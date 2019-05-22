@@ -16,6 +16,18 @@ import (
 	"github.com/magefile/mage/sh"
 )
 
+func Check() error {
+	Format()
+
+	sh.RunV("git", "update-index", "--refresh")
+	sh.RunV("git", "diff-index", "--exit-code", "HEAD", "--")
+
+	return nil
+}
+func Test() error {
+	return sh.RunV("go", "test", "./...")
+}
+
 func Build() error {
 	return sh.Run("go", "build", ".")
 }
