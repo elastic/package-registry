@@ -42,6 +42,7 @@ func main() {
 	router.HandleFunc("/list", listHandler())
 	router.HandleFunc("/package/{name}", packageHandler())
 	router.HandleFunc("/package/{name}/get", downloadHandler)
+	router.HandleFunc("/img/{name}.png", imgHandler)
 
 	log.Fatal(http.ListenAndServe("localhost:8080", router))
 }
@@ -101,6 +102,30 @@ func packageHandler() func(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func imgHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	integration := vars["name"]
+
+	img, err := readIcon(integration)
+	if err != nil {
+		http.Error(w, "integration "+integration+" not found", 404)
+		return
+	}
+
+	// Package exists but does not have an icon, so the default icon is shipped
+	if img == nil {
+		img, err = ioutil.ReadFile("./img/icon.png")
+		if err != nil {
+			http.NotFound(w, r)
+			return
+		}
+	}
+
+	w.Header().Set("Content-Type", "image/png")
+
+	fmt.Fprint(w, string(img))
+}
+
 func listHandler() func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 
@@ -110,7 +135,22 @@ func listHandler() func(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		j, err := json.Marshal(integrations)
+		var output []map[string]string
+		for _, i := range integrations {
+			m, err := readManifest(i)
+			if err != nil {
+				http.NotFound(w, r)
+				return
+			}
+			data := map[string]string{
+				"name":        m.Name,
+				"description": m.Description,
+				"version":     m.Version,
+				"icon":        "/img/" + m.Name + "-" + m.Version + ".png",
+			}
+			output = append(output, data)
+		}
+		j, err := json.MarshalIndent(output, "", "  ")
 		if err != nil {
 			http.NotFound(w, r)
 			return
@@ -140,6 +180,7 @@ func getIntegrationPackages() ([]string, error) {
 type Manifest struct {
 	Name        string `yaml:"name" json:"name"`
 	Version     string `yaml:"version" json:"version"`
+	Description string `yaml:"description" json:"description"`
 	Requirement struct {
 		Kibana struct {
 			Min string `yaml:"min" json:"min"`
@@ -181,5 +222,36 @@ func readManifest(p string) (*Manifest, error) {
 		}
 	}
 
+	return nil, nil
+}
+
+func readIcon(p string) ([]byte, error) {
+
+	r, err := zip.OpenReader(packagesPath + "/" + p + ".zip")
+	if err != nil {
+		return nil, err
+	}
+	defer r.Close()
+
+	for _, f := range r.File {
+		if filepath.Base(f.Name) == "icon.png" {
+			rc, err := f.Open()
+			if err != nil {
+				return nil, err
+			}
+
+			var data []byte
+			buf := bytes.NewBuffer(data)
+			_, err = io.Copy(buf, rc)
+			if err != nil {
+				return nil, err
+			}
+			rc.Close()
+
+			return buf.Bytes(), nil
+		}
+	}
+
+	// Means package exists but no image found
 	return nil, nil
 }
