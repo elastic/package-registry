@@ -53,6 +53,31 @@ func Format() {
 	mg.Deps(GoImports)
 }
 
+// BuildIntegrationPackages rebuilds the zip files inside packages
+func BuildIntegrationPackages() error {
+	packages, err := filepath.Glob("./packages/*")
+	if err != nil {
+		return err
+	}
+
+	for _, p := range packages {
+		info, err := os.Stat(p)
+		if err != nil {
+			return err
+		}
+
+		if !info.IsDir() {
+			continue
+		}
+
+		err = sh.RunV("zip", "-r", p+".zip", p+"/")
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // GoImports executes goimports against all .go files in and below the CWD. It
 // ignores vendor/ directories.
 func GoImports() error {
