@@ -32,3 +32,11 @@ indent_style = tab
 [Vagrantfile]
 indent_size = 2
 indent_style = space
+
+[Jenkinsfile]
+indent_style = space
+indent_size = 2
+
+[*.groovy]
+indent_style = space
+indent_size = 2
