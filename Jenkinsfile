@@ -1,6 +1,11 @@
 #!/usr/bin/env groovy
 
-@Library('apm@current') _
+library identifier: 'apm@current',
+retriever: modernSCM(
+  [$class: 'GitSCMSource',
+  credentialsId: 'f94e9298-83ae-417e-ba91-85c279771570',
+  id: '37cf2c00-2cc7-482e-8c62-7bbffef475e2',
+  remote: 'git@github.com:elastic/apm-pipeline-library.git'])
 
 pipeline {
   agent { label 'docker && linux && immutable' }
@@ -29,7 +34,10 @@ pipeline {
     stage('Checkout') {
       steps {
         deleteDir()
-        gitCheckout(basedir: "${BASE_DIR}")
+        //gitCheckout(basedir: "${BASE_DIR}")
+        dir("${BASE_DIR}"){
+          checkout scm
+        }
         stash allowEmpty: true, name: 'source', useDefaultExcludes: false
       }
     }
