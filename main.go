@@ -44,7 +44,7 @@ func main() {
 	router.HandleFunc("/list", listHandler())
 	router.HandleFunc("/package/{name}", packageHandler())
 	router.HandleFunc("/package/{name}/get", downloadHandler)
-	router.HandleFunc("/img/{name}.png", imgHandler)
+	router.HandleFunc("/img/{name}/{file}", imgHandler)
 
 	log.Fatal(http.ListenAndServe(address, router))
 }
@@ -107,8 +107,9 @@ func packageHandler() func(w http.ResponseWriter, r *http.Request) {
 func imgHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	integration := vars["name"]
+	file := vars["file"]
 
-	img, err := readIcon(integration)
+	img, err := readImage(integration, file)
 	if err != nil {
 		http.Error(w, "integration "+integration+" not found", 404)
 		return
@@ -116,14 +117,35 @@ func imgHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Package exists but does not have an icon, so the default icon is shipped
 	if img == nil {
-		img, err = ioutil.ReadFile("./img/icon.png")
-		if err != nil {
+		if file == "icon.png" {
+			img, err = ioutil.ReadFile("./img/icon.png")
+			if err != nil {
+				http.NotFound(w, r)
+				return
+			}
+		} else {
 			http.NotFound(w, r)
 			return
 		}
 	}
 
-	w.Header().Set("Content-Type", "image/png")
+	// Safety check for too short paths
+	if len(file) < 3 {
+		http.NotFound(w, r)
+		return
+	}
+
+	suffix := file[len(file)-3:]
+
+	// Only .png and .jpg are supported at the moment
+	if suffix == "png" {
+		w.Header().Set("Content-Type", "image/png")
+	} else if suffix == "jpg" {
+		w.Header().Set("Content-Type", "image/jpeg")
+	} else {
+		http.NotFound(w, r)
+		return
+	}
 
 	fmt.Fprint(w, string(img))
 }
@@ -148,7 +170,7 @@ func listHandler() func(w http.ResponseWriter, r *http.Request) {
 				"name":        m.Name,
 				"description": m.Description,
 				"version":     m.Version,
-				"icon":        "/img/" + m.Name + "-" + m.Version + ".png",
+				"icon":        "/img/" + m.Name + "-" + m.Version + "/icon.png",
 			}
 			output = append(output, data)
 		}
@@ -227,7 +249,8 @@ func readManifest(p string) (*Manifest, error) {
 	return nil, nil
 }
 
-func readIcon(p string) ([]byte, error) {
+func readImage(p, file string) ([]byte, error) {
+
 	r, err := zip.OpenReader(packagesPath + "/" + p + ".zip")
 	if err != nil {
 		return nil, err
@@ -235,7 +258,13 @@ func readIcon(p string) ([]byte, error) {
 	defer r.Close()
 
 	for _, f := range r.File {
-		if filepath.Base(f.Name) == "icon.png" {
+
+		// Skip all files not in the img directory
+		if filepath.Base(filepath.Dir(f.Name)) != "img" {
+			continue
+		}
+
+		if filepath.Base(f.Name) == file {
 			rc, err := f.Open()
 			if err != nil {
 				return nil, err
