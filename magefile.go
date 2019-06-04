@@ -25,7 +25,8 @@ func Check() error {
 	return nil
 }
 func Test() error {
-	return sh.RunV("go", "test", "./...")
+	sh.RunV("go", "get", "-v", "-u", "github.com/jstemmer/go-junit-report")
+	return sh.RunV("go", "test", "./...", "-v", "2>&1", "|", "go-junit-report", ">", "junit-report.xml")
 }
 
 func Build() error {
