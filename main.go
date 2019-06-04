@@ -24,15 +24,18 @@ import (
 
 var (
 	packagesPath string
+	address      string
 	version      = "0.0.1"
 )
 
 func init() {
-	packagesPath = *flag.String("packages-path", "./packages", "Path to integration packages directory.")
+	flag.StringVar(&packagesPath, "packages-path", "./packages", "Path to integration packages directory.")
+	flag.StringVar(&address, "address", "localhost:8080", "Address of the integrations-registry service.")
 }
 
 func main() {
 
+	flag.Parse()
 	log.Println("Integrations registry started.")
 	defer log.Println("Integrations registry stopped.")
 
@@ -44,7 +47,7 @@ func main() {
 	router.HandleFunc("/package/{name}/get", downloadHandler)
 	router.HandleFunc("/img/{name}.png", imgHandler)
 
-	log.Fatal(http.ListenAndServe("localhost:8080", router))
+	log.Fatal(http.ListenAndServe(address, router))
 }
 
 func downloadHandler(w http.ResponseWriter, r *http.Request) {
