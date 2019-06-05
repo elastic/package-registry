@@ -229,7 +229,6 @@ func readManifest(p string) (*Manifest, error) {
 }
 
 func readIcon(p string) ([]byte, error) {
-
 	r, err := zip.OpenReader(packagesPath + "/" + p + ".zip")
 	if err != nil {
 		return nil, err
