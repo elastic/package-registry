@@ -11,7 +11,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func downloadHandler(w http.ResponseWriter, r *http.Request) {
+func zipDownloadHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	file := vars["name"]
 
@@ -32,6 +32,32 @@ func downloadHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/octet-stream")
 	w.Header().Set("Content-Description", "File Transfer")
 	w.Header().Set("Content-Disposition", "attachment; filename=\""+file+".zip\"")
+	w.Header().Set("Content-Transfer-Encoding", "binary")
+
+	fmt.Fprint(w, string(d))
+}
+
+func targzDownloadHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	file := vars["name"]
+
+	path := packagesPath + "/" + file + ".tar.gz"
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		log.Println(err)
+		http.NotFound(w, r)
+		return
+	}
+
+	d, err := ioutil.ReadFile(path)
+	if err != nil {
+		log.Println(err)
+		http.NotFound(w, r)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/gzip")
+	w.Header().Set("Content-Description", "File Transfer")
+	w.Header().Set("Content-Disposition", "attachment; filename=\""+file+".tar.gz\"")
 	w.Header().Set("Content-Transfer-Encoding", "binary")
 
 	fmt.Fprint(w, string(d))
@@ -136,6 +162,7 @@ func listHandler() func(w http.ResponseWriter, r *http.Request) {
 				"description": m.Description,
 				"version":     m.Version,
 				"icon":        m.getIcon(),
+				"download":    "/package/" + m.Name + "-" + m.Version + ".tar.gz",
 			}
 			output = append(output, data)
 		}

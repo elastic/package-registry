@@ -65,7 +65,8 @@ func getRouter() *mux.Router {
 	router.HandleFunc("/", infoHandler())
 	router.HandleFunc("/list", listHandler())
 	router.HandleFunc("/package/{name}", packageHandler())
-	router.HandleFunc("/package/{name}/get", downloadHandler)
+	router.HandleFunc("/package/{name}.tar.gz", targzDownloadHandler)
+	router.HandleFunc("/package/{name}.zip", zipDownloadHandler)
 	router.HandleFunc("/img/{name}/{file}", imgHandler)
 
 	return router
