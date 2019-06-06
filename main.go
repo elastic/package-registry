@@ -34,7 +34,6 @@ func init() {
 }
 
 func main() {
-
 	flag.Parse()
 	log.Println("Integrations registry started.")
 	defer log.Println("Integrations registry stopped.")
