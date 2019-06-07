@@ -38,6 +38,12 @@ func main() {
 	log.Println("Integrations registry started.")
 	defer log.Println("Integrations registry stopped.")
 
+	router := getRouter()
+
+	log.Fatal(http.ListenAndServe(address, router))
+}
+
+func getRouter() *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)
 
 	router.HandleFunc("/", infoHandler())
@@ -46,7 +52,7 @@ func main() {
 	router.HandleFunc("/package/{name}/get", downloadHandler)
 	router.HandleFunc("/img/{name}/{file}", imgHandler)
 
-	log.Fatal(http.ListenAndServe(address, router))
+	return router
 }
 
 func downloadHandler(w http.ResponseWriter, r *http.Request) {

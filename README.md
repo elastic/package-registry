@@ -9,7 +9,9 @@ Endpoints:
 * `/`: Info about the registry
 * `/list`: Lis of all available integration packages
 * `/package/{name}`: Info about a package
-* `/package/{name}/get`: Download a package
+* `/package/{name}.tar.gz`: Download a package
+
+Examples for each API endpoint can be found here: https://github.com/elastic/integrations-registry/tree/master/docs/api
 
 ## Package structure
 

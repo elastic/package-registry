@@ -1,0 +1,14 @@
+[
+  {
+    "description": "This is the envoyproxy integration.",
+    "icon": "/img/envoyproxy-0.0.2/icon.png",
+    "name": "envoyproxy",
+    "version": "0.0.2"
+  },
+  {
+    "description": "This is the envoyproxy integration with improved features.",
+    "icon": "/img/envoyproxy-0.0.5/icon.png",
+    "name": "envoyproxy",
+    "version": "0.0.5"
+  }
+]
