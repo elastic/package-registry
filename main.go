@@ -7,12 +7,16 @@ package main
 import (
 	"archive/zip"
 	"bytes"
+	"context"
 	"flag"
 	"io"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
 	"path/filepath"
 	"strings"
+	"syscall"
 
 	"github.com/gorilla/mux"
 	"gopkg.in/yaml.v2"
@@ -36,7 +40,23 @@ func main() {
 
 	router := getRouter()
 
-	log.Fatal(http.ListenAndServe(address, router))
+	server := &http.Server{Addr: address, Handler: router}
+
+	go func() {
+		err := server.ListenAndServe()
+		if err != nil {
+			log.Printf("Error serving: %s", err)
+		}
+	}()
+
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
+	<-stop
+
+	ctx := context.TODO()
+	if err := server.Shutdown(ctx); err != nil {
+		ma	log.Print(err)
+	}
 }
 
 func getRouter() *mux.Router {
