@@ -74,11 +74,18 @@ A full example with the directory structure looks as following:
 
 There are two options to run this. Either the service can be run as a go command or inside a docker container.
 
-Go command: `go run main.go`
+### Go command
+`go run main.go`
 
-Docker:
-
+### Docker
+**General**
 ```
 docker build .
-docker run -p 8080:8080 {container-id}
+docker run -p 8080:8080 {image id from prior step}
+```
+
+**Commands ready to cut-and-paste**
+```
+docker build --rm -t integrations_registry:latest .
+docker run -i -t -p 8080:8080 $(docker images -q integrations_registry:latest)
 ```
