@@ -56,7 +56,18 @@ func Format() {
 
 // BuildIntegrationPackages rebuilds the zip files inside packages
 func BuildIntegrationPackages() error {
-	packages, err := filepath.Glob("./packages/*")
+
+	currentPath, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+	err = os.Chdir("./packages/")
+	if err != nil {
+		return err
+	}
+	defer os.Chdir(currentPath)
+
+	packages, err := filepath.Glob("./*")
 	if err != nil {
 		return err
 	}
@@ -72,6 +83,11 @@ func BuildIntegrationPackages() error {
 		}
 
 		err = sh.RunV("zip", "-r", p+".zip", p+"/")
+		if err != nil {
+			return err
+		}
+
+		err = sh.RunV("tar", "cvzf", p+".tar.gz", filepath.Base(p)+"/")
 		if err != nil {
 			return err
 		}
