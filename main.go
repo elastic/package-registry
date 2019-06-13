@@ -55,7 +55,7 @@ func main() {
 
 	ctx := context.TODO()
 	if err := server.Shutdown(ctx); err != nil {
-		ma	log.Print(err)
+		log.Print(err)
 	}
 }
 
