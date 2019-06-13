@@ -2,6 +2,7 @@
   "name": "envoyproxy",
   "version": "0.0.5",
   "description": "This is the envoyproxy integration with improved features.",
+  "icon": "/img/envoyproxy-0.0.5/icon.png",
   "requirement": {
     "kibana": {
       "min": "",

@@ -75,7 +75,7 @@ A full example with the directory structure looks as following:
 There are two options to run this. Either the service can be run as a go command or inside a docker container.
 
 ### Go command
-`go run main.go`
+`go run .`
 
 ### Docker
 **General**
