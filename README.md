@@ -66,6 +66,8 @@ A full example with the directory structure looks as following:
 └── manifest.yml
 ```
 
+More details about each asset can be found in ASSETS.md
+
 ## Directories
 
 * packages: Contains all the integrations packages. These are just example integration packages used for development.
