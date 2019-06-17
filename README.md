@@ -80,6 +80,9 @@ There are two options to run this. Either the service can be run as a go command
 `go run .`
 
 ### Docker
+**Example**
+An example registry is running on `http://integrations-registry.app.elstc.co/`. This is updated from time to time to be in sync with master.
+
 **General**
 ```
 docker build .
