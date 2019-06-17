@@ -58,12 +58,12 @@ Elasticsearch assets are the assets which are loaded into Elasticsearch. All of 
 
 The [Elasticsearch ingest pipeline](https://www.elastic.co/guide/en/elasticsearch/reference/current/pipeline.html) contains
 information on how the data should be processed. Multiple ingest pipelines can depend on each other thanks to the
-[pipeline processor](https://www.elastic.co/guide/en/elasticsearch/reference/current/pipeline-processor.html). As during 
+[pipeline processor](https://www.elastic.co/guide/en/elasticsearch/reference/current/pipeline-processor.html). As during
 package creation, the exact names given to the pipeline by the integrations manager is not know, we will need to use
 some variables to reference. An example on this can be found [here](https://github.com/elastic/beats/blob/master/filebeat/module/elasticsearch/deprecation/ingest/pipeline.json#L24)
- in Beats. It means the integrations manager will have to be able to understand this template language (we still need 
+ in Beats. It means the integrations manager will have to be able to understand this template language (we still need
  to decide what our template language is) and replace the pipeline ids with the correct values.
- 
+
  ### Index Template
 
 * Asset Path: `elasticsearch/index-template/*.json`
@@ -75,7 +75,7 @@ manager must be able to overwrite the index pattern.
 
 On the Beats side today the Index Template is generated out of the `fields.yml` files. This allows to give more flexibility
 to generate the correct template for different Elasticsearch version. As we can release integrations packages for different
-version of Elasticsearch independently this is probably not needed anymore. I expect one or multiple fields.yml to be 
+version of Elasticsearch independently this is probably not needed anymore. I expect one or multiple fields.yml to be
 in each Integrations Package but leave it to the package creator to create the index template (TBD).
 
 An Index Template also relates to the ILM policy as it can reference to which ILM policy should be applied to the indices
@@ -98,7 +98,7 @@ ingested before the template and the write index exist, this will break the syst
 
 * Asset Path: `elasticsearch/rollup-job/*.json`
 
-A [rollup job](https://www.elastic.co/guide/en/elasticsearch/reference/current/rollup-apis.html) defines on how metric 
+A [rollup job](https://www.elastic.co/guide/en/elasticsearch/reference/current/rollup-apis.html) defines on how metric
 data is rolled up. One special thing about rollup jobs is that they can only be created if index and data is already around.
 Rollup jobs can potentially also be generated from `fields.yml` but it should be up to the package creator to do this.
 
@@ -126,6 +126,12 @@ Loading of data can fail or partially fail. Because of this handling on failure 
 Elasticsearch [Machine Learning Jobs](https://www.elastic.co/guide/en/elasticsearch/reference/current/ml-apis.html#ml-api-job-endpoint)
 can be created in Elasticsearch assuming ML is enabled. As soon as a job is started, the job creates results. If results
 are around, a Job can't be just removed anymore but also the results must be removed first (more details needed).
+
+### Data Frames
+
+* Asset Path: `elasticsearch/data-frame/*.json`
+
+[Data Frame Transforms](https://www.elastic.co/guide/en/elasticsearch/reference/7.x/data-frame-apis.html) can be used to transfrom documents. The special thing about about the data frame transforms is that before deletion the transform must be stopped.
 
 ## Kibana
 
@@ -165,7 +171,7 @@ allows to generate the index pattern for different versions of Kibana. As we can
 we probably don't need this anymore.
 
 ECS also provides a fields.yml in the same format. One limitation of index-patterns in Kibana is that they can't be extended
-or support inheritance / composition like the index templates in Elasticsearch. Having many index patterns in Kibana is a 
+or support inheritance / composition like the index templates in Elasticsearch. Having many index patterns in Kibana is a
 problem as a user would have to constantly switch between them. The integrations manager could work around this by
 append / updating index pattern. But this will lead to the problem on how to remove these fields again.
 
