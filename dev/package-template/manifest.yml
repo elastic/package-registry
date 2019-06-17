@@ -1,9 +1,12 @@
 name: {{.Name}}
 description: {{.Description}}
 version: {{.Version}}
-
+categories: ["logs", "metrics"]
+release: beta
 
 requirement:
   kibana:
     version.min: 6.7.0
     version.max: 7.6.0
+  elasticsearch:
+    version.min: 7.0.1
