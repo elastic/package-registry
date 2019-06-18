@@ -1,3 +1,7 @@
+// Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
+// or more contributor license agreements. Licensed under the Elastic License;
+// you may not use this file except in compliance with the Elastic License.
+
 package main
 
 import (
@@ -18,6 +22,8 @@ var (
 
 func TestEndpoints(t *testing.T) {
 
+	packagesPath = "./testdata/packages"
+
 	tests := []struct {
 		endpoint string
 		path     string
@@ -26,7 +32,7 @@ func TestEndpoints(t *testing.T) {
 	}{
 		{"/", "/", "info.json", infoHandler()},
 		{"/list", "/list", "list.json", listHandler()},
-		{"/package/envoyproxy-0.0.5", "/package/{name}", "package.json", packageHandler()},
+		{"/package/example-1.0.0", "/package/{name}", "package.json", packageHandler()},
 	}
 
 	for _, test := range tests {

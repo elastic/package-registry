@@ -50,7 +50,7 @@ pipeline {
         unstash 'source'
         dir("${BASE_DIR}"){
           insideGo{
-            sh(label: 'Checks formatting / linting',script: 'mage check')
+            sh(label: 'Checks formatting / linting',script: 'mage -debug check  ')
           }
         }
       }
@@ -64,7 +64,7 @@ pipeline {
         unstash 'source'
         dir("${BASE_DIR}"){
           insideGo(){
-            sh(label: 'Checks formatting / linting',script: 'mage build')
+            sh(label: 'Checks formatting / linting',script: 'mage -debug build ')
           }
         }
       }
@@ -78,7 +78,7 @@ pipeline {
         unstash 'source'
         dir("${BASE_DIR}"){
           insideGo(){
-            sh(label: 'Runs the (unit) tests',script: 'mage test')
+            sh(label: 'Runs the (unit) tests',script: 'mage -debug test ')
           }
         }
       }

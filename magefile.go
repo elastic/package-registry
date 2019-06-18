@@ -30,6 +30,15 @@ func Test() error {
 }
 
 func Build() error {
+	err := GeneratePackages()
+	if err != nil {
+		return err
+	}
+	err = BuildIntegrationPackages()
+	if err != nil {
+		return err
+	}
+
 	return sh.Run("go", "build", ".")
 }
 
@@ -61,7 +70,7 @@ func BuildIntegrationPackages() error {
 	if err != nil {
 		return err
 	}
-	err = os.Chdir("./packages/")
+	err = os.Chdir("./build/packages/")
 	if err != nil {
 		return err
 	}
@@ -117,6 +126,21 @@ func GoImports() error {
 	return sh.RunV("goimports", args...)
 }
 
+func GeneratePackages() error {
+	fmt.Println(">> Generating packages from packages.yml")
+	currentPath, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+	err = os.Chdir("./dev/")
+	if err != nil {
+		return err
+	}
+	defer os.Chdir(currentPath)
+
+	return sh.RunV("go", "run", ".")
+}
+
 // AddLicenseHeaders adds license headers to .go files. It applies the
 // appropriate license header based on the value of mage.BeatLicense.
 func AddLicenseHeaders() error {
@@ -145,4 +169,13 @@ func FindFilesRecursive(match func(path string, info os.FileInfo) bool) ([]strin
 		return nil
 	})
 	return matches, err
+}
+
+func Clean() error {
+	err := os.RemoveAll("build")
+	if err != nil {
+		return err
+	}
+
+	return os.Remove("integrations-registry")
 }

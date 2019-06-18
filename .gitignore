@@ -1,4 +1,7 @@
 .DS_Store
 integrations-registry
+packages/*.zip
+packages/*.tar.gz
 
 .idea
+build

@@ -1,16 +1,16 @@
 [
   {
-    "description": "This is the envoyproxy integration.",
-    "download": "/package/envoyproxy-0.0.2.tar.gz",
-    "icon": "/img/envoyproxy-0.0.2/icon.png",
-    "name": "envoyproxy",
-    "version": "0.0.2"
+    "description": "This is the example integration.",
+    "download": "/package/example-0.0.5.tar.gz",
+    "icon": "/img/example-0.0.5/icon.png",
+    "name": "example",
+    "version": "0.0.5"
   },
   {
-    "description": "This is the envoyproxy integration with improved features.",
-    "download": "/package/envoyproxy-0.0.5.tar.gz",
-    "icon": "/img/envoyproxy-0.0.5/icon.png",
-    "name": "envoyproxy",
-    "version": "0.0.5"
+    "description": "This is the example integration",
+    "download": "/package/example-1.0.0.tar.gz",
+    "icon": "/img/example-1.0.0/icon.png",
+    "name": "example",
+    "version": "1.0.0"
   }
 ]
