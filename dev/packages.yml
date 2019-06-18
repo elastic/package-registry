@@ -1,0 +1,12 @@
+- name: apache
+  version: 1.0.1
+  description: Apache logs and metrics
+- name: mysql
+  version: 1.0.1
+  description: Mysql Logs and metrics
+- name: mysql
+  version: 1.0.2
+  description: Mysql Logs and metrics
+- name: rabbitmq
+  version: 1.0.2
+  description: RabbitMQ Logs and metrics

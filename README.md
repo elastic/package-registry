@@ -70,13 +70,22 @@ More details about each asset can be found in ASSETS.md
 
 ## Directories
 
-* packages: Contains all the integrations packages. These are just example integration packages used for development.
+* build/packages: Contains all the example integrations packages. These are only example integration packages used for development. Run `mage build` to generate these.
+* dev: The dev packages contains at the moment a template to build example integrations in automated way.
+* testdata/package: Contains the package for testing. This also serves as an example for a package.
 
 ## Running
 
-There are two options to run this. Either the service can be run as a go command or inside a docker container.
+There are several options to run this.
 
 ### Go command
+
+When using the go command, first the example packages must be built:
+
+`mage build`
+
+Afterwards the service can be started:
+
 `go run .`
 
 ### Docker
@@ -93,4 +102,17 @@ docker run -p 8080:8080 {image id from prior step}
 ```
 docker build --rm -t integrations_registry:latest .
 docker run -i -t -p 8080:8080 $(docker images -q integrations_registry:latest)
+```
+
+## Generated Example packages
+
+For easier testing of the integrations manager, the registry allows to generate some example packages. The packages
+to generate are taken out of `dev/packages.yml`. These values are then used to build a package based on the template
+files inside `dev/package-template` and values are replaced. In addition it's possible to add icons for each package 
+under icons. The name of the icon must match the package name.
+
+The command to generate the packages is:
+
+```
+mage generatePackages
 ```

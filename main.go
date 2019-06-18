@@ -29,7 +29,7 @@ var (
 )
 
 func init() {
-	flag.StringVar(&packagesPath, "packages-path", "./packages", "Path to integration packages directory.")
+	flag.StringVar(&packagesPath, "packages-path", "./build/packages", "Path to integration packages directory.")
 	flag.StringVar(&address, "address", "localhost:8080", "Address of the integrations-registry service.")
 }
 
