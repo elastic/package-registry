@@ -8,16 +8,35 @@ This doc is to describe all the assets available in the integration packages and
 
 * Asset Path: `manifest.yml`
 
-The `manifest.yml` contains the information about the pacakge. The most basic version looks as following:
+The `manifest.yml` contains the information about the pacakge. It can contain the following entries:
+
+* name: Name of the integration (required)
+* description: Description of the integration (required)
+* version: Version of the integration (required)
+* categories: List of categories this integration falls under. The available categories still need to be defined.
+* requirement: Requirement is an object that contains all the requirements for the stack versions of this integration. Inside it contains an entry for each possible service which then can contain `version.min` and `version.max`. Other requirements might be added here like dependency on a specific Elasticsearch plugin / ingest pipeline if needed. In the past this was needed for geo and user_agent as they were not installed by default.
+
+
+An example manifest might look as following:
 
 ```
 name: envoyproxy
 description: This is the envoyproxy integration.
 version: 0.0.2
+categories: ["logs", "metrics"]
+requirement:
+  elasticsearch:
+    version.min: 7.0
+    version.max: 7
+  kibana:
+    version.min: 7.0
+  metricbeat:
+    version.min: 7.1
+  filebeat:
+    version.min: 7.2
 ```
 
-It will also contain definition with which versions of the Elastic Stack products its compatible and the requirements. 
-(more to come).
+The definition of the manifest is not complete yet and further details will follow.
 
 ### Fields.yml
 
