@@ -32,6 +32,8 @@ func TestEndpoints(t *testing.T) {
 	}{
 		{"/", "/", "info.json", infoHandler()},
 		{"/list", "/list", "list.json", listHandler()},
+		{"/list?kibana=6.5.2", "/list", "list-kibana652.json", listHandler()},
+		{"/list?kibana=7.2.1", "/list", "list-kibana721.json", listHandler()},
 		{"/package/example-1.0.0", "/package/{name}", "package.json", packageHandler()},
 	}
 

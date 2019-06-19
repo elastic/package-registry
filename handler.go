@@ -151,12 +151,51 @@ func listHandler() func(w http.ResponseWriter, r *http.Request) {
 
 		integrationsList := map[string]*Manifest{}
 
+		query := r.URL.Query()
+
+		var kibanaVersion *semver.Version
+
+		if len(query) > 0 {
+			if v := query.Get("kibana"); v != "" {
+				kibanaVersion, err = semver.New(v)
+				if err != nil {
+					// TODO: Add error that invalid version
+					notFound(w, err)
+					return
+				}
+			}
+		}
+
 		// Checks that only the most recent version of an integration is added to the list
 		for _, i := range integrations {
 			m, err := readManifest(i)
 			if err != nil {
 				notFound(w, err)
 				return
+			}
+
+			if kibanaVersion != nil {
+				if m.Requirement.Kibana.Max != "" {
+					maxKibana, err := semver.Parse(m.Requirement.Kibana.Max)
+					if err != nil {
+						notFound(w, err)
+						return
+					}
+					if kibanaVersion.GT(maxKibana) {
+						continue
+					}
+				}
+
+				if m.Requirement.Kibana.Min != "" {
+					minKibana, err := semver.Parse(m.Requirement.Kibana.Min)
+					if err != nil {
+						notFound(w, err)
+						return
+					}
+					if kibanaVersion.LT(minKibana) {
+						continue
+					}
+				}
 			}
 
 			// Check if the version exists and if it should be added or not.
