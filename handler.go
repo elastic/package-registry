@@ -12,6 +12,8 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/blang/semver"
+
 	"github.com/gorilla/mux"
 )
 
@@ -153,7 +155,9 @@ func listHandler() func(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		var output []map[string]string
+		integrationsList := map[string]*Manifest{}
+
+		// Checks that only the most recent version of an integration is added to the list
 		for _, i := range integrations {
 			m, err := readManifest(i)
 			if err != nil {
@@ -161,6 +165,23 @@ func listHandler() func(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
+			// Check if the version exists and if it should be added or not.
+			if i, ok := integrationsList[m.Name]; ok {
+				newVersion, _ := semver.Make(m.Version)
+				oldVersion, _ := semver.Make(i.Version)
+
+				// Skip addition of integration if only lower or equal
+				if newVersion.LTE(oldVersion) {
+					continue
+				}
+			}
+			integrationsList[m.Name] = m
+
+		}
+
+		var output []map[string]string
+
+		for _, m := range integrationsList {
 			data := map[string]string{
 				"name":        m.Name,
 				"description": m.Description,
@@ -170,6 +191,7 @@ func listHandler() func(w http.ResponseWriter, r *http.Request) {
 			}
 			output = append(output, data)
 		}
+
 		j, err := json.MarshalIndent(output, "", "  ")
 		if err != nil {
 			http.NotFound(w, r)
