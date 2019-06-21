@@ -9,6 +9,7 @@ import (
 	"bytes"
 	"context"
 	"flag"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -17,6 +18,8 @@ import (
 	"path/filepath"
 	"strings"
 	"syscall"
+
+	ucfgYAML "github.com/elastic/go-ucfg/yaml"
 
 	"github.com/gorilla/mux"
 	"gopkg.in/yaml.v2"
@@ -33,10 +36,30 @@ func init() {
 	flag.StringVar(&address, "address", "localhost:8080", "Address of the integrations-registry service.")
 }
 
+type Config struct {
+	PackagesPath string `config:"packages.path"`
+	Foo          string `config:"foo"`
+}
+
 func main() {
 	flag.Parse()
 	log.Println("Integrations registry started.")
 	defer log.Println("Integrations registry stopped.")
+
+	cfg, err := ucfgYAML.NewConfigWithFile("config.yml")
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	config := Config{}
+	err = cfg.Unpack(&config)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	fmt.Println(config)
 
 	server := &http.Server{Addr: address, Handler: getRouter()}
 
