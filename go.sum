@@ -1,3 +1,5 @@
+github.com/blang/semver v3.5.1+incompatible h1:cQNTCjp13qL8KC3Nbxr/y2Bqb63oX6wdnnjpJbkM4JQ=
+github.com/blang/semver v3.5.1+incompatible/go.mod h1:kRBLl5iJ+tD4TcOOxsy/0fnwebNt5EWlYSAyrTnjyyk=
 github.com/elastic/go-licenser v0.0.0-20190206105657-ca40ceca0166 h1:2syKAicoF3fQ13K9V3cY4T+ktVTVljiBW23oNA37Geo=
 github.com/elastic/go-licenser v0.0.0-20190206105657-ca40ceca0166/go.mod h1:D8eNQk70FOCVBl3smCGQt/lv7meBeQno2eI1S5apiHQ=
 github.com/gorilla/mux v1.7.2 h1:zoNxOV7WjqXptQOVngLmcSQgXmgk4NMz1HibBchjl/I=
