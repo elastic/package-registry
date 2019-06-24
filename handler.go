@@ -23,15 +23,13 @@ func zipDownloadHandler(w http.ResponseWriter, r *http.Request) {
 
 	path := packagesPath + "/" + file + ".zip"
 	if _, err := os.Stat(path); os.IsNotExist(err) {
-		log.Println(err)
-		http.NotFound(w, r)
+		notFound(w, err)
 		return
 	}
 
 	d, err := ioutil.ReadFile(path)
 	if err != nil {
-		log.Println(err)
-		http.NotFound(w, r)
+		notFound(w, err)
 		return
 	}
 
@@ -49,15 +47,13 @@ func targzDownloadHandler(w http.ResponseWriter, r *http.Request) {
 
 	path := packagesPath + "/" + file + ".tar.gz"
 	if _, err := os.Stat(path); os.IsNotExist(err) {
-		log.Println(err)
-		http.NotFound(w, r)
+		notFound(w, err)
 		return
 	}
 
 	d, err := ioutil.ReadFile(path)
 	if err != nil {
-		log.Println(err)
-		http.NotFound(w, r)
+		notFound(w, err)
 		return
 	}
 
@@ -84,8 +80,7 @@ func packageHandler() func(w http.ResponseWriter, r *http.Request) {
 
 		manifest, err := readManifest(key)
 		if err != nil {
-			log.Printf("Manifest not found: %s, %s", key, manifest)
-			http.NotFound(w, r)
+			notFound(w, fmt.Errorf("error reading manfiest: %s, %s", key, err))
 			return
 		}
 		// It's not set by default, generate it
@@ -116,18 +111,18 @@ func imgHandler(w http.ResponseWriter, r *http.Request) {
 		if file == "icon.png" {
 			img, err = ioutil.ReadFile("./img/icon.png")
 			if err != nil {
-				http.NotFound(w, r)
+				notFound(w, err)
 				return
 			}
 		} else {
-			http.NotFound(w, r)
+			notFound(w, nil)
 			return
 		}
 	}
 
 	// Safety check for too short paths
 	if len(file) < 3 {
-		http.NotFound(w, r)
+		notFound(w, nil)
 		return
 	}
 
@@ -139,7 +134,7 @@ func imgHandler(w http.ResponseWriter, r *http.Request) {
 	} else if suffix == "jpg" {
 		w.Header().Set("Content-Type", "image/jpeg")
 	} else {
-		http.NotFound(w, r)
+		notFound(w, err)
 		return
 	}
 
@@ -151,7 +146,7 @@ func listHandler() func(w http.ResponseWriter, r *http.Request) {
 
 		integrations, err := getIntegrationPackages()
 		if err != nil {
-			http.NotFound(w, r)
+			notFound(w, err)
 			return
 		}
 
@@ -161,7 +156,7 @@ func listHandler() func(w http.ResponseWriter, r *http.Request) {
 		for _, i := range integrations {
 			m, err := readManifest(i)
 			if err != nil {
-				http.NotFound(w, r)
+				notFound(w, err)
 				return
 			}
 
@@ -194,10 +189,18 @@ func listHandler() func(w http.ResponseWriter, r *http.Request) {
 
 		j, err := json.MarshalIndent(output, "", "  ")
 		if err != nil {
-			http.NotFound(w, r)
+			notFound(w, err)
 			return
 		}
 		w.Header().Set("Content-Type", "application/json")
 		fmt.Fprint(w, string(j))
 	}
+}
+
+func notFound(w http.ResponseWriter, err error) {
+	errString := ""
+	if err != nil {
+		errString = err.Error()
+	}
+	http.Error(w, errString, http.StatusNotFound)
 }
