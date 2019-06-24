@@ -38,9 +38,7 @@ func main() {
 	log.Println("Integrations registry started.")
 	defer log.Println("Integrations registry stopped.")
 
-	router := getRouter()
-
-	server := &http.Server{Addr: address, Handler: router}
+	server := &http.Server{Addr: address, Handler: getRouter()}
 
 	go func() {
 		err := server.ListenAndServe()
