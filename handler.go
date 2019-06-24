@@ -13,7 +13,6 @@ import (
 	"os"
 
 	"github.com/blang/semver"
-
 	"github.com/gorilla/mux"
 )
 
@@ -67,14 +66,13 @@ func targzDownloadHandler(w http.ResponseWriter, r *http.Request) {
 
 func infoHandler() func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
+		jsonHeader(w)
 		fmt.Fprintf(w, `{"version": "%s"}`, version)
 	}
 }
 
 func packageHandler() func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
 		vars := mux.Vars(r)
 		key := vars["name"]
 
@@ -91,6 +89,7 @@ func packageHandler() func(w http.ResponseWriter, r *http.Request) {
 			log.Fatal(data)
 		}
 
+		jsonHeader(w)
 		fmt.Fprint(w, string(data))
 	}
 }
@@ -192,7 +191,7 @@ func listHandler() func(w http.ResponseWriter, r *http.Request) {
 			notFound(w, err)
 			return
 		}
-		w.Header().Set("Content-Type", "application/json")
+		jsonHeader(w)
 		fmt.Fprint(w, string(j))
 	}
 }
@@ -203,4 +202,8 @@ func notFound(w http.ResponseWriter, err error) {
 		errString = err.Error()
 	}
 	http.Error(w, errString, http.StatusNotFound)
+}
+
+func jsonHeader(w http.ResponseWriter) {
+	w.Header().Set("Content-Type", "application/json")
 }
