@@ -11,6 +11,9 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
+
+	"github.com/elastic/beats/libbeat/common"
 
 	"github.com/blang/semver"
 
@@ -97,6 +100,52 @@ func packageHandler() func(w http.ResponseWriter, r *http.Request) {
 		}
 
 		fmt.Fprint(w, string(data))
+	}
+}
+
+func integrationHandler() func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		vars := mux.Vars(r)
+		key := vars["name"]
+
+		// find all packages with
+
+		paths, err := filepath.Glob(packagesPath + "/" + key + "-*.zip")
+		if err != nil {
+			http.NotFound(w, r)
+			return
+		}
+
+		if len(paths) == 0 {
+			http.NotFound(w, r)
+			return
+		}
+
+		var manifests []*Manifest
+
+		for _, p := range paths {
+			p = filepath.Base(p)
+
+			fmt.Println(p[0 : len(p)-4])
+			manifest, err := readManifest(p[0 : len(p)-4])
+			if err != nil {
+				log.Printf("Manifest not found: %s, %s", key, manifest)
+				http.NotFound(w, r)
+				return
+			}
+			// It's not set by default, generate it
+			manifest.Icon = manifest.getIcon()
+
+			manifests = append(manifests, manifest)
+
+		}
+
+		output := common.MapStr{
+			"integration": key,
+			"packages":    manifests,
+		}
+		fmt.Fprint(w, output.StringToPrint())
 	}
 }
 
