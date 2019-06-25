@@ -60,7 +60,7 @@ An example event looks as following:
     "service.type": "mssql"
 }
 ```
-<details>
+</details>
 
 # Metrics
 
