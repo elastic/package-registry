@@ -1,0 +1,9 @@
+[
+  {
+    "description": "This is the example integration",
+    "download": "/package/example-1.0.0.tar.gz",
+    "icon": "/img/example-1.0.0/icon.png",
+    "name": "example",
+    "version": "1.0.0"
+  }
+]

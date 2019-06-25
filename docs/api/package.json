@@ -5,8 +5,8 @@
   "icon": "/img/example-1.0.0/icon.png",
   "requirement": {
     "kibana": {
-      "min": "",
-      "max": ""
+      "version.min": "7.0.0",
+      "version.max": ""
     }
   }
 }

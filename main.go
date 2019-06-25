@@ -102,8 +102,8 @@ type Manifest struct {
 	Package     `yaml:",inline" json:",inline"`
 	Requirement struct {
 		Kibana struct {
-			Min string `yaml:"min" json:"min"`
-			Max string `yaml:"max" json:"max"`
+			Min string `yaml:"version.min" json:"version.min"`
+			Max string `yaml:"version.max" json:"version.max"`
 		} `yaml:"kibana" json:"kibana"`
 	} `yaml:"requirement" json:"requirement"`
 }

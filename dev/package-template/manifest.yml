@@ -1,3 +1,9 @@
 name: {{.Name}}
 description: {{.Description}}
 version: {{.Version}}
+
+
+requirement:
+  kibana:
+    version.min: 6.7.0
+    version.max: 7.6.0

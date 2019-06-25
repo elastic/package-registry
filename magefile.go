@@ -64,13 +64,20 @@ func Format() {
 }
 
 // BuildIntegrationPackages rebuilds the zip files inside packages
+// PACKAGES_PATH env variable can be used to also rebuild testdata packages.
 func BuildIntegrationPackages() error {
+
+	// Check if PACKAGES_PATH is set.
+	packagesPath := os.Getenv("PACKAGES_PATH")
+	if packagesPath == "" {
+		packagesPath = "./build/packages/"
+	}
 
 	currentPath, err := os.Getwd()
 	if err != nil {
 		return err
 	}
-	err = os.Chdir("./build/packages/")
+	err = os.Chdir(packagesPath)
 	if err != nil {
 		return err
 	}

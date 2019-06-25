@@ -1,3 +1,15 @@
 name: example
 description: This is the example integration.
 version: 0.0.5
+
+
+requirement:
+  elasticsearch:
+    version.min: 6.0.0
+    version.max: 6.8.0
+  kibana:
+    version.min: 6.0.0
+  metricbeat:
+    version.min: 6.1.0
+  filebeat:
+    version.min: 6.2.0
