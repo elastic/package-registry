@@ -24,6 +24,10 @@ name: envoyproxy
 description: This is the envoyproxy integration.
 version: 0.0.2
 categories: ["logs", "metrics"]
+# Options are experimental, beta, ga
+release: beta
+compatibility: [1.0.2, 2.0.1]
+
 requirement:
   elasticsearch:
     version.min: 7.0
@@ -37,6 +41,8 @@ requirement:
 ```
 
 The definition of the manifest is not complete yet and further details will follow.
+
+Question: How do we handle if only one metricset is in beta but integration is in GA?
 
 ### Fields.yml
 
