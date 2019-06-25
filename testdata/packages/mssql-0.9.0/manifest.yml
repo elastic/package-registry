@@ -1,0 +1,16 @@
+name: mssql
+description: This is the example MSSQL integration
+version: 0.9.0
+release: beta
+compatibility: ["sql-server-2017"]
+
+requirement:
+  elasticsearch:
+    version.min: 7.0
+    version.max: 7
+  kibana:
+    version.min: 7.0
+  metricbeat:
+    version.min: 7.1
+  filebeat:
+    version.min: 7.2

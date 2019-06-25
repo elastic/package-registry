@@ -5,5 +5,12 @@
     "icon": "/img/example-1.0.0/icon.png",
     "name": "example",
     "version": "1.0.0"
+  },
+  {
+    "description": "This is the example MSSQL integration",
+    "download": "/package/mssql-0.9.0.tar.gz",
+    "icon": "/img/mssql-0.9.0/icon.png",
+    "name": "mssql",
+    "version": "0.9.0"
   }
 ]
