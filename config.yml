@@ -1,2 +1,1 @@
-foo: bar
-packages.path: "./build"
+packages.path: "./build/packages"
