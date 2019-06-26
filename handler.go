@@ -5,12 +5,21 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
+	"strings"
+	"time"
+
+	"github.com/elastic/go-elasticsearch/esapi"
+
+	"github.com/elastic/go-elasticsearch"
+
+	"github.com/elastic/beats/libbeat/common"
 
 	"github.com/blang/semver"
 	"github.com/gorilla/mux"
@@ -38,6 +47,8 @@ func zipDownloadHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Transfer-Encoding", "binary")
 
 	fmt.Fprint(w, string(d))
+
+	logDownload(r, file)
 }
 
 func targzDownloadHandler(w http.ResponseWriter, r *http.Request) {
@@ -62,6 +73,39 @@ func targzDownloadHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Transfer-Encoding", "binary")
 
 	fmt.Fprint(w, string(d))
+
+	logDownload(r, file)
+}
+
+// logDownload logs each download of a package
+func logDownload(r *http.Request, file string) {
+	packageData := strings.Split(file, "-")
+	data := common.MapStr{
+		"@timestamp": time.Now(),
+		"package":    packageData[0],
+		"version":    packageData[1],
+		"source.ip":  strings.Split(r.RemoteAddr, ":")[0],
+	}
+
+	log.Print(data)
+
+	es, err := elasticsearch.NewDefaultClient()
+	if err != nil {
+		log.Fatalf("Error creating the client: %s", err)
+	}
+
+	// TODO: create mapping?
+	req := esapi.IndexRequest{
+		Index:   "integration-registry-stats",
+		Body:    strings.NewReader(data.String()),
+		Refresh: "true",
+	}
+
+	res, err := req.Do(context.Background(), es)
+	if err != nil {
+		log.Fatalf("Error getting response: %s", err)
+	}
+	defer res.Body.Close()
 }
 
 func infoHandler() func(w http.ResponseWriter, r *http.Request) {

@@ -1,0 +1,23 @@
+{
+  "aliases": {},
+  "mappings": {
+    "properties": {
+      "@timestamp": {
+        "type": "date"
+      },
+      "package": {
+        "type": "keyword"
+      },
+      "source": {
+        "properties": {
+          "ip": {
+            "type": "ip"
+          }
+        }
+      },
+      "version": {
+        "type": "keyword"
+      }
+    }
+  }
+}
