@@ -18,6 +18,8 @@ import (
 	"strings"
 	"syscall"
 
+	ucfgYAML "github.com/elastic/go-ucfg/yaml"
+
 	"github.com/gorilla/mux"
 	"gopkg.in/yaml.v2"
 )
@@ -26,17 +28,28 @@ var (
 	packagesPath string
 	address      string
 	version      = "0.0.1"
+	configPath   = "config.yml"
 )
 
 func init() {
-	flag.StringVar(&packagesPath, "packages-path", "./build/packages", "Path to integration packages directory.")
 	flag.StringVar(&address, "address", "localhost:8080", "Address of the integrations-registry service.")
+}
+
+type Config struct {
+	PackagesPath string `config:"packages.path"`
 }
 
 func main() {
 	flag.Parse()
 	log.Println("Integrations registry started.")
 	defer log.Println("Integrations registry stopped.")
+
+	config, err := getConfig()
+	if err != nil {
+		log.Print(err)
+		os.Exit(1)
+	}
+	packagesPath = config.PackagesPath
 
 	server := &http.Server{Addr: address, Handler: getRouter()}
 
@@ -55,6 +68,20 @@ func main() {
 	if err := server.Shutdown(ctx); err != nil {
 		log.Print(err)
 	}
+}
+
+func getConfig() (*Config, error) {
+	cfg, err := ucfgYAML.NewConfigWithFile(configPath)
+	if err != nil {
+		return nil, err
+	}
+
+	config := &Config{}
+	err = cfg.Unpack(config)
+	if err != nil {
+		return nil, err
+	}
+	return config, nil
 }
 
 func getRouter() *mux.Router {
