@@ -1,0 +1,37 @@
+{
+  "attributes": {
+    "columns": [
+      "_source"
+    ],
+    "description": "",
+    "hits": 0,
+    "kibanaSavedObjectMeta": {
+      "searchSourceJSON": {
+        "filter": [],
+        "highlightAll": true,
+        "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.index",
+        "query": {
+          "language": "kuery",
+          "query": "iptables.length :*"
+        },
+        "version": true
+      }
+    },
+    "sort": [
+      "@timestamp",
+      "desc"
+    ],
+    "title": "Events Search [Filebeat Iptables] ECS",
+    "version": 1
+  },
+  "migrationVersion": {
+    "search": "7.0.0"
+  },
+  "references": [
+    {
+      "id": "filebeat-*",
+      "name": "kibanaSavedObjectMeta.searchSourceJSON.index",
+      "type": "index-pattern"
+    }
+  ]
+}

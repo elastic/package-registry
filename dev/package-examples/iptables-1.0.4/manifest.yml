@@ -1,0 +1,14 @@
+name: iptables
+title: IP Tables
+description: iptables logs
+version: 1.0.4
+categories: ["logs"]
+release: ga
+license: basic
+
+requirement:
+  kibana:
+    version.min: 6.7.0
+    version.max: 7.6.0
+  elasticsearch:
+    version.min: 7.0.1
