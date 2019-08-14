@@ -215,8 +215,12 @@ func listHandler() func(w http.ResponseWriter, r *http.Request) {
 		var output []map[string]string
 
 		for _, m := range integrationsList {
+			if m.Title == "" {
+				m.Title = m.Name
+			}
 			data := map[string]string{
 				"name":        m.Name,
+				"title":       m.Title,
 				"description": m.Description,
 				"version":     m.Version,
 				"icon":        m.getIcon(),
