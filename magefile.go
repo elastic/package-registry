@@ -8,6 +8,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -34,6 +35,12 @@ func Build() error {
 	if err != nil {
 		return err
 	}
+
+	err = CopyExamplePackages()
+	if err != nil {
+		return err
+	}
+
 	err = BuildIntegrationPackages()
 	if err != nil {
 		return err
@@ -146,6 +153,33 @@ func GeneratePackages() error {
 	defer os.Chdir(currentPath)
 
 	return sh.RunV("go", "run", ".")
+}
+
+func CopyExamplePackages() error {
+	fmt.Println(">> Copy example packages")
+	currentPath, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+	err = os.Chdir("./dev/package-examples/")
+	if err != nil {
+		return err
+	}
+	defer os.Chdir(currentPath)
+
+	dirs, err := ioutil.ReadDir("./")
+	if err != nil {
+		return err
+	}
+
+	for _, dir := range dirs {
+		err := sh.RunV("cp", "-a", dir.Name(), "../../build/packages/")
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 // AddLicenseHeaders adds license headers to .go files. It applies the
