@@ -4,6 +4,7 @@
     "download": "/package/example-1.0.0.tar.gz",
     "icon": "/img/example-1.0.0/icon.png",
     "name": "example",
+    "title": "Example",
     "version": "1.0.0"
   }
 ]

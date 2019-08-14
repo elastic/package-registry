@@ -4,6 +4,7 @@
     "download": "/package/example-0.0.5.tar.gz",
     "icon": "/img/example-0.0.5/icon.png",
     "name": "example",
+    "title": "Example Integration",
     "version": "0.0.5"
   }
 ]
