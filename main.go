@@ -145,7 +145,9 @@ func readManifest(p string) (*Manifest, error) {
 	defer r.Close()
 
 	for _, f := range r.File {
-		if filepath.Base(f.Name) == "manifest.yml" {
+		// Check for only 1 / as there could be multiple manifest.yml files
+		if filepath.Base(f.Name) == "manifest.yml" && strings.Count(f.Name, "/") == 1 {
+
 			rc, err := f.Open()
 			if err != nil {
 				return nil, err
