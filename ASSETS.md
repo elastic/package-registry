@@ -21,6 +21,7 @@ An example manifest might look as following:
 
 ```
 name: envoyproxy
+title: Envoy Proxy
 description: This is the envoyproxy integration.
 version: 0.0.2
 categories: ["logs", "metrics"]

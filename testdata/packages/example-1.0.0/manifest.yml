@@ -1,6 +1,7 @@
 name: example
 description: This is the example integration
 version: 1.0.0
+title: Example Integration
 
 requirement:
   elasticsearch:

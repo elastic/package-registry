@@ -2,7 +2,6 @@ name: example
 description: This is the example integration.
 version: 0.0.5
 
-
 requirement:
   elasticsearch:
     version.min: 6.0.0
