@@ -39,6 +39,14 @@ requirement:
     version.min: 7.1
   filebeat:
     version.min: 7.2
+
+screenshots:
+- name: overview-logs.png
+  title: This shows the overview of the logs dashboard.
+- name: overview-metrics.png
+  title: Metrics Dashboard.
+- name: getting-started.mp4
+  title: Getting started with the envoyproxy integration.
 ```
 
 The definition of the manifest is not complete yet and further details will follow.
