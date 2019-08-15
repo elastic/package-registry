@@ -1,0 +1,18 @@
+name: coredns
+title: CoreDNS
+description: >
+  CoreDNS logs and metrics integration.
+
+  The CoreDNS integrations allows to gather logs and metrics from the CoreDNS DNS server to get better
+  insights.
+version: 1.0.1
+categories: ["logs", "metrics"]
+release: beta
+license: basic
+
+requirement:
+  kibana:
+    version.min: 6.7.0
+    version.max: 7.6.0
+  elasticsearch:
+    version.min: 7.0.1
