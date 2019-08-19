@@ -217,11 +217,13 @@ func listHandler() func(w http.ResponseWriter, r *http.Request) {
 		for _, m := range integrationsList {
 			data := map[string]string{
 				"name":        m.Name,
-				"title":       m.Title,
 				"description": m.Description,
 				"version":     m.Version,
 				"icon":        m.getIcon(),
 				"download":    "/package/" + m.Name + "-" + m.Version + ".tar.gz",
+			}
+			if m.Title != nil {
+				data["title"] = *m.Title
 			}
 			output = append(output, data)
 		}
