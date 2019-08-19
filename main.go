@@ -178,6 +178,14 @@ type Manifest struct {
 			Max string `yaml:"version.max" json:"version.max"`
 		} `yaml:"kibana" json:"kibana"`
 	} `yaml:"requirement" json:"requirement"`
+	Screenshots []Screenshot `yaml:"screenshots" json:"screenshots"`
+}
+
+type Screenshot struct {
+	Src   string `yaml:"src" json:"src"`
+	Title string `yaml:"title" json:"title"`
+	Size  string `yaml:"size" json:"size"`
+	Type  string `yaml:"type" json:"type"`
 }
 
 func readManifest(p string) (*Manifest, error) {
