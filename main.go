@@ -115,11 +115,11 @@ func getIntegrationPackages() ([]string, error) {
 }
 
 type Package struct {
-	Name        string `yaml:"name" json:"name"`
-	Title       string `yaml:"title" json:"title"`
-	Version     string `yaml:"version" json:"version"`
-	Description string `yaml:"description" json:"description"`
-	Icon        string `yaml:"icon" json:"icon"`
+	Name        string  `yaml:"name" json:"name"`
+	Title       *string `yaml:"title" json:"title"`
+	Version     string  `yaml:"version" json:"version"`
+	Description string  `yaml:"description" json:"description"`
+	Icon        string  `yaml:"icon" json:"icon"`
 }
 
 func (p *Package) getIcon() string {
