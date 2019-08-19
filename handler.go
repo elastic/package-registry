@@ -15,11 +15,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/elastic/go-elasticsearch/esapi"
-
-	"github.com/elastic/go-elasticsearch"
-
 	"github.com/elastic/beats/libbeat/common"
+	"github.com/elastic/go-elasticsearch"
+	"github.com/elastic/go-elasticsearch/esapi"
 
 	"github.com/blang/semver"
 	"github.com/gorilla/mux"
@@ -89,7 +87,10 @@ func logDownload(r *http.Request, file string) {
 
 	log.Print(data)
 
-	es, err := elasticsearch.NewDefaultClient()
+	esConfig := elasticsearch.Config{
+		Addresses: statsAddresses,
+	}
+	es, err := elasticsearch.NewClient(esConfig)
 	if err != nil {
 		log.Fatalf("Error creating the client: %s", err)
 	}
@@ -106,6 +107,11 @@ func logDownload(r *http.Request, file string) {
 		log.Fatalf("Error getting response: %s", err)
 	}
 	defer res.Body.Close()
+
+	/*body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		log.Fatalf("Error reading body: %s", err)
+	}*/
 }
 
 func infoHandler() func(w http.ResponseWriter, r *http.Request) {

@@ -25,10 +25,11 @@ import (
 )
 
 var (
-	packagesPath string
-	address      string
-	version      = "0.0.1"
-	configPath   = "config.yml"
+	packagesPath   string
+	address        string
+	statsAddresses []string
+	version        = "0.0.1"
+	configPath     = "config.yml"
 )
 
 func init() {
@@ -36,7 +37,8 @@ func init() {
 }
 
 type Config struct {
-	PackagesPath string `config:"packages.path"`
+	PackagesPath   string   `config:"packages.path"`
+	StatsAddresses []string `config:"stats.elasticsearch"`
 }
 
 func main() {
