@@ -138,7 +138,16 @@ are around, a Job can't be just removed anymore but also the results must be rem
 
 * Asset Path: `elasticsearch/data-frame-transform/*.json`
 
-[Data Frame Transforms](https://www.elastic.co/guide/en/elasticsearch/reference/7.x/data-frame-apis.html) can be used to transfrom documents. The special thing about about the data frame transforms is that before deletion the transform must be stopped.
+[Data Frame Transforms](https://www.elastic.co/guide/en/elasticsearch/reference/7.x/data-frame-apis.html) can be used to transfrom documents. There are a few things which are special about data frame transforms:
+
+* Destination index must exist before creation
+* Source index must be exist before creation
+* If data frame uses ingest pipeline, it must exist before creation
+* Data Fram transform must be stopped before deletion
+
+Some of the above limitations might be removed in the future.
+
+
 
 ## Kibana
 
