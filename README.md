@@ -38,7 +38,7 @@ description: This is the envoyproxy integration.
 version: 0.0.2
 ```
 
-The directory name of a package must be as following: `{integration-name}-{version}`. This makes it possible to store multiple versions of the same packages in one directory and already indicates the version before reading the manifest file. The zipped packaged has the name convention with the name but added `.zip` at the end.
+The directory name of a package must be as following: `{integration-name}-{version}`. This makes it possible to store multiple versions of the same packages in one directory and already indicates the version before reading the manifest file. The tar packaged has the name convention with the name but added `.tar.gz` at the end.
 
 A full example with the directory structure looks as following:
 

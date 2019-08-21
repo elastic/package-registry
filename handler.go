@@ -16,30 +16,6 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func zipDownloadHandler(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	file := vars["name"]
-
-	path := packagesPath + "/" + file + ".zip"
-	if _, err := os.Stat(path); os.IsNotExist(err) {
-		notFound(w, err)
-		return
-	}
-
-	d, err := ioutil.ReadFile(path)
-	if err != nil {
-		notFound(w, err)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/octet-stream")
-	w.Header().Set("Content-Description", "File Transfer")
-	w.Header().Set("Content-Disposition", "attachment; filename=\""+file+".zip\"")
-	w.Header().Set("Content-Transfer-Encoding", "binary")
-
-	fmt.Fprint(w, string(d))
-}
-
 func targzDownloadHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	file := vars["name"]

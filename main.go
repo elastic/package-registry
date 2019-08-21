@@ -134,7 +134,6 @@ func getRouter() *mux.Router {
 	router.HandleFunc("/", infoHandler())
 	router.HandleFunc("/list", listHandler())
 	router.HandleFunc("/package/{name}.tar.gz", targzDownloadHandler)
-	router.HandleFunc("/package/{name}.zip", zipDownloadHandler)
 	router.HandleFunc("/package/{name}", packageHandler())
 	router.HandleFunc("/img/{name}/{file}", imgHandler)
 
@@ -143,19 +142,22 @@ func getRouter() *mux.Router {
 
 // getIntegrationPackages returns list of available integration packages
 func getIntegrationPackages() ([]string, error) {
-	files, err := filepath.Glob(packagesPath + "/*.zip")
+
+	files, err := ioutil.ReadDir(packagesPath)
 	if err != nil {
 		return nil, err
 	}
 
-	var integrations []string
+	var packages []string
 	for _, f := range files {
-		file := filepath.Base(f)
-		integration := strings.TrimSuffix(file, filepath.Ext(file))
-		integrations = append(integrations, integration)
+		if !f.IsDir() {
+			continue
+		}
+
+		packages = append(packages, f.Name())
 	}
 
-	return integrations, nil
+	return packages, nil
 }
 
 type Package struct {

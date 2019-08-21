@@ -105,11 +105,6 @@ func BuildIntegrationPackages() error {
 			continue
 		}
 
-		err = sh.RunV("zip", "-r", p+".zip", p+"/")
-		if err != nil {
-			return err
-		}
-
 		err = sh.RunV("tar", "cvzf", p+".tar.gz", filepath.Base(p)+"/")
 		if err != nil {
 			return err
