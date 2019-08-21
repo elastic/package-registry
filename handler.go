@@ -116,7 +116,7 @@ func imgHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, string(img))
 }
 
-func listHandler() func(w http.ResponseWriter, r *http.Request) {
+func searchHandler() func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 
 		integrations, err := getIntegrationPackages()

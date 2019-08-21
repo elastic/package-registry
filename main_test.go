@@ -31,9 +31,9 @@ func TestEndpoints(t *testing.T) {
 		handler  func(w http.ResponseWriter, r *http.Request)
 	}{
 		{"/", "/", "info.json", infoHandler()},
-		{"/list", "/list", "list.json", listHandler()},
-		{"/list?kibana=6.5.2", "/list", "list-kibana652.json", listHandler()},
-		{"/list?kibana=7.2.1", "/list", "list-kibana721.json", listHandler()},
+		{"/search", "/search", "list.json", searchHandler()},
+		{"/search?kibana=6.5.2", "/search", "list-kibana652.json", searchHandler()},
+		{"/search?kibana=7.2.1", "/search", "list-kibana721.json", searchHandler()},
 		{"/package/example-1.0.0", "/package/{name}", "package.json", packageHandler()},
 	}
 

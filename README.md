@@ -7,7 +7,7 @@
 Endpoints:
 
 * `/`: Info about the registry
-* `/list`: Lis of all available integration packages
+* `/search`: Search for packages. By default returns all the most recent packages available.
 * `/package/{name}`: Info about a package
 * `/package/{name}.tar.gz`: Download a package
 
