@@ -178,7 +178,7 @@ type Manifest struct {
 			Max string `yaml:"version.max" json:"version.max"`
 		} `yaml:"kibana" json:"kibana"`
 	} `yaml:"requirement" json:"requirement"`
-	Screenshots []Screenshot `yaml:"screenshots" json:"screenshots"`
+	Screenshots []Screenshot `yaml:"screenshots" json:"screenshots,omitempty"`
 }
 
 type Screenshot struct {
