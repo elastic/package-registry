@@ -131,11 +131,11 @@ func getConfig() (*Config, error) {
 func getRouter() *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)
 
-	router.HandleFunc("/", infoHandler())
 	router.HandleFunc("/search", searchHandler())
-	router.HandleFunc("/package/{name}.tar.gz", targzDownloadHandler)
+	router.HandleFunc("/package/{name}.tar.gz", targzDownloadHandler())
 	router.HandleFunc("/package/{name}", packageHandler())
 	router.HandleFunc("/img/{name}/{file}", imgHandler)
+	router.PathPrefix("/").HandlerFunc(catchAll())
 
 	return router
 }

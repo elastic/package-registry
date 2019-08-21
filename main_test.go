@@ -30,7 +30,7 @@ func TestEndpoints(t *testing.T) {
 		file     string
 		handler  func(w http.ResponseWriter, r *http.Request)
 	}{
-		{"/", "/", "info.json", infoHandler()},
+		{"/", "/", "info.json", catchAll()},
 		{"/search", "/search", "list.json", searchHandler()},
 		{"/search?kibana=6.5.2", "/search", "list-kibana652.json", searchHandler()},
 		{"/search?kibana=7.2.1", "/search", "list-kibana721.json", searchHandler()},

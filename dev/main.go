@@ -17,7 +17,7 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-var packagesPath = "../build/packages/"
+var packagesPath = "../public/package/"
 
 type Package struct {
 	Name        string `yaml:"name"`
