@@ -4,13 +4,13 @@
     {
       "pipeline": {
           "if": "ctx.message.charAt(0) == (char)(\"{\")",
-          "name": "{< IngestPipeline "pipeline-json" >}"
+          "name": "{< IngestPipeline \"pipeline-json\" >}"
       }
     },
     {
       "pipeline": {
           "if": "ctx.message.charAt(0) != (char)(\"{\")",
-          "name": "{< IngestPipeline "pipeline-plaintext" >}"
+          "name": "{< IngestPipeline \"pipeline-plaintext\" >}"
       }
     },
     {
@@ -23,7 +23,7 @@
     {
       "script": {
         "lang": "painless",
-        "source": "ctx['source'] = new HashMap(); if (ctx.temp.source.charAt(0) == (char)(\"[\")) { def p = ctx.temp.source.indexOf (']'); def l = ctx.temp.source.length(); ctx.source.address = ctx.temp.source.substring(1, p); ctx.source.port = ctx.temp.source.substring(p+2, l);} else { def p = ctx.temp.source.indexOf (':'); def l = ctx.temp.source.length(); ctx.source.address = ctx.temp.source.substring(0, p); ctx.source.port = ctx.temp.source.substring(p+1, l);} ctx.remove('temp');", 
+        "source": "ctx['source'] = new HashMap(); if (ctx.temp.source.charAt(0) == (char)(\"[\")) { def p = ctx.temp.source.indexOf (']'); def l = ctx.temp.source.length(); ctx.source.address = ctx.temp.source.substring(1, p); ctx.source.port = ctx.temp.source.substring(p+2, l);} else { def p = ctx.temp.source.indexOf (':'); def l = ctx.temp.source.length(); ctx.source.address = ctx.temp.source.substring(0, p); ctx.source.port = ctx.temp.source.substring(p+1, l);} ctx.remove('temp');",
         "if": "ctx.temp?.source != null"
       }
     },
@@ -72,7 +72,7 @@
     {
       "split": {
         "field": "coredns.response.flags",
-        "separator": "," 
+        "separator": ","
       }
     },
     {
@@ -92,10 +92,10 @@
       }
     }
   ],
-  "on_failure" : [{ 
-    "set" : { 
-      "field" : "error.message", 
-      "value" : "{{ _ingest.on_failure_message }}" 
-    } 
+  "on_failure" : [{
+    "set" : {
+      "field" : "error.message",
+      "value" : "{{ _ingest.on_failure_message }}"
+    }
   }]
 }
