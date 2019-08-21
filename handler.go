@@ -72,6 +72,7 @@ func targzDownloadHandler(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprint(w, string(d))
 
+	// TODO: do this async to not block the request
 	logDownload(r, file)
 }
 
@@ -87,6 +88,8 @@ func logDownload(r *http.Request, file string) {
 
 	log.Print(data)
 
+	// TODO: only create an instance if statsAddresses > 0
+	// Should we even create it each time or not?
 	esConfig := elasticsearch.Config{
 		Addresses: statsAddresses,
 	}
