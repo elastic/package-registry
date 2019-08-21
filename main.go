@@ -182,10 +182,10 @@ type Manifest struct {
 }
 
 type Screenshot struct {
-	Src   string `yaml:"src" json:"src"`
-	Title string `yaml:"title" json:"title"`
-	Size  string `yaml:"size" json:"size"`
-	Type  string `yaml:"type" json:"type"`
+	Src   string `yaml:"src" json:"src,omitempty"`
+	Title string `yaml:"title" json:"title,omitempty"`
+	Size  string `yaml:"size" json:"size,omitempty"`
+	Type  string `yaml:"type" json:"type,omitempty"`
 }
 
 func readManifest(p string) (*Manifest, error) {
