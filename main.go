@@ -7,6 +7,7 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -50,8 +51,7 @@ func main() {
 	}
 	packagesPath = config.PackagesPath
 
-	// TODO: Decode all packages
-	// Delete everything which is not a .zip or .tar.gz
+	// Unzip all packages
 	err = setup(packagesPath)
 	if err != nil {
 		log.Print(err)
@@ -111,7 +111,6 @@ func setup(packagePath string) error {
 		cmd.Run()
 	}
 
-	//os.RemoveAll()
 	return nil
 }
 
@@ -198,6 +197,9 @@ func readManifest(p string) (*Manifest, error) {
 }
 
 func readImage(p, file string) ([]byte, error) {
-	// TODO: This is basically a file server, make sure not relative paths can be inserted
+	// Make sure no relative paths are inserted
+	if strings.Contains(file, "..") {
+		return nil, fmt.Errorf("no relative paths allowed")
+	}
 	return ioutil.ReadFile(packagesPath + "/" + p + "/img/" + file)
 }
