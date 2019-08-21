@@ -5,14 +5,14 @@
 package main
 
 import (
-	"archive/zip"
-	"bytes"
 	"context"
 	"flag"
-	"io"
+	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
 	"os/signal"
 	"path/filepath"
 	"strings"
@@ -51,6 +51,13 @@ func main() {
 	}
 	packagesPath = config.PackagesPath
 
+	// Unzip all packages
+	err = setup(packagesPath)
+	if err != nil {
+		log.Print(err)
+		os.Exit(1)
+	}
+
 	server := &http.Server{Addr: address, Handler: getRouter()}
 
 	go func() {
@@ -68,6 +75,43 @@ func main() {
 	if err := server.Shutdown(ctx); err != nil {
 		log.Print(err)
 	}
+}
+
+func setup(packagePath string) error {
+	log.Println("Extracting packages")
+	wd, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+	defer os.Chdir(wd)
+	err = os.Chdir(packagePath)
+	if err != nil {
+		return err
+	}
+	files, err := ioutil.ReadDir(".")
+	if err != nil {
+		return err
+	}
+
+	for _, f := range files {
+		if f.IsDir() {
+			if err := os.RemoveAll(f.Name()); err != nil {
+				return err
+			}
+		}
+	}
+
+	ff, err := filepath.Glob("*.tar.gz")
+	if err != nil {
+		return err
+	}
+
+	for _, f := range ff {
+		cmd := exec.Command("tar", "xvfz", f)
+		cmd.Run()
+	}
+
+	return nil
 }
 
 func getConfig() (*Config, error) {
@@ -138,75 +182,24 @@ type Manifest struct {
 
 func readManifest(p string) (*Manifest, error) {
 
-	r, err := zip.OpenReader(packagesPath + "/" + p + ".zip")
+	manifest, err := ioutil.ReadFile(packagesPath + "/" + p + "/manifest.yml")
 	if err != nil {
 		return nil, err
 	}
-	defer r.Close()
 
-	for _, f := range r.File {
-		// Check for only 1 / as there could be multiple manifest.yml files
-		if filepath.Base(f.Name) == "manifest.yml" && strings.Count(f.Name, "/") == 1 {
-
-			rc, err := f.Open()
-			if err != nil {
-				return nil, err
-			}
-
-			var data []byte
-			buf := bytes.NewBuffer(data)
-			_, err = io.Copy(buf, rc)
-			if err != nil {
-				return nil, err
-			}
-			rc.Close()
-
-			var m = &Manifest{}
-			err = yaml.Unmarshal(buf.Bytes(), m)
-			if err != nil {
-				return nil, err
-			}
-
-			return m, nil
-		}
+	var m = &Manifest{}
+	err = yaml.Unmarshal(manifest, m)
+	if err != nil {
+		return nil, err
 	}
 
-	return nil, nil
+	return m, nil
 }
 
 func readImage(p, file string) ([]byte, error) {
-
-	r, err := zip.OpenReader(packagesPath + "/" + p + ".zip")
-	if err != nil {
-		return nil, err
+	// Make sure no relative paths are inserted
+	if strings.Contains(file, "..") {
+		return nil, fmt.Errorf("no relative paths allowed")
 	}
-	defer r.Close()
-
-	for _, f := range r.File {
-
-		// Skip all files not in the img directory
-		if filepath.Base(filepath.Dir(f.Name)) != "img" {
-			continue
-		}
-
-		if filepath.Base(f.Name) == file {
-			rc, err := f.Open()
-			if err != nil {
-				return nil, err
-			}
-
-			var data []byte
-			buf := bytes.NewBuffer(data)
-			_, err = io.Copy(buf, rc)
-			if err != nil {
-				return nil, err
-			}
-			rc.Close()
-
-			return buf.Bytes(), nil
-		}
-	}
-
-	// Means package exists but no image found
-	return nil, nil
+	return ioutil.ReadFile(packagesPath + "/" + p + "/img/" + file)
 }
