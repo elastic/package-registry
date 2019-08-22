@@ -1,0 +1,13 @@
+name: system
+description: System SQL Logs and metrics
+
+version: 2.0.1
+categories: ["logs", "metrics"]
+release: beta
+
+requirement:
+  kibana:
+    version.min: 6.7.0
+    version.max: 7.6.0
+  elasticsearch:
+    version.min: 7.0.1

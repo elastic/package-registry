@@ -31,12 +31,12 @@ func Test() error {
 }
 
 func Build() error {
-	err := GeneratePackages()
+	err := CopyPackages("./dev/package-generated/")
 	if err != nil {
 		return err
 	}
 
-	err = CopyExamplePackages()
+	err = CopyPackages("./dev/package-examples/")
 	if err != nil {
 		return err
 	}
@@ -135,28 +135,13 @@ func GoImports() error {
 	return sh.RunV("goimports", args...)
 }
 
-func GeneratePackages() error {
-	fmt.Println(">> Generating packages from packages.yml")
+func CopyPackages(path string) error {
+	fmt.Println(">> Copy packages: " + path)
 	currentPath, err := os.Getwd()
 	if err != nil {
 		return err
 	}
-	err = os.Chdir("./dev/")
-	if err != nil {
-		return err
-	}
-	defer os.Chdir(currentPath)
-
-	return sh.RunV("go", "run", ".")
-}
-
-func CopyExamplePackages() error {
-	fmt.Println(">> Copy example packages")
-	currentPath, err := os.Getwd()
-	if err != nil {
-		return err
-	}
-	err = os.Chdir("./dev/package-examples/")
+	err = os.Chdir(path)
 	if err != nil {
 		return err
 	}
