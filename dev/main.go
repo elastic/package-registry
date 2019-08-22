@@ -21,7 +21,7 @@ var packagesPath = "../build/packages/"
 
 type Package struct {
 	Name        string `yaml:"name"`
-	Title        string `yaml:"title"`
+	Title       string `yaml:"title,omitempty"`
 	Version     string `yaml:"version"`
 	Description string `yaml:"description"`
 }
