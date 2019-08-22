@@ -16,35 +16,8 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func targzDownloadHandler(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	file := vars["name"]
-
-	path := packagesPath + "/" + file + ".tar.gz"
-	if _, err := os.Stat(path); os.IsNotExist(err) {
-		notFound(w, err)
-		return
-	}
-
-	d, err := ioutil.ReadFile(path)
-	if err != nil {
-		notFound(w, err)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/gzip")
-	w.Header().Set("Content-Description", "File Transfer")
-	w.Header().Set("Content-Disposition", "attachment; filename=\""+file+".tar.gz\"")
-	w.Header().Set("Content-Transfer-Encoding", "binary")
-
-	fmt.Fprint(w, string(d))
-}
-
-func infoHandler() func(w http.ResponseWriter, r *http.Request) {
-	return func(w http.ResponseWriter, r *http.Request) {
-		jsonHeader(w)
-		fmt.Fprintf(w, `{"version": "%s"}`, version)
-	}
+func targzDownloadHandler() func(w http.ResponseWriter, r *http.Request) {
+	return catchAll()
 }
 
 func packageHandler() func(w http.ResponseWriter, r *http.Request) {
@@ -220,6 +193,41 @@ func notFound(w http.ResponseWriter, err error) {
 		errString = err.Error()
 	}
 	http.Error(w, errString, http.StatusNotFound)
+}
+
+func catchAll() func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		path := r.RequestURI
+
+		file, err := os.Stat("./public" + path)
+		if os.IsNotExist(err) {
+			notFound(w, fmt.Errorf("404 Page Not Found Error"))
+			return
+		}
+
+		// Handles if it's a directory or last char is a / (also a directory)
+		// It then opens index.json by default (if it exists)
+		if len(path) == 0 {
+			path = "/index.json"
+		} else if path[len(path)-1:] == "/" {
+			path = path + "index.json"
+		} else if file.IsDir() {
+			path = path + "/index.json"
+		}
+
+		file, err = os.Stat("./public" + path)
+		if os.IsNotExist(err) {
+			notFound(w, fmt.Errorf("404 Page Not Found Error"))
+			return
+		}
+
+		data, err := ioutil.ReadFile("./public" + path)
+		if err != nil {
+			notFound(w, fmt.Errorf("404 Page Not Found Error"))
+			return
+		}
+		w.Write(data)
+	}
 }
 
 func jsonHeader(w http.ResponseWriter) {

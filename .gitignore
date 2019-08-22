@@ -3,3 +3,4 @@ integrations-registry
 
 .idea
 build
+public/package

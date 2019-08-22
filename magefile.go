@@ -77,7 +77,7 @@ func BuildIntegrationPackages() error {
 	// Check if PACKAGES_PATH is set.
 	packagesPath := os.Getenv("PACKAGES_PATH")
 	if packagesPath == "" {
-		packagesPath = "./build/packages/"
+		packagesPath = "./public/package/"
 	}
 
 	currentPath, err := os.Getwd()
@@ -168,7 +168,7 @@ func CopyExamplePackages() error {
 	}
 
 	for _, dir := range dirs {
-		err := sh.RunV("cp", "-a", dir.Name(), "../../build/packages/")
+		err := sh.RunV("cp", "-a", dir.Name(), "../../public/package/")
 		if err != nil {
 			return err
 		}
@@ -209,6 +209,11 @@ func FindFilesRecursive(match func(path string, info os.FileInfo) bool) ([]strin
 
 func Clean() error {
 	err := os.RemoveAll("build")
+	if err != nil {
+		return err
+	}
+
+	err = os.RemoveAll("public/package")
 	if err != nil {
 		return err
 	}
