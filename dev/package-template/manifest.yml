@@ -1,6 +1,8 @@
 name: {{.Name}}
 description: {{.Description}}
+{{if .Title}}
 title: {{.Title}}
+{{end}}
 version: {{.Version}}
 categories: ["logs", "metrics"]
 release: beta
