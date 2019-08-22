@@ -11,6 +11,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 
 	"github.com/blang/semver"
 	"github.com/gorilla/mux"
@@ -41,52 +42,6 @@ func packageHandler() func(w http.ResponseWriter, r *http.Request) {
 		jsonHeader(w)
 		fmt.Fprint(w, string(data))
 	}
-}
-
-func imgHandler(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	integration := vars["name"]
-	file := vars["file"]
-
-	img, err := readImage(integration, file)
-	if err != nil {
-		http.Error(w, "integration "+integration+" not found", 404)
-		return
-	}
-
-	// Package exists but does not have an icon, so the default icon is shipped
-	if img == nil {
-		if file == "icon.png" {
-			img, err = ioutil.ReadFile("./img/icon.png")
-			if err != nil {
-				notFound(w, err)
-				return
-			}
-		} else {
-			notFound(w, nil)
-			return
-		}
-	}
-
-	// Safety check for too short paths
-	if len(file) < 3 {
-		notFound(w, nil)
-		return
-	}
-
-	suffix := file[len(file)-3:]
-
-	// Only .png and .jpg are supported at the moment
-	if suffix == "png" {
-		w.Header().Set("Content-Type", "image/png")
-	} else if suffix == "jpg" {
-		w.Header().Set("Content-Type", "image/jpeg")
-	} else {
-		notFound(w, err)
-		return
-	}
-
-	fmt.Fprint(w, string(img))
 }
 
 func searchHandler() func(w http.ResponseWriter, r *http.Request) {
@@ -226,10 +181,26 @@ func catchAll() func(w http.ResponseWriter, r *http.Request) {
 			notFound(w, fmt.Errorf("404 Page Not Found Error"))
 			return
 		}
+		sendHeader(w, r)
 		w.Write(data)
 	}
 }
 
 func jsonHeader(w http.ResponseWriter) {
 	w.Header().Set("Content-Type", "application/json")
+}
+
+func sendHeader(w http.ResponseWriter, r *http.Request) {
+	extension := filepath.Ext(r.RequestURI)
+
+	switch extension {
+	// No extension is always json
+	case "":
+		w.Header().Set("Content-Type", "application/json")
+	case ".png":
+		w.Header().Set("Content-Type", "image/png")
+	case ".jpg":
+	case ".jpeg":
+		w.Header().Set("Content-Type", "image/jpeg")
+	}
 }

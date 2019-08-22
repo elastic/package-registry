@@ -7,7 +7,6 @@ package main
 import (
 	"context"
 	"flag"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -15,7 +14,6 @@ import (
 	"os/exec"
 	"os/signal"
 	"path/filepath"
-	"strings"
 	"syscall"
 
 	ucfgYAML "github.com/elastic/go-ucfg/yaml"
@@ -134,7 +132,6 @@ func getRouter() *mux.Router {
 	router.HandleFunc("/search", searchHandler())
 	router.HandleFunc("/package/{name}.tar.gz", targzDownloadHandler())
 	router.HandleFunc("/package/{name}", packageHandler())
-	router.HandleFunc("/img/{name}/{file}", imgHandler)
 	router.PathPrefix("/").HandlerFunc(catchAll())
 
 	return router
@@ -169,7 +166,7 @@ type Package struct {
 }
 
 func (p *Package) getIcon() string {
-	return "/img/" + p.Name + "-" + p.Version + "/icon.png"
+	return "/package/" + p.Name + "-" + p.Version + "/img/icon.png"
 }
 
 type Manifest struct {
@@ -204,12 +201,4 @@ func readManifest(p string) (*Manifest, error) {
 	}
 
 	return m, nil
-}
-
-func readImage(p, file string) ([]byte, error) {
-	// Make sure no relative paths are inserted
-	if strings.Contains(file, "..") {
-		return nil, fmt.Errorf("no relative paths allowed")
-	}
-	return ioutil.ReadFile(packagesPath + "/" + p + "/img/" + file)
 }
