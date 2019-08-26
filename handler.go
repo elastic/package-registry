@@ -8,39 +8,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 	"path/filepath"
 
+	"github.com/elastic/integrations-registry/p"
+
 	"github.com/blang/semver"
-	"github.com/gorilla/mux"
 )
-
-func targzDownloadHandler() func(w http.ResponseWriter, r *http.Request) {
-	return catchAll()
-}
-
-func packageHandler() func(w http.ResponseWriter, r *http.Request) {
-	return func(w http.ResponseWriter, r *http.Request) {
-		vars := mux.Vars(r)
-		key := vars["name"]
-
-		manifest, err := readManifest(key)
-		if err != nil {
-			notFound(w, fmt.Errorf("error reading manfiest: %s, %s", key, err))
-			return
-		}
-
-		data, err := json.MarshalIndent(manifest, "", "  ")
-		if err != nil {
-			log.Fatal(data)
-		}
-
-		jsonHeader(w)
-		fmt.Fprint(w, string(data))
-	}
-}
 
 func searchHandler() func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -51,7 +26,7 @@ func searchHandler() func(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		integrationsList := map[string]*Manifest{}
+		integrationsList := map[string]*p.Manifest{}
 
 		query := r.URL.Query()
 
@@ -70,7 +45,7 @@ func searchHandler() func(w http.ResponseWriter, r *http.Request) {
 
 		// Checks that only the most recent version of an integration is added to the list
 		for _, i := range integrations {
-			m, err := readManifest(i)
+			m, err := p.ReadManifest(packagesPath, i)
 			if err != nil {
 				notFound(w, err)
 				return
