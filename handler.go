@@ -31,8 +31,6 @@ func packageHandler() func(w http.ResponseWriter, r *http.Request) {
 			notFound(w, fmt.Errorf("error reading manfiest: %s, %s", key, err))
 			return
 		}
-		// It's not set by default, generate it
-		manifest.Icon = manifest.getIcon()
 
 		data, err := json.MarshalIndent(manifest, "", "  ")
 		if err != nil {
@@ -116,18 +114,20 @@ func searchHandler() func(w http.ResponseWriter, r *http.Request) {
 
 		}
 
-		var output []map[string]string
+		var output []map[string]interface{}
 
 		for _, m := range integrationsList {
-			data := map[string]string{
+			data := map[string]interface{}{
 				"name":        m.Name,
 				"description": m.Description,
 				"version":     m.Version,
-				"icon":        m.getIcon(),
 				"download":    "/package/" + m.Name + "-" + m.Version + ".tar.gz",
 			}
 			if m.Title != nil {
 				data["title"] = *m.Title
+			}
+			if m.Icons != nil {
+				data["icons"] = m.Icons
 			}
 			output = append(output, data)
 		}

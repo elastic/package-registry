@@ -162,11 +162,6 @@ type Package struct {
 	Title       *string `yaml:"title,omitempty" json:"title,omitempty"`
 	Version     string  `yaml:"version" json:"version"`
 	Description string  `yaml:"description" json:"description"`
-	Icon        string  `yaml:"icon" json:"icon"`
-}
-
-func (p *Package) getIcon() string {
-	return "/package/" + p.Name + "-" + p.Version + "/img/icon.png"
 }
 
 type Manifest struct {
@@ -178,6 +173,7 @@ type Manifest struct {
 		} `yaml:"kibana" json:"kibana"`
 	} `yaml:"requirement" json:"requirement"`
 	Screenshots []Screenshot `yaml:"screenshots" json:"screenshots,omitempty"`
+	Icons       []Icon       `yaml:"icons" json:"icons,omitempty"`
 }
 
 type Screenshot struct {
@@ -185,6 +181,12 @@ type Screenshot struct {
 	Title string `yaml:"title" json:"title,omitempty"`
 	Size  string `yaml:"size" json:"size,omitempty"`
 	Type  string `yaml:"type" json:"type,omitempty"`
+}
+
+type Icon struct {
+	Src  string `yaml:"src,omitempty" json:"src,omitempty"`
+	Size string `yaml:"size,omitempty" json:"size,omitempty"`
+	Type string `yaml:"type,omitempty" json:"type,omitempty"`
 }
 
 func readManifest(p string) (*Manifest, error) {
@@ -198,6 +200,12 @@ func readManifest(p string) (*Manifest, error) {
 	err = yaml.Unmarshal(manifest, m)
 	if err != nil {
 		return nil, err
+	}
+
+	if m.Icons != nil {
+		for k, i := range m.Icons {
+			m.Icons[k].Src = "/package/" + m.Name + "-" + m.Version + i.Src
+		}
 	}
 
 	return m, nil

@@ -2,7 +2,6 @@
   {
     "description": "This is the example integration",
     "download": "/package/example-1.0.0.tar.gz",
-    "icon": "/package/example-1.0.0/img/icon.png",
     "name": "example",
     "title": "Example Integration",
     "version": "1.0.0"
