@@ -172,21 +172,19 @@ type Manifest struct {
 			Max string `yaml:"version.max" json:"version.max"`
 		} `yaml:"kibana" json:"kibana"`
 	} `yaml:"requirement" json:"requirement"`
-	Screenshots []Screenshot `yaml:"screenshots" json:"screenshots,omitempty"`
-	Icons       []Icon       `yaml:"icons" json:"icons,omitempty"`
+	Screenshots []Image `yaml:"screenshots" json:"screenshots,omitempty"`
+	Icons       []Image `yaml:"icons" json:"icons,omitempty"`
 }
 
-type Screenshot struct {
+type Image struct {
 	Src   string `yaml:"src" json:"src,omitempty"`
 	Title string `yaml:"title" json:"title,omitempty"`
 	Size  string `yaml:"size" json:"size,omitempty"`
 	Type  string `yaml:"type" json:"type,omitempty"`
 }
 
-type Icon struct {
-	Src  string `yaml:"src,omitempty" json:"src,omitempty"`
-	Size string `yaml:"size,omitempty" json:"size,omitempty"`
-	Type string `yaml:"type,omitempty" json:"type,omitempty"`
+func (i Image) getPath(m *Manifest) string {
+	return "/package/" + m.Name + "-" + m.Version + i.Src
 }
 
 func readManifest(p string) (*Manifest, error) {
@@ -204,7 +202,13 @@ func readManifest(p string) (*Manifest, error) {
 
 	if m.Icons != nil {
 		for k, i := range m.Icons {
-			m.Icons[k].Src = "/package/" + m.Name + "-" + m.Version + i.Src
+			m.Icons[k].Src = i.getPath(m)
+		}
+	}
+
+	if m.Screenshots != nil {
+		for k, i := range m.Screenshots {
+			m.Screenshots[k].Src = i.getPath(m)
 		}
 	}
 
