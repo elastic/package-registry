@@ -129,15 +129,12 @@ func catchAll(publicPath string) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 
 		path := r.RequestURI
-		fmt.Fprintln(w, "foo: "+path)
-		fmt.Println("PATH: " + path)
 
 		file, err := os.Stat(publicPath + path)
 		if os.IsNotExist(err) {
 			notFound(w, fmt.Errorf("404 Page Not Found Error"))
 			return
 		}
-		fmt.Fprintln(w, "bar: "+path)
 
 		// Handles if it's a directory or last char is a / (also a directory)
 		// It then opens index.json by default (if it exists)
