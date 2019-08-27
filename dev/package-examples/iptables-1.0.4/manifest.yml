@@ -12,6 +12,7 @@ requirement:
     version.max: 7.6.0
   elasticsearch:
     version.min: 7.0.1
+    version.max: 7.6.1
 
 screenshots:
 - src: /img/kibana-iptables.png
