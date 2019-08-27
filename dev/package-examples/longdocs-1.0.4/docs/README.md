@@ -11,6 +11,14 @@ This integration is considered to be in _beta_.
 
 This is a [link](https://github.com/elastic/integrations-registry) inside the docs.
 
+## Examples from a file
+
+The following file shows how an event might look like:
+
+```
+{{ file /docs/data.json }}
+```
+
 ## Template parts
 
 Some part of our documentation will require templated documentation. An example of this is to link to the download links of the Beat with the same version as Kibana. The link below with the link text is an example:
