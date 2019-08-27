@@ -1,0 +1,103 @@
+{
+  "attributes": {
+    "description": "",
+    "hits": 0,
+    "kibanaSavedObjectMeta": {
+      "searchSourceJSON": {
+        "filter": [],
+        "highlightAll": true,
+        "query": {
+          "language": "kuery",
+          "query": ""
+        },
+        "version": true
+      }
+    },
+    "optionsJSON": {
+      "darkTheme": false,
+      "useMargins": false
+    },
+    "panelsJSON": [
+      {
+        "embeddableConfig": {},
+        "gridData": {
+          "h": 12,
+          "i": "1",
+          "w": 16,
+          "x": 16,
+          "y": 0
+        },
+        "panelIndex": "1",
+        "panelRefName": "panel_0",
+        "version": "7.3.0"
+      },
+      {
+        "embeddableConfig": {},
+        "gridData": {
+          "h": 12,
+          "i": "3",
+          "w": 16,
+          "x": 32,
+          "y": 0
+        },
+        "panelIndex": "3",
+        "panelRefName": "panel_1",
+        "version": "7.3.0"
+      },
+      {
+        "embeddableConfig": {},
+        "gridData": {
+          "h": 12,
+          "i": "5",
+          "w": 16,
+          "x": 0,
+          "y": 0
+        },
+        "panelIndex": "5",
+        "panelRefName": "panel_2",
+        "version": "7.3.0"
+      },
+      {
+        "embeddableConfig": {},
+        "gridData": {
+          "h": 20,
+          "i": "6",
+          "w": 48,
+          "x": 0,
+          "y": 12
+        },
+        "panelIndex": "6",
+        "panelRefName": "panel_3",
+        "version": "7.3.0"
+      }
+    ],
+    "timeRestore": false,
+    "title": "[Auditbeat Auditd] Executions ECS",
+    "version": 1
+  },
+  "migrationVersion": {
+    "dashboard": "7.3.0"
+  },
+  "references": [
+    {
+      "id": "20a8e8d0-c1c8-11e7-8995-936807a28b16-ecs",
+      "name": "panel_0",
+      "type": "visualization"
+    },
+    {
+      "id": "f81a6de0-c1c1-11e7-8995-936807a28b16-ecs",
+      "name": "panel_1",
+      "type": "visualization"
+    },
+    {
+      "id": "2efac370-c1ca-11e7-8995-936807a28b16-ecs",
+      "name": "panel_2",
+      "type": "visualization"
+    },
+    {
+      "id": "d382f5b0-c1c6-11e7-8995-936807a28b16-ecs",
+      "name": "panel_3",
+      "type": "search"
+    }
+  ]
+}

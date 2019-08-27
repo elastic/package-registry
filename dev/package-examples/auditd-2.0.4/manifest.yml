@@ -1,0 +1,29 @@
+name: iptables
+title: IP Tables
+description: iptables logs
+version: 1.0.4
+categories: ["logs"]
+release: ga
+license: basic
+
+requirement:
+  kibana:
+    version.min: 7.1.0
+    version.max: 7.6.0
+  elasticsearch:
+    version.min: 7.0.1
+  auditbeat:
+    version.min: 7.0.0
+
+screenshots:
+  - src: /img/kibana-iptables.png
+    title: IP Tables Overview dashboard
+    size: 1492x1382
+  - src: /img/kibana-iptables-ubiquiti.png
+    title: IP Tables Ubiquity Dashboard
+    size: 1492x1464
+
+icons:
+  - src: "/img/icon.png"
+    size: "1800x1800"
+    type: "image/png"
