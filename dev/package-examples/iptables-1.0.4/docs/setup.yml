@@ -1,0 +1,62 @@
+# This are the installation steps described as a YAML file. Each package must include its own
+# installation steps.
+
+steps:
+  - filters:
+      cloud: true
+    text: Try in Elastic Cloud, sign up
+
+
+  - filters:
+      cloud: true
+    text: Connect local Kibana instance
+
+  - filters:
+      os.name: macos
+      cloud: false
+      distribution: tar.gz
+    text: >
+
+      Download and install Agent:
+
+      ```
+      curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-{{stack.version}}-darwin-x86_64.tar.gz
+      tar xzvf filebeat-{{stack.version}}-darwin-x86_64.tar.gz
+      cd filebeat-{{stack.version}}-darwin-x86_64/
+      ```
+
+  - filter.distribution: deb
+    filter.os: linux
+    filter.cloud: false
+    text: >
+
+    ```
+    curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-8.0.0-SNAPSHOT-amd64.deb
+    sudo dpkg -i filebeat-8.0.0-SNAPSHOT-amd64.deb
+    ```
+
+  - filters:
+      os.name: linux
+      cloud: false
+      os.distribution: rpm
+    text: >
+
+      Download and install
+
+    ```
+    curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-8.0.0-SNAPSHOT-x86_64.rpm
+    sudo rpm -vi filebeat-8.0.0-SNAPSHOT-x86_64.rpm
+    ```
+
+  -  filters:
+      os.name: [windows, macos]
+      cloud: false
+    text: >
+
+      Edit configuration:
+
+    # This is expected to take the file `input.yml` and replace the variables either
+    # with environment variables set in this file or read `vars` from the manifest
+    # and select the right option based on the variables set here.
+    {{ file /filebeat/input.yml | manifest.yml }}
+
