@@ -21,8 +21,8 @@ type Manifest struct {
 			Max string `yaml:"version.max" json:"version.max"`
 		} `yaml:"kibana" json:"kibana"`
 	} `yaml:"requirement" json:"requirement"`
-	Screenshots []Image `yaml:"screenshots" json:"screenshots,omitempty"`
-	Icons       []Image `yaml:"icons" json:"icons,omitempty"`
+	Screenshots []Image `yaml:"screenshots,omitempty" json:"screenshots,omitempty"`
+	Icons       []Image `yaml:"icons,omitempty" json:"icons,omitempty"`
 }
 
 type Image struct {
@@ -36,7 +36,7 @@ func (i Image) getPath(m *Manifest) string {
 	return "/package/" + m.Name + "-" + m.Version + i.Src
 }
 
-func readManifest(packagesPath, p string) (*Manifest, error) {
+func ReadManifest(packagesPath, p string) (*Manifest, error) {
 
 	manifest, err := ioutil.ReadFile(packagesPath + "/" + p + "/manifest.yml")
 	if err != nil {
@@ -56,32 +56,11 @@ func readManifest(packagesPath, p string) (*Manifest, error) {
 	}
 
 	if m.Screenshots != nil {
-		for k, i := range m.Screenshots {
-			m.Screenshots[k].Src = i.getPath(m)
+		for k, s := range m.Screenshots {
+			m.Screenshots[k].Src = s.getPath(m)
 		}
 	}
 
 	return m, nil
 }
 
-func ReadManifest(packagesPath, p string) (*Manifest, error) {
-
-	manifest, err := ioutil.ReadFile(packagesPath + "/" + p + "/manifest.yml")
-	if err != nil {
-		return nil, err
-	}
-
-	var m = &Manifest{}
-	err = yaml.Unmarshal(manifest, m)
-	if err != nil {
-		return nil, err
-	}
-
-	if m.Icons != nil {
-		for k, i := range m.Icons {
-			m.Icons[k].Src = "/package/" + m.Name + "-" + m.Version + i.Src
-		}
-	}
-
-	return m, nil
-}
