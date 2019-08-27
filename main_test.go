@@ -22,7 +22,7 @@ var (
 
 func TestEndpoints(t *testing.T) {
 
-	packagesPath = "./testdata/packages"
+	packagesPath = "./testdata/package"
 
 	tests := []struct {
 		endpoint string
@@ -30,11 +30,11 @@ func TestEndpoints(t *testing.T) {
 		file     string
 		handler  func(w http.ResponseWriter, r *http.Request)
 	}{
-		{"/", "/", "info.json", catchAll()},
+		{"/", "", "info.json", catchAll("./public")},
 		{"/search", "/search", "search.json", searchHandler()},
 		{"/search?kibana=6.5.2", "/search", "search-kibana652.json", searchHandler()},
 		{"/search?kibana=7.2.1", "/search", "search-kibana721.json", searchHandler()},
-		{"/package/example-1.0.0", "/package/{name}", "package.json", packageHandler()},
+		{"/package/example-1.0.0", "", "package.json", catchAll("./testdata")},
 	}
 
 	for _, test := range tests {
@@ -51,9 +51,13 @@ func runEndpoint(t *testing.T, endpoint, path, file string, handler func(w http.
 	}
 
 	recorder := httptest.NewRecorder()
-
 	router := mux.NewRouter()
-	router.HandleFunc(path, handler)
+	if path == "" {
+		router.PathPrefix("/").HandlerFunc(handler)
+	} else {
+		router.HandleFunc(path, handler)
+	}
+	req.RequestURI = endpoint
 	router.ServeHTTP(recorder, req)
 
 	fullPath := "./docs/api/" + file

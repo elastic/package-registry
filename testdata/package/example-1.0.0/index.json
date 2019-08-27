@@ -1,5 +1,3 @@
-foo: /package/example-1.0.0
-bar: /package/example-1.0.0
 {
   "name": "example",
   "title": "Example Integration",

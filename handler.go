@@ -125,15 +125,19 @@ func notFound(w http.ResponseWriter, err error) {
 	http.Error(w, errString, http.StatusNotFound)
 }
 
-func catchAll() func(w http.ResponseWriter, r *http.Request) {
+func catchAll(publicPath string) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		path := r.RequestURI
 
-		file, err := os.Stat("./public" + path)
+		path := r.RequestURI
+		fmt.Fprintln(w, "foo: "+path)
+		fmt.Println("PATH: " + path)
+
+		file, err := os.Stat(publicPath + path)
 		if os.IsNotExist(err) {
 			notFound(w, fmt.Errorf("404 Page Not Found Error"))
 			return
 		}
+		fmt.Fprintln(w, "bar: "+path)
 
 		// Handles if it's a directory or last char is a / (also a directory)
 		// It then opens index.json by default (if it exists)
@@ -145,13 +149,13 @@ func catchAll() func(w http.ResponseWriter, r *http.Request) {
 			path = path + "/index.json"
 		}
 
-		file, err = os.Stat("./public" + path)
+		file, err = os.Stat(publicPath + path)
 		if os.IsNotExist(err) {
 			notFound(w, fmt.Errorf("404 Page Not Found Error"))
 			return
 		}
 
-		data, err := ioutil.ReadFile("./public" + path)
+		data, err := ioutil.ReadFile(publicPath + path)
 		if err != nil {
 			notFound(w, fmt.Errorf("404 Page Not Found Error"))
 			return
