@@ -1,0 +1,11 @@
+{
+  "name": "example",
+  "version": "0.0.5",
+  "description": "This is the example integration.",
+  "requirement": {
+    "kibana": {
+      "version.min": "6.0.0",
+      "version.max": ""
+    }
+  }
+}

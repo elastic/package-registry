@@ -7,6 +7,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -15,6 +16,8 @@ import (
 
 	"github.com/magefile/mage/mg"
 	"github.com/magefile/mage/sh"
+
+	pack "github.com/elastic/integrations-registry/p"
 )
 
 func Check() error {
@@ -109,6 +112,23 @@ func BuildIntegrationPackages() error {
 		if err != nil {
 			return err
 		}
+
+		// Build package endpoint
+		manifest, err := pack.ReadManifest(".", p)
+		if err != nil {
+			return err
+		}
+
+		data, err := json.MarshalIndent(manifest, "", "  ")
+		if err != nil {
+			return err
+		}
+
+		err = ioutil.WriteFile(p+"/index.json", data, 0644)
+		if err != nil {
+			return err
+		}
+
 	}
 	return nil
 }
@@ -152,6 +172,7 @@ func CopyPackages(path string) error {
 		return err
 	}
 
+	os.MkdirAll("../../public/package/", 0755)
 	for _, dir := range dirs {
 		err := sh.RunV("cp", "-a", dir.Name(), "../../public/package/")
 		if err != nil {

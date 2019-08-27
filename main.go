@@ -11,15 +11,12 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"os/exec"
 	"os/signal"
-	"path/filepath"
 	"syscall"
 
 	ucfgYAML "github.com/elastic/go-ucfg/yaml"
 
 	"github.com/gorilla/mux"
-	"gopkg.in/yaml.v2"
 )
 
 var (
@@ -49,13 +46,6 @@ func main() {
 	}
 	packagesPath = config.PackagesPath
 
-	// Unzip all packages
-	err = setup(packagesPath)
-	if err != nil {
-		log.Print(err)
-		os.Exit(1)
-	}
-
 	server := &http.Server{Addr: address, Handler: getRouter()}
 
 	go func() {
@@ -73,43 +63,6 @@ func main() {
 	if err := server.Shutdown(ctx); err != nil {
 		log.Print(err)
 	}
-}
-
-func setup(packagePath string) error {
-	log.Println("Extracting packages")
-	wd, err := os.Getwd()
-	if err != nil {
-		return err
-	}
-	defer os.Chdir(wd)
-	err = os.Chdir(packagePath)
-	if err != nil {
-		return err
-	}
-	files, err := ioutil.ReadDir(".")
-	if err != nil {
-		return err
-	}
-
-	for _, f := range files {
-		if f.IsDir() {
-			if err := os.RemoveAll(f.Name()); err != nil {
-				return err
-			}
-		}
-	}
-
-	ff, err := filepath.Glob("*.tar.gz")
-	if err != nil {
-		return err
-	}
-
-	for _, f := range ff {
-		cmd := exec.Command("tar", "xvfz", f)
-		cmd.Run()
-	}
-
-	return nil
 }
 
 func getConfig() (*Config, error) {
@@ -130,9 +83,7 @@ func getRouter() *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)
 
 	router.HandleFunc("/search", searchHandler())
-	router.HandleFunc("/package/{name}.tar.gz", targzDownloadHandler())
-	router.HandleFunc("/package/{name}", packageHandler())
-	router.PathPrefix("/").HandlerFunc(catchAll())
+	router.PathPrefix("/").HandlerFunc(catchAll("./public"))
 
 	return router
 }
@@ -155,62 +106,4 @@ func getIntegrationPackages() ([]string, error) {
 	}
 
 	return packages, nil
-}
-
-type Package struct {
-	Name        string  `yaml:"name" json:"name"`
-	Title       *string `yaml:"title,omitempty" json:"title,omitempty"`
-	Version     string  `yaml:"version" json:"version"`
-	Description string  `yaml:"description" json:"description"`
-}
-
-type Manifest struct {
-	Package     `yaml:",inline" json:",inline"`
-	Requirement struct {
-		Kibana struct {
-			Min string `yaml:"version.min" json:"version.min"`
-			Max string `yaml:"version.max" json:"version.max"`
-		} `yaml:"kibana" json:"kibana"`
-	} `yaml:"requirement" json:"requirement"`
-	Screenshots []Image `yaml:"screenshots" json:"screenshots,omitempty"`
-	Icons       []Image `yaml:"icons" json:"icons,omitempty"`
-}
-
-type Image struct {
-	Src   string `yaml:"src" json:"src,omitempty"`
-	Title string `yaml:"title" json:"title,omitempty"`
-	Size  string `yaml:"size" json:"size,omitempty"`
-	Type  string `yaml:"type" json:"type,omitempty"`
-}
-
-func (i Image) getPath(m *Manifest) string {
-	return "/package/" + m.Name + "-" + m.Version + i.Src
-}
-
-func readManifest(p string) (*Manifest, error) {
-
-	manifest, err := ioutil.ReadFile(packagesPath + "/" + p + "/manifest.yml")
-	if err != nil {
-		return nil, err
-	}
-
-	var m = &Manifest{}
-	err = yaml.Unmarshal(manifest, m)
-	if err != nil {
-		return nil, err
-	}
-
-	if m.Icons != nil {
-		for k, i := range m.Icons {
-			m.Icons[k].Src = i.getPath(m)
-		}
-	}
-
-	if m.Screenshots != nil {
-		for k, i := range m.Screenshots {
-			m.Screenshots[k].Src = i.getPath(m)
-		}
-	}
-
-	return m, nil
 }
