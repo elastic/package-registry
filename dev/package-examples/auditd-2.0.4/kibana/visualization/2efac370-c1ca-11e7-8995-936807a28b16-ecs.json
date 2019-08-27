@@ -1,0 +1,59 @@
+{
+  "attributes": {
+    "description": "",
+    "kibanaSavedObjectMeta": {
+      "searchSourceJSON": {
+        "filter": [],
+        "query": {
+          "language": "kuery",
+          "query": ""
+        }
+      }
+    },
+    "savedSearchRefName": "search_0",
+    "title": "Exe Name Tag Cloud [Auditbeat Auditd Executions] ECS",
+    "uiStateJSON": {},
+    "version": 1,
+    "visState": {
+      "aggs": [
+        {
+          "enabled": true,
+          "id": "1",
+          "params": {},
+          "schema": "metric",
+          "type": "count"
+        },
+        {
+          "enabled": true,
+          "id": "2",
+          "params": {
+            "field": "process.executable",
+            "order": "desc",
+            "orderBy": "1",
+            "size": 10
+          },
+          "schema": "segment",
+          "type": "terms"
+        }
+      ],
+      "params": {
+        "maxFontSize": 45,
+        "minFontSize": 14,
+        "orientation": "single",
+        "scale": "linear"
+      },
+      "title": "Exe Name Tag Cloud [Auditbeat Auditd Executions] ECS",
+      "type": "tagcloud"
+    }
+  },
+  "migrationVersion": {
+    "visualization": "7.3.0"
+  },
+  "references": [
+    {
+      "id": "d382f5b0-c1c6-11e7-8995-936807a28b16-ecs",
+      "name": "search_0",
+      "type": "search"
+    }
+  ]
+}

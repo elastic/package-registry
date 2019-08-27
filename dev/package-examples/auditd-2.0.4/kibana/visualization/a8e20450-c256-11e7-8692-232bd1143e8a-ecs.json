@@ -1,0 +1,74 @@
+{
+  "attributes": {
+    "description": "",
+    "kibanaSavedObjectMeta": {
+      "searchSourceJSON": {
+        "filter": [],
+        "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.index",
+        "query": {
+          "language": "kuery",
+          "query": ""
+        }
+      }
+    },
+    "title": "Socket Families [Auditbeat Auditd] ECS",
+    "uiStateJSON": {},
+    "version": 1,
+    "visState": {
+      "aggs": [
+        {
+          "enabled": true,
+          "id": "1",
+          "params": {},
+          "schema": "metric",
+          "type": "count"
+        },
+        {
+          "enabled": true,
+          "id": "2",
+          "params": {
+            "customLabel": "Socket Family",
+            "field": "auditd.data.socket.family",
+            "order": "desc",
+            "orderBy": "1",
+            "size": 10
+          },
+          "schema": "segment",
+          "type": "terms"
+        },
+        {
+          "enabled": true,
+          "id": "3",
+          "params": {
+            "customLabel": "Syscall",
+            "field": "auditd.data.syscall",
+            "order": "desc",
+            "orderBy": "1",
+            "size": 10
+          },
+          "schema": "segment",
+          "type": "terms"
+        }
+      ],
+      "params": {
+        "addLegend": true,
+        "addTooltip": true,
+        "isDonut": true,
+        "legendPosition": "left",
+        "type": "pie"
+      },
+      "title": "Socket Families [Auditbeat Auditd] ECS",
+      "type": "pie"
+    }
+  },
+  "migrationVersion": {
+    "visualization": "7.3.0"
+  },
+  "references": [
+    {
+      "id": "auditbeat-*",
+      "name": "kibanaSavedObjectMeta.searchSourceJSON.index",
+      "type": "index-pattern"
+    }
+  ]
+}
