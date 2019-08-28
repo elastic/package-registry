@@ -1,10 +1,10 @@
 package p
 
 import (
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
-)
 
+	"gopkg.in/yaml.v2"
+)
 
 type Package struct {
 	Name        string  `yaml:"name" json:"name"`
@@ -21,8 +21,9 @@ type Manifest struct {
 			Max string `yaml:"version.max" json:"version.max"`
 		} `yaml:"kibana" json:"kibana"`
 	} `yaml:"requirement" json:"requirement"`
-	Screenshots []Image `yaml:"screenshots,omitempty" json:"screenshots,omitempty"`
-	Icons       []Image `yaml:"icons,omitempty" json:"icons,omitempty"`
+	Screenshots []Image  `yaml:"screenshots,omitempty" json:"screenshots,omitempty"`
+	Icons       []Image  `yaml:"icons,omitempty" json:"icons,omitempty"`
+	Assets      []string `yaml:"assets,omitempty" json:"assets,omitempty"`
 }
 
 type Image struct {
@@ -63,4 +64,3 @@ func ReadManifest(packagesPath, p string) (*Manifest, error) {
 
 	return m, nil
 }
-
