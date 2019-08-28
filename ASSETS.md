@@ -28,6 +28,7 @@ categories: ["logs", "metrics"]
 # Options are experimental, beta, ga
 release: beta
 compatibility: [1.0.2, 2.0.1]
+os.platform: [darwin, freebsd, linux, macos, openbsd, windows]
 
 requirement:
   elasticsearch:
