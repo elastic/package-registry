@@ -173,12 +173,21 @@ func sendHeader(w http.ResponseWriter, r *http.Request) {
 	// No extension is always json
 	case "":
 		w.Header().Set("Content-Type", "application/json")
+	case ".asciidoc":
+		w.Header().Set("Content-Type", "text/asciidoc; charset=UTF-8")
+	case ".jpg":
+	case ".jpeg":
+		w.Header().Set("Content-Type", "image/jpeg")
+	case ".md":
+		w.Header().Set("Content-Type", "text/markdown; charset=UTF-8")
 	case ".png":
 		w.Header().Set("Content-Type", "image/png")
 	case ".svg":
 		w.Header().Set("Content-Type", "image/svg+xml")
-	case ".jpg":
-	case ".jpeg":
-		w.Header().Set("Content-Type", "image/jpeg")
+	case ".yml":
+		w.Header().Set("Content-Type", "text/yaml; charset=UTF-8")
+	default:
+		// Using json as the default header
+		w.Header().Set("Content-Type", "application/json")
 	}
 }
