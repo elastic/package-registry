@@ -32,6 +32,7 @@ func TestEndpoints(t *testing.T) {
 	}{
 		{"/", "", "info.json", catchAll("./public")},
 		{"/search", "/search", "search.json", searchHandler()},
+		{"/categories", "/categories", "categories.json", categoriesHandler()},
 		{"/search?kibana=6.5.2", "/search", "search-kibana652.json", searchHandler()},
 		{"/search?kibana=7.2.1", "/search", "search-kibana721.json", searchHandler()},
 		{"/package/example-1.0.0", "", "package.json", catchAll("./testdata")},
