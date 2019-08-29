@@ -1,0 +1,17 @@
+name: foo
+description: This is the foo integration
+version: 1.0.0
+title: Foo
+categories: [metrics]
+
+requirement:
+  elasticsearch:
+    version.min: 7.0.0
+    version.max: 7.5.0
+  kibana:
+    version.min: 7.0.0
+  metricbeat:
+    version.min: 7.1.0
+  filebeat:
+    version.min: 7.2.0
+

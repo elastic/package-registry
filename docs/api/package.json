@@ -3,6 +3,10 @@
   "title": "Example Integration",
   "version": "1.0.0",
   "description": "This is the example integration",
+  "categories": [
+    "logs",
+    "metrics"
+  ],
   "requirement": {
     "kibana": {
       "version.min": "7.0.0",

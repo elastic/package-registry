@@ -1,0 +1,19 @@
+{
+  "name": "foo",
+  "title": "Foo",
+  "version": "1.0.0",
+  "description": "This is the foo integration",
+  "categories": [
+    "metrics"
+  ],
+  "requirement": {
+    "kibana": {
+      "version.min": "7.0.0",
+      "version.max": ""
+    }
+  },
+  "assets": [
+    "/package/foo-1.0.0/index.json",
+    "/package/foo-1.0.0/manifest.yml"
+  ]
+}

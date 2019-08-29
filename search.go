@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"sort"
 
 	"github.com/blang/semver"
 
@@ -24,6 +25,7 @@ func searchHandler() func(w http.ResponseWriter, r *http.Request) {
 		query := r.URL.Query()
 
 		var kibanaVersion *semver.Version
+		var category string
 
 		if len(query) > 0 {
 			if v := query.Get("kibana"); v != "" {
@@ -31,6 +33,12 @@ func searchHandler() func(w http.ResponseWriter, r *http.Request) {
 				if err != nil {
 					notFound(w, fmt.Errorf("invalid Kibana version '%s': %s", v, err))
 					return
+				}
+			}
+
+			if v := query.Get("category"); v != "" {
+				if v != "" {
+					category = v
 				}
 			}
 		}
@@ -41,6 +49,20 @@ func searchHandler() func(w http.ResponseWriter, r *http.Request) {
 			if err != nil {
 				notFound(w, err)
 				return
+			}
+
+			// Filter by category first as this could heavily reduce the number of packages
+			// It must happen before the version filtering as there only the newest version
+			// is exposed and there could be an older package with more versions.
+			if category != "" {
+				hasCategory, err := hasCategory(category, m)
+				if err != nil {
+					notFound(w, err)
+					return
+				}
+				if !hasCategory {
+					continue
+				}
 			}
 
 			valid, err := validKibanaVersion(kibanaVersion, m)
@@ -64,7 +86,6 @@ func searchHandler() func(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 			integrationsList[m.Name] = m
-
 		}
 
 		data, err := servePackages(integrationsList, w)
@@ -76,6 +97,16 @@ func searchHandler() func(w http.ResponseWriter, r *http.Request) {
 		jsonHeader(w)
 		fmt.Fprint(w, string(data))
 	}
+}
+
+func hasCategory(category string, m *p.Manifest) (bool, error) {
+	for _, c := range m.Categories {
+		if c == category {
+			return true, nil
+		}
+	}
+
+	return false, nil
 }
 
 func validKibanaVersion(version *semver.Version, m *p.Manifest) (bool, error) {
@@ -104,9 +135,18 @@ func validKibanaVersion(version *semver.Version, m *p.Manifest) (bool, error) {
 }
 
 func servePackages(packagesList map[string]*p.Manifest, w http.ResponseWriter) ([]byte, error) {
+
+	// Packages need to be sorted to be always outputted in the same order
+	var keys []string
+	for k := range packagesList {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+
 	var output []map[string]interface{}
 
-	for _, m := range packagesList {
+	for _, k := range keys {
+		m := packagesList[k]
 		data := map[string]interface{}{
 			"name":        m.Name,
 			"description": m.Description,
