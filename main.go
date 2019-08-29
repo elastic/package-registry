@@ -83,6 +83,7 @@ func getRouter() *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)
 
 	router.HandleFunc("/search", searchHandler())
+	router.HandleFunc("/categories", categoriesHandler())
 	router.PathPrefix("/").HandlerFunc(catchAll("./public"))
 
 	return router

@@ -7,10 +7,11 @@ import (
 )
 
 type Package struct {
-	Name        string  `yaml:"name" json:"name"`
-	Title       *string `yaml:"title,omitempty" json:"title,omitempty"`
-	Version     string  `yaml:"version" json:"version"`
-	Description string  `yaml:"description" json:"description"`
+	Name        string   `yaml:"name" json:"name"`
+	Title       *string  `yaml:"title,omitempty" json:"title,omitempty"`
+	Version     string   `yaml:"version" json:"version"`
+	Description string   `yaml:"description" json:"description"`
+	Categories  []string `yaml:"categories" json:"categories"`
 }
 
 type Manifest struct {

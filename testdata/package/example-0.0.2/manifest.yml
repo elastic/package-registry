@@ -1,6 +1,7 @@
 name: example
 description: This is the example integration.
 version: 0.0.5
+categories: ["logs"]
 
 requirement:
   elasticsearch:
