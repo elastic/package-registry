@@ -119,6 +119,11 @@ func BuildIntegrationPackages() error {
 			return err
 		}
 
+		err = getAssets(manifest, p)
+		if err != nil {
+			return err
+		}
+
 		data, err := json.MarshalIndent(manifest, "", "  ")
 		if err != nil {
 			return err
@@ -129,6 +134,58 @@ func BuildIntegrationPackages() error {
 			return err
 		}
 
+	}
+	return nil
+}
+
+func getAssets(manifest *pack.Manifest, p string) (err error) {
+	oldDir, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+	defer func() {
+		// use named return to also have an error in case the defer fails
+		err = os.Chdir(oldDir)
+	}()
+	err = os.Chdir(p)
+	if err != nil {
+		return err
+	}
+
+	assets, err := filepath.Glob("*")
+	if err != nil {
+		return err
+	}
+
+	a, err := filepath.Glob("*/*")
+	if err != nil {
+		return err
+	}
+	assets = append(assets, a...)
+
+	a, err = filepath.Glob("*/*/*")
+	if err != nil {
+		return err
+	}
+	assets = append(assets, a...)
+
+	for _, a := range assets {
+		// Unfortunately these files keep sneaking in
+		if strings.Contains(a, ".DS_Store") {
+			continue
+		}
+
+		info, err := os.Stat(a)
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() {
+			continue
+		}
+
+		a = "/package/" + p + "/" + a
+		manifest.Assets = append(manifest.Assets, a)
 	}
 	return nil
 }
