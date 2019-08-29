@@ -5,5 +5,12 @@
     "name": "example",
     "title": "Example Integration",
     "version": "1.0.0"
+  },
+  {
+    "description": "This is the foo integration",
+    "download": "/package/foo-1.0.0.tar.gz",
+    "name": "foo",
+    "title": "Foo",
+    "version": "1.0.0"
   }
 ]
