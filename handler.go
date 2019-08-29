@@ -175,6 +175,8 @@ func sendHeader(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 	case ".png":
 		w.Header().Set("Content-Type", "image/png")
+	case ".svg":
+		w.Header().Set("Content-Type", "image/svg+xml")
 	case ".jpg":
 	case ".jpeg":
 		w.Header().Set("Content-Type", "image/jpeg")
