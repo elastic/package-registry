@@ -22,4 +22,4 @@ icons:
   size: "1800x1800"
 - src: "/img/icon.svg"
   size: "255x144"
-  type: "image/svg"
+  type: "image/svg+xml"

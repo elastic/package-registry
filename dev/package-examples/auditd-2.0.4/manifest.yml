@@ -22,4 +22,4 @@ screenshots:
 
 icons:
   - src: "/img/icon.svg"
-    type: "image/svg"
+    type: "image/svg+xml"
