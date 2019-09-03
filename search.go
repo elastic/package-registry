@@ -8,7 +8,7 @@ import (
 
 	"github.com/blang/semver"
 
-	"github.com/elastic/integrations-registry/p"
+	"github.com/elastic/integrations-registry/util"
 )
 
 func searchHandler() func(w http.ResponseWriter, r *http.Request) {
@@ -20,7 +20,7 @@ func searchHandler() func(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		integrationsList := map[string]*p.Manifest{}
+		integrationsList := map[string]*util.Manifest{}
 
 		query := r.URL.Query()
 
@@ -45,7 +45,7 @@ func searchHandler() func(w http.ResponseWriter, r *http.Request) {
 
 		// Checks that only the most recent version of an integration is added to the list
 		for _, i := range integrations {
-			m, err := p.ReadManifest(packagesPath, i)
+			m, err := util.ReadManifest(packagesPath, i)
 			if err != nil {
 				notFound(w, err)
 				return
@@ -99,7 +99,7 @@ func searchHandler() func(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func hasCategory(category string, m *p.Manifest) (bool, error) {
+func hasCategory(category string, m *util.Manifest) (bool, error) {
 	for _, c := range m.Categories {
 		if c == category {
 			return true, nil
@@ -109,7 +109,7 @@ func hasCategory(category string, m *p.Manifest) (bool, error) {
 	return false, nil
 }
 
-func validKibanaVersion(version *semver.Version, m *p.Manifest) (bool, error) {
+func validKibanaVersion(version *semver.Version, m *util.Manifest) (bool, error) {
 	if version != nil {
 		if m.Requirement.Kibana.Max != "" {
 			maxKibana, err := semver.Parse(m.Requirement.Kibana.Max)
@@ -134,7 +134,7 @@ func validKibanaVersion(version *semver.Version, m *p.Manifest) (bool, error) {
 	return true, nil
 }
 
-func servePackages(packagesList map[string]*p.Manifest, w http.ResponseWriter) ([]byte, error) {
+func servePackages(packagesList map[string]*util.Manifest, w http.ResponseWriter) ([]byte, error) {
 
 	// Packages need to be sorted to be always outputted in the same order
 	var keys []string

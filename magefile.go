@@ -17,7 +17,7 @@ import (
 	"github.com/magefile/mage/mg"
 	"github.com/magefile/mage/sh"
 
-	pack "github.com/elastic/integrations-registry/p"
+	"github.com/elastic/integrations-registry/util"
 )
 
 func Check() error {
@@ -114,7 +114,7 @@ func BuildIntegrationPackages() error {
 		}
 
 		// Build package endpoint
-		manifest, err := pack.ReadManifest(".", p)
+		manifest, err := util.ReadManifest(".", p)
 		if err != nil {
 			return err
 		}
@@ -138,7 +138,7 @@ func BuildIntegrationPackages() error {
 	return nil
 }
 
-func getAssets(manifest *pack.Manifest, p string) (err error) {
+func getAssets(manifest *util.Manifest, p string) (err error) {
 	oldDir, err := os.Getwd()
 	if err != nil {
 		return err
