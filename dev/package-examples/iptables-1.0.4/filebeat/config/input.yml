@@ -1,25 +1,32 @@
-{{ if eq .input "syslog" }}
-
+{{setEmptyVar input "syslog"}}
+{{ ifeq input "syslog" }}
 type: syslog
 protocol.udp:
-  host: "{{.syslog_host}}:{{.syslog_port}}"
+  host: "{{defVal syslog.host localhost}}:{{defVal syslog.post 9001}}"
 
-  {{ else if eq .input "file" }}
 
+{{ elseifeeq input "file" }}
 type: log
 paths:
-  {{ range $i, $path := .paths }}
-- {{$path}}
-  {{ end }}
+-
+  {{!-- If the paths variable is set, it will be used, otherwise falls back to the default config. --}}
+  {{ if paths }}
+  {{#each path}}
+    {{this}}
+  {{/each }}
+  {{ else }}
+    /var/log/iptables.log
+  {{/if}
 exclude_files: [".gz$"]
+{{ /if }}
 
-  {{ end }}
-
-tags: {{.tags}}
+tags: {{defVal tags "[iptables]"}}
 
 processors:
-  - add_locale: ~
-  {{ if .community_id }}
+- add_locale: ~
+
+{{setEmptyVar community_id true}}
+{{ if community_id }}
 - dissect:
     tokenizer: "%{} SRC=%{source.ip} DST=%{destination.ip} "
     field: "message"
@@ -50,4 +57,4 @@ processors:
     fields:
       icmp_type: iptables.icmp.type
       icmp_code: iptables.icmp.code
-  {{ end}}
+{{ end}}
