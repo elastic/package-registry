@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"sort"
+	"strings"
 
 	"github.com/blang/semver"
 
@@ -14,18 +15,13 @@ import (
 func searchHandler() func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		integrations, err := getIntegrationPackages()
-		if err != nil {
-			notFound(w, err)
-			return
-		}
-
-		integrationsList := map[string]*util.Manifest{}
-
 		query := r.URL.Query()
 
 		var kibanaVersion *semver.Version
 		var category string
+		// Leaving out `a` here to not use a reserved name
+		var pckage string
+		var err error
 
 		if len(query) > 0 {
 			if v := query.Get("kibana"); v != "" {
@@ -41,10 +37,24 @@ func searchHandler() func(w http.ResponseWriter, r *http.Request) {
 					category = v
 				}
 			}
+
+			if v := query.Get("package"); v != "" {
+				if v != "" {
+					pckage = v
+				}
+			}
 		}
 
+		packages, err := getPackages()
+		if err != nil {
+			notFound(w, err)
+			return
+		}
+
+		packagesList := map[string]map[string]*util.Manifest{}
+
 		// Checks that only the most recent version of an integration is added to the list
-		for _, i := range integrations {
+		for _, i := range packages {
 			m, err := util.ReadManifest(packagesPath, i)
 			if err != nil {
 				notFound(w, err)
@@ -75,20 +85,35 @@ func searchHandler() func(w http.ResponseWriter, r *http.Request) {
 				continue
 			}
 
-			// Check if the version exists and if it should be added or not.
-			if i, ok := integrationsList[m.Name]; ok {
-				newVersion, _ := semver.Make(m.Version)
-				oldVersion, _ := semver.Make(i.Version)
+			if pckage == "" {
+				// Check if the version exists and if it should be added or not.
+				for _, versions := range packagesList {
+					for _, p := range versions {
+						if p.Name == m.Name {
+							newVersion, _ := semver.Make(m.Version)
+							oldVersion, _ := semver.Make(p.Version)
 
-				// Skip addition of integration if only lower or equal
-				if newVersion.LTE(oldVersion) {
+							if newVersion.LTE(oldVersion) {
+								continue
+							} else {
+								delete(packagesList[p.Name], p.Version)
+							}
+						}
+					}
+				}
+			} else {
+				if pckage != m.Name {
 					continue
 				}
 			}
-			integrationsList[m.Name] = m
+
+			if _, ok := packagesList[m.Name]; !ok {
+				packagesList[m.Name] = map[string]*util.Manifest{}
+			}
+			packagesList[m.Name][m.Version] = m
 		}
 
-		data, err := servePackages(integrationsList, w)
+		data, err := servePackages(packagesList, w)
 		if err != nil {
 			notFound(w, err)
 			return
@@ -134,19 +159,23 @@ func validKibanaVersion(version *semver.Version, m *util.Manifest) (bool, error)
 	return true, nil
 }
 
-func servePackages(packagesList map[string]*util.Manifest, w http.ResponseWriter) ([]byte, error) {
+func servePackages(packagesList map[string]map[string]*util.Manifest, w http.ResponseWriter) ([]byte, error) {
 
+	separator := "@"
 	// Packages need to be sorted to be always outputted in the same order
 	var keys []string
-	for k := range packagesList {
-		keys = append(keys, k)
+	for key, k := range packagesList {
+		for v := range k {
+			keys = append(keys, key+separator+v)
+		}
 	}
 	sort.Strings(keys)
 
 	var output []map[string]interface{}
 
 	for _, k := range keys {
-		m := packagesList[k]
+		parts := strings.Split(k, separator)
+		m := packagesList[parts[0]][parts[1]]
 		data := map[string]interface{}{
 			"name":        m.Name,
 			"description": m.Description,

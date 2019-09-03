@@ -20,7 +20,7 @@ var categoryTitles = map[string]string{
 func categoriesHandler() func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		integrations, err := getIntegrationPackages()
+		integrations, err := getPackages()
 		if err != nil {
 			notFound(w, err)
 			return

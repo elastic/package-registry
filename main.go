@@ -89,8 +89,8 @@ func getRouter() *mux.Router {
 	return router
 }
 
-// getIntegrationPackages returns list of available integration packages
-func getIntegrationPackages() ([]string, error) {
+// getPackages returns list of available packages
+func getPackages() ([]string, error) {
 
 	files, err := ioutil.ReadDir(packagesPath)
 	if err != nil {
