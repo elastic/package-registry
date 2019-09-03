@@ -1,4 +1,4 @@
-package p
+package util
 
 import (
 	"io/ioutil"

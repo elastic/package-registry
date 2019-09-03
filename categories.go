@@ -8,7 +8,7 @@ import (
 
 	"github.com/blang/semver"
 
-	"github.com/elastic/integrations-registry/p"
+	"github.com/elastic/integrations-registry/util"
 )
 
 var categoryTitles = map[string]string{
@@ -26,10 +26,10 @@ func categoriesHandler() func(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		packageList := map[string]*p.Manifest{}
+		packageList := map[string]*util.Manifest{}
 		// Get unique list of newest packages
 		for _, i := range integrations {
-			m, err := p.ReadManifest(packagesPath, i)
+			m, err := util.ReadManifest(packagesPath, i)
 			if err != nil {
 				return
 			}
