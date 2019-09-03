@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"sort"
 
 	"github.com/blang/semver"
 
@@ -62,8 +63,15 @@ func categoriesHandler() func(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
+		var keys []string
+		for k := range categories {
+			keys = append(keys, k)
+		}
+		sort.Strings(keys)
+
 		var outputCategories []*Category
-		for _, c := range categories {
+		for _, k := range keys {
+			c := categories[k]
 			if title, ok := categoryTitles[c.Title]; ok {
 				c.Title = title
 			}
