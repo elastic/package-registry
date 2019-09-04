@@ -1,1 +1,4 @@
-{"version": "0.0.1"}
+{
+  "service.name": "integration-registry",
+  "version": "0.0.1"
+}
