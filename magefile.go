@@ -49,6 +49,11 @@ func Build() error {
 		return err
 	}
 
+	err = BuildRootFile()
+	if err != nil {
+		return err
+	}
+
 	return sh.Run("go", "build", ".")
 }
 
@@ -133,9 +138,24 @@ func BuildIntegrationPackages() error {
 		if err != nil {
 			return err
 		}
-
 	}
 	return nil
+}
+
+// Creates the `index.json` file
+// For now only containing the version.
+func BuildRootFile() error {
+	rootData := map[string]string{
+		"version":      "0.0.1",
+		"service.name": "integration-registry",
+	}
+
+	data, err := json.MarshalIndent(rootData, "", "  ")
+	if err != nil {
+		return err
+	}
+
+	return ioutil.WriteFile("./public/index.json", data, 0644)
 }
 
 func getAssets(manifest *util.Package, p string) (err error) {
@@ -276,7 +296,7 @@ func Clean() error {
 		return err
 	}
 
-	err = os.RemoveAll("public/package")
+	err = os.RemoveAll("public")
 	if err != nil {
 		return err
 	}
