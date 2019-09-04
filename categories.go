@@ -6,8 +6,6 @@ import (
 	"net/http"
 	"sort"
 
-	"github.com/blang/semver"
-
 	"github.com/elastic/integrations-registry/util"
 )
 
@@ -16,35 +14,38 @@ var categoryTitles = map[string]string{
 	"metrics": "Metrics",
 }
 
+type Category struct {
+	Id    string `yaml:"id" json:"id"`
+	Title string `yaml:"title" json:"title"`
+	Count int    `yaml:"count" json:"count"`
+}
+
 // categoriesHandler is a dynamic handler as it will also allow filtering in the future.
 func categoriesHandler() func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		integrations, err := getPackages()
+		packagePaths, err := getPackagePaths()
 		if err != nil {
 			notFound(w, err)
 			return
 		}
 
-		packageList := map[string]*util.Manifest{}
+		packageList := map[string]*util.Package{}
 		// Get unique list of newest packages
-		for _, i := range integrations {
-			m, err := util.ReadManifest(packagesPath, i)
+		for _, i := range packagePaths {
+			p, err := util.NewPackage(packagesPath, i)
 			if err != nil {
 				return
 			}
 
 			// Check if the version exists and if it should be added or not.
-			if p, ok := packageList[m.Name]; ok {
-				newVersion, _ := semver.Make(m.Version)
-				oldVersion, _ := semver.Make(p.Version)
-
-				// Skip addition of package if only lower or equal
-				if newVersion.LTE(oldVersion) {
+			if pp, ok := packageList[p.Name]; ok {
+				// If the package in the list is newer, do nothing. Otherwise delete and later add the new one.
+				if pp.IsNewer(p) {
 					continue
 				}
 			}
-			packageList[m.Name] = m
+			packageList[p.Name] = p
 		}
 
 		categories := map[string]*Category{}
@@ -63,33 +64,31 @@ func categoriesHandler() func(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		var keys []string
-		for k := range categories {
-			keys = append(keys, k)
-		}
-		sort.Strings(keys)
-
-		var outputCategories []*Category
-		for _, k := range keys {
-			c := categories[k]
-			if title, ok := categoryTitles[c.Title]; ok {
-				c.Title = title
-			}
-			outputCategories = append(outputCategories, c)
-		}
-
-		j, err := json.MarshalIndent(outputCategories, "", "  ")
+		data, err := getCategoriesOutput(categories)
 		if err != nil {
 			notFound(w, err)
 			return
 		}
 		jsonHeader(w)
-		fmt.Fprint(w, string(j))
+		fmt.Fprint(w, string(data))
 	}
 }
 
-type Category struct {
-	Id    string `yaml:"id" json:"id"`
-	Title string `yaml:"title" json:"title"`
-	Count int    `yaml:"count" json:"count"`
+func getCategoriesOutput(categories map[string]*Category) ([]byte, error) {
+	var keys []string
+	for k := range categories {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+
+	var outputCategories []*Category
+	for _, k := range keys {
+		c := categories[k]
+		if title, ok := categoryTitles[c.Title]; ok {
+			c.Title = title
+		}
+		outputCategories = append(outputCategories, c)
+	}
+
+	return json.MarshalIndent(outputCategories, "", "  ")
 }

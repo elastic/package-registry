@@ -78,28 +78,28 @@ func Format() {
 func BuildIntegrationPackages() error {
 
 	// Check if PACKAGES_PATH is set.
-	packagesPath := os.Getenv("PACKAGES_PATH")
-	if packagesPath == "" {
-		packagesPath = "./public/package/"
+	packagesBasePath := os.Getenv("PACKAGES_PATH")
+	if packagesBasePath == "" {
+		packagesBasePath = "./public/package/"
 	}
 
 	currentPath, err := os.Getwd()
 	if err != nil {
 		return err
 	}
-	err = os.Chdir(packagesPath)
+	err = os.Chdir(packagesBasePath)
 	if err != nil {
 		return err
 	}
 	defer os.Chdir(currentPath)
 
-	packages, err := filepath.Glob("./*")
+	packagePaths, err := filepath.Glob("./*")
 	if err != nil {
 		return err
 	}
 
-	for _, p := range packages {
-		info, err := os.Stat(p)
+	for _, path := range packagePaths {
+		info, err := os.Stat(path)
 		if err != nil {
 			return err
 		}
@@ -108,28 +108,28 @@ func BuildIntegrationPackages() error {
 			continue
 		}
 
-		err = sh.RunV("tar", "cvzf", p+".tar.gz", filepath.Base(p)+"/")
+		err = sh.RunV("tar", "cvzf", path+".tar.gz", filepath.Base(path)+"/")
 		if err != nil {
 			return err
 		}
 
 		// Build package endpoint
-		manifest, err := util.ReadManifest(".", p)
+		p, err := util.NewPackage(".", path)
 		if err != nil {
 			return err
 		}
 
-		err = getAssets(manifest, p)
+		err = getAssets(p, path)
 		if err != nil {
 			return err
 		}
 
-		data, err := json.MarshalIndent(manifest, "", "  ")
+		data, err := json.MarshalIndent(p, "", "  ")
 		if err != nil {
 			return err
 		}
 
-		err = ioutil.WriteFile(p+"/index.json", data, 0644)
+		err = ioutil.WriteFile(path+"/index.json", data, 0644)
 		if err != nil {
 			return err
 		}
@@ -138,7 +138,7 @@ func BuildIntegrationPackages() error {
 	return nil
 }
 
-func getAssets(manifest *util.Manifest, p string) (err error) {
+func getAssets(manifest *util.Package, p string) (err error) {
 	oldDir, err := os.Getwd()
 	if err != nil {
 		return err

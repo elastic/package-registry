@@ -3,23 +3,24 @@ package util
 import (
 	"io/ioutil"
 
+	"github.com/blang/semver"
+
 	"gopkg.in/yaml.v2"
 )
 
 type Package struct {
-	Name        string   `yaml:"name" json:"name"`
-	Title       *string  `yaml:"title,omitempty" json:"title,omitempty"`
-	Version     string   `yaml:"version" json:"version"`
-	Description string   `yaml:"description" json:"description"`
-	Categories  []string `yaml:"categories" json:"categories"`
-}
-
-type Manifest struct {
-	Package     `yaml:",inline" json:",inline"`
-	Requirement struct {
+	Name          string  `yaml:"name" json:"name"`
+	Title         *string `yaml:"title,omitempty" json:"title,omitempty"`
+	Version       string  `yaml:"version" json:"version"`
+	versionSemVer semver.Version
+	Description   string   `yaml:"description" json:"description"`
+	Categories    []string `yaml:"categories" json:"categories"`
+	Requirement   struct {
 		Kibana struct {
-			Min string `yaml:"version.min" json:"version.min"`
-			Max string `yaml:"version.max" json:"version.max"`
+			Min       string `yaml:"version.min" json:"version.min"`
+			Max       string `yaml:"version.max" json:"version.max"`
+			minSemVer semver.Version
+			maxSemVer semver.Version
 		} `yaml:"kibana" json:"kibana"`
 	} `yaml:"requirement" json:"requirement"`
 	Screenshots []Image  `yaml:"screenshots,omitempty" json:"screenshots,omitempty"`
@@ -34,34 +35,86 @@ type Image struct {
 	Type  string `yaml:"type" json:"type,omitempty"`
 }
 
-func (i Image) getPath(m *Manifest) string {
-	return "/package/" + m.Name + "-" + m.Version + i.Src
+func (i Image) getPath(p *Package) string {
+	return "/package/" + p.Name + "-" + p.Version + i.Src
 }
 
-func ReadManifest(packagesPath, p string) (*Manifest, error) {
+// NewPackage creates a new package instances based on the given base path + package name.
+// The package name passed contains the version of the package.
+func NewPackage(packagesPath, packageName string) (*Package, error) {
 
-	manifest, err := ioutil.ReadFile(packagesPath + "/" + p + "/manifest.yml")
+	manifest, err := ioutil.ReadFile(packagesPath + "/" + packageName + "/manifest.yml")
 	if err != nil {
 		return nil, err
 	}
 
-	var m = &Manifest{}
-	err = yaml.Unmarshal(manifest, m)
+	var p = &Package{}
+	err = yaml.Unmarshal(manifest, p)
 	if err != nil {
 		return nil, err
 	}
 
-	if m.Icons != nil {
-		for k, i := range m.Icons {
-			m.Icons[k].Src = i.getPath(m)
+	if p.Icons != nil {
+		for k, i := range p.Icons {
+			p.Icons[k].Src = i.getPath(p)
 		}
 	}
 
-	if m.Screenshots != nil {
-		for k, s := range m.Screenshots {
-			m.Screenshots[k].Src = s.getPath(m)
+	if p.Screenshots != nil {
+		for k, s := range p.Screenshots {
+			p.Screenshots[k].Src = s.getPath(p)
 		}
 	}
 
-	return m, nil
+	if p.Requirement.Kibana.Max != "" {
+		p.Requirement.Kibana.maxSemVer, err = semver.Parse(p.Requirement.Kibana.Max)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	if p.Requirement.Kibana.Min != "" {
+		p.Requirement.Kibana.minSemVer, err = semver.Parse(p.Requirement.Kibana.Min)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	p.versionSemVer, err = semver.Parse(p.Version)
+	if err != nil {
+		return nil, err
+	}
+
+	return p, nil
+}
+
+func (p *Package) HasCategory(category string) bool {
+	for _, c := range p.Categories {
+		if c == category {
+			return true
+		}
+	}
+
+	return false
+}
+
+func (p *Package) HasKibanaVersion(version *semver.Version) bool {
+	if version != nil {
+		if p.Requirement.Kibana.Max != "" {
+			if version.GT(p.Requirement.Kibana.maxSemVer) {
+				return false
+			}
+		}
+
+		if p.Requirement.Kibana.Min != "" {
+			if version.LT(p.Requirement.Kibana.minSemVer) {
+				return false
+			}
+		}
+	}
+	return true
+}
+
+func (p *Package) IsNewer(pp *Package) bool {
+	return p.versionSemVer.GT(pp.versionSemVer)
 }
