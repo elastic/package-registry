@@ -103,8 +103,9 @@ manager must be able to overwrite the index pattern.
 
 On the Beats side today the Index Template is generated out of the `fields.yml` files. This allows to give more flexibility
 to generate the correct template for different Elasticsearch version. As we can release integrations packages for different
-version of Elasticsearch independently this is probably not needed anymore. I expect one or multiple fields.yml to be
-in each Integrations Package but leave it to the package creator to create the index template (TBD).
+version of Elasticsearch independently this is probably not needed anymore. I expect fields.yml to stick around as it's a nice
+way to create index templates and index patterns in one go. The integration manager should be able to generate index templates
+and index patterns out of all the combined fields.yml.
 
 An Index Template also relates to the ILM policy as it can reference to which ILM policy should be applied to the indices
 created.
