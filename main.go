@@ -89,8 +89,8 @@ func getRouter() *mux.Router {
 	return router
 }
 
-// getPackages returns list of available packages
-func getPackages() ([]string, error) {
+// getPackagePaths returns list of available packages
+func getPackagePaths() ([]string, error) {
 
 	files, err := ioutil.ReadDir(packagesPath)
 	if err != nil {

@@ -20,9 +20,10 @@ func searchHandler() func(w http.ResponseWriter, r *http.Request) {
 		var kibanaVersion *semver.Version
 		var category string
 		// Leaving out `a` here to not use a reserved name
-		var pckage string
+		var packageQuery string
 		var err error
 
+		// Read query filter params which can affect the output
 		if len(query) > 0 {
 			if v := query.Get("kibana"); v != "" {
 				kibanaVersion, err = semver.New(v)
@@ -40,22 +41,22 @@ func searchHandler() func(w http.ResponseWriter, r *http.Request) {
 
 			if v := query.Get("package"); v != "" {
 				if v != "" {
-					pckage = v
+					packageQuery = v
 				}
 			}
 		}
 
-		packages, err := getPackages()
+		packagePaths, err := getPackagePaths()
 		if err != nil {
 			notFound(w, err)
 			return
 		}
 
-		packagesList := map[string]map[string]*util.Manifest{}
+		packagesList := map[string]map[string]*util.Package{}
 
 		// Checks that only the most recent version of an integration is added to the list
-		for _, i := range packages {
-			m, err := util.ReadManifest(packagesPath, i)
+		for _, path := range packagePaths {
+			p, err := util.NewPackage(packagesPath, path)
 			if err != nil {
 				notFound(w, err)
 				return
@@ -64,56 +65,46 @@ func searchHandler() func(w http.ResponseWriter, r *http.Request) {
 			// Filter by category first as this could heavily reduce the number of packages
 			// It must happen before the version filtering as there only the newest version
 			// is exposed and there could be an older package with more versions.
-			if category != "" {
-				hasCategory, err := hasCategory(category, m)
-				if err != nil {
-					notFound(w, err)
-					return
-				}
-				if !hasCategory {
-					continue
-				}
-			}
-
-			valid, err := validKibanaVersion(kibanaVersion, m)
-			if err != nil {
-				notFound(w, err)
-				return
-			}
-
-			if !valid {
+			if category != "" && !p.HasCategory(category) {
 				continue
 			}
 
-			if pckage == "" {
-				// Check if the version exists and if it should be added or not.
-				for _, versions := range packagesList {
-					for _, p := range versions {
-						if p.Name == m.Name {
-							newVersion, _ := semver.Make(m.Version)
-							oldVersion, _ := semver.Make(p.Version)
-
-							if newVersion.LTE(oldVersion) {
-								continue
-							} else {
-								delete(packagesList[p.Name], p.Version)
-							}
-						}
-					}
-				}
-			} else {
-				if pckage != m.Name {
+			if kibanaVersion != nil {
+				if valid := p.HasKibanaVersion(kibanaVersion); !valid {
 					continue
 				}
 			}
 
-			if _, ok := packagesList[m.Name]; !ok {
-				packagesList[m.Name] = map[string]*util.Manifest{}
+			// If package Query is set, all versions of this package are returned
+			if packageQuery != "" && packageQuery != p.Name {
+				continue
 			}
-			packagesList[m.Name][m.Version] = m
+
+			// If no package Query is set, only the newest version of a package is returned
+			if packageQuery == "" {
+				// Check if the version exists and if it should be added or not.
+				for _, versions := range packagesList {
+					for _, pp := range versions {
+						if pp.Name == p.Name {
+
+							// If the package in the list is newer, do nothing. Otherwise delete and later add the new one.
+							if pp.IsNewer(p) {
+								continue
+							}
+
+							delete(packagesList[pp.Name], pp.Version)
+						}
+					}
+				}
+			}
+
+			if _, ok := packagesList[p.Name]; !ok {
+				packagesList[p.Name] = map[string]*util.Package{}
+			}
+			packagesList[p.Name][p.Version] = p
 		}
 
-		data, err := servePackages(packagesList, w)
+		data, err := getPackageOutput(packagesList)
 		if err != nil {
 			notFound(w, err)
 			return
@@ -124,42 +115,7 @@ func searchHandler() func(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func hasCategory(category string, m *util.Manifest) (bool, error) {
-	for _, c := range m.Categories {
-		if c == category {
-			return true, nil
-		}
-	}
-
-	return false, nil
-}
-
-func validKibanaVersion(version *semver.Version, m *util.Manifest) (bool, error) {
-	if version != nil {
-		if m.Requirement.Kibana.Max != "" {
-			maxKibana, err := semver.Parse(m.Requirement.Kibana.Max)
-			if err != nil {
-				return false, err
-			}
-			if version.GT(maxKibana) {
-				return false, nil
-			}
-		}
-
-		if m.Requirement.Kibana.Min != "" {
-			minKibana, err := semver.Parse(m.Requirement.Kibana.Min)
-			if err != nil {
-				return false, nil
-			}
-			if version.LT(minKibana) {
-				return false, err
-			}
-		}
-	}
-	return true, nil
-}
-
-func servePackages(packagesList map[string]map[string]*util.Manifest, w http.ResponseWriter) ([]byte, error) {
+func getPackageOutput(packagesList map[string]map[string]*util.Package) ([]byte, error) {
 
 	separator := "@"
 	// Packages need to be sorted to be always outputted in the same order
