@@ -1,0 +1,18 @@
+name: multiversion
+title: Multi Version
+description: >
+  Multiple versions of this integration exist.
+version: 1.0.4
+categories: ["logs", "metrics"]
+release: ga
+license: basic
+
+requirement:
+  kibana:
+    version.min: 6.7.0
+  elasticsearch:
+    version.min: 7.0.1
+
+icons:
+- src: "/img/icon.svg"
+  type: "image/svg+xml"
