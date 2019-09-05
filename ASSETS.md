@@ -66,6 +66,31 @@ The definition of the manifest is not complete yet and further details will foll
 
 Question: How do we handle if only one metricset is in beta but integration is in GA?
 
+### changelog.yml
+
+The changelog of a package contains always all previous changes and not only the one from the last major, minor, bugfix release. 
+Each array entry is a release. The type entry can contain the following values: [added, bugfix, deprecated, breaking-change, known-issue]
+
+The file looks as following:
+
+```
+- version: 1.0.4
+  changes:
+    - description: >
+        Unexpected breaking change had to be introduced. This should not happen in a minor.
+      type: breaking-change
+      link: https://github.com/elastic/beats/issues/13504
+- version: 1.0.3
+  changes:
+    - description: Fix broken template
+      type: bugfix
+      link: https://github.com/elastic/beats/issues/13507
+    - description: It is a known issue that the dashboard does not load properly
+      type: known-issue
+      link: https://github.com/elastic/beats/issues/13506
+
+```
+
 ### Fields.yml
 
 * Asset Path: fields/*.yml
