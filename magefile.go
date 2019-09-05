@@ -20,6 +20,23 @@ import (
 	"github.com/elastic/integrations-registry/util"
 )
 
+var (
+	// GoImportsImportPath controls the import path used to install goimports.
+	GoImportsImportPath = "golang.org/x/tools/cmd/goimports"
+
+	// GoImportsLocalPrefix is a string prefix matching imports that should be
+	// grouped after third-party packages.
+	GoImportsLocalPrefix = "github.com/elastic"
+
+	// GoLicenserImportPath controls the import path used to install go-licenser.
+	GoLicenserImportPath = "github.com/elastic/go-licenser"
+
+	publicDir    = "./public"
+	buildDir     = "./build"
+	packageDir   = "package"
+	packagePaths = []string{"./dev/package-generated/", "./dev/package-examples/"}
+)
+
 func Check() error {
 	Format()
 
@@ -34,17 +51,14 @@ func Test() error {
 }
 
 func Build() error {
-	err := CopyPackages("./dev/package-generated/")
-	if err != nil {
-		return err
+	for _, p := range packagePaths {
+		err := CopyPackages(p)
+		if err != nil {
+			return err
+		}
 	}
 
-	err = CopyPackages("./dev/package-examples/")
-	if err != nil {
-		return err
-	}
-
-	err = BuildIntegrationPackages()
+	err := BuildIntegrationPackages()
 	if err != nil {
 		return err
 	}
@@ -56,18 +70,6 @@ func Build() error {
 
 	return sh.Run("go", "build", ".")
 }
-
-var (
-	// GoImportsImportPath controls the import path used to install goimports.
-	GoImportsImportPath = "golang.org/x/tools/cmd/goimports"
-
-	// GoImportsLocalPrefix is a string prefix matching imports that should be
-	// grouped after third-party packages.
-	GoImportsLocalPrefix = "github.com/elastic"
-
-	// GoLicenserImportPath controls the import path used to install go-licenser.
-	GoLicenserImportPath = "github.com/elastic/go-licenser"
-)
 
 // Format adds license headers, formats .go files with goimports, and formats
 // .py files with autopep8.
@@ -85,9 +87,26 @@ func BuildIntegrationPackages() error {
 	// Check if PACKAGES_PATH is set.
 	packagesBasePath := os.Getenv("PACKAGES_PATH")
 	if packagesBasePath == "" {
-		packagesBasePath = "./public/package/"
+		packagesBasePath = publicDir + "/" + packageDir + "/"
 	}
 
+	packagePaths, err := util.GetPackagePaths(packagesBasePath)
+	if err != nil {
+		return err
+	}
+
+	for _, path := range packagePaths {
+		err = buildPackage(packagesBasePath, path)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func buildPackage(packagesBasePath, path string) error {
+
+	// Change path to simplify tar command
 	currentPath, err := os.Getwd()
 	if err != nil {
 		return err
@@ -98,46 +117,25 @@ func BuildIntegrationPackages() error {
 	}
 	defer os.Chdir(currentPath)
 
-	packagePaths, err := filepath.Glob("./*")
+	err = sh.RunV("tar", "cvzf", path+".tar.gz", filepath.Base(path)+"/")
 	if err != nil {
 		return err
 	}
 
-	for _, path := range packagePaths {
-		info, err := os.Stat(path)
-		if err != nil {
-			return err
-		}
+	// Build package endpoint
+	p, err := util.NewPackage(".", path)
+	if err != nil {
+		return err
+	}
 
-		if !info.IsDir() {
-			continue
-		}
+	err = p.LoadAssets(path)
+	if err != nil {
+		return err
+	}
 
-		err = sh.RunV("tar", "cvzf", path+".tar.gz", filepath.Base(path)+"/")
-		if err != nil {
-			return err
-		}
-
-		// Build package endpoint
-		p, err := util.NewPackage(".", path)
-		if err != nil {
-			return err
-		}
-
-		err = getAssets(p, path)
-		if err != nil {
-			return err
-		}
-
-		data, err := json.MarshalIndent(p, "", "  ")
-		if err != nil {
-			return err
-		}
-
-		err = ioutil.WriteFile(path+"/index.json", data, 0644)
-		if err != nil {
-			return err
-		}
+	err = writeJsonFile(p, path+"/index.json")
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -150,64 +148,16 @@ func BuildRootFile() error {
 		"service.name": "integration-registry",
 	}
 
-	data, err := json.MarshalIndent(rootData, "", "  ")
-	if err != nil {
-		return err
-	}
-
-	return ioutil.WriteFile("./public/index.json", data, 0644)
+	return writeJsonFile(rootData, publicDir+"/index.json")
 }
 
-func getAssets(manifest *util.Package, p string) (err error) {
-	oldDir, err := os.Getwd()
-	if err != nil {
-		return err
-	}
-	defer func() {
-		// use named return to also have an error in case the defer fails
-		err = os.Chdir(oldDir)
-	}()
-	err = os.Chdir(p)
+func writeJsonFile(v interface{}, path string) error {
+	data, err := json.MarshalIndent(v, "", "  ")
 	if err != nil {
 		return err
 	}
 
-	assets, err := filepath.Glob("*")
-	if err != nil {
-		return err
-	}
-
-	a, err := filepath.Glob("*/*")
-	if err != nil {
-		return err
-	}
-	assets = append(assets, a...)
-
-	a, err = filepath.Glob("*/*/*")
-	if err != nil {
-		return err
-	}
-	assets = append(assets, a...)
-
-	for _, a := range assets {
-		// Unfortunately these files keep sneaking in
-		if strings.Contains(a, ".DS_Store") {
-			continue
-		}
-
-		info, err := os.Stat(a)
-		if err != nil {
-			return err
-		}
-
-		if info.IsDir() {
-			continue
-		}
-
-		a = "/package/" + p + "/" + a
-		manifest.Assets = append(manifest.Assets, a)
-	}
-	return nil
+	return ioutil.WriteFile(path, data, 0644)
 }
 
 // GoImports executes goimports against all .go files in and below the CWD. It
@@ -291,12 +241,12 @@ func FindFilesRecursive(match func(path string, info os.FileInfo) bool) ([]strin
 }
 
 func Clean() error {
-	err := os.RemoveAll("build")
+	err := os.RemoveAll(buildDir)
 	if err != nil {
 		return err
 	}
 
-	err = os.RemoveAll("public")
+	err = os.RemoveAll(publicDir)
 	if err != nil {
 		return err
 	}

@@ -2,6 +2,9 @@ package util
 
 import (
 	"io/ioutil"
+	"os"
+	"path/filepath"
+	"strings"
 
 	"github.com/blang/semver"
 
@@ -41,9 +44,9 @@ func (i Image) getPath(p *Package) string {
 
 // NewPackage creates a new package instances based on the given base path + package name.
 // The package name passed contains the version of the package.
-func NewPackage(packagesPath, packageName string) (*Package, error) {
+func NewPackage(basePath, packageName string) (*Package, error) {
 
-	manifest, err := ioutil.ReadFile(packagesPath + "/" + packageName + "/manifest.yml")
+	manifest, err := ioutil.ReadFile(basePath + "/" + packageName + "/manifest.yml")
 	if err != nil {
 		return nil, err
 	}
@@ -117,4 +120,61 @@ func (p *Package) HasKibanaVersion(version *semver.Version) bool {
 
 func (p *Package) IsNewer(pp *Package) bool {
 	return p.versionSemVer.GT(pp.versionSemVer)
+}
+
+// LoadAssets (re)loads all the assets of the package
+// Based on the time when this is called, it might be that not all assets for a package exist yet, so it is reset every time.
+func (p *Package) LoadAssets(packagePath string) (err error) {
+	// Reset Assets
+	p.Assets = nil
+
+	oldDir, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+	defer func() {
+		// use named return to also have an error in case the defer fails
+		err = os.Chdir(oldDir)
+	}()
+	err = os.Chdir(packagePath)
+	if err != nil {
+		return err
+	}
+
+	assets, err := filepath.Glob("*")
+	if err != nil {
+		return err
+	}
+
+	a, err := filepath.Glob("*/*")
+	if err != nil {
+		return err
+	}
+	assets = append(assets, a...)
+
+	a, err = filepath.Glob("*/*/*")
+	if err != nil {
+		return err
+	}
+	assets = append(assets, a...)
+
+	for _, a := range assets {
+		// Unfortunately these files keep sneaking in
+		if strings.Contains(a, ".DS_Store") {
+			continue
+		}
+
+		info, err := os.Stat(a)
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() {
+			continue
+		}
+
+		a = "/package/" + packagePath + "/" + a
+		p.Assets = append(p.Assets, a)
+	}
+	return nil
 }

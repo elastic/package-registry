@@ -7,7 +7,6 @@ package main
 import (
 	"context"
 	"flag"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -20,10 +19,10 @@ import (
 )
 
 var (
-	packagesPath string
-	address      string
-	version      = "0.0.1"
-	configPath   = "config.yml"
+	packagesBasePath string
+	address          string
+	version          = "0.0.1"
+	configPath       = "config.yml"
 )
 
 func init() {
@@ -44,7 +43,7 @@ func main() {
 		log.Print(err)
 		os.Exit(1)
 	}
-	packagesPath = config.PackagesPath
+	packagesBasePath = config.PackagesPath
 
 	server := &http.Server{Addr: address, Handler: getRouter()}
 
@@ -87,24 +86,4 @@ func getRouter() *mux.Router {
 	router.PathPrefix("/").HandlerFunc(catchAll("./public"))
 
 	return router
-}
-
-// getPackagePaths returns list of available packages
-func getPackagePaths() ([]string, error) {
-
-	files, err := ioutil.ReadDir(packagesPath)
-	if err != nil {
-		return nil, err
-	}
-
-	var packages []string
-	for _, f := range files {
-		if !f.IsDir() {
-			continue
-		}
-
-		packages = append(packages, f.Name())
-	}
-
-	return packages, nil
 }
