@@ -213,6 +213,17 @@ or support inheritance / composition like the index templates in Elasticsearch. 
 problem as a user would have to constantly switch between them. The integrations manager could work around this by
 append / updating index pattern. But this will lead to the problem on how to remove these fields again.
 
+### Infrastructure UI Source
+
+* Asset Path: `kibana/infrastructure-ui-source/*.json`
+
+The Infrastructure UI source is used to tell the Logs and Metrics UI which indices to query for data and how to 
+visualise the data.
+
+The asset is like dashboards / visualizations just a saved object and can be loaded the same way. But the Logs UI 
+could also add an API for a tighter integration. At the moment there is no selection in the UI to change / switch the source
+but it can be triggered through URL parameters.
+
 ### Space
 
 * Asset Path: `kibana/space/*.json`
