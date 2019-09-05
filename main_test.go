@@ -22,7 +22,7 @@ var (
 
 func TestEndpoints(t *testing.T) {
 
-	packagesPath = "./testdata/package"
+	packagesBasePath = "./testdata/package"
 
 	tests := []struct {
 		endpoint string

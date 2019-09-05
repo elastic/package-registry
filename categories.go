@@ -24,7 +24,7 @@ type Category struct {
 func categoriesHandler() func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		packagePaths, err := getPackagePaths()
+		packagePaths, err := util.GetPackagePaths(packagesBasePath)
 		if err != nil {
 			notFound(w, err)
 			return
@@ -33,7 +33,7 @@ func categoriesHandler() func(w http.ResponseWriter, r *http.Request) {
 		packageList := map[string]*util.Package{}
 		// Get unique list of newest packages
 		for _, i := range packagePaths {
-			p, err := util.NewPackage(packagesPath, i)
+			p, err := util.NewPackage(packagesBasePath, i)
 			if err != nil {
 				return
 			}

@@ -46,7 +46,7 @@ func searchHandler() func(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		packagePaths, err := getPackagePaths()
+		packagePaths, err := util.GetPackagePaths(packagesBasePath)
 		if err != nil {
 			notFound(w, err)
 			return
@@ -56,7 +56,7 @@ func searchHandler() func(w http.ResponseWriter, r *http.Request) {
 
 		// Checks that only the most recent version of an integration is added to the list
 		for _, path := range packagePaths {
-			p, err := util.NewPackage(packagesPath, path)
+			p, err := util.NewPackage(packagesBasePath, path)
 			if err != nil {
 				notFound(w, err)
 				return
