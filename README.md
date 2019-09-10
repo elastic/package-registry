@@ -8,10 +8,23 @@ Endpoints:
 
 * `/`: Info about the registry
 * `/search`: Search for packages. By default returns all the most recent packages available.
-* `/package/{name}`: Info about a package
-* `/package/{name}.tar.gz`: Download a package
+* `/categories`: List of the existing package categories and how many packages are in each category.
+* `/package/{name}-{version}`: Info about a package
+* `/package/{name}-{version}.tar.gz`: Download a package
 
 Examples for each API endpoint can be found here: https://github.com/elastic/integrations-registry/tree/master/docs/api
+
+The `/search` API endpoint has few additional query parameters. More might be added in the future, but for now these are:
+
+* kibana: Filters out all the packages which are not compatible with the given Kibana version. If it is set to `7.3.1` and 
+  a package requires 7.4, the package will not be returned or an older compatible package will be shown.
+  By default this endpoint always returns only the newest compatible package.
+* category: Filters the package by the given category. Available categories can be seend when going to `/categories` endpoint.
+* package: Filters by a specific package name, for example `mysql`. In contrast to the other endpoints, it will return
+  by default all versions of this package.
+  
+The different query parameters above can be combined, so `?package=mysql&kibana=7.3.0` will return all mysql package versions
+which are compatible with `7.3.0`.
 
 ## Package structure
 
@@ -67,6 +80,19 @@ A full example with the directory structure looks as following:
 ```
 
 More details about each asset can be found in ASSETS.md
+
+## Architecture
+
+There are 2 main parts to the integration registry:
+
+* Generation of package and content
+* Serving content through a simple http endpoint
+
+As much of the endpoints as possible is generated in advance. All package data is pregenerate and is statically served.
+The only exceptions here are the `/categories` and `/search` endpoint as they allow query parameters which leads to many
+variations and will also get more complex over time.
+
+`mage build` takes all the packages and generates the content under `public`. The generated content itself is not checked in.
 
 ## Directories
 
