@@ -1,6 +1,6 @@
 name: mysql
 description: Mysql Logs and metrics
-
+title: MySQL
 version: 1.0.1
 categories: ["logs", "metrics"]
 release: beta

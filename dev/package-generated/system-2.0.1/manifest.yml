@@ -1,6 +1,6 @@
 name: system
 description: System SQL Logs and metrics
-
+title: System
 version: 2.0.1
 categories: ["logs", "metrics"]
 release: beta

@@ -128,6 +128,12 @@ func buildPackage(packagesBasePath, path string) error {
 		return err
 	}
 
+	// Checks if the package is valid
+	err = p.Validate()
+	if err != nil {
+		return fmt.Errorf("Invalid package %s-%s: %s", p.Name, p.Version, err)
+	}
+
 	err = p.LoadAssets(path)
 	if err != nil {
 		return err
