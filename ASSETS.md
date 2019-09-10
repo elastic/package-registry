@@ -27,6 +27,9 @@ version: 0.0.2
 categories: ["logs", "metrics"]
 # Options are experimental, beta, ga
 release: beta
+# The package type. The options for now are [integration, solution], more type might be added in the future.
+# The default type is integration and will be set if empty.
+type: integration
 compatibility: [1.0.2, 2.0.1]
 os.platform: [darwin, freebsd, linux, macos, openbsd, windows]
 

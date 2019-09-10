@@ -11,12 +11,15 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+const defaultType = "integration"
+
 type Package struct {
 	Name          string  `yaml:"name" json:"name"`
 	Title         *string `yaml:"title,omitempty" json:"title,omitempty"`
 	Version       string  `yaml:"version" json:"version"`
 	versionSemVer semver.Version
 	Description   string   `yaml:"description" json:"description"`
+	Type          string   `yaml:"type" json:"type"`
 	Categories    []string `yaml:"categories" json:"categories"`
 	Requirement   struct {
 		Kibana struct {
@@ -55,6 +58,10 @@ func NewPackage(basePath, packageName string) (*Package, error) {
 	err = yaml.Unmarshal(manifest, p)
 	if err != nil {
 		return nil, err
+	}
+
+	if p.Type == "" {
+		p.Type = defaultType
 	}
 
 	if p.Icons != nil {

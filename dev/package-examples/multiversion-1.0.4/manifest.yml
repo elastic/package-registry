@@ -6,6 +6,7 @@ version: 1.0.4
 categories: ["logs", "metrics"]
 release: ga
 license: basic
+type: integration
 
 requirement:
   kibana:

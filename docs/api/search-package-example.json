@@ -3,6 +3,7 @@
     "description": "This is the example integration.",
     "download": "/package/example-0.0.5.tar.gz",
     "name": "example",
+    "type": "integration",
     "version": "0.0.5"
   },
   {
@@ -10,6 +11,7 @@
     "download": "/package/example-1.0.0.tar.gz",
     "name": "example",
     "title": "Example Integration",
+    "type": "integration",
     "version": "1.0.0"
   }
 ]
