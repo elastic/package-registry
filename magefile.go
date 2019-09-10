@@ -125,7 +125,7 @@ func buildPackage(packagesBasePath, path string) error {
 	// Build package endpoint
 	p, err := util.NewPackage(".", path)
 	if err != nil {
-		return err
+		return fmt.Errorf("Error creating package: %s: %s", path, err)
 	}
 
 	// Checks if the package is valid

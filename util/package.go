@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/pkg/errors"
+
 	"github.com/blang/semver"
 
 	"gopkg.in/yaml.v2"
@@ -19,20 +21,24 @@ type Package struct {
 	Title         *string `yaml:"title,omitempty" json:"title,omitempty"`
 	Version       string  `yaml:"version" json:"version"`
 	versionSemVer semver.Version
-	Description   string   `yaml:"description" json:"description"`
-	Type          string   `yaml:"type" json:"type"`
-	Categories    []string `yaml:"categories" json:"categories"`
-	Requirement   struct {
-		Kibana struct {
-			Min       string `yaml:"version.min" json:"version.min"`
-			Max       string `yaml:"version.max" json:"version.max"`
-			minSemVer semver.Version
-			maxSemVer semver.Version
-		} `yaml:"kibana" json:"kibana"`
-	} `yaml:"requirement" json:"requirement"`
-	Screenshots []Image  `yaml:"screenshots,omitempty" json:"screenshots,omitempty"`
-	Icons       []Image  `yaml:"icons,omitempty" json:"icons,omitempty"`
-	Assets      []string `yaml:"assets,omitempty" json:"assets,omitempty"`
+	Description   string      `yaml:"description" json:"description"`
+	Type          string      `yaml:"type" json:"type"`
+	Categories    []string    `yaml:"categories" json:"categories"`
+	Requirement   Requirement `yaml:"requirement" json:"requirement"`
+	Screenshots   []Image     `yaml:"screenshots,omitempty" json:"screenshots,omitempty"`
+	Icons         []Image     `yaml:"icons,omitempty" json:"icons,omitempty"`
+	Assets        []string    `yaml:"assets,omitempty" json:"assets,omitempty"`
+}
+
+type Requirement struct {
+	Kibana Kibana `yaml:"kibana" json:"kibana"`
+}
+
+type Kibana struct {
+	Min       string `yaml:"version.min" json:"version.min"`
+	Max       string `yaml:"version.max" json:"version.max"`
+	minSemVer semver.Version
+	maxSemVer semver.Version
 }
 
 type Image struct {
@@ -80,14 +86,14 @@ func NewPackage(basePath, packageName string) (*Package, error) {
 	if p.Requirement.Kibana.Max != "" {
 		p.Requirement.Kibana.maxSemVer, err = semver.Parse(p.Requirement.Kibana.Max)
 		if err != nil {
-			return nil, err
+			return nil, errors.Wrapf(err, "invalid Kibana max version: %s", p.Requirement.Kibana.Max)
 		}
 	}
 
 	if p.Requirement.Kibana.Min != "" {
 		p.Requirement.Kibana.minSemVer, err = semver.Parse(p.Requirement.Kibana.Min)
 		if err != nil {
-			return nil, err
+			return nil, errors.Wrapf(err, "invalid Kibana min version: %s", p.Requirement.Kibana.Min)
 		}
 	}
 
@@ -195,6 +201,20 @@ func (p *Package) Validate() error {
 
 	if p.Description == "" {
 		return fmt.Errorf("no description set")
+	}
+
+	if p.Requirement.Kibana.Max != "" {
+		_, err := semver.Parse(p.Requirement.Kibana.Max)
+		if err != nil {
+			return fmt.Errorf("invalid max kibana version: %s, %s", p.Requirement.Kibana.Max, err)
+		}
+	}
+
+	if p.Requirement.Kibana.Min != "" {
+		_, err := semver.Parse(p.Requirement.Kibana.Min)
+		if err != nil {
+			return fmt.Errorf("invalid min Kibana version: %s, %s", p.Requirement.Kibana.Min, err)
+		}
 	}
 
 	return nil
