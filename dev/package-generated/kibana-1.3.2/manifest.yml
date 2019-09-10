@@ -1,6 +1,6 @@
 name: kibana
 description: Kibana Logs and metrics
-
+title: Kibana
 version: 1.3.2
 categories: ["logs", "metrics"]
 release: beta

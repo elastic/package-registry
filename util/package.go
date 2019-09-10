@@ -1,6 +1,7 @@
 package util
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -183,5 +184,18 @@ func (p *Package) LoadAssets(packagePath string) (err error) {
 		a = "/package/" + packagePath + "/" + a
 		p.Assets = append(p.Assets, a)
 	}
+	return nil
+}
+
+func (p *Package) Validate() error {
+
+	if p.Title == nil || *p.Title == "" {
+		return fmt.Errorf("no title set")
+	}
+
+	if p.Description == "" {
+		return fmt.Errorf("no description set")
+	}
+
 	return nil
 }
