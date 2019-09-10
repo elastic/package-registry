@@ -16,7 +16,7 @@ This is a [link](https://github.com/elastic/integrations-registry) inside the do
 The following file shows how an event might look like:
 
 ```
-{{ file /docs/data.json }}
+{{ > ./data.json }}
 ```
 
 ## Template parts
