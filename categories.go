@@ -9,10 +9,7 @@ import (
 	"github.com/elastic/integrations-registry/util"
 )
 
-var categoryTitles = map[string]string{
-	"logs":    "Logs",
-	"metrics": "Metrics",
-}
+
 
 type Category struct {
 	Id    string `yaml:"id" json:"id"`
@@ -85,7 +82,7 @@ func getCategoriesOutput(categories map[string]*Category) ([]byte, error) {
 	var outputCategories []*Category
 	for _, k := range keys {
 		c := categories[k]
-		if title, ok := categoryTitles[c.Title]; ok {
+		if title, ok := util.CategoryTitles[c.Title]; ok {
 			c.Title = title
 		}
 		outputCategories = append(outputCategories, c)
