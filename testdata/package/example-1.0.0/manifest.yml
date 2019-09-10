@@ -3,6 +3,7 @@ description: This is the example integration
 version: 1.0.0
 title: Example Integration
 categories: ["logs", "metrics"]
+type: integration
 
 requirement:
   elasticsearch:

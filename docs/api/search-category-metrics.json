@@ -4,6 +4,7 @@
     "download": "/package/example-1.0.0.tar.gz",
     "name": "example",
     "title": "Example Integration",
+    "type": "integration",
     "version": "1.0.0"
   },
   {
@@ -11,6 +12,7 @@
     "download": "/package/foo-1.0.0.tar.gz",
     "name": "foo",
     "title": "Foo",
+    "type": "solution",
     "version": "1.0.0"
   }
 ]
