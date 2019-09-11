@@ -150,7 +150,7 @@ func buildPackage(packagesBasePath, path string) error {
 // For now only containing the version.
 func BuildRootFile() error {
 	rootData := map[string]string{
-		"version":      "0.1.0",
+		"version":      "0.2.0",
 		"service.name": "integration-registry",
 	}
 
