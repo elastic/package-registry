@@ -1,3 +1,6 @@
+.DS_Store
+integrations-registry
+
 .idea
 build
 public/*
