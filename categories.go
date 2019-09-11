@@ -34,7 +34,7 @@ func categoriesHandler() func(w http.ResponseWriter, r *http.Request) {
 			// Check if the version exists and if it should be added or not.
 			if pp, ok := packageList[p.Name]; ok {
 				// If the package in the list is newer, do nothing. Otherwise delete and later add the new one.
-				if pp.IsNewer(&p) {
+				if pp.IsNewer(p) {
 					continue
 				}
 			}

@@ -83,7 +83,7 @@ func searchHandler() func(w http.ResponseWriter, r *http.Request) {
 						if pp.Name == p.Name {
 
 							// If the package in the list is newer, do nothing. Otherwise delete and later add the new one.
-							if pp.IsNewer(&p) {
+							if pp.IsNewer(p) {
 								continue
 							}
 

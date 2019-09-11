@@ -6,8 +6,32 @@ import (
 
 var packageList []Package
 
-// GetPackagePaths returns list of available packages, one for each version.
-func GetPackagePaths(packagesPath string) ([]string, error) {
+// GetPackages returns a slice with all existing packages.
+// The list is stored in memory and on the second request directly
+// served from memory. This assumes chnages to packages only happen on restart.
+// Caching the packages request many file reads every time this method is called.
+func GetPackages(packagesBasePath string) ([]Package, error) {
+	if packageList != nil {
+		return packageList, nil
+	}
+
+	packagePaths, err := getPackagePaths(packagesBasePath)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, i := range packagePaths {
+		p, err := NewPackage(packagesBasePath, i)
+		if err != nil {
+			return nil, err
+		}
+		packageList = append(packageList, *p)
+	}
+	return packageList, nil
+}
+
+// getPackagePaths returns list of available packages, one for each version.
+func getPackagePaths(packagesPath string) ([]string, error) {
 
 	files, err := ioutil.ReadDir(packagesPath)
 	if err != nil {
@@ -24,25 +48,4 @@ func GetPackagePaths(packagesPath string) ([]string, error) {
 	}
 
 	return packages, nil
-}
-
-func GetPackages(packagesBasePath string) ([]Package, error) {
-	if packageList != nil {
-		return packageList, nil
-	}
-
-	packagePaths, err := GetPackagePaths(packagesBasePath)
-	if err != nil {
-		return nil, err
-	}
-
-	// Get unique list of newest packages
-	for _, i := range packagePaths {
-		p, err := NewPackage(packagesBasePath, i)
-		if err != nil {
-			return nil, err
-		}
-		packageList = append(packageList, *p)
-	}
-	return packageList, nil
 }

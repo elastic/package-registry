@@ -137,7 +137,7 @@ func (p *Package) HasKibanaVersion(version *semver.Version) bool {
 	return true
 }
 
-func (p *Package) IsNewer(pp *Package) bool {
+func (p *Package) IsNewer(pp Package) bool {
 	return p.versionSemVer.GT(pp.versionSemVer)
 }
 
@@ -229,4 +229,8 @@ func (p *Package) Validate() error {
 	}
 
 	return nil
+}
+
+func (p *Package) GetPath() string {
+	return p.Name + "-" + p.Version
 }
