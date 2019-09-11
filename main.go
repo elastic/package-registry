@@ -21,7 +21,6 @@ import (
 var (
 	packagesBasePath string
 	address          string
-	version          = "0.1.0"
 	configPath       = "config.yml"
 )
 
