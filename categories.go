@@ -22,24 +22,19 @@ func categoriesHandler() func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		cacheHeaders(w)
 
-		packagePaths, err := util.GetPackagePaths(packagesBasePath)
+		packages, err := util.GetPackages(packagesBasePath)
 		if err != nil {
 			notFound(w, err)
 			return
 		}
-
-		packageList := map[string]*util.Package{}
+		packageList := map[string]util.Package{}
 		// Get unique list of newest packages
-		for _, i := range packagePaths {
-			p, err := util.NewPackage(packagesBasePath, i)
-			if err != nil {
-				return
-			}
+		for _, p := range packages {
 
 			// Check if the version exists and if it should be added or not.
 			if pp, ok := packageList[p.Name]; ok {
 				// If the package in the list is newer, do nothing. Otherwise delete and later add the new one.
-				if pp.IsNewer(p) {
+				if pp.IsNewer(&p) {
 					continue
 				}
 			}
