@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strconv"
 	"syscall"
 
 	ucfgYAML "github.com/elastic/go-ucfg/yaml"
@@ -22,6 +23,7 @@ var (
 	packagesBasePath string
 	address          string
 	configPath       = "config.yml"
+	cacheTime        = strconv.Itoa(60 * 60) // 1 hour
 )
 
 func init() {

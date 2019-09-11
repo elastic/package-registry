@@ -14,6 +14,7 @@ import (
 
 func searchHandler() func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
+		cacheHeaders(w)
 
 		query := r.URL.Query()
 

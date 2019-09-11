@@ -79,4 +79,5 @@ func runEndpoint(t *testing.T, endpoint, path, file string, handler func(w http.
 	}
 
 	assert.Equal(t, string(data), recorder.Body.String())
+	assert.Equal(t, recorder.Header()["Cache-Control"], []string{"max-age=" + cacheTime, "public"})
 }
