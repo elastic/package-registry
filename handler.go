@@ -22,6 +22,7 @@ func notFound(w http.ResponseWriter, err error) {
 
 func catchAll(publicPath string) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
+		cacheHeaders(w)
 
 		path := r.RequestURI
 
@@ -85,4 +86,9 @@ func sendHeader(w http.ResponseWriter, r *http.Request) {
 		// Using json as the default header
 		w.Header().Set("Content-Type", "application/json")
 	}
+}
+
+func cacheHeaders(w http.ResponseWriter) {
+	w.Header().Add("Cache-Control", "max-age="+cacheTime)
+	w.Header().Add("Cache-Control", "public")
 }
