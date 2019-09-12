@@ -106,6 +106,12 @@ There are several options to run this.
 
 ### Go command
 
+To use the correct golang version, run:
+
+```
+gvm use $(cat .go-version)
+```
+
 When using the go command, first the example packages must be built:
 
 `mage build`

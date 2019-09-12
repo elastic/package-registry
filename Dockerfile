@@ -1,4 +1,5 @@
-FROM golang:latest
+ARG GO_VERSION
+FROM golang:${GO_VERSION:-1.13.0}
 
 RUN \
     apt-get update \
@@ -20,5 +21,6 @@ RUN mage build
 # If we keep it, it means all packages exist twice.
 RUN rm -rf dev
 
+ENTRYPOINT ["go", "run", "."]
 # Make sure it's accessible from outside the container
-ENTRYPOINT ["go", "run", ".", "--address=0.0.0.0:8080"]
+CMD ["--address=0.0.0.0:8080"]
