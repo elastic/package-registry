@@ -14,6 +14,8 @@ import (
 	"strconv"
 	"syscall"
 
+	"github.com/elastic/integrations-registry/util"
+
 	ucfgYAML "github.com/elastic/go-ucfg/yaml"
 
 	"github.com/gorilla/mux"
@@ -45,6 +47,14 @@ func main() {
 		os.Exit(1)
 	}
 	packagesBasePath = config.PackagesPath
+
+	// Prefill the package cache
+	packages, err := util.GetPackages(packagesBasePath)
+	if err != nil {
+		log.Print(err)
+		os.Exit(1)
+	}
+	log.Printf("%v package manifests loaded into memory.\n", len(packages))
 
 	server := &http.Server{Addr: address, Handler: getRouter()}
 

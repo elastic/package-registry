@@ -1,3 +1,7 @@
+// Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
+// or more contributor license agreements. Licensed under the Elastic License;
+// you may not use this file except in compliance with the Elastic License.
+
 package main
 
 import (
@@ -47,21 +51,15 @@ func searchHandler() func(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		packagePaths, err := util.GetPackagePaths(packagesBasePath)
+		packages, err := util.GetPackages(packagesBasePath)
 		if err != nil {
-			notFound(w, err)
+			notFound(w, fmt.Errorf("problem fetching packages: %s", err))
 			return
 		}
-
-		packagesList := map[string]map[string]*util.Package{}
+		packagesList := map[string]map[string]util.Package{}
 
 		// Checks that only the most recent version of an integration is added to the list
-		for _, path := range packagePaths {
-			p, err := util.NewPackage(packagesBasePath, path)
-			if err != nil {
-				notFound(w, err)
-				return
-			}
+		for _, p := range packages {
 
 			// Filter by category first as this could heavily reduce the number of packages
 			// It must happen before the version filtering as there only the newest version
@@ -100,7 +98,7 @@ func searchHandler() func(w http.ResponseWriter, r *http.Request) {
 			}
 
 			if _, ok := packagesList[p.Name]; !ok {
-				packagesList[p.Name] = map[string]*util.Package{}
+				packagesList[p.Name] = map[string]util.Package{}
 			}
 			packagesList[p.Name][p.Version] = p
 		}
@@ -116,7 +114,7 @@ func searchHandler() func(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func getPackageOutput(packagesList map[string]map[string]*util.Package) ([]byte, error) {
+func getPackageOutput(packagesList map[string]map[string]util.Package) ([]byte, error) {
 
 	separator := "@"
 	// Packages need to be sorted to be always outputted in the same order

@@ -1,3 +1,7 @@
+// Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
+// or more contributor license agreements. Licensed under the Elastic License;
+// you may not use this file except in compliance with the Elastic License.
+
 package util
 
 import (
@@ -8,10 +12,9 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
+	yaml "gopkg.in/yaml.v2"
 
 	"github.com/blang/semver"
-
-	"gopkg.in/yaml.v2"
 )
 
 const defaultType = "integration"
@@ -137,7 +140,7 @@ func (p *Package) HasKibanaVersion(version *semver.Version) bool {
 	return true
 }
 
-func (p *Package) IsNewer(pp *Package) bool {
+func (p *Package) IsNewer(pp Package) bool {
 	return p.versionSemVer.GT(pp.versionSemVer)
 }
 
@@ -229,4 +232,8 @@ func (p *Package) Validate() error {
 	}
 
 	return nil
+}
+
+func (p *Package) GetPath() string {
+	return p.Name + "-" + p.Version
 }

@@ -90,13 +90,13 @@ func BuildIntegrationPackages() error {
 		packagesBasePath = publicDir + "/" + packageDir + "/"
 	}
 
-	packagePaths, err := util.GetPackagePaths(packagesBasePath)
+	packages, err := util.GetPackages(packagesBasePath)
 	if err != nil {
 		return err
 	}
 
-	for _, path := range packagePaths {
-		err = buildPackage(packagesBasePath, path)
+	for _, p := range packages {
+		err = buildPackage(packagesBasePath, p)
 		if err != nil {
 			return err
 		}
@@ -104,7 +104,7 @@ func BuildIntegrationPackages() error {
 	return nil
 }
 
-func buildPackage(packagesBasePath, path string) error {
+func buildPackage(packagesBasePath string, p util.Package) error {
 
 	// Change path to simplify tar command
 	currentPath, err := os.Getwd()
@@ -117,29 +117,23 @@ func buildPackage(packagesBasePath, path string) error {
 	}
 	defer os.Chdir(currentPath)
 
-	err = sh.RunV("tar", "cvzf", path+".tar.gz", filepath.Base(path)+"/")
+	err = sh.RunV("tar", "cvzf", p.GetPath()+".tar.gz", filepath.Base(p.GetPath())+"/")
 	if err != nil {
-		return err
-	}
-
-	// Build package endpoint
-	p, err := util.NewPackage(".", path)
-	if err != nil {
-		return fmt.Errorf("Error creating package: %s: %s", path, err)
+		return fmt.Errorf("Error creating package: %s: %s", p.GetPath(), err)
 	}
 
 	// Checks if the package is valid
 	err = p.Validate()
 	if err != nil {
-		return fmt.Errorf("Invalid package %s-%s: %s", p.Name, p.Version, err)
+		return fmt.Errorf("Invalid package: %s: %s", p.GetPath(), err)
 	}
 
-	err = p.LoadAssets(path)
+	err = p.LoadAssets(p.GetPath())
 	if err != nil {
 		return err
 	}
 
-	err = writeJsonFile(p, path+"/index.json")
+	err = writeJsonFile(p, p.GetPath()+"/index.json")
 	if err != nil {
 		return err
 	}

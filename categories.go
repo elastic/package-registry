@@ -1,3 +1,7 @@
+// Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
+// or more contributor license agreements. Licensed under the Elastic License;
+// you may not use this file except in compliance with the Elastic License.
+
 package main
 
 import (
@@ -8,8 +12,6 @@ import (
 
 	"github.com/elastic/integrations-registry/util"
 )
-
-
 
 type Category struct {
 	Id    string `yaml:"id" json:"id"`
@@ -22,19 +24,14 @@ func categoriesHandler() func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		cacheHeaders(w)
 
-		packagePaths, err := util.GetPackagePaths(packagesBasePath)
+		packages, err := util.GetPackages(packagesBasePath)
 		if err != nil {
 			notFound(w, err)
 			return
 		}
-
-		packageList := map[string]*util.Package{}
+		packageList := map[string]util.Package{}
 		// Get unique list of newest packages
-		for _, i := range packagePaths {
-			p, err := util.NewPackage(packagesBasePath, i)
-			if err != nil {
-				return
-			}
+		for _, p := range packages {
 
 			// Check if the version exists and if it should be added or not.
 			if pp, ok := packageList[p.Name]; ok {
