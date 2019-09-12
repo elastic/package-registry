@@ -1,6 +1,13 @@
+# Ingore all files which are not needed for building or running.
+
 .DS_Store
 integrations-registry
 
 .idea
+.git
+.ci
+
 build
-public/*
+public
+testdata
+docs

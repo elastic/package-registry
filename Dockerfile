@@ -16,5 +16,9 @@ RUN go mod vendor
 RUN go get -u github.com/magefile/mage
 RUN mage build
 
+# This directory contains the packages at the moment but is only used during the build process
+# If we keep it, it means all packages exist twice.
+RUN rm -rf dev
+
 # Make sure it's accessible from outside the container
 ENTRYPOINT ["go", "run", ".", "--address=0.0.0.0:8080"]
