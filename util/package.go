@@ -1,3 +1,7 @@
+// Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
+// or more contributor license agreements. Licensed under the Elastic License;
+// you may not use this file except in compliance with the Elastic License.
+
 package util
 
 import (
@@ -8,10 +12,9 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
+	yaml "gopkg.in/yaml.v2"
 
 	"github.com/blang/semver"
-
-	"gopkg.in/yaml.v2"
 )
 
 const defaultType = "integration"

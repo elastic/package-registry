@@ -119,7 +119,7 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 
 	err = sh.RunV("tar", "cvzf", p.GetPath()+".tar.gz", filepath.Base(p.GetPath())+"/")
 	if err != nil {
-		return fmt.Errorf("Error creating package: %s: %s", path, err)
+		return fmt.Errorf("Error creating package: %s: %s", p.GetPath(), err)
 	}
 
 	// Checks if the package is valid
