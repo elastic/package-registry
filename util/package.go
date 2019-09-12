@@ -16,6 +16,11 @@ import (
 
 const defaultType = "integration"
 
+var CategoryTitles = map[string]string{
+	"logs":    "Logs",
+	"metrics": "Metrics",
+}
+
 type Package struct {
 	Name          string  `yaml:"name" json:"name"`
 	Title         *string `yaml:"title,omitempty" json:"title,omitempty"`
@@ -214,6 +219,12 @@ func (p *Package) Validate() error {
 		_, err := semver.Parse(p.Requirement.Kibana.Min)
 		if err != nil {
 			return fmt.Errorf("invalid min Kibana version: %s, %s", p.Requirement.Kibana.Min, err)
+		}
+	}
+
+	for _, c := range p.Categories {
+		if _, ok := CategoryTitles[c]; !ok {
+			return fmt.Errorf("invalid category: %s", c)
 		}
 	}
 

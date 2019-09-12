@@ -62,6 +62,16 @@ var packageTests = []struct {
 					Max: "4.5.6",
 				},
 			},
+			Categories: []string{"metrics", "logs", "foo"},
+		},
+		false,
+		"invalid category ",
+	},
+	{
+		Package{
+			Title:       &title,
+			Description: "my description",
+			Categories:  []string{"metrics", "logs"},
 		},
 		true,
 		"complete",
