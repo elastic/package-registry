@@ -1,0 +1,12 @@
+name: metricsonly
+title: Metrics Only
+description: >
+  This is an integration with only the metrics category.
+version: 2.0.1
+categories: ["metrics"]
+release: ga
+license: basic
+
+icons:
+- src: "/img/icon.svg"
+  type: "image/svg+xml"
