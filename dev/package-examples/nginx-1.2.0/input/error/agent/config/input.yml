@@ -1,0 +1,9 @@
+type: log
+{{#each paths}}
+paths: "{{this}}"
+{{/each}}
+ingest_pipeline: {{pipeline}}
+exclude_files: [".gz$"]
+
+processors:
+  - add_locale: ~

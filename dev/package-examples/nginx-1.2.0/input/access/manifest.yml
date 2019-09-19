@@ -1,0 +1,50 @@
+# Needs to describe the type of this input
+type: logs
+
+# Should we call this file also manifest.yml?
+
+vars:
+  - name: paths
+    # Should we define this as array? How will the UI best make sense of it?
+    type: textarea
+    default:
+      - /var/log/nginx/access.log*
+    # I suggest to use ECS fields for this config options here: https://github.com/elastic/ecs/blob/master/schemas/os.yml
+    # This would need to be based on a predefined definition on what can be filtered on
+    os.darwin:
+      - /usr/local/var/log/nginx/access.log*
+    os.windows:
+      - c:/programdata/nginx/logs/*access.log*
+
+# We can keep this as is for now and call the API's accordingly to active it
+# but the job definition itself should be shipped with the package
+machine_learning:
+  - name: response_code
+    job: machine_learning/response_code.json
+    datafeed: machine_learning/datafeed_response_code.json
+    min_version: 5.5.0
+  - name: low_request_rate
+    job: machine_learning/low_request_rate.json
+    datafeed: machine_learning/datafeed_low_request_rate.json
+    min_version: 5.5.0
+  - name: remote_ip_url_count
+    job: machine_learning/remote_ip_url_count.json
+    datafeed: machine_learning/datafeed_remote_ip_url_count.json
+    min_version: 5.5.0
+  - name: remote_ip_request_rate
+    job: machine_learning/remote_ip_request_rate.json
+    datafeed: machine_learning/datafeed_remote_ip_request_rate.json
+    min_version: 5.5.0
+  - name: visitor_rate
+    job: machine_learning/visitor_rate.json
+    datafeed: machine_learning/datafeed_visitor_rate.json
+    min_version: 5.5.0
+
+requirements:
+  elasticsearch.processors:
+    # If a user does not have the user_agent processor, he should still be able to install the integration but not
+    # enable the access input
+    - name: user_agent
+      plugin: ingest-user-agent
+    - name: geoip
+      plugin: ingest-geoip
