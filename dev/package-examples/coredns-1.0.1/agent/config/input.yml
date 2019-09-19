@@ -1,0 +1,6 @@
+- type: logs
+  paths:
+    - /var/log/coredns.log
+  # This must be identical to the name of the pipeline file (without .yml)
+  pipeline: {{pipeline-entry}}
+
