@@ -259,6 +259,88 @@ but it can be triggered through URL parameters.
 The Kibana Space API can be found [here](https://www.elastic.co/guide/en/kibana/master/spaces-api.html). Kibana Spaces
 are not saved objects and have their own API.
 
+### Input
+
+* Asset Path: `input/{input-name}/{package-structure}`
+
+All inputs are defined inside the `input` directory. An example here is the `access` input of the `nginx` package.
+Inside each input, the same structure is repeated which is defined for the overall package. In general ingest pipelines
+and fields definitions are only expected inside input. 
+
+**manifest.yml**
+
+Each input must contain a manifest.yml. It contains all information about the input and how to configure it.
+
+```
+# Needs to describe the type of this input. Currently either metric or log
+type: metric
+
+# Each input can be in its own release status
+release: beta
+
+# Defines variables which are used in the config files and can be configured by the user / replaced by the package manager.
+vars:
+  - name: hosts
+    description: Nginx hosts
+    default:
+      ["http://127.0.0.1"]
+    required: true
+  - name: period
+    description: "Collection period. Valid values: 10s, 5m, 2h"
+    default: "10s"
+  - name: username
+    type: text
+  - name: password
+    # This is the html input type?
+    type: password
+
+
+requirements:
+  # Defines on which platform is input is available
+  platform: ["linux", "freebsd"]
+  elasticsearch.processors:
+    # If a user does not have the user_agent processor, he should still be able to install the integration but not
+    # enable the access input
+    - name: user_agent
+      plugin: ingest-user-agent
+    - name: geoip
+      plugin: ingest-geoip
+
+```
+
+**fields**
+
+The fields directory contains all fields.yml which are need to build the full template. All fields related to the input
+must be in here in one or multiple files.
+
+An open question is on how the fields for all the processors and autodiscovery are loaded.
+
+**docs**
+
+The docs for each input are combined with the overall docs. For the inputs it is encouraged to have `data.json` as an 
+example event available.
+
+**agent/input**
+
+Agent input configuration for the input. It's by design not an array but a single entry. The package manager will build
+a list out of it for the user.
+
+**filebeat/input**
+
+This contains the raw input configuration for the input.
+
+**filebeat/module**
+
+This contains the module configuration for the input. It is only 1 fileset and is not stored as an array.
+
+**light_module**
+
+This directory is designed to store light modules from Metricbeat. It contains the definition of the light module.
+
+**module**
+
+This contains the module configuration for this input. In the case of Metricbeat this means a module configuration with a
+single metricset. By design it's not an array that is specified.
 
 ## Beats
 
