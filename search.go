@@ -147,5 +147,10 @@ func getPackageOutput(packagesList map[string]map[string]util.Package) ([]byte, 
 		output = append(output, data)
 	}
 
+	// Instead of return `null` in case of an empty array, return []
+	if len(output) == 0 {
+		return []byte("[]"), nil
+	}
+
 	return json.MarshalIndent(output, "", "  ")
 }
