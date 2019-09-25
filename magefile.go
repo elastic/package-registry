@@ -16,8 +16,6 @@ import (
 
 	"github.com/magefile/mage/mg"
 	"github.com/magefile/mage/sh"
-
-	"github.com/elastic/integrations-registry/util"
 )
 
 var (
@@ -33,111 +31,24 @@ var (
 
 	publicDir    = "./public"
 	buildDir     = "./build"
-	packageDir   = "package"
 	packagePaths = []string{"./dev/package-generated/", "./dev/package-examples/"}
 )
 
-func Check() error {
-	Format()
-
-	sh.RunV("git", "update-index", "--refresh")
-	sh.RunV("git", "diff-index", "--exit-code", "HEAD", "--")
-
-	return nil
-}
-func Test() error {
-	sh.RunV("go", "get", "-v", "-u", "github.com/jstemmer/go-junit-report")
-	return sh.RunV("go", "test", "./...", "-v", "2>&1", "|", "go-junit-report", ">", "junit-report.xml")
-}
-
 func Build() error {
+
 	for _, p := range packagePaths {
-		err := CopyPackages(p)
+		err := sh.Run("go", "run", "./dev/generator/", "-sourceDir="+p, "-publicDir="+publicDir)
 		if err != nil {
 			return err
 		}
 	}
 
-	err := BuildIntegrationPackages()
-	if err != nil {
-		return err
-	}
-
-	err = BuildRootFile()
+	err := BuildRootFile()
 	if err != nil {
 		return err
 	}
 
 	return sh.Run("go", "build", ".")
-}
-
-// Format adds license headers, formats .go files with goimports, and formats
-// .py files with autopep8.
-func Format() {
-	// Don't run AddLicenseHeaders and GoImports concurrently because they
-	// both can modify the same files.
-	mg.Deps(AddLicenseHeaders)
-	mg.Deps(GoImports)
-}
-
-// BuildIntegrationPackages rebuilds the zip files inside packages
-// PACKAGES_PATH env variable can be used to also rebuild testdata packages.
-func BuildIntegrationPackages() error {
-
-	// Check if PACKAGES_PATH is set.
-	packagesBasePath := os.Getenv("PACKAGES_PATH")
-	if packagesBasePath == "" {
-		packagesBasePath = publicDir + "/" + packageDir + "/"
-	}
-
-	packages, err := util.GetPackages(packagesBasePath)
-	if err != nil {
-		return err
-	}
-
-	for _, p := range packages {
-		err = buildPackage(packagesBasePath, p)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func buildPackage(packagesBasePath string, p util.Package) error {
-
-	// Change path to simplify tar command
-	currentPath, err := os.Getwd()
-	if err != nil {
-		return err
-	}
-	err = os.Chdir(packagesBasePath)
-	if err != nil {
-		return err
-	}
-	defer os.Chdir(currentPath)
-
-	err = sh.RunV("tar", "cvzf", p.GetPath()+".tar.gz", filepath.Base(p.GetPath())+"/")
-	if err != nil {
-		return fmt.Errorf("Error creating package: %s: %s", p.GetPath(), err)
-	}
-
-	// Checks if the package is valid
-	err = p.Validate()
-	if err != nil {
-		return fmt.Errorf("Invalid package: %s: %s", p.GetPath(), err)
-	}
-
-	err = p.LoadAssets(p.GetPath())
-	if err != nil {
-		return err
-	}
-
-	err = writeJsonFile(p, p.GetPath()+"/index.json")
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // Creates the `index.json` file
@@ -160,6 +71,28 @@ func writeJsonFile(v interface{}, path string) error {
 	return ioutil.WriteFile(path, data, 0644)
 }
 
+func Check() error {
+	Format()
+
+	sh.RunV("git", "update-index", "--refresh")
+	sh.RunV("git", "diff-index", "--exit-code", "HEAD", "--")
+
+	return nil
+}
+func Test() error {
+	sh.RunV("go", "get", "-v", "-u", "github.com/jstemmer/go-junit-report")
+	return sh.RunV("go", "test", "./...", "-v", "2>&1", "|", "go-junit-report", ">", "junit-report.xml")
+}
+
+// Format adds license headers, formats .go files with goimports, and formats
+// .py files with autopep8.
+func Format() {
+	// Don't run AddLicenseHeaders and GoImports concurrently because they
+	// both can modify the same files.
+	mg.Deps(AddLicenseHeaders)
+	mg.Deps(GoImports)
+}
+
 // GoImports executes goimports against all .go files in and below the CWD. It
 // ignores vendor/ directories.
 func GoImports() error {
@@ -180,34 +113,6 @@ func GoImports() error {
 	)
 
 	return sh.RunV("goimports", args...)
-}
-
-func CopyPackages(path string) error {
-	fmt.Println(">> Copy packages: " + path)
-	currentPath, err := os.Getwd()
-	if err != nil {
-		return err
-	}
-	err = os.Chdir(path)
-	if err != nil {
-		return err
-	}
-	defer os.Chdir(currentPath)
-
-	dirs, err := ioutil.ReadDir("./")
-	if err != nil {
-		return err
-	}
-
-	os.MkdirAll("../../public/package/", 0755)
-	for _, dir := range dirs {
-		err := sh.RunV("cp", "-a", dir.Name(), "../../public/package/")
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
 }
 
 // AddLicenseHeaders adds license headers to .go files. It applies the
