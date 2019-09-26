@@ -24,3 +24,5 @@ RUN rm -rf dev
 ENTRYPOINT ["go", "run", "."]
 # Make sure it's accessible from outside the container
 CMD ["--address=0.0.0.0:8080"]
+
+HEALTHCHECK --interval=1s --retries=30 CMD curl --silent --fail localhost:8080/ || exit 1
