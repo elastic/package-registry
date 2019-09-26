@@ -16,9 +16,9 @@ import (
 	"github.com/elastic/integrations-registry/util"
 )
 
-func searchHandler() func(w http.ResponseWriter, r *http.Request) {
+func searchHandler(cacheTime string) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		cacheHeaders(w)
+		cacheHeaders(w, cacheTime)
 
 		query := r.URL.Query()
 

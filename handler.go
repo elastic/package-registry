@@ -20,9 +20,9 @@ func notFound(w http.ResponseWriter, err error) {
 	http.Error(w, errString, http.StatusNotFound)
 }
 
-func catchAll(publicPath string) func(w http.ResponseWriter, r *http.Request) {
+func catchAll(publicPath, cacheTime string) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		cacheHeaders(w)
+		cacheHeaders(w, cacheTime)
 
 		path := r.RequestURI
 
@@ -88,7 +88,7 @@ func sendHeader(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func cacheHeaders(w http.ResponseWriter) {
+func cacheHeaders(w http.ResponseWriter, cacheTime string) {
 	w.Header().Add("Cache-Control", "max-age="+cacheTime)
 	w.Header().Add("Cache-Control", "public")
 }

@@ -25,7 +25,11 @@ var (
 	packagesBasePath string
 	address          string
 	configPath       = "config.yml"
-	cacheTime        = strconv.Itoa(60 * 60) // 1 hour
+
+	// Cache times for the different endpoints
+	searchCacheTime     = strconv.Itoa(60 * 60)      // 1 hour
+	categoriesCacheTime = strconv.Itoa(60 * 60)      // 1 hour
+	catchAllCacheTime   = strconv.Itoa(24 * 60 * 60) // 24 hour
 )
 
 func init() {
@@ -92,9 +96,9 @@ func getConfig() (*Config, error) {
 func getRouter() *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)
 
-	router.HandleFunc("/search", searchHandler())
-	router.HandleFunc("/categories", categoriesHandler())
-	router.PathPrefix("/").HandlerFunc(catchAll("./public"))
+	router.HandleFunc("/search", searchHandler(searchCacheTime))
+	router.HandleFunc("/categories", categoriesHandler(categoriesCacheTime))
+	router.PathPrefix("/").HandlerFunc(catchAll("./public", catchAllCacheTime))
 
 	return router
 }
