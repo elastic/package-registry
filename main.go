@@ -21,6 +21,10 @@ import (
 	"github.com/gorilla/mux"
 )
 
+const (
+	packageDir = "package"
+)
+
 var (
 	packagesBasePath string
 	address          string
@@ -37,7 +41,7 @@ func init() {
 }
 
 type Config struct {
-	PackagesPath string `config:"packages.path"`
+	PublicDir string `config:"public_dir"`
 }
 
 func main() {
@@ -50,7 +54,8 @@ func main() {
 		log.Print(err)
 		os.Exit(1)
 	}
-	packagesBasePath = config.PackagesPath
+
+	packagesBasePath := config.PublicDir + "/" + packageDir
 
 	// Prefill the package cache
 	packages, err := util.GetPackages(packagesBasePath)
@@ -60,7 +65,7 @@ func main() {
 	}
 	log.Printf("%v package manifests loaded into memory.\n", len(packages))
 
-	server := &http.Server{Addr: address, Handler: getRouter()}
+	server := &http.Server{Addr: address, Handler: getRouter(*config, packagesBasePath)}
 
 	go func() {
 		err := server.ListenAndServe()
@@ -90,15 +95,16 @@ func getConfig() (*Config, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return config, nil
 }
 
-func getRouter() *mux.Router {
+func getRouter(config Config, packagesBasePath string) *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)
 
-	router.HandleFunc("/search", searchHandler(searchCacheTime))
-	router.HandleFunc("/categories", categoriesHandler(categoriesCacheTime))
-	router.PathPrefix("/").HandlerFunc(catchAll("./public", catchAllCacheTime))
+	router.HandleFunc("/search", searchHandler(packagesBasePath, searchCacheTime))
+	router.HandleFunc("/categories", categoriesHandler(packagesBasePath, categoriesCacheTime))
+	router.PathPrefix("/").HandlerFunc(catchAll(config.PublicDir, catchAllCacheTime))
 
 	return router
 }

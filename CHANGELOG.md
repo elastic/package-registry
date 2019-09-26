@@ -29,6 +29,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Known Issue
 
+### Breaking change
+
+* Remove `packages.path` config and replace it with `public_dir` config. [#](https://github.com/elastic/integrations-registry/pull/)
+
 ## [0.1.0]
 
 First tagged release. No changelog existed so far.

@@ -1,1 +1,1 @@
-packages.path: "./public/package"
+public_dir: "./public"

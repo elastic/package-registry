@@ -16,7 +16,7 @@ import (
 	"github.com/elastic/integrations-registry/util"
 )
 
-func searchHandler(cacheTime string) func(w http.ResponseWriter, r *http.Request) {
+func searchHandler(packagesBasePath, cacheTime string) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		cacheHeaders(w, cacheTime)
 
