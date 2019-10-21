@@ -136,6 +136,10 @@ docker build --rm -t integrations_registry:latest .
 docker run -i -t -p 8080:8080 $(docker images -q integrations_registry:latest)
 ```
 
+### Healthcheck
+
+For Docker / Kubernetes the `/` endpoint can be queried. As soon as `/` returns a 200, the service is ready.
+
 ## Generated Example packages
 
 For easier testing of the integrations manager, the registry allows to generate some example packages. The packages
