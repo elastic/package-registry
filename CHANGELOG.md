@@ -24,10 +24,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Remove not needed files in Docker image. [#106](https://github.com/elastic/integrations-registry/pull/106)
 * Add healthcheck to docker file. [#115](https://github.com/elastic/integrations-registry/pull/115)
 
-### Changed
-
-* Change empty /search API output from `null` to `[]`.
-
 ### Deprecated
 
 ### Known Issue
