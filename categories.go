@@ -20,9 +20,9 @@ type Category struct {
 }
 
 // categoriesHandler is a dynamic handler as it will also allow filtering in the future.
-func categoriesHandler() func(w http.ResponseWriter, r *http.Request) {
+func categoriesHandler(cacheTime string) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		cacheHeaders(w)
+		cacheHeaders(w, cacheTime)
 
 		packages, err := util.GetPackages(packagesBasePath)
 		if err != nil {

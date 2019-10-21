@@ -17,7 +17,8 @@ import (
 )
 
 var (
-	generateFlag = flag.Bool("generate", false, "Write golden files")
+	generateFlag  = flag.Bool("generate", false, "Write golden files")
+	testCacheTime = "1"
 )
 
 func TestEndpoints(t *testing.T) {
@@ -30,15 +31,15 @@ func TestEndpoints(t *testing.T) {
 		file     string
 		handler  func(w http.ResponseWriter, r *http.Request)
 	}{
-		{"/", "", "info.json", catchAll("./testdata")},
-		{"/search", "/search", "search.json", searchHandler()},
-		{"/categories", "/categories", "categories.json", categoriesHandler()},
-		{"/search?kibana=6.5.2", "/search", "search-kibana652.json", searchHandler()},
-		{"/search?kibana=7.2.1", "/search", "search-kibana721.json", searchHandler()},
-		{"/search?category=metrics", "/search", "search-category-metrics.json", searchHandler()},
-		{"/search?category=logs", "/search", "search-category-logs.json", searchHandler()},
-		{"/search?package=example", "/search", "search-package-example.json", searchHandler()},
-		{"/package/example-1.0.0", "", "package.json", catchAll("./testdata")},
+		{"/", "", "info.json", catchAll("./testdata", testCacheTime)},
+		{"/search", "/search", "search.json", searchHandler(testCacheTime)},
+		{"/categories", "/categories", "categories.json", categoriesHandler(testCacheTime)},
+		{"/search?kibana=6.5.2", "/search", "search-kibana652.json", searchHandler(testCacheTime)},
+		{"/search?kibana=7.2.1", "/search", "search-kibana721.json", searchHandler(testCacheTime)},
+		{"/search?category=metrics", "/search", "search-category-metrics.json", searchHandler(testCacheTime)},
+		{"/search?category=logs", "/search", "search-category-logs.json", searchHandler(testCacheTime)},
+		{"/search?package=example", "/search", "search-package-example.json", searchHandler(testCacheTime)},
+		{"/package/example-1.0.0", "", "package.json", catchAll("./testdata", testCacheTime)},
 	}
 
 	for _, test := range tests {
@@ -79,5 +80,5 @@ func runEndpoint(t *testing.T, endpoint, path, file string, handler func(w http.
 	}
 
 	assert.Equal(t, string(data), recorder.Body.String())
-	assert.Equal(t, recorder.Header()["Cache-Control"], []string{"max-age=" + cacheTime, "public"})
+	assert.Equal(t, recorder.Header()["Cache-Control"], []string{"max-age=" + testCacheTime, "public"})
 }
