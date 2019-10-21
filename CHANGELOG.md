@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Add .dockerignore file for slimmer image. [#104](https://github.com/elastic/integrations-registry/pull/104)
 * Move package generation to its own package. [#112](https://github.com/elastic/integrations-registry/pull/112)
 * Remove not needed files in Docker image. [#106](https://github.com/elastic/integrations-registry/pull/106)
+* Add healthcheck to docker file. [#115](https://github.com/elastic/integrations-registry/pull/115)
 
 ### Deprecated
 
