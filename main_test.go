@@ -23,7 +23,7 @@ var (
 
 func TestEndpoints(t *testing.T) {
 
-	packagesBasePath = "./testdata/package"
+	packagesBasePath := "./testdata/package"
 
 	tests := []struct {
 		endpoint string
@@ -32,13 +32,13 @@ func TestEndpoints(t *testing.T) {
 		handler  func(w http.ResponseWriter, r *http.Request)
 	}{
 		{"/", "", "info.json", catchAll("./testdata", testCacheTime)},
-		{"/search", "/search", "search.json", searchHandler(testCacheTime)},
-		{"/categories", "/categories", "categories.json", categoriesHandler(testCacheTime)},
-		{"/search?kibana=6.5.2", "/search", "search-kibana652.json", searchHandler(testCacheTime)},
-		{"/search?kibana=7.2.1", "/search", "search-kibana721.json", searchHandler(testCacheTime)},
-		{"/search?category=metrics", "/search", "search-category-metrics.json", searchHandler(testCacheTime)},
-		{"/search?category=logs", "/search", "search-category-logs.json", searchHandler(testCacheTime)},
-		{"/search?package=example", "/search", "search-package-example.json", searchHandler(testCacheTime)},
+		{"/search", "/search", "search.json", searchHandler(packagesBasePath, testCacheTime)},
+		{"/categories", "/categories", "categories.json", categoriesHandler(packagesBasePath, testCacheTime)},
+		{"/search?kibana=6.5.2", "/search", "search-kibana652.json", searchHandler(packagesBasePath, testCacheTime)},
+		{"/search?kibana=7.2.1", "/search", "search-kibana721.json", searchHandler(packagesBasePath, testCacheTime)},
+		{"/search?category=metrics", "/search", "search-category-metrics.json", searchHandler(packagesBasePath, testCacheTime)},
+		{"/search?category=logs", "/search", "search-category-logs.json", searchHandler(packagesBasePath, testCacheTime)},
+		{"/search?package=example", "/search", "search-package-example.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/package/example-1.0.0", "", "package.json", catchAll("./testdata", testCacheTime)},
 	}
 
