@@ -11,3 +11,7 @@ requirement:
     version.max: 7.6.0
   elasticsearch:
     version.min: 7.0.1
+
+icons:
+  - src: "/img/icon.svg"
+    type: "image/svg+xml"
