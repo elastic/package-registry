@@ -3,6 +3,7 @@
   "title": "Foo",
   "version": "1.0.0",
   "description": "This is the foo integration",
+  "type": "solution",
   "categories": [
     "metrics"
   ],
@@ -13,6 +14,7 @@
     }
   },
   "assets": [
+    "/package/foo-1.0.0/index.json",
     "/package/foo-1.0.0/manifest.yml"
   ]
 }

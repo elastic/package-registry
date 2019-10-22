@@ -1,6 +1,7 @@
 name: example
+title: Example
 description: This is the example integration.
-version: 0.0.5
+version: 0.0.2
 categories: ["logs"]
 
 requirement:
