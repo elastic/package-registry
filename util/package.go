@@ -36,6 +36,7 @@ type Package struct {
 	Screenshots   []Image     `yaml:"screenshots,omitempty" json:"screenshots,omitempty"`
 	Icons         []Image     `yaml:"icons,omitempty" json:"icons,omitempty"`
 	Assets        []string    `yaml:"assets,omitempty" json:"assets,omitempty"`
+	Internal      bool        `yaml:"internal,omitempty" json:"internal,omitempty"`
 }
 
 type Requirement struct {
