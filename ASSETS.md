@@ -280,11 +280,36 @@ release: beta
 
 # Defines variables which are used in the config files and can be configured by the user / replaced by the package manager.
 vars:
-  - name: hosts
-    description: Nginx hosts
+  -
+    # Name of the variable that should be replaced
+    name: hosts
+
+    # Default value of the variable which is used in the UI and in the config if not specified
     default:
       ["http://127.0.0.1"]
     required: true
+
+    # OS specific configurations!
+    os.darwin:
+      - /usr/local/var/log/nginx/error.log*
+    os.windows:
+      - c:/programdata/nginx/logs/error.log*
+
+
+    # Below are UI Configs. Should we prefix these with ui.*?
+
+    # Title used for the UI
+    title: "Hosts lists"
+
+    # Description of the varaiable which could be used in the UI
+    description: Nginx hosts
+
+    # A special type can be specified here for the UI Input document. By default it is just a 
+    # text field.
+    type: password
+
+    required: true
+
   - name: period
     description: "Collection period. Valid values: 10s, 5m, 2h"
     default: "10s"
@@ -294,6 +319,9 @@ vars:
     # This is the html input type?
     type: password
 
+
+
+```
 
 requirements:
   # Defines on which platform is input is available
