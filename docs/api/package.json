@@ -3,6 +3,7 @@
   "title": "Example Integration",
   "version": "1.0.0",
   "description": "This is the example integration",
+  "type": "integration",
   "categories": [
     "logs",
     "metrics"
