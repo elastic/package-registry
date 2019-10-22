@@ -28,6 +28,7 @@ type Package struct {
 	Name          string  `yaml:"name" json:"name"`
 	Title         *string `yaml:"title,omitempty" json:"title,omitempty"`
 	Version       string  `yaml:"version" json:"version"`
+	Readme        *string `yaml:"readme,omitempty" json:"readme,omitempty"`
 	versionSemVer semver.Version
 	Description   string      `yaml:"description" json:"description"`
 	Type          string      `yaml:"type" json:"type"`
@@ -108,6 +109,21 @@ func NewPackage(basePath, packageName string) (*Package, error) {
 	p.versionSemVer, err = semver.Parse(p.Version)
 	if err != nil {
 		return nil, err
+	}
+
+	readmePath := basePath + "/" + packageName + "/docs/README.md"
+	// Check if readme
+	readme, err := os.Stat(readmePath)
+	if err != nil && !os.IsNotExist(err) {
+		return nil, err
+	}
+
+	if readme != nil {
+		if readme.IsDir() {
+			return nil, fmt.Errorf("README.md is a directory")
+		}
+		readmePathShort := "/package/" + packageName + "/docs/README.md"
+		p.Readme = &readmePathShort
 	}
 
 	return p, nil

@@ -2,6 +2,7 @@
   "name": "example",
   "title": "Example Integration",
   "version": "1.0.0",
+  "readme": "/package/example-1.0.0/docs/README.md",
   "description": "This is the example integration",
   "type": "integration",
   "categories": [
@@ -30,7 +31,7 @@
   "assets": [
     "/package/example-1.0.0/index.json",
     "/package/example-1.0.0/manifest.yml",
-    "/package/example-1.0.0/docs/docs.asciidoc",
+    "/package/example-1.0.0/docs/README.md",
     "/package/example-1.0.0/img/icon.png",
     "/package/example-1.0.0/img/kibana-envoyproxy.jpg",
     "/package/example-1.0.0/elasticsearch/ingest-pipeline/pipeline-entry.json",

@@ -59,7 +59,7 @@ func Build(sourceDir, publicDir string) error {
 	return nil
 }
 
-// CopyPackages copies the files of a package to the public directory
+// CopyPackage copies the files of a package to the public directory
 func CopyPackage(src, dst string) error {
 	fmt.Println(">> Copy package: " + src)
 	os.MkdirAll(dst, 0755)
