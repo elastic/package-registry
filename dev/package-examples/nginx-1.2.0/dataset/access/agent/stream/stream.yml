@@ -5,9 +5,6 @@ type: log
 paths: "{{this}}"
 {{/each}}
 
-# For the field `ingest_pipeline` the manager knows automatically to check for this file name
-# defined in Elasticsearch ingest-pipeline. The file referenced can either be in yml or json
-ingest_pipeline: {{default}}
 exclude_files: [".gz$"]
 
 processors:

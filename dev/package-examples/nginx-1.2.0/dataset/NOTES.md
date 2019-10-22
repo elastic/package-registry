@@ -1,18 +1,3 @@
-* Should the structure inside the inputs be identical to the package structure?
-  * Advantage is that if more assets related to an input follow in the future, it just works
-  * Only one logical tree needed for implementation.
-  * Should be fine, created by a tool
-* Name of the inputs: Full name like `apache.access` or just `access`
-  * not going to reuse, short name good
-* What should we call the input configuration file?
-  * Call both manifest
-* Too many directories?
-  * No
-* Directory for agent input config, call it input or config?
-  * Agent 
-
-* An input can be in beta stage, we should have a visual for this.
-
 
 * There are some settings which are available for all http inputs. Currently we link to these configs like ssl, how will we do that in the future?
 * What about shared docs?

@@ -1,3 +1,4 @@
+title: Nginx Error Logs
 vars:
   - name: paths
     default:
