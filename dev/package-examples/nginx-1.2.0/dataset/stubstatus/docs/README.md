@@ -7,3 +7,5 @@ An example event looks as following:
 ```
 {{ > data.json }}
 ```
+
+The stubstatus input support the [standard http config](https://www.elastic.co/guide/en/beats/metricbeat/current/configuration-metricbeat.html#module-http-config-options) options.

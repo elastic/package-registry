@@ -1,12 +1,12 @@
-== Auditd Module
+# Auditd Package
 
-The `auditd` module receives audit events from the Linux Audit Framework that
+The `auditd` package receives audit events from the Linux Audit Framework that
 is a part of the Linux kernel.
 
 This module is available only for Linux.
 
-[float]
-=== How it works
+
+## How it works
 
 This module establishes a subscription to the kernel to receive the events
 as they occur. So unlike most other modules, the `period` configuration
@@ -23,8 +23,7 @@ Messages for one event can be interleaved with messages from another event. This
 module will buffer the messages in order to combine related messages into a
 single event even if they arrive interleaved or out of order.
 
-[float]
-=== Useful commands
+## Useful commands
 
 When running {beatname_uc} with the `auditd` module enabled, you might find
 that other monitoring tools interfere with {beatname_uc}.
@@ -34,51 +33,45 @@ registered to receive data from the Linux Audit Framework. You can use these
 commands to see if the `auditd` service is running and stop it:
 
 * See if `auditd` is running:
-+
-[source,shell]
------
+
+```
 service auditd status
------
+```
 
 * Stop the `auditd` service:
-+
-[source,shell]
------
+
+```
 service auditd stop
------
+```
 
 * Disable `auditd` from starting on boot:
-+
-[source,shell]
------
+
+```
 chkconfig auditd off
------
+```
 
 To save CPU usage and disk space, you can use this command to stop `journald`
 from listening to audit messages:
 
-[source,shell]
------
+```
 systemctl mask systemd-journald-audit.socket
------
+```
 
-[float]
-=== Inspect the kernel audit system status
 
-{beatname_uc} provides useful commands to query the state of the audit system
+## Inspect the kernel audit system status
+
+The agent provides useful commands to query the state of the audit system
 in the Linux kernel.
 
 * See the list of installed audit rules:
-+
-[source,shell]
------
+
+```
 auditbeat show auditd-rules
------
-+
+```
+
 Prints the list of loaded rules, similar to `auditctl -l`:
-+
-[source,shell]
------
+
+```shell
 -a never,exit -S all -F pid=26253
 -a always,exit -F arch=b32 -S all -F key=32bit-abi
 -a always,exit -F arch=b64 -S execve,execveat -F key=exec
@@ -88,19 +81,17 @@ Prints the list of loaded rules, similar to `auditctl -l`:
 -w /etc/gshadow -p wa -k identity
 -a always,exit -F arch=b64 -S open,truncate,ftruncate,creat,openat,open_by_handle_at -F exit=-EACCES -F key=access
 -a always,exit -F arch=b64 -S open,truncate,ftruncate,creat,openat,open_by_handle_at -F exit=-EPERM -F key=access
------
+```
 
 * See the status of the audit system:
-+
-[source,shell]
------
+
+```
 auditbeat show auditd-status
------
-+
+```
+
 Prints the status of the kernel audit system, similar to `auditctl -s`:
-+
-[source,shell]
------
+
+```
 enabled 1
 failure 0
 pid 0
@@ -110,16 +101,14 @@ lost 14407
 backlog 0
 backlog_wait_time 0
 features 0xf
------
+```
 
-[float]
-=== Configuration options
+## Configuration options
 
 This module has some configuration options for tuning its behavior. The
 following example shows all configuration options with their default values.
 
-[source,yaml]
-----
+```
 - module: auditd
   resolve_ids: true
   failure_mode: silent
@@ -128,7 +117,7 @@ following example shows all configuration options with their default values.
   include_raw_message: false
   include_warnings: false
   backpressure_strategy: auto
-----
+```
 
 *`socket_type`*:: This optional setting controls the type of
 socket that {beatname_uc} uses to receive events from the kernel. The two
@@ -213,8 +202,7 @@ time.
 - `none`: No backpressure mitigation measures are enabled.
 --
 
-[float]
-=== Audit rules
+## Audit rules
 
 The audit rules are where you configure the activities that are audited. These
 rules are configured as either syscalls or files that should be monitored. For
@@ -235,8 +223,7 @@ Defining any audit rules in the config causes {beatname_uc} to purge all
 existing audit rules prior to adding the rules specified in the config.
 Therefore it is unnecessary and unsupported to include a `-D` (delete all) rule.
 
-["source","sh",subs="attributes"]
-----
+```
 {beatname_lc}.modules:
 - module: auditd
   audit_rules: |
@@ -251,4 +238,4 @@ Therefore it is unnecessary and unsupported to include a `-D` (delete all) rule.
     -a always,exit -F arch=b32 -S open,creat,truncate,ftruncate,openat,open_by_handle_at -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -F key=access
     -a always,exit -F arch=b64 -S open,truncate,ftruncate,creat,openat,open_by_handle_at -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -F key=access
     -a always,exit -F arch=b64 -S open,truncate,ftruncate,creat,openat,open_by_handle_at -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -F key=access
-----
+```
