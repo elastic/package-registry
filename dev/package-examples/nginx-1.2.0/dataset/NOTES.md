@@ -5,17 +5,12 @@
   * Link to the website?
   * Update on config option = update of package?
   * How to community packages use it?
-
-
-* Should we call the file also `manifest.yml` or `inputs.yml`? 
-    * `manifest.yml`.
     
 * The fields.yml must be global
   * How do we handle autodiscover and processor fields
   * Could we skip generating keyword fields?
   
   
-* Only 1 input definition possible.
 * Do we need reuse to get started?
 * Where do global configs like prometheus metrics go?
   * How do we know an index is a prometheus metric index? Relevant?
