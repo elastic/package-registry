@@ -259,13 +259,13 @@ but it can be triggered through URL parameters.
 The Kibana Space API can be found [here](https://www.elastic.co/guide/en/kibana/master/spaces-api.html). Kibana Spaces
 are not saved objects and have their own API.
 
-### Input
+### Dataset
 
-* Asset Path: `input/{input-name}/{package-structure}`
+* Asset Path: `dataset/{dataset-name}/{package-structure}`
 
-All inputs are defined inside the `input` directory. An example here is the `access` input of the `nginx` package.
-Inside each input, the same structure is repeated which is defined for the overall package. In general ingest pipelines
-and fields definitions are only expected inside input. 
+All dataset are defined inside the `dataset` directory. An example here is the `access` dataset of the `nginx` package.
+Inside each dataset, the same structure is repeated which is defined for the overall package. In general ingest pipelines
+and fields definitions are only expected inside dataset. An dataset is basically a template for an input.
 
 **manifest.yml**
 
