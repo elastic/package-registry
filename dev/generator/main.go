@@ -1,3 +1,7 @@
+// Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
+// or more contributor license agreements. Licensed under the Elastic License;
+// you may not use this file except in compliance with the Elastic License.
+
 package main
 
 import (
@@ -14,6 +18,11 @@ import (
 	"github.com/elastic/integrations-registry/util"
 )
 
+var (
+	tarGz bool
+	copy  bool
+)
+
 const (
 	packageDirName = "package"
 )
@@ -26,6 +35,8 @@ func main() {
 
 	flag.StringVar(&sourceDir, "sourceDir", "", "Path to the source packages")
 	flag.StringVar(&publicDir, "publicDir", "", "Path to the public directory ")
+	flag.BoolVar(&copy, "copy", true, "If packages should be copied over")
+	flag.BoolVar(&tarGz, "tarGz", true, "If packages should be tar gz")
 	flag.Parse()
 
 	if sourceDir == "" || publicDir == "" {
@@ -75,9 +86,11 @@ func BuildPackages(sourceDir, packagesPath string) error {
 			continue
 		}
 
-		err := CopyPackage(sourceDir+"/"+packageName, packagesPath)
-		if err != nil {
-			return err
+		if copy {
+			err := CopyPackage(sourceDir+"/"+packageName, packagesPath)
+			if err != nil {
+				return err
+			}
 		}
 
 		p, err := util.NewPackage(packagesPath, packageName)
@@ -106,9 +119,11 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 	}
 	defer os.Chdir(currentPath)
 
-	err = sh.RunV("tar", "cvzf", p.GetPath()+".tar.gz", filepath.Base(p.GetPath())+"/")
-	if err != nil {
-		return fmt.Errorf("Error creating package: %s: %s", p.GetPath(), err)
+	if tarGz {
+		err = sh.RunV("tar", "cvzf", p.GetPath()+".tar.gz", filepath.Base(p.GetPath())+"/")
+		if err != nil {
+			return fmt.Errorf("Error creating package: %s: %s", p.GetPath(), err)
+		}
 	}
 
 	// Checks if the package is valid

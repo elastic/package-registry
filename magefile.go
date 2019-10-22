@@ -74,6 +74,9 @@ func writeJsonFile(v interface{}, path string) error {
 func Check() error {
 	Format()
 
+	// Regenerates test data to make sure it stays the same
+	sh.RunV("go", "run", "./dev/generator/", "-sourceDir=testdata/package", "-publicDir=testdata", "-copy=false", "-tarGz=false")
+
 	sh.RunV("git", "update-index", "--refresh")
 	sh.RunV("git", "diff-index", "--exit-code", "HEAD", "--")
 
