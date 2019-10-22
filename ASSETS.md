@@ -259,6 +259,116 @@ but it can be triggered through URL parameters.
 The Kibana Space API can be found [here](https://www.elastic.co/guide/en/kibana/master/spaces-api.html). Kibana Spaces
 are not saved objects and have their own API.
 
+### Dataset
+
+* Asset Path: `dataset/{dataset-name}/{package-structure}`
+
+All dataset are defined inside the `dataset` directory. An example here is the `access` dataset of the `nginx` package.
+Inside each dataset, the same structure is repeated which is defined for the overall package. In general ingest pipelines
+and fields definitions are only expected inside dataset. An dataset is basically a template for an input.
+
+**manifest.yml**
+
+Each dataset must contain a manifest.yml. It contains all information about the dataset and how to configure it.
+
+```
+# Needs to describe the type of this input. Currently either metric or log
+type: metric
+
+# Each input can be in its own release status
+release: beta
+
+# Defines variables which are used in the config files and can be configured by the user / replaced by the package manager.
+vars:
+  -
+    # Name of the variable that should be replaced
+    name: hosts
+
+    # Default value of the variable which is used in the UI and in the config if not specified
+    default:
+      ["http://127.0.0.1"]
+    required: true
+
+    # OS specific configurations!
+    os.darwin:
+      - /usr/local/var/log/nginx/error.log*
+    os.windows:
+      - c:/programdata/nginx/logs/error.log*
+
+
+    # Below are UI Configs. Should we prefix these with ui.*?
+
+    # Title used for the UI
+    title: "Hosts lists"
+
+    # Description of the varaiable which could be used in the UI
+    description: Nginx hosts
+
+    # A special type can be specified here for the UI Input document. By default it is just a 
+    # text field.
+    type: password
+
+    required: true
+
+  - name: period
+    description: "Collection period. Valid values: 10s, 5m, 2h"
+    default: "10s"
+  - name: username
+    type: text
+  - name: password
+    # This is the html input type?
+    type: password
+
+
+
+```
+
+requirements:
+  # Defines on which platform is input is available
+  platform: ["linux", "freebsd"]
+  elasticsearch.processors:
+    # If a user does not have the user_agent processor, he should still be able to install the integration but not
+    # enable the access input
+    - name: user_agent
+      plugin: ingest-user-agent
+    - name: geoip
+      plugin: ingest-geoip
+
+```
+
+**fields**
+
+The fields directory contains all fields.yml which are need to build the full template. All fields related to the dataset
+must be in here in one or multiple files.
+
+An open question is on how the fields for all the processors and autodiscovery are loaded.
+
+**docs**
+
+The docs for each dataset are combined with the overall docs. For the datasets it is encouraged to have `data.json` as an 
+example event available.
+
+**agent/input**
+
+Agent input configuration for the input. It's by design not an array but a single entry. The package manager will build
+a list out of it for the user.
+
+**filebeat/input**
+
+This contains the raw input configuration for the input.
+
+**filebeat/module**
+
+This contains the module configuration for the input. It is only 1 fileset and is not stored as an array.
+
+**light_module**
+
+This directory is designed to store light modules from Metricbeat. It contains the definition of the light module.
+
+**module**
+
+This contains the module configuration for this input. In the case of Metricbeat this means a module configuration with a
+single metricset. By design it's not an array that is specified.
 
 ## Beats
 

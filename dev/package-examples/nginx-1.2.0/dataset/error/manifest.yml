@@ -1,0 +1,9 @@
+title: Nginx Error Logs
+vars:
+  - name: paths
+    default:
+      - /var/log/nginx/error.log*
+    os.darwin:
+      - /usr/local/var/log/nginx/error.log*
+    os.windows:
+      - c:/programdata/nginx/logs/error.log*

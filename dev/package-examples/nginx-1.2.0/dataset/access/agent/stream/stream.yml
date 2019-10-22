@@ -1,0 +1,11 @@
+# This is not an array on purpose to make sure only 1 single input is specified in this file.
+
+type: log
+{{#each paths}}
+paths: "{{this}}"
+{{/each}}
+
+exclude_files: [".gz$"]
+
+processors:
+  - add_locale: ~
