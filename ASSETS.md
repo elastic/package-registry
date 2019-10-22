@@ -269,7 +269,7 @@ and fields definitions are only expected inside dataset. An dataset is basically
 
 **manifest.yml**
 
-Each input must contain a manifest.yml. It contains all information about the input and how to configure it.
+Each dataset must contain a manifest.yml. It contains all information about the dataset and how to configure it.
 
 ```
 # Needs to describe the type of this input. Currently either metric or log
@@ -338,14 +338,14 @@ requirements:
 
 **fields**
 
-The fields directory contains all fields.yml which are need to build the full template. All fields related to the input
+The fields directory contains all fields.yml which are need to build the full template. All fields related to the dataset
 must be in here in one or multiple files.
 
 An open question is on how the fields for all the processors and autodiscovery are loaded.
 
 **docs**
 
-The docs for each input are combined with the overall docs. For the inputs it is encouraged to have `data.json` as an 
+The docs for each dataset are combined with the overall docs. For the datasets it is encouraged to have `data.json` as an 
 example event available.
 
 **agent/input**
