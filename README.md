@@ -139,16 +139,3 @@ docker run -i -t -p 8080:8080 $(docker images -q integrations_registry:latest)
 ### Healthcheck
 
 For Docker / Kubernetes the `/` endpoint can be queried. As soon as `/` returns a 200, the service is ready.
-
-## Generated Example packages
-
-For easier testing of the integrations manager, the registry allows to generate some example packages. The packages
-to generate are taken out of `dev/packages.yml`. These values are then used to build a package based on the template
-files inside `dev/package-template` and values are replaced. In addition it's possible to add icons for each package 
-under icons. The name of the icon must match the package name.
-
-The command to generate the packages is:
-
-```
-mage generatePackages
-```
