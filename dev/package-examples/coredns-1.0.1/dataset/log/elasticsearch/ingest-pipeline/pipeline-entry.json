@@ -4,13 +4,13 @@
     {
       "pipeline": {
           "if": "ctx.message.charAt(0) == (char)(\"{\")",
-          "name": "{< IngestPipeline \"pipeline-json\" >}"
+          "name": "{{IngestPipeline 'pipeline-json' }}"
       }
     },
     {
       "pipeline": {
           "if": "ctx.message.charAt(0) != (char)(\"{\")",
-          "name": "{< IngestPipeline \"pipeline-plaintext\" >}"
+          "name": "{{IngestPipeline 'pipeline-plaintext' }}"
       }
     },
     {
