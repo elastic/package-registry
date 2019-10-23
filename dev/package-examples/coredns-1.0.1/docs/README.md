@@ -1,6 +1,6 @@
 # CoreDNS Integration
 
-This is a filebeat module for coredns. It supports both standalone coredns deployment and 
+This is a filebeat module for coredns. It supports both standalone coredns deployment and
 coredns deployment in Kubernetes.
 
 ## Caveats
@@ -14,10 +14,10 @@ Grab the filebeat binary from elastic.co, and install it by following the instru
 ## Deployment Scenario #1: coredns native deployment
 
 Make sure to update coredns configuration to enable log plugin. This module assumes that coredns log
-entries will be written to /var/log/coredns.log. Should it be not the case, please point the module 
-log path to the path of the log file. 
+entries will be written to /var/log/coredns.log. Should it be not the case, please point the module
+log path to the path of the log file.
 
-Update filebeat.yml to point to Elasticsearch and Kibana. 
+Update filebeat.yml to point to Elasticsearch and Kibana.
 Setup Filebeat.
 ```
 ./filebeat setup --modules coredns -e
@@ -36,10 +36,10 @@ Start Filebeat
 Now, the Coredns logs and dashboard should appear in Kibana.
 
 
-## Deployment Scenario #2: coredns for kubernetes 
+## Deployment Scenario #2: coredns for kubernetes
 
-For Kubernetes deployment, the filebeat daemon-set yaml file needs to be deployed to the 
-Kubernetes cluster. Sample configuration files is provided under the `beats/deploy/filebeat` 
+For Kubernetes deployment, the filebeat daemon-set yaml file needs to be deployed to the
+Kubernetes cluster. Sample configuration files is provided under the `beats/deploy/filebeat`
 directory, and can be deployed by doing the following:
 
 ```shell
@@ -99,13 +99,13 @@ spec:
 ```
 
 The module setup step can also be done separately without Kubernetes if applicable, and in that case, the args can be simplified to:
-```
+```yaml
         args: [
           "sh", "-c", "filebeat -e -c /etc/filebeat.yml"
         ]
 ```
 
-### Note that you probably need to update the coredns configmap to enable logging, and coredns deployment to add proper annotations. 
+### Note that you probably need to update the coredns configmap to enable logging, and coredns deployment to add proper annotations.
 
 ##### Sample ConfigMap for coredns:
 
