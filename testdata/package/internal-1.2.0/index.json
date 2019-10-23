@@ -1,0 +1,19 @@
+{
+  "name": "internal",
+  "title": "Internal",
+  "version": "1.2.0",
+  "description": "Internal package",
+  "type": "integration",
+  "categories": [],
+  "requirement": {
+    "kibana": {
+      "version.min": "",
+      "version.max": ""
+    }
+  },
+  "assets": [
+    "/package/internal-1.2.0/index.json",
+    "/package/internal-1.2.0/manifest.yml"
+  ],
+  "internal": true
+}

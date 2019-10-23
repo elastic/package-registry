@@ -33,6 +33,11 @@ func categoriesHandler(packagesBasePath, cacheTime string) func(w http.ResponseW
 		// Get unique list of newest packages
 		for _, p := range packages {
 
+			// Skip internal packages
+			if p.Internal {
+				continue
+			}
+
 			// Check if the version exists and if it should be added or not.
 			if pp, ok := packageList[p.Name]; ok {
 				// If the package in the list is newer, do nothing. Otherwise delete and later add the new one.

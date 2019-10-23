@@ -1,0 +1,27 @@
+[
+  {
+    "description": "This is the example integration",
+    "download": "/package/example-1.0.0.tar.gz",
+    "name": "example",
+    "title": "Example Integration",
+    "type": "integration",
+    "version": "1.0.0"
+  },
+  {
+    "description": "This is the foo integration",
+    "download": "/package/foo-1.0.0.tar.gz",
+    "name": "foo",
+    "title": "Foo",
+    "type": "solution",
+    "version": "1.0.0"
+  },
+  {
+    "description": "Internal package",
+    "download": "/package/internal-1.2.0.tar.gz",
+    "internal": true,
+    "name": "internal",
+    "title": "Internal",
+    "type": "integration",
+    "version": "1.2.0"
+  }
+]

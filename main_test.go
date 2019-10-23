@@ -39,6 +39,7 @@ func TestEndpoints(t *testing.T) {
 		{"/search?category=metrics", "/search", "search-category-metrics.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/search?category=logs", "/search", "search-category-logs.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/search?package=example", "/search", "search-package-example.json", searchHandler(packagesBasePath, testCacheTime)},
+		{"/search?internal=true", "/search", "search-package-internal.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/package/example-1.0.0", "", "package.json", catchAll("./testdata", testCacheTime)},
 	}
 

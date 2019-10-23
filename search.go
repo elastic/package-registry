@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"net/http"
 	"sort"
+	"strconv"
 	"strings"
 
 	"github.com/blang/semver"
@@ -26,6 +27,7 @@ func searchHandler(packagesBasePath, cacheTime string) func(w http.ResponseWrite
 		var category string
 		// Leaving out `a` here to not use a reserved name
 		var packageQuery string
+		var internal bool
 		var err error
 
 		// Read query filter params which can affect the output
@@ -49,6 +51,13 @@ func searchHandler(packagesBasePath, cacheTime string) func(w http.ResponseWrite
 					packageQuery = v
 				}
 			}
+
+			if v := query.Get("internal"); v != "" {
+				if v != "" {
+					// In case of error, keep it false
+					internal, _ = strconv.ParseBool(v)
+				}
+			}
 		}
 
 		packages, err := util.GetPackages(packagesBasePath)
@@ -60,6 +69,11 @@ func searchHandler(packagesBasePath, cacheTime string) func(w http.ResponseWrite
 
 		// Checks that only the most recent version of an integration is added to the list
 		for _, p := range packages {
+
+			// Skip internal packages by default
+			if p.Internal && !internal {
+				continue
+			}
 
 			// Filter by category first as this could heavily reduce the number of packages
 			// It must happen before the version filtering as there only the newest version
@@ -143,6 +157,9 @@ func getPackageOutput(packagesList map[string]map[string]util.Package) ([]byte, 
 		}
 		if m.Icons != nil {
 			data["icons"] = m.Icons
+		}
+		if m.Internal {
+			data["internal"] = true
 		}
 		output = append(output, data)
 	}
