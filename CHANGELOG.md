@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Remove not needed files in Docker image. [#106](https://github.com/elastic/integrations-registry/pull/106)
 * Add healthcheck to docker file. [#115](https://github.com/elastic/integrations-registry/pull/115)
 * Make caching headers configurable per endpoint. [#116](https://github.com/elastic/integrations-registry/pull/116)
+* Add readme entry to package endpoint. [#128](https://github.com/elastic/integrations-registry/pull/128)
 
 ### Deprecated
 
