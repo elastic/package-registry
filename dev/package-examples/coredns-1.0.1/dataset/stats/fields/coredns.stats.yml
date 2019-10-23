@@ -1,4 +1,4 @@
-- name: stats
+- name: coredns.stats
   type: group
   description: >
     Contains statistics related to the coreDNS service

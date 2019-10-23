@@ -1,0 +1,20 @@
+title: IPTable logs
+
+# Needs to describe the type of this input
+type: logs
+ingest_pipline: pipeline
+
+vars:
+  - name: paths
+    default:
+      - /var/log/iptables.log
+  - name: tags
+    default: [iptables]
+  - name: syslog_host
+    default: localhost
+  - name: syslog_port
+    default: 9001
+  - name: input
+    default: syslog
+  - name: community_id
+    default: true

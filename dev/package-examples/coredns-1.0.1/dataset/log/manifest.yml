@@ -1,0 +1,17 @@
+title: CoreDNS logs
+release: ga
+
+type: logs
+
+ingest_pipline: pipeline-entry
+
+vars:
+  - name: paths
+    # Should we define this as array? How will the UI best make sense of it?
+    type: textarea
+    default:
+      # Change this if it is not "/var/log/coredns.log" in native deployment mode
+      - /var/log/coredns.log
+  - name: tags
+    default: [coredns]
+    type: text
