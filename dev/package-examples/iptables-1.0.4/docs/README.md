@@ -22,15 +22,10 @@ include::../include/running-modules.asciidoc[]
 This module comes with sample dashboards showing geolocation and network
 protocols used. One for all iptables logs:
 
-[role="screenshot"]
-image::./images/kibana-iptables.png[]
 
 and one specific for Ubiquiti Firewall logs:
 
-[role="screenshot"]
-image::./images/kibana-iptables-ubiquiti.png[]
-
-include::../include/configuring-intro.asciidoc[]
+![Image in text](../img/kibana-iptables-ubiquiti.png "Image in text")
 
 The module is by default configured to run via syslog on port 9001. However
 it can also be configured to read from a file path. See the following example.
