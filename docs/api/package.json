@@ -11,8 +11,9 @@
   ],
   "requirement": {
     "kibana": {
-      "version.min": "7.0.0",
-      "version.max": ""
+      "version": {
+        "min": "7.0.0"
+      }
     }
   },
   "screenshots": [
