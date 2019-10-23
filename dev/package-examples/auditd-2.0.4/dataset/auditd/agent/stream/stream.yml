@@ -1,4 +1,4 @@
-type: auditd/auditd
+type: audit/auditd
 
 {{ if eq .GOOS "linux" -}}
   {{ if .Reference -}}
