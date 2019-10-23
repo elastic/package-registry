@@ -37,7 +37,7 @@ var (
 )
 
 func init() {
-	flag.StringVar(&address, "address", "localhost:8080", "Address of the integrations-registry service.")
+	flag.StringVar(&address, "address", "localhost:8080", "Address of the package-registry service.")
 }
 
 type Config struct {
@@ -46,8 +46,8 @@ type Config struct {
 
 func main() {
 	flag.Parse()
-	log.Println("Integrations registry started.")
-	defer log.Println("Integrations registry stopped.")
+	log.Println("Package registry started.")
+	defer log.Println("Package registry stopped.")
 
 	config, err := getConfig()
 	if err != nil {

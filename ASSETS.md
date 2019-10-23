@@ -1,6 +1,6 @@
-# Integration package assets
+# Package assets
 
-This doc is to describe all the assets available in the integration packages and some details around each asset.
+This doc is to describe all the assets available in the packages and some details around each asset.
 
 ## General Assets
 
@@ -10,11 +10,11 @@ This doc is to describe all the assets available in the integration packages and
 
 The `manifest.yml` contains the information about the pacakge. It can contain the following entries:
 
-* name: Name of the integration (required)
-* description: Description of the integration (required)
-* version: Version of the integration (required)
-* categories: List of categories this integration falls under. The available categories still need to be defined.
-* requirement: Requirement is an object that contains all the requirements for the stack versions of this integration. Inside it contains an entry for each possible service which then can contain `version.min` and `version.max`. Other requirements might be added here like dependency on a specific Elasticsearch plugin / ingest pipeline if needed. In the past this was needed for geo and user_agent as they were not installed by default.
+* name: Name of the package (required)
+* description: Description of the package (required)
+* version: Version of the package (required)
+* categories: List of categories this package falls under. The available categories still need to be defined.
+* requirement: Requirement is an object that contains all the requirements for the stack versions of this package. Inside it contains an entry for each possible service which then can contain `version.min` and `version.max`. Other requirements might be added here like dependency on a specific Elasticsearch plugin / ingest pipeline if needed. In the past this was needed for geo and user_agent as they were not installed by default.
 
 
 An example manifest might look as following:
@@ -22,7 +22,7 @@ An example manifest might look as following:
 ```
 name: envoyproxy
 title: Envoy Proxy
-description: This is the envoyproxy integration.
+description: This is the envoyproxy package.
 version: 0.0.2
 categories: ["logs", "metrics"]
 # Options are experimental, beta, ga
@@ -67,8 +67,6 @@ screenshots:
 
 The definition of the manifest is not complete yet and further details will follow.
 
-Question: How do we handle if only one metricset is in beta but integration is in GA?
-
 ### changelog.yml
 
 The changelog of a package contains always all previous changes and not only the one from the last major, minor, bugfix release. 
@@ -99,9 +97,9 @@ The file looks as following:
 * Asset Path: fields/*.yml
 
 The fields.yml files are used for fields definitions and can be used to generate the index pattern in Kibana, elasticsearch
-index template or rollup jobs. It's not clear yet on how the integrations manager should use this file and if.
+index template or rollup jobs. It's not clear yet on how the package manager should use this file and if.
 
-The directory is reserved for multiple fields.yml as each integration, beat and ecs have it's own `fields.yml`.
+The directory is reserved for multiple fields.yml as each package, beat and ecs have it's own `fields.yml`.
 
 ## Elasticsearch
 
@@ -115,9 +113,9 @@ Elasticsearch assets are the assets which are loaded into Elasticsearch. All of 
 The [Elasticsearch ingest pipeline](https://www.elastic.co/guide/en/elasticsearch/reference/current/pipeline.html) contains
 information on how the data should be processed. Multiple ingest pipelines can depend on each other thanks to the
 [pipeline processor](https://www.elastic.co/guide/en/elasticsearch/reference/current/pipeline-processor.html). As during
-package creation, the exact names given to the pipeline by the integrations manager is not know, we will need to use
+package creation, the exact names given to the pipeline by the package manager is not know, we will need to use
 some variables to reference. An example on this can be found [here](https://github.com/elastic/beats/blob/master/filebeat/module/elasticsearch/deprecation/ingest/pipeline.json#L24)
- in Beats. It means the integrations manager will have to be able to understand this template language (we still need
+ in Beats. It means the package manager will have to be able to understand this template language (we still need
  to decide what our template language is) and replace the pipeline ids with the correct values.
 
  ### Index Template
@@ -126,13 +124,13 @@ some variables to reference. An example on this can be found [here](https://gith
 
 The [Elasticsearch index template](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-templates.html)
 is used to have a template applied to certain index patterns. Inside the Index Template the values `index_patterns` is defined
-for the matching indices. As the indexing convention is either given by the index manager or the user, the integrations
+for the matching indices. As the indexing convention is either given by the index manager or the user, the package
 manager must be able to overwrite the index pattern.
 
 On the Beats side today the Index Template is generated out of the `fields.yml` files. This allows to give more flexibility
-to generate the correct template for different Elasticsearch version. As we can release integrations packages for different
+to generate the correct template for different Elasticsearch version. As we can release package packages for different
 version of Elasticsearch independently this is probably not needed anymore. I expect fields.yml to stick around as it's a nice
-way to create index templates and index patterns in one go. The integration manager should be able to generate index templates
+way to create index templates and index patterns in one go. The package manager should be able to generate index templates
 and index patterns out of all the combined fields.yml.
 
 An Index Template also relates to the ILM policy as it can reference to which ILM policy should be applied to the indices
@@ -162,7 +160,7 @@ Rollup jobs can potentially also be generated from `fields.yml` but it should be
 Rollup jobs today do not support rollup templates which would be nice to have, see [discussion here](https://github.com/elastic/beats/pull/7220).
 This would allow to separate creation of the template and actually creation / start of the job.
 
-A rollup job depends on an index pattern and has a target index. The integrations manager should potentially be able
+A rollup job depends on an index pattern and has a target index. The package manager should potentially be able
 to configure this.
 
 ### Index Data
@@ -171,7 +169,7 @@ to configure this.
 
 Index data is data that should be written into Elasticsearch. The data format is expected to be in the [Bulk format](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html).
 
-If the user can configure the index, the integrations manager should potentially be able to overwrite / prefix the index
+If the user can configure the index, the package manager should potentially be able to overwrite / prefix the index
 fields inside the loaded data.
 
 Loading of data can fail or partially fail. Because of this handling on failure must be possible.
@@ -205,7 +203,7 @@ Kibana assets are the assets which are loaded in Kibana. The Kibana API docs can
 A large portion of the Kibana assets are [saved objects](https://www.elastic.co/guide/en/kibana/master/saved-objects-api.html).
 All saves objects are space aware, meaning the same object id with a different prefix can exists in multiple spaces.
 
-Assuming the integrations manager generates the ids of the assets it must be capable to adjust the reference ids acrross
+Assuming the package manager generates the ids of the assets it must be capable to adjust the reference ids acrross
 dashboards, visualizations, search, index patterns.
 
 ### Dashboard
@@ -238,7 +236,7 @@ we probably don't need this anymore.
 
 ECS also provides a fields.yml in the same format. One limitation of index-patterns in Kibana is that they can't be extended
 or support inheritance / composition like the index templates in Elasticsearch. Having many index patterns in Kibana is a
-problem as a user would have to constantly switch between them. The integrations manager could work around this by
+problem as a user would have to constantly switch between them. The package manager could work around this by
 append / updating index pattern. But this will lead to the problem on how to remove these fields again.
 
 ### Infrastructure UI Source
@@ -327,7 +325,7 @@ requirements:
   # Defines on which platform is input is available
   platform: ["linux", "freebsd"]
   elasticsearch.processors:
-    # If a user does not have the user_agent processor, he should still be able to install the integration but not
+    # If a user does not have the user_agent processor, he should still be able to install the package but not
     # enable the access input
     - name: user_agent
       plugin: ingest-user-agent
@@ -376,9 +374,9 @@ How the input configuration for each Beat are stored still needs to be discussed
 
 ## Definitions
 
-### Integration
+### Package
 
-An integration is a list of assets for the Elastic stack that belong together. This can be ingest pipelines,
+A package is a list of assets for the Elastic stack that belong together. This can be ingest pipelines,
 data sources, dashboards etc. All of these are defined above.
 
 ### Input
