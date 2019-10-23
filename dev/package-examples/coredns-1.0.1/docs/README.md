@@ -1,7 +1,4 @@
-This is the CoreDNS integration.
-
-
-# Coredns Module
+# CoreDNS Integration
 
 This is a filebeat module for coredns. It supports both standalone coredns deployment and 
 coredns deployment in Kubernetes.
@@ -44,12 +41,14 @@ Now, the Coredns logs and dashboard should appear in Kibana.
 For Kubernetes deployment, the filebeat daemon-set yaml file needs to be deployed to the 
 Kubernetes cluster. Sample configuration files is provided under the `beats/deploy/filebeat` 
 directory, and can be deployed by doing the following:
-```
+
+```shell
 kubectl apply -f filebeat
 ```
 
 #### Note the following section in the ConfigMap, make changes to the yaml file if necessary
-```
+
+```yaml
   filebeat.autodiscover:
     providers:
       - type: kubernetes
@@ -64,7 +63,8 @@ kubectl apply -f filebeat
 This enables auto-discovery and hints for filebeat. When default.disable is set to true (default value is false), it will disable log harvesting for the pod/container, unless it has specific annotations enabled. This gives users more granular control on kubernetes log ingestion. The `add_kubernetes_metadata` processor will add enrichment data for Kubernetes to the ingest logs.
 
 #### Note the following section in the DaemonSet, make changes to the yaml file if necessary
-```
+
+```yaml
 apiVersion: extensions/v1beta1
 kind: DaemonSet
 metadata:
@@ -109,7 +109,7 @@ The module setup step can also be done separately without Kubernetes if applicab
 
 ##### Sample ConfigMap for coredns:
 
-```
+```json
 apiVersion: v1
 data:
   Corefile: |
@@ -142,7 +142,7 @@ metadata:
 
 #### Sample Deployment for coredns. Note the annotations.
 
-```
+```yaml
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:

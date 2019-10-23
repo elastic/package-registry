@@ -1,9 +1,4 @@
-[role="xpack"]
-
-:modulename: iptables
-:has-dashboards: true
-
-== Iptables module
+# Iptables package
 
 This is a module for iptables and ip6tables logs. It parses logs received
 over the network via syslog or from a file. Also, it understands the prefix added
@@ -22,40 +17,31 @@ a structure suitable for visualizing in Kibana.
 
 include::../include/running-modules.asciidoc[]
 
-[float]
-=== Example dashboard
+## Example dashboard
 
 This module comes with sample dashboards showing geolocation and network
 protocols used. One for all iptables logs:
 
-[role="screenshot"]
-image::./images/kibana-iptables.png[]
 
 and one specific for Ubiquiti Firewall logs:
 
-[role="screenshot"]
-image::./images/kibana-iptables-ubiquiti.png[]
-
-include::../include/configuring-intro.asciidoc[]
+![Image in text](../img/kibana-iptables-ubiquiti.png "Image in text")
 
 The module is by default configured to run via syslog on port 9001. However
 it can also be configured to read from a file path. See the following example.
 
-["source","yaml",subs="attributes"]
------
+```yaml
 - module: iptables
   log:
     enabled: true
     var.paths: ["/var/log/iptables.log"]
     var.input: "file"
------
+```
 
-:fileset_ex: log
 
 include::../include/config-option-intro.asciidoc[]
 
-[float]
-==== `log` log fileset settings
+## `log` log fileset settings
 
 include::../include/var-paths.asciidoc[]
 
@@ -69,9 +55,3 @@ Set to `0.0.0.0` to bind to all available interfaces.
 The UDP port to listen for syslog traffic. Defaults to `9001`
 
 NOTE: Ports below 1024 require Filebeat to run as root.
-
-:has-dashboards!:
-
-:fileset_ex!:
-
-:modulename!:

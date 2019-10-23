@@ -1,17 +1,16 @@
-This module periodically fetches metrics from https://nginx.org/[Nginx] servers.
+# Nginx integration
 
-The default metricset is `stubstatus`.
+This integration periodically fetches metrics from https://nginx.org/[Nginx] servers.
 
 
-[float]
-=== Compatibility
+## Compatibility
 
-The Nginx metricsets were tested with Nginx 1.9 and are expected to work with all version
->= 1.9.
+The Nginx metricsets were tested with Nginx 1.9 and are expected to work with all version >= 1.9.
 
-[float]
-=== Dashboard
+### Inputs
 
-The nginx module comes with a predefined dashboard. For example:
+{{> ../dataset/access/docs/README.md }}
 
-image::./images/metricbeat-nginx.png[]
+## Dashboard
+
+The nginx integration comes with a predefined dashboard. 
