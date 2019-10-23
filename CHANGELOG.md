@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Breaking changes
 
-* Package Kibana compatiblity version is changed to `"kibana": { "max": "1.2.3"}` [#](https://github.com/elastic/integrations-registry/pull/)
+* Package Kibana compatiblity version is changed to `"kibana": { "max": "1.2.3"}` [#134](https://github.com/elastic/integrations-registry/pull/134)
 
 
 ### Bugfixes
