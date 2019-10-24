@@ -108,7 +108,7 @@ features 0xf
 This module has some configuration options for tuning its behavior. The
 following example shows all configuration options with their default values.
 
-```
+```yaml
 - module: auditd
   resolve_ids: true
   failure_mode: silent
@@ -119,28 +119,31 @@ following example shows all configuration options with their default values.
   backpressure_strategy: auto
 ```
 
-*`socket_type`*:: This optional setting controls the type of
+**`socket_type`**
+This optional setting controls the type of
 socket that {beatname_uc} uses to receive events from the kernel. The two
 options are `unicast` and `multicast`.
-+
-`unicast` should be used when {beatname_uc} is the primary userspace daemon for
+
+ - `unicast` should be used when {beatname_uc} is the primary userspace daemon for
 receiving audit events and managing the rules. Only a single process can receive
 audit events through the "unicast" connection so any other daemons should be
 stopped (e.g. stop `auditd`).
-+
-`multicast` can be used in kernel versions 3.16 and newer. By using `multicast`
+
+ - `multicast` can be used in kernel versions 3.16 and newer. By using `multicast`
 {beatname_uc} will receive an audit event broadcast that is not exclusive to a
 a single process. This is ideal for situations where `auditd` is running and
 managing the rules. If `multicast` is specified, but the kernel version is less
 than 3.16 {beatname_uc} will automatically revert to `unicast`.
-+
-By default {beatname_uc} will use `multicast` if the kernel version is 3.16 or
+
+ - By default {beatname_uc} will use `multicast` if the kernel version is 3.16 or
 newer and no rules have been defined. Otherwise `unicast` will be used.
 
-*`resolve_ids`*:: This boolean setting enables the resolution of UIDs and
+**`resolve_ids`**
+This boolean setting enables the resolution of UIDs and
 GIDs to their associated names. The default value is true.
 
-*`failure_mode`*:: This determines the kernel's behavior on critical
+**`failure_mode`**
+This determines the kernel's behavior on critical
 failures such as errors sending events to {beatname_uc}, the backlog limit was
 exceeded, the kernel ran out of memory, or the rate limit was exceeded. The
 options are `silent`, `log`, or `panic`. `silent` basically makes the kernel
@@ -148,43 +151,49 @@ ignore the errors, `log` makes the kernel write the audit messages using
 `printk` so they show up in system's syslog, and `panic` causes the kernel to
 panic to prevent use of the machine. {beatname_uc}'s default is `silent`.
 
-*`backlog_limit`*:: This controls the maximum number of audit messages
+**`backlog_limit`**
+This controls the maximum number of audit messages
 that will be buffered by the kernel.
 
-*`rate_limit`*:: This sets a rate limit on the number of messages/sec
+**`rate_limit`**
+This sets a rate limit on the number of messages/sec
 delivered by the kernel. The default is 0, which disables rate limiting.
 Changing this value to anything other than zero can cause messages to be lost.
 The preferred approach to reduce the messaging rate is be more selective in the
 audit ruleset.
 
-*`include_raw_message`*:: This boolean setting causes {beatname_uc} to
+**`include_raw_message`**
+This boolean setting causes {beatname_uc} to
 include each of the raw messages that contributed to the event in the document
 as a field called `event.original`. The default value is false. This setting is
 primarily used for development and debugging purposes.
 
-*`include_warnings`*:: This boolean setting causes {beatname_uc} to
+**`include_warnings`**
+This boolean setting causes {beatname_uc} to
 include as warnings any issues that were encountered while parsing the raw
 messages. The messages are written to the `error.message` field. The default
 value is false. When this setting is enabled the raw messages will be included
 in the event regardless of the `include_raw_message` config setting. This
 setting is primarily used for development and debugging purposes.
 
-*`audit_rules`*:: A string containing the audit rules that should be
+**`audit_rules`**
+A string containing the audit rules that should be
 installed to the kernel. There should be one rule per line. Comments can be
 embedded in the string using `#` as a prefix. The format for rules is the same
 used by the Linux `auditctl` utility. {beatname_uc} supports adding file watches
 (`-w`) and syscall rules (`-a` or `-A`).
 
-*`audit_rule_files`*:: A list of files to load audit rules from. This files are
+**`audit_rule_files`**
+A list of files to load audit rules from. This files are
 loaded after the rules declared in `audit_rules` are loaded. Wildcards are
 supported and will expand in lexicographical order. The format is the same as
 that of the `audit_rules` field.
 
-*`backpressure_strategy`*:: Specifies the strategy that {beatname_uc} uses to
+**`backpressure_strategy`**
+Specifies the strategy that {beatname_uc} uses to
 prevent backpressure from propagating to the kernel and impacting audited
 processes.
-+
---
+
 The possible values are:
 
 - `auto` (default): {beatname_uc} uses the `kernel` strategy, if supported, or
@@ -200,7 +209,7 @@ option accordingly.
 - `both`: {beatname_uc} uses the `kernel` and `userspace` strategies at the same
 time.
 - `none`: No backpressure mitigation measures are enabled.
---
+
 
 ## Audit rules
 
@@ -223,7 +232,7 @@ Defining any audit rules in the config causes {beatname_uc} to purge all
 existing audit rules prior to adding the rules specified in the config.
 Therefore it is unnecessary and unsupported to include a `-D` (delete all) rule.
 
-```
+```yaml
 {beatname_lc}.modules:
 - module: auditd
   audit_rules: |
