@@ -7,8 +7,7 @@
   "categories": [],
   "requirement": {
     "kibana": {
-      "version.min": "",
-      "version.max": ""
+      "version": {}
     }
   },
   "assets": [

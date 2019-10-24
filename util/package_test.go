@@ -35,8 +35,10 @@ var packageTests = []struct {
 			Title: &title,
 			Requirement: Requirement{
 				Kibana{
-					Min: "1.2.3",
-					Max: "bar",
+					Version: Version{
+						Min: "1.2.3",
+						Max: "bar",
+					},
 				},
 			},
 		},
@@ -48,8 +50,10 @@ var packageTests = []struct {
 			Title: &title,
 			Requirement: Requirement{
 				Kibana{
-					Min: "foo",
-					Max: "4.5.6",
+					Version: Version{
+						Min: "foo",
+						Max: "4.5.6",
+					},
 				},
 			},
 		},
@@ -62,8 +66,10 @@ var packageTests = []struct {
 			Description: "my description",
 			Requirement: Requirement{
 				Kibana{
-					Min: "1.2.3",
-					Max: "4.5.6",
+					Version: Version{
+						Min: "1.2.3",
+						Max: "4.5.6",
+					},
 				},
 			},
 			Categories: []string{"metrics", "logs", "foo"},

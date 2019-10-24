@@ -9,8 +9,9 @@
   ],
   "requirement": {
     "kibana": {
-      "version.min": "6.0.0",
-      "version.max": ""
+      "version": {
+        "min": "6.0.0"
+      }
     }
   },
   "assets": [
