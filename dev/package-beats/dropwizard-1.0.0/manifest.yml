@@ -1,0 +1,13 @@
+name: dropwizard
+title: Dropwizard
+version: 1.0.0
+description: |
+  Stats collected from Dropwizard.
+type: ""
+categories:
+- metrics
+requirement:
+  kibana:
+    version:
+      min: 6.7.0
+      max: 7.6.0

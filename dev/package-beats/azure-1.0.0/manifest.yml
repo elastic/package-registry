@@ -1,0 +1,14 @@
+name: azure
+title: azure
+version: 1.0.0
+description: |
+  Azure Module
+type: ""
+categories:
+- metrics
+- logs
+requirement:
+  kibana:
+    version:
+      min: 6.7.0
+      max: 7.6.0

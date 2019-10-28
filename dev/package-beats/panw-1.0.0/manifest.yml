@@ -1,0 +1,13 @@
+name: panw
+title: panw
+version: 1.0.0
+description: |
+  Module for Palo Alto Networks (PAN-OS)
+type: ""
+categories:
+- logs
+requirement:
+  kibana:
+    version:
+      min: 6.7.0
+      max: 7.6.0

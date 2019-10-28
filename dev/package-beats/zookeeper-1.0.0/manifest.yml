@@ -1,0 +1,13 @@
+name: zookeeper
+title: ZooKeeper
+version: 1.0.0
+description: |
+  ZooKeeper metrics collected by the four-letter monitoring commands.
+type: ""
+categories:
+- metrics
+requirement:
+  kibana:
+    version:
+      min: 6.7.0
+      max: 7.6.0

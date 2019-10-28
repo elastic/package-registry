@@ -1,0 +1,13 @@
+name: cisco
+title: Cisco
+version: 1.0.0
+description: |
+  Module for handling Cisco network device logs.
+type: ""
+categories:
+- logs
+requirement:
+  kibana:
+    version:
+      min: 6.7.0
+      max: 7.6.0

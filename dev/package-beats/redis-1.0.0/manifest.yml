@@ -1,0 +1,14 @@
+name: redis
+title: Redis
+version: 1.0.0
+description: |
+  Redis metrics collected from Redis.
+type: ""
+categories:
+- logs
+- metrics
+requirement:
+  kibana:
+    version:
+      min: 6.7.0
+      max: 7.6.0

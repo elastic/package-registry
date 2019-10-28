@@ -1,0 +1,13 @@
+name: windows
+title: Windows
+version: 1.0.0
+description: |
+  Module for Windows
+type: ""
+categories:
+- metrics
+requirement:
+  kibana:
+    version:
+      min: 6.7.0
+      max: 7.6.0

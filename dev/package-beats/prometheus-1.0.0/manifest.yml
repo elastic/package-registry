@@ -1,0 +1,13 @@
+name: prometheus
+title: Prometheus
+version: 1.0.0
+description: |
+  Stats scraped from a Prometheus endpoint.
+type: ""
+categories:
+- metrics
+requirement:
+  kibana:
+    version:
+      min: 6.7.0
+      max: 7.6.0

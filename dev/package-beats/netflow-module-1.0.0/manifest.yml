@@ -1,0 +1,13 @@
+name: netflow-module
+title: NetFlow
+version: 1.0.0
+description: |
+  Module for receiving NetFlow and IPFIX flow records over UDP. The module does not add fields beyond what the netflow input provides.
+type: ""
+categories:
+- logs
+requirement:
+  kibana:
+    version:
+      min: 6.7.0
+      max: 7.6.0

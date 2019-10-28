@@ -1,0 +1,13 @@
+name: icinga
+title: Icinga
+version: 1.0.0
+description: |
+  Icinga Module
+type: ""
+categories:
+- logs
+requirement:
+  kibana:
+    version:
+      min: 6.7.0
+      max: 7.6.0

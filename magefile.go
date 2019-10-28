@@ -31,7 +31,7 @@ var (
 
 	publicDir    = "./public"
 	buildDir     = "./build"
-	packagePaths = []string{"./dev/package-generated/", "./dev/package-examples/"}
+	packagePaths = []string{"./dev/package-generated/", "./dev/package-examples/", "./dev/package-beats/"}
 )
 
 func Build() error {

@@ -1,0 +1,14 @@
+name: coredns
+title: coredns
+version: 1.0.0
+description: |
+  Module for handling logs produced by coredns
+type: ""
+categories:
+- metrics
+- logs
+requirement:
+  kibana:
+    version:
+      min: 6.7.0
+      max: 7.6.0

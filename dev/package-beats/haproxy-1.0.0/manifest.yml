@@ -1,0 +1,14 @@
+name: haproxy
+title: haproxy
+version: 1.0.0
+description: |
+  HAProxy Module
+type: ""
+categories:
+- logs
+- metrics
+requirement:
+  kibana:
+    version:
+      min: 6.7.0
+      max: 7.6.0

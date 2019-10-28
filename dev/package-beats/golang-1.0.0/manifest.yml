@@ -1,0 +1,13 @@
+name: golang
+title: Golang
+version: 1.0.0
+description: |
+  Golang module
+type: ""
+categories:
+- metrics
+requirement:
+  kibana:
+    version:
+      min: 6.7.0
+      max: 7.6.0

@@ -1,0 +1,14 @@
+name: system
+title: System
+version: 1.0.0
+description: |
+  System status metrics, like CPU and memory usage, that are collected from the operating system.
+type: ""
+categories:
+- logs
+- metrics
+requirement:
+  kibana:
+    version:
+      min: 6.7.0
+      max: 7.6.0

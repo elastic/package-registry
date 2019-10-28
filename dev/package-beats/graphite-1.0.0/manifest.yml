@@ -1,0 +1,13 @@
+name: graphite
+title: Graphite
+version: 1.0.0
+description: |
+  graphite Module
+type: ""
+categories:
+- metrics
+requirement:
+  kibana:
+    version:
+      min: 6.7.0
+      max: 7.6.0

@@ -1,0 +1,13 @@
+name: zeek
+title: Zeek
+version: 1.0.0
+description: |
+  Module for handling logs produced by Zeek/Bro
+type: ""
+categories:
+- logs
+requirement:
+  kibana:
+    version:
+      min: 6.7.0
+      max: 7.6.0

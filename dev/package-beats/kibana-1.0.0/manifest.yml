@@ -1,0 +1,14 @@
+name: kibana
+title: kibana
+version: 1.0.0
+description: |
+  Kibana module
+type: ""
+categories:
+- logs
+- metrics
+requirement:
+  kibana:
+    version:
+      min: 6.7.0
+      max: 7.6.0

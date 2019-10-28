@@ -1,0 +1,13 @@
+name: osquery
+title: Osquery
+version: 1.0.0
+description: |
+  Fields exported by the `osquery` module
+type: ""
+categories:
+- logs
+requirement:
+  kibana:
+    version:
+      min: 6.7.0
+      max: 7.6.0
