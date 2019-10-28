@@ -96,9 +96,11 @@ func (i *Integrations) AddBeatModule(category, path string) {
 				Title:   &meta.Title,
 				Requirement: util.Requirement{
 					Kibana: util.Kibana{
-						Min: "6.7.0",
-						// TODO do we really require a max version?
-						Max: "7.6.0",
+						Version: util.Version{
+							Min: "6.7.0",
+							// TODO do we really require a max version?
+							Max: "7.6.0",
+						},
 					},
 				},
 			},
