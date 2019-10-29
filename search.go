@@ -14,7 +14,7 @@ import (
 
 	"github.com/blang/semver"
 
-	"github.com/elastic/integrations-registry/util"
+	"github.com/elastic/package-registry/util"
 )
 
 func searchHandler(packagesBasePath, cacheTime string) func(w http.ResponseWriter, r *http.Request) {

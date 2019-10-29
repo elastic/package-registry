@@ -10,7 +10,7 @@ import (
 	"net/http"
 	"sort"
 
-	"github.com/elastic/integrations-registry/util"
+	"github.com/elastic/package-registry/util"
 )
 
 type Category struct {

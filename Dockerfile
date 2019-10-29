@@ -7,10 +7,10 @@ RUN \
          zip \
       && rm -rf /var/lib/apt/lists/*
 
-COPY ./ /go/src/github.com/elastic/integrations-registry
+COPY ./ /go/src/github.com/elastic/package-registry
 EXPOSE 8080
 
-WORKDIR "/go/src/github.com/elastic/integrations-registry"
+WORKDIR "/go/src/github.com/elastic/package-registry"
 
 ENV GO111MODULE=on
 RUN go mod vendor

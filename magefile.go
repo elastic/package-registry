@@ -159,5 +159,5 @@ func Clean() error {
 		return err
 	}
 
-	return os.Remove("integrations-registry")
+	return os.Remove("package-registry")
 }

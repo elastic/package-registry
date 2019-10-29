@@ -1,4 +1,4 @@
-module github.com/elastic/integrations-registry
+module github.com/elastic/package-registry
 
 go 1.12
 

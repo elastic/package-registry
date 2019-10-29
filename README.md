@@ -12,7 +12,7 @@ Endpoints:
 * `/package/{name}-{version}`: Info about a package
 * `/package/{name}-{version}.tar.gz`: Download a package
 
-Examples for each API endpoint can be found here: https://github.com/elastic/integrations-registry/tree/master/docs/api
+Examples for each API endpoint can be found here: https://github.com/elastic/package-registry/tree/master/docs/api
 
 The `/search` API endpoint has few additional query parameters. More might be added in the future, but for now these are:
 

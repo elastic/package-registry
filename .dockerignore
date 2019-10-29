@@ -1,7 +1,7 @@
 # Ingore all files which are not needed for building or running.
 
 .DS_Store
-integrations-registry
+package-registry
 
 .idea
 .git

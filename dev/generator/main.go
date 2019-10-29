@@ -15,7 +15,7 @@ import (
 
 	"github.com/magefile/mage/sh"
 
-	"github.com/elastic/integrations-registry/util"
+	"github.com/elastic/package-registry/util"
 )
 
 var (
