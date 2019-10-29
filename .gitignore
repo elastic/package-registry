@@ -1,5 +1,5 @@
 .DS_Store
-integrations-registry
+package-registry
 
 .idea
 build

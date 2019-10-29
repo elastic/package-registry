@@ -14,7 +14,7 @@ import (
 	"strconv"
 	"syscall"
 
-	"github.com/elastic/integrations-registry/util"
+	"github.com/elastic/package-registry/util"
 
 	ucfgYAML "github.com/elastic/go-ucfg/yaml"
 

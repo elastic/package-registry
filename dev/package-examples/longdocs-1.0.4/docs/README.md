@@ -9,7 +9,7 @@ This integration is considered to be in _beta_.
 
 ## Test a link
 
-This is a [link](https://github.com/elastic/integrations-registry) inside the docs.
+This is a [link](https://github.com/elastic/package-registry) inside the docs.
 
 ## Examples from a file
 

@@ -10,7 +10,7 @@ retriever: modernSCM(
 pipeline {
   agent { label 'docker && linux && immutable' }
   environment {
-    BASE_DIR="src/github.com/elastic/integrations-registry"
+    BASE_DIR="src/github.com/elastic/package-registry"
     JOB_GIT_CREDENTIALS = "f6c7695a-671e-4f4f-a331-acdce44ff9ba"
     PIPELINE_LOG_LEVEL='INFO'
   }
