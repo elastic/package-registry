@@ -46,9 +46,10 @@ type Requirement struct {
 }
 
 type Kibana struct {
-	Version   Version `yaml:"version,omitempty" json:"version,omitempty"`
-	minSemVer semver.Version
-	maxSemVer semver.Version
+	Version        Version `yaml:"version,omitempty" json:"version,omitempty"`
+	minSemVer      semver.Version
+	maxSemVerRange semver.Range
+	semVerRange semver.Range
 }
 
 type Version struct {
@@ -96,7 +97,7 @@ func NewPackage(basePath, packageName string) (*Package, error) {
 	}
 
 	if p.Requirement.Kibana.Version.Max != "" {
-		p.Requirement.Kibana.maxSemVer, err = semver.Parse(p.Requirement.Kibana.Version.Max)
+		p.Requirement.Kibana.maxSemVerRange, err = semver.ParseRange(p.Requirement.Kibana.Version.Max)
 		if err != nil {
 			return nil, errors.Wrapf(err, "invalid Kibana max version: %s", p.Requirement.Kibana.Version.Max)
 		}
@@ -144,17 +145,18 @@ func (p *Package) HasCategory(category string) bool {
 
 func (p *Package) HasKibanaVersion(version *semver.Version) bool {
 	if version != nil {
-		if p.Requirement.Kibana.Version.Max != "" {
-			if version.GT(p.Requirement.Kibana.maxSemVer) {
+		if p.Requirement.Kibana.Version.Min != "" {
+			if version.GT(p.Requirement.Kibana.minSemVer) {
 				return false
 			}
 		}
 
-		if p.Requirement.Kibana.Version.Min != "" {
-			if version.LT(p.Requirement.Kibana.minSemVer) {
+		if p.Requirement.Kibana.Version.Max != "" {
+			if p.Requirement.Kibana.maxSemVerRange(*version) {
 				return false
 			}
 		}
+
 	}
 	return true
 }
