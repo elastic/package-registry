@@ -1,6 +1,6 @@
 # EXPERIMENTAL: This is only for experimental use
 
-# Integrations registry
+# Elastic Package Registry (EPR)
 
 ## API
 
@@ -29,7 +29,7 @@ which are compatible with `7.3.0`.
 
 ## Package structure
 
-The structure of each integration package is standardised. It looks as following:
+The structure of each package is standardised. It looks as following:
 
 Files to be loaded into the Elastic Stack:
 
@@ -42,17 +42,17 @@ Service in the above can be `elasticsearch`, `kibana` or any other component in 
 Each package can contain 2 additional directories:
 
 * `docs`: Containing documentation files
-* `img`: Contains images for the integrations.
+* `img`: Contains images for the package.
 
 On the top level each package contains a `manifest.yml` which describes the package and contains meta information about the package. A basic manifest file looks as following:
 
 ```
 name: envoyproxy
-description: This is the envoyproxy integration.
+description: This is the envoyproxy package.
 version: 0.0.2
 ```
 
-The directory name of a package must be as following: `{integration-name}-{version}`. This makes it possible to store multiple versions of the same packages in one directory and already indicates the version before reading the manifest file. The tar packaged has the name convention with the name but added `.tar.gz` at the end.
+The directory name of a package must be as following: `{package-name}-{version}`. This makes it possible to store multiple versions of the same packages in one directory and already indicates the version before reading the manifest file. The tar packaged has the name convention with the name but added `.tar.gz` at the end.
 
 A full example with the directory structure looks as following:
 
@@ -84,7 +84,7 @@ More details about each asset can be found in ASSETS.md
 
 ## Architecture
 
-There are 2 main parts to the integration registry:
+There are 2 main parts to the package registry:
 
 * Generation of package and content
 * Serving content through a simple http endpoint
@@ -97,8 +97,8 @@ variations and will also get more complex over time.
 
 ## Directories
 
-* build/packages: Contains all the example integrations packages. These are only example integration packages used for development. Run `mage build` to generate these.
-* dev: The dev packages contains at the moment a template to build example integrations in automated way.
+* build/packages: Contains all the example packages. These are only example packages used for development. Run `mage build` to generate these.
+* dev: The dev packages contains at the moment a template to build example packages in automated way.
 * testdata/package: Contains the package for testing. This also serves as an example for a package.
 
 ## Running
