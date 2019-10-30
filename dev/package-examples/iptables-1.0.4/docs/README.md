@@ -15,7 +15,7 @@ a structure suitable for visualizing in Kibana.
 
 * Deploys dashboards for visualizing the log data.
 
-include::../include/running-modules.asciidoc[]
+Note: Missing link to how to run a model
 
 ## Example dashboard
 
@@ -39,11 +39,11 @@ it can also be configured to read from a file path. See the following example.
 ```
 
 
-include::../include/config-option-intro.asciidoc[]
+Note: Missing link for the general configs.
 
 ## `log` log fileset settings
 
-include::../include/var-paths.asciidoc[]
+Note: Missing link to the vars.
 
 **`var.syslog_host`**
 The interface to listen to UDP based syslog traffic. Defaults to `localhost`.
