@@ -46,9 +46,7 @@ type Requirement struct {
 }
 
 type Kibana struct {
-	Version        Version `yaml:"version,omitempty" json:"version,omitempty"`
-	minSemVer      semver.Version
-	maxSemVerRange semver.Range
+	Versions    string `yaml:"versions,omitempty" json:"versions,omitempty"`
 	semVerRange semver.Range
 }
 
@@ -96,17 +94,10 @@ func NewPackage(basePath, packageName string) (*Package, error) {
 		}
 	}
 
-	if p.Requirement.Kibana.Version.Max != "" {
-		p.Requirement.Kibana.maxSemVerRange, err = semver.ParseRange(p.Requirement.Kibana.Version.Max)
+	if p.Requirement.Kibana.Versions != "" {
+		p.Requirement.Kibana.semVerRange, err = semver.ParseRange(p.Requirement.Kibana.Versions)
 		if err != nil {
-			return nil, errors.Wrapf(err, "invalid Kibana max version: %s", p.Requirement.Kibana.Version.Max)
-		}
-	}
-
-	if p.Requirement.Kibana.Version.Min != "" {
-		p.Requirement.Kibana.minSemVer, err = semver.Parse(p.Requirement.Kibana.Version.Min)
-		if err != nil {
-			return nil, errors.Wrapf(err, "invalid Kibana min version: %s", p.Requirement.Kibana.Version.Min)
+			return nil, errors.Wrapf(err, "invalid Kibana versions range: %s", p.Requirement.Kibana.Versions)
 		}
 	}
 
@@ -145,18 +136,10 @@ func (p *Package) HasCategory(category string) bool {
 
 func (p *Package) HasKibanaVersion(version *semver.Version) bool {
 	if version != nil {
-		if p.Requirement.Kibana.Version.Min != "" {
-			if version.GT(p.Requirement.Kibana.minSemVer) {
-				return false
-			}
-		}
 
-		if p.Requirement.Kibana.Version.Max != "" {
-			if p.Requirement.Kibana.maxSemVerRange(*version) {
-				return false
-			}
+		if !p.Requirement.Kibana.semVerRange(*version) {
+			return false
 		}
-
 	}
 	return true
 }
@@ -232,17 +215,10 @@ func (p *Package) Validate() error {
 		return fmt.Errorf("no description set")
 	}
 
-	if p.Requirement.Kibana.Version.Max != "" {
-		_, err := semver.Parse(p.Requirement.Kibana.Version.Max)
+	if p.Requirement.Kibana.Versions != "" {
+		_, err := semver.ParseRange(p.Requirement.Kibana.Versions)
 		if err != nil {
-			return fmt.Errorf("invalid max kibana version: %s, %s", p.Requirement.Kibana.Version.Max, err)
-		}
-	}
-
-	if p.Requirement.Kibana.Version.Min != "" {
-		_, err := semver.Parse(p.Requirement.Kibana.Version.Min)
-		if err != nil {
-			return fmt.Errorf("invalid min Kibana version: %s, %s", p.Requirement.Kibana.Version.Min, err)
+			return fmt.Errorf("invalid max kibana version: %s, %s", p.Requirement.Kibana.Versions, err)
 		}
 	}
 

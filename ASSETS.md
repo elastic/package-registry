@@ -35,14 +35,11 @@ os.platform: [darwin, freebsd, linux, macos, openbsd, windows]
 
 requirement:
   elasticsearch:
-    version.min: 7.0
-    version.max: 7
+    versions: >7.0
   kibana:
-    version.min: 7.0
-  metricbeat:
-    version.min: 7.1
-  filebeat:
-    version.min: 7.2
+    versions: >7.0
+  agent:
+    versions: >7.1
 
 # The order of the items listed here is the order they show up in the package overview.
 screenshots:

@@ -7,10 +7,6 @@ release: ga
 
 requirement:
   kibana:
-    version.min: 7.1.0
-    version.max: 7.6.0
+    versions: ">7.1.0 <7.6.0"
   elasticsearch:
-    version.min: 7.0.1
-  auditbeat:
-    version.min: 7.0.0
-
+    versions: ">7.0.1"
