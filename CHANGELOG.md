@@ -4,12 +4,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/elastic/package-registry/compare/v0.1.0...master)
+## [Unreleased](https://github.com/elastic/package-registry/compare/v0.2.0...master)
+
+### Breaking changes
+
+### Bugfixes
+
+### Added
+
+### Deprecated
+
+### Known Issue
+
+
+## [0.2.0](https://github.com/elastic/package-registry/compare/v0.1.0...v0.2.0)
 
 ### Breaking changes
 
 * Package Kibana compatiblity version is changed to `"kibana": { "max": "1.2.3"}` [#134](https://github.com/elastic/integrations-registry/pull/134)
 * Rename `integrations-registry` to `package-registry`. [#138](https://github.com/elastic/integrations-registry/pull/138)
+* Remove `packages.path` config and replace it with `public_dir` config. [#118](https://github.com/elastic/integrations-registry/pull/118)
 
 ### Bugfixes
 
@@ -29,13 +43,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Make caching headers configurable per endpoint. [#116](https://github.com/elastic/integrations-registry/pull/116)
 * Add readme entry to package endpoint. [#128](https://github.com/elastic/integrations-registry/pull/128)
 
-### Deprecated
-
-### Known Issue
-
-### Breaking change
-
-* Remove `packages.path` config and replace it with `public_dir` config. [#](https://github.com/elastic/integrations-registry/pull/)
 
 ## [0.1.0]
 
