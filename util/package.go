@@ -218,7 +218,7 @@ func (p *Package) Validate() error {
 	if p.Requirement.Kibana.Versions != "" {
 		_, err := semver.ParseRange(p.Requirement.Kibana.Versions)
 		if err != nil {
-			return fmt.Errorf("invalid max kibana version: %s, %s", p.Requirement.Kibana.Versions, err)
+			return fmt.Errorf("invalid kibana versions: %s, %s", p.Requirement.Kibana.Versions, err)
 		}
 	}
 

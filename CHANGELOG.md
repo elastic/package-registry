@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Breaking changes
 
+* Change `requirements.kibana.version.min/max` to `requirements.kibana.versions: {semver-range}`
+
 ### Bugfixes
 
 ### Added
