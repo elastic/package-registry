@@ -9,7 +9,7 @@ The Nginx metricsets were tested with Nginx 1.9 and are expected to work with al
 
 ### Inputs
 
-{{> ../dataset/access/docs/README.md }}
+Inputs have to be copied here directly.
 
 ## Dashboard
 
