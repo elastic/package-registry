@@ -182,22 +182,19 @@ func (p *Package) LoadAssets(packagePath string) (err error) {
 		return err
 	}
 
-	assets, err := filepath.Glob("*")
-	if err != nil {
-		return err
+	var assets []string
+	var pattern = "*"
+	// Iterates 6 levels deep through the tree to find assets
+	// If we need more complex matching a library like https://github.com/bmatcuk/doublestar
+	// could be used but the below works and is pretty simple.
+	for n := 0; n <= 6; n++ {
+		a, err := filepath.Glob(pattern)
+		if err != nil {
+			return err
+		}
+		assets = append(assets, a...)
+		pattern = pattern + "/*"
 	}
-
-	a, err := filepath.Glob("*/*")
-	if err != nil {
-		return err
-	}
-	assets = append(assets, a...)
-
-	a, err = filepath.Glob("*/*/*")
-	if err != nil {
-		return err
-	}
-	assets = append(assets, a...)
 
 	for _, a := range assets {
 		// Unfortunately these files keep sneaking in
