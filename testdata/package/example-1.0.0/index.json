@@ -35,6 +35,7 @@
     "/package/example-1.0.0/docs/README.md",
     "/package/example-1.0.0/img/icon.png",
     "/package/example-1.0.0/img/kibana-envoyproxy.jpg",
+    "/package/example-1.0.0/dataset/foo/manifest.yml",
     "/package/example-1.0.0/kibana/dashboard/0c610510-5cbd-11e9-8477-077ec9664dbd.json",
     "/package/example-1.0.0/kibana/index-pattern/filebeat-*.json",
     "/package/example-1.0.0/kibana/visualization/0a994af0-5c9d-11e9-8477-077ec9664dbd.json",
