@@ -182,18 +182,12 @@ func (p *Package) LoadAssets(packagePath string) (err error) {
 		return err
 	}
 
-	var assets []string
-	var pattern = "*"
-	// Iterates 6 levels deep through the tree to find assets
+	// Iterates recursively through all the levels to find assets
 	// If we need more complex matching a library like https://github.com/bmatcuk/doublestar
 	// could be used but the below works and is pretty simple.
-	for n := 0; n <= 6; n++ {
-		a, err := filepath.Glob(pattern)
-		if err != nil {
-			return err
-		}
-		assets = append(assets, a...)
-		pattern = pattern + "/*"
+	assets, err := collectAssets("*")
+	if err != nil {
+		return err
 	}
 
 	for _, a := range assets {
@@ -215,6 +209,21 @@ func (p *Package) LoadAssets(packagePath string) (err error) {
 		p.Assets = append(p.Assets, a)
 	}
 	return nil
+}
+
+func collectAssets(pattern string) ([]string, error) {
+	assets, err := filepath.Glob(pattern)
+	if err != nil {
+		return nil, err
+	}
+	if len(assets) != 0 {
+		a, err := collectAssets(pattern + "/*")
+		if err != nil {
+			return nil, err
+		}
+		return append(assets, a...), nil
+	}
+	return nil, nil
 }
 
 func (p *Package) Validate() error {
