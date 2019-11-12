@@ -182,22 +182,13 @@ func (p *Package) LoadAssets(packagePath string) (err error) {
 		return err
 	}
 
-	assets, err := filepath.Glob("*")
+	// Iterates recursively through all the levels to find assets
+	// If we need more complex matching a library like https://github.com/bmatcuk/doublestar
+	// could be used but the below works and is pretty simple.
+	assets, err := collectAssets("*")
 	if err != nil {
 		return err
 	}
-
-	a, err := filepath.Glob("*/*")
-	if err != nil {
-		return err
-	}
-	assets = append(assets, a...)
-
-	a, err = filepath.Glob("*/*/*")
-	if err != nil {
-		return err
-	}
-	assets = append(assets, a...)
 
 	for _, a := range assets {
 		// Unfortunately these files keep sneaking in
@@ -218,6 +209,21 @@ func (p *Package) LoadAssets(packagePath string) (err error) {
 		p.Assets = append(p.Assets, a)
 	}
 	return nil
+}
+
+func collectAssets(pattern string) ([]string, error) {
+	assets, err := filepath.Glob(pattern)
+	if err != nil {
+		return nil, err
+	}
+	if len(assets) != 0 {
+		a, err := collectAssets(pattern + "/*")
+		if err != nil {
+			return nil, err
+		}
+		return append(assets, a...), nil
+	}
+	return nil, nil
 }
 
 func (p *Package) Validate() error {

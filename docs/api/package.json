@@ -35,11 +35,7 @@
     "/package/example-1.0.0/docs/README.md",
     "/package/example-1.0.0/img/icon.png",
     "/package/example-1.0.0/img/kibana-envoyproxy.jpg",
-    "/package/example-1.0.0/elasticsearch/ingest-pipeline/pipeline-entry.json",
-    "/package/example-1.0.0/elasticsearch/ingest-pipeline/pipeline-http.json",
-    "/package/example-1.0.0/elasticsearch/ingest-pipeline/pipeline-json.json",
-    "/package/example-1.0.0/elasticsearch/ingest-pipeline/pipeline-plaintext.json",
-    "/package/example-1.0.0/elasticsearch/ingest-pipeline/pipeline-tcp.json",
+    "/package/example-1.0.0/dataset/foo/manifest.yml",
     "/package/example-1.0.0/kibana/dashboard/0c610510-5cbd-11e9-8477-077ec9664dbd.json",
     "/package/example-1.0.0/kibana/index-pattern/filebeat-*.json",
     "/package/example-1.0.0/kibana/visualization/0a994af0-5c9d-11e9-8477-077ec9664dbd.json",
@@ -47,6 +43,11 @@
     "/package/example-1.0.0/kibana/visualization/38f96190-5c99-11e9-8477-077ec9664dbd.json",
     "/package/example-1.0.0/kibana/visualization/7e4084e0-5c99-11e9-8477-077ec9664dbd.json",
     "/package/example-1.0.0/kibana/visualization/80844540-5c97-11e9-8477-077ec9664dbd.json",
-    "/package/example-1.0.0/kibana/visualization/ab48c3f0-5ca6-11e9-8477-077ec9664dbd.json"
+    "/package/example-1.0.0/kibana/visualization/ab48c3f0-5ca6-11e9-8477-077ec9664dbd.json",
+    "/package/example-1.0.0/dataset/foo/elasticsearch/ingest-pipeline/pipeline-entry.json",
+    "/package/example-1.0.0/dataset/foo/elasticsearch/ingest-pipeline/pipeline-http.json",
+    "/package/example-1.0.0/dataset/foo/elasticsearch/ingest-pipeline/pipeline-json.json",
+    "/package/example-1.0.0/dataset/foo/elasticsearch/ingest-pipeline/pipeline-plaintext.json",
+    "/package/example-1.0.0/dataset/foo/elasticsearch/ingest-pipeline/pipeline-tcp.json"
   ]
 }
