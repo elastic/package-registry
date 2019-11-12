@@ -3,6 +3,7 @@ title: IPTable logs
 # Needs to describe the type of this input
 type: logs
 ingest_pipline: pipeline
+default: true
 
 vars:
   - name: paths
