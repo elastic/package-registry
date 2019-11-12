@@ -56,7 +56,7 @@ func Build() error {
 func BuildRootFile() error {
 	rootData := map[string]string{
 		"version":      "0.2.0",
-		"service.name": "integration-registry",
+		"service.name": "package-registry",
 	}
 
 	return writeJsonFile(rootData, publicDir+"/index.json")
