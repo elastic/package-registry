@@ -15,11 +15,12 @@ The `manifest.yml` contains the information about the pacakge. It can contain th
 * version: Version of the package (required)
 * categories: List of categories this package falls under. The available categories still need to be defined.
 * requirement: Requirement is an object that contains all the requirements for the stack versions of this package. Inside it contains an entry for each possible service which then can contain `version.min` and `version.max`. Other requirements might be added here like dependency on a specific Elasticsearch plugin / ingest pipeline if needed. In the past this was needed for geo and user_agent as they were not installed by default.
-
+* format_version: The package format version this package was built on top of. By default this is for now always 1.0.0.
 
 An example manifest might look as following:
 
 ```
+format_version: 1.0.0
 name: envoyproxy
 title: Envoy Proxy
 description: This is the envoyproxy package.

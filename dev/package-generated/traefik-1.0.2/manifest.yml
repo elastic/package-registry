@@ -1,3 +1,5 @@
+format_version: 1.0.0
+
 name: traefik
 description: Traefik SQL Logs and metrics
 title: Traefik

@@ -1,3 +1,5 @@
+format_version: 1.0.0
+
 name: example
 description: This is the example integration
 version: 1.0.0
@@ -23,3 +25,4 @@ screenshots:
     title: IP Tables Ubiquity Dashboard
     size: 1492x1464
     type: image/png
+

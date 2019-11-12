@@ -1,3 +1,5 @@
+format_version: 1.0.0
+
 name: mongodb
 description: MongoDB Logs and metrics
 

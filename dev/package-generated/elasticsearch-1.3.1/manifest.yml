@@ -1,3 +1,5 @@
+format_version: 1.0.0
+
 name: elasticsearch
 description: Elasticsearch Logs and metrics
 

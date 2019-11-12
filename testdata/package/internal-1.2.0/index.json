@@ -12,5 +12,6 @@
     "/package/internal-1.2.0/index.json",
     "/package/internal-1.2.0/manifest.yml"
   ],
-  "internal": true
+  "internal": true,
+  "format_version": "1.0.0"
 }

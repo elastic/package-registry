@@ -1,3 +1,5 @@
+format_version: 1.0.0
+
 name: system
 description: System SQL Logs and metrics
 title: System
