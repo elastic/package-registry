@@ -104,7 +104,12 @@ func getRouter(config Config, packagesBasePath string) *mux.Router {
 
 	router.HandleFunc("/search", searchHandler(packagesBasePath, searchCacheTime))
 	router.HandleFunc("/categories", categoriesHandler(packagesBasePath, categoriesCacheTime))
+	router.HandleFunc("/health", healthHandler)
 	router.PathPrefix("/").HandlerFunc(catchAll(config.PublicDir, catchAllCacheTime))
 
 	return router
 }
+
+// healthHandler is used for Docker/K8s deployments. It returns 200 if the service is live
+// In addition ?ready=true can be used for a ready request. Currently both are identical.
+func healthHandler(w http.ResponseWriter, r *http.Request) {}
