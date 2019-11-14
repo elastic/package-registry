@@ -1,0 +1,5 @@
+title: Log Yaml pipeline
+
+type: logs
+
+ingest_pipline: pipeline-entry
