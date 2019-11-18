@@ -42,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Add healthcheck to docker file. [#115](https://github.com/elastic/integrations-registry/pull/115)
 * Make caching headers configurable per endpoint. [#116](https://github.com/elastic/integrations-registry/pull/116)
 * Add readme entry to package endpoint. [#128](https://github.com/elastic/integrations-registry/pull/128)
+* Add `/health` and `/health?ready=1` endpoint for healthcheck. [#151](https://github.com/elastic/integrations-registry/pull/151)
 
 
 ## [0.1.0]
