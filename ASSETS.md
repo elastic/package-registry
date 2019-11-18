@@ -276,6 +276,9 @@ type: metric
 # Each input can be in its own release status
 release: beta
 
+# If set to true, this will be enabled by default in the input selection
+default: true
+
 # Defines variables which are used in the config files and can be configured by the user / replaced by the package manager.
 vars:
   -

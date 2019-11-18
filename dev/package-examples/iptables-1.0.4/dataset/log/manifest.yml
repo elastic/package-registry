@@ -4,6 +4,9 @@ title: IPTable logs
 type: logs
 ingest_pipline: pipeline
 
+# If set to true, this will be enabled by default in the input selection
+default: true
+
 vars:
   - name: paths
     default:
