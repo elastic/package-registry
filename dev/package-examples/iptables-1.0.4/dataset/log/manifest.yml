@@ -3,6 +3,8 @@ title: IPTable logs
 # Needs to describe the type of this input
 type: logs
 ingest_pipline: pipeline
+
+# If set to true, this will be enabled by default in the input selection
 default: true
 
 vars:
