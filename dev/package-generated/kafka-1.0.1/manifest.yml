@@ -7,10 +7,9 @@ release: beta
 
 requirement:
   kibana:
-    version.min: 6.7.0
-    version.max: 7.6.0
+    versions: ">6.7.0 <=7.6.0"
   elasticsearch:
-    version.min: 7.0.1
+    versions: ">7.0.1"
 
 icons:
   - src: "/img/icon.svg"

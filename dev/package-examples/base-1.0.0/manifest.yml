@@ -18,7 +18,7 @@ type: integration
 requirement:
   elasticsearch:
     # Requires ILM which was released in 6.6.
-    version.min: 6.6.0
+    versions: ">6.6.0"
 
 # No icons
 icons:

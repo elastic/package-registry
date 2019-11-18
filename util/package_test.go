@@ -35,30 +35,12 @@ var packageTests = []struct {
 			Title: &title,
 			Requirement: Requirement{
 				Kibana{
-					Version: Version{
-						Min: "1.2.3",
-						Max: "bar",
-					},
+					Versions: "bar",
 				},
 			},
 		},
 		false,
-		"invalid Kibana max version",
-	},
-	{
-		Package{
-			Title: &title,
-			Requirement: Requirement{
-				Kibana{
-					Version: Version{
-						Min: "foo",
-						Max: "4.5.6",
-					},
-				},
-			},
-		},
-		false,
-		"invalid Kibana min version",
+		"invalid Kibana version",
 	},
 	{
 		Package{
@@ -66,10 +48,7 @@ var packageTests = []struct {
 			Description: "my description",
 			Requirement: Requirement{
 				Kibana{
-					Version: Version{
-						Min: "1.2.3",
-						Max: "4.5.6",
-					},
+					Versions: ">=1.2.3 <=4.5.6",
 				},
 			},
 			Categories: []string{"metrics", "logs", "foo"},

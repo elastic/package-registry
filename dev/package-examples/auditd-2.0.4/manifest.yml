@@ -7,12 +7,11 @@ release: ga
 
 requirement:
   kibana:
-    version.min: 7.1.0
-    version.max: 7.6.0
+    versions: ">=7.1.0 <8.0.0"
   elasticsearch:
-    version.min: 7.0.1
+    versions: ">7.0.1"
   auditbeat:
-    version.min: 7.0.0
+    versions: ">7.0.0"
 
 screenshots:
   - src: /img/screenshots/auditbeat-file-integrity-dashboard.png

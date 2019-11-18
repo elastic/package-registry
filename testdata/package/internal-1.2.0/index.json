@@ -6,9 +6,7 @@
   "type": "integration",
   "categories": [],
   "requirement": {
-    "kibana": {
-      "version": {}
-    }
+    "kibana": {}
   },
   "assets": [
     "/package/internal-1.2.0/index.json",
