@@ -65,12 +65,15 @@ func jsonHeader(w http.ResponseWriter) {
 func sendHeader(w http.ResponseWriter, r *http.Request) {
 	extension := filepath.Ext(r.RequestURI)
 
+	fmt.Println(extension)
 	switch extension {
 	// No extension is always json
 	case "":
 		w.Header().Set("Content-Type", "application/json")
 	case ".asciidoc":
 		w.Header().Set("Content-Type", "text/asciidoc; charset=UTF-8")
+	case ".gz":
+		w.Header().Set("Content-Type", "application/gzip")
 	case ".jpg":
 	case ".jpeg":
 		w.Header().Set("Content-Type", "image/jpeg")
