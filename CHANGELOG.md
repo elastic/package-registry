@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
-* Fix header for `tar.gz` files from `application/json` to `application/gzip`. [#](https://github.com/elastic/integrations-registry/pull/)
+* Fix header for `tar.gz` files from `application/json` to `application/gzip`. [#154](https://github.com/elastic/integrations-registry/pull/154)
 
 ### Added
 
