@@ -65,7 +65,6 @@ func jsonHeader(w http.ResponseWriter) {
 func sendHeader(w http.ResponseWriter, r *http.Request) {
 	extension := filepath.Ext(r.RequestURI)
 
-	fmt.Println(extension)
 	switch extension {
 	// No extension is always json
 	case "":
