@@ -140,3 +140,57 @@ docker run -i -t -p 8080:8080 $(docker images -q integrations_registry:latest)
 ### Healthcheck
 
 For Docker / Kubernetes the `/` endpoint can be queried. As soon as `/` returns a 200, the service is ready.
+
+
+# Definitions
+
+## Package
+
+A package is a list of assets for the Elastic stack that belong together. This can be ingest pipelines,
+data sources, dashboards etc. All of these are defined above.
+
+## Input
+
+An input is the configuration that is sent to Beats / Agent to gather data. The input contains the infromation
+on how to gather the data (e.g. log file) and where to send it (index + ingest pipeline). An example for a log
+file might look as following:
+
+```
+inputs:
+  - type: log
+    paths: "/var/log/*.log"
+    pipeline: log-pipeline
+```
+
+A similar example for docker metrics can look as below. But what we have below is the definition of 2 inputs, one 
+for container metrics, one for cpu metrics:
+
+```
+  - type: metric/docker
+    metricsets:
+      - "container"
+      - "cpu"
+    hosts: ["unix:///var/run/docker.sock"]
+    period: 10s
+    pipeline: metric-docker-pipeline
+```
+
+## Data Source
+
+A data source is a group of inputs. Each data source has a unique identifier and a name attached to it. A data
+source for Apache could look as following:
+
+```
+datasource.name: apache
+datasource.name: 4494ee18-2a5a-4212-afa7-9bbe9ade6bfc
+inputs:
+  - type: log
+    paths: "/var/log/apache/access.log"
+    pipeline: apache-access-pipeline
+  - type: metric/apache
+    metricsets:
+      - "stats"
+    period: 10s
+```
+
+The above is more a descriptive example for a data source and not necessarly on how it will be stored.
