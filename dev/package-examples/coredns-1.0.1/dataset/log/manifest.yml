@@ -3,7 +3,7 @@ release: ga
 
 type: logs
 
-ingest_pipline: pipeline-entry
+ingest_pipeline: pipeline-entry
 
 vars:
   - name: paths
