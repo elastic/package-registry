@@ -146,6 +146,8 @@ For Docker / Kubernetes the `/` endpoint can be queried. As soon as `/` returns 
 
 **NOTE: This is not fully up-to-date anymore.**
 
+TODO: Add definition for dataset
+
 ## Package
 
 A package is a list of assets for the Elastic stack that belong together. This can be ingest pipelines,
