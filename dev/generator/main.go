@@ -13,6 +13,8 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/elastic/beats/libbeat/common"
+
 	"github.com/magefile/mage/sh"
 
 	"github.com/elastic/package-registry/util"
@@ -141,6 +143,37 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 	if err != nil {
 		return err
 	}
+
+	// Get all Kibana files
+	savedObjects1, err := filepath.Glob(p.GetPath() + "/dataset/*/kibana/dashboard/*")
+	if err != nil {
+		return err
+	}
+	savedObjects2, err := filepath.Glob(p.GetPath() + "/kibana/dashboard/*")
+	if err != nil {
+		return err
+	}
+	savedObjects := append(savedObjects1, savedObjects2...)
+
+	// Run each file through the saved object encoder
+	for _, file := range savedObjects {
+
+		data, err := ioutil.ReadFile(file)
+		if err != nil {
+			return err
+		}
+		output, err := encodedSavedObject(data)
+		if err != nil {
+			return err
+		}
+
+		err = ioutil.WriteFile(file, []byte(output), 0644)
+		if err != nil {
+			return err
+		}
+
+	}
+
 	return nil
 }
 
@@ -151,4 +184,41 @@ func writeJsonFile(v interface{}, path string) error {
 	}
 
 	return ioutil.WriteFile(path, data, 0644)
+}
+
+var (
+	fieldsToEncode = []string{
+		"attributes.uiStateJSON",
+		"attributes.visState",
+		"attributes.optionsJSON",
+		"attributes.panelsJSON",
+		"attributes.kibanaSavedObjectMeta.searchSourceJSON",
+	}
+)
+
+// encodeSavedObject encodes all the fields inside a saved object
+// which are stored in encoded JSON in Kibana.
+// The reason is that for versioning it is much nicer to have the full
+// json so only on packaging this is changed.
+func encodedSavedObject(data []byte) (string, error) {
+
+	savedObject := common.MapStr{}
+	json.Unmarshal(data, &savedObject)
+
+	for _, v := range fieldsToEncode {
+		out, err := savedObject.GetValue(v)
+		// This means the key did not exists, no conversion needed
+		if err != nil {
+			continue
+		}
+
+		// Marshal the value to encode it properly
+		r, err := json.Marshal(&out)
+		if err != nil {
+			return "", err
+		}
+		savedObject.Put(v, string(r))
+	}
+
+	return savedObject.StringToPrint(), nil
 }

@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Breaking changes
 
 * Change `requirements.kibana.version.min/max` to `requirements.kibana.versions: {semver-range}`
+* Encode Kibana objects during packaging. [#157](https://github.com/elastic/integrations-registry/pull/157)
 
 ### Bugfixes
 
