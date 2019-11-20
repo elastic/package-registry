@@ -2,4 +2,4 @@ title: Foo
 
 # Needs to describe the type of this input
 type: logs
-ingest_pipline: pipeline-entry
+ingest_pipeline: pipeline-entry

@@ -6,7 +6,7 @@ release: beta
 type: logs
 
 # The ingest pipeline which should be used.
-ingest_pipline: default
+ingest_pipeline: default
 
 vars:
   - name: paths
