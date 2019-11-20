@@ -144,10 +144,12 @@ For Docker / Kubernetes the `/` endpoint can be queried. As soon as `/` returns 
 
 # Definitions
 
+**NOTE: This is not fully up-to-date anymore.**
+
 ## Package
 
 A package is a list of assets for the Elastic stack that belong together. This can be ingest pipelines,
-data sources, dashboards etc. All of these are defined above.
+data sources, dashboards etc. All the assets which can exist in a package are defined in ASSETS.md.
 
 ## Input
 
