@@ -7,6 +7,7 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/elastic/go-ucfg v0.7.0
 	github.com/gorilla/mux v1.7.2
+	github.com/jstemmer/go-junit-report v0.9.1 // indirect
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/magefile/mage v1.8.0
 	github.com/pkg/errors v0.8.1
