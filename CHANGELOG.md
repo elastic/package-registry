@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Add `/health` and `/health?ready=1` endpoint for healthcheck. [#151](https://github.com/elastic/integrations-registry/pull/151)
 * Add `default` config to dataset manifest. [#148](https://github.com/elastic/integrations-registry/pull/148)
+* Update Golang version to 1.13.4. [#159](https://github.com/elastic/integrations-registry/pull/159)
 
 ### Deprecated
 
