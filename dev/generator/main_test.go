@@ -7,8 +7,6 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-
-	"github.com/elastic/beats/libbeat/common"
 )
 
 var (
@@ -22,7 +20,7 @@ var (
 )
 
 // DecodeExported decodes an exported dashboard
-//func EncodeKibanaAssets(result common.MapStr) common.MapStr {
+//func EncodeKibanaAssets(result MapStr) MapStr {
 
 func TestFoo(t *testing.T) { // Read file from json
 	file := "../package-examples/auditd-2.0.4/kibana/dashboard/7de391b0-c1ca-11e7-8995-936807a28b16-ecs.json"
@@ -39,7 +37,7 @@ func encodedSavedObject(file string) (string, error) {
 		return "", err
 	}
 
-	savedObject := common.MapStr{}
+	savedObject := MapStr{}
 	json.Unmarshal(data, &savedObject)
 
 	for _, v := range responseToDecode {
