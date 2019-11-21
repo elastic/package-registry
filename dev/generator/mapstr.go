@@ -15,6 +15,10 @@
 // specific language governing permissions and limitations
 // under the License.
 
+// WARNING: This code is copied from https://github.com/elastic/beats/blob/master/libbeat/common/mapstr.go
+// This was done to not have to import the full common package and all its dependencies
+// Not needed methods / variables were removed, but no changes made to the logic.
+
 package main
 
 import (
