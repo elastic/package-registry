@@ -13,8 +13,6 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/elastic/beats/libbeat/common"
-
 	"github.com/magefile/mage/sh"
 
 	"github.com/elastic/package-registry/util"
@@ -202,7 +200,7 @@ var (
 // json so only on packaging this is changed.
 func encodedSavedObject(data []byte) (string, error) {
 
-	savedObject := common.MapStr{}
+	savedObject := MapStr{}
 	json.Unmarshal(data, &savedObject)
 
 	for _, v := range fieldsToEncode {
