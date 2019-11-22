@@ -317,10 +317,6 @@ vars:
     # This is the html input type?
     type: password
 
-
-
-```
-
 requirements:
   # Defines on which platform is input is available
   platform: ["linux", "freebsd"]
@@ -331,7 +327,6 @@ requirements:
       plugin: ingest-user-agent
     - name: geoip
       plugin: ingest-geoip
-
 ```
 
 **fields**
