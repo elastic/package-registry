@@ -143,11 +143,11 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 	}
 
 	// Get all Kibana files
-	savedObjects1, err := filepath.Glob(p.GetPath() + "/dataset/*/kibana/dashboard/*")
+	savedObjects1, err := filepath.Glob(p.GetPath() + "/dataset/*/kibana/*/*")
 	if err != nil {
 		return err
 	}
-	savedObjects2, err := filepath.Glob(p.GetPath() + "/kibana/dashboard/*")
+	savedObjects2, err := filepath.Glob(p.GetPath() + "/kibana/*/*")
 	if err != nil {
 		return err
 	}
@@ -169,7 +169,6 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 		if err != nil {
 			return err
 		}
-
 	}
 
 	return nil
