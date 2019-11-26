@@ -74,7 +74,18 @@ func writeJsonFile(v interface{}, path string) error {
 func Check() error {
 	Format()
 
-	err := os.RemoveAll("testdata/public")
+	publicDir = "./testdata/public"
+	err := os.RemoveAll(publicDir)
+	if err != nil {
+		return err
+	}
+
+	err = os.MkdirAll(publicDir, 0755)
+	if err != nil {
+		return err
+	}
+
+	err = BuildRootFile()
 	if err != nil {
 		return err
 	}

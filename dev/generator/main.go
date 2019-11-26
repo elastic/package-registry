@@ -130,6 +130,11 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 		return err
 	}
 
+	err = p.LoadDataSets(p.GetPath())
+	if err != nil {
+		return err
+	}
+
 	err = writeJsonFile(p, p.GetPath()+"/index.json")
 	if err != nil {
 		return err

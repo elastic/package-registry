@@ -1,4 +1,4 @@
 {
-    "service.name": "package-registry",
-    "version": "0.2.0"
+  "service.name": "package-registry",
+  "version": "0.2.0"
 }
