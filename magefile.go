@@ -74,8 +74,13 @@ func writeJsonFile(v interface{}, path string) error {
 func Check() error {
 	Format()
 
+	err := os.RemoveAll("testdata/public")
+	if err != nil {
+		return err
+	}
+
 	// Regenerates test data to make sure it stays the same
-	sh.RunV("go", "run", "./dev/generator/", "-sourceDir=testdata/package", "-publicDir=testdata", "-copy=false", "-tarGz=false")
+	sh.RunV("go", "run", "./dev/generator/", "-sourceDir=testdata/package", "-publicDir=testdata/public", "-copy=true", "-tarGz=false")
 
 	sh.RunV("git", "update-index", "--refresh")
 	sh.RunV("git", "diff-index", "--exit-code", "HEAD", "--")
