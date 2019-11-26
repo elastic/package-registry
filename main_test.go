@@ -23,7 +23,8 @@ var (
 
 func TestEndpoints(t *testing.T) {
 
-	packagesBasePath := "./testdata/package"
+	publicPath := "./testdata/public"
+	packagesBasePath := publicPath + "/package"
 
 	tests := []struct {
 		endpoint string
@@ -31,7 +32,7 @@ func TestEndpoints(t *testing.T) {
 		file     string
 		handler  func(w http.ResponseWriter, r *http.Request)
 	}{
-		{"/", "", "info.json", catchAll("./testdata", testCacheTime)},
+		{"/", "", "info.json", catchAll(publicPath, testCacheTime)},
 		{"/search", "/search", "search.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/categories", "/categories", "categories.json", categoriesHandler(packagesBasePath, testCacheTime)},
 		{"/search?kibana=6.5.2", "/search", "search-kibana652.json", searchHandler(packagesBasePath, testCacheTime)},
@@ -40,7 +41,7 @@ func TestEndpoints(t *testing.T) {
 		{"/search?category=logs", "/search", "search-category-logs.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/search?package=example", "/search", "search-package-example.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/search?internal=true", "/search", "search-package-internal.json", searchHandler(packagesBasePath, testCacheTime)},
-		{"/package/example-1.0.0", "", "package.json", catchAll("./testdata/public", testCacheTime)},
+		{"/package/example-1.0.0", "", "package.json", catchAll(publicPath, testCacheTime)},
 	}
 
 	for _, test := range tests {
