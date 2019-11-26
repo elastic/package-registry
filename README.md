@@ -125,6 +125,11 @@ Afterwards the service can be started:
 **Example**
 An example registry is running on `http://integrations-registry.app.elstc.co/`. This is updated from time to time to be in sync with master.
 
+Two additional enpoints are available:
+
+* https://epr.elastic.co (this will be production)
+* https://epr.ea-web.elastic.dev/ (this will be staging)
+
 **General**
 ```
 docker build .
