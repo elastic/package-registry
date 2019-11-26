@@ -14,7 +14,7 @@ import (
 
 	"github.com/blang/semver"
 
-	"github.com/elastic/go-ucfg"
+	ucfg "github.com/elastic/go-ucfg"
 	"github.com/elastic/go-ucfg/yaml"
 )
 
@@ -26,23 +26,24 @@ var CategoryTitles = map[string]string{
 }
 
 type Package struct {
-	Name          string  `yaml:"name" json:"name"`
-	Title         *string `yaml:"title,omitempty" json:"title,omitempty"`
-	Version       string  `yaml:"version" json:"version"`
-	Readme        *string `yaml:"readme,omitempty" json:"readme,omitempty"`
+	Name          string  `config:"name" json:"name"`
+	Title         *string `config:"title,omitempty" json:"title,omitempty"`
+	Version       string  `config:"version" json:"version"`
+	Readme        *string `config:"readme,omitempty" json:"readme,omitempty"`
 	versionSemVer semver.Version
-	Description   string      `yaml:"description" json:"description"`
-	Type          string      `yaml:"type" json:"type"`
-	Categories    []string    `yaml:"categories" json:"categories"`
-	Requirement   Requirement `yaml:"requirement" json:"requirement"`
-	Screenshots   []Image     `yaml:"screenshots,omitempty" json:"screenshots,omitempty"`
-	Icons         []Image     `yaml:"icons,omitempty" json:"icons,omitempty"`
-	Assets        []string    `yaml:"assets,omitempty" json:"assets,omitempty"`
-	Internal      bool        `yaml:"internal,omitempty" json:"internal,omitempty"`
+	Description   string      `config:"description" json:"description"`
+	Type          string      `config:"type" json:"type"`
+	Categories    []string    `config:"categories" json:"categories"`
+	Requirement   Requirement `config:"requirement" json:"requirement"`
+	Screenshots   []Image     `config:"screenshots,omitempty" json:"screenshots,omitempty"`
+	Icons         []Image     `config:"icons,omitempty" json:"icons,omitempty"`
+	Assets        []string    `config:"assets,omitempty" json:"assets,omitempty"`
+	Internal      bool        `config:"internal,omitempty" json:"internal,omitempty"`
+	FormatVersion string      `config:"format_version" json:"format_version"`
 }
 
 type Requirement struct {
-	Kibana Kibana `yaml:"kibana" json:"kibana"`
+	Kibana Kibana `config:"kibana" json:"kibana"`
 }
 
 type Kibana struct {
@@ -51,15 +52,15 @@ type Kibana struct {
 }
 
 type Version struct {
-	Min string `yaml:"min,omitempty" json:"min,omitempty"`
-	Max string `yaml:"max,omitempty" json:"max,omitempty"`
+	Min string `config:"min,omitempty" json:"min,omitempty"`
+	Max string `config:"max,omitempty" json:"max,omitempty"`
 }
 
 type Image struct {
-	Src   string `yaml:"src" json:"src,omitempty"`
-	Title string `yaml:"title" json:"title,omitempty"`
-	Size  string `yaml:"size" json:"size,omitempty"`
-	Type  string `yaml:"type" json:"type,omitempty"`
+	Src   string `config:"src" json:"src,omitempty"`
+	Title string `config:"title" json:"title,omitempty"`
+	Size  string `config:"size" json:"size,omitempty"`
+	Type  string `config:"type" json:"type,omitempty"`
 }
 
 func (i Image) getPath(p *Package) string {
@@ -71,6 +72,9 @@ func (i Image) getPath(p *Package) string {
 func NewPackage(basePath, packageName string) (*Package, error) {
 
 	manifest, err := yaml.NewConfigWithFile(basePath+"/"+packageName+"/manifest.yml", ucfg.PathSep("."))
+	if err != nil {
+		return nil, err
+	}
 
 	var p = &Package{}
 	err = manifest.Unpack(p)
@@ -212,6 +216,15 @@ func collectAssets(pattern string) ([]string, error) {
 }
 
 func (p *Package) Validate() error {
+
+	if p.FormatVersion == "" {
+		return fmt.Errorf("no format_version set: %v", p)
+	}
+
+	_, err := semver.New(p.FormatVersion)
+	if err != nil {
+		return fmt.Errorf("invalid package version: %s, %s", p.FormatVersion, err)
+	}
 
 	if p.Title == nil || *p.Title == "" {
 		return fmt.Errorf("no title set")

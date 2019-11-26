@@ -1,3 +1,5 @@
+format_version: 1.0.0
+
 name: apache
 description: Apache logs and metrics
 

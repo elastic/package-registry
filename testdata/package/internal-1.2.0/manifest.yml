@@ -1,3 +1,5 @@
+format_version: 1.0.0
+
 name: internal
 description: Internal package
 version: 1.2.0

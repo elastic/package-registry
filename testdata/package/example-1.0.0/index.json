@@ -47,5 +47,6 @@
     "/package/example-1.0.0/dataset/foo/elasticsearch/ingest-pipeline/pipeline-json.json",
     "/package/example-1.0.0/dataset/foo/elasticsearch/ingest-pipeline/pipeline-plaintext.json",
     "/package/example-1.0.0/dataset/foo/elasticsearch/ingest-pipeline/pipeline-tcp.json"
-  ]
+  ],
+  "format_version": "1.0.0"
 }

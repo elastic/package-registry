@@ -1,3 +1,5 @@
+format_version: 1.0.0
+
 name: example
 title: Example
 description: This is the example integration.

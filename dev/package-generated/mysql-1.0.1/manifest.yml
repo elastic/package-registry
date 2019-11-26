@@ -1,3 +1,5 @@
+format_version: 1.0.0
+
 name: mysql
 description: Mysql Logs and metrics
 title: MySQL
