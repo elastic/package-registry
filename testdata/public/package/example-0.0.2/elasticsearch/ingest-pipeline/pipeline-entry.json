@@ -4,13 +4,13 @@
     {
       "pipeline": {
           "if": "ctx.message.charAt(0) != (char)(\"{\")",
-          "name": "{< IngestPipeline "pipeline-plaintext" >}"
+          "name": "{{IngestPipeline 'pipeline-plaintext' }}"
       }
     },
     {
       "pipeline": {
           "if": "ctx.message.charAt(0) == (char)(\"{\")",
-          "name": "{< IngestPipeline "pipeline-json" >}"
+          "name": "{{IngestPipeline 'pipeline-json' }}"
       }
     },
     {
@@ -33,10 +33,10 @@
       }
     }
   ],
-  "on_failure" : [{ 
-    "set" : { 
-      "field" : "error.message", 
-      "value" : "pipeline-entry: {{ _ingest.on_failure_message }}" 
-    } 
+  "on_failure" : [{
+    "set" : {
+      "field" : "error.message",
+      "value" : "pipeline-entry: {{ _ingest.on_failure_message }}"
+    }
   }]
 }
