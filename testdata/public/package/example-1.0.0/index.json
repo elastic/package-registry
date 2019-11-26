@@ -47,5 +47,14 @@
     "/package/example-1.0.0/dataset/foo/elasticsearch/ingest-pipeline/pipeline-plaintext.json",
     "/package/example-1.0.0/dataset/foo/elasticsearch/ingest-pipeline/pipeline-tcp.json"
   ],
-  "format_version": "1.0.0"
+  "format_version": "1.0.0",
+  "datasets": [
+    {
+      "title": "Foo",
+      "name": "foo",
+      "release": "",
+      "type": "logs",
+      "ingest_pipeline": "pipeline-entry"
+    }
+  ]
 }

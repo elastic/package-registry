@@ -6,6 +6,7 @@ package util
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -40,6 +41,7 @@ type Package struct {
 	Assets        []string    `config:"assets,omitempty" json:"assets,omitempty"`
 	Internal      bool        `config:"internal,omitempty" json:"internal,omitempty"`
 	FormatVersion string      `config:"format_version" json:"format_version"`
+	DataSets      []*DataSet  `config:"datasets,omitempty" json:"datasets,omitempty"`
 }
 
 type Requirement struct {
@@ -47,7 +49,7 @@ type Requirement struct {
 }
 
 type Kibana struct {
-	Versions    string `yaml:"versions,omitempty" json:"versions,omitempty"`
+	Versions    string `config:"versions,omitempty" json:"versions,omitempty"`
 	semVerRange semver.Range
 }
 
@@ -61,6 +63,15 @@ type Image struct {
 	Title string `config:"title" json:"title,omitempty"`
 	Size  string `config:"size" json:"size,omitempty"`
 	Type  string `config:"type" json:"type,omitempty"`
+}
+
+type DataSet struct {
+	Title          string                   `config:"title" json:"title"`
+	Name           string                   `config:"name" json:"name"`
+	Release        string                   `config:"release" json:"release"`
+	Type           string                   `config:"type" json:"type"`
+	IngestPipeline string                   `config:"ingest_pipeline" config:"ingest_pipeline" json:"ingest_pipeline"`
+	Vars           []map[string]interface{} `config:"vars" json:"vars,omitempty"`
 }
 
 func (i Image) getPath(p *Package) string {
@@ -245,6 +256,62 @@ func (p *Package) Validate() error {
 		if _, ok := CategoryTitles[c]; !ok {
 			return fmt.Errorf("invalid category: %s", c)
 		}
+	}
+
+	return nil
+}
+
+func (p *Package) LoadDataSets(packagePath string) error {
+
+	// Check if this package has datasets
+	_, err := os.Stat(packagePath + "/dataset")
+	// If no datasets exist, just return
+	if os.IsNotExist(err) {
+		return nil
+	}
+	// An other error happened, report it
+	if err != nil {
+		return err
+	}
+
+	oldDir, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+	defer func() {
+		// use named return to also have an error in case the defer fails
+		err = os.Chdir(oldDir)
+	}()
+	err = os.Chdir(packagePath + "/dataset")
+	if err != nil {
+		return err
+	}
+
+	dataSetNames, err := filepath.Glob("*")
+	if err != nil {
+		return err
+	}
+
+	for _, dataSetName := range dataSetNames {
+		log.Println(dataSetName)
+		// Read manifest file
+
+		// Check if manifest exists
+		manifestPath := dataSetName + "/manifest.yml"
+		_, err := os.Stat(manifestPath)
+		if err != nil && os.IsNotExist(err) {
+			return errors.Wrapf(err, "manifest does not exist for package: %s", packagePath)
+		}
+
+		manifest, err := yaml.NewConfigWithFile(manifestPath, ucfg.PathSep("."))
+		var d = &DataSet{}
+		err = manifest.Unpack(d)
+		if err != nil {
+			return err
+		}
+		d.Name = dataSetName
+
+		p.DataSets = append(p.DataSets, d)
 	}
 
 	return nil

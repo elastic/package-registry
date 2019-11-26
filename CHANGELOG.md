@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Update Golang version to 1.13.4. [#159](https://github.com/elastic/integrations-registry/pull/159)
 * Add missing assets from datasets. [#146](https://github.com/elastic/integrations-registry/pull/146)
 * Add `format_version` to define the package format.
+* Add dataset array to package info endpoint. [#162](https://github.com/elastic/integrations-registry/pull/162)
 
 ### Deprecated
 
