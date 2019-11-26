@@ -34,14 +34,14 @@
     },
     {
       "pipeline": {
-        "name": "{< IngestPipeline "pipeline-plaintext" >}"
+        "name": "{{IngestPipeline 'pipeline-plaintext' }}"
       }
     }
   ],
-  "on_failure" : [{ 
-    "set" : { 
-      "field" : "error.message", 
-      "value" : "pipeline-json: {{ _ingest.on_failure_message }}" 
-    } 
+  "on_failure" : [{
+    "set" : {
+      "field" : "error.message",
+      "value" : "pipeline-json: {{ _ingest.on_failure_message }}"
+    }
   }]
 }
