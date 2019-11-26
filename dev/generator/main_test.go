@@ -7,20 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var (
-	responseToDecode = []string{
-		"attributes.uiStateJSON",
-		"attributes.visState",
-		"attributes.optionsJSON",
-		"attributes.panelsJSON",
-		"attributes.kibanaSavedObjectMeta.searchSourceJSON",
-	}
-)
-
-// DecodeExported decodes an exported dashboard
-//func EncodeKibanaAssets(result MapStr) MapStr {
-
-func TestFoo(t *testing.T) { // Read file from json
+func TestEncodeSavedObject(t *testing.T) {
 	file := "../package-examples/auditd-2.0.4/kibana/dashboard/7de391b0-c1ca-11e7-8995-936807a28b16-ecs.json"
 
 	data, err := ioutil.ReadFile(file)
