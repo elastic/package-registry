@@ -1,0 +1,12 @@
+title: Log Dataset
+
+type: logs
+ingest_pipeline: default
+
+default: true
+
+vars:
+  - name: paths
+    default:
+      # This example value has to be changed / overwritten by the user.
+      - /var/log/*.log
