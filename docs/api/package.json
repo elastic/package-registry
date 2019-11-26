@@ -28,7 +28,6 @@
     }
   ],
   "assets": [
-    "/package/example-1.0.0/index.json",
     "/package/example-1.0.0/manifest.yml",
     "/package/example-1.0.0/docs/README.md",
     "/package/example-1.0.0/img/icon.png",
