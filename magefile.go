@@ -12,6 +12,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"github.com/magefile/mage/mg"
@@ -32,18 +33,29 @@ var (
 	publicDir    = "./public"
 	buildDir     = "./build"
 	packagePaths = []string{"./dev/package-generated/", "./dev/package-examples/"}
+	tarGz        = true
 )
 
 func Build() error {
 
+	err := os.RemoveAll(publicDir)
+	if err != nil {
+		return err
+	}
+
+	err = os.MkdirAll(publicDir, 0755)
+	if err != nil {
+		return err
+	}
+
 	for _, p := range packagePaths {
-		err := sh.Run("go", "run", "./dev/generator/", "-sourceDir="+p, "-publicDir="+publicDir)
+		err := sh.Run("go", "run", "./dev/generator/", "-sourceDir="+p, "-publicDir="+publicDir, "-tarGz="+strconv.FormatBool(tarGz))
 		if err != nil {
 			return err
 		}
 	}
 
-	err := BuildRootFile()
+	err = BuildRootFile()
 	if err != nil {
 		return err
 	}
@@ -74,25 +86,16 @@ func writeJsonFile(v interface{}, path string) error {
 func Check() error {
 	Format()
 
+	// Setup the variables for the tests and not create tarGz files
 	publicDir = "./testdata/public"
-	err := os.RemoveAll(publicDir)
+	packagePaths = []string{"testdata/package"}
+	tarGz = false
+	err := Build()
 	if err != nil {
 		return err
 	}
 
-	err = os.MkdirAll(publicDir, 0755)
-	if err != nil {
-		return err
-	}
-
-	err = BuildRootFile()
-	if err != nil {
-		return err
-	}
-
-	// Regenerates test data to make sure it stays the same
-	sh.RunV("go", "run", "./dev/generator/", "-sourceDir=testdata/package", "-publicDir=testdata/public", "-copy=true", "-tarGz=false")
-
+	// Check if no changes are shown
 	sh.RunV("git", "update-index", "--refresh")
 	sh.RunV("git", "diff-index", "--exit-code", "HEAD", "--")
 
