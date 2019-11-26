@@ -13,7 +13,6 @@
     }
   },
   "assets": [
-    "/package/foo-1.0.0/index.json",
     "/package/foo-1.0.0/manifest.yml"
   ],
   "format_version": "1.0.0"
