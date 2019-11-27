@@ -1,7 +1,7 @@
 [
   {
     "description": "This is the example integration",
-    "download": "/package/example-1.0.0.tar.gz",
+    "download": "/epr/example/example-1.0.0.tar.gz",
     "name": "example",
     "path": "/package/example-1.0.0",
     "title": "Example Integration",
@@ -10,7 +10,7 @@
   },
   {
     "description": "This is the foo integration",
-    "download": "/package/foo-1.0.0.tar.gz",
+    "download": "/epr/foo/foo-1.0.0.tar.gz",
     "name": "foo",
     "path": "/package/foo-1.0.0",
     "title": "Foo",
@@ -19,7 +19,7 @@
   },
   {
     "description": "Internal package",
-    "download": "/package/internal-1.2.0.tar.gz",
+    "download": "/epr/internal/internal-1.2.0.tar.gz",
     "internal": true,
     "name": "internal",
     "path": "/package/internal-1.2.0",

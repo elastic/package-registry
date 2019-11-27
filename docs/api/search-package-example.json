@@ -1,7 +1,7 @@
 [
   {
     "description": "This is the example integration.",
-    "download": "/package/example-0.0.2.tar.gz",
+    "download": "/epr/example/example-0.0.2.tar.gz",
     "name": "example",
     "path": "/package/example-0.0.2",
     "title": "Example",
@@ -10,7 +10,7 @@
   },
   {
     "description": "This is the example integration",
-    "download": "/package/example-1.0.0.tar.gz",
+    "download": "/epr/example/example-1.0.0.tar.gz",
     "name": "example",
     "path": "/package/example-1.0.0",
     "title": "Example Integration",
