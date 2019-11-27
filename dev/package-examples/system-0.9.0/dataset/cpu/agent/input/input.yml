@@ -1,0 +1,4 @@
+- type: metric/system
+  enabled: true
+  metricsets:
+    - cpu
