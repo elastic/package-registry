@@ -3,6 +3,7 @@
     "description": "This is the example integration",
     "download": "/package/example-1.0.0.tar.gz",
     "name": "example",
+    "path": "/package/example-1.0.0",
     "title": "Example Integration",
     "type": "integration",
     "version": "1.0.0"
@@ -11,6 +12,7 @@
     "description": "This is the foo integration",
     "download": "/package/foo-1.0.0.tar.gz",
     "name": "foo",
+    "path": "/package/foo-1.0.0",
     "title": "Foo",
     "type": "solution",
     "version": "1.0.0"
@@ -20,6 +22,7 @@
     "download": "/package/internal-1.2.0.tar.gz",
     "internal": true,
     "name": "internal",
+    "path": "/package/internal-1.2.0",
     "title": "Internal",
     "type": "integration",
     "version": "1.2.0"

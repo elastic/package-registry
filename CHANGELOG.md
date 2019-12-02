@@ -23,6 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Add missing assets from datasets. [#146](https://github.com/elastic/integrations-registry/pull/146)
 * Add `format_version` to define the package format.
 * Add dataset array to package info endpoint. [#162](https://github.com/elastic/integrations-registry/pull/162)
+* Add path field to search and package info endpoint. [#174](https://github.com/elastic/integrations-registry/pull/174)
+* Add download field to package info endpoint. [#174](https://github.com/elastic/integrations-registry/pull/174)
 
 ### Deprecated
 

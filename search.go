@@ -150,7 +150,8 @@ func getPackageOutput(packagesList map[string]map[string]util.Package) ([]byte, 
 			"description": m.Description,
 			"version":     m.Version,
 			"type":        m.Type,
-			"download":    "/package/" + m.Name + "-" + m.Version + ".tar.gz",
+			"download":    m.GetDownloadPath(),
+			"path":        m.GetUrlPath(),
 		}
 		if m.Title != nil {
 			data["title"] = *m.Title
