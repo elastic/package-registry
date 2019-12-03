@@ -15,5 +15,7 @@
   "assets": [
     "/package/foo-1.0.0/manifest.yml"
   ],
-  "format_version": "1.0.0"
+  "format_version": "1.0.0",
+  "download": "/package/foo-1.0.0.tar.gz",
+  "path": "/package/foo-1.0.0"
 }

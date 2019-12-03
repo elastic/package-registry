@@ -42,6 +42,8 @@ type Package struct {
 	Internal      bool        `config:"internal,omitempty" json:"internal,omitempty"`
 	FormatVersion string      `config:"format_version" json:"format_version"`
 	DataSets      []*DataSet  `config:"datasets,omitempty" json:"datasets,omitempty"`
+	Download      string      `json:"download"`
+	Path          string      `json:"path"`
 }
 
 type Requirement struct {
@@ -135,6 +137,10 @@ func NewPackage(basePath, packageName string) (*Package, error) {
 		readmePathShort := "/package/" + packageName + "/docs/README.md"
 		p.Readme = &readmePathShort
 	}
+
+	// Assign download path to be part of the output
+	p.Download = p.GetDownloadPath()
+	p.Path = p.GetUrlPath()
 
 	return p, nil
 }
@@ -319,4 +325,12 @@ func (p *Package) LoadDataSets(packagePath string) error {
 
 func (p *Package) GetPath() string {
 	return p.Name + "-" + p.Version
+}
+
+func (p *Package) GetDownloadPath() string {
+	return "/package/" + p.Name + "-" + p.Version + ".tar.gz"
+}
+
+func (p *Package) GetUrlPath() string {
+	return "/package/" + p.Name + "-" + p.Version
 }
