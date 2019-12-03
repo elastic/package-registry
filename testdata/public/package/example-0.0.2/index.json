@@ -32,6 +32,6 @@
     "/package/example-0.0.2/kibana/visualization/ab48c3f0-5ca6-11e9-8477-077ec9664dbd.json"
   ],
   "format_version": "1.0.0",
-  "download": "/package/example-0.0.2.tar.gz",
+  "download": "/epr/example/example-0.0.2.tar.gz",
   "path": "/package/example-0.0.2"
 }

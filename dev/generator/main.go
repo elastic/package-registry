@@ -170,7 +170,12 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 	}
 
 	if tarGz {
-		err = sh.RunV("tar", "cvzf", p.GetPath()+".tar.gz", filepath.Base(p.GetPath())+"/")
+		err = os.MkdirAll("../epr/"+p.Name, 0755)
+		if err != nil {
+			return err
+		}
+
+		err = sh.RunV("tar", "cvzf", "../epr/"+p.Name+"/"+p.GetPath()+".tar.gz", filepath.Base(p.GetPath())+"/")
 		if err != nil {
 			return fmt.Errorf("Error creating package: %s: %s", p.GetPath(), err)
 		}

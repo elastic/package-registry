@@ -328,7 +328,7 @@ func (p *Package) GetPath() string {
 }
 
 func (p *Package) GetDownloadPath() string {
-	return "/package/" + p.Name + "-" + p.Version + ".tar.gz"
+	return "/epr/" + p.Name + "/" + p.Name + "-" + p.Version + ".tar.gz"
 }
 
 func (p *Package) GetUrlPath() string {
