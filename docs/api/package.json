@@ -56,5 +56,7 @@
       "type": "logs",
       "ingest_pipeline": "pipeline-entry"
     }
-  ]
+  ],
+  "download": "/package/example-1.0.0.tar.gz",
+  "path": "/package/example-1.0.0"
 }
