@@ -1,3 +1,6 @@
+# This dataset has a different id then the path
+id: bar
+
 title: Foo
 
 # Needs to describe the type of this input

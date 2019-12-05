@@ -50,12 +50,20 @@
   "format_version": "1.0.0",
   "datasets": [
     {
+      "id": "bar",
       "title": "Foo",
+<<<<<<< HEAD
       "name": "foo",
       "release": "beta",
       "type": "logs",
       "ingest_pipeline": "pipeline-entry",
       "package": "example"
+=======
+      "release": "beta",
+      "type": "logs",
+      "ingest_pipeline": "pipeline-entry",
+      "path": "foo"
+>>>>>>> 2f4f519... Change dataset.name to dataset.id and dataset.path
     }
   ],
   "download": "/epr/example/example-1.0.0.tar.gz",

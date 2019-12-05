@@ -288,14 +288,14 @@ func (p *Package) LoadDataSets(packagePath string) error {
 		return err
 	}
 
-	dataSetNames, err := filepath.Glob("*")
+	datasetPaths, err := filepath.Glob("*")
 	if err != nil {
 		return err
 	}
 
-	for _, dataSetName := range dataSetNames {
+	for _, datasetPath := range datasetPaths {
 		// Check if manifest exists
-		manifestPath := dataSetName + "/manifest.yml"
+		manifestPath := datasetPath + "/manifest.yml"
 		_, err := os.Stat(manifestPath)
 		if err != nil && os.IsNotExist(err) {
 			return errors.Wrapf(err, "manifest does not exist for package: %s", packagePath)
@@ -310,6 +310,14 @@ func (p *Package) LoadDataSets(packagePath string) error {
 		err = manifest.Unpack(d)
 		if err != nil {
 			return errors.Wrapf(err, "error building dataset in package: %s", p.Name)
+		}
+
+		// This is the name of the directory of the dataset
+		d.Path = datasetPath
+
+		// if id is not set, {package}.{datasetName} is the default
+		if d.ID == "" {
+			d.ID = p.Name + "." + datasetPath
 		}
 
 		if d.Release == "" {

@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Change `requirements.kibana.version.min/max` to `requirements.kibana.versions: {semver-range}`
 * Encode Kibana objects during packaging. [#157](https://github.com/elastic/integrations-registry/pull/157)
 * Prefix package download url with `/epr/{package-name}`.
+* Remove dataset.name but introduce dataset.id and dataset.path. [#176](https://github.com/elastic/package-registry/pull/176)
 
 ### Bugfixes
 
