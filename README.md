@@ -16,14 +16,14 @@ Examples for each API endpoint can be found here: https://github.com/elastic/pac
 
 The `/search` API endpoint has few additional query parameters. More might be added in the future, but for now these are:
 
-* kibana: Filters out all the packages which are not compatible with the given Kibana version. If it is set to `7.3.1` and 
+* kibana: Filters out all the packages which are not compatible with the given Kibana version. If it is set to `7.3.1` and
   a package requires 7.4, the package will not be returned or an older compatible package will be shown.
   By default this endpoint always returns only the newest compatible package.
 * category: Filters the package by the given category. Available categories can be seend when going to `/categories` endpoint.
 * package: Filters by a specific package name, for example `mysql`. In contrast to the other endpoints, it will return
   by default all versions of this package.
 * internal: This can be set to true, to also list internal packages. This is set to `false` by default.
-  
+
 The different query parameters above can be combined, so `?package=mysql&kibana=7.3.0` will return all mysql package versions
 which are compatible with `7.3.0`.
 
@@ -122,13 +122,23 @@ Afterwards the service can be started:
 `go run .`
 
 ### Docker
-**Example**
-An example registry is running on `http://integrations-registry.app.elstc.co/`. This is updated from time to time to be in sync with master.
 
-Two additional enpoints are available:
+**Deployment**
+An dev registry is running on `https://epr.ea-web.elastic.dev/`. This is updated from time to time to be in sync with master.
 
-* https://epr.elastic.co (this will be production)
-* https://epr.ea-web.elastic.dev/ (this will be staging)
+The production endpoint will be `https://epr.elastic.co`. It is already available but not updated as frequently.
+
+The deployment runs on an Elastic internal k8s cluster. To get all the deployments for the registry use the following command:
+
+```
+kubectl get deployment -n package-registry
+```
+
+This will output the list of available deployments. To do a rolling restart of the staging deployment run:
+
+```
+kubectl rollout restart deployment package-registry-staging-vanilla -n package-registry
+```
 
 **General**
 ```
