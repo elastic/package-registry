@@ -1,4 +1,6 @@
 title: Nginx Error Logs
+type: logs
+ingest_pipline: pipeline
 vars:
   - name: paths
     default:

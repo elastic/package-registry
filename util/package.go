@@ -68,11 +68,11 @@ type Image struct {
 }
 
 type DataSet struct {
-	Title          string                   `config:"title" json:"title"`
+	Title          string                   `config:"title" json:"title" validate:"required"`
 	Name           string                   `config:"name" json:"name"`
 	Release        string                   `config:"release" json:"release"`
-	Type           string                   `config:"type" json:"type"`
-	IngestPipeline string                   `config:"ingest_pipeline" config:"ingest_pipeline" json:"ingest_pipeline"`
+	Type           string                   `config:"type" json:"type" validate:"required"`
+	IngestPipeline string                   `config:"ingest_pipeline,omitempty" config:"ingest_pipeline" json:"ingest_pipeline,omitempty"`
 	Vars           []map[string]interface{} `config:"vars" json:"vars,omitempty"`
 }
 
@@ -316,6 +316,10 @@ func (p *Package) LoadDataSets(packagePath string) error {
 			return err
 		}
 		d.Name = dataSetName
+
+		if d.Release == "" {
+			d.Release = "beta"
+		}
 
 		p.DataSets = append(p.DataSets, d)
 	}
