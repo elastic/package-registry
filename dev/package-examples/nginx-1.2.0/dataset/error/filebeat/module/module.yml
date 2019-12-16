@@ -1,3 +1,0 @@
-module: nginx
-# Should we introduce singular config?
-filesets: error
