@@ -1,0 +1,30 @@
+{
+  "name": "default-pipeline",
+  "title": "Default pipeline Integration",
+  "version": "0.0.2",
+  "description": "Tests if no pipeline is set, it defaults to the default one",
+  "type": "integration",
+  "categories": [
+    "logs"
+  ],
+  "requirement": {
+    "kibana": {}
+  },
+  "assets": [
+    "/package/default-pipeline-0.0.2/manifest.yml",
+    "/package/default-pipeline-0.0.2/dataset/foo/manifest.yml",
+    "/package/default-pipeline-0.0.2/dataset/foo/elasticsearch/ingest-pipeline/default.json"
+  ],
+  "format_version": "1.0.0",
+  "datasets": [
+    {
+      "title": "Foo",
+      "name": "foo",
+      "release": "beta",
+      "type": "logs",
+      "ingest_pipeline": "default"
+    }
+  ],
+  "download": "/epr/default-pipeline/default-pipeline-0.0.2.tar.gz",
+  "path": "/package/default-pipeline-0.0.2"
+}

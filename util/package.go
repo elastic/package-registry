@@ -6,7 +6,6 @@ package util
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -65,15 +64,6 @@ type Image struct {
 	Title string `config:"title" json:"title,omitempty"`
 	Size  string `config:"size" json:"size,omitempty"`
 	Type  string `config:"type" json:"type,omitempty"`
-}
-
-type DataSet struct {
-	Title          string                   `config:"title" json:"title" validate:"required"`
-	Name           string                   `config:"name" json:"name"`
-	Release        string                   `config:"release" json:"release"`
-	Type           string                   `config:"type" json:"type" validate:"required"`
-	IngestPipeline string                   `config:"ingest_pipeline,omitempty" config:"ingest_pipeline" json:"ingest_pipeline,omitempty"`
-	Vars           []map[string]interface{} `config:"vars" json:"vars,omitempty"`
 }
 
 func (i Image) getPath(p *Package) string {
@@ -156,8 +146,13 @@ func (p *Package) HasCategory(category string) bool {
 }
 
 func (p *Package) HasKibanaVersion(version *semver.Version) bool {
-	if version != nil {
 
+	// If the version is not specified, it is for all versions
+	if p.Requirement.Kibana.Versions == "" {
+		return true
+	}
+
+	if version != nil {
 		if !p.Requirement.Kibana.semVerRange(*version) {
 			return false
 		}
@@ -299,7 +294,6 @@ func (p *Package) LoadDataSets(packagePath string) error {
 	}
 
 	for _, dataSetName := range dataSetNames {
-		log.Println(dataSetName)
 		// Read manifest file
 
 		// Check if manifest exists
@@ -310,12 +304,14 @@ func (p *Package) LoadDataSets(packagePath string) error {
 		}
 
 		manifest, err := yaml.NewConfigWithFile(manifestPath, ucfg.PathSep("."))
-		var d = &DataSet{}
+		var d = &DataSet{
+			Name: dataSetName,
+		}
+		// go-ucfg automatically calls the `Validate` method on the Dataset object here
 		err = manifest.Unpack(d)
 		if err != nil {
-			return err
+			return errors.Wrapf(err, "error building dataset in package: %s", p.Name)
 		}
-		d.Name = dataSetName
 
 		if d.Release == "" {
 			d.Release = "beta"
