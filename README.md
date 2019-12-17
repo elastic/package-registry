@@ -124,9 +124,15 @@ Afterwards the service can be started:
 ### Docker
 
 **Deployment**
-An dev registry is running on `https://epr.ea-web.elastic.dev/`. This is updated from time to time to be in sync with master.
 
-The production endpoint will be `https://epr.elastic.co`. It is already available but not updated as frequently.
+The following endpoints exist:
+
+* prod, no CDN: https://epr.ea-web.elastic.dev
+* prod, CDN: https://epr.elastic.co
+* staging, no CDN: https://epr-staging.ea-web.elastic.dev
+* staging, CDN: https://epr-staging.elastic.co
+
+An dev registry is running on `https://epr-staging.elastic.co/`. This is updated from time to time to be in sync with master.
 
 The deployment runs on an Elastic internal k8s cluster. To get all the deployments for the registry use the following command:
 
