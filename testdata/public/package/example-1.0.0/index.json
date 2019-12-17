@@ -54,7 +54,8 @@
       "name": "foo",
       "release": "beta",
       "type": "logs",
-      "ingest_pipeline": "pipeline-entry"
+      "ingest_pipeline": "pipeline-entry",
+      "package": "example"
     }
   ],
   "download": "/epr/example/example-1.0.0.tar.gz",
