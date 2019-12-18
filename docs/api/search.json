@@ -1,6 +1,6 @@
 [
   {
-    "description": "Tetss if no pipeline is set, it defaults to the default one",
+    "description": "Tests if no pipeline is set, it defaults to the default one",
     "download": "/epr/default-pipeline/default-pipeline-0.0.2.tar.gz",
     "name": "default-pipeline",
     "path": "/package/default-pipeline-0.0.2",
