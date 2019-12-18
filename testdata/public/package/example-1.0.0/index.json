@@ -52,7 +52,7 @@
     {
       "title": "Foo",
       "name": "foo",
-      "release": "",
+      "release": "beta",
       "type": "logs",
       "ingest_pipeline": "pipeline-entry"
     }
