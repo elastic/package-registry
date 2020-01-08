@@ -1,7 +1,7 @@
 title: CoreDNS stats metrics
 release: ga
 
-type: metric
+type: metrics
 
 vars:
   - name: hosts

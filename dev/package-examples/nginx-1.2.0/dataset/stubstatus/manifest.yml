@@ -1,7 +1,7 @@
 title: Nginx stubstatus metrics
 
 # Needs to describe the type of this input
-type: metric
+type: metrics
 
 # The list of platforms this input is compatible with. Based on the platform selection,
 # this input might not show up.
