@@ -22,7 +22,8 @@
       "name": "foo",
       "release": "beta",
       "type": "logs",
-      "ingest_pipeline": "default"
+      "ingest_pipeline": "default",
+      "package": "default-pipeline"
     }
   ],
   "download": "/epr/default-pipeline/default-pipeline-0.0.2.tar.gz",

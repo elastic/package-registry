@@ -17,6 +17,7 @@ type DataSet struct {
 	Type           string                   `config:"type" json:"type" validate:"required"`
 	IngestPipeline string                   `config:"ingest_pipeline,omitempty" config:"ingest_pipeline" json:"ingest_pipeline,omitempty"`
 	Vars           []map[string]interface{} `config:"vars" json:"vars,omitempty"`
+	Package        string                   `json:"package"`
 }
 
 func (d *DataSet) Validate() error {

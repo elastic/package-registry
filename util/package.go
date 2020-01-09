@@ -294,8 +294,6 @@ func (p *Package) LoadDataSets(packagePath string) error {
 	}
 
 	for _, dataSetName := range dataSetNames {
-		// Read manifest file
-
 		// Check if manifest exists
 		manifestPath := dataSetName + "/manifest.yml"
 		_, err := os.Stat(manifestPath)
@@ -305,7 +303,8 @@ func (p *Package) LoadDataSets(packagePath string) error {
 
 		manifest, err := yaml.NewConfigWithFile(manifestPath, ucfg.PathSep("."))
 		var d = &DataSet{
-			Name: dataSetName,
+			Name:    dataSetName,
+			Package: p.Name,
 		}
 		// go-ucfg automatically calls the `Validate` method on the Dataset object here
 		err = manifest.Unpack(d)
