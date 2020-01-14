@@ -1,0 +1,10 @@
+{
+  "name": "@elastic/package-registry",
+  "version": "0.2.0",
+  "description": "Elastic Package Registry (EPR)",
+  "repository": "git@github.com:elastic/package-registry.git",
+  "author": " Nicolas Ruflin <spam@ruflin.com>",
+  "license": "Elastic-License",
+  "types": "./types.d.ts",
+  "main": "./types.js"
+}

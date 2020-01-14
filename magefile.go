@@ -60,7 +60,27 @@ func Build() error {
 		return err
 	}
 
+	err = BuildTypesFile()
+	if err != nil {
+		return err
+	}
+
 	return sh.Run("go", "build", ".")
+}
+
+// Creates the `types.d.ts` file which contains the TypeScript types we'll publish
+func BuildTypesFile() error {
+	sh.RunV("go", "get", "-v", "-u", "github.com/OneOfOne/struct2ts/cmd/struct2ts")
+	tsTypesCommand := sh.OutCmd("struct2ts", "--interface", "--mark-optional-fields", "--no-helpers")
+	tsTypesOutput, err := tsTypesCommand("util.Package")
+	if err != nil {
+		return err
+	}
+
+	// Can remove this when https://github.com/OneOfOne/struct2ts/issues/24 is resolved
+	tsTypesOutput = strings.ReplaceAll(tsTypesOutput, "map[string]interface {}", "{ [key: string]: any }")
+
+	return ioutil.WriteFile("./types.d.ts", []byte(tsTypesOutput), 0644)
 }
 
 // Creates the `index.json` file
