@@ -18,12 +18,13 @@
   "format_version": "1.0.0",
   "datasets": [
     {
+      "id": "default-pipeline.foo",
       "title": "Foo",
-      "name": "foo",
       "release": "beta",
       "type": "logs",
       "ingest_pipeline": "default",
-      "package": "default-pipeline"
+      "package": "default-pipeline",
+      "path": "foo"
     }
   ],
   "download": "/epr/default-pipeline/default-pipeline-0.0.2.tar.gz",

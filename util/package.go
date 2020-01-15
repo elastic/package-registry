@@ -303,17 +303,15 @@ func (p *Package) LoadDataSets(packagePath string) error {
 
 		manifest, err := yaml.NewConfigWithFile(manifestPath, ucfg.PathSep("."))
 		var d = &DataSet{
-			Name:    dataSetName,
 			Package: p.Name,
+			// This is the name of the directory of the dataset
+			Path: datasetPath,
 		}
 		// go-ucfg automatically calls the `Validate` method on the Dataset object here
 		err = manifest.Unpack(d)
 		if err != nil {
 			return errors.Wrapf(err, "error building dataset in package: %s", p.Name)
 		}
-
-		// This is the name of the directory of the dataset
-		d.Path = datasetPath
 
 		// if id is not set, {package}.{datasetName} is the default
 		if d.ID == "" {

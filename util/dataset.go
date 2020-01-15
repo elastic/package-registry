@@ -25,7 +25,7 @@ type DataSet struct {
 }
 
 func (d *DataSet) Validate() error {
-	pipelineDir := d.Name + "/elasticsearch/ingest-pipeline/"
+	pipelineDir := d.Path + "/elasticsearch/ingest-pipeline/"
 	paths, err := filepath.Glob(pipelineDir + "*")
 	if err != nil {
 		return err
@@ -46,7 +46,7 @@ func (d *DataSet) Validate() error {
 	}
 
 	if d.IngestPipeline == "" && len(paths) > 0 {
-		return fmt.Errorf("Package contains pipelines which are not used: %v, %s", paths, d.Name)
+		return fmt.Errorf("Package contains pipelines which are not used: %v, %s", paths, d.ID)
 	}
 
 	// In case an ingest pipeline is set, check if it is around
