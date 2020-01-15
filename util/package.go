@@ -313,7 +313,7 @@ func (p *Package) LoadDataSets(packagePath string) error {
 			return errors.Wrapf(err, "error building dataset in package: %s", p.Name)
 		}
 
-		// if id is not set, {package}.{datasetName} is the default
+		// if id is not set, {package}.{datasetPath} is the default
 		if d.ID == "" {
 			d.ID = p.Name + "." + datasetPath
 		}
