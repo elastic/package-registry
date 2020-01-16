@@ -80,7 +80,7 @@ func BuildTypesFile() error {
 	// Can remove this when https://github.com/OneOfOne/struct2ts/issues/24 is resolved
 	tsTypesOutput = strings.ReplaceAll(tsTypesOutput, "map[string]interface {}", "{ [key: string]: any }")
 
-	return ioutil.WriteFile("./types.d.ts", []byte(tsTypesOutput), 0644)
+	return ioutil.WriteFile("./docs/types.d.ts", []byte(tsTypesOutput), 0644)
 }
 
 // Creates the `index.json` file

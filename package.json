@@ -5,6 +5,6 @@
   "repository": "git@github.com:elastic/package-registry.git",
   "author": " Nicolas Ruflin <spam@ruflin.com>",
   "license": "Elastic-License",
-  "types": "./types.d.ts",
-  "main": "./types.js"
+  "types": "./docs/types.d.ts",
+  "main": "./docs/types.js"
 }
