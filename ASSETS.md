@@ -67,7 +67,7 @@ The definition of the manifest is not complete yet and further details will foll
 
 ### changelog.yml
 
-The changelog of a package contains always all previous changes and not only the one from the last major, minor, bugfix release. 
+The changelog of a package contains always all previous changes and not only the one from the last major, minor, bugfix release.
 Each array entry is a release. The type entry can contain the following values: [added, bugfix, deprecated, breaking-change, known-issue]
 
 The file looks as following:
@@ -241,19 +241,13 @@ append / updating index pattern. But this will lead to the problem on how to rem
 
 * Asset Path: `kibana/infrastructure-ui-source/*.json`
 
-The Infrastructure UI source is used to tell the Logs and Metrics UI which indices to query for data and how to 
+The Infrastructure UI source is used to tell the Logs and Metrics UI which indices to query for data and how to
 visualise the data.
 
-The asset is like dashboards / visualizations just a saved object and can be loaded the same way. But the Logs UI 
+The asset is like dashboards / visualizations just a saved object and can be loaded the same way. But the Logs UI
 could also add an API for a tighter integration. At the moment there is no selection in the UI to change / switch the source
 but it can be triggered through URL parameters.
 
-### Space
-
-* Asset Path: `kibana/space/*.json`
-
-The Kibana Space API can be found [here](https://www.elastic.co/guide/en/kibana/master/spaces-api.html). Kibana Spaces
-are not saved objects and have their own API.
 
 ### Dataset
 
@@ -303,7 +297,7 @@ vars:
     # Description of the varaiable which could be used in the UI
     description: Nginx hosts
 
-    # A special type can be specified here for the UI Input document. By default it is just a 
+    # A special type can be specified here for the UI Input document. By default it is just a
     # text field.
     type: password
 
@@ -339,84 +333,10 @@ An open question is on how the fields for all the processors and autodiscovery a
 
 **docs**
 
-The docs for each dataset are combined with the overall docs. For the datasets it is encouraged to have `data.json` as an 
+The docs for each dataset are combined with the overall docs. For the datasets it is encouraged to have `data.json` as an
 example event available.
 
 **agent/input**
 
 Agent input configuration for the input. It's by design not an array but a single entry. The package manager will build
 a list out of it for the user.
-
-**filebeat/input**
-
-This contains the raw input configuration for the input.
-
-**filebeat/module**
-
-This contains the module configuration for the input. It is only 1 fileset and is not stored as an array.
-
-**light_module**
-
-This directory is designed to store light modules from Metricbeat. It contains the definition of the light module.
-
-**module**
-
-This contains the module configuration for this input. In the case of Metricbeat this means a module configuration with a
-single metricset. By design it's not an array that is specified.
-
-## Beats
-
-How the input configuration for each Beat are stored still needs to be discussed.
-
-## Definitions
-
-### Package
-
-A package is a list of assets for the Elastic stack that belong together. This can be ingest pipelines,
-data sources, dashboards etc. All of these are defined above.
-
-### Input
-
-An input is the configuration that is sent to Beats / Agent to gather data. The input contains the infromation
-on how to gather the data (e.g. log file) and where to send it (index + ingest pipeline). An example for a log
-file might look as following:
-
-```
-inputs:
-  - type: log
-    paths: "/var/log/*.log"
-    pipeline: log-pipeline
-```
-
-A similar example for docker metrics can look as below. But what we have below is the definition of 2 inputs, one 
-for container metrics, one for cpu metrics:
-
-```
-  - type: metric/docker
-    metricsets:
-      - "container"
-      - "cpu"
-    hosts: ["unix:///var/run/docker.sock"]
-    period: 10s
-    pipeline: metric-docker-pipeline
-```
-
-### Data Source
-
-A data source is a group of inputs. Each data source has a unique identifier and a name attached to it. A data
-source for Apache could look as following:
-
-```
-datasource.name: apache
-datasource.name: 4494ee18-2a5a-4212-afa7-9bbe9ade6bfc
-inputs:
-  - type: log
-    paths: "/var/log/apache/access.log"
-    pipeline: apache-access-pipeline
-  - type: metric/apache
-    metricsets:
-      - "stats"
-    period: 10s
-```
-
-The above is more a descriptive example for a data source and not necessarly on how it will be stored.
