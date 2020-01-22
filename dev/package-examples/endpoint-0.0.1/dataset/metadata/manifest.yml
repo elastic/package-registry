@@ -1,0 +1,10 @@
+title: Endpoint metadata
+
+# TODO is metadata logs?
+type: logs
+
+# If set to true, this will be enabled by default in the input selection
+default: true
+# TODO do we have any variables?
+#vars:
+
