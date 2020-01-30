@@ -84,12 +84,12 @@
   },
   "references": [
     {
-      "id": "metricbeat-*",
+      "id": "metrics-*",
       "name": "kibanaSavedObjectMeta.searchSourceJSON.index",
       "type": "index-pattern"
     },
     {
-      "id": "metricbeat-*",
+      "id": "metrics-*",
       "name": "kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index",
       "type": "index-pattern"
     }
