@@ -161,7 +161,7 @@ docker run -i -t -p 8080:8080 $(docker images -q integrations_registry:latest)
 #### Docker images published
 
 We publish a Docker image with each successful build commit on branches, tags, or PR.
-For each commit we have two docker image tags, one wit the commit as tag
+For each commit we have two docker image tags, one with the commit as tag
 `docker.elastic.co/package-registry/package-registry:f999b7a84d977cd19a379f0cec802aa1ef7ca379`
 An another Docker tag with the git branch or tag name
 `docker.elastic.co/package-registry/package-registry:master`,

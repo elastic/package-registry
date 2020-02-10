@@ -101,11 +101,11 @@ pipeline {
             registry: "${env.DOCKER_REGISTRY}")
           sh(label: 'Build Docker image',
             script: "docker build -t ${env.DOCKER_IMG_TAG} .")
-          sh(label: 'Push Docker image',
+          sh(label: 'Push Docker image sha',
             script: "docker push ${env.DOCKER_IMG_TAG}")
           sh(label: 'Re-tag Docker image',
             script: "docker tag ${env.DOCKER_IMG_TAG} ${env.DOCKER_IMG_TAG_BRANCH}")
-            sh(label: 'Push Docker image',
+            sh(label: 'Push Docker image name',
               script: "docker push ${env.DOCKER_IMG_TAG_BRANCH}")
         }
       }
