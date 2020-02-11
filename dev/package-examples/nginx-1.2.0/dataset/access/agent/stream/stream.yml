@@ -1,6 +1,5 @@
-# This is not an array on purpose to make sure only 1 single input is specified in this file.
 
-type: log
+input: log
 paths:
 {{#each paths}}
   - "{{this}}"
