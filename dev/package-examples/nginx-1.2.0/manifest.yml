@@ -24,7 +24,7 @@ datasources:
         # An id can be given, in case the type used here is not unique
         # This is for selection in the stream
         # id: nginx
-        type: metrics/nginx
+        type: nginx/metrics
 
         # Common configuration options for this input
         vars:
