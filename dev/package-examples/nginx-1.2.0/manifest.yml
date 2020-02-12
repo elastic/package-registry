@@ -34,9 +34,12 @@ datasources:
               ["http://127.0.0.1"]
             # All the config options that are required should be shown in the UI
             required: true
+            multi: true
+            type: text
           - name: period
             description: "Collection period. Valid values: 10s, 5m, 2h"
             default: "10s"
+            type: duration
           - name: username
             type: text
           - name: password
