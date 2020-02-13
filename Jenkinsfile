@@ -1,11 +1,6 @@
 #!/usr/bin/env groovy
 
-library identifier: 'apm@current',
-retriever: modernSCM(
-  [$class: 'GitSCMSource',
-  credentialsId: 'f94e9298-83ae-417e-ba91-85c279771570',
-  id: '37cf2c00-2cc7-482e-8c62-7bbffef475e2',
-  remote: 'git@github.com:elastic/apm-pipeline-library.git'])
+@Library('apm@current') _
 
 pipeline {
   agent { label 'docker && linux && immutable' }
@@ -13,6 +8,9 @@ pipeline {
     BASE_DIR="src/github.com/elastic/package-registry"
     JOB_GIT_CREDENTIALS = "f6c7695a-671e-4f4f-a331-acdce44ff9ba"
     PIPELINE_LOG_LEVEL='INFO'
+    DOCKER_REGISTRY = 'docker.elastic.co'
+    DOCKER_REGISTRY_SECRET = 'secret/observability-team/ci/docker-registry/prod'
+    DOCKER_IMG = "${env.DOCKER_REGISTRY}/package-registry/package-registry"
   }
   options {
     timeout(time: 1, unit: 'HOURS')
@@ -34,10 +32,7 @@ pipeline {
     stage('Checkout') {
       steps {
         deleteDir()
-        //gitCheckout(basedir: "${BASE_DIR}")
-        dir("${BASE_DIR}"){
-          checkout scm
-        }
+        gitCheckout(basedir: "${BASE_DIR}")
         stash allowEmpty: true, name: 'source', useDefaultExcludes: false
       }
     }
@@ -87,6 +82,31 @@ pipeline {
           junit(allowEmptyResults: true,
             keepLongStdio: true,
             testResults: "${BASE_DIR}/**/junit-*.xml")
+        }
+      }
+    }
+    /**
+      Publish Docker images.
+    */
+    stage('Publish Docker image'){
+      environment {
+        DOCKER_IMG_TAG = "${env.DOCKER_IMG}:${env.GIT_BASE_COMMIT}"
+        DOCKER_IMG_TAG_BRANCH = "${env.DOCKER_IMG}:${env.BRANCH_NAME}"
+      }
+      steps {
+        deleteDir()
+        unstash 'source'
+        dir("${BASE_DIR}"){
+          dockerLogin(secret: "${env.DOCKER_REGISTRY_SECRET}",
+            registry: "${env.DOCKER_REGISTRY}")
+          sh(label: 'Build Docker image',
+            script: "docker build -t ${env.DOCKER_IMG_TAG} .")
+          sh(label: 'Push Docker image sha',
+            script: "docker push ${env.DOCKER_IMG_TAG}")
+          sh(label: 'Re-tag Docker image',
+            script: "docker tag ${env.DOCKER_IMG_TAG} ${env.DOCKER_IMG_TAG_BRANCH}")
+            sh(label: 'Push Docker image name',
+              script: "docker push ${env.DOCKER_IMG_TAG_BRANCH}")
         }
       }
     }
