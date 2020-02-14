@@ -29,7 +29,7 @@
             "id": "e1f6cda0-443e-11e9-94ba-69b05a5f82b8"
           }
         ],
-        "default_index_pattern": "filebeat-*",
+        "default_index_pattern": "logs-*",
         "gauge_color_rules": [
           {
             "id": "6996a6e0-443f-11e9-94ba-69b05a5f82b8"

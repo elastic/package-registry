@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 type DataSet struct {
@@ -25,6 +26,10 @@ func (d *DataSet) Validate() error {
 	paths, err := filepath.Glob(pipelineDir + "*")
 	if err != nil {
 		return err
+	}
+
+	if strings.Contains(d.Name, "-") {
+		return fmt.Errorf("dataset name is not allowed to contain `-`: %s", d.Name)
 	}
 
 	if d.IngestPipeline == "" {
