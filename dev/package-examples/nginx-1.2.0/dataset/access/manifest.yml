@@ -15,6 +15,7 @@ inputs:
       - name: paths
         required: true
         # Should we define this as array? How will the UI best make sense of it?
+        description: Paths to the nginx access log file.
         type: text
         multi: true
         default:
@@ -22,8 +23,10 @@ inputs:
         # I suggest to use ECS fields for this config options here: https://github.com/elastic/ecs/blob/master/schemas/os.yml
         # This would need to be based on a predefined definition on what can be filtered on
         os.darwin:
+          default:
           - /usr/local/var/log/nginx/access.log*
         os.windows:
+          default:
           - c:/programdata/nginx/logs/*access.log*
 
 requirements:
