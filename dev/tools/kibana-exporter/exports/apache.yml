@@ -1,0 +1,93 @@
+package: apache
+assets:
+
+  # Metric assets
+  - type: visualization
+    service: kibana
+    id: Apache-HTTPD-CPU-ecs
+    dataset: apache.stats
+  - type: visualization
+    service: kibana
+    id: Apache-HTTPD-Hostname-list-ecs
+    dataset: apache.stats
+  - type: visualization
+    service: kibana
+    id: Apache-HTTPD-Load1-slash-5-slash-15-ecs
+    dataset: apache.stats
+  - type: visualization
+    service: kibana
+    id: Apache-HTTPD-Scoreboard-ecs
+    dataset: apache.stats
+  - type: visualization
+    service: kibana
+    id: Apache-HTTPD-Total-accesses-and-kbytes-ecs
+    dataset: apache.stats
+  - type: visualization
+    service: kibana
+    id: Apache-HTTPD-Uptime-ecs
+    dataset: apache.stats
+  - type: visualization
+    service: kibana
+    id: Apache-HTTPD-Workers-ecs
+    dataset: apache.stats
+  - type: dashboard
+    service: kibana
+    id: Metricbeat-Apache-HTTPD-server-status-ecs
+    dataset: apache-metrics
+  - type: search
+    service: kibana
+    id: Apache-HTTPD-ecs
+    dataset: apache.stats
+
+  # Metricbeat
+  - type: index-pattern
+    service: kibana
+    id: metricbeat-*
+    dataset: metricbeat
+
+
+  # Log assets
+  - type: visualization
+    service: kibana
+    id: Apache-access-unique-IPs-map-ecs
+    dataset: apache.access
+
+  - type: visualization
+    service: kibana
+    id: Apache-response-codes-of-top-URLs-ecs
+    dataset: apache.access
+
+  - type: visualization
+    service: kibana
+    id: Apache-browsers-ecs
+    dataset: apache.access
+
+  - type: visualization
+    service: kibana
+    id: Apache-operating-systems-ecs
+    dataset: apache.access
+
+  - type: visualization
+    service: kibana
+    id: Apache-error-logs-over-time-ecs
+    dataset: apache.error
+
+  - type: visualization
+    service: kibana
+    id: Apache-response-codes-over-time-ecs
+    dataset: apache.access
+
+  - type: search
+    service: kibana
+    id: Apache-errors-log-ecs
+    dataset: apache.error
+
+  - type: search
+    service: kibana
+    id: Apache-access-logs-ecs
+    dataset: apache.access
+
+  - type: dashboard
+    service: kibana
+    id: Filebeat-Apache-Dashboard-ecs
+    dataset: apache-logs
