@@ -1,0 +1,9 @@
+title: System Process Metrics
+type: metrics
+
+inputs:
+  - type: system/metrics
+    vars:
+      - name: processes
+        default: ['.*']
+        type: string

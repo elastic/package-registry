@@ -1,0 +1,4 @@
+input: metrics/system
+metricset: network
+period: {{period}}
+dataset: system.network

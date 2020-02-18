@@ -1,0 +1,16 @@
+title: System Auth logs
+type: logs
+
+inputs:
+  - type: logs
+    vars:
+      - name: paths
+        default:
+          - /var/log/auth.log*
+          - /var/log/secure*
+        os.darwin:
+          default:
+          # this works in OS X < 10.8. Newer darwin versions don't write
+          # ssh logs to files
+            - /var/log/secure.log*
+        os.windows: []

@@ -1,0 +1,14 @@
+title: System Auth logs
+type: logs
+
+inputs:
+  - type: logs
+    vars:
+      - name: paths
+        default:
+          - /var/log/messages*
+          - /var/log/syslog*
+        os.darwin:
+          default:
+            - /var/log/system.log*
+        os.windows: []
