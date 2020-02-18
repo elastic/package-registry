@@ -1,0 +1,104 @@
+{
+  "name": "datasources",
+  "title": "Default datasource Integration",
+  "version": "1.0.0",
+  "description": "Package with data sources",
+  "type": "integration",
+  "categories": [
+    "logs"
+  ],
+  "requirement": {
+    "kibana": {}
+  },
+  "assets": [
+    "/package/datasources-1.0.0/manifest.yml",
+    "/package/datasources-1.0.0/dataset/example/manifest.yml"
+  ],
+  "format_version": "1.0.0",
+  "datasets": [
+    {
+      "title": "Example dataset with inputs",
+      "name": "example",
+      "release": "beta",
+      "type": "logs",
+      "inputs": [
+        {
+          "type": "log",
+          "vars": [
+            {
+              "default": [
+                "/var/log/nginx/access.log*"
+              ],
+              "description": "Paths to the nginx access log file.",
+              "multi": true,
+              "name": "paths",
+              "os": {
+                "darwin": {
+                  "default": [
+                    "/usr/local/var/log/nginx/access.log*"
+                  ]
+                },
+                "windows": {
+                  "default": [
+                    "c:/programdata/nginx/logs/*access.log*"
+                  ]
+                }
+              },
+              "required": true,
+              "type": "text"
+            }
+          ]
+        }
+      ],
+      "package": "datasources"
+    }
+  ],
+  "datasources": [
+    {
+      "name": "nginx",
+      "inputs": [
+        {
+          "descrition": "Collecting metrics for nginx.",
+          "type": "nginx/metrics",
+          "vars": [
+            {
+              "default": [
+                "http://127.0.0.1"
+              ],
+              "description": "Nginx hosts",
+              "multi": true,
+              "name": "hosts",
+              "required": true,
+              "type": "text"
+            },
+            {
+              "default": "10s",
+              "description": "Collection period. Valid values: 10s, 5m, 2h",
+              "name": "period",
+              "type": "duration"
+            },
+            {
+              "name": "username",
+              "type": "text"
+            },
+            {
+              "name": "password",
+              "type": "password"
+            }
+          ]
+        },
+        {
+          "description": "Collect nginx logs.",
+          "type": "logs",
+          "vars": null
+        },
+        {
+          "type": "syslog",
+          "vars": null
+        }
+      ]
+    }
+  ],
+  "download": "/epr/datasources/datasources-1.0.0.tar.gz",
+  "path": "/package/datasources-1.0.0"
+}
