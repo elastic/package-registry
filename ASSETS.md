@@ -223,20 +223,6 @@ Visualizations are referenced inside dashboards and can reference a search objec
 The search object contains a saved search and is referenced by visualisations. A search object also references an index
 like `"index": "filebeat-*"`. In case we allow users to adjust indices, this would have to be adjusted in the search object.
 
-### Index Pattern
-
-* Asset Path: `kibana/index-pattern/*.json`
-
-The index pattern contains to information about the types of each field and additional settings for the fields like if it
-is a percentage or the unit like seconds. Today in Beats the index pattern is generated out of the `fields.yml`. This
-allows to generate the index pattern for different versions of Kibana. As we can release different versions of a package
-we probably don't need this anymore.
-
-ECS also provides a fields.yml in the same format. One limitation of index-patterns in Kibana is that they can't be extended
-or support inheritance / composition like the index templates in Elasticsearch. Having many index patterns in Kibana is a
-problem as a user would have to constantly switch between them. The package manager could work around this by
-append / updating index pattern. But this will lead to the problem on how to remove these fields again.
-
 ### Infrastructure UI Source
 
 * Asset Path: `kibana/infrastructure-ui-source/*.json`
