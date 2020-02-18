@@ -10,17 +10,10 @@ compatibility: linux, freebsd
 # Each input can be in its own release status
 release: beta
 
-vars:
-  - name: hosts
-    description: Nginx hosts
-    default:
-      ["http://127.0.0.1"]
-    required: true
-  - name: period
-    description: "Collection period. Valid values: 10s, 5m, 2h"
-    default: "10s"
-  - name: username
-    type: text
-  - name: password
-    # This is the html input type?
-    type: password
+# List of inputs this dataset supports
+inputs:
+  - type: "metric/nginx"
+
+    # Only the variables have to be repeated that are not specified as part of the input
+    vars:
+      # All variables are specified in the input already

@@ -1,0 +1,4 @@
+inputy: metric/system
+enabled: true
+metricsets:
+  - load

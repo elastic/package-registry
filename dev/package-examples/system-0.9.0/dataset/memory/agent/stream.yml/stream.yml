@@ -1,0 +1,4 @@
+input: metric/system
+enabled: true
+metricsets:
+  - memory

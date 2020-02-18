@@ -10,3 +10,10 @@ release: ga
 requirement:
   kibana:
     versions: "<8.0.0"
+
+
+datasources:
+  - inputs:
+      type: metrics/system
+  - inputs:
+      type: log
