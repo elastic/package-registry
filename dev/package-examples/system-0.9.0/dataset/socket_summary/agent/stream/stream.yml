@@ -1,0 +1,4 @@
+input: metrics/system
+metricset: socket_summary
+period: {{period}}
+dataset: system.socket_summary

@@ -1,0 +1,6 @@
+title: System Network Metrics
+type: metrics
+
+inputs:
+  - type: system/metrics
+

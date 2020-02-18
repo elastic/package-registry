@@ -1,4 +1,4 @@
 input: metrics/system
-metricset: load
+metricset: uptime
 period: {{period}}
-dataset: system.load
+dataset: system.uptime

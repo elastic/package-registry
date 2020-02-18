@@ -239,7 +239,7 @@ func (p *Package) Validate() error {
 	}
 
 	if p.Title == nil || *p.Title == "" {
-		return fmt.Errorf("no title set")
+		return fmt.Errorf("no title set for package: %s", p.Name)
 	}
 
 	if p.Description == "" {

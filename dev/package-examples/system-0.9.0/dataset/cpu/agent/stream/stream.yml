@@ -1,6 +1,5 @@
 input: metrics/system
-enabled: false # default true
 metricset: cpu
-period: 10s
+period: {{period}}
 dataset: system.cpu
 metrics: ["percentages", "normalized_percentages"]

@@ -1,0 +1,5 @@
+title: System Process Summary Metrics
+type: metrics
+
+inputs:
+  - type: system/metrics
