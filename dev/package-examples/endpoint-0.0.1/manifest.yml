@@ -2,7 +2,7 @@ format_version: 1.0.0
 name: endpoint
 title: Elastic Endpoint
 description: This is the Elastic Endpoint package.
-version: 0.0.2
+version: 0.0.1
 categories: ["security", "endpoint"]
 # Options are experimental, beta, ga
 release: beta
@@ -13,6 +13,6 @@ license: basic
 
 requirement:
   elasticsearch:
-    versions: >7.4
+    versions: ">7.4.0"
   kibana:
-    versions: >7.4
+    versions: ">7.4.0"

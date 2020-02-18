@@ -21,8 +21,10 @@ import (
 const defaultType = "integration"
 
 var CategoryTitles = map[string]string{
-	"logs":    "Logs",
-	"metrics": "Metrics",
+	"logs":     "Logs",
+	"metrics":  "Metrics",
+	"security": "Security",
+	"endpoint": "Endpoint",
 }
 
 type Package struct {

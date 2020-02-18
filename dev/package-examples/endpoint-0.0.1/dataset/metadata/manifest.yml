@@ -1,7 +1,7 @@
 title: Endpoint metadata
 
-# TODO is metadata logs?
-type: logs
+# TODO is metadata metrics?
+type: metrics
 
 # If set to true, this will be enabled by default in the input selection
 default: true
