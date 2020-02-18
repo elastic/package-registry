@@ -5,8 +5,12 @@ ingest_pipeline: default
 
 default: true
 
-vars:
-  - name: paths
-    default:
-      # This example value has to be changed / overwritten by the user.
-      - /var/log/*.log
+inputs:
+  - type: log
+    vars:
+      - name: paths
+        required: true
+        description: Path to log files to be collected
+        type: text
+        multi: true
+

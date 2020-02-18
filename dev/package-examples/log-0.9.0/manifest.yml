@@ -15,3 +15,9 @@ requirement:
     versions: "<8.0.0"
   elasticsearch:
     versions: "<8.0.0"
+
+
+datasources:
+  - name: logs
+    inputs:
+      - type: log
