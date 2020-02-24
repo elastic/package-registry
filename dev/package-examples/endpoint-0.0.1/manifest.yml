@@ -3,7 +3,7 @@ name: endpoint
 title: Elastic Endpoint
 description: This is the Elastic Endpoint package.
 version: 0.0.1
-categories: ["security", "endpoint"]
+categories: ["security"]
 # Options are experimental, beta, ga
 release: beta
 # The package type. The options for now are [integration, solution], more type might be added in the future.
