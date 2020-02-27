@@ -13,22 +13,47 @@
     Required field for all events."
   example: "2016-05-23T08:05:34.853Z"
 - name: agent
-  title: agent
+  title: Agent
   group: 2
-  description: The agent fields contain data about the elastic endpoint agent.
+  description: "The agent fields contain the data about the software entity, if
+    any, that collects, detects, or observes events on a host, or takes measurements
+    on a host.
+
+    Examples include Beats. Agents may also run on observers. ECS agent.* fields
+    shall be populated with details of the agent running on the host or observer
+    where the event happened or the measurement was taken."
+  footnote:
+    "Examples: In the case of Beats for logs, the agent.name is filebeat.
+    For APM, it is the agent running in the app/service. The agent information does
+    not change if data is sent through queuing systems like Kafka, Redis, or processing
+    systems such as Logstash or APM Server."
   type: group
   fields:
     - name: id
-      level: (custom)
+      level: core
       type: keyword
       ignore_above: 1024
-      description: Unique identifier of this elastic endpoint agent (if one exists).
+      description: "Unique identifier of this agent (if one exists).
+
+        Example: For Beats this would be beat.id."
       example: 8a4f500d
-    - name: version
-      level: (custom)
+    - name: name
+      level: core
       type: keyword
       ignore_above: 1024
-      description: version of the elastic endpoint agent.
+      description: "Custom name of the agent.
+
+        This is a name that can be given to an agent. This can be helpful if for example
+        two Filebeat instances are running on the same host but a human readable separation
+        is needed on which Filebeat instance data is coming from.
+
+        If no name is given, the name is often left empty."
+      example: foo
+    - name: version
+      level: core
+      type: keyword
+      ignore_above: 1024
+      description: Version of the agent.
       example: 6.0.0-rc2
 - name: ecs
   title: ECS
@@ -37,7 +62,8 @@
   type: group
   fields:
     - name: version
-      level: (custom)
+      level: core
+      required: true
       type: keyword
       ignore_above: 1024
       description:
@@ -49,95 +75,125 @@
         of the events."
       example: 1.0.0
 - name: endpoint
-  title: endpoint
+  title: Endpoint
   group: 2
-  description: The endpoint fields are used for custom information about the endpoint.
+  description: TODO
   type: group
   fields:
-    - name: policy
-      level: (custom)
-      type: group
-      description: The policy fields are used to hold information about applied policy.
-      default_field: false
     - name: policy.id
-      level: (custom)
+      level: custom
       type: keyword
       ignore_above: 1024
-      description: The unique identifier of the policy
-      example: c2a9093e-e289-4c0a-aa44-8c32a414fa7a
+      description: TODO
       default_field: false
 - name: event
-  title: event
+  title: Event
   group: 2
-  description: The event fields are used for context information about the event.
+  description: "The event fields are used for context information about the log
+    or metric event itself.
+
+    A log is defined as an event containing details of something that happened.
+    Log events must include the time at which the thing happened. Examples of log
+    events include a process starting on a host, a network packet being sent from
+    a source to a destination, or a network connection between a client and a server
+    being initiated or closed. A metric is defined as an event containing one or
+    more numerical or categorical measurements and the time at which the measurement
+    was taken. Examples of metric events include memory pressure measured on a host,
+    or vulnerabilities measured on a scanned host."
   type: group
   fields:
     - name: created
-      level: (custom)
+      level: core
       type: date
       description:
-        event.created contains the date/time when the event was first read
-        by the elastic endpoint agent, or by your pipeline.
-      example: 2015-01-01 12:10:30+00:00
+        "event.created contains the date/time when the event was first
+        read by an agent, or by your pipeline.
+
+        This field is distinct from @timestamp in that @timestamp typically contain
+        the time extracted from the original event.
+
+        In most situations, these two timestamps will be slightly different. The difference
+        can be used to calculate the delay between your source generating an event,
+        and the time when your agent first processed it. This can be used to monitor
+        your agent's or pipeline's ability to keep up with your event source.
+
+        In case the two timestamps are identical, @timestamp should be used."
+      example: "2016-05-23T08:05:34.857Z"
 - name: host
-  title: host
+  title: Host
   group: 2
-  description:
-    The host fields are used to describe the host that's publishing data.
-    A host is defined as a general computing instance.
+  description: "A host is defined as a general computing instance.
+
+    ECS host.* fields should be populated with details about the host on which the
+    event happened, or from which the measurement was taken. Host types include
+    hardware, virtual machines, Docker containers, and Kubernetes nodes."
   type: group
   fields:
     - name: architecture
-      level: (custom)
+      level: core
       type: keyword
       ignore_above: 1024
       description: Operating system architecture.
       example: x86_64
     - name: hostname
-      level: (custom)
+      level: core
       type: keyword
       ignore_above: 1024
-      description: The hostname of the endpoint.
-      example: laptop-mbp
+      description: "Hostname of the host.
+
+        It normally contains what the `hostname` command returns on the host machine."
     - name: id
-      level: (custom)
+      level: core
       type: keyword
       ignore_above: 1024
-      description: Unique host identifier.
-      example: 606267a9-2e51-42b4-956e-6cc7812e3447
+      description: "Unique host id.
+
+        As hostname is not always unique, use values that are meaningful in your environment.
+
+        Example: The current usage of `beat.name`."
     - name: ip
-      level: (custom)
+      level: core
       type: ip
-      description: The IP addresses of the endpoint.
-      example: "- 10.0.1.5 - 10.0.1.6"
+      description: Host ip addresses.
     - name: mac
-      level: (custom)
+      level: core
       type: keyword
       ignore_above: 1024
       description: Host mac addresses.
-      example: "- 9c:90:90:a5:45:50 - 7d:60:90:a5:30:45"
-    - name: os
-      level: (custom)
-      type: group
-      description: The OS fields contain information about the operating system.
-      default_field: false
     - name: os.full
-      level: (custom)
+      level: extended
       type: keyword
       ignore_above: 1024
+      multi_fields:
+        - name: text
+          type: text
+          norms: false
+          default_field: false
       description: Operating system name, including the version or code name.
-      example: Windows Server 2012R2
+      example: Mac OS Mojave
     - name: os.name
-      level: (custom)
+      level: extended
+      type: keyword
+      ignore_above: 1024
+      multi_fields:
+        - name: text
+          type: text
+          norms: false
+          default_field: false
+      description: Operating system name, without the version.
+      example: Mac OS X
+    - name: os.variant
+      level: custom
       type: keyword
       ignore_above: 1024
       description:
-        Currently we just normalize the name (i.e. macOS, Windows, Linux).
-        See https://www.elastic.co/guide/en/ecs/current/ecs-os.html for how we should
-        be mapping this. Operating system name, without the version.
-      example: windows
+        A string value or phrase that further aid to classify or qualify
+        the operating system (OS).  For example the distribution for a Linux OS will
+        be entered in this field.
+      example: Ubuntu
+      default_field: false
     - name: os.version
-      level: (custom)
+      level: extended
       type: keyword
       ignore_above: 1024
       description: Operating system version as a raw string.
