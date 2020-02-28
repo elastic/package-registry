@@ -1,5 +1,14 @@
 [
   {
+    "description": "Package with data sources",
+    "download": "/epr/datasources/datasources-1.0.0.tar.gz",
+    "name": "datasources",
+    "path": "/package/datasources-1.0.0",
+    "title": "Default datasource Integration",
+    "type": "integration",
+    "version": "1.0.0"
+  },
+  {
     "description": "Tests if no pipeline is set, it defaults to the default one",
     "download": "/epr/default-pipeline/default-pipeline-0.0.2.tar.gz",
     "name": "default-pipeline",

@@ -1,0 +1,4 @@
+input: metrics/system
+metricset: uptime
+period: {{period}}
+dataset: system.uptime

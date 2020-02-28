@@ -12,3 +12,50 @@ requirement:
     versions: ">7.1.0 <7.6.0"
   elasticsearch:
     versions: ">7.0.1"
+
+datasources:
+  -
+    # Do we need a name for the data source?
+    name: nginx
+
+    # List of inputs this datasource supports
+    inputs:
+      -
+        # An id can be given, in case the type used here is not unique
+        # This is for selection in the stream
+        # id: nginx
+        type: nginx/metrics
+        descrition: Collecting metrics for nginx.
+
+        # Common configuration options for this input
+        vars:
+          - name: hosts
+            description: Nginx hosts
+            default:
+              ["http://127.0.0.1"]
+            # All the config options that are required should be shown in the UI
+            required: true
+            multi: true
+            type: text
+          - name: period
+            description: "Collection period. Valid values: 10s, 5m, 2h"
+            default: "10s"
+            type: duration
+          - name: username
+            type: text
+          - name: password
+            # This is the html input type?
+            type: password
+
+      -
+        type: logs
+        description: Collect nginx logs.
+
+        # Common configuration options for this input
+        vars:
+
+      -
+        type: syslog
+
+        # Common configuration options for this input
+        vars:

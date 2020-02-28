@@ -10,3 +10,15 @@ release: ga
 requirement:
   kibana:
     versions: "<8.0.0"
+
+
+datasources:
+  - name: system
+    inputs:
+      - type: metrics/system
+        vars:
+          - name: period
+            type: string
+            default: 10s
+            description: Collection period
+      - type: log

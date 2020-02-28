@@ -1,0 +1,4 @@
+input: metrics/system
+metricset: load
+period: {{period}}
+dataset: system.load

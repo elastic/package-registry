@@ -1,11 +1,29 @@
 title: Nginx Error Logs
 type: logs
 ingest_pipeline: pipeline
-vars:
-  - name: paths
-    default:
-      - /var/log/nginx/error.log*
-    os.darwin:
-      - /usr/local/var/log/nginx/error.log*
-    os.windows:
-      - c:/programdata/nginx/logs/error.log*
+
+
+# This is an example that multiple inputs are supported by one dataset
+inputs:
+  - type: log
+    vars:
+      - name: paths
+        required: true
+        default:
+          - /var/log/nginx/error.log*
+
+        # TODO: The exact definition of os specific paths still needs to be defined
+        os.darwin:
+          - /usr/local/var/log/nginx/error.log*
+        os.windows:
+          - c:/programdata/nginx/logs/error.log*
+
+  - type: syslog
+    vars:
+      # Are udp and tcp syslog input two different inputs?
+      - name: protocol.udp.host
+        required: true
+        default:
+          - "localhost:9000"
+
+

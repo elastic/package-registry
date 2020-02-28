@@ -32,18 +32,24 @@ type Package struct {
 	Version       string  `config:"version" json:"version"`
 	Readme        *string `config:"readme,omitempty" json:"readme,omitempty"`
 	versionSemVer semver.Version
-	Description   string      `config:"description" json:"description"`
-	Type          string      `config:"type" json:"type"`
-	Categories    []string    `config:"categories" json:"categories"`
-	Requirement   Requirement `config:"requirement" json:"requirement"`
-	Screenshots   []Image     `config:"screenshots,omitempty" json:"screenshots,omitempty"`
-	Icons         []Image     `config:"icons,omitempty" json:"icons,omitempty"`
-	Assets        []string    `config:"assets,omitempty" json:"assets,omitempty"`
-	Internal      bool        `config:"internal,omitempty" json:"internal,omitempty"`
-	FormatVersion string      `config:"format_version" json:"format_version"`
-	DataSets      []*DataSet  `config:"datasets,omitempty" json:"datasets,omitempty"`
-	Download      string      `json:"download"`
-	Path          string      `json:"path"`
+	Description   string       `config:"description" json:"description"`
+	Type          string       `config:"type" json:"type"`
+	Categories    []string     `config:"categories" json:"categories"`
+	Requirement   Requirement  `config:"requirement" json:"requirement"`
+	Screenshots   []Image      `config:"screenshots,omitempty" json:"screenshots,omitempty"`
+	Icons         []Image      `config:"icons,omitempty" json:"icons,omitempty"`
+	Assets        []string     `config:"assets,omitempty" json:"assets,omitempty"`
+	Internal      bool         `config:"internal,omitempty" json:"internal,omitempty"`
+	FormatVersion string       `config:"format_version" json:"format_version"`
+	DataSets      []*DataSet   `config:"datasets,omitempty" json:"datasets,omitempty"`
+	Datasources   []Datasource `config:"datasources,omitempty" json:"datasources,omitempty"`
+	Download      string       `json:"download"`
+	Path          string       `json:"path"`
+}
+
+type Datasource struct {
+	Name   string        `config:"name" json:"name"`
+	Inputs []interface{} `config:"inputs" json:"inputs"`
 }
 
 type Requirement struct {
@@ -240,7 +246,7 @@ func (p *Package) Validate() error {
 	}
 
 	if p.Title == nil || *p.Title == "" {
-		return fmt.Errorf("no title set")
+		return fmt.Errorf("no title set for package: %s", p.Name)
 	}
 
 	if p.Description == "" {

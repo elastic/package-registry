@@ -1,0 +1,4 @@
+input: metrics/system
+metricset: memory
+period: {{period}}
+dataset: system.memory
