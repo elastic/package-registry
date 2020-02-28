@@ -1,10 +1,6 @@
-title: Endpoint events
+title: Endpoint Events
 
-# TODO currently only metrics and logs are supported
 type: events
 
 # If set to true, this will be enabled by default in the input selection
 default: true
-# TODO do we have any variables?
-#vars:
-
