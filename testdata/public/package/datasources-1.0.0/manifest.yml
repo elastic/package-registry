@@ -12,6 +12,8 @@ datasources:
   -
     # Do we need a name for the data source?
     name: nginx
+    title: Datasource title
+    description: Details about the data source.
 
     # List of inputs this datasource supports
     inputs:
