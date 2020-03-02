@@ -58,6 +58,10 @@
       "name": "nginx",
       "inputs": [
         {
+<<<<<<< HEAD
+=======
+          "description": "Collecting metrics for nginx.",
+>>>>>>> fix typo
           "type": "nginx/metrics",
           "vars": [
             {

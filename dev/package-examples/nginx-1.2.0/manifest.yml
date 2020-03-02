@@ -27,7 +27,7 @@ datasources:
         # This is for selection in the stream
         # id: nginx
         type: nginx/metrics
-        descrition: Collecting metrics for nginx.
+        description: Collecting metrics for nginx.
 
         # Common configuration options for this input
         vars:
