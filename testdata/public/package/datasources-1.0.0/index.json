@@ -58,7 +58,6 @@
       "name": "nginx",
       "inputs": [
         {
-          "descrition": "Collecting metrics for nginx.",
           "type": "nginx/metrics",
           "vars": [
             {
@@ -85,16 +84,15 @@
               "name": "password",
               "type": "password"
             }
-          ]
+          ],
+          "description": "Collecting metrics for nginx."
         },
         {
-          "description": "Collect nginx logs.",
           "type": "logs",
-          "vars": null
+          "description": "Collect nginx logs."
         },
         {
-          "type": "syslog",
-          "vars": null
+          "type": "syslog"
         }
       ]
     }

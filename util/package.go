@@ -47,8 +47,8 @@ type Package struct {
 }
 
 type Datasource struct {
-	Name   string        `config:"name" json:"name"`
-	Inputs []interface{} `config:"inputs" json:"inputs"`
+	Name   string  `config:"name" json:"name"`
+	Inputs []Input `config:"inputs" json:"inputs"`
 }
 
 type Requirement struct {
