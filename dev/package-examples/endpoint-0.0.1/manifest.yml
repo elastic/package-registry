@@ -8,7 +8,7 @@ categories: ["security"]
 release: beta
 # The package type. The options for now are [integration, solution], more type might be added in the future.
 # The default type is integration and will be set if empty.
-type: integration
+type: solution
 license: basic
 
 requirement:
