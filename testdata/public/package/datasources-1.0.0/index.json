@@ -21,9 +21,11 @@
       "name": "example",
       "release": "beta",
       "type": "logs",
-      "inputs": [
+      "streams": [
         {
-          "type": "log",
+          "description": "Description of the stream with more details.",
+          "input": "log",
+          "title": "Title of the stream",
           "vars": [
             {
               "default": [
