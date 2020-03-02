@@ -11,6 +11,8 @@ ingest_pipeline: default
 # List of supported streams. There can be multiple stream definitions for different input types.
 streams:
   - input: log
+    title: Nginx access logs
+    description: Collecting the nginx access logs from file.
     vars:
       - name: paths
         required: true

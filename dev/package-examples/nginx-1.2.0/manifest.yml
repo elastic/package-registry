@@ -17,6 +17,8 @@ datasources:
   -
     # Do we need a name for the data source?
     name: nginx
+    title: Nginx logs and metrics.
+    description: Collecting logs and metrics from nginx.
 
     # List of inputs this datasource supports
     inputs:
