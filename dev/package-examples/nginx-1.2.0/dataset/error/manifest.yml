@@ -4,8 +4,8 @@ ingest_pipeline: pipeline
 
 
 # This is an example that multiple inputs are supported by one dataset
-inputs:
-  - type: log
+streams:
+  - input: log
     vars:
       - name: paths
         required: true
@@ -18,7 +18,7 @@ inputs:
         os.windows:
           - c:/programdata/nginx/logs/error.log*
 
-  - type: syslog
+  - input: syslog
     vars:
       # Are udp and tcp syslog input two different inputs?
       - name: protocol.udp.host
