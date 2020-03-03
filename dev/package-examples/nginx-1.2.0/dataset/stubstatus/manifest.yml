@@ -10,9 +10,8 @@ compatibility: linux, freebsd
 # Each input can be in its own release status
 release: beta
 
-# List of inputs this dataset supports
-inputs:
-  - type: "metric/nginx"
+streams:
+  - input: "metric/nginx"
 
     # Only the variables have to be repeated that are not specified as part of the input
     vars:

@@ -2,8 +2,10 @@ title: Example dataset with inputs
 type: logs
 
 # List of supported inputs
-inputs:
-  - type: log
+streams:
+  - input: log
+    title: Title of the stream
+    description: Description of the stream with more details.
     vars:
       - name: paths
         required: true
