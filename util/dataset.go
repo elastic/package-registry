@@ -18,7 +18,7 @@ type DataSet struct {
 	Type           string                   `config:"type" json:"type" validate:"required"`
 	IngestPipeline string                   `config:"ingest_pipeline,omitempty" config:"ingest_pipeline" json:"ingest_pipeline,omitempty"`
 	Vars           []map[string]interface{} `config:"vars" json:"vars,omitempty"`
-	Streams        []map[string]interface{} `config:"streams" json:"streams,omitempty"`
+	Streams        []Stream                 `config:"streams" json:"streams,omitempty"`
 	Package        string                   `json:"package"`
 
 	// Generated fields
@@ -27,6 +27,13 @@ type DataSet struct {
 
 type Input struct {
 	Type        string                   `config:"type" json:"type" validate:"required"`
+	Vars        []map[string]interface{} `config:"vars" json:"vars,omitempty" `
+	Description string                   `config:"description" json:"description,omitempty" `
+	Streams     []Stream                 `config:"streams" json:"streams,omitempty"`
+}
+
+type Stream struct {
+	Input       string                   `config:"input" json:"input" validate:"required"`
 	Vars        []map[string]interface{} `config:"vars" json:"vars,omitempty" `
 	Description string                   `config:"description" json:"description,omitempty" `
 }

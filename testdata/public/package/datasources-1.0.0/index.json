@@ -12,20 +12,57 @@
   },
   "assets": [
     "/package/datasources-1.0.0/manifest.yml",
-    "/package/datasources-1.0.0/dataset/example/manifest.yml"
+    "/package/datasources-1.0.0/dataset/examplelog1/manifest.yml",
+    "/package/datasources-1.0.0/dataset/examplelog2/manifest.yml",
+    "/package/datasources-1.0.0/dataset/examplemetric/manifest.yml"
   ],
   "format_version": "1.0.0",
   "datasets": [
     {
       "title": "Example dataset with inputs",
-      "name": "example",
+      "name": "examplelog1",
       "release": "beta",
       "type": "logs",
       "streams": [
         {
-          "description": "Description of the stream with more details.",
-          "input": "log",
-          "title": "Title of the stream",
+          "input": "logs",
+          "vars": [
+            {
+              "default": [
+                "/var/log/nginx/error.log*"
+              ],
+              "description": "Paths to the nginx error log file.",
+              "multi": true,
+              "name": "paths",
+              "os": {
+                "darwin": {
+                  "default": [
+                    "/usr/local/var/log/nginx/error.log*"
+                  ]
+                },
+                "windows": {
+                  "default": [
+                    "c:/programdata/nginx/logs/*error.log*"
+                  ]
+                }
+              },
+              "required": true,
+              "type": "text"
+            }
+          ],
+          "description": "Description of the stream with more details."
+        }
+      ],
+      "package": "datasources"
+    },
+    {
+      "title": "Example dataset with inputs",
+      "name": "examplelog2",
+      "release": "beta",
+      "type": "logs",
+      "streams": [
+        {
+          "input": "logs",
           "vars": [
             {
               "default": [
@@ -49,7 +86,30 @@
               "required": true,
               "type": "text"
             }
-          ]
+          ],
+          "description": "Description of the stream with more details."
+        }
+      ],
+      "package": "datasources"
+    },
+    {
+      "title": "Example dataset with inputs",
+      "name": "examplemetric",
+      "release": "beta",
+      "type": "metrics",
+      "streams": [
+        {
+          "input": "nginx/metrics",
+          "vars": [
+            {
+              "default": "localhost",
+              "description": "Paths to the nginx access log file.",
+              "name": "url",
+              "required": true,
+              "type": "text"
+            }
+          ],
+          "description": "Description of the stream with more details."
         }
       ],
       "package": "datasources"
@@ -87,11 +147,84 @@
               "type": "password"
             }
           ],
-          "description": "Collecting metrics for nginx."
+          "description": "Collecting metrics for nginx.",
+          "streams": [
+            {
+              "input": "nginx/metrics",
+              "vars": [
+                {
+                  "default": "localhost",
+                  "description": "Paths to the nginx access log file.",
+                  "name": "url",
+                  "required": true,
+                  "type": "text"
+                }
+              ],
+              "description": "Description of the stream with more details."
+            }
+          ]
         },
         {
           "type": "logs",
-          "description": "Collect nginx logs."
+          "description": "Collect nginx logs.",
+          "streams": [
+            {
+              "input": "logs",
+              "vars": [
+                {
+                  "default": [
+                    "/var/log/nginx/error.log*"
+                  ],
+                  "description": "Paths to the nginx error log file.",
+                  "multi": true,
+                  "name": "paths",
+                  "os": {
+                    "darwin": {
+                      "default": [
+                        "/usr/local/var/log/nginx/error.log*"
+                      ]
+                    },
+                    "windows": {
+                      "default": [
+                        "c:/programdata/nginx/logs/*error.log*"
+                      ]
+                    }
+                  },
+                  "required": true,
+                  "type": "text"
+                }
+              ],
+              "description": "Description of the stream with more details."
+            },
+            {
+              "input": "logs",
+              "vars": [
+                {
+                  "default": [
+                    "/var/log/nginx/access.log*"
+                  ],
+                  "description": "Paths to the nginx access log file.",
+                  "multi": true,
+                  "name": "paths",
+                  "os": {
+                    "darwin": {
+                      "default": [
+                        "/usr/local/var/log/nginx/access.log*"
+                      ]
+                    },
+                    "windows": {
+                      "default": [
+                        "c:/programdata/nginx/logs/*access.log*"
+                      ]
+                    }
+                  },
+                  "required": true,
+                  "type": "text"
+                }
+              ],
+              "description": "Description of the stream with more details."
+            }
+          ]
         },
         {
           "type": "syslog"
