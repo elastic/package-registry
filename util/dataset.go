@@ -35,6 +35,7 @@ type Input struct {
 type Stream struct {
 	Input       string                   `config:"input" json:"input" validate:"required"`
 	Vars        []map[string]interface{} `config:"vars" json:"vars,omitempty" `
+	Dataset     string                   `config:"dataset" json:"dataset,omitempty" `
 	Description string                   `config:"description" json:"description,omitempty" `
 }
 

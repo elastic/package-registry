@@ -160,6 +160,7 @@
                   "type": "text"
                 }
               ],
+              "dataset": "examplemetric",
               "description": "Description of the stream with more details."
             }
           ]
@@ -194,6 +195,7 @@
                   "type": "text"
                 }
               ],
+              "dataset": "examplelog1",
               "description": "Description of the stream with more details."
             },
             {
@@ -222,6 +224,7 @@
                   "type": "text"
                 }
               ],
+              "dataset": "examplelog2",
               "description": "Description of the stream with more details."
             }
           ]

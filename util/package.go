@@ -334,6 +334,7 @@ func (p *Package) LoadDataSets(packagePath string) error {
 			for iK, _ := range datasource.Inputs {
 				for _, stream := range d.Streams {
 					if stream.Input == p.Datasources[dK].Inputs[iK].Type {
+						stream.Dataset = d.Name
 						p.Datasources[dK].Inputs[iK].Streams = append(p.Datasources[dK].Inputs[iK].Streams, stream)
 					}
 				}
