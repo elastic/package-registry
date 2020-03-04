@@ -1,4 +1,5 @@
 {
+  "format_version": "1.0.0",
   "name": "example",
   "title": "Example Integration",
   "version": "1.0.0",
@@ -47,7 +48,6 @@
     "/package/example-1.0.0/dataset/foo/elasticsearch/ingest-pipeline/pipeline-plaintext.json",
     "/package/example-1.0.0/dataset/foo/elasticsearch/ingest-pipeline/pipeline-tcp.json"
   ],
-  "format_version": "1.0.0",
   "datasets": [
     {
       "title": "Foo",
