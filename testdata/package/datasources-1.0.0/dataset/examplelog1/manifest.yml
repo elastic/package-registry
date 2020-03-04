@@ -1,25 +1,23 @@
 title: Example dataset with inputs
 type: logs
 
-# List of supported inputs
 streams:
-  - input: log
+  - input: logs
     title: Title of the stream
     description: Description of the stream with more details.
     vars:
       - name: paths
         required: true
-        # Should we define this as array? How will the UI best make sense of it?
-        description: Paths to the nginx access log file.
+        description: Paths to the nginx error log file.
         type: text
         multi: true
         default:
-          - /var/log/nginx/access.log*
+          - /var/log/nginx/error.log*
         # I suggest to use ECS fields for this config options here: https://github.com/elastic/ecs/blob/master/schemas/os.yml
         # This would need to be based on a predefined definition on what can be filtered on
         os.darwin:
           default:
-            - /usr/local/var/log/nginx/access.log*
+            - /usr/local/var/log/nginx/error.log*
         os.windows:
           default:
-            - c:/programdata/nginx/logs/*access.log*
+            - c:/programdata/nginx/logs/*error.log*

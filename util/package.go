@@ -329,6 +329,18 @@ func (p *Package) LoadDataSets(packagePath string) error {
 			d.Release = "beta"
 		}
 
+		// Iterate through all datatsource and inputs to find the matching streams and add them to the output.
+		for dK, datasource := range p.Datasources {
+			for iK, _ := range datasource.Inputs {
+				for _, stream := range d.Streams {
+					if stream.Input == p.Datasources[dK].Inputs[iK].Type {
+						stream.Dataset = d.ID
+						p.Datasources[dK].Inputs[iK].Streams = append(p.Datasources[dK].Inputs[iK].Streams, stream)
+					}
+				}
+			}
+		}
+
 		p.DataSets = append(p.DataSets, d)
 	}
 
