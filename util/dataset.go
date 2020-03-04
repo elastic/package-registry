@@ -12,14 +12,13 @@ import (
 )
 
 type DataSet struct {
-	ID             string                   `config:"id" json:"id"`
-	Title          string                   `config:"title" json:"title" validate:"required"`
-	Release        string                   `config:"release" json:"release"`
-	Type           string                   `config:"type" json:"type" validate:"required"`
-	IngestPipeline string                   `config:"ingest_pipeline,omitempty" config:"ingest_pipeline" json:"ingest_pipeline,omitempty"`
-	Vars           []map[string]interface{} `config:"vars" json:"vars,omitempty"`
-	Streams        []Stream                 `config:"streams" json:"streams,omitempty"`
-	Package        string                   `json:"package"`
+	ID             string   `config:"id" json:"id"`
+	Title          string   `config:"title" json:"title" validate:"required"`
+	Release        string   `config:"release" json:"release"`
+	Type           string   `config:"type" json:"type" validate:"required"`
+	IngestPipeline string   `config:"ingest_pipeline,omitempty" config:"ingest_pipeline" json:"ingest_pipeline,omitempty"`
+	Streams        []Stream `config:"streams" json:"streams,omitempty"`
+	Package        string   `json:"package"`
 
 	// Generated fields
 	Path string `json:"path"`

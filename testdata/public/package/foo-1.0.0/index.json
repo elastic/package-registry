@@ -3,6 +3,7 @@
   "name": "foo",
   "title": "Foo",
   "version": "1.0.0",
+  "license": "basic",
   "description": "This is the foo integration",
   "type": "solution",
   "categories": [
