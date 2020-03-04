@@ -1,0 +1,13 @@
+format_version: 1.0.0
+name: iis
+version: 0.0.1
+description: ""
+type: integration
+categories:
+- logs
+- metrics
+requirement:
+  kibana:
+    versions: ""
+download: ""
+path: ""

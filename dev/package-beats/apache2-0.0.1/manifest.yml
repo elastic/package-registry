@@ -1,0 +1,12 @@
+format_version: 1.0.0
+name: apache2
+version: 0.0.1
+description: ""
+type: integration
+categories:
+- logs
+requirement:
+  kibana:
+    versions: ""
+download: ""
+path: ""
