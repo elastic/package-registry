@@ -11,7 +11,7 @@ compatibility: linux, freebsd
 release: beta
 
 streams:
-  - input: "metric/nginx"
+  - input: "nginx/metrics"
 
     # Only the variables have to be repeated that are not specified as part of the input
     vars:

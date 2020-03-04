@@ -1,6 +1,6 @@
 title: System uptime Metrics
 type: metrics
 
-inputs:
-  - type: system/metrics
+streams:
+  - input: system/metrics
 

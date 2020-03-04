@@ -5,7 +5,7 @@ ingest_pipeline: pipeline
 
 # This is an example that multiple streams with different inputs are supported by one dataset
 streams:
-  - input: log
+  - input: logs
     title: Nginx error logs
     description: Collecting the Nginx error logs from file.
     vars:

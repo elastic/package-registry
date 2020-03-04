@@ -5,5 +5,5 @@ release: beta
 # Needs to describe the type of this input
 type: metrics
 
-inputs:
-  - type: system/metrics
+streams:
+  - input: system/metrics
