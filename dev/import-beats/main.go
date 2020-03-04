@@ -15,22 +15,22 @@ func main() {
 	// Beats repository directory
 	var beatsDir string
 	// Target public directory where the generated packages should end up in
-	var publicDir string
+	var outputDir string
 
 	flag.StringVar(&beatsDir, "beatsDir", "", "Path to the beats repository")
-	flag.StringVar(&publicDir, "publicDir", "", "Path to the public directory ")
+	flag.StringVar(&outputDir, "outputDir", "", "Path to the output directory ")
 	flag.Parse()
 
-	if beatsDir == "" || publicDir == "" {
-		log.Fatal("beatsDir and publicDir must be set")
+	if beatsDir == "" || outputDir == "" {
+		log.Fatal("beatsDir and outputDir must be set")
 	}
 
-	if err := build(beatsDir, publicDir); err != nil {
+	if err := build(beatsDir, outputDir); err != nil {
 		log.Fatal(err)
 	}
 }
 
-func build(beatsDir, publicDir string) error {
+func build(beatsDir, outputDir string) error {
 	packages := packageMap{}
 
 	for _, beatName := range logSources {
@@ -47,5 +47,5 @@ func build(beatsDir, publicDir string) error {
 		}
 	}
 
-	return packages.writePackages(publicDir)
+	return packages.writePackages(outputDir)
 }

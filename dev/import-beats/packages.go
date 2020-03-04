@@ -48,11 +48,11 @@ func (p packageMap) loadFromSource(beatsDir, beatName, packageType string) error
 	return nil
 }
 
-func (p packageMap) writePackages(publicDir string) error {
+func (p packageMap) writePackages(outputDir string) error {
 	for name, content := range p {
 		log.Printf("Writing package '%s' (version: %s)\n", name, content.Version)
 
-		path := filepath.Join(publicDir, name+"-"+content.Version)
+		path := filepath.Join(outputDir, name+"-"+content.Version)
 		err := os.MkdirAll(path, 0755)
 		if err != nil {
 			return errors.Wrapf(err, "cannot make directory '%s'", path)
