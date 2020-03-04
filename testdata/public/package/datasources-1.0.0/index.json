@@ -19,8 +19,8 @@
   "format_version": "1.0.0",
   "datasets": [
     {
+      "id": "datasources.examplelog1",
       "title": "Example dataset with inputs",
-      "name": "examplelog1",
       "release": "beta",
       "type": "logs",
       "streams": [
@@ -53,11 +53,12 @@
           "description": "Description of the stream with more details."
         }
       ],
-      "package": "datasources"
+      "package": "datasources",
+      "path": "examplelog1"
     },
     {
+      "id": "datasources.examplelog2",
       "title": "Example dataset with inputs",
-      "name": "examplelog2",
       "release": "beta",
       "type": "logs",
       "streams": [
@@ -90,11 +91,12 @@
           "description": "Description of the stream with more details."
         }
       ],
-      "package": "datasources"
+      "package": "datasources",
+      "path": "examplelog2"
     },
     {
+      "id": "datasources.examplemetric",
       "title": "Example dataset with inputs",
-      "name": "examplemetric",
       "release": "beta",
       "type": "metrics",
       "streams": [
@@ -112,7 +114,8 @@
           "description": "Description of the stream with more details."
         }
       ],
-      "package": "datasources"
+      "package": "datasources",
+      "path": "examplemetric"
     }
   ],
   "datasources": [
@@ -160,7 +163,7 @@
                   "type": "text"
                 }
               ],
-              "dataset": "examplemetric",
+              "dataset": "datasources.examplemetric",
               "description": "Description of the stream with more details."
             }
           ]
@@ -195,7 +198,7 @@
                   "type": "text"
                 }
               ],
-              "dataset": "examplelog1",
+              "dataset": "datasources.examplelog1",
               "description": "Description of the stream with more details."
             },
             {
@@ -224,7 +227,7 @@
                   "type": "text"
                 }
               ],
-              "dataset": "examplelog2",
+              "dataset": "datasources.examplelog2",
               "description": "Description of the stream with more details."
             }
           ]
