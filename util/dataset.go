@@ -12,14 +12,17 @@ import (
 )
 
 type DataSet struct {
+	ID             string                   `config:"id" json:"id"`
 	Title          string                   `config:"title" json:"title" validate:"required"`
-	Name           string                   `config:"name" json:"name"`
 	Release        string                   `config:"release" json:"release"`
 	Type           string                   `config:"type" json:"type" validate:"required"`
 	IngestPipeline string                   `config:"ingest_pipeline,omitempty" config:"ingest_pipeline" json:"ingest_pipeline,omitempty"`
 	Vars           []map[string]interface{} `config:"vars" json:"vars,omitempty"`
 	Streams        []map[string]interface{} `config:"streams" json:"streams,omitempty"`
 	Package        string                   `json:"package"`
+
+	// Generated fields
+	Path string `json:"path"`
 }
 
 type Input struct {
@@ -29,14 +32,14 @@ type Input struct {
 }
 
 func (d *DataSet) Validate() error {
-	pipelineDir := d.Name + "/elasticsearch/ingest-pipeline/"
+	pipelineDir := d.Path + "/elasticsearch/ingest-pipeline/"
 	paths, err := filepath.Glob(pipelineDir + "*")
 	if err != nil {
 		return err
 	}
 
-	if strings.Contains(d.Name, "-") {
-		return fmt.Errorf("dataset name is not allowed to contain `-`: %s", d.Name)
+	if strings.Contains(d.ID, "-") {
+		return fmt.Errorf("dataset name is not allowed to contain `-`: %s", d.ID)
 	}
 
 	if d.IngestPipeline == "" {
@@ -50,7 +53,7 @@ func (d *DataSet) Validate() error {
 	}
 
 	if d.IngestPipeline == "" && len(paths) > 0 {
-		return fmt.Errorf("Package contains pipelines which are not used: %v, %s", paths, d.Name)
+		return fmt.Errorf("Package contains pipelines which are not used: %v, %s", paths, d.ID)
 	}
 
 	// In case an ingest pipeline is set, check if it is around
