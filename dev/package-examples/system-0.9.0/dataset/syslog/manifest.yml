@@ -1,8 +1,8 @@
 title: System Auth logs
 type: logs
 
-inputs:
-  - type: logs
+streams:
+  - input: logs
     vars:
       - name: paths
         default:

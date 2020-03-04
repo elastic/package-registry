@@ -1,8 +1,8 @@
 title: System Process Metrics
 type: metrics
 
-inputs:
-  - type: system/metrics
+streams:
+  - input: system/metrics
     vars:
       - name: processes
         default: ['.*']

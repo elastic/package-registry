@@ -15,10 +15,10 @@ requirement:
 datasources:
   - name: system
     inputs:
-      - type: metrics/system
+      - type: system/metrics
         vars:
           - name: period
             type: string
             default: 10s
             description: Collection period
-      - type: log
+      - type: logs

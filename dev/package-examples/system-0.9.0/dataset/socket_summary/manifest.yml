@@ -1,5 +1,5 @@
 title: System Socket Summary Metrics
 type: metrics
 
-inputs:
-  - type: system/metrics
+streams:
+  - input: system/metrics
