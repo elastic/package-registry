@@ -6,6 +6,7 @@ version: 1.0.0
 title: Default datasource Integration
 categories: ["logs"]
 type: integration
+license: basic
 
 
 datasources:

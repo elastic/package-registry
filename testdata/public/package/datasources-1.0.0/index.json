@@ -3,6 +3,7 @@
   "name": "datasources",
   "title": "Default datasource Integration",
   "version": "1.0.0",
+  "license": "basic",
   "description": "Package with data sources",
   "type": "integration",
   "categories": [

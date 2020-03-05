@@ -3,6 +3,7 @@
   "name": "default-pipeline",
   "title": "Default pipeline Integration",
   "version": "0.0.2",
+  "license": "basic",
   "description": "Tests if no pipeline is set, it defaults to the default one",
   "type": "integration",
   "categories": [

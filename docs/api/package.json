@@ -4,6 +4,7 @@
   "title": "Example Integration",
   "version": "1.0.0",
   "readme": "/package/example-1.0.0/docs/README.md",
+  "license": "basic",
   "description": "This is the example integration",
   "type": "integration",
   "categories": [

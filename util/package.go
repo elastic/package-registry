@@ -33,6 +33,7 @@ type Package struct {
 	Title         *string `config:"title,omitempty" json:"title,omitempty" yaml:"title,omitempty"`
 	Version       string  `config:"version" json:"version"`
 	Readme        *string `config:"readme,omitempty" json:"readme,omitempty" yaml:"readme,omitempty"`
+	License       string  `config:"license,omitempty" json:"license,omitempty" yaml:"license,omitempty"`
 	versionSemVer semver.Version
 	Description   string       `config:"description" json:"description"`
 	Type          string       `config:"type" json:"type"`
@@ -95,6 +96,11 @@ func NewPackage(basePath, packageName string) (*Package, error) {
 
 	if p.Type == "" {
 		p.Type = defaultType
+	}
+
+	// If not license is set, basic is assumed
+	if p.License == "" {
+		p.License = "basic"
 	}
 
 	if p.Icons != nil {
