@@ -1,6 +1,7 @@
 format_version: 1.0.0
 name: zookeeper
 version: 0.0.1
+license: oss
 description: ""
 type: integration
 categories:
