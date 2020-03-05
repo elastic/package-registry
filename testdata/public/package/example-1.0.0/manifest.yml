@@ -26,3 +26,10 @@ screenshots:
     size: 1492x1464
     type: image/png
 
+datasources:
+  - name: logs
+    title: Logs datasource
+    description: Datasource for your log files.
+    inputs:
+      - type: foo
+

@@ -24,8 +24,49 @@
       "release": "beta",
       "type": "logs",
       "ingest_pipeline": "default",
+      "streams": [
+        {
+          "input": "logs",
+          "vars": [
+            {
+              "description": "Path to log files to be collected",
+              "multi": true,
+              "name": "paths",
+              "required": true,
+              "type": "text"
+            }
+          ]
+        }
+      ],
       "package": "default-pipeline",
       "path": "foo"
+    }
+  ],
+  "datasources": [
+    {
+      "name": "logs",
+      "title": "Logs datasource",
+      "description": "Datasource for your log files.",
+      "inputs": [
+        {
+          "type": "logs",
+          "streams": [
+            {
+              "input": "logs",
+              "vars": [
+                {
+                  "description": "Path to log files to be collected",
+                  "multi": true,
+                  "name": "paths",
+                  "required": true,
+                  "type": "text"
+                }
+              ],
+              "dataset": "default-pipeline.foo"
+            }
+          ]
+        }
+      ]
     }
   ],
   "download": "/epr/default-pipeline/default-pipeline-0.0.2.tar.gz",

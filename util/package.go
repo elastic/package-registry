@@ -50,8 +50,10 @@ type Package struct {
 }
 
 type Datasource struct {
-	Name   string  `config:"name" json:"name"`
-	Inputs []Input `config:"inputs" json:"inputs"`
+	Name        string  `config:"name" json:"name" validate:"required"`
+	Title       string  `config:"title" json:"title" validate:"required"`
+	Description string  `config:"description" json:"description" validate:"required"`
+	Inputs      []Input `config:"inputs" json:"inputs" validate:"required"`
 }
 
 type Requirement struct {

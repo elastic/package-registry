@@ -7,17 +7,22 @@ ingest_pipeline: pipeline
 # If set to true, this will be enabled by default in the input selection
 default: true
 
-vars:
-  - name: paths
-    default:
-      - /var/log/iptables.log
-  - name: tags
-    default: [iptables]
-  - name: syslog_host
-    default: localhost
-  - name: syslog_port
-    default: 9001
-  - name: input
-    default: syslog
-  - name: community_id
-    default: true
+streams:
+  - input: logs
+    title: Iptables logs
+    description: Collecting Iptables logs
+
+    vars:
+      - name: paths
+        default:
+          - /var/log/iptables.log
+      - name: tags
+        default: [iptables]
+      - name: syslog_host
+        default: localhost
+      - name: syslog_port
+        default: 9001
+      - name: input
+        default: syslog
+      - name: community_id
+        default: true

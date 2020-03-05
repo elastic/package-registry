@@ -25,3 +25,19 @@ icons:
 - src: "/img/icon.svg"
   size: "255x144"
   type: "image/svg+xml"
+
+
+datasources:
+  -
+    name: coredns
+    title: Coredns logs and metrics.
+    description: Collecting logs and metrics from Coredns.
+
+    inputs:
+      -
+        type: coredns/metrics
+        description: Collecting metrics for coredns.
+
+      -
+        type: logs
+        description: Collect coredns logs.

@@ -19,5 +19,8 @@ requirement:
 
 datasources:
   - name: logs
+    title: Logs datasource
+    description: Datasource for your log files.
     inputs:
-      - type: log
+      - type: logs
+
