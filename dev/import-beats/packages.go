@@ -40,6 +40,7 @@ func (p packageMap) loadFromSource(beatsDir, beatName, packageType string) error
 				Version:       "0.0.1", // TODO
 				Type:          "integration",
 				Categories:    []string{},
+				License:       "basic",
 			}
 		}
 
