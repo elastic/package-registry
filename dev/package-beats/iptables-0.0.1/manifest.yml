@@ -1,8 +1,10 @@
 format_version: 1.0.0
 name: iptables
+title: iptables
 version: 0.0.1
 license: basic
-description: ""
+description: |
+  Module for handling the iptables logs.
 type: integration
 categories:
 - logs

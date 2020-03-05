@@ -1,8 +1,10 @@
 format_version: 1.0.0
 name: php_fpm
+title: PHP_FPM
 version: 0.0.1
 license: basic
-description: ""
+description: |
+  PHP-FPM server status metrics collected from PHP-FPM.
 type: integration
 categories:
 - metrics

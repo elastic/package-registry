@@ -1,8 +1,10 @@
 format_version: 1.0.0
 name: cisco
+title: Cisco
 version: 0.0.1
 license: basic
-description: ""
+description: |
+  Module for handling Cisco network device logs.
 type: integration
 categories:
 - logs

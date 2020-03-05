@@ -1,8 +1,10 @@
 format_version: 1.0.0
 name: couchbase
+title: Couchbase
 version: 0.0.1
 license: basic
-description: ""
+description: |
+  Metrics collected from Couchbase servers.
 type: integration
 categories:
 - metrics

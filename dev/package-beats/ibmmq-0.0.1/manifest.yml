@@ -1,8 +1,10 @@
 format_version: 1.0.0
 name: ibmmq
+title: IBM MQ
 version: 0.0.1
 license: basic
-description: ""
+description: |
+  IBM MQ module
 type: integration
 categories:
 - logs

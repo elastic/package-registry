@@ -1,8 +1,10 @@
 format_version: 1.0.0
 name: googlecloud
+title: Google Cloud Platform
 version: 0.0.1
 license: basic
-description: ""
+description: |
+  GCP module
 type: integration
 categories:
 - logs

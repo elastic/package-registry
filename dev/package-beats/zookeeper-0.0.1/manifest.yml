@@ -1,8 +1,10 @@
 format_version: 1.0.0
 name: zookeeper
+title: ZooKeeper
 version: 0.0.1
 license: basic
-description: ""
+description: |
+  ZooKeeper metrics collected by the four-letter monitoring commands.
 type: integration
 categories:
 - metrics

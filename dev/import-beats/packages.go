@@ -16,13 +16,22 @@ import (
 	"github.com/elastic/package-registry/util"
 )
 
+var ignoredModules = map[string]bool{ "apache2": true }
+
 type packageMap map[string]*util.Package
 
 func (p packageMap) loadFromSource(beatsDir, beatName, packageType string) error {
-	path := filepath.Join(beatsDir, beatName, "module")
-	moduleDirs, err := ioutil.ReadDir(path)
+	beatPath := filepath.Join(beatsDir, beatName)
+	beatModulesPath := filepath.Join(beatPath, "module")
+
+	moduleDirs, err := ioutil.ReadDir(beatModulesPath)
 	if err != nil {
-		return errors.Wrapf(err, "cannot read directory '%s'", path)
+		return errors.Wrapf(err, "cannot read directory '%s'", beatModulesPath)
+	}
+
+	fieldsFile, err := loadFields(beatPath)
+	if err != nil {
+		return errors.Wrapf(err, "loading fields failed")
 	}
 
 	for _, moduleDir := range moduleDirs {
@@ -31,6 +40,10 @@ func (p packageMap) loadFromSource(beatsDir, beatName, packageType string) error
 		}
 
 		log.Printf("Visit '%s:%s'\n", beatName, moduleDir.Name())
+		if _, ok := ignoredModules[moduleDir.Name()]; ok {
+			log.Printf("Ignoring '%s:%s'\n", beatName, moduleDir.Name())
+			continue
+		}
 
 		_, ok := p[moduleDir.Name()]
 		if !ok {
@@ -39,12 +52,18 @@ func (p packageMap) loadFromSource(beatsDir, beatName, packageType string) error
 				Name:          moduleDir.Name(),
 				Version:       "0.0.1", // TODO
 				Type:          "integration",
-				Categories:    []string{},
 				License:       "basic",
 			}
 		}
 
+		fieldsEntry, err := fieldsFile.getEntry(moduleDir.Name())
+		if err != nil {
+			return errors.Wrapf(err, "retrieving fields entry failed")
+		}
+
 		p[moduleDir.Name()].Categories = append(p[moduleDir.Name()].Categories, packageType)
+		p[moduleDir.Name()].Title = fieldsEntry.Title
+		p[moduleDir.Name()].Description = fieldsEntry.Description
 	}
 	return nil
 }

@@ -1,8 +1,10 @@
 format_version: 1.0.0
 name: cef
+title: Decode CEF processor fields
 version: 0.0.1
 license: basic
-description: ""
+description: |
+  Common Event Format (CEF) data.
 type: integration
 categories:
 - logs

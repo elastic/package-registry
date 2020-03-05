@@ -1,8 +1,10 @@
 format_version: 1.0.0
 name: misp
+title: MISP
 version: 0.0.1
 license: basic
-description: ""
+description: |
+  Module for handling threat information from MISP.
 type: integration
 categories:
 - logs

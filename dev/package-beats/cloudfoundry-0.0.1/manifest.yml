@@ -1,8 +1,10 @@
 format_version: 1.0.0
 name: cloudfoundry
+title: cloudfoundry
 version: 0.0.1
 license: basic
-description: ""
+description: |
+  Cloud Foundry module
 type: integration
 categories:
 - metrics

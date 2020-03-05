@@ -1,8 +1,10 @@
 format_version: 1.0.0
 name: traefik
+title: traefik
 version: 0.0.1
 license: basic
-description: ""
+description: |
+  Traefik reverse proxy / load balancer metrics
 type: integration
 categories:
 - logs

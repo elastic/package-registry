@@ -1,8 +1,10 @@
 format_version: 1.0.0
 name: munin
+title: Munin
 version: 0.0.1
 license: basic
-description: ""
+description: |
+  Munin node metrics exporter
 type: integration
 categories:
 - metrics

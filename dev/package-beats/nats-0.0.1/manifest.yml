@@ -1,8 +1,10 @@
 format_version: 1.0.0
 name: nats
+title: Nats
 version: 0.0.1
 license: basic
-description: ""
+description: |
+  nats Module
 type: integration
 categories:
 - logs
