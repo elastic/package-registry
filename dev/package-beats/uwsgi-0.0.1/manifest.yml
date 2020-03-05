@@ -1,0 +1,10 @@
+format_version: 1.0.0
+name: uwsgi
+version: 0.0.1
+description: ""
+type: integration
+categories:
+- metrics
+requirement:
+  kibana:
+    versions: ""
