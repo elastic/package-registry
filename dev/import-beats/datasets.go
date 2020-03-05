@@ -40,11 +40,11 @@ func createDatasets(modulePath string) (map[string]datasetContent, error) {
 
 		_, err := os.Stat(path.Join(modulePath, datasetName, "_meta"))
 		if os.IsNotExist(err) {
-			log.Printf("\tSkipped '%s' - not a valid dataset\n", datasetName)
+			log.Printf("\t%s: not a valid dataset, skipped", datasetName)
 			continue
 		}
 
-		log.Printf("\tFound dataset '%s'\n", datasetName)
+		log.Printf("\t%s: dataset found", datasetName)
 		content := datasetContent{}
 
 		fieldsFiles, err := loadDatasetFields(modulePath, datasetName)

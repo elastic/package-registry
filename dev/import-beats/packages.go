@@ -72,9 +72,9 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, package
 		}
 		moduleName := moduleDir.Name()
 
-		log.Printf("Found module '%s:%s'\n", beatName, moduleName)
+		log.Printf("%s %s: module found\n", beatName, moduleName)
 		if _, ok := ignoredModules[moduleName]; ok {
-			log.Printf("Ignoring '%s:%s'\n", beatName, moduleName)
+			log.Printf("%s %s: module skipped\n", beatName, moduleName)
 			continue
 		}
 
@@ -104,7 +104,7 @@ func (r *packageRepository) save(outputDir string) error {
 	for packageName, content := range r.packages {
 		manifest := content.manifest
 
-		log.Printf("Writing package data '%s' (version: %s)\n", packageName, manifest.Version)
+		log.Printf("%s-%s write package content\n", packageName, manifest.Version)
 
 		packagePath := filepath.Join(outputDir, packageName+"-"+manifest.Version)
 		err := os.MkdirAll(packagePath, 0755)
@@ -138,7 +138,7 @@ func (r *packageRepository) save(outputDir string) error {
 				}
 
 				for fieldsFileName, fieldsFile := range dataset.fields.files {
-					log.Printf("\tWriting file '%s' for dataset '%s'\n", fieldsFileName, datasetName)
+					log.Printf("\t%s: write '%s' file\n", datasetName, fieldsFileName)
 
 					fieldsFilePath := filepath.Join(datasetFieldsPath, fieldsFileName)
 					err = ioutil.WriteFile(fieldsFilePath, fieldsFile, 0644)
