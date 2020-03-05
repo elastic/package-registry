@@ -1,8 +1,9 @@
 format_version: 1.0.0
 name: santa
+title: Santa
 version: 0.0.1
-license: oss
-description: ""
+license: basic
+description: Santa Integration
 type: integration
 categories:
 - logs

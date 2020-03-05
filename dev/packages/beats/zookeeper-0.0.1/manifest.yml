@@ -1,8 +1,9 @@
 format_version: 1.0.0
 name: zookeeper
+title: Zookeeper
 version: 0.0.1
-license: oss
-description: ""
+license: basic
+description: Zookeeper Integration
 type: integration
 categories:
 - metrics

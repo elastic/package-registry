@@ -1,8 +1,9 @@
 format_version: 1.0.0
 name: envoyproxy
+title: Envoyproxy
 version: 0.0.1
 license: basic
-description: ""
+description: Envoyproxy Integration
 type: integration
 categories:
 - logs

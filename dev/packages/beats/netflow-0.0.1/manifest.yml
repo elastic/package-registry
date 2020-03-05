@@ -1,8 +1,9 @@
 format_version: 1.0.0
 name: netflow
+title: Netflow
 version: 0.0.1
 license: basic
-description: ""
+description: Netflow Integration
 type: integration
 categories:
 - logs

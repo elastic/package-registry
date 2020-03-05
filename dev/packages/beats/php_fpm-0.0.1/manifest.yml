@@ -1,8 +1,9 @@
 format_version: 1.0.0
 name: php_fpm
+title: Php_fpm
 version: 0.0.1
-license: oss
-description: ""
+license: basic
+description: Php_fpm Integration
 type: integration
 categories:
 - metrics

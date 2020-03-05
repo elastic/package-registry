@@ -1,8 +1,9 @@
 format_version: 1.0.0
 name: redis
+title: Redis
 version: 0.0.1
-license: oss
-description: ""
+license: basic
+description: Redis Integration
 type: integration
 categories:
 - logs
