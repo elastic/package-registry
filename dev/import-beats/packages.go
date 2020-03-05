@@ -41,6 +41,12 @@ func newPackageContent(name string) packageContent {
 	}
 }
 
+func (pc *packageContent) addDatasets(ds map[string]datasetContent) {
+	for k, v := range ds {
+		pc.datasets[k] = v
+	}
+}
+
 type packageRepository struct {
 	packages map[string]packageContent
 }
@@ -88,7 +94,7 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, package
 			return err
 		}
 
-		aPackage.datasets = datasets
+		aPackage.addDatasets(datasets)
 		r.packages[moduleDir.Name()] = aPackage
 	}
 	return nil
