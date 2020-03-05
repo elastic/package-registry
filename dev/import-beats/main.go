@@ -30,6 +30,10 @@ func main() {
 	}
 }
 
+// build method visits all beats in beatsDir to collect configuration data for modules.
+// The package-registry groups integrations per target product not per module type. It's opposite to the beats project,
+// where logs and metrics are distributed with different beats (oriented either on logs or metrics - metricbeat,
+// filebeat, etc.).
 func build(beatsDir, outputDir string) error {
 	packages := packageMap{}
 

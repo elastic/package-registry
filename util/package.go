@@ -43,8 +43,8 @@ type Package struct {
 	Internal      bool         `config:"internal,omitempty" json:"internal,omitempty" yaml:"internal,omitempty"`
 	DataSets      []*DataSet   `config:"datasets,omitempty" json:"datasets,omitempty" yaml:"datasets,omitempty"`
 	Datasources   []Datasource `config:"datasources,omitempty" json:"datasources,omitempty" yaml:"datasources,omitempty"`
-	Download      string       `json:"download"`
-	Path          string       `json:"path"`
+	Download      string       `json:"download" yaml:"download,omitempty"`
+	Path          string       `json:"path" yaml:"path,omitempty"`
 }
 
 type Datasource struct {
