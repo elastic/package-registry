@@ -122,6 +122,8 @@
   "datasources": [
     {
       "name": "nginx",
+      "title": "Datasource title",
+      "description": "Details about the data source.",
       "inputs": [
         {
           "type": "nginx/metrics",

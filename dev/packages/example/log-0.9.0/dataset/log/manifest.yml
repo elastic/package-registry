@@ -5,8 +5,8 @@ ingest_pipeline: default
 
 default: true
 
-inputs:
-  - type: log
+streams:
+  - input: logs
     vars:
       - name: paths
         required: true

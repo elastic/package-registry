@@ -56,8 +56,49 @@
       "release": "beta",
       "type": "logs",
       "ingest_pipeline": "pipeline-entry",
+      "streams": [
+        {
+          "input": "foo",
+          "vars": [
+            {
+              "description": "Path to log files to be collected",
+              "multi": true,
+              "name": "paths",
+              "required": true,
+              "type": "text"
+            }
+          ]
+        }
+      ],
       "package": "example",
       "path": "foo"
+    }
+  ],
+  "datasources": [
+    {
+      "name": "logs",
+      "title": "Logs datasource",
+      "description": "Datasource for your log files.",
+      "inputs": [
+        {
+          "type": "foo",
+          "streams": [
+            {
+              "input": "foo",
+              "vars": [
+                {
+                  "description": "Path to log files to be collected",
+                  "multi": true,
+                  "name": "paths",
+                  "required": true,
+                  "type": "text"
+                }
+              ],
+              "dataset": "bar"
+            }
+          ]
+        }
+      ]
     }
   ],
   "download": "/epr/example/example-1.0.0.tar.gz",

@@ -24,3 +24,13 @@ screenshots:
 icons:
   - src: "/img/icon.svg"
     type: "image/svg+xml"
+
+datasources:
+  -
+    name: auditd
+    title: Auditd logs
+    description: Collecting Auditd logs.
+    inputs:
+      -
+        type: logs
+        description: Collect Auditd logs.

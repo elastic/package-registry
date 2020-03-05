@@ -26,3 +26,14 @@ icons:
   - src: "/img/icon.png"
     size: "1800x1800"
     type: "image/png"
+
+datasources:
+  -
+    name: iptables
+    title: Iptables logs.
+    description: Collecting logs from Iptables.
+
+    inputs:
+      -
+        type: logs
+        description: Collect coredns logs.

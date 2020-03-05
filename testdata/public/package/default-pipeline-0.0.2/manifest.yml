@@ -6,3 +6,12 @@ version: 0.0.2
 title: Default pipeline Integration
 categories: ["logs"]
 type: integration
+
+
+datasources:
+  - name: logs
+    title: Logs datasource
+    description: Datasource for your log files.
+    inputs:
+      - type: logs
+
