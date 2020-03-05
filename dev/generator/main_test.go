@@ -12,7 +12,7 @@ import (
 )
 
 func TestEncodeSavedObject(t *testing.T) {
-	file := "../packages/example/auditd-2.0.4/kibana/dashboard/7de391b0-c1ca-11e7-8995-936807a28b16-ecs.json"
+	file := "../../testdata/package/example-0.0.2/kibana/dashboard/0c610510-5cbd-11e9-8477-077ec9664dbd.json"
 
 	data, err := ioutil.ReadFile(file)
 	assert.NoError(t, err)
