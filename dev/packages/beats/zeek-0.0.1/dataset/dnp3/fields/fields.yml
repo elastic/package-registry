@@ -1,0 +1,38 @@
+- key: zeek
+  title: Zeek
+  description: >
+    Module for handling logs produced by Zeek/Bro
+  fields:
+    - name: zeek
+      type: group
+      description: >
+        Fields from Zeek/Bro logs after normalization
+      fields:
+        - name: session_id
+          type: keyword
+          description: >
+            A unique identifier of the session
+        - name: dnp3
+          type: group
+          default_field: false
+          description: >
+            Fields exported by the Zeek SSH log
+          fields:
+            - name: function
+              type: group
+              fields:
+                - name: request
+                  type: keyword
+                  description: |
+                    The name of the function message in the request.
+        
+                - name: reply
+                  type: keyword
+                  description: |
+                    The name of the function message in the reply.
+        
+            - name: id
+              type: integer
+              description: |
+                The response's internal indication number.
+        

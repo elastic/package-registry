@@ -1,0 +1,64 @@
+// Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
+// or more contributor license agreements. Licensed under the Elastic License;
+// you may not use this file except in compliance with the Elastic License.
+
+package main
+
+import (
+	"io/ioutil"
+	"log"
+	"os"
+	"path"
+
+	"github.com/pkg/errors"
+)
+
+type datasetContent struct {
+	fields fieldsContent
+}
+
+type fieldsContent struct {
+	files map[string][]byte
+}
+
+func createDatasets(modulePath string) (map[string]datasetContent, error) {
+	datasetDirs, err := ioutil.ReadDir(modulePath)
+	if err != nil {
+		return nil, errors.Wrapf(err, "cannot module directory %s", modulePath)
+	}
+
+	contents := map[string]datasetContent{}
+	for _, datasetDir := range datasetDirs {
+		if !datasetDir.IsDir() {
+			continue
+		}
+		datasetName := datasetDir.Name()
+
+		if datasetName == "_meta" {
+			continue
+		}
+
+		_, err := os.Stat(path.Join(modulePath, datasetName, "_meta"))
+		if os.IsNotExist(err) {
+			log.Printf("\tSkipped '%s' - not a valid dataset\n", datasetName)
+			continue
+		}
+
+		log.Printf("\tFound dataset '%s'\n", datasetName)
+		content := datasetContent{}
+
+		fieldsFiles, err := loadDatasetFields(modulePath, datasetName)
+		if err != nil {
+			return nil, errors.Wrapf(err, "loading dataset fields failed (modulePath: %s, datasetName: %s)",
+				modulePath, datasetName)
+		}
+
+		content.fields = fieldsContent{
+			files: map[string][]byte{
+				"fields.yml": fieldsFiles,
+			},
+		}
+		contents[datasetName] = content
+	}
+	return contents, nil
+}

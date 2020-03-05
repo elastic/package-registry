@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path"
 	"path/filepath"
 	"strings"
 
@@ -40,14 +41,6 @@ func newPackageContent(name string) packageContent {
 	}
 }
 
-type datasetContent struct {
-	fields fieldsContent
-}
-
-type fieldsContent struct {
-	files map[string]fields
-}
-
 type packageRepository struct {
 	packages map[string]packageContent
 }
@@ -58,7 +51,7 @@ func newPackageRepository() *packageRepository {
 	}
 }
 
-func (r *packageRepository) loadFromSource(beatsDir, beatName, packageType string) error {
+func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, packageType string) error {
 	beatPath := filepath.Join(beatsDir, beatName)
 	beatModulesPath := filepath.Join(beatPath, "module")
 
@@ -71,48 +64,83 @@ func (r *packageRepository) loadFromSource(beatsDir, beatName, packageType strin
 		if !moduleDir.IsDir() {
 			continue
 		}
+		moduleName := moduleDir.Name()
 
-		log.Printf("Visit '%s:%s'\n", beatName, moduleDir.Name())
-		if _, ok := ignoredModules[moduleDir.Name()]; ok {
-			log.Printf("Ignoring '%s:%s'\n", beatName, moduleDir.Name())
+		log.Printf("Found module '%s:%s'\n", beatName, moduleName)
+		if _, ok := ignoredModules[moduleName]; ok {
+			log.Printf("Ignoring '%s:%s'\n", beatName, moduleName)
 			continue
 		}
 
-		_, ok := r.packages[moduleDir.Name()]
+		_, ok := r.packages[moduleName]
 		if !ok {
-			r.packages[moduleDir.Name()] = newPackageContent(moduleDir.Name())
+			r.packages[moduleName] = newPackageContent(moduleName)
 		}
 
-		aPackage := r.packages[moduleDir.Name()]
+		aPackage := r.packages[moduleName]
 		manifest := aPackage.manifest
 		manifest.Categories = append(manifest.Categories, packageType)
 		aPackage.manifest = manifest
+
+		modulePath := path.Join(beatModulesPath, moduleName)
+		datasets, err := createDatasets(modulePath)
+		if err != nil {
+			return err
+		}
+
+		aPackage.datasets = datasets
 		r.packages[moduleDir.Name()] = aPackage
 	}
 	return nil
 }
 
 func (r *packageRepository) save(outputDir string) error {
-	for name, content := range r.packages {
+	for packageName, content := range r.packages {
 		manifest := content.manifest
 
-		log.Printf("Writing package '%s' (version: %s)\n", name, manifest.Version)
+		log.Printf("Writing package data '%s' (version: %s)\n", packageName, manifest.Version)
 
-		path := filepath.Join(outputDir, name+"-"+manifest.Version)
-		err := os.MkdirAll(path, 0755)
+		packagePath := filepath.Join(outputDir, packageName+"-"+manifest.Version)
+		err := os.MkdirAll(packagePath, 0755)
 		if err != nil {
-			return errors.Wrapf(err, "cannot make directory '%s'", path)
+			return errors.Wrapf(err, "cannot make directory for module: '%s'", packagePath)
 		}
 
 		m, err := yaml.Marshal(content.manifest)
 		if err != nil {
-			return errors.Wrapf(err, "marshaling package content failed (package name: %s)", name)
+			return errors.Wrapf(err, "marshaling package content failed (package packageName: %s)", packageName)
 		}
 
-		manifestFilePath := filepath.Join(path, "manifest.yml")
+		manifestFilePath := filepath.Join(packagePath, "manifest.yml")
 		err = ioutil.WriteFile(manifestFilePath, m, 0644)
 		if err != nil {
 			return errors.Wrapf(err, "writing manifest file failed (path: %s)", manifestFilePath)
+		}
+
+		for datasetName, dataset := range content.datasets {
+			datasetPath := filepath.Join(packagePath, "dataset", datasetName)
+			err := os.MkdirAll(datasetPath, 0755)
+			if err != nil {
+				return errors.Wrapf(err, "cannot make directory for dataset: '%s'", datasetPath)
+			}
+
+			if len(dataset.fields.files) > 0 {
+				datasetFieldsPath := filepath.Join(datasetPath, "fields")
+				err := os.MkdirAll(datasetFieldsPath, 0755)
+				if err != nil {
+					return errors.Wrapf(err, "cannot make directory for dataset fields: '%s'", datasetPath)
+				}
+
+				for fieldsFileName, fieldsFile := range dataset.fields.files {
+					log.Printf("\tWriting file '%s' for dataset '%s'\n", fieldsFileName, datasetName)
+
+					fieldsFilePath := filepath.Join(datasetFieldsPath, fieldsFileName)
+					err = ioutil.WriteFile(fieldsFilePath, fieldsFile, 0644)
+					if err != nil {
+						return errors.Wrapf(err, "writing fields file failed (path: %s)", fieldsFilePath)
+					}
+				}
+			}
 		}
 	}
 	return nil

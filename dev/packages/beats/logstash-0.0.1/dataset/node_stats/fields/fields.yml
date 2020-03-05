@@ -1,0 +1,34 @@
+- key: logstash
+  title: "Logstash"
+  description: >
+    Logstash module
+  release: ga
+  settings: ["ssl", "http"]
+  fields:
+    - name: logstash
+      type: group
+      description: >
+      fields:
+        - name: node.stats
+          type: group
+          description: >
+            node_stats metrics.
+          release: ga
+          fields:
+            - name: events
+              type: group
+              description: >
+                Events stats
+              fields:
+                - name: in
+                  type: long
+                  description: >
+                    Incoming events counter.
+                - name: out
+                  type: long
+                  description: >
+                    Outgoing events counter.
+                - name: filtered
+                  type: long
+                  description: >
+                    Filtered events counter.

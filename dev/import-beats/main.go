@@ -38,16 +38,16 @@ func build(beatsDir, outputDir string) error {
 	repository := newPackageRepository()
 
 	for _, beatName := range logSources {
-		err := repository.loadFromSource(beatsDir, beatName, "logs")
+		err := repository.createPackagesFromSource(beatsDir, beatName, "logs")
 		if err != nil {
-			return errors.Wrap(err, "loading logs source failed")
+			return errors.Wrap(err, "creating form logs source failed")
 		}
 	}
 
 	for _, beatName := range metricSources {
-		err := repository.loadFromSource(beatsDir, beatName, "metrics")
+		err := repository.createPackagesFromSource(beatsDir, beatName, "metrics")
 		if err != nil {
-			return errors.Wrap(err, "loading metrics source failed")
+			return errors.Wrap(err, "creating from metrics source failed")
 		}
 	}
 

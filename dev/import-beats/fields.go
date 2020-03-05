@@ -5,43 +5,42 @@
 package main
 
 import (
-	"fmt"
+	"bufio"
+	"bytes"
 	"io/ioutil"
+	"log"
+	"os"
 	"path/filepath"
 
 	"github.com/pkg/errors"
-	"gopkg.in/yaml.v2"
 )
 
-type fields []fieldsEntry
-
-type fieldsEntry struct {
-	Key         string
-	Title       *string
-	Description string
-}
-
-func (f fields) getEntry(key string) (*fieldsEntry, error) {
-	for _, entry := range f {
-		if entry.Key == key {
-			return &entry, nil
-		}
-	}
-	return nil, fmt.Errorf("missing entry for key '%s'", key)
-}
-
-func loadFields(modulePath string) (fields, error) {
-	fieldsFilePath := filepath.Join(modulePath, "fields.yml")
-
-	data, err := ioutil.ReadFile(fieldsFilePath)
+func loadDatasetFields(modulePath, datasetName string) ([]byte, error) {
+	moduleFieldsPath := filepath.Join(modulePath, "_meta", "fields.yml")
+	moduleFields, err := ioutil.ReadFile(moduleFieldsPath)
 	if err != nil {
-		return nil, errors.Wrapf(err, "reading file failed (path: %s)", fieldsFilePath)
+		return nil, errors.Wrapf(err, "reading module fields file failed (path: %s)", moduleFieldsPath)
 	}
 
-	var f fields
-	err = yaml.Unmarshal(data, &f)
-	if err != nil {
-		return nil, errors.Wrapf(err, "unmarshalling fields file failed (path: %s)", fieldsFilePath)
+	var buffer bytes.Buffer
+	buffer.Write(moduleFields)
+
+	datasetFieldsPath := filepath.Join(modulePath, datasetName, "_meta", "fields.yml")
+	datasetFieldsFile, err := os.Open(datasetFieldsPath)
+	if os.IsNotExist(err) {
+		log.Printf("Missing fields.yml file. Skipping. (path: %s)\n", datasetFieldsPath)
+		return buffer.Bytes(), nil
+	} else if err != nil {
+		return nil, errors.Wrapf(err, "reading dataset fields file failed (path: %s)", moduleFieldsPath)
 	}
-	return f, nil
+	defer datasetFieldsFile.Close()
+
+	scanner := bufio.NewScanner(datasetFieldsFile)
+	for scanner.Scan() {
+		line := scanner.Text()
+		buffer.Write([]byte("        "))
+		buffer.WriteString(line)
+		buffer.WriteString("\n")
+	}
+	return buffer.Bytes(), nil
 }
