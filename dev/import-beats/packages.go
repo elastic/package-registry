@@ -5,6 +5,7 @@
 package main
 
 import (
+	"io"
 	"io/ioutil"
 	"log"
 	"os"
@@ -23,6 +24,7 @@ var ignoredModules = map[string]bool{"apache2": true}
 type packageContent struct {
 	manifest util.Package
 	datasets map[string]datasetContent
+	images   []imageContent
 }
 
 func newPackageContent(name string) packageContent {
@@ -86,15 +88,28 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, package
 		aPackage := r.packages[moduleName]
 		manifest := aPackage.manifest
 		manifest.Categories = append(manifest.Categories, packageType)
-		aPackage.manifest = manifest
 
 		modulePath := path.Join(beatModulesPath, moduleName)
 		datasets, err := createDatasets(modulePath)
 		if err != nil {
 			return err
 		}
-
 		aPackage.addDatasets(datasets)
+
+		beatDocsPath := selectDocsPath(beatsDir, beatName)
+		images, err := createImages(beatDocsPath, modulePath)
+		if err != nil {
+			return err
+		}
+
+		aPackage.images = append(aPackage.images, images...)
+		screenshots, err := createScreenshots(images)
+		if err != nil {
+			return err
+		}
+		manifest.Screenshots = append(manifest.Screenshots, screenshots...)
+
+		aPackage.manifest = manifest
 		r.packages[moduleDir.Name()] = aPackage
 	}
 	return nil
@@ -148,6 +163,51 @@ func (r *packageRepository) save(outputDir string) error {
 				}
 			}
 		}
+
+		imgDstDir := path.Join(packagePath, "img")
+		for _, image := range content.images {
+			log.Printf("\tcopy image file '%s' to '%s'", image.source, imgDstDir)
+			err := copyFile(image.source, imgDstDir)
+			if err != nil {
+				return errors.Wrapf(err, "copying file failed")
+			}
+		}
 	}
 	return nil
+}
+
+func copyFile(src, dstDir string) error {
+	sourceFile, err := os.Open(src)
+	if err != nil {
+		return errors.Wrapf(err, "opening image file failed (src: %s)", src)
+	}
+	defer sourceFile.Close()
+
+	i := strings.LastIndex(sourceFile.Name(), "/")
+	sourceFileName := sourceFile.Name()[i:]
+
+	dst := path.Join(dstDir, sourceFileName)
+	err = os.MkdirAll(dstDir, 0755)
+	if err != nil {
+		return errors.Wrapf(err, "cannot make directory for img: '%s'", dst)
+	}
+
+	dstFile, err := os.Create(dst)
+	if err != nil {
+		return errors.Wrapf(err, "creating target image file failed (dst: %s)", dst)
+	}
+	defer dstFile.Close()
+
+	_, err = io.Copy(dstFile, sourceFile)
+	if err != nil {
+		return errors.Wrapf(err, "copying image file failed (src: %s, dst: %s)", src, dst)
+	}
+	return nil
+}
+
+func selectDocsPath(beatsDir, beatName string) string {
+	if strings.HasPrefix(beatName, "x-pack/") {
+		return path.Join(beatsDir, beatName[7:], "docs")
+	}
+	return path.Join(beatsDir, beatName, "docs")
 }

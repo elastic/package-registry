@@ -24,7 +24,7 @@ type fieldsContent struct {
 func createDatasets(modulePath string) (map[string]datasetContent, error) {
 	datasetDirs, err := ioutil.ReadDir(modulePath)
 	if err != nil {
-		return nil, errors.Wrapf(err, "cannot module directory %s", modulePath)
+		return nil, errors.Wrapf(err, "cannot read module directory %s", modulePath)
 	}
 
 	contents := map[string]datasetContent{}
