@@ -11,3 +11,16 @@ categories:
 requirement:
   kibana:
     versions: ""
+screenshots:
+- src: img/kibana-system.png
+  title: Kibana System
+  size: 1220x852
+  type: image/png
+- src: img/metricbeat_system_dashboard.png
+  title: Metricbeat System Dashboard
+  size: 2097x1933
+  type: image/png
+- src: img/metricbeat-services-host.png
+  title: Metricbeat Services Host
+  size: 5006x2260
+  type: image/png

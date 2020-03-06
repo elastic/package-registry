@@ -11,3 +11,8 @@ categories:
 requirement:
   kibana:
     versions: ""
+screenshots:
+- src: img/kibana-envoyproxy.jpg
+  title: Kibana Envoyproxy
+  size: 3340x1882
+  type: image/jpg

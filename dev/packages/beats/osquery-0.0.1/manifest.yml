@@ -10,3 +10,8 @@ categories:
 requirement:
   kibana:
     versions: ""
+screenshots:
+- src: img/kibana-osquery-compatibility.png
+  title: Kibana Osquery Compatibility
+  size: 2560x2204
+  type: image/png

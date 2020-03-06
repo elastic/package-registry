@@ -11,3 +11,8 @@ categories:
 requirement:
   kibana:
     versions: ""
+screenshots:
+- src: img/kibana-haproxy-overview.png
+  title: Kibana Haproxy Overview
+  size: 1725x780
+  type: image/png

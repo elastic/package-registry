@@ -10,3 +10,8 @@ categories:
 requirement:
   kibana:
     versions: ""
+screenshots:
+- src: img/metricbeat-redisenterprise-overview.png
+  title: Metricbeat Redisenterprise Overview
+  size: 5120x2706
+  type: image/png

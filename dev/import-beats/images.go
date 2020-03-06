@@ -5,18 +5,27 @@
 package main
 
 import (
+	"fmt"
+	"image"
 	"io/ioutil"
 	"log"
 	"os"
 	"path"
 	"regexp"
+	"strings"
+
+	_ "image/jpeg"
+	_ "image/png"
 
 	"github.com/pkg/errors"
 
 	"github.com/elastic/package-registry/util"
 )
 
-var imageRe = regexp.MustCompile(`image::[^\[]+`)
+var (
+	imageRe            = regexp.MustCompile(`image::[^\[]+`)
+	imageTitleReplacer = strings.NewReplacer("_", " ", "-", " ", "/", "")
+)
 
 type imageContent struct {
 	source string
@@ -69,10 +78,6 @@ func createImages(beatDocsPath, modulePath string) ([]imageContent, error) {
 	return images, nil
 }
 
-func createScreenshots(images []imageContent) ([]util.Image, error) {
-	return []util.Image{}, nil
-}
-
 func extractImages(beatDocsPath string, docsFile []byte) []imageContent {
 	matches := imageRe.FindAll(docsFile, -1)
 
@@ -83,4 +88,57 @@ func extractImages(beatDocsPath string, docsFile []byte) []imageContent {
 		})
 	}
 	return contents
+}
+
+func createScreenshots(images []imageContent) ([]util.Image, error) {
+	var imgs []util.Image
+	for _, image := range images {
+		i := strings.LastIndex(image.source, "/")
+		sourceFileName := image.source[i:]
+
+		imageSize, err := readImageSize(image.source)
+		if err != nil {
+			return nil, errors.Wrapf(err, "reading image size failed")
+		}
+
+		imageType, err := extractImageType(image.source)
+		if err != nil {
+			return nil, errors.Wrapf(err, "extracting image type failed")
+		}
+
+		imgs = append(imgs, util.Image{
+			Src:   path.Join("img", sourceFileName),
+			Title: toImageTitle(sourceFileName),
+			Size:  imageSize,
+			Type:  imageType,
+		})
+	}
+	return imgs, nil
+}
+
+func toImageTitle(fileName string) string {
+	i := strings.LastIndex(fileName, ".")
+	return strings.Title(imageTitleReplacer.Replace(fileName[:i]))
+}
+
+func readImageSize(imagePath string) (string, error) {
+	f, err := os.Open(imagePath)
+	if err != nil {
+		return "", errors.Wrapf(err, "opening image failed (path: %s)", imagePath)
+	}
+
+	img, _, err := image.DecodeConfig(f)
+	if err != nil {
+		return "", errors.Wrapf(err, "opening image failed (path: %s)", imagePath)
+	}
+	return fmt.Sprintf("%dx%d", img.Width, img.Height), nil
+}
+
+func extractImageType(imagePath string) (string, error) {
+	if strings.HasSuffix(imagePath, ".png") {
+		return "image/png", nil
+	} else if strings.HasSuffix(imagePath, ".jpg") {
+		return "image/jpg", nil
+	}
+	return "", fmt.Errorf("unknown image type (path: %s)", imagePath)
 }

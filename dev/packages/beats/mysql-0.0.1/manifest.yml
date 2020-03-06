@@ -11,3 +11,12 @@ categories:
 requirement:
   kibana:
     versions: ""
+screenshots:
+- src: img/kibana-mysql.png
+  title: Kibana Mysql
+  size: 1227x1026
+  type: image/png
+- src: img/metricbeat-mysql.png
+  title: Metricbeat Mysql
+  size: 2562x2540
+  type: image/png

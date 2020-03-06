@@ -10,3 +10,8 @@ categories:
 requirement:
   kibana:
     versions: ""
+screenshots:
+- src: img/kibana-suricata.png
+  title: Kibana Suricata
+  size: 2560x1440
+  type: image/png

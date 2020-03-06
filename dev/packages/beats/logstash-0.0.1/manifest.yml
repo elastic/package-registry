@@ -11,3 +11,12 @@ categories:
 requirement:
   kibana:
     versions: ""
+screenshots:
+- src: img/kibana-logstash-log.png
+  title: Kibana Logstash Log
+  size: 1266x1343
+  type: image/png
+- src: img/kibana-logstash-slowlog.png
+  title: Kibana Logstash Slowlog
+  size: 1265x1341
+  type: image/png

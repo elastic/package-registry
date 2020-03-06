@@ -10,3 +10,8 @@ categories:
 requirement:
   kibana:
     versions: ""
+screenshots:
+- src: img/ceph-overview-dashboard.png
+  title: Ceph Overview Dashboard
+  size: 5002x2670
+  type: image/png

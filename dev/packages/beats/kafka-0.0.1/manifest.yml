@@ -11,3 +11,12 @@ categories:
 requirement:
   kibana:
     versions: ""
+screenshots:
+- src: img/filebeat-kafka-logs-overview.png
+  title: Filebeat Kafka Logs Overview
+  size: 1363x657
+  type: image/png
+- src: img/metricbeat_kafka_dashboard.png
+  title: Metricbeat Kafka Dashboard
+  size: 1726x711
+  type: image/png

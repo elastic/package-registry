@@ -10,3 +10,8 @@ categories:
 requirement:
   kibana:
     versions: ""
+screenshots:
+- src: img/metricbeat-prometheus-overview.png
+  title: Metricbeat Prometheus Overview
+  size: 5010x2676
+  type: image/png

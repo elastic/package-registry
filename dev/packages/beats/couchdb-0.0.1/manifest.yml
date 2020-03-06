@@ -10,3 +10,8 @@ categories:
 requirement:
   kibana:
     versions: ""
+screenshots:
+- src: img/metricbeat-couchdb-overview.png
+  title: Metricbeat Couchdb Overview
+  size: 4986x2672
+  type: image/png

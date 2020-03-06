@@ -11,3 +11,24 @@ categories:
 requirement:
   kibana:
     versions: ""
+screenshots:
+- src: img/filebeat-activemq-application-events.png
+  title: Filebeat Activemq Application Events
+  size: 4102x2424
+  type: image/png
+- src: img/filebeat-activemq-audit-events.png
+  title: Filebeat Activemq Audit Events
+  size: 4102x2480
+  type: image/png
+- src: img/metricbeat-activemq-broker-overview.png
+  title: Metricbeat Activemq Broker Overview
+  size: 2560x2032
+  type: image/png
+- src: img/metricbeat-activemq-queues-overview.png
+  title: Metricbeat Activemq Queues Overview
+  size: 2560x3712
+  type: image/png
+- src: img/metricbeat-activemq-topics-overview.png
+  title: Metricbeat Activemq Topics Overview
+  size: 2560x3712
+  type: image/png

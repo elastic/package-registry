@@ -10,3 +10,16 @@ categories:
 requirement:
   kibana:
     versions: ""
+screenshots:
+- src: img/metricbeat-kubernetes-controllermanager.png
+  title: Metricbeat Kubernetes Controllermanager
+  size: 1896x961
+  type: image/png
+- src: img/metricbeat_kubernetes_scheduler.png
+  title: Metricbeat Kubernetes Scheduler
+  size: 1856x897
+  type: image/png
+- src: img/metricbeat-kubernetes-proxy.png
+  title: Metricbeat Kubernetes Proxy
+  size: 1854x920
+  type: image/png
