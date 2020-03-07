@@ -39,7 +39,7 @@ func createImages(beatDocsPath, modulePath string) ([]imageContent, error) {
 	if err != nil && !os.IsNotExist(err) {
 		return nil, errors.Wrapf(err, "reading module docs file failed (path: %s)", moduleDocsPath)
 	} else if os.IsNotExist(err) {
-		log.Printf("\tNo docs found (path: %s), skipped")
+		log.Printf("\tNo docs found (path: %s), skipped", moduleDocsPath)
 	} else {
 		log.Printf("\tDocs found (path: %s)", moduleDocsPath)
 		images = append(images, extractImages(beatDocsPath, moduleDocsFile)...)
