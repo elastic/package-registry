@@ -1,28 +1,15 @@
-- title: "Nats"
-  description: >
-    nats Module
-  release: ga
-  fields:
-    - name: nats
+- fields:
+  - name: nats
+    type: group
+    description: >
+    fields:
+    - name: connections
       type: group
       description: >
-        `nats` contains statistics that were read from Nats
+        Contains nats connection related metrics
+      release: ga
       fields:
-        - name: server.id
-          type: keyword
+        - name: total
+          type: integer
           description: >
-            The server ID
-        - name: server.time
-          type: date
-          description: >
-            Server time of metric creation
-        - name: connections
-          type: group
-          description: >
-            Contains nats connection related metrics
-          release: ga
-          fields:
-            - name: total
-              type: integer
-              description: >
-                The number of currently active clients
+            The number of currently active clients

@@ -1,0 +1,9 @@
+- title: "vSphere"
+  description: >
+    vSphere module
+  release: beta
+  fields:
+    - name: vsphere
+      type: group
+      description: >
+      fields:

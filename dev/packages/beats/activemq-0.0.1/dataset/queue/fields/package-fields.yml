@@ -1,0 +1,9 @@
+- title: "activemq"
+  release: beta
+  description: >
+    activemq module
+  fields:
+    - name: activemq
+      type: group
+      description: >
+      fields:

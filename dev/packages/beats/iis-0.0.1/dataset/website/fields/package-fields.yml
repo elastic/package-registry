@@ -1,0 +1,10 @@
+- title: "iis"
+  description: >
+    iis module
+  release: beta
+
+  fields:
+    - name: iis
+      type: group
+      description: >
+      fields:

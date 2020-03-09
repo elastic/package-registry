@@ -1,0 +1,9 @@
+- title: "mongodb"
+  description: >
+    Module for parsing MongoDB log files.
+  fields:
+    - name: mongodb
+      type: group
+      description: >
+          Fields from MongoDB logs.
+      fields:

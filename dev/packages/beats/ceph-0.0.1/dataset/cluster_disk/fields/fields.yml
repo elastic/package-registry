@@ -1,33 +1,26 @@
-- title: "Ceph"
-  description: >
-    Ceph module
-  short_config: false
-  release: ga
-  settings: ["ssl", "http"]
-  fields:
-    - name: ceph
+- fields:
+  - name: ceph
+    type: group
+    description: >
+    fields:
+    - name: cluster_disk
       type: group
       description: >
-        `ceph` contains the metrics that were scraped from CEPH.
+        cluster_disk
+      release: ga
       fields:
-        - name: cluster_disk
-          type: group
+        - name: available.bytes
+          type: long
           description: >
-            cluster_disk
-          release: ga
-          fields:
-            - name: available.bytes
-              type: long
-              description: >
-                Available bytes of the cluster
-              format: bytes
-            - name: total.bytes
-              type: long
-              description: >
-                Total bytes of the cluster
-              format: bytes
-            - name: used.bytes
-              type: long
-              description: >
-                Used bytes of the cluster
-              format: bytes
+            Available bytes of the cluster
+          format: bytes
+        - name: total.bytes
+          type: long
+          description: >
+            Total bytes of the cluster
+          format: bytes
+        - name: used.bytes
+          type: long
+          description: >
+            Used bytes of the cluster
+          format: bytes

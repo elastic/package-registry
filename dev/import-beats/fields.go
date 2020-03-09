@@ -7,6 +7,7 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -15,7 +16,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-func loadDatasetFields(modulePath, datasetName string) ([]byte, error) {
+func loadModuleFields(modulePath string) ([]byte, error) {
 	moduleFieldsPath := filepath.Join(modulePath, "_meta", "fields.yml")
 	moduleFieldsFile, err := os.Open(moduleFieldsPath)
 	if err != nil {
@@ -24,7 +25,6 @@ func loadDatasetFields(modulePath, datasetName string) ([]byte, error) {
 
 	var buffer bytes.Buffer
 	scanner := bufio.NewScanner(moduleFieldsFile)
-
 	var skipKey bool
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -40,6 +40,17 @@ func loadDatasetFields(modulePath, datasetName string) ([]byte, error) {
 			buffer.WriteString("\n")
 		}
 	}
+	return buffer.Bytes(), nil
+}
+
+func loadDatasetFields(modulePath, moduleName, datasetName string) ([]byte, error) {
+	var buffer bytes.Buffer
+	buffer.WriteString(fmt.Sprintf(`- fields:
+  - name: %s
+    type: group
+    description: >
+    fields:`, moduleName))
+	buffer.WriteString("\n")
 
 	datasetFieldsPath := filepath.Join(modulePath, datasetName, "_meta", "fields.yml")
 	datasetFieldsFile, err := os.Open(datasetFieldsPath)
@@ -47,14 +58,14 @@ func loadDatasetFields(modulePath, datasetName string) ([]byte, error) {
 		log.Printf("Missing fields.yml file. Skipping. (path: %s)\n", datasetFieldsPath)
 		return buffer.Bytes(), nil
 	} else if err != nil {
-		return nil, errors.Wrapf(err, "reading dataset fields file failed (path: %s)", moduleFieldsPath)
+		return nil, errors.Wrapf(err, "reading dataset fields file failed (path: %s)", datasetFieldsFile)
 	}
 	defer datasetFieldsFile.Close()
 
-	scanner = bufio.NewScanner(datasetFieldsFile)
+	scanner := bufio.NewScanner(datasetFieldsFile)
 	for scanner.Scan() {
 		line := scanner.Text()
-		buffer.Write([]byte("        "))
+		buffer.Write([]byte("    "))
 		buffer.WriteString(line)
 		buffer.WriteString("\n")
 	}

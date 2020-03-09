@@ -1,34 +1,26 @@
-- title: Zeek
-  description: >
-    Module for handling logs produced by Zeek/Bro
-  fields:
-    - name: zeek
+- fields:
+  - name: zeek
+    type: group
+    description: >
+    fields:
+    - name: dpd
       type: group
+      default_field: false
       description: >
-        Fields from Zeek/Bro logs after normalization
+        Fields exported by the Zeek DPD log
       fields:
-        - name: session_id
+        - name: analyzer
           type: keyword
           description: >
-            A unique identifier of the session
-        - name: dpd
-          type: group
-          default_field: false
+            The analyzer that generated the violation.
+    
+        - name: failure_reason
+          type: keyword
           description: >
-            Fields exported by the Zeek DPD log
-          fields:
-            - name: analyzer
-              type: keyword
-              description: >
-                The analyzer that generated the violation.
-        
-            - name: failure_reason
-              type: keyword
-              description: >
-                The textual reason for the analysis failure.
-        
-            - name: packet_segment
-              type: keyword
-              description: |
-                (present if policy/frameworks/dpd/packet-segment-logging.bro is loaded)
-                A chunk of the payload that most likely resulted in the protocol violation.
+            The textual reason for the analysis failure.
+    
+        - name: packet_segment
+          type: keyword
+          description: |
+            (present if policy/frameworks/dpd/packet-segment-logging.bro is loaded)
+            A chunk of the payload that most likely resulted in the protocol violation.

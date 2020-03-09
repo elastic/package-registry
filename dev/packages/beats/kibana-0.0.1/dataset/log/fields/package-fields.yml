@@ -1,0 +1,8 @@
+- title: "kibana"
+  description: >
+    kibana Module
+  fields:
+    - name: kibana
+      type: group
+      description: >
+      fields:

@@ -21,7 +21,14 @@ type fieldsContent struct {
 	files map[string][]byte
 }
 
-func createDatasets(modulePath string) (map[string]datasetContent, error) {
+func createDatasets(beatModulesPath, moduleName string) (map[string]datasetContent, error) {
+	modulePath := path.Join(beatModulesPath, moduleName)
+
+	moduleFieldsFiles, err := loadModuleFields(modulePath)
+	if err != nil {
+		return nil, errors.Wrapf(err, "loading module fields failed (modulePath: %s)", modulePath)
+	}
+
 	datasetDirs, err := ioutil.ReadDir(modulePath)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot read module directory %s", modulePath)
@@ -47,7 +54,7 @@ func createDatasets(modulePath string) (map[string]datasetContent, error) {
 		log.Printf("\t%s: dataset found", datasetName)
 		content := datasetContent{}
 
-		fieldsFiles, err := loadDatasetFields(modulePath, datasetName)
+		fieldsFiles, err := loadDatasetFields(modulePath, moduleName, datasetName)
 		if err != nil {
 			return nil, errors.Wrapf(err, "loading dataset fields failed (modulePath: %s, datasetName: %s)",
 				modulePath, datasetName)
@@ -55,7 +62,8 @@ func createDatasets(modulePath string) (map[string]datasetContent, error) {
 
 		content.fields = fieldsContent{
 			files: map[string][]byte{
-				"fields.yml": fieldsFiles,
+				"package-fields.yml": moduleFieldsFiles,
+				"fields.yml":         fieldsFiles,
 			},
 		}
 		contents[datasetName] = content

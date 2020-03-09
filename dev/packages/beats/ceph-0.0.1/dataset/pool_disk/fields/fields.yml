@@ -1,44 +1,37 @@
-- title: "Ceph"
-  description: >
-    Ceph module
-  short_config: false
-  release: ga
-  settings: ["ssl", "http"]
-  fields:
-    - name: ceph
+- fields:
+  - name: ceph
+    type: group
+    description: >
+    fields:
+    - name: pool_disk
       type: group
       description: >
-        `ceph` contains the metrics that were scraped from CEPH.
+        pool_disk
+      release: ga
       fields:
-        - name: pool_disk
-          type: group
+        - name: id
+          type: long
           description: >
-            pool_disk
-          release: ga
-          fields:
-            - name: id
-              type: long
-              description: >
-                Id of the pool
-            - name: name
-              type: keyword
-              description: >
-                Name of the pool
-            - name: stats.available.bytes
-              type: long
-              description: >
-                Available bytes of the pool
-              format: bytes
-            - name: stats.objects
-              type: long
-              description: >
-                Number of objects of the pool
-            - name: stats.used.bytes
-              type: long
-              description: >
-                Used bytes of the pool
-              format: bytes
-            - name: stats.used.kb
-              type: long
-              description: >
-                Used kb of the pool
+            Id of the pool
+        - name: name
+          type: keyword
+          description: >
+            Name of the pool
+        - name: stats.available.bytes
+          type: long
+          description: >
+            Available bytes of the pool
+          format: bytes
+        - name: stats.objects
+          type: long
+          description: >
+            Number of objects of the pool
+        - name: stats.used.bytes
+          type: long
+          description: >
+            Used bytes of the pool
+          format: bytes
+        - name: stats.used.kb
+          type: long
+          description: >
+            Used kb of the pool

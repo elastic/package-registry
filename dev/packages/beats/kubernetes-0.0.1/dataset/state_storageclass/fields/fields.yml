@@ -1,33 +1,26 @@
-- title: "Kubernetes"
-  description: >
-    Kubernetes metrics
-  release: ga
-  settings: ["ssl", "http"]
-  short_config: false
-  fields:
-    - name: kubernetes
+- fields:
+  - name: kubernetes
+    type: group
+    description: >
+    fields:
+    - name: storageclass
       type: group
       description: >
-        Information and statistics of pods managed by kubernetes.
+        kubernetes storage class metrics
+      release: experimental
       fields:
-        - name: storageclass
-          type: group
-          description: >
-            kubernetes storage class metrics
-          release: experimental
-          fields:
-            - name: name
-              type: keyword
-              description: Storage class name.
-            - name: provisioner
-              type: keyword
-              description: Volume provisioner for the storage class.
-            - name: reclaim_policy
-              type: keyword
-              description: Reclaim policy for dynamically created volumes
-            - name: volume_binding_mode
-              type: keyword
-              description: Mode for default provisioning and binding
-            - name: created
-              type: date
-              description: Storage class creation date
+        - name: name
+          type: keyword
+          description: Storage class name.
+        - name: provisioner
+          type: keyword
+          description: Volume provisioner for the storage class.
+        - name: reclaim_policy
+          type: keyword
+          description: Reclaim policy for dynamically created volumes
+        - name: volume_binding_mode
+          type: keyword
+          description: Mode for default provisioning and binding
+        - name: created
+          type: date
+          description: Storage class creation date

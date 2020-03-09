@@ -1,36 +1,23 @@
-- title: "cloudfoundry"
-  description: >
-    Cloud Foundry module
-  release: experimental
-  fields:
-    - name: cloudfoundry
+- fields:
+  - name: cloudfoundry
+    type: group
+    description: >
+    fields:
+    - name: counter
       type: group
       description: >
+        `counter` contains counter metrics from Cloud Foundry.
+      release: experimental
       fields:
-        - name: app
-          type: group
+        - name: name
+          type: keyword
           description: >
-            The application the metric is associated with.
-          fields:
-            - name: id
-              type: keyword
-              description: >
-                The ID of the application.
-        - name: counter
-          type: group
+            The name of the counter.
+        - name: delta
+          type: long
           description: >
-            `counter` contains counter metrics from Cloud Foundry.
-          release: experimental
-          fields:
-            - name: name
-              type: keyword
-              description: >
-                The name of the counter.
-            - name: delta
-              type: long
-              description: >
-                The difference between the last time the counter event occurred.
-            - name: total
-              type: long
-              description: >
-                The total value for the counter.
+            The difference between the last time the counter event occurred.
+        - name: total
+          type: long
+          description: >
+            The total value for the counter.

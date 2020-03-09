@@ -1,0 +1,9 @@
+- title: "Aerospike"
+  description: >
+    Aerospike module
+  release: ga
+  fields:
+    - name: aerospike
+      type: group
+      description: >
+      fields:

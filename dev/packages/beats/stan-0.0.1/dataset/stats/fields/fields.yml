@@ -1,53 +1,40 @@
-- title: "Stan"
-  description: >
-    stan Module
-  release: beta
-  fields:
-    - name: stan
+- fields:
+  - name: stan
+    type: group
+    description: >
+    fields:
+    - name: stats
       type: group
       description: >
-        `stan` contains statistics that were read from Nats Streaming server (STAN)
+        Contains only high-level stan / nats streaming server related metrics
+      release: beta
       fields:
-        - name: server.id
+        - name: state
           type: keyword
           description: >
-            The server ID
-        - name: cluster.id
+            The cluster / streaming configuration state (STANDALONE, CLUSTERED)
+        - name: role
           type: keyword
           description: >
-            The cluster ID
-        - name: stats
-          type: group
+            If clustered, role of this node in the cluster (Leader, Follower, Candidate)
+        - name: clients
+          type: integer
           description: >
-            Contains only high-level stan / nats streaming server related metrics
-          release: beta
-          fields:
-            - name: state
-              type: keyword
-              description: >
-                The cluster / streaming configuration state (STANDALONE, CLUSTERED)
-            - name: role
-              type: keyword
-              description: >
-                If clustered, role of this node in the cluster (Leader, Follower, Candidate)
-            - name: clients
-              type: integer
-              description: >
-                The number of STAN clients
-            - name: subscriptions
-              type: integer
-              description: >
-                The number of STAN streaming subscriptions
-            - name: channels
-              type: integer
-              description: >
-                The number of STAN channels
-            - name: messages
-              type: long
-              description: >
-                Number of messages across all STAN queues
-            - name: bytes
-              type: long
-              description: >
-                Number of bytes consumed across all STAN queues
-            
+            The number of STAN clients
+        - name: subscriptions
+          type: integer
+          description: >
+            The number of STAN streaming subscriptions
+        - name: channels
+          type: integer
+          description: >
+            The number of STAN channels
+        - name: messages
+          type: long
+          description: >
+            Number of messages across all STAN queues
+        - name: bytes
+          type: long
+          description: >
+            Number of bytes consumed across all STAN queues
+        

@@ -1,21 +1,15 @@
-- title: "Golang"
-  description: >
-    Golang module
-  short_config: false
-  release: ga
-  settings: ["ssl", "http"]
-  fields:
-    - name: golang
+- fields:
+  - name: golang
+    type: group
+    description: >
+    fields:
+    - name: expvar
       type: group
       description: >
+        expvar
+      release: ga
       fields:
-        - name: expvar
-          type: group
+        - name: cmdline
+          type: keyword
           description: >
-            expvar
-          release: ga
-          fields:
-            - name: cmdline
-              type: keyword
-              description: >
-                The cmdline of this Go program start with.
+            The cmdline of this Go program start with.

@@ -1,64 +1,57 @@
-- title: "Kubernetes"
-  description: >
-    Kubernetes metrics
-  release: ga
-  settings: ["ssl", "http"]
-  short_config: false
-  fields:
-    - name: kubernetes
+- fields:
+  - name: kubernetes
+    type: group
+    description: >
+    fields:
+    - name: volume
       type: group
       description: >
-        Information and statistics of pods managed by kubernetes.
+        kubernetes volume metrics
+      release: ga
       fields:
-        - name: volume
-          type: group
+        - name: name
+          type: keyword
           description: >
-            kubernetes volume metrics
-          release: ga
+            Volume name
+        - name: fs
+          type: group
           fields:
-            - name: name
-              type: keyword
-              description: >
-                Volume name
-            - name: fs
+            - name: capacity
               type: group
               fields:
-                - name: capacity
-                  type: group
-                  fields:
-                    - name: bytes
-                      type: long
-                      format: bytes
-                      description: >
-                        Filesystem total capacity in bytes
-                - name: available
-                  type: group
-                  fields:
-                    - name: bytes
-                      type: long
-                      format: bytes
-                      description: >
-                        Filesystem total available in bytes
+                - name: bytes
+                  type: long
+                  format: bytes
+                  description: >
+                    Filesystem total capacity in bytes
+            - name: available
+              type: group
+              fields:
+                - name: bytes
+                  type: long
+                  format: bytes
+                  description: >
+                    Filesystem total available in bytes
+            - name: used
+              type: group
+              fields:
+                - name: bytes
+                  type: long
+                  format: bytes
+                  description: >
+                    Filesystem total used in bytes
+            - name: inodes
+              type: group
+              fields:
                 - name: used
-                  type: group
-                  fields:
-                    - name: bytes
-                      type: long
-                      format: bytes
-                      description: >
-                        Filesystem total used in bytes
-                - name: inodes
-                  type: group
-                  fields:
-                    - name: used
-                      type: long
-                      description: >
-                        Used inodes
-                    - name: free
-                      type: long
-                      description: >
-                        Free inodes
-                    - name: count
-                      type: long
-                      description: >
-                        Total inodes
+                  type: long
+                  description: >
+                    Used inodes
+                - name: free
+                  type: long
+                  description: >
+                    Free inodes
+                - name: count
+                  type: long
+                  description: >
+                    Total inodes

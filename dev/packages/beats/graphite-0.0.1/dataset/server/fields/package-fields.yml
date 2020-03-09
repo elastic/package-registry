@@ -1,0 +1,9 @@
+- title: "Graphite"
+  description: >
+    graphite Module
+  release: ga
+  fields:
+    - name: graphite
+      type: group
+      description: >
+      fields:

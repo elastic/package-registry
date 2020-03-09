@@ -1,59 +1,29 @@
-- title: "Elasticsearch"
-  description: >
-    Elasticsearch module
-  release: ga
-  settings: ["ssl", "http"]
-  short_config: false
-  fields:
-    - name: elasticsearch
+- fields:
+  - name: elasticsearch
+    type: group
+    description: >
+    fields:
+    - name: ml.job
       type: group
       description: >
+        ml
+      release: ga
       fields:
-        - name: cluster.name
+        - name: id
           type: keyword
           description: >
-            Elasticsearch cluster name.
-
-        - name: cluster.id
+            Unique ml job id.
+        - name: state
           type: keyword
           description: >
-            Elasticsearch cluster id.
-
-        - name: cluster.state.id
-          type: keyword
+            Job state.
+        - name: data_counts.processed_record_count
+          type: long
           description: >
-            Elasticsearch state id.
-
-        - name: node.id
-          type: keyword
+            Processed data events.
+        - name: data_counts.invalid_date_count
+          type: long
           description: >
-            Node ID
-
-        - name: node.name
-          type: keyword
-          description: >
-            Node name.
-        - name: ml.job
-          type: group
-          description: >
-            ml
-          release: ga
-          fields:
-            - name: id
-              type: keyword
-              description: >
-                Unique ml job id.
-            - name: state
-              type: keyword
-              description: >
-                Job state.
-            - name: data_counts.processed_record_count
-              type: long
-              description: >
-                Processed data events.
-            - name: data_counts.invalid_date_count
-              type: long
-              description: >
-                The number of records with either a missing date field or a date that could not be parsed.
-        
-        
+            The number of records with either a missing date field or a date that could not be parsed.
+    
+    

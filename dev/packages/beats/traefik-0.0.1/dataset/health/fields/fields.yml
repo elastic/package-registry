@@ -1,38 +1,33 @@
-- title: "traefik"
-  description: >
-    Traefik reverse proxy / load balancer metrics
-  release: ga
-  fields:
-    - name: traefik
+- fields:
+  - name: traefik
+    type: group
+    description: >
+    fields:
+    - name: health
       type: group
       description: >
-        Traefik reverse proxy / load balancer metrics
+        Metrics obtained from Traefik's health API endpoint
+      release: ga
       fields:
-        - name: health
+        - name: uptime.sec
+          type: long
+          description: >
+            Uptime of Traefik instance in seconds
+        - name: response
           type: group
           description: >
-            Metrics obtained from Traefik's health API endpoint
-          release: ga
+            Response metrics
           fields:
-            - name: uptime.sec
+            - name: count
               type: long
               description: >
-                Uptime of Traefik instance in seconds
-            - name: response
-              type: group
+                Number of responses
+            - name: avg_time.us
+              type: long
               description: >
-                Response metrics
-              fields:
-                - name: count
-                  type: long
-                  description: >
-                    Number of responses
-                - name: avg_time.us
-                  type: long
-                  description: >
-                    Average response time in microseconds
-                - name: status_codes.*
-                  type: object
-                  object_type: long
-                  description: >
-                    Number of responses per status code
+                Average response time in microseconds
+            - name: status_codes.*
+              type: object
+              object_type: long
+              description: >
+                Number of responses per status code

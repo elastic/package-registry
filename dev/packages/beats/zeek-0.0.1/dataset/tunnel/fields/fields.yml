@@ -1,28 +1,20 @@
-- title: Zeek
-  description: >
-    Module for handling logs produced by Zeek/Bro
-  fields:
-    - name: zeek
+- fields:
+  - name: zeek
+    type: group
+    description: >
+    fields:
+    - name: tunnel
       type: group
+      default_field: false
       description: >
-        Fields from Zeek/Bro logs after normalization
+        Fields exported by the Zeek SSH log.
       fields:
-        - name: session_id
+        - name: type
           type: keyword
           description: >
-            A unique identifier of the session
-        - name: tunnel
-          type: group
-          default_field: false
+            The type of tunnel.
+    
+        - name: action
+          type: keyword
           description: >
-            Fields exported by the Zeek SSH log.
-          fields:
-            - name: type
-              type: keyword
-              description: >
-                The type of tunnel.
-        
-            - name: action
-              type: keyword
-              description: >
-                The type of activity that occurred.
+            The type of activity that occurred.

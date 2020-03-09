@@ -1,12 +1,6 @@
-- title: "Dropwizard"
-  description: >
-    Stats collected from Dropwizard.
-  release: ga
-  settings: ["ssl", "http"]
-  short_config: false
-  fields:
-    - name: dropwizard
-      type: group
-      description: >
-      fields:
-        - release: ga
+- fields:
+  - name: dropwizard
+    type: group
+    description: >
+    fields:
+    - release: ga

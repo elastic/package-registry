@@ -1,10 +1,6 @@
-- title: 'IBM MQ'
-  release: beta
-  description: >
-    IBM MQ module
-  settings: ["http"]
-  fields:
-    - name: ibmmq
-      type: group
-      fields:
-        - release: beta
+- fields:
+  - name: ibmmq
+    type: group
+    description: >
+    fields:
+    - release: beta

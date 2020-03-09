@@ -1,60 +1,30 @@
-- title: "Elasticsearch"
-  description: >
-    Elasticsearch module
-  release: ga
-  settings: ["ssl", "http"]
-  short_config: false
-  fields:
-    - name: elasticsearch
+- fields:
+  - name: elasticsearch
+    type: group
+    description: >
+    fields:
+    - name: enrich
       type: group
       description: >
+        Enrich stats
+      release: ga
       fields:
-        - name: cluster.name
-          type: keyword
+        - name: queue.size
+          type: long
           description: >
-            Elasticsearch cluster name.
-
-        - name: cluster.id
-          type: keyword
-          description: >
-            Elasticsearch cluster id.
-
-        - name: cluster.state.id
-          type: keyword
-          description: >
-            Elasticsearch state id.
-
-        - name: node.id
-          type: keyword
-          description: >
-            Node ID
-
-        - name: node.name
-          type: keyword
-          description: >
-            Node name.
-        - name: enrich
+            Number of search requests in the queue.
+        - name: remote_requests
           type: group
-          description: >
-            Enrich stats
-          release: ga
           fields:
-            - name: queue.size
+            - name: current
               type: long
               description: >
-                Number of search requests in the queue.
-            - name: remote_requests
-              type: group
-              fields:
-                - name: current
-                  type: long
-                  description: >
-                    Current number of outstanding remote requests.
-                - name: total
-                  type: long
-                  description: >
-                    Number of outstanding remote requests executed since node startup.
-            - name: executed_searches.total
+                Current number of outstanding remote requests.
+            - name: total
               type: long
               description: >
-                Number of search requests that enrich processors have executed since node startup.
+                Number of outstanding remote requests executed since node startup.
+        - name: executed_searches.total
+          type: long
+          description: >
+            Number of search requests that enrich processors have executed since node startup.

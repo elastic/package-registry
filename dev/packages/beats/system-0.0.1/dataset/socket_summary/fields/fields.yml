@@ -1,116 +1,110 @@
-- title: "System"
-  description: >
-    System status metrics, like CPU and memory usage, that are collected from the operating system.
-  short_config: true
-  release: ga
-  fields:
-    - name: system
+- fields:
+  - name: system
+    type: group
+    description: >
+    fields:
+    - name: socket.summary
+      title: Socket summary
       type: group
       description: >
-        `system` contains local system metrics.
+        Summary metrics of open sockets in the host system
+      release: ga
       fields:
-        - name: socket.summary
-          title: Socket summary
+        - name: all
           type: group
           description: >
-            Summary metrics of open sockets in the host system
-          release: ga
+            All connections
           fields:
-            - name: all
-              type: group
+            - name: count
+              type: integer
               description: >
-                All connections
-              fields:
-                - name: count
-                  type: integer
-                  description: >
-                    All open connections
-                - name: listening
-                  type: integer
-                  description: >
-                    All listening ports
-            - name: tcp
+                All open connections
+            - name: listening
+              type: integer
+              description: >
+                All listening ports
+        - name: tcp
+          type: group
+          description: >
+            All TCP connections
+          fields:
+            - name: memory
+              type: integer
+              format: bytes
+              description: >
+                Memory used by TCP sockets in bytes, based on number of allocated pages and system page size. Corresponds to limits set in /proc/sys/net/ipv4/tcp_mem. Only available on Linux. 
+            - name: all
               type: group
               description: >
                 All TCP connections
               fields:
-                - name: memory
+                - name: orphan
                   type: integer
-                  format: bytes
                   description: >
-                    Memory used by TCP sockets in bytes, based on number of allocated pages and system page size. Corresponds to limits set in /proc/sys/net/ipv4/tcp_mem. Only available on Linux. 
-                - name: all
-                  type: group
+                    A count of all orphaned tcp sockets. Only available on Linux.
+                - name: count
+                  type: integer
                   description: >
-                    All TCP connections
-                  fields:
-                    - name: orphan
-                      type: integer
-                      description: >
-                        A count of all orphaned tcp sockets. Only available on Linux.
-                    - name: count
-                      type: integer
-                      description: >
-                        All open TCP connections
-                    - name: listening
-                      type: integer
-                      description: >
-                        All TCP listening ports
-                    - name: established
-                      type: integer
-                      description: >
-                        Number of established TCP connections
-                    - name: close_wait
-                      type: integer
-                      description: >
-                        Number of TCP connections in _close_wait_ state
-                    - name: time_wait
-                      type: integer
-                      description: >
-                        Number of TCP connections in _time_wait_ state
-                    - name: syn_sent
-                      type: integer
-                      description: >
-                        Number of TCP connections in _syn_sent_ state
-                    - name: syn_recv
-                      type: integer
-                      description: >
-                        Number of TCP connections in _syn_recv_ state
-                    - name: fin_wait1
-                      type: integer
-                      description: >
-                        Number of TCP connections in _fin_wait1_ state
-                    - name: fin_wait2
-                      type: integer
-                      description: >
-                        Number of TCP connections in _fin_wait2_ state
-                    - name: last_ack
-                      type: integer
-                      description: >
-                        Number of TCP connections in _last_ack_ state
-                    - name: closing
-                      type: integer
-                      description: >
-                        Number of TCP connections in _closing_ state
-            - name: udp
+                    All open TCP connections
+                - name: listening
+                  type: integer
+                  description: >
+                    All TCP listening ports
+                - name: established
+                  type: integer
+                  description: >
+                    Number of established TCP connections
+                - name: close_wait
+                  type: integer
+                  description: >
+                    Number of TCP connections in _close_wait_ state
+                - name: time_wait
+                  type: integer
+                  description: >
+                    Number of TCP connections in _time_wait_ state
+                - name: syn_sent
+                  type: integer
+                  description: >
+                    Number of TCP connections in _syn_sent_ state
+                - name: syn_recv
+                  type: integer
+                  description: >
+                    Number of TCP connections in _syn_recv_ state
+                - name: fin_wait1
+                  type: integer
+                  description: >
+                    Number of TCP connections in _fin_wait1_ state
+                - name: fin_wait2
+                  type: integer
+                  description: >
+                    Number of TCP connections in _fin_wait2_ state
+                - name: last_ack
+                  type: integer
+                  description: >
+                    Number of TCP connections in _last_ack_ state
+                - name: closing
+                  type: integer
+                  description: >
+                    Number of TCP connections in _closing_ state
+        - name: udp
+          type: group
+          description: >
+            All UDP connections
+          fields:
+            - name: memory
+              type: integer
+              format: bytes
+              description: >
+                Memory used by UDP sockets in bytes, based on number of allocated pages and system page size. Corresponds to limits set in /proc/sys/net/ipv4/udp_mem. Only available on Linux. 
+            - name: all
               type: group
               description: >
                 All UDP connections
               fields:
-                - name: memory
+                - name: count
                   type: integer
-                  format: bytes
                   description: >
-                    Memory used by UDP sockets in bytes, based on number of allocated pages and system page size. Corresponds to limits set in /proc/sys/net/ipv4/udp_mem. Only available on Linux. 
-                - name: all
-                  type: group
-                  description: >
-                    All UDP connections
-                  fields:
-                    - name: count
-                      type: integer
-                      description: >
-                        All open UDP connections
-        
-        
-        
+                    All open UDP connections
+    
+    
+    

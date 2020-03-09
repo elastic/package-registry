@@ -89,15 +89,14 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, package
 		manifest := aPackage.manifest
 		manifest.Categories = append(manifest.Categories, packageType)
 
-		modulePath := path.Join(beatModulesPath, moduleName)
-		datasets, err := createDatasets(modulePath)
+		datasets, err := createDatasets(beatModulesPath, moduleName)
 		if err != nil {
 			return err
 		}
 		aPackage.addDatasets(datasets)
 
 		beatDocsPath := selectDocsPath(beatsDir, beatName)
-		images, err := createImages(beatDocsPath, modulePath)
+		images, err := createImages(beatDocsPath, path.Join(beatModulesPath, moduleName))
 		if err != nil {
 			return err
 		}

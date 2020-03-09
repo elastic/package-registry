@@ -1,0 +1,11 @@
+- title: "Golang"
+  description: >
+    Golang module
+  short_config: false
+  release: ga
+  settings: ["ssl", "http"]
+  fields:
+    - name: golang
+      type: group
+      description: >
+      fields:

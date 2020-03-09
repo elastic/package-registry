@@ -1,0 +1,9 @@
+- title: "ibmmq"
+  description: >
+    ibmmq Module
+  release: ga
+  fields:
+    - name: ibmmq
+      type: group
+      description: >
+      fields:

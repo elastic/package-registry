@@ -1,82 +1,37 @@
-- title: "Kafka"
-  description: >
-    Kafka module
-  short_config: false
-  release: ga
-  fields:
-    - name: kafka
+- fields:
+  - name: kafka
+    type: group
+    description: >
+    fields:
+    - name: consumer
       type: group
-      description: >
+      description: Consumer metrics from Kafka Consumer JMX
+      release: beta
       fields:
-        - name: broker
-          type: group
-          description: >
-            Broker Consumer Group Information have been read from (Broker handling
-            the consumer group).
-          fields:
-            - name: id
-              type: long
-              description: >
-                Broker id
-
-            - name: address
-              type: keyword
-              description: >
-                Broker advertised address
-
-        - name: topic.name
+        - name: mbean
+          description: Mbean that this event is related to
           type: keyword
-          description: >
-            Topic name
-
-        - name: topic.error.code
-          type: long
-          description: >
-            Topic error code.
-
-        - name: partition.id
-          type: long
-          description: >
-            Partition id.
-
-        - name: partition.topic_id
-          type: keyword
-          description:
-            Unique id of the partition in the topic.
-
-        - name: partition.topic_broker_id
-          type: keyword
-          description:
-            Unique id of the partition in the topic and the broker.
-        - name: consumer
-          type: group
-          description: Consumer metrics from Kafka Consumer JMX
-          release: beta
-          fields:
-            - name: mbean
-              description: Mbean that this event is related to
-              type: keyword
-            - name: fetch_rate
-              description: The minimum rate at which the consumer sends fetch requests to a broker
-              type: float
-            - name: bytes_consumed
-              description: The average number of bytes consumed for a specific topic per second
-              type: float
-            - name: records_consumed
-              description: The average number of records consumed per second for a specific topic
-              type: float
-            - name: in.bytes_per_sec
-              description: The rate of bytes coming in to the consumer
-              type: float
-            - name: max_lag
-              description: The maximum consumer lag
-              type: float
-            - name: zookeeper_commits
-              description: The rate of offset commits to ZooKeeper
-              type: float
-            - name: kafka_commits
-              description: The rate of offset commits to Kafka
-              type: float
-            - name: messages_in
-              description: The rate of consumer message consumption
-              type: float
+        - name: fetch_rate
+          description: The minimum rate at which the consumer sends fetch requests to a broker
+          type: float
+        - name: bytes_consumed
+          description: The average number of bytes consumed for a specific topic per second
+          type: float
+        - name: records_consumed
+          description: The average number of records consumed per second for a specific topic
+          type: float
+        - name: in.bytes_per_sec
+          description: The rate of bytes coming in to the consumer
+          type: float
+        - name: max_lag
+          description: The maximum consumer lag
+          type: float
+        - name: zookeeper_commits
+          description: The rate of offset commits to ZooKeeper
+          type: float
+        - name: kafka_commits
+          description: The rate of offset commits to Kafka
+          type: float
+        - name: messages_in
+          description: The rate of consumer message consumption
+          type: float

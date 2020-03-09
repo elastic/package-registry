@@ -1,0 +1,10 @@
+- title: "istio"
+  description: >
+    istio Module
+  release: beta
+  fields:
+    - name: istio
+      type: group
+      description: >
+        `istio` contains statistics that were read from Istio
+      fields:

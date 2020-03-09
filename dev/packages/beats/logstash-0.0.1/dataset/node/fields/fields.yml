@@ -1,43 +1,38 @@
-- title: "Logstash"
-  description: >
-    Logstash module
-  release: ga
-  settings: ["ssl", "http"]
-  fields:
-    - name: logstash
+- fields:
+  - name: logstash
+    type: group
+    description: >
+    fields:
+    - name: node
       type: group
       description: >
+        node
+      release: ga
       fields:
-        - name: node
+        - name: host
+          type: alias
+          path: host.hostname
+          migration: true
+          description: >
+            Host name
+        - name: version
+          type: alias
+          path: service.version
+          migration: true
+          description: >
+            Logstash Version
+        - name: jvm
           type: group
           description: >
-            node
-          release: ga
+            JVM Info
           fields:
-            - name: host
-              type: alias
-              path: host.hostname
-              migration: true
-              description: >
-                Host name
             - name: version
+              type: keyword
+              description: >
+                Version
+            - name: pid
               type: alias
-              path: service.version
+              path: process.pid
               migration: true
               description: >
-                Logstash Version
-            - name: jvm
-              type: group
-              description: >
-                JVM Info
-              fields:
-                - name: version
-                  type: keyword
-                  description: >
-                    Version
-                - name: pid
-                  type: alias
-                  path: process.pid
-                  migration: true
-                  description: >
-                    Process ID
+                Process ID

@@ -1,48 +1,41 @@
-- title: "Kubernetes"
-  description: >
-    Kubernetes metrics
-  release: ga
-  settings: ["ssl", "http"]
-  short_config: false
-  fields:
-    - name: kubernetes
+- fields:
+  - name: kubernetes
+    type: group
+    description: >
+    fields:
+    - name: statefulset
       type: group
       description: >
-        Information and statistics of pods managed by kubernetes.
+        kubernetes stateful set metrics
+      release: ga
       fields:
-        - name: statefulset
+        - name: created
+          type: long
+          description: >
+            The creation timestamp (epoch) for StatefulSet
+        - name: replicas
           type: group
           description: >
-            kubernetes stateful set metrics
-          release: ga
+            Kubernetes stateful set replicas status
           fields:
-            - name: created
+            - name: observed
               type: long
               description: >
-                The creation timestamp (epoch) for StatefulSet
-            - name: replicas
-              type: group
+                The number of observed replicas per StatefulSet
+            - name: desired
+              type: long
               description: >
-                Kubernetes stateful set replicas status
-              fields:
-                - name: observed
-                  type: long
-                  description: >
-                    The number of observed replicas per StatefulSet
-                - name: desired
-                  type: long
-                  description: >
-                    The number of desired replicas per StatefulSet
-            - name: generation
-              type: group
+                The number of desired replicas per StatefulSet
+        - name: generation
+          type: group
+          description: >
+            Kubernetes stateful set generation information
+          fields:
+            - name: observed
+              type: long
               description: >
-                Kubernetes stateful set generation information
-              fields:
-                - name: observed
-                  type: long
-                  description: >
-                    The observed generation per StatefulSet
-                - name: desired
-                  type: long
-                  description: >
-                    The desired generation per StatefulSet
+                The observed generation per StatefulSet
+            - name: desired
+              type: long
+              description: >
+                The desired generation per StatefulSet

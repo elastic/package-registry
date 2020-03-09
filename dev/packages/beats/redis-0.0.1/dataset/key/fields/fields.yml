@@ -1,40 +1,35 @@
-- title: "Redis"
-  description: >
-    Redis metrics collected from Redis.
-  release: ga
-  fields:
-    - name: redis
+- fields:
+  - name: redis
+    type: group
+    description: >
+    fields:
+    - name: key
       type: group
       description: >
-        `redis` contains the information and statistics from Redis.
+        `key` contains information about keys.
+      release: ga
       fields:
-        - name: key
-          type: group
+        - name: name
+          type: keyword
           description: >
-            `key` contains information about keys.
-          release: ga
-          fields:
-            - name: name
-              type: keyword
-              description: >
-                Key name.
-        
-            - name: id
-              type: keyword
-              description: >
-                Unique id for this key (With the form <keyspace>:<name>).
-        
-            - name: type
-              type: keyword
-              description: >
-                Key type as shown by `TYPE` command.
-        
-            - name: length
-              type: long
-              description: >
-                Length of the key (Number of elements for lists, length for strings, cardinality for sets).
-        
-            - name: expire.ttl
-              type: long
-              description: >
-                Seconds to expire.
+            Key name.
+    
+        - name: id
+          type: keyword
+          description: >
+            Unique id for this key (With the form <keyspace>:<name>).
+    
+        - name: type
+          type: keyword
+          description: >
+            Key type as shown by `TYPE` command.
+    
+        - name: length
+          type: long
+          description: >
+            Length of the key (Number of elements for lists, length for strings, cardinality for sets).
+    
+        - name: expire.ttl
+          type: long
+          description: >
+            Seconds to expire.

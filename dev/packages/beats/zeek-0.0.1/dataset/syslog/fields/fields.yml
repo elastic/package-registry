@@ -1,33 +1,25 @@
-- title: Zeek
-  description: >
-    Module for handling logs produced by Zeek/Bro
-  fields:
-    - name: zeek
+- fields:
+  - name: zeek
+    type: group
+    description: >
+    fields:
+    - name: syslog
       type: group
+      default_field: false
       description: >
-        Fields from Zeek/Bro logs after normalization
+        Fields exported by the Zeek syslog log.
       fields:
-        - name: session_id
+        - name: facility
           type: keyword
           description: >
-            A unique identifier of the session
-        - name: syslog
-          type: group
-          default_field: false
+            Syslog facility for the message.
+    
+        - name: severity
+          type: keyword
           description: >
-            Fields exported by the Zeek syslog log.
-          fields:
-            - name: facility
-              type: keyword
-              description: >
-                Syslog facility for the message.
-        
-            - name: severity
-              type: keyword
-              description: >
-                Syslog severity for the message.
-        
-            - name: message
-              type: keyword
-              description: >
-                The plain text message.
+            Syslog severity for the message.
+    
+        - name: message
+          type: keyword
+          description: >
+            The plain text message.

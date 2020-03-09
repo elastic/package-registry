@@ -1,18 +1,11 @@
-- title: "Ceph"
-  description: >
-    Ceph module
-  short_config: false
-  release: ga
-  settings: ["ssl", "http"]
-  fields:
-    - name: ceph
+- fields:
+  - name: ceph
+    type: group
+    description: >
+    fields:
+    - name: mgr_cluster_disk
       type: group
       description: >
-        `ceph` contains the metrics that were scraped from CEPH.
+        see: cluster_disk
+      release: beta
       fields:
-        - name: mgr_cluster_disk
-          type: group
-          description: >
-            see: cluster_disk
-          release: beta
-          fields:

@@ -1,0 +1,9 @@
+- title: 'CockroachDB'
+  release: beta
+  description: >
+    CockroachDB module
+  settings: ["ssl", "http"]
+  fields:
+    - name: cockroachdb
+      type: group
+      fields:

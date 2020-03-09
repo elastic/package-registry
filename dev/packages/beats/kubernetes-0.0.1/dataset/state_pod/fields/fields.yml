@@ -1,43 +1,36 @@
-- title: "Kubernetes"
-  description: >
-    Kubernetes metrics
-  release: ga
-  settings: ["ssl", "http"]
-  short_config: false
-  fields:
-    - name: kubernetes
+- fields:
+  - name: kubernetes
+    type: group
+    description: >
+    fields:
+    - name: pod
       type: group
       description: >
-        Information and statistics of pods managed by kubernetes.
+        kubernetes pod metrics
+      release: ga
       fields:
-        - name: pod
+        - name: ip
+          type: ip
+          description: >
+            Kubernetes pod IP
+        - name: host_ip
+          type: ip
+          description: >
+            Kubernetes pod host IP
+        - name: status
           type: group
           description: >
-            kubernetes pod metrics
-          release: ga
+            Kubernetes pod status metrics
           fields:
-            - name: ip
-              type: ip
+            - name: phase
+              type: keyword
               description: >
-                Kubernetes pod IP
-            - name: host_ip
-              type: ip
+                Kubernetes pod phase (Running, Pending...)
+            - name: ready
+              type: keyword
               description: >
-                Kubernetes pod host IP
-            - name: status
-              type: group
+                Kubernetes pod ready status (true, false or unknown)
+            - name: scheduled
+              type: keyword
               description: >
-                Kubernetes pod status metrics
-              fields:
-                - name: phase
-                  type: keyword
-                  description: >
-                    Kubernetes pod phase (Running, Pending...)
-                - name: ready
-                  type: keyword
-                  description: >
-                    Kubernetes pod ready status (true, false or unknown)
-                - name: scheduled
-                  type: keyword
-                  description: >
-                    Kubernetes pod scheduled status (true, false, unknown)
+                Kubernetes pod scheduled status (true, false, unknown)

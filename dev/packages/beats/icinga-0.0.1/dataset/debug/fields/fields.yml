@@ -1,26 +1,23 @@
-- title: "Icinga"
-  description: >
-    Icinga Module
-  fields:
-    - name: icinga
+- fields:
+  - name: icinga
+    type: group
+    description: >
+    fields:
+    - name: debug
       type: group
       description: >
+        Contains fields for the Icinga debug logs.
       fields:
-        - name: debug
-          type: group
+        - name: facility
+          type: keyword
           description: >
-            Contains fields for the Icinga debug logs.
-          fields:
-            - name: facility
-              type: keyword
-              description: >
-                Specifies what component of Icinga logged the message.
-        
-            - name: severity
-              type: alias
-              path: log.level
-              migration: true
-            - name: message
-              type: alias
-              path: message
-              migration: true
+            Specifies what component of Icinga logged the message.
+    
+        - name: severity
+          type: alias
+          path: log.level
+          migration: true
+        - name: message
+          type: alias
+          path: message
+          migration: true

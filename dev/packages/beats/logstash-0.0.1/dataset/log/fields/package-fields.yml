@@ -1,0 +1,8 @@
+- title: "logstash"
+  description: >
+    logstash Module
+  fields:
+    - name: logstash
+      type: group
+      description: >
+      fields:

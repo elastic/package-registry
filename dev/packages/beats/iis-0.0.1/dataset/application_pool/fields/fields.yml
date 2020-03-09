@@ -1,20 +1,15 @@
-- title: "iis"
-  description: >
-    iis module
-  release: beta
-
-  fields:
-    - name: iis
+- fields:
+  - name: iis
+    type: group
+    description: >
+    fields:
+    - name: application_pool
       type: group
+      release: beta
       description: >
+        application_pool
       fields:
-        - name: application_pool
-          type: group
-          release: beta
+        - name: name
+          type: keyword
           description: >
-            application_pool
-          fields:
-            - name: name
-              type: keyword
-              description: >
-                application pool name
+            application pool name

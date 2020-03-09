@@ -1,43 +1,36 @@
-- title: "Kubernetes"
-  description: >
-    Kubernetes metrics
-  release: ga
-  settings: ["ssl", "http"]
-  short_config: false
-  fields:
-    - name: kubernetes
+- fields:
+  - name: kubernetes
+    type: group
+    description: >
+    fields:
+    - name: deployment
       type: group
       description: >
-        Information and statistics of pods managed by kubernetes.
+        kubernetes deployment metrics
+      release: ga
       fields:
-        - name: deployment
+        - name: paused
+          type: boolean
+          description: >
+            Kubernetes deployment paused status
+        - name: replicas
           type: group
           description: >
-            kubernetes deployment metrics
-          release: ga
+            Kubernetes deployment replicas info
           fields:
-            - name: paused
-              type: boolean
+            - name: desired
+              type: integer
               description: >
-                Kubernetes deployment paused status
-            - name: replicas
-              type: group
+                Deployment number of desired replicas (spec)
+            - name: available
+              type: integer
               description: >
-                Kubernetes deployment replicas info
-              fields:
-                - name: desired
-                  type: integer
-                  description: >
-                    Deployment number of desired replicas (spec)
-                - name: available
-                  type: integer
-                  description: >
-                    Deployment available replicas
-                - name: unavailable
-                  type: integer
-                  description: >
-                    Deployment unavailable replicas
-                - name: updated
-                  type: integer
-                  description: >
-                    Deployment updated replicas
+                Deployment available replicas
+            - name: unavailable
+              type: integer
+              description: >
+                Deployment unavailable replicas
+            - name: updated
+              type: integer
+              description: >
+                Deployment updated replicas

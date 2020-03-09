@@ -1,49 +1,43 @@
-- title: "Docker"
-  description: >
-    Docker stats collected from Docker.
-  release: ga
-  short_config: false
-  fields:
-    - name: docker
+- fields:
+  - name: docker
+    type: group
+    description: >
+    fields:
+    - name: healthcheck
       type: group
       description: >
-        Information and statistics about docker's running containers.
+        Docker healthcheck metrics.
+    
+        Healthcheck data will only be available from docker containers where the
+        docker `HEALTHCHECK` instruction has been used to build the docker image.
+      release: ga
       fields:
-        - name: healthcheck
+        - name: failingstreak
+          type: integer
+          description: >
+            concurent failed check
+        - name: status
+          type: keyword
+          description: >
+            Healthcheck status code
+        - name: event
           type: group
           description: >
-            Docker healthcheck metrics.
-        
-            Healthcheck data will only be available from docker containers where the
-            docker `HEALTHCHECK` instruction has been used to build the docker image.
-          release: ga
+            event fields.
           fields:
-            - name: failingstreak
-              type: integer
+            - name: end_date
+              type: date
               description: >
-                concurent failed check
-            - name: status
+                Healthcheck end date
+            - name: start_date
+              type: date
+              description: >
+                Healthcheck start date
+            - name: output
               type: keyword
               description: >
-                Healthcheck status code
-            - name: event
-              type: group
+                Healthcheck output
+            - name: exit_code
+              type: integer
               description: >
-                event fields.
-              fields:
-                - name: end_date
-                  type: date
-                  description: >
-                    Healthcheck end date
-                - name: start_date
-                  type: date
-                  description: >
-                    Healthcheck start date
-                - name: output
-                  type: keyword
-                  description: >
-                    Healthcheck output
-                - name: exit_code
-                  type: integer
-                  description: >
-                    Healthcheck status code
+                Healthcheck status code
