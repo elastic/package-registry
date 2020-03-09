@@ -58,7 +58,7 @@ func loadDatasetFields(modulePath, moduleName, datasetName string) ([]byte, erro
 		log.Printf("Missing fields.yml file. Skipping. (path: %s)\n", datasetFieldsPath)
 		return buffer.Bytes(), nil
 	} else if err != nil {
-		return nil, errors.Wrapf(err, "reading dataset fields file failed (path: %s)", datasetFieldsFile)
+		return nil, errors.Wrapf(err, "reading dataset fields file failed (path: %s)", datasetFieldsPath)
 	}
 	defer datasetFieldsFile.Close()
 
