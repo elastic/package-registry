@@ -1,8 +1,9 @@
 format_version: 1.0.0
 name: munin
+title: Munin
 version: 0.0.1
-license: oss
-description: ""
+license: basic
+description: Munin Integration
 type: integration
 categories:
 - metrics

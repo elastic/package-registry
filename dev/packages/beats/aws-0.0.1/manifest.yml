@@ -1,8 +1,9 @@
 format_version: 1.0.0
 name: aws
+title: Aws
 version: 0.0.1
 license: basic
-description: ""
+description: Aws Integration
 type: integration
 categories:
 - logs

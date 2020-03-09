@@ -1,0 +1,49 @@
+- key: cloudfoundry
+  title: "cloudfoundry"
+  description: >
+    Cloud Foundry module
+  release: experimental
+  fields:
+    - name: cloudfoundry
+      type: group
+      description: >
+      fields:
+        - name: app
+          type: group
+          description: >
+            The application the metric is associated with.
+          fields:
+            - name: id
+              type: keyword
+              description: >
+                The ID of the application.
+        - name: container
+          type: group
+          description: >
+            `container` contains container metrics from Cloud Foundry.
+          release: experimental
+          fields:
+            - name: instance_index
+              type: long
+              description: >
+               Index of the instance the metric belongs to.
+            - name: cpu.pct
+              type: float
+              description: >
+                CPU usage percentage.
+            - name: memory.bytes
+              type: long
+              description: >
+                Bytes of used memory.
+            - name: memory.quota.bytes
+              type: long
+              description: >
+                Bytes of available memory.
+            - name: disk.bytes
+              type: long
+              description: >
+                Bytes of used storage.
+            - name: disk.quota.bytes
+              type: long
+              description: >
+                Bytes of available storage.

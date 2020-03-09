@@ -1,0 +1,35 @@
+- key: zookeeper
+  title: "ZooKeeper"
+  description: >
+    ZooKeeper metrics collected by the four-letter monitoring commands.
+  short_config: false
+  release: ga
+  fields:
+    - name: zookeeper
+      type: group
+      description: >
+        `zookeeper` contains the metrics reported by ZooKeeper
+        commands.
+      fields:
+        - name: connection
+          type: group
+          release: beta
+          description: >
+            connections
+          fields:
+            - name: interest_ops
+              type: long
+              description: >
+                Interest ops
+            - name: queued
+              type: long
+              description: >
+                Queued connections
+            - name: received
+              type: long
+              description: >
+                Received connections
+            - name: sent
+              type: long
+              description: >
+                Connections sent

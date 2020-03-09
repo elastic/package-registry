@@ -1,0 +1,35 @@
+- key: ceph
+  title: "Ceph"
+  description: >
+    Ceph module
+  short_config: false
+  release: ga
+  settings: ["ssl", "http"]
+  fields:
+    - name: ceph
+      type: group
+      description: >
+        `ceph` contains the metrics that were scraped from CEPH.
+      fields:
+        - name: cluster_health
+          type: group
+          description: >
+            cluster_health
+          release: ga
+          fields:
+            - name: overall_status
+              type: keyword
+              description: >
+                Overall status of the cluster
+            - name: timechecks.epoch
+              type: long
+              description: >
+                Map version
+            - name: timechecks.round.value
+              type: long
+              description: >
+                timecheck round
+            - name: timechecks.round.status
+              type: keyword
+              description: >
+                Status of the round

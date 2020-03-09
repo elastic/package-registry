@@ -35,21 +35,21 @@ func main() {
 // where logs and metrics are distributed with different beats (oriented either on logs or metrics - metricbeat,
 // filebeat, etc.).
 func build(beatsDir, outputDir string) error {
-	packages := packageMap{}
+	repository := newPackageRepository()
 
 	for _, beatName := range logSources {
-		err := packages.loadFromSource(beatsDir, beatName, "logs")
+		err := repository.createPackagesFromSource(beatsDir, beatName, "logs")
 		if err != nil {
-			return errors.Wrap(err, "loading logs source failed")
+			return errors.Wrap(err, "creating form logs source failed")
 		}
 	}
 
 	for _, beatName := range metricSources {
-		err := packages.loadFromSource(beatsDir, beatName, "metrics")
+		err := repository.createPackagesFromSource(beatsDir, beatName, "metrics")
 		if err != nil {
-			return errors.Wrap(err, "loading metrics source failed")
+			return errors.Wrap(err, "creating from metrics source failed")
 		}
 	}
 
-	return packages.writePackages(outputDir)
+	return repository.save(outputDir)
 }

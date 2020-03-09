@@ -1,8 +1,9 @@
 format_version: 1.0.0
 name: beat
+title: Beat
 version: 0.0.1
-license: oss
-description: ""
+license: basic
+description: Beat Integration
 type: integration
 categories:
 - metrics

@@ -1,8 +1,9 @@
 format_version: 1.0.0
 name: suricata
+title: Suricata
 version: 0.0.1
 license: basic
-description: ""
+description: Suricata Integration
 type: integration
 categories:
 - logs

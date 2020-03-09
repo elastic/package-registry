@@ -1,0 +1,42 @@
+- key: beat
+  title: "Beat"
+  description: >
+    Beat module
+  release: ga
+  settings: ["ssl", "http"]
+  short_config: false
+  fields:
+    - name: beat
+      type: group
+      description: >
+      fields:
+        - name: id
+          type: keyword
+          description: >
+            Beat ID.
+        - name: type
+          type: keyword
+          description: >
+            Beat type.
+        - name: state
+          type: group
+          description: >
+            Beat state
+          release: ga
+          fields:
+            - name: management.enabled
+              type: boolean
+              description: >
+                Is central management enabled?
+            - name: module.count
+              type: integer
+              description: >
+                Number of modules enabled
+            - name: output.name
+              type: keyword
+              description: >
+                Name of output used by Beat
+            - name: queue.name
+              type: keyword
+              description: >
+                Name of queue being used by Beat
