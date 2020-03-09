@@ -1,4 +1,4 @@
-- name: slowlog
+- name: logstash.slowlog
   type: group
   description: >
     slowlog

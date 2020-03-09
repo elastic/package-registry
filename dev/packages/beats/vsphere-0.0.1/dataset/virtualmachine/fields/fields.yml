@@ -1,4 +1,4 @@
-- name: virtualmachine
+- name: vsphere.virtualmachine
   type: group
   description: >
     virtualmachine

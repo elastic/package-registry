@@ -1,4 +1,4 @@
-- name: server
+- name: graphite.server
   type: group
   description: >
     server

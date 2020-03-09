@@ -1,4 +1,4 @@
-- name: slowlog
+- name: mysql.slowlog
   type: group
   description: >
     Contains fields from the MySQL slow logs.

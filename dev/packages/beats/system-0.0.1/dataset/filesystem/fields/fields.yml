@@ -1,4 +1,4 @@
-- name: filesystem
+- name: system.filesystem
   type: group
   description: >
     `filesystem` contains local filesystem stats.

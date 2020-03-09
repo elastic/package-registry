@@ -1,4 +1,4 @@
-- name: subscriptions
+- name: stan.subscriptions
   type: group
   description: >
     Contains stan / nats streaming/serverz endpoint subscription metrics

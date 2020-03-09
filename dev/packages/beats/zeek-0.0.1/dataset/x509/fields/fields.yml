@@ -1,4 +1,4 @@
-- name: x509
+- name: zeek.x509
   type: group
   default_field: false
   description: >

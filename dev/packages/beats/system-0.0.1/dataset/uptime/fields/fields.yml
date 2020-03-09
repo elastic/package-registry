@@ -1,4 +1,4 @@
-- name: uptime
+- name: system.uptime
   type: group
   description: >
     `uptime` contains the operating system uptime metric.

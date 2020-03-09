@@ -1,4 +1,4 @@
-- name: cluster_health
+- name: ceph.cluster_health
   type: group
   description: >
     cluster_health

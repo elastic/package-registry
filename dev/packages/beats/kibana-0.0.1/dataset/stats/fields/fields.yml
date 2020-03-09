@@ -1,4 +1,4 @@
-- name: stats
+- name: kibana.stats
   type: group
   description: >
     Kibana stats and run-time metrics.

@@ -1,4 +1,4 @@
-- name: ssl
+- name: zeek.ssl
   type: group
   default_field: false
   description: >

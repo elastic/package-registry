@@ -1,4 +1,4 @@
-- name: core
+- name: system.core
   type: group
   description: >
     `system-core` contains CPU metrics for a single core of a multi-core system.

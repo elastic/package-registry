@@ -1,9 +1,4 @@
-- title: "Oracle"
-  description: Oracle database module
-  short_config: false
-  release: beta
+- name: oracle
+  type: group
+  description: Oracle module
   fields:
-    - name: oracle
-      type: group
-      description: Oracle module
-      fields:

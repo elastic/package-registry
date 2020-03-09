@@ -1,4 +1,4 @@
-- name: connections
+- name: nats.connections
   type: group
   description: >
     Contains nats connection related metrics

@@ -1,4 +1,4 @@
-- name: firewall
+- name: googlecloud.firewall
   type: group
   description: >
     Fields for Google Cloud Firewall logs.

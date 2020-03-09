@@ -1,4 +1,4 @@
-- name: volume
+- name: kubernetes.volume
   type: group
   description: >
     kubernetes volume metrics

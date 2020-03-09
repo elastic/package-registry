@@ -1,4 +1,4 @@
-- name: errorlog
+- name: ibmmq.errorlog
   description: IBM MQ error logs
   type: group
   fields:

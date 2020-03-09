@@ -1,4 +1,4 @@
-- name: log
+- name: mongodb.log
   type: group
   description: >
       Contains fields from MongoDB logs.

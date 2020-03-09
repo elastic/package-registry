@@ -1,4 +1,4 @@
-- name: subscriptions
+- name: nats.subscriptions
   type: group
   description: >
     Contains nats subscriptions related metrics

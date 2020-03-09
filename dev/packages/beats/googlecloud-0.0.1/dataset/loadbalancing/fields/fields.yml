@@ -1,4 +1,4 @@
-- name: loadbalancing
+- name: googlecloud.loadbalancing
   release: beta
   type: group
   description: Google Cloud Load Balancing metrics

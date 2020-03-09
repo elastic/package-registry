@@ -1,10 +1,4 @@
-- title: "Memcached"
+- name: memcached
+  type: group
   description: >
-    Memcached module
-  short_config: false
-  release: ga
   fields:
-    - name: memcached
-      type: group
-      description: >
-      fields:

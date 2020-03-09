@@ -1,4 +1,4 @@
-- name: cache
+- name: tomcat.cache
   type: group
   description: Catalina Cache metrics from the WebResourceRoot
   release: beta

@@ -1,4 +1,4 @@
-- name: container
+- name: kubernetes.container
   type: group
   description: >
     kubernetes container metrics

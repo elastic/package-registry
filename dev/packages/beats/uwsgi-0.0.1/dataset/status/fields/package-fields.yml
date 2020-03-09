@@ -1,9 +1,4 @@
-- title: "uwsgi"
+- name: uwsgi
+  type: group
   description: >
-    uwsgi module
-  release: ga
   fields:
-    - name: uwsgi
-      type: group
-      description: >
-      fields:

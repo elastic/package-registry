@@ -1,4 +1,4 @@
-- name: partition
+- name: kafka.partition
   type: group
   description: >
     partition

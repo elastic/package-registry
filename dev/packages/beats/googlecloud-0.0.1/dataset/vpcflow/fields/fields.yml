@@ -1,4 +1,4 @@
-- name: vpcflow
+- name: googlecloud.vpcflow
   type: group
   description: >
     Fields for Google Cloud VPC flow logs.

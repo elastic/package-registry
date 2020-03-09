@@ -1,4 +1,4 @@
-- name: monitor_health
+- name: ceph.monitor_health
   type: group
   release: ga
   description: >

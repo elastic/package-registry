@@ -1,13 +1,9 @@
-- title: Zeek
+- name: zeek
+  type: group
   description: >
-    Module for handling logs produced by Zeek/Bro
+    Fields from Zeek/Bro logs after normalization
   fields:
-    - name: zeek
-      type: group
+    - name: session_id
+      type: keyword
       description: >
-        Fields from Zeek/Bro logs after normalization
-      fields:
-        - name: session_id
-          type: keyword
-          description: >
-            A unique identifier of the session
+        A unique identifier of the session

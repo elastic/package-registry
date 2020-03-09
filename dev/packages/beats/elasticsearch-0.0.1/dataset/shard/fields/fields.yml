@@ -1,4 +1,4 @@
-- name: shard
+- name: elasticsearch.shard
   type: group
   description: >
     shard fields

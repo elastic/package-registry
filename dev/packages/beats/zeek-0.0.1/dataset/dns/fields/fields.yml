@@ -1,4 +1,4 @@
-- name: dns
+- name: zeek.dns
   type: group
   description: >
     Fields exported by the Zeek DNS log

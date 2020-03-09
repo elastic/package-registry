@@ -1,4 +1,4 @@
-- name: datastore
+- name: vsphere.datastore
   type: group
   description: >
     datastore

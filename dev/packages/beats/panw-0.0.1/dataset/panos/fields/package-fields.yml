@@ -1,9 +1,5 @@
-- title: panw
+- name: panw
+  type: group
   description: >
-    Module for Palo Alto Networks (PAN-OS)
+    Fields from the panw module.
   fields:
-    - name: panw
-      type: group
-      description: >
-        Fields from the panw module.
-      fields:

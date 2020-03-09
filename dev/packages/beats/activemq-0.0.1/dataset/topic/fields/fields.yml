@@ -1,4 +1,4 @@
-- name: topic
+- name: activemq.topic
   type: group
   description: Topic metrics from org.apache.activemq:brokerName=*,destinationName=*,destinationType=Topic,type=Broker
   release: beta

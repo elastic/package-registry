@@ -1,4 +1,4 @@
-- name: ocsp
+- name: zeek.ocsp
   type: group
   default_field: false
   description: |

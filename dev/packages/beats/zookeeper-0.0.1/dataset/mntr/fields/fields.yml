@@ -1,4 +1,4 @@
-- name: mntr
+- name: zookeeper.mntr
   type: group
   description: >
     `mntr` contains the metrics reported by the four-letter `mntr`

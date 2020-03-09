@@ -1,4 +1,4 @@
-- name: channels
+- name: stan.channels
   type: group
   description: >
     Contains stan / nats streaming/serverz endpoint metrics

@@ -1,9 +1,4 @@
-- title: "couchdb"
+- name: couchdb
+  type: group
   description: >
-    couchdb module
-  release: ga
   fields:
-    - name: couchdb
-      type: group
-      description: >
-      fields:

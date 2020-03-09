@@ -1,4 +1,4 @@
-- name: index
+- name: elasticsearch.index
   type: group
   description: >
     index

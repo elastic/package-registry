@@ -1,4 +1,4 @@
-- name: log
+- name: activemq.log
   type: group
   description: >
     Fields from ActiveMQ application logs.

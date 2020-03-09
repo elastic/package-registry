@@ -1,4 +1,4 @@
-- name: activity
+- name: postgresql.activity
   type: group
   description: >
     One document per server process, showing information related to the current

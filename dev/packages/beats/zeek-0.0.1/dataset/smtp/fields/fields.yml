@@ -1,4 +1,4 @@
-- name: smtp
+- name: zeek.smtp
   type: group
   default_field: false
   description: >

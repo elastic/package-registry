@@ -1,4 +1,4 @@
-- name: citadel
+- name: istio.citadel
   type: group
   description: >
     Contains statistics related to the Istio Citadel service

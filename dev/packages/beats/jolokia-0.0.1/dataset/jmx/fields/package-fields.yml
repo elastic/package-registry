@@ -1,12 +1,5 @@
-- title: "Jolokia"
+- name: jolokia
+  type: group
   description: >
-    Jolokia module
-  short_config: false
-  release: ga
-  settings: ["ssl", "http"]
+      jolokia contains metrics exposed via jolokia agent
   fields:
-    - name: jolokia
-      type: group
-      description: >
-          jolokia contains metrics exposed via jolokia agent
-      fields:

@@ -1,4 +1,4 @@
-- name: s3_request
+- name: aws.s3_request
   type: group
   description: >
     `s3_request` contains request metrics that were scraped from AWS CloudWatch which contains monitoring metrics sent by AWS S3.

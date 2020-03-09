@@ -1,4 +1,4 @@
-- name: radius
+- name: zeek.radius
   type: group
   default_field: false
   description: >

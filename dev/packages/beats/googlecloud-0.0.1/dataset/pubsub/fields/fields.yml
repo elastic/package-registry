@@ -1,4 +1,4 @@
-- name: pubsub
+- name: googlecloud.pubsub
   release: beta
   type: group
   description: Google Cloud PubSub metrics

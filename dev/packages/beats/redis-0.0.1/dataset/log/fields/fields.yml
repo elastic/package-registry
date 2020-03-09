@@ -1,4 +1,4 @@
-- name: log
+- name: redis.log
   type: group
   description: >
     Redis log files

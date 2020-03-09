@@ -1,4 +1,4 @@
-- name: status
+- name: kibana.status
   type: group
   description: >
     Status fields

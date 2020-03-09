@@ -1,4 +1,4 @@
-- name: apiserver
+- name: kubernetes.apiserver
   type: group
   description: >
     Kubernetes API server metrics

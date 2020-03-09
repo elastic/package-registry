@@ -1,4 +1,4 @@
-- name: smb_cmd
+- name: zeek.smb_cmd
   type: group
   default_field: false
   description: >

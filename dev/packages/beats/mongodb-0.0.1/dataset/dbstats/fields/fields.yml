@@ -1,4 +1,4 @@
-- name: dbstats
+- name: mongodb.dbstats
   type: group
   description: >
     dbstats provides an overview of a particular mongo database. This document

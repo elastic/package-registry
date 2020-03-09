@@ -1,4 +1,4 @@
-- name: controllermanager
+- name: kubernetes.controllermanager
   type: group
   description: >
     Controller manager metrics

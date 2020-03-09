@@ -1,4 +1,4 @@
-- name: event
+- name: docker.event
   type: group
   description: >
     Docker event

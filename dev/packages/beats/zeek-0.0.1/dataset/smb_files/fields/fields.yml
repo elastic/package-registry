@@ -1,4 +1,4 @@
-- name: smb_files
+- name: zeek.smb_files
   type: group
   default_field: false
   description: >

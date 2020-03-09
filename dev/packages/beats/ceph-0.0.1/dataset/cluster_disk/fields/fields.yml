@@ -1,4 +1,4 @@
-- name: cluster_disk
+- name: ceph.cluster_disk
   type: group
   description: >
     cluster_disk

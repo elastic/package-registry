@@ -1,4 +1,4 @@
-- name: process
+- name: php_fpm.process
   type: group
   description: >
     process contains the metrics that were obtained from the PHP-FPM process.

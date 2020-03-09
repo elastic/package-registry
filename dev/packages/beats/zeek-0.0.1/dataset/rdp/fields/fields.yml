@@ -1,4 +1,4 @@
-- name: rdp
+- name: zeek.rdp
   type: group
   default_field: false
   description: >

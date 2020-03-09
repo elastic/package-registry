@@ -1,4 +1,4 @@
-- name: consumergroup
+- name: kafka.consumergroup
   type: group
   description: >
     consumergroup

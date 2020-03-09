@@ -1,4 +1,4 @@
-- name: healthcheck
+- name: docker.healthcheck
   type: group
   description: >
     Docker healthcheck metrics.

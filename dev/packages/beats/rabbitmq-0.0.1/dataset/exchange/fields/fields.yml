@@ -1,4 +1,4 @@
-- name: exchange
+- name: rabbitmq.exchange
   type: group
   description: >
     exchange

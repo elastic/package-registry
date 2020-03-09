@@ -1,10 +1,5 @@
-- title: AWS
-  release: beta
+- name: aws
+  type: group
   description: >
-    Module for handling logs from AWS.
+    Fields from AWS logs.
   fields:
-    - name: aws
-      type: group
-      description: >
-        Fields from AWS logs.
-      fields:

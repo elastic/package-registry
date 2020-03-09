@@ -1,4 +1,4 @@
-- name: vpcflow
+- name: aws.vpcflow
   type: group
   release: beta
   description: >

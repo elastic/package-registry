@@ -1,4 +1,4 @@
-- name: memory
+- name: tomcat.memory
   type: group
   description: Memory metrics from java.lang JMX
   release: beta

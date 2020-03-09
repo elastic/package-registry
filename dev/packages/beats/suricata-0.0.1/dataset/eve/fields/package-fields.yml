@@ -1,9 +1,5 @@
-- title: Suricata
+- name: suricata
+  type: group
   description: >
-    Module for handling the EVE JSON logs produced by Suricata.
+    Fields from the Suricata EVE log file.
   fields:
-    - name: suricata
-      type: group
-      description: >
-        Fields from the Suricata EVE log file.
-      fields:

@@ -1,4 +1,4 @@
-- name: status
+- name: apache.status
   type: group
   release: ga
   description: >

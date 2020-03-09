@@ -1,4 +1,4 @@
-- name: counter
+- name: cloudfoundry.counter
   type: group
   description: >
     `counter` contains counter metrics from Cloud Foundry.

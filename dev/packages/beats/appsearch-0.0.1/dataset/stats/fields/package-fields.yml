@@ -1,9 +1,4 @@
-- title: "App Search"
-  release: beta
+- name: appsearch
+  type: group
   description: >
-    App Search module
   fields:
-    - name: appsearch
-      type: group
-      description: >
-      fields:

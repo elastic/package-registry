@@ -1,4 +1,4 @@
-- name: auditlogs
+- name: azure.auditlogs
   type: group
   description: >
     Fields for Azure audit logs.

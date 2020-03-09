@@ -1,4 +1,4 @@
-- name: audit
+- name: googlecloud.audit
   type: group
   description: >
     Fields for Google Cloud audit logs.

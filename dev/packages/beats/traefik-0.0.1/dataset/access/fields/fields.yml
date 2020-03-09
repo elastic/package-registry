@@ -1,4 +1,4 @@
-- name: access
+- name: traefik.access
   type: group
   description: >
     Contains fields for the Traefik access logs.

@@ -1,4 +1,4 @@
-- name: compute
+- name: googlecloud.compute
   release: beta
   type: group
   description: Google Cloud Compute metrics

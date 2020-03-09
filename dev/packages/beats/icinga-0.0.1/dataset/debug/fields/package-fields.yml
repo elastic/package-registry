@@ -1,8 +1,4 @@
-- title: "Icinga"
+- name: icinga
+  type: group
   description: >
-    Icinga Module
   fields:
-    - name: icinga
-      type: group
-      description: >
-      fields:

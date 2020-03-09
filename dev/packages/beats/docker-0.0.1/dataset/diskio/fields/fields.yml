@@ -1,4 +1,4 @@
-- name: diskio
+- name: docker.diskio
   type: group
   description: >
     Disk I/O metrics.

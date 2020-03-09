@@ -1,4 +1,4 @@
-- name: syslog
+- name: system.syslog
   type: group
   description: >
     Contains fields from the syslog system logs.

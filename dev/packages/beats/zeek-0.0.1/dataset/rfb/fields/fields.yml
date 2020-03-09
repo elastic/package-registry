@@ -1,4 +1,4 @@
-- name: rfb
+- name: zeek.rfb
   type: group
   default_field: false
   description: >

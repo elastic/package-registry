@@ -1,4 +1,4 @@
-- name: startup
+- name: icinga.startup
   type: group
   description: >
     Contains fields for the Icinga startup logs.

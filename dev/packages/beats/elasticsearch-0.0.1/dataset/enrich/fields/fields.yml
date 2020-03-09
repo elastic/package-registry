@@ -1,4 +1,4 @@
-- name: enrich
+- name: elasticsearch.enrich
   type: group
   description: >
     Enrich stats

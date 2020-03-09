@@ -1,19 +1,12 @@
-- title: "Beat"
+- name: beat
+  type: group
   description: >
-    Beat module
-  release: ga
-  settings: ["ssl", "http"]
-  short_config: false
   fields:
-    - name: beat
-      type: group
+    - name: id
+      type: keyword
       description: >
-      fields:
-        - name: id
-          type: keyword
-          description: >
-            Beat ID.
-        - name: type
-          type: keyword
-          description: >
-            Beat type.
+        Beat ID.
+    - name: type
+      type: keyword
+      description: >
+        Beat type.

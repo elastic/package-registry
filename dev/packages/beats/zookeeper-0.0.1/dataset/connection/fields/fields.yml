@@ -1,4 +1,4 @@
-- name: connection
+- name: zookeeper.connection
   type: group
   release: beta
   description: >

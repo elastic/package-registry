@@ -1,4 +1,4 @@
-- name: container
+- name: docker.container
   type: group
   description: >
     Docker container metrics.

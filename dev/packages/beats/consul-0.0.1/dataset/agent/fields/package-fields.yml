@@ -1,8 +1,3 @@
-- title: "consul"
-  description: >
-    Consul module
-  release: beta
+- name: consul
+  type: group
   fields:
-    - name: consul
-      type: group
-      fields:

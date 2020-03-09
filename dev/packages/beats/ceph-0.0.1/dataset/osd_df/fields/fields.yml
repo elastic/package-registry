@@ -1,4 +1,4 @@
-- name: osd_df
+- name: ceph.osd_df
   type: group
   release: ga
   description: >

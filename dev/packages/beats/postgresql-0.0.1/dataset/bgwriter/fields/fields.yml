@@ -1,4 +1,4 @@
-- name: bgwriter
+- name: postgresql.bgwriter
   type: group
   description: >
     Statistics about the background writer process's activity. Collected using the

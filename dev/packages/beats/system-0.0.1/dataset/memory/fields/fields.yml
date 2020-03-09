@@ -1,4 +1,4 @@
-- name: memory
+- name: system.memory
   type: group
   description: >
     `memory` contains local memory stats.

@@ -1,9 +1,5 @@
-- title: Cisco
+- name: cisco
+  type: group
   description: >
-    Module for handling Cisco network device logs.
+    Fields from Cisco logs.
   fields:
-    - name: cisco
-      type: group
-      description: >
-        Fields from Cisco logs.
-      fields:

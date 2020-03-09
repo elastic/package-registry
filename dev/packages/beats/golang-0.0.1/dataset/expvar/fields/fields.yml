@@ -1,4 +1,4 @@
-- name: expvar
+- name: golang.expvar
   type: group
   description: >
     expvar

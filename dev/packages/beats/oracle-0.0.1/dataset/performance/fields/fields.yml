@@ -1,4 +1,4 @@
-- name: performance
+- name: oracle.performance
   type: group
   description: Performance related metrics on a single database instance
   release: beta

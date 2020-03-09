@@ -1,4 +1,4 @@
-- name: network
+- name: docker.network
   type: group
   description: >
     Network metrics.

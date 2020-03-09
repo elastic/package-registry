@@ -1,4 +1,4 @@
-- name: node
+- name: kubernetes.node
   type: group
   description: >
     kubernetes node metrics

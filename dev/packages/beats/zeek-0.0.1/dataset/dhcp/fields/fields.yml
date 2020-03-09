@@ -1,4 +1,4 @@
-- name: dhcp
+- name: zeek.dhcp
   type: group
   default_field: false
   description: >

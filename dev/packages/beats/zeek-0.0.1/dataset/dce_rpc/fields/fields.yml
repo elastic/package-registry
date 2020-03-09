@@ -1,4 +1,4 @@
-- name: dce_rpc
+- name: zeek.dce_rpc
   type: group
   default_field: false
   description: >

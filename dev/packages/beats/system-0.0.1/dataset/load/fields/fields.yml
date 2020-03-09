@@ -1,4 +1,4 @@
-- name: load
+- name: system.load
   type: group
   description: >
     CPU load averages.

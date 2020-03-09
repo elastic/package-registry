@@ -1,4 +1,4 @@
-- name: mgr_osd_pool_stats
+- name: ceph.mgr_osd_pool_stats
   type: group
   description: >
     OSD pool stats of Ceph cluster

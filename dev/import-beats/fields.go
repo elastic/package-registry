@@ -7,6 +7,7 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -24,25 +25,22 @@ func loadModuleFields(modulePath string) ([]byte, error) {
 
 	var buffer bytes.Buffer
 	scanner := bufio.NewScanner(moduleFieldsFile)
-	var skipKey bool
+	var fieldsKeyFound bool
 	for scanner.Scan() {
 		line := scanner.Text()
-		if strings.HasPrefix(line, `- key: `) {
-			skipKey = true
-		} else if skipKey {
-			buffer.WriteString("- ")
-			buffer.WriteString(strings.TrimLeft(line, " "))
-			buffer.WriteString("\n")
-			skipKey = false
-		} else {
-			buffer.WriteString(line)
-			buffer.WriteString("\n")
+		if fieldsKeyFound {
+			if len(line) > 4 { // move all fields two levels to the left
+				buffer.WriteString(line[4:])
+				buffer.WriteString("\n")
+			}
+		} else if strings.TrimLeft(line, " ") == "fields:" {
+			fieldsKeyFound = true
 		}
 	}
 	return buffer.Bytes(), nil
 }
 
-func loadDatasetFields(modulePath, datasetName string) ([]byte, error) {
+func loadDatasetFields(modulePath, moduleName, datasetName string) ([]byte, error) {
 	var buffer bytes.Buffer
 
 	datasetFieldsPath := filepath.Join(modulePath, datasetName, "_meta", "fields.yml")
@@ -58,6 +56,9 @@ func loadDatasetFields(modulePath, datasetName string) ([]byte, error) {
 	scanner := bufio.NewScanner(datasetFieldsFile)
 	for scanner.Scan() {
 		line := scanner.Text()
+		if line == ("- name: " + datasetName) {
+			line = fmt.Sprintf("- name: %s.%s", moduleName, datasetName)
+		}
 		buffer.WriteString(line)
 		buffer.WriteString("\n")
 	}

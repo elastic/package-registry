@@ -1,4 +1,4 @@
-- name: snmp
+- name: zeek.snmp
   type: group
   default_field: false
   description: >

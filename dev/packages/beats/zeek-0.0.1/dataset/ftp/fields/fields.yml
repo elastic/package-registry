@@ -1,4 +1,4 @@
-- name: ftp
+- name: zeek.ftp
   type: group
   default_field: false
   description: >

@@ -1,4 +1,4 @@
-- name: smb_mapping
+- name: zeek.smb_mapping
   type: group
   default_field: false
   description: >

@@ -1,4 +1,4 @@
-- name: signinlogs
+- name: azure.signinlogs
   type: group
   description: >
     Fields for Azure sign-in logs.

@@ -1,8 +1,4 @@
-- title: "RabbitMQ"
+- name: rabbitmq
+  type: group
   description: >
-    RabbitMQ Module
   fields:
-    - name: rabbitmq
-      type: group
-      description: >
-      fields:

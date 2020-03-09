@@ -1,4 +1,4 @@
-- name: log
+- name: rabbitmq.log
   type: group
   description: >
     RabbitMQ log files

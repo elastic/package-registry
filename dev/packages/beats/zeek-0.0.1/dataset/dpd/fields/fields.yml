@@ -1,4 +1,4 @@
-- name: dpd
+- name: zeek.dpd
   type: group
   default_field: false
   description: >

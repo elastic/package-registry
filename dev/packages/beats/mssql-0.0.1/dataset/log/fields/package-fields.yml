@@ -1,7 +1,4 @@
-- title: "mssql"
-  description: MS SQL Filebeat Module
+- name: mssql
+  type: group
+  description: Fields from the MSSQL log files
   fields:
-    - name: mssql
-      type: group
-      description: Fields from the MSSQL log files
-      fields:

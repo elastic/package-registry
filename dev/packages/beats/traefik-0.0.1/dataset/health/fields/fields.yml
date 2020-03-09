@@ -1,4 +1,4 @@
-- name: health
+- name: traefik.health
   type: group
   description: >
     Metrics obtained from Traefik's health API endpoint

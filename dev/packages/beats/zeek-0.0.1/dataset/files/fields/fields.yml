@@ -1,4 +1,4 @@
-- name: files
+- name: zeek.files
   type: group
   description: >
     Fields exported by the Zeek Files log.

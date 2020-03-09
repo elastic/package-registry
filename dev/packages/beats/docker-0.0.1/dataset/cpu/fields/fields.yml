@@ -1,4 +1,4 @@
-- name: cpu
+- name: docker.cpu
   type: group
   description: >
     Runtime CPU metrics.

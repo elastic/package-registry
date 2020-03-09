@@ -1,4 +1,4 @@
-- name: monitor
+- name: azure.monitor
   type: group
   release: beta
   description: >

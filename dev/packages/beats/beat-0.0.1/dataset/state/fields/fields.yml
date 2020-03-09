@@ -1,4 +1,4 @@
-- name: state
+- name: beat.state
   type: group
   description: >
     Beat state

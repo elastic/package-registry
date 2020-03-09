@@ -1,4 +1,4 @@
-- name: tablespace
+- name: oracle.tablespace
   type: group
   description: tablespace
   release: beta

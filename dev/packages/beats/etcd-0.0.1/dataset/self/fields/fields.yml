@@ -1,4 +1,4 @@
-- name: self
+- name: etcd.self
   type: group
   description: >
     Contains etcd self statistics.

@@ -1,4 +1,4 @@
-- name: server
+- name: zookeeper.server
   type: group
   description: 'server contains the metrics reported by the four-letter `srvr` command.'
   release: ga

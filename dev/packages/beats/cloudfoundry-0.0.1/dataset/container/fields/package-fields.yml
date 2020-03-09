@@ -1,18 +1,13 @@
-- title: "cloudfoundry"
+- name: cloudfoundry
+  type: group
   description: >
-    Cloud Foundry module
-  release: experimental
   fields:
-    - name: cloudfoundry
+    - name: app
       type: group
       description: >
+        The application the metric is associated with.
       fields:
-        - name: app
-          type: group
+        - name: id
+          type: keyword
           description: >
-            The application the metric is associated with.
-          fields:
-            - name: id
-              type: keyword
-              description: >
-                The ID of the application.
+            The ID of the application.

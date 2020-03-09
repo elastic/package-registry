@@ -1,4 +1,4 @@
-- name: access
+- name: nginx.access
   type: group
   description: >
     Contains fields for the Nginx access logs.

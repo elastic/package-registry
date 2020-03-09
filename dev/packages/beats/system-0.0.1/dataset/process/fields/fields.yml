@@ -1,4 +1,4 @@
-- name: process
+- name: system.process
   type: group
   description: >
     `process` contains process metadata, CPU metrics, and memory metrics.

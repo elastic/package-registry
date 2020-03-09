@@ -1,4 +1,4 @@
-- name: cpu
+- name: system.cpu
   type: group
   description: >
     `cpu` contains local CPU stats.

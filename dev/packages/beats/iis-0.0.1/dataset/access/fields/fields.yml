@@ -1,4 +1,4 @@
-- name: access
+- name: iis.access
   type: group
   description: >
     Contains fields for IIS access logs.

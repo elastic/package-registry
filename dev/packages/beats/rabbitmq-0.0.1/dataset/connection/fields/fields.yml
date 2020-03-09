@@ -1,4 +1,4 @@
-- name: connection
+- name: rabbitmq.connection
   type: group
   description: >
     connection

@@ -1,4 +1,4 @@
-- name: weird
+- name: zeek.weird
   type: group
   default_field: false
   description: >

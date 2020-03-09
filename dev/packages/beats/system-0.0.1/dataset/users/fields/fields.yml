@@ -1,4 +1,4 @@
-- name: users
+- name: system.users
   type: group
   release: beta
   description: >

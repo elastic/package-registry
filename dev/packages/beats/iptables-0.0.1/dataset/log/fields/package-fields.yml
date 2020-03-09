@@ -1,9 +1,5 @@
-- title: iptables
+- name: iptables
+  type: group
   description: >
-    Module for handling the iptables logs.
+    Fields from the iptables logs.
   fields:
-    - name: iptables
-      type: group
-      description: >
-        Fields from the iptables logs.
-      fields:

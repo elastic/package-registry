@@ -1,8 +1,4 @@
-- title: "Redis"
+- name: redis
+  type: group
   description: >
-    Redis Module
   fields:
-    - name: redis
-      type: group
-      description: >
-      fields:

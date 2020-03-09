@@ -1,4 +1,4 @@
-- name: error
+- name: mysql.error
   type: group
   description: >
     Contains fields from the MySQL error logs.

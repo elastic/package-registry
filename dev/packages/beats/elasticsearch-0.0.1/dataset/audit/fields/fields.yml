@@ -1,4 +1,4 @@
-- name: audit
+- name: elasticsearch.audit
   type: group
   description: >
   fields:

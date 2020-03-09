@@ -1,4 +1,4 @@
-- name: mixer
+- name: istio.mixer
   type: group
   description: >
     Contains statistics related to the Istio mixer service

@@ -1,4 +1,4 @@
-- name: socks
+- name: zeek.socks
   type: group
   default_field: false
   description: >

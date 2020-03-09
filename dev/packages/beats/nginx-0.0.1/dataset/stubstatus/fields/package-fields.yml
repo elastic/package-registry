@@ -1,12 +1,5 @@
-- title: "Nginx"
+- name: nginx
+  type: group
   description: >
-    Nginx server status metrics collected from various modules.
-  short_config: false
-  release: ga
-  settings: ["ssl", "http"]
+    `nginx` contains the metrics that were scraped from nginx.
   fields:
-    - name: nginx
-      type: group
-      description: >
-        `nginx` contains the metrics that were scraped from nginx.
-      fields:

@@ -1,4 +1,4 @@
-- name: ssh
+- name: zeek.ssh
   type: group
   default_field: false
   description: >

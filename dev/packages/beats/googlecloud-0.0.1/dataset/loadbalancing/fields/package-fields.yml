@@ -1,16 +1,11 @@
-- title: 'Google Cloud Platform'
-  release: beta
-  description: >
-    GCP module
+- name: googlecloud.labels
+  type: object
   fields:
-    - name: googlecloud.labels
+    - name: user.*
       type: object
-      fields:
-        - name: user.*
-          type: object
-        - name: metadata.*
-          type: object
-        - name: metrics.*
-          type: object
-        - name: system.*
-          type: object
+    - name: metadata.*
+      type: object
+    - name: metrics.*
+      type: object
+    - name: system.*
+      type: object

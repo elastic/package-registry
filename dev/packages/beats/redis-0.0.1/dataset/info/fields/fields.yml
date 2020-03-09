@@ -1,4 +1,4 @@
-- name: info
+- name: redis.info
   type: group
   description: >
     `info` contains the information and statistics returned by the `INFO` command.

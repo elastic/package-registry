@@ -1,11 +1,5 @@
-- title: "PostgreSQL"
+- name: postgresql
+  type: group
   description: >
-    Metrics collected from PostgreSQL servers.
-  short_config: false
-  release: ga
+    PostgreSQL metrics.
   fields:
-    - name: postgresql
-      type: group
-      description: >
-        PostgreSQL metrics.
-      fields:

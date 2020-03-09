@@ -1,4 +1,4 @@
-- name: image
+- name: docker.image
   type: group
   description: >
     Docker image metrics.

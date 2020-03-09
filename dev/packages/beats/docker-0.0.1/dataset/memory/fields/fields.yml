@@ -1,4 +1,4 @@
-- name: memory
+- name: docker.memory
   type: group
   description: >
     Memory metrics.

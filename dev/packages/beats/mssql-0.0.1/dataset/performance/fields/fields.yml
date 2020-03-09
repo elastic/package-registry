@@ -1,4 +1,4 @@
-- name: performance
+- name: mssql.performance
   type: group
   description: performance metricset fetches information about the Performance Counters
   release: beta

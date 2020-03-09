@@ -1,4 +1,4 @@
-- name: heap
+- name: golang.heap
   type: group
   description: >
     The Go program heap information exposed by expvar.

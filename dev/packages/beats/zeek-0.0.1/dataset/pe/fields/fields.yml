@@ -1,4 +1,4 @@
-- name: pe
+- name: zeek.pe
   type: group
   default_field: false
   description: >

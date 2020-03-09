@@ -1,4 +1,4 @@
-- name: server
+- name: elasticsearch.server
   description: "Server log file"
   type: group
   fields:

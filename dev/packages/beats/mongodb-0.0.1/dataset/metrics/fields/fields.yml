@@ -1,4 +1,4 @@
-- name: metrics
+- name: mongodb.metrics
   type: group
   release: ga
   description: >

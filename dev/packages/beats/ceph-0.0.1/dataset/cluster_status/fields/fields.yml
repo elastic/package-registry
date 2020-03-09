@@ -1,4 +1,4 @@
-- name: cluster_status
+- name: ceph.cluster_status
   type: group
   release: ga
   description: >

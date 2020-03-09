@@ -1,4 +1,4 @@
-- name: raid
+- name: system.raid
   type: group
   description: >
     raid

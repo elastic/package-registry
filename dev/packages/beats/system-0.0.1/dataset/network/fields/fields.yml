@@ -1,4 +1,4 @@
-- name: network
+- name: system.network
   type: group
   description: >
     `network` contains network IO metrics for a single network interface.

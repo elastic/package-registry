@@ -1,4 +1,4 @@
-- name: cluster
+- name: couchbase.cluster
   type: group
   description: >
     Couchbase cluster metrics.

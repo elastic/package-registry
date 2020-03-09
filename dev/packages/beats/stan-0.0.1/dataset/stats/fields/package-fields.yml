@@ -1,18 +1,13 @@
-- title: "Stan"
+- name: stan
+  type: group
   description: >
-    stan Module
-  release: beta
+    `stan` contains statistics that were read from Nats Streaming server (STAN)
   fields:
-    - name: stan
-      type: group
+    - name: server.id
+      type: keyword
       description: >
-        `stan` contains statistics that were read from Nats Streaming server (STAN)
-      fields:
-        - name: server.id
-          type: keyword
-          description: >
-            The server ID
-        - name: cluster.id
-          type: keyword
-          description: >
-            The cluster ID
+        The server ID
+    - name: cluster.id
+      type: keyword
+      description: >
+        The cluster ID

@@ -1,4 +1,4 @@
-- name: routes
+- name: nats.routes
   type: group
   description: >
     Contains nats route related metrics

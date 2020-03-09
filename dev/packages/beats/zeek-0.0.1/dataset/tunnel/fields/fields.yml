@@ -1,4 +1,4 @@
-- name: tunnel
+- name: zeek.tunnel
   type: group
   default_field: false
   description: >

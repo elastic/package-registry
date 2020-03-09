@@ -1,4 +1,4 @@
-- name: mesh
+- name: istio.mesh
   type: group
   description: >
     Contains statistics related to the Istio mesh service

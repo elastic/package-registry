@@ -1,8 +1,4 @@
-- title: "logstash"
+- name: logstash
+  type: group
   description: >
-    logstash Module
   fields:
-    - name: logstash
-      type: group
-      description: >
-      fields:

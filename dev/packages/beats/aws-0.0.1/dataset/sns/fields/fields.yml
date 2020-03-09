@@ -1,4 +1,4 @@
-- name: sns
+- name: aws.sns
   type: group
   description: >
     `sns` contains the metrics that were scraped from AWS CloudWatch which contains monitoring metrics sent by AWS SNS.

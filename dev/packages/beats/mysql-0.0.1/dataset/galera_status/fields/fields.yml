@@ -1,4 +1,4 @@
-- name: galera_status
+- name: mysql.galera_status
   type: group
   release: beta
   description: >

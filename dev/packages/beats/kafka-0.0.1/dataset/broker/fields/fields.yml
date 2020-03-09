@@ -1,4 +1,4 @@
-- name: broker
+- name: kafka.broker
   type: group
   description: Broker metrics from Kafka Broker JMX
   release: beta

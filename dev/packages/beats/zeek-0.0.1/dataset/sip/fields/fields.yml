@@ -1,4 +1,4 @@
-- name: sip
+- name: zeek.sip
   type: group
   default_field: false
   description: >

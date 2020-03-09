@@ -1,4 +1,4 @@
-- name: intel
+- name: zeek.intel
   type: group
   default_field: false
   description: >

@@ -1,4 +1,4 @@
-- name: capture_loss
+- name: zeek.capture_loss
   type: group
   description: >
     Fields exported by the Zeek capture_loss log

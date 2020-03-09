@@ -1,4 +1,4 @@
-- name: ingress_controller
+- name: nginx.ingress_controller
   type: group
   description: >
     Contains fields for the Ingress Nginx controller access logs.

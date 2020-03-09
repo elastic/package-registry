@@ -1,4 +1,4 @@
-- name: key
+- name: redis.key
   type: group
   description: >
     `key` contains information about keys.

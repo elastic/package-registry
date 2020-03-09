@@ -1,4 +1,4 @@
-- name: eve
+- name: suricata.eve
   type: group
   description: >
     Fields exported by the EVE JSON logs

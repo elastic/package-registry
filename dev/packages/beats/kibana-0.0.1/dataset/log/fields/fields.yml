@@ -1,4 +1,4 @@
-- name: log
+- name: kibana.log
   type: group
   description: >
     Kafka log lines.

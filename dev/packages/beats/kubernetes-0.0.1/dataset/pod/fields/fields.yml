@@ -1,4 +1,4 @@
-- name: pod
+- name: kubernetes.pod
   type: group
   description: >
     kubernetes pod metrics

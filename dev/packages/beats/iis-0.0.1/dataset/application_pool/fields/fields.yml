@@ -1,4 +1,4 @@
-- name: application_pool
+- name: iis.application_pool
   type: group
   release: beta
   description: >

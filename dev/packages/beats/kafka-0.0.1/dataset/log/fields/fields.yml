@@ -1,4 +1,4 @@
-- name: log
+- name: kafka.log
   type: group
   description: >
     Kafka log lines.

@@ -1,4 +1,4 @@
-- name: socket
+- name: system.socket
   type: group
   description: >
     TCP sockets that are active.

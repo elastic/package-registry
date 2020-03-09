@@ -1,4 +1,4 @@
-- name: container
+- name: cloudfoundry.container
   type: group
   description: >
     `container` contains container metrics from Cloud Foundry.

@@ -1,4 +1,4 @@
-- name: modbus
+- name: zeek.modbus
   type: group
   default_field: false
   description: >

@@ -1,18 +1,13 @@
-- title: "Nats"
+- name: nats
+  type: group
   description: >
-    nats Module
-  release: ga
+    `nats` contains statistics that were read from Nats
   fields:
-    - name: nats
-      type: group
+    - name: server.id
+      type: keyword
       description: >
-        `nats` contains statistics that were read from Nats
-      fields:
-        - name: server.id
-          type: keyword
-          description: >
-            The server ID
-        - name: server.time
-          type: date
-          description: >
-            Server time of metric creation
+        The server ID
+    - name: server.time
+      type: date
+      description: >
+        Server time of metric creation

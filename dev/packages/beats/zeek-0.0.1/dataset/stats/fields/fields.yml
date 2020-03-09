@@ -1,4 +1,4 @@
-- name: stats
+- name: zeek.stats
   type: group
   default_field: false
   description: >

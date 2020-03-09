@@ -1,4 +1,4 @@
-- name: statement
+- name: postgresql.statement
   type: group
   description: >
     One document per query per user per database, showing information related

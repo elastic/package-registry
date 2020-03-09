@@ -1,4 +1,4 @@
-- name: agent
+- name: consul.agent
   type: group
   release: beta
   description: >

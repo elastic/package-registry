@@ -1,4 +1,4 @@
-- name: threading
+- name: tomcat.threading
   type: group
   description: Threading metrics from the Catalina's ThreadPool JMX
   release: beta

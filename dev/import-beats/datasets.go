@@ -21,7 +21,7 @@ type fieldsContent struct {
 	files map[string][]byte
 }
 
-func createDatasets(modulePath string) (map[string]datasetContent, error) {
+func createDatasets(modulePath, moduleName string) (map[string]datasetContent, error) {
 	moduleFieldsFiles, err := loadModuleFields(modulePath)
 	if err != nil {
 		return nil, errors.Wrapf(err, "loading module fields failed (modulePath: %s)", modulePath)
@@ -52,7 +52,7 @@ func createDatasets(modulePath string) (map[string]datasetContent, error) {
 		log.Printf("\t%s: dataset found", datasetName)
 		content := datasetContent{}
 
-		fieldsFiles, err := loadDatasetFields(modulePath, datasetName)
+		fieldsFiles, err := loadDatasetFields(modulePath, moduleName, datasetName)
 		if err != nil {
 			return nil, errors.Wrapf(err, "loading dataset fields failed (modulePath: %s, datasetName: %s)",
 				modulePath, datasetName)

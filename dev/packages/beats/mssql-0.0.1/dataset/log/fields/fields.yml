@@ -1,4 +1,4 @@
-- name: log
+- name: mssql.log
   description: Common log fields
   type: group
   fields:

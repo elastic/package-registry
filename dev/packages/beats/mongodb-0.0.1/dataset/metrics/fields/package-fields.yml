@@ -1,12 +1,5 @@
-- title: "MongoDB"
+- name: mongodb
+  type: group
   description: >
-    Metrics collected from MongoDB servers.
-  short_config: false
-  release: ga
-  settings: ["ssl"]
+    MongoDB metrics.
   fields:
-    - name: mongodb
-      type: group
-      description: >
-        MongoDB metrics.
-      fields:

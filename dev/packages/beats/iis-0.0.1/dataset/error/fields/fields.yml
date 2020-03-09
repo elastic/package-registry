@@ -1,4 +1,4 @@
-- name: error
+- name: iis.error
   type: group
   description: >
     Contains fields for IIS error logs.

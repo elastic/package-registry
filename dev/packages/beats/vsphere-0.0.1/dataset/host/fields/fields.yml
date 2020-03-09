@@ -1,4 +1,4 @@
-- name: host
+- name: vsphere.host
   type: group
   description: >
     host

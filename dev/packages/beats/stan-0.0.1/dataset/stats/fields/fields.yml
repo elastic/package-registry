@@ -1,4 +1,4 @@
-- name: stats
+- name: stan.stats
   type: group
   description: >
     Contains only high-level stan / nats streaming server related metrics

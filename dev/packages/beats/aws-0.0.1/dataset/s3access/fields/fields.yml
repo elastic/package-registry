@@ -1,4 +1,4 @@
-- name: s3access
+- name: aws.s3access
   type: group
   release: ga
   description: >

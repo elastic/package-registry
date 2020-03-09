@@ -1,4 +1,4 @@
-- name: store
+- name: etcd.store
   type: group
   description: >
     The store statistics include information about the operations that this node has handled.

@@ -1,10 +1,5 @@
-- title: "Redis Enterprise"
+- name: redisenterprise
+  type: group
   description: >
-    Redis metrics collected from Redis Enterprise Server.
-  release: beta
+    `redisenterprise` contains the information and statistics from Redis Enterprise Server.
   fields:
-    - name: redisenterprise
-      type: group
-      description: >
-        `redisenterprise` contains the information and statistics from Redis Enterprise Server.
-      fields:

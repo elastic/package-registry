@@ -1,4 +1,4 @@
-- name: syslog
+- name: zeek.syslog
   type: group
   default_field: false
   description: >

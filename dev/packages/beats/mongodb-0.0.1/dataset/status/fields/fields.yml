@@ -1,4 +1,4 @@
-- name: status
+- name: mongodb.status
   type: group
   description: >
     MongoDB server status metrics.

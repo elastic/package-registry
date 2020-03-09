@@ -1,4 +1,4 @@
-- name: replstatus
+- name: mongodb.replstatus
   type: group
   release: ga
   description: >

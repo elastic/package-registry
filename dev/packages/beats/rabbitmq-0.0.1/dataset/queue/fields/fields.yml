@@ -1,4 +1,4 @@
-- name: queue
+- name: rabbitmq.queue
   type: group
   description: >
     queue

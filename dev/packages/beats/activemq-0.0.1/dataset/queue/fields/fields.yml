@@ -1,4 +1,4 @@
-- name: queue
+- name: activemq.queue
   type: group
   description: Queue metrics from org.apache.activemq:brokerName=*,destinationName=*,destinationType=Queue,type=Broker
   release: beta

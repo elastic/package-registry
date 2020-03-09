@@ -1,10 +1,4 @@
-- title: "Logstash"
+- name: logstash
+  type: group
   description: >
-    Logstash module
-  release: ga
-  settings: ["ssl", "http"]
   fields:
-    - name: logstash
-      type: group
-      description: >
-      fields:

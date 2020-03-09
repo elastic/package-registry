@@ -1,4 +1,4 @@
-- name: entropy
+- name: system.entropy
   type: group
   description: >
     Available system entropy

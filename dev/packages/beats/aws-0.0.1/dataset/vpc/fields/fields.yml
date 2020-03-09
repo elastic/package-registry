@@ -1,4 +1,4 @@
-- name: vpc
+- name: aws.vpc
   type: group
   description: >
     `vpc` contains the metrics from Cloudwatch to track usage of VPC related resources.

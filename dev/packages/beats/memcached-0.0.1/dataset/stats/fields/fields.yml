@@ -1,4 +1,4 @@
-- name: stats
+- name: memcached.stats
   type: group
   description: >
     stats

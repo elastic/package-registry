@@ -1,4 +1,4 @@
-- name: collstats
+- name: mongodb.collstats
   type: group
   description: >
     MongoDB collection statistics metrics.

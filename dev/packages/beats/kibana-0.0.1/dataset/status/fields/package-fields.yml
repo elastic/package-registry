@@ -1,11 +1,4 @@
-- title: "Kibana"
+- name: kibana
+  type: group
   description: >
-    Kibana module
-  short_config: false
-  release: ga
-  settings: ["ssl", "http"]
   fields:
-    - name: kibana
-      type: group
-      description: >
-      fields:

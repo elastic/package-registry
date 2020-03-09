@@ -1,4 +1,4 @@
-- name: namespace
+- name: aerospike.namespace
   type: group
   description: >
     namespace

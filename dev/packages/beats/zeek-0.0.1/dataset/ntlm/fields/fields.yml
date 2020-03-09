@@ -1,4 +1,4 @@
-- name: ntlm
+- name: zeek.ntlm
   type: group
   default_field: false
   description: >

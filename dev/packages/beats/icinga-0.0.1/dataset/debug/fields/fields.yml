@@ -1,4 +1,4 @@
-- name: debug
+- name: icinga.debug
   type: group
   description: >
     Contains fields for the Icinga debug logs.

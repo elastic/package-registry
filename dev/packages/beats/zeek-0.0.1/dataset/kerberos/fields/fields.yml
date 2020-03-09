@@ -1,4 +1,4 @@
-- name: kerberos
+- name: zeek.kerberos
   type: group
   default_field: false
   description: >

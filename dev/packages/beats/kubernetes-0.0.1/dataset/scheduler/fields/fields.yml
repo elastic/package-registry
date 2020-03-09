@@ -1,4 +1,4 @@
-- name: scheduler
+- name: kubernetes.scheduler
   type: group
   description: >
     Kubernetes scheduler metrics

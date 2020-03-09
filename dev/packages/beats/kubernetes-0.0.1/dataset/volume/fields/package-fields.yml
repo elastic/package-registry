@@ -1,12 +1,5 @@
-- title: "Kubernetes"
+- name: kubernetes
+  type: group
   description: >
-    Kubernetes metrics
-  release: ga
-  settings: ["ssl", "http"]
-  short_config: false
+    Information and statistics of pods managed by kubernetes.
   fields:
-    - name: kubernetes
-      type: group
-      description: >
-        Information and statistics of pods managed by kubernetes.
-      fields:

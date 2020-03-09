@@ -1,4 +1,4 @@
-- name: network_summary
+- name: system.network_summary
   type: group
   release: beta
   description: >

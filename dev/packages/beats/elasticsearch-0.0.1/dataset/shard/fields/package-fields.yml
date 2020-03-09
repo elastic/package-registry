@@ -1,35 +1,24 @@
-- title: "Elasticsearch"
+- name: elasticsearch
+  type: group
   description: >
-    Elasticsearch module
-  release: ga
-  settings: ["ssl", "http"]
-  short_config: false
   fields:
-    - name: elasticsearch
-      type: group
+    - name: cluster.name
+      type: keyword
       description: >
-      fields:
-        - name: cluster.name
-          type: keyword
-          description: >
-            Elasticsearch cluster name.
-
-        - name: cluster.id
-          type: keyword
-          description: >
-            Elasticsearch cluster id.
-
-        - name: cluster.state.id
-          type: keyword
-          description: >
-            Elasticsearch state id.
-
-        - name: node.id
-          type: keyword
-          description: >
-            Node ID
-
-        - name: node.name
-          type: keyword
-          description: >
-            Node name.
+        Elasticsearch cluster name.
+    - name: cluster.id
+      type: keyword
+      description: >
+        Elasticsearch cluster id.
+    - name: cluster.state.id
+      type: keyword
+      description: >
+        Elasticsearch state id.
+    - name: node.id
+      type: keyword
+      description: >
+        Node ID
+    - name: node.name
+      type: keyword
+      description: >
+        Node name.

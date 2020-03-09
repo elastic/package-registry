@@ -1,9 +1,4 @@
-- title: "envoyproxy"
+- name: envoyproxy
+  type: group
   description: >
-    envoyproxy module
-  release: ga
   fields:
-    - name: envoyproxy
-      type: group
-      description: >
-      fields:

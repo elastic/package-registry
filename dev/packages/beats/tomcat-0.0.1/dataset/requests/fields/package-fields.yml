@@ -1,8 +1,3 @@
-- title: 'Tomcat'
-  release: beta
-  description: >
-    Tomcat module
+- name: tomcat
+  type: group
   fields:
-    - name: tomcat
-      type: group
-      fields:

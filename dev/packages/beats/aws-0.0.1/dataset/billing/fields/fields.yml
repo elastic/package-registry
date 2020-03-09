@@ -1,4 +1,4 @@
-- name: billing
+- name: aws.billing
   type: group
   description: >
     `billing` contains the estimated charges for your AWS account in Cloudwatch.

@@ -1,4 +1,4 @@
-- name: main
+- name: icinga.main
   type: group
   description: >
     Contains fields for the Icinga main logs.

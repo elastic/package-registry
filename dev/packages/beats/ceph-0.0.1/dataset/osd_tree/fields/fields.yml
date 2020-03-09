@@ -1,4 +1,4 @@
-- name: osd_tree
+- name: ceph.osd_tree
   type: group
   description: >
     ceph osd tree info

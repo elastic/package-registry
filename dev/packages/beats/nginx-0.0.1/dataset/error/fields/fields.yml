@@ -1,4 +1,4 @@
-- name: error
+- name: nginx.error
   type: group
   description: >
     Contains fields for the Nginx error logs.

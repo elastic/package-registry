@@ -1,4 +1,4 @@
-- name: notice
+- name: zeek.notice
   type: group
   description: >
     Fields exported by the Zeek Notice log.

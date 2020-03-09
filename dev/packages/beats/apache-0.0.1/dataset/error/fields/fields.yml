@@ -1,4 +1,4 @@
-- name: error
+- name: apache.error
   type: group
   description: >
     Fields from the Apache error logs.

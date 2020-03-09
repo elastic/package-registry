@@ -1,4 +1,4 @@
-- name: activitylogs
+- name: azure.activitylogs
   type: group
   release: beta
   description: >

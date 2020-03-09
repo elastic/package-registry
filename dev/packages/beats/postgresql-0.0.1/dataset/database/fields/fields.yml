@@ -1,4 +1,4 @@
-- name: database
+- name: postgresql.database
   type: group
   description: >
     One row per database, showing database-wide statistics. Collected by querying

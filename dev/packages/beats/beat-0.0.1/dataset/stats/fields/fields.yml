@@ -1,4 +1,4 @@
-- name: stats
+- name: beat.stats
   type: group
   description: >
     Beat stats

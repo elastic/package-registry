@@ -1,4 +1,4 @@
-- name: requests
+- name: tomcat.requests
   type: group
   description: Requests processor metrics from GlobalRequestProcessor JMX
   release: beta

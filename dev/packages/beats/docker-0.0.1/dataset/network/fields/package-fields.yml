@@ -1,11 +1,5 @@
-- title: "Docker"
+- name: docker
+  type: group
   description: >
-    Docker stats collected from Docker.
-  release: ga
-  short_config: false
+    Information and statistics about docker's running containers.
   fields:
-    - name: docker
-      type: group
-      description: >
-        Information and statistics about docker's running containers.
-      fields:

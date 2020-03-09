@@ -1,9 +1,4 @@
-- title: "kvm"
-  release: beta
+- name: kvm
+  type: group
   description: >
-    kvm module
   fields:
-    - name: kvm
-      type: group
-      description: >
-      fields:

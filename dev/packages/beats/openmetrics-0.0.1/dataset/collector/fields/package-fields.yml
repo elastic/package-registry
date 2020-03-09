@@ -1,23 +1,17 @@
-- title: 'Openmetrics'
-  release: beta
+- name: openmetrics
+  type: group
   description: >
-    Openmetrics module
-  settings: ["http", "ssl"]
+    `openmetrics` contains metrics from endpoints that are following Openmetrics format.
   fields:
-    - name: openmetrics
-      type: group
+    # Order is important here, labels will match first, the rest are double
+    - name: labels.*
+      type: object
+      object_type: keyword
       description: >
-        `openmetrics` contains metrics from endpoints that are following Openmetrics format.
-      fields:
-        # Order is important here, labels will match first, the rest are double
-        - name: labels.*
-          type: object
-          object_type: keyword
-          description: >
-            Prometheus metric labels
-        - name: metrics.*
-          type: object
-          object_type: double
-          object_type_mapping_type: "*"
-          description: >
-            Prometheus metric
+        Prometheus metric labels
+    - name: metrics.*
+      type: object
+      object_type: double
+      object_type_mapping_type: "*"
+      description: >
+        Prometheus metric

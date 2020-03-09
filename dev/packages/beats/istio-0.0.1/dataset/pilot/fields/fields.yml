@@ -1,4 +1,4 @@
-- name: pilot
+- name: istio.pilot
   type: group
   description: >
     Contains statistics related to the Istio pilot service

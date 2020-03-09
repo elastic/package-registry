@@ -1,4 +1,4 @@
-- name: galley
+- name: istio.galley
   type: group
   description: >
     Contains statistics related to the Istio galley service

@@ -1,4 +1,4 @@
-- name: gc
+- name: elasticsearch.gc
   type: group
   description: >
     GC fileset fields.

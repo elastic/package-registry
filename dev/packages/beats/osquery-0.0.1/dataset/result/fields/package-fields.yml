@@ -1,8 +1,4 @@
-- title: "Osquery"
+- name: osquery
+  type: group
   description: >
-    Fields exported by the `osquery` module
   fields:
-    - name: osquery
-      type: group
-      description: >
-      fields:

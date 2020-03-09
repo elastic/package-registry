@@ -1,4 +1,4 @@
-- name: result
+- name: osquery.result
   type: group
   description: >
     Common fields exported by the result metricset.

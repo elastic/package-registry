@@ -1,10 +1,5 @@
-- title: "IIS"
+- name: iis
+  type: group
   description: >
-    Module for parsing IIS log files.
+    Fields from IIS log files.
   fields:
-    - name: iis
-      type: group
-      description: >
-        Fields from IIS log files.
-      fields:
-

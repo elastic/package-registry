@@ -1,4 +1,4 @@
-- name: bucket
+- name: couchbase.bucket
   type: group
   description: >
     Couchbase bucket metrics.

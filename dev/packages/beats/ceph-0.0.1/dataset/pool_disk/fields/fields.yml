@@ -1,4 +1,4 @@
-- name: pool_disk
+- name: ceph.pool_disk
   type: group
   description: >
     pool_disk

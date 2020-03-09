@@ -1,4 +1,4 @@
-- name: fsstat
+- name: system.fsstat
   type: group
   description: >
     `system.fsstat` contains filesystem metrics aggregated from all mounted

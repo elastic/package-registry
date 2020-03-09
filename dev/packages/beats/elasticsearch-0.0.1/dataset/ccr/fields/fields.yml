@@ -1,4 +1,4 @@
-- name: ccr
+- name: elasticsearch.ccr
   type: group
   description: >
     Cross-cluster replication stats

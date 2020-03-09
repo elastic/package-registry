@@ -1,4 +1,4 @@
-- name: stat
+- name: haproxy.stat
   type: group
   description: >
     Stats collected from HAProxy processes.

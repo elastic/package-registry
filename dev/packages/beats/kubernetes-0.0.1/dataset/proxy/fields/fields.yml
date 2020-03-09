@@ -1,4 +1,4 @@
-- name: proxy
+- name: kubernetes.proxy
   type: group
   description: >
     Kubernetes proxy server metrics
