@@ -15,7 +15,7 @@
           type: group
           description: >
             kubernetes cronjob metrics
-          release: beta
+          release: ga
           fields:
             - name: name
               type: keyword

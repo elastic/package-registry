@@ -15,7 +15,7 @@
           type: group
           description: >
             Controller manager metrics
-          release: beta
+          release: ga
           fields:
             - name: handler
               type: keyword

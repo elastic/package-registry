@@ -1,0 +1,17 @@
+- key: cef-module
+  title: CEF
+  description: >
+    Module for receiving CEF logs over Syslog. The module adds vendor
+    specific fields in addition to the fields the decode_cef processor
+    provides.
+  fields:
+        - name: forcepoint
+          type: group
+          default_field: false
+          description: >
+            Fields for Forcepoint Custom String mappings
+          fields:
+            - name: virus_id
+              type: keyword
+              description: >
+                Virus ID
