@@ -3,25 +3,25 @@
       type: group
       description: >
       fields:
-    - name: shard
-      type: group
-      description: >
-        shard fields
-      release: ga
-      fields:
-        - name: primary
-          type: boolean
+        - name: shard
+          type: group
           description: >
-            True if this is the primary shard.
-        - name: number
-          type: long
-          description: >
-            The number of this shard.
-        - name: state
-          type: keyword
-          description: >
-            The state of this shard.
-        - name: relocating_node.name
-          type: keyword
-          description: >
-            The node the shard was relocated from.
+            shard fields
+          release: ga
+          fields:
+            - name: primary
+              type: boolean
+              description: >
+                True if this is the primary shard.
+            - name: number
+              type: long
+              description: >
+                The number of this shard.
+            - name: state
+              type: keyword
+              description: >
+                The state of this shard.
+            - name: relocating_node.name
+              type: keyword
+              description: >
+                The node the shard was relocated from.

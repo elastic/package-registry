@@ -3,29 +3,29 @@
       type: group
       description: >
       fields:
-    - name: network_summary
-      type: group
-      release: beta
-      description: >
-        Metrics relating to global network activity
-      fields:
-        - name: ip.*
-          type: object
+        - name: network_summary
+          type: group
+          release: beta
           description: >
-            IP counters
-        - name: tcp.*
-          type: object
-          description: >
-            TCP counters
-        - name: udp.*
-          type: object
-          description: >
-            UDP counters
-        - name: udp_lite.*
-          type: object
-          description: >
-            UDP Lite counters
-        - name: icmp.*
-          type: object
-          description: >
-            ICMP counters
+            Metrics relating to global network activity
+          fields:
+            - name: ip.*
+              type: object
+              description: >
+                IP counters
+            - name: tcp.*
+              type: object
+              description: >
+                TCP counters
+            - name: udp.*
+              type: object
+              description: >
+                UDP counters
+            - name: udp_lite.*
+              type: object
+              description: >
+                UDP Lite counters
+            - name: icmp.*
+              type: object
+              description: >
+                ICMP counters

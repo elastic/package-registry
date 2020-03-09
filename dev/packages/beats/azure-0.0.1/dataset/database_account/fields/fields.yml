@@ -3,10 +3,10 @@
       type: group
       description: >
       fields:
-    - name: database_account.*.*
-      release: beta
-      type: object
-      object_type: float
-      object_type_mapping_type: "*"
-      description: >
-        database account
+        - name: database_account.*.*
+          release: beta
+          type: object
+          object_type: float
+          object_type_mapping_type: "*"
+          description: >
+            database account

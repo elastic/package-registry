@@ -3,10 +3,10 @@
       type: group
       description: >
       fields:
-    - name: log
-      description: Common log fields
-      type: group
-      fields:
-        - name: origin
-          description: Origin of the message, usually the server but it can also be a recovery process
-          type: keyword
+        - name: log
+          description: Common log fields
+          type: group
+          fields:
+            - name: origin
+              description: Origin of the message, usually the server but it can also be a recovery process
+              type: keyword

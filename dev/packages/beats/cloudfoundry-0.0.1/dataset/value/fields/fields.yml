@@ -3,21 +3,21 @@
       type: group
       description: >
       fields:
-    - name: value
-      type: group
-      description: >
-        `value` contains counter metrics from Cloud Foundry.
-      release: experimental
-      fields:
-        - name: name
-          type: keyword
-          description: >
-            The name of the value.
-        - name: unit
-          type: keyword
-          description: >
-            The unit of the value.
         - name: value
-          type: float
+          type: group
           description: >
-            The value of the value.
+            `value` contains counter metrics from Cloud Foundry.
+          release: experimental
+          fields:
+            - name: name
+              type: keyword
+              description: >
+                The name of the value.
+            - name: unit
+              type: keyword
+              description: >
+                The unit of the value.
+            - name: value
+              type: float
+              description: >
+                The value of the value.

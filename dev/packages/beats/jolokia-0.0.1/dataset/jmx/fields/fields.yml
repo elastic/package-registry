@@ -3,9 +3,9 @@
       type: group
       description: >
       fields:
-    - key: jmx
-      type: group
-      description: >
-        Jolokia jmx metricset
-      release: ga
-      fields:
+        - key: jmx
+          type: group
+          description: >
+            Jolokia jmx metricset
+          release: ga
+          fields:

@@ -3,13 +3,13 @@
       type: group
       description: >
       fields:
-    - name: cloudwatch
-      type: group
-      description: >
-        `cloudwatch` contains the metrics that were scraped from AWS CloudWatch which contains monitoring metrics sent by different namespaces.
-      release: ga
-      fields:
-        - name: namespace
-          type: keyword
+        - name: cloudwatch
+          type: group
           description: >
-            The namespace specified when query cloudwatch api.
+            `cloudwatch` contains the metrics that were scraped from AWS CloudWatch which contains monitoring metrics sent by different namespaces.
+          release: ga
+          fields:
+            - name: namespace
+              type: keyword
+              description: >
+                The namespace specified when query cloudwatch api.

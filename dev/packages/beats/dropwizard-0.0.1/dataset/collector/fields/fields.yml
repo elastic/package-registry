@@ -3,4 +3,4 @@
       type: group
       description: >
       fields:
-    - release: ga
+        - release: ga

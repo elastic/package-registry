@@ -3,98 +3,98 @@
       type: group
       description: >
       fields:
-    - name: stats
-      type: group
-      description: >
-        Beat stats
-      release: ga
-      fields:
-        - name: uptime.ms
-          type: long
-          description: >
-            Beat uptime
-        - name: runtime.goroutines
-          type: long
-          description: >
-            Number of goroutines running in Beat
-        - name: libbeat
+        - name: stats
           type: group
           description: >
-            Fields common to all Beats
+            Beat stats
+          release: ga
           fields:
-            - name: output
+            - name: uptime.ms
+              type: long
+              description: >
+                Beat uptime
+            - name: runtime.goroutines
+              type: long
+              description: >
+                Number of goroutines running in Beat
+            - name: libbeat
               type: group
               description: >
-                Output stats
+                Fields common to all Beats
               fields:
-                - name: type
-                  type: keyword
-                  description: >
-                    Type of output
-                - name: events
+                - name: output
                   type: group
                   description: >
-                    Event counters
+                    Output stats
                   fields:
-                    - name: acked
-                      type: long
+                    - name: type
+                      type: keyword
                       description: >
-                        Number of events acknowledged
-                    - name: active
-                      type: long
+                        Type of output
+                    - name: events
+                      type: group
                       description: >
-                        Number of active events
-                    - name: batches
-                      type: long
+                        Event counters
+                      fields:
+                        - name: acked
+                          type: long
+                          description: >
+                            Number of events acknowledged
+                        - name: active
+                          type: long
+                          description: >
+                            Number of active events
+                        - name: batches
+                          type: long
+                          description: >
+                            Number of event batches
+                        - name: dropped
+                          type: long
+                          description: >
+                            Number of events dropped
+                        - name: duplicates
+                          type: long
+                          description: >
+                            Number of events duplicated
+                        - name: failed
+                          type: long
+                          description: >
+                            Number of events failed
+                        - name: toomany
+                          type: long
+                          description: >
+                            Number of too many events
+                        - name: total
+                          type: long
+                          description: >
+                            Total number of events
+                    - name: read
+                      type: group
                       description: >
-                        Number of event batches
-                    - name: dropped
-                      type: long
+                        Read stats
+                      fields:
+                        - name: bytes
+                          type: long
+                          description: >
+                            Number of bytes read
+                        - name: errors
+                          type: long
+                          description: >
+                            Number of read errors
+                    - name: write
+                      type: group
                       description: >
-                        Number of events dropped
-                    - name: duplicates
-                      type: long
-                      description: >
-                        Number of events duplicated
-                    - name: failed
-                      type: long
-                      description: >
-                        Number of events failed
-                    - name: toomany
-                      type: long
-                      description: >
-                        Number of too many events
-                    - name: total
-                      type: long
-                      description: >
-                        Total number of events
-                - name: read
-                  type: group
-                  description: >
-                    Read stats
-                  fields:
-                    - name: bytes
-                      type: long
-                      description: >
-                        Number of bytes read
-                    - name: errors
-                      type: long
-                      description: >
-                        Number of read errors
-                - name: write
-                  type: group
-                  description: >
-                    Write stats
-                  fields:
-                    - name: bytes
-                      type: long
-                      description: >
-                        Number of bytes written
-                    - name: errors
-                      type: long
-                      description: >
-                        Number of write errors
-    
-    
-    
-    
+                        Write stats
+                      fields:
+                        - name: bytes
+                          type: long
+                          description: >
+                            Number of bytes written
+                        - name: errors
+                          type: long
+                          description: >
+                            Number of write errors
+        
+        
+        
+        

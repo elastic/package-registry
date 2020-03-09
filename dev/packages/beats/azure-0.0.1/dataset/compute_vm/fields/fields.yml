@@ -3,10 +3,10 @@
       type: group
       description: >
       fields:
-    - name: compute_vm.*.*
-      release: beta
-      type: object
-      object_type: float
-      object_type_mapping_type: "*"
-      description: >
-        compute_vm
+        - name: compute_vm.*.*
+          release: beta
+          type: object
+          object_type: float
+          object_type_mapping_type: "*"
+          description: >
+            compute_vm

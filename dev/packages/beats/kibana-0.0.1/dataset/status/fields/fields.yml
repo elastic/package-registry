@@ -3,51 +3,51 @@
       type: group
       description: >
       fields:
-    - name: status
-      type: group
-      description: >
-        Status fields
-      release: ga
-      fields:
-        - name: name
-          type: keyword
-          description: >
-            Kibana instance name.
-        - name: uuid
-          type: alias
-          path: service.id
-          migration: true
-          description: >
-            Kibana instance uuid.
-        - name: version.number
-          type: alias
-          description: >
-            Kibana version number.
-          path: service.version
-          migration: true
-        - name: status.overall.state
-          type: keyword
-          description: >
-            Kibana overall state.
-        - name: metrics
+        - name: status
           type: group
           description: >
-            Metrics fields
+            Status fields
+          release: ga
           fields:
-            - name: concurrent_connections
-              type: long
+            - name: name
+              type: keyword
               description: >
-                Current concurrent connections.
-            - name: requests
+                Kibana instance name.
+            - name: uuid
+              type: alias
+              path: service.id
+              migration: true
+              description: >
+                Kibana instance uuid.
+            - name: version.number
+              type: alias
+              description: >
+                Kibana version number.
+              path: service.version
+              migration: true
+            - name: status.overall.state
+              type: keyword
+              description: >
+                Kibana overall state.
+            - name: metrics
               type: group
               description: >
-                Request statistics.
+                Metrics fields
               fields:
-                - name: disconnects
+                - name: concurrent_connections
                   type: long
                   description: >
-                    Total number of disconnected connections.
-                - name: total
-                  type: long
+                    Current concurrent connections.
+                - name: requests
+                  type: group
                   description: >
-                    Total number of connections.
+                    Request statistics.
+                  fields:
+                    - name: disconnects
+                      type: long
+                      description: >
+                        Total number of disconnected connections.
+                    - name: total
+                      type: long
+                      description: >
+                        Total number of connections.

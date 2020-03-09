@@ -3,12 +3,12 @@
       type: group
       description: >
       fields:
-    - name: error
-      type: group
-      description: >
-        Fields from the Apache error logs.
-      fields:
-        - name: module
-          type: keyword
+        - name: error
+          type: group
           description: >
-            The module producing the logged message.
+            Fields from the Apache error logs.
+          fields:
+            - name: module
+              type: keyword
+              description: >
+                The module producing the logged message.

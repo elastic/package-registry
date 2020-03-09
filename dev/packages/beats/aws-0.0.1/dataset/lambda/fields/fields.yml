@@ -3,9 +3,9 @@
       type: group
       description: >
       fields:
-    - name: lambda
-      type: group
-      description: >
-        `lambda` contains the metrics that were scraped from AWS CloudWatch which contains monitoring metrics sent by AWS Lambda.
-      release: beta
-      fields:
+        - name: lambda
+          type: group
+          description: >
+            `lambda` contains the metrics that were scraped from AWS CloudWatch which contains monitoring metrics sent by AWS Lambda.
+          release: beta
+          fields:

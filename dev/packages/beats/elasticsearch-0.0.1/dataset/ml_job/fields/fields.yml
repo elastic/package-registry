@@ -3,27 +3,27 @@
       type: group
       description: >
       fields:
-    - name: ml.job
-      type: group
-      description: >
-        ml
-      release: ga
-      fields:
-        - name: id
-          type: keyword
+        - name: ml.job
+          type: group
           description: >
-            Unique ml job id.
-        - name: state
-          type: keyword
-          description: >
-            Job state.
-        - name: data_counts.processed_record_count
-          type: long
-          description: >
-            Processed data events.
-        - name: data_counts.invalid_date_count
-          type: long
-          description: >
-            The number of records with either a missing date field or a date that could not be parsed.
-    
-    
+            ml
+          release: ga
+          fields:
+            - name: id
+              type: keyword
+              description: >
+                Unique ml job id.
+            - name: state
+              type: keyword
+              description: >
+                Job state.
+            - name: data_counts.processed_record_count
+              type: long
+              description: >
+                Processed data events.
+            - name: data_counts.invalid_date_count
+              type: long
+              description: >
+                The number of records with either a missing date field or a date that could not be parsed.
+        
+        

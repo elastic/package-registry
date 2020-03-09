@@ -3,9 +3,9 @@
       type: group
       description: >
       fields:
-    - name: server
-      type: group
-      description: >
-        server
-      release: ga
-      fields:
+        - name: server
+          type: group
+          description: >
+            server
+          release: ga
+          fields:

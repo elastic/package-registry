@@ -65,7 +65,7 @@ func loadDatasetFields(modulePath, moduleName, datasetName string) ([]byte, erro
 	scanner := bufio.NewScanner(datasetFieldsFile)
 	for scanner.Scan() {
 		line := scanner.Text()
-		buffer.Write([]byte("    "))
+		buffer.Write([]byte("        "))
 		buffer.WriteString(line)
 		buffer.WriteString("\n")
 	}

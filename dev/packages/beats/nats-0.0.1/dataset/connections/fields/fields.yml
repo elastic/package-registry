@@ -3,13 +3,13 @@
       type: group
       description: >
       fields:
-    - name: connections
-      type: group
-      description: >
-        Contains nats connection related metrics
-      release: ga
-      fields:
-        - name: total
-          type: integer
+        - name: connections
+          type: group
           description: >
-            The number of currently active clients
+            Contains nats connection related metrics
+          release: ga
+          fields:
+            - name: total
+              type: integer
+              description: >
+                The number of currently active clients

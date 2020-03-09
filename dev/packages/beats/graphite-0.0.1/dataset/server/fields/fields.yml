@@ -3,13 +3,13 @@
       type: group
       description: >
       fields:
-    - name: server
-      type: group
-      description: >
-        server
-      release: ga
-      fields:
-        - name: example
-          type: keyword
+        - name: server
+          type: group
           description: >
-            Example field
+            server
+          release: ga
+          fields:
+            - name: example
+              type: keyword
+              description: >
+                Example field

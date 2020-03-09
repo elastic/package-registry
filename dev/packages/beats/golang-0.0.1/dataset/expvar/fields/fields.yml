@@ -3,13 +3,13 @@
       type: group
       description: >
       fields:
-    - name: expvar
-      type: group
-      description: >
-        expvar
-      release: ga
-      fields:
-        - name: cmdline
-          type: keyword
+        - name: expvar
+          type: group
           description: >
-            The cmdline of this Go program start with.
+            expvar
+          release: ga
+          fields:
+            - name: cmdline
+              type: keyword
+              description: >
+                The cmdline of this Go program start with.
