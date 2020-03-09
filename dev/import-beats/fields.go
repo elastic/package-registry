@@ -46,11 +46,11 @@ func loadModuleFields(modulePath string) ([]byte, error) {
 func loadDatasetFields(modulePath, moduleName, datasetName string) ([]byte, error) {
 	var buffer bytes.Buffer
 	buffer.WriteString(fmt.Sprintf(`- fields:
-  - name: %s
-    type: group
-    description: >
-    fields:`, moduleName))
-	buffer.WriteString("\n")
+    - name: %s
+      type: group
+      description: >
+      fields:`, moduleName))
+  	buffer.WriteString("\n")
 
 	datasetFieldsPath := filepath.Join(modulePath, datasetName, "_meta", "fields.yml")
 	datasetFieldsFile, err := os.Open(datasetFieldsPath)

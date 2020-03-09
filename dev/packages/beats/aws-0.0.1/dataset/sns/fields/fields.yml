@@ -1,8 +1,8 @@
 - fields:
-  - name: aws
-    type: group
-    description: >
-    fields:
+    - name: aws
+      type: group
+      description: >
+      fields:
     - name: sns
       type: group
       description: >

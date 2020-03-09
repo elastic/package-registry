@@ -1,8 +1,8 @@
 - fields:
-  - name: icinga
-    type: group
-    description: >
-    fields:
+    - name: icinga
+      type: group
+      description: >
+      fields:
     - name: debug
       type: group
       description: >

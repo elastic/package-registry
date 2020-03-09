@@ -1,8 +1,8 @@
 - fields:
-  - name: ibmmq
-    type: group
-    description: >
-    fields:
+    - name: ibmmq
+      type: group
+      description: >
+      fields:
     - name: errorlog
       description: IBM MQ error logs
       type: group

@@ -1,8 +1,8 @@
 - fields:
-  - name: cloudfoundry
-    type: group
-    description: >
-    fields:
+    - name: cloudfoundry
+      type: group
+      description: >
+      fields:
     - name: value
       type: group
       description: >

@@ -1,8 +1,8 @@
 - fields:
-  - name: tomcat
-    type: group
-    description: >
-    fields:
+    - name: tomcat
+      type: group
+      description: >
+      fields:
     - name: memory
       type: group
       description: Memory metrics from java.lang JMX

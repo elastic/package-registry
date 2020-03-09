@@ -1,8 +1,8 @@
 - fields:
-  - name: logstash
-    type: group
-    description: >
-    fields:
+    - name: logstash
+      type: group
+      description: >
+      fields:
     - name: node.stats
       type: group
       description: >

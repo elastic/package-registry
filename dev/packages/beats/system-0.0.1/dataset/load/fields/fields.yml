@@ -1,8 +1,8 @@
 - fields:
-  - name: system
-    type: group
-    description: >
-    fields:
+    - name: system
+      type: group
+      description: >
+      fields:
     - name: load
       type: group
       description: >

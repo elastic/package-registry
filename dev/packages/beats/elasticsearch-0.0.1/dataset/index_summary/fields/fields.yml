@@ -1,8 +1,8 @@
 - fields:
-  - name: elasticsearch
-    type: group
-    description: >
-    fields:
+    - name: elasticsearch
+      type: group
+      description: >
+      fields:
     - name: index.summary
       type: group
       description: >

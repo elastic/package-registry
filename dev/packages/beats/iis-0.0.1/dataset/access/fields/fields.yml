@@ -1,8 +1,8 @@
 - fields:
-  - name: iis
-    type: group
-    description: >
-    fields:
+    - name: iis
+      type: group
+      description: >
+      fields:
     - name: access
       type: group
       description: >

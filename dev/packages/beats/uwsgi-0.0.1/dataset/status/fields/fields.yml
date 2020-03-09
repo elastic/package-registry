@@ -1,8 +1,8 @@
 - fields:
-  - name: uwsgi
-    type: group
-    description: >
-    fields:
+    - name: uwsgi
+      type: group
+      description: >
+      fields:
     - name: status
       type: group
       release: ga

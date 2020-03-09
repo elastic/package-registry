@@ -1,8 +1,8 @@
 - fields:
-  - name: oracle
-    type: group
-    description: >
-    fields:
+    - name: oracle
+      type: group
+      description: >
+      fields:
     - name: tablespace
       type: group
       description: tablespace

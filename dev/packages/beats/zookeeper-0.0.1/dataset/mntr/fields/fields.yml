@@ -1,8 +1,8 @@
 - fields:
-  - name: zookeeper
-    type: group
-    description: >
-    fields:
+    - name: zookeeper
+      type: group
+      description: >
+      fields:
     - name: mntr
       type: group
       description: >

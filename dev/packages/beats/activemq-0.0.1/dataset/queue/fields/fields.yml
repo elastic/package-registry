@@ -1,8 +1,8 @@
 - fields:
-  - name: activemq
-    type: group
-    description: >
-    fields:
+    - name: activemq
+      type: group
+      description: >
+      fields:
     - name: queue
       type: group
       description: Queue metrics from org.apache.activemq:brokerName=*,destinationName=*,destinationType=Queue,type=Broker

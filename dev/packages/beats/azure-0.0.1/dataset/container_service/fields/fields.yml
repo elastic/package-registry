@@ -1,8 +1,8 @@
 - fields:
-  - name: azure
-    type: group
-    description: >
-    fields:
+    - name: azure
+      type: group
+      description: >
+      fields:
     - name: container_service.*.*
       release: beta
       type: object

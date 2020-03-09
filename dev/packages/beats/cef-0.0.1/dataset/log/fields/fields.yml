@@ -1,8 +1,8 @@
 - fields:
-  - name: cef
-    type: group
-    description: >
-    fields:
+    - name: cef
+      type: group
+      description: >
+      fields:
     - name: forcepoint
       type: group
       default_field: false

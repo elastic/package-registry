@@ -1,8 +1,8 @@
 - fields:
-  - name: vsphere
-    type: group
-    description: >
-    fields:
+    - name: vsphere
+      type: group
+      description: >
+      fields:
     - name: host
       type: group
       description: >

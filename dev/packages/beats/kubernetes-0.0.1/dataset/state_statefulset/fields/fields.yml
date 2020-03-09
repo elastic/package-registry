@@ -1,8 +1,8 @@
 - fields:
-  - name: kubernetes
-    type: group
-    description: >
-    fields:
+    - name: kubernetes
+      type: group
+      description: >
+      fields:
     - name: statefulset
       type: group
       description: >

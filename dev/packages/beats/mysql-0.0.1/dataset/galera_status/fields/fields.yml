@@ -1,8 +1,8 @@
 - fields:
-  - name: mysql
-    type: group
-    description: >
-    fields:
+    - name: mysql
+      type: group
+      description: >
+      fields:
     - name: galera_status
       type: group
       release: beta

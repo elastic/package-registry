@@ -1,8 +1,8 @@
 - fields:
-  - name: elasticsearch
-    type: group
-    description: >
-    fields:
+    - name: elasticsearch
+      type: group
+      description: >
+      fields:
     - name: cluster.pending_task
       type: group
       description: >

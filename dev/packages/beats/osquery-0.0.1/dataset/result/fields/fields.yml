@@ -1,8 +1,8 @@
 - fields:
-  - name: osquery
-    type: group
-    description: >
-    fields:
+    - name: osquery
+      type: group
+      description: >
+      fields:
     - name: result
       type: group
       description: >

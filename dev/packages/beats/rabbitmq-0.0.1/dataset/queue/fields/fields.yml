@@ -1,8 +1,8 @@
 - fields:
-  - name: rabbitmq
-    type: group
-    description: >
-    fields:
+    - name: rabbitmq
+      type: group
+      description: >
+      fields:
     - name: queue
       type: group
       description: >

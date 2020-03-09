@@ -1,8 +1,8 @@
 - fields:
-  - name: kafka
-    type: group
-    description: >
-    fields:
+    - name: kafka
+      type: group
+      description: >
+      fields:
     - name: consumer
       type: group
       description: Consumer metrics from Kafka Consumer JMX

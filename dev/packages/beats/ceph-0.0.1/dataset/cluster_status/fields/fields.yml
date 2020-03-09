@@ -1,8 +1,8 @@
 - fields:
-  - name: ceph
-    type: group
-    description: >
-    fields:
+    - name: ceph
+      type: group
+      description: >
+      fields:
     - name: cluster_status
       type: group
       release: ga

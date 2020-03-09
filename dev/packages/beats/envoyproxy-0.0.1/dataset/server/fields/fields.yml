@@ -1,8 +1,8 @@
 - fields:
-  - name: envoyproxy
-    type: group
-    description: >
-    fields:
+    - name: envoyproxy
+      type: group
+      description: >
+      fields:
     - name: server
       type: group
       release: ga

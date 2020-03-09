@@ -1,8 +1,8 @@
 - fields:
-  - name: redisenterprise
-    type: group
-    description: >
-    fields:
+    - name: redisenterprise
+      type: group
+      description: >
+      fields:
     - name: node
       type: group
       release: beta

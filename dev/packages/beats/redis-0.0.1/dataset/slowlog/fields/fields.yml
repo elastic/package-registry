@@ -1,8 +1,8 @@
 - fields:
-  - name: redis
-    type: group
-    description: >
-    fields:
+    - name: redis
+      type: group
+      description: >
+      fields:
     - name: slowlog
       type: group
       description: >

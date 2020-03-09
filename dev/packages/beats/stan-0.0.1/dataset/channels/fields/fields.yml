@@ -1,8 +1,8 @@
 - fields:
-  - name: stan
-    type: group
-    description: >
-    fields:
+    - name: stan
+      type: group
+      description: >
+      fields:
     - name: channels
       type: group
       description: >

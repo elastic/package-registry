@@ -1,8 +1,8 @@
 - fields:
-  - name: appsearch
-    type: group
-    description: >
-    fields:
+    - name: appsearch
+      type: group
+      description: >
+      fields:
     - name: stats
       type: group
       release: beta

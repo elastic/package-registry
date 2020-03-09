@@ -1,8 +1,8 @@
 - fields:
-  - name: activemq
-    type: group
-    description: >
-    fields:
+    - name: activemq
+      type: group
+      description: >
+      fields:
     - name: audit
       type: group
       description: >

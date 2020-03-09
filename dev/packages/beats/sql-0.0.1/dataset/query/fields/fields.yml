@@ -1,6 +1,6 @@
 - fields:
-  - name: sql
-    type: group
-    description: >
-    fields:
+    - name: sql
+      type: group
+      description: >
+      fields:
     - release: beta

@@ -1,8 +1,8 @@
 - fields:
-  - name: istio
-    type: group
-    description: >
-    fields:
+    - name: istio
+      type: group
+      description: >
+      fields:
     - name: mesh
       type: group
       description: >

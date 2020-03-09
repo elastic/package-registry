@@ -1,8 +1,8 @@
 - fields:
-  - name: beat
-    type: group
-    description: >
-    fields:
+    - name: beat
+      type: group
+      description: >
+      fields:
     - name: stats
       type: group
       description: >

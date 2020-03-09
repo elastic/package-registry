@@ -1,8 +1,8 @@
 - fields:
-  - name: redisenterprise
-    type: group
-    description: >
-    fields:
+    - name: redisenterprise
+      type: group
+      description: >
+      fields:
     - name: proxy
       type: group
       release: beta

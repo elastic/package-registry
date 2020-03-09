@@ -1,8 +1,8 @@
 - fields:
-  - name: apache
-    type: group
-    description: >
-    fields:
+    - name: apache
+      type: group
+      description: >
+      fields:
     - name: error
       type: group
       description: >

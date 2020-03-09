@@ -1,8 +1,8 @@
 - fields:
-  - name: php_fpm
-    type: group
-    description: >
-    fields:
+    - name: php_fpm
+      type: group
+      description: >
+      fields:
     - name: pool
       type: group
       description: >

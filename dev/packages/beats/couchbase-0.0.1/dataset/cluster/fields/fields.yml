@@ -1,8 +1,8 @@
 - fields:
-  - name: couchbase
-    type: group
-    description: >
-    fields:
+    - name: couchbase
+      type: group
+      description: >
+      fields:
     - name: cluster
       type: group
       description: >

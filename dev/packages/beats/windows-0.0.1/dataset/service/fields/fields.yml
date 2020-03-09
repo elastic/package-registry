@@ -1,8 +1,8 @@
 - fields:
-  - name: windows
-    type: group
-    description: >
-    fields:
+    - name: windows
+      type: group
+      description: >
+      fields:
     - name: service
       type: group
       description: >

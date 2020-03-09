@@ -1,8 +1,8 @@
 - fields:
-  - name: tomcat
-    type: group
-    description: >
-    fields:
+    - name: tomcat
+      type: group
+      description: >
+      fields:
     - name: cache
       type: group
       description: Catalina Cache metrics from the WebResourceRoot

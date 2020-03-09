@@ -1,8 +1,8 @@
 - fields:
-  - name: misp
-    type: group
-    description: >
-    fields:
+    - name: misp
+      type: group
+      description: >
+      fields:
     - name: attack_pattern
       title: Attack Pattern
       short: Fields that let you store attack patterns

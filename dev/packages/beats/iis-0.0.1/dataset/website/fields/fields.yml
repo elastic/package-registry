@@ -1,8 +1,8 @@
 - fields:
-  - name: iis
-    type: group
-    description: >
-    fields:
+    - name: iis
+      type: group
+      description: >
+      fields:
     - name: website
       type: group
       release: beta

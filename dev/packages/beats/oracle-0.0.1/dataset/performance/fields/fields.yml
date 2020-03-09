@@ -1,8 +1,8 @@
 - fields:
-  - name: oracle
-    type: group
-    description: >
-    fields:
+    - name: oracle
+      type: group
+      description: >
+      fields:
     - name: performance
       type: group
       description: Performance related metrics on a single database instance

@@ -1,8 +1,8 @@
 - fields:
-  - name: cisco
-    type: group
-    description: >
-    fields:
+    - name: cisco
+      type: group
+      description: >
+      fields:
     - name: ios
       type: group
       description: >

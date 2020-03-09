@@ -1,8 +1,8 @@
 - fields:
-  - name: mssql
-    type: group
-    description: >
-    fields:
+    - name: mssql
+      type: group
+      description: >
+      fields:
     - name: transaction_log
       type: group
       description: transaction_log metricset will fetch information about the operation and transaction log of each database from a MSSQL instance

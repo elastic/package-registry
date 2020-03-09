@@ -1,8 +1,8 @@
 - fields:
-  - name: nats
-    type: group
-    description: >
-    fields:
+    - name: nats
+      type: group
+      description: >
+      fields:
     - name: subscriptions
       type: group
       description: >

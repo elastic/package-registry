@@ -1,8 +1,8 @@
 - fields:
-  - name: cisco
-    type: group
-    description: >
-    fields:
+    - name: cisco
+      type: group
+      description: >
+      fields:
     - name: asa
       type: group
       description: >

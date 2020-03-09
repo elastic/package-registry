@@ -1,8 +1,8 @@
 - fields:
-  - name: kafka
-    type: group
-    description: >
-    fields:
+    - name: kafka
+      type: group
+      description: >
+      fields:
     - name: broker
       type: group
       description: Broker metrics from Kafka Broker JMX

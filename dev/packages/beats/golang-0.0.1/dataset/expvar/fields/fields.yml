@@ -1,8 +1,8 @@
 - fields:
-  - name: golang
-    type: group
-    description: >
-    fields:
+    - name: golang
+      type: group
+      description: >
+      fields:
     - name: expvar
       type: group
       description: >

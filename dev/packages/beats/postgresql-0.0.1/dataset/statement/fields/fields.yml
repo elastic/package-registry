@@ -1,8 +1,8 @@
 - fields:
-  - name: postgresql
-    type: group
-    description: >
-    fields:
+    - name: postgresql
+      type: group
+      description: >
+      fields:
     - name: statement
       type: group
       description: >

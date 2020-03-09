@@ -1,8 +1,8 @@
 - fields:
-  - name: mssql
-    type: group
-    description: >
-    fields:
+    - name: mssql
+      type: group
+      description: >
+      fields:
     - name: performance
       type: group
       description: performance metricset fetches information about the Performance Counters

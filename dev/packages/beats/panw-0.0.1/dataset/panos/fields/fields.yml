@@ -1,8 +1,8 @@
 - fields:
-  - name: panw
-    type: group
-    description: >
-    fields:
+    - name: panw
+      type: group
+      description: >
+      fields:
      - name: panos
        type: group
        description: >

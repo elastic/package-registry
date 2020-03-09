@@ -1,6 +1,6 @@
 - fields:
-  - name: ibmmq
-    type: group
-    description: >
-    fields:
+    - name: ibmmq
+      type: group
+      description: >
+      fields:
     - release: beta

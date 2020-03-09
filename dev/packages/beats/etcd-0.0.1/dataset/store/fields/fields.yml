@@ -1,8 +1,8 @@
 - fields:
-  - name: etcd
-    type: group
-    description: >
-    fields:
+    - name: etcd
+      type: group
+      description: >
+      fields:
     - name: store
       type: group
       description: >

@@ -1,8 +1,8 @@
 - fields:
-  - name: jolokia
-    type: group
-    description: >
-    fields:
+    - name: jolokia
+      type: group
+      description: >
+      fields:
     - key: jmx
       type: group
       description: >

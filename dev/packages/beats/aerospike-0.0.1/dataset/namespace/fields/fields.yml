@@ -1,8 +1,8 @@
 - fields:
-  - name: aerospike
-    type: group
-    description: >
-    fields:
+    - name: aerospike
+      type: group
+      description: >
+      fields:
     - name: namespace
       type: group
       description: >

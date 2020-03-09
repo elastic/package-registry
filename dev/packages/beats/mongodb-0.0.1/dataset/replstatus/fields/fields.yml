@@ -1,8 +1,8 @@
 - fields:
-  - name: mongodb
-    type: group
-    description: >
-    fields:
+    - name: mongodb
+      type: group
+      description: >
+      fields:
     - name: replstatus
       type: group
       release: ga

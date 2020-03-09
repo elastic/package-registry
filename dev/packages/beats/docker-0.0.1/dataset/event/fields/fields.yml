@@ -1,8 +1,8 @@
 - fields:
-  - name: docker
-    type: group
-    description: >
-    fields:
+    - name: docker
+      type: group
+      description: >
+      fields:
     - name: event
       type: group
       description: >

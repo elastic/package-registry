@@ -1,8 +1,8 @@
 - fields:
-  - name: tomcat
-    type: group
-    description: >
-    fields:
+    - name: tomcat
+      type: group
+      description: >
+      fields:
     - name: requests
       type: group
       description: Requests processor metrics from GlobalRequestProcessor JMX

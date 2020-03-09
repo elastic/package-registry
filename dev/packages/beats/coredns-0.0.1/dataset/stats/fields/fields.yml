@@ -1,8 +1,8 @@
 - fields:
-  - name: coredns
-    type: group
-    description: >
-    fields:
+    - name: coredns
+      type: group
+      description: >
+      fields:
     - name: stats
       type: group
       description: >

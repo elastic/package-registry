@@ -1,8 +1,8 @@
 - fields:
-  - name: mongodb
-    type: group
-    description: >
-    fields:
+    - name: mongodb
+      type: group
+      description: >
+      fields:
     - name: collstats
       type: group
       description: >

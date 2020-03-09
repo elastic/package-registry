@@ -1,8 +1,8 @@
 - fields:
-  - name: azure
-    type: group
-    description: >
-    fields:
+    - name: azure
+      type: group
+      description: >
+      fields:
     - name: compute_vm_scaleset.*.*
       release: beta
       type: object

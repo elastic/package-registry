@@ -1,6 +1,6 @@
 - fields:
-  - name: prometheus
-    type: group
-    description: >
-    fields:
+    - name: prometheus
+      type: group
+      description: >
+      fields:
     - release: ga

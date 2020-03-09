@@ -1,8 +1,8 @@
 - fields:
-  - name: nginx
-    type: group
-    description: >
-    fields:
+    - name: nginx
+      type: group
+      description: >
+      fields:
     - name: ingress_controller
       type: group
       description: >

@@ -1,8 +1,8 @@
 - fields:
-  - name: googlecloud
-    type: group
-    description: >
-    fields:
+    - name: googlecloud
+      type: group
+      description: >
+      fields:
     - release: beta
       key: stackdriver
       type: group

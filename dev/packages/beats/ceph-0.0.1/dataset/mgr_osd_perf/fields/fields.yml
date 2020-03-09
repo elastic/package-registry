@@ -1,8 +1,8 @@
 - fields:
-  - name: ceph
-    type: group
-    description: >
-    fields:
+    - name: ceph
+      type: group
+      description: >
+      fields:
     - name: mgr_osd_perf
       type: group
       description: >

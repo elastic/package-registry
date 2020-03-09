@@ -1,6 +1,6 @@
 - fields:
-  - name: munin
-    type: group
-    description: >
-    fields:
+    - name: munin
+      type: group
+      description: >
+      fields:
     - release: ga

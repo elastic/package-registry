@@ -1,8 +1,8 @@
 - fields:
-  - name: zeek
-    type: group
-    description: >
-    fields:
+    - name: zeek
+      type: group
+      description: >
+      fields:
     - name: capture_loss
       type: group
       description: >

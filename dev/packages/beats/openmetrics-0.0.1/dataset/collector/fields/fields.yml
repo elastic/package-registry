@@ -1,6 +1,6 @@
 - fields:
-  - name: openmetrics
-    type: group
-    description: >
-    fields:
+    - name: openmetrics
+      type: group
+      description: >
+      fields:
     - release: beta

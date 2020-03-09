@@ -1,8 +1,8 @@
 - fields:
-  - name: redis
-    type: group
-    description: >
-    fields:
+    - name: redis
+      type: group
+      description: >
+      fields:
     - name: key
       type: group
       description: >

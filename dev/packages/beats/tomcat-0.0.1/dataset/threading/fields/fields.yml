@@ -1,8 +1,8 @@
 - fields:
-  - name: tomcat
-    type: group
-    description: >
-    fields:
+    - name: tomcat
+      type: group
+      description: >
+      fields:
     - name: threading
       type: group
       description: Threading metrics from the Catalina's ThreadPool JMX

@@ -1,8 +1,8 @@
 - fields:
-  - name: consul
-    type: group
-    description: >
-    fields:
+    - name: consul
+      type: group
+      description: >
+      fields:
     - name: agent
       type: group
       release: beta

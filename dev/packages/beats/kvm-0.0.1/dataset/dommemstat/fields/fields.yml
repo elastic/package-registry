@@ -1,8 +1,8 @@
 - fields:
-  - name: kvm
-    type: group
-    description: >
-    fields:
+    - name: kvm
+      type: group
+      description: >
+      fields:
     - name: dommemstat
       type: group
       description: >

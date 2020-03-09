@@ -1,8 +1,8 @@
 - fields:
-  - name: system
-    type: group
-    description: >
-    fields:
+    - name: system
+      type: group
+      description: >
+      fields:
     - name: process.summary
       title: Process Summary
       type: group

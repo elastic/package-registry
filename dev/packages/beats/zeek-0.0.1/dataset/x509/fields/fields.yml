@@ -1,8 +1,8 @@
 - fields:
-  - name: zeek
-    type: group
-    description: >
-    fields:
+    - name: zeek
+      type: group
+      description: >
+      fields:
     - name: x509
       type: group
       default_field: false

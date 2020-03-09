@@ -1,8 +1,8 @@
 - fields:
-  - name: mysql
-    type: group
-    description: >
-    fields:
+    - name: mysql
+      type: group
+      description: >
+      fields:
     - name: status
       type: group
       description: >

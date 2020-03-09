@@ -1,8 +1,8 @@
 - fields:
-  - name: kafka
-    type: group
-    description: >
-    fields:
+    - name: kafka
+      type: group
+      description: >
+      fields:
     - name: partition
       type: group
       description: >

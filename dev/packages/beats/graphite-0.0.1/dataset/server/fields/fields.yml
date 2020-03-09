@@ -1,8 +1,8 @@
 - fields:
-  - name: graphite
-    type: group
-    description: >
-    fields:
+    - name: graphite
+      type: group
+      description: >
+      fields:
     - name: server
       type: group
       description: >

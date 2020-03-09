@@ -1,8 +1,8 @@
 - fields:
-  - name: iptables
-    type: group
-    description: >
-    fields:
+    - name: iptables
+      type: group
+      description: >
+      fields:
     - name: ether_type
       type: long
       description: >
