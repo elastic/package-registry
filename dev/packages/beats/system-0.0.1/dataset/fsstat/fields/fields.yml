@@ -1,45 +1,33 @@
-- key: system
-  title: "System"
+- name: system.fsstat
+  type: group
   description: >
-    System status metrics, like CPU and memory usage, that are collected from the operating system.
-  short_config: true
+    `system.fsstat` contains filesystem metrics aggregated from all mounted
+    filesystems.
   release: ga
   fields:
-    - name: system
+    - name: count
+      type: long
+      description: Number of file systems found.
+    - name: total_files
+      type: long
+      description: Total number of files.
+    - name: total_size
+      format: bytes
       type: group
-      description: >
-        `system` contains local system metrics.
+      description: Nested file system docs.
       fields:
-        - name: fsstat
-          type: group
+        - name: free
+          type: long
+          format: bytes
           description: >
-            `system.fsstat` contains filesystem metrics aggregated from all mounted
-            filesystems.
-          release: ga
-          fields:
-            - name: count
-              type: long
-              description: Number of file systems found.
-            - name: total_files
-              type: long
-              description: Total number of files.
-            - name: total_size
-              format: bytes
-              type: group
-              description: Nested file system docs.
-              fields:
-                - name: free
-                  type: long
-                  format: bytes
-                  description: >
-                    Total free space.
-                - name: used
-                  type: long
-                  format: bytes
-                  description: >
-                    Total used space.
-                - name: total
-                  type: long
-                  format: bytes
-                  description: >
-                    Total space (used plus free).
+            Total free space.
+        - name: used
+          type: long
+          format: bytes
+          description: >
+            Total used space.
+        - name: total
+          type: long
+          format: bytes
+          description: >
+            Total space (used plus free).

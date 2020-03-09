@@ -10,3 +10,12 @@ categories:
 requirement:
   kibana:
     versions: ""
+screenshots:
+- src: img/filebeat-suricata-events.png
+  title: Filebeat Suricata Events
+  size: 1386x1115
+  type: image/png
+- src: img/filebeat-suricata-alerts.png
+  title: Filebeat Suricata Alerts
+  size: 1386x1115
+  type: image/png

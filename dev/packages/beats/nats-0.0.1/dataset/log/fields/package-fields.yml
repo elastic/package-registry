@@ -1,0 +1,5 @@
+- name: nats
+  type: group
+  description: >
+    Fields from NATS logs.
+  fields:

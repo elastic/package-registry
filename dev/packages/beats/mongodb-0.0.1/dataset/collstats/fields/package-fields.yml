@@ -1,0 +1,5 @@
+- name: mongodb
+  type: group
+  description: >
+    MongoDB metrics.
+  fields:

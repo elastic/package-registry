@@ -1,0 +1,4 @@
+- name: mssql
+  type: group
+  description: Fields from the MSSQL log files
+  fields:

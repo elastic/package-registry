@@ -11,3 +11,12 @@ categories:
 requirement:
   kibana:
     versions: ""
+screenshots:
+- src: img/kibana-apache.png
+  title: Kibana Apache
+  size: 1215x1199
+  type: image/png
+- src: img/apache_httpd_server_status.png
+  title: Apache Httpd Server Status
+  size: 1919x1079
+  type: image/png

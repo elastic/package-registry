@@ -1,0 +1,5 @@
+- name: postgresql
+  type: group
+  description: >
+      Fields from PostgreSQL logs.
+  fields:

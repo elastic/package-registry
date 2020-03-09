@@ -10,3 +10,8 @@ categories:
 requirement:
   kibana:
     versions: ""
+screenshots:
+- src: img/kibana-audit-auditd.png
+  title: Kibana Audit Auditd
+  size: 1230x997
+  type: image/png

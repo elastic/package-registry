@@ -1,0 +1,5 @@
+- name: iptables
+  type: group
+  description: >
+    Fields from the iptables logs.
+  fields:

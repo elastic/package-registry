@@ -1,0 +1,5 @@
+- name: istio
+  type: group
+  description: >
+    `istio` contains statistics that were read from Istio
+  fields:

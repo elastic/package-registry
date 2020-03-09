@@ -10,3 +10,8 @@ categories:
 requirement:
   kibana:
     versions: ""
+screenshots:
+- src: img/metricbeat-zookeeper.png
+  title: Metricbeat Zookeeper
+  size: 3808x2018
+  type: image/png

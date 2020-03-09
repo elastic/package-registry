@@ -10,3 +10,8 @@ categories:
 requirement:
   kibana:
     versions: ""
+screenshots:
+- src: img/metricbeat-stan-overview.png
+  title: Metricbeat Stan Overview
+  size: 1829x447
+  type: image/png

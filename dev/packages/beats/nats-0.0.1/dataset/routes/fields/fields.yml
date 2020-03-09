@@ -1,29 +1,10 @@
-- key: nats
-  title: "Nats"
+- name: nats.routes
+  type: group
   description: >
-    nats Module
+    Contains nats route related metrics
   release: ga
   fields:
-    - name: nats
-      type: group
+    - name: total
+      type: integer
       description: >
-        `nats` contains statistics that were read from Nats
-      fields:
-        - name: server.id
-          type: keyword
-          description: >
-            The server ID
-        - name: server.time
-          type: date
-          description: >
-            Server time of metric creation
-        - name: routes
-          type: group
-          description: >
-            Contains nats route related metrics
-          release: ga
-          fields:
-            - name: total
-              type: integer
-              description: >
-                The number of registered routes
+        The number of registered routes

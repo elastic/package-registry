@@ -1,79 +1,43 @@
-- key: elasticsearch
-  title: "Elasticsearch"
+- name: elasticsearch.node
+  type: group
   description: >
-    Elasticsearch module
+    node
   release: ga
-  settings: ["ssl", "http"]
-  short_config: false
   fields:
-    - name: elasticsearch
+    - name: version
+      type: keyword
+      description: >
+        Node version.
+    - name: jvm
       type: group
       description: >
+        JVM Info.
       fields:
-        - name: cluster.name
+        - name: version
           type: keyword
           description: >
-            Elasticsearch cluster name.
-
-        - name: cluster.id
-          type: keyword
+            JVM version.
+        - name: memory.heap.init.bytes
+          type: long
+          format: bytes
           description: >
-            Elasticsearch cluster id.
-
-        - name: cluster.state.id
-          type: keyword
+            Heap init used by the JVM in bytes.
+        - name: memory.heap.max.bytes
+          type: long
+          format: bytes
           description: >
-            Elasticsearch state id.
-
-        - name: node.id
-          type: keyword
+            Heap max used by the JVM in bytes.
+        - name: memory.nonheap.init.bytes
+          type: long
+          format: bytes
           description: >
-            Node ID
-
-        - name: node.name
-          type: keyword
+            Non-Heap init used by the JVM in bytes.
+        - name: memory.nonheap.max.bytes
+          type: long
+          format: bytes
           description: >
-            Node name.
-        - name: node
-          type: group
-          description: >
-            node
-          release: ga
-          fields:
-            - name: version
-              type: keyword
-              description: >
-                Node version.
-            - name: jvm
-              type: group
-              description: >
-                JVM Info.
-              fields:
-                - name: version
-                  type: keyword
-                  description: >
-                    JVM version.
-                - name: memory.heap.init.bytes
-                  type: long
-                  format: bytes
-                  description: >
-                    Heap init used by the JVM in bytes.
-                - name: memory.heap.max.bytes
-                  type: long
-                  format: bytes
-                  description: >
-                    Heap max used by the JVM in bytes.
-                - name: memory.nonheap.init.bytes
-                  type: long
-                  format: bytes
-                  description: >
-                    Non-Heap init used by the JVM in bytes.
-                - name: memory.nonheap.max.bytes
-                  type: long
-                  format: bytes
-                  description: >
-                    Non-Heap max used by the JVM in bytes.
-            - name: process.mlockall
-              type: boolean
-              description: >
-                If process locked in memory.
+            Non-Heap max used by the JVM in bytes.
+    - name: process.mlockall
+      type: boolean
+      description: >
+        If process locked in memory.

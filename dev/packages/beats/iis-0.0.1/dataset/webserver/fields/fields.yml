@@ -1,19 +1,8 @@
-- key: iis
-  title: "iis"
-  description: >
-    iis module
+- name: webserver.*.*
   release: beta
+  type: object
+  object_type: float
+  object_type_mapping_type: "*"
+  description: >
+    webserver
 
-  fields:
-    - name: iis
-      type: group
-      description: >
-      fields:
-        - name: webserver.*.*
-          release: beta
-          type: object
-          object_type: float
-          object_type_mapping_type: "*"
-          description: >
-            webserver
-        

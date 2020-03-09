@@ -1,0 +1,4 @@
+- name: ibmmq
+  type: group
+  description: >
+  fields:

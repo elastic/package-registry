@@ -1,0 +1,4 @@
+- name: icinga
+  type: group
+  description: >
+  fields:

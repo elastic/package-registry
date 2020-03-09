@@ -1,0 +1,5 @@
+- name: haproxy
+  type: group
+  description: >
+    HAProxy metrics.
+  fields:

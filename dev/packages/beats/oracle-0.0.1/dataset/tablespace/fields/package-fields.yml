@@ -1,0 +1,4 @@
+- name: oracle
+  type: group
+  description: Oracle module
+  fields:

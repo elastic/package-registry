@@ -1,0 +1,4 @@
+- name: osquery
+  type: group
+  description: >
+  fields:

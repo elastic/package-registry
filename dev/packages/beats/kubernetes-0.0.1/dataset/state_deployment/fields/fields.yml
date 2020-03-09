@@ -1,44 +1,31 @@
-- key: kubernetes
-  title: "Kubernetes"
+- name: deployment
+  type: group
   description: >
-    Kubernetes metrics
+    kubernetes deployment metrics
   release: ga
-  settings: ["ssl", "http"]
-  short_config: false
   fields:
-    - name: kubernetes
+    - name: paused
+      type: boolean
+      description: >
+        Kubernetes deployment paused status
+    - name: replicas
       type: group
       description: >
-        Information and statistics of pods managed by kubernetes.
+        Kubernetes deployment replicas info
       fields:
-        - name: deployment
-          type: group
+        - name: desired
+          type: integer
           description: >
-            kubernetes deployment metrics
-          release: ga
-          fields:
-            - name: paused
-              type: boolean
-              description: >
-                Kubernetes deployment paused status
-            - name: replicas
-              type: group
-              description: >
-                Kubernetes deployment replicas info
-              fields:
-                - name: desired
-                  type: integer
-                  description: >
-                    Deployment number of desired replicas (spec)
-                - name: available
-                  type: integer
-                  description: >
-                    Deployment available replicas
-                - name: unavailable
-                  type: integer
-                  description: >
-                    Deployment unavailable replicas
-                - name: updated
-                  type: integer
-                  description: >
-                    Deployment updated replicas
+            Deployment number of desired replicas (spec)
+        - name: available
+          type: integer
+          description: >
+            Deployment available replicas
+        - name: unavailable
+          type: integer
+          description: >
+            Deployment unavailable replicas
+        - name: updated
+          type: integer
+          description: >
+            Deployment updated replicas

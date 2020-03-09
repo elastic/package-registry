@@ -1,0 +1,13 @@
+- name: cloudfoundry
+  type: group
+  description: >
+  fields:
+    - name: app
+      type: group
+      description: >
+        The application the metric is associated with.
+      fields:
+        - name: id
+          type: keyword
+          description: >
+            The ID of the application.

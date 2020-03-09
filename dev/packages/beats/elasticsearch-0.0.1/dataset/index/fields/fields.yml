@@ -1,72 +1,36 @@
-- key: elasticsearch
-  title: "Elasticsearch"
+- name: elasticsearch.index
+  type: group
   description: >
-    Elasticsearch module
+    index
   release: ga
-  settings: ["ssl", "http"]
-  short_config: false
   fields:
-    - name: elasticsearch
-      type: group
+    - name: name
+      type: keyword
       description: >
+        Index name.
+    - name: total
+      type: group
       fields:
-        - name: cluster.name
-          type: keyword
+        - name: docs.count
+          type: long
           description: >
-            Elasticsearch cluster name.
+            Total number of documents in the index.
+        - name: docs.deleted
+          type: long
+          description: >
+            Total number of deleted documents in the index.
+        - name: store.size.bytes
+          type: long
+          format: bytes
+          description: >
+            Total size of the index in bytes.
+        - name: segments.count
+          type: long
+          description: >
+            Total number of index segments.
+        - name: segments.memory.bytes
+          type: long
+          format: bytes
+          description: >
+            Total number of memory used by the segments in bytes.
 
-        - name: cluster.id
-          type: keyword
-          description: >
-            Elasticsearch cluster id.
-
-        - name: cluster.state.id
-          type: keyword
-          description: >
-            Elasticsearch state id.
-
-        - name: node.id
-          type: keyword
-          description: >
-            Node ID
-
-        - name: node.name
-          type: keyword
-          description: >
-            Node name.
-        - name: index
-          type: group
-          description: >
-            index
-          release: ga
-          fields:
-            - name: name
-              type: keyword
-              description: >
-                Index name.
-            - name: total
-              type: group
-              fields:
-                - name: docs.count
-                  type: long
-                  description: >
-                    Total number of documents in the index.
-                - name: docs.deleted
-                  type: long
-                  description: >
-                    Total number of deleted documents in the index.
-                - name: store.size.bytes
-                  type: long
-                  format: bytes
-                  description: >
-                    Total size of the index in bytes.
-                - name: segments.count
-                  type: long
-                  description: >
-                    Total number of index segments.
-                - name: segments.memory.bytes
-                  type: long
-                  format: bytes
-                  description: >
-                    Total number of memory used by the segments in bytes.
-        

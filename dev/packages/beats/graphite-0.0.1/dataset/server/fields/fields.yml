@@ -1,20 +1,10 @@
-- key: graphite
-  title: "Graphite"
+- name: graphite.server
+  type: group
   description: >
-    graphite Module
+    server
   release: ga
   fields:
-    - name: graphite
-      type: group
+    - name: example
+      type: keyword
       description: >
-      fields:
-        - name: server
-          type: group
-          description: >
-            server
-          release: ga
-          fields:
-            - name: example
-              type: keyword
-              description: >
-                Example field
+        Example field

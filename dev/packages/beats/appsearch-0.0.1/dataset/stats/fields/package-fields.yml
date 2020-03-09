@@ -1,0 +1,4 @@
+- name: appsearch
+  type: group
+  description: >
+  fields:

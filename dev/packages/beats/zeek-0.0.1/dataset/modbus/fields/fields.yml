@@ -1,35 +1,21 @@
-- key: zeek
-  title: Zeek
+- name: zeek.modbus
+  type: group
+  default_field: false
   description: >
-    Module for handling logs produced by Zeek/Bro
+    Fields exported by the Zeek modbus log.
   fields:
-    - name: zeek
-      type: group
-      description: >
-        Fields from Zeek/Bro logs after normalization
-      fields:
-        - name: session_id
-          type: keyword
-          description: >
-            A unique identifier of the session
-        - name: modbus
-          type: group
-          default_field: false
-          description: >
-            Fields exported by the Zeek modbus log.
-          fields:
-            - name: function
-              type: keyword
-              description: |
-                The name of the function message that was sent.
-        
-            - name: exception
-              type: keyword
-              description: |
-                The exception if the response was a failure.
-        
-            - name: track_address
-              type: integer
-              description: |
-                Present if policy/protocols/modbus/track-memmap.bro is loaded.
-                Modbus track address.
+    - name: function
+      type: keyword
+      description: |
+        The name of the function message that was sent.
+
+    - name: exception
+      type: keyword
+      description: |
+        The exception if the response was a failure.
+
+    - name: track_address
+      type: integer
+      description: |
+        Present if policy/protocols/modbus/track-memmap.bro is loaded.
+        Modbus track address.

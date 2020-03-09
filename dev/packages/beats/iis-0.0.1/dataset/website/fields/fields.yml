@@ -1,21 +1,10 @@
-- key: iis
-  title: "iis"
-  description: >
-    iis module
+- name: iis.website
+  type: group
   release: beta
-
+  description: >
+    website
   fields:
-    - name: iis
-      type: group
-      description: >
-      fields:
-        - name: website
-          type: group
-          release: beta
-          description: >
-            website
-          fields:
-          - name: name
-            type: keyword
-            description: >
-              website name
+  - name: name
+    type: keyword
+    description: >
+      website name

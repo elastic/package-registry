@@ -1,0 +1,5 @@
+- name: panw
+  type: group
+  description: >
+    Fields from the panw module.
+  fields:

@@ -1,0 +1,4 @@
+- name: vsphere
+  type: group
+  description: >
+  fields:

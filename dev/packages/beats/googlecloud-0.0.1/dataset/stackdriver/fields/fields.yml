@@ -1,22 +1,5 @@
-- key: googlecloud
-  title: 'Google Cloud Platform'
-  release: beta
-  description: >
-    GCP module
+- release: beta
+  key: stackdriver
+  type: group
+  description: Google Cloud Compute metrics
   fields:
-    - name: googlecloud.labels
-      type: object
-      fields:
-        - name: user.*
-          type: object
-        - name: metadata.*
-          type: object
-        - name: metrics.*
-          type: object
-        - name: system.*
-          type: object
-        - release: beta
-          key: stackdriver
-          type: group
-          description: Google Cloud Compute metrics
-          fields:

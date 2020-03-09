@@ -1,0 +1,4 @@
+- name: rabbitmq
+  type: group
+  description: >
+  fields:

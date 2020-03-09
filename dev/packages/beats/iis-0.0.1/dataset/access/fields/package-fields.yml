@@ -1,0 +1,5 @@
+- name: iis
+  type: group
+  description: >
+    Fields from IIS log files.
+  fields:

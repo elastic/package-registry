@@ -10,3 +10,8 @@ categories:
 requirement:
   kibana:
     versions: ""
+screenshots:
+- src: img/kibana-icinga-main.png
+  title: Kibana Icinga Main
+  size: 1216x635
+  type: image/png

@@ -1,0 +1,4 @@
+- name: memcached
+  type: group
+  description: >
+  fields:

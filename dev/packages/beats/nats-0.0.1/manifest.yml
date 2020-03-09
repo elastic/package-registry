@@ -11,3 +11,12 @@ categories:
 requirement:
   kibana:
     versions: ""
+screenshots:
+- src: img/filebeat_nats_dashboard.png
+  title: Filebeat Nats Dashboard
+  size: 1919x951
+  type: image/png
+- src: img/metricbeat_nats_dashboard.png
+  title: Metricbeat Nats Dashboard
+  size: 1853x877
+  type: image/png

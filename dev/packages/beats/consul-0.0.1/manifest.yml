@@ -10,3 +10,8 @@ categories:
 requirement:
   kibana:
     versions: ""
+screenshots:
+- src: img/metricbeat-consul.png
+  title: Metricbeat Consul
+  size: 3840x2016
+  type: image/png

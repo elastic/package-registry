@@ -1,49 +1,36 @@
-- key: kubernetes
-  title: "Kubernetes"
+- name: statefulset
+  type: group
   description: >
-    Kubernetes metrics
+    kubernetes stateful set metrics
   release: ga
-  settings: ["ssl", "http"]
-  short_config: false
   fields:
-    - name: kubernetes
+    - name: created
+      type: long
+      description: >
+        The creation timestamp (epoch) for StatefulSet
+    - name: replicas
       type: group
       description: >
-        Information and statistics of pods managed by kubernetes.
+        Kubernetes stateful set replicas status
       fields:
-        - name: statefulset
-          type: group
+        - name: observed
+          type: long
           description: >
-            kubernetes stateful set metrics
-          release: ga
-          fields:
-            - name: created
-              type: long
-              description: >
-                The creation timestamp (epoch) for StatefulSet
-            - name: replicas
-              type: group
-              description: >
-                Kubernetes stateful set replicas status
-              fields:
-                - name: observed
-                  type: long
-                  description: >
-                    The number of observed replicas per StatefulSet
-                - name: desired
-                  type: long
-                  description: >
-                    The number of desired replicas per StatefulSet
-            - name: generation
-              type: group
-              description: >
-                Kubernetes stateful set generation information
-              fields:
-                - name: observed
-                  type: long
-                  description: >
-                    The observed generation per StatefulSet
-                - name: desired
-                  type: long
-                  description: >
-                    The desired generation per StatefulSet
+            The number of observed replicas per StatefulSet
+        - name: desired
+          type: long
+          description: >
+            The number of desired replicas per StatefulSet
+    - name: generation
+      type: group
+      description: >
+        Kubernetes stateful set generation information
+      fields:
+        - name: observed
+          type: long
+          description: >
+            The observed generation per StatefulSet
+        - name: desired
+          type: long
+          description: >
+            The desired generation per StatefulSet

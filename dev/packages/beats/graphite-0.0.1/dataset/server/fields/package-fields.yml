@@ -1,0 +1,4 @@
+- name: graphite
+  type: group
+  description: >
+  fields:

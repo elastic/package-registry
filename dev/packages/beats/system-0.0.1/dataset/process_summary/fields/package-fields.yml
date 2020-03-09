@@ -1,0 +1,5 @@
+- name: system
+  type: group
+  description: >
+    `system` contains local system metrics.
+  fields:

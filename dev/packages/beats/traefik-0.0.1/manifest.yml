@@ -11,3 +11,8 @@ categories:
 requirement:
   kibana:
     versions: ""
+screenshots:
+- src: img/kibana-traefik.png
+  title: Kibana Traefik
+  size: 1409x1254
+  type: image/png

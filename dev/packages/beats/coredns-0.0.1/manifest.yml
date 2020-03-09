@@ -11,3 +11,12 @@ categories:
 requirement:
   kibana:
     versions: ""
+screenshots:
+- src: img/kibana-coredns.jpg
+  title: Kibana Coredns
+  size: 3340x1880
+  type: image/jpg
+- src: img/metricbeat_coredns_dashboard.png
+  title: Metricbeat Coredns Dashboard
+  size: 1507x767
+  type: image/png

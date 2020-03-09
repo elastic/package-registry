@@ -10,3 +10,8 @@ categories:
 requirement:
   kibana:
     versions: ""
+screenshots:
+- src: img/kibana-cisco-asa.png
+  title: Kibana Cisco Asa
+  size: 1800x1559
+  type: image/png

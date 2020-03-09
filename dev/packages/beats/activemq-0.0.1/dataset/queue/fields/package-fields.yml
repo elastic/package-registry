@@ -1,0 +1,4 @@
+- name: activemq
+  type: group
+  description: >
+  fields:

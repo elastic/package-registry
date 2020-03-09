@@ -17,8 +17,8 @@ func main() {
 	// Target public directory where the generated packages should end up in
 	var outputDir string
 
-	flag.StringVar(&beatsDir, "beatsDir", "", "Path to the beats repository")
-	flag.StringVar(&outputDir, "outputDir", "", "Path to the output directory ")
+	flag.StringVar(&beatsDir, "beatsDir", "../beats", "Path to the beats repository")
+	flag.StringVar(&outputDir, "outputDir", "dev/packages/beats", "Path to the output directory ")
 	flag.Parse()
 
 	if beatsDir == "" || outputDir == "" {

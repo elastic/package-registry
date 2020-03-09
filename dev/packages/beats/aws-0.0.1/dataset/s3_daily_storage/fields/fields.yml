@@ -1,51 +1,15 @@
-- key: aws
-  title: "aws"
+- name: aws.s3_daily_storage
+  type: group
   description: >
-    `aws` module collects AWS monitoring metrics from AWS Cloudwatch.
+    `s3_daily_storage` contains the daily storage metrics that were scraped from AWS CloudWatch which contains monitoring metrics sent by AWS S3.
   release: ga
   fields:
-    - name: cloud.account.name
-      type: keyword
+    - name: bucket.size.bytes
+      type: long
+      format: bytes
       description: >
-        The cloud account name or alias used to identify different entities in a multi-tenant environment.
-    - name: aws
-      type: group
+        The amount of data in bytes stored in a bucket.
+    - name: number_of_objects
+      type: long
       description: >
-      fields:
-        - name: tags.*
-          type: object
-          object_type: keyword
-          object_type_mapping_type: "*"
-          description: >
-            Tag key value pairs from aws resources.
-        - name: s3.bucket.name
-          type: keyword
-          description: >
-            Name of a S3 bucket.
-        - name: dimensions.*
-          type: object
-          object_type: keyword
-          object_type_mapping_type: "*"
-          description: >
-            Metric dimensions.
-        - name: '*.metrics.*.*'
-          type: object
-          object_type: double
-          object_type_mapping_type: "*"
-          description: >
-            Metrics that returned from Cloudwatch API query.
-        - name: s3_daily_storage
-          type: group
-          description: >
-            `s3_daily_storage` contains the daily storage metrics that were scraped from AWS CloudWatch which contains monitoring metrics sent by AWS S3.
-          release: ga
-          fields:
-            - name: bucket.size.bytes
-              type: long
-              format: bytes
-              description: >
-                The amount of data in bytes stored in a bucket.
-            - name: number_of_objects
-              type: long
-              description: >
-                The total number of objects stored in a bucket for all storage classes.
+        The total number of objects stored in a bucket for all storage classes.

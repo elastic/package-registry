@@ -1,0 +1,3 @@
+- name: consul
+  type: group
+  fields:

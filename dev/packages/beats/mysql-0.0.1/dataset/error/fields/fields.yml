@@ -1,32 +1,17 @@
-- key: mysql
-  title: "MySQL"
+- name: mysql.error
+  type: group
   description: >
-    Module for parsing the MySQL log files.
-  short_config: true
+    Contains fields from the MySQL error logs.
   fields:
-    - name: mysql
-      type: group
-      description: >
-        Fields from the MySQL log files.
-      fields:
-        - name: thread_id
-          type: long
-          description: >
-            The connection or thread ID for the query.
-        - name: error
-          type: group
-          description: >
-            Contains fields from the MySQL error logs.
-          fields:
-            - name: thread_id
-              type: alias
-              path: mysql.thread_id
-              migration: true
-            - name: level
-              type: alias
-              path: log.level
-              migration: true
-            - name: message
-              type: alias
-              path: message
-              migration: true
+    - name: thread_id
+      type: alias
+      path: mysql.thread_id
+      migration: true
+    - name: level
+      type: alias
+      path: log.level
+      migration: true
+    - name: message
+      type: alias
+      path: message
+      migration: true

@@ -1,0 +1,5 @@
+- name: docker
+  type: group
+  description: >
+    Information and statistics about docker's running containers.
+  fields:

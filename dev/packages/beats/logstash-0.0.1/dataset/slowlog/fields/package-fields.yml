@@ -1,0 +1,4 @@
+- name: logstash
+  type: group
+  description: >
+  fields:

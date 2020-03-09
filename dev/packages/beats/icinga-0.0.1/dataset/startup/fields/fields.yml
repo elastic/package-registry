@@ -1,27 +1,18 @@
-- key: icinga
-  title: "Icinga"
+- name: icinga.startup
+  type: group
   description: >
-    Icinga Module
+    Contains fields for the Icinga startup logs.
   fields:
-    - name: icinga
-      type: group
+    - name: facility
+      type: keyword
       description: >
-      fields:
-        - name: startup
-          type: group
-          description: >
-            Contains fields for the Icinga startup logs.
-          fields:
-            - name: facility
-              type: keyword
-              description: >
-                Specifies what component of Icinga logged the message.
-        
-            - name: severity
-              type: alias
-              path: log.level
-              migration: true
-            - name: message
-              type: alias
-              path: message
-              migration: true
+        Specifies what component of Icinga logged the message.
+
+    - name: severity
+      type: alias
+      path: log.level
+      migration: true
+    - name: message
+      type: alias
+      path: message
+      migration: true

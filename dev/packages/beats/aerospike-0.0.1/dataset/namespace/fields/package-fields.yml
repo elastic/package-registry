@@ -1,0 +1,4 @@
+- name: aerospike
+  type: group
+  description: >
+  fields:

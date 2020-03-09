@@ -1,15 +1,4 @@
-- key: redisenterprise
-  title: "Redis Enterprise"
-  description: >
-    Redis metrics collected from Redis Enterprise Server.
+- name: redisenterprise.proxy
+  type: group
   release: beta
   fields:
-    - name: redisenterprise
-      type: group
-      description: >
-        `redisenterprise` contains the information and statistics from Redis Enterprise Server.
-      fields:
-        - name: proxy
-          type: group
-          release: beta
-          fields:

@@ -10,3 +10,8 @@ categories:
 requirement:
   kibana:
     versions: ""
+screenshots:
+- src: img/metricbeat-aerospike-overview.png
+  title: Metricbeat Aerospike Overview
+  size: 4988x2558
+  type: image/png

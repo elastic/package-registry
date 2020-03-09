@@ -1,70 +1,56 @@
-- key: zeek
-  title: Zeek
+- name: zeek.snmp
+  type: group
+  default_field: false
   description: >
-    Module for handling logs produced by Zeek/Bro
+    Fields exported by the Zeek SNMP log.
   fields:
-    - name: zeek
-      type: group
+    - name: duration
+      type: double
       description: >
-        Fields from Zeek/Bro logs after normalization
+        The amount of time between the first packet beloning to the SNMP session and the latest one seen.
+
+    - name: version
+      type: keyword
+      description: >
+        The version of SNMP being used.
+
+    - name: community
+      type: keyword
+      description: >
+        The community string of the first SNMP packet associated with the session. This is used as part of SNMP's (v1 and v2c) administrative/security framework. See RFC 1157 or RFC 1901.
+
+    - name: get
+      type: group
       fields:
-        - name: session_id
-          type: keyword
+        - name: requests
+          type: integer
           description: >
-            A unique identifier of the session
-        - name: snmp
-          type: group
-          default_field: false
+            The number of variable bindings in GetRequest/GetNextRequest PDUs seen for the session.
+
+        - name: bulk_requests
+          type: integer
           description: >
-            Fields exported by the Zeek SNMP log.
-          fields:
-            - name: duration
-              type: double
-              description: >
-                The amount of time between the first packet beloning to the SNMP session and the latest one seen.
-        
-            - name: version
-              type: keyword
-              description: >
-                The version of SNMP being used.
-        
-            - name: community
-              type: keyword
-              description: >
-                The community string of the first SNMP packet associated with the session. This is used as part of SNMP's (v1 and v2c) administrative/security framework. See RFC 1157 or RFC 1901.
-        
-            - name: get
-              type: group
-              fields:
-                - name: requests
-                  type: integer
-                  description: >
-                    The number of variable bindings in GetRequest/GetNextRequest PDUs seen for the session.
-        
-                - name: bulk_requests
-                  type: integer
-                  description: >
-                    The number of variable bindings in GetBulkRequest PDUs seen for the session.
-        
-                - name: responses
-                  type: integer
-                  description: >
-                    The number of variable bindings in GetResponse/Response PDUs seen for the session.
-        
-            - name: set
-              type: group
-              fields:
-                - name: requests
-                  type: integer
-                  description: >
-                    The number of variable bindings in SetRequest PDUs seen for the session.
-        
-            - name: display_string
-              type: keyword
-              description: >
-                A system description of the SNMP responder endpoint.
-        
-            - name: up_since
-              type: date
-              description: >
-                The time at which the SNMP responder endpoint claims it's been up since.
+            The number of variable bindings in GetBulkRequest PDUs seen for the session.
+
+        - name: responses
+          type: integer
+          description: >
+            The number of variable bindings in GetResponse/Response PDUs seen for the session.
+
+    - name: set
+      type: group
+      fields:
+        - name: requests
+          type: integer
+          description: >
+            The number of variable bindings in SetRequest PDUs seen for the session.
+
+    - name: display_string
+      type: keyword
+      description: >
+        A system description of the SNMP responder endpoint.
+
+    - name: up_since
+      type: date
+      description: >
+        The time at which the SNMP responder endpoint claims it's been up since.

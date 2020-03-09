@@ -1,0 +1,4 @@
+- name: dropwizard
+  type: group
+  description: >
+  fields:

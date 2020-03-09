@@ -11,3 +11,8 @@ categories:
 requirement:
   kibana:
     versions: ""
+screenshots:
+- src: img/filebeat-mongodb-overview.png
+  title: Filebeat Mongodb Overview
+  size: 1920x1080
+  type: image/png

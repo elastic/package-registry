@@ -1,194 +1,158 @@
-- key: elasticsearch
-  title: "Elasticsearch"
+- name: node.stats
+  type: group
   description: >
-    Elasticsearch module
+    node_stats
   release: ga
-  settings: ["ssl", "http"]
-  short_config: false
   fields:
-    - name: elasticsearch
+    - name: indices
       type: group
       description: >
+        Node indices stats
       fields:
-        - name: cluster.name
-          type: keyword
+        - name: docs.count
+          type: long
           description: >
-            Elasticsearch cluster name.
-
-        - name: cluster.id
-          type: keyword
+            Total number of existing documents.
+        - name: docs.deleted
+          type: long
           description: >
-            Elasticsearch cluster id.
-
-        - name: cluster.state.id
-          type: keyword
+            Total number of deleted documents.
+        - name: segments.count
+          type: long
           description: >
-            Elasticsearch state id.
-
-        - name: node.id
-          type: keyword
+            Total number of segments.
+        - name: segments.memory.bytes
+          type: long
+          format: bytes
           description: >
-            Node ID
-
-        - name: node.name
-          type: keyword
+            Total size of segments in bytes.
+        - name: store.size.bytes
+          type: long
           description: >
-            Node name.
-        - name: node.stats
+            Total size of the store in bytes.
+    - name: jvm.mem.pools
+      type: group
+      description: >
+        JVM memory pool stats
+      fields:
+        - name: old
           type: group
           description: >
-            node_stats
-          release: ga
+            Old memory pool stats.
           fields:
-            - name: indices
-              type: group
+            - name: max.bytes
+              type: long
+              format: bytes
+              description:
+                Max bytes.
+            - name: peak.bytes
+              type: long
+              format: bytes
+              description:
+                Peak bytes.
+            - name: peak_max.bytes
+              type: long
+              format: bytes
+              description:
+                Peak max bytes.
+            - name: used.bytes
+              type: long
+              format: bytes
+              description:
+                Used bytes.
+        - name: young
+          type: group
+          description: >
+            Young memory pool stats.
+          fields:
+            - name: max.bytes
+              type: long
+              format: bytes
+              description:
+                Max bytes.
+            - name: peak.bytes
+              type: long
+              format: bytes
+              description:
+                Peak bytes.
+            - name: peak_max.bytes
+              type: long
+              format: bytes
+              description:
+                Peak max bytes.
+            - name: used.bytes
+              type: long
+              format: bytes
+              description:
+                Used bytes.
+        - name: survivor
+          type: group
+          description: >
+            Survivor memory pool stats.
+          fields:
+            - name: max.bytes
+              type: long
+              format: bytes
+              description:
+                Max bytes.
+            - name: peak.bytes
+              type: long
+              format: bytes
+              description:
+                Peak bytes.
+            - name: peak_max.bytes
+              type: long
+              format: bytes
+              description:
+                Peak max bytes.
+            - name: used.bytes
+              type: long
+              format: bytes
+              description:
+                Used bytes.
+
+    - name: jvm.gc.collectors
+      type: group
+      description: >
+        GC collector stats.
+      fields:
+        - name: old.collection
+          type: group
+          description: >
+            Old collection gc.
+          fields:
+            - name: count
+              type: long
               description: >
-                Node indices stats
-              fields:
-                - name: docs.count
-                  type: long
-                  description: >
-                    Total number of existing documents.
-                - name: docs.deleted
-                  type: long
-                  description: >
-                    Total number of deleted documents.
-                - name: segments.count
-                  type: long
-                  description: >
-                    Total number of segments.
-                - name: segments.memory.bytes
-                  type: long
-                  format: bytes
-                  description: >
-                    Total size of segments in bytes.
-                - name: store.size.bytes
-                  type: long
-                  description: >
-                    Total size of the store in bytes.
-            - name: jvm.mem.pools
-              type: group
+            - name: ms
+              type: long
               description: >
-                JVM memory pool stats
-              fields:
-                - name: old
-                  type: group
-                  description: >
-                    Old memory pool stats.
-                  fields:
-                    - name: max.bytes
-                      type: long
-                      format: bytes
-                      description:
-                        Max bytes.
-                    - name: peak.bytes
-                      type: long
-                      format: bytes
-                      description:
-                        Peak bytes.
-                    - name: peak_max.bytes
-                      type: long
-                      format: bytes
-                      description:
-                        Peak max bytes.
-                    - name: used.bytes
-                      type: long
-                      format: bytes
-                      description:
-                        Used bytes.
-                - name: young
-                  type: group
-                  description: >
-                    Young memory pool stats.
-                  fields:
-                    - name: max.bytes
-                      type: long
-                      format: bytes
-                      description:
-                        Max bytes.
-                    - name: peak.bytes
-                      type: long
-                      format: bytes
-                      description:
-                        Peak bytes.
-                    - name: peak_max.bytes
-                      type: long
-                      format: bytes
-                      description:
-                        Peak max bytes.
-                    - name: used.bytes
-                      type: long
-                      format: bytes
-                      description:
-                        Used bytes.
-                - name: survivor
-                  type: group
-                  description: >
-                    Survivor memory pool stats.
-                  fields:
-                    - name: max.bytes
-                      type: long
-                      format: bytes
-                      description:
-                        Max bytes.
-                    - name: peak.bytes
-                      type: long
-                      format: bytes
-                      description:
-                        Peak bytes.
-                    - name: peak_max.bytes
-                      type: long
-                      format: bytes
-                      description:
-                        Peak max bytes.
-                    - name: used.bytes
-                      type: long
-                      format: bytes
-                      description:
-                        Used bytes.
-        
-            - name: jvm.gc.collectors
-              type: group
+        - name: young.collection
+          type: group
+          description: >
+            Young collection gc.
+          fields:
+            - name: count
+              type: long
               description: >
-                GC collector stats.
-              fields:
-                - name: old.collection
-                  type: group
-                  description: >
-                    Old collection gc.
-                  fields:
-                    - name: count
-                      type: long
-                      description: >
-                    - name: ms
-                      type: long
-                      description: >
-                - name: young.collection
-                  type: group
-                  description: >
-                    Young collection gc.
-                  fields:
-                    - name: count
-                      type: long
-                      description: >
-                    - name: ms
-                      type: long
-                      description: >
-        
-            - name: fs.summary
-              type: group
+            - name: ms
+              type: long
               description: >
-                File system summary
-              fields:
-                - name: total.bytes
-                  type: long
-                  format: bytes
-                  description: >
-                - name: free.bytes
-                  type: long
-                  format: bytes
-                  description: >
-                - name: available.bytes
-                  type: long
-                  format: bytes
-                  description: >
+
+    - name: fs.summary
+      type: group
+      description: >
+        File system summary
+      fields:
+        - name: total.bytes
+          type: long
+          format: bytes
+          description: >
+        - name: free.bytes
+          type: long
+          format: bytes
+          description: >
+        - name: available.bytes
+          type: long
+          format: bytes
+          description: >

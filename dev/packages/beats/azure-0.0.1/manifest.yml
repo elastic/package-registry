@@ -11,3 +11,24 @@ categories:
 requirement:
   kibana:
     versions: ""
+screenshots:
+- src: img/filebeat-azure-overview.png
+  title: Filebeat Azure Overview
+  size: 5002x2666
+  type: image/png
+- src: img/metricbeat-azure-vm-overview.png
+  title: Metricbeat Azure Vm Overview
+  size: 5006x2672
+  type: image/png
+- src: img/metricbeat-azure-vm-guestmetrics-overview.png
+  title: Metricbeat Azure Vm Guestmetrics Overview
+  size: 5006x2672
+  type: image/png
+- src: img/metricbeat-azure-vmss-overview.png
+  title: Metricbeat Azure Vmss Overview
+  size: 5000x2668
+  type: image/png
+- src: img/metricbeat-azure-storage-overview.png
+  title: Metricbeat Azure Storage Overview
+  size: 5008x2662
+  type: image/png

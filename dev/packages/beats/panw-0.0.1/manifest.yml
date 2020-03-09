@@ -10,3 +10,12 @@ categories:
 requirement:
   kibana:
     versions: ""
+screenshots:
+- src: img/filebeat-panw-traffic.png
+  title: Filebeat Panw Traffic
+  size: 2546x2888
+  type: image/png
+- src: img/filebeat-panw-threat.png
+  title: Filebeat Panw Threat
+  size: 2546x2496
+  type: image/png

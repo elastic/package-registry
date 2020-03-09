@@ -1,19 +1,6 @@
-- key: jolokia
-  title: "Jolokia"
+- key: jmx
+  type: group
   description: >
-    Jolokia module
-  short_config: false
+    Jolokia jmx metricset
   release: ga
-  settings: ["ssl", "http"]
   fields:
-    - name: jolokia
-      type: group
-      description: >
-          jolokia contains metrics exposed via jolokia agent
-      fields:
-        - key: jmx
-          type: group
-          description: >
-            Jolokia jmx metricset
-          release: ga
-          fields:

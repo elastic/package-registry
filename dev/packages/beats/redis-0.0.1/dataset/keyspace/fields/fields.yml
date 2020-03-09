@@ -1,35 +1,24 @@
-- key: redis
-  title: "Redis"
+- name: redis.keyspace
+  type: group
   description: >
-    Redis metrics collected from Redis.
+    `keyspace` contains the information about the keyspaces returned by the `INFO` command.
   release: ga
   fields:
-    - name: redis
-      type: group
+    - name: id
+      type: keyword
       description: >
-        `redis` contains the information and statistics from Redis.
-      fields:
-        - name: keyspace
-          type: group
-          description: >
-            `keyspace` contains the information about the keyspaces returned by the `INFO` command.
-          release: ga
-          fields:
-            - name: id
-              type: keyword
-              description: >
-                Keyspace identifier.
-        
-            - name: avg_ttl
-              type: long
-              description: >
-                Average ttl.
-        
-            - name: keys
-              type: long
-              description: >
-                Number of keys in the keyspace.
-        
-            - name: expires
-              type: long
-              description: >
+        Keyspace identifier.
+
+    - name: avg_ttl
+      type: long
+      description: >
+        Average ttl.
+
+    - name: keys
+      type: long
+      description: >
+        Number of keys in the keyspace.
+
+    - name: expires
+      type: long
+      description: >

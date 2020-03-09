@@ -1,0 +1,4 @@
+- name: uwsgi
+  type: group
+  description: >
+  fields:
