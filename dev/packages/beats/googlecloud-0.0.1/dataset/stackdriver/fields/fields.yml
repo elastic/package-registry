@@ -1,10 +1,5 @@
-- fields:
-    - name: googlecloud
-      type: group
-      description: >
-      fields:
-        - release: beta
-          key: stackdriver
-          type: group
-          description: Google Cloud Compute metrics
-          fields:
+- release: beta
+  key: stackdriver
+  type: group
+  description: Google Cloud Compute metrics
+  fields:

@@ -1,15 +1,10 @@
-- fields:
-    - name: nats
-      type: group
+- name: routes
+  type: group
+  description: >
+    Contains nats route related metrics
+  release: ga
+  fields:
+    - name: total
+      type: integer
       description: >
-      fields:
-        - name: routes
-          type: group
-          description: >
-            Contains nats route related metrics
-          release: ga
-          fields:
-            - name: total
-              type: integer
-              description: >
-                The number of registered routes
+        The number of registered routes

@@ -1,11 +1,6 @@
-- fields:
-    - name: ceph
-      type: group
-      description: >
-      fields:
-        - name: mgr_cluster_health
-          type: group
-          description: >
-            see: cluster_health
-          release: beta
-          fields:
+- name: mgr_cluster_health
+  type: group
+  description: >
+    see: cluster_health
+  release: beta
+  fields:

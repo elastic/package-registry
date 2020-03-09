@@ -1,11 +1,6 @@
-- fields:
-    - name: http
-      type: group
-      description: >
-      fields:
-        - name: json
-          type: group
-          description: >
-            json metricset
-          release: ga
-          fields:
+- name: json
+  type: group
+  description: >
+    json metricset
+  release: ga
+  fields:

@@ -1,9 +1,4 @@
-- fields:
-    - name: elasticsearch
-      type: group
-      description: >
-      fields:
-        - name: deprecation
-          type: group
-          description: >
-          fields:
+- name: deprecation
+  type: group
+  description: >
+  fields:

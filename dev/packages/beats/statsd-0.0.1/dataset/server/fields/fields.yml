@@ -1,6 +1,1 @@
-- fields:
-    - name: statsd
-      type: group
-      description: >
-      fields:
-        - release: ga
+- release: ga

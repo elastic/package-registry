@@ -1,10 +1,5 @@
-- fields:
-    - name: activemq
-      type: group
-      description: >
-      fields:
-        - name: audit
-          type: group
-          description: >
-            Fields from ActiveMQ audit logs.
-          fields:
+- name: audit
+  type: group
+  description: >
+    Fields from ActiveMQ audit logs.
+  fields:

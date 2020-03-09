@@ -1,26 +1,21 @@
-- fields:
-    - name: ceph
-      type: group
+- name: cluster_disk
+  type: group
+  description: >
+    cluster_disk
+  release: ga
+  fields:
+    - name: available.bytes
+      type: long
       description: >
-      fields:
-        - name: cluster_disk
-          type: group
-          description: >
-            cluster_disk
-          release: ga
-          fields:
-            - name: available.bytes
-              type: long
-              description: >
-                Available bytes of the cluster
-              format: bytes
-            - name: total.bytes
-              type: long
-              description: >
-                Total bytes of the cluster
-              format: bytes
-            - name: used.bytes
-              type: long
-              description: >
-                Used bytes of the cluster
-              format: bytes
+        Available bytes of the cluster
+      format: bytes
+    - name: total.bytes
+      type: long
+      description: >
+        Total bytes of the cluster
+      format: bytes
+    - name: used.bytes
+      type: long
+      description: >
+        Used bytes of the cluster
+      format: bytes

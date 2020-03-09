@@ -1,6 +1,1 @@
-- fields:
-    - name: dropwizard
-      type: group
-      description: >
-      fields:
-        - release: ga
+- release: ga

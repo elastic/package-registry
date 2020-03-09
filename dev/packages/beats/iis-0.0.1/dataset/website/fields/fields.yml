@@ -1,15 +1,10 @@
-- fields:
-    - name: iis
-      type: group
-      description: >
-      fields:
-        - name: website
-          type: group
-          release: beta
-          description: >
-            website
-          fields:
-          - name: name
-            type: keyword
-            description: >
-              website name
+- name: website
+  type: group
+  release: beta
+  description: >
+    website
+  fields:
+  - name: name
+    type: keyword
+    description: >
+      website name

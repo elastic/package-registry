@@ -7,7 +7,6 @@ package main
 import (
 	"bufio"
 	"bytes"
-	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -43,14 +42,8 @@ func loadModuleFields(modulePath string) ([]byte, error) {
 	return buffer.Bytes(), nil
 }
 
-func loadDatasetFields(modulePath, moduleName, datasetName string) ([]byte, error) {
+func loadDatasetFields(modulePath, datasetName string) ([]byte, error) {
 	var buffer bytes.Buffer
-	buffer.WriteString(fmt.Sprintf(`- fields:
-    - name: %s
-      type: group
-      description: >
-      fields:`, moduleName))
-  	buffer.WriteString("\n")
 
 	datasetFieldsPath := filepath.Join(modulePath, datasetName, "_meta", "fields.yml")
 	datasetFieldsFile, err := os.Open(datasetFieldsPath)
@@ -65,7 +58,6 @@ func loadDatasetFields(modulePath, moduleName, datasetName string) ([]byte, erro
 	scanner := bufio.NewScanner(datasetFieldsFile)
 	for scanner.Scan() {
 		line := scanner.Text()
-		buffer.Write([]byte("        "))
 		buffer.WriteString(line)
 		buffer.WriteString("\n")
 	}

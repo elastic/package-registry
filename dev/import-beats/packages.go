@@ -89,7 +89,8 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, package
 		manifest := aPackage.manifest
 		manifest.Categories = append(manifest.Categories, packageType)
 
-		datasets, err := createDatasets(beatModulesPath, moduleName)
+		modulePath := path.Join(beatModulesPath, moduleName)
+		datasets, err := createDatasets(modulePath)
 		if err != nil {
 			return err
 		}
