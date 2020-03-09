@@ -1,5 +1,4 @@
-- key: tomcat
-  title: 'Tomcat'
+- title: 'Tomcat'
   release: beta
   description: >
     Tomcat module

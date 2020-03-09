@@ -1,5 +1,4 @@
-- key: mongodb
-  title: "mongodb"
+- title: "mongodb"
   description: >
     Module for parsing MongoDB log files.
   fields:

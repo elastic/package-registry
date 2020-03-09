@@ -1,5 +1,4 @@
-- key: consul
-  title: "consul"
+- title: "consul"
   description: >
     Consul module
   release: beta

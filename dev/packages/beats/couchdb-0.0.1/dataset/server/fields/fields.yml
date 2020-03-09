@@ -1,5 +1,4 @@
-- key: couchdb
-  title: "couchdb"
+- title: "couchdb"
   description: >
     couchdb module
   release: ga

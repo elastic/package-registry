@@ -1,5 +1,4 @@
-- key: kibana
-  title: "kibana"
+- title: "kibana"
   description: >
     kibana Module
   fields:

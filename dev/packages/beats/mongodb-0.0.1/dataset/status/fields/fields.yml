@@ -1,5 +1,4 @@
-- key: mongodb
-  title: "MongoDB"
+- title: "MongoDB"
   description: >
     Metrics collected from MongoDB servers.
   short_config: false

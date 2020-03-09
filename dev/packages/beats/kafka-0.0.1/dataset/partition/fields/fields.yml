@@ -1,5 +1,4 @@
-- key: kafka
-  title: "Kafka"
+- title: "Kafka"
   description: >
     Kafka module
   short_config: false

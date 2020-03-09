@@ -1,5 +1,4 @@
-- key: oracle
-  title: "Oracle"
+- title: "Oracle"
   description: Oracle database module
   short_config: false
   release: beta

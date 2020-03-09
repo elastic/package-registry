@@ -1,5 +1,4 @@
-- key: suricata
-  title: Suricata
+- title: Suricata
   description: >
     Module for handling the EVE JSON logs produced by Suricata.
   fields:

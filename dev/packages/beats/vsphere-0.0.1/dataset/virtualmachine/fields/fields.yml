@@ -1,5 +1,4 @@
-- key: vsphere
-  title: "vSphere"
+- title: "vSphere"
   description: >
     vSphere module
   release: beta

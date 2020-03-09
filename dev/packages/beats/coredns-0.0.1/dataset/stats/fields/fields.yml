@@ -1,5 +1,4 @@
-- key: coredns
-  title: "coredns"
+- title: "coredns"
   description: >
     coredns Module
   release: ga

@@ -1,5 +1,4 @@
-- key: couchbase
-  title: "Couchbase"
+- title: "Couchbase"
   description: >
     Metrics collected from Couchbase servers.
   short_config: false

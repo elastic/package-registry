@@ -1,5 +1,4 @@
-- key: aerospike
-  title: "Aerospike"
+- title: "Aerospike"
   description: >
     Aerospike module
   release: ga

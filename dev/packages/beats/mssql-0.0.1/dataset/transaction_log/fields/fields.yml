@@ -1,5 +1,4 @@
-- key: mssql
-  title: "MSSQL"
+- title: "MSSQL"
   description: MS SQL module
   release: beta
   fields:

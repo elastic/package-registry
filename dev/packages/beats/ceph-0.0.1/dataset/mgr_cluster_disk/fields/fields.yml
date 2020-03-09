@@ -1,5 +1,4 @@
-- key: ceph
-  title: "Ceph"
+- title: "Ceph"
   description: >
     Ceph module
   short_config: false

@@ -1,5 +1,4 @@
-- key: icinga
-  title: "Icinga"
+- title: "Icinga"
   description: >
     Icinga Module
   fields:

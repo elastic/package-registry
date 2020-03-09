@@ -1,5 +1,4 @@
-- key: iptables
-  title: iptables
+- title: iptables
   description: >
     Module for handling the iptables logs.
   fields:

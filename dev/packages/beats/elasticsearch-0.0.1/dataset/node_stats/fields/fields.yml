@@ -1,5 +1,4 @@
-- key: elasticsearch
-  title: "Elasticsearch"
+- title: "Elasticsearch"
   description: >
     Elasticsearch module
   release: ga

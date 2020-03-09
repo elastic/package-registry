@@ -1,5 +1,4 @@
-- key: appsearch
-  title: "App Search"
+- title: "App Search"
   release: beta
   description: >
     App Search module

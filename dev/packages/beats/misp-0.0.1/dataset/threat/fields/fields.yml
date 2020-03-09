@@ -1,5 +1,4 @@
-- key: misp
-  title: MISP
+- title: MISP
   description: >
     Module for handling threat information from MISP.
   fields:

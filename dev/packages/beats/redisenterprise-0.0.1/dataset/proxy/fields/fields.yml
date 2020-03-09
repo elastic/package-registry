@@ -1,5 +1,4 @@
-- key: redisenterprise
-  title: "Redis Enterprise"
+- title: "Redis Enterprise"
   description: >
     Redis metrics collected from Redis Enterprise Server.
   release: beta

@@ -1,5 +1,4 @@
-- key: googlecloud
-  title: Google Cloud
+- title: Google Cloud
   description: >
     Module for handling logs from Google Cloud.
   fields:

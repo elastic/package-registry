@@ -1,5 +1,4 @@
-- key: logstash
-  title: "logstash"
+- title: "logstash"
   description: >
     logstash Module
   fields:

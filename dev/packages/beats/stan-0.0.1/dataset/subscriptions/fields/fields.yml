@@ -1,5 +1,4 @@
-- key: stan
-  title: "Stan"
+- title: "Stan"
   description: >
     stan Module
   release: beta

@@ -7,23 +7,39 @@ package main
 import (
 	"bufio"
 	"bytes"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/pkg/errors"
 )
 
 func loadDatasetFields(modulePath, datasetName string) ([]byte, error) {
 	moduleFieldsPath := filepath.Join(modulePath, "_meta", "fields.yml")
-	moduleFields, err := ioutil.ReadFile(moduleFieldsPath)
+	moduleFieldsFile, err := os.Open(moduleFieldsPath)
 	if err != nil {
-		return nil, errors.Wrapf(err, "reading module fields file failed (path: %s)", moduleFieldsPath)
+		return nil, errors.Wrapf(err, "openning module fields file failed (path: %s)", moduleFieldsPath)
 	}
 
 	var buffer bytes.Buffer
-	buffer.Write(moduleFields)
+	scanner := bufio.NewScanner(moduleFieldsFile)
+
+	var skipKey bool
+	for scanner.Scan() {
+		line := scanner.Text()
+		if strings.HasPrefix(line, `- key: `) {
+			skipKey = true
+		} else if skipKey {
+			buffer.WriteString("- ")
+			buffer.WriteString(strings.TrimLeft(line, " "))
+			buffer.WriteString("\n")
+			skipKey = false
+		} else {
+			buffer.WriteString(line)
+			buffer.WriteString("\n")
+		}
+	}
 
 	datasetFieldsPath := filepath.Join(modulePath, datasetName, "_meta", "fields.yml")
 	datasetFieldsFile, err := os.Open(datasetFieldsPath)
@@ -35,7 +51,7 @@ func loadDatasetFields(modulePath, datasetName string) ([]byte, error) {
 	}
 	defer datasetFieldsFile.Close()
 
-	scanner := bufio.NewScanner(datasetFieldsFile)
+	scanner = bufio.NewScanner(datasetFieldsFile)
 	for scanner.Scan() {
 		line := scanner.Text()
 		buffer.Write([]byte("        "))

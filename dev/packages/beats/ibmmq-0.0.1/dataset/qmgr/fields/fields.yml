@@ -1,5 +1,4 @@
-- key: ibmmq
-  title: 'IBM MQ'
+- title: 'IBM MQ'
   release: beta
   description: >
     IBM MQ module

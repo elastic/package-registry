@@ -1,5 +1,4 @@
-- key: apache
-  title: "Apache"
+- title: "Apache"
   description: >
     Apache Module
   short_config: true

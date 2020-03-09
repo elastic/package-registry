@@ -1,5 +1,4 @@
-- key: etcd
-  title: "Etcd"
+- title: "Etcd"
   description: >
     etcd Module
   release: ga

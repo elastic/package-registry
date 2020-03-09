@@ -1,5 +1,4 @@
-- key: beat
-  title: "Beat"
+- title: "Beat"
   description: >
     Beat module
   release: ga

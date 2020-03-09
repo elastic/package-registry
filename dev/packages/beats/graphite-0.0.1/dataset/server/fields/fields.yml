@@ -1,5 +1,4 @@
-- key: graphite
-  title: "Graphite"
+- title: "Graphite"
   description: >
     graphite Module
   release: ga

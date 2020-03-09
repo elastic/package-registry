@@ -1,5 +1,4 @@
-- key: jolokia
-  title: "Jolokia"
+- title: "Jolokia"
   description: >
     Jolokia module
   short_config: false

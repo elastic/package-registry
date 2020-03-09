@@ -1,5 +1,4 @@
-- key: system
-  title: "System"
+- title: "System"
   description: >
     Module for parsing system log files.
   short_config: true

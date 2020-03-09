@@ -1,5 +1,4 @@
-- key: http
-  title: "HTTP"
+- title: "HTTP"
   description: >
     HTTP module
   release: ga

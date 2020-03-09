@@ -1,5 +1,4 @@
-- key: memcached
-  title: "Memcached"
+- title: "Memcached"
   description: >
     Memcached module
   short_config: false

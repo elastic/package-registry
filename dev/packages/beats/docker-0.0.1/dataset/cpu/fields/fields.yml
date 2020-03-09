@@ -1,5 +1,4 @@
-- key: docker
-  title: "Docker"
+- title: "Docker"
   description: >
     Docker stats collected from Docker.
   release: ga

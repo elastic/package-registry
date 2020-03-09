@@ -1,5 +1,4 @@
-- key: nginx
-  title: "Nginx"
+- title: "Nginx"
   description: >
     Module for parsing the Nginx log files.
   short_config: true

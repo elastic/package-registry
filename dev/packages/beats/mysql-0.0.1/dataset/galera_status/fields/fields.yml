@@ -1,5 +1,4 @@
-- key: mysql
-  title: "MySQL"
+- title: "MySQL"
   description: >
     MySQL server status metrics collected from MySQL.
   short_config: false

@@ -1,5 +1,4 @@
-- key: kibana
-  title: "Kibana"
+- title: "Kibana"
   description: >
     Kibana module
   short_config: false

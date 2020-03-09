@@ -1,5 +1,4 @@
-- key: auditd
-  title: "Auditd"
+- title: "Auditd"
   description: >
     Module for parsing auditd logs.
   short_config: true

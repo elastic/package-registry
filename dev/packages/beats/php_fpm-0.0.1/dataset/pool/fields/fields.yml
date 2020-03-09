@@ -1,5 +1,4 @@
-- key: php_fpm
-  title: "PHP_FPM"
+- title: "PHP_FPM"
   description: >
     PHP-FPM server status metrics collected from PHP-FPM.
   short_config: false

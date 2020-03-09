@@ -1,5 +1,4 @@
-- key: rabbitmq
-  title: "RabbitMQ"
+- title: "RabbitMQ"
   description: >
     RabbitMQ Module
   fields:

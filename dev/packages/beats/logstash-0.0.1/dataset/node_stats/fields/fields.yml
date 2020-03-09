@@ -1,5 +1,4 @@
-- key: logstash
-  title: "Logstash"
+- title: "Logstash"
   description: >
     Logstash module
   release: ga

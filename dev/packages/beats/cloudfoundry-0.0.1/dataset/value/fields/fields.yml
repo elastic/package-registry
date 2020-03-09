@@ -1,5 +1,4 @@
-- key: cloudfoundry
-  title: "cloudfoundry"
+- title: "cloudfoundry"
   description: >
     Cloud Foundry module
   release: experimental

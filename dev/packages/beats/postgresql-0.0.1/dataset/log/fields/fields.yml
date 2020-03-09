@@ -1,5 +1,4 @@
-- key: postgresql
-  title: "PostgreSQL"
+- title: "PostgreSQL"
   description: >
     Module for parsing the PostgreSQL log files.
   short_config: true

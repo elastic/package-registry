@@ -1,5 +1,4 @@
-- key: zookeeper
-  title: "ZooKeeper"
+- title: "ZooKeeper"
   description: >
     ZooKeeper metrics collected by the four-letter monitoring commands.
   short_config: false

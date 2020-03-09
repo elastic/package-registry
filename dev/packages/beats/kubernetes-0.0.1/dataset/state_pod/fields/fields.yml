@@ -1,5 +1,4 @@
-- key: kubernetes
-  title: "Kubernetes"
+- title: "Kubernetes"
   description: >
     Kubernetes metrics
   release: ga

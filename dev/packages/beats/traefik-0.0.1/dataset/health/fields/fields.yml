@@ -1,5 +1,4 @@
-- key: traefik
-  title: "traefik"
+- title: "traefik"
   description: >
     Traefik reverse proxy / load balancer metrics
   release: ga

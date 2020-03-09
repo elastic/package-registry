@@ -1,5 +1,4 @@
-- key: azure
-  title: "azure"
+- title: "azure"
   description: >
     azure module
   release: beta

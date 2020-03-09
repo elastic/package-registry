@@ -1,5 +1,4 @@
-- key: elasticsearch
-  title: "elasticsearch"
+- title: "elasticsearch"
   description: >
     elasticsearch Module
   fields:

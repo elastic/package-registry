@@ -1,5 +1,4 @@
-- key: statsd
-  title: "Statsd"
+- title: "Statsd"
   description: >
     Statsd module
   release: ga

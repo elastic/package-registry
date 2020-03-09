@@ -1,5 +1,4 @@
-- key: traefik
-  title: "Traefik"
+- title: "Traefik"
   description: >
     Module for parsing the Traefik log files.
   fields:

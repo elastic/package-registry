@@ -1,5 +1,4 @@
-- key: postgresql
-  title: "PostgreSQL"
+- title: "PostgreSQL"
   description: >
     Metrics collected from PostgreSQL servers.
   short_config: false

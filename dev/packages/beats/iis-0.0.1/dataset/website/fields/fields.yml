@@ -1,5 +1,4 @@
-- key: iis
-  title: "iis"
+- title: "iis"
   description: >
     iis module
   release: beta

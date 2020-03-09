@@ -1,5 +1,4 @@
-- key: redis
-  title: "Redis"
+- title: "Redis"
   description: >
     Redis metrics collected from Redis.
   release: ga

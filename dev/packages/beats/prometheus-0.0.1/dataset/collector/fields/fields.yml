@@ -1,5 +1,4 @@
-- key: prometheus
-  title: "Prometheus"
+- title: "Prometheus"
   description: >
     Stats scraped from a Prometheus endpoint.
   short_config: false

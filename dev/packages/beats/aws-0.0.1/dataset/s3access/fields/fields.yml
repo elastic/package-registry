@@ -1,5 +1,4 @@
-- key: aws
-  title: AWS
+- title: AWS
   release: beta
   description: >
     Module for handling logs from AWS.

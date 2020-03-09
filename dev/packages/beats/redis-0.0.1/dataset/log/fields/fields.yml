@@ -1,5 +1,4 @@
-- key: redis
-  title: "Redis"
+- title: "Redis"
   description: >
     Redis Module
   fields:

@@ -1,5 +1,4 @@
-- key: haproxy
-  title: "HAProxy"
+- title: "HAProxy"
   description: >
     HAProxy Module
   short_config: false

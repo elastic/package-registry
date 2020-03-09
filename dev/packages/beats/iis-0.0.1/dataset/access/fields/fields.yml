@@ -1,5 +1,4 @@
-- key: iis
-  title: "IIS"
+- title: "IIS"
   description: >
     Module for parsing IIS log files.
   fields:

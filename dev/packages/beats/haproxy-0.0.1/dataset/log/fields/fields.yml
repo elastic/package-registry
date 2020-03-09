@@ -1,5 +1,4 @@
-- key: haproxy
-  title: "haproxy"
+- title: "haproxy"
   description: >
     haproxy Module
   fields:

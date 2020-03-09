@@ -1,5 +1,4 @@
-- key: ibmmq
-  title: "ibmmq"
+- title: "ibmmq"
   description: >
     ibmmq Module
   release: ga

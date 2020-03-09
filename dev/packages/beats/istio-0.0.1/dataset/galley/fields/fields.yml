@@ -1,5 +1,4 @@
-- key: istio
-  title: "istio"
+- title: "istio"
   description: >
     istio Module
   release: beta

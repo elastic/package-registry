@@ -1,5 +1,4 @@
-- key: windows
-  title: "Windows"
+- title: "Windows"
   description: >
     Module for Windows
   short_config: false

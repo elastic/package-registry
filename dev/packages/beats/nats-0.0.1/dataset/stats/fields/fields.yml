@@ -1,5 +1,4 @@
-- key: nats
-  title: "Nats"
+- title: "Nats"
   description: >
     nats Module
   release: ga

@@ -1,5 +1,4 @@
-- key: cockroachdb
-  title: 'CockroachDB'
+- title: 'CockroachDB'
   release: beta
   description: >
     CockroachDB module

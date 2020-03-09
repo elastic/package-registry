@@ -1,5 +1,4 @@
-- key: envoyproxy
-  title: "envoyproxy"
+- title: "envoyproxy"
   description: >
     envoyproxy module
   release: ga

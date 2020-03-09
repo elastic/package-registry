@@ -1,5 +1,4 @@
-- key: openmetrics
-  title: 'Openmetrics'
+- title: 'Openmetrics'
   release: beta
   description: >
     Openmetrics module

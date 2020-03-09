@@ -1,5 +1,4 @@
-- key: munin
-  title: "Munin"
+- title: "Munin"
   description: >
     Munin node metrics exporter
   release: ga
