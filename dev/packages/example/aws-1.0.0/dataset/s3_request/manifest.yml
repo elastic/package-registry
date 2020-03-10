@@ -1,0 +1,13 @@
+title: AWS s3_request metrics
+release: ga
+type: metrics
+
+streams:
+  - input: aws/metrics
+    title: AWS s3_request metrics
+    description: AWS s3_request metrics
+    vars:
+      - name: period
+        description: Collection frequency for s3_request metrics.
+        type: period
+        default: 24h

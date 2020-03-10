@@ -1,0 +1,27 @@
+title: AWS Cloudwatch metrics
+release: ga
+type: metrics
+
+# List of supported streams. There can be multiple stream definitions for different input types.
+streams:
+  - input: aws/metrics
+    title: AWS cloudwatch metrics
+    description: AWS cloudwatch metrics
+    vars:
+      - name: period
+        description: Cloudwatch metrics.
+        type: period
+        default: 5m
+
+# TODO: The configs for the cloudwatch are pretty complex, arrays of configs.
+
+
+#  metrics:
+#    - namespace: AWS/EC2
+#      #name: ["CPUUtilization", "DiskWriteOps"]
+#      tags.resource_type_filter: ec2:instance
+#      #dimensions:
+#      #  - name: InstanceId
+#      #    value: i-0686946e22cf9494a
+#      #statistic: ["Average", "Maximum"]
+#

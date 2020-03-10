@@ -1,0 +1,13 @@
+title: AWS sqs metrics
+release: ga
+type: metrics
+
+streams:
+  - input: aws/metrics
+    title: AWS sqs metrics
+    description: AWS sqs metrics
+    vars:
+      - name: period
+        description: Collection frequency for sqs metrics.
+        type: period
+        default: 5m
