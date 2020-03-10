@@ -1,0 +1,13 @@
+title: AWS ec2 metrics
+release: ga
+type: metrics
+
+streams:
+  - input: aws/metrics
+    title: AWS ec2 metrics
+    description: AWS ec2 metrics
+    vars:
+      - name: period
+        description: Collection frequency for ec2 metrics.
+        type: period
+        default: 5m

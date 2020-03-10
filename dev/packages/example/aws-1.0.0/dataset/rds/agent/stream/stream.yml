@@ -1,0 +1,4 @@
+input: aws/metrics
+period: {{period}}
+metricsets: rds
+dataset: aws.rds

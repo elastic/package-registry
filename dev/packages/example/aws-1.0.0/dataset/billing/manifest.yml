@@ -1,0 +1,20 @@
+title: AWS Billing metrics
+release: ga
+type: metrics
+
+# List of supported streams. There can be multiple stream definitions for different input types.
+streams:
+  - input: aws/metrics
+    title: AWS billing metrics
+    description: AWS billing metrics
+    vars:
+      - name: period
+        description: Collection frequency for billing metrics.
+        type: period
+        default: 12h
+
+      - name: region
+        description: Regions to collect metrics from.
+        type: text
+        multi: true
+        default: ["us-east-1"]

@@ -1,0 +1,4 @@
+input: aws/metrics
+period: {{period}}
+metricsets: lambda
+dataset: aws.lambda
