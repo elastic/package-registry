@@ -1,5 +1,5 @@
-input: metrics/system
+input: system/metrics
 metricset: cpu
 period: {{period}}
 dataset: system.cpu
-metrics: ["percentages", "normalized_percentages"]
+cpu.metrics: ["percentages", "normalized_percentages"]

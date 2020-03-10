@@ -18,9 +18,9 @@ datasources:
     description: Collecting system metrics like cpu, memory, disk metrics from your system and logs.
     inputs:
       - type: system/metrics
-        vars:
-          - name: period
-            type: string
-            default: 10s
-            description: Collection period
       - type: logs
+
+icons:
+  - src: "/img/compute.svg"
+    size: "16x16"
+    type: "image/svg+xml"

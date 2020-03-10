@@ -1,0 +1,4 @@
+input: system/metrics
+metricset: users
+period: {{period}}
+dataset: system.users

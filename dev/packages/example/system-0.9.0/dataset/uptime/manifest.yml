@@ -3,4 +3,8 @@ type: metrics
 
 streams:
   - input: system/metrics
-
+    vars:
+      - name: period
+        type: string
+        default: 15m
+        description: Collection period

@@ -1,0 +1,16 @@
+title: System Core metrics
+type: metrics
+
+streams:
+  - input: system/metrics
+    enabled: false
+    vars:
+      - name: period
+        type: string
+        default: 10s
+        description: Collection period
+      - name: metrics
+        type: string
+        default: ["percentages"]
+        mutli: true
+        description: Core metrics. Available are precentages and ticks.
