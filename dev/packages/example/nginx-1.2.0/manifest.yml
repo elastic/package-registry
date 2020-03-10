@@ -27,37 +27,34 @@ datasources:
         # This is for selection in the stream
         # id: nginx
         type: nginx/metrics
-        description: Collecting metrics for nginx.
+        # Title should never have an ending dot.
+        title: Collecting metrics from nginx hosts
+        description: Collectiong stubstatus metrics from the nginx hosts.
 
         # Common configuration options for this input
         vars:
           - name: hosts
-            description: Nginx hosts
+            title: Hosts
+            description: List of nginx hosts to collect data from.
             default:
               ["http://127.0.0.1"]
             # All the config options that are required should be shown in the UI
             required: true
             multi: true
             type: text
-          - name: period
-            description: "Collection period. Valid values: 10s, 5m, 2h"
-            default: "10s"
-            type: duration
           - name: username
             type: text
+            title: Username
+            description: Username to authenticate to the Nginx hosts
+
           - name: password
             # This is the html input type?
             type: password
+            title: Password
+            description: Password to authenticate to the Nginx hosts
 
       -
         type: logs
-        description: Collect nginx logs.
-
-        # Common configuration options for this input
-        vars:
-
-      -
-        type: syslog
-
-        # Common configuration options for this input
+        title: Collect nginx logs
+        description: Collect access and error logs from nginx.
         vars:

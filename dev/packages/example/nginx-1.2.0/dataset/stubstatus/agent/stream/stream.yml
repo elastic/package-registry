@@ -1,8 +1,7 @@
 # Defines which input to use, should be stripped out when creating the config
-input: metrics/nginx
+input: nginx/metrics
 metricsets: ["stubstatus"]
 period: {{period}}
-enabled: true
 
 # Nginx hosts
 hosts: {{hosts}}
