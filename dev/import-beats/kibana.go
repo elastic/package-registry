@@ -5,8 +5,11 @@
 package main
 
 import (
+	"bytes"
+	"fmt"
 	"io/ioutil"
 	"log"
+	"net/http"
 	"os"
 	"path"
 
@@ -18,7 +21,42 @@ type kibanaContent struct {
 	visualizationFiles map[string][]byte
 }
 
-func createKibanaContent(modulePath string) (kibanaContent, error) {
+type kibanaMigrator struct {
+	hostPort string
+}
+
+func newKibanaMigrator(hostPort string) *kibanaMigrator {
+	return &kibanaMigrator{
+		hostPort: hostPort,
+	}
+}
+
+func (km *kibanaMigrator) migrateDashboardFile(dashboardFile []byte) ([]byte, error) {
+	request, err := http.NewRequest("POST",
+		fmt.Sprintf("http://%s/api/kibana/dashboards/import?force=true", km.hostPort),
+		bytes.NewReader(dashboardFile))
+	if err != nil {
+		return nil, errors.Wrapf(err, "creating POST request failed")
+	}
+	request.Header.Add("kbn-xsrf", "8.0.0")
+	response, err := http.DefaultClient.Do(request)
+	if err != nil {
+		return nil, errors.Wrapf(err, "making POST request to Kibana failed")
+	}
+	defer response.Body.Close()
+
+	saved, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return nil, errors.Wrapf(err, "reading saved object failed")
+	}
+
+	if response.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("making POST request failed: %s", string(saved))
+	}
+	return saved, nil
+}
+
+func createKibanaContent(kibanaMigrator *kibanaMigrator, modulePath string) (kibanaContent, error) {
 	moduleDashboardPath := path.Join(modulePath, "_meta", "kibana", "7", "dashboard")
 	moduleDashboards, err := ioutil.ReadDir(moduleDashboardPath)
 	if os.IsNotExist(err) {
@@ -30,7 +68,7 @@ func createKibanaContent(modulePath string) (kibanaContent, error) {
 	}
 
 	kibana := kibanaContent{
-		dashboardFiles: map[string][]byte{},
+		dashboardFiles:     map[string][]byte{},
 		visualizationFiles: map[string][]byte{},
 	}
 	for _, moduleDashboard := range moduleDashboards {
@@ -41,12 +79,11 @@ func createKibanaContent(modulePath string) (kibanaContent, error) {
 				dashboardFilePath)
 		}
 
-		migrated, err := migrateDashboardFile(dashboardFile)
+		migrated, err := kibanaMigrator.migrateDashboardFile(dashboardFile)
 		if err != nil {
 			return kibanaContent{}, errors.Wrapf(err, "migrating dashboard file failed (path: %s)",
 				dashboardFilePath)
 		}
-
 
 		extractedDashboards, err := extractKibanaObjects(migrated, "dashboard")
 		if err != nil {
@@ -67,10 +104,6 @@ func createKibanaContent(modulePath string) (kibanaContent, error) {
 		}
 	}
 	return kibana, nil
-}
-
-func migrateDashboardFile(dashboardFile []byte) ([]byte, error) {
-	return nil, errors.New("not implemented")
 }
 
 func extractKibanaObjects(dashboardFile []byte, objectType string) (map[string][]byte, error) {

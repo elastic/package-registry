@@ -69,12 +69,14 @@ func (pc *packageContent) addKibanaContent(kc kibanaContent) {
 }
 
 type packageRepository struct {
-	packages map[string]packageContent
+	kibanaMigrator *kibanaMigrator
+	packages       map[string]packageContent
 }
 
-func newPackageRepository() *packageRepository {
+func newPackageRepository(kibanaMigrator *kibanaMigrator) *packageRepository {
 	return &packageRepository{
-		packages: map[string]packageContent{},
+		kibanaMigrator: kibanaMigrator,
+		packages:       map[string]packageContent{},
 	}
 }
 
@@ -132,7 +134,7 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, package
 		manifest.Screenshots = append(manifest.Screenshots, screenshots...)
 
 		// kibana
-		kibana, err := createKibanaContent(modulePath)
+		kibana, err := createKibanaContent(r.kibanaMigrator, modulePath)
 		if err != nil {
 			return err
 		}
