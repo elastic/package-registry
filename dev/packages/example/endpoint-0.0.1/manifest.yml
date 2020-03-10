@@ -11,6 +11,19 @@ release: beta
 type: solution
 license: basic
 
+
+
+datasources:
+  -
+    name: endpoint
+    title: Endpoint data source
+    description: Interact with the endpoint.
+
+    # This tells the UI that for configuration, it must link to a specific solution
+    # Only solution packages can contain this field.
+    solution: endpoint
+
+
 requirement:
   elasticsearch:
     versions: ">7.4.0"

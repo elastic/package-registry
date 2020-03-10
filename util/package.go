@@ -53,7 +53,8 @@ type Datasource struct {
 	Name        string  `config:"name" json:"name" validate:"required"`
 	Title       string  `config:"title" json:"title" validate:"required"`
 	Description string  `config:"description" json:"description" validate:"required"`
-	Inputs      []Input `config:"inputs" json:"inputs" validate:"required"`
+	Solution    string  `config:"solution" json:"solution" `
+	Inputs      []Input `config:"inputs" json:"inputs"`
 }
 
 type Requirement struct {
