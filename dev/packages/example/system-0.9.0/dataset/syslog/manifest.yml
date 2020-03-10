@@ -5,6 +5,7 @@ streams:
   - input: logs
     vars:
       - name: paths
+        multi: true
         default:
           - /var/log/messages*
           - /var/log/syslog*

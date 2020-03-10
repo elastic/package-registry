@@ -1,0 +1,15 @@
+title: System Raid metrics
+type: metrics
+
+streams:
+  - input: system/metrics
+    enabled: false
+    vars:
+      - name: period
+        type: string
+        default: 10s
+        description: Collection period
+      - name: mount_point
+        type: string
+        default: /
+        description: Raid mount point to monitor

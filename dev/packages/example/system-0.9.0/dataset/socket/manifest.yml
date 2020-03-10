@@ -1,0 +1,27 @@
+title: System Socket metrics
+type: metrics
+
+streams:
+  - input: system/socket
+    enabled: false
+    vars:
+      - name: period
+        type: string
+        default: 10s
+        description: Collection period
+
+      - name: reverse_lookup.enabled
+        type: bool
+        default: false
+        description: Reverse DNS lookup on remote IP addresses
+
+      - name: reverse_lookup.success_ttl
+        type: string
+        default: 60s
+        description: Reverse DNS lookup on remote IP addresses success ttl
+
+      - name: reverse_lookup.failure_ttl
+        type: string
+        default: 60s
+        description: Reverse DNS lookup on remote IP addresses failure ttl
+

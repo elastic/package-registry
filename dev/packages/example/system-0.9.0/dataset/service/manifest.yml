@@ -1,0 +1,16 @@
+title: System Raid metrics
+type: metrics
+
+streams:
+  - input: system/metrics
+    enabled: false
+    vars:
+      - name: period
+        type: string
+        default: 10s
+        description: Collection period
+      - name: state_filter
+        type: string
+        multi: true
+        default: []
+        description: Filter systemd services by status or sub-status

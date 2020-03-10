@@ -1,20 +1,13 @@
-input: metrics/system
+input: system/metrics
 metricset: process
 period: {{period}}
 dataset: system.process
-processes: [{{processes}}]
+processes: {{processes}}
+process.cmdline.cache.enabled: {{cmdline.cache.enabled}}
+process.cgroups.enabled: {{cgroups.enabled}}
+process.env.whitelist: {{env.whitelist}}
+process.include_cpu_ticks: {{include_cpu_ticks}}
 
-# TODO: To be introduced as config options
-# If false, cmdline of a process is not cached.
-#process.cmdline.cache.enabled: true
-
-# Enable collection of cgroup metrics from processes on Linux.
-#process.cgroups.enabled: true
-
-# A list of regular expressions used to whitelist environment variables
-# reported with the process metricset's events. Defaults to empty.
-#process.env.whitelist: []
-
-# Include the cumulative CPU tick values with the process metrics. Defaults
-# to false.
-#process.include_cpu_ticks: false
+process.include_top_n.enabled: {{include_top_n.enabled}}
+process.include_top_n.by_cpu: {{include_top_n.by_cpu}}
+process.include_top_n.by_memory: {{include_top_n.by_memory}}

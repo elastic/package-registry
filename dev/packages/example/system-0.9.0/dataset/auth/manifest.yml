@@ -8,6 +8,8 @@ streams:
         default:
           - /var/log/auth.log*
           - /var/log/secure*
+        required: true
+        multi: true
         os.darwin:
           default:
           # this works in OS X < 10.8. Newer darwin versions don't write
