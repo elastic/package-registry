@@ -25,6 +25,7 @@ type packageContent struct {
 	manifest util.Package
 	datasets map[string]datasetContent
 	images   []imageContent
+	kibana   kibanaContent
 }
 
 func newPackageContent(name string) packageContent {
@@ -40,12 +41,30 @@ func newPackageContent(name string) packageContent {
 			License:       "basic",
 		},
 		datasets: map[string]datasetContent{},
+		kibana: kibanaContent{
+			dashboardFiles:     map[string][]byte{},
+			visualizationFiles: map[string][]byte{},
+		},
 	}
 }
 
 func (pc *packageContent) addDatasets(ds map[string]datasetContent) {
 	for k, v := range ds {
 		pc.datasets[k] = v
+	}
+}
+
+func (pc *packageContent) addKibanaContent(kc kibanaContent) {
+	if kc.dashboardFiles != nil {
+		for k, v := range kc.dashboardFiles {
+			pc.kibana.dashboardFiles[k] = v
+		}
+	}
+
+	if kc.visualizationFiles != nil {
+		for k, v := range kc.visualizationFiles {
+			pc.kibana.visualizationFiles[k] = v
+		}
 	}
 }
 
@@ -89,6 +108,7 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, package
 		manifest := aPackage.manifest
 		manifest.Categories = append(manifest.Categories, packageType)
 
+		// dataset
 		modulePath := path.Join(beatModulesPath, moduleName)
 		datasets, err := createDatasets(modulePath, moduleName)
 		if err != nil {
@@ -96,18 +116,27 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, package
 		}
 		aPackage.addDatasets(datasets)
 
+		// img
 		beatDocsPath := selectDocsPath(beatsDir, beatName)
 		images, err := createImages(beatDocsPath, modulePath)
 		if err != nil {
 			return err
 		}
 
+		// img/screenshots
 		aPackage.images = append(aPackage.images, images...)
 		screenshots, err := createScreenshots(images)
 		if err != nil {
 			return err
 		}
 		manifest.Screenshots = append(manifest.Screenshots, screenshots...)
+
+		// kibana
+		kibana, err := createKibanaContent(modulePath)
+		if err != nil {
+			return nil
+		}
+		aPackage.addKibanaContent(kibana)
 
 		aPackage.manifest = manifest
 		r.packages[moduleDir.Name()] = aPackage
@@ -138,6 +167,7 @@ func (r *packageRepository) save(outputDir string) error {
 			return errors.Wrapf(err, "writing manifest file failed (path: %s)", manifestFilePath)
 		}
 
+		// dataset
 		for datasetName, dataset := range content.datasets {
 			datasetPath := filepath.Join(packagePath, "dataset", datasetName)
 			err := os.MkdirAll(datasetPath, 0755)
@@ -164,12 +194,53 @@ func (r *packageRepository) save(outputDir string) error {
 			}
 		}
 
+		// img
 		imgDstDir := path.Join(packagePath, "img")
 		for _, image := range content.images {
 			log.Printf("\tcopy image file '%s' to '%s'", image.source, imgDstDir)
 			err := copyFile(image.source, imgDstDir)
 			if err != nil {
 				return errors.Wrapf(err, "copying file failed")
+			}
+		}
+
+		// kibana/dashboard
+		if len(content.kibana.dashboardFiles) > 0 {
+			dashboardPath := filepath.Join(packagePath, "dashboard")
+			err := os.MkdirAll(dashboardPath, 0755)
+			if err != nil {
+				return errors.Wrapf(err, "cannot make directory for dashboard files: '%s'", dashboardPath)
+			}
+
+			for fileName, body := range content.kibana.dashboardFiles {
+				dashboardFilePath := filepath.Join(dashboardPath, fileName)
+
+				log.Printf("\tcreate dashboard file: %s", dashboardFilePath)
+				err = ioutil.WriteFile(dashboardFilePath, body, 0644)
+				if err != nil {
+					return errors.Wrapf(err, "writing dashboard file failed (path: %s)", dashboardFilePath)
+				}
+			}
+		}
+
+		// kibana/visualization
+		if len(content.kibana.visualizationFiles) > 0 {
+			visualizationPath := filepath.Join(packagePath, "visualization")
+			err := os.MkdirAll(visualizationPath, 0755)
+			if err != nil {
+				return errors.Wrapf(err, "cannot make directory for visualization files: '%s'",
+					visualizationPath)
+			}
+
+			for fileName, body := range content.kibana.dashboardFiles {
+				visualizationFilePath := filepath.Join(visualizationPath, fileName)
+
+				log.Printf("\tcreate visualization file: %s", visualizationFilePath)
+				err = ioutil.WriteFile(visualizationFilePath, body, 0644)
+				if err != nil {
+					return errors.Wrapf(err, "writing visualization file failed (path: %s)",
+						visualizationFilePath)
+				}
 			}
 		}
 	}
@@ -179,7 +250,7 @@ func (r *packageRepository) save(outputDir string) error {
 func copyFile(src, dstDir string) error {
 	sourceFile, err := os.Open(src)
 	if err != nil {
-		return errors.Wrapf(err, "opening image file failed (src: %s)", src)
+		return errors.Wrapf(err, "opening file failed (src: %s)", src)
 	}
 	defer sourceFile.Close()
 
@@ -189,18 +260,18 @@ func copyFile(src, dstDir string) error {
 	dst := path.Join(dstDir, sourceFileName)
 	err = os.MkdirAll(dstDir, 0755)
 	if err != nil {
-		return errors.Wrapf(err, "cannot make directory for img: '%s'", dst)
+		return errors.Wrapf(err, "cannot make directory: '%s'", dst)
 	}
 
 	dstFile, err := os.Create(dst)
 	if err != nil {
-		return errors.Wrapf(err, "creating target image file failed (dst: %s)", dst)
+		return errors.Wrapf(err, "creating target file failed (dst: %s)", dst)
 	}
 	defer dstFile.Close()
 
 	_, err = io.Copy(dstFile, sourceFile)
 	if err != nil {
-		return errors.Wrapf(err, "copying image file failed (src: %s, dst: %s)", src, dst)
+		return errors.Wrapf(err, "copying file failed (src: %s, dst: %s)", src, dst)
 	}
 	return nil
 }
