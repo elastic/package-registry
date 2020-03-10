@@ -134,7 +134,7 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, package
 		// kibana
 		kibana, err := createKibanaContent(modulePath)
 		if err != nil {
-			return nil
+			return err
 		}
 		aPackage.addKibanaContent(kibana)
 

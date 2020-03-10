@@ -40,7 +40,7 @@ func build(beatsDir, outputDir string) error {
 	for _, beatName := range logSources {
 		err := repository.createPackagesFromSource(beatsDir, beatName, "logs")
 		if err != nil {
-			return errors.Wrap(err, "creating form logs source failed")
+			return errors.Wrap(err, "creating from logs source failed")
 		}
 	}
 
