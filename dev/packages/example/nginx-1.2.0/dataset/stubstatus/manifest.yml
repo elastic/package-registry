@@ -12,7 +12,10 @@ release: beta
 
 streams:
   - input: "nginx/metrics"
-
-    # Only the variables have to be repeated that are not specified as part of the input
+    title: Nginx stubstatus metrics
+    description: Collecting [stubstatus metrics](http://nginx.org/en/docs/http/ngx_http_stub_status_module.html) from the nginx service.
     vars:
-      # All variables are specified in the input already
+      - name: period
+        description: "Collection period. Valid values: 10s, 5m, 2h"
+        default: "10s"
+        type: duration
