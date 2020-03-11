@@ -10,12 +10,6 @@ categories: ["logs"]
 release: ga
 license: basic
 
-requirement:
-  kibana:
-    versions: "<8.0.0"
-  elasticsearch:
-    versions: "<8.0.0"
-
 
 datasources:
   - name: logs
@@ -24,3 +18,6 @@ datasources:
     inputs:
       - type: logs
 
+icons:
+  - src: "/img/icon.svg"
+    type: "image/svg+xml"

@@ -58,3 +58,7 @@ datasources:
         title: Collect nginx logs
         description: Collect access and error logs from nginx.
         vars:
+
+icons:
+  - src: "/img/icon.svg"
+    type: "image/svg+xml"
