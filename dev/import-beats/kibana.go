@@ -203,7 +203,7 @@ func extractKibanaObjects(dashboardFile []byte, objectType string) (map[string][
 			return nil, errors.Wrapf(err, "removing field version failed")
 		}
 
-		data, err := json.Marshal(object)
+		data, err := json.MarshalIndent(object, "", "    ")
 		if err != nil {
 			return nil, errors.Wrapf(err, "marshalling object failed")
 		}

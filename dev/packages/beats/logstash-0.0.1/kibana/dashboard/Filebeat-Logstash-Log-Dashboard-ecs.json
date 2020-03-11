@@ -1,1 +1,33 @@
-{"attributes":{"description":"Overview of Logstash logs","hits":0,"kibanaSavedObjectMeta":{"searchSourceJSON":"{\"filter\":[],\"highlightAll\":true,\"query\":{\"language\":\"kuery\",\"query\":\"\"},\"version\":true}"},"optionsJSON":"{\"darkTheme\":false}","panelsJSON":"[{\"panelIndex\":\"2\",\"panelRefName\":\"panel_0\",\"version\":\"7.3.0\",\"gridData\":{\"x\":24,\"y\":0,\"w\":24,\"h\":12,\"i\":\"2\"},\"embeddableConfig\":{}},{\"panelIndex\":\"3\",\"panelRefName\":\"panel_1\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":0,\"w\":24,\"h\":12,\"i\":\"3\"},\"embeddableConfig\":{}},{\"panelIndex\":\"4\",\"panelRefName\":\"panel_2\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":12,\"w\":48,\"h\":40,\"i\":\"4\"},\"embeddableConfig\":{\"columns\":[\"log.level\",\"logstash.log.module\",\"message\",\"source\"],\"sort\":[\"@timestamp\",\"desc\"]}}]","timeRestore":false,"title":"[Filebeat Logstash] Logstash Logs ECS","version":1},"id":"Filebeat-Logstash-Log-Dashboard-ecs","references":[{"id":"0b1dace0-cbdb-11e7-9852-73e0a9df1bb6-ecs","name":"panel_0","type":"visualization"},{"id":"e90b7240-cbda-11e7-9852-73e0a9df1bb6-ecs","name":"panel_1","type":"visualization"},{"id":"cfaba090-cbda-11e7-9852-73e0a9df1bb6-ecs","name":"panel_2","type":"search"}],"type":"dashboard"}
+{
+    "attributes": {
+        "description": "Overview of Logstash logs",
+        "hits": 0,
+        "kibanaSavedObjectMeta": {
+            "searchSourceJSON": "{\"filter\":[],\"highlightAll\":true,\"query\":{\"language\":\"kuery\",\"query\":\"\"},\"version\":true}"
+        },
+        "optionsJSON": "{\"darkTheme\":false}",
+        "panelsJSON": "[{\"panelIndex\":\"2\",\"panelRefName\":\"panel_0\",\"version\":\"7.3.0\",\"gridData\":{\"x\":24,\"y\":0,\"w\":24,\"h\":12,\"i\":\"2\"},\"embeddableConfig\":{}},{\"panelIndex\":\"3\",\"panelRefName\":\"panel_1\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":0,\"w\":24,\"h\":12,\"i\":\"3\"},\"embeddableConfig\":{}},{\"panelIndex\":\"4\",\"panelRefName\":\"panel_2\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":12,\"w\":48,\"h\":40,\"i\":\"4\"},\"embeddableConfig\":{\"columns\":[\"log.level\",\"logstash.log.module\",\"message\",\"source\"],\"sort\":[\"@timestamp\",\"desc\"]}}]",
+        "timeRestore": false,
+        "title": "[Filebeat Logstash] Logstash Logs ECS",
+        "version": 1
+    },
+    "id": "Filebeat-Logstash-Log-Dashboard-ecs",
+    "references": [
+        {
+            "id": "0b1dace0-cbdb-11e7-9852-73e0a9df1bb6-ecs",
+            "name": "panel_0",
+            "type": "visualization"
+        },
+        {
+            "id": "e90b7240-cbda-11e7-9852-73e0a9df1bb6-ecs",
+            "name": "panel_1",
+            "type": "visualization"
+        },
+        {
+            "id": "cfaba090-cbda-11e7-9852-73e0a9df1bb6-ecs",
+            "name": "panel_2",
+            "type": "search"
+        }
+    ],
+    "type": "dashboard"
+}

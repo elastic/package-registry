@@ -1,1 +1,21 @@
-{"attributes":{"description":"","kibanaSavedObjectMeta":{"searchSourceJSON":"{\"filter\":[],\"query\":{\"language\":\"kuery\",\"query\":\"\"},\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.index\"}"},"title":"Event Account Tag Cloud [Filebeat Auditd] ECS","uiStateJSON":"{}","version":1,"visState":"{\"aggs\":[{\"enabled\":true,\"id\":\"1\",\"params\":{},\"schema\":\"metric\",\"type\":\"count\"},{\"enabled\":true,\"id\":\"2\",\"params\":{\"field\":\"user.name\",\"order\":\"desc\",\"orderBy\":\"1\",\"size\":15},\"schema\":\"segment\",\"type\":\"terms\"}],\"listeners\":{},\"params\":{\"hideLabel\":false,\"maxFontSize\":42,\"minFontSize\":15,\"orientation\":\"single\",\"scale\":\"linear\"},\"title\":\"Audit Event Account Tag Cloud ECS\",\"type\":\"tagcloud\"}"},"id":"c5411910-0a87-11e7-8b04-eb22a5669f27-ecs","references":[{"id":"filebeat-*","name":"kibanaSavedObjectMeta.searchSourceJSON.index","type":"index-pattern"}],"type":"visualization"}
+{
+    "attributes": {
+        "description": "",
+        "kibanaSavedObjectMeta": {
+            "searchSourceJSON": "{\"filter\":[],\"query\":{\"language\":\"kuery\",\"query\":\"\"},\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.index\"}"
+        },
+        "title": "Event Account Tag Cloud [Filebeat Auditd] ECS",
+        "uiStateJSON": "{}",
+        "version": 1,
+        "visState": "{\"aggs\":[{\"enabled\":true,\"id\":\"1\",\"params\":{},\"schema\":\"metric\",\"type\":\"count\"},{\"enabled\":true,\"id\":\"2\",\"params\":{\"field\":\"user.name\",\"order\":\"desc\",\"orderBy\":\"1\",\"size\":15},\"schema\":\"segment\",\"type\":\"terms\"}],\"listeners\":{},\"params\":{\"hideLabel\":false,\"maxFontSize\":42,\"minFontSize\":15,\"orientation\":\"single\",\"scale\":\"linear\"},\"title\":\"Audit Event Account Tag Cloud ECS\",\"type\":\"tagcloud\"}"
+    },
+    "id": "c5411910-0a87-11e7-8b04-eb22a5669f27-ecs",
+    "references": [
+        {
+            "id": "filebeat-*",
+            "name": "kibanaSavedObjectMeta.searchSourceJSON.index",
+            "type": "index-pattern"
+        }
+    ],
+    "type": "visualization"
+}

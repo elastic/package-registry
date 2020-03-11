@@ -1,1 +1,33 @@
-{"attributes":{"description":"Filebeat Icinga module dashboard for the debug logs","hits":0,"kibanaSavedObjectMeta":{"searchSourceJSON":"{\"filter\":[],\"highlightAll\":true,\"query\":{\"language\":\"kuery\",\"query\":\"\"},\"version\":true}"},"optionsJSON":"{\"darkTheme\":false}","panelsJSON":"[{\"panelIndex\":\"1\",\"panelRefName\":\"panel_0\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":0,\"w\":24,\"h\":12,\"i\":\"1\"},\"embeddableConfig\":{}},{\"panelIndex\":\"2\",\"panelRefName\":\"panel_1\",\"version\":\"7.3.0\",\"gridData\":{\"x\":24,\"y\":0,\"w\":24,\"h\":12,\"i\":\"2\"},\"embeddableConfig\":{}},{\"panelIndex\":\"3\",\"panelRefName\":\"panel_2\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":12,\"w\":48,\"h\":116,\"i\":\"3\"},\"embeddableConfig\":{\"columns\":[\"icinga.debug.facility\",\"log.level\",\"message\"],\"sort\":[\"@timestamp\",\"desc\"]}}]","timeRestore":false,"title":"[Filebeat Icinga] Debug Log ECS","version":1},"id":"26309570-2419-11e7-a83b-d5f4cebac9ff-ecs","references":[{"id":"0bc34b60-2419-11e7-a83b-d5f4cebac9ff-ecs","name":"panel_0","type":"visualization"},{"id":"fb09d4b0-2418-11e7-a83b-d5f4cebac9ff-ecs","name":"panel_1","type":"visualization"},{"id":"c876e6a0-2418-11e7-a83b-d5f4cebac9ff-ecs","name":"panel_2","type":"search"}],"type":"dashboard"}
+{
+    "attributes": {
+        "description": "Filebeat Icinga module dashboard for the debug logs",
+        "hits": 0,
+        "kibanaSavedObjectMeta": {
+            "searchSourceJSON": "{\"filter\":[],\"highlightAll\":true,\"query\":{\"language\":\"kuery\",\"query\":\"\"},\"version\":true}"
+        },
+        "optionsJSON": "{\"darkTheme\":false}",
+        "panelsJSON": "[{\"panelIndex\":\"1\",\"panelRefName\":\"panel_0\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":0,\"w\":24,\"h\":12,\"i\":\"1\"},\"embeddableConfig\":{}},{\"panelIndex\":\"2\",\"panelRefName\":\"panel_1\",\"version\":\"7.3.0\",\"gridData\":{\"x\":24,\"y\":0,\"w\":24,\"h\":12,\"i\":\"2\"},\"embeddableConfig\":{}},{\"panelIndex\":\"3\",\"panelRefName\":\"panel_2\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":12,\"w\":48,\"h\":116,\"i\":\"3\"},\"embeddableConfig\":{\"columns\":[\"icinga.debug.facility\",\"log.level\",\"message\"],\"sort\":[\"@timestamp\",\"desc\"]}}]",
+        "timeRestore": false,
+        "title": "[Filebeat Icinga] Debug Log ECS",
+        "version": 1
+    },
+    "id": "26309570-2419-11e7-a83b-d5f4cebac9ff-ecs",
+    "references": [
+        {
+            "id": "0bc34b60-2419-11e7-a83b-d5f4cebac9ff-ecs",
+            "name": "panel_0",
+            "type": "visualization"
+        },
+        {
+            "id": "fb09d4b0-2418-11e7-a83b-d5f4cebac9ff-ecs",
+            "name": "panel_1",
+            "type": "visualization"
+        },
+        {
+            "id": "c876e6a0-2418-11e7-a83b-d5f4cebac9ff-ecs",
+            "name": "panel_2",
+            "type": "search"
+        }
+    ],
+    "type": "dashboard"
+}

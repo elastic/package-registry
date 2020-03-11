@@ -1,1 +1,15 @@
-{"attributes":{"description":"","kibanaSavedObjectMeta":{"searchSourceJSON":"{\"filter\":[],\"query\":{\"language\":\"kuery\",\"query\":\"\"}}"},"title":"GC count [Metricbeat Golang] ECS","uiStateJSON":"{}","version":1,"visState":"{\"aggs\":[],\"params\":{\"expression\":\".es(index=\\\"metricbeat*\\\",metric=\\\"max:golang.heap.gc.pause.count\\\").label(\\\"GC Count\\\").bars().yaxis(label=\\\"Count\\\"),.es(index=\\\"metricbeat*\\\",metric=\\\"max:golang.heap.gc.total_count\\\").label(\\\"GC Rate\\\").derivative().movingaverage(30),.es(index=\\\"metricbeat*\\\",metric=\\\"max:golang.heap.gc.cpu_fraction\\\").label(\\\"CPU Fraction\\\").yaxis(2,label=\\\"Fraction\\\")\",\"interval\":\"10s\"},\"title\":\"GC count [Metricbeat Golang] ECS\",\"type\":\"timelion\"}"},"id":"b046cb80-f52a-11e6-969c-518c48c913e4-ecs","references":[],"type":"visualization"}
+{
+    "attributes": {
+        "description": "",
+        "kibanaSavedObjectMeta": {
+            "searchSourceJSON": "{\"filter\":[],\"query\":{\"language\":\"kuery\",\"query\":\"\"}}"
+        },
+        "title": "GC count [Metricbeat Golang] ECS",
+        "uiStateJSON": "{}",
+        "version": 1,
+        "visState": "{\"aggs\":[],\"params\":{\"expression\":\".es(index=\\\"metricbeat*\\\",metric=\\\"max:golang.heap.gc.pause.count\\\").label(\\\"GC Count\\\").bars().yaxis(label=\\\"Count\\\"),.es(index=\\\"metricbeat*\\\",metric=\\\"max:golang.heap.gc.total_count\\\").label(\\\"GC Rate\\\").derivative().movingaverage(30),.es(index=\\\"metricbeat*\\\",metric=\\\"max:golang.heap.gc.cpu_fraction\\\").label(\\\"CPU Fraction\\\").yaxis(2,label=\\\"Fraction\\\")\",\"interval\":\"10s\"},\"title\":\"GC count [Metricbeat Golang] ECS\",\"type\":\"timelion\"}"
+    },
+    "id": "b046cb80-f52a-11e6-969c-518c48c913e4-ecs",
+    "references": [],
+    "type": "visualization"
+}
