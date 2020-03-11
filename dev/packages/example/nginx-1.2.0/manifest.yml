@@ -28,8 +28,8 @@ datasources:
         # id: nginx
         type: nginx/metrics
         # Title should never have an ending dot.
-        title: Collecting metrics from nginx hosts
-        description: Collectiong stubstatus metrics from the nginx hosts.
+        title: Collect metrics from nginx hosts
+        description: Collect stubstatus metrics from nginx hosts.
 
         # Common configuration options for this input
         vars:
