@@ -66,8 +66,52 @@ screenshots:
 #    type: video/mp4
 
 # Icons options are commented out as currently not icons added
+# It is expected that icons are in svg, but other formats are supported.
 icons:
-#  - src: "/img/icon.png"
-#    size: "1800x1800"
-#    type: "image/png"
+  -
+    # src is a required field
+    src: "/img/icon.svg"
+    # This helps to send the right header
+    type: "image/svg+xml"
+    # Size of the image, can be useful if it has to be scaled.
+    size: 32x32
 
+# Defining a datasource allows the UI to generate a form for each input and generate the agent
+# config out of it. For a visual guide on what fields is used how in the UI, check out https://github.com/elastic/package-registry/pull/242
+datasources:
+  -
+    # Do we need a name for the data source?
+    name: nginx
+    title: Nginx logs and metrics.
+    description: Collecting logs and metrics from nginx.
+
+    # List of inputs this datasource supports
+    inputs:
+      -
+        # An id can be given, in case the type used here is not unique
+        # This is for selection in the stream
+        # id: nginx
+
+        # The type describing this input. These are the types supported by the agent
+        # and are used by the stream definition to reference a type.
+        type: nginx/metrics
+
+        # Short title to describe the input. It should not have a dot at the end.
+        title: Collect metrics and logs from reference service
+
+        # This description is to describe what this input is about. It can contain markdown
+        # and should always end with a dot.
+        description: Description of the reference input.
+
+        # Common configuration options for this input
+        vars:
+          - name: hosts
+            title: Hosts
+
+            description: List of nginx hosts to collect data from.
+            default:
+              ["http://127.0.0.1"]
+            # All the config options that are required should be shown in the UI
+            required: true
+            multi: true
+            type: text

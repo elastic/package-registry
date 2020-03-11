@@ -1,0 +1,48 @@
+# Title of the dataset
+title: Reference Logs Title
+
+# Release status of the dataset.
+# Allowed values: ga, beta, experimental
+release: beta
+
+# Describes the type of the dataset.
+# Allowed values: logs, metrics, events
+type: logs
+
+# This is the ingest pipeline which should be used. If none is define,
+# it checks if a default pipeline exists.
+#ingest_pipeline: default
+
+# List of supported streams. There can be multiple stream definitions for different input types.
+streams:
+  -
+    # This is the input to be used defined on the package level. The names must match.
+    input: logs
+
+    # Title shown for the stream. If not set, falls back to dataset id
+    title: Title reference stream
+
+    # Description of the stream. It can contain markdown and should contain more details about the stream.
+    description: Collecting the nginx access logs from file.
+
+    vars:
+      - name: paths
+        required: true
+
+        # Title shown on top of the variable
+        title: Example variable title
+
+        # More detailed description of the variable, example values, how to use it. Markdown is allowed.
+        description: >
+          Description around how a variable should be used, what values it can contain and it can even contain
+          **Markdown** or links.
+
+        # Type to be used for it in the UI.
+        # Allowed values: text, password, bool, integer
+        type: text
+
+        # Multi defines if the values is an array and multiple values can be defined
+        multi: true
+
+        # Default value to be filled in, in the UI.
+        default: foo
