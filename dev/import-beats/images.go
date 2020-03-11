@@ -90,7 +90,7 @@ func extractImages(beatDocsPath string, docsFile []byte) []imageContent {
 	return contents
 }
 
-func createScreenshots(images []imageContent) ([]util.Image, error) {
+func createManifestImages(images []imageContent) ([]util.Image, error) {
 	var imgs []util.Image
 	for _, image := range images {
 		i := strings.LastIndex(image.source, "/")

@@ -69,7 +69,9 @@ func (pc *packageContent) addKibanaContent(kc kibanaContent) {
 
 type packageRepository struct {
 	kibanaMigrator *kibanaMigrator
-	packages       map[string]packageContent
+	iconRepository *iconRepository
+
+	packages map[string]packageContent
 }
 
 func newPackageRepository(kibanaMigrator *kibanaMigrator) *packageRepository {
@@ -123,14 +125,27 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, package
 		if err != nil {
 			return err
 		}
+		aPackage.images = append(aPackage.images, images...)
+
+		icons, err := createIcons(r.iconRepository, moduleName)
+		if err != nil {
+			return err
+		}
+		aPackage.images = append(aPackage.images, icons...)
 
 		// img/screenshots
-		aPackage.images = append(aPackage.images, images...)
-		screenshots, err := createScreenshots(images)
+		screenshots, err := createManifestImages(images)
 		if err != nil {
 			return err
 		}
 		manifest.Screenshots = append(manifest.Screenshots, screenshots...)
+
+		// img/icons
+		manifestIcons, err := createManifestImages(icons)
+		if err != nil {
+			return err
+		}
+		manifest.Icons = append(manifest.Icons, manifestIcons...)
 
 		// kibana
 		kibana, err := createKibanaContent(r.kibanaMigrator, modulePath)
