@@ -3,10 +3,112 @@
         "description": "Palo Alto Networks PAN-OS Threats Overview",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"query\":{\"language\":\"kuery\",\"query\":\"\"}}"
+            "searchSourceJSON": {
+                "filter": [],
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                }
+            }
         },
-        "optionsJSON": "{\"hidePanelTitles\":false,\"useMargins\":true}",
-        "panelsJSON": "[{\"embeddableConfig\":{\"vis\":{\"legendOpen\":false}},\"gridData\":{\"h\":15,\"i\":\"1\",\"w\":31,\"x\":0,\"y\":0},\"panelIndex\":\"1\",\"panelRefName\":\"panel_0\",\"title\":\"Threat outcome histogram\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"2\",\"w\":24,\"x\":0,\"y\":15},\"panelIndex\":\"2\",\"panelRefName\":\"panel_1\",\"title\":\"Top threats by name\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"3\",\"w\":24,\"x\":24,\"y\":15},\"panelIndex\":\"3\",\"panelRefName\":\"panel_2\",\"title\":\"Top threats by resource\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":8,\"i\":\"4\",\"w\":24,\"x\":0,\"y\":30},\"panelIndex\":\"4\",\"panelRefName\":\"panel_3\",\"title\":\"Top attackers (clients)\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":8,\"i\":\"5\",\"w\":24,\"x\":24,\"y\":30},\"panelIndex\":\"5\",\"panelRefName\":\"panel_4\",\"title\":\"Top attackers (servers)\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{\"vis\":{\"legendOpen\":true}},\"gridData\":{\"h\":15,\"i\":\"6\",\"w\":17,\"x\":31,\"y\":0},\"panelIndex\":\"6\",\"panelRefName\":\"panel_5\",\"title\":\"Outcome by threat type\",\"version\":\"7.3.0\"}]",
+        "optionsJSON": {
+            "hidePanelTitles": false,
+            "useMargins": true
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "legendOpen": false
+                    }
+                },
+                "gridData": {
+                    "h": 15,
+                    "i": "1",
+                    "w": 31,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "1",
+                "panelRefName": "panel_0",
+                "title": "Threat outcome histogram",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "2",
+                    "w": 24,
+                    "x": 0,
+                    "y": 15
+                },
+                "panelIndex": "2",
+                "panelRefName": "panel_1",
+                "title": "Top threats by name",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "3",
+                    "w": 24,
+                    "x": 24,
+                    "y": 15
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_2",
+                "title": "Top threats by resource",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "4",
+                    "w": 24,
+                    "x": 0,
+                    "y": 30
+                },
+                "panelIndex": "4",
+                "panelRefName": "panel_3",
+                "title": "Top attackers (clients)",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "5",
+                    "w": 24,
+                    "x": 24,
+                    "y": 30
+                },
+                "panelIndex": "5",
+                "panelRefName": "panel_4",
+                "title": "Top attackers (servers)",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "legendOpen": true
+                    }
+                },
+                "gridData": {
+                    "h": 15,
+                    "i": "6",
+                    "w": 17,
+                    "x": 31,
+                    "y": 0
+                },
+                "panelIndex": "6",
+                "panelRefName": "panel_5",
+                "title": "Outcome by threat type",
+                "version": "7.3.0"
+            }
+        ],
         "timeRestore": false,
         "title": "[Filebeat PANW] Threats Overview ECS",
         "version": 1

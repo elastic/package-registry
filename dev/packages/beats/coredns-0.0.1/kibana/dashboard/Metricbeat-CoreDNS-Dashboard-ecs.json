@@ -3,10 +3,139 @@
         "description": "Overview of CoreDNS server metrics.",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"query\":{\"language\":\"lucene\",\"query\":\"\"}}"
+            "searchSourceJSON": {
+                "filter": [],
+                "query": {
+                    "language": "lucene",
+                    "query": ""
+                }
+            }
         },
-        "optionsJSON": "{\"darkTheme\":false,\"hidePanelTitles\":false,\"useMargins\":true}",
-        "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"h\":10,\"i\":\"1\",\"w\":10,\"x\":0,\"y\":0},\"panelIndex\":\"1\",\"panelRefName\":\"panel_0\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":10,\"i\":\"2\",\"w\":14,\"x\":10,\"y\":0},\"panelIndex\":\"2\",\"panelRefName\":\"panel_1\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{\"vis\":{\"colors\":{\"NXDOMAIN\":\"#99440A\"}}},\"gridData\":{\"h\":15,\"i\":\"3\",\"w\":19,\"x\":24,\"y\":25},\"panelIndex\":\"3\",\"panelRefName\":\"panel_2\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":14,\"i\":\"10\",\"w\":24,\"x\":0,\"y\":40},\"panelIndex\":\"10\",\"panelRefName\":\"panel_3\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{\"vis\":{\"colors\":{\"tcp - 1\":\"#B7DBAB\",\"udp - 1\":\"#5195CE\"},\"legendOpen\":true}},\"gridData\":{\"h\":10,\"i\":\"11\",\"w\":19,\"x\":24,\"y\":0},\"panelIndex\":\"11\",\"panelRefName\":\"panel_4\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"12\",\"w\":19,\"x\":24,\"y\":10},\"panelIndex\":\"12\",\"panelRefName\":\"panel_5\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"15\",\"w\":24,\"x\":0,\"y\":10},\"panelIndex\":\"15\",\"panelRefName\":\"panel_6\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"16\",\"w\":24,\"x\":0,\"y\":25},\"panelIndex\":\"16\",\"panelRefName\":\"panel_7\",\"version\":\"7.3.0\"}]",
+        "optionsJSON": {
+            "darkTheme": false,
+            "hidePanelTitles": false,
+            "useMargins": true
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 10,
+                    "i": "1",
+                    "w": 10,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "1",
+                "panelRefName": "panel_0",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 10,
+                    "i": "2",
+                    "w": 14,
+                    "x": 10,
+                    "y": 0
+                },
+                "panelIndex": "2",
+                "panelRefName": "panel_1",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "colors": {
+                            "NXDOMAIN": "#99440A"
+                        }
+                    }
+                },
+                "gridData": {
+                    "h": 15,
+                    "i": "3",
+                    "w": 19,
+                    "x": 24,
+                    "y": 25
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_2",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 14,
+                    "i": "10",
+                    "w": 24,
+                    "x": 0,
+                    "y": 40
+                },
+                "panelIndex": "10",
+                "panelRefName": "panel_3",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "colors": {
+                            "tcp - 1": "#B7DBAB",
+                            "udp - 1": "#5195CE"
+                        },
+                        "legendOpen": true
+                    }
+                },
+                "gridData": {
+                    "h": 10,
+                    "i": "11",
+                    "w": 19,
+                    "x": 24,
+                    "y": 0
+                },
+                "panelIndex": "11",
+                "panelRefName": "panel_4",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "12",
+                    "w": 19,
+                    "x": 24,
+                    "y": 10
+                },
+                "panelIndex": "12",
+                "panelRefName": "panel_5",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "15",
+                    "w": 24,
+                    "x": 0,
+                    "y": 10
+                },
+                "panelIndex": "15",
+                "panelRefName": "panel_6",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "16",
+                    "w": 24,
+                    "x": 0,
+                    "y": 25
+                },
+                "panelIndex": "16",
+                "panelRefName": "panel_7",
+                "version": "7.3.0"
+            }
+        ],
         "timeRestore": false,
         "title": "[Metricbeat CoreDNS] Overview ECS",
         "version": 1

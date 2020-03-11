@@ -3,10 +3,236 @@
         "description": "Netflow Top N flows",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[{\"$state\":{\"store\":\"globalState\"},\"meta\":{\"alias\":null,\"disabled\":false,\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index\",\"key\":\"input.type\",\"negate\":false,\"params\":{\"query\":\"netflow\"},\"type\":\"phrase\",\"value\":\"netflow\"},\"query\":{\"match\":{\"input.type\":{\"query\":\"netflow\",\"type\":\"phrase\"}}}}],\"highlightAll\":true,\"version\":true,\"query\":{\"query\":\"\",\"language\":\"kuery\"}}"
+            "searchSourceJSON": {
+                "filter": [
+                    {
+                        "$state": {
+                            "store": "globalState"
+                        },
+                        "meta": {
+                            "alias": null,
+                            "disabled": false,
+                            "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index",
+                            "key": "input.type",
+                            "negate": false,
+                            "params": {
+                                "query": "netflow"
+                            },
+                            "type": "phrase",
+                            "value": "netflow"
+                        },
+                        "query": {
+                            "match": {
+                                "input.type": {
+                                    "query": "netflow",
+                                    "type": "phrase"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "highlightAll": true,
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                },
+                "version": true
+            }
         },
-        "optionsJSON": "{\"darkTheme\":false}",
-        "panelsJSON": "[{\"panelIndex\":\"1\",\"panelRefName\":\"panel_0\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":0,\"w\":48,\"h\":4,\"i\":\"1\"},\"embeddableConfig\":{}},{\"panelIndex\":\"2\",\"panelRefName\":\"panel_1\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":4,\"w\":24,\"h\":20,\"i\":\"2\"},\"embeddableConfig\":{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":null,\"direction\":null}}}}},{\"panelIndex\":\"3\",\"panelRefName\":\"panel_2\",\"version\":\"7.3.0\",\"gridData\":{\"x\":24,\"y\":4,\"w\":24,\"h\":20,\"i\":\"3\"},\"embeddableConfig\":{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":null,\"direction\":null}}}}},{\"panelIndex\":\"4\",\"panelRefName\":\"panel_3\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":24,\"w\":24,\"h\":20,\"i\":\"4\"},\"embeddableConfig\":{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":null,\"direction\":null}}}}},{\"panelIndex\":\"5\",\"panelRefName\":\"panel_4\",\"version\":\"7.3.0\",\"gridData\":{\"x\":24,\"y\":24,\"w\":24,\"h\":20,\"i\":\"5\"},\"embeddableConfig\":{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":null,\"direction\":null}}}}},{\"panelIndex\":\"6\",\"panelRefName\":\"panel_5\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":44,\"w\":24,\"h\":20,\"i\":\"6\"},\"embeddableConfig\":{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":null,\"direction\":null}}}}},{\"panelIndex\":\"7\",\"panelRefName\":\"panel_6\",\"version\":\"7.3.0\",\"gridData\":{\"x\":24,\"y\":44,\"w\":24,\"h\":20,\"i\":\"7\"},\"embeddableConfig\":{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":null,\"direction\":null}}}}},{\"panelIndex\":\"8\",\"panelRefName\":\"panel_7\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":64,\"w\":24,\"h\":20,\"i\":\"8\"},\"embeddableConfig\":{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":2,\"direction\":\"desc\"}}}}},{\"panelIndex\":\"9\",\"panelRefName\":\"panel_8\",\"version\":\"7.3.0\",\"gridData\":{\"x\":24,\"y\":64,\"w\":24,\"h\":20,\"i\":\"9\"},\"embeddableConfig\":{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":null,\"direction\":null}}}}}]",
+        "optionsJSON": {
+            "darkTheme": false
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 4,
+                    "i": "1",
+                    "w": 48,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "1",
+                "panelRefName": "panel_0",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "params": {
+                            "sort": {
+                                "columnIndex": null,
+                                "direction": null
+                            }
+                        }
+                    }
+                },
+                "gridData": {
+                    "h": 20,
+                    "i": "2",
+                    "w": 24,
+                    "x": 0,
+                    "y": 4
+                },
+                "panelIndex": "2",
+                "panelRefName": "panel_1",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "params": {
+                            "sort": {
+                                "columnIndex": null,
+                                "direction": null
+                            }
+                        }
+                    }
+                },
+                "gridData": {
+                    "h": 20,
+                    "i": "3",
+                    "w": 24,
+                    "x": 24,
+                    "y": 4
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_2",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "params": {
+                            "sort": {
+                                "columnIndex": null,
+                                "direction": null
+                            }
+                        }
+                    }
+                },
+                "gridData": {
+                    "h": 20,
+                    "i": "4",
+                    "w": 24,
+                    "x": 0,
+                    "y": 24
+                },
+                "panelIndex": "4",
+                "panelRefName": "panel_3",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "params": {
+                            "sort": {
+                                "columnIndex": null,
+                                "direction": null
+                            }
+                        }
+                    }
+                },
+                "gridData": {
+                    "h": 20,
+                    "i": "5",
+                    "w": 24,
+                    "x": 24,
+                    "y": 24
+                },
+                "panelIndex": "5",
+                "panelRefName": "panel_4",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "params": {
+                            "sort": {
+                                "columnIndex": null,
+                                "direction": null
+                            }
+                        }
+                    }
+                },
+                "gridData": {
+                    "h": 20,
+                    "i": "6",
+                    "w": 24,
+                    "x": 0,
+                    "y": 44
+                },
+                "panelIndex": "6",
+                "panelRefName": "panel_5",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "params": {
+                            "sort": {
+                                "columnIndex": null,
+                                "direction": null
+                            }
+                        }
+                    }
+                },
+                "gridData": {
+                    "h": 20,
+                    "i": "7",
+                    "w": 24,
+                    "x": 24,
+                    "y": 44
+                },
+                "panelIndex": "7",
+                "panelRefName": "panel_6",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "params": {
+                            "sort": {
+                                "columnIndex": 2,
+                                "direction": "desc"
+                            }
+                        }
+                    }
+                },
+                "gridData": {
+                    "h": 20,
+                    "i": "8",
+                    "w": 24,
+                    "x": 0,
+                    "y": 64
+                },
+                "panelIndex": "8",
+                "panelRefName": "panel_7",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "params": {
+                            "sort": {
+                                "columnIndex": null,
+                                "direction": null
+                            }
+                        }
+                    }
+                },
+                "gridData": {
+                    "h": 20,
+                    "i": "9",
+                    "w": 24,
+                    "x": 24,
+                    "y": 64
+                },
+                "panelIndex": "9",
+                "panelRefName": "panel_8",
+                "version": "7.3.0"
+            }
+        ],
         "timeRestore": false,
         "title": "[Filebeat Netflow] Top-N",
         "version": 1

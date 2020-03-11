@@ -3,10 +3,104 @@
         "description": "This Ceph dashboard that shows the most important cluster metrics.",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"query\":{\"language\":\"kuery\",\"query\":\"\"}}"
+            "searchSourceJSON": {
+                "filter": [],
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                }
+            }
         },
-        "optionsJSON": "{\"hidePanelTitles\":false,\"useMargins\":true}",
-        "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"1\",\"w\":18,\"x\":30,\"y\":0},\"panelIndex\":\"1\",\"panelRefName\":\"panel_0\",\"title\":\"Cluster Disk Stats\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":13,\"i\":\"2\",\"w\":24,\"x\":24,\"y\":12},\"panelIndex\":\"2\",\"panelRefName\":\"panel_1\",\"title\":\"Throughput\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":13,\"i\":\"3\",\"w\":24,\"x\":0,\"y\":12},\"panelIndex\":\"3\",\"panelRefName\":\"panel_2\",\"title\":\"IOPS\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"4\",\"w\":6,\"x\":24,\"y\":0},\"panelIndex\":\"4\",\"panelRefName\":\"panel_3\",\"title\":\"OSD Disk Usage\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"5\",\"w\":5,\"x\":0,\"y\":0},\"panelIndex\":\"5\",\"panelRefName\":\"panel_4\",\"title\":\"Pools\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"6\",\"w\":19,\"x\":5,\"y\":0},\"panelIndex\":\"6\",\"panelRefName\":\"panel_5\",\"title\":\"Pool Objects\",\"version\":\"7.3.0\"}]",
+        "optionsJSON": {
+            "hidePanelTitles": false,
+            "useMargins": true
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "1",
+                    "w": 18,
+                    "x": 30,
+                    "y": 0
+                },
+                "panelIndex": "1",
+                "panelRefName": "panel_0",
+                "title": "Cluster Disk Stats",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 13,
+                    "i": "2",
+                    "w": 24,
+                    "x": 24,
+                    "y": 12
+                },
+                "panelIndex": "2",
+                "panelRefName": "panel_1",
+                "title": "Throughput",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 13,
+                    "i": "3",
+                    "w": 24,
+                    "x": 0,
+                    "y": 12
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_2",
+                "title": "IOPS",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "4",
+                    "w": 6,
+                    "x": 24,
+                    "y": 0
+                },
+                "panelIndex": "4",
+                "panelRefName": "panel_3",
+                "title": "OSD Disk Usage",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "5",
+                    "w": 5,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "5",
+                "panelRefName": "panel_4",
+                "title": "Pools",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "6",
+                    "w": 19,
+                    "x": 5,
+                    "y": 0
+                },
+                "panelIndex": "6",
+                "panelRefName": "panel_5",
+                "title": "Pool Objects",
+                "version": "7.3.0"
+            }
+        ],
         "timeRestore": false,
         "title": "[Metricbeat Ceph] Cluster Overview",
         "version": 1

@@ -3,10 +3,84 @@
         "description": "Filebeat MongoDB module overview",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"highlightAll\":true,\"query\":{\"language\":\"kuery\",\"query\":\"\"},\"version\":true}"
+            "searchSourceJSON": {
+                "filter": [],
+                "highlightAll": true,
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                },
+                "version": true
+            }
         },
-        "optionsJSON": "{\"darkTheme\":false}",
-        "panelsJSON": "[{\"panelIndex\":\"1\",\"panelRefName\":\"panel_0\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":0,\"w\":16,\"h\":12,\"i\":\"1\"},\"embeddableConfig\":{}},{\"panelIndex\":\"2\",\"panelRefName\":\"panel_1\",\"version\":\"7.3.0\",\"gridData\":{\"x\":16,\"y\":0,\"w\":32,\"h\":12,\"i\":\"2\"},\"embeddableConfig\":{\"columns\":[\"mongodb.log.timestamp\",\"log.level\",\"mongodb.log.component\",\"mongodb.log.context\",\"message\"],\"sort\":[\"@timestamp\",\"desc\"]}},{\"panelIndex\":\"3\",\"panelRefName\":\"panel_2\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":12,\"w\":48,\"h\":24,\"i\":\"3\"},\"embeddableConfig\":{\"columns\":[\"mongodb.log.timestamp\",\"log.level\",\"mongodb.log.component\",\"mongodb.log.context\",\"message\"],\"sort\":[\"mongodb.log.timestamp\",\"asc\"]}}]",
+        "optionsJSON": {
+            "darkTheme": false
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "1",
+                    "w": 16,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "1",
+                "panelRefName": "panel_0",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "columns": [
+                        "mongodb.log.timestamp",
+                        "log.level",
+                        "mongodb.log.component",
+                        "mongodb.log.context",
+                        "message"
+                    ],
+                    "sort": [
+                        "@timestamp",
+                        "desc"
+                    ]
+                },
+                "gridData": {
+                    "h": 12,
+                    "i": "2",
+                    "w": 32,
+                    "x": 16,
+                    "y": 0
+                },
+                "panelIndex": "2",
+                "panelRefName": "panel_1",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "columns": [
+                        "mongodb.log.timestamp",
+                        "log.level",
+                        "mongodb.log.component",
+                        "mongodb.log.context",
+                        "message"
+                    ],
+                    "sort": [
+                        "mongodb.log.timestamp",
+                        "asc"
+                    ]
+                },
+                "gridData": {
+                    "h": 24,
+                    "i": "3",
+                    "w": 48,
+                    "x": 0,
+                    "y": 12
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_2",
+                "version": "7.3.0"
+            }
+        ],
         "timeRestore": false,
         "title": "[Filebeat MongoDB] Overview ECS",
         "version": 1

@@ -3,10 +3,183 @@
         "description": "Overview of NATS server status",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"highlightAll\":true,\"query\":{\"language\":\"kuery\",\"query\":\"\"},\"version\":true}"
+            "searchSourceJSON": {
+                "filter": [],
+                "highlightAll": true,
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                },
+                "version": true
+            }
         },
-        "optionsJSON": "{\"darkTheme\":false,\"hidePanelTitles\":false,\"useMargins\":true}",
-        "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"h\":11,\"i\":\"6\",\"w\":24,\"x\":0,\"y\":45},\"panelIndex\":\"6\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":7,\"i\":\"7\",\"w\":13,\"x\":24,\"y\":34},\"panelIndex\":\"7\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":7,\"i\":\"8\",\"w\":11,\"x\":37,\"y\":34},\"panelIndex\":\"8\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_2\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":8,\"i\":\"9\",\"w\":8,\"x\":24,\"y\":41},\"panelIndex\":\"9\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_3\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":11,\"i\":\"11\",\"w\":24,\"x\":0,\"y\":34},\"panelIndex\":\"11\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_4\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":10,\"i\":\"12\",\"w\":18,\"x\":15,\"y\":0},\"panelIndex\":\"12\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_5\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":10,\"i\":\"13\",\"w\":15,\"x\":0,\"y\":0},\"panelIndex\":\"13\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_6\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"14\",\"w\":24,\"x\":24,\"y\":10},\"panelIndex\":\"14\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_7\"},{\"embeddableConfig\":{\"vis\":{\"legendOpen\":true}},\"gridData\":{\"h\":12,\"i\":\"15\",\"w\":24,\"x\":24,\"y\":22},\"panelIndex\":\"15\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_8\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"16\",\"w\":24,\"x\":0,\"y\":10},\"panelIndex\":\"16\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_9\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"17\",\"w\":24,\"x\":0,\"y\":22},\"panelIndex\":\"17\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_10\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":10,\"i\":\"18\",\"w\":15,\"x\":33,\"y\":0},\"panelIndex\":\"18\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_11\"}]",
+        "optionsJSON": {
+            "darkTheme": false,
+            "hidePanelTitles": false,
+            "useMargins": true
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 11,
+                    "i": "6",
+                    "w": 24,
+                    "x": 0,
+                    "y": 45
+                },
+                "panelIndex": "6",
+                "panelRefName": "panel_0",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 7,
+                    "i": "7",
+                    "w": 13,
+                    "x": 24,
+                    "y": 34
+                },
+                "panelIndex": "7",
+                "panelRefName": "panel_1",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 7,
+                    "i": "8",
+                    "w": 11,
+                    "x": 37,
+                    "y": 34
+                },
+                "panelIndex": "8",
+                "panelRefName": "panel_2",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "9",
+                    "w": 8,
+                    "x": 24,
+                    "y": 41
+                },
+                "panelIndex": "9",
+                "panelRefName": "panel_3",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 11,
+                    "i": "11",
+                    "w": 24,
+                    "x": 0,
+                    "y": 34
+                },
+                "panelIndex": "11",
+                "panelRefName": "panel_4",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 10,
+                    "i": "12",
+                    "w": 18,
+                    "x": 15,
+                    "y": 0
+                },
+                "panelIndex": "12",
+                "panelRefName": "panel_5",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 10,
+                    "i": "13",
+                    "w": 15,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "13",
+                "panelRefName": "panel_6",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "14",
+                    "w": 24,
+                    "x": 24,
+                    "y": 10
+                },
+                "panelIndex": "14",
+                "panelRefName": "panel_7",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "legendOpen": true
+                    }
+                },
+                "gridData": {
+                    "h": 12,
+                    "i": "15",
+                    "w": 24,
+                    "x": 24,
+                    "y": 22
+                },
+                "panelIndex": "15",
+                "panelRefName": "panel_8",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "16",
+                    "w": 24,
+                    "x": 0,
+                    "y": 10
+                },
+                "panelIndex": "16",
+                "panelRefName": "panel_9",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "17",
+                    "w": 24,
+                    "x": 0,
+                    "y": 22
+                },
+                "panelIndex": "17",
+                "panelRefName": "panel_10",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 10,
+                    "i": "18",
+                    "w": 15,
+                    "x": 33,
+                    "y": 0
+                },
+                "panelIndex": "18",
+                "panelRefName": "panel_11",
+                "version": "7.3.0"
+            }
+        ],
         "timeRestore": false,
         "title": "[Metricbeat NATS] Overview ECS",
         "version": 1

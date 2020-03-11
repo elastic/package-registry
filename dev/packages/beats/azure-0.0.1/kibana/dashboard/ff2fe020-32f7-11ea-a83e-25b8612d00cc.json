@@ -3,10 +3,216 @@
         "description": "This dashboard shows metrics for table storage type in Azure.",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":\"table\",\"disabled\":false,\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index\",\"key\":\"azure.namespace\",\"negate\":false,\"params\":{\"query\":\"Microsoft.Storage/storageAccounts/tableServices\"},\"type\":\"phrase\"},\"query\":{\"match\":{\"azure.namespace\":{\"query\":\"Microsoft.Storage/storageAccounts/tableServices\",\"type\":\"phrase\"}}}}],\"query\":{\"language\":\"kuery\",\"query\":\"\"}}"
+            "searchSourceJSON": {
+                "filter": [
+                    {
+                        "$state": {
+                            "store": "appState"
+                        },
+                        "meta": {
+                            "alias": "table",
+                            "disabled": false,
+                            "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index",
+                            "key": "azure.namespace",
+                            "negate": false,
+                            "params": {
+                                "query": "Microsoft.Storage/storageAccounts/tableServices"
+                            },
+                            "type": "phrase"
+                        },
+                        "query": {
+                            "match": {
+                                "azure.namespace": {
+                                    "query": "Microsoft.Storage/storageAccounts/tableServices",
+                                    "type": "phrase"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                }
+            }
         },
-        "optionsJSON": "{\"hidePanelTitles\":false,\"useMargins\":true}",
-        "panelsJSON": "[{\"embeddableConfig\":{\"title\":\"\"},\"gridData\":{\"h\":5,\"i\":\"204cbabc-fafd-472c-b106-bd08f5262b1f\",\"w\":9,\"x\":0,\"y\":0},\"panelIndex\":\"204cbabc-fafd-472c-b106-bd08f5262b1f\",\"panelRefName\":\"panel_0\",\"version\":\"7.5.0\"},{\"embeddableConfig\":{\"title\":\"Availability\"},\"gridData\":{\"h\":9,\"i\":\"a9456b9b-efa6-410d-a56c-4b66aa8c499e\",\"w\":5,\"x\":9,\"y\":0},\"panelIndex\":\"a9456b9b-efa6-410d-a56c-4b66aa8c499e\",\"panelRefName\":\"panel_1\",\"title\":\"Availability\",\"version\":\"7.5.0\"},{\"embeddableConfig\":{\"title\":\"\"},\"gridData\":{\"h\":9,\"i\":\"15b7c108-0214-4af6-9719-fab59affafec\",\"w\":5,\"x\":14,\"y\":0},\"panelIndex\":\"15b7c108-0214-4af6-9719-fab59affafec\",\"panelRefName\":\"panel_2\",\"version\":\"7.5.0\"},{\"embeddableConfig\":{\"title\":\"\"},\"gridData\":{\"h\":9,\"i\":\"4177a6e6-97d7-447e-bcf3-ee9c1d660bd8\",\"w\":5,\"x\":19,\"y\":0},\"panelIndex\":\"4177a6e6-97d7-447e-bcf3-ee9c1d660bd8\",\"panelRefName\":\"panel_3\",\"version\":\"7.5.0\"},{\"embeddableConfig\":{\"title\":\"\"},\"gridData\":{\"h\":9,\"i\":\"28d85d90-3881-4d1f-b60c-43b545fc9f0e\",\"w\":5,\"x\":24,\"y\":0},\"panelIndex\":\"28d85d90-3881-4d1f-b60c-43b545fc9f0e\",\"panelRefName\":\"panel_4\",\"version\":\"7.5.0\"},{\"embeddableConfig\":{\"title\":\"Transactions\"},\"gridData\":{\"h\":9,\"i\":\"1d623c03-4d02-4a81-b91e-49e82e112016\",\"w\":19,\"x\":29,\"y\":0},\"panelIndex\":\"1d623c03-4d02-4a81-b91e-49e82e112016\",\"panelRefName\":\"panel_5\",\"title\":\"Transactions\",\"version\":\"7.5.0\"},{\"embeddableConfig\":{\"title\":\"\"},\"gridData\":{\"h\":15,\"i\":\"ff6441f8-d66d-4399-bae5-25d3d861b299\",\"w\":9,\"x\":0,\"y\":5},\"panelIndex\":\"ff6441f8-d66d-4399-bae5-25d3d861b299\",\"panelRefName\":\"panel_6\",\"version\":\"7.5.0\"},{\"embeddableConfig\":{\"title\":\"Success Server Latency\"},\"gridData\":{\"h\":15,\"i\":\"87066244-7840-4555-9d12-026d64977f1a\",\"w\":20,\"x\":9,\"y\":9},\"panelIndex\":\"87066244-7840-4555-9d12-026d64977f1a\",\"panelRefName\":\"panel_7\",\"title\":\"Success Server Latency\",\"version\":\"7.5.0\"},{\"embeddableConfig\":{\"title\":\"Success E2E Latency\"},\"gridData\":{\"h\":15,\"i\":\"756da375-e6a2-4668-af43-0cd294878254\",\"w\":19,\"x\":29,\"y\":9},\"panelIndex\":\"756da375-e6a2-4668-af43-0cd294878254\",\"panelRefName\":\"panel_8\",\"title\":\"Success E2E Latency\",\"version\":\"7.5.0\"},{\"embeddableConfig\":{\"title\":\"Egress Traffic by APIName\"},\"gridData\":{\"h\":14,\"i\":\"a715fafc-ca38-410c-9253-12ba506eabc0\",\"w\":20,\"x\":9,\"y\":24},\"panelIndex\":\"a715fafc-ca38-410c-9253-12ba506eabc0\",\"panelRefName\":\"panel_9\",\"title\":\"Egress Traffic by APIName\",\"version\":\"7.5.0\"},{\"embeddableConfig\":{\"title\":\"Ingress Traffic by APIName\"},\"gridData\":{\"h\":14,\"i\":\"75f72920-be71-47a9-a967-f1c862ab2961\",\"w\":19,\"x\":29,\"y\":24},\"panelIndex\":\"75f72920-be71-47a9-a967-f1c862ab2961\",\"panelRefName\":\"panel_10\",\"title\":\"Ingress Traffic by APIName\",\"version\":\"7.5.0\"}]",
+        "optionsJSON": {
+            "hidePanelTitles": false,
+            "useMargins": true
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {
+                    "title": ""
+                },
+                "gridData": {
+                    "h": 5,
+                    "i": "204cbabc-fafd-472c-b106-bd08f5262b1f",
+                    "w": 9,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "204cbabc-fafd-472c-b106-bd08f5262b1f",
+                "panelRefName": "panel_0",
+                "version": "7.5.0"
+            },
+            {
+                "embeddableConfig": {
+                    "title": "Availability"
+                },
+                "gridData": {
+                    "h": 9,
+                    "i": "a9456b9b-efa6-410d-a56c-4b66aa8c499e",
+                    "w": 5,
+                    "x": 9,
+                    "y": 0
+                },
+                "panelIndex": "a9456b9b-efa6-410d-a56c-4b66aa8c499e",
+                "panelRefName": "panel_1",
+                "title": "Availability",
+                "version": "7.5.0"
+            },
+            {
+                "embeddableConfig": {
+                    "title": ""
+                },
+                "gridData": {
+                    "h": 9,
+                    "i": "15b7c108-0214-4af6-9719-fab59affafec",
+                    "w": 5,
+                    "x": 14,
+                    "y": 0
+                },
+                "panelIndex": "15b7c108-0214-4af6-9719-fab59affafec",
+                "panelRefName": "panel_2",
+                "version": "7.5.0"
+            },
+            {
+                "embeddableConfig": {
+                    "title": ""
+                },
+                "gridData": {
+                    "h": 9,
+                    "i": "4177a6e6-97d7-447e-bcf3-ee9c1d660bd8",
+                    "w": 5,
+                    "x": 19,
+                    "y": 0
+                },
+                "panelIndex": "4177a6e6-97d7-447e-bcf3-ee9c1d660bd8",
+                "panelRefName": "panel_3",
+                "version": "7.5.0"
+            },
+            {
+                "embeddableConfig": {
+                    "title": ""
+                },
+                "gridData": {
+                    "h": 9,
+                    "i": "28d85d90-3881-4d1f-b60c-43b545fc9f0e",
+                    "w": 5,
+                    "x": 24,
+                    "y": 0
+                },
+                "panelIndex": "28d85d90-3881-4d1f-b60c-43b545fc9f0e",
+                "panelRefName": "panel_4",
+                "version": "7.5.0"
+            },
+            {
+                "embeddableConfig": {
+                    "title": "Transactions"
+                },
+                "gridData": {
+                    "h": 9,
+                    "i": "1d623c03-4d02-4a81-b91e-49e82e112016",
+                    "w": 19,
+                    "x": 29,
+                    "y": 0
+                },
+                "panelIndex": "1d623c03-4d02-4a81-b91e-49e82e112016",
+                "panelRefName": "panel_5",
+                "title": "Transactions",
+                "version": "7.5.0"
+            },
+            {
+                "embeddableConfig": {
+                    "title": ""
+                },
+                "gridData": {
+                    "h": 15,
+                    "i": "ff6441f8-d66d-4399-bae5-25d3d861b299",
+                    "w": 9,
+                    "x": 0,
+                    "y": 5
+                },
+                "panelIndex": "ff6441f8-d66d-4399-bae5-25d3d861b299",
+                "panelRefName": "panel_6",
+                "version": "7.5.0"
+            },
+            {
+                "embeddableConfig": {
+                    "title": "Success Server Latency"
+                },
+                "gridData": {
+                    "h": 15,
+                    "i": "87066244-7840-4555-9d12-026d64977f1a",
+                    "w": 20,
+                    "x": 9,
+                    "y": 9
+                },
+                "panelIndex": "87066244-7840-4555-9d12-026d64977f1a",
+                "panelRefName": "panel_7",
+                "title": "Success Server Latency",
+                "version": "7.5.0"
+            },
+            {
+                "embeddableConfig": {
+                    "title": "Success E2E Latency"
+                },
+                "gridData": {
+                    "h": 15,
+                    "i": "756da375-e6a2-4668-af43-0cd294878254",
+                    "w": 19,
+                    "x": 29,
+                    "y": 9
+                },
+                "panelIndex": "756da375-e6a2-4668-af43-0cd294878254",
+                "panelRefName": "panel_8",
+                "title": "Success E2E Latency",
+                "version": "7.5.0"
+            },
+            {
+                "embeddableConfig": {
+                    "title": "Egress Traffic by APIName"
+                },
+                "gridData": {
+                    "h": 14,
+                    "i": "a715fafc-ca38-410c-9253-12ba506eabc0",
+                    "w": 20,
+                    "x": 9,
+                    "y": 24
+                },
+                "panelIndex": "a715fafc-ca38-410c-9253-12ba506eabc0",
+                "panelRefName": "panel_9",
+                "title": "Egress Traffic by APIName",
+                "version": "7.5.0"
+            },
+            {
+                "embeddableConfig": {
+                    "title": "Ingress Traffic by APIName"
+                },
+                "gridData": {
+                    "h": 14,
+                    "i": "75f72920-be71-47a9-a967-f1c862ab2961",
+                    "w": 19,
+                    "x": 29,
+                    "y": 24
+                },
+                "panelIndex": "75f72920-be71-47a9-a967-f1c862ab2961",
+                "panelRefName": "panel_10",
+                "title": "Ingress Traffic by APIName",
+                "version": "7.5.0"
+            }
+        ],
         "timeRestore": false,
         "title": "[Metricbeat Azure] Table Storage Overview",
         "version": 1

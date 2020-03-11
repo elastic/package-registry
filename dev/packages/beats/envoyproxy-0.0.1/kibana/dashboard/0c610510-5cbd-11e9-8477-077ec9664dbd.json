@@ -3,10 +3,98 @@
         "description": "Filebeat Envoyproxy Overview Dashboard",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"query\":{\"language\":\"kuery\",\"query\":\"\"}}"
+            "searchSourceJSON": {
+                "filter": [],
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                }
+            }
         },
-        "optionsJSON": "{\"hidePanelTitles\":false,\"useMargins\":true}",
-        "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"h\":7,\"i\":\"1\",\"w\":22,\"x\":22,\"y\":0},\"panelIndex\":\"1\",\"panelRefName\":\"panel_0\",\"version\":\"8.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":10,\"i\":\"2\",\"w\":22,\"x\":22,\"y\":7},\"panelIndex\":\"2\",\"panelRefName\":\"panel_1\",\"version\":\"8.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":10,\"i\":\"3\",\"w\":22,\"x\":0,\"y\":7},\"panelIndex\":\"3\",\"panelRefName\":\"panel_2\",\"version\":\"8.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":7,\"i\":\"4\",\"w\":22,\"x\":0,\"y\":0},\"panelIndex\":\"4\",\"panelRefName\":\"panel_3\",\"version\":\"8.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":10,\"i\":\"5\",\"w\":22,\"x\":0,\"y\":17},\"panelIndex\":\"5\",\"panelRefName\":\"panel_4\",\"version\":\"8.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":10,\"i\":\"6\",\"w\":22,\"x\":22,\"y\":17},\"panelIndex\":\"6\",\"panelRefName\":\"panel_5\",\"version\":\"8.0.0-SNAPSHOT\"}]",
+        "optionsJSON": {
+            "hidePanelTitles": false,
+            "useMargins": true
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 7,
+                    "i": "1",
+                    "w": 22,
+                    "x": 22,
+                    "y": 0
+                },
+                "panelIndex": "1",
+                "panelRefName": "panel_0",
+                "version": "8.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 10,
+                    "i": "2",
+                    "w": 22,
+                    "x": 22,
+                    "y": 7
+                },
+                "panelIndex": "2",
+                "panelRefName": "panel_1",
+                "version": "8.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 10,
+                    "i": "3",
+                    "w": 22,
+                    "x": 0,
+                    "y": 7
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_2",
+                "version": "8.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 7,
+                    "i": "4",
+                    "w": 22,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "4",
+                "panelRefName": "panel_3",
+                "version": "8.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 10,
+                    "i": "5",
+                    "w": 22,
+                    "x": 0,
+                    "y": 17
+                },
+                "panelIndex": "5",
+                "panelRefName": "panel_4",
+                "version": "8.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 10,
+                    "i": "6",
+                    "w": 22,
+                    "x": 22,
+                    "y": 17
+                },
+                "panelIndex": "6",
+                "panelRefName": "panel_5",
+                "version": "8.0.0-SNAPSHOT"
+            }
+        ],
         "timeRestore": false,
         "title": "[Filebeat Envoyproxy] Overview",
         "version": 1

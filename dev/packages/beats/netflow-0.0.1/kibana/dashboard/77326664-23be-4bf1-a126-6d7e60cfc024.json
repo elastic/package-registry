@@ -3,10 +3,116 @@
         "description": "Netflow geo location",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[{\"$state\":{\"store\":\"globalState\"},\"meta\":{\"alias\":null,\"disabled\":false,\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index\",\"key\":\"input.type\",\"negate\":false,\"params\":{\"query\":\"netflow\"},\"type\":\"phrase\",\"value\":\"netflow\"},\"query\":{\"match\":{\"input.type\":{\"query\":\"netflow\",\"type\":\"phrase\"}}}}],\"query\":{\"query\":\"\",\"language\":\"kuery\"}}"
+            "searchSourceJSON": {
+                "filter": [
+                    {
+                        "$state": {
+                            "store": "globalState"
+                        },
+                        "meta": {
+                            "alias": null,
+                            "disabled": false,
+                            "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index",
+                            "key": "input.type",
+                            "negate": false,
+                            "params": {
+                                "query": "netflow"
+                            },
+                            "type": "phrase",
+                            "value": "netflow"
+                        },
+                        "query": {
+                            "match": {
+                                "input.type": {
+                                    "query": "netflow",
+                                    "type": "phrase"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                }
+            }
         },
-        "optionsJSON": "{\"darkTheme\":false}",
-        "panelsJSON": "[{\"panelIndex\":\"16\",\"panelRefName\":\"panel_0\",\"version\":\"7.3.0\",\"gridData\":{\"x\":16,\"y\":4,\"w\":32,\"h\":24,\"i\":\"16\"},\"embeddableConfig\":{\"mapCenter\":[20.632784250388028,16.69921875],\"mapZoom\":2}},{\"panelIndex\":\"17\",\"panelRefName\":\"panel_1\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":4,\"w\":16,\"h\":8,\"i\":\"17\"},\"embeddableConfig\":{}},{\"panelIndex\":\"18\",\"panelRefName\":\"panel_2\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":12,\"w\":16,\"h\":8,\"i\":\"18\"},\"embeddableConfig\":{}},{\"panelIndex\":\"19\",\"panelRefName\":\"panel_3\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":20,\"w\":16,\"h\":8,\"i\":\"19\"},\"embeddableConfig\":{}},{\"panelIndex\":\"20\",\"panelRefName\":\"panel_4\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":0,\"w\":48,\"h\":4,\"i\":\"20\"},\"embeddableConfig\":{}}]",
+        "optionsJSON": {
+            "darkTheme": false
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {
+                    "mapCenter": [
+                        20.632784250388028,
+                        16.69921875
+                    ],
+                    "mapZoom": 2
+                },
+                "gridData": {
+                    "h": 24,
+                    "i": "16",
+                    "w": 32,
+                    "x": 16,
+                    "y": 4
+                },
+                "panelIndex": "16",
+                "panelRefName": "panel_0",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "17",
+                    "w": 16,
+                    "x": 0,
+                    "y": 4
+                },
+                "panelIndex": "17",
+                "panelRefName": "panel_1",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "18",
+                    "w": 16,
+                    "x": 0,
+                    "y": 12
+                },
+                "panelIndex": "18",
+                "panelRefName": "panel_2",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "19",
+                    "w": 16,
+                    "x": 0,
+                    "y": 20
+                },
+                "panelIndex": "19",
+                "panelRefName": "panel_3",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 4,
+                    "i": "20",
+                    "w": 48,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "20",
+                "panelRefName": "panel_4",
+                "version": "7.3.0"
+            }
+        ],
         "timeRestore": false,
         "title": "[Filebeat Netflow] Geo Location",
         "version": 1

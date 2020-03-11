@@ -3,10 +3,111 @@
         "description": "Overview of AWS S3 Metrics",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"query\":{\"language\":\"kuery\",\"query\":\"\"}}"
+            "searchSourceJSON": {
+                "filter": [],
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                }
+            }
         },
-        "optionsJSON": "{\"hidePanelTitles\":false,\"useMargins\":true}",
-        "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"h\":7,\"i\":\"1\",\"w\":24,\"x\":0,\"y\":6},\"panelIndex\":\"1\",\"panelRefName\":\"panel_0\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":7,\"i\":\"2\",\"w\":24,\"x\":24,\"y\":6},\"panelIndex\":\"2\",\"panelRefName\":\"panel_1\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":7,\"i\":\"3\",\"w\":24,\"x\":0,\"y\":13},\"panelIndex\":\"3\",\"panelRefName\":\"panel_2\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":6,\"i\":\"4\",\"w\":13,\"x\":24,\"y\":0},\"panelIndex\":\"4\",\"panelRefName\":\"panel_3\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":6,\"i\":\"5\",\"w\":11,\"x\":37,\"y\":0},\"panelIndex\":\"5\",\"panelRefName\":\"panel_4\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":6,\"i\":\"6\",\"w\":24,\"x\":0,\"y\":0},\"panelIndex\":\"6\",\"panelRefName\":\"panel_5\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":7,\"i\":\"7\",\"w\":24,\"x\":24,\"y\":13},\"panelIndex\":\"7\",\"panelRefName\":\"panel_6\",\"version\":\"7.3.0\"}]",
+        "optionsJSON": {
+            "hidePanelTitles": false,
+            "useMargins": true
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 7,
+                    "i": "1",
+                    "w": 24,
+                    "x": 0,
+                    "y": 6
+                },
+                "panelIndex": "1",
+                "panelRefName": "panel_0",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 7,
+                    "i": "2",
+                    "w": 24,
+                    "x": 24,
+                    "y": 6
+                },
+                "panelIndex": "2",
+                "panelRefName": "panel_1",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 7,
+                    "i": "3",
+                    "w": 24,
+                    "x": 0,
+                    "y": 13
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_2",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 6,
+                    "i": "4",
+                    "w": 13,
+                    "x": 24,
+                    "y": 0
+                },
+                "panelIndex": "4",
+                "panelRefName": "panel_3",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 6,
+                    "i": "5",
+                    "w": 11,
+                    "x": 37,
+                    "y": 0
+                },
+                "panelIndex": "5",
+                "panelRefName": "panel_4",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 6,
+                    "i": "6",
+                    "w": 24,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "6",
+                "panelRefName": "panel_5",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 7,
+                    "i": "7",
+                    "w": 24,
+                    "x": 24,
+                    "y": 13
+                },
+                "panelIndex": "7",
+                "panelRefName": "panel_6",
+                "version": "7.3.0"
+            }
+        ],
         "timeRestore": false,
         "title": "[Metricbeat AWS] S3 Overview",
         "version": 1

@@ -3,10 +3,132 @@
         "description": "Various stats for Prometheus Server",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"query\":{\"language\":\"kuery\",\"query\":\"\"}}"
+            "searchSourceJSON": {
+                "filter": [],
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                }
+            }
         },
-        "optionsJSON": "{\"hidePanelTitles\":false,\"useMargins\":true}",
-        "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"1\",\"w\":24,\"x\":0,\"y\":0},\"panelIndex\":\"1\",\"panelRefName\":\"panel_0\",\"title\":\"HTTP Requests\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"2\",\"w\":24,\"x\":24,\"y\":0},\"panelIndex\":\"2\",\"panelRefName\":\"panel_1\",\"title\":\"Query Durations\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":7,\"i\":\"3\",\"w\":24,\"x\":24,\"y\":15},\"panelIndex\":\"3\",\"panelRefName\":\"panel_2\",\"title\":\"Number of Targets\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"4\",\"w\":24,\"x\":0,\"y\":22},\"panelIndex\":\"4\",\"panelRefName\":\"panel_3\",\"title\":\"Head Chunks\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":7,\"i\":\"5\",\"w\":11,\"x\":0,\"y\":15},\"panelIndex\":\"5\",\"panelRefName\":\"panel_4\",\"title\":\"WAL Stats\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":7,\"i\":\"6\",\"w\":13,\"x\":11,\"y\":15},\"panelIndex\":\"6\",\"panelRefName\":\"panel_5\",\"title\":\"Reload Count\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"7\",\"w\":10,\"x\":24,\"y\":22},\"panelIndex\":\"7\",\"panelRefName\":\"panel_6\",\"title\":\"Remote API Reads\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"8\",\"w\":14,\"x\":34,\"y\":22},\"panelIndex\":\"8\",\"panelRefName\":\"panel_7\",\"title\":\"Alert Notifications\",\"version\":\"7.3.0\"}]",
+        "optionsJSON": {
+            "hidePanelTitles": false,
+            "useMargins": true
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "1",
+                    "w": 24,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "1",
+                "panelRefName": "panel_0",
+                "title": "HTTP Requests",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "2",
+                    "w": 24,
+                    "x": 24,
+                    "y": 0
+                },
+                "panelIndex": "2",
+                "panelRefName": "panel_1",
+                "title": "Query Durations",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 7,
+                    "i": "3",
+                    "w": 24,
+                    "x": 24,
+                    "y": 15
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_2",
+                "title": "Number of Targets",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "4",
+                    "w": 24,
+                    "x": 0,
+                    "y": 22
+                },
+                "panelIndex": "4",
+                "panelRefName": "panel_3",
+                "title": "Head Chunks",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 7,
+                    "i": "5",
+                    "w": 11,
+                    "x": 0,
+                    "y": 15
+                },
+                "panelIndex": "5",
+                "panelRefName": "panel_4",
+                "title": "WAL Stats",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 7,
+                    "i": "6",
+                    "w": 13,
+                    "x": 11,
+                    "y": 15
+                },
+                "panelIndex": "6",
+                "panelRefName": "panel_5",
+                "title": "Reload Count",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "7",
+                    "w": 10,
+                    "x": 24,
+                    "y": 22
+                },
+                "panelIndex": "7",
+                "panelRefName": "panel_6",
+                "title": "Remote API Reads",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "8",
+                    "w": 14,
+                    "x": 34,
+                    "y": 22
+                },
+                "panelIndex": "8",
+                "panelRefName": "panel_7",
+                "title": "Alert Notifications",
+                "version": "7.3.0"
+            }
+        ],
         "timeRestore": false,
         "title": "[Metricbeat Prometheus] Overview",
         "version": 1

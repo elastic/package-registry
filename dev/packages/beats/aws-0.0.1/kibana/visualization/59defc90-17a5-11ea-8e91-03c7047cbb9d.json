@@ -2,12 +2,44 @@
     "attributes": {
         "description": "",
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"query\":{\"language\":\"kuery\",\"query\":\"\"}}"
+            "searchSourceJSON": {
+                "filter": [],
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                }
+            }
         },
         "title": "SNS Topic Name Filter [Metricbeat AWS]",
-        "uiStateJSON": "{}",
+        "uiStateJSON": {},
         "version": 1,
-        "visState": "{\"aggs\":[],\"params\":{\"controls\":[{\"fieldName\":\"aws.dimensions.TopicName\",\"id\":\"1565034367477\",\"indexPatternRefName\":\"control_0_index_pattern\",\"label\":\"topic name\",\"options\":{\"dynamicOptions\":true,\"multiselect\":true,\"order\":\"desc\",\"size\":5,\"type\":\"terms\"},\"parent\":\"\",\"type\":\"list\"}],\"pinFilters\":false,\"updateFiltersOnChange\":true,\"useTimeFilter\":true},\"title\":\"SNS Topic Name Filter [Metricbeat AWS]\",\"type\":\"input_control_vis\"}"
+        "visState": {
+            "aggs": [],
+            "params": {
+                "controls": [
+                    {
+                        "fieldName": "aws.dimensions.TopicName",
+                        "id": "1565034367477",
+                        "indexPatternRefName": "control_0_index_pattern",
+                        "label": "topic name",
+                        "options": {
+                            "dynamicOptions": true,
+                            "multiselect": true,
+                            "order": "desc",
+                            "size": 5,
+                            "type": "terms"
+                        },
+                        "parent": "",
+                        "type": "list"
+                    }
+                ],
+                "pinFilters": false,
+                "updateFiltersOnChange": true,
+                "useTimeFilter": true
+            },
+            "title": "SNS Topic Name Filter [Metricbeat AWS]",
+            "type": "input_control_vis"
+        }
     },
     "id": "59defc90-17a5-11ea-8e91-03c7047cbb9d",
     "references": [

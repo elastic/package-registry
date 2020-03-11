@@ -3,10 +3,174 @@
         "description": "This Couchbase dashboard visualizes the most relevant metrics for cluster, nodes and buckets. ",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"query\":{\"language\":\"kuery\",\"query\":\"\"}}"
+            "searchSourceJSON": {
+                "filter": [],
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                }
+            }
         },
-        "optionsJSON": "{\"hidePanelTitles\":false,\"useMargins\":true}",
-        "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"h\":11,\"i\":\"1\",\"w\":12,\"x\":0,\"y\":11},\"panelIndex\":\"1\",\"panelRefName\":\"panel_0\",\"title\":\"Buckets RAM Used\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":11,\"i\":\"2\",\"w\":12,\"x\":12,\"y\":11},\"panelIndex\":\"2\",\"panelRefName\":\"panel_1\",\"title\":\"Buckets Disk Used\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":11,\"i\":\"3\",\"w\":24,\"x\":24,\"y\":11},\"panelIndex\":\"3\",\"panelRefName\":\"panel_2\",\"title\":\"Node CPU Utilization\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":11,\"i\":\"4\",\"w\":12,\"x\":0,\"y\":22},\"panelIndex\":\"4\",\"panelRefName\":\"panel_3\",\"title\":\"Buckets Operations Per Second\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":11,\"i\":\"5\",\"w\":24,\"x\":24,\"y\":0},\"panelIndex\":\"5\",\"panelRefName\":\"panel_4\",\"title\":\"Operations per Node\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":11,\"i\":\"6\",\"w\":12,\"x\":0,\"y\":0},\"panelIndex\":\"6\",\"panelRefName\":\"panel_5\",\"title\":\"Cluster HDD Usage\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":11,\"i\":\"7\",\"w\":12,\"x\":12,\"y\":0},\"panelIndex\":\"7\",\"panelRefName\":\"panel_6\",\"title\":\"Cluster RAM\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":11,\"i\":\"8\",\"w\":12,\"x\":12,\"y\":22},\"panelIndex\":\"8\",\"panelRefName\":\"panel_7\",\"title\":\"Bucket Item Count\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":11,\"i\":\"9\",\"w\":24,\"x\":24,\"y\":33},\"panelIndex\":\"9\",\"panelRefName\":\"panel_8\",\"title\":\"Document Replicas\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":11,\"i\":\"10\",\"w\":24,\"x\":24,\"y\":22},\"panelIndex\":\"10\",\"panelRefName\":\"panel_9\",\"title\":\"Disk space used by docs\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":11,\"i\":\"11\",\"w\":24,\"x\":0,\"y\":33},\"panelIndex\":\"11\",\"panelRefName\":\"panel_10\",\"title\":\"Disk Fetches\",\"version\":\"7.3.0\"}]",
+        "optionsJSON": {
+            "hidePanelTitles": false,
+            "useMargins": true
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 11,
+                    "i": "1",
+                    "w": 12,
+                    "x": 0,
+                    "y": 11
+                },
+                "panelIndex": "1",
+                "panelRefName": "panel_0",
+                "title": "Buckets RAM Used",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 11,
+                    "i": "2",
+                    "w": 12,
+                    "x": 12,
+                    "y": 11
+                },
+                "panelIndex": "2",
+                "panelRefName": "panel_1",
+                "title": "Buckets Disk Used",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 11,
+                    "i": "3",
+                    "w": 24,
+                    "x": 24,
+                    "y": 11
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_2",
+                "title": "Node CPU Utilization",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 11,
+                    "i": "4",
+                    "w": 12,
+                    "x": 0,
+                    "y": 22
+                },
+                "panelIndex": "4",
+                "panelRefName": "panel_3",
+                "title": "Buckets Operations Per Second",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 11,
+                    "i": "5",
+                    "w": 24,
+                    "x": 24,
+                    "y": 0
+                },
+                "panelIndex": "5",
+                "panelRefName": "panel_4",
+                "title": "Operations per Node",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 11,
+                    "i": "6",
+                    "w": 12,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "6",
+                "panelRefName": "panel_5",
+                "title": "Cluster HDD Usage",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 11,
+                    "i": "7",
+                    "w": 12,
+                    "x": 12,
+                    "y": 0
+                },
+                "panelIndex": "7",
+                "panelRefName": "panel_6",
+                "title": "Cluster RAM",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 11,
+                    "i": "8",
+                    "w": 12,
+                    "x": 12,
+                    "y": 22
+                },
+                "panelIndex": "8",
+                "panelRefName": "panel_7",
+                "title": "Bucket Item Count",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 11,
+                    "i": "9",
+                    "w": 24,
+                    "x": 24,
+                    "y": 33
+                },
+                "panelIndex": "9",
+                "panelRefName": "panel_8",
+                "title": "Document Replicas",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 11,
+                    "i": "10",
+                    "w": 24,
+                    "x": 24,
+                    "y": 22
+                },
+                "panelIndex": "10",
+                "panelRefName": "panel_9",
+                "title": "Disk space used by docs",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 11,
+                    "i": "11",
+                    "w": 24,
+                    "x": 0,
+                    "y": 33
+                },
+                "panelIndex": "11",
+                "panelRefName": "panel_10",
+                "title": "Disk Fetches",
+                "version": "7.3.0"
+            }
+        ],
         "timeRestore": false,
         "title": "[Metricbeat Couchbase] Cluster Overview",
         "version": 1

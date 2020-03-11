@@ -3,10 +3,137 @@
         "description": "Kubernetes Scheduler metrics",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":null,\"disabled\":false,\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index\",\"key\":\"event.dataset\",\"negate\":false,\"params\":{\"query\":\"kubernetes.scheduler\"},\"type\":\"phrase\",\"value\":\"kubernetes.scheduler\"},\"query\":{\"match\":{\"event.dataset\":{\"query\":\"kubernetes.scheduler\",\"type\":\"phrase\"}}}}],\"query\":{\"language\":\"kuery\",\"query\":\"\"}}"
+            "searchSourceJSON": {
+                "filter": [
+                    {
+                        "$state": {
+                            "store": "appState"
+                        },
+                        "meta": {
+                            "alias": null,
+                            "disabled": false,
+                            "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index",
+                            "key": "event.dataset",
+                            "negate": false,
+                            "params": {
+                                "query": "kubernetes.scheduler"
+                            },
+                            "type": "phrase",
+                            "value": "kubernetes.scheduler"
+                        },
+                        "query": {
+                            "match": {
+                                "event.dataset": {
+                                    "query": "kubernetes.scheduler",
+                                    "type": "phrase"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                }
+            }
         },
-        "optionsJSON": "{\"hidePanelTitles\":false,\"useMargins\":true}",
-        "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"h\":14,\"i\":\"1\",\"w\":14,\"x\":0,\"y\":0},\"panelIndex\":\"1\",\"panelRefName\":\"panel_0\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":14,\"i\":\"2\",\"w\":11,\"x\":14,\"y\":0},\"panelIndex\":\"2\",\"panelRefName\":\"panel_1\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":14,\"i\":\"3\",\"w\":23,\"x\":25,\"y\":0},\"panelIndex\":\"3\",\"panelRefName\":\"panel_2\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":11,\"i\":\"4\",\"w\":24,\"x\":0,\"y\":29},\"panelIndex\":\"4\",\"panelRefName\":\"panel_3\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":11,\"i\":\"5\",\"w\":24,\"x\":24,\"y\":29},\"panelIndex\":\"5\",\"panelRefName\":\"panel_4\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"6\",\"w\":24,\"x\":0,\"y\":14},\"panelIndex\":\"6\",\"panelRefName\":\"panel_5\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"7\",\"w\":24,\"x\":24,\"y\":14},\"panelIndex\":\"7\",\"panelRefName\":\"panel_6\",\"version\":\"7.3.0\"}]",
+        "optionsJSON": {
+            "hidePanelTitles": false,
+            "useMargins": true
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 14,
+                    "i": "1",
+                    "w": 14,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "1",
+                "panelRefName": "panel_0",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 14,
+                    "i": "2",
+                    "w": 11,
+                    "x": 14,
+                    "y": 0
+                },
+                "panelIndex": "2",
+                "panelRefName": "panel_1",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 14,
+                    "i": "3",
+                    "w": 23,
+                    "x": 25,
+                    "y": 0
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_2",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 11,
+                    "i": "4",
+                    "w": 24,
+                    "x": 0,
+                    "y": 29
+                },
+                "panelIndex": "4",
+                "panelRefName": "panel_3",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 11,
+                    "i": "5",
+                    "w": 24,
+                    "x": 24,
+                    "y": 29
+                },
+                "panelIndex": "5",
+                "panelRefName": "panel_4",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "6",
+                    "w": 24,
+                    "x": 0,
+                    "y": 14
+                },
+                "panelIndex": "6",
+                "panelRefName": "panel_5",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "7",
+                    "w": 24,
+                    "x": 24,
+                    "y": 14
+                },
+                "panelIndex": "7",
+                "panelRefName": "panel_6",
+                "version": "7.3.0"
+            }
+        ],
         "timeRestore": false,
         "title": "[Metricbeat Kubernetes] Scheduler",
         "version": 1

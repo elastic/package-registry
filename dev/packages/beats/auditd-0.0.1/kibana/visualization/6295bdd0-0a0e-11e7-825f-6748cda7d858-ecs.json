@@ -2,12 +2,50 @@
     "attributes": {
         "description": "",
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"query\":{\"language\":\"kuery\",\"query\":\"\"},\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.index\"}"
+            "searchSourceJSON": {
+                "filter": [],
+                "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.index",
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                }
+            }
         },
         "title": "Event types breakdown [Filebeat Auditd] ECS",
-        "uiStateJSON": "{}",
+        "uiStateJSON": {},
         "version": 1,
-        "visState": "{\"aggs\":[{\"enabled\":true,\"id\":\"1\",\"params\":{},\"schema\":\"metric\",\"type\":\"count\"},{\"enabled\":true,\"id\":\"2\",\"params\":{\"field\":\"event.action\",\"order\":\"desc\",\"orderBy\":\"1\",\"size\":50},\"schema\":\"segment\",\"type\":\"terms\"}],\"listeners\":{},\"params\":{\"addLegend\":true,\"addTooltip\":true,\"isDonut\":true,\"legendPosition\":\"right\"},\"title\":\"Audit Event Types ECS\",\"type\":\"pie\"}"
+        "visState": {
+            "aggs": [
+                {
+                    "enabled": true,
+                    "id": "1",
+                    "params": {},
+                    "schema": "metric",
+                    "type": "count"
+                },
+                {
+                    "enabled": true,
+                    "id": "2",
+                    "params": {
+                        "field": "event.action",
+                        "order": "desc",
+                        "orderBy": "1",
+                        "size": 50
+                    },
+                    "schema": "segment",
+                    "type": "terms"
+                }
+            ],
+            "listeners": {},
+            "params": {
+                "addLegend": true,
+                "addTooltip": true,
+                "isDonut": true,
+                "legendPosition": "right"
+            },
+            "title": "Audit Event Types ECS",
+            "type": "pie"
+        }
     },
     "id": "6295bdd0-0a0e-11e7-825f-6748cda7d858-ecs",
     "references": [

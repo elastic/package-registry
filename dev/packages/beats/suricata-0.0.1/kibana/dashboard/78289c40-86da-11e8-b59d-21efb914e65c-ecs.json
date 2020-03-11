@@ -3,10 +3,140 @@
         "description": "Overview of the Surcata events dashboard.",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"highlightAll\":true,\"query\":{\"language\":\"kuery\",\"query\":\"\"},\"version\":true}"
+            "searchSourceJSON": {
+                "filter": [],
+                "highlightAll": true,
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                },
+                "version": true
+            }
         },
-        "optionsJSON": "{\"darkTheme\":false,\"hidePanelTitles\":false,\"useMargins\":true}",
-        "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"h\":10,\"i\":\"1\",\"w\":48,\"x\":0,\"y\":0},\"panelIndex\":\"1\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":14,\"i\":\"2\",\"w\":9,\"x\":0,\"y\":20},\"panelIndex\":\"2\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":14,\"i\":\"3\",\"w\":11,\"x\":19,\"y\":20},\"panelIndex\":\"3\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_2\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":10,\"i\":\"4\",\"w\":48,\"x\":0,\"y\":10},\"panelIndex\":\"4\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_3\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":19,\"i\":\"5\",\"w\":48,\"x\":0,\"y\":34},\"panelIndex\":\"5\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_4\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":14,\"i\":\"6\",\"w\":9,\"x\":30,\"y\":20},\"panelIndex\":\"6\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_5\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":14,\"i\":\"7\",\"w\":9,\"x\":39,\"y\":20},\"panelIndex\":\"7\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_6\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":14,\"i\":\"8\",\"w\":10,\"x\":9,\"y\":20},\"panelIndex\":\"8\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_7\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":16,\"i\":\"9\",\"w\":48,\"x\":0,\"y\":53},\"panelIndex\":\"9\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_8\"}]",
+        "optionsJSON": {
+            "darkTheme": false,
+            "hidePanelTitles": false,
+            "useMargins": true
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 10,
+                    "i": "1",
+                    "w": 48,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "1",
+                "panelRefName": "panel_0",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 14,
+                    "i": "2",
+                    "w": 9,
+                    "x": 0,
+                    "y": 20
+                },
+                "panelIndex": "2",
+                "panelRefName": "panel_1",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 14,
+                    "i": "3",
+                    "w": 11,
+                    "x": 19,
+                    "y": 20
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_2",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 10,
+                    "i": "4",
+                    "w": 48,
+                    "x": 0,
+                    "y": 10
+                },
+                "panelIndex": "4",
+                "panelRefName": "panel_3",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 19,
+                    "i": "5",
+                    "w": 48,
+                    "x": 0,
+                    "y": 34
+                },
+                "panelIndex": "5",
+                "panelRefName": "panel_4",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 14,
+                    "i": "6",
+                    "w": 9,
+                    "x": 30,
+                    "y": 20
+                },
+                "panelIndex": "6",
+                "panelRefName": "panel_5",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 14,
+                    "i": "7",
+                    "w": 9,
+                    "x": 39,
+                    "y": 20
+                },
+                "panelIndex": "7",
+                "panelRefName": "panel_6",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 14,
+                    "i": "8",
+                    "w": 10,
+                    "x": 9,
+                    "y": 20
+                },
+                "panelIndex": "8",
+                "panelRefName": "panel_7",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 16,
+                    "i": "9",
+                    "w": 48,
+                    "x": 0,
+                    "y": 53
+                },
+                "panelIndex": "9",
+                "panelRefName": "panel_8",
+                "version": "7.3.0"
+            }
+        ],
         "timeRestore": false,
         "title": "[Filebeat Suricata] Events Overview ECS",
         "version": 1

@@ -2,13 +2,47 @@
     "attributes": {
         "description": "",
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[]}"
+            "searchSourceJSON": {
+                "filter": []
+            }
         },
         "savedSearchRefName": "search_0",
         "title": "Top 10 Application Protocols [Filebeat CEF]",
-        "uiStateJSON": "{}",
+        "uiStateJSON": {},
         "version": 1,
-        "visState": "{\"aggs\":[{\"enabled\":true,\"id\":\"1\",\"params\":{},\"schema\":\"metric\",\"type\":\"count\"},{\"enabled\":true,\"id\":\"2\",\"params\":{\"field\":\"network.application\",\"order\":\"desc\",\"orderBy\":\"1\",\"size\":20},\"schema\":\"segment\",\"type\":\"terms\"}],\"listeners\":{},\"params\":{\"hideLabel\":false,\"maxFontSize\":72,\"minFontSize\":26,\"orientation\":\"single\",\"scale\":\"square root\"},\"title\":\"Top 10 Application Protocols [Filebeat CEF]\",\"type\":\"tagcloud\"}"
+        "visState": {
+            "aggs": [
+                {
+                    "enabled": true,
+                    "id": "1",
+                    "params": {},
+                    "schema": "metric",
+                    "type": "count"
+                },
+                {
+                    "enabled": true,
+                    "id": "2",
+                    "params": {
+                        "field": "network.application",
+                        "order": "desc",
+                        "orderBy": "1",
+                        "size": 20
+                    },
+                    "schema": "segment",
+                    "type": "terms"
+                }
+            ],
+            "listeners": {},
+            "params": {
+                "hideLabel": false,
+                "maxFontSize": 72,
+                "minFontSize": 26,
+                "orientation": "single",
+                "scale": "square root"
+            },
+            "title": "Top 10 Application Protocols [Filebeat CEF]",
+            "type": "tagcloud"
+        }
     },
     "id": "f5258de9-71f7-410f-b713-201007f77470",
     "references": [

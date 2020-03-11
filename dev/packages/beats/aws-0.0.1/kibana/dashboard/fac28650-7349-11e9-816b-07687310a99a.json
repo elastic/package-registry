@@ -3,10 +3,215 @@
         "description": "Overview of AWS Metrics",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"query\":{\"language\":\"kuery\",\"query\":\"\"}}"
+            "searchSourceJSON": {
+                "filter": [],
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                }
+            }
         },
-        "optionsJSON": "{\"hidePanelTitles\":false,\"useMargins\":true}",
-        "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"h\":7,\"i\":\"2\",\"w\":9,\"x\":0,\"y\":0},\"panelIndex\":\"2\",\"panelRefName\":\"panel_0\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":7,\"i\":\"3\",\"w\":10,\"x\":9,\"y\":0},\"panelIndex\":\"3\",\"panelRefName\":\"panel_1\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":7,\"i\":\"4\",\"w\":29,\"x\":19,\"y\":0},\"panelIndex\":\"4\",\"panelRefName\":\"panel_2\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":7,\"i\":\"6\",\"w\":9,\"x\":0,\"y\":7},\"panelIndex\":\"6\",\"panelRefName\":\"panel_3\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":7,\"i\":\"7\",\"w\":9,\"x\":9,\"y\":7},\"panelIndex\":\"7\",\"panelRefName\":\"panel_4\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":7,\"i\":\"9\",\"w\":15,\"x\":18,\"y\":7},\"panelIndex\":\"9\",\"panelRefName\":\"panel_5\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":7,\"i\":\"10\",\"w\":15,\"x\":33,\"y\":7},\"panelIndex\":\"10\",\"panelRefName\":\"panel_6\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":7,\"i\":\"12\",\"w\":13,\"x\":0,\"y\":14},\"panelIndex\":\"12\",\"panelRefName\":\"panel_7\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":7,\"i\":\"14\",\"w\":20,\"x\":13,\"y\":14},\"panelIndex\":\"14\",\"panelRefName\":\"panel_8\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":7,\"i\":\"15\",\"w\":15,\"x\":33,\"y\":14},\"panelIndex\":\"15\",\"panelRefName\":\"panel_9\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":7,\"i\":\"17\",\"w\":16,\"x\":15,\"y\":21},\"panelIndex\":\"17\",\"panelRefName\":\"panel_10\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":7,\"i\":\"18\",\"w\":15,\"x\":0,\"y\":21},\"panelIndex\":\"18\",\"panelRefName\":\"panel_11\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":7,\"i\":\"19\",\"w\":17,\"x\":31,\"y\":21},\"panelIndex\":\"19\",\"panelRefName\":\"panel_12\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":9,\"i\":\"24\",\"w\":24,\"x\":0,\"y\":28},\"panelIndex\":\"24\",\"panelRefName\":\"panel_13\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":9,\"i\":\"25\",\"w\":24,\"x\":24,\"y\":28},\"panelIndex\":\"25\",\"panelRefName\":\"panel_14\",\"version\":\"7.3.0\"}]",
+        "optionsJSON": {
+            "hidePanelTitles": false,
+            "useMargins": true
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 7,
+                    "i": "2",
+                    "w": 9,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "2",
+                "panelRefName": "panel_0",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 7,
+                    "i": "3",
+                    "w": 10,
+                    "x": 9,
+                    "y": 0
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_1",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 7,
+                    "i": "4",
+                    "w": 29,
+                    "x": 19,
+                    "y": 0
+                },
+                "panelIndex": "4",
+                "panelRefName": "panel_2",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 7,
+                    "i": "6",
+                    "w": 9,
+                    "x": 0,
+                    "y": 7
+                },
+                "panelIndex": "6",
+                "panelRefName": "panel_3",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 7,
+                    "i": "7",
+                    "w": 9,
+                    "x": 9,
+                    "y": 7
+                },
+                "panelIndex": "7",
+                "panelRefName": "panel_4",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 7,
+                    "i": "9",
+                    "w": 15,
+                    "x": 18,
+                    "y": 7
+                },
+                "panelIndex": "9",
+                "panelRefName": "panel_5",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 7,
+                    "i": "10",
+                    "w": 15,
+                    "x": 33,
+                    "y": 7
+                },
+                "panelIndex": "10",
+                "panelRefName": "panel_6",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 7,
+                    "i": "12",
+                    "w": 13,
+                    "x": 0,
+                    "y": 14
+                },
+                "panelIndex": "12",
+                "panelRefName": "panel_7",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 7,
+                    "i": "14",
+                    "w": 20,
+                    "x": 13,
+                    "y": 14
+                },
+                "panelIndex": "14",
+                "panelRefName": "panel_8",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 7,
+                    "i": "15",
+                    "w": 15,
+                    "x": 33,
+                    "y": 14
+                },
+                "panelIndex": "15",
+                "panelRefName": "panel_9",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 7,
+                    "i": "17",
+                    "w": 16,
+                    "x": 15,
+                    "y": 21
+                },
+                "panelIndex": "17",
+                "panelRefName": "panel_10",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 7,
+                    "i": "18",
+                    "w": 15,
+                    "x": 0,
+                    "y": 21
+                },
+                "panelIndex": "18",
+                "panelRefName": "panel_11",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 7,
+                    "i": "19",
+                    "w": 17,
+                    "x": 31,
+                    "y": 21
+                },
+                "panelIndex": "19",
+                "panelRefName": "panel_12",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 9,
+                    "i": "24",
+                    "w": 24,
+                    "x": 0,
+                    "y": 28
+                },
+                "panelIndex": "24",
+                "panelRefName": "panel_13",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 9,
+                    "i": "25",
+                    "w": 24,
+                    "x": 24,
+                    "y": 28
+                },
+                "panelIndex": "25",
+                "panelRefName": "panel_14",
+                "version": "7.3.0"
+            }
+        ],
         "timeRestore": false,
         "title": "[Metricbeat AWS] Overview",
         "version": 1

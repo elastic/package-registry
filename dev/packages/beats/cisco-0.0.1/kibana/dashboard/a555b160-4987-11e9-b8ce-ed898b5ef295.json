@@ -3,10 +3,133 @@
         "description": "Sample dashboard for Cisco ASA Firewall devices",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"query\":{\"language\":\"kuery\",\"query\":\"\"}}"
+            "searchSourceJSON": {
+                "filter": [],
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                }
+            }
         },
-        "optionsJSON": "{\"hidePanelTitles\":false,\"useMargins\":true}",
-        "panelsJSON": "[{\"embeddableConfig\":{\"vis\":{\"legendOpen\":false}},\"gridData\":{\"h\":15,\"i\":\"1\",\"w\":12,\"x\":12,\"y\":15},\"panelIndex\":\"1\",\"panelRefName\":\"panel_0\",\"title\":\"Destination Port and Transport\",\"version\":\"7.0.0-SNAPSHOT\"},{\"embeddableConfig\":{\"vis\":{\"legendOpen\":false}},\"gridData\":{\"h\":15,\"i\":\"2\",\"w\":12,\"x\":0,\"y\":15},\"panelIndex\":\"2\",\"panelRefName\":\"panel_1\",\"title\":\"Source Port and Transport\",\"version\":\"7.0.0-SNAPSHOT\"},{\"embeddableConfig\":{\"vis\":{\"legendOpen\":false}},\"gridData\":{\"h\":15,\"i\":\"3\",\"w\":24,\"x\":0,\"y\":0},\"panelIndex\":\"3\",\"panelRefName\":\"panel_2\",\"title\":\"ASA Firewall Events Over Time\",\"version\":\"7.0.0-SNAPSHOT\"},{\"embeddableConfig\":{\"vis\":{\"legendOpen\":false}},\"gridData\":{\"h\":15,\"i\":\"4\",\"w\":24,\"x\":24,\"y\":0},\"panelIndex\":\"4\",\"panelRefName\":\"panel_3\",\"title\":\"ASA Flows by Network Bytes\",\"version\":\"7.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"5\",\"w\":12,\"x\":24,\"y\":15},\"panelIndex\":\"5\",\"panelRefName\":\"panel_4\",\"title\":\"Blocked by Source\",\"version\":\"7.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"8\",\"w\":12,\"x\":36,\"y\":15},\"panelIndex\":\"8\",\"panelRefName\":\"panel_5\",\"title\":\"Top ACL by Blocked\",\"version\":\"7.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"9\",\"w\":48,\"x\":0,\"y\":30},\"panelIndex\":\"9\",\"panelRefName\":\"panel_6\",\"version\":\"7.0.0-SNAPSHOT\"}]",
+        "optionsJSON": {
+            "hidePanelTitles": false,
+            "useMargins": true
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "legendOpen": false
+                    }
+                },
+                "gridData": {
+                    "h": 15,
+                    "i": "1",
+                    "w": 12,
+                    "x": 12,
+                    "y": 15
+                },
+                "panelIndex": "1",
+                "panelRefName": "panel_0",
+                "title": "Destination Port and Transport",
+                "version": "7.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "legendOpen": false
+                    }
+                },
+                "gridData": {
+                    "h": 15,
+                    "i": "2",
+                    "w": 12,
+                    "x": 0,
+                    "y": 15
+                },
+                "panelIndex": "2",
+                "panelRefName": "panel_1",
+                "title": "Source Port and Transport",
+                "version": "7.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "legendOpen": false
+                    }
+                },
+                "gridData": {
+                    "h": 15,
+                    "i": "3",
+                    "w": 24,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_2",
+                "title": "ASA Firewall Events Over Time",
+                "version": "7.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "legendOpen": false
+                    }
+                },
+                "gridData": {
+                    "h": 15,
+                    "i": "4",
+                    "w": 24,
+                    "x": 24,
+                    "y": 0
+                },
+                "panelIndex": "4",
+                "panelRefName": "panel_3",
+                "title": "ASA Flows by Network Bytes",
+                "version": "7.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "5",
+                    "w": 12,
+                    "x": 24,
+                    "y": 15
+                },
+                "panelIndex": "5",
+                "panelRefName": "panel_4",
+                "title": "Blocked by Source",
+                "version": "7.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "8",
+                    "w": 12,
+                    "x": 36,
+                    "y": 15
+                },
+                "panelIndex": "8",
+                "panelRefName": "panel_5",
+                "title": "Top ACL by Blocked",
+                "version": "7.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "9",
+                    "w": 48,
+                    "x": 0,
+                    "y": 30
+                },
+                "panelIndex": "9",
+                "panelRefName": "panel_6",
+                "version": "7.0.0-SNAPSHOT"
+            }
+        ],
         "timeRestore": false,
         "title": "[Filebeat Cisco] ASA Firewall",
         "version": 1

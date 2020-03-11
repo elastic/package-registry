@@ -3,10 +3,125 @@
         "description": "Overview of IBM MQ",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"query\":{\"language\":\"kuery\",\"query\":\"\"}}"
+            "searchSourceJSON": {
+                "filter": [],
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                }
+            }
         },
-        "optionsJSON": "{\"hidePanelTitles\":false,\"useMargins\":true}",
-        "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"h\":9,\"i\":\"1\",\"w\":24,\"x\":0,\"y\":7},\"panelIndex\":\"1\",\"panelRefName\":\"panel_0\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":14,\"i\":\"6\",\"w\":48,\"x\":0,\"y\":16},\"panelIndex\":\"6\",\"panelRefName\":\"panel_1\",\"title\":\"Top 5 Errors [Filebeat IBM MQ]\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":7,\"i\":\"8\",\"w\":13,\"x\":0,\"y\":0},\"panelIndex\":\"8\",\"panelRefName\":\"panel_2\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":27,\"i\":\"9\",\"w\":48,\"x\":0,\"y\":30},\"panelIndex\":\"9\",\"panelRefName\":\"panel_3\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":9,\"i\":\"10\",\"w\":24,\"x\":24,\"y\":7},\"panelIndex\":\"10\",\"panelRefName\":\"panel_4\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":7,\"i\":\"11\",\"w\":7,\"x\":13,\"y\":0},\"panelIndex\":\"11\",\"panelRefName\":\"panel_5\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":7,\"i\":\"12\",\"w\":7,\"x\":20,\"y\":0},\"panelIndex\":\"12\",\"panelRefName\":\"panel_6\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":7,\"i\":\"13\",\"w\":21,\"x\":27,\"y\":0},\"panelIndex\":\"13\",\"panelRefName\":\"panel_7\",\"version\":\"7.3.0\"}]",
+        "optionsJSON": {
+            "hidePanelTitles": false,
+            "useMargins": true
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 9,
+                    "i": "1",
+                    "w": 24,
+                    "x": 0,
+                    "y": 7
+                },
+                "panelIndex": "1",
+                "panelRefName": "panel_0",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 14,
+                    "i": "6",
+                    "w": 48,
+                    "x": 0,
+                    "y": 16
+                },
+                "panelIndex": "6",
+                "panelRefName": "panel_1",
+                "title": "Top 5 Errors [Filebeat IBM MQ]",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 7,
+                    "i": "8",
+                    "w": 13,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "8",
+                "panelRefName": "panel_2",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 27,
+                    "i": "9",
+                    "w": 48,
+                    "x": 0,
+                    "y": 30
+                },
+                "panelIndex": "9",
+                "panelRefName": "panel_3",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 9,
+                    "i": "10",
+                    "w": 24,
+                    "x": 24,
+                    "y": 7
+                },
+                "panelIndex": "10",
+                "panelRefName": "panel_4",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 7,
+                    "i": "11",
+                    "w": 7,
+                    "x": 13,
+                    "y": 0
+                },
+                "panelIndex": "11",
+                "panelRefName": "panel_5",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 7,
+                    "i": "12",
+                    "w": 7,
+                    "x": 20,
+                    "y": 0
+                },
+                "panelIndex": "12",
+                "panelRefName": "panel_6",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 7,
+                    "i": "13",
+                    "w": 21,
+                    "x": 27,
+                    "y": 0
+                },
+                "panelIndex": "13",
+                "panelRefName": "panel_7",
+                "version": "7.3.0"
+            }
+        ],
         "refreshInterval": {
             "pause": true,
             "value": 0

@@ -3,10 +3,242 @@
         "description": "Overview of Microsoft DNS activity.",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"highlightAll\":true,\"query\":{\"language\":\"lucene\",\"query\":\"*\"},\"version\":true}"
+            "searchSourceJSON": {
+                "filter": [],
+                "highlightAll": true,
+                "query": {
+                    "language": "lucene",
+                    "query": "*"
+                },
+                "version": true
+            }
         },
-        "optionsJSON": "{\"darkTheme\":false}",
-        "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"h\":8,\"i\":\"1\",\"w\":8,\"x\":40,\"y\":4},\"panelIndex\":\"1\",\"panelRefName\":\"panel_0\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{\"vis\":{\"defaultColors\":{\"0 - 100\":\"rgb(0,104,55)\"}}},\"gridData\":{\"h\":8,\"i\":\"3\",\"w\":40,\"x\":0,\"y\":4},\"panelIndex\":\"3\",\"panelRefName\":\"panel_1\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{\"vis\":{\"defaultColors\":{\"0 - 18k\":\"rgb(247,251,255)\",\"108k - 126k\":\"rgb(74,152,201)\",\"126k - 144k\":\"rgb(46,126,188)\",\"144k - 162k\":\"rgb(23,100,171)\",\"162k - 180k\":\"rgb(8,74,145)\",\"18k - 36k\":\"rgb(227,238,249)\",\"36k - 54k\":\"rgb(208,225,242)\",\"54k - 72k\":\"rgb(182,212,233)\",\"72k - 90k\":\"rgb(148,196,223)\",\"90k - 108k\":\"rgb(107,174,214)\"},\"legendOpen\":false}},\"gridData\":{\"h\":16,\"i\":\"5\",\"w\":24,\"x\":0,\"y\":32},\"panelIndex\":\"5\",\"panelRefName\":\"panel_2\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":8,\"i\":\"6\",\"w\":48,\"x\":0,\"y\":48},\"panelIndex\":\"6\",\"panelRefName\":\"panel_3\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":16,\"i\":\"7\",\"w\":24,\"x\":24,\"y\":32},\"panelIndex\":\"7\",\"panelRefName\":\"panel_4\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":8,\"i\":\"9\",\"w\":48,\"x\":0,\"y\":12},\"panelIndex\":\"9\",\"panelRefName\":\"panel_5\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":null,\"direction\":null}}}},\"gridData\":{\"h\":16,\"i\":\"11\",\"w\":24,\"x\":24,\"y\":56},\"panelIndex\":\"11\",\"panelRefName\":\"panel_6\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":4,\"i\":\"12\",\"w\":48,\"x\":0,\"y\":0},\"panelIndex\":\"12\",\"panelRefName\":\"panel_7\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":null,\"direction\":null}}}},\"gridData\":{\"h\":16,\"i\":\"13\",\"w\":24,\"x\":0,\"y\":56},\"panelIndex\":\"13\",\"panelRefName\":\"panel_8\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"14\",\"w\":24,\"x\":0,\"y\":20},\"panelIndex\":\"14\",\"panelRefName\":\"panel_9\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"15\",\"w\":24,\"x\":24,\"y\":20},\"panelIndex\":\"15\",\"panelRefName\":\"panel_10\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{\"mapCenter\":[12.211180191503997,0],\"mapZoom\":1},\"gridData\":{\"h\":12,\"i\":\"16\",\"w\":24,\"x\":24,\"y\":72},\"panelIndex\":\"16\",\"panelRefName\":\"panel_11\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{\"mapCenter\":[-0.17578097424708533,0],\"mapZoom\":1},\"gridData\":{\"h\":12,\"i\":\"17\",\"w\":24,\"x\":0,\"y\":72},\"panelIndex\":\"17\",\"panelRefName\":\"panel_12\",\"version\":\"7.3.0\"}]",
+        "optionsJSON": {
+            "darkTheme": false
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "1",
+                    "w": 8,
+                    "x": 40,
+                    "y": 4
+                },
+                "panelIndex": "1",
+                "panelRefName": "panel_0",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "defaultColors": {
+                            "0 - 100": "rgb(0,104,55)"
+                        }
+                    }
+                },
+                "gridData": {
+                    "h": 8,
+                    "i": "3",
+                    "w": 40,
+                    "x": 0,
+                    "y": 4
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_1",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "defaultColors": {
+                            "0 - 18k": "rgb(247,251,255)",
+                            "108k - 126k": "rgb(74,152,201)",
+                            "126k - 144k": "rgb(46,126,188)",
+                            "144k - 162k": "rgb(23,100,171)",
+                            "162k - 180k": "rgb(8,74,145)",
+                            "18k - 36k": "rgb(227,238,249)",
+                            "36k - 54k": "rgb(208,225,242)",
+                            "54k - 72k": "rgb(182,212,233)",
+                            "72k - 90k": "rgb(148,196,223)",
+                            "90k - 108k": "rgb(107,174,214)"
+                        },
+                        "legendOpen": false
+                    }
+                },
+                "gridData": {
+                    "h": 16,
+                    "i": "5",
+                    "w": 24,
+                    "x": 0,
+                    "y": 32
+                },
+                "panelIndex": "5",
+                "panelRefName": "panel_2",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "6",
+                    "w": 48,
+                    "x": 0,
+                    "y": 48
+                },
+                "panelIndex": "6",
+                "panelRefName": "panel_3",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 16,
+                    "i": "7",
+                    "w": 24,
+                    "x": 24,
+                    "y": 32
+                },
+                "panelIndex": "7",
+                "panelRefName": "panel_4",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "9",
+                    "w": 48,
+                    "x": 0,
+                    "y": 12
+                },
+                "panelIndex": "9",
+                "panelRefName": "panel_5",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "params": {
+                            "sort": {
+                                "columnIndex": null,
+                                "direction": null
+                            }
+                        }
+                    }
+                },
+                "gridData": {
+                    "h": 16,
+                    "i": "11",
+                    "w": 24,
+                    "x": 24,
+                    "y": 56
+                },
+                "panelIndex": "11",
+                "panelRefName": "panel_6",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 4,
+                    "i": "12",
+                    "w": 48,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "12",
+                "panelRefName": "panel_7",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "params": {
+                            "sort": {
+                                "columnIndex": null,
+                                "direction": null
+                            }
+                        }
+                    }
+                },
+                "gridData": {
+                    "h": 16,
+                    "i": "13",
+                    "w": 24,
+                    "x": 0,
+                    "y": 56
+                },
+                "panelIndex": "13",
+                "panelRefName": "panel_8",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "14",
+                    "w": 24,
+                    "x": 0,
+                    "y": 20
+                },
+                "panelIndex": "14",
+                "panelRefName": "panel_9",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "15",
+                    "w": 24,
+                    "x": 24,
+                    "y": 20
+                },
+                "panelIndex": "15",
+                "panelRefName": "panel_10",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "mapCenter": [
+                        12.211180191503997,
+                        0
+                    ],
+                    "mapZoom": 1
+                },
+                "gridData": {
+                    "h": 12,
+                    "i": "16",
+                    "w": 24,
+                    "x": 24,
+                    "y": 72
+                },
+                "panelIndex": "16",
+                "panelRefName": "panel_11",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "mapCenter": [
+                        -0.17578097424708533,
+                        0
+                    ],
+                    "mapZoom": 1
+                },
+                "gridData": {
+                    "h": 12,
+                    "i": "17",
+                    "w": 24,
+                    "x": 0,
+                    "y": 72
+                },
+                "panelIndex": "17",
+                "panelRefName": "panel_12",
+                "version": "7.3.0"
+            }
+        ],
         "refreshInterval": {
             "display": "Off",
             "pause": false,

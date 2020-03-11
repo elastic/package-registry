@@ -3,10 +3,90 @@
         "description": "Overview of Oracle Tablespaces",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"query\":{\"language\":\"kuery\",\"query\":\"\"}}"
+            "searchSourceJSON": {
+                "filter": [],
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                }
+            }
         },
-        "optionsJSON": "{\"hidePanelTitles\":false,\"useMargins\":true}",
-        "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"1\",\"w\":19,\"x\":0,\"y\":0},\"panelIndex\":\"1\",\"panelRefName\":\"panel_0\",\"title\":\"Avg data file size by filename\",\"version\":\"8.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"2\",\"w\":24,\"x\":0,\"y\":15},\"panelIndex\":\"2\",\"panelRefName\":\"panel_1\",\"title\":\"Tablespace Total Size\",\"version\":\"8.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"3\",\"w\":19,\"x\":19,\"y\":0},\"panelIndex\":\"3\",\"panelRefName\":\"panel_2\",\"title\":\"Maximum data file size\",\"version\":\"8.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"4\",\"w\":10,\"x\":38,\"y\":0},\"panelIndex\":\"4\",\"panelRefName\":\"panel_3\",\"title\":\"Ratio of used space in Tablespaces\",\"version\":\"8.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"5\",\"w\":24,\"x\":24,\"y\":15},\"panelIndex\":\"5\",\"panelRefName\":\"panel_4\",\"title\":\"Ratio of used space in data files\",\"version\":\"8.0.0-SNAPSHOT\"}]",
+        "optionsJSON": {
+            "hidePanelTitles": false,
+            "useMargins": true
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "1",
+                    "w": 19,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "1",
+                "panelRefName": "panel_0",
+                "title": "Avg data file size by filename",
+                "version": "8.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "2",
+                    "w": 24,
+                    "x": 0,
+                    "y": 15
+                },
+                "panelIndex": "2",
+                "panelRefName": "panel_1",
+                "title": "Tablespace Total Size",
+                "version": "8.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "3",
+                    "w": 19,
+                    "x": 19,
+                    "y": 0
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_2",
+                "title": "Maximum data file size",
+                "version": "8.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "4",
+                    "w": 10,
+                    "x": 38,
+                    "y": 0
+                },
+                "panelIndex": "4",
+                "panelRefName": "panel_3",
+                "title": "Ratio of used space in Tablespaces",
+                "version": "8.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "5",
+                    "w": 24,
+                    "x": 24,
+                    "y": 15
+                },
+                "panelIndex": "5",
+                "panelRefName": "panel_4",
+                "title": "Ratio of used space in data files",
+                "version": "8.0.0-SNAPSHOT"
+            }
+        ],
         "timeRestore": false,
         "title": "[Metricbeat Oracle] Tablespaces",
         "version": 1

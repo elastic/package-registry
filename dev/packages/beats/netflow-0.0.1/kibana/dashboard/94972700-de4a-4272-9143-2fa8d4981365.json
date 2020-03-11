@@ -3,10 +3,119 @@
         "description": "Netflow flow records",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[{\"$state\":{\"store\":\"globalState\"},\"meta\":{\"alias\":null,\"disabled\":false,\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index\",\"key\":\"input.type\",\"negate\":false,\"params\":{\"query\":\"netflow\"},\"type\":\"phrase\",\"value\":\"netflow\"},\"query\":{\"match\":{\"input.type\":{\"query\":\"netflow\",\"type\":\"phrase\"}}}}],\"highlightAll\":true,\"version\":true,\"query\":{\"query\":\"\",\"language\":\"kuery\"}}"
+            "searchSourceJSON": {
+                "filter": [
+                    {
+                        "$state": {
+                            "store": "globalState"
+                        },
+                        "meta": {
+                            "alias": null,
+                            "disabled": false,
+                            "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index",
+                            "key": "input.type",
+                            "negate": false,
+                            "params": {
+                                "query": "netflow"
+                            },
+                            "type": "phrase",
+                            "value": "netflow"
+                        },
+                        "query": {
+                            "match": {
+                                "input.type": {
+                                    "query": "netflow",
+                                    "type": "phrase"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "highlightAll": true,
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                },
+                "version": true
+            }
         },
-        "optionsJSON": "{\"darkTheme\":false}",
-        "panelsJSON": "[{\"panelIndex\":\"2\",\"panelRefName\":\"panel_0\",\"version\":\"7.3.0\",\"gridData\":{\"x\":12,\"y\":4,\"w\":36,\"h\":8,\"i\":\"2\"},\"embeddableConfig\":{}},{\"panelIndex\":\"3\",\"panelRefName\":\"panel_1\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":4,\"w\":12,\"h\":8,\"i\":\"3\"},\"embeddableConfig\":{\"vis\":{\"defaultColors\":{\"0 - 100\":\"rgb(0,104,55)\"}}}},{\"panelIndex\":\"4\",\"panelRefName\":\"panel_2\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":0,\"w\":48,\"h\":4,\"i\":\"4\"},\"embeddableConfig\":{}},{\"panelIndex\":\"5\",\"panelRefName\":\"panel_3\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":12,\"w\":48,\"h\":16,\"i\":\"5\"},\"embeddableConfig\":{\"columns\":[\"source.ip\",\"source.port\",\"destination.ip\",\"destination.port\",\"network.transport\",\"network.bytes\",\"network.packets\"],\"sort\":[\"@timestamp\",\"desc\"]}}]",
+        "optionsJSON": {
+            "darkTheme": false
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "2",
+                    "w": 36,
+                    "x": 12,
+                    "y": 4
+                },
+                "panelIndex": "2",
+                "panelRefName": "panel_0",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "defaultColors": {
+                            "0 - 100": "rgb(0,104,55)"
+                        }
+                    }
+                },
+                "gridData": {
+                    "h": 8,
+                    "i": "3",
+                    "w": 12,
+                    "x": 0,
+                    "y": 4
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_1",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 4,
+                    "i": "4",
+                    "w": 48,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "4",
+                "panelRefName": "panel_2",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "columns": [
+                        "source.ip",
+                        "source.port",
+                        "destination.ip",
+                        "destination.port",
+                        "network.transport",
+                        "network.bytes",
+                        "network.packets"
+                    ],
+                    "sort": [
+                        "@timestamp",
+                        "desc"
+                    ]
+                },
+                "gridData": {
+                    "h": 16,
+                    "i": "5",
+                    "w": 48,
+                    "x": 0,
+                    "y": 12
+                },
+                "panelIndex": "5",
+                "panelRefName": "panel_3",
+                "version": "7.3.0"
+            }
+        ],
         "timeRestore": false,
         "title": "[Filebeat Netflow] Flow records",
         "version": 1

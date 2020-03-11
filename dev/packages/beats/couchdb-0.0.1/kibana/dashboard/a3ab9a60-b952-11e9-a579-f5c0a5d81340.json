@@ -3,10 +3,118 @@
         "description": "This CouchDB dashboard visualizes the most important CouchDB server metrics.\n\n",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"query\":{\"language\":\"kuery\",\"query\":\"\"}}"
+            "searchSourceJSON": {
+                "filter": [],
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                }
+            }
         },
-        "optionsJSON": "{\"hidePanelTitles\":false,\"useMargins\":true}",
-        "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"1\",\"w\":24,\"x\":0,\"y\":10},\"panelIndex\":\"1\",\"panelRefName\":\"panel_0\",\"title\":\"HTTP Status Codes\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"2\",\"w\":24,\"x\":24,\"y\":10},\"panelIndex\":\"2\",\"panelRefName\":\"panel_1\",\"title\":\"HTTP Request Methods\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":10,\"i\":\"3\",\"w\":10,\"x\":0,\"y\":0},\"panelIndex\":\"3\",\"panelRefName\":\"panel_2\",\"title\":\"Open Databases\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":10,\"i\":\"4\",\"w\":24,\"x\":24,\"y\":0},\"panelIndex\":\"4\",\"panelRefName\":\"panel_3\",\"title\":\"Database Read/Writes\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":10,\"i\":\"5\",\"w\":24,\"x\":24,\"y\":25},\"panelIndex\":\"5\",\"panelRefName\":\"panel_4\",\"title\":\"Auth Cache Hit/Miss\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":10,\"i\":\"6\",\"w\":14,\"x\":10,\"y\":0},\"panelIndex\":\"6\",\"panelRefName\":\"panel_5\",\"title\":\"Number of HTTP Requests\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":10,\"i\":\"7\",\"w\":24,\"x\":0,\"y\":25},\"panelIndex\":\"7\",\"panelRefName\":\"panel_6\",\"title\":\"Number of View Reads\",\"version\":\"7.3.0\"}]",
+        "optionsJSON": {
+            "hidePanelTitles": false,
+            "useMargins": true
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "1",
+                    "w": 24,
+                    "x": 0,
+                    "y": 10
+                },
+                "panelIndex": "1",
+                "panelRefName": "panel_0",
+                "title": "HTTP Status Codes",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "2",
+                    "w": 24,
+                    "x": 24,
+                    "y": 10
+                },
+                "panelIndex": "2",
+                "panelRefName": "panel_1",
+                "title": "HTTP Request Methods",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 10,
+                    "i": "3",
+                    "w": 10,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_2",
+                "title": "Open Databases",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 10,
+                    "i": "4",
+                    "w": 24,
+                    "x": 24,
+                    "y": 0
+                },
+                "panelIndex": "4",
+                "panelRefName": "panel_3",
+                "title": "Database Read/Writes",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 10,
+                    "i": "5",
+                    "w": 24,
+                    "x": 24,
+                    "y": 25
+                },
+                "panelIndex": "5",
+                "panelRefName": "panel_4",
+                "title": "Auth Cache Hit/Miss",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 10,
+                    "i": "6",
+                    "w": 14,
+                    "x": 10,
+                    "y": 0
+                },
+                "panelIndex": "6",
+                "panelRefName": "panel_5",
+                "title": "Number of HTTP Requests",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 10,
+                    "i": "7",
+                    "w": 24,
+                    "x": 0,
+                    "y": 25
+                },
+                "panelIndex": "7",
+                "panelRefName": "panel_6",
+                "title": "Number of View Reads",
+                "version": "7.3.0"
+            }
+        ],
         "timeRestore": false,
         "title": "[Metricbeat CouchDB] Database Overview",
         "version": 1

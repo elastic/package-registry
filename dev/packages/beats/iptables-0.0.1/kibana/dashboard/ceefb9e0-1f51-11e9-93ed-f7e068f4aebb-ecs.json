@@ -3,10 +3,141 @@
         "description": "Overview of the iptables events dashboard.",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"query\":{\"language\":\"kuery\",\"query\":\"\"}}"
+            "searchSourceJSON": {
+                "filter": [],
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                }
+            }
         },
-        "optionsJSON": "{\"darkTheme\":false,\"hidePanelTitles\":false,\"useMargins\":true}",
-        "panelsJSON": "[{\"embeddableConfig\":{\"vis\":{\"legendOpen\":false}},\"gridData\":{\"h\":15,\"i\":\"1\",\"w\":37,\"x\":0,\"y\":0},\"panelIndex\":\"1\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"2\",\"w\":11,\"x\":37,\"y\":0},\"panelIndex\":\"2\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_1\"},{\"embeddableConfig\":{\"mapCenter\":[47.15984001304432,-47.02148437500001],\"mapZoom\":2},\"gridData\":{\"h\":15,\"i\":\"3\",\"w\":24,\"x\":0,\"y\":15},\"panelIndex\":\"3\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_2\"},{\"embeddableConfig\":{\"mapCenter\":[49.15296965617042,-27.949218750000004],\"mapZoom\":2},\"gridData\":{\"h\":15,\"i\":\"4\",\"w\":24,\"x\":24,\"y\":15},\"panelIndex\":\"4\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_3\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"5\",\"w\":19,\"x\":0,\"y\":30},\"panelIndex\":\"5\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_4\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"6\",\"w\":18,\"x\":19,\"y\":30},\"panelIndex\":\"6\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_5\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"7\",\"w\":11,\"x\":37,\"y\":30},\"panelIndex\":\"7\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_6\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":19,\"i\":\"8\",\"w\":48,\"x\":0,\"y\":45},\"panelIndex\":\"8\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_7\"}]",
+        "optionsJSON": {
+            "darkTheme": false,
+            "hidePanelTitles": false,
+            "useMargins": true
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "legendOpen": false
+                    }
+                },
+                "gridData": {
+                    "h": 15,
+                    "i": "1",
+                    "w": 37,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "1",
+                "panelRefName": "panel_0",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "2",
+                    "w": 11,
+                    "x": 37,
+                    "y": 0
+                },
+                "panelIndex": "2",
+                "panelRefName": "panel_1",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "mapCenter": [
+                        47.15984001304432,
+                        -47.02148437500001
+                    ],
+                    "mapZoom": 2
+                },
+                "gridData": {
+                    "h": 15,
+                    "i": "3",
+                    "w": 24,
+                    "x": 0,
+                    "y": 15
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_2",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "mapCenter": [
+                        49.15296965617042,
+                        -27.949218750000004
+                    ],
+                    "mapZoom": 2
+                },
+                "gridData": {
+                    "h": 15,
+                    "i": "4",
+                    "w": 24,
+                    "x": 24,
+                    "y": 15
+                },
+                "panelIndex": "4",
+                "panelRefName": "panel_3",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "5",
+                    "w": 19,
+                    "x": 0,
+                    "y": 30
+                },
+                "panelIndex": "5",
+                "panelRefName": "panel_4",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "6",
+                    "w": 18,
+                    "x": 19,
+                    "y": 30
+                },
+                "panelIndex": "6",
+                "panelRefName": "panel_5",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "7",
+                    "w": 11,
+                    "x": 37,
+                    "y": 30
+                },
+                "panelIndex": "7",
+                "panelRefName": "panel_6",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 19,
+                    "i": "8",
+                    "w": 48,
+                    "x": 0,
+                    "y": 45
+                },
+                "panelIndex": "8",
+                "panelRefName": "panel_7",
+                "version": "7.3.0"
+            }
+        ],
         "timeRestore": false,
         "title": "[Filebeat Iptables] Overview ECS",
         "version": 1

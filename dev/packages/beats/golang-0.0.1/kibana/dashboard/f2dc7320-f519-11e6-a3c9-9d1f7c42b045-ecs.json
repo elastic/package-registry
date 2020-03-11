@@ -3,10 +3,99 @@
         "description": "Overview of Go profiling information",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"highlightAll\":true,\"query\":{\"language\":\"kuery\",\"query\":\"\"},\"version\":true}"
+            "searchSourceJSON": {
+                "filter": [],
+                "highlightAll": true,
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                },
+                "version": true
+            }
         },
-        "optionsJSON": "{\"darkTheme\":false}",
-        "panelsJSON": "[{\"panelIndex\":\"8\",\"panelRefName\":\"panel_0\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":0,\"w\":48,\"h\":12,\"i\":\"8\"},\"embeddableConfig\":{}},{\"panelIndex\":\"9\",\"panelRefName\":\"panel_1\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":12,\"w\":16,\"h\":16,\"i\":\"9\"},\"embeddableConfig\":{}},{\"panelIndex\":\"10\",\"panelRefName\":\"panel_2\",\"version\":\"7.3.0\",\"gridData\":{\"x\":32,\"y\":12,\"w\":16,\"h\":16,\"i\":\"10\"},\"embeddableConfig\":{}},{\"panelIndex\":\"11\",\"panelRefName\":\"panel_3\",\"version\":\"7.3.0\",\"gridData\":{\"x\":16,\"y\":12,\"w\":16,\"h\":16,\"i\":\"11\"},\"embeddableConfig\":{}},{\"panelIndex\":\"12\",\"panelRefName\":\"panel_4\",\"version\":\"7.3.0\",\"gridData\":{\"x\":24,\"y\":28,\"w\":24,\"h\":16,\"i\":\"12\"},\"embeddableConfig\":{}},{\"panelIndex\":\"13\",\"panelRefName\":\"panel_5\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":28,\"w\":24,\"h\":16,\"i\":\"13\"},\"embeddableConfig\":{}}]",
+        "optionsJSON": {
+            "darkTheme": false
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "8",
+                    "w": 48,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "8",
+                "panelRefName": "panel_0",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 16,
+                    "i": "9",
+                    "w": 16,
+                    "x": 0,
+                    "y": 12
+                },
+                "panelIndex": "9",
+                "panelRefName": "panel_1",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 16,
+                    "i": "10",
+                    "w": 16,
+                    "x": 32,
+                    "y": 12
+                },
+                "panelIndex": "10",
+                "panelRefName": "panel_2",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 16,
+                    "i": "11",
+                    "w": 16,
+                    "x": 16,
+                    "y": 12
+                },
+                "panelIndex": "11",
+                "panelRefName": "panel_3",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 16,
+                    "i": "12",
+                    "w": 24,
+                    "x": 24,
+                    "y": 28
+                },
+                "panelIndex": "12",
+                "panelRefName": "panel_4",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 16,
+                    "i": "13",
+                    "w": 24,
+                    "x": 0,
+                    "y": 28
+                },
+                "panelIndex": "13",
+                "panelRefName": "panel_5",
+                "version": "7.3.0"
+            }
+        ],
         "timeRestore": false,
         "title": "[Metricbeat Golang] Overview ECS",
         "version": 1

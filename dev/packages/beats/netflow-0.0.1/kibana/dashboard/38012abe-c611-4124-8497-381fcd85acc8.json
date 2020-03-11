@@ -3,10 +3,644 @@
         "description": "Netflow traffic analysis",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[{\"$state\":{\"store\":\"globalState\"},\"meta\":{\"alias\":null,\"disabled\":false,\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index\",\"key\":\"input.type\",\"negate\":false,\"params\":{\"query\":\"netflow\"},\"type\":\"phrase\",\"value\":\"netflow\"},\"query\":{\"match\":{\"input.type\":{\"query\":\"netflow\",\"type\":\"phrase\"}}}}],\"highlightAll\":true,\"version\":true,\"query\":{\"query\":\"\",\"language\":\"kuery\"}}"
+            "searchSourceJSON": {
+                "filter": [
+                    {
+                        "$state": {
+                            "store": "globalState"
+                        },
+                        "meta": {
+                            "alias": null,
+                            "disabled": false,
+                            "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index",
+                            "key": "input.type",
+                            "negate": false,
+                            "params": {
+                                "query": "netflow"
+                            },
+                            "type": "phrase",
+                            "value": "netflow"
+                        },
+                        "query": {
+                            "match": {
+                                "input.type": {
+                                    "query": "netflow",
+                                    "type": "phrase"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "highlightAll": true,
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                },
+                "version": true
+            }
         },
-        "optionsJSON": "{\"darkTheme\":false}",
-        "panelsJSON": "[{\"panelIndex\":\"1\",\"panelRefName\":\"panel_0\",\"version\":\"7.3.0\",\"gridData\":{\"x\":24,\"y\":84,\"w\":24,\"h\":8,\"i\":\"1\"},\"embeddableConfig\":{}},{\"panelIndex\":\"4\",\"panelRefName\":\"panel_1\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":0,\"w\":48,\"h\":4,\"i\":\"4\"},\"embeddableConfig\":{}},{\"panelIndex\":\"5\",\"panelRefName\":\"panel_2\",\"version\":\"7.3.0\",\"gridData\":{\"x\":24,\"y\":108,\"w\":24,\"h\":8,\"i\":\"5\"},\"embeddableConfig\":{}},{\"panelIndex\":\"6\",\"panelRefName\":\"panel_3\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":108,\"w\":24,\"h\":8,\"i\":\"6\"},\"embeddableConfig\":{}},{\"panelIndex\":\"7\",\"panelRefName\":\"panel_4\",\"version\":\"7.3.0\",\"gridData\":{\"x\":24,\"y\":36,\"w\":24,\"h\":8,\"i\":\"7\"},\"embeddableConfig\":{}},{\"panelIndex\":\"9\",\"panelRefName\":\"panel_5\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":84,\"w\":24,\"h\":8,\"i\":\"9\"},\"embeddableConfig\":{}},{\"panelIndex\":\"10\",\"panelRefName\":\"panel_6\",\"version\":\"7.3.0\",\"gridData\":{\"x\":24,\"y\":60,\"w\":24,\"h\":8,\"i\":\"10\"},\"embeddableConfig\":{}},{\"panelIndex\":\"11\",\"panelRefName\":\"panel_7\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":60,\"w\":24,\"h\":8,\"i\":\"11\"},\"embeddableConfig\":{}},{\"panelIndex\":\"12\",\"panelRefName\":\"panel_8\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":36,\"w\":24,\"h\":8,\"i\":\"12\"},\"embeddableConfig\":{}},{\"panelIndex\":\"13\",\"panelRefName\":\"panel_9\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":12,\"w\":24,\"h\":8,\"i\":\"13\"},\"embeddableConfig\":{}},{\"panelIndex\":\"14\",\"panelRefName\":\"panel_10\",\"version\":\"7.3.0\",\"gridData\":{\"x\":24,\"y\":12,\"w\":24,\"h\":8,\"i\":\"14\"},\"embeddableConfig\":{}},{\"panelIndex\":\"15\",\"panelRefName\":\"panel_11\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":4,\"w\":16,\"h\":8,\"i\":\"15\"},\"embeddableConfig\":{\"vis\":{\"legendOpen\":true}}},{\"panelIndex\":\"16\",\"panelRefName\":\"panel_12\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":28,\"w\":16,\"h\":8,\"i\":\"16\"},\"embeddableConfig\":{}},{\"panelIndex\":\"17\",\"panelRefName\":\"panel_13\",\"version\":\"7.3.0\",\"gridData\":{\"x\":24,\"y\":4,\"w\":16,\"h\":8,\"i\":\"17\"},\"embeddableConfig\":{}},{\"panelIndex\":\"18\",\"panelRefName\":\"panel_14\",\"version\":\"7.3.0\",\"gridData\":{\"x\":24,\"y\":28,\"w\":16,\"h\":8,\"i\":\"18\"},\"embeddableConfig\":{}},{\"panelIndex\":\"19\",\"panelRefName\":\"panel_15\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":52,\"w\":16,\"h\":8,\"i\":\"19\"},\"embeddableConfig\":{}},{\"panelIndex\":\"20\",\"panelRefName\":\"panel_16\",\"version\":\"7.3.0\",\"gridData\":{\"x\":24,\"y\":52,\"w\":16,\"h\":8,\"i\":\"20\"},\"embeddableConfig\":{}},{\"panelIndex\":\"21\",\"panelRefName\":\"panel_17\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":76,\"w\":16,\"h\":8,\"i\":\"21\"},\"embeddableConfig\":{}},{\"panelIndex\":\"22\",\"panelRefName\":\"panel_18\",\"version\":\"7.3.0\",\"gridData\":{\"x\":24,\"y\":76,\"w\":16,\"h\":8,\"i\":\"22\"},\"embeddableConfig\":{}},{\"panelIndex\":\"23\",\"panelRefName\":\"panel_19\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":100,\"w\":16,\"h\":8,\"i\":\"23\"},\"embeddableConfig\":{}},{\"panelIndex\":\"24\",\"panelRefName\":\"panel_20\",\"version\":\"7.3.0\",\"gridData\":{\"x\":24,\"y\":100,\"w\":16,\"h\":8,\"i\":\"24\"},\"embeddableConfig\":{}},{\"panelIndex\":\"25\",\"panelRefName\":\"panel_21\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":20,\"w\":24,\"h\":8,\"i\":\"25\"},\"embeddableConfig\":{}},{\"panelIndex\":\"26\",\"panelRefName\":\"panel_22\",\"version\":\"7.3.0\",\"gridData\":{\"x\":40,\"y\":4,\"w\":8,\"h\":8,\"i\":\"26\"},\"embeddableConfig\":{\"vis\":{\"defaultColors\":{\"0 - 100\":\"rgb(0,104,55)\"}}}},{\"panelIndex\":\"27\",\"panelRefName\":\"panel_23\",\"version\":\"7.3.0\",\"gridData\":{\"x\":16,\"y\":4,\"w\":8,\"h\":8,\"i\":\"27\"},\"embeddableConfig\":{\"vis\":{\"defaultColors\":{\"0 - 100\":\"rgb(0,104,55)\"}}}},{\"panelIndex\":\"28\",\"panelRefName\":\"panel_24\",\"version\":\"7.3.0\",\"gridData\":{\"x\":24,\"y\":20,\"w\":24,\"h\":8,\"i\":\"28\"},\"embeddableConfig\":{}},{\"panelIndex\":\"29\",\"panelRefName\":\"panel_25\",\"version\":\"7.3.0\",\"gridData\":{\"x\":40,\"y\":28,\"w\":8,\"h\":8,\"i\":\"29\"},\"embeddableConfig\":{\"vis\":{\"defaultColors\":{\"0 - 100\":\"rgb(0,104,55)\"}}}},{\"panelIndex\":\"30\",\"panelRefName\":\"panel_26\",\"version\":\"7.3.0\",\"gridData\":{\"x\":16,\"y\":28,\"w\":8,\"h\":8,\"i\":\"30\"},\"embeddableConfig\":{\"vis\":{\"defaultColors\":{\"0 - 100\":\"rgb(0,104,55)\"}}}},{\"panelIndex\":\"31\",\"panelRefName\":\"panel_27\",\"version\":\"7.3.0\",\"gridData\":{\"x\":24,\"y\":92,\"w\":24,\"h\":8,\"i\":\"31\"},\"embeddableConfig\":{}},{\"panelIndex\":\"34\",\"panelRefName\":\"panel_28\",\"version\":\"7.3.0\",\"gridData\":{\"x\":24,\"y\":116,\"w\":24,\"h\":8,\"i\":\"34\"},\"embeddableConfig\":{}},{\"panelIndex\":\"35\",\"panelRefName\":\"panel_29\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":116,\"w\":24,\"h\":8,\"i\":\"35\"},\"embeddableConfig\":{}},{\"panelIndex\":\"38\",\"panelRefName\":\"panel_30\",\"version\":\"7.3.0\",\"gridData\":{\"x\":24,\"y\":44,\"w\":24,\"h\":8,\"i\":\"38\"},\"embeddableConfig\":{}},{\"panelIndex\":\"42\",\"panelRefName\":\"panel_31\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":44,\"w\":24,\"h\":8,\"i\":\"42\"},\"embeddableConfig\":{}},{\"panelIndex\":\"44\",\"panelRefName\":\"panel_32\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":92,\"w\":24,\"h\":8,\"i\":\"44\"},\"embeddableConfig\":{}},{\"panelIndex\":\"45\",\"panelRefName\":\"panel_33\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":68,\"w\":24,\"h\":8,\"i\":\"45\"},\"embeddableConfig\":{}},{\"panelIndex\":\"47\",\"panelRefName\":\"panel_34\",\"version\":\"7.3.0\",\"gridData\":{\"x\":24,\"y\":68,\"w\":24,\"h\":8,\"i\":\"47\"},\"embeddableConfig\":{}},{\"panelIndex\":\"48\",\"panelRefName\":\"panel_35\",\"version\":\"7.3.0\",\"gridData\":{\"x\":16,\"y\":52,\"w\":8,\"h\":8,\"i\":\"48\"},\"embeddableConfig\":{\"vis\":{\"defaultColors\":{\"0 - 100\":\"rgb(0,104,55)\"}}}},{\"panelIndex\":\"49\",\"panelRefName\":\"panel_36\",\"version\":\"7.3.0\",\"gridData\":{\"x\":40,\"y\":52,\"w\":8,\"h\":8,\"i\":\"49\"},\"embeddableConfig\":{\"vis\":{\"defaultColors\":{\"0 - 100\":\"rgb(0,104,55)\"}}}},{\"panelIndex\":\"50\",\"panelRefName\":\"panel_37\",\"version\":\"7.3.0\",\"gridData\":{\"x\":40,\"y\":76,\"w\":8,\"h\":8,\"i\":\"50\"},\"embeddableConfig\":{\"vis\":{\"defaultColors\":{\"0 - 100\":\"rgb(0,104,55)\"}}}},{\"panelIndex\":\"51\",\"panelRefName\":\"panel_38\",\"version\":\"7.3.0\",\"gridData\":{\"x\":40,\"y\":100,\"w\":8,\"h\":8,\"i\":\"51\"},\"embeddableConfig\":{\"vis\":{\"defaultColors\":{\"0 - 100\":\"rgb(0,104,55)\"}}}},{\"panelIndex\":\"52\",\"panelRefName\":\"panel_39\",\"version\":\"7.3.0\",\"gridData\":{\"x\":16,\"y\":100,\"w\":8,\"h\":8,\"i\":\"52\"},\"embeddableConfig\":{\"vis\":{\"defaultColors\":{\"0 - 100\":\"rgb(0,104,55)\"}}}},{\"panelIndex\":\"53\",\"panelRefName\":\"panel_40\",\"version\":\"7.3.0\",\"gridData\":{\"x\":16,\"y\":76,\"w\":8,\"h\":8,\"i\":\"53\"},\"embeddableConfig\":{\"vis\":{\"defaultColors\":{\"0 - 100\":\"rgb(0,104,55)\"}}}}]",
+        "optionsJSON": {
+            "darkTheme": false
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "1",
+                    "w": 24,
+                    "x": 24,
+                    "y": 84
+                },
+                "panelIndex": "1",
+                "panelRefName": "panel_0",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 4,
+                    "i": "4",
+                    "w": 48,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "4",
+                "panelRefName": "panel_1",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "5",
+                    "w": 24,
+                    "x": 24,
+                    "y": 108
+                },
+                "panelIndex": "5",
+                "panelRefName": "panel_2",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "6",
+                    "w": 24,
+                    "x": 0,
+                    "y": 108
+                },
+                "panelIndex": "6",
+                "panelRefName": "panel_3",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "7",
+                    "w": 24,
+                    "x": 24,
+                    "y": 36
+                },
+                "panelIndex": "7",
+                "panelRefName": "panel_4",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "9",
+                    "w": 24,
+                    "x": 0,
+                    "y": 84
+                },
+                "panelIndex": "9",
+                "panelRefName": "panel_5",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "10",
+                    "w": 24,
+                    "x": 24,
+                    "y": 60
+                },
+                "panelIndex": "10",
+                "panelRefName": "panel_6",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "11",
+                    "w": 24,
+                    "x": 0,
+                    "y": 60
+                },
+                "panelIndex": "11",
+                "panelRefName": "panel_7",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "12",
+                    "w": 24,
+                    "x": 0,
+                    "y": 36
+                },
+                "panelIndex": "12",
+                "panelRefName": "panel_8",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "13",
+                    "w": 24,
+                    "x": 0,
+                    "y": 12
+                },
+                "panelIndex": "13",
+                "panelRefName": "panel_9",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "14",
+                    "w": 24,
+                    "x": 24,
+                    "y": 12
+                },
+                "panelIndex": "14",
+                "panelRefName": "panel_10",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "legendOpen": true
+                    }
+                },
+                "gridData": {
+                    "h": 8,
+                    "i": "15",
+                    "w": 16,
+                    "x": 0,
+                    "y": 4
+                },
+                "panelIndex": "15",
+                "panelRefName": "panel_11",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "16",
+                    "w": 16,
+                    "x": 0,
+                    "y": 28
+                },
+                "panelIndex": "16",
+                "panelRefName": "panel_12",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "17",
+                    "w": 16,
+                    "x": 24,
+                    "y": 4
+                },
+                "panelIndex": "17",
+                "panelRefName": "panel_13",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "18",
+                    "w": 16,
+                    "x": 24,
+                    "y": 28
+                },
+                "panelIndex": "18",
+                "panelRefName": "panel_14",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "19",
+                    "w": 16,
+                    "x": 0,
+                    "y": 52
+                },
+                "panelIndex": "19",
+                "panelRefName": "panel_15",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "20",
+                    "w": 16,
+                    "x": 24,
+                    "y": 52
+                },
+                "panelIndex": "20",
+                "panelRefName": "panel_16",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "21",
+                    "w": 16,
+                    "x": 0,
+                    "y": 76
+                },
+                "panelIndex": "21",
+                "panelRefName": "panel_17",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "22",
+                    "w": 16,
+                    "x": 24,
+                    "y": 76
+                },
+                "panelIndex": "22",
+                "panelRefName": "panel_18",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "23",
+                    "w": 16,
+                    "x": 0,
+                    "y": 100
+                },
+                "panelIndex": "23",
+                "panelRefName": "panel_19",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "24",
+                    "w": 16,
+                    "x": 24,
+                    "y": 100
+                },
+                "panelIndex": "24",
+                "panelRefName": "panel_20",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "25",
+                    "w": 24,
+                    "x": 0,
+                    "y": 20
+                },
+                "panelIndex": "25",
+                "panelRefName": "panel_21",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "defaultColors": {
+                            "0 - 100": "rgb(0,104,55)"
+                        }
+                    }
+                },
+                "gridData": {
+                    "h": 8,
+                    "i": "26",
+                    "w": 8,
+                    "x": 40,
+                    "y": 4
+                },
+                "panelIndex": "26",
+                "panelRefName": "panel_22",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "defaultColors": {
+                            "0 - 100": "rgb(0,104,55)"
+                        }
+                    }
+                },
+                "gridData": {
+                    "h": 8,
+                    "i": "27",
+                    "w": 8,
+                    "x": 16,
+                    "y": 4
+                },
+                "panelIndex": "27",
+                "panelRefName": "panel_23",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "28",
+                    "w": 24,
+                    "x": 24,
+                    "y": 20
+                },
+                "panelIndex": "28",
+                "panelRefName": "panel_24",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "defaultColors": {
+                            "0 - 100": "rgb(0,104,55)"
+                        }
+                    }
+                },
+                "gridData": {
+                    "h": 8,
+                    "i": "29",
+                    "w": 8,
+                    "x": 40,
+                    "y": 28
+                },
+                "panelIndex": "29",
+                "panelRefName": "panel_25",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "defaultColors": {
+                            "0 - 100": "rgb(0,104,55)"
+                        }
+                    }
+                },
+                "gridData": {
+                    "h": 8,
+                    "i": "30",
+                    "w": 8,
+                    "x": 16,
+                    "y": 28
+                },
+                "panelIndex": "30",
+                "panelRefName": "panel_26",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "31",
+                    "w": 24,
+                    "x": 24,
+                    "y": 92
+                },
+                "panelIndex": "31",
+                "panelRefName": "panel_27",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "34",
+                    "w": 24,
+                    "x": 24,
+                    "y": 116
+                },
+                "panelIndex": "34",
+                "panelRefName": "panel_28",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "35",
+                    "w": 24,
+                    "x": 0,
+                    "y": 116
+                },
+                "panelIndex": "35",
+                "panelRefName": "panel_29",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "38",
+                    "w": 24,
+                    "x": 24,
+                    "y": 44
+                },
+                "panelIndex": "38",
+                "panelRefName": "panel_30",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "42",
+                    "w": 24,
+                    "x": 0,
+                    "y": 44
+                },
+                "panelIndex": "42",
+                "panelRefName": "panel_31",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "44",
+                    "w": 24,
+                    "x": 0,
+                    "y": 92
+                },
+                "panelIndex": "44",
+                "panelRefName": "panel_32",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "45",
+                    "w": 24,
+                    "x": 0,
+                    "y": 68
+                },
+                "panelIndex": "45",
+                "panelRefName": "panel_33",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "47",
+                    "w": 24,
+                    "x": 24,
+                    "y": 68
+                },
+                "panelIndex": "47",
+                "panelRefName": "panel_34",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "defaultColors": {
+                            "0 - 100": "rgb(0,104,55)"
+                        }
+                    }
+                },
+                "gridData": {
+                    "h": 8,
+                    "i": "48",
+                    "w": 8,
+                    "x": 16,
+                    "y": 52
+                },
+                "panelIndex": "48",
+                "panelRefName": "panel_35",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "defaultColors": {
+                            "0 - 100": "rgb(0,104,55)"
+                        }
+                    }
+                },
+                "gridData": {
+                    "h": 8,
+                    "i": "49",
+                    "w": 8,
+                    "x": 40,
+                    "y": 52
+                },
+                "panelIndex": "49",
+                "panelRefName": "panel_36",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "defaultColors": {
+                            "0 - 100": "rgb(0,104,55)"
+                        }
+                    }
+                },
+                "gridData": {
+                    "h": 8,
+                    "i": "50",
+                    "w": 8,
+                    "x": 40,
+                    "y": 76
+                },
+                "panelIndex": "50",
+                "panelRefName": "panel_37",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "defaultColors": {
+                            "0 - 100": "rgb(0,104,55)"
+                        }
+                    }
+                },
+                "gridData": {
+                    "h": 8,
+                    "i": "51",
+                    "w": 8,
+                    "x": 40,
+                    "y": 100
+                },
+                "panelIndex": "51",
+                "panelRefName": "panel_38",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "defaultColors": {
+                            "0 - 100": "rgb(0,104,55)"
+                        }
+                    }
+                },
+                "gridData": {
+                    "h": 8,
+                    "i": "52",
+                    "w": 8,
+                    "x": 16,
+                    "y": 100
+                },
+                "panelIndex": "52",
+                "panelRefName": "panel_39",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "defaultColors": {
+                            "0 - 100": "rgb(0,104,55)"
+                        }
+                    }
+                },
+                "gridData": {
+                    "h": 8,
+                    "i": "53",
+                    "w": 8,
+                    "x": 16,
+                    "y": 76
+                },
+                "panelIndex": "53",
+                "panelRefName": "panel_40",
+                "version": "7.3.0"
+            }
+        ],
         "timeRestore": false,
         "title": "[Filebeat Netflow] Traffic Analysis",
         "version": 1

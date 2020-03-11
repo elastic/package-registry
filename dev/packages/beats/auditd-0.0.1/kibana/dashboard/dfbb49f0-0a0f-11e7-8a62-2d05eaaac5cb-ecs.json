@@ -3,10 +3,141 @@
         "description": "Dashboard for the Auditd Filebeat module",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"highlightAll\":true,\"query\":{\"language\":\"kuery\",\"query\":\"\"},\"version\":true}"
+            "searchSourceJSON": {
+                "filter": [],
+                "highlightAll": true,
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                },
+                "version": true
+            }
         },
-        "optionsJSON": "{\"darkTheme\":false}",
-        "panelsJSON": "[{\"panelIndex\":\"1\",\"panelRefName\":\"panel_0\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":0,\"w\":16,\"h\":16,\"i\":\"1\"},\"embeddableConfig\":{}},{\"panelIndex\":\"2\",\"panelRefName\":\"panel_1\",\"version\":\"7.3.0\",\"gridData\":{\"x\":32,\"y\":0,\"w\":16,\"h\":16,\"i\":\"2\"},\"embeddableConfig\":{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":null,\"direction\":null}}}}},{\"panelIndex\":\"3\",\"panelRefName\":\"panel_2\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":16,\"w\":24,\"h\":12,\"i\":\"3\"},\"embeddableConfig\":{}},{\"panelIndex\":\"5\",\"panelRefName\":\"panel_3\",\"version\":\"7.3.0\",\"gridData\":{\"x\":24,\"y\":16,\"w\":24,\"h\":12,\"i\":\"5\"},\"embeddableConfig\":{\"mapBounds\":{\"bottom_right\":{\"lat\":-43.580390855607845,\"lon\":102.65625},\"top_left\":{\"lat\":43.58039085560784,\"lon\":-102.3046875}},\"mapCollar\":{\"bottom_right\":{\"lat\":-87.16078,\"lon\":180},\"top_left\":{\"lat\":87.16078,\"lon\":-180},\"zoom\":2},\"mapZoom\":2}},{\"panelIndex\":\"6\",\"panelRefName\":\"panel_4\",\"version\":\"7.3.0\",\"gridData\":{\"x\":16,\"y\":0,\"w\":16,\"h\":16,\"i\":\"6\"},\"embeddableConfig\":{}},{\"panelIndex\":\"7\",\"panelRefName\":\"panel_5\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":28,\"w\":48,\"h\":12,\"i\":\"7\"},\"embeddableConfig\":{\"columns\":[\"event.action\",\"auditd.log.sequence\",\"user.name\"],\"sort\":[\"@timestamp\",\"desc\"]}}]",
+        "optionsJSON": {
+            "darkTheme": false
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 16,
+                    "i": "1",
+                    "w": 16,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "1",
+                "panelRefName": "panel_0",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "params": {
+                            "sort": {
+                                "columnIndex": null,
+                                "direction": null
+                            }
+                        }
+                    }
+                },
+                "gridData": {
+                    "h": 16,
+                    "i": "2",
+                    "w": 16,
+                    "x": 32,
+                    "y": 0
+                },
+                "panelIndex": "2",
+                "panelRefName": "panel_1",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "3",
+                    "w": 24,
+                    "x": 0,
+                    "y": 16
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_2",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "mapBounds": {
+                        "bottom_right": {
+                            "lat": -43.580390855607845,
+                            "lon": 102.65625
+                        },
+                        "top_left": {
+                            "lat": 43.58039085560784,
+                            "lon": -102.3046875
+                        }
+                    },
+                    "mapCollar": {
+                        "bottom_right": {
+                            "lat": -87.16078,
+                            "lon": 180
+                        },
+                        "top_left": {
+                            "lat": 87.16078,
+                            "lon": -180
+                        },
+                        "zoom": 2
+                    },
+                    "mapZoom": 2
+                },
+                "gridData": {
+                    "h": 12,
+                    "i": "5",
+                    "w": 24,
+                    "x": 24,
+                    "y": 16
+                },
+                "panelIndex": "5",
+                "panelRefName": "panel_3",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 16,
+                    "i": "6",
+                    "w": 16,
+                    "x": 16,
+                    "y": 0
+                },
+                "panelIndex": "6",
+                "panelRefName": "panel_4",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "columns": [
+                        "event.action",
+                        "auditd.log.sequence",
+                        "user.name"
+                    ],
+                    "sort": [
+                        "@timestamp",
+                        "desc"
+                    ]
+                },
+                "gridData": {
+                    "h": 12,
+                    "i": "7",
+                    "w": 48,
+                    "x": 0,
+                    "y": 28
+                },
+                "panelIndex": "7",
+                "panelRefName": "panel_5",
+                "version": "7.3.0"
+            }
+        ],
         "timeRestore": false,
         "title": "[Filebeat Auditd] Audit Events ECS",
         "version": 1

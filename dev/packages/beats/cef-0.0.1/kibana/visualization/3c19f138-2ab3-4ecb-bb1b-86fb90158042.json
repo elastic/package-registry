@@ -2,13 +2,47 @@
     "attributes": {
         "description": "",
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[]}"
+            "searchSourceJSON": {
+                "filter": []
+            }
         },
         "savedSearchRefName": "search_0",
         "title": "Device Type Breakdown [Filebeat CEF]",
-        "uiStateJSON": "{}",
+        "uiStateJSON": {},
         "version": 1,
-        "visState": "{\"aggs\":[{\"enabled\":true,\"id\":\"1\",\"params\":{},\"schema\":\"metric\",\"type\":\"count\"},{\"enabled\":true,\"id\":\"2\",\"params\":{\"customLabel\":\"Firewall Types\",\"field\":\"cef.extensions.categoryDeviceType\",\"order\":\"desc\",\"orderBy\":\"1\",\"size\":5},\"schema\":\"segment\",\"type\":\"terms\"}],\"listeners\":{},\"params\":{\"addLegend\":true,\"addTooltip\":true,\"isDonut\":false,\"legendPosition\":\"right\"},\"title\":\"Device Type Breakdown [Filebeat CEF]\",\"type\":\"pie\"}"
+        "visState": {
+            "aggs": [
+                {
+                    "enabled": true,
+                    "id": "1",
+                    "params": {},
+                    "schema": "metric",
+                    "type": "count"
+                },
+                {
+                    "enabled": true,
+                    "id": "2",
+                    "params": {
+                        "customLabel": "Firewall Types",
+                        "field": "cef.extensions.categoryDeviceType",
+                        "order": "desc",
+                        "orderBy": "1",
+                        "size": 5
+                    },
+                    "schema": "segment",
+                    "type": "terms"
+                }
+            ],
+            "listeners": {},
+            "params": {
+                "addLegend": true,
+                "addTooltip": true,
+                "isDonut": false,
+                "legendPosition": "right"
+            },
+            "title": "Device Type Breakdown [Filebeat CEF]",
+            "type": "pie"
+        }
     },
     "id": "3c19f138-2ab3-4ecb-bb1b-86fb90158042",
     "references": [

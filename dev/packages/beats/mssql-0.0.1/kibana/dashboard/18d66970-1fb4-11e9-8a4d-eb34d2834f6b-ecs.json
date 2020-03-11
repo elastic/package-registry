@@ -3,10 +3,132 @@
         "description": "An overview of the transaction log of each database in a MSSQL instance",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"query\":{\"language\":\"kuery\",\"query\":\"\"}}"
+            "searchSourceJSON": {
+                "filter": [],
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                }
+            }
         },
-        "optionsJSON": "{\"darkTheme\":false,\"hidePanelTitles\":false,\"useMargins\":true}",
-        "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"1\",\"w\":24,\"x\":0,\"y\":12},\"panelIndex\":\"1\",\"title\":\"Recovery size of transaction log\",\"version\":\"7.0.0-alpha2\",\"panelRefName\":\"panel_0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":13,\"i\":\"2\",\"w\":24,\"x\":24,\"y\":24},\"panelIndex\":\"2\",\"title\":\"Transaction log size since last checkpoint\",\"version\":\"7.0.0-alpha2\",\"panelRefName\":\"panel_1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"3\",\"w\":18,\"x\":30,\"y\":0},\"panelIndex\":\"3\",\"title\":\"Percentage of used space of transaction log\",\"version\":\"7.0.0-alpha2\",\"panelRefName\":\"panel_2\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":13,\"i\":\"4\",\"w\":24,\"x\":0,\"y\":37},\"panelIndex\":\"4\",\"title\":\"Log space size since last backup\",\"version\":\"7.0.0-alpha2\",\"panelRefName\":\"panel_3\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":13,\"i\":\"5\",\"w\":24,\"x\":0,\"y\":24},\"panelIndex\":\"5\",\"title\":\"Active size of transaction log\",\"version\":\"7.0.0-alpha2\",\"panelRefName\":\"panel_4\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"6\",\"w\":24,\"x\":24,\"y\":12},\"panelIndex\":\"6\",\"title\":\"Used space of transaction log\",\"version\":\"7.0.0-alpha2\",\"panelRefName\":\"panel_5\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"7\",\"w\":18,\"x\":12,\"y\":0},\"panelIndex\":\"7\",\"title\":\"Total log space usage\",\"version\":\"7.0.0-alpha2\",\"panelRefName\":\"panel_6\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"8\",\"w\":12,\"x\":0,\"y\":0},\"panelIndex\":\"8\",\"version\":\"7.0.0-SNAPSHOT\",\"panelRefName\":\"panel_7\"}]",
+        "optionsJSON": {
+            "darkTheme": false,
+            "hidePanelTitles": false,
+            "useMargins": true
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "1",
+                    "w": 24,
+                    "x": 0,
+                    "y": 12
+                },
+                "panelIndex": "1",
+                "panelRefName": "panel_0",
+                "title": "Recovery size of transaction log",
+                "version": "7.0.0-alpha2"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 13,
+                    "i": "2",
+                    "w": 24,
+                    "x": 24,
+                    "y": 24
+                },
+                "panelIndex": "2",
+                "panelRefName": "panel_1",
+                "title": "Transaction log size since last checkpoint",
+                "version": "7.0.0-alpha2"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "3",
+                    "w": 18,
+                    "x": 30,
+                    "y": 0
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_2",
+                "title": "Percentage of used space of transaction log",
+                "version": "7.0.0-alpha2"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 13,
+                    "i": "4",
+                    "w": 24,
+                    "x": 0,
+                    "y": 37
+                },
+                "panelIndex": "4",
+                "panelRefName": "panel_3",
+                "title": "Log space size since last backup",
+                "version": "7.0.0-alpha2"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 13,
+                    "i": "5",
+                    "w": 24,
+                    "x": 0,
+                    "y": 24
+                },
+                "panelIndex": "5",
+                "panelRefName": "panel_4",
+                "title": "Active size of transaction log",
+                "version": "7.0.0-alpha2"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "6",
+                    "w": 24,
+                    "x": 24,
+                    "y": 12
+                },
+                "panelIndex": "6",
+                "panelRefName": "panel_5",
+                "title": "Used space of transaction log",
+                "version": "7.0.0-alpha2"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "7",
+                    "w": 18,
+                    "x": 12,
+                    "y": 0
+                },
+                "panelIndex": "7",
+                "panelRefName": "panel_6",
+                "title": "Total log space usage",
+                "version": "7.0.0-alpha2"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "8",
+                    "w": 12,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "8",
+                "panelRefName": "panel_7",
+                "version": "7.0.0-SNAPSHOT"
+            }
+        ],
         "timeRestore": false,
         "title": "[Metricbeat MSSQL] Transaction log ECS",
         "version": 1

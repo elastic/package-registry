@@ -3,10 +3,83 @@
         "description": "This dashboard shows data collected by the OSSEC rootkit pack from osquery",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"highlightAll\":true,\"query\":{\"language\":\"kuery\",\"query\":\"\"},\"version\":true}"
+            "searchSourceJSON": {
+                "filter": [],
+                "highlightAll": true,
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                },
+                "version": true
+            }
         },
-        "optionsJSON": "{\"darkTheme\":false,\"hidePanelTitles\":false,\"useMargins\":true}",
-        "panelsJSON": "[{\"gridData\":{\"h\":2,\"i\":\"1\",\"w\":4,\"x\":8,\"y\":1},\"panelIndex\":\"1\",\"version\":\"6.1.0-SNAPSHOT\",\"panelRefName\":\"panel_0\"},{\"gridData\":{\"h\":2,\"i\":\"2\",\"w\":4,\"x\":4,\"y\":1},\"panelIndex\":\"2\",\"version\":\"6.1.0-SNAPSHOT\",\"panelRefName\":\"panel_1\"},{\"gridData\":{\"h\":2,\"i\":\"3\",\"w\":4,\"x\":0,\"y\":1},\"panelIndex\":\"3\",\"version\":\"6.1.0-SNAPSHOT\",\"panelRefName\":\"panel_2\"},{\"gridData\":{\"h\":1,\"i\":\"4\",\"w\":12,\"x\":0,\"y\":0},\"panelIndex\":\"4\",\"version\":\"6.1.0-SNAPSHOT\",\"panelRefName\":\"panel_3\"},{\"gridData\":{\"h\":4,\"i\":\"5\",\"w\":12,\"x\":0,\"y\":3},\"panelIndex\":\"5\",\"version\":\"6.1.0-SNAPSHOT\",\"panelRefName\":\"panel_4\"}]",
+        "optionsJSON": {
+            "darkTheme": false,
+            "hidePanelTitles": false,
+            "useMargins": true
+        },
+        "panelsJSON": [
+            {
+                "gridData": {
+                    "h": 2,
+                    "i": "1",
+                    "w": 4,
+                    "x": 8,
+                    "y": 1
+                },
+                "panelIndex": "1",
+                "panelRefName": "panel_0",
+                "version": "6.1.0-SNAPSHOT"
+            },
+            {
+                "gridData": {
+                    "h": 2,
+                    "i": "2",
+                    "w": 4,
+                    "x": 4,
+                    "y": 1
+                },
+                "panelIndex": "2",
+                "panelRefName": "panel_1",
+                "version": "6.1.0-SNAPSHOT"
+            },
+            {
+                "gridData": {
+                    "h": 2,
+                    "i": "3",
+                    "w": 4,
+                    "x": 0,
+                    "y": 1
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_2",
+                "version": "6.1.0-SNAPSHOT"
+            },
+            {
+                "gridData": {
+                    "h": 1,
+                    "i": "4",
+                    "w": 12,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "4",
+                "panelRefName": "panel_3",
+                "version": "6.1.0-SNAPSHOT"
+            },
+            {
+                "gridData": {
+                    "h": 4,
+                    "i": "5",
+                    "w": 12,
+                    "x": 0,
+                    "y": 3
+                },
+                "panelIndex": "5",
+                "panelRefName": "panel_4",
+                "version": "6.1.0-SNAPSHOT"
+            }
+        ],
         "timeRestore": false,
         "title": "[Filebeat Osquery] OSSEC rootkit pack ECS",
         "version": 1

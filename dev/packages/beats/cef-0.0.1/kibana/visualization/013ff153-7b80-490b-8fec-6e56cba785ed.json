@@ -2,13 +2,47 @@
     "attributes": {
         "description": "",
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[]}"
+            "searchSourceJSON": {
+                "filter": []
+            }
         },
         "savedSearchRefName": "search_0",
         "title": "Top 20 Source Countries [Filebeat CEF]",
-        "uiStateJSON": "{}",
+        "uiStateJSON": {},
         "version": 1,
-        "visState": "{\"aggs\":[{\"enabled\":true,\"id\":\"1\",\"params\":{},\"schema\":\"metric\",\"type\":\"count\"},{\"enabled\":true,\"id\":\"2\",\"params\":{\"field\":\"source.geo.country_iso_code\",\"order\":\"desc\",\"orderBy\":\"1\",\"size\":20},\"schema\":\"segment\",\"type\":\"terms\"}],\"listeners\":{},\"params\":{\"hideLabel\":false,\"maxFontSize\":72,\"minFontSize\":26,\"orientation\":\"single\",\"scale\":\"square root\"},\"title\":\"Top 20 Source Countries [Filebeat CEF]\",\"type\":\"tagcloud\"}"
+        "visState": {
+            "aggs": [
+                {
+                    "enabled": true,
+                    "id": "1",
+                    "params": {},
+                    "schema": "metric",
+                    "type": "count"
+                },
+                {
+                    "enabled": true,
+                    "id": "2",
+                    "params": {
+                        "field": "source.geo.country_iso_code",
+                        "order": "desc",
+                        "orderBy": "1",
+                        "size": 20
+                    },
+                    "schema": "segment",
+                    "type": "terms"
+                }
+            ],
+            "listeners": {},
+            "params": {
+                "hideLabel": false,
+                "maxFontSize": 72,
+                "minFontSize": 26,
+                "orientation": "single",
+                "scale": "square root"
+            },
+            "title": "Top 20 Source Countries [Filebeat CEF]",
+            "type": "tagcloud"
+        }
     },
     "id": "013ff153-7b80-490b-8fec-6e56cba785ed",
     "references": [

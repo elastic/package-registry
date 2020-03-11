@@ -3,10 +3,126 @@
         "description": "Overview of the Suricata Alerts dashboard.",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"highlightAll\":true,\"query\":{\"language\":\"kuery\",\"query\":\"\"},\"version\":true}"
+            "searchSourceJSON": {
+                "filter": [],
+                "highlightAll": true,
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                },
+                "version": true
+            }
         },
-        "optionsJSON": "{\"darkTheme\":false,\"hidePanelTitles\":false,\"useMargins\":true}",
-        "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"h\":10,\"i\":\"1\",\"w\":23,\"x\":0,\"y\":0},\"panelIndex\":\"1\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":22,\"i\":\"2\",\"w\":25,\"x\":23,\"y\":0},\"panelIndex\":\"2\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":16,\"i\":\"3\",\"w\":48,\"x\":0,\"y\":37},\"panelIndex\":\"3\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_2\"},{\"embeddableConfig\":{\"mapCenter\":[38.548165423046584,-6.328125000000001],\"mapZoom\":2},\"gridData\":{\"h\":15,\"i\":\"4\",\"w\":23,\"x\":0,\"y\":22},\"panelIndex\":\"4\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_3\"},{\"embeddableConfig\":{\"mapCenter\":[41.77131167976407,1.9335937500000002],\"mapZoom\":2},\"gridData\":{\"h\":15,\"i\":\"5\",\"w\":25,\"x\":23,\"y\":22},\"panelIndex\":\"5\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_4\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"7\",\"w\":12,\"x\":11,\"y\":10},\"panelIndex\":\"7\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_5\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"8\",\"w\":11,\"x\":0,\"y\":10},\"panelIndex\":\"8\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_6\"}]",
+        "optionsJSON": {
+            "darkTheme": false,
+            "hidePanelTitles": false,
+            "useMargins": true
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 10,
+                    "i": "1",
+                    "w": 23,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "1",
+                "panelRefName": "panel_0",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 22,
+                    "i": "2",
+                    "w": 25,
+                    "x": 23,
+                    "y": 0
+                },
+                "panelIndex": "2",
+                "panelRefName": "panel_1",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 16,
+                    "i": "3",
+                    "w": 48,
+                    "x": 0,
+                    "y": 37
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_2",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "mapCenter": [
+                        38.548165423046584,
+                        -6.328125000000001
+                    ],
+                    "mapZoom": 2
+                },
+                "gridData": {
+                    "h": 15,
+                    "i": "4",
+                    "w": 23,
+                    "x": 0,
+                    "y": 22
+                },
+                "panelIndex": "4",
+                "panelRefName": "panel_3",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "mapCenter": [
+                        41.77131167976407,
+                        1.9335937500000002
+                    ],
+                    "mapZoom": 2
+                },
+                "gridData": {
+                    "h": 15,
+                    "i": "5",
+                    "w": 25,
+                    "x": 23,
+                    "y": 22
+                },
+                "panelIndex": "5",
+                "panelRefName": "panel_4",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "7",
+                    "w": 12,
+                    "x": 11,
+                    "y": 10
+                },
+                "panelIndex": "7",
+                "panelRefName": "panel_5",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "8",
+                    "w": 11,
+                    "x": 0,
+                    "y": 10
+                },
+                "panelIndex": "8",
+                "panelRefName": "panel_6",
+                "version": "7.3.0"
+            }
+        ],
         "timeRestore": false,
         "title": "[Filebeat Suricata] Alert Overview ECS",
         "version": 1

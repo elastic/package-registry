@@ -101,7 +101,6 @@ func prepareDashboardFile(dashboardFile []byte) ([]byte, error) {
 
 func encodeFields(ms mapStr) (mapStr, error) {
 	for _, field := range encodedFields {
-
 		v, err := ms.getValue(field)
 		if err == errKeyNotFound {
 			continue
@@ -204,6 +203,11 @@ func extractKibanaObjects(dashboardFile []byte, objectType string) (map[string][
 			return nil, errors.Wrapf(err, "removing field version failed")
 		}
 
+		object, err = decodeFields(object)
+		if err != nil {
+			return nil, errors.Wrapf(err, "decoding fields failed")
+		}
+
 		data, err := json.MarshalIndent(object, "", "    ")
 		if err != nil {
 			return nil, errors.Wrapf(err, "marshalling object failed")
@@ -218,4 +222,27 @@ func extractKibanaObjects(dashboardFile []byte, objectType string) (map[string][
 	}
 
 	return extracted, nil
+}
+
+func decodeFields(ms mapStr) (mapStr, error) {
+	for _, field := range encodedFields {
+		v, err := ms.getValue(field)
+		if err == errKeyNotFound {
+			continue
+		} else if err != nil {
+			return mapStr{}, errors.Wrapf(err, "retrieving value failed (key: %s)", field)
+		}
+
+		var vd interface{}
+		err = json.Unmarshal([]byte(v.(string)), &vd)
+		if err != nil {
+			return mapStr{}, errors.Wrapf(err, "unmarshalling value failed (key: %s)", field)
+		}
+
+		_, err = ms.put(field, vd)
+		if err != nil {
+			return mapStr{}, errors.Wrapf(err, "putting value failed (key: %s)", field)
+		}
+	}
+	return ms, nil
 }

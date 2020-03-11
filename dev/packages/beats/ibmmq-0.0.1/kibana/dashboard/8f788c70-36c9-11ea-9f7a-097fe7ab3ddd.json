@@ -3,10 +3,111 @@
         "description": "The dashboard presents metric data describing IBM MQ subscriptions. Metrics show statistics of actions performed on durable and non-durable subscriptions, collected by a queue manager.",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"query\":{\"language\":\"kuery\",\"query\":\"\"}}"
+            "searchSourceJSON": {
+                "filter": [],
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                }
+            }
         },
-        "optionsJSON": "{\"hidePanelTitles\":false,\"useMargins\":true}",
-        "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"e17294e6-0911-47dc-b28b-de87507924b5\",\"w\":16,\"x\":0,\"y\":0},\"panelIndex\":\"e17294e6-0911-47dc-b28b-de87507924b5\",\"panelRefName\":\"panel_0\",\"version\":\"7.4.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"040d5750-fa77-45c6-82c1-26fc6f3859a6\",\"w\":16,\"x\":16,\"y\":0},\"panelIndex\":\"040d5750-fa77-45c6-82c1-26fc6f3859a6\",\"panelRefName\":\"panel_1\",\"version\":\"7.4.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"fe5933aa-17b4-455e-8ab4-88d1f50ba73a\",\"w\":16,\"x\":32,\"y\":0},\"panelIndex\":\"fe5933aa-17b4-455e-8ab4-88d1f50ba73a\",\"panelRefName\":\"panel_2\",\"version\":\"7.4.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"87a5c31a-6456-4839-a9ec-24802f51889d\",\"w\":16,\"x\":0,\"y\":12},\"panelIndex\":\"87a5c31a-6456-4839-a9ec-24802f51889d\",\"panelRefName\":\"panel_3\",\"version\":\"7.4.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"1af1ab03-5cfd-4495-9d50-7dd77f43f1a4\",\"w\":16,\"x\":16,\"y\":12},\"panelIndex\":\"1af1ab03-5cfd-4495-9d50-7dd77f43f1a4\",\"panelRefName\":\"panel_4\",\"version\":\"7.4.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"a9a53a87-592f-480f-997d-73fcb1843167\",\"w\":16,\"x\":32,\"y\":12},\"panelIndex\":\"a9a53a87-592f-480f-997d-73fcb1843167\",\"panelRefName\":\"panel_5\",\"version\":\"7.4.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"38525462-b0f6-4cc9-a052-6e5f66f1cba3\",\"w\":16,\"x\":0,\"y\":24},\"panelIndex\":\"38525462-b0f6-4cc9-a052-6e5f66f1cba3\",\"panelRefName\":\"panel_6\",\"version\":\"7.4.0\"}]",
+        "optionsJSON": {
+            "hidePanelTitles": false,
+            "useMargins": true
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "e17294e6-0911-47dc-b28b-de87507924b5",
+                    "w": 16,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "e17294e6-0911-47dc-b28b-de87507924b5",
+                "panelRefName": "panel_0",
+                "version": "7.4.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "040d5750-fa77-45c6-82c1-26fc6f3859a6",
+                    "w": 16,
+                    "x": 16,
+                    "y": 0
+                },
+                "panelIndex": "040d5750-fa77-45c6-82c1-26fc6f3859a6",
+                "panelRefName": "panel_1",
+                "version": "7.4.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "fe5933aa-17b4-455e-8ab4-88d1f50ba73a",
+                    "w": 16,
+                    "x": 32,
+                    "y": 0
+                },
+                "panelIndex": "fe5933aa-17b4-455e-8ab4-88d1f50ba73a",
+                "panelRefName": "panel_2",
+                "version": "7.4.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "87a5c31a-6456-4839-a9ec-24802f51889d",
+                    "w": 16,
+                    "x": 0,
+                    "y": 12
+                },
+                "panelIndex": "87a5c31a-6456-4839-a9ec-24802f51889d",
+                "panelRefName": "panel_3",
+                "version": "7.4.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "1af1ab03-5cfd-4495-9d50-7dd77f43f1a4",
+                    "w": 16,
+                    "x": 16,
+                    "y": 12
+                },
+                "panelIndex": "1af1ab03-5cfd-4495-9d50-7dd77f43f1a4",
+                "panelRefName": "panel_4",
+                "version": "7.4.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "a9a53a87-592f-480f-997d-73fcb1843167",
+                    "w": 16,
+                    "x": 32,
+                    "y": 12
+                },
+                "panelIndex": "a9a53a87-592f-480f-997d-73fcb1843167",
+                "panelRefName": "panel_5",
+                "version": "7.4.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "38525462-b0f6-4cc9-a052-6e5f66f1cba3",
+                    "w": 16,
+                    "x": 0,
+                    "y": 24
+                },
+                "panelIndex": "38525462-b0f6-4cc9-a052-6e5f66f1cba3",
+                "panelRefName": "panel_6",
+                "version": "7.4.0"
+            }
+        ],
         "timeRestore": false,
         "title": "[Metricbeat IBM MQ] Subscriptions Overview",
         "version": 1

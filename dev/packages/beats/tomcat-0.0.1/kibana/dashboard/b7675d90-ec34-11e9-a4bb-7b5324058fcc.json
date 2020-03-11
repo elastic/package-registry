@@ -3,10 +3,132 @@
         "description": "An overview dashboards of all key metrics included in the Tomcat Metricbeat module",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"query\":{\"language\":\"kuery\",\"query\":\"\"}}"
+            "searchSourceJSON": {
+                "filter": [],
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                }
+            }
         },
-        "optionsJSON": "{\"hidePanelTitles\":false,\"useMargins\":true}",
-        "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"h\":9,\"i\":\"1\",\"w\":18,\"x\":16,\"y\":18},\"panelIndex\":\"1\",\"panelRefName\":\"panel_0\",\"title\":\"Other Memory usage\",\"version\":\"8.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":9,\"i\":\"2\",\"w\":25,\"x\":0,\"y\":0},\"panelIndex\":\"2\",\"panelRefName\":\"panel_1\",\"title\":\"Heap memory usage\",\"version\":\"8.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":9,\"i\":\"3\",\"w\":16,\"x\":0,\"y\":18},\"panelIndex\":\"3\",\"panelRefName\":\"panel_2\",\"title\":\"Total Threads\",\"version\":\"8.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":9,\"i\":\"5\",\"w\":14,\"x\":34,\"y\":18},\"panelIndex\":\"5\",\"panelRefName\":\"panel_3\",\"title\":\"Cache Size\",\"version\":\"8.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":9,\"i\":\"6\",\"w\":23,\"x\":25,\"y\":0},\"panelIndex\":\"6\",\"panelRefName\":\"panel_4\",\"title\":\"Total requests\",\"version\":\"8.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":9,\"i\":\"7\",\"w\":16,\"x\":0,\"y\":9},\"panelIndex\":\"7\",\"panelRefName\":\"panel_5\",\"title\":\"Bytes sent/received\",\"version\":\"8.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":9,\"i\":\"8\",\"w\":18,\"x\":16,\"y\":9},\"panelIndex\":\"8\",\"panelRefName\":\"panel_6\",\"title\":\"Processing time ms\",\"version\":\"8.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":9,\"i\":\"9\",\"w\":14,\"x\":34,\"y\":9},\"panelIndex\":\"9\",\"panelRefName\":\"panel_7\",\"title\":\"Cache Hit Total\",\"version\":\"8.0.0-SNAPSHOT\"}]",
+        "optionsJSON": {
+            "hidePanelTitles": false,
+            "useMargins": true
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 9,
+                    "i": "1",
+                    "w": 18,
+                    "x": 16,
+                    "y": 18
+                },
+                "panelIndex": "1",
+                "panelRefName": "panel_0",
+                "title": "Other Memory usage",
+                "version": "8.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 9,
+                    "i": "2",
+                    "w": 25,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "2",
+                "panelRefName": "panel_1",
+                "title": "Heap memory usage",
+                "version": "8.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 9,
+                    "i": "3",
+                    "w": 16,
+                    "x": 0,
+                    "y": 18
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_2",
+                "title": "Total Threads",
+                "version": "8.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 9,
+                    "i": "5",
+                    "w": 14,
+                    "x": 34,
+                    "y": 18
+                },
+                "panelIndex": "5",
+                "panelRefName": "panel_3",
+                "title": "Cache Size",
+                "version": "8.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 9,
+                    "i": "6",
+                    "w": 23,
+                    "x": 25,
+                    "y": 0
+                },
+                "panelIndex": "6",
+                "panelRefName": "panel_4",
+                "title": "Total requests",
+                "version": "8.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 9,
+                    "i": "7",
+                    "w": 16,
+                    "x": 0,
+                    "y": 9
+                },
+                "panelIndex": "7",
+                "panelRefName": "panel_5",
+                "title": "Bytes sent/received",
+                "version": "8.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 9,
+                    "i": "8",
+                    "w": 18,
+                    "x": 16,
+                    "y": 9
+                },
+                "panelIndex": "8",
+                "panelRefName": "panel_6",
+                "title": "Processing time ms",
+                "version": "8.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 9,
+                    "i": "9",
+                    "w": 14,
+                    "x": 34,
+                    "y": 9
+                },
+                "panelIndex": "9",
+                "panelRefName": "panel_7",
+                "title": "Cache Hit Total",
+                "version": "8.0.0-SNAPSHOT"
+            }
+        ],
         "timeRestore": false,
         "title": "[Metricbeat Tomcat] Overview",
         "version": 1

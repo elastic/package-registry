@@ -3,10 +3,138 @@
         "description": "SSH dashboard for the System module in Filebeat",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"highlightAll\":true,\"query\":{\"language\":\"kuery\",\"query\":\"\"},\"version\":true}"
+            "searchSourceJSON": {
+                "filter": [],
+                "highlightAll": true,
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                },
+                "version": true
+            }
         },
-        "optionsJSON": "{\"darkTheme\":false}",
-        "panelsJSON": "[{\"panelIndex\":\"1\",\"panelRefName\":\"panel_0\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":16,\"w\":48,\"h\":12,\"i\":\"1\"},\"embeddableConfig\":{}},{\"panelIndex\":\"2\",\"panelRefName\":\"panel_1\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":4,\"w\":48,\"h\":12,\"i\":\"2\"},\"embeddableConfig\":{}},{\"panelIndex\":\"3\",\"panelRefName\":\"panel_2\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":28,\"w\":24,\"h\":16,\"i\":\"3\"},\"embeddableConfig\":{}},{\"panelIndex\":\"4\",\"panelRefName\":\"panel_3\",\"version\":\"7.3.0\",\"gridData\":{\"x\":24,\"y\":28,\"w\":24,\"h\":16,\"i\":\"4\"},\"embeddableConfig\":{\"mapBounds\":{\"bottom_right\":{\"lat\":10.31491928581316,\"lon\":74.53125},\"top_left\":{\"lat\":60.50052541051131,\"lon\":-27.94921875}},\"mapCenter\":[39.774769485295465,23.203125],\"mapCollar\":{\"bottom_right\":{\"lat\":-14.777884999999998,\"lon\":125.771485},\"top_left\":{\"lat\":85.593335,\"lon\":-79.189455},\"zoom\":3},\"mapZoom\":3}},{\"panelIndex\":\"5\",\"panelRefName\":\"panel_4\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":44,\"w\":48,\"h\":12,\"i\":\"5\"},\"embeddableConfig\":{\"columns\":[\"system.auth.ssh.event\",\"system.auth.ssh.method\",\"user.name\",\"source.ip\",\"source.geo.country_iso_code\"],\"sort\":[\"@timestamp\",\"desc\"]}},{\"panelIndex\":\"6\",\"panelRefName\":\"panel_5\",\"version\":\"7.3.0\",\"gridData\":{\"x\":0,\"y\":0,\"w\":48,\"h\":4,\"i\":\"6\"},\"embeddableConfig\":{}}]",
+        "optionsJSON": {
+            "darkTheme": false
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "1",
+                    "w": 48,
+                    "x": 0,
+                    "y": 16
+                },
+                "panelIndex": "1",
+                "panelRefName": "panel_0",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "2",
+                    "w": 48,
+                    "x": 0,
+                    "y": 4
+                },
+                "panelIndex": "2",
+                "panelRefName": "panel_1",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 16,
+                    "i": "3",
+                    "w": 24,
+                    "x": 0,
+                    "y": 28
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_2",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "mapBounds": {
+                        "bottom_right": {
+                            "lat": 10.31491928581316,
+                            "lon": 74.53125
+                        },
+                        "top_left": {
+                            "lat": 60.50052541051131,
+                            "lon": -27.94921875
+                        }
+                    },
+                    "mapCenter": [
+                        39.774769485295465,
+                        23.203125
+                    ],
+                    "mapCollar": {
+                        "bottom_right": {
+                            "lat": -14.777884999999998,
+                            "lon": 125.771485
+                        },
+                        "top_left": {
+                            "lat": 85.593335,
+                            "lon": -79.189455
+                        },
+                        "zoom": 3
+                    },
+                    "mapZoom": 3
+                },
+                "gridData": {
+                    "h": 16,
+                    "i": "4",
+                    "w": 24,
+                    "x": 24,
+                    "y": 28
+                },
+                "panelIndex": "4",
+                "panelRefName": "panel_3",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "columns": [
+                        "system.auth.ssh.event",
+                        "system.auth.ssh.method",
+                        "user.name",
+                        "source.ip",
+                        "source.geo.country_iso_code"
+                    ],
+                    "sort": [
+                        "@timestamp",
+                        "desc"
+                    ]
+                },
+                "gridData": {
+                    "h": 12,
+                    "i": "5",
+                    "w": 48,
+                    "x": 0,
+                    "y": 44
+                },
+                "panelIndex": "5",
+                "panelRefName": "panel_4",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 4,
+                    "i": "6",
+                    "w": 48,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "6",
+                "panelRefName": "panel_5",
+                "version": "7.3.0"
+            }
+        ],
         "timeRestore": false,
         "title": "[Filebeat System] SSH login attempts ECS",
         "version": 1

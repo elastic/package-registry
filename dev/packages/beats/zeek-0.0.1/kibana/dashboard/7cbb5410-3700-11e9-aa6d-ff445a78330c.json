@@ -3,10 +3,124 @@
         "description": "Overview of Zeek",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"query\":{\"language\":\"kuery\",\"query\":\"\"}}"
+            "searchSourceJSON": {
+                "filter": [],
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                }
+            }
         },
-        "optionsJSON": "{\"hidePanelTitles\":false,\"useMargins\":true}",
-        "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"h\":20,\"i\":\"1\",\"w\":48,\"x\":0,\"y\":0},\"panelIndex\":\"1\",\"panelRefName\":\"panel_0\",\"version\":\"7.0.0-beta1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"2\",\"w\":16,\"x\":0,\"y\":20},\"panelIndex\":\"2\",\"panelRefName\":\"panel_1\",\"version\":\"7.0.0-beta1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"3\",\"w\":16,\"x\":16,\"y\":20},\"panelIndex\":\"3\",\"panelRefName\":\"panel_2\",\"version\":\"7.0.0-beta1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"4\",\"w\":16,\"x\":32,\"y\":20},\"panelIndex\":\"4\",\"panelRefName\":\"panel_3\",\"version\":\"7.0.0-beta1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"5\",\"w\":16,\"x\":0,\"y\":32},\"panelIndex\":\"5\",\"panelRefName\":\"panel_4\",\"version\":\"7.0.0-beta1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"6\",\"w\":16,\"x\":16,\"y\":32},\"panelIndex\":\"6\",\"panelRefName\":\"panel_5\",\"version\":\"7.0.0-beta1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"7\",\"w\":16,\"x\":32,\"y\":32},\"panelIndex\":\"7\",\"panelRefName\":\"panel_6\",\"version\":\"7.0.0-beta1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"8\",\"w\":48,\"x\":0,\"y\":44},\"panelIndex\":\"8\",\"panelRefName\":\"panel_7\",\"version\":\"7.0.0-beta1\"}]",
+        "optionsJSON": {
+            "hidePanelTitles": false,
+            "useMargins": true
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 20,
+                    "i": "1",
+                    "w": 48,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "1",
+                "panelRefName": "panel_0",
+                "version": "7.0.0-beta1"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "2",
+                    "w": 16,
+                    "x": 0,
+                    "y": 20
+                },
+                "panelIndex": "2",
+                "panelRefName": "panel_1",
+                "version": "7.0.0-beta1"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "3",
+                    "w": 16,
+                    "x": 16,
+                    "y": 20
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_2",
+                "version": "7.0.0-beta1"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "4",
+                    "w": 16,
+                    "x": 32,
+                    "y": 20
+                },
+                "panelIndex": "4",
+                "panelRefName": "panel_3",
+                "version": "7.0.0-beta1"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "5",
+                    "w": 16,
+                    "x": 0,
+                    "y": 32
+                },
+                "panelIndex": "5",
+                "panelRefName": "panel_4",
+                "version": "7.0.0-beta1"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "6",
+                    "w": 16,
+                    "x": 16,
+                    "y": 32
+                },
+                "panelIndex": "6",
+                "panelRefName": "panel_5",
+                "version": "7.0.0-beta1"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "7",
+                    "w": 16,
+                    "x": 32,
+                    "y": 32
+                },
+                "panelIndex": "7",
+                "panelRefName": "panel_6",
+                "version": "7.0.0-beta1"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "8",
+                    "w": 48,
+                    "x": 0,
+                    "y": 44
+                },
+                "panelIndex": "8",
+                "panelRefName": "panel_7",
+                "version": "7.0.0-beta1"
+            }
+        ],
         "timeRestore": false,
         "title": "[Filebeat Zeek] Overview",
         "version": 1

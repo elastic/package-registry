@@ -3,10 +3,304 @@
         "description": "Overview of host metrics",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"highlightAll\":true,\"query\":{\"language\":\"kuery\",\"query\":\"host.name:\\\"CHANGEME_HOSTNAME\\\"\"},\"version\":true}"
+            "searchSourceJSON": {
+                "filter": [],
+                "highlightAll": true,
+                "query": {
+                    "language": "kuery",
+                    "query": "host.name:\"CHANGEME_HOSTNAME\""
+                },
+                "version": true
+            }
         },
-        "optionsJSON": "{\"darkTheme\":false}",
-        "panelsJSON": "[{\"gridData\":{\"h\":15,\"i\":\"1\",\"w\":24,\"x\":0,\"y\":55},\"panelIndex\":\"1\",\"panelRefName\":\"panel_0\",\"version\":\"7.3.0\"},{\"gridData\":{\"h\":15,\"i\":\"2\",\"w\":24,\"x\":24,\"y\":25},\"panelIndex\":\"2\",\"panelRefName\":\"panel_1\",\"version\":\"7.3.0\"},{\"gridData\":{\"h\":15,\"i\":\"3\",\"w\":24,\"x\":24,\"y\":55},\"panelIndex\":\"3\",\"panelRefName\":\"panel_2\",\"version\":\"7.3.0\"},{\"gridData\":{\"h\":15,\"i\":\"4\",\"w\":24,\"x\":0,\"y\":40},\"panelIndex\":\"4\",\"panelRefName\":\"panel_3\",\"version\":\"7.3.0\"},{\"gridData\":{\"h\":15,\"i\":\"5\",\"w\":24,\"x\":24,\"y\":70},\"panelIndex\":\"5\",\"panelRefName\":\"panel_4\",\"version\":\"7.3.0\"},{\"gridData\":{\"h\":15,\"i\":\"6\",\"w\":24,\"x\":0,\"y\":70},\"panelIndex\":\"6\",\"panelRefName\":\"panel_5\",\"version\":\"7.3.0\"},{\"gridData\":{\"h\":15,\"i\":\"7\",\"w\":24,\"x\":0,\"y\":25},\"panelIndex\":\"7\",\"panelRefName\":\"panel_6\",\"version\":\"7.3.0\"},{\"gridData\":{\"h\":15,\"i\":\"8\",\"w\":24,\"x\":24,\"y\":40},\"panelIndex\":\"8\",\"panelRefName\":\"panel_7\",\"version\":\"7.3.0\"},{\"gridData\":{\"h\":10,\"i\":\"9\",\"w\":8,\"x\":16,\"y\":5},\"panelIndex\":\"9\",\"panelRefName\":\"panel_8\",\"version\":\"7.3.0\"},{\"gridData\":{\"h\":10,\"i\":\"10\",\"w\":8,\"x\":0,\"y\":5},\"panelIndex\":\"10\",\"panelRefName\":\"panel_9\",\"version\":\"7.3.0\"},{\"gridData\":{\"h\":10,\"i\":\"11\",\"w\":8,\"x\":8,\"y\":5},\"panelIndex\":\"11\",\"panelRefName\":\"panel_10\",\"version\":\"7.3.0\"},{\"gridData\":{\"h\":10,\"i\":\"12\",\"w\":8,\"x\":24,\"y\":5},\"panelIndex\":\"12\",\"panelRefName\":\"panel_11\",\"version\":\"7.3.0\"},{\"gridData\":{\"h\":10,\"i\":\"13\",\"w\":8,\"x\":32,\"y\":5},\"panelIndex\":\"13\",\"panelRefName\":\"panel_12\",\"version\":\"7.3.0\"},{\"gridData\":{\"h\":10,\"i\":\"14\",\"w\":16,\"x\":32,\"y\":15},\"panelIndex\":\"14\",\"panelRefName\":\"panel_13\",\"version\":\"7.3.0\"},{\"gridData\":{\"h\":5,\"i\":\"16\",\"w\":24,\"x\":0,\"y\":0},\"panelIndex\":\"16\",\"panelRefName\":\"panel_14\",\"version\":\"7.3.0\"},{\"gridData\":{\"h\":10,\"i\":\"21\",\"w\":8,\"x\":0,\"y\":15},\"panelIndex\":\"21\",\"panelRefName\":\"panel_15\",\"version\":\"7.3.0\"},{\"gridData\":{\"h\":10,\"i\":\"22\",\"w\":8,\"x\":8,\"y\":15},\"panelIndex\":\"22\",\"panelRefName\":\"panel_16\",\"version\":\"7.3.0\"},{\"gridData\":{\"h\":10,\"i\":\"23\",\"w\":8,\"x\":24,\"y\":15},\"panelIndex\":\"23\",\"panelRefName\":\"panel_17\",\"version\":\"7.3.0\"},{\"gridData\":{\"h\":10,\"i\":\"25\",\"w\":8,\"x\":40,\"y\":5},\"panelIndex\":\"25\",\"panelRefName\":\"panel_18\",\"version\":\"7.3.0\"},{\"gridData\":{\"h\":15,\"i\":\"27\",\"w\":24,\"x\":0,\"y\":85},\"panelIndex\":\"27\",\"panelRefName\":\"panel_19\",\"version\":\"7.3.0\"},{\"gridData\":{\"h\":15,\"i\":\"28\",\"w\":24,\"x\":24,\"y\":85},\"panelIndex\":\"28\",\"panelRefName\":\"panel_20\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{\"vis\":{\"defaultColors\":{\"0 - 100\":\"rgb(0,104,55)\"}}},\"gridData\":{\"h\":10,\"i\":\"29\",\"w\":8,\"x\":16,\"y\":15},\"panelIndex\":\"29\",\"panelRefName\":\"panel_21\",\"version\":\"7.3.0\"},{\"gridData\":{\"h\":5,\"i\":\"30\",\"w\":24,\"x\":24,\"y\":0},\"panelIndex\":\"30\",\"panelRefName\":\"panel_22\",\"version\":\"7.3.0\"}]",
+        "optionsJSON": {
+            "darkTheme": false
+        },
+        "panelsJSON": [
+            {
+                "gridData": {
+                    "h": 15,
+                    "i": "1",
+                    "w": 24,
+                    "x": 0,
+                    "y": 55
+                },
+                "panelIndex": "1",
+                "panelRefName": "panel_0",
+                "version": "7.3.0"
+            },
+            {
+                "gridData": {
+                    "h": 15,
+                    "i": "2",
+                    "w": 24,
+                    "x": 24,
+                    "y": 25
+                },
+                "panelIndex": "2",
+                "panelRefName": "panel_1",
+                "version": "7.3.0"
+            },
+            {
+                "gridData": {
+                    "h": 15,
+                    "i": "3",
+                    "w": 24,
+                    "x": 24,
+                    "y": 55
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_2",
+                "version": "7.3.0"
+            },
+            {
+                "gridData": {
+                    "h": 15,
+                    "i": "4",
+                    "w": 24,
+                    "x": 0,
+                    "y": 40
+                },
+                "panelIndex": "4",
+                "panelRefName": "panel_3",
+                "version": "7.3.0"
+            },
+            {
+                "gridData": {
+                    "h": 15,
+                    "i": "5",
+                    "w": 24,
+                    "x": 24,
+                    "y": 70
+                },
+                "panelIndex": "5",
+                "panelRefName": "panel_4",
+                "version": "7.3.0"
+            },
+            {
+                "gridData": {
+                    "h": 15,
+                    "i": "6",
+                    "w": 24,
+                    "x": 0,
+                    "y": 70
+                },
+                "panelIndex": "6",
+                "panelRefName": "panel_5",
+                "version": "7.3.0"
+            },
+            {
+                "gridData": {
+                    "h": 15,
+                    "i": "7",
+                    "w": 24,
+                    "x": 0,
+                    "y": 25
+                },
+                "panelIndex": "7",
+                "panelRefName": "panel_6",
+                "version": "7.3.0"
+            },
+            {
+                "gridData": {
+                    "h": 15,
+                    "i": "8",
+                    "w": 24,
+                    "x": 24,
+                    "y": 40
+                },
+                "panelIndex": "8",
+                "panelRefName": "panel_7",
+                "version": "7.3.0"
+            },
+            {
+                "gridData": {
+                    "h": 10,
+                    "i": "9",
+                    "w": 8,
+                    "x": 16,
+                    "y": 5
+                },
+                "panelIndex": "9",
+                "panelRefName": "panel_8",
+                "version": "7.3.0"
+            },
+            {
+                "gridData": {
+                    "h": 10,
+                    "i": "10",
+                    "w": 8,
+                    "x": 0,
+                    "y": 5
+                },
+                "panelIndex": "10",
+                "panelRefName": "panel_9",
+                "version": "7.3.0"
+            },
+            {
+                "gridData": {
+                    "h": 10,
+                    "i": "11",
+                    "w": 8,
+                    "x": 8,
+                    "y": 5
+                },
+                "panelIndex": "11",
+                "panelRefName": "panel_10",
+                "version": "7.3.0"
+            },
+            {
+                "gridData": {
+                    "h": 10,
+                    "i": "12",
+                    "w": 8,
+                    "x": 24,
+                    "y": 5
+                },
+                "panelIndex": "12",
+                "panelRefName": "panel_11",
+                "version": "7.3.0"
+            },
+            {
+                "gridData": {
+                    "h": 10,
+                    "i": "13",
+                    "w": 8,
+                    "x": 32,
+                    "y": 5
+                },
+                "panelIndex": "13",
+                "panelRefName": "panel_12",
+                "version": "7.3.0"
+            },
+            {
+                "gridData": {
+                    "h": 10,
+                    "i": "14",
+                    "w": 16,
+                    "x": 32,
+                    "y": 15
+                },
+                "panelIndex": "14",
+                "panelRefName": "panel_13",
+                "version": "7.3.0"
+            },
+            {
+                "gridData": {
+                    "h": 5,
+                    "i": "16",
+                    "w": 24,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "16",
+                "panelRefName": "panel_14",
+                "version": "7.3.0"
+            },
+            {
+                "gridData": {
+                    "h": 10,
+                    "i": "21",
+                    "w": 8,
+                    "x": 0,
+                    "y": 15
+                },
+                "panelIndex": "21",
+                "panelRefName": "panel_15",
+                "version": "7.3.0"
+            },
+            {
+                "gridData": {
+                    "h": 10,
+                    "i": "22",
+                    "w": 8,
+                    "x": 8,
+                    "y": 15
+                },
+                "panelIndex": "22",
+                "panelRefName": "panel_16",
+                "version": "7.3.0"
+            },
+            {
+                "gridData": {
+                    "h": 10,
+                    "i": "23",
+                    "w": 8,
+                    "x": 24,
+                    "y": 15
+                },
+                "panelIndex": "23",
+                "panelRefName": "panel_17",
+                "version": "7.3.0"
+            },
+            {
+                "gridData": {
+                    "h": 10,
+                    "i": "25",
+                    "w": 8,
+                    "x": 40,
+                    "y": 5
+                },
+                "panelIndex": "25",
+                "panelRefName": "panel_18",
+                "version": "7.3.0"
+            },
+            {
+                "gridData": {
+                    "h": 15,
+                    "i": "27",
+                    "w": 24,
+                    "x": 0,
+                    "y": 85
+                },
+                "panelIndex": "27",
+                "panelRefName": "panel_19",
+                "version": "7.3.0"
+            },
+            {
+                "gridData": {
+                    "h": 15,
+                    "i": "28",
+                    "w": 24,
+                    "x": 24,
+                    "y": 85
+                },
+                "panelIndex": "28",
+                "panelRefName": "panel_20",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "defaultColors": {
+                            "0 - 100": "rgb(0,104,55)"
+                        }
+                    }
+                },
+                "gridData": {
+                    "h": 10,
+                    "i": "29",
+                    "w": 8,
+                    "x": 16,
+                    "y": 15
+                },
+                "panelIndex": "29",
+                "panelRefName": "panel_21",
+                "version": "7.3.0"
+            },
+            {
+                "gridData": {
+                    "h": 5,
+                    "i": "30",
+                    "w": 24,
+                    "x": 24,
+                    "y": 0
+                },
+                "panelIndex": "30",
+                "panelRefName": "panel_22",
+                "version": "7.3.0"
+            }
+        ],
         "timeRestore": false,
         "title": "[Metricbeat System] Host overview ECS",
         "version": 1

@@ -3,10 +3,107 @@
         "description": "A dashboard with key metrics about a MSSQL instance performance",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"query\":{\"language\":\"kuery\",\"query\":\"\"}}"
+            "searchSourceJSON": {
+                "filter": [],
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                }
+            }
         },
-        "optionsJSON": "{\"darkTheme\":false,\"hidePanelTitles\":false,\"useMargins\":true}",
-        "panelsJSON": "[{\"embeddableConfig\":{\"vis\":{\"legendOpen\":false}},\"gridData\":{\"h\":15,\"i\":\"1\",\"w\":16,\"x\":0,\"y\":0},\"panelIndex\":\"1\",\"title\":\"User Connections\",\"version\":\"7.0.0-alpha2\",\"panelRefName\":\"panel_0\"},{\"embeddableConfig\":{\"vis\":{\"legendOpen\":false}},\"gridData\":{\"h\":15,\"i\":\"2\",\"w\":32,\"x\":16,\"y\":15},\"panelIndex\":\"2\",\"title\":\"Transactions\",\"version\":\"7.0.0-alpha2\",\"panelRefName\":\"panel_1\"},{\"embeddableConfig\":{\"vis\":{\"legendOpen\":false}},\"gridData\":{\"h\":15,\"i\":\"3\",\"w\":16,\"x\":32,\"y\":0},\"panelIndex\":\"3\",\"title\":\"Lock Waits/sec\",\"version\":\"7.0.0-alpha2\",\"panelRefName\":\"panel_2\"},{\"embeddableConfig\":{\"vis\":{\"legendOpen\":false}},\"gridData\":{\"h\":15,\"i\":\"4\",\"w\":16,\"x\":16,\"y\":0},\"panelIndex\":\"4\",\"title\":\"Batch Requests/sec\",\"version\":\"7.0.0-alpha2\",\"panelRefName\":\"panel_3\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"5\",\"w\":16,\"x\":0,\"y\":15},\"panelIndex\":\"5\",\"title\":\"Buffer Cache Hit Ratio\",\"version\":\"7.0.0-alpha2\",\"panelRefName\":\"panel_4\"}]",
+        "optionsJSON": {
+            "darkTheme": false,
+            "hidePanelTitles": false,
+            "useMargins": true
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "legendOpen": false
+                    }
+                },
+                "gridData": {
+                    "h": 15,
+                    "i": "1",
+                    "w": 16,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "1",
+                "panelRefName": "panel_0",
+                "title": "User Connections",
+                "version": "7.0.0-alpha2"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "legendOpen": false
+                    }
+                },
+                "gridData": {
+                    "h": 15,
+                    "i": "2",
+                    "w": 32,
+                    "x": 16,
+                    "y": 15
+                },
+                "panelIndex": "2",
+                "panelRefName": "panel_1",
+                "title": "Transactions",
+                "version": "7.0.0-alpha2"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "legendOpen": false
+                    }
+                },
+                "gridData": {
+                    "h": 15,
+                    "i": "3",
+                    "w": 16,
+                    "x": 32,
+                    "y": 0
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_2",
+                "title": "Lock Waits/sec",
+                "version": "7.0.0-alpha2"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "legendOpen": false
+                    }
+                },
+                "gridData": {
+                    "h": 15,
+                    "i": "4",
+                    "w": 16,
+                    "x": 16,
+                    "y": 0
+                },
+                "panelIndex": "4",
+                "panelRefName": "panel_3",
+                "title": "Batch Requests/sec",
+                "version": "7.0.0-alpha2"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "5",
+                    "w": 16,
+                    "x": 0,
+                    "y": 15
+                },
+                "panelIndex": "5",
+                "panelRefName": "panel_4",
+                "title": "Buffer Cache Hit Ratio",
+                "version": "7.0.0-alpha2"
+            }
+        ],
         "timeRestore": false,
         "title": "[Metricbeat MSSQL] Performance ECS",
         "version": 1

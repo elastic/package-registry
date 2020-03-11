@@ -3,10 +3,216 @@
         "description": "An overview of key metrics from all Metricsets in the Oracle database Metricbeat module",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"query\":{\"language\":\"kuery\",\"query\":\"\"}}"
+            "searchSourceJSON": {
+                "filter": [],
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                }
+            }
         },
-        "optionsJSON": "{\"hidePanelTitles\":false,\"useMargins\":true}",
-        "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"h\":8,\"i\":\"1\",\"w\":17,\"x\":18,\"y\":31},\"panelIndex\":\"1\",\"panelRefName\":\"panel_0\",\"title\":\"Tablespace Total Size\",\"version\":\"8.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":8,\"i\":\"2\",\"w\":12,\"x\":28,\"y\":0},\"panelIndex\":\"2\",\"panelRefName\":\"panel_1\",\"title\":\"Ratio of used space in Tablespaces\",\"version\":\"8.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":13,\"i\":\"3\",\"w\":28,\"x\":20,\"y\":18},\"panelIndex\":\"3\",\"panelRefName\":\"panel_2\",\"title\":\"Avg data file size by filename\",\"version\":\"8.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":7,\"i\":\"5\",\"w\":20,\"x\":0,\"y\":8},\"panelIndex\":\"5\",\"panelRefName\":\"panel_3\",\"title\":\"Total Cursors by machine (Top 10)\",\"version\":\"8.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":8,\"i\":\"6\",\"w\":8,\"x\":20,\"y\":0},\"panelIndex\":\"6\",\"panelRefName\":\"panel_4\",\"title\":\"Cache Buffer Hit Ratio gauge\",\"version\":\"8.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":8,\"i\":\"9\",\"w\":20,\"x\":0,\"y\":15},\"panelIndex\":\"9\",\"panelRefName\":\"panel_5\",\"title\":\"Current opened cursors\",\"version\":\"8.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":8,\"i\":\"10\",\"w\":13,\"x\":35,\"y\":31},\"panelIndex\":\"10\",\"panelRefName\":\"panel_6\",\"title\":\"Session cache hits\",\"version\":\"8.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":8,\"i\":\"11\",\"w\":20,\"x\":0,\"y\":0},\"panelIndex\":\"11\",\"panelRefName\":\"panel_7\",\"title\":\"Average Cursors by machine (Top 10)\",\"version\":\"8.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":8,\"i\":\"12\",\"w\":18,\"x\":0,\"y\":31},\"panelIndex\":\"12\",\"panelRefName\":\"panel_8\",\"title\":\"Max Cursors by machine (Top 10)\",\"version\":\"8.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":8,\"i\":\"13\",\"w\":20,\"x\":0,\"y\":23},\"panelIndex\":\"13\",\"panelRefName\":\"panel_9\",\"title\":\"DB Blocks Gets by buffer pool (Top 10)\",\"version\":\"8.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":10,\"i\":\"14\",\"w\":30,\"x\":18,\"y\":39},\"panelIndex\":\"14\",\"panelRefName\":\"panel_10\",\"title\":\"Consistent Gets by buffer pool (Top 10)\",\"version\":\"8.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":10,\"i\":\"15\",\"w\":18,\"x\":0,\"y\":39},\"panelIndex\":\"15\",\"panelRefName\":\"panel_11\",\"title\":\"Total / Real parsed cursors\",\"version\":\"8.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":10,\"i\":\"16\",\"w\":28,\"x\":20,\"y\":8},\"panelIndex\":\"16\",\"panelRefName\":\"panel_12\",\"title\":\"Lock/Pin requests and IO reloads ratios\",\"version\":\"8.0.0-SNAPSHOT\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":8,\"i\":\"17\",\"w\":8,\"x\":40,\"y\":0},\"panelIndex\":\"17\",\"panelRefName\":\"panel_13\",\"title\":\"Cursors cache hit ratio gauge\",\"version\":\"8.0.0-SNAPSHOT\"}]",
+        "optionsJSON": {
+            "hidePanelTitles": false,
+            "useMargins": true
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "1",
+                    "w": 17,
+                    "x": 18,
+                    "y": 31
+                },
+                "panelIndex": "1",
+                "panelRefName": "panel_0",
+                "title": "Tablespace Total Size",
+                "version": "8.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "2",
+                    "w": 12,
+                    "x": 28,
+                    "y": 0
+                },
+                "panelIndex": "2",
+                "panelRefName": "panel_1",
+                "title": "Ratio of used space in Tablespaces",
+                "version": "8.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 13,
+                    "i": "3",
+                    "w": 28,
+                    "x": 20,
+                    "y": 18
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_2",
+                "title": "Avg data file size by filename",
+                "version": "8.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 7,
+                    "i": "5",
+                    "w": 20,
+                    "x": 0,
+                    "y": 8
+                },
+                "panelIndex": "5",
+                "panelRefName": "panel_3",
+                "title": "Total Cursors by machine (Top 10)",
+                "version": "8.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "6",
+                    "w": 8,
+                    "x": 20,
+                    "y": 0
+                },
+                "panelIndex": "6",
+                "panelRefName": "panel_4",
+                "title": "Cache Buffer Hit Ratio gauge",
+                "version": "8.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "9",
+                    "w": 20,
+                    "x": 0,
+                    "y": 15
+                },
+                "panelIndex": "9",
+                "panelRefName": "panel_5",
+                "title": "Current opened cursors",
+                "version": "8.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "10",
+                    "w": 13,
+                    "x": 35,
+                    "y": 31
+                },
+                "panelIndex": "10",
+                "panelRefName": "panel_6",
+                "title": "Session cache hits",
+                "version": "8.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "11",
+                    "w": 20,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "11",
+                "panelRefName": "panel_7",
+                "title": "Average Cursors by machine (Top 10)",
+                "version": "8.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "12",
+                    "w": 18,
+                    "x": 0,
+                    "y": 31
+                },
+                "panelIndex": "12",
+                "panelRefName": "panel_8",
+                "title": "Max Cursors by machine (Top 10)",
+                "version": "8.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "13",
+                    "w": 20,
+                    "x": 0,
+                    "y": 23
+                },
+                "panelIndex": "13",
+                "panelRefName": "panel_9",
+                "title": "DB Blocks Gets by buffer pool (Top 10)",
+                "version": "8.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 10,
+                    "i": "14",
+                    "w": 30,
+                    "x": 18,
+                    "y": 39
+                },
+                "panelIndex": "14",
+                "panelRefName": "panel_10",
+                "title": "Consistent Gets by buffer pool (Top 10)",
+                "version": "8.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 10,
+                    "i": "15",
+                    "w": 18,
+                    "x": 0,
+                    "y": 39
+                },
+                "panelIndex": "15",
+                "panelRefName": "panel_11",
+                "title": "Total / Real parsed cursors",
+                "version": "8.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 10,
+                    "i": "16",
+                    "w": 28,
+                    "x": 20,
+                    "y": 8
+                },
+                "panelIndex": "16",
+                "panelRefName": "panel_12",
+                "title": "Lock/Pin requests and IO reloads ratios",
+                "version": "8.0.0-SNAPSHOT"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "17",
+                    "w": 8,
+                    "x": 40,
+                    "y": 0
+                },
+                "panelIndex": "17",
+                "panelRefName": "panel_13",
+                "title": "Cursors cache hit ratio gauge",
+                "version": "8.0.0-SNAPSHOT"
+            }
+        ],
         "timeRestore": false,
         "title": "[Metricbeat Oracle] Overview",
         "version": 1

@@ -2,13 +2,47 @@
     "attributes": {
         "description": "",
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[]}"
+            "searchSourceJSON": {
+                "filter": []
+            }
         },
         "savedSearchRefName": "search_0",
         "title": "Top 10 Source Users [Filebeat CEF]",
-        "uiStateJSON": "{}",
+        "uiStateJSON": {},
         "version": 1,
-        "visState": "{\"aggs\":[{\"enabled\":true,\"id\":\"1\",\"params\":{},\"schema\":\"metric\",\"type\":\"count\"},{\"enabled\":true,\"id\":\"2\",\"params\":{\"customLabel\":\"Source Users\",\"field\":\"source.user.name\",\"order\":\"desc\",\"orderBy\":\"1\",\"size\":10},\"schema\":\"segment\",\"type\":\"terms\"}],\"listeners\":{},\"params\":{\"maxFontSize\":60,\"minFontSize\":10,\"orientation\":\"single\",\"scale\":\"linear\"},\"title\":\"Top 10 Source Users [Filebeat CEF]\",\"type\":\"tagcloud\"}"
+        "visState": {
+            "aggs": [
+                {
+                    "enabled": true,
+                    "id": "1",
+                    "params": {},
+                    "schema": "metric",
+                    "type": "count"
+                },
+                {
+                    "enabled": true,
+                    "id": "2",
+                    "params": {
+                        "customLabel": "Source Users",
+                        "field": "source.user.name",
+                        "order": "desc",
+                        "orderBy": "1",
+                        "size": 10
+                    },
+                    "schema": "segment",
+                    "type": "terms"
+                }
+            ],
+            "listeners": {},
+            "params": {
+                "maxFontSize": 60,
+                "minFontSize": 10,
+                "orientation": "single",
+                "scale": "linear"
+            },
+            "title": "Top 10 Source Users [Filebeat CEF]",
+            "type": "tagcloud"
+        }
     },
     "id": "8cd00d20-957d-4663-be4d-ea80b1609586",
     "references": [

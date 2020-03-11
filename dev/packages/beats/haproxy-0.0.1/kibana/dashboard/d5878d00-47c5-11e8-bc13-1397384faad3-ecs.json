@@ -3,10 +3,49 @@
         "description": "HAProxy frontend metrics",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"highlightAll\":true,\"query\":{\"language\":\"kuery\",\"query\":\"\"},\"version\":true}"
+            "searchSourceJSON": {
+                "filter": [],
+                "highlightAll": true,
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                },
+                "version": true
+            }
         },
-        "optionsJSON": "{\"darkTheme\":false,\"hidePanelTitles\":false,\"useMargins\":true}",
-        "panelsJSON": "[{\"gridData\":{\"w\":24,\"h\":12,\"x\":0,\"y\":0,\"i\":\"2\"},\"panelIndex\":\"2\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_0\",\"embeddableConfig\":{}},{\"gridData\":{\"w\":24,\"h\":12,\"x\":24,\"y\":0,\"i\":\"3\"},\"panelIndex\":\"3\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_1\",\"embeddableConfig\":{}}]",
+        "optionsJSON": {
+            "darkTheme": false,
+            "hidePanelTitles": false,
+            "useMargins": true
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "2",
+                    "w": 24,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "2",
+                "panelRefName": "panel_0",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "3",
+                    "w": 24,
+                    "x": 24,
+                    "y": 0
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_1",
+                "version": "7.3.0"
+            }
+        ],
         "timeRestore": false,
         "title": "[Metricbeat HAProxy] Frontend ECS",
         "version": 1

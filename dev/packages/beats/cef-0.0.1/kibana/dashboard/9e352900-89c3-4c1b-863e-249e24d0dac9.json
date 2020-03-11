@@ -3,10 +3,292 @@
         "description": "Operating system activity from endpoints.",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"highlightAll\":true,\"query\":{\"language\":\"lucene\",\"query\":\"*\"},\"version\":true}"
+            "searchSourceJSON": {
+                "filter": [],
+                "highlightAll": true,
+                "query": {
+                    "language": "lucene",
+                    "query": "*"
+                },
+                "version": true
+            }
         },
-        "optionsJSON": "{\"darkTheme\":false}",
-        "panelsJSON": "[{\"embeddableConfig\":{\"vis\":{\"colors\":{\"Count\":\"#64B0C8\",\"Destination User Names\":\"#E24D42\",\"Event Types\":\"#EF843C\"},\"legendOpen\":true}},\"gridData\":{\"h\":12,\"i\":\"3\",\"w\":24,\"x\":0,\"y\":28},\"panelIndex\":\"3\",\"panelRefName\":\"panel_0\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{\"vis\":{\"defaultColors\":{\"0 - 100\":\"rgb(0,104,55)\"}}},\"gridData\":{\"h\":8,\"i\":\"4\",\"w\":40,\"x\":0,\"y\":4},\"panelIndex\":\"4\",\"panelRefName\":\"panel_1\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{\"vis\":{\"defaultColors\":{\"0 - 55k\":\"rgb(255,255,204)\",\"110k - 165k\":\"rgb(254,225,135)\",\"165k - 220k\":\"rgb(254,201,101)\",\"220k - 275k\":\"rgb(254,171,73)\",\"275k - 330k\":\"rgb(253,141,60)\",\"330k - 385k\":\"rgb(252,91,46)\",\"385k - 440k\":\"rgb(237,47,34)\",\"440k - 495k\":\"rgb(212,16,32)\",\"495k - 550k\":\"rgb(176,0,38)\",\"55k - 110k\":\"rgb(255,241,170)\"},\"legendOpen\":false}},\"gridData\":{\"h\":12,\"i\":\"5\",\"w\":24,\"x\":24,\"y\":28},\"panelIndex\":\"5\",\"panelRefName\":\"panel_2\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":8,\"i\":\"7\",\"w\":48,\"x\":0,\"y\":20},\"panelIndex\":\"7\",\"panelRefName\":\"panel_3\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{\"vis\":{\"colors\":{\"/Attempt\":\"#447EBC\",\"/Failure\":\"#E24D42\",\"/Success\":\"#7EB26D\"}}},\"gridData\":{\"h\":12,\"i\":\"8\",\"w\":24,\"x\":24,\"y\":52},\"panelIndex\":\"8\",\"panelRefName\":\"panel_4\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{\"vis\":{\"params\":{\"sort\":{\"columnIndex\":null,\"direction\":null}}}},\"gridData\":{\"h\":24,\"i\":\"9\",\"w\":24,\"x\":0,\"y\":40},\"panelIndex\":\"9\",\"panelRefName\":\"panel_5\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"10\",\"w\":24,\"x\":24,\"y\":40},\"panelIndex\":\"10\",\"panelRefName\":\"panel_6\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":4,\"i\":\"11\",\"w\":48,\"x\":0,\"y\":0},\"panelIndex\":\"11\",\"panelRefName\":\"panel_7\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":8,\"i\":\"12\",\"w\":8,\"x\":40,\"y\":4},\"panelIndex\":\"12\",\"panelRefName\":\"panel_8\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{\"vis\":{\"colors\":{\"Destination Users\":\"#E24D42\",\"Event Count\":\"#64B0C8\"}}},\"gridData\":{\"h\":8,\"i\":\"13\",\"w\":48,\"x\":0,\"y\":12},\"panelIndex\":\"13\",\"panelRefName\":\"panel_9\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{\"vis\":{\"legendOpen\":false}},\"gridData\":{\"h\":20,\"i\":\"14\",\"w\":16,\"x\":32,\"y\":64},\"panelIndex\":\"14\",\"panelRefName\":\"panel_10\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{\"vis\":{\"legendOpen\":false}},\"gridData\":{\"h\":24,\"i\":\"15\",\"w\":16,\"x\":32,\"y\":84},\"panelIndex\":\"15\",\"panelRefName\":\"panel_11\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":12,\"i\":\"16\",\"w\":32,\"x\":0,\"y\":80},\"panelIndex\":\"16\",\"panelRefName\":\"panel_12\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":8,\"i\":\"17\",\"w\":32,\"x\":0,\"y\":100},\"panelIndex\":\"17\",\"panelRefName\":\"panel_13\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":16,\"i\":\"18\",\"w\":32,\"x\":0,\"y\":64},\"panelIndex\":\"18\",\"panelRefName\":\"panel_14\",\"version\":\"7.3.0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":8,\"i\":\"19\",\"w\":32,\"x\":0,\"y\":92},\"panelIndex\":\"19\",\"panelRefName\":\"panel_15\",\"version\":\"7.3.0\"}]",
+        "optionsJSON": {
+            "darkTheme": false
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "colors": {
+                            "Count": "#64B0C8",
+                            "Destination User Names": "#E24D42",
+                            "Event Types": "#EF843C"
+                        },
+                        "legendOpen": true
+                    }
+                },
+                "gridData": {
+                    "h": 12,
+                    "i": "3",
+                    "w": 24,
+                    "x": 0,
+                    "y": 28
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_0",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "defaultColors": {
+                            "0 - 100": "rgb(0,104,55)"
+                        }
+                    }
+                },
+                "gridData": {
+                    "h": 8,
+                    "i": "4",
+                    "w": 40,
+                    "x": 0,
+                    "y": 4
+                },
+                "panelIndex": "4",
+                "panelRefName": "panel_1",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "defaultColors": {
+                            "0 - 55k": "rgb(255,255,204)",
+                            "110k - 165k": "rgb(254,225,135)",
+                            "165k - 220k": "rgb(254,201,101)",
+                            "220k - 275k": "rgb(254,171,73)",
+                            "275k - 330k": "rgb(253,141,60)",
+                            "330k - 385k": "rgb(252,91,46)",
+                            "385k - 440k": "rgb(237,47,34)",
+                            "440k - 495k": "rgb(212,16,32)",
+                            "495k - 550k": "rgb(176,0,38)",
+                            "55k - 110k": "rgb(255,241,170)"
+                        },
+                        "legendOpen": false
+                    }
+                },
+                "gridData": {
+                    "h": 12,
+                    "i": "5",
+                    "w": 24,
+                    "x": 24,
+                    "y": 28
+                },
+                "panelIndex": "5",
+                "panelRefName": "panel_2",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "7",
+                    "w": 48,
+                    "x": 0,
+                    "y": 20
+                },
+                "panelIndex": "7",
+                "panelRefName": "panel_3",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "colors": {
+                            "/Attempt": "#447EBC",
+                            "/Failure": "#E24D42",
+                            "/Success": "#7EB26D"
+                        }
+                    }
+                },
+                "gridData": {
+                    "h": 12,
+                    "i": "8",
+                    "w": 24,
+                    "x": 24,
+                    "y": 52
+                },
+                "panelIndex": "8",
+                "panelRefName": "panel_4",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "params": {
+                            "sort": {
+                                "columnIndex": null,
+                                "direction": null
+                            }
+                        }
+                    }
+                },
+                "gridData": {
+                    "h": 24,
+                    "i": "9",
+                    "w": 24,
+                    "x": 0,
+                    "y": 40
+                },
+                "panelIndex": "9",
+                "panelRefName": "panel_5",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "10",
+                    "w": 24,
+                    "x": 24,
+                    "y": 40
+                },
+                "panelIndex": "10",
+                "panelRefName": "panel_6",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 4,
+                    "i": "11",
+                    "w": 48,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "11",
+                "panelRefName": "panel_7",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "12",
+                    "w": 8,
+                    "x": 40,
+                    "y": 4
+                },
+                "panelIndex": "12",
+                "panelRefName": "panel_8",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "colors": {
+                            "Destination Users": "#E24D42",
+                            "Event Count": "#64B0C8"
+                        }
+                    }
+                },
+                "gridData": {
+                    "h": 8,
+                    "i": "13",
+                    "w": 48,
+                    "x": 0,
+                    "y": 12
+                },
+                "panelIndex": "13",
+                "panelRefName": "panel_9",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "legendOpen": false
+                    }
+                },
+                "gridData": {
+                    "h": 20,
+                    "i": "14",
+                    "w": 16,
+                    "x": 32,
+                    "y": 64
+                },
+                "panelIndex": "14",
+                "panelRefName": "panel_10",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "legendOpen": false
+                    }
+                },
+                "gridData": {
+                    "h": 24,
+                    "i": "15",
+                    "w": 16,
+                    "x": 32,
+                    "y": 84
+                },
+                "panelIndex": "15",
+                "panelRefName": "panel_11",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 12,
+                    "i": "16",
+                    "w": 32,
+                    "x": 0,
+                    "y": 80
+                },
+                "panelIndex": "16",
+                "panelRefName": "panel_12",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "17",
+                    "w": 32,
+                    "x": 0,
+                    "y": 100
+                },
+                "panelIndex": "17",
+                "panelRefName": "panel_13",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 16,
+                    "i": "18",
+                    "w": 32,
+                    "x": 0,
+                    "y": 64
+                },
+                "panelIndex": "18",
+                "panelRefName": "panel_14",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 8,
+                    "i": "19",
+                    "w": 32,
+                    "x": 0,
+                    "y": 92
+                },
+                "panelIndex": "19",
+                "panelRefName": "panel_15",
+                "version": "7.3.0"
+            }
+        ],
         "refreshInterval": {
             "display": "Off",
             "pause": false,

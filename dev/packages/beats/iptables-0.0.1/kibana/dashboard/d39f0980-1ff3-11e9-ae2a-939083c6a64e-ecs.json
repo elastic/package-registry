@@ -3,10 +3,152 @@
         "description": "Overview of the Ubiquiti Firewall iptables events dashboard.",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": "{\"filter\":[],\"query\":{\"language\":\"kuery\",\"query\":\"\"}}"
+            "searchSourceJSON": {
+                "filter": [],
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                }
+            }
         },
-        "optionsJSON": "{\"darkTheme\":false,\"hidePanelTitles\":false,\"useMargins\":true}",
-        "panelsJSON": "[{\"embeddableConfig\":{\"vis\":{\"colors\":{\"allow\":\"#64B0C8\",\"deny\":\"#E24D42\"},\"legendOpen\":true}},\"gridData\":{\"h\":15,\"i\":\"1\",\"w\":33,\"x\":0,\"y\":0},\"panelIndex\":\"1\",\"title\":\"Event Timeline\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"2\",\"w\":15,\"x\":33,\"y\":0},\"panelIndex\":\"2\",\"title\":\"Top Blocked by source IP\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_1\"},{\"embeddableConfig\":{\"mapCenter\":[39.095962936305476,-22.148437500000004],\"mapZoom\":2},\"gridData\":{\"h\":15,\"i\":\"3\",\"w\":24,\"x\":0,\"y\":15},\"panelIndex\":\"3\",\"title\":\"Allowed Traffic Map\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_2\"},{\"embeddableConfig\":{\"mapCenter\":[46.31658418182218,-34.10156250000001],\"mapZoom\":2},\"gridData\":{\"h\":15,\"i\":\"4\",\"w\":24,\"x\":24,\"y\":15},\"panelIndex\":\"4\",\"title\":\"Blocked Traffic Map\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_3\"},{\"embeddableConfig\":{\"vis\":{\"colors\":{\"allow\":\"#7EB26D\",\"deny\":\"#E24D42\",\"icmp\":\"#F29191\",\"ipv4\":\"#65C5DB\",\"ipv6\":\"#D683CE\",\"ipv6-icmp\":\"#EA6460\",\"tcp\":\"#447EBC\",\"udp\":\"#F2C96D\"}}},\"gridData\":{\"h\":18,\"i\":\"5\",\"w\":24,\"x\":0,\"y\":30},\"panelIndex\":\"5\",\"title\":\"Traffic Breakdown by Protocol\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_4\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":27,\"i\":\"6\",\"w\":48,\"x\":0,\"y\":48},\"panelIndex\":\"6\",\"title\":\"Event View\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_5\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":18,\"i\":\"7\",\"w\":24,\"x\":24,\"y\":30},\"panelIndex\":\"7\",\"title\":\"Traffic Breakdown by Port\",\"version\":\"7.3.0\",\"panelRefName\":\"panel_6\"}]",
+        "optionsJSON": {
+            "darkTheme": false,
+            "hidePanelTitles": false,
+            "useMargins": true
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "colors": {
+                            "allow": "#64B0C8",
+                            "deny": "#E24D42"
+                        },
+                        "legendOpen": true
+                    }
+                },
+                "gridData": {
+                    "h": 15,
+                    "i": "1",
+                    "w": 33,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "1",
+                "panelRefName": "panel_0",
+                "title": "Event Timeline",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "2",
+                    "w": 15,
+                    "x": 33,
+                    "y": 0
+                },
+                "panelIndex": "2",
+                "panelRefName": "panel_1",
+                "title": "Top Blocked by source IP",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "mapCenter": [
+                        39.095962936305476,
+                        -22.148437500000004
+                    ],
+                    "mapZoom": 2
+                },
+                "gridData": {
+                    "h": 15,
+                    "i": "3",
+                    "w": 24,
+                    "x": 0,
+                    "y": 15
+                },
+                "panelIndex": "3",
+                "panelRefName": "panel_2",
+                "title": "Allowed Traffic Map",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "mapCenter": [
+                        46.31658418182218,
+                        -34.10156250000001
+                    ],
+                    "mapZoom": 2
+                },
+                "gridData": {
+                    "h": 15,
+                    "i": "4",
+                    "w": 24,
+                    "x": 24,
+                    "y": 15
+                },
+                "panelIndex": "4",
+                "panelRefName": "panel_3",
+                "title": "Blocked Traffic Map",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {
+                    "vis": {
+                        "colors": {
+                            "allow": "#7EB26D",
+                            "deny": "#E24D42",
+                            "icmp": "#F29191",
+                            "ipv4": "#65C5DB",
+                            "ipv6": "#D683CE",
+                            "ipv6-icmp": "#EA6460",
+                            "tcp": "#447EBC",
+                            "udp": "#F2C96D"
+                        }
+                    }
+                },
+                "gridData": {
+                    "h": 18,
+                    "i": "5",
+                    "w": 24,
+                    "x": 0,
+                    "y": 30
+                },
+                "panelIndex": "5",
+                "panelRefName": "panel_4",
+                "title": "Traffic Breakdown by Protocol",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 27,
+                    "i": "6",
+                    "w": 48,
+                    "x": 0,
+                    "y": 48
+                },
+                "panelIndex": "6",
+                "panelRefName": "panel_5",
+                "title": "Event View",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 18,
+                    "i": "7",
+                    "w": 24,
+                    "x": 24,
+                    "y": 30
+                },
+                "panelIndex": "7",
+                "panelRefName": "panel_6",
+                "title": "Traffic Breakdown by Port",
+                "version": "7.3.0"
+            }
+        ],
         "timeRestore": false,
         "title": "[Filebeat Iptables] Ubiquiti Firewall Overview ECS",
         "version": 1
