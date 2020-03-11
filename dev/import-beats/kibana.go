@@ -6,6 +6,7 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -14,6 +15,16 @@ import (
 	"path"
 
 	"github.com/pkg/errors"
+)
+
+var (
+	encodedFields = []string{
+		"attributes.uiStateJSON",
+		"attributes.visState",
+		"attributes.optionsJSON",
+		"attributes.panelsJSON",
+		"attributes.kibanaSavedObjectMeta.searchSourceJSON",
+	}
 )
 
 type kibanaContent struct {
@@ -25,6 +36,10 @@ type kibanaMigrator struct {
 	hostPort string
 }
 
+type kibanaDocuments struct {
+	Objects []mapStr `json:"objects"`
+}
+
 func newKibanaMigrator(hostPort string) *kibanaMigrator {
 	return &kibanaMigrator{
 		hostPort: hostPort,
@@ -32,6 +47,11 @@ func newKibanaMigrator(hostPort string) *kibanaMigrator {
 }
 
 func (km *kibanaMigrator) migrateDashboardFile(dashboardFile []byte) ([]byte, error) {
+	dashboardFile, err := prepareDashboardFile(dashboardFile)
+	if err != nil {
+		return nil, errors.Wrapf(err, "preparing file failed")
+	}
+
 	request, err := http.NewRequest("POST",
 		fmt.Sprintf("http://%s/api/kibana/dashboards/import?force=true", km.hostPort),
 		bytes.NewReader(dashboardFile))
@@ -56,6 +76,52 @@ func (km *kibanaMigrator) migrateDashboardFile(dashboardFile []byte) ([]byte, er
 	return saved, nil
 }
 
+func prepareDashboardFile(dashboardFile []byte) ([]byte, error) {
+	var documents kibanaDocuments
+
+	err := json.Unmarshal(dashboardFile, &documents)
+	if err != nil {
+		return nil, errors.Wrapf(err, "unmarshalling dashboard file failed")
+	}
+
+	for i, object := range documents.Objects {
+		object, err = encodeFields(object)
+		if err != nil {
+			return nil, errors.Wrapf(err, "encoding fields failed")
+		}
+		documents.Objects[i] = object
+	}
+
+	data, err := json.Marshal(&documents)
+	if err != nil {
+		return nil, errors.Wrapf(err, "marshalling dashboard file failed")
+	}
+	return data, nil
+}
+
+func encodeFields(ms mapStr) (mapStr, error) {
+	for _, field := range encodedFields {
+
+		v, err := ms.getValue(field)
+		if err == errKeyNotFound {
+			continue
+		} else if err != nil {
+			return mapStr{}, errors.Wrapf(err, "retrieving value failed (key: %s)", field)
+		}
+
+		ve, err := json.Marshal(v)
+		if err != nil {
+			return mapStr{}, errors.Wrapf(err, "marshalling value failed (key: %s)", field)
+		}
+
+		_, err = ms.put(field, string(ve))
+		if err != nil {
+			return mapStr{}, errors.Wrapf(err, "putting value failed (key: %s)", field)
+		}
+	}
+	return ms, nil
+}
+
 func createKibanaContent(kibanaMigrator *kibanaMigrator, modulePath string) (kibanaContent, error) {
 	moduleDashboardPath := path.Join(modulePath, "_meta", "kibana", "7", "dashboard")
 	moduleDashboards, err := ioutil.ReadDir(moduleDashboardPath)
@@ -72,6 +138,8 @@ func createKibanaContent(kibanaMigrator *kibanaMigrator, modulePath string) (kib
 		visualizationFiles: map[string][]byte{},
 	}
 	for _, moduleDashboard := range moduleDashboards {
+		log.Printf("\tdashboard found: %s", moduleDashboard.Name())
+
 		dashboardFilePath := path.Join(moduleDashboardPath, moduleDashboard.Name())
 		dashboardFile, err := ioutil.ReadFile(dashboardFilePath)
 		if err != nil {
@@ -107,5 +175,46 @@ func createKibanaContent(kibanaMigrator *kibanaMigrator, modulePath string) (kib
 }
 
 func extractKibanaObjects(dashboardFile []byte, objectType string) (map[string][]byte, error) {
-	return nil, errors.New("not implemented")
+	var documents kibanaDocuments
+
+	err := json.Unmarshal(dashboardFile, &documents)
+	if err != nil {
+		return nil, errors.Wrapf(err, "unmarshalling migrated dashboard file failed")
+	}
+
+	extracted := map[string][]byte{}
+	for _, object := range documents.Objects {
+		aType, err := object.getValue("type")
+		if err != nil {
+			return nil, errors.Wrapf(err, "retrieving type failed")
+		}
+
+		if aType != objectType {
+			continue
+		}
+
+		err = object.delete("updated_at")
+		if err != nil {
+			return nil, errors.Wrapf(err, "removing field updated_at failed")
+		}
+
+		err = object.delete("version")
+		if err != nil {
+			return nil, errors.Wrapf(err, "removing field version failed")
+		}
+
+		data, err := json.Marshal(object)
+		if err != nil {
+			return nil, errors.Wrapf(err, "marshalling object failed")
+		}
+
+		id, err := object.getValue("id")
+		if err != nil {
+			return nil, errors.Wrapf(err, "retrieving id failed")
+		}
+
+		extracted[id.(string)+".json"] = data
+	}
+
+	return extracted, nil
 }

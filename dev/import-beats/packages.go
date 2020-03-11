@@ -206,9 +206,12 @@ func (r *packageRepository) save(outputDir string) error {
 			}
 		}
 
+		// kibana
+		kibanaPath := filepath.Join(packagePath, "kibana")
+
 		// kibana/dashboard
 		if len(content.kibana.dashboardFiles) > 0 {
-			dashboardPath := filepath.Join(packagePath, "dashboard")
+			dashboardPath := filepath.Join(kibanaPath, "dashboard")
 			err := os.MkdirAll(dashboardPath, 0755)
 			if err != nil {
 				return errors.Wrapf(err, "cannot make directory for dashboard files: '%s'", dashboardPath)
@@ -227,14 +230,14 @@ func (r *packageRepository) save(outputDir string) error {
 
 		// kibana/visualization
 		if len(content.kibana.visualizationFiles) > 0 {
-			visualizationPath := filepath.Join(packagePath, "visualization")
+			visualizationPath := filepath.Join(kibanaPath, "visualization")
 			err := os.MkdirAll(visualizationPath, 0755)
 			if err != nil {
 				return errors.Wrapf(err, "cannot make directory for visualization files: '%s'",
 					visualizationPath)
 			}
 
-			for fileName, body := range content.kibana.dashboardFiles {
+			for fileName, body := range content.kibana.visualizationFiles {
 				visualizationFilePath := filepath.Join(visualizationPath, fileName)
 
 				log.Printf("\tcreate visualization file: %s", visualizationFilePath)
