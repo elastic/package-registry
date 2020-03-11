@@ -128,7 +128,8 @@ func createKibanaContent(kibanaMigrator *kibanaMigrator, modulePath string) (kib
 	if os.IsNotExist(err) {
 		log.Printf("\tno dashboards present, skipped (modulePath: %s)", modulePath)
 		return kibanaContent{}, nil
-	} else if err != nil {
+	}
+	if err != nil {
 		return kibanaContent{}, errors.Wrapf(err, "reading module dashboard directory failed (path: %s)",
 			moduleDashboardPath)
 	}
