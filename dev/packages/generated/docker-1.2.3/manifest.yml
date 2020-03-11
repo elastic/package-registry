@@ -16,5 +16,5 @@ requirement:
     versions: ">7.0.1"
 
 icons:
-  - src: "/img/icon.svg"
+  - src: "/img/logo.svg"
     type: "image/svg+xml"
