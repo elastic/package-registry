@@ -11,18 +11,19 @@ release: beta
 type: solution
 license: basic
 
-
-
 datasources:
-  -
-    name: endpoint
+  - name: endpoint
     title: Endpoint data source
     description: Interact with the endpoint.
 
     # This tells the UI that for configuration, it must link to a specific solution
     # Only solution packages can contain this field.
     solution: endpoint
-
+    inputs:
+      - type: metrics
+        description: Placeholder for metrics
+      - type: events
+        description: Placeholder for events
 
 requirement:
   elasticsearch:
