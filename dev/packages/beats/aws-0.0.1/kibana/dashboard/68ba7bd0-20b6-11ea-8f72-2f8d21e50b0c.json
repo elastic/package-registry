@@ -1,0 +1,226 @@
+{
+    "attributes": {
+        "description": "Overview of DynamoDB AWS Cloudwatch metrics",
+        "hits": 0,
+        "kibanaSavedObjectMeta": {
+            "searchSourceJSON": {
+                "filter": [],
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                }
+            }
+        },
+        "optionsJSON": {
+            "hidePanelTitles": false,
+            "useMargins": true
+        },
+        "panelsJSON": [
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 9,
+                    "i": "9642fcd0-464b-46ea-815c-cd2d9efc056d",
+                    "w": 7,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "9642fcd0-464b-46ea-815c-cd2d9efc056d",
+                "panelRefName": "panel_0",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 9,
+                    "i": "03807c37-c9dc-4b41-80ce-e28a13eb66e2",
+                    "w": 14,
+                    "x": 7,
+                    "y": 0
+                },
+                "panelIndex": "03807c37-c9dc-4b41-80ce-e28a13eb66e2",
+                "panelRefName": "panel_1",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 9,
+                    "i": "18810035-5e91-409a-98d7-c03166e1f9b3",
+                    "w": 27,
+                    "x": 21,
+                    "y": 0
+                },
+                "panelIndex": "18810035-5e91-409a-98d7-c03166e1f9b3",
+                "panelRefName": "panel_2",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 9,
+                    "i": "60e6e6e4-3237-430e-80fc-63fe9b718a7e",
+                    "w": 19,
+                    "x": 0,
+                    "y": 9
+                },
+                "panelIndex": "60e6e6e4-3237-430e-80fc-63fe9b718a7e",
+                "panelRefName": "panel_3",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 9,
+                    "i": "5e5d6509-2889-4383-bef4-9c2da0e759c6",
+                    "w": 14,
+                    "x": 19,
+                    "y": 9
+                },
+                "panelIndex": "5e5d6509-2889-4383-bef4-9c2da0e759c6",
+                "panelRefName": "panel_4",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 9,
+                    "i": "2db371a7-20c5-460a-a2f7-06b5b03d7b34",
+                    "w": 15,
+                    "x": 33,
+                    "y": 9
+                },
+                "panelIndex": "2db371a7-20c5-460a-a2f7-06b5b03d7b34",
+                "panelRefName": "panel_5",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "1cd72292-ecba-4008-bb3c-e76c7fb6b4f4",
+                    "w": 24,
+                    "x": 0,
+                    "y": 18
+                },
+                "panelIndex": "1cd72292-ecba-4008-bb3c-e76c7fb6b4f4",
+                "panelRefName": "panel_6",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "cea56791-2602-4079-977b-7d088727872c",
+                    "w": 24,
+                    "x": 24,
+                    "y": 18
+                },
+                "panelIndex": "cea56791-2602-4079-977b-7d088727872c",
+                "panelRefName": "panel_7",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "fe509a4d-700b-4092-9aae-ce14e8de103e",
+                    "w": 24,
+                    "x": 0,
+                    "y": 33
+                },
+                "panelIndex": "fe509a4d-700b-4092-9aae-ce14e8de103e",
+                "panelRefName": "panel_8",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 15,
+                    "i": "3d6b1fa0-746f-40ed-8fcc-ae89013f632b",
+                    "w": 24,
+                    "x": 24,
+                    "y": 33
+                },
+                "panelIndex": "3d6b1fa0-746f-40ed-8fcc-ae89013f632b",
+                "panelRefName": "panel_9",
+                "version": "7.3.0"
+            },
+            {
+                "embeddableConfig": {},
+                "gridData": {
+                    "h": 10,
+                    "i": "0f9a5223-3c63-405c-a5c4-ea15416bad4a",
+                    "w": 24,
+                    "x": 0,
+                    "y": 48
+                },
+                "panelIndex": "0f9a5223-3c63-405c-a5c4-ea15416bad4a",
+                "panelRefName": "panel_10",
+                "version": "7.3.0"
+            }
+        ],
+        "timeRestore": false,
+        "title": "[Metricbeat AWS] DynamoDB Overview",
+        "version": 1
+    },
+    "id": "68ba7bd0-20b6-11ea-8f72-2f8d21e50b0c",
+    "references": [
+        {
+            "id": "bc8bd8f0-31fd-11ea-bcbf-59cb7eefc1f0",
+            "name": "panel_0",
+            "type": "visualization"
+        },
+        {
+            "id": "9e012a20-20b4-11ea-8f72-2f8d21e50b0c",
+            "name": "panel_1",
+            "type": "visualization"
+        },
+        {
+            "id": "6b789730-2002-11ea-8f72-2f8d21e50b0c",
+            "name": "panel_2",
+            "type": "visualization"
+        },
+        {
+            "id": "5eaeaf50-20b4-11ea-8f72-2f8d21e50b0c",
+            "name": "panel_3",
+            "type": "visualization"
+        },
+        {
+            "id": "494adfe0-20b3-11ea-8f72-2f8d21e50b0c",
+            "name": "panel_4",
+            "type": "visualization"
+        },
+        {
+            "id": "8717f330-20b3-11ea-8f72-2f8d21e50b0c",
+            "name": "panel_5",
+            "type": "visualization"
+        },
+        {
+            "id": "64b587a0-20b1-11ea-8f72-2f8d21e50b0c",
+            "name": "panel_6",
+            "type": "visualization"
+        },
+        {
+            "id": "1a22a410-2003-11ea-8f72-2f8d21e50b0c",
+            "name": "panel_7",
+            "type": "visualization"
+        },
+        {
+            "id": "6d9c9fb0-20b2-11ea-8f72-2f8d21e50b0c",
+            "name": "panel_8",
+            "type": "visualization"
+        },
+        {
+            "id": "08d696d0-20b2-11ea-8f72-2f8d21e50b0c",
+            "name": "panel_9",
+            "type": "visualization"
+        },
+        {
+            "id": "31ad4090-2003-11ea-8f72-2f8d21e50b0c",
+            "name": "panel_10",
+            "type": "visualization"
+        }
+    ],
+    "type": "dashboard"
+}

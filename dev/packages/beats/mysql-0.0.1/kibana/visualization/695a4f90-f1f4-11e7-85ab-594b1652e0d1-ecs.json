@@ -1,0 +1,140 @@
+{
+    "attributes": {
+        "description": "",
+        "kibanaSavedObjectMeta": {
+            "searchSourceJSON": {}
+        },
+        "title": "Command rates [Metricbeat MySQL] ECS",
+        "uiStateJSON": {},
+        "version": 1,
+        "visState": {
+            "aggs": [],
+            "params": {
+                "axis_formatter": "number",
+                "axis_position": "left",
+                "id": "61ca57f0-469d-11e7-af02-69e470af7417",
+                "index_pattern": "metricbeat-*",
+                "interval": "auto",
+                "series": [
+                    {
+                        "axis_position": "right",
+                        "chart_type": "line",
+                        "color": "#68BC00",
+                        "fill": "0.2",
+                        "formatter": "number",
+                        "id": "61ca57f1-469d-11e7-af02-69e470af7417",
+                        "label": "SELECT",
+                        "line_width": 1,
+                        "metrics": [
+                            {
+                                "field": "mysql.status.command.select",
+                                "id": "61ca57f2-469d-11e7-af02-69e470af7417",
+                                "type": "avg"
+                            },
+                            {
+                                "field": "61ca57f2-469d-11e7-af02-69e470af7417",
+                                "id": "2d149f90-f1f4-11e7-a752-236fe3270d99",
+                                "type": "derivative",
+                                "unit": ""
+                            }
+                        ],
+                        "point_size": 1,
+                        "seperate_axis": 0,
+                        "split_mode": "everything",
+                        "stacked": "none"
+                    },
+                    {
+                        "axis_position": "right",
+                        "chart_type": "line",
+                        "color": "rgba(104,204,202,1)",
+                        "fill": "0.2",
+                        "formatter": "number",
+                        "id": "3c2a2a40-f1f4-11e7-a752-236fe3270d99",
+                        "label": "INSERT",
+                        "line_width": 1,
+                        "metrics": [
+                            {
+                                "field": "mysql.status.command.insert",
+                                "id": "3c2a2a41-f1f4-11e7-a752-236fe3270d99",
+                                "type": "avg"
+                            },
+                            {
+                                "field": "3c2a2a41-f1f4-11e7-a752-236fe3270d99",
+                                "id": "3c2a2a42-f1f4-11e7-a752-236fe3270d99",
+                                "type": "derivative",
+                                "unit": ""
+                            }
+                        ],
+                        "point_size": 1,
+                        "seperate_axis": 0,
+                        "split_mode": "everything",
+                        "stacked": "none"
+                    },
+                    {
+                        "axis_position": "right",
+                        "chart_type": "line",
+                        "color": "rgba(252,220,0,1)",
+                        "fill": "0.2",
+                        "formatter": "number",
+                        "id": "485ce050-f1f4-11e7-a752-236fe3270d99",
+                        "label": "UPDATE",
+                        "line_width": 1,
+                        "metrics": [
+                            {
+                                "field": "mysql.status.command.update",
+                                "id": "485ce051-f1f4-11e7-a752-236fe3270d99",
+                                "type": "avg"
+                            },
+                            {
+                                "field": "485ce051-f1f4-11e7-a752-236fe3270d99",
+                                "id": "485ce052-f1f4-11e7-a752-236fe3270d99",
+                                "type": "derivative",
+                                "unit": ""
+                            }
+                        ],
+                        "point_size": 1,
+                        "seperate_axis": 0,
+                        "split_mode": "everything",
+                        "stacked": "none"
+                    },
+                    {
+                        "axis_position": "right",
+                        "chart_type": "line",
+                        "color": "rgba(244,78,59,1)",
+                        "fill": "0.2",
+                        "formatter": "number",
+                        "id": "543a4a70-f1f4-11e7-a752-236fe3270d99",
+                        "label": "DELETE",
+                        "line_width": 1,
+                        "metrics": [
+                            {
+                                "field": "mysql.status.command.delete",
+                                "id": "543a4a71-f1f4-11e7-a752-236fe3270d99",
+                                "type": "avg"
+                            },
+                            {
+                                "field": "543a4a71-f1f4-11e7-a752-236fe3270d99",
+                                "id": "543a4a72-f1f4-11e7-a752-236fe3270d99",
+                                "type": "derivative",
+                                "unit": ""
+                            }
+                        ],
+                        "point_size": 1,
+                        "seperate_axis": 0,
+                        "split_mode": "everything",
+                        "stacked": "none"
+                    }
+                ],
+                "show_grid": 1,
+                "show_legend": 1,
+                "time_field": "@timestamp",
+                "type": "timeseries"
+            },
+            "title": "Command rates [Metricbeat MySQL] ECS",
+            "type": "metrics"
+        }
+    },
+    "id": "695a4f90-f1f4-11e7-85ab-594b1652e0d1-ecs",
+    "references": [],
+    "type": "visualization"
+}

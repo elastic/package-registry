@@ -1,0 +1,130 @@
+{
+    "attributes": {
+        "description": "",
+        "kibanaSavedObjectMeta": {
+            "searchSourceJSON": {
+                "filter": [],
+                "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.index",
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                }
+            }
+        },
+        "title": "DynamoDB Max Read/Write Limits [Metricbeat AWS] ECS",
+        "uiStateJSON": {},
+        "version": 1,
+        "visState": {
+            "aggs": [
+                {
+                    "enabled": true,
+                    "id": "1",
+                    "params": {
+                        "customLabel": "AccountMaxReads",
+                        "field": "aws.dynamodb.metrics.AccountMaxReads.max"
+                    },
+                    "schema": "metric",
+                    "type": "max"
+                },
+                {
+                    "enabled": true,
+                    "id": "2",
+                    "params": {
+                        "customLabel": "AccountMaxWrites",
+                        "field": "aws.dynamodb.metrics.AccountMaxWrites.max"
+                    },
+                    "schema": "metric",
+                    "type": "max"
+                },
+                {
+                    "enabled": true,
+                    "id": "3",
+                    "params": {
+                        "customLabel": "AccountMaxTableLevelReads",
+                        "field": "aws.dynamodb.metrics.AccountMaxTableLevelReads.max"
+                    },
+                    "schema": "metric",
+                    "type": "max"
+                },
+                {
+                    "enabled": true,
+                    "id": "4",
+                    "params": {
+                        "customLabel": "AccountMaxTableLevelWrites",
+                        "field": "aws.dynamodb.metrics.AccountMaxTableLevelWrites.max"
+                    },
+                    "schema": "metric",
+                    "type": "max"
+                }
+            ],
+            "params": {
+                "addLegend": false,
+                "addTooltip": true,
+                "dimensions": {
+                    "metrics": [
+                        {
+                            "accessor": 0,
+                            "format": {
+                                "id": "number",
+                                "params": {}
+                            },
+                            "type": "vis_dimension"
+                        },
+                        {
+                            "accessor": 1,
+                            "format": {
+                                "id": "number",
+                                "params": {}
+                            },
+                            "type": "vis_dimension"
+                        },
+                        {
+                            "accessor": 2,
+                            "format": {
+                                "id": "number",
+                                "params": {}
+                            },
+                            "type": "vis_dimension"
+                        }
+                    ]
+                },
+                "metric": {
+                    "colorSchema": "Green to Red",
+                    "colorsRange": [
+                        {
+                            "from": 0,
+                            "to": 10000,
+                            "type": "range"
+                        }
+                    ],
+                    "invertColors": false,
+                    "labels": {
+                        "show": true
+                    },
+                    "metricColorMode": "None",
+                    "percentageMode": false,
+                    "style": {
+                        "bgColor": false,
+                        "bgFill": "#000",
+                        "fontSize": 60,
+                        "labelColor": false,
+                        "subText": ""
+                    },
+                    "useRanges": false
+                },
+                "type": "metric"
+            },
+            "title": "DynamoDB Max Read/Write Limits [Metricbeat AWS] ECS",
+            "type": "metric"
+        }
+    },
+    "id": "6b789730-2002-11ea-8f72-2f8d21e50b0c",
+    "references": [
+        {
+            "id": "metricbeat-*",
+            "name": "kibanaSavedObjectMeta.searchSourceJSON.index",
+            "type": "index-pattern"
+        }
+    ],
+    "type": "visualization"
+}
