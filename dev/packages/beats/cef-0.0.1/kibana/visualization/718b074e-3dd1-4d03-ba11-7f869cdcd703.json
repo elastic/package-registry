@@ -25,7 +25,7 @@
                     "query": "cef.extensions.categoryDeviceGroup:\"/Operating System\" OR cef.extensions.categoryDeviceGroup:\"/IDS/Host\" OR cef.extensions.categoryDeviceGroup:\"/Application\""
                 },
                 "id": "fd1ffeb6-678e-4163-9421-6a164fd59048",
-                "index_pattern": "log-*",
+                "index_pattern": "logs-*",
                 "interval": "auto",
                 "series": [
                     {

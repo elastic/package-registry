@@ -22,7 +22,7 @@
                     "query": "haproxy.stat.component_type:1"
                 },
                 "id": "61ca57f0-469d-11e7-af02-69e470af7417",
-                "index_pattern": "metric-*",
+                "index_pattern": "metrics-*",
                 "interval": "auto",
                 "series": [
                     {

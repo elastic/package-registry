@@ -28,7 +28,7 @@
                     "query": "-system.network.name:l*"
                 },
                 "id": "0c761590-1b92-11e7-bec4-a5e9ec5cab8b",
-                "index_pattern": "metric-*",
+                "index_pattern": "metrics-*",
                 "interval": "auto",
                 "series": [
                     {

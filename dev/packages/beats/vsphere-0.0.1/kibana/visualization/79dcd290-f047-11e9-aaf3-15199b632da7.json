@@ -20,7 +20,7 @@
                 "axis_position": "left",
                 "axis_scale": "normal",
                 "background_color": null,
-                "default_index_pattern": "metric-*",
+                "default_index_pattern": "metrics-*",
                 "default_timefield": "@timestamp",
                 "filter": {
                     "language": "kuery",
@@ -53,7 +53,7 @@
                 "gauge_width": 10,
                 "id": "61ca57f0-469d-11e7-af02-69e470af7417",
                 "ignore_global_filter": 0,
-                "index_pattern": "metric-*",
+                "index_pattern": "metrics-*",
                 "interval": "",
                 "isModelInvalid": false,
                 "series": [

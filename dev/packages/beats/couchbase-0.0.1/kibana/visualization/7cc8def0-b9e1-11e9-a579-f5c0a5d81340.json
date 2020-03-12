@@ -24,14 +24,14 @@
                         "id": "3afe8650-b9e1-11e9-861c-7f7211bffe38"
                     }
                 ],
-                "default_index_pattern": "metric-*",
+                "default_index_pattern": "metrics-*",
                 "default_timefield": "@timestamp",
                 "filter": {
                     "language": "kuery",
                     "query": ""
                 },
                 "id": "24242700-b9e1-11e9-ab98-51a45917a19d",
-                "index_pattern": "metric-*",
+                "index_pattern": "metrics-*",
                 "interval": "auto",
                 "series": [
                     {

@@ -120,7 +120,7 @@
     "id": "77326664-23be-4bf1-a126-6d7e60cfc024",
     "references": [
         {
-            "id": "log-*",
+            "id": "logs-*",
             "name": "kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index",
             "type": "index-pattern"
         },

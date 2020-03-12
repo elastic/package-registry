@@ -41,7 +41,7 @@
                 "drilldown_url": "",
                 "filter": "",
                 "id": "edfceb30-1b18-11e7-b09e-037021c4f8df",
-                "index_pattern": "metric-*",
+                "index_pattern": "metrics-*",
                 "interval": "auto",
                 "series": [
                     {

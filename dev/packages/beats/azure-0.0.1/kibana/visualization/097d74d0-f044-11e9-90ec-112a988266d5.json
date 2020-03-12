@@ -44,7 +44,7 @@
     "id": "097d74d0-f044-11e9-90ec-112a988266d5",
     "references": [
         {
-            "id": "log-*",
+            "id": "logs-*",
             "name": "control_0_index_pattern",
             "type": "index-pattern"
         }

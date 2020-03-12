@@ -74,17 +74,17 @@
     "id": "686bc990-ea92-11e9-90ec-112a988266d5",
     "references": [
         {
-            "id": "metric-*",
+            "id": "metrics-*",
             "name": "control_0_index_pattern",
             "type": "index-pattern"
         },
         {
-            "id": "metric-*",
+            "id": "metrics-*",
             "name": "control_1_index_pattern",
             "type": "index-pattern"
         },
         {
-            "id": "metric-*",
+            "id": "metrics-*",
             "name": "control_2_index_pattern",
             "type": "index-pattern"
         }

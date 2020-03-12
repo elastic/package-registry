@@ -40,7 +40,7 @@
     "id": "Metricbeat-Redis-ecs",
     "references": [
         {
-            "id": "metric-*",
+            "id": "metrics-*",
             "name": "kibanaSavedObjectMeta.searchSourceJSON.index",
             "type": "index-pattern"
         }

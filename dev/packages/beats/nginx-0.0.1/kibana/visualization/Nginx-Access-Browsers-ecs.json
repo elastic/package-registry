@@ -63,7 +63,7 @@
     "id": "Nginx-Access-Browsers-ecs",
     "references": [
         {
-            "id": "log-*",
+            "id": "logs-*",
             "name": "kibanaSavedObjectMeta.searchSourceJSON.index",
             "type": "index-pattern"
         }

@@ -185,7 +185,7 @@
     "id": "6db84660-53e9-11ea-b1b7-7de801e1c297",
     "references": [
         {
-            "id": "log-*",
+            "id": "logs-*",
             "name": "kibanaSavedObjectMeta.searchSourceJSON.index",
             "type": "index-pattern"
         }

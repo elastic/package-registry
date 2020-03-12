@@ -29,11 +29,11 @@
                         "id": "57cc0200-43b5-11e9-84e9-a97a63579915"
                     }
                 ],
-                "default_index_pattern": "metric-*",
+                "default_index_pattern": "metrics-*",
                 "default_timefield": "@timestamp",
                 "drop_last_bucket": 0,
                 "id": "61ca57f0-469d-11e7-af02-69e470af7417",
-                "index_pattern": "metric-*",
+                "index_pattern": "metrics-*",
                 "interval": "5m",
                 "isModelInvalid": false,
                 "series": [

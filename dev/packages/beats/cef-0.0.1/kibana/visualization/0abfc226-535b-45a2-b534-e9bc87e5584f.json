@@ -31,7 +31,7 @@
                     "query": "cef.extensions.categoryDeviceGroup:\"/Firewall\" OR cef.extensions.categoryDeviceGroup:\"/IDS/Network\" OR cef.extensions.categoryDeviceGroup:\"/VPN\" "
                 },
                 "id": "ec53a1d3-213c-4b0f-a074-5005a84cdb83",
-                "index_pattern": "log-*",
+                "index_pattern": "logs-*",
                 "interval": "auto",
                 "series": [
                     {
@@ -53,7 +53,7 @@
                         "override_index_pattern": 1,
                         "point_size": 1,
                         "seperate_axis": 0,
-                        "series_index_pattern": "log-*",
+                        "series_index_pattern": "logs-*",
                         "series_time_field": "@timestamp",
                         "split_mode": "everything",
                         "stacked": "none",
@@ -91,7 +91,7 @@
                         "override_index_pattern": 1,
                         "point_size": 1,
                         "seperate_axis": 0,
-                        "series_index_pattern": "log-*",
+                        "series_index_pattern": "logs-*",
                         "series_time_field": "@timestamp",
                         "split_mode": "everything",
                         "stacked": "none",

@@ -30,7 +30,7 @@
                         "id": "cc6d5070-3e85-11ea-9067-cf383a4ea3b3"
                     }
                 ],
-                "default_index_pattern": "log-*",
+                "default_index_pattern": "logs-*",
                 "default_timefield": "@timestamp",
                 "gauge_color_rules": [
                     {

@@ -47,7 +47,7 @@
                         "id": "69b152e0-5c96-11ea-a0a2-61bf5e1bd67b"
                     }
                 ],
-                "default_index_pattern": "metric-*",
+                "default_index_pattern": "metrics-*",
                 "default_timefield": "@timestamp",
                 "gauge_color_rules": [
                     {

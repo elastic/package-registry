@@ -29,7 +29,7 @@
     "id": "Metricbeat uWSGI status-ecs ECS",
     "references": [
         {
-            "id": "metric-*",
+            "id": "metrics-*",
             "name": "kibanaSavedObjectMeta.searchSourceJSON.index",
             "type": "index-pattern"
         }

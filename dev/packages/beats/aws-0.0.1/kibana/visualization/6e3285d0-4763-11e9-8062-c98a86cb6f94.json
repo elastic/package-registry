@@ -20,7 +20,7 @@
                     {
                         "fieldName": "cloud.region",
                         "id": "1549397251041",
-                        "indexPattern": "metric-*",
+                        "indexPattern": "metrics-*",
                         "label": "region",
                         "options": {
                             "dynamicOptions": true,
@@ -35,7 +35,7 @@
                     {
                         "fieldName": "aws.s3.bucket.name",
                         "id": "1549512142947",
-                        "indexPattern": "metric-*",
+                        "indexPattern": "metrics-*",
                         "label": "s3 bucket name",
                         "options": {
                             "dynamicOptions": true,

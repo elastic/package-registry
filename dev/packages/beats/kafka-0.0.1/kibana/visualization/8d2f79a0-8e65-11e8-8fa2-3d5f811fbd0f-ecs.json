@@ -51,12 +51,12 @@
     "id": "8d2f79a0-8e65-11e8-8fa2-3d5f811fbd0f-ecs",
     "references": [
         {
-            "id": "metric-*",
+            "id": "metrics-*",
             "name": "control_0_index_pattern",
             "type": "index-pattern"
         },
         {
-            "id": "metric-*",
+            "id": "metrics-*",
             "name": "control_1_index_pattern",
             "type": "index-pattern"
         }

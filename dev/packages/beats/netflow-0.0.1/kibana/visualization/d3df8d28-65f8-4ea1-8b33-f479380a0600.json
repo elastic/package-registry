@@ -18,7 +18,7 @@
             "aggs": [],
             "listeners": {},
             "params": {
-                "expression": ".es(index=\"log-*\", metric=\"sum:network.bytes\", split=\"netflow.ingress_interface:10\", kibana=true).scale_interval(1s).fit(mode=scale).if(operator=\"lt\", if=0, then=0).trim(start=2,end=1).label(regex=\"^.* netflow.ingress_interface:(.+) \u003e .*$\", label=\"$1\").lines(width=1, stack=true, fill=1).yaxis(label=\"bytes / sec\", min=0)",
+                "expression": ".es(index=\"logs-*\", metric=\"sum:network.bytes\", split=\"netflow.ingress_interface:10\", kibana=true).scale_interval(1s).fit(mode=scale).if(operator=\"lt\", if=0, then=0).trim(start=2,end=1).label(regex=\"^.* netflow.ingress_interface:(.+) \u003e .*$\", label=\"$1\").lines(width=1, stack=true, fill=1).yaxis(label=\"bytes / sec\", min=0)",
                 "interval": "auto"
             },
             "title": "Ingress Interfaces (bytes) [Filebeat Netflow]",

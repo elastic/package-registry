@@ -44,7 +44,7 @@
     "id": "59defc90-17a5-11ea-8e91-03c7047cbb9d",
     "references": [
         {
-            "id": "metric-*",
+            "id": "metrics-*",
             "name": "control_0_index_pattern",
             "type": "index-pattern"
         }

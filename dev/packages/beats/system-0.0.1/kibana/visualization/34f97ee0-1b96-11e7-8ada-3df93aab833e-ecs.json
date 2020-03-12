@@ -44,7 +44,7 @@
                     "query": "-system.filesystem.mount_point:\\/run* AND -system.filesystem.mount_point:\\/sys* AND -system.filesystem.mount_point:\\/dev* AND -system.filesystem.mount_point:\\/proc* AND -system.filesystem.mount_point:\\/var* AND -system.filesystem.mount_point:\\/boot"
                 },
                 "id": "9f7e48a0-1b95-11e7-8ada-3df93aab833e",
-                "index_pattern": "metric-*",
+                "index_pattern": "metrics-*",
                 "interval": "auto",
                 "series": [
                     {

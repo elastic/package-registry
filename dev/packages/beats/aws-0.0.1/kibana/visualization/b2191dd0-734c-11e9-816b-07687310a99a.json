@@ -24,7 +24,7 @@
                         "id": "94f2ce40-734c-11e9-a683-47ca322fa6f9"
                     }
                 ],
-                "default_index_pattern": "metric-*",
+                "default_index_pattern": "metrics-*",
                 "id": "61ca57f0-469d-11e7-af02-69e470af7417",
                 "index_pattern": "",
                 "interval": "auto",

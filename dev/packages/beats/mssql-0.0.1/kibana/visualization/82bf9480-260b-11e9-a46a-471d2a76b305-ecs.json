@@ -20,7 +20,7 @@
                     {
                         "fieldName": "mssql.database.name",
                         "id": "1549016598264",
-                        "indexPattern": "metric-*",
+                        "indexPattern": "metrics-*",
                         "label": "",
                         "options": {
                             "dynamicOptions": true,

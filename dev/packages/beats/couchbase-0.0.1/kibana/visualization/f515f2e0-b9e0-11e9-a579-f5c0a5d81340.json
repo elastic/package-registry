@@ -24,7 +24,7 @@
                         "id": "c7abd1d0-b9e0-11e9-8604-efdef550e653"
                     }
                 ],
-                "default_index_pattern": "metric-*",
+                "default_index_pattern": "metrics-*",
                 "default_timefield": "@timestamp",
                 "filter": {
                     "language": "kuery",
@@ -39,7 +39,7 @@
                 "gauge_style": "half",
                 "gauge_width": 10,
                 "id": "c34f7c90-b9e0-11e9-ab08-bf43409c5a0d",
-                "index_pattern": "metric-*",
+                "index_pattern": "metrics-*",
                 "interval": "auto",
                 "series": [
                     {
