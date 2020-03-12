@@ -8,14 +8,38 @@ import (
 	"github.com/pkg/errors"
 )
 
-type iconRepository struct{}
+var errIconNotFound = errors.New("icon not found")
+
+type iconRepository struct {
+	icons map[string]string
+}
+
+func newIconRepository(euiDir, kibanaDir string) (*iconRepository, error) {
+	icons, err := populateIconRepository(euiDir, kibanaDir)
+	if err != nil {
+		return nil, errors.Wrapf(err, "populating icon repository failed")
+	}
+	return &iconRepository{icons: icons}, nil
+}
+
+func populateIconRepository(euiDir, kibanaDir string) (map[string]string, error) {
+	// TODO
+	return nil, nil
+}
 
 func (ir *iconRepository) iconForModule(moduleName string) (imageContent, error) {
-	return imageContent{}, nil // TODO
+	source, ok := ir.icons[moduleName]
+	if !ok {
+		return imageContent{}, errIconNotFound
+	}
+	return imageContent{source: source}, nil
 }
 
 func createIcons(iconRepository *iconRepository, moduleName string) ([]imageContent, error) {
 	anIcon, err := iconRepository.iconForModule(moduleName)
+	if err == errIconNotFound {
+		return []imageContent{}, nil
+	}
 	if err != nil {
 		return nil, errors.Wrapf(err, "fetching icon for module failed (moduleName: %s)", moduleName)
 	}

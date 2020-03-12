@@ -52,7 +52,7 @@ func (km *kibanaMigrator) migrateDashboardFile(dashboardFile []byte) ([]byte, er
 	}
 
 	request, err := http.NewRequest("POST",
-		fmt.Sprintf("http://%s/api/kibana/dashboards/import?force=true", km.hostPort),
+		fmt.Sprintf("%s/api/kibana/dashboards/import?force=true", km.hostPort),
 		bytes.NewReader(dashboardFile))
 	if err != nil {
 		return nil, errors.Wrapf(err, "creating POST request failed")

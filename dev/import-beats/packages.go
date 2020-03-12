@@ -68,14 +68,15 @@ func (pc *packageContent) addKibanaContent(kc kibanaContent) {
 }
 
 type packageRepository struct {
-	kibanaMigrator *kibanaMigrator
 	iconRepository *iconRepository
+	kibanaMigrator *kibanaMigrator
 
 	packages map[string]packageContent
 }
 
-func newPackageRepository(kibanaMigrator *kibanaMigrator) *packageRepository {
+func newPackageRepository(iconRepository *iconRepository, kibanaMigrator *kibanaMigrator) *packageRepository {
 	return &packageRepository{
+		iconRepository: iconRepository,
 		kibanaMigrator: kibanaMigrator,
 		packages:       map[string]packageContent{},
 	}
