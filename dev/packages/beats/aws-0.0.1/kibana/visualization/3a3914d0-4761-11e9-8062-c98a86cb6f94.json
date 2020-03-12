@@ -31,7 +31,7 @@
                 ],
                 "drop_last_bucket": 0,
                 "id": "61ca57f0-469d-11e7-af02-69e470af7417",
-                "index_pattern": "metricbeat-*",
+                "index_pattern": "metric-*",
                 "interval": "1d",
                 "series": [
                     {

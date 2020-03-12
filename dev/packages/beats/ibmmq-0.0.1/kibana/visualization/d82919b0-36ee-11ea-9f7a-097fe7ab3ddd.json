@@ -25,7 +25,7 @@
                         "id": "6fa6af70-36ca-11ea-b7bc-e7f346d59677"
                     }
                 ],
-                "default_index_pattern": "metricbeat-*",
+                "default_index_pattern": "metric-*",
                 "default_timefield": "@timestamp",
                 "id": "61ca57f0-469d-11e7-af02-69e470af7417",
                 "index_pattern": "",

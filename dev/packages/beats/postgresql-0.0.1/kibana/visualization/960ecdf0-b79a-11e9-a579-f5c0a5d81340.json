@@ -19,14 +19,14 @@
                 "axis_formatter": "number",
                 "axis_position": "left",
                 "axis_scale": "normal",
-                "default_index_pattern": "metricbeat-*",
+                "default_index_pattern": "metric-*",
                 "default_timefield": "@timestamp",
                 "filter": {
                     "language": "kuery",
                     "query": ""
                 },
                 "id": "6c90db30-b79a-11e9-a8f0-d7983cd3d871",
-                "index_pattern": "metricbeat-*",
+                "index_pattern": "metric-*",
                 "interval": "auto",
                 "isModelInvalid": false,
                 "series": [

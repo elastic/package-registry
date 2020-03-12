@@ -38,7 +38,7 @@
                 "gauge_style": "half",
                 "gauge_width": 10,
                 "id": "94161c6c-4f48-4beb-9d78-f79f29c02a34",
-                "index_pattern": "filebeat-*",
+                "index_pattern": "log-*",
                 "interval": "auto",
                 "series": [
                     {

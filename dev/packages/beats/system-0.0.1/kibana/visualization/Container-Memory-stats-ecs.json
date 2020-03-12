@@ -200,7 +200,7 @@
     "id": "Container-Memory-stats-ecs",
     "references": [
         {
-            "id": "metricbeat-*",
+            "id": "metric-*",
             "name": "kibanaSavedObjectMeta.searchSourceJSON.index",
             "type": "index-pattern"
         }

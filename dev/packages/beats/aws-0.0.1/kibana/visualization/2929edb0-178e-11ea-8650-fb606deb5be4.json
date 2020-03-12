@@ -44,7 +44,7 @@
     "id": "2929edb0-178e-11ea-8650-fb606deb5be4",
     "references": [
         {
-            "id": "metricbeat-*",
+            "id": "metric-*",
             "name": "control_0_index_pattern",
             "type": "index-pattern"
         }

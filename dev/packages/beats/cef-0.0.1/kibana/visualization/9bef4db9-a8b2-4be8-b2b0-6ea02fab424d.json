@@ -30,7 +30,7 @@
                     "query": "cef.extensions.categoryDeviceGroup:\"/Firewall\""
                 },
                 "id": "c39a76e5-f613-41a9-8335-c442747791e0",
-                "index_pattern": "filebeat-*",
+                "index_pattern": "log-*",
                 "interval": "auto",
                 "series": [
                     {

@@ -32,7 +32,7 @@
     "id": "PostgreSQL Query Durations-ecs",
     "references": [
         {
-            "id": "filebeat-*",
+            "id": "log-*",
             "name": "kibanaSavedObjectMeta.searchSourceJSON.index",
             "type": "index-pattern"
         }

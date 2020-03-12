@@ -30,7 +30,7 @@
                         "id": "cc6d5070-3e85-11ea-9067-cf383a4ea3b3"
                     }
                 ],
-                "default_index_pattern": "metricbeat-*",
+                "default_index_pattern": "metric-*",
                 "default_timefield": "@timestamp",
                 "gauge_color_rules": [
                     {
@@ -81,7 +81,7 @@
                         "point_size": 1,
                         "separate_axis": 0,
                         "series_drop_last_bucket": 0,
-                        "series_index_pattern": "filebeat-*",
+                        "series_index_pattern": "log-*",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "source.ip",

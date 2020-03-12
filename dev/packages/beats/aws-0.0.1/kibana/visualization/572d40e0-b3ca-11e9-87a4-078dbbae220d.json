@@ -30,7 +30,7 @@
                         "id": "7db91990-b3c6-11e9-af6e-ef22c5680226"
                     }
                 ],
-                "default_index_pattern": "metricbeat-*",
+                "default_index_pattern": "metric-*",
                 "default_timefield": "@timestamp",
                 "filter": "",
                 "gauge_color_rules": [
@@ -42,7 +42,7 @@
                 "gauge_style": "half",
                 "gauge_width": 10,
                 "id": "35d3cbc0-b3c6-11e9-bf3f-29d51aa3d971",
-                "index_pattern": "metricbeat-*",
+                "index_pattern": "metric-*",
                 "interval": "5m",
                 "isModelInvalid": false,
                 "series": [

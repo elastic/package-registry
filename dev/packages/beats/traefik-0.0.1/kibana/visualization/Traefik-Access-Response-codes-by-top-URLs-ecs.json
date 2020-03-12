@@ -71,7 +71,7 @@
     "id": "Traefik-Access-Response-codes-by-top-URLs-ecs",
     "references": [
         {
-            "id": "filebeat-*",
+            "id": "log-*",
             "name": "kibanaSavedObjectMeta.searchSourceJSON.index",
             "type": "index-pattern"
         }

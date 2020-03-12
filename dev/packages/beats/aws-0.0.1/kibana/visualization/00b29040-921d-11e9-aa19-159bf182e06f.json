@@ -41,7 +41,7 @@
                         "value": 0
                     }
                 ],
-                "default_index_pattern": "metricbeat-*",
+                "default_index_pattern": "metric-*",
                 "default_timefield": "@timestamp",
                 "drilldown_url": "",
                 "filter": "",

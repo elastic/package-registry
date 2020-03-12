@@ -75,8 +75,13 @@ func (km *kibanaMigrator) migrateDashboardFile(dashboardFile []byte) ([]byte, er
 	return saved, nil
 }
 
+
 func prepareDashboardFile(dashboardFile []byte) ([]byte, error) {
 	var documents kibanaDocuments
+
+	// Rename indices (metricbeat, filebeat)
+	dashboardFile = bytes.ReplaceAll(dashboardFile, []byte(`metricbeat-*`), []byte(`metric-*`))
+	dashboardFile = bytes.ReplaceAll(dashboardFile, []byte(`filebeat-*`), []byte(`log-*`))
 
 	err := json.Unmarshal(dashboardFile, &documents)
 	if err != nil {

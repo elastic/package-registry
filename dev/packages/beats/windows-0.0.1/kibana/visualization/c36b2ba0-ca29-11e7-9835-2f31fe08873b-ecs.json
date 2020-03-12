@@ -151,17 +151,17 @@
     "id": "c36b2ba0-ca29-11e7-9835-2f31fe08873b-ecs",
     "references": [
         {
-            "id": "metricbeat-*",
+            "id": "metric-*",
             "name": "kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index",
             "type": "index-pattern"
         },
         {
-            "id": "metricbeat-*",
+            "id": "metric-*",
             "name": "kibanaSavedObjectMeta.searchSourceJSON.filter[1].meta.index",
             "type": "index-pattern"
         },
         {
-            "id": "metricbeat-*",
+            "id": "metric-*",
             "name": "kibanaSavedObjectMeta.searchSourceJSON.filter[2].meta.index",
             "type": "index-pattern"
         },

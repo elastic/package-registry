@@ -24,10 +24,10 @@
                         "id": "3aeae000-f997-11e9-ac67-272468589910"
                     }
                 ],
-                "default_index_pattern": "metricbeat-*",
+                "default_index_pattern": "metric-*",
                 "default_timefield": "@timestamp",
                 "id": "61ca57f0-469d-11e7-af02-69e470af7417",
-                "index_pattern": "metricbeat-*",
+                "index_pattern": "metric-*",
                 "interval": "",
                 "isModelInvalid": false,
                 "series": [

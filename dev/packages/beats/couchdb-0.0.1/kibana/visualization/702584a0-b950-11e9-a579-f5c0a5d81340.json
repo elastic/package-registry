@@ -19,14 +19,14 @@
                 "axis_formatter": "number",
                 "axis_position": "left",
                 "axis_scale": "normal",
-                "default_index_pattern": "metricbeat-*",
+                "default_index_pattern": "metric-*",
                 "default_timefield": "@timestamp",
                 "filter": {
                     "language": "kuery",
                     "query": "couchdb"
                 },
                 "id": "48918790-b950-11e9-84ff-97e538653deb",
-                "index_pattern": "metricbeat-*",
+                "index_pattern": "metric-*",
                 "interval": "auto",
                 "series": [
                     {

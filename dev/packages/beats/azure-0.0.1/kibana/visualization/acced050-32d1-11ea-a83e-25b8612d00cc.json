@@ -74,17 +74,17 @@
     "id": "acced050-32d1-11ea-a83e-25b8612d00cc",
     "references": [
         {
-            "id": "metricbeat-*",
+            "id": "metric-*",
             "name": "control_0_index_pattern",
             "type": "index-pattern"
         },
         {
-            "id": "metricbeat-*",
+            "id": "metric-*",
             "name": "control_1_index_pattern",
             "type": "index-pattern"
         },
         {
-            "id": "metricbeat-*",
+            "id": "metric-*",
             "name": "control_2_index_pattern",
             "type": "index-pattern"
         }

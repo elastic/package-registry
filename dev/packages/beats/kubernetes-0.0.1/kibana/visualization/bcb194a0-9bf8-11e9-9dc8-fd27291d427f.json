@@ -59,12 +59,12 @@
     "id": "bcb194a0-9bf8-11e9-9dc8-fd27291d427f",
     "references": [
         {
-            "id": "metricbeat-*",
+            "id": "metric-*",
             "name": "control_0_index_pattern",
             "type": "index-pattern"
         },
         {
-            "id": "metricbeat-*",
+            "id": "metric-*",
             "name": "control_1_index_pattern",
             "type": "index-pattern"
         }

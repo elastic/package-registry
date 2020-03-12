@@ -30,14 +30,14 @@
                         "id": "f679afa0-28d0-11ea-8789-f72e3366fb25"
                     }
                 ],
-                "default_index_pattern": "filebeat-*",
+                "default_index_pattern": "log-*",
                 "default_timefield": "@timestamp",
                 "filter": {
                     "language": "kuery",
                     "query": ""
                 },
                 "id": "ca2e4c60-28cd-11ea-822d-3ba2c0089081",
-                "index_pattern": "metricbeat-*",
+                "index_pattern": "metric-*",
                 "interval": "5m",
                 "isModelInvalid": false,
                 "series": [

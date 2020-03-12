@@ -26,7 +26,7 @@
                         "value": 0
                     }
                 ],
-                "default_index_pattern": "metricbeat-*",
+                "default_index_pattern": "metric-*",
                 "default_timefield": "@timestamp",
                 "filter": {
                     "language": "kuery",
@@ -41,7 +41,7 @@
                 "gauge_style": "half",
                 "gauge_width": 10,
                 "id": "63159630-baca-11e9-b44b-b5d06880c15a",
-                "index_pattern": "metricbeat-*",
+                "index_pattern": "metric-*",
                 "interval": "auto",
                 "series": [
                     {
