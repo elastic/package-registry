@@ -73,6 +73,8 @@ func sendHeader(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/asciidoc; charset=UTF-8")
 	case ".gz":
 		w.Header().Set("Content-Type", "application/gzip")
+	case ".ico":
+		w.Header().Set("Content-Type", "image/x-icon")
 	case ".jpg":
 	case ".jpeg":
 		w.Header().Set("Content-Type", "image/jpeg")
