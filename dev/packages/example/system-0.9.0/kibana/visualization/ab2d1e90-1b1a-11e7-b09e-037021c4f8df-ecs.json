@@ -19,7 +19,7 @@
                 "axis_formatter": "number",
                 "axis_position": "left",
                 "id": "80a04950-1b19-11e7-b09e-037021c4f8df",
-                "index_pattern": "metricbeat-*",
+                "index_pattern": "metrics-*",
                 "interval": "auto",
                 "series": [
                     {

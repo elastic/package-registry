@@ -3,22 +3,16 @@
         "description": "",
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
-                "filter": [],
-                "highlightAll": true,
-                "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.index",
-                "query": {
-                    "language": "kuery",
-                    "query": "system.auth.ssh.event:Failed OR system.auth.ssh.event:Invalid"
-                }
+                "filter": []
             }
         },
-        "title": "SSH failed login attempts source locations [Filebeat System] ECS",
+        "savedSearchRefName": "search_0",
+        "title": "Access Map [Filebeat Nginx] ECS",
         "uiStateJSON": {
             "mapCenter": [
-                17.602139123350838,
-                69.697265625
-            ],
-            "mapZoom": 2
+                12.039320557540572,
+                -0.17578125
+            ]
         },
         "version": 1,
         "visState": {
@@ -35,8 +29,7 @@
                     "id": "2",
                     "params": {
                         "autoPrecision": true,
-                        "field": "source.geo.location",
-                        "precision": 2
+                        "field": "source.geo.location"
                     },
                     "schema": "segment",
                     "type": "geohash_grid"
@@ -56,7 +49,7 @@
                     15,
                     5
                 ],
-                "mapType": "Shaded Circle Markers",
+                "mapType": "Scaled Circle Markers",
                 "mapZoom": 2,
                 "wms": {
                     "enabled": false,
@@ -71,16 +64,16 @@
                     "url": "https://basemap.nationalmap.gov/arcgis/services/USGSTopo/MapServer/WMSServer"
                 }
             },
-            "title": "SSH failed login attempts source locations ECS",
+            "title": "Nginx Access Map ECS",
             "type": "tile_map"
         }
     },
-    "id": "3cec3eb0-f9d3-11e6-8a3e-2b904044ea1d-ecs",
+    "id": "Nginx-Access-Map-ecs",
     "references": [
         {
-            "id": "logs-*",
-            "name": "kibanaSavedObjectMeta.searchSourceJSON.index",
-            "type": "index-pattern"
+            "id": "Filebeat-Nginx-module-ecs",
+            "name": "search_0",
+            "type": "search"
         }
     ],
     "type": "visualization"

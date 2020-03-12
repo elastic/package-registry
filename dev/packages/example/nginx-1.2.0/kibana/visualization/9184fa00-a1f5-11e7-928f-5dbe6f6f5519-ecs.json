@@ -2,15 +2,9 @@
     "attributes": {
         "description": "",
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": {
-                "filter": [],
-                "query": {
-                    "language": "kuery",
-                    "query": ""
-                }
-            }
+            "searchSourceJSON": {}
         },
-        "title": "Top Processes By CPU [Metricbeat System] ECS",
+        "title": "Top pages [Filebeat Nginx] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -20,16 +14,15 @@
                 "axis_position": "left",
                 "bar_color_rules": [
                     {
-                        "bar_color": "rgba(104,188,0,1)",
-                        "id": "60e11be0-1b18-11e7-b09e-037021c4f8df",
-                        "operator": "gte",
-                        "value": 0
+                        "id": "6252c320-a1f5-11e7-92ba-5d0b8663aece"
                     }
                 ],
-                "drilldown_url": "",
-                "filter": "",
-                "id": "5f5b8d50-1b18-11e7-b09e-037021c4f8df",
-                "index_pattern": "metrics-*",
+                "filter": {
+                    "language": "lucene",
+                    "query": "event.module:nginx AND fileset.name:access"
+                },
+                "id": "61ca57f0-469d-11e7-af02-69e470af7417",
+                "index_pattern": "logs-*",
                 "interval": "auto",
                 "series": [
                     {
@@ -37,22 +30,22 @@
                         "chart_type": "line",
                         "color": "#68BC00",
                         "fill": 0.5,
-                        "formatter": "percent",
-                        "id": "5f5b8d51-1b18-11e7-b09e-037021c4f8df",
+                        "formatter": "number",
+                        "id": "61ca57f1-469d-11e7-af02-69e470af7417",
                         "line_width": 1,
                         "metrics": [
                             {
-                                "field": "system.process.cpu.total.pct",
-                                "id": "5f5b8d52-1b18-11e7-b09e-037021c4f8df",
-                                "type": "avg"
+                                "id": "61ca57f2-469d-11e7-af02-69e470af7417",
+                                "type": "count"
                             }
                         ],
                         "point_size": 1,
                         "seperate_axis": 0,
                         "split_mode": "terms",
                         "stacked": "none",
-                        "terms_field": "process.name",
-                        "terms_order_by": "5f5b8d52-1b18-11e7-b09e-037021c4f8df"
+                        "terms_field": "url.original",
+                        "terms_order_by": "61ca57f2-469d-11e7-af02-69e470af7417",
+                        "value_template": ""
                     }
                 ],
                 "show_grid": 1,
@@ -60,11 +53,11 @@
                 "time_field": "@timestamp",
                 "type": "top_n"
             },
-            "title": "Top Processes By CPU [Metricbeat System] ECS",
+            "title": "Top pages [Filebeat Nginx] ECS",
             "type": "metrics"
         }
     },
-    "id": "e0f001c0-1b18-11e7-b09e-037021c4f8df-ecs",
+    "id": "9184fa00-a1f5-11e7-928f-5dbe6f6f5519-ecs",
     "references": [],
     "type": "visualization"
 }

@@ -91,7 +91,6 @@
         }
     },
     "id": "dcbffe30-f1a4-11e7-a9ef-93c69af7b129-ecs",
-    "type": "visualization",
-    "updated_at": "2018-01-04T23:13:23.859Z",
-    "version": 1
+    "references": [],
+    "type": "visualization"
 }
