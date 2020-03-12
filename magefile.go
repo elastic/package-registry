@@ -60,6 +60,11 @@ func Build() error {
 		return err
 	}
 
+	err = CopyFavicon()
+	if err != nil {
+		return err
+	}
+
 	return sh.Run("go", "build", ".")
 }
 
@@ -72,6 +77,21 @@ func BuildRootFile() error {
 	}
 
 	return writeJsonFile(rootData, publicDir+"/index.json")
+}
+
+// Copy Favicon to public dir
+func CopyFavicon() error {
+
+	favicon, err := ioutil.ReadFile("img/favicon.ico")
+	if err != nil {
+		return err
+	}
+
+	err = ioutil.WriteFile("public/favicon.ico", favicon, 0644)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func writeJsonFile(v interface{}, path string) error {
