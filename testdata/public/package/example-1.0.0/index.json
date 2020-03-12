@@ -79,7 +79,6 @@
       "name": "logs",
       "title": "Logs datasource",
       "description": "Datasource for your log files.",
-      "solution": "",
       "inputs": [
         {
           "type": "foo",

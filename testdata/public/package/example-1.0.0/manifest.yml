@@ -32,4 +32,3 @@ datasources:
     description: Datasource for your log files.
     inputs:
       - type: foo
-
