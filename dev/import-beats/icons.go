@@ -5,10 +5,21 @@
 package main
 
 import (
+	"io/ioutil"
+	"log"
+	"path/filepath"
+	"regexp"
+	"strings"
+
 	"github.com/pkg/errors"
 )
 
-var errIconNotFound = errors.New("icon not found")
+const tutorialsPath = "src/plugins/home/server/tutorials"
+
+var (
+	errIconNotFound = errors.New("icon not found")
+	iconRe          = regexp.MustCompile(`euiIconType: '[^']+'`)
+)
 
 type iconRepository struct {
 	icons map[string]string
@@ -23,6 +34,60 @@ func newIconRepository(euiDir, kibanaDir string) (*iconRepository, error) {
 }
 
 func populateIconRepository(euiDir, kibanaDir string) (map[string]string, error) {
+	log.Println("Populate icon registry")
+
+	iconRefs, err := fetchIconReferencesFromTutorials(kibanaDir)
+	if err != nil {
+		return nil, errors.Wrapf(err, "fetching icon references failed")
+	}
+
+	data, err := collectIconData(iconRefs, euiDir, kibanaDir)
+	if err != nil {
+		return nil, errors.Wrapf(err, "collecting icon data failed")
+	}
+	return data, nil
+}
+
+func fetchIconReferencesFromTutorials(kibanaDir string) (map[string]string, error) {
+	refs := map[string]string{}
+
+	tutorialsPath := filepath.Join(kibanaDir, "src/plugins/home/server/tutorials")
+	tutorialFilePaths, err := filepath.Glob(filepath.Join(tutorialsPath, "*_*", "index.ts"))
+	if err != nil {
+		return nil, errors.Wrapf(err, "globbing tutorial files failed (path: %s)", tutorialsPath)
+	}
+
+	for _, tutorialFilePath := range tutorialFilePaths {
+		log.Printf("Scan tutorial file: %s", tutorialFilePath)
+
+		tutorialFile, err := ioutil.ReadFile(tutorialFilePath)
+		if err != nil {
+			return nil, errors.Wrapf(err, "reading tutorial file failed (path: %s)", tutorialFile)
+		}
+
+		m := iconRe.Find(tutorialFile)
+		if m == nil {
+			log.Printf("\t%s: icon not found", tutorialFilePath)
+			continue
+		}
+
+		s := strings.Split(string(m), `'`)
+
+		// Extracting module name from tutorials path
+		// e.g. ./src/plugins/home/server/tutorials//php_fpm_metrics/index.ts -> php_fpm
+		moduleName := tutorialFilePath[len(tutorialsPath)+1:]
+		moduleName = moduleName[:strings.Index(moduleName, "/")]
+		moduleName = moduleName[:strings.LastIndex(moduleName, "_")]
+		refs[moduleName] = s[1]
+	}
+	return refs, nil
+}
+
+func collectIconData(refs map[string]string, euiDir, kibanaDir string) (map[string]string, error) {
+	for k, v := range refs {
+		log.Println(k, v)
+	}
+	log.Fatal(1)
 	// TODO
 	return nil, nil
 }
