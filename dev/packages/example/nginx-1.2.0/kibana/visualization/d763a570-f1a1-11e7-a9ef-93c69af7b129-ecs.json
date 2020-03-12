@@ -55,7 +55,6 @@
         }
     },
     "id": "d763a570-f1a1-11e7-a9ef-93c69af7b129-ecs",
-    "type": "visualization",
-    "updated_at": "2018-01-04T22:51:46.375Z",
-    "version": 1
+    "references": [],
+    "type": "visualization"
 }

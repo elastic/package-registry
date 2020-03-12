@@ -94,7 +94,6 @@
         }
     },
     "id": "a1d92240-f1a1-11e7-a9ef-93c69af7b129-ecs",
-    "type": "visualization",
-    "updated_at": "2018-01-04T23:07:23.056Z",
-    "version": 2
+    "references": [],
+    "type": "visualization"
 }

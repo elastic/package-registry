@@ -24,7 +24,7 @@
                     }
                 ],
                 "id": "9cdba910-4d60-11e7-9a4c-ed99bbcaa42b",
-                "index_pattern": "metricbeat-*",
+                "index_pattern": "metrics-*",
                 "interval": "auto",
                 "series": [
                     {

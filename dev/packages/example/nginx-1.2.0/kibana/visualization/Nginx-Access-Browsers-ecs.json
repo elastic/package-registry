@@ -4,15 +4,14 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
                 "filter": [],
-                "highlightAll": true,
                 "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.index",
                 "query": {
                     "language": "kuery",
-                    "query": "system.auth.sudo.error:*"
+                    "query": ""
                 }
             }
         },
-        "title": "Sudo errors [Filebeat System] ECS",
+        "title": "Browsers breakdown [Filebeat Nginx] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -28,44 +27,40 @@
                     "enabled": true,
                     "id": "2",
                     "params": {
-                        "extended_bounds": {},
-                        "field": "@timestamp",
-                        "interval": "auto",
-                        "min_doc_count": 1
+                        "field": "user_agent.name",
+                        "order": "desc",
+                        "orderBy": "1",
+                        "size": 5
                     },
                     "schema": "segment",
-                    "type": "date_histogram"
+                    "type": "terms"
                 },
                 {
                     "enabled": true,
                     "id": "3",
                     "params": {
-                        "field": "system.auth.sudo.error",
+                        "field": "user_agent.version",
                         "order": "desc",
                         "orderBy": "1",
                         "size": 5
                     },
-                    "schema": "group",
+                    "schema": "segment",
                     "type": "terms"
                 }
             ],
             "listeners": {},
             "params": {
                 "addLegend": true,
-                "addTimeMarker": false,
                 "addTooltip": true,
-                "defaultYExtents": false,
-                "legendPosition": "right",
-                "mode": "stacked",
-                "scale": "linear",
-                "setYExtents": false,
-                "times": []
+                "isDonut": true,
+                "legendPosition": "bottom",
+                "shareYAxis": true
             },
-            "title": "Sudo errors ECS",
-            "type": "histogram"
+            "title": "Nginx Access Browsers ECS",
+            "type": "pie"
         }
     },
-    "id": "51164310-fa2b-11e6-bbd3-29c986c96e5a-ecs",
+    "id": "Nginx-Access-Browsers-ecs",
     "references": [
         {
             "id": "logs-*",
