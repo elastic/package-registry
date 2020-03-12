@@ -7,15 +7,14 @@ package main
 import (
 	"fmt"
 	"image"
+	_ "image/jpeg"
+	_ "image/png"
 	"io/ioutil"
 	"log"
 	"os"
 	"path"
 	"regexp"
 	"strings"
-
-	_ "image/jpeg"
-	_ "image/png"
 
 	"github.com/pkg/errors"
 
@@ -139,6 +138,8 @@ func extractImageType(imagePath string) (string, error) {
 		return "image/png", nil
 	} else if strings.HasSuffix(imagePath, ".jpg") {
 		return "image/jpg", nil
+	} else if strings.HasSuffix(imagePath, ".svg") {
+		return "image/svg+xml", nil
 	}
 	return "", fmt.Errorf("unknown image type (path: %s)", imagePath)
 }

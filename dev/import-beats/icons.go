@@ -5,8 +5,11 @@
 package main
 
 import (
+	"bufio"
 	"io/ioutil"
 	"log"
+	"os"
+	"path"
 	"path/filepath"
 	"regexp"
 	"strings"
@@ -14,11 +17,19 @@ import (
 	"github.com/pkg/errors"
 )
 
-const tutorialsPath = "src/plugins/home/server/tutorials"
+const (
+	tutorialsPath = "src/plugins/home/server/tutorials"
+	kibanaLogosPath = "src/legacy/core_plugins/kibana/public/home/tutorial_resources/logos"
+)
 
 var (
 	errIconNotFound = errors.New("icon not found")
 	iconRe          = regexp.MustCompile(`euiIconType: '[^']+'`)
+
+	targetModuleNames = map[string]string{
+		"gcp": "googlecloud",
+		"app_search": "appsearch",
+	}
 )
 
 type iconRepository struct {
@@ -36,22 +47,26 @@ func newIconRepository(euiDir, kibanaDir string) (*iconRepository, error) {
 func populateIconRepository(euiDir, kibanaDir string) (map[string]string, error) {
 	log.Println("Populate icon registry")
 
-	iconRefs, err := fetchIconReferencesFromTutorials(kibanaDir)
+	kibanaIconRefs, err := retrieveIconPathFromTutorials(kibanaDir)
 	if err != nil {
-		return nil, errors.Wrapf(err, "fetching icon references failed")
+		return nil, errors.Wrapf(err, "retrieving icon references failed")
 	}
 
-	data, err := collectIconData(iconRefs, euiDir, kibanaDir)
+	euiRefs, err := retrieveIconPathFromEUI(euiDir)
 	if err != nil {
 		return nil, errors.Wrapf(err, "collecting icon data failed")
 	}
-	return data, nil
+
+	refs := map[string]string{}
+	for k, v := range kibanaIconRefs { refs[k] = v }
+	for k, v := range euiRefs { refs[k] = v }
+	return refs, nil
 }
 
-func fetchIconReferencesFromTutorials(kibanaDir string) (map[string]string, error) {
+func retrieveIconPathFromTutorials(kibanaDir string) (map[string]string, error) {
 	refs := map[string]string{}
 
-	tutorialsPath := filepath.Join(kibanaDir, "src/plugins/home/server/tutorials")
+	tutorialsPath := filepath.Join(kibanaDir, tutorialsPath)
 	tutorialFilePaths, err := filepath.Glob(filepath.Join(tutorialsPath, "*_*", "index.ts"))
 	if err != nil {
 		return nil, errors.Wrapf(err, "globbing tutorial files failed (path: %s)", tutorialsPath)
@@ -72,24 +87,58 @@ func fetchIconReferencesFromTutorials(kibanaDir string) (map[string]string, erro
 		}
 
 		s := strings.Split(string(m), `'`)
+		val := s[1]
 
 		// Extracting module name from tutorials path
 		// e.g. ./src/plugins/home/server/tutorials//php_fpm_metrics/index.ts -> php_fpm
 		moduleName := tutorialFilePath[len(tutorialsPath)+1:]
 		moduleName = moduleName[:strings.Index(moduleName, "/")]
 		moduleName = moduleName[:strings.LastIndex(moduleName, "_")]
-		refs[moduleName] = s[1]
+
+		if val[0] == '/' {
+			iconFileName := val[strings.LastIndex(val, "/") + 1:]
+			val = path.Join(kibanaDir, kibanaLogosPath, iconFileName)
+			refs[toTargetModuleName(moduleName)] = val
+		}
 	}
 	return refs, nil
 }
 
-func collectIconData(refs map[string]string, euiDir, kibanaDir string) (map[string]string, error) {
-	for k, v := range refs {
-		log.Println(k, v)
+func retrieveIconPathFromEUI(euiDir string) (map[string]string, error) {
+	refs := map[string]string{}
+
+	iconMapPath := filepath.Join(euiDir, "src/components/icon/icon.tsx")
+	iconMapFile, err := os.Open(iconMapPath)
+	if err != nil {
+		return nil, errors.Wrapf(err, "opening icon map file failed (path: %s)", iconMapPath)
 	}
-	log.Fatal(1)
-	// TODO
-	return nil, nil
+
+	scanner := bufio.NewScanner(iconMapFile)
+	var mapFound bool
+	for scanner.Scan() {
+		line := scanner.Text()
+		if mapFound {
+			line = strings.TrimLeft(line, " ")
+			if strings.HasPrefix(line, "logo") {
+				s := strings.Split(line, `'`)
+				fileName := s[1]
+				fileNameWithExt := fileName + ".svg"
+				filePath := filepath.Join(euiDir, "src/components/icon/assets", fileNameWithExt)
+				moduleName := fileName[strings.Index(fileName, "_") + 1:]
+				refs[toTargetModuleName(moduleName)] = filePath
+			}
+		} else if strings.HasPrefix(line, `const typeToPathMap = {`) {
+			mapFound = true
+		}
+	}
+	return refs, nil
+}
+
+func toTargetModuleName(moduleName string) string {
+	if v, ok := targetModuleNames[moduleName]; ok {
+		return v
+	}
+	return moduleName
 }
 
 func (ir *iconRepository) iconForModule(moduleName string) (imageContent, error) {
