@@ -31,9 +31,9 @@ var (
 	configPath       = "config.yml"
 
 	// Cache times for the different endpoints
-	searchCacheTime     = strconv.Itoa(60 * 60)      // 1 hour
-	categoriesCacheTime = strconv.Itoa(60 * 60)      // 1 hour
-	catchAllCacheTime   = strconv.Itoa(24 * 60 * 60) // 24 hour
+	searchCacheTime     = strconv.Itoa(10 * 60) // 10 min
+	categoriesCacheTime = strconv.Itoa(10 * 60) // 10 min
+	catchAllCacheTime   = strconv.Itoa(10 * 60) // 10 min
 )
 
 func init() {
