@@ -1,15 +1,17 @@
 title: Log Dataset
 
 type: logs
-ingest_pipeline: default
 
 default: true
+id: generic
 
 streams:
   - input: logs
+    title: Collect log files
     vars:
       - name: paths
         required: true
+        title: Log file path
         description: Path to log files to be collected
         type: text
         multi: true
