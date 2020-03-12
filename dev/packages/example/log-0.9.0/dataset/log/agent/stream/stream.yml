@@ -4,4 +4,4 @@ paths:
   - "{{this}}"
 {{/each}}
 
-dataset: generic
+dataset: {{dataset}}
