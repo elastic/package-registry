@@ -11,20 +11,38 @@ import (
 	"github.com/pkg/errors"
 )
 
-func main() {
+type importerOptions struct {
 	// Beats repository directory
-	var beatsDir string
-	// Target public directory where the generated packages should end up in
-	var outputDir string
-	// Kibana host and port
-	var kibanaHostPort string
+	beatsDir string
 
-	flag.StringVar(&beatsDir, "beatsDir", "../beats", "Path to the beats repository")
-	flag.StringVar(&outputDir, "outputDir", "dev/packages/beats", "Path to the output directory")
-	flag.StringVar(&kibanaHostPort, "kibanaHostPort", "localhost:5601", "Kibana host and port")
+	// Kibana host and port
+	kibanaHostPort string
+	// Kibana repository directory
+	kibanaDir string
+
+	// Elastic UI Framework directory
+	euiDir string
+
+	// Target public directory where the generated packages should end up in
+	outputDir string
+}
+
+func (io *importerOptions) validate() error {
+
+}
+
+func main() {
+	var options importerOptions
+
+	flag.StringVar(&options.beatsDir, "beatsDir", "../beats", "Path to the beats repository")
+	flag.StringVar(&options.kibanaDir, "kibanaDir", "../kibana", "Path to the kibana repository")
+	flag.StringVar(&options.kibanaHostPort, "kibanaHostPort", "localhost:5601", "Kibana host and port")
+	flag.StringVar(&options.euiDir, "euiDir", "../eui", "Path to the Elastic UI framework repository")
+	flag.StringVar(&options.outputDir, "outputDir", "dev/packages/beats", "Path to the output directory")
 	flag.Parse()
 
 	if beatsDir == "" || outputDir == "" || kibanaHostPort == "" {
+		flag.Usage()
 		log.Fatal("beatsDir, outputDir and kibanaHostPort must be set")
 	}
 
