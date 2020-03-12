@@ -72,7 +72,7 @@ type Version struct {
 }
 
 type Image struct {
-	Src   string `config:"src" json:"src,omitempty"`
+	Src   string `config:"src" json:"src" validate:"required"`
 	Title string `config:"title" json:"title,omitempty"`
 	Size  string `config:"size" json:"size,omitempty"`
 	Type  string `config:"type" json:"type,omitempty"`
