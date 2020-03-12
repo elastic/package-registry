@@ -128,11 +128,21 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, package
 		}
 		aPackage.images = append(aPackage.images, images...)
 
-		icons, err := createIcons(r.iconRepository, moduleName)
-		if err != nil {
-			return err
+		// img/icons
+		// The condition prevents from adding an icon multiple times (e.g. for metricbeat and filebeat).
+		if len(manifest.Icons) == 0 {
+			icons, err := createIcons(r.iconRepository, moduleName)
+			if err != nil {
+				return err
+			}
+			aPackage.images = append(aPackage.images, icons...)
+
+			manifestIcons, err := createManifestImages(icons)
+			if err != nil {
+				return err
+			}
+			manifest.Icons = append(manifest.Icons, manifestIcons...)
 		}
-		aPackage.images = append(aPackage.images, icons...)
 
 		// img/screenshots
 		screenshots, err := createManifestImages(images)
@@ -140,13 +150,6 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, package
 			return err
 		}
 		manifest.Screenshots = append(manifest.Screenshots, screenshots...)
-
-		// img/icons
-		manifestIcons, err := createManifestImages(icons)
-		if err != nil {
-			return err
-		}
-		manifest.Icons = append(manifest.Icons, manifestIcons...)
 
 		// kibana
 		kibana, err := createKibanaContent(r.kibanaMigrator, modulePath)

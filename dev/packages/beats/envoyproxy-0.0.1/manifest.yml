@@ -16,3 +16,8 @@ screenshots:
   title: Kibana Envoyproxy
   size: 3340x1882
   type: image/jpg
+icons:
+- src: img/envoyproxy.svg
+  title: Envoyproxy
+  size: 300x300
+  type: image/svg+xml

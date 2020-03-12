@@ -10,3 +10,8 @@ categories:
 requirement:
   kibana:
     versions: ""
+icons:
+- src: img/logo_etcd.svg
+  title: Logo Etcd
+  size: 32x32
+  type: image/svg+xml

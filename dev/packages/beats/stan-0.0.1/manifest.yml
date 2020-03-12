@@ -15,3 +15,8 @@ screenshots:
   title: Metricbeat Stan Overview
   size: 1829x447
   type: image/png
+icons:
+- src: img/stan.svg
+  title: Stan
+  size: 32x32
+  type: image/svg+xml

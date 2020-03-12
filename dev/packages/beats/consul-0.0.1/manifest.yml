@@ -15,3 +15,8 @@ screenshots:
   title: Metricbeat Consul
   size: 3840x2016
   type: image/png
+icons:
+- src: img/consul.svg
+  title: Consul
+  size: 79x113
+  type: image/svg+xml

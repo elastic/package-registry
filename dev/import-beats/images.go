@@ -125,8 +125,14 @@ func readImageSize(imagePath string) (string, error) {
 	if err != nil {
 		return "", errors.Wrapf(err, "opening image failed (path: %s)", imagePath)
 	}
+	defer f.Close()
 
-	img, _, err := image.DecodeConfig(f)
+	var img image.Config
+	if strings.HasSuffix(imagePath, ".svg") {
+		img, err = SvgDecodeConfig(f)
+	} else {
+		img, _, err = image.DecodeConfig(f)
+	}
 	if err != nil {
 		return "", errors.Wrapf(err, "opening image failed (path: %s)", imagePath)
 	}

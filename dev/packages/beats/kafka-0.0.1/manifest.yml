@@ -20,3 +20,8 @@ screenshots:
   title: Metricbeat Kafka Dashboard
   size: 1726x711
   type: image/png
+icons:
+- src: img/logo_kafka.svg
+  title: Logo Kafka
+  size: 32x32
+  type: image/svg+xml

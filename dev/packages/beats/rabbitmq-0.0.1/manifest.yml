@@ -11,3 +11,8 @@ categories:
 requirement:
   kibana:
     versions: ""
+icons:
+- src: img/logo_rabbitmq.svg
+  title: Logo Rabbitmq
+  size: 32x32
+  type: image/svg+xml

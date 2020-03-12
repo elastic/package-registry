@@ -26,9 +26,12 @@ var (
 	errIconNotFound = errors.New("icon not found")
 	iconRe          = regexp.MustCompile(`euiIconType: '[^']+'`)
 
-	targetModuleNames = map[string]string{
-		"gcp": "googlecloud",
-		"app_search": "appsearch",
+	aliasedModuleNames = map[string]string {
+		"redisenterprise": "redis",
+		"php_fpm": "php",
+		"postgresql": "postgres",
+		"appsearch": "app_search",
+		"googlecloud": "gcp",
 	}
 )
 
@@ -98,7 +101,7 @@ func retrieveIconPathFromTutorials(kibanaDir string) (map[string]string, error) 
 		if val[0] == '/' {
 			iconFileName := val[strings.LastIndex(val, "/") + 1:]
 			val = path.Join(kibanaDir, kibanaLogosPath, iconFileName)
-			refs[toTargetModuleName(moduleName)] = val
+			refs[moduleName] = val
 		}
 	}
 	return refs, nil
@@ -125,7 +128,7 @@ func retrieveIconPathFromEUI(euiDir string) (map[string]string, error) {
 				fileNameWithExt := fileName + ".svg"
 				filePath := filepath.Join(euiDir, "src/components/icon/assets", fileNameWithExt)
 				moduleName := fileName[strings.Index(fileName, "_") + 1:]
-				refs[toTargetModuleName(moduleName)] = filePath
+				refs[moduleName] = filePath
 			}
 		} else if strings.HasPrefix(line, `const typeToPathMap = {`) {
 			mapFound = true
@@ -134,24 +137,25 @@ func retrieveIconPathFromEUI(euiDir string) (map[string]string, error) {
 	return refs, nil
 }
 
-func toTargetModuleName(moduleName string) string {
-	if v, ok := targetModuleNames[moduleName]; ok {
-		return v
-	}
-	return moduleName
-}
-
 func (ir *iconRepository) iconForModule(moduleName string) (imageContent, error) {
-	source, ok := ir.icons[moduleName]
+	source, ok := ir.icons[aliasModuleName(moduleName)]
 	if !ok {
 		return imageContent{}, errIconNotFound
 	}
 	return imageContent{source: source}, nil
 }
 
+func aliasModuleName(moduleName string) string {
+	if v, ok := aliasedModuleNames[moduleName]; ok {
+		return v
+	}
+	return moduleName
+}
+
 func createIcons(iconRepository *iconRepository, moduleName string) ([]imageContent, error) {
 	anIcon, err := iconRepository.iconForModule(moduleName)
 	if err == errIconNotFound {
+		log.Printf("\t%s: icon not found", moduleName)
 		return []imageContent{}, nil
 	}
 	if err != nil {

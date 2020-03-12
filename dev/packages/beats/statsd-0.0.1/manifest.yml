@@ -10,3 +10,8 @@ categories:
 requirement:
   kibana:
     versions: ""
+icons:
+- src: img/statsd.svg
+  title: Statsd
+  size: 266x266
+  type: image/svg+xml

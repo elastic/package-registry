@@ -16,3 +16,8 @@ screenshots:
   title: Kibana Haproxy Overview
   size: 1725x780
   type: image/png
+icons:
+- src: img/logo_haproxy.svg
+  title: Logo Haproxy
+  size: 32x32
+  type: image/svg+xml
