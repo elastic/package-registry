@@ -21,12 +21,15 @@ datasources:
     solution: endpoint
     inputs:
       - type: metrics
-        description: Placeholder for metrics
       - type: events
-        description: Placeholder for events
 
 requirement:
   elasticsearch:
     versions: ">7.4.0"
   kibana:
     versions: ">7.4.0"
+
+icons:
+  - src: "/img/logo-endpoint-64-color.svg"
+    size: "16x16"
+    type: "image/svg+xml"

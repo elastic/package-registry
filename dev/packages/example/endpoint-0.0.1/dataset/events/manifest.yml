@@ -10,4 +10,4 @@ default: true
 streams:
   - input: events
     title: Endpoint events
-    description: Collecting Endpoint events
+    description: Collect Endpoint events
