@@ -20,3 +20,8 @@ screenshots:
   title: Metricbeat Nats Dashboard
   size: 1853x877
   type: image/png
+icons:
+- src: img/nats.svg
+  title: Nats
+  size: 32x32
+  type: image/svg+xml

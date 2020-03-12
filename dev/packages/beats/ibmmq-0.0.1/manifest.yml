@@ -28,3 +28,8 @@ screenshots:
   title: Metricbeat Ibmmq Subscriptions
   size: 3360x2368
   type: image/png
+icons:
+- src: img/ibmmq.svg
+  title: Ibmmq
+  size: 32x32
+  type: image/svg+xml

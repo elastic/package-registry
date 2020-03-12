@@ -20,7 +20,7 @@ func loadModuleFields(modulePath string) ([]byte, error) {
 	moduleFieldsPath := filepath.Join(modulePath, "_meta", "fields.yml")
 	moduleFieldsFile, err := os.Open(moduleFieldsPath)
 	if err != nil {
-		return nil, errors.Wrapf(err, "openning module fields file failed (path: %s)", moduleFieldsPath)
+		return nil, errors.Wrapf(err, "opening module fields file failed (path: %s)", moduleFieldsPath)
 	}
 
 	var buffer bytes.Buffer

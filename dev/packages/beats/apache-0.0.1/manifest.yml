@@ -20,3 +20,8 @@ screenshots:
   title: Apache Httpd Server Status
   size: 1919x1079
   type: image/png
+icons:
+- src: img/logo_apache.svg
+  title: Logo Apache
+  size: 32x32
+  type: image/svg+xml

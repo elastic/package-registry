@@ -112,3 +112,8 @@ screenshots:
   title: Metricbeat Aws Usage Overview
   size: 2238x2438
   type: image/png
+icons:
+- src: img/logo_aws.svg
+  title: Logo Aws
+  size: 32x32
+  type: image/svg+xml

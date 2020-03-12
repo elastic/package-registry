@@ -15,3 +15,8 @@ screenshots:
   title: Metricbeat Couchdb Overview
   size: 4986x2672
   type: image/png
+icons:
+- src: img/couchdb.svg
+  title: Couchdb
+  size: 289x293
+  type: image/svg+xml

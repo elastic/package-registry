@@ -20,3 +20,8 @@ screenshots:
   title: Metricbeat Nginx
   size: 2560x2100
   type: image/png
+icons:
+- src: img/logo_nginx.svg
+  title: Logo Nginx
+  size: 32x32
+  type: image/svg+xml

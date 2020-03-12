@@ -15,3 +15,8 @@ screenshots:
   title: Metricbeat Aerospike Overview
   size: 4988x2558
   type: image/png
+icons:
+- src: img/logo_aerospike.svg
+  title: Logo Aerospike
+  size: 32x32
+  type: image/svg+xml

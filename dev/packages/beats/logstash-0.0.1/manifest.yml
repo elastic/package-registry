@@ -20,3 +20,8 @@ screenshots:
   title: Kibana Logstash Slowlog
   size: 1265x1341
   type: image/png
+icons:
+- src: img/logo_logstash.svg
+  title: Logo Logstash
+  size: 32x32
+  type: image/svg+xml

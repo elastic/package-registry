@@ -7,15 +7,14 @@ package main
 import (
 	"fmt"
 	"image"
+	_ "image/jpeg"
+	_ "image/png"
 	"io/ioutil"
 	"log"
 	"os"
 	"path"
 	"regexp"
 	"strings"
-
-	_ "image/jpeg"
-	_ "image/png"
 
 	"github.com/pkg/errors"
 
@@ -90,7 +89,7 @@ func extractImages(beatDocsPath string, docsFile []byte) []imageContent {
 	return contents
 }
 
-func createScreenshots(images []imageContent) ([]util.Image, error) {
+func createManifestImages(images []imageContent) ([]util.Image, error) {
 	var imgs []util.Image
 	for _, image := range images {
 		i := strings.LastIndex(image.source, "/")
@@ -126,8 +125,14 @@ func readImageSize(imagePath string) (string, error) {
 	if err != nil {
 		return "", errors.Wrapf(err, "opening image failed (path: %s)", imagePath)
 	}
+	defer f.Close()
 
-	img, _, err := image.DecodeConfig(f)
+	var img image.Config
+	if strings.HasSuffix(imagePath, ".svg") {
+		img, err = SvgDecodeConfig(f)
+	} else {
+		img, _, err = image.DecodeConfig(f)
+	}
 	if err != nil {
 		return "", errors.Wrapf(err, "opening image failed (path: %s)", imagePath)
 	}
@@ -139,6 +144,8 @@ func extractImageType(imagePath string) (string, error) {
 		return "image/png", nil
 	} else if strings.HasSuffix(imagePath, ".jpg") {
 		return "image/jpg", nil
+	} else if strings.HasSuffix(imagePath, ".svg") {
+		return "image/svg+xml", nil
 	}
 	return "", fmt.Errorf("unknown image type (path: %s)", imagePath)
 }

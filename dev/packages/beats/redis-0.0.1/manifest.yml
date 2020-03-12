@@ -20,3 +20,8 @@ screenshots:
   title: Metricbeat Redis Key Dashboard
   size: 1855x949
   type: image/png
+icons:
+- src: img/logo_redis.svg
+  title: Logo Redis
+  size: 32x32
+  type: image/svg+xml

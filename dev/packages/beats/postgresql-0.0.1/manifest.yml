@@ -24,3 +24,8 @@ screenshots:
   title: Metricbeat Postgresql Overview
   size: 5004x2672
   type: image/png
+icons:
+- src: img/logo_postgres.svg
+  title: Logo Postgres
+  size: 32x32
+  type: image/svg+xml

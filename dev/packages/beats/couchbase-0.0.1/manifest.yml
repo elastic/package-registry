@@ -15,3 +15,8 @@ screenshots:
   title: Metricbeat Couchbase Overview
   size: 4964x2678
   type: image/png
+icons:
+- src: img/logo_couchbase.svg
+  title: Logo Couchbase
+  size: 32x32
+  type: image/svg+xml

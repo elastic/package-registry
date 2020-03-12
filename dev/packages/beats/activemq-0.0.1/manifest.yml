@@ -32,3 +32,8 @@ screenshots:
   title: Metricbeat Activemq Topics Overview
   size: 2560x3712
   type: image/png
+icons:
+- src: img/logo_activemq.svg
+  title: Logo Activemq
+  size: 32x32
+  type: image/svg+xml

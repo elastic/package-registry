@@ -68,12 +68,15 @@ func (pc *packageContent) addKibanaContent(kc kibanaContent) {
 }
 
 type packageRepository struct {
+	iconRepository *iconRepository
 	kibanaMigrator *kibanaMigrator
-	packages       map[string]packageContent
+
+	packages map[string]packageContent
 }
 
-func newPackageRepository(kibanaMigrator *kibanaMigrator) *packageRepository {
+func newPackageRepository(iconRepository *iconRepository, kibanaMigrator *kibanaMigrator) *packageRepository {
 	return &packageRepository{
+		iconRepository: iconRepository,
 		kibanaMigrator: kibanaMigrator,
 		packages:       map[string]packageContent{},
 	}
@@ -123,10 +126,26 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, package
 		if err != nil {
 			return err
 		}
+		aPackage.images = append(aPackage.images, images...)
+
+		// img/icons
+		// The condition prevents from adding an icon multiple times (e.g. for metricbeat and filebeat).
+		if len(manifest.Icons) == 0 {
+			icons, err := createIcons(r.iconRepository, moduleName)
+			if err != nil {
+				return err
+			}
+			aPackage.images = append(aPackage.images, icons...)
+
+			manifestIcons, err := createManifestImages(icons)
+			if err != nil {
+				return err
+			}
+			manifest.Icons = append(manifest.Icons, manifestIcons...)
+		}
 
 		// img/screenshots
-		aPackage.images = append(aPackage.images, images...)
-		screenshots, err := createScreenshots(images)
+		screenshots, err := createManifestImages(images)
 		if err != nil {
 			return err
 		}

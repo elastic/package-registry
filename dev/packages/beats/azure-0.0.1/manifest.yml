@@ -32,3 +32,8 @@ screenshots:
   title: Metricbeat Azure Storage Overview
   size: 5008x2662
   type: image/png
+icons:
+- src: img/logo_azure.svg
+  title: Logo Azure
+  size: 32x32
+  type: image/svg+xml

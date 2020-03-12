@@ -20,3 +20,8 @@ screenshots:
   title: Metricbeat Mysql
   size: 2562x2540
   type: image/png
+icons:
+- src: img/logo_mysql.svg
+  title: Logo Mysql
+  size: 32x32
+  type: image/svg+xml

@@ -23,3 +23,8 @@ screenshots:
   title: Metricbeat Kubernetes Proxy
   size: 1854x920
   type: image/png
+icons:
+- src: img/logo_kubernetes.svg
+  title: Logo Kubernetes
+  size: 32x32
+  type: image/svg+xml
