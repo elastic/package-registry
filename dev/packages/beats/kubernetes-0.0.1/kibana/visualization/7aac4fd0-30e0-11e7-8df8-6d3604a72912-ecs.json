@@ -23,7 +23,7 @@
                     "query": "event.module:kubernetes AND metricset.name:state_deployment"
                 },
                 "id": "117fadf0-30df-11e7-8df8-6d3604a72912",
-                "index_pattern": "metricbeat-*",
+                "index_pattern": "metrics-*",
                 "interval": "auto",
                 "series": [
                     {

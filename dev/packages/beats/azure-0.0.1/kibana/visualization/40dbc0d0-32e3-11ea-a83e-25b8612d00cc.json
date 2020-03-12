@@ -39,7 +39,7 @@
                         "id": "28142cf0-32e2-11ea-867b-37070aefa392"
                     }
                 ],
-                "default_index_pattern": "metricbeat-*",
+                "default_index_pattern": "metrics-*",
                 "default_timefield": "@timestamp",
                 "drop_last_bucket": 0,
                 "filter": {
@@ -55,7 +55,7 @@
                 "gauge_style": "circle",
                 "gauge_width": 10,
                 "id": "0e91b810-32e2-11ea-a93d-dd20c62559b3",
-                "index_pattern": "metricbeat-*",
+                "index_pattern": "metrics-*",
                 "interval": "5m",
                 "isModelInvalid": false,
                 "series": [

@@ -19,7 +19,7 @@
                 "axis_formatter": "number",
                 "axis_position": "left",
                 "axis_scale": "normal",
-                "default_index_pattern": "metricbeat-*",
+                "default_index_pattern": "metrics-*",
                 "default_timefield": "@timestamp",
                 "filter": {
                     "language": "kuery",
@@ -43,7 +43,7 @@
                 "gauge_style": "half",
                 "gauge_width": 10,
                 "id": "e17a9bc0-b46b-11e9-9a02-5de45d117640",
-                "index_pattern": "metricbeat-*",
+                "index_pattern": "metrics-*",
                 "interval": "auto",
                 "series": [
                     {

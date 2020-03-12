@@ -17,6 +17,8 @@ datasources:
     description: Datasource for your log files.
     inputs:
       - type: logs
+        description: Collect your log files
+        title: Customer log file
 
 icons:
   - src: "/img/icon.svg"

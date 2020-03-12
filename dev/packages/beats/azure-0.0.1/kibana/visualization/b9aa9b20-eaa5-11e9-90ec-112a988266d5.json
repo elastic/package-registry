@@ -20,14 +20,14 @@
                 "axis_min": 0,
                 "axis_position": "left",
                 "axis_scale": "normal",
-                "default_index_pattern": "metricbeat-*",
+                "default_index_pattern": "metrics-*",
                 "default_timefield": "@timestamp",
                 "filter": {
                     "language": "kuery",
                     "query": "azure.resource.type : \"Microsoft.Compute/virtualMachines\" "
                 },
                 "id": "6d6575a0-eaa5-11e9-84ad-5919a47b8f34",
-                "index_pattern": "metricbeat-*",
+                "index_pattern": "metrics-*",
                 "interval": "\u003e=5m",
                 "isModelInvalid": false,
                 "series": [

@@ -44,7 +44,7 @@
     "id": "247e2990-4699-11ea-ad63-791a5dc86f10",
     "references": [
         {
-            "id": "filebeat-*",
+            "id": "logs-*",
             "name": "control_0_index_pattern",
             "type": "index-pattern"
         }
