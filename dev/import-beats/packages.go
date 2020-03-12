@@ -42,8 +42,7 @@ func newPackageContent(name string) packageContent {
 		},
 		datasets: map[string]datasetContent{},
 		kibana: kibanaContent{
-			dashboardFiles:     map[string][]byte{},
-			visualizationFiles: map[string][]byte{},
+			files: map[string]map[string][]byte{},
 		},
 	}
 }
@@ -55,15 +54,15 @@ func (pc *packageContent) addDatasets(ds map[string]datasetContent) {
 }
 
 func (pc *packageContent) addKibanaContent(kc kibanaContent) {
-	if kc.dashboardFiles != nil {
-		for k, v := range kc.dashboardFiles {
-			pc.kibana.dashboardFiles[k] = v
-		}
-	}
+	if kc.files != nil {
+		for objectType, objects := range kc.files {
+			if _, ok := pc.kibana.files[objectType]; !ok {
+				pc.kibana.files[objectType] = map[string][]byte{}
+			}
 
-	if kc.visualizationFiles != nil {
-		for k, v := range kc.visualizationFiles {
-			pc.kibana.visualizationFiles[k] = v
+			for k, v := range objects {
+				pc.kibana.files[objectType][k] = v
+			}
 		}
 	}
 }
@@ -207,44 +206,25 @@ func (r *packageRepository) save(outputDir string) error {
 		}
 
 		// kibana
-		kibanaPath := filepath.Join(packagePath, "kibana")
+		if len(content.kibana.files) > 0 {
+			kibanaPath := filepath.Join(packagePath, "kibana")
 
-		// kibana/dashboard
-		if len(content.kibana.dashboardFiles) > 0 {
-			dashboardPath := filepath.Join(kibanaPath, "dashboard")
-			err := os.MkdirAll(dashboardPath, 0755)
-			if err != nil {
-				return errors.Wrapf(err, "cannot make directory for dashboard files: '%s'", dashboardPath)
-			}
+			for objectType, objects := range content.kibana.files {
+				resourcePath := filepath.Join(kibanaPath, objectType)
 
-			for fileName, body := range content.kibana.dashboardFiles {
-				dashboardFilePath := filepath.Join(dashboardPath, fileName)
-
-				log.Printf("\tcreate dashboard file: %s", dashboardFilePath)
-				err = ioutil.WriteFile(dashboardFilePath, body, 0644)
+				err := os.MkdirAll(resourcePath, 0755)
 				if err != nil {
-					return errors.Wrapf(err, "writing dashboard file failed (path: %s)", dashboardFilePath)
+					return errors.Wrapf(err, "cannot make directory for dashboard files: '%s'", resourcePath)
 				}
-			}
-		}
 
-		// kibana/visualization
-		if len(content.kibana.visualizationFiles) > 0 {
-			visualizationPath := filepath.Join(kibanaPath, "visualization")
-			err := os.MkdirAll(visualizationPath, 0755)
-			if err != nil {
-				return errors.Wrapf(err, "cannot make directory for visualization files: '%s'",
-					visualizationPath)
-			}
+				for fileName, body := range objects {
+					resourceFilePath := filepath.Join(resourcePath, fileName)
 
-			for fileName, body := range content.kibana.visualizationFiles {
-				visualizationFilePath := filepath.Join(visualizationPath, fileName)
-
-				log.Printf("\tcreate visualization file: %s", visualizationFilePath)
-				err = ioutil.WriteFile(visualizationFilePath, body, 0644)
-				if err != nil {
-					return errors.Wrapf(err, "writing visualization file failed (path: %s)",
-						visualizationFilePath)
+					log.Printf("\tcreate resouce file: %s", resourceFilePath)
+					err = ioutil.WriteFile(resourceFilePath, body, 0644)
+					if err != nil {
+						return errors.Wrapf(err, "writing resource file failed (path: %s)", resourceFilePath)
+					}
 				}
 			}
 		}

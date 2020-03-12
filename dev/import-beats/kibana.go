@@ -28,8 +28,7 @@ var (
 )
 
 type kibanaContent struct {
-	dashboardFiles     map[string][]byte
-	visualizationFiles map[string][]byte
+	files map[string]map[string][]byte
 }
 
 type kibanaMigrator struct {
@@ -134,8 +133,7 @@ func createKibanaContent(kibanaMigrator *kibanaMigrator, modulePath string) (kib
 	}
 
 	kibana := kibanaContent{
-		dashboardFiles:     map[string][]byte{},
-		visualizationFiles: map[string][]byte{},
+		files: map[string]map[string][]byte{},
 	}
 	for _, moduleDashboard := range moduleDashboards {
 		log.Printf("\tdashboard found: %s", moduleDashboard.Name())
@@ -153,28 +151,25 @@ func createKibanaContent(kibanaMigrator *kibanaMigrator, modulePath string) (kib
 				dashboardFilePath)
 		}
 
-		extractedDashboards, err := extractKibanaObjects(migrated, "dashboard")
+		extracted, err := extractKibanaObjects(migrated)
 		if err != nil {
 			return kibanaContent{}, errors.Wrapf(err, "extracting kibana dashboards failed")
 		}
 
-		for k, v := range extractedDashboards {
-			kibana.dashboardFiles[k] = v
-		}
+		for objectType, objects := range extracted {
+			if _, ok := kibana.files[objectType]; !ok {
+				kibana.files[objectType] = map[string][]byte{}
+			}
 
-		extractedVisualizations, err := extractKibanaObjects(migrated, "visualization")
-		if err != nil {
-			return kibanaContent{}, errors.Wrapf(err, "extracting kibana visualizations failed")
-		}
-
-		for k, v := range extractedVisualizations {
-			kibana.visualizationFiles[k] = v
+			for k, v := range objects {
+				kibana.files[objectType][k] = v
+			}
 		}
 	}
 	return kibana, nil
 }
 
-func extractKibanaObjects(dashboardFile []byte, objectType string) (map[string][]byte, error) {
+func extractKibanaObjects(dashboardFile []byte) (map[string]map[string][]byte, error) {
 	var documents kibanaDocuments
 
 	err := json.Unmarshal(dashboardFile, &documents)
@@ -182,17 +177,8 @@ func extractKibanaObjects(dashboardFile []byte, objectType string) (map[string][
 		return nil, errors.Wrapf(err, "unmarshalling migrated dashboard file failed")
 	}
 
-	extracted := map[string][]byte{}
+	extracted := map[string]map[string][]byte{}
 	for _, object := range documents.Objects {
-		aType, err := object.getValue("type")
-		if err != nil {
-			return nil, errors.Wrapf(err, "retrieving type failed")
-		}
-
-		if aType != objectType {
-			continue
-		}
-
 		err = object.delete("updated_at")
 		if err != nil {
 			return nil, errors.Wrapf(err, "removing field updated_at failed")
@@ -213,12 +199,20 @@ func extractKibanaObjects(dashboardFile []byte, objectType string) (map[string][
 			return nil, errors.Wrapf(err, "marshalling object failed")
 		}
 
+		aType, err := object.getValue("type")
+		if err != nil {
+			return nil, errors.Wrapf(err, "retrieving type failed")
+		}
+
 		id, err := object.getValue("id")
 		if err != nil {
 			return nil, errors.Wrapf(err, "retrieving id failed")
 		}
 
-		extracted[id.(string)+".json"] = data
+		if _, ok := extracted[aType.(string)]; !ok {
+			extracted[aType.(string)] = map[string][]byte{}
+		}
+		extracted[aType.(string)][id.(string)+".json"] = data
 	}
 
 	return extracted, nil
