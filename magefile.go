@@ -87,7 +87,7 @@ func CopyFavicon() error {
 		return err
 	}
 
-	err = ioutil.WriteFile("public/favicon.ico", favicon, 0644)
+	err = ioutil.WriteFile(publicDir+"/favicon.ico", favicon, 0644)
 	if err != nil {
 		return err
 	}
@@ -110,6 +110,7 @@ func Check() error {
 	publicDir = "./testdata/public"
 	packagePaths = []string{"testdata/package"}
 	tarGz = false
+
 	err := Build()
 	if err != nil {
 		return err
