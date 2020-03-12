@@ -124,6 +124,7 @@
       "name": "nginx",
       "title": "Datasource title",
       "description": "Details about the data source.",
+      "solution": "",
       "inputs": [
         {
           "type": "nginx/metrics",
