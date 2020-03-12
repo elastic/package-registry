@@ -57,12 +57,12 @@
     "id": "b0471750-f05b-11e9-90ec-112a988266d5",
     "references": [
         {
-            "id": "filebeat-*",
+            "id": "logs-*",
             "name": "control_0_index_pattern",
             "type": "index-pattern"
         },
         {
-            "id": "filebeat-*",
+            "id": "logs-*",
             "name": "control_1_index_pattern",
             "type": "index-pattern"
         }

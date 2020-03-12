@@ -19,14 +19,14 @@
                 "axis_formatter": "number",
                 "axis_position": "left",
                 "axis_scale": "normal",
-                "default_index_pattern": "metricbeat-*",
+                "default_index_pattern": "metrics-*",
                 "default_timefield": "@timestamp",
                 "filter": {
                     "language": "lucene",
                     "query": "event.module:aws AND fileset.name:s3access"
                 },
                 "id": "61ca57f0-469d-11e7-af02-69e470af7417",
-                "index_pattern": "filebeat-*",
+                "index_pattern": "logs-*",
                 "interval": "auto",
                 "legend_position": "bottom",
                 "series": [

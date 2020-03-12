@@ -56,7 +56,7 @@
     "id": "248e00b4-8fc2-406f-8907-729d5380aaa7",
     "references": [
         {
-            "id": "filebeat-*",
+            "id": "logs-*",
             "name": "kibanaSavedObjectMeta.searchSourceJSON.index",
             "type": "index-pattern"
         }

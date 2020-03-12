@@ -20,14 +20,14 @@
                 "axis_min": 0,
                 "axis_position": "left",
                 "axis_scale": "normal",
-                "default_index_pattern": "metricbeat-*",
+                "default_index_pattern": "metrics-*",
                 "default_timefield": "@timestamp",
                 "filter": {
                     "language": "kuery",
                     "query": ""
                 },
                 "id": "e9a40230-32e9-11ea-bda2-69435df36a5c",
-                "index_pattern": "metricbeat-*",
+                "index_pattern": "metrics-*",
                 "interval": "5m",
                 "isModelInvalid": false,
                 "series": [

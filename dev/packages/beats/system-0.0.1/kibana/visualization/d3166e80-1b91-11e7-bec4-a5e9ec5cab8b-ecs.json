@@ -44,7 +44,7 @@
                 "gauge_style": "half",
                 "gauge_width": 10,
                 "id": "9f51b730-1b91-11e7-bec4-a5e9ec5cab8b",
-                "index_pattern": "metricbeat-*",
+                "index_pattern": "metrics-*",
                 "interval": "auto",
                 "series": [
                     {

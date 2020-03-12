@@ -171,7 +171,7 @@
     "id": "a58345f0-7298-11e9-b0d0-414c3011ddbb",
     "references": [
         {
-            "id": "metricbeat-*",
+            "id": "metrics-*",
             "name": "kibanaSavedObjectMeta.searchSourceJSON.index",
             "type": "index-pattern"
         }

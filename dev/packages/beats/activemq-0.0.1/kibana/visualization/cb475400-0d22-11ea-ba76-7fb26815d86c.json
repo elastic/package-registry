@@ -29,7 +29,7 @@
                         "id": "f6955680-0b9b-11ea-8e0f-4970006b3ce7"
                     }
                 ],
-                "default_index_pattern": "metricbeat-*",
+                "default_index_pattern": "metrics-*",
                 "default_timefield": "@timestamp",
                 "gauge_color_rules": [
                     {
