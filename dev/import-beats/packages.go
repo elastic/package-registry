@@ -26,6 +26,7 @@ type packageContent struct {
 	datasets map[string]datasetContent
 	images   []imageContent
 	kibana   kibanaContent
+	docs     []docContent
 }
 
 func newPackageContent(name string) packageContent {
@@ -158,6 +159,15 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, package
 		}
 		aPackage.addKibanaContent(kibana)
 
+		// docs
+		if len(aPackage.docs) == 0 {
+			docs, err := createDocs(moduleName)
+			if err != nil {
+				return err
+			}
+			aPackage.docs = append(aPackage.docs, docs...)
+		}
+
 		aPackage.manifest = manifest
 		r.packages[moduleDir.Name()] = aPackage
 	}
@@ -244,6 +254,25 @@ func (r *packageRepository) save(outputDir string) error {
 					if err != nil {
 						return errors.Wrapf(err, "writing resource file failed (path: %s)", resourceFilePath)
 					}
+				}
+			}
+		}
+
+		// docs
+		if len(content.docs) > 0 {
+			docsPath := filepath.Join(packagePath, "docs")
+			err := os.MkdirAll(docsPath, 0755)
+			if err != nil {
+				return errors.Wrapf(err, "cannot make directory for docs: '%s'", docsPath)
+			}
+
+			for _, doc := range content.docs {
+				log.Printf("\twrite '%s' file\n", doc.fileName)
+
+				docFilePath := filepath.Join(docsPath, doc.fileName)
+				err = ioutil.WriteFile(docFilePath, doc.body, 0644)
+				if err != nil {
+					return errors.Wrapf(err, "writing doc file failed (path: %s)", docFilePath)
 				}
 			}
 		}
