@@ -25,3 +25,12 @@ icons:
   title: Logo Nginx
   size: 32x32
   type: image/svg+xml
+datasources:
+- name: nginx
+  title: Nginx logs and metrics
+  description: Collect logs and metrics from Nginx instances
+  inputs:
+  - type: logs
+    description: Collecting logs for Nginx
+  - type: nginx/metrics
+    description: Collecting metrics for Nginx

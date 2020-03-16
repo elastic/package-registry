@@ -16,3 +16,12 @@ icons:
   title: Logo Rabbitmq
   size: 32x32
   type: image/svg+xml
+datasources:
+- name: rabbitmq
+  title: Rabbitmq logs and metrics
+  description: Collect logs and metrics from Rabbitmq instances
+  inputs:
+  - type: logs
+    description: Collecting logs for Rabbitmq
+  - type: rabbitmq/metrics
+    description: Collecting metrics for Rabbitmq

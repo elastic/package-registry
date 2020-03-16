@@ -15,3 +15,10 @@ screenshots:
   title: Kibana Zeek
   size: 3530x2414
   type: image/png
+datasources:
+- name: zeek
+  title: Zeek logs
+  description: Collect logs from Zeek instances
+  inputs:
+  - type: logs
+    description: Collecting logs for Zeek

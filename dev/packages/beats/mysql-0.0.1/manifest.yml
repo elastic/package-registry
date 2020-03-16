@@ -25,3 +25,12 @@ icons:
   title: Logo Mysql
   size: 32x32
   type: image/svg+xml
+datasources:
+- name: mysql
+  title: Mysql logs and metrics
+  description: Collect logs and metrics from Mysql instances
+  inputs:
+  - type: logs
+    description: Collecting logs for Mysql
+  - type: mysql/metrics
+    description: Collecting metrics for Mysql

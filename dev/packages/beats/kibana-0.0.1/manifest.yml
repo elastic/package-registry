@@ -16,3 +16,12 @@ icons:
   title: Logo Kibana
   size: 32x32
   type: image/svg+xml
+datasources:
+- name: kibana
+  title: Kibana logs and metrics
+  description: Collect logs and metrics from Kibana instances
+  inputs:
+  - type: logs
+    description: Collecting logs for Kibana
+  - type: kibana/metrics
+    description: Collecting metrics for Kibana

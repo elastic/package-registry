@@ -20,3 +20,10 @@ icons:
   title: Logo Redis
   size: 32x32
   type: image/svg+xml
+datasources:
+- name: redisenterprise
+  title: Redisenterprise metrics
+  description: Collect metrics from Redisenterprise instances
+  inputs:
+  - type: redisenterprise/metrics
+    description: Collecting metrics for Redisenterprise

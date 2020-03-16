@@ -21,3 +21,12 @@ icons:
   title: Traefik
   size: 340x456
   type: image/svg+xml
+datasources:
+- name: traefik
+  title: Traefik logs and metrics
+  description: Collect logs and metrics from Traefik instances
+  inputs:
+  - type: logs
+    description: Collecting logs for Traefik
+  - type: traefik/metrics
+    description: Collecting metrics for Traefik

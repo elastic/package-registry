@@ -15,3 +15,10 @@ icons:
   title: Logo App Search
   size: 32x32
   type: image/svg+xml
+datasources:
+- name: appsearch
+  title: Appsearch metrics
+  description: Collect metrics from Appsearch instances
+  inputs:
+  - type: appsearch/metrics
+    description: Collecting metrics for Appsearch

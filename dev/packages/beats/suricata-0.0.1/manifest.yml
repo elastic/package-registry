@@ -19,3 +19,10 @@ screenshots:
   title: Filebeat Suricata Alerts
   size: 1386x1115
   type: image/png
+datasources:
+- name: suricata
+  title: Suricata logs
+  description: Collect logs from Suricata instances
+  inputs:
+  - type: logs
+    description: Collecting logs for Suricata

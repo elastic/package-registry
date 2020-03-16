@@ -10,3 +10,10 @@ categories:
 requirement:
   kibana:
     versions: ""
+datasources:
+- name: munin
+  title: Munin metrics
+  description: Collect metrics from Munin instances
+  inputs:
+  - type: munin/metrics
+    description: Collecting metrics for Munin

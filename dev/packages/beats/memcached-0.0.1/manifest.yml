@@ -15,3 +15,10 @@ icons:
   title: Logo Memcached
   size: 32x32
   type: image/svg+xml
+datasources:
+- name: memcached
+  title: Memcached metrics
+  description: Collect metrics from Memcached instances
+  inputs:
+  - type: memcached/metrics
+    description: Collecting metrics for Memcached

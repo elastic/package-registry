@@ -10,3 +10,10 @@ categories:
 requirement:
   kibana:
     versions: ""
+datasources:
+- name: graphite
+  title: Graphite metrics
+  description: Collect metrics from Graphite instances
+  inputs:
+  - type: graphite/metrics
+    description: Collecting metrics for Graphite

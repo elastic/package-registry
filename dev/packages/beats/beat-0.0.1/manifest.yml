@@ -10,3 +10,10 @@ categories:
 requirement:
   kibana:
     versions: ""
+datasources:
+- name: beat
+  title: Beat metrics
+  description: Collect metrics from Beat instances
+  inputs:
+  - type: beat/metrics
+    description: Collecting metrics for Beat

@@ -30,7 +30,9 @@ type imageContent struct {
 	source string
 }
 
-func createImages(beatDocsPath, modulePath string) ([]imageContent, error) {
+type imageContentArray []imageContent
+
+func createImages(beatDocsPath, modulePath string) (imageContentArray, error) {
 	var images []imageContent
 
 	moduleDocsPath := path.Join(modulePath, "_meta", "docs.asciidoc")
@@ -89,7 +91,7 @@ func extractImages(beatDocsPath string, docsFile []byte) []imageContent {
 	return contents
 }
 
-func createManifestImages(images []imageContent) ([]util.Image, error) {
+func (images imageContentArray) toManifestImages() ([]util.Image, error) {
 	var imgs []util.Image
 	for _, image := range images {
 		i := strings.LastIndex(image.source, "/")

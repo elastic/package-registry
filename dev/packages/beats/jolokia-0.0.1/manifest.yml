@@ -10,3 +10,10 @@ categories:
 requirement:
   kibana:
     versions: ""
+datasources:
+- name: jolokia
+  title: Jolokia metrics
+  description: Collect metrics from Jolokia instances
+  inputs:
+  - type: jolokia/metrics
+    description: Collecting metrics for Jolokia

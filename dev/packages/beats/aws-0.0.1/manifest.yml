@@ -117,3 +117,12 @@ icons:
   title: Logo Aws
   size: 32x32
   type: image/svg+xml
+datasources:
+- name: aws
+  title: Aws logs and metrics
+  description: Collect logs and metrics from Aws instances
+  inputs:
+  - type: logs
+    description: Collecting logs for Aws
+  - type: aws/metrics
+    description: Collecting metrics for Aws

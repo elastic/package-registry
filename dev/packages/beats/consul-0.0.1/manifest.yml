@@ -20,3 +20,10 @@ icons:
   title: Consul
   size: 79x113
   type: image/svg+xml
+datasources:
+- name: consul
+  title: Consul metrics
+  description: Collect metrics from Consul instances
+  inputs:
+  - type: consul/metrics
+    description: Collecting metrics for Consul

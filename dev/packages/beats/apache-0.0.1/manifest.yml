@@ -25,3 +25,12 @@ icons:
   title: Logo Apache
   size: 32x32
   type: image/svg+xml
+datasources:
+- name: apache
+  title: Apache logs and metrics
+  description: Collect logs and metrics from Apache instances
+  inputs:
+  - type: logs
+    description: Collecting logs for Apache
+  - type: apache/metrics
+    description: Collecting metrics for Apache

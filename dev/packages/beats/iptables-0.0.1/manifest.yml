@@ -19,3 +19,10 @@ screenshots:
   title: Kibana Iptables Ubiquiti
   size: 1492x1464
   type: image/png
+datasources:
+- name: iptables
+  title: Iptables logs
+  description: Collect logs from Iptables instances
+  inputs:
+  - type: logs
+    description: Collecting logs for Iptables

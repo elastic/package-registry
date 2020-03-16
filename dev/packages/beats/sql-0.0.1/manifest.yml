@@ -10,3 +10,10 @@ categories:
 requirement:
   kibana:
     versions: ""
+datasources:
+- name: sql
+  title: Sql metrics
+  description: Collect metrics from Sql instances
+  inputs:
+  - type: sql/metrics
+    description: Collecting metrics for Sql

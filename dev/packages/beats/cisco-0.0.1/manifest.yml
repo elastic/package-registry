@@ -15,3 +15,10 @@ screenshots:
   title: Kibana Cisco Asa
   size: 1800x1559
   type: image/png
+datasources:
+- name: cisco
+  title: Cisco logs
+  description: Collect logs from Cisco instances
+  inputs:
+  - type: logs
+    description: Collecting logs for Cisco

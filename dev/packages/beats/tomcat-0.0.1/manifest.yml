@@ -15,3 +15,10 @@ screenshots:
   title: Metricbeat Tomcat Overview
   size: 3836x2148
   type: image/png
+datasources:
+- name: tomcat
+  title: Tomcat metrics
+  description: Collect metrics from Tomcat instances
+  inputs:
+  - type: tomcat/metrics
+    description: Collecting metrics for Tomcat

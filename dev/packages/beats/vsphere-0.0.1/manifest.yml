@@ -19,3 +19,10 @@ screenshots:
   title: Metricbeat Vsphere Vm Dashboard
   size: 3744x4048
   type: image/png
+datasources:
+- name: vsphere
+  title: Vsphere metrics
+  description: Collect metrics from Vsphere instances
+  inputs:
+  - type: vsphere/metrics
+    description: Collecting metrics for Vsphere

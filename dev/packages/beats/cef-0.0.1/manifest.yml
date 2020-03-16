@@ -10,3 +10,10 @@ categories:
 requirement:
   kibana:
     versions: ""
+datasources:
+- name: cef
+  title: Cef logs
+  description: Collect logs from Cef instances
+  inputs:
+  - type: logs
+    description: Collecting logs for Cef

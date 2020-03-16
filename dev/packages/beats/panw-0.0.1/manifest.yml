@@ -19,3 +19,10 @@ screenshots:
   title: Filebeat Panw Threat
   size: 2546x2496
   type: image/png
+datasources:
+- name: panw
+  title: Panw logs
+  description: Collect logs from Panw instances
+  inputs:
+  - type: logs
+    description: Collecting logs for Panw

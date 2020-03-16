@@ -20,3 +20,10 @@ icons:
   title: Logo Prometheus
   size: 32x32
   type: image/svg+xml
+datasources:
+- name: prometheus
+  title: Prometheus metrics
+  description: Collect metrics from Prometheus instances
+  inputs:
+  - type: prometheus/metrics
+    description: Collecting metrics for Prometheus

@@ -15,3 +15,10 @@ screenshots:
   title: Kibana Audit Auditd
   size: 1230x997
   type: image/png
+datasources:
+- name: auditd
+  title: Auditd logs
+  description: Collect logs from Auditd instances
+  inputs:
+  - type: logs
+    description: Collecting logs for Auditd

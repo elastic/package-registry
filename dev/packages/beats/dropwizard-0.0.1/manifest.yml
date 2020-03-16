@@ -15,3 +15,10 @@ icons:
   title: Logo Dropwizard
   size: 32x32
   type: image/svg+xml
+datasources:
+- name: dropwizard
+  title: Dropwizard metrics
+  description: Collect metrics from Dropwizard instances
+  inputs:
+  - type: dropwizard/metrics
+    description: Collecting metrics for Dropwizard

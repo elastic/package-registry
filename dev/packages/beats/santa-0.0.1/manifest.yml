@@ -15,3 +15,10 @@ screenshots:
   title: Kibana Santa Log Overview
   size: 2912x2024
   type: image/png
+datasources:
+- name: santa
+  title: Santa logs
+  description: Collect logs from Santa instances
+  inputs:
+  - type: logs
+    description: Collecting logs for Santa

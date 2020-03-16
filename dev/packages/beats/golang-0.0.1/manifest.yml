@@ -15,3 +15,10 @@ icons:
   title: Logo Golang
   size: 32x32
   type: image/svg+xml
+datasources:
+- name: golang
+  title: Golang metrics
+  description: Collect metrics from Golang instances
+  inputs:
+  - type: golang/metrics
+    description: Collecting metrics for Golang

@@ -15,3 +15,10 @@ icons:
   title: Statsd
   size: 266x266
   type: image/svg+xml
+datasources:
+- name: statsd
+  title: Statsd metrics
+  description: Collect metrics from Statsd instances
+  inputs:
+  - type: statsd/metrics
+    description: Collecting metrics for Statsd
