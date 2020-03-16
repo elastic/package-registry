@@ -15,3 +15,10 @@ screenshots:
   title: Kibana Misp
   size: 1280x882
   type: image/png
+datasources:
+- name: misp
+  title: Misp logs
+  description: Collect logs from Misp instances
+  inputs:
+  - type: logs
+    description: Collecting logs for Misp

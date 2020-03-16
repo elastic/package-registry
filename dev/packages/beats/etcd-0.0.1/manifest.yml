@@ -15,3 +15,10 @@ icons:
   title: Logo Etcd
   size: 32x32
   type: image/svg+xml
+datasources:
+- name: etcd
+  title: Etcd metrics
+  description: Collect metrics from Etcd instances
+  inputs:
+  - type: etcd/metrics
+    description: Collecting metrics for Etcd

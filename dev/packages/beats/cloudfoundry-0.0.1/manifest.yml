@@ -10,3 +10,10 @@ categories:
 requirement:
   kibana:
     versions: ""
+datasources:
+- name: cloudfoundry
+  title: Cloudfoundry metrics
+  description: Collect metrics from Cloudfoundry instances
+  inputs:
+  - type: cloudfoundry/metrics
+    description: Collecting metrics for Cloudfoundry

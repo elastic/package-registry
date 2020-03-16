@@ -10,3 +10,10 @@ categories:
 requirement:
   kibana:
     versions: ""
+datasources:
+- name: http
+  title: Http metrics
+  description: Collect metrics from Http instances
+  inputs:
+  - type: http/metrics
+    description: Collecting metrics for Http

@@ -20,3 +20,10 @@ icons:
   title: Logo Ceph
   size: 32x32
   type: image/svg+xml
+datasources:
+- name: ceph
+  title: Ceph metrics
+  description: Collect metrics from Ceph instances
+  inputs:
+  - type: ceph/metrics
+    description: Collecting metrics for Ceph

@@ -15,3 +15,10 @@ screenshots:
   title: Metricbeat Zookeeper
   size: 3808x2018
   type: image/png
+datasources:
+- name: zookeeper
+  title: Zookeeper metrics
+  description: Collect metrics from Zookeeper instances
+  inputs:
+  - type: zookeeper/metrics
+    description: Collecting metrics for Zookeeper

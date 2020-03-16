@@ -11,3 +11,12 @@ categories:
 requirement:
   kibana:
     versions: ""
+datasources:
+- name: mssql
+  title: Mssql logs and metrics
+  description: Collect logs and metrics from Mssql instances
+  inputs:
+  - type: logs
+    description: Collecting logs for Mssql
+  - type: mssql/metrics
+    description: Collecting metrics for Mssql

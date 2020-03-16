@@ -16,3 +16,12 @@ icons:
   title: Logo Gcp
   size: 32x32
   type: image/svg+xml
+datasources:
+- name: googlecloud
+  title: Googlecloud logs and metrics
+  description: Collect logs and metrics from Googlecloud instances
+  inputs:
+  - type: logs
+    description: Collecting logs for Googlecloud
+  - type: googlecloud/metrics
+    description: Collecting metrics for Googlecloud

@@ -20,3 +20,10 @@ icons:
   title: Cockroachdb
   size: 35x35
   type: image/svg+xml
+datasources:
+- name: cockroachdb
+  title: Cockroachdb metrics
+  description: Collect metrics from Cockroachdb instances
+  inputs:
+  - type: cockroachdb/metrics
+    description: Collecting metrics for Cockroachdb

@@ -21,3 +21,12 @@ icons:
   title: Logo Haproxy
   size: 32x32
   type: image/svg+xml
+datasources:
+- name: haproxy
+  title: Haproxy logs and metrics
+  description: Collect logs and metrics from Haproxy instances
+  inputs:
+  - type: logs
+    description: Collecting logs for Haproxy
+  - type: haproxy/metrics
+    description: Collecting metrics for Haproxy

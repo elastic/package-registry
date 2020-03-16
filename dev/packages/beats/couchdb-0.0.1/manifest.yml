@@ -20,3 +20,10 @@ icons:
   title: Couchdb
   size: 289x293
   type: image/svg+xml
+datasources:
+- name: couchdb
+  title: Couchdb metrics
+  description: Collect metrics from Couchdb instances
+  inputs:
+  - type: couchdb/metrics
+    description: Collecting metrics for Couchdb

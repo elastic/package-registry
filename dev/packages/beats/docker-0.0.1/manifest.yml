@@ -15,3 +15,10 @@ icons:
   title: Logo Docker
   size: 32x32
   type: image/svg+xml
+datasources:
+- name: docker
+  title: Docker metrics
+  description: Collect metrics from Docker instances
+  inputs:
+  - type: docker/metrics
+    description: Collecting metrics for Docker

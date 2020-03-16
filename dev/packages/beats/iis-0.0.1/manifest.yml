@@ -16,3 +16,12 @@ screenshots:
   title: Kibana Iis
   size: 1960x2820
   type: image/png
+datasources:
+- name: iis
+  title: Iis logs and metrics
+  description: Collect logs and metrics from Iis instances
+  inputs:
+  - type: logs
+    description: Collecting logs for Iis
+  - type: iis/metrics
+    description: Collecting metrics for Iis

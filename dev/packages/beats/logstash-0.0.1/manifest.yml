@@ -25,3 +25,12 @@ icons:
   title: Logo Logstash
   size: 32x32
   type: image/svg+xml
+datasources:
+- name: logstash
+  title: Logstash logs and metrics
+  description: Collect logs and metrics from Logstash instances
+  inputs:
+  - type: logs
+    description: Collecting logs for Logstash
+  - type: logstash/metrics
+    description: Collecting metrics for Logstash

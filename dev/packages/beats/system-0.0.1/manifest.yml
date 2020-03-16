@@ -24,3 +24,12 @@ screenshots:
   title: Metricbeat Services Host
   size: 5006x2260
   type: image/png
+datasources:
+- name: system
+  title: System logs and metrics
+  description: Collect logs and metrics from System instances
+  inputs:
+  - type: logs
+    description: Collecting logs for System
+  - type: system/metrics
+    description: Collecting metrics for System

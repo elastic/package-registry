@@ -29,3 +29,12 @@ icons:
   title: Logo Postgres
   size: 32x32
   type: image/svg+xml
+datasources:
+- name: postgresql
+  title: Postgresql logs and metrics
+  description: Collect logs and metrics from Postgresql instances
+  inputs:
+  - type: logs
+    description: Collecting logs for Postgresql
+  - type: postgresql/metrics
+    description: Collecting metrics for Postgresql

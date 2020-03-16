@@ -21,3 +21,12 @@ icons:
   title: Envoyproxy
   size: 300x300
   type: image/svg+xml
+datasources:
+- name: envoyproxy
+  title: Envoyproxy logs and metrics
+  description: Collect logs and metrics from Envoyproxy instances
+  inputs:
+  - type: logs
+    description: Collecting logs for Envoyproxy
+  - type: envoyproxy/metrics
+    description: Collecting metrics for Envoyproxy

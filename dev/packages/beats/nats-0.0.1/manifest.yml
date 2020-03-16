@@ -25,3 +25,12 @@ icons:
   title: Nats
   size: 32x32
   type: image/svg+xml
+datasources:
+- name: nats
+  title: Nats logs and metrics
+  description: Collect logs and metrics from Nats instances
+  inputs:
+  - type: logs
+    description: Collecting logs for Nats
+  - type: nats/metrics
+    description: Collecting metrics for Nats

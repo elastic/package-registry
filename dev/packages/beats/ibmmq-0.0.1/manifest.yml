@@ -33,3 +33,12 @@ icons:
   title: Ibmmq
   size: 32x32
   type: image/svg+xml
+datasources:
+- name: ibmmq
+  title: Ibmmq logs and metrics
+  description: Collect logs and metrics from Ibmmq instances
+  inputs:
+  - type: logs
+    description: Collecting logs for Ibmmq
+  - type: ibmmq/metrics
+    description: Collecting metrics for Ibmmq

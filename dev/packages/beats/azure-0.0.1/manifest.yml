@@ -37,3 +37,12 @@ icons:
   title: Logo Azure
   size: 32x32
   type: image/svg+xml
+datasources:
+- name: azure
+  title: Azure logs and metrics
+  description: Collect logs and metrics from Azure instances
+  inputs:
+  - type: logs
+    description: Collecting logs for Azure
+  - type: azure/metrics
+    description: Collecting metrics for Azure

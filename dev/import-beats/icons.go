@@ -156,7 +156,7 @@ func aliasModuleName(moduleName string) string {
 	return moduleName
 }
 
-func createIcons(iconRepository *iconRepository, moduleName string) ([]imageContent, error) {
+func createIcons(iconRepository *iconRepository, moduleName string) (imageContentArray, error) {
 	anIcon, err := iconRepository.iconForModule(moduleName)
 	if err == errIconNotFound {
 		log.Printf("\t%s: icon not found", moduleName)

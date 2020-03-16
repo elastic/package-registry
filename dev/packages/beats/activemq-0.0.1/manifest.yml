@@ -37,3 +37,12 @@ icons:
   title: Logo Activemq
   size: 32x32
   type: image/svg+xml
+datasources:
+- name: activemq
+  title: Activemq logs and metrics
+  description: Collect logs and metrics from Activemq instances
+  inputs:
+  - type: logs
+    description: Collecting logs for Activemq
+  - type: activemq/metrics
+    description: Collecting metrics for Activemq

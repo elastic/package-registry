@@ -10,3 +10,10 @@ categories:
 requirement:
   kibana:
     versions: ""
+datasources:
+- name: openmetrics
+  title: Openmetrics metrics
+  description: Collect metrics from Openmetrics instances
+  inputs:
+  - type: openmetrics/metrics
+    description: Collecting metrics for Openmetrics

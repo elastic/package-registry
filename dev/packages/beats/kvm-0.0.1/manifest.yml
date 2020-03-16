@@ -10,3 +10,10 @@ categories:
 requirement:
   kibana:
     versions: ""
+datasources:
+- name: kvm
+  title: Kvm metrics
+  description: Collect metrics from Kvm instances
+  inputs:
+  - type: kvm/metrics
+    description: Collecting metrics for Kvm

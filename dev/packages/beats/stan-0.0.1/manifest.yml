@@ -20,3 +20,10 @@ icons:
   title: Stan
   size: 32x32
   type: image/svg+xml
+datasources:
+- name: stan
+  title: Stan metrics
+  description: Collect metrics from Stan instances
+  inputs:
+  - type: stan/metrics
+    description: Collecting metrics for Stan

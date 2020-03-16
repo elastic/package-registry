@@ -16,3 +16,12 @@ icons:
   title: Logo Elasticsearch
   size: 32x32
   type: image/svg+xml
+datasources:
+- name: elasticsearch
+  title: Elasticsearch logs and metrics
+  description: Collect logs and metrics from Elasticsearch instances
+  inputs:
+  - type: logs
+    description: Collecting logs for Elasticsearch
+  - type: elasticsearch/metrics
+    description: Collecting metrics for Elasticsearch

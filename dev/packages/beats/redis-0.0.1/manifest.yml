@@ -25,3 +25,12 @@ icons:
   title: Logo Redis
   size: 32x32
   type: image/svg+xml
+datasources:
+- name: redis
+  title: Redis logs and metrics
+  description: Collect logs and metrics from Redis instances
+  inputs:
+  - type: logs
+    description: Collecting logs for Redis
+  - type: redis/metrics
+    description: Collecting metrics for Redis

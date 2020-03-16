@@ -22,11 +22,12 @@ import (
 var ignoredModules = map[string]bool{"apache2": true}
 
 type packageContent struct {
-	manifest util.Package
-	datasets map[string]datasetContent
-	images   []imageContent
-	kibana   kibanaContent
-	docs     []docContent
+	manifest    util.Package
+	datasets    map[string]datasetContent
+	images      []imageContent
+	kibana      kibanaContent
+	docs        []docContent
+	datasources datasourceContentArray
 }
 
 func newPackageContent(name string) packageContent {
@@ -138,7 +139,7 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, package
 			}
 			aPackage.images = append(aPackage.images, icons...)
 
-			manifestIcons, err := createManifestImages(icons)
+			manifestIcons, err := icons.toManifestImages()
 			if err != nil {
 				return err
 			}
@@ -146,7 +147,7 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, package
 		}
 
 		// img/screenshots
-		screenshots, err := createManifestImages(images)
+		screenshots, err := images.toManifestImages()
 		if err != nil {
 			return err
 		}
@@ -167,6 +168,13 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, package
 			}
 			aPackage.docs = append(aPackage.docs, docs...)
 		}
+
+		// datasources
+		aPackage.datasources, err = updateDatasources(aPackage.datasources, moduleName, packageType)
+		if err != nil {
+			return err
+		}
+		manifest.Datasources = aPackage.datasources.toMetadataDatasources()
 
 		aPackage.manifest = manifest
 		r.packages[moduleDir.Name()] = aPackage

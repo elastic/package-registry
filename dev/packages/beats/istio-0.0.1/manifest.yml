@@ -10,3 +10,10 @@ categories:
 requirement:
   kibana:
     versions: ""
+datasources:
+- name: istio
+  title: Istio metrics
+  description: Collect metrics from Istio instances
+  inputs:
+  - type: istio/metrics
+    description: Collecting metrics for Istio

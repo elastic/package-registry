@@ -20,3 +20,10 @@ icons:
   title: Logo Osquery
   size: 32x32
   type: image/svg+xml
+datasources:
+- name: osquery
+  title: Osquery logs
+  description: Collect logs from Osquery instances
+  inputs:
+  - type: logs
+    description: Collecting logs for Osquery

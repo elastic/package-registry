@@ -15,3 +15,10 @@ screenshots:
   title: Uwsgi Dashboard
   size: 1305x747
   type: image/png
+datasources:
+- name: uwsgi
+  title: Uwsgi metrics
+  description: Collect metrics from Uwsgi instances
+  inputs:
+  - type: uwsgi/metrics
+    description: Collecting metrics for Uwsgi
