@@ -18,7 +18,7 @@ import (
 )
 
 const (
-	tutorialsPath = "src/plugins/home/server/tutorials"
+	tutorialsPath   = "src/plugins/home/server/tutorials"
 	kibanaLogosPath = "src/legacy/core_plugins/kibana/public/home/tutorial_resources/logos"
 )
 
@@ -26,12 +26,12 @@ var (
 	errIconNotFound = errors.New("icon not found")
 	iconRe          = regexp.MustCompile(`euiIconType: '[^']+'`)
 
-	aliasedModuleNames = map[string]string {
+	aliasedModuleNames = map[string]string{
 		"redisenterprise": "redis",
-		"php_fpm": "php",
-		"postgresql": "postgres",
-		"appsearch": "app_search",
-		"googlecloud": "gcp",
+		"php_fpm":         "php",
+		"postgresql":      "postgres",
+		"appsearch":       "app_search",
+		"googlecloud":     "gcp",
 	}
 )
 
@@ -61,8 +61,12 @@ func populateIconRepository(euiDir, kibanaDir string) (map[string]string, error)
 	}
 
 	refs := map[string]string{}
-	for k, v := range kibanaIconRefs { refs[k] = v }
-	for k, v := range euiRefs { refs[k] = v }
+	for k, v := range kibanaIconRefs {
+		refs[k] = v
+	}
+	for k, v := range euiRefs {
+		refs[k] = v
+	}
 	return refs, nil
 }
 
@@ -99,7 +103,7 @@ func retrieveIconPathFromTutorials(kibanaDir string) (map[string]string, error) 
 		moduleName = moduleName[:strings.LastIndex(moduleName, "_")]
 
 		if val[0] == '/' {
-			iconFileName := val[strings.LastIndex(val, "/") + 1:]
+			iconFileName := val[strings.LastIndex(val, "/")+1:]
 			val = path.Join(kibanaDir, kibanaLogosPath, iconFileName)
 			refs[moduleName] = val
 		}
@@ -127,7 +131,7 @@ func retrieveIconPathFromEUI(euiDir string) (map[string]string, error) {
 				fileName := s[1]
 				fileNameWithExt := fileName + ".svg"
 				filePath := filepath.Join(euiDir, "src/components/icon/assets", fileNameWithExt)
-				moduleName := fileName[strings.Index(fileName, "_") + 1:]
+				moduleName := fileName[strings.Index(fileName, "_")+1:]
 				refs[moduleName] = filePath
 			}
 		} else if strings.HasPrefix(line, `const typeToPathMap = {`) {

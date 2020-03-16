@@ -16,7 +16,7 @@ import (
 )
 
 type svgFile struct {
-	Width string `xml:"width,attr"`
+	Width  string `xml:"width,attr"`
 	Height string `xml:"height,attr"`
 
 	ViewBox string `xml:"viewBox,attr"`
@@ -59,7 +59,7 @@ func SvgDecodeConfig(r io.Reader) (image.Config, error) {
 
 	if width > 0 && height > 0 {
 		return image.Config{
-			Width: int(width),
+			Width:  int(width),
 			Height: int(height),
 		}, nil
 	}
@@ -84,7 +84,7 @@ func SvgDecodeConfig(r io.Reader) (image.Config, error) {
 	}
 
 	return image.Config{
-		Width: int(width),
+		Width:  int(width),
 		Height: int(height),
 	}, nil
 }
