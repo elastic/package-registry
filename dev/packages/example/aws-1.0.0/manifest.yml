@@ -45,6 +45,7 @@ datasources:
               Credential profile name. This can be used as an alternative to the keys and tokens in the config.
             default: 'test-mb'
             type: text
+            show_user: true
 
           - name: shared_credential_file
             description: >

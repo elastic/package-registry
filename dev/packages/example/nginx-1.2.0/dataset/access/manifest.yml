@@ -16,7 +16,8 @@ streams:
     vars:
       - name: paths
         required: true
-        # Should we define this as array? How will the UI best make sense of it?
+        show_user: true
+        title: Access log paths
         description: Paths to the nginx access log file.
         type: text
         multi: true
