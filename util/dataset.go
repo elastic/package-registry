@@ -27,6 +27,7 @@ type DataSet struct {
 type Input struct {
 	Type        string                   `config:"type" json:"type" validate:"required"`
 	Vars        []map[string]interface{} `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
+	Title       string                   `config:"title" json:"title,omitempty" `
 	Description string                   `config:"description" json:"description,omitempty" `
 	Streams     []Stream                 `config:"streams" json:"streams,omitempty" yaml:"streams,omitempty"`
 }
@@ -35,6 +36,7 @@ type Stream struct {
 	Input       string                   `config:"input" json:"input" validate:"required"`
 	Vars        []map[string]interface{} `config:"vars" json:"vars,omitempty" `
 	Dataset     string                   `config:"dataset" json:"dataset,omitempty" `
+	Title       string                   `config:"title" json:"title,omitempty" `
 	Description string                   `config:"description" json:"description,omitempty" `
 }
 

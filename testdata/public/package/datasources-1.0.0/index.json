@@ -51,6 +51,7 @@
               "type": "text"
             }
           ],
+          "title": "Title of the stream",
           "description": "Description of the stream with more details."
         }
       ],
@@ -89,6 +90,7 @@
               "type": "text"
             }
           ],
+          "title": "Title of the stream",
           "description": "Description of the stream with more details."
         }
       ],
@@ -112,6 +114,7 @@
               "type": "text"
             }
           ],
+          "title": "Title of the stream",
           "description": "Description of the stream with more details."
         }
       ],
@@ -167,6 +170,7 @@
                 }
               ],
               "dataset": "datasources.examplemetric",
+              "title": "Title of the stream",
               "description": "Description of the stream with more details."
             }
           ]
@@ -202,6 +206,7 @@
                 }
               ],
               "dataset": "datasources.examplelog1",
+              "title": "Title of the stream",
               "description": "Description of the stream with more details."
             },
             {
@@ -231,6 +236,7 @@
                 }
               ],
               "dataset": "datasources.examplelog2",
+              "title": "Title of the stream",
               "description": "Description of the stream with more details."
             }
           ]
