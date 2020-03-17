@@ -4,7 +4,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/elastic/package-registry/compare/v0.2.0...master)
+
+## [Unreleased](https://github.com/elastic/package-registry/compare/v0.3.0...master)
+
+### Breaking changes
+
+
+### Bugfixes
+
+### Added
+
+
+### Deprecated
+
+### Known Issue
+
+
+
+## [Unreleased](https://github.com/elastic/package-registry/compare/v0.2.0...v0.3.0)
 
 ### Breaking changes
 
@@ -29,10 +46,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Add download field to package info endpoint. [#174](https://github.com/elastic/integrations-registry/pull/174)
 * Add `package` field to dataset. [#189](https://github.com/elastic/integrations-registry/pull/189)
 * Add support for datasources. [#216](https://github.com/elastic/integrations-registry/pull/216) [#212](https://github.com/elastic/integrations-registry/pull/212)
-
-### Deprecated
-
-### Known Issue
 
 
 ## [0.2.0](https://github.com/elastic/package-registry/compare/v0.1.0...v0.2.0)
