@@ -5,12 +5,15 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
 	"path"
+	"strings"
 
 	"github.com/pkg/errors"
+	"gopkg.in/yaml.v2"
 )
 
 type elasticsearchContent struct {
@@ -18,25 +21,81 @@ type elasticsearchContent struct {
 }
 
 type ingestPipelineContent struct {
-	source string
+	source         string
+	targetFileName string
 }
 
 func loadElasticsearchContent(datasetPath string) (elasticsearchContent, error) {
 	var esc elasticsearchContent
-	ingestPath := path.Join(datasetPath, "ingest")
-	ingestFiles, err := ioutil.ReadDir(ingestPath)
+
+	datasetManifestPath := path.Join(datasetPath, "manifest.yml")
+	datasetManifestFile, err := ioutil.ReadFile(datasetManifestPath)
 	if os.IsNotExist(err) {
-		log.Printf("No ingest pipelines defined. Skipping. (path: %s)\n", ingestPath)
-		return elasticsearchContent{}, nil
-	} else if err != nil {
-		return elasticsearchContent{}, errors.Wrapf(err, "cannot read ingest directory (path: %s)", ingestPath)
+		return elasticsearchContent{}, nil // no manifest.yml file found,
+	}
+	if err != nil {
+		return elasticsearchContent{}, errors.Wrapf(err, "reading dataset manifest file failed (path: %s)", datasetManifestPath)
 	}
 
-	for _, ingestFile := range ingestFiles {
-		log.Printf("\tingest-pipeline found: %s", ingestFile.Name())
+	var ingestPipelines []string
+	var dmsp datasetManifestSinglePipeline
+	err = yaml.Unmarshal(datasetManifestFile, &dmsp)
+	if err == nil {
+		if len(dmsp.IngestPipeline) > 0 {
+			ingestPipelines = append(ingestPipelines, dmsp.IngestPipeline)
+		}
+	} else {
+		var dmmp datasetManifestMultiplePipelines
+		err = yaml.Unmarshal(datasetManifestFile, &dmmp)
+		if err != nil {
+			return elasticsearchContent{}, errors.Wrapf(err, "unmarshalling dataset manifest file failed (path: %s)", datasetManifestPath)
+		}
+
+		if len(dmmp.IngestPipeline) > 0 {
+			ingestPipelines = append(ingestPipelines, dmmp.IngestPipeline...)
+		}
+	}
+
+	for _, ingestPipeline := range ingestPipelines {
+		ingestPipeline = ensurePipelineFormat(ingestPipeline)
+
+		log.Printf("\tingest-pipeline found: %s", ingestPipeline)
+
+		targetFileName, err := determineIngestPipelineTargetName(ingestPipeline)
+		if err != nil {
+			return elasticsearchContent{}, errors.Wrapf(err, "can't determine ingest pipeline target name (path: %s)", ingestPipeline)
+		}
 		esc.ingestPipelines = append(esc.ingestPipelines, ingestPipelineContent{
-			source: path.Join(ingestPath, ingestFile.Name()),
+			source:         path.Join(datasetPath, ingestPipeline),
+			targetFileName: targetFileName,
 		})
 	}
+
 	return esc, nil
+}
+
+func ensurePipelineFormat(ingestPipeline string) string {
+	if strings.Contains(ingestPipeline, "{{.format}}") {
+		ingestPipeline = strings.ReplaceAll(ingestPipeline, "{{.format}}", "json")
+	}
+	return ingestPipeline
+}
+
+func determineIngestPipelineTargetName(path string) (string, error) {
+	fileName := path
+	if strings.Contains(path, "/") {
+		fileName = path[strings.LastIndex(path, "/")+1:]
+	}
+
+	lastDot := strings.LastIndex(fileName, ".")
+	if lastDot == -1 {
+		return "", fmt.Errorf("ingest pipeline file must have an extension")
+	}
+	fileNameWithoutExt := fileName[:lastDot]
+	fileExt := fileName[lastDot+1:]
+
+	if fileNameWithoutExt == "pipeline" || fileNameWithoutExt == "pipeline-entry" {
+		return "default." + fileExt, nil
+	}
+	return fileName, nil
 }

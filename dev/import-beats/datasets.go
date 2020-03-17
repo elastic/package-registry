@@ -18,6 +18,14 @@ type datasetContent struct {
 	elasticsearch elasticsearchContent
 }
 
+type datasetManifestMultiplePipelines struct {
+	IngestPipeline []string `yaml:"ingest_pipeline"`
+}
+
+type datasetManifestSinglePipeline struct {
+	IngestPipeline string `yaml:"ingest_pipeline"`
+}
+
 func createDatasets(modulePath, moduleName string) (map[string]datasetContent, error) {
 	moduleFieldsFiles, err := loadModuleFields(modulePath)
 	if err != nil {
@@ -64,7 +72,7 @@ func createDatasets(modulePath, moduleName string) (map[string]datasetContent, e
 
 		elasticsearch, err := loadElasticsearchContent(datasetPath)
 		if err != nil {
-			return nil, errors.Wrapf(err, "loading elasticsearc content failed (datasetPath: %s)", datasetPath)
+			return nil, errors.Wrapf(err, "loading elasticsearch content failed (datasetPath: %s)", datasetPath)
 		}
 		content.elasticsearch = elasticsearch
 
