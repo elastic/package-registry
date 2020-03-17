@@ -230,6 +230,22 @@ func (r *packageRepository) save(outputDir string) error {
 					}
 				}
 			}
+
+			if len(dataset.elasticsearch.ingestPipelines) > 0 {
+				ingestPipelinePath := filepath.Join(datasetPath, "elasticsearch", "ingest-pipeline")
+				err := os.MkdirAll(ingestPipelinePath, 0755)
+				if err != nil {
+					return errors.Wrapf(err, "cannot make directory for dataset ingest pipelines: '%s'", ingestPipelinePath)
+				}
+
+				for _, ingestPipeline := range dataset.elasticsearch.ingestPipelines {
+					log.Printf("\tcopy ingest pipeline file '%s' to '%s'", ingestPipeline.source, ingestPipelinePath)
+					err := copyFile(ingestPipeline.source, ingestPipelinePath)
+					if err != nil {
+						return errors.Wrapf(err, "copying file failed")
+					}
+				}
+			}
 		}
 
 		// img
