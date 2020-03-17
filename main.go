@@ -61,9 +61,6 @@ func main() {
 	}
 
 	packagesBasePath := config.PublicDir + "/" + packageDir
-	//cacheTimeSearch = config.CacheTimeSearch
-	//cacheTimeCategories = config.CacheTimeCategories
-	//cacheTimeCatchAll = config.CacheTimeCatchAll
 
 	// Prefill the package cache
 	packages, err := util.GetPackages(packagesBasePath)
