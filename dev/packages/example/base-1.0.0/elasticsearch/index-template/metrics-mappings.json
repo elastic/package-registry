@@ -19,6 +19,9 @@
         ],
         "date_detection": false,
         "properties": {
+            "@timestamp": {
+                "type": "date"
+            },
             "agent": {
                 "properties": {
                     "hostname": {
