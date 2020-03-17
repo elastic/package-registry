@@ -11,8 +11,8 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"strconv"
 	"syscall"
+	"time"
 
 	"github.com/elastic/package-registry/util"
 
@@ -30,10 +30,12 @@ var (
 	address          string
 	configPath       = "config.yml"
 
-	// Cache times for the different endpoints
-	searchCacheTime     = strconv.Itoa(10 * 60) // 10 min
-	categoriesCacheTime = strconv.Itoa(10 * 60) // 10 min
-	catchAllCacheTime   = strconv.Itoa(10 * 60) // 10 min
+	defaultConfig = Config{
+		PublicDir:           "config.yml",
+		CacheTimeSearch:     10 * time.Minute,
+		CacheTimeCategories: 10 * time.Minute,
+		CacheTimeCatchAll:   10 * time.Minute,
+	}
 )
 
 func init() {
@@ -41,7 +43,10 @@ func init() {
 }
 
 type Config struct {
-	PublicDir string `config:"public_dir"`
+	PublicDir           string        `config:"public_dir"`
+	CacheTimeSearch     time.Duration `config:"cache_time.search"`
+	CacheTimeCategories time.Duration `config:"cache_time.categories"`
+	CacheTimeCatchAll   time.Duration `config:"cache_time.catch_all"`
 }
 
 func main() {
@@ -56,6 +61,9 @@ func main() {
 	}
 
 	packagesBasePath := config.PublicDir + "/" + packageDir
+	//cacheTimeSearch = config.CacheTimeSearch
+	//cacheTimeCategories = config.CacheTimeCategories
+	//cacheTimeCatchAll = config.CacheTimeCatchAll
 
 	// Prefill the package cache
 	packages, err := util.GetPackages(packagesBasePath)
@@ -90,22 +98,23 @@ func getConfig() (*Config, error) {
 		return nil, err
 	}
 
-	config := &Config{}
-	err = cfg.Unpack(config)
+	config := defaultConfig
+	err = cfg.Unpack(&config)
 	if err != nil {
 		return nil, err
 	}
 
-	return config, nil
+	log.Println(config)
+	return &config, nil
 }
 
 func getRouter(config Config, packagesBasePath string) *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)
 
-	router.HandleFunc("/search", searchHandler(packagesBasePath, searchCacheTime))
-	router.HandleFunc("/categories", categoriesHandler(packagesBasePath, categoriesCacheTime))
+	router.HandleFunc("/search", searchHandler(packagesBasePath, config.CacheTimeSearch))
+	router.HandleFunc("/categories", categoriesHandler(packagesBasePath, config.CacheTimeCategories))
 	router.HandleFunc("/health", healthHandler)
-	router.PathPrefix("/").HandlerFunc(catchAll(config.PublicDir, catchAllCacheTime))
+	router.PathPrefix("/").HandlerFunc(catchAll(config.PublicDir, config.CacheTimeCatchAll))
 
 	return router
 }

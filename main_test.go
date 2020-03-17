@@ -6,10 +6,12 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
 
 	"github.com/gorilla/mux"
 
@@ -18,7 +20,7 @@ import (
 
 var (
 	generateFlag  = flag.Bool("generate", false, "Write golden files")
-	testCacheTime = "1"
+	testCacheTime = 1 * time.Second
 )
 
 func TestEndpoints(t *testing.T) {
@@ -82,5 +84,6 @@ func runEndpoint(t *testing.T, endpoint, path, file string, handler func(w http.
 	}
 
 	assert.Equal(t, string(data), recorder.Body.String())
-	assert.Equal(t, recorder.Header()["Cache-Control"], []string{"max-age=" + testCacheTime, "public"})
+	cacheTime := fmt.Sprintf("%.0f", testCacheTime.Seconds())
+	assert.Equal(t, recorder.Header()["Cache-Control"], []string{"max-age=" + cacheTime, "public"})
 }
