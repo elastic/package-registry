@@ -5,15 +5,21 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
 	"path"
+	"strings"
 
 	"github.com/pkg/errors"
+
+	"github.com/elastic/package-registry/util"
 )
 
 type datasetContent struct {
+	manifest util.DataSet
+
 	fields        fieldsContent
 	elasticsearch elasticsearchContent
 }
@@ -26,7 +32,7 @@ type datasetManifestSinglePipeline struct {
 	IngestPipeline string `yaml:"ingest_pipeline"`
 }
 
-func createDatasets(modulePath, moduleName string) (map[string]datasetContent, error) {
+func createDatasets(modulePath, moduleName, moduleRelease, beatType string) (map[string]datasetContent, error) {
 	moduleFieldsFiles, err := loadModuleFields(modulePath)
 	if err != nil {
 		return nil, errors.Wrapf(err, "loading module fields failed (modulePath: %s)", modulePath)
@@ -58,6 +64,16 @@ func createDatasets(modulePath, moduleName string) (map[string]datasetContent, e
 		log.Printf("\t%s: dataset found", datasetName)
 		content := datasetContent{}
 
+		datasetRelease, err := determineDatasetRelease(moduleRelease, datasetPath)
+		if err != nil {
+			return nil, errors.Wrapf(err, "loading release from fields failed (datasetPath: %s", datasetPath)
+		}
+		manifest := util.DataSet{
+			Title:   strings.Title(fmt.Sprintf("%s %s %s", moduleName, datasetName, beatType)),
+			Release: datasetRelease,
+			Type:    beatType,
+		}
+
 		fieldsFiles, err := loadDatasetFields(modulePath, moduleName, datasetName)
 		if err != nil {
 			return nil, errors.Wrapf(err, "loading dataset fields failed (modulePath: %s, datasetName: %s)",
@@ -76,6 +92,7 @@ func createDatasets(modulePath, moduleName string) (map[string]datasetContent, e
 		}
 		content.elasticsearch = elasticsearch
 
+		content.manifest = manifest
 		contents[datasetName] = content
 	}
 	return contents, nil

@@ -1,4 +1,4 @@
 - name: couchdb
   type: group
-  description: >
+  description: Couchdb metrics
   fields:

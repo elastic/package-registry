@@ -58,7 +58,7 @@
                             {
                                 "field": "kubernetes.pod.network.tx.bytes",
                                 "id": "0d5c9221-2bf2-11e7-859b-f78b612cde28",
-                                "type": "sum"
+                                "type": "max"
                             },
                             {
                                 "field": "0d5c9221-2bf2-11e7-859b-f78b612cde28",

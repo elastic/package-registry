@@ -38,6 +38,7 @@ type Package struct {
 	Description   string       `config:"description" json:"description"`
 	Type          string       `config:"type" json:"type"`
 	Categories    []string     `config:"categories" json:"categories"`
+	Release       string       `config:"release,omitempty" json:"release,omitempty"`
 	Requirement   Requirement  `config:"requirement" json:"requirement"`
 	Screenshots   []Image      `config:"screenshots,omitempty" json:"screenshots,omitempty" yaml:"screenshots,omitempty"`
 	Icons         []Image      `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`

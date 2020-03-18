@@ -1,6 +1,6 @@
 - name: zookeeper.connection
   type: group
-  release: beta
+  release: ga
   description: >
     connections
   fields:

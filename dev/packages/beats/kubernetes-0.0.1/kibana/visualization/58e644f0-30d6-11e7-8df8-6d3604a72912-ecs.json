@@ -44,7 +44,7 @@
                             {
                                 "field": "kubernetes.container.cpu.usage.core.ns",
                                 "id": "5d3692a2-2bfc-11e7-859b-f78b612cde28",
-                                "type": "sum"
+                                "type": "max"
                             },
                             {
                                 "field": "5d3692a2-2bfc-11e7-859b-f78b612cde28",

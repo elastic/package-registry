@@ -12,16 +12,16 @@ import (
 )
 
 type DataSet struct {
-	ID             string   `config:"id" json:"id"`
+	ID             string   `config:"id" json:"id,omitempty" yaml:"id,omitempty"`
 	Title          string   `config:"title" json:"title" validate:"required"`
 	Release        string   `config:"release" json:"release"`
 	Type           string   `config:"type" json:"type" validate:"required"`
-	IngestPipeline string   `config:"ingest_pipeline,omitempty" config:"ingest_pipeline" json:"ingest_pipeline,omitempty"`
-	Streams        []Stream `config:"streams" json:"streams,omitempty" validate:"required"`
-	Package        string   `json:"package"`
+	IngestPipeline string   `config:"ingest_pipeline,omitempty" config:"ingest_pipeline" json:"ingest_pipeline,omitempty" yaml:"ingest_pipeline,omitempty"`
+	Streams        []Stream `config:"streams" json:"streams,omitempty" yaml:"streams,omitempty" validate:"required"`
+	Package        string   `json:"package,omitempty" yaml:"package,omitempty"`
 
 	// Generated fields
-	Path string `json:"path"`
+	Path string `json:"path,omitempty" yaml:"path,omitempty"`
 }
 
 type Input struct {
