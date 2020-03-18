@@ -64,16 +64,13 @@ func createDatasets(modulePath, moduleName, moduleRelease, beatType string) (map
 		log.Printf("\t%s: dataset found", datasetName)
 		content := datasetContent{}
 
+		// release
 		datasetRelease, err := determineDatasetRelease(moduleRelease, datasetPath)
 		if err != nil {
 			return nil, errors.Wrapf(err, "loading release from fields failed (datasetPath: %s", datasetPath)
 		}
-		manifest := util.DataSet{
-			Title:   strings.Title(fmt.Sprintf("%s %s %s", moduleName, datasetName, beatType)),
-			Release: datasetRelease,
-			Type:    beatType,
-		}
 
+		// fields
 		fieldsFiles, err := loadDatasetFields(modulePath, moduleName, datasetName)
 		if err != nil {
 			return nil, errors.Wrapf(err, "loading dataset fields failed (modulePath: %s, datasetName: %s)",
@@ -86,11 +83,25 @@ func createDatasets(modulePath, moduleName, moduleRelease, beatType string) (map
 			},
 		}
 
+		// elasticsearch
 		elasticsearch, err := loadElasticsearchContent(datasetPath)
 		if err != nil {
 			return nil, errors.Wrapf(err, "loading elasticsearch content failed (datasetPath: %s)", datasetPath)
 		}
 		content.elasticsearch = elasticsearch
+
+		// streams
+		streams, err := createStreams(modulePath, datasetName)
+		if err != nil {
+			return nil, errors.Wrapf(err, "creating streams failed (datasetPath: %s)", datasetPath)
+		}
+
+		// manifest
+		manifest := util.DataSet{
+			Title:   strings.Title(fmt.Sprintf("%s %s %s", moduleName, datasetName, beatType)),
+			Release: datasetRelease,
+			Type:    beatType,
+		}
 
 		content.manifest = manifest
 		contents[datasetName] = content
