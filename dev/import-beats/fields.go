@@ -16,6 +16,10 @@ import (
 	"github.com/pkg/errors"
 )
 
+type fieldsContent struct {
+	files map[string][]byte
+}
+
 func loadModuleFields(modulePath string) ([]byte, error) {
 	moduleFieldsPath := filepath.Join(modulePath, "_meta", "fields.yml")
 	moduleFieldsFile, err := os.Open(moduleFieldsPath)

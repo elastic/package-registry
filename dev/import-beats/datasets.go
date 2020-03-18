@@ -14,11 +14,16 @@ import (
 )
 
 type datasetContent struct {
-	fields fieldsContent
+	fields        fieldsContent
+	elasticsearch elasticsearchContent
 }
 
-type fieldsContent struct {
-	files map[string][]byte
+type datasetManifestMultiplePipelines struct {
+	IngestPipeline []string `yaml:"ingest_pipeline"`
+}
+
+type datasetManifestSinglePipeline struct {
+	IngestPipeline string `yaml:"ingest_pipeline"`
 }
 
 func createDatasets(modulePath, moduleName string) (map[string]datasetContent, error) {
@@ -43,7 +48,8 @@ func createDatasets(modulePath, moduleName string) (map[string]datasetContent, e
 			continue
 		}
 
-		_, err := os.Stat(path.Join(modulePath, datasetName, "_meta"))
+		datasetPath := path.Join(modulePath, datasetName)
+		_, err := os.Stat(path.Join(datasetPath, "_meta"))
 		if os.IsNotExist(err) {
 			log.Printf("\t%s: not a valid dataset, skipped", datasetName)
 			continue
@@ -57,13 +63,19 @@ func createDatasets(modulePath, moduleName string) (map[string]datasetContent, e
 			return nil, errors.Wrapf(err, "loading dataset fields failed (modulePath: %s, datasetName: %s)",
 				modulePath, datasetName)
 		}
-
 		content.fields = fieldsContent{
 			files: map[string][]byte{
 				"package-fields.yml": moduleFieldsFiles,
 				"fields.yml":         fieldsFiles,
 			},
 		}
+
+		elasticsearch, err := loadElasticsearchContent(datasetPath)
+		if err != nil {
+			return nil, errors.Wrapf(err, "loading elasticsearch content failed (datasetPath: %s)", datasetPath)
+		}
+		content.elasticsearch = elasticsearch
+
 		contents[datasetName] = content
 	}
 	return contents, nil

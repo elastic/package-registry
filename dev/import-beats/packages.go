@@ -230,6 +230,22 @@ func (r *packageRepository) save(outputDir string) error {
 					}
 				}
 			}
+
+			if len(dataset.elasticsearch.ingestPipelines) > 0 {
+				ingestPipelinePath := filepath.Join(datasetPath, "elasticsearch", "ingest-pipeline")
+				err := os.MkdirAll(ingestPipelinePath, 0755)
+				if err != nil {
+					return errors.Wrapf(err, "cannot make directory for dataset ingest pipelines: '%s'", ingestPipelinePath)
+				}
+
+				for _, ingestPipeline := range dataset.elasticsearch.ingestPipelines {
+					log.Printf("\tcopy ingest pipeline file '%s' to '%s'", ingestPipeline.source, ingestPipelinePath)
+					err := copyFileToTarget(ingestPipeline.source, ingestPipelinePath, ingestPipeline.targetFileName)
+					if err != nil {
+						return errors.Wrapf(err, "copying file failed")
+					}
+				}
+			}
 		}
 
 		// img
@@ -289,16 +305,20 @@ func (r *packageRepository) save(outputDir string) error {
 }
 
 func copyFile(src, dstDir string) error {
+	i := strings.LastIndex(src, "/")
+	sourceFileName := src[i:]
+
+	return copyFileToTarget(src, dstDir, sourceFileName)
+}
+
+func copyFileToTarget(src, dstDir, targetFileName string) error {
 	sourceFile, err := os.Open(src)
 	if err != nil {
 		return errors.Wrapf(err, "opening file failed (src: %s)", src)
 	}
 	defer sourceFile.Close()
 
-	i := strings.LastIndex(sourceFile.Name(), "/")
-	sourceFileName := sourceFile.Name()[i:]
-
-	dst := path.Join(dstDir, sourceFileName)
+	dst := path.Join(dstDir, targetFileName)
 	err = os.MkdirAll(dstDir, 0755)
 	if err != nil {
 		return errors.Wrapf(err, "cannot make directory: '%s'", dst)
