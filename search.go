@@ -20,8 +20,6 @@ import (
 
 func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		cacheHeaders(w, cacheTime)
-
 		query := r.URL.Query()
 
 		var kibanaVersion *semver.Version
@@ -124,6 +122,7 @@ func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http
 			return
 		}
 
+		cacheHeaders(w, cacheTime)
 		jsonHeader(w)
 		fmt.Fprint(w, string(data))
 	}
