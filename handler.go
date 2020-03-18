@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"time"
 )
 
 func notFound(w http.ResponseWriter, err error) {
@@ -20,7 +21,7 @@ func notFound(w http.ResponseWriter, err error) {
 	http.Error(w, errString, http.StatusNotFound)
 }
 
-func catchAll(publicPath, cacheTime string) func(w http.ResponseWriter, r *http.Request) {
+func catchAll(publicPath string, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		cacheHeaders(w, cacheTime)
 
@@ -92,7 +93,8 @@ func sendHeader(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func cacheHeaders(w http.ResponseWriter, cacheTime string) {
-	w.Header().Add("Cache-Control", "max-age="+cacheTime)
+func cacheHeaders(w http.ResponseWriter, cacheTime time.Duration) {
+	maxAge := fmt.Sprintf("max-age=%.0f", cacheTime.Seconds())
+	w.Header().Add("Cache-Control", maxAge)
 	w.Header().Add("Cache-Control", "public")
 }

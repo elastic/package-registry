@@ -11,13 +11,14 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/blang/semver"
 
 	"github.com/elastic/package-registry/util"
 )
 
-func searchHandler(packagesBasePath, cacheTime string) func(w http.ResponseWriter, r *http.Request) {
+func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		cacheHeaders(w, cacheTime)
 

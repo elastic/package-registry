@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"net/http"
 	"sort"
+	"time"
 
 	"github.com/elastic/package-registry/util"
 )
@@ -20,7 +21,7 @@ type Category struct {
 }
 
 // categoriesHandler is a dynamic handler as it will also allow filtering in the future.
-func categoriesHandler(packagesBasePath, cacheTime string) func(w http.ResponseWriter, r *http.Request) {
+func categoriesHandler(packagesBasePath string, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		cacheHeaders(w, cacheTime)
 
