@@ -62,3 +62,11 @@ datasources:
 icons:
   - src: "/img/icon.svg"
     type: "image/svg+xml"
+
+screenshots:
+  - src: /img/metrics.png
+    title: Nginx metrics overview
+    size: 2560x2100
+  - src: /img/logs.png
+    title: Nginx logs overview
+    size: 1218x1266
