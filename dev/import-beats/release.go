@@ -5,10 +5,9 @@
 package main
 
 import (
-	"fmt"
 	"io/ioutil"
 	"os"
-	"path/filepath"
+	"path"
 
 	"github.com/pkg/errors"
 	"gopkg.in/yaml.v2"
@@ -27,7 +26,7 @@ func determinePackageRelease(manifestRelease, modulePath string) (string, error)
 		return "ga", nil
 	}
 
-	moduleRelease, err := loadModuleRelease(modulePath)
+	moduleRelease, err := loadReleaseFromFields(path.Join(modulePath, "_meta"))
 	if err != nil {
 		return "", errors.Wrapf(err, "loading module release failed (path: %s)", modulePath)
 	}
@@ -42,26 +41,38 @@ func determinePackageRelease(manifestRelease, modulePath string) (string, error)
 	return "experimental", nil
 }
 
-func loadModuleRelease(modulePath string) (string, error) {
-	moduleFieldsPath := filepath.Join(modulePath, "_meta", "fields.yml")
-	moduleFieldsFile, err := os.Open(moduleFieldsPath)
+func determineDatasetRelease(moduleRelease, datasetPath string) (string, error) {
+	datasetRelease, err := loadReleaseFromFields(path.Join(datasetPath, "_meta"))
 	if err != nil {
-		return "", errors.Wrapf(err, "opening module fields file failed (path: %s)", moduleFieldsPath)
+		return "", errors.Wrapf(err, "loading dataset release failed (path: %s)", datasetPath)
 	}
 
-	moduleFields, err := ioutil.ReadAll(moduleFieldsFile)
+	if datasetRelease != "" {
+		return datasetRelease, nil
+	}
+	return moduleRelease, nil
+}
+
+func loadReleaseFromFields(metaDir string) (string, error) {
+	fieldsFilePath := path.Join(metaDir, "fields.yml")
+	fieldsFile, err := os.Open(fieldsFilePath)
 	if err != nil {
-		return "", errors.Wrapf(err, "reading module fields file failed (path: %s)", moduleFieldsPath)
+		return "", errors.Wrapf(err, "opening fields file failed (path: %s)", fieldsFilePath)
+	}
+
+	fields, err := ioutil.ReadAll(fieldsFile)
+	if err != nil {
+		return "", errors.Wrapf(err, "reading fields file failed (path: %s)", fieldsFilePath)
 	}
 
 	var frs []fieldsRelease
-	err = yaml.Unmarshal(moduleFields, &frs)
+	err = yaml.Unmarshal(fields, &frs)
 	if err != nil {
-		return "", errors.Wrapf(err, "unmarshalling module fields file failed (path: %s)", moduleFieldsPath)
+		return "", errors.Wrapf(err, "unmarshalling fields file failed (path: %s)", fieldsFilePath)
 	}
 
 	if len(frs) == 0 {
-		return "", fmt.Errorf("module fields file is empty (path: %s)", moduleFieldsPath)
+		return "", nil // reporting: release not set, but it's accepted
 	}
 
 	return frs[0].Release, nil

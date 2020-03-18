@@ -61,9 +61,17 @@ func loadElasticsearchContent(datasetPath string) (elasticsearchContent, error) 
 
 		log.Printf("\tingest-pipeline found: %s", ingestPipeline)
 
-		targetFileName, err := determineIngestPipelineTargetName(ingestPipeline)
-		if err != nil {
-			return elasticsearchContent{}, errors.Wrapf(err, "can't determine ingest pipeline target name (path: %s)", ingestPipeline)
+		var targetFileName string
+		if len(ingestPipelines) == 1 {
+			targetFileName, err = buildSingleIngestPipelineTargetName(ingestPipeline)
+			if err != nil {
+				return elasticsearchContent{}, errors.Wrapf(err, "can't build single ingest pipeline target name (path: %s)", ingestPipeline)
+			}
+		} else {
+			targetFileName, err = determineIngestPipelineTargetName(ingestPipeline)
+			if err != nil {
+				return elasticsearchContent{}, errors.Wrapf(err, "can't determine ingest pipeline target name (path: %s)", ingestPipeline)
+			}
 		}
 		esc.ingestPipelines = append(esc.ingestPipelines, ingestPipelineContent{
 			source:         path.Join(datasetPath, ingestPipeline),
@@ -72,6 +80,15 @@ func loadElasticsearchContent(datasetPath string) (elasticsearchContent, error) 
 	}
 
 	return esc, nil
+}
+
+func buildSingleIngestPipelineTargetName(path string) (string, error) {
+	lastDot := strings.LastIndex(path, ".")
+	if lastDot == -1 {
+		return "", fmt.Errorf("ingest pipeline file must have an extension")
+	}
+	fileExt := path[lastDot+1:]
+	return "default." + fileExt, nil
 }
 
 func ensurePipelineFormat(ingestPipeline string) string {

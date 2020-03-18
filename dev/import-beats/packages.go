@@ -85,7 +85,7 @@ func newPackageRepository(iconRepository *iconRepository, kibanaMigrator *kibana
 	}
 }
 
-func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, packageType string) error {
+func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatType string) error {
 	beatPath := filepath.Join(beatsDir, beatName)
 	beatModulesPath := filepath.Join(beatPath, "module")
 
@@ -105,6 +105,7 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, package
 			log.Printf("%s %s: module skipped\n", beatName, moduleName)
 			continue
 		}
+		modulePath := path.Join(beatModulesPath, moduleName)
 
 		_, ok := r.packages[moduleName]
 		if !ok {
@@ -113,11 +114,16 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, package
 
 		aPackage := r.packages[moduleName]
 		manifest := aPackage.manifest
-		manifest.Categories = append(manifest.Categories, packageType)
+		manifest.Categories = append(manifest.Categories, beatType)
+
+		// release
+		manifest.Release, err = determinePackageRelease(manifest.Release, modulePath)
+		if err != nil {
+			return err
+		}
 
 		// dataset
-		modulePath := path.Join(beatModulesPath, moduleName)
-		datasets, err := createDatasets(modulePath, moduleName)
+		datasets, err := createDatasets(modulePath, moduleName, manifest.Release, beatType)
 		if err != nil {
 			return err
 		}
@@ -171,17 +177,11 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, package
 		}
 
 		// datasources
-		aPackage.datasources, err = updateDatasources(aPackage.datasources, moduleName, packageType)
+		aPackage.datasources, err = updateDatasources(aPackage.datasources, moduleName, beatType)
 		if err != nil {
 			return err
 		}
 		manifest.Datasources = aPackage.datasources.toMetadataDatasources()
-
-		// release
-		manifest.Release, err = determinePackageRelease(manifest.Release, modulePath)
-		if err != nil {
-			return err
-		}
 
 		aPackage.manifest = manifest
 		r.packages[moduleDir.Name()] = aPackage
@@ -203,7 +203,7 @@ func (r *packageRepository) save(outputDir string) error {
 
 		m, err := yaml.Marshal(content.manifest)
 		if err != nil {
-			return errors.Wrapf(err, "marshaling package content failed (package packageName: %s)", packageName)
+			return errors.Wrapf(err, "marshaling package manifest failed (packageName: %s)", packageName)
 		}
 
 		manifestFilePath := filepath.Join(packagePath, "manifest.yml")
@@ -220,6 +220,19 @@ func (r *packageRepository) save(outputDir string) error {
 				return errors.Wrapf(err, "cannot make directory for dataset: '%s'", datasetPath)
 			}
 
+			// dataset/manifest.yml
+			m, err := yaml.Marshal(dataset.manifest)
+			if err != nil {
+				return errors.Wrapf(err, "marshaling dataset manifest failed (datasetName: %s)", datasetName)
+			}
+
+			manifestFilePath := filepath.Join(datasetPath, "manifest.yml")
+			err = ioutil.WriteFile(manifestFilePath, m, 0644)
+			if err != nil {
+				return errors.Wrapf(err, "writing dataset manifest file failed (path: %s)", manifestFilePath)
+			}
+
+			// dataset/fields
 			if len(dataset.fields.files) > 0 {
 				datasetFieldsPath := filepath.Join(datasetPath, "fields")
 				err := os.MkdirAll(datasetFieldsPath, 0755)
