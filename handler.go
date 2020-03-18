@@ -18,12 +18,12 @@ func notFound(w http.ResponseWriter, err error) {
 	if err != nil {
 		errString = err.Error()
 	}
+
 	http.Error(w, errString, http.StatusNotFound)
 }
 
 func catchAll(publicPath string, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		cacheHeaders(w, cacheTime)
 
 		path := r.RequestURI
 
@@ -54,6 +54,8 @@ func catchAll(publicPath string, cacheTime time.Duration) func(w http.ResponseWr
 			notFound(w, fmt.Errorf("404 Page Not Found Error"))
 			return
 		}
+
+		cacheHeaders(w, cacheTime)
 		sendHeader(w, r)
 		w.Write(data)
 	}
