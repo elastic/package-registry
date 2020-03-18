@@ -7,6 +7,7 @@ description: Redisenterprise Integration
 type: integration
 categories:
 - metrics
+release: beta
 requirement:
   kibana:
     versions: ""

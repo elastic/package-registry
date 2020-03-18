@@ -41,6 +41,7 @@ func newPackageContent(name string) packageContent {
 			Version:       "0.0.1", // TODO
 			Type:          "integration",
 			License:       "basic",
+			Release:       "beta", // default release version
 		},
 		datasets: map[string]datasetContent{},
 		kibana: kibanaContent{
@@ -175,6 +176,12 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, package
 			return err
 		}
 		manifest.Datasources = aPackage.datasources.toMetadataDatasources()
+
+		// release
+		manifest.Release, err = determinePackageRelease(manifest.Release, modulePath)
+		if err != nil {
+			return err
+		}
 
 		aPackage.manifest = manifest
 		r.packages[moduleDir.Name()] = aPackage
