@@ -1,3 +1,18 @@
 title: Zeek Stats Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/bro/current/stats.log
+    name: paths
+    os.darwin:
+    - /usr/local/var/logs/current/stats.log
+    os.linux:
+    - /var/log/bro/current/stats.log
+  - default:
+    - zeek.stats
+    name: tags
+  title: Zeek stats logs
+  description: Collect Zeek stats logs

@@ -1,3 +1,20 @@
 title: Zeek Ftp Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/bro/current/ftp.log
+    name: paths
+    os.darwin:
+    - /usr/local/var/logs/current/ftp.log
+    os.linux:
+    - /var/log/bro/current/ftp.log
+  - default:
+    - zeek.ftp
+    name: tags
+  - default: true
+    name: community_id
+  title: Zeek ftp logs
+  description: Collect Zeek ftp logs

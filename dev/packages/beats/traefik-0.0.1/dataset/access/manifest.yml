@@ -1,3 +1,15 @@
 title: Traefik Access Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/traefik/access.log*
+    name: paths
+    os.darwin:
+    - /usr/local/traefik/access.log*
+    os.windows:
+    - c:/programdata/traefik/logs/*access.log*
+  title: Traefik access logs
+  description: Collect Traefik access logs

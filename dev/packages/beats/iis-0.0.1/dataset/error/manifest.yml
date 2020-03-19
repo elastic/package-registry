@@ -1,3 +1,17 @@
 title: Iis Error Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - c:/Windows/System32/LogFiles/HTTPERR/*.log
+    name: paths
+    os.darwin:
+    - ""
+    os.linux:
+    - ""
+    os.windows:
+    - c:/Windows/System32/LogFiles/HTTPERR/*.log
+  title: Iis error logs
+  description: Collect Iis error logs

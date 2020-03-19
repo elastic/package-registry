@@ -1,3 +1,13 @@
 title: Santa Log Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/santa.log
+    name: paths
+  - default: file
+    name: input
+  title: Santa log logs
+  description: Collect Santa log logs

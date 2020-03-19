@@ -1,3 +1,13 @@
 title: Mongodb Log Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/mongodb/mongodb.log
+    name: paths
+    os.windows:
+    - c:\data\log\mongod.log
+  title: Mongodb log logs
+  description: Collect Mongodb log logs

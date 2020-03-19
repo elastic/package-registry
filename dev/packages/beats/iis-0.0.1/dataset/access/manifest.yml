@@ -1,3 +1,17 @@
 title: Iis Access Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - C:/inetpub/logs/LogFiles/*/*.log
+    name: paths
+    os.darwin:
+    - ""
+    os.linux:
+    - ""
+    os.windows:
+    - C:/inetpub/logs/LogFiles/*/*.log
+  title: Iis access logs
+  description: Collect Iis access logs

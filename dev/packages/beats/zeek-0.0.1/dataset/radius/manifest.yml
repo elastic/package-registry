@@ -1,3 +1,20 @@
 title: Zeek Radius Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/bro/current/radius.log
+    name: paths
+    os.darwin:
+    - /usr/local/var/logs/current/radius.log
+    os.linux:
+    - /var/log/bro/current/radius.log
+  - default:
+    - zeek.radius
+    name: tags
+  - default: true
+    name: community_id
+  title: Zeek radius logs
+  description: Collect Zeek radius logs

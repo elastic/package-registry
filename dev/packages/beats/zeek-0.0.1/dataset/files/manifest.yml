@@ -1,3 +1,20 @@
 title: Zeek Files Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/bro/current/files.log
+    name: paths
+    os.darwin:
+    - /usr/local/var/logs/current/files.log
+    os.linux:
+    - /var/log/bro/current/files.log
+  - default:
+    - zeek.files
+    name: tags
+  - default: true
+    name: community_id
+  title: Zeek files logs
+  description: Collect Zeek files logs

@@ -1,3 +1,15 @@
 title: Activemq Audit Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /opt/apache-activemq-*/data/audit.log*
+    name: paths
+    os.darwin:
+    - /usr/local/apache-activemq-*/data/audit.log*
+    os.windows:
+    - c:/apache-activemq-*/data/audit.log*
+  title: Activemq audit logs
+  description: Collect Activemq audit logs

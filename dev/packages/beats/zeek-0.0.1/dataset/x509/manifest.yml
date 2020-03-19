@@ -1,3 +1,20 @@
 title: Zeek X509 Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/bro/current/x509.log
+    name: paths
+    os.darwin:
+    - /usr/local/var/logs/current/x509.log
+    os.linux:
+    - /var/log/bro/current/x509.log
+  - default:
+    - zeek.x509
+    name: tags
+  - default: true
+    name: community_id
+  title: Zeek x509 logs
+  description: Collect Zeek x509 logs

@@ -1,3 +1,17 @@
 title: Mssql Log Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/opt/mssql/log/error*
+    name: paths
+    os.darwin:
+    - /var/opt/mssql/log/error*
+    os.linux:
+    - /var/opt/mssql/log/error*
+    os.windows:
+    - c:\ProgramFiles\Microsoft SQL Server\MSSQL.1MSSQL\LOG\ERRORLOG*
+  title: Mssql log logs
+  description: Collect Mssql log logs

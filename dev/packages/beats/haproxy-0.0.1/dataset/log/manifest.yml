@@ -1,3 +1,17 @@
 title: Haproxy Log Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/haproxy.log
+    name: paths
+  - default: localhost
+    name: syslog_host
+  - default: 9001
+    name: syslog_port
+  - default: syslog
+    name: input
+  title: Haproxy log logs
+  description: Collect Haproxy log logs

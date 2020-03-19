@@ -1,3 +1,20 @@
 title: Cisco Ios Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/cisco-ios.log
+    name: paths
+  - default:
+    - cisco-ios
+    name: tags
+  - default: localhost
+    name: syslog_host
+  - default: 9002
+    name: syslog_port
+  - default: syslog
+    name: input
+  title: Cisco ios logs
+  description: Collect Cisco ios logs

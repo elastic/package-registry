@@ -1,3 +1,11 @@
 title: Nats Log Logs
 release: beta
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/nats/nats.log*
+    name: paths
+  title: Nats log logs
+  description: Collect Nats log logs

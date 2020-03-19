@@ -161,11 +161,11 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 		manifest.Screenshots = append(manifest.Screenshots, screenshots...)
 
 		// kibana
-		kibana, err := createKibanaContent(r.kibanaMigrator, modulePath)
+		/*kibana, err := createKibanaContent(r.kibanaMigrator, modulePath)
 		if err != nil {
 			return err
 		}
-		aPackage.addKibanaContent(kibana)
+		aPackage.addKibanaContent(kibana)*/
 
 		// docs
 		if len(aPackage.docs) == 0 {

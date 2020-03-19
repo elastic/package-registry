@@ -1,3 +1,15 @@
 title: Nginx Access Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/nginx/access.log*
+    name: paths
+    os.darwin:
+    - /usr/local/var/log/nginx/access.log*
+    os.windows:
+    - c:/programdata/nginx/logs/*access.log*
+  title: Nginx access logs
+  description: Collect Nginx access logs

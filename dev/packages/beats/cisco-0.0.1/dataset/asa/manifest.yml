@@ -1,3 +1,29 @@
 title: Cisco Asa Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/cisco-asa.log
+    name: paths
+  - default:
+    - cisco-asa
+    name: tags
+  - default: localhost
+    name: syslog_host
+  - default: 9001
+    name: syslog_port
+  - default: syslog
+    name: input
+  - default: 7
+    min_elasticsearch_version:
+      value: false
+      version: 6.1.0
+    name: log_level
+  - default: asa
+    name: internal_prefix
+  - default: ASA
+    name: internal_PREFIX
+  title: Cisco asa logs
+  description: Collect Cisco asa logs

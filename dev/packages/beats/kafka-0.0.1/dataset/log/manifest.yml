@@ -1,3 +1,16 @@
 title: Kafka Log Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default: /opt/kafka*
+    name: kafka_home
+  - default:
+    - '{{.kafka_home}}/logs/controller.log*'
+    - '{{.kafka_home}}/logs/server.log*'
+    - '{{.kafka_home}}/logs/state-change.log*'
+    - '{{.kafka_home}}/logs/kafka-*.log*'
+    name: paths
+  title: Kafka log logs
+  description: Collect Kafka log logs

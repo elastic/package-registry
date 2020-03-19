@@ -1,3 +1,20 @@
 title: Zeek Socks Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/bro/current/socks.log
+    name: paths
+    os.darwin:
+    - /usr/local/var/logs/current/socks.log
+    os.linux:
+    - /var/log/bro/current/socks.log
+  - default:
+    - zeek.socks
+    name: tags
+  - default: true
+    name: community_id
+  title: Zeek socks logs
+  description: Collect Zeek socks logs

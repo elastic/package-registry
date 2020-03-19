@@ -1,3 +1,20 @@
 title: Zeek Rfb Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/bro/current/rfb.log
+    name: paths
+    os.darwin:
+    - /usr/local/var/logs/current/rfb.log
+    os.linux:
+    - /var/log/bro/current/rfb.log
+  - default:
+    - zeek.rfb
+    name: tags
+  - default: true
+    name: community_id
+  title: Zeek rfb logs
+  description: Collect Zeek rfb logs

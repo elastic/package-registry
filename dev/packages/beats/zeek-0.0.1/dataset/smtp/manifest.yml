@@ -1,3 +1,20 @@
 title: Zeek Smtp Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/bro/current/smtp.log
+    name: paths
+    os.darwin:
+    - /usr/local/var/logs/current/smtp.log
+    os.linux:
+    - /var/log/bro/current/smtp.log
+  - default:
+    - zeek.smtp
+    name: tags
+  - default: true
+    name: community_id
+  title: Zeek smtp logs
+  description: Collect Zeek smtp logs

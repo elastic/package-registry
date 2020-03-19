@@ -1,3 +1,20 @@
 title: Cef Log Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/cef.log
+    name: paths
+  - default:
+    - cef
+    name: tags
+  - default: localhost
+    name: syslog_host
+  - default: 9003
+    name: syslog_port
+  - default: syslog
+    name: input
+  title: Cef log logs
+  description: Collect Cef log logs

@@ -91,7 +91,7 @@ func createDatasets(modulePath, moduleName, moduleRelease, beatType string) (map
 		content.elasticsearch = elasticsearch
 
 		// streams
-		streams, err := createStreams(modulePath, datasetName)
+		streams, err := createStreams(modulePath, moduleName, datasetName, beatType)
 		if err != nil {
 			return nil, errors.Wrapf(err, "creating streams failed (datasetPath: %s)", datasetPath)
 		}
@@ -101,6 +101,7 @@ func createDatasets(modulePath, moduleName, moduleRelease, beatType string) (map
 			Title:   strings.Title(fmt.Sprintf("%s %s %s", moduleName, datasetName, beatType)),
 			Release: datasetRelease,
 			Type:    beatType,
+			Streams: streams,
 		}
 
 		content.manifest = manifest

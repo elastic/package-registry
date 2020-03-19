@@ -1,3 +1,20 @@
 title: Zeek Dnp3 Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/bro/current/dnp3.log
+    name: paths
+    os.darwin:
+    - /usr/local/var/logs/current/dnp3.log
+    os.linux:
+    - /var/log/bro/current/dnp3.log
+  - default:
+    - zeek.dnp3
+    name: tags
+  - default: true
+    name: community_id
+  title: Zeek dnp3 logs
+  description: Collect Zeek dnp3 logs

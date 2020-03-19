@@ -1,3 +1,20 @@
 title: Zeek Sip Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/bro/current/sip.log
+    name: paths
+    os.darwin:
+    - /usr/local/var/logs/current/sip.log
+    os.linux:
+    - /var/log/bro/current/sip.log
+  - default:
+    - zeek.sip
+    name: tags
+  - default: true
+    name: community_id
+  title: Zeek sip logs
+  description: Collect Zeek sip logs

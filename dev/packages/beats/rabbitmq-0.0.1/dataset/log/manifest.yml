@@ -1,3 +1,14 @@
 title: Rabbitmq Log Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - ${RABBITMQ_LOGS:/var/log/rabbitmq/rabbit@localhost.log*}
+    name: paths
+    os.darwin:
+    - ${RABBITMQ_LOGS:/usr/local/var/log/rabbitmq/rabbit@localhost.log*}
+    os.windows: null
+  title: Rabbitmq log logs
+  description: Collect Rabbitmq log logs

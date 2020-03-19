@@ -1,3 +1,11 @@
 title: Kibana Log Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/kibana/kibana.stdout
+    name: paths
+  title: Kibana log logs
+  description: Collect Kibana log logs

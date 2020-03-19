@@ -1,3 +1,22 @@
 title: Panw Panos Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/pan-os.log
+    name: paths
+  - default:
+    - pan-os
+    name: tags
+  - default: localhost
+    name: syslog_host
+  - default: 9001
+    name: syslog_port
+  - default: syslog
+    name: input
+  - default: true
+    name: community_id
+  title: Panw panos logs
+  description: Collect Panw panos logs

@@ -1,3 +1,20 @@
 title: Zeek Modbus Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/bro/current/modbus.log
+    name: paths
+    os.darwin:
+    - /usr/local/var/logs/current/modbus.log
+    os.linux:
+    - /var/log/bro/current/modbus.log
+  - default:
+    - zeek.modbus
+    name: tags
+  - default: true
+    name: community_id
+  title: Zeek modbus logs
+  description: Collect Zeek modbus logs

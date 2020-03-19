@@ -1,3 +1,20 @@
 title: Zeek Irc Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/bro/current/irc.log
+    name: paths
+    os.darwin:
+    - /usr/local/var/logs/current/irc.log
+    os.linux:
+    - /var/log/bro/current/irc.log
+  - default:
+    - zeek.irc
+    name: tags
+  - default: true
+    name: community_id
+  title: Zeek irc logs
+  description: Collect Zeek irc logs

@@ -1,3 +1,20 @@
 title: Zeek Snmp Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/bro/current/snmp.log
+    name: paths
+    os.darwin:
+    - /usr/local/var/logs/current/snmp.log
+    os.linux:
+    - /var/log/bro/current/snmp.log
+  - default:
+    - zeek.snmp
+    name: tags
+  - default: true
+    name: community_id
+  title: Zeek snmp logs
+  description: Collect Zeek snmp logs
