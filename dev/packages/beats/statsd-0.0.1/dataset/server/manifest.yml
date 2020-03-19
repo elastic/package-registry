@@ -2,3 +2,5 @@ id: server
 title: Statsd Server Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

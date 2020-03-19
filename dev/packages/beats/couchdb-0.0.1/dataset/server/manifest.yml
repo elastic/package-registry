@@ -2,3 +2,5 @@ id: server
 title: Couchdb Server Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

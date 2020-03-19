@@ -2,3 +2,5 @@ id: cluster
 title: Couchbase Cluster Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

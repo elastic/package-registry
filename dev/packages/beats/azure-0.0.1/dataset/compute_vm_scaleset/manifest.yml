@@ -2,3 +2,5 @@ id: compute_vm_scaleset
 title: Azure Compute_vm_scaleset Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

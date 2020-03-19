@@ -2,3 +2,5 @@ id: socket
 title: System Socket Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

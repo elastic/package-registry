@@ -2,3 +2,5 @@ id: node_stats
 title: Elasticsearch Node_stats Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

@@ -2,3 +2,5 @@ id: node
 title: Rabbitmq Node Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

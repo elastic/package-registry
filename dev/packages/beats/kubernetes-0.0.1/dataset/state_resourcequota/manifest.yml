@@ -2,3 +2,5 @@ id: state_resourcequota
 title: Kubernetes State_resourcequota Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

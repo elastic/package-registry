@@ -2,3 +2,5 @@ id: channels
 title: Stan Channels Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

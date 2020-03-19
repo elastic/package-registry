@@ -2,3 +2,5 @@ id: transaction_log
 title: Mssql Transaction_log Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

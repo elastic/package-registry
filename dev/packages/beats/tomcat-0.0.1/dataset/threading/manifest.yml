@@ -2,3 +2,5 @@ id: threading
 title: Tomcat Threading Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

@@ -2,3 +2,5 @@ id: state_persistentvolumeclaim
 title: Kubernetes State_persistentvolumeclaim Metrics
 release: experimental
 type: metrics
+streams:
+- input: TODO

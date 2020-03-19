@@ -2,3 +2,5 @@ id: mgr_cluster_health
 title: Ceph Mgr_cluster_health Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

@@ -2,3 +2,5 @@ id: pending_tasks
 title: Elasticsearch Pending_tasks Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

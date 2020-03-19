@@ -2,3 +2,5 @@ id: application_pool
 title: Iis Application_pool Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

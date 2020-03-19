@@ -2,3 +2,5 @@ id: server
 title: Http Server Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

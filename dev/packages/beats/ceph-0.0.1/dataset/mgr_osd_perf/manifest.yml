@@ -2,3 +2,5 @@ id: mgr_osd_perf
 title: Ceph Mgr_osd_perf Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

@@ -2,3 +2,5 @@ id: container_service
 title: Azure Container_service Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

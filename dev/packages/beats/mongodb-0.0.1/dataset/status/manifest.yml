@@ -2,3 +2,5 @@ id: status
 title: Mongodb Status Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

@@ -2,3 +2,5 @@ id: memory
 title: System Memory Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

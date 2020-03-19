@@ -2,3 +2,5 @@ id: galera_status
 title: Mysql Galera_status Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

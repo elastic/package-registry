@@ -2,3 +2,5 @@ id: entropy
 title: System Entropy Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

@@ -2,3 +2,5 @@ id: state
 title: Beat State Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

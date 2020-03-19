@@ -2,3 +2,5 @@ id: pool
 title: Php_fpm Pool Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

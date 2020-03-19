@@ -2,3 +2,5 @@ id: ccr
 title: Elasticsearch Ccr Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

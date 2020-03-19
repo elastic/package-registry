@@ -2,3 +2,5 @@ id: network_summary
 title: System Network_summary Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

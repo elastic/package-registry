@@ -2,3 +2,5 @@ id: jmx
 title: Jolokia Jmx Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

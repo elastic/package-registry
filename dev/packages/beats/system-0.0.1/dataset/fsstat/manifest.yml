@@ -2,3 +2,5 @@ id: fsstat
 title: System Fsstat Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

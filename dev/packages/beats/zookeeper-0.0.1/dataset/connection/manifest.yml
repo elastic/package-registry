@@ -2,3 +2,5 @@ id: connection
 title: Zookeeper Connection Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

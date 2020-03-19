@@ -2,3 +2,5 @@ id: ebs
 title: Aws Ebs Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

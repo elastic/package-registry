@@ -2,3 +2,5 @@ id: stat
 title: Haproxy Stat Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

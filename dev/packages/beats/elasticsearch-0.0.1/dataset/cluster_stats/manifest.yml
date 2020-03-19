@@ -2,3 +2,5 @@ id: cluster_stats
 title: Elasticsearch Cluster_stats Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

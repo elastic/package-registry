@@ -2,3 +2,5 @@ id: metrics
 title: Mongodb Metrics Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

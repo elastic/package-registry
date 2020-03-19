@@ -2,3 +2,5 @@ id: cpu
 title: System Cpu Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

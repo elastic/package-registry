@@ -2,3 +2,5 @@ id: diskio
 title: System Diskio Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

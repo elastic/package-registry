@@ -2,3 +2,5 @@ id: process
 title: Php_fpm Process Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

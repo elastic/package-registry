@@ -2,3 +2,5 @@ id: state_pod
 title: Kubernetes State_pod Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

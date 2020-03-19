@@ -2,3 +2,5 @@ id: routes
 title: Nats Routes Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

@@ -2,3 +2,5 @@ id: core
 title: System Core Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

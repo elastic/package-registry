@@ -2,3 +2,5 @@ id: image
 title: Docker Image Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

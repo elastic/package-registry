@@ -2,3 +2,5 @@ id: status
 title: Uwsgi Status Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

@@ -2,3 +2,5 @@ id: partition
 title: Kafka Partition Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

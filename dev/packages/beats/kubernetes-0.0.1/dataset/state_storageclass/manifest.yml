@@ -2,3 +2,5 @@ id: state_storageclass
 title: Kubernetes State_storageclass Metrics
 release: experimental
 type: metrics
+streams:
+- input: TODO

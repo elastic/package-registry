@@ -2,3 +2,5 @@ id: mgr_cluster_disk
 title: Ceph Mgr_cluster_disk Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

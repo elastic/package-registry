@@ -2,3 +2,5 @@ id: uptime
 title: System Uptime Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

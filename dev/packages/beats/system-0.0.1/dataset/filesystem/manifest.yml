@@ -2,3 +2,5 @@ id: filesystem
 title: System Filesystem Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

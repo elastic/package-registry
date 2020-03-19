@@ -2,3 +2,5 @@ id: users
 title: System Users Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

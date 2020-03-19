@@ -2,3 +2,5 @@ id: exchange
 title: Rabbitmq Exchange Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

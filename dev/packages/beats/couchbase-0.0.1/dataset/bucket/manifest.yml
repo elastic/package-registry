@@ -2,3 +2,5 @@ id: bucket
 title: Couchbase Bucket Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

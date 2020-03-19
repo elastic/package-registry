@@ -2,3 +2,5 @@ id: counter
 title: Cloudfoundry Counter Metrics
 release: experimental
 type: metrics
+streams:
+- input: TODO

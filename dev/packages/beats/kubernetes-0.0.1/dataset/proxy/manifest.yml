@@ -2,3 +2,5 @@ id: proxy
 title: Kubernetes Proxy Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

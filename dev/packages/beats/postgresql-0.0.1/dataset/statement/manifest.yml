@@ -2,3 +2,5 @@ id: statement
 title: Postgresql Statement Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

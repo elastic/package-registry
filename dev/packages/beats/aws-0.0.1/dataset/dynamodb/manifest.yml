@@ -2,3 +2,5 @@ id: dynamodb
 title: Aws Dynamodb Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

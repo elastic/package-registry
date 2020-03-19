@@ -2,3 +2,5 @@ id: stackdriver
 title: Googlecloud Stackdriver Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

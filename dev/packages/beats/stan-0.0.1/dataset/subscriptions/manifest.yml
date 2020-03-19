@@ -2,3 +2,5 @@ id: subscriptions
 title: Stan Subscriptions Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

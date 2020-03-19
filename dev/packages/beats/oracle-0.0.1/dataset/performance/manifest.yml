@@ -2,3 +2,5 @@ id: performance
 title: Oracle Performance Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

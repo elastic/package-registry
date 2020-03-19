@@ -2,3 +2,5 @@ id: server
 title: Graphite Server Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

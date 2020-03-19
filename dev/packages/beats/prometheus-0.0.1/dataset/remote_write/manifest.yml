@@ -2,3 +2,5 @@ id: remote_write
 title: Prometheus Remote_write Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

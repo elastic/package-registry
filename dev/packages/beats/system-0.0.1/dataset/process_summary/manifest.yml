@@ -2,3 +2,5 @@ id: process_summary
 title: System Process_summary Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

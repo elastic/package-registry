@@ -54,5 +54,9 @@ func createLogStreams(modulePath, moduleName, datasetName, beatType string) ([]u
 }
 
 func createMetricStreams() ([]util.Stream, error) {
-	return nil, nil // TODO
+	return []util.Stream{
+		{
+			Input: "TODO",
+		},
+	}, nil // TODO
 }

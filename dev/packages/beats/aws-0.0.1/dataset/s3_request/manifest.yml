@@ -2,3 +2,5 @@ id: s3_request
 title: Aws S3_request Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

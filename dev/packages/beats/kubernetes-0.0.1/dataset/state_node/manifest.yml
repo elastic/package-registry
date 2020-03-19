@@ -2,3 +2,5 @@ id: state_node
 title: Kubernetes State_node Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

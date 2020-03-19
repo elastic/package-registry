@@ -2,3 +2,5 @@ id: pool_disk
 title: Ceph Pool_disk Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

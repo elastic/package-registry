@@ -2,3 +2,5 @@ id: load
 title: System Load Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

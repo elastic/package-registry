@@ -2,3 +2,5 @@ id: stubstatus
 title: Nginx Stubstatus Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

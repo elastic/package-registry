@@ -2,3 +2,5 @@ id: ml_job
 title: Elasticsearch Ml_job Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO
