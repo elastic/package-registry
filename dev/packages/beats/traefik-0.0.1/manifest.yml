@@ -13,12 +13,12 @@ requirement:
   kibana:
     versions: ""
 screenshots:
-- src: img/kibana-traefik.png
+- src: /img/kibana-traefik.png
   title: Kibana Traefik
   size: 1409x1254
   type: image/png
 icons:
-- src: img/traefik.svg
+- src: /img/traefik.svg
   title: Traefik
   size: 340x456
   type: image/svg+xml

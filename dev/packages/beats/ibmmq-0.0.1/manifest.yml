@@ -13,24 +13,24 @@ requirement:
   kibana:
     versions: ""
 screenshots:
-- src: img/filebeat-ibmmq.png
+- src: /img/filebeat-ibmmq.png
   title: Filebeat Ibmmq
   size: 1849x846
   type: image/png
-- src: img/metricbeat-ibmmq-calls.png
+- src: /img/metricbeat-ibmmq-calls.png
   title: Metricbeat Ibmmq Calls
   size: 3360x3040
   type: image/png
-- src: img/metricbeat-ibmmq-messages.png
+- src: /img/metricbeat-ibmmq-messages.png
   title: Metricbeat Ibmmq Messages
   size: 3360x3040
   type: image/png
-- src: img/metricbeat-ibmmq-subscriptions.png
+- src: /img/metricbeat-ibmmq-subscriptions.png
   title: Metricbeat Ibmmq Subscriptions
   size: 3360x2368
   type: image/png
 icons:
-- src: img/ibmmq.svg
+- src: /img/ibmmq.svg
   title: Ibmmq
   size: 32x32
   type: image/svg+xml

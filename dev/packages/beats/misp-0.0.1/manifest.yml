@@ -12,7 +12,7 @@ requirement:
   kibana:
     versions: ""
 screenshots:
-- src: img/kibana-misp.png
+- src: /img/kibana-misp.png
   title: Kibana Misp
   size: 1280x882
   type: image/png

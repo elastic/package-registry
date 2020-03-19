@@ -12,11 +12,11 @@ requirement:
   kibana:
     versions: ""
 screenshots:
-- src: img/metricbeat_vsphere_dashboard.png
+- src: /img/metricbeat_vsphere_dashboard.png
   title: Metricbeat Vsphere Dashboard
   size: 3744x4832
   type: image/png
-- src: img/metricbeat_vsphere_vm_dashboard.png
+- src: /img/metricbeat_vsphere_vm_dashboard.png
   title: Metricbeat Vsphere Vm Dashboard
   size: 3744x4048
   type: image/png

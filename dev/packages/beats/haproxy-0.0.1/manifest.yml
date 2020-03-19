@@ -13,12 +13,12 @@ requirement:
   kibana:
     versions: ""
 screenshots:
-- src: img/kibana-haproxy-overview.png
+- src: /img/kibana-haproxy-overview.png
   title: Kibana Haproxy Overview
   size: 1725x780
   type: image/png
 icons:
-- src: img/logo_haproxy.svg
+- src: /img/logo_haproxy.svg
   title: Logo Haproxy
   size: 32x32
   type: image/svg+xml

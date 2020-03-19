@@ -12,7 +12,7 @@ requirement:
   kibana:
     versions: ""
 icons:
-- src: img/logo_app_search.svg
+- src: /img/logo_app_search.svg
   title: Logo App Search
   size: 32x32
   type: image/svg+xml

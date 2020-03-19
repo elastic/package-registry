@@ -12,7 +12,7 @@ requirement:
   kibana:
     versions: ""
 screenshots:
-- src: img/kibana-santa-log-overview.png
+- src: /img/kibana-santa-log-overview.png
   title: Kibana Santa Log Overview
   size: 2912x2024
   type: image/png

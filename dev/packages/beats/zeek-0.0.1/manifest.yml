@@ -12,7 +12,7 @@ requirement:
   kibana:
     versions: ""
 screenshots:
-- src: img/kibana-zeek.png
+- src: /img/kibana-zeek.png
   title: Kibana Zeek
   size: 3530x2414
   type: image/png

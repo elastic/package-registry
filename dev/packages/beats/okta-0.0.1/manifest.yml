@@ -12,7 +12,7 @@ requirement:
   kibana:
     versions: ""
 screenshots:
-- src: img/filebeat-okta-dashboard.png
+- src: /img/filebeat-okta-dashboard.png
   title: Filebeat Okta Dashboard
   size: 1024x662
   type: image/png

@@ -13,7 +13,7 @@ requirement:
   kibana:
     versions: ""
 icons:
-- src: img/logo_gcp.svg
+- src: /img/logo_gcp.svg
   title: Logo Gcp
   size: 32x32
   type: image/svg+xml
