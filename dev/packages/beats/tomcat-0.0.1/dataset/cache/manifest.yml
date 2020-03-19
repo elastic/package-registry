@@ -1,3 +1,4 @@
+id: cache
 title: Tomcat Cache Metrics
 release: beta
 type: metrics

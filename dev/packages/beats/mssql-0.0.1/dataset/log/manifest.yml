@@ -1,3 +1,4 @@
+id: log
 title: Mssql Log Logs
 release: ga
 type: logs
@@ -13,5 +14,5 @@ streams:
     - /var/opt/mssql/log/error*
     os.windows:
     - c:\ProgramFiles\Microsoft SQL Server\MSSQL.1MSSQL\LOG\ERRORLOG*
-  title: Mssql log logs
-  description: Collect Mssql log logs
+  title: Mssql Log logs
+  description: Collect Mssql Log logs

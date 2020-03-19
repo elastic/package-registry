@@ -1,3 +1,4 @@
+id: store
 title: Etcd Store Metrics
 release: ga
 type: metrics

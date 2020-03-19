@@ -1,3 +1,4 @@
+id: container_registry
 title: Azure Container_registry Metrics
 release: beta
 type: metrics

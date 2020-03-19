@@ -1,3 +1,4 @@
+id: slowlog
 title: Logstash Slowlog Logs
 release: ga
 type: logs
@@ -11,5 +12,5 @@ streams:
     name: paths
     os.windows:
     - c:/programdata/logstash/logs/logstash-slowlog-{{.format}}*.log
-  title: Logstash slowlog logs
-  description: Collect Logstash slowlog logs
+  title: Logstash Slowlog logs
+  description: Collect Logstash Slowlog logs

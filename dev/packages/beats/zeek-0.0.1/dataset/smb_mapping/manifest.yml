@@ -1,3 +1,4 @@
+id: smb_mapping
 title: Zeek Smb_mapping Logs
 release: ga
 type: logs
@@ -16,5 +17,5 @@ streams:
     name: tags
   - default: true
     name: community_id
-  title: Zeek smb_mapping logs
-  description: Collect Zeek smb_mapping logs
+  title: Zeek Smb_mapping logs
+  description: Collect Zeek Smb_mapping logs

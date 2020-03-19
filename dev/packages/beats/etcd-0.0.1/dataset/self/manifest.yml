@@ -1,3 +1,4 @@
+id: self
 title: Etcd Self Metrics
 release: ga
 type: metrics

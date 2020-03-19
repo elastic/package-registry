@@ -1,3 +1,4 @@
+id: volume
 title: Kubernetes Volume Metrics
 release: ga
 type: metrics

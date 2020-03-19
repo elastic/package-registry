@@ -5,6 +5,7 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
@@ -23,7 +24,7 @@ var ignoredModules = map[string]bool{"apache2": true}
 
 type packageContent struct {
 	manifest    util.Package
-	datasets    map[string]datasetContent
+	datasets    []datasetContent
 	images      []imageContent
 	kibana      kibanaContent
 	docs        []docContent
@@ -43,16 +44,23 @@ func newPackageContent(name string) packageContent {
 			License:       "basic",
 			Release:       "beta", // default release version
 		},
-		datasets: map[string]datasetContent{},
 		kibana: kibanaContent{
 			files: map[string]map[string][]byte{},
 		},
 	}
 }
 
-func (pc *packageContent) addDatasets(ds map[string]datasetContent) {
-	for k, v := range ds {
-		pc.datasets[k] = v
+func (pc *packageContent) addDatasets(ds []datasetContent) {
+	for _, dc := range ds {
+		for i, v := range pc.datasets {
+			if v.name == dc.name {
+				pc.datasets[i].name = fmt.Sprintf("%s-%s", pc.datasets[i].name, pc.datasets[i].beatType)
+				dc.name = fmt.Sprintf("%s-%s", dc.name, dc.beatType)
+				pc.datasets = append(pc.datasets, dc)
+				break
+			}
+		}
+		pc.datasets = append(pc.datasets, dc)
 	}
 }
 
@@ -161,11 +169,11 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 		manifest.Screenshots = append(manifest.Screenshots, screenshots...)
 
 		// kibana
-		/*kibana, err := createKibanaContent(r.kibanaMigrator, modulePath)
+		kibana, err := createKibanaContent(r.kibanaMigrator, modulePath)
 		if err != nil {
 			return err
 		}
-		aPackage.addKibanaContent(kibana)*/
+		aPackage.addKibanaContent(kibana)
 
 		// docs
 		if len(aPackage.docs) == 0 {
@@ -213,8 +221,8 @@ func (r *packageRepository) save(outputDir string) error {
 		}
 
 		// dataset
-		for datasetName, dataset := range content.datasets {
-			datasetPath := filepath.Join(packagePath, "dataset", datasetName)
+		for _, dataset := range content.datasets {
+			datasetPath := filepath.Join(packagePath, "dataset", dataset.name)
 			err := os.MkdirAll(datasetPath, 0755)
 			if err != nil {
 				return errors.Wrapf(err, "cannot make directory for dataset: '%s'", datasetPath)
@@ -223,7 +231,7 @@ func (r *packageRepository) save(outputDir string) error {
 			// dataset/manifest.yml
 			m, err := yaml.Marshal(dataset.manifest)
 			if err != nil {
-				return errors.Wrapf(err, "marshaling dataset manifest failed (datasetName: %s)", datasetName)
+				return errors.Wrapf(err, "marshaling dataset manifest failed (datasetName: %s)", dataset.name)
 			}
 
 			manifestFilePath := filepath.Join(datasetPath, "manifest.yml")
@@ -241,7 +249,7 @@ func (r *packageRepository) save(outputDir string) error {
 				}
 
 				for fieldsFileName, fieldsFile := range dataset.fields.files {
-					log.Printf("\t%s: write '%s' file\n", datasetName, fieldsFileName)
+					log.Printf("\t%s: write '%s' file\n", dataset.name, fieldsFileName)
 
 					fieldsFilePath := filepath.Join(datasetFieldsPath, fieldsFileName)
 					err = ioutil.WriteFile(fieldsFilePath, fieldsFile, 0644)

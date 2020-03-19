@@ -1,3 +1,4 @@
+id: bgwriter
 title: Postgresql Bgwriter Metrics
 release: ga
 type: metrics

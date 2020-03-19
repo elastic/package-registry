@@ -1,3 +1,4 @@
+id: vpcflow
 title: Aws Vpcflow Logs
 release: beta
 type: logs
@@ -12,5 +13,5 @@ streams:
   - name: visibility_timeout
   - name: api_timeout
   - name: endpoint
-  title: Aws vpcflow logs
-  description: Collect Aws vpcflow logs
+  title: Aws Vpcflow logs
+  description: Collect Aws Vpcflow logs

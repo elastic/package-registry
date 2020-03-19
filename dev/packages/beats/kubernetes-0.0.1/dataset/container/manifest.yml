@@ -1,3 +1,4 @@
+id: container
 title: Kubernetes Container Metrics
 release: ga
 type: metrics

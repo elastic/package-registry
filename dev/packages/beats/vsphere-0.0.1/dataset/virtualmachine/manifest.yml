@@ -1,3 +1,4 @@
+id: virtualmachine
 title: Vsphere Virtualmachine Metrics
 release: beta
 type: metrics

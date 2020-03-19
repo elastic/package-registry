@@ -1,3 +1,4 @@
+id: ftd
 title: Cisco Ftd Logs
 release: ga
 type: logs
@@ -25,5 +26,5 @@ streams:
     name: internal_prefix
   - default: FTD
     name: internal_PREFIX
-  title: Cisco ftd logs
-  description: Collect Cisco ftd logs
+  title: Cisco Ftd logs
+  description: Collect Cisco Ftd logs

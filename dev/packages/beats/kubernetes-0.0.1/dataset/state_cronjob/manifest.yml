@@ -1,3 +1,4 @@
+id: state_cronjob
 title: Kubernetes State_cronjob Metrics
 release: ga
 type: metrics

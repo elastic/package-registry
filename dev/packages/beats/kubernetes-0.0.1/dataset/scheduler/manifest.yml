@@ -1,3 +1,4 @@
+id: scheduler
 title: Kubernetes Scheduler Metrics
 release: ga
 type: metrics

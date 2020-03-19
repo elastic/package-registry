@@ -1,3 +1,4 @@
+id: modbus
 title: Zeek Modbus Logs
 release: ga
 type: logs
@@ -16,5 +17,5 @@ streams:
     name: tags
   - default: true
     name: community_id
-  title: Zeek modbus logs
-  description: Collect Zeek modbus logs
+  title: Zeek Modbus logs
+  description: Collect Zeek Modbus logs

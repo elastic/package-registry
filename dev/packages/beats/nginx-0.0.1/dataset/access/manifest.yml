@@ -1,3 +1,4 @@
+id: access
 title: Nginx Access Logs
 release: ga
 type: logs
@@ -11,5 +12,5 @@ streams:
     - /usr/local/var/log/nginx/access.log*
     os.windows:
     - c:/programdata/nginx/logs/*access.log*
-  title: Nginx access logs
-  description: Collect Nginx access logs
+  title: Nginx Access logs
+  description: Collect Nginx Access logs

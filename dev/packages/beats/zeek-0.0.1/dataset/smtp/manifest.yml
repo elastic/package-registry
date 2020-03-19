@@ -1,3 +1,4 @@
+id: smtp
 title: Zeek Smtp Logs
 release: ga
 type: logs
@@ -16,5 +17,5 @@ streams:
     name: tags
   - default: true
     name: community_id
-  title: Zeek smtp logs
-  description: Collect Zeek smtp logs
+  title: Zeek Smtp logs
+  description: Collect Zeek Smtp logs

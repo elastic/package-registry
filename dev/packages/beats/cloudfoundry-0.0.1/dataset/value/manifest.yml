@@ -1,3 +1,4 @@
+id: value
 title: Cloudfoundry Value Metrics
 release: experimental
 type: metrics

@@ -1,3 +1,4 @@
+id: ios
 title: Cisco Ios Logs
 release: ga
 type: logs
@@ -16,5 +17,5 @@ streams:
     name: syslog_port
   - default: syslog
     name: input
-  title: Cisco ios logs
-  description: Collect Cisco ios logs
+  title: Cisco Ios logs
+  description: Collect Cisco Ios logs

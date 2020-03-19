@@ -1,3 +1,4 @@
+id: log
 title: Postgresql Log Logs
 release: ga
 type: logs
@@ -11,5 +12,5 @@ streams:
     - /usr/local/var/postgres/*.log*
     os.windows:
     - c:/Program Files/PostgreSQL/*/logs/*.log*
-  title: Postgresql log logs
-  description: Collect Postgresql log logs
+  title: Postgresql Log logs
+  description: Collect Postgresql Log logs

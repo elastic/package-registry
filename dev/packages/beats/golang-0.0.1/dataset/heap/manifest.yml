@@ -1,3 +1,4 @@
+id: heap
 title: Golang Heap Metrics
 release: ga
 type: metrics

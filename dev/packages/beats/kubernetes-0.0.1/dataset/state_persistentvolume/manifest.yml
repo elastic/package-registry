@@ -1,3 +1,4 @@
+id: state_persistentvolume
 title: Kubernetes State_persistentvolume Metrics
 release: experimental
 type: metrics

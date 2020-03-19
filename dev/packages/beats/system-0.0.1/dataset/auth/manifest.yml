@@ -1,3 +1,4 @@
+id: auth
 title: System Auth Logs
 release: ga
 type: logs
@@ -11,5 +12,5 @@ streams:
     os.darwin:
     - /var/log/secure.log*
     os.windows: []
-  title: System auth logs
-  description: Collect System auth logs
+  title: System Auth logs
+  description: Collect System Auth logs

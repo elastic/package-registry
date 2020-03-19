@@ -1,3 +1,4 @@
+id: compute_vm
 title: Azure Compute_vm Metrics
 release: beta
 type: metrics

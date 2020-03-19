@@ -1,3 +1,4 @@
+id: monitor
 title: Azure Monitor Metrics
 release: beta
 type: metrics

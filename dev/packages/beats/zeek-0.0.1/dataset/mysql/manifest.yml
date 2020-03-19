@@ -1,3 +1,4 @@
+id: mysql
 title: Zeek Mysql Logs
 release: ga
 type: logs
@@ -16,5 +17,5 @@ streams:
     name: tags
   - default: true
     name: community_id
-  title: Zeek mysql logs
-  description: Collect Zeek mysql logs
+  title: Zeek Mysql logs
+  description: Collect Zeek Mysql logs

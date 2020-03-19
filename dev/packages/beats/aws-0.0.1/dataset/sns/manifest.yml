@@ -1,3 +1,4 @@
+id: sns
 title: Aws Sns Metrics
 release: beta
 type: metrics

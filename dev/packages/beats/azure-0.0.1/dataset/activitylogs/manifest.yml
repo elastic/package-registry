@@ -1,3 +1,4 @@
+id: activitylogs
 title: Azure Activitylogs Logs
 release: beta
 type: logs
@@ -13,5 +14,5 @@ streams:
   - name: connection_string
   - name: storage_account
   - name: storage_account_key
-  title: Azure activitylogs logs
-  description: Collect Azure activitylogs logs
+  title: Azure Activitylogs logs
+  description: Collect Azure Activitylogs logs

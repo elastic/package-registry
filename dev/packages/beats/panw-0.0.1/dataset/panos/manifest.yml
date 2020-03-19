@@ -1,3 +1,4 @@
+id: panos
 title: Panw Panos Logs
 release: ga
 type: logs
@@ -18,5 +19,5 @@ streams:
     name: input
   - default: true
     name: community_id
-  title: Panw panos logs
-  description: Collect Panw panos logs
+  title: Panw Panos logs
+  description: Collect Panw Panos logs

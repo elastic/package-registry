@@ -1,3 +1,4 @@
+id: files
 title: Zeek Files Logs
 release: ga
 type: logs
@@ -16,5 +17,5 @@ streams:
     name: tags
   - default: true
     name: community_id
-  title: Zeek files logs
-  description: Collect Zeek files logs
+  title: Zeek Files logs
+  description: Collect Zeek Files logs

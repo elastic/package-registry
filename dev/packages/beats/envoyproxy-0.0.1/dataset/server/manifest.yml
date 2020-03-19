@@ -1,3 +1,4 @@
+id: server
 title: Envoyproxy Server Metrics
 release: ga
 type: metrics

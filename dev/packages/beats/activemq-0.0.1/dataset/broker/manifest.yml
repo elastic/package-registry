@@ -1,3 +1,4 @@
+id: broker
 title: Activemq Broker Metrics
 release: ga
 type: metrics

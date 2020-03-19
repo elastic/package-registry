@@ -1,3 +1,4 @@
+id: pilot
 title: Istio Pilot Metrics
 release: beta
 type: metrics

@@ -1,3 +1,4 @@
+id: dce_rpc
 title: Zeek Dce_rpc Logs
 release: ga
 type: logs
@@ -16,5 +17,5 @@ streams:
     name: tags
   - default: true
     name: community_id
-  title: Zeek dce_rpc logs
-  description: Collect Zeek dce_rpc logs
+  title: Zeek Dce_rpc logs
+  description: Collect Zeek Dce_rpc logs

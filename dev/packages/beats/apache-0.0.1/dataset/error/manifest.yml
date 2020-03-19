@@ -1,3 +1,4 @@
+id: error
 title: Apache Error Logs
 release: ga
 type: logs
@@ -13,5 +14,5 @@ streams:
     os.windows:
     - C:/tools/Apache/httpd-2.*/Apache24/logs/error.log*
     - C:/Program Files/Apache Software Foundation/Apache2.*/logs/error.log*
-  title: Apache error logs
-  description: Collect Apache error logs
+  title: Apache Error logs
+  description: Collect Apache Error logs

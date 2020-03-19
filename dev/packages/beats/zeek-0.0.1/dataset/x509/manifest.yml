@@ -1,3 +1,4 @@
+id: x509
 title: Zeek X509 Logs
 release: ga
 type: logs
@@ -16,5 +17,5 @@ streams:
     name: tags
   - default: true
     name: community_id
-  title: Zeek x509 logs
-  description: Collect Zeek x509 logs
+  title: Zeek X509 logs
+  description: Collect Zeek X509 logs

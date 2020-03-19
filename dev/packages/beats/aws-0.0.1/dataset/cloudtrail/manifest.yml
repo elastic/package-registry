@@ -1,3 +1,4 @@
+id: cloudtrail
 title: Aws Cloudtrail Logs
 release: beta
 type: logs
@@ -12,5 +13,5 @@ streams:
   - name: visibility_timeout
   - name: api_timeout
   - name: endpoint
-  title: Aws cloudtrail logs
-  description: Collect Aws cloudtrail logs
+  title: Aws Cloudtrail logs
+  description: Collect Aws Cloudtrail logs

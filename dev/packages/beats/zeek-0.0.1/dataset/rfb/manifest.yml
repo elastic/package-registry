@@ -1,3 +1,4 @@
+id: rfb
 title: Zeek Rfb Logs
 release: ga
 type: logs
@@ -16,5 +17,5 @@ streams:
     name: tags
   - default: true
     name: community_id
-  title: Zeek rfb logs
-  description: Collect Zeek rfb logs
+  title: Zeek Rfb logs
+  description: Collect Zeek Rfb logs

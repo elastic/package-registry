@@ -1,3 +1,4 @@
+id: server
 title: Zookeeper Server Metrics
 release: ga
 type: metrics

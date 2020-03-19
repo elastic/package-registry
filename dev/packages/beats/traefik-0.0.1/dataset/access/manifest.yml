@@ -1,3 +1,4 @@
+id: access
 title: Traefik Access Logs
 release: ga
 type: logs
@@ -11,5 +12,5 @@ streams:
     - /usr/local/traefik/access.log*
     os.windows:
     - c:/programdata/traefik/logs/*access.log*
-  title: Traefik access logs
-  description: Collect Traefik access logs
+  title: Traefik Access logs
+  description: Collect Traefik Access logs

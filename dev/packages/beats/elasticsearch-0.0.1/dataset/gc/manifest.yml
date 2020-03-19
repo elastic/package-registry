@@ -1,3 +1,4 @@
+id: gc
 title: Elasticsearch Gc Logs
 release: ga
 type: logs
@@ -14,5 +15,5 @@ streams:
     os.windows:
     - c:/ProgramData/Elastic/Elasticsearch/logs/gc.log.*
     - c:/ProgramData/Elastic/Elasticsearch/logs/gc.log
-  title: Elasticsearch gc logs
-  description: Collect Elasticsearch gc logs
+  title: Elasticsearch Gc logs
+  description: Collect Elasticsearch Gc logs

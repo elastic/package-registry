@@ -1,3 +1,4 @@
+id: debug
 title: Icinga Debug Logs
 release: ga
 type: logs
@@ -11,5 +12,5 @@ streams:
     - /usr/local/icinga2/var/log/icinga2/debug.log*
     os.windows:
     - c:/programdata/icinga2/var/log/icinga2/debug.log*
-  title: Icinga debug logs
-  description: Collect Icinga debug logs
+  title: Icinga Debug logs
+  description: Collect Icinga Debug logs

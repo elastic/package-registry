@@ -1,3 +1,4 @@
+id: slowlog
 title: Elasticsearch Slowlog Logs
 release: ga
 type: logs
@@ -20,5 +21,5 @@ streams:
     - c:/ProgramData/Elastic/Elasticsearch/logs/*_index_indexing_slowlog.log
     - c:/ProgramData/Elastic/Elasticsearch/logs/*_index_search_slowlog.json
     - c:/ProgramData/Elastic/Elasticsearch/logs/*_index_indexing_slowlog.json
-  title: Elasticsearch slowlog logs
-  description: Collect Elasticsearch slowlog logs
+  title: Elasticsearch Slowlog logs
+  description: Collect Elasticsearch Slowlog logs

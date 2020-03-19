@@ -1,3 +1,4 @@
+id: activity
 title: Postgresql Activity Metrics
 release: ga
 type: metrics

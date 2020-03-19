@@ -1,3 +1,4 @@
+id: elb
 title: Aws Elb Metrics
 release: ga
 type: metrics

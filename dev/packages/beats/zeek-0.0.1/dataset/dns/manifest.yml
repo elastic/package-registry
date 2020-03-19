@@ -1,3 +1,4 @@
+id: dns
 title: Zeek Dns Logs
 release: ga
 type: logs
@@ -16,5 +17,5 @@ streams:
     name: tags
   - default: true
     name: community_id
-  title: Zeek dns logs
-  description: Collect Zeek dns logs
+  title: Zeek Dns logs
+  description: Collect Zeek Dns logs

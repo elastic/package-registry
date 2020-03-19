@@ -1,3 +1,4 @@
+id: namespace
 title: Aerospike Namespace Metrics
 release: ga
 type: metrics

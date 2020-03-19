@@ -1,3 +1,4 @@
+id: collstats
 title: Mongodb Collstats Metrics
 release: ga
 type: metrics

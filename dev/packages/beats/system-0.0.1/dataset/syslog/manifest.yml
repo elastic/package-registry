@@ -1,3 +1,4 @@
+id: syslog
 title: System Syslog Logs
 release: ga
 type: logs
@@ -11,5 +12,5 @@ streams:
     os.darwin:
     - /var/log/system.log*
     os.windows: []
-  title: System syslog logs
-  description: Collect System syslog logs
+  title: System Syslog logs
+  description: Collect System Syslog logs

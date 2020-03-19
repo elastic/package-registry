@@ -1,3 +1,4 @@
+id: log
 title: Mongodb Log Logs
 release: ga
 type: logs
@@ -9,5 +10,5 @@ streams:
     name: paths
     os.windows:
     - c:\data\log\mongod.log
-  title: Mongodb log logs
-  description: Collect Mongodb log logs
+  title: Mongodb Log logs
+  description: Collect Mongodb Log logs

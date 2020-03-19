@@ -1,3 +1,4 @@
+id: server
 title: Elasticsearch Server Logs
 release: ga
 type: logs
@@ -14,5 +15,5 @@ streams:
     os.windows:
     - c:/ProgramData/Elastic/Elasticsearch/logs/*.log
     - c:/ProgramData/Elastic/Elasticsearch/logs/*_server.json
-  title: Elasticsearch server logs
-  description: Collect Elasticsearch server logs
+  title: Elasticsearch Server logs
+  description: Collect Elasticsearch Server logs

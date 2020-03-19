@@ -1,3 +1,4 @@
+id: collector
 title: Dropwizard Collector Metrics
 release: ga
 type: metrics

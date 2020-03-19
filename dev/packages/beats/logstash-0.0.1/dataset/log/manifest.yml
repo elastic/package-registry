@@ -1,3 +1,4 @@
+id: log
 title: Logstash Log Logs
 release: ga
 type: logs
@@ -11,5 +12,5 @@ streams:
     name: paths
     os.windows:
     - c:/programdata/logstash/logs/logstash-{{.format}}*.log
-  title: Logstash log logs
-  description: Collect Logstash log logs
+  title: Logstash Log logs
+  description: Collect Logstash Log logs

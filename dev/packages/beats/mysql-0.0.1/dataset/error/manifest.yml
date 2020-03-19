@@ -1,3 +1,4 @@
+id: error
 title: Mysql Error Logs
 release: ga
 type: logs
@@ -12,5 +13,5 @@ streams:
     - /usr/local/var/mysql/{{.builtin.hostname}}.{{.builtin.domain}}.err*
     os.windows:
     - c:/programdata/MySQL/MySQL Server*/error.log*
-  title: Mysql error logs
-  description: Collect Mysql error logs
+  title: Mysql Error logs
+  description: Collect Mysql Error logs

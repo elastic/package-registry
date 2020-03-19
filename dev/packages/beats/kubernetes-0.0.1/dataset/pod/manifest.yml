@@ -1,3 +1,4 @@
+id: pod
 title: Kubernetes Pod Metrics
 release: ga
 type: metrics

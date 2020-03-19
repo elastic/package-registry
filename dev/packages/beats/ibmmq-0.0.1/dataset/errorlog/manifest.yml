@@ -1,3 +1,4 @@
+id: errorlog
 title: Ibmmq Errorlog Logs
 release: ga
 type: logs
@@ -11,5 +12,5 @@ streams:
     os.windows:
     - C:\ProgramData\IBM\MQ\errors\*.LOG*
     - C:\ProgramData\IBM\MQ\qmgrs\*\errors\*.LOG*
-  title: Ibmmq errorlog logs
-  description: Collect Ibmmq errorlog logs
+  title: Ibmmq Errorlog logs
+  description: Collect Ibmmq Errorlog logs

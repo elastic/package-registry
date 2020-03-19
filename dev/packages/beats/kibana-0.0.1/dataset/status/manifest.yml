@@ -1,3 +1,4 @@
+id: status
 title: Kibana Status Metrics
 release: ga
 type: metrics

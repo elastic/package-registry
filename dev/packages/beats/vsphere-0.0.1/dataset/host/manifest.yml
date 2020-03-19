@@ -1,3 +1,4 @@
+id: host
 title: Vsphere Host Metrics
 release: beta
 type: metrics

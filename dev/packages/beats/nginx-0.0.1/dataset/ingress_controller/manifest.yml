@@ -1,3 +1,4 @@
+id: ingress_controller
 title: Nginx Ingress_controller Logs
 release: ga
 type: logs
@@ -11,5 +12,5 @@ streams:
     - /usr/local/var/log/nginx/access.log*
     os.windows:
     - c:/programdata/nginx/logs/*access.log*
-  title: Nginx ingress_controller logs
-  description: Collect Nginx ingress_controller logs
+  title: Nginx Ingress_controller logs
+  description: Collect Nginx Ingress_controller logs

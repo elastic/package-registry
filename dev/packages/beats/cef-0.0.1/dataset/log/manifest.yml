@@ -1,3 +1,4 @@
+id: log
 title: Cef Log Logs
 release: ga
 type: logs
@@ -16,5 +17,5 @@ streams:
     name: syslog_port
   - default: syslog
     name: input
-  title: Cef log logs
-  description: Collect Cef log logs
+  title: Cef Log logs
+  description: Collect Cef Log logs

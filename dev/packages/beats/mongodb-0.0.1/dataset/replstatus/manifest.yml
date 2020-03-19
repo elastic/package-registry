@@ -1,3 +1,4 @@
+id: replstatus
 title: Mongodb Replstatus Metrics
 release: ga
 type: metrics
