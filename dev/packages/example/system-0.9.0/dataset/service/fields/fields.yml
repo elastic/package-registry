@@ -1,51 +1,66 @@
-- name: system.raid
+- name: process.exit_code
+  level: extended
+  type: long
+  description: 'The exit code of the process, if this is a termination event.
+
+        The field should be absent if there is no exit code for the event (e.g. process
+        start).'
+  example: 137
+  default_field: false
+
+- name: system.service
   type: group
+  release: beta
   description: >
-    raid
-  release: ga
+    metrics for system services
   fields:
     - name: name
       type: keyword
-      description: >
-        Name of the device.
-    - name: status
+      description: The name of the service
+    - name: load_state
       type: keyword
-      description: >
-        activity-state of the device.
-    - name: level
+      description: The load state of the service
+    - name: state
       type: keyword
-      description: >
-        The raid level of the device
-    - name: sync_action
+      description: The activity state of the service
+    - name: sub_state
       type: keyword
-      description: >
-        Current sync action, if the RAID array is redundant
-    - name: disks.active
-      type: long
-      description: >
-        Number of active disks.
-    - name: disks.total
-      type: long
-      description: >
-        Total number of disks the device consists of.
-    - name: disks.spare
-      type: long
-      description: >
-        Number of spared disks.
-    - name: disks.failed
-      type: long
-      description: >
-        Number of failed disks.
-    - name: disks.states.*
-      type: object
-      object_type: keyword
-      description: >
-        map of raw disk states
-    - name: blocks.total
-      type: long
-      description: >
-        Number of blocks the device holds, in 1024-byte blocks.
-    - name: blocks.synced
-      type: long
-      description: >
-        Number of blocks on the device that are in sync, in 1024-byte blocks.
+      description: The sub-state of the service
+    - name: state_since
+      type: date
+      description: The timestamp of the last state change. If the service is active and running, this is its uptime.
+    - name: exec_code
+      type: keyword
+      description: The SIGCHLD code from the service's main process
+    - name: resources
+      type: group
+      description: system metrics associated with the service
+      fields:
+        - name: cpu.usage.ns
+          type: long
+          description: CPU usage in nanoseconds
+        - name: memory.usage.bytes
+          type: long
+          description: memory usage in bytes
+        - name: tasks.count
+          type: long
+          description: number of tasks associated with the service
+        - name: network
+          type: group
+          description: network resource usage
+          fields:
+            - name: in.bytes
+              type: long
+              format: bytes
+              description: bytes in
+            - name: in.packets
+              type: long
+              format: bytes
+              description: packets in
+            - name: out.packets
+              type: long
+              description: packets out
+            - name: out.bytes
+              type: long
+              description: bytes out
+
