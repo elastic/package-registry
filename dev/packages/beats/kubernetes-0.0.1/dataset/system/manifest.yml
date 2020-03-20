@@ -1,3 +1,6 @@
+id: system
 title: Kubernetes System Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

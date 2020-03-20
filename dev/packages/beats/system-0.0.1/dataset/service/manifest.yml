@@ -1,3 +1,6 @@
+id: service
 title: System Service Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

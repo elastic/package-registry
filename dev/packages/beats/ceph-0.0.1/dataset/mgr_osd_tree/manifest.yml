@@ -1,3 +1,6 @@
+id: mgr_osd_tree
 title: Ceph Mgr_osd_tree Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

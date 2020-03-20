@@ -1,3 +1,19 @@
+id: error
 title: Mysql Error Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/mysql/error.log*
+    - /var/log/mysqld.log*
+    name: paths
+    os.darwin:
+      default:
+      - /usr/local/var/mysql/{{.builtin.hostname}}.{{.builtin.domain}}.err*
+    os.windows:
+      default:
+      - c:/programdata/MySQL/MySQL Server*/error.log*
+  title: Mysql Error logs
+  description: Collect Mysql Error logs

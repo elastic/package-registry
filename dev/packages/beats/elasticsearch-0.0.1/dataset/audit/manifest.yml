@@ -1,3 +1,24 @@
+id: audit
 title: Elasticsearch Audit Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/elasticsearch/*_access.log
+    - /var/log/elasticsearch/*_audit.log
+    - /var/log/elasticsearch/*_audit.json
+    name: paths
+    os.darwin:
+      default:
+      - /usr/local/var/lib/elasticsearch/*_access.log
+      - /usr/local/var/lib/elasticsearch/*_audit.log
+      - /usr/local/var/lib/elasticsearch/*_audit.json
+    os.windows:
+      default:
+      - c:/ProgramData/Elastic/Elasticsearch/logs/*_access.log
+      - c:/ProgramData/Elastic/Elasticsearch/logs/*_audit.log
+      - c:/ProgramData/Elastic/Elasticsearch/logs/*_audit.json
+  title: Elasticsearch Audit logs
+  description: Collect Elasticsearch Audit logs

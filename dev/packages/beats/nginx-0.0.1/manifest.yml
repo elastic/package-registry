@@ -13,16 +13,16 @@ requirement:
   kibana:
     versions: ""
 screenshots:
-- src: img/kibana-nginx.png
+- src: /img/kibana-nginx.png
   title: Kibana Nginx
   size: 1218x1266
   type: image/png
-- src: img/metricbeat-nginx.png
+- src: /img/metricbeat-nginx.png
   title: Metricbeat Nginx
   size: 2560x2100
   type: image/png
 icons:
-- src: img/logo_nginx.svg
+- src: /img/logo_nginx.svg
   title: Logo Nginx
   size: 32x32
   type: image/svg+xml

@@ -1,3 +1,6 @@
+id: cluster_disk
 title: Ceph Cluster_disk Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

@@ -1,3 +1,21 @@
+id: result
 title: Osquery Result Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/osquery/osqueryd.results.log*
+    name: paths
+    os.darwin:
+      default:
+      - /var/log/osquery/osqueryd.results.log*
+      - /private/var/log/osquery/osqueryd.results.log*
+    os.windows:
+      default:
+      - C:/ProgramData/osquery/log/osqueryd.results.log*
+  - default: true
+    name: use_namespace
+  title: Osquery Result logs
+  description: Collect Osquery Result logs

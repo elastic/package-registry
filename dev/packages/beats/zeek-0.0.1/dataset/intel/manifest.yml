@@ -1,3 +1,23 @@
+id: intel
 title: Zeek Intel Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/bro/current/intel.log
+    name: paths
+    os.darwin:
+      default:
+      - /usr/local/var/logs/current/intel.log
+    os.linux:
+      default:
+      - /var/log/bro/current/intel.log
+  - default:
+    - zeek.intel
+    name: tags
+  - default: true
+    name: community_id
+  title: Zeek Intel logs
+  description: Collect Zeek Intel logs

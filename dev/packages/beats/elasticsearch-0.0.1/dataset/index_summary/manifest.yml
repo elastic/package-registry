@@ -1,3 +1,6 @@
+id: index_summary
 title: Elasticsearch Index_summary Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

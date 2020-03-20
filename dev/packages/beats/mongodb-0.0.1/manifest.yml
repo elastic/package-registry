@@ -13,12 +13,12 @@ requirement:
   kibana:
     versions: ""
 screenshots:
-- src: img/filebeat-mongodb-overview.png
+- src: /img/filebeat-mongodb-overview.png
   title: Filebeat Mongodb Overview
   size: 1920x1080
   type: image/png
 icons:
-- src: img/logo_mongodb.svg
+- src: /img/logo_mongodb.svg
   title: Logo Mongodb
   size: 32x32
   type: image/svg+xml

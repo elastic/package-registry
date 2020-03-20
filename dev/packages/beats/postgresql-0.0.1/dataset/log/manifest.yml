@@ -1,3 +1,18 @@
+id: log
 title: Postgresql Log Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/postgresql/postgresql-*-*.log*
+    name: paths
+    os.darwin:
+      default:
+      - /usr/local/var/postgres/*.log*
+    os.windows:
+      default:
+      - c:/Program Files/PostgreSQL/*/logs/*.log*
+  title: Postgresql Log logs
+  description: Collect Postgresql Log logs

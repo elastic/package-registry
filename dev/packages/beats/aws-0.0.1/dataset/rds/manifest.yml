@@ -1,3 +1,6 @@
+id: rds
 title: Aws Rds Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

@@ -1,3 +1,6 @@
+id: shard
 title: Elasticsearch Shard Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

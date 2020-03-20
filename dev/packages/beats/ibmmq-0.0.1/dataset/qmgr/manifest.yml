@@ -1,3 +1,6 @@
+id: qmgr
 title: Ibmmq Qmgr Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

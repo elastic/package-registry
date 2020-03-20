@@ -1,3 +1,18 @@
+id: auditlogs
 title: Azure Auditlogs Logs
 release: beta
 type: logs
+streams:
+- input: logs
+  vars:
+  - default: azure-eventhub
+    name: input
+  - default: insights-logs-auditlogs
+    name: eventhub
+  - default: $Default
+    name: consumer_group
+  - name: connection_string
+  - name: storage_account
+  - name: storage_account_key
+  title: Azure Auditlogs logs
+  description: Collect Azure Auditlogs logs

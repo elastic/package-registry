@@ -1,3 +1,6 @@
+id: usage
 title: Aws Usage Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

@@ -12,12 +12,12 @@ requirement:
   kibana:
     versions: ""
 screenshots:
-- src: img/metricbeat-prometheus-overview.png
+- src: /img/metricbeat-prometheus-overview.png
   title: Metricbeat Prometheus Overview
   size: 5010x2676
   type: image/png
 icons:
-- src: img/logo_prometheus.svg
+- src: /img/logo_prometheus.svg
   title: Logo Prometheus
   size: 32x32
   type: image/svg+xml

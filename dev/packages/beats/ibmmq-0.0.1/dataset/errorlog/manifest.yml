@@ -1,3 +1,17 @@
+id: errorlog
 title: Ibmmq Errorlog Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/mqm/*.LOG*
+    - /var/mqm/qmgrs/*/*.LOG*
+    name: paths
+    os.windows:
+      default:
+      - C:\ProgramData\IBM\MQ\errors\*.LOG*
+      - C:\ProgramData\IBM\MQ\qmgrs\*\errors\*.LOG*
+  title: Ibmmq Errorlog logs
+  description: Collect Ibmmq Errorlog logs

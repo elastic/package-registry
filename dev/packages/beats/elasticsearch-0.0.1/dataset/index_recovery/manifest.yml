@@ -1,3 +1,6 @@
+id: index_recovery
 title: Elasticsearch Index_recovery Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

@@ -1,3 +1,6 @@
+id: queue
 title: Activemq Queue Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

@@ -1,3 +1,6 @@
+id: tablespace
 title: Oracle Tablespace Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

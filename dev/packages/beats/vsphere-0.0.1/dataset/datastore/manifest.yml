@@ -1,3 +1,6 @@
+id: datastore
 title: Vsphere Datastore Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

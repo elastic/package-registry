@@ -1,3 +1,17 @@
+id: s3access
 title: Aws S3access Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default: s3
+    name: input
+  - name: queue_url
+  - name: shared_credential_file
+  - name: credential_profile_name
+  - name: visibility_timeout
+  - name: api_timeout
+  - name: endpoint
+  title: Aws S3access logs
+  description: Collect Aws S3access logs

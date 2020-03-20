@@ -12,7 +12,7 @@ requirement:
   kibana:
     versions: ""
 icons:
-- src: img/logo_dropwizard.svg
+- src: /img/logo_dropwizard.svg
   title: Logo Dropwizard
   size: 32x32
   type: image/svg+xml

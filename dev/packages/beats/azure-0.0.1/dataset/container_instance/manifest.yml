@@ -1,3 +1,6 @@
+id: container_instance
 title: Azure Container_instance Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

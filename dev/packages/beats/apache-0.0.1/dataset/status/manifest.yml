@@ -1,3 +1,6 @@
+id: status
 title: Apache Status Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

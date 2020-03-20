@@ -1,3 +1,6 @@
+id: enrich
 title: Elasticsearch Enrich Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

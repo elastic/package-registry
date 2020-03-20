@@ -1,3 +1,6 @@
+id: event
 title: Docker Event Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

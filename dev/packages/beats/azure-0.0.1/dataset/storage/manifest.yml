@@ -1,3 +1,6 @@
+id: storage
 title: Azure Storage Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

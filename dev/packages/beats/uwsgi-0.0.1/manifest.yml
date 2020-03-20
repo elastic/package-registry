@@ -12,7 +12,7 @@ requirement:
   kibana:
     versions: ""
 screenshots:
-- src: img/uwsgi_dashboard.png
+- src: /img/uwsgi_dashboard.png
   title: Uwsgi Dashboard
   size: 1305x747
   type: image/png

@@ -1,3 +1,6 @@
+id: container
 title: Docker Container Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

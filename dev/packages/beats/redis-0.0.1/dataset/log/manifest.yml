@@ -1,3 +1,19 @@
+id: log
 title: Redis Log Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/redis/redis-server.log*
+    name: paths
+    os.darwin:
+      default:
+      - /usr/local/var/log/redis/redis-server.log*
+      - /usr/local/var/db/redis/redis-server.log*
+    os.windows:
+      default:
+      - c:/program files/Redis/logs/redis.log*
+  title: Redis Log logs
+  description: Collect Redis Log logs

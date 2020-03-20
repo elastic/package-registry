@@ -13,20 +13,20 @@ requirement:
   kibana:
     versions: ""
 screenshots:
-- src: img/filebeat-postgresql-overview.png
+- src: /img/filebeat-postgresql-overview.png
   title: Filebeat Postgresql Overview
   size: 1364x655
   type: image/png
-- src: img/filebeat-postgresql-slowlog-overview.png
+- src: /img/filebeat-postgresql-slowlog-overview.png
   title: Filebeat Postgresql Slowlog Overview
   size: 1363x656
   type: image/png
-- src: img/metricbeat-postgresql-overview.png
+- src: /img/metricbeat-postgresql-overview.png
   title: Metricbeat Postgresql Overview
   size: 5004x2672
   type: image/png
 icons:
-- src: img/logo_postgres.svg
+- src: /img/logo_postgres.svg
   title: Logo Postgres
   size: 32x32
   type: image/svg+xml

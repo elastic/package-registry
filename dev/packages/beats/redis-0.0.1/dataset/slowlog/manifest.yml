@@ -1,3 +1,14 @@
+id: slowlog
 title: Redis Slowlog Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - localhost:6379
+    name: hosts
+  - default: ""
+    name: password
+  title: Redis Slowlog logs
+  description: Collect Redis Slowlog logs

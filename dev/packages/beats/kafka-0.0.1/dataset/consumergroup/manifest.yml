@@ -1,3 +1,6 @@
+id: consumergroup
 title: Kafka Consumergroup Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

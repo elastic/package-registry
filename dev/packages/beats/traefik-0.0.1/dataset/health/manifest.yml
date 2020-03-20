@@ -1,3 +1,6 @@
+id: health
 title: Traefik Health Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

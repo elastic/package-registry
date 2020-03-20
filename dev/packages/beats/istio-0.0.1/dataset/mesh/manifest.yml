@@ -1,3 +1,6 @@
+id: mesh
 title: Istio Mesh Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

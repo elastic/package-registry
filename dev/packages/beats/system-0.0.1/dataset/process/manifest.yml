@@ -1,3 +1,6 @@
+id: process
 title: System Process Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

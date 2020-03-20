@@ -1,3 +1,6 @@
+id: sqs
 title: Aws Sqs Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

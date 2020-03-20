@@ -1,3 +1,6 @@
+id: state_replicaset
 title: Kubernetes State_replicaset Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

@@ -1,3 +1,6 @@
+id: producer
 title: Kafka Producer Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

@@ -1,3 +1,6 @@
+id: diskio
 title: Docker Diskio Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

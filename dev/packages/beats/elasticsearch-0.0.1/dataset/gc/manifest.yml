@@ -1,3 +1,21 @@
+id: gc
 title: Elasticsearch Gc Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/elasticsearch/gc.log.[0-9]*
+    - /var/log/elasticsearch/gc.log
+    name: paths
+    os.darwin:
+      default:
+      - /usr/local/var/lib/elasticsearch/gc.log.[0-9]*
+      - /usr/local/var/lib/elasticsearch/gc.log
+    os.windows:
+      default:
+      - c:/ProgramData/Elastic/Elasticsearch/logs/gc.log.*
+      - c:/ProgramData/Elastic/Elasticsearch/logs/gc.log
+  title: Elasticsearch Gc logs
+  description: Collect Elasticsearch Gc logs

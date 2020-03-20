@@ -1,3 +1,6 @@
+id: ec2
 title: Aws Ec2 Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

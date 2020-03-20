@@ -1,3 +1,6 @@
+id: network
 title: Docker Network Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

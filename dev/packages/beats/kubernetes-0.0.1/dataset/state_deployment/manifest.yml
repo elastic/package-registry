@@ -1,3 +1,6 @@
+id: state_deployment
 title: Kubernetes State_deployment Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

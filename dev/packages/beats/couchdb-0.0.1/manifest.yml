@@ -12,12 +12,12 @@ requirement:
   kibana:
     versions: ""
 screenshots:
-- src: img/metricbeat-couchdb-overview.png
+- src: /img/metricbeat-couchdb-overview.png
   title: Metricbeat Couchdb Overview
   size: 4986x2672
   type: image/png
 icons:
-- src: img/couchdb.svg
+- src: /img/couchdb.svg
   title: Couchdb
   size: 289x293
   type: image/svg+xml

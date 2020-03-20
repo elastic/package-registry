@@ -1,3 +1,6 @@
+id: status
 title: Cockroachdb Status Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

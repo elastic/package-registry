@@ -1,3 +1,6 @@
+id: key
 title: Redis Key Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

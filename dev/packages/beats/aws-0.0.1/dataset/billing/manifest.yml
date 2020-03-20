@@ -1,3 +1,6 @@
+id: billing
 title: Aws Billing Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

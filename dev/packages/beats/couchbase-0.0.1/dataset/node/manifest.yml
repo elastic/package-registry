@@ -1,3 +1,6 @@
+id: node
 title: Couchbase Node Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

@@ -1,3 +1,6 @@
+id: loadbalancing
 title: Googlecloud Loadbalancing Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

@@ -1,3 +1,6 @@
+id: metrics
 title: Etcd Metrics Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

@@ -1,3 +1,6 @@
+id: requests
 title: Tomcat Requests Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

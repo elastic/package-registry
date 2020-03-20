@@ -32,16 +32,18 @@ type kibanaContent struct {
 }
 
 type kibanaMigrator struct {
-	hostPort string
+	hostPort   string
+	skipKibana bool
 }
 
 type kibanaDocuments struct {
 	Objects []mapStr `json:"objects"`
 }
 
-func newKibanaMigrator(hostPort string) *kibanaMigrator {
+func newKibanaMigrator(hostPort string, skipKibana bool) *kibanaMigrator {
 	return &kibanaMigrator{
-		hostPort: hostPort,
+		hostPort:   hostPort,
+		skipKibana: skipKibana,
 	}
 }
 
@@ -125,6 +127,11 @@ func encodeFields(ms mapStr) (mapStr, error) {
 }
 
 func createKibanaContent(kibanaMigrator *kibanaMigrator, modulePath string) (kibanaContent, error) {
+	if kibanaMigrator.skipKibana {
+		log.Printf("\tKibana migrator disabled, skipped (modulePath: %s)", modulePath)
+		return kibanaContent{}, nil
+	}
+
 	moduleDashboardPath := path.Join(modulePath, "_meta", "kibana", "7", "dashboard")
 	moduleDashboards, err := ioutil.ReadDir(moduleDashboardPath)
 	if os.IsNotExist(err) {

@@ -1,3 +1,6 @@
+id: citadel
 title: Istio Citadel Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

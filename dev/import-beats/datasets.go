@@ -18,10 +18,13 @@ import (
 )
 
 type datasetContent struct {
+	name     string
+	beatType string
+
 	manifest util.DataSet
 
-	fields        fieldsContent
 	elasticsearch elasticsearchContent
+	fields        fieldsContent
 }
 
 type datasetManifestMultiplePipelines struct {
@@ -32,7 +35,7 @@ type datasetManifestSinglePipeline struct {
 	IngestPipeline string `yaml:"ingest_pipeline"`
 }
 
-func createDatasets(modulePath, moduleName, moduleRelease, beatType string) (map[string]datasetContent, error) {
+func createDatasets(modulePath, moduleName, moduleRelease, beatType string) ([]datasetContent, error) {
 	moduleFieldsFiles, err := loadModuleFields(modulePath)
 	if err != nil {
 		return nil, errors.Wrapf(err, "loading module fields failed (modulePath: %s)", modulePath)
@@ -43,7 +46,7 @@ func createDatasets(modulePath, moduleName, moduleRelease, beatType string) (map
 		return nil, errors.Wrapf(err, "cannot read module directory %s", modulePath)
 	}
 
-	contents := map[string]datasetContent{}
+	var contents []datasetContent
 	for _, datasetDir := range datasetDirs {
 		if !datasetDir.IsDir() {
 			continue
@@ -62,38 +65,53 @@ func createDatasets(modulePath, moduleName, moduleRelease, beatType string) (map
 		}
 
 		log.Printf("\t%s: dataset found", datasetName)
-		content := datasetContent{}
 
+		// release
 		datasetRelease, err := determineDatasetRelease(moduleRelease, datasetPath)
 		if err != nil {
 			return nil, errors.Wrapf(err, "loading release from fields failed (datasetPath: %s", datasetPath)
 		}
-		manifest := util.DataSet{
-			Title:   strings.Title(fmt.Sprintf("%s %s %s", moduleName, datasetName, beatType)),
-			Release: datasetRelease,
-			Type:    beatType,
-		}
 
+		// fields
 		fieldsFiles, err := loadDatasetFields(modulePath, moduleName, datasetName)
 		if err != nil {
 			return nil, errors.Wrapf(err, "loading dataset fields failed (modulePath: %s, datasetName: %s)",
 				modulePath, datasetName)
 		}
-		content.fields = fieldsContent{
-			files: map[string][]byte{
-				"package-fields.yml": moduleFieldsFiles,
-				"fields.yml":         fieldsFiles,
-			},
-		}
 
+		// elasticsearch
 		elasticsearch, err := loadElasticsearchContent(datasetPath)
 		if err != nil {
 			return nil, errors.Wrapf(err, "loading elasticsearch content failed (datasetPath: %s)", datasetPath)
 		}
-		content.elasticsearch = elasticsearch
 
-		content.manifest = manifest
-		contents[datasetName] = content
+		// streams
+		streams, err := createStreams(modulePath, moduleName, datasetName, beatType)
+		if err != nil {
+			return nil, errors.Wrapf(err, "creating streams failed (datasetPath: %s)", datasetPath)
+		}
+
+		// manifest
+		manifest := util.DataSet{
+			ID:      datasetName,
+			Title:   strings.Title(fmt.Sprintf("%s %s %s", moduleName, datasetName, beatType)),
+			Release: datasetRelease,
+			Type:    beatType,
+			Streams: streams,
+		}
+
+		contents = append(contents, datasetContent{
+			name:          datasetName,
+			beatType:      beatType,
+			manifest:      manifest,
+			elasticsearch: elasticsearch,
+			fields: fieldsContent{
+				files: map[string][]byte{
+					"package-fields.yml": moduleFieldsFiles,
+					"fields.yml":         fieldsFiles,
+				},
+			},
+		})
 	}
 	return contents, nil
 }

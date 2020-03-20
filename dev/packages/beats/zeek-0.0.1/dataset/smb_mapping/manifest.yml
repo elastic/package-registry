@@ -1,3 +1,23 @@
+id: smb_mapping
 title: Zeek Smb_mapping Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/bro/current/smb_mapping.log
+    name: paths
+    os.darwin:
+      default:
+      - /usr/local/var/logs/current/smb_mapping.log
+    os.linux:
+      default:
+      - /var/log/bro/current/smb_mapping.log
+  - default:
+    - zeek.smb_mapping
+    name: tags
+  - default: true
+    name: community_id
+  title: Zeek Smb_mapping logs
+  description: Collect Zeek Smb_mapping logs

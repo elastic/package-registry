@@ -2,9 +2,15 @@
     "attributes": {
         "description": "",
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": {}
+            "searchSourceJSON": {
+                "filter": [],
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                }
+            }
         },
-        "title": "Opened tables rate [Metricbeat MySQL] ECS",
+        "title": "Open tables, files, streams [Metricbeat MySQL] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -12,37 +18,80 @@
             "params": {
                 "axis_formatter": "number",
                 "axis_position": "left",
+                "axis_scale": "normal",
+                "default_index_pattern": "metrics-*",
+                "default_timefield": "@timestamp",
                 "id": "61ca57f0-469d-11e7-af02-69e470af7417",
                 "index_pattern": "metrics-*",
                 "interval": "auto",
+                "isModelInvalid": false,
                 "legend_position": "bottom",
                 "series": [
                     {
                         "axis_position": "right",
                         "chart_type": "line",
-                        "color": "rgba(252,196,0,1)",
-                        "fill": 0.5,
+                        "color": "rgba(22,165,165,1)",
+                        "fill": "0.3",
                         "formatter": "number",
                         "id": "61ca57f1-469d-11e7-af02-69e470af7417",
-                        "label": "Opened tables rate",
+                        "label": "Open Tables",
                         "line_width": 1,
                         "metrics": [
                             {
-                                "field": "mysql.status.opened_tables",
+                                "field": "mysql.status.open.tables",
                                 "id": "61ca57f2-469d-11e7-af02-69e470af7417",
                                 "type": "avg"
-                            },
-                            {
-                                "field": "61ca57f2-469d-11e7-af02-69e470af7417",
-                                "id": "9972d250-f1f5-11e7-a752-236fe3270d99",
-                                "type": "derivative",
-                                "unit": ""
                             }
                         ],
-                        "point_size": 1,
+                        "point_size": "0",
                         "seperate_axis": 0,
                         "split_mode": "everything",
-                        "stacked": "none"
+                        "stacked": "none",
+                        "type": "timeseries"
+                    },
+                    {
+                        "axis_position": "right",
+                        "chart_type": "line",
+                        "color": "rgba(252,196,0,1)",
+                        "fill": "0.3",
+                        "formatter": "number",
+                        "id": "615a2400-6312-11ea-99e6-b5eed31db613",
+                        "label": "Open Files",
+                        "line_width": 1,
+                        "metrics": [
+                            {
+                                "field": "mysql.status.open.files",
+                                "id": "615a2401-6312-11ea-99e6-b5eed31db613",
+                                "type": "avg"
+                            }
+                        ],
+                        "point_size": "0",
+                        "separate_axis": 0,
+                        "split_mode": "everything",
+                        "stacked": "none",
+                        "type": "timeseries"
+                    },
+                    {
+                        "axis_position": "right",
+                        "chart_type": "line",
+                        "color": "rgba(226,115,0,1)",
+                        "fill": "0.3",
+                        "formatter": "number",
+                        "id": "15d7bcd0-6313-11ea-99e6-b5eed31db613",
+                        "label": "Open Streams",
+                        "line_width": 1,
+                        "metrics": [
+                            {
+                                "field": "mysql.status.open.streams",
+                                "id": "15d7bcd1-6313-11ea-99e6-b5eed31db613",
+                                "type": "avg"
+                            }
+                        ],
+                        "point_size": "0",
+                        "separate_axis": 0,
+                        "split_mode": "everything",
+                        "stacked": "none",
+                        "type": "timeseries"
                     }
                 ],
                 "show_grid": 1,
@@ -50,7 +99,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Opened tables rate [Metricbeat MySQL] ECS",
+            "title": "Open tables, files, streams [Metricbeat MySQL] ECS",
             "type": "metrics"
         }
     },

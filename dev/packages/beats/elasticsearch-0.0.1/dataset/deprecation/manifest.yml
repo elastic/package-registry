@@ -1,3 +1,21 @@
+id: deprecation
 title: Elasticsearch Deprecation Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/elasticsearch/*_deprecation.log
+    - /var/log/elasticsearch/*_deprecation.json
+    name: paths
+    os.darwin:
+      default:
+      - /usr/local/var/lib/elasticsearch/*_deprecation.log
+      - /usr/local/var/lib/elasticsearch/*_deprecation.json
+    os.windows:
+      default:
+      - c:/ProgramData/Elastic/Elasticsearch/logs/*_deprecation.log
+      - c:/ProgramData/Elastic/Elasticsearch/logs/*_deprecation.json
+  title: Elasticsearch Deprecation logs
+  description: Collect Elasticsearch Deprecation logs

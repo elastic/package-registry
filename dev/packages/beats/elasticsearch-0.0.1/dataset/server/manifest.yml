@@ -1,3 +1,21 @@
+id: server
 title: Elasticsearch Server Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/elasticsearch/*.log
+    - /var/log/elasticsearch/*_server.json
+    name: paths
+    os.darwin:
+      default:
+      - /usr/local/var/lib/elasticsearch/*.log
+      - /usr/local/var/lib/elasticsearch/*_server.json
+    os.windows:
+      default:
+      - c:/ProgramData/Elastic/Elasticsearch/logs/*.log
+      - c:/ProgramData/Elastic/Elasticsearch/logs/*_server.json
+  title: Elasticsearch Server logs
+  description: Collect Elasticsearch Server logs

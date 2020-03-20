@@ -1,3 +1,23 @@
+id: mysql
 title: Zeek Mysql Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/bro/current/mysql.log
+    name: paths
+    os.darwin:
+      default:
+      - /usr/local/var/logs/current/mysql.log
+    os.linux:
+      default:
+      - /var/log/bro/current/mysql.log
+  - default:
+    - zeek.mysql
+    name: tags
+  - default: true
+    name: community_id
+  title: Zeek Mysql logs
+  description: Collect Zeek Mysql logs

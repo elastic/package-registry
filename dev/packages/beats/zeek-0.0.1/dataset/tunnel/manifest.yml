@@ -1,3 +1,21 @@
+id: tunnel
 title: Zeek Tunnel Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/bro/current/tunnel.log
+    name: paths
+    os.darwin:
+      default:
+      - /usr/local/var/logs/current/tunnel.log
+    os.linux:
+      default:
+      - /var/log/bro/current/tunnel.log
+  - default:
+    - zeek.tunnel
+    name: tags
+  title: Zeek Tunnel logs
+  description: Collect Zeek Tunnel logs

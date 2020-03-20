@@ -1,3 +1,6 @@
+id: json
 title: Http Json Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

@@ -1,3 +1,6 @@
+id: container
 title: Cloudfoundry Container Metrics
 release: experimental
 type: metrics
+streams:
+- input: TODO

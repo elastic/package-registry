@@ -1,3 +1,6 @@
+id: pubsub
 title: Googlecloud Pubsub Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

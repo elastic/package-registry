@@ -1,3 +1,6 @@
+id: stats
 title: Coredns Stats Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

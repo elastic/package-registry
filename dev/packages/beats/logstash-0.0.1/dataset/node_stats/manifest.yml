@@ -1,3 +1,6 @@
+id: node_stats
 title: Logstash Node_stats Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

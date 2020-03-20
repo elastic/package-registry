@@ -1,3 +1,6 @@
+id: monitor
 title: Azure Monitor Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

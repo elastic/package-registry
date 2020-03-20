@@ -1,3 +1,6 @@
+id: cloudwatch
 title: Aws Cloudwatch Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

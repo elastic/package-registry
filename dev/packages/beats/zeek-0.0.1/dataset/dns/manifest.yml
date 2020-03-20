@@ -1,3 +1,23 @@
+id: dns
 title: Zeek Dns Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/bro/current/dns.log
+    name: paths
+    os.darwin:
+      default:
+      - /usr/local/var/logs/current/dns.log
+    os.linux:
+      default:
+      - /var/log/bro/current/dns.log
+  - default:
+    - zeek.dns
+    name: tags
+  - default: true
+    name: community_id
+  title: Zeek Dns logs
+  description: Collect Zeek Dns logs

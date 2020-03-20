@@ -1,3 +1,6 @@
+id: service
 title: Windows Service Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

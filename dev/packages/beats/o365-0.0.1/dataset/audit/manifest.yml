@@ -1,0 +1,19 @@
+id: audit
+title: O365 Audit Logs
+release: ga
+type: logs
+streams:
+- input: logs
+  vars:
+  - default: o365audit
+    name: input
+  - name: certificate
+  - name: key
+  - name: key_passphrase
+  - name: application_id
+  - name: client_secret
+  - name: tenants
+  - name: content_type
+  - name: api
+  title: O365 Audit logs
+  description: Collect O365 Audit logs

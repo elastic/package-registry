@@ -1,3 +1,6 @@
+id: state_statefulset
 title: Kubernetes State_statefulset Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

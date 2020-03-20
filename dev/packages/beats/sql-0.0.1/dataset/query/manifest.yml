@@ -1,3 +1,6 @@
+id: query
 title: Sql Query Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

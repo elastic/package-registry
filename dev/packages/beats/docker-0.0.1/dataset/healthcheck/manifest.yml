@@ -1,3 +1,6 @@
+id: healthcheck
 title: Docker Healthcheck Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

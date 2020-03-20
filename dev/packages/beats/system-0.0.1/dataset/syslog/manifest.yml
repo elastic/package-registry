@@ -1,3 +1,18 @@
+id: syslog
 title: System Syslog Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/messages*
+    - /var/log/syslog*
+    name: paths
+    os.darwin:
+      default:
+      - /var/log/system.log*
+    os.windows:
+      default: []
+  title: System Syslog logs
+  description: Collect System Syslog logs

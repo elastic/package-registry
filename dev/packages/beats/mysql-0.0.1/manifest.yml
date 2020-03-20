@@ -13,16 +13,16 @@ requirement:
   kibana:
     versions: ""
 screenshots:
-- src: img/kibana-mysql.png
+- src: /img/kibana-mysql.png
   title: Kibana Mysql
   size: 1227x1026
   type: image/png
-- src: img/metricbeat-mysql.png
+- src: /img/metricbeat-mysql.png
   title: Metricbeat Mysql
   size: 2562x2540
   type: image/png
 icons:
-- src: img/logo_mysql.svg
+- src: /img/logo_mysql.svg
   title: Logo Mysql
   size: 32x32
   type: image/svg+xml

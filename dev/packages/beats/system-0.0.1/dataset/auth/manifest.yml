@@ -1,3 +1,18 @@
+id: auth
 title: System Auth Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/auth.log*
+    - /var/log/secure*
+    name: paths
+    os.darwin:
+      default:
+      - /var/log/secure.log*
+    os.windows:
+      default: []
+  title: System Auth logs
+  description: Collect System Auth logs

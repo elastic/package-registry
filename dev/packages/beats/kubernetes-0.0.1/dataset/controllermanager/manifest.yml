@@ -1,3 +1,6 @@
+id: controllermanager
 title: Kubernetes Controllermanager Metrics
 release: ga
 type: metrics
+streams:
+- input: TODO

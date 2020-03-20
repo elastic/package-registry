@@ -1,3 +1,21 @@
+id: weird
 title: Zeek Weird Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/bro/current/weird.log
+    name: paths
+    os.darwin:
+      default:
+      - /usr/local/var/logs/current/weird.log
+    os.linux:
+      default:
+      - /var/log/bro/current/weird.log
+  - default:
+    - zeek.weird
+    name: tags
+  title: Zeek Weird logs
+  description: Collect Zeek Weird logs

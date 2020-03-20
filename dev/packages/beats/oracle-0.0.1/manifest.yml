@@ -12,7 +12,7 @@ requirement:
   kibana:
     versions: ""
 screenshots:
-- src: img/metricbeat-oracle-overview.png
+- src: /img/metricbeat-oracle-overview.png
   title: Metricbeat Oracle Overview
   size: 3840x2160
   type: image/png

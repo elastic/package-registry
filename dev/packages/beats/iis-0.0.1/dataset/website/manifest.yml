@@ -1,3 +1,6 @@
+id: website
 title: Iis Website Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

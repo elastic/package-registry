@@ -1,3 +1,23 @@
+id: http
 title: Zeek Http Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/bro/current/http.log
+    name: paths
+    os.darwin:
+      default:
+      - /usr/local/var/logs/current/http.log
+    os.linux:
+      default:
+      - /var/log/bro/current/http.log
+  - default:
+    - zeek.http
+    name: tags
+  - default: true
+    name: community_id
+  title: Zeek Http logs
+  description: Collect Zeek Http logs

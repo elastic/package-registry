@@ -1,3 +1,6 @@
+id: webserver
 title: Iis Webserver Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

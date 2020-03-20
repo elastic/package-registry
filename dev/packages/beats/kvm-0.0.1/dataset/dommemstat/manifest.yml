@@ -1,3 +1,6 @@
+id: dommemstat
 title: Kvm Dommemstat Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

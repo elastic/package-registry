@@ -1,3 +1,6 @@
+id: proxy
 title: Redisenterprise Proxy Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO

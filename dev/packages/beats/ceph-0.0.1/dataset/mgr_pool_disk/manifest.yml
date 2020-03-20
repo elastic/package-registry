@@ -1,3 +1,6 @@
+id: mgr_pool_disk
 title: Ceph Mgr_pool_disk Metrics
 release: beta
 type: metrics
+streams:
+- input: TODO
