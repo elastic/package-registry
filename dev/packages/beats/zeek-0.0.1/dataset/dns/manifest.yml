@@ -9,9 +9,11 @@ streams:
     - /var/log/bro/current/dns.log
     name: paths
     os.darwin:
-    - /usr/local/var/logs/current/dns.log
+      default:
+      - /usr/local/var/logs/current/dns.log
     os.linux:
-    - /var/log/bro/current/dns.log
+      default:
+      - /var/log/bro/current/dns.log
   - default:
     - zeek.dns
     name: tags

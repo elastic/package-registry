@@ -9,9 +9,11 @@ streams:
     - /var/log/bro/current/http.log
     name: paths
     os.darwin:
-    - /usr/local/var/logs/current/http.log
+      default:
+      - /usr/local/var/logs/current/http.log
     os.linux:
-    - /var/log/bro/current/http.log
+      default:
+      - /var/log/bro/current/http.log
   - default:
     - zeek.http
     name: tags

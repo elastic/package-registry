@@ -9,9 +9,11 @@ streams:
     - /var/log/bro/current/ftp.log
     name: paths
     os.darwin:
-    - /usr/local/var/logs/current/ftp.log
+      default:
+      - /usr/local/var/logs/current/ftp.log
     os.linux:
-    - /var/log/bro/current/ftp.log
+      default:
+      - /var/log/bro/current/ftp.log
   - default:
     - zeek.ftp
     name: tags

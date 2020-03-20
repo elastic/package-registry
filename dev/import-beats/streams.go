@@ -20,6 +20,10 @@ type manifestWithVars struct {
 	Vars []map[string]interface{} `yaml:"var"`
 }
 
+type varWithDefault struct {
+	Default interface{} `yaml:"default"`
+}
+
 func createStreams(modulePath, moduleName, datasetName, beatType string) ([]util.Stream, error) {
 	switch beatType {
 	case "logs":
@@ -48,9 +52,28 @@ func createLogStreams(modulePath, moduleName, datasetName, beatType string) ([]u
 			Input:       "logs",
 			Title:       fmt.Sprintf("%s %s %s", strings.Title(moduleName), strings.Title(datasetName), beatType),
 			Description: fmt.Sprintf("Collect %s %s logs", strings.Title(moduleName), strings.Title(datasetName)),
-			Vars:        mwv.Vars,
+			Vars:        wrapVariablesWithDefault(mwv).Vars,
 		},
 	}, nil
+}
+
+func wrapVariablesWithDefault(mwvs manifestWithVars) manifestWithVars {
+	var withDefaults manifestWithVars
+	for _, aVar := range mwvs.Vars {
+
+		aVarWithDefaults := map[string]interface{}{}
+		for k, v := range aVar {
+			if strings.HasPrefix(k, "os.") {
+				aVarWithDefaults[k] = varWithDefault{
+					Default: v,
+				}
+			} else {
+				aVarWithDefaults[k] = v
+			}
+		}
+		withDefaults.Vars = append(withDefaults.Vars, aVarWithDefaults)
+	}
+	return withDefaults
 }
 
 func createMetricStreams() ([]util.Stream, error) {

@@ -12,6 +12,11 @@ release: ga
 requirement:
   kibana:
     versions: ""
+screenshots:
+- src: /img/metricbeat-googlecloud-compute-overview.png
+  title: Metricbeat Googlecloud Compute Overview
+  size: 5109x2610
+  type: image/png
 icons:
 - src: /img/logo_gcp.svg
   title: Logo Gcp

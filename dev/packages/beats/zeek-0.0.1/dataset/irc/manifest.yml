@@ -9,9 +9,11 @@ streams:
     - /var/log/bro/current/irc.log
     name: paths
     os.darwin:
-    - /usr/local/var/logs/current/irc.log
+      default:
+      - /usr/local/var/logs/current/irc.log
     os.linux:
-    - /var/log/bro/current/irc.log
+      default:
+      - /var/log/bro/current/irc.log
   - default:
     - zeek.irc
     name: tags

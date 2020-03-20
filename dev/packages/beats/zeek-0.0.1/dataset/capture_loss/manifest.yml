@@ -9,9 +9,11 @@ streams:
     - /var/log/bro/current/capture_loss.log
     name: paths
     os.darwin:
-    - /usr/local/var/logs/current/capture_loss.log
+      default:
+      - /usr/local/var/logs/current/capture_loss.log
     os.linux:
-    - /var/log/bro/current/capture_loss.log
+      default:
+      - /var/log/bro/current/capture_loss.log
   - default:
     - zeek.capture_loss
     name: tags

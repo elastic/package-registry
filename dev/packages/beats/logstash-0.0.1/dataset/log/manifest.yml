@@ -11,6 +11,7 @@ streams:
     - /var/log/logstash/logstash-{{.format}}*.log
     name: paths
     os.windows:
-    - c:/programdata/logstash/logs/logstash-{{.format}}*.log
+      default:
+      - c:/programdata/logstash/logs/logstash-{{.format}}*.log
   title: Logstash Log logs
   description: Collect Logstash Log logs

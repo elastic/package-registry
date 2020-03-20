@@ -9,9 +9,11 @@ streams:
     - /var/log/bro/current/dnp3.log
     name: paths
     os.darwin:
-    - /usr/local/var/logs/current/dnp3.log
+      default:
+      - /usr/local/var/logs/current/dnp3.log
     os.linux:
-    - /var/log/bro/current/dnp3.log
+      default:
+      - /var/log/bro/current/dnp3.log
   - default:
     - zeek.dnp3
     name: tags

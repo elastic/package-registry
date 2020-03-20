@@ -10,10 +10,12 @@ streams:
     - /var/log/elasticsearch/gc.log
     name: paths
     os.darwin:
-    - /usr/local/var/lib/elasticsearch/gc.log.[0-9]*
-    - /usr/local/var/lib/elasticsearch/gc.log
+      default:
+      - /usr/local/var/lib/elasticsearch/gc.log.[0-9]*
+      - /usr/local/var/lib/elasticsearch/gc.log
     os.windows:
-    - c:/ProgramData/Elastic/Elasticsearch/logs/gc.log.*
-    - c:/ProgramData/Elastic/Elasticsearch/logs/gc.log
+      default:
+      - c:/ProgramData/Elastic/Elasticsearch/logs/gc.log.*
+      - c:/ProgramData/Elastic/Elasticsearch/logs/gc.log
   title: Elasticsearch Gc logs
   description: Collect Elasticsearch Gc logs

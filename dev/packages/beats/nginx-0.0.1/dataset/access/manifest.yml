@@ -9,8 +9,10 @@ streams:
     - /var/log/nginx/access.log*
     name: paths
     os.darwin:
-    - /usr/local/var/log/nginx/access.log*
+      default:
+      - /usr/local/var/log/nginx/access.log*
     os.windows:
-    - c:/programdata/nginx/logs/*access.log*
+      default:
+      - c:/programdata/nginx/logs/*access.log*
   title: Nginx Access logs
   description: Collect Nginx Access logs

@@ -10,7 +10,9 @@ streams:
     - /var/log/secure*
     name: paths
     os.darwin:
-    - /var/log/secure.log*
-    os.windows: []
+      default:
+      - /var/log/secure.log*
+    os.windows:
+      default: []
   title: System Auth logs
   description: Collect System Auth logs

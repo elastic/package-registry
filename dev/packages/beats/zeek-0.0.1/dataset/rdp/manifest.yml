@@ -9,9 +9,11 @@ streams:
     - /var/log/bro/current/rdp.log
     name: paths
     os.darwin:
-    - /usr/local/var/logs/current/rdp.log
+      default:
+      - /usr/local/var/logs/current/rdp.log
     os.linux:
-    - /var/log/bro/current/rdp.log
+      default:
+      - /var/log/bro/current/rdp.log
   - default:
     - zeek.rdp
     name: tags

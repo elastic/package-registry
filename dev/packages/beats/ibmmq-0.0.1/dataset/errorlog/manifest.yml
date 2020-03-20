@@ -10,7 +10,8 @@ streams:
     - /var/mqm/qmgrs/*/*.LOG*
     name: paths
     os.windows:
-    - C:\ProgramData\IBM\MQ\errors\*.LOG*
-    - C:\ProgramData\IBM\MQ\qmgrs\*\errors\*.LOG*
+      default:
+      - C:\ProgramData\IBM\MQ\errors\*.LOG*
+      - C:\ProgramData\IBM\MQ\qmgrs\*\errors\*.LOG*
   title: Ibmmq Errorlog logs
   description: Collect Ibmmq Errorlog logs

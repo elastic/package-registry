@@ -9,7 +9,9 @@ streams:
     - ${RABBITMQ_LOGS:/var/log/rabbitmq/rabbit@localhost.log*}
     name: paths
     os.darwin:
-    - ${RABBITMQ_LOGS:/usr/local/var/log/rabbitmq/rabbit@localhost.log*}
-    os.windows: null
+      default:
+      - ${RABBITMQ_LOGS:/usr/local/var/log/rabbitmq/rabbit@localhost.log*}
+    os.windows:
+      default: null
   title: Rabbitmq Log logs
   description: Collect Rabbitmq Log logs

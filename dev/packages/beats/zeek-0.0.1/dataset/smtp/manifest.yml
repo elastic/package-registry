@@ -9,9 +9,11 @@ streams:
     - /var/log/bro/current/smtp.log
     name: paths
     os.darwin:
-    - /usr/local/var/logs/current/smtp.log
+      default:
+      - /usr/local/var/logs/current/smtp.log
     os.linux:
-    - /var/log/bro/current/smtp.log
+      default:
+      - /var/log/bro/current/smtp.log
   - default:
     - zeek.smtp
     name: tags

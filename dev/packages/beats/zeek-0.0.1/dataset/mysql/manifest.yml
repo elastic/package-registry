@@ -9,9 +9,11 @@ streams:
     - /var/log/bro/current/mysql.log
     name: paths
     os.darwin:
-    - /usr/local/var/logs/current/mysql.log
+      default:
+      - /usr/local/var/logs/current/mysql.log
     os.linux:
-    - /var/log/bro/current/mysql.log
+      default:
+      - /var/log/bro/current/mysql.log
   - default:
     - zeek.mysql
     name: tags

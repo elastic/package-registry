@@ -9,8 +9,10 @@ streams:
     - /var/log/nginx/error.log*
     name: paths
     os.darwin:
-    - /usr/local/var/log/nginx/error.log*
+      default:
+      - /usr/local/var/log/nginx/error.log*
     os.windows:
-    - c:/programdata/nginx/logs/error.log*
+      default:
+      - c:/programdata/nginx/logs/error.log*
   title: Nginx Error logs
   description: Collect Nginx Error logs

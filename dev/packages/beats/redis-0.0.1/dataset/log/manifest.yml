@@ -9,9 +9,11 @@ streams:
     - /var/log/redis/redis-server.log*
     name: paths
     os.darwin:
-    - /usr/local/var/log/redis/redis-server.log*
-    - /usr/local/var/db/redis/redis-server.log*
+      default:
+      - /usr/local/var/log/redis/redis-server.log*
+      - /usr/local/var/db/redis/redis-server.log*
     os.windows:
-    - c:/program files/Redis/logs/redis.log*
+      default:
+      - c:/program files/Redis/logs/redis.log*
   title: Redis Log logs
   description: Collect Redis Log logs

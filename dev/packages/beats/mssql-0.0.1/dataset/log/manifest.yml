@@ -9,10 +9,13 @@ streams:
     - /var/opt/mssql/log/error*
     name: paths
     os.darwin:
-    - /var/opt/mssql/log/error*
+      default:
+      - /var/opt/mssql/log/error*
     os.linux:
-    - /var/opt/mssql/log/error*
+      default:
+      - /var/opt/mssql/log/error*
     os.windows:
-    - c:\ProgramFiles\Microsoft SQL Server\MSSQL.1MSSQL\LOG\ERRORLOG*
+      default:
+      - c:\ProgramFiles\Microsoft SQL Server\MSSQL.1MSSQL\LOG\ERRORLOG*
   title: Mssql Log logs
   description: Collect Mssql Log logs

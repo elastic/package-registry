@@ -9,8 +9,10 @@ streams:
     - /var/log/traefik/access.log*
     name: paths
     os.darwin:
-    - /usr/local/traefik/access.log*
+      default:
+      - /usr/local/traefik/access.log*
     os.windows:
-    - c:/programdata/traefik/logs/*access.log*
+      default:
+      - c:/programdata/traefik/logs/*access.log*
   title: Traefik Access logs
   description: Collect Traefik Access logs

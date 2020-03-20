@@ -9,9 +9,11 @@ streams:
     - /var/log/bro/current/weird.log
     name: paths
     os.darwin:
-    - /usr/local/var/logs/current/weird.log
+      default:
+      - /usr/local/var/logs/current/weird.log
     os.linux:
-    - /var/log/bro/current/weird.log
+      default:
+      - /var/log/bro/current/weird.log
   - default:
     - zeek.weird
     name: tags

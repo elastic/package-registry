@@ -9,10 +9,12 @@ streams:
     - /var/log/osquery/osqueryd.results.log*
     name: paths
     os.darwin:
-    - /var/log/osquery/osqueryd.results.log*
-    - /private/var/log/osquery/osqueryd.results.log*
+      default:
+      - /var/log/osquery/osqueryd.results.log*
+      - /private/var/log/osquery/osqueryd.results.log*
     os.windows:
-    - C:/ProgramData/osquery/log/osqueryd.results.log*
+      default:
+      - C:/ProgramData/osquery/log/osqueryd.results.log*
   - default: true
     name: use_namespace
   title: Osquery Result logs

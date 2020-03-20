@@ -9,9 +9,11 @@ streams:
     - /var/log/bro/current/smb_files.log
     name: paths
     os.darwin:
-    - /usr/local/var/logs/current/smb_files.log
+      default:
+      - /usr/local/var/logs/current/smb_files.log
     os.linux:
-    - /var/log/bro/current/smb_files.log
+      default:
+      - /var/log/bro/current/smb_files.log
   - default:
     - zeek.smb_files
     name: tags

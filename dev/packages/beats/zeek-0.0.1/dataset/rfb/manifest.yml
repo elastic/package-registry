@@ -9,9 +9,11 @@ streams:
     - /var/log/bro/current/rfb.log
     name: paths
     os.darwin:
-    - /usr/local/var/logs/current/rfb.log
+      default:
+      - /usr/local/var/logs/current/rfb.log
     os.linux:
-    - /var/log/bro/current/rfb.log
+      default:
+      - /var/log/bro/current/rfb.log
   - default:
     - zeek.rfb
     name: tags

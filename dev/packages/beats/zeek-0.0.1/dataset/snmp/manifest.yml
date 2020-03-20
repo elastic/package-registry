@@ -9,9 +9,11 @@ streams:
     - /var/log/bro/current/snmp.log
     name: paths
     os.darwin:
-    - /usr/local/var/logs/current/snmp.log
+      default:
+      - /usr/local/var/logs/current/snmp.log
     os.linux:
-    - /var/log/bro/current/snmp.log
+      default:
+      - /var/log/bro/current/snmp.log
   - default:
     - zeek.snmp
     name: tags

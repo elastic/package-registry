@@ -10,10 +10,12 @@ streams:
     - /var/log/elasticsearch/*_server.json
     name: paths
     os.darwin:
-    - /usr/local/var/lib/elasticsearch/*.log
-    - /usr/local/var/lib/elasticsearch/*_server.json
+      default:
+      - /usr/local/var/lib/elasticsearch/*.log
+      - /usr/local/var/lib/elasticsearch/*_server.json
     os.windows:
-    - c:/ProgramData/Elastic/Elasticsearch/logs/*.log
-    - c:/ProgramData/Elastic/Elasticsearch/logs/*_server.json
+      default:
+      - c:/ProgramData/Elastic/Elasticsearch/logs/*.log
+      - c:/ProgramData/Elastic/Elasticsearch/logs/*_server.json
   title: Elasticsearch Server logs
   description: Collect Elasticsearch Server logs

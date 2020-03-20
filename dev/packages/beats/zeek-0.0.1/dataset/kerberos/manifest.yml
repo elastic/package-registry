@@ -9,9 +9,11 @@ streams:
     - /var/log/bro/current/kerberos.log
     name: paths
     os.darwin:
-    - /usr/local/var/logs/current/kerberos.log
+      default:
+      - /usr/local/var/logs/current/kerberos.log
     os.linux:
-    - /var/log/bro/current/kerberos.log
+      default:
+      - /var/log/bro/current/kerberos.log
   - default:
     - zeek.kerberos
     name: tags

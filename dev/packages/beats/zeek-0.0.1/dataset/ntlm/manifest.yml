@@ -9,9 +9,11 @@ streams:
     - /var/log/bro/current/ntlm.log
     name: paths
     os.darwin:
-    - /usr/local/var/logs/current/ntlm.log
+      default:
+      - /usr/local/var/logs/current/ntlm.log
     os.linux:
-    - /var/log/bro/current/ntlm.log
+      default:
+      - /var/log/bro/current/ntlm.log
   - default:
     - zeek.ntlm
     name: tags

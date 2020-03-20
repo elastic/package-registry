@@ -9,9 +9,11 @@ streams:
     - /var/log/bro/current/ssh.log
     name: paths
     os.darwin:
-    - /usr/local/var/logs/current/ssh.log
+      default:
+      - /usr/local/var/logs/current/ssh.log
     os.linux:
-    - /var/log/bro/current/ssh.log
+      default:
+      - /var/log/bro/current/ssh.log
   - default:
     - zeek.ssh
     name: tags

@@ -10,10 +10,12 @@ streams:
     - /var/log/elasticsearch/*_deprecation.json
     name: paths
     os.darwin:
-    - /usr/local/var/lib/elasticsearch/*_deprecation.log
-    - /usr/local/var/lib/elasticsearch/*_deprecation.json
+      default:
+      - /usr/local/var/lib/elasticsearch/*_deprecation.log
+      - /usr/local/var/lib/elasticsearch/*_deprecation.json
     os.windows:
-    - c:/ProgramData/Elastic/Elasticsearch/logs/*_deprecation.log
-    - c:/ProgramData/Elastic/Elasticsearch/logs/*_deprecation.json
+      default:
+      - c:/ProgramData/Elastic/Elasticsearch/logs/*_deprecation.log
+      - c:/ProgramData/Elastic/Elasticsearch/logs/*_deprecation.json
   title: Elasticsearch Deprecation logs
   description: Collect Elasticsearch Deprecation logs

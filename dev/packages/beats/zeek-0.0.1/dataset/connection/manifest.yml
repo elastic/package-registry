@@ -9,9 +9,11 @@ streams:
     - /var/log/bro/current/conn.log
     name: paths
     os.darwin:
-    - /usr/local/var/logs/current/conn.log
+      default:
+      - /usr/local/var/logs/current/conn.log
     os.linux:
-    - /var/log/bro/current/conn.log
+      default:
+      - /var/log/bro/current/conn.log
   - default:
     - zeek.connection
     name: tags

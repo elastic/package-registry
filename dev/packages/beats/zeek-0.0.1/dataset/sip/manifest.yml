@@ -9,9 +9,11 @@ streams:
     - /var/log/bro/current/sip.log
     name: paths
     os.darwin:
-    - /usr/local/var/logs/current/sip.log
+      default:
+      - /usr/local/var/logs/current/sip.log
     os.linux:
-    - /var/log/bro/current/sip.log
+      default:
+      - /var/log/bro/current/sip.log
   - default:
     - zeek.sip
     name: tags

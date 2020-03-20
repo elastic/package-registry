@@ -10,7 +10,9 @@ streams:
     - /var/log/syslog*
     name: paths
     os.darwin:
-    - /var/log/system.log*
-    os.windows: []
+      default:
+      - /var/log/system.log*
+    os.windows:
+      default: []
   title: System Syslog logs
   description: Collect System Syslog logs

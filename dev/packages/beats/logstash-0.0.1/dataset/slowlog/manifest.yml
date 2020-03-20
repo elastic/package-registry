@@ -11,6 +11,7 @@ streams:
     - /var/log/logstash/logstash-slowlog-{{.format}}*.log
     name: paths
     os.windows:
-    - c:/programdata/logstash/logs/logstash-slowlog-{{.format}}*.log
+      default:
+      - c:/programdata/logstash/logs/logstash-slowlog-{{.format}}*.log
   title: Logstash Slowlog logs
   description: Collect Logstash Slowlog logs

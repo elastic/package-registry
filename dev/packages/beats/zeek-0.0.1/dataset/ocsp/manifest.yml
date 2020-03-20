@@ -9,9 +9,11 @@ streams:
     - /var/log/bro/current/ocsp.log
     name: paths
     os.darwin:
-    - /usr/local/var/logs/current/ocsp.log
+      default:
+      - /usr/local/var/logs/current/ocsp.log
     os.linux:
-    - /var/log/bro/current/ocsp.log
+      default:
+      - /var/log/bro/current/ocsp.log
   - default:
     - zeek.ocsp
     name: tags

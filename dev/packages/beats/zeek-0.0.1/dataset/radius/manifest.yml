@@ -9,9 +9,11 @@ streams:
     - /var/log/bro/current/radius.log
     name: paths
     os.darwin:
-    - /usr/local/var/logs/current/radius.log
+      default:
+      - /usr/local/var/logs/current/radius.log
     os.linux:
-    - /var/log/bro/current/radius.log
+      default:
+      - /var/log/bro/current/radius.log
   - default:
     - zeek.radius
     name: tags

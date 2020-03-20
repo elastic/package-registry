@@ -9,9 +9,11 @@ streams:
     - /var/log/suricata/eve.json
     name: paths
     os.darwin:
-    - /usr/local/var/log/suricata/eve.json
+      default:
+      - /usr/local/var/log/suricata/eve.json
     os.windows:
-    - c:/program files/suricata/log/eve.json
+      default:
+      - c:/program files/suricata/log/eve.json
   - default:
     - suricata
     name: tags

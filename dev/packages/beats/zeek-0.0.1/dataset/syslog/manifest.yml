@@ -9,9 +9,11 @@ streams:
     - /var/log/bro/current/syslog.log
     name: paths
     os.darwin:
-    - /usr/local/var/logs/current/syslog.log
+      default:
+      - /usr/local/var/logs/current/syslog.log
     os.linux:
-    - /var/log/bro/current/syslog.log
+      default:
+      - /var/log/bro/current/syslog.log
   - default:
     - zeek.syslog
     name: tags

@@ -9,9 +9,11 @@ streams:
     - /var/log/bro/current/modbus.log
     name: paths
     os.darwin:
-    - /usr/local/var/logs/current/modbus.log
+      default:
+      - /usr/local/var/logs/current/modbus.log
     os.linux:
-    - /var/log/bro/current/modbus.log
+      default:
+      - /var/log/bro/current/modbus.log
   - default:
     - zeek.modbus
     name: tags

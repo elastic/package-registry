@@ -9,9 +9,11 @@ streams:
     - /var/log/bro/current/dpd.log
     name: paths
     os.darwin:
-    - /usr/local/var/logs/current/dpd.log
+      default:
+      - /usr/local/var/logs/current/dpd.log
     os.linux:
-    - /var/log/bro/current/dpd.log
+      default:
+      - /var/log/bro/current/dpd.log
   - default:
     - zeek.dpd
     name: tags

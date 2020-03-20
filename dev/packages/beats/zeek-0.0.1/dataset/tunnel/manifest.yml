@@ -9,9 +9,11 @@ streams:
     - /var/log/bro/current/tunnel.log
     name: paths
     os.darwin:
-    - /usr/local/var/logs/current/tunnel.log
+      default:
+      - /usr/local/var/logs/current/tunnel.log
     os.linux:
-    - /var/log/bro/current/tunnel.log
+      default:
+      - /var/log/bro/current/tunnel.log
   - default:
     - zeek.tunnel
     name: tags

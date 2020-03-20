@@ -10,8 +10,10 @@ streams:
     - /var/log/mysqld.log*
     name: paths
     os.darwin:
-    - /usr/local/var/mysql/{{.builtin.hostname}}.{{.builtin.domain}}.err*
+      default:
+      - /usr/local/var/mysql/{{.builtin.hostname}}.{{.builtin.domain}}.err*
     os.windows:
-    - c:/programdata/MySQL/MySQL Server*/error.log*
+      default:
+      - c:/programdata/MySQL/MySQL Server*/error.log*
   title: Mysql Error logs
   description: Collect Mysql Error logs

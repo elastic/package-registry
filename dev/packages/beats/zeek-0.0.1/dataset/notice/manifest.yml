@@ -9,9 +9,11 @@ streams:
     - /var/log/bro/current/notice.log
     name: paths
     os.darwin:
-    - /usr/local/var/logs/current/notice.log
+      default:
+      - /usr/local/var/logs/current/notice.log
     os.linux:
-    - /var/log/bro/current/notice.log
+      default:
+      - /var/log/bro/current/notice.log
   - default:
     - zeek.notice
     name: tags

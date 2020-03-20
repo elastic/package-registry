@@ -9,9 +9,11 @@ streams:
     - /var/log/bro/current/dhcp.log
     name: paths
     os.darwin:
-    - /usr/local/var/logs/current/dhcp.log
+      default:
+      - /usr/local/var/logs/current/dhcp.log
     os.linux:
-    - /var/log/bro/current/dhcp.log
+      default:
+      - /var/log/bro/current/dhcp.log
   - default:
     - zeek.dhcp
     name: tags

@@ -9,8 +9,10 @@ streams:
     - /opt/apache-activemq-*/data/activemq.log*
     name: paths
     os.darwin:
-    - /usr/local/apache-activemq-*/data/activemq.log*
+      default:
+      - /usr/local/apache-activemq-*/data/activemq.log*
     os.windows:
-    - c:/apache-activemq-*/data/activemq.log*
+      default:
+      - c:/apache-activemq-*/data/activemq.log*
   title: Activemq Log logs
   description: Collect Activemq Log logs

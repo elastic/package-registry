@@ -9,10 +9,13 @@ streams:
     - C:/inetpub/logs/LogFiles/*/*.log
     name: paths
     os.darwin:
-    - ""
+      default:
+      - ""
     os.linux:
-    - ""
+      default:
+      - ""
     os.windows:
-    - C:/inetpub/logs/LogFiles/*/*.log
+      default:
+      - C:/inetpub/logs/LogFiles/*/*.log
   title: Iis Access logs
   description: Collect Iis Access logs

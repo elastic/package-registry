@@ -11,12 +11,14 @@ streams:
     - /var/log/elasticsearch/*_audit.json
     name: paths
     os.darwin:
-    - /usr/local/var/lib/elasticsearch/*_access.log
-    - /usr/local/var/lib/elasticsearch/*_audit.log
-    - /usr/local/var/lib/elasticsearch/*_audit.json
+      default:
+      - /usr/local/var/lib/elasticsearch/*_access.log
+      - /usr/local/var/lib/elasticsearch/*_audit.log
+      - /usr/local/var/lib/elasticsearch/*_audit.json
     os.windows:
-    - c:/ProgramData/Elastic/Elasticsearch/logs/*_access.log
-    - c:/ProgramData/Elastic/Elasticsearch/logs/*_audit.log
-    - c:/ProgramData/Elastic/Elasticsearch/logs/*_audit.json
+      default:
+      - c:/ProgramData/Elastic/Elasticsearch/logs/*_access.log
+      - c:/ProgramData/Elastic/Elasticsearch/logs/*_audit.log
+      - c:/ProgramData/Elastic/Elasticsearch/logs/*_audit.json
   title: Elasticsearch Audit logs
   description: Collect Elasticsearch Audit logs

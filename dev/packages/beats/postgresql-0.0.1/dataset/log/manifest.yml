@@ -9,8 +9,10 @@ streams:
     - /var/log/postgresql/postgresql-*-*.log*
     name: paths
     os.darwin:
-    - /usr/local/var/postgres/*.log*
+      default:
+      - /usr/local/var/postgres/*.log*
     os.windows:
-    - c:/Program Files/PostgreSQL/*/logs/*.log*
+      default:
+      - c:/Program Files/PostgreSQL/*/logs/*.log*
   title: Postgresql Log logs
   description: Collect Postgresql Log logs

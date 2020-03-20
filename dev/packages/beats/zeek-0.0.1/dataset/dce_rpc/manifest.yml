@@ -9,9 +9,11 @@ streams:
     - /var/log/bro/current/dce_rpc.log
     name: paths
     os.darwin:
-    - /usr/local/var/logs/current/dce_rpc.log
+      default:
+      - /usr/local/var/logs/current/dce_rpc.log
     os.linux:
-    - /var/log/bro/current/dce_rpc.log
+      default:
+      - /var/log/bro/current/dce_rpc.log
   - default:
     - zeek.dce_rpc
     name: tags

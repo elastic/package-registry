@@ -10,8 +10,10 @@ streams:
     - /var/lib/mysql/{{.builtin.hostname}}-slow.log
     name: paths
     os.darwin:
-    - /usr/local/var/mysql/{{.builtin.hostname}}-slow.log*
+      default:
+      - /usr/local/var/mysql/{{.builtin.hostname}}-slow.log*
     os.windows:
-    - c:/programdata/MySQL/MySQL Server*/mysql-slow.log*
+      default:
+      - c:/programdata/MySQL/MySQL Server*/mysql-slow.log*
   title: Mysql Slowlog logs
   description: Collect Mysql Slowlog logs

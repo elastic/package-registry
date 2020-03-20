@@ -9,9 +9,11 @@ streams:
     - /var/log/bro/current/ssl.log
     name: paths
     os.darwin:
-    - /usr/local/var/logs/current/ssl.log
+      default:
+      - /usr/local/var/logs/current/ssl.log
     os.linux:
-    - /var/log/bro/current/ssl.log
+      default:
+      - /var/log/bro/current/ssl.log
   - default:
     - zeek.ssl
     name: tags

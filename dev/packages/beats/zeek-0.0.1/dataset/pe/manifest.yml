@@ -9,9 +9,11 @@ streams:
     - /var/log/bro/current/pe.log
     name: paths
     os.darwin:
-    - /usr/local/var/logs/current/pe.log
+      default:
+      - /usr/local/var/logs/current/pe.log
     os.linux:
-    - /var/log/bro/current/pe.log
+      default:
+      - /var/log/bro/current/pe.log
   - default:
     - zeek.pe
     name: tags

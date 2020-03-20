@@ -9,8 +9,10 @@ streams:
     - /opt/apache-activemq-*/data/audit.log*
     name: paths
     os.darwin:
-    - /usr/local/apache-activemq-*/data/audit.log*
+      default:
+      - /usr/local/apache-activemq-*/data/audit.log*
     os.windows:
-    - c:/apache-activemq-*/data/audit.log*
+      default:
+      - c:/apache-activemq-*/data/audit.log*
   title: Activemq Audit logs
   description: Collect Activemq Audit logs

@@ -9,10 +9,13 @@ streams:
     - c:/Windows/System32/LogFiles/HTTPERR/*.log
     name: paths
     os.darwin:
-    - ""
+      default:
+      - ""
     os.linux:
-    - ""
+      default:
+      - ""
     os.windows:
-    - c:/Windows/System32/LogFiles/HTTPERR/*.log
+      default:
+      - c:/Windows/System32/LogFiles/HTTPERR/*.log
   title: Iis Error logs
   description: Collect Iis Error logs

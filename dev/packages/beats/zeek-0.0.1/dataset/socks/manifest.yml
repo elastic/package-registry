@@ -9,9 +9,11 @@ streams:
     - /var/log/bro/current/socks.log
     name: paths
     os.darwin:
-    - /usr/local/var/logs/current/socks.log
+      default:
+      - /usr/local/var/logs/current/socks.log
     os.linux:
-    - /var/log/bro/current/socks.log
+      default:
+      - /var/log/bro/current/socks.log
   - default:
     - zeek.socks
     name: tags

@@ -9,7 +9,9 @@ streams:
     - /var/log/audit/audit.log*
     name: paths
     os.darwin:
-    - ""
-    os.windows: []
+      default:
+      - ""
+    os.windows:
+      default: []
   title: Auditd Log logs
   description: Collect Auditd Log logs
