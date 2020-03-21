@@ -22,8 +22,8 @@
                 "default_index_pattern": "metrics-*",
                 "default_timefield": "@timestamp",
                 "filter": {
-                    "language": "kuery",
-                    "query": "(event.dataset:aws.cloudtrail OR event.dataset:aws.cloudwatch OR event.dataset:aws.ec2 OR event.dataset:aws.elb OR event.dataset:aws.s3access OR event.dataset:aws.vpcflow)  AND fileset.name:s3access"
+                    "language": "lucene",
+                    "query": "event.dataset:aws.s3access"
                 },
                 "id": "61ca57f0-469d-11e7-af02-69e470af7417",
                 "index_pattern": "logs-*",

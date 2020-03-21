@@ -385,9 +385,10 @@ func stripReferencesToEventModuleInQuery(object mapStr, objectKey, moduleName st
 	query = strings.ReplaceAll(query, ": ", ":")
 	query = strings.ReplaceAll(query, " :", ":")
 	query = strings.ReplaceAll(query, `"`, "")
-	if strings.Contains(query, "event.module:"+moduleName) && strings.Contains(query, "metricset.name:") {
+	if strings.Contains(query, "event.module:"+moduleName) && (strings.Contains(query, "metricset.name:") || strings.Contains(query, "fileset.name:")) {
 		query = strings.ReplaceAll(query, "event.module:"+moduleName, "")
 		query = strings.ReplaceAll(query, "metricset.name:", fmt.Sprintf("event.dataset:%s.", moduleName))
+		query = strings.ReplaceAll(query, "fileset.name:", fmt.Sprintf("event.dataset:%s.", moduleName))
 		query = strings.TrimSpace(query)
 		if strings.HasPrefix(query, "AND ") {
 			query = query[4:]
@@ -397,8 +398,7 @@ func stripReferencesToEventModuleInQuery(object mapStr, objectKey, moduleName st
 		if err != nil {
 			return nil, fmt.Errorf("replacing key '%s' failed: %v", queryKey, err)
 		}
-	}
-	if strings.Contains(query, "event.module:"+moduleName) {
+	} else if strings.Contains(query, "event.module:"+moduleName) {
 		var eventDatasets []string
 		for _, datasetName := range datasetNames {
 			eventDatasets = append(eventDatasets, fmt.Sprintf("event.dataset:%s.%s", moduleName, datasetName))
