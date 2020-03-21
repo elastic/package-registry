@@ -24,7 +24,7 @@
                 "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.index",
                 "query": {
                     "language": "kuery",
-                    "query": "event.module:traefik"
+                    "query": "(event.dataset:traefik.access)"
                 }
             }
         },

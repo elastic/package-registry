@@ -29,8 +29,8 @@
                     }
                 ],
                 "filter": {
-                    "language": "lucene",
-                    "query": "event.module:nginx AND fileset.name:access"
+                    "language": "kuery",
+                    "query": "(event.dataset:nginx.access OR event.dataset:nginx.error OR event.dataset:nginx.ingress_controller)  AND fileset.name:access"
                 },
                 "id": "61ca57f0-469d-11e7-af02-69e470af7417",
                 "index_pattern": "logs-*",

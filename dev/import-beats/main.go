@@ -98,7 +98,6 @@ func build(options importerOptions) error {
 			return errors.Wrap(err, "creating from logs source failed")
 		}
 	}
-
 	for _, beatName := range metricSources {
 		err := repository.createPackagesFromSource(options.beatsDir, beatName, "metrics")
 		if err != nil {

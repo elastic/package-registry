@@ -1,0 +1,6 @@
+id: natgateway
+title: Aws Natgateway Metrics
+release: beta
+type: metrics
+streams:
+- input: TODO

@@ -24,7 +24,7 @@
                 "default_timefield": "@timestamp",
                 "filter": {
                     "language": "kuery",
-                    "query": "event.module : \"vsphere\" "
+                    "query": "(event.dataset:vsphere.datastore OR event.dataset:vsphere.host OR event.dataset:vsphere.virtualmachine)"
                 },
                 "gauge_color_rules": [
                     {
