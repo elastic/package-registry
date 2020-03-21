@@ -19,20 +19,15 @@
                             "alias": null,
                             "disabled": false,
                             "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index",
-                            "key": "event.module",
+                            "key": "query",
                             "negate": false,
-                            "params": {
-                                "query": "logstash",
-                                "type": "phrase"
-                            },
-                            "type": "phrase",
-                            "value": "logstash"
+                            "type": "custom",
+                            "value": "{\"match_phrase_prefix\":{\"event.dataset\":{\"query\":\"logstash.\"}}}"
                         },
                         "query": {
-                            "match": {
-                                "event.module": {
-                                    "query": "logstash",
-                                    "type": "phrase"
+                            "match_phrase_prefix": {
+                                "event.dataset": {
+                                    "query": "logstash."
                                 }
                             }
                         }

@@ -222,6 +222,11 @@ func convertToKibanaObjects(dashboardFile []byte, moduleName string, datasetName
 			return nil, errors.Wrapf(err, "marshalling object failed")
 		}
 
+		err = verifyKibanaObjectConvertion(data)
+		if err != nil {
+			return nil, errors.Wrapf(err, "Kibana object convertion failed")
+		}
+
 		id, err := object.getValue("id")
 		if err != nil {
 			return nil, errors.Wrapf(err, "retrieving id failed")
@@ -260,10 +265,16 @@ func decodeFields(ms mapStr) (mapStr, error) {
 }
 
 func stripReferencesToEventModule(object mapStr, moduleName string, datasetNames []string) (mapStr, error) {
-	key := "attributes.kibanaSavedObjectMeta.searchSourceJSON.query"
-	object, err := stripReferencesToEventModuleInQuery(object, key, moduleName, datasetNames)
+	key := "attributes.kibanaSavedObjectMeta.searchSourceJSON.filter"
+	object, err := stripReferencesToEventModuleInFilter(object, key, moduleName)
 	if err != nil {
-		return nil, errors.Wrapf(err, "stripping reference in kibanaSavedObjectMeta failed (moduleName: %s)", moduleName)
+		return nil, errors.Wrapf(err, "stripping reference in searchSourceJSON.filter failed (moduleName: %s)", moduleName)
+	}
+
+	key = "attributes.kibanaSavedObjectMeta.searchSourceJSON.query"
+	object, err = stripReferencesToEventModuleInQuery(object, key, moduleName, datasetNames)
+	if err != nil {
+		return nil, errors.Wrapf(err, "stripping reference in searchSourceJSON.query failed (moduleName: %s)", moduleName)
 	}
 
 	key = "attributes.visState.params.filter"
@@ -272,6 +283,78 @@ func stripReferencesToEventModule(object mapStr, moduleName string, datasetNames
 		return nil, errors.Wrapf(err, "stripping reference in visState failed (moduleName: %s)", moduleName)
 	}
 
+	return object, nil
+}
+
+func stripReferencesToEventModuleInFilter(object mapStr, filterKey, moduleName string) (mapStr, error) {
+	filterValue, err := object.getValue(filterKey)
+	if err != nil && err != errKeyNotFound {
+		return nil, fmt.Errorf("retrieving key '%s' failed: %v", filterKey, err)
+	} else if err == errKeyNotFound {
+		return object, nil // nothing to adjust
+	}
+
+	filters, ok := filterValue.([]interface{})
+	if !ok {
+		return object, nil // not an array, ignoring
+	}
+	if len(filters) == 0 {
+		return object, nil // empty array, ignoring
+	}
+
+	var updatedFilters []mapStr
+	for _, fi := range filters {
+		filterObject, err := toMapStr(fi)
+		if err != nil {
+			return nil, errors.Wrapf(err, "converting to mapstr failed")
+		}
+
+		metaKeyObject, err := filterObject.getValue("meta.key")
+		if err != nil {
+			return nil, errors.Wrapf(err, "retrieving meta.key failed")
+		}
+
+		metaKey, ok := metaKeyObject.(string)
+		if ok && metaKey == "event.module" {
+			_, err = filterObject.put("meta.key", "query")
+			if err != nil {
+				return nil, errors.Wrapf(err, "setting meta.key failed")
+			}
+
+			_, err = filterObject.put("meta.type", "custom")
+			if err != nil {
+				return nil, errors.Wrapf(err, "setting meta.type failed")
+			}
+
+			_, err = filterObject.put("meta.value", fmt.Sprintf("{\"match_phrase_prefix\":{\"event.dataset\":{\"query\":\"%s.\"}}}", moduleName))
+			if err != nil {
+				return nil, errors.Wrapf(err, "setting meta.value failed")
+			}
+
+			err = filterObject.delete("meta.params")
+			if err != nil {
+				return nil, errors.Wrapf(err, "removing meta.params failed")
+			}
+
+			q := map[string]interface{}{
+				"match_phrase_prefix": map[string]interface{}{
+					"event.dataset": map[string]interface{}{
+						"query": moduleName + ".",
+					},
+				},
+			}
+			_, err = filterObject.put("query", q)
+			if err != nil {
+				return nil, errors.Wrapf(err, "setting query failed")
+			}
+		}
+		updatedFilters = append(updatedFilters, filterObject)
+	}
+
+	_, err = object.put(filterKey, updatedFilters)
+	if err != nil {
+		return nil, errors.Wrapf(err, "replacing filters failed (moduleName: %s)", moduleName)
+	}
 	return object, nil
 }
 
@@ -336,4 +419,12 @@ func stripReferencesToEventModuleInQuery(object mapStr, objectKey, moduleName st
 		}
 	}
 	return object, nil
+}
+
+func verifyKibanaObjectConvertion(data []byte) error {
+	i := bytes.Index(data, []byte("event.module"))
+	if i > 0 {
+		return fmt.Errorf("event.module spotted at pos. %d", i)
+	}
+	return nil
 }

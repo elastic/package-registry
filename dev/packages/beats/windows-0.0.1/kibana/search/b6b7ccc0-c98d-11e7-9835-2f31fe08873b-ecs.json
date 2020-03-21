@@ -22,20 +22,15 @@
                             "alias": null,
                             "disabled": false,
                             "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index",
-                            "key": "event.module",
+                            "key": "query",
                             "negate": false,
-                            "params": {
-                                "query": "windows",
-                                "type": "phrase"
-                            },
-                            "type": "phrase",
-                            "value": "windows"
+                            "type": "custom",
+                            "value": "{\"match_phrase_prefix\":{\"event.dataset\":{\"query\":\"windows.\"}}}"
                         },
                         "query": {
-                            "match": {
-                                "event.module": {
-                                    "query": "windows",
-                                    "type": "phrase"
+                            "match_phrase_prefix": {
+                                "event.dataset": {
+                                    "query": "windows."
                                 }
                             }
                         }
