@@ -25,15 +25,12 @@
             "stream": {
                 "properties": {
                     "type": {
-                        "ignore_above": 1024,
                         "type": "constant_keyword"
                     },
                     "dataset": {
-                        "ignore_above": 1024,
                         "type": "constant_keyword"
                     },
                     "namespace": {
-                        "ignore_above": 1024,
                         "type": "constant_keyword"
                     }
                 }
