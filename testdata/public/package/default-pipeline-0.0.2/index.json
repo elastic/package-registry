@@ -3,6 +3,7 @@
   "name": "default-pipeline",
   "title": "Default pipeline Integration",
   "version": "0.0.2",
+  "readme": "/package/default-pipeline-0.0.2/docs/README.md",
   "license": "basic",
   "description": "Tests if no pipeline is set, it defaults to the default one",
   "type": "integration",
@@ -14,6 +15,7 @@
   },
   "assets": [
     "/package/default-pipeline-0.0.2/manifest.yml",
+    "/package/default-pipeline-0.0.2/docs/README.md",
     "/package/default-pipeline-0.0.2/dataset/foo/manifest.yml",
     "/package/default-pipeline-0.0.2/dataset/foo/elasticsearch/ingest-pipeline/default.json"
   ],
