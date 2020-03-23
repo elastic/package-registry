@@ -3,4 +3,15 @@ title: Aws S3_daily_storage Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: aws/metrics
+  vars:
+  - default: ${AWS_ACCESS_KEY_ID:""}
+    name: access_key_id
+  - default: 86400s
+    name: period
+  - default: ${AWS_SECRET_ACCESS_KEY:""}
+    name: secret_access_key
+  - default: ${AWS_SESSION_TOKEN:""}
+    name: session_token
+  title: Aws S3_daily_storage logs
+  description: Collect Aws S3_daily_storage metrics

@@ -3,4 +3,18 @@ title: Sql Query Metrics
 release: beta
 type: metrics
 streams:
-- input: TODO
+- input: sql/metrics
+  vars:
+  - default: postgres
+    name: driver
+  - default:
+    - user=myuser password=mypassword dbname=mydb sslmode=disable
+    name: hosts
+  - default: 10s
+    name: period
+  - default: select now()
+    name: sql_query
+  - default: table
+    name: sql_response_format
+  title: Sql Query logs
+  description: Collect Sql Query metrics

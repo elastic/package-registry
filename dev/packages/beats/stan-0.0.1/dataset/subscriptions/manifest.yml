@@ -3,4 +3,12 @@ title: Stan Subscriptions Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: stan/metrics
+  vars:
+  - default:
+    - localhost:8222
+    name: hosts
+  - default: 60s
+    name: period
+  title: Stan Subscriptions logs
+  description: Collect Stan Subscriptions metrics

@@ -3,4 +3,12 @@ title: Oracle Performance Metrics
 release: beta
 type: metrics
 streams:
-- input: TODO
+- input: oracle/metrics
+  vars:
+  - default:
+    - oracle://user:pass@localhost:1521/ORCLPDB1.localdomain?sysdba=1
+    name: hosts
+  - default: 10s
+    name: period
+  title: Oracle Performance logs
+  description: Collect Oracle Performance metrics

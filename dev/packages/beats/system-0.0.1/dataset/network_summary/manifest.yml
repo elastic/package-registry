@@ -3,4 +3,6 @@ title: System Network_summary Metrics
 release: beta
 type: metrics
 streams:
-- input: TODO
+- input: system/metrics
+  title: System Network_summary logs
+  description: Collect System Network_summary metrics

@@ -3,4 +3,6 @@ title: Golang Heap Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: golang/metrics
+  title: Golang Heap logs
+  description: Collect Golang Heap metrics

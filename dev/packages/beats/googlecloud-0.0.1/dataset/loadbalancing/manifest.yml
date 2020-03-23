@@ -3,4 +3,19 @@ title: Googlecloud Loadbalancing Metrics
 release: beta
 type: metrics
 streams:
-- input: TODO
+- input: googlecloud/metrics
+  vars:
+  - default: your JSON credentials file path
+    name: credentials_file_path
+  - default: false
+    name: exclude_labels
+  - default: 300s
+    name: period
+  - default: your project id
+    name: project_id
+  - default: us-central1
+    name: region
+  - default: us-central1-a
+    name: zone
+  title: Googlecloud Loadbalancing logs
+  description: Collect Googlecloud Loadbalancing metrics

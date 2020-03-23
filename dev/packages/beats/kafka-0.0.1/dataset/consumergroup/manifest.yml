@@ -3,4 +3,6 @@ title: Kafka Consumergroup Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: kafka/metrics
+  title: Kafka Consumergroup logs
+  description: Collect Kafka Consumergroup metrics

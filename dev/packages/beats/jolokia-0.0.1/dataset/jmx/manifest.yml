@@ -3,4 +3,6 @@ title: Jolokia Jmx Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: jolokia/metrics
+  title: Jolokia Jmx logs
+  description: Collect Jolokia Jmx metrics

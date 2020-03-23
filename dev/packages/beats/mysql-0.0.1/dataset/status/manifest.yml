@@ -3,4 +3,12 @@ title: Mysql Status Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: mysql/metrics
+  vars:
+  - default:
+    - root:secret@tcp(127.0.0.1:3306)/
+    name: hosts
+  - default: 10s
+    name: period
+  title: Mysql Status logs
+  description: Collect Mysql Status metrics

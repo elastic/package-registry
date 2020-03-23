@@ -3,4 +3,6 @@ title: Mysql Galera_status Metrics
 release: beta
 type: metrics
 streams:
-- input: TODO
+- input: mysql/metrics
+  title: Mysql Galera_status logs
+  description: Collect Mysql Galera_status metrics

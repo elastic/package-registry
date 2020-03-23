@@ -3,4 +3,12 @@ title: Docker Cpu Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: docker/metrics
+  vars:
+  - default:
+    - unix:///var/run/docker.sock
+    name: hosts
+  - default: 10s
+    name: period
+  title: Docker Cpu logs
+  description: Collect Docker Cpu metrics

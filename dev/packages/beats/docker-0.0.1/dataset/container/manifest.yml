@@ -3,4 +3,12 @@ title: Docker Container Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: docker/metrics
+  vars:
+  - default:
+    - unix:///var/run/docker.sock
+    name: hosts
+  - default: 10s
+    name: period
+  title: Docker Container logs
+  description: Collect Docker Container metrics

@@ -3,4 +3,6 @@ title: Kubernetes Event Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: kubernetes/metrics
+  title: Kubernetes Event logs
+  description: Collect Kubernetes Event metrics

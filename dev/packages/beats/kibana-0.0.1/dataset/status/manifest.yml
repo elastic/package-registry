@@ -3,4 +3,14 @@ title: Kibana Status Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: kibana/metrics
+  vars:
+  - default: ""
+    name: basepath
+  - default:
+    - localhost:5601
+    name: hosts
+  - default: 10s
+    name: period
+  title: Kibana Status logs
+  description: Collect Kibana Status metrics

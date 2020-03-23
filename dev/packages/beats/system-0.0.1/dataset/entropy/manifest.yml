@@ -3,4 +3,6 @@ title: System Entropy Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: system/metrics
+  title: System Entropy logs
+  description: Collect System Entropy metrics

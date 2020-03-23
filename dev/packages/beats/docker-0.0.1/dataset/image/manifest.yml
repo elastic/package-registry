@@ -3,4 +3,6 @@ title: Docker Image Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: docker/metrics
+  title: Docker Image logs
+  description: Collect Docker Image metrics

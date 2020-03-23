@@ -3,4 +3,6 @@ title: Kafka Consumer Metrics
 release: beta
 type: metrics
 streams:
-- input: TODO
+- input: kafka/metrics
+  title: Kafka Consumer logs
+  description: Collect Kafka Consumer metrics

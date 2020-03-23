@@ -3,4 +3,6 @@ title: Etcd Metrics Metrics
 release: beta
 type: metrics
 streams:
-- input: TODO
+- input: etcd/metrics
+  title: Etcd Metrics logs
+  description: Collect Etcd Metrics metrics

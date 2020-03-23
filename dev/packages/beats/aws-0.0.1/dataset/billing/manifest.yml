@@ -3,4 +3,12 @@ title: Aws Billing Metrics
 release: beta
 type: metrics
 streams:
-- input: TODO
+- input: aws/metrics
+  vars:
+  - default: 12h
+    name: period
+  - default:
+    - us-east-1
+    name: regions
+  title: Aws Billing logs
+  description: Collect Aws Billing metrics

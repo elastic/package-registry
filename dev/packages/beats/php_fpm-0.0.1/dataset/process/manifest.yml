@@ -3,4 +3,6 @@ title: Php_fpm Process Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: php_fpm/metrics
+  title: Php_fpm Process logs
+  description: Collect Php_fpm Process metrics

@@ -3,4 +3,12 @@ title: Apache Status Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: apache/metrics
+  vars:
+  - default:
+    - http://127.0.0.1
+    name: hosts
+  - default: 10s
+    name: period
+  title: Apache Status logs
+  description: Collect Apache Status metrics

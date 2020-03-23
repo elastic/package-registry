@@ -3,4 +3,12 @@ title: Consul Agent Metrics
 release: beta
 type: metrics
 streams:
-- input: TODO
+- input: consul/metrics
+  vars:
+  - default:
+    - localhost:8500
+    name: hosts
+  - default: 10s
+    name: period
+  title: Consul Agent logs
+  description: Collect Consul Agent metrics

@@ -3,4 +3,6 @@ title: Rabbitmq Exchange Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: rabbitmq/metrics
+  title: Rabbitmq Exchange logs
+  description: Collect Rabbitmq Exchange metrics

@@ -3,4 +3,6 @@ title: Http Json Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: http/metrics
+  title: Http Json logs
+  description: Collect Http Json metrics

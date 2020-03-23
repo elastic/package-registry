@@ -3,4 +3,6 @@ title: Graphite Server Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: graphite/metrics
+  title: Graphite Server logs
+  description: Collect Graphite Server metrics

@@ -3,4 +3,6 @@ title: Ceph Mgr_osd_tree Metrics
 release: beta
 type: metrics
 streams:
-- input: TODO
+- input: ceph/metrics
+  title: Ceph Mgr_osd_tree logs
+  description: Collect Ceph Mgr_osd_tree metrics

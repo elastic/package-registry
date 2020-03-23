@@ -3,4 +3,6 @@ title: Redis Key Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: redis/metrics
+  title: Redis Key logs
+  description: Collect Redis Key metrics

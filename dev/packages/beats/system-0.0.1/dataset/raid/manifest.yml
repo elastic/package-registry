@@ -3,4 +3,6 @@ title: System Raid Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: system/metrics
+  title: System Raid logs
+  description: Collect System Raid metrics

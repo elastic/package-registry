@@ -3,4 +3,6 @@ title: Ceph Mgr_osd_pool_stats Metrics
 release: beta
 type: metrics
 streams:
-- input: TODO
+- input: ceph/metrics
+  title: Ceph Mgr_osd_pool_stats logs
+  description: Collect Ceph Mgr_osd_pool_stats metrics

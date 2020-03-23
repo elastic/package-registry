@@ -3,4 +3,12 @@ title: Kubernetes Proxy Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: kubernetes/metrics
+  vars:
+  - default:
+    - localhost:10249
+    name: hosts
+  - default: 10s
+    name: period
+  title: Kubernetes Proxy logs
+  description: Collect Kubernetes Proxy metrics

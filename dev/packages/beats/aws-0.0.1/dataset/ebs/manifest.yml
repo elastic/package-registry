@@ -3,4 +3,9 @@ title: Aws Ebs Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: aws/metrics
+  vars:
+  - default: 5m
+    name: period
+  title: Aws Ebs logs
+  description: Collect Aws Ebs metrics

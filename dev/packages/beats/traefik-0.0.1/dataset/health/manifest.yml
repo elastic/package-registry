@@ -3,4 +3,12 @@ title: Traefik Health Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: traefik/metrics
+  vars:
+  - default:
+    - localhost:8080
+    name: hosts
+  - default: 10s
+    name: period
+  title: Traefik Health logs
+  description: Collect Traefik Health metrics

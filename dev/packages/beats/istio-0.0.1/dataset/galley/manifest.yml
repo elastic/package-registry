@@ -3,4 +3,12 @@ title: Istio Galley Metrics
 release: beta
 type: metrics
 streams:
-- input: TODO
+- input: istio/metrics
+  vars:
+  - default:
+    - localhost:15014
+    name: hosts
+  - default: 10s
+    name: period
+  title: Istio Galley logs
+  description: Collect Istio Galley metrics

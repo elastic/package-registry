@@ -3,4 +3,6 @@ title: Ceph Cluster_status Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: ceph/metrics
+  title: Ceph Cluster_status logs
+  description: Collect Ceph Cluster_status metrics

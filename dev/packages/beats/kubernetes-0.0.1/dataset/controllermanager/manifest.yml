@@ -3,4 +3,12 @@ title: Kubernetes Controllermanager Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: kubernetes/metrics
+  vars:
+  - default:
+    - http://localhost:10252
+    name: hosts
+  - default: 10s
+    name: period
+  title: Kubernetes Controllermanager logs
+  description: Collect Kubernetes Controllermanager metrics

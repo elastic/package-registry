@@ -3,4 +3,12 @@ title: Istio Mesh Metrics
 release: beta
 type: metrics
 streams:
-- input: TODO
+- input: istio/metrics
+  vars:
+  - default:
+    - localhost:42422
+    name: hosts
+  - default: 10s
+    name: period
+  title: Istio Mesh logs
+  description: Collect Istio Mesh metrics

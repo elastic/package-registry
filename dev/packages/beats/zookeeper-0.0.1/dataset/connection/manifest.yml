@@ -3,4 +3,6 @@ title: Zookeeper Connection Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: zookeeper/metrics
+  title: Zookeeper Connection logs
+  description: Collect Zookeeper Connection metrics

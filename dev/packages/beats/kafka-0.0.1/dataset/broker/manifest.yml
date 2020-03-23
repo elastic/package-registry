@@ -3,4 +3,6 @@ title: Kafka Broker Metrics
 release: beta
 type: metrics
 streams:
-- input: TODO
+- input: kafka/metrics
+  title: Kafka Broker logs
+  description: Collect Kafka Broker metrics

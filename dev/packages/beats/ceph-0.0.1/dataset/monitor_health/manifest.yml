@@ -3,4 +3,12 @@ title: Ceph Monitor_health Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: ceph/metrics
+  vars:
+  - default:
+    - localhost:5000
+    name: hosts
+  - default: 10s
+    name: period
+  title: Ceph Monitor_health logs
+  description: Collect Ceph Monitor_health metrics

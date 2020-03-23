@@ -3,4 +3,6 @@ title: Http Server Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: http/metrics
+  title: Http Server logs
+  description: Collect Http Server metrics

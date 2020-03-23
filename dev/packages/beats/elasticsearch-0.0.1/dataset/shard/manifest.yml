@@ -3,4 +3,14 @@ title: Elasticsearch Shard Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: elasticsearch/metrics
+  vars:
+  - default:
+    - http://localhost:9200
+    name: hosts
+  - default: 10s
+    name: period
+  - default: true
+    name: xpack.enabled
+  title: Elasticsearch Shard logs
+  description: Collect Elasticsearch Shard metrics

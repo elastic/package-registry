@@ -3,4 +3,15 @@ title: Aws Rds Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: aws/metrics
+  vars:
+  - default: test-mb
+    name: credential_profile_name
+  - default: 60s
+    name: period
+  - default:
+    - key: dept
+      value: eng
+    name: tags_filter
+  title: Aws Rds logs
+  description: Collect Aws Rds metrics

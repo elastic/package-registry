@@ -3,4 +3,6 @@ title: Kafka Partition Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: kafka/metrics
+  title: Kafka Partition logs
+  description: Collect Kafka Partition metrics

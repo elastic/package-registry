@@ -3,4 +3,9 @@ title: Iis Website Metrics
 release: beta
 type: metrics
 streams:
-- input: TODO
+- input: iis/metrics
+  vars:
+  - default: 10s
+    name: period
+  title: Iis Website logs
+  description: Collect Iis Website metrics

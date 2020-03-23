@@ -3,4 +3,6 @@ title: Googlecloud Stackdriver Metrics
 release: beta
 type: metrics
 streams:
-- input: TODO
+- input: googlecloud/metrics
+  title: Googlecloud Stackdriver logs
+  description: Collect Googlecloud Stackdriver metrics

@@ -3,4 +3,14 @@ title: Kubernetes State_pod Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: kubernetes/metrics
+  vars:
+  - default: true
+    name: add_metadata
+  - default:
+    - kube-state-metrics:8080
+    name: hosts
+  - default: 10s
+    name: period
+  title: Kubernetes State_pod logs
+  description: Collect Kubernetes State_pod metrics

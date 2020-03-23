@@ -3,4 +3,12 @@ title: Etcd Self Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: etcd/metrics
+  vars:
+  - default:
+    - localhost:2379
+    name: hosts
+  - default: 10s
+    name: period
+  title: Etcd Self logs
+  description: Collect Etcd Self metrics

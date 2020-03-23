@@ -3,4 +3,12 @@ title: Couchbase Node Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: couchbase/metrics
+  vars:
+  - default:
+    - localhost:8091
+    name: hosts
+  - default: 10s
+    name: period
+  title: Couchbase Node logs
+  description: Collect Couchbase Node metrics

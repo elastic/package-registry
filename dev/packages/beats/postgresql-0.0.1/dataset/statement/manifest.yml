@@ -3,4 +3,6 @@ title: Postgresql Statement Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: postgresql/metrics
+  title: Postgresql Statement logs
+  description: Collect Postgresql Statement metrics

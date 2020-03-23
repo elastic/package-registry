@@ -3,4 +3,18 @@ title: Activemq Topic Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: activemq/metrics
+  vars:
+  - default:
+    - localhost:8161
+    name: hosts
+  - default: admin
+    name: password
+  - default: /api/jolokia/?ignoreErrors=true&canonicalNaming=false
+    name: path
+  - default: 10s
+    name: period
+  - default: admin
+    name: username
+  title: Activemq Topic logs
+  description: Collect Activemq Topic metrics
