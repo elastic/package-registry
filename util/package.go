@@ -48,6 +48,9 @@ type Package struct {
 	Datasources   []Datasource `config:"datasources,omitempty" json:"datasources,omitempty" yaml:"datasources,omitempty"`
 	Download      string       `json:"download" yaml:"download,omitempty"`
 	Path          string       `json:"path" yaml:"path,omitempty"`
+
+	// Local path to the package dir
+	BasePath string `json:"-"`
 }
 
 type Datasource struct {
@@ -188,23 +191,10 @@ func (p *Package) LoadAssets(packagePath string) (err error) {
 	// Reset Assets
 	p.Assets = nil
 
-	oldDir, err := os.Getwd()
-	if err != nil {
-		return err
-	}
-	defer func() {
-		// use named return to also have an error in case the defer fails
-		err = os.Chdir(oldDir)
-	}()
-	err = os.Chdir(packagePath)
-	if err != nil {
-		return err
-	}
-
 	// Iterates recursively through all the levels to find assets
 	// If we need more complex matching a library like https://github.com/bmatcuk/doublestar
 	// could be used but the below works and is pretty simple.
-	assets, err := collectAssets("*")
+	assets, err := collectAssets(p.BasePath + "/*")
 	if err != nil {
 		return err
 	}
@@ -223,6 +213,9 @@ func (p *Package) LoadAssets(packagePath string) (err error) {
 		if info.IsDir() {
 			continue
 		}
+
+		// Strip away the basePath from the local system
+		a = a[len(p.BasePath)-1:]
 
 		a = "/package/" + packagePath + "/" + a
 		p.Assets = append(p.Assets, a)
