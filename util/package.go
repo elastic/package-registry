@@ -134,8 +134,8 @@ func NewPackage(basePath, packageName string) (*Package, error) {
 	readmePath := basePath + "/" + packageName + "/docs/README.md"
 	// Check if readme
 	readme, err := os.Stat(readmePath)
-	if err != nil && !os.IsNotExist(err) {
-		return nil, err
+	if err != nil {
+		return nil, fmt.Errorf("no readme file found, README.md is required: %s", err)
 	}
 
 	if readme != nil {
