@@ -1,5 +1,5 @@
-id: vpc
-title: Aws Vpc Metrics
+id: vpn
+title: Aws Vpn Metrics
 release: beta
 type: metrics
 streams:

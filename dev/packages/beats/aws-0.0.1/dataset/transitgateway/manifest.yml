@@ -1,0 +1,6 @@
+id: transitgateway
+title: Aws Transitgateway Metrics
+release: beta
+type: metrics
+streams:
+- input: TODO

@@ -27,6 +27,16 @@ type datasetContent struct {
 	fields        fieldsContent
 }
 
+type datasetContentArray []datasetContent
+
+func (dca datasetContentArray) names() []string {
+	var names []string
+	for _, dc := range dca {
+		names = append(names, dc.name)
+	}
+	return names
+}
+
 type datasetManifestMultiplePipelines struct {
 	IngestPipeline []string `yaml:"ingest_pipeline"`
 }
@@ -35,7 +45,7 @@ type datasetManifestSinglePipeline struct {
 	IngestPipeline string `yaml:"ingest_pipeline"`
 }
 
-func createDatasets(modulePath, moduleName, moduleRelease, beatType string) ([]datasetContent, error) {
+func createDatasets(modulePath, moduleName, moduleRelease, beatType string) (datasetContentArray, error) {
 	moduleFieldsFiles, err := loadModuleFields(modulePath)
 	if err != nil {
 		return nil, errors.Wrapf(err, "loading module fields failed (modulePath: %s)", modulePath)

@@ -60,7 +60,6 @@ func createLogStreams(modulePath, moduleName, datasetName, beatType string) ([]u
 func wrapVariablesWithDefault(mwvs manifestWithVars) manifestWithVars {
 	var withDefaults manifestWithVars
 	for _, aVar := range mwvs.Vars {
-
 		aVarWithDefaults := map[string]interface{}{}
 		for k, v := range aVar {
 			if strings.HasPrefix(k, "os.") {

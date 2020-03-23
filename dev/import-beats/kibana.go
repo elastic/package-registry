@@ -13,6 +13,7 @@ import (
 	"net/http"
 	"os"
 	"path"
+	"strings"
 
 	"github.com/pkg/errors"
 )
@@ -47,7 +48,7 @@ func newKibanaMigrator(hostPort string, skipKibana bool) *kibanaMigrator {
 	}
 }
 
-func (km *kibanaMigrator) migrateDashboardFile(dashboardFile []byte) ([]byte, error) {
+func (km *kibanaMigrator) migrateDashboardFile(dashboardFile []byte, moduleName string, datasetNames []string) ([]byte, error) {
 	dashboardFile, err := prepareDashboardFile(dashboardFile)
 	if err != nil {
 		return nil, errors.Wrapf(err, "preparing file failed")
@@ -126,7 +127,8 @@ func encodeFields(ms mapStr) (mapStr, error) {
 	return ms, nil
 }
 
-func createKibanaContent(kibanaMigrator *kibanaMigrator, modulePath string) (kibanaContent, error) {
+func createKibanaContent(kibanaMigrator *kibanaMigrator, modulePath string, moduleName string,
+	datasetNames []string) (kibanaContent, error) {
 	if kibanaMigrator.skipKibana {
 		log.Printf("\tKibana migrator disabled, skipped (modulePath: %s)", modulePath)
 		return kibanaContent{}, nil
@@ -156,13 +158,13 @@ func createKibanaContent(kibanaMigrator *kibanaMigrator, modulePath string) (kib
 				dashboardFilePath)
 		}
 
-		migrated, err := kibanaMigrator.migrateDashboardFile(dashboardFile)
+		migrated, err := kibanaMigrator.migrateDashboardFile(dashboardFile, moduleName, datasetNames)
 		if err != nil {
 			return kibanaContent{}, errors.Wrapf(err, "migrating dashboard file failed (path: %s)",
 				dashboardFilePath)
 		}
 
-		extracted, err := extractKibanaObjects(migrated)
+		extracted, err := convertToKibanaObjects(migrated, moduleName, datasetNames)
 		if err != nil {
 			return kibanaContent{}, errors.Wrapf(err, "extracting kibana dashboards failed")
 		}
@@ -180,7 +182,7 @@ func createKibanaContent(kibanaMigrator *kibanaMigrator, modulePath string) (kib
 	return kibana, nil
 }
 
-func extractKibanaObjects(dashboardFile []byte) (map[string]map[string][]byte, error) {
+func convertToKibanaObjects(dashboardFile []byte, moduleName string, datasetNames []string) (map[string]map[string][]byte, error) {
 	var documents kibanaDocuments
 
 	err := json.Unmarshal(dashboardFile, &documents)
@@ -205,14 +207,24 @@ func extractKibanaObjects(dashboardFile []byte) (map[string]map[string][]byte, e
 			return nil, errors.Wrapf(err, "decoding fields failed")
 		}
 
-		data, err := json.MarshalIndent(object, "", "    ")
+		object, err = stripReferencesToEventModule(object, moduleName, datasetNames)
 		if err != nil {
-			return nil, errors.Wrapf(err, "marshalling object failed")
+			return nil, errors.Wrapf(err, "stripping references to event module failed")
 		}
 
 		aType, err := object.getValue("type")
 		if err != nil {
 			return nil, errors.Wrapf(err, "retrieving type failed")
+		}
+
+		data, err := json.MarshalIndent(object, "", "    ")
+		if err != nil {
+			return nil, errors.Wrapf(err, "marshalling object failed")
+		}
+
+		err = verifyKibanaObjectConvertion(data)
+		if err != nil {
+			return nil, errors.Wrapf(err, "Kibana object convertion failed")
 		}
 
 		id, err := object.getValue("id")
@@ -235,19 +247,184 @@ func decodeFields(ms mapStr) (mapStr, error) {
 		if err == errKeyNotFound {
 			continue
 		} else if err != nil {
-			return mapStr{}, errors.Wrapf(err, "retrieving value failed (key: %s)", field)
+			return nil, errors.Wrapf(err, "retrieving value failed (key: %s)", field)
 		}
 
 		var vd interface{}
 		err = json.Unmarshal([]byte(v.(string)), &vd)
 		if err != nil {
-			return mapStr{}, errors.Wrapf(err, "unmarshalling value failed (key: %s)", field)
+			return nil, errors.Wrapf(err, "unmarshalling value failed (key: %s)", field)
 		}
 
 		_, err = ms.put(field, vd)
 		if err != nil {
-			return mapStr{}, errors.Wrapf(err, "putting value failed (key: %s)", field)
+			return nil, errors.Wrapf(err, "putting value failed (key: %s)", field)
 		}
 	}
 	return ms, nil
+}
+
+func stripReferencesToEventModule(object mapStr, moduleName string, datasetNames []string) (mapStr, error) {
+	key := "attributes.kibanaSavedObjectMeta.searchSourceJSON.filter"
+	object, err := stripReferencesToEventModuleInFilter(object, key, moduleName)
+	if err != nil {
+		return nil, errors.Wrapf(err, "stripping reference in searchSourceJSON.filter failed (moduleName: %s)", moduleName)
+	}
+
+	key = "attributes.kibanaSavedObjectMeta.searchSourceJSON.query"
+	object, err = stripReferencesToEventModuleInQuery(object, key, moduleName, datasetNames)
+	if err != nil {
+		return nil, errors.Wrapf(err, "stripping reference in searchSourceJSON.query failed (moduleName: %s)", moduleName)
+	}
+
+	key = "attributes.visState.params.filter"
+	object, err = stripReferencesToEventModuleInQuery(object, key, moduleName, datasetNames)
+	if err != nil {
+		return nil, errors.Wrapf(err, "stripping reference in visState failed (moduleName: %s)", moduleName)
+	}
+
+	return object, nil
+}
+
+func stripReferencesToEventModuleInFilter(object mapStr, filterKey, moduleName string) (mapStr, error) {
+	filterValue, err := object.getValue(filterKey)
+	if err != nil && err != errKeyNotFound {
+		return nil, fmt.Errorf("retrieving key '%s' failed: %v", filterKey, err)
+	} else if err == errKeyNotFound {
+		return object, nil // nothing to adjust
+	}
+
+	filters, ok := filterValue.([]interface{})
+	if !ok {
+		return object, nil // not an array, ignoring
+	}
+	if len(filters) == 0 {
+		return object, nil // empty array, ignoring
+	}
+
+	var updatedFilters []mapStr
+	for _, fi := range filters {
+		filterObject, err := toMapStr(fi)
+		if err != nil {
+			return nil, errors.Wrapf(err, "converting to mapstr failed")
+		}
+
+		metaKeyObject, err := filterObject.getValue("meta.key")
+		if err != nil {
+			return nil, errors.Wrapf(err, "retrieving meta.key failed")
+		}
+
+		metaKey, ok := metaKeyObject.(string)
+		if ok && metaKey == "event.module" {
+			_, err = filterObject.put("meta.key", "query")
+			if err != nil {
+				return nil, errors.Wrapf(err, "setting meta.key failed")
+			}
+
+			_, err = filterObject.put("meta.type", "custom")
+			if err != nil {
+				return nil, errors.Wrapf(err, "setting meta.type failed")
+			}
+
+			_, err = filterObject.put("meta.value", fmt.Sprintf("{\"match_phrase_prefix\":{\"event.dataset\":{\"query\":\"%s.\"}}}", moduleName))
+			if err != nil {
+				return nil, errors.Wrapf(err, "setting meta.value failed")
+			}
+
+			err = filterObject.delete("meta.params")
+			if err != nil {
+				return nil, errors.Wrapf(err, "removing meta.params failed")
+			}
+
+			q := map[string]interface{}{
+				"match_phrase_prefix": map[string]interface{}{
+					"event.dataset": map[string]interface{}{
+						"query": moduleName + ".",
+					},
+				},
+			}
+			_, err = filterObject.put("query", q)
+			if err != nil {
+				return nil, errors.Wrapf(err, "setting query failed")
+			}
+		}
+		updatedFilters = append(updatedFilters, filterObject)
+	}
+
+	_, err = object.put(filterKey, updatedFilters)
+	if err != nil {
+		return nil, errors.Wrapf(err, "replacing filters failed (moduleName: %s)", moduleName)
+	}
+	return object, nil
+}
+
+func stripReferencesToEventModuleInQuery(object mapStr, objectKey, moduleName string, datasetNames []string) (mapStr, error) {
+	objectValue, err := object.getValue(objectKey)
+	if _, ok := objectValue.(map[string]interface{}); !ok {
+		return object, nil // not a map object
+	}
+
+	languageKey := objectKey + ".language"
+	queryKey := objectKey + ".query"
+
+	queryValue, err := object.getValue(queryKey)
+	if err != nil && err != errKeyNotFound {
+		return nil, fmt.Errorf("retrieving key '%s' failed: %v", queryKey, err)
+	} else if err == errKeyNotFound {
+		return object, nil // nothing to adjust
+	}
+
+	query, ok := queryValue.(string)
+	if !ok {
+		return object, nil // complex query (not a simple string)
+	}
+	if query == "" {
+		return object, nil // empty query field
+	}
+
+	query = strings.ReplaceAll(query, ": ", ":")
+	query = strings.ReplaceAll(query, " :", ":")
+	query = strings.ReplaceAll(query, `"`, "")
+	if strings.Contains(query, "event.module:"+moduleName) && (strings.Contains(query, "metricset.name:") || strings.Contains(query, "fileset.name:")) {
+		query = strings.ReplaceAll(query, "event.module:"+moduleName, "")
+		query = strings.ReplaceAll(query, "metricset.name:", fmt.Sprintf("event.dataset:%s.", moduleName))
+		query = strings.ReplaceAll(query, "fileset.name:", fmt.Sprintf("event.dataset:%s.", moduleName))
+		query = strings.TrimSpace(query)
+		if strings.HasPrefix(query, "AND ") {
+			query = query[4:]
+		}
+
+		_, err := object.put(queryKey, query)
+		if err != nil {
+			return nil, fmt.Errorf("replacing key '%s' failed: %v", queryKey, err)
+		}
+	} else if strings.Contains(query, "event.module:"+moduleName) {
+		var eventDatasets []string
+		for _, datasetName := range datasetNames {
+			eventDatasets = append(eventDatasets, fmt.Sprintf("event.dataset:%s.%s", moduleName, datasetName))
+		}
+
+		value := " (" + strings.Join(eventDatasets, " OR ") + ") "
+		query = strings.ReplaceAll(query, "event.module:"+moduleName, value)
+		query = strings.TrimSpace(query)
+
+		_, err := object.put(queryKey, query)
+		if err != nil {
+			return nil, fmt.Errorf("replacing key '%s' failed: %v", queryKey, err)
+		}
+
+		_, err = object.put(languageKey, "kuery")
+		if err != nil {
+			return nil, fmt.Errorf("replacing key '%s' failed: %v", languageKey, err)
+		}
+	}
+	return object, nil
+}
+
+func verifyKibanaObjectConvertion(data []byte) error {
+	i := bytes.Index(data, []byte("event.module"))
+	if i > 0 {
+		return fmt.Errorf("event.module spotted at pos. %d", i)
+	}
+	return nil
 }

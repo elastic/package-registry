@@ -24,7 +24,7 @@ var ignoredModules = map[string]bool{"apache2": true}
 
 type packageContent struct {
 	manifest    util.Package
-	datasets    []datasetContent
+	datasets    datasetContentArray
 	images      []imageContent
 	kibana      kibanaContent
 	docs        []docContent
@@ -169,7 +169,7 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 		manifest.Screenshots = append(manifest.Screenshots, screenshots...)
 
 		// kibana
-		kibana, err := createKibanaContent(r.kibanaMigrator, modulePath)
+		kibana, err := createKibanaContent(r.kibanaMigrator, modulePath, moduleName, datasets.names())
 		if err != nil {
 			return err
 		}
