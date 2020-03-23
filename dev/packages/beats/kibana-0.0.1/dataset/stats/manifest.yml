@@ -4,5 +4,13 @@ release: ga
 type: metrics
 streams:
 - input: kibana/metrics
+  vars:
+  - default:
+    - localhost:5601
+    name: hosts
+  - default: 10s
+    name: period
+  - default: true
+    name: xpack.enabled
   title: Kibana Stats logs
   description: Collect Kibana Stats metrics

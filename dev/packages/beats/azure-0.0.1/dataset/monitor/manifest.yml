@@ -13,7 +13,14 @@ streams:
     name: period
   - default: 600s
     name: refresh_list_interval
-  - default: null
+  - default:
+    - metrics:
+      - name:
+        - DataUsage
+        - DocumentCount
+        - DocumentQuota
+        namespace: Microsoft.DocumentDb/databaseAccounts
+      resource_query: resourceType eq 'Microsoft.DocumentDb/databaseAccounts'
     name: resources
   - default: ${AZURE_SUBSCRIPTION_ID:""}
     name: subscription_id

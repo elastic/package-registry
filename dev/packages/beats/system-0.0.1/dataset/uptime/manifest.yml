@@ -12,7 +12,7 @@ streams:
     - percentages
     - normalized_percentages
     name: cpu.metrics
-  - default: 15m
+  - default: 10s
     name: period
   - default:
     - .*

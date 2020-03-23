@@ -7,7 +7,7 @@ streams:
   vars:
   - default: test-mb
     name: credential_profile_name
-  - default: 1m
+  - default: 60s
     name: period
   - default:
     - key: dept

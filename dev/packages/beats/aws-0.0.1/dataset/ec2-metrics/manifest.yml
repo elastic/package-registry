@@ -7,7 +7,7 @@ streams:
   vars:
   - default: test-mb
     name: credential_profile_name
-  - default: 5m
+  - default: 300s
     name: period
   - default:
     - key: Organization

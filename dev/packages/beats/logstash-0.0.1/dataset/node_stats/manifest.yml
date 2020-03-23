@@ -10,5 +10,7 @@ streams:
     name: hosts
   - default: 10s
     name: period
+  - default: true
+    name: xpack.enabled
   title: Logstash Node_stats logs
   description: Collect Logstash Node_stats metrics

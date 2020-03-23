@@ -8,10 +8,20 @@ streams:
   - default: test-mb
     name: credential_profile_name
   - default:
-    - namespace: AWS/EC2
-      tags.resource_type_filter: ec2:instance
+    - dimensions:
+      - name: InstanceId
+        value: i-0686946e22cf9494a
+      name:
+      - CPUUtilization
+      namespace: AWS/EC2
+    - namespace: AWS/EBS
+    - namespace: AWS/ELB
+      tags:
+      - key: Organization
+        value: Engineering
+      tags.resource_type_filter: elasticloadbalancing
     name: metrics
-  - default: 5m
+  - default: 300s
     name: period
   title: Aws Cloudwatch logs
   description: Collect Aws Cloudwatch metrics

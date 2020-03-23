@@ -4,5 +4,11 @@ release: beta
 type: metrics
 streams:
 - input: ceph/metrics
+  vars:
+  - default:
+    - https://localhost:8003
+    name: hosts
+  - default: 1m
+    name: period
   title: Ceph Mgr_osd_perf logs
   description: Collect Ceph Mgr_osd_perf metrics

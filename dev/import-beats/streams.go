@@ -10,6 +10,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
+	"path/filepath"
 	"sort"
 	"strings"
 
@@ -146,25 +147,19 @@ func createMetricStreams(modulePath, moduleName, datasetName string) ([]util.Str
 }
 
 func mergeMetaConfigFiles(modulePath string) ([]byte, error) {
-	configPath := path.Join(modulePath, "_meta", "config.yml")
-	configFile, err := ioutil.ReadFile(configPath)
-	if err != nil && !os.IsNotExist(err) {
-		return nil, errors.Wrapf(err, "reading config file failed (path: %s)", configPath)
-	}
-
-	configReferencePath := path.Join(modulePath, "_meta", "config.reference.yml")
-	configReferenceFile, err := ioutil.ReadFile(configReferencePath)
-	if err != nil && !os.IsNotExist(err) {
-		return nil, errors.Wrapf(err, "reading config reference file failed (path: %s)", configPath)
+	configFilePaths, err := filepath.Glob(filepath.Join(modulePath, "_meta", "config*.yml"))
+	if err != nil {
+		return nil, errors.Wrapf(err, "location config files failed (modulePath: %s)", modulePath)
 	}
 
 	var mergedConfig bytes.Buffer
-	if configFile != nil {
+	for _, configFilePath := range configFilePaths {
+		configFile, err := ioutil.ReadFile(configFilePath)
+		if err != nil && !os.IsNotExist(err) {
+			return nil, errors.Wrapf(err, "reading config file failed (path: %s)", configFilePath)
+		}
 		mergedConfig.Write(configFile)
 		mergedConfig.WriteString("\n")
-	}
-	if configReferenceFile != nil {
-		mergedConfig.Write(configReferenceFile)
 	}
 	return mergedConfig.Bytes(), nil
 }
