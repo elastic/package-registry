@@ -3,6 +3,7 @@
   "name": "datasources",
   "title": "Default datasource Integration",
   "version": "1.0.0",
+  "readme": "/package/datasources-1.0.0/docs/README.md",
   "license": "basic",
   "description": "Package with data sources",
   "type": "integration",
@@ -14,6 +15,7 @@
   },
   "assets": [
     "/package/datasources-1.0.0/manifest.yml",
+    "/package/datasources-1.0.0/docs/README.md",
     "/package/datasources-1.0.0/dataset/examplelog1/manifest.yml",
     "/package/datasources-1.0.0/dataset/examplelog2/manifest.yml",
     "/package/datasources-1.0.0/dataset/examplemetric/manifest.yml"

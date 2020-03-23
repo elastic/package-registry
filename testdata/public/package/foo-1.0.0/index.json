@@ -3,6 +3,7 @@
   "name": "foo",
   "title": "Foo",
   "version": "1.0.0",
+  "readme": "/package/foo-1.0.0/docs/README.md",
   "license": "basic",
   "description": "This is the foo integration",
   "type": "solution",
@@ -15,7 +16,8 @@
     }
   },
   "assets": [
-    "/package/foo-1.0.0/manifest.yml"
+    "/package/foo-1.0.0/manifest.yml",
+    "/package/foo-1.0.0/docs/README.md"
   ],
   "download": "/epr/foo/foo-1.0.0.tar.gz",
   "path": "/package/foo-1.0.0"
