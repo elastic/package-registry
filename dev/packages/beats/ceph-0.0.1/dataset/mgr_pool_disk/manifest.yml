@@ -4,11 +4,5 @@ release: beta
 type: metrics
 streams:
 - input: ceph/metrics
-  vars:
-  - default:
-    - localhost:5000
-    name: hosts
-  - default: 10s
-    name: period
   title: Ceph Mgr_pool_disk logs
   description: Collect Ceph Mgr_pool_disk metrics

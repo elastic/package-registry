@@ -5,15 +5,8 @@ type: metrics
 streams:
 - input: kubernetes/metrics
   vars:
-  - default: /var/run/secrets/kubernetes.io/serviceaccount/token
-    name: bearer_token_file
   - default:
-    - localhost:10250
+    - https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT}
     name: hosts
-  - default: 10s
-    name: period
-  - default:
-    - /var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt
-    name: ssl.certificate_authorities
   title: Kubernetes Apiserver logs
   description: Collect Kubernetes Apiserver metrics

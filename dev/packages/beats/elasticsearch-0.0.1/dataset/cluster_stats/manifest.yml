@@ -4,11 +4,5 @@ release: ga
 type: metrics
 streams:
 - input: elasticsearch/metrics
-  vars:
-  - default:
-    - http://localhost:9200
-    name: hosts
-  - default: 10s
-    name: period
   title: Elasticsearch Cluster_stats logs
   description: Collect Elasticsearch Cluster_stats metrics

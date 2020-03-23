@@ -8,7 +8,6 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"path"
 	"sort"
@@ -86,27 +85,10 @@ func wrapVariablesWithDefault(mwvs manifestWithVars) manifestWithVars {
 }
 
 func createMetricStreams(modulePath, moduleName, datasetName string) ([]util.Stream, error) {
-	configPath := path.Join(modulePath, "_meta", "config.yml")
-	configFile, err := ioutil.ReadFile(configPath)
-	if err != nil && !os.IsNotExist(err) {
-		return nil, errors.Wrapf(err, "reading config file failed (path: %s)", configPath)
+	merged, err := mergeMetaConfigFiles(modulePath)
+	if err != nil {
+		return nil, errors.Wrapf(err, "merging config files failed")
 	}
-
-	configReferencePath := path.Join(modulePath, "_meta", "config.reference.yml")
-	configReferenceFile, err := ioutil.ReadFile(configReferencePath)
-	if err != nil && !os.IsNotExist(err) {
-		return nil, errors.Wrapf(err, "reading config reference file failed (path: %s)", configPath)
-	}
-
-	var mergedConfig bytes.Buffer
-	if configFile != nil {
-		mergedConfig.Write(configFile)
-		mergedConfig.WriteString("\n")
-	}
-	if configReferenceFile != nil {
-		mergedConfig.Write(configReferenceFile)
-	}
-	merged := mergedConfig.Bytes()
 
 	var configOptions []map[string]interface{}
 
@@ -122,28 +104,16 @@ func createMetricStreams(modulePath, moduleName, datasetName string) ([]util.Str
 
 		for _, moduleConfigEntry := range moduleConfig {
 			flatEntry := moduleConfigEntry.flatten()
-			if metricsets, ok := flatEntry["metricsets"]; ok {
-				metricsetsMapped, ok := metricsets.([]interface{})
-				if !ok {
-					return nil, fmt.Errorf("mapping metricsets failed (moduleName: %s, datasetName: %s)",
-						moduleName, datasetName)
-				}
-
-				var metricsetRelated bool
-				for _, metricset := range metricsetsMapped {
-					if metricset.(string) == datasetName {
-						metricsetRelated = true
-						break
-					}
-				}
-
-				if !metricsetRelated {
-					continue
-				}
+			related, err := isConfigEntryRelatedToMetricset(flatEntry, moduleName, datasetName)
+			if err != nil {
+				return nil, errors.Wrapf(err, "checking if config entry is related failed (moduleName: %s, datasetName: %s)",
+					moduleName, datasetName)
+			}
+			if !related {
+				continue
 			}
 
 			for name, value := range flatEntry {
-				log.Println(name)
 				if shouldConfigOptionBeIgnored(name) {
 					continue
 				}
@@ -175,6 +145,30 @@ func createMetricStreams(modulePath, moduleName, datasetName string) ([]util.Str
 	}, nil
 }
 
+func mergeMetaConfigFiles(modulePath string) ([]byte, error) {
+	configPath := path.Join(modulePath, "_meta", "config.yml")
+	configFile, err := ioutil.ReadFile(configPath)
+	if err != nil && !os.IsNotExist(err) {
+		return nil, errors.Wrapf(err, "reading config file failed (path: %s)", configPath)
+	}
+
+	configReferencePath := path.Join(modulePath, "_meta", "config.reference.yml")
+	configReferenceFile, err := ioutil.ReadFile(configReferencePath)
+	if err != nil && !os.IsNotExist(err) {
+		return nil, errors.Wrapf(err, "reading config reference file failed (path: %s)", configPath)
+	}
+
+	var mergedConfig bytes.Buffer
+	if configFile != nil {
+		mergedConfig.Write(configFile)
+		mergedConfig.WriteString("\n")
+	}
+	if configReferenceFile != nil {
+		mergedConfig.Write(configReferenceFile)
+	}
+	return mergedConfig.Bytes(), nil
+}
+
 func shouldConfigOptionBeIgnored(optionName string) bool {
 	for _, ignored := range ignoredConfigOptions {
 		if ignored == optionName {
@@ -182,4 +176,23 @@ func shouldConfigOptionBeIgnored(optionName string) bool {
 		}
 	}
 	return false
+}
+
+func isConfigEntryRelatedToMetricset(entry mapStr, moduleName, datasetName string) (bool, error) {
+	var metricsetRelated bool
+	if metricsets, ok := entry["metricsets"]; ok {
+		metricsetsMapped, ok := metricsets.([]interface{})
+		if !ok {
+			return false, fmt.Errorf("mapping metricsets failed (moduleName: %s, datasetName: %s)",
+				moduleName, datasetName)
+		}
+
+		for _, metricset := range metricsetsMapped {
+			if metricset.(string) == datasetName {
+				metricsetRelated = true
+				break
+			}
+		}
+	}
+	return metricsetRelated, nil
 }

@@ -4,17 +4,5 @@ release: ga
 type: metrics
 streams:
 - input: golang/metrics
-  vars:
-  - default:
-      namespace: example
-      path: /debug/vars
-    name: expvar
-  - default: /debug/vars
-    name: heap.path
-  - default:
-    - localhost:6060
-    name: hosts
-  - default: 10s
-    name: period
   title: Golang Expvar logs
   description: Collect Golang Expvar metrics

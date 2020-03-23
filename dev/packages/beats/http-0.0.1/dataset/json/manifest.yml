@@ -4,19 +4,5 @@ release: ga
 type: metrics
 streams:
 - input: http/metrics
-  vars:
-  - default: localhost
-    name: host
-  - default:
-    - localhost:80
-    name: hosts
-  - default: json_namespace
-    name: namespace
-  - default: /
-    name: path
-  - default: 10s
-    name: period
-  - default: "8080"
-    name: port
   title: Http Json logs
   description: Collect Http Json metrics

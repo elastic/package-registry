@@ -4,11 +4,5 @@ release: ga
 type: metrics
 streams:
 - input: kafka/metrics
-  vars:
-  - default:
-    - localhost:9092
-    name: hosts
-  - default: 10s
-    name: period
   title: Kafka Consumergroup logs
   description: Collect Kafka Consumergroup metrics

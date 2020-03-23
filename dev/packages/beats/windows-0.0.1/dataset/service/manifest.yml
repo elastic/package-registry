@@ -5,7 +5,7 @@ type: metrics
 streams:
 - input: windows/metrics
   vars:
-  - default: 1m
+  - default: 60s
     name: period
   title: Windows Service logs
   description: Collect Windows Service metrics

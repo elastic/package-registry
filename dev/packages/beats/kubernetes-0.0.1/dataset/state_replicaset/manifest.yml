@@ -7,15 +7,10 @@ streams:
   vars:
   - default: true
     name: add_metadata
-  - default: /var/run/secrets/kubernetes.io/serviceaccount/token
-    name: bearer_token_file
   - default:
-    - localhost:10250
+    - kube-state-metrics:8080
     name: hosts
   - default: 10s
     name: period
-  - default:
-    - /var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt
-    name: ssl.certificate_authorities
   title: Kubernetes State_replicaset logs
   description: Collect Kubernetes State_replicaset metrics

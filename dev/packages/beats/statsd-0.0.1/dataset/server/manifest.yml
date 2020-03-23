@@ -4,10 +4,5 @@ release: ga
 type: metrics
 streams:
 - input: statsd/metrics
-  vars:
-  - default: localhost
-    name: host
-  - default: "8125"
-    name: port
   title: Statsd Server logs
   description: Collect Statsd Server metrics

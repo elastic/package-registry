@@ -11,7 +11,7 @@ streams:
     name: perfmon.group_measurements_by_instance
   - default: false
     name: perfmon.ignore_non_existent_counters
-  - default: 1m
+  - default: 10s
     name: period
   title: Windows Perfmon logs
   description: Collect Windows Perfmon metrics
