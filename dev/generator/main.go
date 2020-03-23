@@ -113,11 +113,6 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 	if err != nil {
 		return err
 	}
-	err = os.Chdir(packagesBasePath)
-	if err != nil {
-		return err
-	}
-	defer os.Chdir(currentPath)
 
 	// Checks if the package is valid
 	err = p.Validate()
@@ -125,10 +120,18 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 		return fmt.Errorf("Invalid package: %s: %s", p.GetPath(), err)
 	}
 
+	p.BasePath = currentPath + "/" + packagesBasePath + "/" + p.GetPath()
+
 	err = p.LoadAssets(p.GetPath())
 	if err != nil {
 		return err
 	}
+
+	err = os.Chdir(packagesBasePath)
+	if err != nil {
+		return err
+	}
+	defer os.Chdir(currentPath)
 
 	err = p.LoadDataSets(p.GetPath())
 	if err != nil {
