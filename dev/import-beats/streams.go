@@ -34,6 +34,9 @@ var ignoredConfigOptions = []string{
 	"enabled",
 }
 
+// createStreams method builds a set of stream inputs including configuration variables.
+// Stream defintions depend on a beat type - log or metric.
+// At the moment, the array returns only one stream.
 func createStreams(modulePath, moduleName, datasetName, beatType string) ([]util.Stream, error) {
 	switch beatType {
 	case "logs":
@@ -44,6 +47,8 @@ func createStreams(modulePath, moduleName, datasetName, beatType string) ([]util
 	return nil, fmt.Errorf("invalid beat type: %s", beatType)
 }
 
+// createLogStreams method builds a set of stream inputs for logs oriented dataset.
+// The method unmarshals "manifest.yml" file and picks all configuration variables.
 func createLogStreams(modulePath, moduleName, datasetName string) ([]util.Stream, error) {
 	manifestPath := path.Join(modulePath, datasetName, "manifest.yml")
 	manifestFile, err := ioutil.ReadFile(manifestPath)
@@ -67,6 +72,8 @@ func createLogStreams(modulePath, moduleName, datasetName string) ([]util.Stream
 	}, nil
 }
 
+// wrapVariablesWithDefault method ensures that all variable values are wrapped with a "default" field, even if they are
+// defined for particular operating systems (prefix: os.)
 func wrapVariablesWithDefault(mwvs manifestWithVars) manifestWithVars {
 	var withDefaults manifestWithVars
 	for _, aVar := range mwvs.Vars {
@@ -85,6 +92,12 @@ func wrapVariablesWithDefault(mwvs manifestWithVars) manifestWithVars {
 	return withDefaults
 }
 
+// wrapVariablesWithDefault method builds a set of stream inputs for metrics oriented dataset.
+// The method combines all config files in module's _meta directory, unmarshals all configuration entries and selects
+// ones related to the particular metricset (first seen, first occurrence, next occurrences skipped).
+//
+// The method skips commented variables, but keeps arrays of structures (even if it's not possible to render them using
+// UI).
 func createMetricStreams(modulePath, moduleName, datasetName string) ([]util.Stream, error) {
 	merged, err := mergeMetaConfigFiles(modulePath)
 	if err != nil {
@@ -130,11 +143,12 @@ func createMetricStreams(modulePath, moduleName, datasetName string) ([]util.Str
 				foundConfigEntries[name] = true
 			}
 		}
-	}
 
-	sort.Slice(configOptions, func(i, j int) bool {
-		return sort.StringsAreSorted([]string{configOptions[i]["name"].(string), configOptions[j]["name"].(string)})
-	})
+		// sort variables to keep them in order while using version control.
+		sort.Slice(configOptions, func(i, j int) bool {
+			return sort.StringsAreSorted([]string{configOptions[i]["name"].(string), configOptions[j]["name"].(string)})
+		})
+	}
 
 	return []util.Stream{
 		{
@@ -146,6 +160,7 @@ func createMetricStreams(modulePath, moduleName, datasetName string) ([]util.Str
 	}, nil
 }
 
+// mergeMetaConfigFiles method visits all configuration YAML files and combines them into single document.
 func mergeMetaConfigFiles(modulePath string) ([]byte, error) {
 	configFilePaths, err := filepath.Glob(filepath.Join(modulePath, "_meta", "config*.yml"))
 	if err != nil {
@@ -164,6 +179,7 @@ func mergeMetaConfigFiles(modulePath string) ([]byte, error) {
 	return mergedConfig.Bytes(), nil
 }
 
+// shouldConfigOptionBeIgnored method checks if the configuration option name should be skipped (not used, duplicate, etc.)
 func shouldConfigOptionBeIgnored(optionName string) bool {
 	for _, ignored := range ignoredConfigOptions {
 		if ignored == optionName {
@@ -173,6 +189,8 @@ func shouldConfigOptionBeIgnored(optionName string) bool {
 	return false
 }
 
+// isConfigEntryRelatedToMetricset method checks if the configuration entry may affect the dataset settings,
+// in other words, checks if the "metricsets" field is present and contains the given datasetName.
 func isConfigEntryRelatedToMetricset(entry mapStr, moduleName, datasetName string) (bool, error) {
 	var metricsetRelated bool
 	if metricsets, ok := entry["metricsets"]; ok {
@@ -180,6 +198,10 @@ func isConfigEntryRelatedToMetricset(entry mapStr, moduleName, datasetName strin
 		if !ok {
 			return false, fmt.Errorf("mapping metricsets failed (moduleName: %s, datasetName: %s)",
 				moduleName, datasetName)
+		}
+		if len(metricsetsMapped) == 0 {
+			return false, fmt.Errorf("no metricsets defined (moduleName: %s, datasetName: %s)", moduleName,
+				datasetName)
 		}
 
 		for _, metricset := range metricsetsMapped {
