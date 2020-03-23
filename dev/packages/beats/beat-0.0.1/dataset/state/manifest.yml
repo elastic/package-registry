@@ -3,4 +3,12 @@ title: Beat State Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: beat/metrics
+  vars:
+  - default:
+    - http://localhost:5066
+    name: hosts
+  - default: 10s
+    name: period
+  title: Beat State logs
+  description: Collect Beat State metrics

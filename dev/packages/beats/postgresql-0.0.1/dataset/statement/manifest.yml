@@ -3,4 +3,12 @@ title: Postgresql Statement Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: postgresql/metrics
+  vars:
+  - default:
+    - postgres://localhost:5432
+    name: hosts
+  - default: 10s
+    name: period
+  title: Postgresql Statement logs
+  description: Collect Postgresql Statement metrics

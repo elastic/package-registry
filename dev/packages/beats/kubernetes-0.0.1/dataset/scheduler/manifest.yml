@@ -3,4 +3,17 @@ title: Kubernetes Scheduler Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: kubernetes/metrics
+  vars:
+  - default: /var/run/secrets/kubernetes.io/serviceaccount/token
+    name: bearer_token_file
+  - default:
+    - localhost:10250
+    name: hosts
+  - default: 10s
+    name: period
+  - default:
+    - /var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt
+    name: ssl.certificate_authorities
+  title: Kubernetes Scheduler logs
+  description: Collect Kubernetes Scheduler metrics

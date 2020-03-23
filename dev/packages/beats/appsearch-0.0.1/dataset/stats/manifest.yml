@@ -3,4 +3,12 @@ title: Appsearch Stats Metrics
 release: beta
 type: metrics
 streams:
-- input: TODO
+- input: appsearch/metrics
+  vars:
+  - default:
+    - http://localhost:3002
+    name: hosts
+  - default: 10s
+    name: period
+  title: Appsearch Stats logs
+  description: Collect Appsearch Stats metrics

@@ -3,4 +3,12 @@ title: Mysql Galera_status Metrics
 release: beta
 type: metrics
 streams:
-- input: TODO
+- input: mysql/metrics
+  vars:
+  - default:
+    - root:secret@tcp(127.0.0.1:3306)/
+    name: hosts
+  - default: 10s
+    name: period
+  title: Mysql Galera_status logs
+  description: Collect Mysql Galera_status metrics

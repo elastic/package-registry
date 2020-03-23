@@ -3,4 +3,12 @@ title: Kafka Producer Metrics
 release: beta
 type: metrics
 streams:
-- input: TODO
+- input: kafka/metrics
+  vars:
+  - default:
+    - localhost:9092
+    name: hosts
+  - default: 10s
+    name: period
+  title: Kafka Producer logs
+  description: Collect Kafka Producer metrics

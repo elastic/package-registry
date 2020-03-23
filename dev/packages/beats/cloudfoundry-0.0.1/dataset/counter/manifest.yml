@@ -3,4 +3,19 @@ title: Cloudfoundry Counter Metrics
 release: experimental
 type: metrics
 streams:
-- input: TODO
+- input: cloudfoundry/metrics
+  vars:
+  - default: ${CLOUDFOUNDRY_API_ADDRESS:""}
+    name: api_address
+  - default: ${CLOUDFOUNDRY_CLIENT_ID:""}
+    name: client_id
+  - default: ${CLOUDFOUNDRY_CLIENT_SECRET:""}
+    name: client_secret
+  - default: ${CLOUDFOUNDRY_DOPPLER_ADDRESS:""}
+    name: doppler_address
+  - default: ${CLOUDFOUNDRY_RLP_ADDRESS:""}
+    name: rlp_address
+  - default: ${CLOUDFOUNDRY_UAA_ADDRESS:""}
+    name: uaa_address
+  title: Cloudfoundry Counter logs
+  description: Collect Cloudfoundry Counter metrics

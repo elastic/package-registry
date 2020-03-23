@@ -3,4 +3,12 @@ title: Docker Healthcheck Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: docker/metrics
+  vars:
+  - default:
+    - unix:///var/run/docker.sock
+    name: hosts
+  - default: 10s
+    name: period
+  title: Docker Healthcheck logs
+  description: Collect Docker Healthcheck metrics

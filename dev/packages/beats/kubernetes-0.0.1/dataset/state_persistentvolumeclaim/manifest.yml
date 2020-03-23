@@ -3,4 +3,19 @@ title: Kubernetes State_persistentvolumeclaim Metrics
 release: experimental
 type: metrics
 streams:
-- input: TODO
+- input: kubernetes/metrics
+  vars:
+  - default: true
+    name: add_metadata
+  - default: /var/run/secrets/kubernetes.io/serviceaccount/token
+    name: bearer_token_file
+  - default:
+    - localhost:10250
+    name: hosts
+  - default: 10s
+    name: period
+  - default:
+    - /var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt
+    name: ssl.certificate_authorities
+  title: Kubernetes State_persistentvolumeclaim logs
+  description: Collect Kubernetes State_persistentvolumeclaim metrics

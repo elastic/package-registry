@@ -3,4 +3,12 @@ title: Ceph Cluster_disk Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: ceph/metrics
+  vars:
+  - default:
+    - localhost:5000
+    name: hosts
+  - default: 10s
+    name: period
+  title: Ceph Cluster_disk logs
+  description: Collect Ceph Cluster_disk metrics

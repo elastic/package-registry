@@ -3,4 +3,12 @@ title: Nats Connections Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: nats/metrics
+  vars:
+  - default:
+    - localhost:8222
+    name: hosts
+  - default: 10s
+    name: period
+  title: Nats Connections logs
+  description: Collect Nats Connections metrics

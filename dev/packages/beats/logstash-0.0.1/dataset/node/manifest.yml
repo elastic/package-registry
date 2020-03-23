@@ -3,4 +3,12 @@ title: Logstash Node Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: logstash/metrics
+  vars:
+  - default:
+    - localhost:9600
+    name: hosts
+  - default: 10s
+    name: period
+  title: Logstash Node logs
+  description: Collect Logstash Node metrics

@@ -3,4 +3,12 @@ title: Redis Key Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: redis/metrics
+  vars:
+  - default:
+    - 127.0.0.1:6379
+    name: hosts
+  - default: 10s
+    name: period
+  title: Redis Key logs
+  description: Collect Redis Key metrics

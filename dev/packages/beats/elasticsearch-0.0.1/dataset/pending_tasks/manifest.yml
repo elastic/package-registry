@@ -3,4 +3,12 @@ title: Elasticsearch Pending_tasks Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: elasticsearch/metrics
+  vars:
+  - default:
+    - http://localhost:9200
+    name: hosts
+  - default: 10s
+    name: period
+  title: Elasticsearch Pending_tasks logs
+  description: Collect Elasticsearch Pending_tasks metrics

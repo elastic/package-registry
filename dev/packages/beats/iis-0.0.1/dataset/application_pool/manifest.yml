@@ -3,4 +3,9 @@ title: Iis Application_pool Metrics
 release: beta
 type: metrics
 streams:
-- input: TODO
+- input: iis/metrics
+  vars:
+  - default: 10s
+    name: period
+  title: Iis Application_pool logs
+  description: Collect Iis Application_pool metrics

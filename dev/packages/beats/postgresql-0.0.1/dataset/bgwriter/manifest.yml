@@ -3,4 +3,12 @@ title: Postgresql Bgwriter Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: postgresql/metrics
+  vars:
+  - default:
+    - postgres://localhost:5432
+    name: hosts
+  - default: 10s
+    name: period
+  title: Postgresql Bgwriter logs
+  description: Collect Postgresql Bgwriter metrics

@@ -3,4 +3,15 @@ title: Aws Vpn Metrics
 release: beta
 type: metrics
 streams:
-- input: TODO
+- input: aws/metrics
+  vars:
+  - default: test-mb
+    name: credential_profile_name
+  - default: 1m
+    name: period
+  - default:
+    - key: dept
+      value: eng
+    name: tags_filter
+  title: Aws Vpn logs
+  description: Collect Aws Vpn metrics

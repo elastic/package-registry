@@ -3,4 +3,12 @@ title: Kafka Consumer Metrics
 release: beta
 type: metrics
 streams:
-- input: TODO
+- input: kafka/metrics
+  vars:
+  - default:
+    - localhost:9092
+    name: hosts
+  - default: 10s
+    name: period
+  title: Kafka Consumer logs
+  description: Collect Kafka Consumer metrics

@@ -3,4 +3,6 @@ title: System Service Metrics
 release: beta
 type: metrics
 streams:
-- input: TODO
+- input: system/metrics
+  title: System Service logs
+  description: Collect System Service metrics

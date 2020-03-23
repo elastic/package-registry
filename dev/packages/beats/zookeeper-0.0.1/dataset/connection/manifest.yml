@@ -3,4 +3,12 @@ title: Zookeeper Connection Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: zookeeper/metrics
+  vars:
+  - default:
+    - localhost:2181
+    name: hosts
+  - default: 10s
+    name: period
+  title: Zookeeper Connection logs
+  description: Collect Zookeeper Connection metrics

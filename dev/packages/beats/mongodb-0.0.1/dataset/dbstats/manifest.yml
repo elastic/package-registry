@@ -3,4 +3,12 @@ title: Mongodb Dbstats Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: mongodb/metrics
+  vars:
+  - default:
+    - localhost:27017
+    name: hosts
+  - default: 10s
+    name: period
+  title: Mongodb Dbstats logs
+  description: Collect Mongodb Dbstats metrics

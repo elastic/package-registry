@@ -3,4 +3,18 @@ title: Vsphere Datastore Metrics
 release: beta
 type: metrics
 streams:
-- input: TODO
+- input: vsphere/metrics
+  vars:
+  - default:
+    - https://localhost/sdk
+    name: hosts
+  - default: false
+    name: insecure
+  - default: password
+    name: password
+  - default: 10s
+    name: period
+  - default: user
+    name: username
+  title: Vsphere Datastore logs
+  description: Collect Vsphere Datastore metrics

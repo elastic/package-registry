@@ -3,4 +3,14 @@ title: Aws Sqs Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: aws/metrics
+  vars:
+  - default: test-mb
+    name: credential_profile_name
+  - default: 5m
+    name: period
+  - default:
+    - us-west-1
+    name: regions
+  title: Aws Sqs logs
+  description: Collect Aws Sqs metrics

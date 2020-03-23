@@ -3,4 +3,12 @@ title: Envoyproxy Server Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: envoyproxy/metrics
+  vars:
+  - default:
+    - localhost:9901
+    name: hosts
+  - default: 10s
+    name: period
+  title: Envoyproxy Server logs
+  description: Collect Envoyproxy Server metrics

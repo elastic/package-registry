@@ -3,4 +3,12 @@ title: Elasticsearch Node Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: elasticsearch/metrics
+  vars:
+  - default:
+    - http://localhost:9200
+    name: hosts
+  - default: 10s
+    name: period
+  title: Elasticsearch Node logs
+  description: Collect Elasticsearch Node metrics

@@ -3,4 +3,12 @@ title: Cockroachdb Status Metrics
 release: beta
 type: metrics
 streams:
-- input: TODO
+- input: cockroachdb/metrics
+  vars:
+  - default:
+    - localhost:8080
+    name: hosts
+  - default: 10s
+    name: period
+  title: Cockroachdb Status logs
+  description: Collect Cockroachdb Status metrics

@@ -3,4 +3,6 @@ title: System Core Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: system/metrics
+  title: System Core logs
+  description: Collect System Core metrics

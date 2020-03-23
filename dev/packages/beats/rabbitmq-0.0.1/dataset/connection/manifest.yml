@@ -3,4 +3,12 @@ title: Rabbitmq Connection Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: rabbitmq/metrics
+  vars:
+  - default:
+    - localhost:15672
+    name: hosts
+  - default: 10s
+    name: period
+  title: Rabbitmq Connection logs
+  description: Collect Rabbitmq Connection metrics

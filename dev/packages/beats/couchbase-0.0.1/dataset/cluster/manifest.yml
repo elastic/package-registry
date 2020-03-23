@@ -3,4 +3,12 @@ title: Couchbase Cluster Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: couchbase/metrics
+  vars:
+  - default:
+    - localhost:8091
+    name: hosts
+  - default: 10s
+    name: period
+  title: Couchbase Cluster logs
+  description: Collect Couchbase Cluster metrics

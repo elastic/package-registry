@@ -65,6 +65,19 @@ func (m mapStr) delete(key string) error {
 	return nil
 }
 
+// flatten flattens the given MapStr and returns a flat MapStr.
+//
+// Example:
+//   "hello": MapStr{"world": "test" }
+//
+// This is converted to:
+//   "hello.world": "test"
+//
+// This can be useful for testing or logging.
+func (m mapStr) flatten() mapStr {
+	return flatten("", m, mapStr{})
+}
+
 // mapFind iterates a mapStr based on a the given dotted key, finding the final
 // subMap and subKey to operate on.
 // An error is returned if some intermediate is no map or the key doesn't exist.
@@ -113,18 +126,38 @@ func mapFind(
 	}
 }
 
+// flatten is a helper for Flatten. See docs for flatten. For convenience the
+// out parameter is returned.
+func flatten(prefix string, in, out mapStr) mapStr {
+	for k, v := range in {
+		var fullKey string
+		if prefix == "" {
+			fullKey = k
+		} else {
+			fullKey = prefix + "." + k
+		}
+
+		if m, ok := tryToMapStr(v); ok {
+			flatten(fullKey, m, out)
+		} else {
+			out[fullKey] = v
+		}
+	}
+	return out
+}
+
 // tomapStr performs a type assertion on v and returns a mapStr. v can be either
 // a mapStr or a map[string]interface{}. If it's any other type or nil then
 // an error is returned.
 func toMapStr(v interface{}) (mapStr, error) {
-	m, ok := tryTomapStr(v)
+	m, ok := tryToMapStr(v)
 	if !ok {
 		return nil, fmt.Errorf("expected map but type is %v", v)
 	}
 	return m, nil
 }
 
-func tryTomapStr(v interface{}) (mapStr, bool) {
+func tryToMapStr(v interface{}) (mapStr, bool) {
 	switch m := v.(type) {
 	case mapStr:
 		return m, true

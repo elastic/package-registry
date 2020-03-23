@@ -3,4 +3,14 @@ title: Php_fpm Process Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: php_fpm/metrics
+  vars:
+  - default:
+    - localhost:8080
+    name: hosts
+  - default: 10s
+    name: period
+  - default: /status
+    name: status_path
+  title: Php_fpm Process logs
+  description: Collect Php_fpm Process metrics

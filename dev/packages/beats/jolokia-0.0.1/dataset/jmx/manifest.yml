@@ -3,4 +3,20 @@ title: Jolokia Jmx Metrics
 release: ga
 type: metrics
 streams:
-- input: TODO
+- input: jolokia/metrics
+  vars:
+  - default:
+    - localhost
+    name: hosts
+  - default: null
+    name: jmx.application
+  - default: null
+    name: jmx.instance
+  - default: null
+    name: jmx.mappings
+  - default: metrics
+    name: namespace
+  - default: 10s
+    name: period
+  title: Jolokia Jmx logs
+  description: Collect Jolokia Jmx metrics
