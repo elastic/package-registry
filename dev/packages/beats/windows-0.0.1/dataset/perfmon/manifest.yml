@@ -5,8 +5,6 @@ type: metrics
 streams:
 - input: windows/metrics
   vars:
-  - default: null
-    name: perfmon.counters
   - default: false
     name: perfmon.group_measurements_by_instance
   - default: false

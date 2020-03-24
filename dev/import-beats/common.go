@@ -162,7 +162,13 @@ func tryToMapStr(v interface{}) (mapStr, bool) {
 	case mapStr:
 		return m, true
 	case map[string]interface{}:
-		return mapStr(m), true
+		return m, true
+	case map[interface{}]interface{}:
+		n := map[string]interface{}{}
+		for k, v := range m {
+			n[k.(string)] = v
+		}
+		return n, true
 	default:
 		return nil, false
 	}

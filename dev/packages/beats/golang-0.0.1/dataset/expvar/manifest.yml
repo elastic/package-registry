@@ -4,5 +4,10 @@ release: ga
 type: metrics
 streams:
 - input: golang/metrics
+  vars:
+  - default: example
+    name: expvar.namespace
+  - default: /debug/vars
+    name: expvar.path
   title: Golang Expvar logs
   description: Collect Golang Expvar metrics

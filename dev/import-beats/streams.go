@@ -123,12 +123,9 @@ func createMetricStreams(modulePath, moduleName, datasetName string) ([]util.Str
 				return nil, errors.Wrapf(err, "checking if config entry is related failed (moduleName: %s, datasetName: %s)",
 					moduleName, datasetName)
 			}
-			if !related {
-				continue
-			}
 
 			for name, value := range flatEntry {
-				if shouldConfigOptionBeIgnored(name) {
+				if shouldConfigOptionBeIgnored(name, value) {
 					continue
 				}
 
@@ -136,11 +133,13 @@ func createMetricStreams(modulePath, moduleName, datasetName string) ([]util.Str
 					continue // already processed this config option
 				}
 
-				configOptions = append(configOptions, map[string]interface{}{
-					"default": value,
-					"name":    name,
-				})
-				foundConfigEntries[name] = true
+				if related || strings.HasPrefix(name, fmt.Sprintf("%s.", datasetName)) {
+					configOptions = append(configOptions, map[string]interface{}{
+						"default": value,
+						"name":    name,
+					})
+					foundConfigEntries[name] = true
+				}
 			}
 		}
 
@@ -180,7 +179,11 @@ func mergeMetaConfigFiles(modulePath string) ([]byte, error) {
 }
 
 // shouldConfigOptionBeIgnored method checks if the configuration option name should be skipped (not used, duplicate, etc.)
-func shouldConfigOptionBeIgnored(optionName string) bool {
+func shouldConfigOptionBeIgnored(optionName string, value interface{}) bool {
+	if value == nil {
+		return true
+	}
+
 	for _, ignored := range ignoredConfigOptions {
 		if ignored == optionName {
 			return true

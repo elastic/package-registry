@@ -4,5 +4,9 @@ release: ga
 type: metrics
 streams:
 - input: system/metrics
+  vars:
+  - default:
+    - percentages
+    name: core.metrics
   title: System Core logs
   description: Collect System Core metrics
