@@ -275,8 +275,10 @@ func (p *Package) Validate() error {
 
 func (p *Package) LoadDataSets(packagePath string) error {
 
+	datasetBasePath := p.BasePath + "/dataset"
+
 	// Check if this package has datasets
-	_, err := os.Stat(packagePath + "/dataset")
+	_, err := os.Stat(datasetBasePath)
 	// If no datasets exist, just return
 	if os.IsNotExist(err) {
 		return nil
@@ -286,20 +288,7 @@ func (p *Package) LoadDataSets(packagePath string) error {
 		return err
 	}
 
-	oldDir, err := os.Getwd()
-	if err != nil {
-		return err
-	}
-	defer func() {
-		// use named return to also have an error in case the defer fails
-		err = os.Chdir(oldDir)
-	}()
-	err = os.Chdir(packagePath + "/dataset")
-	if err != nil {
-		return err
-	}
-
-	datasetPaths, err := filepath.Glob("*")
+	datasetPaths, err := filepath.Glob(datasetBasePath + "/*")
 	if err != nil {
 		return err
 	}
@@ -312,11 +301,15 @@ func (p *Package) LoadDataSets(packagePath string) error {
 			return errors.Wrapf(err, "manifest does not exist for package: %s", packagePath)
 		}
 
+		// Extract the local path name
+		localPath := datasetPath[len(datasetBasePath)-1:]
+
 		manifest, err := yaml.NewConfigWithFile(manifestPath, ucfg.PathSep("."))
 		var d = &DataSet{
 			Package: p.Name,
 			// This is the name of the directory of the dataset
-			Path: datasetPath,
+			Path:     localPath,
+			BasePath: datasetBasePath,
 		}
 		// go-ucfg automatically calls the `Validate` method on the Dataset object here
 		err = manifest.Unpack(d)
@@ -326,7 +319,7 @@ func (p *Package) LoadDataSets(packagePath string) error {
 
 		// if id is not set, {package}.{datasetPath} is the default
 		if d.ID == "" {
-			d.ID = p.Name + "." + datasetPath
+			d.ID = p.Name + "." + localPath
 		}
 
 		if d.Release == "" {

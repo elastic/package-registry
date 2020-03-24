@@ -127,16 +127,16 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 		return err
 	}
 
+	err = p.LoadDataSets(p.GetPath())
+	if err != nil {
+		return err
+	}
+
 	err = os.Chdir(packagesBasePath)
 	if err != nil {
 		return err
 	}
 	defer os.Chdir(currentPath)
-
-	err = p.LoadDataSets(p.GetPath())
-	if err != nil {
-		return err
-	}
 
 	err = writeJsonFile(p, p.GetPath()+"/index.json")
 	if err != nil {
