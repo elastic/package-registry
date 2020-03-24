@@ -23,6 +23,7 @@ type datasetContent struct {
 
 	manifest util.DataSet
 
+	agent         agentContent
 	elasticsearch elasticsearchContent
 	fields        fieldsContent
 }
@@ -89,6 +90,13 @@ func createDatasets(modulePath, moduleName, moduleRelease, beatType string) (dat
 				modulePath, datasetName)
 		}
 
+		fields := fieldsContent{
+			files: map[string][]byte{
+				"package-fields.yml": moduleFieldsFiles,
+				"fields.yml":         fieldsFiles,
+			},
+		}
+
 		// elasticsearch
 		elasticsearch, err := loadElasticsearchContent(datasetPath)
 		if err != nil {
@@ -99,6 +107,13 @@ func createDatasets(modulePath, moduleName, moduleRelease, beatType string) (dat
 		streams, err := createStreams(modulePath, moduleName, datasetName, beatType)
 		if err != nil {
 			return nil, errors.Wrapf(err, "creating streams failed (datasetPath: %s)", datasetPath)
+		}
+
+		// agent
+		agent, err := createAgentContent(modulePath, datasetName)
+		if err != nil {
+			return nil, errors.Wrapf(err, "creating agent content failed (modulePath: %s, datasetName: %s)",
+				modulePath, datasetName)
 		}
 
 		// manifest
@@ -114,13 +129,9 @@ func createDatasets(modulePath, moduleName, moduleRelease, beatType string) (dat
 			name:          datasetName,
 			beatType:      beatType,
 			manifest:      manifest,
+			agent:         agent,
 			elasticsearch: elasticsearch,
-			fields: fieldsContent{
-				files: map[string][]byte{
-					"package-fields.yml": moduleFieldsFiles,
-					"fields.yml":         fieldsFiles,
-				},
-			},
+			fields:        fields,
 		})
 	}
 	return contents, nil
