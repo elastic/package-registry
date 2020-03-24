@@ -9,7 +9,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"path"
+	"path/filepath"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -67,8 +67,8 @@ func createDatasets(modulePath, moduleName, moduleRelease, beatType string) (dat
 			continue
 		}
 
-		datasetPath := path.Join(modulePath, datasetName)
-		_, err := os.Stat(path.Join(datasetPath, "_meta"))
+		datasetPath := filepath.Join(modulePath, datasetName)
+		_, err := os.Stat(filepath.Join(datasetPath, "_meta"))
 		if os.IsNotExist(err) {
 			log.Printf("\t%s: not a valid dataset, skipped", datasetName)
 			continue

@@ -44,8 +44,8 @@ type Stream struct {
 }
 
 func (d *DataSet) Validate() error {
-	pipelineDir := d.BasePath + "/" + d.Path + "/elasticsearch/ingest-pipeline/"
-	paths, err := filepath.Glob(pipelineDir + "*")
+	pipelineDir := filepath.Join(d.BasePath, "elasticsearch", "ingest-pipeline")
+	paths, err := filepath.Glob(filepath.Join(pipelineDir, "*"))
 	if err != nil {
 		return err
 	}
@@ -70,8 +70,8 @@ func (d *DataSet) Validate() error {
 
 	// In case an ingest pipeline is set, check if it is around
 	if d.IngestPipeline != "" {
-		_, errJSON := os.Stat(pipelineDir + d.IngestPipeline + ".json")
-		_, errYAML := os.Stat(pipelineDir + d.IngestPipeline + ".yml")
+		_, errJSON := os.Stat(filepath.Join(pipelineDir, d.IngestPipeline+".json"))
+		_, errYAML := os.Stat(filepath.Join(pipelineDir, d.IngestPipeline+".yml"))
 
 		if os.IsNotExist(errYAML) && os.IsNotExist(errJSON) {
 			return fmt.Errorf("Defined ingest_pipeline does not exist: %s", pipelineDir+d.IngestPipeline)

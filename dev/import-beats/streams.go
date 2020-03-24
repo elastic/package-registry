@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	"path"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -50,7 +49,7 @@ func createStreams(modulePath, moduleName, datasetName, beatType string) ([]util
 // createLogStreams method builds a set of stream inputs for logs oriented dataset.
 // The method unmarshals "manifest.yml" file and picks all configuration variables.
 func createLogStreams(modulePath, moduleName, datasetName string) ([]util.Stream, error) {
-	manifestPath := path.Join(modulePath, datasetName, "manifest.yml")
+	manifestPath := filepath.Join(modulePath, datasetName, "manifest.yml")
 	manifestFile, err := ioutil.ReadFile(manifestPath)
 	if err != nil {
 		return nil, errors.Wrapf(err, "reading manifest file failed (path: %s)", manifestPath)
