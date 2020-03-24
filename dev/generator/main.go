@@ -132,23 +132,17 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 		return err
 	}
 
-	err = os.Chdir(packagesBasePath)
-	if err != nil {
-		return err
-	}
-	defer os.Chdir(currentPath)
-
-	err = writeJsonFile(p, p.GetPath()+"/index.json")
+	err = writeJsonFile(p, packagesBasePath+"/"+p.GetPath()+"/index.json")
 	if err != nil {
 		return err
 	}
 
 	// Get all Kibana files
-	savedObjects1, err := filepath.Glob(p.GetPath() + "/dataset/*/kibana/*/*")
+	savedObjects1, err := filepath.Glob(packagesBasePath + "/" + p.GetPath() + "/dataset/*/kibana/*/*")
 	if err != nil {
 		return err
 	}
-	savedObjects2, err := filepath.Glob(p.GetPath() + "/kibana/*/*")
+	savedObjects2, err := filepath.Glob(packagesBasePath + "/" + p.GetPath() + "/kibana/*/*")
 	if err != nil {
 		return err
 	}
@@ -173,6 +167,13 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 	}
 
 	if tarGz {
+
+		err = os.Chdir(packagesBasePath)
+		if err != nil {
+			return err
+		}
+		defer os.Chdir(currentPath)
+
 		err = os.MkdirAll("../epr/"+p.Name, 0755)
 		if err != nil {
 			return err
