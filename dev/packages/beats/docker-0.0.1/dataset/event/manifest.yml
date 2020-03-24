@@ -1,3 +1,14 @@
+id: event
 title: Docker Event Metrics
 release: ga
 type: metrics
+streams:
+- input: docker/metrics
+  vars:
+  - default:
+    - unix:///var/run/docker.sock
+    name: hosts
+  - default: 10s
+    name: period
+  title: Docker Event logs
+  description: Collect Docker Event metrics

@@ -1,3 +1,8 @@
+id: stackdriver
 title: Googlecloud Stackdriver Metrics
 release: beta
 type: metrics
+streams:
+- input: googlecloud/metrics
+  title: Googlecloud Stackdriver logs
+  description: Collect Googlecloud Stackdriver metrics

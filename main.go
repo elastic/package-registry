@@ -60,6 +60,10 @@ func main() {
 		os.Exit(1)
 	}
 
+	log.Println("Cache time for /search: ", config.CacheTimeSearch)
+	log.Println("Cache time for /categories: ", config.CacheTimeCategories)
+	log.Println("Cache time for all others: ", config.CacheTimeCatchAll)
+
 	packagesBasePath := config.PublicDir + "/" + packageDir
 
 	// Prefill the package cache
@@ -101,7 +105,6 @@ func getConfig() (*Config, error) {
 		return nil, err
 	}
 
-	log.Println(config)
 	return &config, nil
 }
 

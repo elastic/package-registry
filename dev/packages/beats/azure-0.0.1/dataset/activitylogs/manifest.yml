@@ -1,3 +1,18 @@
+id: activitylogs
 title: Azure Activitylogs Logs
 release: beta
 type: logs
+streams:
+- input: logs
+  vars:
+  - default: azure-eventhub
+    name: input
+  - default: insights-operational-logs
+    name: eventhub
+  - default: $Default
+    name: consumer_group
+  - name: connection_string
+  - name: storage_account
+  - name: storage_account_key
+  title: Azure Activitylogs logs
+  description: Collect Azure Activitylogs logs

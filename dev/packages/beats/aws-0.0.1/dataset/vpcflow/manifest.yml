@@ -1,3 +1,17 @@
+id: vpcflow
 title: Aws Vpcflow Logs
 release: beta
 type: logs
+streams:
+- input: logs
+  vars:
+  - default: s3
+    name: input
+  - name: queue_url
+  - name: shared_credential_file
+  - name: credential_profile_name
+  - name: visibility_timeout
+  - name: api_timeout
+  - name: endpoint
+  title: Aws Vpcflow logs
+  description: Collect Aws Vpcflow logs

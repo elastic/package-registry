@@ -12,12 +12,12 @@ requirement:
   kibana:
     versions: ""
 screenshots:
-- src: img/kibana-osquery-compatibility.png
+- src: /img/kibana-osquery-compatibility.png
   title: Kibana Osquery Compatibility
   size: 2560x2204
   type: image/png
 icons:
-- src: img/logo_osquery.svg
+- src: /img/logo_osquery.svg
   title: Logo Osquery
   size: 32x32
   type: image/svg+xml

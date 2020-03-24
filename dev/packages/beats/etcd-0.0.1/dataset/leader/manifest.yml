@@ -1,3 +1,14 @@
+id: leader
 title: Etcd Leader Metrics
 release: ga
 type: metrics
+streams:
+- input: etcd/metrics
+  vars:
+  - default:
+    - localhost:2379
+    name: hosts
+  - default: 10s
+    name: period
+  title: Etcd Leader logs
+  description: Collect Etcd Leader metrics

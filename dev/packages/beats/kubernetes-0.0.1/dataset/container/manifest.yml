@@ -1,3 +1,20 @@
+id: container
 title: Kubernetes Container Metrics
 release: ga
 type: metrics
+streams:
+- input: kubernetes/metrics
+  vars:
+  - default: true
+    name: add_metadata
+  - default: /var/run/secrets/kubernetes.io/serviceaccount/token
+    name: bearer_token_file
+  - default:
+    - https://${HOSTNAME}:10250
+    name: hosts
+  - default: 10s
+    name: period
+  - default: none
+    name: ssl.verification_mode
+  title: Kubernetes Container logs
+  description: Collect Kubernetes Container metrics

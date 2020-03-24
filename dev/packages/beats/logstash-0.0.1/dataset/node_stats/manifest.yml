@@ -1,3 +1,16 @@
+id: node_stats
 title: Logstash Node_stats Metrics
 release: ga
 type: metrics
+streams:
+- input: logstash/metrics
+  vars:
+  - default:
+    - localhost:9600
+    name: hosts
+  - default: 10s
+    name: period
+  - default: true
+    name: xpack.enabled
+  title: Logstash Node_stats logs
+  description: Collect Logstash Node_stats metrics

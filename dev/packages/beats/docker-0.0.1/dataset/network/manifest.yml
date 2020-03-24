@@ -1,3 +1,14 @@
+id: network
 title: Docker Network Metrics
 release: ga
 type: metrics
+streams:
+- input: docker/metrics
+  vars:
+  - default:
+    - unix:///var/run/docker.sock
+    name: hosts
+  - default: 10s
+    name: period
+  title: Docker Network logs
+  description: Collect Docker Network metrics

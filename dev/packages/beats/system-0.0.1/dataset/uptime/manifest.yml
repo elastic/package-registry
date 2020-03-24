@@ -1,3 +1,21 @@
+id: uptime
 title: System Uptime Metrics
 release: ga
 type: metrics
+streams:
+- input: system/metrics
+  vars:
+  - default:
+    - percentages
+    name: core.metrics
+  - default:
+    - percentages
+    - normalized_percentages
+    name: cpu.metrics
+  - default: 10s
+    name: period
+  - default:
+    - .*
+    name: processes
+  title: System Uptime logs
+  description: Collect System Uptime metrics

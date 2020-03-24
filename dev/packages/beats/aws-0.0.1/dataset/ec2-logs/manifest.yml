@@ -1,0 +1,17 @@
+id: ec2
+title: Aws Ec2 Logs
+release: beta
+type: logs
+streams:
+- input: logs
+  vars:
+  - default: s3
+    name: input
+  - name: queue_url
+  - name: shared_credential_file
+  - name: credential_profile_name
+  - name: visibility_timeout
+  - name: api_timeout
+  - name: endpoint
+  title: Aws Ec2 logs
+  description: Collect Aws Ec2 logs

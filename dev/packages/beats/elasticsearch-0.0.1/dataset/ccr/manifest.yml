@@ -1,3 +1,16 @@
+id: ccr
 title: Elasticsearch Ccr Metrics
 release: ga
 type: metrics
+streams:
+- input: elasticsearch/metrics
+  vars:
+  - default:
+    - http://localhost:9200
+    name: hosts
+  - default: 10s
+    name: period
+  - default: true
+    name: xpack.enabled
+  title: Elasticsearch Ccr logs
+  description: Collect Elasticsearch Ccr metrics

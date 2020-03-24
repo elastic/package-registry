@@ -1,3 +1,14 @@
+id: activity
 title: Postgresql Activity Metrics
 release: ga
 type: metrics
+streams:
+- input: postgresql/metrics
+  vars:
+  - default:
+    - postgres://localhost:5432
+    name: hosts
+  - default: 10s
+    name: period
+  title: Postgresql Activity logs
+  description: Collect Postgresql Activity metrics

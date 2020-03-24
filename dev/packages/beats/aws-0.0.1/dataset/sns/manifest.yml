@@ -1,3 +1,11 @@
+id: sns
 title: Aws Sns Metrics
 release: beta
 type: metrics
+streams:
+- input: aws/metrics
+  vars:
+  - default: 5m
+    name: period
+  title: Aws Sns logs
+  description: Collect Aws Sns metrics

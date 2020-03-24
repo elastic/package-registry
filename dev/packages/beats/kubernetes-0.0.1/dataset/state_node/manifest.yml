@@ -1,3 +1,16 @@
+id: state_node
 title: Kubernetes State_node Metrics
 release: ga
 type: metrics
+streams:
+- input: kubernetes/metrics
+  vars:
+  - default: true
+    name: add_metadata
+  - default:
+    - kube-state-metrics:8080
+    name: hosts
+  - default: 10s
+    name: period
+  title: Kubernetes State_node logs
+  description: Collect Kubernetes State_node metrics

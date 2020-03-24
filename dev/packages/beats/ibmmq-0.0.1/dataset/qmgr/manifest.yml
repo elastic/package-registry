@@ -1,3 +1,16 @@
+id: qmgr
 title: Ibmmq Qmgr Metrics
 release: beta
 type: metrics
+streams:
+- input: ibmmq/metrics
+  vars:
+  - default:
+    - localhost:9157
+    name: hosts
+  - default: /metrics
+    name: metrics_path
+  - default: 10s
+    name: period
+  title: Ibmmq Qmgr logs
+  description: Collect Ibmmq Qmgr metrics

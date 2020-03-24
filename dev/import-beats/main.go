@@ -21,6 +21,8 @@ type importerOptions struct {
 	kibanaHostPort string
 	// Kibana repository directory
 	kibanaDir string
+	// Skip storing Kibana objects
+	skipKibana bool
 
 	// Elastic UI Framework directory
 	euiDir string
@@ -63,6 +65,7 @@ func main() {
 	flag.StringVar(&options.beatsDir, "beatsDir", "../beats", "Path to the beats repository")
 	flag.StringVar(&options.kibanaDir, "kibanaDir", "../kibana", "Path to the kibana repository")
 	flag.StringVar(&options.kibanaHostPort, "kibanaHostPort", "http://localhost:5601", "Kibana host and port")
+	flag.BoolVar(&options.skipKibana, "skipKibana", false, "Skip storing Kibana objects")
 	flag.StringVar(&options.euiDir, "euiDir", "../eui", "Path to the Elastic UI framework repository")
 	flag.StringVar(&options.outputDir, "outputDir", "dev/packages/beats", "Path to the output directory")
 	flag.Parse()
@@ -86,7 +89,7 @@ func build(options importerOptions) error {
 	if err != nil {
 		return errors.Wrap(err, "creating icon repository failed")
 	}
-	kibanaMigrator := newKibanaMigrator(options.kibanaHostPort)
+	kibanaMigrator := newKibanaMigrator(options.kibanaHostPort, options.skipKibana)
 	repository := newPackageRepository(iconRepository, kibanaMigrator)
 
 	for _, beatName := range logSources {
@@ -95,7 +98,6 @@ func build(options importerOptions) error {
 			return errors.Wrap(err, "creating from logs source failed")
 		}
 	}
-
 	for _, beatName := range metricSources {
 		err := repository.createPackagesFromSource(options.beatsDir, beatName, "metrics")
 		if err != nil {

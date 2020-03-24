@@ -1,3 +1,21 @@
+id: capture_loss
 title: Zeek Capture_loss Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/bro/current/capture_loss.log
+    name: paths
+    os.darwin:
+      default:
+      - /usr/local/var/logs/current/capture_loss.log
+    os.linux:
+      default:
+      - /var/log/bro/current/capture_loss.log
+  - default:
+    - zeek.capture_loss
+    name: tags
+  title: Zeek Capture_loss logs
+  description: Collect Zeek Capture_loss logs

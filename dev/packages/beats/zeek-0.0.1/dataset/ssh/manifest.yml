@@ -1,3 +1,23 @@
+id: ssh
 title: Zeek Ssh Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/bro/current/ssh.log
+    name: paths
+    os.darwin:
+      default:
+      - /usr/local/var/logs/current/ssh.log
+    os.linux:
+      default:
+      - /var/log/bro/current/ssh.log
+  - default:
+    - zeek.ssh
+    name: tags
+  - default: true
+    name: community_id
+  title: Zeek Ssh logs
+  description: Collect Zeek Ssh logs

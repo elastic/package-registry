@@ -1,3 +1,14 @@
+id: server
 title: Couchdb Server Metrics
 release: ga
 type: metrics
+streams:
+- input: couchdb/metrics
+  vars:
+  - default:
+    - localhost:5984
+    name: hosts
+  - default: 10s
+    name: period
+  title: Couchdb Server logs
+  description: Collect Couchdb Server metrics

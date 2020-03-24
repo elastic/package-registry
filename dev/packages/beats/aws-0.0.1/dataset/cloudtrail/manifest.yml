@@ -1,3 +1,17 @@
+id: cloudtrail
 title: Aws Cloudtrail Logs
 release: beta
 type: logs
+streams:
+- input: logs
+  vars:
+  - default: s3
+    name: input
+  - name: queue_url
+  - name: shared_credential_file
+  - name: credential_profile_name
+  - name: visibility_timeout
+  - name: api_timeout
+  - name: endpoint
+  title: Aws Cloudtrail logs
+  description: Collect Aws Cloudtrail logs

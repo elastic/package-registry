@@ -1,3 +1,20 @@
+id: queue
 title: Activemq Queue Metrics
 release: ga
 type: metrics
+streams:
+- input: activemq/metrics
+  vars:
+  - default:
+    - localhost:8161
+    name: hosts
+  - default: admin
+    name: password
+  - default: /api/jolokia/?ignoreErrors=true&canonicalNaming=false
+    name: path
+  - default: 10s
+    name: period
+  - default: admin
+    name: username
+  title: Activemq Queue logs
+  description: Collect Activemq Queue metrics

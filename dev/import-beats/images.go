@@ -108,7 +108,7 @@ func (images imageContentArray) toManifestImages() ([]util.Image, error) {
 		}
 
 		imgs = append(imgs, util.Image{
-			Src:   path.Join("img", sourceFileName),
+			Src:   path.Join("/img", sourceFileName),
 			Title: toImageTitle(sourceFileName),
 			Size:  imageSize,
 			Type:  imageType,

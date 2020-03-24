@@ -1,3 +1,11 @@
+id: webserver
 title: Iis Webserver Metrics
 release: beta
 type: metrics
+streams:
+- input: iis/metrics
+  vars:
+  - default: 10s
+    name: period
+  title: Iis Webserver logs
+  description: Collect Iis Webserver metrics

@@ -7,6 +7,7 @@ package util
 import (
 	"fmt"
 	"os"
+	"path"
 	"path/filepath"
 	"strings"
 
@@ -48,6 +49,9 @@ type Package struct {
 	Datasources   []Datasource `config:"datasources,omitempty" json:"datasources,omitempty" yaml:"datasources,omitempty"`
 	Download      string       `json:"download" yaml:"download,omitempty"`
 	Path          string       `json:"path" yaml:"path,omitempty"`
+
+	// Local path to the package dir
+	BasePath string `json:"-" yaml:"-"`
 }
 
 type Datasource struct {
@@ -134,8 +138,8 @@ func NewPackage(basePath, packageName string) (*Package, error) {
 	readmePath := basePath + "/" + packageName + "/docs/README.md"
 	// Check if readme
 	readme, err := os.Stat(readmePath)
-	if err != nil && !os.IsNotExist(err) {
-		return nil, err
+	if err != nil {
+		return nil, fmt.Errorf("no readme file found, README.md is required: %s", err)
 	}
 
 	if readme != nil {
@@ -188,23 +192,10 @@ func (p *Package) LoadAssets(packagePath string) (err error) {
 	// Reset Assets
 	p.Assets = nil
 
-	oldDir, err := os.Getwd()
-	if err != nil {
-		return err
-	}
-	defer func() {
-		// use named return to also have an error in case the defer fails
-		err = os.Chdir(oldDir)
-	}()
-	err = os.Chdir(packagePath)
-	if err != nil {
-		return err
-	}
-
 	// Iterates recursively through all the levels to find assets
 	// If we need more complex matching a library like https://github.com/bmatcuk/doublestar
 	// could be used but the below works and is pretty simple.
-	assets, err := collectAssets("*")
+	assets, err := collectAssets(p.BasePath + "/*")
 	if err != nil {
 		return err
 	}
@@ -223,6 +214,9 @@ func (p *Package) LoadAssets(packagePath string) (err error) {
 		if info.IsDir() {
 			continue
 		}
+
+		// Strip away the basePath from the local system
+		a = a[len(p.BasePath)-1:]
 
 		a = "/package/" + packagePath + "/" + a
 		p.Assets = append(p.Assets, a)
@@ -280,40 +274,44 @@ func (p *Package) Validate() error {
 	return nil
 }
 
-func (p *Package) LoadDataSets(packagePath string) error {
+func (p *Package) GetDatasets() ([]string, error) {
+	datasetBasePath := p.BasePath + "/dataset"
 
 	// Check if this package has datasets
-	_, err := os.Stat(packagePath + "/dataset")
+	_, err := os.Stat(datasetBasePath)
 	// If no datasets exist, just return
 	if os.IsNotExist(err) {
-		return nil
+		return nil, nil
 	}
 	// An other error happened, report it
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	oldDir, err := os.Getwd()
+	paths, err := filepath.Glob(datasetBasePath + "/*")
+	if err != nil {
+		return nil, err
+	}
+
+	for i, _ := range paths {
+		paths[i] = paths[i][len(datasetBasePath)-1:]
+	}
+
+	return paths, nil
+}
+
+func (p *Package) LoadDataSets(packagePath string) error {
+
+	datasets, err := p.GetDatasets()
 	if err != nil {
 		return err
 	}
-	defer func() {
-		// use named return to also have an error in case the defer fails
-		err = os.Chdir(oldDir)
-	}()
-	err = os.Chdir(packagePath + "/dataset")
-	if err != nil {
-		return err
-	}
 
-	datasetPaths, err := filepath.Glob("*")
-	if err != nil {
-		return err
-	}
+	datasetBasePath := p.BasePath + "/dataset"
 
-	for _, datasetPath := range datasetPaths {
+	for _, dataset := range datasets {
 		// Check if manifest exists
-		manifestPath := datasetPath + "/manifest.yml"
+		manifestPath := path.Join(datasetBasePath, dataset, "manifest.yml")
 		_, err := os.Stat(manifestPath)
 		if err != nil && os.IsNotExist(err) {
 			return errors.Wrapf(err, "manifest does not exist for package: %s", packagePath)
@@ -323,17 +321,18 @@ func (p *Package) LoadDataSets(packagePath string) error {
 		var d = &DataSet{
 			Package: p.Name,
 			// This is the name of the directory of the dataset
-			Path: datasetPath,
+			Path:     dataset,
+			BasePath: datasetBasePath,
 		}
 		// go-ucfg automatically calls the `Validate` method on the Dataset object here
 		err = manifest.Unpack(d)
 		if err != nil {
-			return errors.Wrapf(err, "error building dataset in package: %s", p.Name)
+			return errors.Wrapf(err, "error building dataset (path: %s) in package: %s", dataset, p.Name)
 		}
 
 		// if id is not set, {package}.{datasetPath} is the default
 		if d.ID == "" {
-			d.ID = p.Name + "." + datasetPath
+			d.ID = p.Name + "." + dataset
 		}
 
 		if d.Release == "" {

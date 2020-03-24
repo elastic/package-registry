@@ -1,0 +1,29 @@
+format_version: 1.0.0
+name: o365
+title: O365
+version: 0.0.1
+license: basic
+description: O365 Integration
+type: integration
+categories:
+- logs
+release: ga
+requirement:
+  kibana:
+    versions: ""
+screenshots:
+- src: /img/filebeat-o365-azure-permissions.png
+  title: Filebeat O365 Azure Permissions
+  size: 2660x1030
+  type: image/png
+- src: /img/filebeat-o365-audit.png
+  title: Filebeat O365 Audit
+  size: 1924x1409
+  type: image/png
+datasources:
+- name: o365
+  title: O365 logs
+  description: Collect logs from O365 instances
+  inputs:
+  - type: logs
+    description: Collecting logs for O365

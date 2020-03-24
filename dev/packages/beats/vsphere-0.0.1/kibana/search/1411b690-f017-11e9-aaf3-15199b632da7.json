@@ -12,7 +12,7 @@
                 "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.index",
                 "query": {
                     "language": "kuery",
-                    "query": "event.module: \"vsphere\" "
+                    "query": "(event.dataset:vsphere.datastore OR event.dataset:vsphere.host OR event.dataset:vsphere.virtualmachine)"
                 },
                 "version": true
             }

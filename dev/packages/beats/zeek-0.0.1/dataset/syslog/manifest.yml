@@ -1,3 +1,23 @@
+id: syslog
 title: Zeek Syslog Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/bro/current/syslog.log
+    name: paths
+    os.darwin:
+      default:
+      - /usr/local/var/logs/current/syslog.log
+    os.linux:
+      default:
+      - /var/log/bro/current/syslog.log
+  - default:
+    - zeek.syslog
+    name: tags
+  - default: true
+    name: community_id
+  title: Zeek Syslog logs
+  description: Collect Zeek Syslog logs

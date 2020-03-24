@@ -1,3 +1,20 @@
+id: collector
 title: Openmetrics Collector Metrics
 release: beta
 type: metrics
+streams:
+- input: openmetrics/metrics
+  vars:
+  - default:
+    - localhost:9090
+    name: hosts
+  - default: []
+    name: metrics_filters.exclude
+  - default: []
+    name: metrics_filters.include
+  - default: /metrics
+    name: metrics_path
+  - default: 10s
+    name: period
+  title: Openmetrics Collector logs
+  description: Collect Openmetrics Collector metrics

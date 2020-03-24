@@ -1,3 +1,15 @@
+id: fsstat
 title: System Fsstat Metrics
 release: ga
 type: metrics
+streams:
+- input: system/metrics
+  vars:
+  - default: 1m
+    name: period
+  - default:
+    - drop_event.when.regexp:
+        system.filesystem.mount_point: ^/(sys|cgroup|proc|dev|etc|host|lib|snap)($|/)
+    name: processors
+  title: System Fsstat logs
+  description: Collect System Fsstat metrics

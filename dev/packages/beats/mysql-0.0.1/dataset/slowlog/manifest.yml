@@ -1,3 +1,19 @@
+id: slowlog
 title: Mysql Slowlog Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/mysql/mysql-slow.log*
+    - /var/lib/mysql/{{.builtin.hostname}}-slow.log
+    name: paths
+    os.darwin:
+      default:
+      - /usr/local/var/mysql/{{.builtin.hostname}}-slow.log*
+    os.windows:
+      default:
+      - c:/programdata/MySQL/MySQL Server*/mysql-slow.log*
+  title: Mysql Slowlog logs
+  description: Collect Mysql Slowlog logs

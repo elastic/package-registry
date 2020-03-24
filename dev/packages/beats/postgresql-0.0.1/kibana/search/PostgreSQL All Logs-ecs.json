@@ -20,20 +20,15 @@
                             "alias": null,
                             "disabled": false,
                             "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index",
-                            "key": "event.module",
+                            "key": "query",
                             "negate": false,
-                            "params": {
-                                "query": "postgresql",
-                                "type": "phrase"
-                            },
-                            "type": "phrase",
-                            "value": "postgresql"
+                            "type": "custom",
+                            "value": "{\"match_phrase_prefix\":{\"event.dataset\":{\"query\":\"postgresql.\"}}}"
                         },
                         "query": {
-                            "match": {
-                                "event.module": {
-                                    "query": "postgresql",
-                                    "type": "phrase"
+                            "match_phrase_prefix": {
+                                "event.dataset": {
+                                    "query": "postgresql."
                                 }
                             }
                         }

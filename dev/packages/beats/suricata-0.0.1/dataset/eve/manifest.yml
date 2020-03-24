@@ -1,3 +1,23 @@
+id: eve
 title: Suricata Eve Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/suricata/eve.json
+    name: paths
+    os.darwin:
+      default:
+      - /usr/local/var/log/suricata/eve.json
+    os.windows:
+      default:
+      - c:/program files/suricata/log/eve.json
+  - default:
+    - suricata
+    name: tags
+  - default: true
+    name: community_id
+  title: Suricata Eve logs
+  description: Collect Suricata Eve logs

@@ -1,3 +1,14 @@
+id: mgr_cluster_disk
 title: Ceph Mgr_cluster_disk Metrics
 release: beta
 type: metrics
+streams:
+- input: ceph/metrics
+  vars:
+  - default:
+    - https://localhost:8003
+    name: hosts
+  - default: 1m
+    name: period
+  title: Ceph Mgr_cluster_disk logs
+  description: Collect Ceph Mgr_cluster_disk metrics

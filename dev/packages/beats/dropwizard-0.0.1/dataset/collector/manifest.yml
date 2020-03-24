@@ -1,3 +1,18 @@
+id: collector
 title: Dropwizard Collector Metrics
 release: ga
 type: metrics
+streams:
+- input: dropwizard/metrics
+  vars:
+  - default:
+    - localhost:8080
+    name: hosts
+  - default: /metrics/metrics
+    name: metrics_path
+  - default: example
+    name: namespace
+  - default: 10s
+    name: period
+  title: Dropwizard Collector logs
+  description: Collect Dropwizard Collector metrics

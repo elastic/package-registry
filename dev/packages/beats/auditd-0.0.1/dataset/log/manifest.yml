@@ -1,3 +1,17 @@
+id: log
 title: Auditd Log Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/audit/audit.log*
+    name: paths
+    os.darwin:
+      default:
+      - ""
+    os.windows:
+      default: []
+  title: Auditd Log logs
+  description: Collect Auditd Log logs

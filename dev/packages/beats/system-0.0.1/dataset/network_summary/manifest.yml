@@ -1,3 +1,8 @@
+id: network_summary
 title: System Network_summary Metrics
 release: beta
 type: metrics
+streams:
+- input: system/metrics
+  title: System Network_summary logs
+  description: Collect System Network_summary metrics

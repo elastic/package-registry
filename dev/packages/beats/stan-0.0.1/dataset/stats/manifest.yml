@@ -1,3 +1,14 @@
+id: stats
 title: Stan Stats Metrics
 release: ga
 type: metrics
+streams:
+- input: stan/metrics
+  vars:
+  - default:
+    - localhost:8222
+    name: hosts
+  - default: 60s
+    name: period
+  title: Stan Stats logs
+  description: Collect Stan Stats metrics

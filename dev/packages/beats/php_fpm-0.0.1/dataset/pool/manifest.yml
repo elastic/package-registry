@@ -1,3 +1,16 @@
+id: pool
 title: Php_fpm Pool Metrics
 release: ga
 type: metrics
+streams:
+- input: php_fpm/metrics
+  vars:
+  - default:
+    - localhost:8080
+    name: hosts
+  - default: 10s
+    name: period
+  - default: /status
+    name: status_path
+  title: Php_fpm Pool logs
+  description: Collect Php_fpm Pool metrics

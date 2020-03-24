@@ -1,3 +1,13 @@
+id: remote_write
 title: Prometheus Remote_write Metrics
 release: beta
 type: metrics
+streams:
+- input: prometheus/metrics
+  vars:
+  - default: localhost
+    name: host
+  - default: "9201"
+    name: port
+  title: Prometheus Remote_write logs
+  description: Collect Prometheus Remote_write metrics

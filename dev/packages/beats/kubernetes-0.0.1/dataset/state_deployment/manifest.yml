@@ -1,3 +1,16 @@
+id: state_deployment
 title: Kubernetes State_deployment Metrics
 release: ga
 type: metrics
+streams:
+- input: kubernetes/metrics
+  vars:
+  - default: true
+    name: add_metadata
+  - default:
+    - kube-state-metrics:8080
+    name: hosts
+  - default: 10s
+    name: period
+  title: Kubernetes State_deployment logs
+  description: Collect Kubernetes State_deployment metrics

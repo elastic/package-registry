@@ -1,3 +1,16 @@
+id: stubstatus
 title: Nginx Stubstatus Metrics
 release: ga
 type: metrics
+streams:
+- input: nginx/metrics
+  vars:
+  - default:
+    - http://127.0.0.1
+    name: hosts
+  - default: 10s
+    name: period
+  - default: nginx_status
+    name: server_status_path
+  title: Nginx Stubstatus logs
+  description: Collect Nginx Stubstatus metrics

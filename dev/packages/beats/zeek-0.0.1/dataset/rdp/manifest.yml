@@ -1,3 +1,23 @@
+id: rdp
 title: Zeek Rdp Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/bro/current/rdp.log
+    name: paths
+    os.darwin:
+      default:
+      - /usr/local/var/logs/current/rdp.log
+    os.linux:
+      default:
+      - /var/log/bro/current/rdp.log
+  - default:
+    - zeek.rdp
+    name: tags
+  - default: true
+    name: community_id
+  title: Zeek Rdp logs
+  description: Collect Zeek Rdp logs

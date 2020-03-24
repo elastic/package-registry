@@ -1,3 +1,21 @@
+id: audit
 title: Googlecloud Audit Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default: google-pubsub
+    name: input
+  - default: SET_PROJECT_NAME
+    name: project_id
+  - default: stackdriver-audit
+    name: topic
+  - default: filebeat-googlecloud-audit
+    name: subscription_name
+  - default: googlecloud-audit-reader-service-identity.json
+    name: credentials_file
+  - default: false
+    name: keep_original_message
+  title: Googlecloud Audit logs
+  description: Collect Googlecloud Audit logs

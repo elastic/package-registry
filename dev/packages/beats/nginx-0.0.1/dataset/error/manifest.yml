@@ -1,3 +1,18 @@
+id: error
 title: Nginx Error Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/nginx/error.log*
+    name: paths
+    os.darwin:
+      default:
+      - /usr/local/var/log/nginx/error.log*
+    os.windows:
+      default:
+      - c:/programdata/nginx/logs/error.log*
+  title: Nginx Error logs
+  description: Collect Nginx Error logs

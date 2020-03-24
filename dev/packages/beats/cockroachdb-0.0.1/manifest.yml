@@ -12,12 +12,12 @@ requirement:
   kibana:
     versions: ""
 screenshots:
-- src: img/metricbeat-cockroachdb-overview.png
+- src: /img/metricbeat-cockroachdb-overview.png
   title: Metricbeat Cockroachdb Overview
   size: 1383x853
   type: image/png
 icons:
-- src: img/cockroachdb.svg
+- src: /img/cockroachdb.svg
   title: Cockroachdb
   size: 35x35
   type: image/svg+xml

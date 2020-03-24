@@ -12,12 +12,12 @@ requirement:
   kibana:
     versions: ""
 screenshots:
-- src: img/metricbeat-windows-service.png
+- src: /img/metricbeat-windows-service.png
   title: Metricbeat Windows Service
   size: 3142x1834
   type: image/png
 icons:
-- src: img/logo_windows.svg
+- src: /img/logo_windows.svg
   title: Logo Windows
   size: 32x32
   type: image/svg+xml

@@ -1,3 +1,14 @@
+id: subscriptions
 title: Nats Subscriptions Metrics
 release: ga
 type: metrics
+streams:
+- input: nats/metrics
+  vars:
+  - default:
+    - localhost:8222
+    name: hosts
+  - default: 10s
+    name: period
+  title: Nats Subscriptions logs
+  description: Collect Nats Subscriptions metrics

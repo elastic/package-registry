@@ -12,12 +12,12 @@ requirement:
   kibana:
     versions: ""
 screenshots:
-- src: img/ceph-overview-dashboard.png
+- src: /img/ceph-overview-dashboard.png
   title: Ceph Overview Dashboard
   size: 5002x2670
   type: image/png
 icons:
-- src: img/logo_ceph.svg
+- src: /img/logo_ceph.svg
   title: Logo Ceph
   size: 32x32
   type: image/svg+xml

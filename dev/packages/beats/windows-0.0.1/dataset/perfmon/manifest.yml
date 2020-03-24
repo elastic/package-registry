@@ -1,3 +1,15 @@
+id: perfmon
 title: Windows Perfmon Metrics
 release: beta
 type: metrics
+streams:
+- input: windows/metrics
+  vars:
+  - default: false
+    name: perfmon.group_measurements_by_instance
+  - default: false
+    name: perfmon.ignore_non_existent_counters
+  - default: 10s
+    name: period
+  title: Windows Perfmon logs
+  description: Collect Windows Perfmon metrics

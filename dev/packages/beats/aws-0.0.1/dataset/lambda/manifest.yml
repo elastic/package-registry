@@ -1,3 +1,11 @@
+id: lambda
 title: Aws Lambda Metrics
 release: beta
 type: metrics
+streams:
+- input: aws/metrics
+  vars:
+  - default: 5m
+    name: period
+  title: Aws Lambda logs
+  description: Collect Aws Lambda metrics

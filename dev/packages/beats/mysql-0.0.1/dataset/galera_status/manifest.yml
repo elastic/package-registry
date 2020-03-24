@@ -1,3 +1,8 @@
+id: galera_status
 title: Mysql Galera_status Metrics
 release: beta
 type: metrics
+streams:
+- input: mysql/metrics
+  title: Mysql Galera_status logs
+  description: Collect Mysql Galera_status metrics

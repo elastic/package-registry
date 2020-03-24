@@ -22,6 +22,9 @@ type DataSet struct {
 
 	// Generated fields
 	Path string `json:"path,omitempty" yaml:"path,omitempty"`
+
+	// Local path to the package dir
+	BasePath string `json:"-"`
 }
 
 type Input struct {
@@ -41,7 +44,7 @@ type Stream struct {
 }
 
 func (d *DataSet) Validate() error {
-	pipelineDir := d.Path + "/elasticsearch/ingest-pipeline/"
+	pipelineDir := d.BasePath + "/" + d.Path + "/elasticsearch/ingest-pipeline/"
 	paths, err := filepath.Glob(pipelineDir + "*")
 	if err != nil {
 		return err

@@ -1,3 +1,25 @@
+id: cpu
 title: System Cpu Metrics
 release: ga
 type: metrics
+streams:
+- input: system/metrics
+  vars:
+  - default:
+    - percentages
+    name: core.metrics
+  - default:
+    - percentages
+    - normalized_percentages
+    name: cpu.metrics
+  - default: 10s
+    name: period
+  - default: 5
+    name: process.include_top_n.by_cpu
+  - default: 5
+    name: process.include_top_n.by_memory
+  - default:
+    - .*
+    name: processes
+  title: System Cpu logs
+  description: Collect System Cpu metrics

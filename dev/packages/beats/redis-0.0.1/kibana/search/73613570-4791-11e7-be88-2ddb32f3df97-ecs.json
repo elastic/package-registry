@@ -19,20 +19,15 @@
                             "alias": null,
                             "disabled": false,
                             "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index",
-                            "key": "event.module",
+                            "key": "query",
                             "negate": false,
-                            "params": {
-                                "query": "redis",
-                                "type": "phrase"
-                            },
-                            "type": "phrase",
-                            "value": "redis"
+                            "type": "custom",
+                            "value": "{\"match_phrase_prefix\":{\"event.dataset\":{\"query\":\"redis.\"}}}"
                         },
                         "query": {
-                            "match": {
-                                "event.module": {
-                                    "query": "redis",
-                                    "type": "phrase"
+                            "match_phrase_prefix": {
+                                "event.dataset": {
+                                    "query": "redis."
                                 }
                             }
                         }

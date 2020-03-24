@@ -1,3 +1,23 @@
+id: connection
 title: Zeek Connection Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/bro/current/conn.log
+    name: paths
+    os.darwin:
+      default:
+      - /usr/local/var/logs/current/conn.log
+    os.linux:
+      default:
+      - /var/log/bro/current/conn.log
+  - default:
+    - zeek.connection
+    name: tags
+  - default: true
+    name: community_id
+  title: Zeek Connection logs
+  description: Collect Zeek Connection logs

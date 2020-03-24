@@ -1,0 +1,17 @@
+id: transitgateway
+title: Aws Transitgateway Metrics
+release: beta
+type: metrics
+streams:
+- input: aws/metrics
+  vars:
+  - default: test-mb
+    name: credential_profile_name
+  - default: 60s
+    name: period
+  - default:
+    - key: dept
+      value: eng
+    name: tags_filter
+  title: Aws Transitgateway logs
+  description: Collect Aws Transitgateway metrics

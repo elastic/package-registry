@@ -20,8 +20,8 @@
                 "axis_position": "left",
                 "axis_scale": "normal",
                 "filter": {
-                    "language": "lucene",
-                    "query": "event.module:santa AND event.dataset:log"
+                    "language": "kuery",
+                    "query": "(event.dataset:santa.log)  AND event.dataset:log"
                 },
                 "id": "61ca57f0-469d-11e7-af02-69e470af7417",
                 "index_pattern": "logs-*",

@@ -51,20 +51,15 @@
                             "alias": null,
                             "disabled": false,
                             "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.filter[1].meta.index",
-                            "key": "event.module",
+                            "key": "query",
                             "negate": false,
-                            "params": {
-                                "query": "suricata",
-                                "type": "phrase"
-                            },
-                            "type": "phrase",
-                            "value": "suricata"
+                            "type": "custom",
+                            "value": "{\"match_phrase_prefix\":{\"event.dataset\":{\"query\":\"suricata.\"}}}"
                         },
                         "query": {
-                            "match": {
-                                "event.module": {
-                                    "query": "suricata",
-                                    "type": "phrase"
+                            "match_phrase_prefix": {
+                                "event.dataset": {
+                                    "query": "suricata."
                                 }
                             }
                         }

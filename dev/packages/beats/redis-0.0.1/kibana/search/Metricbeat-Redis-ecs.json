@@ -24,7 +24,7 @@
                 "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.index",
                 "query": {
                     "language": "kuery",
-                    "query": "event.module:redis"
+                    "query": "(event.dataset:redis.info OR event.dataset:redis.key OR event.dataset:redis.keyspace)"
                 }
             }
         },

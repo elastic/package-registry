@@ -21,7 +21,7 @@
                 "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.index",
                 "query": {
                     "language": "kuery",
-                    "query": "event.module:rabbitmq"
+                    "query": "(event.dataset:rabbitmq.connection OR event.dataset:rabbitmq.exchange OR event.dataset:rabbitmq.node OR event.dataset:rabbitmq.queue)"
                 }
             }
         },

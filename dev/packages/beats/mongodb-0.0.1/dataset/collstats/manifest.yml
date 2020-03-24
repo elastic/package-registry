@@ -1,3 +1,14 @@
+id: collstats
 title: Mongodb Collstats Metrics
 release: ga
 type: metrics
+streams:
+- input: mongodb/metrics
+  vars:
+  - default:
+    - localhost:27017
+    name: hosts
+  - default: 10s
+    name: period
+  title: Mongodb Collstats logs
+  description: Collect Mongodb Collstats metrics

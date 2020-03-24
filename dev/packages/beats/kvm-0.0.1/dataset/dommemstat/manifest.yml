@@ -1,3 +1,14 @@
+id: dommemstat
 title: Kvm Dommemstat Metrics
 release: beta
 type: metrics
+streams:
+- input: kvm/metrics
+  vars:
+  - default:
+    - unix:///var/run/libvirt/libvirt-sock
+    name: hosts
+  - default: 10s
+    name: period
+  title: Kvm Dommemstat logs
+  description: Collect Kvm Dommemstat metrics

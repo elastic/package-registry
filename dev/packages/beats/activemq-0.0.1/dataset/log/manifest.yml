@@ -1,3 +1,18 @@
+id: log
 title: Activemq Log Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /opt/apache-activemq-*/data/activemq.log*
+    name: paths
+    os.darwin:
+      default:
+      - /usr/local/apache-activemq-*/data/activemq.log*
+    os.windows:
+      default:
+      - c:/apache-activemq-*/data/activemq.log*
+  title: Activemq Log logs
+  description: Collect Activemq Log logs

@@ -1,3 +1,17 @@
+id: log
 title: Logstash Log Logs
 release: ga
 type: logs
+streams:
+- input: logs
+  vars:
+  - default: plain
+    name: format
+  - default:
+    - /var/log/logstash/logstash-{{.format}}*.log
+    name: paths
+    os.windows:
+      default:
+      - c:/programdata/logstash/logs/logstash-{{.format}}*.log
+  title: Logstash Log logs
+  description: Collect Logstash Log logs

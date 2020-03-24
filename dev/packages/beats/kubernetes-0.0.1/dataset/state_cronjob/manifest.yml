@@ -1,3 +1,16 @@
+id: state_cronjob
 title: Kubernetes State_cronjob Metrics
 release: ga
 type: metrics
+streams:
+- input: kubernetes/metrics
+  vars:
+  - default: true
+    name: add_metadata
+  - default:
+    - kube-state-metrics:8080
+    name: hosts
+  - default: 10s
+    name: period
+  title: Kubernetes State_cronjob logs
+  description: Collect Kubernetes State_cronjob metrics

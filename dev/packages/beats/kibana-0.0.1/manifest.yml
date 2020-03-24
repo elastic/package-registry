@@ -13,7 +13,7 @@ requirement:
   kibana:
     versions: ""
 icons:
-- src: img/logo_kibana.svg
+- src: /img/logo_kibana.svg
   title: Logo Kibana
   size: 32x32
   type: image/svg+xml

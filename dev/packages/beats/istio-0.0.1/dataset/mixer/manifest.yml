@@ -1,3 +1,14 @@
+id: mixer
 title: Istio Mixer Metrics
 release: beta
 type: metrics
+streams:
+- input: istio/metrics
+  vars:
+  - default:
+    - localhost:15014
+    name: hosts
+  - default: 10s
+    name: period
+  title: Istio Mixer logs
+  description: Collect Istio Mixer metrics

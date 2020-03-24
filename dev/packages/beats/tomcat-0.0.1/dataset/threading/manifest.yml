@@ -1,3 +1,16 @@
+id: threading
 title: Tomcat Threading Metrics
 release: beta
 type: metrics
+streams:
+- input: tomcat/metrics
+  vars:
+  - default:
+    - localhost:8080
+    name: hosts
+  - default: /jolokia/?ignoreErrors=true&canonicalNaming=false
+    name: path
+  - default: 10s
+    name: period
+  title: Tomcat Threading logs
+  description: Collect Tomcat Threading metrics

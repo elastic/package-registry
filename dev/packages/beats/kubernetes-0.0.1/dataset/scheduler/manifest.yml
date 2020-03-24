@@ -1,3 +1,14 @@
+id: scheduler
 title: Kubernetes Scheduler Metrics
 release: ga
 type: metrics
+streams:
+- input: kubernetes/metrics
+  vars:
+  - default:
+    - localhost:10251
+    name: hosts
+  - default: 10s
+    name: period
+  title: Kubernetes Scheduler logs
+  description: Collect Kubernetes Scheduler metrics

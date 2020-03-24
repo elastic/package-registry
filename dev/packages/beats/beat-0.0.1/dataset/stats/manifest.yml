@@ -1,3 +1,16 @@
+id: stats
 title: Beat Stats Metrics
 release: ga
 type: metrics
+streams:
+- input: beat/metrics
+  vars:
+  - default:
+    - http://localhost:5066
+    name: hosts
+  - default: 10s
+    name: period
+  - default: true
+    name: xpack.enabled
+  title: Beat Stats logs
+  description: Collect Beat Stats metrics

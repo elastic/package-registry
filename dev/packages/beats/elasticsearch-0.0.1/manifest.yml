@@ -13,7 +13,7 @@ requirement:
   kibana:
     versions: ""
 icons:
-- src: img/logo_elasticsearch.svg
+- src: /img/logo_elasticsearch.svg
   title: Logo Elasticsearch
   size: 32x32
   type: image/svg+xml

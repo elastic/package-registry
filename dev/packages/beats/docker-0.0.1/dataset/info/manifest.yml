@@ -1,3 +1,14 @@
+id: info
 title: Docker Info Metrics
 release: ga
 type: metrics
+streams:
+- input: docker/metrics
+  vars:
+  - default:
+    - unix:///var/run/docker.sock
+    name: hosts
+  - default: 10s
+    name: period
+  title: Docker Info logs
+  description: Collect Docker Info metrics

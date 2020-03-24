@@ -1,3 +1,12 @@
+id: apiserver
 title: Kubernetes Apiserver Metrics
 release: ga
 type: metrics
+streams:
+- input: kubernetes/metrics
+  vars:
+  - default:
+    - https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT}
+    name: hosts
+  title: Kubernetes Apiserver logs
+  description: Collect Kubernetes Apiserver metrics

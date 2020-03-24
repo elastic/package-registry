@@ -1,0 +1,17 @@
+id: elb
+title: Aws Elb Logs
+release: ga
+type: logs
+streams:
+- input: logs
+  vars:
+  - default: s3
+    name: input
+  - name: queue_url
+  - name: shared_credential_file
+  - name: credential_profile_name
+  - name: visibility_timeout
+  - name: api_timeout
+  - name: endpoint
+  title: Aws Elb logs
+  description: Collect Aws Elb logs

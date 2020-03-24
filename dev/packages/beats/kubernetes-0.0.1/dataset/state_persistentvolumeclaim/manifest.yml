@@ -1,3 +1,16 @@
+id: state_persistentvolumeclaim
 title: Kubernetes State_persistentvolumeclaim Metrics
 release: experimental
 type: metrics
+streams:
+- input: kubernetes/metrics
+  vars:
+  - default: true
+    name: add_metadata
+  - default:
+    - kube-state-metrics:8080
+    name: hosts
+  - default: 10s
+    name: period
+  title: Kubernetes State_persistentvolumeclaim logs
+  description: Collect Kubernetes State_persistentvolumeclaim metrics

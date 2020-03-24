@@ -12,12 +12,12 @@ requirement:
   kibana:
     versions: ""
 screenshots:
-- src: img/metricbeat-aerospike-overview.png
+- src: /img/metricbeat-aerospike-overview.png
   title: Metricbeat Aerospike Overview
   size: 4988x2558
   type: image/png
 icons:
-- src: img/logo_aerospike.svg
+- src: /img/logo_aerospike.svg
   title: Logo Aerospike
   size: 32x32
   type: image/svg+xml

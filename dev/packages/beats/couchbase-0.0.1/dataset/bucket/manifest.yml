@@ -1,3 +1,14 @@
+id: bucket
 title: Couchbase Bucket Metrics
 release: ga
 type: metrics
+streams:
+- input: couchbase/metrics
+  vars:
+  - default:
+    - localhost:8091
+    name: hosts
+  - default: 10s
+    name: period
+  title: Couchbase Bucket logs
+  description: Collect Couchbase Bucket metrics

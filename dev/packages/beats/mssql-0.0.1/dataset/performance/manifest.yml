@@ -1,3 +1,18 @@
+id: performance
 title: Mssql Performance Metrics
 release: beta
 type: metrics
+streams:
+- input: mssql/metrics
+  vars:
+  - default:
+    - sqlserver://localhost
+    name: hosts
+  - default: verysecurepassword
+    name: password
+  - default: 10s
+    name: period
+  - default: domain\username
+    name: username
+  title: Mssql Performance logs
+  description: Collect Mssql Performance metrics

@@ -1,3 +1,8 @@
+id: diskio
 title: System Diskio Metrics
 release: ga
 type: metrics
+streams:
+- input: system/metrics
+  title: System Diskio logs
+  description: Collect System Diskio metrics

@@ -1,3 +1,18 @@
+id: signinlogs
 title: Azure Signinlogs Logs
 release: beta
 type: logs
+streams:
+- input: logs
+  vars:
+  - default: azure-eventhub
+    name: input
+  - default: insights-logs-signinlogs
+    name: eventhub
+  - default: $Default
+    name: consumer_group
+  - name: connection_string
+  - name: storage_account
+  - name: storage_account_key
+  title: Azure Signinlogs logs
+  description: Collect Azure Signinlogs logs

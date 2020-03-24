@@ -1,3 +1,18 @@
+id: info
 title: Haproxy Info Metrics
 release: ga
 type: metrics
+streams:
+- input: haproxy/metrics
+  vars:
+  - default:
+    - tcp://127.0.0.1:14567
+    name: hosts
+  - default: admin
+    name: password
+  - default: 10s
+    name: period
+  - default: admin
+    name: username
+  title: Haproxy Info logs
+  description: Collect Haproxy Info metrics
