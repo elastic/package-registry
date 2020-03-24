@@ -50,7 +50,7 @@ type Package struct {
 	Path          string       `json:"path" yaml:"path,omitempty"`
 
 	// Local path to the package dir
-	BasePath string `json:"-"`
+	BasePath string `json:"-" yaml:"-"`
 }
 
 type Datasource struct {

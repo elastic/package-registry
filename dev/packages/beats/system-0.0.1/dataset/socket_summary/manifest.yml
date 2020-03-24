@@ -14,10 +14,10 @@ streams:
     name: cpu.metrics
   - default: 10s
     name: period
-  - default:
-      by_cpu: 5
-      by_memory: 5
-    name: process.include_top_n
+  - default: 5
+    name: process.include_top_n.by_cpu
+  - default: 5
+    name: process.include_top_n.by_memory
   - default:
     - .*
     name: processes
