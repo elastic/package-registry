@@ -22,6 +22,19 @@
             "@timestamp": {
                 "type": "date"
             },
+            "stream": {
+                "properties": {
+                    "type": {
+                        "type": "constant_keyword"
+                    },
+                    "dataset": {
+                        "type": "constant_keyword"
+                    },
+                    "namespace": {
+                        "type": "constant_keyword"
+                    }
+                }
+            },
             "agent": {
                 "properties": {
                     "hostname": {
