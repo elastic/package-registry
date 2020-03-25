@@ -25,6 +25,20 @@ var (
 
 const (
 	packageDirName = "package"
+	streamFields   = `
+- name: stream.type
+  type: constant_keyword
+  description: >
+    Stream type
+- name: stream.dataset
+  type: constant_keyword
+  description: >
+    Stream dataset.
+- name: stream.namespace
+  type: constant_keyword
+  description: >
+    Stream namespace.
+`
 )
 
 func main() {
@@ -121,6 +135,25 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 	}
 
 	p.BasePath = filepath.Join(currentPath, packagesBasePath, p.GetPath())
+
+	datasets, err := p.GetDatasets()
+	if err != nil {
+		return err
+	}
+
+	// Add stream.yml to all dataset with the basic stream fields
+	for _, dataset := range datasets {
+		dirPath := filepath.Join(p.BasePath, "dataset", dataset, "fields")
+		err := os.MkdirAll(dirPath, 0755)
+		if err != nil {
+			return err
+		}
+
+		err = ioutil.WriteFile(filepath.Join(dirPath, "stream.yml"), []byte(streamFields), 0644)
+		if err != nil {
+			return err
+		}
+	}
 
 	err = p.LoadAssets(p.GetPath())
 	if err != nil {
