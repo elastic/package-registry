@@ -15,18 +15,11 @@
     "elasticsearch": {}
   },
   "assets": [
-<<<<<<< HEAD:testdata/public/package/default-pipeline-0.0.2/index.json
-    "/package/default-pipeline-0.0.2/manifest.yml",
-    "/package/default-pipeline-0.0.2/docs/README.md",
-    "/package/default-pipeline-0.0.2/dataset/foo/manifest.yml",
-    "/package/default-pipeline-0.0.2/dataset/foo/fields/stream.yml",
-    "/package/default-pipeline-0.0.2/dataset/foo/elasticsearch/ingest-pipeline/default.json"
-=======
     "/package/default-pipeline/0.0.2/manifest.yml",
     "/package/default-pipeline/0.0.2/docs/README.md",
     "/package/default-pipeline/0.0.2/dataset/foo/manifest.yml",
+    "/package/default-pipeline/0.0.2/dataset/foo/fields/stream.yml",
     "/package/default-pipeline/0.0.2/dataset/foo/elasticsearch/ingest-pipeline/default.json"
->>>>>>> 4b690b6... Change package path from {packagename}-{version} to {packagename}/{version}:testdata/public/package/default-pipeline/0.0.2/index.json
   ],
   "datasets": [
     {
