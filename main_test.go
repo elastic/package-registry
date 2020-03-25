@@ -37,12 +37,14 @@ func TestEndpoints(t *testing.T) {
 	}{
 		{"/", "", "info.json", catchAll(publicPath, testCacheTime)},
 		{"/search", "/search", "search.json", searchHandler(packagesBasePath, testCacheTime)},
+		{"/search?all=true", "/search", "search-all.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/categories", "/categories", "categories.json", categoriesHandler(packagesBasePath, testCacheTime)},
 		{"/search?kibana=6.5.2", "/search", "search-kibana652.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/search?kibana=7.2.1", "/search", "search-kibana721.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/search?category=metrics", "/search", "search-category-metrics.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/search?category=logs", "/search", "search-category-logs.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/search?package=example", "/search", "search-package-example.json", searchHandler(packagesBasePath, testCacheTime)},
+		{"/search?package=example&all=true", "/search", "search-package-example-all.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/search?internal=true", "/search", "search-package-internal.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/package/example/1.0.0", "", "package.json", catchAll(publicPath, testCacheTime)},
 	}
