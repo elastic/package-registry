@@ -77,14 +77,22 @@
 - name: endpoint
   title: Endpoint
   group: 2
-  description: TODO
+  description: Fields describing the state of the Elastic Endpoint when an event
+    occurs.
   type: group
   fields:
+    - name: policy
+      level: custom
+      type: object
+      object_type: keyword
+      description: The policy fields are used to hold information about applied policy.
+      default_field: false
     - name: policy.id
       level: custom
       type: keyword
       ignore_above: 1024
-      description: TODO
+      description: ID of the policy that was active when the event was created.
+      example: c2a9093e-e289-4c0a-aa44-8c32a414fa7a
       default_field: false
 - name: event
   title: Event
