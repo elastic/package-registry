@@ -11,7 +11,6 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"path"
 	"path/filepath"
 
 	"github.com/magefile/mage/sh"
@@ -144,13 +143,13 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 
 	// Add stream.yml to all dataset with the basic stream fields
 	for _, dataset := range datasets {
-		dirPath := path.Join(p.BasePath, "dataset", dataset, "fields")
+		dirPath := filepath.Join(p.BasePath, "dataset", dataset, "fields")
 		err := os.MkdirAll(dirPath, 0755)
 		if err != nil {
 			return err
 		}
 
-		err = ioutil.WriteFile(path.Join(dirPath, "stream.yml"), []byte(streamFields), 0644)
+		err = ioutil.WriteFile(filepath.Join(dirPath, "stream.yml"), []byte(streamFields), 0644)
 		if err != nil {
 			return err
 		}

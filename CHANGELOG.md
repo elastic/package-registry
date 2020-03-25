@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Allow to set cache times through config. [#271](https://github.com/elastic/integrations-registry/pull/271)
 * Make README.md file a required file for a package. [#287](https://github.com/elastic/integrations-registry/pull/287)
+*  Add stream fields to each dataset [#296](https://github.com/elastic/integrations-registry/pull/296)
 
 ### Deprecated
 
