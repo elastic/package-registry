@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Breaking changes
 
+* Change package path from /package/{packagename}-{version} to /package/{packagename}/{version} [#](https://github.com/elastic/integrations-registry/pull/)
 
 ### Bugfixes
 

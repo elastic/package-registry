@@ -12,6 +12,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/magefile/mage/sh"
 
@@ -75,7 +76,7 @@ func Build(sourceDir, publicDir string) error {
 
 // CopyPackage copies the files of a package to the public directory
 func CopyPackage(src, dst string) error {
-	fmt.Println(">> Copy package: " + src)
+	log.Println(">> Copy package: " + src)
 	os.MkdirAll(dst, 0755)
 	err := sh.RunV("cp", "-a", src, dst)
 	if err != nil {
@@ -100,14 +101,19 @@ func BuildPackages(sourceDir, packagesPath string) error {
 			continue
 		}
 
+		// Finds the last occurence of "-" and then below splits it up in 2 parts.
+		dashIndex := strings.LastIndex(packageName, "-")
+		dstDir := filepath.Join(packagesPath, packageName[0:dashIndex], packageName[dashIndex+1:])
+
 		if copy {
-			err := CopyPackage(filepath.Join(sourceDir, packageName), packagesPath)
+			// Trailing slash is to make sure content of package is copied
+			err := CopyPackage(filepath.Join(sourceDir, packageName)+"/", dstDir)
 			if err != nil {
 				return err
 			}
 		}
 
-		p, err := util.NewPackage(filepath.Join(packagesPath, packageName))
+		p, err := util.NewPackage(dstDir)
 		if err != nil {
 			return err
 		}
@@ -200,14 +206,34 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 	}
 
 	if tarGz {
-		err = os.MkdirAll(filepath.Join(packagesBasePath, "..", "epr", p.Name), 0755)
+		tarGzDirPath := filepath.Join(packagesBasePath, "..", "epr", p.Name)
+		err = os.MkdirAll(tarGzDirPath, 0755)
 		if err != nil {
 			return err
 		}
 
-		err = sh.RunV("tar", "czf", filepath.Join(packagesBasePath, "..", "epr", p.Name, p.GetPath()+".tar.gz"), "-C", packagesBasePath+"/", filepath.Base(p.GetPath())+"/")
+		tarGzName := p.Name + "-" + p.Version
+		copiedPackagePath := filepath.Join(tarGzDirPath, tarGzName)
+
+		// As the package directories are now {packagename}/{version} when just running tar, the dir inside
+		// the package had the wrong name. Using `-s` or `--transform` for some reason worked on the command line
+		// but not when run through Golang. So the hack for now is to just copy over all files with the correct name
+		// and then run tar on it.
+		// This could become even useful in the future as things like images or videos should potentially not be part of
+		// a tar.gz to keep it small.
+		err := CopyPackage(packagesBasePath+"/"+p.Name+"/"+p.Version+"/", copiedPackagePath)
+		if err != nil {
+			return err
+		}
+
+		err = sh.RunV("tar", "czf", filepath.Join(packagesBasePath, "..", "epr", p.Name, tarGzName+".tar.gz"), "-C", tarGzDirPath, tarGzName+"/")
 		if err != nil {
 			return fmt.Errorf("Error creating package: %s: %s", p.GetPath(), err)
+		}
+
+		err = os.RemoveAll(copiedPackagePath)
+		if err != nil {
+			return err
 		}
 	}
 

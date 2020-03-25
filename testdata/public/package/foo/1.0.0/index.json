@@ -19,9 +19,9 @@
     }
   },
   "assets": [
-    "/package/foo-1.0.0/manifest.yml",
-    "/package/foo-1.0.0/docs/README.md"
+    "/package/foo/1.0.0/manifest.yml",
+    "/package/foo/1.0.0/docs/README.md"
   ],
   "download": "/epr/foo/foo-1.0.0.tar.gz",
-  "path": "/package/foo-1.0.0"
+  "path": "/package/foo/1.0.0"
 }

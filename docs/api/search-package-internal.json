@@ -3,7 +3,7 @@
     "description": "Package with data sources",
     "download": "/epr/datasources/datasources-1.0.0.tar.gz",
     "name": "datasources",
-    "path": "/package/datasources-1.0.0",
+    "path": "/package/datasources/1.0.0",
     "title": "Default datasource Integration",
     "type": "integration",
     "version": "1.0.0"
@@ -12,7 +12,7 @@
     "description": "Tests if no pipeline is set, it defaults to the default one",
     "download": "/epr/default-pipeline/default-pipeline-0.0.2.tar.gz",
     "name": "default-pipeline",
-    "path": "/package/default-pipeline-0.0.2",
+    "path": "/package/default-pipeline/0.0.2",
     "title": "Default pipeline Integration",
     "type": "integration",
     "version": "0.0.2"
@@ -21,7 +21,7 @@
     "description": "This is the example integration",
     "download": "/epr/example/example-1.0.0.tar.gz",
     "name": "example",
-    "path": "/package/example-1.0.0",
+    "path": "/package/example/1.0.0",
     "title": "Example Integration",
     "type": "integration",
     "version": "1.0.0"
@@ -30,7 +30,7 @@
     "description": "This is the foo integration",
     "download": "/epr/foo/foo-1.0.0.tar.gz",
     "name": "foo",
-    "path": "/package/foo-1.0.0",
+    "path": "/package/foo/1.0.0",
     "title": "Foo",
     "type": "solution",
     "version": "1.0.0"
@@ -40,7 +40,7 @@
     "download": "/epr/internal/internal-1.2.0.tar.gz",
     "internal": true,
     "name": "internal",
-    "path": "/package/internal-1.2.0",
+    "path": "/package/internal/1.2.0",
     "title": "Internal",
     "type": "integration",
     "version": "1.2.0"

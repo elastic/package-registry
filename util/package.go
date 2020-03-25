@@ -370,7 +370,7 @@ func (p *Package) LoadDataSets(packagePath string) error {
 }
 
 func (p *Package) GetPath() string {
-	return p.Name + "-" + p.Version
+	return p.Name + "/" + p.Version
 }
 
 func (p *Package) GetDownloadPath() string {
@@ -378,5 +378,5 @@ func (p *Package) GetDownloadPath() string {
 }
 
 func (p *Package) GetUrlPath() string {
-	return path.Join("/package", p.Name+"-"+p.Version)
+	return path.Join("/package", p.Name, p.Version)
 }

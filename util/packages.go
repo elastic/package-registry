@@ -5,7 +5,7 @@
 package util
 
 import (
-	"io/ioutil"
+	"os"
 	"path/filepath"
 )
 
@@ -25,32 +25,37 @@ func GetPackages(packagesBasePath string) ([]Package, error) {
 		return nil, err
 	}
 
-	for _, i := range packagePaths {
-		p, err := NewPackage(filepath.Join(packagesBasePath, i))
+	for _, path := range packagePaths {
+		p, err := NewPackage(path)
 		if err != nil {
 			return nil, err
 		}
 		packageList = append(packageList, *p)
 	}
+
 	return packageList, nil
 }
 
 // getPackagePaths returns list of available packages, one for each version.
 func getPackagePaths(packagesPath string) ([]string, error) {
 
-	files, err := ioutil.ReadDir(packagesPath)
+	allPaths, err := filepath.Glob(packagesPath + "/*/*")
 	if err != nil {
 		return nil, err
 	}
 
-	var packages []string
-	for _, f := range files {
-		if !f.IsDir() {
+	var packagePaths []string
+	for _, path := range allPaths {
+		p, err := os.Stat(path)
+		if err != nil {
+			return nil, err
+		}
+		if !p.IsDir() {
 			continue
 		}
 
-		packages = append(packages, f.Name())
+		packagePaths = append(packagePaths, path)
 	}
 
-	return packages, nil
+	return packagePaths, nil
 }

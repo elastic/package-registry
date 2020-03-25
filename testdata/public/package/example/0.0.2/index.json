@@ -1,0 +1,39 @@
+{
+  "format_version": "1.0.0",
+  "name": "example",
+  "title": "Example",
+  "version": "0.0.2",
+  "readme": "/package/example-0.0.2/docs/README.md",
+  "license": "basic",
+  "description": "This is the example integration.",
+  "type": "integration",
+  "categories": [
+    "logs"
+  ],
+  "requirement": {
+    "kibana": {
+      "versions": "\u003e=6.0.0"
+    }
+  },
+  "assets": [
+    "/package/example/0.0.2/manifest.yml",
+    "/package/example/0.0.2/docs/README.md",
+    "/package/example/0.0.2/img/kibana-envoyproxy.jpg",
+    "/package/example/0.0.2/elasticsearch/ingest-pipeline/pipeline-entry.json",
+    "/package/example/0.0.2/elasticsearch/ingest-pipeline/pipeline-http.json",
+    "/package/example/0.0.2/elasticsearch/ingest-pipeline/pipeline-json.json",
+    "/package/example/0.0.2/elasticsearch/ingest-pipeline/pipeline-plaintext.json",
+    "/package/example/0.0.2/elasticsearch/ingest-pipeline/pipeline-tcp.json",
+    "/package/example/0.0.2/kibana/dashboard/0c610510-5cbd-11e9-8477-077ec9664dbd.json",
+    "/package/example/0.0.2/kibana/index-pattern/filebeat-*.json",
+    "/package/example/0.0.2/kibana/infrastructure-ui-source/default.json",
+    "/package/example/0.0.2/kibana/visualization/0a994af0-5c9d-11e9-8477-077ec9664dbd.json",
+    "/package/example/0.0.2/kibana/visualization/36f872a0-5c03-11e9-85b4-19d0072eb4f2.json",
+    "/package/example/0.0.2/kibana/visualization/38f96190-5c99-11e9-8477-077ec9664dbd.json",
+    "/package/example/0.0.2/kibana/visualization/7e4084e0-5c99-11e9-8477-077ec9664dbd.json",
+    "/package/example/0.0.2/kibana/visualization/80844540-5c97-11e9-8477-077ec9664dbd.json",
+    "/package/example/0.0.2/kibana/visualization/ab48c3f0-5ca6-11e9-8477-077ec9664dbd.json"
+  ],
+  "download": "/epr/example/example-0.0.2.tar.gz",
+  "path": "/package/example/0.0.2"
+}
