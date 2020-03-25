@@ -1,6 +1,6 @@
 id: proxy
 title: Kubernetes Proxy Metrics
-release: beta
+release: ga
 type: metrics
 streams:
 - input: kubernetes/metrics

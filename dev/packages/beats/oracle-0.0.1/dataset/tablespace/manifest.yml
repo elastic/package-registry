@@ -1,6 +1,6 @@
 id: tablespace
 title: Oracle Tablespace Metrics
-release: beta
+release: ga
 type: metrics
 streams:
 - input: oracle/metrics

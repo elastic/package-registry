@@ -1,6 +1,6 @@
 id: datastore
 title: Vsphere Datastore Metrics
-release: beta
+release: ga
 type: metrics
 streams:
 - input: vsphere/metrics

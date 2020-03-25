@@ -1,6 +1,6 @@
 id: value
 title: Cloudfoundry Value Metrics
-release: experimental
+release: beta
 type: metrics
 streams:
 - input: cloudfoundry/metrics

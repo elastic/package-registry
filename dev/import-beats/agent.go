@@ -49,7 +49,7 @@ func createAgentContentForLogs(modulePath, moduleName, datasetName string) (agen
 	for _, configFilePath := range configFilePaths {
 		configFile, err := transformAgentConfigFile(configFilePath)
 		if err != nil {
-			return agentContent{}, fmt.Errorf("loading config file failed (modulePath: %s, datasetName: %s)", modulePath, datasetName)
+			return agentContent{}, errors.Wrapf(err, "loading config file failed (modulePath: %s, datasetName: %s)", modulePath, datasetName)
 		}
 
 		inputConfigName := extractInputConfigName(configFilePath)
@@ -117,7 +117,7 @@ func transformAgentConfigFile(configFilePath string) ([]byte, error) {
 			line = strings.ReplaceAll(line, " }}", "}}")
 			buffer.WriteString(line)
 			buffer.WriteString("\n")
-		} else if strings.Contains(line, "{{ range") {
+		} else if strings.Contains(line, "{{range ") || strings.Contains(line, " range ") {
 			loopedVar, err := extractRangeVar(line)
 			if err != nil {
 				return nil, errors.Wrapf(err, "extracting range var failed")
@@ -151,18 +151,21 @@ func transformAgentConfigFile(configFilePath string) ([]byte, error) {
 }
 
 func extractRangeVar(line string) (string, error) {
+	line = line[strings.Index(line, "range") + 1:]
 	i := strings.Index(line, ":=")
-	if i < 0 {
-		return "", fmt.Errorf(`unsupported range "%s"`, line)
+	var sliced string
+	if i >= 0 {
+		line = strings.TrimSpace(line[i+3:])
+		split := strings.Split(line, " ")
+		sliced = split[0]
+	} else {
+		split := strings.Split(line, " ")
+		sliced = split[1]
 	}
 
-	line = strings.TrimSpace(line[i+3:])
-	split := strings.Split(line, " ")
-	sliced := split[0]
 	if strings.HasPrefix(sliced, ".") {
 		sliced = sliced[1:]
 	}
-
 	return sliced, nil
 }
 

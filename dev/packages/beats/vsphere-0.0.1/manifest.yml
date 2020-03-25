@@ -7,7 +7,7 @@ description: Vsphere Integration
 type: integration
 categories:
 - metrics
-release: beta
+release: ga
 requirement:
   kibana:
     versions: ""

@@ -1,6 +1,6 @@
 id: state_cronjob
 title: Kubernetes State_cronjob Metrics
-release: beta
+release: ga
 type: metrics
 streams:
 - input: kubernetes/metrics

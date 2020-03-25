@@ -1,6 +1,6 @@
 id: performance
 title: Oracle Performance Metrics
-release: beta
+release: ga
 type: metrics
 streams:
 - input: oracle/metrics

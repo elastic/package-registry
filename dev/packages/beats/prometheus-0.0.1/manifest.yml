@@ -7,6 +7,7 @@ description: Prometheus Integration
 type: integration
 categories:
 - metrics
+- metrics
 release: ga
 requirement:
   kibana:
@@ -23,8 +24,10 @@ icons:
   type: image/svg+xml
 datasources:
 - name: prometheus
-  title: Prometheus metrics
-  description: Collect metrics from Prometheus instances
+  title: Prometheus metrics and metrics
+  description: Collect metrics and metrics from Prometheus instances
   inputs:
+  - type: prometheus/metrics
+    description: Collecting metrics for Prometheus
   - type: prometheus/metrics
     description: Collecting metrics for Prometheus

@@ -1,6 +1,6 @@
 id: counter
 title: Cloudfoundry Counter Metrics
-release: experimental
+release: beta
 type: metrics
 streams:
 - input: cloudfoundry/metrics

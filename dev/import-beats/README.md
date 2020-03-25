@@ -34,7 +34,7 @@ https://github.com/elastic/eui
 2. Run the importing procedure with the following command:
 
 ```bash
-$ go run dev/import-beats/*.go
+$ mage ImportBeats
 ```
 
 ## Troubleshooting
@@ -45,5 +45,5 @@ While developeing, you can try to perform the migration with skipping migration 
 as this is the most time consuming part of whole process:
 
 ```bash
-$ go run dev/import-beats/*.go -skipKibana
+$ SKIP_KIBANA=true mage ImportBeats
 ```

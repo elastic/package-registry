@@ -1,6 +1,6 @@
 id: controllermanager
 title: Kubernetes Controllermanager Metrics
-release: beta
+release: ga
 type: metrics
 streams:
 - input: kubernetes/metrics

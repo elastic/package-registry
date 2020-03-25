@@ -1,6 +1,6 @@
 id: host
 title: Vsphere Host Metrics
-release: beta
+release: ga
 type: metrics
 streams:
 - input: vsphere/metrics
