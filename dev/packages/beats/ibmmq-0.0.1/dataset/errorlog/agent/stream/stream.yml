@@ -1,0 +1,10 @@
+input: log
+paths:
+{{#each paths}}
+  - {{this}}
+{{/each}}
+exclude_files: [".gz$"]
+multiline:
+  pattern: "^[\\-]{5}.*[\\-]{10,}$"
+  negate: true
+  match: after

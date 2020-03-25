@@ -1,6 +1,6 @@
 id: state_resourcequota
 title: Kubernetes State_resourcequota Metrics
-release: ga
+release: beta
 type: metrics
 streams:
 - input: kubernetes/metrics

@@ -11,11 +11,6 @@ release: beta
 requirement:
   kibana:
     versions: ""
-screenshots:
-- src: /img/metricbeat-tomcat-overview.png
-  title: Metricbeat Tomcat Overview
-  size: 3836x2148
-  type: image/png
 datasources:
 - name: tomcat
   title: Tomcat metrics

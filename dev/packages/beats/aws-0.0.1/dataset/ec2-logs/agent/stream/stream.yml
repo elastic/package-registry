@@ -1,0 +1,27 @@
+{{#if input == ec2}}
+input: s3
+queue_url: {{queue_url}}
+{{#if credential_profile_name}}
+credential_profile_name: {{credential_profile_name}}
+{{/if}}
+{{#if shared_credential_file}}
+shared_credential_file: {{shared_credential_file}}
+{{/if}}
+{{#if visibility_timeout}}
+visibility_timeout: {{visibility_timeout}}
+{{/if}}
+{{#if api_timeout}}
+api_timeout: {{api_timeout}}
+{{/if}}
+{{#if endpoint}}
+endpoint: {{endpoint}}
+{{/if}}
+{{/if}}
+{{#if input == file}}
+input: log
+paths:
+{{#each paths}}
+  - {{this}}
+{{/each}}
+exclude_files: [".gz$"]
+{{/if}}

@@ -1,6 +1,6 @@
 id: scheduler
 title: Kubernetes Scheduler Metrics
-release: ga
+release: beta
 type: metrics
 streams:
 - input: kubernetes/metrics

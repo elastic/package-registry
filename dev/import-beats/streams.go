@@ -162,7 +162,7 @@ func createMetricStreams(modulePath, moduleName, datasetName string) ([]util.Str
 func mergeMetaConfigFiles(modulePath string) ([]byte, error) {
 	configFilePaths, err := filepath.Glob(filepath.Join(modulePath, "_meta", "config*.yml"))
 	if err != nil {
-		return nil, errors.Wrapf(err, "location config files failed (modulePath: %s)", modulePath)
+		return nil, errors.Wrapf(err, "locating config files failed (modulePath: %s)", modulePath)
 	}
 
 	var mergedConfig bytes.Buffer
