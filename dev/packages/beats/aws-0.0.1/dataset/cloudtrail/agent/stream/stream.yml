@@ -1,27 +1,27 @@
-{{#if input == s3}}
+{{#if input == "s3"}}
 input: s3
-queue_url: {{queue_url}}
+queue_url: {{this.queue_url}}
 expand_event_list_from_field: Records
-{{#if credential_profile_name}}
-credential_profile_name: {{credential_profile_name}}
-{{/if}}
-{{#if shared_credential_file}}
-shared_credential_file: {{shared_credential_file}}
-{{/if}}
-{{#if visibility_timeout}}
-visibility_timeout: {{visibility_timeout}}
-{{/if}}
-{{#if api_timeout}}
-api_timeout: {{api_timeout}}
-{{/if}}
-{{#if endpoint}}
-endpoint: {{endpoint}}
-{{/if}}
-{{else if input == file}}
+{{#if this.credential_profile_name}}
+credential_profile_name: {{this.credential_profile_name}}
+{{/end}}
+{{#if this.shared_credential_file}}
+shared_credential_file: {{this.shared_credential_file}}
+{{/end}}
+{{#if this.visibility_timeout}}
+visibility_timeout: {{this.visibility_timeout}}
+{{/end}}
+{{#if this.api_timeout}}
+api_timeout: {{this.api_timeout}}
+{{/end}}
+{{#if this.endpoint}}
+endpoint: {{this.endpoint}}
+{{/end}}
+{{else if input == "file"}}
 input: log
 paths:
-{{#each paths}}
+{{#each paths}}}}
   - {{this}}
 {{/each}}
 exclude_files: [".gz$"]
-{{/if}}
+{{/end}}

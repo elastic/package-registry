@@ -1,15 +1,15 @@
 {{#if input == azure-eventhub}}
 input: azure-eventhub
-connection_string: {{connection_string}}
-eventhub: {{eventhub}}
-consumer_group: {{consumer_group}}
-storage_account: {{storage_account}}
-storage_account_key: {{storage_account_key}}
+connection_string: {{this.connection_string}}
+eventhub: {{this.eventhub}}
+consumer_group: {{this.consumer_group}}
+storage_account: {{this.storage_account}}
+storage_account_key: {{this.storage_account_key}}
 {{/if}}
 {{#if input == file}}
 input: log
 paths:
-{{#each paths}}
+{{#each paths}}}}
   - {{this}}
 {{/each}}
 exclude_files: [".gz$"]

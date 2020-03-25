@@ -89,42 +89,50 @@ func transformAgentConfigFile(configFilePath string) ([]byte, error) {
 	scanner := bufio.NewScanner(configFile)
 	for scanner.Scan() {
 		line := scanner.Text()
+		if line == "" {
+			continue
+		}
+
 		if strings.HasPrefix(line, "type: ") {
 			line = strings.ReplaceAll(line, "type: ", "input: ")
-			buffer.WriteString(line)
-			buffer.WriteString("\n")
-		} else if strings.Contains(line, "if eq .") {
-			if strings.Contains(line, "{{ else") {
-				buffer.WriteString("{{else if ")
-			} else {
-				buffer.WriteString("{{#if ")
-			}
-			i := strings.Index(line, ".")
-			if i < 0 {
-				return nil, fmt.Errorf("missing variable in condition, line: %s", line)
+		}
+
+		// simple cases: if, range, -}}
+		line = strings.ReplaceAll(line, "{{ ", "{{")
+		line = strings.ReplaceAll(line, " }}", "}}")
+		line = strings.ReplaceAll(line, "{{if .", "{{if this.")
+		line = strings.ReplaceAll(line, "{{if", "{{#if")
+		line = strings.ReplaceAll(line, "{{end}}", "{{/end}}")
+		line = strings.ReplaceAll(line, "{{.", "{{this.")
+		line = strings.ReplaceAll(line, "{{range .", "{{#each this.")
+		line = strings.ReplaceAll(line, ".}}", "}}")
+		line = strings.ReplaceAll(line, " -}}", "}}") // no support for cleaning trailing white characters?
+		line = strings.ReplaceAll(line, "{{- ", "{{") // no support for cleaning trailing white characters?
+
+		// if/else if eq
+		if strings.Contains(line, " eq ") {
+			line = strings.ReplaceAll(line, " eq .", " ")
+			line = strings.ReplaceAll(line, " eq ", " ")
+
+			skipSpaces := 1
+			if strings.HasPrefix(line, "{{else") {
+				skipSpaces = 2
 			}
 
-			line = line[i+1:]
-			var variableName, variableValue string
-			_, err := fmt.Sscanf(line, `%s %s }}`, &variableName, &variableValue)
-			if err != nil {
-				return nil, errors.Wrapf(err, `scanning condition failed, line: '%s'`, line)
-			}
-			variableValue = strings.ReplaceAll(variableValue, `"`, ``)
-			buffer.WriteString(fmt.Sprintf("%s == %s}}\n", variableName, variableValue))
-		} else if strings.HasPrefix(line, "{{ if .") {
-			line = strings.ReplaceAll(line, "{{ if .", "{{#if ")
-			line = strings.ReplaceAll(line, " }}", "}}")
-			buffer.WriteString(line)
-			buffer.WriteString("\n")
-		} else if strings.Contains(line, "{{range ") || strings.Contains(line, " range ") {
+			splitCondition := strings.SplitN(line, " ", skipSpaces+2)
+			line = strings.Join(splitCondition[:len(splitCondition)-1], " ") + " == " +
+				splitCondition[len(splitCondition)-1]
+		}
+
+		if strings.Contains(line, "{{range ") || strings.Contains(line, " range ") {
 			loopedVar, err := extractRangeVar(line)
 			if err != nil {
 				return nil, errors.Wrapf(err, "extracting range var failed")
 			}
-			buffer.WriteString(fmt.Sprintf("{{#each %s}}\n", loopedVar))
-			buffer.WriteString("  - {{this}}\n")
-			buffer.WriteString("{{/each}}\n")
+
+			line = fmt.Sprintf("{{#each %s}}\n", loopedVar)
+			line += "  - {{this}}\n"
+			line += "{{/each}}"
 
 			for scanner.Scan() { // skip all lines inside range
 				rangeLine := scanner.Text()
@@ -132,26 +140,16 @@ func transformAgentConfigFile(configFilePath string) ([]byte, error) {
 					break
 				}
 			}
-		} else if strings.HasPrefix(line, "{{ else }}") {
-			buffer.WriteString("{{else}}\n")
-		} else if strings.HasPrefix(line, "{{ end }}") {
-			buffer.WriteString("{{/if}}\n")
-		} else if strings.Contains(line, "{{.") || strings.Contains(line, "{{ .") {
-			line = strings.ReplaceAll(line, "{{ .", "{{")
-			line = strings.ReplaceAll(line, "{{.", "{{")
-			line = strings.ReplaceAll(line, " }}", "}}")
-			buffer.WriteString(line)
-			buffer.WriteString("\n")
-		} else if line != "" {
-			buffer.WriteString(line)
-			buffer.WriteString("\n")
 		}
+
+		buffer.WriteString(line)
+		buffer.WriteString("\n")
 	}
 	return buffer.Bytes(), nil
 }
 
 func extractRangeVar(line string) (string, error) {
-	line = line[strings.Index(line, "range") + 1:]
+	line = line[strings.Index(line, "range")+1:]
 	i := strings.Index(line, ":=")
 	var sliced string
 	if i >= 0 {

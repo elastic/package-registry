@@ -1,10 +1,10 @@
 input: log
 paths:
-{{#each paths}}
+{{#each paths}}}}
   - {{this}}
 {{/each}}
 exclude_files: [".gz$"]
-tags: {{tags}}
+tags: {{this.tags}}
 json.keys_under_root: false
 fields_under_root: true
 fields:
@@ -69,9 +69,9 @@ processors:
           target: destination
           fields:
             port: 67
-{{#if community_id}}
+{{#if this.community_id}}
   - community_id:
       fields:
         source.address: zeek.dhcp.address.client
         destination.address: zeek.dhcp.address.server
-{{/if}}
+{{/end}}

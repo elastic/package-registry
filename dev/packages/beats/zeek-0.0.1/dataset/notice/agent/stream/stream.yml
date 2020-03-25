@@ -1,10 +1,10 @@
 input: log
 paths:
-{{#each paths}}
+{{#each paths}}}}
   - {{this}}
 {{/each}}
 exclude_files: [".gz$"]
-tags: {{tags}}
+tags: {{this.tags}}
 json.keys_under_root: false
 processors:
   - drop_fields:
@@ -55,9 +55,9 @@ processors:
       fail_on_error: false
   - drop_fields:
       fields: ["zeek.notice.remote_location", "zeek.notice.f"]
-{{#if community_id}}
+{{#if this.community_id}}
   - community_id:
       fields:
         source_ip: source.address
         destination_ip: destination.address
-{{/if}}
+{{/end}}
