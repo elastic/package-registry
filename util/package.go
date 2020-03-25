@@ -87,16 +87,18 @@ func (i Image) getPath(p *Package) string {
 	return "/package/" + p.Name + "-" + p.Version + i.Src
 }
 
-// NewPackage creates a new package instances based on the given base path + package name.
-// The package name passed contains the version of the package.
-func NewPackage(basePath, packageName string) (*Package, error) {
+// NewPackage creates a new package instances based on the given base path.
+// The path passed goes to the root of the package where the manifest.yml is.
+func NewPackage(basePath string) (*Package, error) {
 
-	manifest, err := yaml.NewConfigWithFile(basePath+"/"+packageName+"/manifest.yml", ucfg.PathSep("."))
+	manifest, err := yaml.NewConfigWithFile(filepath.Join(basePath, "manifest.yml"), ucfg.PathSep("."))
 	if err != nil {
 		return nil, err
 	}
 
-	var p = &Package{}
+	var p = &Package{
+		BasePath: basePath,
+	}
 	err = manifest.Unpack(p)
 	if err != nil {
 		return nil, err
@@ -135,7 +137,7 @@ func NewPackage(basePath, packageName string) (*Package, error) {
 		return nil, err
 	}
 
-	readmePath := basePath + "/" + packageName + "/docs/README.md"
+	readmePath := filepath.Join(p.BasePath, "docs", "README.md")
 	// Check if readme
 	readme, err := os.Stat(readmePath)
 	if err != nil {
@@ -146,7 +148,7 @@ func NewPackage(basePath, packageName string) (*Package, error) {
 		if readme.IsDir() {
 			return nil, fmt.Errorf("README.md is a directory")
 		}
-		readmePathShort := "/package/" + packageName + "/docs/README.md"
+		readmePathShort := "/package/" + p.Name + "-" + p.Version + "/docs/README.md"
 		p.Readme = &readmePathShort
 	}
 
@@ -195,7 +197,7 @@ func (p *Package) LoadAssets(packagePath string) (err error) {
 	// Iterates recursively through all the levels to find assets
 	// If we need more complex matching a library like https://github.com/bmatcuk/doublestar
 	// could be used but the below works and is pretty simple.
-	assets, err := collectAssets(p.BasePath + "/*")
+	assets, err := collectAssets(filepath.Join(p.BasePath, "*"))
 	if err != nil {
 		return err
 	}
@@ -216,9 +218,9 @@ func (p *Package) LoadAssets(packagePath string) (err error) {
 		}
 
 		// Strip away the basePath from the local system
-		a = a[len(p.BasePath)-1:]
+		a = a[len(p.BasePath)+1:]
 
-		a = "/package/" + packagePath + "/" + a
+		a = path.Join("/package", packagePath, a)
 		p.Assets = append(p.Assets, a)
 	}
 	return nil
@@ -230,7 +232,7 @@ func collectAssets(pattern string) ([]string, error) {
 		return nil, err
 	}
 	if len(assets) != 0 {
-		a, err := collectAssets(pattern + "/*")
+		a, err := collectAssets(filepath.Join(pattern, "*"))
 		if err != nil {
 			return nil, err
 		}
@@ -275,7 +277,7 @@ func (p *Package) Validate() error {
 }
 
 func (p *Package) GetDatasets() ([]string, error) {
-	datasetBasePath := p.BasePath + "/dataset"
+	datasetBasePath := filepath.Join(p.BasePath, "dataset")
 
 	// Check if this package has datasets
 	_, err := os.Stat(datasetBasePath)
@@ -288,13 +290,13 @@ func (p *Package) GetDatasets() ([]string, error) {
 		return nil, err
 	}
 
-	paths, err := filepath.Glob(datasetBasePath + "/*")
+	paths, err := filepath.Glob(filepath.Join(datasetBasePath, "*"))
 	if err != nil {
 		return nil, err
 	}
 
 	for i, _ := range paths {
-		paths[i] = paths[i][len(datasetBasePath)-1:]
+		paths[i] = paths[i][len(datasetBasePath)+1:]
 	}
 
 	return paths, nil
@@ -307,11 +309,13 @@ func (p *Package) LoadDataSets(packagePath string) error {
 		return err
 	}
 
-	datasetBasePath := p.BasePath + "/dataset"
+	datasetsBasePath := filepath.Join(p.BasePath, "dataset")
 
 	for _, dataset := range datasets {
+
+		datasetBasePath := filepath.Join(datasetsBasePath, dataset)
 		// Check if manifest exists
-		manifestPath := path.Join(datasetBasePath, dataset, "manifest.yml")
+		manifestPath := filepath.Join(datasetBasePath, "manifest.yml")
 		_, err := os.Stat(manifestPath)
 		if err != nil && os.IsNotExist(err) {
 			return errors.Wrapf(err, "manifest does not exist for package: %s", packagePath)
@@ -362,9 +366,9 @@ func (p *Package) GetPath() string {
 }
 
 func (p *Package) GetDownloadPath() string {
-	return "/epr/" + p.Name + "/" + p.Name + "-" + p.Version + ".tar.gz"
+	return path.Join("/epr", p.Name, p.Name+"-"+p.Version+".tar.gz")
 }
 
 func (p *Package) GetUrlPath() string {
-	return "/package/" + p.Name + "-" + p.Version
+	return path.Join("/package", p.Name+"-"+p.Version)
 }

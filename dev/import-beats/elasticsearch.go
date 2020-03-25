@@ -9,7 +9,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"path"
+	"path/filepath"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -28,7 +28,7 @@ type ingestPipelineContent struct {
 func loadElasticsearchContent(datasetPath string) (elasticsearchContent, error) {
 	var esc elasticsearchContent
 
-	datasetManifestPath := path.Join(datasetPath, "manifest.yml")
+	datasetManifestPath := filepath.Join(datasetPath, "manifest.yml")
 	datasetManifestFile, err := ioutil.ReadFile(datasetManifestPath)
 	if os.IsNotExist(err) {
 		return elasticsearchContent{}, nil // no manifest.yml file found,
@@ -74,7 +74,7 @@ func loadElasticsearchContent(datasetPath string) (elasticsearchContent, error) 
 			}
 		}
 		esc.ingestPipelines = append(esc.ingestPipelines, ingestPipelineContent{
-			source:         path.Join(datasetPath, ingestPipeline),
+			source:         filepath.Join(datasetPath, ingestPipeline),
 			targetFileName: targetFileName,
 		})
 	}

@@ -6,6 +6,7 @@ package util
 
 import (
 	"io/ioutil"
+	"path/filepath"
 )
 
 var packageList []Package
@@ -25,7 +26,7 @@ func GetPackages(packagesBasePath string) ([]Package, error) {
 	}
 
 	for _, i := range packagePaths {
-		p, err := NewPackage(packagesBasePath, i)
+		p, err := NewPackage(filepath.Join(packagesBasePath, i))
 		if err != nil {
 			return nil, err
 		}

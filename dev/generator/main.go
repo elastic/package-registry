@@ -52,7 +52,7 @@ func main() {
 
 func Build(sourceDir, publicDir string) error {
 
-	err := BuildPackages(sourceDir, publicDir+"/"+packageDirName)
+	err := BuildPackages(sourceDir, filepath.Join(publicDir, packageDirName))
 	if err != nil {
 		return err
 	}
@@ -87,13 +87,13 @@ func BuildPackages(sourceDir, packagesPath string) error {
 		}
 
 		if copy {
-			err := CopyPackage(sourceDir+"/"+packageName, packagesPath)
+			err := CopyPackage(filepath.Join(sourceDir, packageName), packagesPath)
 			if err != nil {
 				return err
 			}
 		}
 
-		p, err := util.NewPackage(packagesPath, packageName)
+		p, err := util.NewPackage(filepath.Join(packagesPath, packageName))
 		if err != nil {
 			return err
 		}
@@ -120,7 +120,7 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 		return fmt.Errorf("Invalid package: %s: %s", p.GetPath(), err)
 	}
 
-	p.BasePath = currentPath + "/" + packagesBasePath + "/" + p.GetPath()
+	p.BasePath = filepath.Join(currentPath, packagesBasePath, p.GetPath())
 
 	err = p.LoadAssets(p.GetPath())
 	if err != nil {
@@ -132,17 +132,17 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 		return err
 	}
 
-	err = writeJsonFile(p, packagesBasePath+"/"+p.GetPath()+"/index.json")
+	err = writeJsonFile(p, filepath.Join(packagesBasePath, p.GetPath(), "index.json"))
 	if err != nil {
 		return err
 	}
 
 	// Get all Kibana files
-	savedObjects1, err := filepath.Glob(packagesBasePath + "/" + p.GetPath() + "/dataset/*/kibana/*/*")
+	savedObjects1, err := filepath.Glob(filepath.Join(packagesBasePath, p.GetPath(), "dataset", "*", "kibana", "*", "*"))
 	if err != nil {
 		return err
 	}
-	savedObjects2, err := filepath.Glob(packagesBasePath + "/" + p.GetPath() + "/kibana/*/*")
+	savedObjects2, err := filepath.Glob(filepath.Join(packagesBasePath, p.GetPath(), "kibana", "*", "*"))
 	if err != nil {
 		return err
 	}
@@ -167,12 +167,12 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 	}
 
 	if tarGz {
-		err = os.MkdirAll(packagesBasePath+"/../epr/"+p.Name, 0755)
+		err = os.MkdirAll(filepath.Join(packagesBasePath, "..", "epr", p.Name), 0755)
 		if err != nil {
 			return err
 		}
 
-		err = sh.RunV("tar", "czf", packagesBasePath+"/../epr/"+p.Name+"/"+p.GetPath()+".tar.gz", "-C", packagesBasePath+"/", filepath.Base(p.GetPath())+"/")
+		err = sh.RunV("tar", "czf", filepath.Join(packagesBasePath, "..", "epr", p.Name, p.GetPath()+".tar.gz"), "-C", packagesBasePath+"/", filepath.Base(p.GetPath())+"/")
 		if err != nil {
 			return fmt.Errorf("Error creating package: %s: %s", p.GetPath(), err)
 		}
