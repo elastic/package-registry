@@ -310,7 +310,7 @@ func (p *Package) LoadDataSets(packagePath string) error {
 		return err
 	}
 
-	datasetsBasePath := filepath.Join(p.BasePath, "datasetPath")
+	datasetsBasePath := filepath.Join(p.BasePath, "dataset")
 
 	for _, datasetPath := range datasetPaths {
 

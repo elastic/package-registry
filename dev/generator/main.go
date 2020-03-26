@@ -136,7 +136,7 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 
 	p.BasePath = filepath.Join(currentPath, packagesBasePath, p.GetPath())
 
-	datasets, err := p.GetDatasets()
+	datasets, err := p.GetDatasetPaths()
 	if err != nil {
 		return err
 	}
