@@ -321,7 +321,7 @@ func (p *Package) LoadDataSets(packagePath string) error {
 			return err
 		}
 
-		// Iterate through all datatsources and inputs to find the matching streams and add them to the output.
+		// Iterate through all datasources and inputs to find the matching streams and add them to the output.
 		for dK, datasource := range p.Datasources {
 			for iK, _ := range datasource.Inputs {
 				for _, stream := range d.Streams {
