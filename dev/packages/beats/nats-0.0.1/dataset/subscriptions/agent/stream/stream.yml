@@ -1,0 +1,4 @@
+input: nats/metrics
+metricsets: ["subscriptions"]
+hosts: {{hosts}}
+period: {{period}}

@@ -1,0 +1,8 @@
+input: golang/metrics
+metricsets: ["expvar"]
+{{#if expvar.namespace}}
+expvar.namespace: {{expvar.namespace}}
+{{#if expvar.namespace}}
+{{#if expvar.path}}
+expvar.path: {{expvar.path}}
+{{#if expvar.path}}

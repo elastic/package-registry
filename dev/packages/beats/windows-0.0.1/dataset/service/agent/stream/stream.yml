@@ -1,0 +1,3 @@
+input: windows/metrics
+metricsets: ["service"]
+period: {{period}}

@@ -110,7 +110,7 @@ func createDatasets(modulePath, moduleName, moduleRelease, beatType string) (dat
 		}
 
 		// agent
-		agent, err := createAgentContent(modulePath, moduleName, datasetName, beatType)
+		agent, err := createAgentContent(modulePath, moduleName, datasetName, beatType, streams)
 		if err != nil {
 			return nil, errors.Wrapf(err, "creating agent content failed (modulePath: %s, datasetName: %s)",
 				modulePath, datasetName)

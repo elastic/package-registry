@@ -1,0 +1,4 @@
+input: couchdb/metrics
+metricsets: ["server"]
+hosts: {{hosts}}
+period: {{period}}

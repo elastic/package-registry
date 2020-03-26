@@ -1,0 +1,4 @@
+input: ceph/metrics
+metricsets: ["monitor_health"]
+hosts: {{hosts}}
+period: {{period}}

@@ -1,0 +1,4 @@
+input: couchbase/metrics
+metricsets: ["node"]
+hosts: {{hosts}}
+period: {{period}}

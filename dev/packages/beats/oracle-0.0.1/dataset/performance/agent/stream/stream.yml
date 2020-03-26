@@ -1,0 +1,4 @@
+input: oracle/metrics
+metricsets: ["performance"]
+hosts: {{hosts}}
+period: {{period}}

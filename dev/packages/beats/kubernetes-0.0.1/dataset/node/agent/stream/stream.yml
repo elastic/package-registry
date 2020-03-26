@@ -1,0 +1,13 @@
+input: kubernetes/metrics
+metricsets: ["node"]
+{{#if add_metadata}}
+add_metadata: {{add_metadata}}
+{{#if add_metadata}}
+{{#if bearer_token_file}}
+bearer_token_file: {{bearer_token_file}}
+{{#if bearer_token_file}}
+hosts: {{hosts}}
+period: {{period}}
+{{#if ssl.verification_mode}}
+ssl.verification_mode: {{ssl.verification_mode}}
+{{#if ssl.verification_mode}}

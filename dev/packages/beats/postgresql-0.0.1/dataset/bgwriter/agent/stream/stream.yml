@@ -1,0 +1,4 @@
+input: postgresql/metrics
+metricsets: ["bgwriter"]
+hosts: {{hosts}}
+period: {{period}}

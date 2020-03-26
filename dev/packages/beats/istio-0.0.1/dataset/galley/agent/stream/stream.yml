@@ -1,0 +1,4 @@
+input: istio/metrics
+metricsets: ["galley"]
+hosts: {{hosts}}
+period: {{period}}

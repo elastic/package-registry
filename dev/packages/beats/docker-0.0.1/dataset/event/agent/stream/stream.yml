@@ -1,0 +1,4 @@
+input: docker/metrics
+metricsets: ["event"]
+hosts: {{hosts}}
+period: {{period}}

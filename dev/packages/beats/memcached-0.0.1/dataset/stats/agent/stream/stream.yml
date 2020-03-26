@@ -1,0 +1,4 @@
+input: memcached/metrics
+metricsets: ["stats"]
+hosts: {{hosts}}
+period: {{period}}

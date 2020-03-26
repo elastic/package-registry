@@ -1,0 +1,4 @@
+input: rabbitmq/metrics
+metricsets: ["queue"]
+hosts: {{hosts}}
+period: {{period}}

@@ -13,6 +13,8 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
+
+	"github.com/elastic/package-registry/util"
 )
 
 type agentContent struct {
@@ -24,17 +26,17 @@ type streamContent struct {
 	body           []byte
 }
 
-func createAgentContent(modulePath, moduleName, datasetName, beatType string) (agentContent, error) {
+func createAgentContent(modulePath, moduleName, datasetName, beatType string, streams []util.Stream) (agentContent, error) {
 	switch beatType {
 	case "logs":
-		return createAgentContentForLogs(modulePath, moduleName, datasetName)
+		return createAgentContentForLogs(modulePath, datasetName)
 	case "metrics":
-		return createAgentContentForMetrics(modulePath, moduleName, datasetName)
+		return createAgentContentForMetrics(modulePath, moduleName, datasetName, streams)
 	}
 	return agentContent{}, fmt.Errorf("invalid beat type: %s", beatType)
 }
 
-func createAgentContentForLogs(modulePath, moduleName, datasetName string) (agentContent, error) {
+func createAgentContentForLogs(modulePath, datasetName string) (agentContent, error) {
 	configFilePaths, err := filepath.Glob(filepath.Join(modulePath, datasetName, "config", "*.yml"))
 	if err != nil {
 		return agentContent{}, errors.Wrapf(err, "location config files failed (modulePath: %s, datasetName: %s)", modulePath, datasetName)
@@ -167,6 +169,44 @@ func extractRangeVar(line string) (string, error) {
 	return sliced, nil
 }
 
-func createAgentContentForMetrics(modulePath, moduleName, datasetName string) (agentContent, error) {
-	return agentContent{}, nil // TODO
+func createAgentContentForMetrics(modulePath, moduleName, datasetName string, streams []util.Stream) (agentContent, error) {
+	inputName := moduleName + "/metrics"
+	vars := extractVarsFromStream(streams, inputName)
+
+	var buffer bytes.Buffer
+	buffer.WriteString(fmt.Sprintf("input: %s\n", inputName))
+	buffer.WriteString(fmt.Sprintf("metricsets: [\"%s\"]\n", datasetName))
+
+	for _, aVar := range vars {
+		variableName := aVar["name"].(string)
+
+		if !isAgentConfigOptionRequired(variableName) {
+			buffer.WriteString(fmt.Sprintf("{{#if %s}}\n", variableName))
+		}
+		buffer.WriteString(fmt.Sprintf("%s: {{%s}}\n", variableName, variableName))
+		if !isAgentConfigOptionRequired(variableName) {
+			buffer.WriteString(fmt.Sprintf("{{#if %s}}\n", variableName))
+		}
+	}
+	return agentContent{
+		streams: []streamContent{
+			{
+				targetFileName: "stream.yml",
+				body:           buffer.Bytes(),
+			},
+		},
+	}, nil
+}
+
+func extractVarsFromStream(streams []util.Stream, inputName string) []map[string]interface{} {
+	for _, stream := range streams {
+		if stream.Input == inputName {
+			return stream.Vars
+		}
+	}
+	return []map[string]interface{}{}
+}
+
+func isAgentConfigOptionRequired(optionName string) bool {
+	return optionName == "hosts" || optionName == "period"
 }

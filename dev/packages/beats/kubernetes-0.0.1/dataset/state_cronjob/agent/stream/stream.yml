@@ -1,0 +1,7 @@
+input: kubernetes/metrics
+metricsets: ["state_cronjob"]
+{{#if add_metadata}}
+add_metadata: {{add_metadata}}
+{{#if add_metadata}}
+hosts: {{hosts}}
+period: {{period}}

@@ -1,0 +1,4 @@
+input: redis/metrics
+metricsets: ["info"]
+hosts: {{hosts}}
+period: {{period}}

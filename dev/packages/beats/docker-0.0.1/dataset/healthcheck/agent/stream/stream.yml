@@ -1,0 +1,4 @@
+input: docker/metrics
+metricsets: ["healthcheck"]
+hosts: {{hosts}}
+period: {{period}}

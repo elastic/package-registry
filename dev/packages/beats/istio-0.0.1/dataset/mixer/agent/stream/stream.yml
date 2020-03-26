@@ -1,0 +1,4 @@
+input: istio/metrics
+metricsets: ["mixer"]
+hosts: {{hosts}}
+period: {{period}}

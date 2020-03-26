@@ -1,0 +1,10 @@
+input: mssql/metrics
+metricsets: ["transaction_log"]
+hosts: {{hosts}}
+{{#if password}}
+password: {{password}}
+{{#if password}}
+period: {{period}}
+{{#if username}}
+username: {{username}}
+{{#if username}}

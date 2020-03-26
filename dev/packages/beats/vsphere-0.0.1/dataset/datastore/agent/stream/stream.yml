@@ -1,0 +1,13 @@
+input: vsphere/metrics
+metricsets: ["datastore"]
+hosts: {{hosts}}
+{{#if insecure}}
+insecure: {{insecure}}
+{{#if insecure}}
+{{#if password}}
+password: {{password}}
+{{#if password}}
+period: {{period}}
+{{#if username}}
+username: {{username}}
+{{#if username}}

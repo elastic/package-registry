@@ -1,0 +1,4 @@
+input: ceph/metrics
+metricsets: ["mgr_osd_perf"]
+hosts: {{hosts}}
+period: {{period}}

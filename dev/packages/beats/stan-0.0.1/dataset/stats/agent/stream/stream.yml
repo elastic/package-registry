@@ -1,0 +1,4 @@
+input: stan/metrics
+metricsets: ["stats"]
+hosts: {{hosts}}
+period: {{period}}

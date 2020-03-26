@@ -1,0 +1,12 @@
+input: aws/metrics
+metricsets: ["s3_daily_storage"]
+{{#if access_key_id}}
+access_key_id: {{access_key_id}}
+{{#if access_key_id}}
+period: {{period}}
+{{#if secret_access_key}}
+secret_access_key: {{secret_access_key}}
+{{#if secret_access_key}}
+{{#if session_token}}
+session_token: {{session_token}}
+{{#if session_token}}

@@ -1,0 +1,4 @@
+input: ceph/metrics
+metricsets: ["mgr_cluster_disk"]
+hosts: {{hosts}}
+period: {{period}}

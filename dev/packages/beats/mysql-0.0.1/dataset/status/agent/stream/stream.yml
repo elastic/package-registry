@@ -1,0 +1,4 @@
+input: mysql/metrics
+metricsets: ["status"]
+hosts: {{hosts}}
+period: {{period}}

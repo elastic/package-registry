@@ -1,0 +1,4 @@
+input: aerospike/metrics
+metricsets: ["namespace"]
+hosts: {{hosts}}
+period: {{period}}

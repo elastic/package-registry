@@ -1,0 +1,2 @@
+input: ceph/metrics
+metricsets: ["mgr_osd_tree"]

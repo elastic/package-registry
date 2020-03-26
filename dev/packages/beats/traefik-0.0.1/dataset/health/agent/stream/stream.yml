@@ -1,0 +1,4 @@
+input: traefik/metrics
+metricsets: ["health"]
+hosts: {{hosts}}
+period: {{period}}

@@ -1,0 +1,7 @@
+input: ibmmq/metrics
+metricsets: ["qmgr"]
+hosts: {{hosts}}
+{{#if metrics_path}}
+metrics_path: {{metrics_path}}
+{{#if metrics_path}}
+period: {{period}}

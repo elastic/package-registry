@@ -1,0 +1,4 @@
+input: nats/metrics
+metricsets: ["routes"]
+hosts: {{hosts}}
+period: {{period}}

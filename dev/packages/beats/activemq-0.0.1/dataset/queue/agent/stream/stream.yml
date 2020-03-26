@@ -1,0 +1,13 @@
+input: activemq/metrics
+metricsets: ["queue"]
+hosts: {{hosts}}
+{{#if password}}
+password: {{password}}
+{{#if password}}
+{{#if path}}
+path: {{path}}
+{{#if path}}
+period: {{period}}
+{{#if username}}
+username: {{username}}
+{{#if username}}

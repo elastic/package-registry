@@ -1,0 +1,7 @@
+input: tomcat/metrics
+metricsets: ["threading"]
+hosts: {{hosts}}
+{{#if path}}
+path: {{path}}
+{{#if path}}
+period: {{period}}
