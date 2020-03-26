@@ -34,8 +34,8 @@ screenshots:
   size: 2560x3712
   type: image/png
 icons:
-- src: /img/logo_activemq.svg
-  title: Logo Activemq
+- src: /img/activemq.svg
+  title: Activemq
   size: 32x32
   type: image/svg+xml
 datasources:
