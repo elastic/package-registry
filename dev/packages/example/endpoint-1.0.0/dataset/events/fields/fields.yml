@@ -623,36 +623,6 @@
       ignore_above: 1024
       description: Session information for the current process
       default_field: false
-    - name: process.token
-      level: custom
-      type: object
-      object_type: keyword
-      description: "These fields contain information about a token.
-
-        These fields can help you correlate metrics information with a process id/name
-        from a log message.  The `process.pid` often stays in the metric itself and
-        is copied to the global field for correlation."
-      default_field: false
-    - name: process.token.elevation
-      level: custom
-      type: keyword
-      ignore_above: 1024
-      description: Whether the token is elevated or not
-      default_field: false
-    - name: process.token.elevation_type
-      level: custom
-      type: keyword
-      ignore_above: 1024
-      description: What level of elevation the token has
-      example: one of "default", "full", "limited"
-      default_field: false
-    - name: process.token.integrity_level
-      level: custom
-      type: keyword
-      ignore_above: 1024
-      description: Integrity level of the process.
-      example: one of "system", "high", "medium", "low", "untrusted"
-      default_field: false
     - name: user
       level: custom
       type: object
@@ -2327,6 +2297,19 @@
       ignore_above: 1024
       description: Domain of token user.
       default_field: false
+    - name: thread.token.elevation
+      level: custom
+      type: keyword
+      ignore_above: 1024
+      description: Whether the token is elevated or not
+      default_field: false
+    - name: thread.token.elevation_type
+      level: custom
+      type: keyword
+      ignore_above: 1024
+      description: What level of elevation the token has
+      example: one of "default", "full", "limited"
+      default_field: false
     - name: thread.token.impersonation_level
       level: extended
       type: keyword
@@ -2343,6 +2326,7 @@
       type: keyword
       ignore_above: 1024
       description: Human readable integrity level.
+      example: one of "system", "high", "medium", "low", "untrusted"
       default_field: false
     - name: thread.token.is_appcontainer
       level: extended
@@ -2413,6 +2397,19 @@
       ignore_above: 1024
       description: Domain of token user.
       default_field: false
+    - name: token.elevation
+      level: custom
+      type: keyword
+      ignore_above: 1024
+      description: Whether the token is elevated or not
+      default_field: false
+    - name: token.elevation_type
+      level: custom
+      type: keyword
+      ignore_above: 1024
+      description: What level of elevation the token has
+      example: one of "default", "full", "limited"
+      default_field: false
     - name: token.impersonation_level
       level: extended
       type: keyword
@@ -2429,6 +2426,7 @@
       type: keyword
       ignore_above: 1024
       description: Human readable integrity level.
+      example: one of "system", "high", "medium", "low", "untrusted"
       default_field: false
     - name: token.is_appcontainer
       level: extended
@@ -3505,6 +3503,19 @@
       ignore_above: 1024
       description: Domain of token user.
       default_field: false
+    - name: process.thread.token.elevation
+      level: custom
+      type: keyword
+      ignore_above: 1024
+      description: Whether the token is elevated or not
+      default_field: false
+    - name: process.thread.token.elevation_type
+      level: custom
+      type: keyword
+      ignore_above: 1024
+      description: What level of elevation the token has
+      example: one of "default", "full", "limited"
+      default_field: false
     - name: process.thread.token.impersonation_level
       level: extended
       type: keyword
@@ -3521,6 +3532,7 @@
       type: keyword
       ignore_above: 1024
       description: Human readable integrity level.
+      example: one of "system", "high", "medium", "low", "untrusted"
       default_field: false
     - name: process.thread.token.is_appcontainer
       level: extended
@@ -3591,6 +3603,19 @@
       ignore_above: 1024
       description: Domain of token user.
       default_field: false
+    - name: process.token.elevation
+      level: custom
+      type: keyword
+      ignore_above: 1024
+      description: Whether the token is elevated or not
+      default_field: false
+    - name: process.token.elevation_type
+      level: custom
+      type: keyword
+      ignore_above: 1024
+      description: What level of elevation the token has
+      example: one of "default", "full", "limited"
+      default_field: false
     - name: process.token.impersonation_level
       level: extended
       type: keyword
@@ -3607,6 +3632,7 @@
       type: keyword
       ignore_above: 1024
       description: Human readable integrity level.
+      example: one of "system", "high", "medium", "low", "untrusted"
       default_field: false
     - name: process.token.is_appcontainer
       level: extended
