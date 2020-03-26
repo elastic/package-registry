@@ -2299,8 +2299,7 @@
       default_field: false
     - name: thread.token.elevation
       level: custom
-      type: keyword
-      ignore_above: 1024
+      type: boolean
       description: Whether the token is elevated or not
       default_field: false
     - name: thread.token.elevation_type
@@ -2399,8 +2398,7 @@
       default_field: false
     - name: token.elevation
       level: custom
-      type: keyword
-      ignore_above: 1024
+      type: boolean
       description: Whether the token is elevated or not
       default_field: false
     - name: token.elevation_type
@@ -3505,8 +3503,7 @@
       default_field: false
     - name: process.thread.token.elevation
       level: custom
-      type: keyword
-      ignore_above: 1024
+      type: boolean
       description: Whether the token is elevated or not
       default_field: false
     - name: process.thread.token.elevation_type
@@ -3605,8 +3602,7 @@
       default_field: false
     - name: process.token.elevation
       level: custom
-      type: keyword
-      ignore_above: 1024
+      type: boolean
       description: Whether the token is elevated or not
       default_field: false
     - name: process.token.elevation_type
