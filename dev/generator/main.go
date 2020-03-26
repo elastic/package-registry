@@ -78,7 +78,7 @@ func Build(sourceDir, publicDir string) error {
 func CopyPackage(src, dst string) error {
 	log.Println(">> Copy package: " + src)
 	os.MkdirAll(dst, 0755)
-	err := sh.RunV("cp", "-a", src, dst)
+	err := sh.RunV("rsync", "-a", src, dst)
 	if err != nil {
 		return err
 	}
