@@ -11,6 +11,11 @@ release: beta
 requirement:
   kibana:
     versions: ""
+icons:
+- src: /img/openmetrics.svg
+  title: Openmetrics
+  size: 64x64
+  type: image/svg+xml
 datasources:
 - name: openmetrics
   title: Openmetrics metrics
