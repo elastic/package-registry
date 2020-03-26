@@ -1,0 +1,4 @@
+input: kvm/metrics
+metricsets: ["dommemstat"]
+hosts: {{hosts}}
+period: {{period}}

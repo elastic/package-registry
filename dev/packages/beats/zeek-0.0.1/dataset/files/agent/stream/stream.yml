@@ -1,0 +1,20 @@
+input: log
+paths:
+{{#each paths}}}}
+  - {{this}}
+{{/each}}
+exclude_files: [".gz$"]
+tags: {{this.tags}}
+json.keys_under_root: false
+processors:
+  - drop_fields:
+      fields: ["json.x509"]
+  - rename:
+      fields:
+        - from: "json"
+          to: "zeek.files"
+        - from: "zeek.files.conn_uids"
+          to: "zeek.files.session_ids"
+              
+      ignore_missing: true
+      fail_on_error: false

@@ -1,0 +1,8 @@
+input: prometheus/metrics
+metricsets: ["remote_write"]
+{{#if host}}
+host: {{host}}
+{{#if host}}
+{{#if port}}
+port: {{port}}
+{{#if port}}

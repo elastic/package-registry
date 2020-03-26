@@ -1,0 +1,4 @@
+input: coredns/metrics
+metricsets: ["stats"]
+hosts: {{hosts}}
+period: {{period}}

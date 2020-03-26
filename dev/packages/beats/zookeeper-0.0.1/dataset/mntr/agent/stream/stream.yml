@@ -1,0 +1,4 @@
+input: zookeeper/metrics
+metricsets: ["mntr"]
+hosts: {{hosts}}
+period: {{period}}

@@ -1,0 +1,4 @@
+input: cockroachdb/metrics
+metricsets: ["status"]
+hosts: {{hosts}}
+period: {{period}}

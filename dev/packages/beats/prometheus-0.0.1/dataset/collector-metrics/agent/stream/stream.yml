@@ -1,0 +1,2 @@
+input: prometheus/metrics
+metricsets: ["collector"]

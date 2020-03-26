@@ -1,0 +1,10 @@
+input: dropwizard/metrics
+metricsets: ["collector"]
+hosts: {{hosts}}
+{{#if metrics_path}}
+metrics_path: {{metrics_path}}
+{{#if metrics_path}}
+{{#if namespace}}
+namespace: {{namespace}}
+{{#if namespace}}
+period: {{period}}

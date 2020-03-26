@@ -1,0 +1,18 @@
+input: log
+paths:
+{{#each paths}}}}
+  - {{this}}
+{{/each}}
+exclude_files: [".gz$"]
+tags: {{this.tags}}
+json.keys_under_root: false
+fields_under_root: true
+processors:
+  - rename:
+      fields:
+        - from: "json"
+          to: "zeek.pe"
+        - from: "zeek.pe.compile_ts"
+          to: "zeek.pe.compile_time"
+      ignore_missing: true
+      fail_on_error: false

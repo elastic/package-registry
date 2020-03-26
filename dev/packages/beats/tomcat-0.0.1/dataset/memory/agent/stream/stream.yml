@@ -1,0 +1,7 @@
+input: tomcat/metrics
+metricsets: ["memory"]
+hosts: {{hosts}}
+{{#if path}}
+path: {{path}}
+{{#if path}}
+period: {{period}}

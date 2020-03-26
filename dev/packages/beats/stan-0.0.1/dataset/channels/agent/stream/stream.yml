@@ -1,0 +1,4 @@
+input: stan/metrics
+metricsets: ["channels"]
+hosts: {{hosts}}
+period: {{period}}

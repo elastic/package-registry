@@ -1,0 +1,6 @@
+input: system/metrics
+metricsets: ["filesystem"]
+period: {{period}}
+{{#if processors}}
+processors: {{processors}}
+{{#if processors}}

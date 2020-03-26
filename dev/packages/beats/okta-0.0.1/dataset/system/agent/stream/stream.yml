@@ -1,0 +1,30 @@
+{{#if input == "httpjson"}}
+input: httpjson
+api_key: {{this.api_key}}
+authentication_scheme: {{this.authentication_scheme}}
+http_client_timeout: {{this.http_client_timeout}}
+http_method: {{this.http_method}}
+http_headers: {{this.http_headers}}
+http_request_body: {{this.http_request_body}}
+no_http_body: {{this.no_http_body}}
+interval: {{this.interval}}
+json_objects_array: {{this.json_objects_array}}
+pagination: {{this.pagination}}
+rate_limit: {{this.rate_limit}}
+url: {{this.url}}
+ssl: {{this.ssl}}
+{{else if input == "file"}}
+input: log
+paths:
+{{#each paths}}}}
+  - {{this}}
+{{/each}}
+exclude_files: [".gz$"]
+{{/end}}
+processors:
+  - script:
+      lang: javascript
+      id: okta_system_script
+      file: ${path.home}/module/okta/system/config/pipeline.js
+      params:
+        keep_original_message: {{this.keep_original_message}}

@@ -1,0 +1,15 @@
+input: azure/metrics
+metricsets: ["container_instance"]
+{{#if client_id}}
+client_id: {{client_id}}
+{{#if client_id}}
+{{#if client_secret}}
+client_secret: {{client_secret}}
+{{#if client_secret}}
+period: {{period}}
+{{#if subscription_id}}
+subscription_id: {{subscription_id}}
+{{#if subscription_id}}
+{{#if tenant_id}}
+tenant_id: {{tenant_id}}
+{{#if tenant_id}}

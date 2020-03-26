@@ -1,0 +1,7 @@
+input: kibana/metrics
+metricsets: ["status"]
+{{#if basepath}}
+basepath: {{basepath}}
+{{#if basepath}}
+hosts: {{hosts}}
+period: {{period}}

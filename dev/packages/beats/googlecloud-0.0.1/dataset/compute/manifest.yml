@@ -13,8 +13,6 @@ streams:
     name: period
   - default: your project id
     name: project_id
-  - default: us-central1
-    name: region
   - default: us-central1-a
     name: zone
   title: Googlecloud Compute logs

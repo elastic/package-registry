@@ -1,0 +1,56 @@
+{{#if input == "o365audit"}}
+input: o365audit
+{{#if this.application_id}}application_id: {{this.application_id}}{{/end}}
+tenant_id:
+{{#each this.tenants}}
+ - {{this.id}}
+{{/end}}
+{{#if this.certificate}}certificate: {{this.certificate}}{{/end}}
+{{#if this.key}}key: {{this.key}}{{/end}}
+{{#if this.key_passphrase}}key_passphrase: {{this.key_passphrase}}{{/end}}
+{{#if this.client_secret}}client_secret: {{this.client_secret}}{{/end}}
+{{#if "string" == (printf "%T" .content_type)}}
+content_type: {{this.content_type}}
+{{else}}
+content_type:
+{{#each this.content_type}}
+ - {{this}}
+{{/end}}
+{{/end}}
+{{#if this.api}}
+api:
+{{#each api}}}}
+  - {{this}}
+{{/each}}
+{{/end}}
+{{else if input == "file"}}
+input: log
+paths:
+{{#each this.paths}}
+ - {{this}}
+{{/end}}
+exclude_files: [".gz$"]
+json.add_error_key: true
+{{/end}}
+processors:
+{{#if input == "file"}}
+  - rename:
+     fields:
+      - from: json
+        to: o365audit
+  - timestamp:
+      field: o365audit.CreationTime
+      layouts:
+        - 2006-01-02T15:04:05
+{{/end}}
+  - script:
+      lang: javascript
+      id: o365audit_script
+      file: ${path.home}/module/o365/audit/config/pipeline.js
+      params:
+        debug: false
+        tenants:
+          {{#each this.tenants}}
+          - id: "{{this.id}}"
+            name: "{{this.name}}"
+          {{/end}}

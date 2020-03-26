@@ -1,0 +1,4 @@
+input: istio/metrics
+metricsets: ["citadel"]
+hosts: {{hosts}}
+period: {{period}}

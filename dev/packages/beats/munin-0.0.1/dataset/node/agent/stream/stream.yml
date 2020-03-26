@@ -1,0 +1,4 @@
+input: munin/metrics
+metricsets: ["node"]
+hosts: {{hosts}}
+period: {{period}}

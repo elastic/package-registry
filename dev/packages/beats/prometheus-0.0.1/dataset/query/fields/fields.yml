@@ -1,0 +1,6 @@
+- name: prometheus.query
+  type: group
+  description: >
+    query metricset
+  release: beta
+  fields:

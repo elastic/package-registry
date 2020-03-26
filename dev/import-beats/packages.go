@@ -259,6 +259,7 @@ func (r *packageRepository) save(outputDir string) error {
 				}
 			}
 
+			// dataset/elasticsearch
 			if len(dataset.elasticsearch.ingestPipelines) > 0 {
 				ingestPipelinePath := filepath.Join(datasetPath, "elasticsearch", "ingest-pipeline")
 				err := os.MkdirAll(ingestPipelinePath, 0755)
@@ -271,6 +272,22 @@ func (r *packageRepository) save(outputDir string) error {
 					err := copyFileToTarget(ingestPipeline.source, ingestPipelinePath, ingestPipeline.targetFileName)
 					if err != nil {
 						return errors.Wrapf(err, "copying file failed")
+					}
+				}
+			}
+
+			// dataset/agent/stream
+			if len(dataset.agent.streams) > 0 {
+				agentStreamPath := filepath.Join(datasetPath, "agent", "stream")
+				err := os.MkdirAll(agentStreamPath, 0755)
+				if err != nil {
+					return errors.Wrapf(err, "cannot make directory for dataset agent stream: '%s'", agentStreamPath)
+				}
+
+				for _, agentStream := range dataset.agent.streams {
+					err := ioutil.WriteFile(path.Join(agentStreamPath, agentStream.targetFileName), agentStream.body, 0644)
+					if err != nil {
+						return errors.Wrapf(err, "writing agent stream file failed")
 					}
 				}
 			}

@@ -1,0 +1,9 @@
+input: aws/metrics
+metricsets: ["cloudwatch"]
+{{#if credential_profile_name}}
+credential_profile_name: {{credential_profile_name}}
+{{#if credential_profile_name}}
+{{#if metrics}}
+metrics: {{metrics}}
+{{#if metrics}}
+period: {{period}}

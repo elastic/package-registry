@@ -1,0 +1,4 @@
+input: etcd/metrics
+metricsets: ["store"]
+hosts: {{hosts}}
+period: {{period}}

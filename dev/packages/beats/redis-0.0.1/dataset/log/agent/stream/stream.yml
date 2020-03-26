@@ -1,0 +1,7 @@
+input: log
+paths:
+{{#each paths}}}}
+  - {{this}}
+{{/each}}
+exclude_files: [".gz$"]
+exclude_lines: ["^\\s+[\\-`('.|_]"]  # drop asciiart lines\n

@@ -1,0 +1,4 @@
+input: docker/metrics
+metricsets: ["diskio"]
+hosts: {{hosts}}
+period: {{period}}

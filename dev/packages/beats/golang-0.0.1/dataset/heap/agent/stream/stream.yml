@@ -1,0 +1,5 @@
+input: golang/metrics
+metricsets: ["heap"]
+{{#if heap.path}}
+heap.path: {{heap.path}}
+{{#if heap.path}}

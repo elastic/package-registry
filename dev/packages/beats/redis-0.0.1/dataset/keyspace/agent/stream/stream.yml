@@ -1,0 +1,4 @@
+input: redis/metrics
+metricsets: ["keyspace"]
+hosts: {{hosts}}
+period: {{period}}

@@ -1,0 +1,2 @@
+input: googlecloud/metrics
+metricsets: ["stackdriver"]

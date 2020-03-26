@@ -1,0 +1,4 @@
+input: postgresql/metrics
+metricsets: ["activity"]
+hosts: {{hosts}}
+period: {{period}}

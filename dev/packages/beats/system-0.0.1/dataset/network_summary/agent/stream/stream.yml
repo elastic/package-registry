@@ -1,0 +1,2 @@
+input: system/metrics
+metricsets: ["network_summary"]

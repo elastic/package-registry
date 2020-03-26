@@ -24,7 +24,7 @@ type DataSet struct {
 	Path string `json:"path,omitempty" yaml:"path,omitempty"`
 
 	// Local path to the package dir
-	BasePath string `json:"-"`
+	BasePath string `json:"-" yaml:"-"`
 }
 
 type Input struct {

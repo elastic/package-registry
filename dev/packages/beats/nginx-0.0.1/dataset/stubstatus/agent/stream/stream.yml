@@ -1,0 +1,7 @@
+input: nginx/metrics
+metricsets: ["stubstatus"]
+hosts: {{hosts}}
+period: {{period}}
+{{#if server_status_path}}
+server_status_path: {{server_status_path}}
+{{#if server_status_path}}

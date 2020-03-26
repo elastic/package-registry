@@ -1,6 +1,6 @@
 id: container
 title: Cloudfoundry Container Metrics
-release: experimental
+release: beta
 type: metrics
 streams:
 - input: cloudfoundry/metrics

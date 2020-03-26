@@ -68,6 +68,15 @@ func Build() error {
 	return sh.Run("go", "build", ".")
 }
 
+func ImportBeats() error {
+	args := []string{"run", "./dev/import-beats/"}
+	if os.Getenv("SKIP_KIBANA") == "true" {
+		args = append(args, "-skipKibana")
+	}
+	args = append(args, "*.go")
+	return sh.Run("go", args...)
+}
+
 // Creates the `index.json` file
 // For now only containing the version.
 func BuildRootFile() error {

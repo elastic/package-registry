@@ -1,0 +1,4 @@
+input: docker/metrics
+metricsets: ["network"]
+hosts: {{hosts}}
+period: {{period}}

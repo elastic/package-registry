@@ -1,0 +1,4 @@
+input: consul/metrics
+metricsets: ["agent"]
+hosts: {{hosts}}
+period: {{period}}

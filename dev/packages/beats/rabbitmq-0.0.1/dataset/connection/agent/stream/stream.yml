@@ -1,0 +1,4 @@
+input: rabbitmq/metrics
+metricsets: ["connection"]
+hosts: {{hosts}}
+period: {{period}}

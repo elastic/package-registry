@@ -1,0 +1,4 @@
+input: envoyproxy/metrics
+metricsets: ["server"]
+hosts: {{hosts}}
+period: {{period}}

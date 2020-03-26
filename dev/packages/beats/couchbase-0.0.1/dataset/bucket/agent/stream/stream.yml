@@ -1,0 +1,4 @@
+input: couchbase/metrics
+metricsets: ["bucket"]
+hosts: {{hosts}}
+period: {{period}}
