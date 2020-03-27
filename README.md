@@ -20,8 +20,7 @@ The `/search` API endpoint has few additional query parameters. More might be ad
   a package requires 7.4, the package will not be returned or an older compatible package will be shown.
   By default this endpoint always returns only the newest compatible package.
 * category: Filters the package by the given category. Available categories can be seend when going to `/categories` endpoint.
-* package: Filters by a specific package name, for example `mysql`. In contrast to the other endpoints, it will return
-  by default all versions of this package.
+* package: Filters by a specific package name, for example `mysql`. It will return the most recent version of the package.
 * internal: This can be set to true, to also list internal packages. This is set to `false` by default.
 
 The different query parameters above can be combined, so `?package=mysql&kibana=7.3.0` will return all mysql package versions
