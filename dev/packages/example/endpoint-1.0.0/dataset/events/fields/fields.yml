@@ -1019,7 +1019,8 @@
       default_field: false
     - name: macro.file_extension
       level: custom
-      type: long
+      type: keyword
+      ignore_above: 1024
       description: The extension of the file containing this macro (e.g. .docm)
       default_field: false
     - name: macro.project_file
