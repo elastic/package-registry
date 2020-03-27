@@ -3,7 +3,7 @@
 @Library('apm@current') _
 
 pipeline {
-  agent { label 'docker && linux && immutable' }
+  agent { label 'ubuntu && immutable' }
   environment {
     BASE_DIR="src/github.com/elastic/package-registry"
     JOB_GIT_CREDENTIALS = "f6c7695a-671e-4f4f-a331-acdce44ff9ba"
@@ -27,8 +27,8 @@ pipeline {
   }
   stages {
     /**
-    Checkout the code and stash it, to use it on other stages.
-    */
+     Checkout the code and stash it, to use it on other stages.
+     */
     stage('Checkout') {
       steps {
         deleteDir()
@@ -37,8 +37,8 @@ pipeline {
       }
     }
     /**
-    Checks formatting / linting.
-    */
+     Checks formatting / linting.
+     */
     stage('Lint') {
       steps {
         deleteDir()
@@ -51,8 +51,8 @@ pipeline {
       }
     }
     /**
-    Build the project from code..
-    */
+     Build the project from code..
+     */
     stage('Build') {
       steps {
         deleteDir()
@@ -65,8 +65,8 @@ pipeline {
       }
     }
     /**
-    Execute unit tests.
-    */
+     Execute unit tests.
+     */
     stage('Test') {
       steps {
         deleteDir()
@@ -86,8 +86,8 @@ pipeline {
       }
     }
     /**
-      Publish Docker images.
-    */
+     Publish Docker images.
+     */
     stage('Publish Docker image'){
       environment {
         DOCKER_IMG_TAG = "${env.DOCKER_IMG}:${env.GIT_BASE_COMMIT}"
@@ -105,8 +105,8 @@ pipeline {
             script: "docker push ${env.DOCKER_IMG_TAG}")
           sh(label: 'Re-tag Docker image',
             script: "docker tag ${env.DOCKER_IMG_TAG} ${env.DOCKER_IMG_TAG_BRANCH}")
-            sh(label: 'Push Docker image name',
-              script: "docker push ${env.DOCKER_IMG_TAG_BRANCH}")
+          sh(label: 'Push Docker image name',
+            script: "docker push ${env.DOCKER_IMG_TAG_BRANCH}")
         }
       }
     }
