@@ -9,8 +9,8 @@ Endpoints:
 * `/`: Info about the registry
 * `/search`: Search for packages. By default returns all the most recent packages available.
 * `/categories`: List of the existing package categories and how many packages are in each category.
-* `/package/{name}-{version}`: Info about a package
-* `/package/{name}-{version}.tar.gz`: Download a package
+* `/package/{name}/{version}`: Info about a package
+* `/epr/{name}/{name}-{version}.tar.gz`: Download a package
 
 Examples for each API endpoint can be found here: https://github.com/elastic/package-registry/tree/master/docs/api
 
@@ -20,7 +20,8 @@ The `/search` API endpoint has few additional query parameters. More might be ad
   a package requires 7.4, the package will not be returned or an older compatible package will be shown.
   By default this endpoint always returns only the newest compatible package.
 * category: Filters the package by the given category. Available categories can be seend when going to `/categories` endpoint.
-* package: Filters by a specific package name, for example `mysql`. It will return the most recent version of the package.
+* package: Filters by a specific package name, for example `mysql`. In contrast to the other endpoints, it will return
+  by default all versions of this package.
 * internal: This can be set to true, to also list internal packages. This is set to `false` by default.
 
 The different query parameters above can be combined, so `?package=mysql&kibana=7.3.0` will return all mysql package versions
