@@ -1,5 +1,5 @@
 id: rds
-title: Aws Rds Metrics
+title: aws rds metrics
 release: ga
 type: metrics
 streams:
@@ -13,5 +13,5 @@ streams:
     - key: dept
       value: eng
     name: tags_filter
-  title: Aws Rds logs
-  description: Collect Aws Rds metrics
+  title: aws rds logs
+  description: Collect aws rds metrics

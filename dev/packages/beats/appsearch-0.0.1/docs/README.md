@@ -1,4 +1,4 @@
-# Appsearch Integration
+# appsearch Integration
 
 TODO
 

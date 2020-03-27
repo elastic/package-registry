@@ -1,4 +1,4 @@
-# Haproxy Integration
+# haproxy Integration
 
 TODO
 

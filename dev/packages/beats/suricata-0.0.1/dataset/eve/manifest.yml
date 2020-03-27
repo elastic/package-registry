@@ -1,5 +1,5 @@
 id: eve
-title: Suricata Eve Logs
+title: suricata eve logs
 release: ga
 type: logs
 streams:
@@ -19,5 +19,5 @@ streams:
     name: tags
   - default: true
     name: community_id
-  title: Suricata Eve logs
-  description: Collect Suricata Eve logs
+  title: suricata eve logs
+  description: Collect suricata eve logs

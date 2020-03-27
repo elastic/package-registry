@@ -1,8 +1,8 @@
 id: metrics
-title: Etcd Metrics Metrics
+title: etcd metrics metrics
 release: beta
 type: metrics
 streams:
 - input: etcd/metrics
-  title: Etcd Metrics logs
-  description: Collect Etcd Metrics metrics
+  title: etcd metrics logs
+  description: Collect etcd metrics metrics

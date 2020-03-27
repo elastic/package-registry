@@ -1,5 +1,5 @@
 id: performance
-title: Mssql Performance Metrics
+title: mssql performance metrics
 release: beta
 type: metrics
 streams:
@@ -14,5 +14,5 @@ streams:
     name: period
   - default: domain\username
     name: username
-  title: Mssql Performance logs
-  description: Collect Mssql Performance metrics
+  title: mssql performance logs
+  description: Collect mssql performance metrics

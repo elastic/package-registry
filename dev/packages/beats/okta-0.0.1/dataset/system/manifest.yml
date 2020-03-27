@@ -1,5 +1,5 @@
 id: system
-title: Okta System Logs
+title: okta system logs
 release: ga
 type: logs
 streams:
@@ -47,5 +47,5 @@ streams:
     name: url
   - default: '{}'
     name: ssl
-  title: Okta System logs
-  description: Collect Okta System logs
+  title: okta system logs
+  description: Collect okta system logs

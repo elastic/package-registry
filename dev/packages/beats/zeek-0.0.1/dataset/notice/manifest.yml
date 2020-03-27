@@ -1,5 +1,5 @@
 id: notice
-title: Zeek Notice Logs
+title: zeek notice logs
 release: ga
 type: logs
 streams:
@@ -19,5 +19,5 @@ streams:
     name: tags
   - default: true
     name: community_id
-  title: Zeek Notice logs
-  description: Collect Zeek Notice logs
+  title: zeek notice logs
+  description: Collect zeek notice logs

@@ -1,4 +1,4 @@
-# Consul Integration
+# consul Integration
 
 TODO
 

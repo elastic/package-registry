@@ -1,5 +1,5 @@
 id: elb
-title: Aws Elb Logs
+title: aws elb logs
 release: ga
 type: logs
 streams:
@@ -13,5 +13,5 @@ streams:
   - name: visibility_timeout
   - name: api_timeout
   - name: endpoint
-  title: Aws Elb logs
-  description: Collect Aws Elb logs
+  title: aws elb logs
+  description: Collect aws elb logs

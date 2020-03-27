@@ -1,25 +1,26 @@
 format_version: 1.0.0
 name: oracle
-title: Oracle
+title: oracle
 version: 0.0.1
 license: basic
-description: Oracle Integration
+description: oracle Integration
 type: integration
 categories:
 - metrics
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=8.0.0-SNAPSHOT <8.0.0'
+  elasticsearch: {}
 screenshots:
 - src: /img/metricbeat-oracle-overview.png
-  title: Metricbeat Oracle Overview
+  title: metricbeat oracle overview
   size: 3840x2160
   type: image/png
 datasources:
 - name: oracle
-  title: Oracle metrics
-  description: Collect metrics from Oracle instances
+  title: oracle metrics
+  description: Collect metrics from oracle instances
   inputs:
   - type: oracle/metrics
-    description: Collecting metrics for Oracle
+    description: Collecting oracle metrics

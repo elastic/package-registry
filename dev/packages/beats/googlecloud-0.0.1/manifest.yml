@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: googlecloud
-title: Googlecloud
+title: googlecloud
 version: 0.0.1
 license: basic
-description: Googlecloud Integration
+description: googlecloud Integration
 type: integration
 categories:
 - logs
@@ -11,23 +11,25 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.6.1 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/metricbeat-googlecloud-compute-overview.png
-  title: Metricbeat Googlecloud Compute Overview
+  title: metricbeat googlecloud compute overview
   size: 5109x2610
   type: image/png
 icons:
 - src: /img/logo_gcp.svg
-  title: Logo Gcp
+  title: logo gcp
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: googlecloud
-  title: Googlecloud logs and metrics
-  description: Collect logs and metrics from Googlecloud instances
+  title: googlecloud logs and metrics
+  description: Collect logs and metrics from googlecloud instances
   inputs:
   - type: logs
-    description: Collecting logs for Googlecloud
+    description: Collecting googlecloud logs
   - type: googlecloud/metrics
-    description: Collecting metrics for Googlecloud
+    description: Collecting googlecloud metrics

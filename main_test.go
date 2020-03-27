@@ -10,6 +10,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 	"time"
 
@@ -83,7 +84,7 @@ func runEndpoint(t *testing.T, endpoint, path, file string, handler func(w http.
 		t.Fatal(err)
 	}
 
-	assert.Equal(t, string(data), recorder.Body.String())
+	assert.Equal(t, strings.TrimSpace(string(data)), recorder.Body.String())
 	cacheTime := fmt.Sprintf("%.0f", testCacheTime.Seconds())
 	assert.Equal(t, recorder.Header()["Cache-Control"], []string{"max-age=" + cacheTime, "public"})
 }

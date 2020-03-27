@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: apache
-title: Apache
+title: apache
 version: 0.0.1
 license: basic
-description: Apache Integration
+description: apache Integration
 type: integration
 categories:
 - logs
@@ -11,27 +11,29 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-apache.png
-  title: Kibana Apache
+  title: kibana apache
   size: 1215x1199
   type: image/png
 - src: /img/apache_httpd_server_status.png
-  title: Apache Httpd Server Status
+  title: apache httpd server status
   size: 1919x1079
   type: image/png
 icons:
 - src: /img/logo_apache.svg
-  title: Logo Apache
+  title: logo apache
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: apache
-  title: Apache logs and metrics
-  description: Collect logs and metrics from Apache instances
+  title: apache logs and metrics
+  description: Collect logs and metrics from apache instances
   inputs:
   - type: logs
-    description: Collecting logs for Apache
+    description: Collecting apache logs
   - type: apache/metrics
-    description: Collecting metrics for Apache
+    description: Collecting apache metrics

@@ -1,28 +1,29 @@
 format_version: 1.0.0
 name: elasticsearch
-title: Elasticsearch
+title: elasticsearch
 version: 0.0.1
 license: basic
-description: Elasticsearch Integration
+description: elasticsearch Integration
 type: integration
 categories:
 - logs
 - metrics
 release: ga
 requirement:
-  kibana:
-    versions: ""
+  kibana: {}
+  elasticsearch:
+    versions: '>7.0.1'
 icons:
 - src: /img/logo_elasticsearch.svg
-  title: Logo Elasticsearch
+  title: logo elasticsearch
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: elasticsearch
-  title: Elasticsearch logs and metrics
-  description: Collect logs and metrics from Elasticsearch instances
+  title: elasticsearch logs and metrics
+  description: Collect logs and metrics from elasticsearch instances
   inputs:
   - type: logs
-    description: Collecting logs for Elasticsearch
+    description: Collecting elasticsearch logs
   - type: elasticsearch/metrics
-    description: Collecting metrics for Elasticsearch
+    description: Collecting elasticsearch metrics

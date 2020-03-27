@@ -1,5 +1,5 @@
 id: node
-title: Kubernetes Node Metrics
+title: kubernetes node metrics
 release: ga
 type: metrics
 streams:
@@ -16,5 +16,5 @@ streams:
     name: period
   - default: none
     name: ssl.verification_mode
-  title: Kubernetes Node logs
-  description: Collect Kubernetes Node metrics
+  title: kubernetes node logs
+  description: Collect kubernetes node metrics

@@ -1,30 +1,31 @@
 format_version: 1.0.0
 name: windows
-title: Windows
+title: windows
 version: 0.0.1
 license: basic
-description: Windows Integration
+description: windows Integration
 type: integration
 categories:
 - metrics
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch: {}
 screenshots:
 - src: /img/metricbeat-windows-service.png
-  title: Metricbeat Windows Service
+  title: metricbeat windows service
   size: 3142x1834
   type: image/png
 icons:
 - src: /img/logo_windows.svg
-  title: Logo Windows
+  title: logo windows
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: windows
-  title: Windows metrics
-  description: Collect metrics from Windows instances
+  title: windows metrics
+  description: Collect metrics from windows instances
   inputs:
   - type: windows/metrics
-    description: Collecting metrics for Windows
+    description: Collecting windows metrics

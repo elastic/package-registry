@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: aws
-title: Aws
+title: aws
 version: 0.0.1
 license: basic
-description: Aws Integration
+description: aws Integration
 type: integration
 categories:
 - logs
@@ -11,119 +11,121 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.6.1 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/filebeat-aws-elb-overview.png
-  title: Filebeat Aws Elb Overview
+  title: filebeat aws elb overview
   size: 5120x2704
   type: image/png
 - src: /img/filebeat-aws-s3access-overview.png
-  title: Filebeat Aws S3access Overview
+  title: filebeat aws s3access overview
   size: 1684x897
   type: image/png
 - src: /img/filebeat-aws-vpcflow-overview.png
-  title: Filebeat Aws Vpcflow Overview
+  title: filebeat aws vpcflow overview
   size: 5111x2609
   type: image/png
 - src: /img/metricbeat-aws-overview.png
-  title: Metricbeat Aws Overview
+  title: metricbeat aws overview
   size: 3848x2440
   type: image/png
 - src: /img/metricbeat-aws-billing-overview.png
-  title: Metricbeat Aws Billing Overview
+  title: metricbeat aws billing overview
   size: 2176x1826
   type: image/png
 - src: /img/metricbeat-aws-dynamodb-overview.png
-  title: Metricbeat Aws Dynamodb Overview
+  title: metricbeat aws dynamodb overview
   size: 1645x826
   type: image/png
 - src: /img/metricbeat-aws-ebs-overview.png
-  title: Metricbeat Aws Ebs Overview
+  title: metricbeat aws ebs overview
   size: 3372x2104
   type: image/png
 - src: /img/metricbeat-aws-ec2-overview.png
-  title: Metricbeat Aws Ec2 Overview
+  title: metricbeat aws ec2 overview
   size: 2640x2240
   type: image/png
 - src: /img/metricbeat-aws-elb-overview.png
-  title: Metricbeat Aws Elb Overview
+  title: metricbeat aws elb overview
   size: 2676x2384
   type: image/png
 - src: /img/metricbeat-aws-lambda-overview.png
-  title: Metricbeat Aws Lambda Overview
+  title: metricbeat aws lambda overview
   size: 2582x2206
   type: image/png
 - src: /img/metricbeat-aws-rds-overview.png
-  title: Metricbeat Aws Rds Overview
+  title: metricbeat aws rds overview
   size: 3468x2290
   type: image/png
 - src: /img/metricbeat-aws-s3-overview.png
-  title: Metricbeat Aws S3 Overview
+  title: metricbeat aws s3 overview
   size: 2048x1504
   type: image/png
 - src: /img/metricbeat-aws-sqs-overview.png
-  title: Metricbeat Aws Sqs Overview
+  title: metricbeat aws sqs overview
   size: 2560x1440
   type: image/png
 - src: /img/metricbeat-aws-usage-overview.png
-  title: Metricbeat Aws Usage Overview
+  title: metricbeat aws usage overview
   size: 2238x2438
   type: image/png
 - src: /img/metricbeat-aws-billing-overview.png
-  title: Metricbeat Aws Billing Overview
+  title: metricbeat aws billing overview
   size: 2176x1826
   type: image/png
 - src: /img/metricbeat-aws-ebs-overview.png
-  title: Metricbeat Aws Ebs Overview
+  title: metricbeat aws ebs overview
   size: 3372x2104
   type: image/png
 - src: /img/metricbeat-aws-ec2-overview.png
-  title: Metricbeat Aws Ec2 Overview
+  title: metricbeat aws ec2 overview
   size: 2640x2240
   type: image/png
 - src: /img/metricbeat-aws-elb-overview.png
-  title: Metricbeat Aws Elb Overview
+  title: metricbeat aws elb overview
   size: 2676x2384
   type: image/png
 - src: /img/metricbeat-aws-lambda-overview.png
-  title: Metricbeat Aws Lambda Overview
+  title: metricbeat aws lambda overview
   size: 2582x2206
   type: image/png
 - src: /img/metricbeat-aws-rds-overview.png
-  title: Metricbeat Aws Rds Overview
+  title: metricbeat aws rds overview
   size: 3468x2290
   type: image/png
 - src: /img/metricbeat-aws-s3-overview.png
-  title: Metricbeat Aws S3 Overview
+  title: metricbeat aws s3 overview
   size: 2048x1504
   type: image/png
 - src: /img/metricbeat-aws-s3-overview.png
-  title: Metricbeat Aws S3 Overview
+  title: metricbeat aws s3 overview
   size: 2048x1504
   type: image/png
 - src: /img/metricbeat-aws-sns-overview.png
-  title: Metricbeat Aws Sns Overview
+  title: metricbeat aws sns overview
   size: 3840x2676
   type: image/png
 - src: /img/metricbeat-aws-sqs-overview.png
-  title: Metricbeat Aws Sqs Overview
+  title: metricbeat aws sqs overview
   size: 2560x1440
   type: image/png
 - src: /img/metricbeat-aws-usage-overview.png
-  title: Metricbeat Aws Usage Overview
+  title: metricbeat aws usage overview
   size: 2238x2438
   type: image/png
 icons:
 - src: /img/logo_aws.svg
-  title: Logo Aws
+  title: logo aws
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: aws
-  title: Aws logs and metrics
-  description: Collect logs and metrics from Aws instances
+  title: aws logs and metrics
+  description: Collect logs and metrics from aws instances
   inputs:
   - type: logs
-    description: Collecting logs for Aws
+    description: Collecting aws logs
   - type: aws/metrics
-    description: Collecting metrics for Aws
+    description: Collecting aws metrics

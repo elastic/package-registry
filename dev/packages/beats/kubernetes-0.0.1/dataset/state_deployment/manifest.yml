@@ -1,5 +1,5 @@
 id: state_deployment
-title: Kubernetes State_deployment Metrics
+title: kubernetes state_deployment metrics
 release: ga
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Kubernetes State_deployment logs
-  description: Collect Kubernetes State_deployment metrics
+  title: kubernetes state_deployment logs
+  description: Collect kubernetes state_deployment metrics

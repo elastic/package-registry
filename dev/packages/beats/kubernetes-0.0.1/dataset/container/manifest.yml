@@ -1,5 +1,5 @@
 id: container
-title: Kubernetes Container Metrics
+title: kubernetes container metrics
 release: ga
 type: metrics
 streams:
@@ -16,5 +16,5 @@ streams:
     name: period
   - default: none
     name: ssl.verification_mode
-  title: Kubernetes Container logs
-  description: Collect Kubernetes Container metrics
+  title: kubernetes container logs
+  description: Collect kubernetes container metrics

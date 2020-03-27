@@ -11,7 +11,8 @@
     "logs"
   ],
   "requirement": {
-    "kibana": {}
+    "kibana": {},
+    "elasticsearch": {}
   },
   "assets": [
     "/package/default-pipeline-0.0.2/manifest.yml",

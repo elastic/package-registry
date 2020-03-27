@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: envoyproxy
-title: Envoyproxy
+title: envoyproxy
 version: 0.0.1
 license: basic
-description: Envoyproxy Integration
+description: envoyproxy Integration
 type: integration
 categories:
 - logs
@@ -11,23 +11,24 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=8.0.0-SNAPSHOT <8.0.0'
+  elasticsearch: {}
 screenshots:
 - src: /img/kibana-envoyproxy.jpg
-  title: Kibana Envoyproxy
+  title: kibana envoyproxy
   size: 3340x1882
   type: image/jpg
 icons:
 - src: /img/envoyproxy.svg
-  title: Envoyproxy
+  title: envoyproxy
   size: 300x300
   type: image/svg+xml
 datasources:
 - name: envoyproxy
-  title: Envoyproxy logs and metrics
-  description: Collect logs and metrics from Envoyproxy instances
+  title: envoyproxy logs and metrics
+  description: Collect logs and metrics from envoyproxy instances
   inputs:
   - type: logs
-    description: Collecting logs for Envoyproxy
+    description: Collecting envoyproxy logs
   - type: envoyproxy/metrics
-    description: Collecting metrics for Envoyproxy
+    description: Collecting envoyproxy metrics

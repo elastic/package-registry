@@ -1,5 +1,5 @@
 id: syslog
-title: System Syslog Logs
+title: system syslog logs
 release: ga
 type: logs
 streams:
@@ -14,5 +14,5 @@ streams:
       - /var/log/system.log*
     os.windows:
       default: []
-  title: System Syslog logs
-  description: Collect System Syslog logs
+  title: system syslog logs
+  description: Collect system syslog logs

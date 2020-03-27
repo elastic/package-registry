@@ -1,4 +1,4 @@
-# Uwsgi Integration
+# uwsgi Integration
 
 TODO
 

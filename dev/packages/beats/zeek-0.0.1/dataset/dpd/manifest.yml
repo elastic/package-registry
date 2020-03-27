@@ -1,5 +1,5 @@
 id: dpd
-title: Zeek Dpd Logs
+title: zeek dpd logs
 release: ga
 type: logs
 streams:
@@ -19,5 +19,5 @@ streams:
     name: tags
   - default: true
     name: community_id
-  title: Zeek Dpd logs
-  description: Collect Zeek Dpd logs
+  title: zeek dpd logs
+  description: Collect zeek dpd logs

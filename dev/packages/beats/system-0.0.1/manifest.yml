@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: system
-title: System
+title: system
 version: 0.0.1
 license: basic
-description: System Integration
+description: system Integration
 type: integration
 categories:
 - logs
@@ -11,26 +11,28 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.4.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-system.png
-  title: Kibana System
+  title: kibana system
   size: 1220x852
   type: image/png
 - src: /img/metricbeat_system_dashboard.png
-  title: Metricbeat System Dashboard
+  title: metricbeat system dashboard
   size: 2097x1933
   type: image/png
 - src: /img/metricbeat-services-host.png
-  title: Metricbeat Services Host
+  title: metricbeat services host
   size: 5006x2260
   type: image/png
 datasources:
 - name: system
-  title: System logs and metrics
-  description: Collect logs and metrics from System instances
+  title: system logs and metrics
+  description: Collect logs and metrics from system instances
   inputs:
   - type: logs
-    description: Collecting logs for System
+    description: Collecting system logs
   - type: system/metrics
-    description: Collecting metrics for System
+    description: Collecting system metrics

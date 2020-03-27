@@ -1,5 +1,5 @@
 id: core
-title: System Core Metrics
+title: system core metrics
 release: ga
 type: metrics
 streams:
@@ -8,5 +8,5 @@ streams:
   - default:
     - percentages
     name: core.metrics
-  title: System Core logs
-  description: Collect System Core metrics
+  title: system core logs
+  description: Collect system core metrics

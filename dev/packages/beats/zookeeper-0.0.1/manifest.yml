@@ -1,25 +1,26 @@
 format_version: 1.0.0
 name: zookeeper
-title: Zookeeper
+title: zookeeper
 version: 0.0.1
 license: basic
-description: Zookeeper Integration
+description: zookeeper Integration
 type: integration
 categories:
 - metrics
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.0.0-alpha2 <8.0.0'
+  elasticsearch: {}
 screenshots:
 - src: /img/metricbeat-zookeeper.png
-  title: Metricbeat Zookeeper
+  title: metricbeat zookeeper
   size: 3808x2018
   type: image/png
 datasources:
 - name: zookeeper
-  title: Zookeeper metrics
-  description: Collect metrics from Zookeeper instances
+  title: zookeeper metrics
+  description: Collect metrics from zookeeper instances
   inputs:
   - type: zookeeper/metrics
-    description: Collecting metrics for Zookeeper
+    description: Collecting zookeeper metrics

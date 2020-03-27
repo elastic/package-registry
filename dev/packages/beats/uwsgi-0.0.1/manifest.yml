@@ -1,25 +1,26 @@
 format_version: 1.0.0
 name: uwsgi
-title: Uwsgi
+title: uwsgi
 version: 0.0.1
 license: basic
-description: Uwsgi Integration
+description: uwsgi Integration
 type: integration
 categories:
 - metrics
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch: {}
 screenshots:
 - src: /img/uwsgi_dashboard.png
-  title: Uwsgi Dashboard
+  title: uwsgi dashboard
   size: 1305x747
   type: image/png
 datasources:
 - name: uwsgi
-  title: Uwsgi metrics
-  description: Collect metrics from Uwsgi instances
+  title: uwsgi metrics
+  description: Collect metrics from uwsgi instances
   inputs:
   - type: uwsgi/metrics
-    description: Collecting metrics for Uwsgi
+    description: Collecting uwsgi metrics

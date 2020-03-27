@@ -1,5 +1,5 @@
 id: state_node
-title: Kubernetes State_node Metrics
+title: kubernetes state_node metrics
 release: ga
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Kubernetes State_node logs
-  description: Collect Kubernetes State_node metrics
+  title: kubernetes state_node logs
+  description: Collect kubernetes state_node metrics

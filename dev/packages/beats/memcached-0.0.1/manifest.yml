@@ -1,25 +1,25 @@
 format_version: 1.0.0
 name: memcached
-title: Memcached
+title: memcached
 version: 0.0.1
 license: basic
-description: Memcached Integration
+description: memcached Integration
 type: integration
 categories:
 - metrics
 release: ga
 requirement:
-  kibana:
-    versions: ""
+  kibana: {}
+  elasticsearch: {}
 icons:
 - src: /img/logo_memcached.svg
-  title: Logo Memcached
+  title: logo memcached
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: memcached
-  title: Memcached metrics
-  description: Collect metrics from Memcached instances
+  title: memcached metrics
+  description: Collect metrics from memcached instances
   inputs:
   - type: memcached/metrics
-    description: Collecting metrics for Memcached
+    description: Collecting memcached metrics

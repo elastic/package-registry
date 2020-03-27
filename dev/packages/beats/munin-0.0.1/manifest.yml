@@ -1,20 +1,20 @@
 format_version: 1.0.0
 name: munin
-title: Munin
+title: munin
 version: 0.0.1
 license: basic
-description: Munin Integration
+description: munin Integration
 type: integration
 categories:
 - metrics
 release: ga
 requirement:
-  kibana:
-    versions: ""
+  kibana: {}
+  elasticsearch: {}
 datasources:
 - name: munin
-  title: Munin metrics
-  description: Collect metrics from Munin instances
+  title: munin metrics
+  description: Collect metrics from munin instances
   inputs:
   - type: munin/metrics
-    description: Collecting metrics for Munin
+    description: Collecting munin metrics

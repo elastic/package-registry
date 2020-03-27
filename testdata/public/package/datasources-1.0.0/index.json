@@ -11,7 +11,8 @@
     "logs"
   ],
   "requirement": {
-    "kibana": {}
+    "kibana": {},
+    "elasticsearch": {}
   },
   "assets": [
     "/package/datasources-1.0.0/manifest.yml",

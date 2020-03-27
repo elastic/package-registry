@@ -1,5 +1,5 @@
 id: mgr_osd_perf
-title: Ceph Mgr_osd_perf Metrics
+title: ceph mgr_osd_perf metrics
 release: beta
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 1m
     name: period
-  title: Ceph Mgr_osd_perf logs
-  description: Collect Ceph Mgr_osd_perf metrics
+  title: ceph mgr_osd_perf logs
+  description: Collect ceph mgr_osd_perf metrics

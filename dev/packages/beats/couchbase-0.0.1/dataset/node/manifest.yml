@@ -1,5 +1,5 @@
 id: node
-title: Couchbase Node Metrics
+title: couchbase node metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Couchbase Node logs
-  description: Collect Couchbase Node metrics
+  title: couchbase node logs
+  description: Collect couchbase node metrics

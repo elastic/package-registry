@@ -1,5 +1,5 @@
 id: ssh
-title: Zeek Ssh Logs
+title: zeek ssh logs
 release: ga
 type: logs
 streams:
@@ -19,5 +19,5 @@ streams:
     name: tags
   - default: true
     name: community_id
-  title: Zeek Ssh logs
-  description: Collect Zeek Ssh logs
+  title: zeek ssh logs
+  description: Collect zeek ssh logs

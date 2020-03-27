@@ -1,5 +1,5 @@
 id: ssl
-title: Zeek Ssl Logs
+title: zeek ssl logs
 release: ga
 type: logs
 streams:
@@ -19,5 +19,5 @@ streams:
     name: tags
   - default: true
     name: community_id
-  title: Zeek Ssl logs
-  description: Collect Zeek Ssl logs
+  title: zeek ssl logs
+  description: Collect zeek ssl logs

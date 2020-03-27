@@ -1,5 +1,5 @@
 id: compute_vm
-title: Azure Compute_vm Metrics
+title: azure compute_vm metrics
 release: beta
 type: metrics
 streams:
@@ -15,5 +15,5 @@ streams:
     name: subscription_id
   - default: ${AZURE_TENANT_ID:""}
     name: tenant_id
-  title: Azure Compute_vm logs
-  description: Collect Azure Compute_vm metrics
+  title: azure compute_vm logs
+  description: Collect azure compute_vm metrics

@@ -1,8 +1,8 @@
 id: exchange
-title: Rabbitmq Exchange Metrics
+title: rabbitmq exchange metrics
 release: ga
 type: metrics
 streams:
 - input: rabbitmq/metrics
-  title: Rabbitmq Exchange logs
-  description: Collect Rabbitmq Exchange metrics
+  title: rabbitmq exchange logs
+  description: Collect rabbitmq exchange metrics

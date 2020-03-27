@@ -1,4 +1,4 @@
-# Activemq Integration
+# activemq Integration
 
 TODO
 

@@ -1,25 +1,25 @@
 format_version: 1.0.0
 name: appsearch
-title: Appsearch
+title: appsearch
 version: 0.0.1
 license: basic
-description: Appsearch Integration
+description: appsearch Integration
 type: integration
 categories:
 - metrics
 release: beta
 requirement:
-  kibana:
-    versions: ""
+  kibana: {}
+  elasticsearch: {}
 icons:
 - src: /img/logo_app_search.svg
-  title: Logo App Search
+  title: logo app search
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: appsearch
-  title: Appsearch metrics
-  description: Collect metrics from Appsearch instances
+  title: appsearch metrics
+  description: Collect metrics from appsearch instances
   inputs:
   - type: appsearch/metrics
-    description: Collecting metrics for Appsearch
+    description: Collecting appsearch metrics

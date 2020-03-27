@@ -1,5 +1,5 @@
 id: heap
-title: Golang Heap Metrics
+title: golang heap metrics
 release: ga
 type: metrics
 streams:
@@ -7,5 +7,5 @@ streams:
   vars:
   - default: /debug/vars
     name: heap.path
-  title: Golang Heap logs
-  description: Collect Golang Heap metrics
+  title: golang heap logs
+  description: Collect golang heap metrics

@@ -1,5 +1,5 @@
 id: index_recovery
-title: Elasticsearch Index_recovery Metrics
+title: elasticsearch index_recovery metrics
 release: ga
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
     name: period
   - default: true
     name: xpack.enabled
-  title: Elasticsearch Index_recovery logs
-  description: Collect Elasticsearch Index_recovery metrics
+  title: elasticsearch index_recovery logs
+  description: Collect elasticsearch index_recovery metrics

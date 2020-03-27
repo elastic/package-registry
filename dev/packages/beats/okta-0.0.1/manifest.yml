@@ -1,25 +1,27 @@
 format_version: 1.0.0
 name: okta
-title: Okta
+title: okta
 version: 0.0.1
 license: basic
-description: Okta Integration
+description: okta Integration
 type: integration
 categories:
 - logs
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=8.0.0-SNAPSHOT <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/filebeat-okta-dashboard.png
-  title: Filebeat Okta Dashboard
+  title: filebeat okta dashboard
   size: 1024x662
   type: image/png
 datasources:
 - name: okta
-  title: Okta logs
-  description: Collect logs from Okta instances
+  title: okta logs
+  description: Collect logs from okta instances
   inputs:
   - type: logs
-    description: Collecting logs for Okta
+    description: Collecting okta logs

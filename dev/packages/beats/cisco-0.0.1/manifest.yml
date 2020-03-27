@@ -1,25 +1,27 @@
 format_version: 1.0.0
 name: cisco
-title: Cisco
+title: cisco
 version: 0.0.1
 license: basic
-description: Cisco Integration
+description: cisco Integration
 type: integration
 categories:
 - logs
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.0.0-SNAPSHOT <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-cisco-asa.png
-  title: Kibana Cisco Asa
+  title: kibana cisco asa
   size: 1800x1559
   type: image/png
 datasources:
 - name: cisco
-  title: Cisco logs
-  description: Collect logs from Cisco instances
+  title: cisco logs
+  description: Collect logs from cisco instances
   inputs:
   - type: logs
-    description: Collecting logs for Cisco
+    description: Collecting cisco logs

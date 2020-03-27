@@ -1,5 +1,5 @@
 id: log
-title: Kafka Log Logs
+title: kafka log logs
 release: ga
 type: logs
 streams:
@@ -13,5 +13,5 @@ streams:
     - '{{.kafka_home}}/logs/state-change.log*'
     - '{{.kafka_home}}/logs/kafka-*.log*'
     name: paths
-  title: Kafka Log logs
-  description: Collect Kafka Log logs
+  title: kafka log logs
+  description: Collect kafka log logs

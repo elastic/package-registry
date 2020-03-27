@@ -1,5 +1,5 @@
 id: node
-title: Redisenterprise Node Metrics
+title: redisenterprise node metrics
 release: beta
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 1m
     name: period
-  title: Redisenterprise Node logs
-  description: Collect Redisenterprise Node metrics
+  title: redisenterprise node logs
+  description: Collect redisenterprise node metrics

@@ -6,8 +6,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
-
 	"github.com/elastic/package-registry/util"
 )
 
@@ -70,21 +68,21 @@ func updateDatasources(datasources datasourceContentArray, moduleName, packageTy
 }
 
 func toDatasourceTitle(moduleName, packageType string) string {
-	return fmt.Sprintf("%s %s", strings.Title(moduleName), packageType)
+	return fmt.Sprintf("%s %s", moduleName, packageType)
 }
 
 func toDatasourceDescription(moduleName, packageType string) string {
-	return fmt.Sprintf("Collect %s from %s instances", packageType, strings.Title(moduleName))
+	return fmt.Sprintf("Collect %s from %s instances", packageType, moduleName)
 }
 
 func toDatasourceTitleForTwoTypes(moduleName, firstPackageType, secondPackageType string) string {
-	return fmt.Sprintf("%s %s and %s", strings.Title(moduleName), firstPackageType, secondPackageType)
+	return fmt.Sprintf("%s %s and %s", moduleName, firstPackageType, secondPackageType)
 }
 
 func toDatasourceDescriptionForTwoTypes(moduleName, firstPackageType, secondPackageType string) string {
-	return fmt.Sprintf("Collect %s and %s from %s instances", firstPackageType, secondPackageType, strings.Title(moduleName))
+	return fmt.Sprintf("Collect %s and %s from %s instances", firstPackageType, secondPackageType, moduleName)
 }
 
 func toDatasourceInputDescription(moduleName, packageType string) string {
-	return fmt.Sprintf("Collecting %s for %s", packageType, strings.Title(moduleName))
+	return fmt.Sprintf("Collecting %s %s", moduleName, packageType)
 }

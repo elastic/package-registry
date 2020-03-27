@@ -1,5 +1,5 @@
 id: stat
-title: Haproxy Stat Metrics
+title: haproxy stat metrics
 release: ga
 type: metrics
 streams:
@@ -14,5 +14,5 @@ streams:
     name: period
   - default: admin
     name: username
-  title: Haproxy Stat logs
-  description: Collect Haproxy Stat metrics
+  title: haproxy stat logs
+  description: Collect haproxy stat metrics

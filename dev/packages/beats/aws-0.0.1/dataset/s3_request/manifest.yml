@@ -1,5 +1,5 @@
 id: s3_request
-title: Aws S3_request Metrics
+title: aws s3_request metrics
 release: ga
 type: metrics
 streams:
@@ -13,5 +13,5 @@ streams:
     name: secret_access_key
   - default: ${AWS_SESSION_TOKEN:""}
     name: session_token
-  title: Aws S3_request logs
-  description: Collect Aws S3_request metrics
+  title: aws s3_request logs
+  description: Collect aws s3_request metrics

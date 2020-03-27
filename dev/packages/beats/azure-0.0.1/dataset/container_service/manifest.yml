@@ -1,5 +1,5 @@
 id: container_service
-title: Azure Container_service Metrics
+title: azure container_service metrics
 release: beta
 type: metrics
 streams:
@@ -15,5 +15,5 @@ streams:
     name: subscription_id
   - default: ${AZURE_TENANT_ID:""}
     name: tenant_id
-  title: Azure Container_service logs
-  description: Collect Azure Container_service metrics
+  title: azure container_service logs
+  description: Collect azure container_service metrics

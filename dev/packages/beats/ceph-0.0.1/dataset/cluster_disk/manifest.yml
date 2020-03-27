@@ -1,5 +1,5 @@
 id: cluster_disk
-title: Ceph Cluster_disk Metrics
+title: ceph cluster_disk metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Ceph Cluster_disk logs
-  description: Collect Ceph Cluster_disk metrics
+  title: ceph cluster_disk logs
+  description: Collect ceph cluster_disk metrics

@@ -1,5 +1,5 @@
 id: database_account
-title: Azure Database_account Metrics
+title: azure database_account metrics
 release: beta
 type: metrics
 streams:
@@ -15,5 +15,5 @@ streams:
     name: subscription_id
   - default: ${AZURE_TENANT_ID:""}
     name: tenant_id
-  title: Azure Database_account logs
-  description: Collect Azure Database_account metrics
+  title: azure database_account logs
+  description: Collect azure database_account metrics

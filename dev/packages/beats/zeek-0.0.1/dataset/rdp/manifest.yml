@@ -1,5 +1,5 @@
 id: rdp
-title: Zeek Rdp Logs
+title: zeek rdp logs
 release: ga
 type: logs
 streams:
@@ -19,5 +19,5 @@ streams:
     name: tags
   - default: true
     name: community_id
-  title: Zeek Rdp logs
-  description: Collect Zeek Rdp logs
+  title: zeek rdp logs
+  description: Collect zeek rdp logs

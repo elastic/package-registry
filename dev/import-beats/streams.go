@@ -64,8 +64,8 @@ func createLogStreams(modulePath, moduleName, datasetName string) ([]util.Stream
 	return []util.Stream{
 		{
 			Input:       "logs",
-			Title:       fmt.Sprintf("%s %s logs", strings.Title(moduleName), strings.Title(datasetName)),
-			Description: fmt.Sprintf("Collect %s %s logs", strings.Title(moduleName), strings.Title(datasetName)),
+			Title:       fmt.Sprintf("%s %s logs", moduleName, datasetName),
+			Description: fmt.Sprintf("Collect %s %s logs", moduleName, datasetName),
 			Vars:        wrapVariablesWithDefault(mwv).Vars,
 		},
 	}, nil
@@ -151,8 +151,8 @@ func createMetricStreams(modulePath, moduleName, datasetName string) ([]util.Str
 	return []util.Stream{
 		{
 			Input:       moduleName + "/metrics",
-			Title:       fmt.Sprintf("%s %s logs", strings.Title(moduleName), strings.Title(datasetName)),
-			Description: fmt.Sprintf("Collect %s %s metrics", strings.Title(moduleName), strings.Title(datasetName)),
+			Title:       fmt.Sprintf("%s %s logs", moduleName, datasetName),
+			Description: fmt.Sprintf("Collect %s %s metrics", moduleName, datasetName),
 			Vars:        configOptions,
 		},
 	}, nil

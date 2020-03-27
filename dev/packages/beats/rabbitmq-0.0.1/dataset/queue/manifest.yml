@@ -1,5 +1,5 @@
 id: queue
-title: Rabbitmq Queue Metrics
+title: rabbitmq queue metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Rabbitmq Queue logs
-  description: Collect Rabbitmq Queue metrics
+  title: rabbitmq queue logs
+  description: Collect rabbitmq queue metrics

@@ -1,5 +1,5 @@
 id: main
-title: Icinga Main Logs
+title: icinga main logs
 release: ga
 type: logs
 streams:
@@ -14,5 +14,5 @@ streams:
     os.windows:
       default:
       - c:/programdata/icinga2/var/log/icinga2/icinga2.log*
-  title: Icinga Main logs
-  description: Collect Icinga Main logs
+  title: icinga main logs
+  description: Collect icinga main logs

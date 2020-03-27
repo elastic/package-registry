@@ -1,5 +1,5 @@
 id: keyspace
-title: Redis Keyspace Metrics
+title: redis keyspace metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Redis Keyspace logs
-  description: Collect Redis Keyspace metrics
+  title: redis keyspace logs
+  description: Collect redis keyspace metrics

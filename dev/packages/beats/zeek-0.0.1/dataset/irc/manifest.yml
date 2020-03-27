@@ -1,5 +1,5 @@
 id: irc
-title: Zeek Irc Logs
+title: zeek irc logs
 release: ga
 type: logs
 streams:
@@ -19,5 +19,5 @@ streams:
     name: tags
   - default: true
     name: community_id
-  title: Zeek Irc logs
-  description: Collect Zeek Irc logs
+  title: zeek irc logs
+  description: Collect zeek irc logs

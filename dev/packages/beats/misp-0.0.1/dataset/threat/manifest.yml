@@ -1,5 +1,5 @@
 id: threat
-title: Misp Threat Logs
+title: misp threat logs
 release: ga
 type: logs
 streams:
@@ -34,5 +34,5 @@ streams:
     name: url
   - default: '{}'
     name: ssl
-  title: Misp Threat logs
-  description: Collect Misp Threat logs
+  title: misp threat logs
+  description: Collect misp threat logs

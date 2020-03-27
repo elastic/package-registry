@@ -1,4 +1,4 @@
-# Elasticsearch Integration
+# elasticsearch Integration
 
 TODO
 

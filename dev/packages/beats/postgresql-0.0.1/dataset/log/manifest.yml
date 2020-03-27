@@ -1,5 +1,5 @@
 id: log
-title: Postgresql Log Logs
+title: postgresql log logs
 release: ga
 type: logs
 streams:
@@ -14,5 +14,5 @@ streams:
     os.windows:
       default:
       - c:/Program Files/PostgreSQL/*/logs/*.log*
-  title: Postgresql Log logs
-  description: Collect Postgresql Log logs
+  title: postgresql log logs
+  description: Collect postgresql log logs

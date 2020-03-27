@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: mssql
-title: Mssql
+title: mssql
 version: 0.0.1
 license: basic
-description: Mssql Integration
+description: mssql Integration
 type: integration
 categories:
 - logs
@@ -11,13 +11,15 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.0.0-alpha2 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 datasources:
 - name: mssql
-  title: Mssql logs and metrics
-  description: Collect logs and metrics from Mssql instances
+  title: mssql logs and metrics
+  description: Collect logs and metrics from mssql instances
   inputs:
   - type: logs
-    description: Collecting logs for Mssql
+    description: Collecting mssql logs
   - type: mssql/metrics
-    description: Collecting metrics for Mssql
+    description: Collecting mssql metrics

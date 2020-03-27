@@ -1,20 +1,20 @@
 format_version: 1.0.0
 name: jolokia
-title: Jolokia
+title: jolokia
 version: 0.0.1
 license: basic
-description: Jolokia Integration
+description: jolokia Integration
 type: integration
 categories:
 - metrics
 release: ga
 requirement:
-  kibana:
-    versions: ""
+  kibana: {}
+  elasticsearch: {}
 datasources:
 - name: jolokia
-  title: Jolokia metrics
-  description: Collect metrics from Jolokia instances
+  title: jolokia metrics
+  description: Collect metrics from jolokia instances
   inputs:
   - type: jolokia/metrics
-    description: Collecting metrics for Jolokia
+    description: Collecting jolokia metrics

@@ -1,25 +1,26 @@
 format_version: 1.0.0
 name: golang
-title: Golang
+title: golang
 version: 0.0.1
 license: basic
-description: Golang Integration
+description: golang Integration
 type: integration
 categories:
 - metrics
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch: {}
 icons:
 - src: /img/logo_golang.svg
-  title: Logo Golang
+  title: logo golang
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: golang
-  title: Golang metrics
-  description: Collect metrics from Golang instances
+  title: golang metrics
+  description: Collect metrics from golang instances
   inputs:
   - type: golang/metrics
-    description: Collecting metrics for Golang
+    description: Collecting golang metrics

@@ -10,7 +10,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"strings"
 
 	"github.com/pkg/errors"
 
@@ -119,7 +118,7 @@ func createDatasets(modulePath, moduleName, moduleRelease, beatType string) (dat
 		// manifest
 		manifest := util.DataSet{
 			ID:      datasetName,
-			Title:   strings.Title(fmt.Sprintf("%s %s %s", moduleName, datasetName, beatType)),
+			Title:   fmt.Sprintf("%s %s %s", moduleName, datasetName, beatType),
 			Release: datasetRelease,
 			Type:    beatType,
 			Streams: streams,

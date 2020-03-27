@@ -1,5 +1,5 @@
 id: log
-title: Rabbitmq Log Logs
+title: rabbitmq log logs
 release: ga
 type: logs
 streams:
@@ -13,5 +13,5 @@ streams:
       - ${RABBITMQ_LOGS:/usr/local/var/log/rabbitmq/rabbit@localhost.log*}
     os.windows:
       default: null
-  title: Rabbitmq Log logs
-  description: Collect Rabbitmq Log logs
+  title: rabbitmq log logs
+  description: Collect rabbitmq log logs

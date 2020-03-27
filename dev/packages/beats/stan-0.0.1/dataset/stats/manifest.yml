@@ -1,5 +1,5 @@
 id: stats
-title: Stan Stats Metrics
+title: stan stats metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 60s
     name: period
-  title: Stan Stats logs
-  description: Collect Stan Stats metrics
+  title: stan stats logs
+  description: Collect stan stats metrics

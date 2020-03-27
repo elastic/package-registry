@@ -1,5 +1,5 @@
 id: log
-title: Logstash Log Logs
+title: logstash log logs
 release: ga
 type: logs
 streams:
@@ -13,5 +13,5 @@ streams:
     os.windows:
       default:
       - c:/programdata/logstash/logs/logstash-{{.format}}*.log
-  title: Logstash Log logs
-  description: Collect Logstash Log logs
+  title: logstash log logs
+  description: Collect logstash log logs

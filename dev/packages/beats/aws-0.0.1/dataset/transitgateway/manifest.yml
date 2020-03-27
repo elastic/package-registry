@@ -1,5 +1,5 @@
 id: transitgateway
-title: Aws Transitgateway Metrics
+title: aws transitgateway metrics
 release: beta
 type: metrics
 streams:
@@ -13,5 +13,5 @@ streams:
     - key: dept
       value: eng
     name: tags_filter
-  title: Aws Transitgateway logs
-  description: Collect Aws Transitgateway metrics
+  title: aws transitgateway logs
+  description: Collect aws transitgateway metrics

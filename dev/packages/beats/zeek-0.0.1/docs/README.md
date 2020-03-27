@@ -1,4 +1,4 @@
-# Zeek Integration
+# zeek Integration
 
 TODO
 

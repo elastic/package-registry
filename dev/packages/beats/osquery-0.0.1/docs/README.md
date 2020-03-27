@@ -1,4 +1,4 @@
-# Osquery Integration
+# osquery Integration
 
 TODO
 

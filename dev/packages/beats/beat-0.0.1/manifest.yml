@@ -1,20 +1,20 @@
 format_version: 1.0.0
 name: beat
-title: Beat
+title: beat
 version: 0.0.1
 license: basic
-description: Beat Integration
+description: beat Integration
 type: integration
 categories:
 - metrics
 release: ga
 requirement:
-  kibana:
-    versions: ""
+  kibana: {}
+  elasticsearch: {}
 datasources:
 - name: beat
-  title: Beat metrics
-  description: Collect metrics from Beat instances
+  title: beat metrics
+  description: Collect metrics from beat instances
   inputs:
   - type: beat/metrics
-    description: Collecting metrics for Beat
+    description: Collecting beat metrics

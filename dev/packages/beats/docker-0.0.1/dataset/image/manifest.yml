@@ -1,8 +1,8 @@
 id: image
-title: Docker Image Metrics
+title: docker image metrics
 release: ga
 type: metrics
 streams:
 - input: docker/metrics
-  title: Docker Image logs
-  description: Collect Docker Image metrics
+  title: docker image logs
+  description: Collect docker image metrics

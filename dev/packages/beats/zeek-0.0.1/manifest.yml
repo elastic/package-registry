@@ -1,25 +1,27 @@
 format_version: 1.0.0
 name: zeek
-title: Zeek
+title: zeek
 version: 0.0.1
 license: basic
-description: Zeek Integration
+description: zeek Integration
 type: integration
 categories:
 - logs
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.0.0-beta1 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-zeek.png
-  title: Kibana Zeek
+  title: kibana zeek
   size: 3530x2414
   type: image/png
 datasources:
 - name: zeek
-  title: Zeek logs
-  description: Collect logs from Zeek instances
+  title: zeek logs
+  description: Collect logs from zeek instances
   inputs:
   - type: logs
-    description: Collecting logs for Zeek
+    description: Collecting zeek logs

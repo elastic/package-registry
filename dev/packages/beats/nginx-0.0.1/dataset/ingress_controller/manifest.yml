@@ -1,5 +1,5 @@
 id: ingress_controller
-title: Nginx Ingress_controller Logs
+title: nginx ingress_controller logs
 release: ga
 type: logs
 streams:
@@ -14,5 +14,5 @@ streams:
     os.windows:
       default:
       - c:/programdata/nginx/logs/*access.log*
-  title: Nginx Ingress_controller logs
-  description: Collect Nginx Ingress_controller logs
+  title: nginx ingress_controller logs
+  description: Collect nginx ingress_controller logs

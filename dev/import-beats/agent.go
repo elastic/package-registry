@@ -152,6 +152,7 @@ func transformAgentConfigFile(configFilePath string) ([]byte, error) {
 
 func extractRangeVar(line string) (string, error) {
 	line = line[strings.Index(line, "range")+1:]
+	line = strings.ReplaceAll(line, "}}", "")
 	i := strings.Index(line, ":=")
 	var sliced string
 	if i >= 0 {

@@ -1,8 +1,8 @@
 id: consumergroup
-title: Kafka Consumergroup Metrics
+title: kafka consumergroup metrics
 release: ga
 type: metrics
 streams:
 - input: kafka/metrics
-  title: Kafka Consumergroup logs
-  description: Collect Kafka Consumergroup metrics
+  title: kafka consumergroup logs
+  description: Collect kafka consumergroup metrics

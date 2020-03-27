@@ -1,5 +1,5 @@
 id: leader
-title: Etcd Leader Metrics
+title: etcd leader metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Etcd Leader logs
-  description: Collect Etcd Leader metrics
+  title: etcd leader logs
+  description: Collect etcd leader metrics

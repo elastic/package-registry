@@ -34,7 +34,7 @@ var packageTests = []struct {
 		Package{
 			Title: &title,
 			Requirement: Requirement{
-				Kibana{
+				Kibana: ProductRequirement{
 					Versions: "bar",
 				},
 			},
@@ -47,7 +47,7 @@ var packageTests = []struct {
 			Title:       &title,
 			Description: "my description",
 			Requirement: Requirement{
-				Kibana{
+				Kibana: ProductRequirement{
 					Versions: ">=1.2.3 <=4.5.6",
 				},
 			},

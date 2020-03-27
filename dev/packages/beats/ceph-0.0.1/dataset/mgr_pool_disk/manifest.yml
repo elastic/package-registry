@@ -1,5 +1,5 @@
 id: mgr_pool_disk
-title: Ceph Mgr_pool_disk Metrics
+title: ceph mgr_pool_disk metrics
 release: beta
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 1m
     name: period
-  title: Ceph Mgr_pool_disk logs
-  description: Collect Ceph Mgr_pool_disk metrics
+  title: ceph mgr_pool_disk logs
+  description: Collect ceph mgr_pool_disk metrics

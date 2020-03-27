@@ -1,5 +1,5 @@
 id: server
-title: Couchdb Server Metrics
+title: couchdb server metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Couchdb Server logs
-  description: Collect Couchdb Server metrics
+  title: couchdb server logs
+  description: Collect couchdb server metrics

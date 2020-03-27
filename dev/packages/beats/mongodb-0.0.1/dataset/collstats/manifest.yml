@@ -1,5 +1,5 @@
 id: collstats
-title: Mongodb Collstats Metrics
+title: mongodb collstats metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Mongodb Collstats logs
-  description: Collect Mongodb Collstats metrics
+  title: mongodb collstats logs
+  description: Collect mongodb collstats metrics

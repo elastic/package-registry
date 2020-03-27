@@ -1,5 +1,5 @@
 id: ccr
-title: Elasticsearch Ccr Metrics
+title: elasticsearch ccr metrics
 release: ga
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
     name: period
   - default: true
     name: xpack.enabled
-  title: Elasticsearch Ccr logs
-  description: Collect Elasticsearch Ccr metrics
+  title: elasticsearch ccr logs
+  description: Collect elasticsearch ccr metrics

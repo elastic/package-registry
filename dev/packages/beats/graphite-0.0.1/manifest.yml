@@ -1,20 +1,20 @@
 format_version: 1.0.0
 name: graphite
-title: Graphite
+title: graphite
 version: 0.0.1
 license: basic
-description: Graphite Integration
+description: graphite Integration
 type: integration
 categories:
 - metrics
 release: ga
 requirement:
-  kibana:
-    versions: ""
+  kibana: {}
+  elasticsearch: {}
 datasources:
 - name: graphite
-  title: Graphite metrics
-  description: Collect metrics from Graphite instances
+  title: graphite metrics
+  description: Collect metrics from graphite instances
   inputs:
   - type: graphite/metrics
-    description: Collecting metrics for Graphite
+    description: Collecting graphite metrics

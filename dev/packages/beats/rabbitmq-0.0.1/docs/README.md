@@ -1,4 +1,4 @@
-# Rabbitmq Integration
+# rabbitmq Integration
 
 TODO
 

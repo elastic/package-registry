@@ -1,30 +1,31 @@
 format_version: 1.0.0
 name: redisenterprise
-title: Redisenterprise
+title: redisenterprise
 version: 0.0.1
 license: basic
-description: Redisenterprise Integration
+description: redisenterprise Integration
 type: integration
 categories:
 - metrics
 release: beta
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.1.0 <8.0.0'
+  elasticsearch: {}
 screenshots:
 - src: /img/metricbeat-redisenterprise-overview.png
-  title: Metricbeat Redisenterprise Overview
+  title: metricbeat redisenterprise overview
   size: 5120x2706
   type: image/png
 icons:
 - src: /img/logo_redis.svg
-  title: Logo Redis
+  title: logo redis
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: redisenterprise
-  title: Redisenterprise metrics
-  description: Collect metrics from Redisenterprise instances
+  title: redisenterprise metrics
+  description: Collect metrics from redisenterprise instances
   inputs:
   - type: redisenterprise/metrics
-    description: Collecting metrics for Redisenterprise
+    description: Collecting redisenterprise metrics

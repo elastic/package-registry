@@ -1,5 +1,5 @@
 id: log
-title: Haproxy Log Logs
+title: haproxy log logs
 release: ga
 type: logs
 streams:
@@ -14,5 +14,5 @@ streams:
     name: syslog_port
   - default: syslog
     name: input
-  title: Haproxy Log logs
-  description: Collect Haproxy Log logs
+  title: haproxy log logs
+  description: Collect haproxy log logs
