@@ -19,7 +19,7 @@ content_type:
 {{/end}}
 {{#if this.api}}
 api:
-{{#each api}}}}
+{{#each api}}
   - {{this}}
 {{/each}}
 {{/end}}
