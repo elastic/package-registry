@@ -1,5 +1,5 @@
 id: health
-title: Traefik health metrics
+title: traefik health metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Traefik health logs
-  description: Collect Traefik health metrics
+  title: traefik health logs
+  description: Collect traefik health metrics

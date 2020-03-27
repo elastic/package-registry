@@ -1,5 +1,5 @@
 id: status
-title: Kibana status metrics
+title: kibana status metrics
 release: ga
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Kibana status logs
-  description: Collect Kibana status metrics
+  title: kibana status logs
+  description: Collect kibana status metrics

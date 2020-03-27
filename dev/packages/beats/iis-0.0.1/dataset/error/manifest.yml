@@ -1,5 +1,5 @@
 id: error
-title: Iis error logs
+title: iis error logs
 release: ga
 type: logs
 streams:
@@ -17,5 +17,5 @@ streams:
     os.windows:
       default:
       - c:/Windows/System32/LogFiles/HTTPERR/*.log
-  title: Iis error logs
-  description: Collect Iis error logs
+  title: iis error logs
+  description: Collect iis error logs

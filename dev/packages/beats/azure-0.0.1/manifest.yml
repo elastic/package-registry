@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: azure
-title: Azure
+title: azure
 version: 0.0.1
 license: basic
-description: Azure Integration
+description: azure Integration
 type: integration
 categories:
 - logs
@@ -16,36 +16,36 @@ requirement:
     versions: '>7.0.1'
 screenshots:
 - src: /img/filebeat-azure-overview.png
-  title: Filebeat Azure Overview
+  title: filebeat azure overview
   size: 5002x2666
   type: image/png
 - src: /img/metricbeat-azure-vm-overview.png
-  title: Metricbeat Azure Vm Overview
+  title: metricbeat azure vm overview
   size: 5006x2672
   type: image/png
 - src: /img/metricbeat-azure-vm-guestmetrics-overview.png
-  title: Metricbeat Azure Vm Guestmetrics Overview
+  title: metricbeat azure vm guestmetrics overview
   size: 5006x2672
   type: image/png
 - src: /img/metricbeat-azure-vmss-overview.png
-  title: Metricbeat Azure Vmss Overview
+  title: metricbeat azure vmss overview
   size: 5000x2668
   type: image/png
 - src: /img/metricbeat-azure-storage-overview.png
-  title: Metricbeat Azure Storage Overview
+  title: metricbeat azure storage overview
   size: 5008x2662
   type: image/png
 icons:
 - src: /img/logo_azure.svg
-  title: Logo Azure
+  title: logo azure
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: azure
-  title: Azure logs and metrics
-  description: Collect logs and metrics from Azure instances
+  title: azure logs and metrics
+  description: Collect logs and metrics from azure instances
   inputs:
   - type: logs
-    description: Collecting Azure logs
+    description: Collecting azure logs
   - type: azure/metrics
-    description: Collecting Azure metrics
+    description: Collecting azure metrics

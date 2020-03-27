@@ -1,4 +1,4 @@
-# Nats Integration
+# nats Integration
 
 TODO
 

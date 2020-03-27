@@ -1,8 +1,8 @@
 id: osd_df
-title: Ceph osd_df metrics
+title: ceph osd_df metrics
 release: ga
 type: metrics
 streams:
 - input: ceph/metrics
-  title: Ceph osd_df logs
-  description: Collect Ceph osd_df metrics
+  title: ceph osd_df logs
+  description: Collect ceph osd_df metrics

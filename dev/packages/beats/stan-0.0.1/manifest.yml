@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: stan
-title: Stan
+title: stan
 version: 0.0.1
 license: basic
-description: Stan Integration
+description: stan Integration
 type: integration
 categories:
 - metrics
@@ -14,18 +14,18 @@ requirement:
   elasticsearch: {}
 screenshots:
 - src: /img/metricbeat-stan-overview.png
-  title: Metricbeat Stan Overview
+  title: metricbeat stan overview
   size: 1829x447
   type: image/png
 icons:
 - src: /img/stan.svg
-  title: Stan
+  title: stan
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: stan
-  title: Stan metrics
-  description: Collect metrics from Stan instances
+  title: stan metrics
+  description: Collect metrics from stan instances
   inputs:
   - type: stan/metrics
-    description: Collecting Stan metrics
+    description: Collecting stan metrics

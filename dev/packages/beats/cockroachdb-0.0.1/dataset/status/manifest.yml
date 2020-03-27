@@ -1,5 +1,5 @@
 id: status
-title: Cockroachdb status metrics
+title: cockroachdb status metrics
 release: beta
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Cockroachdb status logs
-  description: Collect Cockroachdb status metrics
+  title: cockroachdb status logs
+  description: Collect cockroachdb status metrics

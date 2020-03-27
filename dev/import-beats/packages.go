@@ -32,13 +32,12 @@ type packageContent struct {
 }
 
 func newPackageContent(name string) packageContent {
-	title := correctSpelling(strings.Title(name))
 	return packageContent{
 		manifest: util.Package{
 			FormatVersion: "1.0.0",
 			Name:          name,
-			Description:   correctSpelling(strings.Title(name + " integration")),
-			Title:         &title,
+			Description:   name + " Integration",
+			Title:         &name,
 			Version:       "0.0.1", // TODO
 			Type:          "integration",
 			License:       "basic",

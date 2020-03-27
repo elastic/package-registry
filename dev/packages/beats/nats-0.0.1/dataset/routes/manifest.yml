@@ -1,5 +1,5 @@
 id: routes
-title: Nats routes metrics
+title: nats routes metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Nats routes logs
-  description: Collect Nats routes metrics
+  title: nats routes logs
+  description: Collect nats routes metrics

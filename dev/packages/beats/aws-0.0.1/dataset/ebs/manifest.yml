@@ -1,5 +1,5 @@
 id: ebs
-title: Aws ebs metrics
+title: aws ebs metrics
 release: ga
 type: metrics
 streams:
@@ -7,5 +7,5 @@ streams:
   vars:
   - default: 5m
     name: period
-  title: Aws ebs logs
-  description: Collect Aws ebs metrics
+  title: aws ebs logs
+  description: Collect aws ebs metrics

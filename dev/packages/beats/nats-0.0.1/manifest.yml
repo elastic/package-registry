@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: nats
-title: Nats
+title: nats
 version: 0.0.1
 license: basic
-description: Nats Integration
+description: nats Integration
 type: integration
 categories:
 - logs
@@ -16,24 +16,24 @@ requirement:
     versions: '>7.0.1'
 screenshots:
 - src: /img/filebeat_nats_dashboard.png
-  title: Filebeat Nats Dashboard
+  title: filebeat nats dashboard
   size: 1919x951
   type: image/png
 - src: /img/metricbeat_nats_dashboard.png
-  title: Metricbeat Nats Dashboard
+  title: metricbeat nats dashboard
   size: 1853x877
   type: image/png
 icons:
 - src: /img/nats.svg
-  title: Nats
+  title: nats
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: nats
-  title: Nats logs and metrics
-  description: Collect logs and metrics from Nats instances
+  title: nats logs and metrics
+  description: Collect logs and metrics from nats instances
   inputs:
   - type: logs
-    description: Collecting Nats logs
+    description: Collecting nats logs
   - type: nats/metrics
-    description: Collecting Nats metrics
+    description: Collecting nats metrics

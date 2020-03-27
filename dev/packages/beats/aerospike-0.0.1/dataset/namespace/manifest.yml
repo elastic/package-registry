@@ -1,5 +1,5 @@
 id: namespace
-title: Aerospike namespace metrics
+title: aerospike namespace metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Aerospike namespace logs
-  description: Collect Aerospike namespace metrics
+  title: aerospike namespace logs
+  description: Collect aerospike namespace metrics

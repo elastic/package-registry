@@ -1,8 +1,8 @@
 id: service
-title: System service metrics
+title: system service metrics
 release: beta
 type: metrics
 streams:
 - input: system/metrics
-  title: System service logs
-  description: Collect System service metrics
+  title: system service logs
+  description: Collect system service metrics

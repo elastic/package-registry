@@ -1,5 +1,5 @@
 id: log
-title: Activemq log logs
+title: activemq log logs
 release: ga
 type: logs
 streams:
@@ -14,5 +14,5 @@ streams:
     os.windows:
       default:
       - c:/apache-activemq-*/data/activemq.log*
-  title: Activemq log logs
-  description: Collect Activemq log logs
+  title: activemq log logs
+  description: Collect activemq log logs

@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: redis
-title: Redis
+title: redis
 version: 0.0.1
 license: basic
-description: Redis Integration
+description: redis Integration
 type: integration
 categories:
 - logs
@@ -16,24 +16,24 @@ requirement:
     versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-redis.png
-  title: Kibana Redis
+  title: kibana redis
   size: 1124x1079
   type: image/png
 - src: /img/metricbeat_redis_key_dashboard.png
-  title: Metricbeat Redis Key Dashboard
+  title: metricbeat redis key dashboard
   size: 1855x949
   type: image/png
 icons:
 - src: /img/logo_redis.svg
-  title: Logo Redis
+  title: logo redis
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: redis
-  title: Redis logs and metrics
-  description: Collect logs and metrics from Redis instances
+  title: redis logs and metrics
+  description: Collect logs and metrics from redis instances
   inputs:
   - type: logs
-    description: Collecting Redis logs
+    description: Collecting redis logs
   - type: redis/metrics
-    description: Collecting Redis metrics
+    description: Collecting redis metrics

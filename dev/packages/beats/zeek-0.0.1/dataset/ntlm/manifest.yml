@@ -1,5 +1,5 @@
 id: ntlm
-title: Zeek ntlm logs
+title: zeek ntlm logs
 release: ga
 type: logs
 streams:
@@ -19,5 +19,5 @@ streams:
     name: tags
   - default: true
     name: community_id
-  title: Zeek ntlm logs
-  description: Collect Zeek ntlm logs
+  title: zeek ntlm logs
+  description: Collect zeek ntlm logs

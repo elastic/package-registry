@@ -1,5 +1,5 @@
 id: mgr_cluster_health
-title: Ceph mgr_cluster_health metrics
+title: ceph mgr_cluster_health metrics
 release: beta
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Ceph mgr_cluster_health logs
-  description: Collect Ceph mgr_cluster_health metrics
+  title: ceph mgr_cluster_health logs
+  description: Collect ceph mgr_cluster_health metrics

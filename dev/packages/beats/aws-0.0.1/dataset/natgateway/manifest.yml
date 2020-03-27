@@ -1,5 +1,5 @@
 id: natgateway
-title: Aws natgateway metrics
+title: aws natgateway metrics
 release: beta
 type: metrics
 streams:
@@ -13,5 +13,5 @@ streams:
     - key: dept
       value: eng
     name: tags_filter
-  title: Aws natgateway logs
-  description: Collect Aws natgateway metrics
+  title: aws natgateway logs
+  description: Collect aws natgateway metrics

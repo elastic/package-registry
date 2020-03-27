@@ -1,4 +1,4 @@
-# Dropwizard Integration
+# dropwizard Integration
 
 TODO
 

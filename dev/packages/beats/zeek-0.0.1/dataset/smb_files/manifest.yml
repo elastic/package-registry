@@ -1,5 +1,5 @@
 id: smb_files
-title: Zeek smb_files logs
+title: zeek smb_files logs
 release: ga
 type: logs
 streams:
@@ -19,5 +19,5 @@ streams:
     name: tags
   - default: true
     name: community_id
-  title: Zeek smb_files logs
-  description: Collect Zeek smb_files logs
+  title: zeek smb_files logs
+  description: Collect zeek smb_files logs

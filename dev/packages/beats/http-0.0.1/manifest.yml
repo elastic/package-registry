@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: http
-title: Http
+title: http
 version: 0.0.1
 license: basic
-description: Http Integration
+description: http Integration
 type: integration
 categories:
 - metrics
@@ -13,8 +13,8 @@ requirement:
   elasticsearch: {}
 datasources:
 - name: http
-  title: Http metrics
-  description: Collect metrics from Http instances
+  title: http metrics
+  description: Collect metrics from http instances
   inputs:
   - type: http/metrics
-    description: Collecting Http metrics
+    description: Collecting http metrics

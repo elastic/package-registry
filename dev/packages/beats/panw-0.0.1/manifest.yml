@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: panw
-title: Panw
+title: panw
 version: 0.0.1
 license: basic
-description: Panw Integration
+description: panw Integration
 type: integration
 categories:
 - logs
@@ -15,17 +15,17 @@ requirement:
     versions: '>7.0.1'
 screenshots:
 - src: /img/filebeat-panw-traffic.png
-  title: Filebeat Panw Traffic
+  title: filebeat panw traffic
   size: 2546x2888
   type: image/png
 - src: /img/filebeat-panw-threat.png
-  title: Filebeat Panw Threat
+  title: filebeat panw threat
   size: 2546x2496
   type: image/png
 datasources:
 - name: panw
-  title: Panw logs
-  description: Collect logs from Panw instances
+  title: panw logs
+  description: Collect logs from panw instances
   inputs:
   - type: logs
-    description: Collecting Panw logs
+    description: Collecting panw logs

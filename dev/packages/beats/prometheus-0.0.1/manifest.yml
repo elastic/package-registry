@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: prometheus
-title: Prometheus
+title: prometheus
 version: 0.0.1
 license: basic
-description: Prometheus Integration
+description: prometheus Integration
 type: integration
 categories:
 - metrics
@@ -15,20 +15,20 @@ requirement:
   elasticsearch: {}
 screenshots:
 - src: /img/metricbeat-prometheus-overview.png
-  title: Metricbeat Prometheus Overview
+  title: metricbeat prometheus overview
   size: 5010x2676
   type: image/png
 icons:
 - src: /img/logo_prometheus.svg
-  title: Logo Prometheus
+  title: logo prometheus
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: prometheus
-  title: Prometheus metrics and metrics
-  description: Collect metrics and metrics from Prometheus instances
+  title: prometheus metrics and metrics
+  description: Collect metrics and metrics from prometheus instances
   inputs:
   - type: prometheus/metrics
-    description: Collecting Prometheus metrics
+    description: Collecting prometheus metrics
   - type: prometheus/metrics
-    description: Collecting Prometheus metrics
+    description: Collecting prometheus metrics

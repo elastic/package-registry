@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: kibana
-title: Kibana
+title: kibana
 version: 0.0.1
 license: basic
-description: Kibana Integration
+description: kibana Integration
 type: integration
 categories:
 - logs
@@ -15,15 +15,15 @@ requirement:
     versions: '>7.0.1'
 icons:
 - src: /img/logo_kibana.svg
-  title: Logo Kibana
+  title: logo kibana
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: kibana
-  title: Kibana logs and metrics
-  description: Collect logs and metrics from Kibana instances
+  title: kibana logs and metrics
+  description: Collect logs and metrics from kibana instances
   inputs:
   - type: logs
-    description: Collecting Kibana logs
+    description: Collecting kibana logs
   - type: kibana/metrics
-    description: Collecting Kibana metrics
+    description: Collecting kibana metrics

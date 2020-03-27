@@ -1,4 +1,4 @@
-# Kibana Integration
+# kibana Integration
 
 TODO
 

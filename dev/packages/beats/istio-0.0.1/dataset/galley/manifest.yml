@@ -1,5 +1,5 @@
 id: galley
-title: Istio galley metrics
+title: istio galley metrics
 release: beta
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Istio galley logs
-  description: Collect Istio galley metrics
+  title: istio galley logs
+  description: Collect istio galley metrics

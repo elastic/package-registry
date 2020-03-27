@@ -1,4 +1,4 @@
-# Beat Integration
+# beat Integration
 
 TODO
 

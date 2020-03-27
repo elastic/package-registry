@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: kvm
-title: Kvm
+title: kvm
 version: 0.0.1
 license: basic
-description: Kvm Integration
+description: kvm Integration
 type: integration
 categories:
 - metrics
@@ -13,8 +13,8 @@ requirement:
   elasticsearch: {}
 datasources:
 - name: kvm
-  title: Kvm metrics
-  description: Collect metrics from Kvm instances
+  title: kvm metrics
+  description: Collect metrics from kvm instances
   inputs:
   - type: kvm/metrics
-    description: Collecting Kvm metrics
+    description: Collecting kvm metrics

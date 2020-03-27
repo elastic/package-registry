@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: auditd
-title: Auditd
+title: auditd
 version: 0.0.1
 license: basic
-description: Auditd Integration
+description: auditd Integration
 type: integration
 categories:
 - logs
@@ -15,13 +15,13 @@ requirement:
     versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-audit-auditd.png
-  title: Kibana Audit Auditd
+  title: kibana audit auditd
   size: 1230x997
   type: image/png
 datasources:
 - name: auditd
-  title: Auditd logs
-  description: Collect logs from Auditd instances
+  title: auditd logs
+  description: Collect logs from auditd instances
   inputs:
   - type: logs
-    description: Collecting Auditd logs
+    description: Collecting auditd logs

@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: vsphere
-title: Vsphere
+title: vsphere
 version: 0.0.1
 license: basic
-description: Vsphere Integration
+description: vsphere Integration
 type: integration
 categories:
 - metrics
@@ -14,17 +14,17 @@ requirement:
   elasticsearch: {}
 screenshots:
 - src: /img/metricbeat_vsphere_dashboard.png
-  title: Metricbeat Vsphere Dashboard
+  title: metricbeat vsphere dashboard
   size: 3744x4832
   type: image/png
 - src: /img/metricbeat_vsphere_vm_dashboard.png
-  title: Metricbeat Vsphere Vm Dashboard
+  title: metricbeat vsphere vm dashboard
   size: 3744x4048
   type: image/png
 datasources:
 - name: vsphere
-  title: Vsphere metrics
-  description: Collect metrics from Vsphere instances
+  title: vsphere metrics
+  description: Collect metrics from vsphere instances
   inputs:
   - type: vsphere/metrics
-    description: Collecting Vsphere metrics
+    description: Collecting vsphere metrics

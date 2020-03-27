@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: istio
-title: Istio
+title: istio
 version: 0.0.1
 license: basic
-description: Istio Integration
+description: istio Integration
 type: integration
 categories:
 - metrics
@@ -13,8 +13,8 @@ requirement:
   elasticsearch: {}
 datasources:
 - name: istio
-  title: Istio metrics
-  description: Collect metrics from Istio instances
+  title: istio metrics
+  description: Collect metrics from istio instances
   inputs:
   - type: istio/metrics
-    description: Collecting Istio metrics
+    description: Collecting istio metrics

@@ -1,8 +1,8 @@
 id: statement
-title: Postgresql statement metrics
+title: postgresql statement metrics
 release: ga
 type: metrics
 streams:
 - input: postgresql/metrics
-  title: Postgresql statement logs
-  description: Collect Postgresql statement metrics
+  title: postgresql statement logs
+  description: Collect postgresql statement metrics

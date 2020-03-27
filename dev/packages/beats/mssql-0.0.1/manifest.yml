@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: mssql
-title: Mssql
+title: mssql
 version: 0.0.1
 license: basic
-description: Mssql Integration
+description: mssql Integration
 type: integration
 categories:
 - logs
@@ -16,10 +16,10 @@ requirement:
     versions: '>7.0.1'
 datasources:
 - name: mssql
-  title: Mssql logs and metrics
-  description: Collect logs and metrics from Mssql instances
+  title: mssql logs and metrics
+  description: Collect logs and metrics from mssql instances
   inputs:
   - type: logs
-    description: Collecting Mssql logs
+    description: Collecting mssql logs
   - type: mssql/metrics
-    description: Collecting Mssql metrics
+    description: Collecting mssql metrics

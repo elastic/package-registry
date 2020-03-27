@@ -1,5 +1,5 @@
 id: transaction_log
-title: Mssql transaction_log metrics
+title: mssql transaction_log metrics
 release: beta
 type: metrics
 streams:
@@ -14,5 +14,5 @@ streams:
     name: period
   - default: domain\username
     name: username
-  title: Mssql transaction_log logs
-  description: Collect Mssql transaction_log metrics
+  title: mssql transaction_log logs
+  description: Collect mssql transaction_log metrics

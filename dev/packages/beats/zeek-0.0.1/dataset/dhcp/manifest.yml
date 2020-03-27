@@ -1,5 +1,5 @@
 id: dhcp
-title: Zeek dhcp logs
+title: zeek dhcp logs
 release: ga
 type: logs
 streams:
@@ -19,5 +19,5 @@ streams:
     name: tags
   - default: true
     name: community_id
-  title: Zeek dhcp logs
-  description: Collect Zeek dhcp logs
+  title: zeek dhcp logs
+  description: Collect zeek dhcp logs

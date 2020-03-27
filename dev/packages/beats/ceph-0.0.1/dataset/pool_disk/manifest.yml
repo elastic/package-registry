@@ -1,5 +1,5 @@
 id: pool_disk
-title: Ceph pool_disk metrics
+title: ceph pool_disk metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Ceph pool_disk logs
-  description: Collect Ceph pool_disk metrics
+  title: ceph pool_disk logs
+  description: Collect ceph pool_disk metrics

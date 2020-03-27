@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: sql
-title: Sql
+title: sql
 version: 0.0.1
 license: basic
-description: Sql Integration
+description: sql Integration
 type: integration
 categories:
 - metrics
@@ -13,8 +13,8 @@ requirement:
   elasticsearch: {}
 datasources:
 - name: sql
-  title: Sql metrics
-  description: Collect metrics from Sql instances
+  title: sql metrics
+  description: Collect metrics from sql instances
   inputs:
   - type: sql/metrics
-    description: Collecting Sql metrics
+    description: Collecting sql metrics

@@ -1,5 +1,5 @@
 id: threading
-title: Tomcat threading metrics
+title: tomcat threading metrics
 release: beta
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
     name: path
   - default: 10s
     name: period
-  title: Tomcat threading logs
-  description: Collect Tomcat threading metrics
+  title: tomcat threading logs
+  description: Collect tomcat threading metrics

@@ -1,5 +1,5 @@
 id: filesystem
-title: System filesystem metrics
+title: system filesystem metrics
 release: ga
 type: metrics
 streams:
@@ -11,5 +11,5 @@ streams:
     - drop_event.when.regexp:
         system.filesystem.mount_point: ^/(sys|cgroup|proc|dev|etc|host|lib|snap)($|/)
     name: processors
-  title: System filesystem logs
-  description: Collect System filesystem metrics
+  title: system filesystem logs
+  description: Collect system filesystem metrics

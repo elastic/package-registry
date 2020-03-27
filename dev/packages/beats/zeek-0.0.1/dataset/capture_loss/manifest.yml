@@ -1,5 +1,5 @@
 id: capture_loss
-title: Zeek capture_loss logs
+title: zeek capture_loss logs
 release: ga
 type: logs
 streams:
@@ -17,5 +17,5 @@ streams:
   - default:
     - zeek.capture_loss
     name: tags
-  title: Zeek capture_loss logs
-  description: Collect Zeek capture_loss logs
+  title: zeek capture_loss logs
+  description: Collect zeek capture_loss logs

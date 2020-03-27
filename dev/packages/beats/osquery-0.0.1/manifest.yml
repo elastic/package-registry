@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: osquery
-title: Osquery
+title: osquery
 version: 0.0.1
 license: basic
-description: Osquery Integration
+description: osquery Integration
 type: integration
 categories:
 - logs
@@ -15,18 +15,18 @@ requirement:
     versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-osquery-compatibility.png
-  title: Kibana Osquery Compatibility
+  title: kibana osquery compatibility
   size: 2560x2204
   type: image/png
 icons:
 - src: /img/logo_osquery.svg
-  title: Logo Osquery
+  title: logo osquery
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: osquery
-  title: Osquery logs
-  description: Collect logs from Osquery instances
+  title: osquery logs
+  description: Collect logs from osquery instances
   inputs:
   - type: logs
-    description: Collecting Osquery logs
+    description: Collecting osquery logs

@@ -1,4 +1,4 @@
-# Cloudfoundry Integration
+# cloudfoundry Integration
 
 TODO
 

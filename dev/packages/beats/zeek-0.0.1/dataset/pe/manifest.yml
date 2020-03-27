@@ -1,5 +1,5 @@
 id: pe
-title: Zeek pe logs
+title: zeek pe logs
 release: ga
 type: logs
 streams:
@@ -19,5 +19,5 @@ streams:
     name: tags
   - default: true
     name: community_id
-  title: Zeek pe logs
-  description: Collect Zeek pe logs
+  title: zeek pe logs
+  description: Collect zeek pe logs

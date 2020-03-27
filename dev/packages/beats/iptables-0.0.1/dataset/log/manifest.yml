@@ -1,5 +1,5 @@
 id: log
-title: Iptables log logs
+title: iptables log logs
 release: ga
 type: logs
 streams:
@@ -19,5 +19,5 @@ streams:
     name: input
   - default: true
     name: community_id
-  title: Iptables log logs
-  description: Collect Iptables log logs
+  title: iptables log logs
+  description: Collect iptables log logs

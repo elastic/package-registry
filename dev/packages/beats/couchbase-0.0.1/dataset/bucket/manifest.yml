@@ -1,5 +1,5 @@
 id: bucket
-title: Couchbase bucket metrics
+title: couchbase bucket metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Couchbase bucket logs
-  description: Collect Couchbase bucket metrics
+  title: couchbase bucket logs
+  description: Collect couchbase bucket metrics

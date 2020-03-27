@@ -1,5 +1,5 @@
 id: audit
-title: Googlecloud audit logs
+title: googlecloud audit logs
 release: ga
 type: logs
 streams:
@@ -17,5 +17,5 @@ streams:
     name: credentials_file
   - default: false
     name: keep_original_message
-  title: Googlecloud audit logs
-  description: Collect Googlecloud audit logs
+  title: googlecloud audit logs
+  description: Collect googlecloud audit logs

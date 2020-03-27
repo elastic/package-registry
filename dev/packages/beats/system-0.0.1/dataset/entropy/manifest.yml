@@ -1,8 +1,8 @@
 id: entropy
-title: System entropy metrics
+title: system entropy metrics
 release: ga
 type: metrics
 streams:
 - input: system/metrics
-  title: System entropy logs
-  description: Collect System entropy metrics
+  title: system entropy logs
+  description: Collect system entropy metrics

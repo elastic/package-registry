@@ -1,5 +1,5 @@
 id: database
-title: Postgresql database metrics
+title: postgresql database metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Postgresql database logs
-  description: Collect Postgresql database metrics
+  title: postgresql database logs
+  description: Collect postgresql database metrics

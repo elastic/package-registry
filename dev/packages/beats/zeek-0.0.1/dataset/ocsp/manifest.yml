@@ -1,5 +1,5 @@
 id: ocsp
-title: Zeek ocsp logs
+title: zeek ocsp logs
 release: ga
 type: logs
 streams:
@@ -17,5 +17,5 @@ streams:
   - default:
     - zeek.ocsp
     name: tags
-  title: Zeek ocsp logs
-  description: Collect Zeek ocsp logs
+  title: zeek ocsp logs
+  description: Collect zeek ocsp logs

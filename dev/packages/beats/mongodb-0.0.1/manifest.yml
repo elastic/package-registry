@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: mongodb
-title: Mongodb
+title: mongodb
 version: 0.0.1
 license: basic
-description: Mongodb Integration
+description: mongodb Integration
 type: integration
 categories:
 - logs
@@ -16,20 +16,20 @@ requirement:
     versions: '>7.0.1'
 screenshots:
 - src: /img/filebeat-mongodb-overview.png
-  title: Filebeat Mongodb Overview
+  title: filebeat mongodb overview
   size: 1920x1080
   type: image/png
 icons:
 - src: /img/logo_mongodb.svg
-  title: Logo Mongodb
+  title: logo mongodb
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: mongodb
-  title: Mongodb logs and metrics
-  description: Collect logs and metrics from Mongodb instances
+  title: mongodb logs and metrics
+  description: Collect logs and metrics from mongodb instances
   inputs:
   - type: logs
-    description: Collecting Mongodb logs
+    description: Collecting mongodb logs
   - type: mongodb/metrics
-    description: Collecting Mongodb metrics
+    description: Collecting mongodb metrics

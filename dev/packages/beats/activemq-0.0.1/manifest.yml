@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: activemq
-title: Activemq
+title: activemq
 version: 0.0.1
 license: basic
-description: Activemq Integration
+description: activemq Integration
 type: integration
 categories:
 - logs
@@ -16,36 +16,36 @@ requirement:
     versions: '>7.0.1'
 screenshots:
 - src: /img/filebeat-activemq-application-events.png
-  title: Filebeat Activemq Application Events
+  title: filebeat activemq application events
   size: 4102x2424
   type: image/png
 - src: /img/filebeat-activemq-audit-events.png
-  title: Filebeat Activemq Audit Events
+  title: filebeat activemq audit events
   size: 4102x2480
   type: image/png
 - src: /img/metricbeat-activemq-broker-overview.png
-  title: Metricbeat Activemq Broker Overview
+  title: metricbeat activemq broker overview
   size: 2560x2032
   type: image/png
 - src: /img/metricbeat-activemq-queues-overview.png
-  title: Metricbeat Activemq Queues Overview
+  title: metricbeat activemq queues overview
   size: 2560x3712
   type: image/png
 - src: /img/metricbeat-activemq-topics-overview.png
-  title: Metricbeat Activemq Topics Overview
+  title: metricbeat activemq topics overview
   size: 2560x3712
   type: image/png
 icons:
 - src: /img/activemq.svg
-  title: Activemq
+  title: activemq
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: activemq
-  title: Activemq logs and metrics
-  description: Collect logs and metrics from Activemq instances
+  title: activemq logs and metrics
+  description: Collect logs and metrics from activemq instances
   inputs:
   - type: logs
-    description: Collecting Activemq logs
+    description: Collecting activemq logs
   - type: activemq/metrics
-    description: Collecting Activemq metrics
+    description: Collecting activemq metrics

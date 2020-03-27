@@ -1,4 +1,4 @@
-# Ibmmq Integration
+# ibmmq Integration
 
 TODO
 

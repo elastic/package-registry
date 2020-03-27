@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: rabbitmq
-title: Rabbitmq
+title: rabbitmq
 version: 0.0.1
 license: basic
-description: Rabbitmq Integration
+description: rabbitmq Integration
 type: integration
 categories:
 - logs
@@ -16,15 +16,15 @@ requirement:
     versions: '>7.0.1'
 icons:
 - src: /img/logo_rabbitmq.svg
-  title: Logo Rabbitmq
+  title: logo rabbitmq
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: rabbitmq
-  title: Rabbitmq logs and metrics
-  description: Collect logs and metrics from Rabbitmq instances
+  title: rabbitmq logs and metrics
+  description: Collect logs and metrics from rabbitmq instances
   inputs:
   - type: logs
-    description: Collecting Rabbitmq logs
+    description: Collecting rabbitmq logs
   - type: rabbitmq/metrics
-    description: Collecting Rabbitmq metrics
+    description: Collecting rabbitmq metrics

@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: tomcat
-title: Tomcat
+title: tomcat
 version: 0.0.1
 license: basic
-description: Tomcat Integration
+description: tomcat Integration
 type: integration
 categories:
 - metrics
@@ -14,13 +14,13 @@ requirement:
   elasticsearch: {}
 screenshots:
 - src: /img/metricbeat-tomcat-overview.png
-  title: Metricbeat Tomcat Overview
+  title: metricbeat tomcat overview
   size: 3836x2148
   type: image/png
 datasources:
 - name: tomcat
-  title: Tomcat metrics
-  description: Collect metrics from Tomcat instances
+  title: tomcat metrics
+  description: Collect metrics from tomcat instances
   inputs:
   - type: tomcat/metrics
-    description: Collecting Tomcat metrics
+    description: Collecting tomcat metrics

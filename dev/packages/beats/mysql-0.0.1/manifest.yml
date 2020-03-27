@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: mysql
-title: MySQL
+title: mysql
 version: 0.0.1
 license: basic
-description: MySQL Integration
+description: mysql Integration
 type: integration
 categories:
 - logs
@@ -16,24 +16,24 @@ requirement:
     versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-mysql.png
-  title: Kibana MySQL
+  title: kibana mysql
   size: 1227x1026
   type: image/png
 - src: /img/metricbeat-mysql.png
-  title: Metricbeat MySQL
+  title: metricbeat mysql
   size: 2562x2540
   type: image/png
 icons:
 - src: /img/logo_mysql.svg
-  title: Logo MySQL
+  title: logo mysql
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: mysql
-  title: MySQL logs and metrics
-  description: Collect logs and metrics from MySQL instances
+  title: mysql logs and metrics
+  description: Collect logs and metrics from mysql instances
   inputs:
   - type: logs
-    description: Collecting MySQL logs
+    description: Collecting mysql logs
   - type: mysql/metrics
-    description: Collecting MySQL metrics
+    description: Collecting mysql metrics

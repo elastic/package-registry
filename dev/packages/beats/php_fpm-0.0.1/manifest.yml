@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: php_fpm
-title: Php_fpm
+title: php_fpm
 version: 0.0.1
 license: basic
-description: Php_fpm Integration
+description: php_fpm Integration
 type: integration
 categories:
 - metrics
@@ -13,13 +13,13 @@ requirement:
   elasticsearch: {}
 icons:
 - src: /img/logo_php.svg
-  title: Logo Php
+  title: logo php
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: php_fpm
-  title: Php_fpm metrics
-  description: Collect metrics from Php_fpm instances
+  title: php_fpm metrics
+  description: Collect metrics from php_fpm instances
   inputs:
   - type: php_fpm/metrics
-    description: Collecting Php_fpm metrics
+    description: Collecting php_fpm metrics

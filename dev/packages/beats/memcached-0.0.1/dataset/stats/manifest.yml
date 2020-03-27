@@ -1,5 +1,5 @@
 id: stats
-title: Memcached stats metrics
+title: memcached stats metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Memcached stats logs
-  description: Collect Memcached stats metrics
+  title: memcached stats logs
+  description: Collect memcached stats metrics

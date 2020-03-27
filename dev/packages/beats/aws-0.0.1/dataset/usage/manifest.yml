@@ -1,5 +1,5 @@
 id: usage
-title: Aws usage metrics
+title: aws usage metrics
 release: beta
 type: metrics
 streams:
@@ -13,5 +13,5 @@ streams:
     - key: dept
       value: eng
     name: tags_filter
-  title: Aws usage logs
-  description: Collect Aws usage metrics
+  title: aws usage logs
+  description: Collect aws usage metrics

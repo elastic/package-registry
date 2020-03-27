@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: postgresql
-title: Postgresql
+title: postgresql
 version: 0.0.1
 license: basic
-description: Postgresql Integration
+description: postgresql Integration
 type: integration
 categories:
 - logs
@@ -16,28 +16,28 @@ requirement:
     versions: '>7.0.1'
 screenshots:
 - src: /img/filebeat-postgresql-overview.png
-  title: Filebeat Postgresql Overview
+  title: filebeat postgresql overview
   size: 1364x655
   type: image/png
 - src: /img/filebeat-postgresql-slowlog-overview.png
-  title: Filebeat Postgresql Slowlog Overview
+  title: filebeat postgresql slowlog overview
   size: 1363x656
   type: image/png
 - src: /img/metricbeat-postgresql-overview.png
-  title: Metricbeat Postgresql Overview
+  title: metricbeat postgresql overview
   size: 5004x2672
   type: image/png
 icons:
 - src: /img/logo_postgres.svg
-  title: Logo Postgres
+  title: logo postgres
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: postgresql
-  title: Postgresql logs and metrics
-  description: Collect logs and metrics from Postgresql instances
+  title: postgresql logs and metrics
+  description: Collect logs and metrics from postgresql instances
   inputs:
   - type: logs
-    description: Collecting Postgresql logs
+    description: Collecting postgresql logs
   - type: postgresql/metrics
-    description: Collecting Postgresql metrics
+    description: Collecting postgresql metrics

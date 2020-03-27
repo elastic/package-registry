@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: openmetrics
-title: Openmetrics
+title: openmetrics
 version: 0.0.1
 license: basic
-description: Openmetrics Integration
+description: openmetrics Integration
 type: integration
 categories:
 - metrics
@@ -13,13 +13,13 @@ requirement:
   elasticsearch: {}
 icons:
 - src: /img/openmetrics.svg
-  title: Openmetrics
+  title: openmetrics
   size: 64x64
   type: image/svg+xml
 datasources:
 - name: openmetrics
-  title: Openmetrics metrics
-  description: Collect metrics from Openmetrics instances
+  title: openmetrics metrics
+  description: Collect metrics from openmetrics instances
   inputs:
   - type: openmetrics/metrics
-    description: Collecting Openmetrics metrics
+    description: Collecting openmetrics metrics

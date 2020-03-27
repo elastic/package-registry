@@ -1,5 +1,5 @@
 id: memory
-title: Docker memory metrics
+title: docker memory metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Docker memory logs
-  description: Collect Docker memory metrics
+  title: docker memory logs
+  description: Collect docker memory metrics

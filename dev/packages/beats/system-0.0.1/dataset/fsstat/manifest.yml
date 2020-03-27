@@ -1,5 +1,5 @@
 id: fsstat
-title: System fsstat metrics
+title: system fsstat metrics
 release: ga
 type: metrics
 streams:
@@ -11,5 +11,5 @@ streams:
     - drop_event.when.regexp:
         system.filesystem.mount_point: ^/(sys|cgroup|proc|dev|etc|host|lib|snap)($|/)
     name: processors
-  title: System fsstat logs
-  description: Collect System fsstat metrics
+  title: system fsstat logs
+  description: Collect system fsstat metrics

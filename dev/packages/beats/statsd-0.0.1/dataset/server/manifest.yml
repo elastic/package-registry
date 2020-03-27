@@ -1,8 +1,8 @@
 id: server
-title: Statsd server metrics
+title: statsd server metrics
 release: ga
 type: metrics
 streams:
 - input: statsd/metrics
-  title: Statsd server logs
-  description: Collect Statsd server metrics
+  title: statsd server logs
+  description: Collect statsd server metrics

@@ -1,8 +1,8 @@
 id: key
-title: Redis key metrics
+title: redis key metrics
 release: ga
 type: metrics
 streams:
 - input: redis/metrics
-  title: Redis key logs
-  description: Collect Redis key metrics
+  title: redis key logs
+  description: Collect redis key metrics

@@ -1,5 +1,5 @@
 id: mesh
-title: Istio mesh metrics
+title: istio mesh metrics
 release: beta
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Istio mesh logs
-  description: Collect Istio mesh metrics
+  title: istio mesh logs
+  description: Collect istio mesh metrics

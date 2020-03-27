@@ -1,5 +1,5 @@
 id: billing
-title: Aws billing metrics
+title: aws billing metrics
 release: beta
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
   - default:
     - us-east-1
     name: regions
-  title: Aws billing logs
-  description: Collect Aws billing metrics
+  title: aws billing logs
+  description: Collect aws billing metrics

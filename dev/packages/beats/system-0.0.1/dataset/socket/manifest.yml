@@ -1,8 +1,8 @@
 id: socket
-title: System socket metrics
+title: system socket metrics
 release: ga
 type: metrics
 streams:
 - input: system/metrics
-  title: System socket logs
-  description: Collect System socket metrics
+  title: system socket logs
+  description: Collect system socket metrics

@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: kubernetes
-title: Kubernetes
+title: kubernetes
 version: 0.0.1
 license: basic
-description: Kubernetes Integration
+description: kubernetes Integration
 type: integration
 categories:
 - metrics
@@ -14,26 +14,26 @@ requirement:
   elasticsearch: {}
 screenshots:
 - src: /img/metricbeat-kubernetes-controllermanager.png
-  title: Metricbeat Kubernetes Controllermanager
+  title: metricbeat kubernetes controllermanager
   size: 1896x961
   type: image/png
 - src: /img/metricbeat_kubernetes_scheduler.png
-  title: Metricbeat Kubernetes Scheduler
+  title: metricbeat kubernetes scheduler
   size: 1856x897
   type: image/png
 - src: /img/metricbeat-kubernetes-proxy.png
-  title: Metricbeat Kubernetes Proxy
+  title: metricbeat kubernetes proxy
   size: 1854x920
   type: image/png
 icons:
 - src: /img/logo_kubernetes.svg
-  title: Logo Kubernetes
+  title: logo kubernetes
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: kubernetes
-  title: Kubernetes metrics
-  description: Collect metrics from Kubernetes instances
+  title: kubernetes metrics
+  description: Collect metrics from kubernetes instances
   inputs:
   - type: kubernetes/metrics
-    description: Collecting Kubernetes metrics
+    description: Collecting kubernetes metrics

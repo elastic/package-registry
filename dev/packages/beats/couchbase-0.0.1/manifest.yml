@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: couchbase
-title: Couchbase
+title: couchbase
 version: 0.0.1
 license: basic
-description: Couchbase Integration
+description: couchbase Integration
 type: integration
 categories:
 - metrics
@@ -14,18 +14,18 @@ requirement:
   elasticsearch: {}
 screenshots:
 - src: /img/metricbeat-couchbase-overview.png
-  title: Metricbeat Couchbase Overview
+  title: metricbeat couchbase overview
   size: 4964x2678
   type: image/png
 icons:
 - src: /img/logo_couchbase.svg
-  title: Logo Couchbase
+  title: logo couchbase
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: couchbase
-  title: Couchbase metrics
-  description: Collect metrics from Couchbase instances
+  title: couchbase metrics
+  description: Collect metrics from couchbase instances
   inputs:
   - type: couchbase/metrics
-    description: Collecting Couchbase metrics
+    description: Collecting couchbase metrics

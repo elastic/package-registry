@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: netflow
-title: Netflow
+title: netflow
 version: 0.0.1
 license: basic
-description: Netflow Integration
+description: netflow Integration
 type: integration
 categories:
 - logs
@@ -14,8 +14,8 @@ requirement:
   elasticsearch: {}
 datasources:
 - name: netflow
-  title: Netflow logs
-  description: Collect logs from Netflow instances
+  title: netflow logs
+  description: Collect logs from netflow instances
   inputs:
   - type: logs
-    description: Collecting Netflow logs
+    description: Collecting netflow logs

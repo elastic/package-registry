@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: haproxy
-title: Haproxy
+title: haproxy
 version: 0.0.1
 license: basic
-description: Haproxy Integration
+description: haproxy Integration
 type: integration
 categories:
 - logs
@@ -16,20 +16,20 @@ requirement:
     versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-haproxy-overview.png
-  title: Kibana Haproxy Overview
+  title: kibana haproxy overview
   size: 1725x780
   type: image/png
 icons:
 - src: /img/logo_haproxy.svg
-  title: Logo Haproxy
+  title: logo haproxy
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: haproxy
-  title: Haproxy logs and metrics
-  description: Collect logs and metrics from Haproxy instances
+  title: haproxy logs and metrics
+  description: Collect logs and metrics from haproxy instances
   inputs:
   - type: logs
-    description: Collecting Haproxy logs
+    description: Collecting haproxy logs
   - type: haproxy/metrics
-    description: Collecting Haproxy metrics
+    description: Collecting haproxy metrics

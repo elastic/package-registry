@@ -1,5 +1,5 @@
 id: tunnel
-title: Zeek tunnel logs
+title: zeek tunnel logs
 release: ga
 type: logs
 streams:
@@ -17,5 +17,5 @@ streams:
   - default:
     - zeek.tunnel
     name: tags
-  title: Zeek tunnel logs
-  description: Collect Zeek tunnel logs
+  title: zeek tunnel logs
+  description: Collect zeek tunnel logs

@@ -1,5 +1,5 @@
 id: connection
-title: Zeek connection logs
+title: zeek connection logs
 release: ga
 type: logs
 streams:
@@ -19,5 +19,5 @@ streams:
     name: tags
   - default: true
     name: community_id
-  title: Zeek connection logs
-  description: Collect Zeek connection logs
+  title: zeek connection logs
+  description: Collect zeek connection logs

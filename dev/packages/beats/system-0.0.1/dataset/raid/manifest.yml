@@ -1,8 +1,8 @@
 id: raid
-title: System raid metrics
+title: system raid metrics
 release: ga
 type: metrics
 streams:
 - input: system/metrics
-  title: System raid logs
-  description: Collect System raid metrics
+  title: system raid logs
+  description: Collect system raid metrics

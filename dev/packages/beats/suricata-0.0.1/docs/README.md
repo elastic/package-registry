@@ -1,4 +1,4 @@
-# Suricata Integration
+# suricata Integration
 
 TODO
 

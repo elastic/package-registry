@@ -1,5 +1,5 @@
 id: gc
-title: Elasticsearch gc logs
+title: elasticsearch gc logs
 release: ga
 type: logs
 streams:
@@ -17,5 +17,5 @@ streams:
       default:
       - c:/ProgramData/Elastic/Elasticsearch/logs/gc.log.*
       - c:/ProgramData/Elastic/Elasticsearch/logs/gc.log
-  title: Elasticsearch gc logs
-  description: Collect Elasticsearch gc logs
+  title: elasticsearch gc logs
+  description: Collect elasticsearch gc logs

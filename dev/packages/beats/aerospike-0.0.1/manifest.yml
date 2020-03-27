@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: aerospike
-title: Aerospike
+title: aerospike
 version: 0.0.1
 license: basic
-description: Aerospike Integration
+description: aerospike Integration
 type: integration
 categories:
 - metrics
@@ -14,18 +14,18 @@ requirement:
   elasticsearch: {}
 screenshots:
 - src: /img/metricbeat-aerospike-overview.png
-  title: Metricbeat Aerospike Overview
+  title: metricbeat aerospike overview
   size: 4988x2558
   type: image/png
 icons:
 - src: /img/logo_aerospike.svg
-  title: Logo Aerospike
+  title: logo aerospike
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: aerospike
-  title: Aerospike metrics
-  description: Collect metrics from Aerospike instances
+  title: aerospike metrics
+  description: Collect metrics from aerospike instances
   inputs:
   - type: aerospike/metrics
-    description: Collecting Aerospike metrics
+    description: Collecting aerospike metrics

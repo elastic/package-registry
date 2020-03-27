@@ -1,8 +1,8 @@
 id: partition
-title: Kafka partition metrics
+title: kafka partition metrics
 release: ga
 type: metrics
 streams:
 - input: kafka/metrics
-  title: Kafka partition logs
-  description: Collect Kafka partition metrics
+  title: kafka partition logs
+  description: Collect kafka partition metrics

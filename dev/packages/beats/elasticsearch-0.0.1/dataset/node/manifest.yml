@@ -1,5 +1,5 @@
 id: node
-title: Elasticsearch node metrics
+title: elasticsearch node metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Elasticsearch node logs
-  description: Collect Elasticsearch node metrics
+  title: elasticsearch node logs
+  description: Collect elasticsearch node metrics

@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: iptables
-title: Iptables
+title: iptables
 version: 0.0.1
 license: basic
-description: Iptables Integration
+description: iptables Integration
 type: integration
 categories:
 - logs
@@ -15,17 +15,17 @@ requirement:
     versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-iptables.png
-  title: Kibana Iptables
+  title: kibana iptables
   size: 1492x1382
   type: image/png
 - src: /img/kibana-iptables-ubiquiti.png
-  title: Kibana Iptables Ubiquiti
+  title: kibana iptables ubiquiti
   size: 1492x1464
   type: image/png
 datasources:
 - name: iptables
-  title: Iptables logs
-  description: Collect logs from Iptables instances
+  title: iptables logs
+  description: Collect logs from iptables instances
   inputs:
   - type: logs
-    description: Collecting Iptables logs
+    description: Collecting iptables logs

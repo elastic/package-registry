@@ -1,4 +1,4 @@
-# Kafka Integration
+# kafka Integration
 
 TODO
 

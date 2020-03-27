@@ -1,5 +1,5 @@
 id: volume
-title: Kubernetes volume metrics
+title: kubernetes volume metrics
 release: ga
 type: metrics
 streams:
@@ -16,5 +16,5 @@ streams:
     name: period
   - default: none
     name: ssl.verification_mode
-  title: Kubernetes volume logs
-  description: Collect Kubernetes volume metrics
+  title: kubernetes volume logs
+  description: Collect kubernetes volume metrics

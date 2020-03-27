@@ -1,5 +1,5 @@
 id: state_persistentvolumeclaim
-title: Kubernetes state_persistentvolumeclaim metrics
+title: kubernetes state_persistentvolumeclaim metrics
 release: experimental
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Kubernetes state_persistentvolumeclaim logs
-  description: Collect Kubernetes state_persistentvolumeclaim metrics
+  title: kubernetes state_persistentvolumeclaim logs
+  description: Collect kubernetes state_persistentvolumeclaim metrics

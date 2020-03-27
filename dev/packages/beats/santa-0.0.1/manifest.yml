@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: santa
-title: Santa
+title: santa
 version: 0.0.1
 license: basic
-description: Santa Integration
+description: santa Integration
 type: integration
 categories:
 - logs
@@ -15,13 +15,13 @@ requirement:
     versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-santa-log-overview.png
-  title: Kibana Santa Log Overview
+  title: kibana santa log overview
   size: 2912x2024
   type: image/png
 datasources:
 - name: santa
-  title: Santa logs
-  description: Collect logs from Santa instances
+  title: santa logs
+  description: Collect logs from santa instances
   inputs:
   - type: logs
-    description: Collecting Santa logs
+    description: Collecting santa logs

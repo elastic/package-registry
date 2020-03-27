@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: nginx
-title: Nginx
+title: nginx
 version: 0.0.1
 license: basic
-description: Nginx Integration
+description: nginx Integration
 type: integration
 categories:
 - logs
@@ -16,24 +16,24 @@ requirement:
     versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-nginx.png
-  title: Kibana Nginx
+  title: kibana nginx
   size: 1218x1266
   type: image/png
 - src: /img/metricbeat-nginx.png
-  title: Metricbeat Nginx
+  title: metricbeat nginx
   size: 2560x2100
   type: image/png
 icons:
 - src: /img/logo_nginx.svg
-  title: Logo Nginx
+  title: logo nginx
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: nginx
-  title: Nginx logs and metrics
-  description: Collect logs and metrics from Nginx instances
+  title: nginx logs and metrics
+  description: Collect logs and metrics from nginx instances
   inputs:
   - type: logs
-    description: Collecting Nginx logs
+    description: Collecting nginx logs
   - type: nginx/metrics
-    description: Collecting Nginx metrics
+    description: Collecting nginx metrics

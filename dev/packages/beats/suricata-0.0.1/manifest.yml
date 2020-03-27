@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: suricata
-title: Suricata
+title: suricata
 version: 0.0.1
 license: basic
-description: Suricata Integration
+description: suricata Integration
 type: integration
 categories:
 - logs
@@ -15,17 +15,17 @@ requirement:
     versions: '>7.0.1'
 screenshots:
 - src: /img/filebeat-suricata-events.png
-  title: Filebeat Suricata Events
+  title: filebeat suricata events
   size: 1386x1115
   type: image/png
 - src: /img/filebeat-suricata-alerts.png
-  title: Filebeat Suricata Alerts
+  title: filebeat suricata alerts
   size: 1386x1115
   type: image/png
 datasources:
 - name: suricata
-  title: Suricata logs
-  description: Collect logs from Suricata instances
+  title: suricata logs
+  description: Collect logs from suricata instances
   inputs:
   - type: logs
-    description: Collecting Suricata logs
+    description: Collecting suricata logs

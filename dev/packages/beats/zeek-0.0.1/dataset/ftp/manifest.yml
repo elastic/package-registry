@@ -1,5 +1,5 @@
 id: ftp
-title: Zeek ftp logs
+title: zeek ftp logs
 release: ga
 type: logs
 streams:
@@ -19,5 +19,5 @@ streams:
     name: tags
   - default: true
     name: community_id
-  title: Zeek ftp logs
-  description: Collect Zeek ftp logs
+  title: zeek ftp logs
+  description: Collect zeek ftp logs

@@ -1,5 +1,5 @@
 id: query
-title: Prometheus query metrics
+title: prometheus query metrics
 release: beta
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Prometheus query logs
-  description: Collect Prometheus query metrics
+  title: prometheus query logs
+  description: Collect prometheus query metrics

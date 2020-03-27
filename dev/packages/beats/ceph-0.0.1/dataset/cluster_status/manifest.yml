@@ -1,8 +1,8 @@
 id: cluster_status
-title: Ceph cluster_status metrics
+title: ceph cluster_status metrics
 release: ga
 type: metrics
 streams:
 - input: ceph/metrics
-  title: Ceph cluster_status logs
-  description: Collect Ceph cluster_status metrics
+  title: ceph cluster_status logs
+  description: Collect ceph cluster_status metrics

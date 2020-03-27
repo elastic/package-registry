@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: cloudfoundry
-title: Cloudfoundry
+title: cloudfoundry
 version: 0.0.1
 license: basic
-description: Cloudfoundry Integration
+description: cloudfoundry Integration
 type: integration
 categories:
 - metrics
@@ -13,8 +13,8 @@ requirement:
   elasticsearch: {}
 datasources:
 - name: cloudfoundry
-  title: Cloudfoundry metrics
-  description: Collect metrics from Cloudfoundry instances
+  title: cloudfoundry metrics
+  description: Collect metrics from cloudfoundry instances
   inputs:
   - type: cloudfoundry/metrics
-    description: Collecting Cloudfoundry metrics
+    description: Collecting cloudfoundry metrics

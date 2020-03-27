@@ -6,7 +6,6 @@ package main
 
 import (
 	"bytes"
-	"strings"
 	"text/template"
 
 	"github.com/pkg/errors"
@@ -40,7 +39,7 @@ type readmeTemplateModel struct {
 func createDocs(moduleName string) ([]docContent, error) {
 	var body bytes.Buffer
 	err := readmeTemplate.Execute(&body, readmeTemplateModel{
-		ModuleName: correctSpelling(strings.Title(moduleName)),
+		ModuleName: moduleName,
 	})
 	if err != nil {
 		return nil, errors.Wrapf(err, "rendering README template failed")

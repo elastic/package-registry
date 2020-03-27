@@ -1,5 +1,5 @@
 id: dommemstat
-title: Kvm dommemstat metrics
+title: kvm dommemstat metrics
 release: beta
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Kvm dommemstat logs
-  description: Collect Kvm dommemstat metrics
+  title: kvm dommemstat logs
+  description: Collect kvm dommemstat metrics

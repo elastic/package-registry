@@ -1,5 +1,5 @@
 id: collector
-title: Openmetrics collector metrics
+title: openmetrics collector metrics
 release: beta
 type: metrics
 streams:
@@ -16,5 +16,5 @@ streams:
     name: metrics_path
   - default: 10s
     name: period
-  title: Openmetrics collector logs
-  description: Collect Openmetrics collector metrics
+  title: openmetrics collector logs
+  description: Collect openmetrics collector metrics

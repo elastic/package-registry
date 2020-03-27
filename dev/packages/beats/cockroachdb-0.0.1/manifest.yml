@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: cockroachdb
-title: Cockroachdb
+title: cockroachdb
 version: 0.0.1
 license: basic
-description: Cockroachdb Integration
+description: cockroachdb Integration
 type: integration
 categories:
 - metrics
@@ -14,18 +14,18 @@ requirement:
   elasticsearch: {}
 screenshots:
 - src: /img/metricbeat-cockroachdb-overview.png
-  title: Metricbeat Cockroachdb Overview
+  title: metricbeat cockroachdb overview
   size: 1383x853
   type: image/png
 icons:
 - src: /img/cockroachdb.svg
-  title: Cockroachdb
+  title: cockroachdb
   size: 35x35
   type: image/svg+xml
 datasources:
 - name: cockroachdb
-  title: Cockroachdb metrics
-  description: Collect metrics from Cockroachdb instances
+  title: cockroachdb metrics
+  description: Collect metrics from cockroachdb instances
   inputs:
   - type: cockroachdb/metrics
-    description: Collecting Cockroachdb metrics
+    description: Collecting cockroachdb metrics

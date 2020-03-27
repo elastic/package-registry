@@ -1,5 +1,5 @@
 id: load
-title: System load metrics
+title: system load metrics
 release: ga
 type: metrics
 streams:
@@ -21,5 +21,5 @@ streams:
   - default:
     - .*
     name: processes
-  title: System load logs
-  description: Collect System load metrics
+  title: system load logs
+  description: Collect system load metrics

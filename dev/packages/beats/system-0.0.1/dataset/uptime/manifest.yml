@@ -1,5 +1,5 @@
 id: uptime
-title: System uptime metrics
+title: system uptime metrics
 release: ga
 type: metrics
 streams:
@@ -17,5 +17,5 @@ streams:
   - default:
     - .*
     name: processes
-  title: System uptime logs
-  description: Collect System uptime metrics
+  title: system uptime logs
+  description: Collect system uptime metrics

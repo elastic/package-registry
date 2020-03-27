@@ -1,5 +1,5 @@
 id: process
-title: System process metrics
+title: system process metrics
 release: ga
 type: metrics
 streams:
@@ -21,5 +21,5 @@ streams:
   - default:
     - .*
     name: processes
-  title: System process logs
-  description: Collect System process metrics
+  title: system process logs
+  description: Collect system process metrics

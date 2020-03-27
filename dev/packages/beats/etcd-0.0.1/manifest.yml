@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: etcd
-title: Etcd
+title: etcd
 version: 0.0.1
 license: basic
-description: Etcd Integration
+description: etcd Integration
 type: integration
 categories:
 - metrics
@@ -13,13 +13,13 @@ requirement:
   elasticsearch: {}
 icons:
 - src: /img/logo_etcd.svg
-  title: Logo Etcd
+  title: logo etcd
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: etcd
-  title: Etcd metrics
-  description: Collect metrics from Etcd instances
+  title: etcd metrics
+  description: Collect metrics from etcd instances
   inputs:
   - type: etcd/metrics
-    description: Collecting Etcd metrics
+    description: Collecting etcd metrics

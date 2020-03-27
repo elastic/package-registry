@@ -1,5 +1,5 @@
 id: log
-title: Santa log logs
+title: santa log logs
 release: ga
 type: logs
 streams:
@@ -10,5 +10,5 @@ streams:
     name: paths
   - default: file
     name: input
-  title: Santa log logs
-  description: Collect Santa log logs
+  title: santa log logs
+  description: Collect santa log logs

@@ -1,5 +1,5 @@
 id: cloudwatch
-title: Aws cloudwatch metrics
+title: aws cloudwatch metrics
 release: ga
 type: metrics
 streams:
@@ -23,5 +23,5 @@ streams:
     name: metrics
   - default: 300s
     name: period
-  title: Aws cloudwatch logs
-  description: Collect Aws cloudwatch metrics
+  title: aws cloudwatch logs
+  description: Collect aws cloudwatch metrics
