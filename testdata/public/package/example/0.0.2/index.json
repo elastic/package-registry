@@ -13,6 +13,9 @@
   "requirement": {
     "kibana": {
       "versions": "\u003e=6.0.0"
+    },
+    "elasticsearch": {
+      "versions": "\u003e=6.0.0 \u003c=6.8.0"
     }
   },
   "assets": [

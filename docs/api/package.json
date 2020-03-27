@@ -106,10 +106,5 @@
     }
   ],
   "download": "/epr/example/example-1.0.0.tar.gz",
-<<<<<<< HEAD
-  "path": "/package/example-1.0.0"
-}
-=======
   "path": "/package/example/1.0.0"
 }
->>>>>>> aaf31b8... Change package path from {packagename}-{version} to {packagename}/{version}
