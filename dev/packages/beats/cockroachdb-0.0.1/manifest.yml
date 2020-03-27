@@ -10,7 +10,8 @@ categories:
 release: beta
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch: {}
 screenshots:
 - src: /img/metricbeat-cockroachdb-overview.png
   title: Metricbeat Cockroachdb Overview
@@ -27,4 +28,4 @@ datasources:
   description: Collect metrics from Cockroachdb instances
   inputs:
   - type: cockroachdb/metrics
-    description: Collecting metrics for Cockroachdb
+    description: Collecting Cockroachdb metrics

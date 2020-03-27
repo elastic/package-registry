@@ -1,5 +1,5 @@
 id: application_pool
-title: Iis Application_pool Metrics
+title: Iis application_pool metrics
 release: beta
 type: metrics
 streams:
@@ -7,5 +7,5 @@ streams:
   vars:
   - default: 10s
     name: period
-  title: Iis Application_pool logs
-  description: Collect Iis Application_pool metrics
+  title: Iis application_pool logs
+  description: Collect Iis application_pool metrics

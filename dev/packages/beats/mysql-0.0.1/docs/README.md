@@ -1,4 +1,4 @@
-# Mysql Integration
+# MySQL Integration
 
 TODO
 

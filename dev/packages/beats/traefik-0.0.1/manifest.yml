@@ -11,7 +11,9 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-traefik.png
   title: Kibana Traefik
@@ -28,6 +30,6 @@ datasources:
   description: Collect logs and metrics from Traefik instances
   inputs:
   - type: logs
-    description: Collecting logs for Traefik
+    description: Collecting Traefik logs
   - type: traefik/metrics
-    description: Collecting metrics for Traefik
+    description: Collecting Traefik metrics

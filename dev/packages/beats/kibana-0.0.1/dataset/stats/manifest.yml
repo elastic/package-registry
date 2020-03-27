@@ -1,5 +1,5 @@
 id: stats
-title: Kibana Stats Metrics
+title: Kibana stats metrics
 release: ga
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
     name: period
   - default: true
     name: xpack.enabled
-  title: Kibana Stats logs
-  description: Collect Kibana Stats metrics
+  title: Kibana stats logs
+  description: Collect Kibana stats metrics

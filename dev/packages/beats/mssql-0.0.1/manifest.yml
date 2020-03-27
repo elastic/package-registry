@@ -11,13 +11,15 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.0.0-alpha2 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 datasources:
 - name: mssql
   title: Mssql logs and metrics
   description: Collect logs and metrics from Mssql instances
   inputs:
   - type: logs
-    description: Collecting logs for Mssql
+    description: Collecting Mssql logs
   - type: mssql/metrics
-    description: Collecting metrics for Mssql
+    description: Collecting Mssql metrics

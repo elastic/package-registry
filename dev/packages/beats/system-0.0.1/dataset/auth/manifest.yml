@@ -1,5 +1,5 @@
 id: auth
-title: System Auth Logs
+title: System auth logs
 release: ga
 type: logs
 streams:
@@ -14,5 +14,5 @@ streams:
       - /var/log/secure.log*
     os.windows:
       default: []
-  title: System Auth logs
-  description: Collect System Auth logs
+  title: System auth logs
+  description: Collect System auth logs

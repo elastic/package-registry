@@ -1,5 +1,5 @@
 id: firewall
-title: Googlecloud Firewall Logs
+title: Googlecloud firewall logs
 release: ga
 type: logs
 streams:
@@ -19,5 +19,5 @@ streams:
     name: debug
   - default: false
     name: keep_original_message
-  title: Googlecloud Firewall logs
-  description: Collect Googlecloud Firewall logs
+  title: Googlecloud firewall logs
+  description: Collect Googlecloud firewall logs

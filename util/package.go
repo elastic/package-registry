@@ -63,11 +63,12 @@ type Datasource struct {
 }
 
 type Requirement struct {
-	Kibana Kibana `config:"kibana" json:"kibana"`
+	Kibana        ProductRequirement `config:"kibana" json:"kibana,omitempty" yaml:"kibana"`
+	Elasticsearch ProductRequirement `config:"elasticsearch" json:"elasticsearch,omitempty" yaml:"elasticsearch"`
 }
 
-type Kibana struct {
-	Versions    string `config:"versions,omitempty" json:"versions,omitempty"`
+type ProductRequirement struct {
+	Versions    string `config:"versions,omitempty" json:"versions,omitempty" yaml:"versions,omitempty"`
 	semVerRange semver.Range
 }
 
@@ -258,6 +259,13 @@ func (p *Package) Validate() error {
 
 	if p.Description == "" {
 		return fmt.Errorf("no description set")
+	}
+
+	if p.Requirement.Elasticsearch.Versions != "" {
+		_, err := semver.ParseRange(p.Requirement.Elasticsearch.Versions)
+		if err != nil {
+			return fmt.Errorf("invalid elasticsesrch versions: %s, %s", p.Requirement.Elasticsearch.Versions, err)
+		}
 	}
 
 	if p.Requirement.Kibana.Versions != "" {

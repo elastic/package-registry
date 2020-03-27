@@ -1,8 +1,8 @@
 id: jmx
-title: Jolokia Jmx Metrics
+title: Jolokia jmx metrics
 release: ga
 type: metrics
 streams:
 - input: jolokia/metrics
-  title: Jolokia Jmx logs
-  description: Collect Jolokia Jmx metrics
+  title: Jolokia jmx logs
+  description: Collect Jolokia jmx metrics

@@ -10,7 +10,8 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch: {}
 icons:
 - src: /img/logo_golang.svg
   title: Logo Golang
@@ -22,4 +23,4 @@ datasources:
   description: Collect metrics from Golang instances
   inputs:
   - type: golang/metrics
-    description: Collecting metrics for Golang
+    description: Collecting Golang metrics

@@ -10,7 +10,8 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch: {}
 screenshots:
 - src: /img/metricbeat-windows-service.png
   title: Metricbeat Windows Service
@@ -27,4 +28,4 @@ datasources:
   description: Collect metrics from Windows instances
   inputs:
   - type: windows/metrics
-    description: Collecting metrics for Windows
+    description: Collecting Windows metrics

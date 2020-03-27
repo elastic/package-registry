@@ -1,5 +1,5 @@
 id: compute
-title: Googlecloud Compute Metrics
+title: Googlecloud compute metrics
 release: beta
 type: metrics
 streams:
@@ -15,5 +15,5 @@ streams:
     name: project_id
   - default: us-central1-a
     name: zone
-  title: Googlecloud Compute logs
-  description: Collect Googlecloud Compute metrics
+  title: Googlecloud compute logs
+  description: Collect Googlecloud compute metrics

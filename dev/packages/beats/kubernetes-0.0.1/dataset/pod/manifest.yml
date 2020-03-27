@@ -1,5 +1,5 @@
 id: pod
-title: Kubernetes Pod Metrics
+title: Kubernetes pod metrics
 release: ga
 type: metrics
 streams:
@@ -16,5 +16,5 @@ streams:
     name: period
   - default: none
     name: ssl.verification_mode
-  title: Kubernetes Pod logs
-  description: Collect Kubernetes Pod metrics
+  title: Kubernetes pod logs
+  description: Collect Kubernetes pod metrics

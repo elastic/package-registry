@@ -1,5 +1,5 @@
 id: error
-title: Nginx Error Logs
+title: Nginx error logs
 release: ga
 type: logs
 streams:
@@ -14,5 +14,5 @@ streams:
     os.windows:
       default:
       - c:/programdata/nginx/logs/error.log*
-  title: Nginx Error logs
-  description: Collect Nginx Error logs
+  title: Nginx error logs
+  description: Collect Nginx error logs

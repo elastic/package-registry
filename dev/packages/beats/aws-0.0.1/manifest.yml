@@ -11,7 +11,9 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.6.1 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/filebeat-aws-elb-overview.png
   title: Filebeat Aws Elb Overview
@@ -124,6 +126,6 @@ datasources:
   description: Collect logs and metrics from Aws instances
   inputs:
   - type: logs
-    description: Collecting logs for Aws
+    description: Collecting Aws logs
   - type: aws/metrics
-    description: Collecting metrics for Aws
+    description: Collecting Aws metrics

@@ -10,7 +10,9 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.6.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/filebeat-o365-azure-permissions.png
   title: Filebeat O365 Azure Permissions
@@ -26,4 +28,4 @@ datasources:
   description: Collect logs from O365 instances
   inputs:
   - type: logs
-    description: Collecting logs for O365
+    description: Collecting O365 logs

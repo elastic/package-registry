@@ -10,11 +10,13 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 datasources:
 - name: cef
   title: Cef logs
   description: Collect logs from Cef instances
   inputs:
   - type: logs
-    description: Collecting logs for Cef
+    description: Collecting Cef logs

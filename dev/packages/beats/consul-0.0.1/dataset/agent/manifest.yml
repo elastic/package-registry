@@ -1,5 +1,5 @@
 id: agent
-title: Consul Agent Metrics
+title: Consul agent metrics
 release: beta
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Consul Agent logs
-  description: Collect Consul Agent metrics
+  title: Consul agent logs
+  description: Collect Consul agent metrics

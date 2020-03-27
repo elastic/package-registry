@@ -10,7 +10,8 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.0.0-alpha2 <8.0.0'
+  elasticsearch: {}
 screenshots:
 - src: /img/metricbeat-zookeeper.png
   title: Metricbeat Zookeeper
@@ -22,4 +23,4 @@ datasources:
   description: Collect metrics from Zookeeper instances
   inputs:
   - type: zookeeper/metrics
-    description: Collecting metrics for Zookeeper
+    description: Collecting Zookeeper metrics

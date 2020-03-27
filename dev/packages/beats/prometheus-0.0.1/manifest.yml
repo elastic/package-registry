@@ -11,7 +11,8 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch: {}
 screenshots:
 - src: /img/metricbeat-prometheus-overview.png
   title: Metricbeat Prometheus Overview
@@ -28,6 +29,6 @@ datasources:
   description: Collect metrics and metrics from Prometheus instances
   inputs:
   - type: prometheus/metrics
-    description: Collecting metrics for Prometheus
+    description: Collecting Prometheus metrics
   - type: prometheus/metrics
-    description: Collecting metrics for Prometheus
+    description: Collecting Prometheus metrics

@@ -1,8 +1,8 @@
 id: process
-title: Php_fpm Process Metrics
+title: Php_fpm process metrics
 release: ga
 type: metrics
 streams:
 - input: php_fpm/metrics
-  title: Php_fpm Process logs
-  description: Collect Php_fpm Process metrics
+  title: Php_fpm process logs
+  description: Collect Php_fpm process metrics

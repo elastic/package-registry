@@ -1,5 +1,5 @@
 id: broker
-title: Activemq Broker Metrics
+title: Activemq broker metrics
 release: ga
 type: metrics
 streams:
@@ -16,5 +16,5 @@ streams:
     name: period
   - default: admin
     name: username
-  title: Activemq Broker logs
-  description: Collect Activemq Broker metrics
+  title: Activemq broker logs
+  description: Collect Activemq broker metrics

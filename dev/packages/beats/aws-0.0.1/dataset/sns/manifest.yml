@@ -1,5 +1,5 @@
 id: sns
-title: Aws Sns Metrics
+title: Aws sns metrics
 release: beta
 type: metrics
 streams:
@@ -7,5 +7,5 @@ streams:
   vars:
   - default: 5m
     name: period
-  title: Aws Sns logs
-  description: Collect Aws Sns metrics
+  title: Aws sns logs
+  description: Collect Aws sns metrics

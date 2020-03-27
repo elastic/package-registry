@@ -10,7 +10,8 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch: {}
 screenshots:
 - src: /img/ceph-overview-dashboard.png
   title: Ceph Overview Dashboard
@@ -27,4 +28,4 @@ datasources:
   description: Collect metrics from Ceph instances
   inputs:
   - type: ceph/metrics
-    description: Collecting metrics for Ceph
+    description: Collecting Ceph metrics

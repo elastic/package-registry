@@ -11,7 +11,9 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.4.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/filebeat-activemq-application-events.png
   title: Filebeat Activemq Application Events
@@ -44,6 +46,6 @@ datasources:
   description: Collect logs and metrics from Activemq instances
   inputs:
   - type: logs
-    description: Collecting logs for Activemq
+    description: Collecting Activemq logs
   - type: activemq/metrics
-    description: Collecting metrics for Activemq
+    description: Collecting Activemq metrics

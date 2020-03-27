@@ -11,7 +11,9 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-iis.png
   title: Kibana Iis
@@ -23,6 +25,6 @@ datasources:
   description: Collect logs and metrics from Iis instances
   inputs:
   - type: logs
-    description: Collecting logs for Iis
+    description: Collecting Iis logs
   - type: iis/metrics
-    description: Collecting metrics for Iis
+    description: Collecting Iis metrics

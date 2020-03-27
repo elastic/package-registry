@@ -1,5 +1,5 @@
 id: state_resourcequota
-title: Kubernetes State_resourcequota Metrics
+title: Kubernetes state_resourcequota metrics
 release: ga
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Kubernetes State_resourcequota logs
-  description: Collect Kubernetes State_resourcequota metrics
+  title: Kubernetes state_resourcequota logs
+  description: Collect Kubernetes state_resourcequota metrics

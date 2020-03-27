@@ -40,7 +40,7 @@ type readmeTemplateModel struct {
 func createDocs(moduleName string) ([]docContent, error) {
 	var body bytes.Buffer
 	err := readmeTemplate.Execute(&body, readmeTemplateModel{
-		ModuleName: strings.Title(moduleName),
+		ModuleName: correctSpelling(strings.Title(moduleName)),
 	})
 	if err != nil {
 		return nil, errors.Wrapf(err, "rendering README template failed")

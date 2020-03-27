@@ -1,5 +1,5 @@
 id: mixer
-title: Istio Mixer Metrics
+title: Istio mixer metrics
 release: beta
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Istio Mixer logs
-  description: Collect Istio Mixer metrics
+  title: Istio mixer logs
+  description: Collect Istio mixer metrics

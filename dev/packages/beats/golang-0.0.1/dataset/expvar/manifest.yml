@@ -1,5 +1,5 @@
 id: expvar
-title: Golang Expvar Metrics
+title: Golang expvar metrics
 release: ga
 type: metrics
 streams:
@@ -9,5 +9,5 @@ streams:
     name: expvar.namespace
   - default: /debug/vars
     name: expvar.path
-  title: Golang Expvar logs
-  description: Collect Golang Expvar metrics
+  title: Golang expvar logs
+  description: Collect Golang expvar metrics

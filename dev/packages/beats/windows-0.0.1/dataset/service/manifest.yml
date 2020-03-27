@@ -1,5 +1,5 @@
 id: service
-title: Windows Service Metrics
+title: Windows service metrics
 release: ga
 type: metrics
 streams:
@@ -7,5 +7,5 @@ streams:
   vars:
   - default: 60s
     name: period
-  title: Windows Service logs
-  description: Collect Windows Service metrics
+  title: Windows service logs
+  description: Collect Windows service metrics

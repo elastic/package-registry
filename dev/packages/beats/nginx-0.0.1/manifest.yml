@@ -11,7 +11,9 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-nginx.png
   title: Kibana Nginx
@@ -32,6 +34,6 @@ datasources:
   description: Collect logs and metrics from Nginx instances
   inputs:
   - type: logs
-    description: Collecting logs for Nginx
+    description: Collecting Nginx logs
   - type: nginx/metrics
-    description: Collecting metrics for Nginx
+    description: Collecting Nginx metrics

@@ -1,5 +1,5 @@
 id: enrich
-title: Elasticsearch Enrich Metrics
+title: Elasticsearch enrich metrics
 release: ga
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
     name: period
   - default: true
     name: xpack.enabled
-  title: Elasticsearch Enrich logs
-  description: Collect Elasticsearch Enrich metrics
+  title: Elasticsearch enrich logs
+  description: Collect Elasticsearch enrich metrics

@@ -1,5 +1,5 @@
 id: ml_job
-title: Elasticsearch Ml_job Metrics
+title: Elasticsearch ml_job metrics
 release: ga
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
     name: period
   - default: true
     name: xpack.enabled
-  title: Elasticsearch Ml_job logs
-  description: Collect Elasticsearch Ml_job metrics
+  title: Elasticsearch ml_job logs
+  description: Collect Elasticsearch ml_job metrics

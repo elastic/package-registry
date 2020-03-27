@@ -70,21 +70,21 @@ func updateDatasources(datasources datasourceContentArray, moduleName, packageTy
 }
 
 func toDatasourceTitle(moduleName, packageType string) string {
-	return fmt.Sprintf("%s %s", strings.Title(moduleName), packageType)
+	return correctSpelling(fmt.Sprintf("%s %s", strings.Title(moduleName), packageType))
 }
 
 func toDatasourceDescription(moduleName, packageType string) string {
-	return fmt.Sprintf("Collect %s from %s instances", packageType, strings.Title(moduleName))
+	return correctSpelling(fmt.Sprintf("Collect %s from %s instances", packageType, strings.Title(moduleName)))
 }
 
 func toDatasourceTitleForTwoTypes(moduleName, firstPackageType, secondPackageType string) string {
-	return fmt.Sprintf("%s %s and %s", strings.Title(moduleName), firstPackageType, secondPackageType)
+	return correctSpelling(fmt.Sprintf("%s %s and %s", strings.Title(moduleName), firstPackageType, secondPackageType))
 }
 
 func toDatasourceDescriptionForTwoTypes(moduleName, firstPackageType, secondPackageType string) string {
-	return fmt.Sprintf("Collect %s and %s from %s instances", firstPackageType, secondPackageType, strings.Title(moduleName))
+	return correctSpelling(fmt.Sprintf("Collect %s and %s from %s instances", firstPackageType, secondPackageType, strings.Title(moduleName)))
 }
 
 func toDatasourceInputDescription(moduleName, packageType string) string {
-	return fmt.Sprintf("Collecting %s for %s", packageType, strings.Title(moduleName))
+	return correctSpelling(fmt.Sprintf("Collecting %s %s", strings.Title(moduleName), packageType))
 }

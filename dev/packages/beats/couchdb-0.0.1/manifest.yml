@@ -10,7 +10,8 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch: {}
 screenshots:
 - src: /img/metricbeat-couchdb-overview.png
   title: Metricbeat Couchdb Overview
@@ -27,4 +28,4 @@ datasources:
   description: Collect metrics from Couchdb instances
   inputs:
   - type: couchdb/metrics
-    description: Collecting metrics for Couchdb
+    description: Collecting Couchdb metrics

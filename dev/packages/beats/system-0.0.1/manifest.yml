@@ -11,7 +11,9 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.4.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-system.png
   title: Kibana System
@@ -31,6 +33,6 @@ datasources:
   description: Collect logs and metrics from System instances
   inputs:
   - type: logs
-    description: Collecting logs for System
+    description: Collecting System logs
   - type: system/metrics
-    description: Collecting metrics for System
+    description: Collecting System metrics

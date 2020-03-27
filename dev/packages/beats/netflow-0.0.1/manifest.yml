@@ -10,11 +10,12 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch: {}
 datasources:
 - name: netflow
   title: Netflow logs
   description: Collect logs from Netflow instances
   inputs:
   - type: logs
-    description: Collecting logs for Netflow
+    description: Collecting Netflow logs

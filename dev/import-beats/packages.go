@@ -32,12 +32,12 @@ type packageContent struct {
 }
 
 func newPackageContent(name string) packageContent {
-	title := strings.Title(name)
+	title := correctSpelling(strings.Title(name))
 	return packageContent{
 		manifest: util.Package{
 			FormatVersion: "1.0.0",
 			Name:          name,
-			Description:   strings.Title(name + " integration"),
+			Description:   correctSpelling(strings.Title(name + " integration")),
 			Title:         &title,
 			Version:       "0.0.1", // TODO
 			Type:          "integration",
@@ -174,6 +174,10 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 			return err
 		}
 		aPackage.addKibanaContent(kibana)
+		manifest.Requirement, err = createRequirement(aPackage.kibana, aPackage.datasets)
+		if err != nil {
+			return err
+		}
 
 		// docs
 		if len(aPackage.docs) == 0 {

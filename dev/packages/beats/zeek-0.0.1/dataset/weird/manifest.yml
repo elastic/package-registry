@@ -1,5 +1,5 @@
 id: weird
-title: Zeek Weird Logs
+title: Zeek weird logs
 release: ga
 type: logs
 streams:
@@ -17,5 +17,5 @@ streams:
   - default:
     - zeek.weird
     name: tags
-  title: Zeek Weird logs
-  description: Collect Zeek Weird logs
+  title: Zeek weird logs
+  description: Collect Zeek weird logs

@@ -1,5 +1,5 @@
 id: status
-title: Mysql Status Metrics
+title: MySQL status metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Mysql Status logs
-  description: Collect Mysql Status metrics
+  title: MySQL status logs
+  description: Collect MySQL status metrics

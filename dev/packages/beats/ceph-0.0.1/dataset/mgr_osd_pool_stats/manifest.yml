@@ -1,8 +1,8 @@
 id: mgr_osd_pool_stats
-title: Ceph Mgr_osd_pool_stats Metrics
+title: Ceph mgr_osd_pool_stats metrics
 release: beta
 type: metrics
 streams:
 - input: ceph/metrics
-  title: Ceph Mgr_osd_pool_stats logs
-  description: Collect Ceph Mgr_osd_pool_stats metrics
+  title: Ceph mgr_osd_pool_stats logs
+  description: Collect Ceph mgr_osd_pool_stats metrics

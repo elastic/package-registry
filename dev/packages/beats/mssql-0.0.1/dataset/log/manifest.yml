@@ -1,5 +1,5 @@
 id: log
-title: Mssql Log Logs
+title: Mssql log logs
 release: ga
 type: logs
 streams:
@@ -17,5 +17,5 @@ streams:
     os.windows:
       default:
       - c:\ProgramFiles\Microsoft SQL Server\MSSQL.1MSSQL\LOG\ERRORLOG*
-  title: Mssql Log logs
-  description: Collect Mssql Log logs
+  title: Mssql log logs
+  description: Collect Mssql log logs

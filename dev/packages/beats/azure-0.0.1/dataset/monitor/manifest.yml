@@ -1,5 +1,5 @@
 id: monitor
-title: Azure Monitor Metrics
+title: Azure monitor metrics
 release: beta
 type: metrics
 streams:
@@ -26,5 +26,5 @@ streams:
     name: subscription_id
   - default: ${AZURE_TENANT_ID:""}
     name: tenant_id
-  title: Azure Monitor logs
-  description: Collect Azure Monitor metrics
+  title: Azure monitor logs
+  description: Collect Azure monitor metrics

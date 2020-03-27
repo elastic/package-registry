@@ -1,5 +1,5 @@
 id: performance
-title: Oracle Performance Metrics
+title: Oracle performance metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Oracle Performance logs
-  description: Collect Oracle Performance metrics
+  title: Oracle performance logs
+  description: Collect Oracle performance metrics

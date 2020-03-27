@@ -10,7 +10,8 @@ categories:
 release: beta
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.0.0-SNAPSHOT <8.0.0'
+  elasticsearch: {}
 screenshots:
 - src: /img/metricbeat-consul.png
   title: Metricbeat Consul
@@ -27,4 +28,4 @@ datasources:
   description: Collect metrics from Consul instances
   inputs:
   - type: consul/metrics
-    description: Collecting metrics for Consul
+    description: Collecting Consul metrics

@@ -1,8 +1,8 @@
 id: producer
-title: Kafka Producer Metrics
+title: Kafka producer metrics
 release: beta
 type: metrics
 streams:
 - input: kafka/metrics
-  title: Kafka Producer logs
-  description: Collect Kafka Producer metrics
+  title: Kafka producer logs
+  description: Collect Kafka producer metrics

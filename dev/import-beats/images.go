@@ -119,7 +119,7 @@ func (images imageContentArray) toManifestImages() ([]util.Image, error) {
 
 func toImageTitle(fileName string) string {
 	i := strings.LastIndex(fileName, ".")
-	return strings.Title(imageTitleReplacer.Replace(fileName[:i]))
+	return correctSpelling(strings.Title(imageTitleReplacer.Replace(fileName[:i])))
 }
 
 func readImageSize(imagePath string) (string, error) {

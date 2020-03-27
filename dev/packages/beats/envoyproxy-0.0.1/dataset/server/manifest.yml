@@ -1,5 +1,5 @@
 id: server
-title: Envoyproxy Server Metrics
+title: Envoyproxy server metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Envoyproxy Server logs
-  description: Collect Envoyproxy Server metrics
+  title: Envoyproxy server logs
+  description: Collect Envoyproxy server metrics

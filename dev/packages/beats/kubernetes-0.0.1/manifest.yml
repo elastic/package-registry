@@ -10,7 +10,8 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch: {}
 screenshots:
 - src: /img/metricbeat-kubernetes-controllermanager.png
   title: Metricbeat Kubernetes Controllermanager
@@ -35,4 +36,4 @@ datasources:
   description: Collect metrics from Kubernetes instances
   inputs:
   - type: kubernetes/metrics
-    description: Collecting metrics for Kubernetes
+    description: Collecting Kubernetes metrics

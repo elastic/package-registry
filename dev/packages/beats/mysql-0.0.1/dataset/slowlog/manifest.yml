@@ -1,5 +1,5 @@
 id: slowlog
-title: Mysql Slowlog Logs
+title: MySQL slowlog logs
 release: ga
 type: logs
 streams:
@@ -15,5 +15,5 @@ streams:
     os.windows:
       default:
       - c:/programdata/MySQL/MySQL Server*/mysql-slow.log*
-  title: Mysql Slowlog logs
-  description: Collect Mysql Slowlog logs
+  title: MySQL slowlog logs
+  description: Collect MySQL slowlog logs

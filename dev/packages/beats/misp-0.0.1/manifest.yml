@@ -10,7 +10,9 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=8.0.0-SNAPSHOT <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-misp.png
   title: Kibana Misp
@@ -22,4 +24,4 @@ datasources:
   description: Collect logs from Misp instances
   inputs:
   - type: logs
-    description: Collecting logs for Misp
+    description: Collecting Misp logs

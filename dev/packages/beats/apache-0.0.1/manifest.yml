@@ -11,7 +11,9 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-apache.png
   title: Kibana Apache
@@ -32,6 +34,6 @@ datasources:
   description: Collect logs and metrics from Apache instances
   inputs:
   - type: logs
-    description: Collecting logs for Apache
+    description: Collecting Apache logs
   - type: apache/metrics
-    description: Collecting metrics for Apache
+    description: Collecting Apache metrics

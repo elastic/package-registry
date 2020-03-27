@@ -1,5 +1,5 @@
 id: cpu
-title: System Cpu Metrics
+title: System cpu metrics
 release: ga
 type: metrics
 streams:
@@ -21,5 +21,5 @@ streams:
   - default:
     - .*
     name: processes
-  title: System Cpu logs
-  description: Collect System Cpu metrics
+  title: System cpu logs
+  description: Collect System cpu metrics

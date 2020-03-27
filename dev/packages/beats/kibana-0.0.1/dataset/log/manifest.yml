@@ -1,5 +1,5 @@
 id: log
-title: Kibana Log Logs
+title: Kibana log logs
 release: ga
 type: logs
 streams:
@@ -8,5 +8,5 @@ streams:
   - default:
     - /var/log/kibana/kibana.stdout
     name: paths
-  title: Kibana Log logs
-  description: Collect Kibana Log logs
+  title: Kibana log logs
+  description: Collect Kibana log logs

@@ -10,7 +10,8 @@ categories:
 release: beta
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.1.0 <8.0.0'
+  elasticsearch: {}
 screenshots:
 - src: /img/metricbeat-redisenterprise-overview.png
   title: Metricbeat Redisenterprise Overview
@@ -27,4 +28,4 @@ datasources:
   description: Collect metrics from Redisenterprise instances
   inputs:
   - type: redisenterprise/metrics
-    description: Collecting metrics for Redisenterprise
+    description: Collecting Redisenterprise metrics

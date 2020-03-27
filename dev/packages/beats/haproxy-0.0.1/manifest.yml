@@ -11,7 +11,9 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-haproxy-overview.png
   title: Kibana Haproxy Overview
@@ -28,6 +30,6 @@ datasources:
   description: Collect logs and metrics from Haproxy instances
   inputs:
   - type: logs
-    description: Collecting logs for Haproxy
+    description: Collecting Haproxy logs
   - type: haproxy/metrics
-    description: Collecting metrics for Haproxy
+    description: Collecting Haproxy metrics

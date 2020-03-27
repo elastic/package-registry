@@ -11,7 +11,9 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/filebeat-kafka-logs-overview.png
   title: Filebeat Kafka Logs Overview
@@ -32,6 +34,6 @@ datasources:
   description: Collect logs and metrics from Kafka instances
   inputs:
   - type: logs
-    description: Collecting logs for Kafka
+    description: Collecting Kafka logs
   - type: kafka/metrics
-    description: Collecting metrics for Kafka
+    description: Collecting Kafka metrics

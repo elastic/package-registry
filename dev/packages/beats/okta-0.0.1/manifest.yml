@@ -10,7 +10,9 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=8.0.0-SNAPSHOT <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/filebeat-okta-dashboard.png
   title: Filebeat Okta Dashboard
@@ -22,4 +24,4 @@ datasources:
   description: Collect logs from Okta instances
   inputs:
   - type: logs
-    description: Collecting logs for Okta
+    description: Collecting Okta logs

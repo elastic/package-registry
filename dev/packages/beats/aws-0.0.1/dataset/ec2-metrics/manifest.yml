@@ -1,5 +1,5 @@
 id: ec2
-title: Aws Ec2 Metrics
+title: Aws ec2 metrics
 release: ga
 type: metrics
 streams:
@@ -13,5 +13,5 @@ streams:
     - key: Organization
       value: Engineering
     name: tags_filter
-  title: Aws Ec2 logs
-  description: Collect Aws Ec2 metrics
+  title: Aws ec2 logs
+  description: Collect Aws ec2 metrics

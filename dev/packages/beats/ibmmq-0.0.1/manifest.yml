@@ -11,7 +11,9 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.4.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/filebeat-ibmmq.png
   title: Filebeat Ibmmq
@@ -40,6 +42,6 @@ datasources:
   description: Collect logs and metrics from Ibmmq instances
   inputs:
   - type: logs
-    description: Collecting logs for Ibmmq
+    description: Collecting Ibmmq logs
   - type: ibmmq/metrics
-    description: Collecting metrics for Ibmmq
+    description: Collecting Ibmmq metrics

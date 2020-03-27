@@ -1,5 +1,5 @@
 id: error
-title: Apache Error Logs
+title: Apache error logs
 release: ga
 type: logs
 streams:
@@ -16,5 +16,5 @@ streams:
       default:
       - C:/tools/Apache/httpd-2.*/Apache24/logs/error.log*
       - C:/Program Files/Apache Software Foundation/Apache2.*/logs/error.log*
-  title: Apache Error logs
-  description: Collect Apache Error logs
+  title: Apache error logs
+  description: Collect Apache error logs

@@ -1,8 +1,8 @@
 id: consumer
-title: Kafka Consumer Metrics
+title: Kafka consumer metrics
 release: beta
 type: metrics
 streams:
 - input: kafka/metrics
-  title: Kafka Consumer logs
-  description: Collect Kafka Consumer metrics
+  title: Kafka consumer logs
+  description: Collect Kafka consumer metrics

@@ -1,5 +1,5 @@
 id: requests
-title: Tomcat Requests Metrics
+title: Tomcat requests metrics
 release: beta
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
     name: path
   - default: 10s
     name: period
-  title: Tomcat Requests logs
-  description: Collect Tomcat Requests metrics
+  title: Tomcat requests logs
+  description: Collect Tomcat requests metrics

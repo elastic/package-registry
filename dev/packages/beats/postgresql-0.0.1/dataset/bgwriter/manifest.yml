@@ -1,5 +1,5 @@
 id: bgwriter
-title: Postgresql Bgwriter Metrics
+title: Postgresql bgwriter metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Postgresql Bgwriter logs
-  description: Collect Postgresql Bgwriter metrics
+  title: Postgresql bgwriter logs
+  description: Collect Postgresql bgwriter metrics

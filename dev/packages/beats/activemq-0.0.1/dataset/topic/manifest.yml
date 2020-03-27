@@ -1,5 +1,5 @@
 id: topic
-title: Activemq Topic Metrics
+title: Activemq topic metrics
 release: ga
 type: metrics
 streams:
@@ -16,5 +16,5 @@ streams:
     name: period
   - default: admin
     name: username
-  title: Activemq Topic logs
-  description: Collect Activemq Topic metrics
+  title: Activemq topic logs
+  description: Collect Activemq topic metrics

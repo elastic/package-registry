@@ -1,5 +1,5 @@
 id: elb
-title: Aws Elb Metrics
+title: Aws elb metrics
 release: ga
 type: metrics
 streams:
@@ -13,5 +13,5 @@ streams:
     - key: dept
       value: eng
     name: tags_filter
-  title: Aws Elb logs
-  description: Collect Aws Elb metrics
+  title: Aws elb logs
+  description: Collect Aws elb metrics

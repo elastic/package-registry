@@ -1,5 +1,5 @@
 id: result
-title: Osquery Result Logs
+title: Osquery result logs
 release: ga
 type: logs
 streams:
@@ -17,5 +17,5 @@ streams:
       - C:/ProgramData/osquery/log/osqueryd.results.log*
   - default: true
     name: use_namespace
-  title: Osquery Result logs
-  description: Collect Osquery Result logs
+  title: Osquery result logs
+  description: Collect Osquery result logs

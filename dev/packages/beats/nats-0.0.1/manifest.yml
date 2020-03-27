@@ -11,7 +11,9 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/filebeat_nats_dashboard.png
   title: Filebeat Nats Dashboard
@@ -32,6 +34,6 @@ datasources:
   description: Collect logs and metrics from Nats instances
   inputs:
   - type: logs
-    description: Collecting logs for Nats
+    description: Collecting Nats logs
   - type: nats/metrics
-    description: Collecting metrics for Nats
+    description: Collecting Nats metrics

@@ -10,7 +10,9 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/filebeat-panw-traffic.png
   title: Filebeat Panw Traffic
@@ -26,4 +28,4 @@ datasources:
   description: Collect logs from Panw instances
   inputs:
   - type: logs
-    description: Collecting logs for Panw
+    description: Collecting Panw logs

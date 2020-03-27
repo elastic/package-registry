@@ -1,5 +1,5 @@
 id: pool
-title: Php_fpm Pool Metrics
+title: Php_fpm pool metrics
 release: ga
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
     name: period
   - default: /status
     name: status_path
-  title: Php_fpm Pool logs
-  description: Collect Php_fpm Pool metrics
+  title: Php_fpm pool logs
+  description: Collect Php_fpm pool metrics

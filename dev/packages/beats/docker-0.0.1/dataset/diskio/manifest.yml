@@ -1,5 +1,5 @@
 id: diskio
-title: Docker Diskio Metrics
+title: Docker diskio metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Docker Diskio logs
-  description: Collect Docker Diskio metrics
+  title: Docker diskio logs
+  description: Collect Docker diskio metrics

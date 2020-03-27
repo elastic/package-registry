@@ -11,7 +11,8 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=8.0.0-SNAPSHOT <8.0.0'
+  elasticsearch: {}
 screenshots:
 - src: /img/kibana-envoyproxy.jpg
   title: Kibana Envoyproxy
@@ -28,6 +29,6 @@ datasources:
   description: Collect logs and metrics from Envoyproxy instances
   inputs:
   - type: logs
-    description: Collecting logs for Envoyproxy
+    description: Collecting Envoyproxy logs
   - type: envoyproxy/metrics
-    description: Collecting metrics for Envoyproxy
+    description: Collecting Envoyproxy metrics

@@ -1,5 +1,5 @@
 id: info
-title: Haproxy Info Metrics
+title: Haproxy info metrics
 release: ga
 type: metrics
 streams:
@@ -14,5 +14,5 @@ streams:
     name: period
   - default: admin
     name: username
-  title: Haproxy Info logs
-  description: Collect Haproxy Info metrics
+  title: Haproxy info logs
+  description: Collect Haproxy info metrics

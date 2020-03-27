@@ -1,5 +1,5 @@
 id: memory
-title: Tomcat Memory Metrics
+title: Tomcat memory metrics
 release: beta
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
     name: path
   - default: 10s
     name: period
-  title: Tomcat Memory logs
-  description: Collect Tomcat Memory metrics
+  title: Tomcat memory logs
+  description: Collect Tomcat memory metrics

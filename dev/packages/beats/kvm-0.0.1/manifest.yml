@@ -9,12 +9,12 @@ categories:
 - metrics
 release: beta
 requirement:
-  kibana:
-    versions: ""
+  kibana: {}
+  elasticsearch: {}
 datasources:
 - name: kvm
   title: Kvm metrics
   description: Collect metrics from Kvm instances
   inputs:
   - type: kvm/metrics
-    description: Collecting metrics for Kvm
+    description: Collecting Kvm metrics

@@ -10,7 +10,8 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch: {}
 screenshots:
 - src: /img/metricbeat-aerospike-overview.png
   title: Metricbeat Aerospike Overview
@@ -27,4 +28,4 @@ datasources:
   description: Collect metrics from Aerospike instances
   inputs:
   - type: aerospike/metrics
-    description: Collecting metrics for Aerospike
+    description: Collecting Aerospike metrics

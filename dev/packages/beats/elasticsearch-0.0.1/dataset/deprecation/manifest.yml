@@ -1,5 +1,5 @@
 id: deprecation
-title: Elasticsearch Deprecation Logs
+title: Elasticsearch deprecation logs
 release: ga
 type: logs
 streams:
@@ -17,5 +17,5 @@ streams:
       default:
       - c:/ProgramData/Elastic/Elasticsearch/logs/*_deprecation.log
       - c:/ProgramData/Elastic/Elasticsearch/logs/*_deprecation.json
-  title: Elasticsearch Deprecation logs
-  description: Collect Elasticsearch Deprecation logs
+  title: Elasticsearch deprecation logs
+  description: Collect Elasticsearch deprecation logs

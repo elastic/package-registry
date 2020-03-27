@@ -1,5 +1,5 @@
 id: vpn
-title: Aws Vpn Metrics
+title: Aws vpn metrics
 release: beta
 type: metrics
 streams:
@@ -13,5 +13,5 @@ streams:
     - key: dept
       value: eng
     name: tags_filter
-  title: Aws Vpn logs
-  description: Collect Aws Vpn metrics
+  title: Aws vpn logs
+  description: Collect Aws vpn metrics

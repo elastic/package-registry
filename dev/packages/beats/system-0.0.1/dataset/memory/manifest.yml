@@ -1,5 +1,5 @@
 id: memory
-title: System Memory Metrics
+title: System memory metrics
 release: ga
 type: metrics
 streams:
@@ -21,5 +21,5 @@ streams:
   - default:
     - .*
     name: processes
-  title: System Memory logs
-  description: Collect System Memory metrics
+  title: System memory logs
+  description: Collect System memory metrics

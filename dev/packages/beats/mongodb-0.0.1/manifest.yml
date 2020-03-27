@@ -11,7 +11,9 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/filebeat-mongodb-overview.png
   title: Filebeat Mongodb Overview
@@ -28,6 +30,6 @@ datasources:
   description: Collect logs and metrics from Mongodb instances
   inputs:
   - type: logs
-    description: Collecting logs for Mongodb
+    description: Collecting Mongodb logs
   - type: mongodb/metrics
-    description: Collecting metrics for Mongodb
+    description: Collecting Mongodb metrics

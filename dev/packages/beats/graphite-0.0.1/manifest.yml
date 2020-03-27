@@ -9,12 +9,12 @@ categories:
 - metrics
 release: ga
 requirement:
-  kibana:
-    versions: ""
+  kibana: {}
+  elasticsearch: {}
 datasources:
 - name: graphite
   title: Graphite metrics
   description: Collect metrics from Graphite instances
   inputs:
   - type: graphite/metrics
-    description: Collecting metrics for Graphite
+    description: Collecting Graphite metrics

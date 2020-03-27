@@ -10,7 +10,9 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.0.0-alpha1-SNAPSHOT <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-santa-log-overview.png
   title: Kibana Santa Log Overview
@@ -22,4 +24,4 @@ datasources:
   description: Collect logs from Santa instances
   inputs:
   - type: logs
-    description: Collecting logs for Santa
+    description: Collecting Santa logs

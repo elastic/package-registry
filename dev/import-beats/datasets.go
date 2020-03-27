@@ -119,7 +119,7 @@ func createDatasets(modulePath, moduleName, moduleRelease, beatType string) (dat
 		// manifest
 		manifest := util.DataSet{
 			ID:      datasetName,
-			Title:   strings.Title(fmt.Sprintf("%s %s %s", moduleName, datasetName, beatType)),
+			Title:   fmt.Sprintf("%s %s %s", correctSpelling(strings.Title(moduleName)), datasetName, beatType),
 			Release: datasetRelease,
 			Type:    beatType,
 			Streams: streams,

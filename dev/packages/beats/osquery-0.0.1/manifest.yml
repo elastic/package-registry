@@ -10,7 +10,9 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-osquery-compatibility.png
   title: Kibana Osquery Compatibility
@@ -27,4 +29,4 @@ datasources:
   description: Collect logs from Osquery instances
   inputs:
   - type: logs
-    description: Collecting logs for Osquery
+    description: Collecting Osquery logs

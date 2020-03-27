@@ -10,7 +10,8 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch: {}
 screenshots:
 - src: /img/uwsgi_dashboard.png
   title: Uwsgi Dashboard
@@ -22,4 +23,4 @@ datasources:
   description: Collect metrics from Uwsgi instances
   inputs:
   - type: uwsgi/metrics
-    description: Collecting metrics for Uwsgi
+    description: Collecting Uwsgi metrics

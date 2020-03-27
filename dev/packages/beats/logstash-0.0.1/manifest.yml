@@ -11,7 +11,9 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-logstash-log.png
   title: Kibana Logstash Log
@@ -32,6 +34,6 @@ datasources:
   description: Collect logs and metrics from Logstash instances
   inputs:
   - type: logs
-    description: Collecting logs for Logstash
+    description: Collecting Logstash logs
   - type: logstash/metrics
-    description: Collecting metrics for Logstash
+    description: Collecting Logstash metrics

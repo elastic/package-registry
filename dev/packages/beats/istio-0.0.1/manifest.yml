@@ -9,12 +9,12 @@ categories:
 - metrics
 release: beta
 requirement:
-  kibana:
-    versions: ""
+  kibana: {}
+  elasticsearch: {}
 datasources:
 - name: istio
   title: Istio metrics
   description: Collect metrics from Istio instances
   inputs:
   - type: istio/metrics
-    description: Collecting metrics for Istio
+    description: Collecting Istio metrics

@@ -11,7 +11,9 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 icons:
 - src: /img/logo_rabbitmq.svg
   title: Logo Rabbitmq
@@ -23,6 +25,6 @@ datasources:
   description: Collect logs and metrics from Rabbitmq instances
   inputs:
   - type: logs
-    description: Collecting logs for Rabbitmq
+    description: Collecting Rabbitmq logs
   - type: rabbitmq/metrics
-    description: Collecting metrics for Rabbitmq
+    description: Collecting Rabbitmq metrics

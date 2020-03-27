@@ -10,7 +10,9 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-audit-auditd.png
   title: Kibana Audit Auditd
@@ -22,4 +24,4 @@ datasources:
   description: Collect logs from Auditd instances
   inputs:
   - type: logs
-    description: Collecting logs for Auditd
+    description: Collecting Auditd logs

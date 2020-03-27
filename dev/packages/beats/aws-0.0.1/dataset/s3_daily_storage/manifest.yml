@@ -1,5 +1,5 @@
 id: s3_daily_storage
-title: Aws S3_daily_storage Metrics
+title: Aws s3_daily_storage metrics
 release: ga
 type: metrics
 streams:
@@ -13,5 +13,5 @@ streams:
     name: secret_access_key
   - default: ${AWS_SESSION_TOKEN:""}
     name: session_token
-  title: Aws S3_daily_storage logs
-  description: Collect Aws S3_daily_storage metrics
+  title: Aws s3_daily_storage logs
+  description: Collect Aws s3_daily_storage metrics

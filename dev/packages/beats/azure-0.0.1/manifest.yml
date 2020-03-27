@@ -11,7 +11,9 @@ categories:
 release: beta
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.6.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/filebeat-azure-overview.png
   title: Filebeat Azure Overview
@@ -44,6 +46,6 @@ datasources:
   description: Collect logs and metrics from Azure instances
   inputs:
   - type: logs
-    description: Collecting logs for Azure
+    description: Collecting Azure logs
   - type: azure/metrics
-    description: Collecting metrics for Azure
+    description: Collecting Azure metrics

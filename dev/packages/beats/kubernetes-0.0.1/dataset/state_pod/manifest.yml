@@ -1,5 +1,5 @@
 id: state_pod
-title: Kubernetes State_pod Metrics
+title: Kubernetes state_pod metrics
 release: ga
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Kubernetes State_pod logs
-  description: Collect Kubernetes State_pod metrics
+  title: Kubernetes state_pod logs
+  description: Collect Kubernetes state_pod metrics

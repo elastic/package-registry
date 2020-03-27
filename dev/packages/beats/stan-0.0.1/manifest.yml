@@ -10,7 +10,8 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.5.2 <8.0.0'
+  elasticsearch: {}
 screenshots:
 - src: /img/metricbeat-stan-overview.png
   title: Metricbeat Stan Overview
@@ -27,4 +28,4 @@ datasources:
   description: Collect metrics from Stan instances
   inputs:
   - type: stan/metrics
-    description: Collecting metrics for Stan
+    description: Collecting Stan metrics

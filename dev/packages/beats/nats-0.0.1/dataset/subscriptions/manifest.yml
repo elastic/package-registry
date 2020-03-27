@@ -1,5 +1,5 @@
 id: subscriptions
-title: Nats Subscriptions Metrics
+title: Nats subscriptions metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Nats Subscriptions logs
-  description: Collect Nats Subscriptions metrics
+  title: Nats subscriptions logs
+  description: Collect Nats subscriptions metrics

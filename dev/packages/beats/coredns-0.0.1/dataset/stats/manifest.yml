@@ -1,5 +1,5 @@
 id: stats
-title: Coredns Stats Metrics
+title: Coredns stats metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Coredns Stats logs
-  description: Collect Coredns Stats metrics
+  title: Coredns stats logs
+  description: Collect Coredns stats metrics

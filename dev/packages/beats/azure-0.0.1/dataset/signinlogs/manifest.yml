@@ -1,5 +1,5 @@
 id: signinlogs
-title: Azure Signinlogs Logs
+title: Azure signinlogs logs
 release: beta
 type: logs
 streams:
@@ -14,5 +14,5 @@ streams:
   - name: connection_string
   - name: storage_account
   - name: storage_account_key
-  title: Azure Signinlogs logs
-  description: Collect Azure Signinlogs logs
+  title: Azure signinlogs logs
+  description: Collect Azure signinlogs logs

@@ -1,5 +1,5 @@
 id: status
-title: Uwsgi Status Metrics
+title: Uwsgi status metrics
 release: ga
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Uwsgi Status logs
-  description: Collect Uwsgi Status metrics
+  title: Uwsgi status logs
+  description: Collect Uwsgi status metrics

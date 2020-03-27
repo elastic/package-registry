@@ -11,7 +11,9 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-redis.png
   title: Kibana Redis
@@ -32,6 +34,6 @@ datasources:
   description: Collect logs and metrics from Redis instances
   inputs:
   - type: logs
-    description: Collecting logs for Redis
+    description: Collecting Redis logs
   - type: redis/metrics
-    description: Collecting metrics for Redis
+    description: Collecting Redis metrics

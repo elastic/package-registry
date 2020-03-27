@@ -1,5 +1,5 @@
 id: cache
-title: Tomcat Cache Metrics
+title: Tomcat cache metrics
 release: beta
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
     name: path
   - default: 10s
     name: period
-  title: Tomcat Cache logs
-  description: Collect Tomcat Cache metrics
+  title: Tomcat cache logs
+  description: Collect Tomcat cache metrics

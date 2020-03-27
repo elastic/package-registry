@@ -1,5 +1,5 @@
 id: state_storageclass
-title: Kubernetes State_storageclass Metrics
+title: Kubernetes state_storageclass metrics
 release: experimental
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Kubernetes State_storageclass logs
-  description: Collect Kubernetes State_storageclass metrics
+  title: Kubernetes state_storageclass logs
+  description: Collect Kubernetes state_storageclass metrics
