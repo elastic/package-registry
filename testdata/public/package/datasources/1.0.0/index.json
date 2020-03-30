@@ -3,7 +3,7 @@
   "name": "datasources",
   "title": "Default datasource Integration",
   "version": "1.0.0",
-  "readme": "/package/datasources-1.0.0/docs/README.md",
+  "readme": "/package/datasources/1.0.0/docs/README.md",
   "license": "basic",
   "description": "Package with data sources",
   "type": "integration",

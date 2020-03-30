@@ -85,7 +85,7 @@ type Image struct {
 }
 
 func (i Image) getPath(p *Package) string {
-	return "/package/" + p.Name + "-" + p.Version + i.Src
+	return path.Join("/package", p.Name, p.Version, i.Src)
 }
 
 // NewPackage creates a new package instances based on the given base path.
@@ -149,7 +149,7 @@ func NewPackage(basePath string) (*Package, error) {
 		if readme.IsDir() {
 			return nil, fmt.Errorf("README.md is a directory")
 		}
-		readmePathShort := "/package/" + p.Name + "-" + p.Version + "/docs/README.md"
+		readmePathShort := path.Join("/package", p.Name, p.Version, "docs", "README.md")
 		p.Readme = &readmePathShort
 	}
 
