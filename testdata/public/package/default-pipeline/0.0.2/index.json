@@ -15,11 +15,11 @@
     "elasticsearch": {}
   },
   "assets": [
-    "/package/default-pipeline-0.0.2/manifest.yml",
-    "/package/default-pipeline-0.0.2/docs/README.md",
-    "/package/default-pipeline-0.0.2/dataset/foo/manifest.yml",
-    "/package/default-pipeline-0.0.2/dataset/foo/fields/stream.yml",
-    "/package/default-pipeline-0.0.2/dataset/foo/elasticsearch/ingest-pipeline/default.json"
+    "/package/default-pipeline/0.0.2/manifest.yml",
+    "/package/default-pipeline/0.0.2/docs/README.md",
+    "/package/default-pipeline/0.0.2/dataset/foo/manifest.yml",
+    "/package/default-pipeline/0.0.2/dataset/foo/fields/stream.yml",
+    "/package/default-pipeline/0.0.2/dataset/foo/elasticsearch/ingest-pipeline/default.json"
   ],
   "datasets": [
     {
@@ -74,5 +74,5 @@
     }
   ],
   "download": "/epr/default-pipeline/default-pipeline-0.0.2.tar.gz",
-  "path": "/package/default-pipeline-0.0.2"
+  "path": "/package/default-pipeline/0.0.2"
 }

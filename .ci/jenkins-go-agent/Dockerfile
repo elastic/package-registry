@@ -1,9 +1,9 @@
-FROM golang:1.12
+FROM golang:1.13
 
 RUN \
     apt-get update \
       && apt-get install -y --no-install-recommends \
-         zip \
+         zip rsync\
       && rm -rf /var/lib/apt/lists/*
 
 RUN go get -u github.com/magefile/mage \

@@ -4,7 +4,7 @@ FROM golang:${GO_VERSION:-1.13.4}
 RUN \
     apt-get update \
       && apt-get install -y --no-install-recommends \
-         zip \
+         zip rsync \
       && rm -rf /var/lib/apt/lists/*
 
 COPY ./ /go/src/github.com/elastic/package-registry
