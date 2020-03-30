@@ -9,8 +9,7 @@ categories:
 - metrics
 release: ga
 requirement:
-  kibana:
-    versions: '>=7.3.0 <8.0.0'
+  kibana: {}
   elasticsearch: {}
 icons:
 - src: /img/logo_golang.svg

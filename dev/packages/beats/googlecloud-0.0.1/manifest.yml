@@ -10,8 +10,7 @@ categories:
 - metrics
 release: ga
 requirement:
-  kibana:
-    versions: '>=7.6.1 <8.0.0'
+  kibana: {}
   elasticsearch:
     versions: '>7.0.1'
 screenshots:

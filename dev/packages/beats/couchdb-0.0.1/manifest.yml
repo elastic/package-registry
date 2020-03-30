@@ -9,8 +9,7 @@ categories:
 - metrics
 release: ga
 requirement:
-  kibana:
-    versions: '>=7.3.0 <8.0.0'
+  kibana: {}
   elasticsearch: {}
 screenshots:
 - src: /img/metricbeat-couchdb-overview.png

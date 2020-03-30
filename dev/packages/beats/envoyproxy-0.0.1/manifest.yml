@@ -10,8 +10,7 @@ categories:
 - metrics
 release: ga
 requirement:
-  kibana:
-    versions: '>=8.0.0-SNAPSHOT <8.0.0'
+  kibana: {}
   elasticsearch: {}
 screenshots:
 - src: /img/kibana-envoyproxy.jpg

@@ -197,7 +197,8 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 
 		// docs
 		if len(aPackage.docs) == 0 {
-			docs, err := createDocs(moduleTitle)
+			packageDocsPath := filepath.Join("dev/import-beats-resources", moduleDir.Name(), "docs")
+			docs, err := createDocTemplates(packageDocsPath)
 			if err != nil {
 				return err
 			}
@@ -338,7 +339,7 @@ func (r *packageRepository) save(outputDir string) error {
 				for fileName, body := range objects {
 					resourceFilePath := filepath.Join(resourcePath, fileName)
 
-					log.Printf("\tcreate resouce file: %s", resourceFilePath)
+					log.Printf("\tcreate resource file: %s", resourceFilePath)
 					err = ioutil.WriteFile(resourceFilePath, body, 0644)
 					if err != nil {
 						return errors.Wrapf(err, "writing resource file failed (path: %s)", resourceFilePath)
@@ -359,9 +360,13 @@ func (r *packageRepository) save(outputDir string) error {
 				log.Printf("\twrite '%s' file\n", doc.fileName)
 
 				docFilePath := filepath.Join(docsPath, doc.fileName)
-				err = ioutil.WriteFile(docFilePath, doc.body, 0644)
+				f, err := os.OpenFile(docFilePath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 				if err != nil {
-					return errors.Wrapf(err, "writing doc file failed (path: %s)", docFilePath)
+					return errors.Wrapf(err, "opening doc file failed (path: %s)", docFilePath)
+				}
+				err = doc.body.Execute(f, nil)
+				if err != nil {
+					return errors.Wrapf(err, "rendering doc file failed (path: %s)", docFilePath)
 				}
 			}
 		}

@@ -1,2 +1,13 @@
 input: mysql/metrics
 metricsets: ["galera_status"]
+hosts: {{hosts}}
+{{#if password}}
+password: {{password}}
+{{/if}}
+period: {{period}}
+{{#if raw}}
+raw: {{raw}}
+{{/if}}
+{{#if username}}
+username: {{username}}
+{{/if}}

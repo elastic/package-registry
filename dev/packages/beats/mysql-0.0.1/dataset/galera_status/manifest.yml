@@ -4,5 +4,17 @@ release: beta
 type: metrics
 streams:
 - input: mysql/metrics
+  vars:
+  - default:
+    - root:secret@tcp(127.0.0.1:3306)/
+    name: hosts
+  - default: secret
+    name: password
+  - default: 10s
+    name: period
+  - default: false
+    name: raw
+  - default: root
+    name: username
   title: MySQL galera_status metrics
   description: Collect MySQL galera_status metrics

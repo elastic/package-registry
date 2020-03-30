@@ -5,46 +5,38 @@
 package main
 
 import (
-	"bytes"
+	"os"
+	"path/filepath"
 	"text/template"
 
 	"github.com/pkg/errors"
 )
 
-var readmeTemplate = template.Must(template.New("readme").Parse(`# {{ .ModuleTitle }} Integration
-
-TODO
-
-## Compatibility
-
-TODO
-
-### Inputs
-
-TODO
-
-## Dashboard
-
-TODO`))
+var emptyReadmeTemplate = template.Must(template.New("README.md").Parse("TODO"))
 
 type docContent struct {
 	fileName string
-	body     []byte
+	body *template.Template
 }
 
-type readmeTemplateModel struct {
-	ModuleTitle string
-}
-
-func createDocs(moduleTitle string) ([]docContent, error) {
-	var body bytes.Buffer
-	err := readmeTemplate.Execute(&body, readmeTemplateModel{
-		ModuleTitle: moduleTitle,
-	})
+func createDocTemplates(packageDocsPath string) ([]docContent, error) {
+	readmeTemplate, err := createReadmeTemplate(filepath.Join(packageDocsPath, "README.md"))
 	if err != nil {
-		return nil, errors.Wrapf(err, "rendering README template failed")
+		return nil, errors.Wrapf(err, "creating README template failed")
 	}
 	return []docContent{
-		{fileName: "README.md", body: body.Bytes()},
+		{fileName: "README.md", body: readmeTemplate},
 	}, nil
+}
+
+func createReadmeTemplate(readmePath string) (*template.Template, error) {
+	t := template.New("README.md")
+	t, err := t.ParseFiles(readmePath)
+	if os.IsNotExist(err) {
+		return emptyReadmeTemplate, nil
+	}
+	if err != nil {
+		return nil, errors.Wrapf(err, "parsing template failed (path: %s)", readmePath)
+	}
+	return t, nil
 }
