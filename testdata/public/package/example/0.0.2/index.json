@@ -3,7 +3,7 @@
   "name": "example",
   "title": "Example",
   "version": "0.0.2",
-  "readme": "/package/example-0.0.2/docs/README.md",
+  "readme": "/package/example/0.0.2/docs/README.md",
   "license": "basic",
   "description": "This is the example integration.",
   "type": "integration",
