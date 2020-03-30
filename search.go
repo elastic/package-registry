@@ -26,6 +26,7 @@ func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http
 		var category string
 		// Leaving out `a` here to not use a reserved name
 		var packageQuery string
+		var all bool
 		var internal bool
 		var err error
 
@@ -48,6 +49,13 @@ func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http
 			if v := query.Get("package"); v != "" {
 				if v != "" {
 					packageQuery = v
+				}
+			}
+
+			if v := query.Get("all"); v != "" {
+				if v != "" {
+					// Default is false, also on error
+					all, _ = strconv.ParseBool(v)
 				}
 			}
 
@@ -92,8 +100,7 @@ func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http
 				continue
 			}
 
-			// If no package Query is set, only the newest version of a package is returned
-			if packageQuery == "" {
+			if !all {
 				// Check if the version exists and if it should be added or not.
 				for _, versions := range packagesList {
 					for _, pp := range versions {
