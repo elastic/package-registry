@@ -1,0 +1,143 @@
+{
+    "attributes": {
+        "description": "",
+        "hits": 0,
+        "kibanaSavedObjectMeta": {
+            "searchSourceJSON": {
+                "query": {
+                    "language": "kuery",
+                    "query": ""
+                },
+                "filter": []
+            }
+        },
+        "optionsJSON": {
+            "hidePanelTitles": false,
+            "useMargins": true
+        },
+        "panelsJSON": [
+            {
+                "version": "7.6.1",
+                "gridData": {
+                    "x": 0,
+                    "y": 0,
+                    "w": 48,
+                    "h": 7,
+                    "i": "c923502a-9a0e-47bb-8d1b-e642b399c8e3"
+                },
+                "panelIndex": "c923502a-9a0e-47bb-8d1b-e642b399c8e3",
+                "embeddableConfig": {
+                    "title": "Controls"
+                },
+                "title": "Controls",
+                "panelRefName": "panel_0"
+            },
+            {
+                "version": "7.6.1",
+                "gridData": {
+                    "x": 0,
+                    "y": 7,
+                    "w": 48,
+                    "h": 15,
+                    "i": "fa5ef1ae-d2b7-4585-8a84-fa4a001a213a"
+                },
+                "panelIndex": "fa5ef1ae-d2b7-4585-8a84-fa4a001a213a",
+                "embeddableConfig": {
+                    "title": "Endpoint Map",
+                    "hiddenLayers": [],
+                    "isLayerTOCOpen": true,
+                    "mapCenter": {
+                        "lat": 23.72501,
+                        "lon": -32.99463,
+                        "zoom": 1
+                    },
+                    "openTOCDetails": []
+                },
+                "title": "Endpoint Map",
+                "panelRefName": "panel_1"
+            },
+            {
+                "version": "7.6.1",
+                "gridData": {
+                    "x": 0,
+                    "y": 22,
+                    "w": 48,
+                    "h": 10,
+                    "i": "2b6b6a19-3870-4127-bccf-c81c51e10544"
+                },
+                "panelIndex": "2b6b6a19-3870-4127-bccf-c81c51e10544",
+                "embeddableConfig": {},
+                "panelRefName": "panel_2"
+            },
+            {
+                "version": "7.6.1",
+                "gridData": {
+                    "x": 0,
+                    "y": 32,
+                    "w": 25,
+                    "h": 15,
+                    "i": "996c9423-7803-49e0-92d8-4ccfde71b425"
+                },
+                "panelIndex": "996c9423-7803-49e0-92d8-4ccfde71b425",
+                "embeddableConfig": {
+                    "title": "Endpoint Count by Operating System"
+                },
+                "title": "Endpoint Count by Operating System",
+                "panelRefName": "panel_3"
+            },
+            {
+                "version": "7.6.1",
+                "gridData": {
+                    "x": 25,
+                    "y": 32,
+                    "w": 23,
+                    "h": 15,
+                    "i": "e16e025f-20c4-4075-8342-76820c2ff4c7"
+                },
+                "panelIndex": "e16e025f-20c4-4075-8342-76820c2ff4c7",
+                "embeddableConfig": {
+                    "title": "Event Count by Category"
+                },
+                "title": "Event Count by Category",
+                "panelRefName": "panel_4"
+            }
+        ],
+        "timeRestore": false,
+        "title": "Endpoint Dashboard",
+        "version": 1
+    },
+    "id": "826759f0-7074-11ea-9bc8-6b38f4d29a16",
+    "migrationVersion": {
+        "dashboard": "7.3.0"
+    },
+    "references": [
+        {
+            "id": "1cfceda0-728b-11ea-9bc8-6b38f4d29a16",
+            "name": "panel_0",
+            "type": "visualization"
+        },
+        {
+            "id": "a3a3bd10-706b-11ea-9bc8-6b38f4d29a16",
+            "name": "panel_1",
+            "type": "map"
+        },
+        {
+            "id": "55387750-729c-11ea-9bc8-6b38f4d29a16",
+            "name": "panel_2",
+            "type": "visualization"
+        },
+        {
+            "id": "92b1edc0-706a-11ea-9bc8-6b38f4d29a16",
+            "name": "panel_3",
+            "type": "visualization"
+        },
+        {
+            "id": "1e525190-7074-11ea-9bc8-6b38f4d29a16",
+            "name": "panel_4",
+            "type": "visualization"
+        }
+    ],
+    "type": "dashboard",
+    "updated_at": "2020-03-30T15:38:29.097Z",
+    "version": "WzEwNCwxXQ=="
+}
