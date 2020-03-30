@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: zeek
-title: zeek
+title: Zeek
 version: 0.0.1
 license: basic
-description: zeek Integration
+description: Zeek Integration
 type: integration
 categories:
 - logs
@@ -20,8 +20,8 @@ screenshots:
   type: image/png
 datasources:
 - name: zeek
-  title: zeek logs
-  description: Collect logs from zeek instances
+  title: Zeek logs
+  description: Collect logs from Zeek instances
   inputs:
   - type: logs
-    description: Collecting zeek logs
+    description: Collecting Zeek logs

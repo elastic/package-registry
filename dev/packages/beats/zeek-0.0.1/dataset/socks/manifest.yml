@@ -1,5 +1,5 @@
 id: socks
-title: zeek socks logs
+title: Zeek socks logs
 release: ga
 type: logs
 streams:
@@ -19,5 +19,5 @@ streams:
     name: tags
   - default: true
     name: community_id
-  title: zeek socks logs
-  description: Collect zeek socks logs
+  title: Zeek socks logs
+  description: Collect Zeek socks logs

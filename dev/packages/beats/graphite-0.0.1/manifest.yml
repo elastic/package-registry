@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: graphite
-title: graphite
+title: Graphite
 version: 0.0.1
 license: basic
-description: graphite Integration
+description: Graphite Integration
 type: integration
 categories:
 - metrics
@@ -13,8 +13,8 @@ requirement:
   elasticsearch: {}
 datasources:
 - name: graphite
-  title: graphite metrics
-  description: Collect metrics from graphite instances
+  title: Graphite metrics
+  description: Collect metrics from Graphite instances
   inputs:
   - type: graphite/metrics
-    description: Collecting graphite metrics
+    description: Collecting Graphite metrics

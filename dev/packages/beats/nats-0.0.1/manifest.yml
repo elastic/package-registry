@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: nats
-title: nats
+title: Nats
 version: 0.0.1
 license: basic
-description: nats Integration
+description: Nats Integration
 type: integration
 categories:
 - logs

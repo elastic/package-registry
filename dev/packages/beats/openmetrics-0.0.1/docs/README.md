@@ -1,4 +1,4 @@
-# openmetrics Integration
+# Openmetrics Integration
 
 TODO
 

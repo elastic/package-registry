@@ -122,10 +122,10 @@ icons:
   type: image/svg+xml
 datasources:
 - name: aws
-  title: aws logs and metrics
-  description: Collect logs and metrics from aws instances
+  title: AWS logs and metrics
+  description: Collect logs and metrics from AWS instances
   inputs:
   - type: logs
-    description: Collecting aws logs
+    description: Collecting AWS logs
   - type: aws/metrics
-    description: Collecting aws metrics
+    description: Collecting AWS metrics

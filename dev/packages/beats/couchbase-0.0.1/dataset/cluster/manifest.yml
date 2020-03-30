@@ -1,5 +1,5 @@
 id: cluster
-title: couchbase cluster metrics
+title: Couchbase cluster metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: couchbase cluster logs
-  description: Collect couchbase cluster metrics
+  title: Couchbase cluster logs
+  description: Collect Couchbase cluster metrics

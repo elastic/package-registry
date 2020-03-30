@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: nginx
-title: nginx
+title: Nginx
 version: 0.0.1
 license: basic
-description: nginx Integration
+description: Nginx Integration
 type: integration
 categories:
 - logs
@@ -30,10 +30,10 @@ icons:
   type: image/svg+xml
 datasources:
 - name: nginx
-  title: nginx logs and metrics
-  description: Collect logs and metrics from nginx instances
+  title: Nginx logs and metrics
+  description: Collect logs and metrics from Nginx instances
   inputs:
   - type: logs
-    description: Collecting nginx logs
+    description: Collecting Nginx logs
   - type: nginx/metrics
-    description: Collecting nginx metrics
+    description: Collecting Nginx metrics

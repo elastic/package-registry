@@ -1,5 +1,5 @@
 id: node_stats
-title: logstash node_stats metrics
+title: Logstash node_stats metrics
 release: ga
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
     name: period
   - default: true
     name: xpack.enabled
-  title: logstash node_stats logs
-  description: Collect logstash node_stats metrics
+  title: Logstash node_stats logs
+  description: Collect Logstash node_stats metrics

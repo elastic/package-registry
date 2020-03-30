@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: munin
-title: munin
+title: Munin
 version: 0.0.1
 license: basic
-description: munin Integration
+description: Munin Integration
 type: integration
 categories:
 - metrics
@@ -13,8 +13,8 @@ requirement:
   elasticsearch: {}
 datasources:
 - name: munin
-  title: munin metrics
-  description: Collect metrics from munin instances
+  title: Munin metrics
+  description: Collect metrics from Munin instances
   inputs:
   - type: munin/metrics
-    description: Collecting munin metrics
+    description: Collecting Munin metrics

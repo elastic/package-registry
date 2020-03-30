@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: vsphere
-title: vsphere
+title: vSphere
 version: 0.0.1
 license: basic
-description: vsphere Integration
+description: vSphere Integration
 type: integration
 categories:
 - metrics
@@ -23,8 +23,8 @@ screenshots:
   type: image/png
 datasources:
 - name: vsphere
-  title: vsphere metrics
-  description: Collect metrics from vsphere instances
+  title: vSphere metrics
+  description: Collect metrics from vSphere instances
   inputs:
   - type: vsphere/metrics
-    description: Collecting vsphere metrics
+    description: Collecting vSphere metrics

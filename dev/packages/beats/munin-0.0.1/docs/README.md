@@ -1,4 +1,4 @@
-# munin Integration
+# Munin Integration
 
 TODO
 

@@ -36,19 +36,19 @@ var ignoredConfigOptions = []string{
 // createStreams method builds a set of stream inputs including configuration variables.
 // Stream defintions depend on a beat type - log or metric.
 // At the moment, the array returns only one stream.
-func createStreams(modulePath, moduleName, datasetName, beatType string) ([]util.Stream, error) {
+func createStreams(modulePath, moduleName, moduleTitle, datasetName, beatType string) ([]util.Stream, error) {
 	switch beatType {
 	case "logs":
-		return createLogStreams(modulePath, moduleName, datasetName)
+		return createLogStreams(modulePath, moduleTitle, datasetName)
 	case "metrics":
-		return createMetricStreams(modulePath, moduleName, datasetName)
+		return createMetricStreams(modulePath, moduleName, moduleTitle, datasetName)
 	}
 	return nil, fmt.Errorf("invalid beat type: %s", beatType)
 }
 
 // createLogStreams method builds a set of stream inputs for logs oriented dataset.
 // The method unmarshals "manifest.yml" file and picks all configuration variables.
-func createLogStreams(modulePath, moduleName, datasetName string) ([]util.Stream, error) {
+func createLogStreams(modulePath, moduleTitle, datasetName string) ([]util.Stream, error) {
 	manifestPath := filepath.Join(modulePath, datasetName, "manifest.yml")
 	manifestFile, err := ioutil.ReadFile(manifestPath)
 	if err != nil {
@@ -64,8 +64,8 @@ func createLogStreams(modulePath, moduleName, datasetName string) ([]util.Stream
 	return []util.Stream{
 		{
 			Input:       "logs",
-			Title:       fmt.Sprintf("%s %s logs", moduleName, datasetName),
-			Description: fmt.Sprintf("Collect %s %s logs", moduleName, datasetName),
+			Title:       fmt.Sprintf("%s %s logs", moduleTitle, datasetName),
+			Description: fmt.Sprintf("Collect %s %s logs", moduleTitle, datasetName),
 			Vars:        wrapVariablesWithDefault(mwv).Vars,
 		},
 	}, nil
@@ -97,7 +97,7 @@ func wrapVariablesWithDefault(mwvs manifestWithVars) manifestWithVars {
 //
 // The method skips commented variables, but keeps arrays of structures (even if it's not possible to render them using
 // UI).
-func createMetricStreams(modulePath, moduleName, datasetName string) ([]util.Stream, error) {
+func createMetricStreams(modulePath, moduleName, moduleTitle, datasetName string) ([]util.Stream, error) {
 	merged, err := mergeMetaConfigFiles(modulePath)
 	if err != nil {
 		return nil, errors.Wrapf(err, "merging config files failed")
@@ -151,8 +151,8 @@ func createMetricStreams(modulePath, moduleName, datasetName string) ([]util.Str
 	return []util.Stream{
 		{
 			Input:       moduleName + "/metrics",
-			Title:       fmt.Sprintf("%s %s logs", moduleName, datasetName),
-			Description: fmt.Sprintf("Collect %s %s metrics", moduleName, datasetName),
+			Title:       fmt.Sprintf("%s %s logs", moduleTitle, datasetName),
+			Description: fmt.Sprintf("Collect %s %s metrics", moduleTitle, datasetName),
 			Vars:        configOptions,
 		},
 	}, nil

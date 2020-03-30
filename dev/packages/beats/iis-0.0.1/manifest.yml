@@ -21,10 +21,10 @@ screenshots:
   type: image/png
 datasources:
 - name: iis
-  title: iis logs and metrics
-  description: Collect logs and metrics from iis instances
+  title: IIS logs and metrics
+  description: Collect logs and metrics from IIS instances
   inputs:
   - type: logs
-    description: Collecting iis logs
+    description: Collecting IIS logs
   - type: iis/metrics
-    description: Collecting iis metrics
+    description: Collecting IIS metrics

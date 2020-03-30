@@ -1,8 +1,8 @@
 id: connection
-title: zookeeper connection metrics
+title: ZooKeeper connection metrics
 release: ga
 type: metrics
 streams:
 - input: zookeeper/metrics
-  title: zookeeper connection logs
-  description: Collect zookeeper connection metrics
+  title: ZooKeeper connection logs
+  description: Collect ZooKeeper connection metrics

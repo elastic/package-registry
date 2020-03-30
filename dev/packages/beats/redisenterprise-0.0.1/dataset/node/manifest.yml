@@ -1,5 +1,5 @@
 id: node
-title: redisenterprise node metrics
+title: Redis Enterprise node metrics
 release: beta
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 1m
     name: period
-  title: redisenterprise node logs
-  description: Collect redisenterprise node metrics
+  title: Redis Enterprise node logs
+  description: Collect Redis Enterprise node metrics

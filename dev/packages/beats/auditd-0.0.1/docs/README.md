@@ -1,4 +1,4 @@
-# auditd Integration
+# Auditd Integration
 
 TODO
 

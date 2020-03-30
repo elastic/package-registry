@@ -45,12 +45,7 @@ type datasetManifestSinglePipeline struct {
 	IngestPipeline string `yaml:"ingest_pipeline"`
 }
 
-func createDatasets(modulePath, moduleName, moduleRelease, beatType string) (datasetContentArray, error) {
-	moduleFieldsFiles, err := loadModuleFields(modulePath)
-	if err != nil {
-		return nil, errors.Wrapf(err, "loading module fields failed (modulePath: %s)", modulePath)
-	}
-
+func createDatasets(modulePath, moduleName, moduleTitle, moduleRelease string, moduleFields []byte, beatType string) (datasetContentArray, error) {
 	datasetDirs, err := ioutil.ReadDir(modulePath)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot read module directory %s", modulePath)
@@ -76,23 +71,23 @@ func createDatasets(modulePath, moduleName, moduleRelease, beatType string) (dat
 
 		log.Printf("\t%s: dataset found", datasetName)
 
-		// release
-		datasetRelease, err := determineDatasetRelease(moduleRelease, datasetPath)
-		if err != nil {
-			return nil, errors.Wrapf(err, "loading release from fields failed (datasetPath: %s", datasetPath)
-		}
-
 		// fields
-		fieldsFiles, err := loadDatasetFields(modulePath, moduleName, datasetName)
+		datasetFields, err := loadDatasetFields(modulePath, moduleName, datasetName)
 		if err != nil {
 			return nil, errors.Wrapf(err, "loading dataset fields failed (modulePath: %s, datasetName: %s)",
 				modulePath, datasetName)
 		}
 
+		// release
+		datasetRelease, err := determineDatasetRelease(moduleRelease, datasetFields)
+		if err != nil {
+			return nil, errors.Wrapf(err, "loading release from fields failed (datasetPath: %s", datasetPath)
+		}
+
 		fields := fieldsContent{
 			files: map[string][]byte{
-				"package-fields.yml": moduleFieldsFiles,
-				"fields.yml":         fieldsFiles,
+				"package-fields.yml": moduleFields,
+				"fields.yml":         datasetFields,
 			},
 		}
 
@@ -103,7 +98,7 @@ func createDatasets(modulePath, moduleName, moduleRelease, beatType string) (dat
 		}
 
 		// streams
-		streams, err := createStreams(modulePath, moduleName, datasetName, beatType)
+		streams, err := createStreams(modulePath, moduleName, moduleTitle, datasetName, beatType)
 		if err != nil {
 			return nil, errors.Wrapf(err, "creating streams failed (datasetPath: %s)", datasetPath)
 		}
@@ -118,7 +113,7 @@ func createDatasets(modulePath, moduleName, moduleRelease, beatType string) (dat
 		// manifest
 		manifest := util.DataSet{
 			ID:      datasetName,
-			Title:   fmt.Sprintf("%s %s %s", moduleName, datasetName, beatType),
+			Title:   fmt.Sprintf("%s %s %s", moduleTitle, datasetName, beatType),
 			Release: datasetRelease,
 			Type:    beatType,
 			Streams: streams,

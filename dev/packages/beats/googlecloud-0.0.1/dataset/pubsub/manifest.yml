@@ -1,5 +1,5 @@
 id: pubsub
-title: googlecloud pubsub metrics
+title: Google Cloud Platform pubsub metrics
 release: beta
 type: metrics
 streams:
@@ -15,5 +15,5 @@ streams:
     name: project_id
   - default: us-central1-a
     name: zone
-  title: googlecloud pubsub logs
-  description: Collect googlecloud pubsub metrics
+  title: Google Cloud Platform pubsub logs
+  description: Collect Google Cloud Platform pubsub metrics

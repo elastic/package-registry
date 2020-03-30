@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: tomcat
-title: tomcat
+title: Tomcat
 version: 0.0.1
 license: basic
-description: tomcat Integration
+description: Tomcat Integration
 type: integration
 categories:
 - metrics
@@ -19,8 +19,8 @@ screenshots:
   type: image/png
 datasources:
 - name: tomcat
-  title: tomcat metrics
-  description: Collect metrics from tomcat instances
+  title: Tomcat metrics
+  description: Collect metrics from Tomcat instances
   inputs:
   - type: tomcat/metrics
-    description: Collecting tomcat metrics
+    description: Collecting Tomcat metrics

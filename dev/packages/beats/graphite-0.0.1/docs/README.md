@@ -1,4 +1,4 @@
-# graphite Integration
+# Graphite Integration
 
 TODO
 

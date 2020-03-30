@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: openmetrics
-title: openmetrics
+title: Openmetrics
 version: 0.0.1
 license: basic
-description: openmetrics Integration
+description: Openmetrics Integration
 type: integration
 categories:
 - metrics
@@ -18,8 +18,8 @@ icons:
   type: image/svg+xml
 datasources:
 - name: openmetrics
-  title: openmetrics metrics
-  description: Collect metrics from openmetrics instances
+  title: Openmetrics metrics
+  description: Collect metrics from Openmetrics instances
   inputs:
   - type: openmetrics/metrics
-    description: Collecting openmetrics metrics
+    description: Collecting Openmetrics metrics

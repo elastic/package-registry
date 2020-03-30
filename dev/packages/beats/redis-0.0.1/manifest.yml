@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: redis
-title: redis
+title: Redis
 version: 0.0.1
 license: basic
-description: redis Integration
+description: Redis Integration
 type: integration
 categories:
 - logs
@@ -30,10 +30,10 @@ icons:
   type: image/svg+xml
 datasources:
 - name: redis
-  title: redis logs and metrics
-  description: Collect logs and metrics from redis instances
+  title: Redis logs and metrics
+  description: Collect logs and metrics from Redis instances
   inputs:
   - type: logs
-    description: Collecting redis logs
+    description: Collecting Redis logs
   - type: redis/metrics
-    description: Collecting redis metrics
+    description: Collecting Redis metrics

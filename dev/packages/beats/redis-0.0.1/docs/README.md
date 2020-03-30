@@ -1,4 +1,4 @@
-# redis Integration
+# Redis Integration
 
 TODO
 

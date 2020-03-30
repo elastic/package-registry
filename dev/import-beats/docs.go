@@ -11,7 +11,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-var readmeTemplate = template.Must(template.New("readme").Parse(`# {{ .ModuleName }} Integration
+var readmeTemplate = template.Must(template.New("readme").Parse(`# {{ .ModuleTitle }} Integration
 
 TODO
 
@@ -33,13 +33,13 @@ type docContent struct {
 }
 
 type readmeTemplateModel struct {
-	ModuleName string
+	ModuleTitle string
 }
 
-func createDocs(moduleName string) ([]docContent, error) {
+func createDocs(moduleTitle string) ([]docContent, error) {
 	var body bytes.Buffer
 	err := readmeTemplate.Execute(&body, readmeTemplateModel{
-		ModuleName: moduleName,
+		ModuleTitle: moduleTitle,
 	})
 	if err != nil {
 		return nil, errors.Wrapf(err, "rendering README template failed")

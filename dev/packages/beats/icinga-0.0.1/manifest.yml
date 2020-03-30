@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: icinga
-title: icinga
+title: Icinga
 version: 0.0.1
 license: basic
-description: icinga Integration
+description: Icinga Integration
 type: integration
 categories:
 - logs
@@ -20,8 +20,8 @@ screenshots:
   type: image/png
 datasources:
 - name: icinga
-  title: icinga logs
-  description: Collect logs from icinga instances
+  title: Icinga logs
+  description: Collect logs from Icinga instances
   inputs:
   - type: logs
-    description: Collecting icinga logs
+    description: Collecting Icinga logs

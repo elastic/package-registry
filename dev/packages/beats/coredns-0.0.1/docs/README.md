@@ -1,4 +1,4 @@
-# coredns Integration
+# Coredns Integration
 
 TODO
 

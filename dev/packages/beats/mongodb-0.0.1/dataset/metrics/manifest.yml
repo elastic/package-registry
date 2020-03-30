@@ -1,5 +1,5 @@
 id: metrics
-title: mongodb metrics metrics
+title: MongoDB metrics metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: mongodb metrics logs
-  description: Collect mongodb metrics metrics
+  title: MongoDB metrics logs
+  description: Collect MongoDB metrics metrics

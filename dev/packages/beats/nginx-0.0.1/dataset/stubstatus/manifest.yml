@@ -1,5 +1,5 @@
 id: stubstatus
-title: nginx stubstatus metrics
+title: Nginx stubstatus metrics
 release: ga
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
     name: period
   - default: nginx_status
     name: server_status_path
-  title: nginx stubstatus logs
-  description: Collect nginx stubstatus metrics
+  title: Nginx stubstatus logs
+  description: Collect Nginx stubstatus metrics

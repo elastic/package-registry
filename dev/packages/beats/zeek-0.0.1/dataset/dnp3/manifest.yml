@@ -1,5 +1,5 @@
 id: dnp3
-title: zeek dnp3 logs
+title: Zeek dnp3 logs
 release: ga
 type: logs
 streams:
@@ -19,5 +19,5 @@ streams:
     name: tags
   - default: true
     name: community_id
-  title: zeek dnp3 logs
-  description: Collect zeek dnp3 logs
+  title: Zeek dnp3 logs
+  description: Collect Zeek dnp3 logs

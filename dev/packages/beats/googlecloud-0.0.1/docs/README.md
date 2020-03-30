@@ -1,4 +1,4 @@
-# googlecloud Integration
+# Google Cloud Integration
 
 TODO
 

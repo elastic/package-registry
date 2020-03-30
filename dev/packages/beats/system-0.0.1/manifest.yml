@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: system
-title: system
+title: System
 version: 0.0.1
 license: basic
-description: system Integration
+description: System Integration
 type: integration
 categories:
 - logs
@@ -29,10 +29,10 @@ screenshots:
   type: image/png
 datasources:
 - name: system
-  title: system logs and metrics
-  description: Collect logs and metrics from system instances
+  title: System logs and metrics
+  description: Collect logs and metrics from System instances
   inputs:
   - type: logs
-    description: Collecting system logs
+    description: Collecting System logs
   - type: system/metrics
-    description: Collecting system metrics
+    description: Collecting System metrics

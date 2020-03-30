@@ -1,4 +1,4 @@
-# kubernetes Integration
+# Kubernetes Integration
 
 TODO
 

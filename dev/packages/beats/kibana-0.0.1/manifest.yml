@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: kibana
-title: kibana
+title: Kibana
 version: 0.0.1
 license: basic
-description: kibana Integration
+description: Kibana Integration
 type: integration
 categories:
 - logs

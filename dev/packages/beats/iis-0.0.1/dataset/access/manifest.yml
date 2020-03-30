@@ -1,5 +1,5 @@
 id: access
-title: iis access logs
+title: IIS access logs
 release: ga
 type: logs
 streams:
@@ -17,5 +17,5 @@ streams:
     os.windows:
       default:
       - C:/inetpub/logs/LogFiles/*/*.log
-  title: iis access logs
-  description: Collect iis access logs
+  title: IIS access logs
+  description: Collect IIS access logs

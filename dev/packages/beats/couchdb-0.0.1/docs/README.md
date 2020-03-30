@@ -1,4 +1,4 @@
-# couchdb Integration
+# CouchDB Integration
 
 TODO
 

@@ -1,5 +1,5 @@
 id: system
-title: kubernetes system metrics
+title: Kubernetes system metrics
 release: ga
 type: metrics
 streams:
@@ -16,5 +16,5 @@ streams:
     name: period
   - default: none
     name: ssl.verification_mode
-  title: kubernetes system logs
-  description: Collect kubernetes system metrics
+  title: Kubernetes system logs
+  description: Collect Kubernetes system metrics

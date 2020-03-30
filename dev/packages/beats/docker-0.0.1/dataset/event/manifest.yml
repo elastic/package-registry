@@ -1,5 +1,5 @@
 id: event
-title: docker event metrics
+title: Docker event metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: docker event logs
-  description: Collect docker event metrics
+  title: Docker event logs
+  description: Collect Docker event metrics

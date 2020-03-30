@@ -1,4 +1,4 @@
-# azure Integration
+# Azure Integration
 
 TODO
 

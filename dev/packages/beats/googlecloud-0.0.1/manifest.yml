@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: googlecloud
-title: googlecloud
+title: Google Cloud Platform
 version: 0.0.1
 license: basic
-description: googlecloud Integration
+description: Google Cloud Platform Integration
 type: integration
 categories:
 - logs
@@ -26,10 +26,10 @@ icons:
   type: image/svg+xml
 datasources:
 - name: googlecloud
-  title: googlecloud logs and metrics
-  description: Collect logs and metrics from googlecloud instances
+  title: Google Cloud logs and metrics
+  description: Collect logs and metrics from Google Cloud instances
   inputs:
   - type: logs
-    description: Collecting googlecloud logs
+    description: Collecting Google Cloud logs
   - type: googlecloud/metrics
-    description: Collecting googlecloud metrics
+    description: Collecting Google Cloud metrics

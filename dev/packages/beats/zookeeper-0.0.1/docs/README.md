@@ -1,4 +1,4 @@
-# zookeeper Integration
+# ZooKeeper Integration
 
 TODO
 

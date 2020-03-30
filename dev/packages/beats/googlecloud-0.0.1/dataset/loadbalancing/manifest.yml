@@ -1,5 +1,5 @@
 id: loadbalancing
-title: googlecloud loadbalancing metrics
+title: Google Cloud Platform loadbalancing metrics
 release: beta
 type: metrics
 streams:
@@ -15,5 +15,5 @@ streams:
     name: project_id
   - default: us-central1-a
     name: zone
-  title: googlecloud loadbalancing logs
-  description: Collect googlecloud loadbalancing metrics
+  title: Google Cloud Platform loadbalancing logs
+  description: Collect Google Cloud Platform loadbalancing metrics

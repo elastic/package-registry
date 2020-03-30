@@ -1,4 +1,4 @@
-# santa Integration
+# Google Santa Integration
 
 TODO
 

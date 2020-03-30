@@ -1,5 +1,5 @@
 id: auditlogs
-title: azure auditlogs logs
+title: Azure auditlogs logs
 release: beta
 type: logs
 streams:
@@ -14,5 +14,5 @@ streams:
   - name: connection_string
   - name: storage_account
   - name: storage_account_key
-  title: azure auditlogs logs
-  description: Collect azure auditlogs logs
+  title: Azure auditlogs logs
+  description: Collect Azure auditlogs logs

@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: o365
-title: o365
+title: Office 365
 version: 0.0.1
 license: basic
-description: o365 Integration
+description: Office 365 Integration
 type: integration
 categories:
 - logs
@@ -24,8 +24,8 @@ screenshots:
   type: image/png
 datasources:
 - name: o365
-  title: o365 logs
-  description: Collect logs from o365 instances
+  title: Office 365 logs
+  description: Collect logs from Office 365 instances
   inputs:
   - type: logs
-    description: Collecting o365 logs
+    description: Collecting Office 365 logs

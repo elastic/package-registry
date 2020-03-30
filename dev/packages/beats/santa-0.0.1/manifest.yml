@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: santa
-title: santa
+title: Google Santa
 version: 0.0.1
 license: basic
-description: santa Integration
+description: Google Santa Integration
 type: integration
 categories:
 - logs
@@ -20,8 +20,8 @@ screenshots:
   type: image/png
 datasources:
 - name: santa
-  title: santa logs
-  description: Collect logs from santa instances
+  title: Google Santa logs
+  description: Collect logs from Google Santa instances
   inputs:
   - type: logs
-    description: Collecting santa logs
+    description: Collecting Google Santa logs

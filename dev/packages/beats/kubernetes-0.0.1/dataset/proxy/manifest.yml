@@ -1,5 +1,5 @@
 id: proxy
-title: kubernetes proxy metrics
+title: Kubernetes proxy metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: kubernetes proxy logs
-  description: Collect kubernetes proxy metrics
+  title: Kubernetes proxy logs
+  description: Collect Kubernetes proxy metrics

@@ -1,4 +1,4 @@
-# jolokia Integration
+# Jolokia Integration
 
 TODO
 

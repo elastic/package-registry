@@ -1,4 +1,4 @@
-# stan Integration
+# Stan Integration
 
 TODO
 

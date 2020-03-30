@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: appsearch
-title: appsearch
+title: App Search
 version: 0.0.1
 license: basic
-description: appsearch Integration
+description: App Search Integration
 type: integration
 categories:
 - metrics
@@ -18,8 +18,8 @@ icons:
   type: image/svg+xml
 datasources:
 - name: appsearch
-  title: appsearch metrics
-  description: Collect metrics from appsearch instances
+  title: App Search metrics
+  description: Collect metrics from App Search instances
   inputs:
   - type: appsearch/metrics
-    description: Collecting appsearch metrics
+    description: Collecting App Search metrics

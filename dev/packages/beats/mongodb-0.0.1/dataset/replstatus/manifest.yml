@@ -1,5 +1,5 @@
 id: replstatus
-title: mongodb replstatus metrics
+title: MongoDB replstatus metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: mongodb replstatus logs
-  description: Collect mongodb replstatus metrics
+  title: MongoDB replstatus logs
+  description: Collect MongoDB replstatus metrics

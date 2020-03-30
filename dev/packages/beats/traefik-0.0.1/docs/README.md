@@ -1,4 +1,4 @@
-# traefik Integration
+# Traefik Integration
 
 TODO
 

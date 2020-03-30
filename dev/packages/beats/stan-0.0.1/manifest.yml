@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: stan
-title: stan
+title: Stan
 version: 0.0.1
 license: basic
-description: stan Integration
+description: Stan Integration
 type: integration
 categories:
 - metrics
@@ -24,8 +24,8 @@ icons:
   type: image/svg+xml
 datasources:
 - name: stan
-  title: stan metrics
-  description: Collect metrics from stan instances
+  title: Stan metrics
+  description: Collect metrics from Stan instances
   inputs:
   - type: stan/metrics
-    description: Collecting stan metrics
+    description: Collecting Stan metrics

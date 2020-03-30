@@ -1,4 +1,4 @@
-# misp Integration
+# MISP Integration
 
 TODO
 

@@ -1,5 +1,5 @@
 id: log
-title: auditd log logs
+title: Auditd log logs
 release: ga
 type: logs
 streams:
@@ -13,5 +13,5 @@ streams:
       - ""
     os.windows:
       default: []
-  title: auditd log logs
-  description: Collect auditd log logs
+  title: Auditd log logs
+  description: Collect Auditd log logs

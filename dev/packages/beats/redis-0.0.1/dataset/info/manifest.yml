@@ -1,5 +1,5 @@
 id: info
-title: redis info metrics
+title: Redis info metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: redis info logs
-  description: Collect redis info metrics
+  title: Redis info logs
+  description: Collect Redis info metrics

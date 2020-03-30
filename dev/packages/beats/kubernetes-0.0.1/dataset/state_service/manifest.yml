@@ -1,5 +1,5 @@
 id: state_service
-title: kubernetes state_service metrics
+title: Kubernetes state_service metrics
 release: experimental
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: kubernetes state_service logs
-  description: Collect kubernetes state_service metrics
+  title: Kubernetes state_service logs
+  description: Collect Kubernetes state_service metrics

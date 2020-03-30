@@ -1,4 +1,4 @@
-# aerospike Integration
+# Aerospike Integration
 
 TODO
 

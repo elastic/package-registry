@@ -1,5 +1,5 @@
 id: container
-title: docker container metrics
+title: Docker container metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: docker container logs
-  description: Collect docker container metrics
+  title: Docker container logs
+  description: Collect Docker container metrics

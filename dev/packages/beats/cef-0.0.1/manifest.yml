@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: cef
-title: cef
+title: CEF
 version: 0.0.1
 license: basic
-description: cef Integration
+description: CEF Integration
 type: integration
 categories:
 - logs
@@ -15,8 +15,8 @@ requirement:
     versions: '>7.0.1'
 datasources:
 - name: cef
-  title: cef logs
-  description: Collect logs from cef instances
+  title: CEF logs
+  description: Collect logs from CEF instances
   inputs:
   - type: logs
-    description: Collecting cef logs
+    description: Collecting CEF logs

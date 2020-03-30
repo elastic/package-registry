@@ -1,5 +1,5 @@
 id: asa
-title: cisco asa logs
+title: Cisco asa logs
 release: ga
 type: logs
 streams:
@@ -26,5 +26,5 @@ streams:
     name: internal_prefix
   - default: ASA
     name: internal_PREFIX
-  title: cisco asa logs
-  description: Collect cisco asa logs
+  title: Cisco asa logs
+  description: Collect Cisco asa logs

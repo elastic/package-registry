@@ -1,8 +1,8 @@
 id: collector
-title: prometheus collector metrics
+title: Prometheus typed metrics collector metrics
 release: ga
 type: metrics
 streams:
 - input: prometheus/metrics
-  title: prometheus collector logs
-  description: Collect prometheus collector metrics
+  title: Prometheus typed metrics collector logs
+  description: Collect Prometheus typed metrics collector metrics

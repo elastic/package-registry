@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: php_fpm
-title: php_fpm
+title: PHP_FPM
 version: 0.0.1
 license: basic
-description: php_fpm Integration
+description: PHP_FPM Integration
 type: integration
 categories:
 - metrics
@@ -18,8 +18,8 @@ icons:
   type: image/svg+xml
 datasources:
 - name: php_fpm
-  title: php_fpm metrics
-  description: Collect metrics from php_fpm instances
+  title: PHP_FPM metrics
+  description: Collect metrics from PHP_FPM instances
   inputs:
   - type: php_fpm/metrics
-    description: Collecting php_fpm metrics
+    description: Collecting PHP_FPM metrics

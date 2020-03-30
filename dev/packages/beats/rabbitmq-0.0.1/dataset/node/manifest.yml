@@ -1,5 +1,5 @@
 id: node
-title: rabbitmq node metrics
+title: RabbitMQ node metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: rabbitmq node logs
-  description: Collect rabbitmq node metrics
+  title: RabbitMQ node logs
+  description: Collect RabbitMQ node metrics

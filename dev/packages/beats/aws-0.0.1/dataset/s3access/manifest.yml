@@ -1,5 +1,5 @@
 id: s3access
-title: aws s3access logs
+title: AWS s3access logs
 release: ga
 type: logs
 streams:
@@ -13,5 +13,5 @@ streams:
   - name: visibility_timeout
   - name: api_timeout
   - name: endpoint
-  title: aws s3access logs
-  description: Collect aws s3access logs
+  title: AWS s3access logs
+  description: Collect AWS s3access logs

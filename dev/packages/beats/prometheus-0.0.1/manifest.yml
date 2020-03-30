@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: prometheus
-title: prometheus
+title: Prometheus typed metrics
 version: 0.0.1
 license: basic
-description: prometheus Integration
+description: Prometheus typed metrics Integration
 type: integration
 categories:
 - metrics
@@ -25,10 +25,10 @@ icons:
   type: image/svg+xml
 datasources:
 - name: prometheus
-  title: prometheus metrics and metrics
-  description: Collect metrics and metrics from prometheus instances
+  title: Prometheus metrics and metrics
+  description: Collect metrics and metrics from Prometheus instances
   inputs:
   - type: prometheus/metrics
-    description: Collecting prometheus metrics
+    description: Collecting Prometheus metrics
   - type: prometheus/metrics
-    description: Collecting prometheus metrics
+    description: Collecting Prometheus metrics

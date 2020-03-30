@@ -1,5 +1,5 @@
 id: state_replicaset
-title: kubernetes state_replicaset metrics
+title: Kubernetes state_replicaset metrics
 release: ga
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: kubernetes state_replicaset logs
-  description: Collect kubernetes state_replicaset metrics
+  title: Kubernetes state_replicaset logs
+  description: Collect Kubernetes state_replicaset metrics
