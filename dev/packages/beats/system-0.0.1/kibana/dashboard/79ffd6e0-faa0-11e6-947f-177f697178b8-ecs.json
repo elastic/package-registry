@@ -18,6 +18,7 @@
         },
         "panelsJSON": [
             {
+                "embeddableConfig": {},
                 "gridData": {
                     "h": 15,
                     "i": "1",
@@ -27,9 +28,10 @@
                 },
                 "panelIndex": "1",
                 "panelRefName": "panel_0",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
+                "embeddableConfig": {},
                 "gridData": {
                     "h": 15,
                     "i": "2",
@@ -39,9 +41,10 @@
                 },
                 "panelIndex": "2",
                 "panelRefName": "panel_1",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
+                "embeddableConfig": {},
                 "gridData": {
                     "h": 15,
                     "i": "3",
@@ -51,9 +54,10 @@
                 },
                 "panelIndex": "3",
                 "panelRefName": "panel_2",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
+                "embeddableConfig": {},
                 "gridData": {
                     "h": 15,
                     "i": "4",
@@ -63,9 +67,10 @@
                 },
                 "panelIndex": "4",
                 "panelRefName": "panel_3",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
+                "embeddableConfig": {},
                 "gridData": {
                     "h": 15,
                     "i": "5",
@@ -75,9 +80,10 @@
                 },
                 "panelIndex": "5",
                 "panelRefName": "panel_4",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
+                "embeddableConfig": {},
                 "gridData": {
                     "h": 15,
                     "i": "6",
@@ -87,9 +93,10 @@
                 },
                 "panelIndex": "6",
                 "panelRefName": "panel_5",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
+                "embeddableConfig": {},
                 "gridData": {
                     "h": 15,
                     "i": "7",
@@ -99,9 +106,10 @@
                 },
                 "panelIndex": "7",
                 "panelRefName": "panel_6",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
+                "embeddableConfig": {},
                 "gridData": {
                     "h": 15,
                     "i": "8",
@@ -111,9 +119,10 @@
                 },
                 "panelIndex": "8",
                 "panelRefName": "panel_7",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
+                "embeddableConfig": {},
                 "gridData": {
                     "h": 10,
                     "i": "9",
@@ -123,9 +132,10 @@
                 },
                 "panelIndex": "9",
                 "panelRefName": "panel_8",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
+                "embeddableConfig": {},
                 "gridData": {
                     "h": 10,
                     "i": "10",
@@ -135,9 +145,10 @@
                 },
                 "panelIndex": "10",
                 "panelRefName": "panel_9",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
+                "embeddableConfig": {},
                 "gridData": {
                     "h": 10,
                     "i": "11",
@@ -147,9 +158,10 @@
                 },
                 "panelIndex": "11",
                 "panelRefName": "panel_10",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
+                "embeddableConfig": {},
                 "gridData": {
                     "h": 10,
                     "i": "12",
@@ -159,9 +171,10 @@
                 },
                 "panelIndex": "12",
                 "panelRefName": "panel_11",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
+                "embeddableConfig": {},
                 "gridData": {
                     "h": 10,
                     "i": "13",
@@ -171,9 +184,10 @@
                 },
                 "panelIndex": "13",
                 "panelRefName": "panel_12",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
+                "embeddableConfig": {},
                 "gridData": {
                     "h": 10,
                     "i": "14",
@@ -183,9 +197,10 @@
                 },
                 "panelIndex": "14",
                 "panelRefName": "panel_13",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
+                "embeddableConfig": {},
                 "gridData": {
                     "h": 5,
                     "i": "16",
@@ -195,9 +210,10 @@
                 },
                 "panelIndex": "16",
                 "panelRefName": "panel_14",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
+                "embeddableConfig": {},
                 "gridData": {
                     "h": 10,
                     "i": "21",
@@ -207,9 +223,10 @@
                 },
                 "panelIndex": "21",
                 "panelRefName": "panel_15",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
+                "embeddableConfig": {},
                 "gridData": {
                     "h": 10,
                     "i": "22",
@@ -219,9 +236,10 @@
                 },
                 "panelIndex": "22",
                 "panelRefName": "panel_16",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
+                "embeddableConfig": {},
                 "gridData": {
                     "h": 10,
                     "i": "23",
@@ -231,9 +249,10 @@
                 },
                 "panelIndex": "23",
                 "panelRefName": "panel_17",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
+                "embeddableConfig": {},
                 "gridData": {
                     "h": 10,
                     "i": "25",
@@ -243,9 +262,10 @@
                 },
                 "panelIndex": "25",
                 "panelRefName": "panel_18",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
+                "embeddableConfig": {},
                 "gridData": {
                     "h": 15,
                     "i": "27",
@@ -255,9 +275,10 @@
                 },
                 "panelIndex": "27",
                 "panelRefName": "panel_19",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
+                "embeddableConfig": {},
                 "gridData": {
                     "h": 15,
                     "i": "28",
@@ -267,7 +288,7 @@
                 },
                 "panelIndex": "28",
                 "panelRefName": "panel_20",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
                 "embeddableConfig": {
@@ -286,9 +307,10 @@
                 },
                 "panelIndex": "29",
                 "panelRefName": "panel_21",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
+                "embeddableConfig": {},
                 "gridData": {
                     "h": 5,
                     "i": "30",
@@ -298,7 +320,7 @@
                 },
                 "panelIndex": "30",
                 "panelRefName": "panel_22",
-                "version": "7.3.0"
+                "version": "7.6.0"
             }
         ],
         "timeRestore": false,

@@ -4,4 +4,4 @@ hosts: {{hosts}}
 period: {{period}}
 {{#if status_path}}
 status_path: {{status_path}}
-{{#if status_path}}
+{{/if}}

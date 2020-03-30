@@ -4,11 +4,5 @@ release: beta
 type: metrics
 streams:
 - input: prometheus/metrics
-  vars:
-  - default:
-    - localhost:9090
-    name: hosts
-  - default: 10s
-    name: period
   title: Prometheus query metrics
   description: Collect Prometheus query metrics

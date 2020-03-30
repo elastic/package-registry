@@ -18,6 +18,7 @@
             "params": {
                 "axis_formatter": "number",
                 "axis_position": "left",
+                "axis_scale": "normal",
                 "bar_color_rules": [
                     {
                         "bar_color": "rgba(104,188,0,1)",
@@ -38,6 +39,8 @@
                         "value": 0.85
                     }
                 ],
+                "default_index_pattern": "metrics-*",
+                "default_timefield": "@timestamp",
                 "drilldown_url": "",
                 "filter": {
                     "language": "lucene",
@@ -46,6 +49,7 @@
                 "id": "9f7e48a0-1b95-11e7-8ada-3df93aab833e",
                 "index_pattern": "metrics-*",
                 "interval": "auto",
+                "isModelInvalid": false,
                 "series": [
                     {
                         "axis_position": "right",
@@ -57,9 +61,13 @@
                         "line_width": 1,
                         "metrics": [
                             {
+                                "agg_with": "avg",
                                 "field": "system.filesystem.used.pct",
                                 "id": "9f7e48a2-1b95-11e7-8ada-3df93aab833e",
-                                "type": "avg"
+                                "order": "desc",
+                                "order_by": "@timestamp",
+                                "size": 1,
+                                "type": "top_hit"
                             }
                         ],
                         "point_size": 1,
@@ -72,6 +80,7 @@
                 "show_grid": 1,
                 "show_legend": 1,
                 "time_field": "@timestamp",
+                "time_range_mode": "entire_time_range",
                 "type": "top_n"
             },
             "title": "Disk Usage [Metricbeat System] ECS",

@@ -1,37 +1,37 @@
 {{#if input == "o365audit"}}
 input: o365audit
-{{#if this.application_id}}application_id: {{this.application_id}}{{/end}}
+{{#if this.application_id}}application_id: {{this.application_id}}{{/if}}
 tenant_id:
 {{#each this.tenants}}
  - {{this.id}}
-{{/end}}
-{{#if this.certificate}}certificate: {{this.certificate}}{{/end}}
-{{#if this.key}}key: {{this.key}}{{/end}}
-{{#if this.key_passphrase}}key_passphrase: {{this.key_passphrase}}{{/end}}
-{{#if this.client_secret}}client_secret: {{this.client_secret}}{{/end}}
+{{/if}}
+{{#if this.certificate}}certificate: {{this.certificate}}{{/if}}
+{{#if this.key}}key: {{this.key}}{{/if}}
+{{#if this.key_passphrase}}key_passphrase: {{this.key_passphrase}}{{/if}}
+{{#if this.client_secret}}client_secret: {{this.client_secret}}{{/if}}
 {{#if "string" == (printf "%T" .content_type)}}
 content_type: {{this.content_type}}
 {{else}}
 content_type:
 {{#each this.content_type}}
  - {{this}}
-{{/end}}
-{{/end}}
+{{/if}}
+{{/if}}
 {{#if this.api}}
 api:
 {{#each api}}
   - {{this}}
 {{/each}}
-{{/end}}
+{{/if}}
 {{else if input == "file"}}
 input: log
 paths:
 {{#each this.paths}}
  - {{this}}
-{{/end}}
+{{/if}}
 exclude_files: [".gz$"]
 json.add_error_key: true
-{{/end}}
+{{/if}}
 processors:
 {{#if input == "file"}}
   - rename:
@@ -42,7 +42,7 @@ processors:
       field: o365audit.CreationTime
       layouts:
         - 2006-01-02T15:04:05
-{{/end}}
+{{/if}}
   - script:
       lang: javascript
       id: o365audit_script
@@ -53,4 +53,4 @@ processors:
           {{#each this.tenants}}
           - id: "{{this.id}}"
             name: "{{this.name}}"
-          {{/end}}
+          {{/if}}

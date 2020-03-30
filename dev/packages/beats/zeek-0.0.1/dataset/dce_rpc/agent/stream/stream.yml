@@ -29,4 +29,4 @@ processors:
       fail_on_error: false
 {{#if this.community_id}}
   - community_id:
-{{/end}}
+{{/if}}

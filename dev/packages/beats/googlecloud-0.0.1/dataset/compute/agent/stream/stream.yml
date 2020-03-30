@@ -2,14 +2,14 @@ input: googlecloud/metrics
 metricsets: ["compute"]
 {{#if credentials_file_path}}
 credentials_file_path: {{credentials_file_path}}
-{{#if credentials_file_path}}
+{{/if}}
 {{#if exclude_labels}}
 exclude_labels: {{exclude_labels}}
-{{#if exclude_labels}}
+{{/if}}
 period: {{period}}
 {{#if project_id}}
 project_id: {{project_id}}
-{{#if project_id}}
+{{/if}}
 {{#if zone}}
 zone: {{zone}}
-{{#if zone}}
+{{/if}}

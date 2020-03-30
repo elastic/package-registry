@@ -3,8 +3,8 @@ metricsets: ["stat"]
 hosts: {{hosts}}
 {{#if password}}
 password: {{password}}
-{{#if password}}
+{{/if}}
 period: {{period}}
 {{#if username}}
 username: {{username}}
-{{#if username}}
+{{/if}}

@@ -39,7 +39,7 @@ processors:
         - suricata.eve.timestamp
 {{#if this.community_id}}
   - community_id:
-{{/end}}
+{{/if}}
   - if:
       equals:
         suricata.eve.event_type: dns

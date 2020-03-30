@@ -11,17 +11,17 @@ input: s3
 queue_url: {{this.queue_url}}
 {{#if this.credential_profile_name}}
 credential_profile_name: {{this.credential_profile_name}}
-{{/end}}
+{{/if}}
 {{#if this.shared_credential_file}}
 shared_credential_file: {{this.shared_credential_file}}
-{{/end}}
+{{/if}}
 {{#if this.visibility_timeout}}
 visibility_timeout: {{this.visibility_timeout}}
-{{/end}}
+{{/if}}
 {{#if this.api_timeout}}
 api_timeout: {{this.api_timeout}}
-{{/end}}
+{{/if}}
 {{#if this.endpoint}}
 endpoint: {{this.endpoint}}
-{{/end}}
+{{/if}}
 {{/if}}

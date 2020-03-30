@@ -135,7 +135,7 @@ processors:
       target_field: dns.question.registered_domain
 {{#if this.community_id}}
   - community_id: ~
-{{/end}}
+{{/if}}
   - timestamp:
       ignore_missing: true
       field: zeek.dns.ts

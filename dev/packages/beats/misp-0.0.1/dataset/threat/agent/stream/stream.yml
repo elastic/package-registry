@@ -17,7 +17,7 @@ paths:
   - {{this}}
 {{/each}}
 exclude_files: [".gz$"]
-{{/end}}
+{{/if}}
 processors:
   - script:
       lang: javascript
