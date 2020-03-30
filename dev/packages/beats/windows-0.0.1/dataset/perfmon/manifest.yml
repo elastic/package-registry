@@ -11,5 +11,5 @@ streams:
     name: perfmon.ignore_non_existent_counters
   - default: 10s
     name: period
-  title: Windows perfmon logs
+  title: Windows perfmon metrics
   description: Collect Windows perfmon metrics

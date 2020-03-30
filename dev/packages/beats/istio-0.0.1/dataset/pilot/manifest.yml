@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: istio pilot logs
+  title: istio pilot metrics
   description: Collect istio pilot metrics

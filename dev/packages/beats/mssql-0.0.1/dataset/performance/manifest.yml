@@ -14,5 +14,5 @@ streams:
     name: period
   - default: domain\username
     name: username
-  title: MSSQL performance logs
+  title: MSSQL performance metrics
   description: Collect MSSQL performance metrics

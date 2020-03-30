@@ -12,5 +12,5 @@ streams:
     name: period
   - default: true
     name: xpack.enabled
-  title: Logstash node_stats logs
+  title: Logstash node_stats metrics
   description: Collect Logstash node_stats metrics

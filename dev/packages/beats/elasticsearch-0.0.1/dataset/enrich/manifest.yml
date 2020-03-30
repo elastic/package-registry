@@ -12,5 +12,5 @@ streams:
     name: period
   - default: true
     name: xpack.enabled
-  title: Elasticsearch enrich logs
+  title: Elasticsearch enrich metrics
   description: Collect Elasticsearch enrich metrics

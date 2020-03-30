@@ -12,5 +12,5 @@ streams:
     name: period
   - default: true
     name: xpack.enabled
-  title: Elasticsearch shard logs
+  title: Elasticsearch shard metrics
   description: Collect Elasticsearch shard metrics

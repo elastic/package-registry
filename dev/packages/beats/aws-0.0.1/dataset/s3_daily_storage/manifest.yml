@@ -13,5 +13,5 @@ streams:
     name: secret_access_key
   - default: ${AWS_SESSION_TOKEN:""}
     name: session_token
-  title: aws s3_daily_storage logs
+  title: aws s3_daily_storage metrics
   description: Collect aws s3_daily_storage metrics

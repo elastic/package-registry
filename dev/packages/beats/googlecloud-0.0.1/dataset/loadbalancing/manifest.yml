@@ -15,5 +15,5 @@ streams:
     name: project_id
   - default: us-central1-a
     name: zone
-  title: Google Cloud Platform loadbalancing logs
+  title: Google Cloud Platform loadbalancing metrics
   description: Collect Google Cloud Platform loadbalancing metrics

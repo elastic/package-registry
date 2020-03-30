@@ -14,5 +14,5 @@ streams:
     name: period
   - default: admin
     name: username
-  title: HAProxy info logs
+  title: HAProxy info metrics
   description: Collect HAProxy info metrics

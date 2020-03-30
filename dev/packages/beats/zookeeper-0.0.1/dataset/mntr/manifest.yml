@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: ZooKeeper mntr logs
+  title: ZooKeeper mntr metrics
   description: Collect ZooKeeper mntr metrics

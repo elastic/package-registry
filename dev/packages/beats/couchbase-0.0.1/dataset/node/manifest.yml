@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Couchbase node logs
+  title: Couchbase node metrics
   description: Collect Couchbase node metrics

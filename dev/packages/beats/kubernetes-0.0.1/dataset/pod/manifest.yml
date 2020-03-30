@@ -16,5 +16,5 @@ streams:
     name: period
   - default: none
     name: ssl.verification_mode
-  title: Kubernetes pod logs
+  title: Kubernetes pod metrics
   description: Collect Kubernetes pod metrics

@@ -12,5 +12,5 @@ streams:
   - default:
     - us-west-1
     name: regions
-  title: aws sqs logs
+  title: aws sqs metrics
   description: Collect aws sqs metrics

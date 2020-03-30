@@ -13,5 +13,5 @@ streams:
     - key: dept
       value: eng
     name: tags_filter
-  title: aws transitgateway logs
+  title: aws transitgateway metrics
   description: Collect aws transitgateway metrics

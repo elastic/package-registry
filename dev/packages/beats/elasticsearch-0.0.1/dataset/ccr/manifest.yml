@@ -12,5 +12,5 @@ streams:
     name: period
   - default: true
     name: xpack.enabled
-  title: Elasticsearch ccr logs
+  title: Elasticsearch ccr metrics
   description: Collect Elasticsearch ccr metrics

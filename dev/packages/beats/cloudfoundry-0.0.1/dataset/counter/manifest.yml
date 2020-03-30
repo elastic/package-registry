@@ -17,5 +17,5 @@ streams:
     name: rlp_address
   - default: ${CLOUDFOUNDRY_UAA_ADDRESS:""}
     name: uaa_address
-  title: cloudfoundry counter logs
+  title: cloudfoundry counter metrics
   description: Collect cloudfoundry counter metrics

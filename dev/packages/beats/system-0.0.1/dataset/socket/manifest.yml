@@ -4,5 +4,5 @@ release: ga
 type: metrics
 streams:
 - input: system/metrics
-  title: System socket logs
+  title: System socket metrics
   description: Collect System socket metrics

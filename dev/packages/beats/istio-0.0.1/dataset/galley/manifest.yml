@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: istio galley logs
+  title: istio galley metrics
   description: Collect istio galley metrics

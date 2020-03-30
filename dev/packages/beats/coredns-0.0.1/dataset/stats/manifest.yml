@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: coredns stats logs
+  title: coredns stats metrics
   description: Collect coredns stats metrics

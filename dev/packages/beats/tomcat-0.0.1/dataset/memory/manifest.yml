@@ -12,5 +12,5 @@ streams:
     name: path
   - default: 10s
     name: period
-  title: Tomcat memory logs
+  title: Tomcat memory metrics
   description: Collect Tomcat memory metrics

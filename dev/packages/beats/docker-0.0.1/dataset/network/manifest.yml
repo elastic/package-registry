@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Docker network logs
+  title: Docker network metrics
   description: Collect Docker network metrics

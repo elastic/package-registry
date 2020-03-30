@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Nats connections logs
+  title: Nats connections metrics
   description: Collect Nats connections metrics

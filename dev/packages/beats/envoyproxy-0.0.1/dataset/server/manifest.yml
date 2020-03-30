@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: envoyproxy server logs
+  title: envoyproxy server metrics
   description: Collect envoyproxy server metrics

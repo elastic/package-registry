@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: PostgreSQL activity logs
+  title: PostgreSQL activity metrics
   description: Collect PostgreSQL activity metrics

@@ -4,5 +4,5 @@ release: ga
 type: metrics
 streams:
 - input: http/metrics
-  title: HTTP json logs
+  title: HTTP json metrics
   description: Collect HTTP json metrics

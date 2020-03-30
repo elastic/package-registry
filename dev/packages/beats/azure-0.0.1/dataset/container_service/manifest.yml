@@ -15,5 +15,5 @@ streams:
     name: subscription_id
   - default: ${AZURE_TENANT_ID:""}
     name: tenant_id
-  title: azure container_service logs
+  title: azure container_service metrics
   description: Collect azure container_service metrics

@@ -9,5 +9,5 @@ streams:
     name: expvar.namespace
   - default: /debug/vars
     name: expvar.path
-  title: Golang expvar logs
+  title: Golang expvar metrics
   description: Collect Golang expvar metrics

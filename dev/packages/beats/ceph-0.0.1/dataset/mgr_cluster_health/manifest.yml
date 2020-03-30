@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Ceph mgr_cluster_health logs
+  title: Ceph mgr_cluster_health metrics
   description: Collect Ceph mgr_cluster_health metrics

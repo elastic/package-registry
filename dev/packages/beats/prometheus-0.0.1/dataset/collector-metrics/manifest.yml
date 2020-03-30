@@ -4,5 +4,5 @@ release: ga
 type: metrics
 streams:
 - input: prometheus/metrics
-  title: Prometheus typed metrics collector logs
+  title: Prometheus typed metrics collector metrics
   description: Collect Prometheus typed metrics collector metrics

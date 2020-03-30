@@ -15,5 +15,5 @@ streams:
     name: project_id
   - default: us-central1
     name: region
-  title: Google Cloud Platform storage logs
+  title: Google Cloud Platform storage metrics
   description: Collect Google Cloud Platform storage metrics

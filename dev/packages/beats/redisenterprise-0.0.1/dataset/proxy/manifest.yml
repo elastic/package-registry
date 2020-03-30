@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 1m
     name: period
-  title: Redis Enterprise proxy logs
+  title: Redis Enterprise proxy metrics
   description: Collect Redis Enterprise proxy metrics

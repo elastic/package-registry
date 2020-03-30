@@ -4,5 +4,5 @@ release: beta
 type: metrics
 streams:
 - input: system/metrics
-  title: System service logs
+  title: System service metrics
   description: Collect System service metrics

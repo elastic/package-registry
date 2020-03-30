@@ -13,5 +13,5 @@ streams:
     - key: Organization
       value: Engineering
     name: tags_filter
-  title: aws ec2 logs
+  title: aws ec2 metrics
   description: Collect aws ec2 metrics

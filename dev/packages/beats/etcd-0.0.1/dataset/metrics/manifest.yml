@@ -4,5 +4,5 @@ release: beta
 type: metrics
 streams:
 - input: etcd/metrics
-  title: Etcd metrics logs
+  title: Etcd metrics metrics
   description: Collect Etcd metrics metrics

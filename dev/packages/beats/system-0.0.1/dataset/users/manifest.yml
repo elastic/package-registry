@@ -4,5 +4,5 @@ release: beta
 type: metrics
 streams:
 - input: system/metrics
-  title: System users logs
+  title: System users metrics
   description: Collect System users metrics

@@ -4,5 +4,5 @@ release: ga
 type: metrics
 streams:
 - input: graphite/metrics
-  title: Graphite server logs
+  title: Graphite server metrics
   description: Collect Graphite server metrics

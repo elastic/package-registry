@@ -16,5 +16,5 @@ streams:
     name: period
   - default: admin
     name: username
-  title: activemq topic logs
+  title: activemq topic metrics
   description: Collect activemq topic metrics

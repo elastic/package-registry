@@ -21,5 +21,5 @@ streams:
   - default:
     - .*
     name: processes
-  title: System socket_summary logs
+  title: System socket_summary metrics
   description: Collect System socket_summary metrics

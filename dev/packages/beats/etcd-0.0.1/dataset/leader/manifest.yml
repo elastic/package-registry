@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Etcd leader logs
+  title: Etcd leader metrics
   description: Collect Etcd leader metrics

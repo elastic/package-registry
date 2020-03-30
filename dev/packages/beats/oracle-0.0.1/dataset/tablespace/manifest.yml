@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Oracle tablespace logs
+  title: Oracle tablespace metrics
   description: Collect Oracle tablespace metrics

@@ -4,5 +4,5 @@ release: ga
 type: metrics
 streams:
 - input: system/metrics
-  title: System diskio logs
+  title: System diskio metrics
   description: Collect System diskio metrics

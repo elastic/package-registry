@@ -26,5 +26,5 @@ streams:
     name: subscription_id
   - default: ${AZURE_TENANT_ID:""}
     name: tenant_id
-  title: azure monitor logs
+  title: azure monitor metrics
   description: Collect azure monitor metrics

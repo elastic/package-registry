@@ -151,7 +151,7 @@ func createMetricStreams(modulePath, moduleName, moduleTitle, datasetName string
 	return []util.Stream{
 		{
 			Input:       moduleName + "/metrics",
-			Title:       fmt.Sprintf("%s %s logs", moduleTitle, datasetName),
+			Title:       fmt.Sprintf("%s %s metrics", moduleTitle, datasetName),
 			Description: fmt.Sprintf("Collect %s %s metrics", moduleTitle, datasetName),
 			Vars:        configOptions,
 		},

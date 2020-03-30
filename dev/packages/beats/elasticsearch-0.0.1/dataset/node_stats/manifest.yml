@@ -12,5 +12,5 @@ streams:
     name: period
   - default: true
     name: xpack.enabled
-  title: Elasticsearch node_stats logs
+  title: Elasticsearch node_stats metrics
   description: Collect Elasticsearch node_stats metrics

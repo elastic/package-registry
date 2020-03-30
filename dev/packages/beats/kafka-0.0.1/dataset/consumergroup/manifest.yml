@@ -4,5 +4,5 @@ release: ga
 type: metrics
 streams:
 - input: kafka/metrics
-  title: Kafka consumergroup logs
+  title: Kafka consumergroup metrics
   description: Collect Kafka consumergroup metrics

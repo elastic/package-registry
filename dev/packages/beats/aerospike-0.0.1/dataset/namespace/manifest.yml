@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Aerospike namespace logs
+  title: Aerospike namespace metrics
   description: Collect Aerospike namespace metrics

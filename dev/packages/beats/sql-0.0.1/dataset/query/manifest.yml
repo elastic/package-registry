@@ -16,5 +16,5 @@ streams:
     name: sql_query
   - default: table
     name: sql_response_format
-  title: sql query logs
+  title: sql query metrics
   description: Collect sql query metrics

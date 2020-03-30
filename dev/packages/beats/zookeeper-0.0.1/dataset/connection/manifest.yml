@@ -4,5 +4,5 @@ release: ga
 type: metrics
 streams:
 - input: zookeeper/metrics
-  title: ZooKeeper connection logs
+  title: ZooKeeper connection metrics
   description: Collect ZooKeeper connection metrics

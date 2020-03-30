@@ -15,5 +15,5 @@ streams:
     name: subscription_id
   - default: ${AZURE_TENANT_ID:""}
     name: tenant_id
-  title: azure storage logs
+  title: azure storage metrics
   description: Collect azure storage metrics

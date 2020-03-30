@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 60s
     name: period
-  title: Stan stats logs
+  title: Stan stats metrics
   description: Collect Stan stats metrics

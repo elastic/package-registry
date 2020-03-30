@@ -4,5 +4,5 @@ release: ga
 type: metrics
 streams:
 - input: system/metrics
-  title: System entropy logs
+  title: System entropy metrics
   description: Collect System entropy metrics

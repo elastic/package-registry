@@ -13,5 +13,5 @@ streams:
     - key: dept
       value: eng
     name: tags_filter
-  title: aws elb logs
+  title: aws elb metrics
   description: Collect aws elb metrics
