@@ -1,0 +1,4 @@
+input: aws/metrics
+period: {{period}}
+metricsets: transitgateway
+dataset: aws.transitgateway
