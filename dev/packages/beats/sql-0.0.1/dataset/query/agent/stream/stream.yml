@@ -2,12 +2,12 @@ input: sql/metrics
 metricsets: ["query"]
 {{#if driver}}
 driver: {{driver}}
-{{#if driver}}
+{{/if}}
 hosts: {{hosts}}
 period: {{period}}
 {{#if sql_query}}
 sql_query: {{sql_query}}
-{{#if sql_query}}
+{{/if}}
 {{#if sql_response_format}}
 sql_response_format: {{sql_response_format}}
-{{#if sql_response_format}}
+{{/if}}

@@ -74,4 +74,4 @@ processors:
       fields:
         source.address: zeek.dhcp.address.client
         destination.address: zeek.dhcp.address.server
-{{/end}}
+{{/if}}

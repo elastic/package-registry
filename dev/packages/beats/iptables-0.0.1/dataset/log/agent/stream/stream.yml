@@ -9,7 +9,7 @@ paths:
   - {{this}}
 {{/each}}
 exclude_files: [".gz$"]
-{{/end}}
+{{/if}}
 tags: {{this.tags}}
 processors:
   - add_locale: ~
@@ -44,4 +44,4 @@ processors:
       fields:
         icmp_type: iptables.icmp.type
         icmp_code: iptables.icmp.code
-{{/end}}
+{{/if}}

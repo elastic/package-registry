@@ -3,11 +3,11 @@ metricsets: ["collector"]
 hosts: {{hosts}}
 {{#if metrics_filters.exclude}}
 metrics_filters.exclude: {{metrics_filters.exclude}}
-{{#if metrics_filters.exclude}}
+{{/if}}
 {{#if metrics_filters.include}}
 metrics_filters.include: {{metrics_filters.include}}
-{{#if metrics_filters.include}}
+{{/if}}
 {{#if metrics_path}}
 metrics_path: {{metrics_path}}
-{{#if metrics_path}}
+{{/if}}
 period: {{period}}

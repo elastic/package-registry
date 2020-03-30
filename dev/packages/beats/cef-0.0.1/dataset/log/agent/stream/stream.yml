@@ -9,7 +9,7 @@ paths:
   - {{this}}
 {{/each}}
 exclude_files: [".gz$"]
-{{/end}}
+{{/if}}
 tags: {{this.tags}}
 processors:
   - rename:

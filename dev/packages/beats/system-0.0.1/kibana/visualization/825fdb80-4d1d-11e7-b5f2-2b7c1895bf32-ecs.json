@@ -18,6 +18,9 @@
             "params": {
                 "axis_formatter": "number",
                 "axis_position": "left",
+                "axis_scale": "normal",
+                "default_index_pattern": "logs-*",
+                "default_timefield": "@timestamp",
                 "filter": "",
                 "gauge_color_rules": [
                     {
@@ -46,6 +49,7 @@
                 "id": "4e4dc780-4d1d-11e7-b5f2-2b7c1895bf32",
                 "index_pattern": "metrics-*",
                 "interval": "auto",
+                "isModelInvalid": false,
                 "series": [
                     {
                         "axis_position": "right",
@@ -58,19 +62,27 @@
                         "line_width": 1,
                         "metrics": [
                             {
+                                "agg_with": "avg",
                                 "field": "system.fsstat.total_size.used",
                                 "id": "4e4dee91-4d1d-11e7-b5f2-2b7c1895bf32",
-                                "type": "avg"
+                                "order": "desc",
+                                "order_by": "@timestamp",
+                                "size": 1,
+                                "type": "top_hit"
                             },
                             {
+                                "agg_with": "avg",
                                 "field": "system.fsstat.total_size.total",
                                 "id": "57c96ee0-4d54-11e7-b5f2-2b7c1895bf32",
-                                "type": "avg"
+                                "order": "desc",
+                                "order_by": "@timestamp",
+                                "size": 1,
+                                "type": "top_hit"
                             },
                             {
                                 "id": "6304cca0-4d54-11e7-b5f2-2b7c1895bf32",
-                                "script": "params.total != null \u0026\u0026 params.total \u003e 0 ? params.used/params.total : null",
-                                "type": "calculation",
+                                "script": "params.used/params.total ",
+                                "type": "math",
                                 "variables": [
                                     {
                                         "field": "4e4dee91-4d1d-11e7-b5f2-2b7c1895bf32",
@@ -94,6 +106,7 @@
                 "show_grid": 1,
                 "show_legend": 1,
                 "time_field": "@timestamp",
+                "time_range_mode": "entire_time_range",
                 "type": "gauge"
             },
             "title": "Disk used [Metricbeat System] ECS",

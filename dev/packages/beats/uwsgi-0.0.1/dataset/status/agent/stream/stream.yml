@@ -2,6 +2,6 @@ input: uwsgi/metrics
 metricsets: ["status"]
 {{#if enable}}
 enable: {{enable}}
-{{#if enable}}
+{{/if}}
 hosts: {{hosts}}
 period: {{period}}

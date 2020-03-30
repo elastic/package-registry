@@ -3,11 +3,11 @@ metricsets: ["virtualmachine"]
 hosts: {{hosts}}
 {{#if insecure}}
 insecure: {{insecure}}
-{{#if insecure}}
+{{/if}}
 {{#if password}}
 password: {{password}}
-{{#if password}}
+{{/if}}
 period: {{period}}
 {{#if username}}
 username: {{username}}
-{{#if username}}
+{{/if}}

@@ -3,5 +3,5 @@ metricsets: ["memory"]
 hosts: {{hosts}}
 {{#if path}}
 path: {{path}}
-{{#if path}}
+{{/if}}
 period: {{period}}

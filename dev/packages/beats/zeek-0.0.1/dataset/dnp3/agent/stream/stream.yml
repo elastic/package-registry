@@ -38,4 +38,4 @@ processors:
       fields:
         source_ip: source.address
         destination_ip: destination.address
-{{/end}}
+{{/if}}

@@ -1,4 +1,2 @@
 input: prometheus/metrics
 metricsets: ["query"]
-hosts: {{hosts}}
-period: {{period}}
