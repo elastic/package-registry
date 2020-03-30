@@ -16,5 +16,5 @@ streams:
     name: metrics_path
   - default: 10s
     name: period
-  title: Openmetrics collector logs
+  title: Openmetrics collector metrics
   description: Collect Openmetrics collector metrics

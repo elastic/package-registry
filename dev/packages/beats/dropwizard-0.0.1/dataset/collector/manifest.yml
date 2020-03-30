@@ -14,5 +14,5 @@ streams:
     name: namespace
   - default: 10s
     name: period
-  title: Dropwizard collector logs
+  title: Dropwizard collector metrics
   description: Collect Dropwizard collector metrics

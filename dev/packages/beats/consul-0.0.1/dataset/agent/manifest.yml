@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: consul agent logs
+  title: consul agent metrics
   description: Collect consul agent metrics

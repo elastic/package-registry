@@ -8,5 +8,5 @@ streams:
   - default:
     - https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT}
     name: hosts
-  title: Kubernetes apiserver logs
+  title: Kubernetes apiserver metrics
   description: Collect Kubernetes apiserver metrics

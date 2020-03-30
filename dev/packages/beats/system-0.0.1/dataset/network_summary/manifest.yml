@@ -4,5 +4,5 @@ release: beta
 type: metrics
 streams:
 - input: system/metrics
-  title: System network_summary logs
+  title: System network_summary metrics
   description: Collect System network_summary metrics

@@ -12,5 +12,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Kubernetes state_persistentvolumeclaim logs
+  title: Kubernetes state_persistentvolumeclaim metrics
   description: Collect Kubernetes state_persistentvolumeclaim metrics

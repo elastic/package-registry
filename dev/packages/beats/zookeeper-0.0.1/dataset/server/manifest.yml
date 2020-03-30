@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: ZooKeeper server logs
+  title: ZooKeeper server metrics
   description: Collect ZooKeeper server metrics

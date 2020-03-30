@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Docker diskio logs
+  title: Docker diskio metrics
   description: Collect Docker diskio metrics

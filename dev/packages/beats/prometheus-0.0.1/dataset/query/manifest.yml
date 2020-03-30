@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Prometheus query logs
+  title: Prometheus query metrics
   description: Collect Prometheus query metrics

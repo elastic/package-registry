@@ -12,5 +12,5 @@ streams:
     name: period
   - default: true
     name: xpack.enabled
-  title: Elasticsearch index logs
+  title: Elasticsearch index metrics
   description: Collect Elasticsearch index metrics

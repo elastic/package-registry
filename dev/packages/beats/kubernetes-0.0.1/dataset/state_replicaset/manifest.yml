@@ -12,5 +12,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Kubernetes state_replicaset logs
+  title: Kubernetes state_replicaset metrics
   description: Collect Kubernetes state_replicaset metrics

@@ -4,5 +4,5 @@ release: beta
 type: metrics
 streams:
 - input: kafka/metrics
-  title: Kafka producer logs
+  title: Kafka producer metrics
   description: Collect Kafka producer metrics

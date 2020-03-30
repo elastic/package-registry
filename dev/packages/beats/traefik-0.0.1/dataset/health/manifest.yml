@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: traefik health logs
+  title: traefik health metrics
   description: Collect traefik health metrics

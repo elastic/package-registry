@@ -12,5 +12,5 @@ streams:
     name: metrics_path
   - default: 10s
     name: period
-  title: IBM MQ qmgr logs
+  title: IBM MQ qmgr metrics
   description: Collect IBM MQ qmgr metrics

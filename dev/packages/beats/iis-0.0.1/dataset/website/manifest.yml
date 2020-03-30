@@ -7,5 +7,5 @@ streams:
   vars:
   - default: 10s
     name: period
-  title: iis website logs
+  title: iis website metrics
   description: Collect iis website metrics

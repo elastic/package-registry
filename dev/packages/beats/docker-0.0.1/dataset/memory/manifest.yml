@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Docker memory logs
+  title: Docker memory metrics
   description: Collect Docker memory metrics

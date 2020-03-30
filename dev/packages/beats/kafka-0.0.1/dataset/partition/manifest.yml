@@ -4,5 +4,5 @@ release: ga
 type: metrics
 streams:
 - input: kafka/metrics
-  title: Kafka partition logs
+  title: Kafka partition metrics
   description: Collect Kafka partition metrics

@@ -16,5 +16,5 @@ streams:
     name: period
   - default: none
     name: ssl.verification_mode
-  title: Kubernetes node logs
+  title: Kubernetes node metrics
   description: Collect Kubernetes node metrics

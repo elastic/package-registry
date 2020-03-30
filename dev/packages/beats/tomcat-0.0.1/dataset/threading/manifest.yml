@@ -12,5 +12,5 @@ streams:
     name: path
   - default: 10s
     name: period
-  title: Tomcat threading logs
+  title: Tomcat threading metrics
   description: Collect Tomcat threading metrics

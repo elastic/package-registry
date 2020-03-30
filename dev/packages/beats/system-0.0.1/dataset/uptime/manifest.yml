@@ -17,5 +17,5 @@ streams:
   - default:
     - .*
     name: processes
-  title: System uptime logs
+  title: System uptime metrics
   description: Collect System uptime metrics

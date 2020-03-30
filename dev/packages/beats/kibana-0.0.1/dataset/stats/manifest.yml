@@ -12,5 +12,5 @@ streams:
     name: period
   - default: true
     name: xpack.enabled
-  title: Kibana stats logs
+  title: Kibana stats metrics
   description: Collect Kibana stats metrics

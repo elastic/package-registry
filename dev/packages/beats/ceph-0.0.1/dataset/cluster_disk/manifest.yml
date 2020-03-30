@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Ceph cluster_disk logs
+  title: Ceph cluster_disk metrics
   description: Collect Ceph cluster_disk metrics

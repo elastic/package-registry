@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: MongoDB metrics logs
+  title: MongoDB metrics metrics
   description: Collect MongoDB metrics metrics

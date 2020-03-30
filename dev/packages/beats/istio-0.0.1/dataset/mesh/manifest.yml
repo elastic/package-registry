@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: istio mesh logs
+  title: istio mesh metrics
   description: Collect istio mesh metrics

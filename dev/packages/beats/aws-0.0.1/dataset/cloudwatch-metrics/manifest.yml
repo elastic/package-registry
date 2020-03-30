@@ -23,5 +23,5 @@ streams:
     name: metrics
   - default: 300s
     name: period
-  title: aws cloudwatch logs
+  title: aws cloudwatch metrics
   description: Collect aws cloudwatch metrics

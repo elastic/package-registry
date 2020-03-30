@@ -4,5 +4,5 @@ release: ga
 type: metrics
 streams:
 - input: rabbitmq/metrics
-  title: RabbitMQ exchange logs
+  title: RabbitMQ exchange metrics
   description: Collect RabbitMQ exchange metrics

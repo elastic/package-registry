@@ -4,5 +4,5 @@ release: ga
 type: metrics
 streams:
 - input: system/metrics
-  title: System raid logs
+  title: System raid metrics
   description: Collect System raid metrics

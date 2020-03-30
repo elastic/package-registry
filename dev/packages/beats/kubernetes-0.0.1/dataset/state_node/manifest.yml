@@ -12,5 +12,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Kubernetes state_node logs
+  title: Kubernetes state_node metrics
   description: Collect Kubernetes state_node metrics

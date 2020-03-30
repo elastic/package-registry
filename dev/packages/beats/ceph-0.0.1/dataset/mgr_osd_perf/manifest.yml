@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 1m
     name: period
-  title: Ceph mgr_osd_perf logs
+  title: Ceph mgr_osd_perf metrics
   description: Collect Ceph mgr_osd_perf metrics

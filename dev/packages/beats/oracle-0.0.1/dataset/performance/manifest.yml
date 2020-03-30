@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Oracle performance logs
+  title: Oracle performance metrics
   description: Collect Oracle performance metrics

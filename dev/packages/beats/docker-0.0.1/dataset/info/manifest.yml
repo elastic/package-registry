@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Docker info logs
+  title: Docker info metrics
   description: Collect Docker info metrics

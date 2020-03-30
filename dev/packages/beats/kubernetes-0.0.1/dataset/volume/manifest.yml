@@ -16,5 +16,5 @@ streams:
     name: period
   - default: none
     name: ssl.verification_mode
-  title: Kubernetes volume logs
+  title: Kubernetes volume metrics
   description: Collect Kubernetes volume metrics

@@ -12,5 +12,5 @@ streams:
     name: period
   - default: /status
     name: status_path
-  title: PHP_FPM pool logs
+  title: PHP_FPM pool metrics
   description: Collect PHP_FPM pool metrics

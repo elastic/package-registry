@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: CockroachDB status logs
+  title: CockroachDB status metrics
   description: Collect CockroachDB status metrics

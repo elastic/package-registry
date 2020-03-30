@@ -4,5 +4,5 @@ release: ga
 type: metrics
 streams:
 - input: ceph/metrics
-  title: Ceph osd_df logs
+  title: Ceph osd_df metrics
   description: Collect Ceph osd_df metrics

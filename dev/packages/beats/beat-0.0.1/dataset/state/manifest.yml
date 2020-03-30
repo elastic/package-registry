@@ -12,5 +12,5 @@ streams:
     name: period
   - default: true
     name: xpack.enabled
-  title: Beat state logs
+  title: Beat state metrics
   description: Collect Beat state metrics

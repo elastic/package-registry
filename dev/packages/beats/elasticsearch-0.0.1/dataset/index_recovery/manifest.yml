@@ -12,5 +12,5 @@ streams:
     name: period
   - default: true
     name: xpack.enabled
-  title: Elasticsearch index_recovery logs
+  title: Elasticsearch index_recovery metrics
   description: Collect Elasticsearch index_recovery metrics

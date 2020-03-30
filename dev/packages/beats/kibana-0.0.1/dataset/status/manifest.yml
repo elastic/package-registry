@@ -12,5 +12,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Kibana status logs
+  title: Kibana status metrics
   description: Collect Kibana status metrics

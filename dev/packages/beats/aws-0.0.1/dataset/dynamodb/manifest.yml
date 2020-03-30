@@ -7,5 +7,5 @@ streams:
   vars:
   - default: 5m
     name: period
-  title: aws dynamodb logs
+  title: aws dynamodb metrics
   description: Collect aws dynamodb metrics

@@ -8,5 +8,5 @@ streams:
   - default:
     - percentages
     name: core.metrics
-  title: System core logs
+  title: System core metrics
   description: Collect System core metrics

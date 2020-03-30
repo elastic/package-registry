@@ -16,5 +16,5 @@ streams:
     name: period
   - default: user
     name: username
-  title: vSphere virtualmachine logs
+  title: vSphere virtualmachine metrics
   description: Collect vSphere virtualmachine metrics

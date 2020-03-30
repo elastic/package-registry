@@ -13,5 +13,5 @@ streams:
     - key: dept
       value: eng
     name: tags_filter
-  title: aws natgateway logs
+  title: aws natgateway metrics
   description: Collect aws natgateway metrics

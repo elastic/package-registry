@@ -21,5 +21,5 @@ streams:
   - default:
     - .*
     name: processes
-  title: System cpu logs
+  title: System cpu metrics
   description: Collect System cpu metrics

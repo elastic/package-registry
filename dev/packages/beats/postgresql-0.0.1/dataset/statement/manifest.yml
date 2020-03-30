@@ -4,5 +4,5 @@ release: ga
 type: metrics
 streams:
 - input: postgresql/metrics
-  title: PostgreSQL statement logs
+  title: PostgreSQL statement metrics
   description: Collect PostgreSQL statement metrics

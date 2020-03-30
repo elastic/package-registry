@@ -15,5 +15,5 @@ streams:
     name: subscription_id
   - default: ${AZURE_TENANT_ID:""}
     name: tenant_id
-  title: azure database_account logs
+  title: azure database_account metrics
   description: Collect azure database_account metrics

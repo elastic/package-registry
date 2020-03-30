@@ -13,5 +13,5 @@ streams:
     - key: dept
       value: eng
     name: tags_filter
-  title: aws usage logs
+  title: aws usage metrics
   description: Collect aws usage metrics

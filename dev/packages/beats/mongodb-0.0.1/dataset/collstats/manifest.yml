@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: MongoDB collstats logs
+  title: MongoDB collstats metrics
   description: Collect MongoDB collstats metrics

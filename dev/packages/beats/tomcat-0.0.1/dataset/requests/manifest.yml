@@ -12,5 +12,5 @@ streams:
     name: path
   - default: 10s
     name: period
-  title: Tomcat requests logs
+  title: Tomcat requests metrics
   description: Collect Tomcat requests metrics

@@ -15,5 +15,5 @@ streams:
     name: subscription_id
   - default: ${AZURE_TENANT_ID:""}
     name: tenant_id
-  title: azure compute_vm_scaleset logs
+  title: azure compute_vm_scaleset metrics
   description: Collect azure compute_vm_scaleset metrics

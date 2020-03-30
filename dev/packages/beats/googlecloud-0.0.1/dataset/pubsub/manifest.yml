@@ -15,5 +15,5 @@ streams:
     name: project_id
   - default: us-central1-a
     name: zone
-  title: Google Cloud Platform pubsub logs
+  title: Google Cloud Platform pubsub metrics
   description: Collect Google Cloud Platform pubsub metrics

@@ -4,5 +4,5 @@ release: beta
 type: metrics
 streams:
 - input: googlecloud/metrics
-  title: Google Cloud Platform stackdriver logs
+  title: Google Cloud Platform stackdriver metrics
   description: Collect Google Cloud Platform stackdriver metrics
