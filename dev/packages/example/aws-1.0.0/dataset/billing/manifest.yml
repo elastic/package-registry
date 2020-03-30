@@ -1,5 +1,5 @@
 title: AWS Billing metrics
-release: ga
+release: beta
 type: metrics
 
 # List of supported streams. There can be multiple stream definitions for different input types.

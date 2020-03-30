@@ -1,5 +1,5 @@
 title: AWS lambda metrics
-release: ga
+release: beta
 type: metrics
 
 streams:
