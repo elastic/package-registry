@@ -264,14 +264,14 @@ func (p *Package) Validate() error {
 	if p.Requirement.Elasticsearch.Versions != "" {
 		_, err := semver.ParseRange(p.Requirement.Elasticsearch.Versions)
 		if err != nil {
-			return fmt.Errorf("invalid elasticsesrch versions: %s, %s", p.Requirement.Elasticsearch.Versions, err)
+			return fmt.Errorf("invalid Elasticsearch versions: %s, %s", p.Requirement.Elasticsearch.Versions, err)
 		}
 	}
 
 	if p.Requirement.Kibana.Versions != "" {
 		_, err := semver.ParseRange(p.Requirement.Kibana.Versions)
 		if err != nil {
-			return fmt.Errorf("invalid kibana versions: %s, %s", p.Requirement.Kibana.Versions, err)
+			return fmt.Errorf("invalid Kibana versions: %s, %s", p.Requirement.Kibana.Versions, err)
 		}
 	}
 
