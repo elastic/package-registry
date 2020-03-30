@@ -65,7 +65,7 @@ func main() {
 	flag.StringVar(&options.beatsDir, "beatsDir", "../beats", "Path to the beats repository")
 	flag.StringVar(&options.kibanaDir, "kibanaDir", "../kibana", "Path to the kibana repository")
 	flag.StringVar(&options.kibanaHostPort, "kibanaHostPort", "http://localhost:5601", "Kibana host and port")
-	flag.BoolVar(&options.skipKibana, "skipKibana", true, "Skip storing Kibana objects")
+	flag.BoolVar(&options.skipKibana, "skipKibana", false, "Skip storing Kibana objects")
 	flag.StringVar(&options.euiDir, "euiDir", "../eui", "Path to the Elastic UI framework repository")
 	flag.StringVar(&options.outputDir, "outputDir", "dev/packages/beats", "Path to the output directory")
 	flag.Parse()

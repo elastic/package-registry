@@ -10,7 +10,8 @@ categories:
 - metrics
 release: ga
 requirement:
-  kibana: {}
+  kibana:
+    versions: '>=8.0.0-SNAPSHOT <8.0.0'
   elasticsearch: {}
 screenshots:
 - src: /img/kibana-coredns.jpg
