@@ -284,7 +284,8 @@ func (p *Package) Validate() error {
 	return nil
 }
 
-func (p *Package) GetDatasets() ([]string, error) {
+// GetDatasetPaths returns a list with the dataset paths inside this package
+func (p *Package) GetDatasetPaths() ([]string, error) {
 	datasetBasePath := filepath.Join(p.BasePath, "dataset")
 
 	// Check if this package has datasets
@@ -312,46 +313,23 @@ func (p *Package) GetDatasets() ([]string, error) {
 
 func (p *Package) LoadDataSets(packagePath string) error {
 
-	datasets, err := p.GetDatasets()
+	datasetPaths, err := p.GetDatasetPaths()
 	if err != nil {
 		return err
 	}
 
 	datasetsBasePath := filepath.Join(p.BasePath, "dataset")
 
-	for _, dataset := range datasets {
+	for _, datasetPath := range datasetPaths {
 
-		datasetBasePath := filepath.Join(datasetsBasePath, dataset)
-		// Check if manifest exists
-		manifestPath := filepath.Join(datasetBasePath, "manifest.yml")
-		_, err := os.Stat(manifestPath)
-		if err != nil && os.IsNotExist(err) {
-			return errors.Wrapf(err, "manifest does not exist for package: %s", packagePath)
-		}
+		datasetBasePath := filepath.Join(datasetsBasePath, datasetPath)
 
-		manifest, err := yaml.NewConfigWithFile(manifestPath, ucfg.PathSep("."))
-		var d = &DataSet{
-			Package: p.Name,
-			// This is the name of the directory of the dataset
-			Path:     dataset,
-			BasePath: datasetBasePath,
-		}
-		// go-ucfg automatically calls the `Validate` method on the Dataset object here
-		err = manifest.Unpack(d)
+		d, err := NewDataset(datasetBasePath, p)
 		if err != nil {
-			return errors.Wrapf(err, "error building dataset (path: %s) in package: %s", dataset, p.Name)
+			return err
 		}
 
-		// if id is not set, {package}.{datasetPath} is the default
-		if d.ID == "" {
-			d.ID = p.Name + "." + dataset
-		}
-
-		if d.Release == "" {
-			d.Release = "beta"
-		}
-
-		// Iterate through all datatsource and inputs to find the matching streams and add them to the output.
+		// Iterate through all datasources and inputs to find the matching streams and add them to the output.
 		for dK, datasource := range p.Datasources {
 			for iK, _ := range datasource.Inputs {
 				for _, stream := range d.Streams {
