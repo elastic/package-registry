@@ -1,4 +1,4 @@
-# couchbase Integration
+# Couchbase Integration
 
 TODO
 

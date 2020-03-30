@@ -1,4 +1,4 @@
-# etcd Integration
+# Etcd Integration
 
 TODO
 

@@ -36,12 +36,9 @@ func newPackageContent(name string) packageContent {
 		manifest: util.Package{
 			FormatVersion: "1.0.0",
 			Name:          name,
-			Description:   name + " Integration",
-			Title:         &name,
 			Version:       "0.0.1", // TODO
 			Type:          "integration",
 			License:       "basic",
-			Release:       "beta", // default release version
 		},
 		kibana: kibanaContent{
 			files: map[string]map[string][]byte{},
@@ -123,14 +120,34 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 		manifest := aPackage.manifest
 		manifest.Categories = append(manifest.Categories, beatType)
 
-		// release
-		manifest.Release, err = determinePackageRelease(manifest.Release, modulePath)
+		// fields
+		moduleHeaderFields, moduleFields, err := loadModuleFields(modulePath)
 		if err != nil {
 			return err
 		}
 
+		// release
+		manifest.Release, err = determinePackageRelease(manifest.Release, moduleHeaderFields)
+		if err != nil {
+			return err
+		}
+
+		// title
+		maybeTitle, err := loadTitleFromFields(moduleHeaderFields)
+		if err != nil {
+			return err
+		}
+		if maybeTitle != "" {
+			manifest.Title = &maybeTitle
+			manifest.Description = maybeTitle + " Integration"
+		}
+
 		// dataset
-		datasets, err := createDatasets(modulePath, moduleName, manifest.Release, beatType)
+		var moduleTitle = "TODO"
+		if manifest.Title != nil {
+			moduleTitle = *manifest.Title
+		}
+		datasets, err := createDatasets(modulePath, moduleName, moduleTitle, manifest.Release, moduleFields, beatType)
 		if err != nil {
 			return err
 		}
@@ -180,7 +197,7 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 
 		// docs
 		if len(aPackage.docs) == 0 {
-			docs, err := createDocs(moduleName)
+			docs, err := createDocs(moduleTitle)
 			if err != nil {
 				return err
 			}
@@ -188,7 +205,7 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 		}
 
 		// datasources
-		aPackage.datasources, err = updateDatasources(aPackage.datasources, moduleName, beatType)
+		aPackage.datasources, err = updateDatasources(aPackage.datasources, moduleName, moduleTitle, beatType)
 		if err != nil {
 			return err
 		}

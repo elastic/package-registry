@@ -1,5 +1,5 @@
 id: state_container
-title: kubernetes state_container metrics
+title: Kubernetes state_container metrics
 release: ga
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: kubernetes state_container logs
-  description: Collect kubernetes state_container metrics
+  title: Kubernetes state_container logs
+  description: Collect Kubernetes state_container metrics

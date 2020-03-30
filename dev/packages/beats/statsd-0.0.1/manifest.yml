@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: statsd
-title: statsd
+title: Statsd
 version: 0.0.1
 license: basic
-description: statsd Integration
+description: Statsd Integration
 type: integration
 categories:
 - metrics
@@ -18,8 +18,8 @@ icons:
   type: image/svg+xml
 datasources:
 - name: statsd
-  title: statsd metrics
-  description: Collect metrics from statsd instances
+  title: Statsd metrics
+  description: Collect metrics from Statsd instances
   inputs:
   - type: statsd/metrics
-    description: Collecting statsd metrics
+    description: Collecting Statsd metrics

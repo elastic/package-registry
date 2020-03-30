@@ -1,17 +1,16 @@
 format_version: 1.0.0
 name: kafka
-title: kafka
+title: Kafka
 version: 0.0.1
 license: basic
-description: kafka Integration
+description: Kafka Integration
 type: integration
 categories:
 - logs
 - metrics
 release: ga
 requirement:
-  kibana:
-    versions: '>=7.3.0 <8.0.0'
+  kibana: {}
   elasticsearch:
     versions: '>7.0.1'
 screenshots:
@@ -30,10 +29,10 @@ icons:
   type: image/svg+xml
 datasources:
 - name: kafka
-  title: kafka logs and metrics
-  description: Collect logs and metrics from kafka instances
+  title: Kafka logs and metrics
+  description: Collect logs and metrics from Kafka instances
   inputs:
   - type: logs
-    description: Collecting kafka logs
+    description: Collecting Kafka logs
   - type: kafka/metrics
-    description: Collecting kafka metrics
+    description: Collecting Kafka metrics

@@ -10,8 +10,7 @@ categories:
 - metrics
 release: ga
 requirement:
-  kibana:
-    versions: '>=8.0.0-SNAPSHOT <8.0.0'
+  kibana: {}
   elasticsearch: {}
 screenshots:
 - src: /img/kibana-coredns.jpg
@@ -29,10 +28,10 @@ icons:
   type: image/svg+xml
 datasources:
 - name: coredns
-  title: coredns logs and metrics
-  description: Collect logs and metrics from coredns instances
+  title: Coredns logs and metrics
+  description: Collect logs and metrics from Coredns instances
   inputs:
   - type: logs
-    description: Collecting coredns logs
+    description: Collecting Coredns logs
   - type: coredns/metrics
-    description: Collecting coredns metrics
+    description: Collecting Coredns metrics

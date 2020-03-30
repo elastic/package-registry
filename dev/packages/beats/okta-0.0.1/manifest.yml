@@ -1,16 +1,15 @@
 format_version: 1.0.0
 name: okta
-title: okta
+title: Okta
 version: 0.0.1
 license: basic
-description: okta Integration
+description: Okta Integration
 type: integration
 categories:
 - logs
 release: ga
 requirement:
-  kibana:
-    versions: '>=8.0.0-SNAPSHOT <8.0.0'
+  kibana: {}
   elasticsearch:
     versions: '>7.0.1'
 screenshots:
@@ -20,8 +19,8 @@ screenshots:
   type: image/png
 datasources:
 - name: okta
-  title: okta logs
-  description: Collect logs from okta instances
+  title: Okta logs
+  description: Collect logs from Okta instances
   inputs:
   - type: logs
-    description: Collecting okta logs
+    description: Collecting Okta logs

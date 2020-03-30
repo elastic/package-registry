@@ -1,16 +1,15 @@
 format_version: 1.0.0
 name: ceph
-title: ceph
+title: Ceph
 version: 0.0.1
 license: basic
-description: ceph Integration
+description: Ceph Integration
 type: integration
 categories:
 - metrics
 release: ga
 requirement:
-  kibana:
-    versions: '>=7.3.0 <8.0.0'
+  kibana: {}
   elasticsearch: {}
 screenshots:
 - src: /img/ceph-overview-dashboard.png
@@ -24,8 +23,8 @@ icons:
   type: image/svg+xml
 datasources:
 - name: ceph
-  title: ceph metrics
-  description: Collect metrics from ceph instances
+  title: Ceph metrics
+  description: Collect metrics from Ceph instances
   inputs:
   - type: ceph/metrics
-    description: Collecting ceph metrics
+    description: Collecting Ceph metrics

@@ -1,16 +1,15 @@
 format_version: 1.0.0
 name: suricata
-title: suricata
+title: Suricata
 version: 0.0.1
 license: basic
-description: suricata Integration
+description: Suricata Integration
 type: integration
 categories:
 - logs
 release: ga
 requirement:
-  kibana:
-    versions: '>=7.3.0 <8.0.0'
+  kibana: {}
   elasticsearch:
     versions: '>7.0.1'
 screenshots:
@@ -24,8 +23,8 @@ screenshots:
   type: image/png
 datasources:
 - name: suricata
-  title: suricata logs
-  description: Collect logs from suricata instances
+  title: Suricata logs
+  description: Collect logs from Suricata instances
   inputs:
   - type: logs
-    description: Collecting suricata logs
+    description: Collecting Suricata logs

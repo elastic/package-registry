@@ -1,5 +1,5 @@
 id: tablespace
-title: oracle tablespace metrics
+title: Oracle tablespace metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: oracle tablespace logs
-  description: Collect oracle tablespace metrics
+  title: Oracle tablespace logs
+  description: Collect Oracle tablespace metrics

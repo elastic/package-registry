@@ -1,5 +1,5 @@
 id: channels
-title: stan channels metrics
+title: Stan channels metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 60s
     name: period
-  title: stan channels logs
-  description: Collect stan channels metrics
+  title: Stan channels logs
+  description: Collect Stan channels metrics

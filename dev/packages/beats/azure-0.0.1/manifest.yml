@@ -10,8 +10,7 @@ categories:
 - metrics
 release: beta
 requirement:
-  kibana:
-    versions: '>=7.6.0 <8.0.0'
+  kibana: {}
   elasticsearch:
     versions: '>7.0.1'
 screenshots:
@@ -42,10 +41,10 @@ icons:
   type: image/svg+xml
 datasources:
 - name: azure
-  title: azure logs and metrics
-  description: Collect logs and metrics from azure instances
+  title: Azure logs and metrics
+  description: Collect logs and metrics from Azure instances
   inputs:
   - type: logs
-    description: Collecting azure logs
+    description: Collecting Azure logs
   - type: azure/metrics
-    description: Collecting azure metrics
+    description: Collecting Azure metrics

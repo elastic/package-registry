@@ -1,16 +1,15 @@
 format_version: 1.0.0
 name: redisenterprise
-title: redisenterprise
+title: Redis Enterprise
 version: 0.0.1
 license: basic
-description: redisenterprise Integration
+description: Redis Enterprise Integration
 type: integration
 categories:
 - metrics
 release: beta
 requirement:
-  kibana:
-    versions: '>=7.1.0 <8.0.0'
+  kibana: {}
   elasticsearch: {}
 screenshots:
 - src: /img/metricbeat-redisenterprise-overview.png
@@ -24,8 +23,8 @@ icons:
   type: image/svg+xml
 datasources:
 - name: redisenterprise
-  title: redisenterprise metrics
-  description: Collect metrics from redisenterprise instances
+  title: Redis Enterprise metrics
+  description: Collect metrics from Redis Enterprise instances
   inputs:
   - type: redisenterprise/metrics
-    description: Collecting redisenterprise metrics
+    description: Collecting Redis Enterprise metrics

@@ -1,5 +1,5 @@
 id: slowlog
-title: redis slowlog logs
+title: Redis slowlog logs
 release: ga
 type: logs
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: ""
     name: password
-  title: redis slowlog logs
-  description: Collect redis slowlog logs
+  title: Redis slowlog logs
+  description: Collect Redis slowlog logs

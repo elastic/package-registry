@@ -1,5 +1,5 @@
 id: qmgr
-title: ibmmq qmgr metrics
+title: IBM MQ qmgr metrics
 release: beta
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
     name: metrics_path
   - default: 10s
     name: period
-  title: ibmmq qmgr logs
-  description: Collect ibmmq qmgr metrics
+  title: IBM MQ qmgr logs
+  description: Collect IBM MQ qmgr metrics

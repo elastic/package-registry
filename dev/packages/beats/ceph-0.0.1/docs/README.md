@@ -1,4 +1,4 @@
-# ceph Integration
+# Ceph Integration
 
 TODO
 

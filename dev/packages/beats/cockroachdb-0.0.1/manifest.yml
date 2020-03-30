@@ -1,16 +1,15 @@
 format_version: 1.0.0
 name: cockroachdb
-title: cockroachdb
+title: CockroachDB
 version: 0.0.1
 license: basic
-description: cockroachdb Integration
+description: CockroachDB Integration
 type: integration
 categories:
 - metrics
 release: beta
 requirement:
-  kibana:
-    versions: '>=7.3.0 <8.0.0'
+  kibana: {}
   elasticsearch: {}
 screenshots:
 - src: /img/metricbeat-cockroachdb-overview.png
@@ -24,8 +23,8 @@ icons:
   type: image/svg+xml
 datasources:
 - name: cockroachdb
-  title: cockroachdb metrics
-  description: Collect metrics from cockroachdb instances
+  title: CockroachDB metrics
+  description: Collect metrics from CockroachDB instances
   inputs:
   - type: cockroachdb/metrics
-    description: Collecting cockroachdb metrics
+    description: Collecting CockroachDB metrics

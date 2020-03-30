@@ -1,16 +1,15 @@
 format_version: 1.0.0
 name: kubernetes
-title: kubernetes
+title: Kubernetes
 version: 0.0.1
 license: basic
-description: kubernetes Integration
+description: Kubernetes Integration
 type: integration
 categories:
 - metrics
 release: ga
 requirement:
-  kibana:
-    versions: '>=7.3.0 <8.0.0'
+  kibana: {}
   elasticsearch: {}
 screenshots:
 - src: /img/metricbeat-kubernetes-controllermanager.png
@@ -32,8 +31,8 @@ icons:
   type: image/svg+xml
 datasources:
 - name: kubernetes
-  title: kubernetes metrics
-  description: Collect metrics from kubernetes instances
+  title: Kubernetes metrics
+  description: Collect metrics from Kubernetes instances
   inputs:
   - type: kubernetes/metrics
-    description: Collecting kubernetes metrics
+    description: Collecting Kubernetes metrics

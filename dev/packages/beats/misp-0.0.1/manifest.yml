@@ -1,16 +1,15 @@
 format_version: 1.0.0
 name: misp
-title: misp
+title: MISP
 version: 0.0.1
 license: basic
-description: misp Integration
+description: MISP Integration
 type: integration
 categories:
 - logs
 release: ga
 requirement:
-  kibana:
-    versions: '>=8.0.0-SNAPSHOT <8.0.0'
+  kibana: {}
   elasticsearch:
     versions: '>7.0.1'
 screenshots:
@@ -20,8 +19,8 @@ screenshots:
   type: image/png
 datasources:
 - name: misp
-  title: misp logs
-  description: Collect logs from misp instances
+  title: MISP logs
+  description: Collect logs from MISP instances
   inputs:
   - type: logs
-    description: Collecting misp logs
+    description: Collecting MISP logs

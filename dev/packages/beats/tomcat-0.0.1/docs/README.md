@@ -1,4 +1,4 @@
-# tomcat Integration
+# Tomcat Integration
 
 TODO
 

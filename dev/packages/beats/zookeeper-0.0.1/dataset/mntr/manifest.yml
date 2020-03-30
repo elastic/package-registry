@@ -1,5 +1,5 @@
 id: mntr
-title: zookeeper mntr metrics
+title: ZooKeeper mntr metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: zookeeper mntr logs
-  description: Collect zookeeper mntr metrics
+  title: ZooKeeper mntr logs
+  description: Collect ZooKeeper mntr metrics

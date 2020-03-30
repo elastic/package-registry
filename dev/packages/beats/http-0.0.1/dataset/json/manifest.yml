@@ -1,8 +1,8 @@
 id: json
-title: http json metrics
+title: HTTP json metrics
 release: ga
 type: metrics
 streams:
 - input: http/metrics
-  title: http json logs
-  description: Collect http json metrics
+  title: HTTP json logs
+  description: Collect HTTP json metrics

@@ -1,5 +1,5 @@
 id: datastore
-title: vsphere datastore metrics
+title: vSphere datastore metrics
 release: ga
 type: metrics
 streams:
@@ -16,5 +16,5 @@ streams:
     name: period
   - default: user
     name: username
-  title: vsphere datastore logs
-  description: Collect vsphere datastore metrics
+  title: vSphere datastore logs
+  description: Collect vSphere datastore metrics

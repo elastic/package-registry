@@ -1,5 +1,5 @@
 id: access
-title: nginx access logs
+title: Nginx access logs
 release: ga
 type: logs
 streams:
@@ -14,5 +14,5 @@ streams:
     os.windows:
       default:
       - c:/programdata/nginx/logs/*access.log*
-  title: nginx access logs
-  description: Collect nginx access logs
+  title: Nginx access logs
+  description: Collect Nginx access logs

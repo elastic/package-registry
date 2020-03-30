@@ -1,4 +1,4 @@
-# okta Integration
+# Okta Integration
 
 TODO
 

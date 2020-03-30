@@ -1,16 +1,15 @@
 format_version: 1.0.0
 name: docker
-title: docker
+title: Docker
 version: 0.0.1
 license: basic
-description: docker Integration
+description: Docker Integration
 type: integration
 categories:
 - metrics
 release: ga
 requirement:
-  kibana:
-    versions: '>=7.3.0 <8.0.0'
+  kibana: {}
   elasticsearch: {}
 icons:
 - src: /img/logo_docker.svg
@@ -19,8 +18,8 @@ icons:
   type: image/svg+xml
 datasources:
 - name: docker
-  title: docker metrics
-  description: Collect metrics from docker instances
+  title: Docker metrics
+  description: Collect metrics from Docker instances
   inputs:
   - type: docker/metrics
-    description: Collecting docker metrics
+    description: Collecting Docker metrics

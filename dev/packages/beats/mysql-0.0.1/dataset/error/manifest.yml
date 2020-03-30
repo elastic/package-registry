@@ -1,5 +1,5 @@
 id: error
-title: mysql error logs
+title: MySQL error logs
 release: ga
 type: logs
 streams:
@@ -15,5 +15,5 @@ streams:
     os.windows:
       default:
       - c:/programdata/MySQL/MySQL Server*/error.log*
-  title: mysql error logs
-  description: Collect mysql error logs
+  title: MySQL error logs
+  description: Collect MySQL error logs

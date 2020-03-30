@@ -1,4 +1,4 @@
-# o365 Integration
+# Office 365 Integration
 
 TODO
 

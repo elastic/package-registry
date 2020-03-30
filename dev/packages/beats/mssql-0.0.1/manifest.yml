@@ -1,17 +1,16 @@
 format_version: 1.0.0
 name: mssql
-title: mssql
+title: MSSQL
 version: 0.0.1
 license: basic
-description: mssql Integration
+description: MSSQL Integration
 type: integration
 categories:
 - logs
 - metrics
 release: ga
 requirement:
-  kibana:
-    versions: '>=7.0.0-alpha2 <8.0.0'
+  kibana: {}
   elasticsearch:
     versions: '>7.0.1'
 datasources:

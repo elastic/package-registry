@@ -1,5 +1,5 @@
 id: connection
-title: rabbitmq connection metrics
+title: RabbitMQ connection metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: rabbitmq connection logs
-  description: Collect rabbitmq connection metrics
+  title: RabbitMQ connection logs
+  description: Collect RabbitMQ connection metrics

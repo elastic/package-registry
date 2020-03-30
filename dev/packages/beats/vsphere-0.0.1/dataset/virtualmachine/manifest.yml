@@ -1,5 +1,5 @@
 id: virtualmachine
-title: vsphere virtualmachine metrics
+title: vSphere virtualmachine metrics
 release: ga
 type: metrics
 streams:
@@ -16,5 +16,5 @@ streams:
     name: period
   - default: user
     name: username
-  title: vsphere virtualmachine logs
-  description: Collect vsphere virtualmachine metrics
+  title: vSphere virtualmachine logs
+  description: Collect vSphere virtualmachine metrics

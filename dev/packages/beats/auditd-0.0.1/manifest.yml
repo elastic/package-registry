@@ -1,16 +1,15 @@
 format_version: 1.0.0
 name: auditd
-title: auditd
+title: Auditd
 version: 0.0.1
 license: basic
-description: auditd Integration
+description: Auditd Integration
 type: integration
 categories:
 - logs
 release: ga
 requirement:
-  kibana:
-    versions: '>=7.3.0 <8.0.0'
+  kibana: {}
   elasticsearch:
     versions: '>7.0.1'
 screenshots:
@@ -20,8 +19,8 @@ screenshots:
   type: image/png
 datasources:
 - name: auditd
-  title: auditd logs
-  description: Collect logs from auditd instances
+  title: Auditd logs
+  description: Collect logs from Auditd instances
   inputs:
   - type: logs
-    description: Collecting auditd logs
+    description: Collecting Auditd logs

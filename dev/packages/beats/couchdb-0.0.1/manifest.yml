@@ -1,16 +1,15 @@
 format_version: 1.0.0
 name: couchdb
-title: couchdb
+title: CouchDB
 version: 0.0.1
 license: basic
-description: couchdb Integration
+description: CouchDB Integration
 type: integration
 categories:
 - metrics
 release: ga
 requirement:
-  kibana:
-    versions: '>=7.3.0 <8.0.0'
+  kibana: {}
   elasticsearch: {}
 screenshots:
 - src: /img/metricbeat-couchdb-overview.png
@@ -24,8 +23,8 @@ icons:
   type: image/svg+xml
 datasources:
 - name: couchdb
-  title: couchdb metrics
-  description: Collect metrics from couchdb instances
+  title: CouchDB metrics
+  description: Collect metrics from CouchDB instances
   inputs:
   - type: couchdb/metrics
-    description: Collecting couchdb metrics
+    description: Collecting CouchDB metrics

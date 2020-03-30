@@ -1,4 +1,4 @@
-# cockroachdb Integration
+# CockroachDB Integration
 
 TODO
 

@@ -1,17 +1,16 @@
 format_version: 1.0.0
 name: apache
-title: apache
+title: Apache
 version: 0.0.1
 license: basic
-description: apache Integration
+description: Apache Integration
 type: integration
 categories:
 - logs
 - metrics
 release: ga
 requirement:
-  kibana:
-    versions: '>=7.3.0 <8.0.0'
+  kibana: {}
   elasticsearch:
     versions: '>7.0.1'
 screenshots:
@@ -30,10 +29,10 @@ icons:
   type: image/svg+xml
 datasources:
 - name: apache
-  title: apache logs and metrics
-  description: Collect logs and metrics from apache instances
+  title: Apache logs and metrics
+  description: Collect logs and metrics from Apache instances
   inputs:
   - type: logs
-    description: Collecting apache logs
+    description: Collecting Apache logs
   - type: apache/metrics
-    description: Collecting apache metrics
+    description: Collecting Apache metrics

@@ -1,8 +1,8 @@
 id: broker
-title: kafka broker metrics
+title: Kafka broker metrics
 release: beta
 type: metrics
 streams:
 - input: kafka/metrics
-  title: kafka broker logs
-  description: Collect kafka broker metrics
+  title: Kafka broker logs
+  description: Collect Kafka broker metrics

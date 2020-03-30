@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: memcached
-title: memcached
+title: Memcached
 version: 0.0.1
 license: basic
-description: memcached Integration
+description: Memcached Integration
 type: integration
 categories:
 - metrics
@@ -18,8 +18,8 @@ icons:
   type: image/svg+xml
 datasources:
 - name: memcached
-  title: memcached metrics
-  description: Collect metrics from memcached instances
+  title: Memcached metrics
+  description: Collect metrics from Memcached instances
   inputs:
   - type: memcached/metrics
-    description: Collecting memcached metrics
+    description: Collecting Memcached metrics

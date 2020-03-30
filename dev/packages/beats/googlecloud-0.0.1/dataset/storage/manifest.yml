@@ -1,5 +1,5 @@
 id: storage
-title: googlecloud storage metrics
+title: Google Cloud Platform storage metrics
 release: beta
 type: metrics
 streams:
@@ -15,5 +15,5 @@ streams:
     name: project_id
   - default: us-central1
     name: region
-  title: googlecloud storage logs
-  description: Collect googlecloud storage metrics
+  title: Google Cloud Platform storage logs
+  description: Collect Google Cloud Platform storage metrics

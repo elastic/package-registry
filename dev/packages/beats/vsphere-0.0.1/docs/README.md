@@ -1,4 +1,4 @@
-# vsphere Integration
+# vSphere Integration
 
 TODO
 

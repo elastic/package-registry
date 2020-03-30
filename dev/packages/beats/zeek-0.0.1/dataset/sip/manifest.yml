@@ -1,5 +1,5 @@
 id: sip
-title: zeek sip logs
+title: Zeek sip logs
 release: ga
 type: logs
 streams:
@@ -19,5 +19,5 @@ streams:
     name: tags
   - default: true
     name: community_id
-  title: zeek sip logs
-  description: Collect zeek sip logs
+  title: Zeek sip logs
+  description: Collect Zeek sip logs

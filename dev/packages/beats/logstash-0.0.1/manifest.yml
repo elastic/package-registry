@@ -1,17 +1,16 @@
 format_version: 1.0.0
 name: logstash
-title: logstash
+title: Logstash
 version: 0.0.1
 license: basic
-description: logstash Integration
+description: Logstash Integration
 type: integration
 categories:
 - logs
 - metrics
 release: ga
 requirement:
-  kibana:
-    versions: '>=7.3.0 <8.0.0'
+  kibana: {}
   elasticsearch:
     versions: '>7.0.1'
 screenshots:

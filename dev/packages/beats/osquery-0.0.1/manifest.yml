@@ -1,16 +1,15 @@
 format_version: 1.0.0
 name: osquery
-title: osquery
+title: Osquery
 version: 0.0.1
 license: basic
-description: osquery Integration
+description: Osquery Integration
 type: integration
 categories:
 - logs
 release: ga
 requirement:
-  kibana:
-    versions: '>=7.3.0 <8.0.0'
+  kibana: {}
   elasticsearch:
     versions: '>7.0.1'
 screenshots:
@@ -25,8 +24,8 @@ icons:
   type: image/svg+xml
 datasources:
 - name: osquery
-  title: osquery logs
-  description: Collect logs from osquery instances
+  title: Osquery logs
+  description: Collect logs from Osquery instances
   inputs:
   - type: logs
-    description: Collecting osquery logs
+    description: Collecting Osquery logs

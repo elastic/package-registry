@@ -1,4 +1,4 @@
-# netflow Integration
+# NetFlow Integration
 
 TODO
 

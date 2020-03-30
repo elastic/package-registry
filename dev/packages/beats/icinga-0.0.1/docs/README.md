@@ -1,4 +1,4 @@
-# icinga Integration
+# Icinga Integration
 
 TODO
 

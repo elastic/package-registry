@@ -1,4 +1,4 @@
-# aws Integration
+# AWS Integration
 
 TODO
 

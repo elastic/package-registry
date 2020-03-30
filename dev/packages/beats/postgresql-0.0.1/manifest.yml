@@ -1,17 +1,16 @@
 format_version: 1.0.0
 name: postgresql
-title: postgresql
+title: PostgreSQL
 version: 0.0.1
 license: basic
-description: postgresql Integration
+description: PostgreSQL Integration
 type: integration
 categories:
 - logs
 - metrics
 release: ga
 requirement:
-  kibana:
-    versions: '>=7.3.1 <8.0.0'
+  kibana: {}
   elasticsearch:
     versions: '>7.0.1'
 screenshots:
@@ -34,10 +33,10 @@ icons:
   type: image/svg+xml
 datasources:
 - name: postgresql
-  title: postgresql logs and metrics
-  description: Collect logs and metrics from postgresql instances
+  title: PostgreSQL logs and metrics
+  description: Collect logs and metrics from PostgreSQL instances
   inputs:
   - type: logs
-    description: Collecting postgresql logs
+    description: Collecting PostgreSQL logs
   - type: postgresql/metrics
-    description: Collecting postgresql metrics
+    description: Collecting PostgreSQL metrics

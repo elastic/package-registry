@@ -1,5 +1,5 @@
 id: cloudtrail
-title: aws cloudtrail logs
+title: AWS cloudtrail logs
 release: beta
 type: logs
 streams:
@@ -13,5 +13,5 @@ streams:
   - name: visibility_timeout
   - name: api_timeout
   - name: endpoint
-  title: aws cloudtrail logs
-  description: Collect aws cloudtrail logs
+  title: AWS cloudtrail logs
+  description: Collect AWS cloudtrail logs

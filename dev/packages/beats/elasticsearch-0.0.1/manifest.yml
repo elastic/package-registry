@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: elasticsearch
-title: elasticsearch
+title: Elasticsearch
 version: 0.0.1
 license: basic
-description: elasticsearch Integration
+description: Elasticsearch Integration
 type: integration
 categories:
 - logs

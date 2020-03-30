@@ -1,5 +1,5 @@
 id: state_statefulset
-title: kubernetes state_statefulset metrics
+title: Kubernetes state_statefulset metrics
 release: ga
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: kubernetes state_statefulset logs
-  description: Collect kubernetes state_statefulset metrics
+  title: Kubernetes state_statefulset logs
+  description: Collect Kubernetes state_statefulset metrics

@@ -1,4 +1,4 @@
-# prometheus Integration
+# Prometheus Integration
 
 TODO
 

@@ -1,4 +1,4 @@
-# nginx Integration
+# Nginx Integration
 
 TODO
 

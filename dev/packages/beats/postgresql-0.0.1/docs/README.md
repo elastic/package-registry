@@ -1,4 +1,4 @@
-# postgresql Integration
+# PostgreSQL Integration
 
 TODO
 

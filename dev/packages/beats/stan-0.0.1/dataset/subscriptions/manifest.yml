@@ -1,5 +1,5 @@
 id: subscriptions
-title: stan subscriptions metrics
+title: Stan subscriptions metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 60s
     name: period
-  title: stan subscriptions logs
-  description: Collect stan subscriptions metrics
+  title: Stan subscriptions logs
+  description: Collect Stan subscriptions metrics

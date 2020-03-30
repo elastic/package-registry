@@ -1,8 +1,8 @@
 id: pending_tasks
-title: elasticsearch pending_tasks metrics
+title: Elasticsearch pending_tasks metrics
 release: ga
 type: metrics
 streams:
 - input: elasticsearch/metrics
-  title: elasticsearch pending_tasks logs
-  description: Collect elasticsearch pending_tasks metrics
+  title: Elasticsearch pending_tasks logs
+  description: Collect Elasticsearch pending_tasks metrics

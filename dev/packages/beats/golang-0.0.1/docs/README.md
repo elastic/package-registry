@@ -1,4 +1,4 @@
-# golang Integration
+# Golang Integration
 
 TODO
 

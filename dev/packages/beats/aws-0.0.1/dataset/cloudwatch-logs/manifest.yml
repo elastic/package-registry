@@ -1,5 +1,5 @@
 id: cloudwatch
-title: aws cloudwatch logs
+title: AWS cloudwatch logs
 release: beta
 type: logs
 streams:
@@ -13,5 +13,5 @@ streams:
   - name: visibility_timeout
   - name: api_timeout
   - name: endpoint
-  title: aws cloudwatch logs
-  description: Collect aws cloudwatch logs
+  title: AWS cloudwatch logs
+  description: Collect AWS cloudwatch logs

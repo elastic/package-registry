@@ -1,17 +1,16 @@
 format_version: 1.0.0
 name: mysql
-title: mysql
+title: MySQL
 version: 0.0.1
 license: basic
-description: mysql Integration
+description: MySQL Integration
 type: integration
 categories:
 - logs
 - metrics
 release: ga
 requirement:
-  kibana:
-    versions: '>=7.3.1 <8.0.0'
+  kibana: {}
   elasticsearch:
     versions: '>7.0.1'
 screenshots:
@@ -30,10 +29,10 @@ icons:
   type: image/svg+xml
 datasources:
 - name: mysql
-  title: mysql logs and metrics
-  description: Collect logs and metrics from mysql instances
+  title: MySQL logs and metrics
+  description: Collect logs and metrics from MySQL instances
   inputs:
   - type: logs
-    description: Collecting mysql logs
+    description: Collecting MySQL logs
   - type: mysql/metrics
-    description: Collecting mysql metrics
+    description: Collecting MySQL metrics

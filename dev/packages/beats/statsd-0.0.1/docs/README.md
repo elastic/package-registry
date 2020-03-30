@@ -1,4 +1,4 @@
-# statsd Integration
+# Statsd Integration
 
 TODO
 

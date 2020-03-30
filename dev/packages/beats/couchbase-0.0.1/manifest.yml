@@ -1,16 +1,15 @@
 format_version: 1.0.0
 name: couchbase
-title: couchbase
+title: Couchbase
 version: 0.0.1
 license: basic
-description: couchbase Integration
+description: Couchbase Integration
 type: integration
 categories:
 - metrics
 release: ga
 requirement:
-  kibana:
-    versions: '>=7.3.0 <8.0.0'
+  kibana: {}
   elasticsearch: {}
 screenshots:
 - src: /img/metricbeat-couchbase-overview.png
@@ -24,8 +23,8 @@ icons:
   type: image/svg+xml
 datasources:
 - name: couchbase
-  title: couchbase metrics
-  description: Collect metrics from couchbase instances
+  title: Couchbase metrics
+  description: Collect metrics from Couchbase instances
   inputs:
   - type: couchbase/metrics
-    description: Collecting couchbase metrics
+    description: Collecting Couchbase metrics

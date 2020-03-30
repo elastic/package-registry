@@ -1,8 +1,8 @@
 id: server
-title: http server metrics
+title: HTTP server metrics
 release: ga
 type: metrics
 streams:
 - input: http/metrics
-  title: http server logs
-  description: Collect http server metrics
+  title: HTTP server logs
+  description: Collect HTTP server metrics

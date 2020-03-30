@@ -1,5 +1,5 @@
 id: vpcflow
-title: googlecloud vpcflow logs
+title: Google Cloud vpcflow logs
 release: ga
 type: logs
 streams:
@@ -17,5 +17,5 @@ streams:
     name: credentials_file
   - default: false
     name: keep_original_message
-  title: googlecloud vpcflow logs
-  description: Collect googlecloud vpcflow logs
+  title: Google Cloud vpcflow logs
+  description: Collect Google Cloud vpcflow logs
