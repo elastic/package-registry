@@ -13,6 +13,7 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
+	"text/template"
 
 	"github.com/pkg/errors"
 	"gopkg.in/yaml.v2"
@@ -357,19 +358,44 @@ func (r *packageRepository) save(outputDir string) error {
 			}
 
 			for _, doc := range content.docs {
-				log.Printf("\twrite '%s' file\n", doc.fileName)
+				err = writeDoc(docsPath, doc, content)
+				if err != nil {
+					return errors.Wrapf(err, "cannot write docs (docsPath: %s, fileName: %s)", docsPath,
+						doc.fileName)
+				}
 
-				docFilePath := filepath.Join(docsPath, doc.fileName)
-				f, err := os.OpenFile(docFilePath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
-				if err != nil {
-					return errors.Wrapf(err, "opening doc file failed (path: %s)", docFilePath)
-				}
-				err = doc.body.Execute(f, nil)
-				if err != nil {
-					return errors.Wrapf(err, "rendering doc file failed (path: %s)", docFilePath)
-				}
 			}
 		}
+	}
+	return nil
+}
+
+func writeDoc(docsPath string, doc docContent, aPackage packageContent) error {
+	log.Printf("\twrite '%s' file\n", doc.fileName)
+
+	docFilePath := filepath.Join(docsPath, doc.fileName)
+	f, err := os.OpenFile(docFilePath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
+	defer f.Close()
+
+	if err != nil {
+		return errors.Wrapf(err, "opening doc file failed (path: %s)", docFilePath)
+	}
+	t := template.New(doc.fileName)
+	if doc.templatePath == "" {
+		t = template.Must(t.Parse("TODO"))
+	} else {
+		t, err = t.Funcs(template.FuncMap{
+			"fields": func(dataset string) (string, error) {
+				return renderExportedFields(dataset, aPackage.datasets)
+			},
+		}).ParseFiles(doc.templatePath)
+		if err != nil {
+			return errors.Wrapf(err, "parsing doc template failed (path: %s)", doc.templatePath)
+		}
+	}
+	err = t.Execute(f, nil)
+	if err != nil {
+		return errors.Wrapf(err, "rendering doc file failed (path: %s)", docFilePath)
 	}
 	return nil
 }

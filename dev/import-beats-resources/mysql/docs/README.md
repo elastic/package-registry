@@ -15,22 +15,13 @@ versions >= 5.7.0. It is also tested with MariaDB 10.2, 10.3 and 10.4.
 
 The `error` dataset collects the MySQL error logs.
 
-**Exported fields**
-
-| Field                       	| Description                                                                                                                                                                                            	| Type 	|
-|-----------------------------	|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|------	|
-| nginx.access.remote_ip_list 	| An array of remote IP addresses. It is a list because it is common to include, besides the client IP address, IP addresses from headers like X-Forwarded-For. Real source IP is restored to source.ip. 	| ip   	|
-
+{{fields "error"}}
 
 ### slowlog
 
 The `slowlog` dataset collects the MySQL slow logs.
 
-**Exported fields**
-
-| Field                     	| Description                                                                    	| Type 	|
-|---------------------------	|--------------------------------------------------------------------------------	|------	|
-| nginx.error.connection_id 	| Connection identifier.                                                         	| ip   	|
+{{fields "slowlog"}}
 
 ## Metrics
 
@@ -126,9 +117,7 @@ An example event for `galera_status` looks as following:
 
 The fields reported are:
 
-| Field                     	| Description                                                                    	| Type    	|
-|---------------------------	|--------------------------------------------------------------------------------	|---------	|
-| nginx.stubstatus.hostname 	| Nginx hostname.                                                                	| keyword 	|
+{{fields "galera_status"}}
 
 ### status
 
@@ -256,6 +245,4 @@ An example event for `status` looks as following:
 
 The fields reported are:
 
-| Field                     	| Description                                                                    	| Type    	|
-|---------------------------	|--------------------------------------------------------------------------------	|---------	|
-| nginx.stubstatus.hostname 	| Nginx hostname.                                                                	| keyword 	|
+{{fields "status"}}

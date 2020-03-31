@@ -23,29 +23,13 @@ If logs are originated from systems or applications with a different timezone to
 
 Access logs collects the nginx access logs.
 
-**Exported fields**
-
-| Field                       	| Description                                                                                                                                                                                            	| Type 	|
-|-----------------------------	|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|------	|
-| nginx.access.remote_ip_list 	| An array of remote IP addresses. It is a list because it is common to include, besides the client IP address, IP addresses from headers like X-Forwarded-For. Real source IP is restored to source.ip. 	| ip   	|
-| nginx.stubstatus.active     	| The current number of active client connections including Waiting connections.                                                                                                                         	| long 	|
-| nginx.stubstatus.accepts    	| The total number of accepted client connections.                                                                                                                                                       	| long 	|
-| nginx.stubstatus.handled    	| The total number of handled client connections.                                                                                                                                                        	| long 	|
-| nginx.stubstatus.dropped    	| The total number of dropped client connections.                                                                                                                                                        	| long 	|
+{{fields "access"}}
 
 ### Error Logs
 
 Error logs collects the nginx error logs.
 
-**Exported fields**
-
-| Field                     	| Description                                                                    	| Type 	|
-|---------------------------	|--------------------------------------------------------------------------------	|------	|
-| nginx.error.connection_id 	| Connection identifier.                                                         	| ip   	|
-| nginx.stubstatus.active   	| The current number of active client connections including Waiting connections. 	| long 	|
-| nginx.stubstatus.accepts  	| The total number of accepted client connections.                               	| long 	|
-| nginx.stubstatus.handled  	| The total number of handled client connections.                                	| long 	|
-| nginx.stubstatus.dropped  	| The total number of dropped client connections.                                	| long 	|
+{{fields "error"}}
 
 ## Metrics
 
@@ -93,12 +77,4 @@ An example event for nginx looks as following:
 }
 ```
 
-The fields reported are:
-
-| Field                     	| Description                                                                    	| Type    	|
-|---------------------------	|--------------------------------------------------------------------------------	|---------	|
-| nginx.stubstatus.hostname 	| Nginx hostname.                                                                	| keyword 	|
-| nginx.stubstatus.active   	| The current number of active client connections including Waiting connections. 	| long    	|
-| nginx.stubstatus.accepts  	| The total number of accepted client connections.                               	| long    	|
-| nginx.stubstatus.handled  	| The total number of handled client connections.                                	| long    	|
-| nginx.stubstatus.dropped  	| The total number of dropped client connections.                                	| long    	|
+{{fields "stubstatus"}}

@@ -25,13 +25,29 @@ Access logs collects the nginx access logs.
 
 **Exported fields**
 
-| Field                       	| Description                                                                                                                                                                                            	| Type 	|
-|-----------------------------	|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|------	|
-| nginx.access.remote_ip_list 	| An array of remote IP addresses. It is a list because it is common to include, besides the client IP address, IP addresses from headers like X-Forwarded-For. Real source IP is restored to source.ip. 	| ip   	|
-| nginx.stubstatus.active     	| The current number of active client connections including Waiting connections.                                                                                                                         	| long 	|
-| nginx.stubstatus.accepts    	| The total number of accepted client connections.                                                                                                                                                       	| long 	|
-| nginx.stubstatus.handled    	| The total number of handled client connections.                                                                                                                                                        	| long 	|
-| nginx.stubstatus.dropped    	| The total number of dropped client connections.                                                                                                                                                        	| long 	|
+| Field | Description | Type |
+|---|---|---|
+| nginx.access.agent | Alias for field "user_agent.original" | alias |
+| nginx.access.body_sent.bytes | Alias for field "http.response.body.bytes" | alias |
+| nginx.access.geoip.city_name | Alias for field "source.geo.city_name" | alias |
+| nginx.access.geoip.continent_name | Alias for field "source.geo.continent_name" | alias |
+| nginx.access.geoip.country_iso_code | Alias for field "source.geo.country_iso_code" | alias |
+| nginx.access.geoip.location | Alias for field "source.geo.location" | alias |
+| nginx.access.geoip.region_iso_code | Alias for field "source.geo.region_iso_code" | alias |
+| nginx.access.geoip.region_name | Alias for field "source.geo.region_name" | alias |
+| nginx.access.http_version | Alias for field "http.version" | alias |
+| nginx.access.method | Alias for field "http.request.method" | alias |
+| nginx.access.referrer | Alias for field "http.request.referrer" | alias |
+| nginx.access.remote_ip_list | An array of remote IP addresses. It is a list because it is common to include, besides the client IP address, IP addresses from headers like `X-Forwarded-For`. Real source IP is restored to `source.ip`. | array |
+| nginx.access.response_code | Alias for field "http.response.status_code" | alias |
+| nginx.access.url | Alias for field "url.original" | alias |
+| nginx.access.user_agent.device | Alias for field "user_agent.device.name" | alias |
+| nginx.access.user_agent.name | Alias for field "user_agent.name" | alias |
+| nginx.access.user_agent.original | Alias for field "user_agent.original" | alias |
+| nginx.access.user_agent.os | Alias for field "user_agent.os.full_name" | alias |
+| nginx.access.user_agent.os_name | Alias for field "user_agent.os.name" | alias |
+| nginx.access.user_name | Alias for field "user.name" | alias |
+
 
 ### Error Logs
 
@@ -39,13 +55,14 @@ Error logs collects the nginx error logs.
 
 **Exported fields**
 
-| Field                     	| Description                                                                    	| Type 	|
-|---------------------------	|--------------------------------------------------------------------------------	|------	|
-| nginx.error.connection_id 	| Connection identifier.                                                         	| ip   	|
-| nginx.stubstatus.active   	| The current number of active client connections including Waiting connections. 	| long 	|
-| nginx.stubstatus.accepts  	| The total number of accepted client connections.                               	| long 	|
-| nginx.stubstatus.handled  	| The total number of handled client connections.                                	| long 	|
-| nginx.stubstatus.dropped  	| The total number of dropped client connections.                                	| long 	|
+| Field | Description | Type |
+|---|---|---|
+| nginx.error.connection_id | Connection identifier. | long |
+| nginx.error.level | Alias for field "log.level" | alias |
+| nginx.error.message | Alias for field "message" | alias |
+| nginx.error.pid | Alias for field "process.pid" | alias |
+| nginx.error.tid | Alias for field "process.thread.id" | alias |
+
 
 ## Metrics
 
@@ -93,12 +110,18 @@ An example event for nginx looks as following:
 }
 ```
 
-The fields reported are:
+**Exported fields**
 
-| Field                     	| Description                                                                    	| Type    	|
-|---------------------------	|--------------------------------------------------------------------------------	|---------	|
-| nginx.stubstatus.hostname 	| Nginx hostname.                                                                	| keyword 	|
-| nginx.stubstatus.active   	| The current number of active client connections including Waiting connections. 	| long    	|
-| nginx.stubstatus.accepts  	| The total number of accepted client connections.                               	| long    	|
-| nginx.stubstatus.handled  	| The total number of handled client connections.                                	| long    	|
-| nginx.stubstatus.dropped  	| The total number of dropped client connections.                                	| long    	|
+| Field | Description | Type |
+|---|---|---|
+| nginx.stubstatus.accepts | The total number of accepted client connections. | long |
+| nginx.stubstatus.active | The current number of active client connections including Waiting connections. | long |
+| nginx.stubstatus.current | The current number of client requests. | long |
+| nginx.stubstatus.dropped | The total number of dropped client connections. | long |
+| nginx.stubstatus.handled | The total number of handled client connections. | long |
+| nginx.stubstatus.hostname | Nginx hostname. | keyword |
+| nginx.stubstatus.reading | The current number of connections where Nginx is reading the request header. | long |
+| nginx.stubstatus.requests | The total number of client requests. | long |
+| nginx.stubstatus.waiting | The current number of idle client connections waiting for a request. | long |
+| nginx.stubstatus.writing | The current number of connections where Nginx is writing the response back to the client. | long |
+
