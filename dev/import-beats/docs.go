@@ -127,6 +127,19 @@ func visitFields(namePrefix string, f mapStr, records []fieldsTableRecord) ([]fi
 		}
 
 		if description == "" && aType == "alias" {
+			var migration bool
+			migrationVal, err := f.getValue("migration")
+			if err != nil && err != errKeyNotFound {
+				return nil, errors.Wrapf(err, "retrieving field 'migration' failed")
+			}
+			if err == nil {
+				migration = migrationVal.(bool)
+			}
+
+			if migration {
+				return records, nil // skip the field due to migration
+			}
+
 			pathVal, err := f.getValue("path")
 			if err != nil {
 				return nil, errors.Wrapf(err, "retrieving field 'path' failed")

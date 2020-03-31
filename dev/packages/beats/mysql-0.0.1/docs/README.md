@@ -19,9 +19,6 @@ The `error` dataset collects the MySQL error logs.
 
 | Field | Description | Type |
 |---|---|---|
-| mysql.error.level | Alias for field "log.level" | alias |
-| mysql.error.message | Alias for field "message" | alias |
-| mysql.error.thread_id | Alias for field "mysql.thread_id" | alias |
 | mysql.thread_id | The connection or thread ID for the query. | long |
 
 
@@ -40,8 +37,6 @@ The `slowlog` dataset collects the MySQL slow logs.
 | mysql.slowlog.filesort_on_disk | Whether filesort optimization was used and it needed temporary tables on disk. | boolean |
 | mysql.slowlog.full_join | Whether a full join was needed for the slow query (no indexes were used for joins). | boolean |
 | mysql.slowlog.full_scan | Whether a full table scan was needed for the slow query. | boolean |
-| mysql.slowlog.host | Alias for field "source.domain" | alias |
-| mysql.slowlog.id | Alias for field "mysql.thread_id" | alias |
 | mysql.slowlog.innodb.io_r_bytes | Bytes read during page read operations. | long |
 | mysql.slowlog.innodb.io_r_ops | Number of page read operations. | long |
 | mysql.slowlog.innodb.io_r_wait.sec | How long it took to read all needed data from storage. | long |
@@ -49,7 +44,6 @@ The `slowlog` dataset collects the MySQL slow logs.
 | mysql.slowlog.innodb.queue_wait.sec | How long the query waited to enter the InnoDB queue and to be executed once in the queue. | long |
 | mysql.slowlog.innodb.rec_lock_wait.sec | How long the query waited for locks. | long |
 | mysql.slowlog.innodb.trx_id | Transaction ID | keyword |
-| mysql.slowlog.ip | Alias for field "source.ip" | alias |
 | mysql.slowlog.killed | Code of the reason if the query was killed. | keyword |
 | mysql.slowlog.last_errno | Last SQL error seen. | keyword |
 | mysql.slowlog.lock_time.sec | The amount of time the query waited for the lock to be available. The value is in seconds, as a floating point number. | float |
@@ -79,7 +73,6 @@ The `slowlog` dataset collects the MySQL slow logs.
 | mysql.slowlog.tmp_table_on_disk | Whether the query needed temporary tables on disk. | boolean |
 | mysql.slowlog.tmp_table_sizes | Size of temporary tables created for this query. | long |
 | mysql.slowlog.tmp_tables | Number of temporary tables created for this query | long |
-| mysql.slowlog.user | Alias for field "user.name" | alias |
 | mysql.thread_id | The connection or thread ID for the query. | long |
 
 
