@@ -18,6 +18,11 @@ screenshots:
   title: kibana cisco asa
   size: 1800x1559
   type: image/png
+icons:
+- src: /img/cisco.svg
+  title: cisco
+  size: 216x216
+  type: image/svg+xml
 datasources:
 - name: cisco
   title: Cisco logs

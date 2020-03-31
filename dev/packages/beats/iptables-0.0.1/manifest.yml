@@ -22,6 +22,11 @@ screenshots:
   title: kibana iptables ubiquiti
   size: 1492x1464
   type: image/png
+icons:
+- src: /img/ubiquiti.svg
+  title: ubiquiti
+  size: 110x120
+  type: image/svg+xml
 datasources:
 - name: iptables
   title: iptables logs

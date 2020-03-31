@@ -78,14 +78,16 @@ func (pc *packageContent) addKibanaContent(kc kibanaContent) {
 type packageRepository struct {
 	iconRepository *iconRepository
 	kibanaMigrator *kibanaMigrator
+	ecsFields      []fieldsTableRecord
 
 	packages map[string]packageContent
 }
 
-func newPackageRepository(iconRepository *iconRepository, kibanaMigrator *kibanaMigrator) *packageRepository {
+func newPackageRepository(iconRepository *iconRepository, kibanaMigrator *kibanaMigrator, ecsFields []fieldsTableRecord) *packageRepository {
 	return &packageRepository{
 		iconRepository: iconRepository,
 		kibanaMigrator: kibanaMigrator,
+		ecsFields:      ecsFields,
 		packages:       map[string]packageContent{},
 	}
 }
@@ -358,7 +360,7 @@ func (r *packageRepository) save(outputDir string) error {
 			}
 
 			for _, doc := range content.docs {
-				err = writeDoc(docsPath, doc, content)
+				err = writeDoc(docsPath, doc, content, r.ecsFields)
 				if err != nil {
 					return errors.Wrapf(err, "cannot write docs (docsPath: %s, fileName: %s)", docsPath,
 						doc.fileName)
@@ -370,7 +372,7 @@ func (r *packageRepository) save(outputDir string) error {
 	return nil
 }
 
-func writeDoc(docsPath string, doc docContent, aPackage packageContent) error {
+func writeDoc(docsPath string, doc docContent, aPackage packageContent, ecsFields []fieldsTableRecord) error {
 	log.Printf("\twrite '%s' file\n", doc.fileName)
 
 	docFilePath := filepath.Join(docsPath, doc.fileName)
@@ -386,7 +388,7 @@ func writeDoc(docsPath string, doc docContent, aPackage packageContent) error {
 	} else {
 		t, err = t.Funcs(template.FuncMap{
 			"fields": func(dataset string) (string, error) {
-				return renderExportedFields(dataset, aPackage.datasets)
+				return renderExportedFields(dataset, aPackage.datasets, ecsFields)
 			},
 		}).ParseFiles(doc.templatePath)
 		if err != nil {

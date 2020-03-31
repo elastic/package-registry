@@ -17,6 +17,11 @@ screenshots:
   title: metricbeat zookeeper
   size: 3808x2018
   type: image/png
+icons:
+- src: /img/zookeeper.svg
+  title: zookeeper
+  size: 266x266
+  type: image/svg+xml
 datasources:
 - name: zookeeper
   title: ZooKeeper metrics

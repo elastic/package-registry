@@ -20,7 +20,7 @@ screenshots:
 icons:
 - src: /img/consul.svg
   title: consul
-  size: 79x113
+  size: 250x250
   type: image/svg+xml
 datasources:
 - name: consul

@@ -17,6 +17,11 @@ screenshots:
   title: uwsgi dashboard
   size: 1305x747
   type: image/png
+icons:
+- src: /img/uwsgi.svg
+  title: uwsgi
+  size: 715x715
+  type: image/svg+xml
 datasources:
 - name: uwsgi
   title: uwsgi metrics

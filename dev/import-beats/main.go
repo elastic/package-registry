@@ -27,6 +27,9 @@ type importerOptions struct {
 	// Elastic UI Framework directory
 	euiDir string
 
+	// Elastic Common Schema directory
+	ecsDir string
+
 	// Target public directory where the generated packages should end up in
 	outputDir string
 }
@@ -67,6 +70,7 @@ func main() {
 	flag.StringVar(&options.kibanaHostPort, "kibanaHostPort", "http://localhost:5601", "Kibana host and port")
 	flag.BoolVar(&options.skipKibana, "skipKibana", false, "Skip storing Kibana objects")
 	flag.StringVar(&options.euiDir, "euiDir", "../eui", "Path to the Elastic UI framework repository")
+	flag.StringVar(&options.ecsDir, "ecsDir", "../ecs", "Path to the Elastic Common Schema repository")
 	flag.StringVar(&options.outputDir, "outputDir", "dev/packages/beats", "Path to the output directory")
 	flag.Parse()
 
@@ -90,7 +94,12 @@ func build(options importerOptions) error {
 		return errors.Wrap(err, "creating icon repository failed")
 	}
 	kibanaMigrator := newKibanaMigrator(options.kibanaHostPort, options.skipKibana)
-	repository := newPackageRepository(iconRepository, kibanaMigrator)
+	ecsFields, err := loadEcsFields(options.ecsDir)
+	if err != nil {
+		return errors.Wrap(err, "loading ECS fields failed")
+	}
+
+	repository := newPackageRepository(iconRepository, kibanaMigrator, ecsFields)
 
 	for _, beatName := range logSources {
 		err := repository.createPackagesFromSource(options.beatsDir, beatName, "logs")
