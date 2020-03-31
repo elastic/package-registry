@@ -23,23 +23,13 @@ If logs are originated from systems or applications with a different timezone to
 
 Access logs collects the nginx access logs.
 
-**Exported fields**
-
-| Field | Description | Type |
-|---|---|---|
-| nginx.access.remote_ip_list | An array of remote IP addresses. It is a list because it is common to include, besides the client IP address, IP addresses from headers like `X-Forwarded-For`. Real source IP is restored to `source.ip`. | array |
-
+{{fields "access"}}
 
 ### Error Logs
 
 Error logs collects the nginx error logs.
 
-**Exported fields**
-
-| Field | Description | Type |
-|---|---|---|
-| nginx.error.connection_id | Connection identifier. | long |
-
+{{fields "error"}}
 
 ## Metrics
 
@@ -87,18 +77,4 @@ An example event for nginx looks as following:
 }
 ```
 
-**Exported fields**
-
-| Field | Description | Type |
-|---|---|---|
-| nginx.stubstatus.accepts | The total number of accepted client connections. | long |
-| nginx.stubstatus.active | The current number of active client connections including Waiting connections. | long |
-| nginx.stubstatus.current | The current number of client requests. | long |
-| nginx.stubstatus.dropped | The total number of dropped client connections. | long |
-| nginx.stubstatus.handled | The total number of handled client connections. | long |
-| nginx.stubstatus.hostname | Nginx hostname. | keyword |
-| nginx.stubstatus.reading | The current number of connections where Nginx is reading the request header. | long |
-| nginx.stubstatus.requests | The total number of client requests. | long |
-| nginx.stubstatus.waiting | The current number of idle client connections waiting for a request. | long |
-| nginx.stubstatus.writing | The current number of connections where Nginx is writing the response back to the client. | long |
-
+{{fields "stubstatus"}}
