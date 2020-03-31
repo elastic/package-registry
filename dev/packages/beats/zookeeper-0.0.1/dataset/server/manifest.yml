@@ -1,5 +1,5 @@
 id: server
-title: Zookeeper Server Metrics
+title: ZooKeeper server metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Zookeeper Server logs
-  description: Collect Zookeeper Server metrics
+  title: ZooKeeper server metrics
+  description: Collect ZooKeeper server metrics

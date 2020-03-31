@@ -1,5 +1,5 @@
 id: osd_tree
-title: Ceph Osd_tree Metrics
+title: Ceph osd_tree metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Ceph Osd_tree logs
-  description: Collect Ceph Osd_tree metrics
+  title: Ceph osd_tree metrics
+  description: Collect Ceph osd_tree metrics

@@ -6,7 +6,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/elastic/package-registry/util"
 )
@@ -14,7 +13,8 @@ import (
 type datasourceContent struct {
 	packageTypes []string
 
-	moduleName string
+	moduleName  string
+	moduleTitle string
 }
 
 type datasourceContentArray []datasourceContent
@@ -24,11 +24,11 @@ func (datasources datasourceContentArray) toMetadataDatasources() []util.Datasou
 	for _, ds := range datasources {
 		var title, description string
 		if len(ds.packageTypes) == 2 {
-			title = toDatasourceTitleForTwoTypes(ds.moduleName, ds.packageTypes[0], ds.packageTypes[1])
-			description = toDatasourceDescriptionForTwoTypes(ds.moduleName, ds.packageTypes[0], ds.packageTypes[1])
+			title = toDatasourceTitleForTwoTypes(ds.moduleTitle, ds.packageTypes[0], ds.packageTypes[1])
+			description = toDatasourceDescriptionForTwoTypes(ds.moduleTitle, ds.packageTypes[0], ds.packageTypes[1])
 		} else {
-			title = toDatasourceTitle(ds.moduleName, ds.packageTypes[0])
-			description = toDatasourceDescription(ds.moduleName, ds.packageTypes[0])
+			title = toDatasourceTitle(ds.moduleTitle, ds.packageTypes[0])
+			description = toDatasourceDescription(ds.moduleTitle, ds.packageTypes[0])
 		}
 
 		var inputs []util.Input
@@ -40,7 +40,7 @@ func (datasources datasourceContentArray) toMetadataDatasources() []util.Datasou
 
 			inputs = append(inputs, util.Input{
 				Type:        pt,
-				Description: toDatasourceInputDescription(ds.moduleName, packageType),
+				Description: toDatasourceInputDescription(ds.moduleTitle, packageType),
 			})
 		}
 
@@ -54,7 +54,7 @@ func (datasources datasourceContentArray) toMetadataDatasources() []util.Datasou
 	return ud
 }
 
-func updateDatasources(datasources datasourceContentArray, moduleName, packageType string) (datasourceContentArray, error) {
+func updateDatasources(datasources datasourceContentArray, moduleName, moduleTitle, packageType string) (datasourceContentArray, error) {
 	var updated datasourceContentArray
 
 	if len(datasources) > 0 {
@@ -64,27 +64,28 @@ func updateDatasources(datasources datasourceContentArray, moduleName, packageTy
 		updated = append(updated, datasourceContent{
 			packageTypes: []string{packageType},
 			moduleName:   moduleName,
+			moduleTitle:  moduleTitle,
 		})
 	}
 	return updated, nil
 }
 
-func toDatasourceTitle(moduleName, packageType string) string {
-	return fmt.Sprintf("%s %s", strings.Title(moduleName), packageType)
+func toDatasourceTitle(moduleTitle, packageType string) string {
+	return fmt.Sprintf("%s %s", moduleTitle, packageType)
 }
 
-func toDatasourceDescription(moduleName, packageType string) string {
-	return fmt.Sprintf("Collect %s from %s instances", packageType, strings.Title(moduleName))
+func toDatasourceDescription(moduleTitle, packageType string) string {
+	return fmt.Sprintf("Collect %s from %s instances", packageType, moduleTitle)
 }
 
-func toDatasourceTitleForTwoTypes(moduleName, firstPackageType, secondPackageType string) string {
-	return fmt.Sprintf("%s %s and %s", strings.Title(moduleName), firstPackageType, secondPackageType)
+func toDatasourceTitleForTwoTypes(moduleTitle, firstPackageType, secondPackageType string) string {
+	return fmt.Sprintf("%s %s and %s", moduleTitle, firstPackageType, secondPackageType)
 }
 
-func toDatasourceDescriptionForTwoTypes(moduleName, firstPackageType, secondPackageType string) string {
-	return fmt.Sprintf("Collect %s and %s from %s instances", firstPackageType, secondPackageType, strings.Title(moduleName))
+func toDatasourceDescriptionForTwoTypes(moduleTitle, firstPackageType, secondPackageType string) string {
+	return fmt.Sprintf("Collect %s and %s from %s instances", firstPackageType, secondPackageType, moduleTitle)
 }
 
-func toDatasourceInputDescription(moduleName, packageType string) string {
-	return fmt.Sprintf("Collecting %s for %s", packageType, strings.Title(moduleName))
+func toDatasourceInputDescription(moduleTitle, packageType string) string {
+	return fmt.Sprintf("Collecting %s %s", moduleTitle, packageType)
 }

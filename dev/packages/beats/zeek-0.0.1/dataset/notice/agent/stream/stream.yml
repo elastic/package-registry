@@ -1,6 +1,6 @@
 input: log
 paths:
-{{#each paths}}}}
+{{#each paths}}
   - {{this}}
 {{/each}}
 exclude_files: [".gz$"]
@@ -60,4 +60,4 @@ processors:
       fields:
         source_ip: source.address
         destination_ip: destination.address
-{{/end}}
+{{/if}}

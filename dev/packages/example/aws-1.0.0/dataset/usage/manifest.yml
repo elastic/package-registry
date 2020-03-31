@@ -1,5 +1,5 @@
 title: AWS usage metrics
-release: ga
+release: beta
 type: metrics
 
 streams:
@@ -8,6 +8,6 @@ streams:
     description: AWS usage metrics
     vars:
       - name: period
-        description: Collection frequency usage elb metrics.
+        description: Collection frequency for usage metrics.
         type: period
         default: 1m

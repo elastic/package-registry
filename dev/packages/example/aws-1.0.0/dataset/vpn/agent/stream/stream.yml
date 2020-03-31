@@ -1,0 +1,4 @@
+input: aws/metrics
+period: {{period}}
+metricsets: vpn
+dataset: aws.vpn

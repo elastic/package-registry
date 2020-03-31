@@ -1,5 +1,5 @@
 id: query
-title: Sql Query Metrics
+title: sql query metrics
 release: beta
 type: metrics
 streams:
@@ -16,5 +16,5 @@ streams:
     name: sql_query
   - default: table
     name: sql_response_format
-  title: Sql Query logs
-  description: Collect Sql Query metrics
+  title: sql query metrics
+  description: Collect sql query metrics

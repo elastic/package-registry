@@ -1,5 +1,5 @@
 id: cluster_stats
-title: Elasticsearch Cluster_stats Metrics
+title: Elasticsearch cluster_stats metrics
 release: ga
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
     name: period
   - default: true
     name: xpack.enabled
-  title: Elasticsearch Cluster_stats logs
-  description: Collect Elasticsearch Cluster_stats metrics
+  title: Elasticsearch cluster_stats metrics
+  description: Collect Elasticsearch cluster_stats metrics

@@ -9,12 +9,12 @@ categories:
 - metrics
 release: ga
 requirement:
-  kibana:
-    versions: ""
+  kibana: {}
+  elasticsearch: {}
 datasources:
 - name: jolokia
   title: Jolokia metrics
   description: Collect metrics from Jolokia instances
   inputs:
   - type: jolokia/metrics
-    description: Collecting metrics for Jolokia
+    description: Collecting Jolokia metrics

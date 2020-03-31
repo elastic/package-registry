@@ -38,7 +38,7 @@
                             {
                                 "field": "kubernetes.apiserver.request.count",
                                 "id": "a2185e50-57a0-11e8-af57-a1d645d2b569",
-                                "type": "sum"
+                                "type": "max"
                             },
                             {
                                 "id": "b09133d0-57a0-11e8-af57-a1d645d2b569",
@@ -77,7 +77,7 @@
                             {
                                 "field": "kubernetes.apiserver.request.count",
                                 "id": "c001ba50-57a1-11e8-a049-ff54cef064a2",
-                                "type": "sum"
+                                "type": "max"
                             },
                             {
                                 "field": "c001ba50-57a1-11e8-a049-ff54cef064a2",

@@ -9,11 +9,11 @@ categories:
 - metrics
 release: ga
 requirement:
-  kibana:
-    versions: ""
+  kibana: {}
+  elasticsearch: {}
 icons:
 - src: /img/logo_dropwizard.svg
-  title: Logo Dropwizard
+  title: logo dropwizard
   size: 32x32
   type: image/svg+xml
 datasources:
@@ -22,4 +22,4 @@ datasources:
   description: Collect metrics from Dropwizard instances
   inputs:
   - type: dropwizard/metrics
-    description: Collecting metrics for Dropwizard
+    description: Collecting Dropwizard metrics

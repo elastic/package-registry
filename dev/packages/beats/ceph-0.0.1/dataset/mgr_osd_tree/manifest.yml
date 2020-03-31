@@ -1,8 +1,8 @@
 id: mgr_osd_tree
-title: Ceph Mgr_osd_tree Metrics
+title: Ceph mgr_osd_tree metrics
 release: beta
 type: metrics
 streams:
 - input: ceph/metrics
-  title: Ceph Mgr_osd_tree logs
-  description: Collect Ceph Mgr_osd_tree metrics
+  title: Ceph mgr_osd_tree metrics
+  description: Collect Ceph mgr_osd_tree metrics

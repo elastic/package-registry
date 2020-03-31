@@ -10,15 +10,16 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch: {}
 screenshots:
 - src: /img/ceph-overview-dashboard.png
-  title: Ceph Overview Dashboard
+  title: ceph overview dashboard
   size: 5002x2670
   type: image/png
 icons:
 - src: /img/logo_ceph.svg
-  title: Logo Ceph
+  title: logo ceph
   size: 32x32
   type: image/svg+xml
 datasources:
@@ -27,4 +28,4 @@ datasources:
   description: Collect metrics from Ceph instances
   inputs:
   - type: ceph/metrics
-    description: Collecting metrics for Ceph
+    description: Collecting Ceph metrics

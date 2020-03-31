@@ -1,5 +1,5 @@
 id: intel
-title: Zeek Intel Logs
+title: Zeek intel logs
 release: ga
 type: logs
 streams:
@@ -19,5 +19,5 @@ streams:
     name: tags
   - default: true
     name: community_id
-  title: Zeek Intel logs
-  description: Collect Zeek Intel logs
+  title: Zeek intel logs
+  description: Collect Zeek intel logs

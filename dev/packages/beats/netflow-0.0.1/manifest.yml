@@ -1,20 +1,21 @@
 format_version: 1.0.0
 name: netflow
-title: Netflow
+title: NetFlow
 version: 0.0.1
 license: basic
-description: Netflow Integration
+description: NetFlow Integration
 type: integration
 categories:
 - logs
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch: {}
 datasources:
 - name: netflow
-  title: Netflow logs
-  description: Collect logs from Netflow instances
+  title: NetFlow logs
+  description: Collect logs from NetFlow instances
   inputs:
   - type: logs
-    description: Collecting logs for Netflow
+    description: Collecting NetFlow logs

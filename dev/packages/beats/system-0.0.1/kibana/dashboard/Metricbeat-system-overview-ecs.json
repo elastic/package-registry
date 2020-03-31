@@ -28,7 +28,7 @@
                 },
                 "panelIndex": "9",
                 "panelRefName": "panel_0",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
                 "embeddableConfig": {
@@ -47,7 +47,7 @@
                 },
                 "panelIndex": "11",
                 "panelRefName": "panel_1",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
                 "embeddableConfig": {
@@ -66,7 +66,7 @@
                 },
                 "panelIndex": "12",
                 "panelRefName": "panel_2",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
                 "embeddableConfig": {},
@@ -79,7 +79,7 @@
                 },
                 "panelIndex": "13",
                 "panelRefName": "panel_3",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
                 "embeddableConfig": {
@@ -101,7 +101,7 @@
                 },
                 "panelIndex": "14",
                 "panelRefName": "panel_4",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
                 "embeddableConfig": {
@@ -120,7 +120,7 @@
                 },
                 "panelIndex": "16",
                 "panelRefName": "panel_5",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
                 "embeddableConfig": {},
@@ -133,7 +133,7 @@
                 },
                 "panelIndex": "17",
                 "panelRefName": "panel_6",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
                 "embeddableConfig": {},
@@ -146,7 +146,7 @@
                 },
                 "panelIndex": "18",
                 "panelRefName": "panel_7",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
                 "embeddableConfig": {},
@@ -159,7 +159,7 @@
                 },
                 "panelIndex": "19",
                 "panelRefName": "panel_8",
-                "version": "7.3.0"
+                "version": "7.6.0"
             },
             {
                 "embeddableConfig": {},
@@ -172,7 +172,7 @@
                 },
                 "panelIndex": "20",
                 "panelRefName": "panel_9",
-                "version": "7.3.0"
+                "version": "7.6.0"
             }
         ],
         "timeRestore": false,

@@ -1,8 +1,8 @@
 id: event
-title: Kubernetes Event Metrics
+title: Kubernetes event metrics
 release: ga
 type: metrics
 streams:
 - input: kubernetes/metrics
-  title: Kubernetes Event logs
-  description: Collect Kubernetes Event metrics
+  title: Kubernetes event metrics
+  description: Collect Kubernetes event metrics

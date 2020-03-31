@@ -9,8 +9,8 @@ Endpoints:
 * `/`: Info about the registry
 * `/search`: Search for packages. By default returns all the most recent packages available.
 * `/categories`: List of the existing package categories and how many packages are in each category.
-* `/package/{name}-{version}`: Info about a package
-* `/package/{name}-{version}.tar.gz`: Download a package
+* `/package/{name}/{version}`: Info about a package
+* `/epr/{name}/{name}-{version}.tar.gz`: Download a package
 
 Examples for each API endpoint can be found here: https://github.com/elastic/package-registry/tree/master/docs/api
 

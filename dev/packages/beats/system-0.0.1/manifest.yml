@@ -11,18 +11,20 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.6.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-system.png
-  title: Kibana System
+  title: kibana system
   size: 1220x852
   type: image/png
 - src: /img/metricbeat_system_dashboard.png
-  title: Metricbeat System Dashboard
+  title: metricbeat system dashboard
   size: 2097x1933
   type: image/png
 - src: /img/metricbeat-services-host.png
-  title: Metricbeat Services Host
+  title: metricbeat services host
   size: 5006x2260
   type: image/png
 datasources:
@@ -31,6 +33,6 @@ datasources:
   description: Collect logs and metrics from System instances
   inputs:
   - type: logs
-    description: Collecting logs for System
+    description: Collecting System logs
   - type: system/metrics
-    description: Collecting metrics for System
+    description: Collecting System metrics

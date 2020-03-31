@@ -1,5 +1,5 @@
 id: status
-title: Mysql Status Metrics
+title: MySQL status metrics
 release: ga
 type: metrics
 streams:
@@ -8,7 +8,13 @@ streams:
   - default:
     - root:secret@tcp(127.0.0.1:3306)/
     name: hosts
+  - default: secret
+    name: password
   - default: 10s
     name: period
-  title: Mysql Status logs
-  description: Collect Mysql Status metrics
+  - default: false
+    name: raw
+  - default: root
+    name: username
+  title: MySQL status metrics
+  description: Collect MySQL status metrics

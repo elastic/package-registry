@@ -1,5 +1,5 @@
 id: http
-title: Zeek Http Logs
+title: Zeek http logs
 release: ga
 type: logs
 streams:
@@ -19,5 +19,5 @@ streams:
     name: tags
   - default: true
     name: community_id
-  title: Zeek Http logs
-  description: Collect Zeek Http logs
+  title: Zeek http logs
+  description: Collect Zeek http logs

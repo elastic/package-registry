@@ -1,5 +1,5 @@
 id: radius
-title: Zeek Radius Logs
+title: Zeek radius logs
 release: ga
 type: logs
 streams:
@@ -19,5 +19,5 @@ streams:
     name: tags
   - default: true
     name: community_id
-  title: Zeek Radius logs
-  description: Collect Zeek Radius logs
+  title: Zeek radius logs
+  description: Collect Zeek radius logs

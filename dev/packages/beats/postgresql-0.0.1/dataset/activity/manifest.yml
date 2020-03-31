@@ -1,5 +1,5 @@
 id: activity
-title: Postgresql Activity Metrics
+title: PostgreSQL activity metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Postgresql Activity logs
-  description: Collect Postgresql Activity metrics
+  title: PostgreSQL activity metrics
+  description: Collect PostgreSQL activity metrics

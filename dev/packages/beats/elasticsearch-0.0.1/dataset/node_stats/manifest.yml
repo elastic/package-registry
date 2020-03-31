@@ -1,5 +1,5 @@
 id: node_stats
-title: Elasticsearch Node_stats Metrics
+title: Elasticsearch node_stats metrics
 release: ga
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
     name: period
   - default: true
     name: xpack.enabled
-  title: Elasticsearch Node_stats logs
-  description: Collect Elasticsearch Node_stats metrics
+  title: Elasticsearch node_stats metrics
+  description: Collect Elasticsearch node_stats metrics

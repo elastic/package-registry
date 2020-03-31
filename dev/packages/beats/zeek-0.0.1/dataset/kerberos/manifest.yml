@@ -1,5 +1,5 @@
 id: kerberos
-title: Zeek Kerberos Logs
+title: Zeek kerberos logs
 release: ga
 type: logs
 streams:
@@ -19,5 +19,5 @@ streams:
     name: tags
   - default: true
     name: community_id
-  title: Zeek Kerberos logs
-  description: Collect Zeek Kerberos logs
+  title: Zeek kerberos logs
+  description: Collect Zeek kerberos logs

@@ -1,5 +1,5 @@
 id: proxy
-title: Redisenterprise Proxy Metrics
+title: Redis Enterprise proxy metrics
 release: beta
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 1m
     name: period
-  title: Redisenterprise Proxy logs
-  description: Collect Redisenterprise Proxy metrics
+  title: Redis Enterprise proxy metrics
+  description: Collect Redis Enterprise proxy metrics

@@ -1,5 +1,5 @@
 id: syslog
-title: Zeek Syslog Logs
+title: Zeek syslog logs
 release: ga
 type: logs
 streams:
@@ -19,5 +19,5 @@ streams:
     name: tags
   - default: true
     name: community_id
-  title: Zeek Syslog logs
-  description: Collect Zeek Syslog logs
+  title: Zeek syslog logs
+  description: Collect Zeek syslog logs

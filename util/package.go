@@ -63,11 +63,12 @@ type Datasource struct {
 }
 
 type Requirement struct {
-	Kibana Kibana `config:"kibana" json:"kibana"`
+	Kibana        ProductRequirement `config:"kibana" json:"kibana,omitempty" yaml:"kibana"`
+	Elasticsearch ProductRequirement `config:"elasticsearch" json:"elasticsearch,omitempty" yaml:"elasticsearch"`
 }
 
-type Kibana struct {
-	Versions    string `config:"versions,omitempty" json:"versions,omitempty"`
+type ProductRequirement struct {
+	Versions    string `config:"versions,omitempty" json:"versions,omitempty" yaml:"versions,omitempty"`
 	semVerRange semver.Range
 }
 
@@ -84,7 +85,7 @@ type Image struct {
 }
 
 func (i Image) getPath(p *Package) string {
-	return "/package/" + p.Name + "-" + p.Version + i.Src
+	return path.Join("/package", p.Name, p.Version, i.Src)
 }
 
 // NewPackage creates a new package instances based on the given base path.
@@ -148,7 +149,7 @@ func NewPackage(basePath string) (*Package, error) {
 		if readme.IsDir() {
 			return nil, fmt.Errorf("README.md is a directory")
 		}
-		readmePathShort := "/package/" + p.Name + "-" + p.Version + "/docs/README.md"
+		readmePathShort := path.Join("/package", p.Name, p.Version, "docs", "README.md")
 		p.Readme = &readmePathShort
 	}
 
@@ -260,10 +261,17 @@ func (p *Package) Validate() error {
 		return fmt.Errorf("no description set")
 	}
 
+	if p.Requirement.Elasticsearch.Versions != "" {
+		_, err := semver.ParseRange(p.Requirement.Elasticsearch.Versions)
+		if err != nil {
+			return fmt.Errorf("invalid Elasticsearch versions: %s, %s", p.Requirement.Elasticsearch.Versions, err)
+		}
+	}
+
 	if p.Requirement.Kibana.Versions != "" {
 		_, err := semver.ParseRange(p.Requirement.Kibana.Versions)
 		if err != nil {
-			return fmt.Errorf("invalid kibana versions: %s, %s", p.Requirement.Kibana.Versions, err)
+			return fmt.Errorf("invalid Kibana versions: %s, %s", p.Requirement.Kibana.Versions, err)
 		}
 	}
 
@@ -276,7 +284,8 @@ func (p *Package) Validate() error {
 	return nil
 }
 
-func (p *Package) GetDatasets() ([]string, error) {
+// GetDatasetPaths returns a list with the dataset paths inside this package
+func (p *Package) GetDatasetPaths() ([]string, error) {
 	datasetBasePath := filepath.Join(p.BasePath, "dataset")
 
 	// Check if this package has datasets
@@ -304,46 +313,23 @@ func (p *Package) GetDatasets() ([]string, error) {
 
 func (p *Package) LoadDataSets(packagePath string) error {
 
-	datasets, err := p.GetDatasets()
+	datasetPaths, err := p.GetDatasetPaths()
 	if err != nil {
 		return err
 	}
 
 	datasetsBasePath := filepath.Join(p.BasePath, "dataset")
 
-	for _, dataset := range datasets {
+	for _, datasetPath := range datasetPaths {
 
-		datasetBasePath := filepath.Join(datasetsBasePath, dataset)
-		// Check if manifest exists
-		manifestPath := filepath.Join(datasetBasePath, "manifest.yml")
-		_, err := os.Stat(manifestPath)
-		if err != nil && os.IsNotExist(err) {
-			return errors.Wrapf(err, "manifest does not exist for package: %s", packagePath)
-		}
+		datasetBasePath := filepath.Join(datasetsBasePath, datasetPath)
 
-		manifest, err := yaml.NewConfigWithFile(manifestPath, ucfg.PathSep("."))
-		var d = &DataSet{
-			Package: p.Name,
-			// This is the name of the directory of the dataset
-			Path:     dataset,
-			BasePath: datasetBasePath,
-		}
-		// go-ucfg automatically calls the `Validate` method on the Dataset object here
-		err = manifest.Unpack(d)
+		d, err := NewDataset(datasetBasePath, p)
 		if err != nil {
-			return errors.Wrapf(err, "error building dataset (path: %s) in package: %s", dataset, p.Name)
+			return err
 		}
 
-		// if id is not set, {package}.{datasetPath} is the default
-		if d.ID == "" {
-			d.ID = p.Name + "." + dataset
-		}
-
-		if d.Release == "" {
-			d.Release = "beta"
-		}
-
-		// Iterate through all datatsource and inputs to find the matching streams and add them to the output.
+		// Iterate through all datasources and inputs to find the matching streams and add them to the output.
 		for dK, datasource := range p.Datasources {
 			for iK, _ := range datasource.Inputs {
 				for _, stream := range d.Streams {
@@ -362,7 +348,7 @@ func (p *Package) LoadDataSets(packagePath string) error {
 }
 
 func (p *Package) GetPath() string {
-	return p.Name + "-" + p.Version
+	return p.Name + "/" + p.Version
 }
 
 func (p *Package) GetDownloadPath() string {
@@ -370,5 +356,5 @@ func (p *Package) GetDownloadPath() string {
 }
 
 func (p *Package) GetUrlPath() string {
-	return path.Join("/package", p.Name+"-"+p.Version)
+	return path.Join("/package", p.Name, p.Version)
 }

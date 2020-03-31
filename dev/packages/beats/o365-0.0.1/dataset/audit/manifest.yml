@@ -1,5 +1,5 @@
 id: audit
-title: O365 Audit Logs
+title: Office 365 audit logs
 release: ga
 type: logs
 streams:
@@ -15,5 +15,5 @@ streams:
   - name: tenants
   - name: content_type
   - name: api
-  title: O365 Audit logs
-  description: Collect O365 Audit logs
+  title: Office 365 audit logs
+  description: Collect Office 365 audit logs

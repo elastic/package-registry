@@ -11,19 +11,21 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/filebeat-kafka-logs-overview.png
-  title: Filebeat Kafka Logs Overview
+  title: filebeat kafka logs overview
   size: 1363x657
   type: image/png
 - src: /img/metricbeat_kafka_dashboard.png
-  title: Metricbeat Kafka Dashboard
+  title: metricbeat kafka dashboard
   size: 1726x711
   type: image/png
 icons:
 - src: /img/logo_kafka.svg
-  title: Logo Kafka
+  title: logo kafka
   size: 32x32
   type: image/svg+xml
 datasources:
@@ -32,6 +34,6 @@ datasources:
   description: Collect logs and metrics from Kafka instances
   inputs:
   - type: logs
-    description: Collecting logs for Kafka
+    description: Collecting Kafka logs
   - type: kafka/metrics
-    description: Collecting metrics for Kafka
+    description: Collecting Kafka metrics

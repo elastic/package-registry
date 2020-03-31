@@ -10,10 +10,12 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.0.0-SNAPSHOT <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-cisco-asa.png
-  title: Kibana Cisco Asa
+  title: kibana cisco asa
   size: 1800x1559
   type: image/png
 datasources:
@@ -22,4 +24,4 @@ datasources:
   description: Collect logs from Cisco instances
   inputs:
   - type: logs
-    description: Collecting logs for Cisco
+    description: Collecting Cisco logs

@@ -1,5 +1,5 @@
 id: sqs
-title: Aws Sqs Metrics
+title: aws sqs metrics
 release: ga
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
   - default:
     - us-west-1
     name: regions
-  title: Aws Sqs logs
-  description: Collect Aws Sqs metrics
+  title: aws sqs metrics
+  description: Collect aws sqs metrics

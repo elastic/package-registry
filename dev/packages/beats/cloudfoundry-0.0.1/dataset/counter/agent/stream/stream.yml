@@ -2,19 +2,19 @@ input: cloudfoundry/metrics
 metricsets: ["counter"]
 {{#if api_address}}
 api_address: {{api_address}}
-{{#if api_address}}
+{{/if}}
 {{#if client_id}}
 client_id: {{client_id}}
-{{#if client_id}}
+{{/if}}
 {{#if client_secret}}
 client_secret: {{client_secret}}
-{{#if client_secret}}
+{{/if}}
 {{#if doppler_address}}
 doppler_address: {{doppler_address}}
-{{#if doppler_address}}
+{{/if}}
 {{#if rlp_address}}
 rlp_address: {{rlp_address}}
-{{#if rlp_address}}
+{{/if}}
 {{#if uaa_address}}
 uaa_address: {{uaa_address}}
-{{#if uaa_address}}
+{{/if}}

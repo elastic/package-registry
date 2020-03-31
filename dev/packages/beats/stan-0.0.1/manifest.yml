@@ -10,15 +10,16 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.5.2 <8.0.0'
+  elasticsearch: {}
 screenshots:
 - src: /img/metricbeat-stan-overview.png
-  title: Metricbeat Stan Overview
+  title: metricbeat stan overview
   size: 1829x447
   type: image/png
 icons:
 - src: /img/stan.svg
-  title: Stan
+  title: stan
   size: 32x32
   type: image/svg+xml
 datasources:
@@ -27,4 +28,4 @@ datasources:
   description: Collect metrics from Stan instances
   inputs:
   - type: stan/metrics
-    description: Collecting metrics for Stan
+    description: Collecting Stan metrics

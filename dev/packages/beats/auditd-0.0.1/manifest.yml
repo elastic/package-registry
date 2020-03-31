@@ -10,10 +10,12 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-audit-auditd.png
-  title: Kibana Audit Auditd
+  title: kibana audit auditd
   size: 1230x997
   type: image/png
 datasources:
@@ -22,4 +24,4 @@ datasources:
   description: Collect logs from Auditd instances
   inputs:
   - type: logs
-    description: Collecting logs for Auditd
+    description: Collecting Auditd logs

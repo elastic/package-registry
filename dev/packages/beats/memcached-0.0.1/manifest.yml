@@ -9,11 +9,11 @@ categories:
 - metrics
 release: ga
 requirement:
-  kibana:
-    versions: ""
+  kibana: {}
+  elasticsearch: {}
 icons:
 - src: /img/logo_memcached.svg
-  title: Logo Memcached
+  title: logo memcached
   size: 32x32
   type: image/svg+xml
 datasources:
@@ -22,4 +22,4 @@ datasources:
   description: Collect metrics from Memcached instances
   inputs:
   - type: memcached/metrics
-    description: Collecting metrics for Memcached
+    description: Collecting Memcached metrics

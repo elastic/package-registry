@@ -1,5 +1,5 @@
 id: dbstats
-title: Mongodb Dbstats Metrics
+title: MongoDB dbstats metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Mongodb Dbstats logs
-  description: Collect Mongodb Dbstats metrics
+  title: MongoDB dbstats metrics
+  description: Collect MongoDB dbstats metrics

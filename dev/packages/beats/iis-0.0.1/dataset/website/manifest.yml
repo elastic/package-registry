@@ -1,5 +1,5 @@
 id: website
-title: Iis Website Metrics
+title: iis website metrics
 release: beta
 type: metrics
 streams:
@@ -7,5 +7,5 @@ streams:
   vars:
   - default: 10s
     name: period
-  title: Iis Website logs
-  description: Collect Iis Website metrics
+  title: iis website metrics
+  description: Collect iis website metrics

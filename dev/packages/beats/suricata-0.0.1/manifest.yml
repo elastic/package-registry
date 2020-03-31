@@ -10,14 +10,16 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/filebeat-suricata-events.png
-  title: Filebeat Suricata Events
+  title: filebeat suricata events
   size: 1386x1115
   type: image/png
 - src: /img/filebeat-suricata-alerts.png
-  title: Filebeat Suricata Alerts
+  title: filebeat suricata alerts
   size: 1386x1115
   type: image/png
 datasources:
@@ -26,4 +28,4 @@ datasources:
   description: Collect logs from Suricata instances
   inputs:
   - type: logs
-    description: Collecting logs for Suricata
+    description: Collecting Suricata logs

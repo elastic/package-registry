@@ -1,8 +1,8 @@
 id: server
-title: Graphite Server Metrics
+title: Graphite server metrics
 release: ga
 type: metrics
 streams:
 - input: graphite/metrics
-  title: Graphite Server logs
-  description: Collect Graphite Server metrics
+  title: Graphite server metrics
+  description: Collect Graphite server metrics

@@ -1,5 +1,5 @@
 id: perfmon
-title: Windows Perfmon Metrics
+title: Windows perfmon metrics
 release: beta
 type: metrics
 streams:
@@ -11,5 +11,5 @@ streams:
     name: perfmon.ignore_non_existent_counters
   - default: 10s
     name: period
-  title: Windows Perfmon logs
-  description: Collect Windows Perfmon metrics
+  title: Windows perfmon metrics
+  description: Collect Windows perfmon metrics

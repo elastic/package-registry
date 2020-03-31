@@ -30,6 +30,7 @@ $ go run dev/import-beats/*.go -help
 1. Make sure that the following repositories have been fetched locally:
 https://github.com/elastic/beats
 https://github.com/elastic/eui
+https://github.com/elastic/kibana
 2. Start Kibana server (make sure the endpoint is accessible: http://localhost:5601/)
 2. Run the importing procedure with the following command:
 

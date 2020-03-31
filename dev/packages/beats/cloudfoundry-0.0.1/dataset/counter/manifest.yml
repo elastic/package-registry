@@ -1,5 +1,5 @@
 id: counter
-title: Cloudfoundry Counter Metrics
+title: cloudfoundry counter metrics
 release: beta
 type: metrics
 streams:
@@ -17,5 +17,5 @@ streams:
     name: rlp_address
   - default: ${CLOUDFOUNDRY_UAA_ADDRESS:""}
     name: uaa_address
-  title: Cloudfoundry Counter logs
-  description: Collect Cloudfoundry Counter metrics
+  title: cloudfoundry counter metrics
+  description: Collect cloudfoundry counter metrics

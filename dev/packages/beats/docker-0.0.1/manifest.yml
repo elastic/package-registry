@@ -10,10 +10,11 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch: {}
 icons:
 - src: /img/logo_docker.svg
-  title: Logo Docker
+  title: logo docker
   size: 32x32
   type: image/svg+xml
 datasources:
@@ -22,4 +23,4 @@ datasources:
   description: Collect metrics from Docker instances
   inputs:
   - type: docker/metrics
-    description: Collecting metrics for Docker
+    description: Collecting Docker metrics

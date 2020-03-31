@@ -1,5 +1,5 @@
 id: stats
-title: Zeek Stats Logs
+title: Zeek stats logs
 release: ga
 type: logs
 streams:
@@ -17,5 +17,5 @@ streams:
   - default:
     - zeek.stats
     name: tags
-  title: Zeek Stats logs
-  description: Collect Zeek Stats logs
+  title: Zeek stats logs
+  description: Collect Zeek stats logs

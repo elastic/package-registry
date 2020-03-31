@@ -1,5 +1,5 @@
 id: cpu
-title: Docker Cpu Metrics
+title: Docker cpu metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Docker Cpu logs
-  description: Collect Docker Cpu metrics
+  title: Docker cpu metrics
+  description: Collect Docker cpu metrics

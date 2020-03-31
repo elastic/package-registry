@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: iis
-title: Iis
+title: iis
 version: 0.0.1
 license: basic
-description: Iis Integration
+description: iis Integration
 type: integration
 categories:
 - logs
@@ -11,18 +11,20 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-iis.png
-  title: Kibana Iis
+  title: kibana iis
   size: 1960x2820
   type: image/png
 datasources:
 - name: iis
-  title: Iis logs and metrics
-  description: Collect logs and metrics from Iis instances
+  title: IIS logs and metrics
+  description: Collect logs and metrics from IIS instances
   inputs:
   - type: logs
-    description: Collecting logs for Iis
+    description: Collecting IIS logs
   - type: iis/metrics
-    description: Collecting metrics for Iis
+    description: Collecting IIS metrics

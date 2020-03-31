@@ -1,5 +1,5 @@
 id: dynamodb
-title: Aws Dynamodb Metrics
+title: aws dynamodb metrics
 release: beta
 type: metrics
 streams:
@@ -7,5 +7,5 @@ streams:
   vars:
   - default: 5m
     name: period
-  title: Aws Dynamodb logs
-  description: Collect Aws Dynamodb metrics
+  title: aws dynamodb metrics
+  description: Collect aws dynamodb metrics

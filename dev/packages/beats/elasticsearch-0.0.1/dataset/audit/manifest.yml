@@ -1,5 +1,5 @@
 id: audit
-title: Elasticsearch Audit Logs
+title: elasticsearch audit logs
 release: ga
 type: logs
 streams:
@@ -20,5 +20,5 @@ streams:
       - c:/ProgramData/Elastic/Elasticsearch/logs/*_access.log
       - c:/ProgramData/Elastic/Elasticsearch/logs/*_audit.log
       - c:/ProgramData/Elastic/Elasticsearch/logs/*_audit.json
-  title: Elasticsearch Audit logs
-  description: Collect Elasticsearch Audit logs
+  title: elasticsearch audit logs
+  description: Collect elasticsearch audit logs

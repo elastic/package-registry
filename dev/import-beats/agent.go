@@ -104,7 +104,7 @@ func transformAgentConfigFile(configFilePath string) ([]byte, error) {
 		line = strings.ReplaceAll(line, " }}", "}}")
 		line = strings.ReplaceAll(line, "{{if .", "{{if this.")
 		line = strings.ReplaceAll(line, "{{if", "{{#if")
-		line = strings.ReplaceAll(line, "{{end}}", "{{/end}}")
+		line = strings.ReplaceAll(line, "{{end}}", "{{/if}}")
 		line = strings.ReplaceAll(line, "{{.", "{{this.")
 		line = strings.ReplaceAll(line, "{{range .", "{{#each this.")
 		line = strings.ReplaceAll(line, ".}}", "}}")
@@ -152,6 +152,7 @@ func transformAgentConfigFile(configFilePath string) ([]byte, error) {
 
 func extractRangeVar(line string) (string, error) {
 	line = line[strings.Index(line, "range")+1:]
+	line = strings.ReplaceAll(line, "}}", "")
 	i := strings.Index(line, ":=")
 	var sliced string
 	if i >= 0 {
@@ -185,7 +186,7 @@ func createAgentContentForMetrics(modulePath, moduleName, datasetName string, st
 		}
 		buffer.WriteString(fmt.Sprintf("%s: {{%s}}\n", variableName, variableName))
 		if !isAgentConfigOptionRequired(variableName) {
-			buffer.WriteString(fmt.Sprintf("{{#if %s}}\n", variableName))
+			buffer.WriteString("{{/if}}\n")
 		}
 	}
 	return agentContent{

@@ -11,27 +11,29 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-logstash-log.png
-  title: Kibana Logstash Log
+  title: kibana logstash log
   size: 1266x1343
   type: image/png
 - src: /img/kibana-logstash-slowlog.png
-  title: Kibana Logstash Slowlog
+  title: kibana logstash slowlog
   size: 1265x1341
   type: image/png
 icons:
 - src: /img/logo_logstash.svg
-  title: Logo Logstash
+  title: logo logstash
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: logstash
-  title: Logstash logs and metrics
-  description: Collect logs and metrics from Logstash instances
+  title: logstash logs and metrics
+  description: Collect logs and metrics from logstash instances
   inputs:
   - type: logs
-    description: Collecting logs for Logstash
+    description: Collecting logstash logs
   - type: logstash/metrics
-    description: Collecting metrics for Logstash
+    description: Collecting logstash metrics

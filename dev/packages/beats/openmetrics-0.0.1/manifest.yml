@@ -9,12 +9,17 @@ categories:
 - metrics
 release: beta
 requirement:
-  kibana:
-    versions: ""
+  kibana: {}
+  elasticsearch: {}
+icons:
+- src: /img/openmetrics.svg
+  title: openmetrics
+  size: 64x64
+  type: image/svg+xml
 datasources:
 - name: openmetrics
   title: Openmetrics metrics
   description: Collect metrics from Openmetrics instances
   inputs:
   - type: openmetrics/metrics
-    description: Collecting metrics for Openmetrics
+    description: Collecting Openmetrics metrics

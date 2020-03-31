@@ -11,19 +11,21 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-nginx.png
-  title: Kibana Nginx
+  title: kibana nginx
   size: 1218x1266
   type: image/png
 - src: /img/metricbeat-nginx.png
-  title: Metricbeat Nginx
+  title: metricbeat nginx
   size: 2560x2100
   type: image/png
 icons:
 - src: /img/logo_nginx.svg
-  title: Logo Nginx
+  title: logo nginx
   size: 32x32
   type: image/svg+xml
 datasources:
@@ -32,6 +34,6 @@ datasources:
   description: Collect logs and metrics from Nginx instances
   inputs:
   - type: logs
-    description: Collecting logs for Nginx
+    description: Collecting Nginx logs
   - type: nginx/metrics
-    description: Collecting metrics for Nginx
+    description: Collecting Nginx metrics

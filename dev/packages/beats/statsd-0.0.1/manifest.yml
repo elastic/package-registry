@@ -9,11 +9,11 @@ categories:
 - metrics
 release: ga
 requirement:
-  kibana:
-    versions: ""
+  kibana: {}
+  elasticsearch: {}
 icons:
 - src: /img/statsd.svg
-  title: Statsd
+  title: statsd
   size: 266x266
   type: image/svg+xml
 datasources:
@@ -22,4 +22,4 @@ datasources:
   description: Collect metrics from Statsd instances
   inputs:
   - type: statsd/metrics
-    description: Collecting metrics for Statsd
+    description: Collecting Statsd metrics

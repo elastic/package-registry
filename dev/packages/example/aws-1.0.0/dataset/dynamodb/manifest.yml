@@ -1,11 +1,11 @@
-title: AWS Dynamo metrics
-release: ga
+title: AWS dynamodb metrics
+release: beta
 type: metrics
 
 streams:
   - input: aws/metrics
-    title: AWS billing metrics
-    description: AWS billing metrics
+    title: AWS dynamodb metrics
+    description: AWS dynamodb metrics
     vars:
       - name: period
         description: Collection frequency for dynamodb metrics.

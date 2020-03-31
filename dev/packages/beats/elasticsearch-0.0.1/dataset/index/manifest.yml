@@ -1,5 +1,5 @@
 id: index
-title: Elasticsearch Index Metrics
+title: Elasticsearch index metrics
 release: ga
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
     name: period
   - default: true
     name: xpack.enabled
-  title: Elasticsearch Index logs
-  description: Collect Elasticsearch Index metrics
+  title: Elasticsearch index metrics
+  description: Collect Elasticsearch index metrics

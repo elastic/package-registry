@@ -1,5 +1,5 @@
 id: store
-title: Etcd Store Metrics
+title: Etcd store metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Etcd Store logs
-  description: Collect Etcd Store metrics
+  title: Etcd store metrics
+  description: Collect Etcd store metrics

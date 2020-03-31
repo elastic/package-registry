@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: coredns
-title: Coredns
+title: coredns
 version: 0.0.1
 license: basic
-description: Coredns Integration
+description: coredns Integration
 type: integration
 categories:
 - logs
@@ -11,19 +11,20 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=8.0.0-SNAPSHOT <8.0.0'
+  elasticsearch: {}
 screenshots:
 - src: /img/kibana-coredns.jpg
-  title: Kibana Coredns
+  title: kibana coredns
   size: 3340x1880
   type: image/jpg
 - src: /img/metricbeat_coredns_dashboard.png
-  title: Metricbeat Coredns Dashboard
+  title: metricbeat coredns dashboard
   size: 1507x767
   type: image/png
 icons:
 - src: /img/coredns.svg
-  title: Coredns
+  title: coredns
   size: 163x145
   type: image/svg+xml
 datasources:
@@ -32,6 +33,6 @@ datasources:
   description: Collect logs and metrics from Coredns instances
   inputs:
   - type: logs
-    description: Collecting logs for Coredns
+    description: Collecting Coredns logs
   - type: coredns/metrics
-    description: Collecting metrics for Coredns
+    description: Collecting Coredns metrics

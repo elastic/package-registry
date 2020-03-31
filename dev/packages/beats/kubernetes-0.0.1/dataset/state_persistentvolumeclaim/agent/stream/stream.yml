@@ -2,6 +2,6 @@ input: kubernetes/metrics
 metricsets: ["state_persistentvolumeclaim"]
 {{#if add_metadata}}
 add_metadata: {{add_metadata}}
-{{#if add_metadata}}
+{{/if}}
 hosts: {{hosts}}
 period: {{period}}

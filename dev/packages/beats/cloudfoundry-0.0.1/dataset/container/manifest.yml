@@ -1,5 +1,5 @@
 id: container
-title: Cloudfoundry Container Metrics
+title: cloudfoundry container metrics
 release: beta
 type: metrics
 streams:
@@ -17,5 +17,5 @@ streams:
     name: rlp_address
   - default: ${CLOUDFOUNDRY_UAA_ADDRESS:""}
     name: uaa_address
-  title: Cloudfoundry Container logs
-  description: Collect Cloudfoundry Container metrics
+  title: cloudfoundry container metrics
+  description: Collect cloudfoundry container metrics

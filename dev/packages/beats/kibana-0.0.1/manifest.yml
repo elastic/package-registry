@@ -10,19 +10,20 @@ categories:
 - metrics
 release: ga
 requirement:
-  kibana:
-    versions: ""
+  kibana: {}
+  elasticsearch:
+    versions: '>7.0.1'
 icons:
 - src: /img/logo_kibana.svg
-  title: Logo Kibana
+  title: logo kibana
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: kibana
-  title: Kibana logs and metrics
-  description: Collect logs and metrics from Kibana instances
+  title: kibana logs and metrics
+  description: Collect logs and metrics from kibana instances
   inputs:
   - type: logs
-    description: Collecting logs for Kibana
+    description: Collecting kibana logs
   - type: kibana/metrics
-    description: Collecting metrics for Kibana
+    description: Collecting kibana metrics

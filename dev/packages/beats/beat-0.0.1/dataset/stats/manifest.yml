@@ -1,5 +1,5 @@
 id: stats
-title: Beat Stats Metrics
+title: Beat stats metrics
 release: ga
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
     name: period
   - default: true
     name: xpack.enabled
-  title: Beat Stats logs
-  description: Collect Beat Stats metrics
+  title: Beat stats metrics
+  description: Collect Beat stats metrics

@@ -3,5 +3,5 @@ metricsets: ["requests"]
 hosts: {{hosts}}
 {{#if path}}
 path: {{path}}
-{{#if path}}
+{{/if}}
 period: {{period}}

@@ -1,5 +1,5 @@
 id: monitor_health
-title: Ceph Monitor_health Metrics
+title: Ceph monitor_health metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Ceph Monitor_health logs
-  description: Collect Ceph Monitor_health metrics
+  title: Ceph monitor_health metrics
+  description: Collect Ceph monitor_health metrics

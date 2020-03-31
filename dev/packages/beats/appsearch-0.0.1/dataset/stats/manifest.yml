@@ -1,5 +1,5 @@
 id: stats
-title: Appsearch Stats Metrics
+title: App Search stats metrics
 release: beta
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Appsearch Stats logs
-  description: Collect Appsearch Stats metrics
+  title: App Search stats metrics
+  description: Collect App Search stats metrics

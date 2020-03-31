@@ -1,6 +1,6 @@
 input: redis
 hosts:
-{{#each hosts}}}}
+{{#each hosts}}
   - {{this}}
 {{/each}}
 password: {{this.password}}

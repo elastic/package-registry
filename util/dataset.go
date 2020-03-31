@@ -9,6 +9,11 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/pkg/errors"
+
+	"github.com/elastic/go-ucfg"
+	"github.com/elastic/go-ucfg/yaml"
 )
 
 type DataSet struct {
@@ -41,6 +46,42 @@ type Stream struct {
 	Dataset     string                   `config:"dataset" json:"dataset,omitempty" yaml:"dataset,omitempty"`
 	Title       string                   `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
 	Description string                   `config:"description" json:"description,omitempty" yaml:"description,omitempty"`
+}
+
+func NewDataset(basePath string, p *Package) (*DataSet, error) {
+
+	// Check if manifest exists
+	manifestPath := filepath.Join(basePath, "manifest.yml")
+	_, err := os.Stat(manifestPath)
+	if err != nil && os.IsNotExist(err) {
+		return nil, errors.Wrapf(err, "manifest does not exist for package: %s", p.BasePath)
+	}
+
+	datasetPath := filepath.Base(basePath)
+
+	manifest, err := yaml.NewConfigWithFile(manifestPath, ucfg.PathSep("."))
+	var d = &DataSet{
+		Package: p.Name,
+		// This is the name of the directory of the dataset
+		Path:     datasetPath,
+		BasePath: basePath,
+	}
+	// go-ucfg automatically calls the `Validate` method on the Dataset object here
+	err = manifest.Unpack(d)
+	if err != nil {
+		return nil, errors.Wrapf(err, "error building dataset (path: %s) in package: %s", datasetPath, p.Name)
+	}
+
+	// if id is not set, {package}.{datasetPath} is the default
+	if d.ID == "" {
+		d.ID = p.Name + "." + datasetPath
+	}
+
+	if d.Release == "" {
+		d.Release = "beta"
+	}
+
+	return d, nil
 }
 
 func (d *DataSet) Validate() error {

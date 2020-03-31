@@ -1,5 +1,5 @@
 id: shard
-title: Elasticsearch Shard Metrics
+title: Elasticsearch shard metrics
 release: ga
 type: metrics
 streams:
@@ -12,5 +12,5 @@ streams:
     name: period
   - default: true
     name: xpack.enabled
-  title: Elasticsearch Shard logs
-  description: Collect Elasticsearch Shard metrics
+  title: Elasticsearch shard metrics
+  description: Collect Elasticsearch shard metrics

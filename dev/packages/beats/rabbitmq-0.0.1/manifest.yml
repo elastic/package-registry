@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: rabbitmq
-title: Rabbitmq
+title: RabbitMQ
 version: 0.0.1
 license: basic
-description: Rabbitmq Integration
+description: RabbitMQ Integration
 type: integration
 categories:
 - logs
@@ -11,18 +11,20 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 icons:
 - src: /img/logo_rabbitmq.svg
-  title: Logo Rabbitmq
+  title: logo rabbitmq
   size: 32x32
   type: image/svg+xml
 datasources:
 - name: rabbitmq
-  title: Rabbitmq logs and metrics
-  description: Collect logs and metrics from Rabbitmq instances
+  title: RabbitMQ logs and metrics
+  description: Collect logs and metrics from RabbitMQ instances
   inputs:
   - type: logs
-    description: Collecting logs for Rabbitmq
+    description: Collecting RabbitMQ logs
   - type: rabbitmq/metrics
-    description: Collecting metrics for Rabbitmq
+    description: Collecting RabbitMQ metrics

@@ -9,12 +9,12 @@ categories:
 - metrics
 release: ga
 requirement:
-  kibana:
-    versions: ""
+  kibana: {}
+  elasticsearch: {}
 datasources:
 - name: munin
   title: Munin metrics
   description: Collect metrics from Munin instances
   inputs:
   - type: munin/metrics
-    description: Collecting metrics for Munin
+    description: Collecting Munin metrics

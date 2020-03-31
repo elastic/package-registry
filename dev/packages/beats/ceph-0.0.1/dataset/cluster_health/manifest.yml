@@ -1,5 +1,5 @@
 id: cluster_health
-title: Ceph Cluster_health Metrics
+title: Ceph cluster_health metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Ceph Cluster_health logs
-  description: Collect Ceph Cluster_health metrics
+  title: Ceph cluster_health metrics
+  description: Collect Ceph cluster_health metrics

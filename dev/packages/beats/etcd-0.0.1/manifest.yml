@@ -9,11 +9,11 @@ categories:
 - metrics
 release: ga
 requirement:
-  kibana:
-    versions: ""
+  kibana: {}
+  elasticsearch: {}
 icons:
 - src: /img/logo_etcd.svg
-  title: Logo Etcd
+  title: logo etcd
   size: 32x32
   type: image/svg+xml
 datasources:
@@ -22,4 +22,4 @@ datasources:
   description: Collect metrics from Etcd instances
   inputs:
   - type: etcd/metrics
-    description: Collecting metrics for Etcd
+    description: Collecting Etcd metrics

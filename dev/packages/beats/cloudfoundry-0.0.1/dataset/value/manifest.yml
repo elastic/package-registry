@@ -1,5 +1,5 @@
 id: value
-title: Cloudfoundry Value Metrics
+title: cloudfoundry value metrics
 release: beta
 type: metrics
 streams:
@@ -17,5 +17,5 @@ streams:
     name: rlp_address
   - default: ${CLOUDFOUNDRY_UAA_ADDRESS:""}
     name: uaa_address
-  title: Cloudfoundry Value logs
-  description: Collect Cloudfoundry Value metrics
+  title: cloudfoundry value metrics
+  description: Collect cloudfoundry value metrics

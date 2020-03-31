@@ -10,15 +10,16 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch: {}
 screenshots:
 - src: /img/metricbeat-couchbase-overview.png
-  title: Metricbeat Couchbase Overview
+  title: metricbeat couchbase overview
   size: 4964x2678
   type: image/png
 icons:
 - src: /img/logo_couchbase.svg
-  title: Logo Couchbase
+  title: logo couchbase
   size: 32x32
   type: image/svg+xml
 datasources:
@@ -27,4 +28,4 @@ datasources:
   description: Collect metrics from Couchbase instances
   inputs:
   - type: couchbase/metrics
-    description: Collecting metrics for Couchbase
+    description: Collecting Couchbase metrics

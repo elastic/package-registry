@@ -1,5 +1,5 @@
 id: host
-title: Vsphere Host Metrics
+title: vSphere host metrics
 release: ga
 type: metrics
 streams:
@@ -16,5 +16,5 @@ streams:
     name: period
   - default: user
     name: username
-  title: Vsphere Host logs
-  description: Collect Vsphere Host metrics
+  title: vSphere host metrics
+  description: Collect vSphere host metrics

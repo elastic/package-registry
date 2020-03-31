@@ -2,12 +2,12 @@ input: kubernetes/metrics
 metricsets: ["volume"]
 {{#if add_metadata}}
 add_metadata: {{add_metadata}}
-{{#if add_metadata}}
+{{/if}}
 {{#if bearer_token_file}}
 bearer_token_file: {{bearer_token_file}}
-{{#if bearer_token_file}}
+{{/if}}
 hosts: {{hosts}}
 period: {{period}}
 {{#if ssl.verification_mode}}
 ssl.verification_mode: {{ssl.verification_mode}}
-{{#if ssl.verification_mode}}
+{{/if}}

@@ -2,8 +2,8 @@ input: aws/metrics
 metricsets: ["elb"]
 {{#if credential_profile_name}}
 credential_profile_name: {{credential_profile_name}}
-{{#if credential_profile_name}}
+{{/if}}
 period: {{period}}
 {{#if tags_filter}}
 tags_filter: {{tags_filter}}
-{{#if tags_filter}}
+{{/if}}

@@ -1,4 +1,0 @@
-input: aws/metrics
-period: {{period}}
-metricsets: vpc
-dataset: aws.vpc

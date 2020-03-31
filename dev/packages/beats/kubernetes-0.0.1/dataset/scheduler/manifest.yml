@@ -1,5 +1,5 @@
 id: scheduler
-title: Kubernetes Scheduler Metrics
+title: Kubernetes scheduler metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Kubernetes Scheduler logs
-  description: Collect Kubernetes Scheduler metrics
+  title: Kubernetes scheduler metrics
+  description: Collect Kubernetes scheduler metrics

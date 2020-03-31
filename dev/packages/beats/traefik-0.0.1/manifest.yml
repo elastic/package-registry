@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: traefik
-title: Traefik
+title: traefik
 version: 0.0.1
 license: basic
-description: Traefik Integration
+description: traefik Integration
 type: integration
 categories:
 - logs
@@ -11,15 +11,17 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-traefik.png
-  title: Kibana Traefik
+  title: kibana traefik
   size: 1409x1254
   type: image/png
 icons:
 - src: /img/traefik.svg
-  title: Traefik
+  title: traefik
   size: 340x456
   type: image/svg+xml
 datasources:
@@ -28,6 +30,6 @@ datasources:
   description: Collect logs and metrics from Traefik instances
   inputs:
   - type: logs
-    description: Collecting logs for Traefik
+    description: Collecting Traefik logs
   - type: traefik/metrics
-    description: Collecting metrics for Traefik
+    description: Collecting Traefik metrics

@@ -1,5 +1,5 @@
 id: controllermanager
-title: Kubernetes Controllermanager Metrics
+title: Kubernetes controllermanager metrics
 release: ga
 type: metrics
 streams:
@@ -10,5 +10,5 @@ streams:
     name: hosts
   - default: 10s
     name: period
-  title: Kubernetes Controllermanager logs
-  description: Collect Kubernetes Controllermanager metrics
+  title: Kubernetes controllermanager metrics
+  description: Collect Kubernetes controllermanager metrics

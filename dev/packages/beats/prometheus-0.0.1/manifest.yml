@@ -1,9 +1,9 @@
 format_version: 1.0.0
 name: prometheus
-title: Prometheus
+title: Prometheus typed metrics
 version: 0.0.1
 license: basic
-description: Prometheus Integration
+description: Prometheus typed metrics Integration
 type: integration
 categories:
 - metrics
@@ -11,15 +11,16 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: ""
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch: {}
 screenshots:
 - src: /img/metricbeat-prometheus-overview.png
-  title: Metricbeat Prometheus Overview
+  title: metricbeat prometheus overview
   size: 5010x2676
   type: image/png
 icons:
 - src: /img/logo_prometheus.svg
-  title: Logo Prometheus
+  title: logo prometheus
   size: 32x32
   type: image/svg+xml
 datasources:
@@ -28,6 +29,6 @@ datasources:
   description: Collect metrics and metrics from Prometheus instances
   inputs:
   - type: prometheus/metrics
-    description: Collecting metrics for Prometheus
+    description: Collecting Prometheus metrics
   - type: prometheus/metrics
-    description: Collecting metrics for Prometheus
+    description: Collecting Prometheus metrics

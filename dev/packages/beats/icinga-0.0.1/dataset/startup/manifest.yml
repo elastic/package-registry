@@ -1,5 +1,5 @@
 id: startup
-title: Icinga Startup Logs
+title: Icinga startup logs
 release: ga
 type: logs
 streams:
@@ -14,5 +14,5 @@ streams:
     os.windows:
       default:
       - c:/programdata/icinga2/var/log/icinga2/startup.log
-  title: Icinga Startup logs
-  description: Collect Icinga Startup logs
+  title: Icinga startup logs
+  description: Collect Icinga startup logs

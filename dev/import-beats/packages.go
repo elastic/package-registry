@@ -13,6 +13,7 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
+	"text/template"
 
 	"github.com/pkg/errors"
 	"gopkg.in/yaml.v2"
@@ -32,17 +33,13 @@ type packageContent struct {
 }
 
 func newPackageContent(name string) packageContent {
-	title := strings.Title(name)
 	return packageContent{
 		manifest: util.Package{
 			FormatVersion: "1.0.0",
 			Name:          name,
-			Description:   strings.Title(name + " integration"),
-			Title:         &title,
 			Version:       "0.0.1", // TODO
 			Type:          "integration",
 			License:       "basic",
-			Release:       "beta", // default release version
 		},
 		kibana: kibanaContent{
 			files: map[string]map[string][]byte{},
@@ -124,14 +121,34 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 		manifest := aPackage.manifest
 		manifest.Categories = append(manifest.Categories, beatType)
 
-		// release
-		manifest.Release, err = determinePackageRelease(manifest.Release, modulePath)
+		// fields
+		moduleHeaderFields, moduleFields, err := loadModuleFields(modulePath)
 		if err != nil {
 			return err
 		}
 
+		// release
+		manifest.Release, err = determinePackageRelease(manifest.Release, moduleHeaderFields)
+		if err != nil {
+			return err
+		}
+
+		// title
+		maybeTitle, err := loadTitleFromFields(moduleHeaderFields)
+		if err != nil {
+			return err
+		}
+		if maybeTitle != "" {
+			manifest.Title = &maybeTitle
+			manifest.Description = maybeTitle + " Integration"
+		}
+
 		// dataset
-		datasets, err := createDatasets(modulePath, moduleName, manifest.Release, beatType)
+		var moduleTitle = "TODO"
+		if manifest.Title != nil {
+			moduleTitle = *manifest.Title
+		}
+		datasets, err := createDatasets(modulePath, moduleName, moduleTitle, manifest.Release, moduleFields, beatType)
 		if err != nil {
 			return err
 		}
@@ -174,10 +191,15 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 			return err
 		}
 		aPackage.addKibanaContent(kibana)
+		manifest.Requirement, err = createRequirement(aPackage.kibana, aPackage.datasets)
+		if err != nil {
+			return err
+		}
 
 		// docs
 		if len(aPackage.docs) == 0 {
-			docs, err := createDocs(moduleName)
+			packageDocsPath := filepath.Join("dev/import-beats-resources", moduleDir.Name(), "docs")
+			docs, err := createDocTemplates(packageDocsPath)
 			if err != nil {
 				return err
 			}
@@ -185,7 +207,7 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 		}
 
 		// datasources
-		aPackage.datasources, err = updateDatasources(aPackage.datasources, moduleName, beatType)
+		aPackage.datasources, err = updateDatasources(aPackage.datasources, moduleName, moduleTitle, beatType)
 		if err != nil {
 			return err
 		}
@@ -318,7 +340,7 @@ func (r *packageRepository) save(outputDir string) error {
 				for fileName, body := range objects {
 					resourceFilePath := filepath.Join(resourcePath, fileName)
 
-					log.Printf("\tcreate resouce file: %s", resourceFilePath)
+					log.Printf("\tcreate resource file: %s", resourceFilePath)
 					err = ioutil.WriteFile(resourceFilePath, body, 0644)
 					if err != nil {
 						return errors.Wrapf(err, "writing resource file failed (path: %s)", resourceFilePath)
@@ -336,15 +358,44 @@ func (r *packageRepository) save(outputDir string) error {
 			}
 
 			for _, doc := range content.docs {
-				log.Printf("\twrite '%s' file\n", doc.fileName)
-
-				docFilePath := filepath.Join(docsPath, doc.fileName)
-				err = ioutil.WriteFile(docFilePath, doc.body, 0644)
+				err = writeDoc(docsPath, doc, content)
 				if err != nil {
-					return errors.Wrapf(err, "writing doc file failed (path: %s)", docFilePath)
+					return errors.Wrapf(err, "cannot write docs (docsPath: %s, fileName: %s)", docsPath,
+						doc.fileName)
 				}
+
 			}
 		}
+	}
+	return nil
+}
+
+func writeDoc(docsPath string, doc docContent, aPackage packageContent) error {
+	log.Printf("\twrite '%s' file\n", doc.fileName)
+
+	docFilePath := filepath.Join(docsPath, doc.fileName)
+	f, err := os.OpenFile(docFilePath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
+	defer f.Close()
+
+	if err != nil {
+		return errors.Wrapf(err, "opening doc file failed (path: %s)", docFilePath)
+	}
+	t := template.New(doc.fileName)
+	if doc.templatePath == "" {
+		t = template.Must(t.Parse("TODO"))
+	} else {
+		t, err = t.Funcs(template.FuncMap{
+			"fields": func(dataset string) (string, error) {
+				return renderExportedFields(dataset, aPackage.datasets)
+			},
+		}).ParseFiles(doc.templatePath)
+		if err != nil {
+			return errors.Wrapf(err, "parsing doc template failed (path: %s)", doc.templatePath)
+		}
+	}
+	err = t.Execute(f, nil)
+	if err != nil {
+		return errors.Wrapf(err, "rendering doc file failed (path: %s)", docFilePath)
 	}
 	return nil
 }

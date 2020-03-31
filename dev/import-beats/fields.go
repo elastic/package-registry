@@ -20,13 +20,14 @@ type fieldsContent struct {
 	files map[string][]byte
 }
 
-func loadModuleFields(modulePath string) ([]byte, error) {
+func loadModuleFields(modulePath string) ([]byte, []byte, error) {
 	moduleFieldsPath := filepath.Join(modulePath, "_meta", "fields.yml")
 	moduleFieldsFile, err := os.Open(moduleFieldsPath)
 	if err != nil {
-		return nil, errors.Wrapf(err, "opening module fields file failed (path: %s)", moduleFieldsPath)
+		return nil, nil, errors.Wrapf(err, "opening module fields file failed (path: %s)", moduleFieldsPath)
 	}
 
+	var header bytes.Buffer
 	var buffer bytes.Buffer
 	scanner := bufio.NewScanner(moduleFieldsFile)
 	var fieldsKeyFound bool
@@ -39,9 +40,12 @@ func loadModuleFields(modulePath string) ([]byte, error) {
 			}
 		} else if strings.TrimLeft(line, " ") == "fields:" {
 			fieldsKeyFound = true
+		} else {
+			header.WriteString(line)
+			header.WriteString("\n")
 		}
 	}
-	return buffer.Bytes(), nil
+	return header.Bytes(), buffer.Bytes(), nil
 }
 
 func loadDatasetFields(modulePath, moduleName, datasetName string) ([]byte, error) {

@@ -1,8 +1,8 @@
 id: users
-title: System Users Metrics
+title: System users metrics
 release: beta
 type: metrics
 streams:
 - input: system/metrics
-  title: System Users logs
-  description: Collect System Users metrics
+  title: System users metrics
+  description: Collect System users metrics

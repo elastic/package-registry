@@ -4,4 +4,4 @@ hosts: {{hosts}}
 period: {{period}}
 {{#if xpack.enabled}}
 xpack.enabled: {{xpack.enabled}}
-{{#if xpack.enabled}}
+{{/if}}
