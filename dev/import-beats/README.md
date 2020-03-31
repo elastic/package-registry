@@ -12,23 +12,26 @@ migrate existing dashboards to a newer version.
 $ go run dev/import-beats/*.go -help
   Usage of /var/folders/gz/dht4sjdx5w9f72knybys10zw0000gn/T/go-build249388773/b001/exe/agent:
     -beatsDir string
-      	Path to the beats repository (default "../beats")
+       Path to the beats repository (default "../beats")
+    -ecsDir string
+       Path to the Elastic Common Schema repository (default "../ecs")
     -euiDir string
-      	Path to the Elastic UI framework repository (default "../eui")
+       Path to the Elastic UI framework repository (default "../eui")
     -kibanaDir string
-      	Path to the kibana repository (default "../kibana")
+       Path to the kibana repository (default "../kibana")
     -kibanaHostPort string
-      	Kibana host and port (default "http://localhost:5601")
+       Kibana host and port (default "http://localhost:5601")
     -outputDir string
-      	Path to the output directory (default "dev/packages/beats")
+       Path to the output directory (default "dev/packages/beats")
     -skipKibana
-      	Skip storing Kibana objects
-```
+       Skip storing Kibana objects
+``
 
 ## Import all packages
 
 1. Make sure that the following repositories have been fetched locally:
 https://github.com/elastic/beats
+https://github.com/elastic/ecs
 https://github.com/elastic/eui
 https://github.com/elastic/kibana
 2. Start Kibana server (make sure the endpoint is accessible: http://localhost:5601/)
