@@ -25,7 +25,7 @@ $ go run dev/import-beats/*.go -help
        Path to the output directory (default "dev/packages/beats")
     -skipKibana
        Skip storing Kibana objects
-``
+```
 
 ## Import all packages
 
