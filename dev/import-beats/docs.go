@@ -6,25 +6,26 @@ package main
 
 import (
 	"fmt"
-	"github.com/pkg/errors"
-	"gopkg.in/yaml.v2"
 	"os"
 	"path/filepath"
 	"sort"
 	"strings"
 	"text/template"
+
+	"github.com/pkg/errors"
+	"gopkg.in/yaml.v2"
 )
 
 var emptyReadmeTemplate = template.Must(template.New("README.md").Parse("TODO"))
 
 type fieldsTableRecord struct {
-	name string
+	name        string
 	description string
-	aType string
+	aType       string
 }
 
 type docContent struct {
-	fileName string
+	fileName     string
 	templatePath string
 }
 
@@ -135,9 +136,9 @@ func visitFields(namePrefix string, f mapStr, records []fieldsTableRecord) ([]fi
 		}
 
 		records = append(records, fieldsTableRecord{
-			name: name,
+			name:        name,
 			description: description,
-			aType: aType,
+			aType:       aType,
 		})
 		return records, nil
 	}
@@ -155,7 +156,7 @@ func visitFields(namePrefix string, f mapStr, records []fieldsTableRecord) ([]fi
 			return nil, errors.Wrapf(err, "mapping fields entry failed (namePrefix: %s)", namePrefix)
 		}
 
-		records, err = visitFields(namePrefix + name + ".", fieldsEntry, records)
+		records, err = visitFields(namePrefix+name+".", fieldsEntry, records)
 		if err != nil {
 			return nil, errors.Wrapf(err, "recursive visiting fields failed (namePrefix: %s)", namePrefix)
 		}
