@@ -9,7 +9,10 @@
         "title": "[Endpoint] Endpoint Count by Operating System",
         "uiStateJSON": {
             "vis": {
-                "legendOpen": false
+                "legendOpen": false,
+                "colors": {
+                    "Endpoint Count": "#7EB26D"
+                }
             }
         },
         "version": 1,
@@ -169,6 +172,6 @@
         }
     ],
     "type": "visualization",
-    "updated_at": "2020-03-27T21:54:20.258Z",
-    "version": "WzczLDFd"
+    "updated_at": "2020-03-31T15:45:02.733Z",
+    "version": "WzIyMCwxXQ=="
 }

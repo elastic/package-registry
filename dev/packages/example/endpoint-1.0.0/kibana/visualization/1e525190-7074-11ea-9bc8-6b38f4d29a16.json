@@ -9,7 +9,10 @@
         "title": "[Endpoint] Event Count by Category",
         "uiStateJSON": {
             "vis": {
-                "legendOpen": false
+                "legendOpen": false,
+                "colors": {
+                    "Event Count": "#614D93"
+                }
             }
         },
         "version": 1,
@@ -168,6 +171,6 @@
         }
     ],
     "type": "visualization",
-    "updated_at": "2020-03-27T21:54:01.553Z",
-    "version": "WzcyLDFd"
+    "updated_at": "2020-03-31T15:44:50.882Z",
+    "version": "WzIxOSwxXQ=="
 }

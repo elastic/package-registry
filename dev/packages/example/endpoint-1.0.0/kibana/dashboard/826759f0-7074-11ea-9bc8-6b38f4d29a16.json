@@ -17,88 +17,86 @@
         },
         "panelsJSON": [
             {
-                "version": "7.6.1",
-                "gridData": {
-                    "x": 0,
-                    "y": 0,
-                    "w": 48,
-                    "h": 7,
-                    "i": "c923502a-9a0e-47bb-8d1b-e642b399c8e3"
-                },
-                "panelIndex": "c923502a-9a0e-47bb-8d1b-e642b399c8e3",
                 "embeddableConfig": {
                     "title": "Controls"
                 },
+                "gridData": {
+                    "h": 7,
+                    "i": "c923502a-9a0e-47bb-8d1b-e642b399c8e3",
+                    "w": 48,
+                    "x": 0,
+                    "y": 0
+                },
+                "panelIndex": "c923502a-9a0e-47bb-8d1b-e642b399c8e3",
                 "title": "Controls",
+                "version": "7.6.1",
                 "panelRefName": "panel_0"
             },
             {
-                "version": "7.6.1",
-                "gridData": {
-                    "x": 0,
-                    "y": 7,
-                    "w": 48,
-                    "h": 15,
-                    "i": "fa5ef1ae-d2b7-4585-8a84-fa4a001a213a"
-                },
-                "panelIndex": "fa5ef1ae-d2b7-4585-8a84-fa4a001a213a",
                 "embeddableConfig": {
-                    "title": "Endpoint Map",
                     "hiddenLayers": [],
-                    "isLayerTOCOpen": true,
+                    "isLayerTOCOpen": false,
                     "mapCenter": {
-                        "lat": 23.72501,
-                        "lon": -32.99463,
-                        "zoom": 1
+                        "lat": 37.4065,
+                        "lon": -94.14774,
+                        "zoom": 0.74
                     },
                     "openTOCDetails": []
                 },
-                "title": "Endpoint Map",
+                "gridData": {
+                    "h": 15,
+                    "i": "728b8d81-2f01-4e52-8b9a-94a5c9b62f0f",
+                    "w": 48,
+                    "x": 0,
+                    "y": 7
+                },
+                "panelIndex": "728b8d81-2f01-4e52-8b9a-94a5c9b62f0f",
+                "version": "7.6.1",
                 "panelRefName": "panel_1"
             },
             {
-                "version": "7.6.1",
+                "embeddableConfig": {},
                 "gridData": {
-                    "x": 0,
-                    "y": 22,
-                    "w": 48,
                     "h": 10,
-                    "i": "2b6b6a19-3870-4127-bccf-c81c51e10544"
+                    "i": "2b6b6a19-3870-4127-bccf-c81c51e10544",
+                    "w": 48,
+                    "x": 0,
+                    "y": 22
                 },
                 "panelIndex": "2b6b6a19-3870-4127-bccf-c81c51e10544",
-                "embeddableConfig": {},
+                "version": "7.6.1",
                 "panelRefName": "panel_2"
             },
             {
-                "version": "7.6.1",
-                "gridData": {
-                    "x": 0,
-                    "y": 32,
-                    "w": 25,
-                    "h": 15,
-                    "i": "996c9423-7803-49e0-92d8-4ccfde71b425"
-                },
-                "panelIndex": "996c9423-7803-49e0-92d8-4ccfde71b425",
                 "embeddableConfig": {
                     "title": "Endpoint Count by Operating System"
                 },
+                "gridData": {
+                    "h": 15,
+                    "i": "996c9423-7803-49e0-92d8-4ccfde71b425",
+                    "w": 25,
+                    "x": 0,
+                    "y": 32
+                },
+                "panelIndex": "996c9423-7803-49e0-92d8-4ccfde71b425",
                 "title": "Endpoint Count by Operating System",
+                "version": "7.6.1",
                 "panelRefName": "panel_3"
             },
             {
-                "version": "7.6.1",
-                "gridData": {
-                    "x": 25,
-                    "y": 32,
-                    "w": 23,
-                    "h": 15,
-                    "i": "e16e025f-20c4-4075-8342-76820c2ff4c7"
-                },
-                "panelIndex": "e16e025f-20c4-4075-8342-76820c2ff4c7",
                 "embeddableConfig": {
                     "title": "Event Count by Category"
                 },
+                "gridData": {
+                    "h": 15,
+                    "i": "e16e025f-20c4-4075-8342-76820c2ff4c7",
+                    "w": 23,
+                    "x": 25,
+                    "y": 32
+                },
+                "panelIndex": "e16e025f-20c4-4075-8342-76820c2ff4c7",
                 "title": "Event Count by Category",
+                "version": "7.6.1",
                 "panelRefName": "panel_4"
             }
         ],
@@ -138,6 +136,6 @@
         }
     ],
     "type": "dashboard",
-    "updated_at": "2020-03-30T15:38:29.097Z",
-    "version": "WzEwNCwxXQ=="
+    "updated_at": "2020-03-31T15:52:35.444Z",
+    "version": "WzIyMiwxXQ=="
 }

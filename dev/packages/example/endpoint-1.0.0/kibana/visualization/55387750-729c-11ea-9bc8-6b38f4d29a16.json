@@ -99,7 +99,7 @@
                                 }
                             },
                             "params": {},
-                            "label": "host.ip: Descending",
+                            "label": "IP Address",
                             "aggType": "terms"
                         }
                     ]
@@ -149,23 +149,6 @@
                         "missingBucketLabel": "Missing",
                         "customLabel": "Operating System"
                     }
-                },
-                {
-                    "id": "4",
-                    "enabled": true,
-                    "type": "terms",
-                    "schema": "bucket",
-                    "params": {
-                        "field": "host.ip",
-                        "orderBy": "1",
-                        "order": "desc",
-                        "size": 100,
-                        "otherBucket": false,
-                        "otherBucketLabel": "Other",
-                        "missingBucket": false,
-                        "missingBucketLabel": "Missing",
-                        "customLabel": "IP Address"
-                    }
                 }
             ]
         }
@@ -182,6 +165,6 @@
         }
     ],
     "type": "visualization",
-    "updated_at": "2020-03-30T15:44:50.255Z",
-    "version": "WzEwNSwxXQ=="
+    "updated_at": "2020-03-31T14:25:22.168Z",
+    "version": "WzIwNywxXQ=="
 }
