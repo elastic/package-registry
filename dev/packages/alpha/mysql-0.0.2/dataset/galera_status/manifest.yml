@@ -1,0 +1,19 @@
+id: galera_status
+title: MySQL galera_status metrics
+release: beta
+type: metrics
+streams:
+- input: mysql/metrics
+  vars:
+  - name: period
+    type: text
+    title: Period
+    required: true
+    show_user: true
+    default: 10s
+  - name: raw
+    type: bool
+    title: Raw (all fields from "SHOW /*!50002 GLOBAL */ STATUS;")
+    default: false
+  title: MySQL galera_status metrics
+  description: Collect MySQL galera_status metrics
