@@ -22,6 +22,11 @@ screenshots:
   title: filebeat suricata alerts
   size: 1386x1115
   type: image/png
+icons:
+- src: /img/suricata.svg
+  title: suricata
+  size: 309x309
+  type: image/svg+xml
 datasources:
 - name: suricata
   title: Suricata logs

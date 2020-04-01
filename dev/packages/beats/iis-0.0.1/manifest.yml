@@ -19,6 +19,11 @@ screenshots:
   title: kibana iis
   size: 1960x2820
   type: image/png
+icons:
+- src: /img/iis.svg
+  title: iis
+  size: 100x100
+  type: image/svg+xml
 datasources:
 - name: iis
   title: IIS logs and metrics

@@ -22,7 +22,7 @@ screenshots:
 icons:
 - src: /img/traefik.svg
   title: traefik
-  size: 340x456
+  size: 259x296
   type: image/svg+xml
 datasources:
 - name: traefik

@@ -8,6 +8,7 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -71,4 +72,18 @@ func loadDatasetFields(modulePath, moduleName, datasetName string) ([]byte, erro
 		buffer.WriteString("\n")
 	}
 	return buffer.Bytes(), nil
+}
+
+func loadEcsFields(ecsDir string) ([]fieldsTableRecord, error) {
+	ecsFieldsPath := filepath.Join(ecsDir, "generated/beats/fields.ecs.yml")
+	ecsFields, err := ioutil.ReadFile(ecsFieldsPath)
+	if err != nil {
+		return nil, errors.Wrapf(err, "reading ECS fields failed (path: %s)", ecsFieldsPath)
+	}
+
+	records, err := collectFieldsFromFile(ecsFields)
+	if err != nil {
+		return nil, errors.Wrapf(err, "collecting ECS fields failed")
+	}
+	return records, nil
 }

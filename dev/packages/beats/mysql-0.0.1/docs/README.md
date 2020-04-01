@@ -19,6 +19,9 @@ The `error` dataset collects the MySQL error logs.
 
 | Field | Description | Type |
 |---|---|---|
+| log.level | Original log level of the log event. If the source of the event provides a log level or textual severity, this is the one that goes in `log.level`. If your source doesn't specify one, you may put your event transport's severity here (e.g. Syslog severity). Some examples are `warn`, `err`, `i`, `informational`. | keyword |
+| message | For log events the message field contains the log message, optimized for viewing in a log viewer. For structured logs without an original message field, other fields can be concatenated to form a human-readable summary of the event. If multiple messages exist, they can be combined into one message. | text |
+| mysql.error.thread_id | Alias for field "mysql.thread_id" | alias |
 | mysql.thread_id | The connection or thread ID for the query. | long |
 
 
@@ -37,6 +40,7 @@ The `slowlog` dataset collects the MySQL slow logs.
 | mysql.slowlog.filesort_on_disk | Whether filesort optimization was used and it needed temporary tables on disk. | boolean |
 | mysql.slowlog.full_join | Whether a full join was needed for the slow query (no indexes were used for joins). | boolean |
 | mysql.slowlog.full_scan | Whether a full table scan was needed for the slow query. | boolean |
+| mysql.slowlog.id | Alias for field "mysql.thread_id" | alias |
 | mysql.slowlog.innodb.io_r_bytes | Bytes read during page read operations. | long |
 | mysql.slowlog.innodb.io_r_ops | Number of page read operations. | long |
 | mysql.slowlog.innodb.io_r_wait.sec | How long it took to read all needed data from storage. | long |
@@ -74,6 +78,9 @@ The `slowlog` dataset collects the MySQL slow logs.
 | mysql.slowlog.tmp_table_sizes | Size of temporary tables created for this query. | long |
 | mysql.slowlog.tmp_tables | Number of temporary tables created for this query | long |
 | mysql.thread_id | The connection or thread ID for the query. | long |
+| source.domain | Source domain. | keyword |
+| source.ip | IP address of the source (IPv4 or IPv6). | ip |
+| user.name | Short name or login of the user. | keyword |
 
 
 ## Metrics

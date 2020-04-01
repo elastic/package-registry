@@ -27,6 +27,11 @@ screenshots:
   title: metricbeat services host
   size: 5006x2260
   type: image/png
+icons:
+- src: /img/system.svg
+  title: system
+  size: 1000x1000
+  type: image/svg+xml
 datasources:
 - name: system
   title: System logs and metrics

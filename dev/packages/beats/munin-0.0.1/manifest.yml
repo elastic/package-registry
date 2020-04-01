@@ -11,6 +11,11 @@ release: ga
 requirement:
   kibana: {}
   elasticsearch: {}
+icons:
+- src: /img/munin.svg
+  title: munin
+  size: 815x947
+  type: image/svg+xml
 datasources:
 - name: munin
   title: Munin metrics

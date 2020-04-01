@@ -21,6 +21,11 @@ screenshots:
   title: metricbeat vsphere vm dashboard
   size: 3744x4048
   type: image/png
+icons:
+- src: /img/vsphere.svg
+  title: vsphere
+  size: 162x162
+  type: image/svg+xml
 datasources:
 - name: vsphere
   title: vSphere metrics

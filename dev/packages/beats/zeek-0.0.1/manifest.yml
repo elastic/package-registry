@@ -18,6 +18,11 @@ screenshots:
   title: kibana zeek
   size: 3530x2414
   type: image/png
+icons:
+- src: /img/zeek.svg
+  title: zeek
+  size: 214x203
+  type: image/svg+xml
 datasources:
 - name: zeek
   title: Zeek logs
