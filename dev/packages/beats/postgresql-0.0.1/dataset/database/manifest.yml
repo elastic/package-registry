@@ -1,4 +1,3 @@
-id: database
 title: PostgreSQL database metrics
 release: ga
 type: metrics

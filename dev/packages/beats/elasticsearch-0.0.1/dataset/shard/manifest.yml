@@ -1,4 +1,3 @@
-id: shard
 title: Elasticsearch shard metrics
 release: ga
 type: metrics

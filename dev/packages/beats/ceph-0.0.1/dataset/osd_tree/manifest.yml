@@ -1,4 +1,3 @@
-id: osd_tree
 title: Ceph osd_tree metrics
 release: ga
 type: metrics

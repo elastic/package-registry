@@ -1,4 +1,3 @@
-id: server
 title: CouchDB server metrics
 release: ga
 type: metrics

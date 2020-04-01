@@ -1,4 +1,3 @@
-id: ebs
 title: aws ebs metrics
 release: ga
 type: metrics

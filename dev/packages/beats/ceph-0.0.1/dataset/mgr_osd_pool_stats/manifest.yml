@@ -1,4 +1,3 @@
-id: mgr_osd_pool_stats
 title: Ceph mgr_osd_pool_stats metrics
 release: beta
 type: metrics

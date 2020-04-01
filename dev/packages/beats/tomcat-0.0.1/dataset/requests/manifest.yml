@@ -1,4 +1,3 @@
-id: requests
 title: Tomcat requests metrics
 release: beta
 type: metrics

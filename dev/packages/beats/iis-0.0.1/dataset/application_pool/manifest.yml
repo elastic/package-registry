@@ -1,4 +1,3 @@
-id: application_pool
 title: iis application_pool metrics
 release: beta
 type: metrics

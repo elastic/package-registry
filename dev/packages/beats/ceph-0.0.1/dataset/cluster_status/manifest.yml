@@ -1,4 +1,3 @@
-id: cluster_status
 title: Ceph cluster_status metrics
 release: ga
 type: metrics

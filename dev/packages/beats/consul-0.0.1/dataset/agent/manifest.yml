@@ -1,4 +1,3 @@
-id: agent
 title: consul agent metrics
 release: beta
 type: metrics

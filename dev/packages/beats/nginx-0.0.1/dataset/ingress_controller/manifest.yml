@@ -1,4 +1,3 @@
-id: ingress_controller
 title: Nginx ingress_controller logs
 release: ga
 type: logs

@@ -1,4 +1,3 @@
-id: mysql
 title: Zeek mysql logs
 release: ga
 type: logs

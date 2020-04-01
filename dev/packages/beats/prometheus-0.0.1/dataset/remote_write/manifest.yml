@@ -1,4 +1,3 @@
-id: remote_write
 title: Prometheus remote_write metrics
 release: beta
 type: metrics

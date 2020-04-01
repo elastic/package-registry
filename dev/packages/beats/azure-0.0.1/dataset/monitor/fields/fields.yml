@@ -1,6 +1,6 @@
 - name: azure.monitor
   type: group
-  release: beta
+  release: ga
   description: >
     monitor
   fields:

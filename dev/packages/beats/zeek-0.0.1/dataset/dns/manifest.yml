@@ -1,4 +1,3 @@
-id: dns
 title: Zeek dns logs
 release: ga
 type: logs

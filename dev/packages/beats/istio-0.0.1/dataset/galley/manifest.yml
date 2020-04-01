@@ -1,4 +1,3 @@
-id: galley
 title: istio galley metrics
 release: beta
 type: metrics

@@ -1,4 +1,3 @@
-id: process
 title: PHP_FPM process metrics
 release: ga
 type: metrics

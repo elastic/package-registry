@@ -1,4 +1,3 @@
-id: smb_mapping
 title: Zeek smb_mapping logs
 release: ga
 type: logs

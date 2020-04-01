@@ -1,4 +1,3 @@
-id: pool
 title: PHP_FPM pool metrics
 release: ga
 type: metrics

@@ -1,4 +1,3 @@
-id: audit
 title: Google Cloud audit logs
 release: ga
 type: logs

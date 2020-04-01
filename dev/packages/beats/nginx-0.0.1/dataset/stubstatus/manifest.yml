@@ -1,4 +1,3 @@
-id: stubstatus
 title: Nginx stubstatus metrics
 release: ga
 type: metrics

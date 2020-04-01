@@ -1,4 +1,3 @@
-id: dommemstat
 title: kvm dommemstat metrics
 release: beta
 type: metrics

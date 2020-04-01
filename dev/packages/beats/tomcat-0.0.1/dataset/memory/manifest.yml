@@ -1,4 +1,3 @@
-id: memory
 title: Tomcat memory metrics
 release: beta
 type: metrics

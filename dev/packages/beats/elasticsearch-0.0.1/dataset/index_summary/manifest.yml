@@ -1,4 +1,3 @@
-id: index_summary
 title: Elasticsearch index_summary metrics
 release: ga
 type: metrics

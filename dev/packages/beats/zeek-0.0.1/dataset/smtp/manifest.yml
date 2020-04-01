@@ -1,4 +1,3 @@
-id: smtp
 title: Zeek smtp logs
 release: ga
 type: logs

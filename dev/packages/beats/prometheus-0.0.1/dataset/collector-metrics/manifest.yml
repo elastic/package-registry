@@ -1,4 +1,3 @@
-id: collector
 title: Prometheus typed metrics collector metrics
 release: ga
 type: metrics

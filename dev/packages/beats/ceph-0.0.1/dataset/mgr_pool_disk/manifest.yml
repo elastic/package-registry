@@ -1,4 +1,3 @@
-id: mgr_pool_disk
 title: Ceph mgr_pool_disk metrics
 release: beta
 type: metrics

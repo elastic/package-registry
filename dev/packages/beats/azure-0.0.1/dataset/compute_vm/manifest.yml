@@ -1,6 +1,5 @@
-id: compute_vm
 title: azure compute_vm metrics
-release: beta
+release: ga
 type: metrics
 streams:
 - input: azure/metrics

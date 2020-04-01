@@ -1,4 +1,3 @@
-id: dynamodb
 title: aws dynamodb metrics
 release: beta
 type: metrics

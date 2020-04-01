@@ -1,4 +1,3 @@
-id: slowlog
 title: MySQL slowlog logs
 release: ga
 type: logs

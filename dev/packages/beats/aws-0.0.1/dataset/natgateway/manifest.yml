@@ -1,4 +1,3 @@
-id: natgateway
 title: aws natgateway metrics
 release: beta
 type: metrics

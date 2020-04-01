@@ -1,4 +1,3 @@
-id: audit
 title: elasticsearch audit logs
 release: ga
 type: logs

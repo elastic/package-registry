@@ -1,4 +1,3 @@
-id: mntr
 title: ZooKeeper mntr metrics
 release: ga
 type: metrics

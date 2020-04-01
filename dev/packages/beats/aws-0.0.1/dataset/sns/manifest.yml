@@ -1,4 +1,3 @@
-id: sns
 title: aws sns metrics
 release: beta
 type: metrics

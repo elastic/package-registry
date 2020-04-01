@@ -1,4 +1,3 @@
-id: access
 title: Traefik access logs
 release: ga
 type: logs

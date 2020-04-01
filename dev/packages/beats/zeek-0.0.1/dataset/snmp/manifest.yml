@@ -1,4 +1,3 @@
-id: snmp
 title: Zeek snmp logs
 release: ga
 type: logs

@@ -1,6 +1,5 @@
-id: container_registry
 title: azure container_registry metrics
-release: beta
+release: ga
 type: metrics
 streams:
 - input: azure/metrics

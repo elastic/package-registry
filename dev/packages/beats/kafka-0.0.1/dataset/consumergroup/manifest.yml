@@ -1,4 +1,3 @@
-id: consumergroup
 title: Kafka consumergroup metrics
 release: ga
 type: metrics

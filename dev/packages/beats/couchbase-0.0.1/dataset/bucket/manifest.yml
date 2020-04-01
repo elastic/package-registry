@@ -1,4 +1,3 @@
-id: bucket
 title: Couchbase bucket metrics
 release: ga
 type: metrics

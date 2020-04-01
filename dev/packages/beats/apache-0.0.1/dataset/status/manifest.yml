@@ -1,4 +1,3 @@
-id: status
 title: Apache status metrics
 release: ga
 type: metrics

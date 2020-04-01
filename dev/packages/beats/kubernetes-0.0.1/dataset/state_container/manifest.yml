@@ -1,4 +1,3 @@
-id: state_container
 title: Kubernetes state_container metrics
 release: ga
 type: metrics

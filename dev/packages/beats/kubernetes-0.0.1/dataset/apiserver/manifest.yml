@@ -1,4 +1,3 @@
-id: apiserver
 title: Kubernetes apiserver metrics
 release: ga
 type: metrics

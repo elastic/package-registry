@@ -1,4 +1,3 @@
-id: stats
 title: Memcached stats metrics
 release: ga
 type: metrics

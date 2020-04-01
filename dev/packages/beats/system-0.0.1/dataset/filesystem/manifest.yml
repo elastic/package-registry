@@ -1,4 +1,3 @@
-id: filesystem
 title: System filesystem metrics
 release: ga
 type: metrics

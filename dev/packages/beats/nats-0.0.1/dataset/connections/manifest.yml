@@ -1,4 +1,3 @@
-id: connections
 title: Nats connections metrics
 release: ga
 type: metrics

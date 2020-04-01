@@ -1,4 +1,3 @@
-id: smb_files
 title: Zeek smb_files logs
 release: ga
 type: logs

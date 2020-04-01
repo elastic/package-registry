@@ -1,4 +1,3 @@
-id: slowlog
 title: elasticsearch slowlog logs
 release: ga
 type: logs

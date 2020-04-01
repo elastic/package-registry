@@ -1,4 +1,3 @@
-id: container
 title: cloudfoundry container metrics
 release: beta
 type: metrics

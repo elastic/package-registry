@@ -1,4 +1,3 @@
-id: statement
 title: PostgreSQL statement metrics
 release: ga
 type: metrics

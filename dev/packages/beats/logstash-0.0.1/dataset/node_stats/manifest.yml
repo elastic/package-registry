@@ -1,4 +1,3 @@
-id: node_stats
 title: Logstash node_stats metrics
 release: ga
 type: metrics

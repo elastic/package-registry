@@ -1,4 +1,3 @@
-id: kerberos
 title: Zeek kerberos logs
 release: ga
 type: logs

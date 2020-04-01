@@ -1,4 +1,3 @@
-id: pending_tasks
 title: Elasticsearch pending_tasks metrics
 release: ga
 type: metrics

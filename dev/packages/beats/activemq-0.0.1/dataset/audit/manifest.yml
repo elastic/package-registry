@@ -1,4 +1,3 @@
-id: audit
 title: activemq audit logs
 release: ga
 type: logs

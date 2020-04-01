@@ -1,4 +1,3 @@
-id: ocsp
 title: Zeek ocsp logs
 release: ga
 type: logs

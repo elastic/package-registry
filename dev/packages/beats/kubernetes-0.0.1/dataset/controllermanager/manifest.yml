@@ -1,4 +1,3 @@
-id: controllermanager
 title: Kubernetes controllermanager metrics
 release: ga
 type: metrics

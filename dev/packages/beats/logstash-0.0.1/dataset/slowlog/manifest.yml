@@ -1,4 +1,3 @@
-id: slowlog
 title: logstash slowlog logs
 release: ga
 type: logs

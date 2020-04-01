@@ -1,6 +1,5 @@
-id: container_instance
 title: azure container_instance metrics
-release: beta
+release: ga
 type: metrics
 streams:
 - input: azure/metrics

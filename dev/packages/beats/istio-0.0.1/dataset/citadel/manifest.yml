@@ -1,4 +1,3 @@
-id: citadel
 title: istio citadel metrics
 release: beta
 type: metrics

@@ -1,6 +1,5 @@
-id: compute_vm_scaleset
 title: azure compute_vm_scaleset metrics
-release: beta
+release: ga
 type: metrics
 streams:
 - input: azure/metrics

@@ -1,6 +1,5 @@
-id: database_account
 title: azure database_account metrics
-release: beta
+release: ga
 type: metrics
 streams:
 - input: azure/metrics

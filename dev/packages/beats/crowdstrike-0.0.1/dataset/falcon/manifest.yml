@@ -1,0 +1,11 @@
+title: Crowdstrike falcon logs
+release: beta
+type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/crowdstrike/falconhoseclient/output
+    name: paths
+  title: Crowdstrike falcon logs
+  description: Collect Crowdstrike falcon logs

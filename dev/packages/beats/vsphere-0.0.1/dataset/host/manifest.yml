@@ -1,4 +1,3 @@
-id: host
 title: vSphere host metrics
 release: ga
 type: metrics

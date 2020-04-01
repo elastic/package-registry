@@ -1,4 +1,3 @@
-id: node
 title: Elasticsearch node metrics
 release: ga
 type: metrics

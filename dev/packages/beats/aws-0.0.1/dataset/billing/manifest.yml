@@ -1,4 +1,3 @@
-id: billing
 title: aws billing metrics
 release: beta
 type: metrics

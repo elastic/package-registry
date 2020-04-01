@@ -1,4 +1,3 @@
-id: index_recovery
 title: Elasticsearch index_recovery metrics
 release: ga
 type: metrics
