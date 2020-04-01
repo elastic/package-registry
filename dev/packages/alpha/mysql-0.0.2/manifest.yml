@@ -49,8 +49,8 @@ datasources:
       - name: username
         type: text
         title: Username
-        default: test
+        default: root
       - name: password
         type: password
         title: Password
-        default: root
+        default: test
