@@ -56,17 +56,17 @@
     },
     "references": [
         {
-            "id": "endpoint-dashboard-index-pattern",
+            "id": "events-*",
             "name": "control_0_index_pattern",
             "type": "index-pattern"
         },
         {
-            "id": "endpoint-dashboard-index-pattern",
+            "id": "events-*",
             "name": "control_1_index_pattern",
             "type": "index-pattern"
         }
     ],
     "type": "visualization",
-    "updated_at": "2020-03-31T14:25:22.168Z",
-    "version": "WzIwNSwxXQ=="
+    "updated_at": "2020-04-01T16:08:32.353Z",
+    "version": "WzIyOCwxXQ=="
 }

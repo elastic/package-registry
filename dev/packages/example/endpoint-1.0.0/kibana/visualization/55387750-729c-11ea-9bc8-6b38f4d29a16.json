@@ -159,12 +159,12 @@
     },
     "references": [
         {
-            "id": "endpoint-dashboard-index-pattern",
+            "id": "events-*",
             "name": "kibanaSavedObjectMeta.searchSourceJSON.index",
             "type": "index-pattern"
         }
     ],
     "type": "visualization",
-    "updated_at": "2020-03-31T14:25:22.168Z",
-    "version": "WzIwNywxXQ=="
+    "updated_at": "2020-04-01T16:08:56.259Z",
+    "version": "WzIyOSwxXQ=="
 }
