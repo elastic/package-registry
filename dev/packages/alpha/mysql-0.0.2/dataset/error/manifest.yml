@@ -15,7 +15,7 @@ streams:
     - /var/log/mysqld.log*
     os.darwin:
       default:
-      - /usr/local/var/mysql/{{.builtin.hostname}}.{{.builtin.domain}}.err*
+      - /usr/local/var/mysql/localhost.localdomain.err*
     os.windows:
       default:
       - c:/programdata/MySQL/MySQL Server*/error.log*
