@@ -1,6 +1,5 @@
-id: monitor
 title: azure monitor metrics
-release: beta
+release: ga
 type: metrics
 streams:
 - input: azure/metrics

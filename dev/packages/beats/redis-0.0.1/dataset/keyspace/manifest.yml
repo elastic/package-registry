@@ -1,4 +1,3 @@
-id: keyspace
 title: Redis keyspace metrics
 release: ga
 type: metrics

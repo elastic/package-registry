@@ -1,4 +1,3 @@
-id: monitor_health
 title: Ceph monitor_health metrics
 release: ga
 type: metrics

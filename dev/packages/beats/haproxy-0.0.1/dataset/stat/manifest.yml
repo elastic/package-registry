@@ -1,4 +1,3 @@
-id: stat
 title: HAProxy stat metrics
 release: ga
 type: metrics

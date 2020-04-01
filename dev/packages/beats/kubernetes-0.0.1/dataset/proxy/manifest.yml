@@ -1,4 +1,3 @@
-id: proxy
 title: Kubernetes proxy metrics
 release: ga
 type: metrics

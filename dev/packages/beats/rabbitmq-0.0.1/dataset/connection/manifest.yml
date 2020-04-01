@@ -1,4 +1,3 @@
-id: connection
 title: RabbitMQ connection metrics
 release: ga
 type: metrics

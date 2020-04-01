@@ -1,4 +1,3 @@
-id: cpu
 title: Docker cpu metrics
 release: ga
 type: metrics

@@ -1,4 +1,3 @@
-id: status
 title: CockroachDB status metrics
 release: beta
 type: metrics

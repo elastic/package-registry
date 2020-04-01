@@ -1,4 +1,3 @@
-id: state_persistentvolumeclaim
 title: Kubernetes state_persistentvolumeclaim metrics
 release: experimental
 type: metrics

@@ -1,4 +1,3 @@
-id: s3_daily_storage
 title: aws s3_daily_storage metrics
 release: ga
 type: metrics

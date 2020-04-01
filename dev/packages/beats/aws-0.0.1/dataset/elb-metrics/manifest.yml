@@ -1,4 +1,3 @@
-id: elb
 title: aws elb metrics
 release: ga
 type: metrics

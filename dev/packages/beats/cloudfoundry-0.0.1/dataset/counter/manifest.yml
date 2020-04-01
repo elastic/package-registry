@@ -1,4 +1,3 @@
-id: counter
 title: cloudfoundry counter metrics
 release: beta
 type: metrics

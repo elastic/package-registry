@@ -1,4 +1,3 @@
-id: threading
 title: Tomcat threading metrics
 release: beta
 type: metrics

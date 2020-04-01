@@ -1,4 +1,3 @@
-id: ssl
 title: Zeek ssl logs
 release: ga
 type: logs

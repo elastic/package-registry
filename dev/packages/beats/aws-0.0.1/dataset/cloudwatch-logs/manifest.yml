@@ -1,4 +1,3 @@
-id: cloudwatch
 title: AWS cloudwatch logs
 release: beta
 type: logs

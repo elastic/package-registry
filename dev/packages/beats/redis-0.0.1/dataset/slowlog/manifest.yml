@@ -1,4 +1,3 @@
-id: slowlog
 title: Redis slowlog logs
 release: ga
 type: logs

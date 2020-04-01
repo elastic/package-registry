@@ -1,4 +1,3 @@
-id: exchange
 title: RabbitMQ exchange metrics
 release: ga
 type: metrics

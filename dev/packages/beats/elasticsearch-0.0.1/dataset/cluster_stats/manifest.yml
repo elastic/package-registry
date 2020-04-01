@@ -1,4 +1,3 @@
-id: cluster_stats
 title: Elasticsearch cluster_stats metrics
 release: ga
 type: metrics

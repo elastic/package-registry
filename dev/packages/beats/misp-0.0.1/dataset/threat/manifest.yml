@@ -1,4 +1,3 @@
-id: threat
 title: MISP threat logs
 release: ga
 type: logs

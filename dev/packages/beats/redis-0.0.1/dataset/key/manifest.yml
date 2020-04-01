@@ -1,4 +1,3 @@
-id: key
 title: Redis key metrics
 release: ga
 type: metrics

@@ -1,4 +1,3 @@
-id: queue
 title: activemq queue metrics
 release: ga
 type: metrics

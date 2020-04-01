@@ -1,4 +1,3 @@
-id: log
 title: logstash log logs
 release: ga
 type: logs

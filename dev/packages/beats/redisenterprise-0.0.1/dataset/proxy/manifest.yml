@@ -1,4 +1,3 @@
-id: proxy
 title: Redis Enterprise proxy metrics
 release: beta
 type: metrics

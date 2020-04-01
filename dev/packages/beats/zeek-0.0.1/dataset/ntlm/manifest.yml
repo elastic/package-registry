@@ -1,4 +1,3 @@
-id: ntlm
 title: Zeek ntlm logs
 release: ga
 type: logs

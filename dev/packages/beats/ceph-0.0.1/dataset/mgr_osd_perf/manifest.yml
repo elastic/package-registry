@@ -1,4 +1,3 @@
-id: mgr_osd_perf
 title: Ceph mgr_osd_perf metrics
 release: beta
 type: metrics

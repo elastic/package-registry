@@ -1,4 +1,3 @@
-id: state_deployment
 title: Kubernetes state_deployment metrics
 release: ga
 type: metrics

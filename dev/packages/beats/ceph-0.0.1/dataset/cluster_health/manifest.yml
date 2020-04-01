@@ -1,4 +1,3 @@
-id: cluster_health
 title: Ceph cluster_health metrics
 release: ga
 type: metrics

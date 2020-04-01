@@ -1,4 +1,3 @@
-id: osd_df
 title: Ceph osd_df metrics
 release: ga
 type: metrics

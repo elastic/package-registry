@@ -1,4 +1,3 @@
-id: mgr_cluster_health
 title: Ceph mgr_cluster_health metrics
 release: beta
 type: metrics

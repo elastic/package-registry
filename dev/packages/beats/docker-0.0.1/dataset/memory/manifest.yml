@@ -1,4 +1,3 @@
-id: memory
 title: Docker memory metrics
 release: ga
 type: metrics

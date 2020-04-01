@@ -1,4 +1,3 @@
-id: ssh
 title: Zeek ssh logs
 release: ga
 type: logs

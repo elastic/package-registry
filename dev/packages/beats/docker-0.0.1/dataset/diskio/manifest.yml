@@ -1,4 +1,3 @@
-id: diskio
 title: Docker diskio metrics
 release: ga
 type: metrics

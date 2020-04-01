@@ -1,4 +1,3 @@
-id: leader
 title: Etcd leader metrics
 release: ga
 type: metrics

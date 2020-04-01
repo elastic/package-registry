@@ -1,4 +1,3 @@
-id: socket
 title: System socket metrics
 release: ga
 type: metrics

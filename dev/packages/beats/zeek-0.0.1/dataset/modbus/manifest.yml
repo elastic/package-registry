@@ -1,4 +1,3 @@
-id: modbus
 title: Zeek modbus logs
 release: ga
 type: logs

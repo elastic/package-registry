@@ -1,4 +1,3 @@
-id: s3access
 title: AWS s3access logs
 release: ga
 type: logs

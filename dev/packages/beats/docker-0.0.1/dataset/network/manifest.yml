@@ -1,4 +1,3 @@
-id: network
 title: Docker network metrics
 release: ga
 type: metrics

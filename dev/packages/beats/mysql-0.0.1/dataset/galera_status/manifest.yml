@@ -1,4 +1,3 @@
-id: galera_status
 title: MySQL galera_status metrics
 release: beta
 type: metrics

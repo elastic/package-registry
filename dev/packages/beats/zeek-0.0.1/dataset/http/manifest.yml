@@ -1,4 +1,3 @@
-id: http
 title: Zeek http logs
 release: ga
 type: logs

@@ -1,4 +1,3 @@
-id: state_pod
 title: Kubernetes state_pod metrics
 release: ga
 type: metrics

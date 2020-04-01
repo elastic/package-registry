@@ -1,6 +1,5 @@
-id: storage
 title: azure storage metrics
-release: beta
+release: ga
 type: metrics
 streams:
 - input: azure/metrics

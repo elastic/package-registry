@@ -1,4 +1,3 @@
-id: cluster
 title: Couchbase cluster metrics
 release: ga
 type: metrics

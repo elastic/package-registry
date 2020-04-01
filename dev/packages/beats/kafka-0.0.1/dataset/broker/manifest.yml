@@ -1,4 +1,3 @@
-id: broker
 title: Kafka broker metrics
 release: beta
 type: metrics

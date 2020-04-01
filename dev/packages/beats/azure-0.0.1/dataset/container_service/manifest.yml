@@ -1,6 +1,5 @@
-id: container_service
 title: azure container_service metrics
-release: beta
+release: ga
 type: metrics
 streams:
 - input: azure/metrics

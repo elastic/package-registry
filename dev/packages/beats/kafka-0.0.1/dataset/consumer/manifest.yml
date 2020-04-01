@@ -1,4 +1,3 @@
-id: consumer
 title: Kafka consumer metrics
 release: beta
 type: metrics

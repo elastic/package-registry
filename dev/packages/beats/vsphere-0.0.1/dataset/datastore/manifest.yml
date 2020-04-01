@@ -1,4 +1,3 @@
-id: datastore
 title: vSphere datastore metrics
 release: ga
 type: metrics

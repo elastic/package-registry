@@ -1,4 +1,3 @@
-id: healthcheck
 title: Docker healthcheck metrics
 release: ga
 type: metrics

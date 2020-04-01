@@ -1,4 +1,3 @@
-id: producer
 title: Kafka producer metrics
 release: beta
 type: metrics

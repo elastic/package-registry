@@ -1,4 +1,3 @@
-id: elb
 title: AWS elb logs
 release: ga
 type: logs

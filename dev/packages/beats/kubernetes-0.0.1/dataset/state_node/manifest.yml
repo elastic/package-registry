@@ -1,4 +1,3 @@
-id: state_node
 title: Kubernetes state_node metrics
 release: ga
 type: metrics

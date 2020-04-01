@@ -1,4 +1,3 @@
-id: gc
 title: elasticsearch gc logs
 release: ga
 type: logs

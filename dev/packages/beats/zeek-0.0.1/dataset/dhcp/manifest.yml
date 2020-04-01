@@ -1,4 +1,3 @@
-id: dhcp
 title: Zeek dhcp logs
 release: ga
 type: logs

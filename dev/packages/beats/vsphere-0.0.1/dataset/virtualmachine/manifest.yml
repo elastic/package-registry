@@ -1,4 +1,3 @@
-id: virtualmachine
 title: vSphere virtualmachine metrics
 release: ga
 type: metrics

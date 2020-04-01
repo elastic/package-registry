@@ -1,4 +1,3 @@
-id: rds
 title: aws rds metrics
 release: ga
 type: metrics

@@ -1,4 +1,3 @@
-id: state_replicaset
 title: Kubernetes state_replicaset metrics
 release: ga
 type: metrics

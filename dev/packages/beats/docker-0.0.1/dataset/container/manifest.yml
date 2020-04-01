@@ -1,4 +1,3 @@
-id: container
 title: Docker container metrics
 release: ga
 type: metrics

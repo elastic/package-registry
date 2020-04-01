@@ -1,4 +1,3 @@
-id: image
 title: Docker image metrics
 release: ga
 type: metrics

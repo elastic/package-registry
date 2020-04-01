@@ -1,4 +1,3 @@
-id: ml_job
 title: Elasticsearch ml_job metrics
 release: ga
 type: metrics

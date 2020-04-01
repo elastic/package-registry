@@ -1,4 +1,3 @@
-id: jmx
 title: Jolokia jmx metrics
 release: ga
 type: metrics

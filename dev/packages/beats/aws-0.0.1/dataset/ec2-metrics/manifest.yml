@@ -1,4 +1,3 @@
-id: ec2
 title: aws ec2 metrics
 release: ga
 type: metrics

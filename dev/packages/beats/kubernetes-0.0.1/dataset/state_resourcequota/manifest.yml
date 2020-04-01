@@ -1,4 +1,3 @@
-id: state_resourcequota
 title: Kubernetes state_resourcequota metrics
 release: ga
 type: metrics

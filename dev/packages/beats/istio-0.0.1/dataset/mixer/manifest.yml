@@ -1,4 +1,3 @@
-id: mixer
 title: istio mixer metrics
 release: beta
 type: metrics

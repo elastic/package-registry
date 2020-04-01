@@ -1,4 +1,3 @@
-id: collector
 title: Openmetrics collector metrics
 release: beta
 type: metrics

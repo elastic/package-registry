@@ -1,4 +1,3 @@
-id: syslog
 title: Zeek syslog logs
 release: ga
 type: logs

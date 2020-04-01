@@ -1,4 +1,3 @@
-id: metrics
 title: Etcd metrics metrics
 release: beta
 type: metrics

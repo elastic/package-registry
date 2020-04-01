@@ -1,4 +1,3 @@
-id: partition
 title: Kafka partition metrics
 release: ga
 type: metrics

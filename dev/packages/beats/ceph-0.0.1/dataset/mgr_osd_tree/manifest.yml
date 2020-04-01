@@ -1,4 +1,3 @@
-id: mgr_osd_tree
 title: Ceph mgr_osd_tree metrics
 release: beta
 type: metrics

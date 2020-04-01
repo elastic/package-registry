@@ -1,4 +1,3 @@
-id: cluster_disk
 title: Ceph cluster_disk metrics
 release: ga
 type: metrics

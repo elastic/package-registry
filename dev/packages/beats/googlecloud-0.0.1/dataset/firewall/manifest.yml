@@ -1,4 +1,3 @@
-id: firewall
 title: Google Cloud firewall logs
 release: ga
 type: logs

@@ -1,4 +1,3 @@
-id: mgr_cluster_disk
 title: Ceph mgr_cluster_disk metrics
 release: beta
 type: metrics

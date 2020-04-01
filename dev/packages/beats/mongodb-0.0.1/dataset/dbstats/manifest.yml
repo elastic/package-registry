@@ -1,4 +1,3 @@
-id: dbstats
 title: MongoDB dbstats metrics
 release: ga
 type: metrics
