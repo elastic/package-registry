@@ -40,16 +40,16 @@ datasources:
     vars:
       - name: hosts
         type: text
-        title: MySQL host address
+        title: MySQL DSN
         multi: true
         required: true
         show_user: true
         default:
-          - 127.0.0.1:3306
+          - tcp(127.0.0.1:3306)/
       - name: username
         type: text
         title: Username
-        default: root
+        default: test
       - name: password
         type: password
         title: Password
