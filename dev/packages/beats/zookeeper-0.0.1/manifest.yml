@@ -20,7 +20,7 @@ screenshots:
 icons:
 - src: /img/zookeeper.svg
   title: zookeeper
-  size: 266x266
+  size: 754x754
   type: image/svg+xml
 datasources:
 - name: zookeeper

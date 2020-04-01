@@ -25,7 +25,7 @@ screenshots:
 icons:
 - src: /img/suricata.svg
   title: suricata
-  size: 109x109
+  size: 309x309
   type: image/svg+xml
 datasources:
 - name: suricata

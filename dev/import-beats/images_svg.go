@@ -36,26 +36,14 @@ func SvgDecodeConfig(r io.Reader) (image.Config, error) {
 
 	var width, height float64
 	if svgFile.Width != "" && svgFile.Height != "" {
-		width, err = strconv.ParseFloat(svgFile.Width, 32)
+		width, err = svgParseToPixels(svgFile.Width)
 		if err != nil {
-			svgFile.Width = strings.ReplaceAll(svgFile.Width, "pt", "")
-			svgFile.Width = strings.ReplaceAll(svgFile.Width, "mm", "")
-			width, err = strconv.ParseFloat(svgFile.Width, 32)
-			if err != nil {
-				return image.Config{}, errors.Wrapf(err, "parsing width failed (value: %s)", svgFile.Width)
-			}
-			width = width * 4 / 3 // pt to px
+			return image.Config{}, errors.Wrapf(err, "parsing width failed (value: %s)", svgFile.Width)
 		}
 
-		height, err = strconv.ParseFloat(svgFile.Height, 32)
+		height, err = svgParseToPixels(svgFile.Height)
 		if err != nil {
-			svgFile.Height = strings.ReplaceAll(svgFile.Height, "pt", "")
-			svgFile.Height = strings.ReplaceAll(svgFile.Height, "mm", "")
-			height, err = strconv.ParseFloat(svgFile.Height, 32)
-			if err != nil {
-				return image.Config{}, errors.Wrapf(err, "parsing height failed (value: %s)", svgFile.Height)
-			}
-			height = height * 4 / 3 // pt to px
+			return image.Config{}, errors.Wrapf(err, "parsing width failed (value: %s)", svgFile.Width)
 		}
 	}
 
@@ -89,4 +77,27 @@ func SvgDecodeConfig(r io.Reader) (image.Config, error) {
 		Width:  int(width),
 		Height: int(height),
 	}, nil
+}
+
+func svgParseToPixels(value string) (float64, error) {
+	v, err := strconv.ParseFloat(value, 32)
+	if err != nil {
+		var unit string
+		var scale float64
+		if strings.Contains(value, "pt") {
+			unit = "pt"
+			scale = 4.0 / 3
+		} else if strings.Contains(value, "mm") {
+			unit = "mm"
+			scale = 3.77
+		}
+
+		value = strings.ReplaceAll(value, unit, "")
+		v, err = strconv.ParseFloat(value, 32)
+		if err != nil {
+			return -1, errors.Wrapf(err, "parsing width failed (value: %s)", value)
+		}
+		v = v * scale
+	}
+	return v, nil
 }

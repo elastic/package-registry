@@ -24,7 +24,7 @@ screenshots:
 icons:
 - src: /img/vsphere.svg
   title: vsphere
-  size: 57x57
+  size: 162x162
   type: image/svg+xml
 datasources:
 - name: vsphere

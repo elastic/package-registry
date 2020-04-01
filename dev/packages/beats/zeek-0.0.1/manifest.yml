@@ -21,7 +21,7 @@ screenshots:
 icons:
 - src: /img/zeek.svg
   title: zeek
-  size: 76x72
+  size: 214x203
   type: image/svg+xml
 datasources:
 - name: zeek
