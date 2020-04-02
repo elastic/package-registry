@@ -22,17 +22,17 @@ type fieldsContent struct {
 	files map[string][]byte
 }
 
-type FieldDefinition struct {
-	Name string `yaml:"name,omitempty"`
-	Key string `yaml:"key,omitempty"`
-	Type string `yaml:"type,omitempty"`
-	Format string `yaml:"format,omitempty"`
-	Description string `yaml:"description,omitempty"`
-	Release string `yaml:"release,omitempty"`
-	Alias string `yaml:"alias,omitempty"`
-	Path string `yaml:"path,omitempty"`
-	Fields []FieldDefinition `yaml:"fields,omitempty"`
-	Migration *bool `yaml:"migration,omitempty"`
+type fieldDefinition struct {
+	Name        string            `yaml:"name,omitempty"`
+	Key         string            `yaml:"key,omitempty"`
+	Type        string            `yaml:"type,omitempty"`
+	Format      string            `yaml:"format,omitempty"`
+	Description string            `yaml:"description,omitempty"`
+	Release     string            `yaml:"release,omitempty"`
+	Alias       string            `yaml:"alias,omitempty"`
+	Path        string            `yaml:"path,omitempty"`
+	Fields      []fieldDefinition `yaml:"fields,omitempty"`
+	Migration   *bool             `yaml:"migration,omitempty"`
 
 	skipped bool
 }
@@ -107,7 +107,7 @@ func loadEcsFields(ecsDir string) ([]fieldsTableRecord, error) {
 // filterOutMigratedUncommonFields method filters out fields with "migration: true" property, which don't belong to
 // Elastic Common Schema (ECS).
 func filterOutMigratedUncommonFields(fields []byte, ecsFields []fieldsTableRecord) ([]byte, error) {
-	var fs []FieldDefinition
+	var fs []fieldDefinition
 	err := yaml.Unmarshal(fields, &fs)
 	if err != nil {
 		log.Println(string(fields))
@@ -125,7 +125,7 @@ func filterOutMigratedUncommonFields(fields []byte, ecsFields []fieldsTableRecor
 	return m, nil
 }
 
-func visitFieldForFilteringMigrated(f FieldDefinition, ecsFields []fieldsTableRecord) FieldDefinition {
+func visitFieldForFilteringMigrated(f fieldDefinition, ecsFields []fieldsTableRecord) fieldDefinition {
 	if len(f.Fields) == 0 {
 		// this field is not a group entry
 		if f.Type == "alias" && (f.Migration != nil && *f.Migration) {
@@ -134,12 +134,12 @@ func visitFieldForFilteringMigrated(f FieldDefinition, ecsFields []fieldsTableRe
 					return f // this is ECS field, leave as is.
 				}
 			}
-			f.skipped = true  // skip the field
+			f.skipped = true // skip the field
 		}
 		return f
 	}
 
-	var updated []FieldDefinition
+	var updated []fieldDefinition
 	for _, fieldsEntry := range f.Fields {
 		v := visitFieldForFilteringMigrated(fieldsEntry, ecsFields)
 		if !v.skipped {
