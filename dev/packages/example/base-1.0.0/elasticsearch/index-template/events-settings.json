@@ -6,8 +6,7 @@
     "settings": {
         "index": {
             "lifecycle": {
-                "name": "events-default",
-                "rollover_alias": "events-generic-default"
+                "name": "events-default"
             },
             "codec": "best_compression",
             "refresh_interval": "5s",
