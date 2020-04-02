@@ -1,4 +1,4 @@
-- name: redisenterprise.node
-  type: group
+- fields: null
+  name: redisenterprise.node
   release: beta
-  fields:
+  type: group

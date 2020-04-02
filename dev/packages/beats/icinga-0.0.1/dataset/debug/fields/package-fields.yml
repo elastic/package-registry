@@ -1,4 +1,4 @@
-- name: icinga
+- description: ""
+  fields: null
+  name: icinga
   type: group
-  description: >
-  fields:

@@ -1,14 +1,14 @@
-- name: mssql
-  type: group
-  description: The root field containing all MSSQL fields
+- description: The root field containing all MSSQL fields
   fields:
-    - name: database
-      type: group
-      description: The database that the metrics is being referred to
-      fields:
-        - name: id
-          type: long
-          description: Unique ID of the database inside MSSQL
-        - name: name
-          type: keyword
-          description: Name of the database
+  - description: The database that the metrics is being referred to
+    fields:
+    - description: Unique ID of the database inside MSSQL
+      name: id
+      type: long
+    - description: Name of the database
+      name: name
+      type: keyword
+    name: database
+    type: group
+  name: mssql
+  type: group

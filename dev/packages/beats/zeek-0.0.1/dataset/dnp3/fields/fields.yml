@@ -1,24 +1,21 @@
-- name: zeek.dnp3
-  type: group
-  default_field: false
-  description: >
+- default_field: false
+  description: |
     Fields exported by the Zeek SSH log
   fields:
-    - name: function
-      type: group
-      fields:
-        - name: request
-          type: keyword
-          description: |
-            The name of the function message in the request.
-
-        - name: reply
-          type: keyword
-          description: |
-            The name of the function message in the reply.
-
-    - name: id
-      type: integer
-      description: |
-        The response's internal indication number.
-
+  - fields:
+    - description: |
+        The name of the function message in the request.
+      name: request
+      type: keyword
+    - description: |
+        The name of the function message in the reply.
+      name: reply
+      type: keyword
+    name: function
+    type: group
+  - description: |
+      The response's internal indication number.
+    name: id
+    type: integer
+  name: zeek.dnp3
+  type: group

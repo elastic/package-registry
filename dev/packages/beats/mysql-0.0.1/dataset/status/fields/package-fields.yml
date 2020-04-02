@@ -1,6 +1,5 @@
-- name: mysql
+- description: |
+    `mysql` contains the metrics that were obtained from MySQL query.
+  fields: null
+  name: mysql
   type: group
-  description: >
-    `mysql` contains the metrics that were obtained from MySQL
-    query.
-  fields:

@@ -1,27 +1,27 @@
-- name: kvm.dommemstat
-  type: group
-  description: >
+- description: |
     dommemstat
-  release: beta
   fields:
-      - name: stat
-        type: group
-        description: >
-          Memory stat
-        fields:
-          - name: name
-            type: keyword
-            description: >
-              Memory stat name
-          - name: value
-            type: long
-            description: >
-              Memory stat value
-      - name: id
-        type: long
-        description: >
-          Domain id
-      - name: name
-        type: keyword
-        description: >
-          Domain name
+  - description: |
+      Memory stat
+    fields:
+    - description: |
+        Memory stat name
+      name: name
+      type: keyword
+    - description: |
+        Memory stat value
+      name: value
+      type: long
+    name: stat
+    type: group
+  - description: |
+      Domain id
+    name: id
+    type: long
+  - description: |
+      Domain name
+    name: name
+    type: keyword
+  name: kvm.dommemstat
+  release: beta
+  type: group

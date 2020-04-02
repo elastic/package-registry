@@ -1,4 +1,4 @@
-- name: appsearch
+- description: ""
+  fields: null
+  name: appsearch
   type: group
-  description: >
-  fields:

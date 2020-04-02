@@ -1,7 +1,7 @@
-- name: aws.cloudwatch
-  type: group
-  release: beta
-  default_field: false
-  description: >
+- default_field: false
+  description: |
     Fields for AWS CloudWatch logs.
-  fields:
+  fields: null
+  name: aws.cloudwatch
+  release: beta
+  type: group

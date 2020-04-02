@@ -1,21 +1,18 @@
-- name: persistentvolume
-  type: group
-  description: >
+- description: |
     kubernetes persistent volume metrics from kube-state-metrics
-  release: experimental
   fields:
-    - name: name
-      type: keyword
-      description: Volume name.
-    - name: capacity.bytes
-      type: long
-      description: Volume capacity
-    - name: phase
-      type: keyword
-      description: Volume phase according to kubernetes
-    - name: storage_class
-      type: keyword
-      description: Storage class for the volume
-      
-      
-
+  - description: Volume name.
+    name: name
+    type: keyword
+  - description: Volume capacity
+    name: capacity.bytes
+    type: long
+  - description: Volume phase according to kubernetes
+    name: phase
+    type: keyword
+  - description: Storage class for the volume
+    name: storage_class
+    type: keyword
+  name: persistentvolume
+  release: experimental
+  type: group

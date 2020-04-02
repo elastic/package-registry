@@ -1,7 +1,8 @@
-- name: mssql.log
-  description: Common log fields
-  type: group
+- description: Common log fields
   fields:
-    - name: origin
-      description: Origin of the message, usually the server but it can also be a recovery process
-      type: keyword
+  - description: Origin of the message, usually the server but it can also be a recovery
+      process
+    name: origin
+    type: keyword
+  name: mssql.log
+  type: group

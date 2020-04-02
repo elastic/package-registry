@@ -1,31 +1,31 @@
-- name: pod
-  type: group
-  description: >
+- description: |
     kubernetes pod metrics
-  release: ga
   fields:
-    - name: ip
-      type: ip
-      description: >
-        Kubernetes pod IP
-    - name: host_ip
-      type: ip
-      description: >
-        Kubernetes pod host IP
-    - name: status
-      type: group
-      description: >
-        Kubernetes pod status metrics
-      fields:
-        - name: phase
-          type: keyword
-          description: >
-            Kubernetes pod phase (Running, Pending...)
-        - name: ready
-          type: keyword
-          description: >
-            Kubernetes pod ready status (true, false or unknown)
-        - name: scheduled
-          type: keyword
-          description: >
-            Kubernetes pod scheduled status (true, false, unknown)
+  - description: |
+      Kubernetes pod IP
+    name: ip
+    type: ip
+  - description: |
+      Kubernetes pod host IP
+    name: host_ip
+    type: ip
+  - description: |
+      Kubernetes pod status metrics
+    fields:
+    - description: |
+        Kubernetes pod phase (Running, Pending...)
+      name: phase
+      type: keyword
+    - description: |
+        Kubernetes pod ready status (true, false or unknown)
+      name: ready
+      type: keyword
+    - description: |
+        Kubernetes pod scheduled status (true, false, unknown)
+      name: scheduled
+      type: keyword
+    name: status
+    type: group
+  name: pod
+  release: ga
+  type: group

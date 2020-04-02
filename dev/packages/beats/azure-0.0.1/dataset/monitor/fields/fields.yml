@@ -1,13 +1,12 @@
-- name: azure.monitor
-  type: group
-  release: ga
-  description: >
+- description: |
     monitor
   fields:
-    - name: metrics.*.*
-      type: object
-      object_type: float
-      object_type_mapping_type: "*"
-      description: >
-        Metrics returned.
-
+  - description: |
+      Metrics returned.
+    name: metrics.*.*
+    object_type: float
+    object_type_mapping_type: '*'
+    type: object
+  name: azure.monitor
+  release: ga
+  type: group

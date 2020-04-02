@@ -45,7 +45,8 @@ type datasetManifestSinglePipeline struct {
 	IngestPipeline string `yaml:"ingest_pipeline"`
 }
 
-func createDatasets(modulePath, moduleName, moduleTitle, moduleRelease string, moduleFields []byte, beatType string) (datasetContentArray, error) {
+func createDatasets(modulePath, moduleName, moduleTitle, moduleRelease string, moduleFields []byte, beatType string,
+	ecsFields []fieldsTableRecord) (datasetContentArray, error) {
 	datasetDirs, err := ioutil.ReadDir(modulePath)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot read module directory %s", modulePath)
@@ -73,6 +74,12 @@ func createDatasets(modulePath, moduleName, moduleTitle, moduleRelease string, m
 
 		// fields
 		datasetFields, err := loadDatasetFields(modulePath, moduleName, datasetName)
+		if err != nil {
+			return nil, errors.Wrapf(err, "loading dataset fields failed (modulePath: %s, datasetName: %s)",
+				modulePath, datasetName)
+		}
+
+		datasetFields, err = filterOutMigratedUncommonFields(datasetFields, ecsFields)
 		if err != nil {
 			return nil, errors.Wrapf(err, "loading dataset fields failed (modulePath: %s, datasetName: %s)",
 				modulePath, datasetName)

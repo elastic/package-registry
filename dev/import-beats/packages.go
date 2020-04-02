@@ -128,6 +128,10 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 		if err != nil {
 			return err
 		}
+		moduleFields, err = filterOutMigratedUncommonFields(moduleFields, r.ecsFields)
+		if err != nil {
+			return err
+		}
 
 		// release
 		manifest.Release, err = determinePackageRelease(manifest.Release, moduleHeaderFields)
@@ -150,7 +154,7 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 		if manifest.Title != nil {
 			moduleTitle = *manifest.Title
 		}
-		datasets, err := createDatasets(modulePath, moduleName, moduleTitle, manifest.Release, moduleFields, beatType)
+		datasets, err := createDatasets(modulePath, moduleName, moduleTitle, manifest.Release, moduleFields, beatType, r.ecsFields)
 		if err != nil {
 			return err
 		}

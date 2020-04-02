@@ -1,4 +1,4 @@
-- name: oracle
+- description: Oracle module
+  fields: null
+  name: oracle
   type: group
-  description: Oracle module
-  fields:

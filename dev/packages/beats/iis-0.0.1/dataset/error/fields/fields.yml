@@ -1,73 +1,72 @@
-- name: iis.error
-  type: group
-  description: >
+- description: |
     Contains fields for IIS error logs.
   fields:
-    - name: reason_phrase
-      type: keyword
-      description: >
-        The HTTP reason phrase.
-    - name: queue_name
-      type: keyword
-      description: >
-        The IIS application pool name.
-
-    - name: remote_ip
+  - description: |
+      The HTTP reason phrase.
+    name: reason_phrase
+    type: keyword
+  - description: |
+      The IIS application pool name.
+    name: queue_name
+    type: keyword
+  - migration: true
+    name: remote_ip
+    path: source.address
+    type: alias
+  - migration: true
+    name: remote_port
+    path: source.port
+    type: alias
+  - migration: true
+    name: server_ip
+    path: destination.address
+    type: alias
+  - migration: true
+    name: server_port
+    path: destination.port
+    type: alias
+  - migration: true
+    name: http_version
+    path: http.version
+    type: alias
+  - migration: true
+    name: method
+    path: http.request.method
+    type: alias
+  - migration: true
+    name: url
+    path: url.original
+    type: alias
+  - migration: true
+    name: response_code
+    path: http.response.status_code
+    type: alias
+  - fields:
+    - migration: true
+      name: continent_name
+      path: source.geo.continent_name
       type: alias
-      path: source.address
-      migration: true
-    - name: remote_port
+    - migration: true
+      name: country_iso_code
+      path: source.geo.country_iso_code
       type: alias
-      path: source.port
-      migration: true
-    - name: server_ip
+    - migration: true
+      name: location
+      path: source.geo.location
       type: alias
-      path: destination.address
-      migration: true
-    - name: server_port
+    - migration: true
+      name: region_name
+      path: source.geo.region_name
       type: alias
-      path: destination.port
-      migration: true
-    - name: http_version
+    - migration: true
+      name: city_name
+      path: source.geo.city_name
       type: alias
-      path: http.version
-      migration: true
-    - name: method
+    - migration: true
+      name: region_iso_code
+      path: source.geo.region_iso_code
       type: alias
-      path: http.request.method
-      migration: true
-    - name: url
-      type: alias
-      path: url.original
-      migration: true
-    - name: response_code
-      type: alias
-      path: http.response.status_code
-      migration: true
-    - name: geoip
-      type: group
-      fields:
-        - name: continent_name
-          type: alias
-          path: source.geo.continent_name
-          migration: true
-        - name: country_iso_code
-          type: alias
-          path: source.geo.country_iso_code
-          migration: true
-        - name: location
-          type: alias
-          path: source.geo.location
-          migration: true
-        - name: region_name
-          type: alias
-          path: source.geo.region_name
-          migration: true
-        - name: city_name
-          type: alias
-          path: source.geo.city_name
-          migration: true
-        - name: region_iso_code
-          type: alias
-          path: source.geo.region_iso_code
-          migration: true
+    name: geoip
+    type: group
+  name: iis.error
+  type: group

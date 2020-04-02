@@ -1,11 +1,11 @@
-- name: googlecloud.labels
+- fields:
+  - name: user.*
+    type: object
+  - name: metadata.*
+    type: object
+  - name: metrics.*
+    type: object
+  - name: system.*
+    type: object
+  name: googlecloud.labels
   type: object
-  fields:
-    - name: user.*
-      type: object
-    - name: metadata.*
-      type: object
-    - name: metrics.*
-      type: object
-    - name: system.*
-      type: object

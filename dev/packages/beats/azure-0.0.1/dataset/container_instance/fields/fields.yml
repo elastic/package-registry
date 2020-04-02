@@ -1,7 +1,7 @@
-- name: container_instance.*.*
+- description: |
+    container instance
+  name: container_instance.*.*
+  object_type: float
+  object_type_mapping_type: '*'
   release: ga
   type: object
-  object_type: float
-  object_type_mapping_type: "*"
-  description: >
-    container instance

@@ -1,5 +1,5 @@
-- name: nginx
-  type: group
-  description: >
+- description: |
     Fields from the Nginx log files.
-  fields:
+  fields: null
+  name: nginx
+  type: group

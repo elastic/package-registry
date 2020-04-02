@@ -1,4 +1,4 @@
-- name: logstash
+- description: ""
+  fields: null
+  name: logstash
   type: group
-  description: >
-  fields:

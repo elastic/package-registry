@@ -1,5 +1,5 @@
-- name: ceph
-  type: group
-  description: >
+- description: |
     `ceph` contains the metrics that were scraped from CEPH.
-  fields:
+  fields: null
+  name: ceph
+  type: group

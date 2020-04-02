@@ -1,5 +1,5 @@
-- name: cisco
-  type: group
-  description: >
+- description: |
     Fields from Cisco logs.
-  fields:
+  fields: null
+  name: cisco
+  type: group

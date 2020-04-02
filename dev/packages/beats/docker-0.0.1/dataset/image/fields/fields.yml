@@ -1,47 +1,45 @@
-- name: docker.image
-  type: group
-  description: >
+- description: |
     Docker image metrics.
-  release: ga
   fields:
-    - name: id
-      type: group
-      description: >
-        The image layers identifier.
-      fields:
-        - name: current
-          type: keyword
-          description: >
-             Unique image identifier given upon its creation.
-        - name: parent
-          type: keyword
-          description: >
-             Identifier of the image, if it exists, from which the current image directly descends.
-    - name: created
-      type: date
-      description: >
-        Date and time when the image was created.
-    - name: size
-      type: group
-      description: >
-        Image size layers.
-      fields:
-        - name: virtual
-          type: long
-          description: >
-             Size of the image.
-        - name: regular
-          type: long
-          description: >
-             Total size of the all cached images associated to the current image.
-
-    - name: labels
-      type: object
-      object_type: keyword
-      description: >
-        Image labels.
-
-    - name: tags
+  - description: |
+      The image layers identifier.
+    fields:
+    - description: |
+        Unique image identifier given upon its creation.
+      name: current
       type: keyword
-      description: >
-        Image tags.
+    - description: |
+        Identifier of the image, if it exists, from which the current image directly descends.
+      name: parent
+      type: keyword
+    name: id
+    type: group
+  - description: |
+      Date and time when the image was created.
+    name: created
+    type: date
+  - description: |
+      Image size layers.
+    fields:
+    - description: |
+        Size of the image.
+      name: virtual
+      type: long
+    - description: |
+        Total size of the all cached images associated to the current image.
+      name: regular
+      type: long
+    name: size
+    type: group
+  - description: |
+      Image labels.
+    name: labels
+    object_type: keyword
+    type: object
+  - description: |
+      Image tags.
+    name: tags
+    type: keyword
+  name: docker.image
+  release: ga
+  type: group

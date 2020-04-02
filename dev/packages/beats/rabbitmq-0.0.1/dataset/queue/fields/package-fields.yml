@@ -1,8 +1,8 @@
-- name: rabbitmq
-  type: group
-  description: >
+- description: ""
   fields:
-    - name: vhost
-      type: keyword
-      description: >
-        Virtual host name with non-ASCII characters escaped as in C.
+  - description: |
+      Virtual host name with non-ASCII characters escaped as in C.
+    name: vhost
+    type: keyword
+  name: rabbitmq
+  type: group

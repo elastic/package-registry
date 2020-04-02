@@ -1,239 +1,192 @@
-- name: haproxy.info
-  type: group
-  description: >
+- description: |
     General information about HAProxy processes.
-  release: ga
   fields:
-    - name: processes
-      type: long
-      description: >
-        Number of processes.
-
-    - name: process_num
-      type: long
-      description: >
-        Process number.
-
-    - name: pid
-      type: alias
-      path: process.pid
-      migration: true
-      description: >
-        Process ID.
-
-    - name: run_queue
-      type: long
-      description: >
-
-    - name: tasks
-      type: long
-      description: >
-
-    - name: uptime.sec
-      type: long
-      description: >
-        Current uptime in seconds.
-
-    - name: memory.max.bytes
-      type: long
-      format: bytes
-      description: >
-        Maximum amount of memory usage in bytes (the 'Memmax_MB' value converted to bytes).
-
-    - name: ulimit_n
-      type: long
-      description: >
-        Maximum number of open files for the process.
-
-    - name: compress
-      type: group
-      description: >
-
+  - description: |
+      Number of processes.
+    name: processes
+    type: long
+  - description: |
+      Process number.
+    name: process_num
+    type: long
+  - description: |
+      Process ID.
+    migration: true
+    name: pid
+    path: process.pid
+    type: alias
+  - description: ""
+    name: run_queue
+    type: long
+  - description: ""
+    name: tasks
+    type: long
+  - description: |
+      Current uptime in seconds.
+    name: uptime.sec
+    type: long
+  - description: |
+      Maximum amount of memory usage in bytes (the 'Memmax_MB' value converted to bytes).
+    format: bytes
+    name: memory.max.bytes
+    type: long
+  - description: |
+      Maximum number of open files for the process.
+    name: ulimit_n
+    type: long
+  - description: ""
+    fields:
+    - description: ""
       fields:
-        - name: bps
-          type: group
-          description: >
-
-          fields:
-            - name: in
-              type: long
-              description: >
-
-            - name: out
-              type: long
-              description: >
-
-            - name: rate_limit
-              type: long
-              description: >
-
-    - name: connection
+      - description: ""
+        name: in
+        type: long
+      - description: ""
+        name: out
+        type: long
+      - description: ""
+        name: rate_limit
+        type: long
+      name: bps
       type: group
-      description: >
-
+    name: compress
+    type: group
+  - description: ""
+    fields:
+    - description: ""
       fields:
-        - name: rate
-          type: group
-          description: >
-
-          fields:
-            - name: value
-              type: long
-              description: >
-
-            - name: limit
-              type: long
-              description: >
-
-            - name: max
-              type: long
-              description: >
-
-        - name: current
-          type: long
-          description: >
-            Current connections.
-
-        - name: total
-          type: long
-          description: >
-            Total connections.
-
-        - name: ssl.current
-          type: long
-          description: >
-            Current SSL connections.
-
-        - name: ssl.total
-          type: long
-          description: >
-            Total SSL connections.
-
-        - name: ssl.max
-          type: long
-          description: >
-            Maximum SSL connections.
-
-        - name: max
-          type: long
-          description: >
-            Maximum connections.
-
-        - name: hard_max
-          type: long
-          description: >
-
-    - name: requests.total
+      - description: ""
+        name: value
+        type: long
+      - description: ""
+        name: limit
+        type: long
+      - description: ""
+        name: max
+        type: long
+      name: rate
+      type: group
+    - description: |
+        Current connections.
+      name: current
       type: long
-      description: >
-
-    - name: sockets.max
+    - description: |
+        Total connections.
+      name: total
       type: long
-      description: >
-
-    - name: requests.max
+    - description: |
+        Current SSL connections.
+      name: ssl.current
       type: long
-      description: >
-
-    - name: pipes
-      type: group
-      description: >
+    - description: |
+        Total SSL connections.
+      name: ssl.total
+      type: long
+    - description: |
+        Maximum SSL connections.
+      name: ssl.max
+      type: long
+    - description: |
+        Maximum connections.
+      name: max
+      type: long
+    - description: ""
+      name: hard_max
+      type: long
+    name: connection
+    type: group
+  - description: ""
+    name: requests.total
+    type: long
+  - description: ""
+    name: sockets.max
+    type: long
+  - description: ""
+    name: requests.max
+    type: long
+  - description: ""
+    fields:
+    - description: ""
+      name: used
+      type: integer
+    - description: ""
+      name: free
+      type: integer
+    - description: ""
+      name: max
+      type: integer
+    name: pipes
+    type: group
+  - description: null
+    fields:
+    - description: ""
+      name: rate.value
+      type: integer
+    - description: ""
+      name: rate.limit
+      type: integer
+    - description: ""
+      name: rate.max
+      type: integer
+    name: session
+    type: group
+  - description: null
+    fields:
+    - description: null
+      name: rate.value
+      type: integer
+    - description: null
+      name: rate.limit
+      type: integer
+    - description: null
+      name: rate.max
+      type: integer
+    - description: null
       fields:
-        - name: used
-          type: integer
-          description: >
-
-        - name: free
-          type: integer
-          description: >
-
-        - name: max
-          type: integer
-          description: >
-
-    - name: session
+      - description: null
+        name: key_rate.value
+        type: integer
+      - description: null
+        name: key_rate.max
+        type: integer
+      - description: null
+        format: percent
+        name: session_reuse.pct
+        type: scaled_float
+      name: frontend
       type: group
-      description:
+    - description: null
       fields:
-        - name: rate.value
-          type: integer
-          description: >
-
-        - name: rate.limit
-          type: integer
-          description: >
-
-        - name: rate.max
-          type: integer
-          description: >
-
-
-    - name: ssl
+      - description: null
+        name: key_rate.value
+        type: integer
+      - description: MaxConnRate
+        name: key_rate.max
+        type: integer
+      name: backend
       type: group
-      description:
-      fields:
-        - name: rate.value
-          type: integer
-          description:
-
-        - name: rate.limit
-          type: integer
-          description:
-
-        - name: rate.max
-          type: integer
-          description:
-
-        - name: frontend
-          type: group
-          description:
-          fields:
-            - name: key_rate.value
-              type: integer
-              description:
-
-            - name: key_rate.max
-              type: integer
-              description:
-
-            - name: session_reuse.pct
-              type: scaled_float
-              format: percent
-              description:
-
-        - name: backend
-          type: group
-          description:
-          fields:
-            - name: key_rate.value
-              type: integer
-              description:
-
-            - name: key_rate.max
-              type: integer
-              description: MaxConnRate
-        - name: cached_lookups
-          type: long
-          description:
-        - name: cache_misses
-          type: long
-          description:
-
-
-    - name: zlib_mem_usage
-      type: group
-      description: >
-
-      fields:
-        - name: value
-          type: integer
-          description: >
-
-        - name: max
-          type: integer
-          description: >
-
-    - name: idle.pct
-      type: scaled_float
-      format: percent
-      description: >
+    - description: null
+      name: cached_lookups
+      type: long
+    - description: null
+      name: cache_misses
+      type: long
+    name: ssl
+    type: group
+  - description: ""
+    fields:
+    - description: ""
+      name: value
+      type: integer
+    - description: ""
+      name: max
+      type: integer
+    name: zlib_mem_usage
+    type: group
+  - description: ""
+    format: percent
+    name: idle.pct
+    type: scaled_float
+  name: haproxy.info
+  release: ga
+  type: group

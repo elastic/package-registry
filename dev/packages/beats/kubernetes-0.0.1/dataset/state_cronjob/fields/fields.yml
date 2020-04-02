@@ -1,41 +1,33 @@
-- name: cronjob
-  type: group
-  description: >
+- description: |
     kubernetes cronjob metrics
-  release: ga
   fields:
-    - name: name
-      type: keyword
-      description: Cronjob name
-    - name: schedule
-      type: keyword
-      description: Cronjob schedule
-    - name: concurrency
-      type: keyword
-      description: Concurrency policy
-    - name: active.count
-      type: long
-      description: Number of active pods for the cronjob
-    - name: is_suspended
-      type: boolean
-      description: Whether the cronjob is suspended
-    - name: created.sec
-      type: double
-      description: Epoch seconds since the cronjob was created
-    - name: last_schedule.sec
-      type: double
-      description: Epoch seconds for last cronjob run
-    - name: next_schedule.sec
-      type: double
-      description: Epoch seconds for next cronjob run
-    - name: deadline.sec
-      type: long
-      description: Deadline seconds after schedule for considering failed
-
-
-
-
-      
-      
-
-
+  - description: Cronjob name
+    name: name
+    type: keyword
+  - description: Cronjob schedule
+    name: schedule
+    type: keyword
+  - description: Concurrency policy
+    name: concurrency
+    type: keyword
+  - description: Number of active pods for the cronjob
+    name: active.count
+    type: long
+  - description: Whether the cronjob is suspended
+    name: is_suspended
+    type: boolean
+  - description: Epoch seconds since the cronjob was created
+    name: created.sec
+    type: double
+  - description: Epoch seconds for last cronjob run
+    name: last_schedule.sec
+    type: double
+  - description: Epoch seconds for next cronjob run
+    name: next_schedule.sec
+    type: double
+  - description: Deadline seconds after schedule for considering failed
+    name: deadline.sec
+    type: long
+  name: cronjob
+  release: ga
+  type: group

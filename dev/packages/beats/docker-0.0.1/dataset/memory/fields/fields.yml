@@ -1,77 +1,76 @@
-- name: docker.memory
-  type: group
-  description: >
+- description: |
     Memory metrics.
-  release: ga
   fields:
-    - name: stats.*
-      type: object
-      object_type: long
-      object_type_mapping_type: "*"
-      description: >
-        Raw memory stats from the cgroups memory.stat interface
-    - name: commit
-      type: group
-      description: >
-        Committed bytes on Windows
-      fields:
-        - name: total
-          type: long
-          format: bytes
-          description: >
-            Total bytes
-        - name: peak
-          type: long
-          format: bytes
-          description: >
-            Peak committed bytes on Windows
-    - name: private_working_set.total
-      type: long
+  - description: |
+      Raw memory stats from the cgroups memory.stat interface
+    name: stats.*
+    object_type: long
+    object_type_mapping_type: '*'
+    type: object
+  - description: |
+      Committed bytes on Windows
+    fields:
+    - description: |
+        Total bytes
       format: bytes
-      description: >
-        private working sets on Windows
-    - name: fail.count
+      name: total
+      type: long
+    - description: |
+        Peak committed bytes on Windows
+      format: bytes
+      name: peak
+      type: long
+    name: commit
+    type: group
+  - description: |
+      private working sets on Windows
+    format: bytes
+    name: private_working_set.total
+    type: long
+  - description: |
+      Fail counter.
+    name: fail.count
+    type: scaled_float
+  - description: |
+      Memory limit.
+    format: bytes
+    name: limit
+    type: long
+  - description: |
+      RSS memory stats.
+    fields:
+    - description: |
+        Total memory resident set size.
+      format: bytes
+      name: total
+      type: long
+    - description: |
+        Memory resident set size percentage.
+      format: percent
+      name: pct
       type: scaled_float
-      description: >
-        Fail counter.
-    - name: limit
-      type: long
+    name: rss
+    type: group
+  - description: |
+      Usage memory stats.
+    fields:
+    - description: |
+        Max memory usage.
       format: bytes
-      description: >
-        Memory limit.
-    - name: rss
-      type: group
-      description: >
-        RSS memory stats.
-      fields:
-        - name: total
-          type: long
-          format: bytes
-          description: >
-            Total memory resident set size.
-        - name: pct
-          type: scaled_float
-          format: percent
-          description: >
-            Memory resident set size percentage.
-    - name: usage
-      type: group
-      description: >
-        Usage memory stats.
-      fields:
-        - name: max
-          type: long
-          format: bytes
-          description: >
-            Max memory usage.
-        - name: pct
-          type: scaled_float
-          format: percent
-          description: >
-            Memory usage percentage.
-        - name: total
-          type: long
-          format: bytes
-          description: >
-            Total memory usage.
-
+      name: max
+      type: long
+    - description: |
+        Memory usage percentage.
+      format: percent
+      name: pct
+      type: scaled_float
+    - description: |
+        Total memory usage.
+      format: bytes
+      name: total
+      type: long
+    name: usage
+    type: group
+  name: docker.memory
+  release: ga
+  type: group

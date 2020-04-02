@@ -1,4 +1,4 @@
-- name: kafka
+- description: ""
+  fields: null
+  name: kafka
   type: group
-  description: >
-  fields:

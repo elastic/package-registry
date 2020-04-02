@@ -1,13 +1,13 @@
-- name: nats
-  type: group
-  description: >
+- description: |
     `nats` contains statistics that were read from Nats
   fields:
-    - name: server.id
-      type: keyword
-      description: >
-        The server ID
-    - name: server.time
-      type: date
-      description: >
-        Server time of metric creation
+  - description: |
+      The server ID
+    name: server.id
+    type: keyword
+  - description: |
+      Server time of metric creation
+    name: server.time
+    type: date
+  name: nats
+  type: group

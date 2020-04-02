@@ -1,158 +1,158 @@
-- name: aerospike.namespace
-  type: group
-  description: >
+- description: |
     namespace
-  release: ga
   fields:
-    - name: client
-      type: group
-      description: >
-        Client stats.
+  - description: |
+      Client stats.
+    fields:
+    - description: |
+        Client delete transactions stats.
       fields:
-        - name: delete
-          type: group
-          description: >
-            Client delete transactions stats.
-          fields:
-            - name: error
-              type: long
-              description: >
-                Number of client delete transactions that failed with an error.
-            - name: not_found
-              type: long
-              description: >
-                Number of client delete transactions that resulted in a not found.
-            - name: success
-              type: long
-              description: >
-                Number of successful client delete transactions.
-            - name: timeout
-              type: long
-              description: >
-                Number of client delete transactions that timed out.
-        - name: read
-          type: group
-          description: >
-            Client read transactions stats.
-          fields:
-            - name: error
-              type: long
-              description: >
-                Number of client read transaction errors.
-            - name: not_found
-              type: long
-              description: >
-                Number of client read transaction that resulted in not found.
-            - name: success
-              type: long
-              description: >
-                Number of successful client read transactions.
-            - name: timeout
-              type: long
-              description: >
-                Number of client read transaction that timed out.
-        - name: write
-          type: group
-          description: >
-            Client write transactions stats.
-          fields:
-            - name: error
-              type: long
-              description: >
-                Number of client write transactions that failed with an error.
-            - name: success
-              type: long
-              description: >
-                Number of successful client write transactions.
-            - name: timeout
-              type: long
-              description: >
-                Number of client write transactions that timed out.
-    - name: device
+      - description: |
+          Number of client delete transactions that failed with an error.
+        name: error
+        type: long
+      - description: |
+          Number of client delete transactions that resulted in a not found.
+        name: not_found
+        type: long
+      - description: |
+          Number of successful client delete transactions.
+        name: success
+        type: long
+      - description: |
+          Number of client delete transactions that timed out.
+        name: timeout
+        type: long
+      name: delete
       type: group
-      description: >
-        Disk storage stats
+    - description: |
+        Client read transactions stats.
       fields:
-        - name: available.pct
-          type: scaled_float
-          format: percent
-          description: >
-            Measures the minimum contiguous disk space across all disks in a namespace.
-        - name: free.pct
-          type: scaled_float
-          format: percent
-          description: >
-            Percentage of disk capacity free for this namespace.
-        - name: total.bytes
-          type: long
-          format: bytes
-          description: >
-            Total bytes of disk space allocated to this namespace on this node.
-        - name: used.bytes
-          type: long
-          format: bytes
-          description: >
-            Total bytes of disk space used by this namespace on this node.
-    - name: hwm_breached
-      type: boolean
-      description: >
-        If true, Aerospike has breached 'high-water-[disk|memory]-pct' for this namespace.
-    - name: memory
+      - description: |
+          Number of client read transaction errors.
+        name: error
+        type: long
+      - description: |
+          Number of client read transaction that resulted in not found.
+        name: not_found
+        type: long
+      - description: |
+          Number of successful client read transactions.
+        name: success
+        type: long
+      - description: |
+          Number of client read transaction that timed out.
+        name: timeout
+        type: long
+      name: read
       type: group
-      description: >
-        Memory storage stats.
+    - description: |
+        Client write transactions stats.
       fields:
-        - name: free.pct
-          type: scaled_float
-          format: percent
-          description: >
-            Percentage of memory capacity free for this namespace on this node.
-        - name: used.data.bytes
-          type: long
-          format: bytes
-          description: >
-            Amount of memory occupied by data for this namespace on this node.
-        - name: used.index.bytes
-          type: long
-          format: bytes
-          description: >
-            Amount of memory occupied by the index for this namespace on this node.
-        - name: used.sindex.bytes
-          type: long
-          format: bytes
-          description: >
-            Amount of memory occupied by secondary indexes for this namespace on this node.
-        - name: used.total.bytes
-          type: long
-          format: bytes
-          description: >
-            Total bytes of memory used by this namespace on this node.
-    - name: name
-      type: keyword
-      description: >
-        Namespace name
-    - name: node.host
-      type: keyword
-      description: >
-        Node host
-    - name: node.name
-      type: keyword
-      description: >
-        Node name
-    - name: objects
+      - description: |
+          Number of client write transactions that failed with an error.
+        name: error
+        type: long
+      - description: |
+          Number of successful client write transactions.
+        name: success
+        type: long
+      - description: |
+          Number of client write transactions that timed out.
+        name: timeout
+        type: long
+      name: write
       type: group
-      description: >
-        Records stats.
-      fields:
-        - name: master
-          type: long
-          description: >
-            Number of records on this node which are active masters.
-        - name: total
-          type: long
-          description: >
-            Number of records in this namespace for this node.
-    - name: stop_writes
-      type: boolean
-      description: >
-        If true this namespace is currently not allowing writes.
+    name: client
+    type: group
+  - description: |
+      Disk storage stats
+    fields:
+    - description: |
+        Measures the minimum contiguous disk space across all disks in a namespace.
+      format: percent
+      name: available.pct
+      type: scaled_float
+    - description: |
+        Percentage of disk capacity free for this namespace.
+      format: percent
+      name: free.pct
+      type: scaled_float
+    - description: |
+        Total bytes of disk space allocated to this namespace on this node.
+      format: bytes
+      name: total.bytes
+      type: long
+    - description: |
+        Total bytes of disk space used by this namespace on this node.
+      format: bytes
+      name: used.bytes
+      type: long
+    name: device
+    type: group
+  - description: |
+      If true, Aerospike has breached 'high-water-[disk|memory]-pct' for this namespace.
+    name: hwm_breached
+    type: boolean
+  - description: |
+      Memory storage stats.
+    fields:
+    - description: |
+        Percentage of memory capacity free for this namespace on this node.
+      format: percent
+      name: free.pct
+      type: scaled_float
+    - description: |
+        Amount of memory occupied by data for this namespace on this node.
+      format: bytes
+      name: used.data.bytes
+      type: long
+    - description: |
+        Amount of memory occupied by the index for this namespace on this node.
+      format: bytes
+      name: used.index.bytes
+      type: long
+    - description: |
+        Amount of memory occupied by secondary indexes for this namespace on this node.
+      format: bytes
+      name: used.sindex.bytes
+      type: long
+    - description: |
+        Total bytes of memory used by this namespace on this node.
+      format: bytes
+      name: used.total.bytes
+      type: long
+    name: memory
+    type: group
+  - description: |
+      Namespace name
+    name: name
+    type: keyword
+  - description: |
+      Node host
+    name: node.host
+    type: keyword
+  - description: |
+      Node name
+    name: node.name
+    type: keyword
+  - description: |
+      Records stats.
+    fields:
+    - description: |
+        Number of records on this node which are active masters.
+      name: master
+      type: long
+    - description: |
+        Number of records in this namespace for this node.
+      name: total
+      type: long
+    name: objects
+    type: group
+  - description: |
+      If true this namespace is currently not allowing writes.
+    name: stop_writes
+    type: boolean
+  name: aerospike.namespace
+  release: ga
+  type: group

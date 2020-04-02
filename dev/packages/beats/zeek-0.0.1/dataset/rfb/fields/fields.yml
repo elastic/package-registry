@@ -1,67 +1,58 @@
-- name: zeek.rfb
-  type: group
-  default_field: false
-  description: >
+- default_field: false
+  description: |
     Fields exported by the Zeek RFB log.
   fields:
-    - name: version
+  - fields:
+    - fields:
+      - description: |
+          Major version of the client.
+        name: major
+        type: keyword
+      - description: |
+          Minor version of the client.
+        name: minor
+        type: keyword
+      name: client
       type: group
-      fields:
-        - name: client
-          type: group
-          fields:
-            - name: major
-              type: keyword
-              description: |
-                Major version of the client.
-
-            - name: minor
-              type: keyword
-              description: |
-                Minor version of the client.
-
-        - name: server
-          type: group
-          fields:
-            - name: major
-              type: keyword
-              description: |
-                Major version of the server.
-
-            - name: minor
-              type: keyword
-              description: |
-                Minor version of the server.
-
-    - name: auth
+    - fields:
+      - description: |
+          Major version of the server.
+        name: major
+        type: keyword
+      - description: |
+          Minor version of the server.
+        name: minor
+        type: keyword
+      name: server
       type: group
-      fields:
-        - name: success
-          type: boolean
-          description: |
-            Whether or not authentication was successful.
-
-        - name: method
-          type: keyword
-          description: |
-            Identifier of authentication method used.
-
-    - name: share_flag
+    name: version
+    type: group
+  - fields:
+    - description: |
+        Whether or not authentication was successful.
+      name: success
       type: boolean
-      description: |
-        Whether the client has an exclusive or a shared session.
-
-    - name: desktop_name
+    - description: |
+        Identifier of authentication method used.
+      name: method
       type: keyword
-      description: |
-        Name of the screen that is being shared.
-
-    - name: width
-      type: integer
-      description: |
-        Width of the screen that is being shared.
-
-    - name: height
-      type: integer
-      description: |
-        Height of the screen that is being shared.
+    name: auth
+    type: group
+  - description: |
+      Whether the client has an exclusive or a shared session.
+    name: share_flag
+    type: boolean
+  - description: |
+      Name of the screen that is being shared.
+    name: desktop_name
+    type: keyword
+  - description: |
+      Width of the screen that is being shared.
+    name: width
+    type: integer
+  - description: |
+      Height of the screen that is being shared.
+    name: height
+    type: integer
+  name: zeek.rfb
+  type: group

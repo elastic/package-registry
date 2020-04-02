@@ -1,6 +1,6 @@
-- name: aws.elb
-  type: group
-  description: >
+- description: |
     `elb` contains the metrics that were scraped from AWS CloudWatch which contains monitoring metrics sent by AWS ELB.
+  fields: null
+  name: aws.elb
   release: ga
-  fields:
+  type: group

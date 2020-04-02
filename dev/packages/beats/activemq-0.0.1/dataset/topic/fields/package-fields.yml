@@ -1,4 +1,4 @@
-- name: activemq
+- description: ""
+  fields: null
+  name: activemq
   type: group
-  description: >
-  fields:

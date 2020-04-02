@@ -1,4 +1,4 @@
-- name: dropwizard
+- description: ""
+  fields: null
+  name: dropwizard
   type: group
-  description: >
-  fields:

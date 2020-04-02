@@ -1,110 +1,109 @@
-- name: azure.activitylogs
-  type: group
-  release: beta
-  description: >
+- description: |
     Fields for Azure activity logs.
   fields:
-    - name: identity
-      type: group
-      description: >
-        Identity
+  - description: |
+      Identity
+    fields:
+    - description: |
+        Claims initiated by user
       fields:
-        - name: claims_initiated_by_user
-          type: group
-          description: >
-            Claims initiated by user
-          fields:
-            - name: name
-              type: keyword
-              description: >
-                Name
-            - name: givenname
-              type: keyword
-              description: >
-                Givenname
-            - name: surname
-              type: keyword
-              description: >
-                Surname
-            - name: fullname
-              type: keyword
-              description: >
-                Fullname
-            - name: schema
-              type: keyword
-              description: >
-                Schema
-        - name: claims.*
-          type: object
-          object_type: keyword
-          object_type_mapping_type: "*"
-          description: >
-            Claims
-        - name: authorization
-          type: group
-          description: >
-            Authorization
-          fields:
-            - name: scope
-              type: keyword
-              description: >
-                Scope
-            - name: action
-              type: keyword
-              description: >
-                Action
-            - name: evidence
-              type: group
-              description: >
-                Evidence
-              fields:
-                - name: role_assignment_scope
-                  type: keyword
-                  description: >
-                    Role assignment scope
-                - name: role_definition_id
-                  type: keyword
-                  description: >
-                    Role definition ID
-                - name: role
-                  type: keyword
-                  description: >
-                    Role
-                - name: role_assignment_id
-                  type: keyword
-                  description: >
-                    Role assignment ID
-                - name: principal_id
-                  type: keyword
-                  description: >
-                    Principal ID
-                - name: principal_type
-                  type: keyword
-                  description: >
-                    Principal type
-    - name: operation_name
-      type: keyword
-      description: >
-        Operation name
-    - name: result_signature
-      type: keyword
-      description: >
-        Result signature
-    - name: category
-      type: keyword
-      description: >
-        Category
-    - name: properties
+      - description: |
+          Name
+        name: name
+        type: keyword
+      - description: |
+          Givenname
+        name: givenname
+        type: keyword
+      - description: |
+          Surname
+        name: surname
+        type: keyword
+      - description: |
+          Fullname
+        name: fullname
+        type: keyword
+      - description: |
+          Schema
+        name: schema
+        type: keyword
+      name: claims_initiated_by_user
       type: group
-      description: >
-        Properties
+    - description: |
+        Claims
+      name: claims.*
+      object_type: keyword
+      object_type_mapping_type: '*'
+      type: object
+    - description: |
+        Authorization
       fields:
-        - name: service_request_id
+      - description: |
+          Scope
+        name: scope
+        type: keyword
+      - description: |
+          Action
+        name: action
+        type: keyword
+      - description: |
+          Evidence
+        fields:
+        - description: |
+            Role assignment scope
+          name: role_assignment_scope
           type: keyword
-          description: >
-            Service Request Id
-        - name: status_code
+        - description: |
+            Role definition ID
+          name: role_definition_id
           type: keyword
-          description: >
-            Status code
-
+        - description: |
+            Role
+          name: role
+          type: keyword
+        - description: |
+            Role assignment ID
+          name: role_assignment_id
+          type: keyword
+        - description: |
+            Principal ID
+          name: principal_id
+          type: keyword
+        - description: |
+            Principal type
+          name: principal_type
+          type: keyword
+        name: evidence
+        type: group
+      name: authorization
+      type: group
+    name: identity
+    type: group
+  - description: |
+      Operation name
+    name: operation_name
+    type: keyword
+  - description: |
+      Result signature
+    name: result_signature
+    type: keyword
+  - description: |
+      Category
+    name: category
+    type: keyword
+  - description: |
+      Properties
+    fields:
+    - description: |
+        Service Request Id
+      name: service_request_id
+      type: keyword
+    - description: |
+        Status code
+      name: status_code
+      type: keyword
+    name: properties
+    type: group
+  name: azure.activitylogs
+  release: beta
+  type: group

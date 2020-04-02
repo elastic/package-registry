@@ -1,100 +1,95 @@
-- name: traefik.access
-  type: group
-  description: >
+- description: |
     Contains fields for the Traefik access logs.
   fields:
-    - name: user_identifier
-      type: keyword
-      description: >
-        Is the RFC 1413 identity of the client
-    - name: request_count
-      type: long
-      description: >
-        The number of requests
-    - name: frontend_name
-      type: keyword
-      description: >
-        The name of the frontend used
-    - name: backend_url
-      type: keyword
-      description:
-        The url of the backend where request is forwarded
-
-    - name: body_sent.bytes
+  - description: |
+      Is the RFC 1413 identity of the client
+    name: user_identifier
+    type: keyword
+  - description: |
+      The number of requests
+    name: request_count
+    type: long
+  - description: |
+      The name of the frontend used
+    name: frontend_name
+    type: keyword
+  - description: The url of the backend where request is forwarded
+    name: backend_url
+    type: keyword
+  - migration: true
+    name: body_sent.bytes
+    path: http.response.body.bytes
+    type: alias
+  - migration: true
+    name: remote_ip
+    path: source.address
+    type: alias
+  - migration: true
+    name: user_name
+    path: user.name
+    type: alias
+  - migration: true
+    name: method
+    path: http.request.method
+    type: alias
+  - migration: true
+    name: url
+    path: url.original
+    type: alias
+  - migration: true
+    name: http_version
+    path: http.version
+    type: alias
+  - migration: true
+    name: response_code
+    path: http.response.status_code
+    type: alias
+  - migration: true
+    name: referrer
+    path: http.request.referrer
+    type: alias
+  - migration: true
+    name: agent
+    path: user_agent.original
+    type: alias
+  - fields:
+    - name: device
+      path: user_agent.device.name
       type: alias
-      path: http.response.body.bytes
-      migration: true
-    - name: remote_ip
+    - name: name
+      path: user_agent.name
       type: alias
-      path: source.address
-      migration: true
-    - name: user_name
+    - name: os
+      path: user_agent.os.full_name
       type: alias
-      path: user.name
-      migration: true
-    - name: method
+    - name: os_name
+      path: user_agent.os.name
       type: alias
-      path: http.request.method
-      migration: true
-    - name: url
-      type: alias
-      path: url.original
-      migration: true
-    - name: http_version
-      type: alias
-      path: http.version
-      migration: true
-    - name: response_code
-      type: alias
-      path: http.response.status_code
-      migration: true
-    - name: referrer
-      type: alias
-      path: http.request.referrer
-      migration: true
-    - name: agent
-      type: alias
+    - name: original
       path: user_agent.original
-      migration: true
-
-    - name: user_agent
-      type: group
-      fields:
-        - name: device
-          type: alias
-          path: user_agent.device.name
-        - name: name
-          type: alias
-          path: user_agent.name
-        - name: os
-          type: alias
-          path: user_agent.os.full_name
-        - name: os_name
-          type: alias
-          path: user_agent.os.name
-        - name: original
-          type: alias
-          path: user_agent.original
-
-    - name: geoip
-      type: group
-      fields:
-        - name: continent_name
-          type: alias
-          path: source.geo.continent_name
-        - name: country_iso_code
-          type: alias
-          path: source.geo.country_iso_code
-        - name: location
-          type: alias
-          path: source.geo.location
-        - name: region_name
-          type: alias
-          path: source.geo.region_name
-        - name: city_name
-          type: alias
-          path: source.geo.city_name
-        - name: region_iso_code
-          type: alias
-          path: source.geo.region_iso_code
-
+      type: alias
+    name: user_agent
+    type: group
+  - fields:
+    - name: continent_name
+      path: source.geo.continent_name
+      type: alias
+    - name: country_iso_code
+      path: source.geo.country_iso_code
+      type: alias
+    - name: location
+      path: source.geo.location
+      type: alias
+    - name: region_name
+      path: source.geo.region_name
+      type: alias
+    - name: city_name
+      path: source.geo.city_name
+      type: alias
+    - name: region_iso_code
+      path: source.geo.region_iso_code
+      type: alias
+    name: geoip
+    type: group
+  name: traefik.access
+  type: group

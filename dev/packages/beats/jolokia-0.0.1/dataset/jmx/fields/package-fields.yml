@@ -1,5 +1,5 @@
-- name: jolokia
+- description: |
+    jolokia contains metrics exposed via jolokia agent
+  fields: null
+  name: jolokia
   type: group
-  description: >
-      jolokia contains metrics exposed via jolokia agent
-  fields:

@@ -1,4 +1,4 @@
-- name: rabbitmq
+- description: ""
+  fields: null
+  name: rabbitmq
   type: group
-  description: >
-  fields:

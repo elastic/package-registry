@@ -1,130 +1,114 @@
-- name: apache2
-  type: group
-  description: >
+- description: |
     Aliases for backward compatibility with old apache2 fields
   fields:
-    - name: access
+  - fields:
+    - migration: true
+      name: remote_ip
+      path: source.address
+      type: alias
+    - migration: true
+      name: body_sent.bytes
+      path: http.response.body.bytes
+      type: alias
+    - migration: true
+      name: user_name
+      path: user.name
+      type: alias
+    - migration: true
+      name: method
+      path: http.request.method
+      type: alias
+    - migration: true
+      name: url
+      path: url.original
+      type: alias
+    - migration: true
+      name: http_version
+      path: http.version
+      type: alias
+    - migration: true
+      name: response_code
+      path: http.response.status_code
+      type: alias
+    - migration: true
+      name: referrer
+      path: http.request.referrer
+      type: alias
+    - migration: true
+      name: agent
+      path: user_agent.original
+      type: alias
+    - fields:
+      - migration: true
+        name: device
+        path: user_agent.device.name
+        type: alias
+      - migration: true
+        name: name
+        path: user_agent.name
+        type: alias
+      - migration: true
+        name: os_name
+        path: user_agent.os.name
+        type: alias
+      - migration: true
+        name: original
+        path: user_agent.original
+        type: alias
+      name: user_agent
       type: group
-      fields:
-        - name: remote_ip
-          type: alias
-          path: source.address
-          migration: true
-        - name: ssl.protocol
-          type: alias
-          path: apache.access.ssl.protocol
-          migration: true
-        - name: ssl.cipher
-          type: alias
-          path: apache.access.ssl.cipher
-          migration: true
-        - name: body_sent.bytes
-          type: alias
-          path: http.response.body.bytes
-          migration: true
-        - name: user_name
-          type: alias
-          path: user.name
-          migration: true
-        - name: method
-          type: alias
-          path: http.request.method
-          migration: true
-        - name: url
-          type: alias
-          path: url.original
-          migration: true
-        - name: http_version
-          type: alias
-          path: http.version
-          migration: true
-        - name: response_code
-          type: alias
-          path: http.response.status_code
-          migration: true
-        - name: referrer
-          type: alias
-          path: http.request.referrer
-          migration: true
-        - name: agent
-          type: alias
-          path: user_agent.original
-          migration: true
-        - name: user_agent
-          type: group
-          fields:
-            - name: device
-              type: alias
-              path: user_agent.device.name
-              migration: true
-            - name: name
-              type: alias
-              path: user_agent.name
-              migration: true
-            - name: os
-              type: alias
-              path: user_agent.os.full_name
-              migration: true
-            - name: os_name
-              type: alias
-              path: user_agent.os.name
-              migration: true
-            - name: original
-              type: alias
-              path: user_agent.original
-              migration: true
-        - name: geoip
-          type: group
-          fields:
-            - name: continent_name
-              type: alias
-              path: source.geo.continent_name
-              migration: true
-            - name: country_iso_code
-              type: alias
-              path: source.geo.country_iso_code
-              migration: true
-            - name: location
-              type: alias
-              path: source.geo.location
-              migration: true
-            - name: region_name
-              type: alias
-              path: source.geo.region_name
-              migration: true
-            - name: city_name
-              type: alias
-              path: source.geo.city_name
-              migration: true
-            - name: region_iso_code
-              type: alias
-              path: source.geo.region_iso_code
-              migration: true
-    - name: error
+    - fields:
+      - migration: true
+        name: continent_name
+        path: source.geo.continent_name
+        type: alias
+      - migration: true
+        name: country_iso_code
+        path: source.geo.country_iso_code
+        type: alias
+      - migration: true
+        name: location
+        path: source.geo.location
+        type: alias
+      - migration: true
+        name: region_name
+        path: source.geo.region_name
+        type: alias
+      - migration: true
+        name: city_name
+        path: source.geo.city_name
+        type: alias
+      - migration: true
+        name: region_iso_code
+        path: source.geo.region_iso_code
+        type: alias
+      name: geoip
       type: group
-      fields:
-        - name: level
-          type: alias
-          path: log.level
-          migration: true
-        - name: message
-          type: alias
-          path: message
-          migration: true
-        - name: pid
-          type: alias
-          path: process.pid
-          migration: true
-        - name: tid
-          type: alias
-          path: process.thread.id
-          migration: true
-        - name: module
-          type: alias
-          path: apache.error.module
-          migration: true
-- name: apache
+    name: access
+    type: group
+  - fields:
+    - migration: true
+      name: level
+      path: log.level
+      type: alias
+    - migration: true
+      name: message
+      path: message
+      type: alias
+    - migration: true
+      name: pid
+      path: process.pid
+      type: alias
+    - migration: true
+      name: tid
+      path: process.thread.id
+      type: alias
+    name: error
+    type: group
+  name: apache2
   type: group
-  description: >
+- description: |
     Apache fields.
-  fields:
+  fields: null
+  name: apache
+  type: group

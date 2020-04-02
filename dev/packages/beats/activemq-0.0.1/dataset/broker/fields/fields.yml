@@ -1,41 +1,41 @@
-- name: activemq.broker
-  type: group
-  description: Broker metrics from org.apache.activemq:brokerName=*,type=Broker
-  release: ga
+- description: Broker metrics from org.apache.activemq:brokerName=*,type=Broker
   fields:
-  - name: mbean
-    description: Mbean that this event is related to
+  - description: Mbean that this event is related to
+    name: mbean
     type: keyword
-  - name: name
-    description: Broker name
+  - description: Broker name
+    name: name
     type: keyword
-  - name: memory.broker.pct
-    description: The percentage of the memory limit used.
-    type: scaled_float
+  - description: The percentage of the memory limit used.
     format: percent
-  - name: memory.store.pct
-    description: Percent of store limit used.
+    name: memory.broker.pct
     type: scaled_float
+  - description: Percent of store limit used.
     format: percent
-  - name: memory.temp.pct
-    description: The percentage of the temp usage limit used.
+    name: memory.store.pct
     type: scaled_float
+  - description: The percentage of the temp usage limit used.
     format: percent
-  - name: connections.count
-    description: Total number of connections.
+    name: memory.temp.pct
+    type: scaled_float
+  - description: Total number of connections.
+    name: connections.count
     type: long
-  - name: consumers.count
-    description: Number of message consumers.
+  - description: Number of message consumers.
+    name: consumers.count
     type: long
-  - name: messages.dequeue.count
-    description: Number of messages that have been acknowledged on the broker.
+  - description: Number of messages that have been acknowledged on the broker.
+    name: messages.dequeue.count
     type: long
-  - name: messages.enqueue.count
-    description: Number of messages that have been sent to the destination.
+  - description: Number of messages that have been sent to the destination.
+    name: messages.enqueue.count
     type: long
-  - name: messages.count
-    description: Number of unacknowledged messages on the broker.
+  - description: Number of unacknowledged messages on the broker.
+    name: messages.count
     type: long
-  - name: producers.count
-    description: Number of message producers active on destinations on the broker.
+  - description: Number of message producers active on destinations on the broker.
+    name: producers.count
     type: long
+  name: activemq.broker
+  release: ga
+  type: group

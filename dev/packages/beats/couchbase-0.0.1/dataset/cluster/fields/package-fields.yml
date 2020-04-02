@@ -1,5 +1,5 @@
-- name: couchbase
-  type: group
-  description: >
+- description: |
     `couchbase` contains the metrics that were scraped from Couchbase.
-  fields:
+  fields: null
+  name: couchbase
+  type: group

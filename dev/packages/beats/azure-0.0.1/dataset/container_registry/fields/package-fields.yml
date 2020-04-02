@@ -1,41 +1,41 @@
-- name: azure
-  type: group
-  description: >
+- description: ""
   fields:
-    - name: timegrain
+  - description: |
+      The Azure metric timegrain
+    name: timegrain
+    type: keyword
+  - description: |
+      The resource specified
+    fields:
+    - description: |
+        The type of the resource
+      name: type
       type: keyword
-      description: >
-        The Azure metric timegrain
-    - name: resource
-      type: group
-      description: >
-        The resource specified
-      fields:
-        - name: type
-          type: keyword
-          description: >
-            The type of the resource
-        - name: group
-          type: keyword
-          description: >
-            The resource group
-        - name: tags.*
-          type: object
-          object_type: keyword
-          object_type_mapping_type: "*"
-          description: >
-            Azure resource tags.
-    - name: namespace
+    - description: |
+        The resource group
+      name: group
       type: keyword
-      description: >
-        The namespace selected
-    - name: subscription_id
-      type: keyword
-      description: >
-        The subscription ID
-    - name: dimensions.*
-      type: object
+    - description: |
+        Azure resource tags.
+      name: tags.*
       object_type: keyword
-      object_type_mapping_type: "*"
-      description: >
-        Azure metric dimensions.
+      object_type_mapping_type: '*'
+      type: object
+    name: resource
+    type: group
+  - description: |
+      The namespace selected
+    name: namespace
+    type: keyword
+  - description: |
+      The subscription ID
+    name: subscription_id
+    type: keyword
+  - description: |
+      Azure metric dimensions.
+    name: dimensions.*
+    object_type: keyword
+    object_type_mapping_type: '*'
+    type: object
+  name: azure
+  type: group

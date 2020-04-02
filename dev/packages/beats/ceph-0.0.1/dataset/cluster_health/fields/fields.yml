@@ -1,22 +1,22 @@
-- name: ceph.cluster_health
-  type: group
-  description: >
+- description: |
     cluster_health
-  release: ga
   fields:
-    - name: overall_status
-      type: keyword
-      description: >
-        Overall status of the cluster
-    - name: timechecks.epoch
-      type: long
-      description: >
-        Map version
-    - name: timechecks.round.value
-      type: long
-      description: >
-        timecheck round
-    - name: timechecks.round.status
-      type: keyword
-      description: >
-        Status of the round
+  - description: |
+      Overall status of the cluster
+    name: overall_status
+    type: keyword
+  - description: |
+      Map version
+    name: timechecks.epoch
+    type: long
+  - description: |
+      timecheck round
+    name: timechecks.round.value
+    type: long
+  - description: |
+      Status of the round
+    name: timechecks.round.status
+    type: keyword
+  name: ceph.cluster_health
+  release: ga
+  type: group

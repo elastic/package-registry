@@ -1,5 +1,5 @@
-- name: apache
-  type: group
-  description: >
+- description: |
     `apache` contains the metrics that were scraped from Apache.
-  fields:
+  fields: null
+  name: apache
+  type: group

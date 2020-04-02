@@ -1,5 +1,5 @@
-- name: misp
-  type: group
-  description: >
+- description: |
     Fields from MISP threat information.
-  fields:
+  fields: null
+  name: misp
+  type: group

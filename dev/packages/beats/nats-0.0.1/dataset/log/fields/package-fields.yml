@@ -1,5 +1,5 @@
-- name: nats
-  type: group
-  description: >
+- description: |
     Fields from NATS logs.
-  fields:
+  fields: null
+  name: nats
+  type: group

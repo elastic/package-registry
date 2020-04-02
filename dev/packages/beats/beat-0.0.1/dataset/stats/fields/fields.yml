@@ -1,95 +1,91 @@
-- name: beat.stats
-  type: group
-  description: >
+- description: |
     Beat stats
-  release: ga
   fields:
-    - name: uptime.ms
-      type: long
-      description: >
-        Beat uptime
-    - name: runtime.goroutines
-      type: long
-      description: >
-        Number of goroutines running in Beat
-    - name: libbeat
-      type: group
-      description: >
-        Fields common to all Beats
+  - description: |
+      Beat uptime
+    name: uptime.ms
+    type: long
+  - description: |
+      Number of goroutines running in Beat
+    name: runtime.goroutines
+    type: long
+  - description: |
+      Fields common to all Beats
+    fields:
+    - description: |
+        Output stats
       fields:
-        - name: output
-          type: group
-          description: >
-            Output stats
-          fields:
-            - name: type
-              type: keyword
-              description: >
-                Type of output
-            - name: events
-              type: group
-              description: >
-                Event counters
-              fields:
-                - name: acked
-                  type: long
-                  description: >
-                    Number of events acknowledged
-                - name: active
-                  type: long
-                  description: >
-                    Number of active events
-                - name: batches
-                  type: long
-                  description: >
-                    Number of event batches
-                - name: dropped
-                  type: long
-                  description: >
-                    Number of events dropped
-                - name: duplicates
-                  type: long
-                  description: >
-                    Number of events duplicated
-                - name: failed
-                  type: long
-                  description: >
-                    Number of events failed
-                - name: toomany
-                  type: long
-                  description: >
-                    Number of too many events
-                - name: total
-                  type: long
-                  description: >
-                    Total number of events
-            - name: read
-              type: group
-              description: >
-                Read stats
-              fields:
-                - name: bytes
-                  type: long
-                  description: >
-                    Number of bytes read
-                - name: errors
-                  type: long
-                  description: >
-                    Number of read errors
-            - name: write
-              type: group
-              description: >
-                Write stats
-              fields:
-                - name: bytes
-                  type: long
-                  description: >
-                    Number of bytes written
-                - name: errors
-                  type: long
-                  description: >
-                    Number of write errors
-
-
-
-
+      - description: |
+          Type of output
+        name: type
+        type: keyword
+      - description: |
+          Event counters
+        fields:
+        - description: |
+            Number of events acknowledged
+          name: acked
+          type: long
+        - description: |
+            Number of active events
+          name: active
+          type: long
+        - description: |
+            Number of event batches
+          name: batches
+          type: long
+        - description: |
+            Number of events dropped
+          name: dropped
+          type: long
+        - description: |
+            Number of events duplicated
+          name: duplicates
+          type: long
+        - description: |
+            Number of events failed
+          name: failed
+          type: long
+        - description: |
+            Number of too many events
+          name: toomany
+          type: long
+        - description: |
+            Total number of events
+          name: total
+          type: long
+        name: events
+        type: group
+      - description: |
+          Read stats
+        fields:
+        - description: |
+            Number of bytes read
+          name: bytes
+          type: long
+        - description: |
+            Number of read errors
+          name: errors
+          type: long
+        name: read
+        type: group
+      - description: |
+          Write stats
+        fields:
+        - description: |
+            Number of bytes written
+          name: bytes
+          type: long
+        - description: |
+            Number of write errors
+          name: errors
+          type: long
+        name: write
+        type: group
+      name: output
+      type: group
+    name: libbeat
+    type: group
+  name: beat.stats
+  release: ga
+  type: group

@@ -1,5 +1,5 @@
-- name: redisenterprise
-  type: group
-  description: >
+- description: |
     `redisenterprise` contains the information and statistics from Redis Enterprise Server.
-  fields:
+  fields: null
+  name: redisenterprise
+  type: group

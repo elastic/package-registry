@@ -1,22 +1,22 @@
-- name: zookeeper.connection
-  type: group
-  release: ga
-  description: >
+- description: |
     connections
   fields:
-    - name: interest_ops
-      type: long
-      description: >
-        Interest ops
-    - name: queued
-      type: long
-      description: >
-        Queued connections
-    - name: received
-      type: long
-      description: >
-        Received connections
-    - name: sent
-      type: long
-      description: >
-        Connections sent
+  - description: |
+      Interest ops
+    name: interest_ops
+    type: long
+  - description: |
+      Queued connections
+    name: queued
+    type: long
+  - description: |
+      Received connections
+    name: received
+    type: long
+  - description: |
+      Connections sent
+    name: sent
+    type: long
+  name: zookeeper.connection
+  release: ga
+  type: group

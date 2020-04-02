@@ -1,5 +1,5 @@
-- name: aws
-  type: group
-  description: >
+- description: |
     Fields from AWS logs.
-  fields:
+  fields: null
+  name: aws
+  type: group

@@ -1,5 +1,5 @@
-- name: haproxy
-  type: group
-  description: >
+- description: |
     HAProxy metrics.
-  fields:
+  fields: null
+  name: haproxy
+  type: group

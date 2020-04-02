@@ -1,7 +1,7 @@
-- name: activemq.log
-  type: group
-  description: >
+- description: |
     Fields from ActiveMQ application logs.
   fields:
-    - name: stack_trace
-      type: keyword
+  - name: stack_trace
+    type: keyword
+  name: activemq.log
+  type: group

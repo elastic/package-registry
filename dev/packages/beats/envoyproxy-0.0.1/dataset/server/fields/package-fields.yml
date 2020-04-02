@@ -1,4 +1,4 @@
-- name: envoyproxy
+- description: ""
+  fields: null
+  name: envoyproxy
   type: group
-  description: >
-  fields:

@@ -1,16 +1,16 @@
-- name: activemq
-  type: group
-  description: >
+- description: ""
   fields:
-    - name: caller
-      type: keyword
-      description: >
-        Name of the caller issuing the logging request (class or resource).
-    - name: thread
-      type: keyword
-      description: >
-        Thread that generated the logging event.
-    - name: user
-      type: keyword
-      description: >
-        User that generated the logging event.
+  - description: |
+      Name of the caller issuing the logging request (class or resource).
+    name: caller
+    type: keyword
+  - description: |
+      Thread that generated the logging event.
+    name: thread
+    type: keyword
+  - description: |
+      User that generated the logging event.
+    name: user
+    type: keyword
+  name: activemq
+  type: group

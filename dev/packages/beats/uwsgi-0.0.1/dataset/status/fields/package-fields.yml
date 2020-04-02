@@ -1,4 +1,4 @@
-- name: uwsgi
+- description: ""
+  fields: null
+  name: uwsgi
   type: group
-  description: >
-  fields:

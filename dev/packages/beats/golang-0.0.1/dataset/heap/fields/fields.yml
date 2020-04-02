@@ -1,138 +1,135 @@
-- name: golang.heap
-  type: group
-  description: >
+- description: |
     The Go program heap information exposed by expvar.
-  release: ga
   fields:
-    - name: cmdline
-      type: keyword
-      description: >
-        The cmdline of this Go program start with.
-
-    - name: gc
-      type: group
-      description: >
-        Garbage collector summary.
+  - description: |
+      The cmdline of this Go program start with.
+    name: cmdline
+    type: keyword
+  - description: |
+      Garbage collector summary.
+    fields:
+    - description: |
+        Total GC pause duration over lifetime of process.
       fields:
-        - name: total_pause
-          type: group
-          description: >
-             Total GC pause duration over lifetime of process.
-          fields:
-            - name: ns
-              type: long
-              description: >
-                Duration in Ns.
-        - name: total_count
-          type: long
-          description: >
-             Total number of GC was happened.
-        - name: next_gc_limit
-          type: long
-          format: bytes
-          description: >
-             Next collection will happen when HeapAlloc > this amount.
-        - name: cpu_fraction
-          type: float
-          description: >
-             Fraction of CPU time used by GC.
-        - name: pause
-          type: group
-          description: >
-             Last GC pause durations during the monitoring period.
-          fields:
-            - name: count
-              type: long
-              description: >
-                 Count of GC pause duration during this collect period.
-            - name: sum
-              type: group
-              description: >
-                 Total GC pause duration during this collect period.
-              fields:
-                - name: ns
-                  type: long
-                  description: >
-                    Duration in Ns.
-            - name: max
-              type: group
-              description: >
-                 Max GC pause duration during this collect period.
-              fields:
-                - name: ns
-                  type: long
-                  description: >
-                     Duration in Ns.
-            - name: avg
-              type: group
-              description: >
-                 Average GC pause duration during this collect period.
-              fields:
-                - name: ns
-                  type: long
-                  description: >
-                     Duration in Ns.
-
-    - name: system
+      - description: |
+          Duration in Ns.
+        name: ns
+        type: long
+      name: total_pause
       type: group
-      description: >
-        Heap summary,which bytes was obtained from system.
+    - description: |
+        Total number of GC was happened.
+      name: total_count
+      type: long
+    - description: |
+        Next collection will happen when HeapAlloc > this amount.
+      format: bytes
+      name: next_gc_limit
+      type: long
+    - description: |
+        Fraction of CPU time used by GC.
+      name: cpu_fraction
+      type: float
+    - description: |
+        Last GC pause durations during the monitoring period.
       fields:
-        - name: total
+      - description: |
+          Count of GC pause duration during this collect period.
+        name: count
+        type: long
+      - description: |
+          Total GC pause duration during this collect period.
+        fields:
+        - description: |
+            Duration in Ns.
+          name: ns
           type: long
-          format: bytes
-          description: >
-            Total bytes obtained from system (sum of XxxSys below).
-        - name: obtained
+        name: sum
+        type: group
+      - description: |
+          Max GC pause duration during this collect period.
+        fields:
+        - description: |
+            Duration in Ns.
+          name: ns
           type: long
-          format: bytes
-          description: >
-            Via HeapSys, bytes obtained from system. heap_sys = heap_idle + heap_inuse.
-        - name: stack
+        name: max
+        type: group
+      - description: |
+          Average GC pause duration during this collect period.
+        fields:
+        - description: |
+            Duration in Ns.
+          name: ns
           type: long
-          format: bytes
-          description: >
-            Bytes used by stack allocator, and these bytes was obtained from system.
-        - name: released
-          type: long
-          format: bytes
-          description: >
-            Bytes released to the OS.
-
-    - name: allocations
+        name: avg
+        type: group
+      name: pause
       type: group
-      description: >
-        Heap allocations summary.
-      fields:
-        - name: mallocs
-          type: long
-          description: >
-            Number of mallocs.
-        - name: frees
-          type: long
-          description: >
-            Number of frees.
-        - name: objects
-          type: long
-          description: >
-            Total number of allocated objects.
-        - name: total
-          type: long
-          format: bytes
-          description: >
-            Bytes allocated (even if freed) throughout the lifetime.
-        - name: allocated
-          type: long
-          format: bytes
-          description: >
-            Bytes allocated and not yet freed (same as Alloc above).
-        - name: idle
-          type: long
-          format: bytes
-          description: >
-            Bytes in idle spans.
-        - name: active
-          type: long
-          format: bytes
-          description: >
-            Bytes in non-idle span.
+    name: gc
+    type: group
+  - description: |
+      Heap summary,which bytes was obtained from system.
+    fields:
+    - description: |
+        Total bytes obtained from system (sum of XxxSys below).
+      format: bytes
+      name: total
+      type: long
+    - description: |
+        Via HeapSys, bytes obtained from system. heap_sys = heap_idle + heap_inuse.
+      format: bytes
+      name: obtained
+      type: long
+    - description: |
+        Bytes used by stack allocator, and these bytes was obtained from system.
+      format: bytes
+      name: stack
+      type: long
+    - description: |
+        Bytes released to the OS.
+      format: bytes
+      name: released
+      type: long
+    name: system
+    type: group
+  - description: |
+      Heap allocations summary.
+    fields:
+    - description: |
+        Number of mallocs.
+      name: mallocs
+      type: long
+    - description: |
+        Number of frees.
+      name: frees
+      type: long
+    - description: |
+        Total number of allocated objects.
+      name: objects
+      type: long
+    - description: |
+        Bytes allocated (even if freed) throughout the lifetime.
+      format: bytes
+      name: total
+      type: long
+    - description: |
+        Bytes allocated and not yet freed (same as Alloc above).
+      format: bytes
+      name: allocated
+      type: long
+    - description: |
+        Bytes in idle spans.
+      format: bytes
+      name: idle
+      type: long
+    - description: |
+        Bytes in non-idle span.
+      format: bytes
+      name: active
+      type: long
+    name: allocations
+    type: group
+  name: golang.heap
+  release: ga
+  type: group

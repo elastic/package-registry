@@ -1,5 +1,5 @@
-- name: system
-  type: group
-  description: >
+- description: |
     Fields from the system log files.
-  fields:
+  fields: null
+  name: system
+  type: group

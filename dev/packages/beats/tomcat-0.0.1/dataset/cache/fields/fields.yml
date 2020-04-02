@@ -1,23 +1,23 @@
-- name: tomcat.cache
-  type: group
-  description: Catalina Cache metrics from the WebResourceRoot
-  release: beta
+- description: Catalina Cache metrics from the WebResourceRoot
   fields:
-    - name: mbean
-      description: Mbean that this event is related to
-      type: keyword
-    - name: hit.total
-      description: The number of requests for resources that were served from the cache
-      type: long
-    - name: size.total.kb
-      description: The current estimate of the cache size in kilobytes
-      type: long
-    - name: size.max.kb
-      description: The maximum permitted size of the cache in kilobytes
-      type: long
-    - name: lookup.total
-      description: The number of requests for resources
-      type: long
-    - name: ttl.ms
-      description: The time-to-live for cache entries in milliseconds
-      type: long
+  - description: Mbean that this event is related to
+    name: mbean
+    type: keyword
+  - description: The number of requests for resources that were served from the cache
+    name: hit.total
+    type: long
+  - description: The current estimate of the cache size in kilobytes
+    name: size.total.kb
+    type: long
+  - description: The maximum permitted size of the cache in kilobytes
+    name: size.max.kb
+    type: long
+  - description: The number of requests for resources
+    name: lookup.total
+    type: long
+  - description: The time-to-live for cache entries in milliseconds
+    name: ttl.ms
+    type: long
+  name: tomcat.cache
+  release: beta
+  type: group

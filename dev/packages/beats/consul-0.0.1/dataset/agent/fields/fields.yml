@@ -1,60 +1,64 @@
-- name: consul.agent
-  type: group
-  release: beta
-  description: >
+- description: |
     Agent Metricset fetches metrics information from a Consul instance running as Agent
   fields:
-    - name: autopilot
+  - fields:
+    - description: Overall health of the local server cluster
+      name: healthy
+      type: boolean
+    name: autopilot
+    type: group
+  - description: Runtime related metrics
+    fields:
+    - fields:
+      - description: Number of bytes of memory obtained from the OS.
+        name: bytes
+        type: long
+      name: sys
       type: group
-      fields:
-        - name: healthy
-          type: boolean
-          description: Overall health of the local server cluster
-    - name: runtime
+    - description: Heap objects allocated
+      name: malloc_count
+      type: long
+    - description: Objects allocated on the heap and is a general memory pressure
+        indicator. This may burst from time to time but should return to a steady
+        state value.
+      name: heap_objects
+      type: long
+    - description: Running goroutines and is a general load pressure indicator. This
+        may burst from time to time but should return to a steady state value.
+      name: goroutines
+      type: long
+    - fields:
+      - description: Bytes allocated by the Consul process.
+        name: bytes
+        type: long
+      name: alloc
       type: group
-      description: Runtime related metrics
+    - description: Garbage collector metrics
       fields:
-        - name: sys
+      - description: Garbage collector total executions
+        name: runs
+        type: long
+      - description: Time that the garbage collector has paused the app
+        fields:
+        - fields:
+          - description: Garbage collector pause time in nanoseconds
+            name: ns
+            type: long
+          name: current
           type: group
-          fields:
-            - name: bytes
-              type: long
-              description: Number of bytes of memory obtained from the OS.
-        - name: malloc_count
-          type: long
-          description: Heap objects allocated
-        - name: heap_objects
-          type: long
-          description: Objects allocated on the heap and is a general memory pressure indicator. This may burst from time to time but should return to a steady state value.
-        - name: goroutines
-          type: long
-          description: Running goroutines and is a general load pressure indicator. This may burst from time to time but should return to a steady state value.
-        - name: alloc
+        - fields:
+          - description: Nanoseconds consumed by stop-the-world garbage collection
+              pauses since Consul started.
+            name: ns
+            type: long
+          name: total
           type: group
-          fields:
-            - name: bytes
-              type: long
-              description: Bytes allocated by the Consul process.
-        - name: garbage_collector
-          type: group
-          description: Garbage collector metrics
-          fields:
-            - name: runs
-              type: long
-              description: Garbage collector total executions
-            - name: pause
-              type: group
-              description: Time that the garbage collector has paused the app
-              fields:
-                - name: current
-                  type: group
-                  fields:
-                    - name: ns
-                      type: long
-                      description: Garbage collector pause time in nanoseconds
-                - name: total
-                  type: group
-                  fields:
-                    - name: ns
-                      type: long
-                      description: Nanoseconds consumed by stop-the-world garbage collection pauses since Consul started.
+        name: pause
+        type: group
+      name: garbage_collector
+      type: group
+    name: runtime
+    type: group
+  name: consul.agent
+  release: beta
+  type: group

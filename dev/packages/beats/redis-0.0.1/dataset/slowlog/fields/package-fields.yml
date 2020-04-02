@@ -1,4 +1,4 @@
-- name: redis
+- description: ""
+  fields: null
+  name: redis
   type: group
-  description: >
-  fields:

@@ -1,6 +1,6 @@
-- name: aws.transitgateway
-  type: group
-  description: >
+- description: |
     `transitgateway` contains the metrics from Cloudwatch to track usage of transit gateway related resources.
+  fields: null
+  name: aws.transitgateway
   release: beta
-  fields:
+  type: group

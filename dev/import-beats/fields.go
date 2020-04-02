@@ -15,6 +15,7 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
+	"gopkg.in/yaml.v2"
 )
 
 type fieldsContent struct {
@@ -86,4 +87,96 @@ func loadEcsFields(ecsDir string) ([]fieldsTableRecord, error) {
 		return nil, errors.Wrapf(err, "collecting ECS fields failed")
 	}
 	return records, nil
+}
+
+// filterOutMigratedUncommonFields method filters out fields with "migration: true" property, which don't belong to
+// Elastic Common Schema (ECS).
+func filterOutMigratedUncommonFields(fields []byte, ecsFields []fieldsTableRecord) ([]byte, error) {
+	var fs []mapStr
+	err := yaml.Unmarshal(fields, &fs)
+	if err != nil {
+		log.Println(string(fields))
+		return nil, errors.Wrapf(err, "unmarshalling fields failed")
+	}
+
+	for i, f := range fs {
+		fs[i], err = visitFieldForFilteringMigrated(f, ecsFields)
+		if err != nil {
+			return nil, errors.Wrapf(err, "visiting fields first time failed")
+		}
+	}
+
+	m, err := yaml.Marshal(fs)
+	if err != nil {
+		return nil, errors.Wrapf(err, "marshalling fields failed")
+	}
+	return m, nil
+}
+
+func visitFieldForFilteringMigrated(f mapStr, ecsFields []fieldsTableRecord) (mapStr, error) {
+	fields, err := f.getValue("fields")
+	if err != nil && err != errKeyNotFound {
+		return nil, errors.Wrapf(err, "retrieving 'fields' failed")
+	}
+	if err == errKeyNotFound {
+		// this field is not a group entry
+		aType, err := f.getValue("type")
+		if err != nil && err != errKeyNotFound {
+			return nil, errors.Wrapf(err, "retrieving 'type' failed")
+		}
+		if err == errKeyNotFound {
+			return f, nil // no type defined at all
+		}
+
+		if aType.(string) == "alias" {
+			migration, err := f.getValue("migration")
+			if err != nil && err != errKeyNotFound {
+				return nil, errors.Wrapf(err, "retrieving 'migration' failed")
+			}
+			if err == errKeyNotFound || migration.(bool) != true {
+				return f, nil
+			}
+
+			path, err := f.getValue("path")
+			if err != nil {
+				return nil, errors.Wrapf(err, "retrieving 'path' failed")
+			}
+
+			for _, ecsField := range ecsFields {
+				if ecsField.name == path {
+					return f, nil // this is ECS field, leave as is.
+				}
+			}
+
+			return nil, nil // skip the field
+		}
+		return f, nil
+	}
+
+	fieldsVals, ok := fields.([]interface{})
+	if !ok {
+		// "fields:" exists, but is empty
+		return f, nil
+	}
+
+	var updated []mapStr
+	for _, fieldsVal := range fieldsVals {
+		fieldsEntry, err := toMapStr(fieldsVal)
+		if err != nil {
+			return nil, errors.Wrapf(err, "mapping 'fields' failed")
+		}
+
+		v, err := visitFieldForFilteringMigrated(fieldsEntry, ecsFields)
+		if err != nil {
+			return nil, errors.Wrapf(err, "visiting 'fields' failed")
+		}
+		if v != nil {
+			updated = append(updated, v)
+		}
+	}
+	_, err = f.put("fields", updated)
+	if err != nil {
+		return nil, errors.Wrapf(err, "updating 'fields' failed")
+	}
+	return f, nil
 }

@@ -1,111 +1,111 @@
-- name: docker.diskio
-  type: group
-  description: >
+- description: |
     Disk I/O metrics.
-  release: ga
   fields:
-    - name: read
-      type: group
-      description: >
-        Accumulated reads during the life of the container
-      fields:
-        - name: ops
-          type: long
-          description: >
-            Number of reads during the life of the container
-        - name: bytes
-          type: long
-          format: bytes
-          description: >
-            Bytes read during the life of the container
-        - name: rate
-          type: long
-          description: >
-            Number of current reads per second
-        - name: service_time
-          type: long
-          description: >
-            Total time to service IO requests, in nanoseconds
-        - name: wait_time
-          type: long
-          description: > 
-            Total time requests spent waiting in queues for service, in nanoseconds
-        - name: queued
-          type: long
-          description: >
-            Total number of queued requests
-    - name: reads
-      type: scaled_float
-      deprecated: 6.4
-      description: >
+  - description: |
+      Accumulated reads during the life of the container
+    fields:
+    - description: |
+        Number of reads during the life of the container
+      name: ops
+      type: long
+    - description: |
+        Bytes read during the life of the container
+      format: bytes
+      name: bytes
+      type: long
+    - description: |
         Number of current reads per second
-    - name: write
-      type: group
-      description: >
-        Accumulated writes during the life of the container
-      fields:
-        - name: ops
-          type: long
-          description: >
-            Number of writes during the life of the container
-        - name: bytes
-          type: long
-          format: bytes
-          description: >
-            Bytes written during the life of the container
-        - name: rate
-          type: long
-          description: >
-            Number of current writes per second
-        - name: service_time
-          type: long
-          description: >
-            Total time to service IO requests, in nanoseconds
-        - name: wait_time
-          type: long
-          description: > 
-            Total time requests spent waiting in queues for service, in nanoseconds
-        - name: queued
-          type: long
-          description: >
-            Total number of queued requests
-    - name: writes
-      type: scaled_float
-      deprecated: 6.4
-      description: >
+      name: rate
+      type: long
+    - description: |
+        Total time to service IO requests, in nanoseconds
+      name: service_time
+      type: long
+    - description: |
+        Total time requests spent waiting in queues for service, in nanoseconds
+      name: wait_time
+      type: long
+    - description: |
+        Total number of queued requests
+      name: queued
+      type: long
+    name: read
+    type: group
+  - deprecated: 6.4
+    description: |
+      Number of current reads per second
+    name: reads
+    type: scaled_float
+  - description: |
+      Accumulated writes during the life of the container
+    fields:
+    - description: |
+        Number of writes during the life of the container
+      name: ops
+      type: long
+    - description: |
+        Bytes written during the life of the container
+      format: bytes
+      name: bytes
+      type: long
+    - description: |
         Number of current writes per second
-    - name: summary
-      type: group
-      description: >
-        Accumulated reads and writes during the life of the container
-      fields:
-        - name: ops
-          type: long
-          description: >
-            Number of I/O operations during the life of the container
-        - name: bytes
-          type: long
-          format: bytes
-          description: >
-            Bytes read and written during the life of the container
-        - name: rate
-          type: long
-          description: >
-            Number of current operations per second
-        - name: service_time
-          type: long
-          description: >
-            Total time to service IO requests, in nanoseconds
-        - name: wait_time
-          type: long
-          description: > 
-            Total time requests spent waiting in queues for service, in nanoseconds
-        - name: queued
-          type: long
-          description: >
-            Total number of queued requests
-    - name: total
-      type: scaled_float
-      deprecated: 6.4
-      description: >
-        Number of reads and writes per second
+      name: rate
+      type: long
+    - description: |
+        Total time to service IO requests, in nanoseconds
+      name: service_time
+      type: long
+    - description: |
+        Total time requests spent waiting in queues for service, in nanoseconds
+      name: wait_time
+      type: long
+    - description: |
+        Total number of queued requests
+      name: queued
+      type: long
+    name: write
+    type: group
+  - deprecated: 6.4
+    description: |
+      Number of current writes per second
+    name: writes
+    type: scaled_float
+  - description: |
+      Accumulated reads and writes during the life of the container
+    fields:
+    - description: |
+        Number of I/O operations during the life of the container
+      name: ops
+      type: long
+    - description: |
+        Bytes read and written during the life of the container
+      format: bytes
+      name: bytes
+      type: long
+    - description: |
+        Number of current operations per second
+      name: rate
+      type: long
+    - description: |
+        Total time to service IO requests, in nanoseconds
+      name: service_time
+      type: long
+    - description: |
+        Total time requests spent waiting in queues for service, in nanoseconds
+      name: wait_time
+      type: long
+    - description: |
+        Total number of queued requests
+      name: queued
+      type: long
+    name: summary
+    type: group
+  - deprecated: 6.4
+    description: |
+      Number of reads and writes per second
+    name: total
+    type: scaled_float
+  name: docker.diskio
+  release: ga
+  type: group

@@ -1,4 +1,4 @@
-- name: elasticsearch.deprecation
+- description: ""
+  fields: null
+  name: elasticsearch.deprecation
   type: group
-  description: >
-  fields:

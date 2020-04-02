@@ -1,4 +1,4 @@
-- name: graphite
+- description: ""
+  fields: null
+  name: graphite
   type: group
-  description: >
-  fields:

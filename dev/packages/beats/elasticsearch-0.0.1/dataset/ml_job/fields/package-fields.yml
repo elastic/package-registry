@@ -1,24 +1,24 @@
-- name: elasticsearch
-  type: group
-  description: >
+- description: ""
   fields:
-    - name: cluster.name
-      type: keyword
-      description: >
-        Elasticsearch cluster name.
-    - name: cluster.id
-      type: keyword
-      description: >
-        Elasticsearch cluster id.
-    - name: cluster.state.id
-      type: keyword
-      description: >
-        Elasticsearch state id.
-    - name: node.id
-      type: keyword
-      description: >
-        Node ID
-    - name: node.name
-      type: keyword
-      description: >
-        Node name.
+  - description: |
+      Elasticsearch cluster name.
+    name: cluster.name
+    type: keyword
+  - description: |
+      Elasticsearch cluster id.
+    name: cluster.id
+    type: keyword
+  - description: |
+      Elasticsearch state id.
+    name: cluster.state.id
+    type: keyword
+  - description: |
+      Node ID
+    name: node.id
+    type: keyword
+  - description: |
+      Node name.
+    name: node.name
+    type: keyword
+  name: elasticsearch
+  type: group

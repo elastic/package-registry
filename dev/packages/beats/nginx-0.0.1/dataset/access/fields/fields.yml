@@ -1,96 +1,87 @@
-- name: nginx.access
-  type: group
-  description: >
+- description: |
     Contains fields for the Nginx access logs.
   fields:
-    - name: remote_ip_list
-      type: array
-      description: >
-        An array of remote IP addresses. It is a list because it is common to include, besides the client
-        IP address, IP addresses from headers like `X-Forwarded-For`.
-        Real source IP is restored to `source.ip`.
-
-    - name: body_sent.bytes
+  - description: |
+      An array of remote IP addresses. It is a list because it is common to include, besides the client IP address, IP addresses from headers like `X-Forwarded-For`. Real source IP is restored to `source.ip`.
+    name: remote_ip_list
+    type: array
+  - migration: true
+    name: body_sent.bytes
+    path: http.response.body.bytes
+    type: alias
+  - migration: true
+    name: user_name
+    path: user.name
+    type: alias
+  - migration: true
+    name: method
+    path: http.request.method
+    type: alias
+  - migration: true
+    name: url
+    path: url.original
+    type: alias
+  - migration: true
+    name: http_version
+    path: http.version
+    type: alias
+  - migration: true
+    name: response_code
+    path: http.response.status_code
+    type: alias
+  - migration: true
+    name: referrer
+    path: http.request.referrer
+    type: alias
+  - migration: true
+    name: agent
+    path: user_agent.original
+    type: alias
+  - fields:
+    - migration: true
+      name: device
+      path: user_agent.device.name
       type: alias
-      path: http.response.body.bytes
-      migration: true
-    - name: user_name
+    - migration: true
+      name: name
+      path: user_agent.name
       type: alias
-      path: user.name
-      migration: true
-    - name: method
+    - migration: true
+      name: os_name
+      path: user_agent.os.name
       type: alias
-      path: http.request.method
-      migration: true
-    - name: url
-      type: alias
-      path: url.original
-      migration: true
-    - name: http_version
-      type: alias
-      path: http.version
-      migration: true
-    - name: response_code
-      type: alias
-      path: http.response.status_code
-      migration: true
-    - name: referrer
-      type: alias
-      path: http.request.referrer
-      migration: true
-    - name: agent
-      type: alias
+    - migration: true
+      name: original
       path: user_agent.original
-      migration: true
-
-    - name: user_agent
-      type: group
-      fields:
-        - name: device
-          type: alias
-          path: user_agent.device.name
-          migration: true
-        - name: name
-          type: alias
-          path: user_agent.name
-          migration: true
-        - name: os
-          type: alias
-          path: user_agent.os.full_name
-          migration: true
-        - name: os_name
-          type: alias
-          path: user_agent.os.name
-          migration: true
-        - name: original
-          type: alias
-          path: user_agent.original
-          migration: true
-
-    - name: geoip
-      type: group
-      fields:
-        - name: continent_name
-          type: alias
-          path: source.geo.continent_name
-          migration: true
-        - name: country_iso_code
-          type: alias
-          path: source.geo.country_iso_code
-          migration: true
-        - name: location
-          type: alias
-          path: source.geo.location
-          migration: true
-        - name: region_name
-          type: alias
-          path: source.geo.region_name
-          migration: true
-        - name: city_name
-          type: alias
-          path: source.geo.city_name
-          migration: true
-        - name: region_iso_code
-          type: alias
-          path: source.geo.region_iso_code
-          migration: true
+      type: alias
+    name: user_agent
+    type: group
+  - fields:
+    - migration: true
+      name: continent_name
+      path: source.geo.continent_name
+      type: alias
+    - migration: true
+      name: country_iso_code
+      path: source.geo.country_iso_code
+      type: alias
+    - migration: true
+      name: location
+      path: source.geo.location
+      type: alias
+    - migration: true
+      name: region_name
+      path: source.geo.region_name
+      type: alias
+    - migration: true
+      name: city_name
+      path: source.geo.city_name
+      type: alias
+    - migration: true
+      name: region_iso_code
+      path: source.geo.region_iso_code
+      type: alias
+    name: geoip
+    type: group
+  name: nginx.access
+  type: group

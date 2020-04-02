@@ -1,38 +1,36 @@
-- name: docker.healthcheck
-  type: group
-  description: >
+- description: |
     Docker healthcheck metrics.
-
-    Healthcheck data will only be available from docker containers where the
-    docker `HEALTHCHECK` instruction has been used to build the docker image.
-  release: ga
+    Healthcheck data will only be available from docker containers where the docker `HEALTHCHECK` instruction has been used to build the docker image.
   fields:
-    - name: failingstreak
-      type: integer
-      description: >
-        concurent failed check
-    - name: status
+  - description: |
+      concurent failed check
+    name: failingstreak
+    type: integer
+  - description: |
+      Healthcheck status code
+    name: status
+    type: keyword
+  - description: |
+      event fields.
+    fields:
+    - description: |
+        Healthcheck end date
+      name: end_date
+      type: date
+    - description: |
+        Healthcheck start date
+      name: start_date
+      type: date
+    - description: |
+        Healthcheck output
+      name: output
       type: keyword
-      description: >
+    - description: |
         Healthcheck status code
-    - name: event
-      type: group
-      description: >
-        event fields.
-      fields:
-        - name: end_date
-          type: date
-          description: >
-            Healthcheck end date
-        - name: start_date
-          type: date
-          description: >
-            Healthcheck start date
-        - name: output
-          type: keyword
-          description: >
-            Healthcheck output
-        - name: exit_code
-          type: integer
-          description: >
-            Healthcheck status code
+      name: exit_code
+      type: integer
+    name: event
+    type: group
+  name: docker.healthcheck
+  release: ga
+  type: group

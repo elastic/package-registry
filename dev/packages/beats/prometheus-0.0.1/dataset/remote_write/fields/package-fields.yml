@@ -1,21 +1,20 @@
-- name: prometheus
+- fields:
+  - description: |
+      Prometheus metric labels
+    name: labels.*
+    object_type: keyword
+    type: object
+  - description: |
+      Prometheus metric
+    name: metrics.*
+    object_type: double
+    object_type_mapping_type: '*'
+    type: object
+  - description: |
+      Prometheus value resulted from PromQL
+    name: query.*
+    object_type: double
+    object_type_mapping_type: '*'
+    type: object
+  name: prometheus
   type: group
-  fields:
-    # Order is important here, labels will match first, the rest are double
-    - name: labels.*
-      type: object
-      object_type: keyword
-      description: >
-        Prometheus metric labels
-    - name: metrics.*
-      type: object
-      object_type: double
-      object_type_mapping_type: "*"
-      description: >
-        Prometheus metric
-    - name: query.*
-      type: object
-      object_type: double
-      object_type_mapping_type: "*"
-      description: >
-        Prometheus value resulted from PromQL

@@ -1,4 +1,4 @@
-- name: memcached
+- description: ""
+  fields: null
+  name: memcached
   type: group
-  description: >
-  fields:

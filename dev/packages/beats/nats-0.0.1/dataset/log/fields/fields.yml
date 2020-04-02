@@ -1,53 +1,53 @@
-- name: nats.log
-  type: group
-  description: >
+- description: |
     Nats log files
-  release: beta
   fields:
-    - name: client
-      type: group
-      description: >
-        Fields from NATS logs client.
-      fields:
-        - name: id
-          type: integer
-          description: >
-            The id of the client
-    - name: msg
-      type: group
-      description: >
-        Fields from NATS logs message.
-      fields:
-        - name: bytes
-          type: long
-          format: bytes
-          description: >
-            Size of the payload in bytes
-        - name: type
-          type: keyword
-          description: >
-            The protocol message type
-        - name: subject
-          type: keyword
-          description: >
-            Subject name this message was received on
-        - name: sid
-          type: integer
-          description: >
-            The unique alphanumeric subscription ID of the subject
-        - name: reply_to
-          type: keyword
-          description: >
-            The inbox subject on which the publisher is listening for responses
-        - name: max_messages
-          type: integer
-          description: >
-            An optional number of messages to wait for before automatically unsubscribing
-        - name: error.message
-          type: text
-          description: >
-            Details about the error occurred
-        - name: queue_group
-          type: text
-          description: >
-            The queue group which subscriber will join
+  - description: |
+      Fields from NATS logs client.
+    fields:
+    - description: |
+        The id of the client
+      name: id
+      type: integer
+    name: client
+    type: group
+  - description: |
+      Fields from NATS logs message.
+    fields:
+    - description: |
+        Size of the payload in bytes
+      format: bytes
+      name: bytes
+      type: long
+    - description: |
+        The protocol message type
+      name: type
+      type: keyword
+    - description: |
+        Subject name this message was received on
+      name: subject
+      type: keyword
+    - description: |
+        The unique alphanumeric subscription ID of the subject
+      name: sid
+      type: integer
+    - description: |
+        The inbox subject on which the publisher is listening for responses
+      name: reply_to
+      type: keyword
+    - description: |
+        An optional number of messages to wait for before automatically unsubscribing
+      name: max_messages
+      type: integer
+    - description: |
+        Details about the error occurred
+      name: error.message
+      type: text
+    - description: |
+        The queue group which subscriber will join
+      name: queue_group
+      type: text
+    name: msg
+    type: group
+  name: nats.log
+  release: beta
+  type: group

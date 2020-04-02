@@ -1,7 +1,7 @@
-- name: container_registry.*.*
+- description: |
+    container registry
+  name: container_registry.*.*
+  object_type: float
+  object_type_mapping_type: '*'
   release: ga
   type: object
-  object_type: float
-  object_type_mapping_type: "*"
-  description: >
-    container registry

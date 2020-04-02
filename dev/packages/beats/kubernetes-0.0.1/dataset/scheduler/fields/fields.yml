@@ -1,131 +1,129 @@
-- name: kubernetes.scheduler
-  type: group
-  description: >
+- description: |
     Kubernetes scheduler metrics
-  release: ga
   fields:
-  - name: handler
-    type: keyword
-    description: >
+  - description: |
       Request handler
-  - name: code
+    name: handler
     type: keyword
-    description: >
+  - description: |
       HTTP code
-  - name: method
+    name: code
     type: keyword
-    description: >
+  - description: |
       HTTP method
-  - name: host
+    name: method
     type: keyword
-    description: >
+  - description: |
       Request host
-  - name: name
+    name: host
     type: keyword
-    description: >
+  - description: |
       Name for the resource
-  - name: result
+    name: name
     type: keyword
-    description: >
+  - description: |
       Schedule attempt result
-  - name: operation
+    name: result
     type: keyword
-    description: >
+  - description: |
       Scheduling operation
-  - name: process
+    name: operation
+    type: keyword
+  - fields:
+    - description: CPU seconds
+      name: cpu.sec
+      type: double
+    - description: Bytes in resident memory
+      format: bytes
+      name: memory.resident.bytes
+      type: long
+    - description: Bytes in virtual memory
+      format: bytes
+      name: memory.virtual.bytes
+      type: long
+    - description: Number of open file descriptors
+      name: fds.open.count
+      type: long
+    - description: Seconds since the process started
+      name: started.sec
+      type: double
+    name: process
     type: group
-    fields:
-      - name: cpu.sec
-        type: double
-        description: CPU seconds
-      - name: memory.resident.bytes
-        type: long
-        format: bytes
-        description: Bytes in resident memory
-      - name: memory.virtual.bytes
-        type: long
-        format: bytes
-        description: Bytes in virtual memory
-      - name: fds.open.count
-        type: long
-        description: Number of open file descriptors
-      - name: started.sec
-        type: double
-        description: Seconds since the process started
-  - name: http
+  - fields:
+    - description: Request duration microseconds percentiles
+      name: request.duration.us.percentile.*
+      object_type: double
+      type: object
+    - description: Request duration microseconds cumulative sum
+      name: request.duration.us.sum
+      type: double
+    - description: Request count for duration
+      name: request.duration.us.count
+      type: long
+    - description: Request size percentiles
+      name: request.size.bytes.percentile.*
+      object_type: long
+      type: object
+    - description: Request size cumulative sum
+      format: bytes
+      name: request.size.bytes.sum
+      type: long
+    - description: Request count for size
+      name: request.size.bytes.count
+      type: long
+    - description: Response size percentiles
+      name: response.size.bytes.percentile.*
+      object_type: long
+      type: object
+    - description: Response size cumulative sum
+      format: bytes
+      name: response.size.bytes.sum
+      type: long
+    - description: Response count
+      name: response.size.bytes.count
+      type: long
+    - description: Request count
+      name: request.count
+      type: long
+    name: http
     type: group
-    fields:
-      - name: request.duration.us.percentile.*
-        type: object
-        object_type: double
-        description: Request duration microseconds percentiles
-      - name: request.duration.us.sum
-        type: double
-        description: Request duration microseconds cumulative sum
-      - name: request.duration.us.count
-        type: long
-        description: Request count for duration
-      - name: request.size.bytes.percentile.*
-        type: object
-        object_type: long
-        description: Request size percentiles
-      - name: request.size.bytes.sum
-        type: long
-        format: bytes
-        description: Request size cumulative sum
-      - name: request.size.bytes.count
-        type: long
-        description: Request count for size
-      - name: response.size.bytes.percentile.*
-        type: object
-        object_type: long
-        description: Response size percentiles
-      - name: response.size.bytes.sum
-        type: long
-        format: bytes
-        description: Response size cumulative sum
-      - name: response.size.bytes.count
-        type: long
-        description: Response count
-      - name: request.count
-        type: long
-        description: Request count
-  - name: client.request.count
-    type: long
-    description: >
+  - description: |
       Number of requests as client
-  - name: leader.is_master
-    type: boolean
-    description: >
+    name: client.request.count
+    type: long
+  - description: |
       Whether the node is master
-
-  - name: scheduling
+    name: leader.is_master
+    type: boolean
+  - fields:
+    - description: End to end scheduling duration microseconds
+      name: e2e.duration.us.bucket.*
+      object_type: long
+      type: object
+    - description: End to end scheduling duration microseconds sum
+      name: e2e.duration.us.sum
+      type: long
+    - description: End to end scheduling count
+      name: e2e.duration.us.count
+      type: long
+    - description: Pod preemption victims
+      name: pod.preemption.victims.count
+      type: long
+    - description: Pod attempts count
+      name: pod.attempts.count
+      type: long
+    - description: Scheduling duration percentiles
+      name: duration.seconds.percentile.*
+      object_type: double
+      type: object
+    - description: Scheduling duration cumulative sum
+      name: duration.seconds.sum
+      type: double
+    - description: Scheduling count
+      name: duration.seconds.count
+      type: long
+    name: scheduling
     type: group
-    fields:
-      - name: e2e.duration.us.bucket.*
-        type: object
-        object_type: long
-        description: End to end scheduling duration microseconds
-      - name: e2e.duration.us.sum
-        type: long
-        description: End to end scheduling duration microseconds sum
-      - name: e2e.duration.us.count
-        type: long
-        description: End to end scheduling count
-      - name: pod.preemption.victims.count
-        type: long
-        description: Pod preemption victims
-      - name: pod.attempts.count
-        type: long
-        description: Pod attempts count
-      - name: duration.seconds.percentile.*
-        type: object
-        object_type: double
-        description: Scheduling duration percentiles
-      - name: duration.seconds.sum
-        type: double
-        description: Scheduling duration cumulative sum
-      - name: duration.seconds.count
-        type: long
-        description: Scheduling count
-
+  name: kubernetes.scheduler
+  release: ga
+  type: group

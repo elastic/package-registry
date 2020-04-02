@@ -1,6 +1,6 @@
-- name: ceph.mgr_cluster_health
-  type: group
-  description: >
+- description: |
     see: cluster_health
+  fields: null
+  name: ceph.mgr_cluster_health
   release: beta
-  fields:
+  type: group

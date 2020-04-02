@@ -1,24 +1,24 @@
-- name: prometheus.*.value
-  type: object
-  object_type: double
-  object_type_mapping_type: "*"
-  description: >
+- description: |
     Prometheus gauge metric
-- name: prometheus.*.counter
-  type: object
+  name: prometheus.*.value
   object_type: double
-  object_type_mapping_type: "*"
-  description: >
+  object_type_mapping_type: '*'
+  type: object
+- description: |
     Prometheus counter metric
-- name: prometheus.*.rate
-  type: object
+  name: prometheus.*.counter
   object_type: double
-  object_type_mapping_type: "*"
-  description: >
-    Prometheus rated counter metric
-- name: prometheus.*.histogram
+  object_type_mapping_type: '*'
   type: object
-  object_type: histogram
-  object_type_mapping_type: "*"
-  description: >
+- description: |
+    Prometheus rated counter metric
+  name: prometheus.*.rate
+  object_type: double
+  object_type_mapping_type: '*'
+  type: object
+- description: |
     Prometheus histogram metric
+  name: prometheus.*.histogram
+  object_type: histogram
+  object_type_mapping_type: '*'
+  type: object

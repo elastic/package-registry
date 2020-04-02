@@ -1,17 +1,16 @@
-- name: openmetrics
-  type: group
-  description: >
+- description: |
     `openmetrics` contains metrics from endpoints that are following Openmetrics format.
   fields:
-    # Order is important here, labels will match first, the rest are double
-    - name: labels.*
-      type: object
-      object_type: keyword
-      description: >
-        Prometheus metric labels
-    - name: metrics.*
-      type: object
-      object_type: double
-      object_type_mapping_type: "*"
-      description: >
-        Prometheus metric
+  - description: |
+      Prometheus metric labels
+    name: labels.*
+    object_type: keyword
+    type: object
+  - description: |
+      Prometheus metric
+    name: metrics.*
+    object_type: double
+    object_type_mapping_type: '*'
+    type: object
+  name: openmetrics
+  type: group

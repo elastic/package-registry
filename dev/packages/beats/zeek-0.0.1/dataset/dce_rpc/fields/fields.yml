@@ -1,25 +1,22 @@
-- name: zeek.dce_rpc
-  type: group
-  default_field: false
-  description: >
+- default_field: false
+  description: |
     Fields exported by the Zeek DCE_RPC log
   fields:
-    - name: rtt
-      type: integer
-      description: |
-        Round trip time from the request to the response. If either the request or response wasn't seen, this will be null.
-
-    - name: named_pipe
-      type: keyword
-      description: |
-        Remote pipe name.
-
-    - name: endpoint
-      type: keyword
-      description: |
-        Endpoint name looked up from the uuid.
-
-    - name: operation
-      type: keyword
-      description: |
-        Operation seen in the call.
+  - description: |
+      Round trip time from the request to the response. If either the request or response wasn't seen, this will be null.
+    name: rtt
+    type: integer
+  - description: |
+      Remote pipe name.
+    name: named_pipe
+    type: keyword
+  - description: |
+      Endpoint name looked up from the uuid.
+    name: endpoint
+    type: keyword
+  - description: |
+      Operation seen in the call.
+    name: operation
+    type: keyword
+  name: zeek.dce_rpc
+  type: group

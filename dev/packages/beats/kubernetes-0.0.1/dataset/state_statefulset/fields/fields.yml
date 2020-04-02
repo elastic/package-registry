@@ -1,36 +1,36 @@
-- name: statefulset
-  type: group
-  description: >
+- description: |
     kubernetes stateful set metrics
-  release: ga
   fields:
-    - name: created
+  - description: |
+      The creation timestamp (epoch) for StatefulSet
+    name: created
+    type: long
+  - description: |
+      Kubernetes stateful set replicas status
+    fields:
+    - description: |
+        The number of observed replicas per StatefulSet
+      name: observed
       type: long
-      description: >
-        The creation timestamp (epoch) for StatefulSet
-    - name: replicas
-      type: group
-      description: >
-        Kubernetes stateful set replicas status
-      fields:
-        - name: observed
-          type: long
-          description: >
-            The number of observed replicas per StatefulSet
-        - name: desired
-          type: long
-          description: >
-            The number of desired replicas per StatefulSet
-    - name: generation
-      type: group
-      description: >
-        Kubernetes stateful set generation information
-      fields:
-        - name: observed
-          type: long
-          description: >
-            The observed generation per StatefulSet
-        - name: desired
-          type: long
-          description: >
-            The desired generation per StatefulSet
+    - description: |
+        The number of desired replicas per StatefulSet
+      name: desired
+      type: long
+    name: replicas
+    type: group
+  - description: |
+      Kubernetes stateful set generation information
+    fields:
+    - description: |
+        The observed generation per StatefulSet
+      name: observed
+      type: long
+    - description: |
+        The desired generation per StatefulSet
+      name: desired
+      type: long
+    name: generation
+    type: group
+  name: statefulset
+  release: ga
+  type: group

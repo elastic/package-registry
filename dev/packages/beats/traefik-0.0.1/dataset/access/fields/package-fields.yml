@@ -1,5 +1,5 @@
-- name: traefik
-  type: group
-  description: >
+- description: |
     Fields from the Traefik log files.
-  fields:
+  fields: null
+  name: traefik
+  type: group

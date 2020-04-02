@@ -1,4 +1,4 @@
-- name: golang
+- description: ""
+  fields: null
+  name: golang
   type: group
-  description: >
-  fields:

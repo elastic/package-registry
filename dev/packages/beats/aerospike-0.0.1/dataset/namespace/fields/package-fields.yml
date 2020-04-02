@@ -1,4 +1,4 @@
-- name: aerospike
+- description: ""
+  fields: null
+  name: aerospike
   type: group
-  description: >
-  fields:

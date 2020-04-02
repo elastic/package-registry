@@ -1,9 +1,9 @@
-- name: apache.error
-  type: group
-  description: >
+- description: |
     Fields from the Apache error logs.
   fields:
-    - name: module
-      type: keyword
-      description: >
-        The module producing the logged message.
+  - description: |
+      The module producing the logged message.
+    name: module
+    type: keyword
+  name: apache.error
+  type: group

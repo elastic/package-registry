@@ -1,10 +1,10 @@
-- name: graphite.server
-  type: group
-  description: >
+- description: |
     server
-  release: ga
   fields:
-    - name: example
-      type: keyword
-      description: >
-        Example field
+  - description: |
+      Example field
+    name: example
+    type: keyword
+  name: graphite.server
+  release: ga
+  type: group

@@ -1,53 +1,53 @@
-- name: cluster.stats
-  type: group
-  description: >
+- description: |
     Cluster stats
-  release: ga
   fields:
-    - name: status
-      type: keyword
-      description: >
-        Cluster status (green, yellow, red).
-    - name: nodes
-      type: group
-      description: >
-        Nodes statistics.
+  - description: |
+      Cluster status (green, yellow, red).
+    name: status
+    type: keyword
+  - description: |
+      Nodes statistics.
+    fields:
+    - description: |
+        Total number of nodes in cluster.
+      name: count
+      type: long
+    - description: |
+        Number of master-eligible nodes in cluster.
+      name: master
+      type: long
+    - description: |
+        Number of data nodes in cluster.
+      name: data
+      type: long
+    name: nodes
+    type: group
+  - description: |
+      Indices statistics.
+    fields:
+    - description: |
+        Total number of indices in cluster.
+      name: count
+      type: long
+    - description: |
+        Shard statistics.
       fields:
-      - name: count
+      - description: |
+          Total number of shards in cluster.
+        name: count
         type: long
-        description: >
-          Total number of nodes in cluster.
-      - name: master
+      - description: |
+          Total number of primary shards in cluster.
+        name: primaries
         type: long
-        description: >
-          Number of master-eligible nodes in cluster.
-      - name: data
-        type: long
-        description: >
-          Number of data nodes in cluster.
-    - name: indices
+      name: shards
       type: group
-      description: >
-        Indices statistics.
-      fields:
-      - name: count
-        type: long
-        description: >
-          Total number of indices in cluster.
-      - name: shards
-        type: group
-        description: >
-          Shard statistics.
-        fields:
-        - name: count
-          type: long
-          description: >
-            Total number of shards in cluster.
-        - name: primaries
-          type: long
-          description: >
-            Total number of primary shards in cluster.
-      - name: fielddata.memory.bytes
-        type: long
-        description: >
-          Memory used for fielddata.
+    - description: |
+        Memory used for fielddata.
+      name: fielddata.memory.bytes
+      type: long
+    name: indices
+    type: group
+  name: cluster.stats
+  release: ga
+  type: group

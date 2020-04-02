@@ -33,7 +33,6 @@ Access logs collects the nginx access logs.
 | http.response.status_code | HTTP response status code. | long |
 | http.version | HTTP version. | keyword |
 | nginx.access.remote_ip_list | An array of remote IP addresses. It is a list because it is common to include, besides the client IP address, IP addresses from headers like `X-Forwarded-For`. Real source IP is restored to `source.ip`. | array |
-| nginx.access.user_agent.os | Alias for field "user_agent.os.full_name" | alias |
 | source.geo.city_name | City name. | keyword |
 | source.geo.continent_name | Name of the continent. | keyword |
 | source.geo.country_iso_code | Country ISO code. | keyword |

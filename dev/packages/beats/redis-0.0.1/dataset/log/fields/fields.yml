@@ -1,23 +1,21 @@
-- name: redis.log
-  type: group
-  description: >
+- description: |
     Redis log files
   fields:
-    - name: role
-      type: keyword
-      description: >
-        The role of the Redis instance. Can be one of `master`, `slave`, `child` (for RDF/AOF writing child),
-        or `sentinel`.
-
-    - name: pid
-      type: alias
-      path: process.pid
-      migration: true
-    - name: level
-      type: alias
-      path: log.level
-      migration: true
-    - name: message
-      type: alias
-      path: message
-      migration: true
+  - description: |
+      The role of the Redis instance. Can be one of `master`, `slave`, `child` (for RDF/AOF writing child), or `sentinel`.
+    name: role
+    type: keyword
+  - migration: true
+    name: pid
+    path: process.pid
+    type: alias
+  - migration: true
+    name: level
+    path: log.level
+    type: alias
+  - migration: true
+    name: message
+    path: message
+    type: alias
+  name: redis.log
+  type: group

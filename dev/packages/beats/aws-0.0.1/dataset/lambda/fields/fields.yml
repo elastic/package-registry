@@ -1,6 +1,6 @@
-- name: aws.lambda
-  type: group
-  description: >
+- description: |
     `lambda` contains the metrics that were scraped from AWS CloudWatch which contains monitoring metrics sent by AWS Lambda.
+  fields: null
+  name: aws.lambda
   release: beta
-  fields:
+  type: group

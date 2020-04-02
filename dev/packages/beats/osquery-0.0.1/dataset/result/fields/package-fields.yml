@@ -1,4 +1,4 @@
-- name: osquery
+- description: ""
+  fields: null
+  name: osquery
   type: group
-  description: >
-  fields:

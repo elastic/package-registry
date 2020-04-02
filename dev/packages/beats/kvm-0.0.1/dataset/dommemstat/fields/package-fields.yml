@@ -1,4 +1,4 @@
-- name: kvm
+- description: ""
+  fields: null
+  name: kvm
   type: group
-  description: >
-  fields:

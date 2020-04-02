@@ -1,4 +1,4 @@
-- name: redisenterprise.proxy
-  type: group
+- fields: null
+  name: redisenterprise.proxy
   release: beta
-  fields:
+  type: group

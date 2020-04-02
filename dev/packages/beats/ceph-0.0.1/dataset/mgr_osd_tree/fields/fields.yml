@@ -1,6 +1,6 @@
-- name: ceph.mgr_osd_tree
-  type: group
-  description: >
+- description: |
     see: osd_tree
+  fields: null
+  name: ceph.mgr_osd_tree
   release: beta
-  fields:
+  type: group

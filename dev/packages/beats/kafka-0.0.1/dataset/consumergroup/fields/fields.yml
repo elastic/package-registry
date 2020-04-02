@@ -1,70 +1,59 @@
-- name: kafka.consumergroup
-  type: group
-  description: >
+- description: |
     consumergroup
-  release: ga
   fields:
-    - name: broker
-      type: group
-      deprecated: 6.5
-      description: >
-        Broker Consumer Group Information have been read from (Broker handling
-        the consumer group).
-      fields:
-        - name: id
-          type: long
-          description: >
-            Broker id
-
-        - name: address
-          type: keyword
-          description: >
-            Broker address
-
-    - name: id
+  - deprecated: 6.5
+    description: |
+      Broker Consumer Group Information have been read from (Broker handling the consumer group).
+    fields:
+    - description: |
+        Broker id
+      name: id
+      type: long
+    - description: |
+        Broker address
+      name: address
       type: keyword
-      description: Consumer Group ID
-
-    - name: topic
+    name: broker
+    type: group
+  - description: Consumer Group ID
+    name: id
+    type: keyword
+  - deprecated: 6.5
+    description: Topic name
+    name: topic
+    type: keyword
+  - deprecated: 6.5
+    description: Partition ID
+    name: partition
+    type: long
+  - description: consumer offset into partition being read
+    name: offset
+    type: long
+  - description: custom consumer meta data string
+    name: meta
+    type: keyword
+  - description: consumer lag for partition/topic calculated as the difference between
+      the partition offset and consumer offset
+    name: consumer_lag
+    type: long
+  - description: |
+      kafka consumer/partition error code.
+    name: error.code
+    type: long
+  - description: |
+      Assigned client reading events from partition
+    fields:
+    - description: Client ID (kafka setting client.id)
+      name: id
       type: keyword
-      deprecated: 6.5
-      description: Topic name
-
-    - name: partition
-      type: long
-      deprecated: 6.5
-      description: Partition ID
-
-    - name: offset
-      type: long
-      description: consumer offset into partition being read
-
-    - name: meta
+    - description: Client host
+      name: host
       type: keyword
-      description: custom consumer meta data string
-
-    - name: consumer_lag
-      type: long
-      description: consumer lag for partition/topic calculated as the difference between the partition offset and consumer offset
-
-    - name: error.code
-      type: long
-      description: >
-        kafka consumer/partition error code.
-
-    - name: client
-      type: group
-      description: >
-        Assigned client reading events from partition
-      fields:
-        - name: id
-          type: keyword
-          description: Client ID (kafka setting client.id)
-
-        - name: host
-          type: keyword
-          description: Client host
-
-        - name: member_id
-          type: keyword
-          description: internal consumer group member ID
+    - description: internal consumer group member ID
+      name: member_id
+      type: keyword
+    name: client
+    type: group
+  name: kafka.consumergroup
+  release: ga
+  type: group

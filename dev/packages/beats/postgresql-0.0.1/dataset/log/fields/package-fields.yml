@@ -1,5 +1,5 @@
-- name: postgresql
+- description: |
+    Fields from PostgreSQL logs.
+  fields: null
+  name: postgresql
   type: group
-  description: >
-      Fields from PostgreSQL logs.
-  fields:

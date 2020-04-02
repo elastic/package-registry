@@ -1,112 +1,112 @@
-- name: kubernetes.pod
-  type: group
-  description: >
+- description: |
     kubernetes pod metrics
-  release: ga
   fields:
-    - name: start_time
-      type: date
-      description: >
-        Start time
-    - name: network
+  - description: |
+      Start time
+    name: start_time
+    type: date
+  - fields:
+    - fields:
+      - description: |
+          Received bytes
+        format: bytes
+        name: bytes
+        type: long
+      - description: |
+          Rx errors
+        name: errors
+        type: long
+      name: rx
       type: group
-      fields:
-        - name: rx
-          type: group
-          fields:
-            - name: bytes
-              type: long
-              format: bytes
-              description: >
-                Received bytes
-            - name: errors
-              type: long
-              description: >
-                Rx errors
-        - name: tx
-          type: group
-          fields:
-            - name: bytes
-              type: long
-              format: bytes
-              description: >
-                Transmitted bytes
-            - name: errors
-              type: long
-              description: >
-                Tx errors
-    - name: cpu
+    - fields:
+      - description: |
+          Transmitted bytes
+        format: bytes
+        name: bytes
+        type: long
+      - description: |
+          Tx errors
+        name: errors
+        type: long
+      name: tx
       type: group
-      description: >
-        CPU usage metrics
-      fields:
-        - name: usage
-          type: group
-          fields:
-            - name: nanocores
-              type: long
-              description: >
-                CPU used nanocores
-            - name: node.pct
-              type: scaled_float
-              format: percent
-              description: >
-                CPU usage as a percentage of the total node CPU
-            - name: limit.pct
-              type: scaled_float
-              format: percent
-              description: >
-                CPU usage as a percentage of the defined limit for the pod containers (or total node CPU if one or more containers of the pod are unlimited)
-    - name: memory
+    name: network
+    type: group
+  - description: |
+      CPU usage metrics
+    fields:
+    - fields:
+      - description: |
+          CPU used nanocores
+        name: nanocores
+        type: long
+      - description: |
+          CPU usage as a percentage of the total node CPU
+        format: percent
+        name: node.pct
+        type: scaled_float
+      - description: |
+          CPU usage as a percentage of the defined limit for the pod containers (or total node CPU if one or more containers of the pod are unlimited)
+        format: percent
+        name: limit.pct
+        type: scaled_float
+      name: usage
       type: group
-      fields:
-        - name: usage
-          type: group
-          fields:
-            - name: bytes
-              type: long
-              format: bytes
-              description: >
-                Total memory usage
-            - name: node.pct
-              type: scaled_float
-              format: percent
-              description: >
-                Memory usage as a percentage of the total node allocatable memory
-            - name: limit.pct
-              type: scaled_float
-              format: percent
-              description: >
-                Memory usage as a percentage of the defined limit for the pod containers (or total node allocatable memory if unlimited)
-        - name: available
-          type: group
-          fields:
-            - name: bytes
-              type: long
-              format: bytes
-              description: >
-                Total memory available
-        - name: working_set
-          type: group
-          fields:
-            - name: bytes
-              type: long
-              format: bytes
-              description: >
-                Total working set memory
-        - name: rss
-          type: group
-          fields:
-            - name: bytes
-              type: long
-              format: bytes
-              description: >
-                Total resident set size memory
-        - name: page_faults
-          type: long
-          description: >
-            Total page faults
-        - name: major_page_faults
-          type: long
-          description: >
-            Total major page faults
+    name: cpu
+    type: group
+  - fields:
+    - fields:
+      - description: |
+          Total memory usage
+        format: bytes
+        name: bytes
+        type: long
+      - description: |
+          Memory usage as a percentage of the total node allocatable memory
+        format: percent
+        name: node.pct
+        type: scaled_float
+      - description: |
+          Memory usage as a percentage of the defined limit for the pod containers (or total node allocatable memory if unlimited)
+        format: percent
+        name: limit.pct
+        type: scaled_float
+      name: usage
+      type: group
+    - fields:
+      - description: |
+          Total memory available
+        format: bytes
+        name: bytes
+        type: long
+      name: available
+      type: group
+    - fields:
+      - description: |
+          Total working set memory
+        format: bytes
+        name: bytes
+        type: long
+      name: working_set
+      type: group
+    - fields:
+      - description: |
+          Total resident set size memory
+        format: bytes
+        name: bytes
+        type: long
+      name: rss
+      type: group
+    - description: |
+        Total page faults
+      name: page_faults
+      type: long
+    - description: |
+        Total major page faults
+      name: major_page_faults
+      type: long
+    name: memory
+    type: group
+  name: kubernetes.pod
+  release: ga
+  type: group

@@ -1,51 +1,50 @@
-- name: system.raid
-  type: group
-  description: >
+- description: |
     raid
-  release: ga
   fields:
-    - name: name
-      type: keyword
-      description: >
-        Name of the device.
-    - name: status
-      type: keyword
-      description: >
-        activity-state of the device.
-    - name: level
-      type: keyword
-      description: >
-        The raid level of the device
-    - name: sync_action
-      type: keyword
-      description: >
-        Current sync action, if the RAID array is redundant 
-    - name: disks.active
-      type: long
-      description: >
-         Number of active disks.
-    - name: disks.total
-      type: long
-      description: >
-        Total number of disks the device consists of.
-    - name: disks.spare
-      type: long
-      description: >
-         Number of spared disks.
-    - name: disks.failed
-      type: long
-      description: >
-         Number of failed disks.
-    - name: disks.states.*
-      type: object
-      object_type: keyword
-      description: >
-         map of raw disk states
-    - name: blocks.total
-      type: long
-      description: >
-        Number of blocks the device holds, in 1024-byte blocks.
-    - name: blocks.synced
-      type: long
-      description: >
-        Number of blocks on the device that are in sync, in 1024-byte blocks.
+  - description: |
+      Name of the device.
+    name: name
+    type: keyword
+  - description: |
+      activity-state of the device.
+    name: status
+    type: keyword
+  - description: |
+      The raid level of the device
+    name: level
+    type: keyword
+  - description: "Current sync action, if the RAID array is redundant \n"
+    name: sync_action
+    type: keyword
+  - description: |
+      Number of active disks.
+    name: disks.active
+    type: long
+  - description: |
+      Total number of disks the device consists of.
+    name: disks.total
+    type: long
+  - description: |
+      Number of spared disks.
+    name: disks.spare
+    type: long
+  - description: |
+      Number of failed disks.
+    name: disks.failed
+    type: long
+  - description: |
+      map of raw disk states
+    name: disks.states.*
+    object_type: keyword
+    type: object
+  - description: |
+      Number of blocks the device holds, in 1024-byte blocks.
+    name: blocks.total
+    type: long
+  - description: |
+      Number of blocks on the device that are in sync, in 1024-byte blocks.
+    name: blocks.synced
+    type: long
+  name: system.raid
+  release: ga
+  type: group
