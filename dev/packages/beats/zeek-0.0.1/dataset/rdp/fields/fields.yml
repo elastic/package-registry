@@ -1,87 +1,86 @@
-- default_field: false
+- name: zeek.rdp
+  type: group
   description: |
     Fields exported by the Zeek RDP log.
   fields:
-  - description: |
+  - name: cookie
+    type: keyword
+    description: |
       Cookie value used by the client machine. This is typically a username.
-    name: cookie
+  - name: result
     type: keyword
-  - description: |
+    description: |
       Status result for the connection. It's a mix between RDP negotation failure messages and GCC server create response messages.
-    name: result
+  - name: security_protocol
     type: keyword
-  - description: |
+    description: |
       Security protocol chosen by the server.
-    name: security_protocol
+  - name: keyboard_layout
     type: keyword
-  - description: |
+    description: |
       Keyboard layout (language) of the client machine.
-    name: keyboard_layout
-    type: keyword
-  - fields:
-    - description: |
+  - name: client
+    type: group
+    fields:
+    - name: build
+      type: keyword
+      description: |
         RDP client version used by the client machine.
-      name: build
+    - name: client_name
       type: keyword
-    - description: |
+      description: |
         Name of the client machine.
-      name: client_name
+    - name: product_id
       type: keyword
-    - description: |
+      description: |
         Product ID of the client machine.
-      name: product_id
-      type: keyword
-    name: client
+  - name: desktop
     type: group
-  - fields:
-    - description: |
+    fields:
+    - name: width
+      type: integer
+      description: |
         Desktop width of the client machine.
-      name: width
+    - name: height
       type: integer
-    - description: |
+      description: |
         Desktop height of the client machine.
-      name: height
-      type: integer
-    - description: |
+    - name: color_depth
+      type: keyword
+      description: |
         The color depth requested by the client in the high_color_depth field.
-      name: color_depth
-      type: keyword
-    name: desktop
+  - name: cert
     type: group
-  - fields:
-    - description: |
+    fields:
+    - name: type
+      type: keyword
+      description: |
         If the connection is being encrypted with native RDP encryption, this is the type of cert being used.
-      name: type
-      type: keyword
-    - description: |
-        The number of certs seen. X.509 can transfer an entire certificate chain.
-      name: count
+    - name: count
       type: integer
-    - description: |
-        Indicates if the provided certificate or certificate chain is permanent or temporary.
-      name: permanent
+      description: |
+        The number of certs seen. X.509 can transfer an entire certificate chain.
+    - name: permanent
       type: boolean
-    name: cert
+      description: |
+        Indicates if the provided certificate or certificate chain is permanent or temporary.
+  - name: encryption
     type: group
-  - fields:
-    - description: |
+    fields:
+    - name: level
+      type: keyword
+      description: |
         Encryption level of the connection.
-      name: level
+    - name: method
       type: keyword
-    - description: |
+      description: |
         Encryption method of the connection.
-      name: method
-      type: keyword
-    name: encryption
-    type: group
-  - description: |
-      Track status of logging RDP connections.
-    name: done
+  - name: done
     type: boolean
-  - description: |
+    description: |
+      Track status of logging RDP connections.
+  - name: ssl
+    type: boolean
+    description: |
       (present if policy/protocols/rdp/indicate_ssl.bro is loaded)
       Flag the connection if it was seen over SSL.
-    name: ssl
-    type: boolean
-  name: zeek.rdp
-  type: group

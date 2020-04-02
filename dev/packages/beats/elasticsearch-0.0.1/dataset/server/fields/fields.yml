@@ -1,36 +1,26 @@
-- description: Server log file
-  fields:
-  - description": Stack trace in case of errors
-    index: false
-    name: stacktrace
-  - description: GC log
-    fields:
-    - description: Young GC
-      example: ""
-      fields:
-      - description: ""
-        example: ""
-        name: one
-        type: long
-      - description: ""
-        example: ""
-        name: two
-        type: long
-      name: young
-      type: group
-    - description: Sequence number
-      example: 3449992
-      name: overhead_seq
-      type: long
-    - description: Time spent in GC, in milliseconds
-      example: 1600
-      name: collection_duration.ms
-      type: float
-    - description: Total time over which collection was observed, in milliseconds
-      example: 1800
-      name: observation_duration.ms
-      type: float
-    name: gc
-    type: group
-  name: elasticsearch.server
+- name: elasticsearch.server
   type: group
+  description: Server log file
+  fields:
+  - name: stacktrace
+  - name: gc
+    type: group
+    description: GC log
+    fields:
+    - name: young
+      type: group
+      description: Young GC
+      fields:
+      - name: one
+        type: long
+      - name: two
+        type: long
+    - name: overhead_seq
+      type: long
+      description: Sequence number
+    - name: collection_duration.ms
+      type: float
+      description: Time spent in GC, in milliseconds
+    - name: observation_duration.ms
+      type: float
+      description: Total time over which collection was observed, in milliseconds

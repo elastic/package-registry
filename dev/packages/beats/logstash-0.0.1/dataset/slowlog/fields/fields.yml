@@ -1,54 +1,45 @@
-- description: |
+- name: logstash.slowlog
+  type: group
+  description: |
     slowlog
   fields:
-  - description: |
+  - name: module
+    type: keyword
+    description: |
       The module or class where the event originate.
-    name: module
+  - name: thread
     type: keyword
-  - description: |
+    description: |
       Information about the running thread where the log originate.
-    multi_fields:
-    - name: text
-      type: text
-    name: thread
+  - name: event
     type: keyword
-  - description: |
+    description: |
       Raw dump of the original event
-    multi_fields:
-    - name: text
-      type: text
-    name: event
+  - name: plugin_name
     type: keyword
-  - description: |
+    description: |
       Name of the plugin
-    name: plugin_name
+  - name: plugin_type
     type: keyword
-  - description: |
+    description: |
       Type of the plugin: Inputs, Filters, Outputs or Codecs.
-    name: plugin_type
-    type: keyword
-  - description: |
-      Execution time for the plugin in milliseconds.
-    name: took_in_millis
+  - name: took_in_millis
     type: long
-  - description: |
-      String value of the plugin configuration
-    multi_fields:
-    - name: text
-      type: text
-    name: plugin_params
+    description: |
+      Execution time for the plugin in milliseconds.
+  - name: plugin_params
     type: keyword
-  - description: |
-      key -> value of the configuration used by the plugin.
-    name: plugin_params_object
+    description: |
+      String value of the plugin configuration
+  - name: plugin_params_object
     type: object
-  - migration: true
-    name: level
+    description: |
+      key -> value of the configuration used by the plugin.
+  - name: level
+    type: alias
     path: log.level
+    migration: true
+  - name: took_in_nanos
     type: alias
-  - migration: true
-    name: took_in_nanos
     path: event.duration
-    type: alias
-  name: logstash.slowlog
-  type: group
+    migration: true

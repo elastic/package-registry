@@ -1,6 +1,5 @@
-- description: |
-    server
-  fields: null
-  name: http.server
-  release: ga
+- name: http.server
   type: group
+  description: |
+    server
+  release: ga

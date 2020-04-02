@@ -1,119 +1,119 @@
-- description: |
+- name: googlecloud.audit
+  type: group
+  description: |
     Fields for Google Cloud audit logs.
   fields:
-  - description: |
-      Type property.
-    name: type
+  - name: type
     type: keyword
-  - description: "Authentication information. \n"
-    fields:
-    - description: "The email address of the authenticated user making the request.
-        \n"
-      name: principal_email
-      type: keyword
-    - description: "The authority selector specified by the requestor, if any. It
-        is not guaranteed  that the principal was allowed to use this authority. \n"
-      name: authority_selector
-      type: keyword
-    name: authentication_info
+    description: |
+      Type property.
+  - name: authentication_info
     type: group
-  - description: |
+    description: "Authentication information. \n"
+    fields:
+    - name: principal_email
+      type: keyword
+      description: "The email address of the authenticated user making the request.
+        \n"
+    - name: authority_selector
+      type: keyword
+      description: "The authority selector specified by the requestor, if any. It
+        is not guaranteed  that the principal was allowed to use this authority. \n"
+  - name: authorization_info
+    type: array
+    description: |
       Authorization information for the operation.
     fields:
-    - description: "The required IAM permission. \n"
-      name: permission
+    - name: permission
       type: keyword
-    - description: "Whether or not authorization for resource and permission was granted.
-        \n"
-      name: granted
+      description: "The required IAM permission. \n"
+    - name: granted
       type: boolean
-    - description: |
+      description: "Whether or not authorization for resource and permission was granted.
+        \n"
+    - name: resource_attributes
+      type: group
+      description: |
         The attributes of the resource.
       fields:
-      - description: |
+      - name: service
+        type: keyword
+        description: |
           The name of the service.
-        name: service
+      - name: name
         type: keyword
-      - description: |
+        description: |
           The name of the resource.
-        name: name
+      - name: type
         type: keyword
-      - description: |
+        description: |
           The type of the resource.
-        name: type
-        type: keyword
-      name: resource_attributes
-      type: group
-    name: authorization_info
-    type: array
-  - description: |
-      The name of the service method or operation. For API calls, this  should be the name of the API method.  For example, 'google.datastore.v1.Datastore.RunQuery'.
-    name: method_name
+  - name: method_name
     type: keyword
-  - description: |
-      The number of items returned from a List or Query API method, if applicable.
-    name: num_response_items
+    description: |
+      The name of the service method or operation. For API calls, this  should be the name of the API method.  For example, 'google.datastore.v1.Datastore.RunQuery'.
+  - name: num_response_items
     type: long
-  - description: |
+    description: |
+      The number of items returned from a List or Query API method, if applicable.
+  - name: request
+    type: group
+    description: |
       The operation request.
     fields:
-    - description: |
+    - name: proto_name
+      type: keyword
+      description: |
         Type property of the request.
-      name: proto_name
+    - name: filter
       type: keyword
-    - description: |
+      description: |
         Filter of the request.
-      name: filter
+    - name: name
       type: keyword
-    - description: "Name of the request. \n"
-      name: name
+      description: "Name of the request. \n"
+    - name: resource_name
       type: keyword
-    - description: "Name of the request resource. \n"
-      name: resource_name
-      type: keyword
-    name: request
+      description: "Name of the request resource. \n"
+  - name: request_metadata
     type: group
-  - description: |
+    description: |
       Metadata about the request.
     fields:
-    - description: "The IP address of the caller. \n"
-      name: caller_ip
+    - name: caller_ip
       type: ip
-    - description: |
-        The user agent of the caller. This information is not authenticated and  should be treated accordingly.
-      name: caller_supplied_user_agent
+      description: "The IP address of the caller. \n"
+    - name: caller_supplied_user_agent
       type: keyword
-    name: request_metadata
-    type: group
-  - description: |
-      The resource or collection that is the target of the operation.  The name is a scheme-less URI, not including the API service name.  For example, 'shelves/SHELF_ID/books'.
-    name: resource_name
+      description: |
+        The user agent of the caller. This information is not authenticated and  should be treated accordingly.
+  - name: resource_name
     type: keyword
-  - description: |
+    description: |
+      The resource or collection that is the target of the operation.  The name is a scheme-less URI, not including the API service name.  For example, 'shelves/SHELF_ID/books'.
+  - name: resource_location
+    type: group
+    description: |
       The location of the resource.
     fields:
-    - description: |
-        Current locations of the resource.
-      name: current_locations
+    - name: current_locations
       type: keyword
-    name: resource_location
-    type: group
-  - description: |
-      The name of the API service performing the operation.  For example, datastore.googleapis.com.
-    name: service_name
+      description: |
+        Current locations of the resource.
+  - name: service_name
     type: keyword
-  - description: "The status of the overall operation. \n"
+    description: |
+      The name of the API service performing the operation.  For example, datastore.googleapis.com.
+  - name: status
+    type: group
+    description: "The status of the overall operation. \n"
     fields:
-    - description: "The status code, which should be an enum value of google.rpc.Code.
-        \n"
-      name: code
+    - name: code
       type: integer
-    - description: "A developer-facing error message, which should be in English.
+      description: "The status code, which should be an enum value of google.rpc.Code.
+        \n"
+    - name: message
+      type: keyword
+      description: "A developer-facing error message, which should be in English.
         Any user-facing  error message should be localized and sent in the google.rpc.Status.details
         \ field, or localized by the client. \n"
-      name: message
-      type: keyword
-    name: status
-    type: group
-  name: googlecloud.audit
-  type: group

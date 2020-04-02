@@ -1,14 +1,15 @@
-- default_field: false
+- name: o365.audit
+  type: group
   description: |
     Fields from Office 365 Management API audit logs.
   fields:
-  - fields:
+  - name: Actor
+    type: array
+    fields:
     - name: ID
       type: keyword
     - name: Type
       type: keyword
-    name: Actor
-    type: array
   - name: ActorContextId
     type: keyword
   - name: ActorIpAddress
@@ -46,7 +47,6 @@
   - name: ClientIPAddress
     type: keyword
   - name: Comments
-    norms: false
     type: text
   - name: CorrelationId
     type: keyword
@@ -162,13 +162,13 @@
     type: keyword
   - name: SupportTicketId
     type: keyword
-  - fields:
+  - name: Target
+    type: array
+    fields:
     - name: ID
       type: keyword
     - name: Type
       type: keyword
-    name: Target
-    type: array
   - name: TargetContextId
     type: keyword
   - name: TargetUserOrGroupName
@@ -197,5 +197,3 @@
     type: keyword
   - name: YammerNetworkId
     type: keyword
-  name: o365.audit
-  type: group

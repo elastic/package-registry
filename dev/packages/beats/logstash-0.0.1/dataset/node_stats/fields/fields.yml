@@ -1,23 +1,23 @@
-- description: |
+- name: node.stats
+  type: group
+  description: |
     node_stats metrics.
+  release: ga
   fields:
-  - description: |
+  - name: events
+    type: group
+    description: |
       Events stats
     fields:
-    - description: |
+    - name: in
+      type: long
+      description: |
         Incoming events counter.
-      name: in
+    - name: out
       type: long
-    - description: |
+      description: |
         Outgoing events counter.
-      name: out
+    - name: filtered
       type: long
-    - description: |
+      description: |
         Filtered events counter.
-      name: filtered
-      type: long
-    name: events
-    type: group
-  name: node.stats
-  release: ga
-  type: group

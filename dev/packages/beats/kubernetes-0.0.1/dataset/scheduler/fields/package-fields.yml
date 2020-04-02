@@ -1,5 +1,4 @@
-- description: |
-    Information and statistics of pods managed by kubernetes.
-  fields: null
-  name: kubernetes
+- name: kubernetes
   type: group
+  description: |
+    Information and statistics of pods managed by kubernetes.

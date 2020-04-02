@@ -1,170 +1,167 @@
-- description: |
+- name: apache.status
+  type: group
+  description: |
     `status` contains the metrics that were scraped from the Apache status page.
+  release: ga
   fields:
-  - description: |
-      Apache hostname.
-    name: hostname
+  - name: hostname
     type: keyword
-  - description: |
+    description: |
+      Apache hostname.
+  - name: total_accesses
+    type: long
+    description: |
       Total number of access requests.
-    name: total_accesses
+  - name: total_kbytes
     type: long
-  - description: |
+    description: |
       Total number of kilobytes served.
-    name: total_kbytes
-    type: long
-  - description: |
+  - name: requests_per_sec
+    type: scaled_float
+    description: |
       Requests per second.
-    name: requests_per_sec
+  - name: bytes_per_sec
     type: scaled_float
-  - description: |
+    description: |
       Bytes per second.
-    name: bytes_per_sec
+  - name: bytes_per_request
     type: scaled_float
-  - description: |
+    description: |
       Bytes per request.
-    name: bytes_per_request
-    type: scaled_float
-  - description: |
+  - name: workers.busy
+    type: long
+    description: |
       Number of busy workers.
-    name: workers.busy
+  - name: workers.idle
     type: long
-  - description: |
+    description: |
       Number of idle workers.
-    name: workers.idle
-    type: long
-  - description: |
+  - name: uptime
+    type: group
+    description: |
       Uptime stats.
     fields:
-    - description: |
+    - name: server_uptime
+      type: long
+      description: |
         Server uptime in seconds.
-      name: server_uptime
+    - name: uptime
       type: long
-    - description: |
+      description: |
         Server uptime.
-      name: uptime
-      type: long
-    name: uptime
+  - name: cpu
     type: group
-  - description: |
+    description: |
       CPU stats.
     fields:
-    - description: |
+    - name: load
+      type: scaled_float
+      description: |
         CPU Load.
-      name: load
+    - name: user
       type: scaled_float
-    - description: |
+      description: |
         CPU user load.
-      name: user
+    - name: system
       type: scaled_float
-    - description: |
+      description: |
         System cpu.
-      name: system
+    - name: children_user
       type: scaled_float
-    - description: |
+      description: |
         CPU of children user.
-      name: children_user
+    - name: children_system
       type: scaled_float
-    - description: |
+      description: |
         CPU of children system.
-      name: children_system
-      type: scaled_float
-    name: cpu
+  - name: connections
     type: group
-  - description: |
+    description: |
       Connection stats.
     fields:
-    - description: |
+    - name: total
+      type: long
+      description: |
         Total connections.
-      name: total
+    - name: async.writing
       type: long
-    - description: |
+      description: |
         Async connection writing.
-      name: async.writing
+    - name: async.keep_alive
       type: long
-    - description: |
+      description: |
         Async keeped alive connections.
-      name: async.keep_alive
+    - name: async.closing
       type: long
-    - description: |
+      description: |
         Async closed connections.
-      name: async.closing
-      type: long
-    name: connections
+  - name: load
     type: group
-  - description: |
+    description: |
       Load averages.
     fields:
-    - description: |
+    - name: "1"
+      type: scaled_float
+      description: |
         Load average for the last minute.
-      name: "1"
-      scaling_factor: 100
+    - name: "5"
       type: scaled_float
-    - description: |
+      description: |
         Load average for the last 5 minutes.
-      name: "5"
-      scaling_factor: 100
+    - name: "15"
       type: scaled_float
-    - description: |
+      description: |
         Load average for the last 15 minutes.
-      name: "15"
-      scaling_factor: 100
-      type: scaled_float
-    name: load
+  - name: scoreboard
     type: group
-  - description: |
+    description: |
       Scoreboard metrics.
     fields:
-    - description: |
+    - name: starting_up
+      type: long
+      description: |
         Starting up.
-      name: starting_up
+    - name: reading_request
       type: long
-    - description: |
+      description: |
         Reading requests.
-      name: reading_request
+    - name: sending_reply
       type: long
-    - description: |
+      description: |
         Sending Reply.
-      name: sending_reply
+    - name: keepalive
       type: long
-    - description: |
+      description: |
         Keep alive.
-      name: keepalive
+    - name: dns_lookup
       type: long
-    - description: |
+      description: |
         Dns Lookups.
-      name: dns_lookup
+    - name: closing_connection
       type: long
-    - description: |
+      description: |
         Closing connections.
-      name: closing_connection
+    - name: logging
       type: long
-    - description: |
+      description: |
         Logging
-      name: logging
+    - name: gracefully_finishing
       type: long
-    - description: |
+      description: |
         Gracefully finishing.
-      name: gracefully_finishing
+    - name: idle_cleanup
       type: long
-    - description: |
+      description: |
         Idle cleanups.
-      name: idle_cleanup
+    - name: open_slot
       type: long
-    - description: |
+      description: |
         Open slots.
-      name: open_slot
+    - name: waiting_for_connection
       type: long
-    - description: |
+      description: |
         Waiting for connections.
-      name: waiting_for_connection
+    - name: total
       type: long
-    - description: |
+      description: |
         Total.
-      name: total
-      type: long
-    name: scoreboard
-    type: group
-  name: apache.status
-  release: ga
-  type: group

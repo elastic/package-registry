@@ -1,6 +1,5 @@
-- description: |
-    `billing` contains the estimated charges for your AWS account in Cloudwatch.
-  fields: null
-  name: aws.billing
-  release: beta
+- name: aws.billing
   type: group
+  description: |
+    `billing` contains the estimated charges for your AWS account in Cloudwatch.
+  release: beta

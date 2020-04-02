@@ -1,158 +1,155 @@
-- description: |
+- name: azure.auditlogs
+  type: group
+  description: |
     Fields for Azure audit logs.
   fields:
-  - description: |
+  - name: operation_name
+    type: keyword
+    description: |
       The operation name
-    name: operation_name
+  - name: operation_version
     type: keyword
-  - description: |
+    description: |
       The operation version
-    name: operation_version
+  - name: identity
     type: keyword
-  - description: |
+    description: |
       Identity
-    name: identity
+  - name: tenant_id
     type: keyword
-  - description: |
+    description: |
       Tenant ID
-    name: tenant_id
+  - name: result_signature
     type: keyword
-  - description: |
+    description: |
       Result signature
-    name: result_signature
-    type: keyword
-  - description: |
+  - name: properties
+    type: group
+    description: |
       The audit log properties
     fields:
-    - description: |
+    - name: result
+      type: keyword
+      description: |
         Log result
-      name: result
+    - name: activity_display_name
       type: keyword
-    - description: |
+      description: |
         Activity display name
-      name: activity_display_name
+    - name: result_reason
       type: keyword
-    - description: |
+      description: |
         Reason for the log result
-      name: result_reason
+    - name: correlation_id
       type: keyword
-    - description: |
+      description: |
         Correlation ID
-      name: correlation_id
+    - name: logged_by_service
       type: keyword
-    - description: |
+      description: |
         Logged by service
-      name: logged_by_service
+    - name: operation_type
       type: keyword
-    - description: |
+      description: |
         Operation type
-      name: operation_type
+    - name: id
       type: keyword
-    - description: |
+      description: |
         ID
-      name: id
-      type: keyword
-    - description: |
-        Activity timestamp
-      name: activity_datetime
+    - name: activity_datetime
       type: date
-    - description: |
-        category
-      name: category
+      description: |
+        Activity timestamp
+    - name: category
       type: keyword
-    - description: |
+      description: |
+        category
+    - name: target_resources.*
+      type: group
+      description: |
         Target resources
       fields:
-      - description: |
+      - name: display_name
+        type: keyword
+        description: |
           Display name
-        name: display_name
+      - name: id
         type: keyword
-      - description: |
+        description: |
           ID
-        name: id
+      - name: type
         type: keyword
-      - description: |
+        description: |
           Type
-        name: type
+      - name: ip_address
         type: keyword
-      - description: |
+        description: |
           ip Address
-        name: ip_address
+      - name: user_principal_name
         type: keyword
-      - description: |
+        description: |
           User principal name
-        name: user_principal_name
-        type: keyword
-      - description: |
+      - name: modified_properties.*
+        type: group
+        description: |
           Modified properties
         fields:
-        - description: |
+        - name: new_value
+          type: keyword
+          description: |
             New value
-          name: new_value
+        - name: display_name
           type: keyword
-        - description: |
+          description: |
             Display value
-          name: display_name
+        - name: old_value
           type: keyword
-        - description: |
+          description: |
             Old value
-          name: old_value
-          type: keyword
-        name: modified_properties.*
-        object_type: keyword
-        object_type_mapping_type: '*'
-        type: group
-      name: target_resources.*
-      object_type_mapping_type: '*'
+    - name: initiated_by
       type: group
-    - description: |
+      description: |
         Information regarding the initiator
       fields:
-      - description: |
+      - name: app
+        type: group
+        description: |
           App
         fields:
-        - description: |
+        - name: servicePrincipalName
+          type: keyword
+          description: |
             Service principal name
-          name: servicePrincipalName
+        - name: displayName
           type: keyword
-        - description: |
+          description: |
             Display name
-          name: displayName
+        - name: appId
           type: keyword
-        - description: |
+          description: |
             App ID
-          name: appId
+        - name: servicePrincipalId
           type: keyword
-        - description: |
+          description: |
             Service principal ID
-          name: servicePrincipalId
-          type: keyword
-        name: app
+      - name: user
         type: group
-      - description: |
+        description: |
           User
         fields:
-        - description: |
+        - name: userPrincipalName
+          type: keyword
+          description: |
             User principal name
-          name: userPrincipalName
+        - name: displayName
           type: keyword
-        - description: |
+          description: |
             Display name
-          name: displayName
+        - name: id
           type: keyword
-        - description: |
+          description: |
             ID
-          name: id
+        - name: ipAddress
           type: keyword
-        - description: |
+          description: |
             ip Address
-          name: ipAddress
-          type: keyword
-        name: user
-        type: group
-      name: initiated_by
-      type: group
-    name: properties
-    type: group
-  name: azure.auditlogs
-  type: group

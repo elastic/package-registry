@@ -1,5 +1,4 @@
-- description: |
-    Traefik reverse proxy / load balancer metrics
-  fields: null
-  name: traefik
+- name: traefik
   type: group
+  description: |
+    Traefik reverse proxy / load balancer metrics

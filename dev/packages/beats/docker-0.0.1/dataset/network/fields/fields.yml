@@ -1,100 +1,98 @@
-- description: |
+- name: docker.network
+  type: group
+  description: |
     Network metrics.
+  release: ga
   fields:
-  - description: |
-      Network interface name.
-    name: interface
+  - name: interface
     type: keyword
-  - deprecated: 6.4
+    description: |
+      Network interface name.
+  - name: in
+    type: group
     description: |
       Incoming network stats per second.
     fields:
-    - description: |
-        Total number of incoming bytes.
+    - name: bytes
+      type: long
       format: bytes
-      name: bytes
-      type: long
-    - description: |
-        Total number of dropped incoming packets.
-      name: dropped
+      description: |
+        Total number of incoming bytes.
+    - name: dropped
       type: scaled_float
-    - description: |
+      description: |
+        Total number of dropped incoming packets.
+    - name: errors
+      type: long
+      description: |
         Total errors on incoming packets.
-      name: errors
+    - name: packets
       type: long
-    - description: |
+      description: |
         Total number of incoming packets.
-      name: packets
-      type: long
-    name: in
+  - name: out
     type: group
-  - deprecated: 6.4
     description: |
       Outgoing network stats per second.
     fields:
-    - description: |
-        Total number of outgoing bytes.
+    - name: bytes
+      type: long
       format: bytes
-      name: bytes
-      type: long
-    - description: |
-        Total number of dropped outgoing packets.
-      name: dropped
+      description: |
+        Total number of outgoing bytes.
+    - name: dropped
       type: scaled_float
-    - description: |
+      description: |
+        Total number of dropped outgoing packets.
+    - name: errors
+      type: long
+      description: |
         Total errors on outgoing packets.
-      name: errors
+    - name: packets
       type: long
-    - description: |
+      description: |
         Total number of outgoing packets.
-      name: packets
-      type: long
-    name: out
+  - name: inbound
     type: group
-  - description: |
+    description: |
       Incoming network stats since the container started.
     fields:
-    - description: |
-        Total number of incoming bytes.
+    - name: bytes
+      type: long
       format: bytes
-      name: bytes
+      description: |
+        Total number of incoming bytes.
+    - name: dropped
       type: long
-    - description: |
+      description: |
         Total number of dropped incoming packets.
-      name: dropped
+    - name: errors
       type: long
-    - description: |
+      description: |
         Total errors on incoming packets.
-      name: errors
+    - name: packets
       type: long
-    - description: |
+      description: |
         Total number of incoming packets.
-      name: packets
-      type: long
-    name: inbound
+  - name: outbound
     type: group
-  - description: |
+    description: |
       Outgoing network stats since the container started.
     fields:
-    - description: |
-        Total number of outgoing bytes.
+    - name: bytes
+      type: long
       format: bytes
-      name: bytes
+      description: |
+        Total number of outgoing bytes.
+    - name: dropped
       type: long
-    - description: |
+      description: |
         Total number of dropped outgoing packets.
-      name: dropped
+    - name: errors
       type: long
-    - description: |
+      description: |
         Total errors on outgoing packets.
-      name: errors
+    - name: packets
       type: long
-    - description: |
+      description: |
         Total number of outgoing packets.
-      name: packets
-      type: long
-    name: outbound
-    type: group
-  name: docker.network
-  release: ga
-  type: group

@@ -1,4 +1,2 @@
-- description: ""
-  fields: null
-  name: rabbitmq
+- name: rabbitmq
   type: group

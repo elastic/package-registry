@@ -1,7 +1,5 @@
-- description: |
-    container service
-  name: container_service.*.*
-  object_type: float
-  object_type_mapping_type: '*'
-  release: ga
+- name: container_service.*.*
   type: object
+  description: |
+    container service
+  release: ga

@@ -1,25 +1,25 @@
-- description: |
+- name: system.syslog
+  type: group
+  description: |
     Contains fields from the syslog system logs.
   fields:
-  - migration: true
-    name: timestamp
+  - name: timestamp
+    type: alias
     path: '@timestamp'
+    migration: true
+  - name: hostname
     type: alias
-  - migration: true
-    name: hostname
     path: host.hostname
+    migration: true
+  - name: program
     type: alias
-  - migration: true
-    name: program
     path: process.name
+    migration: true
+  - name: pid
     type: alias
-  - migration: true
-    name: pid
     path: process.pid
+    migration: true
+  - name: message
     type: alias
-  - migration: true
-    name: message
     path: message
-    type: alias
-  name: system.syslog
-  type: group
+    migration: true

@@ -1,225 +1,225 @@
-- description: |
+- name: mysql.galera_status
+  type: group
+  description: |
     `galera_status` contains the metrics that were obtained by the status SQL query on Galera.
+  release: beta
   fields:
-  - description: |
+  - name: apply
+    type: group
+    description: |
       Apply status fields.
     fields:
-    - description: |
+    - name: oooe
+      type: double
+      description: |
         How often applier started write-set applying out-of-order (parallelization efficiency).
-      name: oooe
+    - name: oool
       type: double
-    - description: |
+      description: |
         How often write-set was so slow to apply that write-set with higher seqno's were applied earlier. Values closer to 0 refer to a greater gap between slow and fast write-sets.
-      name: oool
+    - name: window
       type: double
-    - description: |
+      description: |
         Average distance between highest and lowest concurrently applied seqno.
-      name: window
-      type: double
-    name: apply
+  - name: cert
     type: group
-  - description: |
+    description: |
       Certification status fields.
     fields:
-    - description: |
+    - name: deps_distance
+      type: double
+      description: |
         Average distance between highest and lowest seqno value that can be possibly applied in parallel (potential degree of parallelization).
-      name: deps_distance
-      type: double
-    - description: |
-        The number of entries in the certification index.
-      name: index_size
+    - name: index_size
       type: long
-    - description: |
-        Average number of transactions received while a transaction replicates.
-      name: interval
+      description: |
+        The number of entries in the certification index.
+    - name: interval
       type: double
-    name: cert
+      description: |
+        Average number of transactions received while a transaction replicates.
+  - name: cluster
     type: group
-  - description: |
+    description: |
       Cluster status fields.
     fields:
-    - description: |
+    - name: conf_id
+      type: long
+      description: |
         Total number of cluster membership changes happened.
-      name: conf_id
+    - name: size
       type: long
-    - description: |
+      description: |
         Current number of members in the cluster.
-      name: size
-      type: long
-    - description: |
-        Status of this cluster component. That is, whether the node is part of a PRIMARY or NON_PRIMARY component.
-      name: status
+    - name: status
       type: keyword
-    name: cluster
+      description: |
+        Status of this cluster component. That is, whether the node is part of a PRIMARY or NON_PRIMARY component.
+  - name: commit
     type: group
-  - description: |
+    description: |
       Commit status fields.
     fields:
-    - description: |
-        How often a transaction was committed out of order.
-      name: oooe
+    - name: oooe
       type: double
-    - description: |
-        Average distance between highest and lowest concurrently committed seqno.
-      name: window
+      description: |
+        How often a transaction was committed out of order.
+    - name: window
       type: long
-    name: commit
-    type: group
-  - description: |
-      If the value is OFF, the node has not yet connected to any of the cluster components. This may be due to misconfiguration. Check the error log for proper diagnostics.
-    name: connected
+      description: |
+        Average distance between highest and lowest concurrently committed seqno.
+  - name: connected
     type: keyword
-  - description: |
+    description: |
+      If the value is OFF, the node has not yet connected to any of the cluster components. This may be due to misconfiguration. Check the error log for proper diagnostics.
+  - name: evs
+    type: group
+    description: |
       Evs Fields.
     fields:
-    - description: |
+    - name: evict
+      type: keyword
+      description: |
         Lists the UUID's of all nodes evicted from the cluster. Evicted nodes cannot rejoin the cluster until you restart their mysqld processes.
-      name: evict
+    - name: state
       type: keyword
-    - description: |
+      description: |
         Shows the internal state of the EVS Protocol.
-      name: state
-      type: keyword
-    name: evs
+  - name: flow_ctl
     type: group
-  - description: |
+    description: |
       Flow Control fields.
     fields:
-    - description: |
-        The fraction of time since the last FLUSH STATUS command that replication was paused due to flow control. In other words, how much the slave lag is slowing down the cluster.
-      name: paused
+    - name: paused
       type: double
-    - description: |
+      description: |
+        The fraction of time since the last FLUSH STATUS command that replication was paused due to flow control. In other words, how much the slave lag is slowing down the cluster.
+    - name: paused_ns
+      type: long
+      description: |
         The total time spent in a paused state measured in nanoseconds.
-      name: paused_ns
+    - name: recv
       type: long
-    - description: |
+      description: |
         Returns the number of FC_PAUSE events the node has received, including those the node has sent. Unlike most status variables, the counter for this one does not reset every time you run the query.
-      name: recv
+    - name: sent
       type: long
-    - description: |
+      description: |
         Returns the number of FC_PAUSE events the node has sent. Unlike most status variables, the counter for this one does not reset every time you run the query.
-      name: sent
-      type: long
-    name: flow_ctl
-    type: group
-  - description: |
-      The sequence number, or seqno, of the last committed transaction.
-    name: last_committed
+  - name: last_committed
     type: long
-  - description: |
+    description: |
+      The sequence number, or seqno, of the last committed transaction.
+  - name: local
+    type: group
+    description: |
       Node specific Cluster status fields.
     fields:
-    - description: |
+    - name: bf_aborts
+      type: long
+      description: |
         Total number of local transactions that were aborted by slave transactions while in execution.
-      name: bf_aborts
+    - name: cert_failures
       type: long
-    - description: |
+      description: |
         Total number of local transactions that failed certification test.
-      name: cert_failures
+    - name: commits
       type: long
-    - description: |
+      description: |
         Total number of local transactions committed.
-      name: commits
-      type: long
-    - description: |
+    - name: recv
+      type: group
+      description: |
         Node specific recv fields.
       fields:
-      - description: |
+      - name: queue
+        type: long
+        description: |
           Current (instantaneous) length of the recv queue.
-        name: queue
-        type: long
-      - description: |
-          Recv queue length averaged over interval since the last FLUSH STATUS command. Values considerably larger than 0.0 mean that the node cannot apply write-sets as fast as they are received and will generate a lot of replication throttling.
-        name: queue_avg
+      - name: queue_avg
         type: double
-      - description: |
+        description: |
+          Recv queue length averaged over interval since the last FLUSH STATUS command. Values considerably larger than 0.0 mean that the node cannot apply write-sets as fast as they are received and will generate a lot of replication throttling.
+      - name: queue_max
+        type: long
+        description: |
           The maximum length of the recv queue since the last FLUSH STATUS command.
-        name: queue_max
+      - name: queue_min
         type: long
-      - description: |
+        description: |
           The minimum length of the recv queue since the last FLUSH STATUS command.
-        name: queue_min
-        type: long
-      name: recv
-      type: group
-    - description: |
-        Total number of transaction replays due to asymmetric lock granularity.
-      name: replays
+    - name: replays
       type: long
-    - description: |
+      description: |
+        Total number of transaction replays due to asymmetric lock granularity.
+    - name: send
+      type: group
+      description: |
         Node specific sent fields.
       fields:
-      - description: |
+      - name: queue
+        type: long
+        description: |
           Current (instantaneous) length of the send queue.
-        name: queue
-        type: long
-      - description: |
-          Send queue length averaged over time since the last FLUSH STATUS command. Values considerably larger than 0.0 indicate replication throttling or network throughput issue.
-        name: queue_avg
+      - name: queue_avg
         type: double
-      - description: |
+        description: |
+          Send queue length averaged over time since the last FLUSH STATUS command. Values considerably larger than 0.0 indicate replication throttling or network throughput issue.
+      - name: queue_max
+        type: long
+        description: |
           The maximum length of the send queue since the last FLUSH STATUS command.
-        name: queue_max
+      - name: queue_min
         type: long
-      - description: |
+        description: |
           The minimum length of the send queue since the last FLUSH STATUS command.
-        name: queue_min
-        type: long
-      name: send
-      type: group
-    - description: |
-        Internal Galera Cluster FSM state number.
-      name: state
+    - name: state
       type: keyword
-    name: local
-    type: group
-  - description: |
-      Whether the server is ready to accept queries.
-    name: ready
+      description: |
+        Internal Galera Cluster FSM state number.
+  - name: ready
     type: keyword
-  - description: |
+    description: |
+      Whether the server is ready to accept queries.
+  - name: received
+    type: group
+    description: |
       Write-Set receive status fields.
     fields:
-    - description: |
+    - name: count
+      type: long
+      description: |
         Total number of write-sets received from other nodes.
-      name: count
+    - name: bytes
       type: long
-    - description: |
+      description: |
         Total size of write-sets received from other nodes.
-      name: bytes
-      type: long
-    name: received
+  - name: repl
     type: group
-  - description: |
+    description: |
       Replication status fields.
     fields:
-    - description: |
+    - name: data_bytes
+      type: long
+      description: |
         Total size of data replicated.
-      name: data_bytes
+    - name: keys
       type: long
-    - description: |
+      description: |
         Total number of keys replicated.
-      name: keys
+    - name: keys_bytes
       type: long
-    - description: |
+      description: |
         Total size of keys replicated.
-      name: keys_bytes
+    - name: other_bytes
       type: long
-    - description: |
+      description: |
         Total size of other bits replicated.
-      name: other_bytes
+    - name: count
       type: long
-    - description: |
+      description: |
         Total number of write-sets replicated (sent to other nodes).
-      name: count
+    - name: bytes
       type: long
-    - description: |
+      description: |
         Total size of write-sets replicated.
-      name: bytes
-      type: long
-    name: repl
-    type: group
-  name: mysql.galera_status
-  release: beta
-  type: group

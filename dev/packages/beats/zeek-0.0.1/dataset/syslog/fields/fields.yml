@@ -1,18 +1,17 @@
-- default_field: false
+- name: zeek.syslog
+  type: group
   description: |
     Fields exported by the Zeek syslog log.
   fields:
-  - description: |
+  - name: facility
+    type: keyword
+    description: |
       Syslog facility for the message.
-    name: facility
+  - name: severity
     type: keyword
-  - description: |
+    description: |
       Syslog severity for the message.
-    name: severity
+  - name: message
     type: keyword
-  - description: |
+    description: |
       The plain text message.
-    name: message
-    type: keyword
-  name: zeek.syslog
-  type: group

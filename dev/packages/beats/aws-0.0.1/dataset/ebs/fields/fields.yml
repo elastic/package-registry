@@ -1,6 +1,5 @@
-- description: |
-    `ebs` contains the metrics that were scraped from AWS CloudWatch which contains monitoring metrics sent by AWS EBS.
-  fields: null
-  name: aws.ebs
-  release: ga
+- name: aws.ebs
   type: group
+  description: |
+    `ebs` contains the metrics that were scraped from AWS CloudWatch which contains monitoring metrics sent by AWS EBS.
+  release: ga

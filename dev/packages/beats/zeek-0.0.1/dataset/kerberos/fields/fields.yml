@@ -1,104 +1,103 @@
-- default_field: false
+- name: zeek.kerberos
+  type: group
   description: |
     Fields exported by the Zeek Kerberos log
   fields:
-  - description: |
+  - name: request_type
+    type: keyword
+    description: |
       Request type - Authentication Service (AS) or Ticket Granting Service (TGS).
-    name: request_type
+  - name: client
     type: keyword
-  - description: |
+    description: |
       Client name.
-    name: client
+  - name: service
     type: keyword
-  - description: |
+    description: |
       Service name.
-    name: service
-    type: keyword
-  - description: |
+  - name: success
+    type: boolean
+    description: |
       Request result.
-    name: success
-    type: boolean
-  - fields:
-    - description: |
+  - name: error
+    type: group
+    fields:
+    - name: code
+      type: integer
+      description: |
         Error code.
-      name: code
-      type: integer
-    - description: |
+    - name: msg
+      type: keyword
+      description: |
         Error message.
-      name: msg
-      type: keyword
-    name: error
+  - name: valid
     type: group
-  - fields:
-    - description: |
+    fields:
+    - name: from
+      type: date
+      description: |
         Ticket valid from.
-      name: from
+    - name: until
       type: date
-    - description: |
+      description: |
         Ticket valid until.
-      name: until
-      type: date
-    - description: |
-        Number of days the ticket is valid for.
-      name: days
+    - name: days
       type: integer
-    name: valid
-    type: group
-  - description: |
-      Ticket encryption type.
-    name: cipher
+      description: |
+        Number of days the ticket is valid for.
+  - name: cipher
     type: keyword
-  - description: |
+    description: |
+      Ticket encryption type.
+  - name: forwardable
+    type: boolean
+    description: |
       Forwardable ticket requested.
-    name: forwardable
+  - name: renewable
     type: boolean
-  - description: |
+    description: |
       Renewable ticket requested.
-    name: renewable
-    type: boolean
-  - fields:
-    - description: |
+  - name: ticket
+    type: group
+    fields:
+    - name: auth
+      type: keyword
+      description: |
         Hash of ticket used to authorize request/transaction.
-      name: auth
+    - name: new
       type: keyword
-    - description: |
+      description: |
         Hash of ticket returned by the KDC.
-      name: new
-      type: keyword
-    name: ticket
+  - name: cert
     type: group
-  - fields:
-    - fields:
-      - description: |
+    fields:
+    - name: client
+      type: group
+      fields:
+      - name: value
+        type: keyword
+        description: |
           Client certificate.
-        name: value
+      - name: fuid
         type: keyword
-      - description: |
+        description: |
           File unique ID of client cert.
-        name: fuid
+      - name: subject
         type: keyword
-      - description: |
+        description: |
           Subject of client certificate.
-        name: subject
-        type: keyword
-      name: client
+    - name: server
       type: group
-    - fields:
-      - description: |
+      fields:
+      - name: value
+        type: keyword
+        description: |
           Server certificate.
-        name: value
+      - name: fuid
         type: keyword
-      - description: |
+        description: |
           File unique ID of server certificate.
-        name: fuid
+      - name: subject
         type: keyword
-      - description: |
+        description: |
           Subject of server certificate.
-        name: subject
-        type: keyword
-      name: server
-      type: group
-    name: cert
-    type: group
-  name: zeek.kerberos
-  type: group

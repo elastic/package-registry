@@ -1,41 +1,41 @@
-- description: Broker metrics from org.apache.activemq:brokerName=*,type=Broker
-  fields:
-  - description: Mbean that this event is related to
-    name: mbean
-    type: keyword
-  - description: Broker name
-    name: name
-    type: keyword
-  - description: The percentage of the memory limit used.
-    format: percent
-    name: memory.broker.pct
-    type: scaled_float
-  - description: Percent of store limit used.
-    format: percent
-    name: memory.store.pct
-    type: scaled_float
-  - description: The percentage of the temp usage limit used.
-    format: percent
-    name: memory.temp.pct
-    type: scaled_float
-  - description: Total number of connections.
-    name: connections.count
-    type: long
-  - description: Number of message consumers.
-    name: consumers.count
-    type: long
-  - description: Number of messages that have been acknowledged on the broker.
-    name: messages.dequeue.count
-    type: long
-  - description: Number of messages that have been sent to the destination.
-    name: messages.enqueue.count
-    type: long
-  - description: Number of unacknowledged messages on the broker.
-    name: messages.count
-    type: long
-  - description: Number of message producers active on destinations on the broker.
-    name: producers.count
-    type: long
-  name: activemq.broker
-  release: ga
+- name: activemq.broker
   type: group
+  description: Broker metrics from org.apache.activemq:brokerName=*,type=Broker
+  release: ga
+  fields:
+  - name: mbean
+    type: keyword
+    description: Mbean that this event is related to
+  - name: name
+    type: keyword
+    description: Broker name
+  - name: memory.broker.pct
+    type: scaled_float
+    format: percent
+    description: The percentage of the memory limit used.
+  - name: memory.store.pct
+    type: scaled_float
+    format: percent
+    description: Percent of store limit used.
+  - name: memory.temp.pct
+    type: scaled_float
+    format: percent
+    description: The percentage of the temp usage limit used.
+  - name: connections.count
+    type: long
+    description: Total number of connections.
+  - name: consumers.count
+    type: long
+    description: Number of message consumers.
+  - name: messages.dequeue.count
+    type: long
+    description: Number of messages that have been acknowledged on the broker.
+  - name: messages.enqueue.count
+    type: long
+    description: Number of messages that have been sent to the destination.
+  - name: messages.count
+    type: long
+    description: Number of unacknowledged messages on the broker.
+  - name: producers.count
+    type: long
+    description: Number of message producers active on destinations on the broker.

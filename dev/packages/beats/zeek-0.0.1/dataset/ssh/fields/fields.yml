@@ -1,67 +1,66 @@
-- default_field: false
+- name: zeek.ssh
+  type: group
   description: |
     Fields exported by the Zeek SSH log.
   fields:
-  - description: |
-      The client's version string.
-    name: client
+  - name: client
     type: keyword
-  - description: |
+    description: |
+      The client's version string.
+  - name: direction
+    type: keyword
+    description: |
       Direction of the connection. If the client was a local host logging into
       an external host, this would be OUTBOUND. INBOUND would be set for the
       opposite situation.
-    name: direction
+  - name: host_key
     type: keyword
-  - description: |
+    description: |
       The server's key thumbprint.
-    name: host_key
+  - name: server
     type: keyword
-  - description: |
+    description: |
       The server's version string.
-    name: server
-    type: keyword
-  - description: |
-      SSH major version (1 or 2).
-    name: version
+  - name: version
     type: integer
-  - description: |
+    description: |
+      SSH major version (1 or 2).
+  - name: algorithm
+    type: group
+    description: |
       Cipher algorithms used in this session.
     fields:
-    - description: |
+    - name: cipher
+      type: keyword
+      description: |
         The encryption algorithm in use.
-      name: cipher
+    - name: compression
       type: keyword
-    - description: |
+      description: |
         The compression algorithm in use.
-      name: compression
+    - name: host_key
       type: keyword
-    - description: |
+      description: |
         The server host key's algorithm.
-      name: host_key
+    - name: key_exchange
       type: keyword
-    - description: |
+      description: |
         The key exchange algorithm in use.
-      name: key_exchange
+    - name: mac
       type: keyword
-    - description: |
+      description: |
         The signing (MAC) algorithm in use.
-      name: mac
-      type: keyword
-    name: algorithm
+  - name: auth
     type: group
-  - fields:
-    - description: |
+    fields:
+    - name: attempts
+      type: integer
+      description: |
         The number of authentication attemps we observed. There's always at
         least one, since some servers might support no authentication at all.
         It's important to note that not all of these are failures, since some
         servers require two-factor auth (e.g. password AND pubkey).
-      name: attempts
-      type: integer
-    - description: |
-        Authentication result.
-      name: success
+    - name: success
       type: boolean
-    name: auth
-    type: group
-  name: zeek.ssh
-  type: group
+      description: |
+        Authentication result.

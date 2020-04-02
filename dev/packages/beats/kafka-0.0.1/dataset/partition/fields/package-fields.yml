@@ -1,35 +1,34 @@
-- description: ""
+- name: kafka
+  type: group
   fields:
-  - description: |
+  - name: broker
+    type: group
+    description: |
       Broker Consumer Group Information have been read from (Broker handling the consumer group).
     fields:
-    - description: |
-        Broker id
-      name: id
+    - name: id
       type: long
-    - description: |
-        Broker advertised address
-      name: address
+      description: |
+        Broker id
+    - name: address
       type: keyword
-    name: broker
-    type: group
-  - description: |
+      description: |
+        Broker advertised address
+  - name: topic.name
+    type: keyword
+    description: |
       Topic name
-    name: topic.name
-    type: keyword
-  - description: |
+  - name: topic.error.code
+    type: long
+    description: |
       Topic error code.
-    name: topic.error.code
+  - name: partition.id
     type: long
-  - description: |
+    description: |
       Partition id.
-    name: partition.id
-    type: long
-  - description: Unique id of the partition in the topic.
-    name: partition.topic_id
+  - name: partition.topic_id
     type: keyword
-  - description: Unique id of the partition in the topic and the broker.
-    name: partition.topic_broker_id
+    description: Unique id of the partition in the topic.
+  - name: partition.topic_broker_id
     type: keyword
-  name: kafka
-  type: group
+    description: Unique id of the partition in the topic and the broker.

@@ -1,23 +1,23 @@
-- description: Requests processor metrics from GlobalRequestProcessor JMX
-  fields:
-  - description: Mbean that this event is related to
-    name: mbean
-    type: keyword
-  - description: Number of requests processed
-    name: total
-    type: long
-  - description: Amount of data received, in bytes
-    name: bytes.received
-    type: long
-  - description: Amount of data sent, in bytes
-    name: bytes.sent
-    type: long
-  - description: Total time to process the requests
-    name: processing.ms
-    type: long
-  - description: Number of errors
-    name: errors.total
-    type: long
-  name: tomcat.requests
-  release: beta
+- name: tomcat.requests
   type: group
+  description: Requests processor metrics from GlobalRequestProcessor JMX
+  release: beta
+  fields:
+  - name: mbean
+    type: keyword
+    description: Mbean that this event is related to
+  - name: total
+    type: long
+    description: Number of requests processed
+  - name: bytes.received
+    type: long
+    description: Amount of data received, in bytes
+  - name: bytes.sent
+    type: long
+    description: Amount of data sent, in bytes
+  - name: processing.ms
+    type: long
+    description: Total time to process the requests
+  - name: errors.total
+    type: long
+    description: Number of errors

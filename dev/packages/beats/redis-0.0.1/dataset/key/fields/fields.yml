@@ -1,26 +1,26 @@
-- description: |
-    `key` contains information about keys.
-  fields:
-  - description: |
-      Key name.
-    name: name
-    type: keyword
-  - description: |
-      Unique id for this key (With the form <keyspace>:<name>).
-    name: id
-    type: keyword
-  - description: |
-      Key type as shown by `TYPE` command.
-    name: type
-    type: keyword
-  - description: |
-      Length of the key (Number of elements for lists, length for strings, cardinality for sets).
-    name: length
-    type: long
-  - description: |
-      Seconds to expire.
-    name: expire.ttl
-    type: long
-  name: redis.key
-  release: ga
+- name: redis.key
   type: group
+  description: |
+    `key` contains information about keys.
+  release: ga
+  fields:
+  - name: name
+    type: keyword
+    description: |
+      Key name.
+  - name: id
+    type: keyword
+    description: |
+      Unique id for this key (With the form <keyspace>:<name>).
+  - name: type
+    type: keyword
+    description: |
+      Key type as shown by `TYPE` command.
+  - name: length
+    type: long
+    description: |
+      Length of the key (Number of elements for lists, length for strings, cardinality for sets).
+  - name: expire.ttl
+    type: long
+    description: |
+      Seconds to expire.

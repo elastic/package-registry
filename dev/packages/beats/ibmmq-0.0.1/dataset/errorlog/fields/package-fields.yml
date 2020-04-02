@@ -1,4 +1,2 @@
-- description: ""
-  fields: null
-  name: ibmmq
+- name: ibmmq
   type: group

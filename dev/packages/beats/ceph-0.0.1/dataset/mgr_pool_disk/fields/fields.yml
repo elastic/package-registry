@@ -1,6 +1,5 @@
-- description: |
-    see: pool_disk
-  fields: null
-  name: ceph.mgr_pool_disk
-  release: beta
+- name: ceph.mgr_pool_disk
   type: group
+  description: |
+    see: pool_disk
+  release: beta

@@ -1,5 +1,4 @@
-- description: |
-    Fields from ActiveMQ audit logs.
-  fields: null
-  name: activemq.audit
+- name: activemq.audit
   type: group
+  description: |
+    Fields from ActiveMQ audit logs.

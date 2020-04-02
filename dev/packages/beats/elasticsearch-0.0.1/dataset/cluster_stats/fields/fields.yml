@@ -1,53 +1,53 @@
-- description: |
+- name: cluster.stats
+  type: group
+  description: |
     Cluster stats
+  release: ga
   fields:
-  - description: |
-      Cluster status (green, yellow, red).
-    name: status
+  - name: status
     type: keyword
-  - description: |
+    description: |
+      Cluster status (green, yellow, red).
+  - name: nodes
+    type: group
+    description: |
       Nodes statistics.
     fields:
-    - description: |
+    - name: count
+      type: long
+      description: |
         Total number of nodes in cluster.
-      name: count
+    - name: master
       type: long
-    - description: |
+      description: |
         Number of master-eligible nodes in cluster.
-      name: master
+    - name: data
       type: long
-    - description: |
+      description: |
         Number of data nodes in cluster.
-      name: data
-      type: long
-    name: nodes
+  - name: indices
     type: group
-  - description: |
+    description: |
       Indices statistics.
     fields:
-    - description: |
-        Total number of indices in cluster.
-      name: count
+    - name: count
       type: long
-    - description: |
+      description: |
+        Total number of indices in cluster.
+    - name: shards
+      type: group
+      description: |
         Shard statistics.
       fields:
-      - description: |
+      - name: count
+        type: long
+        description: |
           Total number of shards in cluster.
-        name: count
+      - name: primaries
         type: long
-      - description: |
+        description: |
           Total number of primary shards in cluster.
-        name: primaries
-        type: long
-      name: shards
-      type: group
-    - description: |
-        Memory used for fielddata.
-      name: fielddata.memory.bytes
+    - name: fielddata.memory.bytes
       type: long
-    name: indices
-    type: group
-  name: cluster.stats
-  release: ga
-  type: group
+      description: |
+        Memory used for fielddata.

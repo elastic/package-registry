@@ -1,52 +1,47 @@
-- description: |
+- name: postgresql.log
+  type: group
+  description: |
     Fields from the PostgreSQL log files.
   fields:
-  - deprecated: 7.3.0
+  - name: timestamp
     description: |
       The timestamp from the log line.
-    name: timestamp
-  - description: |
+  - name: core_id
+    type: long
+    description: |
       Core id
-    name: core_id
-    type: long
-  - description: |
+  - name: database
+    description: |
       Name of database
-    example: mydb
-    name: database
-  - description: |
+  - name: query
+    description: |
       Query statement.
-    example: SELECT * FROM users;
-    name: query
-  - description: |
+  - name: query_step
+    description: |
       Statement step when using extended query protocol (one of statement, parse, bind or execute)
-    example: parse
-    name: query_step
-  - description: |
+  - name: query_name
+    description: |
       Name given to a query when using extended query protocol. If it is "<unnamed>", or not present, this field is ignored.
-    example: pdo_stmt_00000001
-    name: query_name
-  - description: Error code returned by Postgres (if any)
-    name: error.code
+  - name: error.code
     type: long
-  - migration: true
-    name: timezone
+    description: Error code returned by Postgres (if any)
+  - name: timezone
+    type: alias
     path: event.timezone
+    migration: true
+  - name: thread_id
     type: alias
-  - migration: true
-    name: thread_id
     path: process.pid
+    migration: true
+  - name: user
     type: alias
-  - migration: true
-    name: user
     path: user.name
+    migration: true
+  - name: level
     type: alias
-  - migration: true
-    name: level
     path: log.level
+    migration: true
+  - name: message
     type: alias
-  - migration: true
-    name: message
     path: message
-    type: alias
-  name: postgresql.log
-  type: group
+    migration: true

@@ -1,156 +1,156 @@
-- description: |
+- name: azure.signinlogs
+  type: group
+  description: |
     Fields for Azure sign-in logs.
   fields:
-  - description: |
+  - name: operation_name
+    type: keyword
+    description: |
       The operation name
-    name: operation_name
+  - name: operation_version
     type: keyword
-  - description: |
+    description: |
       The operation version
-    name: operation_version
+  - name: tenant_id
     type: keyword
-  - description: |
+    description: |
       Tenant ID
-    name: tenant_id
+  - name: result_signature
     type: keyword
-  - description: |
+    description: |
       Result signature
-    name: result_signature
+  - name: result_description
     type: keyword
-  - description: |
+    description: |
       Result description
-    name: result_description
+  - name: identity
     type: keyword
-  - description: |
+    description: |
       Identity
-    name: identity
-    type: keyword
-  - description: |
+  - name: properties
+    type: group
+    description: |
       The signin log properties
     fields:
-    - description: |
+    - name: id
+      type: keyword
+      description: |
         ID
-      name: id
-      type: keyword
-    - description: |
-        Created date time
-      name: created_at
+    - name: created_at
       type: date
-    - description: |
+      description: |
+        Created date time
+    - name: user_display_name
+      type: keyword
+      description: |
         User display name
-      name: user_display_name
+    - name: correlation_id
       type: keyword
-    - description: |
+      description: |
         Correlation ID
-      name: correlation_id
+    - name: user_principal_name
       type: keyword
-    - description: |
+      description: |
         User principal name
-      name: user_principal_name
+    - name: user_id
       type: keyword
-    - description: |
+      description: |
         User ID
-      name: user_id
+    - name: app_id
       type: keyword
-    - description: |
+      description: |
         App ID
-      name: app_id
+    - name: app_display_name
       type: keyword
-    - description: |
+      description: |
         App display name
-      name: app_display_name
+    - name: ip_address
       type: keyword
-    - description: |
+      description: |
         Ip address
-      name: ip_address
+    - name: client_app_used
       type: keyword
-    - description: |
+      description: |
         Client app used
-      name: client_app_used
+    - name: conditional_access_status
       type: keyword
-    - description: |
+      description: |
         Conditional access status
-      name: conditional_access_status
+    - name: original_request_id
       type: keyword
-    - description: |
+      description: |
         Original request ID
-      name: original_request_id
+    - name: is_interactive
       type: keyword
-    - description: |
+      description: |
         Is interactive
-      name: is_interactive
+    - name: token_issuer_name
       type: keyword
-    - description: |
+      description: |
         Token issuer name
-      name: token_issuer_name
+    - name: token_issuer_type
       type: keyword
-    - description: |
+      description: |
         Token issuer type
-      name: token_issuer_type
-      type: keyword
-    - description: |
-        Processing time in milliseconds
-      name: processing_time_ms
+    - name: processing_time_ms
       type: float
-    - description: |
+      description: |
+        Processing time in milliseconds
+    - name: risk_detail
+      type: keyword
+      description: |
         Risk detail
-      name: risk_detail
+    - name: risk_level_aggregated
       type: keyword
-    - description: |
+      description: |
         Risk level aggregated
-      name: risk_level_aggregated
+    - name: risk_level_during_signin
       type: keyword
-    - description: |
+      description: |
         Risk level during signIn
-      name: risk_level_during_signin
+    - name: risk_state
       type: keyword
-    - description: |
+      description: |
         Risk state
-      name: risk_state
+    - name: resource_display_name
       type: keyword
-    - description: |
+      description: |
         Resource display name
-      name: resource_display_name
-      type: keyword
-    - description: |
+    - name: status
+      type: group
+      description: |
         Status
       fields:
-      - description: |
+      - name: error_code
+        type: keyword
+        description: |
           Error code
-        name: error_code
-        type: keyword
-      name: status
+    - name: device_detail
       type: group
-    - description: |
+      description: |
         Status
       fields:
-      - description: |
+      - name: device_id
+        type: keyword
+        description: |
           Device ID
-        name: device_id
+      - name: operating_system
         type: keyword
-      - description: |
+        description: |
           Operating system
-        name: operating_system
+      - name: browser
         type: keyword
-      - description: |
+        description: |
           Browser
-        name: browser
+      - name: display_name
         type: keyword
-      - description: |
+        description: |
           Display name
-        name: display_name
+      - name: trust_type
         type: keyword
-      - description: |
+        description: |
           Trust type
-        name: trust_type
-        type: keyword
-      name: device_detail
-      type: group
-    - description: |
-        Status
-      name: service_principal_id
+    - name: service_principal_id
       type: keyword
-    name: properties
-    type: group
-  name: azure.signinlogs
-  type: group
+      description: |
+        Status

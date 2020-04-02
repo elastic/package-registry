@@ -1,9 +1,8 @@
-- description: |
+- name: rabbitmq.log
+  type: group
+  description: |
     RabbitMQ log files
   fields:
-  - description: The Erlang process id
-    example: <0.222.0>
-    name: pid
+  - name: pid
     type: keyword
-  name: rabbitmq.log
-  type: group
+    description: The Erlang process id

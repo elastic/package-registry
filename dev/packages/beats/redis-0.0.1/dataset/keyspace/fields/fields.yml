@@ -1,21 +1,20 @@
-- description: |
-    `keyspace` contains the information about the keyspaces returned by the `INFO` command.
-  fields:
-  - description: |
-      Keyspace identifier.
-    name: id
-    type: keyword
-  - description: |
-      Average ttl.
-    name: avg_ttl
-    type: long
-  - description: |
-      Number of keys in the keyspace.
-    name: keys
-    type: long
-  - description: ""
-    name: expires
-    type: long
-  name: redis.keyspace
-  release: ga
+- name: redis.keyspace
   type: group
+  description: |
+    `keyspace` contains the information about the keyspaces returned by the `INFO` command.
+  release: ga
+  fields:
+  - name: id
+    type: keyword
+    description: |
+      Keyspace identifier.
+  - name: avg_ttl
+    type: long
+    description: |
+      Average ttl.
+  - name: keys
+    type: long
+    description: |
+      Number of keys in the keyspace.
+  - name: expires
+    type: long

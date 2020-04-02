@@ -1,4 +1,2 @@
-- description: ""
-  fields: null
-  name: vsphere
+- name: vsphere
   type: group

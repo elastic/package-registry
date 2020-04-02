@@ -1,45 +1,44 @@
-- description: |
+- name: docker.image
+  type: group
+  description: |
     Docker image metrics.
+  release: ga
   fields:
-  - description: |
+  - name: id
+    type: group
+    description: |
       The image layers identifier.
     fields:
-    - description: |
+    - name: current
+      type: keyword
+      description: |
         Unique image identifier given upon its creation.
-      name: current
+    - name: parent
       type: keyword
-    - description: |
+      description: |
         Identifier of the image, if it exists, from which the current image directly descends.
-      name: parent
-      type: keyword
-    name: id
-    type: group
-  - description: |
-      Date and time when the image was created.
-    name: created
+  - name: created
     type: date
-  - description: |
+    description: |
+      Date and time when the image was created.
+  - name: size
+    type: group
+    description: |
       Image size layers.
     fields:
-    - description: |
+    - name: virtual
+      type: long
+      description: |
         Size of the image.
-      name: virtual
+    - name: regular
       type: long
-    - description: |
+      description: |
         Total size of the all cached images associated to the current image.
-      name: regular
-      type: long
-    name: size
-    type: group
-  - description: |
-      Image labels.
-    name: labels
-    object_type: keyword
+  - name: labels
     type: object
-  - description: |
-      Image tags.
-    name: tags
+    description: |
+      Image labels.
+  - name: tags
     type: keyword
-  name: docker.image
-  release: ga
-  type: group
+    description: |
+      Image tags.

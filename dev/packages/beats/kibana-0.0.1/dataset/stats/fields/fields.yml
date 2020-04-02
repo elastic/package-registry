@@ -1,101 +1,101 @@
-- description: |
+- name: kibana.stats
+  type: group
+  description: |
     Kibana stats and run-time metrics.
+  release: ga
   fields:
-  - description: |
+  - name: uuid
+    type: alias
+    description: |
       Kibana instance UUID
-    migration: true
-    name: uuid
     path: service.id
-    type: alias
-  - description: |
-      Kibana instance name
-    name: name
-    type: keyword
-  - description: |
-      Name of Kibana's internal index
-    name: index
-    type: keyword
-  - description: |
-      Kibana instance hostname
-    name: host.name
-    type: keyword
-  - description: |
-      Kibana version
     migration: true
-    name: version
-    path: service.version
-    type: alias
-  - description: |
-      Whether the Kibana build is a snapshot build
-    name: snapshot
-    type: boolean
-  - description: |
-      Kibana instance's health status
-    name: status
+  - name: name
     type: keyword
-  - description: |
-      Number of client connections made to the server. Note that browsers can send multiple simultaneous connections to request multiple server assets at once, and they can re-use established connections.
-    name: concurrent_connections
+    description: |
+      Kibana instance name
+  - name: index
+    type: keyword
+    description: |
+      Name of Kibana's internal index
+  - name: host.name
+    type: keyword
+    description: |
+      Kibana instance hostname
+  - name: version
+    type: alias
+    description: |
+      Kibana version
+    path: service.version
+    migration: true
+  - name: snapshot
+    type: boolean
+    description: |
+      Whether the Kibana build is a snapshot build
+  - name: status
+    type: keyword
+    description: |
+      Kibana instance's health status
+  - name: concurrent_connections
     type: long
-  - description: |
+    description: |
+      Number of client connections made to the server. Note that browsers can send multiple simultaneous connections to request multiple server assets at once, and they can re-use established connections.
+  - name: process
+    type: group
+    description: |
       Process metrics
     fields:
-    - description: |
-        Event loop delay in milliseconds
-      name: event_loop_delay.ms
+    - name: event_loop_delay.ms
       type: scaled_float
-    - description: |
+      description: |
+        Event loop delay in milliseconds
+    - name: memory.heap
+      type: group
+      description: |
         Process heap metrics
       fields:
-      - description: |
+      - name: total.bytes
+        type: long
+        format: bytes
+        description: |
           Total heap allocated to process in bytes
-        format: bytes
-        name: total.bytes
+      - name: used.bytes
         type: long
-      - description: |
+        format: bytes
+        description: |
           Heap used by process in bytes
-        format: bytes
-        name: used.bytes
+      - name: size_limit.bytes
         type: long
-      - description: |
+        format: bytes
+        description: |
           Max. old space size allocated to Node.js process, in bytes
-        format: bytes
-        name: size_limit.bytes
+      - name: uptime.ms
         type: long
-      - description: |
+        description: |
           Uptime of process in milliseconds
-        name: uptime.ms
-        type: long
-      name: memory.heap
-      type: group
-    name: process
+  - name: request
     type: group
-  - description: |
+    description: |
       Request count metrics
     fields:
-    - description: |
+    - name: disconnects
+      type: long
+      description: |
         Number of requests that were disconnected
-      name: disconnects
+    - name: total
       type: long
-    - description: |
+      description: |
         Total number of requests
-      name: total
-      type: long
-    name: request
+  - name: response_time
     type: group
-  - description: |
+    description: |
       Response times metrics
     fields:
-    - description: |
+    - name: avg.ms
+      type: long
+      description: |
         Average response time in milliseconds
-      name: avg.ms
+    - name: max.ms
       type: long
-    - description: |
+      description: |
         Maximum response time in milliseconds
-      name: max.ms
-      type: long
-    name: response_time
-    type: group
-  name: kibana.stats
-  release: ga
-  type: group

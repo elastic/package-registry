@@ -1,6 +1,5 @@
-- description: |
-    `vpn` contains the metrics from Cloudwatch to track usage of VPN related resources.
-  fields: null
-  name: aws.vpn
-  release: beta
+- name: aws.vpn
   type: group
+  description: |
+    `vpn` contains the metrics from Cloudwatch to track usage of VPN related resources.
+  release: beta

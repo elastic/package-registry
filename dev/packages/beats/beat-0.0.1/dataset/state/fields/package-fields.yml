@@ -1,12 +1,11 @@
-- description: ""
-  fields:
-  - description: |
-      Beat ID.
-    name: id
-    type: keyword
-  - description: |
-      Beat type.
-    name: type
-    type: keyword
-  name: beat
+- name: beat
   type: group
+  fields:
+  - name: id
+    type: keyword
+    description: |
+      Beat ID.
+  - name: type
+    type: keyword
+    description: |
+      Beat type.

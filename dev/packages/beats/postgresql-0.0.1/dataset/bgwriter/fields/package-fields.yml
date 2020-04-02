@@ -1,5 +1,4 @@
-- description: |
-    PostgreSQL metrics.
-  fields: null
-  name: postgresql
+- name: postgresql
   type: group
+  description: |
+    PostgreSQL metrics.

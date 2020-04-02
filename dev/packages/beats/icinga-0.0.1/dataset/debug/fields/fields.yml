@@ -1,17 +1,17 @@
-- description: |
+- name: icinga.debug
+  type: group
+  description: |
     Contains fields for the Icinga debug logs.
   fields:
-  - description: |
-      Specifies what component of Icinga logged the message.
-    name: facility
+  - name: facility
     type: keyword
-  - migration: true
-    name: severity
+    description: |
+      Specifies what component of Icinga logged the message.
+  - name: severity
+    type: alias
     path: log.level
+    migration: true
+  - name: message
     type: alias
-  - migration: true
-    name: message
     path: message
-    type: alias
-  name: icinga.debug
-  type: group
+    migration: true

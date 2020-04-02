@@ -1,31 +1,31 @@
-- description: |
+- name: deployment
+  type: group
+  description: |
     kubernetes deployment metrics
+  release: ga
   fields:
-  - description: |
-      Kubernetes deployment paused status
-    name: paused
+  - name: paused
     type: boolean
-  - description: |
+    description: |
+      Kubernetes deployment paused status
+  - name: replicas
+    type: group
+    description: |
       Kubernetes deployment replicas info
     fields:
-    - description: |
+    - name: desired
+      type: integer
+      description: |
         Deployment number of desired replicas (spec)
-      name: desired
+    - name: available
       type: integer
-    - description: |
+      description: |
         Deployment available replicas
-      name: available
+    - name: unavailable
       type: integer
-    - description: |
+      description: |
         Deployment unavailable replicas
-      name: unavailable
+    - name: updated
       type: integer
-    - description: |
+      description: |
         Deployment updated replicas
-      name: updated
-      type: integer
-    name: replicas
-    type: group
-  name: deployment
-  release: ga
-  type: group

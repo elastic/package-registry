@@ -1,304 +1,276 @@
-- description: |
+- name: uuid
+  type: keyword
+  description: |
     The unique identifier of the Okta LogEvent.
-  name: uuid
-  short: The unique identifier of the Okta LogEvent.
-  title: UUID
+- name: event_type
   type: keyword
-- description: |
+  description: |
     The type of the LogEvent.
-  name: event_type
-  short: The type of the LogEvent.
-  title: Event Type
+- name: version
   type: keyword
-- description: |
+  description: |
     The version of the LogEvent.
-  name: version
-  short: The version of the LogEvent.
-  title: Version
+- name: severity
   type: keyword
-- description: |
+  description: |
     The severity of the LogEvent. Must be one of DEBUG, INFO, WARN, or ERROR.
-  name: severity
-  short: The severity of the LogEvent.
-  title: Severity
+- name: display_message
   type: keyword
-- description: |
+  description: |
     The display message of the LogEvent.
-  name: display_message
-  short: The display message of the LogEvent.
-  title: Display Message
-  type: keyword
-- description: |
+- name: actor
+  type: group
+  description: |
     Fields that let you store information of the actor for the LogEvent.
   fields:
-  - description: |
+  - name: id
+    type: keyword
+    description: |
       Identifier of the actor.
-    name: id
+  - name: type
     type: keyword
-  - description: |
+    description: |
       Type of the actor.
-    name: type
+  - name: alternate_id
     type: keyword
-  - description: |
+    description: |
       Alternate identifier of the actor.
-    name: alternate_id
+  - name: display_name
     type: keyword
-  - description: |
+    description: |
       Display name of the actor.
-    name: display_name
-    type: keyword
-  name: actor
-  short: Fields of the actor for the LogEvent.
-  title: Actor
+- name: client
   type: group
-- description: |
+  description: |
     Fields that let you store information about the client of the actor.
   fields:
-  - description: |
-      The IP address of the client.
-    name: ip
+  - name: ip
     type: ip
-  - description: |
+    description: |
+      The IP address of the client.
+  - name: user_agent
+    type: group
+    description: |
       Fields about the user agent information of the client.
     fields:
-    - description: |
+    - name: raw_user_agent
+      type: keyword
+      description: |
         The raw informaton of the user agent.
-      name: raw_user_agent
+    - name: os
       type: keyword
-    - description: |
+      description: |
         The OS informaton.
-      name: os
+    - name: browser
       type: keyword
-    - description: |
+      description: |
         The browser informaton of the client.
-      name: browser
-      type: keyword
-    name: user_agent
-    type: group
-  - description: |
+  - name: zone
+    type: keyword
+    description: |
       The zone information of the client.
-    name: zone
+  - name: device
     type: keyword
-  - description: |
+    description: |
       The information of the client device.
-    name: device
+  - name: id
     type: keyword
-  - description: |
+    description: |
       The identifier of the client.
-    name: id
-    type: keyword
-  name: client
-  short: Fields about the client of the actor.
-  title: Client
+- name: outcome
   type: group
-- description: |
+  description: |
     Fields that let you store information about the outcome.
   fields:
-  - description: |
+  - name: reason
+    type: keyword
+    description: |
       The reason of the outcome.
-    name: reason
+  - name: result
     type: keyword
-  - description: |
+    description: |
       The result of the outcome. Must be one of: SUCCESS, FAILURE, SKIPPED, ALLOW, DENY, CHALLENGE, UNKNOWN.
-    name: result
-    type: keyword
-  name: outcome
-  short: Fields that let you store information about the outcome.
-  title: Outcome of the LogEvent.
-  type: group
-- description: |
+- name: target
+  type: array
+  description: |
     The list of targets.
   fields:
-  - description: |
+  - name: id
+    type: keyword
+    description: |
       Identifier of the actor.
-    name: id
+  - name: type
     type: keyword
-  - description: |
+    description: |
       Type of the actor.
-    name: type
+  - name: alternate_id
     type: keyword
-  - description: |
+    description: |
       Alternate identifier of the actor.
-    name: alternate_id
+  - name: display_name
     type: keyword
-  - description: |
+    description: |
       Display name of the actor.
-    name: display_name
-    type: keyword
-  name: target
-  short: The list of targets.
-  title: Target
-  type: array
-- description: |
+- name: transaction
+  type: group
+  description: |
     Fields that let you store information about related transaction.
   fields:
-  - description: |
+  - name: id
+    type: keyword
+    description: |
       Identifier of the transaction.
-    name: id
+  - name: type
     type: keyword
-  - description: |
+    description: |
       The type of transaction. Must be one of "WEB", "JOB".
-    name: type
-    type: keyword
-  name: transaction
-  short: Fields that let you store information about related transaction.
-  title: Transaction
+- name: debug_context
   type: group
-- description: |
+  description: |
     Fields that let you store information about the debug context.
   fields:
-  - description: |
+  - name: debug_data
+    type: group
+    description: |
       The debug data.
     fields:
-    - description: |
+    - name: device_fingerprint
+      type: keyword
+      description: |
         The fingerprint of the device.
-      name: device_fingerprint
+    - name: request_id
       type: keyword
-    - description: |
+      description: |
         The identifier of the request.
-      name: request_id
+    - name: request_uri
       type: keyword
-    - description: |
+      description: |
         The request URI.
-      name: request_uri
+    - name: threat_suspected
       type: keyword
-    - description: |
+      description: |
         Threat suspected.
-      name: threat_suspected
+    - name: url
       type: keyword
-    - description: |
+      description: |
         The URL.
-      name: url
-      type: keyword
-    name: debug_data
-    type: group
-  name: debug_context
-  short: Fields that let you store information about the debug context.
-  title: Debug Context
+- name: authentication_context
   type: group
-- description: |
+  description: |
     Fields that let you store information about authentication context.
   fields:
-  - description: |
+  - name: authentication_provider
+    type: keyword
+    description: |
       The information about the authentication provider. Must be one of OKTA_AUTHENTICATION_PROVIDER, ACTIVE_DIRECTORY, LDAP, FEDERATION, SOCIAL, FACTOR_PROVIDER.
-    name: authentication_provider
-    type: keyword
-  - description: |
-      The authentication step.
-    name: authentication_step
+  - name: authentication_step
     type: integer
-  - description: |
+    description: |
+      The authentication step.
+  - name: credential_provider
+    type: keyword
+    description: |
       The information about credential provider. Must be one of OKTA_CREDENTIAL_PROVIDER, RSA, SYMANTEC, GOOGLE, DUO, YUBIKEY.
-    name: credential_provider
+  - name: credential_type
     type: keyword
-  - description: |
+    description: |
       The information about credential type. Must be one of OTP, SMS, PASSWORD, ASSERTION, IWA, EMAIL, OAUTH2, JWT, CERTIFICATE, PRE_SHARED_SYMMETRIC_KEY, OKTA_CLIENT_SESSION, DEVICE_UDID.
-    name: credential_type
-    type: keyword
-  - description: |
+  - name: issuer
+    type: array
+    description: |
       The information about the issuer.
     fields:
-    - description: |
+    - name: id
+      type: keyword
+      description: |
         The identifier of the issuer.
-      name: id
+    - name: type
       type: keyword
-    - description: |
+      description: |
         The type of the issuer.
-      name: type
-      type: keyword
-    name: issuer
-    type: array
-  - description: |
+  - name: external_session_id
+    type: keyword
+    description: |
       The session identifer of the external session if any.
-    name: external_session_id
+  - name: interface
     type: keyword
-  - description: |
+    description: |
       The interface used. e.g., Outlook, Office365, wsTrust
-    name: interface
-    type: keyword
-  name: authentication_context
-  short: Fields that let you store information about authentication context.
-  title: Authentication Context
+- name: security_context
   type: group
-- description: |
+  description: |
     Fields that let you store information about security context.
   fields:
-  - description: |
+  - name: as
+    type: group
+    description: |
       The autonomous system.
     fields:
-    - description: |
-        The AS number.
-      name: number
+    - name: number
       type: integer
-    - description: |
+      description: |
+        The AS number.
+    - name: organization
+      type: group
+      description: |
         The organization that owns the AS number.
       fields:
-      - description: |
-          The organization name.
-        name: name
+      - name: name
         type: keyword
-      name: organization
-      type: group
-    name: as
-    type: group
-  - description: |
+        description: |
+          The organization name.
+  - name: isp
+    type: keyword
+    description: |
       The Internet Service Provider.
-    name: isp
+  - name: domain
     type: keyword
-  - description: |
+    description: |
       The domain name.
-    name: domain
-    type: keyword
-  - description: |
-      Whether it is a proxy or not.
-    name: is_proxy
+  - name: is_proxy
     type: boolean
-  name: security_context
-  short: Fields that let you store information about security context.
-  title: Security Context
+    description: |
+      Whether it is a proxy or not.
+- name: request
   type: group
-- description: |
+  description: |
     Fields that let you store information about the request, in the form of list of ip_chain.
   fields:
-  - description: |
+  - name: ip_chain
+    type: group
+    description: |
       List of ip_chain objects.
     fields:
-    - description: |
-        IP address.
-      name: ip
+    - name: ip
       type: ip
-    - description: |
+      description: |
+        IP address.
+    - name: version
+      type: keyword
+      description: |
         IP version. Must be one of V4, V6.
-      name: version
+    - name: source
       type: keyword
-    - description: |
+      description: |
         Source information.
-      name: source
-      type: keyword
-    - description: |
+    - name: geographical_context
+      type: group
+      description: |
         Geographical information.
       fields:
-      - description: The city.
-        name: city
+      - name: city
         type: keyword
-      - description: The state.
-        name: state
+        description: The city.
+      - name: state
         type: keyword
-      - description: The postal code.
-        name: postal_code
+        description: The state.
+      - name: postal_code
         type: keyword
-      - description: The country.
-        name: country
+        description: The postal code.
+      - name: country
         type: keyword
-      - description: |
-          Geolocation information.
-        name: geolocation
+        description: The country.
+      - name: geolocation
         type: geo_point
-      name: geographical_context
-      type: group
-    name: ip_chain
-    type: group
-  name: request
-  short: Fields that let you store information about the request.
-  title: Request
-  type: group
+        description: |
+          Geolocation information.

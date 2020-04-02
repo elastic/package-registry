@@ -1,6 +1,5 @@
-- description: |
-    `natgateway` contains the metrics from Cloudwatch to track usage of NAT gateway related resources.
-  fields: null
-  name: aws.natgateway
-  release: beta
+- name: aws.natgateway
   type: group
+  description: |
+    `natgateway` contains the metrics from Cloudwatch to track usage of NAT gateway related resources.
+  release: beta

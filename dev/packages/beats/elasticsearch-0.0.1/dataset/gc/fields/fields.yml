@@ -1,109 +1,109 @@
-- description: |
+- name: elasticsearch.gc
+  type: group
+  description: |
     GC fileset fields.
   fields:
-  - description: |
+  - name: phase
+    type: group
+    description: |
       Fields specific to GC phase.
     fields:
-    - description: |
-        Name of the GC collection phase.
-      name: name
+    - name: name
       type: keyword
-    - description: |
+      description: |
+        Name of the GC collection phase.
+    - name: duration_sec
+      type: float
+      description: |
         Collection phase duration according to the Java virtual machine.
-      name: duration_sec
+    - name: scrub_symbol_table_time_sec
       type: float
-    - description: |
+      description: |
         Pause time in seconds cleaning up symbol tables.
-      name: scrub_symbol_table_time_sec
+    - name: scrub_string_table_time_sec
       type: float
-    - description: |
+      description: |
         Pause time in seconds cleaning up string tables.
-      name: scrub_string_table_time_sec
+    - name: weak_refs_processing_time_sec
       type: float
-    - description: |
+      description: |
         Time spent processing weak references in seconds.
-      name: weak_refs_processing_time_sec
+    - name: parallel_rescan_time_sec
       type: float
-    - description: |
+      description: |
         Time spent in seconds marking live objects while application is stopped.
-      name: parallel_rescan_time_sec
+    - name: class_unload_time_sec
       type: float
-    - description: |
+      description: |
         Time spent unloading unused classes in seconds.
-      name: class_unload_time_sec
-      type: float
-    - description: |
+    - name: cpu_time
+      type: group
+      description: |
         Process CPU time spent performing collections.
       fields:
-      - description: |
+      - name: user_sec
+        type: float
+        description: |
           CPU time spent outside the kernel.
-        name: user_sec
+      - name: sys_sec
         type: float
-      - description: "CPU time spent inside the kernel. \n"
-        name: sys_sec
+        description: "CPU time spent inside the kernel. \n"
+      - name: real_sec
         type: float
-      - description: |
+        description: |
           Total elapsed CPU time spent to complete the collection from start to finish.
-        name: real_sec
-        type: float
-      name: cpu_time
-      type: group
-    name: phase
-    type: group
-  - description: |
+  - name: jvm_runtime_sec
+    type: float
+    description: |
       The time from JVM start up in seconds, as a floating point number.
-    name: jvm_runtime_sec
+  - name: threads_total_stop_time_sec
     type: float
-  - description: |
+    description: |
       Garbage collection threads total stop time seconds.
-    name: threads_total_stop_time_sec
+  - name: stopping_threads_time_sec
     type: float
-  - description: |
+    description: |
       Time took to stop threads seconds.
-    name: stopping_threads_time_sec
-    type: float
-  - description: |
-      GC logging tags.
-    name: tags
+  - name: tags
     type: keyword
-  - description: |
+    description: |
+      GC logging tags.
+  - name: heap
+    type: group
+    description: |
       Heap allocation and total size.
     fields:
-    - description: |
+    - name: size_kb
+      type: integer
+      description: |
         Total heap size in kilobytes.
-      name: size_kb
+    - name: used_kb
       type: integer
-    - description: |
+      description: |
         Used heap in kilobytes.
-      name: used_kb
-      type: integer
-    name: heap
+  - name: old_gen
     type: group
-  - description: |
+    description: |
       Old generation occupancy and total size.
     fields:
-    - description: |
+    - name: size_kb
+      type: integer
+      description: |
         Total size of old generation in kilobytes.
-      name: size_kb
+    - name: used_kb
       type: integer
-    - description: |
+      description: |
         Old generation occupancy in kilobytes.
-      name: used_kb
-      type: integer
-    name: old_gen
+  - name: young_gen
     type: group
-  - description: |
+    description: |
       Young generation occupancy and total size.
     fields:
-    - description: |
+    - name: size_kb
+      type: integer
+      description: |
         Total size of young generation in kilobytes.
-      name: size_kb
+    - name: used_kb
       type: integer
-    - description: |
+      description: |
         Young generation occupancy in kilobytes.
-      name: used_kb
-      type: integer
-    name: young_gen
-    type: group
-  name: elasticsearch.gc
-  type: group

@@ -1,32 +1,29 @@
-- description: ""
+- name: http
+  type: group
   fields:
-  - description: |
+  - name: request
+    type: group
+    description: |
       HTTP request information
     fields:
-    - description: |
-        The HTTP headers sent
-      name: headers
+    - name: headers
       type: object
-    name: request
+      description: |
+        The HTTP headers sent
+  - name: response
     type: group
-  - description: |
+    description: |
       HTTP response information
     fields:
-    - description: |
-        The HTTP headers received
-      name: headers
+    - name: headers
       type: object
-    - description: |
+      description: |
+        The HTTP headers received
+    - name: code
+      type: keyword
+      description: |
         The HTTP status code
-      example: 404
-      name: code
+    - name: phrase
       type: keyword
-    - description: |
+      description: |
         The HTTP status phrase
-      example: Not found
-      name: phrase
-      type: keyword
-    name: response
-    type: group
-  name: http
-  type: group

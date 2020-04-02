@@ -1,36 +1,27 @@
-- description: ""
-  fields:
-  - description: Elasticsearch component from where the log event originated
-    example: o.e.c.m.MetaDataCreateIndexService
-    name: component
-    type: keyword
-  - description: UUID of the cluster
-    example: GmvrbHlNTiSVYiPf8kxg9g
-    name: cluster.uuid
-    type: keyword
-  - description: Name of the cluster
-    example: docker-cluster
-    name: cluster.name
-    type: keyword
-  - description: ID of the node
-    example: DSiWcTyeThWtUXLB9J0BMw
-    name: node.id
-    type: keyword
-  - description: Name of the node
-    example: vWNJsZ3
-    name: node.name
-    type: keyword
-  - description: Index name
-    example: filebeat-test-input
-    name: index.name
-    type: keyword
-  - description: Index id
-    example: aOGgDwbURfCV57AScqbCgw
-    name: index.id
-    type: keyword
-  - description: Id of the shard
-    example: "0"
-    name: shard.id
-    type: keyword
-  name: elasticsearch
+- name: elasticsearch
   type: group
+  fields:
+  - name: component
+    type: keyword
+    description: Elasticsearch component from where the log event originated
+  - name: cluster.uuid
+    type: keyword
+    description: UUID of the cluster
+  - name: cluster.name
+    type: keyword
+    description: Name of the cluster
+  - name: node.id
+    type: keyword
+    description: ID of the node
+  - name: node.name
+    type: keyword
+    description: Name of the node
+  - name: index.name
+    type: keyword
+    description: Index name
+  - name: index.id
+    type: keyword
+    description: Index id
+  - name: shard.id
+    type: keyword
+    description: Id of the shard

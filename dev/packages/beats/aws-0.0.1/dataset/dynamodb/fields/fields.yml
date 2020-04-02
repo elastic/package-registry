@@ -1,6 +1,5 @@
-- description: |
-    `dynamodb` contains the metrics that were scraped from AWS CloudWatch which contains monitoring metrics sent by AWS DynamoDB.
-  fields: null
-  name: aws.dynamodb
-  release: beta
+- name: aws.dynamodb
   type: group
+  description: |
+    `dynamodb` contains the metrics that were scraped from AWS CloudWatch which contains monitoring metrics sent by AWS DynamoDB.
+  release: beta

@@ -1,17 +1,16 @@
-- description: ""
+- name: cloudfoundry
+  type: group
   fields:
-  - description: |
-      The type of event from Cloud Foundry. Possible values include 'container', 'counter' and 'value'.
-    name: type
+  - name: type
     type: keyword
-  - description: |
+    description: |
+      The type of event from Cloud Foundry. Possible values include 'container', 'counter' and 'value'.
+  - name: app
+    type: group
+    description: |
       The application the metric is associated with.
     fields:
-    - description: |
-        The ID of the application.
-      name: id
+    - name: id
       type: keyword
-    name: app
-    type: group
-  name: cloudfoundry
-  type: group
+      description: |
+        The ID of the application.

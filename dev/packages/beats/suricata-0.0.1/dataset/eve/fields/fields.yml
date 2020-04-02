@@ -1,11 +1,15 @@
-- description: |
+- name: suricata.eve
+  type: group
+  description: |
     Fields exported by the EVE JSON logs
   fields:
   - name: event_type
     type: keyword
   - name: app_proto_orig
     type: keyword
-  - fields:
+  - name: tcp
+    type: group
+    fields:
     - name: tcp_flags
       type: keyword
     - name: psh
@@ -24,14 +28,14 @@
       type: boolean
     - name: fin
       type: boolean
-    name: tcp
+  - name: fileinfo
     type: group
-  - fields:
+    fields:
     - name: sha1
       type: keyword
     - name: filename
-      path: file.path
       type: alias
+      path: file.path
     - name: tx_id
       type: long
     - name: state
@@ -45,27 +49,27 @@
     - name: md5
       type: keyword
     - name: size
-      path: file.size
       type: alias
-    name: fileinfo
-    type: group
+      path: file.size
   - name: icmp_type
     type: long
   - name: dest_port
+    type: alias
     path: destination.port
-    type: alias
   - name: src_port
+    type: alias
     path: source.port
-    type: alias
   - name: proto
-    path: network.transport
     type: alias
+    path: network.transport
   - name: pcap_cnt
     type: long
   - name: src_ip
-    path: source.ip
     type: alias
-  - fields:
+    path: source.ip
+  - name: dns
+    type: group
+    fields:
     - name: type
       type: keyword
     - name: rrtype
@@ -82,61 +86,61 @@
       type: keyword
     - name: id
       type: long
-    name: dns
-    type: group
   - name: flow_id
     type: keyword
-  - fields:
+  - name: email
+    type: group
+    fields:
     - name: status
       type: keyword
-    name: email
-    type: group
   - name: dest_ip
-    path: destination.ip
     type: alias
+    path: destination.ip
   - name: icmp_code
     type: long
-  - fields:
+  - name: http
+    type: group
+    fields:
     - name: status
-      path: http.response.status_code
       type: alias
+      path: http.response.status_code
     - name: redirect
       type: keyword
     - name: http_user_agent
-      path: user_agent.original
       type: alias
+      path: user_agent.original
     - name: protocol
       type: keyword
     - name: http_refer
+      type: alias
       path: http.request.referrer
-      type: alias
     - name: url
+      type: alias
       path: url.original
-      type: alias
     - name: hostname
+      type: alias
       path: url.domain
-      type: alias
     - name: length
+      type: alias
       path: http.response.body.bytes
-      type: alias
     - name: http_method
-      path: http.request.method
       type: alias
+      path: http.request.method
     - name: http_content_type
       type: keyword
-    name: http
-    type: group
   - name: timestamp
-    path: '@timestamp'
     type: alias
+    path: '@timestamp'
   - name: in_iface
     type: keyword
-  - fields:
+  - name: alert
+    type: group
+    fields:
     - name: category
       type: keyword
     - name: severity
-      path: event.severity
       type: alias
+      path: event.severity
     - name: rev
       type: long
     - name: gid
@@ -144,82 +148,84 @@
     - name: signature
       type: keyword
     - name: action
-      path: event.outcome
       type: alias
+      path: event.outcome
     - name: signature_id
       type: long
-    name: alert
+  - name: ssh
     type: group
-  - fields:
-    - fields:
+    fields:
+    - name: client
+      type: group
+      fields:
       - name: proto_version
         type: keyword
       - name: software_version
         type: keyword
-      name: client
+    - name: server
       type: group
-    - fields:
+      fields:
       - name: proto_version
         type: keyword
       - name: software_version
         type: keyword
-      name: server
-      type: group
-    name: ssh
+  - name: stats
     type: group
-  - fields:
-    - fields:
+    fields:
+    - name: capture
+      type: group
+      fields:
       - name: kernel_packets
         type: long
       - name: kernel_drops
         type: long
       - name: kernel_ifdrops
         type: long
-      name: capture
-      type: group
     - name: uptime
       type: long
-    - fields:
+    - name: detect
+      type: group
+      fields:
       - name: alert
         type: long
-      name: detect
+    - name: http
       type: group
-    - fields:
+      fields:
       - name: memcap
         type: long
       - name: memuse
         type: long
-      name: http
+    - name: file_store
       type: group
-    - fields:
+      fields:
       - name: open_files
         type: long
-      name: file_store
+    - name: defrag
       type: group
-    - fields:
+      fields:
       - name: max_frag_hits
         type: long
-      - fields:
+      - name: ipv4
+        type: group
+        fields:
         - name: timeouts
           type: long
         - name: fragments
           type: long
         - name: reassembled
           type: long
-        name: ipv4
+      - name: ipv6
         type: group
-      - fields:
+        fields:
         - name: timeouts
           type: long
         - name: fragments
           type: long
         - name: reassembled
           type: long
-        name: ipv6
-        type: group
-      name: defrag
+    - name: flow
       type: group
-    - fields:
+      fields:
       - name: tcp_reuse
         type: long
       - name: udp
@@ -240,9 +246,9 @@
         type: long
       - name: memuse
         type: long
-      name: flow
+    - name: tcp
       type: group
-    - fields:
+      fields:
       - name: pseudo_failed
         type: long
       - name: ssn_memcap_drop
@@ -281,9 +287,9 @@
         type: long
       - name: no_flow
         type: long
-      name: tcp
+    - name: decoder
       type: group
-    - fields:
+      fields:
       - name: avg_pkt_size
         type: long
       - name: bytes
@@ -298,13 +304,13 @@
         type: long
       - name: "null"
         type: long
-      - fields:
+      - name: ltnull
+        type: group
+        fields:
         - name: unsupported_type
           type: long
         - name: pkt_too_small
           type: long
-        name: ltnull
-        type: group
       - name: invalid
         type: long
       - name: gre
@@ -317,20 +323,20 @@
         type: long
       - name: ipv6_in_ipv6
         type: long
-      - fields:
+      - name: ipraw
+        type: group
+        fields:
         - name: invalid_ip_version
           type: long
-        name: ipraw
-        type: group
       - name: pppoe
         type: long
       - name: udp
         type: long
-      - fields:
+      - name: dce
+        type: group
+        fields:
         - name: pkt_too_small
           type: long
-        name: dce
-        type: group
       - name: vlan
         type: long
       - name: sctp
@@ -355,18 +361,18 @@
         type: long
       - name: ieee8021ah
         type: long
-      name: decoder
+    - name: dns
       type: group
-    - fields:
+      fields:
       - name: memcap_global
         type: long
       - name: memcap_state
         type: long
       - name: memuse
         type: long
-      name: dns
+    - name: flow_mgr
       type: group
-    - fields:
+      fields:
       - name: rows_busy
         type: long
       - name: flows_timeout
@@ -395,10 +401,12 @@
         type: long
       - name: rows_empty
         type: long
-      name: flow_mgr
+    - name: app_layer
       type: group
-    - fields:
-      - fields:
+      fields:
+      - name: flow
+        type: group
+        fields:
         - name: tls
           type: long
         - name: ftp
@@ -427,9 +435,9 @@
           type: long
         - name: smb
           type: long
-        name: flow
+      - name: tx
         type: group
-      - fields:
+        fields:
         - name: tls
           type: long
         - name: ftp
@@ -450,13 +458,9 @@
           type: long
         - name: smb
           type: long
-        name: tx
-        type: group
-      name: app_layer
-      type: group
-    name: stats
+  - name: tls
     type: group
-  - fields:
+    fields:
     - name: notbefore
       type: date
     - name: issuerdn
@@ -475,58 +479,53 @@
       type: date
     - name: subject
       type: keyword
-    name: tls
-    type: group
   - name: app_proto_ts
     type: keyword
-  - fields:
+  - name: flow
+    type: group
+    fields:
     - name: bytes_toclient
+      type: alias
       path: destination.bytes
-      type: alias
     - name: start
+      type: alias
       path: event.start
-      type: alias
     - name: pkts_toclient
-      path: destination.packets
       type: alias
+      path: destination.packets
     - name: age
       type: long
     - name: state
       type: keyword
     - name: bytes_toserver
-      path: source.bytes
       type: alias
+      path: source.bytes
     - name: reason
       type: keyword
     - name: pkts_toserver
-      path: source.packets
       type: alias
+      path: source.packets
     - name: end
       type: date
     - name: alerted
       type: boolean
-    name: flow
-    type: group
   - name: app_proto
-    path: network.protocol
     type: alias
+    path: network.protocol
   - name: tx_id
     type: long
   - name: app_proto_tc
     type: keyword
-  - fields:
+  - name: smtp
+    type: group
+    fields:
     - name: rcpt_to
       type: keyword
     - name: mail_from
       type: keyword
     - name: helo
       type: keyword
-    name: smtp
-    type: group
   - name: app_proto_expected
     type: keyword
-  - fields: null
-    name: flags
+  - name: flags
     type: group
-  name: suricata.eve
-  type: group

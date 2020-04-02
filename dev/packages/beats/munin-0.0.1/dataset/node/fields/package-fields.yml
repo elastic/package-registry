@@ -1,13 +1,10 @@
-- description: |
-    Metrics exposed by a plugin of a munin node agent.
-  name: munin.metrics.*
-  object_type: double
-  object_type_mapping_type: '*'
+- name: munin.metrics.*
   type: object
-- description: |
-    Name of the plugin collecting these metrics.
-  name: munin.plugin.name
+  description: |
+    Metrics exposed by a plugin of a munin node agent.
+- name: munin.plugin.name
   type: keyword
-- fields: null
-  name: munin
+  description: |
+    Name of the plugin collecting these metrics.
+- name: munin
   type: group

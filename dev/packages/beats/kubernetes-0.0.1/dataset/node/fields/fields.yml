@@ -1,171 +1,171 @@
-- description: |
+- name: kubernetes.node
+  type: group
+  description: |
     kubernetes node metrics
+  release: ga
   fields:
-  - description: |
-      Start time
-    name: start_time
+  - name: start_time
     type: date
-  - description: |
+    description: |
+      Start time
+  - name: cpu
+    type: group
+    description: |
       CPU usage metrics
     fields:
-    - fields:
-      - fields:
-        - description: |
+    - name: usage
+      type: group
+      fields:
+      - name: core
+        type: group
+        fields:
+        - name: ns
+          type: long
+          description: |
             Node CPU Core usage nanoseconds
-          name: ns
-          type: long
-        name: core
-        type: group
-      - description: |
+      - name: nanocores
+        type: long
+        description: |
           CPU used nanocores
-        name: nanocores
-        type: long
-      name: usage
-      type: group
-    name: cpu
+  - name: memory
     type: group
-  - fields:
-    - fields:
-      - description: |
+    fields:
+    - name: available
+      type: group
+      fields:
+      - name: bytes
+        type: long
+        format: bytes
+        description: |
           Total available memory
-        format: bytes
-        name: bytes
-        type: long
-      name: available
+    - name: usage
       type: group
-    - fields:
-      - description: |
+      fields:
+      - name: bytes
+        type: long
+        format: bytes
+        description: |
           Total memory usage
-        format: bytes
-        name: bytes
-        type: long
-      name: usage
+    - name: rss
       type: group
-    - fields:
-      - description: |
+      fields:
+      - name: bytes
+        type: long
+        format: bytes
+        description: |
           RSS memory usage
-        format: bytes
-        name: bytes
-        type: long
-      name: rss
+    - name: workingset
       type: group
-    - fields:
-      - description: |
+      fields:
+      - name: bytes
+        type: long
+        format: bytes
+        description: |
           Working set memory usage
-        format: bytes
-        name: bytes
-        type: long
-      name: workingset
-      type: group
-    - description: |
+    - name: pagefaults
+      type: long
+      description: |
         Number of page faults
-      name: pagefaults
+    - name: majorpagefaults
       type: long
-    - description: |
+      description: |
         Number of major page faults
-      name: majorpagefaults
-      type: long
-    name: memory
+  - name: network
     type: group
-  - fields:
-    - fields:
-      - description: |
+    fields:
+    - name: rx
+      type: group
+      fields:
+      - name: bytes
+        type: long
+        format: bytes
+        description: |
           Received bytes
-        format: bytes
-        name: bytes
+      - name: errors
         type: long
-      - description: |
+        description: |
           Rx errors
-        name: errors
-        type: long
-      name: rx
+    - name: tx
       type: group
-    - fields:
-      - description: |
+      fields:
+      - name: bytes
+        type: long
+        format: bytes
+        description: |
           Transmitted bytes
-        format: bytes
-        name: bytes
+      - name: errors
         type: long
-      - description: |
+        description: |
           Tx errors
-        name: errors
-        type: long
-      name: tx
-      type: group
-    name: network
+  - name: fs
     type: group
-  - fields:
-    - fields:
-      - description: |
+    fields:
+    - name: capacity
+      type: group
+      fields:
+      - name: bytes
+        type: long
+        format: bytes
+        description: |
           Filesystem total capacity in bytes
-        format: bytes
-        name: bytes
-        type: long
-      name: capacity
+    - name: available
       type: group
-    - fields:
-      - description: |
+      fields:
+      - name: bytes
+        type: long
+        format: bytes
+        description: |
           Filesystem total available in bytes
-        format: bytes
-        name: bytes
-        type: long
-      name: available
+    - name: used
       type: group
-    - fields:
-      - description: |
+      fields:
+      - name: bytes
+        type: long
+        format: bytes
+        description: |
           Filesystem total used in bytes
-        format: bytes
-        name: bytes
-        type: long
-      name: used
+    - name: inodes
       type: group
-    - fields:
-      - description: |
+      fields:
+      - name: used
+        type: long
+        description: |
           Number of used inodes
-        name: used
+      - name: count
         type: long
-      - description: |
+        description: |
           Number of inodes
-        name: count
+      - name: free
         type: long
-      - description: |
+        description: |
           Number of free inodes
-        name: free
-        type: long
-      name: inodes
-      type: group
-    name: fs
+  - name: runtime
     type: group
-  - fields:
-    - fields:
-      - fields:
-        - description: |
+    fields:
+    - name: imagefs
+      type: group
+      fields:
+      - name: capacity
+        type: group
+        fields:
+        - name: bytes
+          type: long
+          format: bytes
+          description: |
             Image filesystem total capacity in bytes
-          format: bytes
-          name: bytes
-          type: long
-        name: capacity
+      - name: available
         type: group
-      - fields:
-        - description: |
+        fields:
+        - name: bytes
+          type: long
+          format: bytes
+          description: |
             Image filesystem total available in bytes
-          format: bytes
-          name: bytes
-          type: long
-        name: available
+      - name: used
         type: group
-      - fields:
-        - description: |
+        fields:
+        - name: bytes
+          type: long
+          format: bytes
+          description: |
             Image filesystem total used in bytes
-          format: bytes
-          name: bytes
-          type: long
-        name: used
-        type: group
-      name: imagefs
-      type: group
-    name: runtime
-    type: group
-  name: kubernetes.node
-  release: ga
-  type: group

@@ -1,40 +1,39 @@
-- description: |
+- name: docker.event
+  type: group
+  description: |
     Docker event
+  release: ga
   fields:
-  - description: |
+  - name: status
+    type: keyword
+    description: |
       Event status
-    name: status
+  - name: id
     type: keyword
-  - description: |
+    description: |
       Event id when available
-    name: id
+  - name: from
     type: keyword
-  - description: |
+    description: |
       Event source
-    name: from
+  - name: type
     type: keyword
-  - description: |
+    description: |
       The type of object emitting the event
-    name: type
+  - name: action
     type: keyword
-  - description: |
+    description: |
       The type of event
-    name: action
-    type: keyword
-  - description: |
+  - name: actor
+    type: group
+    description: |
       Actor
     fields:
-    - description: |
-        The ID of the object emitting the event
-      name: id
+    - name: id
       type: keyword
-    - description: |
-        Various key/value attributes of the object, depending on its type
-      name: attributes
-      object_type: keyword
+      description: |
+        The ID of the object emitting the event
+    - name: attributes
       type: object
-    name: actor
-    type: group
-  name: docker.event
-  release: ga
-  type: group
+      description: |
+        Various key/value attributes of the object, depending on its type

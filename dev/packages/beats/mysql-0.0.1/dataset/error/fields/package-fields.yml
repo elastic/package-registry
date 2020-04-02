@@ -1,9 +1,9 @@
-- description: |
+- name: mysql
+  type: group
+  description: |
     Fields from the MySQL log files.
   fields:
-  - description: |
-      The connection or thread ID for the query.
-    name: thread_id
+  - name: thread_id
     type: long
-  name: mysql
-  type: group
+    description: |
+      The connection or thread ID for the query.

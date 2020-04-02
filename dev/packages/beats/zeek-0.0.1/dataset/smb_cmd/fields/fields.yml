@@ -1,80 +1,79 @@
-- default_field: false
+- name: zeek.smb_cmd
+  type: group
   description: |
     Fields exported by the Zeek smb_cmd log.
   fields:
-  - description: |
+  - name: command
+    type: keyword
+    description: |
       The command sent by the client.
-    name: command
+  - name: sub_command
     type: keyword
-  - description: |
+    description: |
       The subcommand sent by the client, if present.
-    name: sub_command
+  - name: argument
     type: keyword
-  - description: |
+    description: |
       Command argument sent by the client, if any.
-    name: argument
+  - name: status
     type: keyword
-  - description: |
+    description: |
       Server reply to the client's command.
-    name: status
-    type: keyword
-  - description: |
-      Round trip time from the request to the response.
-    name: rtt
+  - name: rtt
     type: double
-  - description: |
+    description: |
+      Round trip time from the request to the response.
+  - name: version
+    type: keyword
+    description: |
       Version of SMB for the command.
-    name: version
+  - name: username
     type: keyword
-  - description: |
+    description: |
       Authenticated username, if available.
-    name: username
+  - name: tree
     type: keyword
-  - description: |
+    description: |
       If this is related to a tree, this is the tree that was used for the current command.
-    name: tree
+  - name: tree_service
     type: keyword
-  - description: |
+    description: |
       The type of tree (disk share, printer share, named pipe, etc.).
-    name: tree_service
-    type: keyword
-  - description: |
+  - name: file
+    type: group
+    description: |
       If the command referenced a file, store it here.
     fields:
-    - description: |
+    - name: name
+      type: keyword
+      description: |
         Filename if one was seen.
-      name: name
+    - name: action
       type: keyword
-    - description: |
+      description: |
         Action this log record represents.
-      name: action
+    - name: uid
       type: keyword
-    - description: |
+      description: |
         UID of the referenced file.
-      name: uid
-      type: keyword
-    - fields:
-      - description: |
-          Address of the transmitting host.
-        name: tx
-        type: ip
-      - description: |
-          Address of the receiving host.
-        name: rx
-        type: ip
-      name: host
+    - name: host
       type: group
-    name: file
-    type: group
-  - description: |
+      fields:
+      - name: tx
+        type: ip
+        description: |
+          Address of the transmitting host.
+      - name: rx
+        type: ip
+        description: |
+          Address of the receiving host.
+  - name: smb1_offered_dialects
+    type: keyword
+    description: |
       Present if base/protocols/smb/smb1-main.bro is loaded.
       Dialects offered by the client.
-    name: smb1_offered_dialects
-    type: keyword
-  - description: |
+  - name: smb2_offered_dialects
+    type: integer
+    description: |
       Present if base/protocols/smb/smb2-main.bro is loaded.
       Dialects offered by the client.
-    name: smb2_offered_dialects
-    type: integer
-  name: zeek.smb_cmd
-  type: group

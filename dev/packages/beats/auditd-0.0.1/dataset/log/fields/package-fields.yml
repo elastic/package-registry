@@ -1,112 +1,106 @@
-- fields:
-  - description: |
-      Terminal or tty device on which the user is performing the observed activity.
-    name: terminal
+- name: user
+  type: group
+  fields:
+  - name: terminal
     type: keyword
-  - fields:
-    - description: |
-        One or multiple unique identifiers of the user.
-      name: id
-      type: keyword
-    - description: |
-        Short name or login of the user.
-      example: albert
-      name: name
-      type: keyword
-    - description: |
-        Unique identifier for the group on the system/platform.
-      name: group.id
-      type: keyword
-    - description: |
-        Name of the group.
-      name: group.name
-      type: keyword
-    name: audit
+    description: |
+      Terminal or tty device on which the user is performing the observed activity.
+  - name: audit
     type: group
-  - fields:
-    - description: |
+    fields:
+    - name: id
+      type: keyword
+      description: |
         One or multiple unique identifiers of the user.
-      name: id
+    - name: name
       type: keyword
-    - description: |
+      description: |
         Short name or login of the user.
-      example: albert
-      name: name
+    - name: group.id
       type: keyword
-    - description: |
+      description: |
         Unique identifier for the group on the system/platform.
-      name: group.id
+    - name: group.name
       type: keyword
-    - description: |
+      description: |
         Name of the group.
-      name: group.name
-      type: keyword
-    name: effective
+  - name: effective
     type: group
-  - fields:
-    - description: |
+    fields:
+    - name: id
+      type: keyword
+      description: |
         One or multiple unique identifiers of the user.
-      name: id
+    - name: name
       type: keyword
-    - description: |
+      description: |
         Short name or login of the user.
-      example: albert
-      name: name
+    - name: group.id
       type: keyword
-    - description: |
+      description: |
         Unique identifier for the group on the system/platform.
-      name: group.id
+    - name: group.name
       type: keyword
-    - description: |
+      description: |
         Name of the group.
-      name: group.name
-      type: keyword
-    name: filesystem
+  - name: filesystem
     type: group
-  - fields:
-    - description: |
+    fields:
+    - name: id
+      type: keyword
+      description: |
         One or multiple unique identifiers of the user.
-      name: id
+    - name: name
       type: keyword
-    - description: |
+      description: |
         Short name or login of the user.
-      example: albert
-      name: name
+    - name: group.id
       type: keyword
-    - description: |
+      description: |
         Unique identifier for the group on the system/platform.
-      name: group.id
+    - name: group.name
       type: keyword
-    - description: |
+      description: |
         Name of the group.
-      name: group.name
-      type: keyword
-    name: owner
+  - name: owner
     type: group
-  - fields:
-    - description: |
+    fields:
+    - name: id
+      type: keyword
+      description: |
         One or multiple unique identifiers of the user.
-      name: id
+    - name: name
       type: keyword
-    - description: |
+      description: |
         Short name or login of the user.
-      example: albert
-      name: name
+    - name: group.id
       type: keyword
-    - description: |
+      description: |
         Unique identifier for the group on the system/platform.
-      name: group.id
+    - name: group.name
       type: keyword
-    - description: |
+      description: |
         Name of the group.
-      name: group.name
-      type: keyword
-    name: saved
+  - name: saved
     type: group
-  name: user
+    fields:
+    - name: id
+      type: keyword
+      description: |
+        One or multiple unique identifiers of the user.
+    - name: name
+      type: keyword
+      description: |
+        Short name or login of the user.
+    - name: group.id
+      type: keyword
+      description: |
+        Unique identifier for the group on the system/platform.
+    - name: group.name
+      type: keyword
+      description: |
+        Name of the group.
+- name: auditd
   type: group
-- description: |
+  description: |
     Fields from the auditd logs.
-  fields: null
-  name: auditd
-  type: group

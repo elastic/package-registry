@@ -1,5 +1,4 @@
-- description: Google Cloud Compute metrics
-  fields: null
-  key: stackdriver
-  release: beta
+- key: stackdriver
   type: group
+  description: Google Cloud Compute metrics
+  release: beta

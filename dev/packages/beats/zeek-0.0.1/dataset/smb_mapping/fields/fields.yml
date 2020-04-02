@@ -1,23 +1,22 @@
-- default_field: false
+- name: zeek.smb_mapping
+  type: group
   description: |
     Fields exported by the Zeek SMB_Mapping log.
   fields:
-  - description: |
+  - name: path
+    type: keyword
+    description: |
       Name of the tree path.
-    name: path
+  - name: service
     type: keyword
-  - description: |
+    description: |
       The type of resource of the tree (disk share, printer share, named pipe, etc.).
-    name: service
+  - name: native_file_system
     type: keyword
-  - description: |
+    description: |
       File system of the tree.
-    name: native_file_system
+  - name: share_type
     type: keyword
-  - description: |
+    description: |
       If this is SMB2, a share type will be included. For SMB1, the type of share
       will be deduced and included as well.
-    name: share_type
-    type: keyword
-  name: zeek.smb_mapping
-  type: group

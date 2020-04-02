@@ -1,48 +1,47 @@
-- default_field: false
+- name: zeek.snmp
+  type: group
   description: |
     Fields exported by the Zeek SNMP log.
   fields:
-  - description: |
-      The amount of time between the first packet beloning to the SNMP session and the latest one seen.
-    name: duration
+  - name: duration
     type: double
-  - description: |
+    description: |
+      The amount of time between the first packet beloning to the SNMP session and the latest one seen.
+  - name: version
+    type: keyword
+    description: |
       The version of SNMP being used.
-    name: version
+  - name: community
     type: keyword
-  - description: |
+    description: |
       The community string of the first SNMP packet associated with the session. This is used as part of SNMP's (v1 and v2c) administrative/security framework. See RFC 1157 or RFC 1901.
-    name: community
-    type: keyword
-  - fields:
-    - description: |
+  - name: get
+    type: group
+    fields:
+    - name: requests
+      type: integer
+      description: |
         The number of variable bindings in GetRequest/GetNextRequest PDUs seen for the session.
-      name: requests
+    - name: bulk_requests
       type: integer
-    - description: |
+      description: |
         The number of variable bindings in GetBulkRequest PDUs seen for the session.
-      name: bulk_requests
+    - name: responses
       type: integer
-    - description: |
+      description: |
         The number of variable bindings in GetResponse/Response PDUs seen for the session.
-      name: responses
-      type: integer
-    name: get
+  - name: set
     type: group
-  - fields:
-    - description: |
+    fields:
+    - name: requests
+      type: integer
+      description: |
         The number of variable bindings in SetRequest PDUs seen for the session.
-      name: requests
-      type: integer
-    name: set
-    type: group
-  - description: |
-      A system description of the SNMP responder endpoint.
-    name: display_string
+  - name: display_string
     type: keyword
-  - description: |
-      The time at which the SNMP responder endpoint claims it's been up since.
-    name: up_since
+    description: |
+      A system description of the SNMP responder endpoint.
+  - name: up_since
     type: date
-  name: zeek.snmp
-  type: group
+    description: |
+      The time at which the SNMP responder endpoint claims it's been up since.

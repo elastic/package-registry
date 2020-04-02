@@ -1,62 +1,60 @@
-- description: |
+- name: container
+  type: group
+  description: |
     kubernetes container metrics
+  release: ga
   fields:
-  - description: Container id
-    name: id
+  - name: id
     type: keyword
-  - fields:
-    - description: |
-        Container phase (running, waiting, terminated)
-      name: phase
-      type: keyword
-    - description: |
-        Container ready status
-      name: ready
-      type: boolean
-    - description: |
-        Container restarts count
-      name: restarts
-      type: integer
-    - description: |
-        Waiting (ContainerCreating, CrashLoopBackoff, ErrImagePull, ImagePullBackoff) or termination (Completed, ContainerCannotRun, Error, OOMKilled) reason.
-      name: reason
-      type: keyword
-    name: status
+    description: Container id
+  - name: status
     type: group
-  - fields:
-    - description: |
+    fields:
+    - name: phase
+      type: keyword
+      description: |
+        Container phase (running, waiting, terminated)
+    - name: ready
+      type: boolean
+      description: |
+        Container ready status
+    - name: restarts
+      type: integer
+      description: |
+        Container restarts count
+    - name: reason
+      type: keyword
+      description: |
+        Waiting (ContainerCreating, CrashLoopBackoff, ErrImagePull, ImagePullBackoff) or termination (Completed, ContainerCannotRun, Error, OOMKilled) reason.
+  - name: cpu
+    type: group
+    fields:
+    - name: limit.cores
+      type: float
+      description: |
         Container CPU cores limit
-      name: limit.cores
+    - name: request.cores
       type: float
-    - description: |
+      description: |
         Container CPU requested cores
-      name: request.cores
-      type: float
-    - deprecated: 6.4
+    - name: limit.nanocores
+      type: long
       description: |
         Container CPU nanocores limit
-      name: limit.nanocores
+    - name: request.nanocores
       type: long
-    - deprecated: 6.4
       description: |
         Container CPU requested nanocores
-      name: request.nanocores
-      type: long
-    name: cpu
+  - name: memory
     type: group
-  - fields:
-    - description: |
+    fields:
+    - name: limit.bytes
+      type: long
+      format: bytes
+      description: |
         Container memory limit in bytes
-      format: bytes
-      name: limit.bytes
+    - name: request.bytes
       type: long
-    - description: |
+      format: bytes
+      description: |
         Container requested memory in bytes
-      format: bytes
-      name: request.bytes
-      type: long
-    name: memory
-    type: group
-  name: container
-  release: ga
-  type: group

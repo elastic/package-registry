@@ -1,42 +1,41 @@
-- default_field: false
+- name: zeek.radius
+  type: group
   description: |
     Fields exported by the Zeek Radius log.
   fields:
-  - description: |
+  - name: username
+    type: keyword
+    description: |
       The username, if present.
-    name: username
+  - name: mac
     type: keyword
-  - description: |
+    description: |
       MAC address, if present.
-    name: mac
-    type: keyword
-  - description: |
+  - name: framed_addr
+    type: ip
+    description: |
       The address given to the network access server, if present. This is only a hint from the RADIUS server and the network access server is not required to honor the address.
-    name: framed_addr
+  - name: remote_ip
     type: ip
-  - description: |
+    description: |
       Remote IP address, if present. This is collected from the Tunnel-Client-Endpoint attribute.
-    name: remote_ip
-    type: ip
-  - description: |
+  - name: connect_info
+    type: keyword
+    description: |
       Connect info, if present.
-    name: connect_info
+  - name: reply_msg
     type: keyword
-  - description: |
+    description: |
       Reply message from the server challenge. This is frequently shown to the user authenticating.
-    name: reply_msg
+  - name: result
     type: keyword
-  - description: |
+    description: |
       Successful or failed authentication.
-    name: result
-    type: keyword
-  - description: |
-      The duration between the first request and either the "Access-Accept" message or an error. If the field is empty, it means that either the request or response was not seen.
-    name: ttl
+  - name: ttl
     type: integer
-  - description: |
-      Whether this has already been logged and can be ignored.
-    name: logged
+    description: |
+      The duration between the first request and either the "Access-Accept" message or an error. If the field is empty, it means that either the request or response was not seen.
+  - name: logged
     type: boolean
-  name: zeek.radius
-  type: group
+    description: |
+      Whether this has already been logged and can be ignored.

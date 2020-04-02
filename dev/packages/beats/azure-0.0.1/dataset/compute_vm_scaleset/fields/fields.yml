@@ -1,7 +1,5 @@
-- description: |
-    compute_vm_scaleset
-  name: compute_vm_scaleset.*.*
-  object_type: float
-  object_type_mapping_type: '*'
-  release: ga
+- name: compute_vm_scaleset.*.*
   type: object
+  description: |
+    compute_vm_scaleset
+  release: ga

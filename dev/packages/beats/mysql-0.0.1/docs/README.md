@@ -179,6 +179,7 @@ The fields reported are:
 
 | Field | Description | Type |
 |---|---|---|
+| mysql | `mysql` contains the metrics that were obtained from MySQL query. | group |
 | mysql.galera_status.apply.oooe | How often applier started write-set applying out-of-order (parallelization efficiency). | double |
 | mysql.galera_status.apply.oool | How often write-set was so slow to apply that write-set with higher seqno's were applied earlier. Values closer to 0 refer to a greater gap between slow and fast write-sets. | double |
 | mysql.galera_status.apply.window | Average distance between highest and lowest concurrently applied seqno. | double |
@@ -352,6 +353,7 @@ The fields reported are:
 
 | Field | Description | Type |
 |---|---|---|
+| mysql | `mysql` contains the metrics that were obtained from MySQL query. | group |
 | mysql.status.aborted.clients | The number of connections that were aborted because the client died without closing the connection properly. | long |
 | mysql.status.aborted.connects | The number of failed attempts to connect to the MySQL server. | long |
 | mysql.status.binlog.cache.disk_use |  | long |

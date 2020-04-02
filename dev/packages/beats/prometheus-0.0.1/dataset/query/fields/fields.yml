@@ -1,6 +1,5 @@
-- description: |
-    query metricset
-  fields: null
-  name: prometheus.query
-  release: beta
+- name: prometheus.query
   type: group
+  description: |
+    query metricset
+  release: beta

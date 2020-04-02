@@ -1,33 +1,33 @@
-- description: |
+- name: logstash.node
+  type: group
+  description: |
     node
+  release: ga
   fields:
-  - description: |
+  - name: host
+    type: alias
+    description: |
       Host name
-    migration: true
-    name: host
     path: host.hostname
-    type: alias
-  - description: |
-      Logstash Version
     migration: true
-    name: version
-    path: service.version
+  - name: version
     type: alias
-  - description: |
+    description: |
+      Logstash Version
+    path: service.version
+    migration: true
+  - name: jvm
+    type: group
+    description: |
       JVM Info
     fields:
-    - description: |
-        Version
-      name: version
+    - name: version
       type: keyword
-    - description: |
-        Process ID
-      migration: true
-      name: pid
-      path: process.pid
+      description: |
+        Version
+    - name: pid
       type: alias
-    name: jvm
-    type: group
-  name: logstash.node
-  release: ga
-  type: group
+      description: |
+        Process ID
+      path: process.pid
+      migration: true

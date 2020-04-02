@@ -1,40 +1,39 @@
-- default_field: false
+- name: zeek.ntlm
+  type: group
   description: |
     Fields exported by the Zeek NTLM log.
   fields:
-  - description: |
+  - name: domain
+    type: keyword
+    description: |
       Domain name given by the client.
-    name: domain
+  - name: hostname
     type: keyword
-  - description: |
+    description: |
       Hostname given by the client.
-    name: hostname
-    type: keyword
-  - description: |
-      Indicate whether or not the authentication was successful.
-    name: success
+  - name: success
     type: boolean
-  - description: |
-      Username given by the client.
-    name: username
+    description: |
+      Indicate whether or not the authentication was successful.
+  - name: username
     type: keyword
-  - fields:
-    - fields:
-      - description: |
-          DNS name given by the server in a CHALLENGE.
-        name: dns
-        type: keyword
-      - description: |
-          NetBIOS name given by the server in a CHALLENGE.
-        name: netbios
-        type: keyword
-      - description: |
-          Tree name given by the server in a CHALLENGE.
-        name: tree
-        type: keyword
-      name: name
-      type: group
-    name: server
+    description: |
+      Username given by the client.
+  - name: server
     type: group
-  name: zeek.ntlm
-  type: group
+    fields:
+    - name: name
+      type: group
+      fields:
+      - name: dns
+        type: keyword
+        description: |
+          DNS name given by the server in a CHALLENGE.
+      - name: netbios
+        type: keyword
+        description: |
+          NetBIOS name given by the server in a CHALLENGE.
+      - name: tree
+        type: keyword
+        description: |
+          Tree name given by the server in a CHALLENGE.

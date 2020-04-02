@@ -1,50 +1,50 @@
-- description: Please add description
+- name: http
+  type: group
+  description: Please add description
   fields:
-  - description: Fields related to the HTTP response
+  - name: response
+    type: group
+    description: Fields related to the HTTP response
     fields:
-    - description: |
+    - name: captured_cookie
+      description: |
         Optional "name=value" entry indicating that the client had this cookie in the response.
-      name: captured_cookie
-    - description: |
+    - name: captured_headers
+      type: keyword
+      description: |
         List of headers captured in the response due to the presence of the "capture response header" statement in the frontend.
-      name: captured_headers
-      type: keyword
-    - migration: true
-      name: status_code
-      path: http.response.status_code
+    - name: status_code
       type: alias
-    name: response
+      path: http.response.status_code
+      migration: true
+  - name: request
     type: group
-  - description: Fields related to the HTTP request
+    description: Fields related to the HTTP request
     fields:
-    - description: |
+    - name: captured_cookie
+      description: |
         Optional "name=value" entry indicating that the server has returned a cookie with its request.
-      name: captured_cookie
-    - description: |
+    - name: captured_headers
+      type: keyword
+      description: |
         List of headers captured in the request due to the presence of the "capture request header" statement in the frontend.
-      name: captured_headers
+    - name: raw_request_line
       type: keyword
-    - description: Complete HTTP request line, including the method, request and HTTP
+      description: Complete HTTP request line, including the method, request and HTTP
         version string.
-      name: raw_request_line
-      type: keyword
-    - description: Total time in milliseconds spent waiting for the server to send
+    - name: time_wait_without_data_ms
+      type: long
+      description: Total time in milliseconds spent waiting for the server to send
         a full HTTP response, not counting data.
-      name: time_wait_without_data_ms
+    - name: time_wait_ms
       type: long
-    - description: Total time in milliseconds spent waiting for a full HTTP request
+      description: Total time in milliseconds spent waiting for a full HTTP request
         from the client (not counting body) after the first byte was received.
-      name: time_wait_ms
-      type: long
-    name: request
-    type: group
-  name: http
+- name: tcp
   type: group
-- description: TCP log format
+  description: TCP log format
   fields:
-  - description: Total time in milliseconds elapsed between the accept and the last
-      close
-    name: connection_waiting_time_ms
+  - name: connection_waiting_time_ms
     type: long
-  name: tcp
-  type: group
+    description: Total time in milliseconds elapsed between the accept and the last
+      close

@@ -1,45 +1,44 @@
-- description: ""
+- name: azure
+  type: group
   fields:
-  - description: |
+  - name: subscription_id
+    type: keyword
+    description: |
       Azure subscription ID
-    name: subscription_id
+  - name: correlation_id
     type: keyword
-  - description: |
+    description: |
       Correlation ID
-    name: correlation_id
+  - name: tenant_id
     type: keyword
-  - description: |
+    description: |
       tenant ID
-    name: tenant_id
-    type: keyword
-  - description: |
+  - name: resource
+    type: group
+    description: |
       Resource
     fields:
-    - description: |
+    - name: id
+      type: keyword
+      description: |
         Resource ID
-      name: id
+    - name: group
       type: keyword
-    - description: |
+      description: |
         Resource group
-      name: group
+    - name: provider
       type: keyword
-    - description: |
+      description: |
         Resource type/namespace
-      name: provider
+    - name: namespace
       type: keyword
-    - description: |
+      description: |
         Resource type/namespace
-      name: namespace
+    - name: name
       type: keyword
-    - description: |
+      description: |
         Name
-      name: name
+    - name: authorization_rule
       type: keyword
-    - description: |
+      description: |
         Authorization rule
-      name: authorization_rule
-      type: keyword
-    name: resource
-    type: group
-  name: azure
-  type: group

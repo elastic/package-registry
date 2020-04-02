@@ -1,4 +1,2 @@
-- description: ""
-  fields: null
-  name: kibana
+- name: kibana
   type: group

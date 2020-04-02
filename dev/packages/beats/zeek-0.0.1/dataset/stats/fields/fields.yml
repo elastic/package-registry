@@ -1,139 +1,138 @@
-- default_field: false
+- name: zeek.stats
+  type: group
   description: |
     Fields exported by the Zeek stats log.
   fields:
-  - description: |
-      Peer that generated this log. Mostly for clusters.
-    name: peer
+  - name: peer
     type: keyword
-  - description: |
+    description: |
+      Peer that generated this log. Mostly for clusters.
+  - name: memory
+    type: integer
+    description: |
       Amount of memory currently in use in MB.
-    name: memory
-    type: integer
-  - fields:
-    - description: |
+  - name: packets
+    type: group
+    fields:
+    - name: processed
+      type: long
+      description: |
         Number of packets processed since the last stats interval.
-      name: processed
+    - name: dropped
       type: long
-    - description: |
+      description: |
         Number of packets dropped since the last stats interval if reading live traffic.
-      name: dropped
+    - name: received
       type: long
-    - description: |
+      description: |
         Number of packets seen on the link since the last stats interval if reading live traffic.
-      name: received
-      type: long
-    name: packets
+  - name: bytes
     type: group
-  - fields:
-    - description: |
+    fields:
+    - name: received
+      type: long
+      description: |
         Number of bytes received since the last stats interval if reading live traffic.
-      name: received
-      type: long
-    name: bytes
+  - name: connections
     type: group
-  - fields:
-    - fields:
-      - description: |
+    fields:
+    - name: tcp
+      type: group
+      fields:
+      - name: active
+        type: integer
+        description: |
           TCP connections currently in memory.
-        name: active
+      - name: count
         type: integer
-      - description: |
+        description: |
           TCP connections seen since last stats interval.
-        name: count
-        type: integer
-      name: tcp
+    - name: udp
       type: group
-    - fields:
-      - description: |
+      fields:
+      - name: active
+        type: integer
+        description: |
           UDP connections currently in memory.
-        name: active
+      - name: count
         type: integer
-      - description: |
+        description: |
           UDP connections seen since last stats interval.
-        name: count
-        type: integer
-      name: udp
+    - name: icmp
       type: group
-    - fields:
-      - description: |
+      fields:
+      - name: active
+        type: integer
+        description: |
           ICMP connections currently in memory.
-        name: active
+      - name: count
         type: integer
-      - description: |
+        description: |
           ICMP connections seen since last stats interval.
-        name: count
-        type: integer
-      name: icmp
-      type: group
-    name: connections
+  - name: events
     type: group
-  - fields:
-    - description: |
+    fields:
+    - name: processed
+      type: integer
+      description: |
         Number of events processed since the last stats interval.
-      name: processed
+    - name: queued
       type: integer
-    - description: |
+      description: |
         Number of events that have been queued since the last stats interval.
-      name: queued
-      type: integer
-    name: events
+  - name: timers
     type: group
-  - fields:
-    - description: |
+    fields:
+    - name: count
+      type: integer
+      description: |
         Number of timers scheduled since last stats interval.
-      name: count
+    - name: active
       type: integer
-    - description: |
+      description: |
         Current number of scheduled timers.
-      name: active
-      type: integer
-    name: timers
+  - name: files
     type: group
-  - fields:
-    - description: |
+    fields:
+    - name: count
+      type: integer
+      description: |
         Number of files seen since last stats interval.
-      name: count
+    - name: active
       type: integer
-    - description: |
+      description: |
         Current number of files actively being seen.
-      name: active
-      type: integer
-    name: files
+  - name: dns_requests
     type: group
-  - fields:
-    - description: |
+    fields:
+    - name: count
+      type: integer
+      description: |
         Number of DNS requests seen since last stats interval.
-      name: count
+    - name: active
       type: integer
-    - description: |
+      description: |
         Current number of DNS requests awaiting a reply.
-      name: active
-      type: integer
-    name: dns_requests
+  - name: reassembly_size
     type: group
-  - fields:
-    - description: |
+    fields:
+    - name: tcp
+      type: integer
+      description: |
         Current size of TCP data in reassembly.
-      name: tcp
+    - name: file
       type: integer
-    - description: |
+      description: |
         Current size of File data in reassembly.
-      name: file
+    - name: frag
       type: integer
-    - description: |
+      description: |
         Current size of packet fragment data in reassembly.
-      name: frag
+    - name: unknown
       type: integer
-    - description: |
+      description: |
         Current size of unknown data in reassembly (this is only PIA buffer right now).
-      name: unknown
-      type: integer
-    name: reassembly_size
-    type: group
-  - description: |
-      Lag between the wall clock and packet timestamps if reading live traffic.
-    name: timestamp_lag
+  - name: timestamp_lag
     type: integer
-  name: zeek.stats
-  type: group
+    description: |
+      Lag between the wall clock and packet timestamps if reading live traffic.

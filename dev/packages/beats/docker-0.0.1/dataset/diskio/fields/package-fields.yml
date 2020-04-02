@@ -1,5 +1,4 @@
-- description: |
-    Information and statistics about docker's running containers.
-  fields: null
-  name: docker
+- name: docker
   type: group
+  description: |
+    Information and statistics about docker's running containers.

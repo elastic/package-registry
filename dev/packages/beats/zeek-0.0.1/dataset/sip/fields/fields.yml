@@ -1,102 +1,101 @@
-- default_field: false
+- name: zeek.sip
+  type: group
   description: |
     Fields exported by the Zeek SIP log.
   fields:
-  - description: |
-      Represents the pipelined depth into the connection of this request/response transaction.
-    name: transaction_depth
+  - name: transaction_depth
     type: integer
-  - fields:
-    - description: |
+    description: |
+      Represents the pipelined depth into the connection of this request/response transaction.
+  - name: sequence
+    type: group
+    fields:
+    - name: method
+      type: keyword
+      description: |
         Verb used in the SIP request (INVITE, REGISTER etc.).
-      name: method
+    - name: number
       type: keyword
-    - description: |
+      description: |
         Contents of the CSeq: header from the client.
-      name: number
-      type: keyword
-    name: sequence
-    type: group
-  - description: |
+  - name: uri
+    type: keyword
+    description: |
       URI used in the request.
-    name: uri
+  - name: date
     type: keyword
-  - description: |
+    description: |
       Contents of the Date: header from the client.
-    name: date
-    type: keyword
-  - fields:
-    - description: |
+  - name: request
+    type: group
+    fields:
+    - name: from
+      type: keyword
+      description: |
         Contents of the request From: header Note: The tag= value that's usually appended to the sender is stripped off and not logged.
-      name: from
+    - name: to
       type: keyword
-    - description: |
+      description: |
         Contents of the To: header.
-      name: to
+    - name: path
       type: keyword
-    - description: |
+      description: |
         The client message transmission path, as extracted from the headers.
-      name: path
-      type: keyword
-    - description: |
+    - name: body_length
+      type: long
+      description: |
         Contents of the Content-Length: header from the client.
-      name: body_length
-      type: long
-    name: request
+  - name: response
     type: group
-  - fields:
-    - description: |
+    fields:
+    - name: from
+      type: keyword
+      description: |
         Contents of the response From: header Note: The tag= value that's usually appended to the sender is stripped off and not logged.
-      name: from
+    - name: to
       type: keyword
-    - description: |
+      description: |
         Contents of the response To: header.
-      name: to
+    - name: path
       type: keyword
-    - description: |
+      description: |
         The server message transmission path, as extracted from the headers.
-      name: path
-      type: keyword
-    - description: |
-        Contents of the Content-Length: header from the server.
-      name: body_length
+    - name: body_length
       type: long
-    name: response
-    type: group
-  - description: |
+      description: |
+        Contents of the Content-Length: header from the server.
+  - name: reply_to
+    type: keyword
+    description: |
       Contents of the Reply-To: header.
-    name: reply_to
+  - name: call_id
     type: keyword
-  - description: |
+    description: |
       Contents of the Call-ID: header from the client.
-    name: call_id
+  - name: subject
     type: keyword
-  - description: |
+    description: |
       Contents of the Subject: header from the client.
-    name: subject
+  - name: user_agent
     type: keyword
-  - description: |
+    description: |
       Contents of the User-Agent: header from the client.
-    name: user_agent
-    type: keyword
-  - fields:
-    - description: |
-        Status code returned by the server.
-      name: code
-      type: integer
-    - description: |
-        Status message returned by the server.
-      name: msg
-      type: keyword
-    name: status
+  - name: status
     type: group
-  - description: |
+    fields:
+    - name: code
+      type: integer
+      description: |
+        Status code returned by the server.
+    - name: msg
+      type: keyword
+      description: |
+        Status message returned by the server.
+  - name: warning
+    type: keyword
+    description: |
       Contents of the Warning: header.
-    name: warning
+  - name: content_type
     type: keyword
-  - description: |
+    description: |
       Contents of the Content-Type: header from the server.
-    name: content_type
-    type: keyword
-  name: zeek.sip
-  type: group

@@ -1,146 +1,145 @@
-- default_field: false
+- name: forcepoint
+  type: group
   description: |
     Fields for Forcepoint Custom String mappings
   fields:
-  - description: |
-      Virus ID
-    name: virus_id
+  - name: virus_id
     type: keyword
-  name: forcepoint
+    description: |
+      Virus ID
+- name: checkpoint
   type: group
-- default_field: false
   description: |
     Fields for Check Point custom string mappings.
   fields:
-  - description: Application risk.
-    name: app_risk
+  - name: app_risk
     type: keyword
-  - description: Application threat severity.
-    name: app_severity
+    description: Application risk.
+  - name: app_severity
     type: keyword
-  - description: The signature ID which the application was detected by.
-    name: app_sig_id
+    description: Application threat severity.
+  - name: app_sig_id
     type: keyword
-  - description: Password authentication protocol used.
-    name: auth_method
+    description: The signature ID which the application was detected by.
+  - name: auth_method
     type: keyword
-  - description: Category.
-    name: category
+    description: Password authentication protocol used.
+  - name: category
     type: keyword
-  - description: Confidence level determined.
-    name: confidence_level
+    description: Category.
+  - name: confidence_level
     type: keyword
-  - description: Connectivity state.
-    name: connectivity_state
+    description: Confidence level determined.
+  - name: connectivity_state
     type: keyword
-  - description: IKE cookie.
-    name: cookie
+    description: Connectivity state.
+  - name: cookie
     type: keyword
-  - description: Destination IP-Phone.
-    name: dst_phone_number
+    description: IKE cookie.
+  - name: dst_phone_number
     type: keyword
-  - description: Engine name.
-    name: email_control
+    description: Destination IP-Phone.
+  - name: email_control
     type: keyword
-  - description: Internal email ID.
-    name: email_id
+    description: Engine name.
+  - name: email_id
     type: keyword
-  - description: Number of recipients.
-    name: email_recipients_num
+    description: Internal email ID.
+  - name: email_recipients_num
     type: long
-  - description: Internal email session ID.
-    name: email_session_id
+    description: Number of recipients.
+  - name: email_session_id
     type: keyword
-  - description: Internal email spool ID.
-    name: email_spool_id
+    description: Internal email session ID.
+  - name: email_spool_id
     type: keyword
-  - description: Email subject.
-    name: email_subject
+    description: Internal email spool ID.
+  - name: email_subject
     type: keyword
-  - description: Number of events associated with the log.
-    name: event_count
+    description: Email subject.
+  - name: event_count
     type: long
-  - description: File hash (SHA1 or MD5).
-    name: file_hash
+    description: Number of events associated with the log.
+  - name: file_hash
     type: keyword
-  - description: Scan frequency.
-    name: frequency
+    description: File hash (SHA1 or MD5).
+  - name: frequency
     type: keyword
-  - description: ICMP type.
-    name: icmp_type
+    description: Scan frequency.
+  - name: icmp_type
     type: long
-  - description: ICMP code.
-    name: icmp_code
+    description: ICMP type.
+  - name: icmp_code
     type: long
-  - description: Identity type.
-    name: identity_type
+    description: ICMP code.
+  - name: identity_type
     type: keyword
-  - description: Format of original data.
-    name: incident_extension
+    description: Identity type.
+  - name: incident_extension
     type: keyword
-  - description: Scan invoke type.
-    name: integrity_av_invoke_type
+    description: Format of original data.
+  - name: integrity_av_invoke_type
     type: keyword
-  - description: Main IP of the peer Security Gateway.
-    name: peer_gateway
+    description: Scan invoke type.
+  - name: peer_gateway
     type: ip
-  - description: Protection performance impact.
-    name: performance_impact
+    description: Main IP of the peer Security Gateway.
+  - name: performance_impact
     type: keyword
-  - description: Protection malware ID.
-    name: protection_id
+    description: Protection performance impact.
+  - name: protection_id
     type: keyword
-  - description: Specific signature name of the attack.
-    name: protection_name
+    description: Protection malware ID.
+  - name: protection_name
     type: keyword
-  - description: Type of protection used to detect the attack.
-    name: protection_type
+    description: Specific signature name of the attack.
+  - name: protection_type
     type: keyword
-  - description: Scan result.
-    name: scan_result
+    description: Type of protection used to detect the attack.
+  - name: scan_result
     type: keyword
-  - description: Sensor mode.
-    name: sensor_mode
+    description: Scan result.
+  - name: sensor_mode
     type: keyword
-  - description: Threat severity.
-    name: severity
+    description: Sensor mode.
+  - name: severity
     type: keyword
-  - description: Malware status.
-    name: malware_status
+    description: Threat severity.
+  - name: malware_status
     type: keyword
-  - description: The expiration date of the subscription.
-    name: subscription_expiration
+    description: Malware status.
+  - name: subscription_expiration
     type: date
-  - description: TCP packet flags.
-    name: tcp_flags
+    description: The expiration date of the subscription.
+  - name: tcp_flags
     type: keyword
-  - description: Termination reason.
-    name: termination_reason
+    description: TCP packet flags.
+  - name: termination_reason
     type: keyword
-  - description: Update status.
-    name: update_status
+    description: Termination reason.
+  - name: update_status
     type: keyword
-  - description: User response.
-    name: user_status
+    description: Update status.
+  - name: user_status
     type: keyword
-  - description: External ID.
-    name: uuid
+    description: User response.
+  - name: uuid
     type: keyword
-  - description: Virus name.
-    name: virus_name
+    description: External ID.
+  - name: virus_name
     type: keyword
-  - description: Malware name.
-    name: malware_name
+    description: Virus name.
+  - name: malware_name
     type: keyword
-  - description: Malware family.
-    name: malware_family
+    description: Malware name.
+  - name: malware_family
     type: keyword
-  - description: VoIP log types.
-    name: voip_log_type
+    description: Malware family.
+  - name: voip_log_type
     type: keyword
-  name: checkpoint
+    description: VoIP log types.
+- name: cef.extensions
   type: group
-- default_field: false
   description: |
     Extra vendor-specific extensions.
   fields:
@@ -186,5 +185,3 @@
     type: keyword
   - name: version
     type: keyword
-  name: cef.extensions
-  type: group

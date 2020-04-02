@@ -1,25 +1,25 @@
-- description: |
+- name: redis.slowlog
+  type: group
+  description: |
     Slow logs are retrieved from Redis via a network connection.
   fields:
-  - description: |
+  - name: cmd
+    type: keyword
+    description: |
       The command executed.
-    name: cmd
-    type: keyword
-  - description: |
+  - name: duration.us
+    type: long
+    description: |
       How long it took to execute the command in microseconds.
-    name: duration.us
+  - name: id
     type: long
-  - description: |
+    description: |
       The ID of the query.
-    name: id
-    type: long
-  - description: |
+  - name: key
+    type: keyword
+    description: |
       The key on which the command was executed.
-    name: key
+  - name: args
     type: keyword
-  - description: |
+    description: |
       The arguments with which the command was called.
-    name: args
-    type: keyword
-  name: redis.slowlog
-  type: group

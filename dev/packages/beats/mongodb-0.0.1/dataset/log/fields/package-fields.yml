@@ -1,5 +1,4 @@
-- description: |
-    Fields from MongoDB logs.
-  fields: null
-  name: mongodb
+- name: mongodb
   type: group
+  description: |
+    Fields from MongoDB logs.

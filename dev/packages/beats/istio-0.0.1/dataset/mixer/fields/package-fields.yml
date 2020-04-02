@@ -1,5 +1,4 @@
-- description: |
-    `istio` contains statistics that were read from Istio
-  fields: null
-  name: istio
+- name: istio
   type: group
+  description: |
+    `istio` contains statistics that were read from Istio

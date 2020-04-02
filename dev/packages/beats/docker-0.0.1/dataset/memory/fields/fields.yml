@@ -1,76 +1,74 @@
-- description: |
+- name: docker.memory
+  type: group
+  description: |
     Memory metrics.
+  release: ga
   fields:
-  - description: |
-      Raw memory stats from the cgroups memory.stat interface
-    name: stats.*
-    object_type: long
-    object_type_mapping_type: '*'
+  - name: stats.*
     type: object
-  - description: |
+    description: |
+      Raw memory stats from the cgroups memory.stat interface
+  - name: commit
+    type: group
+    description: |
       Committed bytes on Windows
     fields:
-    - description: |
+    - name: total
+      type: long
+      format: bytes
+      description: |
         Total bytes
-      format: bytes
-      name: total
+    - name: peak
       type: long
-    - description: |
+      format: bytes
+      description: |
         Peak committed bytes on Windows
-      format: bytes
-      name: peak
-      type: long
-    name: commit
-    type: group
-  - description: |
+  - name: private_working_set.total
+    type: long
+    format: bytes
+    description: |
       private working sets on Windows
-    format: bytes
-    name: private_working_set.total
-    type: long
-  - description: |
-      Fail counter.
-    name: fail.count
+  - name: fail.count
     type: scaled_float
-  - description: |
-      Memory limit.
-    format: bytes
-    name: limit
+    description: |
+      Fail counter.
+  - name: limit
     type: long
-  - description: |
+    format: bytes
+    description: |
+      Memory limit.
+  - name: rss
+    type: group
+    description: |
       RSS memory stats.
     fields:
-    - description: |
-        Total memory resident set size.
-      format: bytes
-      name: total
+    - name: total
       type: long
-    - description: |
-        Memory resident set size percentage.
-      format: percent
-      name: pct
+      format: bytes
+      description: |
+        Total memory resident set size.
+    - name: pct
       type: scaled_float
-    name: rss
+      format: percent
+      description: |
+        Memory resident set size percentage.
+  - name: usage
     type: group
-  - description: |
+    description: |
       Usage memory stats.
     fields:
-    - description: |
+    - name: max
+      type: long
+      format: bytes
+      description: |
         Max memory usage.
-      format: bytes
-      name: max
-      type: long
-    - description: |
-        Memory usage percentage.
-      format: percent
-      name: pct
+    - name: pct
       type: scaled_float
-    - description: |
-        Total memory usage.
-      format: bytes
-      name: total
+      format: percent
+      description: |
+        Memory usage percentage.
+    - name: total
       type: long
-    name: usage
-    type: group
-  name: docker.memory
-  release: ga
-  type: group
+      format: bytes
+      description: |
+        Total memory usage.

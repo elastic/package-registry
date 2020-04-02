@@ -1,115 +1,114 @@
-- default_field: false
+- name: zeek.dhcp
+  type: group
   description: |
     Fields exported by the Zeek DHCP log
   fields:
-  - description: |
-      Domain given by the server in option 15.
-    name: domain
+  - name: domain
     type: keyword
-  - description: |
+    description: |
+      Domain given by the server in option 15.
+  - name: duration
+    type: double
+    description: |
       Duration of the DHCP session representing the time from the first
       message to the last, in seconds.
-    name: duration
-    type: double
-  - description: |
+  - name: hostname
+    type: keyword
+    description: |
       Name given by client in Hostname option 12.
-    name: hostname
+  - name: client_fqdn
     type: keyword
-  - description: |
+    description: |
       FQDN given by client in Client FQDN option 81.
-    name: client_fqdn
-    type: keyword
-  - description: |
-      IP address lease interval in seconds.
-    name: lease_time
+  - name: lease_time
     type: integer
-  - description: |
+    description: |
+      IP address lease interval in seconds.
+  - name: address
+    type: group
+    description: |
       Addresses seen in this DHCP exchange.
     fields:
-    - description: |
-        IP address assigned by the server.
-      name: assigned
+    - name: assigned
       type: ip
-    - description: |
+      description: |
+        IP address assigned by the server.
+    - name: client
+      type: ip
+      description: |
         IP address of the client. If a transaction is only a client sending
         INFORM messages then there is no lease information exchanged so this
         is helpful to know who sent the messages. Getting an address in this
         field does require that the client sources at least one DHCP message
         using a non-broadcast address.
-      name: client
-      type: ip
-    - description: |
+    - name: mac
+      type: keyword
+      description: |
         Client's hardware address.
-      name: mac
-      type: keyword
-    - description: |
+    - name: requested
+      type: ip
+      description: |
         IP address requested by the client.
-      name: requested
+    - name: server
       type: ip
-    - description: |
+      description: |
         IP address of the DHCP server.
-      name: server
-      type: ip
-    name: address
+  - name: msg
     type: group
-  - fields:
-    - description: |
-        List of DHCP message types seen in this exchange.
-      name: types
+    fields:
+    - name: types
       type: keyword
-    - description: |
+      description: |
+        List of DHCP message types seen in this exchange.
+    - name: origin
+      type: ip
+      description: |
         (present if policy/protocols/dhcp/msg-orig.bro is loaded)
         The address that originated each message from the msg.types field.
-      name: origin
-      type: ip
-    - description: |
+    - name: client
+      type: keyword
+      description: |
         Message typically accompanied with a DHCP_DECLINE so the client can
         tell the server why it rejected an address.
-      name: client
+    - name: server
       type: keyword
-    - description: |
+      description: |
         Message typically accompanied with a DHCP_NAK to let the client know
         why it rejected the request.
-      name: server
-      type: keyword
-    name: msg
+  - name: software
     type: group
-  - fields:
-    - description: |
+    fields:
+    - name: client
+      type: keyword
+      description: |
         (present if policy/protocols/dhcp/software.bro is loaded)
         Software reported by the client in the vendor_class option.
-      name: client
+    - name: server
       type: keyword
-    - description: |
+      description: |
         (present if policy/protocols/dhcp/software.bro is loaded)
         Software reported by the client in the vendor_class option.
-      name: server
-      type: keyword
-    name: software
+  - name: id
     type: group
-  - fields:
-    - description: |
+    fields:
+    - name: circuit
+      type: keyword
+      description: |
         (present if policy/protocols/dhcp/sub-opts.bro is loaded)
         Added by DHCP relay agents which terminate switched or permanent
         circuits. It encodes an agent-local identifier of the circuit from
         which a DHCP client-to-server packet was received. Typically it
         should represent a router or switch interface number.
-      name: circuit
+    - name: remote_agent
       type: keyword
-    - description: |
+      description: |
         (present if policy/protocols/dhcp/sub-opts.bro is loaded)
         A globally unique identifier added by relay agents to identify the
         remote host end of the circuit.
-      name: remote_agent
+    - name: subscriber
       type: keyword
-    - description: |
+      description: |
         (present if policy/protocols/dhcp/sub-opts.bro is loaded)
         The subscriber ID is a value independent of the physical network
         configuration so that a customer's DHCP configuration can be given
         to them correctly no matter where they are physically connected.
-      name: subscriber
-      type: keyword
-    name: id
-    type: group
-  name: zeek.dhcp
-  type: group

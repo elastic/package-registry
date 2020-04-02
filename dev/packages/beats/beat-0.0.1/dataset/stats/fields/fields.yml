@@ -1,91 +1,91 @@
-- description: |
+- name: beat.stats
+  type: group
+  description: |
     Beat stats
+  release: ga
   fields:
-  - description: |
+  - name: uptime.ms
+    type: long
+    description: |
       Beat uptime
-    name: uptime.ms
+  - name: runtime.goroutines
     type: long
-  - description: |
+    description: |
       Number of goroutines running in Beat
-    name: runtime.goroutines
-    type: long
-  - description: |
+  - name: libbeat
+    type: group
+    description: |
       Fields common to all Beats
     fields:
-    - description: |
+    - name: output
+      type: group
+      description: |
         Output stats
       fields:
-      - description: |
-          Type of output
-        name: type
+      - name: type
         type: keyword
-      - description: |
+        description: |
+          Type of output
+      - name: events
+        type: group
+        description: |
           Event counters
         fields:
-        - description: |
+        - name: acked
+          type: long
+          description: |
             Number of events acknowledged
-          name: acked
+        - name: active
           type: long
-        - description: |
+          description: |
             Number of active events
-          name: active
+        - name: batches
           type: long
-        - description: |
+          description: |
             Number of event batches
-          name: batches
+        - name: dropped
           type: long
-        - description: |
+          description: |
             Number of events dropped
-          name: dropped
+        - name: duplicates
           type: long
-        - description: |
+          description: |
             Number of events duplicated
-          name: duplicates
+        - name: failed
           type: long
-        - description: |
+          description: |
             Number of events failed
-          name: failed
+        - name: toomany
           type: long
-        - description: |
+          description: |
             Number of too many events
-          name: toomany
+        - name: total
           type: long
-        - description: |
+          description: |
             Total number of events
-          name: total
-          type: long
-        name: events
+      - name: read
         type: group
-      - description: |
+        description: |
           Read stats
         fields:
-        - description: |
+        - name: bytes
+          type: long
+          description: |
             Number of bytes read
-          name: bytes
+        - name: errors
           type: long
-        - description: |
+          description: |
             Number of read errors
-          name: errors
-          type: long
-        name: read
+      - name: write
         type: group
-      - description: |
+        description: |
           Write stats
         fields:
-        - description: |
+        - name: bytes
+          type: long
+          description: |
             Number of bytes written
-          name: bytes
+        - name: errors
           type: long
-        - description: |
+          description: |
             Number of write errors
-          name: errors
-          type: long
-        name: write
-        type: group
-      name: output
-      type: group
-    name: libbeat
-    type: group
-  name: beat.stats
-  release: ga
-  type: group

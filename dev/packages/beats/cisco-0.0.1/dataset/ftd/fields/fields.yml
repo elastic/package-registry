@@ -1,83 +1,80 @@
-- description: |
+- name: cisco.ftd
+  type: group
+  description: |
     Fields for Cisco Firepower Threat Defense Firewall.
   fields:
-  - description: |
+  - name: message_id
+    type: keyword
+    description: |
       The Cisco FTD message identifier.
-    name: message_id
+  - name: suffix
     type: keyword
-  - description: |
+    description: |
       Optional suffix after %FTD identifier.
-    example: session
-    name: suffix
+  - name: source_interface
     type: keyword
-  - description: |
+    description: |
       Source interface for the flow or event.
-    name: source_interface
+  - name: destination_interface
     type: keyword
-  - description: |
+    description: |
       Destination interface for the flow or event.
-    name: destination_interface
+  - name: rule_name
     type: keyword
-  - description: |
+    description: |
       Name of the Access Control List rule that matched this event.
-    name: rule_name
+  - name: source_username
     type: keyword
-  - description: |
+    description: |
       Name of the user that is the source for this event.
-    name: source_username
+  - name: destination_username
     type: keyword
-  - description: |
+    description: |
       Name of the user that is the destination for this event.
-    name: destination_username
-    type: keyword
-  - description: |
+  - name: mapped_source_ip
+    type: ip
+    description: |
       The translated source IP address. Use ECS source.nat.ip.
-    name: mapped_source_ip
-    type: ip
-  - description: |
+  - name: mapped_source_port
+    type: long
+    description: |
       The translated source port. Use ECS source.nat.port.
-    name: mapped_source_port
-    type: long
-  - description: |
-      The translated destination IP address. Use ECS destination.nat.ip.
-    name: mapped_destination_ip
+  - name: mapped_destination_ip
     type: ip
-  - description: |
-      The translated destination port. Use ECS destination.nat.port.
-    name: mapped_destination_port
+    description: |
+      The translated destination IP address. Use ECS destination.nat.ip.
+  - name: mapped_destination_port
     type: long
-  - description: |
+    description: |
+      The translated destination port. Use ECS destination.nat.port.
+  - name: threat_level
+    type: keyword
+    description: |
       Threat level for malware / botnet traffic. One of very-low, low, moderate, high or very-high.
-    name: threat_level
+  - name: threat_category
     type: keyword
-  - description: |
+    description: |
       Category for the malware / botnet traffic. For example: virus, botnet, trojan, etc.
-    name: threat_category
+  - name: connection_id
     type: keyword
-  - description: |
+    description: |
       Unique identifier for a flow.
-    name: connection_id
-    type: keyword
-  - description: |
+  - name: icmp_type
+    type: short
+    description: |
       ICMP type.
-    name: icmp_type
+  - name: icmp_code
     type: short
-  - description: |
+    description: |
       ICMP code.
-    name: icmp_code
-    type: short
-  - description: Raw fields for Security Events.
-    name: security
+  - name: security
     type: object
-  - default_field: false
+    description: Raw fields for Security Events.
+  - name: connection_type
+    type: keyword
     description: |
       The VPN connection type
-    name: connection_type
+  - name: dap_records
     type: keyword
-  - default_field: false
     description: |
       The assigned DAP records
-    name: dap_records
-    type: keyword
-  name: cisco.ftd
-  type: group

@@ -1,58 +1,57 @@
-- default_field: false
+- name: zeek.rfb
+  type: group
   description: |
     Fields exported by the Zeek RFB log.
   fields:
-  - fields:
-    - fields:
-      - description: |
+  - name: version
+    type: group
+    fields:
+    - name: client
+      type: group
+      fields:
+      - name: major
+        type: keyword
+        description: |
           Major version of the client.
-        name: major
+      - name: minor
         type: keyword
-      - description: |
+        description: |
           Minor version of the client.
-        name: minor
-        type: keyword
-      name: client
+    - name: server
       type: group
-    - fields:
-      - description: |
+      fields:
+      - name: major
+        type: keyword
+        description: |
           Major version of the server.
-        name: major
+      - name: minor
         type: keyword
-      - description: |
+        description: |
           Minor version of the server.
-        name: minor
-        type: keyword
-      name: server
-      type: group
-    name: version
+  - name: auth
     type: group
-  - fields:
-    - description: |
-        Whether or not authentication was successful.
-      name: success
+    fields:
+    - name: success
       type: boolean
-    - description: |
-        Identifier of authentication method used.
-      name: method
+      description: |
+        Whether or not authentication was successful.
+    - name: method
       type: keyword
-    name: auth
-    type: group
-  - description: |
-      Whether the client has an exclusive or a shared session.
-    name: share_flag
+      description: |
+        Identifier of authentication method used.
+  - name: share_flag
     type: boolean
-  - description: |
-      Name of the screen that is being shared.
-    name: desktop_name
+    description: |
+      Whether the client has an exclusive or a shared session.
+  - name: desktop_name
     type: keyword
-  - description: |
+    description: |
+      Name of the screen that is being shared.
+  - name: width
+    type: integer
+    description: |
       Width of the screen that is being shared.
-    name: width
+  - name: height
     type: integer
-  - description: |
+    description: |
       Height of the screen that is being shared.
-    name: height
-    type: integer
-  name: zeek.rfb
-  type: group

@@ -1,55 +1,54 @@
-- default_field: false
+- name: zeek.smb_files
+  type: group
   description: |
     Fields exported by the Zeek SMB Files log.
   fields:
-  - description: |
+  - name: action
+    type: keyword
+    description: |
       Action this log record represents.
-    name: action
-    type: keyword
-  - description: |
-      ID referencing this file.
-    name: fid
+  - name: fid
     type: integer
-  - description: |
+    description: |
+      ID referencing this file.
+  - name: name
+    type: keyword
+    description: |
       Filename if one was seen.
-    name: name
+  - name: path
     type: keyword
-  - description: |
+    description: |
       Path pulled from the tree this file was transferred to or from.
-    name: path
+  - name: previous_name
     type: keyword
-  - description: |
+    description: |
       If the rename action was seen, this will be the file's previous name.
-    name: previous_name
-    type: keyword
-  - description: |
-      Byte size of the file.
-    name: size
+  - name: size
     type: long
-  - description: |
+    description: |
+      Byte size of the file.
+  - name: times
+    type: group
+    description: |
       Timestamps of the file.
     fields:
-    - description: |
+    - name: accessed
+      type: date
+      description: |
         The file's access time.
-      name: accessed
+    - name: changed
       type: date
-    - description: |
+      description: |
         The file's change time.
-      name: changed
+    - name: created
       type: date
-    - description: |
+      description: |
         The file's create time.
-      name: created
+    - name: modified
       type: date
-    - description: |
+      description: |
         The file's modify time.
-      name: modified
-      type: date
-    name: times
-    type: group
-  - description: |
-      UUID referencing this file if DCE/RPC.
-    name: uuid
+  - name: uuid
     type: keyword
-  name: zeek.smb_files
-  type: group
+    description: |
+      UUID referencing this file if DCE/RPC.

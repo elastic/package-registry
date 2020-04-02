@@ -1,131 +1,131 @@
-- description: |
+- name: nginx.ingress_controller
+  type: group
+  description: |
     Contains fields for the Ingress Nginx controller access logs.
   fields:
-  - description: |
-      An array of remote IP addresses. It is a list because it is common to include, besides the client IP address, IP addresses from headers like `X-Forwarded-For`. Real source IP is restored to `source.ip`.
-    name: remote_ip_list
+  - name: remote_ip_list
     type: array
-  - description: |
+    description: |
+      An array of remote IP addresses. It is a list because it is common to include, besides the client IP address, IP addresses from headers like `X-Forwarded-For`. Real source IP is restored to `source.ip`.
+  - name: http.request.length
+    type: long
+    format: bytes
+    description: |
       The request length (including request line, header, and request body)
-    format: bytes
-    name: http.request.length
-    type: long
-  - description: |
+  - name: http.request.time
+    type: double
+    format: duration
+    description: |
       Time elapsed since the first bytes were read from the client
-    format: duration
-    name: http.request.time
-    type: double
-  - description: |
+  - name: upstream.name
+    type: text
+    description: |
       The name of the upstream.
-    name: upstream.name
+  - name: upstream.alternative_name
     type: text
-  - description: |
+    description: |
       The name of the alternative upstream.
-    name: upstream.alternative_name
-    type: text
-  - description: |
-      The length of the response obtained from the upstream server
+  - name: upstream.response.length
+    type: long
     format: bytes
-    name: upstream.response.length
-    type: long
-  - description: |
-      The time spent on receiving the response from the upstream server as seconds with millisecond resolution
-    format: duration
-    name: upstream.response.time
+    description: |
+      The length of the response obtained from the upstream server
+  - name: upstream.response.time
     type: double
-  - description: |
+    format: duration
+    description: |
+      The time spent on receiving the response from the upstream server as seconds with millisecond resolution
+  - name: upstream.response.status_code
+    type: long
+    description: |
       The status code of the response obtained from the upstream server
-    name: upstream.response.status_code
-    type: long
-  - description: |
-      The randomly generated ID of the request
-    name: http.request.id
+  - name: http.request.id
     type: text
-  - description: |
-      The IP address of the upstream server. If several servers were contacted during request processing, their addresses are separated by commas.
-    name: upstream.ip
+    description: |
+      The randomly generated ID of the request
+  - name: upstream.ip
     type: ip
-  - description: |
-      The port of the upstream server.
-    name: upstream.port
+    description: |
+      The IP address of the upstream server. If several servers were contacted during request processing, their addresses are separated by commas.
+  - name: upstream.port
     type: long
-  - migration: true
-    name: body_sent.bytes
+    description: |
+      The port of the upstream server.
+  - name: body_sent.bytes
+    type: alias
     path: http.response.body.bytes
+    migration: true
+  - name: user_name
     type: alias
-  - migration: true
-    name: user_name
     path: user.name
+    migration: true
+  - name: method
     type: alias
-  - migration: true
-    name: method
     path: http.request.method
+    migration: true
+  - name: url
     type: alias
-  - migration: true
-    name: url
     path: url.original
+    migration: true
+  - name: http_version
     type: alias
-  - migration: true
-    name: http_version
     path: http.version
+    migration: true
+  - name: response_code
     type: alias
-  - migration: true
-    name: response_code
     path: http.response.status_code
+    migration: true
+  - name: referrer
     type: alias
-  - migration: true
-    name: referrer
     path: http.request.referrer
+    migration: true
+  - name: agent
     type: alias
-  - migration: true
-    name: agent
     path: user_agent.original
-    type: alias
-  - fields:
-    - migration: true
-      name: device
+    migration: true
+  - name: user_agent
+    type: group
+    fields:
+    - name: device
+      type: alias
       path: user_agent.device.name
+      migration: true
+    - name: name
       type: alias
-    - migration: true
-      name: name
       path: user_agent.name
+      migration: true
+    - name: os_name
       type: alias
-    - migration: true
-      name: os_name
       path: user_agent.os.name
+      migration: true
+    - name: original
       type: alias
-    - migration: true
-      name: original
       path: user_agent.original
-      type: alias
-    name: user_agent
+      migration: true
+  - name: geoip
     type: group
-  - fields:
-    - migration: true
-      name: continent_name
+    fields:
+    - name: continent_name
+      type: alias
       path: source.geo.continent_name
+      migration: true
+    - name: country_iso_code
       type: alias
-    - migration: true
-      name: country_iso_code
       path: source.geo.country_iso_code
+      migration: true
+    - name: location
       type: alias
-    - migration: true
-      name: location
       path: source.geo.location
+      migration: true
+    - name: region_name
       type: alias
-    - migration: true
-      name: region_name
       path: source.geo.region_name
+      migration: true
+    - name: city_name
       type: alias
-    - migration: true
-      name: city_name
       path: source.geo.city_name
+      migration: true
+    - name: region_iso_code
       type: alias
-    - migration: true
-      name: region_iso_code
       path: source.geo.region_iso_code
-      type: alias
-    name: geoip
-    type: group
-  name: nginx.ingress_controller
-  type: group
+      migration: true

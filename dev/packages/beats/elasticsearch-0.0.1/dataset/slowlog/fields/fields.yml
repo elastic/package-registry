@@ -1,58 +1,43 @@
-- description: Slowlog events from Elasticsearch
-  example: '[2018-06-29T10:06:14,933][INFO ][index.search.slowlog.query] [v_VJhjV]
-    [metricbeat-6.3.0-2018.06.26][0] took[4.5ms], took_millis[4], total_hits[19435],
-    types[], stats[], search_type[QUERY_THEN_FETCH], total_shards[1], source[{"query":{"match_all":{"boost":1.0}}}],'
-  fields:
-  - description: Logger name
-    example: index.search.slowlog.fetch
-    name: logger
-    type: keyword
-  - description: Time it took to execute the query
-    example: 300ms
-    name: took
-    type: keyword
-  - description: Types
-    example: ""
-    name: types
-    type: keyword
-  - description: Stats groups
-    example: group1
-    name: stats
-    type: keyword
-  - description: Search type
-    example: QUERY_THEN_FETCH
-    name: search_type
-    type: keyword
-  - description: Slow query
-    example: '{"query":{"match_all":{"boost":1.0}}}'
-    name: source_query
-    type: keyword
-  - description: Extra source information
-    example: ""
-    name: extra_source
-    type: keyword
-  - description: Total hits
-    example: 42
-    name: total_hits
-    type: keyword
-  - description: Total queried shards
-    example: 22
-    name: total_shards
-    type: keyword
-  - description: Routing
-    example: s01HZ2QBk9jw4gtgaFtn
-    name: routing
-    type: keyword
-  - description: Id
-    example: ""
-    name: id
-    type: keyword
-  - description: Type
-    example: doc
-    name: type
-    type: keyword
-  - description: Source of document that was indexed
-    name: source
-    type: keyword
-  name: elasticsearch.slowlog
+- name: elasticsearch.slowlog
   type: group
+  description: Slowlog events from Elasticsearch
+  fields:
+  - name: logger
+    type: keyword
+    description: Logger name
+  - name: took
+    type: keyword
+    description: Time it took to execute the query
+  - name: types
+    type: keyword
+    description: Types
+  - name: stats
+    type: keyword
+    description: Stats groups
+  - name: search_type
+    type: keyword
+    description: Search type
+  - name: source_query
+    type: keyword
+    description: Slow query
+  - name: extra_source
+    type: keyword
+    description: Extra source information
+  - name: total_hits
+    type: keyword
+    description: Total hits
+  - name: total_shards
+    type: keyword
+    description: Total queried shards
+  - name: routing
+    type: keyword
+    description: Routing
+  - name: id
+    type: keyword
+    description: Id
+  - name: type
+    type: keyword
+    description: Type
+  - name: source
+    type: keyword
+    description: Source of document that was indexed

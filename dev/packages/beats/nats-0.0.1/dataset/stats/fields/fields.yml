@@ -1,100 +1,100 @@
-- description: |
+- name: nats.stats
+  type: group
+  description: |
     Contains nats var related metrics
+  release: ga
   fields:
-  - description: |
-      The period the server is up (sec)
+  - name: uptime
+    type: long
     format: duration
-    name: uptime
+    description: |
+      The period the server is up (sec)
+  - name: mem.bytes
     type: long
-  - description: |
-      The current memory usage of NATS process
     format: bytes
-    name: mem.bytes
-    type: long
-  - description: |
+    description: |
+      The current memory usage of NATS process
+  - name: cores
+    type: integer
+    description: |
       The number of logical cores the NATS process runs on
-    name: cores
-    type: integer
-  - description: |
-      The current cpu usage of NATs process
-    format: percent
-    name: cpu
+  - name: cpu
     type: scaled_float
-  - description: |
-      The number of totally created clients
-    name: total_connections
+    format: percent
+    description: |
+      The current cpu usage of NATs process
+  - name: total_connections
     type: long
-  - description: |
-      The number of registered remotes
-    name: remotes
+    description: |
+      The number of totally created clients
+  - name: remotes
     type: integer
-  - description: |
+    description: |
+      The number of registered remotes
+  - name: in
+    type: group
+    description: |
       The amount of incoming data
     fields:
-    - description: |
+    - name: messages
+      type: long
+      description: |
         The amount of incoming messages
-      name: messages
+    - name: bytes
       type: long
-    - description: |
-        The amount of incoming bytes
       format: bytes
-      name: bytes
-      type: long
-    name: in
+      description: |
+        The amount of incoming bytes
+  - name: out
     type: group
-  - description: |
+    description: |
       The amount of outgoing data
     fields:
-    - description: |
+    - name: messages
+      type: long
+      description: |
         The amount of outgoing messages
-      name: messages
+    - name: bytes
       type: long
-    - description: |
-        The amount of outgoing bytes
       format: bytes
-      name: bytes
-      type: long
-    name: out
-    type: group
-  - description: |
-      The number of slow consumers currently on NATS
-    name: slow_consumers
+      description: |
+        The amount of outgoing bytes
+  - name: slow_consumers
     type: long
-  - description: |
+    description: |
+      The number of slow consumers currently on NATS
+  - name: http
+    type: group
+    description: |
       The http metrics of NATS server
     fields:
-    - description: |
+    - name: req_stats
+      type: group
+      description: |
         The requests statistics
       fields:
-      - description: |
+      - name: uri
+        type: group
+        description: |
           The request distribution on monitoring URIS
         fields:
-        - description: |
+        - name: routez
+          type: long
+          description: |
             The number of hits on routez monitoring uri
-          name: routez
+        - name: connz
           type: long
-        - description: |
+          description: |
             The number of hits on connz monitoring uri
-          name: connz
+        - name: varz
           type: long
-        - description: |
+          description: |
             The number of hits on varz monitoring uri
-          name: varz
+        - name: subsz
           type: long
-        - description: |
+          description: |
             The number of hits on subsz monitoring uri
-          name: subsz
+        - name: root
           type: long
-        - description: |
+          description: |
             The number of hits on root monitoring uri
-          name: root
-          type: long
-        name: uri
-        type: group
-      name: req_stats
-      type: group
-    name: http
-    type: group
-  name: nats.stats
-  release: ga
-  type: group

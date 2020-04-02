@@ -1,4 +1,2 @@
-- description: ""
-  fields: null
-  name: iis
+- name: iis
   type: group

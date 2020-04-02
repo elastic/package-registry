@@ -1,25 +1,25 @@
-- description: |
+- name: osquery.result
+  type: group
+  description: |
     Common fields exported by the result metricset.
   fields:
-  - description: |
+  - name: name
+    type: keyword
+    description: |
       The name of the query that generated this event.
-    name: name
+  - name: action
     type: keyword
-  - description: |
+    description: |
       For incremental data, marks whether the entry was added or removed. It can be one of "added", "removed", or "snapshot".
-    name: action
+  - name: host_identifier
     type: keyword
-  - description: |
+    description: |
       The identifier for the host on which the osquery agent is running. Normally the hostname.
-    name: host_identifier
-    type: keyword
-  - description: |
-      Unix timestamp of the event, in seconds since the epoch. Used for computing the `@timestamp` column.
-    name: unix_time
+  - name: unix_time
     type: long
-  - description: |
-      String representation of the collection time, as formatted by osquery.
-    name: calendar_time
+    description: |
+      Unix timestamp of the event, in seconds since the epoch. Used for computing the `@timestamp` column.
+  - name: calendar_time
     type: keyword
-  name: osquery.result
-  type: group
+    description: |
+      String representation of the collection time, as formatted by osquery.

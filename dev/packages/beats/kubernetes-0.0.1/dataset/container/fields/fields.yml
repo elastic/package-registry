@@ -1,170 +1,170 @@
-- description: |
+- name: kubernetes.container
+  type: group
+  description: |
     kubernetes container metrics
+  release: ga
   fields:
-  - description: |
-      Start time
-    name: start_time
+  - name: start_time
     type: date
-  - description: |
+    description: |
+      Start time
+  - name: cpu
+    type: group
+    description: |
       CPU usage metrics
     fields:
-    - fields:
-      - fields:
-        - description: |
-            Container CPU Core usage nanoseconds
-          name: ns
-          type: long
-        name: core
-        type: group
-      - description: |
-          CPU used nanocores
-        name: nanocores
-        type: long
-      - description: |
-          CPU usage as a percentage of the total node allocatable CPU
-        format: percent
-        name: node.pct
-        type: scaled_float
-      - description: |
-          CPU usage as a percentage of the defined limit for the container (or total node allocatable CPU if unlimited)
-        format: percent
-        name: limit.pct
-        type: scaled_float
-      name: usage
+    - name: usage
       type: group
-    name: cpu
+      fields:
+      - name: core
+        type: group
+        fields:
+        - name: ns
+          type: long
+          description: |
+            Container CPU Core usage nanoseconds
+      - name: nanocores
+        type: long
+        description: |
+          CPU used nanocores
+      - name: node.pct
+        type: scaled_float
+        format: percent
+        description: |
+          CPU usage as a percentage of the total node allocatable CPU
+      - name: limit.pct
+        type: scaled_float
+        format: percent
+        description: |
+          CPU usage as a percentage of the defined limit for the container (or total node allocatable CPU if unlimited)
+  - name: logs
     type: group
-  - description: |
+    description: |
       Logs info
     fields:
-    - fields:
-      - description: |
+    - name: available
+      type: group
+      fields:
+      - name: bytes
+        type: long
+        format: bytes
+        description: |
           Logs available capacity in bytes
-        format: bytes
-        name: bytes
-        type: long
-      name: available
+    - name: capacity
       type: group
-    - fields:
-      - description: |
+      fields:
+      - name: bytes
+        type: long
+        format: bytes
+        description: |
           Logs total capacity in bytes
-        format: bytes
-        name: bytes
-        type: long
-      name: capacity
+    - name: used
       type: group
-    - fields:
-      - description: |
+      fields:
+      - name: bytes
+        type: long
+        format: bytes
+        description: |
           Logs used capacity in bytes
-        format: bytes
-        name: bytes
-        type: long
-      name: used
+    - name: inodes
       type: group
-    - fields:
-      - description: |
+      fields:
+      - name: count
+        type: long
+        description: |
           Total available inodes
-        name: count
+      - name: free
         type: long
-      - description: |
+        description: |
           Total free inodes
-        name: free
+      - name: used
         type: long
-      - description: |
+        description: |
           Total used inodes
-        name: used
-        type: long
-      name: inodes
-      type: group
-    name: logs
+  - name: memory
     type: group
-  - fields:
-    - fields:
-      - description: |
+    fields:
+    - name: available
+      type: group
+      fields:
+      - name: bytes
+        type: long
+        format: bytes
+        description: |
           Total available memory
-        format: bytes
-        name: bytes
-        type: long
-      name: available
+    - name: usage
       type: group
-    - fields:
-      - description: |
+      fields:
+      - name: bytes
+        type: long
+        format: bytes
+        description: |
           Total memory usage
-        format: bytes
-        name: bytes
-        type: long
-      - description: |
+      - name: node.pct
+        type: scaled_float
+        format: percent
+        description: |
           Memory usage as a percentage of the total node allocatable memory
-        format: percent
-        name: node.pct
+      - name: limit.pct
         type: scaled_float
-      - description: |
+        format: percent
+        description: |
           Memory usage as a percentage of the defined limit for the container (or total node allocatable memory if unlimited)
-        format: percent
-        name: limit.pct
-        type: scaled_float
-      name: usage
+    - name: rss
       type: group
-    - fields:
-      - description: |
+      fields:
+      - name: bytes
+        type: long
+        format: bytes
+        description: |
           RSS memory usage
-        format: bytes
-        name: bytes
-        type: long
-      name: rss
+    - name: workingset
       type: group
-    - fields:
-      - description: |
+      fields:
+      - name: bytes
+        type: long
+        format: bytes
+        description: |
           Working set memory usage
-        format: bytes
-        name: bytes
-        type: long
-      name: workingset
-      type: group
-    - description: |
+    - name: pagefaults
+      type: long
+      description: |
         Number of page faults
-      name: pagefaults
+    - name: majorpagefaults
       type: long
-    - description: |
+      description: |
         Number of major page faults
-      name: majorpagefaults
-      type: long
-    name: memory
+  - name: rootfs
     type: group
-  - fields:
-    - fields:
-      - description: |
+    fields:
+    - name: capacity
+      type: group
+      fields:
+      - name: bytes
+        type: long
+        format: bytes
+        description: |
           Root filesystem total capacity in bytes
-        format: bytes
-        name: bytes
-        type: long
-      name: capacity
+    - name: available
       type: group
-    - fields:
-      - description: |
+      fields:
+      - name: bytes
+        type: long
+        format: bytes
+        description: |
           Root filesystem total available in bytes
-        format: bytes
-        name: bytes
-        type: long
-      name: available
+    - name: used
       type: group
-    - fields:
-      - description: |
+      fields:
+      - name: bytes
+        type: long
+        format: bytes
+        description: |
           Root filesystem total used in bytes
-        format: bytes
-        name: bytes
-        type: long
-      name: used
+    - name: inodes
       type: group
-    - fields:
-      - description: |
+      fields:
+      - name: used
+        type: long
+        description: |
           Used inodes
-        name: used
-        type: long
-      name: inodes
-      type: group
-    name: rootfs
-    type: group
-  name: kubernetes.container
-  release: ga
-  type: group

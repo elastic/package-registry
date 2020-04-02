@@ -1,5 +1,4 @@
-- description: |
-    Fields from IIS log files.
-  fields: null
-  name: iis
+- name: iis
   type: group
+  description: |
+    Fields from IIS log files.

@@ -1,5 +1,4 @@
-- description: |
-    MongoDB metrics.
-  fields: null
-  name: mongodb
+- name: mongodb
   type: group
+  description: |
+    MongoDB metrics.

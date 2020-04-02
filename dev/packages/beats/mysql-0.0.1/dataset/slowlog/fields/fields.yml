@@ -1,195 +1,195 @@
-- description: |
+- name: mysql.slowlog
+  type: group
+  description: |
     Contains fields from the MySQL slow logs.
   fields:
-  - description: |
-      The amount of time the query waited for the lock to be available. The value is in seconds, as a floating point number.
-    name: lock_time.sec
+  - name: lock_time.sec
     type: float
-  - description: |
+    description: |
+      The amount of time the query waited for the lock to be available. The value is in seconds, as a floating point number.
+  - name: rows_sent
+    type: long
+    description: |
       The number of rows returned by the query.
-    name: rows_sent
+  - name: rows_examined
     type: long
-  - description: |
+    description: |
       The number of rows scanned by the query.
-    name: rows_examined
+  - name: rows_affected
     type: long
-  - description: |
+    description: |
       The number of rows modified by the query.
-    name: rows_affected
+  - name: bytes_sent
     type: long
-  - description: |
+    format: bytes
+    description: |
       The number of bytes sent to client.
-    format: bytes
-    name: bytes_sent
+  - name: bytes_received
     type: long
-  - description: |
+    format: bytes
+    description: |
       The number of bytes received from client.
-    format: bytes
-    name: bytes_received
-    type: long
-  - description: |
+  - name: query
+    description: |
       The slow query.
-    name: query
-  - description: |
+  - name: schema
+    type: keyword
+    description: |
       The schema where the slow query was executed.
-    name: schema
+  - name: current_user
     type: keyword
-  - description: |
+    description: |
       Current authenticated user, used to determine access privileges. Can differ from the value for user.
-    name: current_user
+  - name: last_errno
     type: keyword
-  - description: |
+    description: |
       Last SQL error seen.
-    name: last_errno
+  - name: killed
     type: keyword
-  - description: |
+    description: |
       Code of the reason if the query was killed.
-    name: killed
-    type: keyword
-  - description: |
+  - name: query_cache_hit
+    type: boolean
+    description: |
       Whether the query cache was hit.
-    name: query_cache_hit
+  - name: tmp_table
     type: boolean
-  - description: |
+    description: |
       Whether a temporary table was used to resolve the query.
-    name: tmp_table
+  - name: tmp_table_on_disk
     type: boolean
-  - description: |
+    description: |
       Whether the query needed temporary tables on disk.
-    name: tmp_table_on_disk
-    type: boolean
-  - description: |
+  - name: tmp_tables
+    type: long
+    description: |
       Number of temporary tables created for this query
-    name: tmp_tables
+  - name: tmp_disk_tables
     type: long
-  - description: |
+    description: |
       Number of temporary tables created on disk for this query.
-    name: tmp_disk_tables
+  - name: tmp_table_sizes
     type: long
-  - description: Size of temporary tables created for this query.
     format: bytes
-    name: tmp_table_sizes
-    type: long
-  - description: |
+    description: Size of temporary tables created for this query.
+  - name: filesort
+    type: boolean
+    description: |
       Whether filesort optimization was used.
-    name: filesort
+  - name: filesort_on_disk
     type: boolean
-  - description: |
+    description: |
       Whether filesort optimization was used and it needed temporary tables on disk.
-    name: filesort_on_disk
+  - name: priority_queue
     type: boolean
-  - description: |
+    description: |
       Whether a priority queue was used for filesort.
-    name: priority_queue
+  - name: full_scan
     type: boolean
-  - description: |
+    description: |
       Whether a full table scan was needed for the slow query.
-    name: full_scan
+  - name: full_join
     type: boolean
-  - description: |
+    description: |
       Whether a full join was needed for the slow query (no indexes were used for joins).
-    name: full_join
-    type: boolean
-  - description: |
+  - name: merge_passes
+    type: long
+    description: |
       Number of merge passes executed for the query.
-    name: merge_passes
+  - name: sort_merge_passes
     type: long
-  - description: |
+    description: |
       Number of merge passes that the sort algorithm has had to do.
-    name: sort_merge_passes
+  - name: sort_range_count
     type: long
-  - description: "Number of sorts that were done using ranges. \n"
-    name: sort_range_count
+    description: "Number of sorts that were done using ranges. \n"
+  - name: sort_rows
     type: long
-  - description: |
+    description: |
       Number of sorted rows.
-    name: sort_rows
+  - name: sort_scan_count
     type: long
-  - description: |
+    description: |
       Number of sorts that were done by scanning the table.
-    name: sort_scan_count
-    type: long
-  - description: |
+  - name: log_slow_rate_type
+    type: keyword
+    description: |
       Type of slow log rate limit, it can be `session` if the rate limit is applied per session, or `query` if it applies per query.
-    name: log_slow_rate_type
+  - name: log_slow_rate_limit
     type: keyword
-  - description: |
+    description: |
       Slow log rate limit, a value of 100 means that one in a hundred queries or sessions are being logged.
-    name: log_slow_rate_limit
-    type: keyword
-  - description: |
+  - name: read_first
+    type: long
+    description: |
       The number of times the first entry in an index was read.
-    name: read_first
+  - name: read_last
     type: long
-  - description: |
+    description: |
       The number of times the last key in an index was read.
-    name: read_last
+  - name: read_key
     type: long
-  - description: |
+    description: |
       The number of requests to read a row based on a key.
-    name: read_key
+  - name: read_next
     type: long
-  - description: |
+    description: |
       The number of requests to read the next row in key order.
-    name: read_next
+  - name: read_prev
     type: long
-  - description: |
+    description: |
       The number of requests to read the previous row in key order.
-    name: read_prev
+  - name: read_rnd
     type: long
-  - description: "The number of requests to read a row based on a fixed position.
+    description: "The number of requests to read a row based on a fixed position.
       \n"
-    name: read_rnd
+  - name: read_rnd_next
     type: long
-  - description: |
+    description: |
       The number of requests to read the next row in the data file.
-    name: read_rnd_next
-    type: long
-  - description: |
+  - name: innodb
+    type: group
+    description: |
       Contains fields relative to InnoDB engine
     fields:
-    - description: |
-        Transaction ID
-      name: trx_id
+    - name: trx_id
       type: keyword
-    - description: |
+      description: |
+        Transaction ID
+    - name: io_r_ops
+      type: long
+      description: |
         Number of page read operations.
-      name: io_r_ops
+    - name: io_r_bytes
       type: long
-    - description: |
-        Bytes read during page read operations.
       format: bytes
-      name: io_r_bytes
+      description: |
+        Bytes read during page read operations.
+    - name: io_r_wait.sec
       type: long
-    - description: |
+      description: |
         How long it took to read all needed data from storage.
-      name: io_r_wait.sec
+    - name: rec_lock_wait.sec
       type: long
-    - description: |
+      description: |
         How long the query waited for locks.
-      name: rec_lock_wait.sec
+    - name: queue_wait.sec
       type: long
-    - description: |
+      description: |
         How long the query waited to enter the InnoDB queue and to be executed once in the queue.
-      name: queue_wait.sec
+    - name: pages_distinct
       type: long
-    - description: |
+      description: |
         Approximated count of pages accessed to execute the query.
-      name: pages_distinct
-      type: long
-    name: innodb
-    type: group
-  - migration: true
-    name: user
+  - name: user
+    type: alias
     path: user.name
+    migration: true
+  - name: host
     type: alias
-  - migration: true
-    name: host
     path: source.domain
+    migration: true
+  - name: ip
     type: alias
-  - migration: true
-    name: ip
     path: source.ip
-    type: alias
-  name: mysql.slowlog
-  type: group
+    migration: true

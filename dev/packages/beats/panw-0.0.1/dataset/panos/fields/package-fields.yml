@@ -1,5 +1,4 @@
-- description: |
-    Fields from the panw module.
-  fields: null
-  name: panw
+- name: panw
   type: group
+  description: |
+    Fields from the panw module.

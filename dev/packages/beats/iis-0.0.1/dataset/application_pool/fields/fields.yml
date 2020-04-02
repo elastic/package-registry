@@ -1,10 +1,10 @@
-- description: |
-    application_pool
-  fields:
-  - description: |
-      application pool name
-    name: name
-    type: keyword
-  name: iis.application_pool
-  release: beta
+- name: iis.application_pool
   type: group
+  description: |
+    application_pool
+  release: beta
+  fields:
+  - name: name
+    type: keyword
+    description: |
+      application pool name

@@ -1,4 +1,2 @@
-- description: ""
-  fields: null
-  name: appsearch
+- name: appsearch
   type: group

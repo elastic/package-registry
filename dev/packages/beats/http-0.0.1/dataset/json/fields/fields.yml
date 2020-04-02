@@ -1,6 +1,5 @@
-- description: |
-    json metricset
-  fields: null
-  name: http.json
-  release: ga
+- name: http.json
   type: group
+  description: |
+    json metricset
+  release: ga

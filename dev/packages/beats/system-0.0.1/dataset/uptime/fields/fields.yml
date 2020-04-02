@@ -1,12 +1,11 @@
-- description: |
-    `uptime` contains the operating system uptime metric.
-  fields:
-  - description: |
-      The OS uptime in milliseconds.
-    format: duration
-    input_format: milliseconds
-    name: duration.ms
-    type: long
-  name: system.uptime
-  release: ga
+- name: system.uptime
   type: group
+  description: |
+    `uptime` contains the operating system uptime metric.
+  release: ga
+  fields:
+  - name: duration.ms
+    type: long
+    format: duration
+    description: |
+      The OS uptime in milliseconds.

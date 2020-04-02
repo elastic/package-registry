@@ -1,169 +1,167 @@
-- description: |
+- name: system.memory
+  type: group
+  description: |
     `memory` contains local memory stats.
+  release: ga
   fields:
-  - description: |
+  - name: total
+    type: long
+    format: bytes
+    description: |
       Total memory.
-    format: bytes
-    name: total
+  - name: used.bytes
     type: long
-  - description: |
+    format: bytes
+    description: |
       Used memory.
-    format: bytes
-    name: used.bytes
+  - name: free
     type: long
-  - description: |
+    format: bytes
+    description: |
       The total amount of free memory in bytes. This value does not include memory consumed by system caches and buffers (see system.memory.actual.free).
-    format: bytes
-    name: free
-    type: long
-  - description: |
-      The percentage of used memory.
-    format: percent
-    name: used.pct
+  - name: used.pct
     type: scaled_float
-  - description: |
+    format: percent
+    description: |
+      The percentage of used memory.
+  - name: actual
+    type: group
+    description: |
       Actual memory used and free.
     fields:
-    - description: |
+    - name: used.bytes
+      type: long
+      format: bytes
+      description: |
         Actual used memory in bytes. It represents the difference between the total and the available memory. The available memory depends on the OS. For more details, please check `system.actual.free`.
-      format: bytes
-      name: used.bytes
+    - name: free
       type: long
-    - description: |
+      format: bytes
+      description: |
         Actual free memory in bytes. It is calculated based on the OS. On Linux this value will be MemAvailable from /proc/meminfo,  or calculated from free memory plus caches and buffers if /proc/meminfo is not available. On OSX it is a sum of free memory and the inactive memory. On Windows, it is equal to `system.memory.free`.
-      format: bytes
-      name: free
-      type: long
-    - description: |
-        The percentage of actual used memory.
-      format: percent
-      name: used.pct
+    - name: used.pct
       type: scaled_float
-    name: actual
+      format: percent
+      description: |
+        The percentage of actual used memory.
+  - name: swap
     type: group
-  - description: This group contains statistics related to the swap memory usage on
+    description: This group contains statistics related to the swap memory usage on
       the system.
     fields:
-    - description: |
+    - name: total
+      type: long
+      format: bytes
+      description: |
         Total swap memory.
-      format: bytes
-      name: total
+    - name: used.bytes
       type: long
-    - description: |
+      format: bytes
+      description: |
         Used swap memory.
-      format: bytes
-      name: used.bytes
+    - name: free
       type: long
-    - description: |
+      format: bytes
+      description: |
         Available swap memory.
-      format: bytes
-      name: free
+    - name: out.pages
       type: long
-    - description: count of pages swapped out
-      name: out.pages
+      description: count of pages swapped out
+    - name: in.pages
       type: long
-    - description: count of pages swapped in
-      name: in.pages
+      description: count of pages swapped in
+    - name: readahead.pages
       type: long
-    - description: swap readahead pages
-      name: readahead.pages
+      description: swap readahead pages
+    - name: readahead.cached
       type: long
-    - description: swap readahead cache hits
-      name: readahead.cached
-      type: long
-    - description: |
+      description: swap readahead cache hits
+    - name: used.pct
+      type: scaled_float
+      format: percent
+      description: |
         The percentage of used swap memory.
-      format: percent
-      name: used.pct
-      type: scaled_float
-    name: swap
-    prefix: '[float]'
+  - name: page_stats
     type: group
-  - description: memory page statistics
+    description: memory page statistics
     fields:
-    - description: pages scanned by kswapd
-      format: number
-      name: pgscan_kswapd.pages
+    - name: pgscan_kswapd.pages
       type: long
-    - description: pages scanned directly
       format: number
-      name: pgscan_direct.pages
+      description: pages scanned by kswapd
+    - name: pgscan_direct.pages
       type: long
-    - description: pages freed by the system
       format: number
-      name: pgfree.pages
+      description: pages scanned directly
+    - name: pgfree.pages
       type: long
-    - description: number of pages reclaimed by kswapd
       format: number
-      name: pgsteal_kswapd.pages
+      description: pages freed by the system
+    - name: pgsteal_kswapd.pages
       type: long
-    - description: number of pages reclaimed directly
       format: number
-      name: pgsteal_direct.pages
+      description: number of pages reclaimed by kswapd
+    - name: pgsteal_direct.pages
       type: long
-    - description: direct reclaim efficiency percentage. A lower percentage indicates
-        the system is struggling to reclaim memory.
-      format: percent
-      name: direct_efficiency.pct
+      format: number
+      description: number of pages reclaimed directly
+    - name: direct_efficiency.pct
       type: scaled_float
-    - description: kswapd reclaim efficiency percentage. A lower percentage indicates
-        the system is struggling to reclaim memory.
       format: percent
-      name: kswapd_efficiency.pct
+      description: direct reclaim efficiency percentage. A lower percentage indicates
+        the system is struggling to reclaim memory.
+    - name: kswapd_efficiency.pct
       type: scaled_float
-    name: page_stats
+      format: percent
+      description: kswapd reclaim efficiency percentage. A lower percentage indicates
+        the system is struggling to reclaim memory.
+  - name: hugepages
     type: group
-  - description: This group contains statistics related to huge pages usage on the
+    description: This group contains statistics related to huge pages usage on the
       system.
     fields:
-    - description: |
+    - name: total
+      type: long
+      format: number
+      description: |
         Number of huge pages in the pool.
-      format: number
-      name: total
+    - name: used.bytes
       type: long
-    - description: |
+      format: bytes
+      description: |
         Memory used in allocated huge pages.
-      format: bytes
-      name: used.bytes
+    - name: used.pct
       type: long
-    - description: |
-        Percentage of huge pages used.
       format: percent
-      name: used.pct
+      description: |
+        Percentage of huge pages used.
+    - name: free
       type: long
-    - description: |
+      format: number
+      description: |
         Number of available huge pages in the pool.
-      format: number
-      name: free
+    - name: reserved
       type: long
-    - description: |
+      format: number
+      description: |
         Number of reserved but not allocated huge pages in the pool.
-      format: number
-      name: reserved
+    - name: surplus
       type: long
-    - description: |
+      format: number
+      description: |
         Number of overcommited huge pages.
-      format: number
-      name: surplus
+    - name: default_size
       type: long
-    - description: |
-        Default size for huge pages.
       format: bytes
-      name: default_size
-      type: long
-    - description: huge pages swapped out
-      fields:
-      - description: pages swapped out
-        name: pages
-        type: long
-      - description: Count of huge pages that must be split before swapout
-        name: fallback
-        type: long
-      name: swap.out
+      description: |
+        Default size for huge pages.
+    - name: swap.out
       type: group
-    name: hugepages
-    prefix: '[float]'
-    type: group
-  name: system.memory
-  release: ga
-  type: group
+      description: huge pages swapped out
+      fields:
+      - name: pages
+        type: long
+        description: pages swapped out
+      - name: fallback
+        type: long
+        description: Count of huge pages that must be split before swapout

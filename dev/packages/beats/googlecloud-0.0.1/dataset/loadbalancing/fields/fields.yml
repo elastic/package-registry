@@ -1,8 +1,15 @@
-- description: Google Cloud Load Balancing metrics
+- name: googlecloud.loadbalancing
+  type: group
+  description: Google Cloud Load Balancing metrics
+  release: beta
   fields:
-  - description: Google Cloud Load Balancing metrics
+  - name: https
+    type: group
+    description: Google Cloud Load Balancing metrics
     fields:
-    - description: A distribution of the latency calculated from when the request
+    - name: backend_latencies
+      type: group
+      description: A distribution of the latency calculated from when the request
         was sent by the proxy to the backend until the proxy received from the backend
         the last byte of response.
       fields:
@@ -12,35 +19,35 @@
         type: long
       - name: bucket_counts
         type: long
-      - fields:
-        - fields:
-          - fields:
+      - name: bucket_options
+        type: group
+        fields:
+        - name: Options
+          type: group
+          fields:
+          - name: ExponentialBuckets
+            type: group
+            fields:
             - name: growth_factor
               type: double
             - name: scale
               type: long
             - name: num_finite_buckets
               type: long
-            name: ExponentialBuckets
-            type: group
-          name: Options
-          type: group
-        name: bucket_options
-        type: group
-      name: backend_latencies
-      type: group
-    - description: The number of bytes sent as requests from HTTP/S load balancer
+    - name: backend_request_bytes_count
+      type: long
+      description: The number of bytes sent as requests from HTTP/S load balancer
         to backends.
-      name: backend_request_bytes_count
+    - name: backend_request_count
       type: long
-    - description: The number of requests served by backends of HTTP/S load balancer.
-      name: backend_request_count
+      description: The number of requests served by backends of HTTP/S load balancer.
+    - name: backend_response_bytes_count
       type: long
-    - description: The number of bytes sent as responses from backends (or cache)
+      description: The number of bytes sent as responses from backends (or cache)
         to HTTP/S load balancer.
-      name: backend_response_bytes_count
-      type: long
-    - description: A distribution of the RTT measured for each connection between
+    - name: frontend_tcp_rtt
+      type: group
+      description: A distribution of the RTT measured for each connection between
         client and proxy.
       fields:
       - name: count
@@ -49,25 +56,27 @@
         type: long
       - name: bucket_counts
         type: long
-      - fields:
-        - fields:
-          - fields:
+      - name: bucket_options
+        type: group
+        fields:
+        - name: Options
+          type: group
+          fields:
+          - name: ExponentialBuckets
+            type: group
+            fields:
             - name: growth_factor
               type: double
             - name: scale
               type: long
             - name: num_finite_buckets
               type: long
-            name: ExponentialBuckets
-            type: group
-          name: Options
-          type: group
-        name: bucket_options
-        type: group
-      name: frontend_tcp_rtt
+    - name: internal
       type: group
-    - fields:
-      - description: A distribution of the latency calculated from when the request
+      fields:
+      - name: backend_latencies
+        type: group
+        description: A distribution of the latency calculated from when the request
           was sent by the proxy to the backend until the proxy received from the backend
           the last byte of response.
         fields:
@@ -77,35 +86,35 @@
           type: long
         - name: bucket_counts
           type: long
-        - fields:
-          - fields:
-            - fields:
+        - name: bucket_options
+          type: group
+          fields:
+          - name: Options
+            type: group
+            fields:
+            - name: ExponentialBuckets
+              type: group
+              fields:
               - name: growth_factor
                 type: double
               - name: scale
                 type: long
               - name: num_finite_buckets
                 type: long
-              name: ExponentialBuckets
-              type: group
-            name: Options
-            type: group
-          name: bucket_options
-          type: group
-        name: backend_latencies
-        type: group
-      - description: The number of bytes sent as requests from clients to HTTP/S load
+      - name: request_bytes_count
+        type: long
+        description: The number of bytes sent as requests from clients to HTTP/S load
           balancer.
-        name: request_bytes_count
+      - name: request_count
         type: long
-      - description: The number of requests served by HTTP/S load balancer.
-        name: request_count
+        description: The number of requests served by HTTP/S load balancer.
+      - name: response_bytes_count
         type: long
-      - description: The number of bytes sent as responses from HTTP/S load balancer
+        description: The number of bytes sent as responses from HTTP/S load balancer
           to clients.
-        name: response_bytes_count
-        type: long
-      - description: A distribution of the latency calculated from when the request
+      - name: total_latencies
+        type: group
+        description: A distribution of the latency calculated from when the request
           was received by the proxy until the proxy got ACK from client on last response
           byte.
         fields:
@@ -115,37 +124,35 @@
           type: long
         - name: bucket_counts
           type: long
-        - fields:
-          - fields:
-            - fields:
+        - name: bucket_options
+          type: group
+          fields:
+          - name: Options
+            type: group
+            fields:
+            - name: ExponentialBuckets
+              type: group
+              fields:
               - name: growth_factor
                 type: double
               - name: scale
                 type: long
               - name: num_finite_buckets
                 type: long
-              name: ExponentialBuckets
-              type: group
-            name: Options
-            type: group
-          name: bucket_options
-          type: group
-        name: total_latencies
-        type: group
-      name: internal
-      type: group
-    - description: The number of bytes sent as requests from clients to HTTP/S load
+    - name: request_bytes_count
+      type: long
+      description: The number of bytes sent as requests from clients to HTTP/S load
         balancer.
-      name: request_bytes_count
+    - name: request_count
       type: long
-    - description: The number of requests served by HTTP/S load balancer.
-      name: request_count
+      description: The number of requests served by HTTP/S load balancer.
+    - name: response_bytes_count
       type: long
-    - description: The number of bytes sent as responses from HTTP/S load balancer
+      description: The number of bytes sent as responses from HTTP/S load balancer
         to clients.
-      name: response_bytes_count
-      type: long
-    - description: A distribution of the latency calculated from when the request
+    - name: total_latencies
+      type: group
+      description: A distribution of the latency calculated from when the request
         was received by the proxy until the proxy got ACK from client on last response
         byte.
       fields:
@@ -155,42 +162,42 @@
         type: long
       - name: bucket_counts
         type: long
-      - fields:
-        - fields:
-          - fields:
+      - name: bucket_options
+        type: group
+        fields:
+        - name: Options
+          type: group
+          fields:
+          - name: ExponentialBuckets
+            type: group
+            fields:
             - name: growth_factor
               type: double
             - name: scale
               type: long
             - name: num_finite_buckets
               type: long
-            name: ExponentialBuckets
-            type: group
-          name: Options
-          type: group
-        name: bucket_options
-        type: group
-      name: total_latencies
-      type: group
-    name: https
+  - name: l3.internal
     type: group
-  - description: Google Cloud Load Balancing metrics
+    description: Google Cloud Load Balancing metrics
     fields:
-    - description: The number of bytes sent from ILB backend to client (for TCP flows
+    - name: egress_bytes_count
+      type: long
+      description: The number of bytes sent from ILB backend to client (for TCP flows
         it's counting bytes on application stream only).
-      name: egress_bytes_count
+    - name: egress_packets_count
       type: long
-    - description: The number of packets sent from ILB backend to client of the flow.
-      name: egress_packets_count
+      description: The number of packets sent from ILB backend to client of the flow.
+    - name: ingress_bytes_count
       type: long
-    - description: The number of bytes sent from client to ILB backend (for TCP flows
+      description: The number of bytes sent from client to ILB backend (for TCP flows
         it's counting bytes on application stream only).
-      name: ingress_bytes_count
+    - name: ingress_packets_count
       type: long
-    - description: The number of packets sent from client to ILB backend.
-      name: ingress_packets_count
-      type: long
-    - description: A distribution of RTT measured over TCP connections for ILB flows.
+      description: The number of packets sent from client to ILB backend.
+    - name: rtt_latencies
+      type: group
+      description: A distribution of RTT measured over TCP connections for ILB flows.
       fields:
       - name: count
         type: long
@@ -198,34 +205,34 @@
         type: long
       - name: bucket_counts
         type: long
-      - fields:
-        - fields:
-          - fields:
+      - name: bucket_options
+        type: group
+        fields:
+        - name: Options
+          type: group
+          fields:
+          - name: ExponentialBuckets
+            type: group
+            fields:
             - name: growth_factor
               type: double
             - name: scale
               type: long
             - name: num_finite_buckets
               type: long
-            name: ExponentialBuckets
-            type: group
-          name: Options
-          type: group
-        name: bucket_options
-        type: group
-      name: rtt_latencies
-      type: group
-    name: l3.internal
+  - name: tcp_ssl_proxy
     type: group
-  - description: Google Cloud Load Balancing metrics
+    description: Google Cloud Load Balancing metrics
     fields:
-    - description: Number of connections that were terminated over TCP/SSL proxy.
-      name: closed_connections
+    - name: closed_connections
       type: long
-    - description: Number of bytes sent from VM to client using proxy.
-      name: egress_bytes_count
+      description: Number of connections that were terminated over TCP/SSL proxy.
+    - name: egress_bytes_count
       type: long
-    - description: A distribution of the smoothed RTT (in ms) measured by the proxy's
+      description: Number of bytes sent from VM to client using proxy.
+    - name: frontend_tcp_rtt
+      type: group
+      description: A distribution of the smoothed RTT (in ms) measured by the proxy's
         TCP stack, each minute application layer bytes pass from proxy to client.
       fields:
       - name: count
@@ -234,34 +241,27 @@
         type: long
       - name: bucket_counts
         type: long
-      - fields:
-        - fields:
-          - fields:
+      - name: bucket_options
+        type: group
+        fields:
+        - name: Options
+          type: group
+          fields:
+          - name: ExponentialBuckets
+            type: group
+            fields:
             - name: growth_factor
               type: double
             - name: scale
               type: long
             - name: num_finite_buckets
               type: long
-            name: ExponentialBuckets
-            type: group
-          name: Options
-          type: group
-        name: bucket_options
-        type: group
-      name: frontend_tcp_rtt
-      type: group
-    - description: Number of bytes sent from client to VM using proxy.
-      name: ingress_bytes_count
+    - name: ingress_bytes_count
       type: long
-    - description: Number of connections that were created over TCP/SSL proxy.
-      name: new_connections
+      description: Number of bytes sent from client to VM using proxy.
+    - name: new_connections
       type: long
-    - description: Current number of outstanding connections through the TCP/SSL proxy.
-      name: open_connections
+      description: Number of connections that were created over TCP/SSL proxy.
+    - name: open_connections
       type: long
-    name: tcp_ssl_proxy
-    type: group
-  name: googlecloud.loadbalancing
-  release: beta
-  type: group
+      description: Current number of outstanding connections through the TCP/SSL proxy.

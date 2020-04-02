@@ -1,45 +1,44 @@
-- description: |
-    `network` contains network IO metrics for a single network interface.
-  fields:
-  - description: |
-      The network interface name.
-    example: eth0
-    name: name
-    type: keyword
-  - description: |
-      The number of bytes sent.
-    format: bytes
-    name: out.bytes
-    type: long
-  - description: |
-      The number of bytes received.
-    format: bytes
-    name: in.bytes
-    type: long
-  - description: |
-      The number of packets sent.
-    name: out.packets
-    type: long
-  - description: |
-      The number or packets received.
-    name: in.packets
-    type: long
-  - description: |
-      The number of errors while receiving.
-    name: in.errors
-    type: long
-  - description: |
-      The number of errors while sending.
-    name: out.errors
-    type: long
-  - description: |
-      The number of incoming packets that were dropped.
-    name: in.dropped
-    type: long
-  - description: |
-      The number of outgoing packets that were dropped. This value is always 0 on Darwin and BSD because it is not reported by the operating system.
-    name: out.dropped
-    type: long
-  name: system.network
-  release: ga
+- name: system.network
   type: group
+  description: |
+    `network` contains network IO metrics for a single network interface.
+  release: ga
+  fields:
+  - name: name
+    type: keyword
+    description: |
+      The network interface name.
+  - name: out.bytes
+    type: long
+    format: bytes
+    description: |
+      The number of bytes sent.
+  - name: in.bytes
+    type: long
+    format: bytes
+    description: |
+      The number of bytes received.
+  - name: out.packets
+    type: long
+    description: |
+      The number of packets sent.
+  - name: in.packets
+    type: long
+    description: |
+      The number or packets received.
+  - name: in.errors
+    type: long
+    description: |
+      The number of errors while receiving.
+  - name: out.errors
+    type: long
+    description: |
+      The number of errors while sending.
+  - name: in.dropped
+    type: long
+    description: |
+      The number of incoming packets that were dropped.
+  - name: out.dropped
+    type: long
+    description: |
+      The number of outgoing packets that were dropped. This value is always 0 on Darwin and BSD because it is not reported by the operating system.

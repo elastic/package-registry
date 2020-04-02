@@ -1,5 +1,4 @@
-- description: |
-    `coredns` contains statistics that were read from coreDNS
-  fields: null
-  name: coredns
+- name: coredns
   type: group
+  description: |
+    `coredns` contains statistics that were read from coreDNS

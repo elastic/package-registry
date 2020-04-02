@@ -1,59 +1,58 @@
-- default_field: false
+- name: zeek.ocsp
+  type: group
   description: |
     Fields exported by the Zeek OCSP log
     Online Certificate Status Protocol (OCSP). Only created if policy script is loaded.
   fields:
-  - description: |
+  - name: file_id
+    type: keyword
+    description: |
       File id of the OCSP reply.
-    name: file_id
-    type: keyword
-  - fields:
-    - description: |
+  - name: hash
+    type: group
+    fields:
+    - name: algorithm
+      type: keyword
+      description: |
         Hash algorithm used to generate issuerNameHash and issuerKeyHash.
-      name: algorithm
-      type: keyword
-    - fields:
-      - description: |
-          Hash of the issuer's distingueshed name.
-        name: name
-        type: keyword
-      - description: |
-          Hash of the issuer's public key.
-        name: key
-        type: keyword
-      name: issuer
+    - name: issuer
       type: group
-    name: hash
-    type: group
-  - description: |
+      fields:
+      - name: name
+        type: keyword
+        description: |
+          Hash of the issuer's distingueshed name.
+      - name: key
+        type: keyword
+        description: |
+          Hash of the issuer's public key.
+  - name: serial_number
+    type: keyword
+    description: |
       Serial number of the affected certificate.
-    name: serial_number
+  - name: status
     type: keyword
-  - description: |
+    description: |
       Status of the affected certificate.
-    name: status
-    type: keyword
-  - fields:
-    - description: |
+  - name: revoke
+    type: group
+    fields:
+    - name: time
+      type: date
+      description: |
         Time at which the certificate was revoked.
-      name: time
-      type: date
-    - description: |
-        Reason for which the certificate was revoked.
-      name: reason
+    - name: reason
       type: keyword
-    name: revoke
+      description: |
+        Reason for which the certificate was revoked.
+  - name: update
     type: group
-  - fields:
-    - description: |
+    fields:
+    - name: this
+      type: date
+      description: |
         The time at which the status being shows is known to have been correct.
-      name: this
+    - name: next
       type: date
-    - description: |
+      description: |
         The latest time at which new information about the status of the certificate will be available.
-      name: next
-      type: date
-    name: update
-    type: group
-  name: zeek.ocsp
-  type: group

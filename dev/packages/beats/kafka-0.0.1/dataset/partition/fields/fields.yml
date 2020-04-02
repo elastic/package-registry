@@ -1,73 +1,68 @@
-- description: |
+- name: kafka.partition
+  type: group
+  description: |
     partition
+  release: ga
   fields:
-  - description: |
+  - name: offset
+    type: group
+    description: |
       Available offsets of the given partition.
     fields:
-    - description: |
+    - name: newest
+      type: long
+      description: |
         Newest offset of the partition.
-      name: newest
+    - name: oldest
       type: long
-    - description: |
+      description: |
         Oldest offset of the partition.
-      name: oldest
-      type: long
-    name: offset
+  - name: partition
     type: group
-  - description: |
+    description: |
       Partition data.
     fields:
-    - deprecated: 6.5
+    - name: id
+      type: long
       description: |
         Partition id.
-      name: id
+    - name: leader
       type: long
-    - description: |
+      description: |
         Leader id (broker).
-      name: leader
-      type: long
-    - description: |
-        List of isr ids.
-      name: isr
+    - name: isr
       type: keyword
-    - description: |
+      description: |
+        List of isr ids.
+    - name: replica
+      type: long
+      description: |
         Replica id (broker).
-      name: replica
-      type: long
-    - description: |
+    - name: insync_replica
+      type: boolean
+      description: |
         Indicates if replica is included in the in-sync replicate set (ISR).
-      name: insync_replica
+    - name: is_leader
       type: boolean
-    - description: |
+      description: |
         Indicates if replica is the leader
-      name: is_leader
-      type: boolean
-    - description: |
-        Error code from fetching partition.
-      name: error.code
+    - name: error.code
       type: long
-    name: partition
-    type: group
-  - deprecated: 6.5
+      description: |
+        Error code from fetching partition.
+  - name: topic.error.code
+    type: long
     description: |
       topic error code.
-    name: topic.error.code
-    type: long
-  - deprecated: 6.5
+  - name: topic.name
+    type: keyword
     description: |
       Topic name
-    name: topic.name
-    type: keyword
-  - deprecated: 6.5
+  - name: broker.id
+    type: long
     description: |
       Broker id
-    name: broker.id
-    type: long
-  - deprecated: 6.5
+  - name: broker.address
+    type: keyword
     description: |
       Broker address
-    name: broker.address
-    type: keyword
-  name: kafka.partition
-  release: ga
-  type: group

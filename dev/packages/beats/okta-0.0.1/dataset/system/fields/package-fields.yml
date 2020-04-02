@@ -1,6 +1,4 @@
-- default_field: false
+- name: okta
+  type: group
   description: |
     Fields from Okta.
-  fields: null
-  name: okta
-  type: group

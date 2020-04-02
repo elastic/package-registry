@@ -1,7 +1,5 @@
-- description: |
-    storage account
-  name: storage.*.*
-  object_type: float
-  object_type_mapping_type: '*'
-  release: ga
+- name: storage.*.*
   type: object
+  description: |
+    storage account
+  release: ga

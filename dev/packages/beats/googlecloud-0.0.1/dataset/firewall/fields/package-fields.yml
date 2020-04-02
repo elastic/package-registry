@@ -1,73 +1,73 @@
-- description: |
+- name: googlecloud
+  type: group
+  description: |
     Fields from Google Cloud logs.
   fields:
-  - description: |
+  - name: destination.instance
+    type: group
+    description: |
       If the destination of the connection was a VM located on the same VPC, this field is populated with VM instance details. In a Shared VPC configuration, project_id corresponds to the project that owns the instance, usually the service project.
     fields:
-    - description: |
+    - name: project_id
+      type: keyword
+      description: |
         ID of the project containing the VM.
-      name: project_id
+    - name: region
       type: keyword
-    - description: |
+      description: |
         Region of the VM.
-      name: region
+    - name: zone
       type: keyword
-    - description: |
+      description: |
         Zone of the VM.
-      name: zone
-      type: keyword
-    name: destination.instance
+  - name: destination.vpc
     type: group
-  - description: |
+    description: |
       If the destination of the connection was a VM located on the same VPC, this field is populated with VPC network details. In a Shared VPC configuration, project_id corresponds to that of the host project.
     fields:
-    - description: |
+    - name: project_id
+      type: keyword
+      description: |
         ID of the project containing the VM.
-      name: project_id
+    - name: vpc_name
       type: keyword
-    - description: |
+      description: |
         VPC on which the VM is operating.
-      name: vpc_name
+    - name: subnetwork_name
       type: keyword
-    - description: |
+      description: |
         Subnetwork on which the VM is operating.
-      name: subnetwork_name
-      type: keyword
-    name: destination.vpc
+  - name: source.instance
     type: group
-  - description: |
+    description: |
       If the source of the connection was a VM located on the same VPC, this field is populated with VM instance details. In a Shared VPC configuration, project_id corresponds to the project that owns the instance, usually the service project.
     fields:
-    - description: |
+    - name: project_id
+      type: keyword
+      description: |
         ID of the project containing the VM.
-      name: project_id
+    - name: region
       type: keyword
-    - description: |
+      description: |
         Region of the VM.
-      name: region
+    - name: zone
       type: keyword
-    - description: |
+      description: |
         Zone of the VM.
-      name: zone
-      type: keyword
-    name: source.instance
+  - name: source.vpc
     type: group
-  - description: |
+    description: |
       If the source of the connection was a VM located on the same VPC, this field is populated with VPC network details. In a Shared VPC configuration, project_id corresponds to that of the host project.
     fields:
-    - description: |
+    - name: project_id
+      type: keyword
+      description: |
         ID of the project containing the VM.
-      name: project_id
+    - name: vpc_name
       type: keyword
-    - description: |
+      description: |
         VPC on which the VM is operating.
-      name: vpc_name
+    - name: subnetwork_name
       type: keyword
-    - description: |
+      description: |
         Subnetwork on which the VM is operating.
-      name: subnetwork_name
-      type: keyword
-    name: source.vpc
-    type: group
-  name: googlecloud
-  type: group

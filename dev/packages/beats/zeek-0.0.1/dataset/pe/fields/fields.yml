@@ -1,74 +1,73 @@
-- default_field: false
+- name: zeek.pe
+  type: group
   description: |
     Fields exported by the Zeek pe log.
   fields:
-  - description: |
+  - name: client
+    type: keyword
+    description: |
       The client's version string.
-    name: client
+  - name: id
     type: keyword
-  - description: |
+    description: |
       File id of this portable executable file.
-    name: id
+  - name: machine
     type: keyword
-  - description: |
+    description: |
       The target machine that the file was compiled for.
-    name: machine
-    type: keyword
-  - description: |
-      The time that the file was created at.
-    name: compile_time
+  - name: compile_time
     type: date
-  - description: |
+    description: |
+      The time that the file was created at.
+  - name: os
+    type: keyword
+    description: |
       The required operating system.
-    name: os
+  - name: subsystem
     type: keyword
-  - description: |
+    description: |
       The subsystem that is required to run this file.
-    name: subsystem
-    type: keyword
-  - description: |
+  - name: is_exe
+    type: boolean
+    description: |
       Is the file an executable, or just an object file?
-    name: is_exe
+  - name: is_64bit
     type: boolean
-  - description: |
+    description: |
       Is the file a 64-bit executable?
-    name: is_64bit
+  - name: uses_aslr
     type: boolean
-  - description: |
+    description: |
       Does the file support Address Space Layout Randomization?
-    name: uses_aslr
+  - name: uses_dep
     type: boolean
-  - description: |
+    description: |
       Does the file support Data Execution Prevention?
-    name: uses_dep
+  - name: uses_code_integrity
     type: boolean
-  - description: |
+    description: |
       Does the file enforce code integrity checks?
-    name: uses_code_integrity
+  - name: uses_seh
     type: boolean
-  - description: |
+    description: |
       Does the file use structured exception handing?
-    name: uses_seh
+  - name: has_import_table
     type: boolean
-  - description: |
+    description: |
       Does the file have an import table?
-    name: has_import_table
+  - name: has_export_table
     type: boolean
-  - description: |
+    description: |
       Does the file have an export table?
-    name: has_export_table
+  - name: has_cert_table
     type: boolean
-  - description: |
+    description: |
       Does the file have an attribute certificate table?
-    name: has_cert_table
+  - name: has_debug_data
     type: boolean
-  - description: |
+    description: |
       Does the file have a debug table?
-    name: has_debug_data
-    type: boolean
-  - description: |
-      The names of the sections, in order.
-    name: section_names
+  - name: section_names
     type: keyword
-  name: zeek.pe
-  type: group
+    description: |
+      The names of the sections, in order.

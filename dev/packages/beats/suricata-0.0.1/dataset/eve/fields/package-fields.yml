@@ -1,5 +1,4 @@
-- description: |
-    Fields from the Suricata EVE log file.
-  fields: null
-  name: suricata
+- name: suricata
   type: group
+  description: |
+    Fields from the Suricata EVE log file.

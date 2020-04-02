@@ -1,18 +1,23 @@
-- description: |
+- name: etcd.leader
+  type: group
+  description: |
     Contains etcd leader statistics.
+  release: ga
   fields:
-  - description: |
+  - name: followers.counts
+    type: group
+    description: |
       The number of failed and successful Raft RPC requests.
     fields:
-    - description: successful Raft RPC requests
-      name: followers.counts.success
+    - name: followers.counts.success
       type: integer
-    - description: failed Raft RPC requests
-      name: followers.counts.fail
+      description: successful Raft RPC requests
+    - name: followers.counts.fail
       type: integer
-    name: followers.counts
+      description: failed Raft RPC requests
+  - name: followers.latency
     type: group
-  - description: |
+    description: |
       latency to each peer in the cluster
     fields:
     - name: followers.latency.average
@@ -25,11 +30,6 @@
       type: integer
     - name: follower.latency.standardDeviation
       type: scaled_float
-    name: followers.latency
-    type: group
-  - description: ID of actual leader
-    name: leader
+  - name: leader
     type: keyword
-  name: etcd.leader
-  release: ga
-  type: group
+    description: ID of actual leader

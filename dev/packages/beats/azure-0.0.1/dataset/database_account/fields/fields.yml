@@ -1,7 +1,5 @@
-- description: |
-    database account
-  name: database_account.*.*
-  object_type: float
-  object_type_mapping_type: '*'
-  release: ga
+- name: database_account.*.*
   type: object
+  description: |
+    database account
+  release: ga

@@ -1,9 +1,9 @@
-- description: |
+- name: etcd
+  type: group
+  description: |
     `etcd` contains statistics that were read from Etcd
   fields:
-  - description: |
-      Etcd API version for metrics retrieval
-    name: api_version
+  - name: api_version
     type: keyword
-  name: etcd
-  type: group
+    description: |
+      Etcd API version for metrics retrieval

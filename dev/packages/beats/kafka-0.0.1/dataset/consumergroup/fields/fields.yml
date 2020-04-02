@@ -1,59 +1,56 @@
-- description: |
+- name: kafka.consumergroup
+  type: group
+  description: |
     consumergroup
+  release: ga
   fields:
-  - deprecated: 6.5
+  - name: broker
+    type: group
     description: |
       Broker Consumer Group Information have been read from (Broker handling the consumer group).
     fields:
-    - description: |
-        Broker id
-      name: id
+    - name: id
       type: long
-    - description: |
-        Broker address
-      name: address
+      description: |
+        Broker id
+    - name: address
       type: keyword
-    name: broker
-    type: group
-  - description: Consumer Group ID
-    name: id
+      description: |
+        Broker address
+  - name: id
     type: keyword
-  - deprecated: 6.5
+    description: Consumer Group ID
+  - name: topic
+    type: keyword
     description: Topic name
-    name: topic
-    type: keyword
-  - deprecated: 6.5
+  - name: partition
+    type: long
     description: Partition ID
-    name: partition
+  - name: offset
     type: long
-  - description: consumer offset into partition being read
-    name: offset
-    type: long
-  - description: custom consumer meta data string
-    name: meta
+    description: consumer offset into partition being read
+  - name: meta
     type: keyword
-  - description: consumer lag for partition/topic calculated as the difference between
+    description: custom consumer meta data string
+  - name: consumer_lag
+    type: long
+    description: consumer lag for partition/topic calculated as the difference between
       the partition offset and consumer offset
-    name: consumer_lag
+  - name: error.code
     type: long
-  - description: |
+    description: |
       kafka consumer/partition error code.
-    name: error.code
-    type: long
-  - description: |
+  - name: client
+    type: group
+    description: |
       Assigned client reading events from partition
     fields:
-    - description: Client ID (kafka setting client.id)
-      name: id
+    - name: id
       type: keyword
-    - description: Client host
-      name: host
+      description: Client ID (kafka setting client.id)
+    - name: host
       type: keyword
-    - description: internal consumer group member ID
-      name: member_id
+      description: Client host
+    - name: member_id
       type: keyword
-    name: client
-    type: group
-  name: kafka.consumergroup
-  release: ga
-  type: group
+      description: internal consumer group member ID

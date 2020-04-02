@@ -1,5 +1,4 @@
-- description: |
-    `nginx` contains the metrics that were scraped from nginx.
-  fields: null
-  name: nginx
+- name: nginx
   type: group
+  description: |
+    `nginx` contains the metrics that were scraped from nginx.

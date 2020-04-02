@@ -1,5 +1,4 @@
-- description: |
-    `redis` contains the information and statistics from Redis.
-  fields: null
-  name: redis
+- name: redis
   type: group
+  description: |
+    `redis` contains the information and statistics from Redis.

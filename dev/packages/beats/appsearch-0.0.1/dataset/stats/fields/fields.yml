@@ -1,120 +1,120 @@
-- description: |
+- name: appsearch.stats
+  type: group
+  description: |
     App Search stats
+  release: beta
   fields:
-  - description: |
+  - name: jvm
+    type: group
+    description: |
       JVM stats
     fields:
-    - description: |
+    - name: memory_usage
+      type: group
+      description: |
         Memory usage
       fields:
-      - description: |
+      - name: heap_init.bytes
+        type: long
+        description: |
           Heap init used by the JVM in bytes.
-        name: heap_init.bytes
+      - name: heap_used.bytes
         type: long
-      - description: |
+        description: |
           Heap used by the JVM in bytes.
-        name: heap_used.bytes
+      - name: heap_committed.bytes
         type: long
-      - description: |
+        description: |
           Committed heap to the JVM in bytes.
-        name: heap_committed.bytes
+      - name: heap_max.bytes
         type: long
-      - description: |
+        description: |
           Max heap used by the JVM in bytes
-        name: heap_max.bytes
+      - name: non_heap_init.bytes
         type: long
-      - description: |
+        description: |
           Non-Heap initial memory used by the JVM in bytes.
-        name: non_heap_init.bytes
+      - name: non_heap_committed.bytes
         type: long
-      - description: |
+        description: |
           Non-Heap committed memory used by the JVM in bytes.
-        name: non_heap_committed.bytes
-        type: long
-      name: memory_usage
-      type: group
-    name: jvm
+  - name: queues
     type: group
-  - description: |
+    description: |
       Worker queues
     fields:
-    - description: |
+    - name: analytics_events.count
+      type: long
+      description: |
         Number of pending jobs in the `analytics_events` queue.
-      name: analytics_events.count
+    - name: document_destroyer.count
       type: long
-    - description: |
+      description: |
         Number of pending jobs in the `document_destroyer` queue.
-      name: document_destroyer.count
+    - name: engine_destroyer.count
       type: long
-    - description: |
+      description: |
         Number of pending jobs in the `engine_destroyer` queue.
-      name: engine_destroyer.count
+    - name: index_adder.count
       type: long
-    - description: |
+      description: |
         Number of pending jobs in the `index_adder` queue.
-      name: index_adder.count
+    - name: indexed_doc_remover.count
       type: long
-    - description: |
+      description: |
         Number of pending jobs in the `indexed_doc_remover` queue.
-      name: indexed_doc_remover.count
+    - name: mailer.count
       type: long
-    - description: |
+      description: |
         Number of pending jobs in the `mailer` queue.
-      name: mailer.count
+    - name: refresh_document_counts.count
       type: long
-    - description: |
+      description: |
         Number of pending jobs in the `refresh_document_counts` queue.
-      name: refresh_document_counts.count
+    - name: reindexer.count
       type: long
-    - description: |
+      description: |
         Number of pending jobs in the `reindexer` queue.
-      name: reindexer.count
+    - name: schema_updater.count
       type: long
-    - description: |
+      description: |
         Number of pending jobs in the `schema_updater` queue.
-      name: schema_updater.count
+    - name: failed.count
       type: long
-    - description: |
+      description: |
         Number of failed jobs waiting to be retried.
-      name: failed.count
-      type: long
-    name: queues
+  - name: requests
     type: group
-  - description: |
+    description: |
       Request metrics
     fields:
-    - description: |
-        Number of recently completed requests
-      name: count
+    - name: count
       type: long
-    - description: |
+      description: |
+        Number of recently completed requests
+    - name: api.duration
+      type: group
+      description: |
         API response time metrics
       fields:
-      - description: |
+      - name: avg.ms
+        type: long
+        description: |
           Average response time in milliseconds
-        name: avg.ms
+      - name: max.ms
         type: long
-      - description: |
+        description: |
           Max response time in milliseconds
-        name: max.ms
-        type: long
-      name: api.duration
+    - name: web.response_time
       type: group
-    - description: |
+      description: |
         Dashboard response time metrics
       fields:
-      - description: |
+      - name: avg.ms
+        type: long
+        description: |
           Average response time in milliseconds
-        name: avg.ms
+      - name: max.ms
         type: long
-      - description: |
+        description: |
           Max response time in milliseconds
-        name: max.ms
-        type: long
-      name: web.response_time
-      type: group
-    name: requests
-    type: group
-  name: appsearch.stats
-  release: beta
-  type: group

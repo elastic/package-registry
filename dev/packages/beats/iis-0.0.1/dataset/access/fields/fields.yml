@@ -1,123 +1,123 @@
-- description: |
+- name: iis.access
+  type: group
+  description: |
     Contains fields for IIS access logs.
   fields:
-  - description: |
+  - name: sub_status
+    type: long
+    description: |
       The HTTP substatus code.
-    name: sub_status
+  - name: win32_status
     type: long
-  - description: |
+    description: |
       The Windows status code.
-    name: win32_status
-    type: long
-  - description: |
+  - name: site_name
+    type: keyword
+    description: |
       The site name and instance number.
-    name: site_name
+  - name: server_name
     type: keyword
-  - description: |
+    description: |
       The name of the server on which the log file entry was generated.
-    name: server_name
+  - name: cookie
     type: keyword
-  - description: |
+    description: |
       The content of the cookie sent or received, if any.
-    name: cookie
-    type: keyword
-  - migration: true
-    name: body_received.bytes
+  - name: body_received.bytes
+    type: alias
     path: http.request.body.bytes
+    migration: true
+  - name: body_sent.bytes
     type: alias
-  - migration: true
-    name: body_sent.bytes
     path: http.response.body.bytes
+    migration: true
+  - name: server_ip
     type: alias
-  - migration: true
-    name: server_ip
     path: destination.address
+    migration: true
+  - name: method
     type: alias
-  - migration: true
-    name: method
     path: http.request.method
+    migration: true
+  - name: url
     type: alias
-  - migration: true
-    name: url
     path: url.path
+    migration: true
+  - name: query_string
     type: alias
-  - migration: true
-    name: query_string
     path: url.query
+    migration: true
+  - name: port
     type: alias
-  - migration: true
-    name: port
     path: destination.port
+    migration: true
+  - name: user_name
     type: alias
-  - migration: true
-    name: user_name
     path: user.name
+    migration: true
+  - name: remote_ip
     type: alias
-  - migration: true
-    name: remote_ip
     path: source.address
+    migration: true
+  - name: referrer
     type: alias
-  - migration: true
-    name: referrer
     path: http.request.referrer
+    migration: true
+  - name: response_code
     type: alias
-  - migration: true
-    name: response_code
     path: http.response.status_code
+    migration: true
+  - name: http_version
     type: alias
-  - migration: true
-    name: http_version
     path: http.version
+    migration: true
+  - name: hostname
     type: alias
-  - migration: true
-    name: hostname
     path: host.hostname
-    type: alias
-  - fields:
-    - migration: true
-      name: device
+    migration: true
+  - name: user_agent
+    type: group
+    fields:
+    - name: device
+      type: alias
       path: user_agent.device.name
+      migration: true
+    - name: name
       type: alias
-    - migration: true
-      name: name
       path: user_agent.name
+      migration: true
+    - name: os_name
       type: alias
-    - migration: true
-      name: os_name
       path: user_agent.os.name
+      migration: true
+    - name: original
       type: alias
-    - migration: true
-      name: original
       path: user_agent.original
-      type: alias
-    name: user_agent
+      migration: true
+  - name: geoip
     type: group
-  - fields:
-    - migration: true
-      name: continent_name
+    fields:
+    - name: continent_name
+      type: alias
       path: source.geo.continent_name
+      migration: true
+    - name: country_iso_code
       type: alias
-    - migration: true
-      name: country_iso_code
       path: source.geo.country_iso_code
+      migration: true
+    - name: location
       type: alias
-    - migration: true
-      name: location
       path: source.geo.location
+      migration: true
+    - name: region_name
       type: alias
-    - migration: true
-      name: region_name
       path: source.geo.region_name
+      migration: true
+    - name: city_name
       type: alias
-    - migration: true
-      name: city_name
       path: source.geo.city_name
+      migration: true
+    - name: region_iso_code
       type: alias
-    - migration: true
-      name: region_iso_code
       path: source.geo.region_iso_code
-      type: alias
-    name: geoip
-    type: group
-  name: iis.access
-  type: group
+      migration: true

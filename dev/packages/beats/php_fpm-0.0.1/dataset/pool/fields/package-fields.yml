@@ -1,14 +1,14 @@
-- description: |
+- name: php_fpm
+  type: group
+  description: |
     `php_fpm` contains the metrics that were obtained from PHP-FPM status page call.
   fields:
-  - description: |
+  - name: pool
+    type: group
+    description: |
       `pool` contains the metrics that were obtained from the PHP-FPM process pool.
     fields:
-    - description: |
-        The name of the pool.
-      name: name
+    - name: name
       type: keyword
-    name: pool
-    type: group
-  name: php_fpm
-  type: group
+      description: |
+        The name of the pool.

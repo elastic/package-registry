@@ -1,130 +1,130 @@
-- description: |
+- name: ether_type
+  type: long
+  description: |
     Value of the ethernet type field identifying the network layer protocol.
-  name: ether_type
-  type: long
-- description: |
-    IPv6 flow label.
-  name: flow_label
+- name: flow_label
   type: integer
-- description: |
-    IP fragment flags. A combination of CE, DF and MF.
-  name: fragment_flags
+  description: |
+    IPv6 flow label.
+- name: fragment_flags
   type: keyword
-- description: |
-    Offset of the current IP fragment.
-  name: fragment_offset
+  description: |
+    IP fragment flags. A combination of CE, DF and MF.
+- name: fragment_offset
   type: long
-- description: |
+  description: |
+    Offset of the current IP fragment.
+- name: icmp
+  type: group
+  description: |
     ICMP fields.
   fields:
-  - description: |
+  - name: code
+    type: long
+    description: |
       ICMP code.
-    name: code
+  - name: id
     type: long
-  - description: |
+    description: |
       ICMP ID.
-    name: id
+  - name: parameter
     type: long
-  - description: |
+    description: |
       ICMP parameter.
-    name: parameter
-    type: long
-  - description: |
-      ICMP redirect address.
-    name: redirect
+  - name: redirect
     type: ip
-  - description: |
+    description: |
+      ICMP redirect address.
+  - name: seq
+    type: long
+    description: |
       ICMP sequence number.
-    name: seq
+  - name: type
     type: long
-  - description: |
+    description: |
       ICMP type.
-    name: type
-    type: long
-  name: icmp
-  type: group
-- description: |
+- name: id
+  type: long
+  description: |
     Packet identifier.
-  name: id
+- name: incomplete_bytes
   type: long
-- description: |
+  description: |
     Number of incomplete bytes.
-  name: incomplete_bytes
-  type: long
-- description: |
+- name: input_device
+  type: keyword
+  description: |
     Device that received the packet.
-  name: input_device
-  type: keyword
-- description: |
-    IP precedence bits.
-  name: precedence_bits
+- name: precedence_bits
   type: short
-- description: |
+  description: |
+    IP precedence bits.
+- name: tos
+  type: long
+  description: |
     IP Type of Service field.
-  name: tos
+- name: length
   type: long
-- description: |
+  description: |
     Packet length.
-  name: length
-  type: long
-- description: |
-    Device that output the packet.
-  name: output_device
+- name: output_device
   type: keyword
-- description: |
+  description: |
+    Device that output the packet.
+- name: tcp
+  type: group
+  description: |
     TCP fields.
   fields:
-  - description: |
-      TCP flags.
-    name: flags
+  - name: flags
     type: keyword
-  - description: |
-      TCP reserved bits.
-    name: reserved_bits
+    description: |
+      TCP flags.
+  - name: reserved_bits
     type: short
-  - description: |
+    description: |
+      TCP reserved bits.
+  - name: seq
+    type: long
+    description: |
       TCP sequence number.
-    name: seq
+  - name: ack
     type: long
-  - description: |
+    description: |
       TCP Acknowledgment number.
-    name: ack
+  - name: window
     type: long
-  - description: |
+    description: |
       Advertised TCP window size.
-    name: window
-    type: long
-  name: tcp
-  type: group
-- description: |
-    Time To Live field.
-  name: ttl
+- name: ttl
   type: integer
-- description: |
+  description: |
+    Time To Live field.
+- name: udp
+  type: group
+  description: |
     UDP fields.
   fields:
-  - description: |
-      Length of the UDP header and payload.
-    name: length
+  - name: length
     type: long
-  name: udp
+    description: |
+      Length of the UDP header and payload.
+- name: ubiquiti
   type: group
-- description: |
+  description: |
     Fields for Ubiquiti network devices.
   fields:
-  - description: |
+  - name: input_zone
+    type: keyword
+    description: |
       Input zone.
-    name: input_zone
+  - name: output_zone
     type: keyword
-  - description: |
+    description: |
       Output zone.
-    name: output_zone
+  - name: rule_number
     type: keyword
-  - description: The rule number within the rule set.
-    name: rule_number
+    description: The rule number within the rule set.
+  - name: rule_set
     type: keyword
-  - description: The rule set name.
-    name: rule_set
-    type: keyword
-  name: ubiquiti
-  type: group
+    description: The rule set name.

@@ -1,5 +1,4 @@
-- description: |
-    `system` contains local system metrics.
-  fields: null
-  name: system
+- name: system
   type: group
+  description: |
+    `system` contains local system metrics.

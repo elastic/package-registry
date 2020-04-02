@@ -1,3 +1,2 @@
-- fields: null
-  name: cockroachdb
+- name: cockroachdb
   type: group

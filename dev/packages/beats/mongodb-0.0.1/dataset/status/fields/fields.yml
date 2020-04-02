@@ -1,123 +1,130 @@
-- description: |
+- name: mongodb.status
+  type: group
+  description: |
     MongoDB server status metrics.
+  release: ga
   fields:
-  - description: |
+  - name: version
+    type: alias
+    description: |
       Instance version.
-    name: version
     path: service.version
+  - name: process
     type: alias
-  - description: |
+    description: |
       The current MongoDB process. Possible values are mongos or mongod.
-    name: process
     path: process.name
-    type: alias
-  - description: |
+  - name: uptime.ms
+    type: long
+    description: |
       Instance uptime in milliseconds.
-    name: uptime.ms
-    type: long
-  - description: |
-      Local time as reported by the MongoDB instance.
-    name: local_time
+  - name: local_time
     type: date
-  - description: |
+    description: |
+      Local time as reported by the MongoDB instance.
+  - name: asserts.regular
+    type: long
+    description: |
       Number of regular assertions produced by the server.
-    name: asserts.regular
+  - name: asserts.warning
     type: long
-  - description: |
+    description: |
       Number of warning assertions produced by the server.
-    name: asserts.warning
+  - name: asserts.msg
     type: long
-  - description: |
+    description: |
       Number of msg assertions produced by the server.
-    name: asserts.msg
+  - name: asserts.user
     type: long
-  - description: |
+    description: |
       Number of user assertions produced by the server.
-    name: asserts.user
+  - name: asserts.rollovers
     type: long
-  - description: |
+    description: |
       Number of rollovers assertions produced by the server.
-    name: asserts.rollovers
-    type: long
-  - description: |
+  - name: connections
+    type: group
+    description: |
       Data regarding the current status of incoming connections and availability of the database server.
     fields:
-    - description: |
+    - name: current
+      type: long
+      description: |
         The number of connections to the database server from clients. This number includes the current shell session. Consider the value of `available` to add more context to this datum.
-      name: current
+    - name: available
       type: long
-    - description: |
+      description: |
         The number of unused available incoming connections the database can provide.
-      name: available
+    - name: total_created
       type: long
-    - description: |
+      description: |
         A count of all incoming connections created to the server. This number includes connections that have since closed.
-      name: total_created
-      type: long
-    name: connections
+  - name: extra_info
     type: group
-  - description: |
+    description: |
       Platform specific data.
     fields:
-    - description: |
-        The total size in bytes of heap space used by the database process. Only available on Unix/Linux.
+    - name: heap_usage.bytes
+      type: long
       format: bytes
-      name: heap_usage.bytes
+      description: |
+        The total size in bytes of heap space used by the database process. Only available on Unix/Linux.
+    - name: page_faults
       type: long
-    - description: |
+      description: |
         The total number of page faults that require disk operations. Page faults refer to operations that require the database server to access data that isn't available in active memory.
-      name: page_faults
-      type: long
-    name: extra_info
+  - name: global_lock
     type: group
-  - description: |
+    description: |
       Reports on lock state of the database.
     fields:
-    - description: |
-        The time, in microseconds, since the database last started and created the globalLock. This is roughly equivalent to total server uptime.
-      name: total_time.us
+    - name: total_time.us
       type: long
-    - description: |
+      description: |
+        The time, in microseconds, since the database last started and created the globalLock. This is roughly equivalent to total server uptime.
+    - name: current_queue
+      type: group
+      description: |
         The number of operations queued because of a lock.
       fields:
-      - description: |
+      - name: total
+        type: long
+        description: |
           The total number of operations queued waiting for the lock (i.e., the sum of current_queue.readers and current_queue.writers).
-        name: total
+      - name: readers
         type: long
-      - description: |
+        description: |
           The number of operations that are currently queued and waiting for the read lock.
-        name: readers
+      - name: writers
         type: long
-      - description: |
+        description: |
           The number of operations that are currently queued and waiting for the write lock.
-        name: writers
-        type: long
-      name: current_queue
+    - name: active_clients
       type: group
-    - description: |
+      description: |
         The number of connected clients and the read and write operations performed by these clients.
       fields:
-      - description: |
+      - name: total
+        type: long
+        description: |
           Total number of the active client connections performing read or write operations.
-        name: total
+      - name: readers
         type: long
-      - description: |
+        description: |
           The number of the active client connections performing read operations.
-        name: readers
+      - name: writers
         type: long
-      - description: |
+        description: |
           The number of the active client connections performing write operations.
-        name: writers
-        type: long
-      name: active_clients
-      type: group
-    name: global_lock
+  - name: locks
     type: group
-  - description: |
+    description: |
       A document that reports for each lock <type>, data on lock <mode>s. The possible lock <type>s are global, database, collection, metadata and oplog. The possible <mode>s are r, w, R and W which respresent shared, exclusive, intent shared and intent exclusive.
       locks.<type>.acquire.count.<mode> shows the number of times the lock was acquired in the specified mode. locks.<type>.wait.count.<mode> shows the number of times the locks.acquireCount lock acquisitions encountered waits because the locks were held in a conflicting mode. locks.<type>.wait.us.<mode> shows the cumulative wait time in microseconds for the lock acquisitions. locks.<type>.deadlock.count.<mode> shows the number of times the lock acquisitions encountered deadlocks.
     fields:
-    - fields:
+    - name: global
+      type: group
+      fields:
       - name: acquire.count.r
         type: long
       - name: acquire.count.w
@@ -150,9 +157,9 @@
         type: long
       - name: deadlock.count.W
         type: long
-      name: global
+    - name: database
       type: group
-    - fields:
+      fields:
       - name: acquire.count.r
         type: long
       - name: acquire.count.w
@@ -185,9 +192,9 @@
         type: long
       - name: deadlock.count.W
         type: long
-      name: database
+    - name: collection
       type: group
-    - fields:
+      fields:
       - name: acquire.count.r
         type: long
       - name: acquire.count.w
@@ -220,9 +227,9 @@
         type: long
       - name: deadlock.count.W
         type: long
-      name: collection
+    - name: meta_data
       type: group
-    - fields:
+      fields:
       - name: acquire.count.r
         type: long
       - name: acquire.count.w
@@ -255,9 +262,9 @@
         type: long
       - name: deadlock.count.W
         type: long
-      name: meta_data
+    - name: oplog
       type: group
-    - fields:
+      fields:
       - name: acquire.count.r
         type: long
       - name: acquire.count.w
@@ -290,338 +297,331 @@
         type: long
       - name: deadlock.count.W
         type: long
-      name: oplog
-      type: group
-    name: locks
+  - name: network
     type: group
-  - description: |
+    description: |
       Platform specific data.
     fields:
-    - description: |
+    - name: in.bytes
+      type: long
+      format: bytes
+      description: |
         The amount of network traffic, in bytes, received by this database.
-      format: bytes
-      name: in.bytes
+    - name: out.bytes
       type: long
-    - description: |
+      format: bytes
+      description: |
         The amount of network traffic, in bytes, sent from this database.
-      format: bytes
-      name: out.bytes
+    - name: requests
       type: long
-    - description: |
+      description: |
         The total number of requests received by the server.
-      name: requests
-      type: long
-    name: network
+  - name: ops.latencies
     type: group
-  - description: |
+    description: |
       Operation latencies for the database as a whole. Only mongod instances report this metric.
     fields:
-    - description: |
-        Total combined latency in microseconds.
-      name: reads.latency
+    - name: reads.latency
       type: long
-    - description: |
+      description: |
+        Total combined latency in microseconds.
+    - name: reads.count
+      type: long
+      description: |
         Total number of read operations performed on the collection since startup.
-      name: reads.count
+    - name: writes.latency
       type: long
-    - description: |
+      description: |
         Total combined latency in microseconds.
-      name: writes.latency
+    - name: writes.count
       type: long
-    - description: |
+      description: |
         Total number of write operations performed on the collection since startup.
-      name: writes.count
+    - name: commands.latency
       type: long
-    - description: |
+      description: |
         Total combined latency in microseconds.
-      name: commands.latency
+    - name: commands.count
       type: long
-    - description: |
+      description: |
         Total number of commands performed on the collection since startup.
-      name: commands.count
-      type: long
-    name: ops.latencies
+  - name: ops.counters
     type: group
-  - description: |
+    description: |
       An overview of database operations by type.
     fields:
-    - description: |
+    - name: insert
+      type: long
+      description: |
         The total number of insert operations received since the mongod instance last started.
-      name: insert
+    - name: query
       type: long
-    - description: |
+      description: |
         The total number of queries received since the mongod instance last started.
-      name: query
+    - name: update
       type: long
-    - description: |
+      description: |
         The total number of update operations received since the mongod instance last started.
-      name: update
+    - name: delete
       type: long
-    - description: |
+      description: |
         The total number of delete operations received since the mongod instance last started.
-      name: delete
+    - name: getmore
       type: long
-    - description: |
+      description: |
         The total number of getmore operations received since the mongod instance last started.
-      name: getmore
+    - name: command
       type: long
-    - description: |
+      description: |
         The total number of commands issued to the database since the mongod instance last started.
-      name: command
-      type: long
-    name: ops.counters
+  - name: ops.replicated
     type: group
-  - description: |
+    description: |
       An overview of database replication operations by type.
     fields:
-    - description: |
+    - name: insert
+      type: long
+      description: |
         The total number of replicated insert operations received since the mongod instance last started.
-      name: insert
+    - name: query
       type: long
-    - description: |
+      description: |
         The total number of replicated queries received since the mongod instance last started.
-      name: query
+    - name: update
       type: long
-    - description: |
+      description: |
         The total number of replicated update operations received since the mongod instance last started.
-      name: update
+    - name: delete
       type: long
-    - description: |
+      description: |
         The total number of replicated delete operations received since the mongod instance last started.
-      name: delete
+    - name: getmore
       type: long
-    - description: |
+      description: |
         The total number of replicated getmore operations received since the mongod instance last started.
-      name: getmore
+    - name: command
       type: long
-    - description: |
+      description: |
         The total number of replicated commands issued to the database since the mongod instance last started.
-      name: command
-      type: long
-    name: ops.replicated
+  - name: memory
     type: group
-  - description: |
+    description: |
       Data about the current memory usage of the mongod server.
     fields:
-    - description: |
+    - name: bits
+      type: long
+      description: |
         Either 64 or 32, depending on which target architecture was specified during the mongod compilation process.
-      name: bits
+    - name: resident.mb
       type: long
-    - description: |
+      description: |
         The amount of RAM, in megabytes (MB), currently used by the database process.
-      name: resident.mb
+    - name: virtual.mb
       type: long
-    - description: |
+      description: |
         The amount, in megabytes (MB), of virtual memory used by the mongod process.
-      name: virtual.mb
+    - name: mapped.mb
       type: long
-    - description: |
+      description: |
         The amount of mapped memory, in megabytes (MB), used by the database. Because MongoDB uses memory-mapped files, this value is likely to be to be roughly equivalent to the total size of your database or databases.
-      name: mapped.mb
+    - name: mapped_with_journal.mb
       type: long
-    - description: |
+      description: |
         The amount of mapped memory, in megabytes (MB), including the memory used for journaling.
-      name: mapped_with_journal.mb
-      type: long
-    name: memory
-    type: group
-  - description: |
-      True when there are operations from a mongos instance queued for retrying.
-    name: write_backs_queued
+  - name: write_backs_queued
     type: boolean
-  - description: |
-      A string that represents the name of the current storage engine.
-    name: storage_engine.name
+    description: |
+      True when there are operations from a mongos instance queued for retrying.
+  - name: storage_engine.name
     type: keyword
-  - description: |
+    description: |
+      A string that represents the name of the current storage engine.
+  - name: wired_tiger
+    type: group
+    description: |
       Statistics about the WiredTiger storage engine.
     fields:
-    - description: |
+    - name: concurrent_transactions
+      type: group
+      description: |
         Statistics about the transactions currently in progress.
       fields:
-      - description: |
+      - name: write.out
+        type: long
+        description: |
           Number of concurrent write transaction in progress.
-        name: write.out
+      - name: write.available
         type: long
-      - description: |
+        description: |
           Number of concurrent write tickets available.
-        name: write.available
+      - name: write.total_tickets
         type: long
-      - description: |
+        description: |
           Number of total write tickets.
-        name: write.total_tickets
+      - name: read.out
         type: long
-      - description: |
+        description: |
           Number of concurrent read transaction in progress.
-        name: read.out
+      - name: read.available
         type: long
-      - description: |
+        description: |
           Number of concurrent read tickets available.
-        name: read.available
+      - name: read.total_tickets
         type: long
-      - description: |
+        description: |
           Number of total read tickets.
-        name: read.total_tickets
-        type: long
-      name: concurrent_transactions
+    - name: cache
       type: group
-    - description: |
+      description: |
         Statistics about the cache and page evictions from the cache.
       fields:
-      - description: |
+      - name: maximum.bytes
+        type: long
+        format: bytes
+        description: |
           Maximum cache size.
-        format: bytes
-        name: maximum.bytes
+      - name: used.bytes
         type: long
-      - description: |
+        format: bytes
+        description: |
           Size in byte of the data currently in cache.
-        format: bytes
-        name: used.bytes
+      - name: dirty.bytes
         type: long
-      - description: |
+        format: bytes
+        description: |
           Size in bytes of the dirty data in the cache.
-        format: bytes
-        name: dirty.bytes
+      - name: pages.read
         type: long
-      - description: |
+        description: |
           Number of pages read into the cache.
-        name: pages.read
+      - name: pages.write
         type: long
-      - description: |
+        description: |
           Number of pages written from the cache.
-        name: pages.write
+      - name: pages.evicted
         type: long
-      - description: |
+        description: |
           Number of pages evicted from the cache.
-        name: pages.evicted
-        type: long
-      name: cache
+    - name: log
       type: group
-    - description: |
+      description: |
         Statistics about the write ahead log used by WiredTiger.
       fields:
-      - description: |
+      - name: size.bytes
+        type: long
+        format: bytes
+        description: |
           Total log size in bytes.
-        format: bytes
-        name: size.bytes
+      - name: write.bytes
         type: long
-      - description: |
+        format: bytes
+        description: |
           Number of bytes written into the log.
-        format: bytes
-        name: write.bytes
+      - name: max_file_size.bytes
         type: long
-      - description: |
+        format: bytes
+        description: |
           Maximum file size.
-        format: bytes
-        name: max_file_size.bytes
+      - name: flushes
         type: long
-      - description: |
+        description: |
           Number of flush operations.
-        name: flushes
+      - name: writes
         type: long
-      - description: |
+        description: |
           Number of write operations.
-        name: writes
+      - name: scans
         type: long
-      - description: |
+        description: |
           Number of scan operations.
-        name: scans
+      - name: syncs
         type: long
-      - description: |
+        description: |
           Number of sync operations.
-        name: syncs
-        type: long
-      name: log
-      type: group
-    name: wired_tiger
+  - name: background_flushing
     type: group
-  - description: |
+    description: |
       Data about the process MongoDB uses to write data to disk. This data is only available for instances that use the MMAPv1 storage engine.
     fields:
-    - description: |
+    - name: flushes
+      type: long
+      description: |
         A counter that collects the number of times the database has flushed all writes to disk.
-      name: flushes
+    - name: total.ms
       type: long
-    - description: |
+      description: |
         The total number of milliseconds (ms) that the mongod processes have spent writing (i.e. flushing) data to disk. Because this is an absolute value, consider the value of `flushes` and `average_ms` to provide better context for this datum.
-      name: total.ms
+    - name: average.ms
       type: long
-    - description: |
+      description: |
         The average time spent flushing to disk per flush event.
-      name: average.ms
+    - name: last.ms
       type: long
-    - description: |
+      description: |
         The amount of time, in milliseconds, that the last flush operation took to complete.
-      name: last.ms
-      type: long
-    - description: |
-        A timestamp of the last completed flush operation.
-      name: last_finished
+    - name: last_finished
       type: date
-    name: background_flushing
+      description: |
+        A timestamp of the last completed flush operation.
+  - name: journaling
     type: group
-  - description: |
+    description: |
       Data about the journaling-related operations and performance. Journaling information only appears for mongod instances that use the MMAPv1 storage engine and have journaling enabled.
     fields:
-    - description: |
+    - name: commits
+      type: long
+      description: |
         The number of transactions written to the journal during the last journal group commit interval.
-      name: commits
+    - name: journaled.mb
       type: long
-    - description: |
+      description: |
         The amount of data in megabytes (MB) written to journal during the last journal group commit interval.
-      name: journaled.mb
+    - name: write_to_data_files.mb
       type: long
-    - description: |
+      description: |
         The amount of data in megabytes (MB) written from journal to the data files during the last journal group commit interval.
-      name: write_to_data_files.mb
+    - name: compression
       type: long
-    - description: |
+      description: |
         The compression ratio of the data written to the journal.
-      name: compression
+    - name: commits_in_write_lock
       type: long
-    - description: |
+      description: |
         Count of the commits that occurred while a write lock was held. Commits in a write lock indicate a MongoDB node under a heavy write load and call for further diagnosis.
-      name: commits_in_write_lock
+    - name: early_commits
       type: long
-    - description: |
+      description: |
         The number of times MongoDB requested a commit before the scheduled journal group commit interval.
-      name: early_commits
-      type: long
-    - description: |
+    - name: times
+      type: group
+      description: |
         Information about the performance of the mongod instance during the various phases of journaling in the last journal group commit interval.
       fields:
-      - description: |
+      - name: dt.ms
+        type: long
+        description: |
           The amount of time over which MongoDB collected the times data. Use this field to provide context to the other times field values.
-        name: dt.ms
+      - name: prep_log_buffer.ms
         type: long
-      - description: |
+        description: |
           The amount of time spent preparing to write to the journal. Smaller values indicate better journal performance.
-        name: prep_log_buffer.ms
+      - name: write_to_journal.ms
         type: long
-      - description: |
+        description: |
           The amount of time spent actually writing to the journal. File system speeds and device interfaces can affect performance.
-        name: write_to_journal.ms
+      - name: write_to_data_files.ms
         type: long
-      - description: |
+        description: |
           The amount of time spent writing to data files after journaling. File system speeds and device interfaces can affect performance.
-        name: write_to_data_files.ms
+      - name: remap_private_view.ms
         type: long
-      - description: |
+        description: |
           The amount of time spent remapping copy-on-write memory mapped views. Smaller values indicate better journal performance.
-        name: remap_private_view.ms
+      - name: commits.ms
         type: long
-      - description: |
+        description: |
           The amount of time spent for commits.
-        name: commits.ms
+      - name: commits_in_write_lock.ms
         type: long
-      - description: |
+        description: |
           The amount of time spent for commits that occurred while a write lock was held.
-        name: commits_in_write_lock.ms
-        type: long
-      name: times
-      type: group
-    name: journaling
-    type: group
-  name: mongodb.status
-  release: ga
-  type: group

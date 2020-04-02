@@ -1,13 +1,13 @@
-- description: |
+- name: stan
+  type: group
+  description: |
     `stan` contains statistics that were read from Nats Streaming server (STAN)
   fields:
-  - description: |
+  - name: server.id
+    type: keyword
+    description: |
       The server ID
-    name: server.id
+  - name: cluster.id
     type: keyword
-  - description: |
+    description: |
       The cluster ID
-    name: cluster.id
-    type: keyword
-  name: stan
-  type: group

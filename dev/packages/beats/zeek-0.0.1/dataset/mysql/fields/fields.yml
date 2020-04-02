@@ -1,26 +1,25 @@
-- default_field: false
+- name: zeek.mysql
+  type: group
   description: |
     Fields exported by the Zeek MySQL log.
   fields:
-  - description: |
+  - name: cmd
+    type: keyword
+    description: |
       The command that was issued.
-    name: cmd
+  - name: arg
     type: keyword
-  - description: |
+    description: |
       The argument issued to the command.
-    name: arg
-    type: keyword
-  - description: |
-      Whether the command succeeded.
-    name: success
+  - name: success
     type: boolean
-  - description: |
-      The number of affected rows, if any.
-    name: rows
+    description: |
+      Whether the command succeeded.
+  - name: rows
     type: integer
-  - description: |
-      Server message, if any.
-    name: response
+    description: |
+      The number of affected rows, if any.
+  - name: response
     type: keyword
-  name: zeek.mysql
-  type: group
+    description: |
+      Server message, if any.

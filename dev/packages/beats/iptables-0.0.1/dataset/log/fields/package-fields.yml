@@ -1,5 +1,4 @@
-- description: |
-    Fields from the iptables logs.
-  fields: null
-  name: iptables
+- name: iptables
   type: group
+  description: |
+    Fields from the iptables logs.

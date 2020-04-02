@@ -1,95 +1,95 @@
-- description: |
+- name: traefik.access
+  type: group
+  description: |
     Contains fields for the Traefik access logs.
   fields:
-  - description: |
+  - name: user_identifier
+    type: keyword
+    description: |
       Is the RFC 1413 identity of the client
-    name: user_identifier
-    type: keyword
-  - description: |
-      The number of requests
-    name: request_count
+  - name: request_count
     type: long
-  - description: |
+    description: |
+      The number of requests
+  - name: frontend_name
+    type: keyword
+    description: |
       The name of the frontend used
-    name: frontend_name
+  - name: backend_url
     type: keyword
-  - description: The url of the backend where request is forwarded
-    name: backend_url
-    type: keyword
-  - migration: true
-    name: body_sent.bytes
+    description: The url of the backend where request is forwarded
+  - name: body_sent.bytes
+    type: alias
     path: http.response.body.bytes
+    migration: true
+  - name: remote_ip
     type: alias
-  - migration: true
-    name: remote_ip
     path: source.address
+    migration: true
+  - name: user_name
     type: alias
-  - migration: true
-    name: user_name
     path: user.name
+    migration: true
+  - name: method
     type: alias
-  - migration: true
-    name: method
     path: http.request.method
+    migration: true
+  - name: url
     type: alias
-  - migration: true
-    name: url
     path: url.original
+    migration: true
+  - name: http_version
     type: alias
-  - migration: true
-    name: http_version
     path: http.version
+    migration: true
+  - name: response_code
     type: alias
-  - migration: true
-    name: response_code
     path: http.response.status_code
+    migration: true
+  - name: referrer
     type: alias
-  - migration: true
-    name: referrer
     path: http.request.referrer
+    migration: true
+  - name: agent
     type: alias
-  - migration: true
-    name: agent
     path: user_agent.original
-    type: alias
-  - fields:
+    migration: true
+  - name: user_agent
+    type: group
+    fields:
     - name: device
+      type: alias
       path: user_agent.device.name
-      type: alias
     - name: name
+      type: alias
       path: user_agent.name
-      type: alias
     - name: os
+      type: alias
       path: user_agent.os.full_name
-      type: alias
     - name: os_name
+      type: alias
       path: user_agent.os.name
-      type: alias
     - name: original
+      type: alias
       path: user_agent.original
-      type: alias
-    name: user_agent
+  - name: geoip
     type: group
-  - fields:
+    fields:
     - name: continent_name
+      type: alias
       path: source.geo.continent_name
-      type: alias
     - name: country_iso_code
+      type: alias
       path: source.geo.country_iso_code
-      type: alias
     - name: location
+      type: alias
       path: source.geo.location
-      type: alias
     - name: region_name
+      type: alias
       path: source.geo.region_name
-      type: alias
     - name: city_name
+      type: alias
       path: source.geo.city_name
-      type: alias
     - name: region_iso_code
-      path: source.geo.region_iso_code
       type: alias
-    name: geoip
-    type: group
-  name: traefik.access
-  type: group
+      path: source.geo.region_iso_code
