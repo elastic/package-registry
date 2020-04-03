@@ -3,9 +3,5 @@
   fields:
   - name: id
     type: keyword
-    description: |
-      Beat ID.
   - name: type
     type: keyword
-    description: |
-      Beat type.

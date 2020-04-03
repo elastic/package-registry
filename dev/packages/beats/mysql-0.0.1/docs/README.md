@@ -53,7 +53,7 @@ The `slowlog` dataset collects the MySQL slow logs.
 | mysql.slowlog.log_slow_rate_type | Type of slow log rate limit, it can be `session` if the rate limit is applied per session, or `query` if it applies per query. | keyword |
 | mysql.slowlog.merge_passes | Number of merge passes executed for the query. | long |
 | mysql.slowlog.priority_queue | Whether a priority queue was used for filesort. | boolean |
-| mysql.slowlog.query | The slow query. | keyword |
+| mysql.slowlog.query | The slow query. |  |
 | mysql.slowlog.query_cache_hit | Whether the query cache was hit. | boolean |
 | mysql.slowlog.read_first | The number of times the first entry in an index was read. | long |
 | mysql.slowlog.read_key | The number of requests to read a row based on a key. | long |
@@ -179,7 +179,6 @@ The fields reported are:
 
 | Field | Description | Type |
 |---|---|---|
-| mysql | `mysql` contains the metrics that were obtained from MySQL query. | group |
 | mysql.galera_status.apply.oooe | How often applier started write-set applying out-of-order (parallelization efficiency). | double |
 | mysql.galera_status.apply.oool | How often write-set was so slow to apply that write-set with higher seqno's were applied earlier. Values closer to 0 refer to a greater gap between slow and fast write-sets. | double |
 | mysql.galera_status.apply.window | Average distance between highest and lowest concurrently applied seqno. | double |
@@ -353,7 +352,6 @@ The fields reported are:
 
 | Field | Description | Type |
 |---|---|---|
-| mysql | `mysql` contains the metrics that were obtained from MySQL query. | group |
 | mysql.status.aborted.clients | The number of connections that were aborted because the client died without closing the connection properly. | long |
 | mysql.status.aborted.connects | The number of failed attempts to connect to the MySQL server. | long |
 | mysql.status.binlog.cache.disk_use |  | long |

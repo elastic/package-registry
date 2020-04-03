@@ -1,0 +1,21 @@
+- key: ecs
+  title: ECS
+  fields:
+  - name: event
+    title: Event
+    group: 2
+    type: group
+    fields:
+    - name: duration
+      level: core
+      type: long
+      format: duration
+  - name: log
+    title: Log
+    group: 2
+    type: group
+    fields:
+    - name: level
+      level: core
+      type: keyword
+      ignore_above: 1024

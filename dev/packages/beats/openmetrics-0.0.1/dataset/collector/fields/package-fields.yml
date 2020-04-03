@@ -1,13 +1,7 @@
 - name: openmetrics
   type: group
-  description: |
-    `openmetrics` contains metrics from endpoints that are following Openmetrics format.
   fields:
   - name: labels.*
     type: object
-    description: |
-      Prometheus metric labels
   - name: metrics.*
     type: object
-    description: |
-      Prometheus metric

@@ -1,7 +1,5 @@
 - name: suricata.eve
   type: group
-  description: |
-    Fields exported by the EVE JSON logs
   fields:
   - name: event_type
     type: keyword

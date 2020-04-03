@@ -1,0 +1,35 @@
+- key: ecs
+  title: ECS
+  fields:
+  - name: os
+    title: Operating System
+    group: 2
+    type: group
+    fields:
+    - name: full
+      level: extended
+      type: keyword
+      ignore_above: 1024
+      multi_fields:
+      - name: text
+        type: text
+        norms: false
+        default_field: false
+  - name: process
+    title: Process
+    group: 2
+    type: group
+    fields:
+    - name: pid
+      level: core
+      type: long
+      format: string
+  - name: service
+    title: Service
+    group: 2
+    type: group
+    fields:
+    - name: version
+      level: core
+      type: keyword
+      ignore_above: 1024

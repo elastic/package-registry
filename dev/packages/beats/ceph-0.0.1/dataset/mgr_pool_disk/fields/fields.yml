@@ -1,5 +1,3 @@
 - name: ceph.mgr_pool_disk
   type: group
-  description: |
-    see: pool_disk
   release: beta

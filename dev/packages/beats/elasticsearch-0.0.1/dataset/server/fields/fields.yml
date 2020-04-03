@@ -1,15 +1,12 @@
 - name: elasticsearch.server
   type: group
-  description: Server log file
   fields:
   - name: stacktrace
   - name: gc
     type: group
-    description: GC log
     fields:
     - name: young
       type: group
-      description: Young GC
       fields:
       - name: one
         type: long
@@ -17,10 +14,7 @@
         type: long
     - name: overhead_seq
       type: long
-      description: Sequence number
     - name: collection_duration.ms
       type: float
-      description: Time spent in GC, in milliseconds
     - name: observation_duration.ms
       type: float
-      description: Total time over which collection was observed, in milliseconds

@@ -1,0 +1,61 @@
+- key: ecs
+  title: ECS
+  fields:
+  - name: network
+    title: Network
+    group: 2
+    type: group
+    fields:
+    - name: direction
+      level: core
+      type: keyword
+      ignore_above: 1024
+    - name: type
+      level: core
+      type: keyword
+      ignore_above: 1024
+  - name: process
+    title: Process
+    group: 2
+    type: group
+    fields:
+    - name: executable
+      level: extended
+      type: keyword
+      ignore_above: 1024
+      multi_fields:
+      - name: text
+        type: text
+        norms: false
+        default_field: false
+    - name: name
+      level: extended
+      type: keyword
+      ignore_above: 1024
+      multi_fields:
+      - name: text
+        type: text
+        norms: false
+        default_field: false
+    - name: pid
+      level: core
+      type: long
+      format: string
+  - name: user
+    title: User
+    group: 2
+    type: group
+    fields:
+    - name: full_name
+      level: extended
+      type: keyword
+      ignore_above: 1024
+      multi_fields:
+      - name: text
+        type: text
+        norms: false
+        default_field: false
+    - name: id
+      level: core
+      type: keyword
+      ignore_above: 1024

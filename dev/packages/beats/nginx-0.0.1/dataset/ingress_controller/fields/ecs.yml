@@ -1,0 +1,114 @@
+- key: ecs
+  title: ECS
+  fields:
+  - name: http
+    title: HTTP
+    group: 2
+    type: group
+    fields:
+    - name: request.method
+      level: extended
+      type: keyword
+      ignore_above: 1024
+    - name: request.referrer
+      level: extended
+      type: keyword
+      ignore_above: 1024
+    - name: response.body.bytes
+      level: extended
+      type: long
+      format: bytes
+    - name: response.status_code
+      level: extended
+      type: long
+      format: string
+    - name: version
+      level: extended
+      type: keyword
+      ignore_above: 1024
+  - name: source
+    title: Source
+    group: 2
+    type: group
+    fields:
+    - name: geo.city_name
+      level: core
+      type: keyword
+      ignore_above: 1024
+    - name: geo.continent_name
+      level: core
+      type: keyword
+      ignore_above: 1024
+    - name: geo.country_iso_code
+      level: core
+      type: keyword
+      ignore_above: 1024
+    - name: geo.location
+      level: core
+      type: geo_point
+    - name: geo.region_iso_code
+      level: core
+      type: keyword
+      ignore_above: 1024
+    - name: geo.region_name
+      level: core
+      type: keyword
+      ignore_above: 1024
+  - name: url
+    title: URL
+    group: 2
+    type: group
+    fields:
+    - name: original
+      level: extended
+      type: keyword
+      ignore_above: 1024
+      multi_fields:
+      - name: text
+        type: text
+        norms: false
+        default_field: false
+  - name: user
+    title: User
+    group: 2
+    type: group
+    fields:
+    - name: name
+      level: core
+      type: keyword
+      ignore_above: 1024
+      multi_fields:
+      - name: text
+        type: text
+        norms: false
+        default_field: false
+  - name: user_agent
+    title: User agent
+    group: 2
+    type: group
+    fields:
+    - name: device.name
+      level: extended
+      type: keyword
+      ignore_above: 1024
+    - name: name
+      level: extended
+      type: keyword
+      ignore_above: 1024
+    - name: original
+      level: extended
+      type: keyword
+      ignore_above: 1024
+      multi_fields:
+      - name: text
+        type: text
+        norms: false
+    - name: os.name
+      level: extended
+      type: keyword
+      ignore_above: 1024
+      multi_fields:
+      - name: text
+        type: text
+        norms: false
+        default_field: false

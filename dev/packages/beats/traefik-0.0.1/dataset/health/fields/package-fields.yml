@@ -1,4 +1,2 @@
 - name: traefik
   type: group
-  description: |
-    Traefik reverse proxy / load balancer metrics

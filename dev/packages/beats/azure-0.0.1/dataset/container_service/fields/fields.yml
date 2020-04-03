@@ -1,5 +1,3 @@
-- name: container_service.*.*
+- name: azure.container_service.*.*
   type: object
-  description: |
-    container service
   release: ga

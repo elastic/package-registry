@@ -1,4 +1,2 @@
 - name: kubernetes
   type: group
-  description: |
-    Information and statistics of pods managed by kubernetes.

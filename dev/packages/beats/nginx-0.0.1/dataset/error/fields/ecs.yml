@@ -1,0 +1,28 @@
+- key: ecs
+  title: ECS
+  fields:
+  - name: message
+    level: core
+    type: text
+  - name: log
+    title: Log
+    group: 2
+    type: group
+    fields:
+    - name: level
+      level: core
+      type: keyword
+      ignore_above: 1024
+  - name: process
+    title: Process
+    group: 2
+    type: group
+    fields:
+    - name: pid
+      level: core
+      type: long
+      format: string
+    - name: thread.id
+      level: extended
+      type: long
+      format: string

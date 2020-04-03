@@ -1,1 +1,2 @@
-- release: ga
+- name: munin.
+  release: ga

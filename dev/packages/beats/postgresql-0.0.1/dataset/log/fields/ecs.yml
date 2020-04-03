@@ -1,0 +1,47 @@
+- key: ecs
+  title: ECS
+  fields:
+  - name: message
+    level: core
+    type: text
+  - name: event
+    title: Event
+    group: 2
+    type: group
+    fields:
+    - name: timezone
+      level: extended
+      type: keyword
+      ignore_above: 1024
+  - name: log
+    title: Log
+    group: 2
+    type: group
+    fields:
+    - name: level
+      level: core
+      type: keyword
+      ignore_above: 1024
+  - name: process
+    title: Process
+    group: 2
+    type: group
+    fields:
+    - name: pid
+      level: core
+      type: long
+      format: string
+  - name: user
+    title: User
+    group: 2
+    type: group
+    fields:
+    - name: name
+      level: core
+      type: keyword
+      ignore_above: 1024
+      multi_fields:
+      - name: text
+        type: text
+        norms: false
+        default_field: false

@@ -1,0 +1,16 @@
+- key: ecs
+  title: ECS
+  fields:
+  - name: service
+    title: Service
+    group: 2
+    type: group
+    fields:
+    - name: id
+      level: core
+      type: keyword
+      ignore_above: 1024
+    - name: version
+      level: core
+      type: keyword
+      ignore_above: 1024

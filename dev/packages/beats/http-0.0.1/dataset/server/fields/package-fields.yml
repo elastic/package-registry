@@ -3,27 +3,15 @@
   fields:
   - name: request
     type: group
-    description: |
-      HTTP request information
     fields:
     - name: headers
       type: object
-      description: |
-        The HTTP headers sent
   - name: response
     type: group
-    description: |
-      HTTP response information
     fields:
     - name: headers
       type: object
-      description: |
-        The HTTP headers received
     - name: code
       type: keyword
-      description: |
-        The HTTP status code
     - name: phrase
       type: keyword
-      description: |
-        The HTTP status phrase

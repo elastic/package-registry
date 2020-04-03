@@ -1,5 +1,3 @@
 - name: aws.cloudwatch
   type: group
-  description: |
-    Fields for AWS CloudWatch logs.
   release: beta

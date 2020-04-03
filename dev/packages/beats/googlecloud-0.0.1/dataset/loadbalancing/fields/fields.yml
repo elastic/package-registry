@@ -1,17 +1,12 @@
 - name: googlecloud.loadbalancing
   type: group
-  description: Google Cloud Load Balancing metrics
   release: beta
   fields:
   - name: https
     type: group
-    description: Google Cloud Load Balancing metrics
     fields:
     - name: backend_latencies
       type: group
-      description: A distribution of the latency calculated from when the request
-        was sent by the proxy to the backend until the proxy received from the backend
-        the last byte of response.
       fields:
       - name: count
         type: long
@@ -36,19 +31,12 @@
               type: long
     - name: backend_request_bytes_count
       type: long
-      description: The number of bytes sent as requests from HTTP/S load balancer
-        to backends.
     - name: backend_request_count
       type: long
-      description: The number of requests served by backends of HTTP/S load balancer.
     - name: backend_response_bytes_count
       type: long
-      description: The number of bytes sent as responses from backends (or cache)
-        to HTTP/S load balancer.
     - name: frontend_tcp_rtt
       type: group
-      description: A distribution of the RTT measured for each connection between
-        client and proxy.
       fields:
       - name: count
         type: long
@@ -76,9 +64,6 @@
       fields:
       - name: backend_latencies
         type: group
-        description: A distribution of the latency calculated from when the request
-          was sent by the proxy to the backend until the proxy received from the backend
-          the last byte of response.
         fields:
         - name: count
           type: long
@@ -103,20 +88,12 @@
                 type: long
       - name: request_bytes_count
         type: long
-        description: The number of bytes sent as requests from clients to HTTP/S load
-          balancer.
       - name: request_count
         type: long
-        description: The number of requests served by HTTP/S load balancer.
       - name: response_bytes_count
         type: long
-        description: The number of bytes sent as responses from HTTP/S load balancer
-          to clients.
       - name: total_latencies
         type: group
-        description: A distribution of the latency calculated from when the request
-          was received by the proxy until the proxy got ACK from client on last response
-          byte.
         fields:
         - name: count
           type: long
@@ -141,20 +118,12 @@
                 type: long
     - name: request_bytes_count
       type: long
-      description: The number of bytes sent as requests from clients to HTTP/S load
-        balancer.
     - name: request_count
       type: long
-      description: The number of requests served by HTTP/S load balancer.
     - name: response_bytes_count
       type: long
-      description: The number of bytes sent as responses from HTTP/S load balancer
-        to clients.
     - name: total_latencies
       type: group
-      description: A distribution of the latency calculated from when the request
-        was received by the proxy until the proxy got ACK from client on last response
-        byte.
       fields:
       - name: count
         type: long
@@ -179,25 +148,17 @@
               type: long
   - name: l3.internal
     type: group
-    description: Google Cloud Load Balancing metrics
     fields:
     - name: egress_bytes_count
       type: long
-      description: The number of bytes sent from ILB backend to client (for TCP flows
-        it's counting bytes on application stream only).
     - name: egress_packets_count
       type: long
-      description: The number of packets sent from ILB backend to client of the flow.
     - name: ingress_bytes_count
       type: long
-      description: The number of bytes sent from client to ILB backend (for TCP flows
-        it's counting bytes on application stream only).
     - name: ingress_packets_count
       type: long
-      description: The number of packets sent from client to ILB backend.
     - name: rtt_latencies
       type: group
-      description: A distribution of RTT measured over TCP connections for ILB flows.
       fields:
       - name: count
         type: long
@@ -222,18 +183,13 @@
               type: long
   - name: tcp_ssl_proxy
     type: group
-    description: Google Cloud Load Balancing metrics
     fields:
     - name: closed_connections
       type: long
-      description: Number of connections that were terminated over TCP/SSL proxy.
     - name: egress_bytes_count
       type: long
-      description: Number of bytes sent from VM to client using proxy.
     - name: frontend_tcp_rtt
       type: group
-      description: A distribution of the smoothed RTT (in ms) measured by the proxy's
-        TCP stack, each minute application layer bytes pass from proxy to client.
       fields:
       - name: count
         type: long
@@ -258,10 +214,7 @@
               type: long
     - name: ingress_bytes_count
       type: long
-      description: Number of bytes sent from client to VM using proxy.
     - name: new_connections
       type: long
-      description: Number of connections that were created over TCP/SSL proxy.
     - name: open_connections
       type: long
-      description: Current number of outstanding connections through the TCP/SSL proxy.

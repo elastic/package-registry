@@ -1,21 +1,7 @@
 - name: mongodb.log
   type: group
-  description: |
-    Contains fields from MongoDB logs.
   fields:
   - name: component
     type: keyword
-    description: |
-      Functional categorization of message
   - name: context
     type: keyword
-    description: |
-      Context of message
-  - name: severity
-    type: alias
-    path: log.level
-    migration: true
-  - name: message
-    type: alias
-    path: message
-    migration: true

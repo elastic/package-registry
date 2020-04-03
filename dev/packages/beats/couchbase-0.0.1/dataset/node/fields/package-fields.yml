@@ -1,4 +1,2 @@
 - name: couchbase
   type: group
-  description: |
-    `couchbase` contains the metrics that were scraped from Couchbase.

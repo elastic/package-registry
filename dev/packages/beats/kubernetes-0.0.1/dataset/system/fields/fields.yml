@@ -1,21 +1,13 @@
 - name: kubernetes.system
   type: group
-  description: |
-    kubernetes system containers metrics
   release: ga
   fields:
   - name: container
     type: keyword
-    description: |
-      Container name
   - name: start_time
     type: date
-    description: |
-      Start time
   - name: cpu
     type: group
-    description: |
-      CPU usage metrics
     fields:
     - name: usage
       type: group
@@ -25,12 +17,8 @@
         fields:
         - name: ns
           type: long
-          description: |
-            CPU Core usage nanoseconds
       - name: nanocores
         type: long
-        description: |
-          CPU used nanocores
   - name: memory
     type: group
     fields:
@@ -40,29 +28,19 @@
       - name: bytes
         type: long
         format: bytes
-        description: |
-          Total memory usage
     - name: rss
       type: group
       fields:
       - name: bytes
         type: long
         format: bytes
-        description: |
-          RSS memory usage
     - name: workingset
       type: group
       fields:
       - name: bytes
         type: long
         format: bytes
-        description: |
-          Working set memory usage
     - name: pagefaults
       type: long
-      description: |
-        Number of page faults
     - name: majorpagefaults
       type: long
-      description: |
-        Number of major page faults

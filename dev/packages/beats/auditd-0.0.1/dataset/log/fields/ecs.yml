@@ -1,0 +1,122 @@
+- key: ecs
+  title: ECS
+  fields:
+  - name: message
+    level: core
+    type: text
+  - name: destination
+    title: Destination
+    group: 2
+    type: group
+    fields:
+    - name: address
+      level: extended
+      type: keyword
+      ignore_above: 1024
+  - name: event
+    title: Event
+    group: 2
+    type: group
+    fields:
+    - name: action
+      level: core
+      type: keyword
+      ignore_above: 1024
+    - name: outcome
+      level: core
+      type: keyword
+      ignore_above: 1024
+  - name: host
+    title: Host
+    group: 2
+    type: group
+    fields:
+    - name: architecture
+      level: core
+      type: keyword
+      ignore_above: 1024
+  - name: process
+    title: Process
+    group: 2
+    type: group
+    fields:
+    - name: executable
+      level: extended
+      type: keyword
+      ignore_above: 1024
+      multi_fields:
+      - name: text
+        type: text
+        norms: false
+        default_field: false
+    - name: name
+      level: extended
+      type: keyword
+      ignore_above: 1024
+      multi_fields:
+      - name: text
+        type: text
+        norms: false
+        default_field: false
+    - name: pid
+      level: core
+      type: long
+      format: string
+    - name: ppid
+      level: extended
+      type: long
+      format: string
+  - name: source
+    title: Source
+    group: 2
+    type: group
+    fields:
+    - name: address
+      level: extended
+      type: keyword
+      ignore_above: 1024
+    - name: geo.city_name
+      level: core
+      type: keyword
+      ignore_above: 1024
+    - name: geo.continent_name
+      level: core
+      type: keyword
+      ignore_above: 1024
+    - name: geo.country_iso_code
+      level: core
+      type: keyword
+      ignore_above: 1024
+    - name: geo.location
+      level: core
+      type: geo_point
+    - name: geo.region_iso_code
+      level: core
+      type: keyword
+      ignore_above: 1024
+    - name: geo.region_name
+      level: core
+      type: keyword
+      ignore_above: 1024
+  - name: user
+    title: User
+    group: 2
+    type: group
+    fields:
+    - name: group.id
+      level: extended
+      type: keyword
+      ignore_above: 1024
+    - name: id
+      level: core
+      type: keyword
+      ignore_above: 1024
+    - name: name
+      level: core
+      type: keyword
+      ignore_above: 1024
+      multi_fields:
+      - name: text
+        type: text
+        norms: false
+        default_field: false

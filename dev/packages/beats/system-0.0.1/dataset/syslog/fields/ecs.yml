@@ -1,0 +1,37 @@
+- key: ecs
+  title: ECS
+  fields:
+  - name: '@timestamp'
+    level: core
+    required: true
+    type: date
+  - name: message
+    level: core
+    type: text
+  - name: host
+    title: Host
+    group: 2
+    type: group
+    fields:
+    - name: hostname
+      level: core
+      type: keyword
+      ignore_above: 1024
+  - name: process
+    title: Process
+    group: 2
+    type: group
+    fields:
+    - name: name
+      level: extended
+      type: keyword
+      ignore_above: 1024
+      multi_fields:
+      - name: text
+        type: text
+        norms: false
+        default_field: false
+    - name: pid
+      level: core
+      type: long
+      format: string

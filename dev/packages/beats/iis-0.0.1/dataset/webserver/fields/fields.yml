@@ -1,5 +1,3 @@
-- name: webserver.*.*
+- name: iis.webserver.*.*
   type: object
-  description: |
-    webserver
   release: beta

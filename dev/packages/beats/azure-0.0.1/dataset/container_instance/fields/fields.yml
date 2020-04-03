@@ -1,5 +1,3 @@
-- name: container_instance.*.*
+- name: azure.container_instance.*.*
   type: object
-  description: |
-    container instance
   release: ga

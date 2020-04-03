@@ -1,0 +1,78 @@
+- key: ecs
+  title: ECS
+  fields:
+  - name: destination
+    title: Destination
+    group: 2
+    type: group
+    fields:
+    - name: ip
+      level: core
+      type: ip
+    - name: port
+      level: core
+      type: long
+      format: string
+  - name: http
+    title: HTTP
+    group: 2
+    type: group
+    fields:
+    - name: response.status_code
+      level: extended
+      type: long
+      format: string
+  - name: process
+    title: Process
+    group: 2
+    type: group
+    fields:
+    - name: name
+      level: extended
+      type: keyword
+      ignore_above: 1024
+      multi_fields:
+      - name: text
+        type: text
+        norms: false
+        default_field: false
+    - name: pid
+      level: core
+      type: long
+      format: string
+  - name: source
+    title: Source
+    group: 2
+    type: group
+    fields:
+    - name: address
+      level: extended
+      type: keyword
+      ignore_above: 1024
+    - name: geo.city_name
+      level: core
+      type: keyword
+      ignore_above: 1024
+    - name: geo.continent_name
+      level: core
+      type: keyword
+      ignore_above: 1024
+    - name: geo.country_iso_code
+      level: core
+      type: keyword
+      ignore_above: 1024
+    - name: geo.location
+      level: core
+      type: geo_point
+    - name: geo.region_iso_code
+      level: core
+      type: keyword
+      ignore_above: 1024
+    - name: geo.region_name
+      level: core
+      type: keyword
+      ignore_above: 1024
+    - name: port
+      level: core
+      type: long
+      format: string

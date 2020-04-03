@@ -1,0 +1,53 @@
+- key: ecs
+  title: ECS
+  fields:
+  - name: http
+    title: HTTP
+    group: 2
+    type: group
+    fields:
+    - name: request.body.content
+      level: extended
+      type: keyword
+      ignore_above: 1024
+      multi_fields:
+      - name: text
+        type: text
+        norms: false
+        default_field: false
+  - name: source
+    title: Source
+    group: 2
+    type: group
+    fields:
+    - name: ip
+      level: core
+      type: ip
+  - name: url
+    title: URL
+    group: 2
+    type: group
+    fields:
+    - name: original
+      level: extended
+      type: keyword
+      ignore_above: 1024
+      multi_fields:
+      - name: text
+        type: text
+        norms: false
+        default_field: false
+  - name: user
+    title: User
+    group: 2
+    type: group
+    fields:
+    - name: name
+      level: core
+      type: keyword
+      ignore_above: 1024
+      multi_fields:
+      - name: text
+        type: text
+        norms: false
+        default_field: false

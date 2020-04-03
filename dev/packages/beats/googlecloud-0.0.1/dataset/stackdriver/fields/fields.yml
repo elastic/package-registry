@@ -1,4 +1,4 @@
-- key: stackdriver
+- name: googlecloud.
+  key: stackdriver
   type: group
-  description: Google Cloud Compute metrics
   release: beta

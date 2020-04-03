@@ -1,9 +1,5 @@
 - name: zeek
   type: group
-  description: |
-    Fields from Zeek/Bro logs after normalization
   fields:
   - name: session_id
     type: keyword
-    description: |
-      A unique identifier of the session

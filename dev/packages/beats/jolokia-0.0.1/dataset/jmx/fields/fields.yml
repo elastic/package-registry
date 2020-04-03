@@ -1,5 +1,4 @@
-- key: jmx
+- name: jolokia.
+  key: jmx
   type: group
-  description: |
-    Jolokia jmx metricset
   release: ga

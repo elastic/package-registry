@@ -32,7 +32,6 @@ Access logs collects the nginx access logs.
 | http.response.body.bytes | Size in bytes of the response body. | long |
 | http.response.status_code | HTTP response status code. | long |
 | http.version | HTTP version. | keyword |
-| nginx | Fields from the Nginx log files. | group |
 | nginx.access.remote_ip_list | An array of remote IP addresses. It is a list because it is common to include, besides the client IP address, IP addresses from headers like `X-Forwarded-For`. Real source IP is restored to `source.ip`. | array |
 | source.geo.city_name | City name. | keyword |
 | source.geo.continent_name | Name of the continent. | keyword |
@@ -58,7 +57,6 @@ Error logs collects the nginx error logs.
 |---|---|---|
 | log.level | Original log level of the log event. If the source of the event provides a log level or textual severity, this is the one that goes in `log.level`. If your source doesn't specify one, you may put your event transport's severity here (e.g. Syslog severity). Some examples are `warn`, `err`, `i`, `informational`. | keyword |
 | message | For log events the message field contains the log message, optimized for viewing in a log viewer. For structured logs without an original message field, other fields can be concatenated to form a human-readable summary of the event. If multiple messages exist, they can be combined into one message. | text |
-| nginx | Fields from the Nginx log files. | group |
 | nginx.error.connection_id | Connection identifier. | long |
 | process.pid | Process id. | long |
 | process.thread.id | Thread ID. | long |
@@ -114,7 +112,6 @@ An example event for nginx looks as following:
 
 | Field | Description | Type |
 |---|---|---|
-| nginx | `nginx` contains the metrics that were scraped from nginx. | group |
 | nginx.stubstatus.accepts | The total number of accepted client connections. | long |
 | nginx.stubstatus.active | The current number of active client connections including Waiting connections. | long |
 | nginx.stubstatus.current | The current number of client requests. | long |
