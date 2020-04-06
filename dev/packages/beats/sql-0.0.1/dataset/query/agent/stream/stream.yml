@@ -3,7 +3,10 @@ metricsets: ["query"]
 {{#if driver}}
 driver: {{driver}}
 {{/if}}
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 period: {{period}}
 {{#if sql_query}}
 sql_query: {{sql_query}}

@@ -1,4 +1,7 @@
 input: oracle/metrics
 metricsets: ["tablespace"]
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 period: {{period}}

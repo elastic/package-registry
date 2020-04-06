@@ -1,4 +1,7 @@
 input: nats/metrics
 metricsets: ["connections"]
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 period: {{period}}

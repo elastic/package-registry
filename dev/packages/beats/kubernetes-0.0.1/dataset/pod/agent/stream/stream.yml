@@ -6,7 +6,10 @@ add_metadata: {{add_metadata}}
 {{#if bearer_token_file}}
 bearer_token_file: {{bearer_token_file}}
 {{/if}}
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 period: {{period}}
 {{#if ssl.verification_mode}}
 ssl.verification_mode: {{ssl.verification_mode}}

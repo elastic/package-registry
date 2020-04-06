@@ -1,4 +1,7 @@
 input: kubernetes/metrics
 metricsets: ["scheduler"]
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 period: {{period}}

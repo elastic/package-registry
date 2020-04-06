@@ -1,6 +1,9 @@
 input: mysql/metrics
 metricsets: ["status"]
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 {{#if password}}
 password: {{password}}
 {{/if}}

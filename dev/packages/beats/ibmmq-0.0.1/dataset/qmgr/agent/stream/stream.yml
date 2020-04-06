@@ -1,6 +1,9 @@
 input: ibmmq/metrics
 metricsets: ["qmgr"]
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 {{#if metrics_path}}
 metrics_path: {{metrics_path}}
 {{/if}}

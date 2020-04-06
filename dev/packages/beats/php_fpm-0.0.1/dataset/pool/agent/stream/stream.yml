@@ -1,6 +1,9 @@
 input: php_fpm/metrics
 metricsets: ["pool"]
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 period: {{period}}
 {{#if status_path}}
 status_path: {{status_path}}

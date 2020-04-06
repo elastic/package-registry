@@ -3,5 +3,8 @@ metricsets: ["status"]
 {{#if enable}}
 enable: {{enable}}
 {{/if}}
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 period: {{period}}

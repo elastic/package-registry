@@ -1,6 +1,9 @@
 input: haproxy/metrics
 metricsets: ["stat"]
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 {{#if password}}
 password: {{password}}
 {{/if}}
