@@ -3,5 +3,9 @@
   fields:
   - name: server.id
     type: keyword
+    description: |
+      The server ID
   - name: cluster.id
     type: keyword
+    description: |
+      The cluster ID

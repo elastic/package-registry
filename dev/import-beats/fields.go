@@ -55,7 +55,9 @@ func (fda fieldDefinitionArray) stripped() fieldDefinitionArray {
 	var arr fieldDefinitionArray
 	for _, f := range fda {
 		stripped := f
-		stripped.Description = ""
+		if f.Type == "group" {
+			stripped.Description = ""
+		}
 		stripped.Fields = stripped.Fields.stripped()
 		arr = append(arr, stripped)
 	}
@@ -135,7 +137,7 @@ func loadFieldsFile(path string) ([]fieldDefinition, error) {
 	return fs, nil
 }
 
-// filterOutMigratedUncommonFields method filters out fields with "migration: true" property.
+// filterMigratedFields method filters out fields with "migration: true" property or if it's defined in ECS.
 // It returns a migrated fields file and found ECS fields.
 func filterMigratedFields(fields []fieldDefinition, ecsFieldNames []string) ([]fieldDefinition, []string, error) {
 	var filteredEcsFieldNames []string
@@ -148,12 +150,15 @@ func filterMigratedFields(fields []fieldDefinition, ecsFieldNames []string) ([]f
 func visitFieldForFilteringMigrated(f fieldDefinition, ecsFieldNames, filteredEcsFieldNames []string) (fieldDefinition, []string) {
 	if len(f.Fields) == 0 {
 		// this field is not a group entry
-		if f.Type == "alias" && (f.Migration != nil && *f.Migration) {
-			f.skipped = true // skip the field
+		if f.Type == "alias" {
+			if f.Migration != nil && *f.Migration {
+				f.skipped = true // skip the field
+			}
 
 			for _, ecsFieldName := range ecsFieldNames {
 				if ecsFieldName == f.Path {
 					filteredEcsFieldNames = append(filteredEcsFieldNames, ecsFieldName)
+					f.skipped = true
 					break
 				}
 			}

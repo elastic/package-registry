@@ -220,49 +220,79 @@
     fields:
     - name: timed_out
       type: long
+      description: |
+        The total number of cursors that have timed out since the server process started.
     - name: open
       type: group
       fields:
       - name: no_timeout
         type: long
+        description: |
+          The number of open cursors with the option DBQuery.Option.noTimeout set to prevent timeout.
       - name: pinned
         type: long
+        description: |
+          The number of `pinned` open cursors.
       - name: total
         type: long
+        description: |
+          The number of cursors that MongoDB is maintaining for clients.
   - name: document
     type: group
     fields:
     - name: deleted
       type: long
+      description: |
+        The total number of documents deleted.
     - name: inserted
       type: long
+      description: |
+        The total number of documents inserted.
     - name: returned
       type: long
+      description: |
+        The total number of documents returned by queries.
     - name: updated
       type: long
+      description: |
+        The total number of documents updated.
   - name: get_last_error
     type: group
     fields:
     - name: write_wait.ms
       type: long
+      description: |
+        The total amount of time in milliseconds that the mongod has spent performing getLastError operations with write concern (i.e. w) greater than 1.
     - name: write_wait.count
       type: long
+      description: |
+        The total number of getLastError operations with a specified write concern (i.e. w) greater than 1.
     - name: write_timeouts
       type: long
+      description: |
+        The number of times that write concern operations have timed out as a result of the wtimeout threshold to getLastError.
   - name: operation
     type: group
     fields:
     - name: scan_and_order
       type: long
+      description: |
+        The total number of queries that return sorted numbers that cannot perform the sort operation using an index.
     - name: write_conflicts
       type: long
+      description: |
+        The total number of queries that encountered write conflicts.
   - name: query_executor
     type: group
     fields:
     - name: scanned_indexes.count
       type: long
+      description: |
+        The total number of index items scanned during queries and query-plan evaluation.
     - name: scanned_documents.count
       type: long
+      description: |
+        The total number of documents scanned during queries and query-plan evaluation.
   - name: replication
     type: group
     fields:
@@ -331,19 +361,31 @@
         fields:
         - name: count
           type: long
+          description: |
+            The total number of batches applied across all databases.
         - name: time.ms
           type: long
+          description: |
+            The total amount of time in milliseconds the mongod has spent applying operations from the oplog.
       - name: ops
         type: long
+        description: |
+          The total number of oplog operations applied.
     - name: buffer
       type: group
       fields:
       - name: count
         type: long
+        description: |
+          The current number of operations in the oplog buffer.
       - name: max_size.bytes
         type: long
+        description: |
+          The maximum size of the buffer. This value is a constant setting in the mongod, and is not configurable.
       - name: size.bytes
         type: long
+        description: |
+          The current size of the contents of the oplog buffer.
     - name: initial_sync
       type: group
       fields:
@@ -358,17 +400,27 @@
       fields:
       - name: bytes
         type: long
+        description: |
+          The total amount of data read from the replication sync source.
       - name: getmores
         type: group
         fields:
         - name: count
           type: long
+          description: |
+            The total number of getmore operations
         - name: time.ms
           type: long
+          description: |
+            The total amount of time required to collect data from getmore operations.
       - name: ops
         type: long
+        description: |
+          The total number of operations read from the replication source.
       - name: reders_created
         type: long
+        description: |
+          The total number of oplog query processes created.
     - name: preload
       type: group
       fields:
@@ -377,6 +429,8 @@
         fields:
         - name: count
           type: long
+          description: |
+            The total number of documents loaded during the pre-fetch stage of replication.
         - name: time.ms
           type: long
       - name: indexes
@@ -384,21 +438,35 @@
         fields:
         - name: count
           type: long
+          description: |
+            The total number of index entries loaded by members before updating documents as part of the pre-fetch stage of replication.
         - name: time.ms
           type: long
+          description: |
+            The total amount of time, in milliseconds, spent loading index entries as part of the pre-fetch stage of replication.
   - name: storage.free_list.search
     type: group
     fields:
     - name: bucket_exhausted
       type: long
+      description: |
+        The number of times that mongod has checked the free list without finding a suitably large record allocation.
     - name: requests
       type: long
+      description: |
+        The number of times mongod has searched for available record allocations.
     - name: scanned
       type: long
+      description: |
+        The number of available record allocations mongod has searched.
   - name: ttl
     type: group
     fields:
     - name: deleted_documents.count
       type: long
+      description: |
+        The total number of documents deleted from collections with a ttl index.
     - name: passes.count
       type: long
+      description: |
+        The number of times the background process removes documents from collections with a ttl index.

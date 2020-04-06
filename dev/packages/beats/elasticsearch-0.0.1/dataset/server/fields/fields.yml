@@ -14,7 +14,10 @@
         type: long
     - name: overhead_seq
       type: long
+      description: Sequence number
     - name: collection_duration.ms
       type: float
+      description: Time spent in GC, in milliseconds
     - name: observation_duration.ms
       type: float
+      description: Total time over which collection was observed, in milliseconds

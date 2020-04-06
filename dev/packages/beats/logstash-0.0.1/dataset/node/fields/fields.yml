@@ -7,3 +7,5 @@
     fields:
     - name: version
       type: keyword
+      description: |
+        Version

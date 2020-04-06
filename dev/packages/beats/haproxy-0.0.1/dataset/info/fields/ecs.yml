@@ -1,5 +1,6 @@
 - key: ecs
   title: ECS
+  description: ECS Fields.
   fields:
   - name: process
     title: Process
@@ -10,3 +11,4 @@
       level: core
       type: long
       format: string
+      description: Process id.

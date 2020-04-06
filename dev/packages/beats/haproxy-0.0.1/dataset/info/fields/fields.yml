@@ -4,19 +4,29 @@
   fields:
   - name: processes
     type: long
+    description: |
+      Number of processes.
   - name: process_num
     type: long
+    description: |
+      Process number.
   - name: run_queue
     type: long
   - name: tasks
     type: long
   - name: uptime.sec
     type: long
+    description: |
+      Current uptime in seconds.
   - name: memory.max.bytes
     type: long
     format: bytes
+    description: |
+      Maximum amount of memory usage in bytes (the 'Memmax_MB' value converted to bytes).
   - name: ulimit_n
     type: long
+    description: |
+      Maximum number of open files for the process.
   - name: compress
     type: group
     fields:
@@ -43,16 +53,28 @@
         type: long
     - name: current
       type: long
+      description: |
+        Current connections.
     - name: total
       type: long
+      description: |
+        Total connections.
     - name: ssl.current
       type: long
+      description: |
+        Current SSL connections.
     - name: ssl.total
       type: long
+      description: |
+        Total SSL connections.
     - name: ssl.max
       type: long
+      description: |
+        Maximum SSL connections.
     - name: max
       type: long
+      description: |
+        Maximum connections.
     - name: hard_max
       type: long
   - name: requests.total
@@ -105,6 +127,7 @@
         type: integer
       - name: key_rate.max
         type: integer
+        description: MaxConnRate
     - name: cached_lookups
       type: long
     - name: cache_misses

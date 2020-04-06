@@ -3,3 +3,5 @@
   fields:
   - name: module
     type: keyword
+    description: |
+      The module producing the logged message.

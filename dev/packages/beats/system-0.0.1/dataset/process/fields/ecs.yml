@@ -1,5 +1,6 @@
 - key: ecs
   title: ECS
+  description: ECS Fields.
   fields:
   - name: process
     title: Process
@@ -9,6 +10,9 @@
     - name: name
       level: extended
       type: keyword
+      description: |-
+        Process name.
+        Sometimes called program name or similar.
       ignore_above: 1024
       multi_fields:
       - name: text
@@ -19,17 +23,21 @@
       level: extended
       type: long
       format: string
+      description: Identifier of the group of processes the process belongs to.
     - name: pid
       level: core
       type: long
       format: string
+      description: Process id.
     - name: ppid
       level: extended
       type: long
       format: string
+      description: Parent process' pid.
     - name: working_directory
       level: extended
       type: keyword
+      description: The working directory of the process.
       ignore_above: 1024
       multi_fields:
       - name: text
@@ -44,6 +52,7 @@
     - name: name
       level: core
       type: keyword
+      description: Short name or login of the user.
       ignore_above: 1024
       multi_fields:
       - name: text

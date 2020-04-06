@@ -5,9 +5,15 @@
   - name: available.bytes
     type: long
     format: bytes
+    description: |
+      Available bytes of the cluster
   - name: total.bytes
     type: long
     format: bytes
+    description: |
+      Total bytes of the cluster
   - name: used.bytes
     type: long
     format: bytes
+    description: |
+      Used bytes of the cluster

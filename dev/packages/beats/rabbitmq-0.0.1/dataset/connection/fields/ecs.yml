@@ -1,5 +1,6 @@
 - key: ecs
   title: ECS
+  description: ECS Fields.
   fields:
   - name: user
     title: User
@@ -9,6 +10,7 @@
     - name: name
       level: core
       type: keyword
+      description: Short name or login of the user.
       ignore_above: 1024
       multi_fields:
       - name: text

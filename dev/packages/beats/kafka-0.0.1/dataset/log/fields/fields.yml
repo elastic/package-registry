@@ -3,12 +3,20 @@
   fields:
   - name: component
     type: keyword
+    description: |
+      Component the log is coming from.
   - name: class
     type: keyword
+    description: |
+      Java class the log is coming from.
   - name: trace
     type: group
     fields:
     - name: class
       type: keyword
+      description: |
+        Java class the trace is coming from.
     - name: message
       type: text
+      description: |
+        Message part of the trace.

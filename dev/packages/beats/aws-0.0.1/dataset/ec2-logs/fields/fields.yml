@@ -4,3 +4,5 @@
   fields:
   - name: ip_address
     type: keyword
+    description: |
+      The internet address of the requester.

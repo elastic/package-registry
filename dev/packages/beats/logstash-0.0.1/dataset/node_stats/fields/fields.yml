@@ -7,7 +7,13 @@
     fields:
     - name: in
       type: long
+      description: |
+        Incoming events counter.
     - name: out
       type: long
+      description: |
+        Outgoing events counter.
     - name: filtered
       type: long
+      description: |
+        Filtered events counter.

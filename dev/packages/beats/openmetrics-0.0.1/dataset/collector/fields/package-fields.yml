@@ -3,5 +3,9 @@
   fields:
   - name: labels.*
     type: object
+    description: |
+      Prometheus metric labels
   - name: metrics.*
     type: object
+    description: |
+      Prometheus metric

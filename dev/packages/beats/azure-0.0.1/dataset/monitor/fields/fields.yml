@@ -4,3 +4,5 @@
   fields:
   - name: metrics.*.*
     type: object
+    description: |
+      Metrics returned.

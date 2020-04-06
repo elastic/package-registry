@@ -1,5 +1,6 @@
 - key: ecs
   title: ECS
+  description: ECS Fields.
   fields:
   - name: os
     title: Operating System
@@ -9,6 +10,7 @@
     - name: full
       level: extended
       type: keyword
+      description: Operating system name, including the version or code name.
       ignore_above: 1024
       multi_fields:
       - name: text
@@ -24,6 +26,7 @@
       level: core
       type: long
       format: string
+      description: Process id.
   - name: service
     title: Service
     group: 2
@@ -32,4 +35,7 @@
     - name: version
       level: core
       type: keyword
+      description: |-
+        Version of the service the data was collected from.
+        This allows to look at a data set only for a specific version of a service.
       ignore_above: 1024

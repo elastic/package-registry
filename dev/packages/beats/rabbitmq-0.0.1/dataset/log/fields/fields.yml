@@ -3,3 +3,4 @@
   fields:
   - name: pid
     type: keyword
+    description: The Erlang process id
