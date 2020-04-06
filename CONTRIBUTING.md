@@ -121,16 +121,42 @@ feel free to review the script's [https://github.com/elastic/package-registry/bl
 
 #### Motivation
 
-Most of migration works have been
+Most of the migration work has been done by the `import-beats` script, but there're tasks that require developer's
+interaction.
+
+It may happen that your integration misses a screenshot or an icon, it's a good moment to add missing resources to
+Beats/Kibana repositories and re-import the integration (idempotent). 
 
 #### Checklist
 
+1. Have an icon?
+
+2. Have a screenshot?
+
+3. Write README template file for the integration.
+
+    The README template is used to render the final README file including exported fields. The template should be placed
+    in the `dev/beats/import-beats-resources/docs/<integration-name>/docs/README.md`.
+    
+    Review the MySQL docs template to see how to use template functions (e.g. `{{fields "dataset-name"}}`)
+
+4. Review _titles_ and _descriptions_ in manifest files.
+
+    Titles and descriptions are fields visualized in the Kibana UI. Most users will use them to see how to configure
+    the integration with their installation of a product or to how to use advanced configuration options.
+
+5. Compact variables
+
+6. Define all var properties.
+
+7. Compare and verify agent/stream variables with Beats
+
+8. Missing variable, update config.epr.yaml
+
+9. Are dashboards presenting correctly?
+
+10. Are fields same in docs published online?
+
 ## Testing and validation
 
-TODO
-
-
-[import-beats]: https://github.com/elastic/package-registry/tree/master/dev/import-beats
-
-
-[Beats]: https://github.com/elastic/beats
+TODO click through registry
