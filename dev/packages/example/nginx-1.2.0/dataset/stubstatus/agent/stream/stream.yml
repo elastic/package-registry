@@ -4,7 +4,10 @@ metricsets: ["stubstatus"]
 period: {{period}}
 
 # Nginx hosts
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 
 # Path to server status. Default server-status
 #server_status_path: "server-status"
