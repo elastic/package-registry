@@ -1,4 +1,7 @@
 input: etcd/metrics
 metricsets: ["leader"]
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 period: {{period}}

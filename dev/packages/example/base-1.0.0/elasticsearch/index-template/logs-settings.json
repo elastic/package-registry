@@ -6,8 +6,7 @@
     "settings": {
         "index": {
             "lifecycle": {
-                "name": "logs-default",
-                "rollover_alias": "logs-generic-default"
+                "name": "logs-default"
             },
             "codec": "best_compression",
             "refresh_interval": "5s",

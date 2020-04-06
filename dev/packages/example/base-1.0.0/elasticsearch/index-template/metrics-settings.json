@@ -6,8 +6,7 @@
     "settings": {
         "index": {
             "lifecycle": {
-                "name": "metrics-default",
-                "rollover_alias": "metrics-generic-default"
+                "name": "metrics-default"
             },
             "codec": "best_compression",
             "refresh_interval": "5s",

@@ -1,4 +1,7 @@
 input: rabbitmq/metrics
 metricsets: ["connection"]
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 period: {{period}}

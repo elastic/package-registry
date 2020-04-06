@@ -184,7 +184,13 @@ func createAgentContentForMetrics(modulePath, moduleName, datasetName string, st
 		if !isAgentConfigOptionRequired(variableName) {
 			buffer.WriteString(fmt.Sprintf("{{#if %s}}\n", variableName))
 		}
-		buffer.WriteString(fmt.Sprintf("%s: {{%s}}\n", variableName, variableName))
+
+		if isArrayConfigOption(variableName) {
+			buffer.WriteString(fmt.Sprintf("%s:\n{{#each %s}}\n  - {{this}}\n{{/each}}\n", variableName, variableName))
+		} else {
+			buffer.WriteString(fmt.Sprintf("%s: {{%s}}\n", variableName, variableName))
+		}
+
 		if !isAgentConfigOptionRequired(variableName) {
 			buffer.WriteString("{{/if}}\n")
 		}
@@ -210,4 +216,8 @@ func extractVarsFromStream(streams []util.Stream, inputName string) []map[string
 
 func isAgentConfigOptionRequired(optionName string) bool {
 	return optionName == "hosts" || optionName == "period"
+}
+
+func isArrayConfigOption(optionName string) bool {
+	return optionName == "hosts"
 }

@@ -1,4 +1,7 @@
 input: munin/metrics
 metricsets: ["node"]
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 period: {{period}}

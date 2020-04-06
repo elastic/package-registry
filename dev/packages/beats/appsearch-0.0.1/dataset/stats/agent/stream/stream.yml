@@ -1,4 +1,7 @@
 input: appsearch/metrics
 metricsets: ["stats"]
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 period: {{period}}

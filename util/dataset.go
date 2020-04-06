@@ -60,6 +60,9 @@ func NewDataset(basePath string, p *Package) (*DataSet, error) {
 	datasetPath := filepath.Base(basePath)
 
 	manifest, err := yaml.NewConfigWithFile(manifestPath, ucfg.PathSep("."))
+	if err != nil {
+		return nil, errors.Wrapf(err, "error creating new manifest config %s", manifestPath)
+	}
 	var d = &DataSet{
 		Package: p.Name,
 		// This is the name of the directory of the dataset

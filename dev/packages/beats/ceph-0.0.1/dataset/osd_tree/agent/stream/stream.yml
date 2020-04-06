@@ -1,4 +1,7 @@
 input: ceph/metrics
 metricsets: ["osd_tree"]
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 period: {{period}}
