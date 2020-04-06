@@ -97,7 +97,7 @@ feel free to review the script's [https://github.com/elastic/package-registry/bl
     1. Elasticseach instance:
         * Kibana's dependency
     2. Kibana instance:
-        * used to migrate dashboards, if not available, you can skip the generation (`-skipKibana`)
+        * used to migrate dashboards, if not available, you can skip the generation (`SKIP_KIBANA=true`)
 
     _Hint_. There is dockerized environment in beats (`cd testing/environments`). Boot it up with the following command:
     `docker-compose -f snapshot.yml -f local.yml up --force-recreate elasticsearch kibana`.
