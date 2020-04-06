@@ -175,17 +175,17 @@ Beats/Kibana repositories and re-import the integration (idempotent).
           - /var/log/nginx/access.log*
 ```
 
-    **required** - option is required
+**required** - option is required
     
-    **show_user** - don't hide the configuration option (collapsed menu)
+**show_user** - don't hide the configuration option (collapsed menu)
     
-    **title** - human readable variable name
+**title** - human readable variable name
     
-    **description** - variable description (may contain some details)
+**description** - variable description (may contain some details)
     
-    **type** - field type (according to the reference: text, password, bool, integer)
+**type** - field type (according to the reference: text, password, bool, integer)
     
-    **multi** - the field has mutliple values.
+**multi** - the field has mutliple values.
 
 6. Compact variables
 
