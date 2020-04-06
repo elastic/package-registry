@@ -41,6 +41,10 @@ https://github.com/elastic/kibana
 $ mage ImportBeats
 ```
 
+## How does the import procedure work
+
+TODO
+
 ## Troubleshooting
 
 *Importing process takes too long.*
