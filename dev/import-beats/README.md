@@ -34,8 +34,9 @@ https://github.com/elastic/beats
 https://github.com/elastic/ecs
 https://github.com/elastic/eui
 https://github.com/elastic/kibana
-2. Start Kibana server (make sure the endpoint is accessible: http://localhost:5601/)
-2. Run the importing procedure with the following command:
+2. Make sure you've the `mage` tool installed.
+3. Start Kibana server (make sure the endpoint is accessible: http://localhost:5601/)
+4. Run the importing procedure with the following command:
 
 ```bash
 $ mage ImportBeats
