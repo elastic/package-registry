@@ -6,9 +6,9 @@ This page is intended for contributors to the registry and packages.
 
 ### Package
 
-A Package contains the dashboards, visualisations, and configurations to monitor the logs and metrics of a particular technology or group of related services, such as “MySQL”, or “System”.
+A package contains the dashboards, visualisations, and configurations to monitor the logs and metrics of a particular technology or group of related services, such as “MySQL”, or “System”.
 
-A Package consists of:
+The package consists of:
 
 * Name
 * Zero or more dashboards and visualisations and Canvas workpads
@@ -23,11 +23,11 @@ An integration is a specific type of a _package_ defining datasets used to obser
 
 ### Dataset Template
 
-The dataset template is part of a package and contains all the assets which are needed to create a dataset. Example for assets are: ingest pipeline, agent config template, ES index template, ...
+A dataset template is part of a package and contains all the assets which are needed to create a dataset. Example for assets are: ingest pipeline, agent config template, ES index template, ...
 
-The dataset templates are inside the package directory under `dataset`.
+Dataset templates are inside the package directory under `dataset`.
 
-A dataset template consists of:
+The dataset template consists of:
 
 * An alias templates (or the fields.yml to create it)
 * Zero or more ingest pipelines
@@ -121,7 +121,7 @@ feel free to review the script's [https://github.com/elastic/package-registry/bl
 
 #### Motivation
 
-TODO
+Most of migration works have been
 
 #### Checklist
 
