@@ -129,9 +129,22 @@ Beats/Kibana repositories and re-import the integration (idempotent).
 
 #### Checklist
 
-1. Have an icon?
+1. Add icon if missing.
 
-2. Have a screenshot?
+    The tiles with integration icons are presented in different places in Kibana, hence it's better to define their own
+    icons to make the UI easier to navigate.
+    
+    As the `import-beats` script looks for icons in Kibana and EUI repositories, add an icon to the first one the same
+    way as for tutorial resources (Kibana directory: `src/legacy/core_plugins/kibana/public/home/tutorial_resources/logos/`).
+
+2. Add screenshot if missing.
+
+    The Kibana Integration Manager show screenshots related with an integration. Screenshots present Kibana
+    dashboards visualizing the metric/log data.
+    The `import-beats` script finds references to screenshots mentioned in `_meta/docs.asciidoc` and copies image files
+    from the Beats directories:
+    * `metricbeat/docs/images`
+    * `filebeat/docs/images`
 
 3. Write README template file for the integration.
 
@@ -145,9 +158,36 @@ Beats/Kibana repositories and re-import the integration (idempotent).
     Titles and descriptions are fields visualized in the Kibana UI. Most users will use them to see how to configure
     the integration with their installation of a product or to how to use advanced configuration options.
 
-5. Compact variables
+5. Define all variable properties.
 
-6. Define all var properties.
+    The variable properties customize visualization of configuration options in the Kibana UI:
+    
+```yaml
+    vars:
+      - name: paths
+        required: true
+        show_user: true
+        title: Access log paths
+        description: Paths to the nginx access log file.
+        type: text
+        multi: true
+        default:
+          - /var/log/nginx/access.log*
+```
+
+    **required** - option is required
+    
+    **show_user** - don't hide the configuration option (collapsed menu)
+    
+    **title** - human readable variable name
+    
+    **description** - variable description (may contain some details)
+    
+    **type** - field type (according to the reference: text, password, bool, integer)
+    
+    **multi** - the field has mutliple values.
+
+6. Compact variables
 
 7. Compare and verify agent/stream variables with Beats
 
