@@ -1,6 +1,9 @@
 input: activemq/metrics
 metricsets: ["topic"]
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 {{#if password}}
 password: {{password}}
 {{/if}}

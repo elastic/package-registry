@@ -1,6 +1,9 @@
 input: tomcat/metrics
 metricsets: ["requests"]
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 {{#if path}}
 path: {{path}}
 {{/if}}

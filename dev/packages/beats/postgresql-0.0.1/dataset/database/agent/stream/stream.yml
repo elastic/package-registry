@@ -1,4 +1,7 @@
 input: postgresql/metrics
 metricsets: ["database"]
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 period: {{period}}

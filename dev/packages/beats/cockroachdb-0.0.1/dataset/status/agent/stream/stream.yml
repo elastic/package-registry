@@ -1,4 +1,7 @@
 input: cockroachdb/metrics
 metricsets: ["status"]
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 period: {{period}}

@@ -1,6 +1,9 @@
 input: mssql/metrics
 metricsets: ["performance"]
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 {{#if password}}
 password: {{password}}
 {{/if}}

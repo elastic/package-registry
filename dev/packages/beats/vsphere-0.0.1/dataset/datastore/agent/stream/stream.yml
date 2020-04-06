@@ -1,6 +1,9 @@
 input: vsphere/metrics
 metricsets: ["datastore"]
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 {{#if insecure}}
 insecure: {{insecure}}
 {{/if}}

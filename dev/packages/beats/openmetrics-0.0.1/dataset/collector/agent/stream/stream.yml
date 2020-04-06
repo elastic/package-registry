@@ -1,6 +1,9 @@
 input: openmetrics/metrics
 metricsets: ["collector"]
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 {{#if metrics_filters.exclude}}
 metrics_filters.exclude: {{metrics_filters.exclude}}
 {{/if}}
