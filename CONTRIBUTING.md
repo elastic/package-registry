@@ -81,7 +81,13 @@ existing modules.
 The import procedure heavily uses on the _import-beats_ script. If you are interested how does it work internally,
 feel free to review the script's [README](https://github.com/elastic/package-registry/blob/master/dev/import-beats/README.md).
 
-1. Focus on the particular product (e.g. MySQL, ActiveMQ) you would like to integrate with.
+1. Create an issue in the [package-registry](https://github.com/elastic/package-registry) to track ongoing progress with
+    the integration (especially manual changes).
+
+    Focus on the one particular product (e.g. MySQL, ActiveMQ) you would like to integrate with.
+    Use this issue to mention every manual change that has been applied. It will help in adjusting the `import-beats`
+    script and reviewing the integration.
+
 2. Prepare the developer environment:
     1. Clone/refresh the following repositories:
         * https://github.com/elastic/beats
@@ -92,7 +98,10 @@ feel free to review the script's [README](https://github.com/elastic/package-reg
        Make sure you don't have any manual changes applied as they will reflect on the integration.
     2. Clone/refresh the Elastic Package Registry (EPR) to always use the latest version of the script:
         * https://github.com/elastic/package-registry
-    3. Make sure you've the `mage` tool installed.
+    3. Make sure you've the `mage` tool installed:
+        ```bash
+       $ go get -u -d github.com/magefile/mage
+       ```
 3. Boot up required dependencies:
     1. Elasticseach instance:
         * Kibana's dependency
@@ -101,7 +110,7 @@ feel free to review the script's [README](https://github.com/elastic/package-reg
 
     _Hint_. There is dockerized environment in beats (`cd testing/environments`). Boot it up with the following command:
     `docker-compose -f snapshot.yml -f local.yml up --force-recreate elasticsearch kibana`.
-4. Create a new branch for the integration in package-registry repo (diverge from master).
+4. Create a new branch for the integration in `package-registry` repository (diverge from master).
 5. Run the command: `mage ImportBeats` to start the import process.
 
     The outcome of running the `import-beats` script is directory with refreshed and updated integrations.
