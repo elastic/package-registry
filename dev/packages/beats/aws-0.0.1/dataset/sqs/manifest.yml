@@ -10,6 +10,7 @@ streams:
     name: period
   - default:
     - us-west-1
+    multi: true
     name: regions
   title: aws sqs metrics
   description: Collect aws sqs metrics

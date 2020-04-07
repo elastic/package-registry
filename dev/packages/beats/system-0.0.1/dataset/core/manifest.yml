@@ -6,6 +6,7 @@ streams:
   vars:
   - default:
     - percentages
+    multi: true
     name: core.metrics
   title: System core metrics
   description: Collect System core metrics

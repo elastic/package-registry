@@ -20,6 +20,7 @@ streams:
         - DocumentQuota
         namespace: Microsoft.DocumentDb/databaseAccounts
       resource_query: resourceType eq 'Microsoft.DocumentDb/databaseAccounts'
+    multi: true
     name: resources
   - default: ${AZURE_SUBSCRIPTION_ID:""}
     name: subscription_id

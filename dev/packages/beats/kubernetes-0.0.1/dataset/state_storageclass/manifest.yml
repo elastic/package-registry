@@ -8,6 +8,7 @@ streams:
     name: add_metadata
   - default:
     - kube-state-metrics:8080
+    multi: true
     name: hosts
   - default: 10s
     name: period

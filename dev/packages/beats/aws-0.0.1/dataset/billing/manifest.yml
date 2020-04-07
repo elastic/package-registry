@@ -8,6 +8,7 @@ streams:
     name: period
   - default:
     - us-east-1
+    multi: true
     name: regions
   title: aws billing metrics
   description: Collect aws billing metrics

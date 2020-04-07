@@ -29,6 +29,8 @@
                         "id": "f703aff0-475f-11e9-a9de-e776805ecfc9"
                     }
                 ],
+                "default_index_pattern": "metrics-*",
+                "default_timefield": "@timestamp",
                 "drop_last_bucket": 0,
                 "gauge_color_rules": [
                     {
@@ -41,6 +43,7 @@
                 "id": "61ca57f0-469d-11e7-af02-69e470af7417",
                 "index_pattern": "metrics-*",
                 "interval": "1d",
+                "isModelInvalid": false,
                 "series": [
                     {
                         "axis_position": "right",
@@ -61,7 +64,7 @@
                         "separate_axis": 0,
                         "split_mode": "terms",
                         "stacked": "none",
-                        "terms_field": "aws.s3_daily_storage.bucket.name",
+                        "terms_field": "aws.s3.bucket.name",
                         "terms_order_by": "61ca57f2-469d-11e7-af02-69e470af7417",
                         "terms_size": "5"
                     }
@@ -71,7 +74,7 @@
                 "time_field": "@timestamp",
                 "type": "top_n"
             },
-            "title": "AWS S3 Daily Storage Bucket Size in Bytes",
+            "title": "S3 Daily Storage Bucket Size in Bytes [Metricbeat AWS]",
             "type": "metrics"
         }
     },

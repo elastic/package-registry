@@ -6,10 +6,12 @@ streams:
   vars:
   - default:
     - percentages
+    multi: true
     name: core.metrics
   - default:
     - percentages
     - normalized_percentages
+    multi: true
     name: cpu.metrics
   - default: 10s
     name: period
@@ -19,6 +21,7 @@ streams:
     name: process.include_top_n.by_memory
   - default:
     - .*
+    multi: true
     name: processes
   title: System socket_summary metrics
   description: Collect System socket_summary metrics

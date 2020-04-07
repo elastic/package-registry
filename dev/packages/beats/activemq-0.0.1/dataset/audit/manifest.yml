@@ -6,6 +6,7 @@ streams:
   vars:
   - default:
     - /opt/apache-activemq-*/data/audit.log*
+    multi: true
     name: paths
     os.darwin:
       default:

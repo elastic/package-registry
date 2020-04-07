@@ -6,6 +6,7 @@ streams:
   vars:
   - default:
     - https://localhost:8003
+    multi: true
     name: hosts
   - default: 1m
     name: period

@@ -6,9 +6,11 @@ streams:
   vars:
   - default:
     - /var/log/pan-os.log
+    multi: true
     name: paths
   - default:
     - pan-os
+    multi: true
     name: tags
   - default: localhost
     name: syslog_host

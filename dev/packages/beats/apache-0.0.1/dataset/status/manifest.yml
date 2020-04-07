@@ -6,6 +6,7 @@ streams:
   vars:
   - default:
     - http://127.0.0.1
+    multi: true
     name: hosts
   - default: 10s
     name: period

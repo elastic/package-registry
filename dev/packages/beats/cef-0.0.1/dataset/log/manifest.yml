@@ -6,9 +6,11 @@ streams:
   vars:
   - default:
     - /var/log/cef.log
+    multi: true
     name: paths
   - default:
     - cef
+    multi: true
     name: tags
   - default: localhost
     name: syslog_host
