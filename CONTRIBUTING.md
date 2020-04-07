@@ -88,7 +88,7 @@ feel free to review the script's [https://github.com/elastic/package-registry/bl
         * https://github.com/elastic/ecs
         * https://github.com/elastic/eui
         * https://github.com/elastic/kibana
-        
+
        Make sure you don't have any manual changes applied as they will reflect on the integration.
     2. Clone/refresh the Elastic Package Registry (EPR) to always use the latest version of the script:
         * https://github.com/elastic/package-registry
@@ -103,17 +103,17 @@ feel free to review the script's [https://github.com/elastic/package-registry/bl
     `docker-compose -f snapshot.yml -f local.yml up --force-recreate elasticsearch kibana`.
 4. Create a new branch for the integration in the EPR project (diverge from master).
 5. Run the command: `mage import-beats` to start the import process.
-    
+
     The result of running the `import-beats` script are refreshed and updated integrations.
 
     It will take a while to finish, but the console output should be updated frequently to track the progress.
     The command must end up with the exit code 0. Kindly please to open an issue if it doesn't.
-    
+
     Generated packages are stored by default in the `dev/packages/beats` directory. Generally, the import process
     updates all of the integrations, so don't be surprised if you notice updates to multiple integrations, including
     the one you're currently working on (e.g. `dev/packages/beats/foobarbaz-0.0.1`). You can either commit this changes or
     leave them for later.
-    
+
 6. Copy the package output for your integration (e.g. `dev/packages/beats/foobarbaz-0.0.1`) to the _alpha_ directory and
     raise the version manually: `dev/packages/alpha/foobarbaz-0.0.2`.
 
@@ -129,11 +129,14 @@ Beats/Kibana repositories and re-import the integration (idempotent).
 
 #### Checklist
 
+The order of action items on the checklist is advised to prevent the contributor from repeating some actions (fixing
+what's been already fixed, as the script has overridden part of it).
+
 1. Add icon if missing.
 
     The tiles with integration icons are presented in different places in Kibana, hence it's better to define their own
     icons to make the UI easier to navigate.
-    
+
     As the `import-beats` script looks for icons in Kibana and EUI repositories, add an icon to the first one the same
     way as for tutorial resources (Kibana directory: `src/legacy/core_plugins/kibana/public/home/tutorial_resources/logos/`).
 
@@ -150,18 +153,45 @@ Beats/Kibana repositories and re-import the integration (idempotent).
 
     The README template is used to render the final README file including exported fields. The template should be placed
     in the `dev/beats/import-beats-resources/docs/<integration-name>/docs/README.md`.
-    
+
     Review the MySQL docs template to see how to use template functions (e.g. `{{fields "dataset-name"}}`)
 
-4. Review _titles_ and _descriptions_ in manifest files.
+4. Review fields file and exported fields in docs.
+
+    The fields files (`package-fields.yml`, `fields.yml` and `ecs.yml`) present in the package are created from original
+    `fields.yml` files and the ECS schema. It may happen that original sources have a typo, bad description or misses
+    field definitions. The goal of this action item is to verify if produced artifacts are correct.
+
+5. Metricbeat: add missing configuration options.
+
+   The `import-beats` script extracts configuration options from Metricbeat module's `_meta` directory. It analyzes
+   the configuration files and selects options based on enabled metricsets (not commented). If you notice that some
+   configuration options are missing in your package's manifest files, simply create the `config.epr.yml` file with all
+   required options.
+
+   Sample PR: https://github.com/elastic/beats/pull/17323
+
+6. Review _titles_ and _descriptions_ in manifest files.
 
     Titles and descriptions are fields visualized in the Kibana UI. Most users will use them to see how to configure
     the integration with their installation of a product or to how to use advanced configuration options.
 
-5. Define all variable properties.
+7. Compact configuration options (vars).
 
-    The variable properties customize visualization of configuration options in the Kibana UI:
-    
+    Currently, all configuration options are set by the `import-beats` script on the stream level
+    (path: `dataset/<dataset-name>/manifest.yml`).
+
+    It may happen that some of them, in different datasets, are simply duplicates or concern the same setting, which
+    will be always equal (e.g. MySQL username, password). Keep in mind that two datasets may have the same configuration
+    option, but different values (e.g. `period`, `paths`), hence can't be compacted.
+
+    To sum up, compacting takes down from the user the necessity to setup the same configuration option few times.
+
+8. Define all variable properties.
+
+    The variable properties customize visualization of configuration options in the Kibana UI. Make sure they're
+    defined in all manifest files.
+
 ```yaml
     vars:
       - name: paths
@@ -176,27 +206,20 @@ Beats/Kibana repositories and re-import the integration (idempotent).
 ```
 
 **required** - option is required
-    
+
 **show_user** - don't hide the configuration option (collapsed menu)
-    
+
 **title** - human readable variable name
-    
+
 **description** - variable description (may contain some details)
-    
+
 **type** - field type (according to the reference: text, password, bool, integer)
-    
+
 **multi** - the field has mutliple values.
-
-6. Compact variables
-
-7. Compare and verify agent/stream variables with Beats
-
-8. Missing variable, update config.epr.yaml
-
-9. Are dashboards presenting correctly?
-
-10. Are fields same in docs published online?
 
 ## Testing and validation
 
 TODO click through registry
+
+TODO are dashboards presenting correctly?
+
