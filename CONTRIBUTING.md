@@ -35,7 +35,7 @@ The dataset template consists of:
 
 ### Migration from Beats
 
-A defined importing procedure used to transform both, Filebeat and Metricbeat modules, related to
+A defined importing procedure used to transform both Filebeat and Metricbeat modules, related to
 the same observed product, into a single integration. The integration contains extracted dataset configuration of beat
 modules, hence no modules are required to exist anymore.
 
