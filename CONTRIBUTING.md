@@ -35,9 +35,9 @@ The dataset template consists of:
 
 ### Migration from Beats
 
-A defined importing procedure used to transform both, Filebeat and Metricbeat modules related to
+A defined importing procedure used to transform both, Filebeat and Metricbeat modules, related to
 the same observed product, into a single integration. The integration contains extracted dataset configuration of beat
-modules, hence no module are required to exist anymore.
+modules, hence no modules are required to exist anymore.
 
 ## Package structure
 
@@ -56,14 +56,14 @@ Link: https://github.com/elastic/package-registry/tree/master/dev/packages/examp
 The directory contains mandatory manifest files defining the integration and its datasets. All manifests have fields
 annotated with comments to better understand their goals.
 
-Keep in mind that this package doesn't contain all file resources (images, screenshots, icons) referenced in manifests.
-Let's assume that they're also there.
+_Keep in mind that this package doesn't contain all file resources (images, screenshots, icons) referenced in manifests.
+Let's assume that they're also there._
 
 #### Integration: mysql
 
 Link: https://github.com/mtojek/package-registry/tree/package-mysql-0.0.2/dev/packages/alpha/mysql-0.0.2
 
-The MySQL integration was the first integration built using the [https://github.com/elastic/package-registry/tree/master/dev/import-beats][import-beats] script.
+The MySQL integration was the first integration built using the [import-beats](https://github.com/elastic/package-registry/tree/master/dev/import-beats) script.
 The script imported filesets and metricsets from both MySQL modules, and converted them to a package.
 
 The MySQL integration contains all parts that should be present (or are required) in the integration package.
@@ -72,14 +72,14 @@ After using the _import-beats_ script, the integration has been manually adjuste
 
 ## Create a new integration
 
-This section describes steps required to perform to build a new integration. If you plan to prepare the integration
-with a product unsupported by [https://github.com/elastic/beats][Beats], feel free to skip the section about importing
+This section describes steps required to build a new integration. If you plan to prepare the integration
+with a product unsupported by [Beats](https://github.com/elastic/beats), feel free to skip the section about importing
 existing modules.
 
 ### Import from existing modules
 
 The import procedure heavily uses on the _import-beats_ script. If you are interested how does it work internally,
-feel free to review the script's [https://github.com/elastic/package-registry/blob/master/dev/import-beats/README.md][README].
+feel free to review the script's [README](https://github.com/elastic/package-registry/blob/master/dev/import-beats/README.md).
 
 1. Focus on the particular product (e.g. MySQL, ActiveMQ) you would like to integrate with.
 2. Prepare the developer environment:
@@ -102,17 +102,17 @@ feel free to review the script's [https://github.com/elastic/package-registry/bl
     _Hint_. There is dockerized environment in beats (`cd testing/environments`). Boot it up with the following command:
     `docker-compose -f snapshot.yml -f local.yml up --force-recreate elasticsearch kibana`.
 4. Create a new branch for the integration in the EPR project (diverge from master).
-5. Run the command: `mage import-beats` to start the import process.
+5. Run the command: `mage ImportBeats` to start the import process.
 
-    The result of running the `import-beats` script are refreshed and updated integrations.
+    The outcome of running the `import-beats` script is directory with refreshed and updated integrations.
 
     It will take a while to finish, but the console output should be updated frequently to track the progress.
     The command must end up with the exit code 0. Kindly please to open an issue if it doesn't.
 
     Generated packages are stored by default in the `dev/packages/beats` directory. Generally, the import process
     updates all of the integrations, so don't be surprised if you notice updates to multiple integrations, including
-    the one you're currently working on (e.g. `dev/packages/beats/foobarbaz-0.0.1`). You can either commit this changes or
-    leave them for later.
+    the one you're currently working on (e.g. `dev/packages/beats/foobarbaz-0.0.1`). You can either commit this changes
+    or leave them for later.
 
 6. Copy the package output for your integration (e.g. `dev/packages/beats/foobarbaz-0.0.1`) to the _alpha_ directory and
     raise the version manually: `dev/packages/alpha/foobarbaz-0.0.2`.
@@ -121,7 +121,7 @@ feel free to review the script's [https://github.com/elastic/package-registry/bl
 
 #### Motivation
 
-Most of the migration work has been done by the `import-beats` script, but there're tasks that require developer's
+Most of migration work has been done by the `import-beats` script, but there're tasks that require developer's
 interaction.
 
 It may happen that your integration misses a screenshot or an icon, it's a good moment to add missing resources to
@@ -134,16 +134,17 @@ what's been already fixed, as the script has overridden part of it).
 
 1. Add icon if missing.
 
-    The tiles with integration icons are presented in different places in Kibana, hence it's better to define their own
-    icons to make the UI easier to navigate.
+    The integration icons are presented in different places in Kibana, hence it's better to define custom icons to make
+    the UI easier to navigate.
 
     As the `import-beats` script looks for icons in Kibana and EUI repositories, add an icon to the first one the same
     way as for tutorial resources (Kibana directory: `src/legacy/core_plugins/kibana/public/home/tutorial_resources/logos/`).
 
 2. Add screenshot if missing.
 
-    The Kibana Integration Manager show screenshots related with an integration. Screenshots present Kibana
+    The Kibana Integration Manager shows screenshots related with the integration. Screenshots present Kibana
     dashboards visualizing the metric/log data.
+
     The `import-beats` script finds references to screenshots mentioned in `_meta/docs.asciidoc` and copies image files
     from the Beats directories:
     * `metricbeat/docs/images`
@@ -158,9 +159,9 @@ what's been already fixed, as the script has overridden part of it).
 
 4. Review fields file and exported fields in docs.
 
-    The fields files (`package-fields.yml`, `fields.yml` and `ecs.yml`) present in the package are created from original
+    The fields files (`package-fields.yml`, `fields.yml` and `ecs.yml`) in the package were created from original
     `fields.yml` files and the ECS schema. It may happen that original sources have a typo, bad description or misses
-    field definitions. The goal of this action item is to verify if produced artifacts are correct.
+    a field definition. The goal of this action item is to verify if produced artifacts are correct.
 
 5. Metricbeat: add missing configuration options.
 
@@ -181,11 +182,12 @@ what's been already fixed, as the script has overridden part of it).
     Currently, all configuration options are set by the `import-beats` script on the stream level
     (path: `dataset/<dataset-name>/manifest.yml`).
 
-    It may happen that some of them, in different datasets, are simply duplicates or concern the same setting, which
+    It may happen that some of them in different datasets are simply duplicates or concern the same setting, which
     will be always equal (e.g. MySQL username, password). Keep in mind that two datasets may have the same configuration
     option, but different values (e.g. `period`, `paths`), hence can't be compacted.
 
-    To sum up, compacting takes down from the user the necessity to setup the same configuration option few times.
+    To sum up, compacting takes down from the user the necessity to setup the same configuration option few times (one
+    per dataset).
 
 8. Define all variable properties.
 
@@ -219,8 +221,8 @@ what's been already fixed, as the script has overridden part of it).
 
 9. Update docs template with sample events.
 
-    The events collected by the agent slightly differ from original, Metricbeat and Filebeat, ones. Adjust the event
-    content manually based on already migrated integrations (e.g. [https://github.com/elastic/package-registry/tree/master/dev/import-beats-resources/mysql/docs][MySQL integration])
+    The events collected by the agent slightly differ from original, Metricbeat's and Filebeat's, ones. Adjust the event
+    content manually basing on already migrated integrations (e.g. [MySQL integration](https://github.com/elastic/package-registry/tree/master/dev/import-beats-resources/mysql/docs))
     or copy them once managed to run whole setup with real agent.
 
 ## Testing and validation
@@ -234,7 +236,7 @@ what's been already fixed, as the script has overridden part of it).
    $ docker run -i -t -p 8080:8080 $(docker images -q integrations_registry:latest) 
    ```
 
-3. Verify your integration is available, e.g. MySQL - http://localhost:8080/search?package=mysql
+3. Verify that your integration is available (in the right version), e.g. MySQL: http://localhost:8080/search?package=mysql
 
     ```json
     [
@@ -285,14 +287,14 @@ what's been already fixed, as the script has overridden part of it).
 
 7. Enroll the agent and start it:
 
-    Use the "Enroll new agent" option in the Kibana UI and run a similar command:
+   Use the "Enroll new agent" option in the Kibana UI and run a similar command:
 
-    ```bash
+   ```bash
    $ ./elastic-agent enroll http://localhost:5601/rel cFhNVlZIRUIxYjhmbFhqNTBoS2o6OUhMWkF4SFJRZmFNZTh3QmtvR1cxZw==
    $ ./elastic-agent run
    ```
 
-   The `elastic-agent` initiated two other processes - `metricbeat` and `filebeat`.
+   The `elastic-agent` will start two other processes - `metricbeat` and `filebeat`.
 
 8. Run the product you're integrating with (e.g. a docker image with MySQL).
 
