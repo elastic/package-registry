@@ -159,20 +159,27 @@ what's been already fixed, as the script has overridden part of it).
     * `metricbeat/docs/images`
     * `filebeat/docs/images`
 
-3. Write README template file for the integration.
+3. Improve/correct spelling product names.
+
+    The correct spelling of product names simply makes better impression. The `import-beats` scripts uses the `fields.yml`
+    file as the source of the correct spelling (`title` property), e.g. Mysql - MySQL, Nginx - NGINX, Aws - AWS.
+
+    Keep in mind that this step requires reimporting package contents.
+
+4. Write README template file for the integration.
 
     The README template is used to render the final README file including exported fields. The template should be placed
     in the `dev/beats/import-beats-resources/docs/<integration-name>/docs/README.md`.
 
     Review the MySQL docs template to see how to use template functions (e.g. `{{fields "dataset-name"}}`)
 
-4. Review fields file and exported fields in docs.
+5. Review fields file and exported fields in docs.
 
     The fields files (`package-fields.yml`, `fields.yml` and `ecs.yml`) in the package were created from original
     `fields.yml` files and the ECS schema. It may happen that original sources have a typo, bad description or misses
     a field definition. The goal of this action item is to verify if produced artifacts are correct.
 
-5. Metricbeat: add missing configuration options.
+6. Metricbeat: add missing configuration options.
 
    The `import-beats` script extracts configuration options from Metricbeat module's `_meta` directory. It analyzes
    the configuration files and selects options based on enabled metricsets (not commented). If you notice that some
@@ -181,12 +188,12 @@ what's been already fixed, as the script has overridden part of it).
 
    Sample PR: https://github.com/elastic/beats/pull/17323
 
-6. Review _titles_ and _descriptions_ in manifest files.
+7. Review _titles_ and _descriptions_ in manifest files.
 
     Titles and descriptions are fields visualized in the Kibana UI. Most users will use them to see how to configure
     the integration with their installation of a product or to how to use advanced configuration options.
 
-7. Compact configuration options (vars).
+8. Compact configuration options (vars).
 
     Currently, all configuration options are set by the `import-beats` script on the stream level
     (path: `dataset/<dataset-name>/manifest.yml`).
@@ -198,7 +205,7 @@ what's been already fixed, as the script has overridden part of it).
     To sum up, compacting takes down from the user the necessity to setup the same configuration option few times (one
     per dataset).
 
-8. Define all variable properties.
+9. Define all variable properties.
 
     The variable properties customize visualization of configuration options in the Kibana UI. Make sure they're
     defined in all manifest files.
@@ -228,7 +235,13 @@ what's been already fixed, as the script has overridden part of it).
 
 **multi** - the field has mutliple values.
 
-9. Update docs template with sample events.
+10. Review stream configuration.
+
+    Due to changed templating engine from a standard Golang one to [handlebars](https://handlebarsjs.com/), it may be
+    hard to automatically convert the Filebeat input configuration (nested variables, many representations, conditions,
+    loops). Kindly please to review the output stream configuration and review potential bugs.
+
+11. Update docs template with sample events.
 
     The events collected by the agent slightly differ from original, Metricbeat's and Filebeat's, ones. Adjust the event
     content manually basing on already migrated integrations (e.g. [MySQL integration](https://github.com/elastic/package-registry/tree/master/dev/import-beats-resources/mysql/docs))
