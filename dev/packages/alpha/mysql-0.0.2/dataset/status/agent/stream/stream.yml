@@ -1,16 +1,16 @@
 input: mysql/metrics
 metricsets: ["status"]
 hosts:
-  {{#each hosts}}
-     - {{this}}
-  {{/each}}
-  {{#if password}}
-    password: {{password}}
-  {{/if}}
+{{#each hosts}}
+  - {{this}}
+{{/each}}
+{{#if password}}
+password: {{password}}
+{{/if}}
 period: {{period}}
-  {{#if raw}}
-    raw: {{raw}}
-  {{/if}}
-  {{#if username}}
-    username: {{username}}
-  {{/if}}
+{{#if raw}}
+raw: {{raw}}
+{{/if}}
+{{#if username}}
+username: {{username}}
+{{/if}}
