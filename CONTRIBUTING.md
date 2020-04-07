@@ -101,7 +101,7 @@ feel free to review the script's [README](https://github.com/elastic/package-reg
 
     _Hint_. There is dockerized environment in beats (`cd testing/environments`). Boot it up with the following command:
     `docker-compose -f snapshot.yml -f local.yml up --force-recreate elasticsearch kibana`.
-4. Create a new branch for the integration in the EPR project (diverge from master).
+4. Create a new branch for the integration in package-registry repo (diverge from master).
 5. Run the command: `mage ImportBeats` to start the import process.
 
     The outcome of running the `import-beats` script is directory with refreshed and updated integrations.
