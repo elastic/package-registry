@@ -217,9 +217,87 @@ what's been already fixed, as the script has overridden part of it).
 
 **multi** - the field has mutliple values.
 
+9. Update docs template with sample events.
+
+    The events collected by the agent slightly differ from original, Metricbeat and Filebeat, ones. Adjust the event
+    content manually based on already migrated integrations (e.g. [https://github.com/elastic/package-registry/tree/master/dev/import-beats-resources/mysql/docs][MySQL integration])
+    or copy them once managed to run whole setup with real agent.
+
 ## Testing and validation
 
-TODO click through registry
+### Run the whole setup
 
-TODO are dashboards presenting correctly?
+1. Build docker image with EPR and run it:
 
+    ```bash
+   $ docker build --rm -t integrations_registry:latest .
+   $ docker run -i -t -p 8080:8080 $(docker images -q integrations_registry:latest) 
+   ```
+
+3. Verify your integration is available, e.g. MySQL - http://localhost:8080/search?package=mysql
+
+    ```json
+    [
+      {
+        "description": "MySQL Integration",
+        "download": "/epr/mysql/mysql-0.0.1.tar.gz",
+        "icons": [
+          {
+            "src": "/package/mysql/0.0.1/img/logo_mysql.svg",
+            "title": "logo mysql",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "name": "mysql",
+        "path": "/package/mysql/0.0.1",
+        "title": "MySQL",
+        "type": "integration",
+        "version": "0.0.1"
+      }
+    ]
+    ```
+
+4. Start Elasticsearch instance:
+
+    ```bash
+   $ yarn es snapshot -E xpack.security.authc.api_key.enabled=true 
+   ```
+
+5. Start Kibana with enabled Ingest Manager:
+
+    ```bash
+   $ yarn start --xpack.ingestManager.enabled=true --xpack.ingestManager.epm.enabled=true --xpack.ingestManager.fleet.enabled=true --xpack.ingestManager.epm.registryUrl=http://localhost:8080/
+    ```
+
+6. Build agent code:
+    ```bash
+   $ cd $GOPATH/src/github.com/elastic/beats/x-pack/elastic-agent
+   $ PLATFORMS=darwin mage package
+    ```
+
+   Unpack the distribution you'd like to use (e.g. tar.gz):
+   ```bash
+   $ cd build/distributions/
+   $ tar xzf elastic-agent-8.0.0-darwin-x86_64.tar.gz
+   $ cd elastic-agent-8.0.0-darwin-x86_64/
+   ```
+
+7. Enroll the agent and start it:
+
+    Use the "Enroll new agent" option in the Kibana UI and run a similar command:
+
+    ```bash
+   $ ./elastic-agent enroll http://localhost:5601/rel cFhNVlZIRUIxYjhmbFhqNTBoS2o6OUhMWkF4SFJRZmFNZTh3QmtvR1cxZw==
+   $ ./elastic-agent run
+   ```
+
+   The `elastic-agent` initiated two other processes - `metricbeat` and `filebeat`.
+
+8. Run the product you're integrating with (e.g. a docker image with MySQL).
+
+9. Install package.
+
+    Click out the configuration in the Kibana UI, deploy it and wait for the agent to pick out the updated configuration.
+
+10. Navigate with Kibana UI to freshly installed dashboards, verify the metrics/logs flow.
