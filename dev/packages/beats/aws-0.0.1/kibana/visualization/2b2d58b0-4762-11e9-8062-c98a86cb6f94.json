@@ -29,6 +29,8 @@
                         "id": "67cb0930-4761-11e9-bf81-69a4e579cab5"
                     }
                 ],
+                "default_index_pattern": "metrics-*",
+                "default_timefield": "@timestamp",
                 "drop_last_bucket": 0,
                 "gauge_color_rules": [
                     {
@@ -41,7 +43,8 @@
                 "id": "61ca57f0-469d-11e7-af02-69e470af7417",
                 "index_pattern": "metrics-*",
                 "interval": "1d",
-                "pivot_id": "aws.s3_request.bucket.name",
+                "isModelInvalid": false,
+                "pivot_id": "aws.s3.bucket.name",
                 "series": [
                     {
                         "axis_position": "right",
@@ -68,7 +71,7 @@
                         "separate_axis": 0,
                         "split_mode": "terms",
                         "stacked": "none",
-                        "terms_field": "aws.s3_request.bucket.name",
+                        "terms_field": "aws.s3.bucket.name",
                         "terms_order_by": "61ca57f2-469d-11e7-af02-69e470af7417",
                         "terms_size": "5"
                     }
@@ -78,7 +81,7 @@
                 "time_field": "@timestamp",
                 "type": "top_n"
             },
-            "title": "AWS S3 Request Latency Total Request in ms",
+            "title": "S3 Request Latency Total Request in ms [Metricbeat AWS]",
             "type": "metrics"
         }
     },

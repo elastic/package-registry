@@ -6,6 +6,7 @@ streams:
   vars:
   - default:
     - /var/log/bro/current/smb_cmd.log
+    multi: true
     name: paths
     os.darwin:
       default:
@@ -15,6 +16,7 @@ streams:
       - /var/log/bro/current/smb_cmd.log
   - default:
     - zeek.smb_cmd
+    multi: true
     name: tags
   - default: true
     name: community_id

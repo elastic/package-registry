@@ -10,6 +10,7 @@ streams:
     name: bearer_token_file
   - default:
     - https://${HOSTNAME}:10250
+    multi: true
     name: hosts
   - default: 10s
     name: period

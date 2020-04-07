@@ -19,6 +19,7 @@ streams:
       - key: Organization
         value: Engineering
       tags.resource_type_filter: elasticloadbalancing
+    multi: true
     name: metrics
   - default: 300s
     name: period

@@ -6,6 +6,7 @@ streams:
   vars:
   - default:
     - /var/log/haproxy.log
+    multi: true
     name: paths
   - default: localhost
     name: syslog_host

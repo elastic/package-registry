@@ -8,6 +8,7 @@ streams:
     name: format
   - default:
     - /var/log/logstash/logstash-slowlog-{{.format}}*.log
+    multi: true
     name: paths
     os.windows:
       default:

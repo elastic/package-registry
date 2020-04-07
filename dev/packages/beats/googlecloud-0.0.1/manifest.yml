@@ -11,10 +11,14 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: '>=7.6.1 <8.0.0'
+    versions: '>=8.0.0-SNAPSHOT <8.0.0'
   elasticsearch:
     versions: '>7.0.1'
 screenshots:
+- src: /img/filebeat-googlecloud-audit.png
+  title: filebeat googlecloud audit
+  size: 1702x996
+  type: image/png
 - src: /img/metricbeat-googlecloud-compute-overview.png
   title: metricbeat googlecloud compute overview
   size: 5109x2610

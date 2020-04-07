@@ -17,7 +17,9 @@
         },
         "panelsJSON": [
             {
-                "embeddableConfig": {},
+                "embeddableConfig": {
+                    "title": "S3 Daily Storage Bucket Size in Bytes"
+                },
                 "gridData": {
                     "h": 7,
                     "i": "1",
@@ -27,10 +29,13 @@
                 },
                 "panelIndex": "1",
                 "panelRefName": "panel_0",
-                "version": "7.3.0"
+                "title": "S3 Daily Storage Bucket Size in Bytes",
+                "version": "7.7.0"
             },
             {
-                "embeddableConfig": {},
+                "embeddableConfig": {
+                    "title": "S3 Daily Storage Number of Objects"
+                },
                 "gridData": {
                     "h": 7,
                     "i": "2",
@@ -40,10 +45,13 @@
                 },
                 "panelIndex": "2",
                 "panelRefName": "panel_1",
-                "version": "7.3.0"
+                "title": "S3 Daily Storage Number of Objects",
+                "version": "7.7.0"
             },
             {
-                "embeddableConfig": {},
+                "embeddableConfig": {
+                    "title": "S3 Request Latency Total Request in ms"
+                },
                 "gridData": {
                     "h": 7,
                     "i": "3",
@@ -53,10 +61,13 @@
                 },
                 "panelIndex": "3",
                 "panelRefName": "panel_2",
-                "version": "7.3.0"
+                "title": "S3 Request Latency Total Request in ms",
+                "version": "7.7.0"
             },
             {
-                "embeddableConfig": {},
+                "embeddableConfig": {
+                    "title": "S3 Total Error 4xx"
+                },
                 "gridData": {
                     "h": 6,
                     "i": "4",
@@ -66,10 +77,13 @@
                 },
                 "panelIndex": "4",
                 "panelRefName": "panel_3",
-                "version": "7.3.0"
+                "title": "S3 Total Error 4xx",
+                "version": "7.7.0"
             },
             {
-                "embeddableConfig": {},
+                "embeddableConfig": {
+                    "title": "S3 Total Error 5xx"
+                },
                 "gridData": {
                     "h": 6,
                     "i": "5",
@@ -79,10 +93,13 @@
                 },
                 "panelIndex": "5",
                 "panelRefName": "panel_4",
-                "version": "7.3.0"
+                "title": "S3 Total Error 5xx",
+                "version": "7.7.0"
             },
             {
-                "embeddableConfig": {},
+                "embeddableConfig": {
+                    "title": "S3 Filters"
+                },
                 "gridData": {
                     "h": 6,
                     "i": "6",
@@ -92,10 +109,13 @@
                 },
                 "panelIndex": "6",
                 "panelRefName": "panel_5",
-                "version": "7.3.0"
+                "title": "S3 Filters",
+                "version": "7.7.0"
             },
             {
-                "embeddableConfig": {},
+                "embeddableConfig": {
+                    "title": "S3 Total Requests"
+                },
                 "gridData": {
                     "h": 7,
                     "i": "7",
@@ -105,10 +125,17 @@
                 },
                 "panelIndex": "7",
                 "panelRefName": "panel_6",
-                "version": "7.3.0"
+                "title": "S3 Total Requests",
+                "version": "7.7.0"
             }
         ],
-        "timeRestore": false,
+        "refreshInterval": {
+            "pause": true,
+            "value": 0
+        },
+        "timeFrom": "now-1d",
+        "timeRestore": true,
+        "timeTo": "now",
         "title": "[Metricbeat AWS] S3 Overview",
         "version": 1
     },

@@ -6,6 +6,7 @@ streams:
   vars:
   - default:
     - localhost:8080
+    multi: true
     name: hosts
   - default: /jolokia/?ignoreErrors=true&canonicalNaming=false
     name: path

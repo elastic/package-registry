@@ -8,6 +8,7 @@ streams:
     - /var/log/apache2/access.log*
     - /var/log/apache2/other_vhosts_access.log*
     - /var/log/httpd/access_log*
+    multi: true
     name: paths
     os.darwin:
       default:

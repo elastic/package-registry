@@ -6,6 +6,7 @@ streams:
   vars:
   - default:
     - https://127.0.0.1:8070/
+    multi: true
     name: hosts
   - default: 1m
     name: period
