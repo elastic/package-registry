@@ -6,6 +6,7 @@ streams:
   vars:
   - default:
     - /var/opt/mssql/log/error*
+    multi: true
     name: paths
     os.darwin:
       default:

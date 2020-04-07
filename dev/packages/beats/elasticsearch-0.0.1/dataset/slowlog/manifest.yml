@@ -9,6 +9,7 @@ streams:
     - /var/log/elasticsearch/*_index_indexing_slowlog.log
     - /var/log/elasticsearch/*_index_search_slowlog.json
     - /var/log/elasticsearch/*_index_indexing_slowlog.json
+    multi: true
     name: paths
     os.darwin:
       default:

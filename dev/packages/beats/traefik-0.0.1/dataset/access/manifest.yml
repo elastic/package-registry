@@ -6,6 +6,7 @@ streams:
   vars:
   - default:
     - /var/log/traefik/access.log*
+    multi: true
     name: paths
     os.darwin:
       default:

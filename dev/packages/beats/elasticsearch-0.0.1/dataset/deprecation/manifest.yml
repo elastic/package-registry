@@ -7,6 +7,7 @@ streams:
   - default:
     - /var/log/elasticsearch/*_deprecation.log
     - /var/log/elasticsearch/*_deprecation.json
+    multi: true
     name: paths
     os.darwin:
       default:

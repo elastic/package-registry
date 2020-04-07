@@ -8,6 +8,7 @@ streams:
     - /var/log/elasticsearch/*_access.log
     - /var/log/elasticsearch/*_audit.log
     - /var/log/elasticsearch/*_audit.json
+    multi: true
     name: paths
     os.darwin:
       default:

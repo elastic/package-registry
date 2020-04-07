@@ -11,6 +11,7 @@ streams:
   - default:
     - key: Organization
       value: Engineering
+    multi: true
     name: tags_filter
   title: aws ec2 metrics
   description: Collect aws ec2 metrics

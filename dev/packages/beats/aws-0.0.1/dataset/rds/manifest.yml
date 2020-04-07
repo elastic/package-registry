@@ -11,6 +11,7 @@ streams:
   - default:
     - key: dept
       value: eng
+    multi: true
     name: tags_filter
   title: aws rds metrics
   description: Collect aws rds metrics

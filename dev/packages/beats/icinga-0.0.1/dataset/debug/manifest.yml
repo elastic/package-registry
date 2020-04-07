@@ -6,6 +6,7 @@ streams:
   vars:
   - default:
     - /var/log/icinga2/debug.log*
+    multi: true
     name: paths
     os.darwin:
       default:

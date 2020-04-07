@@ -6,6 +6,7 @@ streams:
   vars:
   - default:
     - /var/log/nats/nats.log*
+    multi: true
     name: paths
   title: nats log logs
   description: Collect nats log logs

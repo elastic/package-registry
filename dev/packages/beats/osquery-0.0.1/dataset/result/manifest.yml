@@ -6,6 +6,7 @@ streams:
   vars:
   - default:
     - /var/log/osquery/osqueryd.results.log*
+    multi: true
     name: paths
     os.darwin:
       default:

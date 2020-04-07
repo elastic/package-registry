@@ -8,6 +8,7 @@ streams:
     name: basepath
   - default:
     - localhost:5601
+    multi: true
     name: hosts
   - default: 10s
     name: period

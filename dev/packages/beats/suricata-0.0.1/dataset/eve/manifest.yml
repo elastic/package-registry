@@ -6,6 +6,7 @@ streams:
   vars:
   - default:
     - /var/log/suricata/eve.json
+    multi: true
     name: paths
     os.darwin:
       default:
@@ -15,6 +16,7 @@ streams:
       - c:/program files/suricata/log/eve.json
   - default:
     - suricata
+    multi: true
     name: tags
   - default: true
     name: community_id

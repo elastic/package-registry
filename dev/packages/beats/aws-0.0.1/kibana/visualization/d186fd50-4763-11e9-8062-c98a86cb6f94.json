@@ -29,10 +29,13 @@
                         "id": "c7b9fca0-4763-11e9-b811-fd5d24a641d7"
                     }
                 ],
+                "default_index_pattern": "metrics-*",
+                "default_timefield": "@timestamp",
                 "drop_last_bucket": 0,
                 "id": "61ca57f0-469d-11e7-af02-69e470af7417",
                 "index_pattern": "metrics-*",
                 "interval": "1d",
+                "isModelInvalid": false,
                 "series": [
                     {
                         "axis_position": "right",
@@ -54,7 +57,7 @@
                         "separate_axis": 0,
                         "split_mode": "terms",
                         "stacked": "none",
-                        "terms_field": "aws.s3_request.bucket.name",
+                        "terms_field": "aws.s3.bucket.name",
                         "terms_order_by": "61ca57f2-469d-11e7-af02-69e470af7417",
                         "terms_size": "5"
                     }
@@ -64,7 +67,7 @@
                 "time_field": "@timestamp",
                 "type": "top_n"
             },
-            "title": "AWS S3 Total Requests",
+            "title": "S3 Total Requests [Metricbeat AWS]",
             "type": "metrics"
         }
     },

@@ -6,6 +6,7 @@ streams:
   vars:
   - default:
     - /var/log/kibana/kibana.stdout
+    multi: true
     name: paths
   title: kibana log logs
   description: Collect kibana log logs

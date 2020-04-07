@@ -66,14 +66,16 @@ func createLogStreams(modulePath, moduleTitle, datasetName string) ([]util.Strea
 			Input:       "logs",
 			Title:       fmt.Sprintf("%s %s logs", moduleTitle, datasetName),
 			Description: fmt.Sprintf("Collect %s %s logs", moduleTitle, datasetName),
-			Vars:        wrapVariablesWithDefault(mwv).Vars,
+			Vars:        adjustVariablesFormat(mwv).Vars,
 		},
 	}, nil
 }
 
-// wrapVariablesWithDefault method ensures that all variable values are wrapped with a "default" field, even if they are
-// defined for particular operating systems (prefix: os.)
-func wrapVariablesWithDefault(mwvs manifestWithVars) manifestWithVars {
+// adjustVariablesFormat method adjusts the format of variables defined in manifest:
+// - ensure that all variable values are wrapped with a "default" field, even if they are defined for particular
+//   operating systems (prefix: os.)
+// - add field "multi: true" if value is an array
+func adjustVariablesFormat(mwvs manifestWithVars) manifestWithVars {
 	var withDefaults manifestWithVars
 	for _, aVar := range mwvs.Vars {
 		aVarWithDefaults := map[string]interface{}{}
@@ -82,9 +84,17 @@ func wrapVariablesWithDefault(mwvs manifestWithVars) manifestWithVars {
 				aVarWithDefaults[k] = varWithDefault{
 					Default: v,
 				}
-			} else {
-				aVarWithDefaults[k] = v
+				continue
 			}
+
+			if k == "default" {
+				_, isArray := v.([]interface{})
+				if isArray {
+					aVarWithDefaults["multi"] = true
+				}
+			}
+
+			aVarWithDefaults[k] = v
 		}
 		withDefaults.Vars = append(withDefaults.Vars, aVarWithDefaults)
 	}
@@ -133,10 +143,17 @@ func createMetricStreams(modulePath, moduleName, moduleTitle, datasetName string
 				}
 
 				if related || strings.HasPrefix(name, fmt.Sprintf("%s.", datasetName)) {
-					configOptions = append(configOptions, map[string]interface{}{
+					_, isArray := value.([]interface{})
+					configOption := map[string]interface{}{
 						"default": value,
 						"name":    name,
-					})
+					}
+
+					if isArray {
+						configOption["multi"] = true
+					}
+
+					configOptions = append(configOptions, configOption)
 					foundConfigEntries[name] = true
 				}
 			}
