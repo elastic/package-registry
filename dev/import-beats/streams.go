@@ -78,7 +78,11 @@ func createLogStreams(modulePath, moduleTitle, datasetName string) ([]util.Strea
 func adjustVariablesFormat(mwvs manifestWithVars) manifestWithVars {
 	var withDefaults manifestWithVars
 	for _, aVar := range mwvs.Vars {
-		aVarWithDefaults := map[string]interface{}{}
+		aVarWithDefaults := map[string]interface{}{
+			"multi": false,
+			"required": true,
+			"show_user": true,
+		}
 		for k, v := range aVar {
 			if strings.HasPrefix(k, "os.") {
 				aVarWithDefaults[k] = varWithDefault{
@@ -92,6 +96,8 @@ func adjustVariablesFormat(mwvs manifestWithVars) manifestWithVars {
 				if isArray {
 					aVarWithDefaults["multi"] = true
 				}
+			} else if k == "name" {
+				aVarWithDefaults["title"] = strings.Title(strings.ReplaceAll(v.(string), "_", " "))
 			}
 
 			aVarWithDefaults[k] = v
@@ -146,7 +152,11 @@ func createMetricStreams(modulePath, moduleName, moduleTitle, datasetName string
 					_, isArray := value.([]interface{})
 					configOption := map[string]interface{}{
 						"default": value,
+						"multi": false,
 						"name":    name,
+						"required": true,
+						"show_user": true,
+						"title": strings.Title(strings.ReplaceAll(name, "_", " ")),
 					}
 
 					if isArray {

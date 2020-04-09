@@ -8,9 +8,20 @@ streams:
     - http://localhost:5066
     multi: true
     name: hosts
+    required: true
+    show_user: true
+    title: Hosts
   - default: 10s
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   - default: true
+    multi: false
     name: xpack.enabled
+    required: true
+    show_user: true
+    title: Xpack.Enabled
   title: Beat stats metrics
   description: Collect Beat stats metrics

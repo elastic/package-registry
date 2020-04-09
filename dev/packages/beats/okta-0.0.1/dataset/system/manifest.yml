@@ -5,27 +5,71 @@ streams:
 - input: logs
   vars:
   - default: httpjson
+    multi: false
     name: input
+    required: true
+    show_user: true
+    title: Input
   - default: ""
+    multi: false
     name: api_key
+    required: true
+    show_user: true
+    title: Api Key
   - default: SSWS
+    multi: false
     name: authentication_scheme
+    required: true
+    show_user: true
+    title: Authentication Scheme
   - default: 60
+    multi: false
     name: http_client_timeout
+    required: true
+    show_user: true
+    title: Http Client Timeout
   - default: GET
+    multi: false
     name: http_method
+    required: true
+    show_user: true
+    title: Http Method
   - default: '{}'
+    multi: false
     name: http_headers
+    required: true
+    show_user: true
+    title: Http Headers
   - default: '{}'
+    multi: false
     name: http_request_body
+    required: true
+    show_user: true
+    title: Http Request Body
   - default: true
+    multi: false
     name: no_http_body
+    required: true
+    show_user: true
+    title: No Http Body
   - default: 60
+    multi: false
     name: interval
+    required: true
+    show_user: true
+    title: Interval
   - default: ""
+    multi: false
     name: json_objects_array
+    required: true
+    show_user: true
+    title: Json Objects Array
   - default: true
+    multi: false
     name: keep_original_message
+    required: true
+    show_user: true
+    title: Keep Original Message
   - default: |-
       {
         "enabled": true,
@@ -34,17 +78,33 @@ streams:
           "regex_pattern": "<([^>]+)>; *rel=\"next\"(?:,|$)"
         },
       }
+    multi: false
     name: pagination
+    required: true
+    show_user: true
+    title: Pagination
   - default: |-
       {
         "limit": "X-Rate-Limit-Limit",
         "remaining": "X-Rate-Limit-Remaining",
         "reset": "X-Rate-Limit-Reset"
       }
+    multi: false
     name: rate_limit
+    required: true
+    show_user: true
+    title: Rate Limit
   - default: ""
+    multi: false
     name: url
+    required: true
+    show_user: true
+    title: Url
   - default: '{}'
+    multi: false
     name: ssl
+    required: true
+    show_user: true
+    title: Ssl
   title: Okta system logs
   description: Collect Okta system logs

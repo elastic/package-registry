@@ -13,5 +13,8 @@ streams:
       - ""
     os.windows:
       default: []
+    required: true
+    show_user: true
+    title: Paths
   title: Auditd log logs
   description: Collect Auditd log logs

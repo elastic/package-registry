@@ -8,5 +8,8 @@ streams:
     - /var/log/kibana/kibana.stdout
     multi: true
     name: paths
+    required: true
+    show_user: true
+    title: Paths
   title: kibana log logs
   description: Collect kibana log logs

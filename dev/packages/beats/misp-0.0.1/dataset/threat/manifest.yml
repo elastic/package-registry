@@ -5,21 +5,53 @@ streams:
 - input: logs
   vars:
   - default: httpjson
+    multi: false
     name: input
+    required: true
+    show_user: true
+    title: Input
   - default: ""
+    multi: false
     name: api_key
+    required: true
+    show_user: true
+    title: Api Key
   - default: 60
+    multi: false
     name: http_client_timeout
+    required: true
+    show_user: true
+    title: Http Client Timeout
   - default: GET
+    multi: false
     name: http_method
+    required: true
+    show_user: true
+    title: Http Method
   - default: '{}'
+    multi: false
     name: http_headers
+    required: true
+    show_user: true
+    title: Http Headers
   - default: '{}'
+    multi: false
     name: http_request_body
+    required: true
+    show_user: true
+    title: Http Request Body
   - default: 0
+    multi: false
     name: interval
+    required: true
+    show_user: true
+    title: Interval
   - default: response.Attribute
+    multi: false
     name: json_objects_array
+    required: true
+    show_user: true
+    title: Json Objects Array
   - default: |-
       {
         "enabled": false,
@@ -28,10 +60,22 @@ streams:
         "req_field": "",
         "url": ""
       }
+    multi: false
     name: pagination
+    required: true
+    show_user: true
+    title: Pagination
   - default: ""
+    multi: false
     name: url
+    required: true
+    show_user: true
+    title: Url
   - default: '{}'
+    multi: false
     name: ssl
+    required: true
+    show_user: true
+    title: Ssl
   title: MISP threat logs
   description: Collect MISP threat logs

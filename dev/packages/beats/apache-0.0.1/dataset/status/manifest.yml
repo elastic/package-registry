@@ -8,7 +8,14 @@ streams:
     - http://127.0.0.1
     multi: true
     name: hosts
+    required: true
+    show_user: true
+    title: Hosts
   - default: 10s
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   title: Apache status metrics
   description: Collect Apache status metrics

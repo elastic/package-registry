@@ -8,7 +8,14 @@ streams:
     - localhost:8222
     multi: true
     name: hosts
+    required: true
+    show_user: true
+    title: Hosts
   - default: 10s
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   title: Nats subscriptions metrics
   description: Collect Nats subscriptions metrics

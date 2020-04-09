@@ -8,5 +8,8 @@ streams:
     - percentages
     multi: true
     name: core.metrics
+    required: true
+    show_user: true
+    title: Core.Metrics
   title: System core metrics
   description: Collect System core metrics

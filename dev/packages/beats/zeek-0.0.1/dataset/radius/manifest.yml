@@ -14,11 +14,21 @@ streams:
     os.linux:
       default:
       - /var/log/bro/current/radius.log
+    required: true
+    show_user: true
+    title: Paths
   - default:
     - zeek.radius
     multi: true
     name: tags
+    required: true
+    show_user: true
+    title: Tags
   - default: true
+    multi: false
     name: community_id
+    required: true
+    show_user: true
+    title: Community Id
   title: Zeek radius logs
   description: Collect Zeek radius logs

@@ -8,5 +8,8 @@ streams:
     - https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT}
     multi: true
     name: hosts
+    required: true
+    show_user: true
+    title: Hosts
   title: Kubernetes apiserver metrics
   description: Collect Kubernetes apiserver metrics

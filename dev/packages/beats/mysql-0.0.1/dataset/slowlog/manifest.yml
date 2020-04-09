@@ -15,5 +15,8 @@ streams:
     os.windows:
       default:
       - c:/programdata/MySQL/MySQL Server*/mysql-slow.log*
+    required: true
+    show_user: true
+    title: Paths
   title: MySQL slowlog logs
   description: Collect MySQL slowlog logs

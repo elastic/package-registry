@@ -5,14 +5,34 @@ streams:
 - input: googlecloud/metrics
   vars:
   - default: your JSON credentials file path
+    multi: false
     name: credentials_file_path
+    required: true
+    show_user: true
+    title: Credentials File Path
   - default: false
+    multi: false
     name: exclude_labels
+    required: true
+    show_user: true
+    title: Exclude Labels
   - default: 300s
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   - default: your project id
+    multi: false
     name: project_id
+    required: true
+    show_user: true
+    title: Project Id
   - default: us-central1-a
+    multi: false
     name: zone
+    required: true
+    show_user: true
+    title: Zone
   title: Google Cloud Platform loadbalancing metrics
   description: Collect Google Cloud Platform loadbalancing metrics

@@ -8,7 +8,14 @@ streams:
     - localhost:4949
     multi: true
     name: hosts
+    required: true
+    show_user: true
+    title: Hosts
   - default: 10s
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   title: Munin node metrics
   description: Collect Munin node metrics

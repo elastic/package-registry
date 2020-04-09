@@ -5,13 +5,24 @@ streams:
 - input: aws/metrics
   vars:
   - default: test-mb
+    multi: false
     name: credential_profile_name
+    required: true
+    show_user: true
+    title: Credential Profile Name
   - default: 60s
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   - default:
     - key: dept
       value: eng
     multi: true
     name: tags_filter
+    required: true
+    show_user: true
+    title: Tags Filter
   title: aws vpn metrics
   description: Collect aws vpn metrics

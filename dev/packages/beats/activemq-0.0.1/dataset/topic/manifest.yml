@@ -8,13 +8,32 @@ streams:
     - localhost:8161
     multi: true
     name: hosts
+    required: true
+    show_user: true
+    title: Hosts
   - default: admin
+    multi: false
     name: password
+    required: true
+    show_user: true
+    title: Password
   - default: /api/jolokia/?ignoreErrors=true&canonicalNaming=false
+    multi: false
     name: path
+    required: true
+    show_user: true
+    title: Path
   - default: 10s
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   - default: admin
+    multi: false
     name: username
+    required: true
+    show_user: true
+    title: Username
   title: activemq topic metrics
   description: Collect activemq topic metrics

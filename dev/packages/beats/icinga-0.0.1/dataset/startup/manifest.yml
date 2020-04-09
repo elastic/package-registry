@@ -14,5 +14,8 @@ streams:
     os.windows:
       default:
       - c:/programdata/icinga2/var/log/icinga2/startup.log
+    required: true
+    show_user: true
+    title: Paths
   title: Icinga startup logs
   description: Collect Icinga startup logs

@@ -5,7 +5,11 @@ streams:
 - input: logs
   vars:
   - default: plain
+    multi: false
     name: format
+    required: true
+    show_user: true
+    title: Format
   - default:
     - /var/log/logstash/logstash-{{.format}}*.log
     multi: true
@@ -13,5 +17,8 @@ streams:
     os.windows:
       default:
       - c:/programdata/logstash/logs/logstash-{{.format}}*.log
+    required: true
+    show_user: true
+    title: Paths
   title: logstash log logs
   description: Collect logstash log logs

@@ -17,5 +17,8 @@ streams:
     os.windows:
       default:
       - C:/inetpub/logs/LogFiles/*/*.log
+    required: true
+    show_user: true
+    title: Paths
   title: IIS access logs
   description: Collect IIS access logs

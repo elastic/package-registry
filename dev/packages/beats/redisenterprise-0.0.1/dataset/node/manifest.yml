@@ -8,7 +8,14 @@ streams:
     - https://127.0.0.1:8070/
     multi: true
     name: hosts
+    required: true
+    show_user: true
+    title: Hosts
   - default: 1m
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   title: Redis Enterprise node metrics
   description: Collect Redis Enterprise node metrics

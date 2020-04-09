@@ -8,7 +8,14 @@ streams:
     - 127.0.0.1:6379
     multi: true
     name: hosts
+    required: true
+    show_user: true
+    title: Hosts
   - default: 10s
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   title: Redis keyspace metrics
   description: Collect Redis keyspace metrics

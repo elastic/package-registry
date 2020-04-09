@@ -8,7 +8,14 @@ streams:
     - localhost:8080
     multi: true
     name: hosts
+    required: true
+    show_user: true
+    title: Hosts
   - default: 10s
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   title: CockroachDB status metrics
   description: Collect CockroachDB status metrics

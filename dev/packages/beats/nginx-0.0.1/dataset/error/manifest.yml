@@ -14,5 +14,8 @@ streams:
     os.windows:
       default:
       - c:/programdata/nginx/logs/error.log*
+    required: true
+    show_user: true
+    title: Paths
   title: Nginx error logs
   description: Collect Nginx error logs

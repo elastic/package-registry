@@ -8,7 +8,14 @@ streams:
     - https://localhost:8003
     multi: true
     name: hosts
+    required: true
+    show_user: true
+    title: Hosts
   - default: 1m
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   title: Ceph mgr_cluster_disk metrics
   description: Collect Ceph mgr_cluster_disk metrics

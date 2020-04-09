@@ -14,5 +14,8 @@ streams:
       - /var/log/secure.log*
     os.windows:
       default: []
+    required: true
+    show_user: true
+    title: Paths
   title: System auth logs
   description: Collect System auth logs

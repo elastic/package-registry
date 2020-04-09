@@ -5,6 +5,10 @@ streams:
 - input: aws/metrics
   vars:
   - default: 5m
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   title: aws sns metrics
   description: Collect aws sns metrics

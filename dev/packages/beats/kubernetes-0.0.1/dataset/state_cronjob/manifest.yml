@@ -5,12 +5,23 @@ streams:
 - input: kubernetes/metrics
   vars:
   - default: true
+    multi: false
     name: add_metadata
+    required: true
+    show_user: true
+    title: Add Metadata
   - default:
     - kube-state-metrics:8080
     multi: true
     name: hosts
+    required: true
+    show_user: true
+    title: Hosts
   - default: 10s
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   title: Kubernetes state_cronjob metrics
   description: Collect Kubernetes state_cronjob metrics

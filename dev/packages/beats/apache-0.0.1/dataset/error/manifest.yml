@@ -16,5 +16,8 @@ streams:
       default:
       - C:/tools/Apache/httpd-2.*/Apache24/logs/error.log*
       - C:/Program Files/Apache Software Foundation/Apache2.*/logs/error.log*
+    required: true
+    show_user: true
+    title: Paths
   title: Apache error logs
   description: Collect Apache error logs

@@ -5,6 +5,10 @@ streams:
 - input: golang/metrics
   vars:
   - default: /debug/vars
+    multi: false
     name: heap.path
+    required: true
+    show_user: true
+    title: Heap.Path
   title: Golang heap metrics
   description: Collect Golang heap metrics

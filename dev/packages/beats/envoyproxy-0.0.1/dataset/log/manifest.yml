@@ -8,9 +8,15 @@ streams:
     - /var/log/envoy.log
     multi: true
     name: paths
+    required: true
+    show_user: true
+    title: Paths
   - default:
     - envoyproxy
     multi: true
     name: tags
+    required: true
+    show_user: true
+    title: Tags
   title: Envoyproxy log logs
   description: Collect Envoyproxy log logs

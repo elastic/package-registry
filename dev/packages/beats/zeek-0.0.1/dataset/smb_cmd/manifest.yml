@@ -14,11 +14,21 @@ streams:
     os.linux:
       default:
       - /var/log/bro/current/smb_cmd.log
+    required: true
+    show_user: true
+    title: Paths
   - default:
     - zeek.smb_cmd
     multi: true
     name: tags
+    required: true
+    show_user: true
+    title: Tags
   - default: true
+    multi: false
     name: community_id
+    required: true
+    show_user: true
+    title: Community Id
   title: Zeek smb_cmd logs
   description: Collect Zeek smb_cmd logs

@@ -5,16 +5,40 @@ streams:
 - input: cloudfoundry/metrics
   vars:
   - default: ${CLOUDFOUNDRY_API_ADDRESS:""}
+    multi: false
     name: api_address
+    required: true
+    show_user: true
+    title: Api Address
   - default: ${CLOUDFOUNDRY_CLIENT_ID:""}
+    multi: false
     name: client_id
+    required: true
+    show_user: true
+    title: Client Id
   - default: ${CLOUDFOUNDRY_CLIENT_SECRET:""}
+    multi: false
     name: client_secret
+    required: true
+    show_user: true
+    title: Client Secret
   - default: ${CLOUDFOUNDRY_DOPPLER_ADDRESS:""}
+    multi: false
     name: doppler_address
+    required: true
+    show_user: true
+    title: Doppler Address
   - default: ${CLOUDFOUNDRY_RLP_ADDRESS:""}
+    multi: false
     name: rlp_address
+    required: true
+    show_user: true
+    title: Rlp Address
   - default: ${CLOUDFOUNDRY_UAA_ADDRESS:""}
+    multi: false
     name: uaa_address
+    required: true
+    show_user: true
+    title: Uaa Address
   title: cloudfoundry counter metrics
   description: Collect cloudfoundry counter metrics

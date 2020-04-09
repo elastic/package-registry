@@ -14,11 +14,21 @@ streams:
     os.windows:
       default:
       - c:/program files/suricata/log/eve.json
+    required: true
+    show_user: true
+    title: Paths
   - default:
     - suricata
     multi: true
     name: tags
+    required: true
+    show_user: true
+    title: Tags
   - default: true
+    multi: false
     name: community_id
+    required: true
+    show_user: true
+    title: Community Id
   title: Suricata eve logs
   description: Collect Suricata eve logs

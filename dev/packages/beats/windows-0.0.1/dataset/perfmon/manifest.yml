@@ -5,10 +5,22 @@ streams:
 - input: windows/metrics
   vars:
   - default: false
+    multi: false
     name: perfmon.group_measurements_by_instance
+    required: true
+    show_user: true
+    title: Perfmon.Group Measurements By Instance
   - default: false
+    multi: false
     name: perfmon.ignore_non_existent_counters
+    required: true
+    show_user: true
+    title: Perfmon.Ignore Non Existent Counters
   - default: 10s
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   title: Windows perfmon metrics
   description: Collect Windows perfmon metrics

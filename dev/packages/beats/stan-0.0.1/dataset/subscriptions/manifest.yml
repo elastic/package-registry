@@ -8,7 +8,14 @@ streams:
     - localhost:8222
     multi: true
     name: hosts
+    required: true
+    show_user: true
+    title: Hosts
   - default: 60s
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   title: Stan subscriptions metrics
   description: Collect Stan subscriptions metrics

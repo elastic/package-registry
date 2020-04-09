@@ -5,6 +5,10 @@ streams:
 - input: aws/metrics
   vars:
   - default: 5m
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   title: aws ebs metrics
   description: Collect aws ebs metrics

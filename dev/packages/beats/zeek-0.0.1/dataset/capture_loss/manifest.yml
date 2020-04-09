@@ -14,9 +14,15 @@ streams:
     os.linux:
       default:
       - /var/log/bro/current/capture_loss.log
+    required: true
+    show_user: true
+    title: Paths
   - default:
     - zeek.capture_loss
     multi: true
     name: tags
+    required: true
+    show_user: true
+    title: Tags
   title: Zeek capture_loss logs
   description: Collect Zeek capture_loss logs

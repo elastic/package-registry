@@ -5,13 +5,29 @@ streams:
 - input: azure/metrics
   vars:
   - default: ${AZURE_CLIENT_ID:""}
+    multi: false
     name: client_id
+    required: true
+    show_user: true
+    title: Client Id
   - default: ${AZURE_CLIENT_SECRET:""}
+    multi: false
     name: client_secret
+    required: true
+    show_user: true
+    title: Client Secret
   - default: 300s
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   - default: 600s
+    multi: false
     name: refresh_list_interval
+    required: true
+    show_user: true
+    title: Refresh List Interval
   - default:
     - metrics:
       - name:
@@ -22,9 +38,20 @@ streams:
       resource_query: resourceType eq 'Microsoft.DocumentDb/databaseAccounts'
     multi: true
     name: resources
+    required: true
+    show_user: true
+    title: Resources
   - default: ${AZURE_SUBSCRIPTION_ID:""}
+    multi: false
     name: subscription_id
+    required: true
+    show_user: true
+    title: Subscription Id
   - default: ${AZURE_TENANT_ID:""}
+    multi: false
     name: tenant_id
+    required: true
+    show_user: true
+    title: Tenant Id
   title: azure monitor metrics
   description: Collect azure monitor metrics

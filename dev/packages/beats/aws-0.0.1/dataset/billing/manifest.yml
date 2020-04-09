@@ -5,10 +5,17 @@ streams:
 - input: aws/metrics
   vars:
   - default: 12h
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   - default:
     - us-east-1
     multi: true
     name: regions
+    required: true
+    show_user: true
+    title: Regions
   title: aws billing metrics
   description: Collect aws billing metrics

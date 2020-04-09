@@ -14,5 +14,8 @@ streams:
     os.windows:
       default:
       - c:/Program Files/PostgreSQL/*/logs/*.log*
+    required: true
+    show_user: true
+    title: Paths
   title: PostgreSQL log logs
   description: Collect PostgreSQL log logs

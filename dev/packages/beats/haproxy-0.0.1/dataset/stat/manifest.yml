@@ -8,11 +8,26 @@ streams:
     - tcp://127.0.0.1:14567
     multi: true
     name: hosts
+    required: true
+    show_user: true
+    title: Hosts
   - default: admin
+    multi: false
     name: password
+    required: true
+    show_user: true
+    title: Password
   - default: 10s
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   - default: admin
+    multi: false
     name: username
+    required: true
+    show_user: true
+    title: Username
   title: HAProxy stat metrics
   description: Collect HAProxy stat metrics

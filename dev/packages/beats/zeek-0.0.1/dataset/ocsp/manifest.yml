@@ -14,9 +14,15 @@ streams:
     os.linux:
       default:
       - /var/log/bro/current/ocsp.log
+    required: true
+    show_user: true
+    title: Paths
   - default:
     - zeek.ocsp
     multi: true
     name: tags
+    required: true
+    show_user: true
+    title: Tags
   title: Zeek ocsp logs
   description: Collect Zeek ocsp logs

@@ -17,5 +17,8 @@ streams:
       default:
       - c:/ProgramData/Elastic/Elasticsearch/logs/*.log
       - c:/ProgramData/Elastic/Elasticsearch/logs/*_server.json
+    required: true
+    show_user: true
+    title: Paths
   title: elasticsearch server logs
   description: Collect elasticsearch server logs

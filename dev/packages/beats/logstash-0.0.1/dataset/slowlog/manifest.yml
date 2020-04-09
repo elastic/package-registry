@@ -5,7 +5,11 @@ streams:
 - input: logs
   vars:
   - default: plain
+    multi: false
     name: format
+    required: true
+    show_user: true
+    title: Format
   - default:
     - /var/log/logstash/logstash-slowlog-{{.format}}*.log
     multi: true
@@ -13,5 +17,8 @@ streams:
     os.windows:
       default:
       - c:/programdata/logstash/logs/logstash-slowlog-{{.format}}*.log
+    required: true
+    show_user: true
+    title: Paths
   title: logstash slowlog logs
   description: Collect logstash slowlog logs

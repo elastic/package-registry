@@ -14,11 +14,21 @@ streams:
     os.linux:
       default:
       - /var/log/bro/current/ssl.log
+    required: true
+    show_user: true
+    title: Paths
   - default:
     - zeek.ssl
     multi: true
     name: tags
+    required: true
+    show_user: true
+    title: Tags
   - default: true
+    multi: false
     name: community_id
+    required: true
+    show_user: true
+    title: Community Id
   title: Zeek ssl logs
   description: Collect Zeek ssl logs

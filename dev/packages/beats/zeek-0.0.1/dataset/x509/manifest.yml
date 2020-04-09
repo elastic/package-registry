@@ -14,11 +14,21 @@ streams:
     os.linux:
       default:
       - /var/log/bro/current/x509.log
+    required: true
+    show_user: true
+    title: Paths
   - default:
     - zeek.x509
     multi: true
     name: tags
+    required: true
+    show_user: true
+    title: Tags
   - default: true
+    multi: false
     name: community_id
+    required: true
+    show_user: true
+    title: Community Id
   title: Zeek x509 logs
   description: Collect Zeek x509 logs

@@ -8,9 +8,20 @@ streams:
     - localhost:9157
     multi: true
     name: hosts
+    required: true
+    show_user: true
+    title: Hosts
   - default: /metrics
+    multi: false
     name: metrics_path
+    required: true
+    show_user: true
+    title: Metrics Path
   - default: 10s
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   title: IBM MQ qmgr metrics
   description: Collect IBM MQ qmgr metrics

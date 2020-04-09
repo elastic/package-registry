@@ -13,5 +13,8 @@ streams:
       - ${RABBITMQ_LOGS:/usr/local/var/log/rabbitmq/rabbit@localhost.log*}
     os.windows:
       default: null
+    required: true
+    show_user: true
+    title: Paths
   title: RabbitMQ log logs
   description: Collect RabbitMQ log logs

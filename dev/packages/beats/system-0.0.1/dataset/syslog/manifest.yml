@@ -14,5 +14,8 @@ streams:
       - /var/log/system.log*
     os.windows:
       default: []
+    required: true
+    show_user: true
+    title: Paths
   title: System syslog logs
   description: Collect System syslog logs

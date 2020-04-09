@@ -5,13 +5,37 @@ streams:
 - input: logs
   vars:
   - default: azure-eventhub
+    multi: false
     name: input
+    required: true
+    show_user: true
+    title: Input
   - default: insights-logs-signinlogs
+    multi: false
     name: eventhub
+    required: true
+    show_user: true
+    title: Eventhub
   - default: $Default
+    multi: false
     name: consumer_group
-  - name: connection_string
-  - name: storage_account
-  - name: storage_account_key
+    required: true
+    show_user: true
+    title: Consumer Group
+  - multi: false
+    name: connection_string
+    required: true
+    show_user: true
+    title: Connection String
+  - multi: false
+    name: storage_account
+    required: true
+    show_user: true
+    title: Storage Account
+  - multi: false
+    name: storage_account_key
+    required: true
+    show_user: true
+    title: Storage Account Key
   title: Azure signinlogs logs
   description: Collect Azure signinlogs logs

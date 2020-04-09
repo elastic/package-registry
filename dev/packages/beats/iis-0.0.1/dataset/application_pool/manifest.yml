@@ -5,6 +5,10 @@ streams:
 - input: iis/metrics
   vars:
   - default: 10s
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   title: iis application_pool metrics
   description: Collect iis application_pool metrics

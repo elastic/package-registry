@@ -11,5 +11,8 @@ streams:
     os.windows:
       default:
       - c:\data\log\mongod.log
+    required: true
+    show_user: true
+    title: Paths
   title: mongodb log logs
   description: Collect mongodb log logs

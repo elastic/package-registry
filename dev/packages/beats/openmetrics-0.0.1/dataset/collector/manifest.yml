@@ -8,15 +8,32 @@ streams:
     - localhost:9090
     multi: true
     name: hosts
+    required: true
+    show_user: true
+    title: Hosts
   - default: []
     multi: true
     name: metrics_filters.exclude
+    required: true
+    show_user: true
+    title: Metrics Filters.Exclude
   - default: []
     multi: true
     name: metrics_filters.include
+    required: true
+    show_user: true
+    title: Metrics Filters.Include
   - default: /metrics
+    multi: false
     name: metrics_path
+    required: true
+    show_user: true
+    title: Metrics Path
   - default: 10s
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   title: Openmetrics collector metrics
   description: Collect Openmetrics collector metrics

@@ -8,9 +8,20 @@ streams:
     - http://127.0.0.1
     multi: true
     name: hosts
+    required: true
+    show_user: true
+    title: Hosts
   - default: 10s
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   - default: nginx_status
+    multi: false
     name: server_status_path
+    required: true
+    show_user: true
+    title: Server Status Path
   title: Nginx stubstatus metrics
   description: Collect Nginx stubstatus metrics

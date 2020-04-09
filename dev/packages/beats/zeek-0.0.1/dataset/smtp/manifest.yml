@@ -14,11 +14,21 @@ streams:
     os.linux:
       default:
       - /var/log/bro/current/smtp.log
+    required: true
+    show_user: true
+    title: Paths
   - default:
     - zeek.smtp
     multi: true
     name: tags
+    required: true
+    show_user: true
+    title: Tags
   - default: true
+    multi: false
     name: community_id
+    required: true
+    show_user: true
+    title: Community Id
   title: Zeek smtp logs
   description: Collect Zeek smtp logs

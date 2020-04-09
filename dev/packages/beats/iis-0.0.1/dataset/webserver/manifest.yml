@@ -5,6 +5,10 @@ streams:
 - input: iis/metrics
   vars:
   - default: 10s
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   title: iis webserver metrics
   description: Collect iis webserver metrics

@@ -8,17 +8,39 @@ streams:
     - /var/log/pan-os.log
     multi: true
     name: paths
+    required: true
+    show_user: true
+    title: Paths
   - default:
     - pan-os
     multi: true
     name: tags
+    required: true
+    show_user: true
+    title: Tags
   - default: localhost
+    multi: false
     name: syslog_host
+    required: true
+    show_user: true
+    title: Syslog Host
   - default: 9001
+    multi: false
     name: syslog_port
+    required: true
+    show_user: true
+    title: Syslog Port
   - default: syslog
+    multi: false
     name: input
+    required: true
+    show_user: true
+    title: Input
   - default: true
+    multi: false
     name: community_id
+    required: true
+    show_user: true
+    title: Community Id
   title: panw panos logs
   description: Collect panw panos logs

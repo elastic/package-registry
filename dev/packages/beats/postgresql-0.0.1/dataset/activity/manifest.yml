@@ -8,7 +8,14 @@ streams:
     - postgres://localhost:5432
     multi: true
     name: hosts
+    required: true
+    show_user: true
+    title: Hosts
   - default: 10s
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   title: PostgreSQL activity metrics
   description: Collect PostgreSQL activity metrics

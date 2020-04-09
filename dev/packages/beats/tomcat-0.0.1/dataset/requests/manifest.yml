@@ -8,9 +8,20 @@ streams:
     - localhost:8080
     multi: true
     name: hosts
+    required: true
+    show_user: true
+    title: Hosts
   - default: /jolokia/?ignoreErrors=true&canonicalNaming=false
+    multi: false
     name: path
+    required: true
+    show_user: true
+    title: Path
   - default: 10s
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   title: Tomcat requests metrics
   description: Collect Tomcat requests metrics

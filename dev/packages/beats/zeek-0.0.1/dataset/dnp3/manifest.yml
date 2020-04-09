@@ -14,11 +14,21 @@ streams:
     os.linux:
       default:
       - /var/log/bro/current/dnp3.log
+    required: true
+    show_user: true
+    title: Paths
   - default:
     - zeek.dnp3
     multi: true
     name: tags
+    required: true
+    show_user: true
+    title: Tags
   - default: true
+    multi: false
     name: community_id
+    required: true
+    show_user: true
+    title: Community Id
   title: Zeek dnp3 logs
   description: Collect Zeek dnp3 logs

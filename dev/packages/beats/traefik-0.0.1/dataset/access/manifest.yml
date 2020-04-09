@@ -14,5 +14,8 @@ streams:
     os.windows:
       default:
       - c:/programdata/traefik/logs/*access.log*
+    required: true
+    show_user: true
+    title: Paths
   title: Traefik access logs
   description: Collect Traefik access logs

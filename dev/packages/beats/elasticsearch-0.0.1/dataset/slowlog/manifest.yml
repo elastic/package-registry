@@ -23,5 +23,8 @@ streams:
       - c:/ProgramData/Elastic/Elasticsearch/logs/*_index_indexing_slowlog.log
       - c:/ProgramData/Elastic/Elasticsearch/logs/*_index_search_slowlog.json
       - c:/ProgramData/Elastic/Elasticsearch/logs/*_index_indexing_slowlog.json
+    required: true
+    show_user: true
+    title: Paths
   title: elasticsearch slowlog logs
   description: Collect elasticsearch slowlog logs

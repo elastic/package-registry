@@ -14,11 +14,21 @@ streams:
     os.linux:
       default:
       - /var/log/bro/current/smb_mapping.log
+    required: true
+    show_user: true
+    title: Paths
   - default:
     - zeek.smb_mapping
     multi: true
     name: tags
+    required: true
+    show_user: true
+    title: Tags
   - default: true
+    multi: false
     name: community_id
+    required: true
+    show_user: true
+    title: Community Id
   title: Zeek smb_mapping logs
   description: Collect Zeek smb_mapping logs

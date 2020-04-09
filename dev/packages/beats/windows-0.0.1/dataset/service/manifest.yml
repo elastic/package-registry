@@ -5,6 +5,10 @@ streams:
 - input: windows/metrics
   vars:
   - default: 60s
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   title: Windows service metrics
   description: Collect Windows service metrics

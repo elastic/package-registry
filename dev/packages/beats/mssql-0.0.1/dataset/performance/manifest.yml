@@ -8,11 +8,26 @@ streams:
     - sqlserver://localhost
     multi: true
     name: hosts
+    required: true
+    show_user: true
+    title: Hosts
   - default: verysecurepassword
+    multi: false
     name: password
+    required: true
+    show_user: true
+    title: Password
   - default: 10s
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   - default: domain\username
+    multi: false
     name: username
+    required: true
+    show_user: true
+    title: Username
   title: MSSQL performance metrics
   description: Collect MSSQL performance metrics

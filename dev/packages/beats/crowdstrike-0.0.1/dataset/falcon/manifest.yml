@@ -8,5 +8,8 @@ streams:
     - /var/log/crowdstrike/falconhoseclient/output
     multi: true
     name: paths
+    required: true
+    show_user: true
+    title: Paths
   title: Crowdstrike falcon logs
   description: Collect Crowdstrike falcon logs

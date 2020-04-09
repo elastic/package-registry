@@ -14,11 +14,21 @@ streams:
     os.linux:
       default:
       - /var/log/bro/current/socks.log
+    required: true
+    show_user: true
+    title: Paths
   - default:
     - zeek.socks
     multi: true
     name: tags
+    required: true
+    show_user: true
+    title: Tags
   - default: true
+    multi: false
     name: community_id
+    required: true
+    show_user: true
+    title: Community Id
   title: Zeek socks logs
   description: Collect Zeek socks logs

@@ -8,13 +8,32 @@ streams:
     - https://localhost/sdk
     multi: true
     name: hosts
+    required: true
+    show_user: true
+    title: Hosts
   - default: false
+    multi: false
     name: insecure
+    required: true
+    show_user: true
+    title: Insecure
   - default: password
+    multi: false
     name: password
+    required: true
+    show_user: true
+    title: Password
   - default: 10s
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   - default: user
+    multi: false
     name: username
+    required: true
+    show_user: true
+    title: Username
   title: vSphere virtualmachine metrics
   description: Collect vSphere virtualmachine metrics

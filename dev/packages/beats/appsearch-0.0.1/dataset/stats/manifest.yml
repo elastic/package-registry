@@ -8,7 +8,14 @@ streams:
     - http://localhost:3002
     multi: true
     name: hosts
+    required: true
+    show_user: true
+    title: Hosts
   - default: 10s
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   title: App Search stats metrics
   description: Collect App Search stats metrics

@@ -13,5 +13,8 @@ streams:
       default:
       - C:\ProgramData\IBM\MQ\errors\*.LOG*
       - C:\ProgramData\IBM\MQ\qmgrs\*\errors\*.LOG*
+    required: true
+    show_user: true
+    title: Paths
   title: ibmmq errorlog logs
   description: Collect ibmmq errorlog logs

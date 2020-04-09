@@ -14,9 +14,15 @@ streams:
     os.linux:
       default:
       - /var/log/bro/current/stats.log
+    required: true
+    show_user: true
+    title: Paths
   - default:
     - zeek.stats
     multi: true
     name: tags
+    required: true
+    show_user: true
+    title: Tags
   title: Zeek stats logs
   description: Collect Zeek stats logs

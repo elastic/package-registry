@@ -8,5 +8,8 @@ streams:
     - /var/log/nats/nats.log*
     multi: true
     name: paths
+    required: true
+    show_user: true
+    title: Paths
   title: nats log logs
   description: Collect nats log logs

@@ -17,5 +17,8 @@ streams:
     os.windows:
       default:
       - c:/Windows/System32/LogFiles/HTTPERR/*.log
+    required: true
+    show_user: true
+    title: Paths
   title: IIS error logs
   description: Collect IIS error logs

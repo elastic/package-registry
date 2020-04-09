@@ -8,16 +8,29 @@ streams:
     - percentages
     multi: true
     name: core.metrics
+    required: true
+    show_user: true
+    title: Core.Metrics
   - default:
     - percentages
     - normalized_percentages
     multi: true
     name: cpu.metrics
+    required: true
+    show_user: true
+    title: Cpu.Metrics
   - default: 10s
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   - default:
     - .*
     multi: true
     name: processes
+    required: true
+    show_user: true
+    title: Processes
   title: System uptime metrics
   description: Collect System uptime metrics

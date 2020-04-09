@@ -20,5 +20,8 @@ streams:
       - c:/ProgramData/Elastic/Elasticsearch/logs/*_access.log
       - c:/ProgramData/Elastic/Elasticsearch/logs/*_audit.log
       - c:/ProgramData/Elastic/Elasticsearch/logs/*_audit.json
+    required: true
+    show_user: true
+    title: Paths
   title: elasticsearch audit logs
   description: Collect elasticsearch audit logs

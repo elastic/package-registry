@@ -5,14 +5,50 @@ streams:
 - input: logs
   vars:
   - default: o365audit
+    multi: false
     name: input
-  - name: certificate
-  - name: key
-  - name: key_passphrase
-  - name: application_id
-  - name: client_secret
-  - name: tenants
-  - name: content_type
-  - name: api
+    required: true
+    show_user: true
+    title: Input
+  - multi: false
+    name: certificate
+    required: true
+    show_user: true
+    title: Certificate
+  - multi: false
+    name: key
+    required: true
+    show_user: true
+    title: Key
+  - multi: false
+    name: key_passphrase
+    required: true
+    show_user: true
+    title: Key Passphrase
+  - multi: false
+    name: application_id
+    required: true
+    show_user: true
+    title: Application Id
+  - multi: false
+    name: client_secret
+    required: true
+    show_user: true
+    title: Client Secret
+  - multi: false
+    name: tenants
+    required: true
+    show_user: true
+    title: Tenants
+  - multi: false
+    name: content_type
+    required: true
+    show_user: true
+    title: Content Type
+  - multi: false
+    name: api
+    required: true
+    show_user: true
+    title: Api
   title: Office 365 audit logs
   description: Collect Office 365 audit logs

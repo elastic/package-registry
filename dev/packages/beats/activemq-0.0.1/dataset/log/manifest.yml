@@ -14,5 +14,8 @@ streams:
     os.windows:
       default:
       - c:/apache-activemq-*/data/activemq.log*
+    required: true
+    show_user: true
+    title: Paths
   title: activemq log logs
   description: Collect activemq log logs

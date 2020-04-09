@@ -8,7 +8,14 @@ streams:
     - localhost:8500
     multi: true
     name: hosts
+    required: true
+    show_user: true
+    title: Hosts
   - default: 10s
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   title: consul agent metrics
   description: Collect consul agent metrics

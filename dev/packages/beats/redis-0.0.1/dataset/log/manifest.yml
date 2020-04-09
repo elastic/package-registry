@@ -15,5 +15,8 @@ streams:
     os.windows:
       default:
       - c:/program files/Redis/logs/redis.log*
+    required: true
+    show_user: true
+    title: Paths
   title: Redis log logs
   description: Collect Redis log logs

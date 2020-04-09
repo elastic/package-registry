@@ -17,5 +17,8 @@ streams:
       default:
       - C:/tools/Apache/httpd-2.*/Apache24/logs/access.log*
       - C:/Program Files/Apache Software Foundation/Apache2.*/logs/access.log*
+    required: true
+    show_user: true
+    title: Paths
   title: Apache access logs
   description: Collect Apache access logs

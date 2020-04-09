@@ -8,7 +8,14 @@ streams:
     - http://localhost:9200
     multi: true
     name: hosts
+    required: true
+    show_user: true
+    title: Hosts
   - default: 10s
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   title: Elasticsearch node metrics
   description: Collect Elasticsearch node metrics

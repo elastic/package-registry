@@ -5,16 +5,35 @@ streams:
 - input: sql/metrics
   vars:
   - default: postgres
+    multi: false
     name: driver
+    required: true
+    show_user: true
+    title: Driver
   - default:
     - user=myuser password=mypassword dbname=mydb sslmode=disable
     multi: true
     name: hosts
+    required: true
+    show_user: true
+    title: Hosts
   - default: 10s
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   - default: select now()
+    multi: false
     name: sql_query
+    required: true
+    show_user: true
+    title: Sql Query
   - default: table
+    multi: false
     name: sql_response_format
+    required: true
+    show_user: true
+    title: Sql Response Format
   title: sql query metrics
   description: Collect sql query metrics

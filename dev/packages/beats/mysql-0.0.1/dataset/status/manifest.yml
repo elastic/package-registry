@@ -8,13 +8,32 @@ streams:
     - root:secret@tcp(127.0.0.1:3306)/
     multi: true
     name: hosts
+    required: true
+    show_user: true
+    title: Hosts
   - default: secret
+    multi: false
     name: password
+    required: true
+    show_user: true
+    title: Password
   - default: 10s
+    multi: false
     name: period
+    required: true
+    show_user: true
+    title: Period
   - default: false
+    multi: false
     name: raw
+    required: true
+    show_user: true
+    title: Raw
   - default: root
+    multi: false
     name: username
+    required: true
+    show_user: true
+    title: Username
   title: MySQL status metrics
   description: Collect MySQL status metrics

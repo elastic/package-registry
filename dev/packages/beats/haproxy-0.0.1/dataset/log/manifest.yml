@@ -8,11 +8,26 @@ streams:
     - /var/log/haproxy.log
     multi: true
     name: paths
+    required: true
+    show_user: true
+    title: Paths
   - default: localhost
+    multi: false
     name: syslog_host
+    required: true
+    show_user: true
+    title: Syslog Host
   - default: 9001
+    multi: false
     name: syslog_port
+    required: true
+    show_user: true
+    title: Syslog Port
   - default: syslog
+    multi: false
     name: input
+    required: true
+    show_user: true
+    title: Input
   title: haproxy log logs
   description: Collect haproxy log logs

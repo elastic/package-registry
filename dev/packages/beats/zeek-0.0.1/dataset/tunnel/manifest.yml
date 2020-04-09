@@ -14,9 +14,15 @@ streams:
     os.linux:
       default:
       - /var/log/bro/current/tunnel.log
+    required: true
+    show_user: true
+    title: Paths
   - default:
     - zeek.tunnel
     multi: true
     name: tags
+    required: true
+    show_user: true
+    title: Tags
   title: Zeek tunnel logs
   description: Collect Zeek tunnel logs

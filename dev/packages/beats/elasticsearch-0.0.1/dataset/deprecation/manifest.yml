@@ -17,5 +17,8 @@ streams:
       default:
       - c:/ProgramData/Elastic/Elasticsearch/logs/*_deprecation.log
       - c:/ProgramData/Elastic/Elasticsearch/logs/*_deprecation.json
+    required: true
+    show_user: true
+    title: Paths
   title: elasticsearch deprecation logs
   description: Collect elasticsearch deprecation logs
