@@ -45,27 +45,23 @@ streams:
     multi: false
     required: true
     show_user: true
-    default: null
   - name: timeout
     type: text
     title: Timeout
     multi: false
     required: true
     show_user: true
-    default: null
   - name: custom_definitions
     type: text
     title: Custom Definitions
     multi: false
     required: true
     show_user: true
-    default: null
   - name: detect_sequence_reset
     type: text
     title: Detect Sequence Reset
     multi: false
     required: true
     show_user: true
-    default: null
   title: NetFlow log logs
   description: Collect NetFlow log logs

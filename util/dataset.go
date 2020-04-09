@@ -33,31 +33,36 @@ type DataSet struct {
 }
 
 type Input struct {
-	Type        string                   `config:"type" json:"type" validate:"required"`
-	Vars        []Variable				 `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
-	Title       string                   `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
-	Description string                   `config:"description" json:"description,omitempty" yaml:"description,omitempty"`
-	Streams     []Stream                 `config:"streams" json:"streams,omitempty" yaml:"streams,omitempty"`
+	Type        string     `config:"type" json:"type" validate:"required"`
+	Vars        []Variable `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
+	Title       string     `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
+	Description string     `config:"description" json:"description,omitempty" yaml:"description,omitempty"`
+	Streams     []Stream   `config:"streams" json:"streams,omitempty" yaml:"streams,omitempty"`
 }
 
 type Stream struct {
-	Input       string                   `config:"input" json:"input" validate:"required"`
-	Vars        []Variable				 `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
-	Dataset     string                   `config:"dataset" json:"dataset,omitempty" yaml:"dataset,omitempty"`
-	Title       string                   `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
-	Description string                   `config:"description" json:"description,omitempty" yaml:"description,omitempty"`
+	Input       string     `config:"input" json:"input" validate:"required"`
+	Vars        []Variable `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
+	Dataset     string     `config:"dataset" json:"dataset,omitempty" yaml:"dataset,omitempty"`
+	Title       string     `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
+	Description string     `config:"description" json:"description,omitempty" yaml:"description,omitempty"`
 }
 
 type Variable struct {
-	Name string `yaml:"name"`
-	Type string `yaml:"type"`
-	Title string `yaml:"title"`
-	Multi bool `yaml:"multi"`
-	Required bool `yaml:"required"`
-	ShowUser bool `yaml:"show_user"`
-	Default interface{} `yaml:"default"`
-	OsDarwin interface{} `yaml:"os.darwin,omitempty"`
-	OsWindows interface{} `yaml:"os.windows,omitempty"`
+	Name        string      `config:"name" json:"name" yaml:"name"`
+	Type        string      `config:"type" json:"type" yaml:"type"`
+	Title       string      `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
+	Description string      `config:"description" json:"description,omitempty" yaml:"description,omitempty"`
+	Multi       bool        `config:"multi" json:"multi" yaml:"multi"`
+	Required    bool        `config:"required" json:"required" yaml:"required"`
+	ShowUser    bool        `config:"show_user" json:"show_user" yaml:"show_user"`
+	Default     interface{} `config:"default" json:"default,omitempty" yaml:"default,omitempty"`
+	Os          *Os         `config:"os" json:"os,omitempty" yaml:"os,omitempty"`
+}
+
+type Os struct {
+	Darwin  interface{} `config:"darwin" json:"darwin,omitempty" yaml:"darwin,omitempty"`
+	Windows interface{} `config:"windows" json:"windows,omitempty" yaml:"windows,omitempty"`
 }
 
 func NewDataset(basePath string, p *Package) (*DataSet, error) {

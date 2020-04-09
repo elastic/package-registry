@@ -7,13 +7,14 @@ streams:
   - name: paths
     type: text
     title: Paths
-    multi: false
+    multi: true
     required: true
     show_user: true
     default:
     - /var/log/mongodb/mongodb.log
-    os.windows:
-      default:
-      - c:\data\log\mongod.log
+    os:
+      windows:
+        default:
+        - c:\data\log\mongod.log
   title: mongodb log logs
   description: Collect mongodb log logs

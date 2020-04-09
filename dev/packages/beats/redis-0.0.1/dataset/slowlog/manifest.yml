@@ -7,7 +7,7 @@ streams:
   - name: hosts
     type: text
     title: Hosts
-    multi: false
+    multi: true
     required: true
     show_user: true
     default:

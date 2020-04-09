@@ -7,16 +7,17 @@ streams:
   - name: paths
     type: text
     title: Paths
-    multi: false
+    multi: true
     required: true
     show_user: true
     default:
     - /var/log/auth.log*
     - /var/log/secure*
-    os.darwin:
-      default:
-      - /var/log/secure.log*
-    os.windows:
-      default: []
+    os:
+      darwin:
+        default:
+        - /var/log/secure.log*
+      windows:
+        default: []
   title: System auth logs
   description: Collect System auth logs

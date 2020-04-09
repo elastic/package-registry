@@ -7,18 +7,19 @@ streams:
   - name: paths
     type: text
     title: Paths
-    multi: false
+    multi: true
     required: true
     show_user: true
     default:
     - /var/log/bro/current/intel.log
-    os.darwin:
-      default:
-      - /usr/local/var/logs/current/intel.log
+    os:
+      darwin:
+        default:
+        - /usr/local/var/logs/current/intel.log
   - name: tags
     type: text
     title: Tags
-    multi: false
+    multi: true
     required: true
     show_user: true
     default:

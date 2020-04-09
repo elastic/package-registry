@@ -31,20 +31,17 @@ streams:
     multi: false
     required: true
     show_user: true
-    default: null
   - name: storage_account
     type: text
     title: Storage Account
     multi: false
     required: true
     show_user: true
-    default: null
   - name: storage_account_key
     type: text
     title: Storage Account Key
     multi: false
     required: true
     show_user: true
-    default: null
   title: Azure auditlogs logs
   description: Collect Azure auditlogs logs

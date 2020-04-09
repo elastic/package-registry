@@ -27,6 +27,15 @@ type varWithDefault struct {
 	Default interface{} `yaml:"default"`
 }
 
+type manifestWithVarsOsFlattened struct {
+	Vars []variableWithOsFlattened `yaml:"var"`
+}
+
+type variableWithOsFlattened struct {
+	OsDarwin interface{} `yaml:"os.darwin,omitempty"`
+	OsWindows interface{} `yaml:"os.windows,omitempty"`
+}
+
 var ignoredConfigOptions = []string{
 	"module",
 	"metricsets",
@@ -61,12 +70,18 @@ func createLogStreams(modulePath, moduleTitle, datasetName string) ([]util.Strea
 		return nil, errors.Wrapf(err, "unmarshalling manifest file failed (path: %s)", manifestPath)
 	}
 
+	var mwvos manifestWithVarsOsFlattened
+	err = yaml.Unmarshal(manifestFile, &mwvos)
+	if err != nil {
+		return nil, errors.Wrapf(err, "unmarshalling flattened OS failed (path: %s)", manifestPath)
+	}
+
 	return []util.Stream{
 		{
 			Input:       "logs",
 			Title:       fmt.Sprintf("%s %s logs", moduleTitle, datasetName),
 			Description: fmt.Sprintf("Collect %s %s logs", moduleTitle, datasetName),
-			Vars:        adjustVariablesFormat(mwv).Vars,
+			Vars:        adjustVariablesFormat(mwvos, mwv).Vars,
 		},
 	}, nil
 }
@@ -75,29 +90,44 @@ func createLogStreams(modulePath, moduleTitle, datasetName string) ([]util.Strea
 // - ensure that all variable values are wrapped with a "default" field, even if they are defined for particular
 //   operating systems (prefix: os.)
 // - add field "multi: true" if value is an array
-func adjustVariablesFormat(mwvs manifestWithVars) manifestWithVars {
+func adjustVariablesFormat(mwvos manifestWithVarsOsFlattened, mwvs manifestWithVars) manifestWithVars {
 	var withDefaults manifestWithVars
-	for _, aVar := range mwvs.Vars {
+	for i, aVar := range mwvs.Vars {
 		aVarWithDefaults := aVar
 		aVarWithDefaults.Title = toVariableTitle(aVar.Name)
 		aVarWithDefaults.Type = determineInputVariableType(aVar.Name, aVar.Default)
 		aVarWithDefaults.Required = true
 		aVarWithDefaults.ShowUser = true
+		_, isArray := aVarWithDefaults.Default.([]interface{})
+		aVarWithDefaults.Multi = isArray
+		aVarWithDefaults.Os = unwrapOsVars(mwvos.Vars[i])
 
-		if aVarWithDefaults.OsDarwin != nil {
-			aVarWithDefaults.OsDarwin = varWithDefault{
-				Default: aVarWithDefaults.OsDarwin,
+		if aVarWithDefaults.Os != nil {
+			if aVarWithDefaults.Os.Darwin != nil {
+				aVarWithDefaults.Os.Darwin = varWithDefault{
+					Default: aVarWithDefaults.Os.Darwin,
+				}
 			}
-		}
 
-		if aVarWithDefaults.OsWindows != nil {
-			aVarWithDefaults.OsWindows = varWithDefault{
-				Default: aVarWithDefaults.OsWindows,
+			if aVarWithDefaults.Os.Windows != nil {
+				aVarWithDefaults.Os.Windows = varWithDefault{
+					Default: aVarWithDefaults.Os.Windows,
+				}
 			}
 		}
 		withDefaults.Vars = append(withDefaults.Vars, aVarWithDefaults)
 	}
 	return withDefaults
+}
+
+func unwrapOsVars(flattened variableWithOsFlattened) *util.Os {
+	var anOs *util.Os
+	if flattened.OsDarwin != nil || flattened.OsWindows != nil {
+		anOs = new(util.Os)
+		anOs.Darwin = flattened.OsDarwin
+		anOs.Windows = flattened.OsWindows
+	}
+	return anOs
 }
 
 // wrapVariablesWithDefault method builds a set of stream inputs for metrics oriented dataset.

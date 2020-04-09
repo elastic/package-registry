@@ -7,21 +7,22 @@ streams:
   - name: paths
     type: text
     title: Paths
-    multi: false
+    multi: true
     required: true
     show_user: true
     default:
     - /var/log/suricata/eve.json
-    os.darwin:
-      default:
-      - /usr/local/var/log/suricata/eve.json
-    os.windows:
-      default:
-      - c:/program files/suricata/log/eve.json
+    os:
+      darwin:
+        default:
+        - /usr/local/var/log/suricata/eve.json
+      windows:
+        default:
+        - c:/program files/suricata/log/eve.json
   - name: tags
     type: text
     title: Tags
-    multi: false
+    multi: true
     required: true
     show_user: true
     default:

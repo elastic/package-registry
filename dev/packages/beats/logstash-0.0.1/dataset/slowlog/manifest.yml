@@ -14,13 +14,14 @@ streams:
   - name: paths
     type: text
     title: Paths
-    multi: false
+    multi: true
     required: true
     show_user: true
     default:
     - /var/log/logstash/logstash-slowlog-{{.format}}*.log
-    os.windows:
-      default:
-      - c:/programdata/logstash/logs/logstash-slowlog-{{.format}}*.log
+    os:
+      windows:
+        default:
+        - c:/programdata/logstash/logs/logstash-slowlog-{{.format}}*.log
   title: logstash slowlog logs
   description: Collect logstash slowlog logs

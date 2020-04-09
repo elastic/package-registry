@@ -7,18 +7,19 @@ streams:
   - name: paths
     type: text
     title: Paths
-    multi: false
+    multi: true
     required: true
     show_user: true
     default:
     - /var/log/osquery/osqueryd.results.log*
-    os.darwin:
-      default:
-      - /var/log/osquery/osqueryd.results.log*
-      - /private/var/log/osquery/osqueryd.results.log*
-    os.windows:
-      default:
-      - C:/ProgramData/osquery/log/osqueryd.results.log*
+    os:
+      darwin:
+        default:
+        - /var/log/osquery/osqueryd.results.log*
+        - /private/var/log/osquery/osqueryd.results.log*
+      windows:
+        default:
+        - C:/ProgramData/osquery/log/osqueryd.results.log*
   - name: use_namespace
     type: bool
     title: Use Namespace

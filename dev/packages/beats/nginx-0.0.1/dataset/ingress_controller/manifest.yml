@@ -7,16 +7,17 @@ streams:
   - name: paths
     type: text
     title: Paths
-    multi: false
+    multi: true
     required: true
     show_user: true
     default:
     - /var/log/nginx/access.log*
-    os.darwin:
-      default:
-      - /usr/local/var/log/nginx/access.log*
-    os.windows:
-      default:
-      - c:/programdata/nginx/logs/*access.log*
+    os:
+      darwin:
+        default:
+        - /usr/local/var/log/nginx/access.log*
+      windows:
+        default:
+        - c:/programdata/nginx/logs/*access.log*
   title: Nginx ingress_controller logs
   description: Collect Nginx ingress_controller logs

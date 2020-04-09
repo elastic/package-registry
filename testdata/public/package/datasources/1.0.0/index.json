@@ -35,12 +35,15 @@
           "input": "logs",
           "vars": [
             {
+              "name": "paths",
+              "type": "text",
+              "description": "Paths to the nginx error log file.",
+              "multi": true,
+              "required": true,
+              "show_user": false,
               "default": [
                 "/var/log/nginx/error.log*"
               ],
-              "description": "Paths to the nginx error log file.",
-              "multi": true,
-              "name": "paths",
               "os": {
                 "darwin": {
                   "default": [
@@ -52,9 +55,7 @@
                     "c:/programdata/nginx/logs/*error.log*"
                   ]
                 }
-              },
-              "required": true,
-              "type": "text"
+              }
             }
           ],
           "title": "Title of the stream",
@@ -74,12 +75,15 @@
           "input": "logs",
           "vars": [
             {
+              "name": "paths",
+              "type": "text",
+              "description": "Paths to the nginx access log file.",
+              "multi": true,
+              "required": true,
+              "show_user": false,
               "default": [
                 "/var/log/nginx/access.log*"
               ],
-              "description": "Paths to the nginx access log file.",
-              "multi": true,
-              "name": "paths",
               "os": {
                 "darwin": {
                   "default": [
@@ -91,9 +95,7 @@
                     "c:/programdata/nginx/logs/*access.log*"
                   ]
                 }
-              },
-              "required": true,
-              "type": "text"
+              }
             }
           ],
           "title": "Title of the stream",
@@ -113,11 +115,13 @@
           "input": "nginx/metrics",
           "vars": [
             {
-              "default": "localhost",
-              "description": "Paths to the nginx access log file.",
               "name": "url",
+              "type": "text",
+              "description": "Paths to the nginx access log file.",
+              "multi": false,
               "required": true,
-              "type": "text"
+              "show_user": false,
+              "default": "localhost"
             }
           ],
           "title": "Title of the stream",
@@ -138,28 +142,38 @@
           "type": "nginx/metrics",
           "vars": [
             {
-              "default": [
-                "http://127.0.0.1"
-              ],
+              "name": "hosts",
+              "type": "text",
               "description": "Nginx hosts",
               "multi": true,
-              "name": "hosts",
               "required": true,
-              "type": "text"
+              "show_user": false,
+              "default": [
+                "http://127.0.0.1"
+              ]
             },
             {
-              "default": "10s",
-              "description": "Collection period. Valid values: 10s, 5m, 2h",
               "name": "period",
-              "type": "duration"
+              "type": "duration",
+              "description": "Collection period. Valid values: 10s, 5m, 2h",
+              "multi": false,
+              "required": false,
+              "show_user": false,
+              "default": "10s"
             },
             {
               "name": "username",
-              "type": "text"
+              "type": "text",
+              "multi": false,
+              "required": false,
+              "show_user": false
             },
             {
               "name": "password",
-              "type": "password"
+              "type": "password",
+              "multi": false,
+              "required": false,
+              "show_user": false
             }
           ],
           "description": "Collecting metrics for nginx.",
@@ -168,11 +182,13 @@
               "input": "nginx/metrics",
               "vars": [
                 {
-                  "default": "localhost",
-                  "description": "Paths to the nginx access log file.",
                   "name": "url",
+                  "type": "text",
+                  "description": "Paths to the nginx access log file.",
+                  "multi": false,
                   "required": true,
-                  "type": "text"
+                  "show_user": false,
+                  "default": "localhost"
                 }
               ],
               "dataset": "datasources.examplemetric",
@@ -189,12 +205,15 @@
               "input": "logs",
               "vars": [
                 {
+                  "name": "paths",
+                  "type": "text",
+                  "description": "Paths to the nginx error log file.",
+                  "multi": true,
+                  "required": true,
+                  "show_user": false,
                   "default": [
                     "/var/log/nginx/error.log*"
                   ],
-                  "description": "Paths to the nginx error log file.",
-                  "multi": true,
-                  "name": "paths",
                   "os": {
                     "darwin": {
                       "default": [
@@ -206,9 +225,7 @@
                         "c:/programdata/nginx/logs/*error.log*"
                       ]
                     }
-                  },
-                  "required": true,
-                  "type": "text"
+                  }
                 }
               ],
               "dataset": "datasources.examplelog1",
@@ -219,12 +236,15 @@
               "input": "logs",
               "vars": [
                 {
+                  "name": "paths",
+                  "type": "text",
+                  "description": "Paths to the nginx access log file.",
+                  "multi": true,
+                  "required": true,
+                  "show_user": false,
                   "default": [
                     "/var/log/nginx/access.log*"
                   ],
-                  "description": "Paths to the nginx access log file.",
-                  "multi": true,
-                  "name": "paths",
                   "os": {
                     "darwin": {
                       "default": [
@@ -236,9 +256,7 @@
                         "c:/programdata/nginx/logs/*access.log*"
                       ]
                     }
-                  },
-                  "required": true,
-                  "type": "text"
+                  }
                 }
               ],
               "dataset": "datasources.examplelog2",
