@@ -17,6 +17,7 @@ streams:
     required: true
     show_user: true
     title: Paths
+    type: text
   - default:
     - zeek.dhcp
     multi: true
@@ -24,11 +25,13 @@ streams:
     required: true
     show_user: true
     title: Tags
+    type: text
   - default: true
     multi: false
     name: community_id
     required: true
     show_user: true
     title: Community Id
+    type: bool
   title: Zeek dhcp logs
   description: Collect Zeek dhcp logs

@@ -10,6 +10,7 @@ streams:
     required: true
     show_user: true
     title: Driver
+    type: text
   - default:
     - user=myuser password=mypassword dbname=mydb sslmode=disable
     multi: true
@@ -17,23 +18,27 @@ streams:
     required: true
     show_user: true
     title: Hosts
+    type: text
   - default: 10s
     multi: false
     name: period
     required: true
     show_user: true
     title: Period
+    type: text
   - default: select now()
     multi: false
     name: sql_query
     required: true
     show_user: true
     title: Sql Query
+    type: text
   - default: table
     multi: false
     name: sql_response_format
     required: true
     show_user: true
     title: Sql Response Format
+    type: text
   title: sql query metrics
   description: Collect sql query metrics

@@ -11,29 +11,34 @@ streams:
     required: true
     show_user: true
     title: Hosts
+    type: text
   - default: false
     multi: false
     name: insecure
     required: true
     show_user: true
     title: Insecure
+    type: bool
   - default: password
     multi: false
     name: password
     required: true
     show_user: true
     title: Password
+    type: password
   - default: 10s
     multi: false
     name: period
     required: true
     show_user: true
     title: Period
+    type: text
   - default: user
     multi: false
     name: username
     required: true
     show_user: true
     title: Username
+    type: text
   title: vSphere virtualmachine metrics
   description: Collect vSphere virtualmachine metrics

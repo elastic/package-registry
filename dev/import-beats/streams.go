@@ -79,8 +79,8 @@ func adjustVariablesFormat(mwvs manifestWithVars) manifestWithVars {
 	var withDefaults manifestWithVars
 	for _, aVar := range mwvs.Vars {
 		aVarWithDefaults := map[string]interface{}{
-			"multi": false,
-			"required": true,
+			"multi":     false,
+			"required":  true,
 			"show_user": true,
 		}
 		for k, v := range aVar {
@@ -92,12 +92,14 @@ func adjustVariablesFormat(mwvs manifestWithVars) manifestWithVars {
 			}
 
 			if k == "default" {
+				aVarWithDefaults["type"] = determineInputVariableType(aVar["name"], v)
+
 				_, isArray := v.([]interface{})
 				if isArray {
 					aVarWithDefaults["multi"] = true
 				}
 			} else if k == "name" {
-				aVarWithDefaults["title"] = strings.Title(strings.ReplaceAll(v.(string), "_", " "))
+				aVarWithDefaults["title"] = toVariableTitle(v.(string))
 			}
 
 			aVarWithDefaults[k] = v
@@ -151,16 +153,13 @@ func createMetricStreams(modulePath, moduleName, moduleTitle, datasetName string
 				if related || strings.HasPrefix(name, fmt.Sprintf("%s.", datasetName)) {
 					_, isArray := value.([]interface{})
 					configOption := map[string]interface{}{
-						"default": value,
-						"multi": false,
-						"name":    name,
-						"required": true,
+						"default":   value,
+						"multi":     isArray,
+						"name":      name,
+						"required":  true,
 						"show_user": true,
-						"title": strings.Title(strings.ReplaceAll(name, "_", " ")),
-					}
-
-					if isArray {
-						configOption["multi"] = true
+						"title":     toVariableTitle(name),
+						"type":      determineInputVariableType(name, value),
 					}
 
 					configOptions = append(configOptions, configOption)
@@ -241,4 +240,32 @@ func isConfigEntryRelatedToMetricset(entry mapStr, moduleName, datasetName strin
 		}
 	}
 	return metricsetRelated, nil
+}
+
+// determineInputVariableType method determines the most appropriate type of the value or the value in array.
+// Support types: text, password, bool, integer
+func determineInputVariableType(name, v interface{}) string {
+	if arr, isArray := v.([]interface{}); isArray {
+		if len(arr) == 0 {
+			return "text" // array doesn't contain any items, assuming default type
+		}
+		return determineInputVariableType(name, arr[0])
+	}
+
+	if _, isBool := v.(bool); isBool {
+		return "bool"
+	} else if _, isInt := v.(int); isInt {
+		return "integer"
+	}
+
+	if name == "password" {
+		return "password"
+	}
+	return "text"
+}
+
+func toVariableTitle(name string) string {
+	name = strings.ReplaceAll(name, "_", " ")
+	name = strings.ReplaceAll(name, ".", " ")
+	return strings.Title(name)
 }

@@ -10,6 +10,7 @@ streams:
     required: true
     show_user: true
     title: Format
+    type: text
   - default:
     - /var/log/logstash/logstash-slowlog-{{.format}}*.log
     multi: true
@@ -20,5 +21,6 @@ streams:
     required: true
     show_user: true
     title: Paths
+    type: text
   title: logstash slowlog logs
   description: Collect logstash slowlog logs

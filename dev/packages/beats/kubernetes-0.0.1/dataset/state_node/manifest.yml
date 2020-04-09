@@ -10,6 +10,7 @@ streams:
     required: true
     show_user: true
     title: Add Metadata
+    type: bool
   - default:
     - kube-state-metrics:8080
     multi: true
@@ -17,11 +18,13 @@ streams:
     required: true
     show_user: true
     title: Hosts
+    type: text
   - default: 10s
     multi: false
     name: period
     required: true
     show_user: true
     title: Period
+    type: text
   title: Kubernetes state_node metrics
   description: Collect Kubernetes state_node metrics

@@ -11,11 +11,13 @@ streams:
     required: true
     show_user: true
     title: Hosts
+    type: text
   - default: 1m
     multi: false
     name: period
     required: true
     show_user: true
     title: Period
+    type: text
   title: Ceph mgr_pool_disk metrics
   description: Collect Ceph mgr_pool_disk metrics

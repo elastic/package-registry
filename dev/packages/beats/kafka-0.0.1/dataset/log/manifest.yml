@@ -10,6 +10,7 @@ streams:
     required: true
     show_user: true
     title: Kafka Home
+    type: text
   - default:
     - '{{.kafka_home}}/logs/controller.log*'
     - '{{.kafka_home}}/logs/server.log*'
@@ -20,5 +21,6 @@ streams:
     required: true
     show_user: true
     title: Paths
+    type: text
   title: Kafka log logs
   description: Collect Kafka log logs

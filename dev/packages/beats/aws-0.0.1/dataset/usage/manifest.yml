@@ -10,12 +10,14 @@ streams:
     required: true
     show_user: true
     title: Credential Profile Name
+    type: text
   - default: 60s
     multi: false
     name: period
     required: true
     show_user: true
     title: Period
+    type: text
   - default:
     - key: dept
       value: eng
@@ -24,5 +26,6 @@ streams:
     required: true
     show_user: true
     title: Tags Filter
+    type: text
   title: aws usage metrics
   description: Collect aws usage metrics

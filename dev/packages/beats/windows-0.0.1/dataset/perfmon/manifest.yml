@@ -9,18 +9,21 @@ streams:
     name: perfmon.group_measurements_by_instance
     required: true
     show_user: true
-    title: Perfmon.Group Measurements By Instance
+    title: Perfmon Group Measurements By Instance
+    type: bool
   - default: false
     multi: false
     name: perfmon.ignore_non_existent_counters
     required: true
     show_user: true
-    title: Perfmon.Ignore Non Existent Counters
+    title: Perfmon Ignore Non Existent Counters
+    type: bool
   - default: 10s
     multi: false
     name: period
     required: true
     show_user: true
     title: Period
+    type: text
   title: Windows perfmon metrics
   description: Collect Windows perfmon metrics

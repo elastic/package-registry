@@ -10,66 +10,77 @@ streams:
     required: true
     show_user: true
     title: Input
+    type: text
   - default: ""
     multi: false
     name: api_key
     required: true
     show_user: true
     title: Api Key
+    type: text
   - default: SSWS
     multi: false
     name: authentication_scheme
     required: true
     show_user: true
     title: Authentication Scheme
+    type: text
   - default: 60
     multi: false
     name: http_client_timeout
     required: true
     show_user: true
     title: Http Client Timeout
+    type: integer
   - default: GET
     multi: false
     name: http_method
     required: true
     show_user: true
     title: Http Method
+    type: text
   - default: '{}'
     multi: false
     name: http_headers
     required: true
     show_user: true
     title: Http Headers
+    type: text
   - default: '{}'
     multi: false
     name: http_request_body
     required: true
     show_user: true
     title: Http Request Body
+    type: text
   - default: true
     multi: false
     name: no_http_body
     required: true
     show_user: true
     title: No Http Body
+    type: bool
   - default: 60
     multi: false
     name: interval
     required: true
     show_user: true
     title: Interval
+    type: integer
   - default: ""
     multi: false
     name: json_objects_array
     required: true
     show_user: true
     title: Json Objects Array
+    type: text
   - default: true
     multi: false
     name: keep_original_message
     required: true
     show_user: true
     title: Keep Original Message
+    type: bool
   - default: |-
       {
         "enabled": true,
@@ -83,6 +94,7 @@ streams:
     required: true
     show_user: true
     title: Pagination
+    type: text
   - default: |-
       {
         "limit": "X-Rate-Limit-Limit",
@@ -94,17 +106,20 @@ streams:
     required: true
     show_user: true
     title: Rate Limit
+    type: text
   - default: ""
     multi: false
     name: url
     required: true
     show_user: true
     title: Url
+    type: text
   - default: '{}'
     multi: false
     name: ssl
     required: true
     show_user: true
     title: Ssl
+    type: text
   title: Okta system logs
   description: Collect Okta system logs

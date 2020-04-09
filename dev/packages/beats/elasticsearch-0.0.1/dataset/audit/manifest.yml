@@ -23,5 +23,6 @@ streams:
     required: true
     show_user: true
     title: Paths
+    type: text
   title: elasticsearch audit logs
   description: Collect elasticsearch audit logs

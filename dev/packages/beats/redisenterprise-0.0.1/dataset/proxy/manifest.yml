@@ -11,11 +11,13 @@ streams:
     required: true
     show_user: true
     title: Hosts
+    type: text
   - default: 1m
     multi: false
     name: period
     required: true
     show_user: true
     title: Period
+    type: text
   title: Redis Enterprise proxy metrics
   description: Collect Redis Enterprise proxy metrics

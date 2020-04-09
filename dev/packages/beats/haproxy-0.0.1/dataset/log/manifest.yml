@@ -11,23 +11,27 @@ streams:
     required: true
     show_user: true
     title: Paths
+    type: text
   - default: localhost
     multi: false
     name: syslog_host
     required: true
     show_user: true
     title: Syslog Host
+    type: text
   - default: 9001
     multi: false
     name: syslog_port
     required: true
     show_user: true
     title: Syslog Port
+    type: integer
   - default: syslog
     multi: false
     name: input
     required: true
     show_user: true
     title: Input
+    type: text
   title: haproxy log logs
   description: Collect haproxy log logs

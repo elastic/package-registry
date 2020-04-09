@@ -11,23 +11,27 @@ streams:
     required: true
     show_user: true
     title: Hosts
+    type: text
   - default: admin
     multi: false
     name: password
     required: true
     show_user: true
     title: Password
+    type: password
   - default: 10s
     multi: false
     name: period
     required: true
     show_user: true
     title: Period
+    type: text
   - default: admin
     multi: false
     name: username
     required: true
     show_user: true
     title: Username
+    type: text
   title: HAProxy stat metrics
   description: Collect HAProxy stat metrics

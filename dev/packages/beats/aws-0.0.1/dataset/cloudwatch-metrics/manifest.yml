@@ -10,6 +10,7 @@ streams:
     required: true
     show_user: true
     title: Credential Profile Name
+    type: text
   - default:
     - dimensions:
       - name: InstanceId
@@ -28,11 +29,13 @@ streams:
     required: true
     show_user: true
     title: Metrics
+    type: text
   - default: 300s
     multi: false
     name: period
     required: true
     show_user: true
     title: Period
+    type: text
   title: aws cloudwatch metrics
   description: Collect aws cloudwatch metrics

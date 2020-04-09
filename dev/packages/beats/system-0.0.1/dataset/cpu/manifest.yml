@@ -10,7 +10,8 @@ streams:
     name: core.metrics
     required: true
     show_user: true
-    title: Core.Metrics
+    title: Core Metrics
+    type: text
   - default:
     - percentages
     - normalized_percentages
@@ -18,25 +19,29 @@ streams:
     name: cpu.metrics
     required: true
     show_user: true
-    title: Cpu.Metrics
+    title: Cpu Metrics
+    type: text
   - default: 10s
     multi: false
     name: period
     required: true
     show_user: true
     title: Period
+    type: text
   - default: 5
     multi: false
     name: process.include_top_n.by_cpu
     required: true
     show_user: true
-    title: Process.Include Top N.By Cpu
+    title: Process Include Top N By Cpu
+    type: integer
   - default: 5
     multi: false
     name: process.include_top_n.by_memory
     required: true
     show_user: true
-    title: Process.Include Top N.By Memory
+    title: Process Include Top N By Memory
+    type: integer
   - default:
     - .*
     multi: true
@@ -44,5 +49,6 @@ streams:
     required: true
     show_user: true
     title: Processes
+    type: text
   title: System cpu metrics
   description: Collect System cpu metrics

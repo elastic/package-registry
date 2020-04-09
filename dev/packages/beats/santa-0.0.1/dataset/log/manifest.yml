@@ -11,11 +11,13 @@ streams:
     required: true
     show_user: true
     title: Paths
+    type: text
   - default: file
     multi: false
     name: input
     required: true
     show_user: true
     title: Input
+    type: text
   title: Google Santa log logs
   description: Collect Google Santa log logs

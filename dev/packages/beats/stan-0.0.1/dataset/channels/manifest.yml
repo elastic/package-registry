@@ -11,11 +11,13 @@ streams:
     required: true
     show_user: true
     title: Hosts
+    type: text
   - default: 60s
     multi: false
     name: period
     required: true
     show_user: true
     title: Period
+    type: text
   title: Stan channels metrics
   description: Collect Stan channels metrics

@@ -14,5 +14,6 @@ streams:
     required: true
     show_user: true
     title: Paths
+    type: text
   title: mongodb log logs
   description: Collect mongodb log logs

@@ -11,5 +11,6 @@ streams:
     required: true
     show_user: true
     title: Hosts
+    type: text
   title: Kubernetes apiserver metrics
   description: Collect Kubernetes apiserver metrics

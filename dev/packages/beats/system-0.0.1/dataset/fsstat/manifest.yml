@@ -10,6 +10,7 @@ streams:
     required: true
     show_user: true
     title: Period
+    type: text
   - default:
     - drop_event.when.regexp:
         system.filesystem.mount_point: ^/(sys|cgroup|proc|dev|etc|host|lib|snap)($|/)
@@ -18,5 +19,6 @@ streams:
     required: true
     show_user: true
     title: Processors
+    type: text
   title: System fsstat metrics
   description: Collect System fsstat metrics

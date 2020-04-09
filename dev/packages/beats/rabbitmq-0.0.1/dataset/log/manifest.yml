@@ -16,5 +16,6 @@ streams:
     required: true
     show_user: true
     title: Paths
+    type: text
   title: RabbitMQ log logs
   description: Collect RabbitMQ log logs

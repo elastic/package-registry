@@ -18,11 +18,13 @@ streams:
     required: true
     show_user: true
     title: Paths
+    type: text
   - default: true
     multi: false
     name: use_namespace
     required: true
     show_user: true
     title: Use Namespace
+    type: bool
   title: Osquery result logs
   description: Collect Osquery result logs

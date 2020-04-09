@@ -11,23 +11,27 @@ streams:
     required: true
     show_user: true
     title: Hosts
+    type: text
   - default: /metrics/metrics
     multi: false
     name: metrics_path
     required: true
     show_user: true
     title: Metrics Path
+    type: text
   - default: example
     multi: false
     name: namespace
     required: true
     show_user: true
     title: Namespace
+    type: text
   - default: 10s
     multi: false
     name: period
     required: true
     show_user: true
     title: Period
+    type: text
   title: Dropwizard collector metrics
   description: Collect Dropwizard collector metrics

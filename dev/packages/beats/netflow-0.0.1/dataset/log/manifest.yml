@@ -10,30 +10,35 @@ streams:
     required: true
     show_user: true
     title: Netflow Host
+    type: text
   - default: 2055
     multi: false
     name: netflow_port
     required: true
     show_user: true
     title: Netflow Port
+    type: integer
   - default: 10KiB
     multi: false
     name: max_message_size
     required: true
     show_user: true
     title: Max Message Size
+    type: text
   - default: 30m
     multi: false
     name: expiration_timeout
     required: true
     show_user: true
     title: Expiration Timeout
+    type: text
   - default: 8192
     multi: false
     name: queue_size
     required: true
     show_user: true
     title: Queue Size
+    type: integer
   - multi: false
     name: read_buffer
     required: true

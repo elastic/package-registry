@@ -11,6 +11,7 @@ streams:
     required: true
     show_user: true
     title: Paths
+    type: text
   - default:
     - cisco-ios
     multi: true
@@ -18,23 +19,27 @@ streams:
     required: true
     show_user: true
     title: Tags
+    type: text
   - default: localhost
     multi: false
     name: syslog_host
     required: true
     show_user: true
     title: Syslog Host
+    type: text
   - default: 9002
     multi: false
     name: syslog_port
     required: true
     show_user: true
     title: Syslog Port
+    type: integer
   - default: syslog
     multi: false
     name: input
     required: true
     show_user: true
     title: Input
+    type: text
   title: Cisco ios logs
   description: Collect Cisco ios logs

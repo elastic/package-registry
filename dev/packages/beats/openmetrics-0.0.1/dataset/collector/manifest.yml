@@ -11,29 +11,34 @@ streams:
     required: true
     show_user: true
     title: Hosts
+    type: text
   - default: []
     multi: true
     name: metrics_filters.exclude
     required: true
     show_user: true
-    title: Metrics Filters.Exclude
+    title: Metrics Filters Exclude
+    type: text
   - default: []
     multi: true
     name: metrics_filters.include
     required: true
     show_user: true
-    title: Metrics Filters.Include
+    title: Metrics Filters Include
+    type: text
   - default: /metrics
     multi: false
     name: metrics_path
     required: true
     show_user: true
     title: Metrics Path
+    type: text
   - default: 10s
     multi: false
     name: period
     required: true
     show_user: true
     title: Period
+    type: text
   title: Openmetrics collector metrics
   description: Collect Openmetrics collector metrics

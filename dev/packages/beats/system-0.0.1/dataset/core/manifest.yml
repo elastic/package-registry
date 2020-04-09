@@ -10,6 +10,7 @@ streams:
     name: core.metrics
     required: true
     show_user: true
-    title: Core.Metrics
+    title: Core Metrics
+    type: text
   title: System core metrics
   description: Collect System core metrics

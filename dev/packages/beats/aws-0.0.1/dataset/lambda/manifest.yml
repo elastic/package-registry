@@ -10,5 +10,6 @@ streams:
     required: true
     show_user: true
     title: Period
+    type: text
   title: aws lambda metrics
   description: Collect aws lambda metrics

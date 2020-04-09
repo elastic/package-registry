@@ -10,48 +10,56 @@ streams:
     required: true
     show_user: true
     title: Input
+    type: text
   - default: ""
     multi: false
     name: api_key
     required: true
     show_user: true
     title: Api Key
+    type: text
   - default: 60
     multi: false
     name: http_client_timeout
     required: true
     show_user: true
     title: Http Client Timeout
+    type: integer
   - default: GET
     multi: false
     name: http_method
     required: true
     show_user: true
     title: Http Method
+    type: text
   - default: '{}'
     multi: false
     name: http_headers
     required: true
     show_user: true
     title: Http Headers
+    type: text
   - default: '{}'
     multi: false
     name: http_request_body
     required: true
     show_user: true
     title: Http Request Body
+    type: text
   - default: 0
     multi: false
     name: interval
     required: true
     show_user: true
     title: Interval
+    type: integer
   - default: response.Attribute
     multi: false
     name: json_objects_array
     required: true
     show_user: true
     title: Json Objects Array
+    type: text
   - default: |-
       {
         "enabled": false,
@@ -65,17 +73,20 @@ streams:
     required: true
     show_user: true
     title: Pagination
+    type: text
   - default: ""
     multi: false
     name: url
     required: true
     show_user: true
     title: Url
+    type: text
   - default: '{}'
     multi: false
     name: ssl
     required: true
     show_user: true
     title: Ssl
+    type: text
   title: MISP threat logs
   description: Collect MISP threat logs

@@ -10,41 +10,48 @@ streams:
     required: true
     show_user: true
     title: Input
+    type: text
   - default: SET_PROJECT_NAME
     multi: false
     name: project_id
     required: true
     show_user: true
     title: Project Id
+    type: text
   - default: stackdriver-firewall
     multi: false
     name: topic
     required: true
     show_user: true
     title: Topic
+    type: text
   - default: filebeat-googlecloud-firewall
     multi: false
     name: subscription_name
     required: true
     show_user: true
     title: Subscription Name
+    type: text
   - default: googlecloud-firewall-reader-service-identity.json
     multi: false
     name: credentials_file
     required: true
     show_user: true
     title: Credentials File
+    type: text
   - default: false
     multi: false
     name: debug
     required: true
     show_user: true
     title: Debug
+    type: bool
   - default: false
     multi: false
     name: keep_original_message
     required: true
     show_user: true
     title: Keep Original Message
+    type: bool
   title: Google Cloud firewall logs
   description: Collect Google Cloud firewall logs

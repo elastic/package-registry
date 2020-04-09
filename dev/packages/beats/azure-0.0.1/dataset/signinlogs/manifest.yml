@@ -10,18 +10,21 @@ streams:
     required: true
     show_user: true
     title: Input
+    type: text
   - default: insights-logs-signinlogs
     multi: false
     name: eventhub
     required: true
     show_user: true
     title: Eventhub
+    type: text
   - default: $Default
     multi: false
     name: consumer_group
     required: true
     show_user: true
     title: Consumer Group
+    type: text
   - multi: false
     name: connection_string
     required: true

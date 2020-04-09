@@ -10,12 +10,14 @@ streams:
     required: true
     show_user: true
     title: Credential Profile Name
+    type: text
   - default: 300s
     multi: false
     name: period
     required: true
     show_user: true
     title: Period
+    type: text
   - default:
     - us-west-1
     multi: true
@@ -23,5 +25,6 @@ streams:
     required: true
     show_user: true
     title: Regions
+    type: text
   title: aws sqs metrics
   description: Collect aws sqs metrics

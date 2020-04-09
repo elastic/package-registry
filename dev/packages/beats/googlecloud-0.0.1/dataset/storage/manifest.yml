@@ -10,29 +10,34 @@ streams:
     required: true
     show_user: true
     title: Credentials File Path
+    type: text
   - default: false
     multi: false
     name: exclude_labels
     required: true
     show_user: true
     title: Exclude Labels
+    type: bool
   - default: 300s
     multi: false
     name: period
     required: true
     show_user: true
     title: Period
+    type: text
   - default: your project id
     multi: false
     name: project_id
     required: true
     show_user: true
     title: Project Id
+    type: text
   - default: us-central1
     multi: false
     name: region
     required: true
     show_user: true
     title: Region
+    type: text
   title: Google Cloud Platform storage metrics
   description: Collect Google Cloud Platform storage metrics

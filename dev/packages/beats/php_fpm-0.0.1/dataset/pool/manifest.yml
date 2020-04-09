@@ -11,17 +11,20 @@ streams:
     required: true
     show_user: true
     title: Hosts
+    type: text
   - default: 10s
     multi: false
     name: period
     required: true
     show_user: true
     title: Period
+    type: text
   - default: /status
     multi: false
     name: status_path
     required: true
     show_user: true
     title: Status Path
+    type: text
   title: PHP_FPM pool metrics
   description: Collect PHP_FPM pool metrics

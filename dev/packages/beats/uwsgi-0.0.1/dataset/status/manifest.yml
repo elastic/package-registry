@@ -10,6 +10,7 @@ streams:
     required: true
     show_user: true
     title: Enable
+    type: bool
   - default:
     - tcp://127.0.0.1:9191
     multi: true
@@ -17,11 +18,13 @@ streams:
     required: true
     show_user: true
     title: Hosts
+    type: text
   - default: 10s
     multi: false
     name: period
     required: true
     show_user: true
     title: Period
+    type: text
   title: uwsgi status metrics
   description: Collect uwsgi status metrics

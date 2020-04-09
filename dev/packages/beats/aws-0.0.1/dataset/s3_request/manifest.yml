@@ -10,23 +10,27 @@ streams:
     required: true
     show_user: true
     title: Access Key Id
+    type: text
   - default: 86400s
     multi: false
     name: period
     required: true
     show_user: true
     title: Period
+    type: text
   - default: ${AWS_SECRET_ACCESS_KEY:""}
     multi: false
     name: secret_access_key
     required: true
     show_user: true
     title: Secret Access Key
+    type: text
   - default: ${AWS_SESSION_TOKEN:""}
     multi: false
     name: session_token
     required: true
     show_user: true
     title: Session Token
+    type: text
   title: aws s3_request metrics
   description: Collect aws s3_request metrics

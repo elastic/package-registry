@@ -11,6 +11,7 @@ streams:
     required: true
     show_user: true
     title: Paths
+    type: text
   - default:
     - coredns
     multi: true
@@ -18,5 +19,6 @@ streams:
     required: true
     show_user: true
     title: Tags
+    type: text
   title: Coredns log logs
   description: Collect Coredns log logs

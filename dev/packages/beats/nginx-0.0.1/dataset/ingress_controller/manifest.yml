@@ -17,5 +17,6 @@ streams:
     required: true
     show_user: true
     title: Paths
+    type: text
   title: Nginx ingress_controller logs
   description: Collect Nginx ingress_controller logs

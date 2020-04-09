@@ -10,35 +10,41 @@ streams:
     required: true
     show_user: true
     title: Input
+    type: text
   - default: SET_PROJECT_NAME
     multi: false
     name: project_id
     required: true
     show_user: true
     title: Project Id
+    type: text
   - default: stackdriver-audit
     multi: false
     name: topic
     required: true
     show_user: true
     title: Topic
+    type: text
   - default: filebeat-googlecloud-audit
     multi: false
     name: subscription_name
     required: true
     show_user: true
     title: Subscription Name
+    type: text
   - default: googlecloud-audit-reader-service-identity.json
     multi: false
     name: credentials_file
     required: true
     show_user: true
     title: Credentials File
+    type: text
   - default: false
     multi: false
     name: keep_original_message
     required: true
     show_user: true
     title: Keep Original Message
+    type: bool
   title: Google Cloud audit logs
   description: Collect Google Cloud audit logs

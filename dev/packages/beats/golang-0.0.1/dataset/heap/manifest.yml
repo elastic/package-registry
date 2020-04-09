@@ -9,6 +9,7 @@ streams:
     name: heap.path
     required: true
     show_user: true
-    title: Heap.Path
+    title: Heap Path
+    type: text
   title: Golang heap metrics
   description: Collect Golang heap metrics

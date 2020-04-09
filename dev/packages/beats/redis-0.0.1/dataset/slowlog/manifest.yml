@@ -11,11 +11,13 @@ streams:
     required: true
     show_user: true
     title: Hosts
+    type: text
   - default: ""
     multi: false
     name: password
     required: true
     show_user: true
     title: Password
+    type: password
   title: Redis slowlog logs
   description: Collect Redis slowlog logs

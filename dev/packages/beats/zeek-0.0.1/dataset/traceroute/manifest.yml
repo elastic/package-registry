@@ -17,6 +17,7 @@ streams:
     required: true
     show_user: true
     title: Paths
+    type: text
   - default:
     - zeek.traceroute
     multi: true
@@ -24,5 +25,6 @@ streams:
     required: true
     show_user: true
     title: Tags
+    type: text
   title: Zeek traceroute logs
   description: Collect Zeek traceroute logs

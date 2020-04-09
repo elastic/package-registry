@@ -11,6 +11,7 @@ streams:
     required: true
     show_user: true
     title: Paths
+    type: text
   - default:
     - pan-os
     multi: true
@@ -18,29 +19,34 @@ streams:
     required: true
     show_user: true
     title: Tags
+    type: text
   - default: localhost
     multi: false
     name: syslog_host
     required: true
     show_user: true
     title: Syslog Host
+    type: text
   - default: 9001
     multi: false
     name: syslog_port
     required: true
     show_user: true
     title: Syslog Port
+    type: integer
   - default: syslog
     multi: false
     name: input
     required: true
     show_user: true
     title: Input
+    type: text
   - default: true
     multi: false
     name: community_id
     required: true
     show_user: true
     title: Community Id
+    type: bool
   title: panw panos logs
   description: Collect panw panos logs

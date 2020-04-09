@@ -17,6 +17,7 @@ streams:
     required: true
     show_user: true
     title: Paths
+    type: text
   - default:
     - zeek.weird
     multi: true
@@ -24,5 +25,6 @@ streams:
     required: true
     show_user: true
     title: Tags
+    type: text
   title: Zeek weird logs
   description: Collect Zeek weird logs

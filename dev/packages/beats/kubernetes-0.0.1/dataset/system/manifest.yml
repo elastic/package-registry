@@ -10,12 +10,14 @@ streams:
     required: true
     show_user: true
     title: Add Metadata
+    type: bool
   - default: /var/run/secrets/kubernetes.io/serviceaccount/token
     multi: false
     name: bearer_token_file
     required: true
     show_user: true
     title: Bearer Token File
+    type: text
   - default:
     - https://${NODE_NAME}:10250
     multi: true
@@ -23,17 +25,20 @@ streams:
     required: true
     show_user: true
     title: Hosts
+    type: text
   - default: 10s
     multi: false
     name: period
     required: true
     show_user: true
     title: Period
+    type: text
   - default: none
     multi: false
     name: ssl.verification_mode
     required: true
     show_user: true
-    title: Ssl.Verification Mode
+    title: Ssl Verification Mode
+    type: text
   title: Kubernetes system metrics
   description: Collect Kubernetes system metrics

@@ -11,11 +11,13 @@ streams:
     required: true
     show_user: true
     title: Hosts
+    type: text
   - default: 10s
     multi: false
     name: period
     required: true
     show_user: true
     title: Period
+    type: text
   title: Oracle tablespace metrics
   description: Collect Oracle tablespace metrics

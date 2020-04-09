@@ -10,29 +10,34 @@ streams:
     required: true
     show_user: true
     title: Credentials File Path
+    type: text
   - default: false
     multi: false
     name: exclude_labels
     required: true
     show_user: true
     title: Exclude Labels
+    type: bool
   - default: 300s
     multi: false
     name: period
     required: true
     show_user: true
     title: Period
+    type: text
   - default: your project id
     multi: false
     name: project_id
     required: true
     show_user: true
     title: Project Id
+    type: text
   - default: us-central1-a
     multi: false
     name: zone
     required: true
     show_user: true
     title: Zone
+    type: text
   title: Google Cloud Platform pubsub metrics
   description: Collect Google Cloud Platform pubsub metrics

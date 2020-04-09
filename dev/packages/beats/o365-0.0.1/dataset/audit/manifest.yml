@@ -10,6 +10,7 @@ streams:
     required: true
     show_user: true
     title: Input
+    type: text
   - multi: false
     name: certificate
     required: true
