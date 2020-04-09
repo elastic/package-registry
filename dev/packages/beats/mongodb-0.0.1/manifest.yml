@@ -30,6 +30,9 @@ datasources:
   description: Collect logs and metrics from mongodb instances
   inputs:
   - type: logs
-    description: Collecting mongodb logs
+    title: Collecting logs from mongodb instances
+    description: Collecting mongodb log logs
   - type: mongodb/metrics
-    description: Collecting mongodb metrics
+    title: Collecting metrics from mongodb instances
+    description: Collecting mongodb collstats, dbstats, metrics, replstatus and status
+      metrics

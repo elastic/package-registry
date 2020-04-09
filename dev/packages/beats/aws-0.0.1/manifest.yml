@@ -130,6 +130,11 @@ datasources:
   description: Collect logs and metrics from AWS instances
   inputs:
   - type: logs
-    description: Collecting AWS logs
+    title: Collecting logs from aws instances
+    description: Collecting AWS cloudtrail, cloudwatch, ec2, elb, s3access and vpcflow
+      logs
   - type: aws/metrics
-    description: Collecting AWS metrics
+    title: Collecting metrics from aws instances
+    description: Collecting AWS billing, cloudwatch, dynamodb, ebs, ec2, elb, lambda,
+      natgateway, rds, s3_daily_storage, s3_request, sns, sqs, transitgateway, usage
+      and vpn metrics

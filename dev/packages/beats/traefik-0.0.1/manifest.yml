@@ -30,6 +30,8 @@ datasources:
   description: Collect logs and metrics from Traefik instances
   inputs:
   - type: logs
-    description: Collecting Traefik logs
+    title: Collecting logs from traefik instances
+    description: Collecting Traefik access logs
   - type: traefik/metrics
-    description: Collecting Traefik metrics
+    title: Collecting metrics from traefik instances
+    description: Collecting Traefik health metrics

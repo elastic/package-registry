@@ -25,6 +25,8 @@ datasources:
   description: Collect logs and metrics from mssql instances
   inputs:
   - type: logs
-    description: Collecting mssql logs
+    title: Collecting logs from mssql instances
+    description: Collecting mssql log logs
   - type: mssql/metrics
-    description: Collecting mssql metrics
+    title: Collecting metrics from mssql instances
+    description: Collecting mssql performance and transaction_log metrics

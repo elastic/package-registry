@@ -1,0 +1,22 @@
+title: NetFlow log logs
+release: ga
+type: logs
+streams:
+- input: logs
+  vars:
+  - default: localhost
+    name: netflow_host
+  - default: 2055
+    name: netflow_port
+  - default: 10KiB
+    name: max_message_size
+  - default: 30m
+    name: expiration_timeout
+  - default: 8192
+    name: queue_size
+  - name: read_buffer
+  - name: timeout
+  - name: custom_definitions
+  - name: detect_sequence_reset
+  title: NetFlow log logs
+  description: Collect NetFlow log logs

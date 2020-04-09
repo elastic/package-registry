@@ -28,4 +28,5 @@ datasources:
   description: Collect metrics from CouchDB instances
   inputs:
   - type: couchdb/metrics
-    description: Collecting CouchDB metrics
+    title: Collecting metrics from couchdb instances
+    description: Collecting CouchDB server metrics

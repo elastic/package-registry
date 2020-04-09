@@ -22,4 +22,5 @@ datasources:
   description: Collect metrics from Dropwizard instances
   inputs:
   - type: dropwizard/metrics
-    description: Collecting Dropwizard metrics
+    title: Collecting metrics from dropwizard instances
+    description: Collecting Dropwizard collector metrics

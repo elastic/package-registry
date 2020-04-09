@@ -17,4 +17,5 @@ datasources:
   description: Collect metrics from Beat instances
   inputs:
   - type: beat/metrics
-    description: Collecting Beat metrics
+    title: Collecting metrics from beat instances
+    description: Collecting Beat state and stats metrics

@@ -46,6 +46,8 @@ datasources:
   description: Collect logs and metrics from activemq instances
   inputs:
   - type: logs
-    description: Collecting activemq logs
+    title: Collecting logs from activemq instances
+    description: Collecting activemq audit and log logs
   - type: activemq/metrics
-    description: Collecting activemq metrics
+    title: Collecting metrics from activemq instances
+    description: Collecting activemq broker, queue and topic metrics

@@ -34,6 +34,8 @@ datasources:
   description: Collect logs and metrics from Nginx instances
   inputs:
   - type: logs
-    description: Collecting Nginx logs
+    title: Collecting logs from nginx instances
+    description: Collecting Nginx access, error and ingress_controller logs
   - type: nginx/metrics
-    description: Collecting Nginx metrics
+    title: Collecting metrics from nginx instances
+    description: Collecting Nginx stubstatus metrics

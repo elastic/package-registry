@@ -33,4 +33,5 @@ datasources:
   description: Collect logs from Suricata instances
   inputs:
   - type: logs
-    description: Collecting Suricata logs
+    title: Collecting logs from suricata instances
+    description: Collecting Suricata eve logs

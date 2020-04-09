@@ -34,6 +34,9 @@ datasources:
   description: Collect logs and metrics from Google Cloud instances
   inputs:
   - type: logs
-    description: Collecting Google Cloud logs
+    title: Collecting logs from googlecloud instances
+    description: Collecting Google Cloud audit, firewall and vpcflow logs
   - type: googlecloud/metrics
-    description: Collecting Google Cloud metrics
+    title: Collecting metrics from googlecloud instances
+    description: Collecting Google Cloud compute, loadbalancing, pubsub, stackdriver
+      and storage metrics

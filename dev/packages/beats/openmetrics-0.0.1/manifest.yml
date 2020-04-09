@@ -22,4 +22,5 @@ datasources:
   description: Collect metrics from Openmetrics instances
   inputs:
   - type: openmetrics/metrics
-    description: Collecting Openmetrics metrics
+    title: Collecting metrics from openmetrics instances
+    description: Collecting Openmetrics collector metrics

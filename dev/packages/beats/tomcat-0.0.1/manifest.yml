@@ -23,4 +23,5 @@ datasources:
   description: Collect metrics from Tomcat instances
   inputs:
   - type: tomcat/metrics
-    description: Collecting Tomcat metrics
+    title: Collecting metrics from tomcat instances
+    description: Collecting Tomcat cache, memory, requests and threading metrics

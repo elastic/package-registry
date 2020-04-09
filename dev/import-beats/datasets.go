@@ -66,8 +66,11 @@ func createDatasets(beatType, modulePath, moduleName, moduleTitle, moduleRelease
 		datasetPath := filepath.Join(modulePath, datasetName)
 		_, err := os.Stat(filepath.Join(datasetPath, "_meta"))
 		if os.IsNotExist(err) {
-			log.Printf("\t%s: not a valid dataset, skipped", datasetName)
-			continue
+			_, err = os.Stat(filepath.Join(datasetPath, "manifest.yml"))
+			if os.IsNotExist(err) {
+				log.Printf("\t%s: not a valid dataset, skipped", datasetName)
+				continue
+			}
 		}
 
 		log.Printf("\t%s: dataset found", datasetName)

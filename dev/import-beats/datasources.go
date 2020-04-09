@@ -6,15 +6,17 @@ package main
 
 import (
 	"fmt"
+	"sort"
+	"strings"
 
 	"github.com/elastic/package-registry/util"
 )
 
 type datasourceContent struct {
-	packageTypes []string
-
 	moduleName  string
 	moduleTitle string
+
+	datasets map[string][]string // map[packageType]datasetName
 }
 
 type datasourceContentArray []datasourceContent
@@ -22,17 +24,24 @@ type datasourceContentArray []datasourceContent
 func (datasources datasourceContentArray) toMetadataDatasources() []util.Datasource {
 	var ud []util.Datasource
 	for _, ds := range datasources {
+		// list package types
+		var packageTypes []string
+		for packageType := range ds.datasets {
+			packageTypes = append(packageTypes, packageType)
+		}
+		sort.Strings(packageTypes)
+
 		var title, description string
-		if len(ds.packageTypes) == 2 {
-			title = toDatasourceTitleForTwoTypes(ds.moduleTitle, ds.packageTypes[0], ds.packageTypes[1])
-			description = toDatasourceDescriptionForTwoTypes(ds.moduleTitle, ds.packageTypes[0], ds.packageTypes[1])
+		if len(ds.datasets) == 2 {
+			title = toDatasourceTitleForTwoTypes(ds.moduleTitle, packageTypes[0], packageTypes[1])
+			description = toDatasourceDescriptionForTwoTypes(ds.moduleTitle, packageTypes[0], packageTypes[1])
 		} else {
-			title = toDatasourceTitle(ds.moduleTitle, ds.packageTypes[0])
-			description = toDatasourceDescription(ds.moduleTitle, ds.packageTypes[0])
+			title = toDatasourceTitle(ds.moduleTitle, packageTypes[0])
+			description = toDatasourceDescription(ds.moduleTitle, packageTypes[0])
 		}
 
 		var inputs []util.Input
-		for _, packageType := range ds.packageTypes {
+		for _, packageType := range packageTypes {
 			pt := packageType
 			if pt == "metrics" {
 				pt = fmt.Sprintf("%s/%s", ds.moduleName, pt)
@@ -40,7 +49,8 @@ func (datasources datasourceContentArray) toMetadataDatasources() []util.Datasou
 
 			inputs = append(inputs, util.Input{
 				Type:        pt,
-				Description: toDatasourceInputDescription(ds.moduleTitle, packageType),
+				Title:       toDatasourceInputTitle(ds.moduleName, packageType),
+				Description: toDatasourceInputDescription(ds.moduleTitle, packageType, ds.datasets[packageType]),
 			})
 		}
 
@@ -54,17 +64,26 @@ func (datasources datasourceContentArray) toMetadataDatasources() []util.Datasou
 	return ud
 }
 
-func updateDatasources(datasources datasourceContentArray, moduleName, moduleTitle, packageType string) (datasourceContentArray, error) {
+func updateDatasources(datasources datasourceContentArray, moduleName, moduleTitle, packageType string, datasetNames []string) (datasourceContentArray, error) {
 	var updated datasourceContentArray
 
 	if len(datasources) > 0 {
 		updated = append(updated, datasources...)
-		updated[0].packageTypes = append(updated[0].packageTypes, packageType)
+
+		if _, ok := updated[0].datasets[packageType]; !ok { // there is always a single datasource
+			updated[0].datasets[packageType] = datasetNames
+		} else {
+			updated[0].datasets[packageType] = append(updated[0].datasets[packageType], datasetNames...)
+		}
 	} else {
+		datasets := map[string][]string{
+			packageType: datasetNames,
+		}
+
 		updated = append(updated, datasourceContent{
-			packageTypes: []string{packageType},
-			moduleName:   moduleName,
-			moduleTitle:  moduleTitle,
+			moduleName:  moduleName,
+			moduleTitle: moduleTitle,
+			datasets:    datasets,
 		})
 	}
 	return updated, nil
@@ -86,6 +105,30 @@ func toDatasourceDescriptionForTwoTypes(moduleTitle, firstPackageType, secondPac
 	return fmt.Sprintf("Collect %s and %s from %s instances", firstPackageType, secondPackageType, moduleTitle)
 }
 
-func toDatasourceInputDescription(moduleTitle, packageType string) string {
-	return fmt.Sprintf("Collecting %s %s", moduleTitle, packageType)
+func toDatasourceInputTitle(moduleTitle, packageType string) string {
+	return fmt.Sprintf("Collecting %s from %s instances", packageType, moduleTitle)
+}
+
+func toDatasourceInputDescription(moduleTitle, packageType string, datasets []string) string {
+	firstPart := datasets[:len(datasets)-1]
+	secondPart := datasets[len(datasets)-1:]
+
+	var description strings.Builder
+	description.WriteString("Collecting ")
+	description.WriteString(moduleTitle)
+	description.WriteString(" ")
+
+	if len(firstPart) > 0 {
+		fp := strings.Join(firstPart, ", ")
+		description.WriteString(fp)
+		description.WriteString(" and ")
+	}
+
+	description.WriteString(secondPart[0])
+
+	description.WriteString(" ")
+	description.WriteString(packageType)
+
+	// Collecting MySQL status and galera_status metrics
+	return description.String()
 }

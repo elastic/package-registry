@@ -22,4 +22,5 @@ datasources:
   description: Collect metrics from Memcached instances
   inputs:
   - type: memcached/metrics
-    description: Collecting Memcached metrics
+    title: Collecting metrics from memcached instances
+    description: Collecting Memcached stats metrics

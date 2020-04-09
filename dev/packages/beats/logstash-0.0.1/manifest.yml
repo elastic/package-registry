@@ -34,6 +34,8 @@ datasources:
   description: Collect logs and metrics from logstash instances
   inputs:
   - type: logs
-    description: Collecting logstash logs
+    title: Collecting logs from logstash instances
+    description: Collecting logstash log and slowlog logs
   - type: logstash/metrics
-    description: Collecting logstash metrics
+    title: Collecting metrics from logstash instances
+    description: Collecting logstash node and node_stats metrics

@@ -24,4 +24,5 @@ datasources:
   description: Collect logs from MISP instances
   inputs:
   - type: logs
-    description: Collecting MISP logs
+    title: Collecting logs from misp instances
+    description: Collecting MISP threat logs

@@ -19,4 +19,5 @@ datasources:
   description: Collect logs from CEF instances
   inputs:
   - type: logs
-    description: Collecting CEF logs
+    title: Collecting logs from cef instances
+    description: Collecting CEF log logs

@@ -36,4 +36,9 @@ datasources:
   description: Collect metrics from Kubernetes instances
   inputs:
   - type: kubernetes/metrics
-    description: Collecting Kubernetes metrics
+    title: Collecting metrics from kubernetes instances
+    description: Collecting Kubernetes apiserver, container, controllermanager, event,
+      node, pod, proxy, scheduler, state_container, state_cronjob, state_deployment,
+      state_node, state_persistentvolume, state_persistentvolumeclaim, state_pod,
+      state_replicaset, state_resourcequota, state_service, state_statefulset, state_storageclass,
+      system and volume metrics

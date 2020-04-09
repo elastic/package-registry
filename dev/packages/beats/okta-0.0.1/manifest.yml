@@ -24,4 +24,5 @@ datasources:
   description: Collect logs from Okta instances
   inputs:
   - type: logs
-    description: Collecting Okta logs
+    title: Collecting logs from okta instances
+    description: Collecting Okta system logs

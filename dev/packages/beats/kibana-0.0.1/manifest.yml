@@ -24,6 +24,8 @@ datasources:
   description: Collect logs and metrics from kibana instances
   inputs:
   - type: logs
-    description: Collecting kibana logs
+    title: Collecting logs from kibana instances
+    description: Collecting kibana log logs
   - type: kibana/metrics
-    description: Collecting kibana metrics
+    title: Collecting metrics from kibana instances
+    description: Collecting kibana stats and status metrics

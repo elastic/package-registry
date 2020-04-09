@@ -28,4 +28,5 @@ datasources:
   description: Collect metrics from Aerospike instances
   inputs:
   - type: aerospike/metrics
-    description: Collecting Aerospike metrics
+    title: Collecting metrics from aerospike instances
+    description: Collecting Aerospike namespace metrics

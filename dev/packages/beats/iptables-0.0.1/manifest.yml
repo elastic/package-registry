@@ -33,4 +33,5 @@ datasources:
   description: Collect logs from iptables instances
   inputs:
   - type: logs
-    description: Collecting iptables logs
+    title: Collecting logs from iptables instances
+    description: Collecting iptables log logs

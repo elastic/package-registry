@@ -28,4 +28,5 @@ datasources:
   description: Collect logs from panw instances
   inputs:
   - type: logs
-    description: Collecting panw logs
+    title: Collecting logs from panw instances
+    description: Collecting panw panos logs
