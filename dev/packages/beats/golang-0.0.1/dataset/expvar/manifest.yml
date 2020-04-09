@@ -4,19 +4,19 @@ type: metrics
 streams:
 - input: golang/metrics
   vars:
-  - default: example
-    multi: false
-    name: expvar.namespace
-    required: true
-    show_user: true
+  - name: expvar.namespace
+    type: text
     title: Expvar Namespace
-    type: text
-  - default: /debug/vars
     multi: false
-    name: expvar.path
     required: true
     show_user: true
-    title: Expvar Path
+    default: example
+  - name: expvar.path
     type: text
+    title: Expvar Path
+    multi: false
+    required: true
+    show_user: true
+    default: /debug/vars
   title: Golang expvar metrics
   description: Collect Golang expvar metrics

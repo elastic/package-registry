@@ -4,27 +4,24 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: false
+    required: true
+    show_user: true
+    default:
     - /var/log/bro/current/traceroute.log
-    multi: true
-    name: paths
     os.darwin:
       default:
       - /usr/local/var/logs/current/traceroute.log
-    os.linux:
-      default:
-      - /var/log/bro/current/traceroute.log
-    required: true
-    show_user: true
-    title: Paths
+  - name: tags
     type: text
-  - default:
-    - zeek.traceroute
-    multi: true
-    name: tags
-    required: true
-    show_user: true
     title: Tags
-    type: text
+    multi: false
+    required: true
+    show_user: true
+    default:
+    - zeek.traceroute
   title: Zeek traceroute logs
   description: Collect Zeek traceroute logs

@@ -4,12 +4,12 @@ type: metrics
 streams:
 - input: aws/metrics
   vars:
-  - default: 5m
+  - name: period
+    type: text
+    title: Period
     multi: false
-    name: period
     required: true
     show_user: true
-    title: Period
-    type: text
+    default: 5m
   title: aws sns metrics
   description: Collect aws sns metrics

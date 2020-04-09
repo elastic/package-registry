@@ -4,34 +4,34 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
-    - /var/log/haproxy.log
-    multi: true
-    name: paths
-    required: true
-    show_user: true
+  - name: paths
+    type: text
     title: Paths
-    type: text
-  - default: localhost
     multi: false
-    name: syslog_host
     required: true
     show_user: true
+    default:
+    - /var/log/haproxy.log
+  - name: syslog_host
+    type: text
     title: Syslog Host
-    type: text
-  - default: 9001
     multi: false
-    name: syslog_port
     required: true
     show_user: true
-    title: Syslog Port
+    default: localhost
+  - name: syslog_port
     type: integer
-  - default: syslog
+    title: Syslog Port
     multi: false
-    name: input
     required: true
     show_user: true
-    title: Input
+    default: 9001
+  - name: input
     type: text
+    title: Input
+    multi: false
+    required: true
+    show_user: true
+    default: syslog
   title: haproxy log logs
   description: Collect haproxy log logs

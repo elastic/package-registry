@@ -4,22 +4,19 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: false
+    required: true
+    show_user: true
+    default:
     - C:/inetpub/logs/LogFiles/*/*.log
-    multi: true
-    name: paths
     os.darwin:
-      default:
-      - ""
-    os.linux:
       default:
       - ""
     os.windows:
       default:
       - C:/inetpub/logs/LogFiles/*/*.log
-    required: true
-    show_user: true
-    title: Paths
-    type: text
   title: IIS access logs
   description: Collect IIS access logs

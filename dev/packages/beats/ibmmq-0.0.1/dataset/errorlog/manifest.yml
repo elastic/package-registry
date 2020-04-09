@@ -4,18 +4,18 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: false
+    required: true
+    show_user: true
+    default:
     - /var/mqm/*.LOG*
     - /var/mqm/qmgrs/*/*.LOG*
-    multi: true
-    name: paths
     os.windows:
       default:
       - C:\ProgramData\IBM\MQ\errors\*.LOG*
       - C:\ProgramData\IBM\MQ\qmgrs\*\errors\*.LOG*
-    required: true
-    show_user: true
-    title: Paths
-    type: text
   title: ibmmq errorlog logs
   description: Collect ibmmq errorlog logs

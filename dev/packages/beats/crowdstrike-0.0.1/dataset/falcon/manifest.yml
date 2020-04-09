@@ -4,13 +4,13 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
-    - /var/log/crowdstrike/falconhoseclient/output
-    multi: true
-    name: paths
+  - name: paths
+    type: text
+    title: Paths
+    multi: false
     required: true
     show_user: true
-    title: Paths
-    type: text
+    default:
+    - /var/log/crowdstrike/falconhoseclient/output
   title: Crowdstrike falcon logs
   description: Collect Crowdstrike falcon logs

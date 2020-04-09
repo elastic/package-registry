@@ -4,19 +4,19 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: false
+    required: true
+    show_user: true
+    default:
     - /var/log/traefik/access.log*
-    multi: true
-    name: paths
     os.darwin:
       default:
       - /usr/local/traefik/access.log*
     os.windows:
       default:
       - c:/programdata/traefik/logs/*access.log*
-    required: true
-    show_user: true
-    title: Paths
-    type: text
   title: Traefik access logs
   description: Collect Traefik access logs

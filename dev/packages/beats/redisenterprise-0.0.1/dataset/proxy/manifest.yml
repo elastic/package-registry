@@ -4,20 +4,20 @@ type: metrics
 streams:
 - input: redisenterprise/metrics
   vars:
-  - default:
-    - https://127.0.0.1:8070/
-    multi: true
-    name: hosts
-    required: true
-    show_user: true
+  - name: hosts
+    type: text
     title: Hosts
-    type: text
-  - default: 1m
-    multi: false
-    name: period
+    multi: true
     required: true
     show_user: true
-    title: Period
+    default:
+    - https://127.0.0.1:8070/
+  - name: period
     type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 1m
   title: Redis Enterprise proxy metrics
   description: Collect Redis Enterprise proxy metrics

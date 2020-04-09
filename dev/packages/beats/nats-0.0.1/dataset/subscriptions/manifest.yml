@@ -4,20 +4,20 @@ type: metrics
 streams:
 - input: nats/metrics
   vars:
-  - default:
-    - localhost:8222
-    multi: true
-    name: hosts
-    required: true
-    show_user: true
+  - name: hosts
+    type: text
     title: Hosts
-    type: text
-  - default: 10s
-    multi: false
-    name: period
+    multi: true
     required: true
     show_user: true
-    title: Period
+    default:
+    - localhost:8222
+  - name: period
     type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 10s
   title: Nats subscriptions metrics
   description: Collect Nats subscriptions metrics

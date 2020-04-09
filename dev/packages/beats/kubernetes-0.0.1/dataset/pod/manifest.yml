@@ -4,41 +4,41 @@ type: metrics
 streams:
 - input: kubernetes/metrics
   vars:
-  - default: true
-    multi: false
-    name: add_metadata
-    required: true
-    show_user: true
-    title: Add Metadata
+  - name: add_metadata
     type: bool
-  - default: /var/run/secrets/kubernetes.io/serviceaccount/token
+    title: Add Metadata
     multi: false
-    name: bearer_token_file
     required: true
     show_user: true
+    default: true
+  - name: bearer_token_file
+    type: text
     title: Bearer Token File
-    type: text
-  - default:
-    - https://${NODE_NAME}:10250
-    multi: true
-    name: hosts
+    multi: false
     required: true
     show_user: true
+    default: /var/run/secrets/kubernetes.io/serviceaccount/token
+  - name: hosts
+    type: text
     title: Hosts
-    type: text
-  - default: 10s
-    multi: false
-    name: period
+    multi: true
     required: true
     show_user: true
+    default:
+    - https://${NODE_NAME}:10250
+  - name: period
+    type: text
     title: Period
-    type: text
-  - default: none
     multi: false
-    name: ssl.verification_mode
     required: true
     show_user: true
-    title: Ssl Verification Mode
+    default: 10s
+  - name: ssl.verification_mode
     type: text
+    title: Ssl Verification Mode
+    multi: false
+    required: true
+    show_user: true
+    default: none
   title: Kubernetes pod metrics
   description: Collect Kubernetes pod metrics

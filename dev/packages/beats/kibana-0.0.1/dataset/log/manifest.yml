@@ -4,13 +4,13 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
-    - /var/log/kibana/kibana.stdout
-    multi: true
-    name: paths
+  - name: paths
+    type: text
+    title: Paths
+    multi: false
     required: true
     show_user: true
-    title: Paths
-    type: text
+    default:
+    - /var/log/kibana/kibana.stdout
   title: kibana log logs
   description: Collect kibana log logs

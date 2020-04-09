@@ -4,27 +4,24 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: false
+    required: true
+    show_user: true
+    default:
     - /var/log/bro/current/ocsp.log
-    multi: true
-    name: paths
     os.darwin:
       default:
       - /usr/local/var/logs/current/ocsp.log
-    os.linux:
-      default:
-      - /var/log/bro/current/ocsp.log
-    required: true
-    show_user: true
-    title: Paths
+  - name: tags
     type: text
-  - default:
-    - zeek.ocsp
-    multi: true
-    name: tags
-    required: true
-    show_user: true
     title: Tags
-    type: text
+    multi: false
+    required: true
+    show_user: true
+    default:
+    - zeek.ocsp
   title: Zeek ocsp logs
   description: Collect Zeek ocsp logs

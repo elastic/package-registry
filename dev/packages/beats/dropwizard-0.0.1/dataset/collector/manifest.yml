@@ -4,34 +4,34 @@ type: metrics
 streams:
 - input: dropwizard/metrics
   vars:
-  - default:
-    - localhost:8080
-    multi: true
-    name: hosts
-    required: true
-    show_user: true
+  - name: hosts
+    type: text
     title: Hosts
-    type: text
-  - default: /metrics/metrics
-    multi: false
-    name: metrics_path
+    multi: true
     required: true
     show_user: true
+    default:
+    - localhost:8080
+  - name: metrics_path
+    type: text
     title: Metrics Path
-    type: text
-  - default: example
     multi: false
-    name: namespace
     required: true
     show_user: true
+    default: /metrics/metrics
+  - name: namespace
+    type: text
     title: Namespace
-    type: text
-  - default: 10s
     multi: false
-    name: period
     required: true
     show_user: true
-    title: Period
+    default: example
+  - name: period
     type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 10s
   title: Dropwizard collector metrics
   description: Collect Dropwizard collector metrics

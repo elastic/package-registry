@@ -4,33 +4,33 @@ type: metrics
 streams:
 - input: aws/metrics
   vars:
-  - default: ${AWS_ACCESS_KEY_ID:""}
-    multi: false
-    name: access_key_id
-    required: true
-    show_user: true
+  - name: access_key_id
+    type: text
     title: Access Key Id
-    type: text
-  - default: 86400s
     multi: false
-    name: period
     required: true
     show_user: true
+    default: ${AWS_ACCESS_KEY_ID:""}
+  - name: period
+    type: text
     title: Period
-    type: text
-  - default: ${AWS_SECRET_ACCESS_KEY:""}
     multi: false
-    name: secret_access_key
     required: true
     show_user: true
+    default: 86400s
+  - name: secret_access_key
+    type: text
     title: Secret Access Key
-    type: text
-  - default: ${AWS_SESSION_TOKEN:""}
     multi: false
-    name: session_token
     required: true
     show_user: true
-    title: Session Token
+    default: ${AWS_SECRET_ACCESS_KEY:""}
+  - name: session_token
     type: text
+    title: Session Token
+    multi: false
+    required: true
+    show_user: true
+    default: ${AWS_SESSION_TOKEN:""}
   title: aws s3_daily_storage metrics
   description: Collect aws s3_daily_storage metrics

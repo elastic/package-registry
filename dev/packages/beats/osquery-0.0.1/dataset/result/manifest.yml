@@ -4,10 +4,14 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: false
+    required: true
+    show_user: true
+    default:
     - /var/log/osquery/osqueryd.results.log*
-    multi: true
-    name: paths
     os.darwin:
       default:
       - /var/log/osquery/osqueryd.results.log*
@@ -15,16 +19,12 @@ streams:
     os.windows:
       default:
       - C:/ProgramData/osquery/log/osqueryd.results.log*
-    required: true
-    show_user: true
-    title: Paths
-    type: text
-  - default: true
-    multi: false
-    name: use_namespace
-    required: true
-    show_user: true
-    title: Use Namespace
+  - name: use_namespace
     type: bool
+    title: Use Namespace
+    multi: false
+    required: true
+    show_user: true
+    default: true
   title: Osquery result logs
   description: Collect Osquery result logs

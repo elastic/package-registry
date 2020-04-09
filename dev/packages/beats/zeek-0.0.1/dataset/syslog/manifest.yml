@@ -4,34 +4,31 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: false
+    required: true
+    show_user: true
+    default:
     - /var/log/bro/current/syslog.log
-    multi: true
-    name: paths
     os.darwin:
       default:
       - /usr/local/var/logs/current/syslog.log
-    os.linux:
-      default:
-      - /var/log/bro/current/syslog.log
-    required: true
-    show_user: true
-    title: Paths
+  - name: tags
     type: text
-  - default:
-    - zeek.syslog
-    multi: true
-    name: tags
-    required: true
-    show_user: true
     title: Tags
-    type: text
-  - default: true
     multi: false
-    name: community_id
     required: true
     show_user: true
-    title: Community Id
+    default:
+    - zeek.syslog
+  - name: community_id
     type: bool
+    title: Community Id
+    multi: false
+    required: true
+    show_user: true
+    default: true
   title: Zeek syslog logs
   description: Collect Zeek syslog logs

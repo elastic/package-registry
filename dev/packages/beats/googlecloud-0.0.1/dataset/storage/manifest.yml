@@ -4,40 +4,40 @@ type: metrics
 streams:
 - input: googlecloud/metrics
   vars:
-  - default: your JSON credentials file path
-    multi: false
-    name: credentials_file_path
-    required: true
-    show_user: true
+  - name: credentials_file_path
+    type: text
     title: Credentials File Path
-    type: text
-  - default: false
     multi: false
-    name: exclude_labels
     required: true
     show_user: true
-    title: Exclude Labels
+    default: your JSON credentials file path
+  - name: exclude_labels
     type: bool
-  - default: 300s
+    title: Exclude Labels
     multi: false
-    name: period
     required: true
     show_user: true
+    default: false
+  - name: period
+    type: text
     title: Period
-    type: text
-  - default: your project id
     multi: false
-    name: project_id
     required: true
     show_user: true
+    default: 300s
+  - name: project_id
+    type: text
     title: Project Id
-    type: text
-  - default: us-central1
     multi: false
-    name: region
     required: true
     show_user: true
-    title: Region
+    default: your project id
+  - name: region
     type: text
+    title: Region
+    multi: false
+    required: true
+    show_user: true
+    default: us-central1
   title: Google Cloud Platform storage metrics
   description: Collect Google Cloud Platform storage metrics

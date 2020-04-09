@@ -4,22 +4,19 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: false
+    required: true
+    show_user: true
+    default:
     - c:/Windows/System32/LogFiles/HTTPERR/*.log
-    multi: true
-    name: paths
     os.darwin:
-      default:
-      - ""
-    os.linux:
       default:
       - ""
     os.windows:
       default:
       - c:/Windows/System32/LogFiles/HTTPERR/*.log
-    required: true
-    show_user: true
-    title: Paths
-    type: text
   title: IIS error logs
   description: Collect IIS error logs

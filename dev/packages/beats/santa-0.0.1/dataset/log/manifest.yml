@@ -4,20 +4,20 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
-    - /var/log/santa.log
-    multi: true
-    name: paths
-    required: true
-    show_user: true
+  - name: paths
+    type: text
     title: Paths
-    type: text
-  - default: file
     multi: false
-    name: input
     required: true
     show_user: true
-    title: Input
+    default:
+    - /var/log/santa.log
+  - name: input
     type: text
+    title: Input
+    multi: false
+    required: true
+    show_user: true
+    default: file
   title: Google Santa log logs
   description: Collect Google Santa log logs

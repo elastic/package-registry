@@ -4,22 +4,19 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: false
+    required: true
+    show_user: true
+    default:
     - /var/opt/mssql/log/error*
-    multi: true
-    name: paths
     os.darwin:
-      default:
-      - /var/opt/mssql/log/error*
-    os.linux:
       default:
       - /var/opt/mssql/log/error*
     os.windows:
       default:
       - c:\ProgramFiles\Microsoft SQL Server\MSSQL.1MSSQL\LOG\ERRORLOG*
-    required: true
-    show_user: true
-    title: Paths
-    type: text
   title: mssql log logs
   description: Collect mssql log logs

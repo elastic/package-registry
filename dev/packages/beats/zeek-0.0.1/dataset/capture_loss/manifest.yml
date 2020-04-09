@@ -4,27 +4,24 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: false
+    required: true
+    show_user: true
+    default:
     - /var/log/bro/current/capture_loss.log
-    multi: true
-    name: paths
     os.darwin:
       default:
       - /usr/local/var/logs/current/capture_loss.log
-    os.linux:
-      default:
-      - /var/log/bro/current/capture_loss.log
-    required: true
-    show_user: true
-    title: Paths
+  - name: tags
     type: text
-  - default:
-    - zeek.capture_loss
-    multi: true
-    name: tags
-    required: true
-    show_user: true
     title: Tags
-    type: text
+    multi: false
+    required: true
+    show_user: true
+    default:
+    - zeek.capture_loss
   title: Zeek capture_loss logs
   description: Collect Zeek capture_loss logs

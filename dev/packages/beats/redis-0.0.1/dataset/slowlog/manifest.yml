@@ -4,20 +4,20 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
-    - localhost:6379
-    multi: true
-    name: hosts
-    required: true
-    show_user: true
-    title: Hosts
+  - name: hosts
     type: text
-  - default: ""
+    title: Hosts
     multi: false
-    name: password
     required: true
     show_user: true
-    title: Password
+    default:
+    - localhost:6379
+  - name: password
     type: password
+    title: Password
+    multi: false
+    required: true
+    show_user: true
+    default: ""
   title: Redis slowlog logs
   description: Collect Redis slowlog logs

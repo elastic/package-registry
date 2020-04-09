@@ -4,20 +4,20 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: false
+    required: true
+    show_user: true
+    default:
     - /var/log/mysql/error.log*
     - /var/log/mysqld.log*
-    multi: true
-    name: paths
     os.darwin:
       default:
       - /usr/local/var/mysql/{{.builtin.hostname}}.{{.builtin.domain}}.err*
     os.windows:
       default:
       - c:/programdata/MySQL/MySQL Server*/error.log*
-    required: true
-    show_user: true
-    title: Paths
-    type: text
   title: MySQL error logs
   description: Collect MySQL error logs

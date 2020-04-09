@@ -179,7 +179,7 @@ func createAgentContentForMetrics(modulePath, moduleName, datasetName string, st
 	buffer.WriteString(fmt.Sprintf("metricsets: [\"%s\"]\n", datasetName))
 
 	for _, aVar := range vars {
-		variableName := aVar["name"].(string)
+		variableName := aVar.Name
 
 		if !isAgentConfigOptionRequired(variableName) {
 			buffer.WriteString(fmt.Sprintf("{{#if %s}}\n", variableName))
@@ -205,13 +205,13 @@ func createAgentContentForMetrics(modulePath, moduleName, datasetName string, st
 	}, nil
 }
 
-func extractVarsFromStream(streams []util.Stream, inputName string) []map[string]interface{} {
+func extractVarsFromStream(streams []util.Stream, inputName string) []util.Variable {
 	for _, stream := range streams {
 		if stream.Input == inputName {
 			return stream.Vars
 		}
 	}
-	return []map[string]interface{}{}
+	return []util.Variable{}
 }
 
 func isAgentConfigOptionRequired(optionName string) bool {

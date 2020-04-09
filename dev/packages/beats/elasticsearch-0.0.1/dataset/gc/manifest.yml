@@ -4,11 +4,15 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: false
+    required: true
+    show_user: true
+    default:
     - /var/log/elasticsearch/gc.log.[0-9]*
     - /var/log/elasticsearch/gc.log
-    multi: true
-    name: paths
     os.darwin:
       default:
       - /usr/local/var/lib/elasticsearch/gc.log.[0-9]*
@@ -17,9 +21,5 @@ streams:
       default:
       - c:/ProgramData/Elastic/Elasticsearch/logs/gc.log.*
       - c:/ProgramData/Elastic/Elasticsearch/logs/gc.log
-    required: true
-    show_user: true
-    title: Paths
-    type: text
   title: elasticsearch gc logs
   description: Collect elasticsearch gc logs

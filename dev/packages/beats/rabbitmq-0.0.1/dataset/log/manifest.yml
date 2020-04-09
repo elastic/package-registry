@@ -4,18 +4,16 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: false
+    required: true
+    show_user: true
+    default:
     - ${RABBITMQ_LOGS:/var/log/rabbitmq/rabbit@localhost.log*}
-    multi: true
-    name: paths
     os.darwin:
       default:
       - ${RABBITMQ_LOGS:/usr/local/var/log/rabbitmq/rabbit@localhost.log*}
-    os.windows:
-      default: null
-    required: true
-    show_user: true
-    title: Paths
-    type: text
   title: RabbitMQ log logs
   description: Collect RabbitMQ log logs

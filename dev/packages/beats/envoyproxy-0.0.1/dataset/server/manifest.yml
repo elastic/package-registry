@@ -4,20 +4,20 @@ type: metrics
 streams:
 - input: envoyproxy/metrics
   vars:
-  - default:
-    - localhost:9901
-    multi: true
-    name: hosts
-    required: true
-    show_user: true
+  - name: hosts
+    type: text
     title: Hosts
-    type: text
-  - default: 10s
-    multi: false
-    name: period
+    multi: true
     required: true
     show_user: true
-    title: Period
+    default:
+    - localhost:9901
+  - name: period
     type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 10s
   title: envoyproxy server metrics
   description: Collect envoyproxy server metrics

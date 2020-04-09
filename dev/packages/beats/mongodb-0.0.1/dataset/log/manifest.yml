@@ -4,16 +4,16 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: false
+    required: true
+    show_user: true
+    default:
     - /var/log/mongodb/mongodb.log
-    multi: true
-    name: paths
     os.windows:
       default:
       - c:\data\log\mongod.log
-    required: true
-    show_user: true
-    title: Paths
-    type: text
   title: mongodb log logs
   description: Collect mongodb log logs

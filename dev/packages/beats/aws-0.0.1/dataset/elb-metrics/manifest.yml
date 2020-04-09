@@ -4,28 +4,28 @@ type: metrics
 streams:
 - input: aws/metrics
   vars:
-  - default: test-mb
-    multi: false
-    name: credential_profile_name
-    required: true
-    show_user: true
+  - name: credential_profile_name
+    type: text
     title: Credential Profile Name
-    type: text
-  - default: 60s
     multi: false
-    name: period
     required: true
     show_user: true
-    title: Period
+    default: test-mb
+  - name: period
     type: text
-  - default:
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 60s
+  - name: tags_filter
+    type: text
+    title: Tags Filter
+    multi: true
+    required: true
+    show_user: true
+    default:
     - key: dept
       value: eng
-    multi: true
-    name: tags_filter
-    required: true
-    show_user: true
-    title: Tags Filter
-    type: text
   title: aws elb metrics
   description: Collect aws elb metrics

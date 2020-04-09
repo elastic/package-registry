@@ -4,20 +4,20 @@ type: metrics
 streams:
 - input: rabbitmq/metrics
   vars:
-  - default:
-    - localhost:15672
-    multi: true
-    name: hosts
-    required: true
-    show_user: true
+  - name: hosts
+    type: text
     title: Hosts
-    type: text
-  - default: 10s
-    multi: false
-    name: period
+    multi: true
     required: true
     show_user: true
-    title: Period
+    default:
+    - localhost:15672
+  - name: period
     type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 10s
   title: RabbitMQ node metrics
   description: Collect RabbitMQ node metrics

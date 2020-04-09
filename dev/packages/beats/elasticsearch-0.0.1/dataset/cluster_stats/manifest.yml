@@ -4,27 +4,27 @@ type: metrics
 streams:
 - input: elasticsearch/metrics
   vars:
-  - default:
-    - http://localhost:9200
-    multi: true
-    name: hosts
-    required: true
-    show_user: true
+  - name: hosts
+    type: text
     title: Hosts
-    type: text
-  - default: 10s
-    multi: false
-    name: period
+    multi: true
     required: true
     show_user: true
+    default:
+    - http://localhost:9200
+  - name: period
+    type: text
     title: Period
-    type: text
-  - default: true
     multi: false
-    name: xpack.enabled
     required: true
     show_user: true
-    title: Xpack Enabled
+    default: 10s
+  - name: xpack.enabled
     type: bool
+    title: Xpack Enabled
+    multi: false
+    required: true
+    show_user: true
+    default: true
   title: Elasticsearch cluster_stats metrics
   description: Collect Elasticsearch cluster_stats metrics

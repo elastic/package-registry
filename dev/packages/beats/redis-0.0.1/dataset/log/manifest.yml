@@ -4,10 +4,14 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: false
+    required: true
+    show_user: true
+    default:
     - /var/log/redis/redis-server.log*
-    multi: true
-    name: paths
     os.darwin:
       default:
       - /usr/local/var/log/redis/redis-server.log*
@@ -15,9 +19,5 @@ streams:
     os.windows:
       default:
       - c:/program files/Redis/logs/redis.log*
-    required: true
-    show_user: true
-    title: Paths
-    type: text
   title: Redis log logs
   description: Collect Redis log logs

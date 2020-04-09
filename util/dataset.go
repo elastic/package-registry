@@ -34,7 +34,7 @@ type DataSet struct {
 
 type Input struct {
 	Type        string                   `config:"type" json:"type" validate:"required"`
-	Vars        []map[string]interface{} `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
+	Vars        []Variable				 `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
 	Title       string                   `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
 	Description string                   `config:"description" json:"description,omitempty" yaml:"description,omitempty"`
 	Streams     []Stream                 `config:"streams" json:"streams,omitempty" yaml:"streams,omitempty"`
@@ -42,10 +42,22 @@ type Input struct {
 
 type Stream struct {
 	Input       string                   `config:"input" json:"input" validate:"required"`
-	Vars        []map[string]interface{} `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
+	Vars        []Variable				 `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
 	Dataset     string                   `config:"dataset" json:"dataset,omitempty" yaml:"dataset,omitempty"`
 	Title       string                   `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
 	Description string                   `config:"description" json:"description,omitempty" yaml:"description,omitempty"`
+}
+
+type Variable struct {
+	Name string `yaml:"name"`
+	Type string `yaml:"type"`
+	Title string `yaml:"title"`
+	Multi bool `yaml:"multi"`
+	Required bool `yaml:"required"`
+	ShowUser bool `yaml:"show_user"`
+	Default interface{} `yaml:"default"`
+	OsDarwin interface{} `yaml:"os.darwin,omitempty"`
+	OsWindows interface{} `yaml:"os.windows,omitempty"`
 }
 
 func NewDataset(basePath string, p *Package) (*DataSet, error) {

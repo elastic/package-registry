@@ -4,51 +4,51 @@ type: metrics
 streams:
 - input: system/metrics
   vars:
-  - default:
-    - percentages
+  - name: core.metrics
+    type: text
+    title: Core Metrics
     multi: true
-    name: core.metrics
     required: true
     show_user: true
-    title: Core Metrics
+    default:
+    - percentages
+  - name: cpu.metrics
     type: text
-  - default:
+    title: Cpu Metrics
+    multi: true
+    required: true
+    show_user: true
+    default:
     - percentages
     - normalized_percentages
-    multi: true
-    name: cpu.metrics
-    required: true
-    show_user: true
-    title: Cpu Metrics
+  - name: period
     type: text
-  - default: 10s
-    multi: false
-    name: period
-    required: true
-    show_user: true
     title: Period
-    type: text
-  - default: 5
     multi: false
-    name: process.include_top_n.by_cpu
     required: true
     show_user: true
+    default: 10s
+  - name: process.include_top_n.by_cpu
+    type: integer
     title: Process Include Top N By Cpu
-    type: integer
-  - default: 5
     multi: false
-    name: process.include_top_n.by_memory
     required: true
     show_user: true
-    title: Process Include Top N By Memory
+    default: 5
+  - name: process.include_top_n.by_memory
     type: integer
-  - default:
-    - .*
-    multi: true
-    name: processes
+    title: Process Include Top N By Memory
+    multi: false
     required: true
     show_user: true
-    title: Processes
+    default: 5
+  - name: processes
     type: text
+    title: Processes
+    multi: true
+    required: true
+    show_user: true
+    default:
+    - .*
   title: System network metrics
   description: Collect System network metrics

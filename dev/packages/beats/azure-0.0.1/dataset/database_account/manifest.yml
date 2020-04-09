@@ -4,40 +4,40 @@ type: metrics
 streams:
 - input: azure/metrics
   vars:
-  - default: ${AZURE_CLIENT_ID:""}
-    multi: false
-    name: client_id
-    required: true
-    show_user: true
+  - name: client_id
+    type: text
     title: Client Id
-    type: text
-  - default: ${AZURE_CLIENT_SECRET:""}
     multi: false
-    name: client_secret
     required: true
     show_user: true
+    default: ${AZURE_CLIENT_ID:""}
+  - name: client_secret
+    type: text
     title: Client Secret
-    type: text
-  - default: 300s
     multi: false
-    name: period
     required: true
     show_user: true
+    default: ${AZURE_CLIENT_SECRET:""}
+  - name: period
+    type: text
     title: Period
-    type: text
-  - default: ${AZURE_SUBSCRIPTION_ID:""}
     multi: false
-    name: subscription_id
     required: true
     show_user: true
+    default: 300s
+  - name: subscription_id
+    type: text
     title: Subscription Id
-    type: text
-  - default: ${AZURE_TENANT_ID:""}
     multi: false
-    name: tenant_id
     required: true
     show_user: true
-    title: Tenant Id
+    default: ${AZURE_SUBSCRIPTION_ID:""}
+  - name: tenant_id
     type: text
+    title: Tenant Id
+    multi: false
+    required: true
+    show_user: true
+    default: ${AZURE_TENANT_ID:""}
   title: azure database_account metrics
   description: Collect azure database_account metrics

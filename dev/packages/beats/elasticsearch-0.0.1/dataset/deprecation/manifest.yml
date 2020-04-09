@@ -4,11 +4,15 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: false
+    required: true
+    show_user: true
+    default:
     - /var/log/elasticsearch/*_deprecation.log
     - /var/log/elasticsearch/*_deprecation.json
-    multi: true
-    name: paths
     os.darwin:
       default:
       - /usr/local/var/lib/elasticsearch/*_deprecation.log
@@ -17,9 +21,5 @@ streams:
       default:
       - c:/ProgramData/Elastic/Elasticsearch/logs/*_deprecation.log
       - c:/ProgramData/Elastic/Elasticsearch/logs/*_deprecation.json
-    required: true
-    show_user: true
-    title: Paths
-    type: text
   title: elasticsearch deprecation logs
   description: Collect elasticsearch deprecation logs

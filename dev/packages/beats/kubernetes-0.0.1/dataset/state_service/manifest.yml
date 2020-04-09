@@ -4,27 +4,27 @@ type: metrics
 streams:
 - input: kubernetes/metrics
   vars:
-  - default: true
-    multi: false
-    name: add_metadata
-    required: true
-    show_user: true
-    title: Add Metadata
+  - name: add_metadata
     type: bool
-  - default:
-    - kube-state-metrics:8080
-    multi: true
-    name: hosts
-    required: true
-    show_user: true
-    title: Hosts
-    type: text
-  - default: 10s
+    title: Add Metadata
     multi: false
-    name: period
     required: true
     show_user: true
-    title: Period
+    default: true
+  - name: hosts
     type: text
+    title: Hosts
+    multi: true
+    required: true
+    show_user: true
+    default:
+    - kube-state-metrics:8080
+  - name: period
+    type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 10s
   title: Kubernetes state_service metrics
   description: Collect Kubernetes state_service metrics

@@ -4,12 +4,16 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: false
+    required: true
+    show_user: true
+    default:
     - /var/log/elasticsearch/*_access.log
     - /var/log/elasticsearch/*_audit.log
     - /var/log/elasticsearch/*_audit.json
-    multi: true
-    name: paths
     os.darwin:
       default:
       - /usr/local/var/lib/elasticsearch/*_access.log
@@ -20,9 +24,5 @@ streams:
       - c:/ProgramData/Elastic/Elasticsearch/logs/*_access.log
       - c:/ProgramData/Elastic/Elasticsearch/logs/*_audit.log
       - c:/ProgramData/Elastic/Elasticsearch/logs/*_audit.json
-    required: true
-    show_user: true
-    title: Paths
-    type: text
   title: elasticsearch audit logs
   description: Collect elasticsearch audit logs

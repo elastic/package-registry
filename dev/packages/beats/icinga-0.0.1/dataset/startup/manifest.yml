@@ -4,19 +4,19 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: false
+    required: true
+    show_user: true
+    default:
     - /var/log/icinga2/startup.log
-    multi: true
-    name: paths
     os.darwin:
       default:
       - /usr/local/icinga2/var/log/icinga2/startup.log
     os.windows:
       default:
       - c:/programdata/icinga2/var/log/icinga2/startup.log
-    required: true
-    show_user: true
-    title: Paths
-    type: text
   title: Icinga startup logs
   description: Collect Icinga startup logs

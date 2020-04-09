@@ -4,13 +4,13 @@ type: metrics
 streams:
 - input: system/metrics
   vars:
-  - default:
-    - percentages
+  - name: core.metrics
+    type: text
+    title: Core Metrics
     multi: true
-    name: core.metrics
     required: true
     show_user: true
-    title: Core Metrics
-    type: text
+    default:
+    - percentages
   title: System core metrics
   description: Collect System core metrics

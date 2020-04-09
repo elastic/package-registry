@@ -20,7 +20,7 @@ import (
 )
 
 type manifestWithVars struct {
-	Vars []map[string]interface{} `yaml:"var"`
+	Vars []util.Variable `yaml:"var"`
 }
 
 type varWithDefault struct {
@@ -78,31 +78,22 @@ func createLogStreams(modulePath, moduleTitle, datasetName string) ([]util.Strea
 func adjustVariablesFormat(mwvs manifestWithVars) manifestWithVars {
 	var withDefaults manifestWithVars
 	for _, aVar := range mwvs.Vars {
-		aVarWithDefaults := map[string]interface{}{
-			"multi":     false,
-			"required":  true,
-			"show_user": true,
+		aVarWithDefaults := aVar
+		aVarWithDefaults.Title = toVariableTitle(aVar.Name)
+		aVarWithDefaults.Type = determineInputVariableType(aVar.Name, aVar.Default)
+		aVarWithDefaults.Required = true
+		aVarWithDefaults.ShowUser = true
+
+		if aVarWithDefaults.OsDarwin != nil {
+			aVarWithDefaults.OsDarwin = varWithDefault{
+				Default: aVarWithDefaults.OsDarwin,
+			}
 		}
-		for k, v := range aVar {
-			if strings.HasPrefix(k, "os.") {
-				aVarWithDefaults[k] = varWithDefault{
-					Default: v,
-				}
-				continue
+
+		if aVarWithDefaults.OsWindows != nil {
+			aVarWithDefaults.OsWindows = varWithDefault{
+				Default: aVarWithDefaults.OsWindows,
 			}
-
-			if k == "default" {
-				aVarWithDefaults["type"] = determineInputVariableType(aVar["name"], v)
-
-				_, isArray := v.([]interface{})
-				if isArray {
-					aVarWithDefaults["multi"] = true
-				}
-			} else if k == "name" {
-				aVarWithDefaults["title"] = toVariableTitle(v.(string))
-			}
-
-			aVarWithDefaults[k] = v
 		}
 		withDefaults.Vars = append(withDefaults.Vars, aVarWithDefaults)
 	}
@@ -121,7 +112,7 @@ func createMetricStreams(modulePath, moduleName, moduleTitle, datasetName string
 		return nil, errors.Wrapf(err, "merging config files failed")
 	}
 
-	var configOptions []map[string]interface{}
+	var configOptions []util.Variable
 
 	if len(merged) > 0 {
 		var moduleConfig []mapStr
@@ -152,14 +143,14 @@ func createMetricStreams(modulePath, moduleName, moduleTitle, datasetName string
 
 				if related || strings.HasPrefix(name, fmt.Sprintf("%s.", datasetName)) {
 					_, isArray := value.([]interface{})
-					configOption := map[string]interface{}{
-						"default":   value,
-						"multi":     isArray,
-						"name":      name,
-						"required":  true,
-						"show_user": true,
-						"title":     toVariableTitle(name),
-						"type":      determineInputVariableType(name, value),
+					configOption := util.Variable{
+						Name:     name,
+						Type:     determineInputVariableType(name, value),
+						Title:    toVariableTitle(name),
+						Multi:    isArray,
+						Required: true,
+						ShowUser: true,
+						Default:  value,
 					}
 
 					configOptions = append(configOptions, configOption)
@@ -170,7 +161,7 @@ func createMetricStreams(modulePath, moduleName, moduleTitle, datasetName string
 
 		// sort variables to keep them in order while using version control.
 		sort.Slice(configOptions, func(i, j int) bool {
-			return sort.StringsAreSorted([]string{configOptions[i]["name"].(string), configOptions[j]["name"].(string)})
+			return sort.StringsAreSorted([]string{configOptions[i].Name, configOptions[j].Name})
 		})
 	}
 

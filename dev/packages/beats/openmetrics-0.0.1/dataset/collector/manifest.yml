@@ -4,41 +4,41 @@ type: metrics
 streams:
 - input: openmetrics/metrics
   vars:
-  - default:
-    - localhost:9090
-    multi: true
-    name: hosts
-    required: true
-    show_user: true
+  - name: hosts
+    type: text
     title: Hosts
-    type: text
-  - default: []
     multi: true
-    name: metrics_filters.exclude
     required: true
     show_user: true
+    default:
+    - localhost:9090
+  - name: metrics_filters.exclude
+    type: text
     title: Metrics Filters Exclude
-    type: text
-  - default: []
     multi: true
-    name: metrics_filters.include
     required: true
     show_user: true
+    default: []
+  - name: metrics_filters.include
+    type: text
     title: Metrics Filters Include
-    type: text
-  - default: /metrics
-    multi: false
-    name: metrics_path
+    multi: true
     required: true
     show_user: true
+    default: []
+  - name: metrics_path
+    type: text
     title: Metrics Path
-    type: text
-  - default: 10s
     multi: false
-    name: period
     required: true
     show_user: true
-    title: Period
+    default: /metrics
+  - name: period
     type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 10s
   title: Openmetrics collector metrics
   description: Collect Openmetrics collector metrics

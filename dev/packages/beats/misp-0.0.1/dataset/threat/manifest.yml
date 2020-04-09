@@ -4,63 +4,69 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default: httpjson
-    multi: false
-    name: input
-    required: true
-    show_user: true
+  - name: input
+    type: text
     title: Input
-    type: text
-  - default: ""
     multi: false
-    name: api_key
     required: true
     show_user: true
+    default: httpjson
+  - name: api_key
+    type: text
     title: Api Key
-    type: text
-  - default: 60
     multi: false
-    name: http_client_timeout
     required: true
     show_user: true
+    default: ""
+  - name: http_client_timeout
+    type: integer
     title: Http Client Timeout
-    type: integer
-  - default: GET
     multi: false
-    name: http_method
     required: true
     show_user: true
+    default: 60
+  - name: http_method
+    type: text
     title: Http Method
-    type: text
-  - default: '{}'
     multi: false
-    name: http_headers
     required: true
     show_user: true
+    default: GET
+  - name: http_headers
+    type: text
     title: Http Headers
-    type: text
-  - default: '{}'
     multi: false
-    name: http_request_body
     required: true
     show_user: true
+    default: '{}'
+  - name: http_request_body
+    type: text
     title: Http Request Body
-    type: text
-  - default: 0
     multi: false
-    name: interval
     required: true
     show_user: true
-    title: Interval
+    default: '{}'
+  - name: interval
     type: integer
-  - default: response.Attribute
+    title: Interval
     multi: false
-    name: json_objects_array
     required: true
     show_user: true
-    title: Json Objects Array
+    default: 0
+  - name: json_objects_array
     type: text
-  - default: |-
+    title: Json Objects Array
+    multi: false
+    required: true
+    show_user: true
+    default: response.Attribute
+  - name: pagination
+    type: text
+    title: Pagination
+    multi: false
+    required: true
+    show_user: true
+    default: |-
       {
         "enabled": false,
         "extra_body_content": {},
@@ -68,25 +74,19 @@ streams:
         "req_field": "",
         "url": ""
       }
-    multi: false
-    name: pagination
-    required: true
-    show_user: true
-    title: Pagination
+  - name: url
     type: text
-  - default: ""
-    multi: false
-    name: url
-    required: true
-    show_user: true
     title: Url
-    type: text
-  - default: '{}'
     multi: false
-    name: ssl
     required: true
     show_user: true
-    title: Ssl
+    default: ""
+  - name: ssl
     type: text
+    title: Ssl
+    multi: false
+    required: true
+    show_user: true
+    default: '{}'
   title: MISP threat logs
   description: Collect MISP threat logs

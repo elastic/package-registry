@@ -4,34 +4,34 @@ type: metrics
 streams:
 - input: mssql/metrics
   vars:
-  - default:
-    - sqlserver://localhost
-    multi: true
-    name: hosts
-    required: true
-    show_user: true
+  - name: hosts
+    type: text
     title: Hosts
-    type: text
-  - default: verysecurepassword
-    multi: false
-    name: password
+    multi: true
     required: true
     show_user: true
-    title: Password
+    default:
+    - sqlserver://localhost
+  - name: password
     type: password
-  - default: 10s
+    title: Password
     multi: false
-    name: period
     required: true
     show_user: true
+    default: verysecurepassword
+  - name: period
+    type: text
     title: Period
-    type: text
-  - default: domain\username
     multi: false
-    name: username
     required: true
     show_user: true
-    title: Username
+    default: 10s
+  - name: username
     type: text
+    title: Username
+    multi: false
+    required: true
+    show_user: true
+    default: domain\username
   title: MSSQL performance metrics
   description: Collect MSSQL performance metrics

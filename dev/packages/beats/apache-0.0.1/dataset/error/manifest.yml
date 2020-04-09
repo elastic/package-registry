@@ -4,11 +4,15 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: false
+    required: true
+    show_user: true
+    default:
     - /var/log/apache2/error.log*
     - /var/log/httpd/error_log*
-    multi: true
-    name: paths
     os.darwin:
       default:
       - /usr/local/var/log/apache2/error_log*
@@ -16,9 +20,5 @@ streams:
       default:
       - C:/tools/Apache/httpd-2.*/Apache24/logs/error.log*
       - C:/Program Files/Apache Software Foundation/Apache2.*/logs/error.log*
-    required: true
-    show_user: true
-    title: Paths
-    type: text
   title: Apache error logs
   description: Collect Apache error logs

@@ -4,27 +4,27 @@ type: metrics
 streams:
 - input: nginx/metrics
   vars:
-  - default:
-    - http://127.0.0.1
-    multi: true
-    name: hosts
-    required: true
-    show_user: true
+  - name: hosts
+    type: text
     title: Hosts
-    type: text
-  - default: 10s
-    multi: false
-    name: period
+    multi: true
     required: true
     show_user: true
+    default:
+    - http://127.0.0.1
+  - name: period
+    type: text
     title: Period
-    type: text
-  - default: nginx_status
     multi: false
-    name: server_status_path
     required: true
     show_user: true
-    title: Server Status Path
+    default: 10s
+  - name: server_status_path
     type: text
+    title: Server Status Path
+    multi: false
+    required: true
+    show_user: true
+    default: nginx_status
   title: Nginx stubstatus metrics
   description: Collect Nginx stubstatus metrics

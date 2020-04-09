@@ -4,27 +4,27 @@ type: metrics
 streams:
 - input: aws/metrics
   vars:
-  - default: test-mb
-    multi: false
-    name: credential_profile_name
-    required: true
-    show_user: true
+  - name: credential_profile_name
+    type: text
     title: Credential Profile Name
-    type: text
-  - default: 300s
     multi: false
-    name: period
     required: true
     show_user: true
+    default: test-mb
+  - name: period
+    type: text
     title: Period
-    type: text
-  - default:
-    - us-west-1
-    multi: true
-    name: regions
+    multi: false
     required: true
     show_user: true
-    title: Regions
+    default: 300s
+  - name: regions
     type: text
+    title: Regions
+    multi: true
+    required: true
+    show_user: true
+    default:
+    - us-west-1
   title: aws sqs metrics
   description: Collect aws sqs metrics

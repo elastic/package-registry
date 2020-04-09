@@ -4,66 +4,63 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
-    - /var/log/cisco-ftd.log
-    multi: true
-    name: paths
-    required: true
-    show_user: true
+  - name: paths
+    type: text
     title: Paths
-    type: text
-  - default:
-    - cisco-ftd
-    multi: true
-    name: tags
+    multi: false
     required: true
     show_user: true
+    default:
+    - /var/log/cisco-ftd.log
+  - name: tags
+    type: text
     title: Tags
-    type: text
-  - default: localhost
     multi: false
-    name: syslog_host
     required: true
     show_user: true
+    default:
+    - cisco-ftd
+  - name: syslog_host
+    type: text
     title: Syslog Host
-    type: text
-  - default: 9003
     multi: false
-    name: syslog_port
     required: true
     show_user: true
+    default: localhost
+  - name: syslog_port
+    type: integer
     title: Syslog Port
-    type: integer
-  - default: syslog
     multi: false
-    name: input
     required: true
     show_user: true
+    default: 9003
+  - name: input
+    type: text
     title: Input
-    type: text
-  - default: 7
-    min_elasticsearch_version:
-      value: false
-      version: 6.1.0
     multi: false
-    name: log_level
     required: true
     show_user: true
-    title: Log Level
+    default: syslog
+  - name: log_level
     type: integer
-  - default: ftd
+    title: Log Level
     multi: false
-    name: internal_prefix
     required: true
     show_user: true
+    default: 7
+  - name: internal_prefix
+    type: text
     title: Internal Prefix
-    type: text
-  - default: FTD
     multi: false
-    name: internal_PREFIX
     required: true
     show_user: true
-    title: Internal PREFIX
+    default: ftd
+  - name: internal_PREFIX
     type: text
+    title: Internal PREFIX
+    multi: false
+    required: true
+    show_user: true
+    default: FTD
   title: Cisco ftd logs
   description: Collect Cisco ftd logs
