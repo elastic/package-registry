@@ -12,7 +12,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/elastic/go-ucfg"
+	ucfg "github.com/elastic/go-ucfg"
 	"github.com/elastic/go-ucfg/yaml"
 )
 
@@ -44,6 +44,7 @@ type Stream struct {
 	Input       string                   `config:"input" json:"input" validate:"required"`
 	Vars        []map[string]interface{} `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
 	Dataset     string                   `config:"dataset" json:"dataset,omitempty" yaml:"dataset,omitempty"`
+	Template    string                   `config:"template" json:"template,omitempty" yaml:"template,omitempty"`
 	Title       string                   `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
 	Description string                   `config:"description" json:"description,omitempty" yaml:"description,omitempty"`
 }
