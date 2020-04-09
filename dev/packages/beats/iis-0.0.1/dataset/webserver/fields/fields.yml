@@ -1,8 +1,5 @@
-- name: webserver.*.*
-  release: beta
+- name: iis.webserver.*.*
   type: object
-  object_type: float
-  object_type_mapping_type: "*"
-  description: >
+  description: |
     webserver
-
+  release: beta

@@ -1,0 +1,14 @@
+- key: ecs
+  title: ECS
+  description: ECS Fields.
+  fields:
+  - name: process
+    title: Process
+    group: 2
+    type: group
+    fields:
+    - name: pid
+      level: core
+      type: long
+      format: string
+      description: Process id.

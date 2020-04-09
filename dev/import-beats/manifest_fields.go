@@ -4,30 +4,16 @@
 
 package main
 
-import (
-	"github.com/pkg/errors"
-	"gopkg.in/yaml.v2"
-)
-
-type fieldsData struct {
-	Title   string `yaml:"title"`
-	Release string `yaml:"release"`
-}
-
 // determinePackageRelease function considers all release tags for modules and justifies a common release tag.
 // If any of module has been released as "GA", then the package will be released as "GA",
 // else if any of module has been release as "beta", then the package will be released as "beta",
 // otherwise "experimental".
-func determinePackageRelease(manifestRelease string, moduleFields []byte) (string, error) {
+func determinePackageRelease(manifestRelease string, fields []fieldDefinition) (string, error) {
 	if manifestRelease == "ga" { // manifestRelease
 		return "ga", nil
 	}
 
-	moduleRelease, err := loadReleaseFromFields(moduleFields)
-	if err != nil {
-		return "", errors.Wrapf(err, "loading module release failed")
-	}
-
+	moduleRelease := fields[0].Release
 	if moduleRelease == "" || moduleRelease == "ga" {
 		return "ga", nil // missing fields.release means "GA"
 	}
@@ -38,42 +24,14 @@ func determinePackageRelease(manifestRelease string, moduleFields []byte) (strin
 	return "experimental", nil
 }
 
-func determineDatasetRelease(moduleRelease string, datasetFields []byte) (string, error) {
-	datasetRelease, err := loadReleaseFromFields(datasetFields)
-	if err != nil {
-		return "", errors.Wrapf(err, "loading dataset release failed")
+func determineDatasetRelease(moduleRelease string, fields []fieldDefinition) (string, error) {
+	if len(fields) == 0 {
+		return moduleRelease, nil
 	}
 
+	datasetRelease := fields[0].Release
 	if datasetRelease != "" {
 		return datasetRelease, nil
 	}
 	return moduleRelease, nil
-}
-
-func loadReleaseFromFields(fields []byte) (string, error) {
-	f, err := unmarshalFirstFieldsData(fields)
-	if err != nil {
-		return "", errors.Wrapf(err, "unmarshalling fields data failed")
-	}
-	return f.Release, nil
-}
-
-func loadTitleFromFields(fields []byte) (string, error) {
-	f, err := unmarshalFirstFieldsData(fields)
-	if err != nil {
-		return "", errors.Wrapf(err, "unmarshalling fields data failed")
-	}
-	return f.Title, nil
-}
-
-func unmarshalFirstFieldsData(fields []byte) (fieldsData, error) {
-	var fs []fieldsData
-	err := yaml.Unmarshal(fields, &fs)
-	if err != nil {
-		return fieldsData{}, errors.Wrapf(err, "unmarshalling fields file failed")
-	}
-	if len(fs) > 0 {
-		return fs[0], nil
-	}
-	return fieldsData{}, nil
 }

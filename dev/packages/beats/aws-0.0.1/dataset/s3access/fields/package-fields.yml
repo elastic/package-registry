@@ -1,5 +1,2 @@
 - name: aws
   type: group
-  description: >
-    Fields from AWS logs.
-  fields:
