@@ -24,4 +24,5 @@ datasources:
   description: Collect logs from Google Santa instances
   inputs:
   - type: logs
-    description: Collecting Google Santa logs
+    title: Collecting logs from santa instances
+    description: Collecting Google Santa log logs

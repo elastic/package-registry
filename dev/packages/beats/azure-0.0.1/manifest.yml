@@ -46,6 +46,10 @@ datasources:
   description: Collect logs and metrics from Azure instances
   inputs:
   - type: logs
-    description: Collecting Azure logs
+    title: Collecting logs from azure instances
+    description: Collecting Azure activitylogs, auditlogs and signinlogs logs
   - type: azure/metrics
-    description: Collecting Azure metrics
+    title: Collecting metrics from azure instances
+    description: Collecting Azure compute_vm, compute_vm_scaleset, container_instance,
+      container_registry, container_service, database_account, monitor and storage
+      metrics

@@ -29,4 +29,5 @@ datasources:
   description: Collect logs from Cisco instances
   inputs:
   - type: logs
-    description: Collecting Cisco logs
+    title: Collecting logs from cisco instances
+    description: Collecting Cisco asa, ftd and ios logs

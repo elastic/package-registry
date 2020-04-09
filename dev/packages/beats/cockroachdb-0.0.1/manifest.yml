@@ -28,4 +28,5 @@ datasources:
   description: Collect metrics from CockroachDB instances
   inputs:
   - type: cockroachdb/metrics
-    description: Collecting CockroachDB metrics
+    title: Collecting metrics from cockroachdb instances
+    description: Collecting CockroachDB status metrics

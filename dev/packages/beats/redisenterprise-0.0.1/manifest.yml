@@ -28,4 +28,5 @@ datasources:
   description: Collect metrics from Redis Enterprise instances
   inputs:
   - type: redisenterprise/metrics
-    description: Collecting Redis Enterprise metrics
+    title: Collecting metrics from redisenterprise instances
+    description: Collecting Redis Enterprise node and proxy metrics

@@ -38,6 +38,9 @@ datasources:
   description: Collect logs and metrics from PostgreSQL instances
   inputs:
   - type: logs
-    description: Collecting PostgreSQL logs
+    title: Collecting logs from postgresql instances
+    description: Collecting PostgreSQL log logs
   - type: postgresql/metrics
-    description: Collecting PostgreSQL metrics
+    title: Collecting metrics from postgresql instances
+    description: Collecting PostgreSQL activity, bgwriter, database and statement
+      metrics

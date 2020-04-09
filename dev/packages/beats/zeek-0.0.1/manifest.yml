@@ -29,4 +29,8 @@ datasources:
   description: Collect logs from Zeek instances
   inputs:
   - type: logs
-    description: Collecting Zeek logs
+    title: Collecting logs from zeek instances
+    description: Collecting Zeek capture_loss, connection, dce_rpc, dhcp, dnp3, dns,
+      dpd, files, ftp, http, intel, irc, kerberos, modbus, mysql, notice, ntlm, ocsp,
+      pe, radius, rdp, rfb, sip, smb_cmd, smb_files, smb_mapping, smtp, snmp, socks,
+      ssh, ssl, stats, syslog, traceroute, tunnel, weird and x509 logs

@@ -34,6 +34,8 @@ datasources:
   description: Collect logs and metrics from Apache instances
   inputs:
   - type: logs
-    description: Collecting Apache logs
+    title: Collecting logs from apache instances
+    description: Collecting Apache access and error logs
   - type: apache/metrics
-    description: Collecting Apache metrics
+    title: Collecting metrics from apache instances
+    description: Collecting Apache status metrics

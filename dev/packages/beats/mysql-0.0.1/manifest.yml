@@ -34,6 +34,8 @@ datasources:
   description: Collect logs and metrics from MySQL instances
   inputs:
   - type: logs
-    description: Collecting MySQL logs
+    title: Collecting logs from mysql instances
+    description: Collecting MySQL error and slowlog logs
   - type: mysql/metrics
-    description: Collecting MySQL metrics
+    title: Collecting metrics from mysql instances
+    description: Collecting MySQL galera_status and status metrics

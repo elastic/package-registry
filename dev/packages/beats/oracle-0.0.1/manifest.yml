@@ -23,4 +23,5 @@ datasources:
   description: Collect metrics from Oracle instances
   inputs:
   - type: oracle/metrics
-    description: Collecting Oracle metrics
+    title: Collecting metrics from oracle instances
+    description: Collecting Oracle performance and tablespace metrics

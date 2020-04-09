@@ -1,0 +1,21 @@
+input: netflow
+protocols: [v1, v5, v6, v7, v8, v9, ipfix]
+host: '{{this.netflow_host}}:{{this.netflow_port}}'
+max_message_size: '{{this.max_message_size}}'
+expiration_timeout: '{{this.expiration_timeout}}'
+queue_size: {{this.queue_size}}
+{{#if this.timeout}}
+timeout: '{{this.timeout}}'
+{{/if}}
+{{#if this.read_buffer}}
+read_buffer: '{{this.read_buffer}}'
+{{/if}}
+{{#if this.custom_definitions}}
+custom_definitions:
+{{#each this.custom_definitions}}
+- '{{this}}'
+{{/if}}
+{{/if}}
+{{#if this.detect_sequence_reset}}
+detect_sequence_reset: {{this.detect_sequence_reset}}
+{{/if}}

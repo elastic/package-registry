@@ -28,4 +28,5 @@ datasources:
   description: Collect metrics from uwsgi instances
   inputs:
   - type: uwsgi/metrics
-    description: Collecting uwsgi metrics
+    title: Collecting metrics from uwsgi instances
+    description: Collecting uwsgi status metrics

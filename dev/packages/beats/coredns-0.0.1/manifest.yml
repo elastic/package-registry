@@ -12,7 +12,8 @@ release: ga
 requirement:
   kibana:
     versions: '>=8.0.0-SNAPSHOT <8.0.0'
-  elasticsearch: {}
+  elasticsearch:
+    versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-coredns.jpg
   title: kibana coredns
@@ -33,6 +34,8 @@ datasources:
   description: Collect logs and metrics from Coredns instances
   inputs:
   - type: logs
-    description: Collecting Coredns logs
+    title: Collecting logs from coredns instances
+    description: Collecting Coredns log logs
   - type: coredns/metrics
-    description: Collecting Coredns metrics
+    title: Collecting metrics from coredns instances
+    description: Collecting Coredns stats metrics

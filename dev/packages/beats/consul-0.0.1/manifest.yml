@@ -28,4 +28,5 @@ datasources:
   description: Collect metrics from consul instances
   inputs:
   - type: consul/metrics
-    description: Collecting consul metrics
+    title: Collecting metrics from consul instances
+    description: Collecting consul agent metrics

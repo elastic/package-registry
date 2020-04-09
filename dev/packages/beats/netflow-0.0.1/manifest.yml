@@ -11,11 +11,13 @@ release: ga
 requirement:
   kibana:
     versions: '>=7.3.0 <8.0.0'
-  elasticsearch: {}
+  elasticsearch:
+    versions: '>7.0.1'
 datasources:
 - name: netflow
   title: NetFlow logs
   description: Collect logs from NetFlow instances
   inputs:
   - type: logs
-    description: Collecting NetFlow logs
+    title: Collecting logs from netflow instances
+    description: Collecting NetFlow log logs

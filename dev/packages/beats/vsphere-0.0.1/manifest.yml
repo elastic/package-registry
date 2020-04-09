@@ -32,4 +32,5 @@ datasources:
   description: Collect metrics from vSphere instances
   inputs:
   - type: vsphere/metrics
-    description: Collecting vSphere metrics
+    title: Collecting metrics from vsphere instances
+    description: Collecting vSphere datastore, host and virtualmachine metrics

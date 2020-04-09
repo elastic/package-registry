@@ -17,4 +17,5 @@ datasources:
   description: Collect metrics from kvm instances
   inputs:
   - type: kvm/metrics
-    description: Collecting kvm metrics
+    title: Collecting metrics from kvm instances
+    description: Collecting kvm dommemstat metrics

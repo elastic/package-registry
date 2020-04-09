@@ -28,4 +28,5 @@ datasources:
   description: Collect logs from Office 365 instances
   inputs:
   - type: logs
-    description: Collecting Office 365 logs
+    title: Collecting logs from o365 instances
+    description: Collecting Office 365 audit logs

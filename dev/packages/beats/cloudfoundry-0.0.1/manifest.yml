@@ -17,4 +17,5 @@ datasources:
   description: Collect metrics from cloudfoundry instances
   inputs:
   - type: cloudfoundry/metrics
-    description: Collecting cloudfoundry metrics
+    title: Collecting metrics from cloudfoundry instances
+    description: Collecting cloudfoundry container, counter and value metrics

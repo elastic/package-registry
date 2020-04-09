@@ -28,4 +28,5 @@ datasources:
   description: Collect metrics from Stan instances
   inputs:
   - type: stan/metrics
-    description: Collecting Stan metrics
+    title: Collecting metrics from stan instances
+    description: Collecting Stan channels, stats and subscriptions metrics

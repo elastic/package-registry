@@ -9,7 +9,7 @@ streams:
   - default: /var/run/secrets/kubernetes.io/serviceaccount/token
     name: bearer_token_file
   - default:
-    - https://${HOSTNAME}:10250
+    - https://${NODE_NAME}:10250
     multi: true
     name: hosts
   - default: 10s

@@ -42,6 +42,8 @@ datasources:
   description: Collect logs and metrics from ibmmq instances
   inputs:
   - type: logs
-    description: Collecting ibmmq logs
+    title: Collecting logs from ibmmq instances
+    description: Collecting ibmmq errorlog logs
   - type: ibmmq/metrics
-    description: Collecting ibmmq metrics
+    title: Collecting metrics from ibmmq instances
+    description: Collecting ibmmq qmgr metrics

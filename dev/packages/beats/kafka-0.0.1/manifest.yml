@@ -34,6 +34,9 @@ datasources:
   description: Collect logs and metrics from Kafka instances
   inputs:
   - type: logs
-    description: Collecting Kafka logs
+    title: Collecting logs from kafka instances
+    description: Collecting Kafka log logs
   - type: kafka/metrics
-    description: Collecting Kafka metrics
+    title: Collecting metrics from kafka instances
+    description: Collecting Kafka broker, consumer, consumergroup, partition and producer
+      metrics

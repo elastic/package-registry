@@ -30,6 +30,8 @@ datasources:
   description: Collect logs and metrics from haproxy instances
   inputs:
   - type: logs
-    description: Collecting haproxy logs
+    title: Collecting logs from haproxy instances
+    description: Collecting haproxy log logs
   - type: haproxy/metrics
-    description: Collecting haproxy metrics
+    title: Collecting metrics from haproxy instances
+    description: Collecting haproxy info and stat metrics

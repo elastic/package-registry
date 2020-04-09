@@ -209,7 +209,7 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 		}
 
 		// datasources
-		aPackage.datasources, err = updateDatasources(aPackage.datasources, moduleName, moduleTitle, beatType)
+		aPackage.datasources, err = updateDatasources(aPackage.datasources, moduleName, moduleTitle, beatType, datasets.names())
 		if err != nil {
 			return err
 		}

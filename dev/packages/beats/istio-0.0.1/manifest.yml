@@ -17,4 +17,5 @@ datasources:
   description: Collect metrics from istio instances
   inputs:
   - type: istio/metrics
-    description: Collecting istio metrics
+    title: Collecting metrics from istio instances
+    description: Collecting istio citadel, galley, mesh, mixer and pilot metrics

@@ -1,0 +1,16 @@
+title: Envoyproxy log logs
+release: ga
+type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/envoy.log
+    multi: true
+    name: paths
+  - default:
+    - envoyproxy
+    multi: true
+    name: tags
+  title: Envoyproxy log logs
+  description: Collect Envoyproxy log logs

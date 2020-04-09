@@ -22,4 +22,5 @@ datasources:
   description: Collect metrics from Munin instances
   inputs:
   - type: munin/metrics
-    description: Collecting Munin metrics
+    title: Collecting metrics from munin instances
+    description: Collecting Munin node metrics

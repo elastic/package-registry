@@ -1,0 +1,16 @@
+title: Coredns log logs
+release: ga
+type: logs
+streams:
+- input: logs
+  vars:
+  - default:
+    - /var/log/coredns.log
+    multi: true
+    name: paths
+  - default:
+    - coredns
+    multi: true
+    name: tags
+  title: Coredns log logs
+  description: Collect Coredns log logs

@@ -29,4 +29,5 @@ datasources:
   description: Collect logs from Osquery instances
   inputs:
   - type: logs
-    description: Collecting Osquery logs
+    title: Collecting logs from osquery instances
+    description: Collecting Osquery result logs

@@ -28,4 +28,5 @@ datasources:
   description: Collect metrics from Couchbase instances
   inputs:
   - type: couchbase/metrics
-    description: Collecting Couchbase metrics
+    title: Collecting metrics from couchbase instances
+    description: Collecting Couchbase bucket, cluster and node metrics
