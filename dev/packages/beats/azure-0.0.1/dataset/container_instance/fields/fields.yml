@@ -1,7 +1,5 @@
-- name: container_instance.*.*
-  release: ga
+- name: azure.container_instance.*.*
   type: object
-  object_type: float
-  object_type_mapping_type: "*"
-  description: >
+  description: |
     container instance
+  release: ga

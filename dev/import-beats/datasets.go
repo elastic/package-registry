@@ -45,7 +45,8 @@ type datasetManifestSinglePipeline struct {
 	IngestPipeline string `yaml:"ingest_pipeline"`
 }
 
-func createDatasets(modulePath, moduleName, moduleTitle, moduleRelease string, moduleFields []byte, beatType string) (datasetContentArray, error) {
+func createDatasets(beatType, modulePath, moduleName, moduleTitle, moduleRelease string, moduleFields []fieldDefinition,
+	filteredEcsModuleFieldNames []string, ecsFields fieldDefinitionArray) (datasetContentArray, error) {
 	datasetDirs, err := ioutil.ReadDir(modulePath)
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot read module directory %s", modulePath)
@@ -80,18 +81,33 @@ func createDatasets(modulePath, moduleName, moduleTitle, moduleRelease string, m
 			return nil, errors.Wrapf(err, "loading dataset fields failed (modulePath: %s, datasetName: %s)",
 				modulePath, datasetName)
 		}
+		datasetFields, filteredEcsDatasetFieldNames, err := filterMigratedFields(datasetFields, ecsFields.names())
+		if err != nil {
+			return nil, errors.Wrapf(err, "filtering uncommon migrated failed (modulePath: %s, datasetName: %s)",
+				modulePath, datasetName)
+		}
+
+		foundEcsFieldNames := uniqueFieldNames(append(filteredEcsModuleFieldNames, filteredEcsDatasetFieldNames...))
+		ecsFields := filterEcsFields(ecsFields, foundEcsFieldNames)
+
+		fieldsFiles := map[string]fieldDefinitionArray{}
+		if len(ecsFields) > 0 {
+			fieldsFiles["ecs.yml"] = ecsFields
+		}
+		if len(moduleFields) > 0 {
+			fieldsFiles["package-fields.yml"] = moduleFields
+		}
+		if len(datasetFields) > 0 {
+			fieldsFiles["fields.yml"] = datasetFields
+		}
+		fields := fieldsContent{
+			files: fieldsFiles,
+		}
 
 		// release
 		datasetRelease, err := determineDatasetRelease(moduleRelease, datasetFields)
 		if err != nil {
 			return nil, errors.Wrapf(err, "loading release from fields failed (datasetPath: %s", datasetPath)
-		}
-
-		fields := fieldsContent{
-			files: map[string][]byte{
-				"package-fields.yml": moduleFields,
-				"fields.yml":         datasetFields,
-			},
 		}
 
 		// elasticsearch

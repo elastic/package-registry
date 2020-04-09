@@ -78,12 +78,12 @@ func (pc *packageContent) addKibanaContent(kc kibanaContent) {
 type packageRepository struct {
 	iconRepository *iconRepository
 	kibanaMigrator *kibanaMigrator
-	ecsFields      []fieldsTableRecord
+	ecsFields      fieldDefinitionArray
 
 	packages map[string]packageContent
 }
 
-func newPackageRepository(iconRepository *iconRepository, kibanaMigrator *kibanaMigrator, ecsFields []fieldsTableRecord) *packageRepository {
+func newPackageRepository(iconRepository *iconRepository, kibanaMigrator *kibanaMigrator, ecsFields fieldDefinitionArray) *packageRepository {
 	return &packageRepository{
 		iconRepository: iconRepository,
 		kibanaMigrator: kibanaMigrator,
@@ -124,22 +124,23 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 		manifest.Categories = append(manifest.Categories, beatType)
 
 		// fields
-		moduleHeaderFields, moduleFields, err := loadModuleFields(modulePath)
+		moduleFields, err := loadModuleFields(modulePath)
+		if err != nil {
+			return err
+		}
+		moduleFields, filteredEcsModuleFieldNames, err := filterMigratedFields(moduleFields, r.ecsFields.names())
 		if err != nil {
 			return err
 		}
 
 		// release
-		manifest.Release, err = determinePackageRelease(manifest.Release, moduleHeaderFields)
+		manifest.Release, err = determinePackageRelease(manifest.Release, moduleFields)
 		if err != nil {
 			return err
 		}
 
 		// title
-		maybeTitle, err := loadTitleFromFields(moduleHeaderFields)
-		if err != nil {
-			return err
-		}
+		maybeTitle := moduleFields[0].Title
 		if maybeTitle != "" {
 			manifest.Title = &maybeTitle
 			manifest.Description = maybeTitle + " Integration"
@@ -150,7 +151,7 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 		if manifest.Title != nil {
 			moduleTitle = *manifest.Title
 		}
-		datasets, err := createDatasets(modulePath, moduleName, moduleTitle, manifest.Release, moduleFields, beatType)
+		datasets, err := createDatasets(beatType, modulePath, moduleName, moduleTitle, manifest.Release, moduleFields, filteredEcsModuleFieldNames, r.ecsFields)
 		if err != nil {
 			return err
 		}
@@ -272,10 +273,24 @@ func (r *packageRepository) save(outputDir string) error {
 					return errors.Wrapf(err, "cannot make directory for dataset fields: '%s'", datasetPath)
 				}
 
-				for fieldsFileName, fieldsFile := range dataset.fields.files {
+				for fieldsFileName, definitions := range dataset.fields.files {
 					log.Printf("\t%s: write '%s' file\n", dataset.name, fieldsFileName)
 
 					fieldsFilePath := filepath.Join(datasetFieldsPath, fieldsFileName)
+					var fieldsFile []byte
+
+					var root fieldDefinitionArray
+					if isPackageFields(fieldsFileName) { // remove the wrapping layer
+						root = definitions[0].Fields
+					} else {
+						root = definitions
+					}
+
+					stripped := root.stripped()
+					fieldsFile, err := yaml.Marshal(&stripped)
+					if err != nil {
+						return errors.Wrapf(err, "marshalling fields file failed (path: %s)", fieldsFilePath)
+					}
 					err = ioutil.WriteFile(fieldsFilePath, fieldsFile, 0644)
 					if err != nil {
 						return errors.Wrapf(err, "writing fields file failed (path: %s)", fieldsFilePath)
@@ -360,19 +375,18 @@ func (r *packageRepository) save(outputDir string) error {
 			}
 
 			for _, doc := range content.docs {
-				err = writeDoc(docsPath, doc, content, r.ecsFields)
+				err = writeDoc(docsPath, doc, content)
 				if err != nil {
 					return errors.Wrapf(err, "cannot write docs (docsPath: %s, fileName: %s)", docsPath,
 						doc.fileName)
 				}
-
 			}
 		}
 	}
 	return nil
 }
 
-func writeDoc(docsPath string, doc docContent, aPackage packageContent, ecsFields []fieldsTableRecord) error {
+func writeDoc(docsPath string, doc docContent, aPackage packageContent) error {
 	log.Printf("\twrite '%s' file\n", doc.fileName)
 
 	docFilePath := filepath.Join(docsPath, doc.fileName)
@@ -388,7 +402,7 @@ func writeDoc(docsPath string, doc docContent, aPackage packageContent, ecsField
 	} else {
 		t, err = t.Funcs(template.FuncMap{
 			"fields": func(dataset string) (string, error) {
-				return renderExportedFields(dataset, aPackage.datasets, ecsFields)
+				return renderExportedFields(dataset, aPackage.datasets)
 			},
 		}).ParseFiles(doc.templatePath)
 		if err != nil {

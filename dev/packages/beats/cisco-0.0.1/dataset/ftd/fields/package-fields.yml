@@ -1,5 +1,2 @@
 - name: cisco
   type: group
-  description: >
-    Fields from Cisco logs.
-  fields:

@@ -1,7 +1,5 @@
-- name: database_account.*.*
-  release: ga
+- name: azure.database_account.*.*
   type: object
-  object_type: float
-  object_type_mapping_type: "*"
-  description: >
+  description: |
     database account
+  release: ga
