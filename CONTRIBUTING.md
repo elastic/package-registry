@@ -175,9 +175,12 @@ what's been already fixed, as the script has overridden part of it).
 
 5. Review fields file and exported fields in docs.
 
+    The goal of this action item is to verify if produced artifacts are correct.
+
     The fields files (`package-fields.yml`, `fields.yml` and `ecs.yml`) in the package were created from original
     `fields.yml` files and the ECS schema. It may happen that original sources have a typo, bad description or misses
-    a field definition. The goal of this action item is to verify if produced artifacts are correct.
+    a field definition. The sum of fields in all present files should contain only fields that are really used, e.g.
+    not all existing ECS fields.
 
 6. Metricbeat: add missing configuration options.
 
@@ -291,6 +294,7 @@ what's been already fixed, as the script has overridden part of it).
 5. Start Kibana with enabled Ingest Manager:
 
     ```bash
+   $ yarn kbn bootstrap
    $ yarn start --xpack.ingestManager.enabled=true --xpack.ingestManager.epm.enabled=true --xpack.ingestManager.fleet.enabled=true --xpack.ingestManager.epm.registryUrl=http://localhost:8080/
     ```
 
