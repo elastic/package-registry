@@ -32,7 +32,7 @@ type manifestWithVarsOsFlattened struct {
 }
 
 type variableWithOsFlattened struct {
-	OsDarwin interface{} `yaml:"os.darwin,omitempty"`
+	OsDarwin  interface{} `yaml:"os.darwin,omitempty"`
 	OsWindows interface{} `yaml:"os.windows,omitempty"`
 }
 
