@@ -21,11 +21,8 @@
                             "type": "phrase"
                         },
                         "query": {
-                            "match": {
-                                "azure.namespace": {
-                                    "query": "Microsoft.Storage/storageAccounts/blobServices",
-                                    "type": "phrase"
-                                }
+                            "match_phrase": {
+                                "azure.namespace": "Microsoft.Storage/storageAccounts/blobServices"
                             }
                         }
                     }
@@ -54,7 +51,7 @@
                 },
                 "panelIndex": "ed5f5642-c94a-481b-a8c2-7dfe4c6a4f05",
                 "panelRefName": "panel_0",
-                "version": "7.5.0"
+                "version": "7.7.0"
             },
             {
                 "embeddableConfig": {
@@ -70,7 +67,7 @@
                 "panelIndex": "a9456b9b-efa6-410d-a56c-4b66aa8c499e",
                 "panelRefName": "panel_1",
                 "title": "Availability",
-                "version": "7.5.0"
+                "version": "7.7.0"
             },
             {
                 "embeddableConfig": {
@@ -85,7 +82,7 @@
                 },
                 "panelIndex": "0c873134-b025-487d-be81-f727dbff0174",
                 "panelRefName": "panel_2",
-                "version": "7.5.0"
+                "version": "7.7.0"
             },
             {
                 "embeddableConfig": {
@@ -100,7 +97,7 @@
                 },
                 "panelIndex": "41faed50-ba96-4484-b6dc-71ed3e2d3427",
                 "panelRefName": "panel_3",
-                "version": "7.5.0"
+                "version": "7.7.0"
             },
             {
                 "embeddableConfig": {
@@ -116,7 +113,7 @@
                 "panelIndex": "1d623c03-4d02-4a81-b91e-49e82e112016",
                 "panelRefName": "panel_4",
                 "title": "Transactions",
-                "version": "7.5.0"
+                "version": "7.7.0"
             },
             {
                 "embeddableConfig": {
@@ -131,7 +128,7 @@
                 },
                 "panelIndex": "ff6441f8-d66d-4399-bae5-25d3d861b299",
                 "panelRefName": "panel_5",
-                "version": "7.5.0"
+                "version": "7.7.0"
             },
             {
                 "embeddableConfig": {
@@ -147,7 +144,7 @@
                 "panelIndex": "87066244-7840-4555-9d12-026d64977f1a",
                 "panelRefName": "panel_6",
                 "title": "Success Server Latency",
-                "version": "7.5.0"
+                "version": "7.7.0"
             },
             {
                 "embeddableConfig": {
@@ -163,7 +160,7 @@
                 "panelIndex": "756da375-e6a2-4668-af43-0cd294878254",
                 "panelRefName": "panel_7",
                 "title": "Success E2E Latency",
-                "version": "7.5.0"
+                "version": "7.7.0"
             },
             {
                 "embeddableConfig": {
@@ -178,7 +175,7 @@
                 },
                 "panelIndex": "34aa5ce7-4f4b-4712-836f-3765e7c3fb3f",
                 "panelRefName": "panel_8",
-                "version": "7.5.0"
+                "version": "7.7.0"
             },
             {
                 "embeddableConfig": {
@@ -194,7 +191,7 @@
                 "panelIndex": "a715fafc-ca38-410c-9253-12ba506eabc0",
                 "panelRefName": "panel_9",
                 "title": "Egress Traffic by APIName",
-                "version": "7.5.0"
+                "version": "7.7.0"
             },
             {
                 "embeddableConfig": {
@@ -210,7 +207,7 @@
                 "panelIndex": "75f72920-be71-47a9-a967-f1c862ab2961",
                 "panelRefName": "panel_10",
                 "title": "Ingress Traffic by APIName",
-                "version": "7.5.0"
+                "version": "7.7.0"
             }
         ],
         "timeRestore": false,

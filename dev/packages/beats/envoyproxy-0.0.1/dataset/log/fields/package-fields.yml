@@ -1,31 +1,28 @@
 - name: envoyproxy
   type: group
-  description: >
-    Fields from envoy proxy logs after normalization
   fields:
   - name: log_type
     type: keyword
-    description: >
+    description: |
       Envoy log type, normally ACCESS
   - name: response_flags
     type: keyword
-    description: >
+    description: |
       Response flags
   - name: upstream_service_time
     type: long
     format: duration
-    input_format: nanoseconds
-    description: >
+    description: |
       Upstream service time in nanoseconds
   - name: request_id
     type: keyword
-    description: >
+    description: |
       ID of the request
   - name: authority
     type: keyword
-    description: >
+    description: |
       Envoy proxy authority field
   - name: proxy_type
     type: keyword
-    description: >
+    description: |
       Envoy proxy type, tcp or http

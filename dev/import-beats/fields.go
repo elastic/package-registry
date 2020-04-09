@@ -7,6 +7,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"os"
 	"path/filepath"
 
 	"github.com/pkg/errors"
@@ -125,6 +126,9 @@ func loadDatasetFields(modulePath, moduleName, datasetName string) ([]fieldDefin
 
 func loadFieldsFile(path string) ([]fieldDefinition, error) {
 	fields, err := ioutil.ReadFile(path)
+	if os.IsNotExist(err) {
+		return []fieldDefinition{}, nil // return empty array, this is a valid state
+	}
 	if err != nil {
 		return nil, errors.Wrapf(err, "reading fields failed (path: %s)", path)
 	}

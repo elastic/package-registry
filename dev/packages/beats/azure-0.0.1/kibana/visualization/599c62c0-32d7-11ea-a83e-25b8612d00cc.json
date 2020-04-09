@@ -85,7 +85,7 @@
                         ],
                         "split_mode": "terms",
                         "stacked": "none",
-                        "terms_field": "azure.dimensions.apiname",
+                        "terms_field": "azure.dimensions.api_name",
                         "terms_order_by": "f0edf191-32d5-11ea-b19d-fb5049b980ca",
                         "type": "timeseries",
                         "value_template": "{{value}}"
