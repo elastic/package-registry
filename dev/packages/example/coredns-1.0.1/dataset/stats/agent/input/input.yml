@@ -4,7 +4,10 @@ period: {{period}}
 enabled: true
 
 # CoreDNS hosts
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 
 {{#if username}}
 username: "{{username}}"

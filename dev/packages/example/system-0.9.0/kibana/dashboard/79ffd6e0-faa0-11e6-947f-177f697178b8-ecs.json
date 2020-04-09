@@ -3,15 +3,7 @@
         "description": "Overview of host metrics",
         "hits": 0,
         "kibanaSavedObjectMeta": {
-            "searchSourceJSON": {
-                "filter": [],
-                "highlightAll": true,
-                "query": {
-                    "language": "kuery",
-                    "query": "host.name:\"CHANGEME_HOSTNAME\""
-                },
-                "version": true
-            }
+            "searchSourceJSON": {}
         },
         "optionsJSON": {
             "darkTheme": false

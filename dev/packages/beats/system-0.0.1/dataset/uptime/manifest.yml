@@ -6,15 +6,18 @@ streams:
   vars:
   - default:
     - percentages
+    multi: true
     name: core.metrics
   - default:
     - percentages
     - normalized_percentages
+    multi: true
     name: cpu.metrics
   - default: 10s
     name: period
   - default:
     - .*
+    multi: true
     name: processes
   title: System uptime metrics
   description: Collect System uptime metrics

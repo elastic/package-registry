@@ -1,4 +1,7 @@
 input: kubernetes/metrics
 metricsets: ["proxy"]
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 period: {{period}}

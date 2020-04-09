@@ -1,6 +1,9 @@
 input: logstash/metrics
 metricsets: ["node"]
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 period: {{period}}
 {{#if xpack.enabled}}
 xpack.enabled: {{xpack.enabled}}

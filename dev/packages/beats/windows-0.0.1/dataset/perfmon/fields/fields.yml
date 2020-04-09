@@ -1,1 +1,2 @@
-- release: beta
+- name: windows.
+  release: beta

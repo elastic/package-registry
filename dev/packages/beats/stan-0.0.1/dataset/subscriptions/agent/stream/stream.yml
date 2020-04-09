@@ -1,4 +1,7 @@
 input: stan/metrics
 metricsets: ["subscriptions"]
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 period: {{period}}

@@ -1,5 +1,2 @@
 - name: ceph
   type: group
-  description: >
-    `ceph` contains the metrics that were scraped from CEPH.
-  fields:

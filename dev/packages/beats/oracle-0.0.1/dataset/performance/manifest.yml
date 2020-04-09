@@ -6,6 +6,7 @@ streams:
   vars:
   - default:
     - oracle://user:pass@localhost:1521/ORCLPDB1.localdomain?sysdba=1
+    multi: true
     name: hosts
   - default: 10s
     name: period

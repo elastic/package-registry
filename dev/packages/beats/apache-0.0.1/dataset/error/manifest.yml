@@ -7,6 +7,7 @@ streams:
   - default:
     - /var/log/apache2/error.log*
     - /var/log/httpd/error_log*
+    multi: true
     name: paths
     os.darwin:
       default:

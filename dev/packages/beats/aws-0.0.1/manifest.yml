@@ -11,10 +11,14 @@ categories:
 release: ga
 requirement:
   kibana:
-    versions: '>=7.6.1 <8.0.0'
+    versions: '>=8.0.0-SNAPSHOT <8.0.0'
   elasticsearch:
     versions: '>7.0.1'
 screenshots:
+- src: /img/filebeat-aws-cloudtrail.png
+  title: filebeat aws cloudtrail
+  size: 1702x1063
+  type: image/png
 - src: /img/filebeat-aws-elb-overview.png
   title: filebeat aws elb overview
   size: 5120x2704

@@ -1,6 +1,9 @@
 input: elasticsearch/metrics
 metricsets: ["shard"]
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 period: {{period}}
 {{#if xpack.enabled}}
 xpack.enabled: {{xpack.enabled}}

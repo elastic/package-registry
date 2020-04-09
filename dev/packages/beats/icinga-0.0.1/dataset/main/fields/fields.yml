@@ -1,18 +1,7 @@
 - name: icinga.main
   type: group
-  description: >
-    Contains fields for the Icinga main logs.
   fields:
-    - name: facility
-      type: keyword
-      description: >
-        Specifies what component of Icinga logged the message.
-
-    - name: severity
-      type: alias
-      path: log.level
-      migration: true
-    - name: message
-      type: alias
-      path: message
-      migration: true
+  - name: facility
+    type: keyword
+    description: |
+      Specifies what component of Icinga logged the message.

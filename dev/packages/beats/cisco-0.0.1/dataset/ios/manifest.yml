@@ -6,9 +6,11 @@ streams:
   vars:
   - default:
     - /var/log/cisco-ios.log
+    multi: true
     name: paths
   - default:
     - cisco-ios
+    multi: true
     name: tags
   - default: localhost
     name: syslog_host

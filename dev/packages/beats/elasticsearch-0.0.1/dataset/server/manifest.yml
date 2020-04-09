@@ -7,6 +7,7 @@ streams:
   - default:
     - /var/log/elasticsearch/*.log
     - /var/log/elasticsearch/*_server.json
+    multi: true
     name: paths
     os.darwin:
       default:

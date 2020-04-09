@@ -1,5 +1,2 @@
 - name: traefik
   type: group
-  description: >
-    Fields from the Traefik log files.
-  fields:

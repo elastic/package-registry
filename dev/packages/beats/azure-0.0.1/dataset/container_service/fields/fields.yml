@@ -1,7 +1,5 @@
-- name: container_service.*.*
-  release: ga
+- name: azure.container_service.*.*
   type: object
-  object_type: float
-  object_type_mapping_type: "*"
-  description: >
+  description: |
     container service
+  release: ga

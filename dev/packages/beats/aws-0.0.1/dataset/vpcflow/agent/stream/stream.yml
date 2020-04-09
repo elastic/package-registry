@@ -16,6 +16,15 @@ api_timeout: {{this.api_timeout}}
 {{#if this.endpoint}}
 endpoint: {{this.endpoint}}
 {{/if}}
+{{#if this.access_key_id}}
+access_key_id: {{this.access_key_id}}
+{{/if}}
+{{#if this.secret_access_key}}
+secret_access_key: {{this.secret_access_key}}
+{{/if}}
+{{#if this.session_token}}
+session_token: {{this.session_token}}
+{{/if}}
 {{else if input == "file"}}
 input: log
 paths:

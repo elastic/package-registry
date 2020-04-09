@@ -7,6 +7,7 @@ streams:
   - default:
     - /var/log/messages*
     - /var/log/syslog*
+    multi: true
     name: paths
     os.darwin:
       default:

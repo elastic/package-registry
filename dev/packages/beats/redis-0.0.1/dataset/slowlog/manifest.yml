@@ -6,6 +6,7 @@ streams:
   vars:
   - default:
     - localhost:6379
+    multi: true
     name: hosts
   - default: ""
     name: password

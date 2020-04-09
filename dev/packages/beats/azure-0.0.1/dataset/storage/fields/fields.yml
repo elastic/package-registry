@@ -1,7 +1,5 @@
-- name: storage.*.*
-  release: ga
+- name: azure.storage.*.*
   type: object
-  object_type: float
-  object_type_mapping_type: "*"
-  description: >
+  description: |
     storage account
+  release: ga

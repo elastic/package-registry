@@ -1,6 +1,9 @@
 input: tomcat/metrics
 metricsets: ["threading"]
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 {{#if path}}
 path: {{path}}
 {{/if}}

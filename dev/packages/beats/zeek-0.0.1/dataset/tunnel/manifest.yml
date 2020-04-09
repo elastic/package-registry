@@ -6,6 +6,7 @@ streams:
   vars:
   - default:
     - /var/log/bro/current/tunnel.log
+    multi: true
     name: paths
     os.darwin:
       default:
@@ -15,6 +16,7 @@ streams:
       - /var/log/bro/current/tunnel.log
   - default:
     - zeek.tunnel
+    multi: true
     name: tags
   title: Zeek tunnel logs
   description: Collect Zeek tunnel logs

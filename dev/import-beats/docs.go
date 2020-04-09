@@ -13,7 +13,6 @@ import (
 	"text/template"
 
 	"github.com/pkg/errors"
-	"gopkg.in/yaml.v2"
 )
 
 var emptyReadmeTemplate = template.Must(template.New("README.md").Parse("TODO"))
@@ -43,7 +42,7 @@ func createDocTemplates(packageDocsPath string) ([]docContent, error) {
 	}, nil
 }
 
-func renderExportedFields(packageDataset string, datasets datasetContentArray, ecsFields []fieldsTableRecord) (string, error) {
+func renderExportedFields(packageDataset string, datasets datasetContentArray) (string, error) {
 	for _, dataset := range datasets {
 		if packageDataset == dataset.name {
 			var buffer strings.Builder
@@ -53,7 +52,7 @@ func renderExportedFields(packageDataset string, datasets datasetContentArray, e
 			if len(dataset.fields.files) == 0 {
 				buffer.WriteString("(no fields available)")
 			} else {
-				collected, err := collectFields(dataset.fields, ecsFields)
+				collected, err := collectFields(dataset.fields)
 				if err != nil {
 					return "", errors.Wrapf(err, "collecting fields failed")
 				}
@@ -61,7 +60,8 @@ func renderExportedFields(packageDataset string, datasets datasetContentArray, e
 				buffer.WriteString("| Field | Description | Type |\n")
 				buffer.WriteString("|---|---|---|\n")
 				for _, c := range collected {
-					buffer.WriteString(fmt.Sprintf("| %s | %s | %s |\n", c.name, c.description, c.aType))
+					description := strings.TrimSpace(strings.ReplaceAll(c.description, "\n", " "))
+					buffer.WriteString(fmt.Sprintf("| %s | %s | %s |\n", c.name, description, c.aType))
 				}
 			}
 			return buffer.String(), nil
@@ -70,10 +70,10 @@ func renderExportedFields(packageDataset string, datasets datasetContentArray, e
 	return "", fmt.Errorf("missing dataset: %s", packageDataset)
 }
 
-func collectFields(content fieldsContent, ecsFields []fieldsTableRecord) ([]fieldsTableRecord, error) {
+func collectFields(content fieldsContent) ([]fieldsTableRecord, error) {
 	var records []fieldsTableRecord
-	for _, fieldsFile := range content.files {
-		r, err := collectFieldsFromFileWithAliases(fieldsFile, ecsFields)
+	for fileName, fieldsFile := range content.files {
+		r, err := collectFieldsFromFile(fileName, fieldsFile)
 		if err != nil {
 			return nil, errors.Wrapf(err, "collecting fields from file failed")
 		}
@@ -83,32 +83,32 @@ func collectFields(content fieldsContent, ecsFields []fieldsTableRecord) ([]fiel
 	sort.Slice(records, func(i, j int) bool {
 		return sort.StringsAreSorted([]string{records[i].name, records[j].name})
 	})
+	return uniqueTableRecords(records), nil
+}
 
+func uniqueTableRecords(records []fieldsTableRecord) []fieldsTableRecord {
 	fieldNames := make(map[string]bool)
-	var uniqueRecords []fieldsTableRecord
+	var unique []fieldsTableRecord
 	for _, r := range records {
 		if _, ok := fieldNames[r.name]; !ok {
 			fieldNames[r.name] = true
-			uniqueRecords = append(uniqueRecords, r)
+			unique = append(unique, r)
 		}
 	}
-	return uniqueRecords, nil
+	return unique
 }
 
-func collectFieldsFromFile(fieldsFile []byte) ([]fieldsTableRecord, error) {
-	return collectFieldsFromFileWithAliases(fieldsFile, []fieldsTableRecord{})
-}
-
-func collectFieldsFromFileWithAliases(fieldsFile []byte, aliases []fieldsTableRecord) ([]fieldsTableRecord, error) {
+func collectFieldsFromFile(fileName string, fieldDefinitions []fieldDefinition) ([]fieldsTableRecord, error) {
 	var records []fieldsTableRecord
-	var fs []mapStr
-	err := yaml.Unmarshal(fieldsFile, &fs)
-	if err != nil {
-		return nil, errors.Wrapf(err, "unmarshalling fields file failed")
+
+	root := fieldDefinitions
+	if isPackageFields(fileName) {
+		root = fieldDefinitions[0].Fields
 	}
 
-	for _, f := range fs {
-		records, err = visitFields("", f, aliases, records)
+	var err error
+	for _, f := range root {
+		records, err = visitFields("", f, records)
 		if err != nil {
 			return nil, errors.Wrapf(err, "visiting fields failed")
 		}
@@ -116,85 +116,25 @@ func collectFieldsFromFileWithAliases(fieldsFile []byte, aliases []fieldsTableRe
 	return records, nil
 }
 
-func visitFields(namePrefix string, f mapStr, aliases []fieldsTableRecord, records []fieldsTableRecord) ([]fieldsTableRecord, error) {
-	var name string
-	nameVal, err := f.getValue("name")
-	if err != nil && err != errKeyNotFound {
-		return nil, errors.Wrapf(err, "retrieving field 'name' failed")
+func visitFields(namePrefix string, f fieldDefinition, records []fieldsTableRecord) ([]fieldsTableRecord, error) {
+	var name = namePrefix
+	if namePrefix != "" {
+		name += "."
 	}
-	if err == nil {
-		name = nameVal.(string)
-	}
+	name += f.Name
 
-	fieldsVal, err := f.getValue("fields")
-	if err == errKeyNotFound {
-		// name
-		name = namePrefix + name
-
-		// description
-		var description string
-		descriptionVal, err := f.getValue("description")
-		if err != nil && err != errKeyNotFound {
-			return nil, errors.Wrapf(err, "retrieving field 'description' failed (namePrefix: %s)", namePrefix)
-		}
-		if err != errKeyNotFound {
-			description = descriptionVal.(string)
-			description = strings.TrimSpace(strings.ReplaceAll(description, "\n", " "))
-		}
-
-		// type
-		aType := "keyword" // default "type" iif there is no type defined
-		typeVal, err := f.getValue("type")
-		if err != nil && err != errKeyNotFound {
-			return nil, errors.Wrapf(err, "retrieving field 'type' failed (namePrefix: %s)", namePrefix)
-		}
-		if err != errKeyNotFound {
-			aType = typeVal.(string)
-		}
-
-		if aType == "alias" {
-			pathVal, err := f.getValue("path")
-			if err != nil {
-				return nil, errors.Wrapf(err, "retrieving field 'path' failed")
-			}
-			path := pathVal.(string)
-
-			description = fmt.Sprintf(`Alias for field "%s"`, path)
-			for _, alias := range aliases {
-				if alias.name == path {
-					name = alias.name
-					description = alias.description
-					aType = alias.aType
-				}
-			}
-		}
-
+	if len(f.Fields) == 0 && f.Type != "group" {
 		records = append(records, fieldsTableRecord{
 			name:        name,
-			description: description,
-			aType:       aType,
+			description: f.Description,
+			aType:       f.Type,
 		})
 		return records, nil
 	}
-	if err != nil {
-		return nil, errors.Wrapf(err, "retrieving field 'fields' failed (namePrefix: %s)", namePrefix)
-	}
 
-	if _, ok := fieldsVal.([]interface{}); !ok {
-		return records, nil
-	}
-
-	for _, fieldsEntryVal := range fieldsVal.([]interface{}) {
-		fieldsEntry, err := toMapStr(fieldsEntryVal)
-		if err != nil {
-			return nil, errors.Wrapf(err, "mapping fields entry failed (namePrefix: %s)", namePrefix)
-		}
-
-		nextNamePrefix := namePrefix + name
-		if nextNamePrefix != "" {
-			nextNamePrefix += "."
-		}
-		records, err = visitFields(nextNamePrefix, fieldsEntry, aliases, records)
+	var err error
+	for _, fieldEntry := range f.Fields {
+		records, err = visitFields(name, fieldEntry, records)
 		if err != nil {
 			return nil, errors.Wrapf(err, "recursive visiting fields failed (namePrefix: %s)", namePrefix)
 		}

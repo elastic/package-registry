@@ -1,4 +1,7 @@
 input: ceph/metrics
 metricsets: ["cluster_disk"]
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 period: {{period}}

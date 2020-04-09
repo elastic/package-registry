@@ -8,6 +8,7 @@ streams:
     name: enable
   - default:
     - tcp://127.0.0.1:9191
+    multi: true
     name: hosts
   - default: 10s
     name: period

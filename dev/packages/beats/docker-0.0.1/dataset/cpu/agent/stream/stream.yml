@@ -1,4 +1,7 @@
 input: docker/metrics
 metricsets: ["cpu"]
-hosts: {{hosts}}
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
 period: {{period}}

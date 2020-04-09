@@ -8,6 +8,7 @@ streams:
     name: driver
   - default:
     - user=myuser password=mypassword dbname=mydb sslmode=disable
+    multi: true
     name: hosts
   - default: 10s
     name: period
