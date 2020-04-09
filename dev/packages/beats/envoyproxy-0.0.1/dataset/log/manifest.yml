@@ -8,23 +8,17 @@ streams:
     - /var/log/envoy.log
     multi: true
     name: paths
-<<<<<<< HEAD
     required: true
     show_user: true
     title: Paths
     type: text
-=======
->>>>>>> master
   - default:
     - envoyproxy
     multi: true
     name: tags
-<<<<<<< HEAD
     required: true
     show_user: true
     title: Tags
     type: text
-=======
->>>>>>> master
   title: Envoyproxy log logs
   description: Collect Envoyproxy log logs
