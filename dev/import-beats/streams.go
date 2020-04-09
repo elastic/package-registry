@@ -98,8 +98,9 @@ func adjustVariablesFormat(mwvos manifestWithVarsOsFlattened, mwvs manifestWithV
 		aVarWithDefaults.Type = determineInputVariableType(aVar.Name, aVar.Default)
 		aVarWithDefaults.Required = true
 		aVarWithDefaults.ShowUser = true
-		_, isArray := aVarWithDefaults.Default.([]interface{})
-		aVarWithDefaults.Multi = isArray
+		if _, isArray := aVarWithDefaults.Default.([]interface{}); isArray {
+			aVarWithDefaults.Multi = isArray
+		}
 		aVarWithDefaults.Os = unwrapOsVars(mwvos.Vars[i])
 
 		if aVarWithDefaults.Os != nil {

@@ -86,6 +86,7 @@ func NewDataset(basePath string, p *Package) (*DataSet, error) {
 		Path:     datasetPath,
 		BasePath: basePath,
 	}
+
 	// go-ucfg automatically calls the `Validate` method on the Dataset object here
 	err = manifest.Unpack(d)
 	if err != nil {
