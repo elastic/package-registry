@@ -14,17 +14,23 @@ streams:
     os.linux:
       default:
       - /var/log/bro/current/traceroute.log
+<<<<<<< HEAD
     required: true
     show_user: true
     title: Paths
     type: text
+=======
+>>>>>>> master
   - default:
     - zeek.traceroute
     multi: true
     name: tags
+<<<<<<< HEAD
     required: true
     show_user: true
     title: Tags
     type: text
+=======
+>>>>>>> master
   title: Zeek traceroute logs
   description: Collect Zeek traceroute logs

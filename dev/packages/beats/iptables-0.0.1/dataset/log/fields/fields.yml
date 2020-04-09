@@ -1,163 +1,122 @@
-- name: ether_type
+- name: iptables.ether_type
   type: long
-  description: >
+  description: |
     Value of the ethernet type field identifying the network layer protocol.
-
-- name: flow_label
+- name: iptables.flow_label
   type: integer
-  description: >
+  description: |
     IPv6 flow label.
-
-- name: fragment_flags
+- name: iptables.fragment_flags
   type: keyword
-  description: >
+  description: |
     IP fragment flags. A combination of CE, DF and MF.
-
-- name: fragment_offset
+- name: iptables.fragment_offset
   type: long
-  description: >
+  description: |
     Offset of the current IP fragment.
-
-- name: icmp
+- name: iptables.icmp
   type: group
-  description: >
-    ICMP fields.
   fields:
-
   - name: code
     type: long
-    description: >
+    description: |
       ICMP code.
-
   - name: id
     type: long
-    description: >
+    description: |
       ICMP ID.
-
   - name: parameter
     type: long
-    description: >
+    description: |
       ICMP parameter.
-
   - name: redirect
     type: ip
-    description: >
+    description: |
       ICMP redirect address.
-
   - name: seq
     type: long
-    description: >
+    description: |
       ICMP sequence number.
-
   - name: type
     type: long
-    description: >
+    description: |
       ICMP type.
-
-- name: id
+- name: iptables.id
   type: long
-  description: >
+  description: |
     Packet identifier.
-
-- name: incomplete_bytes
+- name: iptables.incomplete_bytes
   type: long
-  description: >
+  description: |
     Number of incomplete bytes.
-
-- name: input_device
+- name: iptables.input_device
   type: keyword
-  description: >
+  description: |
     Device that received the packet.
-
-- name: precedence_bits
+- name: iptables.precedence_bits
   type: short
-  description: >
+  description: |
     IP precedence bits.
-
-- name: tos
+- name: iptables.tos
   type: long
-  description: >
-      IP Type of Service field.
-
-- name: length
+  description: |
+    IP Type of Service field.
+- name: iptables.length
   type: long
-  description: >
+  description: |
     Packet length.
-
-- name: output_device
+- name: iptables.output_device
   type: keyword
-  description: >
+  description: |
     Device that output the packet.
-
-- name: tcp
+- name: iptables.tcp
   type: group
-  description: >
-    TCP fields.
   fields:
-
   - name: flags
     type: keyword
-    description: >
+    description: |
       TCP flags.
-
   - name: reserved_bits
     type: short
-    description: >
+    description: |
       TCP reserved bits.
-
   - name: seq
     type: long
-    description: >
+    description: |
       TCP sequence number.
-
   - name: ack
     type: long
-    description: >
+    description: |
       TCP Acknowledgment number.
-
   - name: window
     type: long
-    description: >
+    description: |
       Advertised TCP window size.
-
-- name: ttl
+- name: iptables.ttl
   type: integer
-  description: >
+  description: |
     Time To Live field.
-
-- name: udp
+- name: iptables.udp
   type: group
-  description: >
-    UDP fields.
   fields:
-
   - name: length
     type: long
-    description: >
+    description: |
       Length of the UDP header and payload.
-
-- name: ubiquiti
+- name: iptables.ubiquiti
   type: group
-  description: >
-    Fields for Ubiquiti network devices.
   fields:
-
-    - name: input_zone
-      type: keyword
-      description: >
-        Input zone.
-
-    - name: output_zone
-      type: keyword
-      description: >
-        Output zone.
-
-    - name: rule_number
-      type: keyword
-      description:
-        The rule number within the rule set.
-
-    - name: rule_set
-      type: keyword
-      description:
-        The rule set name.
+  - name: input_zone
+    type: keyword
+    description: |
+      Input zone.
+  - name: output_zone
+    type: keyword
+    description: |
+      Output zone.
+  - name: rule_number
+    type: keyword
+    description: The rule number within the rule set.
+  - name: rule_set
+    type: keyword
+    description: The rule set name.

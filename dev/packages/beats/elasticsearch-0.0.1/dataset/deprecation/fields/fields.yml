@@ -1,4 +1,2 @@
 - name: elasticsearch.deprecation
   type: group
-  description: >
-  fields:

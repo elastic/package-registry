@@ -1,4 +1,2 @@
 - name: windows
   type: group
-  description: >
-  fields:
