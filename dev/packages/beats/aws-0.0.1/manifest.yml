@@ -126,15 +126,15 @@ icons:
   type: image/svg+xml
 datasources:
 - name: aws
-  title: AWS logs and metrics
-  description: Collect logs and metrics from AWS instances
+  title: aws logs and metrics
+  description: Collect logs and metrics from aws instances
   inputs:
   - type: logs
     title: Collecting logs from aws instances
-    description: Collecting AWS cloudtrail, cloudwatch, ec2, elb, s3access and vpcflow
+    description: Collecting aws cloudtrail, cloudwatch, ec2, elb, s3access and vpcflow
       logs
   - type: aws/metrics
     title: Collecting metrics from aws instances
-    description: Collecting AWS billing, cloudwatch, dynamodb, ebs, ec2, elb, lambda,
+    description: Collecting aws billing, cloudwatch, dynamodb, ebs, ec2, elb, lambda,
       natgateway, rds, s3_daily_storage, s3_request, sns, sqs, transitgateway, usage
       and vpn metrics

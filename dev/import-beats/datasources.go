@@ -19,74 +19,68 @@ type datasourceContent struct {
 	datasets map[string][]string // map[packageType]datasetName
 }
 
-type datasourceContentArray []datasourceContent
+func (ds datasourceContent) toMetadataDatasources() []util.Datasource {
+	var packageTypes []string
+	for packageType := range ds.datasets {
+		packageTypes = append(packageTypes, packageType)
+	}
+	sort.Strings(packageTypes)
 
-func (datasources datasourceContentArray) toMetadataDatasources() []util.Datasource {
-	var ud []util.Datasource
-	for _, ds := range datasources {
-		// list package types
-		var packageTypes []string
-		for packageType := range ds.datasets {
-			packageTypes = append(packageTypes, packageType)
-		}
-		sort.Strings(packageTypes)
+	var title, description string
+	if len(ds.datasets) == 2 {
+		title = toDatasourceTitleForTwoTypes(ds.moduleTitle, packageTypes[0], packageTypes[1])
+		description = toDatasourceDescriptionForTwoTypes(ds.moduleTitle, packageTypes[0], packageTypes[1])
+	} else {
+		title = toDatasourceTitle(ds.moduleTitle, packageTypes[0])
+		description = toDatasourceDescription(ds.moduleTitle, packageTypes[0])
+	}
 
-		var title, description string
-		if len(ds.datasets) == 2 {
-			title = toDatasourceTitleForTwoTypes(ds.moduleTitle, packageTypes[0], packageTypes[1])
-			description = toDatasourceDescriptionForTwoTypes(ds.moduleTitle, packageTypes[0], packageTypes[1])
-		} else {
-			title = toDatasourceTitle(ds.moduleTitle, packageTypes[0])
-			description = toDatasourceDescription(ds.moduleTitle, packageTypes[0])
-		}
-
-		var inputs []util.Input
-		for _, packageType := range packageTypes {
-			pt := packageType
-			if pt == "metrics" {
-				pt = fmt.Sprintf("%s/%s", ds.moduleName, pt)
-			}
-
-			inputs = append(inputs, util.Input{
-				Type:        pt,
-				Title:       toDatasourceInputTitle(ds.moduleName, packageType),
-				Description: toDatasourceInputDescription(ds.moduleTitle, packageType, ds.datasets[packageType]),
-			})
+	var inputs []util.Input
+	for _, packageType := range packageTypes {
+		pt := packageType
+		if pt == "metrics" {
+			pt = fmt.Sprintf("%s/%s", ds.moduleName, pt)
 		}
 
-		ud = append(ud, util.Datasource{
+		inputs = append(inputs, util.Input{
+			Type:        pt,
+			Title:       toDatasourceInputTitle(ds.moduleName, packageType),
+			Description: toDatasourceInputDescription(ds.moduleTitle, packageType, ds.datasets[packageType]),
+		})
+	}
+
+	return []util.Datasource{
+		{
 			Name:        ds.moduleName,
 			Title:       title,
 			Description: description,
 			Inputs:      inputs,
-		})
+		},
 	}
-	return ud
 }
 
-func updateDatasources(datasources datasourceContentArray, moduleName, moduleTitle, packageType string, datasetNames []string) (datasourceContentArray, error) {
-	var updated datasourceContentArray
+type updateDatasourcesParameters struct {
+	moduleName  string
+	moduleTitle string
+	packageType string
 
-	if len(datasources) > 0 {
-		updated = append(updated, datasources...)
+	datasetNames []string
+}
 
-		if _, ok := updated[0].datasets[packageType]; !ok { // there is always a single datasource
-			updated[0].datasets[packageType] = datasetNames
-		} else {
-			updated[0].datasets[packageType] = append(updated[0].datasets[packageType], datasetNames...)
-		}
-	} else {
-		datasets := map[string][]string{
-			packageType: datasetNames,
-		}
+func updateDatasource(dsc datasourceContent, params updateDatasourcesParameters) (datasourceContent, error) {
+	dsc.moduleName = params.moduleName
+	dsc.moduleTitle = params.moduleTitle
 
-		updated = append(updated, datasourceContent{
-			moduleName:  moduleName,
-			moduleTitle: moduleTitle,
-			datasets:    datasets,
-		})
+	if dsc.datasets == nil {
+		dsc.datasets = map[string][]string{}
 	}
-	return updated, nil
+
+	if _, ok := dsc.datasets[params.packageType]; !ok {
+		dsc.datasets[params.packageType] = params.datasetNames
+	} else {
+		dsc.datasets[params.packageType] = append(dsc.datasets[params.packageType], params.datasetNames...)
+	}
+	return dsc, nil
 }
 
 func toDatasourceTitle(moduleTitle, packageType string) string {

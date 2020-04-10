@@ -26,12 +26,12 @@ icons:
   type: image/svg+xml
 datasources:
 - name: envoyproxy
-  title: Envoyproxy logs and metrics
-  description: Collect logs and metrics from Envoyproxy instances
+  title: envoyproxy logs and metrics
+  description: Collect logs and metrics from envoyproxy instances
   inputs:
   - type: logs
     title: Collecting logs from envoyproxy instances
-    description: Collecting Envoyproxy log logs
+    description: Collecting envoyproxy log logs
   - type: envoyproxy/metrics
     title: Collecting metrics from envoyproxy instances
-    description: Collecting Envoyproxy server metrics
+    description: Collecting envoyproxy server metrics

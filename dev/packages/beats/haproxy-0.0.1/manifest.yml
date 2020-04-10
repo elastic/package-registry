@@ -26,12 +26,12 @@ icons:
   type: image/svg+xml
 datasources:
 - name: haproxy
-  title: haproxy logs and metrics
-  description: Collect logs and metrics from haproxy instances
+  title: HAProxy logs and metrics
+  description: Collect logs and metrics from HAProxy instances
   inputs:
   - type: logs
     title: Collecting logs from haproxy instances
-    description: Collecting haproxy log logs
+    description: Collecting HAProxy log logs
   - type: haproxy/metrics
     title: Collecting metrics from haproxy instances
-    description: Collecting haproxy info and stat metrics
+    description: Collecting HAProxy info and stat metrics

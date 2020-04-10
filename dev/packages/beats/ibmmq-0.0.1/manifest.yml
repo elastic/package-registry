@@ -38,12 +38,12 @@ icons:
   type: image/svg+xml
 datasources:
 - name: ibmmq
-  title: ibmmq logs and metrics
-  description: Collect logs and metrics from ibmmq instances
+  title: IBM MQ logs and metrics
+  description: Collect logs and metrics from IBM MQ instances
   inputs:
   - type: logs
     title: Collecting logs from ibmmq instances
-    description: Collecting ibmmq errorlog logs
+    description: Collecting IBM MQ errorlog logs
   - type: ibmmq/metrics
     title: Collecting metrics from ibmmq instances
-    description: Collecting ibmmq qmgr metrics
+    description: Collecting IBM MQ qmgr metrics

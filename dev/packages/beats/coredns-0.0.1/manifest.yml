@@ -30,12 +30,12 @@ icons:
   type: image/svg+xml
 datasources:
 - name: coredns
-  title: Coredns logs and metrics
-  description: Collect logs and metrics from Coredns instances
+  title: coredns logs and metrics
+  description: Collect logs and metrics from coredns instances
   inputs:
   - type: logs
     title: Collecting logs from coredns instances
-    description: Collecting Coredns log logs
+    description: Collecting coredns log logs
   - type: coredns/metrics
     title: Collecting metrics from coredns instances
-    description: Collecting Coredns stats metrics
+    description: Collecting coredns stats metrics

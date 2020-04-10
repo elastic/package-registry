@@ -20,12 +20,12 @@ icons:
   type: image/svg+xml
 datasources:
 - name: kibana
-  title: kibana logs and metrics
-  description: Collect logs and metrics from kibana instances
+  title: Kibana logs and metrics
+  description: Collect logs and metrics from Kibana instances
   inputs:
   - type: logs
     title: Collecting logs from kibana instances
-    description: Collecting kibana log logs
+    description: Collecting Kibana log logs
   - type: kibana/metrics
     title: Collecting metrics from kibana instances
-    description: Collecting kibana stats and status metrics
+    description: Collecting Kibana stats and status metrics

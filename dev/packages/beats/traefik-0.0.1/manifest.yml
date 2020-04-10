@@ -26,12 +26,12 @@ icons:
   type: image/svg+xml
 datasources:
 - name: traefik
-  title: Traefik logs and metrics
-  description: Collect logs and metrics from Traefik instances
+  title: traefik logs and metrics
+  description: Collect logs and metrics from traefik instances
   inputs:
   - type: logs
     title: Collecting logs from traefik instances
-    description: Collecting Traefik access logs
+    description: Collecting traefik access logs
   - type: traefik/metrics
     title: Collecting metrics from traefik instances
-    description: Collecting Traefik health metrics
+    description: Collecting traefik health metrics

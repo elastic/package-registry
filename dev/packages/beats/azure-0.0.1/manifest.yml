@@ -42,14 +42,14 @@ icons:
   type: image/svg+xml
 datasources:
 - name: azure
-  title: Azure logs and metrics
-  description: Collect logs and metrics from Azure instances
+  title: azure logs and metrics
+  description: Collect logs and metrics from azure instances
   inputs:
   - type: logs
     title: Collecting logs from azure instances
-    description: Collecting Azure activitylogs, auditlogs and signinlogs logs
+    description: Collecting azure activitylogs, auditlogs and signinlogs logs
   - type: azure/metrics
     title: Collecting metrics from azure instances
-    description: Collecting Azure compute_vm, compute_vm_scaleset, container_instance,
+    description: Collecting azure compute_vm, compute_vm_scaleset, container_instance,
       container_registry, container_service, database_account, monitor and storage
       metrics

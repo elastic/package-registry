@@ -30,12 +30,12 @@ icons:
   type: image/svg+xml
 datasources:
 - name: nats
-  title: nats logs and metrics
-  description: Collect logs and metrics from nats instances
+  title: Nats logs and metrics
+  description: Collect logs and metrics from Nats instances
   inputs:
   - type: logs
     title: Collecting logs from nats instances
-    description: Collecting nats log logs
+    description: Collecting Nats log logs
   - type: nats/metrics
     title: Collecting metrics from nats instances
-    description: Collecting nats connections, routes, stats and subscriptions metrics
+    description: Collecting Nats connections, routes, stats and subscriptions metrics

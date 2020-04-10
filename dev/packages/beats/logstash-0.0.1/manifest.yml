@@ -30,12 +30,12 @@ icons:
   type: image/svg+xml
 datasources:
 - name: logstash
-  title: logstash logs and metrics
-  description: Collect logs and metrics from logstash instances
+  title: Logstash logs and metrics
+  description: Collect logs and metrics from Logstash instances
   inputs:
   - type: logs
     title: Collecting logs from logstash instances
-    description: Collecting logstash log and slowlog logs
+    description: Collecting Logstash log and slowlog logs
   - type: logstash/metrics
     title: Collecting metrics from logstash instances
-    description: Collecting logstash node and node_stats metrics
+    description: Collecting Logstash node and node_stats metrics

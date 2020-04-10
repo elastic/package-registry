@@ -21,12 +21,12 @@ icons:
   type: image/svg+xml
 datasources:
 - name: mssql
-  title: mssql logs and metrics
-  description: Collect logs and metrics from mssql instances
+  title: MSSQL logs and metrics
+  description: Collect logs and metrics from MSSQL instances
   inputs:
   - type: logs
     title: Collecting logs from mssql instances
-    description: Collecting mssql log logs
+    description: Collecting MSSQL log logs
   - type: mssql/metrics
     title: Collecting metrics from mssql instances
-    description: Collecting mssql performance and transaction_log metrics
+    description: Collecting MSSQL performance and transaction_log metrics
