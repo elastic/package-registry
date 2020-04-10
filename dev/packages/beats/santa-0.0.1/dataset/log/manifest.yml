@@ -12,12 +12,5 @@ streams:
     show_user: true
     default:
     - /var/log/santa.log
-  - name: input
-    type: text
-    title: Input
-    multi: false
-    required: true
-    show_user: true
-    default: file
   title: Google Santa log logs
   description: Collect Google Santa log logs

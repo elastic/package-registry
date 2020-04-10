@@ -33,5 +33,21 @@ datasources:
   description: Collect logs from Suricata instances
   inputs:
   - type: logs
+    vars:
+    - name: tags
+      type: text
+      title: Tags
+      multi: true
+      required: true
+      show_user: true
+      default:
+      - suricata
+    - name: community_id
+      type: bool
+      title: Community Id
+      multi: false
+      required: true
+      show_user: true
+      default: true
     title: Collecting logs from suricata instances
     description: Collecting Suricata eve logs

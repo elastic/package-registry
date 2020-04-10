@@ -4,20 +4,6 @@ type: logs
 streams:
 - input: logs
   vars:
-  - name: input
-    type: text
-    title: Input
-    multi: false
-    required: true
-    show_user: true
-    default: google-pubsub
-  - name: project_id
-    type: text
-    title: Project Id
-    multi: false
-    required: true
-    show_user: true
-    default: SET_PROJECT_NAME
   - name: topic
     type: text
     title: Topic
@@ -42,13 +28,6 @@ streams:
   - name: debug
     type: bool
     title: Debug
-    multi: false
-    required: true
-    show_user: true
-    default: false
-  - name: keep_original_message
-    type: bool
-    title: Keep Original Message
     multi: false
     required: true
     show_user: true

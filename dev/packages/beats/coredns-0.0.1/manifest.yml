@@ -34,8 +34,26 @@ datasources:
   description: Collect logs and metrics from coredns instances
   inputs:
   - type: logs
+    vars:
+    - name: tags
+      type: text
+      title: Tags
+      multi: true
+      required: true
+      show_user: true
+      default:
+      - coredns
     title: Collecting logs from coredns instances
     description: Collecting coredns log logs
   - type: coredns/metrics
+    vars:
+    - name: hosts
+      type: text
+      title: Hosts
+      multi: true
+      required: true
+      show_user: true
+      default:
+      - localhost:9153
     title: Collecting metrics from coredns instances
     description: Collecting coredns stats metrics

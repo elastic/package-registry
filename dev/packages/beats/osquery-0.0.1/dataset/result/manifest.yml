@@ -20,12 +20,5 @@ streams:
       windows:
         default:
         - C:/ProgramData/osquery/log/osqueryd.results.log*
-  - name: use_namespace
-    type: bool
-    title: Use Namespace
-    multi: false
-    required: true
-    show_user: true
-    default: true
   title: Osquery result logs
   description: Collect Osquery result logs

@@ -4,21 +4,6 @@ type: metrics
 streams:
 - input: sql/metrics
   vars:
-  - name: driver
-    type: text
-    title: Driver
-    multi: false
-    required: true
-    show_user: true
-    default: postgres
-  - name: hosts
-    type: text
-    title: Hosts
-    multi: true
-    required: true
-    show_user: true
-    default:
-    - user=myuser password=mypassword dbname=mydb sslmode=disable
   - name: period
     type: text
     title: Period
@@ -26,19 +11,5 @@ streams:
     required: true
     show_user: true
     default: 10s
-  - name: sql_query
-    type: text
-    title: Sql Query
-    multi: false
-    required: true
-    show_user: true
-    default: select now()
-  - name: sql_response_format
-    type: text
-    title: Sql Response Format
-    multi: false
-    required: true
-    show_user: true
-    default: table
   title: sql query metrics
   description: Collect sql query metrics

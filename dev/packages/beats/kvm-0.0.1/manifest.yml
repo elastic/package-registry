@@ -17,5 +17,14 @@ datasources:
   description: Collect metrics from kvm instances
   inputs:
   - type: kvm/metrics
+    vars:
+    - name: hosts
+      type: text
+      title: Hosts
+      multi: true
+      required: true
+      show_user: true
+      default:
+      - unix:///var/run/libvirt/libvirt-sock
     title: Collecting metrics from kvm instances
     description: Collecting kvm dommemstat metrics

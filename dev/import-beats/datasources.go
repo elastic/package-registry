@@ -16,18 +16,19 @@ type datasourceContent struct {
 	moduleName  string
 	moduleTitle string
 
-	inputs map[string]datasourceInput // map[packageType]..
+	inputs map[string]datasourceInput // map[inputType]..
 }
 
 type datasourceInput struct {
 	datasetNames []string
+	packageType  string
 	vars         []util.Variable
 }
 
 func (ds datasourceContent) toMetadataDatasources() []util.Datasource {
 	var packageTypes []string
-	for packageType := range ds.inputs {
-		packageTypes = append(packageTypes, packageType)
+	for _, input := range ds.inputs {
+		packageTypes = append(packageTypes, input.packageType)
 	}
 	sort.Strings(packageTypes)
 
@@ -42,18 +43,17 @@ func (ds datasourceContent) toMetadataDatasources() []util.Datasource {
 
 	var inputs []util.Input
 	for _, packageType := range packageTypes {
-		pt := packageType
-		if pt == "metrics" {
-			pt = fmt.Sprintf("%s/%s", ds.moduleName, pt)
+		for inputType, input := range ds.inputs {
+			if input.packageType == packageType {
+				inputs = append(inputs, util.Input{
+					Type:        inputType,
+					Title:       toDatasourceInputTitle(ds.moduleName, packageType),
+					Description: toDatasourceInputDescription(ds.moduleTitle, packageType, ds.inputs[inputType].datasetNames),
+					Vars:        input.vars,
+				})
+			}
 		}
-
-		inputs = append(inputs, util.Input{
-			Type:        pt,
-			Title:       toDatasourceInputTitle(ds.moduleName, packageType),
-			Description: toDatasourceInputDescription(ds.moduleTitle, packageType, ds.inputs[packageType].datasetNames),
-		})
 	}
-
 	return []util.Datasource{
 		{
 			Name:        ds.moduleName,
@@ -81,9 +81,15 @@ func updateDatasource(dsc datasourceContent, params updateDatasourcesParameters)
 		dsc.inputs = map[string]datasourceInput{}
 	}
 
-	dsc.inputs[params.packageType] = datasourceInput{
+	inputType := params.packageType
+	if inputType == "metrics" {
+		inputType = fmt.Sprintf("%s/%s", dsc.moduleName, inputType)
+	}
+
+	dsc.inputs[inputType] = datasourceInput{
 		datasetNames: params.datasetNames,
-		vars:         params.inputVars[params.packageType],
+		packageType:  params.packageType,
+		vars:         params.inputVars[inputType],
 	}
 	return dsc, nil
 }

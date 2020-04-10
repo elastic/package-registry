@@ -34,8 +34,32 @@ datasources:
   description: Collect logs and metrics from Logstash instances
   inputs:
   - type: logs
+    vars:
+    - name: format
+      type: text
+      title: Format
+      multi: false
+      required: true
+      show_user: true
+      default: plain
     title: Collecting logs from logstash instances
     description: Collecting Logstash log and slowlog logs
   - type: logstash/metrics
+    vars:
+    - name: hosts
+      type: text
+      title: Hosts
+      multi: true
+      required: true
+      show_user: true
+      default:
+      - localhost:9600
+    - name: xpack.enabled
+      type: bool
+      title: Xpack Enabled
+      multi: false
+      required: true
+      show_user: true
+      default: true
     title: Collecting metrics from logstash instances
     description: Collecting Logstash node and node_stats metrics

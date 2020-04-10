@@ -4,21 +4,6 @@ type: metrics
 streams:
 - input: ibmmq/metrics
   vars:
-  - name: hosts
-    type: text
-    title: Hosts
-    multi: true
-    required: true
-    show_user: true
-    default:
-    - localhost:9157
-  - name: metrics_path
-    type: text
-    title: Metrics Path
-    multi: false
-    required: true
-    show_user: true
-    default: /metrics
   - name: period
     type: text
     title: Period

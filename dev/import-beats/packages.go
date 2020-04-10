@@ -201,10 +201,10 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 		if err != nil {
 			return err
 		}
-		if moduleName == "prometheus" {
-			log.Println(aPackage.datasets.names())
+		datasets, inputVarsPerInputType, err := compactDatasetVariables(datasets)
+		if err != nil {
+			return err
 		}
-		datasets, inputVars := compactDatasetVariables(datasets)
 		aPackage.addDatasets(datasets)
 
 		// datasources
@@ -213,7 +213,7 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 			moduleTitle:  moduleTitle,
 			packageType:  beatType,
 			datasetNames: datasets.names(),
-			inputVars:    inputVars,
+			inputVars:    inputVarsPerInputType,
 		})
 		if err != nil {
 			return err
