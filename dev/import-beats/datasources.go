@@ -16,18 +16,23 @@ type datasourceContent struct {
 	moduleName  string
 	moduleTitle string
 
-	datasets map[string][]string // map[packageType]datasetName
+	inputs map[string]datasourceInput // map[packageType]..
+}
+
+type datasourceInput struct {
+	datasetNames []string
+	vars         []util.Variable
 }
 
 func (ds datasourceContent) toMetadataDatasources() []util.Datasource {
 	var packageTypes []string
-	for packageType := range ds.datasets {
+	for packageType := range ds.inputs {
 		packageTypes = append(packageTypes, packageType)
 	}
 	sort.Strings(packageTypes)
 
 	var title, description string
-	if len(ds.datasets) == 2 {
+	if len(ds.inputs) == 2 {
 		title = toDatasourceTitleForTwoTypes(ds.moduleTitle, packageTypes[0], packageTypes[1])
 		description = toDatasourceDescriptionForTwoTypes(ds.moduleTitle, packageTypes[0], packageTypes[1])
 	} else {
@@ -45,7 +50,7 @@ func (ds datasourceContent) toMetadataDatasources() []util.Datasource {
 		inputs = append(inputs, util.Input{
 			Type:        pt,
 			Title:       toDatasourceInputTitle(ds.moduleName, packageType),
-			Description: toDatasourceInputDescription(ds.moduleTitle, packageType, ds.datasets[packageType]),
+			Description: toDatasourceInputDescription(ds.moduleTitle, packageType, ds.inputs[packageType].datasetNames),
 		})
 	}
 
@@ -65,20 +70,20 @@ type updateDatasourcesParameters struct {
 	packageType string
 
 	datasetNames []string
+	inputVars    map[string][]util.Variable
 }
 
 func updateDatasource(dsc datasourceContent, params updateDatasourcesParameters) (datasourceContent, error) {
 	dsc.moduleName = params.moduleName
 	dsc.moduleTitle = params.moduleTitle
 
-	if dsc.datasets == nil {
-		dsc.datasets = map[string][]string{}
+	if dsc.inputs == nil {
+		dsc.inputs = map[string]datasourceInput{}
 	}
 
-	if _, ok := dsc.datasets[params.packageType]; !ok {
-		dsc.datasets[params.packageType] = params.datasetNames
-	} else {
-		dsc.datasets[params.packageType] = append(dsc.datasets[params.packageType], params.datasetNames...)
+	dsc.inputs[params.packageType] = datasourceInput{
+		datasetNames: params.datasetNames,
+		vars:         params.inputVars[params.packageType],
 	}
 	return dsc, nil
 }

@@ -30,5 +30,4 @@ datasources:
   inputs:
   - type: prometheus/metrics
     title: Collecting metrics from prometheus instances
-    description: Collecting Prometheus typed metrics collector, query, remote_write
-      and collector metrics
+    description: Collecting Prometheus typed metrics collector metrics

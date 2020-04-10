@@ -51,8 +51,12 @@ func (pc *packageContent) addDatasets(ds []datasetContent) {
 	for _, dc := range ds {
 		for i, v := range pc.datasets {
 			if v.name == dc.name {
-				pc.datasets[i].name = fmt.Sprintf("%s-%s", pc.datasets[i].name, pc.datasets[i].beatType)
-				dc.name = fmt.Sprintf("%s-%s", dc.name, dc.beatType)
+				if v.beatType != dc.beatType {
+					pc.datasets[i].name = fmt.Sprintf("%s-%s", pc.datasets[i].name, pc.datasets[i].beatType)
+					dc.name = fmt.Sprintf("%s-%s", dc.name, dc.beatType)
+				} else {
+					dc.name = fmt.Sprintf("%s-%s", dc.name, dc.beatType)
+				}
 				pc.datasets = append(pc.datasets, dc)
 				break
 			}
@@ -197,7 +201,10 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 		if err != nil {
 			return err
 		}
-		// TODO compact variables
+		if moduleName == "prometheus" {
+			log.Println(aPackage.datasets.names())
+		}
+		datasets, inputVars := compactDatasetVariables(datasets)
 		aPackage.addDatasets(datasets)
 
 		// datasources
@@ -206,7 +213,7 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 			moduleTitle:  moduleTitle,
 			packageType:  beatType,
 			datasetNames: datasets.names(),
-			// TODO compacted variables
+			inputVars:    inputVars,
 		})
 		if err != nil {
 			return err
