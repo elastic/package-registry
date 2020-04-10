@@ -10,40 +10,14 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"sort"
-	"strings"
 
 	"github.com/pkg/errors"
-	"gopkg.in/yaml.v2"
 
 	"github.com/elastic/package-registry/util"
 )
 
-type manifestWithVars struct {
-	Vars []util.Variable `yaml:"var"`
-}
-
-type varWithDefault struct {
-	Default interface{} `yaml:"default"`
-}
-
-type manifestWithVarsOsFlattened struct {
-	Vars []variableWithOsFlattened `yaml:"var"`
-}
-
-type variableWithOsFlattened struct {
-	OsDarwin  interface{} `yaml:"os.darwin,omitempty"`
-	OsWindows interface{} `yaml:"os.windows,omitempty"`
-}
-
-var ignoredConfigOptions = []string{
-	"module",
-	"metricsets",
-	"enabled",
-}
-
 // createStreams method builds a set of stream inputs including configuration variables.
-// Stream defintions depend on a beat type - log or metric.
+// Stream definitions depend on a beat type - log or metric.
 // At the moment, the array returns only one stream.
 func createStreams(modulePath, moduleName, moduleTitle, datasetName, beatType string) ([]util.Stream, error) {
 	switch beatType {
@@ -64,71 +38,18 @@ func createLogStreams(modulePath, moduleTitle, datasetName string) ([]util.Strea
 		return nil, errors.Wrapf(err, "reading manifest file failed (path: %s)", manifestPath)
 	}
 
-	var mwv manifestWithVars
-	err = yaml.Unmarshal(manifestFile, &mwv)
+	vars, err := createLogStreamVariables(manifestFile)
 	if err != nil {
-		return nil, errors.Wrapf(err, "unmarshalling manifest file failed (path: %s)", manifestPath)
+		return nil, errors.Wrapf(err, "creating log stream variables failed (path: %s)", manifestPath)
 	}
-
-	var mwvos manifestWithVarsOsFlattened
-	err = yaml.Unmarshal(manifestFile, &mwvos)
-	if err != nil {
-		return nil, errors.Wrapf(err, "unmarshalling flattened OS failed (path: %s)", manifestPath)
-	}
-
 	return []util.Stream{
 		{
 			Input:       "logs",
 			Title:       fmt.Sprintf("%s %s logs", moduleTitle, datasetName),
 			Description: fmt.Sprintf("Collect %s %s logs", moduleTitle, datasetName),
-			Vars:        adjustVariablesFormat(mwvos, mwv).Vars,
+			Vars:        vars,
 		},
 	}, nil
-}
-
-// adjustVariablesFormat method adjusts the format of variables defined in manifest:
-// - ensure that all variable values are wrapped with a "default" field, even if they are defined for particular
-//   operating systems (prefix: os.)
-// - add field "multi: true" if value is an array
-func adjustVariablesFormat(mwvos manifestWithVarsOsFlattened, mwvs manifestWithVars) manifestWithVars {
-	var withDefaults manifestWithVars
-	for i, aVar := range mwvs.Vars {
-		aVarWithDefaults := aVar
-		aVarWithDefaults.Title = toVariableTitle(aVar.Name)
-		aVarWithDefaults.Type = determineInputVariableType(aVar.Name, aVar.Default)
-		aVarWithDefaults.Required = true
-		aVarWithDefaults.ShowUser = true
-		if _, isArray := aVarWithDefaults.Default.([]interface{}); isArray {
-			aVarWithDefaults.Multi = isArray
-		}
-		aVarWithDefaults.Os = unwrapOsVars(mwvos.Vars[i])
-
-		if aVarWithDefaults.Os != nil {
-			if aVarWithDefaults.Os.Darwin != nil {
-				aVarWithDefaults.Os.Darwin = varWithDefault{
-					Default: aVarWithDefaults.Os.Darwin,
-				}
-			}
-
-			if aVarWithDefaults.Os.Windows != nil {
-				aVarWithDefaults.Os.Windows = varWithDefault{
-					Default: aVarWithDefaults.Os.Windows,
-				}
-			}
-		}
-		withDefaults.Vars = append(withDefaults.Vars, aVarWithDefaults)
-	}
-	return withDefaults
-}
-
-func unwrapOsVars(flattened variableWithOsFlattened) *util.Os {
-	var anOs *util.Os
-	if flattened.OsDarwin != nil || flattened.OsWindows != nil {
-		anOs = new(util.Os)
-		anOs.Darwin = flattened.OsDarwin
-		anOs.Windows = flattened.OsWindows
-	}
-	return anOs
 }
 
 // wrapVariablesWithDefault method builds a set of stream inputs for metrics oriented dataset.
@@ -143,65 +64,16 @@ func createMetricStreams(modulePath, moduleName, moduleTitle, datasetName string
 		return nil, errors.Wrapf(err, "merging config files failed")
 	}
 
-	var configOptions []util.Variable
-
-	if len(merged) > 0 {
-		var moduleConfig []mapStr
-		err = yaml.Unmarshal(merged, &moduleConfig)
-		if err != nil {
-			return nil, errors.Wrapf(err, "unmarshalling module config failed (moduleName: %s, datasetName: %s)",
-				moduleName, datasetName)
-		}
-
-		foundConfigEntries := map[string]bool{}
-
-		for _, moduleConfigEntry := range moduleConfig {
-			flatEntry := moduleConfigEntry.flatten()
-			related, err := isConfigEntryRelatedToMetricset(flatEntry, moduleName, datasetName)
-			if err != nil {
-				return nil, errors.Wrapf(err, "checking if config entry is related failed (moduleName: %s, datasetName: %s)",
-					moduleName, datasetName)
-			}
-
-			for name, value := range flatEntry {
-				if shouldConfigOptionBeIgnored(name, value) {
-					continue
-				}
-
-				if _, ok := foundConfigEntries[name]; ok {
-					continue // already processed this config option
-				}
-
-				if related || strings.HasPrefix(name, fmt.Sprintf("%s.", datasetName)) {
-					_, isArray := value.([]interface{})
-					configOption := util.Variable{
-						Name:     name,
-						Type:     determineInputVariableType(name, value),
-						Title:    toVariableTitle(name),
-						Multi:    isArray,
-						Required: true,
-						ShowUser: true,
-						Default:  value,
-					}
-
-					configOptions = append(configOptions, configOption)
-					foundConfigEntries[name] = true
-				}
-			}
-		}
-
-		// sort variables to keep them in order while using version control.
-		sort.Slice(configOptions, func(i, j int) bool {
-			return sort.StringsAreSorted([]string{configOptions[i].Name, configOptions[j].Name})
-		})
+	vars, err := createMetricStreamVariables(merged, moduleName, datasetName)
+	if err != nil {
+		return nil, errors.Wrapf(err, "creating metric stream variables failed (modulePath: %s)", modulePath)
 	}
-
 	return []util.Stream{
 		{
 			Input:       moduleName + "/metrics",
 			Title:       fmt.Sprintf("%s %s metrics", moduleTitle, datasetName),
 			Description: fmt.Sprintf("Collect %s %s metrics", moduleTitle, datasetName),
-			Vars:        configOptions,
+			Vars:        vars,
 		},
 	}, nil
 }
@@ -223,71 +95,4 @@ func mergeMetaConfigFiles(modulePath string) ([]byte, error) {
 		mergedConfig.WriteString("\n")
 	}
 	return mergedConfig.Bytes(), nil
-}
-
-// shouldConfigOptionBeIgnored method checks if the configuration option name should be skipped (not used, duplicate, etc.)
-func shouldConfigOptionBeIgnored(optionName string, value interface{}) bool {
-	if value == nil {
-		return true
-	}
-
-	for _, ignored := range ignoredConfigOptions {
-		if ignored == optionName {
-			return true
-		}
-	}
-	return false
-}
-
-// isConfigEntryRelatedToMetricset method checks if the configuration entry may affect the dataset settings,
-// in other words, checks if the "metricsets" field is present and contains the given datasetName.
-func isConfigEntryRelatedToMetricset(entry mapStr, moduleName, datasetName string) (bool, error) {
-	var metricsetRelated bool
-	if metricsets, ok := entry["metricsets"]; ok {
-		metricsetsMapped, ok := metricsets.([]interface{})
-		if !ok {
-			return false, fmt.Errorf("mapping metricsets failed (moduleName: %s, datasetName: %s)",
-				moduleName, datasetName)
-		}
-		if len(metricsetsMapped) == 0 {
-			return false, fmt.Errorf("no metricsets defined (moduleName: %s, datasetName: %s)", moduleName,
-				datasetName)
-		}
-
-		for _, metricset := range metricsetsMapped {
-			if metricset.(string) == datasetName {
-				metricsetRelated = true
-				break
-			}
-		}
-	}
-	return metricsetRelated, nil
-}
-
-// determineInputVariableType method determines the most appropriate type of the value or the value in array.
-// Support types: text, password, bool, integer
-func determineInputVariableType(name, v interface{}) string {
-	if arr, isArray := v.([]interface{}); isArray {
-		if len(arr) == 0 {
-			return "text" // array doesn't contain any items, assuming default type
-		}
-		return determineInputVariableType(name, arr[0])
-	}
-
-	if _, isBool := v.(bool); isBool {
-		return "bool"
-	} else if _, isInt := v.(int); isInt {
-		return "integer"
-	}
-
-	if name == "password" {
-		return "password"
-	}
-	return "text"
-}
-
-func toVariableTitle(name string) string {
-	name = strings.ReplaceAll(name, "_", " ")
-	name = strings.ReplaceAll(name, ".", " ")
-	return strings.Title(name)
 }
