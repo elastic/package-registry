@@ -1,0 +1,3 @@
+- module: cisco
+  ftd:
+    enabled: true

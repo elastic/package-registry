@@ -1,0 +1,23 @@
+format_version: 1.0.0
+
+name: netflow
+title: netflow
+version: 1.0.0
+description: netflow Integration
+type: integration
+categories: [logs]
+release: ga
+
+requirement:
+  kibana:
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
+
+datasources:
+- name: netflow
+  title: netflow logs
+  description: Collect logs from netflow instances
+  inputs:
+  - type: logs
+    description: Collecting netflow logs

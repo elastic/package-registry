@@ -1,0 +1,32 @@
+title: Cisco ftd logs
+release: ga
+type: logs
+ingest_pipeline: pipeline
+streams:
+  - input: logs
+    vars:
+      - default:
+          - /var/log/cisco-ftd.log
+        multi: true
+        name: paths
+      - default:
+          - cisco-ftd
+        multi: true
+        name: tags
+      - default: localhost
+        name: syslog_host
+      - default: 9003
+        name: syslog_port
+      - default: syslog
+        name: input
+      - default: 7
+        min_elasticsearch_version:
+          value: false
+          version: 6.1.0
+        name: log_level
+      - default: ftd
+        name: internal_prefix
+      - default: FTD
+        name: internal_PREFIX
+    title: Cisco ftd logs
+    description: Collect Cisco ftd logs

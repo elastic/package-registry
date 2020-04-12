@@ -1,0 +1,3 @@
+- module: cisco
+  asa:
+    enabled: true
