@@ -19,5 +19,23 @@ streams:
       windows:
         default:
         - c:/program files/suricata/log/eve.json
+<<<<<<< HEAD
+=======
+  - name: tags
+    type: text
+    title: Tags
+    multi: true
+    required: true
+    show_user: true
+    default:
+    - suricata
+  - name: community_id
+    type: bool
+    title: Community Id
+    multi: false
+    required: true
+    show_user: true
+    default: true
+>>>>>>> master
   title: Suricata eve logs
   description: Collect Suricata eve logs

@@ -16,7 +16,7 @@ import (
 	"text/template"
 
 	"github.com/pkg/errors"
-	"gopkg.in/yaml.v2"
+	yaml "gopkg.in/yaml.v2"
 
 	"github.com/elastic/package-registry/util"
 )

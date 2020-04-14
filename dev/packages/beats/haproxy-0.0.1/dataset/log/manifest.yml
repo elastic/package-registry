@@ -12,5 +12,29 @@ streams:
     show_user: true
     default:
     - /var/log/haproxy.log
+<<<<<<< HEAD
+=======
+  - name: syslog_host
+    type: text
+    title: Syslog Host
+    multi: false
+    required: true
+    show_user: true
+    default: localhost
+  - name: syslog_port
+    type: integer
+    title: Syslog Port
+    multi: false
+    required: true
+    show_user: true
+    default: 9001
+  - name: input
+    type: text
+    title: Input
+    multi: false
+    required: true
+    show_user: true
+    default: syslog
+>>>>>>> master
   title: haproxy log logs
   description: Collect haproxy log logs

@@ -3,5 +3,126 @@ release: ga
 type: logs
 streams:
 - input: logs
+<<<<<<< HEAD
+=======
+  vars:
+  - name: input
+    type: text
+    title: Input
+    multi: false
+    required: true
+    show_user: true
+    default: httpjson
+  - name: api_key
+    type: text
+    title: Api Key
+    multi: false
+    required: true
+    show_user: true
+    default: ""
+  - name: authentication_scheme
+    type: text
+    title: Authentication Scheme
+    multi: false
+    required: true
+    show_user: true
+    default: SSWS
+  - name: http_client_timeout
+    type: integer
+    title: Http Client Timeout
+    multi: false
+    required: true
+    show_user: true
+    default: 60
+  - name: http_method
+    type: text
+    title: Http Method
+    multi: false
+    required: true
+    show_user: true
+    default: GET
+  - name: http_headers
+    type: text
+    title: Http Headers
+    multi: false
+    required: true
+    show_user: true
+    default: '{}'
+  - name: http_request_body
+    type: text
+    title: Http Request Body
+    multi: false
+    required: true
+    show_user: true
+    default: '{}'
+  - name: no_http_body
+    type: bool
+    title: No Http Body
+    multi: false
+    required: true
+    show_user: true
+    default: true
+  - name: interval
+    type: integer
+    title: Interval
+    multi: false
+    required: true
+    show_user: true
+    default: 60
+  - name: json_objects_array
+    type: text
+    title: Json Objects Array
+    multi: false
+    required: true
+    show_user: true
+    default: ""
+  - name: keep_original_message
+    type: bool
+    title: Keep Original Message
+    multi: false
+    required: true
+    show_user: true
+    default: true
+  - name: pagination
+    type: text
+    title: Pagination
+    multi: false
+    required: true
+    show_user: true
+    default: |-
+      {
+        "enabled": true,
+        "header": {
+          "field_name": "Link",
+          "regex_pattern": "<([^>]+)>; *rel=\"next\"(?:,|$)"
+        },
+      }
+  - name: rate_limit
+    type: text
+    title: Rate Limit
+    multi: false
+    required: true
+    show_user: true
+    default: |-
+      {
+        "limit": "X-Rate-Limit-Limit",
+        "remaining": "X-Rate-Limit-Remaining",
+        "reset": "X-Rate-Limit-Reset"
+      }
+  - name: url
+    type: text
+    title: Url
+    multi: false
+    required: true
+    show_user: true
+    default: ""
+  - name: ssl
+    type: text
+    title: Ssl
+    multi: false
+    required: true
+    show_user: true
+    default: '{}'
+>>>>>>> master
   title: Okta system logs
   description: Collect Okta system logs

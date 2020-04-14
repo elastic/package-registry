@@ -6,6 +6,7 @@ package util
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
@@ -335,6 +336,17 @@ func (p *Package) LoadDataSets(packagePath string) error {
 				for _, stream := range d.Streams {
 					if stream.Input == p.Datasources[dK].Inputs[iK].Type {
 						stream.Dataset = d.ID
+						streamTemplate := filepath.Join(datasetBasePath, "agent", "stream", "stream.yml")
+
+						streamTemplateData, err := ioutil.ReadFile(streamTemplate)
+						if err != nil {
+							return err
+						}
+
+						stream.Template = string(streamTemplateData)
+
+						// Add template to stream
+
 						p.Datasources[dK].Inputs[iK].Streams = append(p.Datasources[dK].Inputs[iK].Streams, stream)
 					}
 				}

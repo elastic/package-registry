@@ -12,5 +12,37 @@ streams:
     show_user: true
     default:
     - /var/log/cef.log
+<<<<<<< HEAD
+=======
+  - name: tags
+    type: text
+    title: Tags
+    multi: true
+    required: true
+    show_user: true
+    default:
+    - cef
+  - name: syslog_host
+    type: text
+    title: Syslog Host
+    multi: false
+    required: true
+    show_user: true
+    default: localhost
+  - name: syslog_port
+    type: integer
+    title: Syslog Port
+    multi: false
+    required: true
+    show_user: true
+    default: 9003
+  - name: input
+    type: text
+    title: Input
+    multi: false
+    required: true
+    show_user: true
+    default: syslog
+>>>>>>> master
   title: CEF log logs
   description: Collect CEF log logs

@@ -20,6 +20,16 @@ streams:
     show_user: true
     default:
     - cisco-ios
+<<<<<<< HEAD
+=======
+  - name: syslog_host
+    type: text
+    title: Syslog Host
+    multi: false
+    required: true
+    show_user: true
+    default: localhost
+>>>>>>> master
   - name: syslog_port
     type: integer
     title: Syslog Port
@@ -27,5 +37,15 @@ streams:
     required: true
     show_user: true
     default: 9002
+<<<<<<< HEAD
+=======
+  - name: input
+    type: text
+    title: Input
+    multi: false
+    required: true
+    show_user: true
+    default: syslog
+>>>>>>> master
   title: Cisco ios logs
   description: Collect Cisco ios logs

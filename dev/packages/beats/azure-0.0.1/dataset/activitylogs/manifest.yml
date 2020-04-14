@@ -4,6 +4,16 @@ type: logs
 streams:
 - input: logs
   vars:
+<<<<<<< HEAD
+=======
+  - name: input
+    type: text
+    title: Input
+    multi: false
+    required: true
+    show_user: true
+    default: azure-eventhub
+>>>>>>> master
   - name: eventhub
     type: text
     title: Eventhub
@@ -11,5 +21,33 @@ streams:
     required: true
     show_user: true
     default: insights-operational-logs
+<<<<<<< HEAD
+=======
+  - name: consumer_group
+    type: text
+    title: Consumer Group
+    multi: false
+    required: true
+    show_user: true
+    default: $Default
+  - name: connection_string
+    type: text
+    title: Connection String
+    multi: false
+    required: true
+    show_user: true
+  - name: storage_account
+    type: text
+    title: Storage Account
+    multi: false
+    required: true
+    show_user: true
+  - name: storage_account_key
+    type: text
+    title: Storage Account Key
+    multi: false
+    required: true
+    show_user: true
+>>>>>>> master
   title: Azure activitylogs logs
   description: Collect Azure activitylogs logs

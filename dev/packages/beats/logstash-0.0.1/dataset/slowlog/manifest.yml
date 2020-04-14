@@ -4,6 +4,16 @@ type: logs
 streams:
 - input: logs
   vars:
+<<<<<<< HEAD
+=======
+  - name: format
+    type: text
+    title: Format
+    multi: false
+    required: true
+    show_user: true
+    default: plain
+>>>>>>> master
   - name: paths
     type: text
     title: Paths

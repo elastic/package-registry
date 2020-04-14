@@ -4,6 +4,16 @@ type: logs
 streams:
 - input: logs
   vars:
+<<<<<<< HEAD
+=======
+  - name: kafka_home
+    type: text
+    title: Kafka Home
+    multi: false
+    required: true
+    show_user: true
+    default: /opt/kafka*
+>>>>>>> master
   - name: paths
     type: text
     title: Paths

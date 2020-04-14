@@ -11,6 +11,17 @@ streams:
     required: true
     show_user: true
     default: ""
+<<<<<<< HEAD
+=======
+  - name: hosts
+    type: text
+    title: Hosts
+    multi: true
+    required: true
+    show_user: true
+    default:
+    - localhost:5601
+>>>>>>> master
   - name: period
     type: text
     title: Period

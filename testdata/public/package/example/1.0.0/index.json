@@ -47,6 +47,7 @@
     "/package/example/1.0.0/kibana/visualization/80844540-5c97-11e9-8477-077ec9664dbd.json",
     "/package/example/1.0.0/kibana/visualization/ab48c3f0-5ca6-11e9-8477-077ec9664dbd.json",
     "/package/example/1.0.0/dataset/foo/fields/stream.yml",
+    "/package/example/1.0.0/dataset/foo/agent/stream/stream.yml",
     "/package/example/1.0.0/dataset/foo/elasticsearch/ingest-pipeline/pipeline-entry.json",
     "/package/example/1.0.0/dataset/foo/elasticsearch/ingest-pipeline/pipeline-http.json",
     "/package/example/1.0.0/dataset/foo/elasticsearch/ingest-pipeline/pipeline-json.json",
@@ -100,7 +101,8 @@
                   "show_user": false
                 }
               ],
-              "dataset": "bar"
+              "dataset": "bar",
+              "template": "foo: bar\n"
             }
           ]
         }

@@ -4,6 +4,31 @@ type: metrics
 streams:
 - input: vsphere/metrics
   vars:
+<<<<<<< HEAD
+=======
+  - name: hosts
+    type: text
+    title: Hosts
+    multi: true
+    required: true
+    show_user: true
+    default:
+    - https://localhost/sdk
+  - name: insecure
+    type: bool
+    title: Insecure
+    multi: false
+    required: true
+    show_user: true
+    default: false
+  - name: password
+    type: password
+    title: Password
+    multi: false
+    required: true
+    show_user: true
+    default: password
+>>>>>>> master
   - name: period
     type: text
     title: Period
@@ -11,5 +36,15 @@ streams:
     required: true
     show_user: true
     default: 10s
+<<<<<<< HEAD
+=======
+  - name: username
+    type: text
+    title: Username
+    multi: false
+    required: true
+    show_user: true
+    default: user
+>>>>>>> master
   title: vSphere datastore metrics
   description: Collect vSphere datastore metrics
