@@ -125,14 +125,33 @@ func Check() error {
 		return err
 	}
 
-	// Check if no changes are shown
-	sh.RunV("git", "update-index", "--refresh")
-	sh.RunV("git", "diff-index", "--exit-code", "HEAD", "--")
+	err = Vendor()
+	if err != nil {
+		return err
+	}
 
-	return nil
+	err = PrepareTest()
+	if err != nil {
+		return err
+	}
+
+	// Check if no changes are shown
+	err = sh.RunV("git", "update-index", "--refresh")
+	if err != nil {
+		return err
+	}
+	return sh.RunV("git", "diff-index", "--exit-code", "HEAD", "--")
 }
+
+func PrepareTest() error {
+	return sh.RunV("go", "get", "-v", "-u", "github.com/jstemmer/go-junit-report")
+}
+
 func Test() error {
-	sh.RunV("go", "get", "-v", "-u", "github.com/jstemmer/go-junit-report")
+	err := PrepareTest()
+	if err != nil {
+		return err
+	}
 	return sh.RunV("go", "test", "./...", "-v", "2>&1", "|", "go-junit-report", ">", "junit-report.xml")
 }
 
@@ -209,4 +228,24 @@ func Clean() error {
 	}
 
 	return os.Remove("package-registry")
+}
+
+func Vendor() error {
+	fmt.Println(">> mod - updating vendor directory")
+
+	err := sh.RunV("go", "mod", "tidy")
+	if err != nil {
+		return err
+	}
+
+	sh.RunV("go", "mod", "vendor")
+	if err != nil {
+		return err
+	}
+
+	sh.RunV("go", "mod", "verify")
+	if err != nil {
+		return err
+	}
+	return nil
 }
