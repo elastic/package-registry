@@ -54,10 +54,10 @@ func (pc *packageContent) addDatasets(ds []datasetContent) {
 				if v.beatType != dc.beatType {
 					pc.datasets[i].name = fmt.Sprintf("%s-%s", pc.datasets[i].name, pc.datasets[i].beatType)
 					dc.name = fmt.Sprintf("%s-%s", dc.name, dc.beatType)
+					pc.datasets = append(pc.datasets, dc)
 				} else {
-					dc.name = fmt.Sprintf("%s-%s", dc.name, dc.beatType)
+					pc.datasets[i] = dc
 				}
-				pc.datasets = append(pc.datasets, dc)
 				break
 			}
 		}

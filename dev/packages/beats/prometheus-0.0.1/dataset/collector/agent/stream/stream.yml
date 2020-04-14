@@ -1,10 +1,2 @@
 input: prometheus/metrics
 metricsets: ["collector"]
-hosts:
-{{#each hosts}}
-  - {{this}}
-{{/each}}
-{{#if metrics_path}}
-metrics_path: {{metrics_path}}
-{{/if}}
-period: {{period}}
