@@ -4,9 +4,13 @@ type: metrics
 streams:
 - input: kubernetes/metrics
   vars:
-  - default:
-    - https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT}
+  - name: hosts
+    type: text
+    title: Hosts
     multi: true
-    name: hosts
+    required: true
+    show_user: true
+    default:
+    - https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT}
   title: Kubernetes apiserver metrics
   description: Collect Kubernetes apiserver metrics

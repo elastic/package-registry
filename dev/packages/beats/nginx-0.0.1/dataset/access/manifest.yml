@@ -4,15 +4,20 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
-    - /var/log/nginx/access.log*
+  - name: paths
+    type: text
+    title: Paths
     multi: true
-    name: paths
-    os.darwin:
-      default:
-      - /usr/local/var/log/nginx/access.log*
-    os.windows:
-      default:
-      - c:/programdata/nginx/logs/*access.log*
+    required: true
+    show_user: true
+    default:
+    - /var/log/nginx/access.log*
+    os:
+      darwin:
+        default:
+        - /usr/local/var/log/nginx/access.log*
+      windows:
+        default:
+        - c:/programdata/nginx/logs/*access.log*
   title: Nginx access logs
   description: Collect Nginx access logs

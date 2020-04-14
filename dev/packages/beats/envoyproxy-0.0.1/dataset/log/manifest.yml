@@ -4,13 +4,21 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: true
+    required: true
+    show_user: true
+    default:
     - /var/log/envoy.log
+  - name: tags
+    type: text
+    title: Tags
     multi: true
-    name: paths
-  - default:
+    required: true
+    show_user: true
+    default:
     - envoyproxy
-    multi: true
-    name: tags
   title: Envoyproxy log logs
   description: Collect Envoyproxy log logs

@@ -4,12 +4,21 @@ type: metrics
 streams:
 - input: system/metrics
   vars:
-  - default: 1m
-    name: period
-  - default:
+  - name: period
+    type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 1m
+  - name: processors
+    type: text
+    title: Processors
+    multi: true
+    required: true
+    show_user: true
+    default:
     - drop_event.when.regexp:
         system.filesystem.mount_point: ^/(sys|cgroup|proc|dev|etc|host|lib|snap)($|/)
-    multi: true
-    name: processors
   title: System fsstat metrics
   description: Collect System fsstat metrics

@@ -4,17 +4,41 @@ type: metrics
 streams:
 - input: vsphere/metrics
   vars:
-  - default:
-    - https://localhost/sdk
+  - name: hosts
+    type: text
+    title: Hosts
     multi: true
-    name: hosts
-  - default: false
-    name: insecure
-  - default: password
-    name: password
-  - default: 10s
-    name: period
-  - default: user
-    name: username
+    required: true
+    show_user: true
+    default:
+    - https://localhost/sdk
+  - name: insecure
+    type: bool
+    title: Insecure
+    multi: false
+    required: true
+    show_user: true
+    default: false
+  - name: password
+    type: password
+    title: Password
+    multi: false
+    required: true
+    show_user: true
+    default: password
+  - name: period
+    type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 10s
+  - name: username
+    type: text
+    title: Username
+    multi: false
+    required: true
+    show_user: true
+    default: user
   title: vSphere virtualmachine metrics
   description: Collect vSphere virtualmachine metrics

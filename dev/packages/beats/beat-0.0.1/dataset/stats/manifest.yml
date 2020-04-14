@@ -4,13 +4,27 @@ type: metrics
 streams:
 - input: beat/metrics
   vars:
-  - default:
-    - http://localhost:5066
+  - name: hosts
+    type: text
+    title: Hosts
     multi: true
-    name: hosts
-  - default: 10s
-    name: period
-  - default: true
-    name: xpack.enabled
+    required: true
+    show_user: true
+    default:
+    - http://localhost:5066
+  - name: period
+    type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 10s
+  - name: xpack.enabled
+    type: bool
+    title: Xpack Enabled
+    multi: false
+    required: true
+    show_user: true
+    default: true
   title: Beat stats metrics
   description: Collect Beat stats metrics

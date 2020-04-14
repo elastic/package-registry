@@ -4,19 +4,42 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: true
+    required: true
+    show_user: true
+    default:
     - /var/log/cisco-ios.log
+  - name: tags
+    type: text
+    title: Tags
     multi: true
-    name: paths
-  - default:
+    required: true
+    show_user: true
+    default:
     - cisco-ios
-    multi: true
-    name: tags
-  - default: localhost
-    name: syslog_host
-  - default: 9002
-    name: syslog_port
-  - default: syslog
-    name: input
+  - name: syslog_host
+    type: text
+    title: Syslog Host
+    multi: false
+    required: true
+    show_user: true
+    default: localhost
+  - name: syslog_port
+    type: integer
+    title: Syslog Port
+    multi: false
+    required: true
+    show_user: true
+    default: 9002
+  - name: input
+    type: text
+    title: Input
+    multi: false
+    required: true
+    show_user: true
+    default: syslog
   title: Cisco ios logs
   description: Collect Cisco ios logs

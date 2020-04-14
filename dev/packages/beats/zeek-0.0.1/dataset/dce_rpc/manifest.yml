@@ -4,21 +4,32 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: true
+    required: true
+    show_user: true
+    default:
     - /var/log/bro/current/dce_rpc.log
+    os:
+      darwin:
+        default:
+        - /usr/local/var/logs/current/dce_rpc.log
+  - name: tags
+    type: text
+    title: Tags
     multi: true
-    name: paths
-    os.darwin:
-      default:
-      - /usr/local/var/logs/current/dce_rpc.log
-    os.linux:
-      default:
-      - /var/log/bro/current/dce_rpc.log
-  - default:
+    required: true
+    show_user: true
+    default:
     - zeek.dce_rpc
-    multi: true
-    name: tags
-  - default: true
-    name: community_id
+  - name: community_id
+    type: bool
+    title: Community Id
+    multi: false
+    required: true
+    show_user: true
+    default: true
   title: Zeek dce_rpc logs
   description: Collect Zeek dce_rpc logs

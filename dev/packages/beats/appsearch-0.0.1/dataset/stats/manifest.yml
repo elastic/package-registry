@@ -4,11 +4,20 @@ type: metrics
 streams:
 - input: appsearch/metrics
   vars:
-  - default:
-    - http://localhost:3002
+  - name: hosts
+    type: text
+    title: Hosts
     multi: true
-    name: hosts
-  - default: 10s
-    name: period
+    required: true
+    show_user: true
+    default:
+    - http://localhost:3002
+  - name: period
+    type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 10s
   title: App Search stats metrics
   description: Collect App Search stats metrics

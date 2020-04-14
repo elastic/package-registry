@@ -4,15 +4,20 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
-    - /var/log/postgresql/postgresql-*-*.log*
+  - name: paths
+    type: text
+    title: Paths
     multi: true
-    name: paths
-    os.darwin:
-      default:
-      - /usr/local/var/postgres/*.log*
-    os.windows:
-      default:
-      - c:/Program Files/PostgreSQL/*/logs/*.log*
+    required: true
+    show_user: true
+    default:
+    - /var/log/postgresql/postgresql-*-*.log*
+    os:
+      darwin:
+        default:
+        - /usr/local/var/postgres/*.log*
+      windows:
+        default:
+        - c:/Program Files/PostgreSQL/*/logs/*.log*
   title: PostgreSQL log logs
   description: Collect PostgreSQL log logs

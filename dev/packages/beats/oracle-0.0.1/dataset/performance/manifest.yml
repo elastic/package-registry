@@ -4,11 +4,20 @@ type: metrics
 streams:
 - input: oracle/metrics
   vars:
-  - default:
-    - oracle://user:pass@localhost:1521/ORCLPDB1.localdomain?sysdba=1
+  - name: hosts
+    type: text
+    title: Hosts
     multi: true
-    name: hosts
-  - default: 10s
-    name: period
+    required: true
+    show_user: true
+    default:
+    - oracle://user:pass@localhost:1521/ORCLPDB1.localdomain?sysdba=1
+  - name: period
+    type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 10s
   title: Oracle performance metrics
   description: Collect Oracle performance metrics

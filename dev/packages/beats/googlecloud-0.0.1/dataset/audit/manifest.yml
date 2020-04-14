@@ -4,17 +4,47 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default: google-pubsub
-    name: input
-  - default: SET_PROJECT_NAME
-    name: project_id
-  - default: stackdriver-audit
-    name: topic
-  - default: filebeat-googlecloud-audit
-    name: subscription_name
-  - default: googlecloud-audit-reader-service-identity.json
-    name: credentials_file
-  - default: false
-    name: keep_original_message
+  - name: input
+    type: text
+    title: Input
+    multi: false
+    required: true
+    show_user: true
+    default: google-pubsub
+  - name: project_id
+    type: text
+    title: Project Id
+    multi: false
+    required: true
+    show_user: true
+    default: SET_PROJECT_NAME
+  - name: topic
+    type: text
+    title: Topic
+    multi: false
+    required: true
+    show_user: true
+    default: stackdriver-audit
+  - name: subscription_name
+    type: text
+    title: Subscription Name
+    multi: false
+    required: true
+    show_user: true
+    default: filebeat-googlecloud-audit
+  - name: credentials_file
+    type: text
+    title: Credentials File
+    multi: false
+    required: true
+    show_user: true
+    default: googlecloud-audit-reader-service-identity.json
+  - name: keep_original_message
+    type: bool
+    title: Keep Original Message
+    multi: false
+    required: true
+    show_user: true
+    default: false
   title: Google Cloud audit logs
   description: Collect Google Cloud audit logs

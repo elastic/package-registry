@@ -4,15 +4,20 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
-    - /opt/apache-activemq-*/data/activemq.log*
+  - name: paths
+    type: text
+    title: Paths
     multi: true
-    name: paths
-    os.darwin:
-      default:
-      - /usr/local/apache-activemq-*/data/activemq.log*
-    os.windows:
-      default:
-      - c:/apache-activemq-*/data/activemq.log*
+    required: true
+    show_user: true
+    default:
+    - /opt/apache-activemq-*/data/activemq.log*
+    os:
+      darwin:
+        default:
+        - /usr/local/apache-activemq-*/data/activemq.log*
+      windows:
+        default:
+        - c:/apache-activemq-*/data/activemq.log*
   title: activemq log logs
   description: Collect activemq log logs

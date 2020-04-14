@@ -66,11 +66,12 @@
           "input": "foo",
           "vars": [
             {
+              "name": "paths",
+              "type": "text",
               "description": "Path to log files to be collected",
               "multi": true,
-              "name": "paths",
               "required": true,
-              "type": "text"
+              "show_user": false
             }
           ]
         }
@@ -92,11 +93,12 @@
               "input": "foo",
               "vars": [
                 {
+                  "name": "paths",
+                  "type": "text",
                   "description": "Path to log files to be collected",
                   "multi": true,
-                  "name": "paths",
                   "required": true,
-                  "type": "text"
+                  "show_user": false
                 }
               ],
               "dataset": "bar",

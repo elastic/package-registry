@@ -4,19 +4,25 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: true
+    required: true
+    show_user: true
+    default:
     - /var/log/bro/current/stats.log
+    os:
+      darwin:
+        default:
+        - /usr/local/var/logs/current/stats.log
+  - name: tags
+    type: text
+    title: Tags
     multi: true
-    name: paths
-    os.darwin:
-      default:
-      - /usr/local/var/logs/current/stats.log
-    os.linux:
-      default:
-      - /var/log/bro/current/stats.log
-  - default:
+    required: true
+    show_user: true
+    default:
     - zeek.stats
-    multi: true
-    name: tags
   title: Zeek stats logs
   description: Collect Zeek stats logs

@@ -4,14 +4,23 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default: /opt/kafka*
-    name: kafka_home
-  - default:
+  - name: kafka_home
+    type: text
+    title: Kafka Home
+    multi: false
+    required: true
+    show_user: true
+    default: /opt/kafka*
+  - name: paths
+    type: text
+    title: Paths
+    multi: true
+    required: true
+    show_user: true
+    default:
     - '{{.kafka_home}}/logs/controller.log*'
     - '{{.kafka_home}}/logs/server.log*'
     - '{{.kafka_home}}/logs/state-change.log*'
     - '{{.kafka_home}}/logs/kafka-*.log*'
-    multi: true
-    name: paths
   title: Kafka log logs
   description: Collect Kafka log logs

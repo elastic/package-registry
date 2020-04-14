@@ -2,9 +2,9 @@
 github.com/blang/semver
 # github.com/davecgh/go-spew v1.1.0
 github.com/davecgh/go-spew/spew
-# github.com/elastic/go-ucfg v0.7.0
+# github.com/elastic/go-ucfg v0.8.3 => github.com/mtojek/go-ucfg v0.8.4-0.20200409161607-b87b280107a8
 github.com/elastic/go-ucfg
-github.com/elastic/go-ucfg/internal/parse
+github.com/elastic/go-ucfg/parse
 github.com/elastic/go-ucfg/yaml
 # github.com/gorilla/mux v1.7.2
 github.com/gorilla/mux

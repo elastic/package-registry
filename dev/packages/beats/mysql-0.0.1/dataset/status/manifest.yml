@@ -4,17 +4,41 @@ type: metrics
 streams:
 - input: mysql/metrics
   vars:
-  - default:
-    - root:secret@tcp(127.0.0.1:3306)/
+  - name: hosts
+    type: text
+    title: Hosts
     multi: true
-    name: hosts
-  - default: secret
-    name: password
-  - default: 10s
-    name: period
-  - default: false
-    name: raw
-  - default: root
-    name: username
+    required: true
+    show_user: true
+    default:
+    - root:secret@tcp(127.0.0.1:3306)/
+  - name: password
+    type: password
+    title: Password
+    multi: false
+    required: true
+    show_user: true
+    default: secret
+  - name: period
+    type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 10s
+  - name: raw
+    type: bool
+    title: Raw
+    multi: false
+    required: true
+    show_user: true
+    default: false
+  - name: username
+    type: text
+    title: Username
+    multi: false
+    required: true
+    show_user: true
+    default: root
   title: MySQL status metrics
   description: Collect MySQL status metrics

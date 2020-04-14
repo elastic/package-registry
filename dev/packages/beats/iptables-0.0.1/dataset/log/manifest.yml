@@ -4,21 +4,49 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: true
+    required: true
+    show_user: true
+    default:
     - /var/log/iptables.log
+  - name: tags
+    type: text
+    title: Tags
     multi: true
-    name: paths
-  - default:
+    required: true
+    show_user: true
+    default:
     - iptables
-    multi: true
-    name: tags
-  - default: localhost
-    name: syslog_host
-  - default: 9001
-    name: syslog_port
-  - default: syslog
-    name: input
-  - default: true
-    name: community_id
+  - name: syslog_host
+    type: text
+    title: Syslog Host
+    multi: false
+    required: true
+    show_user: true
+    default: localhost
+  - name: syslog_port
+    type: integer
+    title: Syslog Port
+    multi: false
+    required: true
+    show_user: true
+    default: 9001
+  - name: input
+    type: text
+    title: Input
+    multi: false
+    required: true
+    show_user: true
+    default: syslog
+  - name: community_id
+    type: bool
+    title: Community Id
+    multi: false
+    required: true
+    show_user: true
+    default: true
   title: iptables log logs
   description: Collect iptables log logs

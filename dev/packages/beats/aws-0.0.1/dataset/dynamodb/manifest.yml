@@ -4,7 +4,12 @@ type: metrics
 streams:
 - input: aws/metrics
   vars:
-  - default: 5m
-    name: period
+  - name: period
+    type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 5m
   title: aws dynamodb metrics
   description: Collect aws dynamodb metrics

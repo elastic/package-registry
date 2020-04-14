@@ -20,11 +20,20 @@ import (
 )
 
 type manifestWithVars struct {
-	Vars []map[string]interface{} `yaml:"var"`
+	Vars []util.Variable `yaml:"var"`
 }
 
 type varWithDefault struct {
 	Default interface{} `yaml:"default"`
+}
+
+type manifestWithVarsOsFlattened struct {
+	Vars []variableWithOsFlattened `yaml:"var"`
+}
+
+type variableWithOsFlattened struct {
+	OsDarwin  interface{} `yaml:"os.darwin,omitempty"`
+	OsWindows interface{} `yaml:"os.windows,omitempty"`
 }
 
 var ignoredConfigOptions = []string{
@@ -61,12 +70,18 @@ func createLogStreams(modulePath, moduleTitle, datasetName string) ([]util.Strea
 		return nil, errors.Wrapf(err, "unmarshalling manifest file failed (path: %s)", manifestPath)
 	}
 
+	var mwvos manifestWithVarsOsFlattened
+	err = yaml.Unmarshal(manifestFile, &mwvos)
+	if err != nil {
+		return nil, errors.Wrapf(err, "unmarshalling flattened OS failed (path: %s)", manifestPath)
+	}
+
 	return []util.Stream{
 		{
 			Input:       "logs",
 			Title:       fmt.Sprintf("%s %s logs", moduleTitle, datasetName),
 			Description: fmt.Sprintf("Collect %s %s logs", moduleTitle, datasetName),
-			Vars:        adjustVariablesFormat(mwv).Vars,
+			Vars:        adjustVariablesFormat(mwvos, mwv).Vars,
 		},
 	}, nil
 }
@@ -75,30 +90,45 @@ func createLogStreams(modulePath, moduleTitle, datasetName string) ([]util.Strea
 // - ensure that all variable values are wrapped with a "default" field, even if they are defined for particular
 //   operating systems (prefix: os.)
 // - add field "multi: true" if value is an array
-func adjustVariablesFormat(mwvs manifestWithVars) manifestWithVars {
+func adjustVariablesFormat(mwvos manifestWithVarsOsFlattened, mwvs manifestWithVars) manifestWithVars {
 	var withDefaults manifestWithVars
-	for _, aVar := range mwvs.Vars {
-		aVarWithDefaults := map[string]interface{}{}
-		for k, v := range aVar {
-			if strings.HasPrefix(k, "os.") {
-				aVarWithDefaults[k] = varWithDefault{
-					Default: v,
+	for i, aVar := range mwvs.Vars {
+		aVarWithDefaults := aVar
+		aVarWithDefaults.Title = toVariableTitle(aVar.Name)
+		aVarWithDefaults.Type = determineInputVariableType(aVar.Name, aVar.Default)
+		aVarWithDefaults.Required = true
+		aVarWithDefaults.ShowUser = true
+		if _, isArray := aVarWithDefaults.Default.([]interface{}); isArray {
+			aVarWithDefaults.Multi = isArray
+		}
+		aVarWithDefaults.Os = unwrapOsVars(mwvos.Vars[i])
+
+		if aVarWithDefaults.Os != nil {
+			if aVarWithDefaults.Os.Darwin != nil {
+				aVarWithDefaults.Os.Darwin = varWithDefault{
+					Default: aVarWithDefaults.Os.Darwin,
 				}
-				continue
 			}
 
-			if k == "default" {
-				_, isArray := v.([]interface{})
-				if isArray {
-					aVarWithDefaults["multi"] = true
+			if aVarWithDefaults.Os.Windows != nil {
+				aVarWithDefaults.Os.Windows = varWithDefault{
+					Default: aVarWithDefaults.Os.Windows,
 				}
 			}
-
-			aVarWithDefaults[k] = v
 		}
 		withDefaults.Vars = append(withDefaults.Vars, aVarWithDefaults)
 	}
 	return withDefaults
+}
+
+func unwrapOsVars(flattened variableWithOsFlattened) *util.Os {
+	var anOs *util.Os
+	if flattened.OsDarwin != nil || flattened.OsWindows != nil {
+		anOs = new(util.Os)
+		anOs.Darwin = flattened.OsDarwin
+		anOs.Windows = flattened.OsWindows
+	}
+	return anOs
 }
 
 // wrapVariablesWithDefault method builds a set of stream inputs for metrics oriented dataset.
@@ -113,7 +143,7 @@ func createMetricStreams(modulePath, moduleName, moduleTitle, datasetName string
 		return nil, errors.Wrapf(err, "merging config files failed")
 	}
 
-	var configOptions []map[string]interface{}
+	var configOptions []util.Variable
 
 	if len(merged) > 0 {
 		var moduleConfig []mapStr
@@ -144,13 +174,14 @@ func createMetricStreams(modulePath, moduleName, moduleTitle, datasetName string
 
 				if related || strings.HasPrefix(name, fmt.Sprintf("%s.", datasetName)) {
 					_, isArray := value.([]interface{})
-					configOption := map[string]interface{}{
-						"default": value,
-						"name":    name,
-					}
-
-					if isArray {
-						configOption["multi"] = true
+					configOption := util.Variable{
+						Name:     name,
+						Type:     determineInputVariableType(name, value),
+						Title:    toVariableTitle(name),
+						Multi:    isArray,
+						Required: true,
+						ShowUser: true,
+						Default:  value,
 					}
 
 					configOptions = append(configOptions, configOption)
@@ -161,7 +192,7 @@ func createMetricStreams(modulePath, moduleName, moduleTitle, datasetName string
 
 		// sort variables to keep them in order while using version control.
 		sort.Slice(configOptions, func(i, j int) bool {
-			return sort.StringsAreSorted([]string{configOptions[i]["name"].(string), configOptions[j]["name"].(string)})
+			return sort.StringsAreSorted([]string{configOptions[i].Name, configOptions[j].Name})
 		})
 	}
 
@@ -231,4 +262,32 @@ func isConfigEntryRelatedToMetricset(entry mapStr, moduleName, datasetName strin
 		}
 	}
 	return metricsetRelated, nil
+}
+
+// determineInputVariableType method determines the most appropriate type of the value or the value in array.
+// Support types: text, password, bool, integer
+func determineInputVariableType(name, v interface{}) string {
+	if arr, isArray := v.([]interface{}); isArray {
+		if len(arr) == 0 {
+			return "text" // array doesn't contain any items, assuming default type
+		}
+		return determineInputVariableType(name, arr[0])
+	}
+
+	if _, isBool := v.(bool); isBool {
+		return "bool"
+	} else if _, isInt := v.(int); isInt {
+		return "integer"
+	}
+
+	if name == "password" {
+		return "password"
+	}
+	return "text"
+}
+
+func toVariableTitle(name string) string {
+	name = strings.ReplaceAll(name, "_", " ")
+	name = strings.ReplaceAll(name, ".", " ")
+	return strings.Title(name)
 }

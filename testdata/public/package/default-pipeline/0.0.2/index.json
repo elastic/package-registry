@@ -34,11 +34,12 @@
           "input": "logs",
           "vars": [
             {
+              "name": "paths",
+              "type": "text",
               "description": "Path to log files to be collected",
               "multi": true,
-              "name": "paths",
               "required": true,
-              "type": "text"
+              "show_user": false
             }
           ]
         }
@@ -60,11 +61,12 @@
               "input": "logs",
               "vars": [
                 {
+                  "name": "paths",
+                  "type": "text",
                   "description": "Path to log files to be collected",
                   "multi": true,
-                  "name": "paths",
                   "required": true,
-                  "type": "text"
+                  "show_user": false
                 }
               ],
               "dataset": "default-pipeline.foo",

@@ -4,23 +4,69 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default: httpjson
-    name: input
-  - default: ""
-    name: api_key
-  - default: 60
-    name: http_client_timeout
-  - default: GET
-    name: http_method
-  - default: '{}'
-    name: http_headers
-  - default: '{}'
-    name: http_request_body
-  - default: 0
-    name: interval
-  - default: response.Attribute
-    name: json_objects_array
-  - default: |-
+  - name: input
+    type: text
+    title: Input
+    multi: false
+    required: true
+    show_user: true
+    default: httpjson
+  - name: api_key
+    type: text
+    title: Api Key
+    multi: false
+    required: true
+    show_user: true
+    default: ""
+  - name: http_client_timeout
+    type: integer
+    title: Http Client Timeout
+    multi: false
+    required: true
+    show_user: true
+    default: 60
+  - name: http_method
+    type: text
+    title: Http Method
+    multi: false
+    required: true
+    show_user: true
+    default: GET
+  - name: http_headers
+    type: text
+    title: Http Headers
+    multi: false
+    required: true
+    show_user: true
+    default: '{}'
+  - name: http_request_body
+    type: text
+    title: Http Request Body
+    multi: false
+    required: true
+    show_user: true
+    default: '{}'
+  - name: interval
+    type: integer
+    title: Interval
+    multi: false
+    required: true
+    show_user: true
+    default: 0
+  - name: json_objects_array
+    type: text
+    title: Json Objects Array
+    multi: false
+    required: true
+    show_user: true
+    default: response.Attribute
+  - name: pagination
+    type: text
+    title: Pagination
+    multi: false
+    required: true
+    show_user: true
+    default: |-
       {
         "enabled": false,
         "extra_body_content": {},
@@ -28,10 +74,19 @@ streams:
         "req_field": "",
         "url": ""
       }
-    name: pagination
-  - default: ""
-    name: url
-  - default: '{}'
-    name: ssl
+  - name: url
+    type: text
+    title: Url
+    multi: false
+    required: true
+    show_user: true
+    default: ""
+  - name: ssl
+    type: text
+    title: Ssl
+    multi: false
+    required: true
+    show_user: true
+    default: '{}'
   title: MISP threat logs
   description: Collect MISP threat logs

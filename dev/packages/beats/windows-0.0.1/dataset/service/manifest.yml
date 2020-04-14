@@ -4,7 +4,12 @@ type: metrics
 streams:
 - input: windows/metrics
   vars:
-  - default: 60s
-    name: period
+  - name: period
+    type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 60s
   title: Windows service metrics
   description: Collect Windows service metrics

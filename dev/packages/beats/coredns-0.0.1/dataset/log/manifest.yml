@@ -4,13 +4,21 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: true
+    required: true
+    show_user: true
+    default:
     - /var/log/coredns.log
+  - name: tags
+    type: text
+    title: Tags
     multi: true
-    name: paths
-  - default:
+    required: true
+    show_user: true
+    default:
     - coredns
-    multi: true
-    name: tags
   title: Coredns log logs
   description: Collect Coredns log logs
