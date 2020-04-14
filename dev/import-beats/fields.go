@@ -96,7 +96,10 @@ func loadEcsFields(ecsDir string) ([]fieldDefinition, error) {
 	if err != nil {
 		return nil, errors.Wrapf(err, "loading ECS fields file failed")
 	}
-	return fs, nil
+	if len(fs) != 1 {
+		return nil, errors.Wrapf(err, "expected single root field")
+	}
+	return fs[0].Fields, nil
 }
 
 func loadModuleFields(modulePath string) ([]fieldDefinition, error) {
