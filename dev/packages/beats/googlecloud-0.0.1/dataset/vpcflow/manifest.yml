@@ -4,23 +4,6 @@ type: logs
 streams:
 - input: logs
   vars:
-<<<<<<< HEAD
-=======
-  - name: input
-    type: text
-    title: Input
-    multi: false
-    required: true
-    show_user: true
-    default: google-pubsub
-  - name: project_id
-    type: text
-    title: Project Id
-    multi: false
-    required: true
-    show_user: true
-    default: SET_PROJECT_NAME
->>>>>>> master
   - name: topic
     type: text
     title: Topic
@@ -42,15 +25,5 @@ streams:
     required: true
     show_user: true
     default: googlecloud-vpcflow-reader-service-identity.json
-<<<<<<< HEAD
-=======
-  - name: keep_original_message
-    type: bool
-    title: Keep Original Message
-    multi: false
-    required: true
-    show_user: true
-    default: false
->>>>>>> master
   title: Google Cloud vpcflow logs
   description: Collect Google Cloud vpcflow logs

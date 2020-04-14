@@ -4,17 +4,6 @@ type: metrics
 streams:
 - input: mongodb/metrics
   vars:
-<<<<<<< HEAD
-=======
-  - name: hosts
-    type: text
-    title: Hosts
-    multi: true
-    required: true
-    show_user: true
-    default:
-    - localhost:27017
->>>>>>> master
   - name: period
     type: text
     title: Period

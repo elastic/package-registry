@@ -4,17 +4,6 @@ type: metrics
 streams:
 - input: redisenterprise/metrics
   vars:
-<<<<<<< HEAD
-=======
-  - name: hosts
-    type: text
-    title: Hosts
-    multi: true
-    required: true
-    show_user: true
-    default:
-    - https://127.0.0.1:8070/
->>>>>>> master
   - name: period
     type: text
     title: Period

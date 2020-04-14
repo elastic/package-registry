@@ -4,17 +4,6 @@ type: metrics
 streams:
 - input: logstash/metrics
   vars:
-<<<<<<< HEAD
-=======
-  - name: hosts
-    type: text
-    title: Hosts
-    multi: true
-    required: true
-    show_user: true
-    default:
-    - localhost:9600
->>>>>>> master
   - name: period
     type: text
     title: Period
@@ -22,15 +11,5 @@ streams:
     required: true
     show_user: true
     default: 10s
-<<<<<<< HEAD
-=======
-  - name: xpack.enabled
-    type: bool
-    title: Xpack Enabled
-    multi: false
-    required: true
-    show_user: true
-    default: true
->>>>>>> master
   title: Logstash node metrics
   description: Collect Logstash node metrics
