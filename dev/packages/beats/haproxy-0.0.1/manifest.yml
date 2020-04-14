@@ -26,12 +26,57 @@ icons:
   type: image/svg+xml
 datasources:
 - name: haproxy
-  title: haproxy logs and metrics
-  description: Collect logs and metrics from haproxy instances
+  title: HAProxy logs and metrics
+  description: Collect logs and metrics from HAProxy instances
   inputs:
   - type: logs
+    vars:
+    - name: syslog_host
+      type: text
+      title: Syslog Host
+      multi: false
+      required: true
+      show_user: true
+      default: localhost
+    - name: syslog_port
+      type: integer
+      title: Syslog Port
+      multi: false
+      required: true
+      show_user: true
+      default: 9001
+    - name: input
+      type: text
+      title: Input
+      multi: false
+      required: true
+      show_user: true
+      default: syslog
     title: Collecting logs from haproxy instances
-    description: Collecting haproxy log logs
+    description: Collecting HAProxy log logs
   - type: haproxy/metrics
+    vars:
+    - name: hosts
+      type: text
+      title: Hosts
+      multi: true
+      required: true
+      show_user: true
+      default:
+      - tcp://127.0.0.1:14567
+    - name: password
+      type: password
+      title: Password
+      multi: false
+      required: true
+      show_user: true
+      default: admin
+    - name: username
+      type: text
+      title: Username
+      multi: false
+      required: true
+      show_user: true
+      default: admin
     title: Collecting metrics from haproxy instances
-    description: Collecting haproxy info and stat metrics
+    description: Collecting HAProxy info and stat metrics

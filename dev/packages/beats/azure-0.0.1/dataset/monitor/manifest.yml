@@ -4,20 +4,6 @@ type: metrics
 streams:
 - input: azure/metrics
   vars:
-  - name: client_id
-    type: text
-    title: Client Id
-    multi: false
-    required: true
-    show_user: true
-    default: ${AZURE_CLIENT_ID:""}
-  - name: client_secret
-    type: text
-    title: Client Secret
-    multi: false
-    required: true
-    show_user: true
-    default: ${AZURE_CLIENT_SECRET:""}
   - name: period
     type: text
     title: Period
@@ -46,19 +32,5 @@ streams:
         - DocumentQuota
         namespace: Microsoft.DocumentDb/databaseAccounts
       resource_query: resourceType eq 'Microsoft.DocumentDb/databaseAccounts'
-  - name: subscription_id
-    type: text
-    title: Subscription Id
-    multi: false
-    required: true
-    show_user: true
-    default: ${AZURE_SUBSCRIPTION_ID:""}
-  - name: tenant_id
-    type: text
-    title: Tenant Id
-    multi: false
-    required: true
-    show_user: true
-    default: ${AZURE_TENANT_ID:""}
   title: azure monitor metrics
   description: Collect azure monitor metrics

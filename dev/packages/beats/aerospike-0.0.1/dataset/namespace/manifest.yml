@@ -4,14 +4,6 @@ type: metrics
 streams:
 - input: aerospike/metrics
   vars:
-  - name: hosts
-    type: text
-    title: Hosts
-    multi: true
-    required: true
-    show_user: true
-    default:
-    - localhost:3000
   - name: period
     type: text
     title: Period

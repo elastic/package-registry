@@ -28,5 +28,21 @@ datasources:
   description: Collect metrics from uwsgi instances
   inputs:
   - type: uwsgi/metrics
+    vars:
+    - name: enable
+      type: bool
+      title: Enable
+      multi: false
+      required: true
+      show_user: true
+      default: true
+    - name: hosts
+      type: text
+      title: Hosts
+      multi: true
+      required: true
+      show_user: true
+      default:
+      - tcp://127.0.0.1:9191
     title: Collecting metrics from uwsgi instances
     description: Collecting uwsgi status metrics

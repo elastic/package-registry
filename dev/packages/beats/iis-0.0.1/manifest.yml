@@ -26,12 +26,12 @@ icons:
   type: image/svg+xml
 datasources:
 - name: iis
-  title: IIS logs and metrics
-  description: Collect logs and metrics from IIS instances
+  title: iis logs and metrics
+  description: Collect logs and metrics from iis instances
   inputs:
   - type: logs
     title: Collecting logs from iis instances
-    description: Collecting IIS access and error logs
+    description: Collecting iis access and error logs
   - type: iis/metrics
     title: Collecting metrics from iis instances
-    description: Collecting IIS application_pool, webserver and website metrics
+    description: Collecting iis application_pool, webserver and website metrics

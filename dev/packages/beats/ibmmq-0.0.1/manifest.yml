@@ -38,12 +38,28 @@ icons:
   type: image/svg+xml
 datasources:
 - name: ibmmq
-  title: ibmmq logs and metrics
-  description: Collect logs and metrics from ibmmq instances
+  title: IBM MQ logs and metrics
+  description: Collect logs and metrics from IBM MQ instances
   inputs:
   - type: logs
     title: Collecting logs from ibmmq instances
-    description: Collecting ibmmq errorlog logs
+    description: Collecting IBM MQ errorlog logs
   - type: ibmmq/metrics
+    vars:
+    - name: hosts
+      type: text
+      title: Hosts
+      multi: true
+      required: true
+      show_user: true
+      default:
+      - localhost:9157
+    - name: metrics_path
+      type: text
+      title: Metrics Path
+      multi: false
+      required: true
+      show_user: true
+      default: /metrics
     title: Collecting metrics from ibmmq instances
-    description: Collecting ibmmq qmgr metrics
+    description: Collecting IBM MQ qmgr metrics

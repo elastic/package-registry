@@ -25,10 +25,9 @@ icons:
   type: image/svg+xml
 datasources:
 - name: prometheus
-  title: Prometheus metrics
-  description: Collect metrics from Prometheus instances
+  title: Prometheus typed metrics metrics
+  description: Collect metrics from Prometheus typed metrics instances
   inputs:
   - type: prometheus/metrics
     title: Collecting metrics from prometheus instances
-    description: Collecting Prometheus collector, query, remote_write and collector
-      metrics
+    description: Collecting Prometheus typed metrics collector metrics

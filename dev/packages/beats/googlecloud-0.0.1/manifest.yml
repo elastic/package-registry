@@ -30,13 +30,35 @@ icons:
   type: image/svg+xml
 datasources:
 - name: googlecloud
-  title: Google Cloud logs and metrics
-  description: Collect logs and metrics from Google Cloud instances
+  title: Google Cloud Platform logs and metrics
+  description: Collect logs and metrics from Google Cloud Platform instances
   inputs:
   - type: logs
+    vars:
+    - name: input
+      type: text
+      title: Input
+      multi: false
+      required: true
+      show_user: true
+      default: google-pubsub
+    - name: project_id
+      type: text
+      title: Project Id
+      multi: false
+      required: true
+      show_user: true
+      default: SET_PROJECT_NAME
+    - name: keep_original_message
+      type: bool
+      title: Keep Original Message
+      multi: false
+      required: true
+      show_user: true
+      default: false
     title: Collecting logs from googlecloud instances
-    description: Collecting Google Cloud audit, firewall and vpcflow logs
+    description: Collecting Google Cloud Platform audit, firewall and vpcflow logs
   - type: googlecloud/metrics
     title: Collecting metrics from googlecloud instances
-    description: Collecting Google Cloud compute, loadbalancing, pubsub, stackdriver
-      and storage metrics
+    description: Collecting Google Cloud Platform compute, loadbalancing, pubsub,
+      stackdriver and storage metrics

@@ -26,13 +26,22 @@ icons:
   type: image/svg+xml
 datasources:
 - name: mongodb
-  title: mongodb logs and metrics
-  description: Collect logs and metrics from mongodb instances
+  title: MongoDB logs and metrics
+  description: Collect logs and metrics from MongoDB instances
   inputs:
   - type: logs
     title: Collecting logs from mongodb instances
-    description: Collecting mongodb log logs
+    description: Collecting MongoDB log logs
   - type: mongodb/metrics
+    vars:
+    - name: hosts
+      type: text
+      title: Hosts
+      multi: true
+      required: true
+      show_user: true
+      default:
+      - localhost:27017
     title: Collecting metrics from mongodb instances
-    description: Collecting mongodb collstats, dbstats, metrics, replstatus and status
+    description: Collecting MongoDB collstats, dbstats, metrics, replstatus and status
       metrics

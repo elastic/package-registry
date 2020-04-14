@@ -24,12 +24,12 @@ import (
 var ignoredModules = map[string]bool{"apache2": true}
 
 type packageContent struct {
-	manifest    util.Package
-	datasets    datasetContentArray
-	images      []imageContent
-	kibana      kibanaContent
-	docs        []docContent
-	datasources datasourceContentArray
+	manifest   util.Package
+	datasets   datasetContentArray
+	images     []imageContent
+	kibana     kibanaContent
+	docs       []docContent
+	datasource datasourceContent
 }
 
 func newPackageContent(name string) packageContent {
@@ -51,8 +51,12 @@ func (pc *packageContent) addDatasets(ds []datasetContent) {
 	for _, dc := range ds {
 		for i, v := range pc.datasets {
 			if v.name == dc.name {
-				pc.datasets[i].name = fmt.Sprintf("%s-%s", pc.datasets[i].name, pc.datasets[i].beatType)
-				dc.name = fmt.Sprintf("%s-%s", dc.name, dc.beatType)
+				if v.beatType != dc.beatType {
+					pc.datasets[i].name = fmt.Sprintf("%s-%s", pc.datasets[i].name, pc.datasets[i].beatType)
+					dc.name = fmt.Sprintf("%s-%s", dc.name, dc.beatType)
+				} else {
+					dc.name = fmt.Sprintf("%s-%s", dc.name, dc.beatType)
+				}
 				pc.datasets = append(pc.datasets, dc)
 				break
 			}
@@ -146,17 +150,6 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 			manifest.Description = maybeTitle + " Integration"
 		}
 
-		// dataset
-		var moduleTitle = "TODO"
-		if manifest.Title != nil {
-			moduleTitle = *manifest.Title
-		}
-		datasets, err := createDatasets(beatType, modulePath, moduleName, moduleTitle, manifest.Release, moduleFields, filteredEcsModuleFieldNames, r.ecsFields)
-		if err != nil {
-			return err
-		}
-		aPackage.addDatasets(datasets)
-
 		// img
 		beatDocsPath := selectDocsPath(beatsDir, beatName)
 		images, err := createImages(beatDocsPath, modulePath)
@@ -188,17 +181,6 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 		}
 		manifest.Screenshots = append(manifest.Screenshots, screenshots...)
 
-		// kibana
-		kibana, err := createKibanaContent(r.kibanaMigrator, modulePath, moduleName, datasets.names())
-		if err != nil {
-			return err
-		}
-		aPackage.addKibanaContent(kibana)
-		manifest.Requirement, err = createRequirement(aPackage.kibana, aPackage.datasets)
-		if err != nil {
-			return err
-		}
-
 		// docs
 		if len(aPackage.docs) == 0 {
 			packageDocsPath := filepath.Join("dev/import-beats-resources", moduleDir.Name(), "docs")
@@ -209,12 +191,45 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 			aPackage.docs = append(aPackage.docs, docs...)
 		}
 
-		// datasources
-		aPackage.datasources, err = updateDatasources(aPackage.datasources, moduleName, moduleTitle, beatType, datasets.names())
+		// datasets
+		var moduleTitle = "TODO"
+		if manifest.Title != nil {
+			moduleTitle = *manifest.Title
+		}
+
+		datasets, err := createDatasets(beatType, modulePath, moduleName, moduleTitle, manifest.Release, moduleFields, filteredEcsModuleFieldNames, r.ecsFields)
 		if err != nil {
 			return err
 		}
-		manifest.Datasources = aPackage.datasources.toMetadataDatasources()
+		datasets, inputVarsPerInputType, err := compactDatasetVariables(datasets)
+		if err != nil {
+			return err
+		}
+		aPackage.addDatasets(datasets)
+
+		// datasources
+		aPackage.datasource, err = updateDatasource(aPackage.datasource, updateDatasourcesParameters{
+			moduleName:   moduleName,
+			moduleTitle:  moduleTitle,
+			packageType:  beatType,
+			datasetNames: datasets.names(),
+			inputVars:    inputVarsPerInputType,
+		})
+		if err != nil {
+			return err
+		}
+		manifest.Datasources = aPackage.datasource.toMetadataDatasources()
+
+		// kibana
+		kibana, err := createKibanaContent(r.kibanaMigrator, modulePath, moduleName, datasets.names())
+		if err != nil {
+			return err
+		}
+		aPackage.addKibanaContent(kibana)
+		manifest.Requirement, err = createRequirement(aPackage.kibana, aPackage.datasets)
+		if err != nil {
+			return err
+		}
 
 		aPackage.manifest = manifest
 		r.packages[moduleDir.Name()] = aPackage

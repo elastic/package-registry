@@ -22,5 +22,35 @@ datasources:
   description: Collect metrics from Openmetrics instances
   inputs:
   - type: openmetrics/metrics
+    vars:
+    - name: hosts
+      type: text
+      title: Hosts
+      multi: true
+      required: true
+      show_user: true
+      default:
+      - localhost:9090
+    - name: metrics_filters.exclude
+      type: text
+      title: Metrics Filters Exclude
+      multi: true
+      required: true
+      show_user: true
+      default: []
+    - name: metrics_filters.include
+      type: text
+      title: Metrics Filters Include
+      multi: true
+      required: true
+      show_user: true
+      default: []
+    - name: metrics_path
+      type: text
+      title: Metrics Path
+      multi: false
+      required: true
+      show_user: true
+      default: /metrics
     title: Collecting metrics from openmetrics instances
     description: Collecting Openmetrics collector metrics

@@ -4,14 +4,6 @@ type: metrics
 streams:
 - input: oracle/metrics
   vars:
-  - name: hosts
-    type: text
-    title: Hosts
-    multi: true
-    required: true
-    show_user: true
-    default:
-    - oracle://user:pass@localhost:1521/ORCLPDB1.localdomain?sysdba=1
   - name: period
     type: text
     title: Period

@@ -126,15 +126,77 @@ icons:
   type: image/svg+xml
 datasources:
 - name: aws
-  title: AWS logs and metrics
-  description: Collect logs and metrics from AWS instances
+  title: aws logs and metrics
+  description: Collect logs and metrics from aws instances
   inputs:
   - type: logs
+    vars:
+    - name: input
+      type: text
+      title: Input
+      multi: false
+      required: true
+      show_user: true
+      default: s3
+    - name: queue_url
+      type: text
+      title: Queue Url
+      multi: false
+      required: true
+      show_user: true
+    - name: shared_credential_file
+      type: text
+      title: Shared Credential File
+      multi: false
+      required: true
+      show_user: true
+    - name: credential_profile_name
+      type: text
+      title: Credential Profile Name
+      multi: false
+      required: true
+      show_user: true
+    - name: visibility_timeout
+      type: text
+      title: Visibility Timeout
+      multi: false
+      required: true
+      show_user: true
+    - name: api_timeout
+      type: text
+      title: Api Timeout
+      multi: false
+      required: true
+      show_user: true
+    - name: endpoint
+      type: text
+      title: Endpoint
+      multi: false
+      required: true
+      show_user: true
+    - name: access_key_id
+      type: text
+      title: Access Key Id
+      multi: false
+      required: true
+      show_user: true
+    - name: secret_access_key
+      type: text
+      title: Secret Access Key
+      multi: false
+      required: true
+      show_user: true
+    - name: session_token
+      type: text
+      title: Session Token
+      multi: false
+      required: true
+      show_user: true
     title: Collecting logs from aws instances
-    description: Collecting AWS cloudtrail, cloudwatch, ec2, elb, s3access and vpcflow
+    description: Collecting aws cloudtrail, cloudwatch, ec2, elb, s3access and vpcflow
       logs
   - type: aws/metrics
     title: Collecting metrics from aws instances
-    description: Collecting AWS billing, cloudwatch, dynamodb, ebs, ec2, elb, lambda,
+    description: Collecting aws billing, cloudwatch, dynamodb, ebs, ec2, elb, lambda,
       natgateway, rds, s3_daily_storage, s3_request, sns, sqs, transitgateway, usage
       and vpn metrics
