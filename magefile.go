@@ -125,6 +125,11 @@ func Check() error {
 		return err
 	}
 
+	err = Vendor()
+	if err != nil {
+		return err
+	}
+
 	// Check if no changes are shown
 	sh.RunV("git", "update-index", "--refresh")
 	sh.RunV("git", "diff-index", "--exit-code", "HEAD", "--")
@@ -209,4 +214,24 @@ func Clean() error {
 	}
 
 	return os.Remove("package-registry")
+}
+
+func Vendor() error {
+	fmt.Println(">> mod - updating vendor directory")
+
+	err := sh.RunV("go", "mod", "tidy")
+	if err != nil {
+		return err
+	}
+
+	sh.RunV("go", "mod", "vendor")
+	if err != nil {
+		return err
+	}
+
+	sh.RunV("go", "mod", "verify")
+	if err != nil {
+		return err
+	}
+	return nil
 }
