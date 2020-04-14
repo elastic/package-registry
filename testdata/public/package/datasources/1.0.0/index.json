@@ -22,7 +22,10 @@
     "/package/datasources/1.0.0/dataset/examplemetric/manifest.yml",
     "/package/datasources/1.0.0/dataset/examplelog1/fields/stream.yml",
     "/package/datasources/1.0.0/dataset/examplelog2/fields/stream.yml",
-    "/package/datasources/1.0.0/dataset/examplemetric/fields/stream.yml"
+    "/package/datasources/1.0.0/dataset/examplemetric/fields/stream.yml",
+    "/package/datasources/1.0.0/dataset/examplelog1/agent/stream/stream.yml",
+    "/package/datasources/1.0.0/dataset/examplelog2/agent/stream/stream.yml",
+    "/package/datasources/1.0.0/dataset/examplemetric/agent/stream/stream.yml"
   ],
   "datasets": [
     {
@@ -176,6 +179,7 @@
                 }
               ],
               "dataset": "datasources.examplemetric",
+              "template": "metric: foo\n",
               "title": "Title of the stream",
               "description": "Description of the stream with more details."
             }
@@ -212,6 +216,7 @@
                 }
               ],
               "dataset": "datasources.examplelog1",
+              "template": "foo: bar\n",
               "title": "Title of the stream",
               "description": "Description of the stream with more details."
             },
@@ -242,6 +247,7 @@
                 }
               ],
               "dataset": "datasources.examplelog2",
+              "template": "foo: bar\n",
               "title": "Title of the stream",
               "description": "Description of the stream with more details."
             }
