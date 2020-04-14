@@ -136,10 +136,11 @@ func Check() error {
 	}
 
 	// Check if no changes are shown
-	sh.RunV("git", "update-index", "--refresh")
-	sh.RunV("git", "diff-index", "--exit-code", "HEAD", "--")
-
-	return nil
+	err = sh.RunV("git", "update-index", "--refresh")
+	if err != nil {
+		return err
+	}
+	return sh.RunV("git", "diff-index", "--exit-code", "HEAD", "--")
 }
 
 func PrepareTest() error {
