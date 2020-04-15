@@ -196,8 +196,8 @@
                 }
               ],
               "dataset": "datasources.examplemetric",
-              "file": "stream.yml",
-              "template": "metric: foo\n",
+              "template.path": "stream.yml",
+              "template.content": "metric: foo\n",
               "title": "Title of the stream",
               "description": "Description of the stream with more details."
             }
@@ -235,8 +235,8 @@
                 }
               ],
               "dataset": "datasources.examplelog1",
-              "file": "stream.yml",
-              "template": "foo: bar\n",
+              "template.path": "stream.yml",
+              "template.content": "foo: bar\n",
               "title": "Title of the stream",
               "description": "Description of the stream with more details."
             },
@@ -268,8 +268,8 @@
                 }
               ],
               "dataset": "datasources.examplelog2",
-              "file": "stream.yml",
-              "template": "foo: bar\n",
+              "template.path": "stream.yml",
+              "template.content": "foo: bar\n",
               "title": "Title of the stream",
               "description": "Description of the stream with more details."
             }

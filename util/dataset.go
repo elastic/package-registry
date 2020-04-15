@@ -45,13 +45,13 @@ type Input struct {
 }
 
 type Stream struct {
-	Input       string     `config:"input" json:"input" validate:"required"`
-	Vars        []Variable `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
-	Dataset     string     `config:"dataset" json:"dataset,omitempty" yaml:"dataset,omitempty"`
-	File        string     `config:"file" json:"file,omitempty" yaml:"file,omitempty"`
-	Template    string     `config:"template" json:"template,omitempty" yaml:"template,omitempty"`
-	Title       string     `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
-	Description string     `config:"description" json:"description,omitempty" yaml:"description,omitempty"`
+	Input           string     `config:"input" json:"input" validate:"required"`
+	Vars            []Variable `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
+	Dataset         string     `config:"dataset" json:"dataset,omitempty" yaml:"dataset,omitempty"`
+	TemplatePath    string     `config:"template.path" json:"template.path,omitempty" yaml:"template.path,omitempty"`
+	TemplateContent string     `json:"template.content,omitempty"` // This is always generated in the json output
+	Title           string     `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
+	Description     string     `config:"description" json:"description,omitempty" yaml:"description,omitempty"`
 }
 
 type Variable struct {
