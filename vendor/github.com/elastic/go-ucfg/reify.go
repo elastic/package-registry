@@ -147,12 +147,17 @@ func (c *Config) Unpack(to interface{}, options ...Option) error {
 	vTo := reflect.ValueOf(to)
 
 	k := vTo.Kind()
-	isValid := to != nil && (k == reflect.Ptr || k == reflect.Map)
+	isValid := k == reflect.Ptr || k == reflect.Map
 	if !isValid {
 		return raisePointerRequired(vTo)
 	}
 
 	return reifyInto(opts, vTo, c)
+}
+
+// UnpackWithoutOptions method calls the Unpack method without any options provided.
+func (c *Config) UnpackWithoutOptions(to interface{}) error {
+	return c.Unpack(to)
 }
 
 func reifyInto(opts *options, to reflect.Value, from *Config) Error {
@@ -221,7 +226,9 @@ func reifyMap(opts *options, to reflect.Value, from *Config, validators []valida
 		if err != nil {
 			return err
 		}
-		to.SetMapIndex(key, v)
+		if v.IsValid() {
+			to.SetMapIndex(key, v)
+		}
 	}
 
 	if err := runValidators(to.Interface(), validators); err != nil {
@@ -594,7 +601,9 @@ func reifyDoArray(
 			if err != nil {
 				return reflect.Value{}, err
 			}
-			to.Index(idx).Set(v)
+			if v.IsValid() {
+				to.Index(idx).Set(v)
+			}
 		} else {
 			if err := tryRecursiveValidate(to.Index(idx), opts.opts, nil); err != nil {
 				return reflect.Value{}, raiseValidation(val.Context(), val.meta(), "", err)
