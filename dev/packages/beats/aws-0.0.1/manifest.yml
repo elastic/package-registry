@@ -41,7 +41,7 @@ screenshots:
   type: image/png
 - src: /img/metricbeat-aws-dynamodb-overview.png
   title: metricbeat aws dynamodb overview
-  size: 1645x826
+  size: 1873x846
   type: image/png
 - src: /img/metricbeat-aws-ebs-overview.png
   title: metricbeat aws ebs overview
@@ -189,6 +189,12 @@ datasources:
     - name: session_token
       type: text
       title: Session Token
+      multi: false
+      required: true
+      show_user: true
+    - name: role_arn
+      type: text
+      title: Role Arn
       multi: false
       required: true
       show_user: true

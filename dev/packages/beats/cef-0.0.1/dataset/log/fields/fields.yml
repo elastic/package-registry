@@ -24,7 +24,7 @@
     type: keyword
     description: Category.
   - name: confidence_level
-    type: keyword
+    type: integer
     description: Confidence level determined.
   - name: connectivity_state
     type: keyword
@@ -56,9 +56,6 @@
   - name: event_count
     type: long
     description: Number of events associated with the log.
-  - name: file_hash
-    type: keyword
-    description: File hash (SHA1 or MD5).
   - name: frequency
     type: keyword
     description: Scan frequency.
@@ -77,11 +74,14 @@
   - name: integrity_av_invoke_type
     type: keyword
     description: Scan invoke type.
+  - name: malware_family
+    type: keyword
+    description: Malware family.
   - name: peer_gateway
     type: ip
     description: Main IP of the peer Security Gateway.
   - name: performance_impact
-    type: keyword
+    type: integer
     description: Protection performance impact.
   - name: protection_id
     type: keyword
@@ -101,10 +101,13 @@
   - name: severity
     type: keyword
     description: Threat severity.
-  - name: malware_status
+  - name: spyware_name
     type: keyword
-    description: Malware status.
-  - name: subscription_expiration
+    description: Spyware name.
+  - name: spyware_status
+    type: keyword
+    description: Spyware status.
+  - name: subs_exp
     type: date
     description: The expiration date of the subscription.
   - name: tcp_flags
@@ -125,12 +128,6 @@
   - name: virus_name
     type: keyword
     description: Virus name.
-  - name: malware_name
-    type: keyword
-    description: Malware name.
-  - name: malware_family
-    type: keyword
-    description: Malware family.
   - name: voip_log_type
     type: keyword
     description: VoIP log types.
