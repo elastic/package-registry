@@ -48,6 +48,7 @@ type Stream struct {
 	Input       string     `config:"input" json:"input" validate:"required"`
 	Vars        []Variable `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
 	Dataset     string     `config:"dataset" json:"dataset,omitempty" yaml:"dataset,omitempty"`
+	File        string     `config:"file" json:"file,omitempty" yaml:"file,omitempty"`
 	Template    string     `config:"template" json:"template,omitempty" yaml:"template,omitempty"`
 	Title       string     `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
 	Description string     `config:"description" json:"description,omitempty" yaml:"description,omitempty"`

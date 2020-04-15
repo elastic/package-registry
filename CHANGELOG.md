@@ -24,6 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Add `all` query param to return all packages. By default is set false. [#301](https://github.com/elastic/integrations-registry/pull/301)
 * Add `multiple` config for datasource. By default true. [#361](https://github.com/elastic/integrations-registry/pull/361)
 * Add `removable` flag to package manifest. Default is true. [#359](https://github.com/elastic/integrations-registry/pull/359)
+* Add stream template to package json. [#335](https://github.com/elastic/integrations-registry/pull/335)
+* Add support for multiple inputs per dataset. [#346](https://github.com/elastic/integrations-registry/pull/346)
 
 ### Deprecated
 
