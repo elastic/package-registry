@@ -56,6 +56,7 @@ func (pc *packageContent) addDatasets(ds []datasetContent) {
 					dc.name = fmt.Sprintf("%s-%s", dc.name, dc.beatType)
 					pc.datasets = append(pc.datasets, dc)
 				} else {
+					log.Printf("Resolve naming conflict (packageName: %s, beatType: %s)", dc.name, dc.beatType)
 					pc.datasets[i] = dc
 				}
 				break
@@ -289,7 +290,7 @@ func (r *packageRepository) save(outputDir string) error {
 				}
 
 				for fieldsFileName, definitions := range dataset.fields.files {
-					log.Printf("\t%s: write '%s' file\n", dataset.name, fieldsFileName)
+					log.Printf("%s: write '%s' file\n", dataset.name, fieldsFileName)
 
 					fieldsFilePath := filepath.Join(datasetFieldsPath, fieldsFileName)
 					var fieldsFile []byte
@@ -322,7 +323,7 @@ func (r *packageRepository) save(outputDir string) error {
 				}
 
 				for _, ingestPipeline := range dataset.elasticsearch.ingestPipelines {
-					log.Printf("\tcopy ingest pipeline file '%s' to '%s'", ingestPipeline.source, ingestPipelinePath)
+					log.Printf("copy ingest pipeline file '%s' to '%s'", ingestPipeline.source, ingestPipelinePath)
 					err := copyFileToTarget(ingestPipeline.source, ingestPipelinePath, ingestPipeline.targetFileName)
 					if err != nil {
 						return errors.Wrapf(err, "copying file failed")
@@ -350,7 +351,7 @@ func (r *packageRepository) save(outputDir string) error {
 		// img
 		imgDstDir := path.Join(packagePath, "img")
 		for _, image := range content.images {
-			log.Printf("\tcopy image file '%s' to '%s'", image.source, imgDstDir)
+			log.Printf("copy image file '%s' to '%s'", image.source, imgDstDir)
 			err := copyFile(image.source, imgDstDir)
 			if err != nil {
 				return errors.Wrapf(err, "copying file failed")
@@ -372,7 +373,7 @@ func (r *packageRepository) save(outputDir string) error {
 				for fileName, body := range objects {
 					resourceFilePath := filepath.Join(resourcePath, fileName)
 
-					log.Printf("\tcreate resource file: %s", resourceFilePath)
+					log.Printf("create resource file: %s", resourceFilePath)
 					err = ioutil.WriteFile(resourceFilePath, body, 0644)
 					if err != nil {
 						return errors.Wrapf(err, "writing resource file failed (path: %s)", resourceFilePath)
@@ -402,7 +403,7 @@ func (r *packageRepository) save(outputDir string) error {
 }
 
 func writeDoc(docsPath string, doc docContent, aPackage packageContent) error {
-	log.Printf("\twrite '%s' file\n", doc.fileName)
+	log.Printf("write '%s' file\n", doc.fileName)
 
 	docFilePath := filepath.Join(docsPath, doc.fileName)
 	f, err := os.OpenFile(docFilePath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
