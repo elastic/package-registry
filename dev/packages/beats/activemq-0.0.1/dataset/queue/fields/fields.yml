@@ -1,51 +1,53 @@
 - name: activemq.queue
   type: group
-  description: Queue metrics from org.apache.activemq:brokerName=*,destinationName=*,destinationType=Queue,type=Broker
   release: ga
   fields:
   - name: mbean
+    type: keyword
     description: Mbean that this event is related to
-    type: keyword
   - name: name
-    description: Queue name
     type: keyword
+    description: Queue name
   - name: size
+    type: long
     description: Queue size
-    type: long
   - name: messages.enqueue.time.avg
-    description: Average time a message was held on this destination.
     type: double
+    description: Average time a message was held on this destination.
   - name: messages.size.avg
+    type: long
     description: Average message size on this destination.
-    type: long
   - name: consumers.count
+    type: long
     description: Number of consumers subscribed to this destination.
-    type: long
   - name: messages.dequeue.count
-    description: Number of messages that has been acknowledged (and removed) from the destination.
     type: long
+    description: Number of messages that has been acknowledged (and removed) from
+      the destination.
   - name: messages.dispatch.count
-    description: Number of messages that has been delivered to consumers, including those not acknowledged.
     type: long
+    description: Number of messages that has been delivered to consumers, including
+      those not acknowledged.
   - name: messages.enqueue.count
+    type: long
     description: Number of messages that have been sent to the destination.
-    type: long
   - name: messages.expired.count
+    type: long
     description: Number of messages that have been expired.
-    type: long
   - name: messages.inflight.count
-    description: Number of messages that have been dispatched to, but not acknowledged by, consumers.
     type: long
+    description: Number of messages that have been dispatched to, but not acknowledged
+      by, consumers.
   - name: messages.enqueue.time.max
-    description: The longest time a message was held on this destination.
     type: long
+    description: The longest time a message was held on this destination.
   - name: memory.broker.pct
-    description: Percent of memory limit used.
     type: scaled_float
     format: percent
+    description: Percent of memory limit used.
   - name: messages.enqueue.time.min
+    type: long
     description: The shortest time a message was held on this destination.
-    type: long
   - name: producers.count
-    description: Number of producers attached to this destination.
     type: long
+    description: Number of producers attached to this destination.

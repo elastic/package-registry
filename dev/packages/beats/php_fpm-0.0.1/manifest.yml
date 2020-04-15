@@ -22,4 +22,5 @@ datasources:
   description: Collect metrics from PHP_FPM instances
   inputs:
   - type: php_fpm/metrics
-    description: Collecting PHP_FPM metrics
+    title: Collecting metrics from php_fpm instances
+    description: Collecting PHP_FPM pool and process metrics

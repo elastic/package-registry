@@ -4,11 +4,12 @@ type: metrics
 streams:
 - input: stan/metrics
   vars:
-  - default:
-    - localhost:8222
-    multi: true
-    name: hosts
-  - default: 60s
-    name: period
+  - name: period
+    type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 60s
   title: Stan stats metrics
   description: Collect Stan stats metrics

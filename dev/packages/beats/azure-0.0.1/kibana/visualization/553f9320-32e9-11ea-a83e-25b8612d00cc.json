@@ -52,7 +52,8 @@
                         "split_color_mode": "rainbow",
                         "split_mode": "terms",
                         "stacked": "none",
-                        "terms_field": "azure.dimensions.responsetype",
+                        "terms_field": "azure.dimensions.response_type",
+                        "terms_order_by": "c9fd8ce1-32e8-11ea-84f4-e9593f8ba8f6",
                         "type": "timeseries",
                         "value_template": "{{value}}"
                     }

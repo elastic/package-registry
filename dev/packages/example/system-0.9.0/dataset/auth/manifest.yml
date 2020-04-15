@@ -15,4 +15,3 @@ streams:
           # this works in OS X < 10.8. Newer darwin versions don't write
           # ssh logs to files
             - /var/log/secure.log*
-        os.windows: []

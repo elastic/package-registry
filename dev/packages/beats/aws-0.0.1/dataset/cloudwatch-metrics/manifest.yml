@@ -4,9 +4,20 @@ type: metrics
 streams:
 - input: aws/metrics
   vars:
-  - default: test-mb
-    name: credential_profile_name
-  - default:
+  - name: credential_profile_name
+    type: text
+    title: Credential Profile Name
+    multi: false
+    required: true
+    show_user: true
+    default: test-mb
+  - name: metrics
+    type: text
+    title: Metrics
+    multi: true
+    required: true
+    show_user: true
+    default:
     - dimensions:
       - name: InstanceId
         value: i-0686946e22cf9494a
@@ -19,9 +30,12 @@ streams:
       - key: Organization
         value: Engineering
       tags.resource_type_filter: elasticloadbalancing
-    multi: true
-    name: metrics
-  - default: 300s
-    name: period
+  - name: period
+    type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 300s
   title: aws cloudwatch metrics
   description: Collect aws cloudwatch metrics

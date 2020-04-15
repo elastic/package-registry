@@ -34,6 +34,17 @@ datasources:
   description: Collect logs and metrics from Kafka instances
   inputs:
   - type: logs
-    description: Collecting Kafka logs
+    vars:
+    - name: kafka_home
+      type: text
+      title: Kafka Home
+      multi: false
+      required: true
+      show_user: true
+      default: /opt/kafka*
+    title: Collecting logs from kafka instances
+    description: Collecting Kafka log logs
   - type: kafka/metrics
-    description: Collecting Kafka metrics
+    title: Collecting metrics from kafka instances
+    description: Collecting Kafka broker, consumer, consumergroup, partition and producer
+      metrics

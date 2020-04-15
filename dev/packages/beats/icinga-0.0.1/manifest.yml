@@ -24,4 +24,5 @@ datasources:
   description: Collect logs from Icinga instances
   inputs:
   - type: logs
-    description: Collecting Icinga logs
+    title: Collecting logs from icinga instances
+    description: Collecting Icinga debug, main and startup logs

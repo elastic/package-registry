@@ -4,19 +4,33 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default: google-pubsub
-    name: input
-  - default: SET_PROJECT_NAME
-    name: project_id
-  - default: stackdriver-firewall
-    name: topic
-  - default: filebeat-googlecloud-firewall
-    name: subscription_name
-  - default: googlecloud-firewall-reader-service-identity.json
-    name: credentials_file
-  - default: false
-    name: debug
-  - default: false
-    name: keep_original_message
+  - name: topic
+    type: text
+    title: Topic
+    multi: false
+    required: true
+    show_user: true
+    default: stackdriver-firewall
+  - name: subscription_name
+    type: text
+    title: Subscription Name
+    multi: false
+    required: true
+    show_user: true
+    default: filebeat-googlecloud-firewall
+  - name: credentials_file
+    type: text
+    title: Credentials File
+    multi: false
+    required: true
+    show_user: true
+    default: googlecloud-firewall-reader-service-identity.json
+  - name: debug
+    type: bool
+    title: Debug
+    multi: false
+    required: true
+    show_user: true
+    default: false
   title: Google Cloud firewall logs
   description: Collect Google Cloud firewall logs

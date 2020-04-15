@@ -29,4 +29,13 @@ datasources:
   description: Collect logs from Osquery instances
   inputs:
   - type: logs
-    description: Collecting Osquery logs
+    vars:
+    - name: use_namespace
+      type: bool
+      title: Use Namespace
+      multi: false
+      required: true
+      show_user: true
+      default: true
+    title: Collecting logs from osquery instances
+    description: Collecting Osquery result logs

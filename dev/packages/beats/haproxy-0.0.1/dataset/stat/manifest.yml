@@ -4,15 +4,12 @@ type: metrics
 streams:
 - input: haproxy/metrics
   vars:
-  - default:
-    - tcp://127.0.0.1:14567
-    multi: true
-    name: hosts
-  - default: admin
-    name: password
-  - default: 10s
-    name: period
-  - default: admin
-    name: username
+  - name: period
+    type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 10s
   title: HAProxy stat metrics
   description: Collect HAProxy stat metrics

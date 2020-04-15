@@ -4,13 +4,19 @@ type: metrics
 streams:
 - input: kibana/metrics
   vars:
-  - default: ""
-    name: basepath
-  - default:
-    - localhost:5601
-    multi: true
-    name: hosts
-  - default: 10s
-    name: period
+  - name: basepath
+    type: text
+    title: Basepath
+    multi: false
+    required: true
+    show_user: true
+    default: ""
+  - name: period
+    type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 10s
   title: Kibana status metrics
   description: Collect Kibana status metrics

@@ -1,1 +1,2 @@
-- release: beta
+- name: ibmmq.
+  release: beta

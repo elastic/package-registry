@@ -4,11 +4,12 @@ type: metrics
 streams:
 - input: couchdb/metrics
   vars:
-  - default:
-    - localhost:5984
-    multi: true
-    name: hosts
-  - default: 10s
-    name: period
+  - name: period
+    type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 10s
   title: CouchDB server metrics
   description: Collect CouchDB server metrics

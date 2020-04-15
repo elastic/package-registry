@@ -4,11 +4,12 @@ type: metrics
 streams:
 - input: couchbase/metrics
   vars:
-  - default:
-    - localhost:8091
-    multi: true
-    name: hosts
-  - default: 10s
-    name: period
+  - name: period
+    type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 10s
   title: Couchbase cluster metrics
   description: Collect Couchbase cluster metrics

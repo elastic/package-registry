@@ -4,11 +4,12 @@ type: metrics
 streams:
 - input: cockroachdb/metrics
   vars:
-  - default:
-    - localhost:8080
-    multi: true
-    name: hosts
-  - default: 10s
-    name: period
+  - name: period
+    type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 10s
   title: CockroachDB status metrics
   description: Collect CockroachDB status metrics

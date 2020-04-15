@@ -1,7 +1,3 @@
-
-# The selected input has to be passed to the stream config when processed.
-
-{{#if input == log}}
 input: log
 
 {{#each paths}}
@@ -11,13 +7,3 @@ exclude_files: [".gz$"]
 
 processors:
   - add_locale: ~
-{{/if}}
-
-
-# This is an example stream config on how multiple inputs could be supported
-
-{{#if input == syslog}}
-input: syslog
-
-# TODO: would need some more config options
-{{/if}}

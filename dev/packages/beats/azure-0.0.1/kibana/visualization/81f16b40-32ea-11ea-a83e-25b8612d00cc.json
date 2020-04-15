@@ -42,7 +42,7 @@
                         "line_width": "1",
                         "metrics": [
                             {
-                                "field": "azure.storage.successserverlatency.avg",
+                                "field": "azure.storage.success_server_latency.avg",
                                 "id": "e9a40232-32e9-11ea-bda2-69435df36a5c",
                                 "type": "avg"
                             }
@@ -52,8 +52,9 @@
                         "split_color_mode": "rainbow",
                         "split_mode": "terms",
                         "stacked": "none",
-                        "terms_field": "azure.dimensions.apiname",
+                        "terms_field": "azure.dimensions.api_name",
                         "terms_order_by": "e9a40232-32e9-11ea-bda2-69435df36a5c",
+                        "type": "timeseries",
                         "value_template": "{{value}} ms"
                     }
                 ],

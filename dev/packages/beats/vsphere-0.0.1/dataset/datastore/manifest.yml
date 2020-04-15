@@ -4,17 +4,12 @@ type: metrics
 streams:
 - input: vsphere/metrics
   vars:
-  - default:
-    - https://localhost/sdk
-    multi: true
-    name: hosts
-  - default: false
-    name: insecure
-  - default: password
-    name: password
-  - default: 10s
-    name: period
-  - default: user
-    name: username
+  - name: period
+    type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 10s
   title: vSphere datastore metrics
   description: Collect vSphere datastore metrics

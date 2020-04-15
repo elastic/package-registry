@@ -4,11 +4,12 @@ type: metrics
 streams:
 - input: munin/metrics
   vars:
-  - default:
-    - localhost:4949
-    multi: true
-    name: hosts
-  - default: 10s
-    name: period
+  - name: period
+    type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 10s
   title: Munin node metrics
   description: Collect Munin node metrics

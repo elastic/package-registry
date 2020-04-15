@@ -4,14 +4,19 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
-    - /var/log/audit/audit.log*
+  - name: paths
+    type: text
+    title: Paths
     multi: true
-    name: paths
-    os.darwin:
-      default:
-      - ""
-    os.windows:
-      default: []
+    required: true
+    show_user: true
+    default:
+    - /var/log/audit/audit.log*
+    os:
+      darwin:
+        default:
+        - ""
+      windows:
+        default: []
   title: Auditd log logs
   description: Collect Auditd log logs

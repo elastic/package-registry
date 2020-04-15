@@ -24,4 +24,5 @@ datasources:
   description: Collect logs from Auditd instances
   inputs:
   - type: logs
-    description: Collecting Auditd logs
+    title: Collecting logs from auditd instances
+    description: Collecting Auditd log logs

@@ -3,17 +3,5 @@ release: beta
 type: logs
 streams:
 - input: logs
-  vars:
-  - default: s3
-    name: input
-  - name: queue_url
-  - name: shared_credential_file
-  - name: credential_profile_name
-  - name: visibility_timeout
-  - name: api_timeout
-  - name: endpoint
-  - name: access_key_id
-  - name: secret_access_key
-  - name: session_token
   title: AWS vpcflow logs
   description: Collect AWS vpcflow logs

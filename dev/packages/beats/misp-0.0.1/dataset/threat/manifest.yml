@@ -3,35 +3,5 @@ release: ga
 type: logs
 streams:
 - input: logs
-  vars:
-  - default: httpjson
-    name: input
-  - default: ""
-    name: api_key
-  - default: 60
-    name: http_client_timeout
-  - default: GET
-    name: http_method
-  - default: '{}'
-    name: http_headers
-  - default: '{}'
-    name: http_request_body
-  - default: 0
-    name: interval
-  - default: response.Attribute
-    name: json_objects_array
-  - default: |-
-      {
-        "enabled": false,
-        "extra_body_content": {},
-        "id_field": "",
-        "req_field": "",
-        "url": ""
-      }
-    name: pagination
-  - default: ""
-    name: url
-  - default: '{}'
-    name: ssl
   title: MISP threat logs
   description: Collect MISP threat logs

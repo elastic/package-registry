@@ -4,24 +4,29 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: true
+    required: true
+    show_user: true
+    default:
     - /var/log/elasticsearch/*_index_search_slowlog.log
     - /var/log/elasticsearch/*_index_indexing_slowlog.log
     - /var/log/elasticsearch/*_index_search_slowlog.json
     - /var/log/elasticsearch/*_index_indexing_slowlog.json
-    multi: true
-    name: paths
-    os.darwin:
-      default:
-      - /usr/local/var/lib/elasticsearch/*_index_search_slowlog.log
-      - /usr/local/var/lib/elasticsearch/*_index_indexing_slowlog.log
-      - /usr/local/var/lib/elasticsearch/*_index_search_slowlog.json
-      - /usr/local/var/lib/elasticsearch/*_index_indexing_slowlog.json
-    os.windows:
-      default:
-      - c:/ProgramData/Elastic/Elasticsearch/logs/*_index_search_slowlog.log
-      - c:/ProgramData/Elastic/Elasticsearch/logs/*_index_indexing_slowlog.log
-      - c:/ProgramData/Elastic/Elasticsearch/logs/*_index_search_slowlog.json
-      - c:/ProgramData/Elastic/Elasticsearch/logs/*_index_indexing_slowlog.json
+    os:
+      darwin:
+        default:
+        - /usr/local/var/lib/elasticsearch/*_index_search_slowlog.log
+        - /usr/local/var/lib/elasticsearch/*_index_indexing_slowlog.log
+        - /usr/local/var/lib/elasticsearch/*_index_search_slowlog.json
+        - /usr/local/var/lib/elasticsearch/*_index_indexing_slowlog.json
+      windows:
+        default:
+        - c:/ProgramData/Elastic/Elasticsearch/logs/*_index_search_slowlog.log
+        - c:/ProgramData/Elastic/Elasticsearch/logs/*_index_indexing_slowlog.log
+        - c:/ProgramData/Elastic/Elasticsearch/logs/*_index_search_slowlog.json
+        - c:/ProgramData/Elastic/Elasticsearch/logs/*_index_indexing_slowlog.json
   title: elasticsearch slowlog logs
   description: Collect elasticsearch slowlog logs

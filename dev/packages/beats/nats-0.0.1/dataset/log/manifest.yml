@@ -4,9 +4,13 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
-    - /var/log/nats/nats.log*
+  - name: paths
+    type: text
+    title: Paths
     multi: true
-    name: paths
+    required: true
+    show_user: true
+    default:
+    - /var/log/nats/nats.log*
   title: nats log logs
   description: Collect nats log logs

@@ -4,11 +4,12 @@ type: metrics
 streams:
 - input: consul/metrics
   vars:
-  - default:
-    - localhost:8500
-    multi: true
-    name: hosts
-  - default: 10s
-    name: period
+  - name: period
+    type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 10s
   title: consul agent metrics
   description: Collect consul agent metrics

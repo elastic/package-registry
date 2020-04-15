@@ -4,21 +4,32 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: true
+    required: true
+    show_user: true
+    default:
     - /var/log/bro/current/radius.log
+    os:
+      darwin:
+        default:
+        - /usr/local/var/logs/current/radius.log
+  - name: tags
+    type: text
+    title: Tags
     multi: true
-    name: paths
-    os.darwin:
-      default:
-      - /usr/local/var/logs/current/radius.log
-    os.linux:
-      default:
-      - /var/log/bro/current/radius.log
-  - default:
+    required: true
+    show_user: true
+    default:
     - zeek.radius
-    multi: true
-    name: tags
-  - default: true
-    name: community_id
+  - name: community_id
+    type: bool
+    title: Community Id
+    multi: false
+    required: true
+    show_user: true
+    default: true
   title: Zeek radius logs
   description: Collect Zeek radius logs

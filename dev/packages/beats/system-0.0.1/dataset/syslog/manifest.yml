@@ -4,15 +4,20 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: true
+    required: true
+    show_user: true
+    default:
     - /var/log/messages*
     - /var/log/syslog*
-    multi: true
-    name: paths
-    os.darwin:
-      default:
-      - /var/log/system.log*
-    os.windows:
-      default: []
+    os:
+      darwin:
+        default:
+        - /var/log/system.log*
+      windows:
+        default: []
   title: System syslog logs
   description: Collect System syslog logs

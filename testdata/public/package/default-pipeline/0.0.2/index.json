@@ -19,6 +19,7 @@
     "/package/default-pipeline/0.0.2/docs/README.md",
     "/package/default-pipeline/0.0.2/dataset/foo/manifest.yml",
     "/package/default-pipeline/0.0.2/dataset/foo/fields/stream.yml",
+    "/package/default-pipeline/0.0.2/dataset/foo/agent/stream/stream.yml",
     "/package/default-pipeline/0.0.2/dataset/foo/elasticsearch/ingest-pipeline/default.json"
   ],
   "datasets": [
@@ -33,11 +34,12 @@
           "input": "logs",
           "vars": [
             {
+              "name": "paths",
+              "type": "text",
               "description": "Path to log files to be collected",
               "multi": true,
-              "name": "paths",
               "required": true,
-              "type": "text"
+              "show_user": false
             }
           ]
         }
@@ -59,14 +61,16 @@
               "input": "logs",
               "vars": [
                 {
+                  "name": "paths",
+                  "type": "text",
                   "description": "Path to log files to be collected",
                   "multi": true,
-                  "name": "paths",
                   "required": true,
-                  "type": "text"
+                  "show_user": false
                 }
               ],
-              "dataset": "default-pipeline.foo"
+              "dataset": "default-pipeline.foo",
+              "template": "foo: bar\n"
             }
           ]
         }

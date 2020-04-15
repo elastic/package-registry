@@ -4,19 +4,13 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: true
+    required: true
+    show_user: true
+    default:
     - /var/log/cef.log
-    multi: true
-    name: paths
-  - default:
-    - cef
-    multi: true
-    name: tags
-  - default: localhost
-    name: syslog_host
-  - default: 9003
-    name: syslog_port
-  - default: syslog
-    name: input
   title: CEF log logs
   description: Collect CEF log logs

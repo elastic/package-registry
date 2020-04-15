@@ -4,11 +4,12 @@ type: metrics
 streams:
 - input: traefik/metrics
   vars:
-  - default:
-    - localhost:8080
-    multi: true
-    name: hosts
-  - default: 10s
-    name: period
+  - name: period
+    type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 10s
   title: traefik health metrics
   description: Collect traefik health metrics

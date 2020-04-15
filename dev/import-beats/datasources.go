@@ -6,68 +6,92 @@ package main
 
 import (
 	"fmt"
+	"sort"
+	"strings"
 
 	"github.com/elastic/package-registry/util"
 )
 
 type datasourceContent struct {
-	packageTypes []string
-
 	moduleName  string
 	moduleTitle string
+
+	inputs map[string]datasourceInput // map[inputType]..
 }
 
-type datasourceContentArray []datasourceContent
+type datasourceInput struct {
+	datasetNames []string
+	packageType  string
+	vars         []util.Variable
+}
 
-func (datasources datasourceContentArray) toMetadataDatasources() []util.Datasource {
-	var ud []util.Datasource
-	for _, ds := range datasources {
-		var title, description string
-		if len(ds.packageTypes) == 2 {
-			title = toDatasourceTitleForTwoTypes(ds.moduleTitle, ds.packageTypes[0], ds.packageTypes[1])
-			description = toDatasourceDescriptionForTwoTypes(ds.moduleTitle, ds.packageTypes[0], ds.packageTypes[1])
-		} else {
-			title = toDatasourceTitle(ds.moduleTitle, ds.packageTypes[0])
-			description = toDatasourceDescription(ds.moduleTitle, ds.packageTypes[0])
-		}
+func (ds datasourceContent) toMetadataDatasources() []util.Datasource {
+	var packageTypes []string
+	for _, input := range ds.inputs {
+		packageTypes = append(packageTypes, input.packageType)
+	}
+	sort.Strings(packageTypes)
 
-		var inputs []util.Input
-		for _, packageType := range ds.packageTypes {
-			pt := packageType
-			if pt == "metrics" {
-				pt = fmt.Sprintf("%s/%s", ds.moduleName, pt)
+	var title, description string
+	if len(ds.inputs) == 2 {
+		title = toDatasourceTitleForTwoTypes(ds.moduleTitle, packageTypes[0], packageTypes[1])
+		description = toDatasourceDescriptionForTwoTypes(ds.moduleTitle, packageTypes[0], packageTypes[1])
+	} else {
+		title = toDatasourceTitle(ds.moduleTitle, packageTypes[0])
+		description = toDatasourceDescription(ds.moduleTitle, packageTypes[0])
+	}
+
+	var inputs []util.Input
+	for _, packageType := range packageTypes {
+		for inputType, input := range ds.inputs {
+			if input.packageType == packageType {
+				inputs = append(inputs, util.Input{
+					Type:        inputType,
+					Title:       toDatasourceInputTitle(ds.moduleName, packageType),
+					Description: toDatasourceInputDescription(ds.moduleTitle, packageType, ds.inputs[inputType].datasetNames),
+					Vars:        input.vars,
+				})
 			}
-
-			inputs = append(inputs, util.Input{
-				Type:        pt,
-				Description: toDatasourceInputDescription(ds.moduleTitle, packageType),
-			})
 		}
-
-		ud = append(ud, util.Datasource{
+	}
+	return []util.Datasource{
+		{
 			Name:        ds.moduleName,
 			Title:       title,
 			Description: description,
 			Inputs:      inputs,
-		})
+		},
 	}
-	return ud
 }
 
-func updateDatasources(datasources datasourceContentArray, moduleName, moduleTitle, packageType string) (datasourceContentArray, error) {
-	var updated datasourceContentArray
+type updateDatasourcesParameters struct {
+	moduleName  string
+	moduleTitle string
+	packageType string
 
-	if len(datasources) > 0 {
-		updated = append(updated, datasources...)
-		updated[0].packageTypes = append(updated[0].packageTypes, packageType)
-	} else {
-		updated = append(updated, datasourceContent{
-			packageTypes: []string{packageType},
-			moduleName:   moduleName,
-			moduleTitle:  moduleTitle,
-		})
+	datasetNames []string
+	inputVars    map[string][]util.Variable
+}
+
+func updateDatasource(dsc datasourceContent, params updateDatasourcesParameters) (datasourceContent, error) {
+	dsc.moduleName = params.moduleName
+	dsc.moduleTitle = params.moduleTitle
+
+	if dsc.inputs == nil {
+		dsc.inputs = map[string]datasourceInput{}
 	}
-	return updated, nil
+
+	inputType := params.packageType
+	if inputType == "metrics" {
+		inputType = fmt.Sprintf("%s/%s", dsc.moduleName, inputType)
+	}
+
+	dsc.inputs[inputType] = datasourceInput{
+		datasetNames: params.datasetNames,
+		packageType:  params.packageType,
+		vars:         params.inputVars[inputType],
+	}
+	return dsc, nil
 }
 
 func toDatasourceTitle(moduleTitle, packageType string) string {
@@ -86,6 +110,30 @@ func toDatasourceDescriptionForTwoTypes(moduleTitle, firstPackageType, secondPac
 	return fmt.Sprintf("Collect %s and %s from %s instances", firstPackageType, secondPackageType, moduleTitle)
 }
 
-func toDatasourceInputDescription(moduleTitle, packageType string) string {
-	return fmt.Sprintf("Collecting %s %s", moduleTitle, packageType)
+func toDatasourceInputTitle(moduleTitle, packageType string) string {
+	return fmt.Sprintf("Collecting %s from %s instances", packageType, moduleTitle)
+}
+
+func toDatasourceInputDescription(moduleTitle, packageType string, datasets []string) string {
+	firstPart := datasets[:len(datasets)-1]
+	secondPart := datasets[len(datasets)-1:]
+
+	var description strings.Builder
+	description.WriteString("Collecting ")
+	description.WriteString(moduleTitle)
+	description.WriteString(" ")
+
+	if len(firstPart) > 0 {
+		fp := strings.Join(firstPart, ", ")
+		description.WriteString(fp)
+		description.WriteString(" and ")
+	}
+
+	description.WriteString(secondPart[0])
+
+	description.WriteString(" ")
+	description.WriteString(packageType)
+
+	// Collecting MySQL status and galera_status metrics
+	return description.String()
 }

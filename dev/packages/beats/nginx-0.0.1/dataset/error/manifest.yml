@@ -4,15 +4,20 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
-    - /var/log/nginx/error.log*
+  - name: paths
+    type: text
+    title: Paths
     multi: true
-    name: paths
-    os.darwin:
-      default:
-      - /usr/local/var/log/nginx/error.log*
-    os.windows:
-      default:
-      - c:/programdata/nginx/logs/error.log*
+    required: true
+    show_user: true
+    default:
+    - /var/log/nginx/error.log*
+    os:
+      darwin:
+        default:
+        - /usr/local/var/log/nginx/error.log*
+      windows:
+        default:
+        - c:/programdata/nginx/logs/error.log*
   title: Nginx error logs
   description: Collect Nginx error logs

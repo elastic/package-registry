@@ -4,18 +4,23 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: true
+    required: true
+    show_user: true
+    default:
     - /var/log/apache2/access.log*
     - /var/log/apache2/other_vhosts_access.log*
     - /var/log/httpd/access_log*
-    multi: true
-    name: paths
-    os.darwin:
-      default:
-      - /usr/local/var/log/apache2/access_log*
-    os.windows:
-      default:
-      - C:/tools/Apache/httpd-2.*/Apache24/logs/access.log*
-      - C:/Program Files/Apache Software Foundation/Apache2.*/logs/access.log*
+    os:
+      darwin:
+        default:
+        - /usr/local/var/log/apache2/access_log*
+      windows:
+        default:
+        - C:/tools/Apache/httpd-2.*/Apache24/logs/access.log*
+        - C:/Program Files/Apache Software Foundation/Apache2.*/logs/access.log*
   title: Apache access logs
   description: Collect Apache access logs

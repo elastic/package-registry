@@ -21,10 +21,35 @@ icons:
   type: image/svg+xml
 datasources:
 - name: mssql
-  title: mssql logs and metrics
-  description: Collect logs and metrics from mssql instances
+  title: MSSQL logs and metrics
+  description: Collect logs and metrics from MSSQL instances
   inputs:
   - type: logs
-    description: Collecting mssql logs
+    title: Collecting logs from mssql instances
+    description: Collecting MSSQL log logs
   - type: mssql/metrics
-    description: Collecting mssql metrics
+    vars:
+    - name: hosts
+      type: text
+      title: Hosts
+      multi: true
+      required: true
+      show_user: true
+      default:
+      - sqlserver://localhost
+    - name: password
+      type: password
+      title: Password
+      multi: false
+      required: true
+      show_user: true
+      default: verysecurepassword
+    - name: username
+      type: text
+      title: Username
+      multi: false
+      required: true
+      show_user: true
+      default: domain\username
+    title: Collecting metrics from mssql instances
+    description: Collecting MSSQL performance and transaction_log metrics

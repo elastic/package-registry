@@ -4,11 +4,12 @@ type: metrics
 streams:
 - input: kvm/metrics
   vars:
-  - default:
-    - unix:///var/run/libvirt/libvirt-sock
-    multi: true
-    name: hosts
-  - default: 10s
-    name: period
+  - name: period
+    type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 10s
   title: kvm dommemstat metrics
   description: Collect kvm dommemstat metrics

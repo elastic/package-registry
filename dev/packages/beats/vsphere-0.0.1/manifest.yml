@@ -32,4 +32,35 @@ datasources:
   description: Collect metrics from vSphere instances
   inputs:
   - type: vsphere/metrics
-    description: Collecting vSphere metrics
+    vars:
+    - name: hosts
+      type: text
+      title: Hosts
+      multi: true
+      required: true
+      show_user: true
+      default:
+      - https://localhost/sdk
+    - name: insecure
+      type: bool
+      title: Insecure
+      multi: false
+      required: true
+      show_user: true
+      default: false
+    - name: password
+      type: password
+      title: Password
+      multi: false
+      required: true
+      show_user: true
+      default: password
+    - name: username
+      type: text
+      title: Username
+      multi: false
+      required: true
+      show_user: true
+      default: user
+    title: Collecting metrics from vsphere instances
+    description: Collecting vSphere datastore, host and virtualmachine metrics

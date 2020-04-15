@@ -4,21 +4,20 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
+  - name: paths
+    type: text
+    title: Paths
+    multi: true
+    required: true
+    show_user: true
+    default:
     - /var/log/suricata/eve.json
-    multi: true
-    name: paths
-    os.darwin:
-      default:
-      - /usr/local/var/log/suricata/eve.json
-    os.windows:
-      default:
-      - c:/program files/suricata/log/eve.json
-  - default:
-    - suricata
-    multi: true
-    name: tags
-  - default: true
-    name: community_id
+    os:
+      darwin:
+        default:
+        - /usr/local/var/log/suricata/eve.json
+      windows:
+        default:
+        - c:/program files/suricata/log/eve.json
   title: Suricata eve logs
   description: Collect Suricata eve logs

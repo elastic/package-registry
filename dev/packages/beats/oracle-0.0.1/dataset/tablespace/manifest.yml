@@ -4,11 +4,12 @@ type: metrics
 streams:
 - input: oracle/metrics
   vars:
-  - default:
-    - oracle://user:pass@localhost:1521/ORCLPDB1.localdomain?sysdba=1
-    multi: true
-    name: hosts
-  - default: 10s
-    name: period
+  - name: period
+    type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 10s
   title: Oracle tablespace metrics
   description: Collect Oracle tablespace metrics

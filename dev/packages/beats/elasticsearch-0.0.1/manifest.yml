@@ -20,10 +20,14 @@ icons:
   type: image/svg+xml
 datasources:
 - name: elasticsearch
-  title: elasticsearch logs and metrics
-  description: Collect logs and metrics from elasticsearch instances
+  title: Elasticsearch logs and metrics
+  description: Collect logs and metrics from Elasticsearch instances
   inputs:
   - type: logs
-    description: Collecting elasticsearch logs
+    title: Collecting logs from elasticsearch instances
+    description: Collecting Elasticsearch audit, deprecation, gc, server and slowlog
+      logs
   - type: elasticsearch/metrics
-    description: Collecting elasticsearch metrics
+    title: Collecting metrics from elasticsearch instances
+    description: Collecting Elasticsearch ccr, cluster_stats, enrich, index, index_recovery,
+      index_summary, ml_job, node, node_stats, pending_tasks and shard metrics

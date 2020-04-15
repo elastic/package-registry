@@ -28,4 +28,14 @@ datasources:
   description: Collect metrics from Redis Enterprise instances
   inputs:
   - type: redisenterprise/metrics
-    description: Collecting Redis Enterprise metrics
+    vars:
+    - name: hosts
+      type: text
+      title: Hosts
+      multi: true
+      required: true
+      show_user: true
+      default:
+      - https://127.0.0.1:8070/
+    title: Collecting metrics from redisenterprise instances
+    description: Collecting Redis Enterprise node and proxy metrics

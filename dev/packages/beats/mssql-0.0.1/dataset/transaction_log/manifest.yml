@@ -4,15 +4,12 @@ type: metrics
 streams:
 - input: mssql/metrics
   vars:
-  - default:
-    - sqlserver://localhost
-    multi: true
-    name: hosts
-  - default: verysecurepassword
-    name: password
-  - default: 10s
-    name: period
-  - default: domain\username
-    name: username
+  - name: period
+    type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 10s
   title: MSSQL transaction_log metrics
   description: Collect MSSQL transaction_log metrics

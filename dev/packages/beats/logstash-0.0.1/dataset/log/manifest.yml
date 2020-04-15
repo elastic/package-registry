@@ -4,14 +4,17 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default: plain
-    name: format
-  - default:
-    - /var/log/logstash/logstash-{{.format}}*.log
+  - name: paths
+    type: text
+    title: Paths
     multi: true
-    name: paths
-    os.windows:
-      default:
-      - c:/programdata/logstash/logs/logstash-{{.format}}*.log
+    required: true
+    show_user: true
+    default:
+    - /var/log/logstash/logstash-{{.format}}*.log
+    os:
+      windows:
+        default:
+        - c:/programdata/logstash/logs/logstash-{{.format}}*.log
   title: logstash log logs
   description: Collect logstash log logs

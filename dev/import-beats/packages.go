@@ -16,7 +16,7 @@ import (
 	"text/template"
 
 	"github.com/pkg/errors"
-	"gopkg.in/yaml.v2"
+	yaml "gopkg.in/yaml.v2"
 
 	"github.com/elastic/package-registry/util"
 )
@@ -24,12 +24,12 @@ import (
 var ignoredModules = map[string]bool{"apache2": true}
 
 type packageContent struct {
-	manifest    util.Package
-	datasets    datasetContentArray
-	images      []imageContent
-	kibana      kibanaContent
-	docs        []docContent
-	datasources datasourceContentArray
+	manifest   util.Package
+	datasets   datasetContentArray
+	images     []imageContent
+	kibana     kibanaContent
+	docs       []docContent
+	datasource datasourceContent
 }
 
 func newPackageContent(name string) packageContent {
@@ -51,9 +51,14 @@ func (pc *packageContent) addDatasets(ds []datasetContent) {
 	for _, dc := range ds {
 		for i, v := range pc.datasets {
 			if v.name == dc.name {
-				pc.datasets[i].name = fmt.Sprintf("%s-%s", pc.datasets[i].name, pc.datasets[i].beatType)
-				dc.name = fmt.Sprintf("%s-%s", dc.name, dc.beatType)
-				pc.datasets = append(pc.datasets, dc)
+				if v.beatType != dc.beatType {
+					pc.datasets[i].name = fmt.Sprintf("%s-%s", pc.datasets[i].name, pc.datasets[i].beatType)
+					dc.name = fmt.Sprintf("%s-%s", dc.name, dc.beatType)
+					pc.datasets = append(pc.datasets, dc)
+				} else {
+					log.Printf("Resolve naming conflict (packageName: %s, beatType: %s)", dc.name, dc.beatType)
+					pc.datasets[i] = dc
+				}
 				break
 			}
 		}
@@ -78,12 +83,12 @@ func (pc *packageContent) addKibanaContent(kc kibanaContent) {
 type packageRepository struct {
 	iconRepository *iconRepository
 	kibanaMigrator *kibanaMigrator
-	ecsFields      []fieldsTableRecord
+	ecsFields      fieldDefinitionArray
 
 	packages map[string]packageContent
 }
 
-func newPackageRepository(iconRepository *iconRepository, kibanaMigrator *kibanaMigrator, ecsFields []fieldsTableRecord) *packageRepository {
+func newPackageRepository(iconRepository *iconRepository, kibanaMigrator *kibanaMigrator, ecsFields fieldDefinitionArray) *packageRepository {
 	return &packageRepository{
 		iconRepository: iconRepository,
 		kibanaMigrator: kibanaMigrator,
@@ -124,37 +129,27 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 		manifest.Categories = append(manifest.Categories, beatType)
 
 		// fields
-		moduleHeaderFields, moduleFields, err := loadModuleFields(modulePath)
+		moduleFields, err := loadModuleFields(modulePath)
+		if err != nil {
+			return err
+		}
+		moduleFields, filteredEcsModuleFieldNames, err := filterMigratedFields(moduleFields, r.ecsFields.names())
 		if err != nil {
 			return err
 		}
 
 		// release
-		manifest.Release, err = determinePackageRelease(manifest.Release, moduleHeaderFields)
+		manifest.Release, err = determinePackageRelease(manifest.Release, moduleFields)
 		if err != nil {
 			return err
 		}
 
 		// title
-		maybeTitle, err := loadTitleFromFields(moduleHeaderFields)
-		if err != nil {
-			return err
-		}
+		maybeTitle := moduleFields[0].Title
 		if maybeTitle != "" {
 			manifest.Title = &maybeTitle
 			manifest.Description = maybeTitle + " Integration"
 		}
-
-		// dataset
-		var moduleTitle = "TODO"
-		if manifest.Title != nil {
-			moduleTitle = *manifest.Title
-		}
-		datasets, err := createDatasets(modulePath, moduleName, moduleTitle, manifest.Release, moduleFields, beatType)
-		if err != nil {
-			return err
-		}
-		aPackage.addDatasets(datasets)
 
 		// img
 		beatDocsPath := selectDocsPath(beatsDir, beatName)
@@ -187,17 +182,6 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 		}
 		manifest.Screenshots = append(manifest.Screenshots, screenshots...)
 
-		// kibana
-		kibana, err := createKibanaContent(r.kibanaMigrator, modulePath, moduleName, datasets.names())
-		if err != nil {
-			return err
-		}
-		aPackage.addKibanaContent(kibana)
-		manifest.Requirement, err = createRequirement(aPackage.kibana, aPackage.datasets)
-		if err != nil {
-			return err
-		}
-
 		// docs
 		if len(aPackage.docs) == 0 {
 			packageDocsPath := filepath.Join("dev/import-beats-resources", moduleDir.Name(), "docs")
@@ -208,12 +192,45 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 			aPackage.docs = append(aPackage.docs, docs...)
 		}
 
-		// datasources
-		aPackage.datasources, err = updateDatasources(aPackage.datasources, moduleName, moduleTitle, beatType)
+		// datasets
+		var moduleTitle = "TODO"
+		if manifest.Title != nil {
+			moduleTitle = *manifest.Title
+		}
+
+		datasets, err := createDatasets(beatType, modulePath, moduleName, moduleTitle, manifest.Release, moduleFields, filteredEcsModuleFieldNames, r.ecsFields)
 		if err != nil {
 			return err
 		}
-		manifest.Datasources = aPackage.datasources.toMetadataDatasources()
+		datasets, inputVarsPerInputType, err := compactDatasetVariables(datasets)
+		if err != nil {
+			return err
+		}
+		aPackage.addDatasets(datasets)
+
+		// datasources
+		aPackage.datasource, err = updateDatasource(aPackage.datasource, updateDatasourcesParameters{
+			moduleName:   moduleName,
+			moduleTitle:  moduleTitle,
+			packageType:  beatType,
+			datasetNames: datasets.names(),
+			inputVars:    inputVarsPerInputType,
+		})
+		if err != nil {
+			return err
+		}
+		manifest.Datasources = aPackage.datasource.toMetadataDatasources()
+
+		// kibana
+		kibana, err := createKibanaContent(r.kibanaMigrator, modulePath, moduleName, datasets.names())
+		if err != nil {
+			return err
+		}
+		aPackage.addKibanaContent(kibana)
+		manifest.Requirement, err = createRequirement(aPackage.kibana, aPackage.datasets)
+		if err != nil {
+			return err
+		}
 
 		aPackage.manifest = manifest
 		r.packages[moduleDir.Name()] = aPackage
@@ -272,10 +289,24 @@ func (r *packageRepository) save(outputDir string) error {
 					return errors.Wrapf(err, "cannot make directory for dataset fields: '%s'", datasetPath)
 				}
 
-				for fieldsFileName, fieldsFile := range dataset.fields.files {
-					log.Printf("\t%s: write '%s' file\n", dataset.name, fieldsFileName)
+				for fieldsFileName, definitions := range dataset.fields.files {
+					log.Printf("%s: write '%s' file\n", dataset.name, fieldsFileName)
 
 					fieldsFilePath := filepath.Join(datasetFieldsPath, fieldsFileName)
+					var fieldsFile []byte
+
+					var root fieldDefinitionArray
+					if isPackageFields(fieldsFileName) { // remove the wrapping layer
+						root = definitions[0].Fields
+					} else {
+						root = definitions
+					}
+
+					stripped := root.stripped()
+					fieldsFile, err := yaml.Marshal(&stripped)
+					if err != nil {
+						return errors.Wrapf(err, "marshalling fields file failed (path: %s)", fieldsFilePath)
+					}
 					err = ioutil.WriteFile(fieldsFilePath, fieldsFile, 0644)
 					if err != nil {
 						return errors.Wrapf(err, "writing fields file failed (path: %s)", fieldsFilePath)
@@ -292,7 +323,7 @@ func (r *packageRepository) save(outputDir string) error {
 				}
 
 				for _, ingestPipeline := range dataset.elasticsearch.ingestPipelines {
-					log.Printf("\tcopy ingest pipeline file '%s' to '%s'", ingestPipeline.source, ingestPipelinePath)
+					log.Printf("copy ingest pipeline file '%s' to '%s'", ingestPipeline.source, ingestPipelinePath)
 					err := copyFileToTarget(ingestPipeline.source, ingestPipelinePath, ingestPipeline.targetFileName)
 					if err != nil {
 						return errors.Wrapf(err, "copying file failed")
@@ -320,7 +351,7 @@ func (r *packageRepository) save(outputDir string) error {
 		// img
 		imgDstDir := path.Join(packagePath, "img")
 		for _, image := range content.images {
-			log.Printf("\tcopy image file '%s' to '%s'", image.source, imgDstDir)
+			log.Printf("copy image file '%s' to '%s'", image.source, imgDstDir)
 			err := copyFile(image.source, imgDstDir)
 			if err != nil {
 				return errors.Wrapf(err, "copying file failed")
@@ -342,7 +373,7 @@ func (r *packageRepository) save(outputDir string) error {
 				for fileName, body := range objects {
 					resourceFilePath := filepath.Join(resourcePath, fileName)
 
-					log.Printf("\tcreate resource file: %s", resourceFilePath)
+					log.Printf("create resource file: %s", resourceFilePath)
 					err = ioutil.WriteFile(resourceFilePath, body, 0644)
 					if err != nil {
 						return errors.Wrapf(err, "writing resource file failed (path: %s)", resourceFilePath)
@@ -360,20 +391,19 @@ func (r *packageRepository) save(outputDir string) error {
 			}
 
 			for _, doc := range content.docs {
-				err = writeDoc(docsPath, doc, content, r.ecsFields)
+				err = writeDoc(docsPath, doc, content)
 				if err != nil {
 					return errors.Wrapf(err, "cannot write docs (docsPath: %s, fileName: %s)", docsPath,
 						doc.fileName)
 				}
-
 			}
 		}
 	}
 	return nil
 }
 
-func writeDoc(docsPath string, doc docContent, aPackage packageContent, ecsFields []fieldsTableRecord) error {
-	log.Printf("\twrite '%s' file\n", doc.fileName)
+func writeDoc(docsPath string, doc docContent, aPackage packageContent) error {
+	log.Printf("write '%s' file\n", doc.fileName)
 
 	docFilePath := filepath.Join(docsPath, doc.fileName)
 	f, err := os.OpenFile(docFilePath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
@@ -388,7 +418,7 @@ func writeDoc(docsPath string, doc docContent, aPackage packageContent, ecsField
 	} else {
 		t, err = t.Funcs(template.FuncMap{
 			"fields": func(dataset string) (string, error) {
-				return renderExportedFields(dataset, aPackage.datasets, ecsFields)
+				return renderExportedFields(dataset, aPackage.datasets)
 			},
 		}).ParseFiles(doc.templatePath)
 		if err != nil {

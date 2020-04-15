@@ -3,48 +3,5 @@ release: ga
 type: logs
 streams:
 - input: logs
-  vars:
-  - default: httpjson
-    name: input
-  - default: ""
-    name: api_key
-  - default: SSWS
-    name: authentication_scheme
-  - default: 60
-    name: http_client_timeout
-  - default: GET
-    name: http_method
-  - default: '{}'
-    name: http_headers
-  - default: '{}'
-    name: http_request_body
-  - default: true
-    name: no_http_body
-  - default: 60
-    name: interval
-  - default: ""
-    name: json_objects_array
-  - default: true
-    name: keep_original_message
-  - default: |-
-      {
-        "enabled": true,
-        "header": {
-          "field_name": "Link",
-          "regex_pattern": "<([^>]+)>; *rel=\"next\"(?:,|$)"
-        },
-      }
-    name: pagination
-  - default: |-
-      {
-        "limit": "X-Rate-Limit-Limit",
-        "remaining": "X-Rate-Limit-Remaining",
-        "reset": "X-Rate-Limit-Reset"
-      }
-    name: rate_limit
-  - default: ""
-    name: url
-  - default: '{}'
-    name: ssl
   title: Okta system logs
   description: Collect Okta system logs

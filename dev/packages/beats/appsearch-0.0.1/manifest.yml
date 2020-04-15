@@ -22,4 +22,14 @@ datasources:
   description: Collect metrics from App Search instances
   inputs:
   - type: appsearch/metrics
-    description: Collecting App Search metrics
+    vars:
+    - name: hosts
+      type: text
+      title: Hosts
+      multi: true
+      required: true
+      show_user: true
+      default:
+      - http://localhost:3002
+    title: Collecting metrics from appsearch instances
+    description: Collecting App Search stats metrics

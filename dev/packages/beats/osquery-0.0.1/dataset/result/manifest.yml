@@ -4,18 +4,21 @@ type: logs
 streams:
 - input: logs
   vars:
-  - default:
-    - /var/log/osquery/osqueryd.results.log*
+  - name: paths
+    type: text
+    title: Paths
     multi: true
-    name: paths
-    os.darwin:
-      default:
-      - /var/log/osquery/osqueryd.results.log*
-      - /private/var/log/osquery/osqueryd.results.log*
-    os.windows:
-      default:
-      - C:/ProgramData/osquery/log/osqueryd.results.log*
-  - default: true
-    name: use_namespace
+    required: true
+    show_user: true
+    default:
+    - /var/log/osquery/osqueryd.results.log*
+    os:
+      darwin:
+        default:
+        - /var/log/osquery/osqueryd.results.log*
+        - /private/var/log/osquery/osqueryd.results.log*
+      windows:
+        default:
+        - C:/ProgramData/osquery/log/osqueryd.results.log*
   title: Osquery result logs
   description: Collect Osquery result logs

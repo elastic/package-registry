@@ -20,10 +20,21 @@ icons:
   type: image/svg+xml
 datasources:
 - name: kibana
-  title: kibana logs and metrics
-  description: Collect logs and metrics from kibana instances
+  title: Kibana logs and metrics
+  description: Collect logs and metrics from Kibana instances
   inputs:
   - type: logs
-    description: Collecting kibana logs
+    title: Collecting logs from kibana instances
+    description: Collecting Kibana log logs
   - type: kibana/metrics
-    description: Collecting kibana metrics
+    vars:
+    - name: hosts
+      type: text
+      title: Hosts
+      multi: true
+      required: true
+      show_user: true
+      default:
+      - localhost:5601
+    title: Collecting metrics from kibana instances
+    description: Collecting Kibana stats and status metrics

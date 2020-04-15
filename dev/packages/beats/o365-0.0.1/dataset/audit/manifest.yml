@@ -3,16 +3,5 @@ release: ga
 type: logs
 streams:
 - input: logs
-  vars:
-  - default: o365audit
-    name: input
-  - name: certificate
-  - name: key
-  - name: key_passphrase
-  - name: application_id
-  - name: client_secret
-  - name: tenants
-  - name: content_type
-  - name: api
   title: Office 365 audit logs
   description: Collect Office 365 audit logs

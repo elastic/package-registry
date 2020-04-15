@@ -4,15 +4,12 @@ type: metrics
 streams:
 - input: azure/metrics
   vars:
-  - default: ${AZURE_CLIENT_ID:""}
-    name: client_id
-  - default: ${AZURE_CLIENT_SECRET:""}
-    name: client_secret
-  - default: 300s
-    name: period
-  - default: ${AZURE_SUBSCRIPTION_ID:""}
-    name: subscription_id
-  - default: ${AZURE_TENANT_ID:""}
-    name: tenant_id
+  - name: period
+    type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 300s
   title: azure container_registry metrics
   description: Collect azure container_registry metrics

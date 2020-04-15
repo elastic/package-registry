@@ -34,6 +34,17 @@ datasources:
   description: Collect logs and metrics from Apache instances
   inputs:
   - type: logs
-    description: Collecting Apache logs
+    title: Collecting logs from apache instances
+    description: Collecting Apache access and error logs
   - type: apache/metrics
-    description: Collecting Apache metrics
+    vars:
+    - name: hosts
+      type: text
+      title: Hosts
+      multi: true
+      required: true
+      show_user: true
+      default:
+      - http://127.0.0.1
+    title: Collecting metrics from apache instances
+    description: Collecting Apache status metrics

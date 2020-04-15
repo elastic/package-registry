@@ -4,13 +4,12 @@ type: metrics
 streams:
 - input: ibmmq/metrics
   vars:
-  - default:
-    - localhost:9157
-    multi: true
-    name: hosts
-  - default: /metrics
-    name: metrics_path
-  - default: 10s
-    name: period
+  - name: period
+    type: text
+    title: Period
+    multi: false
+    required: true
+    show_user: true
+    default: 10s
   title: IBM MQ qmgr metrics
   description: Collect IBM MQ qmgr metrics
