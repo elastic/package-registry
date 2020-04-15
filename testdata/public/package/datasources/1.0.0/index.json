@@ -24,7 +24,8 @@
     "/package/datasources/1.0.0/dataset/examplelog1/fields/stream.yml",
     "/package/datasources/1.0.0/dataset/examplelog2/fields/stream.yml",
     "/package/datasources/1.0.0/dataset/examplemetric/fields/stream.yml",
-    "/package/datasources/1.0.0/dataset/examplelog1/agent/stream/stream.yml",
+    "/package/datasources/1.0.0/dataset/examplelog1/agent/stream/logs.yml",
+    "/package/datasources/1.0.0/dataset/examplelog1/agent/stream/syslog.yml",
     "/package/datasources/1.0.0/dataset/examplelog2/agent/stream/stream.yml",
     "/package/datasources/1.0.0/dataset/examplemetric/agent/stream/stream.yml"
   ],
@@ -62,6 +63,13 @@
               }
             }
           ],
+          "template.path": "logs.yml",
+          "title": "Title of the stream",
+          "description": "Description of the stream with more details."
+        },
+        {
+          "input": "syslog",
+          "template.path": "syslog.yml",
           "title": "Title of the stream",
           "description": "Description of the stream with more details."
         }
@@ -235,7 +243,7 @@
                 }
               ],
               "dataset": "datasources.examplelog1",
-              "template.path": "stream.yml",
+              "template.path": "logs.yml",
               "template.content": "foo: bar\n",
               "title": "Title of the stream",
               "description": "Description of the stream with more details."
@@ -276,7 +284,17 @@
           ]
         },
         {
-          "type": "syslog"
+          "type": "syslog",
+          "streams": [
+            {
+              "input": "syslog",
+              "dataset": "datasources.examplelog1",
+              "template.path": "syslog.yml",
+              "template.content": "syslog: bar\n",
+              "title": "Title of the stream",
+              "description": "Description of the stream with more details."
+            }
+          ]
         }
       ],
       "multiple": true

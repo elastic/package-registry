@@ -7,6 +7,7 @@ package util
 import (
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"path"
 	"path/filepath"
@@ -345,6 +346,7 @@ func (p *Package) LoadDataSets(packagePath string) error {
 			for iK, _ := range datasource.Inputs {
 				for _, stream := range d.Streams {
 					if stream.Input == p.Datasources[dK].Inputs[iK].Type {
+						log.Println(stream)
 						if stream.TemplatePath == "" {
 							stream.TemplatePath = "stream.yml"
 						}
