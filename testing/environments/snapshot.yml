@@ -29,7 +29,7 @@ services:
       - ./kibana.config.yml:/usr/share/kibana/config/kibana.yml
 
   integrations-registry:
-    image: integrations_registry:latest
+    image: docker.elastic.co/package-registry/package-registry:master
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080"]
       retries: 300
