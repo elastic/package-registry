@@ -1,6 +1,2 @@
 - name: mysql
   type: group
-  description: >
-    `mysql` contains the metrics that were obtained from MySQL
-    query.
-  fields:
