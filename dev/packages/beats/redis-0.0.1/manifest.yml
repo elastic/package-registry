@@ -34,8 +34,8 @@ datasources:
   description: Collect logs and metrics from Redis instances
   inputs:
   - type: logs
-    title: Collecting logs from redis instances
+    title: Collect logs from redis instances
     description: Collecting Redis log and slowlog logs
   - type: redis/metrics
-    title: Collecting metrics from redis instances
+    title: Collect metrics from redis instances
     description: Collecting Redis info, key and keyspace metrics

@@ -26,5 +26,5 @@ datasources:
       show_user: true
       default:
       - unix:///var/run/libvirt/libvirt-sock
-    title: Collecting metrics from kvm instances
+    title: Collect metrics from kvm instances
     description: Collecting kvm dommemstat metrics

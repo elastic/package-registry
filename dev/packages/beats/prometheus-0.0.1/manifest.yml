@@ -29,5 +29,5 @@ datasources:
   description: Collect metrics from Prometheus typed metrics instances
   inputs:
   - type: prometheus/metrics
-    title: Collecting metrics from prometheus instances
+    title: Collect metrics from prometheus instances
     description: Collecting Prometheus typed metrics collector metrics

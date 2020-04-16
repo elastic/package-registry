@@ -2,12 +2,15 @@
   type: group
   fields:
   - name: frontend_name
+    type: keyword
     description: Name of the frontend (or listener) which received and processed the
       connection.
   - name: backend_name
+    type: keyword
     description: Name of the backend (or listener) which was selected to manage the
       connection to the server.
   - name: server_name
+    type: keyword
     description: Name of the last server to which the connection was sent.
   - name: total_waiting_time_ms
     type: long
@@ -35,6 +38,7 @@
     description: Total number of requests which were processed before this one in
       the backend's global queue.
   - name: bind_name
+    type: keyword
     description: Name of the listening address which received the connection.
   - name: error_message
     type: text
@@ -43,6 +47,7 @@
     type: keyword
     description: The HAProxy source of the log
   - name: termination_state
+    type: keyword
     description: Condition the session was in when the session ended.
   - name: mode
     type: keyword

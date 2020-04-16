@@ -43,7 +43,7 @@ datasources:
       show_user: true
       default:
       - coredns
-    title: Collecting logs from coredns instances
+    title: Collect logs from coredns instances
     description: Collecting coredns log logs
   - type: coredns/metrics
     vars:
@@ -55,5 +55,5 @@ datasources:
       show_user: true
       default:
       - localhost:9153
-    title: Collecting metrics from coredns instances
+    title: Collect metrics from coredns instances
     description: Collecting coredns stats metrics

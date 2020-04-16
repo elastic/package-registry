@@ -49,5 +49,5 @@ datasources:
       required: true
       show_user: true
       default: true
-    title: Collecting logs from suricata instances
+    title: Collect logs from suricata instances
     description: Collecting Suricata eve logs

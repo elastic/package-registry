@@ -2,6 +2,7 @@
   type: group
   fields:
   - name: stacktrace
+    type: keyword
   - name: gc
     type: group
     fields:

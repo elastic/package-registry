@@ -39,7 +39,7 @@ datasources:
       show_user: true
       default:
       - envoyproxy
-    title: Collecting logs from envoyproxy instances
+    title: Collect logs from envoyproxy instances
     description: Collecting envoyproxy log logs
   - type: envoyproxy/metrics
     vars:
@@ -51,5 +51,5 @@ datasources:
       show_user: true
       default:
       - localhost:9901
-    title: Collecting metrics from envoyproxy instances
+    title: Collect metrics from envoyproxy instances
     description: Collecting envoyproxy server metrics

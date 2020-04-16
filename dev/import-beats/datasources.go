@@ -111,7 +111,7 @@ func toDatasourceDescriptionForTwoTypes(moduleTitle, firstPackageType, secondPac
 }
 
 func toDatasourceInputTitle(moduleTitle, packageType string) string {
-	return fmt.Sprintf("Collecting %s from %s instances", packageType, moduleTitle)
+	return fmt.Sprintf("Collect %s from %s instances", packageType, moduleTitle)
 }
 
 func toDatasourceInputDescription(moduleTitle, packageType string, datasets []string) string {
@@ -130,10 +130,7 @@ func toDatasourceInputDescription(moduleTitle, packageType string, datasets []st
 	}
 
 	description.WriteString(secondPart[0])
-
 	description.WriteString(" ")
 	description.WriteString(packageType)
-
-	// Collecting MySQL status and galera_status metrics
 	return description.String()
 }

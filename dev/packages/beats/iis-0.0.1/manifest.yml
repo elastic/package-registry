@@ -30,8 +30,8 @@ datasources:
   description: Collect logs and metrics from iis instances
   inputs:
   - type: logs
-    title: Collecting logs from iis instances
+    title: Collect logs from iis instances
     description: Collecting iis access and error logs
   - type: iis/metrics
-    title: Collecting metrics from iis instances
+    title: Collect metrics from iis instances
     description: Collecting iis application_pool, webserver and website metrics

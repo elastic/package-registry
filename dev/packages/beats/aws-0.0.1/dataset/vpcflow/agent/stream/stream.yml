@@ -25,6 +25,9 @@ secret_access_key: {{this.secret_access_key}}
 {{#if this.session_token}}
 session_token: {{this.session_token}}
 {{/if}}
+{{#if this.role_arn}}
+role_arn: {{this.role_arn}}
+{{/if}}
 {{else if input == "file"}}
 input: log
 paths:

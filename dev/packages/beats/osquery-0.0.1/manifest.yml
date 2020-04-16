@@ -37,5 +37,5 @@ datasources:
       required: true
       show_user: true
       default: true
-    title: Collecting logs from osquery instances
+    title: Collect logs from osquery instances
     description: Collecting Osquery result logs

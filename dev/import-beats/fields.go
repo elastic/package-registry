@@ -141,7 +141,20 @@ func loadFieldsFile(path string) ([]fieldDefinition, error) {
 	if err != nil {
 		return nil, errors.Wrapf(err, "unmarshalling fields file failed (path: %s)", path)
 	}
+	fs = loadDefaultFieldValues(fs)
 	return fs, nil
+}
+
+func loadDefaultFieldValues(fs fieldDefinitionArray) fieldDefinitionArray {
+	var withDefaults fieldDefinitionArray
+	for _, f := range fs {
+		if f.Type == "" {
+			f.Type = "keyword"
+		}
+		f.Fields = loadDefaultFieldValues(f.Fields)
+		withDefaults = append(withDefaults, f)
+	}
+	return withDefaults
 }
 
 // filterMigratedFields method filters out fields with "migration: true" property or if it's defined in ECS.

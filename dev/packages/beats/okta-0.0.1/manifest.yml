@@ -142,5 +142,5 @@ datasources:
       required: true
       show_user: true
       default: '{}'
-    title: Collecting logs from okta instances
+    title: Collect logs from okta instances
     description: Collecting Okta system logs

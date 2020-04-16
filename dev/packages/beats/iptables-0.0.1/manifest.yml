@@ -70,5 +70,5 @@ datasources:
       required: true
       show_user: true
       default: true
-    title: Collecting logs from iptables instances
+    title: Collect logs from iptables instances
     description: Collecting iptables log logs

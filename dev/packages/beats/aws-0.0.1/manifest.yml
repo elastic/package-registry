@@ -41,7 +41,7 @@ screenshots:
   type: image/png
 - src: /img/metricbeat-aws-dynamodb-overview.png
   title: metricbeat aws dynamodb overview
-  size: 1645x826
+  size: 1873x846
   type: image/png
 - src: /img/metricbeat-aws-ebs-overview.png
   title: metricbeat aws ebs overview
@@ -192,11 +192,17 @@ datasources:
       multi: false
       required: true
       show_user: true
-    title: Collecting logs from aws instances
+    - name: role_arn
+      type: text
+      title: Role Arn
+      multi: false
+      required: true
+      show_user: true
+    title: Collect logs from aws instances
     description: Collecting aws cloudtrail, cloudwatch, ec2, elb, s3access and vpcflow
       logs
   - type: aws/metrics
-    title: Collecting metrics from aws instances
+    title: Collect metrics from aws instances
     description: Collecting aws billing, cloudwatch, dynamodb, ebs, ec2, elb, lambda,
       natgateway, rds, s3_daily_storage, s3_request, sns, sqs, transitgateway, usage
       and vpn metrics

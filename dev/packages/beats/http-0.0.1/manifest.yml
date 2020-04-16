@@ -17,5 +17,5 @@ datasources:
   description: Collect metrics from HTTP instances
   inputs:
   - type: http/metrics
-    title: Collecting metrics from http instances
+    title: Collect metrics from http instances
     description: Collecting HTTP json and server metrics
