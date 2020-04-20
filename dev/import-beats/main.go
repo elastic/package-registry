@@ -19,8 +19,6 @@ type importerOptions struct {
 
 	// Kibana host and port
 	kibanaHostPort string
-	// Kibana Auth Enabled
-	kibanaAuthEnabled bool
 	// Kibana username
 	kibanaUsername string
 	// Kibana password
@@ -74,7 +72,6 @@ func main() {
 	flag.StringVar(&options.beatsDir, "beatsDir", "../beats", "Path to the beats repository")
 	flag.StringVar(&options.kibanaDir, "kibanaDir", "../kibana", "Path to the kibana repository")
 	flag.StringVar(&options.kibanaHostPort, "kibanaHostPort", "http://localhost:5601", "Kibana host and port")
-	flag.BoolVar(&options.kibanaAuthEnabled, "kibanaAuthEnabled", true, "Kibana Auth enabled")
 	flag.StringVar(&options.kibanaUsername, "kibanaUsername", "elastic", "Kibana username")
 	flag.StringVar(&options.kibanaPassword, "kibanaPassword", "changeme", "Kibana password")
 	flag.BoolVar(&options.skipKibana, "skipKibana", false, "Skip storing Kibana objects")
@@ -103,7 +100,6 @@ func build(options importerOptions) error {
 		return errors.Wrap(err, "creating icon repository failed")
 	}
 	kibanaMigrator := newKibanaMigrator(options.kibanaHostPort,
-		options.kibanaAuthEnabled,
 		options.kibanaUsername,
 		options.kibanaPassword,
 		options.skipKibana)
