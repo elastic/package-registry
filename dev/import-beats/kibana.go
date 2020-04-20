@@ -19,15 +19,7 @@ import (
 )
 
 var (
-	fieldsToEncode = []string{
-		"attributes.kibanaSavedObjectMeta.searchSourceJSON",
-		"attributes.optionsJSON",
-		"attributes.panelsJSON",
-		"attributes.uiStateJSON",
-		"attributes.visState",
-	}
-
-	fieldsToDecode = []string{
+	encodedFields = []string{
 		"attributes.kibanaSavedObjectMeta.searchSourceJSON",
 		"attributes.layerListJSON",
 		"attributes.mapStateJSON",
@@ -124,12 +116,17 @@ func prepareDashboardFile(dashboardFile []byte) ([]byte, error) {
 }
 
 func encodeFields(ms mapStr) (mapStr, error) {
-	for _, field := range fieldsToEncode {
+	for _, field := range encodedFields {
 		v, err := ms.getValue(field)
 		if err == errKeyNotFound {
 			continue
 		} else if err != nil {
 			return mapStr{}, errors.Wrapf(err, "retrieving value failed (key: %s)", field)
+		}
+
+		_, isString := v.(string)
+		if isString {
+			continue
 		}
 
 		ve, err := json.Marshal(v)
@@ -260,7 +257,7 @@ func convertToKibanaObjects(dashboardFile []byte, moduleName string, datasetName
 }
 
 func decodeFields(ms mapStr) (mapStr, error) {
-	for _, field := range fieldsToDecode {
+	for _, field := range encodedFields {
 		v, err := ms.getValue(field)
 		if err == errKeyNotFound {
 			continue
