@@ -1,3 +1,0 @@
-- module: netflow
-  log:
-    enabled: true
