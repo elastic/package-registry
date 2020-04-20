@@ -1,3 +1,4 @@
+---
 description: Pipeline for parsing elasticsearch server logs
 processors:
 - rename:

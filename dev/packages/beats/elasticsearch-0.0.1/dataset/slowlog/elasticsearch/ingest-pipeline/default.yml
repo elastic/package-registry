@@ -1,3 +1,4 @@
+---
 description: Pipeline for parsing elasticsearch slow logs.
 processors:
 - rename:
