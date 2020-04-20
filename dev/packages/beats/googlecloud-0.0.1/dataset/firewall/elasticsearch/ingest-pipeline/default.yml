@@ -1,3 +1,4 @@
+---
 description: Pipeline for Google Cloud Firewall Logs
 
 processors:

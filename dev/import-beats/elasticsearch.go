@@ -5,6 +5,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -21,8 +22,8 @@ type elasticsearchContent struct {
 }
 
 type ingestPipelineContent struct {
-	source         string
 	targetFileName string
+	body           []byte
 }
 
 func loadElasticsearchContent(datasetPath string) (elasticsearchContent, error) {
@@ -73,9 +74,20 @@ func loadElasticsearchContent(datasetPath string) (elasticsearchContent, error) 
 				return elasticsearchContent{}, errors.Wrapf(err, "can't determine ingest pipeline target name (path: %s)", ingestPipeline)
 			}
 		}
+
+		body, err := ioutil.ReadFile(filepath.Join(datasetPath, ingestPipeline))
+		if err != nil {
+			return elasticsearchContent{}, errors.Wrapf(err, "reading pipeline body failed")
+		}
+
+		// Fix missing "---" at the beginning of the YAML pipeline.
+		if strings.HasSuffix(targetFileName, ".yml") && bytes.Index(body, []byte("---")) != 0 {
+			body = append([]byte("---\n"), body...)
+		}
+
 		esc.ingestPipelines = append(esc.ingestPipelines, ingestPipelineContent{
-			source:         filepath.Join(datasetPath, ingestPipeline),
 			targetFileName: targetFileName,
+			body:           body,
 		})
 	}
 

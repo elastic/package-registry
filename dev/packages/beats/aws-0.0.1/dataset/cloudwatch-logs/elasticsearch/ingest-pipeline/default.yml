@@ -1,3 +1,4 @@
+---
 description: "Pipeline for CloudWatch logs"
 
 processors:

@@ -254,12 +254,21 @@ what's been already fixed, as the script has overridden part of it).
 
 ### Run the whole setup
 
-1. Build docker image with EPR and run it:
+1. Build docker image with EPR:
 
     ```bash
-   $ docker build --rm -t integrations_registry:latest .
-   $ docker run -i -t -p 8080:8080 $(docker images -q integrations_registry:latest) 
+   $ docker build --rm -t docker.elastic.co/package-registry/package-registry:master .
    ```
+
+
+2. Start testing environment:
+    ```bash
+   $ cd testing/environment
+   $ docker-compose -f snapshot.yml -f local.yml up
+   ```
+
+
+   The command will boot up a docker cluster with Elasticsearch, Kibana and Package Registry.
 
 3. Verify that your integration is available (in the right version), e.g. MySQL: http://localhost:8080/search?package=mysql
 
@@ -285,20 +294,7 @@ what's been already fixed, as the script has overridden part of it).
     ]
     ```
 
-4. Start Elasticsearch instance:
-
-    ```bash
-   $ yarn es snapshot -E xpack.security.authc.api_key.enabled=true 
-   ```
-
-5. Start Kibana with enabled Ingest Manager:
-
-    ```bash
-   $ yarn kbn bootstrap
-   $ yarn start --xpack.ingestManager.enabled=true --xpack.ingestManager.epm.enabled=true --xpack.ingestManager.fleet.enabled=true --xpack.ingestManager.epm.registryUrl=http://localhost:8080/
-    ```
-
-6. Build agent code:
+4. Build agent code:
     ```bash
    $ cd $GOPATH/src/github.com/elastic/beats/x-pack/elastic-agent
    $ PLATFORMS=darwin mage package
@@ -311,7 +307,7 @@ what's been already fixed, as the script has overridden part of it).
    $ cd elastic-agent-8.0.0-darwin-x86_64/
    ```
 
-7. Enroll the agent and start it:
+5. Enroll the agent and start it:
 
    Use the "Enroll new agent" option in the Kibana UI and run a similar command:
 
@@ -322,10 +318,10 @@ what's been already fixed, as the script has overridden part of it).
 
    The `elastic-agent` will start two other processes - `metricbeat` and `filebeat`.
 
-8. Run the product you're integrating with (e.g. a docker image with MySQL).
+6. Run the product you're integrating with (e.g. a docker image with MySQL).
 
-9. Install package.
+7. Install package.
 
     Click out the configuration in the Kibana UI, deploy it and wait for the agent to pick out the updated configuration.
 
-10. Navigate with Kibana UI to freshly installed dashboards, verify the metrics/logs flow.
+8. Navigate with Kibana UI to freshly installed dashboards, verify the metrics/logs flow.
