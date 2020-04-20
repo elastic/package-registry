@@ -1,3 +1,4 @@
+---
 description: "Pipeline for EC2 logs in CloudWatch"
 
 processors:

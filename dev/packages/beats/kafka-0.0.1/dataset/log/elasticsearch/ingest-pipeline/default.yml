@@ -1,3 +1,4 @@
+---
 description: Pipeline for parsing Kafka log messages
 processors:
 - grok:

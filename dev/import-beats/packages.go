@@ -316,17 +316,19 @@ func (r *packageRepository) save(outputDir string) error {
 
 			// dataset/elasticsearch
 			if len(dataset.elasticsearch.ingestPipelines) > 0 {
-				ingestPipelinePath := filepath.Join(datasetPath, "elasticsearch", "ingest-pipeline")
-				err := os.MkdirAll(ingestPipelinePath, 0755)
+				ingestPipelinesPath := filepath.Join(datasetPath, "elasticsearch", "ingest-pipeline")
+				err := os.MkdirAll(ingestPipelinesPath, 0755)
 				if err != nil {
-					return errors.Wrapf(err, "cannot make directory for dataset ingest pipelines: '%s'", ingestPipelinePath)
+					return errors.Wrapf(err, "cannot make directory for dataset ingest pipelines: '%s'", ingestPipelinesPath)
 				}
 
 				for _, ingestPipeline := range dataset.elasticsearch.ingestPipelines {
-					log.Printf("copy ingest pipeline file '%s' to '%s'", ingestPipeline.source, ingestPipelinePath)
-					err := copyFileToTarget(ingestPipeline.source, ingestPipelinePath, ingestPipeline.targetFileName)
+					ingestPipelinePath := filepath.Join(ingestPipelinesPath, ingestPipeline.targetFileName)
+					log.Printf("write ingest pipeline file '%s'", ingestPipelinePath)
+
+					err := ioutil.WriteFile(ingestPipelinePath, ingestPipeline.body, 0644)
 					if err != nil {
-						return errors.Wrapf(err, "copying file failed")
+						return errors.Wrapf(err, "writing ingest pipeline failed")
 					}
 				}
 			}
