@@ -1,3 +1,0 @@
-- module: cisco
-  ios:
-    enabled: true
