@@ -33,7 +33,10 @@ type kibanaContent struct {
 }
 
 type kibanaMigrator struct {
-	hostPort   string
+	hostPort string
+	username string
+	password string
+
 	skipKibana bool
 }
 
@@ -41,9 +44,11 @@ type kibanaDocuments struct {
 	Objects []mapStr `json:"objects"`
 }
 
-func newKibanaMigrator(hostPort string, skipKibana bool) *kibanaMigrator {
+func newKibanaMigrator(hostPort string, username string, password string, skipKibana bool) *kibanaMigrator {
 	return &kibanaMigrator{
 		hostPort:   hostPort,
+		username:   username,
+		password:   password,
 		skipKibana: skipKibana,
 	}
 }
@@ -61,6 +66,9 @@ func (km *kibanaMigrator) migrateDashboardFile(dashboardFile []byte, moduleName 
 		return nil, errors.Wrapf(err, "creating POST request failed")
 	}
 	request.Header.Add("kbn-xsrf", "8.0.0")
+	if km.username != "" {
+		request.SetBasicAuth(km.username, km.password)
+	}
 	response, err := http.DefaultClient.Do(request)
 	if err != nil {
 		return nil, errors.Wrapf(err, "making POST request to Kibana failed")

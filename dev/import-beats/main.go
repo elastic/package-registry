@@ -19,6 +19,10 @@ type importerOptions struct {
 
 	// Kibana host and port
 	kibanaHostPort string
+	// Kibana username
+	kibanaUsername string
+	// Kibana password
+	kibanaPassword string
 	// Kibana repository directory
 	kibanaDir string
 	// Skip storing Kibana objects
@@ -68,6 +72,8 @@ func main() {
 	flag.StringVar(&options.beatsDir, "beatsDir", "../beats", "Path to the beats repository")
 	flag.StringVar(&options.kibanaDir, "kibanaDir", "../kibana", "Path to the kibana repository")
 	flag.StringVar(&options.kibanaHostPort, "kibanaHostPort", "http://localhost:5601", "Kibana host and port")
+	flag.StringVar(&options.kibanaUsername, "kibanaUsername", "elastic", "Kibana username")
+	flag.StringVar(&options.kibanaPassword, "kibanaPassword", "changeme", "Kibana password")
 	flag.BoolVar(&options.skipKibana, "skipKibana", false, "Skip storing Kibana objects")
 	flag.StringVar(&options.euiDir, "euiDir", "../eui", "Path to the Elastic UI framework repository")
 	flag.StringVar(&options.ecsDir, "ecsDir", "../ecs", "Path to the Elastic Common Schema repository")
@@ -93,7 +99,10 @@ func build(options importerOptions) error {
 	if err != nil {
 		return errors.Wrap(err, "creating icon repository failed")
 	}
-	kibanaMigrator := newKibanaMigrator(options.kibanaHostPort, options.skipKibana)
+	kibanaMigrator := newKibanaMigrator(options.kibanaHostPort,
+		options.kibanaUsername,
+		options.kibanaPassword,
+		options.skipKibana)
 	ecsFields, err := loadEcsFields(options.ecsDir)
 	if err != nil {
 		return errors.Wrap(err, "loading ECS fields failed")
