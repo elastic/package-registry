@@ -19,12 +19,22 @@ import (
 )
 
 var (
-	encodedFields = []string{
-		"attributes.uiStateJSON",
-		"attributes.visState",
+	fieldsToEncode = []string{
+		"attributes.kibanaSavedObjectMeta.searchSourceJSON",
 		"attributes.optionsJSON",
 		"attributes.panelsJSON",
+		"attributes.uiStateJSON",
+		"attributes.visState",
+	}
+
+	fieldsToDecode = []string{
 		"attributes.kibanaSavedObjectMeta.searchSourceJSON",
+		"attributes.layerListJSON",
+		"attributes.mapStateJSON",
+		"attributes.optionsJSON",
+		"attributes.panelsJSON",
+		"attributes.uiStateJSON",
+		"attributes.visState",
 	}
 )
 
@@ -106,7 +116,7 @@ func prepareDashboardFile(dashboardFile []byte) ([]byte, error) {
 }
 
 func encodeFields(ms mapStr) (mapStr, error) {
-	for _, field := range encodedFields {
+	for _, field := range fieldsToEncode {
 		v, err := ms.getValue(field)
 		if err == errKeyNotFound {
 			continue
@@ -242,7 +252,7 @@ func convertToKibanaObjects(dashboardFile []byte, moduleName string, datasetName
 }
 
 func decodeFields(ms mapStr) (mapStr, error) {
-	for _, field := range encodedFields {
+	for _, field := range fieldsToDecode {
 		v, err := ms.getValue(field)
 		if err == errKeyNotFound {
 			continue
@@ -250,13 +260,22 @@ func decodeFields(ms mapStr) (mapStr, error) {
 			return nil, errors.Wrapf(err, "retrieving value failed (key: %s)", field)
 		}
 
-		var vd interface{}
-		err = json.Unmarshal([]byte(v.(string)), &vd)
+		var target interface{}
+		var vd mapStr
+		vStr := v.(string)
+		err = json.Unmarshal([]byte(vStr), &vd)
 		if err != nil {
-			return nil, errors.Wrapf(err, "unmarshalling value failed (key: %s)", field)
+			var vda []mapStr
+			err = json.Unmarshal([]byte(vStr), &vda)
+			if err != nil {
+				return nil, errors.Wrapf(err, "unmarshalling value failed (key: %s)", field)
+			}
+			target = vda
+		} else {
+			target = vd
 		}
 
-		_, err = ms.put(field, vd)
+		_, err = ms.put(field, target)
 		if err != nil {
 			return nil, errors.Wrapf(err, "putting value failed (key: %s)", field)
 		}
