@@ -24,7 +24,7 @@ datasources:
   description: Collect logs and metrics from Kibana instances
   inputs:
   - type: logs
-    title: Collecting logs from kibana instances
+    title: Collect logs from kibana instances
     description: Collecting Kibana log logs
   - type: kibana/metrics
     vars:
@@ -36,5 +36,5 @@ datasources:
       show_user: true
       default:
       - localhost:5601
-    title: Collecting metrics from kibana instances
+    title: Collect metrics from kibana instances
     description: Collecting Kibana stats and status metrics

@@ -27,6 +27,7 @@
     type: keyword
     description: The name of the action that was executed
   - name: url.params
+    type: keyword
     description: REST URI parameters
   - name: indices
     type: keyword

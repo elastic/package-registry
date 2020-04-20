@@ -17,5 +17,5 @@ datasources:
   description: Collect metrics from Graphite instances
   inputs:
   - type: graphite/metrics
-    title: Collecting metrics from graphite instances
+    title: Collect metrics from graphite instances
     description: Collecting Graphite server metrics

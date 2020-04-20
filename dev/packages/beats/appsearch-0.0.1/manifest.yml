@@ -31,5 +31,5 @@ datasources:
       show_user: true
       default:
       - http://localhost:3002
-    title: Collecting metrics from appsearch instances
+    title: Collect metrics from appsearch instances
     description: Collecting App Search stats metrics

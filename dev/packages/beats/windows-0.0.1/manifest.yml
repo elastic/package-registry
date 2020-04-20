@@ -28,5 +28,5 @@ datasources:
   description: Collect metrics from Windows instances
   inputs:
   - type: windows/metrics
-    title: Collecting metrics from windows instances
+    title: Collect metrics from windows instances
     description: Collecting Windows perfmon and service metrics

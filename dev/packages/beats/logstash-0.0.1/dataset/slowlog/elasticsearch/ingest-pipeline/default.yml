@@ -1,3 +1,4 @@
+---
 description: Pipeline for parsing logstash slowlogs
 on_failure:
 - set:

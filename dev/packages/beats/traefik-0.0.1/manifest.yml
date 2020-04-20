@@ -30,7 +30,7 @@ datasources:
   description: Collect logs and metrics from traefik instances
   inputs:
   - type: logs
-    title: Collecting logs from traefik instances
+    title: Collect logs from traefik instances
     description: Collecting traefik access logs
   - type: traefik/metrics
     vars:
@@ -42,5 +42,5 @@ datasources:
       show_user: true
       default:
       - localhost:8080
-    title: Collecting metrics from traefik instances
+    title: Collect metrics from traefik instances
     description: Collecting traefik health metrics

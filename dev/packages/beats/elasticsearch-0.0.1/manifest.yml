@@ -24,10 +24,10 @@ datasources:
   description: Collect logs and metrics from Elasticsearch instances
   inputs:
   - type: logs
-    title: Collecting logs from elasticsearch instances
+    title: Collect logs from elasticsearch instances
     description: Collecting Elasticsearch audit, deprecation, gc, server and slowlog
       logs
   - type: elasticsearch/metrics
-    title: Collecting metrics from elasticsearch instances
+    title: Collect metrics from elasticsearch instances
     description: Collecting Elasticsearch ccr, cluster_stats, enrich, index, index_recovery,
       index_summary, ml_job, node, node_stats, pending_tasks and shard metrics

@@ -28,6 +28,7 @@
     description: |
       The number of bytes received from client.
   - name: query
+    type: keyword
     description: |
       The slow query.
   - name: schema

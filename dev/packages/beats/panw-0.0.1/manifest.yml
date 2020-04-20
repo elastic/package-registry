@@ -65,5 +65,5 @@ datasources:
       required: true
       show_user: true
       default: true
-    title: Collecting logs from panw instances
+    title: Collect logs from panw instances
     description: Collecting panw panos logs

@@ -1,3 +1,4 @@
+---
 description: Pipeline for Okta system logs.
 
 processors:

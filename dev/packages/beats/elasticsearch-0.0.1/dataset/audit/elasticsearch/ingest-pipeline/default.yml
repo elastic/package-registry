@@ -1,3 +1,4 @@
+---
 description: Pipeline for parsing elasticsearch audit logs
 processors:
 - rename:

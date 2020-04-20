@@ -84,5 +84,5 @@ datasources:
       multi: false
       required: true
       show_user: true
-    title: Collecting logs from o365 instances
+    title: Collect logs from o365 instances
     description: Collecting Office 365 audit logs

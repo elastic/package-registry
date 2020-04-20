@@ -28,7 +28,7 @@ datasources:
   description: Collect metrics from Ceph instances
   inputs:
   - type: ceph/metrics
-    title: Collecting metrics from ceph instances
+    title: Collect metrics from ceph instances
     description: Collecting Ceph cluster_disk, cluster_health, cluster_status, mgr_cluster_disk,
       mgr_cluster_health, mgr_osd_perf, mgr_osd_pool_stats, mgr_osd_tree, mgr_pool_disk,
       monitor_health, osd_df, osd_tree and pool_disk metrics

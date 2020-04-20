@@ -198,11 +198,15 @@ datasources:
       multi: false
       required: true
       show_user: true
+<<<<<<< HEAD
     title: Collecting logs from aws instances
+=======
+    title: Collect logs from aws instances
+>>>>>>> master
     description: Collecting aws cloudtrail, cloudwatch, ec2, elb, s3access and vpcflow
       logs
   - type: aws/metrics
-    title: Collecting metrics from aws instances
+    title: Collect metrics from aws instances
     description: Collecting aws billing, cloudwatch, dynamodb, ebs, ec2, elb, lambda,
       natgateway, rds, s3_daily_storage, s3_request, sns, sqs, transitgateway, usage
       and vpn metrics

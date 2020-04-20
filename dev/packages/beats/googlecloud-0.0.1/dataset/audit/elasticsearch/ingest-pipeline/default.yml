@@ -1,3 +1,4 @@
+---
 description: Pipeline for Google Cloud audit logs
 
 processors:

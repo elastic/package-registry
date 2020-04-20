@@ -56,9 +56,9 @@ datasources:
       required: true
       show_user: true
       default: false
-    title: Collecting logs from googlecloud instances
+    title: Collect logs from googlecloud instances
     description: Collecting Google Cloud Platform audit, firewall and vpcflow logs
   - type: googlecloud/metrics
-    title: Collecting metrics from googlecloud instances
+    title: Collect metrics from googlecloud instances
     description: Collecting Google Cloud Platform compute, loadbalancing, pubsub,
       stackdriver and storage metrics

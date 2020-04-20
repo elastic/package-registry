@@ -33,5 +33,5 @@ datasources:
       required: true
       show_user: true
       default: true
-    title: Collecting metrics from beat instances
+    title: Collect metrics from beat instances
     description: Collecting Beat state and stats metrics

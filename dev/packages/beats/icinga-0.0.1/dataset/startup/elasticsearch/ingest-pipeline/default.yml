@@ -1,3 +1,4 @@
+---
 description: Pipeline for parsing icinga startup logs
 processors:
 - grok:

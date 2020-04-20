@@ -45,5 +45,5 @@ datasources:
       required: true
       show_user: true
       default: example
-    title: Collecting metrics from dropwizard instances
+    title: Collect metrics from dropwizard instances
     description: Collecting Dropwizard collector metrics

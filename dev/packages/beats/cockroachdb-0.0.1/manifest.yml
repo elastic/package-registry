@@ -37,5 +37,5 @@ datasources:
       show_user: true
       default:
       - localhost:8080
-    title: Collecting metrics from cockroachdb instances
+    title: Collect metrics from cockroachdb instances
     description: Collecting CockroachDB status metrics
