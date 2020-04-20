@@ -3,15 +3,10 @@
         "description": "",
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
-                "filter": [],
-                "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.index",
-                "query": {
-                    "language": "kuery",
-                    "query": ""
-                }
+                "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.index"
             }
         },
-        "title": "DynamoDB Account Provisioned Capacity Utilization [Metricbeat AWS]",
+        "title": "DynamoDB Max Read/Write Account Limits [Metricbeat AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -20,8 +15,8 @@
                     "enabled": true,
                     "id": "1",
                     "params": {
-                        "customLabel": "Write Utilization",
-                        "field": "aws.dynamodb.metrics.AccountProvisionedWriteCapacityUtilization.avg"
+                        "customLabel": "Reads",
+                        "field": "aws.dynamodb.metrics.AccountMaxReads.max"
                     },
                     "schema": "metric",
                     "type": "max"
@@ -30,27 +25,28 @@
                     "enabled": true,
                     "id": "2",
                     "params": {
-                        "drop_partials": false,
-                        "extended_bounds": {},
-                        "field": "@timestamp",
-                        "interval": "auto",
-                        "min_doc_count": 1,
-                        "scaleMetricValues": false,
-                        "timeRange": {
-                            "from": "now-15m",
-                            "to": "now"
-                        },
-                        "useNormalizedEsInterval": true
+                        "customLabel": "Table Reads",
+                        "field": "aws.dynamodb.metrics.AccountMaxTableLevelReads.max"
                     },
-                    "schema": "segment",
-                    "type": "date_histogram"
+                    "schema": "metric",
+                    "type": "max"
                 },
                 {
                     "enabled": true,
                     "id": "3",
                     "params": {
-                        "customLabel": "Read Utilization",
-                        "field": "aws.dynamodb.metrics.AccountProvisionedReadCapacityUtilization.avg"
+                        "customLabel": "Writes",
+                        "field": "aws.dynamodb.metrics.AccountMaxWrites.max"
+                    },
+                    "schema": "metric",
+                    "type": "max"
+                },
+                {
+                    "enabled": true,
+                    "id": "4",
+                    "params": {
+                        "customLabel": "Table Writes",
+                        "field": "aws.dynamodb.metrics.AccountMaxTableLevelWrites.max"
                     },
                     "schema": "metric",
                     "type": "max"
@@ -79,29 +75,24 @@
                     }
                 ],
                 "dimensions": {
-                    "x": {
-                        "accessor": 0,
-                        "aggType": "date_histogram",
-                        "format": {
-                            "id": "date",
-                            "params": {
-                                "pattern": "HH:mm:ss"
-                            }
-                        },
-                        "label": "@timestamp per 30 seconds",
-                        "params": {
-                            "bounds": {
-                                "max": "2020-04-10T10:29:58.462Z",
-                                "min": "2020-04-10T10:14:58.462Z"
-                            },
-                            "date": true,
-                            "format": "HH:mm:ss",
-                            "interval": "PT30S",
-                            "intervalESUnit": "s",
-                            "intervalESValue": 30
-                        }
-                    },
+                    "x": null,
                     "y": [
+                        {
+                            "accessor": 0,
+                            "aggType": "max",
+                            "format": {
+                                "id": "number",
+                                "params": {
+                                    "parsedUrl": {
+                                        "basePath": "",
+                                        "origin": "http://localhost:5601",
+                                        "pathname": "/app/kibana"
+                                    }
+                                }
+                            },
+                            "label": "Reads",
+                            "params": {}
+                        },
                         {
                             "accessor": 1,
                             "aggType": "max",
@@ -115,7 +106,7 @@
                                     }
                                 }
                             },
-                            "label": "Write Utilization",
+                            "label": "Table Reads",
                             "params": {}
                         },
                         {
@@ -131,7 +122,7 @@
                                     }
                                 }
                             },
-                            "label": "Read Utilization",
+                            "label": "Writes",
                             "params": {}
                         }
                     ]
@@ -139,43 +130,73 @@
                 "grid": {
                     "categoryLines": false
                 },
-                "labels": {},
+                "labels": {
+                    "show": false
+                },
                 "legendPosition": "right",
                 "seriesParams": [
                     {
                         "data": {
                             "id": "1",
-                            "label": "Write Utilization"
+                            "label": "Reads"
                         },
                         "drawLinesBetweenPoints": true,
+                        "lineWidth": 2,
                         "mode": "normal",
-                        "show": "true",
+                        "show": true,
                         "showCircles": true,
-                        "type": "line",
+                        "type": "histogram",
+                        "valueAxis": "ValueAxis-1"
+                    },
+                    {
+                        "data": {
+                            "id": "2",
+                            "label": "Table Reads"
+                        },
+                        "drawLinesBetweenPoints": true,
+                        "lineWidth": 2,
+                        "mode": "normal",
+                        "show": true,
+                        "showCircles": true,
+                        "type": "histogram",
                         "valueAxis": "ValueAxis-1"
                     },
                     {
                         "data": {
                             "id": "3",
-                            "label": "Read Utilization"
+                            "label": "Writes"
                         },
                         "drawLinesBetweenPoints": true,
+                        "lineWidth": 2,
                         "mode": "normal",
-                        "show": "true",
+                        "show": true,
                         "showCircles": true,
-                        "type": "line",
+                        "type": "histogram",
+                        "valueAxis": "ValueAxis-1"
+                    },
+                    {
+                        "data": {
+                            "id": "4",
+                            "label": "Table Writes"
+                        },
+                        "drawLinesBetweenPoints": true,
+                        "lineWidth": 2,
+                        "mode": "normal",
+                        "show": true,
+                        "showCircles": true,
+                        "type": "histogram",
                         "valueAxis": "ValueAxis-1"
                     }
                 ],
                 "thresholdLine": {
-                    "color": "#34130C",
+                    "color": "#E7664C",
                     "show": false,
                     "style": "full",
                     "value": 10,
                     "width": 1
                 },
                 "times": [],
-                "type": "line",
+                "type": "histogram",
                 "valueAxes": [
                     {
                         "id": "ValueAxis-1",
@@ -194,17 +215,17 @@
                         "show": true,
                         "style": {},
                         "title": {
-                            "text": "Write Utilization"
+                            "text": "Account Max Reads"
                         },
                         "type": "value"
                     }
                 ]
             },
-            "title": "DynamoDB Account Provisioned Capacity Utilization [Metricbeat AWS]",
-            "type": "line"
+            "title": "DynamoDB Max Read/Write Account Limits [Metricbeat AWS]",
+            "type": "histogram"
         }
     },
-    "id": "31ad4090-2003-11ea-8f72-2f8d21e50b0c",
+    "id": "7d1e0870-7a3f-11ea-bfa4-dfea8c457654",
     "references": [
         {
             "id": "metrics-*",

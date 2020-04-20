@@ -37,5 +37,5 @@ datasources:
       show_user: true
       default:
       - localhost:8500
-    title: Collecting metrics from consul instances
+    title: Collect metrics from consul instances
     description: Collecting consul agent metrics

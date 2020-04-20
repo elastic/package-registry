@@ -15,6 +15,7 @@
     description: |
       ID of the statement.
   - name: query.text
+    type: keyword
     description: |
       Query text
   - name: query.calls

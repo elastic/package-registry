@@ -19,15 +19,19 @@
     description: |
       OID of the user logged into this backend.
   - name: user.name
+    type: keyword
     description: |
       Name of the user logged into this backend.
   - name: application_name
+    type: keyword
     description: |
       Name of the application that is connected to this backend.
   - name: client.address
+    type: keyword
     description: |
       IP address of the client connected to this backend.
   - name: client.hostname
+    type: keyword
     description: |
       Host name of the connected client, as reported by a reverse DNS lookup of client_addr.
   - name: client.port
@@ -55,6 +59,7 @@
     description: |
       True if this backend is currently waiting on a lock.
   - name: state
+    type: keyword
     description: |
       Current overall state of this backend. Possible values are:
 
@@ -68,5 +73,6 @@
         * fastpath function call: The backend is executing a fast-path function.
         * disabled: This state is reported if track_activities is disabled in this backend.
   - name: query
+    type: keyword
     description: |
       Text of this backend's most recent query. If state is active this field shows the currently executing query. In all other states, it shows the last query that was executed.

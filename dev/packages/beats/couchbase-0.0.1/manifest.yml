@@ -37,5 +37,5 @@ datasources:
       show_user: true
       default:
       - localhost:8091
-    title: Collecting metrics from couchbase instances
+    title: Collect metrics from couchbase instances
     description: Collecting Couchbase bucket, cluster and node metrics

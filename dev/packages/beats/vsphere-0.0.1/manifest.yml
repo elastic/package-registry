@@ -62,5 +62,5 @@ datasources:
       required: true
       show_user: true
       default: user
-    title: Collecting metrics from vsphere instances
+    title: Collect metrics from vsphere instances
     description: Collecting vSphere datastore, host and virtualmachine metrics

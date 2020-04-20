@@ -25,8 +25,8 @@ datasources:
   description: Collect logs and metrics from RabbitMQ instances
   inputs:
   - type: logs
-    title: Collecting logs from rabbitmq instances
+    title: Collect logs from rabbitmq instances
     description: Collecting RabbitMQ log logs
   - type: rabbitmq/metrics
-    title: Collecting metrics from rabbitmq instances
+    title: Collect metrics from rabbitmq instances
     description: Collecting RabbitMQ connection, exchange, node and queue metrics

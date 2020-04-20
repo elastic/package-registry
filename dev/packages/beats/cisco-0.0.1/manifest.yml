@@ -44,5 +44,5 @@ datasources:
       required: true
       show_user: true
       default: syslog
-    title: Collecting logs from cisco instances
+    title: Collect logs from cisco instances
     description: Collecting Cisco asa, ftd and ios logs

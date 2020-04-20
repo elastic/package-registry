@@ -60,5 +60,5 @@ datasources:
       required: true
       show_user: true
       default: ${CLOUDFOUNDRY_UAA_ADDRESS:""}
-    title: Collecting metrics from cloudfoundry instances
+    title: Collect metrics from cloudfoundry instances
     description: Collecting cloudfoundry container, counter and value metrics

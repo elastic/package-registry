@@ -44,5 +44,5 @@ datasources:
       show_user: true
       default:
       - tcp://127.0.0.1:9191
-    title: Collecting metrics from uwsgi instances
+    title: Collect metrics from uwsgi instances
     description: Collecting uwsgi status metrics
