@@ -1,11 +1,11 @@
 {
   "format_version": "1.0.0",
-  "name": "default-pipeline",
-  "title": "Default pipeline Integration",
-  "version": "0.0.2",
-  "readme": "/package/default-pipeline/0.0.2/docs/README.md",
+  "name": "multiple-false",
+  "title": "Multiple false",
+  "version": "0.0.1",
+  "readme": "/package/multiple-false/0.0.1/docs/README.md",
   "license": "basic",
-  "description": "Tests if no pipeline is set, it defaults to the default one",
+  "description": "Tests that multiple can be set to false",
   "type": "integration",
   "categories": [
     "logs"
@@ -15,16 +15,16 @@
     "elasticsearch": {}
   },
   "assets": [
-    "/package/default-pipeline/0.0.2/manifest.yml",
-    "/package/default-pipeline/0.0.2/docs/README.md",
-    "/package/default-pipeline/0.0.2/dataset/foo/manifest.yml",
-    "/package/default-pipeline/0.0.2/dataset/foo/fields/stream.yml",
-    "/package/default-pipeline/0.0.2/dataset/foo/agent/stream/stream.yml",
-    "/package/default-pipeline/0.0.2/dataset/foo/elasticsearch/ingest-pipeline/default.json"
+    "/package/multiple-false/0.0.1/manifest.yml",
+    "/package/multiple-false/0.0.1/docs/README.md",
+    "/package/multiple-false/0.0.1/dataset/foo/manifest.yml",
+    "/package/multiple-false/0.0.1/dataset/foo/fields/stream.yml",
+    "/package/multiple-false/0.0.1/dataset/foo/agent/stream/stream.yml",
+    "/package/multiple-false/0.0.1/dataset/foo/elasticsearch/ingest-pipeline/default.json"
   ],
   "datasets": [
     {
-      "id": "default-pipeline.foo",
+      "id": "multiple-false.foo",
       "title": "Foo",
       "release": "beta",
       "type": "logs",
@@ -44,7 +44,7 @@
           ]
         }
       ],
-      "package": "default-pipeline",
+      "package": "multiple-false",
       "path": "foo"
     }
   ],
@@ -69,15 +69,15 @@
                   "show_user": false
                 }
               ],
-              "dataset": "default-pipeline.foo",
+              "dataset": "multiple-false.foo",
               "template": "foo: bar\n"
             }
           ]
         }
       ],
-      "multiple": true
+      "multiple": false
     }
   ],
-  "download": "/epr/default-pipeline/default-pipeline-0.0.2.tar.gz",
-  "path": "/package/default-pipeline/0.0.2"
+  "download": "/epr/multiple-false/multiple-false-0.0.1.tar.gz",
+  "path": "/package/multiple-false/0.0.1"
 }

@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Make README.md file a required file for a package. [#287](https://github.com/elastic/integrations-registry/pull/287)
 *  Add stream fields to each dataset [#296](https://github.com/elastic/integrations-registry/pull/296)
 * Add `all` query param to return all packages. By default is set false. [#301](https://github.com/elastic/integrations-registry/pull/301)
-
+* Add multiple config for datasource. By default true. [#](https://github.com/elastic/integrations-registry/pull/)
 ### Deprecated
 
 ### Known Issue
