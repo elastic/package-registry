@@ -5,14 +5,14 @@ streams:
 - input: redis/metrics
   vars:
   - name: key.patterns
-    type: text
+    type: yaml
     title: Key Patterns
-    multi: true
+    multi: false
     required: true
     show_user: true
-    default:
-    - limit: 20
-      pattern: '*'
+    default: |
+      - limit: 20
+        pattern: '*'
   - name: period
     type: text
     title: Period

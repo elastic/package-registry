@@ -38,49 +38,49 @@ datasources:
       show_user: true
       default: o365audit
     - name: certificate
-      type: text
+      type: yaml
       title: Certificate
       multi: false
       required: true
       show_user: true
     - name: key
-      type: text
+      type: yaml
       title: Key
       multi: false
       required: true
       show_user: true
     - name: key_passphrase
-      type: text
+      type: yaml
       title: Key Passphrase
       multi: false
       required: true
       show_user: true
     - name: application_id
-      type: text
+      type: yaml
       title: Application Id
       multi: false
       required: true
       show_user: true
     - name: client_secret
-      type: text
+      type: yaml
       title: Client Secret
       multi: false
       required: true
       show_user: true
     - name: tenants
-      type: text
+      type: yaml
       title: Tenants
       multi: false
       required: true
       show_user: true
     - name: content_type
-      type: text
+      type: yaml
       title: Content Type
       multi: false
       required: true
       show_user: true
     - name: api
-      type: text
+      type: yaml
       title: Api
       multi: false
       required: true

@@ -63,25 +63,25 @@ datasources:
       show_user: true
       default: $Default
     - name: connection_string
-      type: text
+      type: yaml
       title: Connection String
       multi: false
       required: true
       show_user: true
     - name: storage_account
-      type: text
+      type: yaml
       title: Storage Account
       multi: false
       required: true
       show_user: true
     - name: storage_account_key
-      type: text
+      type: yaml
       title: Storage Account Key
       multi: false
       required: true
       show_user: true
     - name: resource_manager_endpoint
-      type: text
+      type: yaml
       title: Resource Manager Endpoint
       multi: false
       required: true

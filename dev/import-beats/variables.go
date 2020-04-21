@@ -84,10 +84,21 @@ func createMetricStreamVariables(configFileContent []byte, moduleName, datasetNa
 			}
 
 			if related || strings.HasPrefix(name, fmt.Sprintf("%s.", datasetName)) {
-				_, isArray := value.([]interface{})
+				var isArray bool
+
+				variableType := determineInputVariableType(name, value)
+				if variableType == "yaml" {
+					m, err := yaml.Marshal(value)
+					if err != nil {
+						return nil, errors.Wrapf(err, "marshalling object configuration variable failed")
+					}
+					value = string(m)
+				} else {
+					_, isArray = value.([]interface{})
+				}
 				aVar := util.Variable{
 					Name:     name,
-					Type:     determineInputVariableType(name, value),
+					Type:     variableType,
 					Title:    toVariableTitle(name),
 					Multi:    isArray,
 					Required: true,
@@ -211,7 +222,11 @@ func determineInputVariableType(name, v interface{}) string {
 	if name == "password" {
 		return "password"
 	}
-	return "text"
+
+	if _, isString := v.(string); isString {
+		return "text"
+	}
+	return "yaml"
 }
 
 func toVariableTitle(name string) string {
