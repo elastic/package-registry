@@ -9,6 +9,7 @@ categories:
 - logs
 - metrics
 release: ga
+removable: false
 requirement:
   kibana:
     versions: '>=7.7.0 <8.0.0'
@@ -76,6 +77,12 @@ datasources:
     - name: storage_account_key
       type: text
       title: Storage Account Key
+      multi: false
+      required: true
+      show_user: true
+    - name: resource_manager_endpoint
+      type: text
+      title: Resource Manager Endpoint
       multi: false
       required: true
       show_user: true

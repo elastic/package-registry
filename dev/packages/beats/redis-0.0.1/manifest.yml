@@ -9,6 +9,7 @@ categories:
 - logs
 - metrics
 release: ga
+removable: false
 requirement:
   kibana:
     versions: '>=7.3.0 <8.0.0'
@@ -73,6 +74,6 @@ datasources:
       multi: false
       required: true
       show_user: true
-      default: test
+      default: ""
     title: Collect metrics from Redis instances
     description: Collecting Redis info, key and keyspace metrics

@@ -9,6 +9,7 @@ categories:
 - logs
 - metrics
 release: ga
+removable: false
 requirement:
   kibana:
     versions: '>=7.3.1 <8.0.0'

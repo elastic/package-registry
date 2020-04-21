@@ -5,6 +5,7 @@ eventhub: {{this.eventhub}}
 consumer_group: {{this.consumer_group}}
 storage_account: {{this.storage_account}}
 storage_account_key: {{this.storage_account_key}}
+resource_manager_endpoint: {{this.resource_manager_endpoint}}
 {{/if}}
 {{#if input == file}}
 input: log
