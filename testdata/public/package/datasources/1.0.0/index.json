@@ -10,6 +10,7 @@
   "categories": [
     "logs"
   ],
+  "removable": true,
   "requirement": {
     "kibana": {},
     "elasticsearch": {}
