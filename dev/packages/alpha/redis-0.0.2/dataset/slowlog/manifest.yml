@@ -1,4 +1,4 @@
-title: Redis slowlog logs
+title: Redis slow logs
 release: ga
 type: logs
 streams:
@@ -19,5 +19,5 @@ streams:
     required: true
     show_user: true
     default: ""
-  title: Redis slowlog logs
-  description: Collect Redis slowlog logs
+  title: Redis slow logs
+  description: Collect Redis slow logs

@@ -50,15 +50,15 @@ datasources:
       type: text
       title: Idle Timeout
       multi: false
-      required: true
-      show_user: true
+      required: false
+      show_user: false
       default: 20s
     - name: maxconn
       type: integer
       title: Maxconn
       multi: false
-      required: true
-      show_user: true
+      required: false
+      show_user: false
       default: 10
     - name: network
       type: text
@@ -71,8 +71,8 @@ datasources:
       type: password
       title: Password
       multi: false
-      required: true
-      show_user: true
+      required: false
+      show_user: false
       default: test
     title: Collect metrics from Redis instances
     description: Collecting Redis info, key and keyspace metrics

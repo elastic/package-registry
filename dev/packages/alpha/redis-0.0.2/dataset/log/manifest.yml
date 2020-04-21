@@ -1,4 +1,4 @@
-title: Redis log logs
+title: Redis application logs
 release: ga
 type: logs
 streams:
@@ -20,5 +20,5 @@ streams:
       windows:
         default:
         - c:/program files/Redis/logs/redis.log*
-  title: Redis log logs
-  description: Collect Redis log logs
+  title: Redis application logs
+  description: Collect Redis application logs
