@@ -49,6 +49,18 @@ datasources:
       required: true
       show_user: true
       default: SET_PROJECT_NAME
+    - name: credentials_file
+      type: text
+      title: Credentials File
+      multi: false
+      required: true
+      show_user: true
+    - name: credentials_json
+      type: text
+      title: Credentials Json
+      multi: false
+      required: true
+      show_user: true
     - name: keep_original_message
       type: bool
       title: Keep Original Message

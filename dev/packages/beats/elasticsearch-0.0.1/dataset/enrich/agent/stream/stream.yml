@@ -1,10 +1,2 @@
 input: elasticsearch/metrics
 metricsets: ["enrich"]
-hosts:
-{{#each hosts}}
-  - {{this}}
-{{/each}}
-period: {{period}}
-{{#if xpack.enabled}}
-xpack.enabled: {{xpack.enabled}}
-{{/if}}

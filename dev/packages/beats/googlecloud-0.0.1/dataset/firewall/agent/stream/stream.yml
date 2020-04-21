@@ -3,7 +3,12 @@ input: google-pubsub
 project_id: {{this.project_id}}
 topic: {{this.topic}}
 subscription.name: {{this.subscription_name}}
+{{#if this.credentials_file}}
 credentials_file: {{this.credentials_file}}
+{{/if}}
+{{#if this.credentials_json}}
+credentials_json: {{this.credentials_json}}
+{{/if}}
 {{else if input == "file"}}
 input: log
 paths:

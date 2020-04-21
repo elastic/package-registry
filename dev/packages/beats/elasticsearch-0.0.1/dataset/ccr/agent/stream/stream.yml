@@ -1,10 +1,2 @@
 input: elasticsearch/metrics
 metricsets: ["ccr"]
-hosts:
-{{#each hosts}}
-  - {{this}}
-{{/each}}
-period: {{period}}
-{{#if xpack.enabled}}
-xpack.enabled: {{xpack.enabled}}
-{{/if}}

@@ -26,12 +26,5 @@ datasources:
       show_user: true
       default:
       - http://localhost:5066
-    - name: xpack.enabled
-      type: bool
-      title: Xpack Enabled
-      multi: false
-      required: true
-      show_user: true
-      default: true
     title: Collect metrics from Beat instances
     description: Collecting Beat state and stats metrics

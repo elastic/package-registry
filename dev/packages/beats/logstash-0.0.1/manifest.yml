@@ -54,12 +54,5 @@ datasources:
       show_user: true
       default:
       - localhost:9600
-    - name: xpack.enabled
-      type: bool
-      title: Xpack Enabled
-      multi: false
-      required: true
-      show_user: true
-      default: true
     title: Collect metrics from Logstash instances
     description: Collecting Logstash node and node_stats metrics

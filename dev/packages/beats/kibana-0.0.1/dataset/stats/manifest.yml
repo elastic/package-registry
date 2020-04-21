@@ -3,20 +3,5 @@ release: ga
 type: metrics
 streams:
 - input: kibana/metrics
-  vars:
-  - name: period
-    type: text
-    title: Period
-    multi: false
-    required: true
-    show_user: true
-    default: 10s
-  - name: xpack.enabled
-    type: bool
-    title: Xpack Enabled
-    multi: false
-    required: true
-    show_user: true
-    default: true
   title: Kibana stats metrics
   description: Collect Kibana stats metrics
