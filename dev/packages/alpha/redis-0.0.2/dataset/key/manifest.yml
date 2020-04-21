@@ -1,0 +1,7 @@
+title: Redis key metrics
+release: ga
+type: metrics
+streams:
+- input: redis/metrics
+  title: Redis key metrics
+  description: Collect Redis key metrics

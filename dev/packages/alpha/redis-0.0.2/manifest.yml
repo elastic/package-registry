@@ -1,0 +1,41 @@
+format_version: 1.0.0
+name: redis
+title: Redis
+version: 0.0.1
+license: basic
+description: Redis Integration
+type: integration
+categories:
+- logs
+- metrics
+release: ga
+requirement:
+  kibana:
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
+screenshots:
+- src: /img/kibana-redis.png
+  title: kibana redis
+  size: 1124x1079
+  type: image/png
+- src: /img/metricbeat_redis_key_dashboard.png
+  title: metricbeat redis key dashboard
+  size: 1855x949
+  type: image/png
+icons:
+- src: /img/logo_redis.svg
+  title: logo redis
+  size: 32x32
+  type: image/svg+xml
+datasources:
+- name: redis
+  title: Redis logs and metrics
+  description: Collect logs and metrics from Redis instances
+  inputs:
+  - type: logs
+    title: Collect logs from redis instances
+    description: Collecting Redis log and slowlog logs
+  - type: redis/metrics
+    title: Collect metrics from redis instances
+    description: Collecting Redis info, key and keyspace metrics
