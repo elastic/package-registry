@@ -266,7 +266,6 @@ var (
 // The reason is that for versioning it is much nicer to have the full
 // json so only on packaging this is changed.
 func encodedSavedObject(data []byte) (string, error) {
-
 	savedObject := MapStr{}
 	json.Unmarshal(data, &savedObject)
 
@@ -281,7 +280,7 @@ func encodedSavedObject(data []byte) (string, error) {
 		// In this case skip the encoding.
 		_, isString := out.(string)
 		if isString {
-			continue
+			return "", fmt.Errorf("expect non-string field type (fieldName: %s)", v)
 		}
 
 		// Marshal the value to encode it properly
