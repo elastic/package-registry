@@ -26,5 +26,5 @@ datasources:
   description: Collect logs from Crowdstrike instances
   inputs:
   - type: logs
-    title: Collect logs from crowdstrike instances
+    title: Collect logs from Crowdstrike instances
     description: Collecting Crowdstrike falcon logs

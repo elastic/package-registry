@@ -22,5 +22,5 @@ datasources:
   description: Collect metrics from Statsd instances
   inputs:
   - type: statsd/metrics
-    title: Collect metrics from statsd instances
+    title: Collect metrics from Statsd instances
     description: Collecting Statsd server metrics

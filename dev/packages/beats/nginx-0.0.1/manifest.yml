@@ -34,7 +34,7 @@ datasources:
   description: Collect logs and metrics from Nginx instances
   inputs:
   - type: logs
-    title: Collect logs from nginx instances
+    title: Collect logs from Nginx instances
     description: Collecting Nginx access, error and ingress_controller logs
   - type: nginx/metrics
     vars:
@@ -53,5 +53,5 @@ datasources:
       required: true
       show_user: true
       default: nginx_status
-    title: Collect metrics from nginx instances
+    title: Collect metrics from Nginx instances
     description: Collecting Nginx stubstatus metrics

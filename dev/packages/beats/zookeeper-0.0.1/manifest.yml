@@ -28,5 +28,5 @@ datasources:
   description: Collect metrics from ZooKeeper instances
   inputs:
   - type: zookeeper/metrics
-    title: Collect metrics from zookeeper instances
+    title: Collect metrics from ZooKeeper instances
     description: Collecting ZooKeeper connection, mntr and server metrics

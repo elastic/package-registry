@@ -34,7 +34,7 @@ datasources:
   description: Collect logs and metrics from Nats instances
   inputs:
   - type: logs
-    title: Collect logs from nats instances
+    title: Collect logs from Nats instances
     description: Collecting Nats log logs
   - type: nats/metrics
     vars:
@@ -46,5 +46,5 @@ datasources:
       show_user: true
       default:
       - localhost:8222
-    title: Collect metrics from nats instances
+    title: Collect metrics from Nats instances
     description: Collecting Nats connections, routes, stats and subscriptions metrics

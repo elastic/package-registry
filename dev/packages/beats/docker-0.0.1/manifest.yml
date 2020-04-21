@@ -23,6 +23,6 @@ datasources:
   description: Collect metrics from Docker instances
   inputs:
   - type: docker/metrics
-    title: Collect metrics from docker instances
+    title: Collect metrics from Docker instances
     description: Collecting Docker container, cpu, diskio, event, healthcheck, image,
       info, memory and network metrics

@@ -39,5 +39,5 @@ datasources:
       required: true
       show_user: true
       default: /jolokia/?ignoreErrors=true&canonicalNaming=false
-    title: Collect metrics from tomcat instances
+    title: Collect metrics from Tomcat instances
     description: Collecting Tomcat cache, memory, requests and threading metrics

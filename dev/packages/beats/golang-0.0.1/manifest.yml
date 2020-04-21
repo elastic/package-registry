@@ -23,5 +23,5 @@ datasources:
   description: Collect metrics from Golang instances
   inputs:
   - type: golang/metrics
-    title: Collect metrics from golang instances
+    title: Collect metrics from Golang instances
     description: Collecting Golang expvar and heap metrics

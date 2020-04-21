@@ -30,7 +30,7 @@ datasources:
   description: Collect logs and metrics from MongoDB instances
   inputs:
   - type: logs
-    title: Collect logs from mongodb instances
+    title: Collect logs from MongoDB instances
     description: Collecting MongoDB log logs
   - type: mongodb/metrics
     vars:
@@ -42,6 +42,6 @@ datasources:
       show_user: true
       default:
       - localhost:27017
-    title: Collect metrics from mongodb instances
+    title: Collect metrics from MongoDB instances
     description: Collecting MongoDB collstats, dbstats, metrics, replstatus and status
       metrics

@@ -42,7 +42,7 @@ datasources:
       required: true
       show_user: true
       default: plain
-    title: Collect logs from logstash instances
+    title: Collect logs from Logstash instances
     description: Collecting Logstash log and slowlog logs
   - type: logstash/metrics
     vars:
@@ -61,5 +61,5 @@ datasources:
       required: true
       show_user: true
       default: true
-    title: Collect metrics from logstash instances
+    title: Collect metrics from Logstash instances
     description: Collecting Logstash node and node_stats metrics

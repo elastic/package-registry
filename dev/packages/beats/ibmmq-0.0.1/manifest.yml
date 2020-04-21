@@ -42,7 +42,7 @@ datasources:
   description: Collect logs and metrics from IBM MQ instances
   inputs:
   - type: logs
-    title: Collect logs from ibmmq instances
+    title: Collect logs from IBM MQ instances
     description: Collecting IBM MQ errorlog logs
   - type: ibmmq/metrics
     vars:
@@ -61,5 +61,5 @@ datasources:
       required: true
       show_user: true
       default: /metrics
-    title: Collect metrics from ibmmq instances
+    title: Collect metrics from IBM MQ instances
     description: Collecting IBM MQ qmgr metrics

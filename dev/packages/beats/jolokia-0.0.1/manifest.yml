@@ -17,5 +17,5 @@ datasources:
   description: Collect metrics from Jolokia instances
   inputs:
   - type: jolokia/metrics
-    title: Collect metrics from jolokia instances
+    title: Collect metrics from Jolokia instances
     description: Collecting Jolokia jmx metrics

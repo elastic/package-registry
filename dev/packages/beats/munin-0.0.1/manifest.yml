@@ -31,5 +31,5 @@ datasources:
       show_user: true
       default:
       - localhost:4949
-    title: Collect metrics from munin instances
+    title: Collect metrics from Munin instances
     description: Collecting Munin node metrics
