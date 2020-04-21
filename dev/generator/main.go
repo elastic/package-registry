@@ -277,6 +277,13 @@ func encodedSavedObject(data []byte) (string, error) {
 			continue
 		}
 
+		// It may happen that some objects existing in example directory might be already encoded.
+		// In this case skip the encoding.
+		_, isString := out.(string)
+		if isString {
+			continue
+		}
+
 		// Marshal the value to encode it properly
 		r, err := json.Marshal(&out)
 		if err != nil {
