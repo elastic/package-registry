@@ -57,25 +57,25 @@ datasources:
       show_user: true
       default: 8192
     - name: read_buffer
-      type: yaml
+      type: text
       title: Read Buffer
       multi: false
       required: true
       show_user: true
     - name: timeout
-      type: yaml
+      type: text
       title: Timeout
       multi: false
       required: true
       show_user: true
     - name: custom_definitions
-      type: yaml
+      type: text
       title: Custom Definitions
       multi: false
       required: true
       show_user: true
     - name: detect_sequence_reset
-      type: yaml
+      type: text
       title: Detect Sequence Reset
       multi: false
       required: true

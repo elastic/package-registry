@@ -50,7 +50,11 @@ func createLogStreamVariables(manifestFile []byte) ([]util.Variable, error) {
 	if err != nil {
 		return nil, errors.Wrap(err, "unmarshalling flattened OS failed")
 	}
-	return adjustVariablesFormat(mwvos, mwv).Vars, nil
+	adjusted, err := adjustVariablesFormat(mwvos, mwv)
+	if err != nil {
+		return nil, errors.Wrap(err, "adjusting log stream variables failed")
+	}
+	return adjusted.Vars, nil
 }
 
 func createMetricStreamVariables(configFileContent []byte, moduleName, datasetName string) ([]util.Variable, error) {
@@ -85,7 +89,6 @@ func createMetricStreamVariables(configFileContent []byte, moduleName, datasetNa
 
 			if related || strings.HasPrefix(name, fmt.Sprintf("%s.", datasetName)) {
 				var isArray bool
-
 				variableType := determineInputVariableType(name, value)
 				if variableType == "yaml" {
 					m, err := yaml.Marshal(value)
@@ -123,17 +126,27 @@ func createMetricStreamVariables(configFileContent []byte, moduleName, datasetNa
 // - ensure that all variable values are wrapped with a "default" field, even if they are defined for particular
 //   operating systems (prefix: os.)
 // - add field "multi: true" if value is an array
-func adjustVariablesFormat(mwvos manifestWithVarsOsFlattened, mwvs manifestWithVars) manifestWithVars {
+func adjustVariablesFormat(mwvos manifestWithVarsOsFlattened, mwvs manifestWithVars) (manifestWithVars, error) {
 	var withDefaults manifestWithVars
 	for i, aVar := range mwvs.Vars {
+		var isArray bool
+		variableType := determineInputVariableType(aVar.Name, aVar.Default)
+		if variableType == "yaml" {
+			m, err := yaml.Marshal(aVar.Default)
+			if err != nil {
+				return manifestWithVars{}, errors.Wrapf(err, "marshalling object configuration variable failed")
+			}
+			aVar.Default = string(m)
+		} else {
+			_, isArray = aVar.Default.([]interface{})
+		}
+
 		aVarWithDefaults := aVar
 		aVarWithDefaults.Title = toVariableTitle(aVar.Name)
-		aVarWithDefaults.Type = determineInputVariableType(aVar.Name, aVar.Default)
+		aVarWithDefaults.Type = variableType
 		aVarWithDefaults.Required = true
 		aVarWithDefaults.ShowUser = true
-		if _, isArray := aVarWithDefaults.Default.([]interface{}); isArray {
-			aVarWithDefaults.Multi = isArray
-		}
+		aVarWithDefaults.Multi = isArray
 		aVarWithDefaults.Os = unwrapOsVars(mwvos.Vars[i])
 
 		if aVarWithDefaults.Os != nil {
@@ -151,7 +164,7 @@ func adjustVariablesFormat(mwvos manifestWithVarsOsFlattened, mwvs manifestWithV
 		}
 		withDefaults.Vars = append(withDefaults.Vars, aVarWithDefaults)
 	}
-	return withDefaults
+	return withDefaults, nil
 }
 
 func unwrapOsVars(flattened variableWithOsFlattened) *util.Os {
@@ -223,7 +236,7 @@ func determineInputVariableType(name, v interface{}) string {
 		return "password"
 	}
 
-	if _, isString := v.(string); isString {
+	if _, isString := v.(string); isString || v == nil {
 		return "text"
 	}
 	return "yaml"

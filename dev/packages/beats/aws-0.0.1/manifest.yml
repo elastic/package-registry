@@ -140,61 +140,61 @@ datasources:
       show_user: true
       default: s3
     - name: queue_url
-      type: yaml
+      type: text
       title: Queue Url
       multi: false
       required: true
       show_user: true
     - name: shared_credential_file
-      type: yaml
+      type: text
       title: Shared Credential File
       multi: false
       required: true
       show_user: true
     - name: credential_profile_name
-      type: yaml
+      type: text
       title: Credential Profile Name
       multi: false
       required: true
       show_user: true
     - name: visibility_timeout
-      type: yaml
+      type: text
       title: Visibility Timeout
       multi: false
       required: true
       show_user: true
     - name: api_timeout
-      type: yaml
+      type: text
       title: Api Timeout
       multi: false
       required: true
       show_user: true
     - name: endpoint
-      type: yaml
+      type: text
       title: Endpoint
       multi: false
       required: true
       show_user: true
     - name: access_key_id
-      type: yaml
+      type: text
       title: Access Key Id
       multi: false
       required: true
       show_user: true
     - name: secret_access_key
-      type: yaml
+      type: text
       title: Secret Access Key
       multi: false
       required: true
       show_user: true
     - name: session_token
-      type: yaml
+      type: text
       title: Session Token
       multi: false
       required: true
       show_user: true
     - name: role_arn
-      type: yaml
+      type: text
       title: Role Arn
       multi: false
       required: true

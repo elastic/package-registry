@@ -51,13 +51,13 @@ datasources:
       show_user: true
       default: SET_PROJECT_NAME
     - name: credentials_file
-      type: yaml
+      type: text
       title: Credentials File
       multi: false
       required: true
       show_user: true
     - name: credentials_json
-      type: yaml
+      type: text
       title: Credentials Json
       multi: false
       required: true
