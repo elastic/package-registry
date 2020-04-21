@@ -1,10 +1,2 @@
 input: kibana/metrics
 metricsets: ["stats"]
-hosts:
-{{#each hosts}}
-  - {{this}}
-{{/each}}
-period: {{period}}
-{{#if xpack.enabled}}
-xpack.enabled: {{xpack.enabled}}
-{{/if}}

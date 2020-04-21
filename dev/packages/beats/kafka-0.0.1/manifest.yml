@@ -42,9 +42,9 @@ datasources:
       required: true
       show_user: true
       default: /opt/kafka*
-    title: Collect logs from kafka instances
+    title: Collect logs from Kafka instances
     description: Collecting Kafka log logs
   - type: kafka/metrics
-    title: Collect metrics from kafka instances
+    title: Collect metrics from Kafka instances
     description: Collecting Kafka broker, consumer, consumergroup, partition and producer
       metrics

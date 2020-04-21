@@ -49,5 +49,5 @@ datasources:
       required: true
       show_user: true
       default: syslog
-    title: Collect logs from cef instances
+    title: Collect logs from CEF instances
     description: Collecting CEF log logs

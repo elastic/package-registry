@@ -32,5 +32,5 @@ datasources:
       show_user: true
       default:
       - oracle://user:pass@localhost:1521/ORCLPDB1.localdomain?sysdba=1
-    title: Collect metrics from oracle instances
+    title: Collect metrics from Oracle instances
     description: Collecting Oracle performance and tablespace metrics
