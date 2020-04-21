@@ -41,49 +41,49 @@ datasources:
       type: text
       title: Certificate
       multi: false
-      required: true
+      required: false
       show_user: true
     - name: key
       type: text
       title: Key
       multi: false
-      required: true
+      required: false
       show_user: true
     - name: key_passphrase
       type: text
       title: Key Passphrase
       multi: false
-      required: true
+      required: false
       show_user: true
     - name: application_id
       type: text
       title: Application Id
       multi: false
-      required: true
+      required: false
       show_user: true
     - name: client_secret
       type: text
       title: Client Secret
       multi: false
-      required: true
+      required: false
       show_user: true
     - name: tenants
       type: text
       title: Tenants
       multi: false
-      required: true
+      required: false
       show_user: true
     - name: content_type
       type: text
       title: Content Type
       multi: false
-      required: true
+      required: false
       show_user: true
     - name: api
       type: text
       title: Api
       multi: false
-      required: true
+      required: false
       show_user: true
     title: Collect logs from Office 365 instances
     description: Collecting Office 365 audit logs

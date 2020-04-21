@@ -54,13 +54,13 @@ datasources:
       type: text
       title: Credentials File
       multi: false
-      required: true
+      required: false
       show_user: true
     - name: credentials_json
       type: text
       title: Credentials Json
       multi: false
-      required: true
+      required: false
       show_user: true
     - name: keep_original_message
       type: bool

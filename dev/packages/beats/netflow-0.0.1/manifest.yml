@@ -60,25 +60,25 @@ datasources:
       type: text
       title: Read Buffer
       multi: false
-      required: true
+      required: false
       show_user: true
     - name: timeout
       type: text
       title: Timeout
       multi: false
-      required: true
+      required: false
       show_user: true
     - name: custom_definitions
       type: text
       title: Custom Definitions
       multi: false
-      required: true
+      required: false
       show_user: true
     - name: detect_sequence_reset
       type: text
       title: Detect Sequence Reset
       multi: false
-      required: true
+      required: false
       show_user: true
     title: Collect logs from NetFlow instances
     description: Collecting NetFlow log logs

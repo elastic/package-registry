@@ -37,7 +37,7 @@ datasources:
       type: text
       title: Api Key
       multi: false
-      required: true
+      required: false
       show_user: true
       default: ""
     - name: http_client_timeout
@@ -100,7 +100,7 @@ datasources:
       type: text
       title: Url
       multi: false
-      required: true
+      required: false
       show_user: true
       default: ""
     - name: ssl

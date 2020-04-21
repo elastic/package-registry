@@ -66,25 +66,25 @@ datasources:
       type: text
       title: Connection String
       multi: false
-      required: true
+      required: false
       show_user: true
     - name: storage_account
       type: text
       title: Storage Account
       multi: false
-      required: true
+      required: false
       show_user: true
     - name: storage_account_key
       type: text
       title: Storage Account Key
       multi: false
-      required: true
+      required: false
       show_user: true
     - name: resource_manager_endpoint
       type: text
       title: Resource Manager Endpoint
       multi: false
-      required: true
+      required: false
       show_user: true
     title: Collect logs from azure instances
     description: Collecting azure activitylogs, auditlogs and signinlogs logs

@@ -104,7 +104,7 @@ func createMetricStreamVariables(configFileContent []byte, moduleName, datasetNa
 					Type:     variableType,
 					Title:    toVariableTitle(name),
 					Multi:    isArray,
-					Required: true,
+					Required: determineInputVariableIsRequired(value),
 					ShowUser: true,
 					Default:  value,
 				}
@@ -144,7 +144,7 @@ func adjustVariablesFormat(mwvos manifestWithVarsOsFlattened, mwvs manifestWithV
 		aVarWithDefaults := aVar
 		aVarWithDefaults.Title = toVariableTitle(aVar.Name)
 		aVarWithDefaults.Type = variableType
-		aVarWithDefaults.Required = true
+		aVarWithDefaults.Required = determineInputVariableIsRequired(aVar.Default)
 		aVarWithDefaults.ShowUser = true
 		aVarWithDefaults.Multi = isArray
 		aVarWithDefaults.Os = unwrapOsVars(mwvos.Vars[i])
@@ -214,6 +214,20 @@ func isConfigEntryRelatedToMetricset(entry mapStr, moduleName, datasetName strin
 		}
 	}
 	return metricsetRelated, nil
+}
+
+// determineInputVariableIsRequired method determines is the configuration variable should be marked as "required".
+// If the variable is string and its default value is empty, it can be assumed that isn't required.
+func determineInputVariableIsRequired(v interface{}) bool {
+	if v == nil {
+		return false
+	}
+
+	val, isString := v.(string)
+	if isString && val == "" {
+		return false
+	}
+	return true
 }
 
 // determineInputVariableType method determines the most appropriate type of the value or the value in array.
