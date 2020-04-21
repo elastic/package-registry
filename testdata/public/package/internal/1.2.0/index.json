@@ -8,6 +8,7 @@
   "description": "Internal package",
   "type": "integration",
   "categories": [],
+  "removable": false,
   "requirement": {
     "kibana": {},
     "elasticsearch": {}

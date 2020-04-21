@@ -10,6 +10,9 @@ version: 1.0.0
 categories: []
 release: ga
 
+# The base package cannot be removed
+removable: false
+
 # The user should not see this package and not be able to install it
 internal: true
 
