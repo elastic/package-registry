@@ -38,10 +38,10 @@ datasources:
   description: Collect logs and metrics from System instances
   inputs:
   - type: logs
-    title: Collect logs from system instances
+    title: Collect logs from System instances
     description: Collecting System auth and syslog logs
   - type: system/metrics
-    title: Collect metrics from system instances
+    title: Collect metrics from System instances
     description: Collecting System core, cpu, diskio, entropy, filesystem, fsstat,
       load, memory, network, network_summary, process, process_summary, raid, service,
       socket, socket_summary, uptime and users metrics

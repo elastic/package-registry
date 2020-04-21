@@ -49,6 +49,18 @@ datasources:
       required: true
       show_user: true
       default: SET_PROJECT_NAME
+    - name: credentials_file
+      type: text
+      title: Credentials File
+      multi: false
+      required: true
+      show_user: true
+    - name: credentials_json
+      type: text
+      title: Credentials Json
+      multi: false
+      required: true
+      show_user: true
     - name: keep_original_message
       type: bool
       title: Keep Original Message
@@ -56,9 +68,9 @@ datasources:
       required: true
       show_user: true
       default: false
-    title: Collect logs from googlecloud instances
+    title: Collect logs from Google Cloud Platform instances
     description: Collecting Google Cloud Platform audit, firewall and vpcflow logs
   - type: googlecloud/metrics
-    title: Collect metrics from googlecloud instances
+    title: Collect metrics from Google Cloud Platform instances
     description: Collecting Google Cloud Platform compute, loadbalancing, pubsub,
       stackdriver and storage metrics

@@ -22,5 +22,5 @@ datasources:
   description: Collect metrics from Etcd instances
   inputs:
   - type: etcd/metrics
-    title: Collect metrics from etcd instances
+    title: Collect metrics from Etcd instances
     description: Collecting Etcd leader, metrics, self and store metrics

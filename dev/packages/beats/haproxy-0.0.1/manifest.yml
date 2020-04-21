@@ -52,7 +52,7 @@ datasources:
       required: true
       show_user: true
       default: syslog
-    title: Collect logs from haproxy instances
+    title: Collect logs from HAProxy instances
     description: Collecting HAProxy log logs
   - type: haproxy/metrics
     vars:
@@ -78,5 +78,5 @@ datasources:
       required: true
       show_user: true
       default: admin
-    title: Collect metrics from haproxy instances
+    title: Collect metrics from HAProxy instances
     description: Collecting HAProxy info and stat metrics

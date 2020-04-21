@@ -18,12 +18,5 @@ streams:
     required: true
     show_user: true
     default: filebeat-googlecloud-vpcflow
-  - name: credentials_file
-    type: text
-    title: Credentials File
-    multi: false
-    required: true
-    show_user: true
-    default: googlecloud-vpcflow-reader-service-identity.json
   title: Google Cloud vpcflow logs
   description: Collect Google Cloud vpcflow logs

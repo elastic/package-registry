@@ -25,7 +25,7 @@ datasources:
   description: Collect logs and metrics from MSSQL instances
   inputs:
   - type: logs
-    title: Collect logs from mssql instances
+    title: Collect logs from MSSQL instances
     description: Collecting MSSQL log logs
   - type: mssql/metrics
     vars:
@@ -51,5 +51,5 @@ datasources:
       required: true
       show_user: true
       default: domain\username
-    title: Collect metrics from mssql instances
+    title: Collect metrics from MSSQL instances
     description: Collecting MSSQL performance and transaction_log metrics

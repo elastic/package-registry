@@ -52,5 +52,5 @@ datasources:
       required: true
       show_user: true
       default: /metrics
-    title: Collect metrics from openmetrics instances
+    title: Collect metrics from Openmetrics instances
     description: Collecting Openmetrics collector metrics

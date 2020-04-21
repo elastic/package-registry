@@ -37,5 +37,5 @@ datasources:
       show_user: true
       default:
       - https://127.0.0.1:8070/
-    title: Collect metrics from redisenterprise instances
+    title: Collect metrics from Redis Enterprise instances
     description: Collecting Redis Enterprise node and proxy metrics

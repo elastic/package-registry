@@ -37,5 +37,5 @@ datasources:
       show_user: true
       default:
       - localhost:5984
-    title: Collect metrics from couchdb instances
+    title: Collect metrics from CouchDB instances
     description: Collecting CouchDB server metrics

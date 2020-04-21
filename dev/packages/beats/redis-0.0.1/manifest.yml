@@ -34,8 +34,45 @@ datasources:
   description: Collect logs and metrics from Redis instances
   inputs:
   - type: logs
-    title: Collect logs from redis instances
+    title: Collect logs from Redis instances
     description: Collecting Redis log and slowlog logs
   - type: redis/metrics
-    title: Collect metrics from redis instances
+    vars:
+    - name: hosts
+      type: text
+      title: Hosts
+      multi: true
+      required: true
+      show_user: true
+      default:
+      - 127.0.0.1:6379
+    - name: idle_timeout
+      type: text
+      title: Idle Timeout
+      multi: false
+      required: true
+      show_user: true
+      default: 20s
+    - name: maxconn
+      type: integer
+      title: Maxconn
+      multi: false
+      required: true
+      show_user: true
+      default: 10
+    - name: network
+      type: text
+      title: Network
+      multi: false
+      required: true
+      show_user: true
+      default: tcp
+    - name: password
+      type: password
+      title: Password
+      multi: false
+      required: true
+      show_user: true
+      default: test
+    title: Collect metrics from Redis instances
     description: Collecting Redis info, key and keyspace metrics

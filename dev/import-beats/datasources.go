@@ -47,7 +47,7 @@ func (ds datasourceContent) toMetadataDatasources() []util.Datasource {
 			if input.packageType == packageType {
 				inputs = append(inputs, util.Input{
 					Type:        inputType,
-					Title:       toDatasourceInputTitle(ds.moduleName, packageType),
+					Title:       toDatasourceInputTitle(ds.moduleTitle, packageType),
 					Description: toDatasourceInputDescription(ds.moduleTitle, packageType, ds.inputs[inputType].datasetNames),
 					Vars:        input.vars,
 				})

@@ -18,12 +18,5 @@ streams:
     required: true
     show_user: true
     default: filebeat-googlecloud-audit
-  - name: credentials_file
-    type: text
-    title: Credentials File
-    multi: false
-    required: true
-    show_user: true
-    default: googlecloud-audit-reader-service-identity.json
   title: Google Cloud audit logs
   description: Collect Google Cloud audit logs

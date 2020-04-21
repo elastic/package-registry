@@ -31,5 +31,5 @@ datasources:
       show_user: true
       default:
       - localhost:11211
-    title: Collect metrics from memcached instances
+    title: Collect metrics from Memcached instances
     description: Collecting Memcached stats metrics

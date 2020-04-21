@@ -109,5 +109,5 @@ datasources:
       required: true
       show_user: true
       default: '{}'
-    title: Collect logs from misp instances
+    title: Collect logs from MISP instances
     description: Collecting MISP threat logs

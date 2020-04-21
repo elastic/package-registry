@@ -79,5 +79,5 @@ datasources:
       multi: false
       required: true
       show_user: true
-    title: Collect logs from netflow instances
+    title: Collect logs from NetFlow instances
     description: Collecting NetFlow log logs

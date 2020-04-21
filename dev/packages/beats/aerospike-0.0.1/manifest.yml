@@ -37,5 +37,5 @@ datasources:
       show_user: true
       default:
       - localhost:3000
-    title: Collect metrics from aerospike instances
+    title: Collect metrics from Aerospike instances
     description: Collecting Aerospike namespace metrics
