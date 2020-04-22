@@ -182,6 +182,12 @@ what's been already fixed, as the script has overridden part of it).
     a field definition. The sum of fields in all present files should contain only fields that are really used, e.g.
     not all existing ECS fields.
 
+    It may happen that the ingest pipeline uses fields abstracted from ECS, but not mentioned in `fields.yml`.
+    Integrations should contain these fields and also have them documented.
+
+    See the PR https://github.com/elastic/beats/pull/17895 to understand how to add them to Beats (e.g. `event.code`,
+    `event.provider`) using the `fields.epr.yml` file.
+
 6. Metricbeat: add missing configuration options.
 
    The `import-beats` script extracts configuration options from Metricbeat module's `_meta` directory. It analyzes
