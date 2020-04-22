@@ -63,13 +63,13 @@
               }
             }
           ],
-          "template.path": "logs.yml",
+          "template_path": "logs.yml",
           "title": "Title of the stream",
           "description": "Description of the stream with more details."
         },
         {
           "input": "syslog",
-          "template.path": "syslog.yml",
+          "template_path": "syslog.yml",
           "title": "Title of the stream",
           "description": "Description of the stream with more details."
         }
@@ -204,8 +204,8 @@
                 }
               ],
               "dataset": "datasources.examplemetric",
-              "template.path": "stream.yml",
-              "template.content": "metric: foo\n",
+              "template_path": "stream.yml",
+              "template": "metric: foo\n",
               "title": "Title of the stream",
               "description": "Description of the stream with more details."
             }
@@ -243,8 +243,8 @@
                 }
               ],
               "dataset": "datasources.examplelog1",
-              "template.path": "logs.yml",
-              "template.content": "foo: bar\n",
+              "template_path": "logs.yml",
+              "template": "foo: bar\n",
               "title": "Title of the stream",
               "description": "Description of the stream with more details."
             },
@@ -276,8 +276,8 @@
                 }
               ],
               "dataset": "datasources.examplelog2",
-              "template.path": "stream.yml",
-              "template.content": "foo: bar\n",
+              "template_path": "stream.yml",
+              "template": "foo: bar\n",
               "title": "Title of the stream",
               "description": "Description of the stream with more details."
             }
@@ -289,8 +289,8 @@
             {
               "input": "syslog",
               "dataset": "datasources.examplelog1",
-              "template.path": "syslog.yml",
-              "template.content": "syslog: bar\n",
+              "template_path": "syslog.yml",
+              "template": "syslog: bar\n",
               "title": "Title of the stream",
               "description": "Description of the stream with more details."
             }

@@ -5,7 +5,7 @@ streams:
   - input: logs
     title: Title of the stream
     description: Description of the stream with more details.
-    template: logs.yml
+    template_path: logs.yml
     vars:
       - name: paths
         required: true
@@ -26,4 +26,4 @@ streams:
   - input: syslog
     title: Title of the stream
     description: Description of the stream with more details.
-    template: syslog.yml
+    template_path: syslog.yml

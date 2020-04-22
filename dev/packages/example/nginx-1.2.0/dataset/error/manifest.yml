@@ -9,7 +9,7 @@ streams:
     title: Nginx error logs
     description: Collecting the Nginx error logs from file.
     # Name of the stream file
-    template.path: stream.yml
+    template_path: stream.yml
     vars:
       - name: paths
         required: true
@@ -26,7 +26,7 @@ streams:
     title: Nginx error logs
     description: Collecting the Nginx error logs from syslog.
     # Name of the stream file
-    template.path: syslog.yml
+    template_path: syslog.yml
     vars:
       # Are udp and tcp syslog input two different inputs?
       - name: protocol.udp.host
