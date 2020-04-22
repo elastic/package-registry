@@ -22,13 +22,27 @@ EXPOSE 8080
 ENV GO111MODULE=on
 RUN go mod vendor
 RUN go get -u github.com/magefile/mage
+# Prepare all the packages to be built
 RUN mage build
 
-# This directory contains the packages at the moment but is only used during the build process
-# If we keep it, it means all packages exist twice.
-RUN rm -rf dev
+# Build binary
+RUN go build .
 
-ENTRYPOINT ["go", "run", "."]
+# Move all files need to run to its own directory
+# This will become useful for staged builds later on
+RUN mkdir /registry
+RUN mv package-registry /registry/
+RUN mv config.yml /registry/
+RUN mv public /registry/
+
+# Clean up files not needed
+RUN rm -rf /go/src/github.com/elastic/package-registry
+RUN rm -rf /go/package-storage
+
+# Change to new working directory
+WORKDIR /registry
+
+ENTRYPOINT ["./package-registry"]
 # Make sure it's accessible from outside the container
 CMD ["--address=0.0.0.0:8080"]
 
