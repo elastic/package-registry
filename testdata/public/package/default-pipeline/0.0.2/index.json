@@ -71,6 +71,7 @@
                 }
               ],
               "dataset": "default-pipeline.foo",
+              "template_path": "stream.yml",
               "template": "foo: bar\n"
             }
           ]

@@ -103,6 +103,7 @@
                 }
               ],
               "dataset": "bar",
+              "template_path": "stream.yml",
               "template": "foo: bar\n"
             }
           ]

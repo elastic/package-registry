@@ -345,18 +345,20 @@ func (p *Package) LoadDataSets(packagePath string) error {
 			for iK, _ := range datasource.Inputs {
 				for _, stream := range d.Streams {
 					if stream.Input == p.Datasources[dK].Inputs[iK].Type {
+						if stream.TemplatePath == "" {
+							stream.TemplatePath = "stream.yml"
+						}
 						stream.Dataset = d.ID
-						streamTemplate := filepath.Join(datasetBasePath, "agent", "stream", "stream.yml")
+						streamTemplate := filepath.Join(datasetBasePath, "agent", "stream", stream.TemplatePath)
 
 						streamTemplateData, err := ioutil.ReadFile(streamTemplate)
 						if err != nil {
 							return err
 						}
 
-						stream.Template = string(streamTemplateData)
+						stream.TemplateContent = string(streamTemplateData)
 
 						// Add template to stream
-
 						p.Datasources[dK].Inputs[iK].Streams = append(p.Datasources[dK].Inputs[iK].Streams, stream)
 					}
 				}

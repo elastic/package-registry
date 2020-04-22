@@ -71,6 +71,7 @@
                 }
               ],
               "dataset": "multiple-false.foo",
+              "template_path": "stream.yml",
               "template": "foo: bar\n"
             }
           ]
