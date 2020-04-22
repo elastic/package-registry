@@ -1,3 +1,5 @@
+# This Dockerfile allows to build the package-registry and packages together.
+# It is decoupled from the packages and the registry even though for now both are in the same repository.
 ARG GO_VERSION=1.14.2
 FROM golang:${GO_VERSION}
 
@@ -7,10 +9,13 @@ RUN \
          zip rsync \
       && rm -rf /var/lib/apt/lists/*
 
-COPY ./ /go/src/github.com/elastic/package-registry
-EXPOSE 8080
-
+RUN go get github.com/elastic/package-registry
 WORKDIR "/go/src/github.com/elastic/package-registry"
+
+# Define which version of the packages should be checked out.
+ARG PACKAGES_VERSION=master
+RUN git checkout ${PACKAGES_VERSION}
+EXPOSE 8080
 
 ENV GO111MODULE=on
 RUN go mod vendor
