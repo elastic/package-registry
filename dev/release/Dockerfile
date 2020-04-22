@@ -9,8 +9,10 @@ RUN \
          zip rsync \
       && rm -rf /var/lib/apt/lists/*
 
+RUN git clone https://github.com/elastic/package-storage.git
 RUN go get github.com/elastic/package-registry
 WORKDIR "/go/src/github.com/elastic/package-registry"
+RUN rsync -a /go/package-storage/packages/ dev/packages/example
 
 # Define which version of the packages should be checked out.
 ARG PACKAGES_VERSION=master
