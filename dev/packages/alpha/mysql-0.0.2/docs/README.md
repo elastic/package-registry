@@ -19,6 +19,13 @@ The `error` dataset collects the MySQL error logs.
 
 | Field | Description | Type |
 |---|---|---|
+| event.category | Event category (e.g. database) | keyword |
+| event.code | Identification code for this event | keyword |
+| event.created | Date/time when the event was first read by an agent, or by your pipeline. | date |
+| event.kind | Event kind (e.g. event) | keyword |
+| event.provider | Source of the event (e.g. Server) | keyword |
+| event.timezone | Time zone information | keyword |
+| event.type | Event severity (e.g. info, error) | keyword |
 | log.level | Original log level of the log event. If the source of the event provides a log level or textual severity, this is the one that goes in `log.level`. If your source doesn't specify one, you may put your event transport's severity here (e.g. Syslog severity). Some examples are `warn`, `err`, `i`, `informational`. | keyword |
 | message | For log events the message field contains the log message, optimized for viewing in a log viewer. For structured logs without an original message field, other fields can be concatenated to form a human-readable summary of the event. If multiple messages exist, they can be combined into one message. | text |
 | mysql.thread_id | The connection or thread ID for the query. | long |

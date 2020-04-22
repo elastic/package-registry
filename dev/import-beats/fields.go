@@ -115,15 +115,22 @@ func loadModuleFields(modulePath string) ([]fieldDefinition, error) {
 }
 
 func loadDatasetFields(modulePath, moduleName, datasetName string) ([]fieldDefinition, error) {
-	path := filepath.Join(modulePath, datasetName, "_meta", "fields.yml")
-	fs, err := loadFieldsFile(path)
+	fieldsPath := filepath.Join(modulePath, datasetName, "_meta", "fields.yml")
+	fs, err := loadFieldsFile(fieldsPath)
 	if err != nil {
 		return nil, errors.Wrapf(err, "loading dataset fields file failed")
 	}
-
 	for i, f := range fs {
 		fs[i].Name = fmt.Sprintf("%s.%s", moduleName, f.Name)
 	}
+
+	fieldsEpr := filepath.Join(modulePath, datasetName, "_meta", "fields.epr.yml")
+	efs, err := loadFieldsFile(fieldsEpr)
+	if err != nil {
+		return nil, errors.Wrapf(err, "loading fields.epr.yml file failed")
+	}
+
+	fs = append(fs, efs...)
 	return fs, nil
 }
 
