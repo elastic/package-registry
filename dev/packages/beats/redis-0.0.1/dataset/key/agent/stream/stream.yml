@@ -7,6 +7,9 @@ hosts:
 {{#if idle_timeout}}
 idle_timeout: {{idle_timeout}}
 {{/if}}
+{{#if key.patterns}}
+key.patterns: {{key.patterns}}
+{{/if}}
 {{#if maxconn}}
 maxconn: {{maxconn}}
 {{/if}}

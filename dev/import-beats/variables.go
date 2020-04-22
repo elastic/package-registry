@@ -10,7 +10,7 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"gopkg.in/yaml.v2"
+	yaml "gopkg.in/yaml.v2"
 
 	"github.com/elastic/package-registry/util"
 )
@@ -50,7 +50,11 @@ func createLogStreamVariables(manifestFile []byte) ([]util.Variable, error) {
 	if err != nil {
 		return nil, errors.Wrap(err, "unmarshalling flattened OS failed")
 	}
-	return adjustVariablesFormat(mwvos, mwv).Vars, nil
+	adjusted, err := adjustVariablesFormat(mwvos, mwv)
+	if err != nil {
+		return nil, errors.Wrap(err, "adjusting log stream variables failed")
+	}
+	return adjusted.Vars, nil
 }
 
 func createMetricStreamVariables(configFileContent []byte, moduleName, datasetName string) ([]util.Variable, error) {
@@ -84,13 +88,23 @@ func createMetricStreamVariables(configFileContent []byte, moduleName, datasetNa
 			}
 
 			if related || strings.HasPrefix(name, fmt.Sprintf("%s.", datasetName)) {
-				_, isArray := value.([]interface{})
+				var isArray bool
+				variableType := determineInputVariableType(name, value)
+				if variableType == "yaml" {
+					m, err := yaml.Marshal(value)
+					if err != nil {
+						return nil, errors.Wrapf(err, "marshalling object configuration variable failed")
+					}
+					value = string(m)
+				} else {
+					_, isArray = value.([]interface{})
+				}
 				aVar := util.Variable{
 					Name:     name,
-					Type:     determineInputVariableType(name, value),
+					Type:     variableType,
 					Title:    toVariableTitle(name),
 					Multi:    isArray,
-					Required: true,
+					Required: determineInputVariableIsRequired(value),
 					ShowUser: true,
 					Default:  value,
 				}
@@ -112,17 +126,27 @@ func createMetricStreamVariables(configFileContent []byte, moduleName, datasetNa
 // - ensure that all variable values are wrapped with a "default" field, even if they are defined for particular
 //   operating systems (prefix: os.)
 // - add field "multi: true" if value is an array
-func adjustVariablesFormat(mwvos manifestWithVarsOsFlattened, mwvs manifestWithVars) manifestWithVars {
+func adjustVariablesFormat(mwvos manifestWithVarsOsFlattened, mwvs manifestWithVars) (manifestWithVars, error) {
 	var withDefaults manifestWithVars
 	for i, aVar := range mwvs.Vars {
+		var isArray bool
+		variableType := determineInputVariableType(aVar.Name, aVar.Default)
+		if variableType == "yaml" {
+			m, err := yaml.Marshal(aVar.Default)
+			if err != nil {
+				return manifestWithVars{}, errors.Wrapf(err, "marshalling object configuration variable failed")
+			}
+			aVar.Default = string(m)
+		} else {
+			_, isArray = aVar.Default.([]interface{})
+		}
+
 		aVarWithDefaults := aVar
 		aVarWithDefaults.Title = toVariableTitle(aVar.Name)
-		aVarWithDefaults.Type = determineInputVariableType(aVar.Name, aVar.Default)
-		aVarWithDefaults.Required = true
+		aVarWithDefaults.Type = variableType
+		aVarWithDefaults.Required = determineInputVariableIsRequired(aVar.Default)
 		aVarWithDefaults.ShowUser = true
-		if _, isArray := aVarWithDefaults.Default.([]interface{}); isArray {
-			aVarWithDefaults.Multi = isArray
-		}
+		aVarWithDefaults.Multi = isArray
 		aVarWithDefaults.Os = unwrapOsVars(mwvos.Vars[i])
 
 		if aVarWithDefaults.Os != nil {
@@ -140,7 +164,7 @@ func adjustVariablesFormat(mwvos manifestWithVarsOsFlattened, mwvs manifestWithV
 		}
 		withDefaults.Vars = append(withDefaults.Vars, aVarWithDefaults)
 	}
-	return withDefaults
+	return withDefaults, nil
 }
 
 func unwrapOsVars(flattened variableWithOsFlattened) *util.Os {
@@ -192,6 +216,20 @@ func isConfigEntryRelatedToMetricset(entry mapStr, moduleName, datasetName strin
 	return metricsetRelated, nil
 }
 
+// determineInputVariableIsRequired method determines is the configuration variable should be marked as "required".
+// If the variable is string and its default value is empty, it can be assumed that isn't required.
+func determineInputVariableIsRequired(v interface{}) bool {
+	if v == nil {
+		return false
+	}
+
+	val, isString := v.(string)
+	if isString && val == "" {
+		return false
+	}
+	return true
+}
+
 // determineInputVariableType method determines the most appropriate type of the value or the value in array.
 // Support types: text, password, bool, integer
 func determineInputVariableType(name, v interface{}) string {
@@ -211,7 +249,11 @@ func determineInputVariableType(name, v interface{}) string {
 	if name == "password" {
 		return "password"
 	}
-	return "text"
+
+	if _, isString := v.(string); isString || v == nil {
+		return "text"
+	}
+	return "yaml"
 }
 
 func toVariableTitle(name string) string {

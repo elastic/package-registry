@@ -9,6 +9,7 @@ categories:
 - logs
 - metrics
 release: ga
+removable: true
 requirement:
   kibana:
     versions: '>=8.0.0-SNAPSHOT <8.0.0'
@@ -53,13 +54,13 @@ datasources:
       type: text
       title: Credentials File
       multi: false
-      required: true
+      required: false
       show_user: true
     - name: credentials_json
       type: text
       title: Credentials Json
       multi: false
-      required: true
+      required: false
       show_user: true
     - name: keep_original_message
       type: bool

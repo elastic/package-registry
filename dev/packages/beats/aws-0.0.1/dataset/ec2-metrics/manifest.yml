@@ -19,13 +19,13 @@ streams:
     show_user: true
     default: 300s
   - name: tags_filter
-    type: text
+    type: yaml
     title: Tags Filter
-    multi: true
+    multi: false
     required: true
     show_user: true
-    default:
-    - key: Organization
-      value: Engineering
+    default: |
+      - key: Organization
+        value: Engineering
   title: aws ec2 metrics
   description: Collect aws ec2 metrics

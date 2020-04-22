@@ -8,6 +8,7 @@ type: integration
 categories:
 - metrics
 release: beta
+removable: true
 requirement:
   kibana:
     versions: '>=8.0.0-SNAPSHOT <8.0.0'

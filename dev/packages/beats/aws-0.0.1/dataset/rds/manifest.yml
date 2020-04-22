@@ -19,13 +19,13 @@ streams:
     show_user: true
     default: 60s
   - name: tags_filter
-    type: text
+    type: yaml
     title: Tags Filter
-    multi: true
+    multi: false
     required: true
     show_user: true
-    default:
-    - key: dept
-      value: eng
+    default: |
+      - key: dept
+        value: eng
   title: aws rds metrics
   description: Collect aws rds metrics

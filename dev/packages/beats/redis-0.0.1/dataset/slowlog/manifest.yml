@@ -16,7 +16,7 @@ streams:
     type: password
     title: Password
     multi: false
-    required: true
+    required: false
     show_user: true
     default: ""
   title: Redis slowlog logs

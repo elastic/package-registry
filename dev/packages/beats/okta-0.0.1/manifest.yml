@@ -8,6 +8,7 @@ type: integration
 categories:
 - logs
 release: ga
+removable: true
 requirement:
   kibana:
     versions: '>=8.0.0-SNAPSHOT <8.0.0'
@@ -36,7 +37,7 @@ datasources:
       type: text
       title: Api Key
       multi: false
-      required: true
+      required: false
       show_user: true
       default: ""
     - name: authentication_scheme
@@ -92,7 +93,7 @@ datasources:
       type: text
       title: Json Objects Array
       multi: false
-      required: true
+      required: false
       show_user: true
       default: ""
     - name: keep_original_message
@@ -132,7 +133,7 @@ datasources:
       type: text
       title: Url
       multi: false
-      required: true
+      required: false
       show_user: true
       default: ""
     - name: ssl
