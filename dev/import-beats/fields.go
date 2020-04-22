@@ -127,7 +127,7 @@ func loadDatasetFields(modulePath, moduleName, datasetName string) ([]fieldDefin
 	fieldsEpr := filepath.Join(modulePath, datasetName, "_meta", "fields.epr.yml")
 	efs, err := loadFieldsFile(fieldsEpr)
 	if err != nil {
-		return nil, errors.Wrapf(err, "loading dataset fields file failed")
+		return nil, errors.Wrapf(err, "loading fields.epr.yml file failed")
 	}
 
 	fs = append(fs, efs...)
