@@ -8,7 +8,7 @@ streams:
     type: text
     title: Basepath
     multi: false
-    required: true
+    required: false
     show_user: true
     default: ""
   - name: hosts

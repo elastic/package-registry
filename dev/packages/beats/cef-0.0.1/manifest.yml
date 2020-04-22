@@ -8,6 +8,7 @@ type: integration
 categories:
 - logs
 release: ga
+removable: true
 requirement:
   kibana:
     versions: '>=7.3.0 <8.0.0'
