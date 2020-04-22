@@ -12,13 +12,13 @@ streams:
     show_user: true
     default: 1m
   - name: processors
-    type: text
+    type: yaml
     title: Processors
-    multi: true
+    multi: false
     required: true
     show_user: true
-    default:
-    - drop_event.when.regexp:
-        system.filesystem.mount_point: ^/(sys|cgroup|proc|dev|etc|host|lib|snap)($|/)
+    default: |
+      - drop_event.when.regexp:
+          system.filesystem.mount_point: ^/(sys|cgroup|proc|dev|etc|host|lib|snap)($|/)
   title: System filesystem metrics
   description: Collect System filesystem metrics

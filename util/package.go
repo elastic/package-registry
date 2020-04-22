@@ -41,6 +41,7 @@ type Package struct {
 	Type          string       `config:"type" json:"type"`
 	Categories    []string     `config:"categories" json:"categories"`
 	Release       string       `config:"release,omitempty" json:"release,omitempty"`
+	Removable     bool         `config:"removable" json:"removable"`
 	Requirement   Requirement  `config:"requirement" json:"requirement"`
 	Screenshots   []Image      `config:"screenshots,omitempty" json:"screenshots,omitempty" yaml:"screenshots,omitempty"`
 	Icons         []Image      `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
@@ -100,7 +101,8 @@ func NewPackage(basePath string) (*Package, error) {
 	}
 
 	var p = &Package{
-		BasePath: basePath,
+		BasePath:  basePath,
+		Removable: true,
 	}
 	err = manifest.Unpack(p)
 	if err != nil {

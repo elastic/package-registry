@@ -8,6 +8,7 @@ type: integration
 categories:
 - metrics
 release: ga
+removable: true
 requirement:
   kibana: {}
   elasticsearch: {}

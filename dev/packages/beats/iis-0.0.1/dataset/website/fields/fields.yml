@@ -1,5 +1,7 @@
-- name: iis.website
-  type: group
+- name: iis.website.*.*
+  type: object
+  description: |
+    website
   release: beta
   fields:
   - name: name

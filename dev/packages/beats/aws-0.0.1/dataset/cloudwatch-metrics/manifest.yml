@@ -12,24 +12,24 @@ streams:
     show_user: true
     default: test-mb
   - name: metrics
-    type: text
+    type: yaml
     title: Metrics
-    multi: true
+    multi: false
     required: true
     show_user: true
-    default:
-    - dimensions:
-      - name: InstanceId
-        value: i-0686946e22cf9494a
-      name:
-      - CPUUtilization
-      namespace: AWS/EC2
-    - namespace: AWS/EBS
-    - namespace: AWS/ELB
-      tags:
-      - key: Organization
-        value: Engineering
-      tags.resource_type_filter: elasticloadbalancing
+    default: |
+      - dimensions:
+        - name: InstanceId
+          value: i-0686946e22cf9494a
+        name:
+        - CPUUtilization
+        namespace: AWS/EC2
+      - namespace: AWS/EBS
+      - namespace: AWS/ELB
+        tags:
+        - key: Organization
+          value: Engineering
+        tags.resource_type_filter: elasticloadbalancing
   - name: period
     type: text
     title: Period
