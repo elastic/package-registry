@@ -10,6 +10,8 @@ release: beta
 # The default type is integration and will be set if empty.
 type: solution
 license: basic
+# The endpoint package cannot be removed
+removable: false
 
 datasources:
   - name: endpoint
