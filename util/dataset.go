@@ -16,6 +16,10 @@ import (
 	"github.com/elastic/go-ucfg/yaml"
 )
 
+const (
+	DirIngestPipeline = "ingest-pipeline"
+)
+
 type DataSet struct {
 	ID             string   `config:"id" json:"id,omitempty" yaml:"id,omitempty"`
 	Title          string   `config:"title" json:"title" validate:"required"`
@@ -107,7 +111,7 @@ func NewDataset(basePath string, p *Package) (*DataSet, error) {
 }
 
 func (d *DataSet) Validate() error {
-	pipelineDir := filepath.Join(d.BasePath, "elasticsearch", "ingest-pipeline")
+	pipelineDir := filepath.Join(d.BasePath, "elasticsearch", DirIngestPipeline)
 	paths, err := filepath.Glob(filepath.Join(pipelineDir, "*"))
 	if err != nil {
 		return err

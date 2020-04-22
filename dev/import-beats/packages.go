@@ -324,7 +324,7 @@ func (r *packageRepository) save(outputDir string) error {
 
 			// dataset/elasticsearch
 			if len(dataset.elasticsearch.ingestPipelines) > 0 {
-				ingestPipelinesPath := filepath.Join(datasetPath, "elasticsearch", "ingest-pipeline")
+				ingestPipelinesPath := filepath.Join(datasetPath, "elasticsearch", util.DIR_INGEST_PIPELINE)
 				err := os.MkdirAll(ingestPipelinesPath, 0755)
 				if err != nil {
 					return errors.Wrapf(err, "cannot make directory for dataset ingest pipelines: '%s'", ingestPipelinesPath)
