@@ -40,6 +40,7 @@ func newPackageContent(name string) packageContent {
 			Version:       "0.0.1", // TODO
 			Type:          "integration",
 			License:       "basic",
+			Removable:     true,
 		},
 		kibana: kibanaContent{
 			files: map[string]map[string][]byte{},
