@@ -275,7 +275,8 @@
         {
           "type": "syslog"
         }
-      ]
+      ],
+      "multiple": true
     }
   ],
   "download": "/epr/datasources/datasources-1.0.0.tar.gz",

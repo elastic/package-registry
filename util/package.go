@@ -62,6 +62,7 @@ type Datasource struct {
 	Description string  `config:"description" json:"description" validate:"required"`
 	Solution    string  `config:"solution" json:"solution,omitempty" yaml:"solution,omitempty"`
 	Inputs      []Input `config:"inputs" json:"inputs"`
+	Multiple    *bool   `config:"multiple" json:"multiple" yaml:"multiple"`
 }
 
 type Requirement struct {
@@ -108,6 +109,13 @@ func NewPackage(basePath string) (*Package, error) {
 		return nil, err
 	}
 
+	// Default for the multiple flags is true.
+	trueValue := true
+	for i, _ := range p.Datasources {
+		if p.Datasources[i].Multiple == nil {
+			p.Datasources[i].Multiple = &trueValue
+		}
+	}
 	if p.Type == "" {
 		p.Type = defaultType
 	}

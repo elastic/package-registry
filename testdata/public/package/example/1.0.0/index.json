@@ -107,7 +107,8 @@
             }
           ]
         }
-      ]
+      ],
+      "multiple": true
     }
   ],
   "download": "/epr/example/example-1.0.0.tar.gz",
