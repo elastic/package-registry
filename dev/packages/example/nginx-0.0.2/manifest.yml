@@ -3,7 +3,7 @@ format_version: 1.0.0
 name: nginx
 title: Nginx
 description: Nginx integration
-version: 1.2.0
+version: 0.0.2
 categories: ["logs", "metrics"]
 release: ga
 
