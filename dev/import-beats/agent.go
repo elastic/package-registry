@@ -64,10 +64,14 @@ func createAgentContentForLogs(modulePath, datasetName string) (agentContent, er
 }
 
 func extractInputConfigName(configFilePath string) string {
+	fileName := extractInputConfigFilename(configFilePath)
+	j := strings.Index(fileName, ".")
+	return fileName[:j]
+}
+
+func extractInputConfigFilename(configFilePath string) string {
 	i := strings.LastIndex(configFilePath, "/")
-	inputConfigName := configFilePath[i+1:]
-	j := strings.Index(inputConfigName, ".")
-	return inputConfigName[:j]
+	return configFilePath[i+1:]
 }
 
 func transformAgentConfigFile(configFilePath string) ([]byte, error) {

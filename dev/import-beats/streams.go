@@ -10,6 +10,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/pkg/errors"
 
@@ -56,19 +57,58 @@ func createLogStreams(modulePath, moduleTitle, datasetName string) ([]util.Strea
 	if err != nil {
 		return nil, agentContent{}, errors.Wrapf(err, "creating log stream variables failed (path: %s)", manifestPath)
 	}
-	streams := []util.Stream{
-		{
-			Input:       "logs",
-			Title:       fmt.Sprintf("%s %s logs", moduleTitle, datasetName),
-			Description: fmt.Sprintf("Collect %s %s logs", moduleTitle, datasetName),
-			Vars:        vars,
-		},
+
+	configFilePaths, err := filepath.Glob(filepath.Join(modulePath, datasetName, "config", "*.*"))
+	if err != nil {
+		return nil, agentContent{}, errors.Wrapf(err, "locating config files failed (modulePath: %s, datasetName: %s)", modulePath, datasetName)
 	}
 
-	agent, err := createAgentContentForLogs(modulePath, datasetName)
-	if err != nil {
-		return nil, agentContent{}, errors.Wrapf(err, "creating agent content for logs failed (modulePath: %s, datasetName: %s)",
-			modulePath, datasetName)
+	if len(configFilePaths) == 0 {
+		return nil, agentContent{}, fmt.Errorf("expected at least one config file (modulePath: %s, datasetName: %s)", modulePath, datasetName)
+	}
+
+	var streams []util.Stream
+	var agent agentContent
+	for _, configFilePath := range configFilePaths {
+		fileName := extractInputConfigFilename(configFilePath)
+		fileContent, err := ioutil.ReadFile(configFilePath)
+		if err != nil {
+			return nil, agentContent{}, fmt.Errorf("reading file from config directory failed (filePath: %s)", configFilePath)
+		}
+
+		if strings.HasSuffix(configFilePath, ".js") {
+			agent.streams = append(agent.streams, streamContent{
+				targetFileName: fileName,
+				body:           fileContent,
+			})
+			continue
+		}
+
+		root, err := parseStreamConfig(fileContent)
+		if err != nil {
+			return nil, agentContent{}, fmt.Errorf("parsing stream config failed")
+		}
+
+		for _, inputType := range root.inputTypes() {
+			aType := inputType
+			if inputType == "log" {
+				aType = "logs"
+			}
+
+			inputConfig := root.configForInput(aType)
+			agent.streams = append(agent.streams, streamContent{
+				targetFileName: fileName,
+				body:           inputConfig,
+			})
+
+			streams = append(streams, util.Stream{
+				Input:        aType,
+				Title:        fmt.Sprintf("%s %s logs using %s", moduleTitle, datasetName, inputType),
+				Description:  fmt.Sprintf("Collect %s %s logs using %s input", moduleTitle, datasetName, inputType),
+				TemplatePath: fileName,
+				Vars:         root.filterVarsForInput(aType, vars),
+			})
+		}
 	}
 	return streams, agent, nil
 }
