@@ -26,16 +26,6 @@ type streamContent struct {
 	body           []byte
 }
 
-func createAgentContent(modulePath, moduleName, datasetName, beatType string, streams []util.Stream) (agentContent, error) {
-	switch beatType {
-	case "logs":
-		return createAgentContentForLogs(modulePath, datasetName)
-	case "metrics":
-		return createAgentContentForMetrics(moduleName, datasetName, streams)
-	}
-	return agentContent{}, fmt.Errorf("invalid beat type: %s", beatType)
-}
-
 func createAgentContentForLogs(modulePath, datasetName string) (agentContent, error) {
 	configFilePaths, err := filepath.Glob(filepath.Join(modulePath, datasetName, "config", "*.yml"))
 	if err != nil {

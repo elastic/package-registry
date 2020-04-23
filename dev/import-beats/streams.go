@@ -21,17 +21,18 @@ import (
 // At the moment, the array returns only one stream.
 func createStreams(modulePath, moduleName, moduleTitle, datasetName, beatType string) ([]util.Stream, agentContent, error) {
 	var streams []util.Stream
+	var agent agentContent
 	var err error
 
 	switch beatType {
 	case "logs":
-		streams, err = createLogStreams(modulePath, moduleTitle, datasetName)
+		streams, agent, err = createLogStreams(modulePath, moduleTitle, datasetName)
 		if err != nil {
 			return nil, agentContent{}, fmt.Errorf("creating log streams failed (modulePath: %s, datasetName: %s)",
 				modulePath, datasetName)
 		}
 	case "metrics":
-		streams, err = createMetricStreams(modulePath, moduleName, moduleTitle, datasetName)
+		streams, agent, err = createMetricStreams(modulePath, moduleName, moduleTitle, datasetName)
 		if err != nil {
 			return nil, agentContent{}, fmt.Errorf("creating metric streams failed (modulePath: %s, datasetName: %s)",
 				modulePath, datasetName)
@@ -39,36 +40,37 @@ func createStreams(modulePath, moduleName, moduleTitle, datasetName, beatType st
 	default:
 		return nil, agentContent{}, fmt.Errorf("invalid beat type: %s", beatType)
 	}
-
-	agent, err := createAgentContent(modulePath, moduleName, datasetName, beatType, streams)
-	if err != nil {
-		return nil, agentContent{}, errors.Wrapf(err, "creating agent content failed (modulePath: %s, datasetName: %s)",
-			modulePath, datasetName)
-	}
 	return streams, agent, nil
 }
 
 // createLogStreams method builds a set of stream inputs for logs oriented dataset.
 // The method unmarshals "manifest.yml" file and picks all configuration variables.
-func createLogStreams(modulePath, moduleTitle, datasetName string) ([]util.Stream, error) {
+func createLogStreams(modulePath, moduleTitle, datasetName string) ([]util.Stream, agentContent, error) {
 	manifestPath := filepath.Join(modulePath, datasetName, "manifest.yml")
 	manifestFile, err := ioutil.ReadFile(manifestPath)
 	if err != nil {
-		return nil, errors.Wrapf(err, "reading manifest file failed (path: %s)", manifestPath)
+		return nil, agentContent{}, errors.Wrapf(err, "reading manifest file failed (path: %s)", manifestPath)
 	}
 
 	vars, err := createLogStreamVariables(manifestFile)
 	if err != nil {
-		return nil, errors.Wrapf(err, "creating log stream variables failed (path: %s)", manifestPath)
+		return nil, agentContent{}, errors.Wrapf(err, "creating log stream variables failed (path: %s)", manifestPath)
 	}
-	return []util.Stream{
+	streams := []util.Stream{
 		{
 			Input:       "logs",
 			Title:       fmt.Sprintf("%s %s logs", moduleTitle, datasetName),
 			Description: fmt.Sprintf("Collect %s %s logs", moduleTitle, datasetName),
 			Vars:        vars,
 		},
-	}, nil
+	}
+
+	agent, err := createAgentContentForLogs(modulePath, datasetName)
+	if err != nil {
+		return nil, agentContent{}, errors.Wrapf(err, "creating agent content for logs failed (modulePath: %s, datasetName: %s)",
+			modulePath, datasetName)
+	}
+	return streams, agent, nil
 }
 
 // wrapVariablesWithDefault method builds a set of stream inputs for metrics oriented dataset.
@@ -77,24 +79,31 @@ func createLogStreams(modulePath, moduleTitle, datasetName string) ([]util.Strea
 //
 // The method skips commented variables, but keeps arrays of structures (even if it's not possible to render them using
 // UI).
-func createMetricStreams(modulePath, moduleName, moduleTitle, datasetName string) ([]util.Stream, error) {
+func createMetricStreams(modulePath, moduleName, moduleTitle, datasetName string) ([]util.Stream, agentContent, error) {
 	merged, err := mergeMetaConfigFiles(modulePath)
 	if err != nil {
-		return nil, errors.Wrapf(err, "merging config files failed")
+		return nil, agentContent{}, errors.Wrapf(err, "merging config files failed")
 	}
 
 	vars, err := createMetricStreamVariables(merged, moduleName, datasetName)
 	if err != nil {
-		return nil, errors.Wrapf(err, "creating metric stream variables failed (modulePath: %s)", modulePath)
+		return nil, agentContent{}, errors.Wrapf(err, "creating metric stream variables failed (modulePath: %s)", modulePath)
 	}
-	return []util.Stream{
+	streams := []util.Stream{
 		{
 			Input:       moduleName + "/metrics",
 			Title:       fmt.Sprintf("%s %s metrics", moduleTitle, datasetName),
 			Description: fmt.Sprintf("Collect %s %s metrics", moduleTitle, datasetName),
 			Vars:        vars,
 		},
-	}, nil
+	}
+
+	agent, err := createAgentContentForMetrics(moduleName, datasetName, streams)
+	if err != nil {
+		return nil, agentContent{}, errors.Wrapf(err, "creating agent content for logs failed (modulePath: %s, datasetName: %s)",
+			modulePath, datasetName)
+	}
+	return streams, agent, nil
 }
 
 // mergeMetaConfigFiles method visits all configuration YAML files and combines them into single document.
