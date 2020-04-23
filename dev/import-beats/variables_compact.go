@@ -23,24 +23,25 @@ func compactDatasetVariables(datasets datasetContentArray) (datasetContentArray,
 			return nil, nil, fmt.Errorf("only datasets with single streams are supported (datasetName: %s, beatType: %s)", dataset.name, dataset.beatType)
 		}
 
-		stream := dataset.manifest.Streams[0]
-		var notCompactedVars []util.Variable
-		for _, aVar := range stream.Vars {
-			isAlreadyCompacted := isVariableAlreadyCompacted(varsPerInputType, aVar, stream.Input)
-			if !isAlreadyCompacted {
-				canBeCompacted, err := canVariableBeCompacted(datasets, varsPerInputType, aVar, stream.Input)
-				if err != nil {
-					return nil, nil, errors.Wrap(err, "checking compactibility failed")
-				}
-				if canBeCompacted {
-					varsPerInputType[stream.Input] = append(varsPerInputType[stream.Input], aVar)
-				} else {
-					notCompactedVars = append(notCompactedVars, aVar)
+		for i, stream := range dataset.manifest.Streams {
+			var notCompactedVars []util.Variable
+			for _, aVar := range stream.Vars {
+				isAlreadyCompacted := isVariableAlreadyCompacted(varsPerInputType, aVar, stream.Input)
+				if !isAlreadyCompacted {
+					canBeCompacted, err := canVariableBeCompacted(datasets, varsPerInputType, aVar, stream.Input)
+					if err != nil {
+						return nil, nil, errors.Wrap(err, "checking compactibility failed")
+					}
+					if canBeCompacted {
+						varsPerInputType[stream.Input] = append(varsPerInputType[stream.Input], aVar)
+					} else {
+						notCompactedVars = append(notCompactedVars, aVar)
+					}
 				}
 			}
+			stream.Vars = notCompactedVars
+			dataset.manifest.Streams[i] = stream
 		}
-		stream.Vars = notCompactedVars
-		dataset.manifest.Streams[0] = stream
 		compacted = append(compacted, dataset)
 	}
 	return compacted, varsPerInputType, nil
