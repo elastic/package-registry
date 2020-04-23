@@ -19,5 +19,6 @@ streams:
       windows:
         default:
         - c:/Windows/System32/LogFiles/HTTPERR/*.log
-  title: IIS error logs
-  description: Collect IIS error logs
+  template_path: iis-error.yml
+  title: IIS error logs using log
+  description: Collect IIS error logs using log input

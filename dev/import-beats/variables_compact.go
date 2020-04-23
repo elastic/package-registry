@@ -5,7 +5,6 @@
 package main
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -19,10 +18,6 @@ func compactDatasetVariables(datasets datasetContentArray) (datasetContentArray,
 	var compacted datasetContentArray
 
 	for _, dataset := range datasets {
-		if len(dataset.manifest.Streams) != 1 {
-			return nil, nil, fmt.Errorf("only datasets with single streams are supported (datasetName: %s, beatType: %s)", dataset.name, dataset.beatType)
-		}
-
 		for i, stream := range dataset.manifest.Streams {
 			var notCompactedVars []util.Variable
 			for _, aVar := range stream.Vars {

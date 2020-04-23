@@ -5,14 +5,9 @@
 package main
 
 import (
-	"bufio"
 	"bytes"
 	"fmt"
-	"os"
-	"path/filepath"
 	"strings"
-
-	"github.com/pkg/errors"
 
 	"github.com/elastic/package-registry/util"
 )
@@ -26,142 +21,9 @@ type streamContent struct {
 	body           []byte
 }
 
-func createAgentContentForLogs(modulePath, datasetName string) (agentContent, error) {
-	configFilePaths, err := filepath.Glob(filepath.Join(modulePath, datasetName, "config", "*.yml"))
-	if err != nil {
-		return agentContent{}, errors.Wrapf(err, "location config files failed (modulePath: %s, datasetName: %s)", modulePath, datasetName)
-	}
-
-	if len(configFilePaths) == 0 {
-		return agentContent{}, fmt.Errorf("expected at least one config file (modulePath: %s, datasetName: %s)", modulePath, datasetName)
-	}
-
-	var buffer bytes.Buffer
-
-	for _, configFilePath := range configFilePaths {
-		configFile, err := transformAgentConfigFile(configFilePath)
-		if err != nil {
-			return agentContent{}, errors.Wrapf(err, "loading config file failed (modulePath: %s, datasetName: %s)", modulePath, datasetName)
-		}
-
-		inputConfigName := extractInputConfigName(configFilePath)
-		if len(configFilePaths) > 1 {
-			buffer.WriteString(fmt.Sprintf("{{#if input == %s}}\n", inputConfigName))
-		}
-		buffer.Write(configFile)
-		if len(configFilePaths) > 1 {
-			buffer.WriteString("{{/if}}\n")
-		}
-	}
-	return agentContent{
-		streams: []streamContent{
-			{
-				targetFileName: "stream.yml",
-				body:           buffer.Bytes(),
-			},
-		},
-	}, nil
-}
-
-func extractInputConfigName(configFilePath string) string {
-	fileName := extractInputConfigFilename(configFilePath)
-	j := strings.Index(fileName, ".")
-	return fileName[:j]
-}
-
 func extractInputConfigFilename(configFilePath string) string {
 	i := strings.LastIndex(configFilePath, "/")
 	return configFilePath[i+1:]
-}
-
-func transformAgentConfigFile(configFilePath string) ([]byte, error) {
-	var buffer bytes.Buffer
-
-	configFile, err := os.Open(configFilePath)
-	if err != nil {
-		return nil, errors.Wrapf(err, "opening agent config file failed (path: %s)", configFilePath)
-	}
-
-	scanner := bufio.NewScanner(configFile)
-	for scanner.Scan() {
-		line := scanner.Text()
-		if line == "" {
-			continue
-		}
-
-		if strings.HasPrefix(line, "type: ") {
-			line = strings.ReplaceAll(line, "type: ", "input: ")
-		}
-
-		// simple cases: if, range, -}}
-		line = strings.ReplaceAll(line, "{{ ", "{{")
-		line = strings.ReplaceAll(line, " }}", "}}")
-		line = strings.ReplaceAll(line, "{{if .", "{{if this.")
-		line = strings.ReplaceAll(line, "{{if", "{{#if")
-		line = strings.ReplaceAll(line, "{{end}}", "{{/if}}")
-		line = strings.ReplaceAll(line, "{{.", "{{this.")
-		line = strings.ReplaceAll(line, "{{range .", "{{#each this.")
-		line = strings.ReplaceAll(line, ".}}", "}}")
-		line = strings.ReplaceAll(line, " -}}", "}}") // no support for cleaning trailing white characters?
-		line = strings.ReplaceAll(line, "{{- ", "{{") // no support for cleaning trailing white characters?
-
-		// if/else if eq
-		if strings.Contains(line, " eq ") {
-			line = strings.ReplaceAll(line, " eq .", " ")
-			line = strings.ReplaceAll(line, " eq ", " ")
-
-			skipSpaces := 1
-			if strings.HasPrefix(line, "{{else") {
-				skipSpaces = 2
-			}
-
-			splitCondition := strings.SplitN(line, " ", skipSpaces+2)
-			line = strings.Join(splitCondition[:len(splitCondition)-1], " ") + " == " +
-				splitCondition[len(splitCondition)-1]
-		}
-
-		if strings.Contains(line, "{{range ") || strings.Contains(line, " range ") {
-			loopedVar, err := extractRangeVar(line)
-			if err != nil {
-				return nil, errors.Wrapf(err, "extracting range var failed")
-			}
-
-			line = fmt.Sprintf("{{#each %s}}\n", loopedVar)
-			line += "  - {{this}}\n"
-			line += "{{/each}}"
-
-			for scanner.Scan() { // skip all lines inside range
-				rangeLine := scanner.Text()
-				if strings.Contains(rangeLine, "{{ end }}") {
-					break
-				}
-			}
-		}
-
-		buffer.WriteString(line)
-		buffer.WriteString("\n")
-	}
-	return buffer.Bytes(), nil
-}
-
-func extractRangeVar(line string) (string, error) {
-	line = line[strings.Index(line, "range")+1:]
-	line = strings.ReplaceAll(line, "}}", "")
-	i := strings.Index(line, ":=")
-	var sliced string
-	if i >= 0 {
-		line = strings.TrimSpace(line[i+3:])
-		split := strings.Split(line, " ")
-		sliced = split[0]
-	} else {
-		split := strings.Split(line, " ")
-		sliced = split[1]
-	}
-
-	if strings.HasPrefix(sliced, ".") {
-		sliced = sliced[1:]
-	}
-	return sliced, nil
 }
 
 func createAgentContentForMetrics(moduleName, datasetName string, streams []util.Stream) (agentContent, error) {

@@ -19,5 +19,6 @@ streams:
       windows:
         default:
         - c:/programdata/icinga2/var/log/icinga2/startup.log
-  title: Icinga startup logs
-  description: Collect Icinga startup logs
+  template_path: startup.yml
+  title: Icinga startup logs using log
+  description: Collect Icinga startup logs using log input

@@ -2,6 +2,7 @@ title: NetFlow log logs
 release: ga
 type: logs
 streams:
-- input: logs
-  title: NetFlow log logs
-  description: Collect NetFlow log logs
+- input: netflow
+  template_path: netflow.yml
+  title: NetFlow log logs using netflow
+  description: Collect NetFlow log logs using netflow input

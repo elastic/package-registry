@@ -1,16 +1,3 @@
 title: iptables log logs
 release: ga
 type: logs
-streams:
-- input: logs
-  vars:
-  - name: paths
-    type: text
-    title: Paths
-    multi: true
-    required: true
-    show_user: true
-    default:
-    - /var/log/iptables.log
-  title: iptables log logs
-  description: Collect iptables log logs

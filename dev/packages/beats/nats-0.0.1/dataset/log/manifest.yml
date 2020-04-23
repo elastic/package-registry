@@ -12,5 +12,6 @@ streams:
     show_user: true
     default:
     - /var/log/nats/nats.log*
-  title: nats log logs
-  description: Collect nats log logs
+  template_path: log.yml
+  title: nats log logs using log
+  description: Collect nats log logs using log input

@@ -31,5 +31,6 @@ streams:
     required: true
     show_user: true
     default: true
-  title: Zeek x509 logs
-  description: Collect Zeek x509 logs
+  template_path: x509.yml
+  title: Zeek x509 logs using log
+  description: Collect Zeek x509 logs using log input

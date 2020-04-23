@@ -2,22 +2,7 @@ title: Redis slowlog logs
 release: ga
 type: logs
 streams:
-- input: logs
-  vars:
-  - name: hosts
-    type: text
-    title: Hosts
-    multi: true
-    required: true
-    show_user: true
-    default:
-    - localhost:6379
-  - name: password
-    type: password
-    title: Password
-    multi: false
-    required: false
-    show_user: true
-    default: ""
-  title: Redis slowlog logs
-  description: Collect Redis slowlog logs
+- input: redis
+  template_path: slowlog.yml
+  title: Redis slowlog logs using redis
+  description: Collect Redis slowlog logs using redis input

@@ -31,5 +31,6 @@ streams:
     required: true
     show_user: true
     default: true
-  title: Zeek dce_rpc logs
-  description: Collect Zeek dce_rpc logs
+  template_path: dce_rpc.yml
+  title: Zeek dce_rpc logs using log
+  description: Collect Zeek dce_rpc logs using log input

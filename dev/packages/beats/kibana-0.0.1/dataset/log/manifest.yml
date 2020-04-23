@@ -12,5 +12,6 @@ streams:
     show_user: true
     default:
     - /var/log/kibana/kibana.stdout
-  title: kibana log logs
-  description: Collect kibana log logs
+  template_path: log.yml
+  title: kibana log logs using log
+  description: Collect kibana log logs using log input

@@ -31,5 +31,6 @@ streams:
     required: true
     show_user: true
     default: true
-  title: Zeek syslog logs
-  description: Collect Zeek syslog logs
+  template_path: syslog.yml
+  title: Zeek syslog logs using log
+  description: Collect Zeek syslog logs using log input

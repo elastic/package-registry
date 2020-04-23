@@ -19,5 +19,6 @@ streams:
       windows:
         default:
         - c:/programdata/icinga2/var/log/icinga2/icinga2.log*
-  title: Icinga main logs
-  description: Collect Icinga main logs
+  template_path: main.yml
+  title: Icinga main logs using log
+  description: Collect Icinga main logs using log input

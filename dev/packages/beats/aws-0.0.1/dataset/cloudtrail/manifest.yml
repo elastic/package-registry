@@ -3,5 +3,10 @@ release: beta
 type: logs
 streams:
 - input: logs
-  title: AWS cloudtrail logs
-  description: Collect AWS cloudtrail logs
+  template_path: file.yml
+  title: AWS cloudtrail logs using log
+  description: Collect AWS cloudtrail logs using log input
+- input: s3
+  template_path: s3.yml
+  title: AWS cloudtrail logs using s3
+  description: Collect AWS cloudtrail logs using s3 input

@@ -31,5 +31,6 @@ streams:
     required: true
     show_user: true
     default: true
-  title: Zeek irc logs
-  description: Collect Zeek irc logs
+  template_path: irc.yml
+  title: Zeek irc logs using log
+  description: Collect Zeek irc logs using log input

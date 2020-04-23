@@ -24,5 +24,6 @@ streams:
     show_user: true
     default:
     - zeek.capture_loss
-  title: Zeek capture_loss logs
-  description: Collect Zeek capture_loss logs
+  template_path: capture_loss.yml
+  title: Zeek capture_loss logs using log
+  description: Collect Zeek capture_loss logs using log input

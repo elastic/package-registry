@@ -20,5 +20,6 @@ streams:
       windows:
         default:
         - c:/programdata/MySQL/MySQL Server*/mysql-slow.log*
-  title: MySQL slowlog logs
-  description: Collect MySQL slowlog logs
+  template_path: slowlog.yml
+  title: MySQL slowlog logs using log
+  description: Collect MySQL slowlog logs using log input

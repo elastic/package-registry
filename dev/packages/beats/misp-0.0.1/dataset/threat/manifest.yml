@@ -1,7 +1,3 @@
 title: MISP threat logs
 release: ga
 type: logs
-streams:
-- input: logs
-  title: MISP threat logs
-  description: Collect MISP threat logs

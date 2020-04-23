@@ -20,5 +20,6 @@ streams:
       windows:
         default:
         - C:/ProgramData/osquery/log/osqueryd.results.log*
-  title: Osquery result logs
-  description: Collect Osquery result logs
+  template_path: result.yml
+  title: Osquery result logs using log
+  description: Collect Osquery result logs using log input

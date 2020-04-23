@@ -2,6 +2,7 @@ title: AWS vpcflow logs
 release: beta
 type: logs
 streams:
-- input: logs
-  title: AWS vpcflow logs
-  description: Collect AWS vpcflow logs
+- input: ip}
+  template_path: input.yml
+  title: AWS vpcflow logs using ip}
+  description: Collect AWS vpcflow logs using ip} input

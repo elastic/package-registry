@@ -1,31 +1,3 @@
 title: Cisco ios logs
 release: ga
 type: logs
-streams:
-- input: logs
-  vars:
-  - name: paths
-    type: text
-    title: Paths
-    multi: true
-    required: true
-    show_user: true
-    default:
-    - /var/log/cisco-ios.log
-  - name: tags
-    type: text
-    title: Tags
-    multi: true
-    required: true
-    show_user: true
-    default:
-    - cisco-ios
-  - name: syslog_port
-    type: integer
-    title: Syslog Port
-    multi: false
-    required: true
-    show_user: true
-    default: 9002
-  title: Cisco ios logs
-  description: Collect Cisco ios logs

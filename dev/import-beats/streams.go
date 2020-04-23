@@ -29,13 +29,13 @@ func createStreams(modulePath, moduleName, moduleTitle, datasetName, beatType st
 	case "logs":
 		streams, agent, err = createLogStreams(modulePath, moduleTitle, datasetName)
 		if err != nil {
-			return nil, agentContent{}, fmt.Errorf("creating log streams failed (modulePath: %s, datasetName: %s)",
+			return nil, agentContent{}, errors.Wrapf(err, "creating log streams failed (modulePath: %s, datasetName: %s)",
 				modulePath, datasetName)
 		}
 	case "metrics":
 		streams, agent, err = createMetricStreams(modulePath, moduleName, moduleTitle, datasetName)
 		if err != nil {
-			return nil, agentContent{}, fmt.Errorf("creating metric streams failed (modulePath: %s, datasetName: %s)",
+			return nil, agentContent{}, errors.Wrapf(err, "creating metric streams failed (modulePath: %s, datasetName: %s)",
 				modulePath, datasetName)
 		}
 	default:
@@ -73,7 +73,7 @@ func createLogStreams(modulePath, moduleTitle, datasetName string) ([]util.Strea
 		fileName := extractInputConfigFilename(configFilePath)
 		fileContent, err := ioutil.ReadFile(configFilePath)
 		if err != nil {
-			return nil, agentContent{}, fmt.Errorf("reading file from config directory failed (filePath: %s)", configFilePath)
+			return nil, agentContent{}, errors.Wrapf(err, "reading file from config directory failed (filePath: %s)", configFilePath)
 		}
 
 		if strings.HasSuffix(configFilePath, ".js") {
@@ -86,7 +86,7 @@ func createLogStreams(modulePath, moduleTitle, datasetName string) ([]util.Strea
 
 		root, err := parseStreamConfig(fileContent)
 		if err != nil {
-			return nil, agentContent{}, fmt.Errorf("parsing stream config failed")
+			return nil, agentContent{}, errors.Wrapf(err, "parsing stream config failed")
 		}
 
 		for _, inputType := range root.inputTypes() {

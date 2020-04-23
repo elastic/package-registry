@@ -25,5 +25,6 @@ streams:
         - c:/ProgramData/Elastic/Elasticsearch/logs/*_access.log
         - c:/ProgramData/Elastic/Elasticsearch/logs/*_audit.log
         - c:/ProgramData/Elastic/Elasticsearch/logs/*_audit.json
-  title: elasticsearch audit logs
-  description: Collect elasticsearch audit logs
+  template_path: audit.yml
+  title: elasticsearch audit logs using log
+  description: Collect elasticsearch audit logs using log input

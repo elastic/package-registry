@@ -31,5 +31,6 @@ streams:
     required: true
     show_user: true
     default: true
-  title: Zeek kerberos logs
-  description: Collect Zeek kerberos logs
+  template_path: kerberos.yml
+  title: Zeek kerberos logs using log
+  description: Collect Zeek kerberos logs using log input

@@ -22,5 +22,6 @@ streams:
         default:
         - c:/ProgramData/Elastic/Elasticsearch/logs/*_deprecation.log
         - c:/ProgramData/Elastic/Elasticsearch/logs/*_deprecation.json
-  title: elasticsearch deprecation logs
-  description: Collect elasticsearch deprecation logs
+  template_path: log.yml
+  title: elasticsearch deprecation logs using log
+  description: Collect elasticsearch deprecation logs using log input

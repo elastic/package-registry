@@ -31,5 +31,6 @@ streams:
     required: true
     show_user: true
     default: true
-  title: Zeek pe logs
-  description: Collect Zeek pe logs
+  template_path: pe.yml
+  title: Zeek pe logs using log
+  description: Collect Zeek pe logs using log input

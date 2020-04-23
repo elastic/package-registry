@@ -31,5 +31,6 @@ streams:
     required: true
     show_user: true
     default: true
-  title: Zeek modbus logs
-  description: Collect Zeek modbus logs
+  template_path: modbus.yml
+  title: Zeek modbus logs using log
+  description: Collect Zeek modbus logs using log input

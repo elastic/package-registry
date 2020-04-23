@@ -31,5 +31,6 @@ streams:
     required: true
     show_user: true
     default: true
-  title: Zeek socks logs
-  description: Collect Zeek socks logs
+  template_path: socks.yml
+  title: Zeek socks logs using log
+  description: Collect Zeek socks logs using log input

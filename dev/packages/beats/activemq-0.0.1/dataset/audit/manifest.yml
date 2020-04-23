@@ -19,5 +19,6 @@ streams:
       windows:
         default:
         - c:/apache-activemq-*/data/audit.log*
-  title: activemq audit logs
-  description: Collect activemq audit logs
+  template_path: audit.yml
+  title: activemq audit logs using log
+  description: Collect activemq audit logs using log input

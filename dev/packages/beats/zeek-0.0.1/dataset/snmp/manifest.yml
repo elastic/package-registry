@@ -31,5 +31,6 @@ streams:
     required: true
     show_user: true
     default: true
-  title: Zeek snmp logs
-  description: Collect Zeek snmp logs
+  template_path: snmp.yml
+  title: Zeek snmp logs using log
+  description: Collect Zeek snmp logs using log input

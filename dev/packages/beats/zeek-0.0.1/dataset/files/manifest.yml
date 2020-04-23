@@ -31,5 +31,6 @@ streams:
     required: true
     show_user: true
     default: true
-  title: Zeek files logs
-  description: Collect Zeek files logs
+  template_path: files.yml
+  title: Zeek files logs using log
+  description: Collect Zeek files logs using log input

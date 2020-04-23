@@ -21,5 +21,6 @@ streams:
         default:
         - C:/tools/Apache/httpd-2.*/Apache24/logs/error.log*
         - C:/Program Files/Apache Software Foundation/Apache2.*/logs/error.log*
-  title: Apache error logs
-  description: Collect Apache error logs
+  template_path: error.yml
+  title: Apache error logs using log
+  description: Collect Apache error logs using log input

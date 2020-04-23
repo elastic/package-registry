@@ -16,5 +16,6 @@ streams:
       windows:
         default:
         - c:/programdata/logstash/logs/logstash-{{.format}}*.log
-  title: logstash log logs
-  description: Collect logstash log logs
+  template_path: log.yml
+  title: logstash log logs using log
+  description: Collect logstash log logs using log input

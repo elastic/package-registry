@@ -3,5 +3,10 @@ release: beta
 type: logs
 streams:
 - input: logs
-  title: AWS cloudwatch logs
-  description: Collect AWS cloudwatch logs
+  template_path: file.yml
+  title: AWS cloudwatch logs using log
+  description: Collect AWS cloudwatch logs using log input
+- input: s3
+  template_path: s3.yml
+  title: AWS cloudwatch logs using s3
+  description: Collect AWS cloudwatch logs using s3 input

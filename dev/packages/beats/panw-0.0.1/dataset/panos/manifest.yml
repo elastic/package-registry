@@ -2,7 +2,7 @@ title: panw panos logs
 release: ga
 type: logs
 streams:
-- input: logs
+- input: "3"
   vars:
   - name: paths
     type: text
@@ -12,5 +12,6 @@ streams:
     show_user: true
     default:
     - /var/log/pan-os.log
-  title: panw panos logs
-  description: Collect panw panos logs
+  template_path: input.yml
+  title: panw panos logs using 3
+  description: Collect panw panos logs using 3 input

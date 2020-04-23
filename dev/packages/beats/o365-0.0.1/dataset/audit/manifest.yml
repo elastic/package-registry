@@ -1,7 +1,3 @@
 title: Office 365 audit logs
 release: ga
 type: logs
-streams:
-- input: logs
-  title: Office 365 audit logs
-  description: Collect Office 365 audit logs

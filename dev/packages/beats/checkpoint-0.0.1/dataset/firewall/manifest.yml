@@ -1,7 +1,3 @@
 title: Checkpoint firewall logs
 release: beta
 type: logs
-streams:
-- input: logs
-  title: Checkpoint firewall logs
-  description: Collect Checkpoint firewall logs

@@ -12,5 +12,6 @@ streams:
     show_user: true
     default:
     - /var/log/envoy.log
-  title: Envoyproxy log logs
-  description: Collect Envoyproxy log logs
+  template_path: envoyproxy.yml
+  title: Envoyproxy log logs using log
+  description: Collect Envoyproxy log logs using log input

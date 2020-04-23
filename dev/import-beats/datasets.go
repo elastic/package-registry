@@ -87,7 +87,7 @@ func createDatasets(beatType, modulePath, moduleName, moduleTitle, moduleRelease
 				modulePath, datasetName)
 		}
 
-		foundEcsFieldNames := uniqueFieldNames(append(filteredEcsModuleFieldNames, filteredEcsDatasetFieldNames...))
+		foundEcsFieldNames := uniqueStringValues(append(filteredEcsModuleFieldNames, filteredEcsDatasetFieldNames...))
 		ecsFields := filterEcsFields(ecsFields, foundEcsFieldNames)
 
 		fieldsFiles := map[string]fieldDefinitionArray{}

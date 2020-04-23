@@ -31,5 +31,6 @@ streams:
     required: true
     show_user: true
     default: true
-  title: Zeek smtp logs
-  description: Collect Zeek smtp logs
+  template_path: smtp.yml
+  title: Zeek smtp logs using log
+  description: Collect Zeek smtp logs using log input

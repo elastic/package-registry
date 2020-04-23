@@ -31,5 +31,6 @@ streams:
     required: true
     show_user: true
     default: true
-  title: Zeek ssh logs
-  description: Collect Zeek ssh logs
+  template_path: ssh.yml
+  title: Zeek ssh logs using log
+  description: Collect Zeek ssh logs using log input

@@ -31,5 +31,23 @@ streams:
     required: true
     show_user: true
     default: true
-  title: Zeek intel logs
-  description: Collect Zeek intel logs
+  template_path: intel.yml
+  title: Zeek intel logs using log
+  description: Collect Zeek intel logs using log input
+- input: ip}
+  vars:
+  - name: paths
+    type: text
+    title: Paths
+    multi: true
+    required: true
+    show_user: true
+    default:
+    - /var/log/bro/current/intel.log
+    os:
+      darwin:
+        default:
+        - /usr/local/var/logs/current/intel.log
+  template_path: intel.yml
+  title: Zeek intel logs using ip}
+  description: Collect Zeek intel logs using ip} input

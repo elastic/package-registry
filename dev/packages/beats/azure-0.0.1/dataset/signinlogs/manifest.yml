@@ -2,6 +2,18 @@ title: Azure signinlogs logs
 release: beta
 type: logs
 streams:
+- input: azure-eventhub
+  vars:
+  - name: eventhub
+    type: text
+    title: Eventhub
+    multi: false
+    required: true
+    show_user: true
+    default: insights-logs-signinlogs
+  template_path: azure-eventhub.yml
+  title: Azure signinlogs logs using azure-eventhub
+  description: Collect Azure signinlogs logs using azure-eventhub input
 - input: logs
   vars:
   - name: eventhub
@@ -11,5 +23,6 @@ streams:
     required: true
     show_user: true
     default: insights-logs-signinlogs
-  title: Azure signinlogs logs
-  description: Collect Azure signinlogs logs
+  template_path: file.yml
+  title: Azure signinlogs logs using log
+  description: Collect Azure signinlogs logs using log input

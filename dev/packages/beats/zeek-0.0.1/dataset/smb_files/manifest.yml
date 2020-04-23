@@ -31,5 +31,6 @@ streams:
     required: true
     show_user: true
     default: true
-  title: Zeek smb_files logs
-  description: Collect Zeek smb_files logs
+  template_path: smb_files.yml
+  title: Zeek smb_files logs using log
+  description: Collect Zeek smb_files logs using log input
