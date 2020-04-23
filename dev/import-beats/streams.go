@@ -19,14 +19,33 @@ import (
 // createStreams method builds a set of stream inputs including configuration variables.
 // Stream definitions depend on a beat type - log or metric.
 // At the moment, the array returns only one stream.
-func createStreams(modulePath, moduleName, moduleTitle, datasetName, beatType string) ([]util.Stream, error) {
+func createStreams(modulePath, moduleName, moduleTitle, datasetName, beatType string) ([]util.Stream, agentContent, error) {
+	var streams []util.Stream
+	var err error
+
 	switch beatType {
 	case "logs":
-		return createLogStreams(modulePath, moduleTitle, datasetName)
+		streams, err = createLogStreams(modulePath, moduleTitle, datasetName)
+		if err != nil {
+			return nil, agentContent{}, fmt.Errorf("creating log streams failed (modulePath: %s, datasetName: %s)",
+				modulePath, datasetName)
+		}
 	case "metrics":
-		return createMetricStreams(modulePath, moduleName, moduleTitle, datasetName)
+		streams, err = createMetricStreams(modulePath, moduleName, moduleTitle, datasetName)
+		if err != nil {
+			return nil, agentContent{}, fmt.Errorf("creating metric streams failed (modulePath: %s, datasetName: %s)",
+				modulePath, datasetName)
+		}
+	default:
+		return nil, agentContent{}, fmt.Errorf("invalid beat type: %s", beatType)
 	}
-	return nil, fmt.Errorf("invalid beat type: %s", beatType)
+
+	agent, err := createAgentContent(modulePath, moduleName, datasetName, beatType, streams)
+	if err != nil {
+		return nil, agentContent{}, errors.Wrapf(err, "creating agent content failed (modulePath: %s, datasetName: %s)",
+			modulePath, datasetName)
+	}
+	return streams, agent, nil
 }
 
 // createLogStreams method builds a set of stream inputs for logs oriented dataset.
