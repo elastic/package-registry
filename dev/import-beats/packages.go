@@ -89,19 +89,23 @@ func (pc *packageContent) addKibanaContent(kc kibanaContent) {
 }
 
 type packageRepository struct {
-	iconRepository *iconRepository
-	kibanaMigrator *kibanaMigrator
-	ecsFields      fieldDefinitionArray
+	iconRepository       *iconRepository
+	kibanaMigrator       *kibanaMigrator
+	ecsFields            fieldDefinitionArray
+	selectedPackageNames []string
 
 	packages map[string]packageContent
 }
 
-func newPackageRepository(iconRepository *iconRepository, kibanaMigrator *kibanaMigrator, ecsFields fieldDefinitionArray) *packageRepository {
+func newPackageRepository(iconRepository *iconRepository, kibanaMigrator *kibanaMigrator,
+	ecsFields fieldDefinitionArray, selectedPackageNames []string) *packageRepository {
 	return &packageRepository{
-		iconRepository: iconRepository,
-		kibanaMigrator: kibanaMigrator,
-		ecsFields:      ecsFields,
-		packages:       map[string]packageContent{},
+		iconRepository:       iconRepository,
+		kibanaMigrator:       kibanaMigrator,
+		ecsFields:            ecsFields,
+		selectedPackageNames: selectedPackageNames,
+
+		packages: map[string]packageContent{},
 	}
 }
 
@@ -119,6 +123,10 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 			continue
 		}
 		moduleName := moduleDir.Name()
+
+		if !r.packageSelected(moduleName) {
+			continue
+		}
 
 		log.Printf("%s %s: module found\n", beatName, moduleName)
 		if _, ok := ignoredModules[moduleName]; ok {
@@ -244,6 +252,19 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 		r.packages[moduleDir.Name()] = aPackage
 	}
 	return nil
+}
+
+func (r *packageRepository) packageSelected(packageName string) bool {
+	if len(r.selectedPackageNames) == 0 {
+		return true
+	}
+
+	for _, f := range r.selectedPackageNames {
+		if f == packageName {
+			return true
+		}
+	}
+	return false
 }
 
 func (r *packageRepository) save(outputDir string) error {

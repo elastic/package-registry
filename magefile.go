@@ -73,6 +73,9 @@ func ImportBeats() error {
 	if os.Getenv("SKIP_KIBANA") == "true" {
 		args = append(args, "-skipKibana")
 	}
+	if os.Getenv("PACKAGES") != "" {
+		args = append(args, "-packages", os.Getenv("PACKAGES"))
+	}
 	args = append(args, "*.go")
 	return sh.Run("go", args...)
 }
