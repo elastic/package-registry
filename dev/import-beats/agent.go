@@ -31,7 +31,7 @@ func createAgentContent(modulePath, moduleName, datasetName, beatType string, st
 	case "logs":
 		return createAgentContentForLogs(modulePath, datasetName)
 	case "metrics":
-		return createAgentContentForMetrics(modulePath, moduleName, datasetName, streams)
+		return createAgentContentForMetrics(moduleName, datasetName, streams)
 	}
 	return agentContent{}, fmt.Errorf("invalid beat type: %s", beatType)
 }
@@ -170,7 +170,7 @@ func extractRangeVar(line string) (string, error) {
 	return sliced, nil
 }
 
-func createAgentContentForMetrics(modulePath, moduleName, datasetName string, streams []util.Stream) (agentContent, error) {
+func createAgentContentForMetrics(moduleName, datasetName string, streams []util.Stream) (agentContent, error) {
 	inputName := moduleName + "/metrics"
 	vars := extractVarsFromStream(streams, inputName)
 
