@@ -19,8 +19,8 @@ streams:
       windows:
         default:
         - c:/program files/suricata/log/eve.json
-  template_path: eve.yml
-  title: Suricata eve logs using log
+  template_path: log.yml
+  title: Suricata eve logs (log)
   description: Collect Suricata eve logs using log input
 - input: long}
   vars:
@@ -39,26 +39,6 @@ streams:
       windows:
         default:
         - c:/program files/suricata/log/eve.json
-  template_path: eve.yml
-  title: Suricata eve logs using long}
+  template_path: long}.yml
+  title: Suricata eve logs (long})
   description: Collect Suricata eve logs using long} input
-- input: dns
-  vars:
-  - name: paths
-    type: text
-    title: Paths
-    multi: true
-    required: true
-    show_user: true
-    default:
-    - /var/log/suricata/eve.json
-    os:
-      darwin:
-        default:
-        - /usr/local/var/log/suricata/eve.json
-      windows:
-        default:
-        - c:/program files/suricata/log/eve.json
-  template_path: eve.yml
-  title: Suricata eve logs using dns
-  description: Collect Suricata eve logs using dns input

@@ -24,6 +24,6 @@ streams:
     show_user: true
     default:
     - zeek.traceroute
-  template_path: traceroute.yml
-  title: Zeek traceroute logs using log
+  template_path: log.yml
+  title: Zeek traceroute logs (log)
   description: Collect Zeek traceroute logs using log input

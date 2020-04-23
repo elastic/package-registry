@@ -20,5 +20,5 @@ streams:
         default:
         - c:/Program Files/PostgreSQL/*/logs/*.log*
   template_path: log.yml
-  title: PostgreSQL log logs using log
+  title: PostgreSQL log logs (log)
   description: Collect PostgreSQL log logs using log input

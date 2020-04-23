@@ -3,10 +3,10 @@ release: ga
 type: logs
 streams:
 - input: logs
-  template_path: file.yml
-  title: AWS elb logs using log
+  template_path: log.yml
+  title: AWS elb logs (log)
   description: Collect AWS elb logs using log input
 - input: s3
   template_path: s3.yml
-  title: AWS elb logs using s3
+  title: AWS elb logs (s3)
   description: Collect AWS elb logs using s3 input

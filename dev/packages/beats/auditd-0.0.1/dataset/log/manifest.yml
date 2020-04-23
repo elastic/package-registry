@@ -19,5 +19,5 @@ streams:
       windows:
         default: []
   template_path: log.yml
-  title: Auditd log logs using log
+  title: Auditd log logs (log)
   description: Collect Auditd log logs using log input

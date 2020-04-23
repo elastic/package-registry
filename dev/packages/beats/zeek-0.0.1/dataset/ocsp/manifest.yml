@@ -24,6 +24,6 @@ streams:
     show_user: true
     default:
     - zeek.ocsp
-  template_path: ocsp.yml
-  title: Zeek ocsp logs using log
+  template_path: log.yml
+  title: Zeek ocsp logs (log)
   description: Collect Zeek ocsp logs using log input

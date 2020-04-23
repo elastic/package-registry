@@ -31,6 +31,6 @@ streams:
     required: true
     show_user: true
     default: true
-  template_path: connection.yml
-  title: Zeek connection logs using log
+  template_path: log.yml
+  title: Zeek connection logs (log)
   description: Collect Zeek connection logs using log input

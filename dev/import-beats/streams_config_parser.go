@@ -6,6 +6,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"text/template/parse"
 
 	"github.com/pkg/errors"
@@ -19,7 +20,7 @@ type streamConfigParsed struct {
 
 func parseStreamConfig(content []byte) (*streamConfigParsed, error) {
 	mapOfParsed, err := parse.Parse("hello", string(content), "", "", map[string]interface{}{
-		"eq": func() {},
+		"eq":     func() {},
 		"printf": func() {},
 	})
 	if err != nil {
@@ -37,29 +38,152 @@ func (scp *streamConfigParsed) inputTypes() []string {
 func inputTypesForNode(node parse.Node) []string {
 	textNode, isTextNode := node.(*parse.TextNode)
 	if isTextNode {
-		i := bytes.Index(textNode.Text, []byte("type: "))
-		if i > -1 {
-			aType := textNode.Text[i + 6:]
-			j := bytes.IndexByte(aType, '\n')
-			aType = aType[:j]
-			return []string{string(aType)}
+		inputType, ok := extractInputTypeFromTextNode(textNode)
+		if ok {
+			return []string{inputType}
 		}
 		return nil
 	}
 
-	var inputTypes []string
 	listNode, isListNode := node.(*parse.ListNode)
 	if isListNode {
-		for _, listedNode := range listNode.Nodes {
-			it := inputTypesForNode(listedNode)
-			inputTypes = append(inputTypes, it...)
+		return inputTypesForListNode(listNode)
+	}
+
+	ifNode, isIfNode := node.(*parse.IfNode)
+	if isIfNode {
+		var inputTypes []string
+
+		if ifNode.List != nil {
+			inputTypes = append(inputTypes, inputTypesForListNode(ifNode.List)...)
 		}
+		if ifNode.ElseList != nil {
+			inputTypes = append(inputTypes, inputTypesForListNode(ifNode.ElseList)...)
+		}
+		return inputTypes
+	}
+	return nil
+}
+
+func extractInputTypeFromTextNode(textNode *parse.TextNode) (string, bool) {
+	i := bytes.Index(textNode.Text, []byte("type: "))
+	if i > -1 && (i == 0 || textNode.Text[i-1] == ' ' || textNode.Text[i-1] == '\n') {
+		aType := textNode.Text[i+6:]
+		j := bytes.IndexByte(aType, '\n')
+		if j < 0 {
+			j = len(textNode.Text)
+		}
+		aType = aType[:j]
+		return string(aType), true
+	}
+	return "", false
+}
+
+func inputTypesForListNode(listNode *parse.ListNode) []string {
+	var inputTypes []string
+	for _, listedNode := range listNode.Nodes {
+		it := inputTypesForNode(listedNode)
+		inputTypes = append(inputTypes, it...)
 	}
 	return inputTypes
 }
 
 func (scp *streamConfigParsed) configForInput(inputType string) []byte {
-	return []byte("TODO: TODO") // TODO
+	if inputType == "log" {
+		inputType = "file"
+	}
+	return configForInputForNode(inputType, scp.tree.Root)
+}
+
+func configForInputForNode(inputType string, node parse.Node) []byte {
+	var buffer bytes.Buffer
+
+	textNode, isTextNode := node.(*parse.TextNode)
+	if isTextNode {
+		buffer.Write(textNode.Text)
+		return buffer.Bytes()
+	}
+
+	listNode, isListNode := node.(*parse.ListNode)
+	if isListNode {
+		for _, listedNode := range listNode.Nodes {
+			buf := configForInputForNode(inputType, listedNode)
+			buffer.Write(buf)
+		}
+		return buffer.Bytes()
+	}
+
+	ifNode, isIfNode := node.(*parse.IfNode)
+	if isIfNode {
+		if isIfNodeEqInput(ifNode) {
+			if isIfNodeEqInputInputType(ifNode, inputType) {
+				if ifNode.List != nil {
+					buffer.Write(configForInputForNode(inputType, ifNode.List))
+				}
+			} else {
+				if ifNode.ElseList != nil {
+					buffer.Write(configForInputForNode(inputType, ifNode.ElseList))
+				}
+			}
+		} else {
+			buffer.WriteString("<if>")
+			if ifNode.List != nil {
+				buffer.Write(configForInputForNode(inputType, ifNode.List))
+			}
+			buffer.WriteString("<else>")
+			if ifNode.ElseList != nil {
+				buffer.Write(configForInputForNode(inputType, ifNode.ElseList))
+			}
+			buffer.WriteString("</fi>")
+		}
+	}
+	return buffer.Bytes()
+}
+
+func isIfNodeEqInput(ifNode *parse.IfNode) bool {
+	if len(ifNode.Pipe.Cmds) > 0 {
+		if len(ifNode.Pipe.Cmds[0].Args) > 1 {
+			op := ifNode.Pipe.Cmds[0].Args[0].String()
+			var1 := ifNode.Pipe.Cmds[0].Args[1].String()
+
+			if op == "eq" && var1 == ".input" {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func isIfNodeEqInputInputType(ifNode *parse.IfNode, inputType string) bool {
+	if len(ifNode.Pipe.Cmds) > 0 {
+		if len(ifNode.Pipe.Cmds[0].Args) > 1 {
+			op := ifNode.Pipe.Cmds[0].Args[0].String()
+			var1 := ifNode.Pipe.Cmds[0].Args[1].String()
+			var2 := ifNode.Pipe.Cmds[0].Args[2].String()
+
+			if op == "eq" && var1 == ".input" && var2 == fmt.Sprintf(`"%s"`, inputType) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+
+
+func shouldIfNodeBeWritten(inputType string, ifNode *parse.IfNode) bool {
+	if len(ifNode.Pipe.Cmds) > 0 {
+		if len(ifNode.Pipe.Cmds[0].Args) > 1 {
+			op := ifNode.Pipe.Cmds[0].Args[0].String()
+			var1 := ifNode.Pipe.Cmds[0].Args[1].String()
+			var2 := ifNode.Pipe.Cmds[0].Args[2].String()
+
+			if op == "eq" && var1 == ".input" && var2 != fmt.Sprintf(`"%s"`, inputType) {
+				return false
+			}
+		}
+	}
+	return true
 }
 
 func (scp *streamConfigParsed) filterVarsForInput(inputType string, vars []util.Variable) []util.Variable {

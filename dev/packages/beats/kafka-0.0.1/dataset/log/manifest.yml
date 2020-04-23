@@ -16,5 +16,5 @@ streams:
     - '{{.kafka_home}}/logs/state-change.log*'
     - '{{.kafka_home}}/logs/kafka-*.log*'
   template_path: log.yml
-  title: Kafka log logs using log
+  title: Kafka log logs (log)
   description: Collect Kafka log logs using log input

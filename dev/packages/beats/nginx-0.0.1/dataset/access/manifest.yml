@@ -19,6 +19,6 @@ streams:
       windows:
         default:
         - c:/programdata/nginx/logs/*access.log*
-  template_path: nginx-access.yml
-  title: Nginx access logs using log
+  template_path: log.yml
+  title: Nginx access logs (log)
   description: Collect Nginx access logs using log input

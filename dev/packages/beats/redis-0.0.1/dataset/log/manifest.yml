@@ -21,5 +21,5 @@ streams:
         default:
         - c:/program files/Redis/logs/redis.log*
   template_path: log.yml
-  title: Redis log logs using log
+  title: Redis log logs (log)
   description: Collect Redis log logs using log input

@@ -1,3 +1,30 @@
 title: iptables log logs
 release: ga
 type: logs
+streams:
+- input: syslog
+  vars:
+  - name: paths
+    type: text
+    title: Paths
+    multi: true
+    required: true
+    show_user: true
+    default:
+    - /var/log/iptables.log
+  template_path: syslog.yml
+  title: iptables log logs (syslog)
+  description: Collect iptables log logs using syslog input
+- input: logs
+  vars:
+  - name: paths
+    type: text
+    title: Paths
+    multi: true
+    required: true
+    show_user: true
+    default:
+    - /var/log/iptables.log
+  template_path: log.yml
+  title: iptables log logs (log)
+  description: Collect iptables log logs using log input

@@ -20,6 +20,6 @@ streams:
       windows:
         default:
         - c:/programdata/MySQL/MySQL Server*/error.log*
-  template_path: error.yml
-  title: MySQL error logs using log
+  template_path: log.yml
+  title: MySQL error logs (log)
   description: Collect MySQL error logs using log input

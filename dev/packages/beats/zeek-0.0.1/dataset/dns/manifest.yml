@@ -31,8 +31,8 @@ streams:
     required: true
     show_user: true
     default: true
-  template_path: dns.yml
-  title: Zeek dns logs using log
+  template_path: log.yml
+  title: Zeek dns logs (log)
   description: Collect Zeek dns logs using log input
 - input: long}
   vars:
@@ -48,6 +48,6 @@ streams:
       darwin:
         default:
         - /usr/local/var/logs/current/dns.log
-  template_path: dns.yml
-  title: Zeek dns logs using long}
+  template_path: long}.yml
+  title: Zeek dns logs (long})
   description: Collect Zeek dns logs using long} input

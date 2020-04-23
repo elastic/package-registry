@@ -31,6 +31,6 @@ streams:
     required: true
     show_user: true
     default: true
-  template_path: dpd.yml
-  title: Zeek dpd logs using log
+  template_path: log.yml
+  title: Zeek dpd logs (log)
   description: Collect Zeek dpd logs using log input

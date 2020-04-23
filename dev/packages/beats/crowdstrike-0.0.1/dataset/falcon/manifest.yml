@@ -12,6 +12,6 @@ streams:
     show_user: true
     default:
     - /var/log/crowdstrike/falconhoseclient/output
-  template_path: falcon.yml
-  title: Crowdstrike falcon logs using log
+  template_path: log.yml
+  title: Crowdstrike falcon logs (log)
   description: Collect Crowdstrike falcon logs using log input

@@ -1,0 +1,34 @@
+
+
+type: o365audit
+<if>application_id: <else></fi>
+tenant_id:
+
+<if>certificate: <else></fi>
+<if>key: <else></fi>
+<if>key_passphrase: <else></fi>
+<if>client_secret: <else></fi>
+<if>
+content_type: 
+<else>
+content_type:
+
+</fi>
+<if>
+api:
+
+<else></fi>
+
+
+
+processors:
+
+  - script:
+      lang: javascript
+      id: o365audit_script
+      file: ${path.home}/module/o365/audit/config/pipeline.js
+      params:
+        debug: false
+        tenants:
+          
+

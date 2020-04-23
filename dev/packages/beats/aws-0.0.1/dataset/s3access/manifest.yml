@@ -3,10 +3,10 @@ release: ga
 type: logs
 streams:
 - input: logs
-  template_path: file.yml
-  title: AWS s3access logs using log
+  template_path: log.yml
+  title: AWS s3access logs (log)
   description: Collect AWS s3access logs using log input
 - input: s3
   template_path: s3.yml
-  title: AWS s3access logs using s3
+  title: AWS s3access logs (s3)
   description: Collect AWS s3access logs using s3 input

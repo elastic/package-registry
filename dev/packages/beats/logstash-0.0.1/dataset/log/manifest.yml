@@ -17,5 +17,5 @@ streams:
         default:
         - c:/programdata/logstash/logs/logstash-{{.format}}*.log
   template_path: log.yml
-  title: logstash log logs using log
+  title: logstash log logs (log)
   description: Collect logstash log logs using log input

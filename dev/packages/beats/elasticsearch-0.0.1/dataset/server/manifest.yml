@@ -23,5 +23,5 @@ streams:
         - c:/ProgramData/Elastic/Elasticsearch/logs/*.log
         - c:/ProgramData/Elastic/Elasticsearch/logs/*_server.json
   template_path: log.yml
-  title: elasticsearch server logs using log
+  title: elasticsearch server logs (log)
   description: Collect elasticsearch server logs using log input

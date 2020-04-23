@@ -24,6 +24,6 @@ streams:
     show_user: true
     default:
     - zeek.weird
-  template_path: weird.yml
-  title: Zeek weird logs using log
+  template_path: log.yml
+  title: Zeek weird logs (log)
   description: Collect Zeek weird logs using log input

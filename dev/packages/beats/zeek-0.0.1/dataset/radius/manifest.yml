@@ -31,6 +31,6 @@ streams:
     required: true
     show_user: true
     default: true
-  template_path: radius.yml
-  title: Zeek radius logs using log
+  template_path: log.yml
+  title: Zeek radius logs (log)
   description: Collect Zeek radius logs using log input

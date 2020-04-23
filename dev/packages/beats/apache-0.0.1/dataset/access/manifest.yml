@@ -22,6 +22,6 @@ streams:
         default:
         - C:/tools/Apache/httpd-2.*/Apache24/logs/access.log*
         - C:/Program Files/Apache Software Foundation/Apache2.*/logs/access.log*
-  template_path: access.yml
-  title: Apache access logs using log
+  template_path: log.yml
+  title: Apache access logs (log)
   description: Collect Apache access logs using log input

@@ -94,19 +94,20 @@ func createLogStreams(modulePath, moduleTitle, datasetName string) ([]util.Strea
 			if inputType == "log" {
 				aType = "logs"
 			}
+			targetFileName := inputType + ".yml"
 
-			inputConfig := root.configForInput(aType)
+			inputConfig := root.configForInput(inputType)
 			agent.streams = append(agent.streams, streamContent{
-				targetFileName: fileName,
+				targetFileName: targetFileName,
 				body:           inputConfig,
 			})
 
 			streams = append(streams, util.Stream{
 				Input:        aType,
-				Title:        fmt.Sprintf("%s %s logs using %s", moduleTitle, datasetName, inputType),
+				Title:        fmt.Sprintf("%s %s logs (%s)", moduleTitle, datasetName, inputType),
 				Description:  fmt.Sprintf("Collect %s %s logs using %s input", moduleTitle, datasetName, inputType),
-				TemplatePath: fileName,
-				Vars:         root.filterVarsForInput(aType, vars),
+				TemplatePath: targetFileName,
+				Vars:         root.filterVarsForInput(inputType, vars),
 			})
 		}
 	}

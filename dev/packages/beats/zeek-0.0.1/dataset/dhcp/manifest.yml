@@ -31,6 +31,6 @@ streams:
     required: true
     show_user: true
     default: true
-  template_path: dhcp.yml
-  title: Zeek dhcp logs using log
+  template_path: log.yml
+  title: Zeek dhcp logs (log)
   description: Collect Zeek dhcp logs using log input

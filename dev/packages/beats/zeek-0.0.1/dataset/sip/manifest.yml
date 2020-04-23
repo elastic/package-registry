@@ -31,6 +31,6 @@ streams:
     required: true
     show_user: true
     default: true
-  template_path: sip.yml
-  title: Zeek sip logs using log
+  template_path: log.yml
+  title: Zeek sip logs (log)
   description: Collect Zeek sip logs using log input

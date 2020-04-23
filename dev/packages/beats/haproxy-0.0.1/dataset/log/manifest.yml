@@ -12,8 +12,8 @@ streams:
     show_user: true
     default:
     - /var/log/haproxy.log
-  template_path: file.yml
-  title: haproxy log logs using log
+  template_path: log.yml
+  title: haproxy log logs (log)
   description: Collect haproxy log logs using log input
 - input: syslog
   vars:
@@ -26,5 +26,5 @@ streams:
     default:
     - /var/log/haproxy.log
   template_path: syslog.yml
-  title: haproxy log logs using syslog
+  title: haproxy log logs (syslog)
   description: Collect haproxy log logs using syslog input

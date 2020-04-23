@@ -19,6 +19,6 @@ streams:
         - /var/log/secure.log*
       windows:
         default: []
-  template_path: auth.yml
-  title: System auth logs using log
+  template_path: log.yml
+  title: System auth logs (log)
   description: Collect System auth logs using log input

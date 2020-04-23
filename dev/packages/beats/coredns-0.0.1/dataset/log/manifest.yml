@@ -12,6 +12,6 @@ streams:
     show_user: true
     default:
     - /var/log/coredns.log
-  template_path: coredns.yml
-  title: Coredns log logs using log
+  template_path: log.yml
+  title: Coredns log logs (log)
   description: Collect Coredns log logs using log input
