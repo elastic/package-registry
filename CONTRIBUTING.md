@@ -123,6 +123,12 @@ feel free to review the script's [README](https://github.com/elastic/package-reg
     the one you're currently working on (e.g. `dev/packages/beats/foobarbaz-0.0.1`). You can either commit this changes
     or leave them for later.
 
+    If you want to select a subgroup of packages, set the environment variable `PACKAGES` (comma-delimited list):
+
+    ```bash
+   $ PACKAGES=aws,cisco mage ImportBeats
+    ```
+
 6. Copy the package output for your integration (e.g. `dev/packages/beats/foobarbaz-0.0.1`) to the _alpha_ directory and
     raise the version manually: `dev/packages/alpha/foobarbaz-0.0.2`.
 
