@@ -62,7 +62,7 @@ type Datasource struct {
 	Description string  `config:"description" json:"description" validate:"required"`
 	Solution    string  `config:"solution" json:"solution,omitempty" yaml:"solution,omitempty"`
 	Inputs      []Input `config:"inputs" json:"inputs"`
-	Multiple    *bool   `config:"multiple" json:"multiple" yaml:"multiple"`
+	Multiple    *bool   `config:"multiple" json:"multiple,omitempty" yaml:"multiple,omitempty"`
 }
 
 type Requirement struct {
