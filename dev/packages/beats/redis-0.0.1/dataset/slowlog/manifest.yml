@@ -3,6 +3,6 @@ release: ga
 type: logs
 streams:
 - input: redis
-  template_path: redis.yml
+  template_path: redis.yml.hbs
   title: Redis slowlog logs (redis)
   description: Collect Redis slowlog logs using redis input

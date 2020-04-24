@@ -18,6 +18,6 @@ streams:
         default:
         - C:\ProgramData\IBM\MQ\errors\*.LOG*
         - C:\ProgramData\IBM\MQ\qmgrs\*\errors\*.LOG*
-  template_path: log.yml
+  template_path: log.yml.hbs
   title: ibmmq errorlog logs (log)
   description: Collect ibmmq errorlog logs using log input

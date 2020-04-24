@@ -12,7 +12,7 @@ streams:
     show_user: true
     default:
     - /var/log/cisco-ios.log
-  template_path: syslog.yml
+  template_path: syslog.yml.hbs
   title: Cisco ios logs (syslog)
   description: Collect Cisco ios logs using syslog input
 - input: logs
@@ -40,6 +40,6 @@ streams:
     required: true
     show_user: true
     default: 9002
-  template_path: log.yml
+  template_path: log.yml.hbs
   title: Cisco ios logs (log)
   description: Collect Cisco ios logs using log input

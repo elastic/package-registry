@@ -31,6 +31,6 @@ streams:
     required: true
     show_user: true
     default: true
-  template_path: log.yml
+  template_path: log.yml.hbs
   title: Zeek mysql logs (log)
   description: Collect Zeek mysql logs using log input

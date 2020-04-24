@@ -20,6 +20,6 @@ streams:
       windows:
         default:
         - c:/program files/Redis/logs/redis.log*
-  template_path: log.yml
+  template_path: log.yml.hbs
   title: Redis log logs (log)
   description: Collect Redis log logs using log input

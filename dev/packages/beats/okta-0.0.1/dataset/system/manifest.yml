@@ -3,10 +3,10 @@ release: ga
 type: logs
 streams:
 - input: httpjson
-  template_path: httpjson.yml
+  template_path: httpjson.yml.hbs
   title: Okta system logs (httpjson)
   description: Collect Okta system logs using httpjson input
 - input: logs
-  template_path: log.yml
+  template_path: log.yml.hbs
   title: Okta system logs (log)
   description: Collect Okta system logs using log input

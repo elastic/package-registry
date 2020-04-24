@@ -19,7 +19,7 @@ streams:
       windows:
         default:
         - c:/program files/suricata/log/eve.json
-  template_path: log.yml
+  template_path: log.yml.hbs
   title: Suricata eve logs (log)
   description: Collect Suricata eve logs using log input
 - input: long}
@@ -39,6 +39,6 @@ streams:
       windows:
         default:
         - c:/program files/suricata/log/eve.json
-  template_path: long}.yml
+  template_path: long}.yml.hbs
   title: Suricata eve logs (long})
   description: Collect Suricata eve logs using long} input

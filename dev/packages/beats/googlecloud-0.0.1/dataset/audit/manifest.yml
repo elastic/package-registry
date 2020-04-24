@@ -18,7 +18,7 @@ streams:
     required: true
     show_user: true
     default: filebeat-googlecloud-audit
-  template_path: google-pubsub.yml
+  template_path: google-pubsub.yml.hbs
   title: Google Cloud audit logs (google-pubsub)
   description: Collect Google Cloud audit logs using google-pubsub input
 - input: logs
@@ -37,6 +37,6 @@ streams:
     required: true
     show_user: true
     default: filebeat-googlecloud-audit
-  template_path: log.yml
+  template_path: log.yml.hbs
   title: Google Cloud audit logs (log)
   description: Collect Google Cloud audit logs using log input

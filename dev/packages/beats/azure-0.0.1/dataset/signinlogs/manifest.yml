@@ -11,7 +11,7 @@ streams:
     required: true
     show_user: true
     default: insights-logs-signinlogs
-  template_path: azure-eventhub.yml
+  template_path: azure-eventhub.yml.hbs
   title: Azure signinlogs logs (azure-eventhub)
   description: Collect Azure signinlogs logs using azure-eventhub input
 - input: logs
@@ -23,6 +23,6 @@ streams:
     required: true
     show_user: true
     default: insights-logs-signinlogs
-  template_path: log.yml
+  template_path: log.yml.hbs
   title: Azure signinlogs logs (log)
   description: Collect Azure signinlogs logs using log input

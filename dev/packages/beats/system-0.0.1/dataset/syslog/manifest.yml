@@ -19,6 +19,6 @@ streams:
         - /var/log/system.log*
       windows:
         default: []
-  template_path: log.yml
+  template_path: log.yml.hbs
   title: System syslog logs (log)
   description: Collect System syslog logs using log input

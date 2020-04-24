@@ -12,7 +12,7 @@ streams:
     show_user: true
     default:
     - /var/log/pan-os.log
-  template_path: syslog.yml
+  template_path: syslog.yml.hbs
   title: panw panos logs (syslog)
   description: Collect panw panos logs using syslog input
 - input: logs
@@ -25,6 +25,6 @@ streams:
     show_user: true
     default:
     - /var/log/pan-os.log
-  template_path: log.yml
+  template_path: log.yml.hbs
   title: panw panos logs (log)
   description: Collect panw panos logs using log input

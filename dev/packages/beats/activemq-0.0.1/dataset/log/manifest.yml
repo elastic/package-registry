@@ -19,6 +19,6 @@ streams:
       windows:
         default:
         - c:/apache-activemq-*/data/activemq.log*
-  template_path: log.yml
+  template_path: log.yml.hbs
   title: activemq log logs (log)
   description: Collect activemq log logs using log input

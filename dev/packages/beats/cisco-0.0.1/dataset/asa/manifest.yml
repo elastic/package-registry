@@ -41,7 +41,7 @@ streams:
     required: true
     show_user: true
     default: ASA
-  template_path: udp.yml
+  template_path: udp.yml.hbs
   title: Cisco asa logs (udp)
   description: Collect Cisco asa logs using udp input
 - input: logs
@@ -90,6 +90,6 @@ streams:
     required: true
     show_user: true
     default: ASA
-  template_path: log.yml
+  template_path: log.yml.hbs
   title: Cisco asa logs (log)
   description: Collect Cisco asa logs using log input

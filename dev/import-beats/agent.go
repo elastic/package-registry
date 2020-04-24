@@ -54,7 +54,7 @@ func createAgentContentForMetrics(moduleName, datasetName string, streams []util
 	return agentContent{
 		streams: []streamContent{
 			{
-				targetFileName: "stream.yml",
+				targetFileName: "stream.yml.hbs",
 				body:           buffer.Bytes(),
 			},
 		},

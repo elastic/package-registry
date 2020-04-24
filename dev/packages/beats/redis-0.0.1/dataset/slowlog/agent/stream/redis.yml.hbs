@@ -1,0 +1,6 @@
+type: redis
+hosts:
+{{#each hosts as |host|}}
+ - {{host}}
+{{/each}}
+password: {{password}}

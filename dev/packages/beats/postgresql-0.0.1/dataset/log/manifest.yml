@@ -19,6 +19,6 @@ streams:
       windows:
         default:
         - c:/Program Files/PostgreSQL/*/logs/*.log*
-  template_path: log.yml
+  template_path: log.yml.hbs
   title: PostgreSQL log logs (log)
   description: Collect PostgreSQL log logs using log input

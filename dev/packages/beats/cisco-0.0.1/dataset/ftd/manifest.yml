@@ -41,7 +41,7 @@ streams:
     required: true
     show_user: true
     default: FTD
-  template_path: udp.yml
+  template_path: udp.yml.hbs
   title: Cisco ftd logs (udp)
   description: Collect Cisco ftd logs using udp input
 - input: logs
@@ -90,6 +90,6 @@ streams:
     required: true
     show_user: true
     default: FTD
-  template_path: log.yml
+  template_path: log.yml.hbs
   title: Cisco ftd logs (log)
   description: Collect Cisco ftd logs using log input

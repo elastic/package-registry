@@ -25,7 +25,7 @@ streams:
     required: true
     show_user: true
     default: false
-  template_path: google-pubsub.yml
+  template_path: google-pubsub.yml.hbs
   title: Google Cloud firewall logs (google-pubsub)
   description: Collect Google Cloud firewall logs using google-pubsub input
 - input: logs
@@ -51,6 +51,6 @@ streams:
     required: true
     show_user: true
     default: false
-  template_path: log.yml
+  template_path: log.yml.hbs
   title: Google Cloud firewall logs (log)
   description: Collect Google Cloud firewall logs using log input

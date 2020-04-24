@@ -3,14 +3,14 @@ release: beta
 type: logs
 streams:
 - input: s3
-  template_path: s3.yml
+  template_path: s3.yml.hbs
   title: AWS vpcflow logs (s3)
   description: Collect AWS vpcflow logs using s3 input
 - input: logs
-  template_path: log.yml
+  template_path: log.yml.hbs
   title: AWS vpcflow logs (log)
   description: Collect AWS vpcflow logs using log input
 - input: ip}
-  template_path: ip}.yml
+  template_path: ip}.yml.hbs
   title: AWS vpcflow logs (ip})
   description: Collect AWS vpcflow logs using ip} input

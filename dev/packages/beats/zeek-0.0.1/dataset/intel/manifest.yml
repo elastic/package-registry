@@ -31,7 +31,7 @@ streams:
     required: true
     show_user: true
     default: true
-  template_path: log.yml
+  template_path: log.yml.hbs
   title: Zeek intel logs (log)
   description: Collect Zeek intel logs using log input
 - input: ip}
@@ -48,6 +48,6 @@ streams:
       darwin:
         default:
         - /usr/local/var/logs/current/intel.log
-  template_path: ip}.yml
+  template_path: ip}.yml.hbs
   title: Zeek intel logs (ip})
   description: Collect Zeek intel logs using ip} input

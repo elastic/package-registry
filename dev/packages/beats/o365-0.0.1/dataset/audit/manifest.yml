@@ -3,10 +3,10 @@ release: ga
 type: logs
 streams:
 - input: o365audit
-  template_path: o365audit.yml
+  template_path: o365audit.yml.hbs
   title: Office 365 audit logs (o365audit)
   description: Collect Office 365 audit logs using o365audit input
 - input: logs
-  template_path: log.yml
+  template_path: log.yml.hbs
   title: Office 365 audit logs (log)
   description: Collect Office 365 audit logs using log input

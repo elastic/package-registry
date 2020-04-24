@@ -94,7 +94,7 @@ func createLogStreams(modulePath, moduleTitle, datasetName string) ([]util.Strea
 			if inputType == "log" {
 				aType = "logs"
 			}
-			targetFileName := inputType + ".yml"
+			targetFileName := inputType + ".yml.hbs"
 
 			inputConfig := root.configForInput(inputType)
 			agent.streams = append(agent.streams, streamContent{

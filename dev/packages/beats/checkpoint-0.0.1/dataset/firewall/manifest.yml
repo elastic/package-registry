@@ -3,10 +3,10 @@ release: beta
 type: logs
 streams:
 - input: syslog
-  template_path: syslog.yml
+  template_path: syslog.yml.hbs
   title: Checkpoint firewall logs (syslog)
   description: Collect Checkpoint firewall logs using syslog input
 - input: logs
-  template_path: log.yml
+  template_path: log.yml.hbs
   title: Checkpoint firewall logs (log)
   description: Collect Checkpoint firewall logs using log input

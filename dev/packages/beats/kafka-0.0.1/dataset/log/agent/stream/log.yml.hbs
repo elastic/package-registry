@@ -1,0 +1,12 @@
+type: log
+paths:
+{{#each paths as |path|}}
+ - {{path}}
+{{/each}}
+exclude_files: [".gz$"]
+multiline:
+  pattern: '^\['
+  negate: true
+  match: after
+processors:
+- add_locale: ~
