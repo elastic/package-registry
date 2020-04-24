@@ -30,23 +30,16 @@ streams:
   description: Collect Google Cloud firewall logs using google-pubsub input
 - input: logs
   vars:
-  - name: topic
-    type: text
-    title: Topic
-    multi: false
-    required: true
-    show_user: true
-    default: stackdriver-firewall
-  - name: subscription_name
-    type: text
-    title: Subscription Name
-    multi: false
-    required: true
-    show_user: true
-    default: filebeat-googlecloud-firewall
   - name: debug
     type: bool
     title: Debug
+    multi: false
+    required: true
+    show_user: true
+    default: false
+  - name: keep_original_message
+    type: bool
+    title: Keep Original Message
     multi: false
     required: true
     show_user: true

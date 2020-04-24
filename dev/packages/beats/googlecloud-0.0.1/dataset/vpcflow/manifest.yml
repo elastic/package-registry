@@ -23,20 +23,13 @@ streams:
   description: Collect Google Cloud vpcflow logs using google-pubsub input
 - input: logs
   vars:
-  - name: topic
-    type: text
-    title: Topic
+  - name: keep_original_message
+    type: bool
+    title: Keep Original Message
     multi: false
     required: true
     show_user: true
-    default: stackdriver-vpcflow
-  - name: subscription_name
-    type: text
-    title: Subscription Name
-    multi: false
-    required: true
-    show_user: true
-    default: filebeat-googlecloud-vpcflow
+    default: false
   template_path: log.yml.hbs
   title: Google Cloud vpcflow logs (log)
   description: Collect Google Cloud vpcflow logs using log input

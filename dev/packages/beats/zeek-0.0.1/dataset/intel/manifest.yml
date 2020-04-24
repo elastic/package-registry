@@ -24,13 +24,6 @@ streams:
     show_user: true
     default:
     - zeek.intel
-  - name: community_id
-    type: bool
-    title: Community Id
-    multi: false
-    required: true
-    show_user: true
-    default: true
   template_path: log.yml.hbs
   title: Zeek intel logs (log)
   description: Collect Zeek intel logs using log input
@@ -48,6 +41,14 @@ streams:
       darwin:
         default:
         - /usr/local/var/logs/current/intel.log
+  - name: tags
+    type: text
+    title: Tags
+    multi: true
+    required: true
+    show_user: true
+    default:
+    - zeek.intel
   template_path: ip}.yml.hbs
   title: Zeek intel logs (ip})
   description: Collect Zeek intel logs using ip} input

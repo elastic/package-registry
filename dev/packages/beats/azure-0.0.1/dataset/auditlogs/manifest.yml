@@ -15,14 +15,6 @@ streams:
   title: Azure auditlogs logs (azure-eventhub)
   description: Collect Azure auditlogs logs using azure-eventhub input
 - input: logs
-  vars:
-  - name: eventhub
-    type: text
-    title: Eventhub
-    multi: false
-    required: true
-    show_user: true
-    default: insights-logs-auditlogs
   template_path: log.yml.hbs
   title: Azure auditlogs logs (log)
   description: Collect Azure auditlogs logs using log input

@@ -48,6 +48,21 @@ streams:
       darwin:
         default:
         - /usr/local/var/logs/current/dns.log
+  - name: tags
+    type: text
+    title: Tags
+    multi: true
+    required: true
+    show_user: true
+    default:
+    - zeek.dns
+  - name: community_id
+    type: bool
+    title: Community Id
+    multi: false
+    required: true
+    show_user: true
+    default: true
   template_path: long}.yml.hbs
   title: Zeek dns logs (long})
   description: Collect Zeek dns logs using long} input

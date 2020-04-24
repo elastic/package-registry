@@ -3,15 +3,6 @@ release: ga
 type: logs
 streams:
 - input: syslog
-  vars:
-  - name: paths
-    type: text
-    title: Paths
-    multi: true
-    required: true
-    show_user: true
-    default:
-    - /var/log/pan-os.log
   template_path: syslog.yml.hbs
   title: panw panos logs (syslog)
   description: Collect panw panos logs using syslog input
@@ -25,6 +16,14 @@ streams:
     show_user: true
     default:
     - /var/log/pan-os.log
+  - name: tags
+    type: text
+    title: Tags
+    multi: true
+    required: true
+    show_user: true
+    default:
+    - pan-os
   template_path: log.yml.hbs
   title: panw panos logs (log)
   description: Collect panw panos logs using log input

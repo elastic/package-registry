@@ -94,12 +94,12 @@ func (scp *streamConfigParsed) configForInput(inputType string) []byte {
 		inputType = "file"
 	}
 
-	config := configForInputForNode(inputType, scp.tree.Root)
+	config := configForInputForNode(scp.tree.Root, inputType)
 	r := regexp.MustCompile("(\n)+")
 	return bytes.TrimSpace(r.ReplaceAll(config, []byte{'\n'}))
 }
 
-func configForInputForNode(inputType string, node parse.Node) []byte {
+func configForInputForNode(node parse.Node, inputType string) []byte {
 	textNode, isTextNode := node.(*parse.TextNode)
 	if isTextNode {
 		return textNode.Text
@@ -115,14 +115,14 @@ func configForInputForNode(inputType string, node parse.Node) []byte {
 		return writeHandlebarsIfNode(ifNode, inputType)
 	}
 
-	actionNode, isActionNode := node.(*parse.ActionNode)
-	if isActionNode {
-		return writeHandlebarsActionNode(actionNode)
-	}
-
 	rangeNode, isRangeNode := node.(*parse.RangeNode)
 	if isRangeNode {
 		return writeHandlebarsRangeNode(rangeNode, inputType)
+	}
+
+	actionNode, isActionNode := node.(*parse.ActionNode)
+	if isActionNode {
+		return writeHandlebarsActionNode(actionNode)
 	}
 
 	panic(fmt.Sprintf("unsupported node: %s", node.String()))
@@ -131,7 +131,7 @@ func configForInputForNode(inputType string, node parse.Node) []byte {
 func writeHandlebarsListNode(listNode *parse.ListNode, inputType string) []byte {
 	var buffer bytes.Buffer
 	for _, listedNode := range listNode.Nodes {
-		buf := configForInputForNode(inputType, listedNode)
+		buf := configForInputForNode(listedNode, inputType)
 		buffer.Write(buf)
 	}
 	return buffer.Bytes()
@@ -142,29 +142,27 @@ func writeHandlebarsIfNode(ifNode *parse.IfNode, inputType string) []byte {
 	if isIfNodeEqInput(ifNode) {
 		if isIfNodeEqInputInputType(ifNode, inputType) {
 			if ifNode.List != nil {
-				buffer.Write(configForInputForNode(inputType, ifNode.List))
+				buffer.Write(configForInputForNode(ifNode.List, inputType))
 			}
 		} else {
 			if ifNode.ElseList != nil {
-				buffer.Write(configForInputForNode(inputType, ifNode.ElseList))
+				buffer.Write(configForInputForNode(ifNode.ElseList, inputType))
 			}
 		}
 	} else {
-		if len(ifNode.Pipe.Cmds) > 0 {
-			if len(ifNode.Pipe.Cmds[0].Args) == 1 {
-				var1 := ifNode.Pipe.Cmds[0].Args[0].String()[1:]
-				buffer.WriteString(fmt.Sprintf("{{#if %s}}", var1))
-			}
+		if len(ifNode.Pipe.Cmds[0].Args) == 1 {
+			var1 := ifNode.Pipe.Cmds[0].Args[0].String()[1:]
+			buffer.WriteString(fmt.Sprintf("{{#if %s}}", var1))
 		} else {
 			buffer.WriteString(fmt.Sprintf("{{#if %s}}", ifNode.Pipe.String()))
 		}
 
 		if ifNode.List != nil {
-			buffer.Write(configForInputForNode(inputType, ifNode.List))
+			buffer.Write(configForInputForNode(ifNode.List, inputType))
 		}
 		if ifNode.ElseList != nil {
 			buffer.WriteString("{{else}}")
-			buffer.Write(configForInputForNode(inputType, ifNode.ElseList))
+			buffer.Write(configForInputForNode(ifNode.ElseList, inputType))
 		}
 		buffer.WriteString("{{/if}}")
 	}
@@ -172,29 +170,25 @@ func writeHandlebarsIfNode(ifNode *parse.IfNode, inputType string) []byte {
 }
 
 func isIfNodeEqInput(ifNode *parse.IfNode) bool {
-	if len(ifNode.Pipe.Cmds) > 0 {
-		if len(ifNode.Pipe.Cmds[0].Args) > 1 {
-			op := ifNode.Pipe.Cmds[0].Args[0].String()
-			var1 := ifNode.Pipe.Cmds[0].Args[1].String()
+	if len(ifNode.Pipe.Cmds[0].Args) > 1 {
+		op := ifNode.Pipe.Cmds[0].Args[0].String()
+		var1 := ifNode.Pipe.Cmds[0].Args[1].String()
 
-			if op == "eq" && var1 == ".input" {
-				return true
-			}
+		if op == "eq" && var1 == ".input" {
+			return true
 		}
 	}
 	return false
 }
 
 func isIfNodeEqInputInputType(ifNode *parse.IfNode, inputType string) bool {
-	if len(ifNode.Pipe.Cmds) > 0 {
-		if len(ifNode.Pipe.Cmds[0].Args) > 1 {
-			op := ifNode.Pipe.Cmds[0].Args[0].String()
-			var1 := ifNode.Pipe.Cmds[0].Args[1].String()
-			var2 := ifNode.Pipe.Cmds[0].Args[2].String()
+	if len(ifNode.Pipe.Cmds[0].Args) > 1 {
+		op := ifNode.Pipe.Cmds[0].Args[0].String()
+		var1 := ifNode.Pipe.Cmds[0].Args[1].String()
+		var2 := ifNode.Pipe.Cmds[0].Args[2].String()
 
-			if op == "eq" && var1 == ".input" && var2 == fmt.Sprintf(`"%s"`, inputType) {
-				return true
-			}
+		if op == "eq" && var1 == ".input" && var2 == fmt.Sprintf(`"%s"`, inputType) {
+			return true
 		}
 	}
 	return false
@@ -264,11 +258,6 @@ func writeHandlebarsCmdDecl(decl []*parse.VariableNode) []byte {
 
 func (scp *streamConfigParsed) filterVarsForInput(inputType string, vars []util.Variable) []util.Variable {
 	variableNamesForInput := scp.variableNamesForInput(inputType)
-
-	if variableNamesForInput == nil { // TODO remove once above method is implemented
-		return vars
-	}
-
 	var filtered []util.Variable
 	for _, aVar := range vars {
 		var found bool
@@ -287,5 +276,99 @@ func (scp *streamConfigParsed) filterVarsForInput(inputType string, vars []util.
 }
 
 func (scp *streamConfigParsed) variableNamesForInput(inputType string) []string {
-	return nil // TODO
+	if inputType == "log" {
+		inputType = "file"
+	}
+
+	var variables []string
+
+	variables = variableNamesForInputForNode(scp.tree.Root, inputType, variables)
+	return uniqueStringValues(variables)
+}
+
+func variableNamesForInputForNode(node parse.Node, inputType string, variables []string) []string {
+	_, isTextNode := node.(*parse.TextNode)
+	if isTextNode {
+		return variables // do nothing, there are no variables
+	}
+
+	listNode, isListNode := node.(*parse.ListNode)
+	if isListNode {
+		return variableNamesListNode(listNode, inputType, variables)
+	}
+
+	ifNode, isIfNode := node.(*parse.IfNode)
+	if isIfNode {
+		return variableNamesIfNode(ifNode, inputType, variables)
+	}
+
+	rangeNode, isRangeNode := node.(*parse.RangeNode)
+	if isRangeNode {
+		return variableNamesRangeNode(rangeNode, inputType, variables)
+	}
+
+	actionNode, isActionNode := node.(*parse.ActionNode)
+	if isActionNode {
+		return variableNamesForNodeArgs(actionNode.Pipe.Cmds[0].Args, variables)
+	}
+
+	panic(fmt.Sprintf("unsupported node: %s", node.String()))
+}
+
+func variableNamesListNode(listNode *parse.ListNode, inputType string, vars []string) []string {
+	var variables []string
+	variables = append(variables, vars...)
+
+	for _, listedNode := range listNode.Nodes {
+		variables = uniqueStringValues(append(variables, variableNamesForInputForNode(listedNode, inputType, variables)...))
+	}
+	return variables
+}
+
+func variableNamesIfNode(ifNode *parse.IfNode, inputType string, vars []string) []string {
+	var variables []string
+	variables = append(variables, vars...)
+
+	if isIfNodeEqInput(ifNode) {
+		if isIfNodeEqInputInputType(ifNode, inputType) {
+			if ifNode.List != nil {
+				variables = uniqueStringValues(append(variableNamesForInputForNode(ifNode.List, inputType, variables)))
+			}
+		} else {
+			if ifNode.ElseList != nil {
+				variables = uniqueStringValues(append(variableNamesForInputForNode(ifNode.ElseList, inputType, variables)))
+			}
+		}
+	} else {
+		if ifNode.List != nil {
+			variables = uniqueStringValues(append(variableNamesForInputForNode(ifNode.List, inputType, variables)))
+		}
+		if ifNode.ElseList != nil {
+			variables = uniqueStringValues(append(variableNamesForInputForNode(ifNode.ElseList, inputType, variables)))
+		}
+
+		variables = uniqueStringValues(append(variables, variableNamesForNodeArgs(ifNode.Pipe.Cmds[0].Args, variables)...))
+	}
+	return variables
+}
+
+func variableNamesRangeNode(rangeNode *parse.RangeNode, inputType string, vars []string) []string {
+	var variables []string
+	variables = append(variables, vars...)
+
+	variables = uniqueStringValues(append(variables, variableNamesListNode(rangeNode.List, inputType, variables)...))
+	variables = uniqueStringValues(append(variables, variableNamesForNodeArgs(rangeNode.Pipe.Cmds[0].Args, variables)...))
+	return variables
+}
+
+func variableNamesForNodeArgs(args []parse.Node, vars []string) []string {
+	var variables []string
+	variables = append(variables, vars...)
+
+	if len(args) > 0 {
+		for _, arg := range args {
+			variables = append(variables, arg.String()[1:])
+		}
+	}
+	return variables
 }

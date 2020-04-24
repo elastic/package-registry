@@ -39,6 +39,21 @@ streams:
       windows:
         default:
         - c:/program files/suricata/log/eve.json
+  - name: tags
+    type: text
+    title: Tags
+    multi: true
+    required: true
+    show_user: true
+    default:
+    - suricata
+  - name: community_id
+    type: bool
+    title: Community Id
+    multi: false
+    required: true
+    show_user: true
+    default: true
   template_path: long}.yml.hbs
   title: Suricata eve logs (long})
   description: Collect Suricata eve logs using long} input

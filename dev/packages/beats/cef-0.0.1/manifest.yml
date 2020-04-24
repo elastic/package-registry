@@ -20,35 +20,5 @@ datasources:
   description: Collect logs from CEF instances
   inputs:
   - type: logs
-    vars:
-    - name: tags
-      type: text
-      title: Tags
-      multi: true
-      required: true
-      show_user: true
-      default:
-      - cef
-    - name: syslog_host
-      type: text
-      title: Syslog Host
-      multi: false
-      required: true
-      show_user: true
-      default: localhost
-    - name: syslog_port
-      type: integer
-      title: Syslog Port
-      multi: false
-      required: true
-      show_user: true
-      default: 9003
-    - name: input
-      type: text
-      title: Input
-      multi: false
-      required: true
-      show_user: true
-      default: syslog
     title: Collect logs from CEF instances
     description: Collecting CEF log logs

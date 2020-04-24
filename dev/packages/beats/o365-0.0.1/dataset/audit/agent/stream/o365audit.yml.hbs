@@ -8,6 +8,7 @@ tenant_id:
 {{#if key}}key: {{key}}{{/if}}
 {{#if key_passphrase}}key_passphrase: {{key_passphrase}}{{/if}}
 {{#if client_secret}}client_secret: {{client_secret}}{{/if}}
+{{#if eq "string" (printf "%T" .content_type)}}
 content_type: {{content_type}}
 {{else}}
 content_type:

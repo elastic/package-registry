@@ -30,20 +30,5 @@ datasources:
   description: Collect logs from Cisco instances
   inputs:
   - type: logs
-    vars:
-    - name: syslog_host
-      type: text
-      title: Syslog Host
-      multi: false
-      required: true
-      show_user: true
-      default: localhost
-    - name: input
-      type: text
-      title: Input
-      multi: false
-      required: true
-      show_user: true
-      default: syslog
     title: Collect logs from Cisco instances
     description: Collecting Cisco asa, ftd and ios logs

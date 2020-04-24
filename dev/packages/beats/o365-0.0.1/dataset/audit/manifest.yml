@@ -7,6 +7,13 @@ streams:
   title: Office 365 audit logs (o365audit)
   description: Collect Office 365 audit logs using o365audit input
 - input: logs
+  vars:
+  - name: tenants
+    type: text
+    title: Tenants
+    multi: false
+    required: false
+    show_user: true
   template_path: log.yml.hbs
   title: Office 365 audit logs (log)
   description: Collect Office 365 audit logs using log input
