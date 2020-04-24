@@ -21,6 +21,7 @@ datasources:
     # This tells the UI that for configuration, it must link to a specific solution
     # Only solution packages can contain this field.
     solution: endpoint
+    multiple: false
 
 requirement:
   elasticsearch:
