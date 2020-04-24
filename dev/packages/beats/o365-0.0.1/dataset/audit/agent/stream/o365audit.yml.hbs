@@ -17,7 +17,7 @@ content_type:
 {{/if}}
 {{#if api}}
 api:
-{{#each api as |v|}}
+{{#each api as |v k|}}
  - {{k}}: {{v}}{{/each}}
 {{/if}}
 processors:

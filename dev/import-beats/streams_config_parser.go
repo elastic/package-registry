@@ -247,11 +247,11 @@ func writeHandlebarsCmdDecl(decl []*parse.VariableNode) []byte {
 		buffer.WriteString(" as |")
 	}
 
-	for i := len(decl) - 1; i > 0; i-- {
+	for i := len(decl) - 1; i >= 0; i-- {
 		aVar := decl[i].String()[1:]
 		buffer.WriteString(aVar)
 
-		if i != (len(decl) - 1) {
+		if i != 0 {
 			buffer.WriteByte(' ')
 		}
 	}
