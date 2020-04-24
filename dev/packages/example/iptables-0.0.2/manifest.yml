@@ -3,7 +3,7 @@ format_version: 1.0.0
 name: iptables
 title: IP Tables
 description: iptables logs
-version: 1.0.4
+version: 0.0.2
 categories: ["logs"]
 release: ga
 license: basic

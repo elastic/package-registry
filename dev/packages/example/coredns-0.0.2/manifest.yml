@@ -7,7 +7,7 @@ description: >
 
   The CoreDNS integrations allows to gather logs and metrics from the CoreDNS DNS server to get better
   insights.
-version: 1.0.1
+version: 0.0.2
 categories: ["logs", "metrics"]
 release: beta
 license: basic
