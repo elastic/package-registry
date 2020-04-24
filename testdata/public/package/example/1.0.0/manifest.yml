@@ -6,6 +6,7 @@ version: 1.0.0
 title: Example Integration
 categories: ["logs", "metrics"]
 type: integration
+release: ga
 
 requirement:
   elasticsearch:

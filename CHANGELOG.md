@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Add `removable` flag to package manifest. Default is true. [#359](https://github.com/elastic/integrations-registry/pull/359)
 * Add stream template to package json. [#335](https://github.com/elastic/integrations-registry/pull/335)
 * Add support for multiple inputs per dataset. [#346](https://github.com/elastic/integrations-registry/pull/346)
+* Add experimental releases for packages and datasets. [#](https://github.com/elastic/integrations-registry/pull/)
 
 ### Deprecated
 
