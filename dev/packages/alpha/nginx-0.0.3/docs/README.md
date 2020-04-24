@@ -1,23 +1,26 @@
 # Nginx Integration
 
-This integration periodically fetches metrics from [https://nginx.org/](Nginx) servers.
-
+This integration periodically fetches metrics from [https://nginx.org/](Nginx) servers. It can parse access and error
+logs created by the HTTP server. 
 
 ## Compatibility
 
-The Nginx stubstatus metrics were tested with Nginx 1.9 and are expected to work with all version >= 1.9. The logs were tested with version 1.10. On Windows, the module was tested with Nginx installed from the Chocolatey repository.
-
+The Nginx `stubstatus` metrics was tested with Nginx 1.9 and are expected to work with all version >= 1.9.
+The logs were tested with version 1.10.
+On Windows, the module was tested with Nginx installed from the Chocolatey repository.
 
 ## Logs
 
-
 **Timezone support**
 
-This datasource parses logs that don’t contain timezone information. For these logs, the Elastic Agent reads the local timezone and uses it when parsing to convert the timestamp to UTC. The timezone to be used for parsing is included in the event in the event.timezone field.
+This datasource parses logs that don’t contain timezone information. For these logs, the Elastic Agent reads the local
+timezone and uses it when parsing to convert the timestamp to UTC. The timezone to be used for parsing is included
+in the event in the `event.timezone` field.
 
 To disable this conversion, the event.timezone field can be removed with the drop_fields processor.
 
-If logs are originated from systems or applications with a different timezone to the local one, the event.timezone field can be overwritten with the original timezone using the add_fields processor.
+If logs are originated from systems or applications with a different timezone to the local one, the `event.timezone`
+field can be overwritten with the original timezone using the add_fields processor.
 
 ### Access Logs
 
@@ -62,50 +65,57 @@ Error logs collects the nginx error logs.
 | process.thread.id | Thread ID. | long |
 
 
+### Ingress Controller Logs
+
+Error logs collects the ingress controller logs.
+
+**Exported fields**
+
+| Field | Description | Type |
+|---|---|---|
+| http.request.method | HTTP request method. The field value must be normalized to lowercase for querying. See the documentation section "Implementing ECS". | keyword |
+| http.request.referrer | Referrer for this HTTP request. | keyword |
+| http.response.body.bytes | Size in bytes of the response body. | long |
+| http.response.status_code | HTTP response status code. | long |
+| http.version | HTTP version. | keyword |
+| nginx.ingress_controller.http.request.id | The randomly generated ID of the request | text |
+| nginx.ingress_controller.http.request.length | The request length (including request line, header, and request body) | long |
+| nginx.ingress_controller.http.request.time | Time elapsed since the first bytes were read from the client | double |
+| nginx.ingress_controller.remote_ip_list | An array of remote IP addresses. It is a list because it is common to include, besides the client IP address, IP addresses from headers like `X-Forwarded-For`. Real source IP is restored to `source.ip`. | array |
+| nginx.ingress_controller.upstream.alternative_name | The name of the alternative upstream. | text |
+| nginx.ingress_controller.upstream.ip | The IP address of the upstream server. If several servers were contacted during request processing, their addresses are separated by commas. | ip |
+| nginx.ingress_controller.upstream.name | The name of the upstream. | text |
+| nginx.ingress_controller.upstream.port | The port of the upstream server. | long |
+| nginx.ingress_controller.upstream.response.length | The length of the response obtained from the upstream server | long |
+| nginx.ingress_controller.upstream.response.status_code | The status code of the response obtained from the upstream server | long |
+| nginx.ingress_controller.upstream.response.time | The time spent on receiving the response from the upstream server as seconds with millisecond resolution | double |
+| source.geo.city_name | City name. | keyword |
+| source.geo.continent_name | Name of the continent. | keyword |
+| source.geo.country_iso_code | Country ISO code. | keyword |
+| source.geo.location | Longitude and latitude. | geo_point |
+| source.geo.region_iso_code | Region ISO code. | keyword |
+| source.geo.region_name | Region name. | keyword |
+| url.original | Unmodified original url as seen in the event source. Note that in network monitoring, the observed URL may be a full URL, whereas in access logs, the URL is often just represented as a path. This field is meant to represent the URL as it was observed, complete or not. | keyword |
+| user.name | Short name or login of the user. | keyword |
+| user_agent.device.name | Name of the device. | keyword |
+| user_agent.name | Name of the user agent. | keyword |
+| user_agent.original | Unparsed user_agent string. | keyword |
+| user_agent.os.name | Operating system name, without the version. | keyword |
+
+
 ## Metrics
 
-### Stubstatus Metrics
+### Stub Status Metrics
 
-The Nginx stubstatus stream collects data from the Nginx ngx_http_stub_status module. It scrapes the server status data from the web page generated by ngx_http_stub_status.
+The Nginx stubstatus stream collects data from the Nginx `ngx_http_stub_status` module. It scrapes the server status
+data from the web page generated by ngx_http_stub_status.
 
 This is a default stream. If the host datasource is unconfigured, this stream is enabled by default.
 
 An example event for nginx looks as following:
 
 ```$json
-{
-    "@timestamp": "2017-10-12T08:05:34.853Z",
-    "agent": {
-        "hostname": "host.example.com",
-        "name": "host.example.com"
-    },
-    "event": {
-        "dataset": "nginx.stubstatus",
-        "duration": 115000,
-        "module": "nginx"
-    },
-    "metricset": {
-        "name": "stubstatus"
-    },
-    "nginx": {
-        "stubstatus": {
-            "accepts": 6254,
-            "active": 2,
-            "current": 1,
-            "dropped": 0,
-            "handled": 6254,
-            "hostname": "127.0.0.1",
-            "reading": 0,
-            "requests": 6259,
-            "waiting": 1,
-            "writing": 1
-        }
-    },
-    "service": {
-        "address": "127.0.0.1",
-        "type": "nginx"
-    }
-}
+TODO
 ```
 
 **Exported fields**

@@ -1,7 +1,6 @@
 title: Nginx ingress_controller logs
 release: ga
 type: logs
-enabled: false
 streams:
 - input: logs
   vars:
