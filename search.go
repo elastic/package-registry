@@ -20,6 +20,7 @@ import (
 
 func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
+		logRequest(r)
 		query := r.URL.Query()
 
 		var kibanaVersion *semver.Version

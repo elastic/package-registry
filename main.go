@@ -7,18 +7,21 @@ package main
 import (
 	"context"
 	"flag"
-	"log"
+	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
 
+	"go.uber.org/zap"
+
 	"github.com/elastic/package-registry/util"
 
 	ucfgYAML "github.com/elastic/go-ucfg/yaml"
 
 	"github.com/gorilla/mux"
+	"go.elastic.co/ecszap"
 )
 
 const (
@@ -36,6 +39,8 @@ var (
 		CacheTimeCategories: 10 * time.Minute,
 		CacheTimeCatchAll:   10 * time.Minute,
 	}
+
+	logger *zap.Logger
 )
 
 func init() {
@@ -50,36 +55,41 @@ type Config struct {
 }
 
 func main() {
-	flag.Parse()
-	log.Println("Package registry started.")
-	defer log.Println("Package registry stopped.")
 
+	encoderConfig := ecszap.NewDefaultEncoderConfig()
+	core := ecszap.NewCore(encoderConfig, os.Stdout, zap.DebugLevel)
+	logger = zap.New(core, zap.AddCaller())
+
+	logger.Info("Package registry started.")
+	defer logger.Info("Package registry stopped.")
+
+	flag.Parse()
 	config, err := getConfig()
 	if err != nil {
-		log.Print(err)
+		logger.Error(err.Error())
 		os.Exit(1)
 	}
 
-	log.Println("Cache time for /search: ", config.CacheTimeSearch)
-	log.Println("Cache time for /categories: ", config.CacheTimeCategories)
-	log.Println("Cache time for all others: ", config.CacheTimeCatchAll)
+	logger.Info(fmt.Sprintf("Cache time for /search: %s", config.CacheTimeSearch))
+	logger.Info(fmt.Sprint("Cache time for /categories: %s", config.CacheTimeCategories))
+	logger.Info(fmt.Sprint("Cache time for all others: %s", config.CacheTimeCatchAll))
 
 	packagesBasePath := config.PublicDir + "/" + packageDir
 
 	// Prefill the package cache
 	packages, err := util.GetPackages(packagesBasePath)
 	if err != nil {
-		log.Print(err)
+		logger.Error(err.Error())
 		os.Exit(1)
 	}
-	log.Printf("%v package manifests loaded into memory.\n", len(packages))
+	logger.Info(fmt.Sprintf("%v package manifests loaded into memory.", len(packages)))
 
 	server := &http.Server{Addr: address, Handler: getRouter(*config, packagesBasePath)}
 
 	go func() {
 		err := server.ListenAndServe()
 		if err != nil {
-			log.Printf("Error serving: %s", err)
+			logger.Error(fmt.Sprintf("Error serving: %s", err))
 		}
 	}()
 
@@ -89,7 +99,7 @@ func main() {
 
 	ctx := context.TODO()
 	if err := server.Shutdown(ctx); err != nil {
-		log.Print(err)
+		logger.Error(err.Error())
 	}
 }
 
@@ -122,3 +132,12 @@ func getRouter(config Config, packagesBasePath string) *mux.Router {
 // healthHandler is used for Docker/K8s deployments. It returns 200 if the service is live
 // In addition ?ready=true can be used for a ready request. Currently both are identical.
 func healthHandler(w http.ResponseWriter, r *http.Request) {}
+
+// TODO: convert to a logging handler
+func logRequest(r *http.Request) {
+	// TOOD: log in go routine to not block
+	logger.Info("some logging info",
+		zap.String("source.ip", r.RemoteAddr),
+		zap.String("url.original", r.RequestURI),
+	)
+}
