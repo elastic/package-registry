@@ -36,7 +36,7 @@ datasources:
   inputs:
   - type: logs
     title: Collect logs from Nginx instances
-    description: Collecting Nginx access, error and ingress_controller logs
+    description: Collecting Nginx access, error and ingress controller logs
   - type: nginx/metrics
     vars:
     - name: hosts
@@ -47,12 +47,5 @@ datasources:
       show_user: true
       default:
       - http://127.0.0.1
-    - name: server_status_path
-      type: text
-      title: Server Status Path
-      multi: false
-      required: true
-      show_user: true
-      default: nginx_status
     title: Collect metrics from Nginx instances
-    description: Collecting Nginx stubstatus metrics
+    description: Collecting Nginx stub status metrics

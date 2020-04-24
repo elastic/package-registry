@@ -11,5 +11,12 @@ streams:
     required: true
     show_user: true
     default: 10s
-  title: Nginx stubstatus metrics
-  description: Collect Nginx stubstatus metrics
+  - name: server_status_path
+    type: text
+    title: Server Status Path
+    multi: false
+    required: true
+    show_user: false
+    default: nginx_status
+  title: Nginx stub status metrics
+  description: Collect Nginx stub status metrics
