@@ -22,11 +22,11 @@
                             "key": "query",
                             "negate": false,
                             "type": "custom",
-                            "value": "{\"match_phrase_prefix\":{\"event.dataset\":{\"query\":\"redis.\"}}}"
+                            "value": "{\"match_phrase_prefix\":{\"stream.dataset\":{\"query\":\"redis.\"}}}"
                         },
                         "query": {
                             "match_phrase_prefix": {
-                                "event.dataset": {
+                                "stream.dataset": {
                                     "query": "redis."
                                 }
                             }
