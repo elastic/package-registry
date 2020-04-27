@@ -22,7 +22,7 @@ CloudWatch logs to monitor, store, and access log files from different sources.
 Export logs from log groups to an Amazon S3 bucket which has SQS notification 
 setup already.
 
-{{fields "cloudwatch"}}
+{{fields "cloudwatch-logs"}}
 
 ### ec2
 
@@ -31,7 +31,7 @@ from log groups to Amazon S3 bucket which has SQS notification setup already.
 With this dataset, EC2 logs will be parsed into fields like  `ip_address`
 and `process.name`. For logs from other services, please use `cloudwatch` dataset.
 
-{{fields "ec2"}}
+{{fields "ec2-logs"}}
 
 ### elb
 
@@ -47,7 +47,7 @@ for sending Classic ELB access logs to S3 bucket.
 For application load balancer, please follow [enable access log for application load balancer](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html#enable-access-logging).
 For network load balancer, please follow [enable access log for network load balancer](https://docs.aws.amazon.com/elasticloadbalancing/latest//network/load-balancer-access-logs.html).
 
-{{fields "elb"}}
+{{fields "elb-logs"}}
 
 ### s3access
 
@@ -91,7 +91,7 @@ An example event for `cloudwatch` looks as following:
 
 The fields reported are:
 
-{{fields "cloudwatch"}}
+{{fields "cloudwatch-metrics"}}
 
 ### dynamodb
 
@@ -127,7 +127,7 @@ An example event for `ec2` looks as following:
 
 The fields reported are:
 
-{{fields "ec2"}}
+{{fields "ec2-metrics"}}
 
 ### elb
 
@@ -139,7 +139,7 @@ An example event for `elb` looks as following:
 
 The fields reported are:
 
-{{fields "elb"}}
+{{fields "elb-metrics"}}
 
 ### lambda
 
