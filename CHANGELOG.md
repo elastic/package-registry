@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Change package path from /package/{packagename}-{version} to /package/{packagename}/{version} [#300](https://github.com/elastic/integrations-registry/pull/300)
 * By default /search?package= now only returns the most recent package. [#301](https://github.com/elastic/integrations-registry/pull/301)
 * Stream configuration filenames have `.hbs` suffix appended [#308](https://github.com/elastic/package-registry/pull/380)
+* Align package storage directories with public dir structure [#376](https://github.com/elastic/package-registry/pull/376)
 
 ### Bugfixes
 
