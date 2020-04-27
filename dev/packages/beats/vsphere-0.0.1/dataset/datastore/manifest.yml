@@ -1,5 +1,5 @@
 title: vSphere datastore metrics
-release: ga
+release: experimental
 type: metrics
 streams:
 - input: vsphere/metrics

@@ -1,5 +1,5 @@
 title: PHP_FPM pool metrics
-release: ga
+release: experimental
 type: metrics
 streams:
 - input: php_fpm/metrics

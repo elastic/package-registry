@@ -1,6 +1,6 @@
 - name: windows.perfmon
   type: group
-  release: beta
+  release: ga
   fields:
   - name: instance
     type: keyword

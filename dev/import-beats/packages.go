@@ -43,6 +43,7 @@ func newPackageContent(name string) packageContent {
 			Type:          "integration",
 			License:       "basic",
 			Removable:     determineIfPackageIsRemovable(name),
+			Release:       "experimental",
 		},
 		kibana: kibanaContent{
 			files: map[string]map[string][]byte{},
@@ -89,19 +90,23 @@ func (pc *packageContent) addKibanaContent(kc kibanaContent) {
 }
 
 type packageRepository struct {
-	iconRepository *iconRepository
-	kibanaMigrator *kibanaMigrator
-	ecsFields      fieldDefinitionArray
+	iconRepository       *iconRepository
+	kibanaMigrator       *kibanaMigrator
+	ecsFields            fieldDefinitionArray
+	selectedPackageNames []string
 
 	packages map[string]packageContent
 }
 
-func newPackageRepository(iconRepository *iconRepository, kibanaMigrator *kibanaMigrator, ecsFields fieldDefinitionArray) *packageRepository {
+func newPackageRepository(iconRepository *iconRepository, kibanaMigrator *kibanaMigrator,
+	ecsFields fieldDefinitionArray, selectedPackageNames []string) *packageRepository {
 	return &packageRepository{
-		iconRepository: iconRepository,
-		kibanaMigrator: kibanaMigrator,
-		ecsFields:      ecsFields,
-		packages:       map[string]packageContent{},
+		iconRepository:       iconRepository,
+		kibanaMigrator:       kibanaMigrator,
+		ecsFields:            ecsFields,
+		selectedPackageNames: selectedPackageNames,
+
+		packages: map[string]packageContent{},
 	}
 }
 
@@ -119,6 +124,10 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 			continue
 		}
 		moduleName := moduleDir.Name()
+
+		if !r.packageSelected(moduleName) {
+			continue
+		}
 
 		log.Printf("%s %s: module found\n", beatName, moduleName)
 		if _, ok := ignoredModules[moduleName]; ok {
@@ -142,12 +151,6 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 			return err
 		}
 		moduleFields, filteredEcsModuleFieldNames, err := filterMigratedFields(moduleFields, r.ecsFields.names())
-		if err != nil {
-			return err
-		}
-
-		// release
-		manifest.Release, err = determinePackageRelease(manifest.Release, moduleFields)
 		if err != nil {
 			return err
 		}
@@ -246,6 +249,19 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 	return nil
 }
 
+func (r *packageRepository) packageSelected(packageName string) bool {
+	if len(r.selectedPackageNames) == 0 {
+		return true
+	}
+
+	for _, f := range r.selectedPackageNames {
+		if f == packageName {
+			return true
+		}
+	}
+	return false
+}
+
 func (r *packageRepository) save(outputDir string) error {
 	for packageName, content := range r.packages {
 		manifest := content.manifest
@@ -324,7 +340,7 @@ func (r *packageRepository) save(outputDir string) error {
 
 			// dataset/elasticsearch
 			if len(dataset.elasticsearch.ingestPipelines) > 0 {
-				ingestPipelinesPath := filepath.Join(datasetPath, "elasticsearch", "ingest-pipeline")
+				ingestPipelinesPath := filepath.Join(datasetPath, "elasticsearch", util.DirIngestPipeline)
 				err := os.MkdirAll(ingestPipelinesPath, 0755)
 				if err != nil {
 					return errors.Wrapf(err, "cannot make directory for dataset ingest pipelines: '%s'", ingestPipelinesPath)

@@ -14,7 +14,7 @@
                 "axis_position": "left",
                 "filter": {
                     "language": "lucene",
-                    "query": "event.dataset:nginx.error"
+                    "query": "stream.dataset:nginx.error"
                 },
                 "id": "61ca57f0-469d-11e7-af02-69e470af7417",
                 "index_pattern": "logs-*",

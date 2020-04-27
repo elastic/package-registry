@@ -1,5 +1,5 @@
 title: Auditd log logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: logs
@@ -18,5 +18,6 @@ streams:
         - ""
       windows:
         default: []
-  title: Auditd log logs
-  description: Collect Auditd log logs
+  template_path: log.yml.hbs
+  title: Auditd log logs (log)
+  description: Collect Auditd log logs using log input

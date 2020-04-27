@@ -24,7 +24,7 @@
                 "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.index",
                 "query": {
                     "language": "kuery",
-                    "query": "(event.dataset:mongodb.collstats OR event.dataset:mongodb.dbstats OR event.dataset:mongodb.metrics OR event.dataset:mongodb.replstatus OR event.dataset:mongodb.status)"
+                    "query": "(stream.dataset:mongodb.collstats OR stream.dataset:mongodb.dbstats OR stream.dataset:mongodb.metrics OR stream.dataset:mongodb.replstatus OR stream.dataset:mongodb.status)"
                 }
             }
         },

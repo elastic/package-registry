@@ -1,5 +1,5 @@
 title: Osquery result logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: logs
@@ -20,5 +20,6 @@ streams:
       windows:
         default:
         - C:/ProgramData/osquery/log/osqueryd.results.log*
-  title: Osquery result logs
-  description: Collect Osquery result logs
+  template_path: log.yml.hbs
+  title: Osquery result logs (log)
+  description: Collect Osquery result logs using log input

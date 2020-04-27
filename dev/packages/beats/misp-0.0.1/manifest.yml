@@ -7,7 +7,7 @@ description: MISP Integration
 type: integration
 categories:
 - logs
-release: ga
+release: experimental
 removable: true
 requirement:
   kibana:
@@ -25,90 +25,5 @@ datasources:
   description: Collect logs from MISP instances
   inputs:
   - type: logs
-    vars:
-    - name: input
-      type: text
-      title: Input
-      multi: false
-      required: true
-      show_user: true
-      default: httpjson
-    - name: api_key
-      type: text
-      title: Api Key
-      multi: false
-      required: false
-      show_user: true
-      default: ""
-    - name: http_client_timeout
-      type: integer
-      title: Http Client Timeout
-      multi: false
-      required: true
-      show_user: true
-      default: 60
-    - name: http_method
-      type: text
-      title: Http Method
-      multi: false
-      required: true
-      show_user: true
-      default: GET
-    - name: http_headers
-      type: text
-      title: Http Headers
-      multi: false
-      required: true
-      show_user: true
-      default: '{}'
-    - name: http_request_body
-      type: text
-      title: Http Request Body
-      multi: false
-      required: true
-      show_user: true
-      default: '{}'
-    - name: interval
-      type: integer
-      title: Interval
-      multi: false
-      required: true
-      show_user: true
-      default: 0
-    - name: json_objects_array
-      type: text
-      title: Json Objects Array
-      multi: false
-      required: true
-      show_user: true
-      default: response.Attribute
-    - name: pagination
-      type: text
-      title: Pagination
-      multi: false
-      required: true
-      show_user: true
-      default: |-
-        {
-          "enabled": false,
-          "extra_body_content": {},
-          "id_field": "",
-          "req_field": "",
-          "url": ""
-        }
-    - name: url
-      type: text
-      title: Url
-      multi: false
-      required: false
-      show_user: true
-      default: ""
-    - name: ssl
-      type: text
-      title: Ssl
-      multi: false
-      required: true
-      show_user: true
-      default: '{}'
     title: Collect logs from MISP instances
     description: Collecting MISP threat logs

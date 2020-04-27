@@ -10,6 +10,7 @@
   "categories": [
     "logs"
   ],
+  "release": "beta",
   "removable": true,
   "requirement": {
     "kibana": {},
@@ -21,18 +22,19 @@
     "/package/datasources/1.0.0/dataset/examplelog1/manifest.yml",
     "/package/datasources/1.0.0/dataset/examplelog2/manifest.yml",
     "/package/datasources/1.0.0/dataset/examplemetric/manifest.yml",
-    "/package/datasources/1.0.0/dataset/examplelog1/fields/stream.yml",
-    "/package/datasources/1.0.0/dataset/examplelog2/fields/stream.yml",
-    "/package/datasources/1.0.0/dataset/examplemetric/fields/stream.yml",
-    "/package/datasources/1.0.0/dataset/examplelog1/agent/stream/stream.yml",
-    "/package/datasources/1.0.0/dataset/examplelog2/agent/stream/stream.yml",
-    "/package/datasources/1.0.0/dataset/examplemetric/agent/stream/stream.yml"
+    "/package/datasources/1.0.0/dataset/examplelog1/fields/stream.yml.hbs",
+    "/package/datasources/1.0.0/dataset/examplelog2/fields/stream.yml.hbs",
+    "/package/datasources/1.0.0/dataset/examplemetric/fields/stream.yml.hbs",
+    "/package/datasources/1.0.0/dataset/examplelog1/agent/stream/logs.yml",
+    "/package/datasources/1.0.0/dataset/examplelog1/agent/stream/syslog.yml",
+    "/package/datasources/1.0.0/dataset/examplelog2/agent/stream/stream.yml.hbs",
+    "/package/datasources/1.0.0/dataset/examplemetric/agent/stream/stream.yml.hbs"
   ],
   "datasets": [
     {
       "id": "datasources.examplelog1",
       "title": "Example dataset with inputs",
-      "release": "beta",
+      "release": "experimental",
       "type": "logs",
       "streams": [
         {
@@ -62,6 +64,13 @@
               }
             }
           ],
+          "template_path": "logs.yml",
+          "title": "Title of the stream",
+          "description": "Description of the stream with more details."
+        },
+        {
+          "input": "syslog",
+          "template_path": "syslog.yml",
           "title": "Title of the stream",
           "description": "Description of the stream with more details."
         }
@@ -72,7 +81,7 @@
     {
       "id": "datasources.examplelog2",
       "title": "Example dataset with inputs",
-      "release": "beta",
+      "release": "experimental",
       "type": "logs",
       "streams": [
         {
@@ -112,7 +121,7 @@
     {
       "id": "datasources.examplemetric",
       "title": "Example dataset with inputs",
-      "release": "beta",
+      "release": "experimental",
       "type": "metrics",
       "streams": [
         {
@@ -196,6 +205,7 @@
                 }
               ],
               "dataset": "datasources.examplemetric",
+              "template_path": "stream.yml.hbs",
               "template": "metric: foo\n",
               "title": "Title of the stream",
               "description": "Description of the stream with more details."
@@ -234,6 +244,7 @@
                 }
               ],
               "dataset": "datasources.examplelog1",
+              "template_path": "logs.yml",
               "template": "foo: bar\n",
               "title": "Title of the stream",
               "description": "Description of the stream with more details."
@@ -266,6 +277,7 @@
                 }
               ],
               "dataset": "datasources.examplelog2",
+              "template_path": "stream.yml.hbs",
               "template": "foo: bar\n",
               "title": "Title of the stream",
               "description": "Description of the stream with more details."
@@ -273,9 +285,20 @@
           ]
         },
         {
-          "type": "syslog"
+          "type": "syslog",
+          "streams": [
+            {
+              "input": "syslog",
+              "dataset": "datasources.examplelog1",
+              "template_path": "syslog.yml",
+              "template": "syslog: bar\n",
+              "title": "Title of the stream",
+              "description": "Description of the stream with more details."
+            }
+          ]
         }
-      ]
+      ],
+      "multiple": true
     }
   ],
   "download": "/epr/datasources/datasources-1.0.0.tar.gz",

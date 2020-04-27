@@ -7,7 +7,7 @@ description: Osquery Integration
 type: integration
 categories:
 - logs
-release: ga
+release: experimental
 removable: true
 requirement:
   kibana:
@@ -30,13 +30,5 @@ datasources:
   description: Collect logs from Osquery instances
   inputs:
   - type: logs
-    vars:
-    - name: use_namespace
-      type: bool
-      title: Use Namespace
-      multi: false
-      required: true
-      show_user: true
-      default: true
     title: Collect logs from Osquery instances
     description: Collecting Osquery result logs

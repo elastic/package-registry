@@ -1,0 +1,19 @@
+format_version: 1.0.0
+
+name: multiple-false
+description: Tests that multiple can be set to false
+version: 0.0.1
+title: Multiple false
+categories: ["logs"]
+type: integration
+release: beta
+
+
+datasources:
+  - name: logs
+    title: Logs datasource
+    description: Datasource for your log files.
+    inputs:
+      - type: logs
+    multiple: false
+

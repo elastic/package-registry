@@ -8,7 +8,7 @@ type: integration
 categories:
 - logs
 - metrics
-release: ga
+release: experimental
 removable: true
 requirement:
   kibana:
@@ -31,28 +31,6 @@ datasources:
   description: Collect logs and metrics from HAProxy instances
   inputs:
   - type: logs
-    vars:
-    - name: syslog_host
-      type: text
-      title: Syslog Host
-      multi: false
-      required: true
-      show_user: true
-      default: localhost
-    - name: syslog_port
-      type: integer
-      title: Syslog Port
-      multi: false
-      required: true
-      show_user: true
-      default: 9001
-    - name: input
-      type: text
-      title: Input
-      multi: false
-      required: true
-      show_user: true
-      default: syslog
     title: Collect logs from HAProxy instances
     description: Collecting HAProxy log logs
   - type: haproxy/metrics

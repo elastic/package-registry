@@ -51,7 +51,7 @@
                 "minZoom": 0,
                 "query": {
                     "language": "kuery",
-                    "query": "event.dataset : \"okta.system\" "
+                    "query": "stream.dataset : \"okta.system\" "
                 },
                 "sourceDescriptor": {
                     "applyGlobalQuery": true,
@@ -160,7 +160,7 @@
                         "alias": null,
                         "disabled": false,
                         "index": "logs-*",
-                        "key": "event.dataset",
+                        "key": "stream.dataset",
                         "negate": false,
                         "params": {
                             "query": "okta.system"
@@ -169,7 +169,7 @@
                     },
                     "query": {
                         "match_phrase": {
-                            "event.dataset": "okta.system"
+                            "stream.dataset": "okta.system"
                         }
                     }
                 }

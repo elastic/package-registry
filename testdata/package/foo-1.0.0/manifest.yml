@@ -6,6 +6,7 @@ version: 1.0.0
 title: Foo
 categories: [metrics]
 type: solution
+release: beta
 
 requirement:
   elasticsearch:

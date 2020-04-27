@@ -1,8 +1,8 @@
 title: Google Cloud firewall logs
-release: ga
+release: experimental
 type: logs
 streams:
-- input: logs
+- input: google-pubsub
   vars:
   - name: topic
     type: text
@@ -25,5 +25,25 @@ streams:
     required: true
     show_user: true
     default: false
-  title: Google Cloud firewall logs
-  description: Collect Google Cloud firewall logs
+  template_path: google-pubsub.yml.hbs
+  title: Google Cloud firewall logs (google-pubsub)
+  description: Collect Google Cloud firewall logs using google-pubsub input
+- input: logs
+  vars:
+  - name: debug
+    type: bool
+    title: Debug
+    multi: false
+    required: true
+    show_user: true
+    default: false
+  - name: keep_original_message
+    type: bool
+    title: Keep Original Message
+    multi: false
+    required: true
+    show_user: true
+    default: false
+  template_path: log.yml.hbs
+  title: Google Cloud firewall logs (log)
+  description: Collect Google Cloud firewall logs using log input

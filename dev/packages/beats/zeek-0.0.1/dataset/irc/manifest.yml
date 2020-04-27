@@ -1,5 +1,5 @@
 title: Zeek irc logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: logs
@@ -31,5 +31,6 @@ streams:
     required: true
     show_user: true
     default: true
-  title: Zeek irc logs
-  description: Collect Zeek irc logs
+  template_path: log.yml.hbs
+  title: Zeek irc logs (log)
+  description: Collect Zeek irc logs using log input

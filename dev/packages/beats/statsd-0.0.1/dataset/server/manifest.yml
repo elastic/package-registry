@@ -1,5 +1,5 @@
 title: Statsd server metrics
-release: ga
+release: experimental
 type: metrics
 streams:
 - input: statsd/metrics

@@ -1,0 +1,12 @@
+[
+  {
+    "id": "logs",
+    "title": "Logs",
+    "count": 4
+  },
+  {
+    "id": "metrics",
+    "title": "Metrics",
+    "count": 3
+  }
+]

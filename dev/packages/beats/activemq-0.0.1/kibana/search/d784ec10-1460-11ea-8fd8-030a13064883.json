@@ -14,7 +14,7 @@
                 "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.index",
                 "query": {
                     "language": "kuery",
-                    "query": "event.dataset :\"activemq.log\" "
+                    "query": "stream.dataset :\"activemq.log\" "
                 },
                 "version": true
             }

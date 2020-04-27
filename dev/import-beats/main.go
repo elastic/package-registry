@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/url"
 	"os"
+	"strings"
 
 	"github.com/pkg/errors"
 )
@@ -33,6 +34,9 @@ type importerOptions struct {
 
 	// Elastic Common Schema directory
 	ecsDir string
+
+	// Packages selected for the import (comma-delimited list)
+	packages string
 
 	// Target public directory where the generated packages should end up in
 	outputDir string
@@ -66,6 +70,15 @@ func (o *importerOptions) validate() error {
 	return nil
 }
 
+func (o *importerOptions) selectedPackages() []string {
+	var selected []string
+	p := strings.TrimSpace(o.packages)
+	if len(p) > 0 {
+		selected = strings.Split(p, ",")
+	}
+	return selected
+}
+
 func main() {
 	var options importerOptions
 
@@ -77,6 +90,7 @@ func main() {
 	flag.BoolVar(&options.skipKibana, "skipKibana", false, "Skip storing Kibana objects")
 	flag.StringVar(&options.euiDir, "euiDir", "../eui", "Path to the Elastic UI framework repository")
 	flag.StringVar(&options.ecsDir, "ecsDir", "../ecs", "Path to the Elastic Common Schema repository")
+	flag.StringVar(&options.packages, "packages", "", "Packages selected for the import")
 	flag.StringVar(&options.outputDir, "outputDir", "dev/packages/beats", "Path to the output directory")
 	flag.Parse()
 
@@ -108,7 +122,7 @@ func build(options importerOptions) error {
 		return errors.Wrap(err, "loading ECS fields failed")
 	}
 
-	repository := newPackageRepository(iconRepository, kibanaMigrator, ecsFields)
+	repository := newPackageRepository(iconRepository, kibanaMigrator, ecsFields, options.selectedPackages())
 
 	for _, beatName := range logSources {
 		err := repository.createPackagesFromSource(options.beatsDir, beatName, "logs")

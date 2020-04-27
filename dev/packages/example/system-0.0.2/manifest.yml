@@ -1,0 +1,29 @@
+format_version: 1.0.0
+
+name: system
+title: System
+description: System package
+version: 0.0.2
+categories: ["logs", "metrics"]
+release: ga
+
+# The system package cannot be removed
+removable: false
+
+requirement:
+  kibana:
+    versions: "<8.0.0"
+
+
+datasources:
+  - name: system
+    title: System metrics and logs
+    description: Collecting system metrics like cpu, memory, disk metrics from your system and logs.
+    inputs:
+      - type: system/metrics
+      - type: logs
+
+icons:
+  - src: "/img/compute.svg"
+    size: "16x16"
+    type: "image/svg+xml"

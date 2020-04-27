@@ -24,7 +24,7 @@
                 "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.index",
                 "query": {
                     "language": "kuery",
-                    "query": "(event.dataset:apache.status)"
+                    "query": "(stream.dataset:apache.status)"
                 }
             }
         },

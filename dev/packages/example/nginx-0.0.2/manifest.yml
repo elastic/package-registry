@@ -1,0 +1,72 @@
+format_version: 1.0.0
+
+name: nginx
+title: Nginx
+description: Nginx integration
+version: 0.0.2
+categories: ["logs", "metrics"]
+release: ga
+
+requirement:
+  kibana:
+    versions: ">7.1.0 <7.6.0"
+  elasticsearch:
+    versions: ">7.0.1"
+
+datasources:
+  -
+    # Do we need a name for the data source?
+    name: nginx
+    title: Nginx logs and metrics.
+    description: Collecting logs and metrics from nginx.
+
+    # List of inputs this datasource supports
+    inputs:
+      -
+        # An id can be given, in case the type used here is not unique
+        # This is for selection in the stream
+        # id: nginx
+        type: nginx/metrics
+        # Title should never have an ending dot.
+        title: Collect metrics from nginx hosts
+        description: Collect stubstatus metrics from nginx hosts.
+
+        # Common configuration options for this input
+        vars:
+          - name: hosts
+            title: Hosts
+            description: List of nginx hosts to collect data from.
+            default:
+              ["http://127.0.0.1"]
+            # All the config options that are required should be shown in the UI
+            required: true
+            multi: true
+            type: text
+          - name: username
+            type: text
+            title: Username
+            description: Username to authenticate to the Nginx hosts
+
+          - name: password
+            # This is the html input type?
+            type: password
+            title: Password
+            description: Password to authenticate to the Nginx hosts
+
+      -
+        type: logs
+        title: Collect nginx logs
+        description: Collect access and error logs from nginx.
+        vars:
+
+icons:
+  - src: "/img/icon.svg"
+    type: "image/svg+xml"
+
+screenshots:
+  - src: /img/metrics.png
+    title: Nginx metrics overview
+    size: 2560x2100
+  - src: /img/logs.png
+    title: Nginx logs overview
+    size: 1218x1266

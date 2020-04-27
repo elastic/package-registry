@@ -1,5 +1,5 @@
 title: RabbitMQ exchange metrics
-release: ga
+release: experimental
 type: metrics
 streams:
 - input: rabbitmq/metrics

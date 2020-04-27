@@ -1,5 +1,5 @@
-ARG GO_VERSION
-FROM golang:${GO_VERSION:-1.13.4}
+ARG GO_VERSION=1.14.2
+FROM golang:${GO_VERSION}
 
 RUN \
     apt-get update \

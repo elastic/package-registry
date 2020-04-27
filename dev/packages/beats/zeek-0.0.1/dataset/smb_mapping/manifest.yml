@@ -1,5 +1,5 @@
 title: Zeek smb_mapping logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: logs
@@ -31,5 +31,6 @@ streams:
     required: true
     show_user: true
     default: true
-  title: Zeek smb_mapping logs
-  description: Collect Zeek smb_mapping logs
+  template_path: log.yml.hbs
+  title: Zeek smb_mapping logs (log)
+  description: Collect Zeek smb_mapping logs using log input

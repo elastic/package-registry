@@ -1,5 +1,5 @@
 title: Icinga main logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: logs
@@ -19,5 +19,6 @@ streams:
       windows:
         default:
         - c:/programdata/icinga2/var/log/icinga2/icinga2.log*
-  title: Icinga main logs
-  description: Collect Icinga main logs
+  template_path: log.yml.hbs
+  title: Icinga main logs (log)
+  description: Collect Icinga main logs using log input

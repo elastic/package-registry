@@ -12,7 +12,7 @@
                 "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.index",
                 "query": {
                     "language": "kuery",
-                    "query": "event.dataset:\"o365.audit\" "
+                    "query": "stream.dataset:\"o365.audit\" "
                 },
                 "version": true
             }

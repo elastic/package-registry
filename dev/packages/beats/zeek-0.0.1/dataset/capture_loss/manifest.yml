@@ -1,5 +1,5 @@
 title: Zeek capture_loss logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: logs
@@ -24,5 +24,6 @@ streams:
     show_user: true
     default:
     - zeek.capture_loss
-  title: Zeek capture_loss logs
-  description: Collect Zeek capture_loss logs
+  template_path: log.yml.hbs
+  title: Zeek capture_loss logs (log)
+  description: Collect Zeek capture_loss logs using log input

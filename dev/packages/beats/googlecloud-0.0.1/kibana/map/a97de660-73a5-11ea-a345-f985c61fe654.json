@@ -52,7 +52,7 @@
                 "minZoom": 0,
                 "query": {
                     "language": "kuery",
-                    "query": "event.dataset:googlecloud.audit"
+                    "query": "stream.dataset:googlecloud.audit"
                 },
                 "sourceDescriptor": {
                     "applyGlobalQuery": true,

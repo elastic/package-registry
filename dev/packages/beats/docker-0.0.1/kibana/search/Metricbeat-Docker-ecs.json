@@ -24,7 +24,7 @@
                 "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.index",
                 "query": {
                     "language": "kuery",
-                    "query": "(event.dataset:docker.container OR event.dataset:docker.cpu OR event.dataset:docker.diskio OR event.dataset:docker.event OR event.dataset:docker.healthcheck OR event.dataset:docker.image OR event.dataset:docker.info OR event.dataset:docker.memory OR event.dataset:docker.network)"
+                    "query": "(stream.dataset:docker.container OR stream.dataset:docker.cpu OR stream.dataset:docker.diskio OR stream.dataset:docker.event OR stream.dataset:docker.healthcheck OR stream.dataset:docker.image OR stream.dataset:docker.info OR stream.dataset:docker.memory OR stream.dataset:docker.network)"
                 }
             }
         },

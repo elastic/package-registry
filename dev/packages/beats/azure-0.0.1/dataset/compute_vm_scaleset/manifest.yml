@@ -1,5 +1,5 @@
 title: azure compute_vm_scaleset metrics
-release: ga
+release: experimental
 type: metrics
 streams:
 - input: azure/metrics
