@@ -1,0 +1,17 @@
+type: metric/coredns
+metricsets: ["stats"]
+period: {{period}}
+enabled: true
+
+# CoreDNS hosts
+hosts:
+{{#each hosts}}
+  - {{this}}
+{{/each}}
+
+{{#if username}}
+username: "{{username}}"
+{{/if}}
+{{#if password}}
+password: "{{password}}"
+{{/if}}

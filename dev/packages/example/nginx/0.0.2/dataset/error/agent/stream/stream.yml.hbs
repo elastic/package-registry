@@ -1,0 +1,9 @@
+input: log
+
+{{#each paths}}
+paths: "{{this}}"
+{{/each}}
+exclude_files: [".gz$"]
+
+processors:
+  - add_locale: ~
