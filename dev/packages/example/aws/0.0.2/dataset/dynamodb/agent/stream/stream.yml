@@ -1,4 +1,0 @@
-input: aws/metrics
-period: {{period}}
-metricsets: dynamodb
-dataset: aws.dynamodb

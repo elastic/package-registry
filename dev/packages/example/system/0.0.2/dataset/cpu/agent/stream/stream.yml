@@ -1,5 +1,0 @@
-input: system/metrics
-metricset: cpu
-period: {{period}}
-dataset: system.cpu
-cpu.metrics: ["percentages", "normalized_percentages"]

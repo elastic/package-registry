@@ -1,8 +1,0 @@
-input: system/metrics
-metricset: socket
-period: {{period}}
-dataset: system.socket
-
-socket.reverse_lookup.enabled: {{reverse_lookup.enabled}}
-socket.reverse_lookup.success_ttl: {{reverse_lookup.success_ttl}}
-socket.reverse_lookup.failure_ttl: {{reverse_lookup.failure_ttl}}

@@ -1,4 +1,0 @@
-input: system/metrics
-metricset: load
-period: {{period}}
-dataset: system.load

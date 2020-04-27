@@ -1,4 +1,0 @@
-input: system/metrics
-metricset: process_summary
-period: {{period}}
-dataset: system.process_summary

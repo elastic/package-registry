@@ -1,5 +1,0 @@
-input: system/metrics
-metricset: raid
-period: {{period}}
-dataset: system.raid
-raid.mount_point: {{mount_point}}

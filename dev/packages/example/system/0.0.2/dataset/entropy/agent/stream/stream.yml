@@ -1,4 +1,0 @@
-input: system/metrics
-metricset: entropy
-period: {{period}}
-dataset: system.entropy
