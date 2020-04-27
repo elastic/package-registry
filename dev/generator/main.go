@@ -155,7 +155,7 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 			return err
 		}
 
-		err = ioutil.WriteFile(filepath.Join(dirPath, "stream.yml"), []byte(streamFields), 0644)
+		err = ioutil.WriteFile(filepath.Join(dirPath, "stream.yml.hbs"), []byte(streamFields), 0644)
 		if err != nil {
 			return err
 		}
