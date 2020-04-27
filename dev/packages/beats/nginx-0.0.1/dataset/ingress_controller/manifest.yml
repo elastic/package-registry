@@ -19,5 +19,6 @@ streams:
       windows:
         default:
         - c:/programdata/nginx/logs/*access.log*
-  title: Nginx ingress_controller logs
-  description: Collect Nginx ingress_controller logs
+  template_path: log.yml.hbs
+  title: Nginx ingress_controller logs (log)
+  description: Collect Nginx ingress_controller logs using log input

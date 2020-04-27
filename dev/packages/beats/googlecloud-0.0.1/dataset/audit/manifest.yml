@@ -2,7 +2,7 @@ title: Google Cloud audit logs
 release: ga
 type: logs
 streams:
-- input: logs
+- input: google-pubsub
   vars:
   - name: topic
     type: text
@@ -18,5 +18,18 @@ streams:
     required: true
     show_user: true
     default: filebeat-googlecloud-audit
-  title: Google Cloud audit logs
-  description: Collect Google Cloud audit logs
+  template_path: google-pubsub.yml.hbs
+  title: Google Cloud audit logs (google-pubsub)
+  description: Collect Google Cloud audit logs using google-pubsub input
+- input: logs
+  vars:
+  - name: keep_original_message
+    type: bool
+    title: Keep Original Message
+    multi: false
+    required: true
+    show_user: true
+    default: false
+  template_path: log.yml.hbs
+  title: Google Cloud audit logs (log)
+  description: Collect Google Cloud audit logs using log input

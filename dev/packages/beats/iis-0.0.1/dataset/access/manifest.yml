@@ -19,5 +19,6 @@ streams:
       windows:
         default:
         - C:/inetpub/logs/LogFiles/*/*.log
-  title: IIS access logs
-  description: Collect IIS access logs
+  template_path: log.yml.hbs
+  title: IIS access logs (log)
+  description: Collect IIS access logs using log input

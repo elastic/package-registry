@@ -87,7 +87,7 @@ func createDatasets(beatType, modulePath, moduleName, moduleTitle, moduleRelease
 				modulePath, datasetName)
 		}
 
-		foundEcsFieldNames := uniqueFieldNames(append(filteredEcsModuleFieldNames, filteredEcsDatasetFieldNames...))
+		foundEcsFieldNames := uniqueStringValues(append(filteredEcsModuleFieldNames, filteredEcsDatasetFieldNames...))
 		ecsFields := filterEcsFields(ecsFields, foundEcsFieldNames)
 
 		fieldsFiles := map[string]fieldDefinitionArray{}
@@ -116,17 +116,10 @@ func createDatasets(beatType, modulePath, moduleName, moduleTitle, moduleRelease
 			return nil, errors.Wrapf(err, "loading elasticsearch content failed (datasetPath: %s)", datasetPath)
 		}
 
-		// streams
-		streams, err := createStreams(modulePath, moduleName, moduleTitle, datasetName, beatType)
+		// streams and agents
+		streams, agent, err := createStreams(modulePath, moduleName, moduleTitle, datasetName, beatType)
 		if err != nil {
 			return nil, errors.Wrapf(err, "creating streams failed (datasetPath: %s)", datasetPath)
-		}
-
-		// agent
-		agent, err := createAgentContent(modulePath, moduleName, datasetName, beatType, streams)
-		if err != nil {
-			return nil, errors.Wrapf(err, "creating agent content failed (modulePath: %s, datasetName: %s)",
-				modulePath, datasetName)
 		}
 
 		// manifest

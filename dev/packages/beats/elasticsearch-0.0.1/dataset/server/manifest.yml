@@ -22,5 +22,6 @@ streams:
         default:
         - c:/ProgramData/Elastic/Elasticsearch/logs/*.log
         - c:/ProgramData/Elastic/Elasticsearch/logs/*_server.json
-  title: elasticsearch server logs
-  description: Collect elasticsearch server logs
+  template_path: log.yml.hbs
+  title: elasticsearch server logs (log)
+  description: Collect elasticsearch server logs using log input

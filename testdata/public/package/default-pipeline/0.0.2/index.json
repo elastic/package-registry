@@ -20,8 +20,8 @@
     "/package/default-pipeline/0.0.2/manifest.yml",
     "/package/default-pipeline/0.0.2/docs/README.md",
     "/package/default-pipeline/0.0.2/dataset/foo/manifest.yml",
-    "/package/default-pipeline/0.0.2/dataset/foo/fields/stream.yml",
-    "/package/default-pipeline/0.0.2/dataset/foo/agent/stream/stream.yml",
+    "/package/default-pipeline/0.0.2/dataset/foo/fields/stream.yml.hbs",
+    "/package/default-pipeline/0.0.2/dataset/foo/agent/stream/stream.yml.hbs",
     "/package/default-pipeline/0.0.2/dataset/foo/elasticsearch/ingest-pipeline/default.json"
   ],
   "datasets": [
@@ -72,7 +72,7 @@
                 }
               ],
               "dataset": "default-pipeline.foo",
-              "template_path": "stream.yml",
+              "template_path": "stream.yml.hbs",
               "template": "foo: bar\n"
             }
           ]

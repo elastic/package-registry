@@ -19,5 +19,6 @@ streams:
       windows:
         default:
         - c:/programdata/icinga2/var/log/icinga2/debug.log*
-  title: Icinga debug logs
-  description: Collect Icinga debug logs
+  template_path: log.yml.hbs
+  title: Icinga debug logs (log)
+  description: Collect Icinga debug logs using log input

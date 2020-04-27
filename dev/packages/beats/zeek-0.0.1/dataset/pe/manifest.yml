@@ -24,12 +24,6 @@ streams:
     show_user: true
     default:
     - zeek.pe
-  - name: community_id
-    type: bool
-    title: Community Id
-    multi: false
-    required: true
-    show_user: true
-    default: true
-  title: Zeek pe logs
-  description: Collect Zeek pe logs
+  template_path: log.yml.hbs
+  title: Zeek pe logs (log)
+  description: Collect Zeek pe logs using log input

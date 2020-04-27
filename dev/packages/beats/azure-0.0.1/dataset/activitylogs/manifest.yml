@@ -2,7 +2,7 @@ title: Azure activitylogs logs
 release: beta
 type: logs
 streams:
-- input: logs
+- input: azure-eventhub
   vars:
   - name: eventhub
     type: text
@@ -11,5 +11,10 @@ streams:
     required: true
     show_user: true
     default: insights-operational-logs
-  title: Azure activitylogs logs
-  description: Collect Azure activitylogs logs
+  template_path: azure-eventhub.yml.hbs
+  title: Azure activitylogs logs (azure-eventhub)
+  description: Collect Azure activitylogs logs using azure-eventhub input
+- input: logs
+  template_path: log.yml.hbs
+  title: Azure activitylogs logs (log)
+  description: Collect Azure activitylogs logs using log input

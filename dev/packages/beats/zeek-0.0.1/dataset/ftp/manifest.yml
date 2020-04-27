@@ -31,5 +31,6 @@ streams:
     required: true
     show_user: true
     default: true
-  title: Zeek ftp logs
-  description: Collect Zeek ftp logs
+  template_path: log.yml.hbs
+  title: Zeek ftp logs (log)
+  description: Collect Zeek ftp logs using log input

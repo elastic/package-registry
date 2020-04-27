@@ -16,5 +16,6 @@ streams:
       windows:
         default:
         - c:/programdata/logstash/logs/logstash-slowlog-{{.format}}*.log
-  title: logstash slowlog logs
-  description: Collect logstash slowlog logs
+  template_path: log.yml.hbs
+  title: logstash slowlog logs (log)
+  description: Collect logstash slowlog logs using log input

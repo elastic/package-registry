@@ -19,5 +19,6 @@ streams:
       windows:
         default:
         - c:/programdata/nginx/logs/error.log*
-  title: Nginx error logs
-  description: Collect Nginx error logs
+  template_path: log.yml.hbs
+  title: Nginx error logs (log)
+  description: Collect Nginx error logs using log input

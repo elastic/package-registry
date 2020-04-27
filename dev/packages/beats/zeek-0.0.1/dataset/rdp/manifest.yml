@@ -31,5 +31,6 @@ streams:
     required: true
     show_user: true
     default: true
-  title: Zeek rdp logs
-  description: Collect Zeek rdp logs
+  template_path: log.yml.hbs
+  title: Zeek rdp logs (log)
+  description: Collect Zeek rdp logs using log input

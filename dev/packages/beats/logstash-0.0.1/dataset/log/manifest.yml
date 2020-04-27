@@ -4,6 +4,13 @@ type: logs
 streams:
 - input: logs
   vars:
+  - name: format
+    type: text
+    title: Format
+    multi: false
+    required: true
+    show_user: true
+    default: plain
   - name: paths
     type: text
     title: Paths
@@ -16,5 +23,6 @@ streams:
       windows:
         default:
         - c:/programdata/logstash/logs/logstash-{{.format}}*.log
-  title: logstash log logs
-  description: Collect logstash log logs
+  template_path: log.yml.hbs
+  title: logstash log logs (log)
+  description: Collect logstash log logs using log input

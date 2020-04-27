@@ -31,5 +31,6 @@ streams:
     required: true
     show_user: true
     default: true
-  title: Zeek http logs
-  description: Collect Zeek http logs
+  template_path: log.yml.hbs
+  title: Zeek http logs (log)
+  description: Collect Zeek http logs using log input

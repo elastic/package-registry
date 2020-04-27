@@ -19,5 +19,6 @@ streams:
       windows:
         default:
         - c:/programdata/traefik/logs/*access.log*
-  title: Traefik access logs
-  description: Collect Traefik access logs
+  template_path: log.yml.hbs
+  title: Traefik access logs (log)
+  description: Collect Traefik access logs using log input

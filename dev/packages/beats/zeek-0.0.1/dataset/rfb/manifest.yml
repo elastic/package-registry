@@ -31,5 +31,6 @@ streams:
     required: true
     show_user: true
     default: true
-  title: Zeek rfb logs
-  description: Collect Zeek rfb logs
+  template_path: log.yml.hbs
+  title: Zeek rfb logs (log)
+  description: Collect Zeek rfb logs using log input
