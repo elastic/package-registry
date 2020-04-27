@@ -1,5 +1,5 @@
 title: Zeek tunnel logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: logs

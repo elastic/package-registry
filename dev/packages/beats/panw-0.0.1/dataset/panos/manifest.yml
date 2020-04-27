@@ -1,5 +1,5 @@
 title: panw panos logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: syslog

@@ -1,5 +1,5 @@
 title: Zeek x509 logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: logs

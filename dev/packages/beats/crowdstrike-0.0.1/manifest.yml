@@ -7,7 +7,7 @@ description: Crowdstrike Integration
 type: integration
 categories:
 - logs
-release: beta
+release: experimental
 removable: true
 requirement:
   kibana: {}

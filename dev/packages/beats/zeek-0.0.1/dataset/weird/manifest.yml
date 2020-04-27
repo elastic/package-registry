@@ -1,5 +1,5 @@
 title: Zeek weird logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: logs

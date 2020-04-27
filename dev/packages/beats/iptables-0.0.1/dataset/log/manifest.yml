@@ -1,5 +1,5 @@
 title: iptables log logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: syslog

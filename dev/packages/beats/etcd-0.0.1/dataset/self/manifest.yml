@@ -1,5 +1,5 @@
 title: Etcd self metrics
-release: ga
+release: experimental
 type: metrics
 streams:
 - input: etcd/metrics

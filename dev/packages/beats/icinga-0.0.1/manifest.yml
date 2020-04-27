@@ -7,7 +7,7 @@ description: Icinga Integration
 type: integration
 categories:
 - logs
-release: ga
+release: experimental
 removable: true
 requirement:
   kibana:

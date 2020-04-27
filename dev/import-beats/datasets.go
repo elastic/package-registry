@@ -104,12 +104,6 @@ func createDatasets(beatType, modulePath, moduleName, moduleTitle, moduleRelease
 			files: fieldsFiles,
 		}
 
-		// release
-		datasetRelease, err := determineDatasetRelease(moduleRelease, datasetFields)
-		if err != nil {
-			return nil, errors.Wrapf(err, "loading release from fields failed (datasetPath: %s", datasetPath)
-		}
-
 		// elasticsearch
 		elasticsearch, err := loadElasticsearchContent(datasetPath)
 		if err != nil {
@@ -125,7 +119,7 @@ func createDatasets(beatType, modulePath, moduleName, moduleTitle, moduleRelease
 		// manifest
 		manifest := util.DataSet{
 			Title:   fmt.Sprintf("%s %s %s", moduleTitle, datasetName, beatType),
-			Release: datasetRelease,
+			Release: "experimental",
 			Type:    beatType,
 			Streams: streams,
 		}

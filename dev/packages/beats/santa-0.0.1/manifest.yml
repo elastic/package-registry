@@ -7,7 +7,7 @@ description: Google Santa Integration
 type: integration
 categories:
 - logs
-release: ga
+release: experimental
 removable: true
 requirement:
   kibana:

@@ -1,5 +1,5 @@
 title: MISP threat logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: httpjson

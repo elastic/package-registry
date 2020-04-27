@@ -1,5 +1,5 @@
 title: Zeek capture_loss logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: logs

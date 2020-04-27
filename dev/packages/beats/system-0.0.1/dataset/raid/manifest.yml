@@ -1,5 +1,5 @@
 title: System raid metrics
-release: ga
+release: experimental
 type: metrics
 streams:
 - input: system/metrics
