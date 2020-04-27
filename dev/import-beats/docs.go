@@ -49,20 +49,21 @@ func renderExportedFields(packageDataset string, datasets datasetContentArray) (
 			buffer.WriteString("**Exported fields**")
 			buffer.WriteString("\n\n")
 
-			if len(dataset.fields.files) == 0 {
-				buffer.WriteString("(no fields available)")
-			} else {
-				collected, err := collectFields(dataset.fields)
-				if err != nil {
-					return "", errors.Wrapf(err, "collecting fields failed")
-				}
+			collected, err := collectFields(dataset.fields)
+			if err != nil {
+				return "", errors.Wrapf(err, "collecting fields failed")
+			}
 
-				buffer.WriteString("| Field | Description | Type |\n")
-				buffer.WriteString("|---|---|---|\n")
-				for _, c := range collected {
-					description := strings.TrimSpace(strings.ReplaceAll(c.description, "\n", " "))
-					buffer.WriteString(fmt.Sprintf("| %s | %s | %s |\n", c.name, description, c.aType))
-				}
+			if len(collected) == 0 {
+				buffer.WriteString("(no fields available)")
+				return buffer.String(), nil
+			}
+
+			buffer.WriteString("| Field | Description | Type |\n")
+			buffer.WriteString("|---|---|---|\n")
+			for _, c := range collected {
+				description := strings.TrimSpace(strings.ReplaceAll(c.description, "\n", " "))
+				buffer.WriteString(fmt.Sprintf("| %s | %s | %s |\n", c.name, description, c.aType))
 			}
 			return buffer.String(), nil
 		}
