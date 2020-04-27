@@ -37,7 +37,7 @@
                             "alias": null,
                             "disabled": false,
                             "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.filter[1].meta.index",
-                            "key": "event.dataset",
+                            "key": "stream.dataset",
                             "negate": false,
                             "params": {
                                 "query": "activemq.log"
@@ -47,7 +47,7 @@
                         },
                         "query": {
                             "match": {
-                                "event.dataset": {
+                                "stream.dataset": {
                                     "query": "activemq.log",
                                     "type": "phrase"
                                 }

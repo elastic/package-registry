@@ -22,7 +22,7 @@
                             "alias": null,
                             "disabled": false,
                             "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index",
-                            "key": "event.dataset",
+                            "key": "stream.dataset",
                             "negate": false,
                             "params": {
                                 "query": "googlecloud.audit"
@@ -31,7 +31,7 @@
                         },
                         "query": {
                             "match_phrase": {
-                                "event.dataset": "googlecloud.audit"
+                                "stream.dataset": "googlecloud.audit"
                             }
                         }
                     }

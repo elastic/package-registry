@@ -15,7 +15,7 @@
                 "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.index",
                 "query": {
                     "language": "kuery",
-                    "query": "event.dataset:redis.slowlog"
+                    "query": "stream.dataset:redis.slowlog"
                 },
                 "version": true
             }

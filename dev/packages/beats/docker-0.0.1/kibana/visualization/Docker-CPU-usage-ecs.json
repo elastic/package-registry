@@ -20,7 +20,7 @@
                 "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.index",
                 "query": {
                     "language": "kuery",
-                    "query": "event.dataset:docker.cpu"
+                    "query": "stream.dataset:docker.cpu"
                 }
             }
         },

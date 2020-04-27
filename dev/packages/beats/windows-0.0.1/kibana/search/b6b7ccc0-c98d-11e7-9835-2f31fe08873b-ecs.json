@@ -25,11 +25,11 @@
                             "key": "query",
                             "negate": false,
                             "type": "custom",
-                            "value": "{\"match_phrase_prefix\":{\"event.dataset\":{\"query\":\"windows.\"}}}"
+                            "value": "{\"match_phrase_prefix\":{\"stream.dataset\":{\"query\":\"windows.\"}}}"
                         },
                         "query": {
                             "match_phrase_prefix": {
-                                "event.dataset": {
+                                "stream.dataset": {
                                     "query": "windows."
                                 }
                             }

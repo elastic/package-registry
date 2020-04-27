@@ -46,7 +46,7 @@
                         "fill": "0",
                         "filter": {
                             "language": "kuery",
-                            "query": "event.dataset: \"googlecloud.pubsub\" "
+                            "query": "stream.dataset: \"googlecloud.pubsub\" "
                         },
                         "formatter": "number",
                         "id": "61ca57f1-469d-11e7-af02-69e470af7417",

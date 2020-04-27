@@ -52,11 +52,11 @@
                             "key": "query",
                             "negate": false,
                             "type": "custom",
-                            "value": "{\"match_phrase_prefix\":{\"event.dataset\":{\"query\":\"suricata.\"}}}"
+                            "value": "{\"match_phrase_prefix\":{\"stream.dataset\":{\"query\":\"suricata.\"}}}"
                         },
                         "query": {
                             "match_phrase_prefix": {
-                                "event.dataset": {
+                                "stream.dataset": {
                                     "query": "suricata."
                                 }
                             }

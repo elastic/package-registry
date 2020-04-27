@@ -32,7 +32,7 @@
                         "fill": 0.5,
                         "filter": {
                             "language": "kuery",
-                            "query": "event.dataset : \"okta.system\""
+                            "query": "stream.dataset : \"okta.system\""
                         },
                         "formatter": "number",
                         "id": "61ca57f1-469d-11e7-af02-69e470af7417",

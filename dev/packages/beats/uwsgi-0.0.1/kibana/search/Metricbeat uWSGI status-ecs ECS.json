@@ -12,7 +12,7 @@
                 "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.index",
                 "query": {
                     "language": "kuery",
-                    "query": "(event.dataset:uwsgi.status)"
+                    "query": "(stream.dataset:uwsgi.status)"
                 },
                 "version": true
             }

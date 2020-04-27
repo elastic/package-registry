@@ -22,11 +22,11 @@
                             "key": "query",
                             "negate": false,
                             "type": "custom",
-                            "value": "{\"match_phrase_prefix\":{\"event.dataset\":{\"query\":\"santa.\"}}}"
+                            "value": "{\"match_phrase_prefix\":{\"stream.dataset\":{\"query\":\"santa.\"}}}"
                         },
                         "query": {
                             "match_phrase_prefix": {
-                                "event.dataset": {
+                                "stream.dataset": {
                                     "query": "santa."
                                 }
                             }
@@ -40,7 +40,7 @@
                             "alias": null,
                             "disabled": false,
                             "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.filter[1].meta.index",
-                            "key": "event.dataset",
+                            "key": "stream.dataset",
                             "negate": false,
                             "params": {
                                 "query": "log",
@@ -51,7 +51,7 @@
                         },
                         "query": {
                             "match": {
-                                "event.dataset": {
+                                "stream.dataset": {
                                     "query": "log",
                                     "type": "phrase"
                                 }
