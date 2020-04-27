@@ -1,5 +1,5 @@
 title: Google Cloud audit logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: google-pubsub

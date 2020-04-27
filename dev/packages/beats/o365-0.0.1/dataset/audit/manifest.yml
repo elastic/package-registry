@@ -1,5 +1,5 @@
 title: Office 365 audit logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: o365audit

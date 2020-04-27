@@ -1,5 +1,5 @@
 title: HAProxy stat metrics
-release: ga
+release: experimental
 type: metrics
 streams:
 - input: haproxy/metrics

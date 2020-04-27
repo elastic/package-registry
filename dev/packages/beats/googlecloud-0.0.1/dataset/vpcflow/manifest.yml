@@ -1,5 +1,5 @@
 title: Google Cloud vpcflow logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: google-pubsub

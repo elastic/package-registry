@@ -1,5 +1,5 @@
 title: aws dynamodb metrics
-release: beta
+release: experimental
 type: metrics
 streams:
 - input: aws/metrics

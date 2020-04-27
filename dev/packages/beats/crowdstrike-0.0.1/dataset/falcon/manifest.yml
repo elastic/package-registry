@@ -1,5 +1,5 @@
 title: Crowdstrike falcon logs
-release: beta
+release: experimental
 type: logs
 streams:
 - input: logs

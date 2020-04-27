@@ -1,5 +1,5 @@
 title: Azure signinlogs logs
-release: beta
+release: experimental
 type: logs
 streams:
 - input: azure-eventhub

@@ -1,5 +1,5 @@
 title: ibmmq errorlog logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: logs

@@ -1,5 +1,5 @@
 title: Windows perfmon metrics
-release: ga
+release: experimental
 type: metrics
 streams:
 - input: windows/metrics

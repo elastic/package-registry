@@ -1,5 +1,5 @@
 title: Nginx ingress_controller logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: logs

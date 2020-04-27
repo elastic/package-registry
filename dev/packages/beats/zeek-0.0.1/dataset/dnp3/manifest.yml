@@ -1,5 +1,5 @@
 title: Zeek dnp3 logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: logs

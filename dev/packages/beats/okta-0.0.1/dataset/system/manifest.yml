@@ -1,5 +1,5 @@
 title: Okta system logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: httpjson
