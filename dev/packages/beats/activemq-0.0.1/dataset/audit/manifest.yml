@@ -1,5 +1,5 @@
 title: activemq audit logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: logs
@@ -19,5 +19,6 @@ streams:
       windows:
         default:
         - c:/apache-activemq-*/data/audit.log*
-  title: activemq audit logs
-  description: Collect activemq audit logs
+  template_path: log.yml.hbs
+  title: activemq audit logs (log)
+  description: Collect activemq audit logs using log input

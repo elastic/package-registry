@@ -1,5 +1,5 @@
 title: elasticsearch slowlog logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: logs
@@ -28,5 +28,6 @@ streams:
         - c:/ProgramData/Elastic/Elasticsearch/logs/*_index_indexing_slowlog.log
         - c:/ProgramData/Elastic/Elasticsearch/logs/*_index_search_slowlog.json
         - c:/ProgramData/Elastic/Elasticsearch/logs/*_index_indexing_slowlog.json
-  title: elasticsearch slowlog logs
-  description: Collect elasticsearch slowlog logs
+  template_path: log.yml.hbs
+  title: elasticsearch slowlog logs (log)
+  description: Collect elasticsearch slowlog logs using log input

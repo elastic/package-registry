@@ -22,11 +22,11 @@
                             "key": "query",
                             "negate": false,
                             "type": "custom",
-                            "value": "{\"match_phrase_prefix\":{\"event.dataset\":{\"query\":\"logstash.\"}}}"
+                            "value": "{\"match_phrase_prefix\":{\"stream.dataset\":{\"query\":\"logstash.\"}}}"
                         },
                         "query": {
                             "match_phrase_prefix": {
-                                "event.dataset": {
+                                "stream.dataset": {
                                     "query": "logstash."
                                 }
                             }

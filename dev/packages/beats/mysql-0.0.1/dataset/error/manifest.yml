@@ -1,5 +1,5 @@
 title: MySQL error logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: logs
@@ -20,5 +20,6 @@ streams:
       windows:
         default:
         - c:/programdata/MySQL/MySQL Server*/error.log*
-  title: MySQL error logs
-  description: Collect MySQL error logs
+  template_path: log.yml.hbs
+  title: MySQL error logs (log)
+  description: Collect MySQL error logs using log input

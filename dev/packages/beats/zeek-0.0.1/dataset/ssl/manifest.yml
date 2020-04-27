@@ -1,5 +1,5 @@
 title: Zeek ssl logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: logs
@@ -31,5 +31,6 @@ streams:
     required: true
     show_user: true
     default: true
-  title: Zeek ssl logs
-  description: Collect Zeek ssl logs
+  template_path: log.yml.hbs
+  title: Zeek ssl logs (log)
+  description: Collect Zeek ssl logs using log input

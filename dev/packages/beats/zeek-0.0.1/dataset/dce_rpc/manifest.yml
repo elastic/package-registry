@@ -1,5 +1,5 @@
 title: Zeek dce_rpc logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: logs
@@ -31,5 +31,6 @@ streams:
     required: true
     show_user: true
     default: true
-  title: Zeek dce_rpc logs
-  description: Collect Zeek dce_rpc logs
+  template_path: log.yml.hbs
+  title: Zeek dce_rpc logs (log)
+  description: Collect Zeek dce_rpc logs using log input

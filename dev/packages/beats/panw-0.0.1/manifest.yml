@@ -7,7 +7,7 @@ description: panw Integration
 type: integration
 categories:
 - logs
-release: ga
+release: experimental
 removable: true
 requirement:
   kibana:
@@ -29,42 +29,5 @@ datasources:
   description: Collect logs from panw instances
   inputs:
   - type: logs
-    vars:
-    - name: tags
-      type: text
-      title: Tags
-      multi: true
-      required: true
-      show_user: true
-      default:
-      - pan-os
-    - name: syslog_host
-      type: text
-      title: Syslog Host
-      multi: false
-      required: true
-      show_user: true
-      default: localhost
-    - name: syslog_port
-      type: integer
-      title: Syslog Port
-      multi: false
-      required: true
-      show_user: true
-      default: 9001
-    - name: input
-      type: text
-      title: Input
-      multi: false
-      required: true
-      show_user: true
-      default: syslog
-    - name: community_id
-      type: bool
-      title: Community Id
-      multi: false
-      required: true
-      show_user: true
-      default: true
     title: Collect logs from panw instances
     description: Collecting panw panos logs

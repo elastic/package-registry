@@ -1,5 +1,5 @@
 title: Docker event metrics
-release: ga
+release: experimental
 type: metrics
 streams:
 - input: docker/metrics

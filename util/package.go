@@ -144,6 +144,14 @@ func NewPackage(basePath string) (*Package, error) {
 		}
 	}
 
+	if p.Release == "" {
+		p.Release = DefaultRelease
+	}
+
+	if !IsValidRelase(p.Release) {
+		return nil, fmt.Errorf("invalid release: %s", p.Release)
+	}
+
 	p.versionSemVer, err = semver.Parse(p.Version)
 	if err != nil {
 		return nil, err
@@ -346,7 +354,7 @@ func (p *Package) LoadDataSets(packagePath string) error {
 				for _, stream := range d.Streams {
 					if stream.Input == p.Datasources[dK].Inputs[iK].Type {
 						if stream.TemplatePath == "" {
-							stream.TemplatePath = "stream.yml"
+							stream.TemplatePath = "stream.yml.hbs"
 						}
 						stream.Dataset = d.ID
 						streamTemplate := filepath.Join(datasetBasePath, "agent", "stream", stream.TemplatePath)

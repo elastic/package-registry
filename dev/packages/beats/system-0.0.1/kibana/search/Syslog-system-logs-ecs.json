@@ -27,7 +27,7 @@
                 "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.index",
                 "query": {
                     "language": "kuery",
-                    "query": "event.dataset:system.syslog"
+                    "query": "stream.dataset:system.syslog"
                 }
             }
         },

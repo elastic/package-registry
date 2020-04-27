@@ -1,5 +1,5 @@
 title: PostgreSQL log logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: logs
@@ -19,5 +19,6 @@ streams:
       windows:
         default:
         - c:/Program Files/PostgreSQL/*/logs/*.log*
-  title: PostgreSQL log logs
-  description: Collect PostgreSQL log logs
+  template_path: log.yml.hbs
+  title: PostgreSQL log logs (log)
+  description: Collect PostgreSQL log logs using log input

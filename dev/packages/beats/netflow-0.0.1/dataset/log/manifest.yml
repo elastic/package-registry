@@ -1,7 +1,8 @@
 title: NetFlow log logs
-release: ga
+release: experimental
 type: logs
 streams:
-- input: logs
-  title: NetFlow log logs
-  description: Collect NetFlow log logs
+- input: netflow
+  template_path: netflow.yml.hbs
+  title: NetFlow log logs (netflow)
+  description: Collect NetFlow log logs using netflow input

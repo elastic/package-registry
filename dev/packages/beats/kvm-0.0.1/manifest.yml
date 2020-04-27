@@ -7,7 +7,7 @@ description: kvm Integration
 type: integration
 categories:
 - metrics
-release: beta
+release: experimental
 removable: true
 requirement:
   kibana: {}

@@ -169,7 +169,7 @@
             "filters": [],
             "query": {
                 "language": "kuery",
-                "query": "event.dataset:\"o365.audit\" "
+                "query": "stream.dataset:\"o365.audit\" "
             },
             "refreshConfig": {
                 "interval": 0,

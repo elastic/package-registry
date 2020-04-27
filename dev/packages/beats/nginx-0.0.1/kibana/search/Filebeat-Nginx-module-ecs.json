@@ -29,7 +29,7 @@
                 "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.index",
                 "query": {
                     "language": "kuery",
-                    "query": "(event.dataset:nginx.access OR event.dataset:nginx.error OR event.dataset:nginx.ingress_controller)"
+                    "query": "(stream.dataset:nginx.access OR stream.dataset:nginx.error OR stream.dataset:nginx.ingress_controller)"
                 },
                 "version": true
             }

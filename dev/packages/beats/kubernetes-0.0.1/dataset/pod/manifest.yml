@@ -1,5 +1,5 @@
 title: Kubernetes pod metrics
-release: ga
+release: experimental
 type: metrics
 streams:
 - input: kubernetes/metrics

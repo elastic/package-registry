@@ -1,8 +1,8 @@
 title: Azure auditlogs logs
-release: beta
+release: experimental
 type: logs
 streams:
-- input: logs
+- input: azure-eventhub
   vars:
   - name: eventhub
     type: text
@@ -11,5 +11,10 @@ streams:
     required: true
     show_user: true
     default: insights-logs-auditlogs
-  title: Azure auditlogs logs
-  description: Collect Azure auditlogs logs
+  template_path: azure-eventhub.yml.hbs
+  title: Azure auditlogs logs (azure-eventhub)
+  description: Collect Azure auditlogs logs using azure-eventhub input
+- input: logs
+  template_path: log.yml.hbs
+  title: Azure auditlogs logs (log)
+  description: Collect Azure auditlogs logs using log input

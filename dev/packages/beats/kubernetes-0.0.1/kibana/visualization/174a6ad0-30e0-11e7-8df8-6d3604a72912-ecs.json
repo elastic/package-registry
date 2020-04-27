@@ -31,7 +31,7 @@
                 ],
                 "filter": {
                     "language": "lucene",
-                    "query": "event.dataset:kubernetes.state_deployment"
+                    "query": "stream.dataset:kubernetes.state_deployment"
                 },
                 "gauge_color_rules": [
                     {

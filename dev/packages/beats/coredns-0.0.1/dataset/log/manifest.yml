@@ -1,5 +1,5 @@
 title: Coredns log logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: logs
@@ -12,5 +12,6 @@ streams:
     show_user: true
     default:
     - /var/log/coredns.log
-  title: Coredns log logs
-  description: Collect Coredns log logs
+  template_path: log.yml.hbs
+  title: Coredns log logs (log)
+  description: Collect Coredns log logs using log input

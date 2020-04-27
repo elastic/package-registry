@@ -7,7 +7,7 @@ description: Google Santa Integration
 type: integration
 categories:
 - logs
-release: ga
+release: experimental
 removable: true
 requirement:
   kibana:
@@ -25,13 +25,5 @@ datasources:
   description: Collect logs from Google Santa instances
   inputs:
   - type: logs
-    vars:
-    - name: input
-      type: text
-      title: Input
-      multi: false
-      required: true
-      show_user: true
-      default: file
     title: Collect logs from Google Santa instances
     description: Collecting Google Santa log logs

@@ -1,8 +1,0 @@
-input: log
-paths:
-{{#each paths}}
-  - {{this}}
-{{/each}}
-exclude_files: [".gz$"]
-json.keys_under_root: false
-json.add_error_key: true

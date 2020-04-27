@@ -1,5 +1,5 @@
 title: Zeek ssh logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: logs
@@ -31,5 +31,6 @@ streams:
     required: true
     show_user: true
     default: true
-  title: Zeek ssh logs
-  description: Collect Zeek ssh logs
+  template_path: log.yml.hbs
+  title: Zeek ssh logs (log)
+  description: Collect Zeek ssh logs using log input

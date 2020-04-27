@@ -7,7 +7,7 @@ description: Graphite Integration
 type: integration
 categories:
 - metrics
-release: ga
+release: experimental
 removable: true
 requirement:
   kibana: {}

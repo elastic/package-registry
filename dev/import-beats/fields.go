@@ -209,18 +209,6 @@ func isPackageFields(fileName string) bool {
 	return fileName == "package-fields.yml"
 }
 
-func uniqueFieldNames(fieldNames []string) []string {
-	t := make(map[string]bool)
-	var unique []string
-	for _, f := range fieldNames {
-		if _, ok := t[f]; !ok {
-			t[f] = true
-			unique = append(unique, f)
-		}
-	}
-	return unique
-}
-
 func filterEcsFields(ecsFields fieldDefinitionArray, filteredNames []string) fieldDefinitionArray {
 	var filteredFields fieldDefinitionArray
 	for _, f := range ecsFields {

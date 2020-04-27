@@ -1,0 +1,5 @@
+input: syslog
+protocol.udp:
+  host: "{{syslog_host}}:{{syslog_port}}"
+processors:
+- add_locale: ~

@@ -1,5 +1,5 @@
 title: System syslog logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: logs
@@ -19,5 +19,6 @@ streams:
         - /var/log/system.log*
       windows:
         default: []
-  title: System syslog logs
-  description: Collect System syslog logs
+  template_path: log.yml.hbs
+  title: System syslog logs (log)
+  description: Collect System syslog logs using log input

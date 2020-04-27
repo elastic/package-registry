@@ -10,6 +10,7 @@
   "categories": [
     "logs"
   ],
+  "release": "beta",
   "removable": true,
   "requirement": {
     "kibana": {},
@@ -19,15 +20,15 @@
     "/package/multiple-false/0.0.1/manifest.yml",
     "/package/multiple-false/0.0.1/docs/README.md",
     "/package/multiple-false/0.0.1/dataset/foo/manifest.yml",
-    "/package/multiple-false/0.0.1/dataset/foo/fields/stream.yml",
-    "/package/multiple-false/0.0.1/dataset/foo/agent/stream/stream.yml",
+    "/package/multiple-false/0.0.1/dataset/foo/fields/stream.yml.hbs",
+    "/package/multiple-false/0.0.1/dataset/foo/agent/stream/stream.yml.hbs",
     "/package/multiple-false/0.0.1/dataset/foo/elasticsearch/ingest-pipeline/default.json"
   ],
   "datasets": [
     {
       "id": "multiple-false.foo",
       "title": "Foo",
-      "release": "beta",
+      "release": "experimental",
       "type": "logs",
       "ingest_pipeline": "default",
       "streams": [
@@ -71,7 +72,7 @@
                 }
               ],
               "dataset": "multiple-false.foo",
-              "template_path": "stream.yml",
+              "template_path": "stream.yml.hbs",
               "template": "foo: bar\n"
             }
           ]

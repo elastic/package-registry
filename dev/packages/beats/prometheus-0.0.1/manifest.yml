@@ -8,7 +8,7 @@ type: integration
 categories:
 - metrics
 - metrics
-release: ga
+release: experimental
 removable: true
 requirement:
   kibana:
