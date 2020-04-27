@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Add stream template to package json. [#335](https://github.com/elastic/integrations-registry/pull/335)
 * Add support for multiple inputs per dataset. [#346](https://github.com/elastic/integrations-registry/pull/346)
 * Add experimental releases for packages and datasets. [#382](https://github.com/elastic/integrations-registry/pull/382)
+* Handle invalid query params and return error. [#382](https://github.com/elastic/integrations-registry/pull/382)
 
 ### Deprecated
 
