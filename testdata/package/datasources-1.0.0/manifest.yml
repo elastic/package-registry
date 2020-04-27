@@ -7,7 +7,7 @@ title: Default datasource Integration
 categories: ["logs"]
 type: integration
 license: basic
-
+release: beta
 
 datasources:
   -

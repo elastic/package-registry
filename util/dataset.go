@@ -106,7 +106,11 @@ func NewDataset(basePath string, p *Package) (*DataSet, error) {
 	}
 
 	if d.Release == "" {
-		d.Release = "beta"
+		d.Release = DefaultRelease
+	}
+
+	if !IsValidRelase(d.Release) {
+		return nil, fmt.Errorf("invalid release: %s", d.Release)
 	}
 
 	return d, nil

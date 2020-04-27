@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"net/http"
 	"sort"
+	"strconv"
 	"time"
 
 	"github.com/elastic/package-registry/util"
@@ -28,12 +29,30 @@ func categoriesHandler(packagesBasePath string, cacheTime time.Duration) func(w 
 			notFound(w, err)
 			return
 		}
+
+		query := r.URL.Query()
+		var experimental bool
+		// Read query filter params which can affect the output
+		if len(query) > 0 {
+			if v := query.Get("experimental"); v != "" {
+				if v != "" {
+					// In case of error, keep it false
+					experimental, _ = strconv.ParseBool(v)
+				}
+			}
+		}
+
 		packageList := map[string]util.Package{}
 		// Get unique list of newest packages
 		for _, p := range packages {
 
 			// Skip internal packages
 			if p.Internal {
+				continue
+			}
+
+			// Skip experimental packages if flag is not specified
+			if p.Release == util.ReleaseExperimental && !experimental {
 				continue
 			}
 

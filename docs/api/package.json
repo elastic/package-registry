@@ -11,6 +11,7 @@
     "logs",
     "metrics"
   ],
+  "release": "ga",
   "removable": true,
   "requirement": {
     "kibana": {
@@ -59,7 +60,7 @@
     {
       "id": "bar",
       "title": "Foo",
-      "release": "beta",
+      "release": "experimental",
       "type": "logs",
       "ingest_pipeline": "pipeline-entry",
       "streams": [

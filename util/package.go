@@ -144,6 +144,14 @@ func NewPackage(basePath string) (*Package, error) {
 		}
 	}
 
+	if p.Release == "" {
+		p.Release = DefaultRelease
+	}
+
+	if !IsValidRelase(p.Release) {
+		return nil, fmt.Errorf("invalid release: %s", p.Release)
+	}
+
 	p.versionSemVer, err = semver.Parse(p.Version)
 	if err != nil {
 		return nil, err
