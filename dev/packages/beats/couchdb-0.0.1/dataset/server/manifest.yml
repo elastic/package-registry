@@ -1,5 +1,5 @@
 title: CouchDB server metrics
-release: ga
+release: experimental
 type: metrics
 streams:
 - input: couchdb/metrics

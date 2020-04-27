@@ -1,5 +1,5 @@
 title: MySQL slowlog logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: logs
@@ -20,5 +20,6 @@ streams:
       windows:
         default:
         - c:/programdata/MySQL/MySQL Server*/mysql-slow.log*
-  title: MySQL slowlog logs
-  description: Collect MySQL slowlog logs
+  template_path: log.yml.hbs
+  title: MySQL slowlog logs (log)
+  description: Collect MySQL slowlog logs using log input

@@ -31,7 +31,7 @@
                 ],
                 "filter": {
                     "language": "lucene",
-                    "query": "event.dataset:kubernetes.pod"
+                    "query": "stream.dataset:kubernetes.pod"
                 },
                 "gauge_color_rules": [
                     {

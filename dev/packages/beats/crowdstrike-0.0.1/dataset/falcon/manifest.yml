@@ -1,5 +1,5 @@
 title: Crowdstrike falcon logs
-release: beta
+release: experimental
 type: logs
 streams:
 - input: logs
@@ -12,5 +12,6 @@ streams:
     show_user: true
     default:
     - /var/log/crowdstrike/falconhoseclient/output
-  title: Crowdstrike falcon logs
-  description: Collect Crowdstrike falcon logs
+  template_path: log.yml.hbs
+  title: Crowdstrike falcon logs (log)
+  description: Collect Crowdstrike falcon logs using log input

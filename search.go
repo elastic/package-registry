@@ -28,6 +28,7 @@ func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http
 		var packageQuery string
 		var all bool
 		var internal bool
+		var experimental bool
 		var err error
 
 		// Read query filter params which can affect the output
@@ -65,6 +66,13 @@ func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http
 					internal, _ = strconv.ParseBool(v)
 				}
 			}
+
+			if v := query.Get("experimental"); v != "" {
+				if v != "" {
+					// In case of error, keep it false
+					experimental, _ = strconv.ParseBool(v)
+				}
+			}
 		}
 
 		packages, err := util.GetPackages(packagesBasePath)
@@ -79,6 +87,11 @@ func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http
 
 			// Skip internal packages by default
 			if p.Internal && !internal {
+				continue
+			}
+
+			// Skip experimental packages if flag is not specified
+			if p.Release == util.ReleaseExperimental && !experimental {
 				continue
 			}
 

@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Change package path from /package/{packagename}-{version} to /package/{packagename}/{version} [#300](https://github.com/elastic/integrations-registry/pull/300)
 * By default /search?package= now only returns the most recent package. [#301](https://github.com/elastic/integrations-registry/pull/301)
+* Stream configuration filenames have `.hbs` suffix appended [#308](https://github.com/elastic/package-registry/pull/380)
 
 ### Bugfixes
 
@@ -26,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Add `removable` flag to package manifest. Default is true. [#359](https://github.com/elastic/integrations-registry/pull/359)
 * Add stream template to package json. [#335](https://github.com/elastic/integrations-registry/pull/335)
 * Add support for multiple inputs per dataset. [#346](https://github.com/elastic/integrations-registry/pull/346)
+* Add experimental releases for packages and datasets. [#382](https://github.com/elastic/integrations-registry/pull/382)
 
 ### Deprecated
 

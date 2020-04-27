@@ -1,5 +1,5 @@
 title: Zeek intel logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: logs
@@ -24,12 +24,31 @@ streams:
     show_user: true
     default:
     - zeek.intel
-  - name: community_id
-    type: bool
-    title: Community Id
-    multi: false
+  template_path: log.yml.hbs
+  title: Zeek intel logs (log)
+  description: Collect Zeek intel logs using log input
+- input: ip}
+  vars:
+  - name: paths
+    type: text
+    title: Paths
+    multi: true
     required: true
     show_user: true
-    default: true
-  title: Zeek intel logs
-  description: Collect Zeek intel logs
+    default:
+    - /var/log/bro/current/intel.log
+    os:
+      darwin:
+        default:
+        - /usr/local/var/logs/current/intel.log
+  - name: tags
+    type: text
+    title: Tags
+    multi: true
+    required: true
+    show_user: true
+    default:
+    - zeek.intel
+  template_path: ip}.yml.hbs
+  title: Zeek intel logs (ip})
+  description: Collect Zeek intel logs using ip} input

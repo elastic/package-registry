@@ -8,7 +8,7 @@ type: integration
 categories:
 - logs
 - metrics
-release: ga
+release: experimental
 removable: true
 requirement:
   kibana:
@@ -35,40 +35,6 @@ datasources:
   description: Collect logs and metrics from Google Cloud Platform instances
   inputs:
   - type: logs
-    vars:
-    - name: input
-      type: text
-      title: Input
-      multi: false
-      required: true
-      show_user: true
-      default: google-pubsub
-    - name: project_id
-      type: text
-      title: Project Id
-      multi: false
-      required: true
-      show_user: true
-      default: SET_PROJECT_NAME
-    - name: credentials_file
-      type: text
-      title: Credentials File
-      multi: false
-      required: false
-      show_user: true
-    - name: credentials_json
-      type: text
-      title: Credentials Json
-      multi: false
-      required: false
-      show_user: true
-    - name: keep_original_message
-      type: bool
-      title: Keep Original Message
-      multi: false
-      required: true
-      show_user: true
-      default: false
     title: Collect logs from Google Cloud Platform instances
     description: Collecting Google Cloud Platform audit, firewall and vpcflow logs
   - type: googlecloud/metrics

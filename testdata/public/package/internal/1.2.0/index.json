@@ -8,6 +8,7 @@
   "description": "Internal package",
   "type": "integration",
   "categories": [],
+  "release": "beta",
   "removable": false,
   "requirement": {
     "kibana": {},

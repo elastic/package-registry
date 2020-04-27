@@ -1,0 +1,9 @@
+input: log
+paths:
+{{#each paths as |path i|}}
+  - {{path}}
+{{/each}}
+exclude_files: [".gz$"]
+tags: {{tags}}
+processors:
+  - add_locale: ~

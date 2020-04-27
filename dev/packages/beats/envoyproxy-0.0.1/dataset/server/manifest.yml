@@ -1,5 +1,5 @@
 title: envoyproxy server metrics
-release: ga
+release: experimental
 type: metrics
 streams:
 - input: envoyproxy/metrics

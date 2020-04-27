@@ -1,5 +1,5 @@
 title: Apache access logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: logs
@@ -22,5 +22,6 @@ streams:
         default:
         - C:/tools/Apache/httpd-2.*/Apache24/logs/access.log*
         - C:/Program Files/Apache Software Foundation/Apache2.*/logs/access.log*
-  title: Apache access logs
-  description: Collect Apache access logs
+  template_path: log.yml.hbs
+  title: Apache access logs (log)
+  description: Collect Apache access logs using log input

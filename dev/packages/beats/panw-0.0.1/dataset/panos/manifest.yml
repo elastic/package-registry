@@ -1,7 +1,11 @@
 title: panw panos logs
-release: ga
+release: experimental
 type: logs
 streams:
+- input: syslog
+  template_path: syslog.yml.hbs
+  title: panw panos logs (syslog)
+  description: Collect panw panos logs using syslog input
 - input: logs
   vars:
   - name: paths
@@ -12,5 +16,14 @@ streams:
     show_user: true
     default:
     - /var/log/pan-os.log
-  title: panw panos logs
-  description: Collect panw panos logs
+  - name: tags
+    type: text
+    title: Tags
+    multi: true
+    required: true
+    show_user: true
+    default:
+    - pan-os
+  template_path: log.yml.hbs
+  title: panw panos logs (log)
+  description: Collect panw panos logs using log input

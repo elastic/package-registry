@@ -1,5 +1,5 @@
 title: Suricata eve logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: logs
@@ -19,5 +19,41 @@ streams:
       windows:
         default:
         - c:/program files/suricata/log/eve.json
-  title: Suricata eve logs
-  description: Collect Suricata eve logs
+  template_path: log.yml.hbs
+  title: Suricata eve logs (log)
+  description: Collect Suricata eve logs using log input
+- input: long}
+  vars:
+  - name: paths
+    type: text
+    title: Paths
+    multi: true
+    required: true
+    show_user: true
+    default:
+    - /var/log/suricata/eve.json
+    os:
+      darwin:
+        default:
+        - /usr/local/var/log/suricata/eve.json
+      windows:
+        default:
+        - c:/program files/suricata/log/eve.json
+  - name: tags
+    type: text
+    title: Tags
+    multi: true
+    required: true
+    show_user: true
+    default:
+    - suricata
+  - name: community_id
+    type: bool
+    title: Community Id
+    multi: false
+    required: true
+    show_user: true
+    default: true
+  template_path: long}.yml.hbs
+  title: Suricata eve logs (long})
+  description: Collect Suricata eve logs using long} input

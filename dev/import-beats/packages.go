@@ -43,6 +43,7 @@ func newPackageContent(name string) packageContent {
 			Type:          "integration",
 			License:       "basic",
 			Removable:     determineIfPackageIsRemovable(name),
+			Release:       "experimental",
 		},
 		kibana: kibanaContent{
 			files: map[string]map[string][]byte{},
@@ -150,12 +151,6 @@ func (r *packageRepository) createPackagesFromSource(beatsDir, beatName, beatTyp
 			return err
 		}
 		moduleFields, filteredEcsModuleFieldNames, err := filterMigratedFields(moduleFields, r.ecsFields.names())
-		if err != nil {
-			return err
-		}
-
-		// release
-		manifest.Release, err = determinePackageRelease(manifest.Release, moduleFields)
 		if err != nil {
 			return err
 		}

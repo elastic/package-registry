@@ -14,7 +14,7 @@
                 "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.index",
                 "query": {
                     "language": "kuery",
-                    "query": "event.dataset:auditd.log"
+                    "query": "stream.dataset:auditd.log"
                 },
                 "version": true
             }

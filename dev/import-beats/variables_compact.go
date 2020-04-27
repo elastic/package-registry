@@ -5,7 +5,6 @@
 package main
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -19,28 +18,25 @@ func compactDatasetVariables(datasets datasetContentArray) (datasetContentArray,
 	var compacted datasetContentArray
 
 	for _, dataset := range datasets {
-		if len(dataset.manifest.Streams) != 1 {
-			return nil, nil, fmt.Errorf("only datasets with single streams are supported (datasetName: %s, beatType: %s)", dataset.name, dataset.beatType)
-		}
-
-		stream := dataset.manifest.Streams[0]
-		var notCompactedVars []util.Variable
-		for _, aVar := range stream.Vars {
-			isAlreadyCompacted := isVariableAlreadyCompacted(varsPerInputType, aVar, stream.Input)
-			if !isAlreadyCompacted {
-				canBeCompacted, err := canVariableBeCompacted(datasets, varsPerInputType, aVar, stream.Input)
-				if err != nil {
-					return nil, nil, errors.Wrap(err, "checking compactibility failed")
-				}
-				if canBeCompacted {
-					varsPerInputType[stream.Input] = append(varsPerInputType[stream.Input], aVar)
-				} else {
-					notCompactedVars = append(notCompactedVars, aVar)
+		for i, stream := range dataset.manifest.Streams {
+			var notCompactedVars []util.Variable
+			for _, aVar := range stream.Vars {
+				isAlreadyCompacted := isVariableAlreadyCompacted(varsPerInputType, aVar, stream.Input)
+				if !isAlreadyCompacted {
+					canBeCompacted, err := canVariableBeCompacted(datasets, aVar, stream.Input)
+					if err != nil {
+						return nil, nil, errors.Wrap(err, "checking compactibility failed")
+					}
+					if canBeCompacted {
+						varsPerInputType[stream.Input] = append(varsPerInputType[stream.Input], aVar)
+					} else {
+						notCompactedVars = append(notCompactedVars, aVar)
+					}
 				}
 			}
+			stream.Vars = notCompactedVars
+			dataset.manifest.Streams[i] = stream
 		}
-		stream.Vars = notCompactedVars
-		dataset.manifest.Streams[0] = stream
 		compacted = append(compacted, dataset)
 	}
 	return compacted, varsPerInputType, nil
@@ -57,14 +53,15 @@ func isVariableAlreadyCompacted(varsPerInputType map[string][]util.Variable, aVa
 	return false
 }
 
-func canVariableBeCompacted(datasets datasetContentArray, varsPerInputType map[string][]util.Variable, aVar util.Variable, inputType string) (bool, error) {
+func canVariableBeCompacted(datasets datasetContentArray, aVar util.Variable, inputType string) (bool, error) {
 	for _, dataset := range datasets {
+		var varUsed bool
+
 		for _, stream := range dataset.manifest.Streams {
 			if stream.Input != inputType {
-				continue // input is not related with this var
+				break // input is not related with this var
 			}
 
-			var varUsed bool
 			for _, streamVar := range stream.Vars {
 				if isNonCompactableVariable(aVar) {
 					continue
@@ -79,10 +76,10 @@ func canVariableBeCompacted(datasets datasetContentArray, varsPerInputType map[s
 					break
 				}
 			}
+		}
 
-			if !varUsed {
-				return false, nil // variable not present in this dataset
-			}
+		if !varUsed {
+			return false, nil // variable not present in this dataset
 		}
 	}
 	return true, nil

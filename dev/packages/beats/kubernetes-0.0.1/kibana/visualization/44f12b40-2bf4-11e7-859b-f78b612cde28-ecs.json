@@ -31,7 +31,7 @@
                 ],
                 "filter": {
                     "language": "lucene",
-                    "query": "(event.dataset:kubernetes.container OR event.dataset:kubernetes.state_node)"
+                    "query": "(stream.dataset:kubernetes.container OR stream.dataset:kubernetes.state_node)"
                 },
                 "gauge_color_rules": [
                     {

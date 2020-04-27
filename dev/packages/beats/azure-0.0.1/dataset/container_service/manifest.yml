@@ -1,5 +1,5 @@
 title: azure container_service metrics
-release: ga
+release: experimental
 type: metrics
 streams:
 - input: azure/metrics

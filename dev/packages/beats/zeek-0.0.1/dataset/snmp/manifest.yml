@@ -1,5 +1,5 @@
 title: Zeek snmp logs
-release: ga
+release: experimental
 type: logs
 streams:
 - input: logs
@@ -31,5 +31,6 @@ streams:
     required: true
     show_user: true
     default: true
-  title: Zeek snmp logs
-  description: Collect Zeek snmp logs
+  template_path: log.yml.hbs
+  title: Zeek snmp logs (log)
+  description: Collect Zeek snmp logs using log input
