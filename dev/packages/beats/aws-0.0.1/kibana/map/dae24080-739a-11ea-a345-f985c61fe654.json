@@ -52,7 +52,7 @@
                 "minZoom": 0,
                 "query": {
                     "language": "kuery",
-                    "query": "event.dataset:aws.cloudtrail"
+                    "query": "stream.dataset:aws.cloudtrail"
                 },
                 "sourceDescriptor": {
                     "applyGlobalQuery": true,

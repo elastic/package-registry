@@ -7,7 +7,7 @@
                 "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.index",
                 "query": {
                     "language": "kuery",
-                    "query": "event.dataset :\"azure.activitylogs\" "
+                    "query": "stream.dataset :\"azure.activitylogs\" "
                 }
             }
         },
