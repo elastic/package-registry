@@ -20,7 +20,7 @@ type streamConfigParsed struct {
 }
 
 func parseStreamConfig(content []byte) (*streamConfigParsed, error) {
-	mapOfParsed, err := parse.Parse("hello", string(content), "", "", map[string]interface{}{
+	mapOfParsed, err := parse.Parse("input-config", string(content), "", "", map[string]interface{}{
 		"eq":     func() {},
 		"printf": func() {},
 	})
@@ -28,7 +28,7 @@ func parseStreamConfig(content []byte) (*streamConfigParsed, error) {
 		return nil, errors.Wrapf(err, "parsing template failed")
 	}
 	return &streamConfigParsed{
-		tree: mapOfParsed["hello"],
+		tree: mapOfParsed["input-config"],
 	}, nil
 }
 
@@ -102,7 +102,7 @@ func (scp *streamConfigParsed) configForInput(inputType string) []byte {
 func configForInputForNode(node parse.Node, inputType string) []byte {
 	textNode, isTextNode := node.(*parse.TextNode)
 	if isTextNode {
-		return textNode.Text
+		return writeHandlebarsTextNode(textNode)
 	}
 
 	listNode, isListNode := node.(*parse.ListNode)
@@ -126,6 +126,18 @@ func configForInputForNode(node parse.Node, inputType string) []byte {
 	}
 
 	panic(fmt.Sprintf("unsupported node: %s", node.String()))
+}
+
+func writeHandlebarsTextNode(textNode *parse.TextNode) []byte {
+	i := bytes.Index(textNode.Text, []byte("type: "))
+	if i > -1 && (i == 0 || textNode.Text[i-1] == ' ' || textNode.Text[i-1] == '\n') {
+		var buffer bytes.Buffer
+		buffer.Write(textNode.Text[0:i])
+		buffer.WriteString("input")
+		buffer.Write(textNode.Text[i+4:])
+		return buffer.Bytes()
+	}
+	return textNode.Text
 }
 
 func writeHandlebarsListNode(listNode *parse.ListNode, inputType string) []byte {

@@ -1,4 +1,4 @@
-type: log
+input: log
 paths:
 {{#each paths as |path i|}}
  - {{path}}
@@ -20,7 +20,7 @@ processors:
       ignore_missing: true
       fields:
         - {from: zeek.intel.id.orig_h, to: source.address}
-        - {from: zeek.intel.id.orig_h, to: source.ip, type: ip}
+        - {from: zeek.intel.id.orig_h, to: source.ip, input: ip}
         - {from: zeek.intel.id.orig_p, to: source.port, type: long}
         - {from: zeek.intel.id.resp_h, to: destination.address}
         - {from: zeek.intel.id.resp_h, to: destination.ip, type: ip}
