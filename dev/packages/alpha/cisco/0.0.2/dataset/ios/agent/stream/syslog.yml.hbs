@@ -1,0 +1,11 @@
+input: syslog
+protocol.udp:
+  host: "{{this.syslog_host}}:{{this.syslog_port}}"
+tags: {{ this.tags }}
+processors:
+  - add_locale: ~
+  - script:
+      lang: javascript
+      id: cisco_ios
+      file: ${path.home}/dataset/agent/stream/pipeline.js
+

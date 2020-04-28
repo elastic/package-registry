@@ -1,0 +1,6 @@
+input: udp
+udp:
+host: "{{this.syslog_host}}:{{this.syslog_port}}"
+tags: {{ this.tags }}
+processors:
+  - add_locale: ~
