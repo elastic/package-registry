@@ -48,6 +48,21 @@ events for the account. If user creates a trail, it delivers those events as log
 | aws.cloudtrail.user_identity.session_issuer.type | The source of the temporary security credentials, such as Root, IAMUser, or Role. | keyword |
 | aws.cloudtrail.user_identity.type | The type of the identity | keyword |
 | aws.cloudtrail.vpc_endpoint_id | Identifies the VPC endpoint in which requests were made from a VPC to another AWS service, such as Amazon S3. | keyword |
+| cloud.account.id | The cloud account or organization id used to identify different entities in a multi-tenant environment. | keyword |
+| cloud.region | Region in which this host is running. | keyword |
+| event.action | The action captured by the event. | keyword |
+| event.kind | Event kind (e.g. event, alert, metric, state, pipeline_error, signal) | keyword |
+| event.original | Raw text message of entire event. Used to demonstrate log integrity. | keyword |
+| event.provider | Source of the event. | keyword |
+| event.type | Event severity (e.g. info, error) | keyword |
+| related.user | All the user names seen on your event. | keyword |
+| source.address | Some event source addresses are defined ambiguously. The event will sometimes list an IP, a domain or a unix socket. You should always store the raw address in the .address field. | keyword |
+| source.ip | IP address of the source (IPv4 or IPv6). | ip |
+| user.id | Unique identifier of the user. | keyword |
+| user.name | Short name or login of the user. | keyword |
+| user_agent.device.name | Name of the device. | keyword |
+| user_agent.name | Name of the user agent. | keyword |
+| user_agent.original | Unparsed user_agent string. | keyword |
 
 
 ### cloudwatch
@@ -61,6 +76,7 @@ setup already.
 
 | Field | Description | Type |
 |---|---|---|
+| aws.cloudwatch.message | CloudWatch log message. | text |
 
 
 ### ec2
@@ -75,6 +91,7 @@ and `process.name`. For logs from other services, please use `cloudwatch` datase
 | Field | Description | Type |
 |---|---|---|
 | aws.ec2.ip_address | The internet address of the requester. | keyword |
+| process.name | Process name. | keyword |
 
 
 ### elb
@@ -119,6 +136,32 @@ For network load balancer, please follow [enable access log for network load bal
 | aws.elb.tls_named_group | The TLS named group. | keyword |
 | aws.elb.trace_id | The contents of the `X-Amzn-Trace-Id` header. | keyword |
 | aws.elb.type | The type of the load balancer for v2 Load Balancers. | keyword |
+| cloud.provider | Name of the cloud provider. Example values are aws, azure, gcp, or digitalocean. | keyword |
+| destination.bytes | Bytes sent from the destination to the source. | long |
+| destination.domain | Destination domain. | keyword |
+| event.category | Event category (e.g. database) | keyword |
+| event.end | event.end contains the date when the event ended or when the activity was last observed. | date |
+| event.kind | Event kind (e.g. event, alert, metric, state, pipeline_error, sig | keyword |
+| event.outcome | This is one of four ECS Categorization Fields, and indicates the lowest level in the ECS category hierarchy. | keyword |
+| event.start | event.start contains the date when the event started or when the activity was first observed. | date |
+| http.request.body.bytes | Size in bytes of the request body. | long |
+| http.request.method | HTTP request method. | keyword |
+| http.request.referrer | Referrer for this HTTP request. | keyword |
+| http.response.body.bytes | Size in bytes of the response body. | long |
+| http.response.status_code | HTTP response status code. | long |
+| http.version | HTTP version. | keyword |
+| source.as.number | Unique number allocated to the autonomous system. The autonomous system number (ASN) uniquely identifies each network on the Internet. | long |
+| source.as.organization.name | Organization name. | keyword |
+| source.geo.city_name | City name. | keyword |
+| source.geo.continent_name | Name of the continent. | keyword |
+| source.geo.country_iso_code | Country ISO code. | keyword |
+| source.geo.location | Longitude and latitude. | geo_point |
+| source.geo.region_iso_code | Region ISO code. | keyword |
+| source.geo.region_name | Region name. | keyword |
+| source.ip | IP address of the source. | ip |
+| source.port | Port of the source. | long |
+| tracing.trace.id | Unique identifier of the trace. | keyword |
+| user_agent.original | Unparsed user_agent string. | keyword |
 
 
 ### s3access
@@ -159,6 +202,36 @@ for sending server access logs to S3 bucket.
 | aws.s3access.turn_around_time | The number of milliseconds that Amazon S3 spent processing your request. | long |
 | aws.s3access.user_agent | The value of the HTTP User-Agent header. | keyword |
 | aws.s3access.version_id | The version ID in the request, or "-" if the operation does not take a versionId parameter. | keyword |
+| client.address | Some event client addresses are defined ambiguously. The event will sometimes list an IP, a domain or a unix socket. You should always store the raw address in the .address field. | keyword |
+| client.ip | IP address of the client. | ip |
+| client.user.id | Unique identifiers of the user. | keyword |
+| cloud.provider | Name of the cloud provider. Example values are aws, azure, gcp, or digitalocean. | keyword |
+| event.action | The action captured by the event. | keyword |
+| event.code | Identification code for this event, if one exists. | keyword |
+| event.duration | Duration of the event in nanoseconds. | long |
+| event.id | Unique ID to describe the event. | keyword |
+| event.kind | Event kind (e.g. event, alert, metric, state, pipeline_error, signal) | keyword |
+| event.outcome | This is one of four ECS Categorization Fields, and indicates the lowest level in the ECS category hierarchy. | keyword |
+| geo.city_name | City name. | keyword |
+| geo.continent_name | Name of the continent. | keyword |
+| geo.country_iso_code | Country ISO code. | keyword |
+| geo.location | Longitude and latitude. | geo_point |
+| geo.region_iso_code | Region ISO code. | keyword |
+| geo.region_name | Region name. | keyword |
+| http.request.referrer | Referrer for this HTTP request. | keyword |
+| http.response.status_code | HTTP response status code. | long |
+| related.ip | All of the IPs seen on your event. | ip |
+| related.user | All the user names seen on your event. | keyword |
+| tls.cipher | String indicating the cipher used during the current connection. | keyword |
+| tls.version | Numeric part of the version parsed from the original string. | keyword |
+| tls.version_protocol | Normalized lowercase protocol name parsed from original string. | keyword |
+| user_agent.device.name | Name of the device. | keyword |
+| user_agent.name | Name of the user agent. | keyword |
+| user_agent.original | Unparsed user_agent string. | keyword |
+| user_agent.os.full | Operating system name, including the version or code name. | keyword |
+| user_agent.os.name | Operating system name, without the version. | keyword |
+| user_agent.os.version | Operating system version as a raw string. | keyword |
+| user_agent.version | Version of the user agent. | keyword |
 
 
 ### vpcflow
@@ -179,6 +252,44 @@ for sending server access logs to S3 bucket.
 | aws.vpcflow.type | The type of traffic: IPv4, IPv6, or EFA. | keyword |
 | aws.vpcflow.version | The VPC Flow Logs version. If you use the default format, the version is 2. If you specify a custom format, the version is 3. | keyword |
 | aws.vpcflow.vpc_id | The ID of the VPC that contains the network interface for which the traffic is recorded. | keyword |
+| cloud.account.id | The cloud account or organization id used to identify different entities in a multi-tenant environment. | keyword |
+| cloud.instance.id | Instance ID of the host machine. | keyword |
+| cloud.provider | Name of the cloud provider. | keyword |
+| destination.address | Some event destination addresses are defined ambiguously. The event will sometimes list an IP, a domain or a unix socket. You should always store the raw address in the .address field. | keyword |
+| destination.as.number | Unique number allocated to the autonomous system. The autonomous system number (ASN) uniquely identifies each network on the Internet. | long |
+| destination.as.organization.name | Organization name. | keyword |
+| destination.geo.continent_name | Name of the continent. | keyword |
+| destination.geo.country_iso_code | Country ISO code. | keyword |
+| destination.geo.location | Longitude and latitude. | geo_point |
+| destination.ip | IP address of the destination. | ip |
+| destination.port | Port of the destination. | long |
+| event.category | Event category (e.g. database) | keyword |
+| event.end | event.end contains the date when the event ended or when the activity was last observed. | date |
+| event.kind | Event kind (e.g. event, alert, metric, state, pipeline_error, signal) | keyword |
+| event.original | Raw text message of entire event. Used to demonstrate log integrity. | keyword |
+| event.outcome | This is one of four ECS Categorization Fields, and indicates the lowest level in the ECS category hierarchy. | keyword |
+| event.start | event.start contains the date when the event started or when the activity was first observed. | date |
+| event.type | Event severity (e.g. info, error) | keyword |
+| network.bytes | Total bytes transferred in both directions. | long |
+| network.community_id | A hash of source and destination IPs and ports, as well as the protocol used in a communication. This is a tool-agnostic standard to identify flows. | keyword |
+| network.iana_number | IANA Protocol Number (https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml). Standardized list of protocols. This aligns well with NetFlow and sFlow related logs which use the IANA Protocol Number. | keyword |
+| network.packets | Total packets transferred in both directions. | long |
+| network.transport | Same as network.iana_number, but instead using the Keyword name of the transport layer (udp, tcp, ipv6-icmp, etc.) | keyword |
+| network.type | In the OSI Model this would be the Network Layer. ipv4, ipv6, ipsec, pim, etc | keyword |
+| related.ip | All of the IPs seen on your event. | ip |
+| source.address | Some event source addresses are defined ambiguously. The event will sometimes list an IP, a domain or a unix socket. You should always store the raw address in the .address field. | keyword |
+| source.as.number | Unique number allocated to the autonomous system. The autonomous system number (ASN) uniquely identifies each network on the Internet. | long |
+| source.as.organization.name | Organization name. | keyword |
+| source.bytes | Bytes sent from the source to the destination. | long |
+| source.geo.city_name | City name. | keyword |
+| source.geo.continent_name | Name of the continent. | keyword |
+| source.geo.country_iso_code | Country ISO code. | keyword |
+| source.geo.location | Longitude and latitude. | geo_point |
+| source.geo.region_iso_code | Region ISO code. | keyword |
+| source.geo.region_name | Region name. | keyword |
+| source.ip | IP address of the source (IPv4 or IPv6). | ip |
+| source.packets | Packets sent from the source to the destination. | long |
+| source.port | Port of the source. | long |
 
 
 

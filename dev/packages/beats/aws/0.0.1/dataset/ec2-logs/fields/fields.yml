@@ -6,3 +6,6 @@
     type: keyword
     description: |
       The internet address of the requester.
+- name: process.name
+  type: keyword
+  description: Process name.
