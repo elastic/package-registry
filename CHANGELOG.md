@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * By default /search?package= now only returns the most recent package. [#301](https://github.com/elastic/integrations-registry/pull/301)
 * Stream configuration filenames have `.hbs` suffix appended [#308](https://github.com/elastic/package-registry/pull/380)
 * Align package storage directories with public dir structure [#376](https://github.com/elastic/package-registry/pull/376)
+* Use index template v2 format for pre-built and generated index templates. [#392](https://github.com/elastic/package-registry/pull/392)
 
 ### Bugfixes
 
