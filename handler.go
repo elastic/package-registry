@@ -22,6 +22,15 @@ func notFound(w http.ResponseWriter, err error) {
 	http.Error(w, errString, http.StatusNotFound)
 }
 
+func badRequest(w http.ResponseWriter, err error) {
+	errString := ""
+	if err != nil {
+		errString = err.Error()
+	}
+
+	http.Error(w, errString, http.StatusBadRequest)
+}
+
 func catchAll(publicPath string, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 

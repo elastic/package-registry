@@ -262,6 +262,12 @@ what's been already fixed, as the script has overridden part of it).
     content manually basing on already migrated integrations (e.g. [MySQL integration](https://github.com/elastic/package-registry/tree/master/dev/import-beats-resources/mysql/docs))
     or copy them once managed to run whole setup with real agent.
 
+12. Kibana: use `stream.dataset` field instead of `event.dataset`.
+
+    Using `stream.dataset` instead of `event.dataset` also makes queries a lot more efficient as this is a
+    `constant_keyword`. Make sure that dashboards in your package don't use the `event.dataset` field. If so,
+    simply replace them with the more efficient one.
+
 ## Testing and validation
 
 ### Run the whole setup

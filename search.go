@@ -36,7 +36,7 @@ func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http
 			if v := query.Get("kibana"); v != "" {
 				kibanaVersion, err = semver.New(v)
 				if err != nil {
-					notFound(w, fmt.Errorf("invalid Kibana version '%s': %s", v, err))
+					badRequest(w, fmt.Errorf("invalid Kibana version '%s': %s", v, err))
 					return
 				}
 			}
@@ -56,21 +56,33 @@ func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http
 			if v := query.Get("all"); v != "" {
 				if v != "" {
 					// Default is false, also on error
-					all, _ = strconv.ParseBool(v)
+					all, err = strconv.ParseBool(v)
+					if err != nil {
+						badRequest(w, fmt.Errorf("invalid 'all' query param: '%s'", v))
+						return
+					}
 				}
 			}
 
 			if v := query.Get("internal"); v != "" {
 				if v != "" {
 					// In case of error, keep it false
-					internal, _ = strconv.ParseBool(v)
+					internal, err = strconv.ParseBool(v)
+					if err != nil {
+						badRequest(w, fmt.Errorf("invalid 'internal' query param: '%s'", v))
+						return
+					}
 				}
 			}
 
 			if v := query.Get("experimental"); v != "" {
 				if v != "" {
 					// In case of error, keep it false
-					experimental, _ = strconv.ParseBool(v)
+					experimental, err = strconv.ParseBool(v)
+					if err != nil {
+						badRequest(w, fmt.Errorf("invalid 'experimental' query param: '%s'", v))
+						return
+					}
 				}
 			}
 		}
