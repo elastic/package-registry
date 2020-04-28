@@ -186,10 +186,9 @@ what's been already fixed, as the script has overridden part of it).
 
     The fields files (package-fields.yml, fields.yml and ecs.yml) in the package were created from original fields.yml
     files (that may contain ECS schema fields) and fields.epr.yml (defining some other fields used in the ingest
-    pipeline).
-    It may happen that original sources have a typo, bad description or misses
-    a field definition. The sum of fields in all present files should contain only fields that are really used, e.g.
-    not all existing ECS fields.
+    pipeline). It may happen that original sources have a typo, bad description or misses a field definition.
+    The sum of fields in all present files should contain only fields that are really used, e.g. not all existing ECS
+    fields.
 
     It may happen that the ingest pipeline uses fields abstracted from ECS, but not mentioned in `fields.yml`.
     Integrations should contain these fields and also have them documented.
