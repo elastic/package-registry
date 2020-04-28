@@ -17,6 +17,6 @@ streams:
     multi: false
     required: true
     show_user: false
-    default: nginx_status
+    default: /nginx_status
   title: Nginx stub status metrics
   description: Collect Nginx stub status metrics

@@ -4,17 +4,33 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Data Volume [Filebeat Nginx] ECS",
+        "title": "Access logs over time [Filebeat Nginx] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
             "aggs": [],
             "params": {
+                "annotations": [
+                    {
+                        "color": "#F00",
+                        "icon": "fa-tag",
+                        "id": "970b1420-a1f3-11e7-a062-a1c3587f4874",
+                        "ignore_global_filters": 1,
+                        "ignore_panel_filters": 1,
+                        "index_pattern": "logs-*",
+                        "time_field": "@timestamp"
+                    }
+                ],
                 "axis_formatter": "number",
                 "axis_position": "left",
+                "background_color_rules": [
+                    {
+                        "id": "3189aa80-a1f3-11e7-a062-a1c3587f4874"
+                    }
+                ],
                 "filter": {
                     "language": "lucene",
-                    "query": "event.dataset:nginx.access"
+                    "query": "stream.dataset:nginx.access"
                 },
                 "id": "61ca57f0-469d-11e7-af02-69e470af7417",
                 "index_pattern": "logs-*",
@@ -26,15 +42,14 @@
                         "chart_type": "line",
                         "color": "#68BC00",
                         "fill": 0.5,
-                        "formatter": "bytes",
+                        "formatter": "number",
                         "id": "61ca57f1-469d-11e7-af02-69e470af7417",
-                        "label": "",
+                        "label": "Access logs",
                         "line_width": 1,
                         "metrics": [
                             {
-                                "field": "http.response.body.bytes",
                                 "id": "61ca57f2-469d-11e7-af02-69e470af7417",
-                                "type": "sum"
+                                "type": "count"
                             }
                         ],
                         "point_size": 1,
@@ -42,17 +57,13 @@
                         "split_filters": [
                             {
                                 "color": "#68BC00",
-                                "filter": {
-                                    "language": "lucene",
-                                    "query": "http.response.status_code:[200 TO 299]"
-                                },
-                                "id": "7c343c20-a29e-11e7-a062-a1c3587f4874",
-                                "label": "200s"
+                                "id": "1db649a0-a1f3-11e7-a062-a1c3587f4874"
                             }
                         ],
                         "split_mode": "everything",
                         "stacked": "none",
-                        "terms_field": null
+                        "terms_field": "url.original",
+                        "terms_order_by": "61ca57f2-469d-11e7-af02-69e470af7417"
                     }
                 ],
                 "show_grid": 1,
@@ -60,11 +71,11 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Data Volume [Filebeat Nginx] ECS",
+            "title": "Access logs over time [Filebeat Nginx] ECS",
             "type": "metrics"
         }
     },
-    "id": "0dd6f320-a29f-11e7-928f-5dbe6f6f5519-ecs",
+    "id": "1cfb1a80-a1f4-11e7-928f-5dbe6f6f5519-ecs",
     "references": [],
     "type": "visualization"
 }

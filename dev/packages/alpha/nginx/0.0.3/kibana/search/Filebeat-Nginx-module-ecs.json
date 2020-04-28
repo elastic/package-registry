@@ -1,8 +1,11 @@
 {
     "attributes": {
         "columns": [
-            "log.level",
-            "message"
+            "url.original",
+            "http.request.method",
+            "http.response.status_code",
+            "http.request.referrer",
+            "http.response.body.bytes"
         ],
         "description": "",
         "hits": 0,
@@ -26,7 +29,7 @@
                 "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.index",
                 "query": {
                     "language": "kuery",
-                    "query": "(event.dataset:nginx.access OR event.dataset:nginx.error OR event.dataset:nginx.ingress_controller)  AND message:*"
+                    "query": "(stream.dataset:nginx.access OR stream.dataset:nginx.error OR stream.dataset:nginx.ingress_controller)"
                 },
                 "version": true
             }
@@ -37,10 +40,10 @@
                 "desc"
             ]
         ],
-        "title": "Nginx error logs [Filebeat Nginx] ECS",
+        "title": "Nginx logs [Filebeat Nginx] ECS",
         "version": 1
     },
-    "id": "9eb25600-a1f0-11e7-928f-5dbe6f6f5519-ecs",
+    "id": "Filebeat-Nginx-module-ecs",
     "references": [
         {
             "id": "logs-*",
