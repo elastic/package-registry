@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "SELECT rates [Metricbeat MySQL] ECS",
+        "title": "SELECT rates [Metrics MySQL] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -72,7 +72,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "SELECT rates [Metricbeat MySQL] ECS",
+            "title": "SELECT rates [Metrics MySQL] ECS",
             "type": "metrics"
         }
     },

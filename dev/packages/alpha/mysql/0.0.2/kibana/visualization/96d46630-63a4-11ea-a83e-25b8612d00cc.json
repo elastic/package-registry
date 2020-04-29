@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Buffer Pool Utilization [Metricbeat MySQL] ECS",
+        "title": "Buffer Pool Utilization [Metrics MySQL] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -100,7 +100,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Buffer Pool Utilization [Metricbeat MySQL] ECS",
+            "title": "Buffer Pool Utilization [Metrics MySQL] ECS",
             "type": "metrics"
         }
     },

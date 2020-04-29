@@ -1,5 +1,4 @@
 title: MySQL slowlog logs
-release: ga
 type: logs
 streams:
 - input: logs

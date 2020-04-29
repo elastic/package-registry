@@ -1,5 +1,4 @@
 title: MySQL error logs
-release: ga
 type: logs
 streams:
 - input: logs
