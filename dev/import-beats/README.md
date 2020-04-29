@@ -92,9 +92,11 @@ as the proper form. Remember to adjust this value if working on the migration fr
 
 Values: _beta, experimental, ga_
 
-The value depends on definitions in module and dataset fields. The scripts determines the correct release type
+~~The value depends on definitions in module and dataset fields. The scripts determines the correct release type
 for dataset, depending on overall release status for module (e.g. dataset can't be annotated as GA if the entire module
-is in beta).
+is in beta).~~
+
+Currently, all imported packages are created with default value - experimental.
 
 ##### Images
 
