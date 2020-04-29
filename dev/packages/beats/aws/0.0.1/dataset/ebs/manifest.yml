@@ -11,5 +11,14 @@ streams:
     required: true
     show_user: true
     default: 5m
+  - name: tags_filter
+    type: yaml
+    title: Tags Filter
+    multi: false
+    required: true
+    show_user: true
+    default: |
+      - key: Organization
+        value: Engineering
   title: aws ebs metrics
   description: Collect aws ebs metrics

@@ -135,6 +135,42 @@ datasources:
     description: Collecting aws cloudtrail, cloudwatch, ec2, elb, s3access and vpcflow
       logs
   - type: aws/metrics
+    vars:
+    - name: aws_access_key_id
+      type: text
+      title: Aws Access Key Id
+      multi: false
+      required: true
+      show_user: true
+      default: access-key-id
+    - name: aws_secret_access_key
+      type: text
+      title: Aws Secret Access Key
+      multi: false
+      required: true
+      show_user: true
+      default: secret-access-key
+    - name: aws_session_token
+      type: text
+      title: Aws Session Token
+      multi: false
+      required: true
+      show_user: true
+      default: session_token
+    - name: credential_profile_name
+      type: text
+      title: Credential Profile Name
+      multi: false
+      required: true
+      show_user: true
+      default: test-mb
+    - name: role_arn
+      type: text
+      title: Role Arn
+      multi: false
+      required: true
+      show_user: true
+      default: role-arn
     title: Collect metrics from aws instances
     description: Collecting aws billing, cloudwatch, dynamodb, ebs, ec2, elb, lambda,
       natgateway, rds, s3_daily_storage, s3_request, sns, sqs, transitgateway, usage

@@ -4,13 +4,6 @@ type: metrics
 streams:
 - input: aws/metrics
   vars:
-  - name: credential_profile_name
-    type: text
-    title: Credential Profile Name
-    multi: false
-    required: true
-    show_user: true
-    default: test-mb
   - name: metrics
     type: yaml
     title: Metrics
@@ -23,13 +16,15 @@ streams:
           value: i-0686946e22cf9494a
         name:
         - CPUUtilization
+        - DiskWriteOps
         namespace: AWS/EC2
-      - namespace: AWS/EBS
-      - namespace: AWS/ELB
+        statistic:
+        - Average
+        - Maximum
         tags:
         - key: Organization
           value: Engineering
-        tags.resource_type_filter: elasticloadbalancing
+        tags.resource_type_filter: ec2:instance
   - name: period
     type: text
     title: Period

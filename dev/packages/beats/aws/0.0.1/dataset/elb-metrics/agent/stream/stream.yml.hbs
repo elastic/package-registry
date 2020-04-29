@@ -1,9 +1,21 @@
 input: aws/metrics
 metricsets: ["elb"]
+{{#if aws_access_key_id}}
+aws_access_key_id: {{aws_access_key_id}}
+{{/if}}
+{{#if aws_secret_access_key}}
+aws_secret_access_key: {{aws_secret_access_key}}
+{{/if}}
+{{#if aws_session_token}}
+aws_session_token: {{aws_session_token}}
+{{/if}}
 {{#if credential_profile_name}}
 credential_profile_name: {{credential_profile_name}}
 {{/if}}
 period: {{period}}
+{{#if role_arn}}
+role_arn: {{role_arn}}
+{{/if}}
 {{#if tags_filter}}
 tags_filter: {{tags_filter}}
 {{/if}}

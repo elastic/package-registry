@@ -4,20 +4,13 @@ type: metrics
 streams:
 - input: aws/metrics
   vars:
-  - name: credential_profile_name
-    type: text
-    title: Credential Profile Name
-    multi: false
-    required: true
-    show_user: true
-    default: test-mb
   - name: period
     type: text
     title: Period
     multi: false
     required: true
     show_user: true
-    default: 60s
+    default: 1m
   - name: tags_filter
     type: yaml
     title: Tags Filter
@@ -25,7 +18,7 @@ streams:
     required: true
     show_user: true
     default: |
-      - key: dept
-        value: eng
+      - key: Organization
+        value: Engineering
   title: aws rds metrics
   description: Collect aws rds metrics

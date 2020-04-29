@@ -4,20 +4,13 @@ type: metrics
 streams:
 - input: aws/metrics
   vars:
-  - name: credential_profile_name
-    type: text
-    title: Credential Profile Name
-    multi: false
-    required: true
-    show_user: true
-    default: test-mb
   - name: period
     type: text
     title: Period
     multi: false
     required: true
     show_user: true
-    default: 300s
+    default: 5m
   - name: regions
     type: text
     title: Regions
