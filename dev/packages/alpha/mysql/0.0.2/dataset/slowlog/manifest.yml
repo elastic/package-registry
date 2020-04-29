@@ -1,5 +1,6 @@
 title: MySQL slowlog logs
 type: logs
+release: beta
 streams:
 - input: logs
   vars:
