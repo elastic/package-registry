@@ -13,6 +13,8 @@ streams:
     vars:
       - name: paths
         required: true
+        type: text
+        multi: true
         default:
           - /var/log/nginx/error.log*
 
