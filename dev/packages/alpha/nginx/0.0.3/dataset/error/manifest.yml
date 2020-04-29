@@ -1,5 +1,6 @@
 title: Nginx error logs
 type: logs
+release: beta
 streams:
 - input: logs
   vars:

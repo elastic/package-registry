@@ -1,5 +1,6 @@
 title: Nginx stubstatus metrics
 type: metrics
+release: beta
 streams:
 - input: nginx/metrics
   vars:
