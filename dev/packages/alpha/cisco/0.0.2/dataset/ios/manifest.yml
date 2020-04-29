@@ -1,5 +1,5 @@
 title: Cisco IOS logs
-release: ga
+release: experimental
 type: logs
 streams:
   - input: syslog
@@ -23,6 +23,13 @@ streams:
         show_user: true
         default:
           - cisco-ios
+      - name: syslog_host
+        type: text
+        title: Host to listen on
+        multi: false
+        required: true
+        show_user: true
+        default: localhost
       - name: syslog_port
         type: integer
         title: Syslog Port
@@ -33,7 +40,6 @@ streams:
   - input: log
     title: Cisco IOS logs
     description: Collect Cisco IOS logs from file
-    template_path: log.yml.hbs
     vars:
       - name: paths
         type: text

@@ -18,6 +18,7 @@ services:
     - "xpack.security.enabled=true"
     - "xpack.security.authc.api_key.enabled=true"
     - "ELASTIC_PASSWORD=changeme"
+    - "license=trial"
 
   kibana:
     image: docker.elastic.co/kibana/kibana:8.0.0-SNAPSHOT

@@ -1,5 +1,5 @@
 title: Cisco FTD logs
-release: ga
+release: experimental
 type: logs
 streams:
   - input: udp
@@ -15,9 +15,16 @@ streams:
         show_user: true
         default:
           - cisco-ftd
-      - name: syslog_port
+      - name: udp_host
+        type: text
+        title: UDP host to listen on
+        multi: false
+        required: true
+        show_user: true
+        default: localhost
+      - name: udp_port
         type: integer
-        title: Syslog Port
+        title: UDP Port to listen on
         multi: false
         required: true
         show_user: true
@@ -32,7 +39,6 @@ streams:
   - input: log
     title: Cisco FTD logs
     description: Collect Cisco FTD logs from file
-    template_path: log.yml.hbs
     vars:
       - name: paths
         type: text

@@ -1,7 +1,7 @@
 input: syslog
 protocol.udp:
-  host: "{{this.syslog_host}}:{{this.syslog_port}}"
-tags: {{ this.tags }}
+  host: "{{syslog_host}}:{{syslog_port}}"
+tags: {{tags}}
 processors:
   - add_locale: ~
   - script:
