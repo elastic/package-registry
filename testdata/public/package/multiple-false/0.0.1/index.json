@@ -43,7 +43,8 @@
               "required": true,
               "show_user": false
             }
-          ]
+          ],
+          "enabled": true
         }
       ],
       "package": "multiple-false",
@@ -73,7 +74,8 @@
               ],
               "dataset": "multiple-false.foo",
               "template_path": "stream.yml.hbs",
-              "template": "foo: bar\n"
+              "template": "foo: bar\n",
+              "enabled": true
             }
           ]
         }
