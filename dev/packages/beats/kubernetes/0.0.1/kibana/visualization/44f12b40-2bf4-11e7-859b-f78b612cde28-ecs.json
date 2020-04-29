@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "CPU usage by node  [Metricbeat Kubernetes] ECS",
+        "title": "CPU usage by node  [Metrics Kubernetes] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -65,6 +65,7 @@
                         "seperate_axis": 0,
                         "series_interval": "10s",
                         "series_time_field": "@timestamp",
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "kubernetes.node.name",
@@ -106,6 +107,7 @@
                         "seperate_axis": 0,
                         "series_interval": "10s",
                         "series_time_field": "@timestamp",
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "kubernetes.node.name",
@@ -118,7 +120,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "CPU usage by node  [Metricbeat Kubernetes] ECS",
+            "title": "CPU usage by node  [Metrics Kubernetes] ECS",
             "type": "metrics"
         }
     },

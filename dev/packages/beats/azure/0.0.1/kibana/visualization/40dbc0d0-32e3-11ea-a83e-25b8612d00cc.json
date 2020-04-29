@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Storage Availability [Metricbeat Azure]",
+        "title": "Storage Availability [Metrics Azure]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -78,6 +78,7 @@
                         ],
                         "point_size": 0,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "terms_field": null,
@@ -91,7 +92,7 @@
                 "time_range_mode": "last_value",
                 "type": "timeseries"
             },
-            "title": "Storage Availability [Metricbeat Azure]",
+            "title": "Storage Availability [Metrics Azure]",
             "type": "metrics"
         }
     },

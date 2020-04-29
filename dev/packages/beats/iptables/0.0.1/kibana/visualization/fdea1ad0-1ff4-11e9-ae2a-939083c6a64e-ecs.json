@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Ubiquiti Firewall Traffic Breakdown [Filebeat Iptables] ECS",
+        "title": "Ubiquiti Firewall Traffic Breakdown [Logs Iptables] ECS",
         "uiStateJSON": {
             "vis": {
                 "colors": {
@@ -97,7 +97,7 @@
                 "legendPosition": "top",
                 "type": "pie"
             },
-            "title": "Ubiquiti Firewall Traffic Breakdown [Filebeat Iptables] ECS",
+            "title": "Ubiquiti Firewall Traffic Breakdown [Logs Iptables] ECS",
             "type": "pie"
         }
     },

@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Storage Egress Gauge [Metricbeat Azure]",
+        "title": "Storage Egress Gauge [Metrics Azure]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -88,7 +88,7 @@
                 "time_field": "@timestamp",
                 "type": "gauge"
             },
-            "title": "Storage Egress Gauge [Metricbeat Azure]",
+            "title": "Storage Egress Gauge [Metrics Azure]",
             "type": "metrics"
         }
     },

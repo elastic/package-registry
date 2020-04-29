@@ -149,7 +149,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat Netflow] Flow Exporters",
+        "title": "[Logs Netflow] Flow Exporters",
         "version": 1
     },
     "id": "feebb4e6-b13e-4e4e-b9fc-d3a178276425",

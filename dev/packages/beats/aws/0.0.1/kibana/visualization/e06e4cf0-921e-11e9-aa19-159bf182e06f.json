@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "RDS Select Throughput in Count/Second [Metricbeat AWS]",
+        "title": "RDS Select Throughput in Count/Second [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -67,7 +67,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "RDS Select Throughput in Count/Second [Metricbeat AWS]",
+            "title": "RDS Select Throughput in Count/Second [Metrics AWS]",
             "type": "metrics"
         }
     },

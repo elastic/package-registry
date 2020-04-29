@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Outcomes Breakdown [Filebeat CEF]",
+        "title": "Outcomes Breakdown [Logs CEF]",
         "uiStateJSON": {
             "vis": {
                 "colors": {
@@ -129,7 +129,7 @@
                     }
                 ]
             },
-            "title": "Outcomes Breakdown [Filebeat CEF]",
+            "title": "Outcomes Breakdown [Logs CEF]",
             "type": "area"
         }
     },

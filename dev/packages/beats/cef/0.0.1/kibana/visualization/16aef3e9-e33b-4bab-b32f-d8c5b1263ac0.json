@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Events by Direction [Filebeat CEF]",
+        "title": "Events by Direction [Logs CEF]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -49,6 +49,7 @@
                         ],
                         "point_size": 1,
                         "seperate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_filters": [
                             {
                                 "color": "rgba(0,156,224,1)",
@@ -92,6 +93,7 @@
                         ],
                         "point_size": 1,
                         "seperate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_filters": [
                             {
                                 "color": "rgba(211,49,21,1)",
@@ -111,7 +113,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Events by Direction [Filebeat CEF]",
+            "title": "Events by Direction [Logs CEF]",
             "type": "metrics"
         }
     },

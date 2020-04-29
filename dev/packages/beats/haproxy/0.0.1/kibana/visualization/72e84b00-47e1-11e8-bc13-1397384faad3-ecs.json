@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Number of server connections [Metricbeat HAProxy] ECS",
+        "title": "Number of server connections [Metrics HAProxy] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -50,6 +50,7 @@
                         ],
                         "point_size": 1,
                         "seperate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "haproxy.stat.service_name"

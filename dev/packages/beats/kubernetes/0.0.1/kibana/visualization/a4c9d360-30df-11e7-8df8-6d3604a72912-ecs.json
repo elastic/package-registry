@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Top memory intensive pods  [Metricbeat Kubernetes] ECS",
+        "title": "Top memory intensive pods  [Metrics Kubernetes] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -61,6 +61,7 @@
                         "override_index_pattern": 0,
                         "point_size": 1,
                         "seperate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "kubernetes.pod.name",
@@ -74,7 +75,7 @@
                 "time_field": "@timestamp",
                 "type": "top_n"
             },
-            "title": "Top memory intensive pods  [Metricbeat Kubernetes] ECS",
+            "title": "Top memory intensive pods  [Metrics Kubernetes] ECS",
             "type": "metrics"
         }
     },

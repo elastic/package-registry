@@ -37,7 +37,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Source Zone breakout [Filebeat PANW] ECS",
+        "title": "Source Zone breakout [Logs PANW] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -149,7 +149,7 @@
                     }
                 ]
             },
-            "title": "Source Zone breakout [Filebeat PANW] ECS",
+            "title": "Source Zone breakout [Logs PANW] ECS",
             "type": "horizontal_bar"
         }
     },

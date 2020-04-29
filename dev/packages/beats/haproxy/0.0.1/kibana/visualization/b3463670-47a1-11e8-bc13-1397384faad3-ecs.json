@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Average time in queue [Metricbeat HAProxy] ECS",
+        "title": "Average time in queue [Metrics HAProxy] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -34,6 +34,7 @@
                         ],
                         "point_size": 1,
                         "seperate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none"
                     }

@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "SELECT rates [Metricbeat MySQL] ECS",
+        "title": "SELECT rates [Metrics MySQL] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -62,6 +62,7 @@
                         ],
                         "point_size": 1,
                         "seperate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "type": "timeseries"
@@ -72,7 +73,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "SELECT rates [Metricbeat MySQL] ECS",
+            "title": "SELECT rates [Metrics MySQL] ECS",
             "type": "metrics"
         }
     },

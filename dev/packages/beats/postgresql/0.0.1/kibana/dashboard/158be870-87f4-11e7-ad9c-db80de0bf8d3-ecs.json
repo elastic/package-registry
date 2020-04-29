@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "description": "Overview dashboard for the Filebeat PostgreSQL module",
+        "description": "Overview dashboard for the Logs PostgreSQL integration",
         "hits": 0,
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
@@ -79,7 +79,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat PostgreSQL] Overview ECS",
+        "title": "[Logs PostgreSQL] Overview ECS",
         "version": 1
     },
     "id": "158be870-87f4-11e7-ad9c-db80de0bf8d3-ecs",

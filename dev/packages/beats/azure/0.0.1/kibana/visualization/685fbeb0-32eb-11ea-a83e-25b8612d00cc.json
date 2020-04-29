@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Storage Success E2E Latency [Metricbeat Azure]",
+        "title": "Storage Success E2E Latency [Metrics Azure]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -63,7 +63,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Storage Success E2E Latency [Metricbeat Azure]",
+            "title": "Storage Success E2E Latency [Metrics Azure]",
             "type": "metrics"
         }
     },

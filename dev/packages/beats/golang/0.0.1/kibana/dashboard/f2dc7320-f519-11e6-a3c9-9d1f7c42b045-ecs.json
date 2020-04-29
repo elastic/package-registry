@@ -97,7 +97,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Golang] Overview ECS",
+        "title": "[Metrics Golang] Overview ECS",
         "version": 1
     },
     "id": "f2dc7320-f519-11e6-a3c9-9d1f7c42b045-ecs",

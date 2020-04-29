@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Queue Index Operations [Metricbeat RabbitMQ] ECS",
+        "title": "Queue Index Operations [Metrics RabbitMQ] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -133,14 +133,14 @@
                 ],
                 "yAxis": {}
             },
-            "title": "Queue Index Operations [Metricbeat RabbitMQ] ECS",
+            "title": "Queue Index Operations [Metrics RabbitMQ] ECS",
             "type": "line"
         }
     },
     "id": "RabbitMQ-Queue-Index-Operations-ecs",
     "references": [
         {
-            "id": "Metricbeat-Rabbitmq-ecs",
+            "id": "Metrics-Rabbitmq-ecs",
             "name": "search_0",
             "type": "search"
         }

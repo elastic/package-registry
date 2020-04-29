@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Number of processes [Metricbeat System] ECS",
+        "title": "Number of processes [Metrics System] ECS",
         "uiStateJSON": {
             "vis": {
                 "defaultColors": {

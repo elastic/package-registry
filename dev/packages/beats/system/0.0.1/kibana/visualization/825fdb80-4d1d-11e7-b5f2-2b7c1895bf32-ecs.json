@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Disk used [Metricbeat System] ECS",
+        "title": "Disk used [Metrics System] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -99,6 +99,7 @@
                         ],
                         "point_size": 1,
                         "seperate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none"
                     }
@@ -109,7 +110,7 @@
                 "time_range_mode": "entire_time_range",
                 "type": "gauge"
             },
-            "title": "Disk used [Metricbeat System] ECS",
+            "title": "Disk used [Metrics System] ECS",
             "type": "metrics"
         }
     },

@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Controller Workqueue adds [Metricbeat Kubernetes]",
+        "title": "Controller Workqueue adds [Metrics Kubernetes]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -61,7 +61,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Controller Workqueue adds [Metricbeat Kubernetes]",
+            "title": "Controller Workqueue adds [Metrics Kubernetes]",
             "type": "metrics"
         }
     },

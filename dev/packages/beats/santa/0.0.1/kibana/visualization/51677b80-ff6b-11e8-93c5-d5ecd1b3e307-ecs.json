@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Total Events [Filebeat Santa] ECS",
+        "title": "Total Events [Logs Santa] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -54,7 +54,7 @@
                 },
                 "type": "metric"
             },
-            "title": "Total Events [Filebeat Santa] ECS",
+            "title": "Total Events [Logs Santa] ECS",
             "type": "metric"
         }
     },

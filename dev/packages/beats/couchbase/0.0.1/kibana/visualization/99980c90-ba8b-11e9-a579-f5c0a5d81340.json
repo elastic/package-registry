@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Disk space used by docs [Metricbeat Couchbase] ECS",
+        "title": "Disk space used by docs [Metrics Couchbase] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -59,7 +59,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Disk space used by docs [Metricbeat Couchbase] ECS",
+            "title": "Disk space used by docs [Metrics Couchbase] ECS",
             "type": "metrics"
         }
     },

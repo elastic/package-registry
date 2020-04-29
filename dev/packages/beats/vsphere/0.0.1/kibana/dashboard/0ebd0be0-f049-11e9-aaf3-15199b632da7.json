@@ -109,7 +109,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat VSphere] Hosts Overview ECS",
+        "title": "[Metrics VSphere] Hosts Overview ECS",
         "version": 1
     },
     "id": "0ebd0be0-f049-11e9-aaf3-15199b632da7",

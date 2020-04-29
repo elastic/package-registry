@@ -146,7 +146,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat AWS] SQS Overview",
+        "title": "[Metrics AWS] SQS Overview",
         "version": 1
     },
     "id": "234aeda0-43b7-11e9-8697-530f39afc6eb",

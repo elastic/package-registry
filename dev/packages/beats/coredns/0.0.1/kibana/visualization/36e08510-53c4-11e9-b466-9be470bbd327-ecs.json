@@ -29,7 +29,7 @@
                 }
             }
         },
-        "title": "Panic Count [Metricbeat CoreDNS] ECS",
+        "title": "Panic Count [Metrics CoreDNS] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -75,7 +75,7 @@
                 },
                 "type": "metric"
             },
-            "title": "Panic Count [Metricbeat CoreDNS] ECS",
+            "title": "Panic Count [Metrics CoreDNS] ECS",
             "type": "metric"
         }
     },

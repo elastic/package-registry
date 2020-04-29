@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Hostname list [Metricbeat Apache] ECS",
+        "title": "Hostname list [Metrics Apache] ECS",
         "uiStateJSON": {
             "vis": {
                 "params": {

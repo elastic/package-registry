@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Network Application [Filebeat Zeek]",
+        "title": "Network Application [Logs Zeek]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -63,7 +63,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Network Application [Filebeat Zeek]",
+            "title": "Network Application [Logs Zeek]",
             "type": "pie"
         }
     },

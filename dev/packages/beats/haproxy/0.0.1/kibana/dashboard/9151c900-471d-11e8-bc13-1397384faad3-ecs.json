@@ -99,7 +99,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat HAProxy] Backend ECS",
+        "title": "[Metrics HAProxy] Backend ECS",
         "version": 1
     },
     "id": "9151c900-471d-11e8-bc13-1397384faad3-ecs",

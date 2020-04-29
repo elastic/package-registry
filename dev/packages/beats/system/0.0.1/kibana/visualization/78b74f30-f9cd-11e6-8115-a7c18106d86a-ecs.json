@@ -8,7 +8,7 @@
                 "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.index"
             }
         },
-        "title": "SSH login attempts [Filebeat System] ECS",
+        "title": "SSH login attempts [Logs System] ECS",
         "uiStateJSON": {
             "vis": {
                 "colors": {

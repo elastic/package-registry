@@ -96,7 +96,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat ActiveMQ] Broker Overview",
+        "title": "[Metrics ActiveMQ] Broker Overview",
         "version": 1
     },
     "id": "fc27a270-0b95-11ea-81bb-cf244189d349",

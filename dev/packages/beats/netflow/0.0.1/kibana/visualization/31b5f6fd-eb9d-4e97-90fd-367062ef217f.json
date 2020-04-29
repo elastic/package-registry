@@ -13,7 +13,7 @@
                 }
             }
         },
-        "title": "Top Destination Ports [Filebeat Netflow]",
+        "title": "Top Destination Ports [Logs Netflow]",
         "uiStateJSON": {
             "vis": {
                 "params": {
@@ -82,7 +82,7 @@
                 },
                 "totalFunc": "sum"
             },
-            "title": "Top Destination Ports [Filebeat Netflow]",
+            "title": "Top Destination Ports [Logs Netflow]",
             "type": "table"
         }
     },

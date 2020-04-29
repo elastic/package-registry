@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Threat Indicator Geo Map [Filebeat MISP]",
+        "title": "Threat Indicator Geo Map [Logs MISP]",
         "uiStateJSON": {
             "mapCenter": [
                 -0.17578097424708533,
@@ -85,7 +85,7 @@
                     }
                 }
             },
-            "title": "Threat Indicator Geo Map [Filebeat MISP]",
+            "title": "Threat Indicator Geo Map [Logs MISP]",
             "type": "tile_map"
         }
     },

@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Storage Queue Message Count [Metricbeat Azure]",
+        "title": "Storage Queue Message Count [Metrics Azure]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -88,7 +88,7 @@
                 "time_field": "@timestamp",
                 "type": "gauge"
             },
-            "title": "Storage Queue Message Count [Metricbeat Azure]",
+            "title": "Storage Queue Message Count [Metrics Azure]",
             "type": "metrics"
         }
     },

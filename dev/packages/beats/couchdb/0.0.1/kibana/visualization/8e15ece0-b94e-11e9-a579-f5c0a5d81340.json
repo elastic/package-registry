@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "HTTP Status Codes [Metricbeat CouchDB] ECS",
+        "title": "HTTP Status Codes [Metrics CouchDB] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -58,6 +58,7 @@
                         ],
                         "point_size": 0,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "value_template": "{{value}}"
@@ -91,6 +92,7 @@
                         ],
                         "point_size": 0,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "value_template": "{{value}}"
@@ -124,6 +126,7 @@
                         ],
                         "point_size": 0,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "value_template": "{{value}}"
@@ -157,6 +160,7 @@
                         ],
                         "point_size": 0,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "value_template": "{{value}}"
@@ -190,6 +194,7 @@
                         ],
                         "point_size": 0,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "value_template": "{{value}}"
@@ -223,6 +228,7 @@
                         ],
                         "point_size": 0,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "value_template": "{{value}}"
@@ -256,6 +262,7 @@
                         ],
                         "point_size": 0,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "value_template": "{{value}}"
@@ -289,6 +296,7 @@
                         ],
                         "point_size": 0,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "value_template": "{{value}}"
@@ -322,6 +330,7 @@
                         ],
                         "point_size": 0,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "value_template": "{{value}}"
@@ -355,6 +364,7 @@
                         ],
                         "point_size": 0,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "value_template": "{{value}}"
@@ -365,7 +375,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "HTTP Status Codes [Metricbeat CouchDB] ECS",
+            "title": "HTTP Status Codes [Metrics CouchDB] ECS",
             "type": "metrics"
         }
     },

@@ -71,7 +71,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat uWSGI] Overview ECS",
+        "title": "[Metrics uWSGI] Overview ECS",
         "version": 1
     },
     "id": "32fca290-f0af-11e7-b9ff-9f96241065de-ecs",

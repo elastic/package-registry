@@ -24,7 +24,7 @@
                 }
             }
         },
-        "title": "Memory usage [Metricbeat Docker] ECS",
+        "title": "Memory usage [Metrics Docker] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -142,7 +142,7 @@
                 ],
                 "yAxis": {}
             },
-            "title": "Memory usage [Metricbeat Docker] ECS",
+            "title": "Memory usage [Metrics Docker] ECS",
             "type": "area"
         }
     },

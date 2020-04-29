@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "EBS Volume Total Write Time [Metricbeat AWS]",
+        "title": "EBS Volume Total Write Time [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -57,7 +57,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "EBS Volume Total Write Time [Metricbeat AWS]",
+            "title": "EBS Volume Total Write Time [Metrics AWS]",
             "type": "metrics"
         }
     },

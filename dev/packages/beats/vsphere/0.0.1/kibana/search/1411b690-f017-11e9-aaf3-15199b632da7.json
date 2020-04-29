@@ -23,7 +23,7 @@
                 "desc"
             ]
         ],
-        "title": "search for event module [Metricbeat VSphere] ECS",
+        "title": "search for event integration [Metrics VSphere] ECS",
         "version": 1
     },
     "id": "1411b690-f017-11e9-aaf3-15199b632da7",

@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Host selector [Metricbeat Kubernetes]",
+        "title": "Host selector [Metrics Kubernetes]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -52,7 +52,7 @@
                 "updateFiltersOnChange": false,
                 "useTimeFilter": false
             },
-            "title": "Host selector [Metricbeat Kubernetes]",
+            "title": "Host selector [Metrics Kubernetes]",
             "type": "input_control_vis"
         }
     },

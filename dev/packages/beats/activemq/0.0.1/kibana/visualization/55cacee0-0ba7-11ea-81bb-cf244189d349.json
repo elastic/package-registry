@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Broker Messages [Metricbeat ActiveMQ]",
+        "title": "Broker Messages [Metrics ActiveMQ]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -57,6 +57,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "type": "timeseries"
@@ -85,6 +86,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "type": "timeseries"
@@ -113,6 +115,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "type": "timeseries"
@@ -123,7 +126,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "Broker Messages [Metricbeat ActiveMQ]",
+            "title": "Broker Messages [Metrics ActiveMQ]",
             "type": "metrics"
         }
     },

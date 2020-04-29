@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Batch Requests/sec [Metricbeat MSSQL] ECS",
+        "title": "Batch Requests/sec [Metrics MSSQL] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -120,7 +120,7 @@
                     }
                 ]
             },
-            "title": "Batch Requests/sec [Metricbeat MSSQL] ECS",
+            "title": "Batch Requests/sec [Metrics MSSQL] ECS",
             "type": "line"
         }
     },

@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "description": "Syslog dashboard from the Filebeat System module",
+        "description": "Syslog dashboard from the Logs System integration",
         "hits": 0,
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
@@ -81,10 +81,10 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat System] Syslog dashboard ECS",
+        "title": "[Logs System] Syslog dashboard ECS",
         "version": 1
     },
-    "id": "Filebeat-syslog-dashboard-ecs",
+    "id": "Logs-syslog-dashboard-ecs",
     "references": [
         {
             "id": "Syslog-events-by-hostname-ecs",

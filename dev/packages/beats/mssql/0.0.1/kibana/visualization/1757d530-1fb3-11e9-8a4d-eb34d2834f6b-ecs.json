@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Transaction log size since last checkpoint [Metricbeat MSSQL] ECS",
+        "title": "Transaction log size since last checkpoint [Metrics MSSQL] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -41,6 +41,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "mssql.database.name"
@@ -51,7 +52,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Transaction log size since last checkpoint [Metricbeat MSSQL] ECS",
+            "title": "Transaction log size since last checkpoint [Metrics MSSQL] ECS",
             "type": "metrics"
         }
     },

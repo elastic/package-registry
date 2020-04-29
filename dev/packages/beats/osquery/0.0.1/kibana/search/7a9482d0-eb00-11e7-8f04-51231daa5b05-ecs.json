@@ -52,7 +52,7 @@
                 "desc"
             ]
         ],
-        "title": "Mounts [Filebeat Osquery] ECS",
+        "title": "Mounts [Logs Osquery] ECS",
         "version": 1
     },
     "id": "7a9482d0-eb00-11e7-8f04-51231daa5b05-ecs",

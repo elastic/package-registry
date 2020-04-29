@@ -25,7 +25,7 @@
                 "desc"
             ]
         ],
-        "title": "Application Events [Filebeat ActiveMQ]",
+        "title": "Application Events [Logs ActiveMQ]",
         "version": 1
     },
     "id": "d784ec10-1460-11ea-8fd8-030a13064883",

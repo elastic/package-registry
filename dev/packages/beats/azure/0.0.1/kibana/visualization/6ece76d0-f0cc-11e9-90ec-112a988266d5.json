@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Caller IP [Filebeat Azure]",
+        "title": "Caller IP [Logs Azure]",
         "uiStateJSON": {
             "vis": {
                 "params": {
@@ -149,7 +149,7 @@
                 },
                 "totalFunc": "sum"
             },
-            "title": "Caller IP [Filebeat Azure]",
+            "title": "Caller IP [Logs Azure]",
             "type": "table"
         }
     },

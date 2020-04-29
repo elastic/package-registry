@@ -122,7 +122,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat ActiveMQ] Queues Overview",
+        "title": "[Metrics ActiveMQ] Queues Overview",
         "version": 1
     },
     "id": "a8160560-0bd0-11ea-81bb-cf244189d349",

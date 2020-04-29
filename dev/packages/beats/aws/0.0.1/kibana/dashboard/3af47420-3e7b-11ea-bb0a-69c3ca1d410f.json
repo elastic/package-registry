@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "description": "Filebeat AWS ELB Access Log Overview Dashboard",
+        "description": "Logs AWS ELB Access Log Overview Dashboard",
         "hits": 0,
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
@@ -169,7 +169,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat AWS] ELB Access Log Overview",
+        "title": "[Logs AWS] ELB Access Log Overview",
         "version": 1
     },
     "id": "3af47420-3e7b-11ea-bb0a-69c3ca1d410f",

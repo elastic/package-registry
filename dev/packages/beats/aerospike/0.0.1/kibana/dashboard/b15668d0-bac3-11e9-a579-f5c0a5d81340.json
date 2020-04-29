@@ -17,15 +17,15 @@
                             "key": "aerospike.namespace.name",
                             "negate": false,
                             "params": {
-                                "query": "metricbeat"
+                                "query": "metrics"
                             },
                             "type": "phrase",
-                            "value": "metricbeat"
+                            "value": "metrics"
                         },
                         "query": {
                             "match": {
                                 "aerospike.namespace.name": {
-                                    "query": "metricbeat",
+                                    "query": "metrics",
                                     "type": "phrase"
                                 }
                             }
@@ -171,7 +171,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Aerospike] Database Overview ",
+        "title": "[Metrics Aerospike] Database Overview ",
         "version": 1
     },
     "id": "b15668d0-bac3-11e9-a579-f5c0a5d81340",

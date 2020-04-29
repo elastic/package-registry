@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Other Memory usage [Metricbeat Tomcat]",
+        "title": "Other Memory usage [Metrics Tomcat]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -44,6 +44,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "value_template": "{{value/1024}}"
@@ -66,6 +67,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "value_template": "{{value/1024}}"
@@ -89,6 +91,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "value_template": "{{value/1024}}"
@@ -111,6 +114,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "value_template": "{{value/1024}}"
@@ -121,7 +125,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "Other Memory usage [Metricbeat Tomcat]",
+            "title": "Other Memory usage [Metrics Tomcat]",
             "type": "metrics"
         }
     },

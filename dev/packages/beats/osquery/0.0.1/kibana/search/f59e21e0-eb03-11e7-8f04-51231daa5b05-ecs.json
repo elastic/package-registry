@@ -21,16 +21,16 @@
                             "key": "osquery.result.name",
                             "negate": false,
                             "params": {
-                                "query": "pack_it-compliance_kernel_modules",
+                                "query": "pack_it-compliance_kernel_integrations",
                                 "type": "phrase"
                             },
                             "type": "phrase",
-                            "value": "pack_it-compliance_kernel_modules"
+                            "value": "pack_it-compliance_kernel_integrations"
                         },
                         "query": {
                             "match": {
                                 "osquery.result.name": {
-                                    "query": "pack_it-compliance_kernel_modules",
+                                    "query": "pack_it-compliance_kernel_integrations",
                                     "type": "phrase"
                                 }
                             }
@@ -52,7 +52,7 @@
                 "desc"
             ]
         ],
-        "title": "Kernel modules [Filebeat Osquery] ECS",
+        "title": "Kernel integrations [Logs Osquery] ECS",
         "version": 1
     },
     "id": "f59e21e0-eb03-11e7-8f04-51231daa5b05-ecs",

@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "DynamoDB Max Request Latency Per Operation [Metricbeat AWS]",
+        "title": "DynamoDB Max Request Latency Per Operation [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -38,6 +38,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "aws.dimensions.Operation",
@@ -49,7 +50,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "DynamoDB Max Request Latency Per Operation [Metricbeat AWS]",
+            "title": "DynamoDB Max Request Latency Per Operation [Metrics AWS]",
             "type": "metrics"
         }
     },

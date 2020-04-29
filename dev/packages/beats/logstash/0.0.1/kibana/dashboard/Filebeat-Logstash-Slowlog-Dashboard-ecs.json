@@ -93,10 +93,10 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat Logstash] Slowlogs ECS",
+        "title": "[Logs Logstash] Slowlogs ECS",
         "version": 1
     },
-    "id": "Filebeat-Logstash-Slowlog-Dashboard-ecs",
+    "id": "Logs-Logstash-Slowlog-Dashboard-ecs",
     "references": [
         {
             "id": "742e45d0-cbdd-11e7-9852-73e0a9df1bb6-ecs",

@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Logs Severity [Filebeat MongoDB] ECS",
+        "title": "Logs Severity [Logs MongoDB] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -44,7 +44,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Logs Severity [Filebeat MongoDB] ECS",
+            "title": "Logs Severity [Logs MongoDB] ECS",
             "type": "pie"
         }
     },

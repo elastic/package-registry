@@ -188,7 +188,7 @@
             },
             "zoom": 2.75
         },
-        "title": "Geolocation [Filebeat Okta]",
+        "title": "Geolocation [Logs Okta]",
         "uiStateJSON": {
             "isLayerTOCOpen": true,
             "openTOCDetails": []

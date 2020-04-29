@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Resource Deletions [Filebeat Azure]",
+        "title": "Resource Deletions [Logs Azure]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -178,7 +178,7 @@
                     }
                 ]
             },
-            "title": "Resource Deletions [Filebeat Azure]",
+            "title": "Resource Deletions [Logs Azure]",
             "type": "horizontal_bar"
         }
     },

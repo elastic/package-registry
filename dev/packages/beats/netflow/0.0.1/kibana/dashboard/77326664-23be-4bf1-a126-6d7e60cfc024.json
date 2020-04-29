@@ -114,7 +114,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat Netflow] Geo Location",
+        "title": "[Logs Netflow] Geo Location",
         "version": 1
     },
     "id": "77326664-23be-4bf1-a126-6d7e60cfc024",

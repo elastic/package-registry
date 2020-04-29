@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "CloudTrail Event Type [Filebeat AWS]",
+        "title": "CloudTrail Event Type [Logs AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -54,7 +54,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "CloudTrail Event Type [Filebeat AWS]",
+            "title": "CloudTrail Event Type [Logs AWS]",
             "type": "pie"
         }
     },

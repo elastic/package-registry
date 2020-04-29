@@ -13,7 +13,7 @@
                 }
             }
         },
-        "title": "Top Cities [Filebeat Netflow]",
+        "title": "Top Cities [Logs Netflow]",
         "uiStateJSON": {
             "vis": {
                 "params": {
@@ -95,7 +95,7 @@
                 },
                 "totalFunc": "sum"
             },
-            "title": "Top Cities [Filebeat Netflow]",
+            "title": "Top Cities [Logs Netflow]",
             "type": "table"
         }
     },

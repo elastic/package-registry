@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "VPN Filters [Metricbeat AWS]",
+        "title": "VPN Filters [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -82,7 +82,7 @@
                 "updateFiltersOnChange": true,
                 "useTimeFilter": true
             },
-            "title": "VPN Filters [Metricbeat AWS]",
+            "title": "VPN Filters [Metrics AWS]",
             "type": "input_control_vis"
         }
     },

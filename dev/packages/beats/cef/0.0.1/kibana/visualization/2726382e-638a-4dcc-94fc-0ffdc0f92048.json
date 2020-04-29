@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Top 15 Event Types by Events [Filebeat CEF]",
+        "title": "Top 15 Event Types by Events [Logs CEF]",
         "uiStateJSON": {
             "vis": {
                 "params": {
@@ -94,7 +94,7 @@
                 },
                 "totalFunc": "sum"
             },
-            "title": "Top 15 Event Types by Events [Filebeat CEF]",
+            "title": "Top 15 Event Types by Events [Logs CEF]",
             "type": "table"
         }
     },

@@ -13,7 +13,7 @@
                 }
             }
         },
-        "title": "Egress Interfaces (flow records) [Filebeat Netflow]",
+        "title": "Egress Interfaces (flow records) [Logs Netflow]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -48,7 +48,7 @@
                 "isDonut": true,
                 "legendPosition": "right"
             },
-            "title": "Egress Interfaces (flow records) [Filebeat Netflow]",
+            "title": "Egress Interfaces (flow records) [Logs Netflow]",
             "type": "pie"
         }
     },

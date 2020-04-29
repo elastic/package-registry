@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "description": "Filebeat Icinga module dashboard for the debug logs",
+        "description": "Logs Icinga integration dashboard for the debug logs",
         "hits": 0,
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
@@ -68,7 +68,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat Icinga] Debug Log ECS",
+        "title": "[Logs Icinga] Debug Log ECS",
         "version": 1
     },
     "id": "26309570-2419-11e7-a83b-d5f4cebac9ff-ecs",

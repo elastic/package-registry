@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Decision and Reason [Filebeat Santa] ECS",
+        "title": "Decision and Reason [Logs Santa] ECS",
         "uiStateJSON": {
             "vis": {
                 "colors": {
@@ -77,7 +77,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Decision and Reason [Filebeat Santa] ECS",
+            "title": "Decision and Reason [Logs Santa] ECS",
             "type": "pie"
         }
     },

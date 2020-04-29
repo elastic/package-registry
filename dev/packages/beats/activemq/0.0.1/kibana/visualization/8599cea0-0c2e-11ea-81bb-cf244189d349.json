@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Queues Consumers [Metricbeat ActiveMQ]",
+        "title": "Queues Consumers [Metrics ActiveMQ]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -45,6 +45,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "activemq.queue.name",
@@ -57,7 +58,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "Queues Consumers [Metricbeat ActiveMQ]",
+            "title": "Queues Consumers [Metrics ActiveMQ]",
             "type": "metrics"
         }
     },

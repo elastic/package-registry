@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Top URLs [Filebeat AWS]",
+        "title": "Top URLs [Logs AWS]",
         "uiStateJSON": {
             "vis": {
                 "colors": {
@@ -118,7 +118,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Top URLs [Filebeat AWS]",
+            "title": "Top URLs [Logs AWS]",
             "type": "pie"
         }
     },

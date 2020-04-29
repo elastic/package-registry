@@ -52,7 +52,7 @@
                 "desc"
             ]
         ],
-        "title": "DEB packages installed [Filebeat Osquery] ECS",
+        "title": "DEB packages installed [Logs Osquery] ECS",
         "version": 1
     },
     "id": "3824b080-eb02-11e7-8f04-51231daa5b05-ecs",

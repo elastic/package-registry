@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Buffer Cache Hit Ratio [Metricbeat MSSQL] ECS",
+        "title": "Buffer Cache Hit Ratio [Metrics MSSQL] ECS",
         "uiStateJSON": {
             "vis": {
                 "legendOpen": false
@@ -118,7 +118,7 @@
                     }
                 ]
             },
-            "title": "Buffer Cache Hit Ratio [Metricbeat MSSQL] ECS",
+            "title": "Buffer Cache Hit Ratio [Metrics MSSQL] ECS",
             "type": "line"
         }
     },

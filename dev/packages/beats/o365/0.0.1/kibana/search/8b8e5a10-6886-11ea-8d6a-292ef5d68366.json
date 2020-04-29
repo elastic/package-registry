@@ -107,7 +107,7 @@
                 "desc"
             ]
         ],
-        "title": "Data Loss Prevention [Filebeat o365]",
+        "title": "Data Loss Prevention [Logs o365]",
         "version": 1
     },
     "id": "8b8e5a10-6886-11ea-8d6a-292ef5d68366",

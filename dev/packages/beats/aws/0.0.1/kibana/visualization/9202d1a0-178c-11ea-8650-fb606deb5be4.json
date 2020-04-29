@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Usage ResourceCount [Metricbeat AWS]",
+        "title": "Usage ResourceCount [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -135,7 +135,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Usage ResourceCount [Metricbeat AWS]",
+            "title": "Usage ResourceCount [Metrics AWS]",
             "type": "pie"
         }
     },

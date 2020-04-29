@@ -37,7 +37,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Flow Creation Histogram [Filebeat PANW] ECS",
+        "title": "Flow Creation Histogram [Logs PANW] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -149,7 +149,7 @@
                     }
                 ]
             },
-            "title": "Flow Creation Histogram [Filebeat PANW] ECS",
+            "title": "Flow Creation Histogram [Logs PANW] ECS",
             "type": "histogram"
         }
     },

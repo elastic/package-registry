@@ -84,10 +84,10 @@
                 "desc"
             ]
         ],
-        "title": "Slow logs [Filebeat MySQL] ECS",
+        "title": "Slow logs [Logs MySQL] ECS",
         "version": 1
     },
-    "id": "Filebeat-MySQL-Slow-log-ecs",
+    "id": "Logs-MySQL-Slow-log-ecs",
     "references": [
         {
             "id": "logs-*",

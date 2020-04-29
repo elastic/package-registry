@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Top 5 Sources by Destination Ports [Filebeat CEF]",
+        "title": "Top 5 Sources by Destination Ports [Logs CEF]",
         "uiStateJSON": {
             "vis": {
                 "params": {
@@ -66,7 +66,7 @@
                 },
                 "totalFunc": "sum"
             },
-            "title": "Top 5 Sources by Destination Ports [Filebeat CEF]",
+            "title": "Top 5 Sources by Destination Ports [Logs CEF]",
             "type": "table"
         }
     },

@@ -172,7 +172,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Couchbase] Cluster Overview",
+        "title": "[Metrics Couchbase] Cluster Overview",
         "version": 1
     },
     "id": "46d21220-b9f1-11e9-a579-f5c0a5d81340",

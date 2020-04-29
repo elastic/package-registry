@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Scheduler scheduling attempts [Metricbeat Kubernetes]",
+        "title": "Scheduler scheduling attempts [Metrics Kubernetes]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -62,7 +62,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "Scheduler scheduling attempts [Metricbeat Kubernetes]",
+            "title": "Scheduler scheduling attempts [Metrics Kubernetes]",
             "type": "metrics"
         }
     },

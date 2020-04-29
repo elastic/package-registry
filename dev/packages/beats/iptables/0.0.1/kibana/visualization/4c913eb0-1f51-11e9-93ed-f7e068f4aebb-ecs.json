@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Events Timeline [Filebeat Iptables] ECS",
+        "title": "Events Timeline [Logs Iptables] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -107,7 +107,7 @@
                     }
                 ]
             },
-            "title": "Events Timeline [Filebeat Iptables] ECS",
+            "title": "Events Timeline [Logs Iptables] ECS",
             "type": "area"
         }
     },

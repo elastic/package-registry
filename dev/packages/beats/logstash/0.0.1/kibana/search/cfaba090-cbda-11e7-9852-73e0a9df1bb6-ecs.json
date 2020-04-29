@@ -2,7 +2,7 @@
     "attributes": {
         "columns": [
             "log.level",
-            "logstash.log.module",
+            "logstash.log.integration",
             "message",
             "source"
         ],
@@ -74,7 +74,7 @@
                 "desc"
             ]
         ],
-        "title": "logs [Filebeat Logstash] ECS",
+        "title": "logs [Logs Logstash] ECS",
         "version": 1
     },
     "id": "cfaba090-cbda-11e7-9852-73e0a9df1bb6-ecs",

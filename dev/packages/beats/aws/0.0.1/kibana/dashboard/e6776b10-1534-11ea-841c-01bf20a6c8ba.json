@@ -82,7 +82,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat AWS] Billing Overview",
+        "title": "[Metrics AWS] Billing Overview",
         "version": 1
     },
     "id": "e6776b10-1534-11ea-841c-01bf20a6c8ba",

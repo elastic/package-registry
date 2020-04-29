@@ -13,7 +13,7 @@
                 }
             }
         },
-        "title": "Destinations and Sources (flow records) [Filebeat Netflow]",
+        "title": "Destinations and Sources (flow records) [Logs Netflow]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -61,7 +61,7 @@
                 "isDonut": true,
                 "legendPosition": "right"
             },
-            "title": "Destinations and Sources (flow records) [Filebeat Netflow]",
+            "title": "Destinations and Sources (flow records) [Logs Netflow]",
             "type": "pie"
         }
     },

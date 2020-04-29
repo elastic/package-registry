@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Top 5 Source Countries [Filebeat CEF]",
+        "title": "Top 5 Source Countries [Logs CEF]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -39,7 +39,7 @@
                 "orientation": "single",
                 "scale": "linear"
             },
-            "title": "Top 5 Source Countries [Filebeat CEF]",
+            "title": "Top 5 Source Countries [Logs CEF]",
             "type": "tagcloud"
         }
     },

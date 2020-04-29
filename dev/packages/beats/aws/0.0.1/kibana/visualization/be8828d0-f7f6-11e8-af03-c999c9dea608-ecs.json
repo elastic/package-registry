@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "EC2 CPU Utilization [Metricbeat AWS] ECS",
+        "title": "EC2 CPU Utilization [Metrics AWS] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {

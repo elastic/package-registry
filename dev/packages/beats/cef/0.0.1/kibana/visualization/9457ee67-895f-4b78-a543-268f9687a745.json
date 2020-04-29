@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Endpoint Average EPS [Filebeat CEF]",
+        "title": "Endpoint Average EPS [Logs CEF]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -81,6 +81,7 @@
                         ],
                         "point_size": 1,
                         "seperate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "value_template": "{{value}} / s"
@@ -90,7 +91,7 @@
                 "time_field": "@timestamp",
                 "type": "gauge"
             },
-            "title": "Endpoint Average EPS [Filebeat CEF]",
+            "title": "Endpoint Average EPS [Logs CEF]",
             "type": "metrics"
         }
     },

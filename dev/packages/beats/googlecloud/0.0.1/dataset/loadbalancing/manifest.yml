@@ -24,7 +24,7 @@ streams:
     multi: false
     required: true
     show_user: true
-    default: 300s
+    default: 60s
   - name: project_id
     type: text
     title: Project Id

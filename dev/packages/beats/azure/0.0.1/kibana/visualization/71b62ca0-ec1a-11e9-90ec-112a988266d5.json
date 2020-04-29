@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Top Resource Groups [Filebeat Azure]",
+        "title": "Top Resource Groups [Logs Azure]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -134,7 +134,7 @@
                     }
                 ]
             },
-            "title": "Top Resource Groups [Filebeat Azure]",
+            "title": "Top Resource Groups [Logs Azure]",
             "type": "horizontal_bar"
         }
     },

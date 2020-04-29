@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "RDS Disk Queue Depth [Metricbeat AWS]",
+        "title": "RDS Disk Queue Depth [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -68,7 +68,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "RDS Disk Queue Depth [Metricbeat AWS]",
+            "title": "RDS Disk Queue Depth [Metrics AWS]",
             "type": "metrics"
         }
     },

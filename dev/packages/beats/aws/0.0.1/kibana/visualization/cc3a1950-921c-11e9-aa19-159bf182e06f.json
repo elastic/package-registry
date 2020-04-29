@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "RDS Select Latency in Milliseconds [Metricbeat AWS]",
+        "title": "RDS Select Latency in Milliseconds [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -66,7 +66,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "RDS Select Latency in Milliseconds [Metricbeat AWS]",
+            "title": "RDS Select Latency in Milliseconds [Metrics AWS]",
             "type": "metrics"
         }
     },

@@ -166,7 +166,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Kafka] Overview ECS",
+        "title": "[Metrics Kafka] Overview ECS",
         "version": 1
     },
     "id": "ea488d90-8e63-11e8-8fa2-3d5f811fbd0f-ecs",

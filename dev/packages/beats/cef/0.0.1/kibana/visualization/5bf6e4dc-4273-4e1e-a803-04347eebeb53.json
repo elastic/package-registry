@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Outcomes by User Names [Filebeat CEF]",
+        "title": "Outcomes by User Names [Logs CEF]",
         "uiStateJSON": {
             "vis": {
                 "colors": {
@@ -79,7 +79,7 @@
                 "isDonut": false,
                 "legendPosition": "right"
             },
-            "title": "Outcomes by User Names [Filebeat CEF]",
+            "title": "Outcomes by User Names [Logs CEF]",
             "type": "pie"
         }
     },

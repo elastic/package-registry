@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Subscription Stats Timeline [Metricbeat NATS] ECS",
+        "title": "Subscription Stats Timeline [Metrics NATS] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -195,7 +195,7 @@
                     }
                 ]
             },
-            "title": "Subscription Stats Timeline [Metricbeat NATS] ECS",
+            "title": "Subscription Stats Timeline [Metrics NATS] ECS",
             "type": "line"
         }
     },

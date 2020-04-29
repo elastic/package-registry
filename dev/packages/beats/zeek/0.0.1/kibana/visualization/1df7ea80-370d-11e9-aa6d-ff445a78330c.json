@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Network Transport [Filebeat Zeek]",
+        "title": "Network Transport [Logs Zeek]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -63,7 +63,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Network Transport [Filebeat Zeek]",
+            "title": "Network Transport [Logs Zeek]",
             "type": "pie"
         }
     },

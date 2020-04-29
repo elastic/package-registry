@@ -13,7 +13,7 @@
                 }
             }
         },
-        "title": "Destinations (bytes) [Filebeat Netflow]",
+        "title": "Destinations (bytes) [Logs Netflow]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -49,7 +49,7 @@
                 "isDonut": true,
                 "legendPosition": "right"
             },
-            "title": "Destinations (bytes) [Filebeat Netflow]",
+            "title": "Destinations (bytes) [Logs Netflow]",
             "type": "pie"
         }
     },

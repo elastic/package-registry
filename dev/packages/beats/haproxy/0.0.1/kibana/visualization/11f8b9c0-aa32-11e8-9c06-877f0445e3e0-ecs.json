@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "IP Geohashes [Filebeat HAProxy] ECS",
+        "title": "IP Geohashes [Logs HAProxy] ECS",
         "uiStateJSON": {
             "mapCenter": [
                 14.944784875088372,
@@ -72,7 +72,7 @@
                     "url": "https://basemap.nationalmap.gov/arcgis/services/USGSTopo/MapServer/WMSServer"
                 }
             },
-            "title": "IP Geohashes [Filebeat HAProxy] ECS",
+            "title": "IP Geohashes [Logs HAProxy] ECS",
             "type": "tile_map"
         }
     },

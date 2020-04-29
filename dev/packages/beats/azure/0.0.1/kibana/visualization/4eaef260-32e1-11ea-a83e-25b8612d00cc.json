@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Storage Account Ingress Traffic [Metricbeat Azure]",
+        "title": "Storage Account Ingress Traffic [Metrics Azure]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -96,7 +96,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Storage Account Ingress Traffic [Metricbeat Azure]",
+            "title": "Storage Account Ingress Traffic [Metrics Azure]",
             "type": "metrics"
         }
     },

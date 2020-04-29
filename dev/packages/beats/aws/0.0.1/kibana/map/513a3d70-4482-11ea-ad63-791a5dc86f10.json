@@ -208,7 +208,7 @@
             },
             "zoom": 0.47
         },
-        "title": "VPC Flow Action Geo Location[Filebeat AWS]",
+        "title": "VPC Flow Action Geo Location[Logs AWS]",
         "uiStateJSON": {
             "isLayerTOCOpen": false,
             "openTOCDetails": []

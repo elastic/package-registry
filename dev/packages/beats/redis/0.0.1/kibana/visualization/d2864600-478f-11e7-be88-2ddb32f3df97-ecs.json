@@ -13,7 +13,7 @@
                 "version": true
             }
         },
-        "title": "Logs over time [Filebeat Redis] ECS",
+        "title": "Logs over time [Logs Redis] ECS",
         "uiStateJSON": {
             "vis": {
                 "colors": {
@@ -134,7 +134,7 @@
                     }
                 ]
             },
-            "title": "Logs over time [Filebeat Redis] ECS",
+            "title": "Logs over time [Logs Redis] ECS",
             "type": "histogram"
         }
     },

@@ -37,7 +37,7 @@
                 }
             }
         },
-        "title": "Proxy Request Distribution [Filebeat Envoyproxy]",
+        "title": "Proxy Request Distribution [Logs Envoyproxy]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -89,7 +89,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Proxy Request Distribution [Filebeat Envoyproxy] ",
+            "title": "Proxy Request Distribution [Logs Envoyproxy] ",
             "type": "pie"
         }
     },

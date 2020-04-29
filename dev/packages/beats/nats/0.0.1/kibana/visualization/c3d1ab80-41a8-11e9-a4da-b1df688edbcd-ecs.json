@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": " Bytes Timeline [Filebeat NATS] ECS",
+        "title": " Bytes Timeline [Logs NATS] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -101,7 +101,7 @@
                     }
                 ]
             },
-            "title": " Bytes Timeline [Filebeat NATS] ECS",
+            "title": " Bytes Timeline [Logs NATS] ECS",
             "type": "line"
         }
     },

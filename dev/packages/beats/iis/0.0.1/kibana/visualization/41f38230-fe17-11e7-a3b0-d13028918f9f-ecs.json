@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Error logs over time [Filebeat IIS] ECS",
+        "title": "Error logs over time [Logs IIS] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -116,7 +116,7 @@
                     }
                 ]
             },
-            "title": "Error logs over time [Filebeat IIS] ECS",
+            "title": "Error logs over time [Logs IIS] ECS",
             "type": "histogram"
         }
     },

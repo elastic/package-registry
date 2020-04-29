@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Control [Filebeat IBM MQ]",
+        "title": "Control [Logs IBM MQ]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -37,7 +37,7 @@
                 "updateFiltersOnChange": false,
                 "useTimeFilter": false
             },
-            "title": "Control [Filebeat IBM MQ]",
+            "title": "Control [Logs IBM MQ]",
             "type": "input_control_vis"
         }
     },

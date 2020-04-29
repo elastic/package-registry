@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "ELB Request Count [Metricbeat AWS]",
+        "title": "ELB Request Count [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -78,7 +78,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "ELB Request Count [Metricbeat AWS]",
+            "title": "ELB Request Count [Metrics AWS]",
             "type": "metrics"
         }
     },

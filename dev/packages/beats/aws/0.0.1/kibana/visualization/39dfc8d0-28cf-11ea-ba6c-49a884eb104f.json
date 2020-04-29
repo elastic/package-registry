@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Lambda Duration in Milliseconds [Metricbeat AWS]",
+        "title": "Lambda Duration in Milliseconds [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -67,7 +67,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Lambda Duration in Milliseconds [Metricbeat AWS]",
+            "title": "Lambda Duration in Milliseconds [Metrics AWS]",
             "type": "metrics"
         }
     },

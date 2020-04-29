@@ -10,16 +10,16 @@
                 }
             }
         },
-        "title": "System Navigation [Metricbeat System] ECS",
+        "title": "System Navigation [Metrics System] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
             "aggs": [],
             "params": {
                 "fontSize": 12,
-                "markdown": "[System Overview](#/dashboard/Metricbeat-system-overview-ecs)  | [Host Overview](#/dashboard/79ffd6e0-faa0-11e6-947f-177f697178b8-ecs) |\n[Containers overview](#/dashboard/CPU-slash-Memory-per-container-ecs)"
+                "markdown": "[System Overview](#/dashboard/Metrics-system-overview-ecs)  | [Host Overview](#/dashboard/79ffd6e0-faa0-11e6-947f-177f697178b8-ecs) |\n[Containers overview](#/dashboard/CPU-slash-Memory-per-container-ecs)"
             },
-            "title": "System Navigation [Metricbeat System] ECS",
+            "title": "System Navigation [Metrics System] ECS",
             "type": "markdown"
         }
     },

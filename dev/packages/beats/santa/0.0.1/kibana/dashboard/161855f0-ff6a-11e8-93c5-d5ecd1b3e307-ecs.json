@@ -110,7 +110,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat Santa] Overview ECS",
+        "title": "[Logs Santa] Overview ECS",
         "version": 1
     },
     "id": "161855f0-ff6a-11e8-93c5-d5ecd1b3e307-ecs",

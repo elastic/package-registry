@@ -70,7 +70,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat CoreDNS] Overview",
+        "title": "[Logs CoreDNS] Overview",
         "version": 1
     },
     "id": "53aa1f70-443e-11e9-8548-ab7fbe04f038",

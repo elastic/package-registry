@@ -37,7 +37,7 @@
                 }
             }
         },
-        "title": "Application Event Results [Filebeat ActiveMQ]",
+        "title": "Application Event Results [Logs ActiveMQ]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -215,7 +215,7 @@
                     }
                 ]
             },
-            "title": "Application Event Results [Filebeat ActiveMQ]",
+            "title": "Application Event Results [Logs ActiveMQ]",
             "type": "histogram"
         }
     },

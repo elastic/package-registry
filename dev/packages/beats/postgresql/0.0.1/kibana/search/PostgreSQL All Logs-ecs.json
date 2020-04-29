@@ -49,7 +49,7 @@
                 "desc"
             ]
         ],
-        "title": "All Logs [Filebeat PostgreSQL] ECS",
+        "title": "All Logs [Logs PostgreSQL] ECS",
         "version": 1
     },
     "id": "PostgreSQL All Logs-ecs",

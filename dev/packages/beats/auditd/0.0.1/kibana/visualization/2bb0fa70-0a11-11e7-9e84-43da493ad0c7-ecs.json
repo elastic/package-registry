@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Event Results [Filebeat Auditd] ECS",
+        "title": "Event Results [Logs Auditd] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -13,7 +13,7 @@
                 "expression": ".es(q=\"stream.dataset:auditd.log NOT event.outcome:failure\").label(\"Success\"), .es(q=\"event.outcome:failed\").label(\"Failure\").title(\"Audit Event Results\")",
                 "interval": "auto"
             },
-            "title": "Event Results [Filebeat Auditd] ECS",
+            "title": "Event Results [Logs Auditd] ECS",
             "type": "timelion"
         }
     },

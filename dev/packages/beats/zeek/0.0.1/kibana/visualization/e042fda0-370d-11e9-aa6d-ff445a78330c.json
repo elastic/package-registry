@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Top SSL Servers [Filebeat Zeek]",
+        "title": "Top SSL Servers [Logs Zeek]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -63,7 +63,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Top SSL Servers [Filebeat Zeek]",
+            "title": "Top SSL Servers [Logs Zeek]",
             "type": "pie"
         }
     },

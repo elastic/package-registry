@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Browsers breakdown [Filebeat IIS] ECS",
+        "title": "Browsers breakdown [Logs IIS] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -61,7 +61,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Browsers breakdown [Filebeat IIS] ECS",
+            "title": "Browsers breakdown [Logs IIS] ECS",
             "type": "pie"
         }
     },

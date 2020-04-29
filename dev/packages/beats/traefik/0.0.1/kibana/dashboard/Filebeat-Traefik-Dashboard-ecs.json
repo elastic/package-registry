@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "description": "Dashboard for the Filebeat Traefik module",
+        "description": "Dashboard for the Logs Traefik integration",
         "hits": 0,
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
@@ -104,10 +104,10 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat Traefik] Access logs ECS",
+        "title": "[Logs Traefik] Access logs ECS",
         "version": 1
     },
-    "id": "Filebeat-Traefik-Dashboard-ecs",
+    "id": "Logs-Traefik-Dashboard-ecs",
     "references": [
         {
             "id": "Traefik-Access-Browsers-ecs",

@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Desired pods [Metricbeat Kubernetes] ECS",
+        "title": "Desired pods [Metrics Kubernetes] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -67,6 +67,7 @@
                         "seperate_axis": 0,
                         "series_interval": "10s",
                         "series_time_field": "@timestamp",
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none"
                     }
@@ -75,7 +76,7 @@
                 "time_field": "@timestamp",
                 "type": "metric"
             },
-            "title": "Desired pods [Metricbeat Kubernetes] ECS",
+            "title": "Desired pods [Metrics Kubernetes] ECS",
             "type": "metrics"
         }
     },

@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "EBS Volume Read Bytes [Metricbeat AWS]",
+        "title": "EBS Volume Read Bytes [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -57,7 +57,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "EBS Volume Read Bytes [Metricbeat AWS]",
+            "title": "EBS Volume Read Bytes [Metrics AWS]",
             "type": "metrics"
         }
     },

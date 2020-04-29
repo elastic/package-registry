@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Log space size since last backup [Metricbeat MSSQL] ECS",
+        "title": "Log space size since last backup [Metrics MSSQL] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -41,6 +41,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "mssql.database.name"
@@ -51,7 +52,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Log space size since last backup [Metricbeat MSSQL] ECS",
+            "title": "Log space size since last backup [Metrics MSSQL] ECS",
             "type": "metrics"
         }
     },

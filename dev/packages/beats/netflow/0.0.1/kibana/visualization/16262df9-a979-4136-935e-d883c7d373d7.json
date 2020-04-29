@@ -13,7 +13,7 @@
                 }
             }
         },
-        "title": "City Count [Filebeat Netflow]",
+        "title": "City Count [Logs Netflow]",
         "uiStateJSON": {
             "vis": {
                 "defaultColors": {
@@ -80,7 +80,7 @@
                 "handleNoResults": true,
                 "type": "gauge"
             },
-            "title": "City Count [Filebeat Netflow]",
+            "title": "City Count [Logs Netflow]",
             "type": "metric"
         }
     },

@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "description": "Sudo commands dashboard from the Filebeat System module",
+        "description": "Sudo commands dashboard from the Logs System integration",
         "hits": 0,
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
@@ -80,7 +80,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat System] Sudo commands ECS",
+        "title": "[Logs System] Sudo commands ECS",
         "version": 1
     },
     "id": "277876d0-fa2c-11e6-bbd3-29c986c96e5a-ecs",

@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Top Domains [Filebeat CoreDNS]",
+        "title": "Top Domains [Logs CoreDNS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -55,7 +55,7 @@
                 "scale": "linear",
                 "showLabel": true
             },
-            "title": "Top Domains [Filebeat CoreDNS]",
+            "title": "Top Domains [Logs CoreDNS]",
             "type": "tagcloud"
         }
     },

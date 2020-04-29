@@ -37,7 +37,7 @@
                 }
             }
         },
-        "title": "Top User Agents [Filebeat Envoyproxy]",
+        "title": "Top User Agents [Logs Envoyproxy]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -89,7 +89,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Top User Agents [Filebeat Envoyproxy]",
+            "title": "Top User Agents [Logs Envoyproxy]",
             "type": "pie"
         }
     },

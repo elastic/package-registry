@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "New users by home directory [Filebeat System] ECS",
+        "title": "New users by home directory [Logs System] ECS",
         "uiStateJSON": {
             "vis": {
                 "colors": {

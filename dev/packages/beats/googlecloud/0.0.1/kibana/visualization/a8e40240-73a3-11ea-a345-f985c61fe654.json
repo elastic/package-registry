@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Audit User Agent [Filebeat GoogleCloud]",
+        "title": "Audit User Agent [Logs GoogleCloud]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -53,7 +53,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Audit User Agent [Filebeat GoogleCloud]",
+            "title": "Audit User Agent [Logs GoogleCloud]",
             "type": "pie"
         }
     },

@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Kafka Broker Details [Metricbeat Kafka] ECS",
+        "title": "Kafka Broker Details [Metrics Kafka] ECS",
         "uiStateJSON": {
             "table": {
                 "sort": {
@@ -50,6 +50,7 @@
                         ],
                         "point_size": 1,
                         "seperate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "kafka.broker.id",
@@ -82,6 +83,7 @@
                         ],
                         "point_size": 1,
                         "seperate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none"
                     },
@@ -109,6 +111,7 @@
                         ],
                         "point_size": 1,
                         "seperate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none"
                     }
@@ -118,7 +121,7 @@
                 "time_field": "@timestamp",
                 "type": "table"
             },
-            "title": "Kafka Broker Details [Metricbeat Kafka] ECS",
+            "title": "Kafka Broker Details [Metrics Kafka] ECS",
             "type": "metrics"
         }
     },

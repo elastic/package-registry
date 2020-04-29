@@ -77,7 +77,7 @@
                 "desc"
             ]
         ],
-        "title": "Error Logs [Filebeat AWS]",
+        "title": "Error Logs [Logs AWS]",
         "version": 1
     },
     "id": "5e5a3c90-bac0-11e9-9f70-1f7bda85a5eb",

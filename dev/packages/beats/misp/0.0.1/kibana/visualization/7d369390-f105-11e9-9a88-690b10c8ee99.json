@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Threat Indicators per Month  [Filebeat MISP]",
+        "title": "Threat Indicators per Month  [Logs MISP]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -125,7 +125,7 @@
                     }
                 ]
             },
-            "title": "Threat Indicators per Month  [Filebeat MISP]",
+            "title": "Threat Indicators per Month  [Logs MISP]",
             "type": "histogram"
         }
     },

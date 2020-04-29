@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Event Account Tag Cloud [Filebeat Auditd] ECS",
+        "title": "Event Account Tag Cloud [Logs Auditd] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {

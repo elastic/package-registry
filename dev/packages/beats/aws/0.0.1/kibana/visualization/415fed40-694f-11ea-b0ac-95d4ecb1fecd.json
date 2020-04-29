@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "TransitGateway Filters [Metricbeat AWS]",
+        "title": "TransitGateway Filters [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -67,7 +67,7 @@
                 "updateFiltersOnChange": true,
                 "useTimeFilter": true
             },
-            "title": "TransitGateway Filters [Metricbeat AWS]",
+            "title": "TransitGateway Filters [Metrics AWS]",
             "type": "input_control_vis"
         }
     },

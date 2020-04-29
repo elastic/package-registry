@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Errors over time [Filebeat Nginx] ECS",
+        "title": "Errors over time [Logs Nginx] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -37,6 +37,7 @@
                         ],
                         "point_size": 1,
                         "seperate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "log.level",
@@ -48,7 +49,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Errors over time [Filebeat Nginx] ECS",
+            "title": "Errors over time [Logs Nginx] ECS",
             "type": "metrics"
         }
     },

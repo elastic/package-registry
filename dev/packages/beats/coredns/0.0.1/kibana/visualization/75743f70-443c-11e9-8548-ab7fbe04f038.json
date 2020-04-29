@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Unique Domains [Filebeat CoreDNS]",
+        "title": "Unique Domains [Logs CoreDNS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -78,7 +78,7 @@
                 },
                 "type": "metric"
             },
-            "title": "Unique Domains [Filebeat CoreDNS]",
+            "title": "Unique Domains [Logs CoreDNS]",
             "type": "metric"
         }
     },

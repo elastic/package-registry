@@ -24,7 +24,7 @@
                 }
             }
         },
-        "title": "CPU usage [Metricbeat Docker] ECS",
+        "title": "CPU usage [Metrics Docker] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -145,7 +145,7 @@
                 ],
                 "yAxis": {}
             },
-            "title": "CPU usage [Metricbeat Docker] ECS",
+            "title": "CPU usage [Metrics Docker] ECS",
             "type": "area"
         }
     },

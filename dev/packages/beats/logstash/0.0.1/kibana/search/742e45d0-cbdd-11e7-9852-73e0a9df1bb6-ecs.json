@@ -76,7 +76,7 @@
                 "asc"
             ]
         ],
-        "title": "Slow logs [Filebeat Logstash] ECS",
+        "title": "Slow logs [Logs Logstash] ECS",
         "version": 1
     },
     "id": "742e45d0-cbdd-11e7-9852-73e0a9df1bb6-ecs",

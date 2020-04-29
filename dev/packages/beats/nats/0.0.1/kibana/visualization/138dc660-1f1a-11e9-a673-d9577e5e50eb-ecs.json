@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "CPU Utilization Timeline [Metricbeat NATS] ECS",
+        "title": "CPU Utilization Timeline [Metrics NATS] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -107,7 +107,7 @@
                     }
                 ]
             },
-            "title": "CPU Utilization Timeline [Metricbeat NATS] ECS",
+            "title": "CPU Utilization Timeline [Metrics NATS] ECS",
             "type": "line"
         }
     },

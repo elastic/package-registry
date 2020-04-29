@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "ELB Latency in Seconds [Metricbeat AWS]",
+        "title": "ELB Latency in Seconds [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -77,7 +77,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "ELB Latency in Seconds [Metricbeat AWS]",
+            "title": "ELB Latency in Seconds [Metrics AWS]",
             "type": "metrics"
         }
     },

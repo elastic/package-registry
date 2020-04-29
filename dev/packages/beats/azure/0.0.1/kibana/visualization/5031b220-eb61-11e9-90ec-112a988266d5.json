@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "VM Filters [Metricbeat Azure]",
+        "title": "VM Filters [Metrics Azure]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -67,7 +67,7 @@
                 "updateFiltersOnChange": true,
                 "useTimeFilter": false
             },
-            "title": "VM Filters [Metricbeat Azure]",
+            "title": "VM Filters [Metrics Azure]",
             "type": "input_control_vis"
         }
     },

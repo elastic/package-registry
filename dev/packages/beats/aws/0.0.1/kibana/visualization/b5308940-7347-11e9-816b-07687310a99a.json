@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "AWS Region Filter [Metricbeat AWS]",
+        "title": "AWS Region Filter [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {

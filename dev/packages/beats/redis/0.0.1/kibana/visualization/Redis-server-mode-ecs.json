@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Server mode [Metricbeat Redis] ECS",
+        "title": "Server mode [Metrics Redis] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -44,14 +44,14 @@
                 "legendPosition": "right",
                 "shareYAxis": true
             },
-            "title": "Server mode [Metricbeat Redis] ECS",
+            "title": "Server mode [Metrics Redis] ECS",
             "type": "pie"
         }
     },
     "id": "Redis-server-mode-ecs",
     "references": [
         {
-            "id": "Metricbeat-Redis-ecs",
+            "id": "Metrics-Redis-ecs",
             "name": "search_0",
             "type": "search"
         }

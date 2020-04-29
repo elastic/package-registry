@@ -10,16 +10,16 @@
                 }
             }
         },
-        "title": "System [Metricbeat Golang] ECS",
+        "title": "System [Metrics Golang] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
             "aggs": [],
             "params": {
-                "expression": ".es(index=\"metricbeat*\",metric=\"avg:golang.heap.system.total\").label(\"System Total\").yaxis(label=\"Bytes\",units=bytes),.es(index=\"metricbeat*\",metric=\"avg:golang.heap.system.obtained\").label(\"System Obtained\"),.es(index=\"metricbeat*\",metric=\"avg:golang.heap.system.stack\").label(\"System Stack\"),.es(index=\"metricbeat*\",metric=\"avg:golang.heap.system.released\").label(\"System Released\")",
+                "expression": ".es(index=\"metrics*\",metric=\"avg:golang.heap.system.total\").label(\"System Total\").yaxis(label=\"Bytes\",units=bytes),.es(index=\"metrics*\",metric=\"avg:golang.heap.system.obtained\").label(\"System Obtained\"),.es(index=\"metrics*\",metric=\"avg:golang.heap.system.stack\").label(\"System Stack\"),.es(index=\"metrics*\",metric=\"avg:golang.heap.system.released\").label(\"System Released\")",
                 "interval": "10s"
             },
-            "title": "System  [Metricbeat Golang] ECS",
+            "title": "System  [Metrics Golang] ECS",
             "type": "timelion"
         }
     },

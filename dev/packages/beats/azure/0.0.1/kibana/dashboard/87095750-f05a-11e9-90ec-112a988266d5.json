@@ -195,7 +195,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat Azure] User Activity",
+        "title": "[Logs Azure] User Activity",
         "version": 1
     },
     "id": "87095750-f05a-11e9-90ec-112a988266d5",

@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Response codes over time [Filebeat Nginx] ECS",
+        "title": "Response codes over time [Logs Nginx] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -38,6 +38,7 @@
                         ],
                         "point_size": 1,
                         "seperate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_filters": [
                             {
                                 "color": "#68BC00",
@@ -87,7 +88,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Response codes over time [Filebeat Nginx] ECS",
+            "title": "Response codes over time [Logs Nginx] ECS",
             "type": "metrics"
         }
     },

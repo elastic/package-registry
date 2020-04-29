@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "VPN Tunnel Data Out Per VPN ID [Metricbeat AWS]",
+        "title": "VPN Tunnel Data Out Per VPN ID [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -39,6 +39,7 @@
                         ],
                         "point_size": "3",
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "aws.dimensions.VpnId",
@@ -51,7 +52,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "VPN Tunnel Data Out Per VPN ID [Metricbeat AWS]",
+            "title": "VPN Tunnel Data Out Per VPN ID [Metrics AWS]",
             "type": "metrics"
         }
     },

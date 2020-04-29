@@ -74,7 +74,7 @@
                 "desc"
             ]
         ],
-        "title": "Logs [Filebeat Redis] ECS",
+        "title": "Logs [Logs Redis] ECS",
         "version": 1
     },
     "id": "73613570-4791-11e7-be88-2ddb32f3df97-ecs",

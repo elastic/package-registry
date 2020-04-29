@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": " Cache Hits, Misses [Metricbeat CoreDNS] ECS",
+        "title": " Cache Hits, Misses [Metrics CoreDNS] ECS",
         "uiStateJSON": {
             "vis": {
                 "colors": {
@@ -184,7 +184,7 @@
                     }
                 ]
             },
-            "title": " Cache Hits, Misses [Metricbeat CoreDNS] ECS",
+            "title": " Cache Hits, Misses [Metrics CoreDNS] ECS",
             "type": "line"
         }
     },

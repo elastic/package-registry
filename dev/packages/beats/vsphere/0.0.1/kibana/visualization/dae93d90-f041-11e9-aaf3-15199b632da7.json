@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "CPU/RAM/Network per VM [Metricbeat VSphere] ECS",
+        "title": "CPU/RAM/Network per VM [Metrics VSphere] ECS",
         "uiStateJSON": {
             "vis": {
                 "params": {
@@ -197,7 +197,7 @@
                 },
                 "totalFunc": "sum"
             },
-            "title": "CPU/RAM/Network per VM [Metricbeat VSphere] ECS",
+            "title": "CPU/RAM/Network per VM [Metrics VSphere] ECS",
             "type": "table"
         }
     },

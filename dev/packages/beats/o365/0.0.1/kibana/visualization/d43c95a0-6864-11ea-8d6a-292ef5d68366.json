@@ -5,7 +5,7 @@
             "searchSourceJSON": {}
         },
         "savedSearchRefName": "search_0",
-        "title": "Audit Event Type [Filebeat o365]",
+        "title": "Audit Event Type [Logs o365]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -58,7 +58,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Audit Event Type [Filebeat o365]",
+            "title": "Audit Event Type [Logs o365]",
             "type": "pie"
         }
     },

@@ -23,7 +23,7 @@
                 "desc"
             ]
         ],
-        "title": "Ubiquiti Firewall Blocked Events [Filebeat Iptables] ECS",
+        "title": "Ubiquiti Firewall Blocked Events [Logs Iptables] ECS",
         "version": 1
     },
     "id": "9f7d97c0-1fe9-11e9-ae2a-939083c6a64e-ecs",

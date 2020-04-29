@@ -1,11 +1,18 @@
-- name: googlecloud.labels
-  type: object
+- name: googlecloud
+  type: group
   fields:
-  - name: user.*
+  - name: labels
     type: object
-  - name: metadata.*
+    fields:
+    - name: user.*
+      type: object
+    - name: metadata.*
+      type: object
+    - name: metrics.*
+      type: object
+    - name: system.*
+      type: object
+  - name: stackdriver.*.*.*.*
     type: object
-  - name: metrics.*
-    type: object
-  - name: system.*
-    type: object
+    description: |
+      Metrics that returned from StackDriver API query.

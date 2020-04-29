@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Response codes over time [Filebeat Apache] ECS",
+        "title": "Response codes over time [Logs Apache] ECS",
         "uiStateJSON": {
             "vis": {
                 "colors": {

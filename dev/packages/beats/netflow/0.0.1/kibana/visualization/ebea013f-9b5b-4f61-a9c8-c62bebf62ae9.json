@@ -13,7 +13,7 @@
                 }
             }
         },
-        "title": "Conversation Partners [Filebeat Netflow]",
+        "title": "Conversation Partners [Logs Netflow]",
         "uiStateJSON": {
             "vis": {
                 "params": {
@@ -95,7 +95,7 @@
                 },
                 "totalFunc": "sum"
             },
-            "title": "Conversation Partners [Filebeat Netflow]",
+            "title": "Conversation Partners [Logs Netflow]",
             "type": "table"
         }
     },

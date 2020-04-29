@@ -37,7 +37,7 @@
                 }
             }
         },
-        "title": "Top Domains [Filebeat Envoyproxy]",
+        "title": "Top Domains [Logs Envoyproxy]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -89,7 +89,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Top Domains [Filebeat Envoyproxy]",
+            "title": "Top Domains [Logs Envoyproxy]",
             "type": "pie"
         }
     },

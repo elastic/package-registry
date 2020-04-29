@@ -294,7 +294,7 @@
         "timeFrom": "now-24h",
         "timeRestore": true,
         "timeTo": "now",
-        "title": "[Filebeat CEF] Endpoint Overview Dashboard",
+        "title": "[Logs CEF] Endpoint Overview Dashboard",
         "version": 1
     },
     "id": "c10ce1cf-f6b8-4de4-8715-2cb5f6770b3b",

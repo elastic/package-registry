@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Ubiquiti Firewall Event Timeline [Filebeat Iptables] ECS",
+        "title": "Ubiquiti Firewall Event Timeline [Logs Iptables] ECS",
         "uiStateJSON": {
             "vis": {
                 "colors": {
@@ -134,7 +134,7 @@
                     }
                 ]
             },
-            "title": "Ubiquiti Firewall Event Timeline [Filebeat Iptables] ECS",
+            "title": "Ubiquiti Firewall Event Timeline [Logs Iptables] ECS",
             "type": "histogram"
         }
     },

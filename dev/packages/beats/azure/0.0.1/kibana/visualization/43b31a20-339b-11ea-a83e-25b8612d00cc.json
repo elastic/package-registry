@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Storage Table Count [Metricbeat Azure]",
+        "title": "Storage Table Count [Metrics Azure]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -88,7 +88,7 @@
                 "time_field": "@timestamp",
                 "type": "gauge"
             },
-            "title": "Storage Table Count [Metricbeat Azure]",
+            "title": "Storage Table Count [Metrics Azure]",
             "type": "metrics"
         }
     },

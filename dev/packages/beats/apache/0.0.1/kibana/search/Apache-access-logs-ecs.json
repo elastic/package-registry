@@ -37,7 +37,7 @@
                 "desc"
             ]
         ],
-        "title": "Apache access logs [Filebeat Apache] ECS",
+        "title": "Apache access logs [Logs Apache] ECS",
         "version": 1
     },
     "id": "Apache-access-logs-ecs",

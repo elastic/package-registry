@@ -13,7 +13,7 @@
                 }
             }
         },
-        "title": "Destination and Source ASs (flow records) [Filebeat Netflow]",
+        "title": "Destination and Source ASs (flow records) [Logs Netflow]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -61,7 +61,7 @@
                 "isDonut": true,
                 "legendPosition": "right"
             },
-            "title": "Destination and Source ASs (flow records) [Filebeat Netflow]",
+            "title": "Destination and Source ASs (flow records) [Logs Netflow]",
             "type": "pie"
         }
     },

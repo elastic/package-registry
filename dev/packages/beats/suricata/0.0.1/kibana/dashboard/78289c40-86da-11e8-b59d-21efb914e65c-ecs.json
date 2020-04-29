@@ -138,7 +138,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat Suricata] Events Overview ECS",
+        "title": "[Logs Suricata] Events Overview ECS",
         "version": 1
     },
     "id": "78289c40-86da-11e8-b59d-21efb914e65c-ecs",

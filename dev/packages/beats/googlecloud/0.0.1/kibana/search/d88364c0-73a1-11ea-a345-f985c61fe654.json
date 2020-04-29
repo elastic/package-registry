@@ -46,7 +46,7 @@
             }
         },
         "sort": [],
-        "title": "Audit [Filebeat GoogleCloud]",
+        "title": "Audit [Logs GoogleCloud]",
         "version": 1
     },
     "id": "d88364c0-73a1-11ea-a345-f985c61fe654",

@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Syslog hostnames and processes [Filebeat System] ECS",
+        "title": "Syslog hostnames and processes [Logs System] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {

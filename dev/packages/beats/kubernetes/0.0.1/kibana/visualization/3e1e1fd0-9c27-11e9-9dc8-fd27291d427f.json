@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Controller Unfinished jobs sec [Metricbeat Kubernetes]",
+        "title": "Controller Unfinished jobs sec [Metrics Kubernetes]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -56,7 +56,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Controller Unfinished jobs sec [Metricbeat Kubernetes]",
+            "title": "Controller Unfinished jobs sec [Metrics Kubernetes]",
             "type": "metrics"
         }
     },

@@ -324,7 +324,7 @@
         "timeFrom": "now-24h",
         "timeRestore": true,
         "timeTo": "now",
-        "title": "[Filebeat CEF] Network Overview Dashboard",
+        "title": "[Logs CEF] Network Overview Dashboard",
         "version": 1
     },
     "id": "dd0bc9af-2e89-4150-9b42-62517ea56b71",

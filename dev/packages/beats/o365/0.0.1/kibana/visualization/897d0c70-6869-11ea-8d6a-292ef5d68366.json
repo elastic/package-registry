@@ -33,7 +33,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Top Authentication Failures [Filebeat o365]",
+        "title": "Top Authentication Failures [Logs o365]",
         "uiStateJSON": {
             "vis": {
                 "colors": {
@@ -225,7 +225,7 @@
                     }
                 ]
             },
-            "title": "Top Authentication Failures [Filebeat o365]",
+            "title": "Top Authentication Failures [Logs o365]",
             "type": "horizontal_bar"
         }
     },

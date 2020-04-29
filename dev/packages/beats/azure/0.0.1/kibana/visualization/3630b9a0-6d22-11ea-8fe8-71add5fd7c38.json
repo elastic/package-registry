@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Navigation Container Service Overview [Metricbeat Azure]",
+        "title": "Navigation Container Service Overview [Metrics Azure]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -14,7 +14,7 @@
                 "markdown": "### Azure Containers\n\n[Instances](#/dashboard/9c11ac60-6cf6-11ea-8fe8-71add5fd7c38) |\n[Registries](#/dashboard/6f2393f0-6d08-11ea-8fe8-71add5fd7c38) |\n[**Services**](#/dashboard/dae20ed0-6d0a-11ea-8fe8-71add5fd7c38) ",
                 "openLinksInNewTab": false
             },
-            "title": "Navigation Container Service Overview [Metricbeat Azure]",
+            "title": "Navigation Container Service Overview [Metrics Azure]",
             "type": "markdown"
         }
     },

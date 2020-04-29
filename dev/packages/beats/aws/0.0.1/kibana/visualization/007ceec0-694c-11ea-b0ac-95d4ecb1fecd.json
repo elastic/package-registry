@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Transit Gateway Packets Drop Count No Route [Metricbeat AWS]",
+        "title": "Transit Gateway Packets Drop Count No Route [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -39,6 +39,7 @@
                         ],
                         "point_size": "3",
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "aws.dimensions.TransitGateway",
@@ -51,7 +52,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "Transit Gateway Packets Drop Count No Route [Metricbeat AWS]",
+            "title": "Transit Gateway Packets Drop Count No Route [Metrics AWS]",
             "type": "metrics"
         }
     },

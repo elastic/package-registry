@@ -61,7 +61,7 @@
                 "desc"
             ]
         ],
-        "title": "Network Events [Filebeat CEF]",
+        "title": "Network Events [Logs CEF]",
         "version": 1
     },
     "id": "68202a5c-c8f2-432f-8c08-04fbfacb95c8",

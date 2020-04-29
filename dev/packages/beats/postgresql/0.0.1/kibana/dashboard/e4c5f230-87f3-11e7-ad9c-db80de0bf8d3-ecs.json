@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "description": "Dashboard for analyzing the query durations of the Filebeat PostgreSQL module",
+        "description": "Dashboard for analyzing the query durations of the Logs PostgreSQL integration",
         "hits": 0,
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
@@ -80,7 +80,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat PostgreSQL] Query Duration Overview ECS",
+        "title": "[Logs PostgreSQL] Query Duration Overview ECS",
         "version": 1
     },
     "id": "e4c5f230-87f3-11e7-ad9c-db80de0bf8d3-ecs",

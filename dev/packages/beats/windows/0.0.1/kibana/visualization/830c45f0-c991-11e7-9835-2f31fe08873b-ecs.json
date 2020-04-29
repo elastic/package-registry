@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Startup States [Metricbeat Windows] ECS",
+        "title": "Startup States [Metrics Windows] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -60,7 +60,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Startup States [Metricbeat Windows] ECS",
+            "title": "Startup States [Metrics Windows] ECS",
             "type": "pie"
         }
     },

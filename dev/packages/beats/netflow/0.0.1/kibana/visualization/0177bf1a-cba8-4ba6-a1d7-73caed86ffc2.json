@@ -13,7 +13,7 @@
                 }
             }
         },
-        "title": "VLAN Count [Filebeat Netflow]",
+        "title": "VLAN Count [Logs Netflow]",
         "uiStateJSON": {
             "vis": {
                 "defaultColors": {
@@ -80,7 +80,7 @@
                 "handleNoResults": true,
                 "type": "gauge"
             },
-            "title": "VLAN Count [Filebeat Netflow]",
+            "title": "VLAN Count [Logs Netflow]",
             "type": "metric"
         }
     },

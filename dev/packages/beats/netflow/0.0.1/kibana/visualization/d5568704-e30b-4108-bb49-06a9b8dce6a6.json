@@ -13,7 +13,7 @@
                 }
             }
         },
-        "title": "Autonomous System Count [Filebeat Netflow]",
+        "title": "Autonomous System Count [Logs Netflow]",
         "uiStateJSON": {
             "vis": {
                 "defaultColors": {
@@ -80,7 +80,7 @@
                 "handleNoResults": true,
                 "type": "gauge"
             },
-            "title": "Autonomous System Count [Filebeat Netflow]",
+            "title": "Autonomous System Count [Logs Netflow]",
             "type": "metric"
         }
     },

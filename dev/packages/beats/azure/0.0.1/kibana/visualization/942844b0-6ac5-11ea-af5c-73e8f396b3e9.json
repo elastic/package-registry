@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Container Instance Memory Utilization [Metricbeat Azure]",
+        "title": "Container Instance Memory Utilization [Metrics Azure]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -47,6 +47,7 @@
                         ],
                         "point_size": "0",
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "cloud.instance.name",
@@ -58,7 +59,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Container Instance Memory Utilization [Metricbeat Azure]",
+            "title": "Container Instance Memory Utilization [Metrics Azure]",
             "type": "metrics"
         }
     },

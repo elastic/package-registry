@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Node Filter [Metricbeat Aerospike] ECS",
+        "title": "Node Filter [Metrics Aerospike] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -37,7 +37,7 @@
                 "updateFiltersOnChange": true,
                 "useTimeFilter": true
             },
-            "title": "Node Filter [Metricbeat Aerospike] ECS",
+            "title": "Node Filter [Metrics Aerospike] ECS",
             "type": "input_control_vis"
         }
     },

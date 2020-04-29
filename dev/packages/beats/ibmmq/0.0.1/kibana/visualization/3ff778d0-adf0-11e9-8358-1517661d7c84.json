@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Different error codes [Filebeat IBM MQ]",
+        "title": "Different error codes [Logs IBM MQ]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -67,7 +67,7 @@
                 },
                 "type": "metric"
             },
-            "title": "Different error codes [Filebeat IBM MQ]",
+            "title": "Different error codes [Logs IBM MQ]",
             "type": "metric"
         }
     },

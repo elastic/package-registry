@@ -10,16 +10,16 @@
                 }
             }
         },
-        "title": "Objects [Metricbeat Golang] ECS",
+        "title": "Objects [Metrics Golang] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
             "aggs": [],
             "params": {
-                "expression": ".es(index=\"metricbeat*\",metric=\"max:golang.heap.allocations.objects\").label(\"Object Count(avg)\").yaxis(1,label=\"Count\").movingaverage(30),.es(index=\"metricbeat*\",metric=\"max:golang.heap.allocations.total\").derivative().label(\"Allocation Rate\").yaxis(2,label=\"Rate\").movingaverage(30)",
+                "expression": ".es(index=\"metrics*\",metric=\"max:golang.heap.allocations.objects\").label(\"Object Count(avg)\").yaxis(1,label=\"Count\").movingaverage(30),.es(index=\"metrics*\",metric=\"max:golang.heap.allocations.total\").derivative().label(\"Allocation Rate\").yaxis(2,label=\"Rate\").movingaverage(30)",
                 "interval": "10s"
             },
-            "title": "Objects [Metricbeat Golang] ECS",
+            "title": "Objects [Metrics Golang] ECS",
             "type": "timelion"
         }
     },

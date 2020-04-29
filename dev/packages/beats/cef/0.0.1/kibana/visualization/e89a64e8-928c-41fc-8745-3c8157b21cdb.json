@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Top 10 Devices by Bandwidth [Filebeat CEF]",
+        "title": "Top 10 Devices by Bandwidth [Logs CEF]",
         "uiStateJSON": {
             "vis": {
                 "params": {
@@ -97,7 +97,7 @@
                 },
                 "totalFunc": "sum"
             },
-            "title": "Top 10 Devices by Bandwidth [Filebeat CEF]",
+            "title": "Top 10 Devices by Bandwidth [Logs CEF]",
             "type": "table"
         }
     },

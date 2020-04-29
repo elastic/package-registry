@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Topics Messages Expired [Metricbeat ActiveMQ]",
+        "title": "Topics Messages Expired [Metrics ActiveMQ]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -51,6 +51,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "activemq.topic.name",
@@ -63,7 +64,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "Topics Messages Expired [Metricbeat ActiveMQ]",
+            "title": "Topics Messages Expired [Metrics ActiveMQ]",
             "type": "metrics"
         }
     },

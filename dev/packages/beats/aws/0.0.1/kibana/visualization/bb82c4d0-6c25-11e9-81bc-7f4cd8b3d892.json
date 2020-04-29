@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "SQS Empty Receives [Metricbeat AWS]",
+        "title": "SQS Empty Receives [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -84,7 +84,7 @@
                 "time_field": "@timestamp",
                 "type": "top_n"
             },
-            "title": "SQS Empty Receives [Metricbeat AWS]",
+            "title": "SQS Empty Receives [Metrics AWS]",
             "type": "metrics"
         }
     },

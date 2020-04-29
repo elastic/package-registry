@@ -25,7 +25,7 @@
                 "desc"
             ]
         ],
-        "title": "Audit Events [Filebeat ActiveMQ]",
+        "title": "Audit Events [Logs ActiveMQ]",
         "version": 1
     },
     "id": "896ef3a0-145f-11ea-8fd8-030a13064883",

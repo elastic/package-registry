@@ -6,7 +6,7 @@
                 "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.index"
             }
         },
-        "title": "DynamoDB Max Read/Write Account Limits [Metricbeat AWS]",
+        "title": "DynamoDB Max Read/Write Account Limits [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -221,7 +221,7 @@
                     }
                 ]
             },
-            "title": "DynamoDB Max Read/Write Account Limits [Metricbeat AWS]",
+            "title": "DynamoDB Max Read/Write Account Limits [Metrics AWS]",
             "type": "histogram"
         }
     },

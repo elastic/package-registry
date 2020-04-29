@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Response codes over time [Filebeat Traefik] ECS",
+        "title": "Response codes over time [Logs Traefik] ECS",
         "uiStateJSON": {
             "vis": {
                 "colors": {
@@ -72,7 +72,7 @@
     "id": "New-Visualization-ecs",
     "references": [
         {
-            "id": "Filebeat-Traefik-module-ecs",
+            "id": "Logs-Traefik-integration-ecs",
             "name": "search_0",
             "type": "search"
         }

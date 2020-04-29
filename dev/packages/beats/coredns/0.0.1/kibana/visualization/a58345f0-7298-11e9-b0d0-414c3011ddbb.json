@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Requests by Type [Metricbeat CoreDNS] ECS",
+        "title": "Requests by Type [Metrics CoreDNS] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -164,7 +164,7 @@
                     }
                 ]
             },
-            "title": "Requests by Type [Metricbeat CoreDNS] ECS",
+            "title": "Requests by Type [Metrics CoreDNS] ECS",
             "type": "line"
         }
     },

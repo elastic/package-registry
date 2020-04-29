@@ -25,7 +25,7 @@
                 "desc"
             ]
         ],
-        "title": "Startup Errors [Filebeat Icinga] ECS",
+        "title": "Startup Errors [Logs Icinga] ECS",
         "version": 1
     },
     "id": "710043e0-2417-11e7-a83b-d5f4cebac9ff-ecs",

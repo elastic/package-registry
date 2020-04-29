@@ -16,7 +16,7 @@
                 }
             }
         },
-        "title": "IP Version and Protocols (bytes) [Filebeat Netflow]",
+        "title": "IP Version and Protocols (bytes) [Logs Netflow]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -117,7 +117,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "IP Version and Protocols (bytes) [Filebeat Netflow]",
+            "title": "IP Version and Protocols (bytes) [Logs Netflow]",
             "type": "pie"
         }
     },

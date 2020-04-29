@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "New groups [Filebeat System] ECS",
+        "title": "New groups [Logs System] ECS",
         "uiStateJSON": {
             "vis": {
                 "params": {

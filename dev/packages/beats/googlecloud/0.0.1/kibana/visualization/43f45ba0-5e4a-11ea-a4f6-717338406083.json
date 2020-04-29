@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Compute Network Received Bytes [Metricbeat Googlecloud]",
+        "title": "Compute Network Received Bytes [Metrics Googlecloud]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -51,7 +51,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "Compute Network Received Bytes [Metricbeat Googlecloud]",
+            "title": "Compute Network Received Bytes [Metrics Googlecloud]",
             "type": "metrics"
         }
     },

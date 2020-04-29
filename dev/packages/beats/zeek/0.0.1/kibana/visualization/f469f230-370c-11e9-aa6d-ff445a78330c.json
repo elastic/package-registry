@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Destination Geo [Filebeat Zeek]",
+        "title": "Destination Geo [Logs Zeek]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -74,7 +74,7 @@
                     }
                 }
             },
-            "title": "Destination Geo [Filebeat Zeek]",
+            "title": "Destination Geo [Logs Zeek]",
             "type": "tile_map"
         }
     },

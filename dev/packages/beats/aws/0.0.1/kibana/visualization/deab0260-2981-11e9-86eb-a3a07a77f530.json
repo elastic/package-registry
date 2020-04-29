@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "AWS Account Filter [Metricbeat AWS]",
+        "title": "AWS Account Filter [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -37,7 +37,7 @@
                 "updateFiltersOnChange": true,
                 "useTimeFilter": false
             },
-            "title": "AWS Account Filter [Metricbeat AWS]",
+            "title": "AWS Account Filter [Metrics AWS]",
             "type": "input_control_vis"
         }
     },

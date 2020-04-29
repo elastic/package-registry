@@ -89,7 +89,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Zookeeper] Overview ECS",
+        "title": "[Metrics Zookeeper] Overview ECS",
         "version": 1
     },
     "id": "467207a0-231e-11e9-bb66-8baac426dfd4-ecs",

@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Top Network Protocols [Filebeat Suricata] ECS",
+        "title": "Top Network Protocols [Logs Suricata] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -53,7 +53,7 @@
                 "legendPosition": "bottom",
                 "type": "pie"
             },
-            "title": "Top Network Protocols [Filebeat Suricata] ECS",
+            "title": "Top Network Protocols [Logs Suricata] ECS",
             "type": "pie"
         }
     },

@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Top Alerting Hosts [Filebeat Suricata] ECS",
+        "title": "Top Alerting Hosts [Logs Suricata] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -120,7 +120,7 @@
                     }
                 ]
             },
-            "title": "Top Alerting Hosts [Filebeat Suricata] ECS",
+            "title": "Top Alerting Hosts [Logs Suricata] ECS",
             "type": "histogram"
         }
     },

@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Resource Creations [Filebeat Azure]",
+        "title": "Resource Creations [Logs Azure]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -179,7 +179,7 @@
                     }
                 ]
             },
-            "title": "Resource Creations [Filebeat Azure]",
+            "title": "Resource Creations [Logs Azure]",
             "type": "horizontal_bar"
         }
     },

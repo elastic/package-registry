@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "description": "Filebeat Kafka module dashboard",
+        "description": "Logs Kafka integration dashboard",
         "hits": 0,
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
@@ -91,7 +91,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat Kafka] Overview ECS",
+        "title": "[Logs Kafka] Overview ECS",
         "version": 1
     },
     "id": "943caca0-87ee-11e7-ad9c-db80de0bf8d3-ecs",

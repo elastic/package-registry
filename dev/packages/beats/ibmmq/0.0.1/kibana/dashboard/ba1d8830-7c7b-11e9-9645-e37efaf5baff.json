@@ -40,7 +40,7 @@
                 },
                 "panelIndex": "6",
                 "panelRefName": "panel_1",
-                "title": "Top 5 Errors [Filebeat IBM MQ]",
+                "title": "Top 5 Errors [Logs IBM MQ]",
                 "version": "7.3.0"
             },
             {
@@ -129,7 +129,7 @@
         "timeFrom": "now-2M",
         "timeRestore": true,
         "timeTo": "now",
-        "title": "[Filebeat IBM MQ] Overview of error log overview",
+        "title": "[Logs IBM MQ] Overview of error log overview",
         "version": 1
     },
     "id": "ba1d8830-7c7b-11e9-9645-e37efaf5baff",

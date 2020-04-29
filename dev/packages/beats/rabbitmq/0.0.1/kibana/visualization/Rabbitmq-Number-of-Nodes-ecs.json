@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Number of Nodes [Metricbeat RabbitMQ] ECS",
+        "title": "Number of Nodes [Metrics RabbitMQ] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -35,7 +35,7 @@
     "id": "Rabbitmq-Number-of-Nodes-ecs",
     "references": [
         {
-            "id": "Metricbeat-Rabbitmq-ecs",
+            "id": "Metrics-Rabbitmq-ecs",
             "name": "search_0",
             "type": "search"
         }

@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Ubiquiti Firewall Allowed Traffic Map [Filebeat Iptables] ECS",
+        "title": "Ubiquiti Firewall Allowed Traffic Map [Logs Iptables] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -69,7 +69,7 @@
                     }
                 }
             },
-            "title": "Ubiquiti Firewall Allowed Traffic Map [Filebeat Iptables] ECS",
+            "title": "Ubiquiti Firewall Allowed Traffic Map [Logs Iptables] ECS",
             "type": "tile_map"
         }
     },

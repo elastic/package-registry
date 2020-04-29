@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Total DNS Queries [Filebeat CoreDNS]",
+        "title": "Total DNS Queries [Logs CoreDNS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -52,7 +52,7 @@
                 },
                 "type": "metric"
             },
-            "title": "Total DNS Queries [Filebeat CoreDNS]",
+            "title": "Total DNS Queries [Logs CoreDNS]",
             "type": "metric"
         }
     },

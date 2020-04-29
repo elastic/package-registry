@@ -324,7 +324,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat System] Host overview ECS",
+        "title": "[Metrics System] Host overview ECS",
         "version": 1
     },
     "id": "79ffd6e0-faa0-11e6-947f-177f697178b8-ecs",

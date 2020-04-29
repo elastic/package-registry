@@ -137,7 +137,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Docker] Overview ECS",
+        "title": "[Metrics Docker] Overview ECS",
         "version": 1
     },
     "id": "AV4REOpp5NkDleZmzKkE-ecs",

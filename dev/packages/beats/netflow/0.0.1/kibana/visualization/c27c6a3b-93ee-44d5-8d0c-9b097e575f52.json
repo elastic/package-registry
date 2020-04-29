@@ -13,7 +13,7 @@
                 }
             }
         },
-        "title": "Flow Records [Filebeat Netflow]",
+        "title": "Flow Records [Logs Netflow]",
         "uiStateJSON": {
             "vis": {
                 "defaultColors": {
@@ -79,7 +79,7 @@
                 "handleNoResults": true,
                 "type": "gauge"
             },
-            "title": "Flow Records [Filebeat Netflow]",
+            "title": "Flow Records [Logs Netflow]",
             "type": "metric"
         }
     },

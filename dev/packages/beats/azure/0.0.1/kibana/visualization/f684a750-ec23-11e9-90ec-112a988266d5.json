@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Alerts Count [Filebeat Azure]",
+        "title": "Alerts Count [Logs Azure]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -106,7 +106,7 @@
                 },
                 "type": "metric"
             },
-            "title": "Alerts Count [Filebeat Azure]",
+            "title": "Alerts Count [Logs Azure]",
             "type": "metric"
         }
     },

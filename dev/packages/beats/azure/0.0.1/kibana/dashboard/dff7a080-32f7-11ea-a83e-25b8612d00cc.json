@@ -241,7 +241,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Azure] File Storage Overview",
+        "title": "[Metrics Azure] File Storage Overview",
         "version": 1
     },
     "id": "dff7a080-32f7-11ea-a83e-25b8612d00cc",

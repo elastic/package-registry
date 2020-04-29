@@ -77,7 +77,7 @@
                 "desc"
             ]
         ],
-        "title": "Services [Metricbeat Windows] ECS",
+        "title": "Services [Metrics Windows] ECS",
         "version": 1
     },
     "id": "b6b7ccc0-c98d-11e7-9835-2f31fe08873b-ecs",

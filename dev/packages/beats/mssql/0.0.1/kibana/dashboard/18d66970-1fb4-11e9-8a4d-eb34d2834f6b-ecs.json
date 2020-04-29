@@ -130,7 +130,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat MSSQL] Transaction log ECS",
+        "title": "[Metrics MSSQL] Transaction log ECS",
         "version": 1
     },
     "id": "18d66970-1fb4-11e9-8a4d-eb34d2834f6b-ecs",

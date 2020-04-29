@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Broker Connections [Metricbeat ActiveMQ]",
+        "title": "Broker Connections [Metrics ActiveMQ]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -74,6 +74,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_filters": [
                             {
                                 "color": "#68BC00",
@@ -96,7 +97,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "Broker Connections [Metricbeat ActiveMQ]",
+            "title": "Broker Connections [Metrics ActiveMQ]",
             "type": "metrics"
         }
     },

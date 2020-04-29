@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Top ASA Messages [Filebeat Cisco]",
+        "title": "Top ASA Messages [Logs Cisco]",
         "uiStateJSON": {
             "vis": {
                 "params": {
@@ -89,7 +89,7 @@
                 },
                 "totalFunc": "sum"
             },
-            "title": "Top ASA Messages [Filebeat Cisco]",
+            "title": "Top ASA Messages [Logs Cisco]",
             "type": "table"
         }
     },

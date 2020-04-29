@@ -135,7 +135,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Kubernetes] Scheduler",
+        "title": "[Metrics Kubernetes] Scheduler",
         "version": 1
     },
     "id": "f5ab5510-9c94-11e9-94fd-c91206cd5249",

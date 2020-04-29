@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "EC2 DiskIO Write Bytes [Metricbeat AWS]",
+        "title": "EC2 DiskIO Write Bytes [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {

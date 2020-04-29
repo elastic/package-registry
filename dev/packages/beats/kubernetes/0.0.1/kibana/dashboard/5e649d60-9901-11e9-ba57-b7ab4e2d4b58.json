@@ -135,7 +135,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Kubernetes] Proxy",
+        "title": "[Metrics Kubernetes] Proxy",
         "version": 1
     },
     "id": "5e649d60-9901-11e9-ba57-b7ab4e2d4b58",

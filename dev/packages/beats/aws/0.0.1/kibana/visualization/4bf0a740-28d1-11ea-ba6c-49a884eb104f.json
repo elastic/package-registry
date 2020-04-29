@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Lambda Top Errors [Metricbeat AWS]",
+        "title": "Lambda Top Errors [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -85,7 +85,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Lambda Top Errors [Metricbeat AWS]",
+            "title": "Lambda Top Errors [Metrics AWS]",
             "type": "metrics"
         }
     },

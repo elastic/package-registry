@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "API Server Top clients by resource [Metricbeat Kubernetes] ECS",
+        "title": "API Server Top clients by resource [Metrics Kubernetes] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -48,6 +48,7 @@
                         "point_size": 1,
                         "seperate_axis": 0,
                         "series_drop_last_bucket": 1,
+                        "split_color_mode": "gradient",
                         "split_filters": [
                             {
                                 "color": "#68BC00",
@@ -66,7 +67,7 @@
                 "time_field": "@timestamp",
                 "type": "top_n"
             },
-            "title": "API Server Top clients by resource [Metricbeat Kubernetes] ECS",
+            "title": "API Server Top clients by resource [Metrics Kubernetes] ECS",
             "type": "metrics"
         }
     },

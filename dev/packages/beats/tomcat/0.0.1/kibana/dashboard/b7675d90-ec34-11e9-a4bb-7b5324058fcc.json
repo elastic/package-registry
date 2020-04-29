@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "description": "An overview dashboards of all key metrics included in the Tomcat Metricbeat module",
+        "description": "An overview dashboards of all key metrics included in the Tomcat Metrics integration",
         "hits": 0,
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
@@ -130,7 +130,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Tomcat] Overview",
+        "title": "[Metrics Tomcat] Overview",
         "version": 1
     },
     "id": "b7675d90-ec34-11e9-a4bb-7b5324058fcc",

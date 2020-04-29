@@ -232,7 +232,7 @@
         "timeFrom": "now-24h",
         "timeRestore": true,
         "timeTo": "now",
-        "title": "[Filebeat CEF] Network Suspicious Activity Dashboard",
+        "title": "[Logs CEF] Network Suspicious Activity Dashboard",
         "version": 1
     },
     "id": "db1e1aca-279e-4ecc-b84e-fe58644f7619",

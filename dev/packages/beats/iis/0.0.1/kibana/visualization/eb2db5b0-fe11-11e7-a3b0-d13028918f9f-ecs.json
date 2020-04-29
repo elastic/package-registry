@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Access map [Filebeat IIS] ECS",
+        "title": "Access map [Logs IIS] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -56,7 +56,7 @@
                     }
                 }
             },
-            "title": "Access map [Filebeat IIS] ECS",
+            "title": "Access map [Logs IIS] ECS",
             "type": "tile_map"
         }
     },

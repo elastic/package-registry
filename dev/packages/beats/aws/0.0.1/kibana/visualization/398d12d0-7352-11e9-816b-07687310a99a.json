@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Cloudwatch Lambda Throttles Top5 [Metricbeat AWS]",
+        "title": "Cloudwatch Lambda Throttles Top5 [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -52,6 +52,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "aws.dimensions.FunctionName",

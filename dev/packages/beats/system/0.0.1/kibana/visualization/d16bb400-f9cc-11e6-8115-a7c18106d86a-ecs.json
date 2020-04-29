@@ -12,7 +12,7 @@
                 }
             }
         },
-        "title": "Successful SSH logins [Filebeat System] ECS",
+        "title": "Successful SSH logins [Logs System] ECS",
         "uiStateJSON": {
             "vis": {
                 "colors": {

@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Remotes-Subsz-Connz-Routez Timeline [Metricbeat NATS] ECS",
+        "title": "Remotes-Subsz-Connz-Routez Timeline [Metrics NATS] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -177,7 +177,7 @@
                     }
                 ]
             },
-            "title": "Remotes-Subsz-Connz-Routez Timeline [Metricbeat NATS] ECS",
+            "title": "Remotes-Subsz-Connz-Routez Timeline [Metrics NATS] ECS",
             "type": "area"
         }
     },

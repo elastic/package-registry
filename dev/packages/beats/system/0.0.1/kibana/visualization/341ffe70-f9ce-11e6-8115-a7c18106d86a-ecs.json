@@ -12,7 +12,7 @@
                 }
             }
         },
-        "title": "SSH users of failed login attempts [Filebeat System] ECS",
+        "title": "SSH users of failed login attempts [Logs System] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {

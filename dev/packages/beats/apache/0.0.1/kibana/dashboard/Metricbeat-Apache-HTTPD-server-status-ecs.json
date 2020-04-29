@@ -131,10 +131,10 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Apache] Overview ECS",
+        "title": "[Metrics Apache] Overview ECS",
         "version": 1
     },
-    "id": "Metricbeat-Apache-HTTPD-server-status-ecs",
+    "id": "Metrics-Apache-HTTPD-server-status-ecs",
     "references": [
         {
             "id": "Apache-HTTPD-CPU-ecs",

@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Source Flows Map [Filebeat PANW] ECS",
+        "title": "Source Flows Map [Logs PANW] ECS",
         "uiStateJSON": {
             "mapCenter": [
                 -0.17578097424708533,
@@ -68,7 +68,7 @@
                     }
                 }
             },
-            "title": "Source Flows Map [Filebeat PANW] ECS",
+            "title": "Source Flows Map [Logs PANW] ECS",
             "type": "tile_map"
         }
     },

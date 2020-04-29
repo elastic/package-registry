@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "description": "Filebeat Apache module dashboard",
+        "description": "Logs Apache integration dashboard",
         "hits": 0,
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
@@ -127,7 +127,7 @@
                     "columns": [
                         "source.address",
                         "log.level",
-                        "apache2.error.module",
+                        "apache2.error.integration",
                         "message"
                     ],
                     "sort": [
@@ -148,10 +148,10 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat Apache] Access and error logs ECS",
+        "title": "[Logs Apache] Access and error logs ECS",
         "version": 1
     },
-    "id": "Filebeat-Apache-Dashboard-ecs",
+    "id": "Logs-Apache-Dashboard-ecs",
     "references": [
         {
             "id": "Apache-access-unique-IPs-map-ecs",

@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Top Services By Memory Usage [Metricbeat System]",
+        "title": "Top Services By Memory Usage [Metrics System]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -48,6 +48,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "system.service.name",
@@ -59,7 +60,7 @@
                 "time_field": "",
                 "type": "top_n"
             },
-            "title": "Top Services By Memory Usage [Metricbeat System]",
+            "title": "Top Services By Memory Usage [Metrics System]",
             "type": "metrics"
         }
     },

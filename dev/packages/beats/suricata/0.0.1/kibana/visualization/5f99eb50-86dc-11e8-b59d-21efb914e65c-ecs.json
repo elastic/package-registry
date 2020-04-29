@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Top Connection Source Countries [Filebeat Suricata] ECS",
+        "title": "Top Connection Source Countries [Logs Suricata] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -48,7 +48,7 @@
                 "scale": "linear",
                 "showLabel": true
             },
-            "title": "Top Connection Source Countries [Filebeat Suricata] ECS",
+            "title": "Top Connection Source Countries [Logs Suricata] ECS",
             "type": "tagcloud"
         }
     },

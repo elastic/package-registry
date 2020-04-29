@@ -73,7 +73,7 @@
                 "desc"
             ]
         ],
-        "title": "Debug Log [Filebeat Icinga] ECS",
+        "title": "Debug Log [Logs Icinga] ECS",
         "version": 1
     },
     "id": "c876e6a0-2418-11e7-a83b-d5f4cebac9ff-ecs",

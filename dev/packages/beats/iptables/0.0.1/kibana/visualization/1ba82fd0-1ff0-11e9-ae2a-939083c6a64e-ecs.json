@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Ubiquiti Firewall Top Blocked IPs [Filebeat Iptables] ECS",
+        "title": "Ubiquiti Firewall Top Blocked IPs [Logs Iptables] ECS",
         "uiStateJSON": {
             "vis": {
                 "params": {
@@ -61,7 +61,7 @@
                 },
                 "totalFunc": "sum"
             },
-            "title": "Ubiquiti Firewall Top Blocked IPs [Filebeat Iptables] ECS",
+            "title": "Ubiquiti Firewall Top Blocked IPs [Logs Iptables] ECS",
             "type": "table"
         }
     },

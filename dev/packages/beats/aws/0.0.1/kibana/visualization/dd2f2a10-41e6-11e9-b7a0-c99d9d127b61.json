@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "SQS Messages Sent [Metricbeat AWS]",
+        "title": "SQS Messages Sent [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -62,7 +62,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "SQS Messages Sent [Metricbeat AWS]",
+            "title": "SQS Messages Sent [Metrics AWS]",
             "type": "metrics"
         }
     },

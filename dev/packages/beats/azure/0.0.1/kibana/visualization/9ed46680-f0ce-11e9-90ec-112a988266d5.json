@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Resource Type Breakdown [Filebeat Azure]",
+        "title": "Resource Type Breakdown [Logs Azure]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -78,7 +78,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Resource Type Breakdown [Filebeat Azure]",
+            "title": "Resource Type Breakdown [Logs Azure]",
             "type": "pie"
         }
     },

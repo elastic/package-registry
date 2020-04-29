@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Operating systems breakdown [Filebeat IIS] ECS",
+        "title": "Operating systems breakdown [Logs IIS] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -61,7 +61,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Operating systems breakdown [Filebeat IIS] ECS",
+            "title": "Operating systems breakdown [Logs IIS] ECS",
             "type": "pie"
         }
     },

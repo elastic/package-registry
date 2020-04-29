@@ -24,7 +24,7 @@
                 }
             }
         },
-        "title": "Sent Byte Size [Filebeat Traefik] ECS",
+        "title": "Sent Byte Size [Logs Traefik] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {

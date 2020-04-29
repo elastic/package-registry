@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "description": "Filebeat AWS S3 Server Access Log Overview Dashboard",
+        "description": "Logs AWS S3 Server Access Log Overview Dashboard",
         "hits": 0,
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
@@ -66,7 +66,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat AWS] S3 Server Access Log Overview",
+        "title": "[Logs AWS] S3 Server Access Log Overview",
         "version": 1
     },
     "id": "4746e000-bacd-11e9-9f70-1f7bda85a5eb",

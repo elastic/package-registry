@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Controller Process [Metricbeat Kubernetes]",
+        "title": "Controller Process [Metrics Kubernetes]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -58,6 +58,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "var_name": "started"
@@ -80,6 +81,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "var_name": "fds"
@@ -102,6 +104,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "var_name": "resident_memory"
@@ -123,6 +126,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "var_name": "virtual_memory"
@@ -133,7 +137,7 @@
                 "time_field": "@timestamp",
                 "type": "markdown"
             },
-            "title": "Controller Process [Metricbeat Kubernetes]",
+            "title": "Controller Process [Metrics Kubernetes]",
             "type": "metrics"
         }
     },

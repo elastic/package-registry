@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "VM CPU Utilization [Metricbeat Azure]",
+        "title": "VM CPU Utilization [Metrics Azure]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -65,7 +65,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "VM CPU Utilization [Metricbeat Azure]",
+            "title": "VM CPU Utilization [Metrics Azure]",
             "type": "metrics"
         }
     },

@@ -50,7 +50,7 @@
                 "desc"
             ]
         ],
-        "title": "OS versions [Filebeat Osquery] ECS",
+        "title": "OS versions [Logs Osquery] ECS",
         "version": 1
     },
     "id": "b5d6baa0-eb02-11e7-8f04-51231daa5b05-ecs",

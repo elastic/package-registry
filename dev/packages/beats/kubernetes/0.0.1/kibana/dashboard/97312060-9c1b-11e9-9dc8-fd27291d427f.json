@@ -161,7 +161,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Kubernetes] Controller Manager",
+        "title": "[Metrics Kubernetes] Controller Manager",
         "version": 1
     },
     "id": "97312060-9c1b-11e9-9dc8-fd27291d427f",

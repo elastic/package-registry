@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Memory usage by node  [Metricbeat Kubernetes] ECS",
+        "title": "Memory usage by node  [Metrics Kubernetes] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -72,6 +72,7 @@
                         ],
                         "point_size": 1,
                         "seperate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "kubernetes.node.name",
@@ -108,6 +109,7 @@
                         ],
                         "point_size": "0",
                         "seperate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "kubernetes.node.name",
@@ -120,7 +122,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Memory usage by node  [Metricbeat Kubernetes] ECS",
+            "title": "Memory usage by node  [Metrics Kubernetes] ECS",
             "type": "metrics"
         }
     },

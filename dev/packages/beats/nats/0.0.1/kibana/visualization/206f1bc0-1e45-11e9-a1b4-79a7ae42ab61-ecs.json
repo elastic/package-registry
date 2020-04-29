@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Server Uptime [Metricbeat NATS] ECS",
+        "title": "Server Uptime [Metrics NATS] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -55,7 +55,7 @@
                 },
                 "type": "metric"
             },
-            "title": "Server Uptime [Metricbeat NATS] ECS",
+            "title": "Server Uptime [Metrics NATS] ECS",
             "type": "metric"
         }
     },

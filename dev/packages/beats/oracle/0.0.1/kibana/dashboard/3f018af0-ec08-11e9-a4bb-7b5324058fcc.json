@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "description": "An overview of key metrics from all Metricsets in the Oracle database Metricbeat module",
+        "description": "An overview of key metrics from all Metricsets in the Oracle database Metrics integration",
         "hits": 0,
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
@@ -214,7 +214,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Oracle] Overview",
+        "title": "[Metrics Oracle] Overview",
         "version": 1
     },
     "id": "3f018af0-ec08-11e9-a4bb-7b5324058fcc",

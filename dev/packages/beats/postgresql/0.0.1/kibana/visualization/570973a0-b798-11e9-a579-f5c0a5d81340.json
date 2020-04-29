@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Fileblock IO Rate [Metricbeat PostgreSQL] ECS",
+        "title": "Fileblock IO Rate [Metrics PostgreSQL] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -59,6 +59,7 @@
                         ],
                         "point_size": 0,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "type": "timeseries",
@@ -93,6 +94,7 @@
                         ],
                         "point_size": 0,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "type": "timeseries",
@@ -104,7 +106,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Fileblock IO Rate [Metricbeat PostgreSQL] ECS",
+            "title": "Fileblock IO Rate [Metrics PostgreSQL] ECS",
             "type": "metrics"
         }
     },

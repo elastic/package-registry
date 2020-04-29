@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "CPU usage [Metricbeat Apache] ECS",
+        "title": "CPU usage [Metrics Apache] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {

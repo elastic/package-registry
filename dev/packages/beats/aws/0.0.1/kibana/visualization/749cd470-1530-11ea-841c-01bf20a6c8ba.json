@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Estimated Billing Pie Chart [Metricbeat AWS]",
+        "title": "Estimated Billing Pie Chart [Metrics AWS]",
         "uiStateJSON": {
             "vis": {
                 "colors": {
@@ -102,7 +102,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Estimated Billing Pie Chart [Metricbeat AWS]",
+            "title": "Estimated Billing Pie Chart [Metrics AWS]",
             "type": "pie"
         }
     },

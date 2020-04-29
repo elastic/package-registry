@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "description": "SSH dashboard for the System module in Filebeat",
+        "description": "SSH dashboard for the System integration in Logs",
         "hits": 0,
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
@@ -136,7 +136,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat System] SSH login attempts ECS",
+        "title": "[Logs System] SSH login attempts ECS",
         "version": 1
     },
     "id": "5517a150-f9ce-11e6-8115-a7c18106d86a-ecs",

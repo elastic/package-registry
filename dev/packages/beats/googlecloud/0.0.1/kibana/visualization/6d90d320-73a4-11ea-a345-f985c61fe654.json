@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Audit Resource Name [Filebeat GoogleCloud]",
+        "title": "Audit Resource Name [Logs GoogleCloud]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -53,7 +53,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Audit Resource Name [Filebeat GoogleCloud]",
+            "title": "Audit Resource Name [Logs GoogleCloud]",
             "type": "pie"
         }
     },

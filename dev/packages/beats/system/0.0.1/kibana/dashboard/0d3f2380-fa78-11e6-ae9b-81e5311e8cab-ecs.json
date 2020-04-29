@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "description": "New users and groups dashboard for the System module in Filebeat",
+        "description": "New users and groups dashboard for the System integration in Logs",
         "hits": 0,
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
@@ -128,7 +128,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat System] New users and groups ECS",
+        "title": "[Logs System] New users and groups ECS",
         "version": 1
     },
     "id": "0d3f2380-fa78-11e6-ae9b-81e5311e8cab-ecs",

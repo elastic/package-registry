@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "description": "Filebeat AWS VPC Flow Log Overview Dashboard",
+        "description": "Logs AWS VPC Flow Log Overview Dashboard",
         "hits": 0,
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
@@ -105,7 +105,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat AWS] VPC Flow Log Overview",
+        "title": "[Logs AWS] VPC Flow Log Overview",
         "version": 1
     },
     "id": "15503340-4488-11ea-ad63-791a5dc86f10",

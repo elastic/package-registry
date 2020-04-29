@@ -29,7 +29,7 @@
                 }
             }
         },
-        "title": "DO Count [Metricbeat CoreDNS] ECS",
+        "title": "DO Count [Metrics CoreDNS] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -76,7 +76,7 @@
                 },
                 "type": "metric"
             },
-            "title": "DO Count [Metricbeat CoreDNS] ECS",
+            "title": "DO Count [Metrics CoreDNS] ECS",
             "type": "metric"
         }
     },

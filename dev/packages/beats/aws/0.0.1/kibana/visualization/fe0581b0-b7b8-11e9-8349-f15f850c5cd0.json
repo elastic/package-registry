@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "EBS Volume Queue Length [Metricbeat AWS]",
+        "title": "EBS Volume Queue Length [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -57,7 +57,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "EBS Volume Queue Length [Metricbeat AWS]",
+            "title": "EBS Volume Queue Length [Metrics AWS]",
             "type": "metrics"
         }
     },

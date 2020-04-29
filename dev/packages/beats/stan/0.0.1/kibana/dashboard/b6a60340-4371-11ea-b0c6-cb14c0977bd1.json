@@ -44,7 +44,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Stan] Channel Overview Metrics",
+        "title": "[Metrics Stan] Channel Overview Metrics",
         "version": 1
     },
     "id": "b6a60340-4371-11ea-b0c6-cb14c0977bd1",

@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Maximum data file size [Metricbeat Oracle]",
+        "title": "Maximum data file size [Metrics Oracle]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -43,6 +43,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "stacked",
                         "terms_field": "oracle.tablespace.data_file.name",
@@ -54,7 +55,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Maximum data file size [Metricbeat Oracle]",
+            "title": "Maximum data file size [Metrics Oracle]",
             "type": "metrics"
         }
     },

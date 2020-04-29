@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Subscriptions Info [Metricbeat NATS] ECS",
+        "title": "Subscriptions Info [Metrics NATS] ECS",
         "uiStateJSON": {
             "vis": {
                 "params": {
@@ -118,7 +118,7 @@
                 },
                 "totalFunc": "sum"
             },
-            "title": "Subscriptions Info [Metricbeat NATS] ECS",
+            "title": "Subscriptions Info [Metrics NATS] ECS",
             "type": "table"
         }
     },

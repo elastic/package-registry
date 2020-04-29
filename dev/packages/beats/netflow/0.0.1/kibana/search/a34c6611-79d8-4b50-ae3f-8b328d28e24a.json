@@ -31,7 +31,7 @@
                 "desc"
             ]
         ],
-        "title": "Flow Records [Filebeat Netflow]",
+        "title": "Flow Records [Logs Netflow]",
         "version": 1
     },
     "id": "a34c6611-79d8-4b50-ae3f-8b328d28e24a",

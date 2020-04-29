@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Reading / Writing / Waiting Rates [Metricbeat Nginx] ECS",
+        "title": "Reading / Writing / Waiting Rates [Metrics Nginx] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -35,6 +35,7 @@
                         ],
                         "point_size": 1,
                         "seperate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none"
                     },
@@ -56,6 +57,7 @@
                         ],
                         "point_size": 1,
                         "seperate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none"
                     },
@@ -77,6 +79,7 @@
                         ],
                         "point_size": 1,
                         "seperate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none"
                     }
@@ -86,7 +89,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Reading / Writing / Waiting Rates [Metricbeat Nginx] ECS",
+            "title": "Reading / Writing / Waiting Rates [Metrics Nginx] ECS",
             "type": "metrics"
         }
     },

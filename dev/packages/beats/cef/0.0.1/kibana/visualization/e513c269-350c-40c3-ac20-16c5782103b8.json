@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Events by Device Types [Filebeat CEF]",
+        "title": "Events by Device Types [Logs CEF]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -78,6 +78,7 @@
                         ],
                         "point_size": "0",
                         "seperate_axis": 1,
+                        "split_color_mode": "gradient",
                         "split_filters": [
                             {
                                 "color": "rgba(244,78,59,1)",
@@ -124,6 +125,7 @@
                         ],
                         "point_size": 1,
                         "seperate_axis": 1,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "cef.extensions.categoryDeviceType",
@@ -134,7 +136,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Events by Device Types [Filebeat CEF]",
+            "title": "Events by Device Types [Logs CEF]",
             "type": "metrics"
         }
     },

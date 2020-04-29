@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Top 10 Sources by Destinations [Filebeat CEF]",
+        "title": "Top 10 Sources by Destinations [Logs CEF]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -53,7 +53,7 @@
                 "isDonut": true,
                 "legendPosition": "bottom"
             },
-            "title": "Top 10 Sources by Destinations [Filebeat CEF]",
+            "title": "Top 10 Sources by Destinations [Logs CEF]",
             "type": "pie"
         }
     },

@@ -113,7 +113,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Azure] Container Registry Overview",
+        "title": "[Metrics Azure] Container Registry Overview",
         "version": 1
     },
     "id": "6f2393f0-6d08-11ea-8fe8-71add5fd7c38",

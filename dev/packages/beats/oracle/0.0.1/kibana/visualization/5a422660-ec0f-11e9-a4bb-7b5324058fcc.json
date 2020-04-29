@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Average Cursors by machine (Top 10) [Metricbeat Oracle]",
+        "title": "Average Cursors by machine (Top 10) [Metrics Oracle]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -64,7 +64,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "Average Cursors by machine (Top 10) [Metricbeat Oracle]",
+            "title": "Average Cursors by machine (Top 10) [Metrics Oracle]",
             "type": "metrics"
         }
     },

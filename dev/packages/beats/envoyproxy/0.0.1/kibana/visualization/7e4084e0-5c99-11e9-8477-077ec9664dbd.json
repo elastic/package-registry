@@ -37,7 +37,7 @@
                 }
             }
         },
-        "title": "Unique Domains [Filebeat Envoyproxy]",
+        "title": "Unique Domains [Logs Envoyproxy]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -103,7 +103,7 @@
                 },
                 "type": "metric"
             },
-            "title": "Unique Domains [Filebeat Envoyproxy]",
+            "title": "Unique Domains [Logs Envoyproxy]",
             "type": "metric"
         }
     },

@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Number of rootkits found [Filebeat Osquery] ECS",
+        "title": "Number of rootkits found [Logs Osquery] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -55,7 +55,7 @@
                 },
                 "type": "metric"
             },
-            "title": "Number of rootkits found [Filebeat Osquery] ECS",
+            "title": "Number of rootkits found [Logs Osquery] ECS",
             "type": "metric"
         }
     },

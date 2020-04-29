@@ -152,10 +152,10 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat NATS] Overview ECS",
+        "title": "[Logs NATS] Overview ECS",
         "version": 1
     },
-    "id": "Filebeat-nats-overview-ecs",
+    "id": "Logs-nats-overview-ecs",
     "references": [
         {
             "id": "6987a800-41a8-11e9-a4da-b1df688edbcd-ecs",

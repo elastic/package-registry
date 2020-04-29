@@ -85,7 +85,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat VSphere] VMs overview ECS",
+        "title": "[Metrics VSphere] VMs overview ECS",
         "version": 1
     },
     "id": "8a2d1540-f049-11e9-aaf3-15199b632da7",

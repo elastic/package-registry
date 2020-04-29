@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Memory usage [Metricbeat uWSGI] ECS",
+        "title": "Memory usage [Metrics uWSGI] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -12,7 +12,7 @@
                 "expression": ".es(metric=max:uwsgi.status.worker.rss).label('Currently used (rss)').title('Memory usage'),\n.es(metric=max:uwsgi.status.worker.vsz).label('Assigned (vsz)').yaxis(2)",
                 "interval": "15s"
             },
-            "title": "Memory usage [Metricbeat uWSGI] ECS",
+            "title": "Memory usage [Metrics uWSGI] ECS",
             "type": "timelion"
         }
     },

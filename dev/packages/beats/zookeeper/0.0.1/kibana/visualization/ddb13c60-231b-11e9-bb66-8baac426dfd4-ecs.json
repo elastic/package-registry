@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Used file descriptors [Metricbeat Zookeeper] ECS",
+        "title": "Used file descriptors [Metrics Zookeeper] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -65,6 +65,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 1,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "value_template": "{{value}}"
@@ -88,6 +89,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 1,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none"
                     }
@@ -97,7 +99,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Used file descriptors [Metricbeat Zookeeper] ECS",
+            "title": "Used file descriptors [Metrics Zookeeper] ECS",
             "type": "metrics"
         }
     },

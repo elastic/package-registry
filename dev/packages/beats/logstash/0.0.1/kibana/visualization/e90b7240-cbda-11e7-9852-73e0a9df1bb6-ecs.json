@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "logs over time [Filebeat Logstash] ECS",
+        "title": "logs over time [Logs Logstash] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -116,7 +116,7 @@
                     }
                 ]
             },
-            "title": "logs over time [Filebeat Logstash] ECS",
+            "title": "logs over time [Logs Logstash] ECS",
             "type": "histogram"
         }
     },

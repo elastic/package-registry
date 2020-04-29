@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Operation counters [Metricbeat MongoDB] ECS",
+        "title": "Operation counters [Metrics MongoDB] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -162,7 +162,7 @@
                 ],
                 "yAxis": {}
             },
-            "title": "Operation counters [Metricbeat MongoDB] ECS",
+            "title": "Operation counters [Metrics MongoDB] ECS",
             "type": "area"
         }
     },

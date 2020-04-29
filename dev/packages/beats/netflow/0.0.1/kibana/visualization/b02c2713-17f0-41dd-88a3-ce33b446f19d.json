@@ -13,7 +13,7 @@
                 }
             }
         },
-        "title": "Locality (bytes) [Filebeat Netflow]",
+        "title": "Locality (bytes) [Logs Netflow]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -49,7 +49,7 @@
                 "isDonut": true,
                 "legendPosition": "right"
             },
-            "title": "Locality (bytes) [Filebeat Netflow]",
+            "title": "Locality (bytes) [Logs Netflow]",
             "type": "pie"
         }
     },

@@ -228,7 +228,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat Azure] Cloud Overview",
+        "title": "[Logs Azure] Cloud Overview",
         "version": 1
     },
     "id": "41e84340-ec20-11e9-90ec-112a988266d5",

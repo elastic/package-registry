@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "NATGateway Packet Drop [Metricbeat AWS]",
+        "title": "NATGateway Packet Drop [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -58,6 +58,7 @@
                         ],
                         "point_size": "3",
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "terms_field": "aws.dimensions.NatGatewayId",
@@ -70,7 +71,7 @@
                 "time_range_mode": "last_value",
                 "type": "metric"
             },
-            "title": "NATGateway Packet Drop [Metricbeat AWS]",
+            "title": "NATGateway Packet Drop [Metrics AWS]",
             "type": "metrics"
         }
     },

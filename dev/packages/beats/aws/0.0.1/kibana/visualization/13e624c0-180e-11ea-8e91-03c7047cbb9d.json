@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "SNS Messages and Notifications [Metricbeat AWS]",
+        "title": "SNS Messages and Notifications [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -109,7 +109,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "SNS Messages and Notifications [Metricbeat AWS]",
+            "title": "SNS Messages and Notifications [Metrics AWS]",
             "type": "metrics"
         }
     },

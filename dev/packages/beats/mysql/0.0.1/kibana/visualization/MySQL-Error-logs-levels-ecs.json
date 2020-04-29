@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Error logs levels breakdown [Filebeat MySQL] ECS",
+        "title": "Error logs levels breakdown [Logs MySQL] ECS",
         "uiStateJSON": {
             "vis": {
                 "colors": {
@@ -48,14 +48,14 @@
                 "shareYAxis": true,
                 "type": "pie"
             },
-            "title": "Error logs levels breakdown [Filebeat MySQL] ECS",
+            "title": "Error logs levels breakdown [Logs MySQL] ECS",
             "type": "pie"
         }
     },
     "id": "MySQL-Error-logs-levels-ecs",
     "references": [
         {
-            "id": "Filebeat-MySQL-error-log-ecs",
+            "id": "Logs-MySQL-error-log-ecs",
             "name": "search_0",
             "type": "search"
         }

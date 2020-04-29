@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "SNS Notifications Filtered Out No Message Attributes [Metricbeat AWS]",
+        "title": "SNS Notifications Filtered Out No Message Attributes [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -59,7 +59,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "SNS Notifications Filtered Out No Message Attributes [Metricbeat AWS]",
+            "title": "SNS Notifications Filtered Out No Message Attributes [Metrics AWS]",
             "type": "metrics"
         }
     },

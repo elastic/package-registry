@@ -73,7 +73,7 @@
                 "desc"
             ]
         ],
-        "title": "All logs [Filebeat Kafka] ECS",
+        "title": "All logs [Logs Kafka] ECS",
         "version": 1
     },
     "id": "All Kafka logs-ecs",

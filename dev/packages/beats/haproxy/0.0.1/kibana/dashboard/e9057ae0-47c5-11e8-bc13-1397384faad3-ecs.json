@@ -60,7 +60,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat HAProxy] HTTP frontend ECS",
+        "title": "[Metrics HAProxy] HTTP frontend ECS",
         "version": 1
     },
     "id": "e9057ae0-47c5-11e8-bc13-1397384faad3-ecs",

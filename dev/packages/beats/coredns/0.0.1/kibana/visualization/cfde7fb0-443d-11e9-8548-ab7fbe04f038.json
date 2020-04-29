@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Time Series Visualizer [Filebeat CoreDNS]",
+        "title": "Time Series Visualizer [Logs CoreDNS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -63,6 +63,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "filter",
                         "stacked": "none",
                         "terms_field": "fileset.name"
@@ -88,6 +89,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "filter",
                         "stacked": "none"
                     }
@@ -97,7 +99,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Time Series Visualizer [Filebeat CoreDNS]",
+            "title": "Time Series Visualizer [Logs CoreDNS]",
             "type": "metrics"
         }
     },

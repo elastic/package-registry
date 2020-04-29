@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Free vs Used CPU on Cluster stacked [Metricbeat VSphere] ECS",
+        "title": "Free vs Used CPU on Cluster stacked [Metrics VSphere] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -182,7 +182,7 @@
                     }
                 ]
             },
-            "title": "Free vs Used CPU on Cluster stacked [Metricbeat VSphere] ECS",
+            "title": "Free vs Used CPU on Cluster stacked [Metrics VSphere] ECS",
             "type": "area"
         }
     },

@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Storage Table Capacity [Metricbeat Azure]",
+        "title": "Storage Table Capacity [Metrics Azure]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -92,7 +92,7 @@
                 "time_field": "@timestamp",
                 "type": "gauge"
             },
-            "title": "Storage Table Capacity [Metricbeat Azure]",
+            "title": "Storage Table Capacity [Metrics Azure]",
             "type": "metrics"
         }
     },

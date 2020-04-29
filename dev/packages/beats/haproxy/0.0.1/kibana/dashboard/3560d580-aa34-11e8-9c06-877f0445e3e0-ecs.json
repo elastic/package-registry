@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "description": "Filebeat HAProxy module dashboard",
+        "description": "Logs HAProxy integration dashboard",
         "hits": 0,
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
@@ -71,7 +71,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat HAProxy] Overview ECS",
+        "title": "[Logs HAProxy] Overview ECS",
         "version": 1
     },
     "id": "3560d580-aa34-11e8-9c06-877f0445e3e0-ecs",

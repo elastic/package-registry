@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Events by Source [Filebeat CEF]",
+        "title": "Events by Source [Logs CEF]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -81,6 +81,7 @@
                         ],
                         "point_size": "0",
                         "seperate_axis": 1,
+                        "split_color_mode": "gradient",
                         "split_filters": [
                             {
                                 "color": "rgba(244,78,59,1)",
@@ -156,7 +157,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Events by Source [Filebeat CEF]",
+            "title": "Events by Source [Logs CEF]",
             "type": "metrics"
         }
     },

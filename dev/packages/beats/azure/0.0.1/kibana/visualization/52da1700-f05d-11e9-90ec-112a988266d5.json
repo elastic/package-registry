@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Users List [Filebeat Azure]",
+        "title": "Users List [Logs Azure]",
         "uiStateJSON": {
             "vis": {
                 "params": {
@@ -139,7 +139,7 @@
                 },
                 "totalFunc": "sum"
             },
-            "title": "Users List [Filebeat Azure]",
+            "title": "Users List [Logs Azure]",
             "type": "table"
         }
     },

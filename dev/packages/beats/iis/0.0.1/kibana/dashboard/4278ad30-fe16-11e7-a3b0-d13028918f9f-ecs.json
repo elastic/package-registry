@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "description": "Dashboard for the Filebeat IIS module",
+        "description": "Dashboard for the Logs IIS integration",
         "hits": 0,
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
@@ -99,7 +99,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat IIS] Access and error logs ECS",
+        "title": "[Logs IIS] Access and error logs ECS",
         "version": 1
     },
     "id": "4278ad30-fe16-11e7-a3b0-d13028918f9f-ecs",

@@ -26,7 +26,7 @@
                 "desc"
             ]
         ],
-        "title": "Slow Queries [Filebeat PostgreSQL] ECS",
+        "title": "Slow Queries [Logs PostgreSQL] ECS",
         "version": 1
     },
     "id": "Slow PostgreSQL Queries-ecs",

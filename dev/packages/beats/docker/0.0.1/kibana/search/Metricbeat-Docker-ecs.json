@@ -34,10 +34,10 @@
                 "desc"
             ]
         ],
-        "title": "Metricbeat Docker ECS",
+        "title": "Metrics Docker ECS",
         "version": 1
     },
-    "id": "Metricbeat-Docker-ecs",
+    "id": "Metrics-Docker-ecs",
     "references": [
         {
             "id": "metrics-*",
