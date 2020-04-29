@@ -133,9 +133,12 @@ func writeHandlebarsTextNode(textNode *parse.TextNode) []byte {
 	if i > -1 && (i == 0 || textNode.Text[i-1] == ' ' || textNode.Text[i-1] == '\n') {
 		var buffer bytes.Buffer
 		buffer.Write(textNode.Text[0:i])
-		buffer.WriteString("input")
-		buffer.Write(textNode.Text[i+4:])
-		return buffer.Bytes()
+
+		j := bytes.Index(textNode.Text[i:], []byte{'\n'})
+		if j > 0 {
+			buffer.Write(textNode.Text[i+j+1:])
+			return buffer.Bytes()
+		}
 	}
 	return textNode.Text
 }

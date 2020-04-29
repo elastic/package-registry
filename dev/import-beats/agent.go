@@ -31,7 +31,6 @@ func createAgentContentForMetrics(moduleName, datasetName string, streams []util
 	vars := extractVarsFromStream(streams, inputName)
 
 	var buffer bytes.Buffer
-	buffer.WriteString(fmt.Sprintf("input: %s\n", inputName))
 	buffer.WriteString(fmt.Sprintf("metricsets: [\"%s\"]\n", datasetName))
 
 	for _, aVar := range vars {
