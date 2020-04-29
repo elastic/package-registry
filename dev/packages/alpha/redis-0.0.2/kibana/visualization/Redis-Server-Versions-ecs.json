@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Server Versions [Metricbeat Redis] ECS",
+        "title": "Server Versions [Metrics Redis] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -44,14 +44,14 @@
                 "legendPosition": "right",
                 "shareYAxis": true
             },
-            "title": "Server Versions [Metricbeat Redis] ECS",
+            "title": "Server Versions [Metrics Redis] ECS",
             "type": "pie"
         }
     },
     "id": "Redis-Server-Versions-ecs",
     "references": [
         {
-            "id": "Metricbeat-Redis-ecs",
+            "id": "Metrics-Redis-ecs",
             "name": "search_0",
             "type": "search"
         }

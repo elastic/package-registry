@@ -36,7 +36,7 @@
                 }
             }
         },
-        "title": "Average keys TTL [Metricbeat Redis] ECS",
+        "title": "Average keys TTL [Metrics Redis] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -173,7 +173,7 @@
                     }
                 ]
             },
-            "title": "Average keys TTL [Metricbeat Redis] ECS",
+            "title": "Average keys TTL [Metrics Redis] ECS",
             "type": "line"
         }
     },

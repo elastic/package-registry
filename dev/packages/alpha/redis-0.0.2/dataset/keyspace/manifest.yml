@@ -1,5 +1,4 @@
 title: Redis keyspace metrics
-release: ga
 type: metrics
 streams:
 - input: redis/metrics

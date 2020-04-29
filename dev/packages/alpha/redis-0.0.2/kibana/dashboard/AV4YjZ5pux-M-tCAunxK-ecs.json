@@ -129,7 +129,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Redis] Overview ECS",
+        "title": "[Metrics Redis] Overview ECS",
         "version": 1
     },
     "id": "AV4YjZ5pux-M-tCAunxK-ecs",

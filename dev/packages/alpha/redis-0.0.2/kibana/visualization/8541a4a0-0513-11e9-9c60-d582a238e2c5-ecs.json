@@ -38,7 +38,7 @@
                 }
             }
         },
-        "title": "Average string key size [Metricbeat Redis] ECS",
+        "title": "Average string key size [Metrics Redis] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -158,7 +158,7 @@
                     }
                 ]
             },
-            "title": "Average string key size [Metricbeat Redis] ECS",
+            "title": "Average string key size [Metrics Redis] ECS",
             "type": "line"
         }
     },

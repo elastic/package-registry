@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Clients [Metricbeat Redis] ECS",
+        "title": "Clients [Metrics Redis] ECS",
         "uiStateJSON": {
             "vis": {
                 "defaultColors": {
@@ -73,14 +73,14 @@
                 "handleNoResults": true,
                 "type": "gauge"
             },
-            "title": "Clients [Metricbeat Redis] ECS",
+            "title": "Clients [Metrics Redis] ECS",
             "type": "metric"
         }
     },
     "id": "Redis-Clients-Metrics-ecs",
     "references": [
         {
-            "id": "Metricbeat-Redis-ecs",
+            "id": "Metrics-Redis-ecs",
             "name": "search_0",
             "type": "search"
         }

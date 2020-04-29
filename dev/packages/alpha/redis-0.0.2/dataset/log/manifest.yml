@@ -1,5 +1,4 @@
 title: Redis application logs
-release: ga
 type: logs
 streams:
 - input: logs

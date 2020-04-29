@@ -38,7 +38,7 @@
                 }
             }
         },
-        "title": "Lists length [Metricbeat Redis] ECS",
+        "title": "Lists length [Metrics Redis] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -176,7 +176,7 @@
                     }
                 ]
             },
-            "title": "Lists length [Metricbeat Redis] ECS",
+            "title": "Lists length [Metrics Redis] ECS",
             "type": "line"
         }
     },

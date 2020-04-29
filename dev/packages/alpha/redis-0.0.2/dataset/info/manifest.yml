@@ -1,5 +1,4 @@
 title: Redis info metrics
-release: ga
 type: metrics
 streams:
 - input: redis/metrics

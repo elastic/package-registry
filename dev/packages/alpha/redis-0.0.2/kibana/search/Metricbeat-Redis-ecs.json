@@ -34,10 +34,10 @@
                 "desc"
             ]
         ],
-        "title": "Metricbeat Redis ECS",
+        "title": "Metrics Redis ECS",
         "version": 1
     },
-    "id": "Metricbeat-Redis-ecs",
+    "id": "Metrics-Redis-ecs",
     "references": [
         {
             "id": "metrics-*",
