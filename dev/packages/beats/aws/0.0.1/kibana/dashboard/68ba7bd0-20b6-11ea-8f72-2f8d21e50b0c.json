@@ -178,7 +178,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat AWS] DynamoDB Overview",
+        "title": "[Metrics AWS] DynamoDB Overview",
         "version": 1
     },
     "id": "68ba7bd0-20b6-11ea-8f72-2f8d21e50b0c",

@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Top Destinations by Events [Filebeat CEF]",
+        "title": "Top Destinations by Events [Logs CEF]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -60,7 +60,7 @@
                     "url": "https://basemap.nationalmap.gov/arcgis/services/USGSTopo/MapServer/WMSServer"
                 }
             },
-            "title": "Top Destinations by Events [Filebeat CEF]",
+            "title": "Top Destinations by Events [Logs CEF]",
             "type": "tile_map"
         }
     },

@@ -211,7 +211,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Azure] Queue Storage Overview",
+        "title": "[Metrics Azure] Queue Storage Overview",
         "version": 1
     },
     "id": "10efa340-32f8-11ea-a83e-25b8612d00cc",

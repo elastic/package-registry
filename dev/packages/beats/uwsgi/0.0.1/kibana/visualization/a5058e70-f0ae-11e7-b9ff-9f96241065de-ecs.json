@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Overview [Metricbeat uWSGI] ECS",
+        "title": "Overview [Metrics uWSGI] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -12,7 +12,7 @@
                 "expression": ".es(metric=avg:uwsgi.status.total.requests).derivative().label('Requests').title('Overview of requests per period'),\n.es(metric=avg:uwsgi.status.total.exceptions).derivative().label('Exceptions'),\n.es(metric=max:uwsgi.status.worker.avg_rt).label('Average response time').yaxis(2)",
                 "interval": "15s"
             },
-            "title": "Overview [Metricbeat uWSGI] ECS",
+            "title": "Overview [Metrics uWSGI] ECS",
             "type": "timelion"
         }
     },

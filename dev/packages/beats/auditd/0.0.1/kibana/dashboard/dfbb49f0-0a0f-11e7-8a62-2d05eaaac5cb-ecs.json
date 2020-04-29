@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "description": "Dashboard for the Auditd Filebeat module",
+        "description": "Dashboard for the Auditd Logs integration",
         "hits": 0,
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
@@ -139,7 +139,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat Auditd] Audit Events ECS",
+        "title": "[Logs Auditd] Audit Events ECS",
         "version": 1
     },
     "id": "dfbb49f0-0a0f-11e7-8a62-2d05eaaac5cb-ecs",

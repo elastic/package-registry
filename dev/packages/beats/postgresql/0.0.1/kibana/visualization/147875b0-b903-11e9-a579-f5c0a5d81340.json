@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Query Calls Count [Metricbeat PostgreSQL] ECS",
+        "title": "Query Calls Count [Metrics PostgreSQL] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -72,6 +72,7 @@
                         ],
                         "point_size": 0,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "postgresql.statement.query.text",
@@ -87,7 +88,7 @@
                 "time_range_mode": "entire_time_range",
                 "type": "top_n"
             },
-            "title": "Query Calls Count [Metricbeat PostgreSQL] ECS",
+            "title": "Query Calls Count [Metrics PostgreSQL] ECS",
             "type": "metrics"
         }
     },

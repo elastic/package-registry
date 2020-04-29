@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Destination Port and Transport [Filebeat Cisco]",
+        "title": "Destination Port and Transport [Logs Cisco]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -69,7 +69,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Destination Port and Transport [Filebeat Cisco]",
+            "title": "Destination Port and Transport [Logs Cisco]",
             "type": "pie"
         }
     },

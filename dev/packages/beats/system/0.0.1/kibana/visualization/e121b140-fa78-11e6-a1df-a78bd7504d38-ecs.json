@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "New users by shell [Filebeat System] ECS",
+        "title": "New users by shell [Logs System] ECS",
         "uiStateJSON": {
             "vis": {
                 "colors": {

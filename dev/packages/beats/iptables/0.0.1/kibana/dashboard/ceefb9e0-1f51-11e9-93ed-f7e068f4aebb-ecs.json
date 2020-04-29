@@ -139,7 +139,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat Iptables] Overview ECS",
+        "title": "[Logs Iptables] Overview ECS",
         "version": 1
     },
     "id": "ceefb9e0-1f51-11e9-93ed-f7e068f4aebb-ecs",

@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Errors [Metricbeat uWSGI] ECS",
+        "title": "Errors [Metrics uWSGI] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -12,7 +12,7 @@
                 "expression": ".es(metric=max:uwsgi.status.total.read_errors).label('Read errors').title('Errors'),\n.es(metric=max:uwsgi.status.total.write_errors).label('Write errors'),\n.es(metric=max:uwsgi.status.worker.harakiri_count).label('Timeouted requests')",
                 "interval": "15s"
             },
-            "title": "Errors [Metricbeat uWSGI] ECS",
+            "title": "Errors [Metrics uWSGI] ECS",
             "type": "timelion"
         }
     },

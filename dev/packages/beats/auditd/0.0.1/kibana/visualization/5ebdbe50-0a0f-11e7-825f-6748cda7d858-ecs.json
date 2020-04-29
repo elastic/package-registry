@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Top Exec Commands [Filebeat Auditd] ECS",
+        "title": "Top Exec Commands [Logs Auditd] ECS",
         "uiStateJSON": {
             "vis": {
                 "params": {

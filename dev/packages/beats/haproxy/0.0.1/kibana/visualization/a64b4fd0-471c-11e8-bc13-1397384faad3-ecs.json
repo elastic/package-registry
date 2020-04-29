@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Connections [Metricbeat HAProxy] ECS",
+        "title": "Connections [Metrics HAProxy] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {

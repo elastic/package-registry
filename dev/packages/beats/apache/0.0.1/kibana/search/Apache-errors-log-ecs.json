@@ -3,7 +3,7 @@
         "columns": [
             "source.address",
             "log.level",
-            "apache2.error.module",
+            "apache2.error.integration",
             "message"
         ],
         "description": "",
@@ -37,7 +37,7 @@
                 "desc"
             ]
         ],
-        "title": "Apache errors log [Filebeat Apache] ECS",
+        "title": "Apache errors log [Logs Apache] ECS",
         "version": 1
     },
     "id": "Apache-errors-log-ecs",

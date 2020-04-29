@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "NATGateway Filters [Metricbeat AWS]",
+        "title": "NATGateway Filters [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -67,7 +67,7 @@
                 "updateFiltersOnChange": true,
                 "useTimeFilter": true
             },
-            "title": "NATGateway Filters [Metricbeat AWS]",
+            "title": "NATGateway Filters [Metrics AWS]",
             "type": "input_control_vis"
         }
     },

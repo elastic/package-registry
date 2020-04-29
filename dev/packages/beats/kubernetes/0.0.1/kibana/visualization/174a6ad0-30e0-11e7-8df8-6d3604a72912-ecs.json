@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Unavailable pods [Metricbeat Kubernetes] ECS",
+        "title": "Unavailable pods [Metrics Kubernetes] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -66,6 +66,7 @@
                         "point_size": 1,
                         "seperate_axis": 0,
                         "series_interval": "10s",
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none"
                     }
@@ -74,7 +75,7 @@
                 "time_field": "@timestamp",
                 "type": "metric"
             },
-            "title": "Unavailable pods [Metricbeat Kubernetes] ECS",
+            "title": "Unavailable pods [Metrics Kubernetes] ECS",
             "type": "metrics"
         }
     },

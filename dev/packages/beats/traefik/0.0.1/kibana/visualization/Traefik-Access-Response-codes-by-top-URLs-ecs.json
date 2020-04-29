@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Response codes by top URLs [Filebeat Traefik] ECS",
+        "title": "Response codes by top URLs [Logs Traefik] ECS",
         "uiStateJSON": {
             "vis": {
                 "colors": {

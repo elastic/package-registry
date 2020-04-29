@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Host top RAM util [Metricbeat VSphere] ECS",
+        "title": "Host top RAM util [Metrics VSphere] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -101,6 +101,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "vsphere.host.name",
@@ -112,7 +113,7 @@
                 "time_field": "",
                 "type": "gauge"
             },
-            "title": "Host top RAM util [Metricbeat VSphere] ECS",
+            "title": "Host top RAM util [Metrics VSphere] ECS",
             "type": "metrics"
         }
     },

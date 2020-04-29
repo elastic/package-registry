@@ -10,16 +10,16 @@
                 }
             }
         },
-        "title": "Heap Summary [Metricbeat Golang] ECS",
+        "title": "Heap Summary [Metrics Golang] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
             "aggs": [],
             "params": {
-                "expression": ".es(index=\"metricbeat*\",metric=\"avg:golang.heap.system.total\").label(\"System Total Memory\").yaxis(label=\"Bytes\",units=bytes),.es(index=\"metricbeat*\",metric=\"min:golang.heap.allocations.allocated\").label(\"Bytes Allocated(min)\").movingaverage(30),.es(index=\"metricbeat*\",metric=\"max:golang.heap.allocations.allocated\").label(\"Bytes Allocated(max)\").movingaverage(30),.es(index=\"metricbeat*\",metric=\"avg:golang.heap.gc.next_gc_limit\").label(\"GC Limit\"),.es(index=\"metricbeat*\",metric=\"avg:golang.heap.gc.pause.count\").condition(lt,1, null).points().label(\"GC Cycles(count)\").yaxis(2,label=\"Count\")",
+                "expression": ".es(index=\"metrics*\",metric=\"avg:golang.heap.system.total\").label(\"System Total Memory\").yaxis(label=\"Bytes\",units=bytes),.es(index=\"metrics*\",metric=\"min:golang.heap.allocations.allocated\").label(\"Bytes Allocated(min)\").movingaverage(30),.es(index=\"metrics*\",metric=\"max:golang.heap.allocations.allocated\").label(\"Bytes Allocated(max)\").movingaverage(30),.es(index=\"metrics*\",metric=\"avg:golang.heap.gc.next_gc_limit\").label(\"GC Limit\"),.es(index=\"metrics*\",metric=\"avg:golang.heap.gc.pause.count\").condition(lt,1, null).points().label(\"GC Cycles(count)\").yaxis(2,label=\"Count\")",
                 "interval": "10s"
             },
-            "title": "Heap Summary [Metricbeat Golang] ECS",
+            "title": "Heap Summary [Metrics Golang] ECS",
             "type": "timelion"
         }
     },

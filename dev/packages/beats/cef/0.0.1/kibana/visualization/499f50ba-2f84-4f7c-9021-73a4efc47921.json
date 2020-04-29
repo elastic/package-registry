@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Events by Outcome [Filebeat CEF]",
+        "title": "Events by Outcome [Logs CEF]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -83,6 +83,7 @@
                         ],
                         "point_size": "0",
                         "seperate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_filters": [
                             {
                                 "color": "rgba(254,146,0,1)",
@@ -117,6 +118,7 @@
                         ],
                         "point_size": 1,
                         "seperate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_filters": [
                             {
                                 "color": "rgba(104,188,0,0.35)",
@@ -156,7 +158,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Events by Outcome [Filebeat CEF]",
+            "title": "Events by Outcome [Logs CEF]",
             "type": "metrics"
         }
     },

@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "IO Bytes Stats [Metricbeat NATS] ECS",
+        "title": "IO Bytes Stats [Metrics NATS] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -129,7 +129,7 @@
                     }
                 ]
             },
-            "title": "IO Bytes Stats [Metricbeat NATS] ECS",
+            "title": "IO Bytes Stats [Metrics NATS] ECS",
             "type": "line"
         }
     },

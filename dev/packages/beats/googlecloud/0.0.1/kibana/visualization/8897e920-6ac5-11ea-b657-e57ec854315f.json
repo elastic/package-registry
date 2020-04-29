@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Pubsub Filters [Metricbeat Googlecloud]",
+        "title": "Pubsub Filters [Metrics Googlecloud]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -46,7 +46,7 @@
                 "updateFiltersOnChange": true,
                 "useTimeFilter": true
             },
-            "title": "Pubsub Filters [Metricbeat Googlecloud]",
+            "title": "Pubsub Filters [Metrics Googlecloud]",
             "type": "input_control_vis"
         }
     },

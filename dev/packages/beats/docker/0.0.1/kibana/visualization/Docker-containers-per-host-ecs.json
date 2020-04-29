@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Docker containers per host [Metricbeat Docker] ECS",
+        "title": "Docker containers per host [Metrics Docker] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -44,14 +44,14 @@
                 "legendPosition": "bottom",
                 "shareYAxis": true
             },
-            "title": "Docker containers per host [Metricbeat Docker] ECS",
+            "title": "Docker containers per host [Metrics Docker] ECS",
             "type": "pie"
         }
     },
     "id": "Docker-containers-per-host-ecs",
     "references": [
         {
-            "id": "Metricbeat-Docker-ecs",
+            "id": "Metrics-Docker-ecs",
             "name": "search_0",
             "type": "search"
         }

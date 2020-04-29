@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "CloudTrail Error Code [Filebeat AWS]",
+        "title": "CloudTrail Error Code [Logs AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -53,7 +53,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "CloudTrail Error Code [Filebeat AWS]",
+            "title": "CloudTrail Error Code [Logs AWS]",
             "type": "pie"
         }
     },

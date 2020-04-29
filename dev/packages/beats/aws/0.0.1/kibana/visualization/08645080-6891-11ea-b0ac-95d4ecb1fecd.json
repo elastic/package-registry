@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "NATGateway Packet Out To Destination [Metricbeat AWS]",
+        "title": "NATGateway Packet Out To Destination [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -58,6 +58,7 @@
                         ],
                         "point_size": "3",
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "aws.dimensions.NatGatewayId",
@@ -71,7 +72,7 @@
                 "time_range_mode": "last_value",
                 "type": "timeseries"
             },
-            "title": "NATGateway Packet Out To Destination [Metricbeat AWS]",
+            "title": "NATGateway Packet Out To Destination [Metrics AWS]",
             "type": "metrics"
         }
     },

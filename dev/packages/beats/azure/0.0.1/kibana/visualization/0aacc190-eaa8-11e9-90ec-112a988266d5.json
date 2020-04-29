@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "SQL Server User Connections [Metricbeat Azure]",
+        "title": "SQL Server User Connections [Metrics Azure]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -49,6 +49,7 @@
                         ],
                         "point_size": 0,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "value_template": "{{value}}"
@@ -59,7 +60,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "SQL Server User Connections [Metricbeat Azure]",
+            "title": "SQL Server User Connections [Metrics Azure]",
             "type": "metrics"
         }
     },

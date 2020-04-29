@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Top Hosts By CPU (Realtime) [Metricbeat System] ECS",
+        "title": "Top Hosts By CPU (Realtime) [Metrics System] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -61,6 +61,7 @@
                         ],
                         "point_size": 1,
                         "seperate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "host.name",
@@ -73,7 +74,7 @@
                 "time_field": "@timestamp",
                 "type": "top_n"
             },
-            "title": "Top Hosts By CPU (Realtime) [Metricbeat System] ECS",
+            "title": "Top Hosts By CPU (Realtime) [Metrics System] ECS",
             "type": "metrics"
         }
     },

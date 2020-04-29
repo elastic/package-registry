@@ -6,7 +6,7 @@
                 "indexRefName": "kibanaSavedObjectMeta.searchSourceJSON.index"
             }
         },
-        "title": "Container Service Kube Node Status Condition [Metricbeat Azure]",
+        "title": "Container Service Kube Node Status Condition [Metrics Azure]",
         "uiStateJSON": {
             "vis": {
                 "defaultColors": {
@@ -212,7 +212,7 @@
                     }
                 ]
             },
-            "title": "Container Service Kube Node Status Condition [Metricbeat Azure]",
+            "title": "Container Service Kube Node Status Condition [Metrics Azure]",
             "type": "heatmap"
         }
     },

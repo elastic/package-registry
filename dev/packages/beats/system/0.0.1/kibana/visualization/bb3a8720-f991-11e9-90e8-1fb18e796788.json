@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Service States [Metricbeat System]",
+        "title": "Service States [Metrics System]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -20,7 +20,7 @@
                     "enabled": true,
                     "id": "1",
                     "params": {
-                        "customLabel": "Service States [Metricbeat Services]"
+                        "customLabel": "Service States [Metrics Services]"
                     },
                     "schema": "metric",
                     "type": "count"
@@ -80,7 +80,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Service States [Metricbeat System]",
+            "title": "Service States [Metrics System]",
             "type": "pie"
         }
     },

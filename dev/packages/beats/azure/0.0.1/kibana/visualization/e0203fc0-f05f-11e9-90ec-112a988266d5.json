@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "User Activity Overview [Filebeat Azure]",
+        "title": "User Activity Overview [Logs Azure]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -49,6 +49,7 @@
                         ],
                         "point_size": 1,
                         "seperate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_filters": [
                             {
                                 "color": "rgba(244,78,59,1)",
@@ -69,7 +70,7 @@
                 "time_field": null,
                 "type": "timeseries"
             },
-            "title": "User Activity Overview [Filebeat Azure]",
+            "title": "User Activity Overview [Logs Azure]",
             "type": "metrics"
         }
     },

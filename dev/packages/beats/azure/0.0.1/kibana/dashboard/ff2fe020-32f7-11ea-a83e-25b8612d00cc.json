@@ -211,7 +211,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Azure] Table Storage Overview",
+        "title": "[Metrics Azure] Table Storage Overview",
         "version": 1
     },
     "id": "ff2fe020-32f7-11ea-a83e-25b8612d00cc",

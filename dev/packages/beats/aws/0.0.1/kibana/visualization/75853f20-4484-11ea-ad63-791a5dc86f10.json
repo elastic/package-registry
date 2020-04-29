@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "VPC Flow Top IP Addresses [Filebeat AWS]",
+        "title": "VPC Flow Top IP Addresses [Logs AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -82,6 +82,7 @@
                         "separate_axis": 0,
                         "series_drop_last_bucket": 0,
                         "series_index_pattern": "logs-*",
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "source.ip",
@@ -94,7 +95,7 @@
                 "time_field": "",
                 "type": "top_n"
             },
-            "title": "VPC Flow Top IP Addresses [Filebeat AWS]",
+            "title": "VPC Flow Top IP Addresses [Logs AWS]",
             "type": "metrics"
         }
     },

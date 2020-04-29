@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Slow logs breakdown [Filebeat MySQL] ECS",
+        "title": "Slow logs breakdown [Logs MySQL] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -40,14 +40,14 @@
                 "shareYAxis": true,
                 "type": "pie"
             },
-            "title": "Slow logs breakdown [Filebeat MySQL] ECS",
+            "title": "Slow logs breakdown [Logs MySQL] ECS",
             "type": "pie"
         }
     },
     "id": "MySQL-Slow-logs-by-count-ecs",
     "references": [
         {
-            "id": "Filebeat-MySQL-Slow-log-ecs",
+            "id": "Logs-MySQL-Slow-log-ecs",
             "name": "search_0",
             "type": "search"
         }

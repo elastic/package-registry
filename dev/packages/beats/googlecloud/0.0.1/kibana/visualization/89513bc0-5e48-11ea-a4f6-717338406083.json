@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Compute Read I/O [Metricbeat Googlecloud]",
+        "title": "Compute Read I/O [Metrics Googlecloud]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -51,7 +51,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "Compute Read I/O [Metricbeat Googlecloud]",
+            "title": "Compute Read I/O [Metrics Googlecloud]",
             "type": "metrics"
         }
     },

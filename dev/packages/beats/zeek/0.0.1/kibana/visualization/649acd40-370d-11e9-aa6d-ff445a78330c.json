@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Network Traffic Direction [Filebeat Zeek]",
+        "title": "Network Traffic Direction [Logs Zeek]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -63,7 +63,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Network Traffic Direction [Filebeat Zeek]",
+            "title": "Network Traffic Direction [Logs Zeek]",
             "type": "pie"
         }
     },

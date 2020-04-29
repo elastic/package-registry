@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "OS versions [Filebeat Osquery] ECS",
+        "title": "OS versions [Logs Osquery] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -75,7 +75,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "OS versions [Filebeat Osquery] ECS",
+            "title": "OS versions [Logs Osquery] ECS",
             "type": "pie"
         }
     },

@@ -33,7 +33,7 @@
                 }
             }
         },
-        "title": "Event Outcome [Filebeat Okta]",
+        "title": "Event Outcome [Logs Okta]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -75,7 +75,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Event Outcome [Filebeat Okta]",
+            "title": "Event Outcome [Logs Okta]",
             "type": "pie"
         }
     },

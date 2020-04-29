@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Num of Hosts Reporting [Filebeat Santa] ECS",
+        "title": "Num of Hosts Reporting [Logs Santa] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -55,7 +55,7 @@
                 },
                 "type": "metric"
             },
-            "title": "Num of Hosts Reporting [Filebeat Santa] ECS",
+            "title": "Num of Hosts Reporting [Logs Santa] ECS",
             "type": "metric"
         }
     },

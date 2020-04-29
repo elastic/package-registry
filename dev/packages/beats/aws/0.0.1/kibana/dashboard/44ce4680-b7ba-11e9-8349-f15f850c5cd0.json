@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "description": "[Metricbeat AWS] Overview of EBS Metrics",
+        "description": "[Metrics AWS] Overview of EBS Metrics",
         "hits": 0,
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
@@ -157,7 +157,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat AWS] EBS Overview",
+        "title": "[Metrics AWS] EBS Overview",
         "version": 1
     },
     "id": "44ce4680-b7ba-11e9-8349-f15f850c5cd0",

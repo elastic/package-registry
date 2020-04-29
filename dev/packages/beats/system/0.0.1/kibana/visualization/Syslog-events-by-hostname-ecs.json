@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Syslog events by hostname [Filebeat System] ECS",
+        "title": "Syslog events by hostname [Logs System] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {

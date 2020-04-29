@@ -176,10 +176,10 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat System] Overview ECS",
+        "title": "[Metrics System] Overview ECS",
         "version": 1
     },
-    "id": "Metricbeat-system-overview-ecs",
+    "id": "Metrics-system-overview-ecs",
     "references": [
         {
             "id": "System-Navigation-ecs",

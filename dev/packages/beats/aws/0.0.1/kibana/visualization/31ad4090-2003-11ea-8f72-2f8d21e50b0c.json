@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "DynamoDB Account Provisioned Capacity Utilization [Metricbeat AWS]",
+        "title": "DynamoDB Account Provisioned Capacity Utilization [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -200,7 +200,7 @@
                     }
                 ]
             },
-            "title": "DynamoDB Account Provisioned Capacity Utilization [Metricbeat AWS]",
+            "title": "DynamoDB Account Provisioned Capacity Utilization [Metrics AWS]",
             "type": "line"
         }
     },

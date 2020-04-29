@@ -237,7 +237,9 @@ func convertToKibanaObjects(dashboardFile []byte, moduleName string, datasetName
 			return nil, errors.Wrapf(err, "marshalling object failed")
 		}
 
-		data = replaceFieldEventDatasetWithStreamDataset(data)
+		data = replaceBlacklistedWords(
+			replaceFieldEventDatasetWithStreamDataset(
+				data))
 
 		err = verifyKibanaObjectConvertion(data)
 		if err != nil {
@@ -449,6 +451,16 @@ func stripReferencesToEventModuleInQuery(object mapStr, objectKey, moduleName st
 
 func replaceFieldEventDatasetWithStreamDataset(data []byte) []byte {
 	return bytes.ReplaceAll(data, []byte("event.dataset"), []byte("stream.dataset"))
+}
+
+func replaceBlacklistedWords(data []byte) []byte {
+	data = bytes.ReplaceAll(data, []byte("Metricbeat"), []byte("Metrics"))
+	data = bytes.ReplaceAll(data, []byte("metricbeat"), []byte("metrics"))
+	data = bytes.ReplaceAll(data, []byte("Filebeat"), []byte("Logs"))
+	data = bytes.ReplaceAll(data, []byte("filebeat"), []byte("logs"))
+	data = bytes.ReplaceAll(data, []byte("Module"), []byte("Integration"))
+	data = bytes.ReplaceAll(data, []byte("module"), []byte("integration"))
+	return data
 }
 
 func verifyKibanaObjectConvertion(data []byte) error {

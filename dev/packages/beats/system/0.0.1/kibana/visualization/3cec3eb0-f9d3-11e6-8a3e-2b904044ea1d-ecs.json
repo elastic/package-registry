@@ -12,7 +12,7 @@
                 }
             }
         },
-        "title": "SSH failed login attempts source locations [Filebeat System] ECS",
+        "title": "SSH failed login attempts source locations [Logs System] ECS",
         "uiStateJSON": {
             "mapCenter": [
                 17.602139123350838,

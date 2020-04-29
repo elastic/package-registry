@@ -247,7 +247,7 @@
         "timeFrom": "now-24h",
         "timeRestore": true,
         "timeTo": "now",
-        "title": "[Filebeat CEF] Microsoft DNS Overview",
+        "title": "[Logs CEF] Microsoft DNS Overview",
         "version": 1
     },
     "id": "56428e01-0c47-4770-8ba4-9345a029ea41",

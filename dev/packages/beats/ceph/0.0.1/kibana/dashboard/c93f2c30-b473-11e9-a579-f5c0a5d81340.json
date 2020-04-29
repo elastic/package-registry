@@ -102,7 +102,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Ceph] Cluster Overview",
+        "title": "[Metrics Ceph] Cluster Overview",
         "version": 1
     },
     "id": "c93f2c30-b473-11e9-a579-f5c0a5d81340",

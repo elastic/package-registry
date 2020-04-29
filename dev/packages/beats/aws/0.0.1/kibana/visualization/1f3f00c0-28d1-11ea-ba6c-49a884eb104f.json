@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Lambda Top Invoked Functions [Metricbeat AWS]",
+        "title": "Lambda Top Invoked Functions [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -77,7 +77,7 @@
                 "time_field": "@timestamp",
                 "type": "top_n"
             },
-            "title": "Lambda Top Invoked Functions [Metricbeat AWS]",
+            "title": "Lambda Top Invoked Functions [Metrics AWS]",
             "type": "metrics"
         }
     },

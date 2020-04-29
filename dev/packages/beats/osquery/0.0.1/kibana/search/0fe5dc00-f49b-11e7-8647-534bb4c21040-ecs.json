@@ -92,7 +92,7 @@
                 "desc"
             ]
         ],
-        "title": "OSSEC Rootkits [Filebeat Osquery] ECS",
+        "title": "OSSEC Rootkits [Logs Osquery] ECS",
         "version": 1
     },
     "id": "0fe5dc00-f49b-11e7-8647-534bb4c21040-ecs",

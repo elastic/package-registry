@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Communication Directions [Filebeat NATS] ECS",
+        "title": "Communication Directions [Logs NATS] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -108,7 +108,7 @@
                     }
                 ]
             },
-            "title": "Communication Directions [Filebeat NATS] ECS",
+            "title": "Communication Directions [Logs NATS] ECS",
             "type": "line"
         }
     },

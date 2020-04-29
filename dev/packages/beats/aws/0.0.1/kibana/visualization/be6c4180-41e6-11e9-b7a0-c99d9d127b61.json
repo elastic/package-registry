@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "SQS Messages Deleted [Metricbeat AWS]",
+        "title": "SQS Messages Deleted [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -57,7 +57,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "SQS Messages Deleted [Metricbeat AWS]",
+            "title": "SQS Messages Deleted [Metrics AWS]",
             "type": "metrics"
         }
     },

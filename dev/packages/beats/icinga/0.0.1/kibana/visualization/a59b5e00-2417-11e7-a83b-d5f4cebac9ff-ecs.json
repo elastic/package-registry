@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Startup Errors [Filebeat Icinga] ECS",
+        "title": "Startup Errors [Logs Icinga] ECS",
         "uiStateJSON": {
             "vis": {
                 "colors": {

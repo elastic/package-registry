@@ -26,7 +26,7 @@
                 "desc"
             ]
         ],
-        "title": "useradd logs [Filebeat System] ECS",
+        "title": "useradd logs [Logs System] ECS",
         "version": 1
     },
     "id": "8030c1b0-fa77-11e6-ae9b-81e5311e8cab-ecs",

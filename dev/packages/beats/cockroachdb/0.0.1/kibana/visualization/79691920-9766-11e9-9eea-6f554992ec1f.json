@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Number of SQL connections [Metricbeat CockroachDB]",
+        "title": "Number of SQL connections [Metrics CockroachDB]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -55,7 +55,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Number of SQL connections [Metricbeat CockroachDB]",
+            "title": "Number of SQL connections [Metrics CockroachDB]",
             "type": "metrics"
         }
     },

@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Top 20 Behaviors by Outcome [Filebeat CEF]",
+        "title": "Top 20 Behaviors by Outcome [Logs CEF]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -53,7 +53,7 @@
                 "isDonut": true,
                 "legendPosition": "right"
             },
-            "title": "Top 20 Behaviors by Outcome [Filebeat CEF]",
+            "title": "Top 20 Behaviors by Outcome [Logs CEF]",
             "type": "pie"
         }
     },

@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "ELB Top User Agents [Filebeat AWS] ECS",
+        "title": "ELB Top User Agents [Logs AWS] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -79,6 +79,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "user_agent.original",
@@ -90,7 +91,7 @@
                 "time_field": "",
                 "type": "top_n"
             },
-            "title": "ELB Top User Agents [Filebeat AWS] ECS",
+            "title": "ELB Top User Agents [Logs AWS] ECS",
             "type": "metrics"
         }
     },

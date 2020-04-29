@@ -13,7 +13,7 @@
                 }
             }
         },
-        "title": "Countries and Cities (flow records) [Filebeat Netflow]",
+        "title": "Countries and Cities (flow records) [Logs Netflow]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -61,7 +61,7 @@
                 "isDonut": true,
                 "legendPosition": "right"
             },
-            "title": "Countries and Cities (flow records) [Filebeat Netflow]",
+            "title": "Countries and Cities (flow records) [Logs Netflow]",
             "type": "pie"
         }
     },

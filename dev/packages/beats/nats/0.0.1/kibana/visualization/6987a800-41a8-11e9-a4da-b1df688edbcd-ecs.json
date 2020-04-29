@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Message Types Timeline [Filebeat NATS] ECS",
+        "title": "Message Types Timeline [Logs NATS] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -111,7 +111,7 @@
                     }
                 ]
             },
-            "title": "Message Types Timeline [Filebeat NATS] ECS",
+            "title": "Message Types Timeline [Logs NATS] ECS",
             "type": "line"
         }
     },

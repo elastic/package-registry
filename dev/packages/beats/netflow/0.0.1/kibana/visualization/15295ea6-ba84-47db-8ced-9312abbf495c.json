@@ -13,7 +13,7 @@
                 }
             }
         },
-        "title": "Top Sources [Filebeat Netflow]",
+        "title": "Top Sources [Logs Netflow]",
         "uiStateJSON": {
             "vis": {
                 "params": {
@@ -82,7 +82,7 @@
                 },
                 "totalFunc": "sum"
             },
-            "title": "Top Sources [Filebeat Netflow]",
+            "title": "Top Sources [Logs Netflow]",
             "type": "table"
         }
     },

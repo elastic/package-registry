@@ -119,7 +119,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat Netflow] Conversation Partners",
+        "title": "[Logs Netflow] Conversation Partners",
         "version": 1
     },
     "id": "acd7a630-0c71-4840-bc9e-4a3801374a32",

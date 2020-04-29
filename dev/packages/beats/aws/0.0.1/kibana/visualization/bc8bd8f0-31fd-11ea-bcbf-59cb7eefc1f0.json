@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Region/Account Filters [Metricbeat AWS]",
+        "title": "Region/Account Filters [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -52,7 +52,7 @@
                 "updateFiltersOnChange": true,
                 "useTimeFilter": false
             },
-            "title": "Region/Account Filters [Metricbeat AWS]",
+            "title": "Region/Account Filters [Metrics AWS]",
             "type": "input_control_vis"
         }
     },

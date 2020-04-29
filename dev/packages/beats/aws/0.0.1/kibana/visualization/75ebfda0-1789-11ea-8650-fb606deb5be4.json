@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Usage Call Count Per Service [Metricbeat AWS]",
+        "title": "Usage Call Count Per Service [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -61,7 +61,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Usage Call Count Per Service [Metricbeat AWS]",
+            "title": "Usage Call Count Per Service [Metrics AWS]",
             "type": "metrics"
         }
     },

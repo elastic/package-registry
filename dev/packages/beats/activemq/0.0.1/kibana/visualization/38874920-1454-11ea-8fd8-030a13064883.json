@@ -37,7 +37,7 @@
                 }
             }
         },
-        "title": "Audit Account Tag Cloud [Filebeat ActiveMQ]",
+        "title": "Audit Account Tag Cloud [Logs ActiveMQ]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -93,7 +93,7 @@
                 "scale": "linear",
                 "showLabel": true
             },
-            "title": "Audit Account Tag Cloud [Filebeat ActiveMQ]",
+            "title": "Audit Account Tag Cloud [Logs ActiveMQ]",
             "type": "tagcloud"
         }
     },

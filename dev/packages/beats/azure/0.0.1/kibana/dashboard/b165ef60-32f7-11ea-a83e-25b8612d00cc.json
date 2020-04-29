@@ -211,7 +211,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Azure] Blob Storage Overview",
+        "title": "[Metrics Azure] Blob Storage Overview",
         "version": 1
     },
     "id": "b165ef60-32f7-11ea-a83e-25b8612d00cc",

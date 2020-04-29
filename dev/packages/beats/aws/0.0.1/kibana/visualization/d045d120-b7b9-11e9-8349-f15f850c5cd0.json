@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "EBS Volume ID Filter [Metricbeat AWS]",
+        "title": "EBS Volume ID Filter [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -37,7 +37,7 @@
                 "updateFiltersOnChange": true,
                 "useTimeFilter": true
             },
-            "title": "EBS Volume ID Filter [Metricbeat AWS]",
+            "title": "EBS Volume ID Filter [Metrics AWS]",
             "type": "input_control_vis"
         }
     },

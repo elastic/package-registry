@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Pubsub Subscription Sent Message Count [Metricbeat Googlecloud]",
+        "title": "Pubsub Subscription Sent Message Count [Metrics Googlecloud]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -52,6 +52,7 @@
                         ],
                         "point_size": "3",
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "googlecloud.labels.resource.subscription_id",
@@ -64,7 +65,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "Pubsub Subscription Sent Message Count [Metricbeat Googlecloud]",
+            "title": "Pubsub Subscription Sent Message Count [Metrics Googlecloud]",
             "type": "metrics"
         }
     },

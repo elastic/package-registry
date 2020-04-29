@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Hosts [Metricbeat Redis] ECS",
+        "title": "Hosts [Metrics Redis] ECS",
         "uiStateJSON": {
             "vis": {
                 "params": {
@@ -96,14 +96,14 @@
                 },
                 "totalFunc": "sum"
             },
-            "title": "Hosts [Metricbeat Redis] ECS",
+            "title": "Hosts [Metrics Redis] ECS",
             "type": "table"
         }
     },
     "id": "Redis-hosts-ecs",
     "references": [
         {
-            "id": "Metricbeat-Redis-ecs",
+            "id": "Metrics-Redis-ecs",
             "name": "search_0",
             "type": "search"
         }

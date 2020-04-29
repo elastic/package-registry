@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "CloudTrail Event Outcome over time [Filebeat AWS]",
+        "title": "CloudTrail Event Outcome over time [Logs AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -135,7 +135,7 @@
                     }
                 ]
             },
-            "title": "CloudTrail Event Outcome over time [Filebeat AWS]",
+            "title": "CloudTrail Event Outcome over time [Logs AWS]",
             "type": "area"
         }
     },

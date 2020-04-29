@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "description": "This dashboard shows audit logs collected by the ActiveMQ filebeat module.",
+        "description": "This dashboard shows audit logs collected by the ActiveMQ logs integration.",
         "hits": 0,
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
@@ -57,7 +57,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat ActiveMQ] Audit Events",
+        "title": "[Logs ActiveMQ] Audit Events",
         "version": 1
     },
     "id": "ffe86390-145f-11ea-8fd8-030a13064883",

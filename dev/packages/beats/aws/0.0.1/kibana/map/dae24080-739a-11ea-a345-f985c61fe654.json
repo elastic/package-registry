@@ -167,7 +167,7 @@
             },
             "zoom": 1.97
         },
-        "title": "CloudTrail Source Location [Filebeat AWS]",
+        "title": "CloudTrail Source Location [Logs AWS]",
         "uiStateJSON": {
             "isLayerTOCOpen": true,
             "openTOCDetails": []

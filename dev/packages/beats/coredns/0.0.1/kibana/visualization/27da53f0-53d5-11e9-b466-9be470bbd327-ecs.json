@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Responses by Rcode [Metricbeat CoreDNS] ECS",
+        "title": "Responses by Rcode [Metrics CoreDNS] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -165,7 +165,7 @@
                     }
                 ]
             },
-            "title": "Responses by Rcode [Metricbeat CoreDNS] ECS",
+            "title": "Responses by Rcode [Metrics CoreDNS] ECS",
             "type": "line"
         }
     },

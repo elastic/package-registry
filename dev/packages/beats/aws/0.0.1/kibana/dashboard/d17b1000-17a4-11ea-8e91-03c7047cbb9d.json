@@ -214,7 +214,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat AWS] SNS Overview",
+        "title": "[Metrics AWS] SNS Overview",
         "version": 1
     },
     "id": "d17b1000-17a4-11ea-8e91-03c7047cbb9d",

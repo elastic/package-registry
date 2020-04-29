@@ -146,7 +146,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Azure] VM Guest Metrics Overview",
+        "title": "[Metrics Azure] VM Guest Metrics Overview",
         "version": 1
     },
     "id": "a6f5d430-eaa6-11e9-90ec-112a988266d5",

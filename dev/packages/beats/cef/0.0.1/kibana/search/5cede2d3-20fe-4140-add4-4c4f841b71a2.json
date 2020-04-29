@@ -31,7 +31,7 @@
                 "desc"
             ]
         ],
-        "title": "Endpoint Event Explorer [Filebeat CEF]",
+        "title": "Endpoint Event Explorer [Logs CEF]",
         "version": 1
     },
     "id": "5cede2d3-20fe-4140-add4-4c4f841b71a2",

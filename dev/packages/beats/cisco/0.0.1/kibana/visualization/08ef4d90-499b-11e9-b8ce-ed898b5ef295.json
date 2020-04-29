@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "ASA Top ACL by Blocked [Filebeat Cisco]",
+        "title": "ASA Top ACL by Blocked [Logs Cisco]",
         "uiStateJSON": {
             "vis": {
                 "params": {
@@ -63,7 +63,7 @@
                 },
                 "totalFunc": "sum"
             },
-            "title": "ASA Top ACL by Blocked [Filebeat Cisco]",
+            "title": "ASA Top ACL by Blocked [Logs Cisco]",
             "type": "table"
         }
     },

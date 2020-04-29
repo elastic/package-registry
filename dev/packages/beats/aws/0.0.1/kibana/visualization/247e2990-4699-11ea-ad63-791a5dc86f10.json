@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "S3 Bucket Name Filter [Filebeat AWS]",
+        "title": "S3 Bucket Name Filter [Logs AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -37,7 +37,7 @@
                 "updateFiltersOnChange": true,
                 "useTimeFilter": true
             },
-            "title": "S3 Bucket Name Filter [Filebeat AWS]",
+            "title": "S3 Bucket Name Filter [Logs AWS]",
             "type": "input_control_vis"
         }
     },

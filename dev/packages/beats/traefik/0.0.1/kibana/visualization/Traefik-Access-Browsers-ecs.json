@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Browsers breakdown [Filebeat Traefik] ECS",
+        "title": "Browsers breakdown [Logs Traefik] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {

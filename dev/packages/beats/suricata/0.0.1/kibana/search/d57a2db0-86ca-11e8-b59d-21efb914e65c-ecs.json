@@ -77,7 +77,7 @@
                 "desc"
             ]
         ],
-        "title": "Host Stats [Filebeat Suricata] ECS",
+        "title": "Host Stats [Logs Suricata] ECS",
         "version": 1
     },
     "id": "d57a2db0-86ca-11e8-b59d-21efb914e65c-ecs",

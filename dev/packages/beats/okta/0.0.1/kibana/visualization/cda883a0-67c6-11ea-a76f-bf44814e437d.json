@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Time Series [Filebeat Okta]",
+        "title": "Time Series [Logs Okta]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -45,6 +45,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none"
                     }
@@ -54,7 +55,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "Time Series [Filebeat Okta]",
+            "title": "Time Series [Logs Okta]",
             "type": "metrics"
         }
     },

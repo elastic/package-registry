@@ -23,7 +23,7 @@
                 "desc"
             ]
         ],
-        "title": "Audit Events [Filebeat O365]",
+        "title": "Audit Events [Logs O365]",
         "version": 1
     },
     "id": "fdc14020-6859-11ea-8d6a-292ef5d68366",

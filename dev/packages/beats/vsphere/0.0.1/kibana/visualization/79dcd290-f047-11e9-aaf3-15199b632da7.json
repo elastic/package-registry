@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Top Datastore Used [Metricbeat VSphere] ECS",
+        "title": "Top Datastore Used [Metrics VSphere] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -106,6 +106,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "vsphere.datastore.name",
@@ -117,7 +118,7 @@
                 "time_field": "",
                 "type": "gauge"
             },
-            "title": "Top Datastore Used [Metricbeat VSphere] ECS",
+            "title": "Top Datastore Used [Metrics VSphere] ECS",
             "type": "metrics"
         }
     },

@@ -23,10 +23,10 @@
                 "desc"
             ]
         ],
-        "title": "Metricbeat uWSGI status-ecs ECS",
+        "title": "Metrics uWSGI status-ecs ECS",
         "version": 1
     },
-    "id": "Metricbeat uWSGI status-ecs ECS",
+    "id": "Metrics uWSGI status-ecs ECS",
     "references": [
         {
             "id": "metrics-*",

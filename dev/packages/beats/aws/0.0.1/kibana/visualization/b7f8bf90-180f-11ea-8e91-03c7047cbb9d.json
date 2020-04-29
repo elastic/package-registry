@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "SNS SMS Month To Date Spent USD [Metricbeat AWS]",
+        "title": "SNS SMS Month To Date Spent USD [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -59,7 +59,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "SNS SMS Month To Date Spent USD [Metricbeat AWS]",
+            "title": "SNS SMS Month To Date Spent USD [Metrics AWS]",
             "type": "metrics"
         }
     },

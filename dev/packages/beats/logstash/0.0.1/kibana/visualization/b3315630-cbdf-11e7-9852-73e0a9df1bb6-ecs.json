@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Slowest plugins [Filebeat Logstash] ECS",
+        "title": "Slowest plugins [Logs Logstash] ECS",
         "uiStateJSON": {
             "vis": {
                 "params": {
@@ -93,7 +93,7 @@
                 },
                 "totalFunc": "sum"
             },
-            "title": "Slowest plugins [Filebeat Logstash] ECS",
+            "title": "Slowest plugins [Logs Logstash] ECS",
             "type": "table"
         }
     },

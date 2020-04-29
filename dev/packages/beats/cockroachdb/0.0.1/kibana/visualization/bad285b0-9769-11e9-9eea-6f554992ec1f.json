@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Replicas per Store [Metricbeat CockroachDB]",
+        "title": "Replicas per Store [Metrics CockroachDB]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -55,7 +55,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Replicas per Store [Metricbeat CockroachDB]",
+            "title": "Replicas per Store [Metrics CockroachDB]",
             "type": "metrics"
         }
     },

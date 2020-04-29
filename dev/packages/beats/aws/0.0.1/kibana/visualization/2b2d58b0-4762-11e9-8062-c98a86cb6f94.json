@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "S3 Request Latency Total Request in ms [Metricbeat AWS]",
+        "title": "S3 Request Latency Total Request in ms [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -69,6 +69,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "aws.s3.bucket.name",
@@ -81,7 +82,7 @@
                 "time_field": "@timestamp",
                 "type": "top_n"
             },
-            "title": "S3 Request Latency Total Request in ms [Metricbeat AWS]",
+            "title": "S3 Request Latency Total Request in ms [Metrics AWS]",
             "type": "metrics"
         }
     },

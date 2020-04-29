@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Event types breakdown [Filebeat Auditd] ECS",
+        "title": "Event types breakdown [Logs Auditd] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {

@@ -23,7 +23,7 @@
                 "desc"
             ]
         ],
-        "title": "ASA Firewall flows [Filebeat Cisco]",
+        "title": "ASA Firewall flows [Logs Cisco]",
         "version": 1
     },
     "id": "753406e0-4986-11e9-b8ce-ed898b5ef295",

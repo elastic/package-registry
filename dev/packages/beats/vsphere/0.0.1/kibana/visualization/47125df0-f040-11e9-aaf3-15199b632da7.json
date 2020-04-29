@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Cluster Memory free vs used stacked [Metricbeat VSphere] ECS",
+        "title": "Cluster Memory free vs used stacked [Metrics VSphere] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -182,7 +182,7 @@
                     }
                 ]
             },
-            "title": "Cluster Memory free vs used stacked [Metricbeat VSphere] ECS",
+            "title": "Cluster Memory free vs used stacked [Metrics VSphere] ECS",
             "type": "area"
         }
     },

@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Kafka Controls [Metricbeat Kafka] ECS",
+        "title": "Kafka Controls [Metrics Kafka] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -44,7 +44,7 @@
                 "updateFiltersOnChange": true,
                 "useTimeFilter": false
             },
-            "title": "Kafka Controls [Metricbeat Kafka] ECS",
+            "title": "Kafka Controls [Metrics Kafka] ECS",
             "type": "input_control_vis"
         }
     },

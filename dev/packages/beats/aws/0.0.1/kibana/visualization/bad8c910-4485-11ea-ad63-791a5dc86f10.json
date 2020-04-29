@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "VPC Flow Total Requests [Filebeat AWS]",
+        "title": "VPC Flow Total Requests [Logs AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -163,7 +163,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "VPC Flow Total Requests [Filebeat AWS]",
+            "title": "VPC Flow Total Requests [Logs AWS]",
             "type": "metrics"
         }
     },

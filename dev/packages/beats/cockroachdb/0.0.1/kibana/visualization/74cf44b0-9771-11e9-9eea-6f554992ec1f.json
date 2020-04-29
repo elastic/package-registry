@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Log commit latency [Metricbeat CockroachDB]",
+        "title": "Log commit latency [Metrics CockroachDB]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -93,7 +93,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Log commit latency [Metricbeat CockroachDB]",
+            "title": "Log commit latency [Metrics CockroachDB]",
             "type": "metrics"
         }
     },

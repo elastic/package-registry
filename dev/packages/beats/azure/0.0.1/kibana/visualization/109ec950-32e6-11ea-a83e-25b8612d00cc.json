@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Storage Used Capacity Resource Table [Metricbeat Azure]",
+        "title": "Storage Used Capacity Resource Table [Metrics Azure]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -92,7 +92,7 @@
                 "time_field": "@timestamp",
                 "type": "top_n"
             },
-            "title": "Storage Used Capacity Resource Table [Metricbeat Azure]",
+            "title": "Storage Used Capacity Resource Table [Metrics Azure]",
             "type": "metrics"
         }
     },

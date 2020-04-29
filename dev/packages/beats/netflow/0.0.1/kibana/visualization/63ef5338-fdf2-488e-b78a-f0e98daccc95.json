@@ -13,7 +13,7 @@
                 }
             }
         },
-        "title": "Country Count [Filebeat Netflow]",
+        "title": "Country Count [Logs Netflow]",
         "uiStateJSON": {
             "vis": {
                 "defaultColors": {
@@ -80,7 +80,7 @@
                 "handleNoResults": true,
                 "type": "gauge"
             },
-            "title": "Country Count [Filebeat Netflow]",
+            "title": "Country Count [Logs Netflow]",
             "type": "metric"
         }
     },

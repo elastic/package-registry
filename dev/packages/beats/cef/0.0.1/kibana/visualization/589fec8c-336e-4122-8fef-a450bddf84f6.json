@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Top 10 Source Addresses [Filebeat CEF]",
+        "title": "Top 10 Source Addresses [Logs CEF]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -40,7 +40,7 @@
                 "orientation": "single",
                 "scale": "linear"
             },
-            "title": "Top 10 Source Addresses [Filebeat CEF]",
+            "title": "Top 10 Source Addresses [Logs CEF]",
             "type": "tagcloud"
         }
     },

@@ -116,7 +116,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat CouchDB] Database Overview",
+        "title": "[Metrics CouchDB] Database Overview",
         "version": 1
     },
     "id": "a3ab9a60-b952-11e9-a579-f5c0a5d81340",

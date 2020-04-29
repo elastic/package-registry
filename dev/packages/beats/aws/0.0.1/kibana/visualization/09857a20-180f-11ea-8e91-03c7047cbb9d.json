@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "SNS Notifications Failed To Redrive To DLQ [Metricbeat AWS]",
+        "title": "SNS Notifications Failed To Redrive To DLQ [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -59,7 +59,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "SNS Notifications Failed To Redrive To DLQ [Metricbeat AWS]",
+            "title": "SNS Notifications Failed To Redrive To DLQ [Metrics AWS]",
             "type": "metrics"
         }
     },

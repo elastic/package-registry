@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "description": "Filebeat Envoyproxy Overview Dashboard",
+        "description": "Logs Envoyproxy Overview Dashboard",
         "hits": 0,
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
@@ -96,7 +96,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat Envoyproxy] Overview",
+        "title": "[Logs Envoyproxy] Overview",
         "version": 1
     },
     "id": "0c610510-5cbd-11e9-8477-077ec9664dbd",

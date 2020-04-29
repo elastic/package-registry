@@ -33,7 +33,7 @@
                 }
             }
         },
-        "title": "Transaction Types [Filebeat Okta]",
+        "title": "Transaction Types [Logs Okta]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -75,7 +75,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Transaction Types [Filebeat Okta]",
+            "title": "Transaction Types [Logs Okta]",
             "type": "pie"
         }
     },

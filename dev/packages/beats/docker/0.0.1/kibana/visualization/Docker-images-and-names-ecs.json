@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Docker images and names [Metricbeat Docker] ECS",
+        "title": "Docker images and names [Metrics Docker] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -52,14 +52,14 @@
                 "legendPosition": "bottom",
                 "shareYAxis": true
             },
-            "title": "Docker images and names [Metricbeat Docker] ECS",
+            "title": "Docker images and names [Metrics Docker] ECS",
             "type": "pie"
         }
     },
     "id": "Docker-images-and-names-ecs",
     "references": [
         {
-            "id": "Metricbeat-Docker-ecs",
+            "id": "Metrics-Docker-ecs",
             "name": "search_0",
             "type": "search"
         }

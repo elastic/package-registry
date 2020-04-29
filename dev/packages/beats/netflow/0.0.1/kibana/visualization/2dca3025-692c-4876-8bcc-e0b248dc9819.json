@@ -13,7 +13,7 @@
                 }
             }
         },
-        "title": "TCP Flags Count [Filebeat Netflow]",
+        "title": "TCP Flags Count [Logs Netflow]",
         "uiStateJSON": {
             "vis": {
                 "defaultColors": {
@@ -80,7 +80,7 @@
                 "handleNoResults": true,
                 "type": "gauge"
             },
-            "title": "TCP Flags Count [Filebeat Netflow]",
+            "title": "TCP Flags Count [Logs Netflow]",
             "type": "metric"
         }
     },

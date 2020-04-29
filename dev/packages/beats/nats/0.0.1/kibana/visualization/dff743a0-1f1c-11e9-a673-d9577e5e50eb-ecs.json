@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Cache Hit Rate Timeline [Metricbeat NATS] ECS",
+        "title": "Cache Hit Rate Timeline [Metrics NATS] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -107,7 +107,7 @@
                     }
                 ]
             },
-            "title": "Cache Hit Rate Timeline [Metricbeat NATS] ECS",
+            "title": "Cache Hit Rate Timeline [Metrics NATS] ECS",
             "type": "line"
         }
     },

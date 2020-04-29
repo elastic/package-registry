@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Mainlog Severity [Filebeat Icinga] ECS",
+        "title": "Mainlog Severity [Logs Icinga] ECS",
         "uiStateJSON": {
             "vis": {
                 "colors": {

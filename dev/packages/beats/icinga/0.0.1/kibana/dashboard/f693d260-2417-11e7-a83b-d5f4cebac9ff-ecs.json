@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "description": "Filebeat Icinga module dashboard for the main log files",
+        "description": "Logs Icinga integration dashboard for the main log files",
         "hits": 0,
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
@@ -68,7 +68,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat Icinga] Main Log ECS",
+        "title": "[Logs Icinga] Main Log ECS",
         "version": 1
     },
     "id": "f693d260-2417-11e7-a83b-d5f4cebac9ff-ecs",

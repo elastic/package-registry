@@ -76,7 +76,7 @@
                 "desc"
             ]
         ],
-        "title": "VPC Flow Reject Logs [Filebeat AWS]",
+        "title": "VPC Flow Reject Logs [Logs AWS]",
         "version": 1
     },
     "id": "c1aee600-4487-11ea-ad63-791a5dc86f10",

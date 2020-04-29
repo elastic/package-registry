@@ -189,7 +189,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Kubernetes] Overview ECS",
+        "title": "[Metrics Kubernetes] Overview ECS",
         "version": 1
     },
     "id": "AV4RGUqo5NkDleZmzKuZ-ecs",

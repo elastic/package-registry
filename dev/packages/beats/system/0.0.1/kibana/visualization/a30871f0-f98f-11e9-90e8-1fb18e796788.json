@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Running Services [Metricbeat System]",
+        "title": "Running Services [Metrics System]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -20,7 +20,7 @@
                     "enabled": true,
                     "id": "1",
                     "params": {
-                        "customLabel": "Running Services [Metricbeat Services]",
+                        "customLabel": "Running Services [Metrics Services]",
                         "field": "system.service.name"
                     },
                     "schema": "metric",
@@ -68,7 +68,7 @@
                 },
                 "type": "metric"
             },
-            "title": "Running Services [Metricbeat System]",
+            "title": "Running Services [Metrics System]",
             "type": "metric"
         }
     },

@@ -162,7 +162,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat AWS] TransitGateway Overview",
+        "title": "[Metrics AWS] TransitGateway Overview",
         "version": 1
     },
     "id": "0eb5a6a0-694f-11ea-b0ac-95d4ecb1fecd",

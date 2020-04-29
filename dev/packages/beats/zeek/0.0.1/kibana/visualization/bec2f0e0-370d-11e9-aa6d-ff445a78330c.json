@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Top URL Domains [Filebeat Zeek]",
+        "title": "Top URL Domains [Logs Zeek]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -78,7 +78,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Top URL Domains [Filebeat Zeek]",
+            "title": "Top URL Domains [Logs Zeek]",
             "type": "pie"
         }
     },

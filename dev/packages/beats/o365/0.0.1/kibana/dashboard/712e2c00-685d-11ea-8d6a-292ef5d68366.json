@@ -146,7 +146,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat o365] Audit Dashboard ECS",
+        "title": "[Logs o365] Audit Dashboard ECS",
         "version": 1
     },
     "id": "712e2c00-685d-11ea-8d6a-292ef5d68366",

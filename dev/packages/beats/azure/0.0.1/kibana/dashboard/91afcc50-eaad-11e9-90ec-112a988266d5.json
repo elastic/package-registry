@@ -162,7 +162,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Azure] VM Scale Sets Overview ",
+        "title": "[Metrics Azure] VM Scale Sets Overview ",
         "version": 1
     },
     "id": "91afcc50-eaad-11e9-90ec-112a988266d5",

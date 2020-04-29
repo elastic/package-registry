@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "AWS Service Filter [Metricbeat AWS]",
+        "title": "AWS Service Filter [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -37,7 +37,7 @@
                 "updateFiltersOnChange": true,
                 "useTimeFilter": false
             },
-            "title": "AWS Service Filter [Metricbeat AWS]",
+            "title": "AWS Service Filter [Metrics AWS]",
             "type": "input_control_vis"
         }
     },

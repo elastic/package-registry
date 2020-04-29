@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Storage File Share Snapshot Size [Metricbeat Azure]",
+        "title": "Storage File Share Snapshot Size [Metrics Azure]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -92,7 +92,7 @@
                 "time_field": "@timestamp",
                 "type": "gauge"
             },
-            "title": "Storage File Share Snapshot Size [Metricbeat Azure]",
+            "title": "Storage File Share Snapshot Size [Metrics Azure]",
             "type": "metrics"
         }
     },

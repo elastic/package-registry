@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "description": "Overview dashboard for the Nginx module in Metricbeat",
+        "description": "Overview dashboard for the Nginx integration in Metrics",
         "hits": 0,
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
@@ -86,7 +86,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Nginx] Overview ECS",
+        "title": "[Metrics Nginx] Overview ECS",
         "version": 1
     },
     "id": "023d2930-f1a5-11e7-a9ef-93c69af7b129-ecs",

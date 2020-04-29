@@ -129,7 +129,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Azure] Container Service Overview",
+        "title": "[Metrics Azure] Container Service Overview",
         "version": 1
     },
     "id": "dae20ed0-6d0a-11ea-8fe8-71add5fd7c38",

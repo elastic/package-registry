@@ -162,7 +162,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Googlecloud] Compute Overview",
+        "title": "[Metrics Googlecloud] Compute Overview",
         "version": 1
     },
     "id": "f40ee870-5e4a-11ea-a4f6-717338406083",

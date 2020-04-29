@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Logs Severity [Filebeat Logstash] ECS",
+        "title": "Logs Severity [Logs Logstash] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -43,7 +43,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Logs Severity [Filebeat Logstash] ECS",
+            "title": "Logs Severity [Logs Logstash] ECS",
             "type": "pie"
         }
     },

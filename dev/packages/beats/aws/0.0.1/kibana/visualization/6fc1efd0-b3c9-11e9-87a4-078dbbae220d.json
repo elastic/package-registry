@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "ELB Unhealthy Host Count [Metricbeat AWS]",
+        "title": "ELB Unhealthy Host Count [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -80,7 +80,7 @@
                 "time_field": "@timestamp",
                 "type": "metric"
             },
-            "title": "ELB Unhealthy Host Count [Metricbeat AWS]",
+            "title": "ELB Unhealthy Host Count [Metrics AWS]",
             "type": "metrics"
         }
     },

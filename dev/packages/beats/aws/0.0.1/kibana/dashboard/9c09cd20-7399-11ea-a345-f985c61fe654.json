@@ -141,7 +141,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat AWS] CloudTrail",
+        "title": "[Logs AWS] CloudTrail",
         "version": 1
     },
     "id": "9c09cd20-7399-11ea-a345-f985c61fe654",

@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Hosts [Metricbeat Windows] ECS",
+        "title": "Hosts [Metrics Windows] ECS",
         "uiStateJSON": {
             "vis": {
                 "params": {
@@ -60,7 +60,7 @@
                 },
                 "totalFunc": "sum"
             },
-            "title": "Hosts [Metricbeat Windows] ECS",
+            "title": "Hosts [Metrics Windows] ECS",
             "type": "table"
         }
     },

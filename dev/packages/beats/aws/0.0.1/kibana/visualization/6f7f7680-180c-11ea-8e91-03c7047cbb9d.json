@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "SNS Publish Size [Metricbeat AWS]",
+        "title": "SNS Publish Size [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -59,7 +59,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "SNS Publish Size [Metricbeat AWS]",
+            "title": "SNS Publish Size [Metrics AWS]",
             "type": "metrics"
         }
     },

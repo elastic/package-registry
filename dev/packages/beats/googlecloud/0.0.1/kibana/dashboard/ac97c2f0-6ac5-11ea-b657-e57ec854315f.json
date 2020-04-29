@@ -162,7 +162,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Googlecloud] Pubsub Overview",
+        "title": "[Metrics Googlecloud] Pubsub Overview",
         "version": 1
     },
     "id": "ac97c2f0-6ac5-11ea-b657-e57ec854315f",

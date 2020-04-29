@@ -25,7 +25,7 @@
                 "desc"
             ]
         ],
-        "title": "Stacktraces [Filebeat Kafka] ECS",
+        "title": "Stacktraces [Logs Kafka] ECS",
         "version": 1
     },
     "id": "Kafka stacktraces-ecs",

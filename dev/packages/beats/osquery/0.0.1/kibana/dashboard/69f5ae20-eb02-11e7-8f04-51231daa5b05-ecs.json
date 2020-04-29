@@ -105,7 +105,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat Osquery] Compliance pack ECS",
+        "title": "[Logs Osquery] Compliance pack ECS",
         "version": 1
     },
     "id": "69f5ae20-eb02-11e7-8f04-51231daa5b05-ecs",

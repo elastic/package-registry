@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Consumer Partition Reassignments [Metricbeat Kafka] ECS",
+        "title": "Consumer Partition Reassignments [Metrics Kafka] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -71,7 +71,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Consumer Partition Reassignments [Metricbeat Kafka] ECS",
+            "title": "Consumer Partition Reassignments [Metrics Kafka] ECS",
             "type": "metrics"
         }
     },

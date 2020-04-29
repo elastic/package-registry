@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Storage Account Egress Traffic [Metricbeat Azure]",
+        "title": "Storage Account Egress Traffic [Metrics Azure]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -96,7 +96,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Storage Account Egress Traffic [Metricbeat Azure]",
+            "title": "Storage Account Egress Traffic [Metrics Azure]",
             "type": "metrics"
         }
     },

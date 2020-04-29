@@ -37,7 +37,7 @@
                 }
             }
         },
-        "title": "Requests per Source [Filebeat Envoyproxy]",
+        "title": "Requests per Source [Logs Envoyproxy]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -144,7 +144,7 @@
                     }
                 ]
             },
-            "title": "Requests per Source [Filebeat Envoyproxy]",
+            "title": "Requests per Source [Logs Envoyproxy]",
             "type": "histogram"
         }
     },

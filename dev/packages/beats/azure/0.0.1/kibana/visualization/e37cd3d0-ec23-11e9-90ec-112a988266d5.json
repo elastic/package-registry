@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Service Health Count [Filebeat Azure]",
+        "title": "Service Health Count [Logs Azure]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -99,7 +99,7 @@
                 },
                 "type": "metric"
             },
-            "title": "Service Health Count [Filebeat Azure]",
+            "title": "Service Health Count [Logs Azure]",
             "type": "metric"
         }
     },

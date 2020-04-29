@@ -47,7 +47,7 @@
                 "embeddableConfig": {
                     "columns": [
                         "log.level",
-                        "logstash.log.module",
+                        "logstash.log.integration",
                         "message",
                         "source"
                     ],
@@ -69,10 +69,10 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat Logstash] Logstash Logs ECS",
+        "title": "[Logs Logstash] Logstash Logs ECS",
         "version": 1
     },
-    "id": "Filebeat-Logstash-Log-Dashboard-ecs",
+    "id": "Logs-Logstash-Log-Dashboard-ecs",
     "references": [
         {
             "id": "0b1dace0-cbdb-11e7-9852-73e0a9df1bb6-ecs",

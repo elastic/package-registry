@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Number of Containers [Metricbeat Docker] ECS",
+        "title": "Number of Containers [Metrics Docker] ECS",
         "uiStateJSON": {
             "vis": {
                 "defaultColors": {
@@ -93,14 +93,14 @@
                 "handleNoResults": true,
                 "type": "gauge"
             },
-            "title": "Number of Containers [Metricbeat Docker] ECS",
+            "title": "Number of Containers [Metrics Docker] ECS",
             "type": "metric"
         }
     },
     "id": "Docker-Number-of-Containers-ecs",
     "references": [
         {
-            "id": "Metricbeat-Docker-ecs",
+            "id": "Metrics-Docker-ecs",
             "name": "search_0",
             "type": "search"
         }

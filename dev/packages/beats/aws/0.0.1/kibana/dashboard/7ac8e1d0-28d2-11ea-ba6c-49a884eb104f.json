@@ -114,7 +114,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat AWS] Lambda Overview",
+        "title": "[Metrics AWS] Lambda Overview",
         "version": 1
     },
     "id": "7ac8e1d0-28d2-11ea-ba6c-49a884eb104f",

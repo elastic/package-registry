@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Error logs over time [Filebeat Apache] ECS",
+        "title": "Error logs over time [Logs Apache] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {

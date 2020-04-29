@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Activity Stats [Filebeat Azure]",
+        "title": "Activity Stats [Logs Azure]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -114,7 +114,7 @@
                 },
                 "type": "metric"
             },
-            "title": "Activity Stats [Filebeat Azure]",
+            "title": "Activity Stats [Logs Azure]",
             "type": "metric"
         }
     },

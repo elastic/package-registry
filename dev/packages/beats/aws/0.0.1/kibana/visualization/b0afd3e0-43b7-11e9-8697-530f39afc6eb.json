@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "SQS Filters [Metricbeat AWS]",
+        "title": "SQS Filters [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {

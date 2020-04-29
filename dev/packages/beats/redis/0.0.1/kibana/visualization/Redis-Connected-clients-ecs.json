@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Connected clients [Metricbeat Redis] ECS",
+        "title": "Connected clients [Metrics Redis] ECS",
         "uiStateJSON": {
             "vis": {
                 "colors": {
@@ -125,14 +125,14 @@
                 ],
                 "yAxis": {}
             },
-            "title": "Connected clients [Metricbeat Redis] ECS",
+            "title": "Connected clients [Metrics Redis] ECS",
             "type": "histogram"
         }
     },
     "id": "Redis-Connected-clients-ecs",
     "references": [
         {
-            "id": "Metricbeat-Redis-ecs",
+            "id": "Metrics-Redis-ecs",
             "name": "search_0",
             "type": "search"
         }

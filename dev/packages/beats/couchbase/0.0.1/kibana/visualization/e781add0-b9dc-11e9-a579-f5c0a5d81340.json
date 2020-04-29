@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Buckets RAM Used [Metricbeat Couchbase] ECS",
+        "title": "Buckets RAM Used [Metrics Couchbase] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -64,7 +64,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Buckets RAM Used [Metricbeat Couchbase] ECS",
+            "title": "Buckets RAM Used [Metrics Couchbase] ECS",
             "type": "metrics"
         }
     },

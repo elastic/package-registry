@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Storage File Count [Metricbeat Azure]",
+        "title": "Storage File Count [Metrics Azure]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -88,7 +88,7 @@
                 "time_field": "@timestamp",
                 "type": "gauge"
             },
-            "title": "Storage File Count [Metricbeat Azure]",
+            "title": "Storage File Count [Metrics Azure]",
             "type": "metrics"
         }
     },

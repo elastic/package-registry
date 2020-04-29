@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Top slowest queries [Filebeat MySQL] ECS",
+        "title": "Top slowest queries [Logs MySQL] ECS",
         "uiStateJSON": {
             "vis": {
                 "params": {
@@ -69,14 +69,14 @@
                 },
                 "totalFunc": "sum"
             },
-            "title": "Top slowest queries [Filebeat MySQL] ECS",
+            "title": "Top slowest queries [Logs MySQL] ECS",
             "type": "table"
         }
     },
     "id": "MySQL-slowest-queries-ecs",
     "references": [
         {
-            "id": "Filebeat-MySQL-Slow-log-ecs",
+            "id": "Logs-MySQL-Slow-log-ecs",
             "name": "search_0",
             "type": "search"
         }

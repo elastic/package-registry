@@ -26,7 +26,7 @@
                 "desc"
             ]
         ],
-        "title": "SSH login attempts [Filebeat System] ECS",
+        "title": "SSH login attempts [Logs System] ECS",
         "version": 1
     },
     "id": "62439dc0-f9c9-11e6-a747-6121780e0414-ecs",

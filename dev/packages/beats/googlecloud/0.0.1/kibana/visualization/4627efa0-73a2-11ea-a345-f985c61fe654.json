@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Audit Events Outcome over time [Filebeat GoogleCloud]",
+        "title": "Audit Events Outcome over time [Logs GoogleCloud]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -136,7 +136,7 @@
                     }
                 ]
             },
-            "title": "Audit Event Outcome over time [Filebeat GoogleCloud]",
+            "title": "Audit Event Outcome over time [Logs GoogleCloud]",
             "type": "histogram"
         }
     },

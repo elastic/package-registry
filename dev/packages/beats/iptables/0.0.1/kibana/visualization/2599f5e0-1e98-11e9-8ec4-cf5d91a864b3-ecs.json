@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Top Source Countries [Filebeat Iptables] ECS",
+        "title": "Top Source Countries [Logs Iptables] ECS",
         "uiStateJSON": {
             "vis": {
                 "params": {
@@ -61,7 +61,7 @@
                 },
                 "totalFunc": "sum"
             },
-            "title": "Top Source Countries [Filebeat Iptables] ECS",
+            "title": "Top Source Countries [Logs Iptables] ECS",
             "type": "table"
         }
     },

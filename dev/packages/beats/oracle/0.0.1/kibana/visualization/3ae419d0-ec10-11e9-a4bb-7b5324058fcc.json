@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Consistent Gets by buffer pool (Top 10) [Metricbeat Oracle]",
+        "title": "Consistent Gets by buffer pool (Top 10) [Metrics Oracle]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -43,6 +43,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "oracle.performance.buffer_pool"
@@ -53,7 +54,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "Consistent Gets by buffer pool (Top 10) [Metricbeat Oracle]",
+            "title": "Consistent Gets by buffer pool (Top 10) [Metrics Oracle]",
             "type": "metrics"
         }
     },

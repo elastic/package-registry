@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Avg Request Duration (cumulative) [Metricbeat CoreDNS] ECS",
+        "title": "Avg Request Duration (cumulative) [Metrics CoreDNS] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -73,6 +73,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_filters": [
                             {
                                 "color": "#68BC00",
@@ -97,7 +98,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Avg Request Duration (cumulative) [Metricbeat CoreDNS] ECS",
+            "title": "Avg Request Duration (cumulative) [Metrics CoreDNS] ECS",
             "type": "metrics"
         }
     },

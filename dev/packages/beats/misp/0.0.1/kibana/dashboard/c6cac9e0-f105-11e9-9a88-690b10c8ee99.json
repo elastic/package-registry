@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "description": "Overview dashboard for Filebeat MSIP module.",
+        "description": "Overview dashboard for Logs MSIP integration.",
         "hits": 0,
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
@@ -63,7 +63,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat MISP] Overview",
+        "title": "[Logs MISP] Overview",
         "version": 1
     },
     "id": "c6cac9e0-f105-11e9-9a88-690b10c8ee99",

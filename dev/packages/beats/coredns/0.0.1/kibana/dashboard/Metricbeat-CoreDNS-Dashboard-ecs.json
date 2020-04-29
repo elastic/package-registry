@@ -137,10 +137,10 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat CoreDNS] Overview ECS",
+        "title": "[Metrics CoreDNS] Overview ECS",
         "version": 1
     },
-    "id": "Metricbeat-CoreDNS-Dashboard-ecs",
+    "id": "Metrics-CoreDNS-Dashboard-ecs",
     "references": [
         {
             "id": "36e08510-53c4-11e9-b466-9be470bbd327-ecs",

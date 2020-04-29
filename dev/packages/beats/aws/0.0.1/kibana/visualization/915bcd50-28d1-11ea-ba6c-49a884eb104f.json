@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Lambda Top Throttles [Metricbeat AWS]",
+        "title": "Lambda Top Throttles [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -85,7 +85,7 @@
                 "time_field": "@timestamp",
                 "type": "top_n"
             },
-            "title": "Lambda Top Throttles [Metricbeat AWS]",
+            "title": "Lambda Top Throttles [Metrics AWS]",
             "type": "metrics"
         }
     },

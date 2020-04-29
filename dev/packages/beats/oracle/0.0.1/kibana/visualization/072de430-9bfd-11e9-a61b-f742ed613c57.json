@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Ratio of used space in data files [Metricbeat Oracle]",
+        "title": "Ratio of used space in data files [Metrics Oracle]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -70,6 +70,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "stacked",
                         "terms_field": "oracle.tablespace.data_file.name",
@@ -81,7 +82,7 @@
                 "time_field": "@timestamp",
                 "type": "top_n"
             },
-            "title": "Ratio of used space in data files [Metricbeat Oracle]",
+            "title": "Ratio of used space in data files [Metrics Oracle]",
             "type": "metrics"
         }
     },

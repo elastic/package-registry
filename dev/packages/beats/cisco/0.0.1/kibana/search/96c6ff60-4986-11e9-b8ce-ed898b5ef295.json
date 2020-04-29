@@ -23,7 +23,7 @@
                 "desc"
             ]
         ],
-        "title": "ASA Firewall Events [Filebeat Cisco]",
+        "title": "ASA Firewall Events [Logs Cisco]",
         "version": 1
     },
     "id": "96c6ff60-4986-11e9-b8ce-ed898b5ef295",

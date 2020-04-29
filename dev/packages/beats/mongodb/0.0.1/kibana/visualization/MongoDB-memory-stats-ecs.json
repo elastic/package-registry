@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Memory stats [Metricbeat MongoDB] ECS",
+        "title": "Memory stats [Metrics MongoDB] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -143,7 +143,7 @@
                 ],
                 "yAxis": {}
             },
-            "title": "Memory stats [Metricbeat MongoDB] ECS",
+            "title": "Memory stats [Metrics MongoDB] ECS",
             "type": "line"
         }
     },

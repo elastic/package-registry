@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "description": "Filebeat Okta module Kibana dashboard",
+        "description": "Logs Okta integration Kibana dashboard",
         "hits": 0,
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
@@ -105,7 +105,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat Okta] Overview",
+        "title": "[Logs Okta] Overview",
         "version": 1
     },
     "id": "749203a0-67b1-11ea-a76f-bf44814e437d",

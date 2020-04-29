@@ -181,10 +181,10 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat NATS] Overview ECS",
+        "title": "[Metrics NATS] Overview ECS",
         "version": 1
     },
-    "id": "Metricbeat-Nats-Dashboard-ecs",
+    "id": "Metrics-Nats-Dashboard-ecs",
     "references": [
         {
             "id": "b129b220-1e44-11e9-a1b4-79a7ae42ab61-ecs",

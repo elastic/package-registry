@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Outcome by Threat Type [Filebeat PANW] ECS",
+        "title": "Outcome by Threat Type [Logs PANW] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -69,7 +69,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Outcome by Threat Type [Filebeat PANW] ECS",
+            "title": "Outcome by Threat Type [Logs PANW] ECS",
             "type": "pie"
         }
     },

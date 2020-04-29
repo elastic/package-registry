@@ -156,7 +156,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Azure] Compute VMs Overview",
+        "title": "[Metrics Azure] Compute VMs Overview",
         "version": 1
     },
     "id": "eb3f05f0-ea9a-11e9-90ec-112a988266d5",

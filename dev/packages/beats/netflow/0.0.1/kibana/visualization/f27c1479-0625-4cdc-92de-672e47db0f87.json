@@ -13,7 +13,7 @@
                 }
             }
         },
-        "title": "ToS Count [Filebeat Netflow]",
+        "title": "ToS Count [Logs Netflow]",
         "uiStateJSON": {
             "vis": {
                 "defaultColors": {
@@ -80,7 +80,7 @@
                 "handleNoResults": true,
                 "type": "gauge"
             },
-            "title": "ToS Count [Filebeat Netflow]",
+            "title": "ToS Count [Logs Netflow]",
             "type": "metric"
         }
     },

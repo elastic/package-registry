@@ -117,7 +117,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat Netflow] Flow records",
+        "title": "[Logs Netflow] Flow records",
         "version": 1
     },
     "id": "94972700-de4a-4272-9143-2fa8d4981365",

@@ -36,7 +36,7 @@
                 "desc"
             ]
         ],
-        "title": "Endpoint - OS Events [Filebeat CEF]",
+        "title": "Endpoint - OS Events [Logs CEF]",
         "version": 1
     },
     "id": "e6cf2383-71f4-4db1-a791-1a7d4f110194",

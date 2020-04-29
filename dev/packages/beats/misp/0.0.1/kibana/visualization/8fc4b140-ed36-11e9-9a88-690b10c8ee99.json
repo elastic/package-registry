@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Threat Indicator Type [Filebeat MISP]",
+        "title": "Threat Indicator Type [Logs MISP]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -53,7 +53,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Threat Indicator Type [Filebeat MISP]",
+            "title": "Threat Indicator Type [Logs MISP]",
             "type": "pie"
         }
     },

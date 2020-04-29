@@ -13,7 +13,7 @@
                 }
             }
         },
-        "title": "Top Source Ports [Filebeat Netflow]",
+        "title": "Top Source Ports [Logs Netflow]",
         "uiStateJSON": {
             "vis": {
                 "params": {
@@ -82,7 +82,7 @@
                 },
                 "totalFunc": "sum"
             },
-            "title": "Top Source Ports [Filebeat Netflow]",
+            "title": "Top Source Ports [Logs Netflow]",
             "type": "table"
         }
     },

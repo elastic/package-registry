@@ -88,7 +88,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Oracle] Tablespaces",
+        "title": "[Metrics Oracle] Tablespaces",
         "version": 1
     },
     "id": "862e2c20-9bf0-11e9-a61b-f742ed613c57",

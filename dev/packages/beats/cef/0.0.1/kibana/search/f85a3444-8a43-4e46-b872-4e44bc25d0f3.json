@@ -47,7 +47,7 @@
                 "desc"
             ]
         ],
-        "title": "Microsoft DNS Events [Filebeat CEF]",
+        "title": "Microsoft DNS Events [Logs CEF]",
         "version": 1
     },
     "id": "f85a3444-8a43-4e46-b872-4e44bc25d0f3",

@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Other commands [Metricbeat Redis Enterprise]",
+        "title": "Other commands [Metrics Redis Enterprise]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -76,6 +76,7 @@
                         ],
                         "point_size": "1",
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "steps": 0,
@@ -101,6 +102,7 @@
                         ],
                         "point_size": "1",
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "steps": 0,
@@ -125,6 +127,7 @@
                         ],
                         "point_size": "1",
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "steps": 0,
@@ -137,7 +140,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "Other commands [Metricbeat Redis Enterprise]",
+            "title": "Other commands [Metrics Redis Enterprise]",
             "type": "metrics"
         }
     },

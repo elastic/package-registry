@@ -118,7 +118,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat GoogleCloud] Audit",
+        "title": "[Logs GoogleCloud] Audit",
         "version": 1
     },
     "id": "6576c480-73a2-11ea-a345-f985c61fe654",

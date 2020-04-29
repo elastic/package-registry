@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Alert - Destination Location [Filebeat Suricata] ECS",
+        "title": "Alert - Destination Location [Logs Suricata] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -81,7 +81,7 @@
                     ]
                 }
             },
-            "title": "Alert - Destination Location [Filebeat Suricata] ECS",
+            "title": "Alert - Destination Location [Logs Suricata] ECS",
             "type": "tile_map"
         }
     },

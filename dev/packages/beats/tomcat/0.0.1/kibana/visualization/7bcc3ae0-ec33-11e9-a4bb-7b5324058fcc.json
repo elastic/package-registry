@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Bytes sent/received [Metricbeat Tomcat]",
+        "title": "Bytes sent/received [Metrics Tomcat]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -57,6 +57,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "type": "timeseries"
@@ -91,6 +92,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "type": "timeseries"
@@ -101,7 +103,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "Bytes sent/received [Metricbeat Tomcat]",
+            "title": "Bytes sent/received [Metrics Tomcat]",
             "type": "metrics"
         }
     },

@@ -13,7 +13,7 @@
                 }
             }
         },
-        "title": "Top Protocols [Filebeat Netflow]",
+        "title": "Top Protocols [Logs Netflow]",
         "uiStateJSON": {
             "vis": {
                 "params": {
@@ -82,7 +82,7 @@
                 },
                 "totalFunc": "sum"
             },
-            "title": "Top Protocols [Filebeat Netflow]",
+            "title": "Top Protocols [Logs Netflow]",
             "type": "table"
         }
     },

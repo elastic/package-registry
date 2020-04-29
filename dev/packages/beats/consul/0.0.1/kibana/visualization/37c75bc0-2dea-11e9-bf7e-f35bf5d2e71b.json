@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Heap Objects [Metricbeat Consul]",
+        "title": "Heap Objects [Metrics Consul]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -42,6 +42,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none"
                     }
@@ -51,7 +52,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Heap Objects [Metricbeat Consul]",
+            "title": "Heap Objects [Metrics Consul]",
             "type": "metrics"
         }
     },

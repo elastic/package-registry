@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Engine \u0026 Version [Metricbeat MongoDB] ECS",
+        "title": "Engine \u0026 Version [Metrics MongoDB] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -56,7 +56,7 @@
                 "shareYAxis": true,
                 "type": "pie"
             },
-            "title": "Engine \u0026 Version [Metricbeat MongoDB] ECS",
+            "title": "Engine \u0026 Version [Metrics MongoDB] ECS",
             "type": "pie"
         }
     },

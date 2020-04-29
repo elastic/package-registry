@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "SNS Topic Name Filter [Metricbeat AWS]",
+        "title": "SNS Topic Name Filter [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -37,7 +37,7 @@
                 "updateFiltersOnChange": true,
                 "useTimeFilter": true
             },
-            "title": "SNS Topic Name Filter [Metricbeat AWS]",
+            "title": "SNS Topic Name Filter [Metrics AWS]",
             "type": "input_control_vis"
         }
     },

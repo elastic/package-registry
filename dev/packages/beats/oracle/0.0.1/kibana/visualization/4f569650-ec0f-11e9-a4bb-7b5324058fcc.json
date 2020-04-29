@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Max Cursors by machine (Top 10) [Metricbeat Oracle]",
+        "title": "Max Cursors by machine (Top 10) [Metrics Oracle]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -43,6 +43,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "stacked",
                         "terms_field": "oracle.performance.machine"
@@ -53,7 +54,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "Max Cursors by machine (Top 10) [Metricbeat Oracle]",
+            "title": "Max Cursors by machine (Top 10) [Metrics Oracle]",
             "type": "metrics"
         }
     },

@@ -113,7 +113,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Azure] Container Instance Overview",
+        "title": "[Metrics Azure] Container Instance Overview",
         "version": 1
     },
     "id": "9c11ac60-6cf6-11ea-8fe8-71add5fd7c38",

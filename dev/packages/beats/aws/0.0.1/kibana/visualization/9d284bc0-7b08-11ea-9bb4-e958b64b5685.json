@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "DynamoDB Consumed Read Capacity Units [Metricbeat AWS]",
+        "title": "DynamoDB Consumed Read Capacity Units [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -75,7 +75,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "DynamoDB Consumed Read Capacity Units [Metricbeat AWS]",
+            "title": "DynamoDB Consumed Read Capacity Units [Metrics AWS]",
             "type": "metrics"
         }
     },

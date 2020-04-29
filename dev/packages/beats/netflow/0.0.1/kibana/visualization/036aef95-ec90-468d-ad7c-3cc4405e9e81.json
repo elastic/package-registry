@@ -13,7 +13,7 @@
                 }
             }
         },
-        "title": "Top Autonomous Systems [Filebeat Netflow]",
+        "title": "Top Autonomous Systems [Logs Netflow]",
         "uiStateJSON": {
             "vis": {
                 "params": {
@@ -82,7 +82,7 @@
                 },
                 "totalFunc": "sum"
             },
-            "title": "Top Autonomous Systems [Filebeat Netflow]",
+            "title": "Top Autonomous Systems [Logs Netflow]",
             "type": "table"
         }
     },

@@ -76,7 +76,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat HAProxy] Overview ECS",
+        "title": "[Metrics HAProxy] Overview ECS",
         "version": 1
     },
     "id": "4b555c30-47dd-11e8-bc13-1397384faad3-ecs",

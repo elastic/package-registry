@@ -37,7 +37,7 @@
                 }
             }
         },
-        "title": "Top HTTP Response Codes [Filebeat Envoyproxy]",
+        "title": "Top HTTP Response Codes [Logs Envoyproxy]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -94,7 +94,7 @@
                 "scale": "linear",
                 "showLabel": false
             },
-            "title": "Top HTTP Response Codes [Filebeat Envoyproxy]",
+            "title": "Top HTTP Response Codes [Logs Envoyproxy]",
             "type": "tagcloud"
         }
     },

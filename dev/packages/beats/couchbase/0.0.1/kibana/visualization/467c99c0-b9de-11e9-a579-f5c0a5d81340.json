@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Node CPU Utilization [Metricbeat Couchbase] ECS",
+        "title": "Node CPU Utilization [Metrics Couchbase] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -59,7 +59,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Node CPU Utilization [Metricbeat Couchbase] ECS",
+            "title": "Node CPU Utilization [Metrics Couchbase] ECS",
             "type": "metrics"
         }
     },

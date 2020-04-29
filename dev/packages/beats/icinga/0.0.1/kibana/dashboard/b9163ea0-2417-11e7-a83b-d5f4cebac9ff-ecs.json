@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "description": "Filebeat Icinga module dashboard for startup errors",
+        "description": "Logs Icinga integration dashboard for startup errors",
         "hits": 0,
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
@@ -55,7 +55,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat Icinga] Startup Errors ECS",
+        "title": "[Logs Icinga] Startup Errors ECS",
         "version": 1
     },
     "id": "b9163ea0-2417-11e7-a83b-d5f4cebac9ff-ecs",

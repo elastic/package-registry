@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Destination Map [Filebeat Iptables] ECS",
+        "title": "Destination Map [Logs Iptables] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -69,7 +69,7 @@
                     }
                 }
             },
-            "title": "Destination Map [Filebeat Iptables] ECS",
+            "title": "Destination Map [Logs Iptables] ECS",
             "type": "tile_map"
         }
     },

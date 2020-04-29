@@ -31,10 +31,10 @@
                 "desc"
             ]
         ],
-        "title": "Metricbeat Rabbitmq ECS",
+        "title": "Metrics Rabbitmq ECS",
         "version": 1
     },
-    "id": "Metricbeat-Rabbitmq-ecs",
+    "id": "Metrics-Rabbitmq-ecs",
     "references": [
         {
             "id": "metrics-*",

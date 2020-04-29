@@ -297,7 +297,7 @@
         "timeFrom": "now-24h",
         "timeRestore": true,
         "timeTo": "now",
-        "title": "[Filebeat CEF] Endpoint OS Activity Dashboard",
+        "title": "[Logs CEF] Endpoint OS Activity Dashboard",
         "version": 1
     },
     "id": "9e352900-89c3-4c1b-863e-249e24d0dac9",

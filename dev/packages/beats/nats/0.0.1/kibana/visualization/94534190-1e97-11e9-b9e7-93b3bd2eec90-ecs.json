@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Slow Consumers Timeline [Metricbeat NATS] ECS",
+        "title": "Slow Consumers Timeline [Metrics NATS] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -107,7 +107,7 @@
                     }
                 ]
             },
-            "title": "Slow Consumers Timeline [Metricbeat NATS] ECS",
+            "title": "Slow Consumers Timeline [Metrics NATS] ECS",
             "type": "line"
         }
     },

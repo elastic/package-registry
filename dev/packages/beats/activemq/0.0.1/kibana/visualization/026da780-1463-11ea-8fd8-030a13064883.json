@@ -62,7 +62,7 @@
                 }
             }
         },
-        "title": "Top ERROR callers [Filebeat ActiveMQ]",
+        "title": "Top ERROR callers [Logs ActiveMQ]",
         "uiStateJSON": {
             "vis": {
                 "params": {
@@ -139,7 +139,7 @@
                 },
                 "totalFunc": "sum"
             },
-            "title": "Top ERROR callers [Filebeat ActiveMQ]",
+            "title": "Top ERROR callers [Logs ActiveMQ]",
             "type": "table"
         }
     },

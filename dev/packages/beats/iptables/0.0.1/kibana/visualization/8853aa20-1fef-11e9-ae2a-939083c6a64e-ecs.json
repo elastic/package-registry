@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Ubiquiti Firewall Blocked Traffic Map [Filebeat Iptables] ECS",
+        "title": "Ubiquiti Firewall Blocked Traffic Map [Logs Iptables] ECS",
         "uiStateJSON": {
             "mapCenter": [
                 19.228176737766262,
@@ -75,7 +75,7 @@
                     }
                 }
             },
-            "title": "Ubiquiti Firewall Blocked Traffic Map [Filebeat Iptables] ECS",
+            "title": "Ubiquiti Firewall Blocked Traffic Map [Logs Iptables] ECS",
             "type": "tile_map"
         }
     },

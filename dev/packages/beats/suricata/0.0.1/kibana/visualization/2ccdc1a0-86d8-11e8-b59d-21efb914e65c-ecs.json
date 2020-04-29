@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Alerts - Top Destination Countries [Filebeat Suricata] ECS",
+        "title": "Alerts - Top Destination Countries [Logs Suricata] ECS",
         "uiStateJSON": {
             "vis": {
                 "params": {
@@ -61,7 +61,7 @@
                 },
                 "totalFunc": "sum"
             },
-            "title": "Alerts - Top Destination Countries [Filebeat Suricata] ECS",
+            "title": "Alerts - Top Destination Countries [Logs Suricata] ECS",
             "type": "table"
         }
     },

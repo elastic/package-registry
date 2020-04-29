@@ -13,7 +13,7 @@
                 }
             }
         },
-        "title": "Top Flow Exporters [Filebeat Netflow]",
+        "title": "Top Flow Exporters [Logs Netflow]",
         "uiStateJSON": {
             "vis": {
                 "params": {
@@ -82,7 +82,7 @@
                 },
                 "totalFunc": "sum"
             },
-            "title": "Top Flow Exporters [Filebeat Netflow]",
+            "title": "Top Flow Exporters [Logs Netflow]",
             "type": "table"
         }
     },

@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Events Types by Severity [Filebeat CEF]",
+        "title": "Events Types by Severity [Logs CEF]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -46,6 +46,7 @@
                         ],
                         "point_size": "0",
                         "seperate_axis": 1,
+                        "split_color_mode": "gradient",
                         "split_filters": [
                             {
                                 "color": "rgba(244,78,59,1)",
@@ -95,6 +96,7 @@
                         ],
                         "point_size": 1,
                         "seperate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "cef.device.event_class_id",
@@ -105,7 +107,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Events Types by Severity [Filebeat CEF]",
+            "title": "Events Types by Severity [Logs CEF]",
             "type": "metrics"
         }
     },

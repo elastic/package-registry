@@ -24,7 +24,7 @@
                 }
             }
         },
-        "title": "Network IO [Metricbeat Docker] ECS",
+        "title": "Network IO [Metrics Docker] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -152,7 +152,7 @@
                 ],
                 "yAxis": {}
             },
-            "title": "Network IO [Metricbeat Docker] ECS",
+            "title": "Network IO [Metrics Docker] ECS",
             "type": "area"
         }
     },

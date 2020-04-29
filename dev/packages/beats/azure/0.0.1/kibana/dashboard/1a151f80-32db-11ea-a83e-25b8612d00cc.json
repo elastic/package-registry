@@ -205,7 +205,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Azure] Storage Overview",
+        "title": "[Metrics Azure] Storage Overview",
         "version": 1
     },
     "id": "1a151f80-32db-11ea-a83e-25b8612d00cc",

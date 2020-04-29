@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Total Threads [Metricbeat Tomcat]",
+        "title": "Total Threads [Metrics Tomcat]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -45,6 +45,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "steps": 0,
@@ -68,6 +69,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none"
                     }
@@ -77,7 +79,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "Total Threads [Metricbeat Tomcat]",
+            "title": "Total Threads [Metrics Tomcat]",
             "type": "metrics"
         }
     },

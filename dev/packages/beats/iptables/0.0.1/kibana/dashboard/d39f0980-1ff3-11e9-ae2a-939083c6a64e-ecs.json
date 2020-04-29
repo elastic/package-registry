@@ -150,7 +150,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat Iptables] Ubiquiti Firewall Overview ECS",
+        "title": "[Logs Iptables] Ubiquiti Firewall Overview ECS",
         "version": 1
     },
     "id": "d39f0980-1ff3-11e9-ae2a-939083c6a64e-ecs",

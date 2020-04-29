@@ -48,7 +48,7 @@
                 "desc"
             ]
         ],
-        "title": "Errorlogs [Filebeat IBM MQ]",
+        "title": "Errorlogs [Logs IBM MQ]",
         "version": 1
     },
     "id": "82db7ba0-adec-11e9-8358-1517661d7c84",

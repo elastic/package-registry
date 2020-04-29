@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Log Level Distribution [Filebeat NATS] ECS",
+        "title": "Log Level Distribution [Logs NATS] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -47,7 +47,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Log Level Distribution [Filebeat NATS] ECS",
+            "title": "Log Level Distribution [Logs NATS] ECS",
             "type": "pie"
         }
     },

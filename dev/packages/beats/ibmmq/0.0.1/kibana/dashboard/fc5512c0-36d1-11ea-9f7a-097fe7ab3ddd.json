@@ -161,7 +161,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat IBM MQ] Calls Overview",
+        "title": "[Metrics IBM MQ] Calls Overview",
         "version": 1
     },
     "id": "fc5512c0-36d1-11ea-9f7a-097fe7ab3ddd",

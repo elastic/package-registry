@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Top 5 Vendors by Product [Filebeat CEF]",
+        "title": "Top 5 Vendors by Product [Logs CEF]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -53,7 +53,7 @@
                 "isDonut": true,
                 "legendPosition": "right"
             },
-            "title": "Top 5 Vendors by Product [Filebeat CEF]",
+            "title": "Top 5 Vendors by Product [Logs CEF]",
             "type": "pie"
         }
     },

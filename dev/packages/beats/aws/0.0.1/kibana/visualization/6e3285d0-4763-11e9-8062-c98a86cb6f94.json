@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "S3 Filters [Metricbeat AWS]",
+        "title": "S3 Filters [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {

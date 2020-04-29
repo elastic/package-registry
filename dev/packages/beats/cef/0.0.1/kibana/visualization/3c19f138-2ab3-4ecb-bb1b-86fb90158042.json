@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Device Type Breakdown [Filebeat CEF]",
+        "title": "Device Type Breakdown [Logs CEF]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -40,7 +40,7 @@
                 "isDonut": false,
                 "legendPosition": "right"
             },
-            "title": "Device Type Breakdown [Filebeat CEF]",
+            "title": "Device Type Breakdown [Logs CEF]",
             "type": "pie"
         }
     },

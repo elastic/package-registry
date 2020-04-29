@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "ELB HTTP 2xx [Filebeat AWS] ECS",
+        "title": "ELB HTTP 2xx [Logs AWS] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -49,6 +49,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "aws.elb.name",
@@ -60,7 +61,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "ELB HTTP 2xx [Filebeat AWS] ECS",
+            "title": "ELB HTTP 2xx [Logs AWS] ECS",
             "type": "metrics"
         }
     },

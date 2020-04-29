@@ -130,7 +130,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat AWS] VPN Overview",
+        "title": "[Metrics AWS] VPN Overview",
         "version": 1
     },
     "id": "67c9f900-693e-11ea-b0ac-95d4ecb1fecd",

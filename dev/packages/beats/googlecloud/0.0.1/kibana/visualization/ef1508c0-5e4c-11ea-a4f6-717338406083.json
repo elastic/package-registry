@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Compute Firewall Dropped Packets [Metricbeat Googlecloud]",
+        "title": "Compute Firewall Dropped Packets [Metrics Googlecloud]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -71,7 +71,7 @@
                 "time_range_mode": "entire_time_range",
                 "type": "top_n"
             },
-            "title": "Compute Firewall Dropped Packets [Metricbeat Googlecloud]",
+            "title": "Compute Firewall Dropped Packets [Metrics Googlecloud]",
             "type": "metrics"
         }
     },

@@ -34,10 +34,10 @@
                 "desc"
             ]
         ],
-        "title": "Traefik logs [Filebeat Traefik] ECS",
+        "title": "Traefik logs [Logs Traefik] ECS",
         "version": 1
     },
-    "id": "Filebeat-Traefik-module-ecs",
+    "id": "Logs-Traefik-integration-ecs",
     "references": [
         {
             "id": "logs-*",

@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Usage CallCount [Metricbeat AWS]",
+        "title": "Usage CallCount [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -135,7 +135,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Usage CallCount [Metricbeat AWS]",
+            "title": "Usage CallCount [Metrics AWS]",
             "type": "pie"
         }
     },

@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Source Map [Filebeat Iptables] ECS",
+        "title": "Source Map [Logs Iptables] ECS",
         "uiStateJSON": {
             "mapCenter": [
                 45.02695045318546,
@@ -75,7 +75,7 @@
                     }
                 }
             },
-            "title": "Source Map [Filebeat Iptables] ECS",
+            "title": "Source Map [Logs Iptables] ECS",
             "type": "tile_map"
         }
     },

@@ -23,7 +23,7 @@
                 "desc"
             ]
         ],
-        "title": "Events Search [Filebeat Iptables] ECS",
+        "title": "Events Search [Logs Iptables] ECS",
         "version": 1
     },
     "id": "b3f1b010-1f26-11e9-8ec4-cf5d91a864b3-ecs",

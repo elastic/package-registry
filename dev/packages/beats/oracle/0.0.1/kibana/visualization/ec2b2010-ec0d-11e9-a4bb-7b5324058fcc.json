@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Cache Buffer Hit Ratio gauge [Metricbeat Oracle]",
+        "title": "Cache Buffer Hit Ratio gauge [Metrics Oracle]",
         "uiStateJSON": {
             "vis": {
                 "defaultColors": {
@@ -102,7 +102,7 @@
                 "isDisplayWarning": false,
                 "type": "gauge"
             },
-            "title": "Cache Buffer Hit Ratio gauge [Metricbeat Oracle]",
+            "title": "Cache Buffer Hit Ratio gauge [Metrics Oracle]",
             "type": "gauge"
         }
     },

@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Top sudo commands [Filebeat System] ECS",
+        "title": "Top sudo commands [Logs System] ECS",
         "uiStateJSON": {
             "vis": {
                 "params": {

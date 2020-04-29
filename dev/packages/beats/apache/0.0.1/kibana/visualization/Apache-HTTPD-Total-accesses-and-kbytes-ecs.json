@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Total accesses and kbytes [Metricbeat Apache] ECS",
+        "title": "Total accesses and kbytes [Metrics Apache] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {

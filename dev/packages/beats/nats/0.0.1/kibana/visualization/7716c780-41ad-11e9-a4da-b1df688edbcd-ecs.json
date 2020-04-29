@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Communication Directions Distribution [Filebeat NATS] ECS",
+        "title": "Communication Directions Distribution [Logs NATS] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -47,7 +47,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Communication Directions Distribution [Filebeat NATS] ECS",
+            "title": "Communication Directions Distribution [Logs NATS] ECS",
             "type": "pie"
         }
     },

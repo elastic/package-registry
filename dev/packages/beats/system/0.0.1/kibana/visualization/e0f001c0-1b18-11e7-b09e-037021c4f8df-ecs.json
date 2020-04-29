@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Top Processes By CPU [Metricbeat System] ECS",
+        "title": "Top Processes By CPU [Metrics System] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -49,6 +49,7 @@
                         ],
                         "point_size": 1,
                         "seperate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "process.name",
@@ -60,7 +61,7 @@
                 "time_field": "@timestamp",
                 "type": "top_n"
             },
-            "title": "Top Processes By CPU [Metricbeat System] ECS",
+            "title": "Top Processes By CPU [Metrics System] ECS",
             "type": "metrics"
         }
     },

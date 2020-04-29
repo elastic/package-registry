@@ -13,7 +13,7 @@
                 }
             }
         },
-        "title": "Ingress Interfaces (flow records) [Filebeat Netflow]",
+        "title": "Ingress Interfaces (flow records) [Logs Netflow]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -46,7 +46,7 @@
                 "isDonut": true,
                 "legendPosition": "right"
             },
-            "title": "Ingress Interfaces (flow records) [Filebeat Netflow]",
+            "title": "Ingress Interfaces (flow records) [Logs Netflow]",
             "type": "pie"
         }
     },

@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Code Signers [Filebeat Santa] ECS",
+        "title": "Code Signers [Logs Santa] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -47,7 +47,7 @@
                 "scale": "linear",
                 "showLabel": true
             },
-            "title": "Code Signers [Filebeat Santa] ECS",
+            "title": "Code Signers [Logs Santa] ECS",
             "type": "tagcloud"
         }
     },

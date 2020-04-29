@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Workers [Metricbeat uWSGI] ECS",
+        "title": "Workers [Metrics uWSGI] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -12,7 +12,7 @@
                 "expression": ".es(split=uwsgi.status.core.id:16,metric=max:uwsgi.status.core.requests.total).derivative().bars().title('Requests handled by each thread (core) per period')",
                 "interval": "15s"
             },
-            "title": "Workers [Metricbeat uWSGI] ECS",
+            "title": "Workers [Metrics uWSGI] ECS",
             "type": "timelion"
         }
     },

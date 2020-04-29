@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Replica leaseholders [Metricbeat CockroachDB]",
+        "title": "Replica leaseholders [Metrics CockroachDB]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -53,7 +53,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Replica leaseholders [Metricbeat CockroachDB]",
+            "title": "Replica leaseholders [Metrics CockroachDB]",
             "type": "metrics"
         }
     },

@@ -37,7 +37,7 @@
                 }
             }
         },
-        "title": "Return Codes Of Exited Services [Metricbeat System]",
+        "title": "Return Codes Of Exited Services [Metrics System]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -46,7 +46,7 @@
                     "enabled": true,
                     "id": "1",
                     "params": {
-                        "customLabel": "Return Codes Of Exited Services [Metricbeat Services]"
+                        "customLabel": "Return Codes Of Exited Services [Metrics Services]"
                     },
                     "schema": "metric",
                     "type": "count"
@@ -106,7 +106,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Return Codes Of Exited Services [Metricbeat System]",
+            "title": "Return Codes Of Exited Services [Metrics System]",
             "type": "pie"
         }
     },

@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Errors per code, queue manager and host [Filebeat IBM MQ]",
+        "title": "Errors per code, queue manager and host [Logs IBM MQ]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -98,7 +98,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Errors per code, queue manager and host [Filebeat IBM MQ]",
+            "title": "Errors per code, queue manager and host [Logs IBM MQ]",
             "type": "pie"
         }
     },

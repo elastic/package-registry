@@ -33,7 +33,7 @@
                 }
             }
         },
-        "title": "Top 5 Errors [Filebeat IBM MQ]",
+        "title": "Top 5 Errors [Logs IBM MQ]",
         "uiStateJSON": {
             "vis": {
                 "params": {
@@ -127,7 +127,7 @@
                 },
                 "totalFunc": "sum"
             },
-            "title": "Top 5 Errors [Filebeat IBM MQ]",
+            "title": "Top 5 Errors [Logs IBM MQ]",
             "type": "table"
         }
     },

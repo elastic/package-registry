@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Info OSSEC rootkit [Filebeat Osquery] ECS",
+        "title": "Info OSSEC rootkit [Logs Osquery] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -13,7 +13,7 @@
                 "fontSize": 12,
                 "markdown": "This dashboard shows data collected by the ossec-rootkit pack from osquery."
             },
-            "title": "Info OSSEC rootkit [Filebeat Osquery] ECS",
+            "title": "Info OSSEC rootkit [Logs Osquery] ECS",
             "type": "markdown"
         }
     },

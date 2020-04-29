@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Top URLs by response code [Filebeat Apache] ECS",
+        "title": "Top URLs by response code [Logs Apache] ECS",
         "uiStateJSON": {
             "vis": {
                 "colors": {

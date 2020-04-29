@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Alerts Heatmap [Filebeat Azure]",
+        "title": "Alerts Heatmap [Logs Azure]",
         "uiStateJSON": {
             "vis": {
                 "defaultColors": {
@@ -120,7 +120,7 @@
                     }
                 ]
             },
-            "title": "Alerts Heatmap [Filebeat Azure]",
+            "title": "Alerts Heatmap [Logs Azure]",
             "type": "heatmap"
         }
     },

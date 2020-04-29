@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Transactions [Metricbeat MSSQL] ECS",
+        "title": "Transactions [Metrics MSSQL] ECS",
         "uiStateJSON": {
             "vis": {
                 "legendOpen": false
@@ -115,7 +115,7 @@
                     }
                 ]
             },
-            "title": "Transactions [Metricbeat MSSQL] ECS",
+            "title": "Transactions [Metrics MSSQL] ECS",
             "type": "line"
         }
     },

@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "User Tag Cloud [Filebeat Azure]",
+        "title": "User Tag Cloud [Logs Azure]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -67,7 +67,7 @@
                 "scale": "linear",
                 "showLabel": true
             },
-            "title": "User Tag Cloud [Filebeat Azure]",
+            "title": "User Tag Cloud [Logs Azure]",
             "type": "tagcloud"
         }
     },

@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Tablespace Total Size [Metricbeat Oracle]",
+        "title": "Tablespace Total Size [Metrics Oracle]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -42,6 +42,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "stacked",
                         "terms_field": "oracle.tablespace.name",
@@ -53,7 +54,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Tablespace Total Size [Metricbeat Oracle]",
+            "title": "Tablespace Total Size [Metrics Oracle]",
             "type": "metrics"
         }
     },

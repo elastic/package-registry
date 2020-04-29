@@ -109,7 +109,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat IBM MQ] Subscriptions Overview",
+        "title": "[Metrics IBM MQ] Subscriptions Overview",
         "version": 1
     },
     "id": "8f788c70-36c9-11ea-9f7a-097fe7ab3ddd",

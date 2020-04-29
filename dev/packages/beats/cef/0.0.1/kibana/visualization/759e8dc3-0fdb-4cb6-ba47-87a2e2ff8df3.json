@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Top 10 Event Types [Filebeat CEF]",
+        "title": "Top 10 Event Types [Logs CEF]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -39,7 +39,7 @@
                 "orientation": "single",
                 "scale": "square root"
             },
-            "title": "Top 10 Event Types [Filebeat CEF]",
+            "title": "Top 10 Event Types [Logs CEF]",
             "type": "tagcloud"
         }
     },

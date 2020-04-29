@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Errors over time by Queue Manager [Filebeat IBM MQ]",
+        "title": "Errors over time by Queue Manager [Logs IBM MQ]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -45,6 +45,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "stacked",
                         "terms_field": "ibmmq.errorlog.qmgr",
@@ -57,7 +58,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Errors over time by Queue Manager [Filebeat IBM MQ]",
+            "title": "Errors over time by Queue Manager [Logs IBM MQ]",
             "type": "metrics"
         }
     },

@@ -130,7 +130,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Consul] Overview",
+        "title": "[Metrics Consul] Overview",
         "version": 1
     },
     "id": "6d0cf140-2deb-11e9-bf7e-f35bf5d2e71b",

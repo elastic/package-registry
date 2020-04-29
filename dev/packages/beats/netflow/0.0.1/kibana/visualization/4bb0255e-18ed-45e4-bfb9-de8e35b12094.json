@@ -13,7 +13,7 @@
                 }
             }
         },
-        "title": "Flow Records [Filebeat Netflow]",
+        "title": "Flow Records [Logs Netflow]",
         "uiStateJSON": {
             "vis": {
                 "legendOpen": true
@@ -130,7 +130,7 @@
                     }
                 ]
             },
-            "title": "Flow Records [Filebeat Netflow]",
+            "title": "Flow Records [Logs Netflow]",
             "type": "histogram"
         }
     },

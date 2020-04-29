@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Channel Queue Depth [Metricbeat Stan]",
+        "title": "Channel Queue Depth [Metrics Stan]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -44,6 +44,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "stan.channels.name",
@@ -55,7 +56,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "Channel Queue Depth [Metricbeat Stan]",
+            "title": "Channel Queue Depth [Metrics Stan]",
             "type": "metrics"
         }
     },

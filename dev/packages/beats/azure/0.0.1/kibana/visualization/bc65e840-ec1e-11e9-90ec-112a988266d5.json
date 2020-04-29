@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Service Health Overview [Filebeat Azure]",
+        "title": "Service Health Overview [Logs Azure]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -51,6 +51,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "filter",
                         "stacked": "none"
                     },
@@ -75,6 +76,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "filter",
                         "stacked": "none"
                     }
@@ -84,7 +86,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "Service Health Overview [Filebeat Azure]",
+            "title": "Service Health Overview [Logs Azure]",
             "type": "metrics"
         }
     },

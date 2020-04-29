@@ -209,7 +209,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat Redis Enterprise] Overview",
+        "title": "[Metrics Redis Enterprise] Overview",
         "version": 1
     },
     "id": "8da53a40-5a2f-11ea-bc69-cdcc68092a57",

@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Total Estimated Charges [Metricbeat AWS]",
+        "title": "Total Estimated Charges [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -70,6 +70,7 @@
                         "separate_axis": 0,
                         "series_drop_last_bucket": 0,
                         "series_interval": "12h",
+                        "split_color_mode": "gradient",
                         "split_mode": "filter",
                         "stacked": "none",
                         "time_range_mode": "last_value",
@@ -81,7 +82,7 @@
                 "time_field": "@timestamp",
                 "type": "metric"
             },
-            "title": "Total Estimated Charges [Metricbeat AWS]",
+            "title": "Total Estimated Charges [Metrics AWS]",
             "type": "metrics"
         }
     },

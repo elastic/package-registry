@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Erlang Process Usage [Metricbeat RabbitMQ] ECS",
+        "title": "Erlang Process Usage [Metrics RabbitMQ] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -73,7 +73,7 @@
     "id": "RabbitMQ-Erlang-Process-Usage-ecs",
     "references": [
         {
-            "id": "Metricbeat-Rabbitmq-ecs",
+            "id": "Metrics-Rabbitmq-ecs",
             "name": "search_0",
             "type": "search"
         }

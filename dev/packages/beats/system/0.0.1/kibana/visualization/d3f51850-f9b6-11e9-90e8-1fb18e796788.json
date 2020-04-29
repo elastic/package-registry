@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Service Memory Use Over Time [Metricbeat System]",
+        "title": "Service Memory Use Over Time [Metrics System]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -58,7 +58,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "Service Memory Use Over Time [Metricbeat System]",
+            "title": "Service Memory Use Over Time [Metrics System]",
             "type": "metrics"
         }
     },

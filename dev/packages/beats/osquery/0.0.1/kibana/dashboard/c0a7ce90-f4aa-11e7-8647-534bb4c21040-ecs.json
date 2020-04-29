@@ -81,7 +81,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat Osquery] OSSEC rootkit pack ECS",
+        "title": "[Logs Osquery] OSSEC rootkit pack ECS",
         "version": 1
     },
     "id": "c0a7ce90-f4aa-11e7-8647-534bb4c21040-ecs",

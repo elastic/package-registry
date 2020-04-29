@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "New users [Filebeat System] ECS",
+        "title": "New users [Logs System] ECS",
         "uiStateJSON": {
             "vis": {
                 "params": {

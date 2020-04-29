@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "VM placements on ESXi Hosts[Metricbeat VSphere] ECS",
+        "title": "VM placements on ESXi Hosts[Metrics VSphere] ECS",
         "uiStateJSON": {
             "vis": {
                 "defaultColors": {
@@ -138,7 +138,7 @@
                     }
                 ]
             },
-            "title": "VM placements on ESXi Hosts[Metricbeat VSphere] ECS",
+            "title": "VM placements on ESXi Hosts[Metrics VSphere] ECS",
             "type": "heatmap"
         }
     },

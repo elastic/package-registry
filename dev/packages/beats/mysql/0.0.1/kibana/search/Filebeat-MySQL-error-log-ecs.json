@@ -85,10 +85,10 @@
                 "desc"
             ]
         ],
-        "title": "Error logs [Filebeat MySQL] ECS",
+        "title": "Error logs [Logs MySQL] ECS",
         "version": 1
     },
-    "id": "Filebeat-MySQL-error-log-ecs",
+    "id": "Logs-MySQL-error-log-ecs",
     "references": [
         {
             "id": "logs-*",

@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Bandwidth Utilization [Filebeat CEF]",
+        "title": "Bandwidth Utilization [Logs CEF]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -55,6 +55,7 @@
                         "seperate_axis": 0,
                         "series_index_pattern": "logs-*",
                         "series_time_field": "@timestamp",
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "terms_field": "observer.hostname",
@@ -93,6 +94,7 @@
                         "seperate_axis": 0,
                         "series_index_pattern": "logs-*",
                         "series_time_field": "@timestamp",
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none",
                         "steps": 0
@@ -102,7 +104,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Bandwidth Utilization [Filebeat CEF]",
+            "title": "Bandwidth Utilization [Logs CEF]",
             "type": "metrics"
         }
     },

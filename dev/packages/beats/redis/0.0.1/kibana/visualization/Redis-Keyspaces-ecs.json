@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Keyspaces [Metricbeat Redis] ECS",
+        "title": "Keyspaces [Metrics Redis] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -125,14 +125,14 @@
                 ],
                 "yAxis": {}
             },
-            "title": "Keyspaces [Metricbeat Redis] ECS",
+            "title": "Keyspaces [Metrics Redis] ECS",
             "type": "area"
         }
     },
     "id": "Redis-Keyspaces-ecs",
     "references": [
         {
-            "id": "Metricbeat-Redis-ecs",
+            "id": "Metrics-Redis-ecs",
             "name": "search_0",
             "type": "search"
         }

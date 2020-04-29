@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Navigation Users [Filebeat Azure]",
+        "title": "Navigation Users [Logs Azure]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -20,7 +20,7 @@
                 "markdown": "### Azure Monitoring\n\n[Overview](#/dashboard/41e84340-ec20-11e9-90ec-112a988266d5) | [**Users**](#/dashboard/87095750-f05a-11e9-90ec-112a988266d5) | [Alerts](#/dashboard/0f559cc0-f0d5-11e9-90ec-112a988266d5) ",
                 "openLinksInNewTab": false
             },
-            "title": "Navigation Users [Filebeat Azure]",
+            "title": "Navigation Users [Logs Azure]",
             "type": "markdown"
         }
     },

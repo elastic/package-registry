@@ -32,12 +32,12 @@ streams:
     required: true
     show_user: true
     default: your project id
-  - name: zone
+  - name: region
     type: text
-    title: Zone
+    title: Region
     multi: false
     required: true
     show_user: true
-    default: us-central1-a
+    default: us-central1
   title: Google Cloud Platform compute metrics
   description: Collect Google Cloud Platform compute metrics

@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Docker containers [Metricbeat Docker] ECS",
+        "title": "Docker containers [Metrics Docker] ECS",
         "uiStateJSON": {
             "vis": {
                 "params": {
@@ -97,14 +97,14 @@
                 },
                 "totalFunc": "sum"
             },
-            "title": "Docker containers [Metricbeat Docker] ECS",
+            "title": "Docker containers [Metrics Docker] ECS",
             "type": "table"
         }
     },
     "id": "Docker-containers-ecs",
     "references": [
         {
-            "id": "Metricbeat-Docker-ecs",
+            "id": "Metrics-Docker-ecs",
             "name": "search_0",
             "type": "search"
         }

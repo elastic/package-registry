@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "CloudTrail Top User IDs [Filebeat AWS]",
+        "title": "CloudTrail Top User IDs [Logs AWS]",
         "uiStateJSON": {
             "vis": {
                 "params": {
@@ -64,7 +64,7 @@
                 },
                 "totalFunc": "sum"
             },
-            "title": "CloudTrail Top User IDs [Filebeat AWS]",
+            "title": "CloudTrail Top User IDs [Logs AWS]",
             "type": "table"
         }
     },

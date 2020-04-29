@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "HTTP Requests [Metricbeat Prometheus]",
+        "title": "HTTP Requests [Metrics Prometheus]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -53,6 +53,7 @@
                         ],
                         "point_size": 0,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "prometheus.labels.handler",
@@ -65,7 +66,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "HTTP Requests [Metricbeat Prometheus]",
+            "title": "HTTP Requests [Metrics Prometheus]",
             "type": "metrics"
         }
     },

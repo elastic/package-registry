@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Number of Queue Manager [Filebeat IBM MQ]",
+        "title": "Number of Queue Manager [Logs IBM MQ]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -67,7 +67,7 @@
                 },
                 "type": "metric"
             },
-            "title": "Number of Queue Manager [Filebeat IBM MQ]",
+            "title": "Number of Queue Manager [Logs IBM MQ]",
             "type": "metric"
         }
     },

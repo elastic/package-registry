@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Http Status over time [Filebeat AWS]",
+        "title": "Http Status over time [Logs AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -47,6 +47,7 @@
                         ],
                         "point_size": 1,
                         "seperate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_filters": [
                             {
                                 "color": "#68BC00",
@@ -96,7 +97,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Http Status over time [Filebeat AWS]",
+            "title": "Http Status over time [Logs AWS]",
             "type": "metrics"
         }
     },

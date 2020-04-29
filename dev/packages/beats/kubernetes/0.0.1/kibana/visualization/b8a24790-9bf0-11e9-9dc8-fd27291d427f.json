@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Proxy network programming [Metricbeat Kubernetes]",
+        "title": "Proxy network programming [Metrics Kubernetes]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -68,6 +68,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none"
                     },
@@ -96,6 +97,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none"
                     },
@@ -124,6 +126,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none"
                     },
@@ -152,6 +155,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none"
                     },
@@ -179,6 +183,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none"
                     },
@@ -206,6 +211,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none"
                     },
@@ -233,6 +239,7 @@
                         ],
                         "point_size": 1,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "everything",
                         "stacked": "none"
                     }
@@ -242,7 +249,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Proxy network programming [Metricbeat Kubernetes]",
+            "title": "Proxy network programming [Metrics Kubernetes]",
             "type": "metrics"
         }
     },

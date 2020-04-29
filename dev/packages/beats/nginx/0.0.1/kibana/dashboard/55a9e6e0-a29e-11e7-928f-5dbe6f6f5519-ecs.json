@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "description": "Dashboard for the Filebeat Nginx module",
+        "description": "Dashboard for the Logs Nginx integration",
         "hits": 0,
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
@@ -154,7 +154,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat Nginx] Overview ECS",
+        "title": "[Logs Nginx] Overview ECS",
         "version": 1
     },
     "id": "55a9e6e0-a29e-11e7-928f-5dbe6f6f5519-ecs",

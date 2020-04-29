@@ -99,7 +99,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat HAProxy] HTTP server ECS",
+        "title": "[Metrics HAProxy] HTTP server ECS",
         "version": 1
     },
     "id": "8cc50a50-47e0-11e8-bc13-1397384faad3-ecs",

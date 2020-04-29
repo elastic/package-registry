@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Last error [Filebeat IBM MQ]",
+        "title": "Last error [Logs IBM MQ]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -67,7 +67,7 @@
                 },
                 "type": "metric"
             },
-            "title": "Last error [Filebeat IBM MQ]",
+            "title": "Last error [Logs IBM MQ]",
             "type": "metric"
         }
     },

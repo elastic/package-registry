@@ -181,7 +181,7 @@
             },
             "zoom": 2.88
         },
-        "title": "Client Geo Map [Filebeat o365 audit]",
+        "title": "Client Geo Map [Logs o365 audit]",
         "uiStateJSON": {
             "isLayerTOCOpen": true,
             "openTOCDetails": []

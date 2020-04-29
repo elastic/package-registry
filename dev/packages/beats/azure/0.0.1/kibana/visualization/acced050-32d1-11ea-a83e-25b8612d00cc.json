@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Storage Filters [Metricbeat Azure]",
+        "title": "Storage Filters [Metrics Azure]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -67,7 +67,7 @@
                 "updateFiltersOnChange": true,
                 "useTimeFilter": false
             },
-            "title": "Storage Filters [Metricbeat Azure]",
+            "title": "Storage Filters [Metrics Azure]",
             "type": "input_control_vis"
         }
     },

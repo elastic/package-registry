@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Subscriptions Filter [Filebeat Azure]",
+        "title": "Subscriptions Filter [Logs Azure]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -37,7 +37,7 @@
                 "updateFiltersOnChange": true,
                 "useTimeFilter": false
             },
-            "title": "Subscriptions Filter [Filebeat Azure]",
+            "title": "Subscriptions Filter [Logs Azure]",
             "type": "input_control_vis"
         }
     },

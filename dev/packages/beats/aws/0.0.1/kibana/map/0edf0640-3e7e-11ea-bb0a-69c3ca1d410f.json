@@ -173,7 +173,7 @@
             },
             "zoom": 3.9
         },
-        "title": "ELB Requests Geolocation [Filebeat AWS] ECS",
+        "title": "ELB Requests Geolocation [Logs AWS] ECS",
         "uiStateJSON": {
             "isLayerTOCOpen": true,
             "openTOCDetails": []

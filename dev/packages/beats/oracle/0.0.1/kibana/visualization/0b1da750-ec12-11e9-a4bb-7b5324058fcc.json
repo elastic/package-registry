@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Lock/Pin requests and IO reloads ratios [Metricbeat Oracle]",
+        "title": "Lock/Pin requests and IO reloads ratios [Metrics Oracle]",
         "uiStateJSON": {
             "vis": {
                 "defaultColors": {
@@ -137,7 +137,7 @@
                 "isDisplayWarning": false,
                 "type": "gauge"
             },
-            "title": "Lock/Pin requests and IO reloads ratios [Metricbeat Oracle]",
+            "title": "Lock/Pin requests and IO reloads ratios [Metrics Oracle]",
             "type": "gauge"
         }
     },

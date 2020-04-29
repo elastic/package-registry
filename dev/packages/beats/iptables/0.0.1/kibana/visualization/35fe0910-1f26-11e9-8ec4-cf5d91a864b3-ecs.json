@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Network Transport Breakdown [Filebeat Iptables] ECS",
+        "title": "Network Transport Breakdown [Logs Iptables] ECS",
         "uiStateJSON": {
             "vis": {
                 "legendOpen": false
@@ -57,7 +57,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Network Transport Breakdown [Filebeat Iptables] ECS",
+            "title": "Network Transport Breakdown [Logs Iptables] ECS",
             "type": "pie"
         }
     },

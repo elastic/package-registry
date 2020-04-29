@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Query Durations [Metricbeat Prometheus]",
+        "title": "Query Durations [Metrics Prometheus]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -51,6 +51,7 @@
                         ],
                         "point_size": 0,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_filters": [
                             {
                                 "color": "#3185FC",
@@ -74,7 +75,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Query Durations [Metricbeat Prometheus]",
+            "title": "Query Durations [Metrics Prometheus]",
             "type": "metrics"
         }
     },

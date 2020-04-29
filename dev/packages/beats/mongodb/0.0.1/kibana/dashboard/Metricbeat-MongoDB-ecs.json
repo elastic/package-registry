@@ -132,10 +132,10 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat MongoDB] Overview ECS",
+        "title": "[Metrics MongoDB] Overview ECS",
         "version": 1
     },
-    "id": "Metricbeat-MongoDB-ecs",
+    "id": "Metrics-MongoDB-ecs",
     "references": [
         {
             "id": "MongoDB-hosts-ecs",

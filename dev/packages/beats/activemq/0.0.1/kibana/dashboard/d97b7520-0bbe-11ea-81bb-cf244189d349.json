@@ -122,7 +122,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat ActiveMQ] Topics Overview",
+        "title": "[Metrics ActiveMQ] Topics Overview",
         "version": 1
     },
     "id": "d97b7520-0bbe-11ea-81bb-cf244189d349",

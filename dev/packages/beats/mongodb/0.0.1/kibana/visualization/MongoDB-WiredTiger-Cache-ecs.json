@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "WiredTiger Cache [Metricbeat MongoDB] ECS",
+        "title": "WiredTiger Cache [Metrics MongoDB] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -132,7 +132,7 @@
                 ],
                 "yAxis": {}
             },
-            "title": "WiredTiger Cache [Metricbeat MongoDB] ECS",
+            "title": "WiredTiger Cache [Metrics MongoDB] ECS",
             "type": "area"
         }
     },

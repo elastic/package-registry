@@ -13,7 +13,7 @@
                 }
             }
         },
-        "title": "Destination Geo Location Heatmap [Filebeat Netflow]",
+        "title": "Destination Geo Location Heatmap [Logs Netflow]",
         "uiStateJSON": {
             "mapCenter": [
                 8.407168163601076,
@@ -74,7 +74,7 @@
                     "url": "https://basemap.nationalmap.gov/arcgis/services/USGSTopo/MapServer/WMSServer"
                 }
             },
-            "title": "Destination Geo Location Heatmap [Filebeat Netflow]",
+            "title": "Destination Geo Location Heatmap [Logs Netflow]",
             "type": "tile_map"
         }
     },

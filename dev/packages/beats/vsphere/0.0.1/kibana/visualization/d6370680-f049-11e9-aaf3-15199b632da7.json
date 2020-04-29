@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Datastore Types [Metricbeat VSphere] ECS",
+        "title": "Datastore Types [Metrics VSphere] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -63,7 +63,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Datastore types [Metricbeat VSphere] ECS",
+            "title": "Datastore types [Metrics VSphere] ECS",
             "type": "pie"
         }
     },

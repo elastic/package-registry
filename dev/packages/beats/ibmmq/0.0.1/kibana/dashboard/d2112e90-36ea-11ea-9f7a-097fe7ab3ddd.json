@@ -174,7 +174,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Metricbeat IBM MQ] Messages Overview",
+        "title": "[Metrics IBM MQ] Messages Overview",
         "version": 1
     },
     "id": "d2112e90-36ea-11ea-9f7a-097fe7ab3ddd",

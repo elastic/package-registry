@@ -39,7 +39,7 @@
                 "desc"
             ]
         ],
-        "title": "Nginx access logs [Filebeat Nginx] ECS",
+        "title": "Nginx access logs [Logs Nginx] ECS",
         "version": 1
     },
     "id": "6d9e66d0-a1f0-11e7-928f-5dbe6f6f5519-ecs",

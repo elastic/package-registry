@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Message Type Distribution [Filebeat NATS] ECS",
+        "title": "Message Type Distribution [Logs NATS] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -47,7 +47,7 @@
                 "legendPosition": "right",
                 "type": "pie"
             },
-            "title": "Message Type Distribution [Filebeat NATS] ECS",
+            "title": "Message Type Distribution [Logs NATS] ECS",
             "type": "pie"
         }
     },

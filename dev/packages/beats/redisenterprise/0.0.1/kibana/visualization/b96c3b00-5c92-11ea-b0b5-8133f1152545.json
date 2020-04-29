@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Cluster/node selector [Metricbeat Redis Enterprise]",
+        "title": "Cluster/node selector [Metrics Redis Enterprise]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -52,7 +52,7 @@
                 "updateFiltersOnChange": true,
                 "useTimeFilter": false
             },
-            "title": "Cluster/node selector [Metricbeat Redis Enterprise]",
+            "title": "Cluster/node selector [Metrics Redis Enterprise]",
             "type": "input_control_vis"
         }
     },

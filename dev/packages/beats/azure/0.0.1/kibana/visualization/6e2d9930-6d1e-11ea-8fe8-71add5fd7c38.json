@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Container Service Kube Node Status Allocatable CPU Cores [Metricbeat Azure]",
+        "title": "Container Service Kube Node Status Allocatable CPU Cores [Metrics Azure]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -42,6 +42,7 @@
                         ],
                         "point_size": "",
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "cloud.instance.name",
@@ -53,7 +54,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Container Service Kube Node Status Allocatable CPU Cores [Metricbeat Azure]",
+            "title": "Container Service Kube Node Status Allocatable CPU Cores [Metrics Azure]",
             "type": "metrics"
         }
     },

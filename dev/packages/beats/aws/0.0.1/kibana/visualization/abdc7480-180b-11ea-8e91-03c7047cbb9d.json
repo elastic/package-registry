@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "SNS SMS Success Rate [Metricbeat AWS]",
+        "title": "SNS SMS Success Rate [Metrics AWS]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -59,7 +59,7 @@
                 "time_field": "",
                 "type": "timeseries"
             },
-            "title": "SNS SMS Success Rate [Metricbeat AWS]",
+            "title": "SNS SMS Success Rate [Metrics AWS]",
             "type": "metrics"
         }
     },

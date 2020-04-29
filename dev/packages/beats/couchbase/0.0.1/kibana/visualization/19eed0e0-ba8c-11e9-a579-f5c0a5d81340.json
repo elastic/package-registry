@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Disk Fetches [Metricbeat Couchbase] ECS",
+        "title": "Disk Fetches [Metrics Couchbase] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -47,6 +47,7 @@
                         ],
                         "point_size": 0,
                         "separate_axis": 0,
+                        "split_color_mode": "gradient",
                         "split_mode": "terms",
                         "stacked": "none",
                         "terms_field": "couchbase.bucket.name",
@@ -58,7 +59,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Disk Fetches [Metricbeat Couchbase] ECS",
+            "title": "Disk Fetches [Metrics Couchbase] ECS",
             "type": "metrics"
         }
     },

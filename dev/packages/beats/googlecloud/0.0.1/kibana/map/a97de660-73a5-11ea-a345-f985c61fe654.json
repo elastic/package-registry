@@ -167,7 +167,7 @@
             },
             "zoom": 1.97
         },
-        "title": "Audit Source Locations [Filebeat GoogleCloud]",
+        "title": "Audit Source Locations [Logs GoogleCloud]",
         "uiStateJSON": {
             "isLayerTOCOpen": true,
             "openTOCDetails": []

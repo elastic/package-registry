@@ -26,7 +26,7 @@
                 "desc"
             ]
         ],
-        "title": "Query Durations [Filebeat PostgreSQL] ECS",
+        "title": "Query Durations [Logs PostgreSQL] ECS",
         "version": 1
     },
     "id": "PostgreSQL Query Durations-ecs",

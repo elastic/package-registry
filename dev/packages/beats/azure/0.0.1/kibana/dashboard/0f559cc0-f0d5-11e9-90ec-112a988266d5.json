@@ -87,7 +87,7 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat Azure] Alerts Overview",
+        "title": "[Logs Azure] Alerts Overview",
         "version": 1
     },
     "id": "0f559cc0-f0d5-11e9-90ec-112a988266d5",

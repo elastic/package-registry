@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Device Types by Vendor [Filebeat CEF]",
+        "title": "Device Types by Vendor [Logs CEF]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -53,7 +53,7 @@
                 "isDonut": false,
                 "legendPosition": "right"
             },
-            "title": "Device Types by Vendor [Filebeat CEF]",
+            "title": "Device Types by Vendor [Logs CEF]",
             "type": "pie"
         }
     },

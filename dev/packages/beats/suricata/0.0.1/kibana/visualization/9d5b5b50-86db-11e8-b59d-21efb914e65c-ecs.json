@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Top Hosts Generating Events [Filebeat Suricata] ECS",
+        "title": "Top Hosts Generating Events [Logs Suricata] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -120,7 +120,7 @@
                     }
                 ]
             },
-            "title": "Top Hosts Generating Events [Filebeat Suricata] ECS",
+            "title": "Top Hosts Generating Events [Logs Suricata] ECS",
             "type": "histogram"
         }
     },
