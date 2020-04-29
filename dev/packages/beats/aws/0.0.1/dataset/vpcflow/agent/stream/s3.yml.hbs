@@ -75,7 +75,8 @@ processors:
       ignore_missing: true
       fields:
         - {from: aws.vpcflow.srcaddr, to: source.address}
-        - {from: aws.vpcflow.srcaddr, to: source.ip,         - {from: aws.vpcflow.srcport, to: source.port, type: long}
+        - {from: aws.vpcflow.srcaddr, to: source.ip, type: ip}
+        - {from: aws.vpcflow.srcport, to: source.port, type: long}
         - {from: aws.vpcflow.dstaddr, to: destination.address}
         - {from: aws.vpcflow.dstaddr, to: destination.ip, type: ip}
         - {from: aws.vpcflow.dstport, to: destination.port, type: long}

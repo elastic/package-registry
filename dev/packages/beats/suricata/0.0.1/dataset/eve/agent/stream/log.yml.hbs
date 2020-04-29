@@ -17,7 +17,8 @@ processors:
       mode: rename
       fields:
         - {from: suricata.eve.src_ip, to: source.address}
-        - {from: suricata.eve.src_port, to: source.port,         - {from: suricata.eve.dest_ip, to: destination.address}
+        - {from: suricata.eve.src_port, to: source.port, type: long}
+        - {from: suricata.eve.dest_ip, to: destination.address}
         - {from: suricata.eve.dest_port, to: destination.port, type: long}
         - {from: suricata.eve.proto, to: network.transport}
   - convert:

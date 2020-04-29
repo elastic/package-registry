@@ -71,7 +71,3 @@ streams:
   template_path: log.yml.hbs
   title: AWS vpcflow logs (log)
   description: Collect AWS vpcflow logs using log input
-- input: ip}
-  template_path: ip}.yml.hbs
-  title: AWS vpcflow logs (ip})
-  description: Collect AWS vpcflow logs using ip} input

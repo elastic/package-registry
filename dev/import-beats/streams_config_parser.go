@@ -68,7 +68,7 @@ func inputTypesForNode(node parse.Node) []string {
 
 func extractInputTypeFromTextNode(textNode *parse.TextNode) (string, bool) {
 	i := bytes.Index(textNode.Text, []byte("type: "))
-	if i > -1 && (i == 0 || textNode.Text[i-1] == ' ' || textNode.Text[i-1] == '\n') {
+	if i > -1 && (i == 0 || textNode.Text[i-1] == '\n') {
 		aType := textNode.Text[i+6:]
 		j := bytes.IndexByte(aType, '\n')
 		if j < 0 {
@@ -130,7 +130,7 @@ func configForInputForNode(node parse.Node, inputType string) []byte {
 
 func writeHandlebarsTextNode(textNode *parse.TextNode) []byte {
 	i := bytes.Index(textNode.Text, []byte("type: "))
-	if i > -1 && (i == 0 || textNode.Text[i-1] == ' ' || textNode.Text[i-1] == '\n') {
+	if i > -1 && (i == 0 || textNode.Text[i-1] == '\n') {
 		var buffer bytes.Buffer
 		buffer.Write(textNode.Text[0:i])
 

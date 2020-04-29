@@ -109,7 +109,8 @@ processors:
       mode: rename
       fields:
         - {from: zeek.dns.id.orig_h, to: source.address}
-        - {from: zeek.dns.id.orig_p, to: source.port,         - {from: zeek.dns.id.resp_h, to: destination.address}
+        - {from: zeek.dns.id.orig_p, to: source.port, type: long}
+        - {from: zeek.dns.id.resp_h, to: destination.address}
         - {from: zeek.dns.id.resp_p, to: destination.port, type: long}
         - {from: zeek.dns.uid, to: zeek.session_id}
         - {from: zeek.dns.proto, to: network.transport}
