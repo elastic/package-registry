@@ -1,5 +1,4 @@
 title: Nginx access logs
-release: ga
 type: logs
 streams:
 - input: logs
