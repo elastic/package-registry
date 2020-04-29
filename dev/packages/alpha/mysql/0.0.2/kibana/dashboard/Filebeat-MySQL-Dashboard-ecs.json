@@ -1,6 +1,6 @@
 {
     "attributes": {
-        "description": "Overview dashboard for the Filebeat MySQL module",
+        "description": "Overview dashboard for the MySQL integration (logs)",
         "hits": 0,
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {
@@ -115,10 +115,10 @@
             }
         ],
         "timeRestore": false,
-        "title": "[Filebeat MySQL] Overview ECS",
+        "title": "[Logs MySQL] Overview ECS",
         "version": 1
     },
-    "id": "Filebeat-MySQL-Dashboard-ecs",
+    "id": "Logs-MySQL-Dashboard-ecs",
     "references": [
         {
             "id": "MySQL-slowest-queries-ecs",
@@ -136,7 +136,7 @@
             "type": "visualization"
         },
         {
-            "id": "Filebeat-MySQL-error-log-ecs",
+            "id": "Logs-MySQL-error-log-ecs",
             "name": "panel_3",
             "type": "search"
         },

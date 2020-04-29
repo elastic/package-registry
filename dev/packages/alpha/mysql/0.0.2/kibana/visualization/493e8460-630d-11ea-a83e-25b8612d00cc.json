@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Connections [Metricbeat MySQL] ECS",
+        "title": "Connections [Metrics MySQL] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -111,7 +111,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Connections [Metricbeat MySQL] ECS",
+            "title": "Connections [Metrics MySQL] ECS",
             "type": "metrics"
         }
     },

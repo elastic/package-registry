@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Network Traffic [Metricbeat MySQL] ECS",
+        "title": "Network Traffic [Metrics MySQL] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -113,7 +113,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Network Traffic [Metricbeat MySQL] ECS",
+            "title": "Network Traffic [Metrics MySQL] ECS",
             "type": "metrics"
         }
     },

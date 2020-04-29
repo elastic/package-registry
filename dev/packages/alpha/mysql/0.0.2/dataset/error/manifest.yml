@@ -1,6 +1,6 @@
 title: MySQL error logs
-release: ga
 type: logs
+release: beta
 streams:
 - input: logs
   vars:

@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Aborted Connections Rate [Metricbeat MySQL] ECS",
+        "title": "Aborted Connections Rate [Metrics MySQL] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -104,7 +104,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Aborted Connections Rate [Metricbeat MySQL] ECS",
+            "title": "Aborted Connections Rate [Metrics MySQL] ECS",
             "type": "metrics"
         }
     },

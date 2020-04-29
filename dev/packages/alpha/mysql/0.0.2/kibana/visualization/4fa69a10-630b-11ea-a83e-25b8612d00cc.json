@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Question rates [Metricbeat MySQL] ECS",
+        "title": "Question rates [Metrics MySQL] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -72,7 +72,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Question rates [Metricbeat MySQL] ECS",
+            "title": "Question rates [Metrics MySQL] ECS",
             "type": "metrics"
         }
     },

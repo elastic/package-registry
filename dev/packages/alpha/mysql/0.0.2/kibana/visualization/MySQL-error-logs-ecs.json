@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Error logs over time [Filebeat MySQL] ECS",
+        "title": "Error logs over time [Logs MySQL] ECS",
         "uiStateJSON": {
             "vis": {
                 "colors": {
@@ -117,14 +117,14 @@
                 ],
                 "yAxis": {}
             },
-            "title": "Error logs over time [Filebeat MySQL] ECS",
+            "title": "Error logs over time [Logs MySQL] ECS",
             "type": "histogram"
         }
     },
     "id": "MySQL-error-logs-ecs",
     "references": [
         {
-            "id": "Filebeat-MySQL-error-log-ecs",
+            "id": "Logs-MySQL-error-log-ecs",
             "name": "search_0",
             "type": "search"
         }

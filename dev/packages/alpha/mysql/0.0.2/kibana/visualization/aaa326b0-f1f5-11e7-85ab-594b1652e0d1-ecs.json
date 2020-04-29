@@ -10,7 +10,7 @@
                 }
             }
         },
-        "title": "Open tables, files, streams [Metricbeat MySQL] ECS",
+        "title": "Open tables, files, streams [Metrics MySQL] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -99,7 +99,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Open tables, files, streams [Metricbeat MySQL] ECS",
+            "title": "Open tables, files, streams [Metrics MySQL] ECS",
             "type": "metrics"
         }
     },

@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Slow queries over time [Filebeat MySQL] ECS",
+        "title": "Slow queries over time [Logs MySQL] ECS",
         "uiStateJSON": {
             "vis": {
                 "colors": {
@@ -116,14 +116,14 @@
                 ],
                 "yAxis": {}
             },
-            "title": "Slow queries over time [Filebeat MySQL] ECS",
+            "title": "Slow queries over time [Logs MySQL] ECS",
             "type": "histogram"
         }
     },
     "id": "MySQL-Slow-queries-over-time-ecs",
     "references": [
         {
-            "id": "Filebeat-MySQL-Slow-log-ecs",
+            "id": "Logs-MySQL-Slow-log-ecs",
             "name": "search_0",
             "type": "search"
         }

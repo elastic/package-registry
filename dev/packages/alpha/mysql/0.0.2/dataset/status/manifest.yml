@@ -1,6 +1,6 @@
 title: MySQL status metrics
-release: ga
 type: metrics
+release: beta
 streams:
 - input: mysql/metrics
   vars:
