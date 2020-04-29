@@ -175,18 +175,20 @@ what's been already fixed, as the script has overridden part of it).
 4. Write README template file for the integration.
 
     The README template is used to render the final README file including exported fields. The template should be placed
-    in the `dev/beats/import-beats-resources/docs/<integration-name>/docs/README.md`.
+    in the `dev/import-beats-resources/<integration-name>/docs/README.md`.
 
-    Review the MySQL docs template to see how to use template functions (e.g. `{{fields "dataset-name"}}`)
+    Review the MySQL docs template to see how to use template functions (e.g. `{{fields "dataset-name"}}`). 
+    If the same dataset name is used in both metrics and logs, please add `-metrics` and `-logs` in the template. For example, `elb` is a dataset for log and also a dataset for metrics. In README.md template, `{{fields "elb-logs"}}` and `{{fields "elb-metrics"}}` are used to separate them.
 
 5. Review fields file and exported fields in docs.
 
     The goal of this action item is to verify if produced artifacts are correct.
 
-    The fields files (`package-fields.yml`, `fields.yml` and `ecs.yml`) in the package were created from original
-    `fields.yml` files and the ECS schema. It may happen that original sources have a typo, bad description or misses
-    a field definition. The sum of fields in all present files should contain only fields that are really used, e.g.
-    not all existing ECS fields.
+    The fields files (package-fields.yml, fields.yml and ecs.yml) in the package were created from original fields.yml
+    files (that may contain ECS schema fields) and fields.epr.yml (defining some other fields used in the ingest
+    pipeline). It may happen that original sources have a typo, bad description or misses a field definition.
+    The sum of fields in all present files should contain only fields that are really used, e.g. not all existing ECS
+    fields.
 
     It may happen that the ingest pipeline uses fields abstracted from ECS, but not mentioned in `fields.yml`.
     Integrations should contain these fields and also have them documented.
@@ -261,6 +263,12 @@ what's been already fixed, as the script has overridden part of it).
     The events collected by the agent slightly differ from original, Metricbeat's and Filebeat's, ones. Adjust the event
     content manually basing on already migrated integrations (e.g. [MySQL integration](https://github.com/elastic/package-registry/tree/master/dev/import-beats-resources/mysql/docs))
     or copy them once managed to run whole setup with real agent.
+
+12. Kibana: use `stream.dataset` field instead of `event.dataset`.
+
+    Using `stream.dataset` instead of `event.dataset` also makes queries a lot more efficient as this is a
+    `constant_keyword`. Make sure that dashboards in your package don't use the `event.dataset` field. If so,
+    simply replace them with the more efficient one.
 
 ## Testing and validation
 

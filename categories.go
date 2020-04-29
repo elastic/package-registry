@@ -36,8 +36,12 @@ func categoriesHandler(packagesBasePath string, cacheTime time.Duration) func(w 
 		if len(query) > 0 {
 			if v := query.Get("experimental"); v != "" {
 				if v != "" {
-					// In case of error, keep it false
-					experimental, _ = strconv.ParseBool(v)
+					experimental, err = strconv.ParseBool(v)
+					if err != nil {
+						badRequest(w, fmt.Errorf("invalid 'experimental' query param: '%s'", v))
+						return
+					}
+
 				}
 			}
 		}

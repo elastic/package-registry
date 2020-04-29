@@ -7,6 +7,7 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -115,10 +116,27 @@ func getRouter(config Config, packagesBasePath string) *mux.Router {
 	router.HandleFunc("/categories", categoriesHandler(packagesBasePath, config.CacheTimeCategories))
 	router.HandleFunc("/health", healthHandler)
 	router.PathPrefix("/").HandlerFunc(catchAll(config.PublicDir, config.CacheTimeCatchAll))
-
+	router.Use(loggingMiddleware)
 	return router
 }
 
 // healthHandler is used for Docker/K8s deployments. It returns 200 if the service is live
 // In addition ?ready=true can be used for a ready request. Currently both are identical.
 func healthHandler(w http.ResponseWriter, r *http.Request) {}
+
+// logging middle to log all requests
+func loggingMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		logRequest(r)
+		next.ServeHTTP(w, r)
+	})
+}
+
+// logRequest converts a request object into a proper logging event
+func logRequest(r *http.Request) {
+	// Do not log requests to the health endpoint
+	if r.RequestURI == "/health" {
+		return
+	}
+	log.Println(fmt.Sprintf("source.ip: %s, url.original: %s", r.RemoteAddr, r.RequestURI))
+}

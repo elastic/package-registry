@@ -3,20 +3,35 @@
 ARG GO_VERSION=1.14.2
 FROM golang:${GO_VERSION}
 
+# Get dependencies
 RUN \
     apt-get update \
       && apt-get install -y --no-install-recommends \
          zip rsync \
       && rm -rf /var/lib/apt/lists/*
 
-RUN git clone https://github.com/elastic/package-storage.git
-RUN go get github.com/elastic/package-registry
-WORKDIR "/go/src/github.com/elastic/package-registry"
-RUN rsync -a /go/package-storage/packages/ dev/packages/example
+WORKDIR /home
 
-# Define which version of the packages should be checked out.
-ARG PACKAGES_VERSION=master
-RUN git checkout ${PACKAGES_VERSION}
+# Check out package storage
+RUN git clone https://github.com/elastic/package-storage.git
+WORKDIR /home/package-storage
+ARG PACKAGE_STORAGE_REVISION=master
+RUN git checkout ${PACKAGE_STORAGE_REVISION}
+LABEL package-storage-revision=${PACKAGE_STORAGE_REVISION}
+
+WORKDIR /home
+
+# Checkout out package registry
+RUN git clone https://github.com/elastic/package-registry.git
+WORKDIR "/home/package-registry"
+ARG PACKAGE_REGISTRY_REVISION=master
+RUN git checkout ${PACKAGE_REGISTRY_REVISION}
+LABEL package-registry-revision=${PACKAGE_REGISTRY_REVISION}
+
+# Get package storage packages into registry
+# Note: In the future, packages will only be in the storage and not the registry
+RUN rsync -a /home/package-storage/packages/ /home/package-registry/dev/packages/example
+
 EXPOSE 8080
 
 ENV GO111MODULE=on
@@ -46,4 +61,4 @@ ENTRYPOINT ["./package-registry"]
 # Make sure it's accessible from outside the container
 CMD ["--address=0.0.0.0:8080"]
 
-HEALTHCHECK --interval=1s --retries=30 CMD curl --silent --fail localhost:8080/ || exit 1
+HEALTHCHECK --interval=1s --retries=30 CMD curl --silent --fail localhost:8080/health || exit 1

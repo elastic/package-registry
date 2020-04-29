@@ -12,7 +12,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"strings"
 
 	"github.com/magefile/mage/sh"
 
@@ -89,25 +88,30 @@ func CopyPackage(src, dst string) error {
 // BuildPackage rebuilds the zip files inside packages
 func BuildPackages(sourceDir, packagesPath string) error {
 
-	dirs, err := ioutil.ReadDir(sourceDir)
+	list, err := filepath.Glob(sourceDir + "/*/*")
 	if err != nil {
 		return err
 	}
 
-	for _, d := range dirs {
+	for _, p := range list {
+		fileInfo, err := os.Stat(p)
+		if err != nil {
+			return err
+		}
 
-		packageName := d.Name()
-		if !d.IsDir() {
+		// Skip all non directories
+		if !fileInfo.IsDir() {
 			continue
 		}
 
-		// Finds the last occurence of "-" and then below splits it up in 2 parts.
-		dashIndex := strings.LastIndex(packageName, "-")
-		dstDir := filepath.Join(packagesPath, packageName[0:dashIndex], packageName[dashIndex+1:])
+		packageVersion := filepath.Base(p)
+		packageName := filepath.Base(filepath.Dir(p))
+		packagePath := filepath.Join(packageName, packageVersion)
+		dstDir := filepath.Join(packagesPath, packagePath)
 
 		if copy {
 			// Trailing slash is to make sure content of package is copied
-			err := CopyPackage(filepath.Join(sourceDir, packageName)+"/", dstDir)
+			err := CopyPackage(filepath.Join(sourceDir, packagePath)+"/", dstDir)
 			if err != nil {
 				return err
 			}
