@@ -134,5 +134,9 @@ func loggingMiddleware(next http.Handler) http.Handler {
 
 // logRequest converts a request object into a proper logging event
 func logRequest(r *http.Request) {
+	// Do not log requests to the health endpoint
+	if r.RequestURI == "/health" {
+		return
+	}
 	log.Println(fmt.Sprintf("source.ip: %s, url.original: %s", r.RemoteAddr, r.RequestURI))
 }
