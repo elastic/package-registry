@@ -1,5 +1,6 @@
 title: Redis application logs
 type: logs
+release: beta
 streams:
 - input: logs
   vars:

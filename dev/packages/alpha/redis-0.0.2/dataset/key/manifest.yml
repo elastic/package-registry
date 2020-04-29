@@ -1,5 +1,6 @@
 title: Redis key metrics
 type: metrics
+release: beta
 streams:
 - input: redis/metrics
   vars:
