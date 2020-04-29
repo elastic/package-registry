@@ -53,6 +53,7 @@ type Stream struct {
 	TemplateContent string `json:"template,omitempty" yaml:"template,omitempty"` // This is always generated in the json output
 	Title           string `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
 	Description     string `config:"description" json:"description,omitempty" yaml:"description,omitempty"`
+	Enabled         *bool  `config:"enabled" json:"enabled" yaml:"enabled"`
 }
 
 type Variable struct {
@@ -107,6 +108,14 @@ func NewDataset(basePath string, p *Package) (*DataSet, error) {
 
 	if d.Release == "" {
 		d.Release = DefaultRelease
+	}
+
+	// Default for the enabled flags is true.
+	trueValue := true
+	for i, _ := range d.Streams {
+		if d.Streams[i].Enabled == nil {
+			d.Streams[i].Enabled = &trueValue
+		}
 	}
 
 	if !IsValidRelase(d.Release) {

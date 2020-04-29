@@ -4,7 +4,8 @@ type: metrics
 streams:
   - input: nginx/metrics
     title: Title of the stream
-    description: Description of the stream with more details.
+    description: Not enabled data source.
+    enabled: false
     vars:
       - name: url
         required: true
