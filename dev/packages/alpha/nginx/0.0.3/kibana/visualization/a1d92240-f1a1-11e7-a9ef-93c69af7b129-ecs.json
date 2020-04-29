@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Accepts and Handled Rate [Metricbeat Nginx] ECS",
+        "title": "Accepts and Handled Rate [Metrics Nginx] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -89,7 +89,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Accepts and Handled Rate [Metricbeat Nginx] ECS",
+            "title": "Accepts and Handled Rate [Metrics Nginx] ECS",
             "type": "metrics"
         }
     },

@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Top pages [Filebeat Nginx] ECS",
+        "title": "Top pages [Logs Nginx] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -53,7 +53,7 @@
                 "time_field": "@timestamp",
                 "type": "top_n"
             },
-            "title": "Top pages [Filebeat Nginx] ECS",
+            "title": "Top pages [Logs Nginx] ECS",
             "type": "metrics"
         }
     },

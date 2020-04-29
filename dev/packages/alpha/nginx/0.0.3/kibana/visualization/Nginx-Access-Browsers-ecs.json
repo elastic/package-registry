@@ -11,7 +11,7 @@
                 }
             }
         },
-        "title": "Browsers breakdown [Filebeat Nginx] ECS",
+        "title": "Browsers breakdown [Logs Nginx] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {

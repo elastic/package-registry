@@ -7,7 +7,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "Access Map [Filebeat Nginx] ECS",
+        "title": "Access Map [Logs Nginx] ECS",
         "uiStateJSON": {
             "mapCenter": [
                 12.039320557540572,
@@ -71,7 +71,7 @@
     "id": "Nginx-Access-Map-ecs",
     "references": [
         {
-            "id": "Filebeat-Nginx-module-ecs",
+            "id": "Logs-Nginx-integration-ecs",
             "name": "search_0",
             "type": "search"
         }

@@ -40,10 +40,10 @@
                 "desc"
             ]
         ],
-        "title": "Nginx logs [Filebeat Nginx] ECS",
+        "title": "Nginx logs [Logs Nginx] ECS",
         "version": 1
     },
-    "id": "Filebeat-Nginx-module-ecs",
+    "id": "Logs-Nginx-integration-ecs",
     "references": [
         {
             "id": "logs-*",

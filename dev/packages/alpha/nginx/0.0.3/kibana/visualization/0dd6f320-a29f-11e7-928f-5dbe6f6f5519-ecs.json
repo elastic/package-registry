@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Data Volume [Filebeat Nginx] ECS",
+        "title": "Data Volume [Logs Nginx] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -60,7 +60,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Data Volume [Filebeat Nginx] ECS",
+            "title": "Data Volume [Logs Nginx] ECS",
             "type": "metrics"
         }
     },

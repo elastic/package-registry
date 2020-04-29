@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Access logs over time [Filebeat Nginx] ECS",
+        "title": "Access logs over time [Logs Nginx] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -71,7 +71,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Access logs over time [Filebeat Nginx] ECS",
+            "title": "Access logs over time [Logs Nginx] ECS",
             "type": "metrics"
         }
     },

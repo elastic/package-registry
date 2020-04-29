@@ -4,7 +4,7 @@
         "kibanaSavedObjectMeta": {
             "searchSourceJSON": {}
         },
-        "title": "Reading / Writing / Waiting Rates [Metricbeat Nginx] ECS",
+        "title": "Reading / Writing / Waiting Rates [Metrics Nginx] ECS",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -86,7 +86,7 @@
                 "time_field": "@timestamp",
                 "type": "timeseries"
             },
-            "title": "Reading / Writing / Waiting Rates [Metricbeat Nginx] ECS",
+            "title": "Reading / Writing / Waiting Rates [Metrics Nginx] ECS",
             "type": "metrics"
         }
     },
