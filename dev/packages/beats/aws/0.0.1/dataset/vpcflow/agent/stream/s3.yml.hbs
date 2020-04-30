@@ -1,4 +1,3 @@
-input: s3
 queue_url: {{queue_url}}
 {{#if credential_profile_name}}
 credential_profile_name: {{credential_profile_name}}
@@ -76,7 +75,7 @@ processors:
       ignore_missing: true
       fields:
         - {from: aws.vpcflow.srcaddr, to: source.address}
-        - {from: aws.vpcflow.srcaddr, to: source.ip, input: ip}
+        - {from: aws.vpcflow.srcaddr, to: source.ip, type: ip}
         - {from: aws.vpcflow.srcport, to: source.port, type: long}
         - {from: aws.vpcflow.dstaddr, to: destination.address}
         - {from: aws.vpcflow.dstaddr, to: destination.ip, type: ip}
