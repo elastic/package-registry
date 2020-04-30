@@ -18,7 +18,7 @@ streams:
     required: true
     show_user: true
     default: |
-      - key: Organization
-        value: Engineering
+      - key: ""
+        value: ""
   title: aws rds metrics
   description: Collect aws rds metrics

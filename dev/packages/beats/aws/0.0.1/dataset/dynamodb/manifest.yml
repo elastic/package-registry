@@ -18,7 +18,7 @@ streams:
     required: true
     show_user: true
     default: |
-      - key: Organization
-        value: Engineering
+      - key: ""
+        value: ""
   title: aws dynamodb metrics
   description: Collect aws dynamodb metrics

@@ -12,19 +12,17 @@ streams:
     show_user: true
     default: |
       - dimensions:
-        - name: InstanceId
-          value: i-0686946e22cf9494a
+        - name: ""
+          value: ""
         name:
-        - CPUUtilization
-        - DiskWriteOps
+        - ""
         namespace: AWS/EC2
         statistic:
-        - Average
-        - Maximum
+        - ""
         tags:
-        - key: Organization
-          value: Engineering
-        tags.resource_type_filter: ec2:instance
+        - key: ""
+          value: ""
+        tags.resource_type_filter: ""
   - name: period
     type: text
     title: Period
