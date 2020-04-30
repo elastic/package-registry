@@ -283,7 +283,7 @@ what's been already fixed, as the script has overridden part of it).
 
 2. Start testing environment:
     ```bash
-   $ cd testing/environment
+   $ cd testing/environments
    $ docker-compose -f snapshot.yml -f local.yml up
    ```
 
@@ -329,7 +329,7 @@ what's been already fixed, as the script has overridden part of it).
 
 5. Enroll the agent and start it:
 
-   Use the "Enroll new agent" option in the Kibana UI and run a similar command:
+   Use the "Enroll new agent" option in the Kibana UI (Ingest Manager -> Fleet -> Create user and enable Fleet) and run a similar command:
 
    ```bash
    $ ./elastic-agent enroll http://localhost:5601/rel cFhNVlZIRUIxYjhmbFhqNTBoS2o6OUhMWkF4SFJRZmFNZTh3QmtvR1cxZw==
