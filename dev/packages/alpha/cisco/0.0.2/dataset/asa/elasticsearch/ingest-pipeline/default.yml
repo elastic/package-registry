@@ -21,7 +21,7 @@ processors:
         # exactly match the syntax for firepower management logs
         PROCESS_HOST: "(?:%{PROCESS:process.name}:\\s%{SYSLOGHOST:host.name})"
         HOST_PROCESS: "(?:%{SYSLOGHOST:host.hostname}:?\\s+)?(?:%{PROCESS:process.name}?(?:\\[%{POSINT:process.pid:long}\\])?)?"
-
+      
   #
   # Parse FTD/ASA style message
   #
@@ -58,12 +58,16 @@ processors:
       value: 7
       if: "ctx?.event?.severity == null"
 
-  #
-  # Drop messages above configured log_level
-  #
-  - drop:
-      if: "ctx.event.severity > {< .log_level >}"
+  # #
+  # # Drop messages above configured log_level
+  # #
+  # - drop:
+  #     if: "ctx.event.severity > {< .log_level >}"
 
+  - rename:
+    field: '@timestamp'
+    target_field: event.created
+    
   #
   # Parse the date included in FTD logs
   #

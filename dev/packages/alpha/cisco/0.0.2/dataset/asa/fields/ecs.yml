@@ -48,3 +48,15 @@
 - name: event.type
   type: keyword
   description: Event severity (e.g. info, error)
+- name: event.created
+  type: date
+  description: The date/time when the event was first read by an agent, or by your pipeline.
+- name: event.start
+  type: date
+  description: The date when the event started or when the activity was first observed.
+- name: event.end
+  type: keyword
+  description: The date when the event ended or when the activity was last observed.
+- name: event.duration
+  type: long
+  description: Duration of the event in nanoseconds.
