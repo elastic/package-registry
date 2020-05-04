@@ -13,6 +13,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/pkg/errors"
+
 	"github.com/blang/semver"
 
 	"github.com/elastic/package-registry/util"
@@ -36,7 +38,7 @@ func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http
 			if v := query.Get("kibana"); v != "" {
 				kibanaVersion, err = semver.New(v)
 				if err != nil {
-					badRequest(w, fmt.Errorf("invalid Kibana version '%s': %s", v, err))
+					badRequest(w, fmt.Sprintf("invalid Kibana version '%s': %s", v, err))
 					return
 				}
 			}
@@ -58,7 +60,7 @@ func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http
 					// Default is false, also on error
 					all, err = strconv.ParseBool(v)
 					if err != nil {
-						badRequest(w, fmt.Errorf("invalid 'all' query param: '%s'", v))
+						badRequest(w, fmt.Sprintf("invalid 'all' query param: '%s'", v))
 						return
 					}
 				}
@@ -69,7 +71,7 @@ func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http
 					// In case of error, keep it false
 					internal, err = strconv.ParseBool(v)
 					if err != nil {
-						badRequest(w, fmt.Errorf("invalid 'internal' query param: '%s'", v))
+						badRequest(w, fmt.Sprintf("invalid 'internal' query param: '%s'", v))
 						return
 					}
 				}
@@ -80,7 +82,7 @@ func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http
 					// In case of error, keep it false
 					experimental, err = strconv.ParseBool(v)
 					if err != nil {
-						badRequest(w, fmt.Errorf("invalid 'experimental' query param: '%s'", v))
+						badRequest(w, fmt.Sprintf("invalid 'experimental' query param: '%s'", v))
 						return
 					}
 				}
@@ -89,7 +91,7 @@ func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http
 
 		packages, err := util.GetPackages(packagesBasePath)
 		if err != nil {
-			notFound(w, fmt.Errorf("problem fetching packages: %s", err))
+			notFoundError(w, errors.Wrapf(err, "fetching package failed"))
 			return
 		}
 		packagesList := map[string]map[string]util.Package{}
@@ -150,7 +152,7 @@ func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http
 
 		data, err := getPackageOutput(packagesList)
 		if err != nil {
-			notFound(w, err)
+			notFoundError(w, err)
 			return
 		}
 

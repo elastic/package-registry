@@ -115,7 +115,7 @@ func getRouter(config Config, packagesBasePath string) *mux.Router {
 	router.HandleFunc("/search", searchHandler(packagesBasePath, config.CacheTimeSearch))
 	router.HandleFunc("/categories", categoriesHandler(packagesBasePath, config.CacheTimeCategories))
 	router.HandleFunc("/health", healthHandler)
-	router.PathPrefix("/").HandlerFunc(catchAll(config.PublicDir, config.CacheTimeCatchAll))
+	router.PathPrefix("/").HandlerFunc(catchAll(http.Dir(config.PublicDir), config.CacheTimeCatchAll))
 	router.Use(loggingMiddleware)
 	return router
 }
