@@ -103,7 +103,7 @@ func runEndpoint(t *testing.T, endpoint, path, file string, handler func(w http.
 
 func TestContentTypes(t *testing.T) {
 	tests := []struct {
-		endpoint string
+		endpoint            string
 		expectedContentType string
 	}{
 		{"/index.json", "application/json"},
@@ -117,7 +117,7 @@ func TestContentTypes(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		t.Run(test.	endpoint, func(t *testing.T) {
+		t.Run(test.endpoint, func(t *testing.T) {
 			runContentType(t, test.endpoint, test.expectedContentType)
 		})
 	}
