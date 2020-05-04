@@ -26,7 +26,7 @@ func categoriesHandler(packagesBasePath string, cacheTime time.Duration) func(w 
 	return func(w http.ResponseWriter, r *http.Request) {
 		packages, err := util.GetPackages(packagesBasePath)
 		if err != nil {
-			notFound(w, err)
+			notFoundError(w, err)
 			return
 		}
 
@@ -38,7 +38,7 @@ func categoriesHandler(packagesBasePath string, cacheTime time.Duration) func(w 
 				if v != "" {
 					experimental, err = strconv.ParseBool(v)
 					if err != nil {
-						badRequest(w, fmt.Errorf("invalid 'experimental' query param: '%s'", v))
+						badRequest(w, fmt.Sprintf("invalid 'experimental' query param: '%s'", v))
 						return
 					}
 
@@ -88,7 +88,7 @@ func categoriesHandler(packagesBasePath string, cacheTime time.Duration) func(w 
 
 		data, err := getCategoriesOutput(categories)
 		if err != nil {
-			notFound(w, err)
+			notFoundError(w, err)
 			return
 		}
 

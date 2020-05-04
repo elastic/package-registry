@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Handle invalid query params and return error. [#382](https://github.com/elastic/integrations-registry/pull/382)
 * Add basic access logs. [#400](https://github.com/elastic/integrations-registry/pull/400)
 * Validate ingest pipeline during packaging phrase. [#426](https://github.com/elastic/package-registry/pull/426)
+* Use http.FileServer to serve package content and define HTTP headers [#425](https://github.com/elastic/package-registry/pull/425)
 
 ### Deprecated
 

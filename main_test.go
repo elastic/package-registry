@@ -35,7 +35,7 @@ func TestEndpoints(t *testing.T) {
 		file     string
 		handler  func(w http.ResponseWriter, r *http.Request)
 	}{
-		{"/", "", "info.json", catchAll(publicPath, testCacheTime)},
+		{"/", "", "info.json", catchAll(http.Dir(publicPath), testCacheTime)},
 		{"/search", "/search", "search.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/search?all=true", "/search", "search-all.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/categories", "/categories", "categories.json", categoriesHandler(packagesBasePath, testCacheTime)},
@@ -51,7 +51,7 @@ func TestEndpoints(t *testing.T) {
 		{"/search?internal=bar", "/search", "search-package-internal-error.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/search?experimental=true", "/search", "search-package-experimental.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/search?experimental=foo", "/search", "search-package-experimental-error.json", searchHandler(packagesBasePath, testCacheTime)},
-		{"/package/example/1.0.0", "", "package.json", catchAll(publicPath, testCacheTime)},
+		{"/package/example/1.0.0", "", "package.json", catchAll(http.Dir(publicPath), testCacheTime)},
 	}
 
 	for _, test := range tests {

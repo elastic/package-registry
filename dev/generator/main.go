@@ -14,6 +14,7 @@ import (
 	"path/filepath"
 
 	"github.com/magefile/mage/sh"
+	"github.com/pkg/errors"
 
 	"github.com/elastic/package-registry/util"
 )
@@ -59,17 +60,14 @@ func main() {
 
 	if sourceDir == "" || publicDir == "" {
 		log.Fatal("sourceDir and publicDir must be set")
-		os.Exit(1)
 	}
 
 	if err := Build(sourceDir, publicDir); err != nil {
 		log.Fatal(err)
-		os.Exit(1)
 	}
 }
 
 func Build(sourceDir, publicDir string) error {
-
 	err := BuildPackages(sourceDir, filepath.Join(publicDir, packageDirName))
 	if err != nil {
 		return err
@@ -80,8 +78,11 @@ func Build(sourceDir, publicDir string) error {
 // CopyPackage copies the files of a package to the public directory
 func CopyPackage(src, dst string) error {
 	log.Println(">> Copy package: " + src)
-	os.MkdirAll(dst, 0755)
-	err := sh.RunV("rsync", "-a", src, dst)
+	err := os.MkdirAll(dst, 0755)
+	if err != nil {
+		return err
+	}
+	err = sh.RunV("rsync", "-a", src, dst)
 	if err != nil {
 		return err
 	}
@@ -91,7 +92,6 @@ func CopyPackage(src, dst string) error {
 
 // BuildPackage rebuilds the zip files inside packages
 func BuildPackages(sourceDir, packagesPath string) error {
-
 	list, err := filepath.Glob(sourceDir + "/*/*")
 	if err != nil {
 		return err
@@ -135,7 +135,6 @@ func BuildPackages(sourceDir, packagesPath string) error {
 }
 
 func buildPackage(packagesBasePath string, p util.Package) error {
-
 	// Change path to simplify tar command
 	currentPath, err := os.Getwd()
 	if err != nil {
@@ -145,7 +144,7 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 	// Checks if the package is valid
 	err = p.Validate()
 	if err != nil {
-		return fmt.Errorf("Invalid package: %s: %s", p.GetPath(), err)
+		return errors.Wrapf(err, "package validation failed (path: %s", p.GetPath())
 	}
 
 	p.BasePath = filepath.Join(currentPath, packagesBasePath, p.GetPath())
@@ -221,7 +220,7 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 		}
 
 		tarGzName := p.Name + "-" + p.Version
-		copiedPackagePath := filepath.Join(tarGzDirPath, tarGzName)
+		dst := filepath.Join(tarGzDirPath, tarGzName)
 
 		// As the package directories are now {packagename}/{version} when just running tar, the dir inside
 		// the package had the wrong name. Using `-s` or `--transform` for some reason worked on the command line
@@ -229,17 +228,18 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 		// and then run tar on it.
 		// This could become even useful in the future as things like images or videos should potentially not be part of
 		// a tar.gz to keep it small.
-		err := CopyPackage(packagesBasePath+"/"+p.Name+"/"+p.Version+"/", copiedPackagePath)
+		src := filepath.Join(packagesBasePath, p.Name, p.Version) + "/"
+		err := CopyPackage(src, dst)
 		if err != nil {
-			return err
+			return errors.Wrapf(err, "copying package content failed (path: %s)", p.GetPath())
 		}
 
 		err = sh.RunV("tar", "czf", filepath.Join(packagesBasePath, "..", "epr", p.Name, tarGzName+".tar.gz"), "-C", tarGzDirPath, tarGzName+"/")
 		if err != nil {
-			return fmt.Errorf("Error creating package: %s: %s", p.GetPath(), err)
+			return errors.Wrapf(err, "compressing package failed (path: %s)", p.GetPath())
 		}
 
-		err = os.RemoveAll(copiedPackagePath)
+		err = os.RemoveAll(dst)
 		if err != nil {
 			return err
 		}
@@ -275,7 +275,10 @@ var (
 // json so only on packaging this is changed.
 func encodedSavedObject(data []byte) (string, error) {
 	savedObject := MapStr{}
-	json.Unmarshal(data, &savedObject)
+	err := json.Unmarshal(data, &savedObject)
+	if err != nil {
+		return "", errors.Wrapf(err, "unmarshalling saved object failed")
+	}
 
 	for _, v := range fieldsToEncode {
 		out, err := savedObject.GetValue(v)
@@ -296,7 +299,11 @@ func encodedSavedObject(data []byte) (string, error) {
 		if err != nil {
 			return "", err
 		}
-		savedObject.Put(v, string(r))
+		_, err = savedObject.Put(v, string(r))
+		if err != nil {
+			return "", errors.Wrapf(err, "can't put value to the saved object")
+		}
+
 	}
 
 	return savedObject.StringToPrint(), nil
