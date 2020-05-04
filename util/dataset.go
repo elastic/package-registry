@@ -166,9 +166,8 @@ func (d *DataSet) Validate() error {
 			err = validateIngestPipelineFile(jsonPipelinePath)
 			if err != nil {
 				return errors.Wrapf(err, "validating ingest pipeline JSON file failed (path: %s)", jsonPipelinePath)
-			} else {
-				validFound = true
 			}
+			validFound = true
 		}
 
 		yamlPipelinePath := filepath.Join(pipelineDir, d.IngestPipeline+".yml")
@@ -180,9 +179,8 @@ func (d *DataSet) Validate() error {
 			err = validateIngestPipelineFile(yamlPipelinePath)
 			if err != nil {
 				return errors.Wrapf(err, "validating ingest pipeline YAML file failed (path: %s)", jsonPipelinePath)
-			} else {
-				validFound = true
 			}
+			validFound = true
 		}
 
 		if !validFound {
