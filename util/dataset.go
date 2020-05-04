@@ -5,12 +5,15 @@
 package util
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
 
 	"github.com/pkg/errors"
+	yamlv2 "gopkg.in/yaml.v2"
 
 	ucfg "github.com/elastic/go-ucfg"
 	"github.com/elastic/go-ucfg/yaml"
@@ -147,17 +150,61 @@ func (d *DataSet) Validate() error {
 	}
 
 	if d.IngestPipeline == "" && len(paths) > 0 {
-		return fmt.Errorf("Package contains pipelines which are not used: %v, %s", paths, d.ID)
+		return fmt.Errorf("unused pipelines in the package (dataSetID: %s): %s", d.ID, strings.Join(paths, ","))
 	}
 
 	// In case an ingest pipeline is set, check if it is around
 	if d.IngestPipeline != "" {
-		_, errJSON := os.Stat(filepath.Join(pipelineDir, d.IngestPipeline+".json"))
-		_, errYAML := os.Stat(filepath.Join(pipelineDir, d.IngestPipeline+".yml"))
+		var validFound bool
 
-		if os.IsNotExist(errYAML) && os.IsNotExist(errJSON) {
-			return fmt.Errorf("Defined ingest_pipeline does not exist: %s", pipelineDir+d.IngestPipeline)
+		jsonPipelinePath := filepath.Join(pipelineDir, d.IngestPipeline+".json")
+		_, errJSON := os.Stat(jsonPipelinePath)
+		if errJSON != nil && !os.IsNotExist(errJSON) {
+			return errors.Wrapf(errJSON, "stat ingest pipeline JSON file failed (path: %s)", jsonPipelinePath)
+		}
+		if !os.IsNotExist(errJSON) {
+			err = validateIngestPipelineFile(jsonPipelinePath)
+			if err != nil {
+				return errors.Wrapf(err, "validating ingest pipeline JSON file failed (path: %s)", jsonPipelinePath)
+			}
+			validFound = true
+		}
+
+		yamlPipelinePath := filepath.Join(pipelineDir, d.IngestPipeline+".yml")
+		_, errYAML := os.Stat(yamlPipelinePath)
+		if errYAML != nil && !os.IsNotExist(errYAML) {
+			return errors.Wrapf(errYAML, "stat ingest pipeline YAML file failed (path: %s)", jsonPipelinePath)
+		}
+		if !os.IsNotExist(errYAML) {
+			err = validateIngestPipelineFile(yamlPipelinePath)
+			if err != nil {
+				return errors.Wrapf(err, "validating ingest pipeline YAML file failed (path: %s)", jsonPipelinePath)
+			}
+			validFound = true
+		}
+
+		if !validFound {
+			return fmt.Errorf("defined ingest_pipeline does not exist: %s", pipelineDir+d.IngestPipeline)
 		}
 	}
 	return nil
+}
+
+func validateIngestPipelineFile(pipelinePath string) error {
+	f, err := ioutil.ReadFile(pipelinePath)
+	if err != nil {
+		return errors.Wrapf(err, "reading ingest pipeline file failed (path: %s)", pipelinePath)
+	}
+	ext := filepath.Ext(pipelinePath)
+
+	var m map[string]interface{}
+	switch ext {
+	case ".json":
+		err = json.Unmarshal(f, &m)
+	case ".yml":
+		err = yamlv2.Unmarshal(f, &m)
+	default:
+		return fmt.Errorf("unsupported pipeline extension (path: %s, ext: %s)", pipelinePath, ext)
+	}
+	return err
 }
