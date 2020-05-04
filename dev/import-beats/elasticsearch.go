@@ -29,9 +29,9 @@ type ingestPipelineContent struct {
 }
 
 var (
-	reUnsupportedIfInPipeline = regexp.MustCompile("{<[ ]{0,1}if[^(>})]+>}")
+	reUnsupportedIfInPipeline             = regexp.MustCompile("{<[ ]{0,1}if[^(>})]+>}")
 	reUnsupportedIngestPipelineInPipeline = regexp.MustCompile("('|\"){< (IngestPipeline).+>}('|\")")
-	reUnsupportedPlaceholderInPipeline = regexp.MustCompile("{<.+>}")
+	reUnsupportedPlaceholderInPipeline    = regexp.MustCompile("{<.+>}")
 )
 
 func loadElasticsearchContent(datasetPath string) (elasticsearchContent, error) {
@@ -102,7 +102,7 @@ func loadElasticsearchContent(datasetPath string) (elasticsearchContent, error) 
 		err = validateIngestPipeline(ipc)
 		if err != nil {
 			return elasticsearchContent{},
-			errors.Wrapf(err, "validation of modified ingest pipeline failed (original path: %s)", pipelinePath)
+				errors.Wrapf(err, "validation of modified ingest pipeline failed (original path: %s)", pipelinePath)
 		}
 
 		esc.ingestPipelines = append(esc.ingestPipelines, ipc)
