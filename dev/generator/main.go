@@ -38,6 +38,10 @@ const (
   type: constant_keyword
   description: >
     Stream namespace.
+- name: "@timestamp"
+  type: date
+  description: >
+    Event timestamp.
 `
 )
 
@@ -151,7 +155,7 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 		return err
 	}
 
-	// Add stream.yml to all dataset with the basic stream fields
+	// Add base-fields.yml to all dataset with the basic stream fields and @timestamp
 	for _, dataset := range datasets {
 		dirPath := filepath.Join(p.BasePath, "dataset", dataset, "fields")
 		err := os.MkdirAll(dirPath, 0755)
@@ -159,7 +163,7 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 			return err
 		}
 
-		err = ioutil.WriteFile(filepath.Join(dirPath, "stream.yml"), []byte(streamFields), 0644)
+		err = ioutil.WriteFile(filepath.Join(dirPath, "base-fields.yml"), []byte(streamFields), 0644)
 		if err != nil {
 			return err
 		}
