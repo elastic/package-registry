@@ -228,7 +228,7 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 		// and then run tar on it.
 		// This could become even useful in the future as things like images or videos should potentially not be part of
 		// a tar.gz to keep it small.
-		src := packagesBasePath + "/" + p.Name + "/" + p.Version + "/"
+		src := filepath.Join(packagesBasePath, p.Name, p.Version) + "/"
 		err := CopyPackage(src, dst)
 		if err != nil {
 			return errors.Wrapf(err, "copying package content failed (path: %s)", p.GetPath())
