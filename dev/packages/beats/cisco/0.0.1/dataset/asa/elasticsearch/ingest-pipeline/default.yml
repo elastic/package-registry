@@ -1,5 +1,5 @@
 ---
-description: "Pipeline for Cisco {< .internal_PREFIX >} logs"
+description: "Pipeline for Cisco FIX_ME logs"
 processors:
   #
   # Parse the syslog header
@@ -62,7 +62,7 @@ processors:
   # Drop messages above configured log_level
   #
   - drop:
-      if: "ctx.event.severity > {< .log_level >}"
+      if: "ctx.event.severity > FIX_ME"
 
   #
   # Parse the date included in FTD logs
@@ -1254,7 +1254,7 @@ processors:
   #
   - rename:
       field: _temp_.cisco
-      target_field: "cisco.{< .internal_prefix >}"
+      target_field: "cisco.FIX_ME"
       ignore_failure: true
 
   #
@@ -1272,8 +1272,8 @@ processors:
       target_field: event.original
       ignore_missing: true
   - rename:
-      field: cisco.{< .internal_prefix >}.list_id
-      target_field: cisco.{< .internal_prefix >}.rule_name
+      field: cisco.FIX_ME.list_id
+      target_field: cisco.FIX_ME.rule_name
       ignore_missing: true
 
 on_failure:
