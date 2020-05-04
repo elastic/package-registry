@@ -9,14 +9,16 @@ import (
 	"mime"
 )
 
+// init method defines MIME types important for the package content. Definitions ensure that the same Content-Type
+// will be returned if the /etc/mime.types is empty or tiny.
 func init() {
-	mustAddMimeExtenstionType(".gz", "application/gzip")
-	mustAddMimeExtenstionType(".ico", "image/x-icon")
-	mustAddMimeExtenstionType(".md", "text/markdown; charset=utf-8")
-	mustAddMimeExtenstionType(".yml", "text/yaml; charset=UTF-8")
+	mustAddMimeExtensionType(".gz", "application/gzip")
+	mustAddMimeExtensionType(".ico", "image/x-icon")
+	mustAddMimeExtensionType(".md", "text/markdown; charset=utf-8")
+	mustAddMimeExtensionType(".yml", "text/yaml; charset=UTF-8")
 }
 
-func mustAddMimeExtenstionType(ext, typ string) {
+func mustAddMimeExtensionType(ext, typ string) {
 	err := mime.AddExtensionType(ext, typ)
 	if err != nil {
 		log.Fatal(err)
