@@ -155,26 +155,32 @@ func (d *DataSet) Validate() error {
 
 	// In case an ingest pipeline is set, check if it is around
 	if d.IngestPipeline != "" {
+		var validFound bool
+
 		jsonPipelinePath := filepath.Join(pipelineDir, d.IngestPipeline+".json")
 		_, errJSON := os.Stat(jsonPipelinePath)
-
-		yamlPipelinePath := filepath.Join(pipelineDir, d.IngestPipeline+".yml")
-		_, errYAML := os.Stat(yamlPipelinePath)
-
-		var validFound bool
-		if !os.IsNotExist(errJSON) {
+		if errJSON != nil && !os.IsNotExist(errJSON) {
+			return errors.Wrapf(errJSON, "stat ingest pipeline JSON file failed (path: %s)", jsonPipelinePath)
+		} else if !os.IsNotExist(errJSON) {
 			err = validateIngestPipelineFile(jsonPipelinePath)
 			if err != nil {
 				return errors.Wrapf(err, "validating ingest pipeline JSON file failed (path: %s)", jsonPipelinePath)
+			} else {
+				validFound = true
 			}
-			validFound = true
 		}
-		if !os.IsNotExist(errYAML) {
+
+		yamlPipelinePath := filepath.Join(pipelineDir, d.IngestPipeline+".yml")
+		_, errYAML := os.Stat(yamlPipelinePath)
+		if errYAML != nil && !os.IsNotExist(errYAML) {
+			return errors.Wrapf(errYAML, "stat ingest pipeline YAML file failed (path: %s)", jsonPipelinePath)
+		} else if !os.IsNotExist(errYAML) {
 			err = validateIngestPipelineFile(yamlPipelinePath)
 			if err != nil {
 				return errors.Wrapf(err, "validating ingest pipeline YAML file failed (path: %s)", jsonPipelinePath)
+			} else {
+				validFound = true
 			}
-			validFound = true
 		}
 
 		if !validFound {
@@ -187,18 +193,18 @@ func (d *DataSet) Validate() error {
 func validateIngestPipelineFile(pipelinePath string) error {
 	f, err := ioutil.ReadFile(pipelinePath)
 	if err != nil {
-		return errors.Wrapf(err, "reading ingest pipeline file failed")
+		return errors.Wrapf(err, "reading ingest pipeline file failed (path: %s)", pipelinePath)
 	}
-	ext := pipelinePath[strings.LastIndex(pipelinePath, ".")+1:]
+	ext := filepath.Ext(pipelinePath)
 
 	var m map[string]interface{}
 	switch ext {
-	case "json":
+	case ".json":
 		err = json.Unmarshal(f, &m)
-	case "yml":
+	case ".yml":
 		err = yamlv2.Unmarshal(f, &m)
 	default:
-		return fmt.Errorf("unsupported pipeline extension (path: %s)", pipelinePath)
+		return fmt.Errorf("unsupported pipeline extension (path: %s, ext: %s)", pipelinePath, ext)
 	}
 	return err
 }
