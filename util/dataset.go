@@ -161,7 +161,8 @@ func (d *DataSet) Validate() error {
 		_, errJSON := os.Stat(jsonPipelinePath)
 		if errJSON != nil && !os.IsNotExist(errJSON) {
 			return errors.Wrapf(errJSON, "stat ingest pipeline JSON file failed (path: %s)", jsonPipelinePath)
-		} else if !os.IsNotExist(errJSON) {
+		}
+		if !os.IsNotExist(errJSON) {
 			err = validateIngestPipelineFile(jsonPipelinePath)
 			if err != nil {
 				return errors.Wrapf(err, "validating ingest pipeline JSON file failed (path: %s)", jsonPipelinePath)
@@ -174,7 +175,8 @@ func (d *DataSet) Validate() error {
 		_, errYAML := os.Stat(yamlPipelinePath)
 		if errYAML != nil && !os.IsNotExist(errYAML) {
 			return errors.Wrapf(errYAML, "stat ingest pipeline YAML file failed (path: %s)", jsonPipelinePath)
-		} else if !os.IsNotExist(errYAML) {
+		}
+		if !os.IsNotExist(errYAML) {
 			err = validateIngestPipelineFile(yamlPipelinePath)
 			if err != nil {
 				return errors.Wrapf(err, "validating ingest pipeline YAML file failed (path: %s)", jsonPipelinePath)
