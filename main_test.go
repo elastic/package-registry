@@ -99,3 +99,28 @@ func runEndpoint(t *testing.T, endpoint, path, file string, handler func(w http.
 		assert.Equal(t, recorder.Header()["Cache-Control"], []string{"max-age=" + cacheTime, "public"})
 	}
 }
+
+func TestContentTypes(t *testing.T) {
+	publicPath := "./testdata/public"
+	packagesBasePath := publicPath + "/package"
+
+	tests := []struct {
+		endpoint string
+
+		path     string
+		handler  func(w http.ResponseWriter, r *http.Request)
+
+		expectedContenType string
+	}{
+		{"/", "", "info.json", catchAll(http.Dir(publicPath), testCacheTime)},
+	}
+
+	for _, test := range tests {
+		t.Run(test.endpoint, func(t *testing.T) {
+			runEndpoint(t, test.endpoint, test.path, test.file, test.handler)
+		})
+	}
+}
+
+func runContentType(t *testing.T, endpoint, path, file string, handler func(w http.ResponseWriter, r *http.Request)) {
+}
