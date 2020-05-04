@@ -10,6 +10,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"strings"
 	"testing"
 	"time"
@@ -101,26 +102,37 @@ func runEndpoint(t *testing.T, endpoint, path, file string, handler func(w http.
 }
 
 func TestContentTypes(t *testing.T) {
-	publicPath := "./testdata/public"
-	packagesBasePath := publicPath + "/package"
-
 	tests := []struct {
 		endpoint string
-
-		path     string
-		handler  func(w http.ResponseWriter, r *http.Request)
-
-		expectedContenType string
+		expectedContentType string
 	}{
-		{"/", "", "info.json", catchAll(http.Dir(publicPath), testCacheTime)},
+		{"/index.json", "application/json"},
+		{"/activemq-0.0.1.tar.gz", "application/x-gzip"},
+		{"/favicon.ico", "image/x-icon"},
+		{"/metricbeat-mysql.png", "image/png"},
+		{"/kibana-coredns.jpg", "image/jpeg"},
+		{"/README.md", "text/plain; charset=utf-8"},
+		{"/logo_mysql.svg", "image/svg+xml"},
+		{"/manifest.yml", "text/plain; charset=utf-8"},
 	}
 
 	for _, test := range tests {
-		t.Run(test.endpoint, func(t *testing.T) {
-			runEndpoint(t, test.endpoint, test.path, test.file, test.handler)
+		t.Run(test.	endpoint, func(t *testing.T) {
+			runContentType(t, test.endpoint, test.expectedContentType)
 		})
 	}
 }
 
-func runContentType(t *testing.T, endpoint, path, file string, handler func(w http.ResponseWriter, r *http.Request)) {
+func runContentType(t *testing.T, endpoint, expectedContentType string) {
+	publicPath := "./testdata/content-types"
+
+	recorder := httptest.NewRecorder()
+	h := catchAll(http.Dir(publicPath), testCacheTime)
+	h(recorder, &http.Request{
+		URL: &url.URL{
+			Path: endpoint,
+		},
+	})
+
+	assert.Equal(t, expectedContentType, recorder.Header().Get("Content-Type"))
 }

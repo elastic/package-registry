@@ -12,10 +12,6 @@ import (
 	"time"
 )
 
-func notFound(w http.ResponseWriter, errorMessage string) {
-	http.Error(w, errorMessage, http.StatusNotFound)
-}
-
 func notFoundError(w http.ResponseWriter, err error) {
 	http.Error(w, err.Error(), http.StatusNotFound)
 }
@@ -41,7 +37,7 @@ func catchAll(public http.FileSystem, cacheTime time.Duration) func(w http.Respo
 }
 
 func determineResourcePath(r *http.Request, public http.FileSystem) (string, error) {
-	path := r.RequestURI
+	path := r.URL.Path
 
 	// Handles if it's a directory or last char is a / (also a directory)
 	// It then opens index.json by default (if it exists)
