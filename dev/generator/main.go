@@ -38,7 +38,7 @@ const (
   type: constant_keyword
   description: >
     Stream namespace.
-- name: @timestamp
+- name: "@timestamp"
   type: date
   description: >
     Event timestamp.
