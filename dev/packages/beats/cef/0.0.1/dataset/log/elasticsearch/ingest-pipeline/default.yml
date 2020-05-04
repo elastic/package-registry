@@ -78,10 +78,10 @@ processors:
         value: "{{source.user.name}}"
         if: "ctx?.source?.user?.name != null"
   - pipeline:
-        name: '{< IngestPipeline "fp-pipeline" >}'
+        name: '{{ IngestPipeline "fp-pipeline" }}'
         if: "ctx.cef?.device?.vendor == 'FORCEPOINT'"
   - pipeline:
-        name: '{< IngestPipeline "cp-pipeline" >}'
+        name: '{{ IngestPipeline "cp-pipeline" }}'
         if: "ctx.cef?.device?.vendor == 'Check Point'"
 on_failure:
   - set:

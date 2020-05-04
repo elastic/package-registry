@@ -59,13 +59,13 @@
     {
       "pipeline": {
           "if": "ctx.proto.charAt(0) != (char)(\"-\")",
-          "name": "{< IngestPipeline "pipeline-http" >}"
+          "name": "{{ IngestPipeline 'pipeline-http' }}"
       }
     },
     {
       "pipeline": {
           "if": "ctx.proto.charAt(0) == (char)(\"-\")",
-          "name": "{< IngestPipeline "pipeline-tcp" >}"
+          "name": "{{ IngestPipeline 'pipeline-tcp' }}"
       }
     },
     {

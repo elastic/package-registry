@@ -179,7 +179,7 @@
       },
       {
           "pipeline": {
-              "name": "{< IngestPipeline "azure-shared-pipeline" >}"
+              "name": "{{ IngestPipeline 'azure-shared-pipeline' }}"
           }
       }
   ],

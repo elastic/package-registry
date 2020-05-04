@@ -12,10 +12,10 @@ processors:
       CHAR: .
 - pipeline:
     if: ctx.first_char != '{'
-    name: '{< IngestPipeline "pipeline-plaintext" >}'
+    name: '{{ IngestPipeline "pipeline-plaintext" }}'
 - pipeline:
     if: ctx.first_char == '{'
-    name: '{< IngestPipeline "pipeline-json" >}'
+    name: '{{ IngestPipeline "pipeline-json" }}'
 - remove:
     field:
     - elasticsearch.slowlog.timestamp

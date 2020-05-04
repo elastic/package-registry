@@ -6,11 +6,13 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -25,6 +27,12 @@ type ingestPipelineContent struct {
 	targetFileName string
 	body           []byte
 }
+
+var (
+	reUnsupportedIfInPipeline             = regexp.MustCompile("{<[ ]{0,1}if[^(>})]+>}")
+	reUnsupportedIngestPipelineInPipeline = regexp.MustCompile("('|\"){< (IngestPipeline).+>}('|\")")
+	reUnsupportedPlaceholderInPipeline    = regexp.MustCompile("{<.+>}")
+)
 
 func loadElasticsearchContent(datasetPath string) (elasticsearchContent, error) {
 	var esc elasticsearchContent
@@ -75,9 +83,10 @@ func loadElasticsearchContent(datasetPath string) (elasticsearchContent, error) 
 			}
 		}
 
-		body, err := ioutil.ReadFile(filepath.Join(datasetPath, ingestPipeline))
+		pipelinePath := filepath.Join(datasetPath, ingestPipeline)
+		body, err := ioutil.ReadFile(pipelinePath)
 		if err != nil {
-			return elasticsearchContent{}, errors.Wrapf(err, "reading pipeline body failed")
+			return elasticsearchContent{}, errors.Wrapf(err, "reading pipeline body failed (path: %s)", pipelinePath)
 		}
 
 		// Fix missing "---" at the beginning of the YAML pipeline.
@@ -85,22 +94,29 @@ func loadElasticsearchContent(datasetPath string) (elasticsearchContent, error) 
 			body = append([]byte("---\n"), body...)
 		}
 
-		esc.ingestPipelines = append(esc.ingestPipelines, ingestPipelineContent{
+		ipc := ingestPipelineContent{
 			targetFileName: targetFileName,
-			body:           body,
-		})
+			body:           adjustUnsupportedStructuresInPipeline(body),
+		}
+
+		err = validateIngestPipeline(ipc)
+		if err != nil {
+			return elasticsearchContent{},
+				errors.Wrapf(err, "validation of modified ingest pipeline failed (original path: %s)", pipelinePath)
+		}
+
+		esc.ingestPipelines = append(esc.ingestPipelines, ipc)
 	}
 
 	return esc, nil
 }
 
 func buildSingleIngestPipelineTargetName(path string) (string, error) {
-	lastDot := strings.LastIndex(path, ".")
-	if lastDot == -1 {
-		return "", fmt.Errorf("ingest pipeline file must have an extension")
+	_, ext, err := splitFilenameExt(path)
+	if err != nil {
+		return "", errors.Wrapf(err, "processing filename failed (path: %s)", path)
 	}
-	fileExt := path[lastDot+1:]
-	return "default." + fileExt, nil
+	return "default." + ext, nil
 }
 
 func ensurePipelineFormat(ingestPipeline string) string {
@@ -111,20 +127,51 @@ func ensurePipelineFormat(ingestPipeline string) string {
 }
 
 func determineIngestPipelineTargetName(path string) (string, error) {
-	fileName := path
-	if strings.Contains(path, "/") {
-		fileName = path[strings.LastIndex(path, "/")+1:]
+	name, ext, err := splitFilenameExt(path)
+	if err != nil {
+		return "", errors.Wrapf(err, "processing filename failed (path: %s)", path)
 	}
 
-	lastDot := strings.LastIndex(fileName, ".")
-	if lastDot == -1 {
-		return "", fmt.Errorf("ingest pipeline file must have an extension")
+	if name == "pipeline" || name == "pipeline-entry" {
+		return "default." + ext, nil
 	}
-	fileNameWithoutExt := fileName[:lastDot]
-	fileExt := fileName[lastDot+1:]
+	return fmt.Sprintf("%s.%s", name, ext), nil
+}
 
-	if fileNameWithoutExt == "pipeline" || fileNameWithoutExt == "pipeline-entry" {
-		return "default." + fileExt, nil
+func adjustUnsupportedStructuresInPipeline(data []byte) []byte {
+	data = reUnsupportedIfInPipeline.ReplaceAll(data, []byte{})
+	data = bytes.ReplaceAll(data, []byte("{< end >}"), []byte{})
+
+	data = reUnsupportedIngestPipelineInPipeline.ReplaceAllFunc(data, func(found []byte) []byte {
+		found = bytes.ReplaceAll(found, []byte("{<"), []byte("{{"))
+		found = bytes.ReplaceAll(found, []byte(">}"), []byte("}}"))
+
+		if found[0] == '"' {
+			found = bytes.ReplaceAll(found, []byte(`"`), []byte(`'`))
+			found[0] = '"'
+			found[len(found)-1] = '"'
+		}
+		return found
+	})
+
+	data = reUnsupportedPlaceholderInPipeline.ReplaceAll(data, []byte("FIX_ME"))
+	return data
+}
+
+func validateIngestPipeline(content ingestPipelineContent) error {
+	_, ext, err := splitFilenameExt(content.targetFileName)
+	if err != nil {
+		return errors.Wrapf(err, "processing filename failed (path: %s)", content.targetFileName)
 	}
-	return fileName, nil
+
+	var m mapStr
+	switch ext {
+	case "json":
+		err = json.Unmarshal(content.body, &m)
+	case "yml":
+		err = yaml.Unmarshal(content.body, &m)
+	default:
+		return fmt.Errorf("unsupported pipeline extension (path: %s)", content.targetFileName)
+	}
+	return err
 }

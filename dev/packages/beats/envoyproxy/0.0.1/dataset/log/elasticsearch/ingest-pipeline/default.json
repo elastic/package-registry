@@ -4,18 +4,18 @@
     {
       "pipeline": {
           "if": "ctx.message.charAt(0) != (char)(\"{\")",
-          "name": "{< IngestPipeline "pipeline-plaintext" >}"
+          "name": "{{ IngestPipeline 'pipeline-plaintext' }}"
       }
     },
     {
       "pipeline": {
           "if": "ctx.message.charAt(0) == (char)(\"{\")",
-          "name": "{< IngestPipeline "pipeline-json" >}"
+          "name": "{{ IngestPipeline 'pipeline-json' }}"
       }
     },
     {
       "pipeline": {
-          "name": "{< IngestPipeline "pipeline-geo-as" >}"
+          "name": "{{ IngestPipeline 'pipeline-geo-as' }}"
       }
     },
     {

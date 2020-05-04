@@ -53,7 +53,7 @@ type Stream struct {
 	TemplateContent string `json:"template,omitempty" yaml:"template,omitempty"` // This is always generated in the json output
 	Title           string `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
 	Description     string `config:"description" json:"description,omitempty" yaml:"description,omitempty"`
-	Enabled         *bool  `config:"enabled" json:"enabled" yaml:"enabled"`
+	Enabled         *bool  `config:"enabled" json:"enabled,omitempty" yaml:"enabled,omitempty"`
 }
 
 type Variable struct {
