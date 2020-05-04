@@ -13,9 +13,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/pkg/errors"
-
 	"github.com/blang/semver"
+	"github.com/pkg/errors"
 
 	"github.com/elastic/package-registry/util"
 )

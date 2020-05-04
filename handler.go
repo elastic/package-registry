@@ -25,6 +25,7 @@ func badRequest(w http.ResponseWriter, errorMessage string) {
 }
 
 func catchAll(public http.FileSystem, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+	fileServer := http.FileServer(public)
 	return func(w http.ResponseWriter, r *http.Request) {
 		path, err := determineResourcePath(r, public)
 		if err != nil {
@@ -34,9 +35,8 @@ func catchAll(public http.FileSystem, cacheTime time.Duration) func(w http.Respo
 
 		cacheHeaders(w, cacheTime)
 
-		fs := http.FileServer(public)
 		r.URL.Path = path
-		fs.ServeHTTP(w, r)
+		fileServer.ServeHTTP(w, r)
 	}
 }
 
