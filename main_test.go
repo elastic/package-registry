@@ -10,7 +10,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
-	"net/url"
 	"strings"
 	"testing"
 	"time"
@@ -99,40 +98,4 @@ func runEndpoint(t *testing.T, endpoint, path, file string, handler func(w http.
 		cacheTime := fmt.Sprintf("%.0f", testCacheTime.Seconds())
 		assert.Equal(t, recorder.Header()["Cache-Control"], []string{"max-age=" + cacheTime, "public"})
 	}
-}
-
-func TestContentTypes(t *testing.T) {
-	tests := []struct {
-		endpoint            string
-		expectedContentType string
-	}{
-		{"/index.json", "application/json"},
-		{"/activemq-0.0.1.tar.gz", "application/x-gzip"},
-		{"/favicon.ico", "image/x-icon"},
-		{"/metricbeat-mysql.png", "image/png"},
-		{"/kibana-coredns.jpg", "image/jpeg"},
-		{"/README.md", "text/plain; charset=utf-8"},
-		{"/logo_mysql.svg", "image/svg+xml"},
-		{"/manifest.yml", "text/plain; charset=utf-8"},
-	}
-
-	for _, test := range tests {
-		t.Run(test.endpoint, func(t *testing.T) {
-			runContentType(t, test.endpoint, test.expectedContentType)
-		})
-	}
-}
-
-func runContentType(t *testing.T, endpoint, expectedContentType string) {
-	publicPath := "./testdata/content-types"
-
-	recorder := httptest.NewRecorder()
-	h := catchAll(http.Dir(publicPath), testCacheTime)
-	h(recorder, &http.Request{
-		URL: &url.URL{
-			Path: endpoint,
-		},
-	})
-
-	assert.Equal(t, expectedContentType, recorder.Header().Get("Content-Type"))
 }
