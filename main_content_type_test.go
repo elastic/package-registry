@@ -1,7 +1,6 @@
 // Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
 // or more contributor license agreements. Licensed under the Elastic License;
 // you may not use this file except in compliance with the Elastic License.
-// +build linux
 
 package main
 
@@ -21,12 +20,12 @@ func TestContentTypes(t *testing.T) {
 	}{
 		{"/index.json", "application/json"},
 		{"/activemq-0.0.1.tar.gz", "application/gzip"},
-		{"/favicon.ico", "image/vnd.microsoft.icon"},
+		{"/favicon.ico", "image/x-icon"},
 		{"/metricbeat-mysql.png", "image/png"},
 		{"/kibana-coredns.jpg", "image/jpeg"},
 		{"/README.md", "text/markdown; charset=utf-8"},
 		{"/logo_mysql.svg", "image/svg+xml"},
-		{"/manifest.yml", "text/plain; charset=utf-8"},
+		{"/manifest.yml", "text/yaml; charset=UTF-8"},
 	}
 
 	for _, test := range tests {
