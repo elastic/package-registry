@@ -30,7 +30,7 @@
     "/package/example/0.0.2/elasticsearch/ingest-pipeline/pipeline-plaintext.json",
     "/package/example/0.0.2/elasticsearch/ingest-pipeline/pipeline-tcp.json",
     "/package/example/0.0.2/kibana/dashboard/0c610510-5cbd-11e9-8477-077ec9664dbd.json",
-    "/package/example/0.0.2/kibana/index-pattern/filebeat-*.json",
+    "/package/example/0.0.2/kibana/index-pattern/filebeat.json",
     "/package/example/0.0.2/kibana/infrastructure-ui-source/default.json",
     "/package/example/0.0.2/kibana/visualization/0a994af0-5c9d-11e9-8477-077ec9664dbd.json",
     "/package/example/0.0.2/kibana/visualization/36f872a0-5c03-11e9-85b4-19d0072eb4f2.json",
