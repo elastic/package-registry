@@ -77,7 +77,7 @@ func Build() error {
 // For now only containing the version.
 func BuildRootFile() error {
 	rootData := map[string]string{
-		"version":      "0.3.0",
+		"version":      "0.4.0",
 		"service.name": "package-registry",
 	}
 
