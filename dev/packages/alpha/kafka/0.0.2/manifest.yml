@@ -50,6 +50,12 @@ datasources:
         show_user: true
         default:
           - 'localhost:9092'
+      - name: period
+        type: text
+        title: Period
+        required: true
+        show_user: true
+        default: 10s
       # TODO: Template for common SSL options?
       - name: ssl.certificate_authorities
         type: text  # TODO: Add a "path" type so it helps in UI?
