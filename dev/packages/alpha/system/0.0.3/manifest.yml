@@ -8,13 +8,8 @@ type: integration
 categories:
 - logs
 - metrics
-release: experimental
+release: beta
 removable: false
-requirement:
-  kibana:
-    versions: '>=7.6.0 <8.0.0'
-  elasticsearch:
-    versions: '>7.0.1'
 screenshots:
 - src: /img/kibana-system.png
   title: kibana system
