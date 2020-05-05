@@ -1,5 +1,5 @@
 title: aws rds metrics
-release: experimental
+release: beta
 type: metrics
 streams:
 - input: aws/metrics

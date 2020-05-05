@@ -1,5 +1,5 @@
 title: aws ec2 metrics
-release: experimental
+release: beta
 type: metrics
 streams:
 - input: aws/metrics
