@@ -32,7 +32,7 @@ var (
 
 	publicDir    = "./public"
 	buildDir     = "./build"
-	packagePaths = []string{"./dev/packages/alpha/", "./dev/packages/example/", "./dev/packages/beats/"}
+	packagePaths = []string{"./dev/packages/alpha/", "./dev/packages/example/"}
 	tarGz        = true
 )
 
@@ -66,18 +66,6 @@ func Build() error {
 	}
 
 	return sh.Run("go", "build", ".")
-}
-
-func ImportBeats() error {
-	args := []string{"run", "./dev/import-beats/"}
-	if os.Getenv("SKIP_KIBANA") == "true" {
-		args = append(args, "-skipKibana")
-	}
-	if os.Getenv("PACKAGES") != "" {
-		args = append(args, "-packages", os.Getenv("PACKAGES"))
-	}
-	args = append(args, "*.go")
-	return sh.Run("go", args...)
 }
 
 // Creates the `index.json` file
