@@ -1,0 +1,40 @@
+- name: aws
+  type: group
+  fields:
+  - name: tags.*
+    type: object
+    description: |
+      Tag key value pairs from aws resources.
+  - name: s3.bucket.name
+    type: keyword
+    description: |
+      Name of a S3 bucket.
+  - name: dimensions.*
+    type: object
+    description: |
+      Metric dimensions.
+  - name: '*.metrics.*.*'
+    type: object
+    description: |
+      Metrics that returned from Cloudwatch API query.
+- name: cloud.account.name
+  type: alias
+  path: cloud.account.name
+- name: cloud.account.id
+  type: alias
+  path: cloud.account.id
+- name: cloud.provider
+  type: alias
+  path: cloud.provider
+- name: cloud.region
+  type: alias
+  path: cloud.region
+- name: cloud.availability_zone
+  type: alias
+  path: cloud.availability_zone
+- name: cloud.instance.id
+  type: alias
+  path: cloud.instance.id
+- name: cloud.machine.type
+  type: alias
+  path: cloud.machine.type
