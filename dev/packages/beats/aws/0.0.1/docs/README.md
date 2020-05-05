@@ -314,13 +314,13 @@ The fields reported are:
 | aws.dimensions.* | Metric dimensions. | object |
 | aws.s3.bucket.name | Name of a S3 bucket. | keyword |
 | aws.tags.* | Tag key value pairs from aws resources. | object |
-| cloud.account.id | AWS cloud account ID used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.account.name | AWS cloud account name or alias used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.availability_zone | Availability zone in which this AWS service is running. | keyword |
-| cloud.instance.id | AWS EC2 instance ID. | keyword |
-| cloud.machine.type | AWS EC2 instance machine type. | keyword |
-| cloud.provider | Name of the cloud provider: aws. | keyword |
-| cloud.region | Region in which this AWS service is running. | keyword |
+| cloud.account.id | The cloud account or organization id used to identify different entities in a multi-tenant environment. Examples: AWS account id, Google Cloud ORG Id, or other unique identifier. | keyword |
+| cloud.account.name | The cloud account name or alias used to identify different entities in a multi-tenant environment. Examples: AWS account name, Google Cloud ORG display name. | keyword |
+| cloud.availability_zone | Availability zone in which this host is running. | keyword |
+| cloud.instance.id | Instance ID of the host machine. | keyword |
+| cloud.machine.type | Machine type of the host machine. | keyword |
+| cloud.provider | Name of the cloud provider. Example values are aws, azure, gcp, or digitalocean. | keyword |
+| cloud.region | Region in which this host is running. | keyword |
 
 
 ### cloudwatch
@@ -342,13 +342,13 @@ The fields reported are:
 | aws.dimensions.* | Metric dimensions. | object |
 | aws.s3.bucket.name | Name of a S3 bucket. | keyword |
 | aws.tags.* | Tag key value pairs from aws resources. | object |
-| cloud.account.id | AWS cloud account ID used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.account.name | AWS cloud account name or alias used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.availability_zone | Availability zone in which this AWS service is running. | keyword |
-| cloud.instance.id | AWS EC2 instance ID. | keyword |
-| cloud.machine.type | AWS EC2 instance machine type. | keyword |
-| cloud.provider | Name of the cloud provider: aws. | keyword |
-| cloud.region | Region in which this AWS service is running. | keyword |
+| cloud.account.id | The cloud account or organization id used to identify different entities in a multi-tenant environment. Examples: AWS account id, Google Cloud ORG Id, or other unique identifier. | keyword |
+| cloud.account.name | The cloud account name or alias used to identify different entities in a multi-tenant environment. Examples: AWS account name, Google Cloud ORG display name. | keyword |
+| cloud.availability_zone | Availability zone in which this host is running. | keyword |
+| cloud.instance.id | Instance ID of the host machine. | keyword |
+| cloud.machine.type | Machine type of the host machine. | keyword |
+| cloud.provider | Name of the cloud provider. Example values are aws, azure, gcp, or digitalocean. | keyword |
+| cloud.region | Region in which this host is running. | keyword |
 
 
 ### dynamodb
@@ -396,13 +396,13 @@ The fields reported are:
 | aws.dynamodb.metrics.WriteThrottleEvents.sum | Requests to DynamoDB that exceed the provisioned write capacity units for a table or a global secondary index. | long |
 | aws.s3.bucket.name | Name of a S3 bucket. | keyword |
 | aws.tags.* | Tag key value pairs from aws resources. | object |
-| cloud.account.id | AWS cloud account ID used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.account.name | AWS cloud account name or alias used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.availability_zone | Availability zone in which this AWS service is running. | keyword |
-| cloud.instance.id | AWS EC2 instance ID. | keyword |
-| cloud.machine.type | AWS EC2 instance machine type. | keyword |
-| cloud.provider | Name of the cloud provider: aws. | keyword |
-| cloud.region | Region in which this AWS service is running. | keyword |
+| cloud.account.id | The cloud account or organization id used to identify different entities in a multi-tenant environment. Examples: AWS account id, Google Cloud ORG Id, or other unique identifier. | keyword |
+| cloud.account.name | The cloud account name or alias used to identify different entities in a multi-tenant environment. Examples: AWS account name, Google Cloud ORG display name. | keyword |
+| cloud.availability_zone | Availability zone in which this host is running. | keyword |
+| cloud.instance.id | Instance ID of the host machine. | keyword |
+| cloud.machine.type | Machine type of the host machine. | keyword |
+| cloud.provider | Name of the cloud provider. Example values are aws, azure, gcp, or digitalocean. | keyword |
+| cloud.region | Region in which this host is running. | keyword |
 
 
 ### ebs
@@ -434,13 +434,13 @@ The fields reported are:
 | aws.ebs.metrics.VolumeWriteOps.avg | The total number of write operations in a specified period of time. | double |
 | aws.s3.bucket.name | Name of a S3 bucket. | keyword |
 | aws.tags.* | Tag key value pairs from aws resources. | object |
-| cloud.account.id | AWS cloud account ID used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.account.name | AWS cloud account name or alias used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.availability_zone | Availability zone in which this AWS service is running. | keyword |
-| cloud.instance.id | AWS EC2 instance ID. | keyword |
-| cloud.machine.type | AWS EC2 instance machine type. | keyword |
-| cloud.provider | Name of the cloud provider: aws. | keyword |
-| cloud.region | Region in which this AWS service is running. | keyword |
+| cloud.account.id | The cloud account or organization id used to identify different entities in a multi-tenant environment. Examples: AWS account id, Google Cloud ORG Id, or other unique identifier. | keyword |
+| cloud.account.name | The cloud account name or alias used to identify different entities in a multi-tenant environment. Examples: AWS account name, Google Cloud ORG display name. | keyword |
+| cloud.availability_zone | Availability zone in which this host is running. | keyword |
+| cloud.instance.id | Instance ID of the host machine. | keyword |
+| cloud.machine.type | Machine type of the host machine. | keyword |
+| cloud.provider | Name of the cloud provider. Example values are aws, azure, gcp, or digitalocean. | keyword |
+| cloud.region | Region in which this host is running. | keyword |
 
 
 ### ec2
@@ -495,13 +495,13 @@ The fields reported are:
 | aws.ec2.status.check_failed_system | Reports whether the instance has passed the system status check in the last minute. | long |
 | aws.s3.bucket.name | Name of a S3 bucket. | keyword |
 | aws.tags.* | Tag key value pairs from aws resources. | object |
-| cloud.account.id | AWS cloud account ID used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.account.name | AWS cloud account name or alias used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.availability_zone | Availability zone in which this AWS service is running. | keyword |
-| cloud.instance.id | AWS EC2 instance ID. | keyword |
-| cloud.machine.type | AWS EC2 instance machine type. | keyword |
-| cloud.provider | Name of the cloud provider: aws. | keyword |
-| cloud.region | Region in which this AWS service is running. | keyword |
+| cloud.account.id | The cloud account or organization id used to identify different entities in a multi-tenant environment. Examples: AWS account id, Google Cloud ORG Id, or other unique identifier. | keyword |
+| cloud.account.name | The cloud account name or alias used to identify different entities in a multi-tenant environment. Examples: AWS account name, Google Cloud ORG display name. | keyword |
+| cloud.availability_zone | Availability zone in which this host is running. | keyword |
+| cloud.instance.id | Instance ID of the host machine. | keyword |
+| cloud.machine.type | Machine type of the host machine. | keyword |
+| cloud.provider | Name of the cloud provider. Example values are aws, azure, gcp, or digitalocean. | keyword |
+| cloud.region | Region in which this host is running. | keyword |
 
 
 ### elb
@@ -575,13 +575,13 @@ The fields reported are:
 | aws.networkelb.metrics.UnHealthyHostCount.max | The number of targets that are considered unhealthy. | long |
 | aws.s3.bucket.name | Name of a S3 bucket. | keyword |
 | aws.tags.* | Tag key value pairs from aws resources. | object |
-| cloud.account.id | AWS cloud account ID used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.account.name | AWS cloud account name or alias used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.availability_zone | Availability zone in which this AWS service is running. | keyword |
-| cloud.instance.id | AWS EC2 instance ID. | keyword |
-| cloud.machine.type | AWS EC2 instance machine type. | keyword |
-| cloud.provider | Name of the cloud provider: aws. | keyword |
-| cloud.region | Region in which this AWS service is running. | keyword |
+| cloud.account.id | The cloud account or organization id used to identify different entities in a multi-tenant environment. Examples: AWS account id, Google Cloud ORG Id, or other unique identifier. | keyword |
+| cloud.account.name | The cloud account name or alias used to identify different entities in a multi-tenant environment. Examples: AWS account name, Google Cloud ORG display name. | keyword |
+| cloud.availability_zone | Availability zone in which this host is running. | keyword |
+| cloud.instance.id | Instance ID of the host machine. | keyword |
+| cloud.machine.type | Machine type of the host machine. | keyword |
+| cloud.provider | Name of the cloud provider. Example values are aws, azure, gcp, or digitalocean. | keyword |
+| cloud.region | Region in which this host is running. | keyword |
 
 
 ### lambda
@@ -615,13 +615,13 @@ The fields reported are:
 | aws.lambda.metrics.UnreservedConcurrentExecutions.avg | For an AWS Region, the number of events that are being processed by functions that don't have reserved concurrency. | double |
 | aws.s3.bucket.name | Name of a S3 bucket. | keyword |
 | aws.tags.* | Tag key value pairs from aws resources. | object |
-| cloud.account.id | AWS cloud account ID used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.account.name | AWS cloud account name or alias used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.availability_zone | Availability zone in which this AWS service is running. | keyword |
-| cloud.instance.id | AWS EC2 instance ID. | keyword |
-| cloud.machine.type | AWS EC2 instance machine type. | keyword |
-| cloud.provider | Name of the cloud provider: aws. | keyword |
-| cloud.region | Region in which this AWS service is running. | keyword |
+| cloud.account.id | The cloud account or organization id used to identify different entities in a multi-tenant environment. Examples: AWS account id, Google Cloud ORG Id, or other unique identifier. | keyword |
+| cloud.account.name | The cloud account name or alias used to identify different entities in a multi-tenant environment. Examples: AWS account name, Google Cloud ORG display name. | keyword |
+| cloud.availability_zone | Availability zone in which this host is running. | keyword |
+| cloud.instance.id | Instance ID of the host machine. | keyword |
+| cloud.machine.type | Machine type of the host machine. | keyword |
+| cloud.provider | Name of the cloud provider. Example values are aws, azure, gcp, or digitalocean. | keyword |
+| cloud.region | Region in which this host is running. | keyword |
 
 
 ### natgateway
@@ -656,13 +656,13 @@ The fields reported are:
 | aws.natgateway.metrics.PacketsOutToSource.sum | The number of packets sent through the NAT gateway to the clients in your VPC. | long |
 | aws.s3.bucket.name | Name of a S3 bucket. | keyword |
 | aws.tags.* | Tag key value pairs from aws resources. | object |
-| cloud.account.id | AWS cloud account ID used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.account.name | AWS cloud account name or alias used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.availability_zone | Availability zone in which this AWS service is running. | keyword |
-| cloud.instance.id | AWS EC2 instance ID. | keyword |
-| cloud.machine.type | AWS EC2 instance machine type. | keyword |
-| cloud.provider | Name of the cloud provider: aws. | keyword |
-| cloud.region | Region in which this AWS service is running. | keyword |
+| cloud.account.id | The cloud account or organization id used to identify different entities in a multi-tenant environment. Examples: AWS account id, Google Cloud ORG Id, or other unique identifier. | keyword |
+| cloud.account.name | The cloud account name or alias used to identify different entities in a multi-tenant environment. Examples: AWS account name, Google Cloud ORG display name. | keyword |
+| cloud.availability_zone | Availability zone in which this host is running. | keyword |
+| cloud.instance.id | Instance ID of the host machine. | keyword |
+| cloud.machine.type | Machine type of the host machine. | keyword |
+| cloud.provider | Name of the cloud provider. Example values are aws, azure, gcp, or digitalocean. | keyword |
+| cloud.region | Region in which this host is running. | keyword |
 
 
 ### rds
@@ -757,13 +757,13 @@ The fields reported are:
 | aws.rds.write_io.ops_per_sec | The average number of disk write I/O operations per second. | float |
 | aws.s3.bucket.name | Name of a S3 bucket. | keyword |
 | aws.tags.* | Tag key value pairs from aws resources. | object |
-| cloud.account.id | AWS cloud account ID used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.account.name | AWS cloud account name or alias used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.availability_zone | Availability zone in which this AWS service is running. | keyword |
-| cloud.instance.id | AWS EC2 instance ID. | keyword |
-| cloud.machine.type | AWS EC2 instance machine type. | keyword |
-| cloud.provider | Name of the cloud provider: aws. | keyword |
-| cloud.region | Region in which this AWS service is running. | keyword |
+| cloud.account.id | The cloud account or organization id used to identify different entities in a multi-tenant environment. Examples: AWS account id, Google Cloud ORG Id, or other unique identifier. | keyword |
+| cloud.account.name | The cloud account name or alias used to identify different entities in a multi-tenant environment. Examples: AWS account name, Google Cloud ORG display name. | keyword |
+| cloud.availability_zone | Availability zone in which this host is running. | keyword |
+| cloud.instance.id | Instance ID of the host machine. | keyword |
+| cloud.machine.type | Machine type of the host machine. | keyword |
+| cloud.provider | Name of the cloud provider. Example values are aws, azure, gcp, or digitalocean. | keyword |
+| cloud.region | Region in which this host is running. | keyword |
 
 
 ### s3_daily_storage
@@ -786,13 +786,13 @@ The fields reported are:
 | aws.s3_daily_storage.bucket.size.bytes | The amount of data in bytes stored in a bucket. | long |
 | aws.s3_daily_storage.number_of_objects | The total number of objects stored in a bucket for all storage classes. | long |
 | aws.tags.* | Tag key value pairs from aws resources. | object |
-| cloud.account.id | AWS cloud account ID used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.account.name | AWS cloud account name or alias used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.availability_zone | Availability zone in which this AWS service is running. | keyword |
-| cloud.instance.id | AWS EC2 instance ID. | keyword |
-| cloud.machine.type | AWS EC2 instance machine type. | keyword |
-| cloud.provider | Name of the cloud provider: aws. | keyword |
-| cloud.region | Region in which this AWS service is running. | keyword |
+| cloud.account.id | The cloud account or organization id used to identify different entities in a multi-tenant environment. Examples: AWS account id, Google Cloud ORG Id, or other unique identifier. | keyword |
+| cloud.account.name | The cloud account name or alias used to identify different entities in a multi-tenant environment. Examples: AWS account name, Google Cloud ORG display name. | keyword |
+| cloud.availability_zone | Availability zone in which this host is running. | keyword |
+| cloud.instance.id | Instance ID of the host machine. | keyword |
+| cloud.machine.type | Machine type of the host machine. | keyword |
+| cloud.provider | Name of the cloud provider. Example values are aws, azure, gcp, or digitalocean. | keyword |
+| cloud.region | Region in which this host is running. | keyword |
 
 
 ### s3_request
@@ -829,13 +829,13 @@ The fields reported are:
 | aws.s3_request.requests.total | The total number of HTTP requests made to an Amazon S3 bucket, regardless of type. | long |
 | aws.s3_request.uploaded.bytes | The number bytes uploaded that contain a request body, made to an Amazon S3 bucket. | long |
 | aws.tags.* | Tag key value pairs from aws resources. | object |
-| cloud.account.id | AWS cloud account ID used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.account.name | AWS cloud account name or alias used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.availability_zone | Availability zone in which this AWS service is running. | keyword |
-| cloud.instance.id | AWS EC2 instance ID. | keyword |
-| cloud.machine.type | AWS EC2 instance machine type. | keyword |
-| cloud.provider | Name of the cloud provider: aws. | keyword |
-| cloud.region | Region in which this AWS service is running. | keyword |
+| cloud.account.id | The cloud account or organization id used to identify different entities in a multi-tenant environment. Examples: AWS account id, Google Cloud ORG Id, or other unique identifier. | keyword |
+| cloud.account.name | The cloud account name or alias used to identify different entities in a multi-tenant environment. Examples: AWS account name, Google Cloud ORG display name. | keyword |
+| cloud.availability_zone | Availability zone in which this host is running. | keyword |
+| cloud.instance.id | Instance ID of the host machine. | keyword |
+| cloud.machine.type | Machine type of the host machine. | keyword |
+| cloud.provider | Name of the cloud provider. Example values are aws, azure, gcp, or digitalocean. | keyword |
+| cloud.region | Region in which this host is running. | keyword |
 
 
 ### sns
@@ -867,13 +867,13 @@ The fields reported are:
 | aws.sns.metrics.SMSMonthToDateSpentUSD.sum | The charges you have accrued since the start of the current calendar month for sending SMS messages. | long |
 | aws.sns.metrics.SMSSuccessRate.avg | The rate of successful SMS message deliveries. | double |
 | aws.tags.* | Tag key value pairs from aws resources. | object |
-| cloud.account.id | AWS cloud account ID used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.account.name | AWS cloud account name or alias used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.availability_zone | Availability zone in which this AWS service is running. | keyword |
-| cloud.instance.id | AWS EC2 instance ID. | keyword |
-| cloud.machine.type | AWS EC2 instance machine type. | keyword |
-| cloud.provider | Name of the cloud provider: aws. | keyword |
-| cloud.region | Region in which this AWS service is running. | keyword |
+| cloud.account.id | The cloud account or organization id used to identify different entities in a multi-tenant environment. Examples: AWS account id, Google Cloud ORG Id, or other unique identifier. | keyword |
+| cloud.account.name | The cloud account name or alias used to identify different entities in a multi-tenant environment. Examples: AWS account name, Google Cloud ORG display name. | keyword |
+| cloud.availability_zone | Availability zone in which this host is running. | keyword |
+| cloud.instance.id | Instance ID of the host machine. | keyword |
+| cloud.machine.type | Machine type of the host machine. | keyword |
+| cloud.provider | Name of the cloud provider. Example values are aws, azure, gcp, or digitalocean. | keyword |
+| cloud.region | Region in which this host is running. | keyword |
 
 
 ### sqs
@@ -904,13 +904,13 @@ The fields reported are:
 | aws.sqs.queue.name | SQS queue name | keyword |
 | aws.sqs.sent_message_size.bytes | The size of messages added to a queue. | long |
 | aws.tags.* | Tag key value pairs from aws resources. | object |
-| cloud.account.id | AWS cloud account ID used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.account.name | AWS cloud account name or alias used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.availability_zone | Availability zone in which this AWS service is running. | keyword |
-| cloud.instance.id | AWS EC2 instance ID. | keyword |
-| cloud.machine.type | AWS EC2 instance machine type. | keyword |
-| cloud.provider | Name of the cloud provider: aws. | keyword |
-| cloud.region | Region in which this AWS service is running. | keyword |
+| cloud.account.id | The cloud account or organization id used to identify different entities in a multi-tenant environment. Examples: AWS account id, Google Cloud ORG Id, or other unique identifier. | keyword |
+| cloud.account.name | The cloud account name or alias used to identify different entities in a multi-tenant environment. Examples: AWS account name, Google Cloud ORG display name. | keyword |
+| cloud.availability_zone | Availability zone in which this host is running. | keyword |
+| cloud.instance.id | Instance ID of the host machine. | keyword |
+| cloud.machine.type | Machine type of the host machine. | keyword |
+| cloud.provider | Name of the cloud provider. Example values are aws, azure, gcp, or digitalocean. | keyword |
+| cloud.region | Region in which this host is running. | keyword |
 
 
 ### transitgateway
@@ -937,13 +937,13 @@ The fields reported are:
 | aws.transitgateway.metrics.PacketDropCountNoRoute.sum | The number of packets dropped because they did not match a route. | long |
 | aws.transitgateway.metrics.PacketsIn.sum | The number of packets received by the transit gateway. | long |
 | aws.transitgateway.metrics.PacketsOut.sum | The number of packets sent by the transit gateway. | long |
-| cloud.account.id | AWS cloud account ID used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.account.name | AWS cloud account name or alias used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.availability_zone | Availability zone in which this AWS service is running. | keyword |
-| cloud.instance.id | AWS EC2 instance ID. | keyword |
-| cloud.machine.type | AWS EC2 instance machine type. | keyword |
-| cloud.provider | Name of the cloud provider: aws. | keyword |
-| cloud.region | Region in which this AWS service is running. | keyword |
+| cloud.account.id | The cloud account or organization id used to identify different entities in a multi-tenant environment. Examples: AWS account id, Google Cloud ORG Id, or other unique identifier. | keyword |
+| cloud.account.name | The cloud account name or alias used to identify different entities in a multi-tenant environment. Examples: AWS account name, Google Cloud ORG display name. | keyword |
+| cloud.availability_zone | Availability zone in which this host is running. | keyword |
+| cloud.instance.id | Instance ID of the host machine. | keyword |
+| cloud.machine.type | Machine type of the host machine. | keyword |
+| cloud.provider | Name of the cloud provider. Example values are aws, azure, gcp, or digitalocean. | keyword |
+| cloud.region | Region in which this host is running. | keyword |
 
 
 ### usage
@@ -966,13 +966,13 @@ The fields reported are:
 | aws.tags.* | Tag key value pairs from aws resources. | object |
 | aws.usage.metrics.CallCount.sum | The number of specified API operations performed in your account. | long |
 | aws.usage.metrics.ResourceCount.sum | The number of the specified resources running in your account. The resources are defined by the dimensions associated with the metric. | long |
-| cloud.account.id | AWS cloud account ID used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.account.name | AWS cloud account name or alias used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.availability_zone | Availability zone in which this AWS service is running. | keyword |
-| cloud.instance.id | AWS EC2 instance ID. | keyword |
-| cloud.machine.type | AWS EC2 instance machine type. | keyword |
-| cloud.provider | Name of the cloud provider: aws. | keyword |
-| cloud.region | Region in which this AWS service is running. | keyword |
+| cloud.account.id | The cloud account or organization id used to identify different entities in a multi-tenant environment. Examples: AWS account id, Google Cloud ORG Id, or other unique identifier. | keyword |
+| cloud.account.name | The cloud account name or alias used to identify different entities in a multi-tenant environment. Examples: AWS account name, Google Cloud ORG display name. | keyword |
+| cloud.availability_zone | Availability zone in which this host is running. | keyword |
+| cloud.instance.id | Instance ID of the host machine. | keyword |
+| cloud.machine.type | Machine type of the host machine. | keyword |
+| cloud.provider | Name of the cloud provider. Example values are aws, azure, gcp, or digitalocean. | keyword |
+| cloud.region | Region in which this host is running. | keyword |
 
 
 ### vpn
@@ -996,11 +996,11 @@ The fields reported are:
 | aws.vpn.metrics.TunnelDataIn.sum | The bytes received through the VPN tunnel. | double |
 | aws.vpn.metrics.TunnelDataOut.sum | The bytes sent through the VPN tunnel. | double |
 | aws.vpn.metrics.TunnelState.avg | The state of the tunnel. For static VPNs, 0 indicates DOWN and 1 indicates UP. For BGP VPNs, 1 indicates ESTABLISHED and 0 is used for all other states. | double |
-| cloud.account.id | AWS cloud account ID used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.account.name | AWS cloud account name or alias used to identify different entities in a multi-tenant environment. | keyword |
-| cloud.availability_zone | Availability zone in which this AWS service is running. | keyword |
-| cloud.instance.id | AWS EC2 instance ID. | keyword |
-| cloud.machine.type | AWS EC2 instance machine type. | keyword |
-| cloud.provider | Name of the cloud provider: aws. | keyword |
-| cloud.region | Region in which this AWS service is running. | keyword |
+| cloud.account.id | The cloud account or organization id used to identify different entities in a multi-tenant environment. Examples: AWS account id, Google Cloud ORG Id, or other unique identifier. | keyword |
+| cloud.account.name | The cloud account name or alias used to identify different entities in a multi-tenant environment. Examples: AWS account name, Google Cloud ORG display name. | keyword |
+| cloud.availability_zone | Availability zone in which this host is running. | keyword |
+| cloud.instance.id | Instance ID of the host machine. | keyword |
+| cloud.machine.type | Machine type of the host machine. | keyword |
+| cloud.provider | Name of the cloud provider. Example values are aws, azure, gcp, or digitalocean. | keyword |
+| cloud.region | Region in which this host is running. | keyword |
 

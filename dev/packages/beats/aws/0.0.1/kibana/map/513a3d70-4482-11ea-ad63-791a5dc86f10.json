@@ -59,24 +59,18 @@
                     "geoField": "destination.geo.location",
                     "id": "97903038-e08d-4451-bbd2-eb92c894bdf5",
                     "indexPatternRefName": "layer_1_source_index_pattern",
-                    "scalingType": "LIMIT",
                     "sortField": "@timestamp",
                     "sortOrder": "desc",
                     "tooltipProperties": [],
                     "topHitsSize": 1,
-                    "type": "ES_SEARCH"
+                    "type": "ES_SEARCH",
+                    "useTopHits": false
                 },
                 "style": {
                     "properties": {
                         "fillColor": {
                             "options": {
                                 "color": "#1EA593"
-                            },
-                            "type": "STATIC"
-                        },
-                        "icon": {
-                            "options": {
-                                "value": "airfield"
                             },
                             "type": "STATIC"
                         },
@@ -104,9 +98,10 @@
                             },
                             "type": "STATIC"
                         },
-                        "symbolizeAs": {
+                        "symbol": {
                             "options": {
-                                "value": "circle"
+                                "symbolId": "airfield",
+                                "symbolizeAs": "circle"
                             }
                         }
                     },
@@ -131,24 +126,18 @@
                     "geoField": "source.geo.location",
                     "id": "9c0e7cce-4f21-4bcd-bb50-ae36c0fffffb",
                     "indexPatternRefName": "layer_2_source_index_pattern",
-                    "scalingType": "LIMIT",
                     "sortField": "@timestamp",
                     "sortOrder": "desc",
                     "tooltipProperties": [],
                     "topHitsSize": 1,
-                    "type": "ES_SEARCH"
+                    "type": "ES_SEARCH",
+                    "useTopHits": false
                 },
                 "style": {
                     "properties": {
                         "fillColor": {
                             "options": {
                                 "color": "#f00f0b"
-                            },
-                            "type": "STATIC"
-                        },
-                        "icon": {
-                            "options": {
-                                "value": "airfield"
                             },
                             "type": "STATIC"
                         },
@@ -176,9 +165,10 @@
                             },
                             "type": "STATIC"
                         },
-                        "symbolizeAs": {
+                        "symbol": {
                             "options": {
-                                "value": "circle"
+                                "symbolId": "airfield",
+                                "symbolizeAs": "circle"
                             }
                         }
                     },

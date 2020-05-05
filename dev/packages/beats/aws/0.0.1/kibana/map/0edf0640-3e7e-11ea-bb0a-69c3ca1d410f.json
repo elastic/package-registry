@@ -75,12 +75,6 @@
                             },
                             "type": "DYNAMIC"
                         },
-                        "icon": {
-                            "options": {
-                                "value": "airfield"
-                            },
-                            "type": "STATIC"
-                        },
                         "iconOrientation": {
                             "options": {
                                 "orientation": 0
@@ -115,9 +109,10 @@
                             },
                             "type": "STATIC"
                         },
-                        "symbolizeAs": {
+                        "symbol": {
                             "options": {
-                                "value": "circle"
+                                "symbolId": "airfield",
+                                "symbolizeAs": "circle"
                             }
                         }
                     },
