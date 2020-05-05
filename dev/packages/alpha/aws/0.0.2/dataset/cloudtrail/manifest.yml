@@ -12,7 +12,7 @@ streams:
     type: text
     title: Queue Url
     multi: false
-    required: false
+    required: true
     show_user: true
   - name: shared_credential_file
     type: text
