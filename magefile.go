@@ -38,6 +38,11 @@ var (
 
 func Build() error {
 
+	packagePathsEnv := os.Getenv("PACKAGE_PATHS")
+	if packagePathsEnv != "" {
+		packagePaths = strings.Split(packagePathsEnv, ",")
+	}
+
 	err := os.RemoveAll(publicDir)
 	if err != nil {
 		return err
