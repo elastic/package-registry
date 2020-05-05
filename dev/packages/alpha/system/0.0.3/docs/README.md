@@ -103,7 +103,7 @@ This metricset is available on:
 | system.cpu.user.ticks | The amount of CPU time spent in user space. | long |
 
 
-### diskio
+### Diskio
 
 The System `diskio` metricset provides disk IO metrics collected from the
 operating system. One event is created for each disk mounted on the system.
@@ -143,7 +143,7 @@ This metricset is available on:
 | system.diskio.write.time | The total number of milliseconds spent by all writes. | long |
 
 
-### entropy
+### Entropy
 
 This is the entropy metricset of the module system. 
 It collects the amount of available entropy in bits. On kernel versions greater than 2.6, 
@@ -161,7 +161,7 @@ This Metricset is available on:
 | system.entropy.pct | The percentage of available entropy, relative to the pool size of 4096 | scaled_float |
 
 
-### filesystem
+### Filesystem
 
 The System `filesystem` metricset provides file system statistics. For each file
 system, one document is provided.
@@ -190,7 +190,7 @@ This metricset is available on:
 | system.filesystem.used.pct | The percentage of used disk space. | scaled_float |
 
 
-### fsstat
+### Fsstat
 
 The System `fsstat` metricset provides overall file system statistics.
 
@@ -213,7 +213,7 @@ This metricset is available on:
 | system.fsstat.total_size.used | Total used space. | long |
 
 
-### load
+### Load
 
 The System `load` metricset provides load statistics.
 
@@ -237,7 +237,7 @@ This metricset is available on:
 | system.load.norm.5 | Load for the last 5 minutes divided by the number of cores. | scaled_float |
 
 
-### memory
+### Memory
 
 The System `memory` metricset provides memory statistics.
 
@@ -286,7 +286,7 @@ This metricset is available on:
 | system.memory.used.pct | The percentage of used memory. | scaled_float |
 
 
-### network
+### Network
 
 The System `network` metricset provides network IO metrics collected from the
 operating system. One event is created for each network interface.
@@ -313,7 +313,7 @@ This metricset is available on:
 | system.network.out.packets | The number of packets sent. | long |
 
 
-### network_summary
+### Network_summary
 
 The System `network_summary` metricset provides network IO metrics collected from the
 operating system. These events are global and sorted by protocol.
@@ -333,7 +333,7 @@ This metricset is available on:
 | system.network_summary.udp_lite.* | UDP Lite counters | object |
 
 
-### process
+### Process
 
 The System `process` metricset provides process statistics. One document is
 provided for each process.
@@ -430,7 +430,7 @@ This metricset is available on:
 | user.name | Short name or login of the user. | keyword |
 
 
-### process_summary
+### Process_summary
 
 The `process_summary` metricset collects high level statistics about the running
 processes.
@@ -481,7 +481,7 @@ This metricset is available on:
 | system.raid.sync_action | Current sync action, if the RAID array is redundant | keyword |
 
 
-### service
+### Service
 
 The `service` metricset reports on the status of systemd services.
 
@@ -508,7 +508,7 @@ This metricset is available on:
 | system.service.sub_state | The sub-state of the service | keyword |
 
 
-### socket
+### Socket
 
 This metricset is available on Linux only and requires kernel 2.6.14 or newer.
 
@@ -539,7 +539,7 @@ missing short-lived connections.
 | user.id | Unique identifier of the user. | keyword |
 
 
-### socket_summary
+### Socket_summary
 
 The System `socket_summary` metricset provides the summary of open network
 sockets in the host system.
@@ -577,7 +577,7 @@ This metricset is available on:
 | system.socket.summary.udp.memory | Memory used by UDP sockets in bytes, based on number of allocated pages and system page size. Corresponds to limits set in /proc/sys/net/ipv4/udp_mem. Only available on Linux. | integer |
 
 
-### uptime
+### Uptime
 
 The System `uptime` metricset provides the uptime of the host operating system.
 
@@ -596,7 +596,7 @@ This metricset is available on:
 | system.uptime.duration.ms | The OS uptime in milliseconds. | long |
 
 
-### users
+### Users
 
 The system/users metricset reports logged in users and associated sessions via dbus and logind, which is a systemd component. By default, the metricset will look in `/var/run/dbus/` for a system socket, although a new path can be selected with `DBUS_SYSTEM_BUS_ADDRESS`.
 
