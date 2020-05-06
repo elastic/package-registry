@@ -58,13 +58,5 @@ streams:
     show_user: true
     default:
     - us-west-1
-  - name: regions
-    type: text
-    title: Regions
-    multi: true
-    required: false
-    show_user: true
-    default:
-      - us-east-1
   title: aws sqs metrics
   description: Collect aws sqs metrics

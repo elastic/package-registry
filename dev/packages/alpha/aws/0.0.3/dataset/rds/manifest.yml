@@ -53,7 +53,7 @@ streams:
   - name: tags_filter
     type: yaml
     title: Tags Filter
-    multi: false
+    multi: true
     required: false
     show_user: true
     default: |

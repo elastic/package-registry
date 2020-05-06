@@ -7,7 +7,7 @@ streams:
   - name: metrics
     type: yaml
     title: Metrics
-    multi: false
+    multi: true
     required: true
     show_user: true
     default: |
