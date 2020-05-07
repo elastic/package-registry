@@ -19,5 +19,14 @@ streams:
     show_user: true
     default:
       - us-east-1
+  - name: tags_filter
+    type: yaml
+    title: Tags Filter
+    multi: false
+    required: false
+    show_user: true
+    default: |
+      - key: "created-by"
+        value: "foo"
   title: aws rds metrics
   description: Collect aws rds metrics

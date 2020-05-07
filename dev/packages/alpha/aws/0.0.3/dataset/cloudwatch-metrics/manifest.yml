@@ -19,5 +19,13 @@ streams:
     show_user: true
     default:
       - us-east-1
+  - name: metrics
+    type: yaml
+    title: Metrics
+    multi: false
+    required: true
+    show_user: true
+    default: |
+      - namespace: AWS/EC2
   title: aws cloudwatch metrics
   description: Collect aws cloudwatch metrics
