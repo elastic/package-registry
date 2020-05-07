@@ -4,45 +4,6 @@ type: metrics
 streams:
 - input: aws/metrics
   vars:
-  - name: access_key_id
-    type: text
-    title: Access Key Id
-    multi: false
-    required: false
-    show_user: true
-    default: ${AWS_ACCESS_KEY_ID:""}
-  - name: secret_access_key
-    type: text
-    title: Secret Access Key
-    multi: false
-    required: false
-    show_user: true
-    default: ${AWS_SECRET_ACCESS_KEY:""}
-  - name: session_token
-    type: text
-    title: Session Token
-    multi: false
-    required: false
-    show_user: true
-    default: ${AWS_SESSION_TOKEN:""}
-  - name: shared_credential_file
-    type: text
-    title: Shared Credential File
-    multi: false
-    required: false
-    show_user: true
-  - name: credential_profile_name
-    type: text
-    title: Credential Profile Name
-    multi: false
-    required: false
-    show_user: true
-  - name: role_arn
-    type: text
-    title: Role Arn
-    multi: false
-    required: false
-    show_user: true
   - name: period
     type: text
     title: Period
@@ -50,13 +11,5 @@ streams:
     required: true
     show_user: true
     default: 12h
-  - name: regions
-    type: text
-    title: Regions
-    multi: true
-    required: false
-    show_user: true
-    default:
-    - us-east-1
   title: aws billing metrics
   description: Collect aws billing metrics
