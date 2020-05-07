@@ -135,6 +135,10 @@ datasources:
     description: Collecting aws cloudtrail, cloudwatch, ec2, elb, s3access and vpcflow
       logs
   - type: aws/metrics
+    title: Collect metrics from aws instances
+    description: Collecting aws billing, cloudwatch, dynamodb, ebs, ec2, elb, lambda,
+      natgateway, rds, s3_daily_storage, s3_request, sns, sqs, transitgateway, usage
+      and vpn metrics
     vars:
     - name: aws_access_key_id
       type: text
@@ -171,7 +175,3 @@ datasources:
       required: false
       show_user: true
       default: ""
-    title: Collect metrics from aws instances
-    description: Collecting aws billing, cloudwatch, dynamodb, ebs, ec2, elb, lambda,
-      natgateway, rds, s3_daily_storage, s3_request, sns, sqs, transitgateway, usage
-      and vpn metrics

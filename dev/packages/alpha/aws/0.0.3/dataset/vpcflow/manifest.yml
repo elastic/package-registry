@@ -2,7 +2,7 @@ title: AWS vpcflow logs
 release: beta
 type: logs
 streams:
-- input: s3
+- input: logs
   vars:
   - name: queue_url
     type: text
@@ -19,24 +19,6 @@ streams:
   - name: credential_profile_name
     type: text
     title: Credential Profile Name
-    multi: false
-    required: false
-    show_user: true
-  - name: visibility_timeout
-    type: text
-    title: Visibility Timeout
-    multi: false
-    required: false
-    show_user: true
-  - name: api_timeout
-    type: text
-    title: Api Timeout
-    multi: false
-    required: false
-    show_user: true
-  - name: endpoint
-    type: text
-    title: Endpoint
     multi: false
     required: false
     show_user: true
@@ -64,10 +46,24 @@ streams:
     multi: false
     required: false
     show_user: true
+  - name: visibility_timeout
+    type: text
+    title: Visibility Timeout
+    multi: false
+    required: false
+    show_user: true
+  - name: api_timeout
+    type: text
+    title: Api Timeout
+    multi: false
+    required: false
+    show_user: true
+  - name: endpoint
+    type: text
+    title: Endpoint
+    multi: false
+    required: false
+    show_user: true
   template_path: s3.yml.hbs
   title: AWS vpcflow logs (s3)
   description: Collect AWS vpcflow logs using s3 input
-- input: logs
-  template_path: log.yml.hbs
-  title: AWS vpcflow logs (log)
-  description: Collect AWS vpcflow logs using log input

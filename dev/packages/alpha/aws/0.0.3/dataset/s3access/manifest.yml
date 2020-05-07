@@ -3,10 +3,6 @@ release: beta
 type: logs
 streams:
 - input: logs
-  template_path: log.yml.hbs
-  title: AWS s3access logs (log)
-  description: Collect AWS s3access logs using log input
-- input: s3
   vars:
   - name: queue_url
     type: text
@@ -23,24 +19,6 @@ streams:
   - name: credential_profile_name
     type: text
     title: Credential Profile Name
-    multi: false
-    required: false
-    show_user: true
-  - name: visibility_timeout
-    type: text
-    title: Visibility Timeout
-    multi: false
-    required: false
-    show_user: true
-  - name: api_timeout
-    type: text
-    title: Api Timeout
-    multi: false
-    required: false
-    show_user: true
-  - name: endpoint
-    type: text
-    title: Endpoint
     multi: false
     required: false
     show_user: true
@@ -65,6 +43,24 @@ streams:
   - name: role_arn
     type: text
     title: Role Arn
+    multi: false
+    required: false
+    show_user: true
+  - name: visibility_timeout
+    type: text
+    title: Visibility Timeout
+    multi: false
+    required: false
+    show_user: true
+  - name: api_timeout
+    type: text
+    title: Api Timeout
+    multi: false
+    required: false
+    show_user: true
+  - name: endpoint
+    type: text
+    title: Endpoint
     multi: false
     required: false
     show_user: true
