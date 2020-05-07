@@ -1,4 +1,3 @@
-input: log
 paths:
 {{#each paths}}
   - {{this}}
@@ -10,4 +9,5 @@ processors:
   - script:
       lang: javascript
       id: cisco_ios
-      file: ${path.home}/module/cisco/ios/config/pipeline.js
+      source: >
+{{ file("pipeline.js") | indent(8) }}
