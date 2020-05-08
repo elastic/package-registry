@@ -1,3 +1,8 @@
+# github.com/aymerick/raymond v2.0.2+incompatible
+github.com/aymerick/raymond
+github.com/aymerick/raymond/ast
+github.com/aymerick/raymond/lexer
+github.com/aymerick/raymond/parser
 # github.com/blang/semver v3.5.1+incompatible
 github.com/blang/semver
 # github.com/davecgh/go-spew v1.1.0

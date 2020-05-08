@@ -3,6 +3,7 @@ module github.com/elastic/package-registry
 go 1.12
 
 require (
+	github.com/aymerick/raymond v2.0.2+incompatible
 	github.com/blang/semver v3.5.1+incompatible
 	github.com/elastic/go-ucfg v0.8.4-0.20200415140258-1232bd4774a6
 	github.com/gorilla/mux v1.7.4
