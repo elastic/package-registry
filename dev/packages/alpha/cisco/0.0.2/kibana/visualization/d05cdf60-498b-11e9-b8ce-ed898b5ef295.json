@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "ASA Firewall Blocked by Source [Filebeat Cisco]",
+        "title": "ASA Firewall Blocked by Source [Cisco]",
         "uiStateJSON": {
             "vis": {
                 "params": {
@@ -62,7 +62,7 @@
                 },
                 "totalFunc": "sum"
             },
-            "title": "ASA Firewall Blocked by Source [Filebeat Cisco]",
+            "title": "ASA Firewall Blocked by Source [Cisco]",
             "type": "table"
         }
     },

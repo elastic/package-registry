@@ -11,7 +11,7 @@
             }
         },
         "savedSearchRefName": "search_0",
-        "title": "ASA Flows by Network Bytes [Filebeat Cisco]",
+        "title": "ASA Flows by Network Bytes [Cisco]",
         "uiStateJSON": {},
         "version": 1,
         "visState": {
@@ -110,7 +110,7 @@
                     }
                 ]
             },
-            "title": "ASA Flows by Network Bytes [Filebeat Cisco]",
+            "title": "ASA Flows by Network Bytes [Cisco]",
             "type": "histogram"
         }
     },
