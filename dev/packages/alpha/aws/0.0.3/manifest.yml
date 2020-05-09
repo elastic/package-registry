@@ -137,34 +137,32 @@ datasources:
     vars:
     - name: queue_url
       type: text
-      title: Queue Url
+      title: Queue URL
       multi: false
       required: true
       show_user: true
+      description: URL of the AWS SQS queue that messages will be received from.
     - name: visibility_timeout
       type: text
       title: Visibility Timeout
       multi: false
       required: false
-      show_user: true
+      show_user: false
+      description: The duration that the received messages are hidden from subsequent retrieve requests after being retrieved by a ReceiveMessage request.  The maximum is 12 hours.
     - name: api_timeout
       type: text
-      title: Api Timeout
+      title: API Timeout
       multi: false
       required: false
-      show_user: true
-    - name: endpoint
-      type: text
-      title: Endpoint
-      multi: false
-      required: false
-      show_user: true
+      show_user: false
+      description: The maximum duration of AWS API can take. The maximum is half of the visibility timeout value.
     - name: shared_credential_file
       type: text
       title: Shared Credential File
       multi: false
       required: false
-      show_user: true
+      show_user: false
+      description: Directory of the shared credentials file.
     - name: credential_profile_name
       type: text
       title: Credential Profile Name
@@ -173,61 +171,69 @@ datasources:
       show_user: true
     - name: access_key_id
       type: text
-      title: Access Key Id
+      title: Access Key ID
       multi: false
       required: false
-      show_user: true
+      show_user: false
     - name: secret_access_key
       type: text
       title: Secret Access Key
       multi: false
       required: false
-      show_user: true
+      show_user: false
     - name: session_token
       type: text
       title: Session Token
       multi: false
       required: false
-      show_user: true
+      show_user: false
     - name: role_arn
       type: text
-      title: Role Arn
+      title: Role ARN
       multi: false
       required: false
-      show_user: true
+      show_user: false
+    - name: endpoint
+      type: text
+      title: Endpoint
+      multi: false
+      required: false
+      show_user: false
+      default: "amazonaws.com"
+      description: URL of the entry point for an AWS web service.
   - type: aws/metrics
-    title: Collect metrics from aws instances
+    title: Collect metrics from AWS instances
     description: Collecting aws billing, cloudwatch, dynamodb, ebs, ec2, elb, lambda,
       natgateway, rds, s3_daily_storage, s3_request, sns, sqs, transitgateway, usage
       and vpn metrics
     vars:
-    - name: aws_access_key_id
+    - name: access_key_id
       type: text
-      title: Aws Access Key Id
+      title: Access Key ID
       multi: false
       required: false
-      show_user: true
+      show_user: false
       default: ""
-    - name: aws_secret_access_key
+    - name: secret_access_key
       type: text
-      title: Aws Secret Access Key
+      title: Secret Access Key
       multi: false
       required: false
-      show_user: true
+      show_user: false
       default: ""
-    - name: aws_session_token
+    - name: session_token
       type: text
-      title: Aws Session Token
+      title: Session Token
       multi: false
       required: false
-      show_user: true
+      show_user: false
       default: ""
     - name: shared_credential_file
       type: text
       title: Shared Credential File
       multi: false
       required: false
-      show_user: true
+      show_user: false
       default: ""
     - name: credential_profile_name
       type: text
@@ -238,8 +244,16 @@ datasources:
       default: ""
     - name: role_arn
       type: text
-      title: Role Arn
+      title: Role ARN
       multi: false
       required: false
-      show_user: true
+      show_user: false
       default: ""
+    - name: endpoint
+      type: text
+      title: Endpoint
+      multi: false
+      required: false
+      show_user: false
+      default: "amazonaws.com"
+      description: URL of the entry point for an AWS web service.

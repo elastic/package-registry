@@ -4,5 +4,5 @@ type: logs
 streams:
 - input: logs
   template_path: s3.yml.hbs
-  title: AWS vpcflow logs (s3)
+  title: AWS vpcflow logs
   description: Collect AWS vpcflow logs using s3 input

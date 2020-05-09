@@ -1,4 +1,4 @@
-title: aws sqs metrics
+title: AWS SQS metrics
 release: beta
 type: metrics
 streams:
@@ -19,5 +19,5 @@ streams:
     show_user: true
     default:
     - us-west-1
-  title: aws sqs metrics
-  description: Collect aws sqs metrics
+  title: AWS SQS metrics
+  description: Collect AWS SQS metrics

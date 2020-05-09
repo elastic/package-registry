@@ -1,4 +1,4 @@
-title: aws usage metrics
+title: AWS usage metrics
 release: beta
 type: metrics
 streams:
@@ -19,5 +19,5 @@ streams:
     show_user: true
     default:
       - us-east-1
-  title: aws usage metrics
-  description: Collect aws usage metrics
+  title: AWS usage metrics
+  description: Collect AWS usage metrics

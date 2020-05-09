@@ -1,4 +1,4 @@
-title: aws cloudwatch metrics
+title: AWS CloudWatch metrics
 release: beta
 type: metrics
 streams:
@@ -40,5 +40,5 @@ streams:
         tags:
           - key: created-by
             value: foo
-  title: aws cloudwatch metrics
-  description: Collect aws cloudwatch metrics
+  title: AWS CloudWatch metrics
+  description: Collect AWS CloudWatch metrics

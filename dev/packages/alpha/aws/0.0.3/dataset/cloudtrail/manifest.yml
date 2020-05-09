@@ -1,8 +1,8 @@
-title: AWS cloudtrail logs
+title: AWS CloudTrail logs
 release: beta
 type: logs
 streams:
 - input: logs
   template_path: s3.yml.hbs
-  title: AWS cloudtrail logs (s3)
-  description: Collect AWS cloudtrail logs using s3 input
+  title: AWS CloudTrail logs
+  description: Collect AWS CloudTrail logs using s3 input

@@ -1,4 +1,4 @@
-title: aws dynamodb metrics
+title: AWS DynamoDB metrics
 release: beta
 type: metrics
 streams:
@@ -24,9 +24,9 @@ streams:
     title: Tags Filter
     multi: false
     required: false
-    show_user: true
+    show_user: false
     default: |
       - key: "created-by"
         value: "foo"
-  title: aws dynamodb metrics
-  description: Collect aws dynamodb metrics
+  title: AWS DynamoDB metrics
+  description: Collect AWS DynamoDB metrics

@@ -1,4 +1,4 @@
-title: aws billing metrics
+title: AWS billing metrics
 release: beta
 type: metrics
 streams:
@@ -11,5 +11,5 @@ streams:
     required: true
     show_user: true
     default: 12h
-  title: aws billing metrics
-  description: Collect aws billing metrics
+  title: AWS Billing metrics
+  description: Collect AWS billing metrics

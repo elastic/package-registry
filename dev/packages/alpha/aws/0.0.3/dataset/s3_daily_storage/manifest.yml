@@ -1,4 +1,4 @@
-title: aws s3_daily_storage metrics
+title: AWS S3 daily storage metrics
 release: beta
 type: metrics
 streams:
@@ -19,5 +19,5 @@ streams:
     show_user: true
     default:
       - us-east-1
-  title: aws s3_daily_storage metrics
-  description: Collect aws s3_daily_storage metrics
+  title: AWS S3 daily storage metrics
+  description: Collect AWS S3 daily storage metrics

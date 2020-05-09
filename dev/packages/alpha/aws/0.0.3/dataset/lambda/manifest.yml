@@ -1,4 +1,4 @@
-title: aws lambda metrics
+title: AWS Lambda metrics
 release: beta
 type: metrics
 streams:
@@ -24,9 +24,9 @@ streams:
     title: Tags Filter
     multi: false
     required: false
-    show_user: true
+    show_user: false
     default: |
       - key: "created-by"
         value: "foo"
-  title: aws lambda metrics
-  description: Collect aws lambda metrics
+  title: AWS Lambda metrics
+  description: Collect AWS Lambda metrics

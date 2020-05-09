@@ -1,4 +1,4 @@
-title: aws rds metrics
+title: AWS RDS metrics
 release: beta
 type: metrics
 streams:
@@ -24,9 +24,9 @@ streams:
     title: Tags Filter
     multi: false
     required: false
-    show_user: true
+    show_user: false
     default: |
       - key: "created-by"
         value: "foo"
-  title: aws rds metrics
-  description: Collect aws rds metrics
+  title: AWS RDS metrics
+  description: Collect AWS RDS metrics

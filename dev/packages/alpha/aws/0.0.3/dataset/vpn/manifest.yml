@@ -1,4 +1,4 @@
-title: aws vpn metrics
+title: AWS VPN metrics
 release: beta
 type: metrics
 streams:
@@ -24,9 +24,9 @@ streams:
     title: Tags Filter
     multi: false
     required: false
-    show_user: true
+    show_user: false
     default: |
       - key: "created-by"
         value: "foo"
-  title: aws vpn metrics
-  description: Collect aws vpn metrics
+  title: AWS VPN metrics
+  description: Collect AWS VPN metrics

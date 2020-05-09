@@ -1,4 +1,4 @@
-title: aws transitgateway metrics
+title: AWS Transit Gateway metrics
 release: beta
 type: metrics
 streams:
@@ -19,5 +19,5 @@ streams:
     show_user: true
     default:
       - us-east-1
-  title: aws transitgateway metrics
-  description: Collect aws transitgateway metrics
+  title: AWS Transit Gateway metrics
+  description: Collect AWS Transit Gateway metrics

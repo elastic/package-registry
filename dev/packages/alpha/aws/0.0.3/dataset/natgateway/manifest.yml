@@ -1,4 +1,4 @@
-title: aws natgateway metrics
+title: AWS NAT gateway metrics
 release: beta
 type: metrics
 streams:
@@ -19,5 +19,5 @@ streams:
     show_user: true
     default:
       - us-east-1
-  title: aws natgateway metrics
-  description: Collect aws natgateway metrics
+  title: AWS NAT gateway metrics
+  description: Collect AWS NAT gateway metrics
