@@ -50,6 +50,14 @@ datasources:
         show_user: true
         default:
           - 'localhost:9092'
+      - name: jolokia_hosts
+        type: text
+        title: Address of Jolokia agents installed in Kafka (required for some metricsets)
+        multi: true
+        required: false
+        show_user: true
+        default:
+          - 'localhost:8778'
       - name: period
         type: text
         title: Period
