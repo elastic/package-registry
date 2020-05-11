@@ -34,11 +34,11 @@ streams:
         statistic:
           - Average
           - Maximum
-        dimensions:
-          - name: InstanceId
-            value: i-123456
-        tags:
-          - key: created-by
-            value: foo
+        # dimensions:
+         # - name: InstanceId
+            # value: i-123456
+        # tags:
+          # - key: created-by
+            # value: foo
   title: AWS CloudWatch metrics
   description: Collect AWS CloudWatch metrics

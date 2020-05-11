@@ -26,7 +26,7 @@ streams:
     required: false
     show_user: false
     default: |
-      - key: "created-by"
-        value: "foo"
+      # - key: "created-by"
+        # value: "foo"
   title: AWS EC2 metrics
   description: Collect AWS EC2 metrics
