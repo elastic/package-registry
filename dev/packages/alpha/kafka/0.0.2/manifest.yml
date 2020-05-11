@@ -50,11 +50,44 @@ datasources:
         show_user: true
         default:
           - 'localhost:9092'
-      - name: jolokia_hosts
+      - name: period
         type: text
-        title: Address of Jolokia agents installed in Kafka (required for some metricsets)
+        title: Period
+        required: true
+        show_user: true
+        default: 10s
+      - name: topics
+        type: text
+        title: List of topics to query metrics for
         multi: true
-        required: false
+        show_user: true
+      - name: username
+        type: text
+        title: SASL username
+      - name: password
+        type: password
+        title: SASL password
+      # TODO: Template for common SSL options?
+      - name: ssl.certificate_authorities
+        type: text  # TODO: Add a "path" type so it helps in UI?
+        multi: true
+        show_user: true
+      - name: ssl.certificate
+        type: text  # TODO: Add a "path" type so it helps in UI?
+        show_user: true
+      - name: ssl.key
+        type: text  # TODO: Add a "path" type so it helps in UI?
+        show_user: true
+  - type: kafka_jolokia/metrics
+    title: Collect Jolokia metrics from Kafka instances
+    description: Collecting Kafka broker, consumer, consumergroup, partition and producer
+      metrics
+    vars:
+      - name: hosts
+        type: text
+        title: Address of Jolokia agents installed in Kafka
+        multi: true
+        required: true
         show_user: true
         default:
           - 'localhost:8778'
@@ -64,6 +97,12 @@ datasources:
         required: true
         show_user: true
         default: 10s
+      - name: username
+        type: text
+        title: Basic authentication username
+      - name: password
+        type: password
+        title: Basic authentication password
       # TODO: Template for common SSL options?
       - name: ssl.certificate_authorities
         type: text  # TODO: Add a "path" type so it helps in UI?
