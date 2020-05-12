@@ -40,11 +40,12 @@ RUN mv package-registry /registry/
 RUN mv config.yml /registry/
 RUN mv public /registry/
 
-# Clean up files not needed
-RUN rm -rf /home/package-storage
-
 # Change to new working directory
 WORKDIR /registry
+
+# Clean up files not needed
+RUN rm -rf /home/package-registry
+RUN rm -rf /home/package-storage
 
 EXPOSE 8080
 
