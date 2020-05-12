@@ -32,7 +32,7 @@ var (
 
 	publicDir    = "./public"
 	buildDir     = "./build"
-	packagePaths = []string{"./dev/packages/alpha/", "./dev/packages/example/"}
+	packagePaths = []string{"./dev/packages/storage/", "./dev/packages/example/"}
 	tarGz        = true
 )
 
