@@ -6,23 +6,12 @@ FROM golang:${GO_VERSION}
 # Get dependencies
 RUN \
     apt-get update \
-      && apt-get install -y --no-install-recommends \
-         zip rsync \
+      && apt-get install -y --no-install-recommends zip rsync \
       && rm -rf /var/lib/apt/lists/*
-
-# Check out package storage
-WORKDIR /home
-RUN git clone https://github.com/elastic/package-storage.git
-WORKDIR /home/package-storage
-ARG PACKAGE_STORAGE_REVISION=master
-RUN git checkout ${PACKAGE_STORAGE_REVISION}
-LABEL package-storage-revision=${PACKAGE_STORAGE_REVISION}
 
 # Copy the package registry
 COPY ./ /home/package-registry
 WORKDIR /home/package-registry
-RUN mkdir -p /home/package-registry/dev/packages/storage
-RUN rsync -av /home/package-storage/packages/ /home/package-registry/dev/packages/storage
 
 ENV GO111MODULE=on
 RUN go mod vendor
@@ -45,7 +34,6 @@ WORKDIR /registry
 
 # Clean up files not needed
 RUN rm -rf /home/package-registry
-RUN rm -rf /home/package-storage
 
 EXPOSE 8080
 
