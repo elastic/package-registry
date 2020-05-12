@@ -2,6 +2,6 @@ title: Kafka consumer metrics
 release: experimental
 type: metrics
 streams:
-- input: kafka_jolokia/metrics
+- input: kafka/metrics
   title: Kafka consumer metrics
   description: Collect Kafka consumer metrics
