@@ -33,7 +33,7 @@ var (
 	publicDir      = "./public"
 	buildDir       = "./build"
 	storageDir     = "./dev/packages/storage"
-	storageRepoDir = "./.package-storage"
+	storageRepoDir = filepath.Join(buildDir, ".package-storage")
 	packagePaths   = []string{storageDir, "./dev/packages/example/"}
 	tarGz          = true
 )
@@ -100,7 +100,11 @@ func fetchPackageStorage() error {
 		packageStorageRevision = "master"
 	}
 
-	err = sh.Run("git", "--git-dir", filepath.Join(storageRepoDir, ".git"), "checkout", packageStorageRevision)
+	err = sh.Run("git",
+		"--git-dir", filepath.Join(storageRepoDir, ".git"),
+		"--work-tree", storageRepoDir,
+		"checkout",
+		packageStorageRevision)
 	if err != nil {
 		return err
 	}
@@ -261,12 +265,7 @@ func Clean() error {
 	if err != nil {
 		return err
 	}
-
-	err = os.RemoveAll(storageDir)
-	if err != nil {
-		return err
-	}
-	return os.Remove("package-registry")
+	return os.RemoveAll("package-registry")
 }
 
 func Vendor() error {
