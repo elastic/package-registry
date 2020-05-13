@@ -1,0 +1,44 @@
+format_version: 1.0.0
+name: kafka_java_producer
+title: Kafka Java producer
+version: 0.0.2
+license: basic
+description: Kafka Integration for Java producers
+type: integration
+categories:
+- metrics
+release: beta
+removable: true
+requirement:
+  kibana:
+    versions: '>=7.3.0 <8.0.0'
+  elasticsearch:
+    versions: '>7.0.1'
+icons:
+- src: /img/logo_kafka.svg
+  title: logo kafka
+  size: 32x32
+  type: image/svg+xml
+datasources:
+- name: kafka_java_producer
+  title: Kafka metrics from Java producers
+  description: Collect metrics from Kafka Java producers using Jolokia
+  inputs:
+  - type: kafka/metrics
+    title: Collect metrics from Kafka Java producers
+    description: Collecting Kafka producer metrics using Jolokia
+    vars:
+      - name: hosts
+        type: text
+        title: Address of Jolokia agent
+        multi: true
+        required: true
+        show_user: true
+        default:
+          - 'localhost:8778'
+      - name: period
+        type: text
+        title: Period
+        required: true
+        show_user: true
+        default: 10s

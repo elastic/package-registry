@@ -32,15 +32,14 @@ icons:
 datasources:
 - name: kafka
   title: Kafka logs and metrics
-  description: Collect logs and metrics from Kafka instances
+  description: Collect logs and metrics from Kafka brokers
   inputs:
   - type: logs
-    title: Collect logs from Kafka instances
+    title: Collect logs from Kafka brokers
     description: Collecting Kafka log logs
   - type: kafka/metrics
-    title: Collect metrics from Kafka instances
-    description: Collecting Kafka broker, consumer, consumergroup, partition and producer
-      metrics
+    title: Collect metrics from Kafka brokers
+    description: Collecting Kafka broker, consumergroup and partition metrics
     vars:
       - name: hosts
         type: text
@@ -50,14 +49,6 @@ datasources:
         show_user: true
         default:
           - 'localhost:9092'
-      - name: jolokia_hosts
-        type: text
-        title: Address of Jolokia agents installed in Kafka (required for some metricsets)
-        multi: true
-        required: false
-        show_user: true
-        default:
-          - 'localhost:8778'
       - name: period
         type: text
         title: Period

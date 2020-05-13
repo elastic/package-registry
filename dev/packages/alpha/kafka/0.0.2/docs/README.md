@@ -73,34 +73,6 @@ The fields reported are:
 | kafka.topic.name | Topic name | keyword |
 
 
-### consumer
-
-<!-- TODO example event -->
-
-The fields reported are:
-
-**Exported fields**
-
-| Field | Description | Type |
-|---|---|---|
-| kafka.broker.address | Broker advertised address | keyword |
-| kafka.broker.id | Broker id | long |
-| kafka.consumer.bytes_consumed | The average number of bytes consumed for a specific topic per second | float |
-| kafka.consumer.fetch_rate | The minimum rate at which the consumer sends fetch requests to a broker | float |
-| kafka.consumer.in.bytes_per_sec | The rate of bytes coming in to the consumer | float |
-| kafka.consumer.kafka_commits | The rate of offset commits to Kafka | float |
-| kafka.consumer.max_lag | The maximum consumer lag | float |
-| kafka.consumer.mbean | Mbean that this event is related to | keyword |
-| kafka.consumer.messages_in | The rate of consumer message consumption | float |
-| kafka.consumer.records_consumed | The average number of records consumed per second for a specific topic | float |
-| kafka.consumer.zookeeper_commits | The rate of offset commits to ZooKeeper | float |
-| kafka.partition.id | Partition id. | long |
-| kafka.partition.topic_broker_id | Unique id of the partition in the topic and the broker. | keyword |
-| kafka.partition.topic_id | Unique id of the partition in the topic. | keyword |
-| kafka.topic.error.code | Topic error code. | long |
-| kafka.topic.name | Topic name | keyword |
-
-
 ### consumergroup
 
 <!-- TODO example event -->
@@ -162,38 +134,3 @@ The fields reported are:
 | kafka.partition.topic_id | Unique id of the partition in the topic. | keyword |
 | kafka.topic.error.code | Topic error code. | long |
 | kafka.topic.name | Topic name | keyword |
-
-
-### producer
-
-<!-- TODO example event -->
-
-The fields reported are:
-
-**Exported fields**
-
-| Field | Description | Type |
-|---|---|---|
-| kafka.broker.address | Broker advertised address | keyword |
-| kafka.broker.id | Broker id | long |
-| kafka.partition.id | Partition id. | long |
-| kafka.partition.topic_broker_id | Unique id of the partition in the topic and the broker. | keyword |
-| kafka.partition.topic_id | Unique id of the partition in the topic. | keyword |
-| kafka.producer.available_buffer_bytes | The total amount of buffer memory | float |
-| kafka.producer.batch_size_avg | The average number of bytes sent | float |
-| kafka.producer.batch_size_max | The maximum number of bytes sent | long |
-| kafka.producer.io_wait | The producer I/O wait time | float |
-| kafka.producer.mbean | Mbean that this event is related to | keyword |
-| kafka.producer.message_rate | The producer message rate | float |
-| kafka.producer.out.bytes_per_sec | The rate of bytes going out for the producer | float |
-| kafka.producer.record_error_rate | The average number of retried record sends per second | float |
-| kafka.producer.record_retry_rate | The average number of retried record sends per second | float |
-| kafka.producer.record_send_rate | The average number of records sent per second | float |
-| kafka.producer.record_size_avg | The average record size | float |
-| kafka.producer.record_size_max | The maximum record size | long |
-| kafka.producer.records_per_request | The average number of records sent per second | float |
-| kafka.producer.request_rate | The number of producer requests per second | float |
-| kafka.producer.response_rate | The number of producer responses per second | float |
-| kafka.topic.error.code | Topic error code. | long |
-| kafka.topic.name | Topic name | keyword |
-
