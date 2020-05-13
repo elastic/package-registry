@@ -1,6 +1,0 @@
-- name: aws.transitgateway
-  type: group
-  description: >
-    `vpn` contains the metrics from Cloudwatch to track usage of transit gateway related resources.
-  release: beta
-  fields:
