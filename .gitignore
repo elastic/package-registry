@@ -4,5 +4,3 @@ package-registry
 .idea
 build
 public/*
-
-/dev/packages/storage
