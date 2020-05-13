@@ -32,9 +32,8 @@ var (
 
 	publicDir      = "./public"
 	buildDir       = "./build"
-	storageDir     = "./dev/packages/storage"
 	storageRepoDir = filepath.Join(buildDir, "package-storage")
-	packagePaths   = []string{storageDir, "./dev/packages/example/"}
+	packagePaths   = []string{filepath.Join(storageRepoDir, "packages"), "./dev/packages/example/"}
 	tarGz          = true
 )
 
@@ -80,12 +79,7 @@ func Build() error {
 }
 
 func fetchPackageStorage() error {
-	err := os.RemoveAll(storageDir)
-	if err != nil {
-		return err
-	}
-
-	err = os.RemoveAll(storageRepoDir)
+	err := os.RemoveAll(storageRepoDir)
 	if err != nil {
 		return err
 	}
@@ -100,21 +94,11 @@ func fetchPackageStorage() error {
 		packageStorageRevision = "master"
 	}
 
-	err = sh.Run("git",
+	return sh.Run("git",
 		"--git-dir", filepath.Join(storageRepoDir, ".git"),
 		"--work-tree", storageRepoDir,
 		"checkout",
 		packageStorageRevision)
-	if err != nil {
-		return err
-	}
-
-	err = os.Rename(filepath.Join(storageRepoDir, "packages"), storageDir)
-	if err != nil {
-		return err
-	}
-
-	return os.RemoveAll(storageRepoDir)
 }
 
 // Creates the `index.json` file
