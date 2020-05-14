@@ -22,7 +22,8 @@
                 "stream": {
                     "properties": {
                         "type": {
-                            "type": "constant_keyword"
+                            "type": "constant_keyword",
+                            "value": "events"
                         },
                         "dataset": {
                             "type": "constant_keyword"
