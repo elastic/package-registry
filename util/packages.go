@@ -44,6 +44,10 @@ func getPackagePaths(packagesPath string) ([]string, error) {
 
 	var foundPaths []string
 	return foundPaths, filepath.Walk(packagesPath, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
 		relativePath, err := filepath.Rel(packagesPath, path)
 		if err != nil {
 			return err
