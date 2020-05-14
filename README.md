@@ -156,8 +156,8 @@ docker run -p 8080:8080 {image id from prior step}
 
 **Commands ready to cut-and-paste**
 ```
-docker build --rm -t integrations_registry:latest .
-docker run -i -t -p 8080:8080 $(docker images -q integrations_registry:latest)
+docker build --rm -t docker.elastic.co/package-registry/package-registry:master .
+docker run -i -t -p 8080:8080 $(docker images -q docker.elastic.co/package-registry/package-registry:master)
 ```
 
 #### Docker images published

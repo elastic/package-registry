@@ -34,7 +34,7 @@
     },
     {
       "pipeline": {
-        "name": "{{IngestPipeline 'pipeline-plaintext' }"
+        "name": "{{IngestPipeline 'pipeline-plaintext' }}"
       }
     }
   ],
