@@ -17,8 +17,8 @@ requirement:
 datasources:
 - name: netflow
   title: NetFlow logs
-  description: Collect logs from NetFlow instances
+  description: Collect Netflow logs from networks via UDP
   inputs:
   - type: netflow
-    title: Collect logs from NetFlow instances
-    description: Collecting NetFlow log logs
+    title: Collect NetFlow logs
+    description: Collecting NetFlow logs using the netflow input

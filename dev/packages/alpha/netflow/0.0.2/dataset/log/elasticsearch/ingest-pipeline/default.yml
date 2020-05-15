@@ -1,5 +1,5 @@
 ---
-description: Pipeline for Filebeat NetFlow
+description: Pipeline for NetFlow
 
 processors:
   # IP Geolocation Lookup
