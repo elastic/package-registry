@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/blang/semver"
+	"github.com/pkg/errors"
 
 	"github.com/elastic/package-registry/util"
 )
@@ -28,6 +29,7 @@ func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http
 		var packageQuery string
 		var all bool
 		var internal bool
+		var experimental bool
 		var err error
 
 		// Read query filter params which can affect the output
@@ -35,7 +37,7 @@ func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http
 			if v := query.Get("kibana"); v != "" {
 				kibanaVersion, err = semver.New(v)
 				if err != nil {
-					notFound(w, fmt.Errorf("invalid Kibana version '%s': %s", v, err))
+					badRequest(w, fmt.Sprintf("invalid Kibana version '%s': %s", v, err))
 					return
 				}
 			}
@@ -55,21 +57,40 @@ func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http
 			if v := query.Get("all"); v != "" {
 				if v != "" {
 					// Default is false, also on error
-					all, _ = strconv.ParseBool(v)
+					all, err = strconv.ParseBool(v)
+					if err != nil {
+						badRequest(w, fmt.Sprintf("invalid 'all' query param: '%s'", v))
+						return
+					}
 				}
 			}
 
 			if v := query.Get("internal"); v != "" {
 				if v != "" {
 					// In case of error, keep it false
-					internal, _ = strconv.ParseBool(v)
+					internal, err = strconv.ParseBool(v)
+					if err != nil {
+						badRequest(w, fmt.Sprintf("invalid 'internal' query param: '%s'", v))
+						return
+					}
+				}
+			}
+
+			if v := query.Get("experimental"); v != "" {
+				if v != "" {
+					// In case of error, keep it false
+					experimental, err = strconv.ParseBool(v)
+					if err != nil {
+						badRequest(w, fmt.Sprintf("invalid 'experimental' query param: '%s'", v))
+						return
+					}
 				}
 			}
 		}
 
 		packages, err := util.GetPackages(packagesBasePath)
 		if err != nil {
-			notFound(w, fmt.Errorf("problem fetching packages: %s", err))
+			notFoundError(w, errors.Wrapf(err, "fetching package failed"))
 			return
 		}
 		packagesList := map[string]map[string]util.Package{}
@@ -79,6 +100,11 @@ func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http
 
 			// Skip internal packages by default
 			if p.Internal && !internal {
+				continue
+			}
+
+			// Skip experimental packages if flag is not specified
+			if p.Release == util.ReleaseExperimental && !experimental {
 				continue
 			}
 
@@ -125,7 +151,7 @@ func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http
 
 		data, err := getPackageOutput(packagesList)
 		if err != nil {
-			notFound(w, err)
+			notFoundError(w, err)
 			return
 		}
 

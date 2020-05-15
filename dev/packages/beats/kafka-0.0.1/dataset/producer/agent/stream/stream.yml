@@ -1,2 +1,0 @@
-input: kafka/metrics
-metricsets: ["producer"]

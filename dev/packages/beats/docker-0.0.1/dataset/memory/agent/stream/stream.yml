@@ -1,7 +1,0 @@
-input: docker/metrics
-metricsets: ["memory"]
-hosts:
-{{#each hosts}}
-  - {{this}}
-{{/each}}
-period: {{period}}

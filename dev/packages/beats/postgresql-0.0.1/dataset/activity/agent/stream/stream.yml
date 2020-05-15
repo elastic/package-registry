@@ -1,7 +1,0 @@
-input: postgresql/metrics
-metricsets: ["activity"]
-hosts:
-{{#each hosts}}
-  - {{this}}
-{{/each}}
-period: {{period}}

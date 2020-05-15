@@ -1,7 +1,0 @@
-title: AWS ec2 logs
-release: beta
-type: logs
-streams:
-- input: logs
-  title: AWS ec2 logs
-  description: Collect AWS ec2 logs

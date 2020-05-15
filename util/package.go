@@ -62,6 +62,7 @@ type Datasource struct {
 	Description string  `config:"description" json:"description" validate:"required"`
 	Solution    string  `config:"solution" json:"solution,omitempty" yaml:"solution,omitempty"`
 	Inputs      []Input `config:"inputs" json:"inputs"`
+	Multiple    *bool   `config:"multiple" json:"multiple,omitempty" yaml:"multiple,omitempty"`
 }
 
 type Requirement struct {
@@ -108,6 +109,13 @@ func NewPackage(basePath string) (*Package, error) {
 		return nil, err
 	}
 
+	// Default for the multiple flags is true.
+	trueValue := true
+	for i, _ := range p.Datasources {
+		if p.Datasources[i].Multiple == nil {
+			p.Datasources[i].Multiple = &trueValue
+		}
+	}
 	if p.Type == "" {
 		p.Type = defaultType
 	}
@@ -134,6 +142,14 @@ func NewPackage(basePath string) (*Package, error) {
 		if err != nil {
 			return nil, errors.Wrapf(err, "invalid Kibana versions range: %s", p.Requirement.Kibana.Versions)
 		}
+	}
+
+	if p.Release == "" {
+		p.Release = DefaultRelease
+	}
+
+	if !IsValidRelase(p.Release) {
+		return nil, fmt.Errorf("invalid release: %s", p.Release)
 	}
 
 	p.versionSemVer, err = semver.Parse(p.Version)
@@ -337,18 +353,20 @@ func (p *Package) LoadDataSets(packagePath string) error {
 			for iK, _ := range datasource.Inputs {
 				for _, stream := range d.Streams {
 					if stream.Input == p.Datasources[dK].Inputs[iK].Type {
+						if stream.TemplatePath == "" {
+							stream.TemplatePath = "stream.yml.hbs"
+						}
 						stream.Dataset = d.ID
-						streamTemplate := filepath.Join(datasetBasePath, "agent", "stream", "stream.yml")
+						streamTemplate := filepath.Join(datasetBasePath, "agent", "stream", stream.TemplatePath)
 
 						streamTemplateData, err := ioutil.ReadFile(streamTemplate)
 						if err != nil {
 							return err
 						}
 
-						stream.Template = string(streamTemplateData)
+						stream.TemplateContent = string(streamTemplateData)
 
 						// Add template to stream
-
 						p.Datasources[dK].Inputs[iK].Streams = append(p.Datasources[dK].Inputs[iK].Streams, stream)
 					}
 				}

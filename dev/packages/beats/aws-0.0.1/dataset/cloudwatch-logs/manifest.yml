@@ -1,7 +1,0 @@
-title: AWS cloudwatch logs
-release: beta
-type: logs
-streams:
-- input: logs
-  title: AWS cloudwatch logs
-  description: Collect AWS cloudwatch logs

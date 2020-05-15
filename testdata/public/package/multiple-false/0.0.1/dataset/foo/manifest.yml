@@ -1,0 +1,13 @@
+title: Foo
+
+# Needs to describe the type of this input
+type: logs
+
+streams:
+  - input: logs
+    vars:
+      - name: paths
+        required: true
+        description: Path to log files to be collected
+        type: text
+        multi: true

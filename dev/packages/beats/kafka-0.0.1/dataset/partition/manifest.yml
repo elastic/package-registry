@@ -1,7 +1,0 @@
-title: Kafka partition metrics
-release: ga
-type: metrics
-streams:
-- input: kafka/metrics
-  title: Kafka partition metrics
-  description: Collect Kafka partition metrics

@@ -1,7 +1,0 @@
-title: cloudfoundry counter metrics
-release: beta
-type: metrics
-streams:
-- input: cloudfoundry/metrics
-  title: cloudfoundry counter metrics
-  description: Collect cloudfoundry counter metrics

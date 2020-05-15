@@ -1,9 +1,0 @@
-input: log
-paths:
-{{#each paths}}
-  - {{this}}
-{{/each}}
-exclude_files: [".gz$"]
-processors:
-# Locale for timezone is only needed in non-json logs
-- add_locale.when.not.regexp.message: "^{"

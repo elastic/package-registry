@@ -1,7 +1,0 @@
-title: HTTP server metrics
-release: ga
-type: metrics
-streams:
-- input: http/metrics
-  title: HTTP server metrics
-  description: Collect HTTP server metrics

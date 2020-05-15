@@ -7,10 +7,12 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"syscall"
 	"time"
 
@@ -56,30 +58,31 @@ func main() {
 
 	config, err := getConfig()
 	if err != nil {
-		log.Print(err)
-		os.Exit(1)
+		log.Fatal(err)
 	}
 
 	log.Println("Cache time for /search: ", config.CacheTimeSearch)
 	log.Println("Cache time for /categories: ", config.CacheTimeCategories)
 	log.Println("Cache time for all others: ", config.CacheTimeCatchAll)
 
-	packagesBasePath := config.PublicDir + "/" + packageDir
-
-	// Prefill the package cache
+	packagesBasePath := filepath.Join(config.PublicDir, packageDir)
 	packages, err := util.GetPackages(packagesBasePath)
 	if err != nil {
-		log.Print(err)
-		os.Exit(1)
+		log.Fatal(err)
 	}
+
+	if len(packages) == 0 {
+		log.Fatal("No packages available")
+	}
+
 	log.Printf("%v package manifests loaded into memory.\n", len(packages))
 
 	server := &http.Server{Addr: address, Handler: getRouter(*config, packagesBasePath)}
 
 	go func() {
 		err := server.ListenAndServe()
-		if err != nil {
-			log.Printf("Error serving: %s", err)
+		if err != nil && err != http.ErrServerClosed {
+			log.Fatalf("Error occurred while serving: %s", err)
 		}
 	}()
 
@@ -89,7 +92,7 @@ func main() {
 
 	ctx := context.TODO()
 	if err := server.Shutdown(ctx); err != nil {
-		log.Print(err)
+		log.Fatal(err)
 	}
 }
 
@@ -114,11 +117,28 @@ func getRouter(config Config, packagesBasePath string) *mux.Router {
 	router.HandleFunc("/search", searchHandler(packagesBasePath, config.CacheTimeSearch))
 	router.HandleFunc("/categories", categoriesHandler(packagesBasePath, config.CacheTimeCategories))
 	router.HandleFunc("/health", healthHandler)
-	router.PathPrefix("/").HandlerFunc(catchAll(config.PublicDir, config.CacheTimeCatchAll))
-
+	router.PathPrefix("/").HandlerFunc(catchAll(http.Dir(config.PublicDir), config.CacheTimeCatchAll))
+	router.Use(loggingMiddleware)
 	return router
 }
 
 // healthHandler is used for Docker/K8s deployments. It returns 200 if the service is live
 // In addition ?ready=true can be used for a ready request. Currently both are identical.
 func healthHandler(w http.ResponseWriter, r *http.Request) {}
+
+// logging middle to log all requests
+func loggingMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		logRequest(r)
+		next.ServeHTTP(w, r)
+	})
+}
+
+// logRequest converts a request object into a proper logging event
+func logRequest(r *http.Request) {
+	// Do not log requests to the health endpoint
+	if r.RequestURI == "/health" {
+		return
+	}
+	log.Println(fmt.Sprintf("source.ip: %s, url.original: %s", r.RemoteAddr, r.RequestURI))
+}

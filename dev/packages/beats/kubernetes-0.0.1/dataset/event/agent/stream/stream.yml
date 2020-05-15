@@ -1,2 +1,0 @@
-input: kubernetes/metrics
-metricsets: ["event"]

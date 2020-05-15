@@ -1,7 +1,0 @@
-title: AWS cloudtrail logs
-release: beta
-type: logs
-streams:
-- input: logs
-  title: AWS cloudtrail logs
-  description: Collect AWS cloudtrail logs

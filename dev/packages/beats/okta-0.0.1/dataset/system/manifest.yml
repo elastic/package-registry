@@ -1,7 +1,0 @@
-title: Okta system logs
-release: ga
-type: logs
-streams:
-- input: logs
-  title: Okta system logs
-  description: Collect Okta system logs

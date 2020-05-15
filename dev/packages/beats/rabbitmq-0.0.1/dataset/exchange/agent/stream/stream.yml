@@ -1,2 +1,0 @@
-input: rabbitmq/metrics
-metricsets: ["exchange"]

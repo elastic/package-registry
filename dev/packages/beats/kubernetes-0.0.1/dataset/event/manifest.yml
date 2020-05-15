@@ -1,7 +1,0 @@
-title: Kubernetes event metrics
-release: ga
-type: metrics
-streams:
-- input: kubernetes/metrics
-  title: Kubernetes event metrics
-  description: Collect Kubernetes event metrics

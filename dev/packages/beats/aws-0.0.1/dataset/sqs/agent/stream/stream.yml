@@ -1,9 +1,0 @@
-input: aws/metrics
-metricsets: ["sqs"]
-{{#if credential_profile_name}}
-credential_profile_name: {{credential_profile_name}}
-{{/if}}
-period: {{period}}
-{{#if regions}}
-regions: {{regions}}
-{{/if}}

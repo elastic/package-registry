@@ -12,9 +12,9 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"strings"
 
 	"github.com/magefile/mage/sh"
+	"github.com/pkg/errors"
 
 	"github.com/elastic/package-registry/util"
 )
@@ -39,6 +39,10 @@ const (
   type: constant_keyword
   description: >
     Stream namespace.
+- name: "@timestamp"
+  type: date
+  description: >
+    Event timestamp.
 `
 )
 
@@ -56,17 +60,14 @@ func main() {
 
 	if sourceDir == "" || publicDir == "" {
 		log.Fatal("sourceDir and publicDir must be set")
-		os.Exit(1)
 	}
 
 	if err := Build(sourceDir, publicDir); err != nil {
 		log.Fatal(err)
-		os.Exit(1)
 	}
 }
 
 func Build(sourceDir, publicDir string) error {
-
 	err := BuildPackages(sourceDir, filepath.Join(publicDir, packageDirName))
 	if err != nil {
 		return err
@@ -77,8 +78,11 @@ func Build(sourceDir, publicDir string) error {
 // CopyPackage copies the files of a package to the public directory
 func CopyPackage(src, dst string) error {
 	log.Println(">> Copy package: " + src)
-	os.MkdirAll(dst, 0755)
-	err := sh.RunV("rsync", "-a", src, dst)
+	err := os.MkdirAll(dst, 0755)
+	if err != nil {
+		return err
+	}
+	err = sh.RunV("rsync", "-a", src, dst)
 	if err != nil {
 		return err
 	}
@@ -88,26 +92,30 @@ func CopyPackage(src, dst string) error {
 
 // BuildPackage rebuilds the zip files inside packages
 func BuildPackages(sourceDir, packagesPath string) error {
-
-	dirs, err := ioutil.ReadDir(sourceDir)
+	list, err := filepath.Glob(sourceDir + "/*/*")
 	if err != nil {
 		return err
 	}
 
-	for _, d := range dirs {
+	for _, p := range list {
+		fileInfo, err := os.Stat(p)
+		if err != nil {
+			return err
+		}
 
-		packageName := d.Name()
-		if !d.IsDir() {
+		// Skip all non directories
+		if !fileInfo.IsDir() {
 			continue
 		}
 
-		// Finds the last occurence of "-" and then below splits it up in 2 parts.
-		dashIndex := strings.LastIndex(packageName, "-")
-		dstDir := filepath.Join(packagesPath, packageName[0:dashIndex], packageName[dashIndex+1:])
+		packageVersion := filepath.Base(p)
+		packageName := filepath.Base(filepath.Dir(p))
+		packagePath := filepath.Join(packageName, packageVersion)
+		dstDir := filepath.Join(packagesPath, packagePath)
 
 		if copy {
 			// Trailing slash is to make sure content of package is copied
-			err := CopyPackage(filepath.Join(sourceDir, packageName)+"/", dstDir)
+			err := CopyPackage(filepath.Join(sourceDir, packagePath)+"/", dstDir)
 			if err != nil {
 				return err
 			}
@@ -127,7 +135,6 @@ func BuildPackages(sourceDir, packagesPath string) error {
 }
 
 func buildPackage(packagesBasePath string, p util.Package) error {
-
 	// Change path to simplify tar command
 	currentPath, err := os.Getwd()
 	if err != nil {
@@ -137,7 +144,7 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 	// Checks if the package is valid
 	err = p.Validate()
 	if err != nil {
-		return fmt.Errorf("Invalid package: %s: %s", p.GetPath(), err)
+		return errors.Wrapf(err, "package validation failed (path: %s", p.GetPath())
 	}
 
 	p.BasePath = filepath.Join(currentPath, packagesBasePath, p.GetPath())
@@ -147,7 +154,7 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 		return err
 	}
 
-	// Add stream.yml to all dataset with the basic stream fields
+	// Add base-fields.yml to all dataset with the basic stream fields and @timestamp
 	for _, dataset := range datasets {
 		dirPath := filepath.Join(p.BasePath, "dataset", dataset, "fields")
 		err := os.MkdirAll(dirPath, 0755)
@@ -155,7 +162,7 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 			return err
 		}
 
-		err = ioutil.WriteFile(filepath.Join(dirPath, "stream.yml"), []byte(streamFields), 0644)
+		err = ioutil.WriteFile(filepath.Join(dirPath, "base-fields.yml"), []byte(streamFields), 0644)
 		if err != nil {
 			return err
 		}
@@ -213,7 +220,7 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 		}
 
 		tarGzName := p.Name + "-" + p.Version
-		copiedPackagePath := filepath.Join(tarGzDirPath, tarGzName)
+		dst := filepath.Join(tarGzDirPath, tarGzName)
 
 		// As the package directories are now {packagename}/{version} when just running tar, the dir inside
 		// the package had the wrong name. Using `-s` or `--transform` for some reason worked on the command line
@@ -221,17 +228,18 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 		// and then run tar on it.
 		// This could become even useful in the future as things like images or videos should potentially not be part of
 		// a tar.gz to keep it small.
-		err := CopyPackage(packagesBasePath+"/"+p.Name+"/"+p.Version+"/", copiedPackagePath)
+		src := filepath.Join(packagesBasePath, p.Name, p.Version) + "/"
+		err := CopyPackage(src, dst)
 		if err != nil {
-			return err
+			return errors.Wrapf(err, "copying package content failed (path: %s)", p.GetPath())
 		}
 
 		err = sh.RunV("tar", "czf", filepath.Join(packagesBasePath, "..", "epr", p.Name, tarGzName+".tar.gz"), "-C", tarGzDirPath, tarGzName+"/")
 		if err != nil {
-			return fmt.Errorf("Error creating package: %s: %s", p.GetPath(), err)
+			return errors.Wrapf(err, "compressing package failed (path: %s)", p.GetPath())
 		}
 
-		err = os.RemoveAll(copiedPackagePath)
+		err = os.RemoveAll(dst)
 		if err != nil {
 			return err
 		}
@@ -267,7 +275,10 @@ var (
 // json so only on packaging this is changed.
 func encodedSavedObject(data []byte) (string, error) {
 	savedObject := MapStr{}
-	json.Unmarshal(data, &savedObject)
+	err := json.Unmarshal(data, &savedObject)
+	if err != nil {
+		return "", errors.Wrapf(err, "unmarshalling saved object failed")
+	}
 
 	for _, v := range fieldsToEncode {
 		out, err := savedObject.GetValue(v)
@@ -288,7 +299,11 @@ func encodedSavedObject(data []byte) (string, error) {
 		if err != nil {
 			return "", err
 		}
-		savedObject.Put(v, string(r))
+		_, err = savedObject.Put(v, string(r))
+		if err != nil {
+			return "", errors.Wrapf(err, "can't put value to the saved object")
+		}
+
 	}
 
 	return savedObject.StringToPrint(), nil

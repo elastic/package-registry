@@ -1,7 +1,0 @@
-title: AWS elb logs
-release: ga
-type: logs
-streams:
-- input: logs
-  title: AWS elb logs
-  description: Collect AWS elb logs

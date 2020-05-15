@@ -1,7 +1,0 @@
-title: PostgreSQL statement metrics
-release: ga
-type: metrics
-streams:
-- input: postgresql/metrics
-  title: PostgreSQL statement metrics
-  description: Collect PostgreSQL statement metrics

@@ -1,7 +1,0 @@
-input: redisenterprise/metrics
-metricsets: ["proxy"]
-hosts:
-{{#each hosts}}
-  - {{this}}
-{{/each}}
-period: {{period}}

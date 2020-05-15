@@ -1,7 +1,0 @@
-input: aerospike/metrics
-metricsets: ["namespace"]
-hosts:
-{{#each hosts}}
-  - {{this}}
-{{/each}}
-period: {{period}}

@@ -1,3 +1,0 @@
-input: aws/metrics
-metricsets: ["lambda"]
-period: {{period}}

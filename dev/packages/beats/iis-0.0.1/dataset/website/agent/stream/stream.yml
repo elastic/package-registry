@@ -1,3 +1,0 @@
-input: iis/metrics
-metricsets: ["website"]
-period: {{period}}

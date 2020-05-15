@@ -1,2 +1,0 @@
-input: jolokia/metrics
-metricsets: ["jmx"]

@@ -1,6 +1,0 @@
-input: system/metrics
-metricsets: ["fsstat"]
-period: {{period}}
-{{#if processors}}
-processors: {{processors}}
-{{/if}}

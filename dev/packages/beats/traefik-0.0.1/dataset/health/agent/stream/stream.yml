@@ -1,7 +1,0 @@
-input: traefik/metrics
-metricsets: ["health"]
-hosts:
-{{#each hosts}}
-  - {{this}}
-{{/each}}
-period: {{period}}

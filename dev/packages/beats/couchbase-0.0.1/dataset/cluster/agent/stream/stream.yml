@@ -1,7 +1,0 @@
-input: couchbase/metrics
-metricsets: ["cluster"]
-hosts:
-{{#each hosts}}
-  - {{this}}
-{{/each}}
-period: {{period}}

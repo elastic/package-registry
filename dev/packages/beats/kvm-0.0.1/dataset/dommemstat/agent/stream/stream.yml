@@ -1,7 +1,0 @@
-input: kvm/metrics
-metricsets: ["dommemstat"]
-hosts:
-{{#each hosts}}
-  - {{this}}
-{{/each}}
-period: {{period}}

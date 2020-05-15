@@ -5,15 +5,23 @@
 package util
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
 
+	handlebars "github.com/aymerick/raymond"
 	"github.com/pkg/errors"
+	yamlv2 "gopkg.in/yaml.v2"
 
 	ucfg "github.com/elastic/go-ucfg"
 	"github.com/elastic/go-ucfg/yaml"
+)
+
+const (
+	DirIngestPipeline = "ingest-pipeline"
 )
 
 type DataSet struct {
@@ -41,12 +49,15 @@ type Input struct {
 }
 
 type Stream struct {
-	Input       string     `config:"input" json:"input" validate:"required"`
-	Vars        []Variable `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
-	Dataset     string     `config:"dataset" json:"dataset,omitempty" yaml:"dataset,omitempty"`
-	Template    string     `config:"template" json:"template,omitempty" yaml:"template,omitempty"`
-	Title       string     `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
-	Description string     `config:"description" json:"description,omitempty" yaml:"description,omitempty"`
+	Input   string     `config:"input" json:"input" validate:"required"`
+	Vars    []Variable `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
+	Dataset string     `config:"dataset" json:"dataset,omitempty" yaml:"dataset,omitempty"`
+	// TODO: This might cause issues when consuming the json as the key contains . (had been an issue in the past if I remember correctly)
+	TemplatePath    string `config:"template_path" json:"template_path,omitempty" yaml:"template_path,omitempty"`
+	TemplateContent string `json:"template,omitempty" yaml:"template,omitempty"` // This is always generated in the json output
+	Title           string `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
+	Description     string `config:"description" json:"description,omitempty" yaml:"description,omitempty"`
+	Enabled         *bool  `config:"enabled" json:"enabled,omitempty" yaml:"enabled,omitempty"`
 }
 
 type Variable struct {
@@ -100,14 +111,26 @@ func NewDataset(basePath string, p *Package) (*DataSet, error) {
 	}
 
 	if d.Release == "" {
-		d.Release = "beta"
+		d.Release = DefaultRelease
+	}
+
+	// Default for the enabled flags is true.
+	trueValue := true
+	for i, _ := range d.Streams {
+		if d.Streams[i].Enabled == nil {
+			d.Streams[i].Enabled = &trueValue
+		}
+	}
+
+	if !IsValidRelase(d.Release) {
+		return nil, fmt.Errorf("invalid release: %s", d.Release)
 	}
 
 	return d, nil
 }
 
 func (d *DataSet) Validate() error {
-	pipelineDir := filepath.Join(d.BasePath, "elasticsearch", "ingest-pipeline")
+	pipelineDir := filepath.Join(d.BasePath, "elasticsearch", DirIngestPipeline)
 	paths, err := filepath.Glob(filepath.Join(pipelineDir, "*"))
 	if err != nil {
 		return err
@@ -128,17 +151,66 @@ func (d *DataSet) Validate() error {
 	}
 
 	if d.IngestPipeline == "" && len(paths) > 0 {
-		return fmt.Errorf("Package contains pipelines which are not used: %v, %s", paths, d.ID)
+		return fmt.Errorf("unused pipelines in the package (dataSetID: %s): %s", d.ID, strings.Join(paths, ","))
 	}
 
 	// In case an ingest pipeline is set, check if it is around
 	if d.IngestPipeline != "" {
-		_, errJSON := os.Stat(filepath.Join(pipelineDir, d.IngestPipeline+".json"))
-		_, errYAML := os.Stat(filepath.Join(pipelineDir, d.IngestPipeline+".yml"))
+		var validFound bool
 
-		if os.IsNotExist(errYAML) && os.IsNotExist(errJSON) {
-			return fmt.Errorf("Defined ingest_pipeline does not exist: %s", pipelineDir+d.IngestPipeline)
+		jsonPipelinePath := filepath.Join(pipelineDir, d.IngestPipeline+".json")
+		_, errJSON := os.Stat(jsonPipelinePath)
+		if errJSON != nil && !os.IsNotExist(errJSON) {
+			return errors.Wrapf(errJSON, "stat ingest pipeline JSON file failed (path: %s)", jsonPipelinePath)
+		}
+		if !os.IsNotExist(errJSON) {
+			err = validateIngestPipelineFile(jsonPipelinePath)
+			if err != nil {
+				return errors.Wrapf(err, "validating ingest pipeline JSON file failed (path: %s)", jsonPipelinePath)
+			}
+			validFound = true
+		}
+
+		yamlPipelinePath := filepath.Join(pipelineDir, d.IngestPipeline+".yml")
+		_, errYAML := os.Stat(yamlPipelinePath)
+		if errYAML != nil && !os.IsNotExist(errYAML) {
+			return errors.Wrapf(errYAML, "stat ingest pipeline YAML file failed (path: %s)", jsonPipelinePath)
+		}
+		if !os.IsNotExist(errYAML) {
+			err = validateIngestPipelineFile(yamlPipelinePath)
+			if err != nil {
+				return errors.Wrapf(err, "validating ingest pipeline YAML file failed (path: %s)", jsonPipelinePath)
+			}
+			validFound = true
+		}
+
+		if !validFound {
+			return fmt.Errorf("defined ingest_pipeline does not exist: %s", pipelineDir+d.IngestPipeline)
 		}
 	}
 	return nil
+}
+
+func validateIngestPipelineFile(pipelinePath string) error {
+	f, err := ioutil.ReadFile(pipelinePath)
+	if err != nil {
+		return errors.Wrapf(err, "reading ingest pipeline file failed (path: %s)", pipelinePath)
+	}
+
+	_, err = handlebars.Parse(string(f))
+	if err != nil {
+		return errors.Wrapf(err, "parsing handlebars syntax failed (path: %s)", pipelinePath)
+	}
+
+	ext := filepath.Ext(pipelinePath)
+	var m map[string]interface{}
+	switch ext {
+	case ".json":
+		err = json.Unmarshal(f, &m)
+	case ".yml":
+		err = yamlv2.Unmarshal(f, &m)
+	default:
+		return fmt.Errorf("unsupported pipeline extension (path: %s, ext: %s)", pipelinePath, ext)
+	}
+	return err
 }

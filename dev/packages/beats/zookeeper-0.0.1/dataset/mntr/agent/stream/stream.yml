@@ -1,7 +1,0 @@
-input: zookeeper/metrics
-metricsets: ["mntr"]
-hosts:
-{{#each hosts}}
-  - {{this}}
-{{/each}}
-period: {{period}}

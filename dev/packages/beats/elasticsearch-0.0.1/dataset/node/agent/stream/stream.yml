@@ -1,7 +1,0 @@
-input: elasticsearch/metrics
-metricsets: ["node"]
-hosts:
-{{#each hosts}}
-  - {{this}}
-{{/each}}
-period: {{period}}

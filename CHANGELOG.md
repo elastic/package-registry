@@ -4,13 +4,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased](https://github.com/elastic/package-registry/compare/v0.4.0...master)
 
-## [Unreleased](https://github.com/elastic/package-registry/compare/v0.3.0...master)
+### Breaking changes
+
+### Bugfixes
+
+### Added
+* Use filepath.Walk to find valid package content data. [#438](https://github.com/elastic/package-registry/pull/438)
+* Validate handlebarsjs stream configuration templates. [#445](https://github.com/elastic/package-registry/pull/445)
+
+### Deprecated
+
+### Known Issue
+
+## [Unreleased](https://github.com/elastic/package-registry/compare/v0.3.0...v0.4.0)
 
 ### Breaking changes
 
 * Change package path from /package/{packagename}-{version} to /package/{packagename}/{version} [#300](https://github.com/elastic/integrations-registry/pull/300)
 * By default /search?package= now only returns the most recent package. [#301](https://github.com/elastic/integrations-registry/pull/301)
+* Stream configuration filenames have `.hbs` suffix appended [#308](https://github.com/elastic/package-registry/pull/380)
+* Align package storage directories with public dir structure [#376](https://github.com/elastic/package-registry/pull/376)
+* Use index template v2 format for pre-built and generated index templates. [#392](https://github.com/elastic/package-registry/pull/392)
 
 ### Bugfixes
 
@@ -22,12 +38,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Make README.md file a required file for a package. [#287](https://github.com/elastic/integrations-registry/pull/287)
 *  Add stream fields to each dataset [#296](https://github.com/elastic/integrations-registry/pull/296)
 * Add `all` query param to return all packages. By default is set false. [#301](https://github.com/elastic/integrations-registry/pull/301)
+* Add `multiple` config for datasource. By default true. [#361](https://github.com/elastic/integrations-registry/pull/361)
 * Add `removable` flag to package manifest. Default is true. [#359](https://github.com/elastic/integrations-registry/pull/359)
-
-### Deprecated
-
-### Known Issue
-
+* Add stream template to package json. [#335](https://github.com/elastic/integrations-registry/pull/335)
+* Add support for multiple inputs per dataset. [#346](https://github.com/elastic/integrations-registry/pull/346)
+* Add experimental releases for packages and datasets. [#382](https://github.com/elastic/integrations-registry/pull/382)
+* Handle invalid query params and return error. [#382](https://github.com/elastic/integrations-registry/pull/382)
+* Add basic access logs. [#400](https://github.com/elastic/integrations-registry/pull/400)
+* Validate ingest pipeline during packaging phrase. [#426](https://github.com/elastic/package-registry/pull/426)
+* Use http.FileServer to serve package content and define HTTP headers [#425](https://github.com/elastic/package-registry/pull/425)
 
 
 ## [Unreleased](https://github.com/elastic/package-registry/compare/v0.2.0...v0.3.0)

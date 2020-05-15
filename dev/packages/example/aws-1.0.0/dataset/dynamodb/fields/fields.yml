@@ -1,6 +1,0 @@
-- name: aws.dynamodb
-  type: group
-  description: >
-    `dynamodb` contains the metrics that were scraped from AWS CloudWatch which contains monitoring metrics sent by AWS DynamoDB.
-  release: beta
-  fields:

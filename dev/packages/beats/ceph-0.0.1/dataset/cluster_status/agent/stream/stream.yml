@@ -1,2 +1,0 @@
-input: ceph/metrics
-metricsets: ["cluster_status"]

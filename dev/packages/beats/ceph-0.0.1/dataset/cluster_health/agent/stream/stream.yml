@@ -1,7 +1,0 @@
-input: ceph/metrics
-metricsets: ["cluster_health"]
-hosts:
-{{#each hosts}}
-  - {{this}}
-{{/each}}
-period: {{period}}

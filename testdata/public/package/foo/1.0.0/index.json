@@ -10,6 +10,7 @@
   "categories": [
     "metrics"
   ],
+  "release": "beta",
   "removable": true,
   "requirement": {
     "kibana": {

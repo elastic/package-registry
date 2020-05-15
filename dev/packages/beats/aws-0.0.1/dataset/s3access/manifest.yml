@@ -1,7 +1,0 @@
-title: AWS s3access logs
-release: ga
-type: logs
-streams:
-- input: logs
-  title: AWS s3access logs
-  description: Collect AWS s3access logs

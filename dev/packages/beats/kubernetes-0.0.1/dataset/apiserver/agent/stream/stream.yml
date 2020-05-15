@@ -1,6 +1,0 @@
-input: kubernetes/metrics
-metricsets: ["apiserver"]
-hosts:
-{{#each hosts}}
-  - {{this}}
-{{/each}}

@@ -1,2 +1,0 @@
-input: kibana/metrics
-metricsets: ["stats"]

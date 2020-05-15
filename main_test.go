@@ -35,10 +35,12 @@ func TestEndpoints(t *testing.T) {
 		file     string
 		handler  func(w http.ResponseWriter, r *http.Request)
 	}{
-		{"/", "", "info.json", catchAll(publicPath, testCacheTime)},
+		{"/", "", "info.json", catchAll(http.Dir(publicPath), testCacheTime)},
 		{"/search", "/search", "search.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/search?all=true", "/search", "search-all.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/categories", "/categories", "categories.json", categoriesHandler(packagesBasePath, testCacheTime)},
+		{"/categories?experimental=true", "/categories", "categories-experimental.json", categoriesHandler(packagesBasePath, testCacheTime)},
+		{"/categories?experimental=foo", "/categories", "categories-experimental-error.json", categoriesHandler(packagesBasePath, testCacheTime)},
 		{"/search?kibana=6.5.2", "/search", "search-kibana652.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/search?kibana=7.2.1", "/search", "search-kibana721.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/search?category=metrics", "/search", "search-category-metrics.json", searchHandler(packagesBasePath, testCacheTime)},
@@ -46,7 +48,10 @@ func TestEndpoints(t *testing.T) {
 		{"/search?package=example", "/search", "search-package-example.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/search?package=example&all=true", "/search", "search-package-example-all.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/search?internal=true", "/search", "search-package-internal.json", searchHandler(packagesBasePath, testCacheTime)},
-		{"/package/example/1.0.0", "", "package.json", catchAll(publicPath, testCacheTime)},
+		{"/search?internal=bar", "/search", "search-package-internal-error.json", searchHandler(packagesBasePath, testCacheTime)},
+		{"/search?experimental=true", "/search", "search-package-experimental.json", searchHandler(packagesBasePath, testCacheTime)},
+		{"/search?experimental=foo", "/search", "search-package-experimental-error.json", searchHandler(packagesBasePath, testCacheTime)},
+		{"/package/example/1.0.0", "", "package.json", catchAll(http.Dir(publicPath), testCacheTime)},
 	}
 
 	for _, test := range tests {
@@ -86,7 +91,11 @@ func runEndpoint(t *testing.T, endpoint, path, file string, handler func(w http.
 		t.Fatal(err)
 	}
 
-	assert.Equal(t, strings.TrimSpace(string(data)), recorder.Body.String())
-	cacheTime := fmt.Sprintf("%.0f", testCacheTime.Seconds())
-	assert.Equal(t, recorder.Header()["Cache-Control"], []string{"max-age=" + cacheTime, "public"})
+	assert.Equal(t, strings.TrimSpace(string(data)), strings.TrimSpace(recorder.Body.String()))
+
+	// Skip cache check if 400 error
+	if recorder.Code != 400 {
+		cacheTime := fmt.Sprintf("%.0f", testCacheTime.Seconds())
+		assert.Equal(t, recorder.Header()["Cache-Control"], []string{"max-age=" + cacheTime, "public"})
+	}
 }

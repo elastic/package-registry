@@ -1,4 +1,0 @@
-input: aws/metrics
-period: {{period}}
-metricsets: sqs
-dataset: aws.sqs

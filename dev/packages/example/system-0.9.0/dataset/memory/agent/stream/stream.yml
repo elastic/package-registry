@@ -1,4 +1,0 @@
-input: system/metrics
-metricset: memory
-period: {{period}}
-dataset: system.memory

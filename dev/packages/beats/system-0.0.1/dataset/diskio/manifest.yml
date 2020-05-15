@@ -1,7 +1,0 @@
-title: System diskio metrics
-release: ga
-type: metrics
-streams:
-- input: system/metrics
-  title: System diskio metrics
-  description: Collect System diskio metrics

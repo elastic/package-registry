@@ -1,7 +1,0 @@
-input: mongodb/metrics
-metricsets: ["collstats"]
-hosts:
-{{#each hosts}}
-  - {{this}}
-{{/each}}
-period: {{period}}

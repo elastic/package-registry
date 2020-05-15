@@ -1,4 +1,0 @@
-input: system/metrics
-metricset: network_summary
-period: {{period}}
-dataset: system.network_summary

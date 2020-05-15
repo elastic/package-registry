@@ -1,7 +1,0 @@
-input: mongodb/metrics
-metricsets: ["metrics"]
-hosts:
-{{#each hosts}}
-  - {{this}}
-{{/each}}
-period: {{period}}

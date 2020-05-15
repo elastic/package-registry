@@ -1,7 +1,0 @@
-title: Kafka broker metrics
-release: beta
-type: metrics
-streams:
-- input: kafka/metrics
-  title: Kafka broker metrics
-  description: Collect Kafka broker metrics

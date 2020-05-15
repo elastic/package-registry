@@ -1,2 +1,0 @@
-input: php_fpm/metrics
-metricsets: ["process"]

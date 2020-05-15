@@ -1,2 +1,0 @@
-input: zookeeper/metrics
-metricsets: ["connection"]

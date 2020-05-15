@@ -1,7 +1,0 @@
-title: NetFlow log logs
-release: ga
-type: logs
-streams:
-- input: logs
-  title: NetFlow log logs
-  description: Collect NetFlow log logs

@@ -1,7 +1,0 @@
-input: stan/metrics
-metricsets: ["channels"]
-hosts:
-{{#each hosts}}
-  - {{this}}
-{{/each}}
-period: {{period}}
