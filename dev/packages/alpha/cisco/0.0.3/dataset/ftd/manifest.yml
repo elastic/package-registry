@@ -12,7 +12,7 @@ streams:
     title: Tags
     multi: true
     required: true
-    show_user: true
+    show_user: false
     default:
       - cisco-ftd
   - name: udp_host
@@ -34,7 +34,7 @@ streams:
     title: Log Level
     multi: false
     required: true
-    show_user: true
+    show_user: false
     default: 7
 - input: logs
   title: Cisco FTD logs
@@ -53,7 +53,7 @@ streams:
     title: Tags
     multi: true
     required: true
-    show_user: true
+    show_user: false
     default:
       - cisco-ftd
   - name: log_level
@@ -61,5 +61,5 @@ streams:
     title: Log Level
     multi: false
     required: true
-    show_user: true
+    show_user: false
     default: 7
