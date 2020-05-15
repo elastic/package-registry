@@ -13,7 +13,53 @@ The `producer` metricset requires Jolokia to fetch JMX metrics. Refer to the Met
 
 ### producer
 
-<!-- TODO example event -->
+An example event of the `producer` dataset looks as following:
+
+```$json
+{
+  "@timestamp": "2020-05-15T15:30:03.990Z",
+  "service": {
+    "address": "localhost:8777",
+    "type": "kafka"
+  },
+  "event": {
+    "dataset": "kafka.producer",
+    "module": "kafka",
+    "duration": 9662361
+  },
+  "metricset": {
+    "name": "producer",
+    "period": 10000
+  },
+  "kafka": {
+    "producer": {
+      "mbean": "kafka.producer:client-id=console-producer,type=producer-metrics",
+      "request_rate": 0.03333333333333333,
+      "record_send_rate": 0,
+      "response_rate": 0.03333333333333333,
+      "record_error_rate": 0,
+      "io_wait": 1413696731.5789473,
+      "available_buffer_bytes": 33554432,
+      "record_retry_rate": 0
+    }
+  },
+  "stream": {
+    "namespace": "default",
+    "type": "metrics",
+    "dataset": "kafka_java_producer.producer"
+  },
+  "agent": {
+    "type": "metricbeat",
+    "version": "8.0.0",
+    "ephemeral_id": "178ff0e9-e3dd-4bdf-8e3d-8f67a6bd72ef",
+    "id": "5aba67f2-2050-4d19-8953-ba20f0a5483c",
+    "name": "voyager"
+  },
+  "ecs": {
+    "version": "1.5.0"
+  }
+}
+```
 
 The fields reported are:
 

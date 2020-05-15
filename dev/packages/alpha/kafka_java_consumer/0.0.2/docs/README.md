@@ -13,7 +13,49 @@ The `consumer` metricset requires Jolokia to fetch JMX metrics. Refer to the Met
 
 ### consumer
 
-<!-- TODO example event -->
+An example event of the `consumer` dataset looks as following:
+
+```$json
+{
+  "@timestamp": "2020-05-15T15:27:55.499Z",
+  "stream": {
+    "type": "metrics",
+    "dataset": "kafka_java_consumer.consumer",
+    "namespace": "default"
+  },
+  "agent": {
+    "ephemeral_id": "178ff0e9-e3dd-4bdf-8e3d-8f67a6bd72ef",
+    "id": "5aba67f2-2050-4d19-8953-ba20f0a5483c",
+    "name": "kafka-01",
+    "type": "metricbeat",
+    "version": "8.0.0"
+  },
+  "ecs": {
+    "version": "1.5.0"
+  },
+  "kafka": {
+    "consumer": {
+      "fetch_rate": 2.0035526913702646,
+      "records_consumed": 43,
+      "mbean": "kafka.consumer:client-id=consumer-console-consumer-99447-1,type=consumer-fetch-manager-metrics",
+      "bytes_consumed": 426
+    }
+  },
+  "event": {
+    "dataset": "kafka.consumer",
+    "module": "kafka",
+    "duration": 3443090
+  },
+  "metricset": {
+    "name": "consumer",
+    "period": 10000
+  },
+  "service": {
+    "type": "kafka",
+    "address": "localhost:8779"
+  }
+}
+```
 
 The fields reported are:
 

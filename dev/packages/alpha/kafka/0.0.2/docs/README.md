@@ -6,7 +6,7 @@ This integration collects logs and metrics from [https://kafka.apache.org](Kafka
 
 The `log` dataset module is tested with logs from Kafka 0.9, 1.1.0 and 2.0.0.
 
-The `broker`, `consumer`, `consumergroup`, `partition` and `producer` metricsets are tested with Kafka 0.10.2.1, 1.1.0, 2.1.1, and 2.2.2.
+The `broker`, `consumergroup`, `partition` and `producer` metricsets are tested with Kafka 0.10.2.1, 1.1.0, 2.1.1, and 2.2.2.
 
 <!-- TODO: Add a link to Jolokia "input" in Metricbeat -->
 The `broker`, `consumer` and `producer` metricsets require Jolokia to fetch JMX metrics. Refer to the Metricbeat documentation about Jolokia for more information.
@@ -35,7 +35,57 @@ The fields reported are:
 
 ### broker
 
-<!-- TODO example event -->
+The `broker` dataset collects JMX metrics from Kafka brokers using Jolokia.
+
+An example event of the `broker` dataset looks as following:
+
+```$json
+{
+  "@timestamp": "2020-05-15T15:12:12.270Z",
+  "service": {
+    "address": "localhost:8778",
+    "type": "kafka"
+  },
+  "kafka": {
+    "broker": {
+      "mbean": "kafka.server:name=BytesOutPerSec,topic=messages,type=BrokerTopicMetrics",
+      "topic": {
+        "net": {
+          "out": {
+            "bytes_per_sec": 0.6089809926927563
+          }
+        }
+      }
+    }
+  },
+  "event": {
+    "dataset": "kafka.broker",
+    "module": "kafka",
+    "duration": 4572918
+  },
+  "metricset": {
+    "period": 10000,
+    "name": "broker"
+  },
+  "stream": {
+    "type": "metrics",
+    "dataset": "kafka.broker",
+    "namespace": "default"
+  },
+  "ecs": {
+    "version": "1.5.0"
+  },
+  "agent": {
+    "id": "5aba67f2-2050-4d19-8953-ba20f0a5483c",
+    "name": "kafka-01",
+    "type": "metricbeat",
+    "version": "8.0.0",
+    "ephemeral_id": "178ff0e9-e3dd-4bdf-8e3d-8f67a6bd72ef"
+  }
+}
+```
+
+
 
 The fields reported are:
 
@@ -75,7 +125,74 @@ The fields reported are:
 
 ### consumergroup
 
-<!-- TODO example event -->
+An example event of the `consumergroup` dataset looks as following:
+
+```$json
+{
+  "@timestamp": "2020-05-15T15:18:13.919Z",
+  "agent": {
+    "name": "kafka-01",
+    "type": "metricbeat",
+    "version": "8.0.0",
+    "ephemeral_id": "178ff0e9-e3dd-4bdf-8e3d-8f67a6bd72ef",
+    "id": "5aba67f2-2050-4d19-8953-ba20f0a5483c"
+  },
+  "ecs": {
+    "version": "1.5.0"
+  },
+  "kafka": {
+    "consumergroup": {
+      "topic": "messages",
+      "error": {
+        "code": 0
+      },
+      "broker": {
+        "id": 0,
+        "address": "kafka-01:9092"
+      },
+      "id": "console-consumer-99447",
+      "offset": -1,
+      "consumer_lag": 112,
+      "client": {
+        "member_id": "consumer-console-consumer-99447-1-208fdf91-2f28-4336-a2ff-5e5f4b8b71e4",
+        "id": "consumer-console-consumer-99447-1",
+        "host": "127.0.0.1"
+      },
+      "partition": 0,
+      "meta": ""
+    },
+    "broker": {
+      "id": 0,
+      "address": "kafka-01:9092"
+    },
+    "topic": {
+      "name": "messages"
+    },
+    "partition": {
+      "id": 0,
+      "topic_id": "0-messages"
+    }
+  },
+  "event": {
+    "dataset": "kafka.consumergroup",
+    "module": "kafka",
+    "duration": 8821045
+  },
+  "metricset": {
+    "period": 10000,
+    "name": "consumergroup"
+  },
+  "service": {
+    "address": "localhost:9092",
+    "type": "kafka"
+  },
+  "stream": {
+    "dataset": "kafka.consumergroup",
+    "namespace": "default",
+    "type": "metrics"
+  }
+}
+```
 
 The fields reported are:
 
@@ -106,7 +223,74 @@ The fields reported are:
 
 ### partition
 
-<!-- TODO example event -->
+An example event of the `partition` dataset looks as following:
+
+```$json
+{
+  "@timestamp": "2020-05-15T15:19:44.240Z",
+  "metricset": {
+    "name": "partition",
+    "period": 10000
+  },
+  "service": {
+    "address": "localhost:9092",
+    "type": "kafka"
+  },
+  "kafka": {
+    "partition": {
+      "offset": {
+        "oldest": 0,
+        "newest": 111
+      },
+      "id": 0,
+      "topic_id": "0-messages",
+      "topic_broker_id": "0-messages-0",
+      "topic": {
+        "name": "messages"
+      },
+      "broker": {
+        "id": 0,
+        "address": "kafka-01:9092"
+      },
+      "partition": {
+        "is_leader": true,
+        "insync_replica": true,
+        "id": 0,
+        "leader": 0,
+        "replica": 0
+      }
+    },
+    "broker": {
+      "address": "kafka-01:9092",
+      "id": 0
+    },
+    "topic": {
+      "name": "messages"
+    }
+  },
+  "stream": {
+    "type": "metrics",
+    "dataset": "kafka.partition",
+    "namespace": "default"
+  },
+  "ecs": {
+    "version": "1.5.0"
+  },
+  "agent": {
+    "ephemeral_id": "178ff0e9-e3dd-4bdf-8e3d-8f67a6bd72ef",
+    "id": "5aba67f2-2050-4d19-8953-ba20f0a5483c",
+    "name": "kafka-01",
+    "type": "metricbeat",
+    "version": "8.0.0"
+  },
+  "event": {
+    "dataset": "kafka.partition",
+    "module": "kafka",
+    "duration": 11263377
+  }
+}
+```
+
 
 The fields reported are:
 
