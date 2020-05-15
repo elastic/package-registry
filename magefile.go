@@ -53,7 +53,7 @@ func Build() error {
 		return err
 	}
 
-	//err = fetchPackageStorage()
+	err = fetchPackageStorage()
 	if err != nil {
 		return err
 	}
