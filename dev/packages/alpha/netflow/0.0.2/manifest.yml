@@ -19,6 +19,6 @@ datasources:
   title: NetFlow logs
   description: Collect logs from NetFlow instances
   inputs:
-  - type: logs
+  - type: netflow
     title: Collect logs from NetFlow instances
     description: Collecting NetFlow log logs
