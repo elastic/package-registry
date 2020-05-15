@@ -20,7 +20,7 @@ func indexHandler(cacheTime time.Duration) (func(w http.ResponseWriter, r *http.
 		ServiceName: "package-registry",
 		Version:     "0.4.0",
 	}
-	body, err := json.MarshalIndent(&data, " ", " ")
+	body, err := json.MarshalIndent(&data, "", " ")
 	if err != nil {
 		return nil, err
 	}
