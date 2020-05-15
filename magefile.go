@@ -69,12 +69,6 @@ func Build() error {
 	if err != nil {
 		return err
 	}
-
-	err = CopyFavicon()
-	if err != nil {
-		return err
-	}
-
 	return sh.Run("go", "build", ".")
 }
 

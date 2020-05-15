@@ -77,7 +77,12 @@ func main() {
 
 	log.Printf("%v package manifests loaded into memory.\n", len(packages))
 
-	server := &http.Server{Addr: address, Handler: getRouter(*config, packagesBasePath)}
+	router, err := getRouter(*config, packagesBasePath)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	server := &http.Server{Addr: address, Handler: router}
 
 	go func() {
 		err := server.ListenAndServe()
@@ -111,15 +116,20 @@ func getConfig() (*Config, error) {
 	return &config, nil
 }
 
-func getRouter(config Config, packagesBasePath string) *mux.Router {
-	router := mux.NewRouter().StrictSlash(true)
+func getRouter(config Config, packagesBasePath string) (*mux.Router, error) {
+	faviconHandleFunc, err := faviconHandler(config.CacheTimeCatchAll)
+	if err != nil {
+		return nil, err
+	}
 
+	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/search", searchHandler(packagesBasePath, config.CacheTimeSearch))
 	router.HandleFunc("/categories", categoriesHandler(packagesBasePath, config.CacheTimeCategories))
 	router.HandleFunc("/health", healthHandler)
+	router.HandleFunc("/favicon.ico", faviconHandleFunc)
 	router.PathPrefix("/").HandlerFunc(catchAll(http.Dir(config.PublicDir), config.CacheTimeCatchAll))
 	router.Use(loggingMiddleware)
-	return router
+	return router, nil
 }
 
 // healthHandler is used for Docker/K8s deployments. It returns 200 if the service is live
