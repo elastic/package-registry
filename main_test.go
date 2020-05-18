@@ -37,6 +37,8 @@ func TestEndpoints(t *testing.T) {
 	indexHandleFunc, err := indexHandler(testCacheTime)
 	require.NoError(t, err)
 
+	artifactsHandler := artifactsHandler(packagesBasePath, testCacheTime)
+
 	tests := []struct {
 		endpoint string
 		path     string
@@ -62,6 +64,10 @@ func TestEndpoints(t *testing.T) {
 		{"/search?experimental=foo", "/search", "search-package-experimental-error.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/package/example/1.0.0", "", "package.json", catchAll(http.Dir(publicPath), testCacheTime)},
 		{"/favicon.ico", "", "favicon.ico", faviconHandleFunc},
+		{"/epr/example/example-0.0.2.tar.gz", artifactsRouterPath, "example-0.0.2.tar.gz", artifactsHandler},
+		{"/epr/example/example-999.0.2.tar.gz", artifactsRouterPath, "package-version-not-found.txt", artifactsHandler},
+		{"/epr/example/missing-0.1.2.tar.gz", artifactsRouterPath, "package-missing.txt", artifactsHandler},
+		{"/epr/example/example-a.b.c.tar.gz", artifactsRouterPath, "package-invalid-version.txt", artifactsHandler},
 	}
 
 	for _, test := range tests {
@@ -103,8 +109,8 @@ func runEndpoint(t *testing.T, endpoint, path, file string, handler func(w http.
 
 	assert.Equal(t, strings.TrimSpace(string(data)), strings.TrimSpace(recorder.Body.String()))
 
-	// Skip cache check if 400 error
-	if recorder.Code != 400 {
+	// Skip cache check if 4xx error
+	if recorder.Code >= 200 && recorder.Code < 300 {
 		cacheTime := fmt.Sprintf("%.0f", testCacheTime.Seconds())
 		assert.Equal(t, recorder.Header()["Cache-Control"], []string{"max-age=" + cacheTime, "public"})
 	}

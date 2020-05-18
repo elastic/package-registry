@@ -19,98 +19,88 @@ import (
 	"github.com/pkg/errors"
 )
 
-type artifactsHandler struct {
-	cacheTime        time.Duration
-	packagesBasePath string
-}
-
-var _ http.Handler = new(artifactsHandler)
+const artifactsRouterPath = "/epr/{packageName}/{packageName:[a-z]+}-{packageVersion}.tar.gz"
 
 var errArtifactNotFound = errors.New("artifact not found")
 
-func newArtifactsHandler(packagesBasePath string, cacheTime time.Duration) *artifactsHandler {
-	return &artifactsHandler{
-		cacheTime:        cacheTime,
-		packagesBasePath: packagesBasePath,
-	}
-}
+func artifactsHandler(packagesBasePath string, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		vars := mux.Vars(r)
+		packageName := vars["packageName"]
+		packageVersion := vars["packageVersion"]
 
-func (h *artifactsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	packageName := vars["packageName"]
-	packageVersion := vars["packageVersion"]
-
-	_, err := semver.Parse(packageVersion)
-	if err != nil {
-		badRequest(w, "invalid package version")
-		return
-	}
-
-	packagePath := filepath.Join(h.packagesBasePath, packageName, packageVersion)
-	_, err = os.Stat(packagePath)
-	if os.IsNotExist(err) {
-		notFoundError(w, errArtifactNotFound)
-		return
-	}
-	if err != nil {
-		log.Printf("stat package path '%s' failed: %v", packagePath, err)
-
-		http.Error(w, "internal server error", http.StatusInternalServerError)
-		return
-	}
-
-	gzipWriter := gzip.NewWriter(w)
-	tarWriter := tar.NewWriter(gzipWriter)
-	defer func() {
-		err := tarWriter.Close()
+		_, err := semver.Parse(packageVersion)
 		if err != nil {
-			log.Printf("Error occurred while closing tar writer: %v", err)
+			badRequest(w, "invalid package version")
+			return
 		}
 
-		err = gzipWriter.Close()
+		packagePath := filepath.Join(packagesBasePath, packageName, packageVersion)
+		_, err = os.Stat(packagePath)
+		if os.IsNotExist(err) {
+			notFoundError(w, errArtifactNotFound)
+			return
+		}
 		if err != nil {
-			log.Printf("Error occurred while closing gzip writer: %v", err)
-		}
-	}()
+			log.Printf("stat package path '%s' failed: %v", packagePath, err)
 
-	w.Header().Set("Content-Type", "application/gzip")
-	cacheHeaders(w, h.cacheTime)
-
-	err = filepath.Walk(packagePath, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
+			http.Error(w, "internal server error", http.StatusInternalServerError)
+			return
 		}
 
-		relativePath, err := filepath.Rel(packagePath, path)
-		if err != nil {
-			return errors.Wrapf(err, "finding relative path failed (packagePath: %s, path: %s)", packagePath, path)
-		}
-
-		if relativePath == "." {
-			return nil
-		}
-
-		header, err := buildArchiveHeader(info, relativePath)
-		if err != nil {
-			return errors.Wrapf(err, "building archive header failed (path: %s)", relativePath)
-		}
-
-		err = tarWriter.WriteHeader(header)
-		if err != nil {
-			return errors.Wrapf(err, "writing header failed (path: %s)", relativePath)
-		}
-
-		if !info.IsDir() {
-			err = writeFileContentToArchive(path, tarWriter)
+		gzipWriter := gzip.NewWriter(w)
+		tarWriter := tar.NewWriter(gzipWriter)
+		defer func() {
+			err := tarWriter.Close()
 			if err != nil {
-				return errors.Wrapf(err, "archiving file content failed (path: %s)", path)
+				log.Printf("Error occurred while closing tar writer: %v", err)
 			}
+
+			err = gzipWriter.Close()
+			if err != nil {
+				log.Printf("Error occurred while closing gzip writer: %v", err)
+			}
+		}()
+
+		w.Header().Set("Content-Type", "application/gzip")
+		cacheHeaders(w, cacheTime)
+
+		err = filepath.Walk(packagePath, func(path string, info os.FileInfo, err error) error {
+			if err != nil {
+				return err
+			}
+
+			relativePath, err := filepath.Rel(packagePath, path)
+			if err != nil {
+				return errors.Wrapf(err, "finding relative path failed (packagePath: %s, path: %s)", packagePath, path)
+			}
+
+			if relativePath == "." {
+				return nil
+			}
+
+			header, err := buildArchiveHeader(info, relativePath)
+			if err != nil {
+				return errors.Wrapf(err, "building archive header failed (path: %s)", relativePath)
+			}
+
+			err = tarWriter.WriteHeader(header)
+			if err != nil {
+				return errors.Wrapf(err, "writing header failed (path: %s)", relativePath)
+			}
+
+			if !info.IsDir() {
+				err = writeFileContentToArchive(path, tarWriter)
+				if err != nil {
+					return errors.Wrapf(err, "archiving file content failed (path: %s)", path)
+				}
+			}
+			return nil
+		})
+		if err != nil {
+			log.Printf("walking package path '%s' failed: %v", packagePath, err)
+			return
 		}
-		return nil
-	})
-	if err != nil {
-		log.Printf("walking package path '%s' failed: %v", packagePath, err)
-		return
 	}
 }
 
