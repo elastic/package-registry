@@ -121,7 +121,6 @@ func getRouter(config Config, packagesBasePath string) (*mux.Router, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	indexHandlerFunc, err := indexHandler(config.CacheTimeCatchAll)
 	if err != nil {
 		return nil, err
