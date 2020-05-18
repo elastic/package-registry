@@ -17,8 +17,8 @@ type indexData struct {
 
 func indexHandler(cacheTime time.Duration) (func(w http.ResponseWriter, r *http.Request), error) {
 	data := indexData{
-		ServiceName: "package-registry",
-		Version:     "0.4.0",
+		ServiceName: serviceName,
+		Version:     version,
 	}
 	body, err := json.MarshalIndent(&data, "", " ")
 	if err != nil {
