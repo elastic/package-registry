@@ -90,21 +90,6 @@ func fetchPackageStorage() error {
 		packageStorageRevision)
 }
 
-// Copy Favicon to public dir
-func CopyFavicon() error {
-
-	favicon, err := ioutil.ReadFile("img/favicon.ico")
-	if err != nil {
-		return err
-	}
-
-	err = ioutil.WriteFile(publicDir+"/favicon.ico", favicon, 0644)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
 func writeJsonFile(v interface{}, path string) error {
 	data, err := json.MarshalIndent(v, "", "  ")
 	if err != nil {
