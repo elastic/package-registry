@@ -120,6 +120,7 @@ func getConfig() (*Config, error) {
 }
 
 func getRouter(config Config, packagesBasePath string) (*mux.Router, error) {
+	artifactsHandler := newArtifactsHandler(packagesBasePath, config.CacheTimeCatchAll)
 	faviconHandleFunc, err := faviconHandler(config.CacheTimeCatchAll)
 	if err != nil {
 		return nil, err
@@ -136,7 +137,8 @@ func getRouter(config Config, packagesBasePath string) (*mux.Router, error) {
 	router.HandleFunc("/categories", categoriesHandler(packagesBasePath, config.CacheTimeCategories))
 	router.HandleFunc("/health", healthHandler)
 	router.HandleFunc("/favicon.ico", faviconHandleFunc)
-	router.PathPrefix("/epr").HandlerFunc(catchAll(http.Dir(config.PublicDir), config.CacheTimeCatchAll))
+	router.Handle("/epr/{packageName}/{packageName:[a-z]+}-{packageVersion}.tar.gz",
+		http.StripPrefix("/epr", http.Handler(artifactsHandler)))
 	router.PathPrefix("/package").HandlerFunc(catchAll(http.Dir(config.PublicDir), config.CacheTimeCatchAll))
 	router.Use(loggingMiddleware)
 	return router, nil
