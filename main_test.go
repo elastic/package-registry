@@ -14,6 +14,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/stretchr/testify/require"
+
 	"github.com/gorilla/mux"
 
 	"github.com/stretchr/testify/assert"
@@ -28,6 +30,9 @@ func TestEndpoints(t *testing.T) {
 
 	publicPath := "./testdata/public"
 	packagesBasePath := publicPath + "/package"
+
+	faviconHandleFunc, err := faviconHandler(testCacheTime)
+	require.NoError(t, err)
 
 	tests := []struct {
 		endpoint string
@@ -52,6 +57,7 @@ func TestEndpoints(t *testing.T) {
 		{"/search?experimental=true", "/search", "search-package-experimental.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/search?experimental=foo", "/search", "search-package-experimental-error.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/package/example/1.0.0", "", "package.json", catchAll(http.Dir(publicPath), testCacheTime)},
+		{"/favicon.ico", "", "favicon.ico", faviconHandleFunc},
 	}
 
 	for _, test := range tests {
