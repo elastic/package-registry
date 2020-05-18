@@ -64,11 +64,6 @@ func Build() error {
 			return err
 		}
 	}
-
-	err = BuildRootFile()
-	if err != nil {
-		return err
-	}
 	return sh.Run("go", "build", ".")
 }
 
@@ -93,31 +88,6 @@ func fetchPackageStorage() error {
 		"--work-tree", storageRepoDir,
 		"checkout",
 		packageStorageRevision)
-}
-
-// Creates the `index.json` file
-// For now only containing the version.
-func BuildRootFile() error {
-	rootData := map[string]string{
-		"version":      "0.4.0",
-		"service.name": "package-registry",
-	}
-	return writeJsonFile(rootData, publicDir+"/index.json")
-}
-
-// Copy Favicon to public dir
-func CopyFavicon() error {
-
-	favicon, err := ioutil.ReadFile("img/favicon.ico")
-	if err != nil {
-		return err
-	}
-
-	err = ioutil.WriteFile(publicDir+"/favicon.ico", favicon, 0644)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 func writeJsonFile(v interface{}, path string) error {

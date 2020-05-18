@@ -34,13 +34,17 @@ func TestEndpoints(t *testing.T) {
 	faviconHandleFunc, err := faviconHandler(testCacheTime)
 	require.NoError(t, err)
 
+	indexHandleFunc, err := indexHandler(testCacheTime)
+	require.NoError(t, err)
+
 	tests := []struct {
 		endpoint string
 		path     string
 		file     string
 		handler  func(w http.ResponseWriter, r *http.Request)
 	}{
-		{"/", "", "info.json", catchAll(http.Dir(publicPath), testCacheTime)},
+		{"/", "", "index.json", indexHandleFunc},
+		{"/index.json", "", "index.json", indexHandleFunc},
 		{"/search", "/search", "search.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/search?all=true", "/search", "search-all.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/categories", "/categories", "categories.json", categoriesHandler(packagesBasePath, testCacheTime)},

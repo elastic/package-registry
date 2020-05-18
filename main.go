@@ -25,6 +25,9 @@ import (
 
 const (
 	packageDir = "package"
+
+	serviceName = "package-registry"
+	version     = "0.4.0"
 )
 
 var (
@@ -121,13 +124,20 @@ func getRouter(config Config, packagesBasePath string) (*mux.Router, error) {
 	if err != nil {
 		return nil, err
 	}
+	indexHandlerFunc, err := indexHandler(config.CacheTimeCatchAll)
+	if err != nil {
+		return nil, err
+	}
 
 	router := mux.NewRouter().StrictSlash(true)
+	router.HandleFunc("/", indexHandlerFunc)
+	router.HandleFunc("/index.json", indexHandlerFunc)
 	router.HandleFunc("/search", searchHandler(packagesBasePath, config.CacheTimeSearch))
 	router.HandleFunc("/categories", categoriesHandler(packagesBasePath, config.CacheTimeCategories))
 	router.HandleFunc("/health", healthHandler)
 	router.HandleFunc("/favicon.ico", faviconHandleFunc)
-	router.PathPrefix("/").HandlerFunc(catchAll(http.Dir(config.PublicDir), config.CacheTimeCatchAll))
+	router.PathPrefix("/epr").HandlerFunc(catchAll(http.Dir(config.PublicDir), config.CacheTimeCatchAll))
+	router.PathPrefix("/package").HandlerFunc(catchAll(http.Dir(config.PublicDir), config.CacheTimeCatchAll))
 	router.Use(loggingMiddleware)
 	return router, nil
 }
