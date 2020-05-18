@@ -33,7 +33,7 @@ var (
 	publicDir      = "./public"
 	buildDir       = "./build"
 	storageRepoDir = filepath.Join(buildDir, "package-storage")
-	packagePaths   = []string{filepath.Join(storageRepoDir, "packages"), "./dev/packages/example/"}
+	packagePaths   = []string{filepath.Join(storageRepoDir, "packages")}
 	tarGz          = true
 )
 
@@ -80,7 +80,7 @@ func fetchPackageStorage() error {
 
 	packageStorageRevision := os.Getenv("PACKAGE_STORAGE_REVISION")
 	if packageStorageRevision == "" {
-		packageStorageRevision = "master"
+		packageStorageRevision = "experimental"
 	}
 
 	return sh.Run("git",
