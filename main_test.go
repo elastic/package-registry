@@ -27,7 +27,6 @@ var (
 )
 
 func TestEndpoints(t *testing.T) {
-
 	publicPath := "./testdata/public"
 	packagesBasePath := publicPath + "/package"
 
@@ -36,8 +35,6 @@ func TestEndpoints(t *testing.T) {
 
 	indexHandleFunc, err := indexHandler(testCacheTime)
 	require.NoError(t, err)
-
-	artifactsHandler := artifactsHandler(packagesBasePath, testCacheTime)
 
 	tests := []struct {
 		endpoint string
@@ -64,6 +61,27 @@ func TestEndpoints(t *testing.T) {
 		{"/search?experimental=foo", "/search", "search-package-experimental-error.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/package/example/1.0.0", "", "package.json", catchAll(http.Dir(publicPath), testCacheTime)},
 		{"/favicon.ico", "", "favicon.ico", faviconHandleFunc},
+	}
+
+	for _, test := range tests {
+		t.Run(test.endpoint, func(t *testing.T) {
+			runEndpoint(t, test.endpoint, test.path, test.file, test.handler)
+		})
+	}
+}
+
+func TestArtifacts(t *testing.T) {
+	publicPath := "./testdata/artifacts"
+	packagesBasePath := publicPath + "/package"
+
+	artifactsHandler := artifactsHandler(packagesBasePath, testCacheTime)
+
+	tests := []struct {
+		endpoint string
+		path     string
+		file     string
+		handler  func(w http.ResponseWriter, r *http.Request)
+	}{
 		{"/epr/example/example-0.0.2.tar.gz", artifactsRouterPath, "example-0.0.2.tar.gz", artifactsHandler},
 		{"/epr/example/example-999.0.2.tar.gz", artifactsRouterPath, "package-version-not-found.txt", artifactsHandler},
 		{"/epr/example/missing-0.1.2.tar.gz", artifactsRouterPath, "package-missing.txt", artifactsHandler},
