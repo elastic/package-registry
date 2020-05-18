@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 * Use filepath.Walk to find valid package content data. [#438](https://github.com/elastic/package-registry/pull/438)
 * Validate handlebarsjs stream configuration templates. [#445](https://github.com/elastic/package-registry/pull/445)
+* Serve favicon as embedded resource. [#468](https://github.com/elastic/package-registry/pull/468)
 
 ### Deprecated
 
