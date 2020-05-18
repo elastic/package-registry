@@ -5,8 +5,12 @@
 package main
 
 import (
+	"archive/tar"
+	"bytes"
+	"compress/gzip"
 	"flag"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -113,8 +117,13 @@ func runEndpoint(t *testing.T, endpoint, path, file string, handler func(w http.
 
 	fullPath := "./docs/api/" + file
 
+	recorded := recorder.Body.Bytes()
+	if strings.HasSuffix(file, ".tar.gz") {
+		recorded = listArchivedFiles(t, recorded)
+	}
+
 	if *generateFlag {
-		err = ioutil.WriteFile(fullPath, recorder.Body.Bytes(), 0644)
+		err = ioutil.WriteFile(fullPath, recorded, 0644)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -125,11 +134,31 @@ func runEndpoint(t *testing.T, endpoint, path, file string, handler func(w http.
 		t.Fatal(err)
 	}
 
-	assert.Equal(t, strings.TrimSpace(string(data)), strings.TrimSpace(recorder.Body.String()))
+	assert.Equal(t, bytes.TrimSpace(data), bytes.TrimSpace(recorded))
 
 	// Skip cache check if 4xx error
 	if recorder.Code >= 200 && recorder.Code < 300 {
 		cacheTime := fmt.Sprintf("%.0f", testCacheTime.Seconds())
 		assert.Equal(t, recorder.Header()["Cache-Control"], []string{"max-age=" + cacheTime, "public"})
 	}
+}
+
+func listArchivedFiles(t *testing.T, body []byte) []byte {
+	gzippedReader, err := gzip.NewReader(bytes.NewReader(body))
+	require.NoError(t, err)
+
+	tarReader := tar.NewReader(gzippedReader)
+
+	var listing bytes.Buffer
+
+	for {
+		header, err := tarReader.Next()
+		if err == io.EOF {
+			break
+		}
+		require.NoError(t, err)
+
+		listing.WriteString(fmt.Sprintf("%d %s\n", header.Size, header.Name))
+	}
+	return listing.Bytes()
 }

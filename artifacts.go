@@ -101,6 +101,16 @@ func artifactsHandler(packagesBasePath string, cacheTime time.Duration) func(w h
 			log.Printf("walking package path '%s' failed: %v", packagePath, err)
 			return
 		}
+
+		err = tarWriter.Flush()
+		if err != nil {
+			log.Printf("Error occurred while flushing tar writer: %v", err)
+		}
+
+		err = gzipWriter.Flush()
+		if err != nil {
+			log.Printf("Error occurred while flushing gzip writer: %v", err)
+		}
 	}
 }
 
