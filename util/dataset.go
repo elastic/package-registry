@@ -122,7 +122,7 @@ func NewDataset(basePath string, p *Package) (*DataSet, error) {
 		}
 	}
 
-	if !IsValidRelase(d.Release) {
+	if !IsValidRelease(d.Release) {
 		return nil, fmt.Errorf("invalid release: %s", d.Release)
 	}
 

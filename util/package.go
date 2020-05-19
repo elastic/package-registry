@@ -148,7 +148,7 @@ func NewPackage(basePath string) (*Package, error) {
 		p.Release = DefaultRelease
 	}
 
-	if !IsValidRelase(p.Release) {
+	if !IsValidRelease(p.Release) {
 		return nil, fmt.Errorf("invalid release: %s", p.Release)
 	}
 
