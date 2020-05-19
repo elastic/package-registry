@@ -86,7 +86,7 @@ func TestArtifacts(t *testing.T) {
 		file     string
 		handler  func(w http.ResponseWriter, r *http.Request)
 	}{
-		{"/epr/example/example-0.0.2.tar.gz", artifactsRouterPath, "example-0.0.2.tar.gz", artifactsHandler},
+		{"/epr/example/example-0.0.2.tar.gz", artifactsRouterPath, "example-0.0.2.tar.gz-preview.txt", artifactsHandler},
 		{"/epr/example/example-999.0.2.tar.gz", artifactsRouterPath, "package-version-not-found.txt", artifactsHandler},
 		{"/epr/example/missing-0.1.2.tar.gz", artifactsRouterPath, "package-missing.txt", artifactsHandler},
 		{"/epr/example/example-a.b.c.tar.gz", artifactsRouterPath, "package-invalid-version.txt", artifactsHandler},
@@ -118,7 +118,7 @@ func runEndpoint(t *testing.T, endpoint, path, file string, handler func(w http.
 	fullPath := "./docs/api/" + file
 
 	recorded := recorder.Body.Bytes()
-	if strings.HasSuffix(file, ".tar.gz") {
+	if strings.HasSuffix(file, "-preview.txt") {
 		recorded = listArchivedFiles(t, recorded)
 	}
 
