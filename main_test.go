@@ -75,7 +75,7 @@ func TestEndpoints(t *testing.T) {
 }
 
 func TestArtifacts(t *testing.T) {
-	publicPath := "./testdata/artifacts"
+	publicPath := "./testdata/public"
 	packagesBasePath := publicPath + "/package"
 
 	artifactsHandler := artifactsHandler(packagesBasePath, testCacheTime)
