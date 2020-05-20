@@ -9,9 +9,10 @@ import (
 	"compress/gzip"
 	"fmt"
 	"io"
-	"log"
 	"os"
 	"path/filepath"
+
+	"github.com/joeshaw/multierror"
 
 	"github.com/pkg/errors"
 )
@@ -24,24 +25,34 @@ type PackageProperties struct {
 }
 
 // ArchivePackage method builds and streams an archive with package content.
-func ArchivePackage(w io.Writer, properties PackageProperties) error {
+func ArchivePackage(w io.Writer, properties PackageProperties) (err error) {
 	gzipWriter := gzip.NewWriter(w)
 	tarWriter := tar.NewWriter(gzipWriter)
 	defer func() {
-		err := tarWriter.Close()
+		var me multierror.Errors
+
 		if err != nil {
-			log.Printf("Error occurred while closing tar writer: %v", err)
+			me = append(me, err)
+		}
+
+		err = tarWriter.Close()
+		if err != nil {
+			me = append(me, errors.Wrapf(err, "closing tar writer failed"))
 		}
 
 		err = gzipWriter.Close()
 		if err != nil {
-			log.Printf("Error occurred while closing gzip writer: %v", err)
+			me = append(me, errors.Wrapf(err, "closing gzip writer failed"))
+		}
+
+		if me != nil {
+			err = me.Err()
 		}
 	}()
 
 	rootDir := fmt.Sprintf("%s-%s", properties.Name, properties.Version)
 
-	err := filepath.Walk(properties.Path, func(path string, info os.FileInfo, err error) error {
+	err = filepath.Walk(properties.Path, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
@@ -102,15 +113,25 @@ func buildArchiveHeader(info os.FileInfo, relativePath string) (*tar.Header, err
 	return header, nil
 }
 
-func writeFileContentToArchive(path string, writer io.Writer) error {
-	f, err := os.Open(path)
+func writeFileContentToArchive(path string, writer io.Writer) (err error) {
+	var f *os.File
+	f, err = os.Open(path)
 	if err != nil {
 		return errors.Wrapf(err, "opening file failed (path: %s)", path)
 	}
 	defer func() {
-		err := f.Close()
+		var me multierror.Errors
 		if err != nil {
-			log.Printf("Error occurred while closing file (path: %s): %v", path, err)
+			me = append(me, err)
+		}
+
+		err = f.Close()
+		if err != nil {
+			me = append(me, errors.Wrapf(err, "closing file failed (path: %s)", path))
+		}
+
+		if me != nil {
+			err = me.Err()
 		}
 	}()
 
