@@ -16,6 +16,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// PackageProperties defines properties describing the package. The structure is used for archiving.
 type PackageProperties struct {
 	Name    string
 	Version string
