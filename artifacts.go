@@ -50,7 +50,11 @@ func artifactsHandler(packagesBasePath string, cacheTime time.Duration) func(w h
 		w.Header().Set("Content-Type", "application/gzip")
 		cacheHeaders(w, cacheTime)
 
-		err = archiver.ArchivePackage(w, packagePath)
+		err = archiver.ArchivePackage(w, archiver.PackageProperties{
+			Name:    packageName,
+			Version: packageVersion,
+			Path:    packagePath,
+		})
 		if err != nil {
 			log.Printf("archiving package path '%s' failed: %v", packagePath, err)
 			return

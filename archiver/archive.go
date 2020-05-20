@@ -7,6 +7,7 @@ package archiver
 import (
 	"archive/tar"
 	"compress/gzip"
+	"fmt"
 	"io"
 	"log"
 	"os"
@@ -15,8 +16,14 @@ import (
 	"github.com/pkg/errors"
 )
 
+type PackageProperties struct {
+	Name    string
+	Version string
+	Path    string
+}
+
 // ArchivePackage method builds and streams an archive with package content.
-func ArchivePackage(w io.Writer, packagePath string) error {
+func ArchivePackage(w io.Writer, properties PackageProperties) error {
 	gzipWriter := gzip.NewWriter(w)
 	tarWriter := tar.NewWriter(gzipWriter)
 	defer func() {
@@ -31,21 +38,23 @@ func ArchivePackage(w io.Writer, packagePath string) error {
 		}
 	}()
 
-	err := filepath.Walk(packagePath, func(path string, info os.FileInfo, err error) error {
+	rootDir := fmt.Sprintf("%s-%s", properties.Name, properties.Version)
+
+	err := filepath.Walk(properties.Path, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
 
-		relativePath, err := filepath.Rel(packagePath, path)
+		relativePath, err := filepath.Rel(properties.Path, path)
 		if err != nil {
-			return errors.Wrapf(err, "finding relative path failed (packagePath: %s, path: %s)", packagePath, path)
+			return errors.Wrapf(err, "finding relative path failed (packagePath: %s, path: %s)", properties.Path, path)
 		}
 
 		if relativePath == "." {
 			return nil
 		}
 
-		header, err := buildArchiveHeader(info, relativePath)
+		header, err := buildArchiveHeader(info, filepath.Join(rootDir, relativePath))
 		if err != nil {
 			return errors.Wrapf(err, "building archive header failed (path: %s)", relativePath)
 		}
@@ -64,7 +73,7 @@ func ArchivePackage(w io.Writer, packagePath string) error {
 		return nil
 	})
 	if err != nil {
-		return errors.Wrapf(err, "processing package path '%s' failed", packagePath)
+		return errors.Wrapf(err, "processing package path '%s' failed", properties.Path)
 	}
 
 	err = tarWriter.Flush()
