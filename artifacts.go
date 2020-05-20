@@ -25,8 +25,17 @@ var errArtifactNotFound = errors.New("artifact not found")
 func artifactsHandler(packagesBasePath string, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
-		packageName := vars["packageName"]
-		packageVersion := vars["packageVersion"]
+		packageName, ok := vars["packageName"]
+		if !ok {
+			badRequest(w, "missing package name")
+			return
+		}
+
+		packageVersion, ok := vars["packageVersion"]
+		if !ok {
+			badRequest(w, "missing package version")
+			return
+		}
 
 		_, err := semver.Parse(packageVersion)
 		if err != nil {
