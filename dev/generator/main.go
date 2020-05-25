@@ -178,11 +178,6 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 		return err
 	}
 
-	err = writeJsonFile(p, filepath.Join(packagesBasePath, p.GetPath(), "index.json"))
-	if err != nil {
-		return err
-	}
-
 	// Get all Kibana files
 	savedObjects1, err := filepath.Glob(filepath.Join(packagesBasePath, p.GetPath(), "dataset", "*", "kibana", "*", "*"))
 	if err != nil {
@@ -212,15 +207,6 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 		}
 	}
 	return nil
-}
-
-func writeJsonFile(v interface{}, path string) error {
-	data, err := json.MarshalIndent(v, "", "  ")
-	if err != nil {
-		return err
-	}
-
-	return ioutil.WriteFile(path, data, 0644)
 }
 
 var (

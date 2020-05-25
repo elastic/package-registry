@@ -130,6 +130,8 @@ func getRouter(config Config, packagesBasePath string) (*mux.Router, error) {
 		return nil, err
 	}
 
+	packageIndexHandler := packageIndexHandler(packagesBasePath, config.CacheTimeCatchAll)
+
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/", indexHandlerFunc)
 	router.HandleFunc("/index.json", indexHandlerFunc)
@@ -138,6 +140,8 @@ func getRouter(config Config, packagesBasePath string) (*mux.Router, error) {
 	router.HandleFunc("/health", healthHandler)
 	router.HandleFunc("/favicon.ico", faviconHandleFunc)
 	router.HandleFunc(artifactsRouterPath, artifactsHandler)
+	router.HandleFunc(packageIndexRouterPath1, packageIndexHandler)
+	router.HandleFunc(packageIndexRouterPath2, packageIndexHandler)
 	router.PathPrefix("/package").HandlerFunc(catchAll(http.Dir(config.PublicDir), config.CacheTimeCatchAll))
 	router.Use(loggingMiddleware)
 	return router, nil
