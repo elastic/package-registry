@@ -1,3 +1,4 @@
+1916 example-0.0.2/index.json
 0 example-0.0.2/docs/
 622 example-0.0.2/docs/README.md
 0 example-0.0.2/elasticsearch/
@@ -9,7 +10,6 @@
 900 example-0.0.2/elasticsearch/ingest-pipeline/pipeline-tcp.json
 0 example-0.0.2/img/
 482070 example-0.0.2/img/kibana-envoyproxy.jpg
-1916 example-0.0.2/index.json
 0 example-0.0.2/kibana/
 0 example-0.0.2/kibana/dashboard/
 2221 example-0.0.2/kibana/dashboard/0c610510-5cbd-11e9-8477-077ec9664dbd.json
