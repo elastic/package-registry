@@ -181,17 +181,17 @@ func NewPackage(basePath string) (*Package, error) {
 func NewPackageWithResources(path string) (*Package, error) {
 	aPackage, err := NewPackage(path)
 	if err != nil {
-		return nil, errors.Wrapf(err, "building package from path '%s' failed: %v", path)
+		return nil, errors.Wrapf(err, "building package from path '%s' failed", path)
 	}
 
 	err = aPackage.LoadAssets(aPackage.GetPath())
 	if err != nil {
-		return nil, errors.Wrapf(err, "loading package assets failed (path '%s'): %v", path)
+		return nil, errors.Wrapf(err, "loading package assets failed (path '%s')", path)
 	}
 
 	err = aPackage.LoadDataSets(aPackage.GetPath())
 	if err != nil {
-		return nil, errors.Wrapf(err, "loading package datasets failed (path '%s'): %v", path)
+		return nil, errors.Wrapf(err, "loading package datasets failed (path '%s')", path)
 	}
 	return aPackage, nil
 }
