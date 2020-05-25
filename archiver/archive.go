@@ -11,6 +11,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/joeshaw/multierror"
 
@@ -29,24 +30,24 @@ func ArchivePackage(w io.Writer, properties PackageProperties) (err error) {
 	gzipWriter := gzip.NewWriter(w)
 	tarWriter := tar.NewWriter(gzipWriter)
 	defer func() {
-		var me multierror.Errors
+		var multiErr multierror.Errors
 
 		if err != nil {
-			me = append(me, err)
+			multiErr = append(multiErr, err)
 		}
 
 		err = tarWriter.Close()
 		if err != nil {
-			me = append(me, errors.Wrapf(err, "closing tar writer failed"))
+			multiErr = append(multiErr, errors.Wrapf(err, "closing tar writer failed"))
 		}
 
 		err = gzipWriter.Close()
 		if err != nil {
-			me = append(me, errors.Wrapf(err, "closing gzip writer failed"))
+			multiErr = append(multiErr, errors.Wrapf(err, "closing gzip writer failed"))
 		}
 
-		if me != nil {
-			err = me.Err()
+		if multiErr != nil {
+			err = multiErr.Err()
 		}
 	}()
 
@@ -107,7 +108,7 @@ func buildArchiveHeader(info os.FileInfo, relativePath string) (*tar.Header, err
 	}
 
 	header.Name = relativePath
-	if info.IsDir() {
+	if info.IsDir() && !strings.HasSuffix(header.Name, "/") {
 		header.Name = header.Name + "/"
 	}
 	return header, nil
@@ -120,18 +121,18 @@ func writeFileContentToArchive(path string, writer io.Writer) (err error) {
 		return errors.Wrapf(err, "opening file failed (path: %s)", path)
 	}
 	defer func() {
-		var me multierror.Errors
+		var multiErr multierror.Errors
 		if err != nil {
-			me = append(me, err)
+			multiErr = append(multiErr, err)
 		}
 
 		err = f.Close()
 		if err != nil {
-			me = append(me, errors.Wrapf(err, "closing file failed (path: %s)", path))
+			multiErr = append(multiErr, errors.Wrapf(err, "closing file failed (path: %s)", path))
 		}
 
-		if me != nil {
-			err = me.Err()
+		if multiErr != nil {
+			err = multiErr.Err()
 		}
 	}()
 
