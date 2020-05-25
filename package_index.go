@@ -6,12 +6,13 @@ package main
 
 import (
 	"encoding/json"
-	"errors"
 	"log"
 	"net/http"
 	"os"
 	"path/filepath"
 	"time"
+
+	"github.com/pkg/errors"
 
 	"github.com/blang/semver"
 	"github.com/gorilla/mux"
@@ -63,9 +64,9 @@ func packageIndexHandler(packagesBasePath string, cacheTime time.Duration) func(
 		w.Header().Set("Content-Type", "application/json")
 		cacheHeaders(w, cacheTime)
 
-		aPackage, err := util.NewPackage(packagePath)
+		aPackage, err := util.NewPackageWithResources(packagePath)
 		if err != nil {
-			log.Printf("building package from path '%s' failed: %v", packagePath, err)
+			log.Printf("loading package from path '%s' failed: %v", packagePath, err)
 
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return

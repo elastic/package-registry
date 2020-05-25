@@ -1,4 +1,4 @@
-567 example-0.0.2/index.json
+1916 example-0.0.2/index.json
 0 example-0.0.2/docs/
 622 example-0.0.2/docs/README.md
 0 example-0.0.2/elasticsearch/

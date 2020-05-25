@@ -122,7 +122,7 @@ func buildArchiveHeader(info os.FileInfo, relativePath string) (*tar.Header, err
 }
 
 func writePackageIndexToArchive(path, rootDir string, tarWriter *tar.Writer) error {
-	aPackage, err := util.NewPackage(path)
+	aPackage, err := util.NewPackageWithResources(path)
 	if err != nil {
 		return errors.Wrapf(err, "building package failed (path: %s)", path)
 	}
