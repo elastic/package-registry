@@ -110,8 +110,8 @@ func TestPackageIndex(t *testing.T) {
 		file     string
 		handler  func(w http.ResponseWriter, r *http.Request)
 	}{
-		{"/package/example/0.0.2/index.json", packageIndexRouterPath1, "package.json", packageIndexHandler},
-		{"/package/missing/0.0.2/index.json", packageIndexRouterPath1, "index-package-not-found.txt", packageIndexHandler},
+		{"/package/example/1.0.0/index.json", packageIndexRouterPath1, "package.json", packageIndexHandler},
+		{"/package/missing/1.0.0/index.json", packageIndexRouterPath1, "index-package-not-found.txt", packageIndexHandler},
 		{"/package/example/999.0.0/index.json", packageIndexRouterPath1, "index-package-revision-not-found.txt", packageIndexHandler},
 		{"/package/example/a.b.c/index.json", packageIndexRouterPath1, "index-package-invalid-version.txt", packageIndexHandler},
 	}

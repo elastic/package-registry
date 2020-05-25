@@ -1,25 +1,52 @@
 {
   "format_version": "1.0.0",
   "name": "example",
-  "title": "Example",
-  "version": "0.0.2",
-  "readme": "/package/example/0.0.2/docs/README.md",
+  "title": "Example Integration",
+  "version": "1.0.0",
+  "readme": "/package/example/1.0.0/docs/README.md",
   "license": "basic",
-  "description": "This is the example integration.",
+  "description": "This is the example integration",
   "type": "integration",
   "categories": [
-    "logs"
+    "logs",
+    "metrics"
   ],
-  "release": "beta",
+  "release": "ga",
   "removable": true,
   "requirement": {
     "kibana": {
-      "versions": "\u003e=6.0.0"
+      "versions": "\u003e=7.0.0"
     },
     "elasticsearch": {
-      "versions": "\u003e=6.0.0 \u003c=6.8.0"
+      "versions": "\u003e=7.0.0 \u003c=7.5.0"
     }
   },
-  "download": "/epr/example/example-0.0.2.tar.gz",
-  "path": "/package/example/0.0.2"
+  "screenshots": [
+    {
+      "src": "/package/example/1.0.0/img/kibana-iptables.png",
+      "title": "IP Tables Overview dashboard",
+      "size": "1492x1382"
+    },
+    {
+      "src": "/package/example/1.0.0/img/kibana-iptables-ubiquity.png",
+      "title": "IP Tables Ubiquity Dashboard",
+      "size": "1492x1464",
+      "type": "image/png"
+    }
+  ],
+  "datasources": [
+    {
+      "name": "logs",
+      "title": "Logs datasource",
+      "description": "Datasource for your log files.",
+      "inputs": [
+        {
+          "type": "foo"
+        }
+      ],
+      "multiple": true
+    }
+  ],
+  "download": "/epr/example/example-1.0.0.tar.gz",
+  "path": "/package/example/1.0.0"
 }
