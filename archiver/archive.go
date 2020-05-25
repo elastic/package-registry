@@ -55,6 +55,8 @@ func ArchivePackage(w io.Writer, properties PackageProperties) (err error) {
 
 	rootDir := fmt.Sprintf("%s-%s", properties.Name, properties.Version)
 
+	// Kibana still relies on the "index.json" file to be present in the archive.
+	// This asset can be removed in the future, once not needed anymore.
 	err = writePackageIndexToArchive(properties.Path, rootDir, tarWriter)
 	if err != nil {
 		return errors.Wrapf(err, "writing package index failed")
