@@ -35,7 +35,7 @@ var releaseTests = []struct {
 func TestReleases(t *testing.T) {
 	for _, tt := range releaseTests {
 		t.Run(tt.release, func(t *testing.T) {
-			exists := IsValidRelase(tt.release)
+			exists := IsValidRelease(tt.release)
 			assert.Equal(t, tt.exists, exists)
 		})
 	}

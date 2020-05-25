@@ -5,8 +5,12 @@
 package main
 
 import (
+	"archive/tar"
+	"bytes"
+	"compress/gzip"
 	"flag"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -27,7 +31,6 @@ var (
 )
 
 func TestEndpoints(t *testing.T) {
-
 	publicPath := "./testdata/public"
 	packagesBasePath := publicPath + "/package"
 
@@ -71,6 +74,31 @@ func TestEndpoints(t *testing.T) {
 	}
 }
 
+func TestArtifacts(t *testing.T) {
+	publicPath := "./testdata/public"
+	packagesBasePath := publicPath + "/package"
+
+	artifactsHandler := artifactsHandler(packagesBasePath, testCacheTime)
+
+	tests := []struct {
+		endpoint string
+		path     string
+		file     string
+		handler  func(w http.ResponseWriter, r *http.Request)
+	}{
+		{"/epr/example/example-0.0.2.tar.gz", artifactsRouterPath, "example-0.0.2.tar.gz-preview.txt", artifactsHandler},
+		{"/epr/example/example-999.0.2.tar.gz", artifactsRouterPath, "package-version-not-found.txt", artifactsHandler},
+		{"/epr/example/missing-0.1.2.tar.gz", artifactsRouterPath, "package-missing.txt", artifactsHandler},
+		{"/epr/example/example-a.b.c.tar.gz", artifactsRouterPath, "package-invalid-version.txt", artifactsHandler},
+	}
+
+	for _, test := range tests {
+		t.Run(test.endpoint, func(t *testing.T) {
+			runEndpoint(t, test.endpoint, test.path, test.file, test.handler)
+		})
+	}
+}
+
 func runEndpoint(t *testing.T, endpoint, path, file string, handler func(w http.ResponseWriter, r *http.Request)) {
 	req, err := http.NewRequest("GET", endpoint, nil)
 	if err != nil {
@@ -89,8 +117,13 @@ func runEndpoint(t *testing.T, endpoint, path, file string, handler func(w http.
 
 	fullPath := "./docs/api/" + file
 
+	recorded := recorder.Body.Bytes()
+	if strings.HasSuffix(file, "-preview.txt") {
+		recorded = listArchivedFiles(t, recorded)
+	}
+
 	if *generateFlag {
-		err = ioutil.WriteFile(fullPath, recorder.Body.Bytes(), 0644)
+		err = ioutil.WriteFile(fullPath, recorded, 0644)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -101,11 +134,31 @@ func runEndpoint(t *testing.T, endpoint, path, file string, handler func(w http.
 		t.Fatal(err)
 	}
 
-	assert.Equal(t, strings.TrimSpace(string(data)), strings.TrimSpace(recorder.Body.String()))
+	assert.Equal(t, bytes.TrimSpace(data), bytes.TrimSpace(recorded))
 
-	// Skip cache check if 400 error
-	if recorder.Code != 400 {
+	// Skip cache check if 4xx error
+	if recorder.Code >= 200 && recorder.Code < 300 {
 		cacheTime := fmt.Sprintf("%.0f", testCacheTime.Seconds())
 		assert.Equal(t, recorder.Header()["Cache-Control"], []string{"max-age=" + cacheTime, "public"})
 	}
+}
+
+func listArchivedFiles(t *testing.T, body []byte) []byte {
+	gzippedReader, err := gzip.NewReader(bytes.NewReader(body))
+	require.NoError(t, err)
+
+	tarReader := tar.NewReader(gzippedReader)
+
+	var listing bytes.Buffer
+
+	for {
+		header, err := tarReader.Next()
+		if err == io.EOF {
+			break
+		}
+		require.NoError(t, err)
+
+		listing.WriteString(fmt.Sprintf("%d %s\n", header.Size, header.Name))
+	}
+	return listing.Bytes()
 }

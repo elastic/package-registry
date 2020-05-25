@@ -211,40 +211,6 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 			return err
 		}
 	}
-
-	if tarGz {
-		tarGzDirPath := filepath.Join(packagesBasePath, "..", "epr", p.Name)
-		err = os.MkdirAll(tarGzDirPath, 0755)
-		if err != nil {
-			return err
-		}
-
-		tarGzName := p.Name + "-" + p.Version
-		dst := filepath.Join(tarGzDirPath, tarGzName)
-
-		// As the package directories are now {packagename}/{version} when just running tar, the dir inside
-		// the package had the wrong name. Using `-s` or `--transform` for some reason worked on the command line
-		// but not when run through Golang. So the hack for now is to just copy over all files with the correct name
-		// and then run tar on it.
-		// This could become even useful in the future as things like images or videos should potentially not be part of
-		// a tar.gz to keep it small.
-		src := filepath.Join(packagesBasePath, p.Name, p.Version) + "/"
-		err := CopyPackage(src, dst)
-		if err != nil {
-			return errors.Wrapf(err, "copying package content failed (path: %s)", p.GetPath())
-		}
-
-		err = sh.RunV("tar", "czf", filepath.Join(packagesBasePath, "..", "epr", p.Name, tarGzName+".tar.gz"), "-C", tarGzDirPath, tarGzName+"/")
-		if err != nil {
-			return errors.Wrapf(err, "compressing package failed (path: %s)", p.GetPath())
-		}
-
-		err = os.RemoveAll(dst)
-		if err != nil {
-			return err
-		}
-	}
-
 	return nil
 }
 
