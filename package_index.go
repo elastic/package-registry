@@ -71,7 +71,7 @@ func packageIndexHandler(packagesBasePath string, cacheTime time.Duration) func(
 			return
 		}
 
-		body, err := json.MarshalIndent(aPackage, "", " ")
+		body, err := json.MarshalIndent(aPackage, "", "  ")
 		if err != nil {
 			log.Printf("marshaling package index failed (path '%s'): %v", packagePath, err)
 
