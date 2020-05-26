@@ -5,15 +5,16 @@
                 "lifecycle": {
                     "name": "logs-default"
                 },
+                // Best compression optimises for storage
                 "codec": "best_compression",
                 "refresh_interval": "5s",
+                // Do we need number_of_shards default in this template as it is the same value as in ES?
                 "number_of_shards": "1",
                 "query": {
                     "default_field": [
                         "message"
                     ]
-                },
-                "number_of_routing_shards": "30"
+                }
             }
         },
         "aliases": {}
