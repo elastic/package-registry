@@ -1,0 +1,8 @@
+template:
+  settings:
+    index:
+      codec: "best_compression"
+      refresh_interval: "5s"
+      query:
+        default_field:
+          - "message"
