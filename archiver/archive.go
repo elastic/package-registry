@@ -29,7 +29,11 @@ type PackageProperties struct {
 
 // ArchivePackage method builds and streams an archive with package content.
 func ArchivePackage(w io.Writer, properties PackageProperties) (err error) {
-	gzipWriter := gzip.NewWriter(w)
+	gzipWriter, err := gzip.NewWriterLevel(w, gzip.NoCompression)
+	if err != nil {
+		return errors.Wrapf(err, "creating gzip writer failed")
+	}
+
 	tarWriter := tar.NewWriter(gzipWriter)
 	defer func() {
 		var multiErr multierror.Errors
