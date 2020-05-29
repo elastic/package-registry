@@ -90,40 +90,57 @@ func CopyPackage(src, dst string) error {
 	return nil
 }
 
-// BuildPackage rebuilds the zip files inside packages
 func BuildPackages(sourceDir, packagesPath string) error {
-	list, err := filepath.Glob(sourceDir + "/*/*")
+	var matches []string
+	err := filepath.Walk(sourceDir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		f, err := os.Stat(path)
+		if err != nil {
+			return err
+		}
+
+		if !f.IsDir() {
+			return nil // skip as the path is not a directory
+		}
+
+		manifestPath := filepath.Join(path, "manifest.yml")
+
+		_, err = os.Stat(manifestPath)
+		if os.IsNotExist(err) {
+			return nil
+		}
+
+		relativePath, err := filepath.Rel(sourceDir, path)
+		if err != nil {
+			return err
+		}
+
+		matches = append(matches, relativePath)
+		return filepath.SkipDir
+	})
 	if err != nil {
 		return err
 	}
 
-	for _, p := range list {
-		fileInfo, err := os.Stat(p)
+	for _, packagePath := range matches {
+		srcDir := filepath.Join(sourceDir, packagePath) + "/"
+
+		p, err := util.NewPackage(srcDir)
 		if err != nil {
 			return err
 		}
 
-		// Skip all non directories
-		if !fileInfo.IsDir() {
-			continue
-		}
-
-		packageVersion := filepath.Base(p)
-		packageName := filepath.Base(filepath.Dir(p))
-		packagePath := filepath.Join(packageName, packageVersion)
-		dstDir := filepath.Join(packagesPath, packagePath)
+		dstDir := filepath.Join(packagesPath, p.Name, p.Version)
 
 		if copy {
 			// Trailing slash is to make sure content of package is copied
-			err := CopyPackage(filepath.Join(sourceDir, packagePath)+"/", dstDir)
+			err := CopyPackage(srcDir, dstDir)
 			if err != nil {
 				return err
 			}
-		}
-
-		p, err := util.NewPackage(dstDir)
-		if err != nil {
-			return err
 		}
 
 		err = buildPackage(packagesPath, *p)
