@@ -184,7 +184,7 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 
 		err = createBaseFieldsFile(datasetPath)
 		if err != nil {
-			return err
+			return errors.Wrapf(err, "creating file with basic fields failed (datasetPath: %s)", datasetPath)
 		}
 	}
 
@@ -194,7 +194,7 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 
 		err = validateRequiredFields(datasetPath)
 		if err != nil {
-			return err
+			return errors.Wrapf(err, "validating required fields failed (datasetPath: %s)", datasetPath)
 		}
 	}
 
@@ -247,12 +247,12 @@ func createBaseFieldsFile(datasetPath string) error {
 	if err == nil {
 		return nil
 	} else if !os.IsNotExist(err) {
-		return err
+		return errors.Wrapf(err, "stat file failed (fieldsPath: %s)", baseFieldsPath)
 	}
 
 	err = os.MkdirAll(fieldsDirPath, 0755)
 	if err != nil {
-		return err
+		return errors.Wrapf(err, "creating directories failed (fieldsDirPath: %s)", fieldsDirPath)
 	}
 	return ioutil.WriteFile(baseFieldsPath, []byte(streamFields), 0644)
 }
@@ -270,7 +270,7 @@ func validateRequiredFields(datasetPath string) error {
 
 		relativePath, err := filepath.Rel(fieldsDirPath, path)
 		if err != nil {
-			return err
+			return errors.Wrapf(err, "cannot find relative path (fieldsDirPath: %s, path: %s)", fieldsDirPath, path)
 		}
 
 		if relativePath == "." {
@@ -279,20 +279,20 @@ func validateRequiredFields(datasetPath string) error {
 
 		body, err := ioutil.ReadFile(path)
 		if err != nil {
-			return err
+			return errors.Wrapf(err, "reading file failed (path: %s)", path)
 		}
 
 		var m []MapStr
 		err = yaml.Unmarshal(body, &m)
 		if err != nil {
-			return err
+			return errors.Wrapf(err, "unmarshaling file failed (path: %s)", path)
 		}
 
 		allFields = append(allFields, m...)
 		return nil
 	})
 	if err != nil {
-		return err
+		return errors.Wrapf(err, "walking through fields files failed")
 	}
 
 	// Flatten all fields
@@ -315,7 +315,7 @@ func requireField(allFields []MapStr, searchedName, expectedType string, validat
 
 	f, err := findField(allFields, searchedName)
 	if err != nil {
-		return err
+		return errors.Wrapf(err, "finding field failed (searchedName: %s)", searchedName)
 	}
 
 	if f.aType != expectedType {
@@ -328,7 +328,7 @@ func findField(allFields []MapStr, searchedName string) (*fieldEntry, error) {
 	for _, fields := range allFields {
 		name, err := fields.GetValue("name")
 		if err != nil {
-			return nil, err
+			return nil, errors.Wrapf(err, "cannot get value (key: name)")
 		}
 
 		if name != searchedName {
@@ -337,7 +337,7 @@ func findField(allFields []MapStr, searchedName string) (*fieldEntry, error) {
 
 		aType, err := fields.GetValue("type")
 		if err != nil {
-			return nil, err
+			return nil, errors.Wrapf(err, "cannot get value (key: type)")
 		}
 
 		if aType == "" {
