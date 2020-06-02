@@ -7,7 +7,6 @@ package archiver
 import (
 	"archive/tar"
 	"compress/gzip"
-	"encoding/json"
 	"fmt"
 	"io"
 	"os"
@@ -16,8 +15,6 @@ import (
 
 	"github.com/joeshaw/multierror"
 	"github.com/pkg/errors"
-
-	"github.com/elastic/package-registry/util"
 )
 
 // PackageProperties defines properties describing the package. The structure is used for archiving.
@@ -54,14 +51,6 @@ func ArchivePackage(w io.Writer, properties PackageProperties) (err error) {
 	}()
 
 	rootDir := fmt.Sprintf("%s-%s", properties.Name, properties.Version)
-
-	// Kibana still relies on the "index.json" file to be present in the archive.
-	// This asset can be removed in the future, once not needed anymore.
-	err = writePackageIndexToArchive(properties.Path, rootDir, tarWriter)
-	if err != nil {
-		return errors.Wrapf(err, "writing package index failed")
-	}
-
 	err = filepath.Walk(properties.Path, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
@@ -121,33 +110,6 @@ func buildArchiveHeader(info os.FileInfo, relativePath string) (*tar.Header, err
 		header.Name = header.Name + "/"
 	}
 	return header, nil
-}
-
-func writePackageIndexToArchive(path, rootDir string, tarWriter *tar.Writer) error {
-	aPackage, err := util.NewPackageWithResources(path)
-	if err != nil {
-		return errors.Wrapf(err, "building package failed (path: %s)", path)
-	}
-
-	packageIndexBody, err := json.MarshalIndent(aPackage, "", "  ")
-	if err != nil {
-		return errors.Wrapf(err, "marshaling package 'index.json' failed (path: %s)", path)
-	}
-
-	err = tarWriter.WriteHeader(&tar.Header{
-		Name: filepath.Join(rootDir, "index.json"),
-		Size: int64(len(packageIndexBody)),
-		Mode: 0644,
-	})
-	if err != nil {
-		return errors.Wrapf(err, "writing package 'index.json' header failed (path: %s)", path)
-	}
-
-	_, err = tarWriter.Write(packageIndexBody)
-	if err != nil {
-		return errors.Wrapf(err, "writing package 'index.json' body failed (path: %s)", path)
-	}
-	return nil
 }
 
 func writeFileContentToArchive(path string, writer io.Writer) (err error) {

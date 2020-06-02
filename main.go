@@ -140,8 +140,7 @@ func getRouter(config Config, packagesBasePath string) (*mux.Router, error) {
 	router.HandleFunc("/health", healthHandler)
 	router.HandleFunc("/favicon.ico", faviconHandleFunc)
 	router.HandleFunc(artifactsRouterPath, artifactsHandler)
-	router.HandleFunc(packageIndexRouterPath1, packageIndexHandler)
-	router.HandleFunc(packageIndexRouterPath2, packageIndexHandler)
+	router.HandleFunc(packageIndexRouterPath, packageIndexHandler)
 	router.PathPrefix("/package").HandlerFunc(catchAll(http.Dir(config.PublicDir), config.CacheTimeCatchAll))
 	router.Use(loggingMiddleware)
 	return router, nil
