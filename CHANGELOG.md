@@ -51,9 +51,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Add basic access logs. [#400](https://github.com/elastic/integrations-registry/pull/400)
 * Validate ingest pipeline during packaging phrase. [#426](https://github.com/elastic/package-registry/pull/426)
 * Use http.FileServer to serve package content and define HTTP headers [#425](https://github.com/elastic/package-registry/pull/425)
+* Remove requirement for streams definition in dataset manifest. [#483](https://github.com/elastic/package-registry/pull/483)
 
 
-## [Unreleased](https://github.com/elastic/package-registry/compare/v0.2.0...v0.3.0)
+## [v0.3.0](https://github.com/elastic/package-registry/compare/v0.2.0...v0.3.0)
 
 ### Breaking changes
 
