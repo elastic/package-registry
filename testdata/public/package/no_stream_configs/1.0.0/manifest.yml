@@ -1,0 +1,14 @@
+format_version: 1.0.0
+
+name: no_stream_configs
+title: No Stream configs
+description: >
+  This package does contain a dataset but not stream configs.
+version: 1.0.0
+categories: [logs]
+release: beta
+
+license: basic
+type: integration
+
+
