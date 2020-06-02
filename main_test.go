@@ -110,15 +110,10 @@ func TestPackageIndex(t *testing.T) {
 		file     string
 		handler  func(w http.ResponseWriter, r *http.Request)
 	}{
-		{"/package/example/1.0.0/index.json", packageIndexRouterPath1, "package.json", packageIndexHandler},
-		{"/package/missing/1.0.0/index.json", packageIndexRouterPath1, "index-package-not-found.txt", packageIndexHandler},
-		{"/package/example/999.0.0/index.json", packageIndexRouterPath1, "index-package-revision-not-found.txt", packageIndexHandler},
-		{"/package/example/a.b.c/index.json", packageIndexRouterPath1, "index-package-invalid-version.txt", packageIndexHandler},
-
-		{"/package/example/1.0.0/", packageIndexRouterPath2, "package.json", packageIndexHandler},
-		{"/package/missing/1.0.0/", packageIndexRouterPath2, "index-package-not-found.txt", packageIndexHandler},
-		{"/package/example/999.0.0/", packageIndexRouterPath2, "index-package-revision-not-found.txt", packageIndexHandler},
-		{"/package/example/a.b.c/", packageIndexRouterPath2, "index-package-invalid-version.txt", packageIndexHandler},
+		{"/package/example/1.0.0/", packageIndexRouterPath, "package.json", packageIndexHandler},
+		{"/package/missing/1.0.0/", packageIndexRouterPath, "index-package-not-found.txt", packageIndexHandler},
+		{"/package/example/999.0.0/", packageIndexRouterPath, "index-package-revision-not-found.txt", packageIndexHandler},
+		{"/package/example/a.b.c/", packageIndexRouterPath, "index-package-invalid-version.txt", packageIndexHandler},
 	}
 
 	for _, test := range tests {

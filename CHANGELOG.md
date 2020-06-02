@@ -20,6 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Deprecated
 
+* Delete package index.json from archives. Don't serve index.json as resource. [#488](https://github.com/elastic/package-registry/pull/488)
+
 ### Known Issue
 
 ## [Unreleased](https://github.com/elastic/package-registry/compare/v0.3.0...v0.4.0)

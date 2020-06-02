@@ -21,8 +21,7 @@ import (
 )
 
 const (
-	packageIndexRouterPath1 = "/package/{packageName:[a-z_]+}/{packageVersion}/index.json"
-	packageIndexRouterPath2 = "/package/{packageName:[a-z_]+}/{packageVersion}/"
+	packageIndexRouterPath = "/package/{packageName:[a-z_]+}/{packageVersion}/"
 )
 
 var errPackageRevisionNotFound = errors.New("package revision not found")
