@@ -26,6 +26,8 @@ paths:
           description: OK
           content:
             application/json:
+              schema:
+                type: object
       operationId: get
       description: Info about the registry
   /categories:
@@ -39,8 +41,6 @@ paths:
             application/json:
               schema:
                 type: array
-                items:
-                  $ref: '#/components/schemas/Category'
               examples:
                 example-1:
                   value:
@@ -95,6 +95,7 @@ paths:
           description: OK
           content:
             application/json:
+              schema:
+                type: object
       operationId: get-package
       description: Info about a package
-  securitySchemes: {}
