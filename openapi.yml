@@ -86,7 +86,7 @@ paths:
           in: query
           name: internal
           description: 'This can be set to true, to also list internal packages. This is set to false by default.'
-  /package:
+  '/package/{package}/{version}':
     get:
       summary: GET package info
       tags: []
@@ -99,3 +99,16 @@ paths:
                 type: object
       operationId: get-package
       description: Info about a package
+    parameters:
+      - schema:
+          type: string
+        name: package
+        in: path
+        description: Name of the package
+        required: true
+      - schema:
+          type: string
+        name: version
+        in: path
+        required: true
+        description: Version of the package
