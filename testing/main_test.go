@@ -32,7 +32,12 @@ func TestSetup(t *testing.T) {
 	}()
 	// Spin up services
 	go func() {
-		err = sh.Run("docker-compose", "-f", "snapshot.yml", "-f", "local.yml", "up", "--force-recreate")
+		err = sh.Run("docker-compose", "-f", "snapshot.yml", "pull")
+		if err != nil {
+			t.Error(err)
+		}
+
+		err = sh.Run("docker-compose", "-f", "snapshot.yml", "-f", "local.yml", "up", "--force-recreate", "--remove-orphans", "--build")
 		if err != nil {
 			t.Error(err)
 		}
