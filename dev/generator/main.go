@@ -13,10 +13,9 @@ import (
 	"os"
 	"path/filepath"
 
-	"gopkg.in/yaml.v2"
-
 	"github.com/magefile/mage/sh"
 	"github.com/pkg/errors"
+	"gopkg.in/yaml.v2"
 
 	"github.com/elastic/package-registry/util"
 )
@@ -26,27 +25,7 @@ var (
 	copy  bool
 )
 
-const (
-	packageDirName = "package"
-	streamFields   = `
-- name: stream.type
-  type: constant_keyword
-  description: >
-    Stream type
-- name: stream.dataset
-  type: constant_keyword
-  description: >
-    Stream dataset.
-- name: stream.namespace
-  type: constant_keyword
-  description: >
-    Stream namespace.
-- name: "@timestamp"
-  type: date
-  description: >
-    Event timestamp.
-`
-)
+const packageDirName = "package"
 
 type fieldEntry struct {
 	name  string
@@ -178,16 +157,6 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 		return err
 	}
 
-	// Add base-fields.yml if missing to all dataset with the basic stream fields and @timestamp
-	for _, dataset := range datasets {
-		datasetPath := filepath.Join(p.BasePath, "dataset", dataset)
-
-		err = createBaseFieldsFile(datasetPath)
-		if err != nil {
-			return errors.Wrapf(err, "creating file with basic fields failed (datasetPath: %s)", datasetPath)
-		}
-	}
-
 	// Validate if basic stream fields and @timestamp are present
 	for _, dataset := range datasets {
 		datasetPath := filepath.Join(p.BasePath, "dataset", dataset)
@@ -237,24 +206,6 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 		}
 	}
 	return nil
-}
-
-// createBaseFieldsFile method creates the base-fields.yml file if missing.
-func createBaseFieldsFile(datasetPath string) error {
-	fieldsDirPath := filepath.Join(datasetPath, "fields")
-	baseFieldsPath := filepath.Join(fieldsDirPath, "base-fields.yml")
-	_, err := os.Stat(baseFieldsPath)
-	if err == nil {
-		return nil
-	} else if !os.IsNotExist(err) {
-		return errors.Wrapf(err, "stat file failed (fieldsPath: %s)", baseFieldsPath)
-	}
-
-	err = os.MkdirAll(fieldsDirPath, 0755)
-	if err != nil {
-		return errors.Wrapf(err, "creating directories failed (fieldsDirPath: %s)", fieldsDirPath)
-	}
-	return ioutil.WriteFile(baseFieldsPath, []byte(streamFields), 0644)
 }
 
 // validateRequiredFields method loads fields from all files and checks if required fields are present.
