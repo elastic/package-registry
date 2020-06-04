@@ -2,6 +2,8 @@
 // or more contributor license agreements. Licensed under the Elastic License;
 // you may not use this file except in compliance with the Elastic License.
 
+// +build integration
+
 package main
 
 import (
@@ -21,7 +23,7 @@ import (
 // and the setup command works as expected.
 func TestSetup(t *testing.T) {
 
-	err := os.Chdir("environments")
+	err := os.Chdir("testing/environments")
 	if err != nil {
 		t.Error(err)
 	}

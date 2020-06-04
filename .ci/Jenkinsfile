@@ -87,6 +87,20 @@ pipeline {
       }
     }
     /**
+     Execute integration tests.
+     */
+    stage('TestIntegration') {
+      steps {
+        deleteDir()
+        unstash 'source'
+        dir("${BASE_DIR}"){
+          insideGo(){
+            sh(label: 'Runs the (integration) tests',script: 'mage -debug testIntegration ')
+          }
+        }
+      }
+    }
+    /**
      Publish Docker images.
      */
     stage('Publish Docker image'){
