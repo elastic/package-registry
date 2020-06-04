@@ -7,9 +7,7 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -88,15 +86,6 @@ func fetchPackageStorage() error {
 		"--work-tree", storageRepoDir,
 		"checkout",
 		packageStorageRevision)
-}
-
-func writeJsonFile(v interface{}, path string) error {
-	data, err := json.MarshalIndent(v, "", "  ")
-	if err != nil {
-		return err
-	}
-
-	return ioutil.WriteFile(path, data, 0644)
 }
 
 func Check() error {
