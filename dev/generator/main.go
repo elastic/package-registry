@@ -167,16 +167,6 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 		}
 	}
 
-	err = p.LoadAssets(p.GetPath())
-	if err != nil {
-		return err
-	}
-
-	err = p.LoadDataSets(p.GetPath())
-	if err != nil {
-		return err
-	}
-
 	// Get all Kibana files
 	savedObjects1, err := filepath.Glob(filepath.Join(packagesBasePath, p.GetPath(), "dataset", "*", "kibana", "*", "*"))
 	if err != nil {
