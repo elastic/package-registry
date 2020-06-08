@@ -90,6 +90,10 @@ pipeline {
      Execute integration tests.
      */
     stage('TestIntegration') {
+      environment {
+        HOME = "${env.WORKSPACE}"
+        PATH = "${env.HOME}/go/bin:${env.PATH}"
+      }
       steps {
         deleteDir()
         unstash 'source'
