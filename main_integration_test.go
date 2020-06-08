@@ -23,7 +23,12 @@ import (
 // and the setup command works as expected.
 func TestSetup(t *testing.T) {
 
-	err := os.Chdir("testing/environments")
+	currentDir, err := os.Getwd()
+	if err != nil {
+		t.Error(err)
+	}
+	defer os.Chdir(currentDir)
+	err = os.Chdir("testing/environments")
 	if err != nil {
 		t.Error(err)
 	}
