@@ -86,5 +86,7 @@ func TestSetup(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+
+	// Leaving this in as it could become useful for debugging purpose
 	log.Println(string(body))
 }
