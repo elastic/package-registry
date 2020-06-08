@@ -1,7 +1,7 @@
 - name: dataset.type
   type: constant_keyword
   description: >
-    Dataset type. This can be logs or metrics.
+    Dataset type.
 - name: dataset.name
   type: constant_keyword
   description: >
