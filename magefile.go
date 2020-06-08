@@ -143,7 +143,7 @@ func Test() error {
 }
 
 func TestIntegration() error {
-	return sh.RunV("go", "test", "./...", "-v", "-tags=integration")
+	return sh.RunV("go", "test", "./...", "-v", "-tags=integration", "2>&1", "|", "go-junit-report", ">", "junit-report.xml")
 }
 
 // Format adds license headers, formats .go files with goimports, and formats
