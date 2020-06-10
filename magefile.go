@@ -138,7 +138,7 @@ func TestIntegration() error {
 		return err
 	}
 
-	// Checks if the binary is properly run and does not return any errors
+	// Checks if the binary is properly running and does not return any errors
 	_, err = sh.Output("go", "run", ".", "-dry-run=true")
 	if err != nil {
 		return err

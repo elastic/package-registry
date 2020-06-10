@@ -46,7 +46,8 @@ var (
 
 func init() {
 	flag.StringVar(&address, "address", "localhost:8080", "Address of the package-registry service.")
-	flag.BoolVar(&dryRun, "dry-run", false, "Runs a dry-run of the registry without starting the web service")
+	// This flag is experimental and might be removed in the future or renamed
+	flag.BoolVar(&dryRun, "dry-run", false, "Runs a dry-run of the registry without starting the web service (experimental)")
 }
 
 type Config struct {
