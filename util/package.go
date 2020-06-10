@@ -189,7 +189,7 @@ func NewPackageWithResources(path string) (*Package, error) {
 		return nil, errors.Wrapf(err, "loading package assets failed (path '%s')", path)
 	}
 
-	err = aPackage.LoadDataSets(aPackage.GetPath())
+	err = aPackage.LoadDataSets()
 	if err != nil {
 		return nil, errors.Wrapf(err, "loading package datasets failed (path '%s')", path)
 	}
@@ -347,7 +347,7 @@ func (p *Package) GetDatasetPaths() ([]string, error) {
 	return paths, nil
 }
 
-func (p *Package) LoadDataSets(packagePath string) error {
+func (p *Package) LoadDataSets() error {
 
 	datasetPaths, err := p.GetDatasetPaths()
 	if err != nil {
