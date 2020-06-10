@@ -7,7 +7,5 @@ elasticsearch.password: changeme
 xpack.monitoring.ui.container.elasticsearch.enabled: true
 
 xpack.ingestManager.enabled: true
-xpack.ingestManager.epm.enabled: true
-xpack.ingestManager.fleet.enabled: true
 xpack.ingestManager.fleet.tlsCheckDisabled: true
-xpack.ingestManager.epm.registryUrl: "http://integrations-registry:8080"
+xpack.ingestManager.epm.registryUrl: "http://package-registry:8080"
