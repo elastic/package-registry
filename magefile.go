@@ -132,6 +132,18 @@ func Test() error {
 }
 
 func TestIntegration() error {
+	// Build is need to make sure all packages are built
+	err := Build()
+	if err != nil {
+		return err
+	}
+
+	// Checks if the binary is properly run and does not return any errors
+	_, err = sh.Output("go", "run", ".", "-dry-run=true")
+	if err != nil {
+		return err
+	}
+
 	return sh.RunV("go", "test", "./...", "-v", "-tags=integration", "2>&1", "|", "go-junit-report", ">", "junit-report.xml")
 }
 

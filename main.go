@@ -33,6 +33,7 @@ const (
 var (
 	packagesBasePath string
 	address          string
+	dryRun           bool
 	configPath       = "config.yml"
 
 	defaultConfig = Config{
@@ -45,6 +46,7 @@ var (
 
 func init() {
 	flag.StringVar(&address, "address", "localhost:8080", "Address of the package-registry service.")
+	flag.BoolVar(&dryRun, "dry-run", false, "Runs a dry-run of the registry without starting the web service")
 }
 
 type Config struct {
@@ -79,6 +81,11 @@ func main() {
 	}
 
 	log.Printf("%v package manifests loaded into memory.\n", len(packages))
+
+	// If -dry-run=true is set, service stops here after validation
+	if dryRun {
+		return
+	}
 
 	router, err := getRouter(*config, packagesBasePath)
 	if err != nil {
