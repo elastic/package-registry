@@ -24,11 +24,11 @@ const (
 	DirIngestPipeline = "ingest-pipeline"
 )
 
-var ValidTypes = map[string]interface{}{
-	"logs":    nil,
-	"metrics": nil,
+var validTypes = map[string]string{
+	"logs":    "Logs",
+	"metrics": "Metrics",
 	// TODO: Remove as soon as endpoint package does not use it anymore
-	"events": nil,
+	"events": "Events",
 }
 
 type DataSet struct {
@@ -147,7 +147,7 @@ func (d *DataSet) Validate() error {
 		return fmt.Errorf("dataset name is not allowed to contain `-`: %s", d.ID)
 	}
 
-	if !d.ValidType() {
+	if !d.validType() {
 		return fmt.Errorf("type is not valid: %s", d.Type)
 	}
 
@@ -202,8 +202,8 @@ func (d *DataSet) Validate() error {
 	return nil
 }
 
-func (d *DataSet) ValidType() bool {
-	_, exists := ValidTypes[d.Type]
+func (d *DataSet) validType() bool {
+	_, exists := validTypes[d.Type]
 	return exists
 }
 
