@@ -17,6 +17,7 @@ func TestEncodeSavedObject(t *testing.T) {
 	data, err := ioutil.ReadFile(file)
 	assert.NoError(t, err)
 
-	_, err = encodedSavedObject(data)
+	_, changed, err := encodedSavedObject(data)
 	assert.NoError(t, err)
+	assert.True(t, changed)
 }

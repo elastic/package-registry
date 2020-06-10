@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Generate package index.json files. [#479](https://github.com/elastic/package-registry/pull/479)
 * Add validation for dataset type. [#501](https://github.com/elastic/package-registry/pull/501)
 * Add -dry-run flag. [#503](https://github.com/elastic/package-registry/pull/503)
+* Encode fields in Kibana objects if not encoded. [#506](https://github.com/elastic/package-registry/pull/506)
 
 ### Deprecated
 

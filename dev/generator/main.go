@@ -185,14 +185,16 @@ func buildPackage(packagesBasePath string, p util.Package) error {
 		if err != nil {
 			return err
 		}
-		output, err := encodedSavedObject(data)
+		output, changed, err := encodedSavedObject(data)
 		if err != nil {
 			return err
 		}
 
-		err = ioutil.WriteFile(file, []byte(output), 0644)
-		if err != nil {
-			return err
+		if changed {
+			err = ioutil.WriteFile(file, output, 0644)
+			if err != nil {
+				return err
+			}
 		}
 	}
 	return nil
@@ -309,38 +311,39 @@ var (
 // which are stored in encoded JSON in Kibana.
 // The reason is that for versioning it is much nicer to have the full
 // json so only on packaging this is changed.
-func encodedSavedObject(data []byte) (string, error) {
+func encodedSavedObject(data []byte) ([]byte, bool, error) {
 	savedObject := MapStr{}
 	err := json.Unmarshal(data, &savedObject)
 	if err != nil {
-		return "", errors.Wrapf(err, "unmarshalling saved object failed")
+		return nil, false, errors.Wrapf(err, "unmarshalling saved object failed")
 	}
 
+	var changed bool
 	for _, v := range fieldsToEncode {
 		out, err := savedObject.GetValue(v)
-		// This means the key did not exists, no conversion needed
+		// This means the key did not exists, no conversion needed.
 		if err != nil {
 			continue
 		}
 
 		// It may happen that some objects existing in example directory might be already encoded.
-		// In this case skip the encoding.
+		// In this case skip encoding the field and move to the next one.
 		_, isString := out.(string)
 		if isString {
-			return "", fmt.Errorf("expect non-string field type (fieldName: %s)", v)
+			continue
 		}
 
-		// Marshal the value to encode it properly
+		// Marshal the value to encode it properly.
 		r, err := json.Marshal(&out)
 		if err != nil {
-			return "", err
+			return nil, false, err
 		}
 		_, err = savedObject.Put(v, string(r))
 		if err != nil {
-			return "", errors.Wrapf(err, "can't put value to the saved object")
+			return nil, false, errors.Wrapf(err, "can't put value to the saved object")
 		}
-
+		changed = true
 	}
 
-	return savedObject.StringToPrint(), nil
+	return []byte(savedObject.StringToPrint()), changed, nil
 }
