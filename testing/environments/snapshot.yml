@@ -28,7 +28,7 @@ services:
     volumes:
       - ./kibana.config.yml:/usr/share/kibana/config/kibana.yml
 
-  integrations-registry:
+  package-registry:
     image: docker.elastic.co/package-registry/package-registry:master
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080"]
