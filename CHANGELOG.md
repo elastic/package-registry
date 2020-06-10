@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Generate index.json file. [#470](https://github.com/elastic/package-registry/pull/470)
 * Stream archived package content. [#472](https://github.com/elastic/package-registry/pull/472)
 * Generate package index.json files. [#479](https://github.com/elastic/package-registry/pull/479)
+* Add validation for dataset type. [#](https://github.com/elastic/package-registry/pull/)
 
 ### Deprecated
 
