@@ -158,7 +158,7 @@ def junitResults(){
 def withGoEnv(Map params = [:], Closure body) {
   def version = params.containsKey('version') ? params.version : '1.14.2'
   def pkgs = params.containsKey('pkgs') ? params.pkgs : []
-  def os = nodeOS()
+  def os = 'linux'
   withEnv([
       "HOME=${WORKSPACE}"
   ]){
