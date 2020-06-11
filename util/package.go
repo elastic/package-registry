@@ -59,7 +59,6 @@ type Datasource struct {
 	Name        string  `config:"name" json:"name" validate:"required"`
 	Title       string  `config:"title" json:"title" validate:"required"`
 	Description string  `config:"description" json:"description" validate:"required"`
-	Solution    string  `config:"solution" json:"solution,omitempty" yaml:"solution,omitempty"`
 	Inputs      []Input `config:"inputs" json:"inputs"`
 	Multiple    *bool   `config:"multiple" json:"multiple,omitempty" yaml:"multiple,omitempty"`
 }
