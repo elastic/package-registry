@@ -159,12 +159,15 @@ def withGoEnv(Map params = [:], Closure body) {
   def version = params.containsKey('version') ? params.version : '1.14.2'
   def pkgs = params.containsKey('pkgs') ? params.pkgs : []
   def os = 'linux'
+  def lastCoordinate = version[-2..-1]
+  // gvm remove the last coordinate if it is 0
+  def goDir = ".gvm/versions/go${lastCoordinate != ".0" ? version : version[0..-3]}.${os}.amd64"
   withEnv([
       "HOME=${WORKSPACE}"
   ]){
       withEnv([
-          "PATH=${HOME}/go/bin:${HOME}/.gvm/versions/go${version}.${os}.amd64/bin:${PATH}",
-          "GOROOT=${HOME}/.gvm/versions/go${version}.${os}.amd64",
+          "PATH=${HOME}/go/bin:${HOME}/${goDir}/bin:${PATH}",
+          "GOROOT=${HOME}/${goDir}",
           "GOPATH=${HOME}"
       ]){
           sh(label: "Installing go ${version}", script: "gvm ${version}")
@@ -174,8 +177,8 @@ def withGoEnv(Map params = [:], Closure body) {
                 echo "GOROOT=$GOROOT"
                 echo "GOPATH=$GOPATH"
                 echo "HOME=$HOME"
-                ls -la "${HOME}/.gvm/versions/go${version}.${os}.amd64"
-                ls -la "${HOME}/.gvm/versions/go${version}.${os}.amd64/bin"
+                ls -la "${HOME}/${goDir}"
+                ls -la "${HOME}/${goDir}/bin"
                 ls -la "${GOROOT}"
                 go get -u ${p}
               """)
