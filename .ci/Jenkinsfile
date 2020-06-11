@@ -177,7 +177,7 @@ def withGoEnv(Map params = [:], Closure body) {
                 echo "GOROOT=$GOROOT"
                 echo "GOPATH=$GOPATH"
                 echo "HOME=$HOME"
-                ls -la "${HOME}/bin"
+                ls -la "${HOME}"
                 ls -la "${GOROOT}"
                 find ${HOME} -name mage
                 go get -u ${p}
