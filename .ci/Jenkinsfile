@@ -156,7 +156,6 @@ def junitResults(){
 }
 
 def withGoEnv(Map params = [:], Closure body) {
-  log(level: 'INFO', text: 'I am a dummy step - ' + text)
   def version = params.containsKey('version') ? params.version : '1.14.2'
   def pkgs = params.containsKey('pkgs') ? params.pkgs : []
   def os = nodeOS()
