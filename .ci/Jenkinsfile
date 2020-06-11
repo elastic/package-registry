@@ -166,7 +166,7 @@ def withGoEnv(Map params = [:], Closure body) {
       "HOME=${WORKSPACE}"
   ]){
       withEnv([
-          "PATH=${HOME}/go/bin:${HOME}/${goDir}/bin:${PATH}",
+          "PATH=${HOME}/bin:${HOME}/go/bin:${HOME}/${goDir}/bin:${PATH}",
           "GOROOT=${HOME}/${goDir}",
           "GOPATH=${HOME}"
       ]){
@@ -177,7 +177,6 @@ def withGoEnv(Map params = [:], Closure body) {
                 echo "GOROOT=$GOROOT"
                 echo "GOPATH=$GOPATH"
                 echo "HOME=$HOME"
-                ls -la "${HOME}/go/bin"
                 ls -la "${HOME}/bin"
                 ls -la "${GOROOT}"
                 find ${HOME} -name mage
