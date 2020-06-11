@@ -172,14 +172,15 @@ def withGoEnv(Map params = [:], Closure body) {
       ]){
           sh(label: "Installing go ${version}", script: "gvm ${version}")
           pkgs?.each{ p ->
-              sh(label: "Installing ${pkgs}", script: """
+              sh(label: "Installing ${p}", script: """
                 echo "PATH=$PATH"
                 echo "GOROOT=$GOROOT"
                 echo "GOPATH=$GOPATH"
                 echo "HOME=$HOME"
-                ls -la "${HOME}/${goDir}"
-                ls -la "${HOME}/${goDir}/bin"
+                ls -la "${HOME}/go/bin"
+                ls -la "${HOME}/bin"
                 ls -la "${GOROOT}"
+                find ${HOME} -name mage
                 go get -u ${p}
               """)
           }
