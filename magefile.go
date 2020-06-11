@@ -131,6 +131,22 @@ func Test() error {
 	return sh.RunV("go", "test", "./...", "-v", "2>&1", "|", "go-junit-report", ">", "junit-report.xml")
 }
 
+func TestIntegration() error {
+	// Build is need to make sure all packages are built
+	err := Build()
+	if err != nil {
+		return err
+	}
+
+	// Checks if the binary is properly running and does not return any errors
+	_, err = sh.Output("go", "run", ".", "-dry-run=true")
+	if err != nil {
+		return err
+	}
+
+	return sh.RunV("go", "test", "./...", "-v", "-tags=integration", "2>&1", "|", "go-junit-report", ">", "junit-report.xml")
+}
+
 // Format adds license headers, formats .go files with goimports, and formats
 // .py files with autopep8.
 func Format() {
