@@ -46,7 +46,7 @@ pipeline {
         deleteDir()
         unstash 'source'
         dir("${BASE_DIR}"){
-          withMageEnv{
+          withMageEnv(){
             sh(label: 'Checks formatting / linting',script: 'mage -debug check')
           }
         }
