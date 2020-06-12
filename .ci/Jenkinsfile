@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 
-@Library('apm@current') _
+@Library('apm@master') _
 
 pipeline {
   agent { label 'ubuntu && immutable' }
@@ -78,7 +78,10 @@ pipeline {
       }
       post {
         always {
-          junitResults()
+          convertGoTestResults(
+            input: "${BASE_DIR}/tests-report.txt",
+            output: "${BASE_DIR}/junit-report.xml"
+          )
         }
       }
     }
@@ -97,10 +100,13 @@ pipeline {
             sh(label: 'Runs the (integration) tests',script: 'mage -debug testIntegration|tee test-report.txt')
           }
         }
-        post {
-          always {
-            junitResults()
-          }
+      }
+      post {
+        always {
+          convertGoTestResults(
+            input: "${BASE_DIR}/tests-report.txt",
+            output: "${BASE_DIR}/junit-report.xml"
+          )
         }
       }
     }
@@ -141,56 +147,4 @@ def cleanup(){
     deleteDir()
   }
   unstash 'source'
-}
-
-def junitResults(){
-  def testsReport = "${BASE_DIR}/tests-report.txt"
-  def junitReport = "${BASE_DIR}/junit-report.xml"
-  withMageEnv(){
-    sh(
-      label: 'Convert test results to JUnit',
-      script: "go-junit-report > ${junitReport} < ${testsReport}"
-    )
-  }
-  junit(allowEmptyResults: true,
-    keepLongStdio: true,
-    testResults: "${junitReport}")
-}
-
-def withGoEnv(Map params = [:], Closure body) {
-  def version = params.containsKey('version') ? params.version : '1.14.2'
-  def pkgs = params.containsKey('pkgs') ? params.pkgs : []
-  def os = 'linux'
-  def lastCoordinate = version[-2..-1]
-  // gvm remove the last coordinate if it is 0
-  def goDir = ".gvm/versions/go${lastCoordinate != ".0" ? version : version[0..-3]}.${os}.amd64"
-  withEnv([
-      "HOME=${WORKSPACE}"
-  ]){
-      withEnv([
-          "PATH=${HOME}/bin:${HOME}/${goDir}/bin:${PATH}",
-          "GOROOT=${HOME}/${goDir}",
-          "GOPATH=${HOME}"
-      ]){
-          sh(label: "Installing go ${version}", script: "gvm ${version}")
-          pkgs?.each{ p ->
-              sh(label: "Installing ${p}", script: "go get -u ${p}")
-          }
-          body()
-      }
-  }
-}
-
-def withMageEnv(Closure body){
-  withGoEnv(
-    version: "${GO_VERSION}",
-    pkgs: [
-     "github.com/magefile/mage",
-     "github.com/elastic/go-licenser",
-     "golang.org/x/tools/cmd/goimports",
-     "github.com/jstemmer/go-junit-report"
-     ]
-  ){
-    body()
-  }
 }
