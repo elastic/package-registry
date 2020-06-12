@@ -97,7 +97,7 @@ pipeline {
         cleanup()
         withMageEnv(){
           dir("${BASE_DIR}"){
-            sh(label: 'Runs the (integration) tests',script: 'mage -debug testIntegration|tee test-report.txt')
+            sh(label: 'Runs the (integration) tests',script: 'mage -debug testIntegration|tee tests-report.txt')
           }
         }
       }
