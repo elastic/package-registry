@@ -117,7 +117,7 @@ func main() {
 func getConfig() (*Config, error) {
 	cfg, err := ucfgYAML.NewConfigWithFile(configPath)
 	if os.IsNotExist(err) {
-		log.Println(`Using default configuration options as "config.yml" is not available.`)
+		log.Printf(`Using default configuration options as "%s" is not available.`, configPath)
 		return &defaultConfig, nil
 	}
 	if err != nil {
