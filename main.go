@@ -16,13 +16,12 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
-
-	"github.com/elastic/package-registry/util"
 
 	ucfgYAML "github.com/elastic/go-ucfg/yaml"
 
-	"github.com/gorilla/mux"
+	"github.com/elastic/package-registry/util"
 )
 
 const (
