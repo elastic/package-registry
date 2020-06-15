@@ -1,0 +1,11 @@
+[
+  {
+    "description": "Package with data sources",
+    "download": "/epr/datasources/datasources-1.0.0.tar.gz",
+    "name": "datasources",
+    "path": "/package/datasources/1.0.0",
+    "title": "Default datasource Integration",
+    "type": "integration",
+    "version": "1.0.0"
+  }
+]

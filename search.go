@@ -25,6 +25,7 @@ func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http
 
 		var kibanaVersion *semver.Version
 		var category string
+		var datasetType string
 		// Leaving out `a` here to not use a reserved name
 		var packageQuery string
 		var all bool
@@ -44,6 +45,12 @@ func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http
 
 			if v := query.Get("category"); v != "" {
 				category = v
+			}
+
+			if v := query.Get("dataset.type"); v != "" {
+				if v != "" {
+					datasetType = v
+				}
 			}
 
 			if v := query.Get("package"); v != "" {
@@ -95,6 +102,13 @@ func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http
 
 			// Skip experimental packages if flag is not specified
 			if p.Release == util.ReleaseExperimental && !experimental {
+				continue
+			}
+
+			// Filter by dataset.type first as this could heavily reduce the number of packages
+			// It must happen before the version filtering as there only the newest version
+			// is exposed and there could be an older package with more versions.
+			if datasetType != "" && !p.HasDatasetType(datasetType) {
 				continue
 			}
 

@@ -113,5 +113,8 @@
     }
   ],
   "download": "/epr/example/example-1.0.0.tar.gz",
-  "path": "/package/example/1.0.0"
+  "path": "/package/example/1.0.0",
+  "dataset.types": [
+    "logs"
+  ]
 }

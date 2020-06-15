@@ -24,7 +24,7 @@ const (
 	DirIngestPipeline = "ingest-pipeline"
 )
 
-var validTypes = map[string]string{
+var DatasetTypes = map[string]string{
 	"logs":    "Logs",
 	"metrics": "Metrics",
 	// TODO: Remove as soon as endpoint package does not use it anymore
@@ -211,7 +211,7 @@ func (d *DataSet) Validate() error {
 }
 
 func (d *DataSet) validType() bool {
-	_, exists := validTypes[d.Type]
+	_, exists := DatasetTypes[d.Type]
 	return exists
 }
 

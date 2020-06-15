@@ -148,6 +148,7 @@ func getRouter(config Config, packagesBasePath string) (*mux.Router, error) {
 	router.HandleFunc("/index.json", indexHandlerFunc)
 	router.HandleFunc("/search", searchHandler(packagesBasePath, config.CacheTimeSearch))
 	router.HandleFunc("/categories", categoriesHandler(packagesBasePath, config.CacheTimeCategories))
+	router.HandleFunc("/types", typesHandler(packagesBasePath, config.CacheTimeCategories))
 	router.HandleFunc("/health", healthHandler)
 	router.HandleFunc("/favicon.ico", faviconHandleFunc)
 	router.HandleFunc(artifactsRouterPath, artifactsHandler)

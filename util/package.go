@@ -50,6 +50,8 @@ type Package struct {
 	Datasources   []Datasource `config:"datasources,omitempty" json:"datasources,omitempty" yaml:"datasources,omitempty"`
 	Download      string       `json:"download" yaml:"download,omitempty"`
 	Path          string       `json:"path" yaml:"path,omitempty"`
+	// This is in purpose `dataset.types` with an "s" as it is a summary of the existing dataset types
+	DatasetTypes []string `json:"dataset.types" yaml:"dataset.types,omitempty"`
 
 	// Local path to the package dir
 	BasePath string `json:"-" yaml:"-"`
@@ -172,6 +174,7 @@ func NewPackage(basePath string) (*Package, error) {
 	// Assign download path to be part of the output
 	p.Download = p.GetDownloadPath()
 	p.Path = p.GetUrlPath()
+	p.DatasetTypes = p.getDatasetTypes()
 
 	return p, nil
 }
@@ -191,12 +194,23 @@ func NewPackageWithResources(path string) (*Package, error) {
 	if err != nil {
 		return nil, errors.Wrapf(err, "loading package datasets failed (path '%s')", path)
 	}
+
 	return aPackage, nil
 }
 
 func (p *Package) HasCategory(category string) bool {
 	for _, c := range p.Categories {
 		if c == category {
+			return true
+		}
+	}
+
+	return false
+}
+
+func (p *Package) HasDatasetType(datasetType string) bool {
+	for _, c := range p.DatasetTypes {
+		if c == datasetType {
 			return true
 		}
 	}
@@ -378,6 +392,8 @@ func (p *Package) LoadDataSets() error {
 
 	datasetsBasePath := filepath.Join(p.BasePath, "dataset")
 
+	// Reset dataset slice to make sure each dataset only exists once
+	p.DataSets = nil
 	for _, datasetPath := range datasetPaths {
 
 		datasetBasePath := filepath.Join(datasetsBasePath, datasetPath)
@@ -426,6 +442,9 @@ func (p *Package) ValidateDatasets() error {
 	}
 
 	datasetsBasePath := filepath.Join(p.BasePath, "dataset")
+
+	// Reset datasets to make sure each exists only once
+	p.DataSets = nil
 	for _, datasetPath := range datasetPaths {
 		datasetBasePath := filepath.Join(datasetsBasePath, datasetPath)
 
@@ -438,6 +457,8 @@ func (p *Package) ValidateDatasets() error {
 		if err != nil {
 			return errors.Wrapf(err, "validating dataset failed (path: %s)", datasetBasePath)
 		}
+
+		p.DataSets = append(p.DataSets, d)
 	}
 	return nil
 }
@@ -452,4 +473,21 @@ func (p *Package) GetDownloadPath() string {
 
 func (p *Package) GetUrlPath() string {
 	return path.Join("/package", p.Name, p.Version)
+}
+
+// getDatasetTypes return all the dataset types which exist
+// Currently the data is summarised and only the list of
+// datasets is returned, not the counters
+func (p *Package) getDatasetTypes() []string {
+	// Get unique list of
+	typesCounter := map[string]int{}
+	for _, d := range p.DataSets {
+		typesCounter[d.Type] = typesCounter[d.Type] + 1
+	}
+
+	var types []string
+	for key := range typesCounter {
+		types = append(types, key)
+	}
+	return types
 }
