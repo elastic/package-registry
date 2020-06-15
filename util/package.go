@@ -14,6 +14,7 @@ import (
 
 	"github.com/blang/semver"
 	"github.com/pkg/errors"
+	yamlv2 "gopkg.in/yaml.v2"
 
 	ucfg "github.com/elastic/go-ucfg"
 	"github.com/elastic/go-ucfg/yaml"
@@ -83,6 +84,11 @@ type Image struct {
 	Title string `config:"title" json:"title,omitempty"`
 	Size  string `config:"size" json:"size,omitempty"`
 	Type  string `config:"type" json:"type,omitempty"`
+}
+
+type fieldEntry struct {
+	name  string
+	aType string
 }
 
 func (i Image) getPath(p *Package) string {
@@ -278,7 +284,6 @@ func collectAssets(pattern string) ([]string, error) {
 }
 
 func (p *Package) Validate() error {
-
 	if p.FormatVersion == "" {
 		return fmt.Errorf("no format_version set: %v", p)
 	}
@@ -397,24 +402,121 @@ func (p *Package) LoadDataSets() error {
 
 // ValidateDatasets loads all datasets and with it validates them
 func (p *Package) ValidateDatasets() error {
-
 	datasetPaths, err := p.GetDatasetPaths()
 	if err != nil {
 		return err
 	}
 
 	datasetsBasePath := filepath.Join(p.BasePath, "dataset")
-
 	for _, datasetPath := range datasetPaths {
-
 		datasetBasePath := filepath.Join(datasetsBasePath, datasetPath)
 
 		_, err := NewDataset(datasetBasePath, p)
 		if err != nil {
-			return err
+			return errors.Wrapf(err, "building dataset failed (path: %s)", datasetBasePath)
+		}
+
+		err = validateRequiredFields(datasetBasePath)
+		if err != nil {
+			return errors.Wrapf(err, "validating required fields failed (path: %s)", datasetPath)
 		}
 	}
 	return nil
+}
+
+// validateRequiredFields method loads fields from all files and checks if required fields are present.
+func validateRequiredFields(datasetPath string) error {
+	fieldsDirPath := filepath.Join(datasetPath, "fields")
+
+	// Collect fields from all files
+	var allFields []MapStr
+	err := filepath.Walk(fieldsDirPath, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		relativePath, err := filepath.Rel(fieldsDirPath, path)
+		if err != nil {
+			return errors.Wrapf(err, "cannot find relative path (fieldsDirPath: %s, path: %s)", fieldsDirPath, path)
+		}
+
+		if relativePath == "." {
+			return nil
+		}
+
+		body, err := ioutil.ReadFile(path)
+		if err != nil {
+			return errors.Wrapf(err, "reading file failed (path: %s)", path)
+		}
+
+		var m []MapStr
+		err = yamlv2.Unmarshal(body, &m)
+		if err != nil {
+			return errors.Wrapf(err, "unmarshaling file failed (path: %s)", path)
+		}
+
+		allFields = append(allFields, m...)
+		return nil
+	})
+	if err != nil {
+		return errors.Wrapf(err, "walking through fields files failed")
+	}
+
+	// Flatten all fields
+	for i, fields := range allFields {
+		allFields[i] = fields.Flatten()
+	}
+
+	// Verify required keys
+	err = requireField(allFields, "dataset.type", "constant_keyword", err)
+	err = requireField(allFields, "dataset.name", "constant_keyword", err)
+	err = requireField(allFields, "dataset.namespace", "constant_keyword", err)
+	err = requireField(allFields, "@timestamp", "date", err)
+	return err
+}
+
+func requireField(allFields []MapStr, searchedName, expectedType string, validationErr error) error {
+	if validationErr != nil {
+		return validationErr
+	}
+
+	f, err := findField(allFields, searchedName)
+	if err != nil {
+		return errors.Wrapf(err, "finding field failed (searchedName: %s)", searchedName)
+	}
+
+	if f.aType != expectedType {
+		return fmt.Errorf("wrong field type for '%s' (expected: %s, got: %s)", searchedName, expectedType, f.aType)
+	}
+	return nil
+}
+
+func findField(allFields []MapStr, searchedName string) (*fieldEntry, error) {
+	for _, fields := range allFields {
+		name, err := fields.GetValue("name")
+		if err != nil {
+			return nil, errors.Wrapf(err, "cannot get value (key: name)")
+		}
+
+		if name != searchedName {
+			continue
+		}
+
+		aType, err := fields.GetValue("type")
+		if err != nil {
+			return nil, errors.Wrapf(err, "cannot get value (key: type)")
+		}
+
+		if aType == "" {
+			return nil, fmt.Errorf("field '%s' found, but type is undefined", searchedName)
+		}
+
+		return &fieldEntry{
+			name:  name.(string),
+			aType: aType.(string),
+		}, nil
+	}
+	return nil, fmt.Errorf("field '%s' not found", searchedName)
 }
 
 func (p *Package) GetPath() string {
