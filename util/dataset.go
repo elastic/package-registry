@@ -84,6 +84,11 @@ type Os struct {
 	Windows interface{} `config:"windows" json:"windows,omitempty" yaml:"windows,omitempty"`
 }
 
+type fieldEntry struct {
+	name  string
+	aType string
+}
+
 func NewDataset(basePath string, p *Package) (*DataSet, error) {
 	// Check if manifest exists
 	manifestPath := filepath.Join(basePath, "manifest.yml")

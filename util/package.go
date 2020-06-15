@@ -85,11 +85,6 @@ type Image struct {
 	Type  string `config:"type" json:"type,omitempty"`
 }
 
-type fieldEntry struct {
-	name  string
-	aType string
-}
-
 func (i Image) getPath(p *Package) string {
 	return path.Join("/package", p.Name, p.Version, i.Src)
 }
