@@ -16,6 +16,8 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/pkg/errors"
+
 	"github.com/elastic/package-registry/util"
 
 	ucfgYAML "github.com/elastic/go-ucfg/yaml"
@@ -37,7 +39,7 @@ var (
 	configPath       = "config.yml"
 
 	defaultConfig = Config{
-		PublicDir:           "config.yml",
+		PublicDir:           "public",
 		CacheTimeSearch:     10 * time.Minute,
 		CacheTimeCategories: 10 * time.Minute,
 		CacheTimeCatchAll:   10 * time.Minute,
@@ -114,16 +116,18 @@ func main() {
 
 func getConfig() (*Config, error) {
 	cfg, err := ucfgYAML.NewConfigWithFile(configPath)
+	if os.IsNotExist(err) {
+		return &defaultConfig, nil
+	}
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "reading config failed (path: %s)", configPath)
 	}
 
 	config := defaultConfig
 	err = cfg.Unpack(&config)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "unpacking config failed (path: %s)", configPath)
 	}
-
 	return &config, nil
 }
 
