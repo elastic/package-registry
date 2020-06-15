@@ -26,7 +26,6 @@ RUN go build .
 # This will become useful for staged builds later on
 RUN mkdir /registry
 RUN mv package-registry /registry/
-RUN mv config.yml /registry/
 RUN mv public /registry/
 
 # Change to new working directory
