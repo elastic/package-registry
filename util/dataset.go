@@ -146,6 +146,10 @@ func (d *DataSet) Validate() error {
 		return err
 	}
 
+	if strings.Contains(d.ID, "-") {
+		return fmt.Errorf("dataset name is not allowed to contain `-`: %s", d.ID)
+	}
+
 	if !d.validType() {
 		return fmt.Errorf("type is not valid: %s", d.Type)
 	}
