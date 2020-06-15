@@ -32,10 +32,9 @@ const (
 )
 
 var (
-	packagesBasePath string
-	address          string
-	dryRun           bool
-	configPath       = "config.yml"
+	address    string
+	dryRun     bool
+	configPath = "config.yml"
 
 	defaultConfig = Config{
 		PublicDir:           "public",
