@@ -1,5 +1,16 @@
 [
   {
+<<<<<<< HEAD
+=======
+    "description": "Package with data sources",
+    "download": "/epr/datasources/datasources-1.0.0.tar.gz",
+    "downloads": [
+      {
+        "path": "/epr/datasources/datasources-1.0.0.tar.gz",
+        "type": "tar.gz"
+      }
+    ],
+>>>>>>> f5fea69e... Add list of downloads to /search endpoint
     "name": "datasources",
     "title": "Default datasource Integration",
     "version": "1.0.0",
@@ -9,6 +20,17 @@
     "path": "/package/datasources/1.0.0"
   },
   {
+<<<<<<< HEAD
+=======
+    "description": "Tests if no pipeline is set, it defaults to the default one",
+    "download": "/epr/default_pipeline/default_pipeline-0.0.2.tar.gz",
+    "downloads": [
+      {
+        "path": "/epr/default_pipeline/default_pipeline-0.0.2.tar.gz",
+        "type": "tar.gz"
+      }
+    ],
+>>>>>>> f5fea69e... Add list of downloads to /search endpoint
     "name": "default_pipeline",
     "title": "Default pipeline Integration",
     "version": "0.0.2",
@@ -18,6 +40,17 @@
     "path": "/package/default_pipeline/0.0.2"
   },
   {
+<<<<<<< HEAD
+=======
+    "description": "Tests the registry validations works for dataset fields using the ecs style format",
+    "download": "/epr/ecs_style_dataset/ecs_style_dataset-0.0.1.tar.gz",
+    "downloads": [
+      {
+        "path": "/epr/ecs_style_dataset/ecs_style_dataset-0.0.1.tar.gz",
+        "type": "tar.gz"
+      }
+    ],
+>>>>>>> f5fea69e... Add list of downloads to /search endpoint
     "name": "ecs_style_dataset",
     "title": "Default pipeline Integration",
     "version": "0.0.1",
@@ -27,6 +60,17 @@
     "path": "/package/ecs_style_dataset/0.0.1"
   },
   {
+<<<<<<< HEAD
+=======
+    "description": "This is the example integration",
+    "download": "/epr/example/example-1.0.0.tar.gz",
+    "downloads": [
+      {
+        "path": "/epr/example/example-1.0.0.tar.gz",
+        "type": "tar.gz"
+      }
+    ],
+>>>>>>> f5fea69e... Add list of downloads to /search endpoint
     "name": "example",
     "title": "Example Integration",
     "version": "1.0.0",
@@ -36,6 +80,17 @@
     "path": "/package/example/1.0.0"
   },
   {
+<<<<<<< HEAD
+=======
+    "description": "Experimental package, should be set by default",
+    "download": "/epr/experimental/experimental-0.0.1.tar.gz",
+    "downloads": [
+      {
+        "path": "/epr/experimental/experimental-0.0.1.tar.gz",
+        "type": "tar.gz"
+      }
+    ],
+>>>>>>> f5fea69e... Add list of downloads to /search endpoint
     "name": "experimental",
     "title": "Experimental",
     "version": "0.0.1",
@@ -45,6 +100,17 @@
     "path": "/package/experimental/0.0.1"
   },
   {
+<<<<<<< HEAD
+=======
+    "description": "This is the foo integration",
+    "download": "/epr/foo/foo-1.0.0.tar.gz",
+    "downloads": [
+      {
+        "path": "/epr/foo/foo-1.0.0.tar.gz",
+        "type": "tar.gz"
+      }
+    ],
+>>>>>>> f5fea69e... Add list of downloads to /search endpoint
     "name": "foo",
     "title": "Foo",
     "version": "1.0.0",
@@ -54,6 +120,17 @@
     "path": "/package/foo/1.0.0"
   },
   {
+<<<<<<< HEAD
+=======
+    "description": "Tests that multiple can be set to false",
+    "download": "/epr/multiple_false/multiple_false-0.0.1.tar.gz",
+    "downloads": [
+      {
+        "path": "/epr/multiple_false/multiple_false-0.0.1.tar.gz",
+        "type": "tar.gz"
+      }
+    ],
+>>>>>>> f5fea69e... Add list of downloads to /search endpoint
     "name": "multiple_false",
     "title": "Multiple false",
     "version": "0.0.1",
@@ -63,6 +140,17 @@
     "path": "/package/multiple_false/0.0.1"
   },
   {
+<<<<<<< HEAD
+=======
+    "description": "This package does contain a dataset but not stream configs.\n",
+    "download": "/epr/no_stream_configs/no_stream_configs-1.0.0.tar.gz",
+    "downloads": [
+      {
+        "path": "/epr/no_stream_configs/no_stream_configs-1.0.0.tar.gz",
+        "type": "tar.gz"
+      }
+    ],
+>>>>>>> f5fea69e... Add list of downloads to /search endpoint
     "name": "no_stream_configs",
     "title": "No Stream configs",
     "version": "1.0.0",

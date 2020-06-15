@@ -33,6 +33,12 @@
       "type": "image/png"
     }
   ],
+  "downloads": [
+    {
+      "path": "/epr/example/example-1.0.0.tar.gz",
+      "type": "tar.gz"
+    }
+  ],
   "assets": [
     "/package/example/1.0.0/manifest.yml",
     "/package/example/1.0.0/docs/README.md",

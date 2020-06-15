@@ -75,15 +75,16 @@ type Package struct {
 
 // BasePackage is used for the output of the package info in the /search endpoint
 type BasePackage struct {
-	Name        string  `config:"name" json:"name"`
-	Title       *string `config:"title,omitempty" json:"title,omitempty" yaml:"title,omitempty"`
-	Version     string  `config:"version" json:"version"`
-	Description string  `config:"description" json:"description"`
-	Type        string  `config:"type" json:"type"`
-	Download    string  `json:"download" yaml:"download,omitempty"`
-	Path        string  `json:"path" yaml:"path,omitempty"`
-	Icons       []Image `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
-	Internal    bool    `config:"internal,omitempty" json:"internal,omitempty" yaml:"internal,omitempty"`
+	Name        string     `config:"name" json:"name"`
+	Title       *string    `config:"title,omitempty" json:"title,omitempty" yaml:"title,omitempty"`
+	Version     string     `config:"version" json:"version"`
+	Description string     `config:"description" json:"description"`
+	Type        string     `config:"type" json:"type"`
+	Download    string     `json:"download" yaml:"download,omitempty"`
+	Downloads   []Download `config:"downloads,omitempty" json:"downloads,omitempty" yaml:"downloads,omitempty"`
+	Path        string     `json:"path" yaml:"path,omitempty"`
+	Icons       []Image    `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
+	Internal    bool       `config:"internal,omitempty" json:"internal,omitempty" yaml:"internal,omitempty"`
 }
 
 type Datasource struct {
@@ -121,6 +122,22 @@ type Image struct {
 
 func (i Image) getPath(p *Package) string {
 	return path.Join("/package", p.Name, p.Version, i.Src)
+}
+
+type Download struct {
+	Path string `config:"path" json:"path" validate:"required"`
+	Type string `config:"type" json:"type" validate:"required"`
+}
+
+func NewDownload(p Package, t string) Download {
+	return Download{
+		Path: getDownloadPath(p, t),
+		Type: t,
+	}
+}
+
+func getDownloadPath(p Package, t string) string {
+	return path.Join("/epr", p.Name, p.Name+"-"+p.Version+"."+t)
 }
 
 // NewPackage creates a new package instances based on the given base path.
@@ -168,6 +185,8 @@ func NewPackage(basePath string) (*Package, error) {
 			p.Screenshots[k].Src = s.getPath(p)
 		}
 	}
+
+	p.Downloads = []Download{NewDownload(*p, "tar.gz")}
 
 	if p.Requirement.Kibana.Versions != "" {
 		p.Requirement.Kibana.semVerRange, err = semver.NewConstraint(p.Requirement.Kibana.Versions)
