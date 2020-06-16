@@ -172,11 +172,6 @@ func Check() error {
 		return err
 	}
 
-	err = PrepareTest()
-	if err != nil {
-		return err
-	}
-
 	// Check if no changes are shown
 	err = sh.RunV("git", "update-index", "--refresh")
 	if err != nil {
@@ -185,16 +180,8 @@ func Check() error {
 	return sh.RunV("git", "diff-index", "--exit-code", "HEAD", "--")
 }
 
-func PrepareTest() error {
-	return sh.RunV("go", "get", "-v", "-u", "github.com/jstemmer/go-junit-report")
-}
-
 func Test() error {
-	err := PrepareTest()
-	if err != nil {
-		return err
-	}
-	return sh.RunV("go", "test", "./...", "-v", "2>&1", "|", "go-junit-report", ">", "junit-report.xml")
+	return sh.RunV("go", "test", "./...", "-v")
 }
 
 func TestIntegration() error {
@@ -210,7 +197,7 @@ func TestIntegration() error {
 		return err
 	}
 
-	return sh.RunV("go", "test", "./...", "-v", "-tags=integration", "2>&1", "|", "go-junit-report", ">", "junit-report.xml")
+	return sh.RunV("go", "test", "./...", "-v", "-tags=integration")
 }
 
 // Format adds license headers, formats .go files with goimports, and formats

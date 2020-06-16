@@ -34,6 +34,7 @@ pipeline {
       steps {
         deleteDir()
         gitCheckout(basedir: "${BASE_DIR}")
+        setEnvVar("GO_VERSION", readFile(file: "${BASE_DIR}/.go-version")?.trim())
         stash allowEmpty: true, name: 'source', useDefaultExcludes: false
       }
     }
@@ -42,11 +43,10 @@ pipeline {
      */
     stage('Lint') {
       steps {
-        deleteDir()
-        unstash 'source'
+        cleanup()
         dir("${BASE_DIR}"){
-          insideGo{
-            sh(label: 'Checks formatting / linting',script: 'mage -debug check  ')
+          withMageEnv(){
+            sh(label: 'Checks formatting / linting',script: 'mage -debug check')
           }
         }
       }
@@ -56,11 +56,10 @@ pipeline {
      */
     stage('Build') {
       steps {
-        deleteDir()
-        unstash 'source'
+        cleanup()
         dir("${BASE_DIR}"){
-          insideGo(){
-            sh(label: 'Checks formatting / linting',script: 'mage -debug build ')
+          withMageEnv(){
+            sh(label: 'Checks formatting / linting',script: 'mage -debug build')
           }
         }
       }
@@ -70,19 +69,19 @@ pipeline {
      */
     stage('Test') {
       steps {
-        deleteDir()
-        unstash 'source'
+        cleanup()
         dir("${BASE_DIR}"){
-          insideGo(){
-            sh(label: 'Runs the (unit) tests',script: 'mage -debug test ')
+          withMageEnv(){
+            sh(label: 'Runs the (unit) tests',script: 'mage -debug test|tee tests-report.txt')
           }
         }
       }
       post {
         always {
-          junit(allowEmptyResults: true,
-            keepLongStdio: true,
-            testResults: "${BASE_DIR}/**/junit-*.xml")
+          convertGoTestResults(
+            input: "${BASE_DIR}/tests-report.txt",
+            output: "${BASE_DIR}/junit-report.xml"
+          )
         }
       }
     }
@@ -95,16 +94,19 @@ pipeline {
         PATH = "${env.HOME}/go/bin:${env.PATH}"
       }
       steps {
-        deleteDir()
-        unstash 'source'
-        dir("${BASE_DIR}"){
-          sh(label: 'Runs the (integration) tests',script: '''
-            eval "$(gvm 1.14.2)"
-            go get -u github.com/magefile/mage
-            go get -u github.com/elastic/go-licenser
-            go get -u -v golang.org/x/tools/cmd/goimports
-            mage -debug testIntegration
-          ''')
+        cleanup()
+        withMageEnv(){
+          dir("${BASE_DIR}"){
+            sh(label: 'Runs the (integration) tests',script: 'mage -debug testIntegration|tee tests-report.txt')
+          }
+        }
+      }
+      post {
+        always {
+          convertGoTestResults(
+            input: "${BASE_DIR}/tests-report.txt",
+            output: "${BASE_DIR}/junit-report.xml"
+          )
         }
       }
     }
@@ -117,8 +119,7 @@ pipeline {
         DOCKER_IMG_TAG_BRANCH = "${env.DOCKER_IMG}:${env.BRANCH_NAME}"
       }
       steps {
-        deleteDir()
-        unstash 'source'
+        cleanup()
         dir("${BASE_DIR}"){
           dockerLogin(secret: "${env.DOCKER_REGISTRY_SECRET}",
             registry: "${env.DOCKER_REGISTRY}")
@@ -141,12 +142,9 @@ pipeline {
   }
 }
 
-def insideGo(Closure body){
-  def goAgent = docker.build("go-agent", ".ci/jenkins-go-agent")
-  goAgent.inside(){
-    env.HOME="${WORKSPACE}/${BASE_DIR}"
-    sh(label: 'Go version', script: 'go version')
-    sh(label: 'Install Mage', script: 'mage -version')
-    body()
+def cleanup(){
+  dir("${BASE_DIR}"){
+    deleteDir()
   }
+  unstash 'source'
 }
