@@ -73,6 +73,17 @@ var packageTests = []struct {
 			FormatVersion: "1.0",
 		},
 		false,
+		"invalid format_version",
+	},
+	{
+		Package{
+			Title:         &title,
+			Description:   "my description",
+			Categories:    []string{"metrics", "logs"},
+			FormatVersion: "1.0.0",
+			Version:       "1.0",
+		},
+		false,
 		"invalid package version",
 	},
 	{
@@ -81,6 +92,7 @@ var packageTests = []struct {
 			Description:   "my description",
 			Categories:    []string{"metrics", "logs"},
 			FormatVersion: "1.0.0",
+			Version:       "1.2.3",
 		},
 		true,
 		"complete",

@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Encode fields in Kibana objects if not encoded. [#506](https://github.com/elastic/package-registry/pull/506)
 * Validate required fields in datasets. [#507](https://github.com/elastic/package-registry/pull/507)
 * Do not require "config.yml". [#508](https://github.com/elastic/package-registry/pull/508)
+* Validate version consistency. [#510](https://github.com/elastic/package-registry/pull/510)
 
 ### Deprecated
 
