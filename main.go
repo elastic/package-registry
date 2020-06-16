@@ -62,37 +62,16 @@ func main() {
 	log.Println("Package registry started.")
 	defer log.Println("Package registry stopped.")
 
-	config, err := getConfig()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	log.Println("Cache time for /search: ", config.CacheTimeSearch)
-	log.Println("Cache time for /categories: ", config.CacheTimeCategories)
-	log.Println("Cache time for all others: ", config.CacheTimeCatchAll)
-
+	config := mustLoadConfig()
 	packagesBasePath := filepath.Join(config.PublicDir, packageDir)
-	packages, err := util.GetPackages(packagesBasePath)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	if len(packages) == 0 {
-		log.Fatal("No packages available")
-	}
-
-	log.Printf("%v package manifests loaded into memory.\n", len(packages))
+	ensurePackagesAvailable(packagesBasePath)
 
 	// If -dry-run=true is set, service stops here after validation
 	if dryRun {
 		return
 	}
 
-	router, err := getRouter(*config, packagesBasePath)
-	if err != nil {
-		log.Fatal(err)
-	}
-
+	router := mustLoadRouter(config, packagesBasePath)
 	server := &http.Server{Addr: address, Handler: router}
 
 	go func() {
@@ -130,7 +109,43 @@ func getConfig() (*Config, error) {
 	return &config, nil
 }
 
-func getRouter(config Config, packagesBasePath string) (*mux.Router, error) {
+func mustLoadConfig() *Config {
+	config, err := getConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
+	printConfig(config)
+	return config
+}
+
+func printConfig(config *Config) {
+	log.Println("Cache time for /search: ", config.CacheTimeSearch)
+	log.Println("Cache time for /categories: ", config.CacheTimeCategories)
+	log.Println("Cache time for all others: ", config.CacheTimeCatchAll)
+}
+
+func ensurePackagesAvailable(packagesBasePath string) {
+	packages, err := util.GetPackages(packagesBasePath)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if len(packages) == 0 {
+		log.Fatal("No packages available")
+	}
+
+	log.Printf("%v package manifests loaded.\n", len(packages))
+}
+
+func mustLoadRouter(config *Config, packagesBasePath string) *mux.Router {
+	router, err := getRouter(config, packagesBasePath)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return router
+}
+
+func getRouter(config *Config, packagesBasePath string) (*mux.Router, error) {
 	artifactsHandler := artifactsHandler(packagesBasePath, config.CacheTimeCatchAll)
 	faviconHandleFunc, err := faviconHandler(config.CacheTimeCatchAll)
 	if err != nil {
