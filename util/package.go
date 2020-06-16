@@ -6,7 +6,6 @@ package util
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
@@ -64,9 +63,11 @@ type Package struct {
 	Requirement   Requirement  `config:"requirement" json:"requirement"`
 	Screenshots   []Image      `config:"screenshots,omitempty" json:"screenshots,omitempty" yaml:"screenshots,omitempty"`
 	Assets        []string     `config:"assets,omitempty" json:"assets,omitempty" yaml:"assets,omitempty"`
-	DataSets      []*DataSet   `config:"datasets,omitempty" json:"datasets,omitempty" yaml:"datasets,omitempty"`
+	DataSets      []*Dataset   `config:"datasets,omitempty" json:"datasets,omitempty" yaml:"datasets,omitempty"`
 	Datasources   []Datasource `config:"datasources,omitempty" json:"datasources,omitempty" yaml:"datasources,omitempty"`
 	Owner         *Owner       `config:"owner,omitempty" json:"owner,omitempty" yaml:"owner,omitempty"`
+	Internal      bool         `config:"internal,omitempty" json:"internal,omitempty" yaml:"internal,omitempty"`
+	Datasets      []*Dataset   `config:"datasets,omitempty" json:"datasets,omitempty" yaml:"datasets,omitempty"`
 
 	// Local path to the package dir
 	BasePath string `json:"-" yaml:"-"`
@@ -439,32 +440,9 @@ func (p *Package) LoadDataSets() error {
 			return err
 		}
 
-		// Iterate through all datasources and inputs to find the matching streams and add them to the output.
-		for dK, datasource := range p.Datasources {
-			for iK, _ := range datasource.Inputs {
-				for _, stream := range d.Streams {
-					if stream.Input == p.Datasources[dK].Inputs[iK].Type {
-						if stream.TemplatePath == "" {
-							stream.TemplatePath = "stream.yml.hbs"
-						}
-						stream.Dataset = d.ID
-						streamTemplate := filepath.Join(datasetBasePath, "agent", "stream", stream.TemplatePath)
+		// TODO: Validate that each input specified in a stream also is defined in the package
 
-						streamTemplateData, err := ioutil.ReadFile(streamTemplate)
-						if err != nil {
-							return err
-						}
-
-						stream.TemplateContent = string(streamTemplateData)
-
-						// Add template to stream
-						p.Datasources[dK].Inputs[iK].Streams = append(p.Datasources[dK].Inputs[iK].Streams, stream)
-					}
-				}
-			}
-		}
-
-		p.DataSets = append(p.DataSets, d)
+		p.Datasets = append(p.Datasets, d)
 	}
 
 	return nil

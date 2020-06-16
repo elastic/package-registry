@@ -62,10 +62,10 @@
   ],
   "datasets": [
     {
-      "id": "bar",
+      "type": "logs",
+      "name": "bar.noo",
       "title": "Foo",
       "release": "experimental",
-      "type": "logs",
       "ingest_pipeline": "pipeline-entry",
       "streams": [
         {
@@ -80,6 +80,7 @@
               "show_user": false
             }
           ],
+          "template_path": "stream.yml.hbs",
           "enabled": true
         }
       ],
@@ -87,33 +88,14 @@
       "path": "foo"
     }
   ],
-  "datasources": [
+  "config_templates": [
     {
       "name": "logs",
       "title": "Logs datasource",
       "description": "Datasource for your log files.",
       "inputs": [
         {
-          "type": "foo",
-          "streams": [
-            {
-              "input": "foo",
-              "vars": [
-                {
-                  "name": "paths",
-                  "type": "text",
-                  "description": "Path to log files to be collected",
-                  "multi": true,
-                  "required": true,
-                  "show_user": false
-                }
-              ],
-              "dataset": "bar",
-              "template_path": "stream.yml.hbs",
-              "template": "foo: bar\n",
-              "enabled": true
-            }
-          ]
+          "type": "foo"
         }
       ],
       "multiple": true
