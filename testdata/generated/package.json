@@ -63,7 +63,7 @@
   "datasets": [
     {
       "type": "logs",
-      "name": "bar.noo",
+      "name": "example.foo",
       "title": "Foo",
       "release": "experimental",
       "ingest_pipeline": "pipeline-entry",
