@@ -10,11 +10,12 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"strconv"
 	"strings"
 
 	"github.com/magefile/mage/mg"
 	"github.com/magefile/mage/sh"
+
+	"github.com/elastic/package-registry/util"
 )
 
 var (
@@ -56,11 +57,9 @@ func Build() error {
 		return err
 	}
 
-	for _, p := range packagePaths {
-		err := sh.Run("go", "run", "./dev/generator/", "-sourceDir="+p, "-publicDir="+publicDir, "-tarGz="+strconv.FormatBool(tarGz))
-		if err != nil {
-			return err
-		}
+	err = buildPackages()
+	if err != nil {
+		return err
 	}
 	return sh.Run("go", "build", ".")
 }
@@ -86,6 +85,73 @@ func fetchPackageStorage() error {
 		"--work-tree", storageRepoDir,
 		"checkout",
 		packageStorageRevision)
+}
+
+func buildPackages() error {
+	packagePaths, err := findPackages()
+	if err != nil {
+		return err
+	}
+
+	for _, packagePath := range packagePaths {
+		srcDir := packagePath + "/"
+		p, err := util.NewPackage(srcDir)
+		if err != nil {
+			return err
+		}
+		dstDir := filepath.Join(publicDir, "package", p.Name, p.Version)
+
+		err = copyPackageFromSource(srcDir, dstDir)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func findPackages() ([]string, error) {
+	var matches []string
+	for _, sourceDir := range packagePaths {
+		err := filepath.Walk(sourceDir, func(path string, info os.FileInfo, err error) error {
+			if err != nil {
+				return err
+			}
+
+			f, err := os.Stat(path)
+			if err != nil {
+				return err
+			}
+
+			if !f.IsDir() {
+				return nil // skip as the path is not a directory
+			}
+
+			manifestPath := filepath.Join(path, "manifest.yml")
+			_, err = os.Stat(manifestPath)
+			if os.IsNotExist(err) {
+				return nil
+			}
+			matches = append(matches, path)
+			return filepath.SkipDir
+		})
+		if err != nil {
+			return nil, err
+		}
+	}
+	return matches, nil
+}
+
+func copyPackageFromSource(src, dst string) error {
+	err := os.MkdirAll(dst, 0755)
+	if err != nil {
+		return err
+	}
+	err = sh.RunV("rsync", "-a", src, dst)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func Check() error {
