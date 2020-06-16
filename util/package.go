@@ -419,21 +419,23 @@ func (p *Package) LoadDataSets() error {
 
 // ValidateDatasets loads all datasets and with it validates them
 func (p *Package) ValidateDatasets() error {
-
 	datasetPaths, err := p.GetDatasetPaths()
 	if err != nil {
 		return err
 	}
 
 	datasetsBasePath := filepath.Join(p.BasePath, "dataset")
-
 	for _, datasetPath := range datasetPaths {
-
 		datasetBasePath := filepath.Join(datasetsBasePath, datasetPath)
 
-		_, err := NewDataset(datasetBasePath, p)
+		d, err := NewDataset(datasetBasePath, p)
 		if err != nil {
-			return err
+			return errors.Wrapf(err, "building dataset failed (path: %s)", datasetBasePath)
+		}
+
+		err = d.Validate()
+		if err != nil {
+			return errors.Wrapf(err, "validating dataset failed (path: %s)", datasetBasePath)
 		}
 	}
 	return nil
