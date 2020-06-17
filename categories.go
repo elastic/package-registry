@@ -35,13 +35,10 @@ func categoriesHandler(packagesBasePath string, cacheTime time.Duration) func(w 
 		// Read query filter params which can affect the output
 		if len(query) > 0 {
 			if v := query.Get("experimental"); v != "" {
-				if v != "" {
-					experimental, err = strconv.ParseBool(v)
-					if err != nil {
-						badRequest(w, fmt.Sprintf("invalid 'experimental' query param: '%s'", v))
-						return
-					}
-
+				experimental, err = strconv.ParseBool(v)
+				if err != nil {
+					badRequest(w, fmt.Sprintf("invalid 'experimental' query param: '%s'", v))
+					return
 				}
 			}
 		}

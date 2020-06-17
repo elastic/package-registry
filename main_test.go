@@ -18,11 +18,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/gorilla/mux"
-
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 var (
@@ -53,8 +51,8 @@ func TestEndpoints(t *testing.T) {
 		{"/categories", "/categories", "categories.json", categoriesHandler(packagesBasePath, testCacheTime)},
 		{"/categories?experimental=true", "/categories", "categories-experimental.json", categoriesHandler(packagesBasePath, testCacheTime)},
 		{"/categories?experimental=foo", "/categories", "categories-experimental-error.json", categoriesHandler(packagesBasePath, testCacheTime)},
-		{"/search?kibana=6.5.2", "/search", "search-kibana652.json", searchHandler(packagesBasePath, testCacheTime)},
-		{"/search?kibana=7.2.1", "/search", "search-kibana721.json", searchHandler(packagesBasePath, testCacheTime)},
+		{"/search?kibana.version=6.5.2", "/search", "search-kibana652.json", searchHandler(packagesBasePath, testCacheTime)},
+		{"/search?kibana.version=7.2.1", "/search", "search-kibana721.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/search?category=metrics", "/search", "search-category-metrics.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/search?category=logs", "/search", "search-category-logs.json", searchHandler(packagesBasePath, testCacheTime)},
 		{"/search?package=example", "/search", "search-package-example.json", searchHandler(packagesBasePath, testCacheTime)},
