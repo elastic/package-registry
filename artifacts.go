@@ -37,7 +37,7 @@ func artifactsHandler(packagesBasePath string, cacheTime time.Duration) func(w h
 			return
 		}
 
-		_, err := semver.NewVersion(packageVersion)
+		_, err := semver.StrictNewVersion(packageVersion)
 		if err != nil {
 			badRequest(w, "invalid package version")
 			return
