@@ -8,11 +8,5 @@ categories: ["logs"]
 release: beta
 
 requirement:
-  elasticsearch:
-    versions: ">=6.0.0 <=6.8.0"
   kibana:
     versions: ">=6.0.0"
-  metricbeat:
-    versions: ">=6.1.0"
-  filebeat:
-    versions: ">=6.2.0"

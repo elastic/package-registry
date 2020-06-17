@@ -64,8 +64,7 @@ type Datasource struct {
 }
 
 type Requirement struct {
-	Kibana        ProductRequirement `config:"kibana" json:"kibana,omitempty" yaml:"kibana"`
-	Elasticsearch ProductRequirement `config:"elasticsearch" json:"elasticsearch,omitempty" yaml:"elasticsearch"`
+	Kibana ProductRequirement `config:"kibana" json:"kibana,omitempty" yaml:"kibana"`
 }
 
 type ProductRequirement struct {
@@ -298,13 +297,6 @@ func (p *Package) Validate() error {
 
 	if p.Description == "" {
 		return fmt.Errorf("no description set")
-	}
-
-	if p.Requirement.Elasticsearch.Versions != "" {
-		_, err := semver.NewConstraint(p.Requirement.Elasticsearch.Versions)
-		if err != nil {
-			return fmt.Errorf("invalid Elasticsearch versions: %s, %s", p.Requirement.Elasticsearch.Versions, err)
-		}
 	}
 
 	if p.Requirement.Kibana.Versions != "" {

@@ -16,8 +16,6 @@ license: basic
 requirement:
   kibana:
     versions: ">6.7.0"
-  elasticsearch:
-    versions: ">7.0.1"
 
 icons:
 - src: "/img/icon.svg"
