@@ -12,7 +12,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/blang/semver"
+	"github.com/Masterminds/semver/v3"
 	"github.com/pkg/errors"
 
 	ucfg "github.com/elastic/go-ucfg"
@@ -35,7 +35,7 @@ type Package struct {
 	Version       string  `config:"version" json:"version"`
 	Readme        *string `config:"readme,omitempty" json:"readme,omitempty" yaml:"readme,omitempty"`
 	License       string  `config:"license,omitempty" json:"license,omitempty" yaml:"license,omitempty"`
-	versionSemVer semver.Version
+	versionSemVer *semver.Version
 	Description   string       `config:"description" json:"description"`
 	Type          string       `config:"type" json:"type"`
 	Categories    []string     `config:"categories" json:"categories"`
@@ -70,7 +70,7 @@ type Requirement struct {
 
 type ProductRequirement struct {
 	Versions    string `config:"versions,omitempty" json:"versions,omitempty" yaml:"versions,omitempty"`
-	semVerRange semver.Range
+	semVerRange *semver.Constraints
 }
 
 type Version struct {
@@ -136,7 +136,7 @@ func NewPackage(basePath string) (*Package, error) {
 	}
 
 	if p.Requirement.Kibana.Versions != "" {
-		p.Requirement.Kibana.semVerRange, err = semver.ParseRange(p.Requirement.Kibana.Versions)
+		p.Requirement.Kibana.semVerRange, err = semver.NewConstraint(p.Requirement.Kibana.Versions)
 		if err != nil {
 			return nil, errors.Wrapf(err, "invalid Kibana versions range: %s", p.Requirement.Kibana.Versions)
 		}
@@ -150,7 +150,7 @@ func NewPackage(basePath string) (*Package, error) {
 		return nil, fmt.Errorf("invalid release: %s", p.Release)
 	}
 
-	p.versionSemVer, err = semver.Parse(p.Version)
+	p.versionSemVer, err = semver.StrictNewVersion(p.Version)
 	if err != nil {
 		return nil, err
 	}
@@ -213,7 +213,7 @@ func (p *Package) HasKibanaVersion(version *semver.Version) bool {
 	}
 
 	if version != nil {
-		if !p.Requirement.Kibana.semVerRange(*version) {
+		if !p.Requirement.Kibana.semVerRange.Check(version) {
 			return false
 		}
 	}
@@ -221,7 +221,7 @@ func (p *Package) HasKibanaVersion(version *semver.Version) bool {
 }
 
 func (p *Package) IsNewer(pp Package) bool {
-	return p.versionSemVer.GT(pp.versionSemVer)
+	return p.versionSemVer.GreaterThan(pp.versionSemVer)
 }
 
 // LoadAssets (re)loads all the assets of the package
@@ -282,9 +282,14 @@ func (p *Package) Validate() error {
 		return fmt.Errorf("no format_version set: %v", p)
 	}
 
-	_, err := semver.New(p.FormatVersion)
+	_, err := semver.StrictNewVersion(p.FormatVersion)
 	if err != nil {
 		return fmt.Errorf("invalid package version: %s, %s", p.FormatVersion, err)
+	}
+
+	_, err = semver.StrictNewVersion(p.Version)
+	if err != nil {
+		return err
 	}
 
 	if p.Title == nil || *p.Title == "" {
@@ -296,14 +301,14 @@ func (p *Package) Validate() error {
 	}
 
 	if p.Requirement.Elasticsearch.Versions != "" {
-		_, err := semver.ParseRange(p.Requirement.Elasticsearch.Versions)
+		_, err := semver.NewConstraint(p.Requirement.Elasticsearch.Versions)
 		if err != nil {
 			return fmt.Errorf("invalid Elasticsearch versions: %s, %s", p.Requirement.Elasticsearch.Versions, err)
 		}
 	}
 
 	if p.Requirement.Kibana.Versions != "" {
-		_, err := semver.ParseRange(p.Requirement.Kibana.Versions)
+		_, err := semver.NewConstraint(p.Requirement.Kibana.Versions)
 		if err != nil {
 			return fmt.Errorf("invalid Kibana versions: %s, %s", p.Requirement.Kibana.Versions, err)
 		}
@@ -324,18 +329,18 @@ func (p *Package) Validate() error {
 }
 
 func (p *Package) validateVersionConsistency() error {
-	versionPackage, err := semver.Parse(p.Version)
+	versionPackage, err := semver.NewVersion(p.Version)
 	if err != nil {
 		return errors.Wrap(err, "invalid version defined in manifest")
 	}
 
 	baseDir := filepath.Base(p.BasePath)
-	versionDir, err := semver.Parse(baseDir)
+	versionDir, err := semver.NewVersion(baseDir)
 	if err != nil {
 		return nil // package content is not rooted in version directory
 	}
 
-	if !versionPackage.EQ(versionDir) {
+	if !versionPackage.Equal(versionDir) {
 		return fmt.Errorf("inconsistent versions (path: %s, manifest: %s)", versionDir.String(), p.versionSemVer.String())
 	}
 	return nil
