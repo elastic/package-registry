@@ -23,7 +23,7 @@ type: integration
 requirement:
   kibana:
     # Requires ILM which was released in 6.6.
-    versions: ">7.9"
+    versions: ">7.9.0"
 
 # No icons
 icons:
