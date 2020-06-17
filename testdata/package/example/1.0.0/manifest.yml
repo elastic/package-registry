@@ -10,6 +10,9 @@ release: ga
 
 owner.github: "ruflin"
 
+conditions:
+  kibana.version: "~7.x.x"
+
 requirement:
   kibana:
     versions: ">=7.0.0"

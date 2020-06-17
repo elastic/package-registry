@@ -31,6 +31,9 @@
       "versions": "\u003e6.7.0"
     }
   },
+  "conditions": {
+    "kibana.version": "\u003e6.7.0"
+  },
   "assets": [
     "/package/multiversion/1.0.3/changelog.yml",
     "/package/multiversion/1.0.3/manifest.yml",

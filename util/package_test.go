@@ -5,8 +5,10 @@
 package util
 
 import (
+	"log"
 	"testing"
 
+	"github.com/Masterminds/semver/v3"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -123,6 +125,74 @@ func TestValidate(t *testing.T) {
 			} else {
 				assert.True(t, tt.valid)
 			}
+		})
+	}
+}
+
+var kibanaVersionPackageTests = []struct {
+	description   string
+	constraint    string
+	kibanaVersion string
+	check         bool
+}{
+	{
+		"last major",
+		">= 7.0.0",
+		"6.7.0",
+		false,
+	},
+	{
+		"next minor",
+		">= 7.0.0",
+		"7.1.0",
+		true,
+	},
+	{
+		"next minor tilde",
+		"~7",
+		"7.1.0",
+		true,
+	},
+	{
+		"next minor tilde, x",
+		"~7.x.x",
+		"7.1.0",
+		true,
+	},
+	{
+		"next minor tilde, not matching",
+		"~7.0.0",
+		"7.1.0",
+		false,
+	},
+	{
+		"next minor tilde, matching",
+		"~7.0.x",
+		"7.0.2",
+		true,
+	},
+}
+
+func TestHasKibanaVersion(t *testing.T) {
+	for _, tt := range kibanaVersionPackageTests {
+		t.Run(tt.description, func(t *testing.T) {
+
+			constraint, err := semver.NewConstraint(tt.constraint)
+			assert.NoError(t, err)
+
+			p := Package{
+				Conditions: &Conditions{
+					kibanaVersion: constraint,
+				},
+			}
+
+			kibanaVersion, err := semver.NewVersion(tt.kibanaVersion)
+			assert.NoError(t, err)
+
+			check := p.HasKibanaVersion(kibanaVersion)
+			log.Println(check)
+			assert.Equal(t, tt.check, check)
+
 		})
 	}
 }

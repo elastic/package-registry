@@ -33,6 +33,9 @@ type: integration
 owner:
   github: "ruflin"
 
+conditions:
+  kibana.version: ">6.7.0  <7.6.0"
+
 requirement:
   kibana:
     versions: ">6.7.0  <7.6.0"

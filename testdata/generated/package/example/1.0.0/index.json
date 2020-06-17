@@ -25,6 +25,9 @@
       "versions": "\u003e=7.0.0"
     }
   },
+  "conditions": {
+    "kibana.version": "~7.x.x"
+  },
   "screenshots": [
     {
       "src": "/package/example/1.0.0/img/kibana-iptables.png",
