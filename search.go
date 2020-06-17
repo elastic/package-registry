@@ -13,7 +13,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/blang/semver"
+	"github.com/Masterminds/semver/v3"
 	"github.com/pkg/errors"
 
 	"github.com/elastic/package-registry/util"
@@ -35,7 +35,7 @@ func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http
 		// Read query filter params which can affect the output
 		if len(query) > 0 {
 			if v := query.Get("kibana"); v != "" {
-				kibanaVersion, err = semver.New(v)
+				kibanaVersion, err = semver.NewVersion(v)
 				if err != nil {
 					badRequest(w, fmt.Sprintf("invalid Kibana version '%s': %s", v, err))
 					return
