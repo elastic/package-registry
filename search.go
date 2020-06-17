@@ -34,7 +34,7 @@ func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http
 
 		// Read query filter params which can affect the output
 		if len(query) > 0 {
-			if v := query.Get("kibana"); v != "" {
+			if v := query.Get("kibana.version"); v != "" {
 				kibanaVersion, err = semver.NewVersion(v)
 				if err != nil {
 					badRequest(w, fmt.Sprintf("invalid Kibana version '%s': %s", v, err))
@@ -43,47 +43,37 @@ func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http
 			}
 
 			if v := query.Get("category"); v != "" {
-				if v != "" {
-					category = v
-				}
+				category = v
 			}
 
 			if v := query.Get("package"); v != "" {
-				if v != "" {
-					packageQuery = v
-				}
+				packageQuery = v
 			}
 
 			if v := query.Get("all"); v != "" {
-				if v != "" {
-					// Default is false, also on error
-					all, err = strconv.ParseBool(v)
-					if err != nil {
-						badRequest(w, fmt.Sprintf("invalid 'all' query param: '%s'", v))
-						return
-					}
+				// Default is false, also on error
+				all, err = strconv.ParseBool(v)
+				if err != nil {
+					badRequest(w, fmt.Sprintf("invalid 'all' query param: '%s'", v))
+					return
 				}
 			}
 
 			if v := query.Get("internal"); v != "" {
-				if v != "" {
-					// In case of error, keep it false
-					internal, err = strconv.ParseBool(v)
-					if err != nil {
-						badRequest(w, fmt.Sprintf("invalid 'internal' query param: '%s'", v))
-						return
-					}
+				// In case of error, keep it false
+				internal, err = strconv.ParseBool(v)
+				if err != nil {
+					badRequest(w, fmt.Sprintf("invalid 'internal' query param: '%s'", v))
+					return
 				}
 			}
 
 			if v := query.Get("experimental"); v != "" {
-				if v != "" {
-					// In case of error, keep it false
-					experimental, err = strconv.ParseBool(v)
-					if err != nil {
-						badRequest(w, fmt.Sprintf("invalid 'experimental' query param: '%s'", v))
-						return
-					}
+				// In case of error, keep it false
+				experimental, err = strconv.ParseBool(v)
+				if err != nil {
+					badRequest(w, fmt.Sprintf("invalid 'experimental' query param: '%s'", v))
+					return
 				}
 			}
 		}
