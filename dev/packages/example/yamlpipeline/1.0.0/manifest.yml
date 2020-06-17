@@ -11,10 +11,6 @@ release: beta
 license: basic
 type: integration
 
-requirement:
-  elasticsearch:
-    version.min: 7.0.0
-
 # No icons
 icons:
 

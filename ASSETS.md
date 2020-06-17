@@ -35,12 +35,8 @@ compatibility: [1.0.2, 2.0.1]
 os.platform: [darwin, freebsd, linux, macos, openbsd, windows]
 
 requirement:
-  elasticsearch:
-    versions: >7.0
   kibana:
     versions: >7.0
-  agent:
-    versions: >7.1
 
 # The order of the items listed here is the order they show up in the package overview.
 screenshots:
