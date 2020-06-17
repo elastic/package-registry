@@ -150,7 +150,7 @@ func NewPackage(basePath string) (*Package, error) {
 		return nil, fmt.Errorf("invalid release: %s", p.Release)
 	}
 
-	p.versionSemVer, err = semver.NewVersion(p.Version)
+	p.versionSemVer, err = semver.StrictNewVersion(p.Version)
 	if err != nil {
 		return nil, err
 	}
@@ -282,9 +282,14 @@ func (p *Package) Validate() error {
 		return fmt.Errorf("no format_version set: %v", p)
 	}
 
-	_, err := semver.NewVersion(p.FormatVersion)
+	_, err := semver.StrictNewVersion(p.FormatVersion)
 	if err != nil {
 		return fmt.Errorf("invalid package version: %s, %s", p.FormatVersion, err)
+	}
+
+	_, err = semver.StrictNewVersion(p.Version)
+	if err != nil {
+		return err
 	}
 
 	if p.Title == nil || *p.Title == "" {
