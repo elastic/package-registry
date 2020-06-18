@@ -1,5 +1,6 @@
+public_dir: ./public
 packages_paths:
-  - ./packages
+  - ./packages/package-storage
 
 cache_time.search: 10m
 cache_time.categories: 10m
