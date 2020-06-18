@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Do not require "config.yml". [#508](https://github.com/elastic/package-registry/pull/508)
 * Validate version consistency. [#510](https://github.com/elastic/package-registry/pull/510)
 * Remove package code generator. [#513](https://github.com/elastic/package-registry/pull/513)
+* Added support for ecs style validation for dataset fields. [#520](https://github.com/elastic/package-registry/pull/520)
 
 ### Deprecated
 
