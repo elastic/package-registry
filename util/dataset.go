@@ -277,30 +277,17 @@ func (d *DataSet) validateRequiredFields() error {
 		return errors.Wrapf(err, "walking through fields files failed")
 	}
 
-	err = validateRequiredFieldsData(allFields)
-	if err != nil {
-		return errors.Wrapf(err, "validating required fields data failed")
+	// Flatten all fields
+	for i, fields := range allFields {
+		allFields[i] = fields.Flatten()
 	}
-	return nil
-}
 
-func validateRequiredFieldsData(allFields []MapStr) error {
-	allFields = flattenFieldsData(allFields)
-
-	var err error
+	// Verify required keys
 	err = requireField(allFields, "dataset.type", "constant_keyword", err)
 	err = requireField(allFields, "dataset.name", "constant_keyword", err)
 	err = requireField(allFields, "dataset.namespace", "constant_keyword", err)
 	err = requireField(allFields, "@timestamp", "date", err)
 	return err
-}
-
-func flattenFieldsData(allFields []MapStr) []MapStr {
-	var modified []MapStr
-	for _, fields := range allFields {
-		modified = append(modified, fields.FlattenWithoutChildrenKey("fields"))
-	}
-	return modified
 }
 
 func requireField(allFields []MapStr, searchedName, expectedType string, validationErr error) error {
