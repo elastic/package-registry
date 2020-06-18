@@ -26,7 +26,8 @@ RUN go build .
 # This will become useful for staged builds later on
 RUN mkdir /registry
 RUN mv package-registry /registry/
-RUN mv public /registry/
+RUN mkdir -p /registry/public
+ADD build/package-storage/packages /registry/public/
 
 # Change to new working directory
 WORKDIR /registry
