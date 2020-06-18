@@ -42,7 +42,7 @@ func artifactsHandler(packagesBasePaths []string, cacheTime time.Duration) func(
 		}
 
 		packagePath, err := getPackagePath(packagesBasePaths, packageName, packageVersion)
-		if err == errPackageNotFound {
+		if err == errResourceNotFound {
 			notFoundError(w, errArtifactNotFound)
 			return
 		}

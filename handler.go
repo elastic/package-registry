@@ -14,7 +14,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-var errPackageNotFound = errors.New("package not found")
+var errResourceNotFound = errors.New("resource not found")
 
 func notFoundError(w http.ResponseWriter, err error) {
 	http.Error(w, err.Error(), http.StatusNotFound)
@@ -103,5 +103,5 @@ func getPackageBasePath(packagesBasePaths []string, resourcePath string) (string
 		}
 		return basePath, nil
 	}
-	return "", errPackageNotFound
+	return "", errResourceNotFound
 }

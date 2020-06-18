@@ -16,13 +16,13 @@ func staticHandler(packagesBasePaths []string, prefix string, cacheTime time.Dur
 		fileServers[packagesBasePath] = catchAll(http.Dir(packagesBasePath), cacheTime)
 	}
 	return http.StripPrefix(prefix, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		basePath, err := getPackageBasePath(packagesBasePaths, r.RequestURI)
-		if err == errPackageNotFound {
-			notFoundError(w, errArtifactNotFound)
+		basePath, err := getPackageBasePath(packagesBasePaths, r.URL.Path)
+		if err == errResourceNotFound {
+			notFoundError(w, err)
 			return
 		}
 		if err != nil {
-			log.Printf("stat package path '%s' failed: %v", r.RequestURI, err)
+			log.Printf("stat package path '%s' failed: %v", r.URL.Path, err)
 
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return

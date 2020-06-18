@@ -46,7 +46,7 @@ func packageIndexHandler(packagesBasePaths []string, cacheTime time.Duration) fu
 		}
 
 		packagePath, err := getPackagePath(packagesBasePaths, packageName, packageVersion)
-		if err == errPackageNotFound {
+		if err == errResourceNotFound {
 			notFoundError(w, errPackageRevisionNotFound)
 			return
 		}
