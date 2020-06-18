@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"net/http"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -39,6 +40,7 @@ func catchAll(public http.FileSystem, cacheTime time.Duration) func(w http.Respo
 func determineResourcePath(r *http.Request, public http.FileSystem) (string, error) {
 	path := r.URL.Path
 
+	path = strings.Replace(path, "/package", "", 1)
 	// Handles if it's a directory or last char is a / (also a directory)
 	// It then opens index.json by default (if it exists)
 	if len(path) == 0 || path == "/" {

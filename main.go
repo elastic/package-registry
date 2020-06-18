@@ -12,7 +12,6 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"path/filepath"
 	"syscall"
 	"time"
 
@@ -25,8 +24,6 @@ import (
 )
 
 const (
-	packageDir = "package"
-
 	serviceName = "package-registry"
 	version     = "0.4.0"
 )
@@ -37,7 +34,7 @@ var (
 	configPath = "config.yml"
 
 	defaultConfig = Config{
-		PublicDir:           "public",
+		PackagesPath:        "packages",
 		CacheTimeSearch:     10 * time.Minute,
 		CacheTimeCategories: 10 * time.Minute,
 		CacheTimeCatchAll:   10 * time.Minute,
@@ -51,7 +48,7 @@ func init() {
 }
 
 type Config struct {
-	PublicDir           string        `config:"public_dir"`
+	PackagesPath        string        `config:"packages_path"`
 	CacheTimeSearch     time.Duration `config:"cache_time.search"`
 	CacheTimeCategories time.Duration `config:"cache_time.categories"`
 	CacheTimeCatchAll   time.Duration `config:"cache_time.catch_all"`
@@ -71,7 +68,7 @@ func main() {
 	log.Println("Cache time for /categories: ", config.CacheTimeCategories)
 	log.Println("Cache time for all others: ", config.CacheTimeCatchAll)
 
-	packagesBasePath := filepath.Join(config.PublicDir, packageDir)
+	packagesBasePath := config.PackagesPath
 	packages, err := util.GetPackages(packagesBasePath)
 	if err != nil {
 		log.Fatal(err)
@@ -152,7 +149,7 @@ func getRouter(config Config, packagesBasePath string) (*mux.Router, error) {
 	router.HandleFunc("/favicon.ico", faviconHandleFunc)
 	router.HandleFunc(artifactsRouterPath, artifactsHandler)
 	router.HandleFunc(packageIndexRouterPath, packageIndexHandler)
-	router.PathPrefix("/package").HandlerFunc(catchAll(http.Dir(config.PublicDir), config.CacheTimeCatchAll))
+	router.PathPrefix("/package").HandlerFunc(catchAll(http.Dir(config.PackagesPath), config.CacheTimeCatchAll))
 	router.Use(loggingMiddleware)
 	return router, nil
 }
