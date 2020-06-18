@@ -1,0 +1,25 @@
+- name: "@timestamp"
+  type: date
+  description: >
+    Event timestamp.
+- name: dataset
+  title: dataset
+  group: 2
+  description: Fields describing the new indexing strategy <type>-<name>-<namespace>
+  type: group
+  fields:
+    - name: name
+      level: custom
+      type: constant_keyword
+      description: Dataset name.
+      default_field: false
+    - name: namespace
+      level: custom
+      type: constant_keyword
+      description: Dataset namespace.
+      default_field: false
+    - name: type
+      level: custom
+      type: constant_keyword
+      description: Dataset type.
+      default_field: false
