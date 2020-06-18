@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Change stream.* fields to dataset.* fields. [#492](https://github.com/elastic/package-registry/pull/492)
 * Remove `solution` entry support in package manfiest. [#504](https://github.com/elastic/package-registry/pull/504)
+* Remove support for Elasticsearch requirements [#516](https://github.com/elastic/package-registry/pull/516)
+* Rename `kibana` query param to `kibana.version`. [#518](https://github.com/elastic/package-registry/pull/518)
 
 ### Bugfixes
 
