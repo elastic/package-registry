@@ -6,11 +6,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/pkg/errors"
 	"net/http"
 	"os"
 	"path/filepath"
 	"time"
+
+	"github.com/pkg/errors"
 )
 
 var errPackageNotFound = errors.New("package not found")
