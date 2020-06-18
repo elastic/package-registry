@@ -12,7 +12,6 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"path/filepath"
 	"syscall"
 	"time"
 
@@ -51,7 +50,8 @@ func init() {
 }
 
 type Config struct {
-	PublicDir           string        `config:"public_dir"`
+	PublicDir           string        `config:"public_dir"` // left for legacy purposes
+	PackagesPaths       []string      `config:"packages_paths"`
 	CacheTimeSearch     time.Duration `config:"cache_time.search"`
 	CacheTimeCategories time.Duration `config:"cache_time.categories"`
 	CacheTimeCatchAll   time.Duration `config:"cache_time.catch_all"`
@@ -63,15 +63,15 @@ func main() {
 	defer log.Println("Package registry stopped.")
 
 	config := mustLoadConfig()
-	packagesBasePath := filepath.Join(config.PublicDir, packageDir)
-	ensurePackagesAvailable(packagesBasePath)
+	packagesBasePaths := getPackagesBasePaths(config)
+	ensurePackagesAvailable(packagesBasePaths)
 
 	// If -dry-run=true is set, service stops here after validation
 	if dryRun {
 		return
 	}
 
-	router := mustLoadRouter(config, packagesBasePath)
+	router := mustLoadRouter(config, packagesBasePaths)
 	server := &http.Server{Addr: address, Handler: router}
 
 	go func() {
@@ -89,6 +89,15 @@ func main() {
 	if err := server.Shutdown(ctx); err != nil {
 		log.Fatal(err)
 	}
+}
+
+func mustLoadConfig() *Config {
+	config, err := getConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
+	printConfig(config)
+	return config
 }
 
 func getConfig() (*Config, error) {
@@ -109,13 +118,13 @@ func getConfig() (*Config, error) {
 	return &config, nil
 }
 
-func mustLoadConfig() *Config {
-	config, err := getConfig()
-	if err != nil {
-		log.Fatal(err)
+func getPackagesBasePaths(config *Config) []string {
+	var paths []string
+	if config.PublicDir != "" {
+		paths = append(paths, config.PublicDir, packageDir) // left for legacy purposes
 	}
-	printConfig(config)
-	return config
+	paths = append(paths, config.PackagesPaths...)
+	return paths
 }
 
 func printConfig(config *Config) {
@@ -124,8 +133,8 @@ func printConfig(config *Config) {
 	log.Println("Cache time for all others: ", config.CacheTimeCatchAll)
 }
 
-func ensurePackagesAvailable(packagesBasePath string) {
-	packages, err := util.GetPackages(packagesBasePath)
+func ensurePackagesAvailable(packagesBasePaths []string) {
+	packages, err := util.GetPackages(packagesBasePaths)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -137,16 +146,16 @@ func ensurePackagesAvailable(packagesBasePath string) {
 	log.Printf("%v package manifests loaded.\n", len(packages))
 }
 
-func mustLoadRouter(config *Config, packagesBasePath string) *mux.Router {
-	router, err := getRouter(config, packagesBasePath)
+func mustLoadRouter(config *Config, packagesBasePaths []string) *mux.Router {
+	router, err := getRouter(config, packagesBasePaths)
 	if err != nil {
 		log.Fatal(err)
 	}
 	return router
 }
 
-func getRouter(config *Config, packagesBasePath string) (*mux.Router, error) {
-	artifactsHandler := artifactsHandler(packagesBasePath, config.CacheTimeCatchAll)
+func getRouter(config *Config, packagesBasePaths []string) (*mux.Router, error) {
+	artifactsHandler := artifactsHandler(packagesBasePaths, config.CacheTimeCatchAll)
 	faviconHandleFunc, err := faviconHandler(config.CacheTimeCatchAll)
 	if err != nil {
 		return nil, err
@@ -156,13 +165,13 @@ func getRouter(config *Config, packagesBasePath string) (*mux.Router, error) {
 		return nil, err
 	}
 
-	packageIndexHandler := packageIndexHandler(packagesBasePath, config.CacheTimeCatchAll)
+	packageIndexHandler := packageIndexHandler(packagesBasePaths, config.CacheTimeCatchAll)
 
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/", indexHandlerFunc)
 	router.HandleFunc("/index.json", indexHandlerFunc)
-	router.HandleFunc("/search", searchHandler(packagesBasePath, config.CacheTimeSearch))
-	router.HandleFunc("/categories", categoriesHandler(packagesBasePath, config.CacheTimeCategories))
+	router.HandleFunc("/search", searchHandler(packagesBasePaths, config.CacheTimeSearch))
+	router.HandleFunc("/categories", categoriesHandler(packagesBasePaths, config.CacheTimeCategories))
 	router.HandleFunc("/health", healthHandler)
 	router.HandleFunc("/favicon.ico", faviconHandleFunc)
 	router.HandleFunc(artifactsRouterPath, artifactsHandler)

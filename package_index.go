@@ -8,8 +8,6 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"os"
-	"path/filepath"
 	"time"
 
 	"github.com/pkg/errors"
@@ -26,7 +24,7 @@ const (
 
 var errPackageRevisionNotFound = errors.New("package revision not found")
 
-func packageIndexHandler(packagesBasePath string, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+func packageIndexHandler(packagesBasePaths []string, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		packageName, ok := vars["packageName"]
@@ -47,9 +45,8 @@ func packageIndexHandler(packagesBasePath string, cacheTime time.Duration) func(
 			return
 		}
 
-		packagePath := filepath.Join(packagesBasePath, packageName, packageVersion)
-		_, err = os.Stat(packagePath)
-		if os.IsNotExist(err) {
+		packagePath, err := getPackagePath(packagesBasePaths, packageName, packageVersion)
+		if err == errPackageNotFound {
 			notFoundError(w, errPackageRevisionNotFound)
 			return
 		}

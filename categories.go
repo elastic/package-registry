@@ -22,9 +22,9 @@ type Category struct {
 }
 
 // categoriesHandler is a dynamic handler as it will also allow filtering in the future.
-func categoriesHandler(packagesBasePath string, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+func categoriesHandler(packagesBasePaths []string, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		packages, err := util.GetPackages(packagesBasePath)
+		packages, err := util.GetPackages(packagesBasePaths)
 		if err != nil {
 			notFoundError(w, err)
 			return

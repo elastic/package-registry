@@ -5,12 +5,15 @@
 package main
 
 import (
-	"errors"
 	"fmt"
+	"github.com/pkg/errors"
 	"net/http"
+	"os"
 	"path/filepath"
 	"time"
 )
+
+var errPackageNotFound = errors.New("package not found")
 
 func notFoundError(w http.ResponseWriter, err error) {
 	http.Error(w, err.Error(), http.StatusNotFound)
@@ -77,4 +80,18 @@ func cacheHeaders(w http.ResponseWriter, cacheTime time.Duration) {
 
 func jsonHeader(w http.ResponseWriter) {
 	w.Header().Set("Content-Type", "application/json")
+}
+
+func getPackagePath(packagesBasePaths []string, packageName, packageVersion string) (string, error) {
+	for _, packagesBasePath := range packagesBasePaths {
+		packagePath := filepath.Join(packagesBasePath, packageName, packageVersion)
+		_, err := os.Stat(packagePath)
+		if os.IsNotExist(err) {
+			continue
+		}
+		if err != nil {
+			return "", errors.Wrapf(err, "stat file failed (path: %s)", packagePath)
+		}
+	}
+	return "", errPackageNotFound
 }
