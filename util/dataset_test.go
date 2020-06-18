@@ -1,3 +1,7 @@
+// Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
+// or more contributor license agreements. Licensed under the Elastic License;
+// you may not use this file except in compliance with the Elastic License.
+
 package util
 
 import (
@@ -55,4 +59,3 @@ func TestFlattenFieldsData_ObjectWithFields(t *testing.T) {
 	require.Len(t, flattened, 1)
 	require.Equal(t, `{"dataset.name":"name-1","dataset.type":"type-1"}`, flattened[0].String())
 }
-
