@@ -207,30 +207,6 @@ func flatten(prefix string, in, out MapStr) MapStr {
 	return out
 }
 
-func (m MapStr) FlattenWithoutChildrenKey(childrenKey string) MapStr {
-	return flattenWithoutChildrenKey("", childrenKey, m, MapStr{})
-}
-
-func flattenWithoutChildrenKey(prefix, childrenKey string, in, out MapStr) MapStr {
-	for k, v := range in {
-		var fullKey string
-		if prefix == "" {
-			fullKey = k
-		} else if k == childrenKey {
-			fullKey = prefix
-		} else {
-			fullKey = prefix + "." + k
-		}
-
-		if m, ok := tryToMapStr(v); ok {
-			flattenWithoutChildrenKey(fullKey, childrenKey, m, out)
-		} else {
-			out[fullKey] = v
-		}
-	}
-	return out
-}
-
 // toMapStr performs a type assertion on v and returns a MapStr. v can be either
 // a MapStr or a map[string]interface{}. If it's any other type or nil then
 // an error is returned.
