@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"syscall"
 	"time"
 
@@ -121,7 +122,7 @@ func getConfig() (*Config, error) {
 func getPackagesBasePaths(config *Config) []string {
 	var paths []string
 	if config.PublicDir != "" {
-		paths = append(paths, config.PublicDir, packageDir) // left for legacy purposes
+		paths = append(paths, filepath.Join(config.PublicDir, packageDir)) // left for legacy purposes
 	}
 	paths = append(paths, config.PackagesPaths...)
 	return paths
