@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/blang/semver"
+	"github.com/Masterminds/semver/v3"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
 
@@ -35,7 +35,7 @@ func artifactsHandler(packagesBasePaths []string, cacheTime time.Duration) func(
 			return
 		}
 
-		_, err := semver.Parse(packageVersion)
+		_, err := semver.StrictNewVersion(packageVersion)
 		if err != nil {
 			badRequest(w, "invalid package version")
 			return

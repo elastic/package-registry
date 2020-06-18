@@ -12,7 +12,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/blang/semver"
+	"github.com/Masterminds/semver/v3"
 	"github.com/gorilla/mux"
 
 	"github.com/elastic/package-registry/util"
@@ -39,7 +39,7 @@ func packageIndexHandler(packagesBasePaths []string, cacheTime time.Duration) fu
 			return
 		}
 
-		_, err := semver.Parse(packageVersion)
+		_, err := semver.StrictNewVersion(packageVersion)
 		if err != nil {
 			badRequest(w, "invalid package version")
 			return
