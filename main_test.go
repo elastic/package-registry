@@ -29,8 +29,7 @@ var (
 )
 
 func TestEndpoints(t *testing.T) {
-	publicPath := "./testdata/public/package"
-	packagesBasePaths := []string{publicPath}
+	packagesBasePaths := []string{"./testdata/package"}
 
 	faviconHandleFunc, err := faviconHandler(testCacheTime)
 	require.NoError(t, err)
@@ -72,8 +71,7 @@ func TestEndpoints(t *testing.T) {
 }
 
 func TestArtifacts(t *testing.T) {
-	publicPath := "./testdata/public/package"
-	packagesBasePaths := []string{publicPath}
+	packagesBasePaths := []string{"./testdata/package"}
 
 	artifactsHandler := artifactsHandler(packagesBasePaths, testCacheTime)
 
@@ -97,8 +95,7 @@ func TestArtifacts(t *testing.T) {
 }
 
 func TestPackageIndex(t *testing.T) {
-	publicPath := "./testdata/public/package"
-	packagesBasePaths := []string{publicPath}
+	packagesBasePaths := []string{"./testdata/package"}
 
 	packageIndexHandler := packageIndexHandler(packagesBasePaths, testCacheTime)
 

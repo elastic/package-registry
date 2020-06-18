@@ -93,6 +93,7 @@ func getPackagePath(packagesBasePaths []string, packageName, packageVersion stri
 		if err != nil {
 			return "", errors.Wrapf(err, "stat file failed (path: %s)", packagePath)
 		}
+		return packagePath, nil
 	}
 	return "", errPackageNotFound
 }
