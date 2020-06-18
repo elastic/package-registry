@@ -1,0 +1,87 @@
+{
+  "format_version": "1.0.0",
+  "name": "multiple_false",
+  "title": "Multiple false",
+  "version": "0.0.1",
+  "readme": "/package/multiple_false/0.0.1/docs/README.md",
+  "license": "basic",
+  "description": "Tests that multiple can be set to false",
+  "type": "integration",
+  "categories": [
+    "logs"
+  ],
+  "release": "beta",
+  "removable": true,
+  "requirement": {
+    "kibana": {}
+  },
+  "assets": [
+    "/package/multiple_false/0.0.1/manifest.yml",
+    "/package/multiple_false/0.0.1/docs/README.md",
+    "/package/multiple_false/0.0.1/dataset/foo/manifest.yml",
+    "/package/multiple_false/0.0.1/dataset/foo/fields/base-fields.yml",
+    "/package/multiple_false/0.0.1/dataset/foo/agent/stream/stream.yml.hbs",
+    "/package/multiple_false/0.0.1/dataset/foo/elasticsearch/ingest-pipeline/default.json"
+  ],
+  "datasets": [
+    {
+      "id": "multiple_false.foo",
+      "title": "Foo",
+      "release": "experimental",
+      "type": "logs",
+      "ingest_pipeline": "default",
+      "streams": [
+        {
+          "input": "logs",
+          "vars": [
+            {
+              "name": "paths",
+              "type": "text",
+              "description": "Path to log files to be collected",
+              "multi": true,
+              "required": true,
+              "show_user": false
+            }
+          ],
+          "enabled": true
+        }
+      ],
+      "package": "multiple_false",
+      "path": "foo"
+    }
+  ],
+  "datasources": [
+    {
+      "name": "logs",
+      "title": "Logs datasource",
+      "description": "Datasource for your log files.",
+      "inputs": [
+        {
+          "type": "logs",
+          "streams": [
+            {
+              "input": "logs",
+              "vars": [
+                {
+                  "name": "paths",
+                  "type": "text",
+                  "description": "Path to log files to be collected",
+                  "multi": true,
+                  "required": true,
+                  "show_user": false
+                }
+              ],
+              "dataset": "multiple_false.foo",
+              "template_path": "stream.yml.hbs",
+              "template": "foo: bar\n",
+              "enabled": true
+            }
+          ]
+        }
+      ],
+      "multiple": false
+    }
+  ],
+  "download": "/epr/multiple_false/multiple_false-0.0.1.tar.gz",
+  "path": "/package/multiple_false/0.0.1"
+}

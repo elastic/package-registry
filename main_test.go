@@ -14,6 +14,8 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 	"time"
@@ -118,6 +120,40 @@ func TestPackageIndex(t *testing.T) {
 	}
 }
 
+// TestAllPackageIndex generates and compares all index.json files for the test packages
+func TestAllPackageIndex(t *testing.T) {
+	publicPath := "./testdata/public"
+	packagesBasePath := publicPath + "/package"
+
+	packageIndexHandler := packageIndexHandler(packagesBasePath, testCacheTime)
+
+	// find all packages
+	dirs, err := filepath.Glob(packagesBasePath + "/*/*")
+	assert.NoError(t, err)
+
+	type Test struct {
+		packageName    string
+		packageVersion string
+	}
+	var tests []Test
+
+	for _, path := range dirs {
+		packageVersion := filepath.Base(path)
+		packageName := filepath.Base(filepath.Dir(path))
+
+		test := Test{packageName, packageVersion}
+		tests = append(tests, test)
+	}
+
+	for _, test := range tests {
+		t.Run(test.packageName+"/"+test.packageVersion, func(t *testing.T) {
+			packageEndpoint := "/package/" + test.packageName + "/" + test.packageVersion + "/"
+			fileName := filepath.Join("package", test.packageName, test.packageVersion, "index.json")
+			runEndpoint(t, packageEndpoint, packageIndexRouterPath, fileName, packageIndexHandler)
+		})
+	}
+}
+
 func runEndpoint(t *testing.T, endpoint, path, file string, handler func(w http.ResponseWriter, r *http.Request)) {
 	req, err := http.NewRequest("GET", endpoint, nil)
 	if err != nil {
@@ -135,6 +171,8 @@ func runEndpoint(t *testing.T, endpoint, path, file string, handler func(w http.
 	router.ServeHTTP(recorder, req)
 
 	fullPath := "./docs/api/" + file
+	err = os.MkdirAll(filepath.Dir(fullPath), 0755)
+	assert.NoError(t, err)
 
 	recorded := recorder.Body.Bytes()
 	if strings.HasSuffix(file, "-preview.txt") {
