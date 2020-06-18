@@ -333,7 +333,11 @@ func (p *Package) validateVersionConsistency() error {
 	}
 
 	if !versionPackage.Equal(versionDir) {
-		return fmt.Errorf("inconsistent versions (path: %s, manifest: %s)", versionDir.String(), p.versionSemVer.String())
+		manifestVer := "unknown"
+		if p.versionSemVer != nil {
+			manifestVer = p.versionSemVer.String()
+		}
+		return fmt.Errorf("inconsistent versions (path: %s, manifest: %s)", versionDir.String(), manifestVer)
 	}
 	return nil
 }
