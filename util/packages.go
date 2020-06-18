@@ -5,6 +5,7 @@
 package util
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -49,8 +50,8 @@ func GetPackages(packagesBasePaths []string) ([]Package, error) {
 func getPackagePaths(packagesPaths []string) ([]string, error) {
 	var foundPaths []string
 	for _, packagesPath := range packagesPaths {
-		log.Printf("List packages in %s", packagesPath)
 
+		var discovered []string
 		err := filepath.Walk(packagesPath, func(path string, info os.FileInfo, err error) error {
 			relativePath, err := filepath.Rel(packagesPath, path)
 			if err != nil {
@@ -68,13 +69,20 @@ func getPackagePaths(packagesPaths []string) ([]string, error) {
 			}
 
 			if p.IsDir() {
-				log.Printf("%-20s\t%10s\t%s", dirs[0], dirs[1], path)
+				discovered = append(discovered, fmt.Sprintf("%-20s\t%10s\t%s", dirs[0], dirs[1], path))
 				foundPaths = append(foundPaths, path)
 			}
 			return filepath.SkipDir // don't need to go deeper
 		})
 		if err != nil {
 			return nil, errors.Wrapf(err, "listing packages failed (path: %s)", packagesPath)
+		}
+
+		if len(discovered) > 0 {
+			log.Printf("Packages in %s:", packagesPath)
+			for _, entry := range discovered {
+				log.Println(entry)
+			}
 		}
 	}
 	return foundPaths, nil

@@ -40,7 +40,7 @@ func runContentType(t *testing.T, endpoint, expectedContentType string) {
 
 	recorder := httptest.NewRecorder()
 	h := catchAll(http.Dir(publicPath), testCacheTime)
-	h(recorder, &http.Request{
+	h.ServeHTTP(recorder, &http.Request{
 		URL: &url.URL{
 			Path: endpoint,
 		},
