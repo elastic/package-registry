@@ -65,13 +65,15 @@ func Build() error {
 }
 
 func fetchPackageStorage() error {
-	err := os.RemoveAll(storageRepoDir)
-	if err != nil {
-		return err
-	}
 
-	err = sh.Run("git", "clone", "https://github.com/elastic/package-storage.git", storageRepoDir)
-	if err != nil {
+	// If storage directory does not exists, check it out
+	if _, err := os.Stat(storageRepoDir); os.IsNotExist(err) {
+		err = sh.Run("git", "clone", "--depth=1", "https://github.com/elastic/package-storage.git", storageRepoDir)
+		if err != nil {
+			return err
+		}
+	} else if err != nil {
+		// catch other errors
 		return err
 	}
 
@@ -80,11 +82,36 @@ func fetchPackageStorage() error {
 		packageStorageRevision = "master"
 	}
 
-	return sh.Run("git",
-		"--git-dir", filepath.Join(storageRepoDir, ".git"),
-		"--work-tree", storageRepoDir,
+	err := sh.Run("git",
+		"--git-dir", filepath.Join(storageRepoDir, ".git"), "--work-tree", storageRepoDir,
+		"reset", "--hard")
+	if err != nil {
+		return err
+	}
+
+	err = sh.Run("git",
+		"--git-dir", filepath.Join(storageRepoDir, ".git"), "--work-tree", storageRepoDir,
+		"clean", "-df")
+	if err != nil {
+		return err
+	}
+
+	err = sh.Run("git",
+		"--git-dir", filepath.Join(storageRepoDir, ".git"), "--work-tree", storageRepoDir,
+		"fetch")
+	if err != nil {
+		return err
+	}
+
+	err = sh.Run("git",
+		"--git-dir", filepath.Join(storageRepoDir, ".git"), "--work-tree", storageRepoDir,
 		"checkout",
 		packageStorageRevision)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func buildPackages() error {
