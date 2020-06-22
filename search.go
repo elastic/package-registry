@@ -163,28 +163,12 @@ func getPackageOutput(packagesList map[string]map[string]util.Package) ([]byte, 
 	}
 	sort.Strings(keys)
 
-	var output []map[string]interface{}
+	var output []util.BasePackage
 
 	for _, k := range keys {
 		parts := strings.Split(k, separator)
 		m := packagesList[parts[0]][parts[1]]
-		data := map[string]interface{}{
-			"name":        m.Name,
-			"description": m.Description,
-			"version":     m.Version,
-			"type":        m.Type,
-			"download":    m.GetDownloadPath(),
-			"path":        m.GetUrlPath(),
-		}
-		if m.Title != nil {
-			data["title"] = *m.Title
-		}
-		if m.Icons != nil {
-			data["icons"] = m.Icons
-		}
-		if m.Internal {
-			data["internal"] = true
-		}
+		data := m.BasePackage
 		output = append(output, data)
 	}
 

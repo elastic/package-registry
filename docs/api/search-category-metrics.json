@@ -1,20 +1,20 @@
 [
   {
-    "description": "This is the example integration",
-    "download": "/epr/example/example-1.0.0.tar.gz",
     "name": "example",
-    "path": "/package/example/1.0.0",
     "title": "Example Integration",
+    "version": "1.0.0",
+    "description": "This is the example integration",
     "type": "integration",
-    "version": "1.0.0"
+    "download": "/epr/example/example-1.0.0.tar.gz",
+    "path": "/package/example/1.0.0"
   },
   {
-    "description": "This is the foo integration",
-    "download": "/epr/foo/foo-1.0.0.tar.gz",
     "name": "foo",
-    "path": "/package/foo/1.0.0",
     "title": "Foo",
+    "version": "1.0.0",
+    "description": "This is the foo integration",
     "type": "solution",
-    "version": "1.0.0"
+    "download": "/epr/foo/foo-1.0.0.tar.gz",
+    "path": "/package/foo/1.0.0"
   }
 ]

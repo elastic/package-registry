@@ -28,31 +28,36 @@ var CategoryTitles = map[string]string{
 }
 
 type Package struct {
+	BasePackage   `config:",inline" json:",inline" yaml:",inline"`
 	FormatVersion string `config:"format_version" json:"format_version" yaml:"format_version"`
 
-	Name          string  `config:"name" json:"name"`
-	Title         *string `config:"title,omitempty" json:"title,omitempty" yaml:"title,omitempty"`
-	Version       string  `config:"version" json:"version"`
 	Readme        *string `config:"readme,omitempty" json:"readme,omitempty" yaml:"readme,omitempty"`
 	License       string  `config:"license,omitempty" json:"license,omitempty" yaml:"license,omitempty"`
 	versionSemVer *semver.Version
-	Description   string       `config:"description" json:"description"`
-	Type          string       `config:"type" json:"type"`
 	Categories    []string     `config:"categories" json:"categories"`
 	Release       string       `config:"release,omitempty" json:"release,omitempty"`
 	Removable     bool         `config:"removable" json:"removable"`
 	Requirement   Requirement  `config:"requirement" json:"requirement"`
 	Screenshots   []Image      `config:"screenshots,omitempty" json:"screenshots,omitempty" yaml:"screenshots,omitempty"`
-	Icons         []Image      `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
 	Assets        []string     `config:"assets,omitempty" json:"assets,omitempty" yaml:"assets,omitempty"`
-	Internal      bool         `config:"internal,omitempty" json:"internal,omitempty" yaml:"internal,omitempty"`
 	DataSets      []*DataSet   `config:"datasets,omitempty" json:"datasets,omitempty" yaml:"datasets,omitempty"`
 	Datasources   []Datasource `config:"datasources,omitempty" json:"datasources,omitempty" yaml:"datasources,omitempty"`
-	Download      string       `json:"download" yaml:"download,omitempty"`
-	Path          string       `json:"path" yaml:"path,omitempty"`
 
 	// Local path to the package dir
 	BasePath string `json:"-" yaml:"-"`
+}
+
+// BasePackage is used for the output of the package info in the /search endpoint
+type BasePackage struct {
+	Name        string  `config:"name" json:"name"`
+	Title       *string `config:"title,omitempty" json:"title,omitempty" yaml:"title,omitempty"`
+	Version     string  `config:"version" json:"version"`
+	Description string  `config:"description" json:"description"`
+	Type        string  `config:"type" json:"type"`
+	Download    string  `json:"download" yaml:"download,omitempty"`
+	Path        string  `json:"path" yaml:"path,omitempty"`
+	Icons       []Image `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
+	Internal    bool    `config:"internal,omitempty" json:"internal,omitempty" yaml:"internal,omitempty"`
 }
 
 type Datasource struct {
