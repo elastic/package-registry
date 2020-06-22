@@ -1,7 +1,7 @@
 format_version: 1.0.0
 
 name: default_pipeline
-description: Tests if no pipeline is set, it defaults to the default one
+description: Tests if no pipeline is set thhat it defaults to the default pipeline
 version: 0.0.2
 title: Default pipeline Integration
 categories: ["logs"]

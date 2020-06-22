@@ -4,11 +4,11 @@
       "logs",
       "metrics"
     ],
-    "description": "Package with data sources",
+    "description": "Package with data source",
     "download": "/epr/datasources/datasources-1.0.0.tar.gz",
     "name": "datasources",
     "path": "/package/datasources/1.0.0",
-    "title": "Default datasource Integration",
+    "title": "Default data source Integration",
     "type": "integration",
     "version": "1.0.0"
   }

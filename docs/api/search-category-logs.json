@@ -4,11 +4,11 @@
       "logs",
       "metrics"
     ],
-    "description": "Package with data sources",
+    "description": "Package with data source",
     "download": "/epr/datasources/datasources-1.0.0.tar.gz",
     "name": "datasources",
     "path": "/package/datasources/1.0.0",
-    "title": "Default datasource Integration",
+    "title": "Default data source Integration",
     "type": "integration",
     "version": "1.0.0"
   },
@@ -16,7 +16,7 @@
     "dataset_types": [
       "logs"
     ],
-    "description": "Tests if no pipeline is set, it defaults to the default one",
+    "description": "Tests if no pipeline is set thhat it defaults to the default pipeline",
     "download": "/epr/default_pipeline/default_pipeline-0.0.2.tar.gz",
     "name": "default_pipeline",
     "path": "/package/default_pipeline/0.0.2",
