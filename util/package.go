@@ -22,9 +22,35 @@ import (
 const defaultType = "integration"
 
 var CategoryTitles = map[string]string{
-	"logs":     "Logs",
-	"metrics":  "Metrics",
-	"security": "Security",
+	"aws":               "AWS",
+	"azure":             "Azure",
+	"cloud":             "Cloud",
+	"config_management": "Config management",
+	"container":         "Container",
+	"containers":        "Containers",
+	"crm":               "CRM",
+	"Custom":            "Custom",
+	"datastore":         "Datastore",
+	"elastic_stack":     "Elastic Stack",
+	"google_loud":       "Google Cloud",
+	"kubernetes":        "Kubernetes",
+	"languages":         "Languages",
+	"message_queue":     "Message Queue",
+	"monitoring":        "Monitoring",
+	"network":           "Network",
+	"notification":      "Notification",
+	"os_system":         "OS & System",
+	"productivity":      "Productivity",
+	"security":          "Security",
+	"support":           "Support",
+	"ticketing":         "Ticketing",
+	"version_control":   "Version Control",
+	"web":               "Web",
+
+	// Old categories, to be removed
+	"logs":    "Logs",
+	"metrics": "Metrics",
+	//"security": "Security",
 }
 
 type Package struct {
