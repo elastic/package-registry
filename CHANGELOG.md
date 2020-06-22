@@ -31,7 +31,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Remove package code generator. [#513](https://github.com/elastic/package-registry/pull/513)
 * Added support for ecs style validation for dataset fields. [#520](https://github.com/elastic/package-registry/pull/520)
 * Add /types endpoint to retrieve list of types and the number related to it. [#511](https://github.com/elastic/package-registry/pull/511)
->>>>>>> 79cba8cd... Add /types API endpoint
 
 ### Deprecated
 

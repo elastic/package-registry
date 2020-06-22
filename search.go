@@ -48,9 +48,7 @@ func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http
 			}
 
 			if v := query.Get("dataset.type"); v != "" {
-				if v != "" {
-					datasetType = v
-				}
+				datasetType = v
 			}
 
 			if v := query.Get("package"); v != "" {
@@ -105,7 +103,7 @@ func searchHandler(packagesBasePath string, cacheTime time.Duration) func(w http
 				continue
 			}
 
-			// Filter by dataset.type first as this could heavily reduce the number of packages
+			// Filter by dataset.type first as this could heavily reduce the number of packages.
 			// It must happen before the version filtering as there only the newest version
 			// is exposed and there could be an older package with more versions.
 			if datasetType != "" && !p.HasDatasetType(datasetType) {

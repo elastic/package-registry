@@ -50,8 +50,10 @@ type Package struct {
 	Datasources   []Datasource `config:"datasources,omitempty" json:"datasources,omitempty" yaml:"datasources,omitempty"`
 	Download      string       `json:"download" yaml:"download,omitempty"`
 	Path          string       `json:"path" yaml:"path,omitempty"`
-	// This is in purpose `dataset.types` with an "s" as it is a summary of the existing dataset types
-	DatasetTypes []string `json:"dataset.types" yaml:"dataset.types,omitempty"`
+	// This is on purpose `dataset.types` with an "s" as it is a summary of the existing dataset types
+	Dataset struct {
+		Types []string `json:"types,omitempty" `
+	} `json:"dataset,omitempty" `
 
 	// Local path to the package dir
 	BasePath string `json:"-" yaml:"-"`
@@ -174,7 +176,7 @@ func NewPackage(basePath string) (*Package, error) {
 	// Assign download path to be part of the output
 	p.Download = p.GetDownloadPath()
 	p.Path = p.GetUrlPath()
-	p.DatasetTypes = p.getDatasetTypes()
+	p.Dataset.Types = p.getDatasetTypes()
 
 	return p, nil
 }
@@ -209,7 +211,7 @@ func (p *Package) HasCategory(category string) bool {
 }
 
 func (p *Package) HasDatasetType(datasetType string) bool {
-	for _, c := range p.DatasetTypes {
+	for _, c := range p.Dataset.Types {
 		if c == datasetType {
 			return true
 		}
@@ -475,13 +477,16 @@ func (p *Package) GetUrlPath() string {
 	return path.Join("/package", p.Name, p.Version)
 }
 
-// getDatasetTypes return all the dataset types which exist
+// getDatasetTypes returns all the dataset types which exist
 // Currently the data is summarised and only the list of
 // datasets is returned, not the counters
 func (p *Package) getDatasetTypes() []string {
 	// Get unique list of
 	typesCounter := map[string]int{}
 	for _, d := range p.DataSets {
+		if _, ok := typesCounter[d.Type]; !ok {
+			typesCounter[d.Type] = 0
+		}
 		typesCounter[d.Type] = typesCounter[d.Type] + 1
 	}
 

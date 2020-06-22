@@ -1,9 +1,9 @@
 format_version: 1.0.0
 
 name: datasources
-description: Package with data sources
+description: Package with data source
 version: 1.0.0
-title: Default datasource Integration
+title: Default data source Integration
 categories: ["logs"]
 type: integration
 license: basic
