@@ -197,6 +197,9 @@ func getPackageOutput(packagesList map[string]map[string]util.Package) ([]byte, 
 		if m.Internal {
 			data["internal"] = true
 		}
+		if m.DatasetTypes != nil {
+			data["dataset_types"] = m.DatasetTypes
+		}
 		output = append(output, data)
 	}
 

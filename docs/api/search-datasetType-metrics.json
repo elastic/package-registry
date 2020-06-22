@@ -1,5 +1,9 @@
 [
   {
+    "dataset_types": [
+      "logs",
+      "metrics"
+    ],
     "description": "Package with data sources",
     "download": "/epr/datasources/datasources-1.0.0.tar.gz",
     "name": "datasources",

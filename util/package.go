@@ -51,9 +51,7 @@ type Package struct {
 	Download      string       `json:"download" yaml:"download,omitempty"`
 	Path          string       `json:"path" yaml:"path,omitempty"`
 	// This is on purpose `dataset.types` with an "s" as it is a summary of the existing dataset types
-	Dataset struct {
-		Types []string `json:"types,omitempty" `
-	} `json:"dataset,omitempty" `
+	DatasetTypes []string `json:"dataset_types,omitempty" `
 
 	// Local path to the package dir
 	BasePath string `json:"-" yaml:"-"`
@@ -176,7 +174,7 @@ func NewPackage(basePath string) (*Package, error) {
 	// Assign download path to be part of the output
 	p.Download = p.GetDownloadPath()
 	p.Path = p.GetUrlPath()
-	p.Dataset.Types = p.getDatasetTypes()
+	p.DatasetTypes = p.getDatasetTypes()
 
 	return p, nil
 }
@@ -211,7 +209,7 @@ func (p *Package) HasCategory(category string) bool {
 }
 
 func (p *Package) HasDatasetType(datasetType string) bool {
-	for _, c := range p.Dataset.Types {
+	for _, c := range p.DatasetTypes {
 		if c == datasetType {
 			return true
 		}
