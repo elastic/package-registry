@@ -32,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Support multiple packages paths. [#525](https://github.com/elastic/package-registry/pull/525)
 * Added support for ecs style validation for dataset fields. [#520](https://github.com/elastic/package-registry/pull/520)
 * Use BasePackage for search output data. [#529](https://github.com/elastic/package-registry/pull/529)
+* Add support for owner filed in package manifest. [#535](https://github.com/elastic/package-registry/pull/535)
 
 ### Deprecated
 

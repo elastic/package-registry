@@ -42,6 +42,9 @@ type Package struct {
 	Assets        []string     `config:"assets,omitempty" json:"assets,omitempty" yaml:"assets,omitempty"`
 	DataSets      []*DataSet   `config:"datasets,omitempty" json:"datasets,omitempty" yaml:"datasets,omitempty"`
 	Datasources   []Datasource `config:"datasources,omitempty" json:"datasources,omitempty" yaml:"datasources,omitempty"`
+	Download      string       `json:"download" yaml:"download,omitempty"`
+	Path          string       `json:"path" yaml:"path,omitempty"`
+	Owner         Owner        `config:"owner,omitempty" json:"owner,omitempty" yaml:"owner,omitempty"`
 
 	// Local path to the package dir
 	BasePath string `json:"-" yaml:"-"`
@@ -80,6 +83,10 @@ type ProductRequirement struct {
 type Version struct {
 	Min string `config:"min,omitempty" json:"min,omitempty"`
 	Max string `config:"max,omitempty" json:"max,omitempty"`
+}
+
+type Owner struct {
+	Github string `config:"github,omitempty" json:"github,omitempty"`
 }
 
 type Image struct {
