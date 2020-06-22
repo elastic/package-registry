@@ -26,7 +26,6 @@ var CategoryTitles = map[string]string{
 	"azure":             "Azure",
 	"cloud":             "Cloud",
 	"config_management": "Config management",
-	"container":         "Container",
 	"containers":        "Containers",
 	"crm":               "CRM",
 	"Custom":            "Custom",
