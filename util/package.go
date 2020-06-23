@@ -42,8 +42,6 @@ type Package struct {
 	Assets        []string     `config:"assets,omitempty" json:"assets,omitempty" yaml:"assets,omitempty"`
 	DataSets      []*DataSet   `config:"datasets,omitempty" json:"datasets,omitempty" yaml:"datasets,omitempty"`
 	Datasources   []Datasource `config:"datasources,omitempty" json:"datasources,omitempty" yaml:"datasources,omitempty"`
-	Download      string       `json:"download" yaml:"download,omitempty"`
-	Path          string       `json:"path" yaml:"path,omitempty"`
 	Owner         Owner        `config:"owner,omitempty" json:"owner,omitempty" yaml:"owner,omitempty"`
 
 	// Local path to the package dir

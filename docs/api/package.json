@@ -113,14 +113,8 @@
       ],
       "multiple": true
     }
-<<<<<<< HEAD
-  ]
-=======
   ],
-  "download": "/epr/example/example-1.0.0.tar.gz",
-  "path": "/package/example/1.0.0",
   "owner": {
     "github": "ruflin"
   }
->>>>>>> c7a538db... Add support for owner filed in package manifest
 }
