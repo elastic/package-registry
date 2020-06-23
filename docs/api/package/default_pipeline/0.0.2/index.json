@@ -1,12 +1,14 @@
 {
-  "format_version": "1.0.0",
   "name": "default_pipeline",
   "title": "Default pipeline Integration",
   "version": "0.0.2",
-  "readme": "/package/default_pipeline/0.0.2/docs/README.md",
-  "license": "basic",
   "description": "Tests if no pipeline is set, it defaults to the default one",
   "type": "integration",
+  "download": "/epr/default_pipeline/default_pipeline-0.0.2.tar.gz",
+  "path": "/package/default_pipeline/0.0.2",
+  "format_version": "1.0.0",
+  "readme": "/package/default_pipeline/0.0.2/docs/README.md",
+  "license": "basic",
   "categories": [
     "logs"
   ],
@@ -81,7 +83,5 @@
       ],
       "multiple": true
     }
-  ],
-  "download": "/epr/default_pipeline/default_pipeline-0.0.2.tar.gz",
-  "path": "/package/default_pipeline/0.0.2"
+  ]
 }

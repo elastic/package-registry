@@ -1,12 +1,14 @@
 {
-  "format_version": "1.0.0",
   "name": "example",
   "title": "Example",
   "version": "0.0.2",
-  "readme": "/package/example/0.0.2/docs/README.md",
-  "license": "basic",
   "description": "This is the example integration.",
   "type": "integration",
+  "download": "/epr/example/example-0.0.2.tar.gz",
+  "path": "/package/example/0.0.2",
+  "format_version": "1.0.0",
+  "readme": "/package/example/0.0.2/docs/README.md",
+  "license": "basic",
   "categories": [
     "logs"
   ],
@@ -35,7 +37,5 @@
     "/package/example/0.0.2/kibana/visualization/7e4084e0-5c99-11e9-8477-077ec9664dbd.json",
     "/package/example/0.0.2/kibana/visualization/80844540-5c97-11e9-8477-077ec9664dbd.json",
     "/package/example/0.0.2/kibana/visualization/ab48c3f0-5ca6-11e9-8477-077ec9664dbd.json"
-  ],
-  "download": "/epr/example/example-0.0.2.tar.gz",
-  "path": "/package/example/0.0.2"
+  ]
 }

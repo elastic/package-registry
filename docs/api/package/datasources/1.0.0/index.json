@@ -1,12 +1,14 @@
 {
-  "format_version": "1.0.0",
   "name": "datasources",
   "title": "Default datasource Integration",
   "version": "1.0.0",
-  "readme": "/package/datasources/1.0.0/docs/README.md",
-  "license": "basic",
   "description": "Package with data sources",
   "type": "integration",
+  "download": "/epr/datasources/datasources-1.0.0.tar.gz",
+  "path": "/package/datasources/1.0.0",
+  "format_version": "1.0.0",
+  "readme": "/package/datasources/1.0.0/docs/README.md",
+  "license": "basic",
   "categories": [
     "logs"
   ],
@@ -307,7 +309,5 @@
       ],
       "multiple": true
     }
-  ],
-  "download": "/epr/datasources/datasources-1.0.0.tar.gz",
-  "path": "/package/datasources/1.0.0"
+  ]
 }
