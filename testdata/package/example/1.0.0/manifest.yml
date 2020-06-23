@@ -8,6 +8,8 @@ categories: ["logs", "metrics"]
 type: integration
 release: ga
 
+owner.github: "ruflin"
+
 requirement:
   kibana:
     versions: ">=7.0.0"

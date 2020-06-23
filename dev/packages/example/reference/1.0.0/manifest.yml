@@ -28,6 +28,10 @@ license: basic
 # The default type is integration and will be set if empty.
 type: integration
 
+# Details about the owner of the package. Current only github link is supported.
+# A package can only have a single owner, the owner can be a user or a team.
+owner:
+  github: "ruflin"
 
 requirement:
   kibana:
