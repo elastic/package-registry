@@ -115,6 +115,9 @@ pipeline {
      Publish Docker images.
      */
     stage('Publish Docker image'){
+      when {
+        not { changeRequest() }
+      }
       environment {
         DOCKER_IMG_TAG = "${env.DOCKER_IMG}:${env.GIT_BASE_COMMIT}"
         DOCKER_IMG_TAG_BRANCH = "${env.DOCKER_IMG}:${env.BRANCH_NAME}"
