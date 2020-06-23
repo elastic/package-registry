@@ -35,10 +35,6 @@ func GetPackages(packagesBasePath string) ([]Package, error) {
 			return nil, errors.Wrapf(err, "loading package failed (path: %s)", path)
 		}
 
-		err = p.Validate()
-		if err != nil {
-			return nil, errors.Wrapf(err, "validating package failed (path: %s)", path)
-		}
 		packageList = append(packageList, *p)
 	}
 
