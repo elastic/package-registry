@@ -1,4 +1,4 @@
-packages_paths:
+package_paths:
   - ./packages
 
 cache_time.search: 10m

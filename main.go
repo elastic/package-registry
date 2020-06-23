@@ -53,7 +53,7 @@ func init() {
 
 type Config struct {
 	PublicDir           string        `config:"public_dir"` // left for legacy purposes
-	PackagesPaths       []string      `config:"packages_paths"`
+	PackagePaths        []string      `config:"package_paths"`
 	CacheTimeSearch     time.Duration `config:"cache_time.search"`
 	CacheTimeCategories time.Duration `config:"cache_time.categories"`
 	CacheTimeCatchAll   time.Duration `config:"cache_time.catch_all"`
@@ -125,13 +125,13 @@ func getPackagesBasePaths(config *Config) []string {
 	if config.PublicDir != "" {
 		paths = append(paths, filepath.Join(config.PublicDir, packageDir)) // left for legacy purposes
 	}
-	paths = append(paths, config.PackagesPaths...)
+	paths = append(paths, config.PackagePaths...)
 	return paths
 }
 
 func printConfig(config *Config) {
 	log.Printf("Public dir (legacy): %s\n", config.PublicDir)
-	log.Printf("Packages paths: %s\n", strings.Join(config.PackagesPaths, ", "))
+	log.Printf("Packages paths: %s\n", strings.Join(config.PackagePaths, ", "))
 	log.Println("Cache time for /search: ", config.CacheTimeSearch)
 	log.Println("Cache time for /categories: ", config.CacheTimeCategories)
 	log.Println("Cache time for all others: ", config.CacheTimeCatchAll)

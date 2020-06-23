@@ -46,9 +46,9 @@ func GetPackages(packagesBasePaths []string) ([]Package, error) {
 }
 
 // getPackagePaths returns list of available packages, one for each version.
-func getPackagePaths(packagesPaths []string) ([]string, error) {
+func getPackagePaths(allPaths []string) ([]string, error) {
 	var foundPaths []string
-	for _, packagesPath := range packagesPaths {
+	for _, packagesPath := range allPaths {
 		log.Printf("Packages in %s:", packagesPath)
 		err := filepath.Walk(packagesPath, func(path string, info os.FileInfo, err error) error {
 			relativePath, err := filepath.Rel(packagesPath, path)
