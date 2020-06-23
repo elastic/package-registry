@@ -14,7 +14,6 @@ COPY ./ /home/package-registry
 WORKDIR /home/package-registry
 
 ENV GO111MODULE=on
-RUN go mod vendor
 RUN go get -u github.com/magefile/mage
 # Prepare all the packages to be built
 RUN mage build
@@ -24,9 +23,11 @@ RUN go build .
 
 # Move all files need to run to its own directory
 # This will become useful for staged builds later on
-RUN mkdir /registry
+RUN mkdir -p /registry/public # left for legacy purposes
+RUN mkdir -p /registry/packages/package-storage
 RUN mv package-registry /registry/
-RUN mv public /registry/
+RUN cp -r build/package-storage/packages/* /registry/packages/package-storage/
+RUN cp config.docker.yml /registry/config.yml
 
 # Change to new working directory
 WORKDIR /registry

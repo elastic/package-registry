@@ -13,6 +13,7 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
+	"strings"
 	"syscall"
 	"time"
 
@@ -37,7 +38,7 @@ var (
 	configPath = "config.yml"
 
 	defaultConfig = Config{
-		PublicDir:           "public",
+		PublicDir:           "./public", // left for legacy purposes
 		CacheTimeSearch:     10 * time.Minute,
 		CacheTimeCategories: 10 * time.Minute,
 		CacheTimeCatchAll:   10 * time.Minute,
@@ -51,7 +52,8 @@ func init() {
 }
 
 type Config struct {
-	PublicDir           string        `config:"public_dir"`
+	PublicDir           string        `config:"public_dir"` // left for legacy purposes
+	PackagePaths        []string      `config:"package_paths"`
 	CacheTimeSearch     time.Duration `config:"cache_time.search"`
 	CacheTimeCategories time.Duration `config:"cache_time.categories"`
 	CacheTimeCatchAll   time.Duration `config:"cache_time.catch_all"`
@@ -62,37 +64,16 @@ func main() {
 	log.Println("Package registry started.")
 	defer log.Println("Package registry stopped.")
 
-	config, err := getConfig()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	log.Println("Cache time for /search: ", config.CacheTimeSearch)
-	log.Println("Cache time for /categories: ", config.CacheTimeCategories)
-	log.Println("Cache time for all others: ", config.CacheTimeCatchAll)
-
-	packagesBasePath := filepath.Join(config.PublicDir, packageDir)
-	packages, err := util.GetPackages(packagesBasePath)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	if len(packages) == 0 {
-		log.Fatal("No packages available")
-	}
-
-	log.Printf("%v package manifests loaded into memory.\n", len(packages))
+	config := mustLoadConfig()
+	packagesBasePaths := getPackagesBasePaths(config)
+	ensurePackagesAvailable(packagesBasePaths)
 
 	// If -dry-run=true is set, service stops here after validation
 	if dryRun {
 		return
 	}
 
-	router, err := getRouter(*config, packagesBasePath)
-	if err != nil {
-		log.Fatal(err)
-	}
-
+	router := mustLoadRouter(config, packagesBasePaths)
 	server := &http.Server{Addr: address, Handler: router}
 
 	go func() {
@@ -110,6 +91,15 @@ func main() {
 	if err := server.Shutdown(ctx); err != nil {
 		log.Fatal(err)
 	}
+}
+
+func mustLoadConfig() *Config {
+	config, err := getConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
+	printConfig(config)
+	return config
 }
 
 func getConfig() (*Config, error) {
@@ -130,8 +120,46 @@ func getConfig() (*Config, error) {
 	return &config, nil
 }
 
-func getRouter(config Config, packagesBasePath string) (*mux.Router, error) {
-	artifactsHandler := artifactsHandler(packagesBasePath, config.CacheTimeCatchAll)
+func getPackagesBasePaths(config *Config) []string {
+	var paths []string
+	if config.PublicDir != "" {
+		paths = append(paths, filepath.Join(config.PublicDir, packageDir)) // left for legacy purposes
+	}
+	paths = append(paths, config.PackagePaths...)
+	return paths
+}
+
+func printConfig(config *Config) {
+	log.Printf("Public dir (legacy): %s\n", config.PublicDir)
+	log.Printf("Packages paths: %s\n", strings.Join(config.PackagePaths, ", "))
+	log.Println("Cache time for /search: ", config.CacheTimeSearch)
+	log.Println("Cache time for /categories: ", config.CacheTimeCategories)
+	log.Println("Cache time for all others: ", config.CacheTimeCatchAll)
+}
+
+func ensurePackagesAvailable(packagesBasePaths []string) {
+	packages, err := util.GetPackages(packagesBasePaths)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if len(packages) == 0 {
+		log.Fatal("No packages available")
+	}
+
+	log.Printf("%v package manifests loaded.\n", len(packages))
+}
+
+func mustLoadRouter(config *Config, packagesBasePaths []string) *mux.Router {
+	router, err := getRouter(config, packagesBasePaths)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return router
+}
+
+func getRouter(config *Config, packagesBasePaths []string) (*mux.Router, error) {
+	artifactsHandler := artifactsHandler(packagesBasePaths, config.CacheTimeCatchAll)
 	faviconHandleFunc, err := faviconHandler(config.CacheTimeCatchAll)
 	if err != nil {
 		return nil, err
@@ -141,18 +169,18 @@ func getRouter(config Config, packagesBasePath string) (*mux.Router, error) {
 		return nil, err
 	}
 
-	packageIndexHandler := packageIndexHandler(packagesBasePath, config.CacheTimeCatchAll)
+	packageIndexHandler := packageIndexHandler(packagesBasePaths, config.CacheTimeCatchAll)
 
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/", indexHandlerFunc)
 	router.HandleFunc("/index.json", indexHandlerFunc)
-	router.HandleFunc("/search", searchHandler(packagesBasePath, config.CacheTimeSearch))
-	router.HandleFunc("/categories", categoriesHandler(packagesBasePath, config.CacheTimeCategories))
+	router.HandleFunc("/search", searchHandler(packagesBasePaths, config.CacheTimeSearch))
+	router.HandleFunc("/categories", categoriesHandler(packagesBasePaths, config.CacheTimeCategories))
 	router.HandleFunc("/health", healthHandler)
 	router.HandleFunc("/favicon.ico", faviconHandleFunc)
 	router.HandleFunc(artifactsRouterPath, artifactsHandler)
 	router.HandleFunc(packageIndexRouterPath, packageIndexHandler)
-	router.PathPrefix("/package").HandlerFunc(catchAll(http.Dir(config.PublicDir), config.CacheTimeCatchAll))
+	router.PathPrefix("/package").HandlerFunc(staticHandler(packagesBasePaths, "/package", config.CacheTimeCatchAll))
 	router.Use(loggingMiddleware)
 	return router, nil
 }

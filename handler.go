@@ -5,12 +5,16 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"net/http"
+	"os"
 	"path/filepath"
 	"time"
+
+	"github.com/pkg/errors"
 )
+
+var errResourceNotFound = errors.New("resource not found")
 
 func notFoundError(w http.ResponseWriter, err error) {
 	http.Error(w, err.Error(), http.StatusNotFound)
@@ -20,9 +24,19 @@ func badRequest(w http.ResponseWriter, errorMessage string) {
 	http.Error(w, errorMessage, http.StatusBadRequest)
 }
 
-func catchAll(public http.FileSystem, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+func cacheHeaders(w http.ResponseWriter, cacheTime time.Duration) {
+	maxAge := fmt.Sprintf("max-age=%.0f", cacheTime.Seconds())
+	w.Header().Add("Cache-Control", maxAge)
+	w.Header().Add("Cache-Control", "public")
+}
+
+func jsonHeader(w http.ResponseWriter) {
+	w.Header().Set("Content-Type", "application/json")
+}
+
+func catchAll(public http.FileSystem, cacheTime time.Duration) http.Handler {
 	fileServer := http.FileServer(public)
-	return func(w http.ResponseWriter, r *http.Request) {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		path, err := determineResourcePath(r, public)
 		if err != nil {
 			notFoundError(w, err)
@@ -33,7 +47,7 @@ func catchAll(public http.FileSystem, cacheTime time.Duration) func(w http.Respo
 
 		r.URL.Path = path
 		fileServer.ServeHTTP(w, r)
-	}
+	})
 }
 
 func determineResourcePath(r *http.Request, public http.FileSystem) (string, error) {
@@ -69,12 +83,25 @@ func determineResourcePath(r *http.Request, public http.FileSystem) (string, err
 	return path, nil
 }
 
-func cacheHeaders(w http.ResponseWriter, cacheTime time.Duration) {
-	maxAge := fmt.Sprintf("max-age=%.0f", cacheTime.Seconds())
-	w.Header().Add("Cache-Control", maxAge)
-	w.Header().Add("Cache-Control", "public")
+func getPackagePath(packagesBasePaths []string, packageName, packageVersion string) (string, error) {
+	basePath, err := getPackageBasePath(packagesBasePaths, filepath.Join(packageName, packageVersion))
+	if err != nil {
+		return "", err
+	}
+	return filepath.Join(basePath, packageName, packageVersion), nil
 }
 
-func jsonHeader(w http.ResponseWriter) {
-	w.Header().Set("Content-Type", "application/json")
+func getPackageBasePath(packagesBasePaths []string, resourcePath string) (string, error) {
+	for _, basePath := range packagesBasePaths {
+		packagePath := filepath.Join(basePath, resourcePath)
+		_, err := os.Stat(packagePath)
+		if os.IsNotExist(err) {
+			continue
+		}
+		if err != nil {
+			return "", errors.Wrapf(err, "stat file failed (path: %s)", packagePath)
+		}
+		return basePath, nil
+	}
+	return "", errResourceNotFound
 }

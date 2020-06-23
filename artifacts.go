@@ -7,8 +7,6 @@ package main
 import (
 	"log"
 	"net/http"
-	"os"
-	"path/filepath"
 	"time"
 
 	"github.com/Masterminds/semver/v3"
@@ -22,7 +20,7 @@ const artifactsRouterPath = "/epr/{packageName}/{packageName:[a-z_]+}-{packageVe
 
 var errArtifactNotFound = errors.New("artifact not found")
 
-func artifactsHandler(packagesBasePath string, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+func artifactsHandler(packagesBasePaths []string, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		packageName, ok := vars["packageName"]
@@ -43,9 +41,8 @@ func artifactsHandler(packagesBasePath string, cacheTime time.Duration) func(w h
 			return
 		}
 
-		packagePath := filepath.Join(packagesBasePath, packageName, packageVersion)
-		_, err = os.Stat(packagePath)
-		if os.IsNotExist(err) {
+		packagePath, err := getPackagePath(packagesBasePaths, packageName, packageVersion)
+		if err == errResourceNotFound {
 			notFoundError(w, errArtifactNotFound)
 			return
 		}

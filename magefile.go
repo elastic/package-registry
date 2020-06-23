@@ -14,8 +14,6 @@ import (
 
 	"github.com/magefile/mage/mg"
 	"github.com/magefile/mage/sh"
-
-	"github.com/elastic/package-registry/util"
 )
 
 var (
@@ -33,15 +31,9 @@ var (
 	buildDir       = "./build"
 	storageRepoDir = filepath.Join(buildDir, "package-storage")
 	packagePaths   = []string{filepath.Join(storageRepoDir, "packages"), "./dev/packages/example/"}
-	tarGz          = true
 )
 
 func Build() error {
-	packagePathsEnv := os.Getenv("PACKAGE_PATHS")
-	if packagePathsEnv != "" {
-		packagePaths = strings.Split(packagePathsEnv, ",")
-	}
-
 	err := os.RemoveAll(publicDir)
 	if err != nil {
 		return err
@@ -53,11 +45,6 @@ func Build() error {
 	}
 
 	err = fetchPackageStorage()
-	if err != nil {
-		return err
-	}
-
-	err = buildPackages()
 	if err != nil {
 		return err
 	}
@@ -87,80 +74,12 @@ func fetchPackageStorage() error {
 		packageStorageRevision)
 }
 
-func buildPackages() error {
-	packagePaths, err := findPackages()
-	if err != nil {
-		return err
-	}
-
-	for _, packagePath := range packagePaths {
-		srcDir := packagePath + "/"
-		p, err := util.NewPackage(srcDir)
-		if err != nil {
-			return err
-		}
-		dstDir := filepath.Join(publicDir, "package", p.Name, p.Version)
-
-		err = copyPackageFromSource(srcDir, dstDir)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func findPackages() ([]string, error) {
-	var matches []string
-	for _, sourceDir := range packagePaths {
-		err := filepath.Walk(sourceDir, func(path string, info os.FileInfo, err error) error {
-			if err != nil {
-				return err
-			}
-
-			f, err := os.Stat(path)
-			if err != nil {
-				return err
-			}
-
-			if !f.IsDir() {
-				return nil // skip as the path is not a directory
-			}
-
-			manifestPath := filepath.Join(path, "manifest.yml")
-			_, err = os.Stat(manifestPath)
-			if os.IsNotExist(err) {
-				return nil
-			}
-			matches = append(matches, path)
-			return filepath.SkipDir
-		})
-		if err != nil {
-			return nil, err
-		}
-	}
-	return matches, nil
-}
-
-func copyPackageFromSource(src, dst string) error {
-	err := os.MkdirAll(dst, 0755)
-	if err != nil {
-		return err
-	}
-	err = sh.RunV("rsync", "-a", src, dst)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func Check() error {
 	Format()
 
 	// Setup the variables for the tests and not create tarGz files
 	publicDir = "./testdata/public"
 	packagePaths = []string{"testdata/package"}
-	tarGz = false
 
 	err := Build()
 	if err != nil {
