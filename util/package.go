@@ -119,7 +119,7 @@ func NewPackage(basePath string) (*Package, error) {
 
 	// If not license is set, basic is assumed
 	if p.License == "" {
-		p.License = "basic"
+		p.License = DefaultLicense
 	}
 
 	if p.Icons != nil {
@@ -276,6 +276,8 @@ func collectAssets(pattern string) ([]string, error) {
 	return nil, nil
 }
 
+// Validate is called during Unpack of the manifest.
+// The validation here is only related to the fields directly specified in the manifest itself.
 func (p *Package) Validate() error {
 	if p.FormatVersion == "" {
 		return fmt.Errorf("no format_version set: %v", p)
