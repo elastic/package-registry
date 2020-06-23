@@ -123,12 +123,12 @@ func TestPackageIndex(t *testing.T) {
 // TestAllPackageIndex generates and compares all index.json files for the test packages
 func TestAllPackageIndex(t *testing.T) {
 	publicPath := "./testdata/public"
-	packagesBasePath := publicPath + "/package"
+	packagesBasePath := []string{publicPath + "/package"}
 
 	packageIndexHandler := packageIndexHandler(packagesBasePath, testCacheTime)
 
 	// find all packages
-	dirs, err := filepath.Glob(packagesBasePath + "/*/*")
+	dirs, err := filepath.Glob(packagesBasePath[0] + "/*/*")
 	assert.NoError(t, err)
 
 	type Test struct {
