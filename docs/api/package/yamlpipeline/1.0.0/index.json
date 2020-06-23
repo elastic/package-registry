@@ -1,0 +1,58 @@
+{
+  "name": "yamlpipeline",
+  "title": "Yaml Pipeline package",
+  "version": "1.0.0",
+  "description": "This package contains a yaml pipeline.\n",
+  "type": "integration",
+  "download": "/epr/yamlpipeline/yamlpipeline-1.0.0.tar.gz",
+  "path": "/package/yamlpipeline/1.0.0",
+  "format_version": "1.0.0",
+  "readme": "/package/yamlpipeline/1.0.0/docs/README.md",
+  "license": "basic",
+  "categories": [
+    "logs"
+  ],
+  "release": "beta",
+  "removable": true,
+  "requirement": {
+    "kibana": {}
+  },
+  "assets": [
+    "/package/yamlpipeline/1.0.0/manifest.yml",
+    "/package/yamlpipeline/1.0.0/docs/README.md",
+    "/package/yamlpipeline/1.0.0/dataset/log/manifest.yml",
+    "/package/yamlpipeline/1.0.0/dataset/log/fields/base-fields.yml",
+    "/package/yamlpipeline/1.0.0/dataset/log/agent/stream/stream.yml.hbs",
+    "/package/yamlpipeline/1.0.0/dataset/log/elasticsearch/ingest-pipeline/pipeline-entry.yml",
+    "/package/yamlpipeline/1.0.0/dataset/log/elasticsearch/ingest-pipeline/pipeline-json.yml",
+    "/package/yamlpipeline/1.0.0/dataset/log/elasticsearch/ingest-pipeline/pipeline-plaintext.yml"
+  ],
+  "datasets": [
+    {
+      "id": "yamlpipeline.log",
+      "title": "Log Yaml pipeline",
+      "release": "experimental",
+      "type": "logs",
+      "ingest_pipeline": "pipeline-entry",
+      "streams": [
+        {
+          "input": "logs",
+          "vars": [
+            {
+              "name": "paths",
+              "type": "",
+              "multi": false,
+              "required": true,
+              "show_user": false
+            }
+          ],
+          "title": "Yamlpipline example logs",
+          "description": "Yamlpipeline example",
+          "enabled": true
+        }
+      ],
+      "package": "yamlpipeline",
+      "path": "log"
+    }
+  ]
+}

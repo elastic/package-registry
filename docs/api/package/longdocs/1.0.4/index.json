@@ -1,0 +1,35 @@
+{
+  "name": "longdocs",
+  "title": "Long Docs",
+  "version": "1.0.4",
+  "description": "This integration contains pretty long documentation.\nIt is used to show the different visualisations inside a documentation to test how we handle it.\nThe integration does not contain any assets except the documentation page.\n",
+  "type": "integration",
+  "download": "/epr/longdocs/longdocs-1.0.4.tar.gz",
+  "path": "/package/longdocs/1.0.4",
+  "icons": [
+    {
+      "src": "/package/longdocs/1.0.4/img/icon.svg",
+      "type": "image/svg+xml"
+    }
+  ],
+  "format_version": "1.0.0",
+  "readme": "/package/longdocs/1.0.4/docs/README.md",
+  "license": "basic",
+  "categories": [
+    "logs",
+    "metrics"
+  ],
+  "release": "ga",
+  "removable": true,
+  "requirement": {
+    "kibana": {
+      "versions": "\u003e6.7.0"
+    }
+  },
+  "assets": [
+    "/package/longdocs/1.0.4/manifest.yml",
+    "/package/longdocs/1.0.4/docs/README.md",
+    "/package/longdocs/1.0.4/docs/data.json",
+    "/package/longdocs/1.0.4/img/icon.svg"
+  ]
+}

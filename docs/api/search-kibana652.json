@@ -60,6 +60,21 @@
     "path": "/package/example/0.0.2"
   },
   {
+    "name": "metricsonly",
+    "title": "Metrics Only",
+    "version": "2.0.1",
+    "description": "This is an integration with only the metrics category.\n",
+    "type": "integration",
+    "download": "/epr/metricsonly/metricsonly-2.0.1.tar.gz",
+    "path": "/package/metricsonly/2.0.1",
+    "icons": [
+      {
+        "src": "/package/metricsonly/2.0.1/img/icon.svg",
+        "type": "image/svg+xml"
+      }
+    ]
+  },
+  {
     "name": "multiple_false",
     "title": "Multiple false",
     "version": "0.0.1",
@@ -88,5 +103,14 @@
       }
     ],
     "path": "/package/no_stream_configs/1.0.0"
+  },
+  {
+    "name": "yamlpipeline",
+    "title": "Yaml Pipeline package",
+    "version": "1.0.0",
+    "description": "This package contains a yaml pipeline.\n",
+    "type": "integration",
+    "download": "/epr/yamlpipeline/yamlpipeline-1.0.0.tar.gz",
+    "path": "/package/yamlpipeline/1.0.0"
   }
 ]
