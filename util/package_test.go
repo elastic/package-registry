@@ -25,14 +25,18 @@ var packageTests = []struct {
 	},
 	{
 		Package{
-			Title: &title,
+			BasePackage: BasePackage{
+				Title: &title,
+			},
 		},
 		false,
 		"missing description",
 	},
 	{
 		Package{
-			Title: &title,
+			BasePackage: BasePackage{
+				Title: &title,
+			},
 			Requirement: Requirement{
 				Kibana: ProductRequirement{
 					Versions: "bar",
@@ -44,8 +48,10 @@ var packageTests = []struct {
 	},
 	{
 		Package{
-			Title:       &title,
-			Description: "my description",
+			BasePackage: BasePackage{
+				Title:       &title,
+				Description: "my description",
+			},
 			Requirement: Requirement{
 				Kibana: ProductRequirement{
 					Versions: ">=1.2.3 <=4.5.6",
@@ -58,17 +64,21 @@ var packageTests = []struct {
 	},
 	{
 		Package{
-			Title:       &title,
-			Description: "my description",
-			Categories:  []string{"metrics", "logs"},
+			BasePackage: BasePackage{
+				Title:       &title,
+				Description: "my description",
+			},
+			Categories: []string{"metrics", "logs"},
 		},
 		false,
 		"missing format_version",
 	},
 	{
 		Package{
-			Title:         &title,
-			Description:   "my description",
+			BasePackage: BasePackage{
+				Title:       &title,
+				Description: "my description",
+			},
 			Categories:    []string{"metrics", "logs"},
 			FormatVersion: "1.0",
 		},
@@ -77,22 +87,26 @@ var packageTests = []struct {
 	},
 	{
 		Package{
-			Title:         &title,
-			Description:   "my description",
+			BasePackage: BasePackage{
+				Title:       &title,
+				Description: "my description",
+				Version:     "1.0",
+			},
 			Categories:    []string{"metrics", "logs"},
 			FormatVersion: "1.0.0",
-			Version:       "1.0",
 		},
 		false,
 		"invalid package version",
 	},
 	{
 		Package{
-			Title:         &title,
-			Description:   "my description",
+			BasePackage: BasePackage{
+				Title:       &title,
+				Description: "my description",
+				Version:     "1.2.3",
+			},
 			Categories:    []string{"metrics", "logs"},
 			FormatVersion: "1.0.0",
-			Version:       "1.2.3",
 		},
 		true,
 		"complete",

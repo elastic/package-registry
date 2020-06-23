@@ -1,75 +1,75 @@
 [
   {
-    "description": "Package with data sources",
-    "download": "/epr/datasources/datasources-1.0.0.tar.gz",
     "name": "datasources",
-    "path": "/package/datasources/1.0.0",
     "title": "Default datasource Integration",
+    "version": "1.0.0",
+    "description": "Package with data sources",
     "type": "integration",
-    "version": "1.0.0"
+    "download": "/epr/datasources/datasources-1.0.0.tar.gz",
+    "path": "/package/datasources/1.0.0"
   },
   {
-    "description": "Tests if no pipeline is set, it defaults to the default one",
-    "download": "/epr/default_pipeline/default_pipeline-0.0.2.tar.gz",
     "name": "default_pipeline",
-    "path": "/package/default_pipeline/0.0.2",
     "title": "Default pipeline Integration",
+    "version": "0.0.2",
+    "description": "Tests if no pipeline is set, it defaults to the default one",
     "type": "integration",
-    "version": "0.0.2"
+    "download": "/epr/default_pipeline/default_pipeline-0.0.2.tar.gz",
+    "path": "/package/default_pipeline/0.0.2"
   },
   {
-    "description": "Tests the registry validations works for dataset fields using the ecs style format",
-    "download": "/epr/ecs_style_dataset/ecs_style_dataset-0.0.1.tar.gz",
     "name": "ecs_style_dataset",
-    "path": "/package/ecs_style_dataset/0.0.1",
     "title": "Default pipeline Integration",
+    "version": "0.0.1",
+    "description": "Tests the registry validations works for dataset fields using the ecs style format",
     "type": "integration",
-    "version": "0.0.1"
+    "download": "/epr/ecs_style_dataset/ecs_style_dataset-0.0.1.tar.gz",
+    "path": "/package/ecs_style_dataset/0.0.1"
   },
   {
-    "description": "This is the example integration",
-    "download": "/epr/example/example-1.0.0.tar.gz",
     "name": "example",
-    "path": "/package/example/1.0.0",
     "title": "Example Integration",
+    "version": "1.0.0",
+    "description": "This is the example integration",
     "type": "integration",
-    "version": "1.0.0"
+    "download": "/epr/example/example-1.0.0.tar.gz",
+    "path": "/package/example/1.0.0"
   },
   {
-    "description": "This is the foo integration",
-    "download": "/epr/foo/foo-1.0.0.tar.gz",
     "name": "foo",
-    "path": "/package/foo/1.0.0",
     "title": "Foo",
+    "version": "1.0.0",
+    "description": "This is the foo integration",
     "type": "solution",
-    "version": "1.0.0"
+    "download": "/epr/foo/foo-1.0.0.tar.gz",
+    "path": "/package/foo/1.0.0"
   },
   {
-    "description": "Internal package",
-    "download": "/epr/internal/internal-1.2.0.tar.gz",
-    "internal": true,
     "name": "internal",
-    "path": "/package/internal/1.2.0",
     "title": "Internal",
+    "version": "1.2.0",
+    "description": "Internal package",
     "type": "integration",
-    "version": "1.2.0"
+    "download": "/epr/internal/internal-1.2.0.tar.gz",
+    "path": "/package/internal/1.2.0",
+    "internal": true
   },
   {
-    "description": "Tests that multiple can be set to false",
-    "download": "/epr/multiple_false/multiple_false-0.0.1.tar.gz",
     "name": "multiple_false",
-    "path": "/package/multiple_false/0.0.1",
     "title": "Multiple false",
+    "version": "0.0.1",
+    "description": "Tests that multiple can be set to false",
     "type": "integration",
-    "version": "0.0.1"
+    "download": "/epr/multiple_false/multiple_false-0.0.1.tar.gz",
+    "path": "/package/multiple_false/0.0.1"
   },
   {
-    "description": "This package does contain a dataset but not stream configs.\n",
-    "download": "/epr/no_stream_configs/no_stream_configs-1.0.0.tar.gz",
     "name": "no_stream_configs",
-    "path": "/package/no_stream_configs/1.0.0",
     "title": "No Stream configs",
+    "version": "1.0.0",
+    "description": "This package does contain a dataset but not stream configs.\n",
     "type": "integration",
-    "version": "1.0.0"
+    "download": "/epr/no_stream_configs/no_stream_configs-1.0.0.tar.gz",
+    "path": "/package/no_stream_configs/1.0.0"
   }
 ]

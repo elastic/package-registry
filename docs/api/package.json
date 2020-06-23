@@ -1,12 +1,14 @@
 {
-  "format_version": "1.0.0",
   "name": "example",
   "title": "Example Integration",
   "version": "1.0.0",
-  "readme": "/package/example/1.0.0/docs/README.md",
-  "license": "basic",
   "description": "This is the example integration",
   "type": "integration",
+  "download": "/epr/example/example-1.0.0.tar.gz",
+  "path": "/package/example/1.0.0",
+  "format_version": "1.0.0",
+  "readme": "/package/example/1.0.0/docs/README.md",
+  "license": "basic",
   "categories": [
     "logs",
     "metrics"
@@ -111,7 +113,5 @@
       ],
       "multiple": true
     }
-  ],
-  "download": "/epr/example/example-1.0.0.tar.gz",
-  "path": "/package/example/1.0.0"
+  ]
 }
