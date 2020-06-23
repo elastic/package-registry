@@ -68,10 +68,7 @@ func fetchPackageStorage() error {
 
 	// If storage directory does not exists, check it out
 	if _, err := os.Stat(storageRepoDir); os.IsNotExist(err) {
-		err = sh.Run("git", "clone", "--depth=1", "https://github.com/elastic/package-storage.git", storageRepoDir)
-		if err != nil {
-			return err
-		}
+		return sh.Run("git", "clone", "--depth=1", "https://github.com/elastic/package-storage.git", storageRepoDir)
 	} else if err != nil {
 		// catch other errors
 		return err
