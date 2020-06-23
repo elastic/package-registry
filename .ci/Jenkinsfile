@@ -11,6 +11,7 @@ pipeline {
     DOCKER_REGISTRY = 'docker.elastic.co'
     DOCKER_REGISTRY_SECRET = 'secret/observability-team/ci/docker-registry/prod'
     DOCKER_IMG = "${env.DOCKER_REGISTRY}/package-registry/package-registry"
+    DOCKER_IMG_PR = "${env.DOCKER_REGISTRY}/observability-ci/package-registry"
   }
   options {
     timeout(time: 1, unit: 'HOURS')
@@ -114,24 +115,32 @@ pipeline {
      Publish Docker images.
      */
     stage('Publish Docker image'){
+      when {
+        not { changeRequest() }
+      }
       environment {
         DOCKER_IMG_TAG = "${env.DOCKER_IMG}:${env.GIT_BASE_COMMIT}"
         DOCKER_IMG_TAG_BRANCH = "${env.DOCKER_IMG}:${env.BRANCH_NAME}"
       }
       steps {
         cleanup()
-        dir("${BASE_DIR}"){
-          dockerLogin(secret: "${env.DOCKER_REGISTRY_SECRET}",
-            registry: "${env.DOCKER_REGISTRY}")
-          sh(label: 'Build Docker image',
-            script: "docker build -t ${env.DOCKER_IMG_TAG} .")
-          sh(label: 'Push Docker image sha',
-            script: "docker push ${env.DOCKER_IMG_TAG}")
-          sh(label: 'Re-tag Docker image',
-            script: "docker tag ${env.DOCKER_IMG_TAG} ${env.DOCKER_IMG_TAG_BRANCH}")
-          sh(label: 'Push Docker image name',
-            script: "docker push ${env.DOCKER_IMG_TAG_BRANCH}")
-        }
+        pushDockerImage()
+      }
+    }
+    /**
+     Publish PR Docker images.
+     */
+    stage('Publish PR Docker image'){
+      when {
+        changeRequest()
+      }
+      environment {
+        DOCKER_IMG_TAG = "${env.DOCKER_IMG_PR}:${env.GIT_BASE_COMMIT}"
+        DOCKER_IMG_TAG_BRANCH = "${env.DOCKER_IMG_PR}:${env.BRANCH_NAME}"
+      }
+      steps {
+        cleanup()
+        pushDockerImage()
       }
     }
   }
@@ -147,4 +156,28 @@ def cleanup(){
     deleteDir()
   }
   unstash 'source'
+}
+
+def pushDockerImage(){
+  dir("${BASE_DIR}"){
+    dockerLogin(secret: "${env.DOCKER_REGISTRY_SECRET}",
+      registry: "${env.DOCKER_REGISTRY}")
+    sh(label: 'Build Docker image',
+      script: """docker build \
+        -t ${env.DOCKER_IMG_TAG} \
+        --label BRANCH_NAME=${env.BRANCH_NAME} \
+        --label GIT_SHA=${env.GIT_BASE_COMMIT} \
+        --label GO_VERSION=${env.GO_VERSION} \
+        --label TIMESTAMP=\$(date +%Y-%m-%d_%H:%M) \
+        .
+    """)
+    retryWithSleep(retries: 3, seconds: 5, backoff: true){
+      sh(label: 'Push Docker image sha',
+        script: "docker push ${env.DOCKER_IMG_TAG}")
+      sh(label: 'Re-tag Docker image',
+        script: "docker tag ${env.DOCKER_IMG_TAG} ${env.DOCKER_IMG_TAG_BRANCH}")
+      sh(label: 'Push Docker image name',
+        script: "docker push ${env.DOCKER_IMG_TAG_BRANCH}")
+    }
+  }
 }
