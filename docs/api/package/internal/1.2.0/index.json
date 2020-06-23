@@ -1,0 +1,23 @@
+{
+  "name": "internal",
+  "title": "Internal",
+  "version": "1.2.0",
+  "description": "Internal package",
+  "type": "integration",
+  "download": "/epr/internal/internal-1.2.0.tar.gz",
+  "path": "/package/internal/1.2.0",
+  "internal": true,
+  "format_version": "1.0.0",
+  "readme": "/package/internal/1.2.0/docs/README.md",
+  "license": "basic",
+  "categories": [],
+  "release": "beta",
+  "removable": false,
+  "requirement": {
+    "kibana": {}
+  },
+  "assets": [
+    "/package/internal/1.2.0/manifest.yml",
+    "/package/internal/1.2.0/docs/README.md"
+  ]
+}

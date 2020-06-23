@@ -1,0 +1,49 @@
+{
+  "name": "ecs_style_dataset",
+  "title": "Default pipeline Integration",
+  "version": "0.0.1",
+  "description": "Tests the registry validations works for dataset fields using the ecs style format",
+  "type": "integration",
+  "download": "/epr/ecs_style_dataset/ecs_style_dataset-0.0.1.tar.gz",
+  "path": "/package/ecs_style_dataset/0.0.1",
+  "format_version": "1.0.0",
+  "readme": "/package/ecs_style_dataset/0.0.1/docs/README.md",
+  "license": "basic",
+  "categories": [
+    "logs"
+  ],
+  "release": "beta",
+  "removable": true,
+  "requirement": {
+    "kibana": {}
+  },
+  "assets": [
+    "/package/ecs_style_dataset/0.0.1/manifest.yml",
+    "/package/ecs_style_dataset/0.0.1/docs/README.md",
+    "/package/ecs_style_dataset/0.0.1/dataset/foo/manifest.yml",
+    "/package/ecs_style_dataset/0.0.1/dataset/foo/fields/fields.yml"
+  ],
+  "datasets": [
+    {
+      "id": "ecs_style_dataset.foo",
+      "title": "Foo",
+      "release": "experimental",
+      "type": "logs",
+      "package": "ecs_style_dataset",
+      "path": "foo"
+    }
+  ],
+  "datasources": [
+    {
+      "name": "logs",
+      "title": "Logs datasource",
+      "description": "Datasource for your log files.",
+      "inputs": [
+        {
+          "type": "logs"
+        }
+      ],
+      "multiple": true
+    }
+  ]
+}
