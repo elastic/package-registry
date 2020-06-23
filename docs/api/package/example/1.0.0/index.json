@@ -113,5 +113,8 @@
       ],
       "multiple": true
     }
-  ]
+  ],
+  "owner": {
+    "github": "ruflin"
+  }
 }

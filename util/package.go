@@ -42,7 +42,7 @@ type Package struct {
 	Assets        []string     `config:"assets,omitempty" json:"assets,omitempty" yaml:"assets,omitempty"`
 	DataSets      []*DataSet   `config:"datasets,omitempty" json:"datasets,omitempty" yaml:"datasets,omitempty"`
 	Datasources   []Datasource `config:"datasources,omitempty" json:"datasources,omitempty" yaml:"datasources,omitempty"`
-	Owner         Owner        `config:"owner,omitempty" json:"owner,omitempty" yaml:"owner,omitempty"`
+	Owner         *Owner       `config:"owner,omitempty" json:"owner,omitempty" yaml:"owner,omitempty"`
 
 	// Local path to the package dir
 	BasePath string `json:"-" yaml:"-"`
