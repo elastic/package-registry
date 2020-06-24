@@ -13,19 +13,17 @@ import (
 	"github.com/radovskyb/watcher"
 )
 
-const watcherPollingPeriod = time.Second
+const watcherPollingPeriod = 2 * time.Second
 
 var (
 	w *watcher.Watcher
-
-	watchedPackages []Package
 )
 
 func MustUsePackageWatcher(packagePaths []string) {
 	log.Println("Use package watcher")
 
 	var err error
-	watchedPackages, err = getPackagesFromFilesystem(packagePaths)
+	packageList, err = getPackagesFromFilesystem(packagePaths)
 	if err != nil {
 		log.Println(errors.Wrap(err, "watcher error: reading packages failed"))
 	}
@@ -40,9 +38,9 @@ func MustUsePackageWatcher(packagePaths []string) {
 		}
 	}
 
-	go func() {
-		go w.Start(watcherPollingPeriod)
+	go w.Start(watcherPollingPeriod)
 
+	go func() {
 		for {
 			select {
 			case _, ok := <-w.Event:
@@ -51,8 +49,9 @@ func MustUsePackageWatcher(packagePaths []string) {
 					return // channel is closed
 				}
 
+				time.Sleep(watcherPollingPeriod) // reload at the end of watch frame
 				log.Println("Reloading packages...")
-				watchedPackages, err = getPackagesFromFilesystem(packagePaths)
+				packageList, err = getPackagesFromFilesystem(packagePaths)
 				if err != nil {
 					log.Println(errors.Wrap(err, "watcher error: reading packages failed"))
 				}
@@ -76,8 +75,4 @@ func ClosePackageWatcher() {
 
 func packageWatcherEnabled() bool {
 	return w != nil
-}
-
-func getWatchedPackages() []Package {
-	return watchedPackages
 }

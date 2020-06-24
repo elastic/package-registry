@@ -11,8 +11,6 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-
-	"github.com/elastic/package-registry/devmode"
 )
 
 var packageList []Package
@@ -22,11 +20,7 @@ var packageList []Package
 // This assumes changes to packages only happen on restart (unless development mode is enabled).
 // Caching the packages request many file reads every time this method is called.
 func GetPackages(packagesBasePaths []string) ([]Package, error) {
-	if packageWatcherEnabled() {
-		return getWatchedPackages(), nil
-	}
-
-	if !devmode.Enabled() && packageList != nil {
+	if packageList != nil {
 		return packageList, nil
 	}
 
@@ -43,15 +37,16 @@ func getPackagesFromFilesystem(packagesBasePaths []string) ([]Package, error) {
 		return nil, err
 	}
 
+	var pList []Package
 	for _, path := range packagePaths {
 		p, err := NewPackage(path)
 		if err != nil {
 			return nil, errors.Wrapf(err, "loading package failed (path: %s)", path)
 		}
 
-		packageList = append(packageList, *p)
+		pList = append(pList, *p)
 	}
-	return packageList, nil
+	return pList, nil
 }
 
 // getPackagePaths returns list of available packages, one for each version.
