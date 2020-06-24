@@ -74,7 +74,9 @@ func main() {
 	// If config.DevMode is set, the service will not cache package content.
 	if config.DevMode {
 		devmode.Enable()
+
 		util.MustUsePackageWatcher(packagesBasePaths)
+		defer util.ClosePackageWatcher()
 	}
 
 	ensurePackagesAvailable(packagesBasePaths)
@@ -102,8 +104,6 @@ func main() {
 	if err := server.Shutdown(ctx); err != nil {
 		log.Fatal(err)
 	}
-
-	util.ClosePackageWatcher()
 }
 
 func mustLoadConfig() *Config {
