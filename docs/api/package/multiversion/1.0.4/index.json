@@ -5,6 +5,12 @@
   "description": "Multiple versions of this integration exist.\n",
   "type": "integration",
   "download": "/epr/multiversion/multiversion-1.0.4.tar.gz",
+  "downloads": [
+    {
+      "path": "/epr/multiversion/multiversion-1.0.4.tar.gz",
+      "type": "tar"
+    }
+  ],
   "path": "/package/multiversion/1.0.4",
   "icons": [
     {

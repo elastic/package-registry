@@ -5,6 +5,12 @@
   "description": "This integration contains pretty long documentation.\nIt is used to show the different visualisations inside a documentation to test how we handle it.\nThe integration does not contain any assets except the documentation page.\n",
   "type": "integration",
   "download": "/epr/longdocs/longdocs-1.0.4.tar.gz",
+  "downloads": [
+    {
+      "path": "/epr/longdocs/longdocs-1.0.4.tar.gz",
+      "type": "tar"
+    }
+  ],
   "path": "/package/longdocs/1.0.4",
   "icons": [
     {

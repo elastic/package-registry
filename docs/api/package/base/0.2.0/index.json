@@ -5,6 +5,12 @@
   "description": "The base package contains assets which are needed for the basic setup of the stack.\nIt contains the default ILM policies.\n",
   "type": "integration",
   "download": "/epr/base/base-0.2.0.tar.gz",
+  "downloads": [
+    {
+      "path": "/epr/base/base-0.2.0.tar.gz",
+      "type": "tar"
+    }
+  ],
   "path": "/package/base/0.2.0",
   "internal": true,
   "format_version": "1.0.0",
