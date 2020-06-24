@@ -17,13 +17,12 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/elastic/package-registry/devmode"
-
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
 
 	ucfgYAML "github.com/elastic/go-ucfg/yaml"
 
+	"github.com/elastic/package-registry/devmode"
 	"github.com/elastic/package-registry/util"
 )
 
