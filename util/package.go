@@ -184,11 +184,6 @@ func NewPackage(basePath string) (*Package, error) {
 		return nil, fmt.Errorf("invalid release: %s", p.Release)
 	}
 
-	p.versionSemVer, err = semver.StrictNewVersion(p.Version)
-	if err != nil {
-		return nil, err
-	}
-
 	readmePath := filepath.Join(p.BasePath, "docs", "README.md")
 	// Check if readme
 	readme, err := os.Stat(readmePath)
@@ -349,6 +344,11 @@ func (p *Package) Validate() error {
 		}
 	}
 
+	p.versionSemVer, err = semver.StrictNewVersion(p.Version)
+	if err != nil {
+		return errors.Wrap(err, "invalid package version")
+	}
+
 	err = p.validateVersionConsistency()
 	if err != nil {
 		return errors.Wrap(err, "version in manifest file is not consistent with path")
@@ -366,15 +366,13 @@ func (p *Package) validateVersionConsistency() error {
 	baseDir := filepath.Base(p.BasePath)
 	versionDir, err := semver.NewVersion(baseDir)
 	if err != nil {
+		// TODO: There should be a flag passed to the registry to accept these kind of packages
+		// as otherwise these could hide some errors in the structure of the package-storage
 		return nil // package content is not rooted in version directory
 	}
 
 	if !versionPackage.Equal(versionDir) {
-		manifestVer := "unknown"
-		if p.versionSemVer != nil {
-			manifestVer = p.versionSemVer.String()
-		}
-		return fmt.Errorf("inconsistent versions (path: %s, manifest: %s)", versionDir.String(), manifestVer)
+		return fmt.Errorf("inconsistent versions (path: %s, manifest: %s)", versionDir.String(), p.versionSemVer.String())
 	}
 	return nil
 }
