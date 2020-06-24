@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added support for ecs style validation for dataset fields. [#520](https://github.com/elastic/package-registry/pull/520)
 * Use BasePackage for search output data. [#529](https://github.com/elastic/package-registry/pull/529)
 * Add support for owner field in package manifest. [#536](https://github.com/elastic/package-registry/pull/536)
+* Introduce development mode. [#543](https://github.com/elastic/package-registry/pull/543)
 
 ### Deprecated
 

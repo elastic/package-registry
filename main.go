@@ -22,6 +22,7 @@ import (
 
 	ucfgYAML "github.com/elastic/go-ucfg/yaml"
 
+	"github.com/elastic/package-registry/devmode"
 	"github.com/elastic/package-registry/util"
 )
 
@@ -42,6 +43,7 @@ var (
 		CacheTimeSearch:     10 * time.Minute,
 		CacheTimeCategories: 10 * time.Minute,
 		CacheTimeCatchAll:   10 * time.Minute,
+		DevMode:             false,
 	}
 )
 
@@ -57,6 +59,8 @@ type Config struct {
 	CacheTimeSearch     time.Duration `config:"cache_time.search"`
 	CacheTimeCategories time.Duration `config:"cache_time.categories"`
 	CacheTimeCatchAll   time.Duration `config:"cache_time.catch_all"`
+
+	DevMode bool `config:"dev_mode"`
 }
 
 func main() {
@@ -67,6 +71,11 @@ func main() {
 	config := mustLoadConfig()
 	packagesBasePaths := getPackagesBasePaths(config)
 	ensurePackagesAvailable(packagesBasePaths)
+
+	// If config.DevMode is set, the service will not cache package content.
+	if config.DevMode {
+		devmode.Enable()
+	}
 
 	// If -dry-run=true is set, service stops here after validation
 	if dryRun {
