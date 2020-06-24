@@ -19,7 +19,6 @@
     "metrics"
   ],
   "release": "experimental",
-  "removable": true,
   "requirement": {
     "kibana": {}
   },

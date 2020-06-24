@@ -20,7 +20,6 @@
     "message_queue"
   ],
   "release": "beta",
-  "removable": true,
   "requirement": {
     "kibana": {}
   },
