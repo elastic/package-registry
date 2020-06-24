@@ -12,7 +12,6 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"path/filepath"
 	"strings"
 	"syscall"
 	"time"
@@ -39,7 +38,7 @@ var (
 	configPath = "config.yml"
 
 	defaultConfig = Config{
-		PublicDir:           "./public", // left for legacy purposes
+		PackagesPaths:       []string{"./packages"},
 		CacheTimeSearch:     10 * time.Minute,
 		CacheTimeCategories: 10 * time.Minute,
 		CacheTimeCatchAll:   10 * time.Minute,
@@ -54,8 +53,7 @@ func init() {
 }
 
 type Config struct {
-	PublicDir           string        `config:"public_dir"` // left for legacy purposes
-	PackagePaths        []string      `config:"package_paths"`
+	PackagesPaths       []string      `config:"packages_paths"`
 	CacheTimeSearch     time.Duration `config:"cache_time.search"`
 	CacheTimeCategories time.Duration `config:"cache_time.categories"`
 	CacheTimeCatchAll   time.Duration `config:"cache_time.catch_all"`
@@ -69,8 +67,7 @@ func main() {
 	defer log.Println("Package registry stopped.")
 
 	config := mustLoadConfig()
-	packagesBasePaths := getPackagesBasePaths(config)
-	ensurePackagesAvailable(packagesBasePaths)
+	ensurePackagesAvailable(config.PackagesPaths)
 
 	// If config.DevMode is set, the service will not cache package content.
 	if config.DevMode {
@@ -82,7 +79,7 @@ func main() {
 		return
 	}
 
-	router := mustLoadRouter(config, packagesBasePaths)
+	router := mustLoadRouter(config, config.PackagesPaths)
 	server := &http.Server{Addr: address, Handler: router}
 
 	go func() {
@@ -129,18 +126,8 @@ func getConfig() (*Config, error) {
 	return &config, nil
 }
 
-func getPackagesBasePaths(config *Config) []string {
-	var paths []string
-	if config.PublicDir != "" {
-		paths = append(paths, filepath.Join(config.PublicDir, packageDir)) // left for legacy purposes
-	}
-	paths = append(paths, config.PackagePaths...)
-	return paths
-}
-
 func printConfig(config *Config) {
-	log.Printf("Public dir (legacy): %s\n", config.PublicDir)
-	log.Printf("Packages paths: %s\n", strings.Join(config.PackagePaths, ", "))
+	log.Printf("Packages paths: %s\n", strings.Join(config.PackagesPaths, ", "))
 	log.Println("Cache time for /search: ", config.CacheTimeSearch)
 	log.Println("Cache time for /categories: ", config.CacheTimeCategories)
 	log.Println("Cache time for all others: ", config.CacheTimeCatchAll)
