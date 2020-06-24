@@ -28,7 +28,7 @@ var CategoryTitles = map[string]string{
 	"config_management": "Config management",
 	"containers":        "Containers",
 	"crm":               "CRM",
-	"Custom":            "Custom",
+	"custom":            "Custom",
 	"datastore":         "Datastore",
 	"elastic_stack":     "Elastic Stack",
 	"google_loud":       "Google Cloud",
