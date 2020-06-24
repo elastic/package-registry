@@ -26,8 +26,9 @@ import (
 )
 
 var (
-	generateFlag  = flag.Bool("generate", false, "Write golden files")
-	testCacheTime = 1 * time.Second
+	generateFlag       = flag.Bool("generate", false, "Write golden files")
+	testCacheTime      = 1 * time.Second
+	generatedFilesPath = filepath.Join("testdata", "generated")
 )
 
 func TestEndpoints(t *testing.T) {
@@ -174,7 +175,7 @@ func runEndpoint(t *testing.T, endpoint, path, file string, handler func(w http.
 	req.RequestURI = endpoint
 	router.ServeHTTP(recorder, req)
 
-	fullPath := "./docs/api/" + file
+	fullPath := filepath.Join(generatedFilesPath, file)
 	err = os.MkdirAll(filepath.Dir(fullPath), 0755)
 	assert.NoError(t, err)
 
