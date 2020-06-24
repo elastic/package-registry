@@ -66,7 +66,6 @@ type Package struct {
 	Datasources   []Datasource `config:"datasources,omitempty" json:"config_templates,omitempty" yaml:"datasources,omitempty"`
 	Datasets      []*Dataset   `config:"datasets,omitempty" json:"datasets,omitempty" yaml:"datasets,omitempty"`
 	Owner         *Owner       `config:"owner,omitempty" json:"owner,omitempty" yaml:"owner,omitempty"`
-	Internal      bool         `config:"internal,omitempty" json:"internal,omitempty" yaml:"internal,omitempty"`
 
 	// Local path to the package dir
 	BasePath string `json:"-" yaml:"-"`
