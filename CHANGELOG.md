@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Introduce development mode. [#543](https://github.com/elastic/package-registry/pull/543)
 * Add additional supported categories to package. [#533](https://github.com/elastic/package-registry/pull/533)
 * Add list of downloads to /search endpoint. [#512](https://github.com/elastic/package-registry/pull/512)
+* Apply rule: first package found served. [#546](https://github.com/elastic/package-registry/pull/546)
 
 ### Deprecated
 

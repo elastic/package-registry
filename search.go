@@ -122,11 +122,12 @@ func searchHandler(packagesBasePaths []string, cacheTime time.Duration) func(w h
 					for _, pp := range versions {
 						if pp.Name == p.Name {
 
-							// If the package in the list is newer, do nothing. Otherwise delete and later add the new one.
-							if pp.IsNewer(p) {
+							// If the package in the list is newer or equal, do nothing.
+							if pp.IsNewerOrEqual(p) {
 								continue
 							}
 
+							// Otherwise delete and later add the new one.
 							delete(packagesList[pp.Name], pp.Version)
 						}
 					}

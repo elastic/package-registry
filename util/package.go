@@ -268,8 +268,8 @@ func (p *Package) HasKibanaVersion(version *semver.Version) bool {
 	return true
 }
 
-func (p *Package) IsNewer(pp Package) bool {
-	return p.versionSemVer.GreaterThan(pp.versionSemVer)
+func (p *Package) IsNewerOrEqual(pp Package) bool {
+	return !p.versionSemVer.LessThan(pp.versionSemVer)
 }
 
 // LoadAssets (re)loads all the assets of the package
