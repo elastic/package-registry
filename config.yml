@@ -1,3 +1,3 @@
 package_paths:
-  - ./dev/packages/example
+  - ./testdata/package
   - ./build/package-storage/packages

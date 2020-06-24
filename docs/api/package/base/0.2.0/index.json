@@ -1,0 +1,43 @@
+{
+  "name": "base",
+  "title": "Base package",
+  "version": "0.2.0",
+  "description": "The base package contains assets which are needed for the basic setup of the stack.\nIt contains the default ILM policies.\n",
+  "type": "integration",
+  "download": "/epr/base/base-0.2.0.tar.gz",
+  "downloads": [
+    {
+      "path": "/epr/base/base-0.2.0.tar.gz",
+      "type": "tar"
+    }
+  ],
+  "path": "/package/base/0.2.0",
+  "internal": true,
+  "format_version": "1.0.0",
+  "readme": "/package/base/0.2.0/docs/README.md",
+  "license": "basic",
+  "categories": [],
+  "release": "ga",
+  "removable": false,
+  "requirement": {
+    "kibana": {
+      "versions": "\u003e7.9.0"
+    }
+  },
+  "assets": [
+    "/package/base/0.2.0/manifest.yml",
+    "/package/base/0.2.0/docs/README.md",
+    "/package/base/0.2.0/elasticsearch/component-template/events-mappings.json",
+    "/package/base/0.2.0/elasticsearch/component-template/events-settings.json",
+    "/package/base/0.2.0/elasticsearch/component-template/logs-mappings.json",
+    "/package/base/0.2.0/elasticsearch/component-template/logs-settings.json",
+    "/package/base/0.2.0/elasticsearch/component-template/metrics-mappings.json",
+    "/package/base/0.2.0/elasticsearch/component-template/metrics-settings.json",
+    "/package/base/0.2.0/elasticsearch/ilm-policy/events-default.json",
+    "/package/base/0.2.0/elasticsearch/ilm-policy/logs-default.json",
+    "/package/base/0.2.0/elasticsearch/ilm-policy/metrics-default.json",
+    "/package/base/0.2.0/elasticsearch/index-template/events.json",
+    "/package/base/0.2.0/elasticsearch/index-template/logs.json",
+    "/package/base/0.2.0/elasticsearch/index-template/metrics.json"
+  ]
+}

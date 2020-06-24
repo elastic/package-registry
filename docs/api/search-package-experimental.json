@@ -90,6 +90,48 @@
     "path": "/package/foo/1.0.0"
   },
   {
+    "name": "longdocs",
+    "title": "Long Docs",
+    "version": "1.0.4",
+    "description": "This integration contains pretty long documentation.\nIt is used to show the different visualisations inside a documentation to test how we handle it.\nThe integration does not contain any assets except the documentation page.\n",
+    "type": "integration",
+    "download": "/epr/longdocs/longdocs-1.0.4.tar.gz",
+    "downloads": [
+      {
+        "path": "/epr/longdocs/longdocs-1.0.4.tar.gz",
+        "type": "tar"
+      }
+    ],
+    "path": "/package/longdocs/1.0.4",
+    "icons": [
+      {
+        "src": "/package/longdocs/1.0.4/img/icon.svg",
+        "type": "image/svg+xml"
+      }
+    ]
+  },
+  {
+    "name": "metricsonly",
+    "title": "Metrics Only",
+    "version": "2.0.1",
+    "description": "This is an integration with only the metrics category.\n",
+    "type": "integration",
+    "download": "/epr/metricsonly/metricsonly-2.0.1.tar.gz",
+    "downloads": [
+      {
+        "path": "/epr/metricsonly/metricsonly-2.0.1.tar.gz",
+        "type": "tar"
+      }
+    ],
+    "path": "/package/metricsonly/2.0.1",
+    "icons": [
+      {
+        "src": "/package/metricsonly/2.0.1/img/icon.svg",
+        "type": "image/svg+xml"
+      }
+    ]
+  },
+  {
     "name": "multiple_false",
     "title": "Multiple false",
     "version": "0.0.1",
@@ -105,6 +147,27 @@
     "path": "/package/multiple_false/0.0.1"
   },
   {
+    "name": "multiversion",
+    "title": "Multi Version",
+    "version": "1.1.0",
+    "description": "Multiple versions of this integration exist.\n",
+    "type": "integration",
+    "download": "/epr/multiversion/multiversion-1.1.0.tar.gz",
+    "downloads": [
+      {
+        "path": "/epr/multiversion/multiversion-1.1.0.tar.gz",
+        "type": "tar"
+      }
+    ],
+    "path": "/package/multiversion/1.1.0",
+    "icons": [
+      {
+        "src": "/package/multiversion/1.1.0/img/icon.svg",
+        "type": "image/svg+xml"
+      }
+    ]
+  },
+  {
     "name": "no_stream_configs",
     "title": "No Stream configs",
     "version": "1.0.0",
@@ -118,5 +181,42 @@
       }
     ],
     "path": "/package/no_stream_configs/1.0.0"
+  },
+  {
+    "name": "reference",
+    "title": "Reference package",
+    "version": "1.0.0",
+    "description": "This package is used for defining all the properties of a package, the possible assets etc. It serves as a reference on all the config options which are possible.\n",
+    "type": "integration",
+    "download": "/epr/reference/reference-1.0.0.tar.gz",
+    "downloads": [
+      {
+        "path": "/epr/reference/reference-1.0.0.tar.gz",
+        "type": "tar"
+      }
+    ],
+    "path": "/package/reference/1.0.0",
+    "icons": [
+      {
+        "src": "/package/reference/1.0.0/img/icon.svg",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ]
+  },
+  {
+    "name": "yamlpipeline",
+    "title": "Yaml Pipeline package",
+    "version": "1.0.0",
+    "description": "This package contains a yaml pipeline.\n",
+    "type": "integration",
+    "download": "/epr/yamlpipeline/yamlpipeline-1.0.0.tar.gz",
+    "downloads": [
+      {
+        "path": "/epr/yamlpipeline/yamlpipeline-1.0.0.tar.gz",
+        "type": "tar"
+      }
+    ],
+    "path": "/package/yamlpipeline/1.0.0"
   }
 ]

@@ -2,7 +2,7 @@
   {
     "id": "logs",
     "title": "Logs",
-    "count": 6
+    "count": 10
   },
   {
     "id": "message_queue",
@@ -12,6 +12,6 @@
   {
     "id": "metrics",
     "title": "Metrics",
-    "count": 3
+    "count": 7
   }
 ]

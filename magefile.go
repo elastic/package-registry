@@ -30,7 +30,7 @@ var (
 	publicDir      = "./public"
 	buildDir       = "./build"
 	storageRepoDir = filepath.Join(buildDir, "package-storage")
-	packagePaths   = []string{filepath.Join(storageRepoDir, "packages"), "./dev/packages/example/"}
+	packagePaths   = []string{filepath.Join(storageRepoDir, "packages"), "./testdata/package/"}
 )
 
 func Build() error {
