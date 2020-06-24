@@ -4,7 +4,9 @@
 
 package devmode
 
-import "log"
+import (
+	"log"
+)
 
 var enabled bool
 

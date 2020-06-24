@@ -22,6 +22,8 @@ github.com/magefile/mage/sh
 github.com/pkg/errors
 # github.com/pmezard/go-difflib v1.0.0
 github.com/pmezard/go-difflib/difflib
+# github.com/radovskyb/watcher v1.0.7
+github.com/radovskyb/watcher
 # github.com/stretchr/testify v1.4.0
 github.com/stretchr/testify/assert
 github.com/stretchr/testify/require
