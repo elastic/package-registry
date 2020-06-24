@@ -5,6 +5,12 @@
   "description": "This is the example integration",
   "type": "integration",
   "download": "/epr/example/example-1.0.0.tar.gz",
+  "downloads": [
+    {
+      "path": "/epr/example/example-1.0.0.tar.gz",
+      "type": "tar.gz"
+    }
+  ],
   "path": "/package/example/1.0.0",
   "format_version": "1.0.0",
   "readme": "/package/example/1.0.0/docs/README.md",
@@ -31,12 +37,6 @@
       "title": "IP Tables Ubiquity Dashboard",
       "size": "1492x1464",
       "type": "image/png"
-    }
-  ],
-  "downloads": [
-    {
-      "path": "/epr/example/example-1.0.0.tar.gz",
-      "type": "tar.gz"
     }
   ],
   "assets": [

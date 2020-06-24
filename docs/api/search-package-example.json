@@ -1,8 +1,10 @@
 [
   {
-<<<<<<< HEAD
-=======
+    "name": "example",
+    "title": "Example Integration",
+    "version": "1.0.0",
     "description": "This is the example integration",
+    "type": "integration",
     "download": "/epr/example/example-1.0.0.tar.gz",
     "downloads": [
       {
@@ -10,13 +12,6 @@
         "type": "tar.gz"
       }
     ],
->>>>>>> f5fea69e... Add list of downloads to /search endpoint
-    "name": "example",
-    "title": "Example Integration",
-    "version": "1.0.0",
-    "description": "This is the example integration",
-    "type": "integration",
-    "download": "/epr/example/example-1.0.0.tar.gz",
     "path": "/package/example/1.0.0"
   }
 ]
