@@ -40,7 +40,53 @@
     "/package/reference/1.0.0/dataset/reference/manifest.yml",
     "/package/reference/1.0.0/dataset/reference/fields/base-fields.yml"
   ],
+<<<<<<< HEAD
   "config_templates": [
+=======
+  "datasets": [
+    {
+      "id": "reference.reference",
+      "title": "Reference Logs Title",
+      "release": "beta",
+      "type": "logs",
+      "streams": [
+        {
+          "input": "logs",
+          "vars": [
+            {
+              "name": "paths",
+              "type": "text",
+              "title": "Example variable title",
+              "description": "Description around how a variable should be used, what values it can contain and it can even contain **Markdown** or links.\n",
+              "multi": true,
+              "required": true,
+              "show_user": false,
+              "default": "foo"
+            }
+          ],
+          "title": "Title reference stream",
+          "description": "Collecting the nginx access logs from file.",
+          "enabled": true
+        }
+      ],
+      "package": "reference",
+      "elasticsearch": {
+        "index-template.settings": {
+          "index": {
+            "lifecycle": {
+              "name": "reference"
+            }
+          }
+        },
+        "index-template.mappings": {
+          "dynamic": false
+        }
+      },
+      "path": "reference"
+    }
+  ],
+  "datasources": [
+>>>>>>> be22aea6... Add support for ES index-template configs
     {
       "name": "nginx",
       "title": "Nginx logs and metrics.",
