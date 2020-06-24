@@ -10,7 +10,8 @@
   "readme": "/package/default_pipeline/0.0.2/docs/README.md",
   "license": "basic",
   "categories": [
-    "logs"
+    "logs",
+    "message_queue"
   ],
   "release": "beta",
   "removable": true,
