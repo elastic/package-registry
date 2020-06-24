@@ -30,12 +30,25 @@
     "/package/multiple_false/0.0.1/dataset/foo/agent/stream/stream.yml.hbs",
     "/package/multiple_false/0.0.1/dataset/foo/elasticsearch/ingest-pipeline/default.json"
   ],
+  "config_templates": [
+    {
+      "name": "logs",
+      "title": "Logs datasource",
+      "description": "Datasource for your log files.",
+      "inputs": [
+        {
+          "type": "logs"
+        }
+      ],
+      "multiple": false
+    }
+  ],
   "datasets": [
     {
-      "id": "multiple_false.foo",
+      "type": "logs",
+      "name": "multiple_false.foo",
       "title": "Foo",
       "release": "experimental",
-      "type": "logs",
       "ingest_pipeline": "default",
       "streams": [
         {
@@ -50,43 +63,12 @@
               "show_user": false
             }
           ],
+          "template_path": "stream.yml.hbs",
           "enabled": true
         }
       ],
       "package": "multiple_false",
       "path": "foo"
-    }
-  ],
-  "datasources": [
-    {
-      "name": "logs",
-      "title": "Logs datasource",
-      "description": "Datasource for your log files.",
-      "inputs": [
-        {
-          "type": "logs",
-          "streams": [
-            {
-              "input": "logs",
-              "vars": [
-                {
-                  "name": "paths",
-                  "type": "text",
-                  "description": "Path to log files to be collected",
-                  "multi": true,
-                  "required": true,
-                  "show_user": false
-                }
-              ],
-              "dataset": "multiple_false.foo",
-              "template_path": "stream.yml.hbs",
-              "template": "foo: bar\n",
-              "enabled": true
-            }
-          ]
-        }
-      ],
-      "multiple": false
     }
   ]
 }

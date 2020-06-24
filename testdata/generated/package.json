@@ -60,6 +60,19 @@
     "/package/example/1.0.0/dataset/foo/elasticsearch/ingest-pipeline/pipeline-plaintext.json",
     "/package/example/1.0.0/dataset/foo/elasticsearch/ingest-pipeline/pipeline-tcp.json"
   ],
+  "config_templates": [
+    {
+      "name": "logs",
+      "title": "Logs datasource",
+      "description": "Datasource for your log files.",
+      "inputs": [
+        {
+          "type": "foo"
+        }
+      ],
+      "multiple": true
+    }
+  ],
   "datasets": [
     {
       "type": "logs",
@@ -86,19 +99,6 @@
       ],
       "package": "example",
       "path": "foo"
-    }
-  ],
-  "config_templates": [
-    {
-      "name": "logs",
-      "title": "Logs datasource",
-      "description": "Datasource for your log files.",
-      "inputs": [
-        {
-          "type": "foo"
-        }
-      ],
-      "multiple": true
     }
   ],
   "owner": {

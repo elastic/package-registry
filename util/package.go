@@ -63,11 +63,10 @@ type Package struct {
 	Requirement   Requirement  `config:"requirement" json:"requirement"`
 	Screenshots   []Image      `config:"screenshots,omitempty" json:"screenshots,omitempty" yaml:"screenshots,omitempty"`
 	Assets        []string     `config:"assets,omitempty" json:"assets,omitempty" yaml:"assets,omitempty"`
-	DataSets      []*Dataset   `config:"datasets,omitempty" json:"datasets,omitempty" yaml:"datasets,omitempty"`
-	Datasources   []Datasource `config:"datasources,omitempty" json:"datasources,omitempty" yaml:"datasources,omitempty"`
+	Datasources   []Datasource `config:"datasources,omitempty" json:"config_templates,omitempty" yaml:"datasources,omitempty"`
+	Datasets      []*Dataset   `config:"datasets,omitempty" json:"datasets,omitempty" yaml:"datasets,omitempty"`
 	Owner         *Owner       `config:"owner,omitempty" json:"owner,omitempty" yaml:"owner,omitempty"`
 	Internal      bool         `config:"internal,omitempty" json:"internal,omitempty" yaml:"internal,omitempty"`
-	Datasets      []*Dataset   `config:"datasets,omitempty" json:"datasets,omitempty" yaml:"datasets,omitempty"`
 
 	// Local path to the package dir
 	BasePath string `json:"-" yaml:"-"`

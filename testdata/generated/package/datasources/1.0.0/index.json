@@ -36,12 +36,69 @@
     "/package/datasources/1.0.0/dataset/examplelog2/agent/stream/stream.yml.hbs",
     "/package/datasources/1.0.0/dataset/examplemetric/agent/stream/stream.yml.hbs"
   ],
+  "config_templates": [
+    {
+      "name": "nginx",
+      "title": "Datasource title",
+      "description": "Details about the data source.",
+      "inputs": [
+        {
+          "type": "nginx/metrics",
+          "vars": [
+            {
+              "name": "hosts",
+              "type": "text",
+              "description": "Nginx hosts",
+              "multi": true,
+              "required": true,
+              "show_user": false,
+              "default": [
+                "http://127.0.0.1"
+              ]
+            },
+            {
+              "name": "period",
+              "type": "duration",
+              "description": "Collection period. Valid values: 10s, 5m, 2h",
+              "multi": false,
+              "required": false,
+              "show_user": false,
+              "default": "10s"
+            },
+            {
+              "name": "username",
+              "type": "text",
+              "multi": false,
+              "required": false,
+              "show_user": false
+            },
+            {
+              "name": "password",
+              "type": "password",
+              "multi": false,
+              "required": false,
+              "show_user": false
+            }
+          ],
+          "description": "Collecting metrics for nginx."
+        },
+        {
+          "type": "logs",
+          "description": "Collect nginx logs."
+        },
+        {
+          "type": "syslog"
+        }
+      ],
+      "multiple": true
+    }
+  ],
   "datasets": [
     {
-      "id": "datasources.examplelog1",
+      "type": "logs",
+      "name": "datasources.examplelog1",
       "title": "Example dataset with inputs",
       "release": "experimental",
-      "type": "logs",
       "streams": [
         {
           "input": "logs",
@@ -75,10 +132,10 @@
       "path": "examplelog1"
     },
     {
-      "id": "datasources.examplelog2",
+      "type": "logs",
+      "name": "datasources.examplelog2",
       "title": "Example dataset with inputs",
       "release": "experimental",
-      "type": "logs",
       "streams": [
         {
           "input": "logs",
@@ -95,6 +152,7 @@
               ]
             }
           ],
+          "template_path": "stream.yml.hbs",
           "title": "Title of the stream",
           "description": "Description of the stream with more details.",
           "enabled": true
@@ -104,10 +162,10 @@
       "path": "examplelog2"
     },
     {
-      "id": "datasources.examplemetric",
+      "type": "metrics",
+      "name": "datasources.examplemetric",
       "title": "Example dataset with inputs",
       "release": "experimental",
-      "type": "metrics",
       "streams": [
         {
           "input": "nginx/metrics",
@@ -130,6 +188,7 @@
       "package": "datasources",
       "path": "examplemetric"
     }
+<<<<<<< HEAD:testdata/generated/package/datasources/1.0.0/index.json
   ],
   "datasources": [
     {
@@ -266,5 +325,7 @@
       ],
       "multiple": true
     }
+=======
+>>>>>>> cada7b07... rebase on master:docs/api/package/datasources/1.0.0/index.json
   ]
 }
