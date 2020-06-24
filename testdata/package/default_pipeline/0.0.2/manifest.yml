@@ -4,7 +4,7 @@ name: default_pipeline
 description: Tests if no pipeline is set, it defaults to the default one
 version: 0.0.2
 title: Default pipeline Integration
-categories: ["logs"]
+categories: ["logs", "message_queue"]
 type: integration
 release: beta
 

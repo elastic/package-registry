@@ -5,6 +5,11 @@
     "count": 6
   },
   {
+    "id": "message_queue",
+    "title": "Message Queue",
+    "count": 1
+  },
+  {
     "id": "metrics",
     "title": "Metrics",
     "count": 3
