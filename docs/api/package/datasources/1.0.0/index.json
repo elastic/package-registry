@@ -5,6 +5,12 @@
   "description": "Package with data sources",
   "type": "integration",
   "download": "/epr/datasources/datasources-1.0.0.tar.gz",
+  "downloads": [
+    {
+      "path": "/epr/datasources/datasources-1.0.0.tar.gz",
+      "type": "tar"
+    }
+  ],
   "path": "/package/datasources/1.0.0",
   "format_version": "1.0.0",
   "readme": "/package/datasources/1.0.0/docs/README.md",

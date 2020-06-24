@@ -6,6 +6,12 @@
     "description": "This is the example integration",
     "type": "integration",
     "download": "/epr/example/example-1.0.0.tar.gz",
+    "downloads": [
+      {
+        "path": "/epr/example/example-1.0.0.tar.gz",
+        "type": "tar"
+      }
+    ],
     "path": "/package/example/1.0.0"
   },
   {
@@ -15,6 +21,12 @@
     "description": "This is the foo integration",
     "type": "solution",
     "download": "/epr/foo/foo-1.0.0.tar.gz",
+    "downloads": [
+      {
+        "path": "/epr/foo/foo-1.0.0.tar.gz",
+        "type": "tar"
+      }
+    ],
     "path": "/package/foo/1.0.0"
   }
 ]

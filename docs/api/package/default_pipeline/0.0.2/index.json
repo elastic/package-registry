@@ -5,6 +5,12 @@
   "description": "Tests if no pipeline is set, it defaults to the default one",
   "type": "integration",
   "download": "/epr/default_pipeline/default_pipeline-0.0.2.tar.gz",
+  "downloads": [
+    {
+      "path": "/epr/default_pipeline/default_pipeline-0.0.2.tar.gz",
+      "type": "tar"
+    }
+  ],
   "path": "/package/default_pipeline/0.0.2",
   "format_version": "1.0.0",
   "readme": "/package/default_pipeline/0.0.2/docs/README.md",

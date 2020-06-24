@@ -6,6 +6,12 @@
     "description": "This is the example integration",
     "type": "integration",
     "download": "/epr/example/example-1.0.0.tar.gz",
+    "downloads": [
+      {
+        "path": "/epr/example/example-1.0.0.tar.gz",
+        "type": "tar"
+      }
+    ],
     "path": "/package/example/1.0.0"
   }
 ]

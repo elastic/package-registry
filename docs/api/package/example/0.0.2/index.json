@@ -5,6 +5,12 @@
   "description": "This is the example integration.",
   "type": "integration",
   "download": "/epr/example/example-0.0.2.tar.gz",
+  "downloads": [
+    {
+      "path": "/epr/example/example-0.0.2.tar.gz",
+      "type": "tar"
+    }
+  ],
   "path": "/package/example/0.0.2",
   "format_version": "1.0.0",
   "readme": "/package/example/0.0.2/docs/README.md",
