@@ -8,7 +8,7 @@
   "downloads": [
     {
       "path": "/epr/example/example-0.0.2.tar.gz",
-      "type": "tar.gz"
+      "type": "tar"
     }
   ],
   "path": "/package/example/0.0.2",

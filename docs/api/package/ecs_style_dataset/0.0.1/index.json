@@ -8,7 +8,7 @@
   "downloads": [
     {
       "path": "/epr/ecs_style_dataset/ecs_style_dataset-0.0.1.tar.gz",
-      "type": "tar.gz"
+      "type": "tar"
     }
   ],
   "path": "/package/ecs_style_dataset/0.0.1",

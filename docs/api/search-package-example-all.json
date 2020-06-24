@@ -9,7 +9,7 @@
     "downloads": [
       {
         "path": "/epr/example/example-0.0.2.tar.gz",
-        "type": "tar.gz"
+        "type": "tar"
       }
     ],
     "path": "/package/example/0.0.2"
@@ -24,7 +24,7 @@
     "downloads": [
       {
         "path": "/epr/example/example-1.0.0.tar.gz",
-        "type": "tar.gz"
+        "type": "tar"
       }
     ],
     "path": "/package/example/1.0.0"

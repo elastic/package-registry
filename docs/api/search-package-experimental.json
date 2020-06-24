@@ -9,7 +9,7 @@
     "downloads": [
       {
         "path": "/epr/datasources/datasources-1.0.0.tar.gz",
-        "type": "tar.gz"
+        "type": "tar"
       }
     ],
     "path": "/package/datasources/1.0.0"
@@ -24,7 +24,7 @@
     "downloads": [
       {
         "path": "/epr/default_pipeline/default_pipeline-0.0.2.tar.gz",
-        "type": "tar.gz"
+        "type": "tar"
       }
     ],
     "path": "/package/default_pipeline/0.0.2"
@@ -39,7 +39,7 @@
     "downloads": [
       {
         "path": "/epr/ecs_style_dataset/ecs_style_dataset-0.0.1.tar.gz",
-        "type": "tar.gz"
+        "type": "tar"
       }
     ],
     "path": "/package/ecs_style_dataset/0.0.1"
@@ -54,7 +54,7 @@
     "downloads": [
       {
         "path": "/epr/example/example-1.0.0.tar.gz",
-        "type": "tar.gz"
+        "type": "tar"
       }
     ],
     "path": "/package/example/1.0.0"
@@ -69,7 +69,7 @@
     "downloads": [
       {
         "path": "/epr/experimental/experimental-0.0.1.tar.gz",
-        "type": "tar.gz"
+        "type": "tar"
       }
     ],
     "path": "/package/experimental/0.0.1"
@@ -84,7 +84,7 @@
     "downloads": [
       {
         "path": "/epr/foo/foo-1.0.0.tar.gz",
-        "type": "tar.gz"
+        "type": "tar"
       }
     ],
     "path": "/package/foo/1.0.0"
@@ -99,7 +99,7 @@
     "downloads": [
       {
         "path": "/epr/multiple_false/multiple_false-0.0.1.tar.gz",
-        "type": "tar.gz"
+        "type": "tar"
       }
     ],
     "path": "/package/multiple_false/0.0.1"
@@ -114,7 +114,7 @@
     "downloads": [
       {
         "path": "/epr/no_stream_configs/no_stream_configs-1.0.0.tar.gz",
-        "type": "tar.gz"
+        "type": "tar"
       }
     ],
     "path": "/package/no_stream_configs/1.0.0"

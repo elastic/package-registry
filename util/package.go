@@ -137,7 +137,7 @@ func NewDownload(p Package, t string) Download {
 }
 
 func getDownloadPath(p Package, t string) string {
-	return path.Join("/epr", p.Name, p.Name+"-"+p.Version+"."+t)
+	return path.Join("/epr", p.Name, p.Name+"-"+p.Version+".tar.gz")
 }
 
 // NewPackage creates a new package instances based on the given base path.
@@ -186,7 +186,7 @@ func NewPackage(basePath string) (*Package, error) {
 		}
 	}
 
-	p.Downloads = []Download{NewDownload(*p, "tar.gz")}
+	p.Downloads = []Download{NewDownload(*p, "tar")}
 
 	if p.Requirement.Kibana.Versions != "" {
 		p.Requirement.Kibana.semVerRange, err = semver.NewConstraint(p.Requirement.Kibana.Versions)
