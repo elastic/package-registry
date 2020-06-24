@@ -59,12 +59,7 @@ func getPackagePaths(allPaths []string) ([]string, error) {
 				return nil // need to go to the package version level
 			}
 
-			p, err := os.Stat(path)
-			if err != nil {
-				return err
-			}
-
-			if p.IsDir() {
+			if info.IsDir() {
 				log.Printf("%-20s\t%10s\t%s", dirs[0], dirs[1], path)
 				foundPaths = append(foundPaths, path)
 			}
