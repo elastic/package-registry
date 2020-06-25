@@ -24,7 +24,8 @@ func GetPackages(packagesBasePaths []string) ([]Package, error) {
 		return packageList, nil
 	}
 
-	packageList, err := getPackagesFromFilesystem(packagesBasePaths)
+	var err error
+	packageList, err = getPackagesFromFilesystem(packagesBasePaths)
 	if err != nil {
 		return nil, errors.Wrapf(err, "reading packages from filesystem failed")
 	}
