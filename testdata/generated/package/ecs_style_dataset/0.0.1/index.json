@@ -11,9 +11,9 @@
       "type": "tar"
     }
   ],
-  "path": "/package/ecs_style_dataset/0.0.1",
+  "path": "/v1/package/ecs_style_dataset/0.0.1",
   "format_version": "1.0.0",
-  "readme": "/package/ecs_style_dataset/0.0.1/docs/README.md",
+  "readme": "/v1/package/ecs_style_dataset/0.0.1/docs/README.md",
   "license": "basic",
   "categories": [
     "logs"
@@ -24,10 +24,10 @@
     "kibana": {}
   },
   "assets": [
-    "/package/ecs_style_dataset/0.0.1/manifest.yml",
-    "/package/ecs_style_dataset/0.0.1/docs/README.md",
-    "/package/ecs_style_dataset/0.0.1/dataset/foo/manifest.yml",
-    "/package/ecs_style_dataset/0.0.1/dataset/foo/fields/fields.yml"
+    "/v1/package/ecs_style_dataset/0.0.1/manifest.yml",
+    "/v1/package/ecs_style_dataset/0.0.1/docs/README.md",
+    "/v1/package/ecs_style_dataset/0.0.1/dataset/foo/manifest.yml",
+    "/v1/package/ecs_style_dataset/0.0.1/dataset/foo/fields/fields.yml"
   ],
   "datasets": [
     {

@@ -11,15 +11,15 @@
       "type": "tar"
     }
   ],
-  "path": "/package/metricsonly/2.0.1",
+  "path": "/v1/package/metricsonly/2.0.1",
   "icons": [
     {
-      "src": "/package/metricsonly/2.0.1/img/icon.svg",
+      "src": "/v1/package/metricsonly/2.0.1/img/icon.svg",
       "type": "image/svg+xml"
     }
   ],
   "format_version": "1.0.0",
-  "readme": "/package/metricsonly/2.0.1/docs/README.md",
+  "readme": "/v1/package/metricsonly/2.0.1/docs/README.md",
   "license": "basic",
   "categories": [
     "metrics"
@@ -30,8 +30,8 @@
     "kibana": {}
   },
   "assets": [
-    "/package/metricsonly/2.0.1/manifest.yml",
-    "/package/metricsonly/2.0.1/docs/README.md",
-    "/package/metricsonly/2.0.1/img/icon.svg"
+    "/v1/package/metricsonly/2.0.1/manifest.yml",
+    "/v1/package/metricsonly/2.0.1/docs/README.md",
+    "/v1/package/metricsonly/2.0.1/img/icon.svg"
   ]
 }

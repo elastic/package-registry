@@ -11,16 +11,16 @@
       "type": "tar"
     }
   ],
-  "path": "/package/reference/1.0.0",
+  "path": "/v1/package/reference/1.0.0",
   "icons": [
     {
-      "src": "/package/reference/1.0.0/img/icon.svg",
+      "src": "/v1/package/reference/1.0.0/img/icon.svg",
       "size": "32x32",
       "type": "image/svg+xml"
     }
   ],
   "format_version": "1.0.0",
-  "readme": "/package/reference/1.0.0/docs/README.md",
+  "readme": "/v1/package/reference/1.0.0/docs/README.md",
   "license": "basic",
   "categories": [
     "logs",
@@ -34,12 +34,12 @@
     }
   },
   "assets": [
-    "/package/reference/1.0.0/changelog.yml",
-    "/package/reference/1.0.0/manifest.yml",
-    "/package/reference/1.0.0/docs/README.md",
-    "/package/reference/1.0.0/img/icon.svg",
-    "/package/reference/1.0.0/dataset/reference/manifest.yml",
-    "/package/reference/1.0.0/dataset/reference/fields/base-fields.yml"
+    "/v1/package/reference/1.0.0/changelog.yml",
+    "/v1/package/reference/1.0.0/manifest.yml",
+    "/v1/package/reference/1.0.0/docs/README.md",
+    "/v1/package/reference/1.0.0/img/icon.svg",
+    "/v1/package/reference/1.0.0/dataset/reference/manifest.yml",
+    "/v1/package/reference/1.0.0/dataset/reference/fields/base-fields.yml"
   ],
   "datasets": [
     {

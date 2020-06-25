@@ -12,7 +12,7 @@
         "type": "tar"
       }
     ],
-    "path": "/package/example/0.0.2"
+    "path": "/v1/package/example/0.0.2"
   },
   {
     "name": "example",
@@ -27,6 +27,6 @@
         "type": "tar"
       }
     ],
-    "path": "/package/example/1.0.0"
+    "path": "/v1/package/example/1.0.0"
   }
 ]

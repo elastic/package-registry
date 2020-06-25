@@ -11,9 +11,9 @@
       "type": "tar"
     }
   ],
-  "path": "/package/experimental/0.0.1",
+  "path": "/v1/package/experimental/0.0.1",
   "format_version": "1.0.0",
-  "readme": "/package/experimental/0.0.1/docs/README.md",
+  "readme": "/v1/package/experimental/0.0.1/docs/README.md",
   "license": "basic",
   "categories": [
     "metrics"
@@ -24,7 +24,7 @@
     "kibana": {}
   },
   "assets": [
-    "/package/experimental/0.0.1/manifest.yml",
-    "/package/experimental/0.0.1/docs/README.md"
+    "/v1/package/experimental/0.0.1/manifest.yml",
+    "/v1/package/experimental/0.0.1/docs/README.md"
   ]
 }

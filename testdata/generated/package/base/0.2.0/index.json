@@ -11,10 +11,10 @@
       "type": "tar"
     }
   ],
-  "path": "/package/base/0.2.0",
+  "path": "/v1/package/base/0.2.0",
   "internal": true,
   "format_version": "1.0.0",
-  "readme": "/package/base/0.2.0/docs/README.md",
+  "readme": "/v1/package/base/0.2.0/docs/README.md",
   "license": "basic",
   "categories": [],
   "release": "ga",
@@ -25,19 +25,19 @@
     }
   },
   "assets": [
-    "/package/base/0.2.0/manifest.yml",
-    "/package/base/0.2.0/docs/README.md",
-    "/package/base/0.2.0/elasticsearch/component-template/events-mappings.json",
-    "/package/base/0.2.0/elasticsearch/component-template/events-settings.json",
-    "/package/base/0.2.0/elasticsearch/component-template/logs-mappings.json",
-    "/package/base/0.2.0/elasticsearch/component-template/logs-settings.json",
-    "/package/base/0.2.0/elasticsearch/component-template/metrics-mappings.json",
-    "/package/base/0.2.0/elasticsearch/component-template/metrics-settings.json",
-    "/package/base/0.2.0/elasticsearch/ilm-policy/events-default.json",
-    "/package/base/0.2.0/elasticsearch/ilm-policy/logs-default.json",
-    "/package/base/0.2.0/elasticsearch/ilm-policy/metrics-default.json",
-    "/package/base/0.2.0/elasticsearch/index-template/events.json",
-    "/package/base/0.2.0/elasticsearch/index-template/logs.json",
-    "/package/base/0.2.0/elasticsearch/index-template/metrics.json"
+    "/v1/package/base/0.2.0/manifest.yml",
+    "/v1/package/base/0.2.0/docs/README.md",
+    "/v1/package/base/0.2.0/elasticsearch/component-template/events-mappings.json",
+    "/v1/package/base/0.2.0/elasticsearch/component-template/events-settings.json",
+    "/v1/package/base/0.2.0/elasticsearch/component-template/logs-mappings.json",
+    "/v1/package/base/0.2.0/elasticsearch/component-template/logs-settings.json",
+    "/v1/package/base/0.2.0/elasticsearch/component-template/metrics-mappings.json",
+    "/v1/package/base/0.2.0/elasticsearch/component-template/metrics-settings.json",
+    "/v1/package/base/0.2.0/elasticsearch/ilm-policy/events-default.json",
+    "/v1/package/base/0.2.0/elasticsearch/ilm-policy/logs-default.json",
+    "/v1/package/base/0.2.0/elasticsearch/ilm-policy/metrics-default.json",
+    "/v1/package/base/0.2.0/elasticsearch/index-template/events.json",
+    "/v1/package/base/0.2.0/elasticsearch/index-template/logs.json",
+    "/v1/package/base/0.2.0/elasticsearch/index-template/metrics.json"
   ]
 }

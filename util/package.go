@@ -121,7 +121,7 @@ type Image struct {
 }
 
 func (i Image) getPath(p *Package) string {
-	return path.Join("/package", p.Name, p.Version, i.Src)
+	return path.Join("/", APIVersion, "package", p.Name, p.Version, i.Src)
 }
 
 type Download struct {
@@ -214,7 +214,7 @@ func NewPackage(basePath string) (*Package, error) {
 		if readme.IsDir() {
 			return nil, fmt.Errorf("README.md is a directory")
 		}
-		readmePathShort := path.Join("/package", p.Name, p.Version, "docs", "README.md")
+		readmePathShort := path.Join("/", APIVersion, "package", p.Name, p.Version, "docs", "README.md")
 		p.Readme = &readmePathShort
 	}
 
@@ -304,7 +304,7 @@ func (p *Package) LoadAssets(packagePath string) (err error) {
 		// Strip away the basePath from the local system
 		a = a[len(p.BasePath)+1:]
 
-		a = path.Join("/package", packagePath, a)
+		a = path.Join("/", APIVersion, "package", packagePath, a)
 		p.Assets = append(p.Assets, a)
 	}
 	return nil
@@ -501,9 +501,9 @@ func (p *Package) GetPath() string {
 }
 
 func (p *Package) GetDownloadPath() string {
-	return path.Join("/epr", p.Name, p.Name+"-"+p.Version+".tar.gz")
+	return path.Join("/", "epr", p.Name, p.Name+"-"+p.Version+".tar.gz")
 }
 
 func (p *Package) GetUrlPath() string {
-	return path.Join("/package", p.Name, p.Version)
+	return path.Join("/", APIVersion, "package", p.Name, p.Version)
 }

@@ -11,9 +11,9 @@
       "type": "tar"
     }
   ],
-  "path": "/package/foo/1.0.0",
+  "path": "/v1/package/foo/1.0.0",
   "format_version": "1.0.0",
-  "readme": "/package/foo/1.0.0/docs/README.md",
+  "readme": "/v1/package/foo/1.0.0/docs/README.md",
   "license": "basic",
   "categories": [
     "metrics"
@@ -26,7 +26,7 @@
     }
   },
   "assets": [
-    "/package/foo/1.0.0/manifest.yml",
-    "/package/foo/1.0.0/docs/README.md"
+    "/v1/package/foo/1.0.0/manifest.yml",
+    "/v1/package/foo/1.0.0/docs/README.md"
   ]
 }

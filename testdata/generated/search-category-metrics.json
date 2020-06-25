@@ -12,7 +12,7 @@
         "type": "tar"
       }
     ],
-    "path": "/package/example/1.0.0"
+    "path": "/v1/package/example/1.0.0"
   },
   {
     "name": "foo",
@@ -27,7 +27,7 @@
         "type": "tar"
       }
     ],
-    "path": "/package/foo/1.0.0"
+    "path": "/v1/package/foo/1.0.0"
   },
   {
     "name": "longdocs",
@@ -42,10 +42,10 @@
         "type": "tar"
       }
     ],
-    "path": "/package/longdocs/1.0.4",
+    "path": "/v1/package/longdocs/1.0.4",
     "icons": [
       {
-        "src": "/package/longdocs/1.0.4/img/icon.svg",
+        "src": "/v1/package/longdocs/1.0.4/img/icon.svg",
         "type": "image/svg+xml"
       }
     ]
@@ -63,10 +63,10 @@
         "type": "tar"
       }
     ],
-    "path": "/package/metricsonly/2.0.1",
+    "path": "/v1/package/metricsonly/2.0.1",
     "icons": [
       {
-        "src": "/package/metricsonly/2.0.1/img/icon.svg",
+        "src": "/v1/package/metricsonly/2.0.1/img/icon.svg",
         "type": "image/svg+xml"
       }
     ]
@@ -84,10 +84,10 @@
         "type": "tar"
       }
     ],
-    "path": "/package/multiversion/1.1.0",
+    "path": "/v1/package/multiversion/1.1.0",
     "icons": [
       {
-        "src": "/package/multiversion/1.1.0/img/icon.svg",
+        "src": "/v1/package/multiversion/1.1.0/img/icon.svg",
         "type": "image/svg+xml"
       }
     ]
@@ -105,10 +105,10 @@
         "type": "tar"
       }
     ],
-    "path": "/package/reference/1.0.0",
+    "path": "/v1/package/reference/1.0.0",
     "icons": [
       {
-        "src": "/package/reference/1.0.0/img/icon.svg",
+        "src": "/v1/package/reference/1.0.0/img/icon.svg",
         "size": "32x32",
         "type": "image/svg+xml"
       }

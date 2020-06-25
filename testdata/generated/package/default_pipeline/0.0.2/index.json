@@ -11,9 +11,9 @@
       "type": "tar"
     }
   ],
-  "path": "/package/default_pipeline/0.0.2",
+  "path": "/v1/package/default_pipeline/0.0.2",
   "format_version": "1.0.0",
-  "readme": "/package/default_pipeline/0.0.2/docs/README.md",
+  "readme": "/v1/package/default_pipeline/0.0.2/docs/README.md",
   "license": "basic",
   "categories": [
     "logs",
@@ -25,12 +25,12 @@
     "kibana": {}
   },
   "assets": [
-    "/package/default_pipeline/0.0.2/manifest.yml",
-    "/package/default_pipeline/0.0.2/docs/README.md",
-    "/package/default_pipeline/0.0.2/dataset/foo/manifest.yml",
-    "/package/default_pipeline/0.0.2/dataset/foo/fields/base-fields.yml",
-    "/package/default_pipeline/0.0.2/dataset/foo/agent/stream/stream.yml.hbs",
-    "/package/default_pipeline/0.0.2/dataset/foo/elasticsearch/ingest-pipeline/default.json"
+    "/v1/package/default_pipeline/0.0.2/manifest.yml",
+    "/v1/package/default_pipeline/0.0.2/docs/README.md",
+    "/v1/package/default_pipeline/0.0.2/dataset/foo/manifest.yml",
+    "/v1/package/default_pipeline/0.0.2/dataset/foo/fields/base-fields.yml",
+    "/v1/package/default_pipeline/0.0.2/dataset/foo/agent/stream/stream.yml.hbs",
+    "/v1/package/default_pipeline/0.0.2/dataset/foo/elasticsearch/ingest-pipeline/default.json"
   ],
   "datasets": [
     {

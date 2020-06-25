@@ -11,9 +11,9 @@
       "type": "tar"
     }
   ],
-  "path": "/package/datasources/1.0.0",
+  "path": "/v1/package/datasources/1.0.0",
   "format_version": "1.0.0",
-  "readme": "/package/datasources/1.0.0/docs/README.md",
+  "readme": "/v1/package/datasources/1.0.0/docs/README.md",
   "license": "basic",
   "categories": [
     "logs"
@@ -24,18 +24,18 @@
     "kibana": {}
   },
   "assets": [
-    "/package/datasources/1.0.0/manifest.yml",
-    "/package/datasources/1.0.0/docs/README.md",
-    "/package/datasources/1.0.0/dataset/examplelog1/manifest.yml",
-    "/package/datasources/1.0.0/dataset/examplelog2/manifest.yml",
-    "/package/datasources/1.0.0/dataset/examplemetric/manifest.yml",
-    "/package/datasources/1.0.0/dataset/examplelog1/fields/base-fields.yml",
-    "/package/datasources/1.0.0/dataset/examplelog2/fields/base-fields.yml",
-    "/package/datasources/1.0.0/dataset/examplemetric/fields/base-fields.yml",
-    "/package/datasources/1.0.0/dataset/examplelog1/agent/stream/logs.yml",
-    "/package/datasources/1.0.0/dataset/examplelog1/agent/stream/syslog.yml",
-    "/package/datasources/1.0.0/dataset/examplelog2/agent/stream/stream.yml.hbs",
-    "/package/datasources/1.0.0/dataset/examplemetric/agent/stream/stream.yml.hbs"
+    "/v1/package/datasources/1.0.0/manifest.yml",
+    "/v1/package/datasources/1.0.0/docs/README.md",
+    "/v1/package/datasources/1.0.0/dataset/examplelog1/manifest.yml",
+    "/v1/package/datasources/1.0.0/dataset/examplelog2/manifest.yml",
+    "/v1/package/datasources/1.0.0/dataset/examplemetric/manifest.yml",
+    "/v1/package/datasources/1.0.0/dataset/examplelog1/fields/base-fields.yml",
+    "/v1/package/datasources/1.0.0/dataset/examplelog2/fields/base-fields.yml",
+    "/v1/package/datasources/1.0.0/dataset/examplemetric/fields/base-fields.yml",
+    "/v1/package/datasources/1.0.0/dataset/examplelog1/agent/stream/logs.yml",
+    "/v1/package/datasources/1.0.0/dataset/examplelog1/agent/stream/syslog.yml",
+    "/v1/package/datasources/1.0.0/dataset/examplelog2/agent/stream/stream.yml.hbs",
+    "/v1/package/datasources/1.0.0/dataset/examplemetric/agent/stream/stream.yml.hbs"
   ],
   "datasets": [
     {

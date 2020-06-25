@@ -8,6 +8,7 @@ const (
 	ReleaseExperimental = "experimental"
 	ReleaseBeta         = "beta"
 	ReleaseGa           = "ga"
+	APIVersion          = "v1"
 
 	// Default release if no release is configured
 	DefaultRelease = ReleaseExperimental

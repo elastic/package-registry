@@ -11,15 +11,15 @@
       "type": "tar"
     }
   ],
-  "path": "/package/longdocs/1.0.4",
+  "path": "/v1/package/longdocs/1.0.4",
   "icons": [
     {
-      "src": "/package/longdocs/1.0.4/img/icon.svg",
+      "src": "/v1/package/longdocs/1.0.4/img/icon.svg",
       "type": "image/svg+xml"
     }
   ],
   "format_version": "1.0.0",
-  "readme": "/package/longdocs/1.0.4/docs/README.md",
+  "readme": "/v1/package/longdocs/1.0.4/docs/README.md",
   "license": "basic",
   "categories": [
     "logs",
@@ -33,9 +33,9 @@
     }
   },
   "assets": [
-    "/package/longdocs/1.0.4/manifest.yml",
-    "/package/longdocs/1.0.4/docs/README.md",
-    "/package/longdocs/1.0.4/docs/data.json",
-    "/package/longdocs/1.0.4/img/icon.svg"
+    "/v1/package/longdocs/1.0.4/manifest.yml",
+    "/v1/package/longdocs/1.0.4/docs/README.md",
+    "/v1/package/longdocs/1.0.4/docs/data.json",
+    "/v1/package/longdocs/1.0.4/img/icon.svg"
   ]
 }

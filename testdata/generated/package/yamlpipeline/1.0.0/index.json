@@ -11,9 +11,9 @@
       "type": "tar"
     }
   ],
-  "path": "/package/yamlpipeline/1.0.0",
+  "path": "/v1/package/yamlpipeline/1.0.0",
   "format_version": "1.0.0",
-  "readme": "/package/yamlpipeline/1.0.0/docs/README.md",
+  "readme": "/v1/package/yamlpipeline/1.0.0/docs/README.md",
   "license": "basic",
   "categories": [
     "logs"
@@ -24,14 +24,14 @@
     "kibana": {}
   },
   "assets": [
-    "/package/yamlpipeline/1.0.0/manifest.yml",
-    "/package/yamlpipeline/1.0.0/docs/README.md",
-    "/package/yamlpipeline/1.0.0/dataset/log/manifest.yml",
-    "/package/yamlpipeline/1.0.0/dataset/log/fields/base-fields.yml",
-    "/package/yamlpipeline/1.0.0/dataset/log/agent/stream/stream.yml.hbs",
-    "/package/yamlpipeline/1.0.0/dataset/log/elasticsearch/ingest-pipeline/pipeline-entry.yml",
-    "/package/yamlpipeline/1.0.0/dataset/log/elasticsearch/ingest-pipeline/pipeline-json.yml",
-    "/package/yamlpipeline/1.0.0/dataset/log/elasticsearch/ingest-pipeline/pipeline-plaintext.yml"
+    "/v1/package/yamlpipeline/1.0.0/manifest.yml",
+    "/v1/package/yamlpipeline/1.0.0/docs/README.md",
+    "/v1/package/yamlpipeline/1.0.0/dataset/log/manifest.yml",
+    "/v1/package/yamlpipeline/1.0.0/dataset/log/fields/base-fields.yml",
+    "/v1/package/yamlpipeline/1.0.0/dataset/log/agent/stream/stream.yml.hbs",
+    "/v1/package/yamlpipeline/1.0.0/dataset/log/elasticsearch/ingest-pipeline/pipeline-entry.yml",
+    "/v1/package/yamlpipeline/1.0.0/dataset/log/elasticsearch/ingest-pipeline/pipeline-json.yml",
+    "/v1/package/yamlpipeline/1.0.0/dataset/log/elasticsearch/ingest-pipeline/pipeline-plaintext.yml"
   ],
   "datasets": [
     {

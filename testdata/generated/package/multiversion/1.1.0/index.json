@@ -11,15 +11,15 @@
       "type": "tar"
     }
   ],
-  "path": "/package/multiversion/1.1.0",
+  "path": "/v1/package/multiversion/1.1.0",
   "icons": [
     {
-      "src": "/package/multiversion/1.1.0/img/icon.svg",
+      "src": "/v1/package/multiversion/1.1.0/img/icon.svg",
       "type": "image/svg+xml"
     }
   ],
   "format_version": "1.0.0",
-  "readme": "/package/multiversion/1.1.0/docs/README.md",
+  "readme": "/v1/package/multiversion/1.1.0/docs/README.md",
   "license": "basic",
   "categories": [
     "logs",
@@ -33,9 +33,9 @@
     }
   },
   "assets": [
-    "/package/multiversion/1.1.0/changelog.yml",
-    "/package/multiversion/1.1.0/manifest.yml",
-    "/package/multiversion/1.1.0/docs/README.md",
-    "/package/multiversion/1.1.0/img/icon.svg"
+    "/v1/package/multiversion/1.1.0/changelog.yml",
+    "/v1/package/multiversion/1.1.0/manifest.yml",
+    "/v1/package/multiversion/1.1.0/docs/README.md",
+    "/v1/package/multiversion/1.1.0/img/icon.svg"
   ]
 }

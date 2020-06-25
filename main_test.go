@@ -48,21 +48,21 @@ func TestEndpoints(t *testing.T) {
 	}{
 		{"/", "", "index.json", indexHandleFunc},
 		{"/index.json", "", "index.json", indexHandleFunc},
-		{"/search", "/search", "search.json", searchHandler(packagesBasePaths, testCacheTime)},
-		{"/search?all=true", "/search", "search-all.json", searchHandler(packagesBasePaths, testCacheTime)},
-		{"/categories", "/categories", "categories.json", categoriesHandler(packagesBasePaths, testCacheTime)},
-		{"/categories?experimental=true", "/categories", "categories-experimental.json", categoriesHandler(packagesBasePaths, testCacheTime)},
-		{"/categories?experimental=foo", "/categories", "categories-experimental-error.json", categoriesHandler(packagesBasePaths, testCacheTime)},
-		{"/search?kibana.version=6.5.2", "/search", "search-kibana652.json", searchHandler(packagesBasePaths, testCacheTime)},
-		{"/search?kibana.version=7.2.1", "/search", "search-kibana721.json", searchHandler(packagesBasePaths, testCacheTime)},
-		{"/search?category=metrics", "/search", "search-category-metrics.json", searchHandler(packagesBasePaths, testCacheTime)},
-		{"/search?category=logs", "/search", "search-category-logs.json", searchHandler(packagesBasePaths, testCacheTime)},
-		{"/search?package=example", "/search", "search-package-example.json", searchHandler(packagesBasePaths, testCacheTime)},
-		{"/search?package=example&all=true", "/search", "search-package-example-all.json", searchHandler(packagesBasePaths, testCacheTime)},
-		{"/search?internal=true", "/search", "search-package-internal.json", searchHandler(packagesBasePaths, testCacheTime)},
-		{"/search?internal=bar", "/search", "search-package-internal-error.json", searchHandler(packagesBasePaths, testCacheTime)},
-		{"/search?experimental=true", "/search", "search-package-experimental.json", searchHandler(packagesBasePaths, testCacheTime)},
-		{"/search?experimental=foo", "/search", "search-package-experimental-error.json", searchHandler(packagesBasePaths, testCacheTime)},
+		{"/v1/search", "/v1/search", "search.json", searchHandler(packagesBasePaths, testCacheTime)},
+		{"/v1/search?all=true", "/v1/search", "search-all.json", searchHandler(packagesBasePaths, testCacheTime)},
+		{"/v1/categories", "/v1/categories", "categories.json", categoriesHandler(packagesBasePaths, testCacheTime)},
+		{"/v1/categories?experimental=true", "/v1/categories", "categories-experimental.json", categoriesHandler(packagesBasePaths, testCacheTime)},
+		{"/v1/categories?experimental=foo", "/v1/categories", "categories-experimental-error.json", categoriesHandler(packagesBasePaths, testCacheTime)},
+		{"/v1/search?kibana.version=6.5.2", "/v1/search", "search-kibana652.json", searchHandler(packagesBasePaths, testCacheTime)},
+		{"/v1/search?kibana.version=7.2.1", "/v1/search", "search-kibana721.json", searchHandler(packagesBasePaths, testCacheTime)},
+		{"/v1/search?category=metrics", "/v1/search", "search-category-metrics.json", searchHandler(packagesBasePaths, testCacheTime)},
+		{"/v1/search?category=logs", "/v1/search", "search-category-logs.json", searchHandler(packagesBasePaths, testCacheTime)},
+		{"/v1/search?package=example", "/v1/search", "search-package-example.json", searchHandler(packagesBasePaths, testCacheTime)},
+		{"/v1/search?package=example&all=true", "/v1/search", "search-package-example-all.json", searchHandler(packagesBasePaths, testCacheTime)},
+		{"/v1/search?internal=true", "/v1/search", "search-package-internal.json", searchHandler(packagesBasePaths, testCacheTime)},
+		{"/v1/search?internal=bar", "/v1/search", "search-package-internal-error.json", searchHandler(packagesBasePaths, testCacheTime)},
+		{"/v1/search?experimental=true", "/v1/search", "search-package-experimental.json", searchHandler(packagesBasePaths, testCacheTime)},
+		{"/v1/search?experimental=foo", "/v1/search", "search-package-experimental-error.json", searchHandler(packagesBasePaths, testCacheTime)},
 		{"/favicon.ico", "", "favicon.ico", faviconHandleFunc},
 	}
 
@@ -108,10 +108,10 @@ func TestPackageIndex(t *testing.T) {
 		file     string
 		handler  func(w http.ResponseWriter, r *http.Request)
 	}{
-		{"/package/example/1.0.0/", packageIndexRouterPath, "package.json", packageIndexHandler},
-		{"/package/missing/1.0.0/", packageIndexRouterPath, "index-package-not-found.txt", packageIndexHandler},
-		{"/package/example/999.0.0/", packageIndexRouterPath, "index-package-revision-not-found.txt", packageIndexHandler},
-		{"/package/example/a.b.c/", packageIndexRouterPath, "index-package-invalid-version.txt", packageIndexHandler},
+		{"/v1/package/example/1.0.0/", packageIndexRouterPath, "package.json", packageIndexHandler},
+		{"/v1/package/missing/1.0.0/", packageIndexRouterPath, "index-package-not-found.txt", packageIndexHandler},
+		{"/v1/package/example/999.0.0/", packageIndexRouterPath, "index-package-revision-not-found.txt", packageIndexHandler},
+		{"/v1/package/example/a.b.c/", packageIndexRouterPath, "index-package-invalid-version.txt", packageIndexHandler},
 	}
 
 	for _, test := range tests {
@@ -152,7 +152,7 @@ func TestAllPackageIndex(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.packageName+"/"+test.packageVersion, func(t *testing.T) {
-			packageEndpoint := "/package/" + test.packageName + "/" + test.packageVersion + "/"
+			packageEndpoint := "/v1/package/" + test.packageName + "/" + test.packageVersion + "/"
 			fileName := filepath.Join("package", test.packageName, test.packageVersion, "index.json")
 			runEndpoint(t, packageEndpoint, packageIndexRouterPath, fileName, packageIndexHandler)
 		})

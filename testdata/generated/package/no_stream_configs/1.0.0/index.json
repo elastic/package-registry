@@ -11,9 +11,9 @@
       "type": "tar"
     }
   ],
-  "path": "/package/no_stream_configs/1.0.0",
+  "path": "/v1/package/no_stream_configs/1.0.0",
   "format_version": "1.0.0",
-  "readme": "/package/no_stream_configs/1.0.0/docs/README.md",
+  "readme": "/v1/package/no_stream_configs/1.0.0/docs/README.md",
   "license": "basic",
   "categories": [
     "logs"
@@ -24,11 +24,11 @@
     "kibana": {}
   },
   "assets": [
-    "/package/no_stream_configs/1.0.0/manifest.yml",
-    "/package/no_stream_configs/1.0.0/docs/README.md",
-    "/package/no_stream_configs/1.0.0/dataset/log/manifest.yml",
-    "/package/no_stream_configs/1.0.0/dataset/log/fields/base-fields.yml",
-    "/package/no_stream_configs/1.0.0/dataset/log/fields/ecs.yml"
+    "/v1/package/no_stream_configs/1.0.0/manifest.yml",
+    "/v1/package/no_stream_configs/1.0.0/docs/README.md",
+    "/v1/package/no_stream_configs/1.0.0/dataset/log/manifest.yml",
+    "/v1/package/no_stream_configs/1.0.0/dataset/log/fields/base-fields.yml",
+    "/v1/package/no_stream_configs/1.0.0/dataset/log/fields/ecs.yml"
   ],
   "datasets": [
     {
