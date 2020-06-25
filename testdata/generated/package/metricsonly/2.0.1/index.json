@@ -25,7 +25,6 @@
     "metrics"
   ],
   "release": "ga",
-  "removable": true,
   "requirement": {
     "kibana": {}
   },

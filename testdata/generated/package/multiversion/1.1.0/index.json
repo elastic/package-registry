@@ -26,7 +26,6 @@
     "metrics"
   ],
   "release": "ga",
-  "removable": true,
   "requirement": {
     "kibana": {
       "versions": "\u003e6.7.0"
