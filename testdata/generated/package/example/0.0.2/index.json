@@ -19,7 +19,6 @@
     "logs"
   ],
   "release": "beta",
-  "removable": true,
   "requirement": {
     "kibana": {
       "versions": "\u003e=6.0.0"

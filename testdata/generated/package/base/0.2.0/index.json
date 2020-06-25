@@ -18,7 +18,6 @@
   "license": "basic",
   "categories": [],
   "release": "ga",
-  "removable": false,
   "requirement": {
     "kibana": {
       "versions": "\u003e7.9.0"

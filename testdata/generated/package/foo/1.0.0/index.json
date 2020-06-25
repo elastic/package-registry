@@ -19,7 +19,6 @@
     "metrics"
   ],
   "release": "beta",
-  "removable": true,
   "requirement": {
     "kibana": {
       "versions": "\u003e=7.0.0"

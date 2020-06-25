@@ -61,7 +61,6 @@ type Package struct {
 	versionSemVer *semver.Version
 	Categories    []string     `config:"categories" json:"categories"`
 	Release       string       `config:"release,omitempty" json:"release,omitempty"`
-	Removable     bool         `config:"removable" json:"removable"`
 	Requirement   Requirement  `config:"requirement" json:"requirement"`
 	Screenshots   []Image      `config:"screenshots,omitempty" json:"screenshots,omitempty" yaml:"screenshots,omitempty"`
 	Assets        []string     `config:"assets,omitempty" json:"assets,omitempty" yaml:"assets,omitempty"`
@@ -150,8 +149,7 @@ func NewPackage(basePath string) (*Package, error) {
 	}
 
 	var p = &Package{
-		BasePath:  basePath,
-		Removable: true,
+		BasePath: basePath,
 	}
 	err = manifest.Unpack(p)
 	if err != nil {
