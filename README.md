@@ -80,7 +80,7 @@ A full example with the directory structure looks as following:
 └── manifest.yml
 ```
 
-More details about each asset can be found in ASSETS.md
+More details about each asset can be found in the reference package: /testdata/package/reference
 
 ## Architecture
 
