@@ -1,0 +1,114 @@
+openapi: 3.0.0
+info:
+  title: EPR
+  version: '1.0'
+  license:
+    name: Elastic-License
+    url: 'https://github.com/elastic/package-registry/blob/master/LICENSE.txt'
+  description: Elastic Package Registry
+  contact:
+    name: Nicolas Ruflin
+    email: spam@ruflin.com
+servers:
+  - url: 'https://epr.elastic.co'
+    description: public
+  - url: 'https://epr-staging.elastic.co'
+    description: staging
+  - url: 'http://localhost:8080'
+    description: local
+paths:
+  /:
+    get:
+      summary: GET info
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+      operationId: get
+      description: Info about the registry
+  /categories:
+    get:
+      summary: GET categories
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+              examples:
+                example-1:
+                  value:
+                    - id: logs
+                      title: Logs
+                      count: 20
+                    - id: metrics
+                      title: Metrics
+                      count: 17
+      operationId: get-categories
+      description: List of the existing package categories and how many packages are in each category
+  /search:
+    get:
+      summary: Search packages
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+      operationId: get-search
+      description: Search for packages. By default returns all the most recent packages available.
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: kibana
+          description: 'Filters out all the packages which are not compatible with the given Kibana version. If it is set to 7.3.1 and a package requires 7.4, the package will not be returned or an older compatible package will be shown. By default this endpoint always returns only the newest compatible package.'
+        - schema:
+            type: string
+          in: query
+          name: category
+          description: Filters the package by the given category. Available categories can be seend when going to /categories endpoint.
+        - schema:
+            type: string
+          in: query
+          name: package
+          description: 'Filters by a specific package name, for example mysql. In contrast to the other endpoints, it will return by default all versions of this package.'
+        - schema:
+            type: string
+          in: query
+          name: internal
+          description: 'This can be set to true, to also list internal packages. This is set to false by default.'
+  '/package/{package}/{version}':
+    get:
+      summary: GET package info
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+      operationId: get-package
+      description: Info about a package
+    parameters:
+      - schema:
+          type: string
+        name: package
+        in: path
+        description: Name of the package
+        required: true
+      - schema:
+          type: string
+        name: version
+        in: path
+        required: true
+        description: Version of the package
