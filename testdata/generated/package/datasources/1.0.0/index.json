@@ -55,19 +55,7 @@
               "show_user": false,
               "default": [
                 "/var/log/nginx/error.log*"
-              ],
-              "os": {
-                "darwin": {
-                  "default": [
-                    "/usr/local/var/log/nginx/error.log*"
-                  ]
-                },
-                "windows": {
-                  "default": [
-                    "c:/programdata/nginx/logs/*error.log*"
-                  ]
-                }
-              }
+              ]
             }
           ],
           "template_path": "logs.yml",
@@ -104,19 +92,7 @@
               "show_user": false,
               "default": [
                 "/var/log/nginx/access.log*"
-              ],
-              "os": {
-                "darwin": {
-                  "default": [
-                    "/usr/local/var/log/nginx/access.log*"
-                  ]
-                },
-                "windows": {
-                  "default": [
-                    "c:/programdata/nginx/logs/*access.log*"
-                  ]
-                }
-              }
+              ]
             }
           ],
           "title": "Title of the stream",
@@ -239,19 +215,7 @@
                   "show_user": false,
                   "default": [
                     "/var/log/nginx/error.log*"
-                  ],
-                  "os": {
-                    "darwin": {
-                      "default": [
-                        "/usr/local/var/log/nginx/error.log*"
-                      ]
-                    },
-                    "windows": {
-                      "default": [
-                        "c:/programdata/nginx/logs/*error.log*"
-                      ]
-                    }
-                  }
+                  ]
                 }
               ],
               "dataset": "datasources.examplelog1",
@@ -273,19 +237,7 @@
                   "show_user": false,
                   "default": [
                     "/var/log/nginx/access.log*"
-                  ],
-                  "os": {
-                    "darwin": {
-                      "default": [
-                        "/usr/local/var/log/nginx/access.log*"
-                      ]
-                    },
-                    "windows": {
-                      "default": [
-                        "c:/programdata/nginx/logs/*access.log*"
-                      ]
-                    }
-                  }
+                  ]
                 }
               ],
               "dataset": "datasources.examplelog2",
