@@ -27,7 +27,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/IndexData'
       operationId: get
       description: Info about the registry
   /categories:
@@ -41,6 +41,8 @@ paths:
             application/json:
               schema:
                 type: array
+                items:
+                  $ref: '#/components/schemas/Category'
               examples:
                 example-1:
                   value:
@@ -63,6 +65,8 @@ paths:
             application/json:
               schema:
                 type: array
+                items:
+                  $ref: '#/components/schemas/BasePackage'
       operationId: get-search
       description: Search for packages. By default returns all the most recent packages available.
       parameters:
@@ -96,7 +100,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/Package'
       operationId: get-package
       description: Info about a package
     parameters:
@@ -112,3 +116,251 @@ paths:
         in: path
         required: true
         description: Version of the package
+components:
+  schemas:
+    IndexData:
+      title: IndexData
+      type: object
+      properties:
+        version:
+          type: string
+        service.name:
+          type: string
+      required:
+        - version
+        - service.name
+    Category:
+      title: Category
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        count:
+          type: integer
+      required:
+        - id
+        - title
+        - count
+    Image:
+      title: Image
+      type: object
+      properties:
+        src:
+          type: string
+        title:
+          type: string
+        size:
+          type: string
+        type:
+          type: string
+      required:
+        - src
+    ProductRequirement:
+      title: Kibana
+      type: object
+      properties:
+        versions:
+          type: string
+    Requirement:
+      title: Requirement
+      type: object
+      properties:
+        Kibana:
+          $ref: '#/components/schemas/ProductRequirement'
+      required:
+        - Kibana
+    Dataset:
+      title: Dataset
+      type: object
+      properties:
+        title:
+          type: string
+        name:
+          type: string
+        release:
+          type: string
+        type:
+          type: string
+        ingest_pipeline:
+          type: string
+        package:
+          type: string
+        id:
+          type: string
+        path:
+          type: string
+        streams:
+          $ref: '#/components/schemas/Stream'
+      required:
+        - title
+        - name
+        - release
+        - type
+    Stream:
+      title: Stream
+      type: object
+      properties:
+        input:
+          type: string
+        vars:
+          $ref: '#/components/schemas/Variable'
+        dataset:
+          type: string
+        template_path:
+          type: string
+        template:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        enabled:
+          type: boolean
+      required:
+        - input
+    Input:
+      title: Input
+      type: object
+      properties:
+        id:
+          type: string
+    Variable:
+      title: Variable
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        multi:
+          type: boolean
+        required:
+          type: boolean
+        show_user:
+          type: boolean
+        default:
+          type: object
+      required:
+        - name
+        - type
+        - multi
+        - required
+        - show_user
+    BasePackage:
+      title: BasePackage
+      type: object
+      properties:
+        name:
+          type: string
+        title:
+          type: string
+        version:
+          type: string
+        description:
+          type: string
+        type:
+          type: string
+        download:
+          type: string
+        downloads:
+          type: array
+          items:
+            $ref: '#/components/schemas/Download'
+        path:
+          type: string
+        icons:
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+        internal:
+          type: string
+      required:
+        - name
+        - version
+        - description
+        - type
+    Download:
+      title: Download
+      type: object
+      properties:
+        path:
+          type: string
+        type:
+          type: string
+      required:
+        - path
+        - type
+    Package:
+      title: Package
+      allOf:
+        - $ref: '#/components/schemas/BasePackage'
+        - type: object
+          properties:
+            format_version:
+              type: string
+            readme:
+              type: string
+            license:
+              type: string
+            categories:
+              type: array
+              items:
+                type: string
+            release:
+              type: string
+            requirement:
+              $ref: '#/components/schemas/Requirement'
+            screenshots:
+              $ref: '#/components/schemas/Image'
+            assets:
+              type: array
+              items:
+                type: string
+            datasets:
+              type: array
+              items:
+                $ref: '#/components/schemas/Dataset'
+            datasources:
+              type: array
+              items:
+                $ref: '#/components/schemas/Datasource'
+            owner:
+              $ref: '#/components/schemas/Owner'
+          required:
+            - format_version
+            - categories
+            - requirement
+      description: ''
+    Datasource:
+      title: Datasource
+      type: object
+      properties:
+        name:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Input'
+        multiple:
+          type: boolean
+      required:
+        - name
+        - title
+        - description
+        - inputs
+    Owner:
+      title: Owner
+      type: object
+      properties:
+        github:
+          type: string
