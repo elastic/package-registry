@@ -83,6 +83,10 @@ type Elasticsearch struct {
 	IndexTemplateMappings map[string]interface{} `config:"index_template.mappings" json:"index_template.mappings,omitempty" yaml:"index_template.mappings,omitempty"`
 }
 
+type Elasticsearch struct {
+	IngestPipelineName string `config:"ingest_pipeline.name,omitempty" json:"ingest_pipeline.name,omitempty" yaml:"ingest_pipeline.name,omitempty"`
+}
+
 type fieldEntry struct {
 	name  string
 	aType string
@@ -157,7 +161,18 @@ func (d *Dataset) Validate() error {
 		return fmt.Errorf("type is not valid: %s", d.Type)
 	}
 
-	if d.IngestPipeline == "" {
+	if d.Elasticsearch != nil && d.Elasticsearch.IngestPipelineName == "" {
+		// Check that no ingest pipeline exists in the directory except default
+		for _, path := range paths {
+			if filepath.Base(path) == "default.json" || filepath.Base(path) == "default.yml" {
+				d.Elasticsearch.IngestPipelineName = "default"
+				// TODO: remove because of legacy
+				d.IngestPipeline = "default"
+				break
+			}
+		}
+		// TODO: Remove, only here for legacy
+	} else if d.IngestPipeline == "" {
 		// Check that no ingest pipeline exists in the directory except default
 		for _, path := range paths {
 			if filepath.Base(path) == "default.json" || filepath.Base(path) == "default.yml" {
