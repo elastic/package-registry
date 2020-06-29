@@ -224,21 +224,21 @@ func NewPackage(basePath string) (*Package, error) {
 }
 
 func NewPackageWithResources(path string) (*Package, error) {
-	aPackage, err := NewPackage(path)
+	p, err := NewPackage(path)
 	if err != nil {
 		return nil, errors.Wrapf(err, "building package from path '%s' failed", path)
 	}
 
-	err = aPackage.LoadAssets()
+	err = p.LoadAssets()
 	if err != nil {
 		return nil, errors.Wrapf(err, "loading package assets failed (path '%s')", path)
 	}
 
-	err = aPackage.LoadDataSets()
+	err = p.LoadDataSets()
 	if err != nil {
 		return nil, errors.Wrapf(err, "loading package datasets failed (path '%s')", path)
 	}
-	return aPackage, nil
+	return p, nil
 }
 
 func (p *Package) HasCategory(category string) bool {
