@@ -34,10 +34,10 @@
   ],
   "datasets": [
     {
-      "id": "yamlpipeline.log",
+      "type": "logs",
+      "name": "yamlpipeline.log",
       "title": "Log Yaml pipeline",
       "release": "experimental",
-      "type": "logs",
       "ingest_pipeline": "pipeline-entry",
       "streams": [
         {
@@ -51,6 +51,7 @@
               "show_user": false
             }
           ],
+          "template_path": "stream.yml.hbs",
           "title": "Yamlpipline example logs",
           "description": "Yamlpipeline example",
           "enabled": true
