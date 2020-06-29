@@ -126,3 +126,10 @@ func TestValidate(t *testing.T) {
 		})
 	}
 }
+
+func BenchmarkNewPackage(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_, err := NewPackage("../testdata/package/reference/1.0.0")
+		assert.NoError(b, err)
+	}
+}
