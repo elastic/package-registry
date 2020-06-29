@@ -31,10 +31,10 @@
   ],
   "datasets": [
     {
-      "id": "no_stream_configs.log",
+      "type": "logs",
+      "name": "no_stream_configs.log",
       "title": "Log Yaml pipeline",
       "release": "experimental",
-      "type": "logs",
       "package": "no_stream_configs",
       "path": "log"
     }

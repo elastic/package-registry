@@ -28,17 +28,7 @@
     "/package/ecs_style_dataset/0.0.1/dataset/foo/manifest.yml",
     "/package/ecs_style_dataset/0.0.1/dataset/foo/fields/fields.yml"
   ],
-  "datasets": [
-    {
-      "id": "ecs_style_dataset.foo",
-      "title": "Foo",
-      "release": "experimental",
-      "type": "logs",
-      "package": "ecs_style_dataset",
-      "path": "foo"
-    }
-  ],
-  "datasources": [
+  "config_templates": [
     {
       "name": "logs",
       "title": "Logs datasource",
@@ -49,6 +39,16 @@
         }
       ],
       "multiple": true
+    }
+  ],
+  "datasets": [
+    {
+      "type": "logs",
+      "name": "ecs_style_dataset.foo",
+      "title": "Foo",
+      "release": "experimental",
+      "package": "ecs_style_dataset",
+      "path": "foo"
     }
   ]
 }
