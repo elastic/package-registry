@@ -10,9 +10,9 @@ release: beta
 type: logs
 
 elasticsearch:
-  index-template.mappings:
+  index_template.mappings:
     dynamic: false
-  index-template.settings:
+  index_template.settings:
     index.lifecycle.name: reference
 
 # This is the ingest pipeline which should be used. If none is define,

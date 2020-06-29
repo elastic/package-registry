@@ -81,8 +81,8 @@ type Variable struct {
 }
 
 type Elasticsearch struct {
-	IndexTemplateSettings map[string]interface{} `config:"index-template.settings" json:"index-template.settings,omitempty" yaml:"index-template.settings,omitempty"`
-	IndexTemplateMappings map[string]interface{} `config:"index-template.mappings" json:"index-template.mappings,omitempty" yaml:"index-template.mappings,omitempty"`
+	IndexTemplateSettings map[string]interface{} `config:"index_template.settings" json:"index_template.settings,omitempty" yaml:"index_template.settings,omitempty"`
+	IndexTemplateMappings map[string]interface{} `config:"index_template.mappings" json:"index_template.mappings,omitempty" yaml:"index_template.mappings,omitempty"`
 }
 
 type fieldEntry struct {

@@ -71,14 +71,14 @@
       ],
       "package": "reference",
       "elasticsearch": {
-        "index-template.settings": {
+        "index_template.settings": {
           "index": {
             "lifecycle": {
               "name": "reference"
             }
           }
         },
-        "index-template.mappings": {
+        "index_template.mappings": {
           "dynamic": false
         }
       },
