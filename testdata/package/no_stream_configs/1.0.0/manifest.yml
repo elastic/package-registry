@@ -5,7 +5,7 @@ title: No Stream configs
 description: >
   This package does contain a dataset but not stream configs.
 version: 1.0.0
-categories: [logs]
+categories: ["custom"]
 release: beta
 
 license: basic

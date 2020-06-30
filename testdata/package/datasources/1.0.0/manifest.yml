@@ -4,7 +4,7 @@ name: datasources
 description: Package with data sources
 version: 1.0.0
 title: Default datasource Integration
-categories: ["logs"]
+categories: ["custom"]
 type: integration
 license: basic
 release: beta

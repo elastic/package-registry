@@ -5,7 +5,7 @@ title: Yaml Pipeline package
 description: >
   This package contains a yaml pipeline.
 version: 1.0.0
-categories: [logs]
+categories: ["custom"]
 release: beta
 
 license: basic

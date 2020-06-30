@@ -16,7 +16,7 @@
   "readme": "/package/foo/1.0.0/docs/README.md",
   "license": "basic",
   "categories": [
-    "metrics"
+    "custom"
   ],
   "release": "beta",
   "requirement": {

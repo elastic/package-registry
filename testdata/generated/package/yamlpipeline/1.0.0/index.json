@@ -16,7 +16,7 @@
   "readme": "/package/yamlpipeline/1.0.0/docs/README.md",
   "license": "basic",
   "categories": [
-    "logs"
+    "custom"
   ],
   "release": "beta",
   "requirement": {

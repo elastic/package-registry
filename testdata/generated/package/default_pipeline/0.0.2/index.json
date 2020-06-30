@@ -16,7 +16,7 @@
   "readme": "/package/default_pipeline/0.0.2/docs/README.md",
   "license": "basic",
   "categories": [
-    "logs",
+    "containers",
     "message_queue"
   ],
   "release": "beta",

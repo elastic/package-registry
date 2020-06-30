@@ -16,8 +16,8 @@
   "readme": "/package/example/1.0.0/docs/README.md",
   "license": "basic",
   "categories": [
-    "logs",
-    "metrics"
+    "crm",
+    "azure"
   ],
   "release": "ga",
   "requirement": {

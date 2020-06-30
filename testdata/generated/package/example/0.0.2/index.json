@@ -16,7 +16,7 @@
   "readme": "/package/example/0.0.2/docs/README.md",
   "license": "basic",
   "categories": [
-    "logs"
+    "web"
   ],
   "release": "beta",
   "requirement": {
