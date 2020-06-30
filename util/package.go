@@ -195,7 +195,7 @@ func NewPackage(basePath string) (*Package, error) {
 	if p.Conditions != nil && p.Conditions.KibanaVersion != "" {
 		p.Conditions.kibanaConstraint, err = semver.NewConstraint(p.Conditions.KibanaVersion)
 		if err != nil {
-			return nil, errors.Wrapf(err, "invalid Kibana versions range: %s", p.Requirement.Kibana.Versions)
+			return nil, errors.Wrapf(err, "invalid Kibana versions range: %s", p.Conditions.KibanaVersion)
 		}
 		// TODO: remove legacy part
 	} else if p.Requirement.Kibana.Versions != "" {
