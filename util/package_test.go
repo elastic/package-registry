@@ -171,6 +171,18 @@ var kibanaVersionPackageTests = []struct {
 		"7.0.2",
 		true,
 	},
+	{
+		"inside major, not",
+		"^7.6.0",
+		"7.0.2",
+		false,
+	},
+	{
+		"inside major",
+		"^7.6.0",
+		"7.12.2",
+		true,
+	},
 }
 
 func TestHasKibanaVersion(t *testing.T) {
