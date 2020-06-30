@@ -99,8 +99,8 @@ type Requirement struct {
 }
 
 type Conditions struct {
-	KibanaVersion string `config:"kibana.version,omitempty" json:"kibana.version,omitempty" yaml:"kibana.version,omitempty"`
-	kibanaVersion *semver.Constraints
+	KibanaVersion    string `config:"kibana.version,omitempty" json:"kibana.version,omitempty" yaml:"kibana.version,omitempty"`
+	kibanaConstraint *semver.Constraints
 }
 
 type ProductRequirement struct {
@@ -193,7 +193,7 @@ func NewPackage(basePath string) (*Package, error) {
 
 	// If the new conditions are used, select them over the requirements
 	if p.Conditions != nil && p.Conditions.KibanaVersion != "" {
-		p.Conditions.kibanaVersion, err = semver.NewConstraint(p.Conditions.KibanaVersion)
+		p.Conditions.kibanaConstraint, err = semver.NewConstraint(p.Conditions.KibanaVersion)
 		if err != nil {
 			return nil, errors.Wrapf(err, "invalid Kibana versions range: %s", p.Requirement.Kibana.Versions)
 		}
@@ -202,7 +202,7 @@ func NewPackage(basePath string) (*Package, error) {
 		p.Conditions = &Conditions{
 			KibanaVersion: p.Requirement.Kibana.Versions,
 		}
-		p.Conditions.kibanaVersion, err = semver.NewConstraint(p.Requirement.Kibana.Versions)
+		p.Conditions.kibanaConstraint, err = semver.NewConstraint(p.Requirement.Kibana.Versions)
 		if err != nil {
 			return nil, errors.Wrapf(err, "invalid Kibana versions range: %s", p.Requirement.Kibana.Versions)
 		}
@@ -273,7 +273,7 @@ func (p *Package) HasKibanaVersion(version *semver.Version) bool {
 		return true
 	}
 
-	return p.Conditions.kibanaVersion.Check(version)
+	return p.Conditions.kibanaConstraint.Check(version)
 }
 
 func (p *Package) IsNewerOrEqual(pp Package) bool {

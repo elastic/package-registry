@@ -26,13 +26,13 @@
     "metrics"
   ],
   "release": "ga",
+  "conditions": {
+    "kibana.version": "\u003e6.7.0"
+  },
   "requirement": {
     "kibana": {
       "versions": "\u003e6.7.0"
     }
-  },
-  "conditions": {
-    "kibana.version": "\u003e6.7.0"
   },
   "assets": [
     "/package/longdocs/1.0.4/manifest.yml",

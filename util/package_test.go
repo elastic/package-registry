@@ -182,7 +182,7 @@ func TestHasKibanaVersion(t *testing.T) {
 
 			p := Package{
 				Conditions: &Conditions{
-					kibanaVersion: constraint,
+					kibanaConstraint: constraint,
 				},
 			}
 
