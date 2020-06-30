@@ -55,17 +55,17 @@ type Package struct {
 	BasePackage   `config:",inline" json:",inline" yaml:",inline"`
 	FormatVersion string `config:"format_version" json:"format_version" yaml:"format_version"`
 
-	Readme        *string `config:"readme,omitempty" json:"readme,omitempty" yaml:"readme,omitempty"`
-	License       string  `config:"license,omitempty" json:"license,omitempty" yaml:"license,omitempty"`
-	versionSemVer *semver.Version
-	Categories    []string     `config:"categories" json:"categories"`
-	Release       string       `config:"release,omitempty" json:"release,omitempty"`
-	Requirement   Requirement  `config:"requirement" json:"requirement"`
-	Screenshots   []Image      `config:"screenshots,omitempty" json:"screenshots,omitempty" yaml:"screenshots,omitempty"`
-	Assets        []string     `config:"assets,omitempty" json:"assets,omitempty" yaml:"assets,omitempty"`
-	Datasources   []Datasource `config:"datasources,omitempty" json:"config_templates,omitempty" yaml:"datasources,omitempty"`
-	Datasets      []*Dataset   `config:"datasets,omitempty" json:"datasets,omitempty" yaml:"datasets,omitempty"`
-	Owner         *Owner       `config:"owner,omitempty" json:"owner,omitempty" yaml:"owner,omitempty"`
+	Readme          *string `config:"readme,omitempty" json:"readme,omitempty" yaml:"readme,omitempty"`
+	License         string  `config:"license,omitempty" json:"license,omitempty" yaml:"license,omitempty"`
+	versionSemVer   *semver.Version
+	Categories      []string         `config:"categories" json:"categories"`
+	Release         string           `config:"release,omitempty" json:"release,omitempty"`
+	Requirement     Requirement      `config:"requirement" json:"requirement"`
+	Screenshots     []Image          `config:"screenshots,omitempty" json:"screenshots,omitempty" yaml:"screenshots,omitempty"`
+	Assets          []string         `config:"assets,omitempty" json:"assets,omitempty" yaml:"assets,omitempty"`
+	ConfigTemplates []ConfigTemplate `config:"config_templates,omitempty" json:"config_templates,omitempty" yaml:"config_templates,omitempty"`
+	Datasets        []*Dataset       `config:"datasets,omitempty" json:"datasets,omitempty" yaml:"datasets,omitempty"`
+	Owner           *Owner           `config:"owner,omitempty" json:"owner,omitempty" yaml:"owner,omitempty"`
 
 	// Local path to the package dir
 	BasePath string `json:"-" yaml:"-"`
@@ -85,7 +85,7 @@ type BasePackage struct {
 	Internal    bool       `config:"internal,omitempty" json:"internal,omitempty" yaml:"internal,omitempty"`
 }
 
-type Datasource struct {
+type ConfigTemplate struct {
 	Name        string  `config:"name" json:"name" validate:"required"`
 	Title       string  `config:"title" json:"title" validate:"required"`
 	Description string  `config:"description" json:"description" validate:"required"`
@@ -157,9 +157,9 @@ func NewPackage(basePath string) (*Package, error) {
 
 	// Default for the multiple flags is true.
 	trueValue := true
-	for i, _ := range p.Datasources {
-		if p.Datasources[i].Multiple == nil {
-			p.Datasources[i].Multiple = &trueValue
+	for i, _ := range p.ConfigTemplates {
+		if p.ConfigTemplates[i].Multiple == nil {
+			p.ConfigTemplates[i].Multiple = &trueValue
 		}
 	}
 	if p.Type == "" {

@@ -9,7 +9,7 @@ type: integration
 license: basic
 release: beta
 
-datasources:
+config_templates:
   -
     # Do we need a name for the data source?
     name: nginx
