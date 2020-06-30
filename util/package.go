@@ -63,7 +63,7 @@ type Package struct {
 	Requirement     Requirement      `config:"requirement" json:"requirement"`
 	Screenshots     []Image          `config:"screenshots,omitempty" json:"screenshots,omitempty" yaml:"screenshots,omitempty"`
 	Assets          []string         `config:"assets,omitempty" json:"assets,omitempty" yaml:"assets,omitempty"`
-	ConfigTemplates []ConfigTemplate `config:"config_templates,omitempty" json:"config_templates,omitempty" yaml:"datasources,omitempty"`
+	ConfigTemplates []ConfigTemplate `config:"config_templates,omitempty" json:"config_templates,omitempty" yaml:"config_templates,omitempty"`
 	Datasets        []*Dataset       `config:"datasets,omitempty" json:"datasets,omitempty" yaml:"datasets,omitempty"`
 	Owner           *Owner           `config:"owner,omitempty" json:"owner,omitempty" yaml:"owner,omitempty"`
 
