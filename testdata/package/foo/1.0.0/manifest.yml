@@ -4,7 +4,7 @@ name: foo
 description: This is the foo integration
 version: 1.0.0
 title: Foo
-categories: [metrics]
+categories: ["custom"]
 type: solution
 release: beta
 

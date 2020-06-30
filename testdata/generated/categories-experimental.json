@@ -1,8 +1,28 @@
 [
   {
-    "id": "logs",
-    "title": "Logs",
-    "count": 10
+    "id": "aws",
+    "title": "AWS",
+    "count": 1
+  },
+  {
+    "id": "azure",
+    "title": "Azure",
+    "count": 1
+  },
+  {
+    "id": "containers",
+    "title": "Containers",
+    "count": 1
+  },
+  {
+    "id": "crm",
+    "title": "CRM",
+    "count": 1
+  },
+  {
+    "id": "custom",
+    "title": "Custom",
+    "count": 9
   },
   {
     "id": "message_queue",
@@ -10,8 +30,13 @@
     "count": 1
   },
   {
-    "id": "metrics",
-    "title": "Metrics",
-    "count": 7
+    "id": "monitoring",
+    "title": "Monitoring",
+    "count": 1
+  },
+  {
+    "id": "web",
+    "title": "Web",
+    "count": 3
   }
 ]

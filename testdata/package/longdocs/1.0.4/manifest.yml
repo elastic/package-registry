@@ -9,7 +9,7 @@ description: >
 
   The integration does not contain any assets except the documentation page.
 version: 1.0.4
-categories: ["logs", "metrics"]
+categories: ["custom", "web"]
 release: ga
 license: basic
 

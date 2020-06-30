@@ -5,7 +5,7 @@ title: Metrics Only
 description: >
   This is an integration with only the metrics category.
 version: 2.0.1
-categories: ["metrics"]
+categories: ["custom"]
 release: ga
 license: basic
 

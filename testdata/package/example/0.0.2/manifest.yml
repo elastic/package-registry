@@ -4,7 +4,7 @@ name: example
 title: Example
 description: This is the example integration.
 version: 0.0.2
-categories: ["logs"]
+categories: ["web"]
 release: beta
 
 requirement:

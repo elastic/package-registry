@@ -23,4 +23,4 @@
 1995 example-0.0.2/kibana/visualization/7e4084e0-5c99-11e9-8477-077ec9664dbd.json
 1849 example-0.0.2/kibana/visualization/80844540-5c97-11e9-8477-077ec9664dbd.json
 1920 example-0.0.2/kibana/visualization/ab48c3f0-5ca6-11e9-8477-077ec9664dbd.json
-196 example-0.0.2/manifest.yml
+195 example-0.0.2/manifest.yml

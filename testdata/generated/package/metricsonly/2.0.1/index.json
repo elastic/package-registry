@@ -22,7 +22,7 @@
   "readme": "/package/metricsonly/2.0.1/docs/README.md",
   "license": "basic",
   "categories": [
-    "metrics"
+    "custom"
   ],
   "release": "ga",
   "requirement": {

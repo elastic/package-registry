@@ -23,8 +23,8 @@
   "readme": "/package/reference/1.0.0/docs/README.md",
   "license": "basic",
   "categories": [
-    "logs",
-    "metrics"
+    "custom",
+    "web"
   ],
   "release": "ga",
   "requirement": {

@@ -16,7 +16,7 @@ description: >
 version: 1.0.0
 
 # Categories this package fits in. The current two categories are "logs" and "metrics"
-categories: ["logs", "metrics"]
+categories: ["custom", "web"]
 
 # Release of this package. The possible options are experimental, beta, ga. The default if not set is experimental.
 release: ga

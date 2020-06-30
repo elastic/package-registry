@@ -4,7 +4,7 @@ name: ecs_style_dataset
 description: Tests the registry validations works for dataset fields using the ecs style format
 version: 0.0.1
 title: Default pipeline Integration
-categories: ["logs"]
+categories: ["monitoring"]
 type: integration
 release: beta
 

@@ -4,7 +4,7 @@ name: experimental
 description: Experimental package, should be set by default
 version: 0.0.1
 title: Experimental
-categories: [metrics]
+categories: ["aws"]
 type: solution
 
 

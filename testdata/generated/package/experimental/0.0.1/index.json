@@ -16,7 +16,7 @@
   "readme": "/package/experimental/0.0.1/docs/README.md",
   "license": "basic",
   "categories": [
-    "metrics"
+    "aws"
   ],
   "release": "experimental",
   "requirement": {
