@@ -58,6 +58,18 @@
         }
       ],
       "package": "yamlpipeline",
+      "elasticsearch": {
+        "index_template.settings": {
+          "index": {
+            "lifecycle": {
+              "name": "reference"
+            }
+          }
+        },
+        "index_template.mappings": {
+          "dynamic": false
+        }
+      },
       "path": "log"
     }
   ]

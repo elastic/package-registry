@@ -97,6 +97,18 @@
         }
       ],
       "package": "reference",
+      "elasticsearch": {
+        "index_template.settings": {
+          "index": {
+            "lifecycle": {
+              "name": "reference"
+            }
+          }
+        },
+        "index_template.mappings": {
+          "dynamic": false
+        }
+      },
       "path": "reference"
     }
   ],

@@ -9,6 +9,12 @@ release: beta
 # Allowed values: logs, metrics, events
 type: logs
 
+elasticsearch:
+  index_template.mappings:
+    dynamic: false
+  index_template.settings:
+    index.lifecycle.name: reference
+
 # This is the ingest pipeline which should be used. If none is define,
 # it checks if a default pipeline exists.
 #ingest_pipeline: default

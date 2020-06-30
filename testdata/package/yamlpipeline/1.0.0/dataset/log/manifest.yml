@@ -4,6 +4,13 @@ type: logs
 
 ingest_pipeline: pipeline-entry
 
+elasticsearch:
+  index_template:
+    mappings:
+      dynamic: false
+    settings:
+      index.lifecycle.name: reference
+
 streams:
   - input: logs
     title: Yamlpipline example logs
