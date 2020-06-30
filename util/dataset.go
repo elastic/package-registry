@@ -27,8 +27,6 @@ const (
 var validTypes = map[string]string{
 	"logs":    "Logs",
 	"metrics": "Metrics",
-	// TODO: Remove as soon as endpoint package does not use it anymore
-	"events": "Events",
 }
 
 type Dataset struct {
