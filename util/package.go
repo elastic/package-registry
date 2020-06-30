@@ -44,11 +44,6 @@ var CategoryTitles = map[string]string{
 	"ticketing":         "Ticketing",
 	"version_control":   "Version Control",
 	"web":               "Web",
-
-	// Old categories, to be removed
-	"logs":    "Logs",
-	"metrics": "Metrics",
-	//"security": "Security",
 }
 
 type Package struct {
