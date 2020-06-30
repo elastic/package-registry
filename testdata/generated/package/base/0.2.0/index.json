@@ -21,11 +21,6 @@
   "conditions": {
     "kibana.version": "\u003e7.9.0"
   },
-  "requirement": {
-    "kibana": {
-      "versions": "\u003e7.9.0"
-    }
-  },
   "assets": [
     "/package/base/0.2.0/manifest.yml",
     "/package/base/0.2.0/docs/README.md",

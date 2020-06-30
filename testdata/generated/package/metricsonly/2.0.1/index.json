@@ -25,9 +25,6 @@
     "custom"
   ],
   "release": "ga",
-  "requirement": {
-    "kibana": {}
-  },
   "assets": [
     "/package/metricsonly/2.0.1/manifest.yml",
     "/package/metricsonly/2.0.1/docs/README.md",

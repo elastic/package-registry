@@ -10,9 +10,9 @@ release: ga
 license: basic
 type: integration
 
-requirement:
+conditions:
   kibana:
-    versions: ">6.7.0"
+    version: ">6.7.0"
 
 icons:
 - src: "/img/icon.svg"

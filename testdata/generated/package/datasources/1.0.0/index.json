@@ -19,9 +19,6 @@
     "custom"
   ],
   "release": "beta",
-  "requirement": {
-    "kibana": {}
-  },
   "assets": [
     "/package/datasources/1.0.0/manifest.yml",
     "/package/datasources/1.0.0/docs/README.md",

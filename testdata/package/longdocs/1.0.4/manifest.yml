@@ -13,9 +13,9 @@ categories: ["custom", "web"]
 release: ga
 license: basic
 
-requirement:
+conditions:
   kibana:
-    versions: ">6.7.0"
+    version: ">6.7.0"
 
 icons:
 - src: "/img/icon.svg"
