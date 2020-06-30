@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Remove support for Elasticsearch requirements [#516](https://github.com/elastic/package-registry/pull/516)
 * Rename `kibana` query param to `kibana.version`. [#518](https://github.com/elastic/package-registry/pull/518)
 * Remove `removable` flag from package manifest. [#532](https://github.com/elastic/package-registry/pull/532)
+* Rename `datasources` to `config_templates` in dataset manifest. [#570](https://github.com/elastic/package-registry/pull/570)
 
 ### Bugfixes
 
