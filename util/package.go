@@ -18,7 +18,11 @@ import (
 	"github.com/elastic/go-ucfg/yaml"
 )
 
-const defaultType = "integration"
+const (
+	defaultType = "integration"
+	// Prefix used for all assets served for a package
+	packagePathPrefix = "/package"
+)
 
 var CategoryTitles = map[string]string{
 	"aws":               "AWS",
@@ -114,7 +118,7 @@ type Image struct {
 }
 
 func (i Image) getPath(p *Package) string {
-	return path.Join("/package", p.Name, p.Version, i.Src)
+	return path.Join(packagePathPrefix, p.Name, p.Version, i.Src)
 }
 
 type Download struct {
@@ -206,7 +210,7 @@ func NewPackage(basePath string) (*Package, error) {
 		if readme.IsDir() {
 			return nil, fmt.Errorf("README.md is a directory")
 		}
-		readmePathShort := path.Join("/package", p.Name, p.Version, "docs", "README.md")
+		readmePathShort := path.Join(packagePathPrefix, p.Name, p.Version, "docs", "README.md")
 		p.Readme = &readmePathShort
 	}
 
@@ -295,8 +299,7 @@ func (p *Package) LoadAssets() (err error) {
 
 		// Strip away the basePath from the local system
 		a = a[len(p.BasePath)+1:]
-
-		a = path.Join("/package", p.GetPath(), a)
+		a = path.Join(packagePathPrefix, p.GetPath(), a)
 		p.Assets = append(p.Assets, a)
 	}
 	return nil
@@ -474,5 +477,5 @@ func (p *Package) GetDownloadPath() string {
 }
 
 func (p *Package) GetUrlPath() string {
-	return path.Join("/package", p.Name, p.Version)
+	return path.Join(packagePathPrefix, p.Name, p.Version)
 }
