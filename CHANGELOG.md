@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Add list of downloads to /search endpoint. [#512](https://github.com/elastic/package-registry/pull/512)
 * Apply rule: first package found served. [#546](https://github.com/elastic/package-registry/pull/546)
 * Implement package watcher. [#553](https://github.com/elastic/package-registry/pull/553)
+* Add conditions as future replacement of requirements. [#519](https://github.com/elastic/package-registry/pull/519)
 
 ### Deprecated
 

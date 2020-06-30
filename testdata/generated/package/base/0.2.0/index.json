@@ -18,6 +18,9 @@
   "license": "basic",
   "categories": [],
   "release": "ga",
+  "conditions": {
+    "kibana.version": "\u003e7.9.0"
+  },
   "requirement": {
     "kibana": {
       "versions": "\u003e7.9.0"

@@ -19,6 +19,9 @@
     "web"
   ],
   "release": "beta",
+  "conditions": {
+    "kibana.version": "\u003e=6.0.0"
+  },
   "requirement": {
     "kibana": {
       "versions": "\u003e=6.0.0"

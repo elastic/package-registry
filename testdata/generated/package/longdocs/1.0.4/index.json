@@ -26,6 +26,9 @@
     "web"
   ],
   "release": "ga",
+  "conditions": {
+    "kibana.version": "\u003e6.7.0"
+  },
   "requirement": {
     "kibana": {
       "versions": "\u003e6.7.0"

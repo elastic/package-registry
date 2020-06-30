@@ -59,6 +59,7 @@ type Package struct {
 	versionSemVer   *semver.Version
 	Categories      []string         `config:"categories" json:"categories"`
 	Release         string           `config:"release,omitempty" json:"release,omitempty"`
+	Conditions      *Conditions      `config:"conditions,omitempty" json:"conditions,omitempty" yaml:"conditions,omitempty"`
 	Requirement     Requirement      `config:"requirement" json:"requirement"`
 	Screenshots     []Image          `config:"screenshots,omitempty" json:"screenshots,omitempty" yaml:"screenshots,omitempty"`
 	Assets          []string         `config:"assets,omitempty" json:"assets,omitempty" yaml:"assets,omitempty"`
@@ -94,6 +95,11 @@ type ConfigTemplate struct {
 
 type Requirement struct {
 	Kibana ProductRequirement `config:"kibana" json:"kibana,omitempty" yaml:"kibana"`
+}
+
+type Conditions struct {
+	KibanaVersion    string `config:"kibana.version,omitempty" json:"kibana.version,omitempty" yaml:"kibana.version,omitempty"`
+	kibanaConstraint *semver.Constraints
 }
 
 type ProductRequirement struct {
@@ -149,7 +155,7 @@ func NewPackage(basePath string) (*Package, error) {
 	var p = &Package{
 		BasePath: basePath,
 	}
-	err = manifest.Unpack(p)
+	err = manifest.Unpack(p, ucfg.PathSep("."))
 	if err != nil {
 		return nil, err
 	}
@@ -184,8 +190,18 @@ func NewPackage(basePath string) (*Package, error) {
 
 	p.Downloads = []Download{NewDownload(*p, "tar")}
 
-	if p.Requirement.Kibana.Versions != "" {
-		p.Requirement.Kibana.semVerRange, err = semver.NewConstraint(p.Requirement.Kibana.Versions)
+	// If the new conditions are used, select them over the requirements
+	if p.Conditions != nil && p.Conditions.KibanaVersion != "" {
+		p.Conditions.kibanaConstraint, err = semver.NewConstraint(p.Conditions.KibanaVersion)
+		if err != nil {
+			return nil, errors.Wrapf(err, "invalid Kibana versions range: %s", p.Conditions.KibanaVersion)
+		}
+		// TODO: remove legacy part
+	} else if p.Requirement.Kibana.Versions != "" {
+		p.Conditions = &Conditions{
+			KibanaVersion: p.Requirement.Kibana.Versions,
+		}
+		p.Conditions.kibanaConstraint, err = semver.NewConstraint(p.Requirement.Kibana.Versions)
 		if err != nil {
 			return nil, errors.Wrapf(err, "invalid Kibana versions range: %s", p.Requirement.Kibana.Versions)
 		}
@@ -252,16 +268,11 @@ func (p *Package) HasCategory(category string) bool {
 func (p *Package) HasKibanaVersion(version *semver.Version) bool {
 
 	// If the version is not specified, it is for all versions
-	if p.Requirement.Kibana.Versions == "" {
+	if p.Conditions == nil || version == nil {
 		return true
 	}
 
-	if version != nil {
-		if !p.Requirement.Kibana.semVerRange.Check(version) {
-			return false
-		}
-	}
-	return true
+	return p.Conditions.kibanaConstraint.Check(version)
 }
 
 func (p *Package) IsNewerOrEqual(pp Package) bool {
