@@ -1,4 +1,0 @@
-{
-  "description": "Pipeline for normalizing envoyproxy logs",
-  "processors": []
-}
