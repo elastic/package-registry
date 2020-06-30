@@ -84,6 +84,7 @@ paths:
           description: Filters the package by the given category. Available categories can be seend when going to /categories endpoint.
         - schema:
             type: string
+            default: ''
           in: query
           name: package
           description: 'Filters by a specific package name, for example mysql. In contrast to the other endpoints, it will return by default all versions of this package.'
@@ -174,27 +175,24 @@ components:
       title: Dataset
       type: object
       properties:
-        title:
+        type:
           type: string
         name:
           type: string
-        release:
+        title:
           type: string
-        type:
+        release:
           type: string
         ingest_pipeline:
           type: string
+        streams:
+          $ref: '#/components/schemas/Stream'
         package:
-          type: string
-        id:
           type: string
         path:
           type: string
-        streams:
-          $ref: '#/components/schemas/Stream'
       required:
         - title
-        - name
         - release
         - type
     Stream:
@@ -209,8 +207,6 @@ components:
           type: string
         template_path:
           type: string
-        template:
-          type: string
         title:
           type: string
         description:
@@ -223,8 +219,18 @@ components:
       title: Input
       type: object
       properties:
-        id:
+        type:
           type: string
+        vars:
+          $ref: '#/components/schemas/Variable'
+        title:
+          type: string
+        description:
+          type: string
+        streams:
+          $ref: '#/components/schemas/Stream'
+      required:
+        - type
     Variable:
       title: Variable
       type: object
@@ -321,14 +327,14 @@ components:
               type: array
               items:
                 type: string
+            config_templates:
+              type: array
+              items:
+                $ref: '#/components/schemas/ConfigTemplate'
             datasets:
               type: array
               items:
                 $ref: '#/components/schemas/Dataset'
-            datasources:
-              type: array
-              items:
-                $ref: '#/components/schemas/Datasource'
             owner:
               $ref: '#/components/schemas/Owner'
           required:
@@ -336,8 +342,8 @@ components:
             - categories
             - requirement
       description: ''
-    Datasource:
-      title: Datasource
+    ConfigTemplate:
+      title: ConfigTemplate
       type: object
       properties:
         name:
