@@ -29,12 +29,6 @@
   "conditions": {
     "kibana.version": "\u003e6.7.0"
   },
-<<<<<<< HEAD
-  "requirement": {
-    "kibana": {}
-  },
-=======
->>>>>>> 1f6d71c7... Remove support for requirements in package manifest
   "assets": [
     "/package/multiversion/1.1.0/changelog.yml",
     "/package/multiversion/1.1.0/manifest.yml",
