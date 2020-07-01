@@ -7,7 +7,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"sort"
 	"strconv"
@@ -125,7 +124,6 @@ func searchHandler(packagesBasePaths []string, cacheTime time.Duration) func(w h
 						continue
 					}
 					for _, pp := range versions {
-						log.Println("Delete package check, same name: ", pp.Name, pp.Version, p.Name, p.Version)
 
 						// If the package in the list is newer or equal, do nothing.
 						if pp.IsNewerOrEqual(p) {
