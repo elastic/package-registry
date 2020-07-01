@@ -1,0 +1,18 @@
+format_version: 1.0.0
+
+name: multiversion
+title: Multi Version Second with the same version! This one should win, because it is first.
+description: >
+  Multiple versions of this integration exist.
+version: 1.1.0
+categories: ["custom", "web"]
+release: ga
+license: basic
+
+conditions:
+  kibana:
+    version: ">6.7.0"
+
+icons:
+- src: "/img/icon.svg"
+  type: "image/svg+xml"

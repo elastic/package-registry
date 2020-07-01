@@ -137,7 +137,9 @@ func searchHandler(packagesBasePaths []string, cacheTime time.Duration) func(w h
 			if _, ok := packagesList[p.Name]; !ok {
 				packagesList[p.Name] = map[string]util.Package{}
 			}
-			packagesList[p.Name][p.Version] = p
+			if _, ok := packagesList[p.Name][p.Version]; !ok {
+				packagesList[p.Name][p.Version] = p
+			}
 		}
 
 		data, err := getPackageOutput(packagesList)

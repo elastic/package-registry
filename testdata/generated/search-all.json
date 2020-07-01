@@ -190,7 +190,7 @@
   },
   {
     "name": "multiversion",
-    "title": "Multi Version",
+    "title": "Multi Version Second with the same version! This one should win, because it is first.",
     "version": "1.1.0",
     "description": "Multiple versions of this integration exist.\n",
     "type": "integration",
