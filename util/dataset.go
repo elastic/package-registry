@@ -22,6 +22,10 @@ import (
 
 const (
 	DirIngestPipeline = "ingest-pipeline"
+
+	DefaultPipelineName     = "default"
+	DefaultPipelineNameJSON = "default.json"
+	DefaultPipelineNameYAML = "default.yaml"
 )
 
 var validTypes = map[string]string{
@@ -34,8 +38,10 @@ type Dataset struct {
 	Type string `config:"type" json:"type" validate:"required"`
 	Name string `config:"name" json:"name,omitempty" yaml:"name,omitempty"`
 
-	Title          string         `config:"title" json:"title" validate:"required"`
-	Release        string         `config:"release" json:"release"`
+	Title   string `config:"title" json:"title" validate:"required"`
+	Release string `config:"release" json:"release"`
+
+	// Deprecated: Replaced by elasticsearch.ingest_pipeline.name
 	IngestPipeline string         `config:"ingest_pipeline,omitempty" config:"ingest_pipeline" json:"ingest_pipeline,omitempty" yaml:"ingest_pipeline,omitempty"`
 	Streams        []Stream       `config:"streams" json:"streams,omitempty" yaml:"streams,omitempty" `
 	Package        string         `json:"package,omitempty" yaml:"package,omitempty"`
@@ -164,10 +170,10 @@ func (d *Dataset) Validate() error {
 	if d.Elasticsearch != nil && d.Elasticsearch.IngestPipelineName == "" {
 		// Check that no ingest pipeline exists in the directory except default
 		for _, path := range paths {
-			if filepath.Base(path) == "default.json" || filepath.Base(path) == "default.yml" {
-				d.Elasticsearch.IngestPipelineName = "default"
+			if filepath.Base(path) == DefaultPipelineNameJSON || filepath.Base(path) == DefaultPipelineNameYAML {
+				d.Elasticsearch.IngestPipelineName = DefaultPipelineName
 				// TODO: remove because of legacy
-				d.IngestPipeline = "default"
+				d.IngestPipeline = DefaultPipelineName
 				break
 			}
 		}
@@ -175,8 +181,8 @@ func (d *Dataset) Validate() error {
 	} else if d.IngestPipeline == "" {
 		// Check that no ingest pipeline exists in the directory except default
 		for _, path := range paths {
-			if filepath.Base(path) == "default.json" || filepath.Base(path) == "default.yml" {
-				d.IngestPipeline = "default"
+			if filepath.Base(path) == DefaultPipelineNameJSON || filepath.Base(path) == DefaultPipelineNameYAML {
+				d.IngestPipeline = DefaultPipelineName
 				break
 			}
 		}
