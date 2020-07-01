@@ -32,7 +32,7 @@ var (
 )
 
 func TestEndpoints(t *testing.T) {
-	packagesBasePaths := []string{"./testdata/package"}
+	packagesBasePaths := []string{"./testdata/second_package_path", "./testdata/package"}
 
 	faviconHandleFunc, err := faviconHandler(testCacheTime)
 	require.NoError(t, err)
@@ -124,8 +124,8 @@ func TestPackageIndex(t *testing.T) {
 // TestAllPackageIndex generates and compares all index.json files for the test packages
 func TestAllPackageIndex(t *testing.T) {
 	testPackagePath := filepath.Join("testdata", "package")
-
-	packagesBasePath := []string{testPackagePath}
+	secondPackagePath := filepath.Join("testdata", "second_package_path")
+	packagesBasePath := []string{secondPackagePath, testPackagePath}
 	packageIndexHandler := packageIndexHandler(packagesBasePath, testCacheTime)
 
 	// find all packages
