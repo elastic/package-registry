@@ -7,6 +7,6 @@ version: 0.0.2
 categories: ["web"]
 release: beta
 
-requirement:
+conditions:
   kibana:
-    versions: ">=6.0.0"
+    version: ">=6.0.0"

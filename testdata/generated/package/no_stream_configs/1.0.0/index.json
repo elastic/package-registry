@@ -19,9 +19,6 @@
     "custom"
   ],
   "release": "beta",
-  "requirement": {
-    "kibana": {}
-  },
   "assets": [
     "/package/no_stream_configs/1.0.0/manifest.yml",
     "/package/no_stream_configs/1.0.0/docs/README.md",

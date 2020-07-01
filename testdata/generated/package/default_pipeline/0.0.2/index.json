@@ -20,9 +20,6 @@
     "message_queue"
   ],
   "release": "beta",
-  "requirement": {
-    "kibana": {}
-  },
   "assets": [
     "/package/default_pipeline/0.0.2/manifest.yml",
     "/package/default_pipeline/0.0.2/docs/README.md",

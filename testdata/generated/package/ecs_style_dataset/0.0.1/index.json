@@ -19,9 +19,6 @@
     "monitoring"
   ],
   "release": "beta",
-  "requirement": {
-    "kibana": {}
-  },
   "assets": [
     "/package/ecs_style_dataset/0.0.1/manifest.yml",
     "/package/ecs_style_dataset/0.0.1/docs/README.md",

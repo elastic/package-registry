@@ -30,11 +30,6 @@
   "conditions": {
     "kibana.version": "\u003e6.7.0  \u003c7.6.0"
   },
-  "requirement": {
-    "kibana": {
-      "versions": "\u003e6.7.0  \u003c7.6.0"
-    }
-  },
   "assets": [
     "/package/reference/1.0.0/changelog.yml",
     "/package/reference/1.0.0/manifest.yml",

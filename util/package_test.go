@@ -39,10 +39,8 @@ var packageTests = []struct {
 			BasePackage: BasePackage{
 				Title: &title,
 			},
-			Requirement: Requirement{
-				Kibana: ProductRequirement{
-					Versions: "bar",
-				},
+			Conditions: &Conditions{
+				KibanaVersion: "bar",
 			},
 		},
 		false,
@@ -54,10 +52,8 @@ var packageTests = []struct {
 				Title:       &title,
 				Description: "my description",
 			},
-			Requirement: Requirement{
-				Kibana: ProductRequirement{
-					Versions: ">=1.2.3 <=4.5.6",
-				},
+			Conditions: &Conditions{
+				KibanaVersion: ">=1.2.3 <=4.5.6",
 			},
 			Categories: []string{"custom", "foo"},
 		},

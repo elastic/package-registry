@@ -15,7 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Remove `removable` flag from package manifest. [#532](https://github.com/elastic/package-registry/pull/532)
 * Rename `datasources` to `config_templates` in dataset manifest. [#570](https://github.com/elastic/package-registry/pull/570)
 * Remove support for logs and metrics category. [#571](https://github.com/elastic/package-registry/pull/571)
-* Remove `dataset.type: event` as suported type. [#](https://github.com/elastic/package-registry/pull/)
+* Remove `dataset.type: event` as suported type. [#567](https://github.com/elastic/package-registry/pull/567)
+* Remove support for requirements. Use conditions instead. [#574](https://github.com/elastic/package-registry/pull/574)
 
 ### Bugfixes
 
