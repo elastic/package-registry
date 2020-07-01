@@ -7,6 +7,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"sort"
 	"strconv"
@@ -116,29 +117,35 @@ func searchHandler(packagesBasePaths []string, cacheTime time.Duration) func(w h
 				continue
 			}
 
+			addPackage := true
 			if !all {
 				// Check if the version exists and if it should be added or not.
-				for _, versions := range packagesList {
+				for name, versions := range packagesList {
+					if name != p.Name {
+						continue
+					}
 					for _, pp := range versions {
-						if pp.Name == p.Name {
+						log.Println("Delete package check, same name: ", pp.Name, pp.Version, p.Name, p.Version)
 
-							// If the package in the list is newer or equal, do nothing.
-							if pp.IsNewerOrEqual(p) {
-								continue
-							}
-
-							// Otherwise delete and later add the new one.
-							delete(packagesList[pp.Name], pp.Version)
+						// If the package in the list is newer or equal, do nothing.
+						if pp.IsNewerOrEqual(p) {
+							addPackage = false
+							continue
 						}
+
+						// Otherwise delete and later add the new one.
+						delete(packagesList[pp.Name], pp.Version)
 					}
 				}
 			}
 
-			if _, ok := packagesList[p.Name]; !ok {
-				packagesList[p.Name] = map[string]util.Package{}
-			}
-			if _, ok := packagesList[p.Name][p.Version]; !ok {
-				packagesList[p.Name][p.Version] = p
+			if addPackage {
+				if _, ok := packagesList[p.Name]; !ok {
+					packagesList[p.Name] = map[string]util.Package{}
+				}
+				if _, ok := packagesList[p.Name][p.Version]; !ok {
+					packagesList[p.Name][p.Version] = p
+				}
 			}
 		}
 
