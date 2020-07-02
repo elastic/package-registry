@@ -66,9 +66,6 @@ type Package struct {
 	Datasets        []*Dataset       `config:"datasets,omitempty" json:"datasets,omitempty" yaml:"datasets,omitempty"`
 	Owner           *Owner           `config:"owner,omitempty" json:"owner,omitempty" yaml:"owner,omitempty"`
 
-	// Introduce it temporary to fix outdated Kibana snapshot
-	Requirement map[string]interface{} `json:"requirement"`
-
 	// Local path to the package dir
 	BasePath string `json:"-" yaml:"-"`
 }
@@ -179,8 +176,6 @@ func NewPackage(basePath string) (*Package, error) {
 			p.Screenshots[k].Src = s.getPath(p)
 		}
 	}
-
-	p.Requirement = map[string]interface{}{}
 
 	if p.Conditions != nil && p.Conditions.KibanaVersion != "" {
 		p.Conditions.kibanaConstraint, err = semver.NewConstraint(p.Conditions.KibanaVersion)
