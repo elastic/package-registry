@@ -63,7 +63,7 @@ func fetchPackageStorage() error {
 
 	packageStorageRevision := os.Getenv("PACKAGE_STORAGE_REVISION")
 	if packageStorageRevision == "" {
-		packageStorageRevision = "master"
+		packageStorageRevision = "production"
 	}
 
 	err := sh.Run("git",
