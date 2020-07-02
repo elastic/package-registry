@@ -25,7 +25,7 @@ const (
 
 	DefaultPipelineName     = "default"
 	DefaultPipelineNameJSON = "default.json"
-	DefaultPipelineNameYAML = "default.yaml"
+	DefaultPipelineNameYAML = "default.yml"
 )
 
 var validTypes = map[string]string{

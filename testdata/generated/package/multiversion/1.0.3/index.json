@@ -34,5 +34,6 @@
     "/package/multiversion/1.0.3/manifest.yml",
     "/package/multiversion/1.0.3/docs/README.md",
     "/package/multiversion/1.0.3/img/icon.svg"
-  ]
+  ],
+  "requirement": {}
 }
