@@ -21,7 +21,7 @@ import (
 )
 
 const (
-	DirIngestPipeline = "ingest-pipeline"
+	DirIngestPipeline = "ingest_pipeline"
 
 	DefaultPipelineName     = "default"
 	DefaultPipelineNameJSON = "default.json"
