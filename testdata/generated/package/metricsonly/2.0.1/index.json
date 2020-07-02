@@ -29,5 +29,6 @@
     "/package/metricsonly/2.0.1/manifest.yml",
     "/package/metricsonly/2.0.1/docs/README.md",
     "/package/metricsonly/2.0.1/img/icon.svg"
-  ]
+  ],
+  "requirement": {}
 }

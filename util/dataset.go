@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -25,7 +26,7 @@ const (
 
 	DefaultPipelineName     = "default"
 	DefaultPipelineNameJSON = "default.json"
-	DefaultPipelineNameYAML = "default.yaml"
+	DefaultPipelineNameYAML = "default.yml"
 )
 
 var validTypes = map[string]string{
@@ -186,6 +187,7 @@ func (d *Dataset) Validate() error {
 	}
 
 	if d.IngestPipeline == "" && len(paths) > 0 {
+		log.Println(d)
 		return fmt.Errorf("unused pipelines in the package (dataSetID: %s): %s", d.Name, strings.Join(paths, ","))
 	}
 

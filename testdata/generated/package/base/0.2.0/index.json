@@ -36,5 +36,6 @@
     "/package/base/0.2.0/elasticsearch/index-template/events.json",
     "/package/base/0.2.0/elasticsearch/index-template/logs.json",
     "/package/base/0.2.0/elasticsearch/index-template/metrics.json"
-  ]
+  ],
+  "requirement": {}
 }

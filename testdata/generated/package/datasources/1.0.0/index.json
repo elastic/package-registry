@@ -185,5 +185,6 @@
       "package": "datasources",
       "path": "examplemetric"
     }
-  ]
+  ],
+  "requirement": {}
 }

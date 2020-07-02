@@ -22,5 +22,6 @@
   "assets": [
     "/package/experimental/0.0.1/manifest.yml",
     "/package/experimental/0.0.1/docs/README.md"
-  ]
+  ],
+  "requirement": {}
 }

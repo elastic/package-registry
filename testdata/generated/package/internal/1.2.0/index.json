@@ -21,5 +21,6 @@
   "assets": [
     "/package/internal/1.2.0/manifest.yml",
     "/package/internal/1.2.0/docs/README.md"
-  ]
+  ],
+  "requirement": {}
 }

@@ -34,5 +34,6 @@
     "/package/longdocs/1.0.4/docs/README.md",
     "/package/longdocs/1.0.4/docs/data.json",
     "/package/longdocs/1.0.4/img/icon.svg"
-  ]
+  ],
+  "requirement": {}
 }
