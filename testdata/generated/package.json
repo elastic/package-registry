@@ -56,7 +56,12 @@
     "/package/example/1.0.0/dataset/foo/elasticsearch/ingest-pipeline/pipeline-http.json",
     "/package/example/1.0.0/dataset/foo/elasticsearch/ingest-pipeline/pipeline-json.json",
     "/package/example/1.0.0/dataset/foo/elasticsearch/ingest-pipeline/pipeline-plaintext.json",
-    "/package/example/1.0.0/dataset/foo/elasticsearch/ingest-pipeline/pipeline-tcp.json"
+    "/package/example/1.0.0/dataset/foo/elasticsearch/ingest-pipeline/pipeline-tcp.json",
+    "/package/example/1.0.0/dataset/foo/elasticsearch/ingest_pipeline/pipeline-entry.json",
+    "/package/example/1.0.0/dataset/foo/elasticsearch/ingest_pipeline/pipeline-http.json",
+    "/package/example/1.0.0/dataset/foo/elasticsearch/ingest_pipeline/pipeline-json.json",
+    "/package/example/1.0.0/dataset/foo/elasticsearch/ingest_pipeline/pipeline-plaintext.json",
+    "/package/example/1.0.0/dataset/foo/elasticsearch/ingest_pipeline/pipeline-tcp.json"
   ],
   "config_templates": [
     {
