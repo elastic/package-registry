@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -187,7 +186,6 @@ func (d *Dataset) Validate() error {
 	}
 
 	if d.IngestPipeline == "" && len(paths) > 0 {
-		log.Println(d)
 		return fmt.Errorf("unused pipelines in the package (dataSetID: %s): %s", d.Name, strings.Join(paths, ","))
 	}
 
