@@ -18,18 +18,18 @@
   "assets": [
     "/package/base/0.2.0/manifest.yml",
     "/package/base/0.2.0/docs/README.md",
-    "/package/base/0.2.0/elasticsearch/component-template/events-mappings.json",
-    "/package/base/0.2.0/elasticsearch/component-template/events-settings.json",
-    "/package/base/0.2.0/elasticsearch/component-template/logs-mappings.json",
-    "/package/base/0.2.0/elasticsearch/component-template/logs-settings.json",
-    "/package/base/0.2.0/elasticsearch/component-template/metrics-mappings.json",
-    "/package/base/0.2.0/elasticsearch/component-template/metrics-settings.json",
-    "/package/base/0.2.0/elasticsearch/ilm-policy/events-default.json",
-    "/package/base/0.2.0/elasticsearch/ilm-policy/logs-default.json",
-    "/package/base/0.2.0/elasticsearch/ilm-policy/metrics-default.json",
-    "/package/base/0.2.0/elasticsearch/index-template/events.json",
-    "/package/base/0.2.0/elasticsearch/index-template/logs.json",
-    "/package/base/0.2.0/elasticsearch/index-template/metrics.json"
+    "/package/base/0.2.0/elasticsearch/component_template/events-mappings.json",
+    "/package/base/0.2.0/elasticsearch/component_template/events-settings.json",
+    "/package/base/0.2.0/elasticsearch/component_template/logs-mappings.json",
+    "/package/base/0.2.0/elasticsearch/component_template/logs-settings.json",
+    "/package/base/0.2.0/elasticsearch/component_template/metrics-mappings.json",
+    "/package/base/0.2.0/elasticsearch/component_template/metrics-settings.json",
+    "/package/base/0.2.0/elasticsearch/ilm_policy/events-default.json",
+    "/package/base/0.2.0/elasticsearch/ilm_policy/logs-default.json",
+    "/package/base/0.2.0/elasticsearch/ilm_policy/metrics-default.json",
+    "/package/base/0.2.0/elasticsearch/index_template/events.json",
+    "/package/base/0.2.0/elasticsearch/index_template/logs.json",
+    "/package/base/0.2.0/elasticsearch/index_template/metrics.json"
   ],
   "requirement": {}
 }

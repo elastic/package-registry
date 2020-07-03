@@ -19,7 +19,6 @@
     "/package/multiple_false/0.0.1/dataset/foo/manifest.yml",
     "/package/multiple_false/0.0.1/dataset/foo/fields/base-fields.yml",
     "/package/multiple_false/0.0.1/dataset/foo/agent/stream/stream.yml.hbs",
-    "/package/multiple_false/0.0.1/dataset/foo/elasticsearch/ingest-pipeline/default.json",
     "/package/multiple_false/0.0.1/dataset/foo/elasticsearch/ingest_pipeline/default.json"
   ],
   "config_templates": [

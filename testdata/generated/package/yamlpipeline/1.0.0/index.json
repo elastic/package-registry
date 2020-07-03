@@ -19,9 +19,6 @@
     "/package/yamlpipeline/1.0.0/dataset/log/manifest.yml",
     "/package/yamlpipeline/1.0.0/dataset/log/fields/base-fields.yml",
     "/package/yamlpipeline/1.0.0/dataset/log/agent/stream/stream.yml.hbs",
-    "/package/yamlpipeline/1.0.0/dataset/log/elasticsearch/ingest-pipeline/pipeline-entry.yml",
-    "/package/yamlpipeline/1.0.0/dataset/log/elasticsearch/ingest-pipeline/pipeline-json.yml",
-    "/package/yamlpipeline/1.0.0/dataset/log/elasticsearch/ingest-pipeline/pipeline-plaintext.yml",
     "/package/yamlpipeline/1.0.0/dataset/log/elasticsearch/ingest_pipeline/pipeline-entry.yml",
     "/package/yamlpipeline/1.0.0/dataset/log/elasticsearch/ingest_pipeline/pipeline-json.yml",
     "/package/yamlpipeline/1.0.0/dataset/log/elasticsearch/ingest_pipeline/pipeline-plaintext.yml"
