@@ -1,5 +1,5 @@
 # This image contains the package-registry binary.
-# It expects packages to be mounted under /packages or have a config file loaded into /package-registry/config.yml
+# It expects packages to be mounted under /packages/package-registry or have a config file loaded into /package-registry/config.yml
 
 # Build binary
 ARG GO_VERSION=1.14.2

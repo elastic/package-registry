@@ -19,7 +19,7 @@ services:
     build: ../..
     #image: docker.elastic.co/package-registry/package-registry:master
     volumes:
-      - ../../build/package-storage/packages:/packages
+      - ../../build/package-storage/packages:/packages/package-registry
     ports:
       - "127.0.0.1:8080:8080"
 
