@@ -41,6 +41,5 @@
       "package": "ecs_style_dataset",
       "path": "foo"
     }
-  ],
-  "requirement": {}
+  ]
 }

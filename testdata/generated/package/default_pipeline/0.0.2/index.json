@@ -62,6 +62,5 @@
       "package": "default_pipeline",
       "path": "foo"
     }
-  ],
-  "requirement": {}
+  ]
 }

@@ -28,6 +28,5 @@
     "/package/multiversion/1.1.0/manifest.yml",
     "/package/multiversion/1.1.0/docs/README.md",
     "/package/multiversion/1.1.0/img/icon.svg"
-  ],
-  "requirement": {}
+  ]
 }
