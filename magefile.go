@@ -44,14 +44,14 @@ func Build() error {
 		return err
 	}
 
-	err = fetchPackageStorage()
+	err = FetchPackageStorage()
 	if err != nil {
 		return err
 	}
 	return sh.Run("go", "build", ".")
 }
 
-func fetchPackageStorage() error {
+func FetchPackageStorage() error {
 
 	// If storage directory does not exists, check it out
 	if _, err := os.Stat(storageRepoDir); os.IsNotExist(err) {
