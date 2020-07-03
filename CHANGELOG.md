@@ -4,7 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/elastic/package-registry/compare/v0.4.0...master)
+## [Unreleased](https://github.com/elastic/package-registry/compare/v0.6.0...master)
+
+### Breaking changes
+
+### Bugfixes
+
+### Added
+
+### Deprecated
+
+### Known Issue
+
+## [v0.6.0](https://github.com/elastic/package-registry/compare/v0.4.0...v0.6.0)
 
 ### Breaking changes
 
@@ -17,8 +29,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Remove support for logs and metrics category. [#571](https://github.com/elastic/package-registry/pull/571)
 * Remove `dataset.type: event` as suported type. [#567](https://github.com/elastic/package-registry/pull/567)
 * Remove support for requirements. Use conditions instead. [#574](https://github.com/elastic/package-registry/pull/574)
-
-### Bugfixes
 
 ### Added
 * Use filepath.Walk to find valid package content data. [#438](https://github.com/elastic/package-registry/pull/438)
@@ -49,9 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Delete package index.json from archives. Don't serve index.json as resource. [#488](https://github.com/elastic/package-registry/pull/488)
 
-### Known Issue
-
-## [Unreleased](https://github.com/elastic/package-registry/compare/v0.3.0...v0.4.0)
+## [v0.4.0](https://github.com/elastic/package-registry/compare/v0.3.0...v0.4.0)
 
 ### Breaking changes
 
