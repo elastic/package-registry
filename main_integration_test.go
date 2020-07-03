@@ -23,6 +23,12 @@ import (
 // and the setup command works as expected.
 func TestSetup(t *testing.T) {
 
+	// Mage fetchPackageStorage is needed to pull in the packages from package-storage
+	err := sh.Run("mage", "fetchPackageStorage")
+	if err != nil {
+		t.Error(err)
+	}
+
 	currentDir, err := os.Getwd()
 	if err != nil {
 		t.Error(err)

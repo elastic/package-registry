@@ -1,0 +1,6 @@
+package_paths:
+  - /packages/package-storage
+
+cache_time.search: 10s
+cache_time.categories: 10s
+cache_time.catch_all: 10s
