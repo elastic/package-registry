@@ -5,12 +5,6 @@
   "description": "Internal package",
   "type": "integration",
   "download": "/epr/internal/internal-1.2.0.tar.gz",
-  "downloads": [
-    {
-      "path": "/epr/internal/internal-1.2.0.tar.gz",
-      "type": "tar"
-    }
-  ],
   "path": "/package/internal/1.2.0",
   "internal": true,
   "format_version": "1.0.0",

@@ -75,16 +75,15 @@ type Package struct {
 
 // BasePackage is used for the output of the package info in the /search endpoint
 type BasePackage struct {
-	Name        string     `config:"name" json:"name"`
-	Title       *string    `config:"title,omitempty" json:"title,omitempty" yaml:"title,omitempty"`
-	Version     string     `config:"version" json:"version"`
-	Description string     `config:"description" json:"description"`
-	Type        string     `config:"type" json:"type"`
-	Download    string     `json:"download" yaml:"download,omitempty"`
-	Downloads   []Download `config:"downloads,omitempty" json:"downloads,omitempty" yaml:"downloads,omitempty"`
-	Path        string     `json:"path" yaml:"path,omitempty"`
-	Icons       []Image    `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
-	Internal    bool       `config:"internal,omitempty" json:"internal,omitempty" yaml:"internal,omitempty"`
+	Name        string  `config:"name" json:"name"`
+	Title       *string `config:"title,omitempty" json:"title,omitempty" yaml:"title,omitempty"`
+	Version     string  `config:"version" json:"version"`
+	Description string  `config:"description" json:"description"`
+	Type        string  `config:"type" json:"type"`
+	Download    string  `json:"download" yaml:"download,omitempty"`
+	Path        string  `json:"path" yaml:"path,omitempty"`
+	Icons       []Image `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
+	Internal    bool    `config:"internal,omitempty" json:"internal,omitempty" yaml:"internal,omitempty"`
 }
 
 type ConfigTemplate struct {
@@ -182,8 +181,6 @@ func NewPackage(basePath string) (*Package, error) {
 	}
 
 	p.Requirement = map[string]interface{}{}
-
-	p.Downloads = []Download{NewDownload(*p, "tar")}
 
 	if p.Conditions != nil && p.Conditions.KibanaVersion != "" {
 		p.Conditions.kibanaConstraint, err = semver.NewConstraint(p.Conditions.KibanaVersion)

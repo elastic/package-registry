@@ -5,12 +5,6 @@
   "description": "This package is used for defining all the properties of a package, the possible assets etc. It serves as a reference on all the config options which are possible.\n",
   "type": "integration",
   "download": "/epr/reference/reference-1.0.0.tar.gz",
-  "downloads": [
-    {
-      "path": "/epr/reference/reference-1.0.0.tar.gz",
-      "type": "tar"
-    }
-  ],
   "path": "/package/reference/1.0.0",
   "icons": [
     {
