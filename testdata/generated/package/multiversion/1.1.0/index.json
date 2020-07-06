@@ -2,6 +2,7 @@
   "name": "multiversion",
   "title": "Multi Version Second with the same version! This one should win, because it is first.",
   "version": "1.1.0",
+  "release": "ga",
   "description": "Multiple versions of this integration exist.\n",
   "type": "integration",
   "download": "/epr/multiversion/multiversion-1.1.0.tar.gz",
@@ -19,7 +20,6 @@
     "custom",
     "web"
   ],
-  "release": "ga",
   "conditions": {
     "kibana.version": "\u003e6.7.0"
   },
