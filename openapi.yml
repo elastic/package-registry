@@ -1,20 +1,20 @@
 openapi: 3.0.0
 info:
   title: EPR
-  version: '1.0'
+  version: "1.0"
   license:
     name: Elastic-License
-    url: 'https://github.com/elastic/package-registry/blob/master/LICENSE.txt'
+    url: "https://github.com/elastic/package-registry/blob/master/LICENSE.txt"
   description: Elastic Package Registry
   contact:
     name: Nicolas Ruflin
     email: spam@ruflin.com
 servers:
-  - url: 'https://epr.elastic.co'
+  - url: "https://epr.elastic.co"
     description: public
-  - url: 'https://epr-staging.elastic.co'
+  - url: "https://epr-staging.elastic.co"
     description: staging
-  - url: 'http://localhost:8080'
+  - url: "http://localhost:8080"
     description: local
 paths:
   /:
@@ -22,12 +22,12 @@ paths:
       summary: GET info
       tags: []
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/IndexData'
+                $ref: "#/components/schemas/IndexData"
       operationId: get
       description: Info about the registry
   /categories:
@@ -35,14 +35,14 @@ paths:
       summary: GET categories
       tags: []
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Category'
+                  $ref: "#/components/schemas/Category"
               examples:
                 example-1:
                   value:
@@ -55,20 +55,20 @@ paths:
       operationId: get-categories
       description: List of the existing package categories and how many packages are in each category
       parameters:
-        - $ref: '#/components/parameters/experimentalPackageParam'
+        - $ref: "#/components/parameters/experimentalPackageParam"
   /search:
     get:
       summary: Search packages
       tags: []
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BasePackage'
+                  $ref: "#/components/schemas/BasePackage"
       operationId: get-search
       description: Search for packages. By default returns all the most recent packages available.
       parameters:
@@ -76,7 +76,7 @@ paths:
             type: string
           in: query
           name: kibana
-          description: 'Filters out all the packages which are not compatible with the given Kibana version. If it is set to 7.3.1 and a package requires 7.4, the package will not be returned or an older compatible package will be shown. By default this endpoint always returns only the newest compatible package.'
+          description: "Filters out all the packages which are not compatible with the given Kibana version. If it is set to 7.3.1 and a package requires 7.4, the package will not be returned or an older compatible package will be shown. By default this endpoint always returns only the newest compatible package."
         - schema:
             type: string
           in: query
@@ -86,20 +86,20 @@ paths:
             type: string
           in: query
           name: package
-          description: 'Filters by a specific package name, for example mysql. In contrast to the other endpoints, it will return by default all versions of this package.'
-        - $ref: '#/components/parameters/internalPackageParam'
-        - $ref: '#/components/parameters/experimentalPackageParam'
-  '/package/{package}/{version}':
+          description: "Filters by a specific package name, for example mysql. In contrast to the other endpoints, it will return by default all versions of this package."
+        - $ref: "#/components/parameters/internalPackageParam"
+        - $ref: "#/components/parameters/experimentalPackageParam"
+  "/package/{package}/{version}":
     get:
       summary: GET package info
       tags: []
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Package'
+                $ref: "#/components/schemas/Package"
       operationId: get-package
       description: Info about a package
     parameters:
@@ -167,7 +167,7 @@ components:
       type: object
       properties:
         Kibana:
-          $ref: '#/components/schemas/ProductRequirement'
+          $ref: "#/components/schemas/ProductRequirement"
       required:
         - Kibana
     Dataset:
@@ -185,7 +185,7 @@ components:
         ingest_pipeline:
           type: string
         streams:
-          $ref: '#/components/schemas/Stream'
+          $ref: "#/components/schemas/Stream"
         package:
           type: string
         path:
@@ -201,7 +201,7 @@ components:
         input:
           type: string
         vars:
-          $ref: '#/components/schemas/Variable'
+          $ref: "#/components/schemas/Variable"
         dataset:
           type: string
         template_path:
@@ -221,13 +221,13 @@ components:
         type:
           type: string
         vars:
-          $ref: '#/components/schemas/Variable'
+          $ref: "#/components/schemas/Variable"
         title:
           type: string
         description:
           type: string
         streams:
-          $ref: '#/components/schemas/Stream'
+          $ref: "#/components/schemas/Stream"
       required:
         - type
     Variable:
@@ -266,6 +266,8 @@ components:
           type: string
         version:
           type: string
+        release:
+          type: string
         description:
           type: string
         type:
@@ -275,13 +277,13 @@ components:
         downloads:
           type: array
           items:
-            $ref: '#/components/schemas/Download'
+            $ref: "#/components/schemas/Download"
         path:
           type: string
         icons:
           type: array
           items:
-            $ref: '#/components/schemas/Image'
+            $ref: "#/components/schemas/Image"
         internal:
           type: string
       required:
@@ -303,7 +305,7 @@ components:
     Package:
       title: Package
       allOf:
-        - $ref: '#/components/schemas/BasePackage'
+        - $ref: "#/components/schemas/BasePackage"
         - type: object
           properties:
             format_version:
@@ -316,12 +318,10 @@ components:
               type: array
               items:
                 type: string
-            release:
-              type: string
             requirement:
-              $ref: '#/components/schemas/Requirement'
+              $ref: "#/components/schemas/Requirement"
             screenshots:
-              $ref: '#/components/schemas/Image'
+              $ref: "#/components/schemas/Image"
             assets:
               type: array
               items:
@@ -329,18 +329,18 @@ components:
             config_templates:
               type: array
               items:
-                $ref: '#/components/schemas/ConfigTemplate'
+                $ref: "#/components/schemas/ConfigTemplate"
             datasets:
               type: array
               items:
-                $ref: '#/components/schemas/Dataset'
+                $ref: "#/components/schemas/Dataset"
             owner:
-              $ref: '#/components/schemas/Owner'
+              $ref: "#/components/schemas/Owner"
           required:
             - format_version
             - categories
             - requirement
-      description: ''
+      description: ""
     ConfigTemplate:
       title: ConfigTemplate
       type: object
@@ -354,7 +354,7 @@ components:
         inputs:
           type: array
           items:
-            $ref: '#/components/schemas/Input'
+            $ref: "#/components/schemas/Input"
         multiple:
           type: boolean
       required:
