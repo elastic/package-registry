@@ -34,7 +34,7 @@ var CategoryTitles = map[string]string{
 	"custom":            "Custom",
 	"datastore":         "Datastore",
 	"elastic_stack":     "Elastic Stack",
-	"google_loud":       "Google Cloud",
+	"google_cloud":      "Google Cloud",
 	"kubernetes":        "Kubernetes",
 	"languages":         "Languages",
 	"message_queue":     "Message Queue",
