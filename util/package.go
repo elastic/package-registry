@@ -58,7 +58,6 @@ type Package struct {
 	License         string  `config:"license,omitempty" json:"license,omitempty" yaml:"license,omitempty"`
 	versionSemVer   *semver.Version
 	Categories      []string         `config:"categories" json:"categories"`
-	Release         string           `config:"release,omitempty" json:"release,omitempty"`
 	Conditions      *Conditions      `config:"conditions,omitempty" json:"conditions,omitempty" yaml:"conditions,omitempty"`
 	Screenshots     []Image          `config:"screenshots,omitempty" json:"screenshots,omitempty" yaml:"screenshots,omitempty"`
 	Assets          []string         `config:"assets,omitempty" json:"assets,omitempty" yaml:"assets,omitempty"`
@@ -75,6 +74,7 @@ type BasePackage struct {
 	Name        string  `config:"name" json:"name"`
 	Title       *string `config:"title,omitempty" json:"title,omitempty" yaml:"title,omitempty"`
 	Version     string  `config:"version" json:"version"`
+	Release     string  `config:"release,omitempty" json:"release,omitempty"`
 	Description string  `config:"description" json:"description"`
 	Type        string  `config:"type" json:"type"`
 	Download    string  `json:"download" yaml:"download,omitempty"`

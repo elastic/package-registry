@@ -2,6 +2,7 @@
   "name": "datasources",
   "title": "Default datasource Integration",
   "version": "1.0.0",
+  "release": "beta",
   "description": "Package with data sources",
   "type": "integration",
   "download": "/epr/datasources/datasources-1.0.0.tar.gz",
@@ -12,7 +13,6 @@
   "categories": [
     "custom"
   ],
-  "release": "beta",
   "assets": [
     "/package/datasources/1.0.0/manifest.yml",
     "/package/datasources/1.0.0/docs/README.md",

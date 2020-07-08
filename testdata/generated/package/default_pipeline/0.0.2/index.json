@@ -2,6 +2,7 @@
   "name": "default_pipeline",
   "title": "Default pipeline Integration",
   "version": "0.0.2",
+  "release": "beta",
   "description": "Tests if no pipeline is set, it defaults to the default one",
   "type": "integration",
   "download": "/epr/default_pipeline/default_pipeline-0.0.2.tar.gz",
@@ -13,7 +14,6 @@
     "containers",
     "message_queue"
   ],
-  "release": "beta",
   "assets": [
     "/package/default_pipeline/0.0.2/manifest.yml",
     "/package/default_pipeline/0.0.2/docs/README.md",

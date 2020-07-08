@@ -266,6 +266,8 @@ components:
           type: string
         version:
           type: string
+        release:
+          type: string
         description:
           type: string
         type:
@@ -316,8 +318,6 @@ components:
               type: array
               items:
                 type: string
-            release:
-              type: string
             requirement:
               $ref: '#/components/schemas/Requirement'
             screenshots:

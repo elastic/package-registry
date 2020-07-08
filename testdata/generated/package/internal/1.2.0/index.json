@@ -2,6 +2,7 @@
   "name": "internal",
   "title": "Internal",
   "version": "1.2.0",
+  "release": "beta",
   "description": "Internal package",
   "type": "integration",
   "download": "/epr/internal/internal-1.2.0.tar.gz",
@@ -11,7 +12,6 @@
   "readme": "/package/internal/1.2.0/docs/README.md",
   "license": "basic",
   "categories": [],
-  "release": "beta",
   "assets": [
     "/package/internal/1.2.0/manifest.yml",
     "/package/internal/1.2.0/docs/README.md"
