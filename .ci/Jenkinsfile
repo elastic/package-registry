@@ -44,8 +44,8 @@ pipeline {
     stage('Lint') {
       steps {
         cleanup()
-        dir("${BASE_DIR}"){
-          withMageEnv(){
+        withMageEnv(){
+          dir("${BASE_DIR}"){
             sh(label: 'Checks formatting / linting',script: 'mage -debug check')
           }
         }
@@ -57,8 +57,8 @@ pipeline {
     stage('Build') {
       steps {
         cleanup()
-        dir("${BASE_DIR}"){
-          withMageEnv(){
+        withMageEnv(){
+          dir("${BASE_DIR}"){
             sh(label: 'Checks formatting / linting',script: 'mage -debug build')
           }
         }
@@ -70,8 +70,8 @@ pipeline {
     stage('Test') {
       steps {
         cleanup()
-        dir("${BASE_DIR}"){
-          withMageEnv(){
+        withMageEnv(){
+          dir("${BASE_DIR}"){
             sh(label: 'Runs the (unit) tests',script: 'mage -debug test|tee tests-report.txt')
           }
         }
