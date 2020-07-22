@@ -15,7 +15,8 @@ RUN go build .
 FROM centos:7
 
 # Get dependencies
-RUN yum install -y zip rsync && yum clean all
+# mailcap - installs "/etc/mime.types" used by the package-registry binary
+RUN yum install -y zip rsync mailcap && yum clean all
 
 # Move binary from the builder image
 COPY --from=builder /package-registry/package-registry /package-registry/package-registry
