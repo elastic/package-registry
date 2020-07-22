@@ -10,7 +10,6 @@ require (
 	github.com/joeshaw/multierror v0.0.0-20140124173710-69b34d4ec901
 	github.com/magefile/mage v1.9.0
 	github.com/pkg/errors v0.9.1
-	github.com/radovskyb/watcher v1.0.7
 	github.com/stretchr/testify v1.4.0
 	gopkg.in/yaml.v2 v2.2.8
 )

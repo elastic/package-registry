@@ -22,7 +22,6 @@ import (
 
 	ucfgYAML "github.com/elastic/go-ucfg/yaml"
 
-	"github.com/elastic/package-registry/devmode"
 	"github.com/elastic/package-registry/util"
 )
 
@@ -70,15 +69,6 @@ func main() {
 
 	config := mustLoadConfig()
 	packagesBasePaths := getPackagesBasePaths(config)
-
-	// If config.DevMode is set, the service will not cache package content.
-	if config.DevMode {
-		devmode.Enable()
-
-		util.MustUsePackageWatcher(packagesBasePaths)
-		defer util.ClosePackageWatcher()
-	}
-
 	ensurePackagesAvailable(packagesBasePaths)
 
 	// If -dry-run=true is set, service stops here after validation
