@@ -17,6 +17,7 @@ import (
 
 	"github.com/magefile/mage/sh"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 // TestSetup tests if Kibana can be run against the current registry
@@ -89,10 +90,11 @@ func TestSetup(t *testing.T) {
 	}
 
 	defer func() {
-		if resp.Body != nil {
+		if resp != nil && resp.Body != nil {
 			resp.Body.Close()
 		}
 	}()
+	require.NotNil(t, resp)
 	assert.Equal(t, 200, resp.StatusCode)
 
 	body, err := ioutil.ReadAll(resp.Body)
