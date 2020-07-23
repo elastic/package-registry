@@ -42,7 +42,6 @@ var (
 		CacheTimeSearch:     10 * time.Minute,
 		CacheTimeCategories: 10 * time.Minute,
 		CacheTimeCatchAll:   10 * time.Minute,
-		DevMode:             false,
 	}
 )
 
@@ -58,8 +57,6 @@ type Config struct {
 	CacheTimeSearch     time.Duration `config:"cache_time.search"`
 	CacheTimeCategories time.Duration `config:"cache_time.categories"`
 	CacheTimeCatchAll   time.Duration `config:"cache_time.catch_all"`
-
-	DevMode bool `config:"dev_mode"`
 }
 
 func main() {
