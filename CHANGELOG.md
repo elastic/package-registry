@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Make `release` field available as part of `/search` endpoint [#591](https://github.com/elastic/package-registry/pull/591)
+* Make `release` field available as part of `/search` endpoint. [#591](https://github.com/elastic/package-registry/pull/591)
 
 ### Deprecated
 
