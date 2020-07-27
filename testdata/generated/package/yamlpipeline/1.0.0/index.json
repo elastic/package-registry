@@ -2,6 +2,7 @@
   "name": "yamlpipeline",
   "title": "Yaml Pipeline package",
   "version": "1.0.0",
+  "release": "beta",
   "description": "This package contains a yaml pipeline.\n",
   "type": "integration",
   "download": "/epr/yamlpipeline/yamlpipeline-1.0.0.tar.gz",
@@ -12,7 +13,6 @@
   "categories": [
     "custom"
   ],
-  "release": "beta",
   "assets": [
     "/package/yamlpipeline/1.0.0/manifest.yml",
     "/package/yamlpipeline/1.0.0/docs/README.md",

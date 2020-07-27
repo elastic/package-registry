@@ -2,6 +2,7 @@
   "name": "longdocs",
   "title": "Long Docs",
   "version": "1.0.4",
+  "release": "ga",
   "description": "This integration contains pretty long documentation.\nIt is used to show the different visualisations inside a documentation to test how we handle it.\nThe integration does not contain any assets except the documentation page.\n",
   "type": "integration",
   "download": "/epr/longdocs/longdocs-1.0.4.tar.gz",
@@ -19,7 +20,6 @@
     "custom",
     "web"
   ],
-  "release": "ga",
   "conditions": {
     "kibana.version": "\u003e6.7.0"
   },

@@ -2,6 +2,7 @@
   "name": "reference",
   "title": "Reference package",
   "version": "1.0.0",
+  "release": "ga",
   "description": "This package is used for defining all the properties of a package, the possible assets etc. It serves as a reference on all the config options which are possible.\n",
   "type": "integration",
   "download": "/epr/reference/reference-1.0.0.tar.gz",
@@ -20,7 +21,6 @@
     "custom",
     "web"
   ],
-  "release": "ga",
   "conditions": {
     "kibana.version": "\u003e6.7.0  \u003c7.6.0"
   },

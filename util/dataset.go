@@ -136,10 +136,11 @@ func NewDataset(basePath string, p *Package) (*Dataset, error) {
 	for i, _ := range d.Streams {
 		if d.Streams[i].Enabled == nil {
 			d.Streams[i].Enabled = &trueValue
-			// TODO: validate that the template path actually exists
-			if d.Streams[i].TemplatePath == "" {
-				d.Streams[i].TemplatePath = "stream.yml.hbs"
-			}
+		}
+
+		// TODO: validate that the template path actually exists
+		if d.Streams[i].TemplatePath == "" {
+			d.Streams[i].TemplatePath = "stream.yml.hbs"
 		}
 	}
 

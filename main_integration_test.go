@@ -17,6 +17,7 @@ import (
 
 	"github.com/magefile/mage/sh"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 // TestSetup tests if Kibana can be run against the current registry
@@ -84,8 +85,16 @@ func TestSetup(t *testing.T) {
 	}
 	req.Header.Add("kbn-xsrf", "ingest_manager")
 	resp, err := http.DefaultClient.Do(req)
-	defer resp.Body.Close()
+	if err != nil {
+		t.Error(err)
+	}
 
+	defer func() {
+		if resp != nil && resp.Body != nil {
+			resp.Body.Close()
+		}
+	}()
+	require.NotNil(t, resp)
 	assert.Equal(t, 200, resp.StatusCode)
 
 	body, err := ioutil.ReadAll(resp.Body)

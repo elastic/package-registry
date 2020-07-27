@@ -3,6 +3,7 @@
     "name": "example",
     "title": "Example Integration",
     "version": "1.0.0",
+    "release": "ga",
     "description": "This is the example integration",
     "type": "integration",
     "download": "/epr/example/example-1.0.0.tar.gz",

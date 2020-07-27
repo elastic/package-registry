@@ -2,6 +2,7 @@
   "name": "experimental",
   "title": "Experimental",
   "version": "0.0.1",
+  "release": "experimental",
   "description": "Experimental package, should be set by default",
   "type": "solution",
   "download": "/epr/experimental/experimental-0.0.1.tar.gz",
@@ -12,7 +13,6 @@
   "categories": [
     "aws"
   ],
-  "release": "experimental",
   "assets": [
     "/package/experimental/0.0.1/manifest.yml",
     "/package/experimental/0.0.1/docs/README.md"

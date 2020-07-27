@@ -2,6 +2,7 @@
   "name": "foo",
   "title": "Foo",
   "version": "1.0.0",
+  "release": "beta",
   "description": "This is the foo integration",
   "type": "solution",
   "download": "/epr/foo/foo-1.0.0.tar.gz",
@@ -12,7 +13,6 @@
   "categories": [
     "custom"
   ],
-  "release": "beta",
   "conditions": {
     "kibana.version": "\u003e=7.0.0"
   },

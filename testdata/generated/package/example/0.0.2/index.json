@@ -2,6 +2,7 @@
   "name": "example",
   "title": "Example",
   "version": "0.0.2",
+  "release": "beta",
   "description": "This is the example integration.",
   "type": "integration",
   "download": "/epr/example/example-0.0.2.tar.gz",
@@ -12,7 +13,6 @@
   "categories": [
     "web"
   ],
-  "release": "beta",
   "conditions": {
     "kibana.version": "\u003e=6.0.0"
   },
