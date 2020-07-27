@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Known Issue
 
 
-## [v0.7.0](https://github.com/elastic/package-registry/compare/v0.7.0...v0.7.1)
+## [v0.7.1](https://github.com/elastic/package-registry/compare/v0.7.0...v0.7.1)
 
 ### Bugfixes
 
