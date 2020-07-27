@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 * Add missing MIME types. [#599](https://github.com/elastic/package-registry/pull/599)
 
+* Make `release` field available as part of `/search` endpoint. [#591](https://github.com/elastic/package-registry/pull/591)
+
 ### Deprecated
 * Remove development mode. [#597](https://github.com/elastic/package-registry/pull/597)
 
