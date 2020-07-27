@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
+* Always populate template_path. [#600](https://github.com/elastic/package-registry/pull/600)
+
 ### Added
 
 ### Deprecated
