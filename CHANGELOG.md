@@ -13,8 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Always populate template_path. [#600](https://github.com/elastic/package-registry/pull/600)
 
 ### Added
+* Add missing MIME types. [#599](https://github.com/elastic/package-registry/pull/599)
 
 ### Deprecated
+* Remove development mode. [#597](https://github.com/elastic/package-registry/pull/597)
 
 ### Known Issue
 
