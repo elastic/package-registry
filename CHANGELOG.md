@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
+* Fix Gogle Cloud tag typo. [#592](https://github.com/elastic/package-registry/pull/592)
+
 ### Added
 
 ### Deprecated
