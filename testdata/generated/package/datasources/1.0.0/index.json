@@ -171,6 +171,7 @@
               "default": "localhost"
             }
           ],
+          "template_path": "stream.yml.hbs",
           "title": "Title of the stream",
           "description": "Not enabled data source.",
           "enabled": false
