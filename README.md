@@ -179,11 +179,10 @@ For Docker / Kubernetes the `/health` endpoint can be queried. As soon as `/heal
 
 ## Release
 
-New versions of the package registry need to be released from time to time. The following steps should be followed to create
-a new release:
+New versions of the package registry need to be released from time to time. The following steps should be followed to create a new release:
 
 1. Create a new branch with the changes to be done for the release
-2. Update the changelog by putting in a line for the release, remove all not needed section and put in a new Unrelease section. Don't forget to update the links to the diffs.
+2. Update the changelog by putting in a line for the release, remove all not needed section and put in a new Unreleased section. Don't forget to update the links to the diffs.
 3. Update the registry version in the `main.go` file to be the same version as the release is planned and update the generated files with `go test . -generate`.
 4. Open a pull request and get it merged
 5. Tag the new release by creating a new release in Github, put in the changelog in the release
