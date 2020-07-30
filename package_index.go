@@ -19,7 +19,7 @@ import (
 )
 
 const (
-	packageIndexRouterPath = "/package/{packageName:[a-z_]+}/{packageVersion}/"
+	packageIndexRouterPath = "/package/{packageName:[a-z0-9_]+}/{packageVersion}/"
 )
 
 var errPackageRevisionNotFound = errors.New("package revision not found")
