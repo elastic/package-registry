@@ -16,7 +16,7 @@ import (
 	"github.com/elastic/package-registry/archiver"
 )
 
-const artifactsRouterPath = "/epr/{packageName}/{packageName:[a-z_]+}-{packageVersion}.tar.gz"
+const artifactsRouterPath = "/epr/{packageName}/{packageName:[a-z0-9_]+}-{packageVersion}.tar.gz"
 
 var errArtifactNotFound = errors.New("artifact not found")
 
