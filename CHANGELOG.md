@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Breaking changes
 
+* Change dataset.* fields to datastream.* fields. [#618](https://github.com/elastic/package-registry/pull/618)
+
 ### Bugfixes
 
 ### Added
