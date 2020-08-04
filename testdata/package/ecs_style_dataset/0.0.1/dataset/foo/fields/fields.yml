@@ -4,12 +4,12 @@
     Event timestamp.
 
 - name: datastream
-  title: dataset
+  title: datastream
   group: 2
   description: Fields describing the new indexing strategy <type>-<name>-<namespace>
   type: group
   fields:
-    - name: name
+    - name: dataset
       level: custom
       type: constant_keyword
       description: Datastream dataset.
