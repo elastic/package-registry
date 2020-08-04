@@ -12,15 +12,15 @@
     - name: name
       level: custom
       type: constant_keyword
-      description: Dataset name.
+      description: Datastream dataset.
       default_field: false
     - name: namespace
       level: custom
       type: constant_keyword
-      description: Dataset namespace.
+      description: Datastream namespace.
       default_field: false
     - name: type
       level: custom
       type: constant_keyword
-      description: Dataset type.
+      description: Datastream type.
       default_field: false
