@@ -1,15 +1,15 @@
-- name: dataset.type
+- name: datastream.type
   type: constant_keyword
   description: >
-    Dataset type.
-- name: dataset.name
+    Datastream type.
+- name: datastream.dataset
   type: constant_keyword
   description: >
-    Dataset name.
-- name: dataset.namespace
+    Datastream dataset.
+- name: datastream.namespace
   type: constant_keyword
   description: >
-    Dataset namespace.
+    Datastream namespace.
 - name: "@timestamp"
   type: date
   description: >

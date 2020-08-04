@@ -3,24 +3,24 @@
   description: >
     Event timestamp.
 
-- name: dataset
-  title: dataset
+- name: datastream
+  title: datastream
   group: 2
   description: Fields describing the new indexing strategy <type>-<name>-<namespace>
   type: group
   fields:
-    - name: name
+    - name: dataset
       level: custom
       type: constant_keyword
-      description: Dataset name.
+      description: Datastream dataset.
       default_field: false
     - name: namespace
       level: custom
       type: constant_keyword
-      description: Dataset namespace.
+      description: Datastream namespace.
       default_field: false
     - name: type
       level: custom
       type: constant_keyword
-      description: Dataset type.
+      description: Datastream type.
       default_field: false
