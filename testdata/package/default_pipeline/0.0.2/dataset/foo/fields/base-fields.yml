@@ -1,12 +1,12 @@
-- name: dataset.type
+- name: datastream.type
   type: constant_keyword
   description: >
     Dataset type.
-- name: dataset.name
+- name: datastream.name
   type: constant_keyword
   description: >
     Dataset name.
-- name: dataset.namespace
+- name: datastream.namespace
   type: constant_keyword
   description: >
     Dataset namespace.
