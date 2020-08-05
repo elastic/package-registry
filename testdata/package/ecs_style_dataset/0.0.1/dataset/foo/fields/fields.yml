@@ -3,8 +3,8 @@
   description: >
     Event timestamp.
 
-- name: datastream
-  title: datastream
+- name: data_stream
+  title: data_stream
   group: 2
   description: Fields describing the new indexing strategy <type>-<name>-<namespace>
   type: group

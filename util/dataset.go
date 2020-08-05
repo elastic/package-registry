@@ -34,7 +34,7 @@ var validTypes = map[string]string{
 }
 
 type Dataset struct {
-	// Name and type of the dataset. This is linked to dataset.name and dataset.type fields.
+	// Name and type of the dataset. This is linked to data_stream.name and data_stream.type fields.
 	Type string `config:"type" json:"type" validate:"required"`
 	Name string `config:"name" json:"name,omitempty" yaml:"name,omitempty"`
 
@@ -305,9 +305,9 @@ func (d *Dataset) validateRequiredFields() error {
 	}
 
 	// Verify required keys
-	err = requireField(allFields, "datastream.type", "constant_keyword", err)
-	err = requireField(allFields, "datastream.dataset", "constant_keyword", err)
-	err = requireField(allFields, "datastream.namespace", "constant_keyword", err)
+	err = requireField(allFields, "data_stream.type", "constant_keyword", err)
+	err = requireField(allFields, "data_stream.dataset", "constant_keyword", err)
+	err = requireField(allFields, "data_stream.namespace", "constant_keyword", err)
 	err = requireField(allFields, "@timestamp", "date", err)
 	return err
 }
