@@ -34,7 +34,7 @@ var validTypes = map[string]string{
 }
 
 type Dataset struct {
-	// Name and type of the dataset. This is linked to data_stream.name and data_stream.type fields.
+	// Name and type of the dataset. This is linked to dataset.name and dataset.type fields.
 	Type string `config:"type" json:"type" validate:"required"`
 	Name string `config:"name" json:"name,omitempty" yaml:"name,omitempty"`
 
