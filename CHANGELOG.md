@@ -20,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Breaking changes
 
-* Change dataset.* fields to datastream.* fields. [#622](https://github.com/elastic/package-registry/pull/622)
+* Change dataset.* fields to data_stream.* fields. [#622](https://github.com/elastic/package-registry/pull/622)
 
 ## [v0.9.0](https://github.com/elastic/package-registry/compare/v0.8.0...v0.9.0)
 
