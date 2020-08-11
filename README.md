@@ -21,6 +21,7 @@ The `/search` API endpoint has few additional query parameters. More might be ad
 * package: Filters by a specific package name, for example `mysql`. Returns the most recent version. 
 * internal: This can be set to true, to also list internal packages. This is set to `false` by default.
 * all: This can be set to true to list all package versions. This is set to `false` by default.
+* experimental: This can be set to true to list packages considered to be experimental. This is set to `false` by default.
 
 The different query parameters above can be combined, so `?package=mysql&kibana=7.3.0` will return all mysql package versions
 which are compatible with `7.3.0`.
