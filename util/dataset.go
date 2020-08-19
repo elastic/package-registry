@@ -305,9 +305,9 @@ func (d *Dataset) validateRequiredFields() error {
 	}
 
 	// Verify required keys
-	err = requireField(allFields, "datastream.type", "constant_keyword", err)
-	err = requireField(allFields, "datastream.dataset", "constant_keyword", err)
-	err = requireField(allFields, "datastream.namespace", "constant_keyword", err)
+	err = requireField(allFields, "data_stream.type", "constant_keyword", err)
+	err = requireField(allFields, "data_stream.dataset", "constant_keyword", err)
+	err = requireField(allFields, "data_stream.namespace", "constant_keyword", err)
 	err = requireField(allFields, "@timestamp", "date", err)
 	return err
 }
