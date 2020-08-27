@@ -9,7 +9,8 @@
   "path": "/package/reference/1.0.0",
   "icons": [
     {
-      "src": "/package/reference/1.0.0/img/icon.svg",
+      "src": "/img/icon.svg",
+      "path": "/package/reference/1.0.0/img/icon.svg",
       "size": "32x32",
       "type": "image/svg+xml"
     }

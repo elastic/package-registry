@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Rename version to service.version in index handler. [#633](https://github.com/elastic/package-registry/pull/633)
 * Remove config `public_dir` which is replaced by `package_paths`. [#632](https://github.com/elastic/package-registry/pull/632)
 * Ship packages as zip instead of tar.gz [#628](https://github.com/elastic/package-registry/pull/628)
+* Rename image src to path and have src as the original value from the manifest. [#](https://github.com/elastic/package-registry/pull/)
 
 ### Bugfixes
 

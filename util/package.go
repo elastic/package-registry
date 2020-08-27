@@ -107,6 +107,7 @@ type Owner struct {
 
 type Image struct {
 	Src   string `config:"src" json:"src" validate:"required"`
+	Path  string `config:"path" json:"path"`
 	Title string `config:"title" json:"title,omitempty"`
 	Size  string `config:"size" json:"size,omitempty"`
 	Type  string `config:"type" json:"type,omitempty"`
@@ -167,13 +168,13 @@ func NewPackage(basePath string) (*Package, error) {
 
 	if p.Icons != nil {
 		for k, i := range p.Icons {
-			p.Icons[k].Src = i.getPath(p)
+			p.Icons[k].Path = i.getPath(p)
 		}
 	}
 
 	if p.Screenshots != nil {
 		for k, s := range p.Screenshots {
-			p.Screenshots[k].Src = s.getPath(p)
+			p.Screenshots[k].Path = s.getPath(p)
 		}
 	}
 
