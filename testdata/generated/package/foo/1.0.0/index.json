@@ -5,7 +5,7 @@
   "release": "beta",
   "description": "This is the foo integration",
   "type": "solution",
-  "download": "/epr/foo/foo-1.0.0.tar.gz",
+  "download": "/epr/foo/foo-1.0.0.zip",
   "path": "/package/foo/1.0.0",
   "format_version": "1.0.0",
   "readme": "/package/foo/1.0.0/docs/README.md",

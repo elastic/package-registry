@@ -5,8 +5,7 @@
 package archiver
 
 import (
-	"archive/tar"
-	"compress/gzip"
+	"archive/zip"
 	"fmt"
 	"io"
 	"os"
@@ -26,8 +25,7 @@ type PackageProperties struct {
 
 // ArchivePackage method builds and streams an archive with package content.
 func ArchivePackage(w io.Writer, properties PackageProperties) (err error) {
-	gzipWriter := gzip.NewWriter(w)
-	tarWriter := tar.NewWriter(gzipWriter)
+	zipWriter := zip.NewWriter(w)
 	defer func() {
 		var multiErr multierror.Errors
 
@@ -35,14 +33,9 @@ func ArchivePackage(w io.Writer, properties PackageProperties) (err error) {
 			multiErr = append(multiErr, err)
 		}
 
-		err = tarWriter.Close()
+		err = zipWriter.Close()
 		if err != nil {
-			multiErr = append(multiErr, errors.Wrapf(err, "closing tar writer failed"))
-		}
-
-		err = gzipWriter.Close()
-		if err != nil {
-			multiErr = append(multiErr, errors.Wrapf(err, "closing gzip writer failed"))
+			multiErr = append(multiErr, errors.Wrapf(err, "closing zip writer failed"))
 		}
 
 		if multiErr != nil {
@@ -70,13 +63,13 @@ func ArchivePackage(w io.Writer, properties PackageProperties) (err error) {
 			return errors.Wrapf(err, "building archive header failed (path: %s)", relativePath)
 		}
 
-		err = tarWriter.WriteHeader(header)
+		w, err = zipWriter.CreateHeader(header)
 		if err != nil {
 			return errors.Wrapf(err, "writing header failed (path: %s)", relativePath)
 		}
 
 		if !info.IsDir() {
-			err = writeFileContentToArchive(path, tarWriter)
+			err = writeFileContentToArchive(path, w)
 			if err != nil {
 				return errors.Wrapf(err, "archiving file content failed (path: %s)", path)
 			}
@@ -87,24 +80,20 @@ func ArchivePackage(w io.Writer, properties PackageProperties) (err error) {
 		return errors.Wrapf(err, "processing package path '%s' failed", properties.Path)
 	}
 
-	err = tarWriter.Flush()
-	if err != nil {
-		return errors.Wrap(err, "flushing tar writer failed")
-	}
-
-	err = gzipWriter.Flush()
+	err = zipWriter.Flush()
 	if err != nil {
 		return errors.Wrap(err, "flushing gzip writer failed")
 	}
 	return nil
 }
 
-func buildArchiveHeader(info os.FileInfo, relativePath string) (*tar.Header, error) {
-	header, err := tar.FileInfoHeader(info, "")
+func buildArchiveHeader(info os.FileInfo, relativePath string) (*zip.FileHeader, error) {
+	header, err := zip.FileInfoHeader(info)
 	if err != nil {
 		return nil, errors.Wrapf(err, "reading file info header failed (info: %s)", info.Name())
 	}
 
+	header.Method = zip.Deflate
 	header.Name = relativePath
 	if info.IsDir() && !strings.HasSuffix(header.Name, "/") {
 		header.Name = header.Name + "/"

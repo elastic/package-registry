@@ -5,7 +5,7 @@
   "release": "beta",
   "description": "This package contains a yaml pipeline.\n",
   "type": "integration",
-  "download": "/epr/yamlpipeline/yamlpipeline-1.0.0.tar.gz",
+  "download": "/epr/yamlpipeline/yamlpipeline-1.0.0.zip",
   "path": "/package/yamlpipeline/1.0.0",
   "format_version": "1.0.0",
   "readme": "/package/yamlpipeline/1.0.0/docs/README.md",

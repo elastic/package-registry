@@ -6,7 +6,7 @@
     "release": "beta",
     "description": "Package with data sources",
     "type": "integration",
-    "download": "/epr/datasources/datasources-1.0.0.tar.gz",
+    "download": "/epr/datasources/datasources-1.0.0.zip",
     "path": "/package/datasources/1.0.0"
   },
   {
@@ -16,7 +16,7 @@
     "release": "beta",
     "description": "Tests if no pipeline is set, it defaults to the default one",
     "type": "integration",
-    "download": "/epr/default_pipeline/default_pipeline-0.0.2.tar.gz",
+    "download": "/epr/default_pipeline/default_pipeline-0.0.2.zip",
     "path": "/package/default_pipeline/0.0.2"
   },
   {
@@ -26,7 +26,7 @@
     "release": "beta",
     "description": "Tests the registry validations works for dataset fields using the ecs style format",
     "type": "integration",
-    "download": "/epr/ecs_style_dataset/ecs_style_dataset-0.0.1.tar.gz",
+    "download": "/epr/ecs_style_dataset/ecs_style_dataset-0.0.1.zip",
     "path": "/package/ecs_style_dataset/0.0.1"
   },
   {
@@ -36,7 +36,7 @@
     "release": "beta",
     "description": "This is the example integration.",
     "type": "integration",
-    "download": "/epr/example/example-0.0.2.tar.gz",
+    "download": "/epr/example/example-0.0.2.zip",
     "path": "/package/example/0.0.2"
   },
   {
@@ -46,7 +46,7 @@
     "release": "ga",
     "description": "This is the example integration",
     "type": "integration",
-    "download": "/epr/example/example-1.0.0.tar.gz",
+    "download": "/epr/example/example-1.0.0.zip",
     "path": "/package/example/1.0.0"
   },
   {
@@ -56,7 +56,7 @@
     "release": "beta",
     "description": "This is the foo integration",
     "type": "solution",
-    "download": "/epr/foo/foo-1.0.0.tar.gz",
+    "download": "/epr/foo/foo-1.0.0.zip",
     "path": "/package/foo/1.0.0"
   },
   {
@@ -66,7 +66,7 @@
     "release": "ga",
     "description": "This integration contains pretty long documentation.\nIt is used to show the different visualisations inside a documentation to test how we handle it.\nThe integration does not contain any assets except the documentation page.\n",
     "type": "integration",
-    "download": "/epr/longdocs/longdocs-1.0.4.tar.gz",
+    "download": "/epr/longdocs/longdocs-1.0.4.zip",
     "path": "/package/longdocs/1.0.4",
     "icons": [
       {
@@ -82,7 +82,7 @@
     "release": "ga",
     "description": "This is an integration with only the metrics category.\n",
     "type": "integration",
-    "download": "/epr/metricsonly/metricsonly-2.0.1.tar.gz",
+    "download": "/epr/metricsonly/metricsonly-2.0.1.zip",
     "path": "/package/metricsonly/2.0.1",
     "icons": [
       {
@@ -98,7 +98,7 @@
     "release": "beta",
     "description": "Tests that multiple can be set to false",
     "type": "integration",
-    "download": "/epr/multiple_false/multiple_false-0.0.1.tar.gz",
+    "download": "/epr/multiple_false/multiple_false-0.0.1.zip",
     "path": "/package/multiple_false/0.0.1"
   },
   {
@@ -108,7 +108,7 @@
     "release": "ga",
     "description": "Multiple versions of this integration exist.\n",
     "type": "integration",
-    "download": "/epr/multiversion/multiversion-1.0.3.tar.gz",
+    "download": "/epr/multiversion/multiversion-1.0.3.zip",
     "path": "/package/multiversion/1.0.3",
     "icons": [
       {
@@ -124,7 +124,7 @@
     "release": "ga",
     "description": "Multiple versions of this integration exist.\n",
     "type": "integration",
-    "download": "/epr/multiversion/multiversion-1.0.4.tar.gz",
+    "download": "/epr/multiversion/multiversion-1.0.4.zip",
     "path": "/package/multiversion/1.0.4",
     "icons": [
       {
@@ -140,7 +140,7 @@
     "release": "ga",
     "description": "Multiple versions of this integration exist.\n",
     "type": "integration",
-    "download": "/epr/multiversion/multiversion-1.1.0.tar.gz",
+    "download": "/epr/multiversion/multiversion-1.1.0.zip",
     "path": "/package/multiversion/1.1.0",
     "icons": [
       {
@@ -156,7 +156,7 @@
     "release": "beta",
     "description": "This package does contain a dataset but not stream configs.\n",
     "type": "integration",
-    "download": "/epr/no_stream_configs/no_stream_configs-1.0.0.tar.gz",
+    "download": "/epr/no_stream_configs/no_stream_configs-1.0.0.zip",
     "path": "/package/no_stream_configs/1.0.0"
   },
   {
@@ -166,7 +166,7 @@
     "release": "ga",
     "description": "This package is used for defining all the properties of a package, the possible assets etc. It serves as a reference on all the config options which are possible.\n",
     "type": "integration",
-    "download": "/epr/reference/reference-1.0.0.tar.gz",
+    "download": "/epr/reference/reference-1.0.0.zip",
     "path": "/package/reference/1.0.0",
     "icons": [
       {
@@ -183,7 +183,7 @@
     "release": "beta",
     "description": "This package contains a yaml pipeline.\n",
     "type": "integration",
-    "download": "/epr/yamlpipeline/yamlpipeline-1.0.0.tar.gz",
+    "download": "/epr/yamlpipeline/yamlpipeline-1.0.0.zip",
     "path": "/package/yamlpipeline/1.0.0"
   }
 ]

@@ -5,7 +5,7 @@
   "release": "experimental",
   "description": "Experimental package, should be set by default",
   "type": "solution",
-  "download": "/epr/experimental/experimental-0.0.1.tar.gz",
+  "download": "/epr/experimental/experimental-0.0.1.zip",
   "path": "/package/experimental/0.0.1",
   "format_version": "1.0.0",
   "readme": "/package/experimental/0.0.1/docs/README.md",

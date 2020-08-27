@@ -5,7 +5,7 @@
   "release": "beta",
   "description": "This package does contain a dataset but not stream configs.\n",
   "type": "integration",
-  "download": "/epr/no_stream_configs/no_stream_configs-1.0.0.tar.gz",
+  "download": "/epr/no_stream_configs/no_stream_configs-1.0.0.zip",
   "path": "/package/no_stream_configs/1.0.0",
   "format_version": "1.0.0",
   "readme": "/package/no_stream_configs/1.0.0/docs/README.md",

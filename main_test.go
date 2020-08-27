@@ -5,12 +5,10 @@
 package main
 
 import (
-	"archive/tar"
+	"archive/zip"
 	"bytes"
-	"compress/gzip"
 	"flag"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -84,10 +82,10 @@ func TestArtifacts(t *testing.T) {
 		file     string
 		handler  func(w http.ResponseWriter, r *http.Request)
 	}{
-		{"/epr/example/example-0.0.2.tar.gz", artifactsRouterPath, "example-0.0.2.tar.gz-preview.txt", artifactsHandler},
-		{"/epr/example/example-999.0.2.tar.gz", artifactsRouterPath, "artifact-package-version-not-found.txt", artifactsHandler},
-		{"/epr/example/missing-0.1.2.tar.gz", artifactsRouterPath, "artifact-package-not-found.txt", artifactsHandler},
-		{"/epr/example/example-a.b.c.tar.gz", artifactsRouterPath, "artifact-package-invalid-version.txt", artifactsHandler},
+		{"/epr/example/example-0.0.2.zip", artifactsRouterPath, "example-0.0.2.zip-preview.txt", artifactsHandler},
+		{"/epr/example/example-999.0.2.zip", artifactsRouterPath, "artifact-package-version-not-found.txt", artifactsHandler},
+		{"/epr/example/missing-0.1.2.zip", artifactsRouterPath, "artifact-package-not-found.txt", artifactsHandler},
+		{"/epr/example/example-a.b.c.zip", artifactsRouterPath, "artifact-package-invalid-version.txt", artifactsHandler},
 	}
 
 	for _, test := range tests {
@@ -206,21 +204,14 @@ func runEndpoint(t *testing.T, endpoint, path, file string, handler func(w http.
 }
 
 func listArchivedFiles(t *testing.T, body []byte) []byte {
-	gzippedReader, err := gzip.NewReader(bytes.NewReader(body))
+	zipReader, err := zip.NewReader(bytes.NewReader(body), int64(len(body)))
 	require.NoError(t, err)
-
-	tarReader := tar.NewReader(gzippedReader)
 
 	var listing bytes.Buffer
 
-	for {
-		header, err := tarReader.Next()
-		if err == io.EOF {
-			break
-		}
-		require.NoError(t, err)
+	for _, f := range zipReader.File {
+		listing.WriteString(fmt.Sprintf("%d %s\n", f.UncompressedSize64, f.Name))
 
-		listing.WriteString(fmt.Sprintf("%d %s\n", header.Size, header.Name))
 	}
 	return listing.Bytes()
 }

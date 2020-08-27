@@ -129,7 +129,7 @@ func NewDownload(p Package, t string) Download {
 }
 
 func getDownloadPath(p Package, t string) string {
-	return path.Join("/epr", p.Name, p.Name+"-"+p.Version+".tar.gz")
+	return path.Join("/epr", p.Name, p.Name+"-"+p.Version+".zip")
 }
 
 // NewPackage creates a new package instances based on the given base path.
@@ -448,7 +448,7 @@ func (p *Package) GetPath() string {
 }
 
 func (p *Package) GetDownloadPath() string {
-	return path.Join("/epr", p.Name, p.Name+"-"+p.Version+".tar.gz")
+	return path.Join("/epr", p.Name, p.Name+"-"+p.Version+".zip")
 }
 
 func (p *Package) GetUrlPath() string {
