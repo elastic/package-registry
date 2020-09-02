@@ -12,7 +12,7 @@ import (
 
 type indexData struct {
 	ServiceName string `json:"service.name"`
-	Version     string `json:"version"`
+	Version     string `json:"service.version"`
 }
 
 func indexHandler(cacheTime time.Duration) (func(w http.ResponseWriter, r *http.Request), error) {

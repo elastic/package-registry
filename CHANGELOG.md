@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Breaking changes
 
+* Rename version to service.version in index handler. [#](https://github.com/elastic/package-registry/pull/)
+
 ### Bugfixes
 
 ### Added
