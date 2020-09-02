@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Add `cache_time.index` as config option. [#631](https://github.com/elastic/package-registry/pull/631)
+
 ### Deprecated
 
 ### Known Issue
