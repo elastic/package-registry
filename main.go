@@ -12,7 +12,6 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"path/filepath"
 	"strings"
 	"syscall"
 	"time"
@@ -38,7 +37,6 @@ var (
 	configPath = "config.yml"
 
 	defaultConfig = Config{
-		PublicDir:           "./public", // left for legacy purposes
 		CacheTimeIndex:      10 * time.Second,
 		CacheTimeSearch:     10 * time.Minute,
 		CacheTimeCategories: 10 * time.Minute,
@@ -53,7 +51,6 @@ func init() {
 }
 
 type Config struct {
-	PublicDir           string        `config:"public_dir"` // left for legacy purposes
 	PackagePaths        []string      `config:"package_paths"`
 	CacheTimeIndex      time.Duration `config:"cache_time.index"`
 	CacheTimeSearch     time.Duration `config:"cache_time.search"`
@@ -124,15 +121,11 @@ func getConfig() (*Config, error) {
 
 func getPackagesBasePaths(config *Config) []string {
 	var paths []string
-	if config.PublicDir != "" {
-		paths = append(paths, filepath.Join(config.PublicDir, packageDir)) // left for legacy purposes
-	}
 	paths = append(paths, config.PackagePaths...)
 	return paths
 }
 
 func printConfig(config *Config) {
-	log.Printf("Public dir (legacy): %s\n", config.PublicDir)
 	log.Printf("Packages paths: %s\n", strings.Join(config.PackagePaths, ", "))
 	log.Println("Cache time for /search: ", config.CacheTimeSearch)
 	log.Println("Cache time for /categories: ", config.CacheTimeCategories)

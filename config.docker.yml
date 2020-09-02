@@ -1,5 +1,3 @@
-public_dir: ./public
-
 # If users want to add their own packages, they should be put under
 # /packages/package-registry or the config must be adjusted.
 package_paths:

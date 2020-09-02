@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Breaking changes
 
 * Rename version to service.version in index handler. [#633](https://github.com/elastic/package-registry/pull/633)
+* Remove config `public_dir` which is replaced by `package_paths`. [#](https://github.com/elastic/package-registry/pull/)
 
 ### Bugfixes
 
