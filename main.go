@@ -39,6 +39,7 @@ var (
 
 	defaultConfig = Config{
 		PublicDir:           "./public", // left for legacy purposes
+		CacheTimeIndex:      10 * time.Second,
 		CacheTimeSearch:     10 * time.Minute,
 		CacheTimeCategories: 10 * time.Minute,
 		CacheTimeCatchAll:   10 * time.Minute,
@@ -54,6 +55,7 @@ func init() {
 type Config struct {
 	PublicDir           string        `config:"public_dir"` // left for legacy purposes
 	PackagePaths        []string      `config:"package_paths"`
+	CacheTimeIndex      time.Duration `config:"cache_time.index"`
 	CacheTimeSearch     time.Duration `config:"cache_time.search"`
 	CacheTimeCategories time.Duration `config:"cache_time.categories"`
 	CacheTimeCatchAll   time.Duration `config:"cache_time.catch_all"`
@@ -164,7 +166,7 @@ func getRouter(config *Config, packagesBasePaths []string) (*mux.Router, error) 
 	if err != nil {
 		return nil, err
 	}
-	indexHandlerFunc, err := indexHandler(config.CacheTimeCatchAll)
+	indexHandlerFunc, err := indexHandler(config.CacheTimeIndex)
 	if err != nil {
 		return nil, err
 	}
