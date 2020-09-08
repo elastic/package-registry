@@ -82,7 +82,7 @@ func ArchivePackage(w io.Writer, properties PackageProperties) (err error) {
 
 	err = zipWriter.Flush()
 	if err != nil {
-		return errors.Wrap(err, "flushing gzip writer failed")
+		return errors.Wrap(err, "flushing zip writer failed")
 	}
 	return nil
 }
