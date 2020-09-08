@@ -6,7 +6,7 @@
     "release": "beta",
     "description": "This is the example integration.",
     "type": "integration",
-    "download": "/epr/example/example-0.0.2.tar.gz",
+    "download": "/epr/example/example-0.0.2.zip",
     "path": "/package/example/0.0.2"
   },
   {
@@ -16,7 +16,7 @@
     "release": "ga",
     "description": "This is the example integration",
     "type": "integration",
-    "download": "/epr/example/example-1.0.0.tar.gz",
+    "download": "/epr/example/example-1.0.0.zip",
     "path": "/package/example/1.0.0"
   }
 ]

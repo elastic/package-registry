@@ -12,7 +12,7 @@ import (
 // init method defines MIME types important for the package content. Definitions ensure that the same Content-Type
 // will be returned if the /etc/mime.types is empty or tiny.
 func init() {
-	mustAddMimeExtensionType(".gz", "application/gzip")
+	mustAddMimeExtensionType(".zip", "application/zip")
 	mustAddMimeExtensionType(".ico", "image/x-icon")
 	mustAddMimeExtensionType(".md", "text/markdown; charset=utf-8")
 	mustAddMimeExtensionType(".yml", "text/yaml; charset=UTF-8")

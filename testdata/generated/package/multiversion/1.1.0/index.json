@@ -5,7 +5,7 @@
   "release": "ga",
   "description": "Multiple versions of this integration exist.\n",
   "type": "integration",
-  "download": "/epr/multiversion/multiversion-1.1.0.tar.gz",
+  "download": "/epr/multiversion/multiversion-1.1.0.zip",
   "path": "/package/multiversion/1.1.0",
   "icons": [
     {

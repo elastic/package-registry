@@ -19,7 +19,7 @@ func TestContentTypes(t *testing.T) {
 		expectedContentType string
 	}{
 		{"/index.json", "application/json"},
-		{"/activemq-0.0.1.tar.gz", "application/gzip"},
+		{"/activemq-0.0.1.zip", "application/zip"},
 		{"/favicon.ico", "image/x-icon"},
 		{"/metricbeat-mysql.png", "image/png"},
 		{"/kibana-coredns.jpg", "image/jpeg"},

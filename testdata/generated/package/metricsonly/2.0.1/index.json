@@ -5,7 +5,7 @@
   "release": "ga",
   "description": "This is an integration with only the metrics category.\n",
   "type": "integration",
-  "download": "/epr/metricsonly/metricsonly-2.0.1.tar.gz",
+  "download": "/epr/metricsonly/metricsonly-2.0.1.zip",
   "path": "/package/metricsonly/2.0.1",
   "icons": [
     {

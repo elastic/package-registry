@@ -5,7 +5,7 @@
   "release": "beta",
   "description": "Tests the registry validations works for dataset fields using the ecs style format",
   "type": "integration",
-  "download": "/epr/ecs_style_dataset/ecs_style_dataset-0.0.1.tar.gz",
+  "download": "/epr/ecs_style_dataset/ecs_style_dataset-0.0.1.zip",
   "path": "/package/ecs_style_dataset/0.0.1",
   "format_version": "1.0.0",
   "readme": "/package/ecs_style_dataset/0.0.1/docs/README.md",
