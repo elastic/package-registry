@@ -6,9 +6,6 @@ info:
     name: Elastic-License
     url: 'https://github.com/elastic/package-registry/blob/master/LICENSE.txt'
   description: Elastic Package Registry
-  contact:
-    name: Nicolas Ruflin
-    email: spam@ruflin.com
 servers:
   - url: 'https://epr.elastic.co'
     description: public
@@ -146,6 +143,8 @@ components:
       title: Image
       type: object
       properties:
+        path:
+          type: string
         src:
           type: string
         title:

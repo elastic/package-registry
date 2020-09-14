@@ -20,7 +20,8 @@
     "path": "/package/longdocs/1.0.4",
     "icons": [
       {
-        "src": "/package/longdocs/1.0.4/img/icon.svg",
+        "src": "/img/icon.svg",
+        "path": "/package/longdocs/1.0.4/img/icon.svg",
         "type": "image/svg+xml"
       }
     ]
@@ -36,7 +37,8 @@
     "path": "/package/multiversion/1.1.0",
     "icons": [
       {
-        "src": "/package/multiversion/1.1.0/img/icon.svg",
+        "src": "/img/icon.svg",
+        "path": "/package/multiversion/1.1.0/img/icon.svg",
         "type": "image/svg+xml"
       }
     ]
@@ -52,7 +54,8 @@
     "path": "/package/reference/1.0.0",
     "icons": [
       {
-        "src": "/package/reference/1.0.0/img/icon.svg",
+        "src": "/img/icon.svg",
+        "path": "/package/reference/1.0.0/img/icon.svg",
         "size": "32x32",
         "type": "image/svg+xml"
       }

@@ -9,7 +9,8 @@
   "path": "/package/multiversion/1.0.3",
   "icons": [
     {
-      "src": "/package/multiversion/1.0.3/img/icon.svg",
+      "src": "/img/icon.svg",
+      "path": "/package/multiversion/1.0.3/img/icon.svg",
       "type": "image/svg+xml"
     }
   ],

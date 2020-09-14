@@ -9,7 +9,8 @@
   "path": "/package/longdocs/1.0.4",
   "icons": [
     {
-      "src": "/package/longdocs/1.0.4/img/icon.svg",
+      "src": "/img/icon.svg",
+      "path": "/package/longdocs/1.0.4/img/icon.svg",
       "type": "image/svg+xml"
     }
   ],

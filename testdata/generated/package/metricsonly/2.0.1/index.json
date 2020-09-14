@@ -9,7 +9,8 @@
   "path": "/package/metricsonly/2.0.1",
   "icons": [
     {
-      "src": "/package/metricsonly/2.0.1/img/icon.svg",
+      "src": "/img/icon.svg",
+      "path": "/package/metricsonly/2.0.1/img/icon.svg",
       "type": "image/svg+xml"
     }
   ],
