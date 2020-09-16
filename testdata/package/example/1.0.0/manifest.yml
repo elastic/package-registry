@@ -14,10 +14,7 @@ conditions:
   kibana.version: "~7.x.x"
 
 screenshots:
-  - src: /img/kibana-iptables.png
-    title: IP Tables Overview dashboard
-    size: 1492x1382
-  - src: /img/kibana-iptables-ubiquity.png
+  - src: /img/kibana-envoyproxy.jpg
     title: IP Tables Ubiquity Dashboard
     size: 1492x1464
     type: image/png

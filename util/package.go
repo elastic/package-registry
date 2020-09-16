@@ -106,7 +106,9 @@ type Owner struct {
 }
 
 type Image struct {
-	Src   string `config:"src" json:"src" validate:"required"`
+	// Src is relative inside the package
+	Src string `config:"src" json:"src" validate:"required"`
+	// Path is the absolute path in the url
 	Path  string `config:"path" json:"path"`
 	Title string `config:"title" json:"title,omitempty"`
 	Size  string `config:"size" json:"size,omitempty"`
@@ -337,6 +339,20 @@ func (p *Package) Validate() error {
 	p.versionSemVer, err = semver.StrictNewVersion(p.Version)
 	if err != nil {
 		return errors.Wrap(err, "invalid package version")
+	}
+
+	for _, i := range p.Icons {
+		_, err := os.Stat(filepath.Join(p.BasePath, i.Src))
+		if err != nil {
+			return err
+		}
+	}
+
+	for _, s := range p.Screenshots {
+		_, err := os.Stat(filepath.Join(p.BasePath, s.Src))
+		if err != nil {
+			return err
+		}
 	}
 
 	err = p.validateVersionConsistency()

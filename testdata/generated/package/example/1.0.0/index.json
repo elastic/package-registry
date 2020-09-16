@@ -19,14 +19,8 @@
   },
   "screenshots": [
     {
-      "src": "/img/kibana-iptables.png",
-      "path": "/package/example/1.0.0/img/kibana-iptables.png",
-      "title": "IP Tables Overview dashboard",
-      "size": "1492x1382"
-    },
-    {
-      "src": "/img/kibana-iptables-ubiquity.png",
-      "path": "/package/example/1.0.0/img/kibana-iptables-ubiquity.png",
+      "src": "/img/kibana-envoyproxy.jpg",
+      "path": "/package/example/1.0.0/img/kibana-envoyproxy.jpg",
       "title": "IP Tables Ubiquity Dashboard",
       "size": "1492x1464",
       "type": "image/png"
