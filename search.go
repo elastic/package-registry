@@ -27,6 +27,7 @@ func searchHandler(packagesBasePaths []string, cacheTime time.Duration) func(w h
 		var category string
 		// Leaving out `a` here to not use a reserved name
 		var packageQuery string
+		var assetQuery string
 		var all bool
 		var internal bool
 		var experimental bool
@@ -48,6 +49,10 @@ func searchHandler(packagesBasePaths []string, cacheTime time.Duration) func(w h
 
 			if v := query.Get("package"); v != "" {
 				packageQuery = v
+			}
+
+			if v := query.Get("asset"); v != "" {
+				assetQuery = v
 			}
 
 			if v := query.Get("all"); v != "" {
@@ -114,6 +119,20 @@ func searchHandler(packagesBasePaths []string, cacheTime time.Duration) func(w h
 			// If package Query is set, all versions of this package are returned
 			if packageQuery != "" && packageQuery != p.Name {
 				continue
+			}
+
+			if assetQuery != "" {
+				assetFound := false
+				for _, a := range p.Assets {
+					if strings.Contains(a, assetQuery) {
+						assetFound = true
+						break
+
+					}
+				}
+				if !assetFound {
+					continue
+				}
 			}
 
 			addPackage := true
