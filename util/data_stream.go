@@ -63,8 +63,8 @@ type Input struct {
 }
 
 type Stream struct {
-	Input   string     `config:"input" json:"input" validate:"required"`
-	Vars    []Variable `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
+	Input      string     `config:"input" json:"input" validate:"required"`
+	Vars       []Variable `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
 	DataStream string     `config:"data_stream" json:"data_stream,omitempty" yaml:"data_stream,omitempty"`
 	// TODO: This might cause issues when consuming the json as the key contains . (had been an issue in the past if I remember correctly)
 	TemplatePath string `config:"template_path" json:"template_path,omitempty" yaml:"template_path,omitempty"`
