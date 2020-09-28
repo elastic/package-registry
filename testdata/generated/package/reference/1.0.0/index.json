@@ -30,10 +30,10 @@
     "/package/reference/1.0.0/manifest.yml",
     "/package/reference/1.0.0/docs/README.md",
     "/package/reference/1.0.0/img/icon.svg",
-    "/package/reference/1.0.0/dataset/reference/manifest.yml",
-    "/package/reference/1.0.0/dataset/reference/fields/base-fields.yml"
+    "/package/reference/1.0.0/data_stream/reference/manifest.yml",
+    "/package/reference/1.0.0/data_stream/reference/fields/base-fields.yml"
   ],
-  "config_templates": [
+  "policy_templates": [
     {
       "name": "nginx",
       "title": "Nginx logs and metrics.",
@@ -62,7 +62,7 @@
       "multiple": true
     }
   ],
-  "datasets": [
+  "data_streams": [
     {
       "type": "logs",
       "name": "reference.reference",

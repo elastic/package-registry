@@ -16,14 +16,14 @@
   "assets": [
     "/package/yamlpipeline/1.0.0/manifest.yml",
     "/package/yamlpipeline/1.0.0/docs/README.md",
-    "/package/yamlpipeline/1.0.0/dataset/log/manifest.yml",
-    "/package/yamlpipeline/1.0.0/dataset/log/fields/base-fields.yml",
-    "/package/yamlpipeline/1.0.0/dataset/log/agent/stream/stream.yml.hbs",
-    "/package/yamlpipeline/1.0.0/dataset/log/elasticsearch/ingest_pipeline/pipeline-entry.yml",
-    "/package/yamlpipeline/1.0.0/dataset/log/elasticsearch/ingest_pipeline/pipeline-json.yml",
-    "/package/yamlpipeline/1.0.0/dataset/log/elasticsearch/ingest_pipeline/pipeline-plaintext.yml"
+    "/package/yamlpipeline/1.0.0/data_stream/log/manifest.yml",
+    "/package/yamlpipeline/1.0.0/data_stream/log/fields/base-fields.yml",
+    "/package/yamlpipeline/1.0.0/data_stream/log/agent/stream/stream.yml.hbs",
+    "/package/yamlpipeline/1.0.0/data_stream/log/elasticsearch/ingest_pipeline/pipeline-entry.yml",
+    "/package/yamlpipeline/1.0.0/data_stream/log/elasticsearch/ingest_pipeline/pipeline-json.yml",
+    "/package/yamlpipeline/1.0.0/data_stream/log/elasticsearch/ingest_pipeline/pipeline-plaintext.yml"
   ],
-  "datasets": [
+  "data_streams": [
     {
       "type": "logs",
       "name": "yamlpipeline.log",

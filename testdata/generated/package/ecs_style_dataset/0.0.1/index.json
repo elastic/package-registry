@@ -16,10 +16,10 @@
   "assets": [
     "/package/ecs_style_dataset/0.0.1/manifest.yml",
     "/package/ecs_style_dataset/0.0.1/docs/README.md",
-    "/package/ecs_style_dataset/0.0.1/dataset/foo/manifest.yml",
-    "/package/ecs_style_dataset/0.0.1/dataset/foo/fields/fields.yml"
+    "/package/ecs_style_dataset/0.0.1/data_stream/foo/manifest.yml",
+    "/package/ecs_style_dataset/0.0.1/data_stream/foo/fields/fields.yml"
   ],
-  "config_templates": [
+  "policy_templates": [
     {
       "name": "logs",
       "title": "Logs datasource",
@@ -32,7 +32,7 @@
       "multiple": true
     }
   ],
-  "datasets": [
+  "data_streams": [
     {
       "type": "logs",
       "name": "ecs_style_dataset.foo",
