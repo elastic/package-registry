@@ -33,8 +33,8 @@ var validTypes = map[string]string{
 	"metrics": "Metrics",
 }
 
-type Dataset struct {
-	// Name and type of the dataset. This is linked to dataset.name and dataset.type fields.
+type DataStream struct {
+	// Name and type of the dataStream. This is linked to dataStream.name and dataStream.type fields.
 	Type string `config:"type" json:"type" validate:"required"`
 	Name string `config:"name" json:"name,omitempty" yaml:"name,omitempty"`
 
@@ -65,7 +65,7 @@ type Input struct {
 type Stream struct {
 	Input   string     `config:"input" json:"input" validate:"required"`
 	Vars    []Variable `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
-	Dataset string     `config:"dataset" json:"dataset,omitempty" yaml:"dataset,omitempty"`
+	DataStream string     `config:"data_stream" json:"data_stream,omitempty" yaml:"data_stream,omitempty"`
 	// TODO: This might cause issues when consuming the json as the key contains . (had been an issue in the past if I remember correctly)
 	TemplatePath string `config:"template_path" json:"template_path,omitempty" yaml:"template_path,omitempty"`
 	Title        string `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
@@ -95,7 +95,7 @@ type fieldEntry struct {
 	aType string
 }
 
-func NewDataset(basePath string, p *Package) (*Dataset, error) {
+func NewDataStream(basePath string, p *Package) (*DataStream, error) {
 	// Check if manifest exists
 	manifestPath := filepath.Join(basePath, "manifest.yml")
 	_, err := os.Stat(manifestPath)
@@ -103,28 +103,28 @@ func NewDataset(basePath string, p *Package) (*Dataset, error) {
 		return nil, errors.Wrapf(err, "manifest does not exist for package: %s", p.BasePath)
 	}
 
-	datasetPath := filepath.Base(basePath)
+	dataStreamPath := filepath.Base(basePath)
 
 	manifest, err := yaml.NewConfigWithFile(manifestPath, ucfg.PathSep("."))
 	if err != nil {
 		return nil, errors.Wrapf(err, "error creating new manifest config %s", manifestPath)
 	}
-	var d = &Dataset{
+	var d = &DataStream{
 		Package: p.Name,
-		// This is the name of the directory of the dataset
-		Path:     datasetPath,
+		// This is the name of the directory of the dataStream
+		Path:     dataStreamPath,
 		BasePath: basePath,
 	}
 
-	// go-ucfg automatically calls the `Validate` method on the Dataset object here
+	// go-ucfg automatically calls the `Validate` method on the DataStream object here
 	err = manifest.Unpack(d, ucfg.PathSep("."))
 	if err != nil {
-		return nil, errors.Wrapf(err, "error building dataset (path: %s) in package: %s", datasetPath, p.Name)
+		return nil, errors.Wrapf(err, "error building data stream (path: %s) in package: %s", dataStreamPath, p.Name)
 	}
 
-	// if id is not set, {package}.{datasetPath} is the default
+	// if id is not set, {package}.{dataStreamPath} is the default
 	if d.Name == "" {
-		d.Name = p.Name + "." + datasetPath
+		d.Name = p.Name + "." + dataStreamPath
 	}
 
 	if d.Release == "" {
@@ -150,7 +150,7 @@ func NewDataset(basePath string, p *Package) (*Dataset, error) {
 	return d, nil
 }
 
-func (d *Dataset) Validate() error {
+func (d *DataStream) Validate() error {
 	pipelineDir := filepath.Join(d.BasePath, "elasticsearch", DirIngestPipeline)
 	paths, err := filepath.Glob(filepath.Join(pipelineDir, "*"))
 	if err != nil {
@@ -158,7 +158,7 @@ func (d *Dataset) Validate() error {
 	}
 
 	if strings.Contains(d.Name, "-") {
-		return fmt.Errorf("dataset name is not allowed to contain `-`: %s", d.Name)
+		return fmt.Errorf("data stream name is not allowed to contain `-`: %s", d.Name)
 	}
 
 	if !d.validType() {
@@ -232,7 +232,7 @@ func (d *Dataset) Validate() error {
 	return nil
 }
 
-func (d *Dataset) validType() bool {
+func (d *DataStream) validType() bool {
 	_, exists := validTypes[d.Type]
 	return exists
 }
@@ -262,7 +262,7 @@ func validateIngestPipelineFile(pipelinePath string) error {
 }
 
 // validateRequiredFields method loads fields from all files and checks if required fields are present.
-func (d *Dataset) validateRequiredFields() error {
+func (d *DataStream) validateRequiredFields() error {
 	fieldsDirPath := filepath.Join(d.BasePath, "fields")
 
 	// Collect fields from all files

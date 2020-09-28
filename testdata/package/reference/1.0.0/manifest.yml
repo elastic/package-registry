@@ -78,7 +78,7 @@ icons:
 
 # Defining a datasource allows the UI to generate a form for each input and generate the agent
 # config out of it. For a visual guide on what fields is used how in the UI, check out https://github.com/elastic/package-registry/pull/242
-config_templates:
+policy_templates:
   -
     # Do we need a name for the data source?
     name: nginx
