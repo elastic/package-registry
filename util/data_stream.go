@@ -34,7 +34,7 @@ var validTypes = map[string]string{
 }
 
 type DataStream struct {
-	// Name and type of the dataStream. This is linked to dataStream.name and dataStream.type fields.
+	// Name and type of the data stream. This is linked to data_stream.dataset and data_stream.type fields.
 	Type    string `config:"type" json:"type" validate:"required"`
 	Dataset string `config:"dataset" json:"dataset,omitempty" yaml:"dataset,omitempty"`
 
@@ -187,7 +187,7 @@ func (d *DataStream) Validate() error {
 	}
 
 	if d.IngestPipeline == "" && len(paths) > 0 {
-		return fmt.Errorf("unused pipelines in the package (dataSetID: %s): %s", d.Dataset, strings.Join(paths, ","))
+		return fmt.Errorf("unused pipelines in the package (dataset: %s): %s", d.Dataset, strings.Join(paths, ","))
 	}
 
 	// In case an ingest pipeline is set, check if it is around
