@@ -19,7 +19,7 @@ screenshots:
     size: 1492x1464
     type: image/png
 
-config_templates:
+policy_templates:
   - name: logs
     title: Logs datasource
     description: Datasource for your log files.

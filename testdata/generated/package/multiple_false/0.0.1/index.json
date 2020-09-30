@@ -16,12 +16,12 @@
   "assets": [
     "/package/multiple_false/0.0.1/manifest.yml",
     "/package/multiple_false/0.0.1/docs/README.md",
-    "/package/multiple_false/0.0.1/dataset/foo/manifest.yml",
-    "/package/multiple_false/0.0.1/dataset/foo/fields/base-fields.yml",
-    "/package/multiple_false/0.0.1/dataset/foo/agent/stream/stream.yml.hbs",
-    "/package/multiple_false/0.0.1/dataset/foo/elasticsearch/ingest_pipeline/default.json"
+    "/package/multiple_false/0.0.1/data_stream/foo/manifest.yml",
+    "/package/multiple_false/0.0.1/data_stream/foo/fields/base-fields.yml",
+    "/package/multiple_false/0.0.1/data_stream/foo/agent/stream/stream.yml.hbs",
+    "/package/multiple_false/0.0.1/data_stream/foo/elasticsearch/ingest_pipeline/default.json"
   ],
-  "config_templates": [
+  "policy_templates": [
     {
       "name": "logs",
       "title": "Logs datasource",
@@ -34,10 +34,10 @@
       "multiple": false
     }
   ],
-  "datasets": [
+  "data_streams": [
     {
       "type": "logs",
-      "name": "multiple_false.foo",
+      "dataset": "multiple_false.foo",
       "title": "Foo",
       "release": "experimental",
       "ingest_pipeline": "default",

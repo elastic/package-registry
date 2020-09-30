@@ -9,7 +9,7 @@ type: integration
 release: beta
 
 
-config_templates:
+policy_templates:
   - name: logs
     title: Logs datasource
     description: Datasource for your log files.

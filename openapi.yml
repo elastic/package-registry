@@ -169,8 +169,8 @@ components:
           $ref: '#/components/schemas/ProductRequirement'
       required:
         - Kibana
-    Dataset:
-      title: Dataset
+    DataStream:
+      title: DataStream
       type: object
       properties:
         type:
@@ -325,14 +325,14 @@ components:
               type: array
               items:
                 type: string
-            config_templates:
+            policy_templates:
               type: array
               items:
-                $ref: '#/components/schemas/ConfigTemplate'
-            datasets:
+                $ref: '#/components/schemas/PolicyTemplate'
+            data_streams:
               type: array
               items:
-                $ref: '#/components/schemas/Dataset'
+                $ref: '#/components/schemas/DataStream'
             owner:
               $ref: '#/components/schemas/Owner'
           required:
@@ -340,8 +340,8 @@ components:
             - categories
             - requirement
       description: ''
-    ConfigTemplate:
-      title: ConfigTemplate
+    PolicyTemplate:
+      title: PolicyTemplate
       type: object
       properties:
         name:

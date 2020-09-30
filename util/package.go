@@ -61,8 +61,8 @@ type Package struct {
 	Conditions      *Conditions      `config:"conditions,omitempty" json:"conditions,omitempty" yaml:"conditions,omitempty"`
 	Screenshots     []Image          `config:"screenshots,omitempty" json:"screenshots,omitempty" yaml:"screenshots,omitempty"`
 	Assets          []string         `config:"assets,omitempty" json:"assets,omitempty" yaml:"assets,omitempty"`
-	ConfigTemplates []ConfigTemplate `config:"config_templates,omitempty" json:"config_templates,omitempty" yaml:"config_templates,omitempty"`
-	Datasets        []*Dataset       `config:"datasets,omitempty" json:"datasets,omitempty" yaml:"datasets,omitempty"`
+	PolicyTemplates []PolicyTemplate `config:"policy_templates,omitempty" json:"policy_templates,omitempty" yaml:"policy_templates,omitempty"`
+	DataStreams     []*DataStream    `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
 	Owner           *Owner           `config:"owner,omitempty" json:"owner,omitempty" yaml:"owner,omitempty"`
 
 	// Local path to the package dir
@@ -83,7 +83,7 @@ type BasePackage struct {
 	Internal    bool    `config:"internal,omitempty" json:"internal,omitempty" yaml:"internal,omitempty"`
 }
 
-type ConfigTemplate struct {
+type PolicyTemplate struct {
 	Name        string  `config:"name" json:"name" validate:"required"`
 	Title       string  `config:"title" json:"title" validate:"required"`
 	Description string  `config:"description" json:"description" validate:"required"`
@@ -154,9 +154,9 @@ func NewPackage(basePath string) (*Package, error) {
 
 	// Default for the multiple flags is true.
 	trueValue := true
-	for i, _ := range p.ConfigTemplates {
-		if p.ConfigTemplates[i].Multiple == nil {
-			p.ConfigTemplates[i].Multiple = &trueValue
+	for i, _ := range p.PolicyTemplates {
+		if p.PolicyTemplates[i].Multiple == nil {
+			p.PolicyTemplates[i].Multiple = &trueValue
 		}
 	}
 	if p.Type == "" {
@@ -221,7 +221,7 @@ func NewPackage(basePath string) (*Package, error) {
 
 	err = p.LoadDataSets()
 	if err != nil {
-		return nil, errors.Wrapf(err, "loading package datasets failed (path '%s')", p.BasePath)
+		return nil, errors.Wrapf(err, "loading package dataStreams failed (path '%s')", p.BasePath)
 	}
 	return p, nil
 }
@@ -360,7 +360,7 @@ func (p *Package) Validate() error {
 		return errors.Wrap(err, "version in manifest file is not consistent with path")
 	}
 
-	return p.ValidateDatasets()
+	return p.ValidateDataStreams()
 }
 
 func (p *Package) validateVersionConsistency() error {
@@ -383,13 +383,13 @@ func (p *Package) validateVersionConsistency() error {
 	return nil
 }
 
-// GetDatasetPaths returns a list with the dataset paths inside this package
-func (p *Package) GetDatasetPaths() ([]string, error) {
-	datasetBasePath := filepath.Join(p.BasePath, "dataset")
+// GetDataStreamPaths returns a list with the dataStream paths inside this package
+func (p *Package) GetDataStreamPaths() ([]string, error) {
+	dataStreamBasePath := filepath.Join(p.BasePath, "data_stream")
 
-	// Check if this package has datasets
-	_, err := os.Stat(datasetBasePath)
-	// If no datasets exist, just return
+	// Check if this package has dataStreams
+	_, err := os.Stat(dataStreamBasePath)
+	// If no dataStreams exist, just return
 	if os.IsNotExist(err) {
 		return nil, nil
 	}
@@ -398,13 +398,13 @@ func (p *Package) GetDatasetPaths() ([]string, error) {
 		return nil, err
 	}
 
-	paths, err := filepath.Glob(filepath.Join(datasetBasePath, "*"))
+	paths, err := filepath.Glob(filepath.Join(dataStreamBasePath, "*"))
 	if err != nil {
 		return nil, err
 	}
 
 	for i, _ := range paths {
-		paths[i] = paths[i][len(datasetBasePath)+1:]
+		paths[i] = paths[i][len(dataStreamBasePath)+1:]
 	}
 
 	return paths, nil
@@ -412,49 +412,49 @@ func (p *Package) GetDatasetPaths() ([]string, error) {
 
 func (p *Package) LoadDataSets() error {
 
-	datasetPaths, err := p.GetDatasetPaths()
+	dataStreamPaths, err := p.GetDataStreamPaths()
 	if err != nil {
 		return err
 	}
 
-	datasetsBasePath := filepath.Join(p.BasePath, "dataset")
+	dataStreamsBasePath := filepath.Join(p.BasePath, "data_stream")
 
-	for _, datasetPath := range datasetPaths {
+	for _, dataStreamPath := range dataStreamPaths {
 
-		datasetBasePath := filepath.Join(datasetsBasePath, datasetPath)
+		dataStreamBasePath := filepath.Join(dataStreamsBasePath, dataStreamPath)
 
-		d, err := NewDataset(datasetBasePath, p)
+		d, err := NewDataStream(dataStreamBasePath, p)
 		if err != nil {
 			return err
 		}
 
 		// TODO: Validate that each input specified in a stream also is defined in the package
 
-		p.Datasets = append(p.Datasets, d)
+		p.DataStreams = append(p.DataStreams, d)
 	}
 
 	return nil
 }
 
-// ValidateDatasets loads all datasets and with it validates them
-func (p *Package) ValidateDatasets() error {
-	datasetPaths, err := p.GetDatasetPaths()
+// ValidateDataStreams loads all dataStreams and with it validates them
+func (p *Package) ValidateDataStreams() error {
+	dataStreamPaths, err := p.GetDataStreamPaths()
 	if err != nil {
 		return err
 	}
 
-	datasetsBasePath := filepath.Join(p.BasePath, "dataset")
-	for _, datasetPath := range datasetPaths {
-		datasetBasePath := filepath.Join(datasetsBasePath, datasetPath)
+	dataStreamsBasePath := filepath.Join(p.BasePath, "data_stream")
+	for _, dataStreamPath := range dataStreamPaths {
+		dataStreamBasePath := filepath.Join(dataStreamsBasePath, dataStreamPath)
 
-		d, err := NewDataset(datasetBasePath, p)
+		d, err := NewDataStream(dataStreamBasePath, p)
 		if err != nil {
-			return errors.Wrapf(err, "building dataset failed (path: %s)", datasetBasePath)
+			return errors.Wrapf(err, "building data stream failed (path: %s)", dataStreamBasePath)
 		}
 
 		err = d.Validate()
 		if err != nil {
-			return errors.Wrapf(err, "validating dataset failed (path: %s)", datasetBasePath)
+			return errors.Wrapf(err, "validating data stream failed (path: %s)", dataStreamBasePath)
 		}
 	}
 	return nil

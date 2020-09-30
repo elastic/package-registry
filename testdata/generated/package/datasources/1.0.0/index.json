@@ -16,18 +16,18 @@
   "assets": [
     "/package/datasources/1.0.0/manifest.yml",
     "/package/datasources/1.0.0/docs/README.md",
-    "/package/datasources/1.0.0/dataset/examplelog1/manifest.yml",
-    "/package/datasources/1.0.0/dataset/examplelog2/manifest.yml",
-    "/package/datasources/1.0.0/dataset/examplemetric/manifest.yml",
-    "/package/datasources/1.0.0/dataset/examplelog1/fields/base-fields.yml",
-    "/package/datasources/1.0.0/dataset/examplelog2/fields/base-fields.yml",
-    "/package/datasources/1.0.0/dataset/examplemetric/fields/base-fields.yml",
-    "/package/datasources/1.0.0/dataset/examplelog1/agent/stream/logs.yml",
-    "/package/datasources/1.0.0/dataset/examplelog1/agent/stream/syslog.yml",
-    "/package/datasources/1.0.0/dataset/examplelog2/agent/stream/stream.yml.hbs",
-    "/package/datasources/1.0.0/dataset/examplemetric/agent/stream/stream.yml.hbs"
+    "/package/datasources/1.0.0/data_stream/examplelog1/manifest.yml",
+    "/package/datasources/1.0.0/data_stream/examplelog2/manifest.yml",
+    "/package/datasources/1.0.0/data_stream/examplemetric/manifest.yml",
+    "/package/datasources/1.0.0/data_stream/examplelog1/fields/base-fields.yml",
+    "/package/datasources/1.0.0/data_stream/examplelog2/fields/base-fields.yml",
+    "/package/datasources/1.0.0/data_stream/examplemetric/fields/base-fields.yml",
+    "/package/datasources/1.0.0/data_stream/examplelog1/agent/stream/logs.yml",
+    "/package/datasources/1.0.0/data_stream/examplelog1/agent/stream/syslog.yml",
+    "/package/datasources/1.0.0/data_stream/examplelog2/agent/stream/stream.yml.hbs",
+    "/package/datasources/1.0.0/data_stream/examplemetric/agent/stream/stream.yml.hbs"
   ],
-  "config_templates": [
+  "policy_templates": [
     {
       "name": "nginx",
       "title": "Datasource title",
@@ -84,10 +84,10 @@
       "multiple": true
     }
   ],
-  "datasets": [
+  "data_streams": [
     {
       "type": "logs",
-      "name": "datasources.examplelog1",
+      "dataset": "datasources.examplelog1",
       "title": "Example dataset with inputs",
       "release": "experimental",
       "streams": [
@@ -124,7 +124,7 @@
     },
     {
       "type": "logs",
-      "name": "datasources.examplelog2",
+      "dataset": "datasources.examplelog2",
       "title": "Example dataset with inputs",
       "release": "experimental",
       "streams": [
@@ -154,8 +154,8 @@
     },
     {
       "type": "metrics",
-      "name": "datasources.examplemetric",
-      "title": "Example dataset with inputs",
+      "dataset": "datasources.examplemetric",
+      "title": "Example data stream with inputs",
       "release": "experimental",
       "streams": [
         {

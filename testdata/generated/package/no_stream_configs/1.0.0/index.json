@@ -16,14 +16,14 @@
   "assets": [
     "/package/no_stream_configs/1.0.0/manifest.yml",
     "/package/no_stream_configs/1.0.0/docs/README.md",
-    "/package/no_stream_configs/1.0.0/dataset/log/manifest.yml",
-    "/package/no_stream_configs/1.0.0/dataset/log/fields/base-fields.yml",
-    "/package/no_stream_configs/1.0.0/dataset/log/fields/ecs.yml"
+    "/package/no_stream_configs/1.0.0/data_stream/log/manifest.yml",
+    "/package/no_stream_configs/1.0.0/data_stream/log/fields/base-fields.yml",
+    "/package/no_stream_configs/1.0.0/data_stream/log/fields/ecs.yml"
   ],
-  "datasets": [
+  "data_streams": [
     {
       "type": "logs",
-      "name": "no_stream_configs.log",
+      "dataset": "no_stream_configs.log",
       "title": "Log Yaml pipeline",
       "release": "experimental",
       "package": "no_stream_configs",

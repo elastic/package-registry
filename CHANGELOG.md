@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Breaking changes
 
+* Rename config template to policy template and dataset to data stream. [#641](https://github.com/elastic/package-registry/pull/641)
+
 ### Bugfixes
 
 ### Added
