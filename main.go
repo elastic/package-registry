@@ -25,8 +25,6 @@ import (
 )
 
 const (
-	packageDir = "package"
-
 	serviceName = "package-registry"
 	version     = "0.13.0"
 )
