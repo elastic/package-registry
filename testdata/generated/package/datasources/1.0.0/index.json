@@ -155,7 +155,7 @@
     {
       "type": "metrics",
       "dataset": "datasources.examplemetric",
-      "title": "Example dataset with inputs",
+      "title": "Example data stream with inputs",
       "release": "experimental",
       "streams": [
         {
