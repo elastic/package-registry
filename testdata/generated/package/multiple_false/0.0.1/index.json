@@ -37,7 +37,7 @@
   "data_streams": [
     {
       "type": "logs",
-      "name": "multiple_false.foo",
+      "dataset": "multiple_false.foo",
       "title": "Foo",
       "release": "experimental",
       "ingest_pipeline": "default",

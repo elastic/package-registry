@@ -87,7 +87,7 @@
   "data_streams": [
     {
       "type": "logs",
-      "name": "datasources.examplelog1",
+      "dataset": "datasources.examplelog1",
       "title": "Example dataset with inputs",
       "release": "experimental",
       "streams": [
@@ -124,7 +124,7 @@
     },
     {
       "type": "logs",
-      "name": "datasources.examplelog2",
+      "dataset": "datasources.examplelog2",
       "title": "Example dataset with inputs",
       "release": "experimental",
       "streams": [
@@ -154,7 +154,7 @@
     },
     {
       "type": "metrics",
-      "name": "datasources.examplemetric",
+      "dataset": "datasources.examplemetric",
       "title": "Example dataset with inputs",
       "release": "experimental",
       "streams": [

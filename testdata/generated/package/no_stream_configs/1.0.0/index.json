@@ -23,7 +23,7 @@
   "data_streams": [
     {
       "type": "logs",
-      "name": "no_stream_configs.log",
+      "dataset": "no_stream_configs.log",
       "title": "Log Yaml pipeline",
       "release": "experimental",
       "package": "no_stream_configs",

@@ -26,7 +26,7 @@
   "data_streams": [
     {
       "type": "logs",
-      "name": "yamlpipeline.log",
+      "dataset": "yamlpipeline.log",
       "title": "Log Yaml pipeline",
       "release": "experimental",
       "ingest_pipeline": "pipeline-entry",

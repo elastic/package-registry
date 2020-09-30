@@ -36,7 +36,7 @@ var validTypes = map[string]string{
 type DataStream struct {
 	// Name and type of the dataStream. This is linked to dataStream.name and dataStream.type fields.
 	Type string `config:"type" json:"type" validate:"required"`
-	Name string `config:"name" json:"name,omitempty" yaml:"name,omitempty"`
+	Dataset string `config:"dataset" json:"dataset,omitempty" yaml:"dataset,omitempty"`
 
 	Title   string `config:"title" json:"title" validate:"required"`
 	Release string `config:"release" json:"release"`
@@ -123,8 +123,8 @@ func NewDataStream(basePath string, p *Package) (*DataStream, error) {
 	}
 
 	// if id is not set, {package}.{dataStreamPath} is the default
-	if d.Name == "" {
-		d.Name = p.Name + "." + dataStreamPath
+	if d.Dataset == "" {
+		d.Dataset = p.Name + "." + dataStreamPath
 	}
 
 	if d.Release == "" {
@@ -157,8 +157,8 @@ func (d *DataStream) Validate() error {
 		return err
 	}
 
-	if strings.Contains(d.Name, "-") {
-		return fmt.Errorf("data stream name is not allowed to contain `-`: %s", d.Name)
+	if strings.Contains(d.Dataset, "-") {
+		return fmt.Errorf("data stream name is not allowed to contain `-`: %s", d.Dataset)
 	}
 
 	if !d.validType() {
@@ -187,7 +187,7 @@ func (d *DataStream) Validate() error {
 	}
 
 	if d.IngestPipeline == "" && len(paths) > 0 {
-		return fmt.Errorf("unused pipelines in the package (dataSetID: %s): %s", d.Name, strings.Join(paths, ","))
+		return fmt.Errorf("unused pipelines in the package (dataSetID: %s): %s", d.Dataset, strings.Join(paths, ","))
 	}
 
 	// In case an ingest pipeline is set, check if it is around

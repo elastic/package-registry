@@ -65,7 +65,7 @@
   "data_streams": [
     {
       "type": "logs",
-      "name": "reference.reference",
+      "dataset": "reference.reference",
       "title": "Reference Logs Title",
       "release": "beta",
       "streams": [

@@ -63,7 +63,7 @@
   "data_streams": [
     {
       "type": "logs",
-      "name": "bar.noo",
+      "dataset": "example.foo",
       "title": "Foo",
       "release": "experimental",
       "ingest_pipeline": "pipeline-entry",

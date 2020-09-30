@@ -35,7 +35,7 @@
   "data_streams": [
     {
       "type": "logs",
-      "name": "ecs_style_dataset.foo",
+      "dataset": "ecs_style_dataset.foo",
       "title": "Foo",
       "release": "experimental",
       "package": "ecs_style_dataset",

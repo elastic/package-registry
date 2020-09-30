@@ -38,7 +38,7 @@
   "data_streams": [
     {
       "type": "logs",
-      "name": "default_pipeline.foo",
+      "dataset": "default_pipeline.foo",
       "title": "Foo",
       "release": "experimental",
       "ingest_pipeline": "default",
