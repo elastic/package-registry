@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Known Issue
 
-## [v0.11.0](https://github.com/elastic/package-registry/compare/v0.11.0...v0.12.0)
+## [v0.12.0](https://github.com/elastic/package-registry/compare/v0.11.0...v0.12.0)
 
 ### Breaking changes
 
