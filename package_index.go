@@ -34,7 +34,7 @@ func packageIndexHandler(packagesBasePaths []string, cacheTime time.Duration) fu
 		}
 
 		packageVersion, ok := vars["packageVersion"]
-		if !ok {
+		if !ok || (packageName == "endpoint" && packageVersion == "0.17.0-dev.0") {
 			badRequest(w, "missing package version")
 			return
 		}
