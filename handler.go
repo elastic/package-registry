@@ -17,10 +17,12 @@ import (
 var errResourceNotFound = errors.New("resource not found")
 
 func notFoundError(w http.ResponseWriter, err error) {
+	cacheHeaders(w, 0)
 	http.Error(w, err.Error(), http.StatusNotFound)
 }
 
 func badRequest(w http.ResponseWriter, errorMessage string) {
+	cacheHeaders(w, 0)
 	http.Error(w, errorMessage, http.StatusBadRequest)
 }
 
