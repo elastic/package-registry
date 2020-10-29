@@ -17,12 +17,12 @@ import (
 var errResourceNotFound = errors.New("resource not found")
 
 func notFoundError(w http.ResponseWriter, err error) {
-	cacheHeaders(w, 0)
+	noCacheHeaders(w)
 	http.Error(w, err.Error(), http.StatusNotFound)
 }
 
 func badRequest(w http.ResponseWriter, errorMessage string) {
-	cacheHeaders(w, 0)
+	noCacheHeaders(w)
 	http.Error(w, errorMessage, http.StatusBadRequest)
 }
 
@@ -30,6 +30,11 @@ func cacheHeaders(w http.ResponseWriter, cacheTime time.Duration) {
 	maxAge := fmt.Sprintf("max-age=%.0f", cacheTime.Seconds())
 	w.Header().Add("Cache-Control", maxAge)
 	w.Header().Add("Cache-Control", "public")
+}
+
+func noCacheHeaders(w http.ResponseWriter) {
+	w.Header().Add("Cache-Control", "max-age=0")
+	w.Header().Add("Cache-Control", "private, no store")
 }
 
 func jsonHeader(w http.ResponseWriter) {
