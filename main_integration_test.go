@@ -79,7 +79,7 @@ func TestSetup(t *testing.T) {
 	}
 
 	// Run setup in ingest_manager against registry to see if no errors are returned
-	req, err := http.NewRequest("POST", "http://elastic:changeme@localhost:5601/api/ingest_manager/setup", nil)
+	req, err := http.NewRequest("POST", "http://elastic:changeme@localhost:5601/api/fleet/setup", nil)
 	if err != nil {
 		t.Error(err)
 	}
