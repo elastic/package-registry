@@ -26,7 +26,7 @@ import (
 
 const (
 	serviceName = "package-registry"
-	version     = "0.13.0"
+	version     = "0.13.1"
 )
 
 var (
