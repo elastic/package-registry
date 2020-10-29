@@ -34,7 +34,7 @@ func cacheHeaders(w http.ResponseWriter, cacheTime time.Duration) {
 
 func noCacheHeaders(w http.ResponseWriter) {
 	w.Header().Add("Cache-Control", "max-age=0")
-	w.Header().Add("Cache-Control", "private, no store")
+	w.Header().Add("Cache-Control", "private, no-store")
 }
 
 func jsonHeader(w http.ResponseWriter) {
