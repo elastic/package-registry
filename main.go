@@ -176,6 +176,7 @@ func getRouter(config *Config, packagesBasePaths []string) (*mux.Router, error) 
 	router.HandleFunc(packageIndexRouterPath, packageIndexHandler)
 	router.PathPrefix("/package").HandlerFunc(staticHandler(packagesBasePaths, "/package", config.CacheTimeCatchAll))
 	router.Use(loggingMiddleware)
+	router.NotFoundHandler = http.Handler(notFoundHandler(fmt.Errorf("404 page not found")))
 	return router, nil
 }
 
