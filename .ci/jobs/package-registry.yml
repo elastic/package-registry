@@ -1,6 +1,6 @@
 ---
 - job:
-    name: Beats/package-registry
+    name:  Ingest-manager/package-registry
     display-name: Package Registry
     description: Jenkins pipeline for the Package Registry project
     view: Beats
