@@ -55,11 +55,12 @@ type DataStream struct {
 }
 
 type Input struct {
-	Type        string     `config:"type" json:"type" validate:"required"`
-	Vars        []Variable `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
-	Title       string     `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
-	Description string     `config:"description" json:"description,omitempty" yaml:"description,omitempty"`
-	Streams     []Stream   `config:"streams" json:"streams,omitempty" yaml:"streams,omitempty"`
+	Type         string     `config:"type" json:"type" validate:"required"`
+	Vars         []Variable `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
+	Title        string     `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
+	Description  string     `config:"description" json:"description,omitempty" yaml:"description,omitempty"`
+	Streams      []Stream   `config:"streams" json:"streams,omitempty" yaml:"streams,omitempty"`
+	TemplatePath string    `config:"template_path" json:"template_path,omitempty" yaml:"template_path,omitempty"`
 }
 
 type Stream struct {
