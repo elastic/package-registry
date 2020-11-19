@@ -60,7 +60,7 @@ type Input struct {
 	Title        string     `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
 	Description  string     `config:"description" json:"description,omitempty" yaml:"description,omitempty"`
 	Streams      []Stream   `config:"streams" json:"streams,omitempty" yaml:"streams,omitempty"`
-	TemplatePath string    `config:"template_path" json:"template_path,omitempty" yaml:"template_path,omitempty"`
+	TemplatePath string     `config:"template_path" json:"template_path,omitempty" yaml:"template_path,omitempty"`
 }
 
 type Stream struct {
