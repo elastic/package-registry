@@ -1,0 +1,33 @@
+format_version: 1.0.0
+
+name: input_level_templates
+description: This is a test package showing input-level agent yaml templates
+version: 1.0.0
+title: Input level templates
+categories: ["custom"]
+type: solution
+release: beta
+
+conditions:
+  kibana:
+    version: ">=7.11.0"
+
+policy_templates:
+  - name: input_level_templates
+    title: Input level templates
+    description: Input with input-level template to use input-level vars with
+    inputs:
+      - type: logs
+        title: Collect logs
+        vars:
+          - name: paths
+            title: Paths
+            default: ["/foo/bar", "/test/path"]
+            required: true
+            multi: true
+            type: text
+          - name: host
+            title: Host
+            required: true
+            type: text
+        template_path: "template.yml.hbs"
