@@ -31,7 +31,7 @@ const (
 var validTypes = map[string]string{
 	"logs":    "Logs",
 	"metrics": "Metrics",
-	"traces": "Traces",
+	"traces":  "Traces",
 }
 
 type DataStream struct {
