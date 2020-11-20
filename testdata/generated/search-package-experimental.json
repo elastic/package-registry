@@ -50,6 +50,16 @@
     "path": "/package/experimental/0.0.1"
   },
   {
+    "name": "fakeapm",
+    "title": "Not actually APM",
+    "version": "1.0.0",
+    "release": "experimental",
+    "description": "Not actually APM",
+    "type": "integration",
+    "download": "/epr/fakeapm/fakeapm-1.0.0.zip",
+    "path": "/package/fakeapm/1.0.0"
+  },
+  {
     "name": "foo",
     "title": "Foo",
     "version": "1.0.0",
