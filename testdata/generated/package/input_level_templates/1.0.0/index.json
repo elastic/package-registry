@@ -1,0 +1,61 @@
+{
+  "name": "input_level_templates",
+  "title": "Input level templates",
+  "version": "1.0.0",
+  "release": "beta",
+  "description": "This is a test package showing input-level agent yaml templates",
+  "type": "solution",
+  "download": "/epr/input_level_templates/input_level_templates-1.0.0.zip",
+  "path": "/package/input_level_templates/1.0.0",
+  "format_version": "1.0.0",
+  "readme": "/package/input_level_templates/1.0.0/docs/README.md",
+  "license": "basic",
+  "categories": [
+    "custom"
+  ],
+  "conditions": {
+    "kibana.version": "\u003e=7.11.0"
+  },
+  "assets": [
+    "/package/input_level_templates/1.0.0/manifest.yml",
+    "/package/input_level_templates/1.0.0/docs/README.md",
+    "/package/input_level_templates/1.0.0/agent/input/template.yml.hbs"
+  ],
+  "policy_templates": [
+    {
+      "name": "input_level_templates",
+      "title": "Input level templates",
+      "description": "Input with input-level template to use input-level vars with",
+      "inputs": [
+        {
+          "type": "logs",
+          "vars": [
+            {
+              "name": "paths",
+              "type": "text",
+              "title": "Paths",
+              "multi": true,
+              "required": true,
+              "show_user": false,
+              "default": [
+                "/foo/bar",
+                "/test/path"
+              ]
+            },
+            {
+              "name": "host",
+              "type": "text",
+              "title": "Host",
+              "multi": false,
+              "required": true,
+              "show_user": false
+            }
+          ],
+          "title": "Collect logs",
+          "template_path": "template.yml.hbs"
+        }
+      ],
+      "multiple": true
+    }
+  ]
+}
