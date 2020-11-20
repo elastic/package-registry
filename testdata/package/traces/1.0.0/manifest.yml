@@ -1,0 +1,11 @@
+format_version: 1.0.0
+name: fakeapm
+description: Not actually APM
+version: 1.0.0
+title: Not actually APM
+categories: ["monitoring"]
+type: integration
+release: experimental
+owner.github: "github.com/elastic/not-apm"
+conditions:
+  kibana.version: "~7.x.x"

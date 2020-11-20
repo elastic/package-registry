@@ -1,0 +1,38 @@
+{
+  "name": "fakeapm",
+  "title": "Not actually APM",
+  "version": "1.0.0",
+  "release": "experimental",
+  "description": "Not actually APM",
+  "type": "integration",
+  "download": "/epr/fakeapm/fakeapm-1.0.0.zip",
+  "path": "/package/fakeapm/1.0.0",
+  "format_version": "1.0.0",
+  "readme": "/package/fakeapm/1.0.0/docs/README.md",
+  "license": "basic",
+  "categories": [
+    "monitoring"
+  ],
+  "conditions": {
+    "kibana.version": "~7.x.x"
+  },
+  "assets": [
+    "/package/fakeapm/1.0.0/manifest.yml",
+    "/package/fakeapm/1.0.0/docs/README.md",
+    "/package/fakeapm/1.0.0/data_stream/traces/manifest.yml",
+    "/package/fakeapm/1.0.0/data_stream/traces/fields/base-fields.yml"
+  ],
+  "data_streams": [
+    {
+      "type": "traces",
+      "dataset": "fakeapm.traces",
+      "title": "notapmtraces",
+      "release": "experimental",
+      "package": "fakeapm",
+      "path": "traces"
+    }
+  ],
+  "owner": {
+    "github": "github.com/elastic/not-apm"
+  }
+}
