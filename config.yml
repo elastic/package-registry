@@ -1,3 +1,4 @@
 package_paths:
   - ./testdata/package
   - ./build/package-storage/packages
+  - /Users/fejoh/Documents/WORK/SOURCE/endpoint-package/out/packages
