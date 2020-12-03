@@ -62,6 +62,7 @@ type Input struct {
 	Description  string     `config:"description" json:"description,omitempty" yaml:"description,omitempty"`
 	Streams      []Stream   `config:"streams" json:"streams,omitempty" yaml:"streams,omitempty"`
 	TemplatePath string     `config:"template_path" json:"template_path,omitempty" yaml:"template_path,omitempty"`
+	Condition    string     `config:"condition" json:"condition,omitempty" yaml:"condition,omitempty"`
 }
 
 type Stream struct {
@@ -73,6 +74,7 @@ type Stream struct {
 	Title        string `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
 	Description  string `config:"description" json:"description,omitempty" yaml:"description,omitempty"`
 	Enabled      *bool  `config:"enabled" json:"enabled,omitempty" yaml:"enabled,omitempty"`
+	Condition    string `config:"condition" json:"condition,omitempty" yaml:"condition,omitempty"`
 }
 
 type Variable struct {
