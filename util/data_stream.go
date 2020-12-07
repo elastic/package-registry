@@ -74,7 +74,6 @@ type Stream struct {
 	Title        string `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
 	Description  string `config:"description" json:"description,omitempty" yaml:"description,omitempty"`
 	Enabled      *bool  `config:"enabled" json:"enabled,omitempty" yaml:"enabled,omitempty"`
-	Condition    string `config:"condition" json:"condition,omitempty" yaml:"condition,omitempty"`
 }
 
 type Variable struct {

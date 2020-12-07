@@ -54,8 +54,7 @@
             }
           ],
           "template_path": "stream.yml.hbs",
-          "enabled": true,
-          "condition": "${host.platform} == 'windows'"
+          "enabled": true
         }
       ],
       "package": "input_stream_condition",
