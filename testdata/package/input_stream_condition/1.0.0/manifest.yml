@@ -1,0 +1,22 @@
+format_version: 1.0.0
+
+name: input_stream_condition
+title: Input and stream condtion package
+description: >
+  This package contains input and streams with condition.
+version: 1.0.0
+categories: ["custom"]
+release: beta
+
+license: basic
+type: integration
+
+# No icons
+icons:
+policy_templates:
+  - name: logs
+    title: Logs datasource
+    description: Datasource for your log files.
+    inputs:
+      - type: foo
+        condition: ${host.platform} == 'windows'

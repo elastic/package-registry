@@ -1,0 +1,65 @@
+{
+  "name": "input_stream_condition",
+  "title": "Input and stream condtion package",
+  "version": "1.0.0",
+  "release": "beta",
+  "description": "This package contains input and streams with condition.\n",
+  "type": "integration",
+  "download": "/epr/input_stream_condition/input_stream_condition-1.0.0.zip",
+  "path": "/package/input_stream_condition/1.0.0",
+  "format_version": "1.0.0",
+  "readme": "/package/input_stream_condition/1.0.0/docs/README.md",
+  "license": "basic",
+  "categories": [
+    "custom"
+  ],
+  "assets": [
+    "/package/input_stream_condition/1.0.0/manifest.yml",
+    "/package/input_stream_condition/1.0.0/docs/README.md",
+    "/package/input_stream_condition/1.0.0/data_stream/foo/manifest.yml",
+    "/package/input_stream_condition/1.0.0/data_stream/foo/fields/base-fields.yml",
+    "/package/input_stream_condition/1.0.0/data_stream/foo/agent/stream/stream.yml.hbs"
+  ],
+  "policy_templates": [
+    {
+      "name": "logs",
+      "title": "Logs datasource",
+      "description": "Datasource for your log files.",
+      "inputs": [
+        {
+          "type": "foo",
+          "condition": "${host.platform} == 'windows'"
+        }
+      ],
+      "multiple": true
+    }
+  ],
+  "data_streams": [
+    {
+      "type": "logs",
+      "dataset": "input_stream_condition.foo",
+      "title": "Foo",
+      "release": "experimental",
+      "streams": [
+        {
+          "input": "foo",
+          "vars": [
+            {
+              "name": "paths",
+              "type": "text",
+              "description": "Path to log files to be collected",
+              "multi": true,
+              "required": true,
+              "show_user": false
+            }
+          ],
+          "template_path": "stream.yml.hbs",
+          "enabled": true,
+          "condition": "${host.platform} == 'windows'"
+        }
+      ],
+      "package": "input_stream_condition",
+      "path": "foo"
+    }
+  ]
+}
