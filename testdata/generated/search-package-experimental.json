@@ -80,6 +80,16 @@
     "path": "/package/input_level_templates/1.0.0"
   },
   {
+    "name": "input_stream_condition",
+    "title": "Input and stream condtion package",
+    "version": "1.0.0",
+    "release": "beta",
+    "description": "This package contains input and streams with condition.\n",
+    "type": "integration",
+    "download": "/epr/input_stream_condition/input_stream_condition-1.0.0.zip",
+    "path": "/package/input_stream_condition/1.0.0"
+  },
+  {
     "name": "longdocs",
     "title": "Long Docs",
     "version": "1.0.4",
