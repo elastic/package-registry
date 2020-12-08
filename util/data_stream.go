@@ -39,7 +39,6 @@ type DataStream struct {
 	Type      string `config:"type" json:"type" validate:"required"`
 	Dataset   string `config:"dataset" json:"dataset,omitempty" yaml:"dataset,omitempty"`
 	IlmPolicy string `config:"ilm_policy" json:"ilm_policy,omitempty" yaml:"ilm_policy,omitempty"`
-	Hidden    bool   `config:"hidden" json:"hidden,omitempty" yaml:"hidden,omitempty"`
 
 	Title   string `config:"title" json:"title" validate:"required"`
 	Release string `config:"release" json:"release"`
