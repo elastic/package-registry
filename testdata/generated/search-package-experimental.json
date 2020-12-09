@@ -70,6 +70,16 @@
     "path": "/package/foo/1.0.0"
   },
   {
+    "name": "hidden",
+    "title": "Hidden",
+    "version": "1.0.0",
+    "release": "beta",
+    "description": "This is the hidden integration",
+    "type": "solution",
+    "download": "/epr/hidden/hidden-1.0.0.zip",
+    "path": "/package/hidden/1.0.0"
+  },
+  {
     "name": "input_level_templates",
     "title": "Input level templates",
     "version": "1.0.0",

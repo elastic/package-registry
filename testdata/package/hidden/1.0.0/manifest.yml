@@ -1,0 +1,14 @@
+format_version: 1.0.0
+
+name: hidden
+description: This is the hidden integration
+version: 1.0.0
+title: Hidden
+categories: ["custom"]
+type: solution
+release: beta
+
+conditions:
+  kibana:
+    version: ">=7.0.0"
+
