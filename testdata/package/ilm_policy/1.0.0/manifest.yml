@@ -1,0 +1,14 @@
+format_version: 1.0.0
+
+name: ilmpolicy
+description: Test form ILM Policy in Package
+version: 1.0.0
+title: ILM Policy
+categories: ["custom"]
+type: solution
+release: beta
+
+conditions:
+  kibana:
+    version: ">=7.0.0"
+

@@ -1,0 +1,6 @@
+title: ILM policy overrride data stream
+type: metrics
+ilm_policy: diagnostics
+elasticsearch:
+  index_template.mappings:
+    dynamic: false
