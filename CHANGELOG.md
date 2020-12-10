@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Add "traces" as legal event type. [#656](https://github.com/elastic/package-registry/pull/656)
 * Add input-level `template_path` field. [#655](https://github.com/elastic/package-registry/pull/655)
-* Add hidden field to data stream. [#660] (https://github.com/elastic/package-registry/pull/660)
+* Add "hidden" field to data stream. [#660] (https://github.com/elastic/package-registry/pull/660)
 ### Deprecated
 
 ### Known Issue
