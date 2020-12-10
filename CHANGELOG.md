@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/elastic/package-registry/compare/v0.14.0...master)
+## [Unreleased](https://github.com/elastic/package-registry/compare/v0.15.0...master)
 
 ### Breaking changes
 
@@ -16,6 +16,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Known Issues
 
+## [0.15.0](https://github.com/elastic/package-registry/compare/v0.14.0...v0.15.0)
+
+### Breaking changes
+
+### Bugfixes
+
+### Added
+
+* Add "hidden" field to data stream. [#660] (https://github.com/elastic/package-registry/pull/660)
+* Add "ilm_policy" field to data stream. [#657] (https://github.com/elastic/package-registry/pull/657)
+
+### Deprecated
+
+### Known Issue
+
 ## [0.14.0](https://github.com/elastic/package-registry/compare/v0.13.0...v0.14.0)
 
 ### Breaking changes
@@ -26,8 +41,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Add "traces" as legal event type. [#656](https://github.com/elastic/package-registry/pull/656)
 * Add input-level `template_path` field. [#655](https://github.com/elastic/package-registry/pull/655)
-* Add "hidden" field to data stream. [#660] (https://github.com/elastic/package-registry/pull/660)
-* Add "ilm_policy" field to data stream. [#657] (https://github.com/elastic/package-registry/pull/657)
 
 ### Deprecated
 
