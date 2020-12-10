@@ -1,0 +1,6 @@
+title: Hidden data stream and ilm policy overrride
+type: metrics
+hidden: true
+elasticsearch:
+  index_template.mappings:
+    dynamic: false

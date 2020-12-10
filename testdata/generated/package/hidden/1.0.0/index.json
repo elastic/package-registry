@@ -1,0 +1,42 @@
+{
+  "name": "hidden",
+  "title": "Hidden",
+  "version": "1.0.0",
+  "release": "beta",
+  "description": "This is the hidden integration",
+  "type": "solution",
+  "download": "/epr/hidden/hidden-1.0.0.zip",
+  "path": "/package/hidden/1.0.0",
+  "format_version": "1.0.0",
+  "readme": "/package/hidden/1.0.0/docs/README.md",
+  "license": "basic",
+  "categories": [
+    "custom"
+  ],
+  "conditions": {
+    "kibana.version": "\u003e=7.0.0"
+  },
+  "assets": [
+    "/package/hidden/1.0.0/manifest.yml",
+    "/package/hidden/1.0.0/docs/README.md",
+    "/package/hidden/1.0.0/data_stream/hidden/manifest.yml",
+    "/package/hidden/1.0.0/data_stream/hidden/fields/base-fields.yml",
+    "/package/hidden/1.0.0/data_stream/hidden/fields/some_fields.yml"
+  ],
+  "data_streams": [
+    {
+      "type": "metrics",
+      "dataset": "hidden.hidden",
+      "hidden": true,
+      "title": "Hidden data stream and ilm policy overrride",
+      "release": "experimental",
+      "package": "hidden",
+      "elasticsearch": {
+        "index_template.mappings": {
+          "dynamic": false
+        }
+      },
+      "path": "hidden"
+    }
+  ]
+}
