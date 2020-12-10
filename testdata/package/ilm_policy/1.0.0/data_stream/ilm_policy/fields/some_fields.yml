@@ -1,0 +1,14 @@
+- name: source
+  title: Source
+  group: 2
+  type: group
+  fields:
+    - name: geo.city_name
+      level: core
+      type: keyword
+      description: City name.
+      ignore_above: 1024
+- name: foobar
+  type: text
+  description: A field with a pattern defined
+  pattern: '^[a-zA-Z]$'

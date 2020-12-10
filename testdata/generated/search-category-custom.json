@@ -30,6 +30,16 @@
     "path": "/package/hidden/1.0.0"
   },
   {
+    "name": "ilmpolicy",
+    "title": "ILM Policy",
+    "version": "1.0.0",
+    "release": "beta",
+    "description": "Test form ILM Policy in Package",
+    "type": "solution",
+    "download": "/epr/ilmpolicy/ilmpolicy-1.0.0.zip",
+    "path": "/package/ilmpolicy/1.0.0"
+  },
+  {
     "name": "input_level_templates",
     "title": "Input level templates",
     "version": "1.0.0",
