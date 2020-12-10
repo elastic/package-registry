@@ -38,6 +38,7 @@ type DataStream struct {
 	// Name and type of the data stream. This is linked to data_stream.dataset and data_stream.type fields.
 	Type      string `config:"type" json:"type" validate:"required"`
 	Dataset   string `config:"dataset" json:"dataset,omitempty" yaml:"dataset,omitempty"`
+	Hidden    bool   `config:"hidden" json:"hidden,omitempty" yaml:"hidden,omitempty"`
 	IlmPolicy string `config:"ilm_policy" json:"ilm_policy,omitempty" yaml:"ilm_policy,omitempty"`
 
 	Title   string `config:"title" json:"title" validate:"required"`
