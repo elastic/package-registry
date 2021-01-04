@@ -155,6 +155,10 @@ func NewDataStream(basePath string, p *Package) (*DataStream, error) {
 }
 
 func (d *DataStream) Validate() error {
+	if !EnablePackageValidation {
+		return nil
+	}
+
 	pipelineDir := filepath.Join(d.BasePath, "elasticsearch", DirIngestPipeline)
 	paths, err := filepath.Glob(filepath.Join(pipelineDir, "*"))
 	if err != nil {

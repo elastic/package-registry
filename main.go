@@ -46,6 +46,7 @@ func init() {
 	flag.StringVar(&address, "address", "localhost:8080", "Address of the package-registry service.")
 	// This flag is experimental and might be removed in the future or renamed
 	flag.BoolVar(&dryRun, "dry-run", false, "Runs a dry-run of the registry without starting the web service (experimental)")
+	flag.BoolVar(&util.EnablePackageValidation, "validate", false, "Validate package content")
 }
 
 type Config struct {
@@ -60,6 +61,10 @@ func main() {
 	flag.Parse()
 	log.Println("Package registry started.")
 	defer log.Println("Package registry stopped.")
+
+	if dryRun {
+		util.EnablePackageValidation = true // dry-run enables the package validation
+	}
 
 	config := mustLoadConfig()
 	packagesBasePaths := getPackagesBasePaths(config)
