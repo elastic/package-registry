@@ -112,7 +112,6 @@ var packageTests = []struct {
 }
 
 func TestValidate(t *testing.T) {
-	EnablePackageValidation = true
 	for _, tt := range packageTests {
 		t.Run(tt.description, func(t *testing.T) {
 			err := tt.p.Validate()
