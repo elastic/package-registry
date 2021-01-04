@@ -13,8 +13,8 @@ import (
 	"github.com/pkg/errors"
 )
 
-// EnablePackageValidation is a flag which can enable package content validation (package, data streams, assets, etc.).
-var EnablePackageValidation = true
+// PackageValidationDisabled is a flag which can disable package content validation (package, data streams, assets, etc.).
+var PackageValidationDisabled bool
 
 var packageList Packages
 

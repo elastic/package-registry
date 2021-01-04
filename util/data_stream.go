@@ -185,7 +185,7 @@ func NewDataStream(basePath string, p *Package) (*DataStream, error) {
 }
 
 func (d *DataStream) Validate() error {
-	if !EnablePackageValidation {
+	if PackageValidationDisabled {
 		return nil
 	}
 

@@ -313,7 +313,7 @@ func collectAssets(pattern string) ([]string, error) {
 // Validate is called during Unpack of the manifest.
 // The validation here is only related to the fields directly specified in the manifest itself.
 func (p *Package) Validate() error {
-	if !EnablePackageValidation {
+	if PackageValidationDisabled {
 		return nil
 	}
 
