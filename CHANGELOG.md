@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Package validation is disabled by default. [#] (https://github.com/elastic/package-registry/pull/)
+* Package validation is disabled by default. [#667] (https://github.com/elastic/package-registry/pull/667)
 
 ### Deprecated
 
