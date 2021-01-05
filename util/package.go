@@ -168,6 +168,11 @@ func NewPackage(basePath string) (*Package, error) {
 		p.License = DefaultLicense
 	}
 
+	p.versionSemVer, err = semver.StrictNewVersion(p.Version)
+	if err != nil {
+		return nil, errors.Wrap(err, "invalid package version")
+	}
+
 	if p.Icons != nil {
 		for k, i := range p.Icons {
 			p.Icons[k].Path = i.getPath(p)
@@ -308,6 +313,10 @@ func collectAssets(pattern string) ([]string, error) {
 // Validate is called during Unpack of the manifest.
 // The validation here is only related to the fields directly specified in the manifest itself.
 func (p *Package) Validate() error {
+	if PackageValidationDisabled {
+		return nil
+	}
+
 	if p.FormatVersion == "" {
 		return fmt.Errorf("no format_version set: %v", p)
 	}
@@ -334,11 +343,6 @@ func (p *Package) Validate() error {
 		if _, ok := CategoryTitles[c]; !ok {
 			return fmt.Errorf("invalid category: %s", c)
 		}
-	}
-
-	p.versionSemVer, err = semver.StrictNewVersion(p.Version)
-	if err != nil {
-		return errors.Wrap(err, "invalid package version")
 	}
 
 	for _, i := range p.Icons {

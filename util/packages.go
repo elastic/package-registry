@@ -13,6 +13,9 @@ import (
 	"github.com/pkg/errors"
 )
 
+// PackageValidationDisabled is a flag which can disable package content validation (package, data streams, assets, etc.).
+var PackageValidationDisabled bool
+
 var packageList Packages
 
 type Packages []Package
