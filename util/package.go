@@ -44,7 +44,7 @@ var CategoryTitles = map[string]string{
 	"os_system":         "OS & System",
 	"productivity":      "Productivity",
 	"security":          "Security",
-	"streaming":         "Data Streaming"
+	"streaming":         "Data Streaming",
 	"support":           "Support",
 	"ticketing":         "Ticketing",
 	"version_control":   "Version Control",
