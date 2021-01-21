@@ -74,14 +74,13 @@ func getPackagePaths(allPaths []string) ([]string, error) {
 			if info.IsDir() {
 				log.Printf("%-20s\t%10s\t%s", dirs[0], dirs[1], path)
 				foundPaths = append(foundPaths, path)
-			} else {
-				// Not expected file, return nil in order to continue processing sibling directories
-				// Fixes an annoying problem when the .DS_Store file is left behind and the package
-				// is not loading without any error information
-				log.Printf("error: unexpected file: %s", path)
-				return nil
+				return filepath.SkipDir
 			}
-			return filepath.SkipDir // don't need to go deeper
+			// Not expected file, return nil in order to continue processing sibling directories
+			// Fixes an annoying problem when the .DS_Store file is left behind and the package
+			// is not loading without any error information
+			log.Printf("error: unexpected file: %s", path)
+			return nil
 		})
 		if err != nil {
 			return nil, errors.Wrapf(err, "listing packages failed (path: %s)", packagesPath)
