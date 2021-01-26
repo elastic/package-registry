@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
+* Fix the package not loading if it has an accidental file left in the package root directory. Add semver validation of the version directory. [#673] (https://github.com/elastic/package-registry/pull/673)
+
 ### Added
 
 * Add "dataset_is_prefix" field to data stream. [#674] (https://github.com/elastic/package-registry/pull/674)
