@@ -1,0 +1,3 @@
+title: dataset_is_prefix test data stream
+type: metrics
+dataset_is_prefix: true
