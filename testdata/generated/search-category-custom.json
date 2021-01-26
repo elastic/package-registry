@@ -1,5 +1,15 @@
 [
   {
+    "name": "dataset_is_prefix",
+    "title": "DatasetIsPrefix Flag",
+    "version": "0.0.1",
+    "release": "beta",
+    "description": "This package contains a datastream with the dataset_is_prefix flag set to true.\n",
+    "type": "integration",
+    "download": "/epr/dataset_is_prefix/dataset_is_prefix-0.0.1.zip",
+    "path": "/package/dataset_is_prefix/0.0.1"
+  },
+  {
     "name": "datasources",
     "title": "Default datasource Integration",
     "version": "1.0.0",

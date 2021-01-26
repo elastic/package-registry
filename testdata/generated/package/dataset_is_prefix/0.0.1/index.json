@@ -1,0 +1,33 @@
+{
+  "name": "dataset_is_prefix",
+  "title": "DatasetIsPrefix Flag",
+  "version": "0.0.1",
+  "release": "beta",
+  "description": "This package contains a datastream with the dataset_is_prefix flag set to true.\n",
+  "type": "integration",
+  "download": "/epr/dataset_is_prefix/dataset_is_prefix-0.0.1.zip",
+  "path": "/package/dataset_is_prefix/0.0.1",
+  "format_version": "1.0.0",
+  "readme": "/package/dataset_is_prefix/0.0.1/docs/README.md",
+  "license": "basic",
+  "categories": [
+    "custom"
+  ],
+  "assets": [
+    "/package/dataset_is_prefix/0.0.1/manifest.yml",
+    "/package/dataset_is_prefix/0.0.1/docs/README.md",
+    "/package/dataset_is_prefix/0.0.1/data_stream/test/manifest.yml",
+    "/package/dataset_is_prefix/0.0.1/data_stream/test/fields/base-fields.yml"
+  ],
+  "data_streams": [
+    {
+      "type": "metrics",
+      "dataset": "dataset_is_prefix.test",
+      "dataset_is_prefix": true,
+      "title": "dataset_is_prefix test data stream",
+      "release": "experimental",
+      "package": "dataset_is_prefix",
+      "path": "test"
+    }
+  ]
+}
