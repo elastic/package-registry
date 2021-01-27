@@ -1,6 +1,8 @@
 # github.com/Masterminds/semver/v3 v3.1.0
+## explicit
 github.com/Masterminds/semver/v3
 # github.com/aymerick/raymond v2.0.2+incompatible
+## explicit
 github.com/aymerick/raymond
 github.com/aymerick/raymond/ast
 github.com/aymerick/raymond/lexer
@@ -8,22 +10,29 @@ github.com/aymerick/raymond/parser
 # github.com/davecgh/go-spew v1.1.0
 github.com/davecgh/go-spew/spew
 # github.com/elastic/go-ucfg v0.8.4-0.20200415140258-1232bd4774a6
+## explicit
 github.com/elastic/go-ucfg
 github.com/elastic/go-ucfg/parse
 github.com/elastic/go-ucfg/yaml
 # github.com/gorilla/mux v1.7.4
+## explicit
 github.com/gorilla/mux
 # github.com/joeshaw/multierror v0.0.0-20140124173710-69b34d4ec901
+## explicit
 github.com/joeshaw/multierror
 # github.com/magefile/mage v1.9.0
+## explicit
 github.com/magefile/mage/mg
 github.com/magefile/mage/sh
 # github.com/pkg/errors v0.9.1
+## explicit
 github.com/pkg/errors
 # github.com/pmezard/go-difflib v1.0.0
 github.com/pmezard/go-difflib/difflib
 # github.com/stretchr/testify v1.4.0
+## explicit
 github.com/stretchr/testify/assert
 github.com/stretchr/testify/require
 # gopkg.in/yaml.v2 v2.2.8
+## explicit
 gopkg.in/yaml.v2
