@@ -1,0 +1,12 @@
+format_version: 1.0.0
+
+name: dataset_is_prefix
+title: DatasetIsPrefix Flag
+description: >
+  This package contains a datastream with the dataset_is_prefix flag set to true.
+version: 0.0.1
+categories: ["custom"]
+release: beta
+
+license: basic
+type: integration
