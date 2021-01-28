@@ -55,6 +55,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
+* Set cache headers for 404 for all API endpoints to private, no-store.[#652](https://github.com/elastic/package-registry/pull/652)
+
 ### Added
 
 * Add "traces" as legal event type. [#656](https://github.com/elastic/package-registry/pull/656)

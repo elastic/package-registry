@@ -16,6 +16,12 @@ import (
 
 var errResourceNotFound = errors.New("resource not found")
 
+func notFoundHandler(err error) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		notFoundError(w, err)
+	})
+}
+
 func notFoundError(w http.ResponseWriter, err error) {
 	noCacheHeaders(w)
 	http.Error(w, err.Error(), http.StatusNotFound)
