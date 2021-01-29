@@ -191,4 +191,7 @@ New versions of the package registry need to be released from time to time. The 
 
 CI automatically creates a new Docker image which will be available under `docker.elastic.co/package-registry/package-registry:vA.B.C` a few minutes after creating the tag.
 
-As a new registry is normally released to bring new features to the package-storage, follow the docs in the [Package Storage](https://github.com/elastic/package-storage#update-package-registry-for-a-distribution) repository on how to update the distributions.
+After the new registry Docker image is available, update the following projects that consume it:
+- Integrations: Update the version of the Package Registry Docker image as shown in this [sample PR](https://github.com/elastic/integrations/pull/581).
+- Package Storage: Follow the [documentation](https://github.com/elastic/package-storage#update-package-registry-for-a-distribution) repository on how to update the distributions.
+- Kibana: Do this only after all Package Storage distributions have been updated and released as new Docker images. Update the version of the Package Registry Distribution Docker image as shown in this [sample PR](https://github.com/elastic/kibana/pull/89776).
