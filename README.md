@@ -130,8 +130,8 @@ The following endpoints exist:
 * prod, CDN: https://epr.elastic.co
 * staging, no CDN: https://epr-staging.ea-web.elastic.dev
 * staging, CDN: https://epr-staging.elastic.co
-* experimental, no CDN: https://epr-experimental.ea-web.elastic.dev/
-* experimental, CDN: https://epr-experimental.elastic.co/
+* snapshot, no CDN: https://epr-snapshot.ea-web.elastic.dev/
+* snapshot, CDN: https://epr-snapshot.elastic.co/
 
 An dev registry is running on `https://epr-staging.elastic.co/`. This is updated from time to time to be in sync with master.
 
