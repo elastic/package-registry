@@ -124,11 +124,16 @@ Afterwards the service can be started:
 
 **Deployment**
 
-The following endpoints exist:
+The following **active** endpoints exist:
 
 * prod, CDN: https://epr.elastic.co
 * staging, CDN: https://epr-staging.elastic.co
 * snapshot, CDN: https://epr-snapshot.elastic.co/
+
+Additionally, the following **frozen** endpoints exist and are **no longer updated**:
+
+* experimental, CDN: https://epr-experimental.elastic.co
+* 7.9, CDN: https://epr-7-9.elastic.co
 
 An dev registry is running on `https://epr-staging.elastic.co/`. This is updated from time to time to be in sync with master.
 
