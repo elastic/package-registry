@@ -67,20 +67,23 @@ type Package struct {
 
 	// Local path to the package dir
 	BasePath string `json:"-" yaml:"-"`
+
+	ExpandDataStream bool `config:"expand_data_stream,omitempty" json:"expand_data_stream,omitempty" yaml:"expand_data_stream,omitempty"`
 }
 
 // BasePackage is used for the output of the package info in the /search endpoint
 type BasePackage struct {
-	Name        string  `config:"name" json:"name"`
-	Title       *string `config:"title,omitempty" json:"title,omitempty" yaml:"title,omitempty"`
-	Version     string  `config:"version" json:"version"`
-	Release     string  `config:"release,omitempty" json:"release,omitempty"`
-	Description string  `config:"description" json:"description"`
-	Type        string  `config:"type" json:"type"`
-	Download    string  `json:"download" yaml:"download,omitempty"`
-	Path        string  `json:"path" yaml:"path,omitempty"`
-	Icons       []Image `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
-	Internal    bool    `config:"internal,omitempty" json:"internal,omitempty" yaml:"internal,omitempty"`
+	Name            string            `config:"name" json:"name"`
+	Title           *string           `config:"title,omitempty" json:"title,omitempty" yaml:"title,omitempty"`
+	Version         string            `config:"version" json:"version"`
+	Release         string            `config:"release,omitempty" json:"release,omitempty"`
+	Description     string            `config:"description" json:"description"`
+	Type            string            `config:"type" json:"type"`
+	Download        string            `json:"download" yaml:"download,omitempty"`
+	Path            string            `json:"path" yaml:"path,omitempty"`
+	Icons           []Image           `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
+	Internal        bool              `config:"internal,omitempty" json:"internal,omitempty" yaml:"internal,omitempty"`
+	BaseDataStreams []*BaseDataStream `config:"base_data_streams,omitempty" json:"base_data_streams,omitempty" yaml:"base_data_streams,omitempty"`
 }
 
 type PolicyTemplate struct {
@@ -423,7 +426,7 @@ func (p *Package) LoadDataSets() error {
 
 		dataStreamBasePath := filepath.Join(dataStreamsBasePath, dataStreamPath)
 
-		d, err := NewDataStream(dataStreamBasePath, p)
+		d, bd, err := NewDataStream(dataStreamBasePath, p)
 		if err != nil {
 			return err
 		}
@@ -431,6 +434,9 @@ func (p *Package) LoadDataSets() error {
 		// TODO: Validate that each input specified in a stream also is defined in the package
 
 		p.DataStreams = append(p.DataStreams, d)
+		if bd != nil {
+			p.BaseDataStreams = append(p.BaseDataStreams, bd)
+		}
 	}
 
 	return nil
@@ -447,7 +453,7 @@ func (p *Package) ValidateDataStreams() error {
 	for _, dataStreamPath := range dataStreamPaths {
 		dataStreamBasePath := filepath.Join(dataStreamsBasePath, dataStreamPath)
 
-		d, err := NewDataStream(dataStreamBasePath, p)
+		d, _, err := NewDataStream(dataStreamBasePath, p)
 		if err != nil {
 			return errors.Wrapf(err, "building data stream failed (path: %s)", dataStreamBasePath)
 		}

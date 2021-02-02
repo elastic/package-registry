@@ -42,6 +42,9 @@ type DataStream struct {
 	Title   string `config:"title" json:"title" validate:"required"`
 	Release string `config:"release" json:"release"`
 
+	Description string  `config:"description" json:"description"`
+	Icons       []Image `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
+
 	// Deprecated: Replaced by elasticsearch.ingest_pipeline.name
 	IngestPipeline string         `config:"ingest_pipeline,omitempty" config:"ingest_pipeline" json:"ingest_pipeline,omitempty" yaml:"ingest_pipeline,omitempty"`
 	Streams        []Stream       `config:"streams" json:"streams,omitempty" yaml:"streams,omitempty" `
@@ -53,6 +56,17 @@ type DataStream struct {
 
 	// Local path to the package dir
 	BasePath string `json:"-" yaml:"-"`
+}
+
+type BaseDataStream struct {
+	// Name and type of the data stream. This is linked to data_stream.dataset and data_stream.type fields.
+	Type    string `config:"type" json:"type" validate:"required"`
+	Dataset string `config:"dataset" json:"dataset,omitempty" yaml:"dataset,omitempty"`
+
+	Title       string  `config:"title" json:"title" validate:"required"`
+	Release     string  `config:"release" json:"release"`
+	Description string  `config:"description" json:"description"`
+	Icons       []Image `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
 }
 
 type Input struct {
@@ -97,19 +111,19 @@ type fieldEntry struct {
 	aType string
 }
 
-func NewDataStream(basePath string, p *Package) (*DataStream, error) {
+func NewDataStream(basePath string, p *Package) (*DataStream, *BaseDataStream, error) {
 	// Check if manifest exists
 	manifestPath := filepath.Join(basePath, "manifest.yml")
 	_, err := os.Stat(manifestPath)
 	if err != nil && os.IsNotExist(err) {
-		return nil, errors.Wrapf(err, "manifest does not exist for package: %s", p.BasePath)
+		return nil, nil, errors.Wrapf(err, "manifest does not exist for package: %s", p.BasePath)
 	}
 
 	dataStreamPath := filepath.Base(basePath)
 
 	manifest, err := yaml.NewConfigWithFile(manifestPath, ucfg.PathSep("."))
 	if err != nil {
-		return nil, errors.Wrapf(err, "error creating new manifest config %s", manifestPath)
+		return nil, nil, errors.Wrapf(err, "error creating new manifest config %s", manifestPath)
 	}
 	var d = &DataStream{
 		Package: p.Name,
@@ -121,7 +135,7 @@ func NewDataStream(basePath string, p *Package) (*DataStream, error) {
 	// go-ucfg automatically calls the `Validate` method on the DataStream object here
 	err = manifest.Unpack(d, ucfg.PathSep("."))
 	if err != nil {
-		return nil, errors.Wrapf(err, "error building data stream (path: %s) in package: %s", dataStreamPath, p.Name)
+		return nil, nil, errors.Wrapf(err, "error building data stream (path: %s) in package: %s", dataStreamPath, p.Name)
 	}
 
 	// if id is not set, {package}.{dataStreamPath} is the default
@@ -147,9 +161,21 @@ func NewDataStream(basePath string, p *Package) (*DataStream, error) {
 	}
 
 	if !IsValidRelease(d.Release) {
-		return nil, fmt.Errorf("invalid release: %s", d.Release)
+		return nil, nil, fmt.Errorf("invalid release: %s", d.Release)
 	}
-	return d, nil
+
+	if p.ExpandDataStream {
+		var bd = &BaseDataStream{
+			Type:        d.Type,
+			Dataset:     d.Dataset,
+			Title:       d.Title,
+			Release:     d.Release,
+			Description: d.Description,
+			Icons:       d.Icons,
+		}
+		return d, bd, nil
+	}
+	return d, nil, nil
 }
 
 func (d *DataStream) Validate() error {
