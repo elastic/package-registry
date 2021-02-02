@@ -124,14 +124,16 @@ Afterwards the service can be started:
 
 **Deployment**
 
-The following endpoints exist:
+The following **active** endpoints exist:
 
-* prod, no CDN: https://epr.ea-web.elastic.dev
 * prod, CDN: https://epr.elastic.co
-* staging, no CDN: https://epr-staging.ea-web.elastic.dev
 * staging, CDN: https://epr-staging.elastic.co
-* experimental, no CDN: https://epr-experimental.ea-web.elastic.dev/
-* experimental, CDN: https://epr-experimental.elastic.co/
+* snapshot, CDN: https://epr-snapshot.elastic.co/
+
+Additionally, the following **frozen** endpoints exist and are **no longer updated**:
+
+* experimental, CDN: https://epr-experimental.elastic.co
+* 7.9, CDN: https://epr-7-9.elastic.co
 
 An dev registry is running on `https://epr-staging.elastic.co/`. This is updated from time to time to be in sync with master.
 
@@ -191,4 +193,7 @@ New versions of the package registry need to be released from time to time. The 
 
 CI automatically creates a new Docker image which will be available under `docker.elastic.co/package-registry/package-registry:vA.B.C` a few minutes after creating the tag.
 
-As a new registry is normally released to bring new features to the package-storage, follow the docs in the [Package Storage](https://github.com/elastic/package-storage#update-package-registry-for-a-distribution) repository on how to update the distributions.
+After the new registry Docker image is available, update the following projects that consume it:
+- Integrations: Update the version of the Package Registry Docker image as shown in this [sample PR](https://github.com/elastic/integrations/pull/581).
+- Package Storage: Follow the [documentation](https://github.com/elastic/package-storage#update-package-registry-for-a-distribution) on how to update the distributions.
+- Kibana: Do this only after all Package Storage distributions have been updated and released as new Docker images. Update the version of the Package Registry Distribution Docker image as shown in this [sample PR](https://github.com/elastic/kibana/pull/89776).
