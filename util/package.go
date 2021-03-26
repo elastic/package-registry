@@ -109,6 +109,7 @@ type Image struct {
 	// Src is relative inside the package
 	Src string `config:"src" json:"src" validate:"required"`
 	// Path is the absolute path in the url
+	// TODO: remove yaml struct tag once mage ImportBeats is removed from elastic/integrations repo.
 	Path  string `config:"path" json:"path" yaml:"path,omitempty"`
 	Title string `config:"title" json:"title,omitempty"`
 	Size  string `config:"size" json:"size,omitempty"`
