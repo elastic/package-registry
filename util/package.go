@@ -109,7 +109,7 @@ type Image struct {
 	// Src is relative inside the package
 	Src string `config:"src" json:"src" validate:"required"`
 	// Path is the absolute path in the url
-	Path  string `config:"path" json:"path"`
+	Path  string `config:"path" json:"path" yaml:"path,omitempty"`
 	Title string `config:"title" json:"title,omitempty"`
 	Size  string `config:"size" json:"size,omitempty"`
 	Type  string `config:"type" json:"type,omitempty"`
