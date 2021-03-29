@@ -2,23 +2,23 @@
   {
     "name": "aws",
     "title": "AWS",
-    "version": "1.0.0",
+    "version": "0.0.1",
     "release": "beta",
     "description": "AWS Integration",
     "type": "integration",
-    "download": "/epr/aws/aws-1.0.0.zip",
-    "path": "/package/aws/1.0.0",
+    "download": "/epr/aws/aws-0.0.1.zip",
+    "path": "/package/aws/0.0.1",
     "icons": [
       {
         "src": "/img/logo_aws.svg",
-        "path": "/package/aws/1.0.0/img/logo_aws.svg",
+        "path": "/package/aws/0.0.1/img/logo_aws.svg",
         "title": "logo aws",
         "size": "32x32",
         "type": "image/svg+xml"
       },
       {
         "src": "/img/logo_ec2.svg",
-        "path": "/package/aws/1.0.0/img/logo_ec2.svg",
+        "path": "/package/aws/0.0.1/img/logo_ec2.svg",
         "title": "AWS EC2 logo",
         "size": "32x32",
         "type": "image/svg+xml"
