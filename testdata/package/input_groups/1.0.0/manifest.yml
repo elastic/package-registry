@@ -78,6 +78,8 @@ policy_templates:
     data_streams:
       - ec2_logs
       - ec2_metrics
+    categories:
+      - compute
     inputs:
       - type: s3
         title: Collect logs from EC2 service

@@ -65,6 +65,7 @@ type Input struct {
 	Description  string     `config:"description" json:"description,omitempty" yaml:"description,omitempty"`
 	Streams      []Stream   `config:"streams" json:"streams,omitempty" yaml:"streams,omitempty"`
 	TemplatePath string     `config:"template_path" json:"template_path,omitempty" yaml:"template_path,omitempty"`
+	InputGroup   string     `config:"input_group" json:"input_group,omitempty" yaml:"input_group,omitempty"`
 }
 
 type Stream struct {

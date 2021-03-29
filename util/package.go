@@ -91,6 +91,7 @@ type PolicyTemplate struct {
 	Inputs      []Input `config:"inputs" json:"inputs"`
 	Multiple    *bool   `config:"multiple" json:"multiple,omitempty" yaml:"multiple,omitempty"`
 	Icons       []Image `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
+	Categories  []string `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
 }
 
 type Conditions struct {
@@ -194,12 +195,6 @@ func NewPackage(basePath string) (*Package, error) {
 		p.Conditions.kibanaConstraint, err = semver.NewConstraint(p.Conditions.KibanaVersion)
 		if err != nil {
 			return nil, errors.Wrapf(err, "invalid Kibana versions range: %s", p.Conditions.KibanaVersion)
-		}
-	}
-
-	if p.Vars != nil {
-		for _, v := range p.Vars {
-			fmt.Println("----- var = ", v)
 		}
 	}
 

@@ -52,7 +52,6 @@
     "/package/aws/1.0.0/data_stream/ec2_logs/manifest.yml",
     "/package/aws/1.0.0/data_stream/ec2_metrics/manifest.yml",
     "/package/aws/1.0.0/data_stream/ec2_metrics/sample_event.json",
-    "/package/aws/1.0.0/data_stream/foo/manifest.yml",
     "/package/aws/1.0.0/kibana/dashboard/0c610510-5cbd-11e9-8477-077ec9664dbd.json",
     "/package/aws/1.0.0/kibana/visualization/0a994af0-5c9d-11e9-8477-077ec9664dbd.json",
     "/package/aws/1.0.0/kibana/visualization/36f872a0-5c03-11e9-85b4-19d0072eb4f2.json",
@@ -69,16 +68,9 @@
     "/package/aws/1.0.0/data_stream/ec2_metrics/fields/ecs.yml",
     "/package/aws/1.0.0/data_stream/ec2_metrics/fields/fields.yml",
     "/package/aws/1.0.0/data_stream/ec2_metrics/fields/package-fields.yml",
-    "/package/aws/1.0.0/data_stream/foo/fields/base-fields.yml",
     "/package/aws/1.0.0/data_stream/ec2_logs/agent/stream/s3.yml.hbs",
     "/package/aws/1.0.0/data_stream/ec2_logs/elasticsearch/ingest_pipeline/default.yml",
-    "/package/aws/1.0.0/data_stream/ec2_metrics/agent/stream/stream.yml.hbs",
-    "/package/aws/1.0.0/data_stream/foo/agent/stream/stream.yml.hbs",
-    "/package/aws/1.0.0/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-entry.json",
-    "/package/aws/1.0.0/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-http.json",
-    "/package/aws/1.0.0/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-json.json",
-    "/package/aws/1.0.0/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-plaintext.json",
-    "/package/aws/1.0.0/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-tcp.json"
+    "/package/aws/1.0.0/data_stream/ec2_metrics/agent/stream/stream.yml.hbs"
   ],
   "policy_templates": [
     {
@@ -109,12 +101,14 @@
             }
           ],
           "title": "Collect logs from EC2 service",
-          "description": "Collecting EC2 logs using S3 input"
+          "description": "Collecting EC2 logs using S3 input",
+          "input_group": "logs"
         },
         {
           "type": "aws/metrics",
           "title": "Collect metrics from EC2 service",
-          "description": "Collecting EC2 metrics using AWS CloudWatch"
+          "description": "Collecting EC2 metrics using AWS CloudWatch",
+          "input_group": "metrics"
         }
       ],
       "multiple": true,
@@ -126,6 +120,9 @@
           "size": "32x32",
           "type": "image/svg+xml"
         }
+      ],
+      "categories": [
+        "compute"
       ]
     }
   ],
@@ -221,32 +218,6 @@
       ],
       "package": "aws",
       "path": "ec2_metrics"
-    },
-    {
-      "type": "logs",
-      "dataset": "aws.foo",
-      "title": "Foo",
-      "release": "experimental",
-      "ingest_pipeline": "pipeline-entry",
-      "streams": [
-        {
-          "input": "foo",
-          "vars": [
-            {
-              "name": "paths",
-              "type": "text",
-              "description": "Path to log files to be collected",
-              "multi": true,
-              "required": true,
-              "show_user": false
-            }
-          ],
-          "template_path": "stream.yml.hbs",
-          "enabled": true
-        }
-      ],
-      "package": "aws",
-      "path": "foo"
     }
   ],
   "vars": [
