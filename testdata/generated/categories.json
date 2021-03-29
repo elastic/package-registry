@@ -1,7 +1,17 @@
 [
   {
+    "id": "aws",
+    "title": "AWS",
+    "count": 1
+  },
+  {
     "id": "azure",
     "title": "Azure",
+    "count": 1
+  },
+  {
+    "id": "cloud",
+    "title": "Cloud",
     "count": 1
   },
   {

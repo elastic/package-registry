@@ -1,5 +1,31 @@
 [
   {
+    "name": "aws",
+    "title": "AWS",
+    "version": "1.0.0",
+    "release": "beta",
+    "description": "AWS Integration",
+    "type": "integration",
+    "download": "/epr/aws/aws-1.0.0.zip",
+    "path": "/package/aws/1.0.0",
+    "icons": [
+      {
+        "src": "/img/logo_aws.svg",
+        "path": "/package/aws/1.0.0/img/logo_aws.svg",
+        "title": "logo aws",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      },
+      {
+        "src": "/img/logo_ec2.svg",
+        "path": "/package/aws/1.0.0/img/logo_ec2.svg",
+        "title": "AWS EC2 logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ]
+  },
+  {
     "name": "dataset_is_prefix",
     "title": "DatasetIsPrefix Flag",
     "version": "0.0.1",
@@ -217,6 +243,12 @@
       {
         "src": "/img/icon.svg",
         "path": "/package/reference/1.0.0/img/icon.svg",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      },
+      {
+        "src": "/img/sub_icon.svg",
+        "path": "/package/reference/1.0.0/img/sub_icon.svg",
         "size": "32x32",
         "type": "image/svg+xml"
       }

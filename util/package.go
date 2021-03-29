@@ -64,6 +64,7 @@ type Package struct {
 	PolicyTemplates []PolicyTemplate `config:"policy_templates,omitempty" json:"policy_templates,omitempty" yaml:"policy_templates,omitempty"`
 	DataStreams     []*DataStream    `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
 	Owner           *Owner           `config:"owner,omitempty" json:"owner,omitempty" yaml:"owner,omitempty"`
+	Vars            []Variable       `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
 
 	// Local path to the package dir
 	BasePath string `json:"-" yaml:"-"`
@@ -89,6 +90,7 @@ type PolicyTemplate struct {
 	Description string  `config:"description" json:"description" validate:"required"`
 	Inputs      []Input `config:"inputs" json:"inputs"`
 	Multiple    *bool   `config:"multiple" json:"multiple,omitempty" yaml:"multiple,omitempty"`
+	Icons       []Image `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
 }
 
 type Conditions struct {
@@ -158,6 +160,9 @@ func NewPackage(basePath string) (*Package, error) {
 		if p.PolicyTemplates[i].Multiple == nil {
 			p.PolicyTemplates[i].Multiple = &trueValue
 		}
+
+		// Combine policy template icons with package level icons
+		p.Icons = append(p.Icons, p.PolicyTemplates[i].Icons...)
 	}
 	if p.Type == "" {
 		p.Type = defaultType
@@ -189,6 +194,12 @@ func NewPackage(basePath string) (*Package, error) {
 		p.Conditions.kibanaConstraint, err = semver.NewConstraint(p.Conditions.KibanaVersion)
 		if err != nil {
 			return nil, errors.Wrapf(err, "invalid Kibana versions range: %s", p.Conditions.KibanaVersion)
+		}
+	}
+
+	if p.Vars != nil {
+		for _, v := range p.Vars {
+			fmt.Println("----- var = ", v)
 		}
 	}
 
