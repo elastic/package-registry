@@ -92,6 +92,7 @@ type PolicyTemplate struct {
 	Multiple    *bool    `config:"multiple" json:"multiple,omitempty" yaml:"multiple,omitempty"`
 	Icons       []Image  `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
 	Categories  []string `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
+	Screenshots []Image  `config:"screenshots,omitempty" json:"screenshots,omitempty" yaml:"screenshots,omitempty"`
 }
 
 type Conditions struct {

@@ -123,6 +123,15 @@
       ],
       "categories": [
         "compute"
+      ],
+      "screenshots": [
+        {
+          "src": "/img/metricbeat-aws-ec2-overview.png",
+          "path": "",
+          "title": "metricbeat aws ec2 overview",
+          "size": "2640x2240",
+          "type": "image/png"
+        }
       ]
     }
   ],
