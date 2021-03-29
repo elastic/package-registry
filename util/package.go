@@ -85,12 +85,12 @@ type BasePackage struct {
 }
 
 type PolicyTemplate struct {
-	Name        string  `config:"name" json:"name" validate:"required"`
-	Title       string  `config:"title" json:"title" validate:"required"`
-	Description string  `config:"description" json:"description" validate:"required"`
-	Inputs      []Input `config:"inputs" json:"inputs"`
-	Multiple    *bool   `config:"multiple" json:"multiple,omitempty" yaml:"multiple,omitempty"`
-	Icons       []Image `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
+	Name        string   `config:"name" json:"name" validate:"required"`
+	Title       string   `config:"title" json:"title" validate:"required"`
+	Description string   `config:"description" json:"description" validate:"required"`
+	Inputs      []Input  `config:"inputs" json:"inputs"`
+	Multiple    *bool    `config:"multiple" json:"multiple,omitempty" yaml:"multiple,omitempty"`
+	Icons       []Image  `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
 	Categories  []string `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
 }
 
