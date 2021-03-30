@@ -8,10 +8,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/pkg/errors"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/pkg/errors"
 
 	"github.com/magefile/mage/mg"
 	"github.com/magefile/mage/sh"
