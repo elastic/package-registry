@@ -72,25 +72,25 @@ type Package struct {
 
 // BasePackage is used for the output of the package info in the /search endpoint
 type BasePackage struct {
-	Name        string  `config:"name" json:"name"`
-	Title       *string `config:"title,omitempty" json:"title,omitempty" yaml:"title,omitempty"`
-	Version     string  `config:"version" json:"version"`
-	Release     string  `config:"release,omitempty" json:"release,omitempty"`
-	Description string  `config:"description" json:"description"`
-	Type        string  `config:"type" json:"type"`
-	Download    string  `json:"download" yaml:"download,omitempty"`
-	Path        string  `json:"path" yaml:"path,omitempty"`
-	Icons       []Image `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
-	Internal    bool    `config:"internal,omitempty" json:"internal,omitempty" yaml:"internal,omitempty"`
-	BasePolicyTemplates []BasePolicyTemplate `config:"policy_templates,omitempty" json:"policy_templates,omitempty" yaml:"policy_templates,omitempty"`
+	Name                string               `config:"name" json:"name"`
+	Title               *string              `config:"title,omitempty" json:"title,omitempty" yaml:"title,omitempty"`
+	Version             string               `config:"version" json:"version"`
+	Release             string               `config:"release,omitempty" json:"release,omitempty"`
+	Description         string               `config:"description" json:"description"`
+	Type                string               `config:"type" json:"type"`
+	Download            string               `json:"download" yaml:"download,omitempty"`
+	Path                string               `json:"path" yaml:"path,omitempty"`
+	Icons               []Image              `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
+	Internal            bool                 `config:"internal,omitempty" json:"internal,omitempty" yaml:"internal,omitempty"`
+	BasePolicyTemplates []BasePolicyTemplate `json:"policy_templates,omitempty"`
 }
 
 // BasePolicyTemplate is used for the package policy templates in the /search endpoint
 type BasePolicyTemplate struct {
-	Name        string   `config:"name" json:"name" validate:"required"`
-	Title       string   `config:"title" json:"title" validate:"required"`
-	Description string   `config:"description" json:"description" validate:"required"`
-	Icons       []Image  `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
+	Name        string  `config:"name" json:"name" validate:"required"`
+	Title       string  `config:"title" json:"title" validate:"required"`
+	Description string  `config:"description" json:"description" validate:"required"`
+	Icons       []Image `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
 }
 
 type PolicyTemplate struct {
@@ -176,8 +176,14 @@ func NewPackage(basePath string) (*Package, error) {
 
 		// Collect basic information from policy templates only when icons are
 		// available and store in /search endpoint
-		if p.PolicyTemplates[i].Icons == nil {
-			p.BasePolicyTemplates = nil
+		if p.PolicyTemplates[i].Icons != nil {
+			t := p.PolicyTemplates[i]
+			p.BasePolicyTemplates = append(p.BasePolicyTemplates, BasePolicyTemplate{
+				Name:        t.Name,
+				Title:       t.Title,
+				Description: t.Description,
+				Icons:       t.Icons,
+			})
 		}
 	}
 
