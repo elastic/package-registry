@@ -13,12 +13,6 @@
       "path": "/package/reference/1.0.0/img/icon.svg",
       "size": "32x32",
       "type": "image/svg+xml"
-    },
-    {
-      "src": "/img/sub_icon.svg",
-      "path": "/package/reference/1.0.0/img/sub_icon.svg",
-      "size": "32x32",
-      "type": "image/svg+xml"
     }
   ],
   "format_version": "1.0.0",
@@ -36,7 +30,6 @@
     "/package/reference/1.0.0/manifest.yml",
     "/package/reference/1.0.0/docs/README.md",
     "/package/reference/1.0.0/img/icon.svg",
-    "/package/reference/1.0.0/img/sub_icon.svg",
     "/package/reference/1.0.0/data_stream/reference/manifest.yml",
     "/package/reference/1.0.0/data_stream/reference/fields/base-fields.yml"
   ],
@@ -66,15 +59,7 @@
           "description": "Description of the reference input."
         }
       ],
-      "multiple": true,
-      "icons": [
-        {
-          "src": "/img/sub_icon.svg",
-          "path": "",
-          "size": "32x32",
-          "type": "image/svg+xml"
-        }
-      ]
+      "multiple": true
     }
   ],
   "data_streams": [

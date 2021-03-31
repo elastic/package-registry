@@ -14,13 +14,6 @@
       "title": "logo aws",
       "size": "32x32",
       "type": "image/svg+xml"
-    },
-    {
-      "src": "/img/logo_ec2.svg",
-      "path": "/package/aws/0.0.1/img/logo_ec2.svg",
-      "title": "AWS EC2 logo",
-      "size": "32x32",
-      "type": "image/svg+xml"
     }
   ],
   "format_version": "1.0.0",
@@ -77,6 +70,10 @@
       "name": "ec2",
       "title": "AWS EC2",
       "description": "Collect logs and metrics from EC2 service",
+      "data_streams": [
+        "ec2_logs",
+        "ec2_metrics"
+      ],
       "inputs": [
         {
           "type": "s3",

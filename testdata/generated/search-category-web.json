@@ -58,12 +58,6 @@
         "path": "/package/reference/1.0.0/img/icon.svg",
         "size": "32x32",
         "type": "image/svg+xml"
-      },
-      {
-        "src": "/img/sub_icon.svg",
-        "path": "/package/reference/1.0.0/img/sub_icon.svg",
-        "size": "32x32",
-        "type": "image/svg+xml"
       }
     ]
   }

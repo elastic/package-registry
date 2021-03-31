@@ -115,12 +115,3 @@ policy_templates:
             required: true
             multi: true
             type: text
-
-    # Icons
-    icons:
-      - # src is a required field
-        src: "/img/sub_icon.svg"
-        # This helps to send the right header
-        type: "image/svg+xml"
-        # Size of the image, can be useful if it has to be scaled.
-        size: 32x32
