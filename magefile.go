@@ -12,6 +12,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/pkg/errors"
+
 	"github.com/magefile/mage/mg"
 	"github.com/magefile/mage/sh"
 )
@@ -41,14 +43,9 @@ func Build() error {
 }
 
 func FetchPackageStorage() error {
-
-	// If storage directory does not exists, check it out
-	if _, err := os.Stat(storageRepoDir); os.IsNotExist(err) {
-		return sh.Run("git", "clone", "--depth=1", "--single-branch", "--branch", "production", "https://github.com/elastic/package-storage.git", storageRepoDir)
-
-	} else if err != nil {
-		// catch other errors
-		return err
+	// Remove old storage directory
+	if err := os.RemoveAll(storageRepoDir); err != nil {
+		return errors.Wrapf(err, "failed to remove existing storage directory: %s", storageRepoDir)
 	}
 
 	packageStorageRevision := os.Getenv("PACKAGE_STORAGE_REVISION")
@@ -56,36 +53,9 @@ func FetchPackageStorage() error {
 		packageStorageRevision = "production"
 	}
 
-	err := sh.Run("git",
-		"--git-dir", filepath.Join(storageRepoDir, ".git"), "--work-tree", storageRepoDir,
-		"reset", "--hard")
-	if err != nil {
-		return err
-	}
-
-	err = sh.Run("git",
-		"--git-dir", filepath.Join(storageRepoDir, ".git"), "--work-tree", storageRepoDir,
-		"clean", "-df")
-	if err != nil {
-		return err
-	}
-
-	err = sh.Run("git",
-		"--git-dir", filepath.Join(storageRepoDir, ".git"), "--work-tree", storageRepoDir,
-		"fetch")
-	if err != nil {
-		return err
-	}
-
-	err = sh.Run("git",
-		"--git-dir", filepath.Join(storageRepoDir, ".git"), "--work-tree", storageRepoDir,
-		"checkout",
-		packageStorageRevision)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	// Check out fresh storage directory
+	return sh.Run("git", "clone", "--depth=1", "--single-branch",
+		"--branch", packageStorageRevision, "https://github.com/elastic/package-storage.git", storageRepoDir)
 }
 
 func Check() error {
