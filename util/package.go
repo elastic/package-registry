@@ -178,12 +178,18 @@ func NewPackage(basePath string) (*Package, error) {
 		// available and store in /search endpoint
 		if p.PolicyTemplates[i].Icons != nil {
 			t := p.PolicyTemplates[i]
-			p.BasePolicyTemplates = append(p.BasePolicyTemplates, BasePolicyTemplate{
+			baseT := BasePolicyTemplate{
 				Name:        t.Name,
 				Title:       t.Title,
 				Description: t.Description,
-				Icons:       t.Icons,
-			})
+			}
+
+			for k, i := range p.PolicyTemplates[i].Icons {
+				t.Icons[k].Path = i.getPath(p)
+			}
+
+			baseT.Icons = t.Icons
+			p.BasePolicyTemplates = append(p.BasePolicyTemplates, baseT)
 		}
 	}
 

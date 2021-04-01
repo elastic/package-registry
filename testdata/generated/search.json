@@ -25,7 +25,7 @@
         "icons": [
           {
             "src": "/img/logo_ec2.svg",
-            "path": "",
+            "path": "/package/aws/0.0.1/img/logo_ec2.svg",
             "title": "AWS EC2 logo",
             "size": "32x32",
             "type": "image/svg+xml"
