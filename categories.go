@@ -81,6 +81,29 @@ func categoriesHandler(packagesBasePaths []string, cacheTime time.Duration) func
 
 				categories[c].Count = categories[c].Count + 1
 			}
+
+			for _, t := range p.PolicyTemplates {
+				if t.Icons != nil {
+					// Package level categories is inherited by policy templates with icons.
+					for _, c := range p.Categories {
+						categories[c].Count = categories[c].Count + 1
+					}
+				}
+
+				// Add policy template level categories.
+				for _, c := range t.Categories {
+					if _, ok := categories[c]; !ok {
+						categories[c] = &Category{
+							Id:    c,
+							Title: c,
+							Count: 0,
+						}
+					}
+
+					categories[c].Count = categories[c].Count + 1
+				}
+
+			}
 		}
 
 		data, err := getCategoriesOutput(categories)
