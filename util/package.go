@@ -191,6 +191,13 @@ func NewPackage(basePath string) (*Package, error) {
 			baseT.Icons = t.Icons
 			p.BasePolicyTemplates = append(p.BasePolicyTemplates, baseT)
 		}
+
+		// Store paths for all screenshots under each policy template
+		if p.PolicyTemplates[i].Screenshots != nil {
+			for k, s := range p.PolicyTemplates[i].Screenshots {
+				p.PolicyTemplates[i].Screenshots[k].Path = s.getPath(p)
+			}
+		}
 	}
 
 	if p.Type == "" {

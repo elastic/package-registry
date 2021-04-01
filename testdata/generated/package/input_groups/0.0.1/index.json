@@ -124,7 +124,7 @@
       "screenshots": [
         {
           "src": "/img/metricbeat-aws-ec2-overview.png",
-          "path": "",
+          "path": "/package/aws/0.0.1/img/metricbeat-aws-ec2-overview.png",
           "title": "metricbeat aws ec2 overview",
           "size": "2640x2240",
           "type": "image/png"
