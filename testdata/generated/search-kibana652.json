@@ -17,7 +17,14 @@
     "description": "Package with data sources",
     "type": "integration",
     "download": "/epr/datasources/datasources-1.0.0.zip",
-    "path": "/package/datasources/1.0.0"
+    "path": "/package/datasources/1.0.0",
+    "policy_templates": [
+      {
+        "name": "nginx",
+        "title": "Datasource title",
+        "description": "Details about the data source."
+      }
+    ]
   },
   {
     "name": "default_pipeline",
@@ -27,7 +34,14 @@
     "description": "Tests if no pipeline is set, it defaults to the default one",
     "type": "integration",
     "download": "/epr/default_pipeline/default_pipeline-0.0.2.zip",
-    "path": "/package/default_pipeline/0.0.2"
+    "path": "/package/default_pipeline/0.0.2",
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Logs datasource",
+        "description": "Datasource for your log files."
+      }
+    ]
   },
   {
     "name": "ecs_style_dataset",
@@ -37,7 +51,14 @@
     "description": "Tests the registry validations works for dataset fields using the ecs style format",
     "type": "integration",
     "download": "/epr/ecs_style_dataset/ecs_style_dataset-0.0.1.zip",
-    "path": "/package/ecs_style_dataset/0.0.1"
+    "path": "/package/ecs_style_dataset/0.0.1",
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Logs datasource",
+        "description": "Datasource for your log files."
+      }
+    ]
   },
   {
     "name": "example",
@@ -74,7 +95,14 @@
     "description": "Tests that multiple can be set to false",
     "type": "integration",
     "download": "/epr/multiple_false/multiple_false-0.0.1.zip",
-    "path": "/package/multiple_false/0.0.1"
+    "path": "/package/multiple_false/0.0.1",
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Logs datasource",
+        "description": "Datasource for your log files."
+      }
+    ]
   },
   {
     "name": "no_stream_configs",

@@ -52,7 +52,14 @@
     "description": "Package with data sources",
     "type": "integration",
     "download": "/epr/datasources/datasources-1.0.0.zip",
-    "path": "/package/datasources/1.0.0"
+    "path": "/package/datasources/1.0.0",
+    "policy_templates": [
+      {
+        "name": "nginx",
+        "title": "Datasource title",
+        "description": "Details about the data source."
+      }
+    ]
   },
   {
     "name": "default_pipeline",
@@ -62,7 +69,14 @@
     "description": "Tests if no pipeline is set, it defaults to the default one",
     "type": "integration",
     "download": "/epr/default_pipeline/default_pipeline-0.0.2.zip",
-    "path": "/package/default_pipeline/0.0.2"
+    "path": "/package/default_pipeline/0.0.2",
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Logs datasource",
+        "description": "Datasource for your log files."
+      }
+    ]
   },
   {
     "name": "ecs_style_dataset",
@@ -72,7 +86,14 @@
     "description": "Tests the registry validations works for dataset fields using the ecs style format",
     "type": "integration",
     "download": "/epr/ecs_style_dataset/ecs_style_dataset-0.0.1.zip",
-    "path": "/package/ecs_style_dataset/0.0.1"
+    "path": "/package/ecs_style_dataset/0.0.1",
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Logs datasource",
+        "description": "Datasource for your log files."
+      }
+    ]
   },
   {
     "name": "example",
@@ -82,7 +103,14 @@
     "description": "This is the example integration",
     "type": "integration",
     "download": "/epr/example/example-1.0.0.zip",
-    "path": "/package/example/1.0.0"
+    "path": "/package/example/1.0.0",
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Logs datasource",
+        "description": "Datasource for your log files."
+      }
+    ]
   },
   {
     "name": "foo",
@@ -122,7 +150,14 @@
     "description": "This is a test package showing input-level agent yaml templates",
     "type": "solution",
     "download": "/epr/input_level_templates/input_level_templates-1.0.0.zip",
-    "path": "/package/input_level_templates/1.0.0"
+    "path": "/package/input_level_templates/1.0.0",
+    "policy_templates": [
+      {
+        "name": "input_level_templates",
+        "title": "Input level templates",
+        "description": "Input with input-level template to use input-level vars with"
+      }
+    ]
   },
   {
     "name": "internal",
@@ -177,7 +212,14 @@
     "description": "Tests that multiple can be set to false",
     "type": "integration",
     "download": "/epr/multiple_false/multiple_false-0.0.1.zip",
-    "path": "/package/multiple_false/0.0.1"
+    "path": "/package/multiple_false/0.0.1",
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Logs datasource",
+        "description": "Datasource for your log files."
+      }
+    ]
   },
   {
     "name": "multiversion",
@@ -221,6 +263,13 @@
         "path": "/package/reference/1.0.0/img/icon.svg",
         "size": "32x32",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "nginx",
+        "title": "Nginx logs and metrics.",
+        "description": "Collecting logs and metrics from nginx."
       }
     ]
   },

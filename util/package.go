@@ -174,9 +174,8 @@ func NewPackage(basePath string) (*Package, error) {
 			p.PolicyTemplates[i].Multiple = &trueValue
 		}
 
-		// Collect basic information from policy templates only when icons are
-		// available and store in /search endpoint
-		if p.PolicyTemplates[i].Icons != nil {
+		// Collect basic information from policy templates and store into the /search endpoint
+		if p.PolicyTemplates != nil {
 			t := p.PolicyTemplates[i]
 			baseT := BasePolicyTemplate{
 				Name:        t.Name,

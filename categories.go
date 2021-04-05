@@ -32,12 +32,22 @@ func categoriesHandler(packagesBasePaths []string, cacheTime time.Duration) func
 
 		query := r.URL.Query()
 		var experimental bool
+		var includePolicyTemplates bool
+
 		// Read query filter params which can affect the output
 		if len(query) > 0 {
 			if v := query.Get("experimental"); v != "" {
 				experimental, err = strconv.ParseBool(v)
 				if err != nil {
 					badRequest(w, fmt.Sprintf("invalid 'experimental' query param: '%s'", v))
+					return
+				}
+			}
+
+			if v := query.Get("include_policy_templates"); v != "" {
+				includePolicyTemplates, err = strconv.ParseBool(v)
+				if err != nil {
+					badRequest(w, fmt.Sprintf("invalid 'include_policy_templates' query param: '%s'", v))
 					return
 				}
 			}
@@ -82,27 +92,25 @@ func categoriesHandler(packagesBasePaths []string, cacheTime time.Duration) func
 				categories[c].Count = categories[c].Count + 1
 			}
 
-			for _, t := range p.PolicyTemplates {
-				if t.Icons != nil {
-					// Package level categories is inherited by policy templates with icons.
+			if includePolicyTemplates {
+				for _, t := range p.PolicyTemplates {
 					for _, c := range p.Categories {
 						categories[c].Count = categories[c].Count + 1
 					}
-				}
 
-				// Add policy template level categories.
-				for _, c := range t.Categories {
-					if _, ok := categories[c]; !ok {
-						categories[c] = &Category{
-							Id:    c,
-							Title: c,
-							Count: 0,
+					// Add policy template level categories.
+					for _, c := range t.Categories {
+						if _, ok := categories[c]; !ok {
+							categories[c] = &Category{
+								Id:    c,
+								Title: c,
+								Count: 0,
+							}
 						}
+
+						categories[c].Count = categories[c].Count + 1
 					}
-
-					categories[c].Count = categories[c].Count + 1
 				}
-
 			}
 		}
 
