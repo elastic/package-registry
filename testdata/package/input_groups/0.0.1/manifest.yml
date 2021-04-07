@@ -71,6 +71,14 @@ vars:
     default: "amazonaws.com"
     description: URL of the entry point for an AWS web service.
 
+input_groups:
+  - name: metrics
+    title: Metrics
+    description: Collect metrics from AWS service.
+  - name: logs
+    title: Logs
+    description: Collect logs from AWS service.
+
 policy_templates:
   - name: ec2
     title: AWS EC2

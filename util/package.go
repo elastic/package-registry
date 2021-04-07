@@ -65,6 +65,7 @@ type Package struct {
 	DataStreams     []*DataStream    `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
 	Owner           *Owner           `config:"owner,omitempty" json:"owner,omitempty" yaml:"owner,omitempty"`
 	Vars            []Variable       `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
+	InputGroups     []InputGroup     `config:"input_groups,omitempty" json:"input_groups,omitempty" yaml:"input_groups,omitempty"`
 
 	// Local path to the package dir
 	BasePath string `json:"-" yaml:"-"`
@@ -128,6 +129,12 @@ type Image struct {
 	Title string `config:"title" json:"title,omitempty"`
 	Size  string `config:"size" json:"size,omitempty"`
 	Type  string `config:"type" json:"type,omitempty"`
+}
+
+type InputGroup struct {
+	Name        string `config:"name" json:"name" validate:"required"`
+	Title       string `config:"title" json:"title" validate:"required"`
+	Description string `config:"description" json:"description" validate:"required"`
 }
 
 func (i Image) getPath(p *Package) string {
