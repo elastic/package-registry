@@ -1,40 +1,5 @@
 [
   {
-    "name": "aws",
-    "title": "AWS",
-    "version": "0.0.1",
-    "release": "beta",
-    "description": "AWS Integration",
-    "type": "integration",
-    "download": "/epr/aws/aws-0.0.1.zip",
-    "path": "/package/aws/0.0.1",
-    "icons": [
-      {
-        "src": "/img/logo_aws.svg",
-        "path": "/package/aws/0.0.1/img/logo_aws.svg",
-        "title": "logo aws",
-        "size": "32x32",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "ec2",
-        "title": "AWS EC2",
-        "description": "Collect logs and metrics from EC2 service",
-        "icons": [
-          {
-            "src": "/img/logo_ec2.svg",
-            "path": "/package/aws/0.0.1/img/logo_ec2.svg",
-            "title": "AWS EC2 logo",
-            "size": "32x32",
-            "type": "image/svg+xml"
-          }
-        ]
-      }
-    ]
-  },
-  {
     "name": "dataset_is_prefix",
     "title": "DatasetIsPrefix Flag",
     "version": "0.0.1",
@@ -161,6 +126,41 @@
     "type": "solution",
     "download": "/epr/ilmpolicy/ilmpolicy-1.0.0.zip",
     "path": "/package/ilmpolicy/1.0.0"
+  },
+  {
+    "name": "input_groups",
+    "title": "Input Groups",
+    "version": "0.0.1",
+    "release": "beta",
+    "description": "AWS Integration for testing input groups",
+    "type": "integration",
+    "download": "/epr/input_groups/input_groups-0.0.1.zip",
+    "path": "/package/input_groups/0.0.1",
+    "icons": [
+      {
+        "src": "/img/logo_aws.svg",
+        "path": "/package/input_groups/0.0.1/img/logo_aws.svg",
+        "title": "logo aws",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "ec2",
+        "title": "AWS EC2",
+        "description": "Collect logs and metrics from EC2 service",
+        "icons": [
+          {
+            "src": "/img/logo_ec2.svg",
+            "path": "/package/input_groups/0.0.1/img/logo_ec2.svg",
+            "title": "AWS EC2 logo",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      }
+    ]
   },
   {
     "name": "input_level_templates",

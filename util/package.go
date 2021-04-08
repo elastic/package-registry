@@ -104,6 +104,7 @@ type PolicyTemplate struct {
 	Icons       []Image  `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
 	Categories  []string `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
 	Screenshots []Image  `config:"screenshots,omitempty" json:"screenshots,omitempty" yaml:"screenshots,omitempty"`
+	Readme      *string `config:"readme,omitempty" json:"readme,omitempty" yaml:"readme,omitempty"`
 }
 
 type Conditions struct {
@@ -203,6 +204,17 @@ func NewPackage(basePath string) (*Package, error) {
 			for k, s := range p.PolicyTemplates[i].Screenshots {
 				p.PolicyTemplates[i].Screenshots[k].Path = s.getPath(p)
 			}
+		}
+
+		// Store policy template specific README
+		readmePath := filepath.Join(p.BasePath, "docs", p.PolicyTemplates[i].Name+".md")
+		readme, err := os.Stat(readmePath)
+		if err == nil && readme != nil {
+			if readme.IsDir() {
+				return nil, fmt.Errorf("%s.md is a directory", p.PolicyTemplates[i].Name)
+			}
+			readmePathShort := path.Join(packagePathPrefix, p.Name, p.Version, "docs", p.PolicyTemplates[i].Name+".md")
+			p.PolicyTemplates[i].Readme = &readmePathShort
 		}
 	}
 

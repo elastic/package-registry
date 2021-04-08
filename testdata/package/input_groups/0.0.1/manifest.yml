@@ -1,9 +1,9 @@
 format_version: 1.0.0
 
-name: aws
-title: AWS
+name: input_groups
+title: Input Groups
 license: basic
-description: AWS Integration
+description: AWS Integration for testing input groups
 version: 0.0.1
 categories: ["aws", "cloud"]
 type: integration
