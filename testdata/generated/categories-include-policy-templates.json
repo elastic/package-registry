@@ -7,7 +7,7 @@
   {
     "id": "azure",
     "title": "Azure",
-    "count": 2
+    "count": 1
   },
   {
     "id": "cloud",
@@ -22,31 +22,31 @@
   {
     "id": "containers",
     "title": "Containers",
-    "count": 2
+    "count": 1
   },
   {
     "id": "crm",
     "title": "CRM",
-    "count": 2
+    "count": 1
   },
   {
     "id": "custom",
     "title": "Custom",
-    "count": 17
+    "count": 13
   },
   {
     "id": "message_queue",
     "title": "Message Queue",
-    "count": 2
+    "count": 1
   },
   {
     "id": "monitoring",
     "title": "Monitoring",
-    "count": 2
+    "count": 1
   },
   {
     "id": "web",
     "title": "Web",
-    "count": 4
+    "count": 3
   }
 ]
