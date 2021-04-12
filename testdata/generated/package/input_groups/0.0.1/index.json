@@ -288,17 +288,5 @@
       "show_user": false,
       "default": "amazonaws.com"
     }
-  ],
-  "input_groups": [
-    {
-      "name": "metrics",
-      "title": "Metrics",
-      "description": "Collect metrics from AWS service."
-    },
-    {
-      "name": "logs",
-      "title": "Logs",
-      "description": "Collect logs from AWS service."
-    }
   ]
 }
