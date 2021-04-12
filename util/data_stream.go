@@ -29,9 +29,10 @@ const (
 )
 
 var validTypes = map[string]string{
-	"logs":    "Logs",
-	"metrics": "Metrics",
-	"traces":  "Traces",
+	"logs":       "Logs",
+	"metrics":    "Metrics",
+	"synthetics": "Synthetics",
+	"traces":     "Traces",
 }
 
 type DataStream struct {
