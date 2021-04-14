@@ -176,21 +176,19 @@ func NewPackage(basePath string) (*Package, error) {
 		}
 
 		// Collect basic information from policy templates and store into the /search endpoint
-		if p.PolicyTemplates != nil {
-			t := p.PolicyTemplates[i]
-			baseT := BasePolicyTemplate{
-				Name:        t.Name,
-				Title:       t.Title,
-				Description: t.Description,
-			}
-
-			for k, i := range p.PolicyTemplates[i].Icons {
-				t.Icons[k].Path = i.getPath(p)
-			}
-
-			baseT.Icons = t.Icons
-			p.BasePolicyTemplates = append(p.BasePolicyTemplates, baseT)
+		t := p.PolicyTemplates[i]
+		baseT := BasePolicyTemplate{
+			Name:        t.Name,
+			Title:       t.Title,
+			Description: t.Description,
 		}
+
+		for k, i := range p.PolicyTemplates[i].Icons {
+			t.Icons[k].Path = i.getPath(p)
+		}
+
+		baseT.Icons = t.Icons
+		p.BasePolicyTemplates = append(p.BasePolicyTemplates, baseT)
 
 		// Store paths for all screenshots under each policy template
 		if p.PolicyTemplates[i].Screenshots != nil {
@@ -202,7 +200,11 @@ func NewPackage(basePath string) (*Package, error) {
 		// Store policy template specific README
 		readmePath := filepath.Join(p.BasePath, "docs", p.PolicyTemplates[i].Name+".md")
 		readme, err := os.Stat(readmePath)
-		if err == nil && readme != nil {
+		if err != nil {
+			if _, ok := err.(*os.PathError); !ok {
+				return nil, fmt.Errorf("failed to find %s file: %s", p.PolicyTemplates[i].Name+".md", err)
+			}
+		} else if readme != nil {
 			if readme.IsDir() {
 				return nil, fmt.Errorf("%s.md is a directory", p.PolicyTemplates[i].Name)
 			}

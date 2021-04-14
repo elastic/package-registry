@@ -96,7 +96,7 @@ func categoriesHandler(packagesBasePaths []string, cacheTime time.Duration) func
 				for _, t := range p.PolicyTemplates {
 					// Skip when policy template level `categories` is empty and there is only one policy template
 					if t.Categories == nil && len(p.PolicyTemplates) == 1 {
-						continue
+						break
 					}
 
 					for _, c := range p.Categories {
