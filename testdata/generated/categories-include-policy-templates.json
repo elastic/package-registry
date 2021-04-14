@@ -12,6 +12,11 @@
   {
     "id": "cloud",
     "title": "Cloud",
+    "count": 2
+  },
+  {
+    "id": "compute",
+    "title": "compute",
     "count": 1
   },
   {
@@ -37,7 +42,7 @@
   {
     "id": "monitoring",
     "title": "Monitoring",
-    "count": 2
+    "count": 1
   },
   {
     "id": "web",

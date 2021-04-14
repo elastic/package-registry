@@ -7,6 +7,13 @@
     "description": "This is the example integration",
     "type": "integration",
     "download": "/epr/example/example-1.0.0.zip",
-    "path": "/package/example/1.0.0"
+    "path": "/package/example/1.0.0",
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Logs datasource",
+        "description": "Datasource for your log files."
+      }
+    ]
   }
 ]

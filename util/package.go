@@ -64,6 +64,7 @@ type Package struct {
 	PolicyTemplates []PolicyTemplate `config:"policy_templates,omitempty" json:"policy_templates,omitempty" yaml:"policy_templates,omitempty"`
 	DataStreams     []*DataStream    `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
 	Owner           *Owner           `config:"owner,omitempty" json:"owner,omitempty" yaml:"owner,omitempty"`
+	Vars            []Variable       `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
 
 	// Local path to the package dir
 	BasePath string `json:"-" yaml:"-"`
@@ -71,24 +72,38 @@ type Package struct {
 
 // BasePackage is used for the output of the package info in the /search endpoint
 type BasePackage struct {
-	Name        string  `config:"name" json:"name"`
-	Title       *string `config:"title,omitempty" json:"title,omitempty" yaml:"title,omitempty"`
-	Version     string  `config:"version" json:"version"`
-	Release     string  `config:"release,omitempty" json:"release,omitempty"`
-	Description string  `config:"description" json:"description"`
-	Type        string  `config:"type" json:"type"`
-	Download    string  `json:"download" yaml:"download,omitempty"`
-	Path        string  `json:"path" yaml:"path,omitempty"`
-	Icons       []Image `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
-	Internal    bool    `config:"internal,omitempty" json:"internal,omitempty" yaml:"internal,omitempty"`
+	Name                string               `config:"name" json:"name"`
+	Title               *string              `config:"title,omitempty" json:"title,omitempty" yaml:"title,omitempty"`
+	Version             string               `config:"version" json:"version"`
+	Release             string               `config:"release,omitempty" json:"release,omitempty"`
+	Description         string               `config:"description" json:"description"`
+	Type                string               `config:"type" json:"type"`
+	Download            string               `json:"download" yaml:"download,omitempty"`
+	Path                string               `json:"path" yaml:"path,omitempty"`
+	Icons               []Image              `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
+	Internal            bool                 `config:"internal,omitempty" json:"internal,omitempty" yaml:"internal,omitempty"`
+	BasePolicyTemplates []BasePolicyTemplate `json:"policy_templates,omitempty"`
 }
 
-type PolicyTemplate struct {
+// BasePolicyTemplate is used for the package policy templates in the /search endpoint
+type BasePolicyTemplate struct {
 	Name        string  `config:"name" json:"name" validate:"required"`
 	Title       string  `config:"title" json:"title" validate:"required"`
 	Description string  `config:"description" json:"description" validate:"required"`
-	Inputs      []Input `config:"inputs" json:"inputs"`
-	Multiple    *bool   `config:"multiple" json:"multiple,omitempty" yaml:"multiple,omitempty"`
+	Icons       []Image `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
+}
+
+type PolicyTemplate struct {
+	Name        string   `config:"name" json:"name" validate:"required"`
+	Title       string   `config:"title" json:"title" validate:"required"`
+	Description string   `config:"description" json:"description" validate:"required"`
+	DataStreams []string `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
+	Inputs      []Input  `config:"inputs" json:"inputs"`
+	Multiple    *bool    `config:"multiple" json:"multiple,omitempty" yaml:"multiple,omitempty"`
+	Icons       []Image  `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
+	Categories  []string `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
+	Screenshots []Image  `config:"screenshots,omitempty" json:"screenshots,omitempty" yaml:"screenshots,omitempty"`
+	Readme      *string  `config:"readme,omitempty" json:"readme,omitempty" yaml:"readme,omitempty"`
 }
 
 type Conditions struct {
@@ -159,7 +174,45 @@ func NewPackage(basePath string) (*Package, error) {
 		if p.PolicyTemplates[i].Multiple == nil {
 			p.PolicyTemplates[i].Multiple = &trueValue
 		}
+
+		// Collect basic information from policy templates and store into the /search endpoint
+		t := p.PolicyTemplates[i]
+		baseT := BasePolicyTemplate{
+			Name:        t.Name,
+			Title:       t.Title,
+			Description: t.Description,
+		}
+
+		for k, i := range p.PolicyTemplates[i].Icons {
+			t.Icons[k].Path = i.getPath(p)
+		}
+
+		baseT.Icons = t.Icons
+		p.BasePolicyTemplates = append(p.BasePolicyTemplates, baseT)
+
+		// Store paths for all screenshots under each policy template
+		if p.PolicyTemplates[i].Screenshots != nil {
+			for k, s := range p.PolicyTemplates[i].Screenshots {
+				p.PolicyTemplates[i].Screenshots[k].Path = s.getPath(p)
+			}
+		}
+
+		// Store policy template specific README
+		readmePath := filepath.Join(p.BasePath, "docs", p.PolicyTemplates[i].Name+".md")
+		readme, err := os.Stat(readmePath)
+		if err != nil {
+			if _, ok := err.(*os.PathError); !ok {
+				return nil, fmt.Errorf("failed to find %s file: %s", p.PolicyTemplates[i].Name+".md", err)
+			}
+		} else if readme != nil {
+			if readme.IsDir() {
+				return nil, fmt.Errorf("%s.md is a directory", p.PolicyTemplates[i].Name)
+			}
+			readmePathShort := path.Join(packagePathPrefix, p.Name, p.Version, "docs", p.PolicyTemplates[i].Name+".md")
+			p.PolicyTemplates[i].Readme = &readmePathShort
+		}
 	}
+
 	if p.Type == "" {
 		p.Type = defaultType
 	}

@@ -59,6 +59,13 @@
         "size": "32x32",
         "type": "image/svg+xml"
       }
+    ],
+    "policy_templates": [
+      {
+        "name": "nginx",
+        "title": "Nginx logs and metrics.",
+        "description": "Collecting logs and metrics from nginx."
+      }
     ]
   }
 ]
