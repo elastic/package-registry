@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
+* Disable Handlebars parsing. [#692] (https://github.com/elastic/package-registry/pull/692)
+
 ### Added
 
 * Add input groups support. [#685] (https://github.com/elastic/package-registry/pull/685)
@@ -18,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Known Issues
 
-## [Unreleased](https://github.com/elastic/package-registry/compare/v0.17.0...v0.18.0)
+## [0.18.0](https://github.com/elastic/package-registry/compare/v0.17.0...v0.18.0)
 
 ### Breaking changes
 
