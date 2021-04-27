@@ -12,7 +12,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	handlebars "github.com/aymerick/raymond"
 	"github.com/pkg/errors"
 	yamlv2 "gopkg.in/yaml.v2"
 
@@ -253,11 +252,6 @@ func validateIngestPipelineFile(pipelinePath string) error {
 	f, err := ioutil.ReadFile(pipelinePath)
 	if err != nil {
 		return errors.Wrapf(err, "reading ingest pipeline file failed (path: %s)", pipelinePath)
-	}
-
-	_, err = handlebars.Parse(string(f))
-	if err != nil {
-		return errors.Wrapf(err, "parsing handlebars syntax failed (path: %s)", pipelinePath)
 	}
 
 	ext := filepath.Ext(pipelinePath)
