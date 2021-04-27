@@ -10,6 +10,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
+### Added
+
+### Deprecated
+
+### Known Issues
+
+## [0.19.0](https://github.com/elastic/package-registry/compare/v0.18.0...v0.19.0)
+
+### Breaking changes
+
+### Bugfixes
+
 * Disable Handlebars parsing. [#692] (https://github.com/elastic/package-registry/pull/692)
 
 ### Added
