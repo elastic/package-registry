@@ -51,6 +51,7 @@ func TestEndpoints(t *testing.T) {
 		{"/categories", "/categories", "categories.json", categoriesHandler(packagesBasePaths, testCacheTime)},
 		{"/categories?experimental=true", "/categories", "categories-experimental.json", categoriesHandler(packagesBasePaths, testCacheTime)},
 		{"/categories?experimental=foo", "/categories", "categories-experimental-error.json", categoriesHandler(packagesBasePaths, testCacheTime)},
+		{"/categories?experimental=true&kibana.version=6.5.2", "/categories", "categories-kibana652.json", categoriesHandler(packagesBasePaths, testCacheTime)},
 		{"/categories?include_policy_templates=true", "/categories", "categories-include-policy-templates.json", categoriesHandler(packagesBasePaths, testCacheTime)},
 		{"/categories?include_policy_templates=foo", "/categories", "categories-include-policy-templates-error.json", categoriesHandler(packagesBasePaths, testCacheTime)},
 		{"/search?kibana.version=6.5.2", "/search", "search-kibana652.json", searchHandler(packagesBasePaths, testCacheTime)},

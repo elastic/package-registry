@@ -12,6 +12,8 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/Masterminds/semver/v3"
+
 	"github.com/elastic/package-registry/util"
 )
 
@@ -33,6 +35,7 @@ func categoriesHandler(packagesBasePaths []string, cacheTime time.Duration) func
 		query := r.URL.Query()
 		var experimental bool
 		var includePolicyTemplates bool
+		var kibanaVersion *semver.Version
 
 		// Read query filter params which can affect the output
 		if len(query) > 0 {
@@ -40,6 +43,14 @@ func categoriesHandler(packagesBasePaths []string, cacheTime time.Duration) func
 				experimental, err = strconv.ParseBool(v)
 				if err != nil {
 					badRequest(w, fmt.Sprintf("invalid 'experimental' query param: '%s'", v))
+					return
+				}
+			}
+
+			if v := query.Get("kibana.version"); v != "" {
+				kibanaVersion, err = semver.NewVersion(v)
+				if err != nil {
+					badRequest(w, fmt.Sprintf("invalid Kibana version '%s': %s", v, err))
 					return
 				}
 			}
@@ -56,6 +67,12 @@ func categoriesHandler(packagesBasePaths []string, cacheTime time.Duration) func
 		packageList := map[string]util.Package{}
 		// Get unique list of newest packages
 		for _, p := range packages {
+			// Check if the package is compatible with Kibana version
+			if kibanaVersion != nil {
+				if valid := p.HasKibanaVersion(kibanaVersion); !valid {
+					continue
+				}
+			}
 
 			// Skip internal packages
 			if p.Internal {
