@@ -1,0 +1,32 @@
+[
+  {
+    "id": "aws",
+    "title": "AWS",
+    "count": 1
+  },
+  {
+    "id": "containers",
+    "title": "Containers",
+    "count": 1
+  },
+  {
+    "id": "custom",
+    "title": "Custom",
+    "count": 6
+  },
+  {
+    "id": "message_queue",
+    "title": "Message Queue",
+    "count": 1
+  },
+  {
+    "id": "monitoring",
+    "title": "Monitoring",
+    "count": 1
+  },
+  {
+    "id": "web",
+    "title": "Web",
+    "count": 1
+  }
+]

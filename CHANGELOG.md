@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Support filtering /categories using `kibana.version` query param [#695](https://github.com/elastic/package-registry/pull/695)
+
 ### Deprecated
 
 ### Known Issues
