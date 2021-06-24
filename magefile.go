@@ -8,11 +8,9 @@ package main
 
 import (
 	"fmt"
+	"github.com/pkg/errors"
 	"os"
 	"path/filepath"
-	"strings"
-
-	"github.com/pkg/errors"
 
 	"github.com/magefile/mage/mg"
 	"github.com/magefile/mage/sh"
@@ -69,11 +67,6 @@ func Check() error {
 		return err
 	}
 
-	err = Vendor()
-	if err != nil {
-		return err
-	}
-
 	// Check if no changes are shown
 	err = sh.RunV("git", "update-index", "--refresh")
 	if err != nil {
@@ -95,11 +88,10 @@ func Format() {
 	mg.Deps(GoImports)
 }
 
-// GoImports executes goimports against all .go files in and below the CWD. It
-// ignores vendor/ directories.
+// GoImports executes goimports against all .go files in and below the CWD.
 func GoImports() error {
 	goFiles, err := FindFilesRecursive(func(path string, _ os.FileInfo) bool {
-		return filepath.Ext(path) == ".go" && !strings.Contains(path, "vendor/")
+		return filepath.Ext(path) == ".go"
 	})
 	if err != nil {
 		return err
