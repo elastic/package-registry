@@ -86,22 +86,6 @@ func Test() error {
 	return sh.RunV("go", "test", "./...", "-v")
 }
 
-func TestIntegration() error {
-	// Build is need to make sure all packages are built
-	err := Build()
-	if err != nil {
-		return err
-	}
-
-	// Checks if the binary is properly running and does not return any errors
-	_, err = sh.Output("go", "run", ".", "-dry-run=true")
-	if err != nil {
-		return err
-	}
-
-	return sh.RunV("go", "test", "./...", "-v", "-tags=integration")
-}
-
 // Format adds license headers, formats .go files with goimports, and formats
 // .py files with autopep8.
 func Format() {
@@ -170,24 +154,4 @@ func Clean() error {
 	}
 
 	return os.RemoveAll("package-registry")
-}
-
-func Vendor() error {
-	fmt.Println(">> mod - updating vendor directory")
-
-	err := sh.RunV("go", "mod", "tidy")
-	if err != nil {
-		return err
-	}
-
-	sh.RunV("go", "mod", "vendor")
-	if err != nil {
-		return err
-	}
-
-	sh.RunV("go", "mod", "verify")
-	if err != nil {
-		return err
-	}
-	return nil
 }
