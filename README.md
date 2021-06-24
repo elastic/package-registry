@@ -102,7 +102,6 @@ variations and will also get more complex over time.
 ## Directories
 
 * build/packages: Contains all the example packages. These are only example packages used for development. Run `mage build` to generate these.
-* dev: The dev packages contains at the moment a template to build example packages in automated way.
 * testdata/package: Contains the package for testing. This also serves as an example for a package.
 
 ## Running
