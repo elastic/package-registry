@@ -8,12 +8,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/pkg/errors"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/magefile/mage/mg"
 	"github.com/magefile/mage/sh"
+	"github.com/pkg/errors"
 )
 
 var (
@@ -88,10 +89,11 @@ func Format() {
 	mg.Deps(GoImports)
 }
 
-// GoImports executes goimports against all .go files in and below the CWD.
+// GoImports executes goimports against all .go files in and below the CWD. It
+// ignores vendor/ directories.
 func GoImports() error {
 	goFiles, err := FindFilesRecursive(func(path string, _ os.FileInfo) bool {
-		return filepath.Ext(path) == ".go"
+		return filepath.Ext(path) == ".go" && !strings.Contains(path, "vendor/")
 	})
 	if err != nil {
 		return err
