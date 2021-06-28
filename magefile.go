@@ -69,7 +69,7 @@ func Check() error {
 		return err
 	}
 
-	err = Vendor()
+	err = ModTidy()
 	if err != nil {
 		return err
 	}
@@ -172,20 +172,10 @@ func Clean() error {
 	return os.RemoveAll("package-registry")
 }
 
-func Vendor() error {
+func ModTidy() error {
 	fmt.Println(">> mod - updating vendor directory")
 
 	err := sh.RunV("go", "mod", "tidy")
-	if err != nil {
-		return err
-	}
-
-	sh.RunV("go", "mod", "vendor")
-	if err != nil {
-		return err
-	}
-
-	sh.RunV("go", "mod", "verify")
 	if err != nil {
 		return err
 	}
