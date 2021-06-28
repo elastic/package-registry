@@ -173,8 +173,6 @@ func Clean() error {
 }
 
 func ModTidy() error {
-	fmt.Println(">> mod - updating vendor directory")
-
 	err := sh.RunV("go", "mod", "tidy")
 	if err != nil {
 		return err
