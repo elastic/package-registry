@@ -116,11 +116,6 @@ func GoImports() error {
 	return sh.RunV("goimports", args...)
 }
 
-// ModTidy cleans unused dependencies.
-func ModTidy() error {
-	return sh.RunV("go", "mod", "tidy")
-}
-
 // AddLicenseHeaders adds license headers to .go files. It applies the
 // appropriate license header based on the value of mage.BeatLicense.
 func AddLicenseHeaders() error {
@@ -159,3 +154,9 @@ func Clean() error {
 
 	return os.RemoveAll("package-registry")
 }
+
+// ModTidy cleans unused dependencies.
+func ModTidy() error {
+	return sh.RunV("go", "mod", "tidy")
+}
+
