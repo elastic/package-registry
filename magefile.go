@@ -68,6 +68,11 @@ func Check() error {
 		return err
 	}
 
+	err = ModTidy()
+	if err != nil {
+		return err
+	}
+
 	// Check if no changes are shown
 	err = sh.RunV("git", "update-index", "--refresh")
 	if err != nil {
@@ -109,6 +114,11 @@ func GoImports() error {
 	)
 
 	return sh.RunV("goimports", args...)
+}
+
+// ModTidy cleans unused dependencies.
+func ModTidy() error {
+	return sh.RunV("go", "mod", "tidy")
 }
 
 // AddLicenseHeaders adds license headers to .go files. It applies the
