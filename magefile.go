@@ -12,10 +12,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/pkg/errors"
-
 	"github.com/magefile/mage/mg"
 	"github.com/magefile/mage/sh"
+	"github.com/pkg/errors"
 )
 
 var (
@@ -84,22 +83,6 @@ func Check() error {
 
 func Test() error {
 	return sh.RunV("go", "test", "./...", "-v")
-}
-
-func TestIntegration() error {
-	// Build is need to make sure all packages are built
-	err := Build()
-	if err != nil {
-		return err
-	}
-
-	// Checks if the binary is properly running and does not return any errors
-	_, err = sh.Output("go", "run", ".", "-dry-run=true")
-	if err != nil {
-		return err
-	}
-
-	return sh.RunV("go", "test", "./...", "-v", "-tags=integration")
 }
 
 // Format adds license headers, formats .go files with goimports, and formats
@@ -172,10 +155,7 @@ func Clean() error {
 	return os.RemoveAll("package-registry")
 }
 
+// ModTidy cleans unused dependencies.
 func ModTidy() error {
-	err := sh.RunV("go", "mod", "tidy")
-	if err != nil {
-		return err
-	}
-	return nil
+	return sh.RunV("go", "mod", "tidy")
 }

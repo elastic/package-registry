@@ -86,31 +86,6 @@ pipeline {
       }
     }
     /**
-     Execute integration tests.
-     */
-    stage('TestIntegration') {
-      environment {
-        HOME = "${env.WORKSPACE}"
-        PATH = "${env.HOME}/go/bin:${env.PATH}"
-      }
-      steps {
-        cleanup()
-        withMageEnv(){
-          dir("${BASE_DIR}"){
-            sh(label: 'Runs the (integration) tests',script: 'mage -debug testIntegration|tee tests-report.txt')
-          }
-        }
-      }
-      post {
-        always {
-          convertGoTestResults(
-            input: "${BASE_DIR}/tests-report.txt",
-            output: "${BASE_DIR}/junit-report.xml"
-          )
-        }
-      }
-    }
-    /**
      Publish Docker images.
      */
     stage('Publish Docker image'){
