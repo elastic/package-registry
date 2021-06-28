@@ -159,4 +159,3 @@ func Clean() error {
 func ModTidy() error {
 	return sh.RunV("go", "mod", "tidy")
 }
-
