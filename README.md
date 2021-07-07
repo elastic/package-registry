@@ -180,6 +180,45 @@ Another Docker tag with the git branch or tag name
 
 If you want to run the most recent registry, run the master tag.
 
+### Testing with Kibana
+
+The Docker image of Package Registry is just an empty distribution without any packages. To test it with Kibana using
+[elastic-package](https://github.com/elastic/elastic-package), you need to rebuild the snapshot distribution first:
+
+0. Make sure you've built the Docker image for Package Registry:
+
+```bash
+docker build --rm -t docker.elastic.co/package-registry/package-registry:master .
+```
+
+1. Git clone latest `distribution:snapshot` from Git:
+
+```bash
+git clone --branch snapshot https://github.com/elastic/package-storage.git
+```
+
+2. Open Dockerfile and change the base image for the Package Registry (use `master` instead of `v0.19.0`):
+
+```
+FROM docker.elastic.co/package-registry/package-registry:master
+```
+
+(Docker builder will use the custom image you've built in step 0.)
+
+3. Rebuild the `distribution:snapshot`:
+
+```
+docker build --rm -t docker.elastic.co/package-registry/distribution:snapshot .
+```
+
+4. Now you're able to start the stack using Elastic Package (Elasticsearch, Kibana, Agent, Fleet Server, Package Registry):
+
+```
+elastic-package stack up -v -d
+```
+
+(Elastic Package uses the `distribution:snapshot` by default)
+
 ### Healthcheck
 
 For Docker / Kubernetes the `/health` endpoint can be queried. As soon as `/health` returns a 200, the service is ready.
