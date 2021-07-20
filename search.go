@@ -16,11 +16,38 @@ import (
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/pkg/errors"
-
 	"go.elastic.co/apm"
 
 	"github.com/elastic/package-registry/util"
 )
+
+func searchHandler(packagesBasePaths []string, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		filter, err := newSearchFilterFromParams(r)
+		if err != nil {
+			badRequest(w, err.Error())
+			return
+		}
+
+		packages, err := util.GetPackages(r.Context(), packagesBasePaths)
+		if err != nil {
+			notFoundError(w, errors.Wrapf(err, "fetching package failed"))
+			return
+		}
+
+		packagesList := filter.Filter(r.Context(), packages)
+
+		data, err := getPackageOutput(r.Context(), packagesList)
+		if err != nil {
+			notFoundError(w, err)
+			return
+		}
+
+		cacheHeaders(w, cacheTime)
+		jsonHeader(w)
+		fmt.Fprint(w, string(data))
+	}
+}
 
 type searchFilter struct {
 	Category      string
@@ -31,7 +58,7 @@ type searchFilter struct {
 	Experimental  bool
 }
 
-func newFilterFromParams(r *http.Request) (searchFilter, error) {
+func newSearchFilterFromParams(r *http.Request) (searchFilter, error) {
 	var filter searchFilter
 
 	query := r.URL.Query()
@@ -82,41 +109,7 @@ func newFilterFromParams(r *http.Request) (searchFilter, error) {
 	return filter, nil
 }
 
-func searchHandler(packagesBasePaths []string, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
-	return func(w http.ResponseWriter, r *http.Request) {
-		filter, err := newFilterFromParams(r)
-		if err != nil {
-			badRequest(w, err.Error())
-		}
-
-		packages, err := getPackagesFromStore(r.Context(), packagesBasePaths)
-		if err != nil {
-			notFoundError(w, errors.Wrapf(err, "fetching package failed"))
-			return
-		}
-
-		packagesList := filterPackages(r.Context(), packages, filter)
-
-		data, err := getPackageOutput(r.Context(), packagesList)
-		if err != nil {
-			notFoundError(w, err)
-			return
-		}
-
-		cacheHeaders(w, cacheTime)
-		jsonHeader(w)
-		fmt.Fprint(w, string(data))
-	}
-}
-
-func getPackagesFromStore(ctx context.Context, paths []string) (util.Packages, error) {
-	span, _ := apm.StartSpan(ctx, "GetPackages", "custom")
-	defer span.End()
-
-	return util.GetPackages(paths)
-}
-
-func filterPackages(ctx context.Context, packages util.Packages, filter searchFilter) map[string]map[string]util.Package {
+func (filter searchFilter) Filter(ctx context.Context, packages util.Packages) map[string]map[string]util.Package {
 	span, _ := apm.StartSpan(ctx, "FilterPackages", "custom")
 	defer span.End()
 

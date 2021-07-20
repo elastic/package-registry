@@ -134,7 +134,7 @@ func printConfig(config *Config) {
 }
 
 func ensurePackagesAvailable(packagesBasePaths []string) {
-	packages, err := util.GetPackages(packagesBasePaths)
+	packages, err := util.GetPackages(context.TODO(), packagesBasePaths)
 	if err != nil {
 		log.Fatal(err)
 	}
