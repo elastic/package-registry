@@ -115,7 +115,7 @@ func (filter categoriesFilter) Filter(ctx context.Context, packages util.Package
 		}
 
 		// Skip experimental packages if flag is not specified
-		if p.Release == util.ReleaseExperimental && filter.Experimental {
+		if p.Release == util.ReleaseExperimental && !filter.Experimental {
 			continue
 		}
 
@@ -132,13 +132,13 @@ func (filter categoriesFilter) Filter(ctx context.Context, packages util.Package
 	return packageList
 }
 
-func (filter categoriesFilter) FilterCategories(ctx context.Context, packages map[string]util.Package) map[string]*Category {
+func (filter categoriesFilter) FilterCategories(ctx context.Context, packageList map[string]util.Package) map[string]*Category {
 	span, _ := apm.StartSpan(ctx, "FilterCategories", "custom")
 	defer span.End()
 
 	categories := map[string]*Category{}
 
-	for _, p := range packages {
+	for _, p := range packageList {
 		for _, c := range p.Categories {
 			if _, ok := categories[c]; !ok {
 				categories[c] = &Category{
