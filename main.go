@@ -19,6 +19,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
 
+	"go.elastic.co/apm"
 	"go.elastic.co/apm/module/apmgorilla"
 
 	ucfgYAML "github.com/elastic/go-ucfg/yaml"
@@ -64,18 +65,7 @@ func main() {
 	log.Println("Package registry started.")
 	defer log.Println("Package registry stopped.")
 
-	config := mustLoadConfig()
-	packagesBasePaths := getPackagesBasePaths(config)
-	ensurePackagesAvailable(packagesBasePaths)
-
-	// If -dry-run=true is set, service stops here after validation
-	if dryRun {
-		return
-	}
-
-	router := mustLoadRouter(config, packagesBasePaths)
-	server := &http.Server{Addr: address, Handler: router}
-
+	server := initServer()
 	go func() {
 		err := server.ListenAndServe()
 		if err != nil && err != http.ErrServerClosed {
@@ -91,6 +81,28 @@ func main() {
 	if err := server.Shutdown(ctx); err != nil {
 		log.Fatal(err)
 	}
+}
+
+func initServer() *http.Server {
+	apmTracer := apm.DefaultTracer
+	tx := apmTracer.StartTransaction("initServer", "custom")
+	defer tx.End()
+
+	ctx := apm.ContextWithTransaction(context.TODO(), tx)
+
+	config := mustLoadConfig()
+	packagesBasePaths := getPackagesBasePaths(config)
+	ensurePackagesAvailable(ctx, packagesBasePaths)
+
+	// If -dry-run=true is set, service stops here after validation
+	if dryRun {
+		os.Exit(0)
+	}
+
+	router := mustLoadRouter(config, packagesBasePaths)
+	apmgorilla.Instrument(router, apmgorilla.WithTracer(apmTracer))
+
+	return &http.Server{Addr: address, Handler: router}
 }
 
 func mustLoadConfig() *Config {
@@ -133,8 +145,8 @@ func printConfig(config *Config) {
 	log.Println("Cache time for all others: ", config.CacheTimeCatchAll)
 }
 
-func ensurePackagesAvailable(packagesBasePaths []string) {
-	packages, err := util.GetPackages(context.TODO(), packagesBasePaths)
+func ensurePackagesAvailable(ctx context.Context, packagesBasePaths []string) {
+	packages, err := util.GetPackages(ctx, packagesBasePaths)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -168,7 +180,6 @@ func getRouter(config *Config, packagesBasePaths []string) (*mux.Router, error) 
 	packageIndexHandler := packageIndexHandler(packagesBasePaths, config.CacheTimeCatchAll)
 
 	router := mux.NewRouter().StrictSlash(true)
-	apmgorilla.Instrument(router)
 
 	router.HandleFunc("/", indexHandlerFunc)
 	router.HandleFunc("/index.json", indexHandlerFunc)
