@@ -28,9 +28,6 @@ type Packages []Package
 // This assumes changes to packages only happen on restart (unless development mode is enabled).
 // Caching the packages request many file reads every time this method is called.
 func GetPackages(ctx context.Context, packagesBasePaths []string) (Packages, error) {
-	span, ctx := apm.StartSpan(ctx, "GetPackages", "app")
-	defer span.End()
-
 	if packageList != nil {
 		return packageList, nil
 	}
