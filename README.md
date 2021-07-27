@@ -223,6 +223,22 @@ elastic-package stack up -v -d
 
 For Docker / Kubernetes the `/health` endpoint can be queried. As soon as `/health` returns a 200, the service is ready.
 
+## Performance monitoring
+
+Package Registry is instrumented with the [Elastic APM Go Agent](https://www.elastic.co/guide/en/apm/agent/go/current/index.html). You can configure the agent to send the data to any APM Server using the following environment variables:
+
+* `ELASTIC_APM_SERVER_URL`: Address of the APM Server. Instrumentation is
+  disabled in Package Registry if this variable is not set.
+* `ELASTIC_APM_API_KEY`: API key to use to authenticate with the APM Server, if needed.
+* `ELASTIC_APM_SECRET_TOKEN`: If configured in the APM Server, this token has to
+  be the same in the agents sending data.
+* `ELASTIC_APM_TRANSACTION_SAMPLE_RATE`: Sample rate for transaction collection,
+  it can be a value from 0.0 to 1.0. 1.0 is the default value, that collects all
+  transactions.
+
+You can find a full reference of these and other options in the Elastic APM Go
+Agent [configuration guide](https://www.elastic.co/guide/en/apm/agent/go/current/configuration.html).
+
 ## Release
 
 New versions of the package registry need to be released from time to time. The following steps should be followed to create a new release:

@@ -19,6 +19,9 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
 
+	"go.elastic.co/apm"
+	"go.elastic.co/apm/module/apmgorilla"
+
 	ucfgYAML "github.com/elastic/go-ucfg/yaml"
 
 	"github.com/elastic/package-registry/util"
@@ -62,18 +65,7 @@ func main() {
 	log.Println("Package registry started.")
 	defer log.Println("Package registry stopped.")
 
-	config := mustLoadConfig()
-	packagesBasePaths := getPackagesBasePaths(config)
-	ensurePackagesAvailable(packagesBasePaths)
-
-	// If -dry-run=true is set, service stops here after validation
-	if dryRun {
-		return
-	}
-
-	router := mustLoadRouter(config, packagesBasePaths)
-	server := &http.Server{Addr: address, Handler: router}
-
+	server := initServer()
 	go func() {
 		err := server.ListenAndServe()
 		if err != nil && err != http.ErrServerClosed {
@@ -89,6 +81,45 @@ func main() {
 	if err := server.Shutdown(ctx); err != nil {
 		log.Fatal(err)
 	}
+}
+
+func initServer() *http.Server {
+	apmTracer := initAPMTracer()
+	tx := apmTracer.StartTransaction("initServer", "backend.init")
+	defer tx.End()
+
+	ctx := apm.ContextWithTransaction(context.TODO(), tx)
+
+	config := mustLoadConfig()
+	packagesBasePaths := getPackagesBasePaths(config)
+	ensurePackagesAvailable(ctx, packagesBasePaths)
+
+	// If -dry-run=true is set, service stops here after validation
+	if dryRun {
+		os.Exit(0)
+	}
+
+	router := mustLoadRouter(config, packagesBasePaths)
+	apmgorilla.Instrument(router, apmgorilla.WithTracer(apmTracer))
+
+	return &http.Server{Addr: address, Handler: router}
+}
+
+func initAPMTracer() *apm.Tracer {
+	apm.DefaultTracer.Close()
+	if _, found := os.LookupEnv("ELASTIC_APM_SERVER_URL"); !found {
+		// Don't report anything if the Server URL hasn't been configured.
+		return apm.DefaultTracer
+	}
+
+	tracer, err := apm.NewTracerOptions(apm.TracerOptions{
+		ServiceName:    serviceName,
+		ServiceVersion: version,
+	})
+	if err != nil {
+		log.Fatalf("Failed to initialize APM agent: %v", err)
+	}
+	return tracer
 }
 
 func mustLoadConfig() *Config {
@@ -131,8 +162,8 @@ func printConfig(config *Config) {
 	log.Println("Cache time for all others: ", config.CacheTimeCatchAll)
 }
 
-func ensurePackagesAvailable(packagesBasePaths []string) {
-	packages, err := util.GetPackages(packagesBasePaths)
+func ensurePackagesAvailable(ctx context.Context, packagesBasePaths []string) {
+	packages, err := util.GetPackages(ctx, packagesBasePaths)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -166,6 +197,7 @@ func getRouter(config *Config, packagesBasePaths []string) (*mux.Router, error) 
 	packageIndexHandler := packageIndexHandler(packagesBasePaths, config.CacheTimeCatchAll)
 
 	router := mux.NewRouter().StrictSlash(true)
+
 	router.HandleFunc("/", indexHandlerFunc)
 	router.HandleFunc("/index.json", indexHandlerFunc)
 	router.HandleFunc("/search", searchHandler(packagesBasePaths, config.CacheTimeSearch))
