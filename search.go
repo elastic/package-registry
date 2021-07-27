@@ -110,7 +110,7 @@ func newSearchFilterFromParams(r *http.Request) (searchFilter, error) {
 }
 
 func (filter searchFilter) Filter(ctx context.Context, packages util.Packages) map[string]map[string]util.Package {
-	span, _ := apm.StartSpan(ctx, "FilterPackages", "custom")
+	span, _ := apm.StartSpan(ctx, "FilterPackages", "app")
 	defer span.End()
 
 	packagesList := map[string]map[string]util.Package{}
@@ -180,7 +180,7 @@ func (filter searchFilter) Filter(ctx context.Context, packages util.Packages) m
 }
 
 func getPackageOutput(ctx context.Context, packagesList map[string]map[string]util.Package) ([]byte, error) {
-	span, _ := apm.StartSpan(ctx, "GetPackageOutput", "custom")
+	span, _ := apm.StartSpan(ctx, "GetPackageOutput", "app")
 	defer span.End()
 
 	separator := "@"

@@ -28,7 +28,7 @@ type Packages []Package
 // This assumes changes to packages only happen on restart (unless development mode is enabled).
 // Caching the packages request many file reads every time this method is called.
 func GetPackages(ctx context.Context, packagesBasePaths []string) (Packages, error) {
-	span, ctx := apm.StartSpan(ctx, "GetPackages", "custom")
+	span, ctx := apm.StartSpan(ctx, "GetPackages", "app")
 	defer span.End()
 
 	if packageList != nil {
@@ -44,7 +44,7 @@ func GetPackages(ctx context.Context, packagesBasePaths []string) (Packages, err
 }
 
 func getPackagesFromFilesystem(ctx context.Context, packagesBasePaths []string) (Packages, error) {
-	span, _ := apm.StartSpan(ctx, "GetPackagesFromFilesystem", "custom")
+	span, _ := apm.StartSpan(ctx, "GetPackagesFromFilesystem", "app")
 	defer span.End()
 
 	packagePaths, err := getPackagePaths(packagesBasePaths)
