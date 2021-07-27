@@ -84,8 +84,8 @@ func main() {
 }
 
 func initServer() *http.Server {
-	apmTracer := apm.DefaultTracer
-	tx := apmTracer.StartTransaction("initServer", "custom")
+	apmTracer := initAPMTracer()
+	tx := apmTracer.StartTransaction("initServer", "backend.init")
 	defer tx.End()
 
 	ctx := apm.ContextWithTransaction(context.TODO(), tx)
@@ -103,6 +103,23 @@ func initServer() *http.Server {
 	apmgorilla.Instrument(router, apmgorilla.WithTracer(apmTracer))
 
 	return &http.Server{Addr: address, Handler: router}
+}
+
+func initAPMTracer() *apm.Tracer {
+	apm.DefaultTracer.Close()
+	if _, found := os.LookupEnv("ELASTIC_APM_SERVER_URL"); !found {
+		// Don't report anything if the Server URL hasn't been configured.
+		return apm.DefaultTracer
+	}
+
+	tracer, err := apm.NewTracerOptions(apm.TracerOptions{
+		ServiceName:    serviceName,
+		ServiceVersion: version,
+	})
+	if err != nil {
+		log.Fatalf("Failed to initialize APM agent: %v", err)
+	}
+	return tracer
 }
 
 func mustLoadConfig() *Config {
