@@ -95,7 +95,7 @@ func newCategoriesFilterFromParams(r *http.Request) (categoriesFilter, error) {
 }
 
 func (filter categoriesFilter) Filter(ctx context.Context, packages util.Packages) map[string]util.Package {
-	span, _ := apm.StartSpan(ctx, "FilterPackages", "app")
+	span, ctx := apm.StartSpan(ctx, "FilterPackages", "app")
 	defer span.End()
 
 	packageList := map[string]util.Package{}
@@ -133,7 +133,7 @@ func (filter categoriesFilter) Filter(ctx context.Context, packages util.Package
 }
 
 func (filter categoriesFilter) FilterCategories(ctx context.Context, packageList map[string]util.Package) map[string]*Category {
-	span, _ := apm.StartSpan(ctx, "FilterCategories", "app")
+	span, ctx := apm.StartSpan(ctx, "FilterCategories", "app")
 	defer span.End()
 
 	categories := map[string]*Category{}
@@ -182,7 +182,7 @@ func (filter categoriesFilter) FilterCategories(ctx context.Context, packageList
 }
 
 func getCategoriesOutput(ctx context.Context, categories map[string]*Category) ([]byte, error) {
-	span, _ := apm.StartSpan(ctx, "GetCategoriesOutput", "app")
+	span, ctx := apm.StartSpan(ctx, "GetCategoriesOutput", "app")
 	defer span.End()
 
 	var keys []string

@@ -44,7 +44,7 @@ func GetPackages(ctx context.Context, packagesBasePaths []string) (Packages, err
 }
 
 func getPackagesFromFilesystem(ctx context.Context, packagesBasePaths []string) (Packages, error) {
-	span, _ := apm.StartSpan(ctx, "GetPackagesFromFilesystem", "app")
+	span, ctx := apm.StartSpan(ctx, "GetPackagesFromFilesystem", "app")
 	defer span.End()
 
 	packagePaths, err := getPackagePaths(packagesBasePaths)
