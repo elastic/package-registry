@@ -98,6 +98,28 @@ func TestArtifacts(t *testing.T) {
 	}
 }
 
+func TestZippedArtifacts(t *testing.T) {
+	packagesBasePaths := []string{"./testdata/local-storage"}
+
+	artifactsHandler := artifactsHandler(packagesBasePaths, testCacheTime)
+
+	tests := []struct {
+		endpoint string
+		path     string
+		file     string
+		handler  func(w http.ResponseWriter, r *http.Request)
+	}{
+		{"/epr/example/example-1.0.1.zip", artifactsRouterPath, "example-1.0.1.zip-preview.txt", artifactsHandler},
+		{"/epr/example/example-999.0.2.zip", artifactsRouterPath, "artifact-package-version-not-found.txt", artifactsHandler},
+	}
+
+	for _, test := range tests {
+		t.Run(test.endpoint, func(t *testing.T) {
+			runEndpoint(t, test.endpoint, test.path, test.file, test.handler)
+		})
+	}
+}
+
 func TestPackageIndex(t *testing.T) {
 	packagesBasePaths := []string{"./testdata/package"}
 
