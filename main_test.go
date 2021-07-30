@@ -81,7 +81,7 @@ func TestArtifacts(t *testing.T) {
 	packagesBasePaths := []string{"./testdata/package"}
 	indexer := util.NewFilesystemIndexer(packagesBasePaths)
 
-	artifactsHandler := artifactsHandler(indexer, packagesBasePaths, testCacheTime)
+	artifactsHandler := artifactsHandler(indexer, testCacheTime)
 
 	tests := []struct {
 		endpoint string
@@ -106,7 +106,7 @@ func TestZippedArtifacts(t *testing.T) {
 	packagesBasePaths := []string{"./testdata/local-storage"}
 	indexer := util.NewFilesystemIndexer(packagesBasePaths)
 
-	artifactsHandler := artifactsHandler(indexer, packagesBasePaths, testCacheTime)
+	artifactsHandler := artifactsHandler(indexer, testCacheTime)
 
 	tests := []struct {
 		endpoint string

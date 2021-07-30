@@ -23,7 +23,7 @@ const artifactsRouterPath = "/epr/{packageName}/{packageName:[a-z0-9_]+}-{packag
 
 var errArtifactNotFound = errors.New("artifact not found")
 
-func artifactsHandler(indexer Indexer, packagesBasePaths []string, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+func artifactsHandler(indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		packageName, ok := vars["packageName"]
@@ -44,13 +44,10 @@ func artifactsHandler(indexer Indexer, packagesBasePaths []string, cacheTime tim
 			return
 		}
 
-		packagePath, err := getPackagePath(packagesBasePaths, packageName, packageVersion)
+		packagePath, err := getPackagePathFromIndex(r.Context(), indexer, packageName, packageVersion)
 		if err == errResourceNotFound {
-			packagePath, err = getPackagePathFromIndex(r.Context(), indexer, packageName, packageVersion)
-			if err == errResourceNotFound {
-				notFoundError(w, errArtifactNotFound)
-				return
-			}
+			notFoundError(w, errArtifactNotFound)
+			return
 		}
 		if err != nil {
 			log.Printf("getting package path '%s' failed: %v", packagePath, err)

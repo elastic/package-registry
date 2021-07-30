@@ -189,7 +189,7 @@ func mustLoadRouter(config *Config, indexer Indexer, packagesBasePaths []string)
 }
 
 func getRouter(config *Config, indexer Indexer, packagesBasePaths []string) (*mux.Router, error) {
-	artifactsHandler := artifactsHandler(indexer, packagesBasePaths, config.CacheTimeCatchAll)
+	artifactsHandler := artifactsHandler(indexer, config.CacheTimeCatchAll)
 	faviconHandleFunc, err := faviconHandler(config.CacheTimeCatchAll)
 	if err != nil {
 		return nil, err
