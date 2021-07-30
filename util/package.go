@@ -6,6 +6,7 @@ package util
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
@@ -157,7 +158,7 @@ func getDownloadPath(p Package, t string) string {
 // The path should be the path to a zip file containing a package.
 func NewPackageFromZip(path string) (*Package, error) {
 	// TODO: Make it smarter so it doesn't need to extract all the files.
-	tmpdir, err := os.MkdirTemp(os.TempDir(), "package-registry-")
+	tmpdir, err := ioutil.TempDir(os.TempDir(), "package-registry-")
 	if err != nil {
 		return nil, fmt.Errorf("failed to create temporary directory: %w", err)
 	}
