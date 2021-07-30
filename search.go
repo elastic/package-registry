@@ -21,7 +21,7 @@ import (
 	"github.com/elastic/package-registry/util"
 )
 
-func searchHandler(packagesBasePaths []string, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+func searchHandler(indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		filter, err := newSearchFilterFromParams(r)
 		if err != nil {
@@ -29,7 +29,7 @@ func searchHandler(packagesBasePaths []string, cacheTime time.Duration) func(w h
 			return
 		}
 
-		packages, err := util.GetPackages(r.Context(), packagesBasePaths)
+		packages, err := indexer.GetPackages(r.Context())
 		if err != nil {
 			notFoundError(w, errors.Wrapf(err, "fetching package failed"))
 			return

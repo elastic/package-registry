@@ -60,6 +60,10 @@ type Config struct {
 	CacheTimeCatchAll   time.Duration `config:"cache_time.catch_all"`
 }
 
+type Indexer interface {
+	GetPackages(context.Context) (util.Packages, error)
+}
+
 func main() {
 	flag.Parse()
 	log.Println("Package registry started.")
@@ -92,14 +96,15 @@ func initServer() *http.Server {
 
 	config := mustLoadConfig()
 	packagesBasePaths := getPackagesBasePaths(config)
-	ensurePackagesAvailable(ctx, packagesBasePaths)
+	indexer := util.NewFilesystemIndexer(packagesBasePaths)
+	ensurePackagesAvailable(ctx, indexer)
 
 	// If -dry-run=true is set, service stops here after validation
 	if dryRun {
 		os.Exit(0)
 	}
 
-	router := mustLoadRouter(config, packagesBasePaths)
+	router := mustLoadRouter(config, indexer, packagesBasePaths)
 	apmgorilla.Instrument(router, apmgorilla.WithTracer(apmTracer))
 
 	return &http.Server{Addr: address, Handler: router}
@@ -162,8 +167,8 @@ func printConfig(config *Config) {
 	log.Println("Cache time for all others: ", config.CacheTimeCatchAll)
 }
 
-func ensurePackagesAvailable(ctx context.Context, packagesBasePaths []string) {
-	packages, err := util.GetPackages(ctx, packagesBasePaths)
+func ensurePackagesAvailable(ctx context.Context, indexer Indexer) {
+	packages, err := indexer.GetPackages(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -175,16 +180,16 @@ func ensurePackagesAvailable(ctx context.Context, packagesBasePaths []string) {
 	log.Printf("%v package manifests loaded.\n", len(packages))
 }
 
-func mustLoadRouter(config *Config, packagesBasePaths []string) *mux.Router {
-	router, err := getRouter(config, packagesBasePaths)
+func mustLoadRouter(config *Config, indexer Indexer, packagesBasePaths []string) *mux.Router {
+	router, err := getRouter(config, indexer, packagesBasePaths)
 	if err != nil {
 		log.Fatal(err)
 	}
 	return router
 }
 
-func getRouter(config *Config, packagesBasePaths []string) (*mux.Router, error) {
-	artifactsHandler := artifactsHandler(packagesBasePaths, config.CacheTimeCatchAll)
+func getRouter(config *Config, indexer Indexer, packagesBasePaths []string) (*mux.Router, error) {
+	artifactsHandler := artifactsHandler(indexer, packagesBasePaths, config.CacheTimeCatchAll)
 	faviconHandleFunc, err := faviconHandler(config.CacheTimeCatchAll)
 	if err != nil {
 		return nil, err
@@ -200,8 +205,8 @@ func getRouter(config *Config, packagesBasePaths []string) (*mux.Router, error) 
 
 	router.HandleFunc("/", indexHandlerFunc)
 	router.HandleFunc("/index.json", indexHandlerFunc)
-	router.HandleFunc("/search", searchHandler(packagesBasePaths, config.CacheTimeSearch))
-	router.HandleFunc("/categories", categoriesHandler(packagesBasePaths, config.CacheTimeCategories))
+	router.HandleFunc("/search", searchHandler(indexer, config.CacheTimeSearch))
+	router.HandleFunc("/categories", categoriesHandler(indexer, config.CacheTimeCategories))
 	router.HandleFunc("/health", healthHandler)
 	router.HandleFunc("/favicon.ico", faviconHandleFunc)
 	router.HandleFunc(artifactsRouterPath, artifactsHandler)

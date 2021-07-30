@@ -21,6 +21,8 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/elastic/package-registry/util"
 )
 
 var (
@@ -31,6 +33,7 @@ var (
 
 func TestEndpoints(t *testing.T) {
 	packagesBasePaths := []string{"./testdata/second_package_path", "./testdata/package"}
+	indexer := util.NewFilesystemIndexer(packagesBasePaths)
 
 	faviconHandleFunc, err := faviconHandler(testCacheTime)
 	require.NoError(t, err)
@@ -46,24 +49,24 @@ func TestEndpoints(t *testing.T) {
 	}{
 		{"/", "", "index.json", indexHandleFunc},
 		{"/index.json", "", "index.json", indexHandleFunc},
-		{"/search", "/search", "search.json", searchHandler(packagesBasePaths, testCacheTime)},
-		{"/search?all=true", "/search", "search-all.json", searchHandler(packagesBasePaths, testCacheTime)},
-		{"/categories", "/categories", "categories.json", categoriesHandler(packagesBasePaths, testCacheTime)},
-		{"/categories?experimental=true", "/categories", "categories-experimental.json", categoriesHandler(packagesBasePaths, testCacheTime)},
-		{"/categories?experimental=foo", "/categories", "categories-experimental-error.json", categoriesHandler(packagesBasePaths, testCacheTime)},
-		{"/categories?experimental=true&kibana.version=6.5.2", "/categories", "categories-kibana652.json", categoriesHandler(packagesBasePaths, testCacheTime)},
-		{"/categories?include_policy_templates=true", "/categories", "categories-include-policy-templates.json", categoriesHandler(packagesBasePaths, testCacheTime)},
-		{"/categories?include_policy_templates=foo", "/categories", "categories-include-policy-templates-error.json", categoriesHandler(packagesBasePaths, testCacheTime)},
-		{"/search?kibana.version=6.5.2", "/search", "search-kibana652.json", searchHandler(packagesBasePaths, testCacheTime)},
-		{"/search?kibana.version=7.2.1", "/search", "search-kibana721.json", searchHandler(packagesBasePaths, testCacheTime)},
-		{"/search?category=web", "/search", "search-category-web.json", searchHandler(packagesBasePaths, testCacheTime)},
-		{"/search?category=custom", "/search", "search-category-custom.json", searchHandler(packagesBasePaths, testCacheTime)},
-		{"/search?package=example", "/search", "search-package-example.json", searchHandler(packagesBasePaths, testCacheTime)},
-		{"/search?package=example&all=true", "/search", "search-package-example-all.json", searchHandler(packagesBasePaths, testCacheTime)},
-		{"/search?internal=true", "/search", "search-package-internal.json", searchHandler(packagesBasePaths, testCacheTime)},
-		{"/search?internal=bar", "/search", "search-package-internal-error.json", searchHandler(packagesBasePaths, testCacheTime)},
-		{"/search?experimental=true", "/search", "search-package-experimental.json", searchHandler(packagesBasePaths, testCacheTime)},
-		{"/search?experimental=foo", "/search", "search-package-experimental-error.json", searchHandler(packagesBasePaths, testCacheTime)},
+		{"/search", "/search", "search.json", searchHandler(indexer, testCacheTime)},
+		{"/search?all=true", "/search", "search-all.json", searchHandler(indexer, testCacheTime)},
+		{"/categories", "/categories", "categories.json", categoriesHandler(indexer, testCacheTime)},
+		{"/categories?experimental=true", "/categories", "categories-experimental.json", categoriesHandler(indexer, testCacheTime)},
+		{"/categories?experimental=foo", "/categories", "categories-experimental-error.json", categoriesHandler(indexer, testCacheTime)},
+		{"/categories?experimental=true&kibana.version=6.5.2", "/categories", "categories-kibana652.json", categoriesHandler(indexer, testCacheTime)},
+		{"/categories?include_policy_templates=true", "/categories", "categories-include-policy-templates.json", categoriesHandler(indexer, testCacheTime)},
+		{"/categories?include_policy_templates=foo", "/categories", "categories-include-policy-templates-error.json", categoriesHandler(indexer, testCacheTime)},
+		{"/search?kibana.version=6.5.2", "/search", "search-kibana652.json", searchHandler(indexer, testCacheTime)},
+		{"/search?kibana.version=7.2.1", "/search", "search-kibana721.json", searchHandler(indexer, testCacheTime)},
+		{"/search?category=web", "/search", "search-category-web.json", searchHandler(indexer, testCacheTime)},
+		{"/search?category=custom", "/search", "search-category-custom.json", searchHandler(indexer, testCacheTime)},
+		{"/search?package=example", "/search", "search-package-example.json", searchHandler(indexer, testCacheTime)},
+		{"/search?package=example&all=true", "/search", "search-package-example-all.json", searchHandler(indexer, testCacheTime)},
+		{"/search?internal=true", "/search", "search-package-internal.json", searchHandler(indexer, testCacheTime)},
+		{"/search?internal=bar", "/search", "search-package-internal-error.json", searchHandler(indexer, testCacheTime)},
+		{"/search?experimental=true", "/search", "search-package-experimental.json", searchHandler(indexer, testCacheTime)},
+		{"/search?experimental=foo", "/search", "search-package-experimental-error.json", searchHandler(indexer, testCacheTime)},
 		{"/favicon.ico", "", "favicon.ico", faviconHandleFunc},
 	}
 
@@ -76,8 +79,9 @@ func TestEndpoints(t *testing.T) {
 
 func TestArtifacts(t *testing.T) {
 	packagesBasePaths := []string{"./testdata/package"}
+	indexer := util.NewFilesystemIndexer(packagesBasePaths)
 
-	artifactsHandler := artifactsHandler(packagesBasePaths, testCacheTime)
+	artifactsHandler := artifactsHandler(indexer, packagesBasePaths, testCacheTime)
 
 	tests := []struct {
 		endpoint string
@@ -100,8 +104,9 @@ func TestArtifacts(t *testing.T) {
 
 func TestZippedArtifacts(t *testing.T) {
 	packagesBasePaths := []string{"./testdata/local-storage"}
+	indexer := util.NewFilesystemIndexer(packagesBasePaths)
 
-	artifactsHandler := artifactsHandler(packagesBasePaths, testCacheTime)
+	artifactsHandler := artifactsHandler(indexer, packagesBasePaths, testCacheTime)
 
 	tests := []struct {
 		endpoint string

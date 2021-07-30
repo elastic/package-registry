@@ -19,25 +19,35 @@ import (
 // PackageValidationDisabled is a flag which can disable package content validation (package, data streams, assets, etc.).
 var PackageValidationDisabled bool
 
-var packageList Packages
-
 type Packages []Package
+
+// FilesystemIndexer indexes packages from the filesystem.
+type FilesystemIndexer struct {
+	paths       []string
+	packageList Packages
+}
+
+func NewFilesystemIndexer(paths []string) *FilesystemIndexer {
+	return &FilesystemIndexer{
+		paths: paths,
+	}
+}
 
 // GetPackages returns a slice with all existing packages.
 // The list is stored in memory and on the second request directly served from memory.
 // This assumes changes to packages only happen on restart (unless development mode is enabled).
 // Caching the packages request many file reads every time this method is called.
-func GetPackages(ctx context.Context, packagesBasePaths []string) (Packages, error) {
-	if packageList != nil {
-		return packageList, nil
+func (i *FilesystemIndexer) GetPackages(ctx context.Context) (Packages, error) {
+	if i.packageList != nil {
+		return i.packageList, nil
 	}
 
 	var err error
-	packageList, err = getPackagesFromFilesystem(ctx, packagesBasePaths)
+	i.packageList, err = getPackagesFromFilesystem(ctx, i.paths)
 	if err != nil {
 		return nil, errors.Wrapf(err, "reading packages from filesystem failed")
 	}
-	return packageList, nil
+	return i.packageList, nil
 }
 
 func getPackagesFromFilesystem(ctx context.Context, packagesBasePaths []string) (Packages, error) {
