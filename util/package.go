@@ -16,6 +16,8 @@ import (
 
 	ucfg "github.com/elastic/go-ucfg"
 	"github.com/elastic/go-ucfg/yaml"
+
+	"github.com/elastic/package-registry/archiver"
 )
 
 const (
@@ -149,6 +151,37 @@ func NewDownload(p Package, t string) Download {
 
 func getDownloadPath(p Package, t string) string {
 	return path.Join("/epr", p.Name, p.Name+"-"+p.Version+".zip")
+}
+
+// NewPackageFromZip creates a new package instances based on the given path.
+// The path should be the path to a zip file containing a package.
+func NewPackageFromZip(path string) (*Package, error) {
+	// TODO: Make it smarter so it doesn't need to extract all the files.
+	tmpdir, err := os.MkdirTemp(os.TempDir(), "package-registry-")
+	if err != nil {
+		return nil, fmt.Errorf("failed to create temporary directory: %w", err)
+	}
+	defer os.RemoveAll(tmpdir)
+
+	err = archiver.ExtractPackage(path, tmpdir)
+	if err != nil {
+		return nil, fmt.Errorf("failed to extract package: %w", err)
+	}
+
+	packagePaths, err := getPackagePaths([]string{tmpdir})
+	if err != nil {
+		return nil, fmt.Errorf("failed to find package after extract: %w", err)
+	}
+	if len(packagePaths) != 1 {
+		return nil, fmt.Errorf("ambiguous content of package")
+	}
+
+	p, err := NewPackage(packagePaths[0])
+	if err != nil {
+		return nil, err
+	}
+	p.BasePath = path
+	return p, nil
 }
 
 // NewPackage creates a new package instances based on the given base path.

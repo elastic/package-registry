@@ -51,7 +51,11 @@ func getPackagesFromFilesystem(ctx context.Context, packagesBasePaths []string) 
 
 	var pList Packages
 	for _, path := range packagePaths {
-		p, err := NewPackage(path)
+		builder := NewPackage
+		if strings.HasSuffix(path, ".zip") {
+			builder = NewPackageFromZip
+		}
+		p, err := builder(path)
 		if err != nil {
 			return nil, errors.Wrapf(err, "loading package failed (path: %s)", path)
 		}
@@ -64,9 +68,18 @@ func getPackagesFromFilesystem(ctx context.Context, packagesBasePaths []string) 
 // getPackagePaths returns list of available packages, one for each version.
 func getPackagePaths(allPaths []string) ([]string, error) {
 	var foundPaths []string
+	isZip := func(name string) bool {
+		// TODO: Make this safer.
+		return strings.HasSuffix(name, ".zip")
+	}
 	for _, packagesPath := range allPaths {
 		log.Printf("Packages in %s:", packagesPath)
 		err := filepath.Walk(packagesPath, func(path string, info os.FileInfo, err error) error {
+			if isZip(path) {
+				foundPaths = append(foundPaths, path)
+				return nil
+			}
+
 			relativePath, err := filepath.Rel(packagesPath, path)
 			if err != nil {
 				return err

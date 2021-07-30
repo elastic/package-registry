@@ -5,15 +5,19 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
+	"go.elastic.co/apm"
 
 	"github.com/elastic/package-registry/archiver"
+	"github.com/elastic/package-registry/util"
 )
 
 const artifactsRouterPath = "/epr/{packageName}/{packageName:[a-z0-9_]+}-{packageVersion}.zip"
@@ -43,12 +47,21 @@ func artifactsHandler(packagesBasePaths []string, cacheTime time.Duration) func(
 
 		packagePath, err := getPackagePath(packagesBasePaths, packageName, packageVersion)
 		if err == errResourceNotFound {
-			notFoundError(w, errArtifactNotFound)
-			return
+			packagePath, err = getPackagePathFromIndex(r.Context(), packagesBasePaths, packageName, packageVersion)
+			if err == errResourceNotFound {
+				notFoundError(w, errArtifactNotFound)
+				return
+			}
 		}
 		if err != nil {
-			log.Printf("stat package path '%s' failed: %v", packagePath, err)
+			log.Printf("getting package path '%s' failed: %v", packagePath, err)
+			http.Error(w, "internal server error", http.StatusInternalServerError)
+			return
+		}
 
+		f, err := os.Stat(packagePath)
+		if err != nil {
+			log.Printf("stat package path '%s' failed: %v", packagePath, err)
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
@@ -56,14 +69,36 @@ func artifactsHandler(packagesBasePaths []string, cacheTime time.Duration) func(
 		w.Header().Set("Content-Type", "application/gzip")
 		cacheHeaders(w, cacheTime)
 
-		err = archiver.ArchivePackage(w, archiver.PackageProperties{
-			Name:    packageName,
-			Version: packageVersion,
-			Path:    packagePath,
-		})
-		if err != nil {
-			log.Printf("archiving package path '%s' failed: %v", packagePath, err)
-			return
+		if f.IsDir() {
+			err = archiver.ArchivePackage(w, archiver.PackageProperties{
+				Name:    packageName,
+				Version: packageVersion,
+				Path:    packagePath,
+			})
+			if err != nil {
+				log.Printf("archiving package path '%s' failed: %v", packagePath, err)
+				return
+			}
+		} else {
+			http.ServeFile(w, r, packagePath)
 		}
 	}
+}
+
+func getPackagePathFromIndex(ctx context.Context, basePaths []string, name, version string) (string, error) {
+	span, ctx := apm.StartSpan(ctx, "GetPackagePathFromIndex", "app")
+	defer span.End()
+
+	packages, err := util.GetPackages(ctx, basePaths)
+	if err != nil {
+		return "", err
+	}
+
+	for _, p := range packages {
+		if p.Name == name && p.Version == version {
+			return p.BasePath, nil
+		}
+	}
+
+	return "", errResourceNotFound
 }
