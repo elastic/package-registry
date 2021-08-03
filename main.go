@@ -206,7 +206,7 @@ func getRouter(config *Config, packagesBasePaths []string) (*mux.Router, error) 
 	router.HandleFunc("/favicon.ico", faviconHandleFunc)
 	router.HandleFunc(artifactsRouterPath, artifactsHandler)
 	router.HandleFunc(packageIndexRouterPath, packageIndexHandler)
-	router.PathPrefix("/package").HandlerFunc(staticHandler(packagesBasePaths, "/package", config.CacheTimeCatchAll))
+	router.PathPrefix(staticHandlerPrefix).HandlerFunc(staticHandler(packagesBasePaths, staticHandlerPrefix, config.CacheTimeCatchAll))
 	router.Use(loggingMiddleware)
 	router.NotFoundHandler = http.Handler(notFoundHandler(fmt.Errorf("404 page not found")))
 	return router, nil
