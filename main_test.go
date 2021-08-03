@@ -21,6 +21,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"gopkg.in/yaml.v2"
 
 	"github.com/elastic/package-registry/util"
 )
@@ -155,8 +156,9 @@ func TestZippedArtifacts(t *testing.T) {
 
 func TestPackageIndex(t *testing.T) {
 	packagesBasePaths := []string{"./testdata/package"}
+	indexer := util.NewFilesystemIndexer(packagesBasePaths)
 
-	packageIndexHandler := packageIndexHandler(packagesBasePaths, testCacheTime)
+	packageIndexHandler := packageIndexHandler(indexer, testCacheTime)
 
 	tests := []struct {
 		endpoint string
@@ -181,35 +183,36 @@ func TestPackageIndex(t *testing.T) {
 func TestAllPackageIndex(t *testing.T) {
 	testPackagePath := filepath.Join("testdata", "package")
 	secondPackagePath := filepath.Join("testdata", "second_package_path")
-	packagesBasePath := []string{secondPackagePath, testPackagePath}
-	packageIndexHandler := packageIndexHandler(packagesBasePath, testCacheTime)
+	packagesBasePaths := []string{secondPackagePath, testPackagePath}
+	indexer := util.NewFilesystemIndexer(packagesBasePaths)
+	packageIndexHandler := packageIndexHandler(indexer, testCacheTime)
 
-	// find all packages
-	var dirs []string
-	for _, path := range packagesBasePath {
-		d, err := filepath.Glob(path + "/*/*")
-		assert.NoError(t, err)
-		dirs = append(dirs, d...)
+	// find all manifests
+	var manifests []string
+	for _, path := range packagesBasePaths {
+		m, err := filepath.Glob(path + "/*/*/manifest.yml")
+		require.NoError(t, err)
+		manifests = append(manifests, m...)
 	}
 
 	type Test struct {
-		packageName    string
-		packageVersion string
+		PackageName    string `yaml:"name"`
+		PackageVersion string `yaml:"version"`
 	}
 	var tests []Test
-
-	for _, path := range dirs {
-		packageVersion := filepath.Base(path)
-		packageName := filepath.Base(filepath.Dir(path))
-
-		test := Test{packageName, packageVersion}
+	for _, manifest := range manifests {
+		var test Test
+		d, err := ioutil.ReadFile(manifest)
+		require.NoError(t, err)
+		err = yaml.Unmarshal(d, &test)
+		require.NoError(t, err)
 		tests = append(tests, test)
 	}
 
 	for _, test := range tests {
-		t.Run(test.packageName+"/"+test.packageVersion, func(t *testing.T) {
-			packageEndpoint := "/package/" + test.packageName + "/" + test.packageVersion + "/"
-			fileName := filepath.Join("package", test.packageName, test.packageVersion, "index.json")
+		t.Run(test.PackageName+"/"+test.PackageVersion, func(t *testing.T) {
+			packageEndpoint := "/package/" + test.PackageName + "/" + test.PackageVersion + "/"
+			fileName := filepath.Join("package", test.PackageName, test.PackageVersion, "index.json")
 			runEndpoint(t, packageEndpoint, packageIndexRouterPath, fileName, packageIndexHandler)
 		})
 	}

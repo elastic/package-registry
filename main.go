@@ -104,7 +104,7 @@ func initServer() *http.Server {
 		os.Exit(0)
 	}
 
-	router := mustLoadRouter(config, indexer, packagesBasePaths)
+	router := mustLoadRouter(config, indexer)
 	apmgorilla.Instrument(router, apmgorilla.WithTracer(apmTracer))
 
 	return &http.Server{Addr: address, Handler: router}
@@ -180,15 +180,15 @@ func ensurePackagesAvailable(ctx context.Context, indexer Indexer) {
 	log.Printf("%v package manifests loaded.\n", len(packages))
 }
 
-func mustLoadRouter(config *Config, indexer Indexer, packagesBasePaths []string) *mux.Router {
-	router, err := getRouter(config, indexer, packagesBasePaths)
+func mustLoadRouter(config *Config, indexer Indexer) *mux.Router {
+	router, err := getRouter(config, indexer)
 	if err != nil {
 		log.Fatal(err)
 	}
 	return router
 }
 
-func getRouter(config *Config, indexer Indexer, packagesBasePaths []string) (*mux.Router, error) {
+func getRouter(config *Config, indexer Indexer) (*mux.Router, error) {
 	artifactsHandler := artifactsHandler(indexer, config.CacheTimeCatchAll)
 	faviconHandleFunc, err := faviconHandler(config.CacheTimeCatchAll)
 	if err != nil {
@@ -199,7 +199,7 @@ func getRouter(config *Config, indexer Indexer, packagesBasePaths []string) (*mu
 		return nil, err
 	}
 
-	packageIndexHandler := packageIndexHandler(packagesBasePaths, config.CacheTimeCatchAll)
+	packageIndexHandler := packageIndexHandler(indexer, config.CacheTimeCatchAll)
 	staticHandler := staticHandler(indexer, config.CacheTimeCatchAll)
 
 	router := mux.NewRouter().StrictSlash(true)
