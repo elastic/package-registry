@@ -102,6 +102,29 @@ func TestArtifacts(t *testing.T) {
 	}
 }
 
+func TestStatics(t *testing.T) {
+	packagesBasePaths := []string{"./testdata/package"}
+
+	staticHandler := staticHandler(packagesBasePaths, "", testCacheTime)
+
+	tests := []struct {
+		endpoint string
+		path     string
+		file     string
+		handler  func(w http.ResponseWriter, r *http.Request)
+	}{
+		{"/example/1.0.0/docs/README.md", "", "example-1.0.0-README.md", staticHandler},
+		{"/example/1.0.0/img/kibana-envoyproxy.jpg", "", "example-1.0.0-screenshot.jpg", staticHandler},
+	}
+
+	for _, test := range tests {
+		t.Run(test.endpoint, func(t *testing.T) {
+			runEndpoint(t, test.endpoint, test.path, test.file, test.handler)
+		})
+	}
+
+}
+
 func TestZippedArtifacts(t *testing.T) {
 	packagesBasePaths := []string{"./testdata/local-storage"}
 	indexer := util.NewFilesystemIndexer(packagesBasePaths)
