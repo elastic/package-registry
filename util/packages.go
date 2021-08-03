@@ -61,11 +61,7 @@ func getPackagesFromFilesystem(ctx context.Context, packagesBasePaths []string) 
 
 	var pList Packages
 	for _, path := range packagePaths {
-		builder := NewPackage
-		if strings.HasSuffix(path, ".zip") {
-			builder = NewPackageFromZip
-		}
-		p, err := builder(path)
+		p, err := NewPackage(path)
 		if err != nil {
 			return nil, errors.Wrapf(err, "loading package failed (path: %s)", path)
 		}

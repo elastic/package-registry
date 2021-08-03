@@ -7,7 +7,6 @@ package util
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -54,8 +53,11 @@ type DataStream struct {
 	// Generated fields
 	Path string `json:"path,omitempty" yaml:"path,omitempty"`
 
-	// Local path to the package dir
+	// Local path to the data stream directory, relative to the package directory
 	BasePath string `json:"-" yaml:"-"`
+
+	// Local path to the package directory
+	packagePath string
 }
 
 type Input struct {
@@ -102,21 +104,35 @@ type fieldEntry struct {
 }
 
 func NewDataStream(basePath string, p *Package) (*DataStream, error) {
-	// Check if manifest exists
+	fs, err := p.fs()
+	if err != nil {
+		return nil, err
+	}
+	defer fs.Close()
+
 	manifestPath := filepath.Join(basePath, "manifest.yml")
-	_, err := os.Stat(manifestPath)
+
+	// Check if manifest exists
+	_, err = fs.Stat(manifestPath)
 	if err != nil && os.IsNotExist(err) {
 		return nil, errors.Wrapf(err, "manifest does not exist for package: %s", p.BasePath)
 	}
 
 	dataStreamPath := filepath.Base(basePath)
 
-	manifest, err := yaml.NewConfigWithFile(manifestPath, ucfg.PathSep("."))
+	b, err := ReadAll(fs, manifestPath)
 	if err != nil {
-		return nil, errors.Wrapf(err, "error creating new manifest config %s", manifestPath)
+		return nil, errors.Wrapf(err, "failed to read manifest: %s", err)
+	}
+
+	manifest, err := yaml.NewConfig(b, ucfg.PathSep("."))
+	if err != nil {
+		return nil, errors.Wrapf(err, "error creating new manifest config")
 	}
 	var d = &DataStream{
-		Package: p.Name,
+		Package:     p.Name,
+		packagePath: p.BasePath,
+
 		// This is the name of the directory of the dataStream
 		Path:     dataStreamPath,
 		BasePath: basePath,
@@ -155,7 +171,7 @@ func NewDataStream(basePath string, p *Package) (*DataStream, error) {
 	}
 
 	pipelineDir := filepath.Join(d.BasePath, "elasticsearch", DirIngestPipeline)
-	paths, err := filepath.Glob(filepath.Join(pipelineDir, "*"))
+	paths, err := fs.Glob(filepath.Join(pipelineDir, "*"))
 	if err != nil {
 		return nil, err
 	}
@@ -191,8 +207,6 @@ func (d *DataStream) Validate() error {
 		return nil
 	}
 
-	pipelineDir := filepath.Join(d.BasePath, "elasticsearch", DirIngestPipeline)
-
 	if strings.Contains(d.Dataset, "-") {
 		return fmt.Errorf("data stream name is not allowed to contain `-`: %s", d.Dataset)
 	}
@@ -201,17 +215,24 @@ func (d *DataStream) Validate() error {
 		return fmt.Errorf("type is not valid: %s", d.Type)
 	}
 
+	fs, err := NewPackageFileSystem(d.packagePath)
+	if err != nil {
+		return err
+	}
+	defer fs.Close()
+
 	// In case an ingest pipeline is set, check if it is around
+	pipelineDir := filepath.Join(d.BasePath, "elasticsearch", DirIngestPipeline)
 	if d.IngestPipeline != "" {
 		var validFound bool
 
 		jsonPipelinePath := filepath.Join(pipelineDir, d.IngestPipeline+".json")
-		_, errJSON := os.Stat(jsonPipelinePath)
+		_, errJSON := fs.Stat(jsonPipelinePath)
 		if errJSON != nil && !os.IsNotExist(errJSON) {
 			return errors.Wrapf(errJSON, "stat ingest pipeline JSON file failed (path: %s)", jsonPipelinePath)
 		}
 		if !os.IsNotExist(errJSON) {
-			err := validateIngestPipelineFile(jsonPipelinePath)
+			err := validateIngestPipelineFile(fs, jsonPipelinePath)
 			if err != nil {
 				return errors.Wrapf(err, "validating ingest pipeline JSON file failed (path: %s)", jsonPipelinePath)
 			}
@@ -219,12 +240,12 @@ func (d *DataStream) Validate() error {
 		}
 
 		yamlPipelinePath := filepath.Join(pipelineDir, d.IngestPipeline+".yml")
-		_, errYAML := os.Stat(yamlPipelinePath)
+		_, errYAML := fs.Stat(yamlPipelinePath)
 		if errYAML != nil && !os.IsNotExist(errYAML) {
 			return errors.Wrapf(errYAML, "stat ingest pipeline YAML file failed (path: %s)", jsonPipelinePath)
 		}
 		if !os.IsNotExist(errYAML) {
-			err := validateIngestPipelineFile(yamlPipelinePath)
+			err := validateIngestPipelineFile(fs, yamlPipelinePath)
 			if err != nil {
 				return errors.Wrapf(err, "validating ingest pipeline YAML file failed (path: %s)", jsonPipelinePath)
 			}
@@ -236,7 +257,7 @@ func (d *DataStream) Validate() error {
 		}
 	}
 
-	err := d.validateRequiredFields()
+	err = d.validateRequiredFields(fs)
 	if err != nil {
 		return errors.Wrap(err, "validating required fields failed")
 	}
@@ -248,8 +269,8 @@ func (d *DataStream) validType() bool {
 	return exists
 }
 
-func validateIngestPipelineFile(pipelinePath string) error {
-	f, err := ioutil.ReadFile(pipelinePath)
+func validateIngestPipelineFile(fs PackageFileSystem, pipelinePath string) error {
+	f, err := ReadAll(fs, pipelinePath)
 	if err != nil {
 		return errors.Wrapf(err, "reading ingest pipeline file failed (path: %s)", pipelinePath)
 	}
@@ -268,26 +289,17 @@ func validateIngestPipelineFile(pipelinePath string) error {
 }
 
 // validateRequiredFields method loads fields from all files and checks if required fields are present.
-func (d *DataStream) validateRequiredFields() error {
+func (d *DataStream) validateRequiredFields(fs PackageFileSystem) error {
 	fieldsDirPath := filepath.Join(d.BasePath, "fields")
 
 	// Collect fields from all files
+	fieldsFiles, err := fs.Glob(filepath.Join(fieldsDirPath, "*"))
+	if err != nil {
+		return err
+	}
 	var allFields []MapStr
-	err := filepath.Walk(fieldsDirPath, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-
-		relativePath, err := filepath.Rel(fieldsDirPath, path)
-		if err != nil {
-			return errors.Wrapf(err, "cannot find relative path (fieldsDirPath: %s, path: %s)", fieldsDirPath, path)
-		}
-
-		if relativePath == "." {
-			return nil
-		}
-
-		body, err := ioutil.ReadFile(path)
+	for _, path := range fieldsFiles {
+		body, err := ReadAll(fs, path)
 		if err != nil {
 			return errors.Wrapf(err, "reading file failed (path: %s)", path)
 		}
@@ -300,7 +312,7 @@ func (d *DataStream) validateRequiredFields() error {
 
 		allFields = append(allFields, m...)
 		return nil
-	})
+	}
 	if err != nil {
 		return errors.Wrapf(err, "walking through fields files failed")
 	}

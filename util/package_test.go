@@ -116,10 +116,10 @@ func TestValidate(t *testing.T) {
 		t.Run(tt.description, func(t *testing.T) {
 			err := tt.p.Validate()
 
-			if err != nil {
-				assert.False(t, tt.valid)
+			if tt.valid {
+				assert.NoError(t, err)
 			} else {
-				assert.True(t, tt.valid)
+				assert.Error(t, err)
 			}
 		})
 	}
