@@ -8,15 +8,20 @@ import (
 	"archive/zip"
 	"fmt"
 	"io"
+	"io/fs"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
 )
 
+// PackageFile is the interface that files in the file system need to implement.
+// Seeker interface is needed for http helpers to serve files.
+type PackageFile = io.ReadSeekCloser
+
 type PackageFileSystem interface {
 	Stat(name string) (os.FileInfo, error)
-	Open(name string) (io.ReadCloser, error)
+	Open(name string) (PackageFile, error)
 	Glob(pattern string) (matches []string, err error)
 	Close() error
 }
@@ -52,7 +57,7 @@ func (fs *extractedPackageFileSystem) Stat(name string) (os.FileInfo, error) {
 	return os.Stat(filepath.Join(fs.path, name))
 }
 
-func (fs *extractedPackageFileSystem) Open(name string) (io.ReadCloser, error) {
+func (fs *extractedPackageFileSystem) Open(name string) (PackageFile, error) {
 	return os.Open(filepath.Join(fs.path, name))
 }
 
@@ -110,13 +115,17 @@ func (fs *zipPackageFileSystem) Stat(name string) (os.FileInfo, error) {
 	return f.Stat()
 }
 
-func (fs *zipPackageFileSystem) Open(name string) (io.ReadCloser, error) {
+func (fs *zipPackageFileSystem) Open(name string) (PackageFile, error) {
 	path := filepath.Join(fs.root, name)
 	f, err := fs.reader.Open(path)
 	if err != nil {
 		return nil, err
 	}
-	return f, nil
+	return &zipFileSeeker{
+		File:   f,
+		reader: fs.reader,
+		path:   path,
+	}, nil
 }
 
 func (fs *zipPackageFileSystem) Glob(pattern string) (matches []string, err error) {
@@ -136,6 +145,51 @@ func (fs *zipPackageFileSystem) Glob(pattern string) (matches []string, err erro
 
 func (fs *zipPackageFileSystem) Close() error {
 	return fs.reader.Close()
+}
+
+// zipFileSeeker implements the seeker interface for zip files.
+type zipFileSeeker struct {
+	fs.File
+
+	reader *zip.ReadCloser
+	path   string
+}
+
+// Seek implements the seeker interface for zip files. This is inefficient, it shouldn't
+// be frequently used.
+func (f *zipFileSeeker) Seek(offset int64, whence int) (n int64, err error) {
+	switch whence {
+	case io.SeekStart:
+		f.File.Close()
+		f.File, err = f.reader.Open(f.path)
+		if err != nil {
+			return -1, err
+		}
+		if offset > 0 {
+			buf := make([]byte, offset)
+			n, err := f.File.Read(buf)
+			if err != nil {
+				return -1, err
+			}
+			return int64(n), nil
+		}
+		return offset, nil
+	case io.SeekEnd:
+		if offset != 0 {
+			return -1, fmt.Errorf("unsupported offset")
+		}
+		info, err := f.File.Stat()
+		if err != nil {
+			return -1, err
+		}
+		_, err = io.Copy(ioutil.Discard, f.File)
+		if err != nil {
+			return -1, err
+		}
+		return info.Size(), nil
+	default:
+		return -1, fmt.Errorf("unsupported whence")
+	}
 }
 
 func ReadAll(fs PackageFileSystem, name string) ([]byte, error) {
@@ -161,7 +215,7 @@ func (fs *virtualPackageFileSystem) Stat(name string) (os.FileInfo, error) {
 	return nil, os.ErrNotExist
 }
 
-func (fs *virtualPackageFileSystem) Open(name string) (io.ReadCloser, error) {
+func (fs *virtualPackageFileSystem) Open(name string) (PackageFile, error) {
 	return nil, os.ErrNotExist
 }
 

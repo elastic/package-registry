@@ -5,9 +5,9 @@
 package util
 
 import (
-	"io"
 	"net/http"
 	"os"
+	"time"
 )
 
 func ServeFile(w http.ResponseWriter, r *http.Request, p *Package, name string) {
@@ -32,6 +32,5 @@ func ServeFile(w http.ResponseWriter, r *http.Request, p *Package, name string) 
 	}
 	defer f.Close()
 
-	// TODO: Set content type headers.
-	io.Copy(w, f)
+	http.ServeContent(w, r, name, time.Time{}, f)
 }

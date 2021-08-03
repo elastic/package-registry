@@ -82,6 +82,7 @@ func getPackagePaths(allPaths []string) ([]string, error) {
 		log.Printf("Packages in %s:", packagesPath)
 		err := filepath.Walk(packagesPath, func(path string, info os.FileInfo, err error) error {
 			if isZip(path) {
+				log.Printf("%-20s", path)
 				foundPaths = append(foundPaths, path)
 				return nil
 			}
