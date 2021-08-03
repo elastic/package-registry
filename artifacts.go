@@ -17,6 +17,7 @@ import (
 	"go.elastic.co/apm"
 
 	"github.com/elastic/package-registry/archiver"
+	"github.com/elastic/package-registry/util"
 )
 
 const artifactsRouterPath = "/epr/{packageName}/{packageName:[a-z0-9_]+}-{packageVersion}.zip"
@@ -44,17 +45,18 @@ func artifactsHandler(indexer Indexer, cacheTime time.Duration) func(w http.Resp
 			return
 		}
 
-		packagePath, err := getPackagePathFromIndex(r.Context(), indexer, packageName, packageVersion)
+		p, err := getPackageFromIndex(r.Context(), indexer, packageName, packageVersion)
 		if err == errResourceNotFound {
 			notFoundError(w, errArtifactNotFound)
 			return
 		}
 		if err != nil {
-			log.Printf("getting package path '%s' failed: %v", packagePath, err)
+			log.Printf("getting package path failed: %v", err)
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
 
+		packagePath := p.BasePath
 		f, err := os.Stat(packagePath)
 		if err != nil {
 			log.Printf("stat package path '%s' failed: %v", packagePath, err)
@@ -81,20 +83,20 @@ func artifactsHandler(indexer Indexer, cacheTime time.Duration) func(w http.Resp
 	}
 }
 
-func getPackagePathFromIndex(ctx context.Context, indexer Indexer, name, version string) (string, error) {
+func getPackageFromIndex(ctx context.Context, indexer Indexer, name, version string) (*util.Package, error) {
 	span, ctx := apm.StartSpan(ctx, "GetPackagePathFromIndex", "app")
 	defer span.End()
 
 	packages, err := indexer.GetPackages(ctx)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	for _, p := range packages {
 		if p.Name == name && p.Version == version {
-			return p.BasePath, nil
+			return &p, nil
 		}
 	}
 
-	return "", errResourceNotFound
+	return nil, errResourceNotFound
 }

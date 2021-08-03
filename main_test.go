@@ -104,8 +104,9 @@ func TestArtifacts(t *testing.T) {
 
 func TestStatics(t *testing.T) {
 	packagesBasePaths := []string{"./testdata/package"}
+	indexer := util.NewFilesystemIndexer(packagesBasePaths)
 
-	staticHandler := staticHandler(packagesBasePaths, "", testCacheTime)
+	staticHandler := staticHandler(indexer, testCacheTime)
 
 	tests := []struct {
 		endpoint string
@@ -113,8 +114,8 @@ func TestStatics(t *testing.T) {
 		file     string
 		handler  func(w http.ResponseWriter, r *http.Request)
 	}{
-		{"/example/1.0.0/docs/README.md", "", "example-1.0.0-README.md", staticHandler},
-		{"/example/1.0.0/img/kibana-envoyproxy.jpg", "", "example-1.0.0-screenshot.jpg", staticHandler},
+		{"/packages/example/1.0.0/docs/README.md", staticRouterPath, "example-1.0.0-README.md", staticHandler},
+		{"/packages/example/1.0.0/img/kibana-envoyproxy.jpg", staticRouterPath, "example-1.0.0-screenshot.jpg", staticHandler},
 	}
 
 	for _, test := range tests {
@@ -131,6 +132,8 @@ func TestZippedArtifacts(t *testing.T) {
 
 	artifactsHandler := artifactsHandler(indexer, testCacheTime)
 
+	staticHandler := staticHandler(indexer, testCacheTime)
+
 	tests := []struct {
 		endpoint string
 		path     string
@@ -139,6 +142,8 @@ func TestZippedArtifacts(t *testing.T) {
 	}{
 		{"/epr/example/example-1.0.1.zip", artifactsRouterPath, "example-1.0.1.zip-preview.txt", artifactsHandler},
 		{"/epr/example/example-999.0.2.zip", artifactsRouterPath, "artifact-package-version-not-found.txt", artifactsHandler},
+		{"/packages/example/1.0.1/docs/README.md", staticRouterPath, "example-1.0.1-README.md", staticHandler},
+		{"/packages/example/1.0.1/img/kibana-envoyproxy.jpg", staticRouterPath, "example-1.0.1-screenshot.jpg", staticHandler},
 	}
 
 	for _, test := range tests {

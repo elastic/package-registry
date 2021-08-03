@@ -200,6 +200,7 @@ func getRouter(config *Config, indexer Indexer, packagesBasePaths []string) (*mu
 	}
 
 	packageIndexHandler := packageIndexHandler(packagesBasePaths, config.CacheTimeCatchAll)
+	staticHandler := staticHandler(indexer, config.CacheTimeCatchAll)
 
 	router := mux.NewRouter().StrictSlash(true)
 
@@ -211,7 +212,7 @@ func getRouter(config *Config, indexer Indexer, packagesBasePaths []string) (*mu
 	router.HandleFunc("/favicon.ico", faviconHandleFunc)
 	router.HandleFunc(artifactsRouterPath, artifactsHandler)
 	router.HandleFunc(packageIndexRouterPath, packageIndexHandler)
-	router.PathPrefix(staticHandlerPrefix).HandlerFunc(staticHandler(packagesBasePaths, staticHandlerPrefix, config.CacheTimeCatchAll))
+	router.HandleFunc(staticRouterPath, staticHandler)
 	router.Use(loggingMiddleware)
 	router.NotFoundHandler = http.Handler(notFoundHandler(fmt.Errorf("404 page not found")))
 	return router, nil

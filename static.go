@@ -5,31 +5,52 @@
 package main
 
 import (
-	"log"
 	"net/http"
 	"time"
+
+	"github.com/Masterminds/semver/v3"
+	"github.com/gorilla/mux"
+
+	"github.com/elastic/package-registry/util"
 )
 
-const staticHandlerPrefix = "/packages"
+const staticRouterPath = "/packages/{packageName}/{packageVersion}/{name:.*}"
 
-func staticHandler(packagesBasePaths []string, prefix string, cacheTime time.Duration) http.HandlerFunc {
-	fileServers := map[string]http.Handler{}
-	for _, packagesBasePath := range packagesBasePaths {
-		fileServers[packagesBasePath] = catchAll(http.Dir(packagesBasePath), cacheTime)
-	}
-	return http.StripPrefix(prefix, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		basePath, err := getPackageBasePath(packagesBasePaths, r.URL.Path)
+func staticHandler(indexer Indexer, cacheTime time.Duration) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		vars := mux.Vars(r)
+		packageName, ok := vars["packageName"]
+		if !ok {
+			badRequest(w, "missing package name")
+			return
+		}
+
+		packageVersion, ok := vars["packageVersion"]
+		if !ok {
+			badRequest(w, "missing package version")
+			return
+		}
+
+		_, err := semver.StrictNewVersion(packageVersion)
+		if err != nil {
+			badRequest(w, "invalid package version")
+			return
+		}
+
+		fileName, ok := vars["name"]
+		if !ok {
+			badRequest(w, "missing file name")
+			return
+		}
+
+		p, err := getPackageFromIndex(r.Context(), indexer, packageName, packageVersion)
 		if err == errResourceNotFound {
 			notFoundError(w, err)
 			return
 		}
-		if err != nil {
-			log.Printf("stat package path '%s' failed: %v", r.URL.Path, err)
 
-			http.Error(w, "internal server error", http.StatusInternalServerError)
-			return
-		}
+		cacheHeaders(w, cacheTime)
 
-		fileServers[basePath].ServeHTTP(w, r)
-	})).ServeHTTP
+		util.ServeFile(w, r, p, fileName)
+	}
 }
