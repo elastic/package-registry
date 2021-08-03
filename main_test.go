@@ -218,6 +218,44 @@ func TestAllPackageIndex(t *testing.T) {
 	}
 }
 
+func TestContentTypes(t *testing.T) {
+	tests := []struct {
+		endpoint    string
+		contentType string
+	}{
+		{"/packages/example/1.0.0/manifest.yml", "text/yaml; charset=UTF-8"},
+		{"/packages/example/1.0.0/docs/README.md", "text/markdown; charset=utf-8"},
+		{"/packages/example/1.0.0/img/kibana-envoyproxy.jpg", "image/jpeg"},
+
+		// From zip
+		{"/packages/example/1.0.1/manifest.yml", "text/yaml; charset=UTF-8"},
+		{"/packages/example/1.0.1/docs/README.md", "text/markdown; charset=utf-8"},
+		{"/packages/example/1.0.1/img/kibana-envoyproxy.jpg", "image/jpeg"},
+	}
+
+	packagesBasePaths := []string{
+		"./testdata/package",
+		"./testdata/local-storage",
+	}
+	indexer := util.NewFilesystemIndexer(packagesBasePaths)
+	handler := staticHandler(indexer, testCacheTime)
+	router := mux.NewRouter()
+	router.HandleFunc(staticRouterPath, handler)
+
+	for _, test := range tests {
+		t.Run(test.endpoint, func(t *testing.T) {
+			recorder := httptest.NewRecorder()
+			req, err := http.NewRequest("GET", test.endpoint, nil)
+			require.NoError(t, err)
+
+			router.ServeHTTP(recorder, req)
+			t.Logf("status response: %d", recorder.Code)
+
+			assert.Equal(t, test.contentType, recorder.Header().Get("Content-Type"))
+		})
+	}
+}
+
 func runEndpoint(t *testing.T, endpoint, path, file string, handler func(w http.ResponseWriter, r *http.Request)) {
 	req, err := http.NewRequest("GET", endpoint, nil)
 	if err != nil {
