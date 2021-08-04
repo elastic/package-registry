@@ -16,6 +16,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Known Issues
 
+## [0.21](https://github.com/elastic/package-registry/compare/v0.20.0...v0.21.0)
+
+### Breaking changes
+
+### Bugfixes
+
+### Added
+
+* Add instrumentation with the APM Go Agent [#702](https://github.com/elastic/package-registry/pull/720).
+
+### Deprecated
+
+### Known Issues
+
 ## [0.20](https://github.com/elastic/package-registry/compare/v0.19.0...v0.20.0)
 
 ### Breaking changes
