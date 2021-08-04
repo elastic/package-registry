@@ -54,69 +54,69 @@ func getPackagesFromFilesystem(ctx context.Context, packagesBasePaths []string) 
 	span, ctx := apm.StartSpan(ctx, "GetPackagesFromFilesystem", "app")
 	defer span.End()
 
-	packagePaths, err := getPackagePaths(packagesBasePaths)
-	if err != nil {
-		return nil, err
-	}
-
 	var pList Packages
-	for _, path := range packagePaths {
-		p, err := NewPackage(path)
+	for _, basePath := range packagesBasePaths {
+		packagePaths, err := getPackagePaths(basePath)
 		if err != nil {
-			return nil, errors.Wrapf(err, "loading package failed (path: %s)", path)
+			return nil, err
 		}
 
-		pList = append(pList, *p)
+		log.Printf("Packages in %s:", basePath)
+		for _, path := range packagePaths {
+			p, err := NewPackage(path)
+			if err != nil {
+				return nil, errors.Wrapf(err, "loading package failed (path: %s)", path)
+			}
+
+			log.Printf("%-20s\t%10s\t%s", p.Name, p.Version, p.BasePath)
+
+			pList = append(pList, *p)
+		}
 	}
 	return pList, nil
 }
 
 // getPackagePaths returns list of available packages, one for each version.
-func getPackagePaths(allPaths []string) ([]string, error) {
+func getPackagePaths(packagesPath string) ([]string, error) {
 	var foundPaths []string
 	isZip := func(name string) bool {
 		// TODO: Make this safer.
 		return strings.HasSuffix(name, ".zip")
 	}
-	for _, packagesPath := range allPaths {
-		log.Printf("Packages in %s:", packagesPath)
-		err := filepath.Walk(packagesPath, func(path string, info os.FileInfo, err error) error {
-			if isZip(path) {
-				log.Printf("%-20s", path)
-				foundPaths = append(foundPaths, path)
-				return nil
-			}
-
-			relativePath, err := filepath.Rel(packagesPath, path)
-			if err != nil {
-				return err
-			}
-
-			dirs := strings.Split(relativePath, string(filepath.Separator))
-			if len(dirs) < 2 {
-				return nil // need to go to the package version level
-			}
-
-			if info.IsDir() {
-				versionDir := dirs[1]
-				_, err := semver.StrictNewVersion(versionDir)
-				if err != nil {
-					log.Printf("warning: unexpected directory: %s, ignoring", path)
-				} else {
-					log.Printf("%-20s\t%10s\t%s", dirs[0], versionDir, path)
-					foundPaths = append(foundPaths, path)
-				}
-				return filepath.SkipDir
-			}
-			// Unexpected file, return nil in order to continue processing sibling directories
-			// Fixes an annoying problem when the .DS_Store file is left behind and the package
-			// is not loading without any error information
-			log.Printf("warning: unexpected file: %s, ignoring", path)
+	err := filepath.Walk(packagesPath, func(path string, info os.FileInfo, err error) error {
+		if isZip(path) {
+			foundPaths = append(foundPaths, path)
 			return nil
-		})
-		if err != nil {
-			return nil, errors.Wrapf(err, "listing packages failed (path: %s)", packagesPath)
 		}
+
+		relativePath, err := filepath.Rel(packagesPath, path)
+		if err != nil {
+			return err
+		}
+
+		dirs := strings.Split(relativePath, string(filepath.Separator))
+		if len(dirs) < 2 {
+			return nil // need to go to the package version level
+		}
+
+		if info.IsDir() {
+			versionDir := dirs[1]
+			_, err := semver.StrictNewVersion(versionDir)
+			if err != nil {
+				log.Printf("warning: unexpected directory: %s, ignoring", path)
+			} else {
+				foundPaths = append(foundPaths, path)
+			}
+			return filepath.SkipDir
+		}
+		// Unexpected file, return nil in order to continue processing sibling directories
+		// Fixes an annoying problem when the .DS_Store file is left behind and the package
+		// is not loading without any error information
+		log.Printf("warning: unexpected file: %s, ignoring", path)
+		return nil
+	})
+	if err != nil {
+		return nil, errors.Wrapf(err, "listing packages failed (path: %s)", packagesPath)
 	}
 	return foundPaths, nil
 }
