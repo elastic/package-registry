@@ -24,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Add instrumentation with the APM Go Agent [#702](https://github.com/elastic/package-registry/pull/720).
+* Add instrumentation with the APM Go Agent [#702](https://github.com/elastic/package-registry/pull/702).
 
 ### Deprecated
 
