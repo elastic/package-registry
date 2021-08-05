@@ -5,7 +5,6 @@
 package main
 
 import (
-	"context"
 	"log"
 	"net/http"
 	"os"
@@ -14,7 +13,6 @@ import (
 	"github.com/Masterminds/semver/v3"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
-	"go.elastic.co/apm"
 
 	"github.com/elastic/package-registry/archiver"
 	"github.com/elastic/package-registry/util"
@@ -45,8 +43,8 @@ func artifactsHandler(indexer Indexer, cacheTime time.Duration) func(w http.Resp
 			return
 		}
 
-		p, err := getPackageFromIndex(r.Context(), indexer, packageName, packageVersion)
-		if err == errResourceNotFound {
+		p, err := indexer.GetPackage(r.Context(), packageName, packageVersion)
+		if err == util.ErrPackageNotFound {
 			notFoundError(w, errArtifactNotFound)
 			return
 		}
@@ -81,22 +79,4 @@ func artifactsHandler(indexer Indexer, cacheTime time.Duration) func(w http.Resp
 			http.ServeFile(w, r, packagePath)
 		}
 	}
-}
-
-func getPackageFromIndex(ctx context.Context, indexer Indexer, name, version string) (*util.Package, error) {
-	span, ctx := apm.StartSpan(ctx, "GetPackagePathFromIndex", "app")
-	defer span.End()
-
-	packages, err := indexer.GetPackages(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	for _, p := range packages {
-		if p.Name == name && p.Version == version {
-			return &p, nil
-		}
-	}
-
-	return nil, errResourceNotFound
 }

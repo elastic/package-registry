@@ -14,6 +14,8 @@ import (
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/gorilla/mux"
+
+	"github.com/elastic/package-registry/util"
 )
 
 const (
@@ -43,8 +45,8 @@ func packageIndexHandler(indexer Indexer, cacheTime time.Duration) func(w http.R
 			return
 		}
 
-		p, err := getPackageFromIndex(r.Context(), indexer, packageName, packageVersion)
-		if err == errResourceNotFound {
+		p, err := indexer.GetPackage(r.Context(), packageName, packageVersion)
+		if err == util.ErrPackageNotFound {
 			notFoundError(w, errPackageRevisionNotFound)
 			return
 		}

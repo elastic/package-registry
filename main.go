@@ -62,6 +62,7 @@ type Config struct {
 
 type Indexer interface {
 	GetPackages(context.Context) (util.Packages, error)
+	GetPackage(ctx context.Context, name, version string) (*util.Package, error)
 }
 
 func main() {

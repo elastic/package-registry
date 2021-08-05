@@ -16,6 +16,8 @@ import (
 	"go.elastic.co/apm"
 )
 
+var ErrPackageNotFound = errors.New("package not found")
+
 // PackageValidationDisabled is a flag which can disable package content validation (package, data streams, assets, etc.).
 var PackageValidationDisabled bool
 
@@ -48,6 +50,25 @@ func (i *FilesystemIndexer) GetPackages(ctx context.Context) (Packages, error) {
 		return nil, errors.Wrapf(err, "reading packages from filesystem failed")
 	}
 	return i.packageList, nil
+}
+
+// GetPackage looks in the index a package per name and version.
+func (i *FilesystemIndexer) GetPackage(ctx context.Context, name string, version string) (*Package, error) {
+	span, ctx := apm.StartSpan(ctx, "GetPackage", "app")
+	defer span.End()
+
+	packages, err := i.GetPackages(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, p := range packages {
+		if p.Name == name && p.Version == version {
+			return &p, nil
+		}
+	}
+
+	return nil, ErrPackageNotFound
 }
 
 func getPackagesFromFilesystem(ctx context.Context, packagesBasePaths []string) (Packages, error) {

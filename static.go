@@ -43,8 +43,8 @@ func staticHandler(indexer Indexer, cacheTime time.Duration) http.HandlerFunc {
 			return
 		}
 
-		p, err := getPackageFromIndex(r.Context(), indexer, packageName, packageVersion)
-		if err == errResourceNotFound {
+		p, err := indexer.GetPackage(r.Context(), packageName, packageVersion)
+		if err == util.ErrPackageNotFound {
 			notFoundError(w, err)
 			return
 		}
