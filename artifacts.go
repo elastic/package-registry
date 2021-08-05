@@ -41,18 +41,19 @@ func artifactsHandler(indexer Indexer, cacheTime time.Duration) func(w http.Resp
 			return
 		}
 
-		p, err := indexer.GetPackage(r.Context(), packageName, packageVersion)
-		if err == util.ErrPackageNotFound {
-			notFoundError(w, errArtifactNotFound)
-			return
-		}
+		opts := util.PackageNameVersionFilter(packageName, packageVersion)
+		packages, err := indexer.GetPackages(r.Context(), &opts)
 		if err != nil {
 			log.Printf("getting package path failed: %v", err)
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
+		if len(packages) == 0 {
+			notFoundError(w, errArtifactNotFound)
+			return
+		}
 
 		cacheHeaders(w, cacheTime)
-		util.ServePackage(w, r, p)
+		util.ServePackage(w, r, packages[0])
 	}
 }

@@ -61,8 +61,7 @@ type Config struct {
 }
 
 type Indexer interface {
-	GetPackages(context.Context) (util.Packages, error)
-	GetPackage(ctx context.Context, name, version string) (*util.Package, error)
+	GetPackages(context.Context, *util.GetPackagesOptions) (util.Packages, error)
 }
 
 func main() {
@@ -169,7 +168,7 @@ func printConfig(config *Config) {
 }
 
 func ensurePackagesAvailable(ctx context.Context, indexer Indexer) {
-	packages, err := indexer.GetPackages(ctx)
+	packages, err := indexer.GetPackages(ctx, nil)
 	if err != nil {
 		log.Fatal(err)
 	}

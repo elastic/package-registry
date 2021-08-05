@@ -5,6 +5,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"time"
 
@@ -43,14 +44,20 @@ func staticHandler(indexer Indexer, cacheTime time.Duration) http.HandlerFunc {
 			return
 		}
 
-		p, err := indexer.GetPackage(r.Context(), packageName, packageVersion)
-		if err == util.ErrPackageNotFound {
-			notFoundError(w, err)
+		opts := util.PackageNameVersionFilter(packageName, packageVersion)
+		packages, err := indexer.GetPackages(r.Context(), &opts)
+		if err != nil {
+			log.Printf("getting package path failed: %v", err)
+			http.Error(w, "internal server error", http.StatusInternalServerError)
+			return
+		}
+		if len(packages) == 0 {
+			notFoundError(w, errPackageRevisionNotFound)
 			return
 		}
 
 		cacheHeaders(w, cacheTime)
 
-		util.ServeFile(w, r, p, fileName)
+		util.ServeFile(w, r, packages[0], fileName)
 	}
 }

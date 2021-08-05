@@ -16,12 +16,20 @@ import (
 	"go.elastic.co/apm"
 )
 
-var ErrPackageNotFound = errors.New("package not found")
-
 // PackageValidationDisabled is a flag which can disable package content validation (package, data streams, assets, etc.).
 var PackageValidationDisabled bool
 
-type Packages []Package
+// Packages is a list of packages.
+type Packages []*Package
+
+func (p Packages) Len() int      { return len(p) }
+func (p Packages) Swap(i, j int) { p[i], p[j] = p[j], p[i] }
+func (p Packages) Less(i, j int) bool {
+	if p[i].Name == p[j].Name {
+		return p[i].Version < p[j].Version
+	}
+	return p[i].Name < p[j].Name
+}
 
 // FilesystemIndexer indexes packages from the filesystem.
 type FilesystemIndexer struct {
@@ -29,46 +37,45 @@ type FilesystemIndexer struct {
 	packageList Packages
 }
 
+// NewFilesystemIndexer creates a new FilesystemIndexer for the given paths.
 func NewFilesystemIndexer(paths []string) *FilesystemIndexer {
 	return &FilesystemIndexer{
 		paths: paths,
 	}
 }
 
-// GetPackages returns a slice with all existing packages.
+// GetPackagesOptions can be used to pass options to GetPackages.
+type GetPackagesOptions struct {
+	// Filter to apply when querying for packages. If the filter is nil,
+	// all packages are returned. This is different to a zero-object filter,
+	// where internal and experimental packages are filtered by default.
+	Filter *PackageFilter
+}
+
+// GetPackages returns a slice with packages.
+// Options can be used to filter the returned list of packages. When no options are passed
+// or they don't contain any filter, no filtering is done.
 // The list is stored in memory and on the second request directly served from memory.
 // This assumes changes to packages only happen on restart (unless development mode is enabled).
 // Caching the packages request many file reads every time this method is called.
-func (i *FilesystemIndexer) GetPackages(ctx context.Context) (Packages, error) {
-	if i.packageList != nil {
-		return i.packageList, nil
-	}
-
-	var err error
-	i.packageList, err = getPackagesFromFilesystem(ctx, i.paths)
-	if err != nil {
-		return nil, errors.Wrapf(err, "reading packages from filesystem failed")
-	}
-	return i.packageList, nil
-}
-
-// GetPackage looks in the index a package per name and version.
-func (i *FilesystemIndexer) GetPackage(ctx context.Context, name string, version string) (*Package, error) {
-	span, ctx := apm.StartSpan(ctx, "GetPackage", "app")
-	defer span.End()
-
-	packages, err := i.GetPackages(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	for _, p := range packages {
-		if p.Name == name && p.Version == version {
-			return &p, nil
+func (i *FilesystemIndexer) GetPackages(ctx context.Context, opts *GetPackagesOptions) (Packages, error) {
+	if i.packageList == nil {
+		var err error
+		i.packageList, err = getPackagesFromFilesystem(ctx, i.paths)
+		if err != nil {
+			return nil, errors.Wrapf(err, "reading packages from filesystem failed")
 		}
 	}
 
-	return nil, ErrPackageNotFound
+	if opts == nil {
+		return i.packageList, nil
+	}
+
+	if opts.Filter != nil {
+		return opts.Filter.Apply(ctx, i.packageList), nil
+	}
+
+	return i.packageList, nil
 }
 
 func getPackagesFromFilesystem(ctx context.Context, packagesBasePaths []string) (Packages, error) {
@@ -91,7 +98,7 @@ func getPackagesFromFilesystem(ctx context.Context, packagesBasePaths []string) 
 
 			log.Printf("%-20s\t%10s\t%s", p.Name, p.Version, p.BasePath)
 
-			pList = append(pList, *p)
+			pList = append(pList, p)
 		}
 	}
 	return pList, nil
@@ -140,4 +147,99 @@ func getPackagePaths(packagesPath string) ([]string, error) {
 		return nil, errors.Wrapf(err, "listing packages failed (path: %s)", packagesPath)
 	}
 	return foundPaths, nil
+}
+
+// PackageFilter can be used to filter a list of packages.
+type PackageFilter struct {
+	AllVersions    bool
+	Category       string
+	Experimental   bool
+	Internal       bool
+	KibanaVersion  *semver.Version
+	PackageName    string
+	PackageVersion string
+}
+
+// Apply applies the filter to the list of packages, if the filter is nil, no filtering is done.
+func (f *PackageFilter) Apply(ctx context.Context, packages Packages) Packages {
+	if f == nil {
+		return packages
+	}
+
+	span, ctx := apm.StartSpan(ctx, "FilterPackages", "app")
+	defer span.End()
+
+	// Checks that only the most recent version of an integration is added to the list
+	var packagesList Packages
+	for _, p := range packages {
+		// Skip internal packages by default
+		if p.Internal && !f.Internal {
+			continue
+		}
+
+		// Skip experimental packages if flag is not specified
+		if p.Release == ReleaseExperimental && !f.Experimental {
+			continue
+		}
+
+		// Filter by category first as this could heavily reduce the number of packages
+		// It must happen before the version filtering as there only the newest version
+		// is exposed and there could be an older package with more versions.
+		if f.Category != "" && !p.HasCategory(f.Category) {
+			continue
+		}
+
+		if f.KibanaVersion != nil {
+			if valid := p.HasKibanaVersion(f.KibanaVersion); !valid {
+				continue
+			}
+		}
+
+		if f.PackageName != "" && f.PackageName != p.Name {
+			continue
+		}
+
+		if f.PackageVersion != "" && f.PackageVersion != p.Version {
+			continue
+		}
+
+		addPackage := true
+		if !f.AllVersions {
+			// Check if the version exists and if it should be added or not.
+			for i, current := range packagesList {
+				if current.Name != p.Name {
+					continue
+				}
+
+				addPackage = false
+
+				// If the package in the list is newer or equal, do nothing.
+				if current.IsNewerOrEqual(p) {
+					continue
+				}
+
+				// Otherwise replace it.
+				packagesList[i] = p
+			}
+		}
+
+		if addPackage {
+			packagesList = append(packagesList, p)
+		}
+	}
+
+	return packagesList
+}
+
+// PackageNameVersionFilter is a helper to initialize a PackageFilter with the usual
+// options to look per name and version along all packages indexed.
+func PackageNameVersionFilter(name, version string) GetPackagesOptions {
+	return GetPackagesOptions{
+		Filter: &PackageFilter{
+			Experimental:   true,
+			Internal:       true,
+			PackageName:    name,
+			PackageVersion: version,
+		},
+	}
 }

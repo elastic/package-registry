@@ -314,7 +314,7 @@ func (p *Package) HasKibanaVersion(version *semver.Version) bool {
 	return p.Conditions.kibanaConstraint.Check(version)
 }
 
-func (p *Package) IsNewerOrEqual(pp Package) bool {
+func (p *Package) IsNewerOrEqual(pp *Package) bool {
 	return !p.versionSemVer.LessThan(pp.versionSemVer)
 }
 

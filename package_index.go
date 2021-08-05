@@ -45,14 +45,15 @@ func packageIndexHandler(indexer Indexer, cacheTime time.Duration) func(w http.R
 			return
 		}
 
-		p, err := indexer.GetPackage(r.Context(), packageName, packageVersion)
-		if err == util.ErrPackageNotFound {
-			notFoundError(w, errPackageRevisionNotFound)
-			return
-		}
+		opts := util.PackageNameVersionFilter(packageName, packageVersion)
+		packages, err := indexer.GetPackages(r.Context(), &opts)
 		if err != nil {
 			log.Printf("getting package path failed: %v", err)
 			http.Error(w, "internal server error", http.StatusInternalServerError)
+			return
+		}
+		if len(packages) == 0 {
+			notFoundError(w, errPackageRevisionNotFound)
 			return
 		}
 
@@ -61,9 +62,9 @@ func packageIndexHandler(indexer Indexer, cacheTime time.Duration) func(w http.R
 
 		encoder := json.NewEncoder(w)
 		encoder.SetIndent("", "  ")
-		err = encoder.Encode(p)
+		err = encoder.Encode(packages[0])
 		if err != nil {
-			log.Printf("marshaling package index failed (path '%s'): %v", p.BasePath, err)
+			log.Printf("marshaling package index failed (path '%s'): %v", packages[0].BasePath, err)
 
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
