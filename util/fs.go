@@ -166,12 +166,12 @@ func (f *zipFileSeeker) Seek(offset int64, whence int) (n int64, err error) {
 			return -1, err
 		}
 		if offset > 0 {
-			buf := make([]byte, offset)
-			n, err := f.File.Read(buf)
+			r := io.LimitReader(f.File, offset)
+			n, err = io.Copy(ioutil.Discard, r)
 			if err != nil {
 				return -1, err
 			}
-			return int64(n), nil
+			offset = int64(n)
 		}
 		return offset, nil
 	case io.SeekEnd:

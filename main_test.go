@@ -9,11 +9,13 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -256,6 +258,38 @@ func TestContentTypes(t *testing.T) {
 	}
 }
 
+// TestRangeDownloads tests that range downloads continue working for packages stored
+// on different file systems.
+func TestRangeDownloads(t *testing.T) {
+	packagesBasePaths := []string{
+		"./testdata/package",
+		"./testdata/local-storage",
+	}
+	indexer := util.NewFilesystemIndexer(packagesBasePaths)
+	router := mux.NewRouter()
+	router.HandleFunc(staticRouterPath, staticHandler(indexer, testCacheTime))
+	router.HandleFunc(artifactsRouterPath, artifactsHandler(indexer, testCacheTime))
+
+	tests := []struct {
+		endpoint string
+		file     string
+	}{
+		{"/epr/example/example-0.0.2.zip", "example-0.0.2.zip-preview.txt"},
+		{"/packages/example/1.0.0/img/kibana-envoyproxy.jpg", "example-1.0.0-screenshot.jpg"},
+
+		// zip
+		{"/epr/example/example-1.0.1.zip", "example-1.0.1.zip-preview.txt"},
+		{"/packages/example/1.0.1/img/kibana-envoyproxy.jpg", "example-1.0.1-screenshot.jpg"},
+	}
+
+	for _, test := range tests {
+		t.Run(test.endpoint, func(t *testing.T) {
+			buf := downloadWithRanges(t, router, test.endpoint)
+			assertExpectedBody(t, &buf, test.file)
+		})
+	}
+}
+
 func runEndpoint(t *testing.T, endpoint, path, file string, handler func(w http.ResponseWriter, r *http.Request)) {
 	req, err := http.NewRequest("GET", endpoint, nil)
 	if err != nil {
@@ -272,12 +306,26 @@ func runEndpoint(t *testing.T, endpoint, path, file string, handler func(w http.
 	req.RequestURI = endpoint
 	router.ServeHTTP(recorder, req)
 
-	fullPath := filepath.Join(generatedFilesPath, file)
-	err = os.MkdirAll(filepath.Dir(fullPath), 0755)
-	assert.NoError(t, err)
+	assertExpectedBody(t, recorder.Body, file)
 
-	recorded := recorder.Body.Bytes()
-	if strings.HasSuffix(file, "-preview.txt") {
+	// Skip cache check if 4xx error
+	if recorder.Code >= 200 && recorder.Code < 300 {
+		cacheTime := fmt.Sprintf("%.0f", testCacheTime.Seconds())
+		assert.Equal(t, recorder.Header()["Cache-Control"], []string{"max-age=" + cacheTime, "public"})
+	}
+}
+
+type recordedBody interface {
+	Bytes() []byte
+}
+
+func assertExpectedBody(t *testing.T, body recordedBody, expectedFile string) {
+	fullPath := filepath.Join(generatedFilesPath, expectedFile)
+	err := os.MkdirAll(filepath.Dir(fullPath), 0755)
+	require.NoError(t, err)
+
+	recorded := body.Bytes()
+	if strings.HasSuffix(expectedFile, "-preview.txt") {
 		recorded = listArchivedFiles(t, recorded)
 	}
 
@@ -294,12 +342,6 @@ func runEndpoint(t *testing.T, endpoint, path, file string, handler func(w http.
 	}
 
 	assert.Equal(t, string(bytes.TrimSpace(data)), string(bytes.TrimSpace(recorded)))
-
-	// Skip cache check if 4xx error
-	if recorder.Code >= 200 && recorder.Code < 300 {
-		cacheTime := fmt.Sprintf("%.0f", testCacheTime.Seconds())
-		assert.Equal(t, recorder.Header()["Cache-Control"], []string{"max-age=" + cacheTime, "public"})
-	}
 }
 
 func listArchivedFiles(t *testing.T, body []byte) []byte {
@@ -313,4 +355,52 @@ func listArchivedFiles(t *testing.T, body []byte) []byte {
 
 	}
 	return listing.Bytes()
+}
+
+func downloadWithRanges(t *testing.T, handler http.Handler, endpoint string) bytes.Buffer {
+	var buf bytes.Buffer
+
+	req, err := http.NewRequest("HEAD", endpoint, nil)
+	require.NoError(t, err)
+	recorder := httptest.NewRecorder()
+	handler.ServeHTTP(recorder, req)
+	ranges := recorder.Header().Get("Accept-Ranges")
+	if ranges == "" {
+		t.Skipf("ranges not supported for endpoint (%s)", endpoint)
+	}
+	if ranges != "bytes" {
+		t.Fatalf("ranges supported in endpoint (%s), but not in bytes, found: %s", endpoint, ranges)
+	}
+	totalSize, err := strconv.ParseInt(recorder.Header().Get("Content-Length"), 10, 64)
+	require.NoError(t, err)
+	require.True(t, totalSize > 0)
+
+	t.Logf("endpoint: %s, size: %d", endpoint, totalSize)
+
+	maxSize := 100 * int64(1024)
+	var start, end int64
+	for {
+		end = start + maxSize
+		if end > totalSize {
+			end = totalSize
+		}
+		req, err := http.NewRequest("GET", endpoint, nil)
+		require.NoError(t, err)
+		req.Header.Add("Range", fmt.Sprintf("bytes=%d-%d", start, end))
+
+		recorder := httptest.NewRecorder()
+		handler.ServeHTTP(recorder, req)
+		n, err := io.Copy(&buf, recorder.Body)
+		require.NoError(t, err)
+		require.GreaterOrEqual(t, maxSize+1, n)
+
+		size, err := strconv.ParseInt(recorder.Header().Get("Content-Length"), 10, 64)
+		require.NoError(t, err)
+		if size < maxSize {
+			break
+		}
+		start = start + size
+	}
+
+	return buf
 }
