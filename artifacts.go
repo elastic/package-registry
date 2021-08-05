@@ -7,14 +7,12 @@ package main
 import (
 	"log"
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
 
-	"github.com/elastic/package-registry/archiver"
 	"github.com/elastic/package-registry/util"
 )
 
@@ -54,29 +52,7 @@ func artifactsHandler(indexer Indexer, cacheTime time.Duration) func(w http.Resp
 			return
 		}
 
-		packagePath := p.BasePath
-		f, err := os.Stat(packagePath)
-		if err != nil {
-			log.Printf("stat package path '%s' failed: %v", packagePath, err)
-			http.Error(w, "internal server error", http.StatusInternalServerError)
-			return
-		}
-
-		w.Header().Set("Content-Type", "application/gzip")
 		cacheHeaders(w, cacheTime)
-
-		if f.IsDir() {
-			err = archiver.ArchivePackage(w, archiver.PackageProperties{
-				Name:    packageName,
-				Version: packageVersion,
-				Path:    packagePath,
-			})
-			if err != nil {
-				log.Printf("archiving package path '%s' failed: %v", packagePath, err)
-				return
-			}
-		} else {
-			http.ServeFile(w, r, packagePath)
-		}
+		util.ServePackage(w, r, p)
 	}
 }
