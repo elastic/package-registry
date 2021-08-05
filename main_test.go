@@ -271,21 +271,25 @@ func TestRangeDownloads(t *testing.T) {
 	router.HandleFunc(artifactsRouterPath, artifactsHandler(indexer, testCacheTime))
 
 	tests := []struct {
-		endpoint string
-		file     string
+		endpoint  string
+		supported bool
+		file      string
 	}{
-		{"/epr/example/example-0.0.2.zip", "example-0.0.2.zip-preview.txt"},
-		{"/packages/example/1.0.0/img/kibana-envoyproxy.jpg", "example-1.0.0-screenshot.jpg"},
+		{"/epr/example/example-0.0.2.zip", false, "example-0.0.2.zip-preview.txt"},
+		{"/packages/example/1.0.0/img/kibana-envoyproxy.jpg", true, "example-1.0.0-screenshot.jpg"},
 
 		// zip
-		{"/epr/example/example-1.0.1.zip", "example-1.0.1.zip-preview.txt"},
-		{"/packages/example/1.0.1/img/kibana-envoyproxy.jpg", "example-1.0.1-screenshot.jpg"},
+		{"/epr/example/example-1.0.1.zip", true, "example-1.0.1.zip-preview.txt"},
+		{"/packages/example/1.0.1/img/kibana-envoyproxy.jpg", true, "example-1.0.1-screenshot.jpg"},
 	}
 
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
-			buf := downloadWithRanges(t, router, test.endpoint)
-			assertExpectedBody(t, &buf, test.file)
+			buf, supported := downloadWithRanges(t, router, test.endpoint)
+			assert.Equal(t, test.supported, supported)
+			if supported {
+				assertExpectedBody(t, &buf, test.file)
+			}
 		})
 	}
 }
@@ -357,7 +361,7 @@ func listArchivedFiles(t *testing.T, body []byte) []byte {
 	return listing.Bytes()
 }
 
-func downloadWithRanges(t *testing.T, handler http.Handler, endpoint string) bytes.Buffer {
+func downloadWithRanges(t *testing.T, handler http.Handler, endpoint string) (bytes.Buffer, bool) {
 	var buf bytes.Buffer
 
 	req, err := http.NewRequest("HEAD", endpoint, nil)
@@ -366,7 +370,8 @@ func downloadWithRanges(t *testing.T, handler http.Handler, endpoint string) byt
 	handler.ServeHTTP(recorder, req)
 	ranges := recorder.Header().Get("Accept-Ranges")
 	if ranges == "" {
-		t.Skipf("ranges not supported for endpoint (%s)", endpoint)
+		t.Logf("ranges not supported for endpoint (%s)", endpoint)
+		return buf, false
 	}
 	if ranges != "bytes" {
 		t.Fatalf("ranges supported in endpoint (%s), but not in bytes, found: %s", endpoint, ranges)
@@ -402,5 +407,5 @@ func downloadWithRanges(t *testing.T, handler http.Handler, endpoint string) byt
 		start = start + size
 	}
 
-	return buf
+	return buf, true
 }
