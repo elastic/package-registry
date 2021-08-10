@@ -15,7 +15,7 @@ import (
 	"github.com/elastic/package-registry/util"
 )
 
-const staticRouterPath = "/packages/{packageName}/{packageVersion}/{name:.*}"
+const staticRouterPath = "/package/{packageName}/{packageVersion}/{name:.*}"
 
 func staticHandler(indexer Indexer, cacheTime time.Duration) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {

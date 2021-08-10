@@ -117,8 +117,8 @@ func TestStatics(t *testing.T) {
 		file     string
 		handler  func(w http.ResponseWriter, r *http.Request)
 	}{
-		{"/packages/example/1.0.0/docs/README.md", staticRouterPath, "example-1.0.0-README.md", staticHandler},
-		{"/packages/example/1.0.0/img/kibana-envoyproxy.jpg", staticRouterPath, "example-1.0.0-screenshot.jpg", staticHandler},
+		{"/package/example/1.0.0/docs/README.md", staticRouterPath, "example-1.0.0-README.md", staticHandler},
+		{"/package/example/1.0.0/img/kibana-envoyproxy.jpg", staticRouterPath, "example-1.0.0-screenshot.jpg", staticHandler},
 	}
 
 	for _, test := range tests {
@@ -145,8 +145,8 @@ func TestZippedArtifacts(t *testing.T) {
 	}{
 		{"/epr/example/example-1.0.1.zip", artifactsRouterPath, "example-1.0.1.zip-preview.txt", artifactsHandler},
 		{"/epr/example/example-999.0.2.zip", artifactsRouterPath, "artifact-package-version-not-found.txt", artifactsHandler},
-		{"/packages/example/1.0.1/docs/README.md", staticRouterPath, "example-1.0.1-README.md", staticHandler},
-		{"/packages/example/1.0.1/img/kibana-envoyproxy.jpg", staticRouterPath, "example-1.0.1-screenshot.jpg", staticHandler},
+		{"/package/example/1.0.1/docs/README.md", staticRouterPath, "example-1.0.1-README.md", staticHandler},
+		{"/package/example/1.0.1/img/kibana-envoyproxy.jpg", staticRouterPath, "example-1.0.1-screenshot.jpg", staticHandler},
 	}
 
 	for _, test := range tests {
@@ -225,14 +225,14 @@ func TestContentTypes(t *testing.T) {
 		endpoint    string
 		contentType string
 	}{
-		{"/packages/example/1.0.0/manifest.yml", "text/yaml; charset=UTF-8"},
-		{"/packages/example/1.0.0/docs/README.md", "text/markdown; charset=utf-8"},
-		{"/packages/example/1.0.0/img/kibana-envoyproxy.jpg", "image/jpeg"},
+		{"/package/example/1.0.0/manifest.yml", "text/yaml; charset=UTF-8"},
+		{"/package/example/1.0.0/docs/README.md", "text/markdown; charset=utf-8"},
+		{"/package/example/1.0.0/img/kibana-envoyproxy.jpg", "image/jpeg"},
 
 		// From zip
-		{"/packages/example/1.0.1/manifest.yml", "text/yaml; charset=UTF-8"},
-		{"/packages/example/1.0.1/docs/README.md", "text/markdown; charset=utf-8"},
-		{"/packages/example/1.0.1/img/kibana-envoyproxy.jpg", "image/jpeg"},
+		{"/package/example/1.0.1/manifest.yml", "text/yaml; charset=UTF-8"},
+		{"/package/example/1.0.1/docs/README.md", "text/markdown; charset=utf-8"},
+		{"/package/example/1.0.1/img/kibana-envoyproxy.jpg", "image/jpeg"},
 	}
 
 	packagesBasePaths := []string{
@@ -276,11 +276,11 @@ func TestRangeDownloads(t *testing.T) {
 		file      string
 	}{
 		{"/epr/example/example-0.0.2.zip", false, "example-0.0.2.zip-preview.txt"},
-		{"/packages/example/1.0.0/img/kibana-envoyproxy.jpg", true, "example-1.0.0-screenshot.jpg"},
+		{"/package/example/1.0.0/img/kibana-envoyproxy.jpg", true, "example-1.0.0-screenshot.jpg"},
 
 		// zip
 		{"/epr/example/example-1.0.1.zip", true, "example-1.0.1.zip-preview.txt"},
-		{"/packages/example/1.0.1/img/kibana-envoyproxy.jpg", true, "example-1.0.1-screenshot.jpg"},
+		{"/package/example/1.0.1/img/kibana-envoyproxy.jpg", true, "example-1.0.1-screenshot.jpg"},
 	}
 
 	for _, test := range tests {
