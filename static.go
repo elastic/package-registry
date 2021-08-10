@@ -10,8 +10,6 @@ import (
 	"time"
 )
 
-const staticHandlerPrefix = "/package"
-
 func staticHandler(packagesBasePaths []string, prefix string, cacheTime time.Duration) http.HandlerFunc {
 	fileServers := map[string]http.Handler{}
 	for _, packagesBasePath := range packagesBasePaths {
