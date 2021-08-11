@@ -106,7 +106,7 @@ variations and will also get more complex over time.
 
 ## Running
 
-There are several options to run this for development purpouses.
+There are several options to run this for development purposes.
 
 ### Go command
 
