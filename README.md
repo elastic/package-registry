@@ -106,7 +106,7 @@ variations and will also get more complex over time.
 
 ## Running
 
-There are several options to run this.
+There are several options to run this for development purpouses.
 
 ### Go command
 
@@ -178,7 +178,9 @@ Another Docker tag with the git branch or tag name
 * `docker.elastic.co/package-registry/package-registry:pr-111`
 * `docker.elastic.co/package-registry/package-registry:v0.2.0`
 
-If you want to run the most recent registry, run the master tag.
+If you want to run the most recent registry for development, run the master tag.
+
+These images contain only the package registry, they don't contain any package.
 
 ### Testing with Kibana
 
