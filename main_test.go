@@ -157,7 +157,10 @@ func TestZippedArtifacts(t *testing.T) {
 }
 
 func TestPackageIndex(t *testing.T) {
-	packagesBasePaths := []string{"./testdata/package"}
+	packagesBasePaths := []string{
+		"./testdata/package",
+		"./testdata/local-storage",
+	}
 	indexer := util.NewFilesystemIndexer(packagesBasePaths)
 
 	packageIndexHandler := packageIndexHandler(indexer, testCacheTime)
@@ -169,6 +172,32 @@ func TestPackageIndex(t *testing.T) {
 		handler  func(w http.ResponseWriter, r *http.Request)
 	}{
 		{"/package/example/1.0.0/", packageIndexRouterPath, "package.json", packageIndexHandler},
+		{"/package/example/1.0.1/", packageIndexRouterPath, "package-zip.json", packageIndexHandler},
+		{"/package/missing/1.0.0/", packageIndexRouterPath, "index-package-not-found.txt", packageIndexHandler},
+		{"/package/example/999.0.0/", packageIndexRouterPath, "index-package-revision-not-found.txt", packageIndexHandler},
+		{"/package/example/a.b.c/", packageIndexRouterPath, "index-package-invalid-version.txt", packageIndexHandler},
+	}
+
+	for _, test := range tests {
+		t.Run(test.endpoint, func(t *testing.T) {
+			runEndpoint(t, test.endpoint, test.path, test.file, test.handler)
+		})
+	}
+}
+
+func TestZippedPackageIndex(t *testing.T) {
+	packagesBasePaths := []string{"./testdata/local-storage"}
+	indexer := util.NewFilesystemIndexer(packagesBasePaths)
+
+	packageIndexHandler := packageIndexHandler(indexer, testCacheTime)
+
+	tests := []struct {
+		endpoint string
+		path     string
+		file     string
+		handler  func(w http.ResponseWriter, r *http.Request)
+	}{
+		{"/package/example/1.0.1/", packageIndexRouterPath, "package-zip.json", packageIndexHandler},
 		{"/package/missing/1.0.0/", packageIndexRouterPath, "index-package-not-found.txt", packageIndexHandler},
 		{"/package/example/999.0.0/", packageIndexRouterPath, "index-package-revision-not-found.txt", packageIndexHandler},
 		{"/package/example/a.b.c/", packageIndexRouterPath, "index-package-invalid-version.txt", packageIndexHandler},
