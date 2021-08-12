@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	_ "net/http/pprof"
 	"os"
 	"os/signal"
 	"strings"
@@ -33,7 +34,9 @@ const (
 )
 
 var (
-	address    string
+	address         string
+	httpProfAddress string
+
 	dryRun     bool
 	configPath = "config.yml"
 
@@ -47,6 +50,7 @@ var (
 
 func init() {
 	flag.StringVar(&address, "address", "localhost:8080", "Address of the package-registry service.")
+	flag.StringVar(&httpProfAddress, "httpprof", "", "Enable HTTP profiler listening on the given address")
 	// This flag is experimental and might be removed in the future or renamed
 	flag.BoolVar(&dryRun, "dry-run", false, "Runs a dry-run of the registry without starting the web service (experimental)")
 	flag.BoolVar(&util.PackageValidationDisabled, "disable-package-validation", false, "Disable package content validation")
@@ -65,6 +69,8 @@ func main() {
 	log.Println("Package registry started.")
 	defer log.Println("Package registry stopped.")
 
+	initHttpProf()
+
 	server := initServer()
 	go func() {
 		err := server.ListenAndServe()
@@ -81,6 +87,17 @@ func main() {
 	if err := server.Shutdown(ctx); err != nil {
 		log.Fatal(err)
 	}
+}
+
+func initHttpProf() {
+	if httpProfAddress == "" {
+		return
+	}
+
+	log.Printf("Starting http pprof in %s", httpProfAddress)
+	go func() {
+		log.Println(http.ListenAndServe(httpProfAddress, nil))
+	}()
 }
 
 func initServer() *http.Server {
