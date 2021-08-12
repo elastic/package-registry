@@ -8,7 +8,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"path"
 	"time"
 
 	"go.elastic.co/apm"
@@ -51,36 +50,23 @@ func ServeFile(w http.ResponseWriter, r *http.Request, p *Package, name string) 
 
 	fs, err := p.fs()
 	if os.IsNotExist(err) {
-		http.Error(w, err.Error(), http.StatusNotFound)
+		http.Error(w, "resource not found", http.StatusNotFound)
 		return
 	}
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.Printf("failed to open filesystem for package: %v", err)
+		http.Error(w, "internal server error", http.StatusInternalServerError)
 		return
-	}
-
-	info, err := fs.Stat(name)
-	if os.IsNotExist(err) {
-		http.Error(w, err.Error(), http.StatusNotFound)
-		return
-	}
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	if info.IsDir() {
-		// TODO: Is this needed? It was done by previous implementation.
-		name = path.Join(name, "index.json")
 	}
 
 	f, err := fs.Open(name)
 	if os.IsNotExist(err) {
-		http.Error(w, err.Error(), http.StatusNotFound)
+		http.Error(w, "resource not found", http.StatusNotFound)
 		return
 	}
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.Printf("failed to open file (%s) in package: %v", name, err)
+		http.Error(w, "internal server error", http.StatusInternalServerError)
 		return
 	}
 	defer f.Close()
