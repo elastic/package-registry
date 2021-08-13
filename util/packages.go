@@ -46,8 +46,8 @@ type GetPackagesOptions struct {
 	Filter *PackageFilter
 }
 
-// FilesystemIndexer indexes packages from the filesystem.
-type FilesystemIndexer struct {
+// FileSystemIndexer indexes packages from the filesystem.
+type FileSystemIndexer struct {
 	paths       []string
 	packageList Packages
 
@@ -63,8 +63,8 @@ type FilesystemIndexer struct {
 
 var walkerIndexFile = errors.New("file should be indexed")
 
-// NewFilesystemIndexer creates a new FilesystemIndexer for the given paths.
-func NewFilesystemIndexer(paths ...string) *FilesystemIndexer {
+// NewFileSystemIndexer creates a new FileSystemIndexer for the given paths.
+func NewFileSystemIndexer(paths ...string) *FileSystemIndexer {
 	walkerFn := func(basePath, path string, info os.FileInfo, err error) error {
 		relativePath, err := filepath.Rel(basePath, path)
 		if err != nil {
@@ -94,16 +94,16 @@ func NewFilesystemIndexer(paths ...string) *FilesystemIndexer {
 	fsBuilder := func(p *Package) (PackageFileSystem, error) {
 		return NewExtractedPackageFileSystem(p)
 	}
-	return &FilesystemIndexer{
+	return &FileSystemIndexer{
 		paths:     paths,
-		label:     "FilesystemIndexer",
+		label:     "FileSystemIndexer",
 		walkerFn:  walkerFn,
 		fsBuilder: fsBuilder,
 	}
 }
 
-// NewZipFilesystemIndexer creates a new ZipFilesystemIndexer for the given paths.
-func NewZipFilesystemIndexer(paths ...string) *FilesystemIndexer {
+// NewZipFileSystemIndexer creates a new ZipFileSystemIndexer for the given paths.
+func NewZipFileSystemIndexer(paths ...string) *FileSystemIndexer {
 	walkerFn := func(basePath, path string, info os.FileInfo, err error) error {
 		if info.IsDir() {
 			return nil
@@ -125,9 +125,9 @@ func NewZipFilesystemIndexer(paths ...string) *FilesystemIndexer {
 	fsBuilder := func(p *Package) (PackageFileSystem, error) {
 		return NewZipPackageFileSystem(p)
 	}
-	return &FilesystemIndexer{
+	return &FileSystemIndexer{
 		paths:     paths,
-		label:     "ZipFilesystemIndexer",
+		label:     "ZipFileSystemIndexer",
 		walkerFn:  walkerFn,
 		fsBuilder: fsBuilder,
 	}
@@ -139,10 +139,10 @@ func NewZipFilesystemIndexer(paths ...string) *FilesystemIndexer {
 // The list is stored in memory and on the second request directly served from memory.
 // This assumes changes to packages only happen on restart (unless development mode is enabled).
 // Caching the packages request many file reads every time this method is called.
-func (i *FilesystemIndexer) GetPackages(ctx context.Context, opts *GetPackagesOptions) (Packages, error) {
+func (i *FileSystemIndexer) GetPackages(ctx context.Context, opts *GetPackagesOptions) (Packages, error) {
 	if i.packageList == nil {
 		var err error
-		i.packageList, err = i.getPackagesFromFilesystem(ctx)
+		i.packageList, err = i.getPackagesFromFileSystem(ctx)
 		if err != nil {
 			return nil, errors.Wrapf(err, "reading packages from filesystem failed")
 		}
@@ -159,8 +159,8 @@ func (i *FilesystemIndexer) GetPackages(ctx context.Context, opts *GetPackagesOp
 	return i.packageList, nil
 }
 
-func (i *FilesystemIndexer) getPackagesFromFilesystem(ctx context.Context) (Packages, error) {
-	span, ctx := apm.StartSpan(ctx, "GetPackagesFromFilesystem", "app")
+func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Packages, error) {
+	span, ctx := apm.StartSpan(ctx, "GetPackagesFromFileSystem", "app")
 	span.Context.SetLabel("indexer", i.label)
 	defer span.End()
 
@@ -187,7 +187,7 @@ func (i *FilesystemIndexer) getPackagesFromFilesystem(ctx context.Context) (Pack
 }
 
 // getPackagePaths returns list of available packages, one for each version.
-func (i *FilesystemIndexer) getPackagePaths(packagesPath string) ([]string, error) {
+func (i *FileSystemIndexer) getPackagePaths(packagesPath string) ([]string, error) {
 	var foundPaths []string
 	err := filepath.Walk(packagesPath, func(path string, info os.FileInfo, err error) error {
 		err = i.walkerFn(packagesPath, path, info, err)

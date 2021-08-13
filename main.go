@@ -113,8 +113,8 @@ func initServer() *http.Server {
 	config := mustLoadConfig()
 	packagesBasePaths := getPackagesBasePaths(config)
 	indexer := NewCombinedIndexer(
-		util.NewFilesystemIndexer(packagesBasePaths...),
-		util.NewZipFilesystemIndexer(packagesBasePaths...),
+		util.NewFileSystemIndexer(packagesBasePaths...),
+		util.NewZipFileSystemIndexer(packagesBasePaths...),
 	)
 	ensurePackagesAvailable(ctx, indexer)
 
