@@ -241,6 +241,13 @@ Package Registry is instrumented with the [Elastic APM Go Agent](https://www.ela
 You can find a full reference of these and other options in the Elastic APM Go
 Agent [configuration guide](https://www.elastic.co/guide/en/apm/agent/go/current/configuration.html).
 
+## Performance profiling
+
+You can enable the HTTP profiler in Package Registry starting it with the `-httpprof <address>` flag.
+It will be listening in the given address.
+
+You can read more about this profiler and the available endpoints in the [pprof documentation](https://pkg.go.dev/net/http/pprof).
+
 ## Release
 
 New versions of the package registry need to be released from time to time. The following steps should be followed to create a new release:
