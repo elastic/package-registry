@@ -50,12 +50,75 @@ type GetPackagesOptions struct {
 type FilesystemIndexer struct {
 	paths       []string
 	packageList Packages
+
+	// Label used for APM instrumentation.
+	label string
+
+	// Walker function used to look for files.
+	walkerFn func(basePath, path string, info os.FileInfo, err error) error
 }
+
+var walkerIndexFile = errors.New("file should be indexed")
 
 // NewFilesystemIndexer creates a new FilesystemIndexer for the given paths.
 func NewFilesystemIndexer(paths ...string) *FilesystemIndexer {
+	walkerFn := func(basePath, path string, info os.FileInfo, err error) error {
+		relativePath, err := filepath.Rel(basePath, path)
+		if err != nil {
+			return err
+		}
+
+		dirs := strings.Split(relativePath, string(filepath.Separator))
+		if len(dirs) < 2 {
+			return nil // need to go to the package version level
+		}
+
+		if info.IsDir() {
+			versionDir := dirs[1]
+			_, err := semver.StrictNewVersion(versionDir)
+			if err != nil {
+				log.Printf("warning: unexpected directory: %s, ignoring", path)
+				return filepath.SkipDir
+			}
+			return walkerIndexFile
+		}
+		// Unexpected file, return nil in order to continue processing sibling directories
+		// Fixes an annoying problem when the .DS_Store file is left behind and the package
+		// is not loading without any error information
+		log.Printf("warning: unexpected file: %s, ignoring", path)
+		return nil
+	}
 	return &FilesystemIndexer{
-		paths: paths,
+		paths:    paths,
+		label:    "FilesystemIndexer",
+		walkerFn: walkerFn,
+	}
+}
+
+// NewZipFilesystemIndexer creates a new ZipFilesystemIndexer for the given paths.
+func NewZipFilesystemIndexer(paths ...string) *FilesystemIndexer {
+	walkerFn := func(basePath, path string, info os.FileInfo, err error) error {
+		if info.IsDir() {
+			return nil
+		}
+		if !strings.HasSuffix(path, ".zip") {
+			return nil
+		}
+
+		// Check if the file is actually a zip file.
+		r, err := zip.OpenReader(path)
+		if err != nil {
+			log.Printf("warning: zip file cannot be opened as zip: %s, ignoring: %v", path, err)
+			return nil
+		}
+		defer r.Close()
+
+		return walkerIndexFile
+	}
+	return &FilesystemIndexer{
+		paths:    paths,
+		label:    "ZipFilesystemIndexer",
+		walkerFn: walkerFn,
 	}
 }
 
@@ -87,7 +150,7 @@ func (i *FilesystemIndexer) GetPackages(ctx context.Context, opts *GetPackagesOp
 
 func (i *FilesystemIndexer) getPackagesFromFilesystem(ctx context.Context) (Packages, error) {
 	span, ctx := apm.StartSpan(ctx, "GetPackagesFromFilesystem", "app")
-	span.Context.SetLabel("indexer", "FilesystemIndexer")
+	span.Context.SetLabel("indexer", i.label)
 	defer span.End()
 
 	var pList Packages
@@ -116,30 +179,16 @@ func (i *FilesystemIndexer) getPackagesFromFilesystem(ctx context.Context) (Pack
 func (i *FilesystemIndexer) getPackagePaths(packagesPath string) ([]string, error) {
 	var foundPaths []string
 	err := filepath.Walk(packagesPath, func(path string, info os.FileInfo, err error) error {
-		relativePath, err := filepath.Rel(packagesPath, path)
-		if err != nil {
+		err = i.walkerFn(packagesPath, path, info, err)
+		if err != walkerIndexFile {
 			return err
 		}
-
-		dirs := strings.Split(relativePath, string(filepath.Separator))
-		if len(dirs) < 2 {
-			return nil // need to go to the package version level
-		}
-
+		foundPaths = append(foundPaths, path)
 		if info.IsDir() {
-			versionDir := dirs[1]
-			_, err := semver.StrictNewVersion(versionDir)
-			if err != nil {
-				log.Printf("warning: unexpected directory: %s, ignoring", path)
-			} else {
-				foundPaths = append(foundPaths, path)
-			}
+			// If a directory is being added, consider all its contents part of
+			// the package and continue.
 			return filepath.SkipDir
 		}
-		// Unexpected file, return nil in order to continue processing sibling directories
-		// Fixes an annoying problem when the .DS_Store file is left behind and the package
-		// is not loading without any error information
-		log.Printf("warning: unexpected file: %s, ignoring", path)
 		return nil
 	})
 	if err != nil {
@@ -241,95 +290,4 @@ func PackageNameVersionFilter(name, version string) GetPackagesOptions {
 			PackageVersion: version,
 		},
 	}
-}
-
-// ZipFilesystemIndexer indexes packages from the filesystem.
-type ZipFilesystemIndexer struct {
-	paths       []string
-	packageList Packages
-}
-
-// NewZipFilesystemIndexer creates a new ZipFilesystemIndexer for the given paths.
-func NewZipFilesystemIndexer(paths ...string) *ZipFilesystemIndexer {
-	return &ZipFilesystemIndexer{
-		paths: paths,
-	}
-}
-
-// GetPackages returns a slice with packages.
-// Options can be used to filter the returned list of packages. When no options are passed
-// or they don't contain any filter, no filtering is done.
-// The list is stored in memory and on the second request directly served from memory.
-// This assumes changes to packages only happen on restart (unless development mode is enabled).
-// Caching the packages request many file reads every time this method is called.
-func (i *ZipFilesystemIndexer) GetPackages(ctx context.Context, opts *GetPackagesOptions) (Packages, error) {
-	if i.packageList == nil {
-		var err error
-		i.packageList, err = i.getPackagesFromFilesystem(ctx)
-		if err != nil {
-			return nil, errors.Wrapf(err, "reading packages from filesystem failed")
-		}
-	}
-
-	if opts == nil {
-		return i.packageList, nil
-	}
-
-	if opts.Filter != nil {
-		return opts.Filter.Apply(ctx, i.packageList), nil
-	}
-
-	return i.packageList, nil
-}
-
-func (i *ZipFilesystemIndexer) getPackagesFromFilesystem(ctx context.Context) (Packages, error) {
-	span, ctx := apm.StartSpan(ctx, "GetPackagesFromFilesystem", "app")
-	span.Context.SetLabel("indexer", "ZipFilesystemIndexer")
-	defer span.End()
-
-	var pList Packages
-	for _, basePath := range i.paths {
-		packagePaths, err := i.getPackagePaths(basePath)
-		if err != nil {
-			return nil, err
-		}
-
-		log.Printf("Packages in %s:", basePath)
-		for _, path := range packagePaths {
-			p, err := NewPackage(path)
-			if err != nil {
-				return nil, errors.Wrapf(err, "loading package failed (path: %s)", path)
-			}
-
-			log.Printf("%-20s\t%10s\t%s", p.Name, p.Version, p.BasePath)
-
-			pList = append(pList, p)
-		}
-	}
-	return pList, nil
-}
-
-// getZippedPackagePaths returns list of available packages, one for each version.
-func (i *ZipFilesystemIndexer) getPackagePaths(packagesPath string) ([]string, error) {
-	var foundPaths []string
-	err := filepath.Walk(packagesPath, func(path string, info os.FileInfo, err error) error {
-		if !strings.HasSuffix(path, ".zip") {
-			return nil
-		}
-
-		// Check if the file is actually a zip file.
-		r, err := zip.OpenReader(path)
-		if err != nil {
-			return nil
-		}
-		defer r.Close()
-
-		foundPaths = append(foundPaths, path)
-		return nil
-
-	})
-	if err != nil {
-		return nil, errors.Wrapf(err, "listing packages failed (path: %s)", packagesPath)
-	}
-	return foundPaths, nil
 }
