@@ -26,31 +26,13 @@ type PackageFileSystem interface {
 	Close() error
 }
 
-func NewPackageFileSystem(path string) (PackageFileSystem, error) {
-	if path == "" {
-		return NewVirtualPackageFileSystem()
-	}
-	info, err := os.Stat(path)
-	if err != nil {
-		return nil, err
-	}
-	switch {
-	case info.IsDir():
-		return NewExtractedPackageFileSystem(path)
-	case strings.HasSuffix(path, ".zip"):
-		return NewZipPackageFileSystem(path)
-	default:
-		return nil, fmt.Errorf("unsupported file system in path: %s", path)
-	}
-}
-
 // extractedPackageFileSystem provides utils to access files in an extracted package.
 type extractedPackageFileSystem struct {
 	path string
 }
 
-func NewExtractedPackageFileSystem(path string) (*extractedPackageFileSystem, error) {
-	return &extractedPackageFileSystem{path: path}, nil
+func NewExtractedPackageFileSystem(p *Package) (*extractedPackageFileSystem, error) {
+	return &extractedPackageFileSystem{path: p.BasePath}, nil
 }
 
 func (fs *extractedPackageFileSystem) Stat(name string) (os.FileInfo, error) {
@@ -80,8 +62,8 @@ type zipPackageFileSystem struct {
 	reader *zip.ReadCloser
 }
 
-func NewZipPackageFileSystem(path string) (*zipPackageFileSystem, error) {
-	reader, err := zip.OpenReader(path)
+func NewZipPackageFileSystem(p *Package) (*zipPackageFileSystem, error) {
+	reader, err := zip.OpenReader(p.BasePath)
 	if err != nil {
 		return nil, err
 	}
@@ -97,7 +79,7 @@ func NewZipPackageFileSystem(path string) (*zipPackageFileSystem, error) {
 		}
 	}
 	if !found {
-		return nil, fmt.Errorf("failed to determine root directory in package (path: %s)", path)
+		return nil, fmt.Errorf("failed to determine root directory in package (path: %s)", p.BasePath)
 	}
 	return &zipPackageFileSystem{
 		root:   root,
@@ -204,8 +186,7 @@ func ReadAll(fs PackageFileSystem, name string) ([]byte, error) {
 
 // virtualPackageFileSystem provide utils for package objects that don't correspond to
 // any real package in any backend. Used mainly for testing purpouses.
-type virtualPackageFileSystem struct {
-}
+type virtualPackageFileSystem struct{}
 
 func NewVirtualPackageFileSystem() (*virtualPackageFileSystem, error) {
 	return &virtualPackageFileSystem{}, nil

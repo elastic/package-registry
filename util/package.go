@@ -68,7 +68,11 @@ type Package struct {
 
 	// Local path to the package dir
 	BasePath string `json:"-" yaml:"-"`
+
+	fsBuilder FileSystemBuilder
 }
+
+type FileSystemBuilder func(*Package) (PackageFileSystem, error)
 
 // BasePackage is used for the output of the package info in the /search endpoint
 type BasePackage struct {
@@ -153,9 +157,10 @@ func getDownloadPath(p Package, t string) string {
 
 // NewPackage creates a new package instances based on the given base path.
 // The path passed goes to the root of the package where the manifest.yml is.
-func NewPackage(basePath string) (*Package, error) {
+func NewPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) {
 	var p = &Package{
-		BasePath: basePath,
+		BasePath:  basePath,
+		fsBuilder: fsBuilder,
 	}
 	fs, err := p.fs()
 	if err != nil {
@@ -377,7 +382,11 @@ func collectAssets(fs PackageFileSystem, pattern string) ([]string, error) {
 }
 
 func (p *Package) fs() (PackageFileSystem, error) {
-	return NewPackageFileSystem(p.BasePath)
+	if p.fsBuilder == nil {
+		return NewVirtualPackageFileSystem()
+	}
+
+	return p.fsBuilder(p)
 }
 
 // Validate is called during Unpack of the manifest.
@@ -440,7 +449,7 @@ func (p *Package) Validate() error {
 		return errors.Wrap(err, "version in manifest file is not consistent with path")
 	}
 
-	return p.ValidateDataStreams()
+	return p.ValidateDataStreams(fs)
 }
 
 func (p *Package) validateVersionConsistency() error {
@@ -519,7 +528,7 @@ func (p *Package) LoadDataSets() error {
 }
 
 // ValidateDataStreams loads all dataStreams and with it validates them
-func (p *Package) ValidateDataStreams() error {
+func (p *Package) ValidateDataStreams(fs PackageFileSystem) error {
 	dataStreamPaths, err := p.GetDataStreamPaths()
 	if err != nil {
 		return err

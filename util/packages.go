@@ -56,6 +56,9 @@ type FilesystemIndexer struct {
 
 	// Walker function used to look for files.
 	walkerFn func(basePath, path string, info os.FileInfo, err error) error
+
+	// Builder to access the files of a package in this indexer.
+	fsBuilder FileSystemBuilder
 }
 
 var walkerIndexFile = errors.New("file should be indexed")
@@ -88,10 +91,14 @@ func NewFilesystemIndexer(paths ...string) *FilesystemIndexer {
 		log.Printf("warning: unexpected file: %s, ignoring", path)
 		return nil
 	}
+	fsBuilder := func(p *Package) (PackageFileSystem, error) {
+		return NewExtractedPackageFileSystem(p)
+	}
 	return &FilesystemIndexer{
-		paths:    paths,
-		label:    "FilesystemIndexer",
-		walkerFn: walkerFn,
+		paths:     paths,
+		label:     "FilesystemIndexer",
+		walkerFn:  walkerFn,
+		fsBuilder: fsBuilder,
 	}
 }
 
@@ -115,10 +122,14 @@ func NewZipFilesystemIndexer(paths ...string) *FilesystemIndexer {
 
 		return walkerIndexFile
 	}
+	fsBuilder := func(p *Package) (PackageFileSystem, error) {
+		return NewZipPackageFileSystem(p)
+	}
 	return &FilesystemIndexer{
-		paths:    paths,
-		label:    "ZipFilesystemIndexer",
-		walkerFn: walkerFn,
+		paths:     paths,
+		label:     "ZipFilesystemIndexer",
+		walkerFn:  walkerFn,
+		fsBuilder: fsBuilder,
 	}
 }
 
@@ -162,7 +173,7 @@ func (i *FilesystemIndexer) getPackagesFromFilesystem(ctx context.Context) (Pack
 
 		log.Printf("Packages in %s:", basePath)
 		for _, path := range packagePaths {
-			p, err := NewPackage(path)
+			p, err := NewPackage(path, i.fsBuilder)
 			if err != nil {
 				return nil, errors.Wrapf(err, "loading package failed (path: %s)", path)
 			}

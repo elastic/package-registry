@@ -206,8 +206,21 @@ func TestHasKibanaVersion(t *testing.T) {
 }
 
 func BenchmarkNewPackage(b *testing.B) {
+	fsBuilder := func(p *Package) (PackageFileSystem, error) {
+		return NewExtractedPackageFileSystem(p)
+	}
 	for i := 0; i < b.N; i++ {
-		_, err := NewPackage("../testdata/package/reference/1.0.0")
+		_, err := NewPackage("../testdata/package/reference/1.0.0", fsBuilder)
+		assert.NoError(b, err)
+	}
+}
+
+func BenchmarkNewZipPackage(b *testing.B) {
+	fsBuilder := func(p *Package) (PackageFileSystem, error) {
+		return NewZipPackageFileSystem(p)
+	}
+	for i := 0; i < b.N; i++ {
+		_, err := NewPackage("../testdata/local-storage/example-1.0.1.zip", fsBuilder)
 		assert.NoError(b, err)
 	}
 }

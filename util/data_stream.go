@@ -56,8 +56,8 @@ type DataStream struct {
 	// Local path to the data stream directory, relative to the package directory
 	BasePath string `json:"-" yaml:"-"`
 
-	// Local path to the package directory
-	packagePath string
+	// Reference to the package containing this data stream
+	packageRef *Package
 }
 
 type Input struct {
@@ -130,8 +130,8 @@ func NewDataStream(basePath string, p *Package) (*DataStream, error) {
 		return nil, errors.Wrapf(err, "error creating new manifest config")
 	}
 	var d = &DataStream{
-		Package:     p.Name,
-		packagePath: p.BasePath,
+		Package:    p.Name,
+		packageRef: p,
 
 		// This is the name of the directory of the dataStream
 		Path:     dataStreamPath,
@@ -215,7 +215,7 @@ func (d *DataStream) Validate() error {
 		return fmt.Errorf("type is not valid: %s", d.Type)
 	}
 
-	fs, err := NewPackageFileSystem(d.packagePath)
+	fs, err := d.packageRef.fs()
 	if err != nil {
 		return err
 	}
