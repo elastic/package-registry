@@ -243,11 +243,10 @@ Agent [configuration guide](https://www.elastic.co/guide/en/apm/agent/go/current
 
 ## Performance profiling
 
-Package registry starts the HTTP profiler in the local port 6060 by default.
-The listening address can be configured using the `-httpprof` flag. An empty
-value disables it.
+You can enable the HTTP profiler in Package Registry starting it with the `-httpprof <address>` flag.
+It will be listening in the given address.
 
-You can read more about this profiler in the [pprof documentation](https://pkg.go.dev/net/http/pprof).
+You can read more about this profiler and the available endpoints in the [pprof documentation](https://pkg.go.dev/net/http/pprof).
 
 ## Release
 
