@@ -50,7 +50,7 @@ var (
 
 func init() {
 	flag.StringVar(&address, "address", "localhost:8080", "Address of the package-registry service.")
-	flag.StringVar(&httpProfAddress, "httpprof", "", "Enable HTTP profiler listening on the given address")
+	flag.StringVar(&httpProfAddress, "httpprof", "localhost:6060", "Address of the HTTP profiler, use empty value to disable it.")
 	// This flag is experimental and might be removed in the future or renamed
 	flag.BoolVar(&dryRun, "dry-run", false, "Runs a dry-run of the registry without starting the web service (experimental)")
 	flag.BoolVar(&util.PackageValidationDisabled, "disable-package-validation", false, "Disable package content validation")
