@@ -244,9 +244,9 @@ Agent [configuration guide](https://www.elastic.co/guide/en/apm/agent/go/current
 ## Performance profiling
 
 You can enable the HTTP profiler in Package Registry starting it with the `-httpprof <address>` flag.
-It will be available in the given address.
+It will be listening in the given address.
 
-You can read more about this profiler in the [pprof documentation](https://pkg.go.dev/net/http/pprof).
+You can read more about this profiler and the available endpoints in the [pprof documentation](https://pkg.go.dev/net/http/pprof).
 
 ## Release
 
