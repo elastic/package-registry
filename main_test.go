@@ -36,7 +36,7 @@ var (
 
 func TestEndpoints(t *testing.T) {
 	packagesBasePaths := []string{"./testdata/second_package_path", "./testdata/package"}
-	indexer := util.NewFilesystemIndexer(packagesBasePaths)
+	indexer := util.NewFilesystemIndexer(packagesBasePaths...)
 
 	faviconHandleFunc, err := faviconHandler(testCacheTime)
 	require.NoError(t, err)
@@ -82,7 +82,7 @@ func TestEndpoints(t *testing.T) {
 
 func TestArtifacts(t *testing.T) {
 	packagesBasePaths := []string{"./testdata/package"}
-	indexer := util.NewFilesystemIndexer(packagesBasePaths)
+	indexer := util.NewFilesystemIndexer(packagesBasePaths...)
 
 	artifactsHandler := artifactsHandler(indexer, testCacheTime)
 
@@ -107,7 +107,7 @@ func TestArtifacts(t *testing.T) {
 
 func TestStatics(t *testing.T) {
 	packagesBasePaths := []string{"./testdata/package"}
-	indexer := util.NewFilesystemIndexer(packagesBasePaths)
+	indexer := util.NewFilesystemIndexer(packagesBasePaths...)
 
 	staticHandler := staticHandler(indexer, testCacheTime)
 
@@ -130,8 +130,7 @@ func TestStatics(t *testing.T) {
 }
 
 func TestZippedArtifacts(t *testing.T) {
-	packagesBasePaths := []string{"./testdata/local-storage"}
-	indexer := util.NewFilesystemIndexer(packagesBasePaths)
+	indexer := util.NewZipFilesystemIndexer("./testdata/local-storage")
 
 	artifactsHandler := artifactsHandler(indexer, testCacheTime)
 
@@ -157,11 +156,10 @@ func TestZippedArtifacts(t *testing.T) {
 }
 
 func TestPackageIndex(t *testing.T) {
-	packagesBasePaths := []string{
-		"./testdata/package",
-		"./testdata/local-storage",
-	}
-	indexer := util.NewFilesystemIndexer(packagesBasePaths)
+	indexer := NewCombinedIndexer(
+		util.NewFilesystemIndexer("./testdata/package"),
+		util.NewZipFilesystemIndexer("./testdata/local-storage"),
+	)
 
 	packageIndexHandler := packageIndexHandler(indexer, testCacheTime)
 
@@ -187,7 +185,7 @@ func TestPackageIndex(t *testing.T) {
 
 func TestZippedPackageIndex(t *testing.T) {
 	packagesBasePaths := []string{"./testdata/local-storage"}
-	indexer := util.NewFilesystemIndexer(packagesBasePaths)
+	indexer := util.NewZipFilesystemIndexer(packagesBasePaths...)
 
 	packageIndexHandler := packageIndexHandler(indexer, testCacheTime)
 
@@ -215,7 +213,7 @@ func TestAllPackageIndex(t *testing.T) {
 	testPackagePath := filepath.Join("testdata", "package")
 	secondPackagePath := filepath.Join("testdata", "second_package_path")
 	packagesBasePaths := []string{secondPackagePath, testPackagePath}
-	indexer := util.NewFilesystemIndexer(packagesBasePaths)
+	indexer := util.NewFilesystemIndexer(packagesBasePaths...)
 	packageIndexHandler := packageIndexHandler(indexer, testCacheTime)
 
 	// find all manifests
@@ -264,11 +262,10 @@ func TestContentTypes(t *testing.T) {
 		{"/package/example/1.0.1/img/kibana-envoyproxy.jpg", "image/jpeg"},
 	}
 
-	packagesBasePaths := []string{
-		"./testdata/package",
-		"./testdata/local-storage",
-	}
-	indexer := util.NewFilesystemIndexer(packagesBasePaths)
+	indexer := NewCombinedIndexer(
+		util.NewFilesystemIndexer("./testdata/package"),
+		util.NewZipFilesystemIndexer("./testdata/local-storage"),
+	)
 	handler := staticHandler(indexer, testCacheTime)
 	router := mux.NewRouter()
 	router.HandleFunc(staticRouterPath, handler)
@@ -290,11 +287,11 @@ func TestContentTypes(t *testing.T) {
 // TestRangeDownloads tests that range downloads continue working for packages stored
 // on different file systems.
 func TestRangeDownloads(t *testing.T) {
-	packagesBasePaths := []string{
-		"./testdata/package",
-		"./testdata/local-storage",
-	}
-	indexer := util.NewFilesystemIndexer(packagesBasePaths)
+	indexer := NewCombinedIndexer(
+		util.NewFilesystemIndexer("./testdata/package"),
+		util.NewZipFilesystemIndexer("./testdata/local-storage"),
+	)
+
 	router := mux.NewRouter()
 	router.HandleFunc(staticRouterPath, staticHandler(indexer, testCacheTime))
 	router.HandleFunc(artifactsRouterPath, artifactsHandler(indexer, testCacheTime))

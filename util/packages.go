@@ -5,6 +5,7 @@
 package util
 
 import (
+	"archive/zip"
 	"context"
 	"log"
 	"os"
@@ -31,17 +32,10 @@ func (p Packages) Less(i, j int) bool {
 	return p[i].Name < p[j].Name
 }
 
-// FilesystemIndexer indexes packages from the filesystem.
-type FilesystemIndexer struct {
-	paths       []string
-	packageList Packages
-}
-
-// NewFilesystemIndexer creates a new FilesystemIndexer for the given paths.
-func NewFilesystemIndexer(paths []string) *FilesystemIndexer {
-	return &FilesystemIndexer{
-		paths: paths,
-	}
+// Join returns a set of packages that combines both sets.
+func (p1 Packages) Join(p2 Packages) Packages {
+	// TODO: Avoid duplications?
+	return append(p1, p2...)
 }
 
 // GetPackagesOptions can be used to pass options to GetPackages.
@@ -50,6 +44,19 @@ type GetPackagesOptions struct {
 	// all packages are returned. This is different to a zero-object filter,
 	// where internal and experimental packages are filtered by default.
 	Filter *PackageFilter
+}
+
+// FilesystemIndexer indexes packages from the filesystem.
+type FilesystemIndexer struct {
+	paths       []string
+	packageList Packages
+}
+
+// NewFilesystemIndexer creates a new FilesystemIndexer for the given paths.
+func NewFilesystemIndexer(paths ...string) *FilesystemIndexer {
+	return &FilesystemIndexer{
+		paths: paths,
+	}
 }
 
 // GetPackages returns a slice with packages.
@@ -61,7 +68,7 @@ type GetPackagesOptions struct {
 func (i *FilesystemIndexer) GetPackages(ctx context.Context, opts *GetPackagesOptions) (Packages, error) {
 	if i.packageList == nil {
 		var err error
-		i.packageList, err = getPackagesFromFilesystem(ctx, i.paths)
+		i.packageList, err = i.getPackagesFromFilesystem(ctx)
 		if err != nil {
 			return nil, errors.Wrapf(err, "reading packages from filesystem failed")
 		}
@@ -78,13 +85,14 @@ func (i *FilesystemIndexer) GetPackages(ctx context.Context, opts *GetPackagesOp
 	return i.packageList, nil
 }
 
-func getPackagesFromFilesystem(ctx context.Context, packagesBasePaths []string) (Packages, error) {
+func (i *FilesystemIndexer) getPackagesFromFilesystem(ctx context.Context) (Packages, error) {
 	span, ctx := apm.StartSpan(ctx, "GetPackagesFromFilesystem", "app")
+	span.Context.SetLabel("indexer", "FilesystemIndexer")
 	defer span.End()
 
 	var pList Packages
-	for _, basePath := range packagesBasePaths {
-		packagePaths, err := getPackagePaths(basePath)
+	for _, basePath := range i.paths {
+		packagePaths, err := i.getPackagePaths(basePath)
 		if err != nil {
 			return nil, err
 		}
@@ -105,18 +113,9 @@ func getPackagesFromFilesystem(ctx context.Context, packagesBasePaths []string) 
 }
 
 // getPackagePaths returns list of available packages, one for each version.
-func getPackagePaths(packagesPath string) ([]string, error) {
+func (i *FilesystemIndexer) getPackagePaths(packagesPath string) ([]string, error) {
 	var foundPaths []string
-	isZip := func(name string) bool {
-		// TODO: Make this safer.
-		return strings.HasSuffix(name, ".zip")
-	}
 	err := filepath.Walk(packagesPath, func(path string, info os.FileInfo, err error) error {
-		if isZip(path) {
-			foundPaths = append(foundPaths, path)
-			return nil
-		}
-
 		relativePath, err := filepath.Rel(packagesPath, path)
 		if err != nil {
 			return err
@@ -242,4 +241,95 @@ func PackageNameVersionFilter(name, version string) GetPackagesOptions {
 			PackageVersion: version,
 		},
 	}
+}
+
+// ZipFilesystemIndexer indexes packages from the filesystem.
+type ZipFilesystemIndexer struct {
+	paths       []string
+	packageList Packages
+}
+
+// NewZipFilesystemIndexer creates a new ZipFilesystemIndexer for the given paths.
+func NewZipFilesystemIndexer(paths ...string) *ZipFilesystemIndexer {
+	return &ZipFilesystemIndexer{
+		paths: paths,
+	}
+}
+
+// GetPackages returns a slice with packages.
+// Options can be used to filter the returned list of packages. When no options are passed
+// or they don't contain any filter, no filtering is done.
+// The list is stored in memory and on the second request directly served from memory.
+// This assumes changes to packages only happen on restart (unless development mode is enabled).
+// Caching the packages request many file reads every time this method is called.
+func (i *ZipFilesystemIndexer) GetPackages(ctx context.Context, opts *GetPackagesOptions) (Packages, error) {
+	if i.packageList == nil {
+		var err error
+		i.packageList, err = i.getPackagesFromFilesystem(ctx)
+		if err != nil {
+			return nil, errors.Wrapf(err, "reading packages from filesystem failed")
+		}
+	}
+
+	if opts == nil {
+		return i.packageList, nil
+	}
+
+	if opts.Filter != nil {
+		return opts.Filter.Apply(ctx, i.packageList), nil
+	}
+
+	return i.packageList, nil
+}
+
+func (i *ZipFilesystemIndexer) getPackagesFromFilesystem(ctx context.Context) (Packages, error) {
+	span, ctx := apm.StartSpan(ctx, "GetPackagesFromFilesystem", "app")
+	span.Context.SetLabel("indexer", "ZipFilesystemIndexer")
+	defer span.End()
+
+	var pList Packages
+	for _, basePath := range i.paths {
+		packagePaths, err := i.getPackagePaths(basePath)
+		if err != nil {
+			return nil, err
+		}
+
+		log.Printf("Packages in %s:", basePath)
+		for _, path := range packagePaths {
+			p, err := NewPackage(path)
+			if err != nil {
+				return nil, errors.Wrapf(err, "loading package failed (path: %s)", path)
+			}
+
+			log.Printf("%-20s\t%10s\t%s", p.Name, p.Version, p.BasePath)
+
+			pList = append(pList, p)
+		}
+	}
+	return pList, nil
+}
+
+// getZippedPackagePaths returns list of available packages, one for each version.
+func (i *ZipFilesystemIndexer) getPackagePaths(packagesPath string) ([]string, error) {
+	var foundPaths []string
+	err := filepath.Walk(packagesPath, func(path string, info os.FileInfo, err error) error {
+		if !strings.HasSuffix(path, ".zip") {
+			return nil
+		}
+
+		// Check if the file is actually a zip file.
+		r, err := zip.OpenReader(path)
+		if err != nil {
+			return nil
+		}
+		defer r.Close()
+
+		foundPaths = append(foundPaths, path)
+		return nil
+
+	})
+	if err != nil {
+		return nil, errors.Wrapf(err, "listing packages failed (path: %s)", packagesPath)
+	}
+	return foundPaths, nil
 }

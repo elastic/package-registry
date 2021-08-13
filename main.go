@@ -60,10 +60,6 @@ type Config struct {
 	CacheTimeCatchAll   time.Duration `config:"cache_time.catch_all"`
 }
 
-type Indexer interface {
-	GetPackages(context.Context, *util.GetPackagesOptions) (util.Packages, error)
-}
-
 func main() {
 	flag.Parse()
 	log.Println("Package registry started.")
@@ -96,7 +92,10 @@ func initServer() *http.Server {
 
 	config := mustLoadConfig()
 	packagesBasePaths := getPackagesBasePaths(config)
-	indexer := util.NewFilesystemIndexer(packagesBasePaths)
+	indexer := NewCombinedIndexer(
+		util.NewFilesystemIndexer(packagesBasePaths...),
+		util.NewZipFilesystemIndexer(packagesBasePaths...),
+	)
 	ensurePackagesAvailable(ctx, indexer)
 
 	// If -dry-run=true is set, service stops here after validation
