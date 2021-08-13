@@ -449,7 +449,7 @@ func (p *Package) Validate() error {
 		return errors.Wrap(err, "version in manifest file is not consistent with path")
 	}
 
-	return p.ValidateDataStreams(fs)
+	return p.ValidateDataStreams()
 }
 
 func (p *Package) validateVersionConsistency() error {
@@ -528,7 +528,7 @@ func (p *Package) LoadDataSets() error {
 }
 
 // ValidateDataStreams loads all dataStreams and with it validates them
-func (p *Package) ValidateDataStreams(fs PackageFileSystem) error {
+func (p *Package) ValidateDataStreams() error {
 	dataStreamPaths, err := p.GetDataStreamPaths()
 	if err != nil {
 		return err
