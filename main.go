@@ -96,7 +96,10 @@ func initHttpProf() {
 
 	log.Printf("Starting http pprof in %s", httpProfAddress)
 	go func() {
-		log.Println(http.ListenAndServe(httpProfAddress, nil))
+		err := http.ListenAndServe(httpProfAddress, nil)
+		if err != nil {
+			log.Fatalf("failed to start HTTP profiler: %v", err)
+		}
 	}()
 }
 
