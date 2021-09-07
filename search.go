@@ -171,7 +171,7 @@ func (filter searchFilter) Filter(ctx context.Context, packages util.Packages) m
 				packagesList[p.Name] = map[string]util.Package{}
 			}
 
-			// TODO filter unrelevant policy templates
+			// TODO filter not relevant policy templates
 
 			if _, ok := packagesList[p.Name][p.Version]; !ok {
 				packagesList[p.Name][p.Version] = p
