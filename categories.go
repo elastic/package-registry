@@ -176,7 +176,7 @@ func (filter categoriesFilter) FilterCategories(ctx context.Context, packageList
 						}
 					}
 
-					if !contains(p.Categories, c) && !contains(extraPackageCategories, c) {
+					if !p.HasCategory(c) && !contains(extraPackageCategories, c) {
 						extraPackageCategories = append(extraPackageCategories, c)
 						categories[c].Count = categories[c].Count + 1
 					}
