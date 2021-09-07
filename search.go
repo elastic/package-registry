@@ -130,7 +130,7 @@ func (filter searchFilter) Filter(ctx context.Context, packages util.Packages) m
 		// Filter by category first as this could heavily reduce the number of packages
 		// It must happen before the version filtering as there only the newest version
 		// is exposed and there could be an older package with more versions.
-		if filter.Category != "" && !p.HasCategory(filter.Category) {
+		if filter.Category != "" && !p.HasCategory(filter.Category) { // TODO or p.HasPolicyTemplateWithCategory()
 			continue
 		}
 
@@ -170,6 +170,9 @@ func (filter searchFilter) Filter(ctx context.Context, packages util.Packages) m
 			if _, ok := packagesList[p.Name]; !ok {
 				packagesList[p.Name] = map[string]util.Package{}
 			}
+
+			// TODO filter unrelevant policy templates
+
 			if _, ok := packagesList[p.Name][p.Version]; !ok {
 				packagesList[p.Name][p.Version] = p
 			}
