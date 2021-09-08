@@ -171,7 +171,7 @@ func (filter searchFilter) Filter(ctx context.Context, packages util.Packages) m
 				packagesList[p.Name] = map[string]util.Package{}
 			}
 
-			if !p.HasCategory(filter.Category) {
+			if filter.Category != "" && !p.HasCategory(filter.Category) {
 				// It means that package's policy template has the category
 				p = filterPolicyTemplates(p, filter.Category)
 			}
