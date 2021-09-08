@@ -23,5 +23,7 @@ policy_templates:
   - name: logs
     title: Logs datasource
     description: Datasource for your log files.
+    categories:
+      - datastore
     inputs:
       - type: foo
