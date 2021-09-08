@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Add -httpprof flag to enable HTTP profiling with pprof. [#709](https://github.com/elastic/package-registry/pull/709)
+* Adjust counting logic for categories/policy templates. [#716](https://github.com/elastic/package-registry/pull/716)
 
 ### Deprecated
 
