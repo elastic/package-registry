@@ -176,7 +176,7 @@ func (filter categoriesFilter) FilterCategories(ctx context.Context, packageList
 						}
 					}
 
-					if !p.HasCategory(c) && !contains(extraPackageCategories, c) {
+					if !p.HasCategory(c) && !util.StringsContains(extraPackageCategories, c) {
 						extraPackageCategories = append(extraPackageCategories, c)
 						categories[c].Count = categories[c].Count + 1
 					}
@@ -209,13 +209,4 @@ func getCategoriesOutput(ctx context.Context, categories map[string]*Category) (
 	}
 
 	return json.MarshalIndent(outputCategories, "", "  ")
-}
-
-func contains(categories []string, cat string) bool {
-	for _, c := range categories {
-		if c == cat {
-			return true
-		}
-	}
-	return false
 }

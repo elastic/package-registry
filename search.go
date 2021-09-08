@@ -130,7 +130,7 @@ func (filter searchFilter) Filter(ctx context.Context, packages util.Packages) m
 		// Filter by category first as this could heavily reduce the number of packages
 		// It must happen before the version filtering as there only the newest version
 		// is exposed and there could be an older package with more versions.
-		if filter.Category != "" && !p.HasCategory(filter.Category) { // TODO or p.HasPolicyTemplateWithCategory()
+		if filter.Category != "" && !p.HasCategory(filter.Category) && !p.HasPolicyTemplateWithCategory(filter.Category) {
 			continue
 		}
 
@@ -171,7 +171,10 @@ func (filter searchFilter) Filter(ctx context.Context, packages util.Packages) m
 				packagesList[p.Name] = map[string]util.Package{}
 			}
 
-			// TODO filter not relevant policy templates
+			if !p.HasCategory(filter.Category) {
+				// It means that package's policy template has the category
+				p = filterPolicyTemplates(p, filter.Category)
+			}
 
 			if _, ok := packagesList[p.Name][p.Version]; !ok {
 				packagesList[p.Name][p.Version] = p
@@ -180,6 +183,20 @@ func (filter searchFilter) Filter(ctx context.Context, packages util.Packages) m
 	}
 
 	return packagesList
+}
+
+func filterPolicyTemplates(p util.Package, category string) util.Package {
+	var updatedPolicyTemplates []util.PolicyTemplate
+	var updatedBasePolicyTemplates []util.BasePolicyTemplate
+	for i, pt := range p.PolicyTemplates {
+		if util.StringsContains(pt.Categories, category) {
+			updatedPolicyTemplates = append(updatedPolicyTemplates, pt)
+			updatedBasePolicyTemplates = append(updatedBasePolicyTemplates, p.BasePackage.BasePolicyTemplates[i])
+		}
+	}
+	p.PolicyTemplates = updatedPolicyTemplates
+	p.BasePackage.BasePolicyTemplates = updatedBasePolicyTemplates
+	return p
 }
 
 func getPackageOutput(ctx context.Context, packagesList map[string]map[string]util.Package) ([]byte, error) {
