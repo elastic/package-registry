@@ -35,6 +35,7 @@ func searchHandler(packagesBasePaths []string, cacheTime time.Duration) func(w h
 			return
 		}
 
+		packages = filter.FilterPackages(r.Context(), packages)
 		packagesList := filter.Filter(r.Context(), packages)
 
 		data, err := getPackageOutput(r.Context(), packagesList)
@@ -109,28 +110,62 @@ func newSearchFilterFromParams(r *http.Request) (searchFilter, error) {
 	return filter, nil
 }
 
-func (filter searchFilter) Filter(ctx context.Context, packages util.Packages) map[string]map[string]util.Package {
+func (filter searchFilter) FilterPackages(ctx context.Context, packages util.Packages) util.Packages {
 	span, ctx := apm.StartSpan(ctx, "FilterPackages", "app")
+	defer span.End()
+
+	if filter.AllVersions {
+		return packages
+	}
+
+	packageList := map[string]util.Package{}
+
+	// Get unique list of newest packages
+	for _, p := range packages {
+		if filter.KibanaVersion != nil {
+			if valid := p.HasKibanaVersion(filter.KibanaVersion); !valid {
+				continue
+			}
+		}
+
+		// Check if the version exists and if it should be added or not.
+		// If the package in the list is newer or equal, do nothing.
+		if pp, ok := packageList[p.Name]; ok && pp.IsNewerOrEqual(p) {
+			continue
+		}
+
+		// Otherwise delete and later add the new one.
+		packageList[p.Name] = p
+	}
+
+	var filtered util.Packages
+	for _, p := range packageList {
+		filtered = append(filtered, p)
+	}
+	return filtered
+}
+
+func (filter searchFilter) Filter(ctx context.Context, packages util.Packages) map[string]map[string]util.Package {
+	span, ctx := apm.StartSpan(ctx, "Filter", "app")
 	defer span.End()
 
 	packagesList := map[string]map[string]util.Package{}
 
-	// Checks that only the most recent version of an integration is added to the list
 	for _, p := range packages {
-		// Skip internal packages by default
+		// Filter by category first as this could heavily reduce the number of packages
+		// It must happen before the version filtering as there only the newest version
+		// is exposed and there could be an older package with more versions.
+		if filter.Category != "" && !p.HasCategory(filter.Category) && !p.HasPolicyTemplateWithCategory(filter.Category) {
+			continue
+		}
+
+		// Skip internal packages
 		if p.Internal && !filter.Internal {
 			continue
 		}
 
 		// Skip experimental packages if flag is not specified
 		if p.Release == util.ReleaseExperimental && !filter.Experimental {
-			continue
-		}
-
-		// Filter by category first as this could heavily reduce the number of packages
-		// It must happen before the version filtering as there only the newest version
-		// is exposed and there could be an older package with more versions.
-		if filter.Category != "" && !p.HasCategory(filter.Category) && !p.HasPolicyTemplateWithCategory(filter.Category) {
 			continue
 		}
 
@@ -181,7 +216,6 @@ func (filter searchFilter) Filter(ctx context.Context, packages util.Packages) m
 			}
 		}
 	}
-
 	return packagesList
 }
 

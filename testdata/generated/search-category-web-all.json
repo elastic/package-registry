@@ -1,5 +1,15 @@
 [
   {
+    "name": "example",
+    "title": "Example",
+    "version": "0.0.2",
+    "release": "beta",
+    "description": "This is the example integration.",
+    "type": "integration",
+    "download": "/epr/example/example-0.0.2.zip",
+    "path": "/package/example/0.0.2"
+  },
+  {
     "name": "longdocs",
     "title": "Long Docs",
     "version": "1.0.4",
@@ -12,6 +22,40 @@
       {
         "src": "/img/icon.svg",
         "path": "/package/longdocs/1.0.4/img/icon.svg",
+        "type": "image/svg+xml"
+      }
+    ]
+  },
+  {
+    "name": "multiversion",
+    "title": "Multi Version",
+    "version": "1.0.3",
+    "release": "ga",
+    "description": "Multiple versions of this integration exist.\n",
+    "type": "integration",
+    "download": "/epr/multiversion/multiversion-1.0.3.zip",
+    "path": "/package/multiversion/1.0.3",
+    "icons": [
+      {
+        "src": "/img/icon.svg",
+        "path": "/package/multiversion/1.0.3/img/icon.svg",
+        "type": "image/svg+xml"
+      }
+    ]
+  },
+  {
+    "name": "multiversion",
+    "title": "Multi Version",
+    "version": "1.0.4",
+    "release": "ga",
+    "description": "Multiple versions of this integration exist.\n",
+    "type": "integration",
+    "download": "/epr/multiversion/multiversion-1.0.4.zip",
+    "path": "/package/multiversion/1.0.4",
+    "icons": [
+      {
+        "src": "/img/icon.svg",
+        "path": "/package/multiversion/1.0.4/img/icon.svg",
         "type": "image/svg+xml"
       }
     ]
