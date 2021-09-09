@@ -147,11 +147,15 @@ func (filter categoriesFilter) FilterCategories(ctx context.Context, packageList
 					Count: 0,
 				}
 			}
-
 			categories[c].Count = categories[c].Count + 1
 		}
 
 		if filter.IncludePolicyTemplates {
+			// /categories counts policies and packages separately, but packages are counted too
+			// if they don't match but any of their policies does (for the AWS case this would mean that
+			// the count for "datastore" would be 3: the Package and the RDS and DynamoDB policies).
+			var extraPackageCategories []string
+
 			for _, t := range p.PolicyTemplates {
 				// Skip when policy template level `categories` is empty and there is only one policy template
 				if t.Categories == nil && len(p.PolicyTemplates) == 1 {
@@ -172,6 +176,10 @@ func (filter categoriesFilter) FilterCategories(ctx context.Context, packageList
 						}
 					}
 
+					if !p.HasCategory(c) && !util.StringsContains(extraPackageCategories, c) {
+						extraPackageCategories = append(extraPackageCategories, c)
+						categories[c].Count = categories[c].Count + 1
+					}
 					categories[c].Count = categories[c].Count + 1
 				}
 			}

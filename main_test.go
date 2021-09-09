@@ -64,6 +64,7 @@ func TestEndpoints(t *testing.T) {
 		{"/search?internal=bar", "/search", "search-package-internal-error.json", searchHandler(packagesBasePaths, testCacheTime)},
 		{"/search?experimental=true", "/search", "search-package-experimental.json", searchHandler(packagesBasePaths, testCacheTime)},
 		{"/search?experimental=foo", "/search", "search-package-experimental-error.json", searchHandler(packagesBasePaths, testCacheTime)},
+		{"/search?category=datastore&experimental=true", "/search", "search-category-datastore.json", searchHandler(packagesBasePaths, testCacheTime)},
 		{"/favicon.ico", "", "favicon.ico", faviconHandleFunc},
 	}
 

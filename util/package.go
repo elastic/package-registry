@@ -286,12 +286,15 @@ func NewPackage(basePath string) (*Package, error) {
 }
 
 func (p *Package) HasCategory(category string) bool {
-	for _, c := range p.Categories {
-		if c == category {
+	return StringsContains(p.Categories, category)
+}
+
+func (p *Package) HasPolicyTemplateWithCategory(category string) bool {
+	for _, pt := range p.PolicyTemplates {
+		if StringsContains(pt.Categories, category) {
 			return true
 		}
 	}
-
 	return false
 }
 
