@@ -27,6 +27,16 @@
     ]
   },
   {
+    "name": "elasticsearch_privileges",
+    "title": "Elasticsearch Privileges",
+    "version": "1.0.0",
+    "release": "beta",
+    "description": "Test package-specified Elasticsearch index privileges",
+    "type": "solution",
+    "download": "/epr/elasticsearch_privileges/elasticsearch_privileges-1.0.0.zip",
+    "path": "/package/elasticsearch_privileges/1.0.0"
+  },
+  {
     "name": "foo",
     "title": "Foo",
     "version": "1.0.0",

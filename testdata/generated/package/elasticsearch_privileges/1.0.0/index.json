@@ -1,0 +1,46 @@
+{
+  "name": "elasticsearch_privileges",
+  "title": "Elasticsearch Privileges",
+  "version": "1.0.0",
+  "release": "beta",
+  "description": "Test package-specified Elasticsearch index privileges",
+  "type": "solution",
+  "download": "/epr/elasticsearch_privileges/elasticsearch_privileges-1.0.0.zip",
+  "path": "/package/elasticsearch_privileges/1.0.0",
+  "format_version": "1.0.0",
+  "readme": "/package/elasticsearch_privileges/1.0.0/docs/README.md",
+  "license": "basic",
+  "categories": [
+    "custom"
+  ],
+  "conditions": {
+    "kibana.version": "\u003e=7.16.0"
+  },
+  "assets": [
+    "/package/elasticsearch_privileges/1.0.0/manifest.yml",
+    "/package/elasticsearch_privileges/1.0.0/docs/README.md",
+    "/package/elasticsearch_privileges/1.0.0/data_stream/elasticsearch_privileges/manifest.yml",
+    "/package/elasticsearch_privileges/1.0.0/data_stream/elasticsearch_privileges/fields/base-fields.yml"
+  ],
+  "data_streams": [
+    {
+      "type": "metrics",
+      "dataset": "elasticsearch_privileges.elasticsearch_privileges",
+      "title": "Elasticsearch privileges data stream",
+      "release": "experimental",
+      "package": "elasticsearch_privileges",
+      "elasticsearch": {
+        "privileges": {
+          "indices": [
+            "auto_configure",
+            "create_doc",
+            "maintenance",
+            "monitor",
+            "read"
+          ]
+        }
+      },
+      "path": "elasticsearch_privileges"
+    }
+  ]
+}
