@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
+* Fix: don't list old packages with categories incompatible with latest revisions. [#719](https://github.com/elastic/package-registry/pull/719)
+
 ### Added
 
 * Support `elasticsearch.privileges.indices` in data stream manifests. [#713](https://github.com/elastic/package-registry/pull/713)
