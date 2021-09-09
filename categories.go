@@ -40,7 +40,7 @@ func categoriesHandler(packagesBasePaths []string, cacheTime time.Duration) func
 			return
 		}
 
-		packageList := filter.Filter(r.Context(), packages)
+		packageList := filter.FilterPackages(r.Context(), packages)
 		categories := filter.FilterCategories(r.Context(), packageList)
 
 		data, err := getCategoriesOutput(r.Context(), categories)
@@ -94,7 +94,7 @@ func newCategoriesFilterFromParams(r *http.Request) (categoriesFilter, error) {
 	return filter, nil
 }
 
-func (filter categoriesFilter) Filter(ctx context.Context, packages util.Packages) map[string]util.Package {
+func (filter categoriesFilter) FilterPackages(ctx context.Context, packages util.Packages) map[string]util.Package {
 	span, ctx := apm.StartSpan(ctx, "FilterPackages", "app")
 	defer span.End()
 

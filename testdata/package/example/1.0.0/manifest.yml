@@ -11,7 +11,8 @@ release: ga
 owner.github: "ruflin"
 
 conditions:
-  kibana.version: "~7.x.x"
+  kibana:
+    version: "~7.x.x"
 
 screenshots:
   - src: /img/kibana-envoyproxy.jpg
