@@ -164,6 +164,12 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 	span.Context.SetLabel("indexer", i.label)
 	defer span.End()
 
+	type packageKey struct {
+		name    string
+		version string
+	}
+	packagesFound := make(map[packageKey]struct{})
+
 	var pList Packages
 	for _, basePath := range i.paths {
 		packagePaths, err := i.getPackagePaths(basePath)
@@ -178,9 +184,16 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 				return nil, errors.Wrapf(err, "loading package failed (path: %s)", path)
 			}
 
-			log.Printf("%-20s\t%10s\t%s", p.Name, p.Version, p.BasePath)
+			key := packageKey{name: p.Name, version: p.Version}
+			if _, found := packagesFound[key]; found {
+				log.Printf("%-20s\t%10s\t%s", p.Name+" (duplicated)", p.Version, p.BasePath)
+				continue
+			}
 
+			packagesFound[key] = struct{}{}
 			pList = append(pList, p)
+
+			log.Printf("%-20s\t%10s\t%s", p.Name, p.Version, p.BasePath)
 		}
 	}
 	return pList, nil
