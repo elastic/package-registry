@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Decouple API from backend "indexers". [#703](https://github.com/elastic/package-registry/pull/703)
+* Add experimental support to serve packages stored as zip archives. [#703](https://github.com/elastic/package-registry/pull/703)
+
 ### Deprecated
 
 ### Known Issues
