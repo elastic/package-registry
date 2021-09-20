@@ -1,0 +1,14 @@
+format_version: 1.0.0
+
+name: elasticsearch_privileges
+description: Test package-specified Elasticsearch index privileges
+version: 1.0.0
+title: Elasticsearch Privileges
+categories: ["custom"]
+type: solution
+release: beta
+
+conditions:
+  kibana:
+    version: ">=7.16.0"
+

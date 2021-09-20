@@ -11,7 +11,8 @@ release: ga
 owner.github: "ruflin"
 
 conditions:
-  kibana.version: "~7.x.x"
+  kibana:
+    version: "~7.x.x"
 
 screenshots:
   - src: /img/kibana-envoyproxy.jpg
@@ -23,5 +24,7 @@ policy_templates:
   - name: logs
     title: Logs datasource
     description: Datasource for your log files.
+    categories:
+      - datastore
     inputs:
       - type: foo

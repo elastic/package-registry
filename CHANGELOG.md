@@ -4,7 +4,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/elastic/package-registry/compare/v1.0.0...master)
+## [Unreleased](https://github.com/elastic/package-registry/compare/v1.2.0...master)
+
+### Breaking changes
+
+### Bugfixes
+
+### Added
+
+### Deprecated
+
+### Known Issues
+
+## [1.2.0](https://github.com/elastic/package-registry/compare/v1.1.0...v1.2.0)
+
+### Breaking changes
+
+### Bugfixes
+
+* Fix: don't list old packages with categories incompatible with latest revisions. [#719](https://github.com/elastic/package-registry/pull/719)
+
+### Added
+
+* Support `elasticsearch.privileges.indices` in data stream manifests. [#713](https://github.com/elastic/package-registry/pull/713)
+
+### Deprecated
+
+### Known Issues
+
+## [1.1.0](https://github.com/elastic/package-registry/compare/v1.0.0...v1.1.0)
 
 ### Breaking changes
 
@@ -13,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Add -httpprof flag to enable HTTP profiling with pprof. [#709](https://github.com/elastic/package-registry/pull/709)
+* Adjust counting logic for categories/policy templates. [#716](https://github.com/elastic/package-registry/pull/716)
 
 ### Deprecated
 

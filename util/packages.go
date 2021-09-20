@@ -254,13 +254,6 @@ func (f *PackageFilter) Apply(ctx context.Context, packages Packages) Packages {
 			continue
 		}
 
-		// Filter by category first as this could heavily reduce the number of packages
-		// It must happen before the version filtering as there only the newest version
-		// is exposed and there could be an older package with more versions.
-		if f.Category != "" && !p.HasCategory(f.Category) {
-			continue
-		}
-
 		if f.KibanaVersion != nil {
 			if valid := p.HasKibanaVersion(f.KibanaVersion); !valid {
 				continue
@@ -300,7 +293,42 @@ func (f *PackageFilter) Apply(ctx context.Context, packages Packages) Packages {
 		}
 	}
 
+	// Filter by category after selecting the newer packages.
+	packagesList = filterCategories(packagesList, f.Category)
+
 	return packagesList
+}
+
+func filterCategories(packages Packages, category string) Packages {
+	if category == "" {
+		return packages
+	}
+	var result Packages
+	for _, p := range packages {
+		if !p.HasCategory(category) && !p.HasPolicyTemplateWithCategory(category) {
+			continue
+		}
+		if !p.HasCategory(category) {
+			p = filterPolicyTemplates(*p, category)
+		}
+
+		result = append(result, p)
+	}
+	return result
+}
+
+func filterPolicyTemplates(p Package, category string) *Package {
+	var updatedPolicyTemplates []PolicyTemplate
+	var updatedBasePolicyTemplates []BasePolicyTemplate
+	for i, pt := range p.PolicyTemplates {
+		if StringsContains(pt.Categories, category) {
+			updatedPolicyTemplates = append(updatedPolicyTemplates, pt)
+			updatedBasePolicyTemplates = append(updatedBasePolicyTemplates, p.BasePackage.BasePolicyTemplates[i])
+		}
+	}
+	p.PolicyTemplates = updatedPolicyTemplates
+	p.BasePackage.BasePolicyTemplates = updatedBasePolicyTemplates
+	return &p
 }
 
 // PackageNameVersionFilter is a helper to initialize a PackageFilter with the usual

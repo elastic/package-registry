@@ -7,7 +7,7 @@
   {
     "id": "azure",
     "title": "Azure",
-    "count": 1
+    "count": 2
   },
   {
     "id": "cloud",
@@ -17,7 +17,7 @@
   {
     "id": "compute",
     "title": "compute",
-    "count": 1
+    "count": 2
   },
   {
     "id": "containers",
@@ -27,12 +27,17 @@
   {
     "id": "crm",
     "title": "CRM",
-    "count": 1
+    "count": 2
   },
   {
     "id": "custom",
     "title": "Custom",
-    "count": 13
+    "count": 14
+  },
+  {
+    "id": "datastore",
+    "title": "Datastore",
+    "count": 2
   },
   {
     "id": "message_queue",

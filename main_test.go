@@ -63,6 +63,7 @@ func TestEndpoints(t *testing.T) {
 		{"/search?kibana.version=6.5.2", "/search", "search-kibana652.json", searchHandler(indexer, testCacheTime)},
 		{"/search?kibana.version=7.2.1", "/search", "search-kibana721.json", searchHandler(indexer, testCacheTime)},
 		{"/search?category=web", "/search", "search-category-web.json", searchHandler(indexer, testCacheTime)},
+		{"/search?category=web&all=true", "/search", "search-category-web-all.json", searchHandler(indexer, testCacheTime)},
 		{"/search?category=custom", "/search", "search-category-custom.json", searchHandler(indexer, testCacheTime)},
 		{"/search?package=example", "/search", "search-package-example.json", searchHandler(indexer, testCacheTime)},
 		{"/search?package=example&all=true", "/search", "search-package-example-all.json", searchHandler(indexer, testCacheTime)},
@@ -70,6 +71,7 @@ func TestEndpoints(t *testing.T) {
 		{"/search?internal=bar", "/search", "search-package-internal-error.json", searchHandler(indexer, testCacheTime)},
 		{"/search?experimental=true", "/search", "search-package-experimental.json", searchHandler(indexer, testCacheTime)},
 		{"/search?experimental=foo", "/search", "search-package-experimental-error.json", searchHandler(indexer, testCacheTime)},
+		{"/search?category=datastore&experimental=true", "/search", "search-category-datastore.json", searchHandler(indexer, testCacheTime)},
 		{"/favicon.ico", "", "favicon.ico", faviconHandleFunc},
 	}
 

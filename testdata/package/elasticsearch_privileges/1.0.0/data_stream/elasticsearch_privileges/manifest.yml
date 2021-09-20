@@ -1,0 +1,4 @@
+title: Elasticsearch privileges data stream
+type: metrics
+elasticsearch:
+  privileges.indices: [auto_configure, create_doc, maintenance, monitor, read]
