@@ -133,6 +133,15 @@ func NewZipFileSystemIndexer(paths ...string) *FileSystemIndexer {
 	}
 }
 
+// Init initializes the indexer.
+func (i *FileSystemIndexer) Init(ctx context.Context) (err error) {
+	i.packageList, err = i.getPackagesFromFileSystem(ctx)
+	if err != nil {
+		return errors.Wrapf(err, "reading packages from filesystem failed")
+	}
+	return nil
+}
+
 // GetPackages returns a slice with packages.
 // Options can be used to filter the returned list of packages. When no options are passed
 // or they don't contain any filter, no filtering is done.
@@ -140,14 +149,6 @@ func NewZipFileSystemIndexer(paths ...string) *FileSystemIndexer {
 // This assumes changes to packages only happen on restart (unless development mode is enabled).
 // Caching the packages request many file reads every time this method is called.
 func (i *FileSystemIndexer) GetPackages(ctx context.Context, opts *GetPackagesOptions) (Packages, error) {
-	if i.packageList == nil {
-		var err error
-		i.packageList, err = i.getPackagesFromFileSystem(ctx)
-		if err != nil {
-			return nil, errors.Wrapf(err, "reading packages from filesystem failed")
-		}
-	}
-
 	if opts == nil {
 		return i.packageList, nil
 	}

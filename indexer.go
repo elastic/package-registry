@@ -11,6 +11,7 @@ import (
 )
 
 type Indexer interface {
+	Init(context.Context) error
 	GetPackages(context.Context, *util.GetPackagesOptions) (util.Packages, error)
 }
 
@@ -18,6 +19,16 @@ type CombinedIndexer []Indexer
 
 func NewCombinedIndexer(indexers ...Indexer) CombinedIndexer {
 	return CombinedIndexer(indexers)
+}
+
+func (c CombinedIndexer) Init(ctx context.Context) error {
+	for _, indexer := range c {
+		err := indexer.Init(ctx)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func (c CombinedIndexer) GetPackages(ctx context.Context, opts *util.GetPackagesOptions) (util.Packages, error) {

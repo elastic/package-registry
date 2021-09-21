@@ -195,6 +195,11 @@ func printConfig(config *Config) {
 }
 
 func ensurePackagesAvailable(ctx context.Context, indexer Indexer) {
+	err := indexer.Init(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	packages, err := indexer.GetPackages(ctx, nil)
 	if err != nil {
 		log.Fatal(err)
