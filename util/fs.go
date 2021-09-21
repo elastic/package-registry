@@ -26,24 +26,24 @@ type PackageFileSystem interface {
 	Close() error
 }
 
-// extractedPackageFileSystem provides utils to access files in an extracted package.
-type extractedPackageFileSystem struct {
+// ExtractedPackageFileSystem provides utils to access files in an extracted package.
+type ExtractedPackageFileSystem struct {
 	path string
 }
 
-func NewExtractedPackageFileSystem(p *Package) (*extractedPackageFileSystem, error) {
-	return &extractedPackageFileSystem{path: p.BasePath}, nil
+func NewExtractedPackageFileSystem(p *Package) (*ExtractedPackageFileSystem, error) {
+	return &ExtractedPackageFileSystem{path: p.BasePath}, nil
 }
 
-func (fs *extractedPackageFileSystem) Stat(name string) (os.FileInfo, error) {
+func (fs *ExtractedPackageFileSystem) Stat(name string) (os.FileInfo, error) {
 	return os.Stat(filepath.Join(fs.path, name))
 }
 
-func (fs *extractedPackageFileSystem) Open(name string) (PackageFile, error) {
+func (fs *ExtractedPackageFileSystem) Open(name string) (PackageFile, error) {
 	return os.Open(filepath.Join(fs.path, name))
 }
 
-func (fs *extractedPackageFileSystem) Glob(pattern string) (matches []string, err error) {
+func (fs *ExtractedPackageFileSystem) Glob(pattern string) (matches []string, err error) {
 	matches, err = filepath.Glob(filepath.Join(fs.path, pattern))
 	if err != nil {
 		return
@@ -54,15 +54,15 @@ func (fs *extractedPackageFileSystem) Glob(pattern string) (matches []string, er
 	return
 }
 
-func (fs *extractedPackageFileSystem) Close() error { return nil }
+func (fs *ExtractedPackageFileSystem) Close() error { return nil }
 
-// zipPackageFileSystem provides utils to access files in a zipped package.
-type zipPackageFileSystem struct {
+// ZipPackageFileSystem provides utils to access files in a zipped package.
+type ZipPackageFileSystem struct {
 	root   string
 	reader *zip.ReadCloser
 }
 
-func NewZipPackageFileSystem(p *Package) (*zipPackageFileSystem, error) {
+func NewZipPackageFileSystem(p *Package) (*ZipPackageFileSystem, error) {
 	reader, err := zip.OpenReader(p.BasePath)
 	if err != nil {
 		return nil, err
@@ -81,13 +81,13 @@ func NewZipPackageFileSystem(p *Package) (*zipPackageFileSystem, error) {
 	if !found {
 		return nil, fmt.Errorf("failed to determine root directory in package (path: %s)", p.BasePath)
 	}
-	return &zipPackageFileSystem{
+	return &ZipPackageFileSystem{
 		root:   root,
 		reader: reader,
 	}, nil
 }
 
-func (fs *zipPackageFileSystem) Stat(name string) (os.FileInfo, error) {
+func (fs *ZipPackageFileSystem) Stat(name string) (os.FileInfo, error) {
 	path := filepath.Join(fs.root, name)
 	f, err := fs.reader.Open(path)
 	if err != nil {
@@ -97,7 +97,7 @@ func (fs *zipPackageFileSystem) Stat(name string) (os.FileInfo, error) {
 	return f.Stat()
 }
 
-func (fs *zipPackageFileSystem) Open(name string) (PackageFile, error) {
+func (fs *ZipPackageFileSystem) Open(name string) (PackageFile, error) {
 	path := filepath.Join(fs.root, name)
 	f, err := fs.reader.Open(path)
 	if err != nil {
@@ -110,7 +110,7 @@ func (fs *zipPackageFileSystem) Open(name string) (PackageFile, error) {
 	}, nil
 }
 
-func (fs *zipPackageFileSystem) Glob(pattern string) (matches []string, err error) {
+func (fs *ZipPackageFileSystem) Glob(pattern string) (matches []string, err error) {
 	pattern = filepath.Join(fs.root, pattern)
 	for _, f := range fs.reader.File {
 		match, err := filepath.Match(pattern, filepath.Clean(f.Name))
@@ -125,7 +125,7 @@ func (fs *zipPackageFileSystem) Glob(pattern string) (matches []string, err erro
 	return
 }
 
-func (fs *zipPackageFileSystem) Close() error {
+func (fs *ZipPackageFileSystem) Close() error {
 	return fs.reader.Close()
 }
 
@@ -184,24 +184,24 @@ func ReadAll(fs PackageFileSystem, name string) ([]byte, error) {
 	return ioutil.ReadAll(f)
 }
 
-// virtualPackageFileSystem provide utils for package objects that don't correspond to
+// VirtualPackageFileSystem provide utils for package objects that don't correspond to
 // any real package in any backend. Used mainly for testing purpouses.
-type virtualPackageFileSystem struct{}
+type VirtualPackageFileSystem struct{}
 
-func NewVirtualPackageFileSystem() (*virtualPackageFileSystem, error) {
-	return &virtualPackageFileSystem{}, nil
+func NewVirtualPackageFileSystem() (*VirtualPackageFileSystem, error) {
+	return &VirtualPackageFileSystem{}, nil
 }
 
-func (fs *virtualPackageFileSystem) Stat(name string) (os.FileInfo, error) {
+func (fs *VirtualPackageFileSystem) Stat(name string) (os.FileInfo, error) {
 	return nil, os.ErrNotExist
 }
 
-func (fs *virtualPackageFileSystem) Open(name string) (PackageFile, error) {
+func (fs *VirtualPackageFileSystem) Open(name string) (PackageFile, error) {
 	return nil, os.ErrNotExist
 }
 
-func (fs *virtualPackageFileSystem) Glob(pattern string) (matches []string, err error) {
+func (fs *VirtualPackageFileSystem) Glob(pattern string) (matches []string, err error) {
 	return []string{}, nil
 }
 
-func (fs *virtualPackageFileSystem) Close() error { return nil }
+func (fs *VirtualPackageFileSystem) Close() error { return nil }
