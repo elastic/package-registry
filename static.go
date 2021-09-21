@@ -5,6 +5,7 @@
 package main
 
 import (
+	"errors"
 	"log"
 	"net/http"
 	"time"
@@ -17,34 +18,21 @@ import (
 
 const staticRouterPath = "/package/{packageName}/{packageVersion}/{name:.*}"
 
+type staticParams struct {
+	packageName    string
+	packageVersion string
+	fileName       string
+}
+
 func staticHandler(indexer Indexer, cacheTime time.Duration) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		vars := mux.Vars(r)
-		packageName, ok := vars["packageName"]
-		if !ok {
-			badRequest(w, "missing package name")
-			return
-		}
-
-		packageVersion, ok := vars["packageVersion"]
-		if !ok {
-			badRequest(w, "missing package version")
-			return
-		}
-
-		_, err := semver.StrictNewVersion(packageVersion)
+		params, err := staticParamsFromRequest(r)
 		if err != nil {
-			badRequest(w, "invalid package version")
+			badRequest(w, err.Error())
 			return
 		}
 
-		fileName, ok := vars["name"]
-		if !ok {
-			badRequest(w, "missing file name")
-			return
-		}
-
-		opts := util.PackageNameVersionFilter(packageName, packageVersion)
+		opts := util.PackageNameVersionFilter(params.packageName, params.packageVersion)
 		packages, err := indexer.GetPackages(r.Context(), &opts)
 		if err != nil {
 			log.Printf("getting package path failed: %v", err)
@@ -58,6 +46,36 @@ func staticHandler(indexer Indexer, cacheTime time.Duration) http.HandlerFunc {
 
 		cacheHeaders(w, cacheTime)
 
-		util.ServeFile(w, r, packages[0], fileName)
+		util.ServeFile(w, r, packages[0], params.fileName)
 	}
+}
+
+func staticParamsFromRequest(r *http.Request) (*staticParams, error) {
+	vars := mux.Vars(r)
+	packageName, ok := vars["packageName"]
+	if !ok {
+		return nil, errors.New("missing package name")
+	}
+
+	packageVersion, ok := vars["packageVersion"]
+	if !ok {
+		return nil, errors.New("missing package version")
+	}
+
+	_, err := semver.StrictNewVersion(packageVersion)
+	if err != nil {
+		return nil, errors.New("invalid package version")
+	}
+
+	fileName, ok := vars["name"]
+	if !ok {
+		return nil, errors.New("missing file name")
+	}
+
+	params := staticParams{
+		packageName:    packageName,
+		packageVersion: packageVersion,
+		fileName:       fileName,
+	}
+	return &params, nil
 }
