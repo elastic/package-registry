@@ -2,7 +2,7 @@
 // or more contributor license agreements. Licensed under the Elastic License;
 // you may not use this file except in compliance with the Elastic License.
 
-package util
+package packages
 
 import (
 	"archive/zip"
@@ -15,10 +15,12 @@ import (
 	"github.com/Masterminds/semver/v3"
 	"github.com/pkg/errors"
 	"go.elastic.co/apm"
+
+	"github.com/elastic/package-registry/util"
 )
 
-// PackageValidationDisabled is a flag which can disable package content validation (package, data streams, assets, etc.).
-var PackageValidationDisabled bool
+// ValidationDisabled is a flag which can disable package content validation (package, data streams, assets, etc.).
+var ValidationDisabled bool
 
 // Packages is a list of packages.
 type Packages []*Package
@@ -38,12 +40,12 @@ func (p1 Packages) Join(p2 Packages) Packages {
 	return append(p1, p2...)
 }
 
-// GetPackagesOptions can be used to pass options to GetPackages.
-type GetPackagesOptions struct {
+// GetOptions can be used to pass options to Get.
+type GetOptions struct {
 	// Filter to apply when querying for packages. If the filter is nil,
 	// all packages are returned. This is different to a zero-object filter,
 	// where internal and experimental packages are filtered by default.
-	Filter *PackageFilter
+	Filter *Filter
 }
 
 // FileSystemIndexer indexes packages from the filesystem.
@@ -140,13 +142,13 @@ func (i *FileSystemIndexer) Init(ctx context.Context) (err error) {
 	return nil
 }
 
-// GetPackages returns a slice with packages.
+// Get returns a slice with packages.
 // Options can be used to filter the returned list of packages. When no options are passed
 // or they don't contain any filter, no filtering is done.
 // The list is stored in memory and on the second request directly served from memory.
 // This assumes changes to packages only happen on restart (unless development mode is enabled).
 // Caching the packages request many file reads every time this method is called.
-func (i *FileSystemIndexer) GetPackages(ctx context.Context, opts *GetPackagesOptions) (Packages, error) {
+func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages, error) {
 	if opts == nil {
 		return i.packageList, nil
 	}
@@ -159,7 +161,7 @@ func (i *FileSystemIndexer) GetPackages(ctx context.Context, opts *GetPackagesOp
 }
 
 func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Packages, error) {
-	span, ctx := apm.StartSpan(ctx, "GetPackagesFromFileSystem", "app")
+	span, ctx := apm.StartSpan(ctx, "GetFromFileSystem", "app")
 	span.Context.SetLabel("indexer", i.label)
 	defer span.End()
 
@@ -230,8 +232,8 @@ func (i *FileSystemIndexer) getPackagePaths(packagesPath string) ([]string, erro
 	return foundPaths, nil
 }
 
-// PackageFilter can be used to filter a list of packages.
-type PackageFilter struct {
+// Filter can be used to filter a list of packages.
+type Filter struct {
 	AllVersions    bool
 	Category       string
 	Experimental   bool
@@ -242,7 +244,7 @@ type PackageFilter struct {
 }
 
 // Apply applies the filter to the list of packages, if the filter is nil, no filtering is done.
-func (f *PackageFilter) Apply(ctx context.Context, packages Packages) Packages {
+func (f *Filter) Apply(ctx context.Context, packages Packages) Packages {
 	if f == nil {
 		return packages
 	}
@@ -330,7 +332,7 @@ func filterPolicyTemplates(p Package, category string) *Package {
 	var updatedPolicyTemplates []PolicyTemplate
 	var updatedBasePolicyTemplates []BasePolicyTemplate
 	for i, pt := range p.PolicyTemplates {
-		if StringsContains(pt.Categories, category) {
+		if util.StringsContains(pt.Categories, category) {
 			updatedPolicyTemplates = append(updatedPolicyTemplates, pt)
 			updatedBasePolicyTemplates = append(updatedBasePolicyTemplates, p.BasePackage.BasePolicyTemplates[i])
 		}
@@ -340,11 +342,11 @@ func filterPolicyTemplates(p Package, category string) *Package {
 	return &p
 }
 
-// PackageNameVersionFilter is a helper to initialize a PackageFilter with the usual
+// NameVersionFilter is a helper to initialize a Filter with the usual
 // options to look per name and version along all packages indexed.
-func PackageNameVersionFilter(name, version string) GetPackagesOptions {
-	return GetPackagesOptions{
-		Filter: &PackageFilter{
+func NameVersionFilter(name, version string) GetOptions {
+	return GetOptions{
+		Filter: &Filter{
 			Experimental:   true,
 			Internal:       true,
 			PackageName:    name,

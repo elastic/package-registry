@@ -25,7 +25,7 @@ import (
 
 	ucfgYAML "github.com/elastic/go-ucfg/yaml"
 
-	"github.com/elastic/package-registry/util"
+	"github.com/elastic/package-registry/packages"
 )
 
 const (
@@ -53,7 +53,7 @@ func init() {
 	flag.StringVar(&httpProfAddress, "httpprof", "", "Enable HTTP profiler listening on the given address.")
 	// This flag is experimental and might be removed in the future or renamed
 	flag.BoolVar(&dryRun, "dry-run", false, "Runs a dry-run of the registry without starting the web service (experimental)")
-	flag.BoolVar(&util.PackageValidationDisabled, "disable-package-validation", false, "Disable package content validation")
+	flag.BoolVar(&packages.ValidationDisabled, "disable-package-validation", false, "Disable package content validation")
 }
 
 type Config struct {
@@ -113,8 +113,8 @@ func initServer() *http.Server {
 	config := mustLoadConfig()
 	packagesBasePaths := getPackagesBasePaths(config)
 	indexer := NewCombinedIndexer(
-		util.NewFileSystemIndexer(packagesBasePaths...),
-		util.NewZipFileSystemIndexer(packagesBasePaths...),
+		packages.NewFileSystemIndexer(packagesBasePaths...),
+		packages.NewZipFileSystemIndexer(packagesBasePaths...),
 	)
 	ensurePackagesAvailable(ctx, indexer)
 
@@ -192,7 +192,7 @@ func ensurePackagesAvailable(ctx context.Context, indexer Indexer) {
 		log.Fatal(err)
 	}
 
-	packages, err := indexer.GetPackages(ctx, nil)
+	packages, err := indexer.Get(ctx, nil)
 	if err != nil {
 		log.Fatal(err)
 	}

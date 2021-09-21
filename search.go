@@ -18,7 +18,7 @@ import (
 	"github.com/pkg/errors"
 	"go.elastic.co/apm"
 
-	"github.com/elastic/package-registry/util"
+	"github.com/elastic/package-registry/packages"
 )
 
 func searchHandler(indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
@@ -28,11 +28,11 @@ func searchHandler(indexer Indexer, cacheTime time.Duration) func(w http.Respons
 			badRequest(w, err.Error())
 			return
 		}
-		opts := util.GetPackagesOptions{
+		opts := packages.GetOptions{
 			Filter: filter,
 		}
 
-		packages, err := indexer.GetPackages(r.Context(), &opts)
+		packages, err := indexer.Get(r.Context(), &opts)
 		if err != nil {
 			notFoundError(w, errors.Wrapf(err, "fetching package failed"))
 			return
@@ -50,8 +50,8 @@ func searchHandler(indexer Indexer, cacheTime time.Duration) func(w http.Respons
 	}
 }
 
-func newSearchFilterFromQuery(query url.Values) (*util.PackageFilter, error) {
-	var filter util.PackageFilter
+func newSearchFilterFromQuery(query url.Values) (*packages.Filter, error) {
+	var filter packages.Filter
 
 	if len(query) == 0 {
 		return &filter, nil
@@ -100,15 +100,15 @@ func newSearchFilterFromQuery(query url.Values) (*util.PackageFilter, error) {
 	return &filter, nil
 }
 
-func getPackageOutput(ctx context.Context, packages util.Packages) ([]byte, error) {
+func getPackageOutput(ctx context.Context, packageList packages.Packages) ([]byte, error) {
 	span, ctx := apm.StartSpan(ctx, "GetPackageOutput", "app")
 	defer span.End()
 
 	// Packages need to be sorted to be always outputted in the same order
-	sort.Sort(packages)
+	sort.Sort(packageList)
 
-	var output []util.BasePackage
-	for _, p := range packages {
+	var output []packages.BasePackage
+	for _, p := range packageList {
 		data := p.BasePackage
 		output = append(output, data)
 	}

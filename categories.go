@@ -17,6 +17,7 @@ import (
 	"github.com/Masterminds/semver/v3"
 	"go.elastic.co/apm"
 
+	"github.com/elastic/package-registry/packages"
 	"github.com/elastic/package-registry/util"
 )
 
@@ -46,10 +47,10 @@ func categoriesHandler(indexer Indexer, cacheTime time.Duration) func(w http.Res
 			}
 		}
 
-		opts := util.GetPackagesOptions{
+		opts := packages.GetOptions{
 			Filter: filter,
 		}
-		packages, err := indexer.GetPackages(r.Context(), &opts)
+		packages, err := indexer.Get(r.Context(), &opts)
 		if err != nil {
 			notFoundError(w, err)
 			return
@@ -69,8 +70,8 @@ func categoriesHandler(indexer Indexer, cacheTime time.Duration) func(w http.Res
 	}
 }
 
-func newCategoriesFilterFromQuery(query url.Values) (*util.PackageFilter, error) {
-	var filter util.PackageFilter
+func newCategoriesFilterFromQuery(query url.Values) (*packages.Filter, error) {
+	var filter packages.Filter
 
 	if len(query) == 0 {
 		return &filter, nil
@@ -94,7 +95,7 @@ func newCategoriesFilterFromQuery(query url.Values) (*util.PackageFilter, error)
 	return &filter, nil
 }
 
-func getCategories(ctx context.Context, packages util.Packages, includePolicyTemplates bool) map[string]*Category {
+func getCategories(ctx context.Context, packages packages.Packages, includePolicyTemplates bool) map[string]*Category {
 	span, ctx := apm.StartSpan(ctx, "FilterCategories", "app")
 	defer span.End()
 
@@ -166,7 +167,7 @@ func getCategoriesOutput(ctx context.Context, categories map[string]*Category) (
 	var outputCategories []*Category
 	for _, k := range keys {
 		c := categories[k]
-		if title, ok := util.CategoryTitles[c.Title]; ok {
+		if title, ok := packages.CategoryTitles[c.Title]; ok {
 			c.Title = title
 		}
 		outputCategories = append(outputCategories, c)

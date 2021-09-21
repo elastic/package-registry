@@ -2,7 +2,7 @@
 // or more contributor license agreements. Licensed under the Elastic License;
 // you may not use this file except in compliance with the Elastic License.
 
-package util
+package packages
 
 import (
 	"encoding/json"
@@ -16,6 +16,8 @@ import (
 
 	ucfg "github.com/elastic/go-ucfg"
 	"github.com/elastic/go-ucfg/yaml"
+
+	"github.com/elastic/package-registry/util"
 )
 
 const (
@@ -208,7 +210,7 @@ func NewDataStream(basePath string, p *Package) (*DataStream, error) {
 }
 
 func (d *DataStream) Validate() error {
-	if PackageValidationDisabled {
+	if ValidationDisabled {
 		return nil
 	}
 
@@ -302,14 +304,14 @@ func (d *DataStream) validateRequiredFields(fs PackageFileSystem) error {
 	if err != nil {
 		return err
 	}
-	var allFields []MapStr
+	var allFields []util.MapStr
 	for _, path := range fieldsFiles {
 		body, err := ReadAll(fs, path)
 		if err != nil {
 			return errors.Wrapf(err, "reading file failed (path: %s)", path)
 		}
 
-		var m []MapStr
+		var m []util.MapStr
 		err = yamlv2.Unmarshal(body, &m)
 		if err != nil {
 			return errors.Wrapf(err, "unmarshaling file failed (path: %s)", path)
@@ -335,7 +337,7 @@ func (d *DataStream) validateRequiredFields(fs PackageFileSystem) error {
 	return err
 }
 
-func requireField(allFields []MapStr, searchedName, expectedType string, validationErr error) error {
+func requireField(allFields []util.MapStr, searchedName, expectedType string, validationErr error) error {
 	if validationErr != nil {
 		return validationErr
 	}
@@ -354,7 +356,7 @@ func requireField(allFields []MapStr, searchedName, expectedType string, validat
 	return nil
 }
 
-func findFieldSplit(allFields []MapStr, searchedName string) (*fieldEntry, error) {
+func findFieldSplit(allFields []util.MapStr, searchedName string) (*fieldEntry, error) {
 	levels := strings.Split(searchedName, ".")
 	curFields := allFields
 	var err error
@@ -367,8 +369,8 @@ func findFieldSplit(allFields []MapStr, searchedName string) (*fieldEntry, error
 	return findField(curFields, levels[len(levels)-1])
 }
 
-func createMapStr(in interface{}) (MapStr, error) {
-	m := make(MapStr)
+func createMapStr(in interface{}) (util.MapStr, error) {
+	m := make(util.MapStr)
 	v, ok := in.(map[interface{}]interface{})
 	if !ok {
 		return nil, fmt.Errorf("unable to convert %v to known type", in)
@@ -379,7 +381,7 @@ func createMapStr(in interface{}) (MapStr, error) {
 	return m, nil
 }
 
-func getFieldsArray(allFields []MapStr, searchedName string) ([]MapStr, error) {
+func getFieldsArray(allFields []util.MapStr, searchedName string) ([]util.MapStr, error) {
 	for _, fields := range allFields {
 		name, err := fields.GetValue("name")
 		if err != nil {
@@ -392,7 +394,7 @@ func getFieldsArray(allFields []MapStr, searchedName string) ([]MapStr, error) {
 			}
 
 			if inArray, ok := value.([]interface{}); ok {
-				m := make([]MapStr, 0, len(inArray))
+				m := make([]util.MapStr, 0, len(inArray))
 				for _, in := range inArray {
 					mapStr, err := createMapStr(in)
 					if err != nil {
@@ -408,7 +410,7 @@ func getFieldsArray(allFields []MapStr, searchedName string) ([]MapStr, error) {
 	return nil, fmt.Errorf("field '%s' not found", searchedName)
 }
 
-func findField(allFields []MapStr, searchedName string) (*fieldEntry, error) {
+func findField(allFields []util.MapStr, searchedName string) (*fieldEntry, error) {
 	for _, fields := range allFields {
 		name, err := fields.GetValue("name")
 		if err != nil {

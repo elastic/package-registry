@@ -13,7 +13,7 @@ import (
 	"github.com/Masterminds/semver/v3"
 	"github.com/gorilla/mux"
 
-	"github.com/elastic/package-registry/util"
+	"github.com/elastic/package-registry/packages"
 )
 
 const staticRouterPath = "/package/{packageName}/{packageVersion}/{name:.*}"
@@ -32,21 +32,21 @@ func staticHandler(indexer Indexer, cacheTime time.Duration) http.HandlerFunc {
 			return
 		}
 
-		opts := util.PackageNameVersionFilter(params.packageName, params.packageVersion)
-		packages, err := indexer.GetPackages(r.Context(), &opts)
+		opts := packages.NameVersionFilter(params.packageName, params.packageVersion)
+		packageList, err := indexer.Get(r.Context(), &opts)
 		if err != nil {
 			log.Printf("getting package path failed: %v", err)
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
-		if len(packages) == 0 {
+		if len(packageList) == 0 {
 			notFoundError(w, errPackageRevisionNotFound)
 			return
 		}
 
 		cacheHeaders(w, cacheTime)
 
-		util.ServeFile(w, r, packages[0], params.fileName)
+		packages.ServeFile(w, r, packageList[0], params.fileName)
 	}
 }
 

@@ -15,7 +15,7 @@ import (
 	"github.com/Masterminds/semver/v3"
 	"github.com/gorilla/mux"
 
-	"github.com/elastic/package-registry/util"
+	"github.com/elastic/package-registry/packages"
 )
 
 const (
@@ -45,8 +45,8 @@ func packageIndexHandler(indexer Indexer, cacheTime time.Duration) func(w http.R
 			return
 		}
 
-		opts := util.PackageNameVersionFilter(packageName, packageVersion)
-		packages, err := indexer.GetPackages(r.Context(), &opts)
+		opts := packages.NameVersionFilter(packageName, packageVersion)
+		packages, err := indexer.Get(r.Context(), &opts)
 		if err != nil {
 			log.Printf("getting package path failed: %v", err)
 			http.Error(w, "internal server error", http.StatusInternalServerError)

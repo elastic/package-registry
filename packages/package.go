@@ -2,7 +2,7 @@
 // or more contributor license agreements. Licensed under the Elastic License;
 // you may not use this file except in compliance with the Elastic License.
 
-package util
+package packages
 
 import (
 	"fmt"
@@ -16,6 +16,8 @@ import (
 
 	ucfg "github.com/elastic/go-ucfg"
 	"github.com/elastic/go-ucfg/yaml"
+
+	"github.com/elastic/package-registry/util"
 )
 
 const (
@@ -300,12 +302,12 @@ func NewPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) 
 }
 
 func (p *Package) HasCategory(category string) bool {
-	return StringsContains(p.Categories, category)
+	return util.StringsContains(p.Categories, category)
 }
 
 func (p *Package) HasPolicyTemplateWithCategory(category string) bool {
 	for _, pt := range p.PolicyTemplates {
-		if StringsContains(pt.Categories, category) {
+		if util.StringsContains(pt.Categories, category) {
 			return true
 		}
 	}
@@ -395,7 +397,7 @@ func (p *Package) fs() (PackageFileSystem, error) {
 // Validate is called during Unpack of the manifest.
 // The validation here is only related to the fields directly specified in the manifest itself.
 func (p *Package) Validate() error {
-	if PackageValidationDisabled {
+	if ValidationDisabled {
 		return nil
 	}
 

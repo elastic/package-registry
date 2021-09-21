@@ -7,12 +7,12 @@ package main
 import (
 	"context"
 
-	"github.com/elastic/package-registry/util"
+	"github.com/elastic/package-registry/packages"
 )
 
 type Indexer interface {
 	Init(context.Context) error
-	GetPackages(context.Context, *util.GetPackagesOptions) (util.Packages, error)
+	Get(context.Context, *packages.GetOptions) (packages.Packages, error)
 }
 
 type CombinedIndexer []Indexer
@@ -31,10 +31,10 @@ func (c CombinedIndexer) Init(ctx context.Context) error {
 	return nil
 }
 
-func (c CombinedIndexer) GetPackages(ctx context.Context, opts *util.GetPackagesOptions) (util.Packages, error) {
-	var packages util.Packages
+func (c CombinedIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.Packages, error) {
+	var packages packages.Packages
 	for _, indexer := range c {
-		p, err := indexer.GetPackages(ctx, opts)
+		p, err := indexer.Get(ctx, opts)
 		if err != nil {
 			return nil, err
 		}

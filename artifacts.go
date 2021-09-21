@@ -13,7 +13,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
 
-	"github.com/elastic/package-registry/util"
+	"github.com/elastic/package-registry/packages"
 )
 
 const artifactsRouterPath = "/epr/{packageName}/{packageName:[a-z0-9_]+}-{packageVersion}.zip"
@@ -41,19 +41,19 @@ func artifactsHandler(indexer Indexer, cacheTime time.Duration) func(w http.Resp
 			return
 		}
 
-		opts := util.PackageNameVersionFilter(packageName, packageVersion)
-		packages, err := indexer.GetPackages(r.Context(), &opts)
+		opts := packages.NameVersionFilter(packageName, packageVersion)
+		packageList, err := indexer.Get(r.Context(), &opts)
 		if err != nil {
 			log.Printf("getting package path failed: %v", err)
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
-		if len(packages) == 0 {
+		if len(packageList) == 0 {
 			notFoundError(w, errArtifactNotFound)
 			return
 		}
 
 		cacheHeaders(w, cacheTime)
-		util.ServePackage(w, r, packages[0])
+		packages.ServePackage(w, r, packageList[0])
 	}
 }
