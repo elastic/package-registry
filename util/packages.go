@@ -54,26 +54,24 @@ type FileSystemIndexer struct {
 	// Label used for APM instrumentation.
 	label string
 
-	// Walker function used to look for files.
-	walkerFn func(basePath, path string, info os.DirEntry) error
+	// Walker function used to look for files, it returns true for paths that should be indexed.
+	walkerFn func(basePath, path string, info os.DirEntry) (shouldIndex bool, err error)
 
 	// Builder to access the files of a package in this indexer.
 	fsBuilder FileSystemBuilder
 }
 
-var walkerIndexFile = errors.New("file should be indexed")
-
 // NewFileSystemIndexer creates a new FileSystemIndexer for the given paths.
 func NewFileSystemIndexer(paths ...string) *FileSystemIndexer {
-	walkerFn := func(basePath, path string, info os.DirEntry) error {
+	walkerFn := func(basePath, path string, info os.DirEntry) (bool, error) {
 		relativePath, err := filepath.Rel(basePath, path)
 		if err != nil {
-			return err
+			return false, err
 		}
 
 		dirs := strings.Split(relativePath, string(filepath.Separator))
 		if len(dirs) < 2 {
-			return nil // need to go to the package version level
+			return false, nil // need to go to the package version level
 		}
 
 		if info.IsDir() {
@@ -81,15 +79,15 @@ func NewFileSystemIndexer(paths ...string) *FileSystemIndexer {
 			_, err := semver.StrictNewVersion(versionDir)
 			if err != nil {
 				log.Printf("warning: unexpected directory: %s, ignoring", path)
-				return filepath.SkipDir
+				return false, filepath.SkipDir
 			}
-			return walkerIndexFile
+			return true, nil
 		}
 		// Unexpected file, return nil in order to continue processing sibling directories
 		// Fixes an annoying problem when the .DS_Store file is left behind and the package
 		// is not loading without any error information
 		log.Printf("warning: unexpected file: %s, ignoring", path)
-		return nil
+		return false, nil
 	}
 	fsBuilder := func(p *Package) (PackageFileSystem, error) {
 		return NewExtractedPackageFileSystem(p)
@@ -104,23 +102,23 @@ func NewFileSystemIndexer(paths ...string) *FileSystemIndexer {
 
 // NewZipFileSystemIndexer creates a new ZipFileSystemIndexer for the given paths.
 func NewZipFileSystemIndexer(paths ...string) *FileSystemIndexer {
-	walkerFn := func(basePath, path string, info os.DirEntry) error {
+	walkerFn := func(basePath, path string, info os.DirEntry) (bool, error) {
 		if info.IsDir() {
-			return nil
+			return false, nil
 		}
 		if !strings.HasSuffix(path, ".zip") {
-			return nil
+			return false, nil
 		}
 
 		// Check if the file is actually a zip file.
 		r, err := zip.OpenReader(path)
 		if err != nil {
 			log.Printf("warning: zip file cannot be opened as zip: %s, ignoring: %v", path, err)
-			return nil
+			return false, nil
 		}
 		defer r.Close()
 
-		return walkerIndexFile
+		return true, nil
 	}
 	fsBuilder := func(p *Package) (PackageFileSystem, error) {
 		return NewZipPackageFileSystem(p)
@@ -211,9 +209,12 @@ func (i *FileSystemIndexer) getPackagePaths(packagesPath string) ([]string, erro
 			return err
 		}
 
-		err = i.walkerFn(packagesPath, path, info)
-		if err != walkerIndexFile {
+		shouldIndex, err := i.walkerFn(packagesPath, path, info)
+		if err != nil {
 			return err
+		}
+		if !shouldIndex {
+			return nil
 		}
 		foundPaths = append(foundPaths, path)
 		if info.IsDir() {
