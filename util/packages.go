@@ -55,7 +55,7 @@ type FileSystemIndexer struct {
 	label string
 
 	// Walker function used to look for files.
-	walkerFn func(basePath, path string, info os.FileInfo) error
+	walkerFn func(basePath, path string, info os.DirEntry) error
 
 	// Builder to access the files of a package in this indexer.
 	fsBuilder FileSystemBuilder
@@ -65,7 +65,7 @@ var walkerIndexFile = errors.New("file should be indexed")
 
 // NewFileSystemIndexer creates a new FileSystemIndexer for the given paths.
 func NewFileSystemIndexer(paths ...string) *FileSystemIndexer {
-	walkerFn := func(basePath, path string, info os.FileInfo) error {
+	walkerFn := func(basePath, path string, info os.DirEntry) error {
 		relativePath, err := filepath.Rel(basePath, path)
 		if err != nil {
 			return err
@@ -104,7 +104,7 @@ func NewFileSystemIndexer(paths ...string) *FileSystemIndexer {
 
 // NewZipFileSystemIndexer creates a new ZipFileSystemIndexer for the given paths.
 func NewZipFileSystemIndexer(paths ...string) *FileSystemIndexer {
-	walkerFn := func(basePath, path string, info os.FileInfo) error {
+	walkerFn := func(basePath, path string, info os.DirEntry) error {
 		if info.IsDir() {
 			return nil
 		}
@@ -203,7 +203,7 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 // getPackagePaths returns list of available packages, one for each version.
 func (i *FileSystemIndexer) getPackagePaths(packagesPath string) ([]string, error) {
 	var foundPaths []string
-	err := filepath.Walk(packagesPath, func(path string, info os.FileInfo, err error) error {
+	err := filepath.WalkDir(packagesPath, func(path string, info os.DirEntry, err error) error {
 		if os.IsNotExist(err) {
 			return filepath.SkipDir
 		}
