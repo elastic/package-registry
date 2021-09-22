@@ -7,15 +7,15 @@
   "type": "solution",
   "download": "/epr/input_level_templates/input_level_templates-1.0.0.zip",
   "path": "/package/input_level_templates/1.0.0",
+  "conditions": {
+    "kibana.version": ">=7.11.0"
+  },
   "format_version": "1.0.0",
   "readme": "/package/input_level_templates/1.0.0/docs/README.md",
   "license": "basic",
   "categories": [
     "custom"
   ],
-  "conditions": {
-    "kibana.version": "\u003e=7.11.0"
-  },
   "assets": [
     "/package/input_level_templates/1.0.0/manifest.yml",
     "/package/input_level_templates/1.0.0/docs/README.md",

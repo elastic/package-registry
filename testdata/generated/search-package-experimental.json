@@ -68,7 +68,10 @@
     "description": "Test package-specified Elasticsearch index privileges",
     "type": "solution",
     "download": "/epr/elasticsearch_privileges/elasticsearch_privileges-1.0.0.zip",
-    "path": "/package/elasticsearch_privileges/1.0.0"
+    "path": "/package/elasticsearch_privileges/1.0.0",
+    "conditions": {
+      "kibana.version": ">=7.16.0"
+    }
   },
   {
     "name": "example",
@@ -85,7 +88,13 @@
         "title": "Logs datasource",
         "description": "Datasource for your log files."
       }
-    ]
+    ],
+    "conditions": {
+      "kibana.version": "~7.x.x"
+    },
+    "owner": {
+      "github": "ruflin"
+    }
   },
   {
     "name": "experimental",
@@ -105,7 +114,13 @@
     "description": "Not actually APM",
     "type": "integration",
     "download": "/epr/fakeapm/fakeapm-1.0.0.zip",
-    "path": "/package/fakeapm/1.0.0"
+    "path": "/package/fakeapm/1.0.0",
+    "conditions": {
+      "kibana.version": "~7.x.x"
+    },
+    "owner": {
+      "github": "github.com/elastic/not-apm"
+    }
   },
   {
     "name": "foo",
@@ -115,7 +130,10 @@
     "description": "This is the foo integration",
     "type": "solution",
     "download": "/epr/foo/foo-1.0.0.zip",
-    "path": "/package/foo/1.0.0"
+    "path": "/package/foo/1.0.0",
+    "conditions": {
+      "kibana.version": ">=7.0.0"
+    }
   },
   {
     "name": "hidden",
@@ -125,7 +143,10 @@
     "description": "This is the hidden integration",
     "type": "solution",
     "download": "/epr/hidden/hidden-1.0.0.zip",
-    "path": "/package/hidden/1.0.0"
+    "path": "/package/hidden/1.0.0",
+    "conditions": {
+      "kibana.version": ">=7.0.0"
+    }
   },
   {
     "name": "ilmpolicy",
@@ -135,7 +156,10 @@
     "description": "Test form ILM Policy in Package",
     "type": "solution",
     "download": "/epr/ilmpolicy/ilmpolicy-1.0.0.zip",
-    "path": "/package/ilmpolicy/1.0.0"
+    "path": "/package/ilmpolicy/1.0.0",
+    "conditions": {
+      "kibana.version": ">=7.0.0"
+    }
   },
   {
     "name": "input_groups",
@@ -170,7 +194,10 @@
           }
         ]
       }
-    ]
+    ],
+    "conditions": {
+      "kibana.version": "~7.x.x"
+    }
   },
   {
     "name": "input_level_templates",
@@ -187,7 +214,10 @@
         "title": "Input level templates",
         "description": "Input with input-level template to use input-level vars with"
       }
-    ]
+    ],
+    "conditions": {
+      "kibana.version": ">=7.11.0"
+    }
   },
   {
     "name": "longdocs",
@@ -204,7 +234,10 @@
         "path": "/package/longdocs/1.0.4/img/icon.svg",
         "type": "image/svg+xml"
       }
-    ]
+    ],
+    "conditions": {
+      "kibana.version": ">6.7.0"
+    }
   },
   {
     "name": "metricsonly",
@@ -255,7 +288,10 @@
         "path": "/package/multiversion/1.1.0/img/icon.svg",
         "type": "image/svg+xml"
       }
-    ]
+    ],
+    "conditions": {
+      "kibana.version": ">6.7.0"
+    }
   },
   {
     "name": "no_stream_configs",
@@ -290,7 +326,13 @@
         "title": "Nginx logs and metrics.",
         "description": "Collecting logs and metrics from nginx."
       }
-    ]
+    ],
+    "conditions": {
+      "kibana.version": ">6.7.0  <7.6.0"
+    },
+    "owner": {
+      "github": "ruflin"
+    }
   },
   {
     "name": "yamlpipeline",

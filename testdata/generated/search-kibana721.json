@@ -75,7 +75,13 @@
         "title": "Logs datasource",
         "description": "Datasource for your log files."
       }
-    ]
+    ],
+    "conditions": {
+      "kibana.version": "~7.x.x"
+    },
+    "owner": {
+      "github": "ruflin"
+    }
   },
   {
     "name": "foo",
@@ -85,7 +91,10 @@
     "description": "This is the foo integration",
     "type": "solution",
     "download": "/epr/foo/foo-1.0.0.zip",
-    "path": "/package/foo/1.0.0"
+    "path": "/package/foo/1.0.0",
+    "conditions": {
+      "kibana.version": ">=7.0.0"
+    }
   },
   {
     "name": "hidden",
@@ -95,7 +104,10 @@
     "description": "This is the hidden integration",
     "type": "solution",
     "download": "/epr/hidden/hidden-1.0.0.zip",
-    "path": "/package/hidden/1.0.0"
+    "path": "/package/hidden/1.0.0",
+    "conditions": {
+      "kibana.version": ">=7.0.0"
+    }
   },
   {
     "name": "ilmpolicy",
@@ -105,7 +117,10 @@
     "description": "Test form ILM Policy in Package",
     "type": "solution",
     "download": "/epr/ilmpolicy/ilmpolicy-1.0.0.zip",
-    "path": "/package/ilmpolicy/1.0.0"
+    "path": "/package/ilmpolicy/1.0.0",
+    "conditions": {
+      "kibana.version": ">=7.0.0"
+    }
   },
   {
     "name": "input_groups",
@@ -140,7 +155,10 @@
           }
         ]
       }
-    ]
+    ],
+    "conditions": {
+      "kibana.version": "~7.x.x"
+    }
   },
   {
     "name": "longdocs",
@@ -157,7 +175,10 @@
         "path": "/package/longdocs/1.0.4/img/icon.svg",
         "type": "image/svg+xml"
       }
-    ]
+    ],
+    "conditions": {
+      "kibana.version": ">6.7.0"
+    }
   },
   {
     "name": "metricsonly",
@@ -208,7 +229,10 @@
         "path": "/package/multiversion/1.1.0/img/icon.svg",
         "type": "image/svg+xml"
       }
-    ]
+    ],
+    "conditions": {
+      "kibana.version": ">6.7.0"
+    }
   },
   {
     "name": "no_stream_configs",
@@ -243,7 +267,13 @@
         "title": "Nginx logs and metrics.",
         "description": "Collecting logs and metrics from nginx."
       }
-    ]
+    ],
+    "conditions": {
+      "kibana.version": ">6.7.0  <7.6.0"
+    },
+    "owner": {
+      "github": "ruflin"
+    }
   },
   {
     "name": "yamlpipeline",

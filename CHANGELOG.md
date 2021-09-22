@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `constraints` and `owner` fields to `/search` responses. [#731](https://github.com/elastic/package-registry/issues/731) [#734](https://github.com/elastic/package-registry/pull/734)
+
 ### Deprecated
 
 ### Known Issues

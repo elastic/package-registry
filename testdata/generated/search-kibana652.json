@@ -68,7 +68,10 @@
     "description": "This is the example integration.",
     "type": "integration",
     "download": "/epr/example/example-0.0.2.zip",
-    "path": "/package/example/0.0.2"
+    "path": "/package/example/0.0.2",
+    "conditions": {
+      "kibana.version": ">=6.0.0"
+    }
   },
   {
     "name": "metricsonly",

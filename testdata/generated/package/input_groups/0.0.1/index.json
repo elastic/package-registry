@@ -16,6 +16,9 @@
       "type": "image/svg+xml"
     }
   ],
+  "conditions": {
+    "kibana.version": "~7.x.x"
+  },
   "format_version": "1.0.0",
   "readme": "/package/input_groups/0.0.1/docs/README.md",
   "license": "basic",
@@ -23,9 +26,6 @@
     "aws",
     "cloud"
   ],
-  "conditions": {
-    "kibana.version": "~7.x.x"
-  },
   "screenshots": [
     {
       "src": "/img/metricbeat-aws-overview.png",

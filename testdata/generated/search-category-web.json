@@ -14,7 +14,10 @@
         "path": "/package/longdocs/1.0.4/img/icon.svg",
         "type": "image/svg+xml"
       }
-    ]
+    ],
+    "conditions": {
+      "kibana.version": ">6.7.0"
+    }
   },
   {
     "name": "multiversion",
@@ -31,7 +34,10 @@
         "path": "/package/multiversion/1.1.0/img/icon.svg",
         "type": "image/svg+xml"
       }
-    ]
+    ],
+    "conditions": {
+      "kibana.version": ">6.7.0"
+    }
   },
   {
     "name": "reference",
@@ -56,6 +62,12 @@
         "title": "Nginx logs and metrics.",
         "description": "Collecting logs and metrics from nginx."
       }
-    ]
+    ],
+    "conditions": {
+      "kibana.version": ">6.7.0  <7.6.0"
+    },
+    "owner": {
+      "github": "ruflin"
+    }
   }
 ]
