@@ -22,7 +22,9 @@
     "web"
   ],
   "conditions": {
-    "kibana.version": "\u003e6.7.0"
+    "kibana": {
+      "version": "\u003e6.7.0"
+    }
   },
   "assets": [
     "/package/multiversion/1.0.3/changelog.yml",

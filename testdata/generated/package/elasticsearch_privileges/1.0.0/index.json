@@ -14,7 +14,9 @@
     "custom"
   ],
   "conditions": {
-    "kibana.version": "\u003e=7.16.0"
+    "kibana": {
+      "version": "\u003e=7.16.0"
+    }
   },
   "assets": [
     "/package/elasticsearch_privileges/1.0.0/manifest.yml",
