@@ -2,4 +2,5 @@
 package-registry
 
 .idea
+*.iml
 build

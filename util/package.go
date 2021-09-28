@@ -83,6 +83,7 @@ type BasePackage struct {
 	Icons               []Image              `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
 	Internal            bool                 `config:"internal,omitempty" json:"internal,omitempty" yaml:"internal,omitempty"`
 	BasePolicyTemplates []BasePolicyTemplate `json:"policy_templates,omitempty"`
+	Categories          []string             `config:"categories" json:"categories"`
 }
 
 // BasePolicyTemplate is used for the package policy templates in the /search endpoint
