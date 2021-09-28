@@ -220,8 +220,7 @@
     "type": "integration",
     "download": "/epr/internal/internal-1.2.0.zip",
     "path": "/package/internal/1.2.0",
-    "internal": true,
-    "categories": []
+    "internal": true
   },
   {
     "name": "longdocs",
