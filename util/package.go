@@ -83,16 +83,16 @@ type BasePackage struct {
 	Icons               []Image              `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
 	Internal            bool                 `config:"internal,omitempty" json:"internal,omitempty" yaml:"internal,omitempty"`
 	BasePolicyTemplates []BasePolicyTemplate `json:"policy_templates,omitempty"`
-	Categories          []string             `config:"categories" json:"categories"`
+	Categories          []string             `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
 }
 
 // BasePolicyTemplate is used for the package policy templates in the /search endpoint
 type BasePolicyTemplate struct {
-	Name        string  	`config:"name" json:"name" validate:"required"`
-	Title       string  	`config:"title" json:"title" validate:"required"`
-	Description string  	`config:"description" json:"description" validate:"required"`
-	Icons       []Image 	`config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
-	Categories  []string 	`config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
+	Name        string   `config:"name" json:"name" validate:"required"`
+	Title       string   `config:"title" json:"title" validate:"required"`
+	Description string   `config:"description" json:"description" validate:"required"`
+	Icons       []Image  `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
+	Categories  []string `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
 }
 
 type PolicyTemplate struct {
