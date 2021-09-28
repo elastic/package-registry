@@ -12,8 +12,15 @@
       {
         "name": "logs",
         "title": "Logs datasource",
-        "description": "Datasource for your log files."
+        "description": "Datasource for your log files.",
+        "categories": [
+          "datastore"
+        ]
       }
+    ],
+    "categories": [
+      "crm",
+      "azure"
     ]
   }
 ]

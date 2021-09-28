@@ -7,7 +7,10 @@
     "description": "This package contains a datastream with the dataset_is_prefix flag set to true.\n",
     "type": "integration",
     "download": "/epr/dataset_is_prefix/dataset_is_prefix-0.0.1.zip",
-    "path": "/package/dataset_is_prefix/0.0.1"
+    "path": "/package/dataset_is_prefix/0.0.1",
+    "categories": [
+      "custom"
+    ]
   },
   {
     "name": "datasources",
@@ -24,6 +27,9 @@
         "title": "Datasource title",
         "description": "Details about the data source."
       }
+    ],
+    "categories": [
+      "custom"
     ]
   },
   {
@@ -41,6 +47,10 @@
         "title": "Logs datasource",
         "description": "Datasource for your log files."
       }
+    ],
+    "categories": [
+      "containers",
+      "message_queue"
     ]
   },
   {
@@ -58,6 +68,9 @@
         "title": "Logs datasource",
         "description": "Datasource for your log files."
       }
+    ],
+    "categories": [
+      "monitoring"
     ]
   },
   {
@@ -68,7 +81,10 @@
     "description": "Test package-specified Elasticsearch index privileges",
     "type": "solution",
     "download": "/epr/elasticsearch_privileges/elasticsearch_privileges-1.0.0.zip",
-    "path": "/package/elasticsearch_privileges/1.0.0"
+    "path": "/package/elasticsearch_privileges/1.0.0",
+    "categories": [
+      "custom"
+    ]
   },
   {
     "name": "example",
@@ -83,8 +99,15 @@
       {
         "name": "logs",
         "title": "Logs datasource",
-        "description": "Datasource for your log files."
+        "description": "Datasource for your log files.",
+        "categories": [
+          "datastore"
+        ]
       }
+    ],
+    "categories": [
+      "crm",
+      "azure"
     ]
   },
   {
@@ -95,7 +118,10 @@
     "description": "This is the foo integration",
     "type": "solution",
     "download": "/epr/foo/foo-1.0.0.zip",
-    "path": "/package/foo/1.0.0"
+    "path": "/package/foo/1.0.0",
+    "categories": [
+      "custom"
+    ]
   },
   {
     "name": "hidden",
@@ -105,7 +131,10 @@
     "description": "This is the hidden integration",
     "type": "solution",
     "download": "/epr/hidden/hidden-1.0.0.zip",
-    "path": "/package/hidden/1.0.0"
+    "path": "/package/hidden/1.0.0",
+    "categories": [
+      "custom"
+    ]
   },
   {
     "name": "ilmpolicy",
@@ -115,7 +144,10 @@
     "description": "Test form ILM Policy in Package",
     "type": "solution",
     "download": "/epr/ilmpolicy/ilmpolicy-1.0.0.zip",
-    "path": "/package/ilmpolicy/1.0.0"
+    "path": "/package/ilmpolicy/1.0.0",
+    "categories": [
+      "custom"
+    ]
   },
   {
     "name": "input_groups",
@@ -148,8 +180,15 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "categories": [
+          "compute"
         ]
       }
+    ],
+    "categories": [
+      "aws",
+      "cloud"
     ]
   },
   {
@@ -167,6 +206,9 @@
         "title": "Input level templates",
         "description": "Input with input-level template to use input-level vars with"
       }
+    ],
+    "categories": [
+      "custom"
     ]
   },
   {
@@ -184,6 +226,10 @@
         "path": "/package/longdocs/1.0.4/img/icon.svg",
         "type": "image/svg+xml"
       }
+    ],
+    "categories": [
+      "custom",
+      "web"
     ]
   },
   {
@@ -201,6 +247,9 @@
         "path": "/package/metricsonly/2.0.1/img/icon.svg",
         "type": "image/svg+xml"
       }
+    ],
+    "categories": [
+      "custom"
     ]
   },
   {
@@ -218,6 +267,9 @@
         "title": "Logs datasource",
         "description": "Datasource for your log files."
       }
+    ],
+    "categories": [
+      "custom"
     ]
   },
   {
@@ -235,6 +287,10 @@
         "path": "/package/multiversion/1.1.0/img/icon.svg",
         "type": "image/svg+xml"
       }
+    ],
+    "categories": [
+      "custom",
+      "web"
     ]
   },
   {
@@ -245,7 +301,10 @@
     "description": "This package does contain a dataset but not stream configs.\n",
     "type": "integration",
     "download": "/epr/no_stream_configs/no_stream_configs-1.0.0.zip",
-    "path": "/package/no_stream_configs/1.0.0"
+    "path": "/package/no_stream_configs/1.0.0",
+    "categories": [
+      "custom"
+    ]
   },
   {
     "name": "reference",
@@ -270,6 +329,10 @@
         "title": "Nginx logs and metrics.",
         "description": "Collecting logs and metrics from nginx."
       }
+    ],
+    "categories": [
+      "custom",
+      "web"
     ]
   },
   {
@@ -280,6 +343,9 @@
     "description": "This package contains a yaml pipeline.\n",
     "type": "integration",
     "download": "/epr/yamlpipeline/yamlpipeline-1.0.0.zip",
-    "path": "/package/yamlpipeline/1.0.0"
+    "path": "/package/yamlpipeline/1.0.0",
+    "categories": [
+      "custom"
+    ]
   }
 ]
