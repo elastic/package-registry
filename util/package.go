@@ -91,6 +91,7 @@ type BasePolicyTemplate struct {
 	Title       string  `config:"title" json:"title" validate:"required"`
 	Description string  `config:"description" json:"description" validate:"required"`
 	Icons       []Image `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
+	Categories  []string `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
 }
 
 type PolicyTemplate struct {
@@ -181,6 +182,7 @@ func NewPackage(basePath string) (*Package, error) {
 			Name:        t.Name,
 			Title:       t.Title,
 			Description: t.Description,
+			Categories:  t.Categories,
 		}
 
 		for k, i := range p.PolicyTemplates[i].Icons {
