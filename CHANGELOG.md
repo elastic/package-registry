@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Add categories to /search output. Categories are added to the package and policy-templates. [#722](https://github.com/elastic/package-registry/issues/722)
+* Add categories to /search output. Categories are added to the package and policy-templates. [#735](https://github.com/elastic/package-registry/pull/735)
 
 ### Deprecated
 
