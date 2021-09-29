@@ -8,7 +8,9 @@
   "download": "/epr/foo/foo-1.0.0.zip",
   "path": "/package/foo/1.0.0",
   "conditions": {
-    "kibana.version": ">=7.0.0"
+    "kibana": {
+      "version": ">=7.0.0"
+    }
   },
   "format_version": "1.0.0",
   "readme": "/package/foo/1.0.0/docs/README.md",

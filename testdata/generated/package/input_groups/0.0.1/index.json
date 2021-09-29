@@ -17,7 +17,9 @@
     }
   ],
   "conditions": {
-    "kibana.version": "~7.x.x"
+    "kibana": {
+      "version": "~7.x.x"
+    }
   },
   "format_version": "1.0.0",
   "readme": "/package/input_groups/0.0.1/docs/README.md",

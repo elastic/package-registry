@@ -9,8 +9,13 @@
     "download": "/epr/example/example-0.0.2.zip",
     "path": "/package/example/0.0.2",
     "conditions": {
-      "kibana.version": ">=6.0.0"
-    }
+      "kibana": {
+        "version": ">=6.0.0"
+      }
+    },
+    "categories": [
+      "web"
+    ]
   },
   {
     "name": "longdocs",
@@ -29,8 +34,14 @@
       }
     ],
     "conditions": {
-      "kibana.version": ">6.7.0"
-    }
+      "kibana": {
+        "version": ">6.7.0"
+      }
+    },
+    "categories": [
+      "custom",
+      "web"
+    ]
   },
   {
     "name": "multiversion",
@@ -49,8 +60,14 @@
       }
     ],
     "conditions": {
-      "kibana.version": ">6.7.0"
-    }
+      "kibana": {
+        "version": ">6.7.0"
+      }
+    },
+    "categories": [
+      "custom",
+      "web"
+    ]
   },
   {
     "name": "multiversion",
@@ -69,8 +86,14 @@
       }
     ],
     "conditions": {
-      "kibana.version": ">6.7.0"
-    }
+      "kibana": {
+        "version": ">6.7.0"
+      }
+    },
+    "categories": [
+      "custom",
+      "web"
+    ]
   },
   {
     "name": "multiversion",
@@ -89,8 +112,14 @@
       }
     ],
     "conditions": {
-      "kibana.version": ">6.7.0"
-    }
+      "kibana": {
+        "version": ">6.7.0"
+      }
+    },
+    "categories": [
+      "custom",
+      "web"
+    ]
   },
   {
     "name": "reference",
@@ -117,10 +146,16 @@
       }
     ],
     "conditions": {
-      "kibana.version": ">6.7.0  <7.6.0"
+      "kibana": {
+        "version": ">6.7.0  <7.6.0"
+      }
     },
     "owner": {
       "github": "ruflin"
-    }
+    },
+    "categories": [
+      "custom",
+      "web"
+    ]
   }
 ]

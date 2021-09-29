@@ -8,7 +8,9 @@
   "download": "/epr/ilmpolicy/ilmpolicy-1.0.0.zip",
   "path": "/package/ilmpolicy/1.0.0",
   "conditions": {
-    "kibana.version": ">=7.0.0"
+    "kibana": {
+      "version": ">=7.0.0"
+    }
   },
   "format_version": "1.0.0",
   "readme": "/package/ilmpolicy/1.0.0/docs/README.md",

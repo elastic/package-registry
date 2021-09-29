@@ -39,7 +39,7 @@ var packageTests = []struct {
 			BasePackage: BasePackage{
 				Title: &title,
 				Conditions: &Conditions{
-					KibanaVersion: "bar",
+					Kibana: &KibanaConditions{Version: "bar"},
 				},
 			},
 		},
@@ -52,7 +52,7 @@ var packageTests = []struct {
 				Title:       &title,
 				Description: "my description",
 				Conditions: &Conditions{
-					KibanaVersion: ">=1.2.3 <=4.5.6",
+					Kibana: &KibanaConditions{Version: ">=1.2.3 <=4.5.6"},
 				},
 			},
 			Categories: []string{"custom", "foo"},
@@ -191,7 +191,9 @@ func TestHasKibanaVersion(t *testing.T) {
 			p := Package{
 				BasePackage: BasePackage{
 					Conditions: &Conditions{
-						kibanaConstraint: constraint,
+						Kibana: &KibanaConditions{
+							constraint: constraint,
+						},
 					},
 				},
 			}

@@ -16,8 +16,14 @@
       }
     ],
     "conditions": {
-      "kibana.version": ">6.7.0"
-    }
+      "kibana": {
+        "version": ">6.7.0"
+      }
+    },
+    "categories": [
+      "custom",
+      "web"
+    ]
   },
   {
     "name": "multiversion",
@@ -36,8 +42,14 @@
       }
     ],
     "conditions": {
-      "kibana.version": ">6.7.0"
-    }
+      "kibana": {
+        "version": ">6.7.0"
+      }
+    },
+    "categories": [
+      "custom",
+      "web"
+    ]
   },
   {
     "name": "reference",
@@ -64,10 +76,16 @@
       }
     ],
     "conditions": {
-      "kibana.version": ">6.7.0  <7.6.0"
+      "kibana": {
+        "version": ">6.7.0  <7.6.0"
+      }
     },
     "owner": {
       "github": "ruflin"
-    }
+    },
+    "categories": [
+      "custom",
+      "web"
+    ]
   }
 ]

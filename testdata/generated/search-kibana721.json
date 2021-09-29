@@ -7,7 +7,10 @@
     "description": "This package contains a datastream with the dataset_is_prefix flag set to true.\n",
     "type": "integration",
     "download": "/epr/dataset_is_prefix/dataset_is_prefix-0.0.1.zip",
-    "path": "/package/dataset_is_prefix/0.0.1"
+    "path": "/package/dataset_is_prefix/0.0.1",
+    "categories": [
+      "custom"
+    ]
   },
   {
     "name": "datasources",
@@ -24,6 +27,9 @@
         "title": "Datasource title",
         "description": "Details about the data source."
       }
+    ],
+    "categories": [
+      "custom"
     ]
   },
   {
@@ -41,6 +47,10 @@
         "title": "Logs datasource",
         "description": "Datasource for your log files."
       }
+    ],
+    "categories": [
+      "containers",
+      "message_queue"
     ]
   },
   {
@@ -58,6 +68,9 @@
         "title": "Logs datasource",
         "description": "Datasource for your log files."
       }
+    ],
+    "categories": [
+      "monitoring"
     ]
   },
   {
@@ -73,15 +86,24 @@
       {
         "name": "logs",
         "title": "Logs datasource",
-        "description": "Datasource for your log files."
+        "description": "Datasource for your log files.",
+        "categories": [
+          "datastore"
+        ]
       }
     ],
     "conditions": {
-      "kibana.version": "~7.x.x"
+      "kibana": {
+        "version": "~7.x.x"
+      }
     },
     "owner": {
       "github": "ruflin"
-    }
+    },
+    "categories": [
+      "crm",
+      "azure"
+    ]
   },
   {
     "name": "foo",
@@ -93,8 +115,13 @@
     "download": "/epr/foo/foo-1.0.0.zip",
     "path": "/package/foo/1.0.0",
     "conditions": {
-      "kibana.version": ">=7.0.0"
-    }
+      "kibana": {
+        "version": ">=7.0.0"
+      }
+    },
+    "categories": [
+      "custom"
+    ]
   },
   {
     "name": "hidden",
@@ -106,8 +133,13 @@
     "download": "/epr/hidden/hidden-1.0.0.zip",
     "path": "/package/hidden/1.0.0",
     "conditions": {
-      "kibana.version": ">=7.0.0"
-    }
+      "kibana": {
+        "version": ">=7.0.0"
+      }
+    },
+    "categories": [
+      "custom"
+    ]
   },
   {
     "name": "ilmpolicy",
@@ -119,8 +151,13 @@
     "download": "/epr/ilmpolicy/ilmpolicy-1.0.0.zip",
     "path": "/package/ilmpolicy/1.0.0",
     "conditions": {
-      "kibana.version": ">=7.0.0"
-    }
+      "kibana": {
+        "version": ">=7.0.0"
+      }
+    },
+    "categories": [
+      "custom"
+    ]
   },
   {
     "name": "input_groups",
@@ -153,12 +190,21 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "categories": [
+          "compute"
         ]
       }
     ],
     "conditions": {
-      "kibana.version": "~7.x.x"
-    }
+      "kibana": {
+        "version": "~7.x.x"
+      }
+    },
+    "categories": [
+      "aws",
+      "cloud"
+    ]
   },
   {
     "name": "longdocs",
@@ -177,8 +223,14 @@
       }
     ],
     "conditions": {
-      "kibana.version": ">6.7.0"
-    }
+      "kibana": {
+        "version": ">6.7.0"
+      }
+    },
+    "categories": [
+      "custom",
+      "web"
+    ]
   },
   {
     "name": "metricsonly",
@@ -195,6 +247,9 @@
         "path": "/package/metricsonly/2.0.1/img/icon.svg",
         "type": "image/svg+xml"
       }
+    ],
+    "categories": [
+      "custom"
     ]
   },
   {
@@ -212,6 +267,9 @@
         "title": "Logs datasource",
         "description": "Datasource for your log files."
       }
+    ],
+    "categories": [
+      "custom"
     ]
   },
   {
@@ -231,8 +289,14 @@
       }
     ],
     "conditions": {
-      "kibana.version": ">6.7.0"
-    }
+      "kibana": {
+        "version": ">6.7.0"
+      }
+    },
+    "categories": [
+      "custom",
+      "web"
+    ]
   },
   {
     "name": "no_stream_configs",
@@ -242,7 +306,10 @@
     "description": "This package does contain a dataset but not stream configs.\n",
     "type": "integration",
     "download": "/epr/no_stream_configs/no_stream_configs-1.0.0.zip",
-    "path": "/package/no_stream_configs/1.0.0"
+    "path": "/package/no_stream_configs/1.0.0",
+    "categories": [
+      "custom"
+    ]
   },
   {
     "name": "reference",
@@ -269,11 +336,17 @@
       }
     ],
     "conditions": {
-      "kibana.version": ">6.7.0  <7.6.0"
+      "kibana": {
+        "version": ">6.7.0  <7.6.0"
+      }
     },
     "owner": {
       "github": "ruflin"
-    }
+    },
+    "categories": [
+      "custom",
+      "web"
+    ]
   },
   {
     "name": "yamlpipeline",
@@ -283,6 +356,9 @@
     "description": "This package contains a yaml pipeline.\n",
     "type": "integration",
     "download": "/epr/yamlpipeline/yamlpipeline-1.0.0.zip",
-    "path": "/package/yamlpipeline/1.0.0"
+    "path": "/package/yamlpipeline/1.0.0",
+    "categories": [
+      "custom"
+    ]
   }
 ]

@@ -8,11 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Breaking changes
 
+* Change format of responses to `/package` to make `{"constraint": {"kibana.version": "7.16.0"}}` be `{"constraint": {"kibana": {"version": "7.16.0"}}}`. [#733](https://github.com/elastic/package-registry/pull/733)
+
 ### Bugfixes
 
 ### Added
 
 * Added `constraints` and `owner` fields to `/search` responses. [#731](https://github.com/elastic/package-registry/issues/731) [#734](https://github.com/elastic/package-registry/pull/734)
+* Add categories to /search output. Categories are added to the package and policy-templates. [#735](https://github.com/elastic/package-registry/pull/735)
 
 ### Deprecated
 

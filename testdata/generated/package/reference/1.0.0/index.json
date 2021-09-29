@@ -16,7 +16,9 @@
     }
   ],
   "conditions": {
-    "kibana.version": ">6.7.0  <7.6.0"
+    "kibana": {
+      "version": ">6.7.0  <7.6.0"
+    }
   },
   "owner": {
     "github": "ruflin"

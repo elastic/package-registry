@@ -8,7 +8,9 @@
   "download": "/epr/fakeapm/fakeapm-1.0.0.zip",
   "path": "/package/fakeapm/1.0.0",
   "conditions": {
-    "kibana.version": "~7.x.x"
+    "kibana": {
+      "version": "~7.x.x"
+    }
   },
   "owner": {
     "github": "github.com/elastic/not-apm"

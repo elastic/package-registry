@@ -8,7 +8,9 @@
   "download": "/epr/input_level_templates/input_level_templates-1.0.0.zip",
   "path": "/package/input_level_templates/1.0.0",
   "conditions": {
-    "kibana.version": ">=7.11.0"
+    "kibana": {
+      "version": ">=7.11.0"
+    }
   },
   "format_version": "1.0.0",
   "readme": "/package/input_level_templates/1.0.0/docs/README.md",

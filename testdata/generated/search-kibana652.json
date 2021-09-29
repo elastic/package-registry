@@ -7,7 +7,10 @@
     "description": "This package contains a datastream with the dataset_is_prefix flag set to true.\n",
     "type": "integration",
     "download": "/epr/dataset_is_prefix/dataset_is_prefix-0.0.1.zip",
-    "path": "/package/dataset_is_prefix/0.0.1"
+    "path": "/package/dataset_is_prefix/0.0.1",
+    "categories": [
+      "custom"
+    ]
   },
   {
     "name": "datasources",
@@ -24,6 +27,9 @@
         "title": "Datasource title",
         "description": "Details about the data source."
       }
+    ],
+    "categories": [
+      "custom"
     ]
   },
   {
@@ -41,6 +47,10 @@
         "title": "Logs datasource",
         "description": "Datasource for your log files."
       }
+    ],
+    "categories": [
+      "containers",
+      "message_queue"
     ]
   },
   {
@@ -58,6 +68,9 @@
         "title": "Logs datasource",
         "description": "Datasource for your log files."
       }
+    ],
+    "categories": [
+      "monitoring"
     ]
   },
   {
@@ -70,8 +83,13 @@
     "download": "/epr/example/example-0.0.2.zip",
     "path": "/package/example/0.0.2",
     "conditions": {
-      "kibana.version": ">=6.0.0"
-    }
+      "kibana": {
+        "version": ">=6.0.0"
+      }
+    },
+    "categories": [
+      "web"
+    ]
   },
   {
     "name": "metricsonly",
@@ -88,6 +106,9 @@
         "path": "/package/metricsonly/2.0.1/img/icon.svg",
         "type": "image/svg+xml"
       }
+    ],
+    "categories": [
+      "custom"
     ]
   },
   {
@@ -105,6 +126,9 @@
         "title": "Logs datasource",
         "description": "Datasource for your log files."
       }
+    ],
+    "categories": [
+      "custom"
     ]
   },
   {
@@ -115,7 +139,10 @@
     "description": "This package does contain a dataset but not stream configs.\n",
     "type": "integration",
     "download": "/epr/no_stream_configs/no_stream_configs-1.0.0.zip",
-    "path": "/package/no_stream_configs/1.0.0"
+    "path": "/package/no_stream_configs/1.0.0",
+    "categories": [
+      "custom"
+    ]
   },
   {
     "name": "yamlpipeline",
@@ -125,6 +152,9 @@
     "description": "This package contains a yaml pipeline.\n",
     "type": "integration",
     "download": "/epr/yamlpipeline/yamlpipeline-1.0.0.zip",
-    "path": "/package/yamlpipeline/1.0.0"
+    "path": "/package/yamlpipeline/1.0.0",
+    "categories": [
+      "custom"
+    ]
   }
 ]
