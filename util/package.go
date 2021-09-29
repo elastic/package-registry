@@ -109,8 +109,13 @@ type PolicyTemplate struct {
 }
 
 type Conditions struct {
-	KibanaVersion    string `config:"kibana.version,omitempty" json:"kibana.version,omitempty" yaml:"kibana.version,omitempty"`
-	kibanaConstraint *semver.Constraints
+	Kibana *KibanaConditions `config:"kibana,omitempty" json:"kibana,omitempty" yaml:"kibana,omitempty"`
+}
+
+// KibanaConditions defines conditions for Kibana (e.g. required version).
+type KibanaConditions struct {
+	Version    string `config:"version" json:"version" yaml:"version"`
+	constraint *semver.Constraints
 }
 
 type Version struct {
@@ -242,10 +247,10 @@ func NewPackage(basePath string) (*Package, error) {
 		}
 	}
 
-	if p.Conditions != nil && p.Conditions.KibanaVersion != "" {
-		p.Conditions.kibanaConstraint, err = semver.NewConstraint(p.Conditions.KibanaVersion)
+	if p.Conditions != nil && p.Conditions.Kibana != nil {
+		p.Conditions.Kibana.constraint, err = semver.NewConstraint(p.Conditions.Kibana.Version)
 		if err != nil {
-			return nil, errors.Wrapf(err, "invalid Kibana versions range: %s", p.Conditions.KibanaVersion)
+			return nil, errors.Wrapf(err, "invalid Kibana versions range: %s", p.Conditions.Kibana.Version)
 		}
 	}
 
@@ -302,13 +307,12 @@ func (p *Package) HasPolicyTemplateWithCategory(category string) bool {
 }
 
 func (p *Package) HasKibanaVersion(version *semver.Version) bool {
-
 	// If the version is not specified, it is for all versions
-	if p.Conditions == nil || version == nil || p.Conditions.kibanaConstraint == nil {
+	if p.Conditions == nil || p.Conditions.Kibana == nil || p.Conditions.Kibana.constraint == nil || version == nil {
 		return true
 	}
 
-	return p.Conditions.kibanaConstraint.Check(version)
+	return p.Conditions.Kibana.constraint.Check(version)
 }
 
 func (p *Package) IsNewerOrEqual(pp Package) bool {
