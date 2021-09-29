@@ -14,6 +14,10 @@
         "path": "/package/longdocs/1.0.4/img/icon.svg",
         "type": "image/svg+xml"
       }
+    ],
+    "categories": [
+      "custom",
+      "web"
     ]
   },
   {
@@ -31,6 +35,10 @@
         "path": "/package/multiversion/1.1.0/img/icon.svg",
         "type": "image/svg+xml"
       }
+    ],
+    "categories": [
+      "custom",
+      "web"
     ]
   },
   {
@@ -56,6 +64,10 @@
         "title": "Nginx logs and metrics.",
         "description": "Collecting logs and metrics from nginx."
       }
+    ],
+    "categories": [
+      "custom",
+      "web"
     ]
   }
 ]
