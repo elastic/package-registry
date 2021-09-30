@@ -15,6 +15,14 @@
       "type": "image/svg+xml"
     }
   ],
+  "conditions": {
+    "kibana": {
+      "version": ">6.7.0  <7.6.0"
+    }
+  },
+  "owner": {
+    "github": "ruflin"
+  },
   "format_version": "1.0.0",
   "readme": "/package/reference/1.0.0/docs/README.md",
   "license": "basic",
@@ -22,11 +30,6 @@
     "custom",
     "web"
   ],
-  "conditions": {
-    "kibana": {
-      "version": "\u003e6.7.0  \u003c7.6.0"
-    }
-  },
   "assets": [
     "/package/reference/1.0.0/changelog.yml",
     "/package/reference/1.0.0/manifest.yml",
@@ -106,8 +109,5 @@
       },
       "path": "reference"
     }
-  ],
-  "owner": {
-    "github": "ruflin"
-  }
+  ]
 }

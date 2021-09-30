@@ -58,12 +58,10 @@ type Package struct {
 	License         string  `config:"license,omitempty" json:"license,omitempty" yaml:"license,omitempty"`
 	versionSemVer   *semver.Version
 	Categories      []string         `config:"categories" json:"categories"`
-	Conditions      *Conditions      `config:"conditions,omitempty" json:"conditions,omitempty" yaml:"conditions,omitempty"`
 	Screenshots     []Image          `config:"screenshots,omitempty" json:"screenshots,omitempty" yaml:"screenshots,omitempty"`
 	Assets          []string         `config:"assets,omitempty" json:"assets,omitempty" yaml:"assets,omitempty"`
 	PolicyTemplates []PolicyTemplate `config:"policy_templates,omitempty" json:"policy_templates,omitempty" yaml:"policy_templates,omitempty"`
 	DataStreams     []*DataStream    `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
-	Owner           *Owner           `config:"owner,omitempty" json:"owner,omitempty" yaml:"owner,omitempty"`
 	Vars            []Variable       `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
 
 	// Local path to the package dir
@@ -83,6 +81,8 @@ type BasePackage struct {
 	Icons               []Image              `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
 	Internal            bool                 `config:"internal,omitempty" json:"internal,omitempty" yaml:"internal,omitempty"`
 	BasePolicyTemplates []BasePolicyTemplate `json:"policy_templates,omitempty"`
+	Conditions          *Conditions          `config:"conditions,omitempty" json:"conditions,omitempty" yaml:"conditions,omitempty"`
+	Owner               *Owner               `config:"owner,omitempty" json:"owner,omitempty" yaml:"owner,omitempty"`
 	Categories          []string             `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
 }
 

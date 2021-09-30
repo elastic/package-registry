@@ -5,7 +5,6 @@
 package main
 
 import (
-	"encoding/json"
 	"log"
 	"net/http"
 	"time"
@@ -68,7 +67,7 @@ func packageIndexHandler(packagesBasePaths []string, cacheTime time.Duration) fu
 			return
 		}
 
-		body, err := json.MarshalIndent(p, "", "  ")
+		body, err := util.MarshalJSONPretty(p)
 		if err != nil {
 			log.Printf("marshaling package index failed (path '%s'): %v", packagePath, err)
 

@@ -41,6 +41,11 @@
     "type": "solution",
     "download": "/epr/elasticsearch_privileges/elasticsearch_privileges-1.0.0.zip",
     "path": "/package/elasticsearch_privileges/1.0.0",
+    "conditions": {
+      "kibana": {
+        "version": ">=7.16.0"
+      }
+    },
     "categories": [
       "custom"
     ]
@@ -54,6 +59,11 @@
     "type": "solution",
     "download": "/epr/foo/foo-1.0.0.zip",
     "path": "/package/foo/1.0.0",
+    "conditions": {
+      "kibana": {
+        "version": ">=7.0.0"
+      }
+    },
     "categories": [
       "custom"
     ]
@@ -67,6 +77,11 @@
     "type": "solution",
     "download": "/epr/hidden/hidden-1.0.0.zip",
     "path": "/package/hidden/1.0.0",
+    "conditions": {
+      "kibana": {
+        "version": ">=7.0.0"
+      }
+    },
     "categories": [
       "custom"
     ]
@@ -80,6 +95,11 @@
     "type": "solution",
     "download": "/epr/ilmpolicy/ilmpolicy-1.0.0.zip",
     "path": "/package/ilmpolicy/1.0.0",
+    "conditions": {
+      "kibana": {
+        "version": ">=7.0.0"
+      }
+    },
     "categories": [
       "custom"
     ]
@@ -100,6 +120,11 @@
         "description": "Input with input-level template to use input-level vars with"
       }
     ],
+    "conditions": {
+      "kibana": {
+        "version": ">=7.11.0"
+      }
+    },
     "categories": [
       "custom"
     ]
@@ -120,6 +145,11 @@
         "type": "image/svg+xml"
       }
     ],
+    "conditions": {
+      "kibana": {
+        "version": ">6.7.0"
+      }
+    },
     "categories": [
       "custom",
       "web"
@@ -181,6 +211,11 @@
         "type": "image/svg+xml"
       }
     ],
+    "conditions": {
+      "kibana": {
+        "version": ">6.7.0"
+      }
+    },
     "categories": [
       "custom",
       "web"
@@ -223,6 +258,14 @@
         "description": "Collecting logs and metrics from nginx."
       }
     ],
+    "conditions": {
+      "kibana": {
+        "version": ">6.7.0  <7.6.0"
+      }
+    },
+    "owner": {
+      "github": "ruflin"
+    },
     "categories": [
       "custom",
       "web"

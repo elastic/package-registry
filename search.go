@@ -6,7 +6,6 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"sort"
@@ -46,7 +45,7 @@ func searchHandler(packagesBasePaths []string, cacheTime time.Duration) func(w h
 
 		cacheHeaders(w, cacheTime)
 		jsonHeader(w)
-		fmt.Fprint(w, string(data))
+		w.Write(data)
 	}
 }
 
@@ -261,5 +260,5 @@ func getPackageOutput(ctx context.Context, packagesList map[string]map[string]ut
 		return []byte("[]"), nil
 	}
 
-	return json.MarshalIndent(output, "", "  ")
+	return util.MarshalJSONPretty(output)
 }

@@ -7,17 +7,20 @@
   "type": "integration",
   "download": "/epr/fakeapm/fakeapm-1.0.0.zip",
   "path": "/package/fakeapm/1.0.0",
+  "conditions": {
+    "kibana": {
+      "version": "~7.x.x"
+    }
+  },
+  "owner": {
+    "github": "github.com/elastic/not-apm"
+  },
   "format_version": "1.0.0",
   "readme": "/package/fakeapm/1.0.0/docs/README.md",
   "license": "basic",
   "categories": [
     "monitoring"
   ],
-  "conditions": {
-    "kibana": {
-      "version": "~7.x.x"
-    }
-  },
   "assets": [
     "/package/fakeapm/1.0.0/manifest.yml",
     "/package/fakeapm/1.0.0/docs/README.md",
@@ -33,8 +36,5 @@
       "package": "fakeapm",
       "path": "traces"
     }
-  ],
-  "owner": {
-    "github": "github.com/elastic/not-apm"
-  }
+  ]
 }

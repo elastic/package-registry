@@ -92,6 +92,14 @@
         ]
       }
     ],
+    "conditions": {
+      "kibana": {
+        "version": "~7.x.x"
+      }
+    },
+    "owner": {
+      "github": "ruflin"
+    },
     "categories": [
       "crm",
       "azure"
@@ -106,6 +114,11 @@
     "type": "solution",
     "download": "/epr/foo/foo-1.0.0.zip",
     "path": "/package/foo/1.0.0",
+    "conditions": {
+      "kibana": {
+        "version": ">=7.0.0"
+      }
+    },
     "categories": [
       "custom"
     ]
@@ -119,6 +132,11 @@
     "type": "solution",
     "download": "/epr/hidden/hidden-1.0.0.zip",
     "path": "/package/hidden/1.0.0",
+    "conditions": {
+      "kibana": {
+        "version": ">=7.0.0"
+      }
+    },
     "categories": [
       "custom"
     ]
@@ -132,6 +150,11 @@
     "type": "solution",
     "download": "/epr/ilmpolicy/ilmpolicy-1.0.0.zip",
     "path": "/package/ilmpolicy/1.0.0",
+    "conditions": {
+      "kibana": {
+        "version": ">=7.0.0"
+      }
+    },
     "categories": [
       "custom"
     ]
@@ -173,6 +196,11 @@
         ]
       }
     ],
+    "conditions": {
+      "kibana": {
+        "version": "~7.x.x"
+      }
+    },
     "categories": [
       "aws",
       "cloud"
@@ -194,6 +222,11 @@
         "type": "image/svg+xml"
       }
     ],
+    "conditions": {
+      "kibana": {
+        "version": ">6.7.0"
+      }
+    },
     "categories": [
       "custom",
       "web"
@@ -255,6 +288,11 @@
         "type": "image/svg+xml"
       }
     ],
+    "conditions": {
+      "kibana": {
+        "version": ">6.7.0"
+      }
+    },
     "categories": [
       "custom",
       "web"
@@ -297,6 +335,14 @@
         "description": "Collecting logs and metrics from nginx."
       }
     ],
+    "conditions": {
+      "kibana": {
+        "version": ">6.7.0  <7.6.0"
+      }
+    },
+    "owner": {
+      "github": "ruflin"
+    },
     "categories": [
       "custom",
       "web"

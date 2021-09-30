@@ -15,6 +15,11 @@
         "type": "image/svg+xml"
       }
     ],
+    "conditions": {
+      "kibana": {
+        "version": ">6.7.0"
+      }
+    },
     "categories": [
       "custom",
       "web"
@@ -36,6 +41,11 @@
         "type": "image/svg+xml"
       }
     ],
+    "conditions": {
+      "kibana": {
+        "version": ">6.7.0"
+      }
+    },
     "categories": [
       "custom",
       "web"
@@ -65,6 +75,14 @@
         "description": "Collecting logs and metrics from nginx."
       }
     ],
+    "conditions": {
+      "kibana": {
+        "version": ">6.7.0  <7.6.0"
+      }
+    },
+    "owner": {
+      "github": "ruflin"
+    },
     "categories": [
       "custom",
       "web"

@@ -8,6 +8,11 @@
     "type": "integration",
     "download": "/epr/example/example-0.0.2.zip",
     "path": "/package/example/0.0.2",
+    "conditions": {
+      "kibana": {
+        "version": ">=6.0.0"
+      }
+    },
     "categories": [
       "web"
     ]
@@ -28,6 +33,11 @@
         "type": "image/svg+xml"
       }
     ],
+    "conditions": {
+      "kibana": {
+        "version": ">6.7.0"
+      }
+    },
     "categories": [
       "custom",
       "web"
@@ -49,6 +59,11 @@
         "type": "image/svg+xml"
       }
     ],
+    "conditions": {
+      "kibana": {
+        "version": ">6.7.0"
+      }
+    },
     "categories": [
       "custom",
       "web"
@@ -70,6 +85,11 @@
         "type": "image/svg+xml"
       }
     ],
+    "conditions": {
+      "kibana": {
+        "version": ">6.7.0"
+      }
+    },
     "categories": [
       "custom",
       "web"
@@ -91,6 +111,11 @@
         "type": "image/svg+xml"
       }
     ],
+    "conditions": {
+      "kibana": {
+        "version": ">6.7.0"
+      }
+    },
     "categories": [
       "custom",
       "web"
@@ -120,6 +145,14 @@
         "description": "Collecting logs and metrics from nginx."
       }
     ],
+    "conditions": {
+      "kibana": {
+        "version": ">6.7.0  <7.6.0"
+      }
+    },
+    "owner": {
+      "github": "ruflin"
+    },
     "categories": [
       "custom",
       "web"
