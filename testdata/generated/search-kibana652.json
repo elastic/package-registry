@@ -33,6 +33,26 @@
     ]
   },
   {
+    "name": "ecs_style_dataset",
+    "title": "Default pipeline Integration",
+    "version": "0.0.1",
+    "release": "beta",
+    "description": "Tests the registry validations works for dataset fields using the ecs style format",
+    "type": "integration",
+    "download": "/epr/ecs_style_dataset/ecs_style_dataset-0.0.1.zip",
+    "path": "/package/ecs_style_dataset/0.0.1",
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Logs datasource",
+        "description": "Datasource for your log files."
+      }
+    ],
+    "categories": [
+      "monitoring"
+    ]
+  },
+  {
     "name": "default_pipeline",
     "title": "Default pipeline Integration",
     "version": "0.0.2",
@@ -51,26 +71,6 @@
     "categories": [
       "containers",
       "message_queue"
-    ]
-  },
-  {
-    "name": "ecs_style_dataset",
-    "title": "Default pipeline Integration",
-    "version": "0.0.1",
-    "release": "beta",
-    "description": "Tests the registry validations works for dataset fields using the ecs style format",
-    "type": "integration",
-    "download": "/epr/ecs_style_dataset/ecs_style_dataset-0.0.1.zip",
-    "path": "/package/ecs_style_dataset/0.0.1",
-    "policy_templates": [
-      {
-        "name": "logs",
-        "title": "Logs datasource",
-        "description": "Datasource for your log files."
-      }
-    ],
-    "categories": [
-      "monitoring"
     ]
   },
   {

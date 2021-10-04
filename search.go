@@ -10,7 +10,6 @@ import (
 	"net/http"
 	"sort"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/Masterminds/semver/v3"
@@ -232,33 +231,62 @@ func filterPolicyTemplates(p util.Package, category string) util.Package {
 	return p
 }
 
+type sortedPackage struct {
+	name    string
+	title   string
+	version string
+}
+
+func newSortedPackage(aPackage util.Package) sortedPackage {
+	title := aPackage.Name
+	if aPackage.Title != nil {
+		title = *aPackage.Title
+	}
+	return sortedPackage{
+		name:    aPackage.Name,
+		title:   title,
+		version: aPackage.Version,
+	}
+}
+
+type sortedPackages []sortedPackage
+
+func (s sortedPackages) Len() int {
+	return len(s)
+}
+
+func (s sortedPackages) Less(i, j int) bool {
+	titlesSorted := sort.StringsAreSorted([]string{s[i].title, s[j].title})
+	if s[i].title != s[j].title {
+		return titlesSorted
+	}
+	return sort.StringsAreSorted([]string{s[i].version, s[j].version})
+}
+
+func (s sortedPackages) Swap(i, j int) {
+	s[i], s[j] = s[j], s[i]
+}
+
+var _ sort.Interface = new(sortedPackages)
+
 func getPackageOutput(ctx context.Context, packagesList map[string]map[string]util.Package) ([]byte, error) {
 	span, ctx := apm.StartSpan(ctx, "GetPackageOutput", "app")
 	defer span.End()
 
-	separator := "@"
 	// Packages need to be sorted to be always outputted in the same order
-	var keys []string
-	for key, k := range packagesList {
-		for v := range k {
-			keys = append(keys, key+separator+v)
+	var sorted sortedPackages
+	for _, versionPackage := range packagesList {
+		for _, aPackage := range versionPackage {
+			sorted = append(sorted, newSortedPackage(aPackage))
 		}
 	}
-	sort.Strings(keys)
+	sort.Sort(sorted)
 
 	var output []util.BasePackage
-
-	for _, k := range keys {
-		parts := strings.Split(k, separator)
-		m := packagesList[parts[0]][parts[1]]
+	for _, s := range sorted {
+		m := packagesList[s.name][s.version]
 		data := m.BasePackage
 		output = append(output, data)
 	}
-
-	// Instead of return `null` in case of an empty array, return []
-	if len(output) == 0 {
-		return []byte("[]"), nil
-	}
-
 	return util.MarshalJSONPretty(output)
 }
