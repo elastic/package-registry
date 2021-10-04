@@ -176,26 +176,6 @@
     ]
   },
   {
-    "name": "multiple_false",
-    "title": "Multiple false",
-    "version": "0.0.1",
-    "release": "beta",
-    "description": "Tests that multiple can be set to false",
-    "type": "integration",
-    "download": "/epr/multiple_false/multiple_false-0.0.1.zip",
-    "path": "/package/multiple_false/0.0.1",
-    "policy_templates": [
-      {
-        "name": "logs",
-        "title": "Logs datasource",
-        "description": "Datasource for your log files."
-      }
-    ],
-    "categories": [
-      "custom"
-    ]
-  },
-  {
     "name": "multiversion",
     "title": "Multi Version Second with the same version! This one should win, because it is first.",
     "version": "1.1.0",
@@ -219,6 +199,26 @@
     "categories": [
       "custom",
       "web"
+    ]
+  },
+  {
+    "name": "multiple_false",
+    "title": "Multiple false",
+    "version": "0.0.1",
+    "release": "beta",
+    "description": "Tests that multiple can be set to false",
+    "type": "integration",
+    "download": "/epr/multiple_false/multiple_false-0.0.1.zip",
+    "path": "/package/multiple_false/0.0.1",
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Logs datasource",
+        "description": "Datasource for your log files."
+      }
+    ],
+    "categories": [
+      "custom"
     ]
   },
   {
