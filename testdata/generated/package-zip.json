@@ -7,6 +7,14 @@
   "type": "integration",
   "download": "/epr/example/example-1.0.1.zip",
   "path": "/package/example/1.0.1",
+  "conditions": {
+    "kibana": {
+      "version": "~7.x.x"
+    }
+  },
+  "owner": {
+    "github": "ruflin"
+  },
   "format_version": "1.0.0",
   "readme": "/package/example/1.0.1/docs/README.md",
   "license": "basic",
@@ -14,9 +22,6 @@
     "crm",
     "azure"
   ],
-  "conditions": {
-    "kibana.version": "~7.x.x"
-  },
   "screenshots": [
     {
       "src": "/img/kibana-envoyproxy.jpg",
@@ -87,8 +92,5 @@
       "package": "example",
       "path": "foo"
     }
-  ],
-  "owner": {
-    "github": "ruflin"
-  }
+  ]
 }

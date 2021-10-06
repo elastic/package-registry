@@ -7,15 +7,17 @@
   "type": "solution",
   "download": "/epr/elasticsearch_privileges/elasticsearch_privileges-1.0.0.zip",
   "path": "/package/elasticsearch_privileges/1.0.0",
+  "conditions": {
+    "kibana": {
+      "version": ">=7.16.0"
+    }
+  },
   "format_version": "1.0.0",
   "readme": "/package/elasticsearch_privileges/1.0.0/docs/README.md",
   "license": "basic",
   "categories": [
     "custom"
   ],
-  "conditions": {
-    "kibana.version": "\u003e=7.16.0"
-  },
   "assets": [
     "/package/elasticsearch_privileges/1.0.0/manifest.yml",
     "/package/elasticsearch_privileges/1.0.0/docs/README.md",

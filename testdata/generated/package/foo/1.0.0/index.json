@@ -7,15 +7,17 @@
   "type": "solution",
   "download": "/epr/foo/foo-1.0.0.zip",
   "path": "/package/foo/1.0.0",
+  "conditions": {
+    "kibana": {
+      "version": ">=7.0.0"
+    }
+  },
   "format_version": "1.0.0",
   "readme": "/package/foo/1.0.0/docs/README.md",
   "license": "basic",
   "categories": [
     "custom"
   ],
-  "conditions": {
-    "kibana.version": "\u003e=7.0.0"
-  },
   "assets": [
     "/package/foo/1.0.0/manifest.yml",
     "/package/foo/1.0.0/docs/README.md"

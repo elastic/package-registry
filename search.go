@@ -6,7 +6,6 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -19,6 +18,7 @@ import (
 	"go.elastic.co/apm"
 
 	"github.com/elastic/package-registry/packages"
+	"github.com/elastic/package-registry/util"
 )
 
 func searchHandler(indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
@@ -118,5 +118,5 @@ func getPackageOutput(ctx context.Context, packageList packages.Packages) ([]byt
 		return []byte("[]"), nil
 	}
 
-	return json.MarshalIndent(output, "", "  ")
+	return util.MarshalJSONPretty(output)
 }

@@ -12,8 +12,23 @@
       {
         "name": "logs",
         "title": "Logs datasource",
-        "description": "Datasource for your log files."
+        "description": "Datasource for your log files.",
+        "categories": [
+          "datastore"
+        ]
       }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "~7.x.x"
+      }
+    },
+    "owner": {
+      "github": "ruflin"
+    },
+    "categories": [
+      "crm",
+      "azure"
     ]
   }
 ]

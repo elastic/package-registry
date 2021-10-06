@@ -4,16 +4,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/elastic/package-registry/compare/v1.2.0...master)
+## [Unreleased](https://github.com/elastic/package-registry/compare/v1.3.0...master)
 
 ### Breaking changes
 
 ### Bugfixes
 
+* Search API: sort packages by title. [#647](https://github.com/elastic/package-registry/issues/647) [#?](https://github.com/elastic/package-registry/pull/?)
+
 ### Added
 
 * Decouple API from backend "indexers". [#703](https://github.com/elastic/package-registry/pull/703)
-* Add experimental support to serve packages stored as zip archives. [#703](https://github.com/elastic/package-registry/pull/703)
+* Add support to serve packages stored as zip archives. [#703](https://github.com/elastic/package-registry/pull/703)
+
+### Deprecated
+
+### Known Issues
+
+## [1.3.0](https://github.com/elastic/package-registry/compare/v1.2.0...v.1.3.0)
+
+### Breaking changes
+
+* Change format of responses to `/package` to make `{"constraint": {"kibana.version": "7.16.0"}}` be `{"constraint": {"kibana": {"version": "7.16.0"}}}`. [#733](https://github.com/elastic/package-registry/pull/733)
+
+### Bugfixes
+
+### Added
+
+* Added `constraints` and `owner` fields to `/search` responses. [#731](https://github.com/elastic/package-registry/issues/731) [#734](https://github.com/elastic/package-registry/pull/734)
+* Add categories to /search output. Categories are added to the package and policy-templates. [#735](https://github.com/elastic/package-registry/pull/735)
 
 ### Deprecated
 

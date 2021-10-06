@@ -5,9 +5,10 @@
 package main
 
 import (
-	"encoding/json"
 	"net/http"
 	"time"
+
+	"github.com/elastic/package-registry/util"
 )
 
 type indexData struct {
@@ -20,7 +21,7 @@ func indexHandler(cacheTime time.Duration) (func(w http.ResponseWriter, r *http.
 		ServiceName: serviceName,
 		Version:     version,
 	}
-	body, err := json.MarshalIndent(&data, "", " ")
+	body, err := util.MarshalJSONPretty(&data)
 	if err != nil {
 		return nil, err
 	}

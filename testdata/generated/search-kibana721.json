@@ -7,7 +7,10 @@
     "description": "This package contains a datastream with the dataset_is_prefix flag set to true.\n",
     "type": "integration",
     "download": "/epr/dataset_is_prefix/dataset_is_prefix-0.0.1.zip",
-    "path": "/package/dataset_is_prefix/0.0.1"
+    "path": "/package/dataset_is_prefix/0.0.1",
+    "categories": [
+      "custom"
+    ]
   },
   {
     "name": "datasources",
@@ -24,23 +27,9 @@
         "title": "Datasource title",
         "description": "Details about the data source."
       }
-    ]
-  },
-  {
-    "name": "default_pipeline",
-    "title": "Default pipeline Integration",
-    "version": "0.0.2",
-    "release": "beta",
-    "description": "Tests if no pipeline is set, it defaults to the default one",
-    "type": "integration",
-    "download": "/epr/default_pipeline/default_pipeline-0.0.2.zip",
-    "path": "/package/default_pipeline/0.0.2",
-    "policy_templates": [
-      {
-        "name": "logs",
-        "title": "Logs datasource",
-        "description": "Datasource for your log files."
-      }
+    ],
+    "categories": [
+      "custom"
     ]
   },
   {
@@ -58,6 +47,30 @@
         "title": "Logs datasource",
         "description": "Datasource for your log files."
       }
+    ],
+    "categories": [
+      "monitoring"
+    ]
+  },
+  {
+    "name": "default_pipeline",
+    "title": "Default pipeline Integration",
+    "version": "0.0.2",
+    "release": "beta",
+    "description": "Tests if no pipeline is set, it defaults to the default one",
+    "type": "integration",
+    "download": "/epr/default_pipeline/default_pipeline-0.0.2.zip",
+    "path": "/package/default_pipeline/0.0.2",
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Logs datasource",
+        "description": "Datasource for your log files."
+      }
+    ],
+    "categories": [
+      "containers",
+      "message_queue"
     ]
   },
   {
@@ -73,8 +86,23 @@
       {
         "name": "logs",
         "title": "Logs datasource",
-        "description": "Datasource for your log files."
+        "description": "Datasource for your log files.",
+        "categories": [
+          "datastore"
+        ]
       }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "~7.x.x"
+      }
+    },
+    "owner": {
+      "github": "ruflin"
+    },
+    "categories": [
+      "crm",
+      "azure"
     ]
   },
   {
@@ -85,7 +113,15 @@
     "description": "This is the foo integration",
     "type": "solution",
     "download": "/epr/foo/foo-1.0.0.zip",
-    "path": "/package/foo/1.0.0"
+    "path": "/package/foo/1.0.0",
+    "conditions": {
+      "kibana": {
+        "version": ">=7.0.0"
+      }
+    },
+    "categories": [
+      "custom"
+    ]
   },
   {
     "name": "hidden",
@@ -95,7 +131,15 @@
     "description": "This is the hidden integration",
     "type": "solution",
     "download": "/epr/hidden/hidden-1.0.0.zip",
-    "path": "/package/hidden/1.0.0"
+    "path": "/package/hidden/1.0.0",
+    "conditions": {
+      "kibana": {
+        "version": ">=7.0.0"
+      }
+    },
+    "categories": [
+      "custom"
+    ]
   },
   {
     "name": "ilmpolicy",
@@ -105,7 +149,15 @@
     "description": "Test form ILM Policy in Package",
     "type": "solution",
     "download": "/epr/ilmpolicy/ilmpolicy-1.0.0.zip",
-    "path": "/package/ilmpolicy/1.0.0"
+    "path": "/package/ilmpolicy/1.0.0",
+    "conditions": {
+      "kibana": {
+        "version": ">=7.0.0"
+      }
+    },
+    "categories": [
+      "custom"
+    ]
   },
   {
     "name": "input_groups",
@@ -138,8 +190,20 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "categories": [
+          "compute"
         ]
       }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "~7.x.x"
+      }
+    },
+    "categories": [
+      "aws",
+      "cloud"
     ]
   },
   {
@@ -157,6 +221,15 @@
         "path": "/package/longdocs/1.0.4/img/icon.svg",
         "type": "image/svg+xml"
       }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": ">6.7.0"
+      }
+    },
+    "categories": [
+      "custom",
+      "web"
     ]
   },
   {
@@ -174,23 +247,9 @@
         "path": "/package/metricsonly/2.0.1/img/icon.svg",
         "type": "image/svg+xml"
       }
-    ]
-  },
-  {
-    "name": "multiple_false",
-    "title": "Multiple false",
-    "version": "0.0.1",
-    "release": "beta",
-    "description": "Tests that multiple can be set to false",
-    "type": "integration",
-    "download": "/epr/multiple_false/multiple_false-0.0.1.zip",
-    "path": "/package/multiple_false/0.0.1",
-    "policy_templates": [
-      {
-        "name": "logs",
-        "title": "Logs datasource",
-        "description": "Datasource for your log files."
-      }
+    ],
+    "categories": [
+      "custom"
     ]
   },
   {
@@ -208,6 +267,35 @@
         "path": "/package/multiversion/1.1.0/img/icon.svg",
         "type": "image/svg+xml"
       }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": ">6.7.0"
+      }
+    },
+    "categories": [
+      "custom",
+      "web"
+    ]
+  },
+  {
+    "name": "multiple_false",
+    "title": "Multiple false",
+    "version": "0.0.1",
+    "release": "beta",
+    "description": "Tests that multiple can be set to false",
+    "type": "integration",
+    "download": "/epr/multiple_false/multiple_false-0.0.1.zip",
+    "path": "/package/multiple_false/0.0.1",
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Logs datasource",
+        "description": "Datasource for your log files."
+      }
+    ],
+    "categories": [
+      "custom"
     ]
   },
   {
@@ -218,7 +306,10 @@
     "description": "This package does contain a dataset but not stream configs.\n",
     "type": "integration",
     "download": "/epr/no_stream_configs/no_stream_configs-1.0.0.zip",
-    "path": "/package/no_stream_configs/1.0.0"
+    "path": "/package/no_stream_configs/1.0.0",
+    "categories": [
+      "custom"
+    ]
   },
   {
     "name": "reference",
@@ -243,6 +334,18 @@
         "title": "Nginx logs and metrics.",
         "description": "Collecting logs and metrics from nginx."
       }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": ">6.7.0  <7.6.0"
+      }
+    },
+    "owner": {
+      "github": "ruflin"
+    },
+    "categories": [
+      "custom",
+      "web"
     ]
   },
   {
@@ -253,6 +356,9 @@
     "description": "This package contains a yaml pipeline.\n",
     "type": "integration",
     "download": "/epr/yamlpipeline/yamlpipeline-1.0.0.zip",
-    "path": "/package/yamlpipeline/1.0.0"
+    "path": "/package/yamlpipeline/1.0.0",
+    "categories": [
+      "custom"
+    ]
   }
 ]

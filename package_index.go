@@ -5,7 +5,6 @@
 package main
 
 import (
-	"encoding/json"
 	"log"
 	"net/http"
 	"time"
@@ -16,6 +15,7 @@ import (
 	"github.com/gorilla/mux"
 
 	"github.com/elastic/package-registry/packages"
+	"github.com/elastic/package-registry/util"
 )
 
 const (
@@ -60,9 +60,7 @@ func packageIndexHandler(indexer Indexer, cacheTime time.Duration) func(w http.R
 		w.Header().Set("Content-Type", "application/json")
 		cacheHeaders(w, cacheTime)
 
-		encoder := json.NewEncoder(w)
-		encoder.SetIndent("", "  ")
-		err = encoder.Encode(packages[0])
+		err = util.WriteJSONPretty(w, packages[0])
 		if err != nil {
 			log.Printf("marshaling package index failed (path '%s'): %v", packages[0].BasePath, err)
 

@@ -6,7 +6,6 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -66,7 +65,7 @@ func categoriesHandler(indexer Indexer, cacheTime time.Duration) func(w http.Res
 
 		cacheHeaders(w, cacheTime)
 		jsonHeader(w)
-		fmt.Fprint(w, string(data))
+		w.Write(data)
 	}
 }
 
@@ -173,5 +172,5 @@ func getCategoriesOutput(ctx context.Context, categories map[string]*Category) (
 		outputCategories = append(outputCategories, c)
 	}
 
-	return json.MarshalIndent(outputCategories, "", "  ")
+	return util.MarshalJSONPretty(outputCategories)
 }
