@@ -25,7 +25,7 @@ import (
 
 	ucfgYAML "github.com/elastic/go-ucfg/yaml"
 
-	"github.com/elastic/package-registry/util"
+	"github.com/elastic/package-registry/packages"
 )
 
 const (
@@ -53,7 +53,7 @@ func init() {
 	flag.StringVar(&httpProfAddress, "httpprof", "", "Enable HTTP profiler listening on the given address.")
 	// This flag is experimental and might be removed in the future or renamed
 	flag.BoolVar(&dryRun, "dry-run", false, "Runs a dry-run of the registry without starting the web service (experimental)")
-	flag.BoolVar(&util.PackageValidationDisabled, "disable-package-validation", false, "Disable package content validation")
+	flag.BoolVar(&packages.ValidationDisabled, "disable-package-validation", false, "Disable package content validation")
 }
 
 type Config struct {
@@ -112,14 +112,18 @@ func initServer() *http.Server {
 
 	config := mustLoadConfig()
 	packagesBasePaths := getPackagesBasePaths(config)
-	ensurePackagesAvailable(ctx, packagesBasePaths)
+	indexer := NewCombinedIndexer(
+		packages.NewFileSystemIndexer(packagesBasePaths...),
+		packages.NewZipFileSystemIndexer(packagesBasePaths...),
+	)
+	ensurePackagesAvailable(ctx, indexer)
 
 	// If -dry-run=true is set, service stops here after validation
 	if dryRun {
 		os.Exit(0)
 	}
 
-	router := mustLoadRouter(config, packagesBasePaths)
+	router := mustLoadRouter(config, indexer)
 	apmgorilla.Instrument(router, apmgorilla.WithTracer(apmTracer))
 
 	return &http.Server{Addr: address, Handler: router}
@@ -182,8 +186,13 @@ func printConfig(config *Config) {
 	log.Println("Cache time for all others: ", config.CacheTimeCatchAll)
 }
 
-func ensurePackagesAvailable(ctx context.Context, packagesBasePaths []string) {
-	packages, err := util.GetPackages(ctx, packagesBasePaths)
+func ensurePackagesAvailable(ctx context.Context, indexer Indexer) {
+	err := indexer.Init(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	packages, err := indexer.Get(ctx, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -195,16 +204,16 @@ func ensurePackagesAvailable(ctx context.Context, packagesBasePaths []string) {
 	log.Printf("%v package manifests loaded.\n", len(packages))
 }
 
-func mustLoadRouter(config *Config, packagesBasePaths []string) *mux.Router {
-	router, err := getRouter(config, packagesBasePaths)
+func mustLoadRouter(config *Config, indexer Indexer) *mux.Router {
+	router, err := getRouter(config, indexer)
 	if err != nil {
 		log.Fatal(err)
 	}
 	return router
 }
 
-func getRouter(config *Config, packagesBasePaths []string) (*mux.Router, error) {
-	artifactsHandler := artifactsHandler(packagesBasePaths, config.CacheTimeCatchAll)
+func getRouter(config *Config, indexer Indexer) (*mux.Router, error) {
+	artifactsHandler := artifactsHandler(indexer, config.CacheTimeCatchAll)
 	faviconHandleFunc, err := faviconHandler(config.CacheTimeCatchAll)
 	if err != nil {
 		return nil, err
@@ -214,19 +223,20 @@ func getRouter(config *Config, packagesBasePaths []string) (*mux.Router, error) 
 		return nil, err
 	}
 
-	packageIndexHandler := packageIndexHandler(packagesBasePaths, config.CacheTimeCatchAll)
+	packageIndexHandler := packageIndexHandler(indexer, config.CacheTimeCatchAll)
+	staticHandler := staticHandler(indexer, config.CacheTimeCatchAll)
 
 	router := mux.NewRouter().StrictSlash(true)
 
 	router.HandleFunc("/", indexHandlerFunc)
 	router.HandleFunc("/index.json", indexHandlerFunc)
-	router.HandleFunc("/search", searchHandler(packagesBasePaths, config.CacheTimeSearch))
-	router.HandleFunc("/categories", categoriesHandler(packagesBasePaths, config.CacheTimeCategories))
+	router.HandleFunc("/search", searchHandler(indexer, config.CacheTimeSearch))
+	router.HandleFunc("/categories", categoriesHandler(indexer, config.CacheTimeCategories))
 	router.HandleFunc("/health", healthHandler)
 	router.HandleFunc("/favicon.ico", faviconHandleFunc)
 	router.HandleFunc(artifactsRouterPath, artifactsHandler)
 	router.HandleFunc(packageIndexRouterPath, packageIndexHandler)
-	router.PathPrefix("/package").HandlerFunc(staticHandler(packagesBasePaths, "/package", config.CacheTimeCatchAll))
+	router.HandleFunc(staticRouterPath, staticHandler)
 	router.Use(loggingMiddleware)
 	router.NotFoundHandler = http.Handler(notFoundHandler(fmt.Errorf("404 page not found")))
 	return router, nil

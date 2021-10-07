@@ -2,7 +2,7 @@
 // or more contributor license agreements. Licensed under the Elastic License;
 // you may not use this file except in compliance with the Elastic License.
 
-package util
+package packages
 
 import (
 	"log"
@@ -116,10 +116,10 @@ func TestValidate(t *testing.T) {
 		t.Run(tt.description, func(t *testing.T) {
 			err := tt.p.Validate()
 
-			if err != nil {
-				assert.False(t, tt.valid)
+			if tt.valid {
+				assert.NoError(t, err)
 			} else {
-				assert.True(t, tt.valid)
+				assert.Error(t, err)
 			}
 		})
 	}
@@ -210,8 +210,21 @@ func TestHasKibanaVersion(t *testing.T) {
 }
 
 func BenchmarkNewPackage(b *testing.B) {
+	fsBuilder := func(p *Package) (PackageFileSystem, error) {
+		return NewExtractedPackageFileSystem(p)
+	}
 	for i := 0; i < b.N; i++ {
-		_, err := NewPackage("../testdata/package/reference/1.0.0")
+		_, err := NewPackage("../testdata/package/reference/1.0.0", fsBuilder)
+		assert.NoError(b, err)
+	}
+}
+
+func BenchmarkNewZipPackage(b *testing.B) {
+	fsBuilder := func(p *Package) (PackageFileSystem, error) {
+		return NewZipPackageFileSystem(p)
+	}
+	for i := 0; i < b.N; i++ {
+		_, err := NewPackage("../testdata/local-storage/example-1.0.1.zip", fsBuilder)
 		assert.NoError(b, err)
 	}
 }

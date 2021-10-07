@@ -14,6 +14,7 @@ import (
 	"github.com/Masterminds/semver/v3"
 	"github.com/gorilla/mux"
 
+	"github.com/elastic/package-registry/packages"
 	"github.com/elastic/package-registry/util"
 )
 
@@ -23,7 +24,7 @@ const (
 
 var errPackageRevisionNotFound = errors.New("package revision not found")
 
-func packageIndexHandler(packagesBasePaths []string, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+func packageIndexHandler(indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		packageName, ok := vars["packageName"]
@@ -44,36 +45,27 @@ func packageIndexHandler(packagesBasePaths []string, cacheTime time.Duration) fu
 			return
 		}
 
-		packagePath, err := getPackagePath(packagesBasePaths, packageName, packageVersion)
-		if err == errResourceNotFound {
-			notFoundError(w, errPackageRevisionNotFound)
+		opts := packages.NameVersionFilter(packageName, packageVersion)
+		packages, err := indexer.Get(r.Context(), &opts)
+		if err != nil {
+			log.Printf("getting package path failed: %v", err)
+			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
-		if err != nil {
-			log.Printf("stat package path '%s' failed: %v", packagePath, err)
-
-			http.Error(w, "internal server error", http.StatusInternalServerError)
+		if len(packages) == 0 {
+			notFoundError(w, errPackageRevisionNotFound)
 			return
 		}
 
 		w.Header().Set("Content-Type", "application/json")
 		cacheHeaders(w, cacheTime)
 
-		p, err := util.NewPackage(packagePath)
+		err = util.WriteJSONPretty(w, packages[0])
 		if err != nil {
-			log.Printf("loading package from path '%s' failed: %v", packagePath, err)
+			log.Printf("marshaling package index failed (path '%s'): %v", packages[0].BasePath, err)
 
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
-
-		body, err := util.MarshalJSONPretty(p)
-		if err != nil {
-			log.Printf("marshaling package index failed (path '%s'): %v", packagePath, err)
-
-			http.Error(w, "internal server error", http.StatusInternalServerError)
-			return
-		}
-		w.Write(body)
 	}
 }

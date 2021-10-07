@@ -2,7 +2,7 @@
 // or more contributor license agreements. Licensed under the Elastic License;
 // you may not use this file except in compliance with the Elastic License.
 
-package util
+package packages
 
 import (
 	"fmt"
@@ -16,6 +16,8 @@ import (
 
 	ucfg "github.com/elastic/go-ucfg"
 	"github.com/elastic/go-ucfg/yaml"
+
+	"github.com/elastic/package-registry/util"
 )
 
 const (
@@ -66,7 +68,11 @@ type Package struct {
 
 	// Local path to the package dir
 	BasePath string `json:"-" yaml:"-"`
+
+	fsBuilder FileSystemBuilder
 }
+
+type FileSystemBuilder func(*Package) (PackageFileSystem, error)
 
 // BasePackage is used for the output of the package info in the /search endpoint
 type BasePackage struct {
@@ -160,15 +166,25 @@ func getDownloadPath(p Package, t string) string {
 
 // NewPackage creates a new package instances based on the given base path.
 // The path passed goes to the root of the package where the manifest.yml is.
-func NewPackage(basePath string) (*Package, error) {
+func NewPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) {
+	var p = &Package{
+		BasePath:  basePath,
+		fsBuilder: fsBuilder,
+	}
+	fs, err := p.fs()
+	if err != nil {
+		return nil, err
+	}
+	defer fs.Close()
 
-	manifest, err := yaml.NewConfigWithFile(filepath.Join(basePath, "manifest.yml"), ucfg.PathSep("."))
+	manifestBody, err := ReadAll(fs, "manifest.yml")
 	if err != nil {
 		return nil, err
 	}
 
-	var p = &Package{
-		BasePath: basePath,
+	manifest, err := yaml.NewConfig(manifestBody, ucfg.PathSep("."))
+	if err != nil {
+		return nil, err
 	}
 	err = manifest.Unpack(p, ucfg.PathSep("."))
 	if err != nil {
@@ -206,8 +222,8 @@ func NewPackage(basePath string) (*Package, error) {
 		}
 
 		// Store policy template specific README
-		readmePath := filepath.Join(p.BasePath, "docs", p.PolicyTemplates[i].Name+".md")
-		readme, err := os.Stat(readmePath)
+		readmePath := filepath.Join("docs", p.PolicyTemplates[i].Name+".md")
+		readme, err := fs.Stat(readmePath)
 		if err != nil {
 			if _, ok := err.(*os.PathError); !ok {
 				return nil, fmt.Errorf("failed to find %s file: %s", p.PolicyTemplates[i].Name+".md", err)
@@ -262,9 +278,9 @@ func NewPackage(basePath string) (*Package, error) {
 		return nil, fmt.Errorf("invalid release: %s", p.Release)
 	}
 
-	readmePath := filepath.Join(p.BasePath, "docs", "README.md")
+	readmePath := filepath.Join("docs", "README.md")
 	// Check if readme
-	readme, err := os.Stat(readmePath)
+	readme, err := fs.Stat(readmePath)
 	if err != nil {
 		return nil, fmt.Errorf("no readme file found, README.md is required: %s", err)
 	}
@@ -288,18 +304,18 @@ func NewPackage(basePath string) (*Package, error) {
 
 	err = p.LoadDataSets()
 	if err != nil {
-		return nil, errors.Wrapf(err, "loading package dataStreams failed (path '%s')", p.BasePath)
+		return nil, errors.Wrapf(err, "loading package data streams failed (path '%s')", p.BasePath)
 	}
 	return p, nil
 }
 
 func (p *Package) HasCategory(category string) bool {
-	return StringsContains(p.Categories, category)
+	return util.StringsContains(p.Categories, category)
 }
 
 func (p *Package) HasPolicyTemplateWithCategory(category string) bool {
 	for _, pt := range p.PolicyTemplates {
-		if StringsContains(pt.Categories, category) {
+		if util.StringsContains(pt.Categories, category) {
 			return true
 		}
 	}
@@ -315,31 +331,36 @@ func (p *Package) HasKibanaVersion(version *semver.Version) bool {
 	return p.Conditions.Kibana.constraint.Check(version)
 }
 
-func (p *Package) IsNewerOrEqual(pp Package) bool {
+func (p *Package) IsNewerOrEqual(pp *Package) bool {
 	return !p.versionSemVer.LessThan(pp.versionSemVer)
 }
 
 // LoadAssets (re)loads all the assets of the package
 // Based on the time when this is called, it might be that not all assets for a package exist yet, so it is reset every time.
 func (p *Package) LoadAssets() (err error) {
+	fs, err := p.fs()
+	if err != nil {
+		return err
+	}
+	defer fs.Close()
+
 	// Reset Assets
 	p.Assets = nil
 
 	// Iterates recursively through all the levels to find assets
 	// If we need more complex matching a library like https://github.com/bmatcuk/doublestar
 	// could be used but the below works and is pretty simple.
-	assets, err := collectAssets(filepath.Join(p.BasePath, "*"))
+	assets, err := collectAssets(fs, "*")
 	if err != nil {
 		return err
 	}
-
 	for _, a := range assets {
 		// Unfortunately these files keep sneaking in
 		if strings.Contains(a, ".DS_Store") {
 			continue
 		}
 
-		info, err := os.Stat(a)
+		info, err := fs.Stat(a)
 		if err != nil {
 			return err
 		}
@@ -351,21 +372,19 @@ func (p *Package) LoadAssets() (err error) {
 			continue
 		}
 
-		// Strip away the basePath from the local system
-		a = a[len(p.BasePath)+1:]
 		a = path.Join(packagePathPrefix, p.GetPath(), a)
 		p.Assets = append(p.Assets, a)
 	}
 	return nil
 }
 
-func collectAssets(pattern string) ([]string, error) {
-	assets, err := filepath.Glob(pattern)
+func collectAssets(fs PackageFileSystem, pattern string) ([]string, error) {
+	assets, err := fs.Glob(pattern)
 	if err != nil {
 		return nil, err
 	}
 	if len(assets) != 0 {
-		a, err := collectAssets(filepath.Join(pattern, "*"))
+		a, err := collectAssets(fs, filepath.Join(pattern, "*"))
 		if err != nil {
 			return nil, err
 		}
@@ -374,10 +393,18 @@ func collectAssets(pattern string) ([]string, error) {
 	return nil, nil
 }
 
+func (p *Package) fs() (PackageFileSystem, error) {
+	if p.fsBuilder == nil {
+		return NewVirtualPackageFileSystem()
+	}
+
+	return p.fsBuilder(p)
+}
+
 // Validate is called during Unpack of the manifest.
 // The validation here is only related to the fields directly specified in the manifest itself.
 func (p *Package) Validate() error {
-	if PackageValidationDisabled {
+	if ValidationDisabled {
 		return nil
 	}
 
@@ -409,15 +436,21 @@ func (p *Package) Validate() error {
 		}
 	}
 
+	fs, err := p.fs()
+	if err != nil {
+		return err
+	}
+	defer fs.Close()
+
 	for _, i := range p.Icons {
-		_, err := os.Stat(filepath.Join(p.BasePath, i.Src))
+		_, err := fs.Stat(i.Src)
 		if err != nil {
 			return err
 		}
 	}
 
 	for _, s := range p.Screenshots {
-		_, err := os.Stat(filepath.Join(p.BasePath, s.Src))
+		_, err := fs.Stat(s.Src)
 		if err != nil {
 			return err
 		}
@@ -453,10 +486,16 @@ func (p *Package) validateVersionConsistency() error {
 
 // GetDataStreamPaths returns a list with the dataStream paths inside this package
 func (p *Package) GetDataStreamPaths() ([]string, error) {
-	dataStreamBasePath := filepath.Join(p.BasePath, "data_stream")
+	fs, err := p.fs()
+	if err != nil {
+		return nil, err
+	}
+	defer fs.Close()
+
+	dataStreamBasePath := "data_stream"
 
 	// Check if this package has dataStreams
-	_, err := os.Stat(dataStreamBasePath)
+	_, err = fs.Stat(dataStreamBasePath)
 	// If no dataStreams exist, just return
 	if os.IsNotExist(err) {
 		return nil, nil
@@ -466,7 +505,7 @@ func (p *Package) GetDataStreamPaths() ([]string, error) {
 		return nil, err
 	}
 
-	paths, err := filepath.Glob(filepath.Join(dataStreamBasePath, "*"))
+	paths, err := fs.Glob(filepath.Join(dataStreamBasePath, "*"))
 	if err != nil {
 		return nil, err
 	}
@@ -479,14 +518,12 @@ func (p *Package) GetDataStreamPaths() ([]string, error) {
 }
 
 func (p *Package) LoadDataSets() error {
-
 	dataStreamPaths, err := p.GetDataStreamPaths()
 	if err != nil {
 		return err
 	}
 
-	dataStreamsBasePath := filepath.Join(p.BasePath, "data_stream")
-
+	dataStreamsBasePath := "data_stream"
 	for _, dataStreamPath := range dataStreamPaths {
 
 		dataStreamBasePath := filepath.Join(dataStreamsBasePath, dataStreamPath)
@@ -495,8 +532,6 @@ func (p *Package) LoadDataSets() error {
 		if err != nil {
 			return err
 		}
-
-		// TODO: Validate that each input specified in a stream also is defined in the package
 
 		p.DataStreams = append(p.DataStreams, d)
 	}
@@ -511,7 +546,7 @@ func (p *Package) ValidateDataStreams() error {
 		return err
 	}
 
-	dataStreamsBasePath := filepath.Join(p.BasePath, "data_stream")
+	dataStreamsBasePath := "data_stream"
 	for _, dataStreamPath := range dataStreamPaths {
 		dataStreamBasePath := filepath.Join(dataStreamsBasePath, dataStreamPath)
 

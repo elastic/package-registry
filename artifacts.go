@@ -13,14 +13,14 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
 
-	"github.com/elastic/package-registry/archiver"
+	"github.com/elastic/package-registry/packages"
 )
 
 const artifactsRouterPath = "/epr/{packageName}/{packageName:[a-z0-9_]+}-{packageVersion}.zip"
 
 var errArtifactNotFound = errors.New("artifact not found")
 
-func artifactsHandler(packagesBasePaths []string, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+func artifactsHandler(indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		packageName, ok := vars["packageName"]
@@ -41,29 +41,19 @@ func artifactsHandler(packagesBasePaths []string, cacheTime time.Duration) func(
 			return
 		}
 
-		packagePath, err := getPackagePath(packagesBasePaths, packageName, packageVersion)
-		if err == errResourceNotFound {
-			notFoundError(w, errArtifactNotFound)
-			return
-		}
+		opts := packages.NameVersionFilter(packageName, packageVersion)
+		packageList, err := indexer.Get(r.Context(), &opts)
 		if err != nil {
-			log.Printf("stat package path '%s' failed: %v", packagePath, err)
-
+			log.Printf("getting package path failed: %v", err)
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
-
-		w.Header().Set("Content-Type", "application/gzip")
-		cacheHeaders(w, cacheTime)
-
-		err = archiver.ArchivePackage(w, archiver.PackageProperties{
-			Name:    packageName,
-			Version: packageVersion,
-			Path:    packagePath,
-		})
-		if err != nil {
-			log.Printf("archiving package path '%s' failed: %v", packagePath, err)
+		if len(packageList) == 0 {
+			notFoundError(w, errArtifactNotFound)
 			return
 		}
+
+		cacheHeaders(w, cacheTime)
+		packages.ServePackage(w, r, packageList[0])
 	}
 }

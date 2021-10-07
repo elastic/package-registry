@@ -8,6 +8,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"net/url"
 	"sort"
 	"strconv"
 	"time"
@@ -15,6 +16,7 @@ import (
 	"github.com/Masterminds/semver/v3"
 	"go.elastic.co/apm"
 
+	"github.com/elastic/package-registry/packages"
 	"github.com/elastic/package-registry/util"
 )
 
@@ -25,22 +27,35 @@ type Category struct {
 }
 
 // categoriesHandler is a dynamic handler as it will also allow filtering in the future.
-func categoriesHandler(packagesBasePaths []string, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+func categoriesHandler(indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		filter, err := newCategoriesFilterFromParams(r)
+		query := r.URL.Query()
+
+		filter, err := newCategoriesFilterFromQuery(query)
 		if err != nil {
 			badRequest(w, err.Error())
 			return
 		}
 
-		packages, err := util.GetPackages(r.Context(), packagesBasePaths)
+		includePolicyTemplates := false
+		if v := query.Get("include_policy_templates"); v != "" {
+			includePolicyTemplates, err = strconv.ParseBool(v)
+			if err != nil {
+				badRequest(w, fmt.Sprintf("invalid 'include_policy_templates' query param: '%s'", v))
+				return
+			}
+		}
+
+		opts := packages.GetOptions{
+			Filter: filter,
+		}
+		packages, err := indexer.Get(r.Context(), &opts)
 		if err != nil {
 			notFoundError(w, err)
 			return
 		}
 
-		packageList := filter.FilterPackages(r.Context(), packages)
-		categories := filter.FilterCategories(r.Context(), packageList)
+		categories := getCategories(r.Context(), packages, includePolicyTemplates)
 
 		data, err := getCategoriesOutput(r.Context(), categories)
 		if err != nil {
@@ -54,90 +69,38 @@ func categoriesHandler(packagesBasePaths []string, cacheTime time.Duration) func
 	}
 }
 
-type categoriesFilter struct {
-	Experimental           bool
-	KibanaVersion          *semver.Version
-	IncludePolicyTemplates bool
-}
+func newCategoriesFilterFromQuery(query url.Values) (*packages.Filter, error) {
+	var filter packages.Filter
 
-func newCategoriesFilterFromParams(r *http.Request) (categoriesFilter, error) {
-	var filter categoriesFilter
-
-	query := r.URL.Query()
 	if len(query) == 0 {
-		return filter, nil
+		return &filter, nil
 	}
 
 	var err error
 	if v := query.Get("kibana.version"); v != "" {
 		filter.KibanaVersion, err = semver.NewVersion(v)
 		if err != nil {
-			return filter, fmt.Errorf("invalid Kibana version '%s': %w", v, err)
+			return nil, fmt.Errorf("invalid Kibana version '%s': %w", v, err)
 		}
 	}
 
 	if v := query.Get("experimental"); v != "" {
 		filter.Experimental, err = strconv.ParseBool(v)
 		if err != nil {
-			return filter, fmt.Errorf("invalid 'experimental' query param: '%s'", v)
+			return nil, fmt.Errorf("invalid 'experimental' query param: '%s'", v)
 		}
 	}
 
-	if v := query.Get("include_policy_templates"); v != "" {
-		filter.IncludePolicyTemplates, err = strconv.ParseBool(v)
-		if err != nil {
-			return filter, fmt.Errorf("invalid 'include_policy_templates' query param: '%s'", v)
-		}
-	}
-
-	return filter, nil
+	return &filter, nil
 }
 
-func (filter categoriesFilter) FilterPackages(ctx context.Context, packages util.Packages) map[string]util.Package {
-	span, ctx := apm.StartSpan(ctx, "FilterPackages", "app")
-	defer span.End()
-
-	packageList := map[string]util.Package{}
-
-	// Get unique list of newest packages
-	for _, p := range packages {
-		// Check if the package is compatible with Kibana version
-		if filter.KibanaVersion != nil {
-			if valid := p.HasKibanaVersion(filter.KibanaVersion); !valid {
-				continue
-			}
-		}
-
-		// Skip internal packages
-		if p.Internal {
-			continue
-		}
-
-		// Skip experimental packages if flag is not specified
-		if p.Release == util.ReleaseExperimental && !filter.Experimental {
-			continue
-		}
-
-		// Check if the version exists and if it should be added or not.
-		// If the package in the list is newer or equal, do nothing.
-		if pp, ok := packageList[p.Name]; ok && pp.IsNewerOrEqual(p) {
-			continue
-		}
-
-		// Otherwise delete and later add the new one.
-		packageList[p.Name] = p
-	}
-
-	return packageList
-}
-
-func (filter categoriesFilter) FilterCategories(ctx context.Context, packageList map[string]util.Package) map[string]*Category {
+func getCategories(ctx context.Context, packages packages.Packages, includePolicyTemplates bool) map[string]*Category {
 	span, ctx := apm.StartSpan(ctx, "FilterCategories", "app")
 	defer span.End()
 
 	categories := map[string]*Category{}
 
-	for _, p := range packageList {
+	for _, p := range packages {
 		for _, c := range p.Categories {
 			if _, ok := categories[c]; !ok {
 				categories[c] = &Category{
@@ -146,10 +109,11 @@ func (filter categoriesFilter) FilterCategories(ctx context.Context, packageList
 					Count: 0,
 				}
 			}
+
 			categories[c].Count = categories[c].Count + 1
 		}
 
-		if filter.IncludePolicyTemplates {
+		if includePolicyTemplates {
 			// /categories counts policies and packages separately, but packages are counted too
 			// if they don't match but any of their policies does (for the AWS case this would mean that
 			// the count for "datastore" would be 3: the Package and the RDS and DynamoDB policies).
@@ -179,6 +143,7 @@ func (filter categoriesFilter) FilterCategories(ctx context.Context, packageList
 						extraPackageCategories = append(extraPackageCategories, c)
 						categories[c].Count = categories[c].Count + 1
 					}
+
 					categories[c].Count = categories[c].Count + 1
 				}
 			}
@@ -201,7 +166,7 @@ func getCategoriesOutput(ctx context.Context, categories map[string]*Category) (
 	var outputCategories []*Category
 	for _, k := range keys {
 		c := categories[k]
-		if title, ok := util.CategoryTitles[c.Title]; ok {
+		if title, ok := packages.CategoryTitles[c.Title]; ok {
 			c.Title = title
 		}
 		outputCategories = append(outputCategories, c)
