@@ -6,10 +6,12 @@ package packages
 
 import (
 	"log"
+	"path/filepath"
 	"testing"
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 var (
@@ -205,6 +207,45 @@ func TestHasKibanaVersion(t *testing.T) {
 			log.Println(check)
 			assert.Equal(t, tt.check, check)
 
+		})
+	}
+}
+
+func TestNewPackageFromPath(t *testing.T) {
+	packagePath := "../testdata/package/reference/1.0.0"
+	absPath, err := filepath.Abs(packagePath)
+	require.NoError(t, err)
+
+	cases := []struct {
+		title string
+		path  string
+	}{
+		{
+			title: "relative path",
+			path:  packagePath,
+		},
+		{
+			title: "relative path with slash",
+			path:  packagePath + "/",
+		},
+		{
+			title: "absolute path",
+			path:  absPath,
+		},
+		{
+			title: "absolute path with slash",
+			path:  absPath + "/",
+		},
+	}
+
+	fsBuilder := func(p *Package) (PackageFileSystem, error) {
+		return NewExtractedPackageFileSystem(p)
+	}
+
+	for _, c := range cases {
+		t.Run(c.title, func(t *testing.T) {
+			_, err := NewPackage(c.path, fsBuilder)
+			assert.NoError(t, err)
 		})
 	}
 }

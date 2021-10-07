@@ -511,7 +511,11 @@ func (p *Package) GetDataStreamPaths() ([]string, error) {
 	}
 
 	for i, _ := range paths {
-		paths[i] = paths[i][len(dataStreamBasePath)+1:]
+		relPath, err := filepath.Rel(dataStreamBasePath, paths[i])
+		if err != nil {
+			return nil, err
+		}
+		paths[i] = relPath
 	}
 
 	return paths, nil
@@ -525,7 +529,6 @@ func (p *Package) LoadDataSets() error {
 
 	dataStreamsBasePath := "data_stream"
 	for _, dataStreamPath := range dataStreamPaths {
-
 		dataStreamBasePath := filepath.Join(dataStreamsBasePath, dataStreamPath)
 
 		d, err := NewDataStream(dataStreamBasePath, p)

@@ -122,7 +122,7 @@ func NewDataStream(basePath string, p *Package) (*DataStream, error) {
 	// Check if manifest exists
 	_, err = fs.Stat(manifestPath)
 	if err != nil && os.IsNotExist(err) {
-		return nil, errors.Wrapf(err, "manifest does not exist for package: %s", p.BasePath)
+		return nil, errors.Wrapf(err, "manifest does not exist for data stream: %s", p.BasePath)
 	}
 
 	dataStreamPath := filepath.Base(basePath)

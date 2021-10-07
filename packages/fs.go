@@ -49,7 +49,11 @@ func (fs *ExtractedPackageFileSystem) Glob(pattern string) (matches []string, er
 		return
 	}
 	for i := range matches {
-		matches[i] = matches[i][len(fs.path+string(filepath.Separator)):]
+		match, err := filepath.Rel(fs.path, matches[i])
+		if err != nil {
+			return nil, err
+		}
+		matches[i] = match
 	}
 	return
 }
