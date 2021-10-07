@@ -23,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
-* Search API: sort packages by title. [#647](https://github.com/elastic/package-registry/issues/647) [#?](https://github.com/elastic/package-registry/pull/?)
+* Search API: sort packages by title. [#647](https://github.com/elastic/package-registry/issues/647) [#739](https://github.com/elastic/package-registry/pull/739)
 
 ### Added
 
