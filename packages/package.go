@@ -513,7 +513,7 @@ func (p *Package) GetDataStreamPaths() ([]string, error) {
 	for i, _ := range paths {
 		relPath, err := filepath.Rel(dataStreamBasePath, paths[i])
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("failed to get data stream path inside package (%s): %w", dataStreamBasePath, err)
 		}
 		paths[i] = relPath
 	}

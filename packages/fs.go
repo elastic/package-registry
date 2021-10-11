@@ -51,7 +51,7 @@ func (fs *ExtractedPackageFileSystem) Glob(pattern string) (matches []string, er
 	for i := range matches {
 		match, err := filepath.Rel(fs.path, matches[i])
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("failed to obtain path under package root path (%s): %w", fs.path, err)
 		}
 		matches[i] = match
 	}
