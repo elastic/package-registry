@@ -187,8 +187,14 @@ the reference configuration file for the available settings.
 
 Additional runtime settings can be provided using flags, for more information
 about the available flags, use `package-registry -help`. Flags can be provided
-also as environment variables, in their uppercased form, for example
-`EPR_DRY_RUN=true` is equivalent to adding the `-dry-run` flag.
+also as environment variables, in their uppercased form, for example the
+following commands are equivalent:
+```
+EPR_DRY_RUN=true package-registry
+```
+```
+package-registry -dry-run
+```
 
 ## Performance monitoring
 
