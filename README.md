@@ -175,6 +175,27 @@ elastic-package stack up -v -d
 
 For Docker / Kubernetes the `/health` endpoint can be queried. As soon as `/health` returns a 200, the service is ready.
 
+## Configuration
+
+Package Registry needs to be configured with the source of packages. This
+configuration is loaded by default from the `config.yml` file. An example file
+is provided with the distribution.
+
+Cache headers can also be configured in the configuration file. They are used
+to inform clients about the amount of time a resource is considered fresh. Check
+the reference configuration file for the available settings.
+
+Additional runtime settings can be provided using flags, for more information
+about the available flags, use `package-registry -help`. Flags can be provided
+also as environment variables, in their uppercased form, for example the
+following commands are equivalent:
+```
+EPR_DRY_RUN=true package-registry
+```
+```
+package-registry -dry-run
+```
+
 ## Performance monitoring
 
 Package Registry is instrumented with the [Elastic APM Go Agent](https://www.elastic.co/guide/en/apm/agent/go/current/index.html). You can configure the agent to send the data to any APM Server using the following environment variables:
