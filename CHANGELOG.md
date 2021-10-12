@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Configuration file path can be selected with the `-config` flag.
+* Configuration flags can be provided using environment variables.
+
 ### Deprecated
 
 ### Known Issues

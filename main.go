@@ -38,7 +38,7 @@ var (
 	httpProfAddress string
 
 	dryRun     bool
-	configPath = "config.yml"
+	configPath string
 
 	defaultConfig = Config{
 		CacheTimeIndex:      10 * time.Second,
@@ -50,6 +50,7 @@ var (
 
 func init() {
 	flag.StringVar(&address, "address", "localhost:8080", "Address of the package-registry service.")
+	flag.StringVar(&configPath, "config", "config.yml", "Path to the configuration file.")
 	flag.StringVar(&httpProfAddress, "httpprof", "", "Enable HTTP profiler listening on the given address.")
 	// This flag is experimental and might be removed in the future or renamed
 	flag.BoolVar(&dryRun, "dry-run", false, "Runs a dry-run of the registry without starting the web service (experimental)")
@@ -65,7 +66,7 @@ type Config struct {
 }
 
 func main() {
-	flag.Parse()
+	parseFlags()
 	log.Println("Package registry started.")
 	defer log.Println("Package registry stopped.")
 
