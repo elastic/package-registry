@@ -19,13 +19,13 @@
       "version": ">6.7.0"
     }
   },
-  "format_version": "1.0.0",
-  "readme": "/package/longdocs/1.0.4/docs/README.md",
-  "license": "basic",
   "categories": [
     "custom",
     "web"
   ],
+  "format_version": "1.0.0",
+  "readme": "/package/longdocs/1.0.4/docs/README.md",
+  "license": "basic",
   "assets": [
     "/package/longdocs/1.0.4/manifest.yml",
     "/package/longdocs/1.0.4/docs/README.md",

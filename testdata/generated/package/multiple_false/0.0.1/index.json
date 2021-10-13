@@ -7,12 +7,12 @@
   "type": "integration",
   "download": "/epr/multiple_false/multiple_false-0.0.1.zip",
   "path": "/package/multiple_false/0.0.1",
-  "format_version": "1.0.0",
-  "readme": "/package/multiple_false/0.0.1/docs/README.md",
-  "license": "basic",
   "categories": [
     "custom"
   ],
+  "format_version": "1.0.0",
+  "readme": "/package/multiple_false/0.0.1/docs/README.md",
+  "license": "basic",
   "assets": [
     "/package/multiple_false/0.0.1/manifest.yml",
     "/package/multiple_false/0.0.1/docs/README.md",
