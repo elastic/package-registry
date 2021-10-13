@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
+* Fix: duplicated Categories property. [#?](https://github.com/elastic/package-registry/pull/?)
+
 ### Added
 
 * Configuration file path can be selected with the `-config` flag. [#745](https://github.com/elastic/package-registry/pull/745)
