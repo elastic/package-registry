@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
-* Fix: duplicated Categories property. [#?](https://github.com/elastic/package-registry/pull/?)
+* Fix: remove duplicated Categories property. [#748](https://github.com/elastic/package-registry/pull/748)
 
 ### Added
 
