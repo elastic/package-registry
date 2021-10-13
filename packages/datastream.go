@@ -47,10 +47,10 @@ type DataStream struct {
 	Release string `config:"release" json:"release"`
 
 	// Deprecated: Replaced by elasticsearch.ingest_pipeline.name
-	IngestPipeline string         `config:"ingest_pipeline,omitempty" config:"ingest_pipeline" json:"ingest_pipeline,omitempty" yaml:"ingest_pipeline,omitempty"`
-	Streams        []Stream       `config:"streams" json:"streams,omitempty" yaml:"streams,omitempty" `
-	Package        string         `json:"package,omitempty" yaml:"package,omitempty"`
-	Elasticsearch  *Elasticsearch `config:"elasticsearch,omitempty" json:"elasticsearch,omitempty" yaml:"elasticsearch,omitempty"`
+	IngestPipeline string           `config:"ingest_pipeline,omitempty" config:"ingest_pipeline" json:"ingest_pipeline,omitempty" yaml:"ingest_pipeline,omitempty"`
+	Streams        []Stream         `config:"streams" json:"streams,omitempty" yaml:"streams,omitempty" `
+	Package        string           `json:"package,omitempty" yaml:"package,omitempty"`
+	Elasticsearch  *DsElasticsearch `config:"elasticsearch,omitempty" json:"elasticsearch,omitempty" yaml:"elasticsearch,omitempty"`
 
 	// Generated fields
 	Path string `json:"path,omitempty" yaml:"path,omitempty"`
@@ -94,14 +94,14 @@ type Variable struct {
 	Default     interface{} `config:"default" json:"default,omitempty" yaml:"default,omitempty"`
 }
 
-type Elasticsearch struct {
-	IndexTemplateSettings map[string]interface{}   `config:"index_template.settings" json:"index_template.settings,omitempty" yaml:"index_template.settings,omitempty"`
-	IndexTemplateMappings map[string]interface{}   `config:"index_template.mappings" json:"index_template.mappings,omitempty" yaml:"index_template.mappings,omitempty"`
-	IngestPipelineName    string                   `config:"ingest_pipeline.name,omitempty" json:"ingest_pipeline.name,omitempty" yaml:"ingest_pipeline.name,omitempty"`
-	Privileges            *ElasticsearchPrivileges `config:"privileges,omitempty" json:"privileges,omitempty" yaml:"privileges,omitempty"`
+type DsElasticsearch struct {
+	IndexTemplateSettings map[string]interface{}     `config:"index_template.settings" json:"index_template.settings,omitempty" yaml:"index_template.settings,omitempty"`
+	IndexTemplateMappings map[string]interface{}     `config:"index_template.mappings" json:"index_template.mappings,omitempty" yaml:"index_template.mappings,omitempty"`
+	IngestPipelineName    string                     `config:"ingest_pipeline.name,omitempty" json:"ingest_pipeline.name,omitempty" yaml:"ingest_pipeline.name,omitempty"`
+	Privileges            *DsElasticsearchPrivileges `config:"privileges,omitempty" json:"privileges,omitempty" yaml:"privileges,omitempty"`
 }
 
-type ElasticsearchPrivileges struct {
+type DsElasticsearchPrivileges struct {
 	Indices []string `config:"indices,omitempty" json:"indices,omitempty" yaml:"indices,omitempty"`
 }
 
