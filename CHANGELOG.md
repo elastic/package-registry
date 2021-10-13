@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Configuration file path can be selected with the `-config` flag. [#745](https://github.com/elastic/package-registry/pull/745)
 * Configuration flags can be provided using environment variables. [#745](https://github.com/elastic/package-registry/pull/745)
-* HTTPS/TLS support. [#711](https://github.com/elastic/package-registry/issues/711) [#746](https://github.com/elastic/package-registry/issues/746)
+* Add -tls-cert and -tls-key flags to configure HTTPS. [#711](https://github.com/elastic/package-registry/issues/711) [#746](https://github.com/elastic/package-registry/issues/746)
 
 ### Deprecated
 
