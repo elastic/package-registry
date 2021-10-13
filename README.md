@@ -112,7 +112,18 @@ docker run -p 8080:8080 {image id from prior step}
 **Commands ready to cut-and-paste**
 ```
 docker build --rm -t docker.elastic.co/package-registry/package-registry:master .
-docker run -i -t -p 8080:8080 $(docker images -q docker.elastic.co/package-registry/package-registry:master)
+docker run -it -p 8080:8080 $(docker images -q docker.elastic.co/package-registry/package-registry:master)
+```
+
+**Listening on HTTPS**
+```
+docker run -it -p 8443:8443 \
+  -v /etc/ssl/package-registry.key:/etc/ssl/package-registry.key:ro \
+  -v /etc/ssl/package-registry.crt:/etc/ssl/package-registry.crt:ro \
+  -e EPR_ADDRESS=0.0.0.0:8443
+  -e EPR_TLS_KEY=/etc/ssl/package-registry.key \
+  -e EPR_TLS_CERT=/etc/ssl/package-registry.crt \
+  docker.elastic.co/package-registry/package-registry:master
 ```
 
 #### Docker images published
