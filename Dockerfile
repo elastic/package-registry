@@ -2,7 +2,7 @@
 # It expects packages to be mounted under /packages/package-registry or have a config file loaded into /package-registry/config.yml
 
 # Build binary
-ARG GO_VERSION=1.16.7
+ARG GO_VERSION=1.17.1
 FROM golang:${GO_VERSION} AS builder
 
 ENV GO111MODULE=on
