@@ -2,7 +2,7 @@
 // or more contributor license agreements. Licensed under the Elastic License;
 // you may not use this file except in compliance with the Elastic License.
 
-// +build mage
+//go:build mage
 
 package main
 
@@ -109,18 +109,18 @@ func GoImports() error {
 
 	fmt.Println(">> fmt - goimports: Formatting Go code")
 	args := append(
-		[]string{"-local", GoImportsLocalPrefix, "-l", "-w"},
+		[]string{"run", GoImportsImportPath, "-local", GoImportsLocalPrefix, "-l", "-w"},
 		goFiles...,
 	)
 
-	return sh.RunV("goimports", args...)
+	return sh.RunV("go", args...)
 }
 
 // AddLicenseHeaders adds license headers to .go files. It applies the
 // appropriate license header based on the value of mage.BeatLicense.
 func AddLicenseHeaders() error {
 	fmt.Println(">> fmt - go-licenser: Adding missing headers")
-	return sh.RunV("go-licenser", "-license", "Elastic")
+	return sh.RunV("go", "run", GoLicenserImportPath, "-license", "Elastic")
 }
 
 // FindFilesRecursive recursively traverses from the CWD and invokes the given
