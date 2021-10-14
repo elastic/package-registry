@@ -59,12 +59,12 @@ type Package struct {
 	Readme          *string `config:"readme,omitempty" json:"readme,omitempty" yaml:"readme,omitempty"`
 	License         string  `config:"license,omitempty" json:"license,omitempty" yaml:"license,omitempty"`
 	versionSemVer   *semver.Version
-	Screenshots     []Image          `config:"screenshots,omitempty" json:"screenshots,omitempty" yaml:"screenshots,omitempty"`
-	Assets          []string         `config:"assets,omitempty" json:"assets,omitempty" yaml:"assets,omitempty"`
-	PolicyTemplates []PolicyTemplate `config:"policy_templates,omitempty" json:"policy_templates,omitempty" yaml:"policy_templates,omitempty"`
-	DataStreams     []*DataStream    `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
-	Vars            []Variable       `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
-
+	Screenshots     []Image               `config:"screenshots,omitempty" json:"screenshots,omitempty" yaml:"screenshots,omitempty"`
+	Assets          []string              `config:"assets,omitempty" json:"assets,omitempty" yaml:"assets,omitempty"`
+	PolicyTemplates []PolicyTemplate      `config:"policy_templates,omitempty" json:"policy_templates,omitempty" yaml:"policy_templates,omitempty"`
+	DataStreams     []*DataStream         `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
+	Vars            []Variable            `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
+	Elasticsearch   *PackageElasticsearch `config:"elasticsearch,omitempty" json:"elasticsearch,omitempty" yaml:"elasticsearch,omitempty"`
 	// Local path to the package dir
 	BasePath string `json:"-" yaml:"-"`
 
@@ -141,6 +141,14 @@ type Image struct {
 	Title string `config:"title" json:"title,omitempty"`
 	Size  string `config:"size" json:"size,omitempty"`
 	Type  string `config:"type" json:"type,omitempty"`
+}
+
+type PackageElasticsearch struct {
+	Privileges *PackageElasticsearchPrivileges `config:"privileges,omitempty" json:"privileges,omitempty" yaml:"privileges,omitempty"`
+}
+
+type PackageElasticsearchPrivileges struct {
+	Cluster []string `config:"cluster,omitempty" json:"cluster,omitempty" yaml:"cluster,omitempty"`
 }
 
 func (i Image) getPath(p *Package) string {
