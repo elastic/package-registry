@@ -48,7 +48,7 @@
   "elasticsearch": {
     "privileges": {
       "cluster": [
-        "monitor/main"
+        "monitor"
       ]
     }
   }

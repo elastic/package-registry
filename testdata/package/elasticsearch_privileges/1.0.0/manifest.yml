@@ -10,7 +10,7 @@ release: beta
 
 elasticsearch:
   privileges:
-    cluster: ["monitor/main"]
+    cluster: ["monitor"]
 
 conditions:
   kibana:
