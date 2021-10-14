@@ -59,7 +59,6 @@ type Package struct {
 	Readme          *string `config:"readme,omitempty" json:"readme,omitempty" yaml:"readme,omitempty"`
 	License         string  `config:"license,omitempty" json:"license,omitempty" yaml:"license,omitempty"`
 	versionSemVer   *semver.Version
-	Categories      []string         `config:"categories" json:"categories"`
 	Screenshots     []Image          `config:"screenshots,omitempty" json:"screenshots,omitempty" yaml:"screenshots,omitempty"`
 	Assets          []string         `config:"assets,omitempty" json:"assets,omitempty" yaml:"assets,omitempty"`
 	PolicyTemplates []PolicyTemplate `config:"policy_templates,omitempty" json:"policy_templates,omitempty" yaml:"policy_templates,omitempty"`

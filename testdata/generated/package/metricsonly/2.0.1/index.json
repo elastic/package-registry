@@ -14,12 +14,12 @@
       "type": "image/svg+xml"
     }
   ],
-  "format_version": "1.0.0",
-  "readme": "/package/metricsonly/2.0.1/docs/README.md",
-  "license": "basic",
   "categories": [
     "custom"
   ],
+  "format_version": "1.0.0",
+  "readme": "/package/metricsonly/2.0.1/docs/README.md",
+  "license": "basic",
   "assets": [
     "/package/metricsonly/2.0.1/manifest.yml",
     "/package/metricsonly/2.0.1/docs/README.md",
