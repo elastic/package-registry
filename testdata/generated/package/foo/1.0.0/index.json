@@ -12,12 +12,12 @@
       "version": ">=7.0.0"
     }
   },
-  "format_version": "1.0.0",
-  "readme": "/package/foo/1.0.0/docs/README.md",
-  "license": "basic",
   "categories": [
     "custom"
   ],
+  "format_version": "1.0.0",
+  "readme": "/package/foo/1.0.0/docs/README.md",
+  "license": "basic",
   "assets": [
     "/package/foo/1.0.0/manifest.yml",
     "/package/foo/1.0.0/docs/README.md"

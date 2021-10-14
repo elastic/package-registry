@@ -7,12 +7,12 @@
   "type": "integration",
   "download": "/epr/yamlpipeline/yamlpipeline-1.0.0.zip",
   "path": "/package/yamlpipeline/1.0.0",
-  "format_version": "1.0.0",
-  "readme": "/package/yamlpipeline/1.0.0/docs/README.md",
-  "license": "basic",
   "categories": [
     "custom"
   ],
+  "format_version": "1.0.0",
+  "readme": "/package/yamlpipeline/1.0.0/docs/README.md",
+  "license": "basic",
   "assets": [
     "/package/yamlpipeline/1.0.0/manifest.yml",
     "/package/yamlpipeline/1.0.0/docs/README.md",
