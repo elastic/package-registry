@@ -37,6 +37,9 @@ var (
 	address         string
 	httpProfAddress string
 
+	tlsCertFile string
+	tlsKeyFile  string
+
 	dryRun     bool
 	configPath string
 
@@ -50,6 +53,8 @@ var (
 
 func init() {
 	flag.StringVar(&address, "address", "localhost:8080", "Address of the package-registry service.")
+	flag.StringVar(&tlsCertFile, "tls-cert", "", "Path of the TLS certificate.")
+	flag.StringVar(&tlsKeyFile, "tls-key", "", "Path of the TLS key.")
 	flag.StringVar(&configPath, "config", "config.yml", "Path to the configuration file.")
 	flag.StringVar(&httpProfAddress, "httpprof", "", "Enable HTTP profiler listening on the given address.")
 	// This flag is experimental and might be removed in the future or renamed
@@ -74,7 +79,7 @@ func main() {
 
 	server := initServer()
 	go func() {
-		err := server.ListenAndServe()
+		err := runServer(server)
 		if err != nil && err != http.ErrServerClosed {
 			log.Fatalf("Error occurred while serving: %s", err)
 		}
@@ -128,6 +133,13 @@ func initServer() *http.Server {
 	apmgorilla.Instrument(router, apmgorilla.WithTracer(apmTracer))
 
 	return &http.Server{Addr: address, Handler: router}
+}
+
+func runServer(server *http.Server) error {
+	if tlsCertFile != "" && tlsKeyFile != "" {
+		return server.ListenAndServeTLS(tlsCertFile, tlsKeyFile)
+	}
+	return server.ListenAndServe()
 }
 
 func initAPMTracer() *apm.Tracer {
