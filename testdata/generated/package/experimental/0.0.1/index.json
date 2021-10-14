@@ -7,12 +7,12 @@
   "type": "solution",
   "download": "/epr/experimental/experimental-0.0.1.zip",
   "path": "/package/experimental/0.0.1",
-  "format_version": "1.0.0",
-  "readme": "/package/experimental/0.0.1/docs/README.md",
-  "license": "basic",
   "categories": [
     "aws"
   ],
+  "format_version": "1.0.0",
+  "readme": "/package/experimental/0.0.1/docs/README.md",
+  "license": "basic",
   "assets": [
     "/package/experimental/0.0.1/manifest.yml",
     "/package/experimental/0.0.1/docs/README.md"

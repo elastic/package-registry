@@ -23,13 +23,13 @@
   "owner": {
     "github": "ruflin"
   },
-  "format_version": "1.0.0",
-  "readme": "/package/reference/1.0.0/docs/README.md",
-  "license": "basic",
   "categories": [
     "custom",
     "web"
   ],
+  "format_version": "1.0.0",
+  "readme": "/package/reference/1.0.0/docs/README.md",
+  "license": "basic",
   "assets": [
     "/package/reference/1.0.0/changelog.yml",
     "/package/reference/1.0.0/manifest.yml",

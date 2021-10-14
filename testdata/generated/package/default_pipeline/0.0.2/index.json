@@ -7,13 +7,13 @@
   "type": "integration",
   "download": "/epr/default_pipeline/default_pipeline-0.0.2.zip",
   "path": "/package/default_pipeline/0.0.2",
-  "format_version": "1.0.0",
-  "readme": "/package/default_pipeline/0.0.2/docs/README.md",
-  "license": "basic",
   "categories": [
     "containers",
     "message_queue"
   ],
+  "format_version": "1.0.0",
+  "readme": "/package/default_pipeline/0.0.2/docs/README.md",
+  "license": "basic",
   "assets": [
     "/package/default_pipeline/0.0.2/manifest.yml",
     "/package/default_pipeline/0.0.2/docs/README.md",
