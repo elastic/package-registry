@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
+* Properly handle modification headers (`If-Modified-Since`, `Last-Modified`) for static resources. [#756](https://github.com/elastic/package-registry/pull/756)
+
 ### Added
 
 ### Deprecated
