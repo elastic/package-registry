@@ -141,6 +141,99 @@ func TestStatics(t *testing.T) {
 
 }
 
+func TestStaticsModifiedTime(t *testing.T) {
+	const ifModifiedSinceHeader = "If-Modified-Since"
+	const lastModifiedHeader = "Last-Modified"
+
+	tests := []struct {
+		title    string
+		endpoint string
+		headers  map[string]string
+		code     int
+	}{
+		{
+			title:    "No cache headers",
+			endpoint: "/package/example/1.0.0/img/kibana-envoyproxy.jpg",
+			code:     200,
+		},
+		{
+			title:    "Doesn't exist",
+			endpoint: "/package/none/1.0.0/img/foo.jpg",
+			code:     404,
+		},
+		{
+			title:    "Cached entry",
+			endpoint: "/package/example/1.0.0/img/kibana-envoyproxy.jpg",
+			headers: map[string]string{
+				// Assuming that the file hasn't been modified in the future.
+				ifModifiedSinceHeader: time.Now().UTC().Format(http.TimeFormat),
+			},
+			code: 304,
+		},
+		{
+			title:    "Old cached entry",
+			endpoint: "/package/example/1.0.0/img/kibana-envoyproxy.jpg",
+			headers: map[string]string{
+				ifModifiedSinceHeader: time.Time{}.Format(http.TimeFormat),
+			},
+			code: 200,
+		},
+
+		// From zip
+		{
+			title:    "No cache headers from zip",
+			endpoint: "/package/example/1.0.1/img/kibana-envoyproxy.jpg",
+			code:     200,
+		},
+		{
+			title:    "Cached entry from zip",
+			endpoint: "/package/example/1.0.1/img/kibana-envoyproxy.jpg",
+			headers: map[string]string{
+				// Assuming that the file hasn't been modified in the future.
+				ifModifiedSinceHeader: time.Now().UTC().Format(http.TimeFormat),
+			},
+			code: 304,
+		},
+		{
+			title:    "Old cached entry from zip",
+			endpoint: "/package/example/1.0.1/img/kibana-envoyproxy.jpg",
+			headers: map[string]string{
+				ifModifiedSinceHeader: time.Time{}.Format(http.TimeFormat),
+			},
+			code: 200,
+		},
+	}
+
+	indexer := NewCombinedIndexer(
+		packages.NewFileSystemIndexer("./testdata/package"),
+		packages.NewZipFileSystemIndexer("./testdata/local-storage"),
+	)
+	err := indexer.Init(context.Background())
+	require.NoError(t, err)
+
+	router := mux.NewRouter()
+	router.HandleFunc(staticRouterPath, staticHandler(indexer, testCacheTime))
+
+	for _, test := range tests {
+		t.Run(test.title, func(t *testing.T) {
+			req, err := http.NewRequest("GET", test.endpoint, nil)
+			require.NoError(t, err)
+
+			for k, v := range test.headers {
+				req.Header.Add(k, v)
+			}
+
+			recorder := httptest.NewRecorder()
+			router.ServeHTTP(recorder, req)
+
+			assert.Equal(t, test.code, recorder.Code)
+			if test.code >= 0 && test.code < 400 {
+				assert.NotEmpty(t, recorder.Header().Values(lastModifiedHeader))
+			}
+		})
+	}
+}
+
 func TestZippedArtifacts(t *testing.T) {
 	indexer := packages.NewZipFileSystemIndexer("./testdata/local-storage")
 

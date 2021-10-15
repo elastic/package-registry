@@ -8,7 +8,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"time"
 
 	"go.elastic.co/apm"
 
@@ -59,11 +58,18 @@ func ServeFile(w http.ResponseWriter, r *http.Request, p *Package, name string) 
 		return
 	}
 
-	f, err := fs.Open(name)
+	stat, err := fs.Stat(name)
 	if os.IsNotExist(err) {
 		http.Error(w, "resource not found", http.StatusNotFound)
 		return
 	}
+	if err != nil {
+		log.Printf("failed to check file modification time (%s) in package: %v", name, err)
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	f, err := fs.Open(name)
 	if err != nil {
 		log.Printf("failed to open file (%s) in package: %v", name, err)
 		http.Error(w, "internal server error", http.StatusInternalServerError)
@@ -71,5 +77,5 @@ func ServeFile(w http.ResponseWriter, r *http.Request, p *Package, name string) 
 	}
 	defer f.Close()
 
-	http.ServeContent(w, r, name, time.Time{}, f)
+	http.ServeContent(w, r, name, stat.ModTime(), f)
 }
