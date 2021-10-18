@@ -64,7 +64,7 @@ func ServeFile(w http.ResponseWriter, r *http.Request, p *Package, name string) 
 		return
 	}
 	if err != nil {
-		log.Printf("failed to check file modification time (%s) in package: %v", name, err)
+		log.Printf("stat failed for %s: %v", name, err)
 		http.Error(w, "internal server error", http.StatusInternalServerError)
 		return
 	}
