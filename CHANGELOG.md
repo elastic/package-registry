@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Update APM Go Agent to 1.14.0. []()
+
 ### Deprecated
 
 ### Known Issues
