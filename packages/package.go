@@ -89,6 +89,7 @@ type BasePackage struct {
 	Conditions          *Conditions          `config:"conditions,omitempty" json:"conditions,omitempty" yaml:"conditions,omitempty"`
 	Owner               *Owner               `config:"owner,omitempty" json:"owner,omitempty" yaml:"owner,omitempty"`
 	Categories          []string             `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
+	Signature           string               `config:"signature,omitempty" json:"signature,omitempty" yaml:"signature,omitempty"`
 }
 
 // BasePolicyTemplate is used for the package policy templates in the /search endpoint
@@ -312,6 +313,12 @@ func NewPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) 
 	err = p.LoadDataSets()
 	if err != nil {
 		return nil, errors.Wrapf(err, "loading package data streams failed (path '%s')", p.BasePath)
+	}
+
+	// Read package signature
+	p.Signature, err = readSignature(basePath)
+	if err != nil {
+		return nil, errors.Wrapf(err, "can't read package signature (package path '%s')", p.BasePath)
 	}
 	return p, nil
 }
