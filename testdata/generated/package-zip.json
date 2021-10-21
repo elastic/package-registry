@@ -19,6 +19,7 @@
     "crm",
     "azure"
   ],
+  "signature": "e16ddaf4f91df524b27bf4f2e4b1ac09",
   "format_version": "1.0.0",
   "readme": "/package/example/1.0.1/docs/README.md",
   "license": "basic",
