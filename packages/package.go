@@ -89,7 +89,7 @@ type BasePackage struct {
 	Conditions          *Conditions          `config:"conditions,omitempty" json:"conditions,omitempty" yaml:"conditions,omitempty"`
 	Owner               *Owner               `config:"owner,omitempty" json:"owner,omitempty" yaml:"owner,omitempty"`
 	Categories          []string             `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
-	Signature           string               `config:"signature,omitempty" json:"signature,omitempty" yaml:"signature,omitempty"`
+	SignaturePath       string               `config:"signature_path,omitempty" json:"signature_path,omitempty" yaml:"signature_path,omitempty"`
 }
 
 // BasePolicyTemplate is used for the package policy templates in the /search endpoint
@@ -315,10 +315,10 @@ func NewPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) 
 		return nil, errors.Wrapf(err, "loading package data streams failed (path '%s')", p.BasePath)
 	}
 
-	// Read package signature
-	p.Signature, err = readSignature(basePath)
+	// Read path for package signature
+	p.SignaturePath, err = p.GetSignaturePath()
 	if err != nil {
-		return nil, errors.Wrapf(err, "can't read package signature (package path '%s')", p.BasePath)
+		return nil, errors.Wrapf(err, "can't process the package signature")
 	}
 	return p, nil
 }
@@ -590,4 +590,21 @@ func (p *Package) GetDownloadPath() string {
 
 func (p *Package) GetUrlPath() string {
 	return path.Join(packagePathPrefix, p.Name, p.Version)
+}
+
+func (p *Package) GetSignaturePath() (string, error) {
+	fs, err := p.fs()
+	if err != nil {
+		return "", err
+	}
+	defer fs.Close()
+
+	_, err = fs.Stat(p.BasePath + ".sig")
+	if err != nil && errors.Is(err, os.ErrNotExist) {
+		return "", nil
+	}
+	if err != nil {
+		return "", errors.Wrap(err, "can't locate signature file")
+	}
+	return path.Join("/epr", p.Name, p.Name+"-"+p.Version+".zip.sig"), nil
 }
