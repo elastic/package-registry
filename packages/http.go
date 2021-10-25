@@ -79,3 +79,7 @@ func ServeFile(w http.ResponseWriter, r *http.Request, p *Package, name string) 
 
 	http.ServeContent(w, r, name, stat.ModTime(), f)
 }
+
+func ServeSignature(w http.ResponseWriter, r *http.Request, p *Package) {
+	http.ServeFile(w, r, p.BasePath+".sig")
+}

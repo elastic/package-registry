@@ -114,6 +114,31 @@ func TestArtifacts(t *testing.T) {
 	}
 }
 
+func TestSignatures(t *testing.T) {
+	indexer := packages.NewZipFileSystemIndexer("./testdata/local-storage")
+
+	err := indexer.Init(context.Background())
+	require.NoError(t, err)
+
+	signaturesHandler := signaturesHandler(indexer, testCacheTime)
+
+	tests := []struct {
+		endpoint string
+		path     string
+		file     string
+		handler  func(w http.ResponseWriter, r *http.Request)
+	}{
+		{"/epr/example/example-1.0.1.zip.sig", signaturesRouterPath, "example-1.0.1.zip.sig", signaturesHandler},
+		{"/epr/example/example-0.0.1.zip.sig", signaturesRouterPath, "missing-signature.txt", signaturesHandler},
+	}
+
+	for _, test := range tests {
+		t.Run(test.endpoint, func(t *testing.T) {
+			runEndpoint(t, test.endpoint, test.path, test.file, test.handler)
+		})
+	}
+}
+
 func TestStatics(t *testing.T) {
 	packagesBasePaths := []string{"./testdata/package"}
 	indexer := packages.NewFileSystemIndexer(packagesBasePaths...)

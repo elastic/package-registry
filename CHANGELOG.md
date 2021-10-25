@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Update APM Go Agent to 1.14.0. [#759](https://github.com/elastic/package-registry/pull/759)
 * Update Gorilla to 1.8.0 [#759](https://github.com/elastic/package-registry/pull/759)
+* Support package signatures [#760](https://github.com/elastic/package-registry/pull/760)
 
 ### Deprecated
 

@@ -89,6 +89,7 @@ type BasePackage struct {
 	Conditions          *Conditions          `config:"conditions,omitempty" json:"conditions,omitempty" yaml:"conditions,omitempty"`
 	Owner               *Owner               `config:"owner,omitempty" json:"owner,omitempty" yaml:"owner,omitempty"`
 	Categories          []string             `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
+	SignaturePath       string               `config:"signature_path,omitempty" json:"signature_path,omitempty" yaml:"signature_path,omitempty"`
 }
 
 // BasePolicyTemplate is used for the package policy templates in the /search endpoint
@@ -312,6 +313,12 @@ func NewPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) 
 	err = p.LoadDataSets()
 	if err != nil {
 		return nil, errors.Wrapf(err, "loading package data streams failed (path '%s')", p.BasePath)
+	}
+
+	// Read path for package signature
+	p.SignaturePath, err = p.GetSignaturePath()
+	if err != nil {
+		return nil, errors.Wrapf(err, "can't process the package signature")
 	}
 	return p, nil
 }
@@ -583,4 +590,15 @@ func (p *Package) GetDownloadPath() string {
 
 func (p *Package) GetUrlPath() string {
 	return path.Join(packagePathPrefix, p.Name, p.Version)
+}
+
+func (p *Package) GetSignaturePath() (string, error) {
+	_, err := os.Stat(p.BasePath + ".sig")
+	if err != nil && errors.Is(err, os.ErrNotExist) {
+		return "", nil
+	}
+	if err != nil {
+		return "", errors.Wrap(err, "can't stat signature file")
+	}
+	return p.GetDownloadPath() + ".sig", nil
 }

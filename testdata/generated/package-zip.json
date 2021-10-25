@@ -19,6 +19,7 @@
     "crm",
     "azure"
   ],
+  "signature_path": "/epr/example/example-1.0.1.zip.sig",
   "format_version": "1.0.0",
   "readme": "/package/example/1.0.1/docs/README.md",
   "license": "basic",
