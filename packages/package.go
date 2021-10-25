@@ -593,18 +593,12 @@ func (p *Package) GetUrlPath() string {
 }
 
 func (p *Package) GetSignaturePath() (string, error) {
-	fs, err := p.fs()
-	if err != nil {
-		return "", err
-	}
-	defer fs.Close()
-
-	_, err = fs.Stat(p.BasePath + ".sig")
+	_, err := os.Stat(p.BasePath + ".sig")
 	if err != nil && errors.Is(err, os.ErrNotExist) {
 		return "", nil
 	}
 	if err != nil {
-		return "", errors.Wrap(err, "can't locate signature file")
+		return "", errors.Wrap(err, "can't stat signature file")
 	}
 	return path.Join("/epr", p.Name, p.Name+"-"+p.Version+".zip.sig"), nil
 }
