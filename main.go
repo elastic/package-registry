@@ -227,6 +227,7 @@ func mustLoadRouter(config *Config, indexer Indexer) *mux.Router {
 
 func getRouter(config *Config, indexer Indexer) (*mux.Router, error) {
 	artifactsHandler := artifactsHandler(indexer, config.CacheTimeCatchAll)
+	signaturesHandler := signaturesHandler(indexer, config.CacheTimeCatchAll)
 	faviconHandleFunc, err := faviconHandler(config.CacheTimeCatchAll)
 	if err != nil {
 		return nil, err
@@ -248,6 +249,7 @@ func getRouter(config *Config, indexer Indexer) (*mux.Router, error) {
 	router.HandleFunc("/health", healthHandler)
 	router.HandleFunc("/favicon.ico", faviconHandleFunc)
 	router.HandleFunc(artifactsRouterPath, artifactsHandler)
+	router.HandleFunc(signaturesRouterPath, signaturesHandler)
 	router.HandleFunc(packageIndexRouterPath, packageIndexHandler)
 	router.HandleFunc(staticRouterPath, staticHandler)
 	router.Use(loggingMiddleware)
