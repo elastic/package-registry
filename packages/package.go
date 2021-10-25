@@ -600,5 +600,5 @@ func (p *Package) GetSignaturePath() (string, error) {
 	if err != nil {
 		return "", errors.Wrap(err, "can't stat signature file")
 	}
-	return path.Join("/epr", p.Name, p.Name+"-"+p.Version+".zip.sig"), nil
+	return p.GetDownloadPath() + ".sig", nil
 }
