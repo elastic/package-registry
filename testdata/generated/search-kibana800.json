@@ -124,19 +124,6 @@
     ]
   },
   {
-    "name": "experimental",
-    "title": "Experimental",
-    "version": "0.0.1",
-    "release": "experimental",
-    "description": "Experimental package, should be set by default",
-    "type": "solution",
-    "download": "/epr/experimental/experimental-0.0.1.zip",
-    "path": "/package/experimental/0.0.1",
-    "categories": [
-      "aws"
-    ]
-  },
-  {
     "name": "foo",
     "title": "Foo",
     "version": "1.0.0",
@@ -188,53 +175,6 @@
     },
     "categories": [
       "custom"
-    ]
-  },
-  {
-    "name": "input_groups",
-    "title": "Input Groups",
-    "version": "0.0.1",
-    "release": "beta",
-    "description": "AWS Integration for testing input groups",
-    "type": "integration",
-    "download": "/epr/input_groups/input_groups-0.0.1.zip",
-    "path": "/package/input_groups/0.0.1",
-    "icons": [
-      {
-        "src": "/img/logo_aws.svg",
-        "path": "/package/input_groups/0.0.1/img/logo_aws.svg",
-        "title": "logo aws",
-        "size": "32x32",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "ec2",
-        "title": "AWS EC2",
-        "description": "Collect logs and metrics from EC2 service",
-        "icons": [
-          {
-            "src": "/img/logo_ec2.svg",
-            "path": "/package/input_groups/0.0.1/img/logo_ec2.svg",
-            "title": "AWS EC2 logo",
-            "size": "32x32",
-            "type": "image/svg+xml"
-          }
-        ],
-        "categories": [
-          "compute"
-        ]
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "~7.x.x"
-      }
-    },
-    "categories": [
-      "aws",
-      "cloud"
     ]
   },
   {
@@ -365,64 +305,6 @@
     "path": "/package/no_stream_configs/1.0.0",
     "categories": [
       "custom"
-    ]
-  },
-  {
-    "name": "fakeapm",
-    "title": "Not actually APM",
-    "version": "1.0.0",
-    "release": "experimental",
-    "description": "Not actually APM",
-    "type": "integration",
-    "download": "/epr/fakeapm/fakeapm-1.0.0.zip",
-    "path": "/package/fakeapm/1.0.0",
-    "conditions": {
-      "kibana": {
-        "version": "~7.x.x"
-      }
-    },
-    "owner": {
-      "github": "github.com/elastic/not-apm"
-    },
-    "categories": [
-      "monitoring"
-    ]
-  },
-  {
-    "name": "reference",
-    "title": "Reference package",
-    "version": "1.0.0",
-    "release": "ga",
-    "description": "This package is used for defining all the properties of a package, the possible assets etc. It serves as a reference on all the config options which are possible.\n",
-    "type": "integration",
-    "download": "/epr/reference/reference-1.0.0.zip",
-    "path": "/package/reference/1.0.0",
-    "icons": [
-      {
-        "src": "/img/icon.svg",
-        "path": "/package/reference/1.0.0/img/icon.svg",
-        "size": "32x32",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "nginx",
-        "title": "Nginx logs and metrics.",
-        "description": "Collecting logs and metrics from nginx."
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": ">6.7.0  <7.6.0"
-      }
-    },
-    "owner": {
-      "github": "ruflin"
-    },
-    "categories": [
-      "custom",
-      "web"
     ]
   },
   {
