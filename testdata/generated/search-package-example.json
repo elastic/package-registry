@@ -2,12 +2,12 @@
   {
     "name": "example",
     "title": "Example Integration",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "release": "ga",
     "description": "This is the example integration",
     "type": "integration",
-    "download": "/epr/example/example-1.0.0.zip",
-    "path": "/package/example/1.0.0",
+    "download": "/epr/example/example-1.1.0.zip",
+    "path": "/package/example/1.1.0",
     "policy_templates": [
       {
         "name": "logs",
@@ -20,7 +20,7 @@
     ],
     "conditions": {
       "kibana": {
-        "version": "~7.x.x"
+        "version": "^7.16.0 || ^8.0.0"
       }
     },
     "owner": {
