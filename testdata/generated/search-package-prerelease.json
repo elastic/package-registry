@@ -94,12 +94,12 @@
   {
     "name": "example",
     "title": "Example Integration",
-    "version": "1.1.0",
+    "version": "1.2.0-rc1",
     "release": "ga",
     "description": "This is the example integration",
     "type": "integration",
-    "download": "/epr/example/example-1.1.0.zip",
-    "path": "/package/example/1.1.0",
+    "download": "/epr/example/example-1.2.0-rc1.zip",
+    "path": "/package/example/1.2.0-rc1",
     "policy_templates": [
       {
         "name": "logs",
@@ -120,20 +120,8 @@
     },
     "categories": [
       "crm",
-      "azure"
-    ]
-  },
-  {
-    "name": "experimental",
-    "title": "Experimental",
-    "version": "0.0.1",
-    "release": "experimental",
-    "description": "Experimental package, should be set by default",
-    "type": "solution",
-    "download": "/epr/experimental/experimental-0.0.1.zip",
-    "path": "/package/experimental/0.0.1",
-    "categories": [
-      "aws"
+      "azure",
+      "cloud"
     ]
   },
   {
@@ -365,27 +353,6 @@
     "path": "/package/no_stream_configs/1.0.0",
     "categories": [
       "custom"
-    ]
-  },
-  {
-    "name": "fakeapm",
-    "title": "Not actually APM",
-    "version": "1.0.0",
-    "release": "experimental",
-    "description": "Not actually APM",
-    "type": "integration",
-    "download": "/epr/fakeapm/fakeapm-1.0.0.zip",
-    "path": "/package/fakeapm/1.0.0",
-    "conditions": {
-      "kibana": {
-        "version": "~7.x.x"
-      }
-    },
-    "owner": {
-      "github": "github.com/elastic/not-apm"
-    },
-    "categories": [
-      "monitoring"
     ]
   },
   {

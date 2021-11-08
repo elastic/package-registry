@@ -348,6 +348,10 @@ func (p *Package) IsNewerOrEqual(pp *Package) bool {
 	return !p.versionSemVer.LessThan(pp.versionSemVer)
 }
 
+func (p *Package) IsPrerelease() bool {
+	return p.versionSemVer.Prerelease() != ""
+}
+
 // LoadAssets (re)loads all the assets of the package
 // Based on the time when this is called, it might be that not all assets for a package exist yet, so it is reset every time.
 func (p *Package) LoadAssets() (err error) {

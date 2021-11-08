@@ -84,10 +84,19 @@ func newCategoriesFilterFromQuery(query url.Values) (*packages.Filter, error) {
 		}
 	}
 
+	// Deprecated: release tags to be removed.
 	if v := query.Get("experimental"); v != "" {
 		filter.Experimental, err = strconv.ParseBool(v)
 		if err != nil {
 			return nil, fmt.Errorf("invalid 'experimental' query param: '%s'", v)
+		}
+	}
+
+	if v := query.Get("prerelease"); v != "" {
+		// In case of error, keep it false
+		filter.Prerelease, err = strconv.ParseBool(v)
+		if err != nil {
+			return nil, fmt.Errorf("invalid 'prerelease' query param: '%s'", v)
 		}
 	}
 

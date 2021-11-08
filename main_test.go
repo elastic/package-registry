@@ -62,6 +62,9 @@ func TestEndpoints(t *testing.T) {
 		{"/categories?experimental=true", "/categories", "categories-experimental.json", categoriesHandler(indexer, testCacheTime)},
 		{"/categories?experimental=foo", "/categories", "categories-experimental-error.json", categoriesHandler(indexer, testCacheTime)},
 		{"/categories?experimental=true&kibana.version=6.5.2", "/categories", "categories-kibana652.json", categoriesHandler(indexer, testCacheTime)},
+		{"/categories?prerelease=true", "/categories", "categories-prerelease.json", categoriesHandler(indexer, testCacheTime)},
+		{"/categories?prerelease=foo", "/categories", "categories-prerelease-error.json", categoriesHandler(indexer, testCacheTime)},
+		{"/categories?prerelease=true&kibana.version=6.5.2", "/categories", "categories-prerelease-kibana652.json", categoriesHandler(indexer, testCacheTime)},
 		{"/categories?include_policy_templates=true", "/categories", "categories-include-policy-templates.json", categoriesHandler(indexer, testCacheTime)},
 		{"/categories?include_policy_templates=foo", "/categories", "categories-include-policy-templates-error.json", categoriesHandler(indexer, testCacheTime)},
 		{"/search?kibana.version=6.5.2", "/search", "search-kibana652.json", searchHandler(indexer, testCacheTime)},
@@ -75,6 +78,9 @@ func TestEndpoints(t *testing.T) {
 		{"/search?experimental=true", "/search", "search-package-experimental.json", searchHandler(indexer, testCacheTime)},
 		{"/search?experimental=foo", "/search", "search-package-experimental-error.json", searchHandler(indexer, testCacheTime)},
 		{"/search?category=datastore&experimental=true", "/search", "search-category-datastore.json", searchHandler(indexer, testCacheTime)},
+		{"/search?prerelease=true", "/search", "search-package-prerelease.json", searchHandler(indexer, testCacheTime)},
+		{"/search?prerelease=foo", "/search", "search-package-prerelease-error.json", searchHandler(indexer, testCacheTime)},
+		{"/search?category=datastore&prerelease=true", "/search", "search-category-datastore-prerelease.json", searchHandler(indexer, testCacheTime)},
 		{"/favicon.ico", "", "favicon.ico", faviconHandleFunc},
 
 		// Removed flags, kept to ensure that they don't break requests from old versions.
