@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Breaking changes
 
-* Ignore the `internal` parameter in packages and `/search` requests. []()
+* Ignore the `internal` parameter in packages and `/search` requests. [#765](https://github.com/elastic/package-registry/pull/765)
 
 ### Bugfixes
 
