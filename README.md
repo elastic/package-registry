@@ -19,7 +19,6 @@ The `/search` API endpoint has few additional query parameters. More might be ad
   By default this endpoint always returns only the newest compatible package.
 * `category`: Filters the package by the given category. Available categories can be seend when going to `/categories` endpoint.
 * `package`: Filters by a specific package name, for example `mysql`. Returns the most recent version.
-* `internal`: This can be set to true, to also list internal packages. This is set to `false` by default.
 * `all`: This can be set to true to list all package versions. This is set to `false` by default.
 * `experimental`: This can be set to true to list packages considered to be experimental. This is set to `false` by default.
 

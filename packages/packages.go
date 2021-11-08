@@ -44,7 +44,7 @@ func (p1 Packages) Join(p2 Packages) Packages {
 type GetOptions struct {
 	// Filter to apply when querying for packages. If the filter is nil,
 	// all packages are returned. This is different to a zero-object filter,
-	// where internal and experimental packages are filtered by default.
+	// where experimental packages are filtered by default.
 	Filter *Filter
 }
 
@@ -237,7 +237,6 @@ type Filter struct {
 	AllVersions    bool
 	Category       string
 	Experimental   bool
-	Internal       bool
 	KibanaVersion  *semver.Version
 	PackageName    string
 	PackageVersion string
@@ -255,11 +254,6 @@ func (f *Filter) Apply(ctx context.Context, packages Packages) Packages {
 	// Checks that only the most recent version of an integration is added to the list
 	var packagesList Packages
 	for _, p := range packages {
-		// Skip internal packages by default
-		if p.Internal && !f.Internal {
-			continue
-		}
-
 		// Skip experimental packages if flag is not specified
 		if p.Release == ReleaseExperimental && !f.Experimental {
 			continue
@@ -348,7 +342,6 @@ func NameVersionFilter(name, version string) GetOptions {
 	return GetOptions{
 		Filter: &Filter{
 			Experimental:   true,
-			Internal:       true,
 			PackageName:    name,
 			PackageVersion: version,
 		},

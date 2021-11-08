@@ -84,7 +84,6 @@ type BasePackage struct {
 	Download            string               `json:"download" yaml:"download,omitempty"`
 	Path                string               `json:"path" yaml:"path,omitempty"`
 	Icons               []Image              `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
-	Internal            bool                 `config:"internal,omitempty" json:"internal,omitempty" yaml:"internal,omitempty"`
 	BasePolicyTemplates []BasePolicyTemplate `json:"policy_templates,omitempty"`
 	Conditions          *Conditions          `config:"conditions,omitempty" json:"conditions,omitempty" yaml:"conditions,omitempty"`
 	Owner               *Owner               `config:"owner,omitempty" json:"owner,omitempty" yaml:"owner,omitempty"`

@@ -72,12 +72,13 @@ func TestEndpoints(t *testing.T) {
 		{"/search?category=custom", "/search", "search-category-custom.json", searchHandler(indexer, testCacheTime)},
 		{"/search?package=example", "/search", "search-package-example.json", searchHandler(indexer, testCacheTime)},
 		{"/search?package=example&all=true", "/search", "search-package-example-all.json", searchHandler(indexer, testCacheTime)},
-		{"/search?internal=true", "/search", "search-package-internal.json", searchHandler(indexer, testCacheTime)},
-		{"/search?internal=bar", "/search", "search-package-internal-error.json", searchHandler(indexer, testCacheTime)},
 		{"/search?experimental=true", "/search", "search-package-experimental.json", searchHandler(indexer, testCacheTime)},
 		{"/search?experimental=foo", "/search", "search-package-experimental-error.json", searchHandler(indexer, testCacheTime)},
 		{"/search?category=datastore&experimental=true", "/search", "search-category-datastore.json", searchHandler(indexer, testCacheTime)},
 		{"/favicon.ico", "", "favicon.ico", faviconHandleFunc},
+
+		// Removed flags, kept to ensure that they don't break requests from old versions.
+		{"/search?internal=true", "/search", "search-package-internal.json", searchHandler(indexer, testCacheTime)},
 	}
 
 	for _, test := range tests {
