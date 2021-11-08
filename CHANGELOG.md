@@ -10,11 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
+* Fix panic when opening specially crafted Zip file. [#764](https://github.com/elastic/package-registry/pull/764)
+
 ### Added
 
 * Update APM Go Agent to 1.14.0. [#759](https://github.com/elastic/package-registry/pull/759)
-* Update Gorilla to 1.8.0 [#759](https://github.com/elastic/package-registry/pull/759)
-* Support package signatures [#760](https://github.com/elastic/package-registry/pull/760)
+* Update Gorilla to 1.8.0. [#759](https://github.com/elastic/package-registry/pull/759)
+* Support package signatures. [#760](https://github.com/elastic/package-registry/pull/760)
+* Update Go runtime to 1.17.3. [#764](https://github.com/elastic/package-registry/pull/764)
 
 ### Deprecated
 
