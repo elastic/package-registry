@@ -237,7 +237,7 @@ type Filter struct {
 	AllVersions    bool
 	Category       string
 	Experimental   bool
-	KibanaVersion  *semver.Version
+	KibanaVersions []*semver.Version
 	PackageName    string
 	PackageVersion string
 }
@@ -259,8 +259,8 @@ func (f *Filter) Apply(ctx context.Context, packages Packages) Packages {
 			continue
 		}
 
-		if f.KibanaVersion != nil {
-			if valid := p.HasKibanaVersion(f.KibanaVersion); !valid {
+		if len(f.KibanaVersions) > 0 {
+			if valid := hasAnyKibanaVersion(p, f.KibanaVersions); !valid {
 				continue
 			}
 		}
@@ -302,6 +302,15 @@ func (f *Filter) Apply(ctx context.Context, packages Packages) Packages {
 	packagesList = filterCategories(packagesList, f.Category)
 
 	return packagesList
+}
+
+func hasAnyKibanaVersion(p *Package, versions []*semver.Version) bool {
+	for _, v := range versions {
+		if p.HasKibanaVersion(v) {
+			return true
+		}
+	}
+	return false
 }
 
 func filterCategories(packages Packages, category string) Packages {

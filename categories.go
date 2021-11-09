@@ -77,11 +77,12 @@ func newCategoriesFilterFromQuery(query url.Values) (*packages.Filter, error) {
 	}
 
 	var err error
-	if v := query.Get("kibana.version"); v != "" {
-		filter.KibanaVersion, err = semver.NewVersion(v)
+	for _, v := range query["kibana.version"] {
+		parsed, err := semver.NewVersion(v)
 		if err != nil {
 			return nil, fmt.Errorf("invalid Kibana version '%s': %w", v, err)
 		}
+		filter.KibanaVersions = append(filter.KibanaVersions, parsed)
 	}
 
 	if v := query.Get("experimental"); v != "" {
