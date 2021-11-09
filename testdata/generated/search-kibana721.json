@@ -75,34 +75,20 @@
   },
   {
     "name": "example",
-    "title": "Example Integration",
-    "version": "1.0.0",
-    "release": "ga",
-    "description": "This is the example integration",
+    "title": "Example",
+    "version": "0.0.2",
+    "release": "beta",
+    "description": "This is the example integration.",
     "type": "integration",
-    "download": "/epr/example/example-1.0.0.zip",
-    "path": "/package/example/1.0.0",
-    "policy_templates": [
-      {
-        "name": "logs",
-        "title": "Logs datasource",
-        "description": "Datasource for your log files.",
-        "categories": [
-          "datastore"
-        ]
-      }
-    ],
+    "download": "/epr/example/example-0.0.2.zip",
+    "path": "/package/example/0.0.2",
     "conditions": {
       "kibana": {
-        "version": "~7.x.x"
+        "version": ">=6.0.0"
       }
     },
-    "owner": {
-      "github": "ruflin"
-    },
     "categories": [
-      "crm",
-      "azure"
+      "web"
     ]
   },
   {
