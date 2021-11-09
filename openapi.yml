@@ -84,7 +84,6 @@ paths:
           in: query
           name: package
           description: 'Filters by a specific package name, for example mysql. In contrast to the other endpoints, it will return by default all versions of this package.'
-        - $ref: '#/components/parameters/internalPackageParam'
         - $ref: '#/components/parameters/experimentalPackageParam'
   '/package/{package}/{version}':
     get:
@@ -283,8 +282,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Image'
-        internal:
-          type: string
       required:
         - name
         - version
@@ -368,14 +365,6 @@ components:
         github:
           type: string
   parameters:
-    internalPackageParam:
-      name: internal
-      in: query
-      required: false
-      description: Set to true to also list internal packages
-      schema:
-        type: boolean
-        default: false
     experimentalPackageParam:
       name: experimental
       in: query

@@ -250,17 +250,6 @@
     ]
   },
   {
-    "name": "internal",
-    "title": "Internal",
-    "version": "1.2.0",
-    "release": "beta",
-    "description": "Internal package",
-    "type": "integration",
-    "download": "/epr/internal/internal-1.2.0.zip",
-    "path": "/package/internal/1.2.0",
-    "internal": true
-  },
-  {
     "name": "longdocs",
     "title": "Long Docs",
     "version": "1.0.4",
