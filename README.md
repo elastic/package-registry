@@ -22,7 +22,7 @@ The `/search` API endpoint has few additional query parameters. More might be ad
 * `all`: This can be set to true to list all package versions. This is set to `false` by default.
 * `experimental`: This can be set to true to list packages considered to be experimental. This is set to `false` by default.
 
-The different query parameters above can be combined, so `?package=mysql&kibana=7.3.0` will return all mysql package versions
+The different query parameters above can be combined, so `?package=mysql&kibana.version=7.3.0` will return all mysql package versions
 which are compatible with `7.3.0`.
 
 The `/categories` API endpoint has two additional query parameters.
