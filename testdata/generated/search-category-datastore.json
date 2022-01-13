@@ -2,12 +2,12 @@
   {
     "name": "example",
     "title": "Example Integration",
-    "version": "1.1.0",
+    "version": "1.2.0-rc1",
     "release": "ga",
     "description": "This is the example integration",
     "type": "integration",
-    "download": "/epr/example/example-1.1.0.zip",
-    "path": "/package/example/1.1.0",
+    "download": "/epr/example/example-1.2.0-rc1.zip",
+    "path": "/package/example/1.2.0-rc1",
     "policy_templates": [
       {
         "name": "logs",
@@ -28,7 +28,8 @@
     },
     "categories": [
       "crm",
-      "azure"
+      "azure",
+      "cloud"
     ]
   }
 ]
