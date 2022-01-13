@@ -349,7 +349,14 @@ func (p *Package) IsNewerOrEqual(pp *Package) bool {
 }
 
 func (p *Package) IsPrerelease() bool {
-	return p.versionSemVer.Prerelease() != ""
+	return isPrerelease(p.versionSemVer)
+}
+
+func isPrerelease(version *semver.Version) bool {
+	if version.Major() < 1 {
+		return true
+	}
+	return version.Prerelease() != ""
 }
 
 // LoadAssets (re)loads all the assets of the package

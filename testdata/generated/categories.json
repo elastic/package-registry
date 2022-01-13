@@ -1,22 +1,7 @@
 [
   {
-    "id": "aws",
-    "title": "AWS",
-    "count": 1
-  },
-  {
     "id": "azure",
     "title": "Azure",
-    "count": 1
-  },
-  {
-    "id": "cloud",
-    "title": "Cloud",
-    "count": 1
-  },
-  {
-    "id": "containers",
-    "title": "Containers",
     "count": 1
   },
   {
@@ -27,17 +12,7 @@
   {
     "id": "custom",
     "title": "Custom",
-    "count": 14
-  },
-  {
-    "id": "message_queue",
-    "title": "Message Queue",
-    "count": 1
-  },
-  {
-    "id": "monitoring",
-    "title": "Monitoring",
-    "count": 1
+    "count": 12
   },
   {
     "id": "web",
