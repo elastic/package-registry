@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Breaking changes
 
 * Ignore the `internal` parameter in packages and `/search` requests. [#765](https://github.com/elastic/package-registry/pull/765)
+* Packages with major version 0 or with prerelease labels are only returned by search requests when they include `prerelease=true` or `experimental=true`. []()
 
 ### Bugfixes
 
@@ -16,12 +17,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Add the `prerelease` parameter in search requests to include in development versions of packages. []()
 * Update APM Go Agent to 1.14.0. [#759](https://github.com/elastic/package-registry/pull/759)
 * Update Gorilla to 1.8.0. [#759](https://github.com/elastic/package-registry/pull/759)
 * Support package signatures. [#760](https://github.com/elastic/package-registry/pull/760)
 * Update Go runtime to 1.17.3. [#764](https://github.com/elastic/package-registry/pull/764)
 
 ### Deprecated
+
+* `experimental` parameter in search requests is deprecated. []()
 
 ### Known Issues
 
