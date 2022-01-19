@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Ignore the `internal` parameter in packages and `/search` requests. [#765](https://github.com/elastic/package-registry/pull/765)
 * Packages with major version 0 or with prerelease labels are only returned by search requests when they include `prerelease=true` or `experimental=true`. [#785](https://github.com/elastic/package-registry/pull/785)
+* Release level of a package without release tag is based on its semantic versioning now, previously it was experimental. [#785](https://github.com/elastic/package-registry/pull/785)
+* Release level of a data stream without release tag is the same as the package that contains it, previously it was experimental. [#785](https://github.com/elastic/package-registry/pull/785)
 
 ### Bugfixes
 

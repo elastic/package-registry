@@ -278,7 +278,7 @@ func NewPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) 
 	}
 
 	if p.Release == "" {
-		p.Release = DefaultRelease
+		p.Release = releaseForSemVerCompat(p.versionSemVer)
 	}
 
 	if !IsValidRelease(p.Release) {

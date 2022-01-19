@@ -40,7 +40,7 @@
       "type": "logs",
       "dataset": "default_pipeline.foo",
       "title": "Foo",
-      "release": "experimental",
+      "release": "beta",
       "ingest_pipeline": "default",
       "streams": [
         {

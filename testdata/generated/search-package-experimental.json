@@ -13,6 +13,19 @@
     ]
   },
   {
+    "name": "defaultrelease",
+    "title": "Default Release",
+    "version": "0.0.1",
+    "release": "beta",
+    "description": "Package without release, should be set to default",
+    "type": "solution",
+    "download": "/epr/defaultrelease/defaultrelease-0.0.1.zip",
+    "path": "/package/defaultrelease/0.0.1",
+    "categories": [
+      "aws"
+    ]
+  },
+  {
     "name": "datasources",
     "title": "Default datasource Integration",
     "version": "1.0.0",
@@ -122,19 +135,6 @@
       "crm",
       "azure",
       "cloud"
-    ]
-  },
-  {
-    "name": "experimental",
-    "title": "Experimental",
-    "version": "0.0.1",
-    "release": "experimental",
-    "description": "Experimental package, should be set by default",
-    "type": "solution",
-    "download": "/epr/experimental/experimental-0.0.1.zip",
-    "path": "/package/experimental/0.0.1",
-    "categories": [
-      "aws"
     ]
   },
   {

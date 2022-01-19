@@ -157,7 +157,7 @@ func NewDataStream(basePath string, p *Package) (*DataStream, error) {
 	}
 
 	if d.Release == "" {
-		d.Release = DefaultRelease
+		d.Release = p.Release
 	}
 
 	// Default for the enabled flags is true.
