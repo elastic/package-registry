@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Update Gorilla to 1.8.0. [#759](https://github.com/elastic/package-registry/pull/759)
 * Support package signatures. [#760](https://github.com/elastic/package-registry/pull/760)
 * Update Go runtime to 1.17.6. [#788](https://github.com/elastic/package-registry/pull/788)
+* Use Ubuntu LTS as base image instead of CentOS [#787](https://github.com/elastic/package-registry/pull/787)
 
 ### Deprecated
 
