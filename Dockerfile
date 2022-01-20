@@ -12,11 +12,12 @@ RUN go build .
 
 
 # Run binary
-FROM centos:7
+FROM ubuntu:20.04
 
 # Get dependencies
-# mailcap - installs "/etc/mime.types" used by the package-registry binary
-RUN yum install -y zip rsync mailcap && yum clean all
+RUN apt-get update && \
+    apt-get install -y mime-support zip rsync curl && \
+    apt-get clean all
 
 # Move binary from the builder image
 COPY --from=builder /package-registry/package-registry /package-registry/package-registry
