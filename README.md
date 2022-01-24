@@ -10,7 +10,7 @@ Endpoints:
 * `/package/{name}/{version}`: Info about a package
 * `/epr/{name}/{name}-{version}.tar.gz`: Download a package
 
-Examples for each API endpoint can be found here: https://github.com/elastic/package-registry/tree/master/docs/api
+Examples for each API endpoint can be found here: https://github.com/elastic/package-registry/tree/main/docs/api
 
 The `/search` API endpoint has few additional query parameters. More might be added in the future, but for now these are:
 
@@ -88,7 +88,7 @@ Additionally, the following **frozen** endpoints exist and are **no longer updat
 * experimental, CDN: https://epr-experimental.elastic.co
 * 7.9, CDN: https://epr-7-9.elastic.co
 
-An dev registry is running on `https://epr-staging.elastic.co/`. This is updated from time to time to be in sync with master.
+An dev registry is running on `https://epr-staging.elastic.co/`. This is updated from time to time to be in sync with main.
 
 The deployment runs on an Elastic internal k8s cluster. To get all the deployments for the registry use the following command:
 
@@ -110,8 +110,8 @@ docker run -p 8080:8080 {image id from prior step}
 
 **Commands ready to cut-and-paste**
 ```
-docker build --rm -t docker.elastic.co/package-registry/package-registry:master .
-docker run -it -p 8080:8080 $(docker images -q docker.elastic.co/package-registry/package-registry:master)
+docker build --rm -t docker.elastic.co/package-registry/package-registry:main .
+docker run -it -p 8080:8080 $(docker images -q docker.elastic.co/package-registry/package-registry:main)
 ```
 
 **Listening on HTTPS**
@@ -122,7 +122,7 @@ docker run -it -p 8443:8443 \
   -e EPR_ADDRESS=0.0.0.0:8443
   -e EPR_TLS_KEY=/etc/ssl/package-registry.key \
   -e EPR_TLS_CERT=/etc/ssl/package-registry.crt \
-  docker.elastic.co/package-registry/package-registry:master
+  docker.elastic.co/package-registry/package-registry:main
 ```
 
 #### Docker images published
@@ -134,11 +134,11 @@ For each commit we have two docker image tags, one with the commit as tag
 
 Another Docker tag with the git branch or tag name
 
-* `docker.elastic.co/package-registry/package-registry:master`
+* `docker.elastic.co/package-registry/package-registry:main`
 * `docker.elastic.co/package-registry/package-registry:pr-111`
 * `docker.elastic.co/package-registry/package-registry:v0.2.0`
 
-If you want to run the most recent registry for development, run the master tag.
+If you want to run the most recent registry for development, run the main tag.
 
 These images contain only the package registry, they don't contain any package.
 
@@ -150,7 +150,7 @@ The Docker image of Package Registry is just an empty distribution without any p
 0. Make sure you've built the Docker image for Package Registry:
 
 ```bash
-docker build --rm -t docker.elastic.co/package-registry/package-registry:master .
+docker build --rm -t docker.elastic.co/package-registry/package-registry:main .
 ```
 
 1. Git clone latest `distribution:snapshot` from Git:
@@ -159,10 +159,10 @@ docker build --rm -t docker.elastic.co/package-registry/package-registry:master 
 git clone --branch snapshot https://github.com/elastic/package-storage.git
 ```
 
-2. Open Dockerfile and change the base image for the Package Registry (use `master` instead of `v0.19.0`):
+2. Open Dockerfile and change the base image for the Package Registry (use `main` instead of `v0.19.0`):
 
 ```
-FROM docker.elastic.co/package-registry/package-registry:master
+FROM docker.elastic.co/package-registry/package-registry:main
 ```
 
 (Docker builder will use the custom image you've built in step 0.)
