@@ -4,30 +4,47 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/elastic/package-registry/compare/v1.5.1...master)
+## [Unreleased](https://github.com/elastic/package-registry/compare/v1.6.0...main)
 
 ### Breaking changes
 
-* Ignore the `internal` parameter in packages and `/search` requests. [#765](https://github.com/elastic/package-registry/pull/765)
 * Packages with major version 0 or with prerelease labels are only returned by search requests when they include `prerelease=true` or `experimental=true`. [#785](https://github.com/elastic/package-registry/pull/785)
 * Release level of a package without release tag is based on its semantic versioning now, previously it was experimental. [#785](https://github.com/elastic/package-registry/pull/785)
 * Release level of a data stream without release tag is the same as the package that contains it, previously it was experimental. [#785](https://github.com/elastic/package-registry/pull/785)
 
 ### Bugfixes
 
-* Fix panic when opening specially crafted Zip file. [#764](https://github.com/elastic/package-registry/pull/764)
-
 ### Added
 
 * Add the `prerelease` parameter in search requests to include in-development versions of packages. [#785](https://github.com/elastic/package-registry/pull/785)
-* Update APM Go Agent to 1.14.0. [#759](https://github.com/elastic/package-registry/pull/759)
-* Update Gorilla to 1.8.0. [#759](https://github.com/elastic/package-registry/pull/759)
-* Support package signatures. [#760](https://github.com/elastic/package-registry/pull/760)
-* Update Go runtime to 1.17.3. [#764](https://github.com/elastic/package-registry/pull/764)
 
 ### Deprecated
 
 * `experimental` parameter in search requests is deprecated. [#785](https://github.com/elastic/package-registry/pull/785)
+
+### Known Issues
+
+## [v1.6.0](https://github.com/elastic/package-registry/compare/v1.5.1...v1.6.0)
+
+### Breaking changes
+
+* Ignore the `internal` parameter in packages and `/search` requests. [#765](https://github.com/elastic/package-registry/pull/765)
+
+### Bugfixes
+
+* Fix panic when opening specially crafted Zip file. [#764](https://github.com/elastic/package-registry/pull/764)
+* Fix unbounded memory issue when handling HTTP/2 requests. [#788](https://github.com/elastic/package-registry/pull/788)
+
+### Added
+
+* Update APM Go Agent to 1.14.0. [#759](https://github.com/elastic/package-registry/pull/759)
+* Update Gorilla to 1.8.0. [#759](https://github.com/elastic/package-registry/pull/759)
+* Support package signatures. [#760](https://github.com/elastic/package-registry/pull/760)
+* Update Go runtime to 1.17.6. [#788](https://github.com/elastic/package-registry/pull/788)
+* Use Ubuntu LTS as base image instead of CentOS [#787](https://github.com/elastic/package-registry/pull/787)
+
+### Deprecated
+
 
 ### Known Issues
 

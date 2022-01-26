@@ -2,7 +2,7 @@
 # It expects packages to be mounted under /packages/package-registry or have a config file loaded into /package-registry/config.yml
 
 # Build binary
-ARG GO_VERSION=1.17.3
+ARG GO_VERSION=1.17.6
 FROM golang:${GO_VERSION} AS builder
 
 ENV GO111MODULE=on
@@ -12,11 +12,12 @@ RUN go build .
 
 
 # Run binary
-FROM centos:7
+FROM ubuntu:20.04
 
 # Get dependencies
-# mailcap - installs "/etc/mime.types" used by the package-registry binary
-RUN yum install -y zip rsync mailcap && yum clean all
+RUN apt-get update && \
+    apt-get install -y mime-support zip rsync curl && \
+    apt-get clean all
 
 # Move binary from the builder image
 COPY --from=builder /package-registry/package-registry /package-registry/package-registry

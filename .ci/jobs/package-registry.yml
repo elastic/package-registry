@@ -13,7 +13,7 @@
           discover-pr-forks-trust: permission
           discover-pr-origin: merge-current
           discover-tags: true
-          head-filter-regex: '(^master|^experimental|PR-.*|v\d+\.\d+\.\d+)'
+          head-filter-regex: '(^main|^experimental|PR-.*|v\d+\.\d+\.\d+)'
           notification-context: 'package-registry'
           repo: package-registry
           repo-owner: elastic
