@@ -1,28 +1,8 @@
 [
   {
-    "id": "aws",
-    "title": "AWS",
-    "count": 2
-  },
-  {
     "id": "azure",
     "title": "Azure",
     "count": 2
-  },
-  {
-    "id": "cloud",
-    "title": "Cloud",
-    "count": 2
-  },
-  {
-    "id": "compute",
-    "title": "compute",
-    "count": 2
-  },
-  {
-    "id": "containers",
-    "title": "Containers",
-    "count": 1
   },
   {
     "id": "crm",
@@ -32,22 +12,12 @@
   {
     "id": "custom",
     "title": "Custom",
-    "count": 14
+    "count": 12
   },
   {
     "id": "datastore",
     "title": "Datastore",
     "count": 2
-  },
-  {
-    "id": "message_queue",
-    "title": "Message Queue",
-    "count": 1
-  },
-  {
-    "id": "monitoring",
-    "title": "Monitoring",
-    "count": 1
   },
   {
     "id": "web",

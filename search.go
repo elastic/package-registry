@@ -81,11 +81,25 @@ func newSearchFilterFromQuery(query url.Values) (*packages.Filter, error) {
 		}
 	}
 
+	// Deprecated: release tags to be removed.
 	if v := query.Get("experimental"); v != "" {
 		// In case of error, keep it false
 		filter.Experimental, err = strconv.ParseBool(v)
 		if err != nil {
 			return nil, fmt.Errorf("invalid 'experimental' query param: '%s'", v)
+		}
+
+		// For compatibility with older versions of Kibana.
+		if filter.Experimental {
+			filter.Prerelease = true
+		}
+	}
+
+	if v := query.Get("prerelease"); v != "" {
+		// In case of error, keep it false
+		filter.Prerelease, err = strconv.ParseBool(v)
+		if err != nil {
+			return nil, fmt.Errorf("invalid 'prerelease' query param: '%s'", v)
 		}
 	}
 

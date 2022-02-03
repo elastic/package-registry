@@ -73,7 +73,7 @@
       "type": "logs",
       "dataset": "example.foo",
       "title": "Foo",
-      "release": "experimental",
+      "release": "ga",
       "ingest_pipeline": "pipeline-entry",
       "streams": [
         {

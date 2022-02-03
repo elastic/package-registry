@@ -89,7 +89,7 @@
       "type": "logs",
       "dataset": "datasources.examplelog1",
       "title": "Example dataset with inputs",
-      "release": "experimental",
+      "release": "beta",
       "streams": [
         {
           "input": "logs",
@@ -126,7 +126,7 @@
       "type": "logs",
       "dataset": "datasources.examplelog2",
       "title": "Example dataset with inputs",
-      "release": "experimental",
+      "release": "beta",
       "streams": [
         {
           "input": "logs",
@@ -156,7 +156,7 @@
       "type": "metrics",
       "dataset": "datasources.examplemetric",
       "title": "Example data stream with inputs",
-      "release": "experimental",
+      "release": "beta",
       "streams": [
         {
           "input": "nginx/metrics",

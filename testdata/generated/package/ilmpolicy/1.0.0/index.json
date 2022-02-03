@@ -32,7 +32,7 @@
       "dataset": "ilmpolicy.ilm_policy",
       "ilm_policy": "diagnostics",
       "title": "ILM policy overrride data stream",
-      "release": "experimental",
+      "release": "beta",
       "package": "ilmpolicy",
       "elasticsearch": {
         "index_template.mappings": {

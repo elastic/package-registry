@@ -250,6 +250,27 @@ func TestNewPackageFromPath(t *testing.T) {
 	}
 }
 
+func TestIsPrerelease(t *testing.T) {
+	cases := []struct {
+		version    string
+		prerelease bool
+	}{
+		{"0.1.0-rc1", true},
+		{"0.1.0", true}, // Major version 0 shouldn't be considered stable.
+		{"1.0.0-beta1", true},
+		{"1.0.0-rc.1", true},
+		{"1.0.0-SNAPSHOT", true},
+		{"1.0.0", false},
+	}
+
+	for _, c := range cases {
+		t.Run(c.version, func(t *testing.T) {
+			semver := semver.MustParse(c.version)
+			assert.Equal(t, c.prerelease, isPrerelease(semver))
+		})
+	}
+}
+
 func BenchmarkNewPackage(b *testing.B) {
 	fsBuilder := func(p *Package) (PackageFileSystem, error) {
 		return NewExtractedPackageFileSystem(p)

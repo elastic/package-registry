@@ -4,14 +4,19 @@
 
 package packages
 
+import (
+	"github.com/Masterminds/semver/v3"
+)
+
 const (
 	ReleaseExperimental = "experimental"
 	ReleaseBeta         = "beta"
 	ReleaseGa           = "ga"
 
 	// Default release if no release is configured
-	DefaultRelease = ReleaseExperimental
-	DefaultLicense = "basic"
+	DefaultRelease    = ReleaseGa
+	DefaultPrerelease = ReleaseBeta
+	DefaultLicense    = "basic"
 )
 
 var ReleaseTypes = map[string]interface{}{
@@ -23,4 +28,13 @@ var ReleaseTypes = map[string]interface{}{
 func IsValidRelease(release string) bool {
 	_, exists := ReleaseTypes[release]
 	return exists
+}
+
+// releaseForSemVerCompat is a compatibility function that returns a release
+// for a given version.
+func releaseForSemVerCompat(version *semver.Version) string {
+	if isPrerelease(version) {
+		return DefaultPrerelease
+	}
+	return DefaultRelease
 }

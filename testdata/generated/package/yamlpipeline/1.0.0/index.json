@@ -28,7 +28,7 @@
       "type": "logs",
       "dataset": "yamlpipeline.log",
       "title": "Log Yaml pipeline",
-      "release": "experimental",
+      "release": "beta",
       "ingest_pipeline": "pipeline-entry",
       "streams": [
         {

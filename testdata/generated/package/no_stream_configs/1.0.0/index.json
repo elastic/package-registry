@@ -25,7 +25,7 @@
       "type": "logs",
       "dataset": "no_stream_configs.log",
       "title": "Log Yaml pipeline",
-      "release": "experimental",
+      "release": "beta",
       "package": "no_stream_configs",
       "path": "log"
     }

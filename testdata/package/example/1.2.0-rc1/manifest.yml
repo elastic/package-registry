@@ -1,0 +1,30 @@
+format_version: 1.0.0
+
+name: example
+description: This is the example integration
+version: 1.2.0-rc1
+title: Example Integration
+categories: ["crm", "azure", "cloud"]
+type: integration
+release: ga
+
+owner.github: "ruflin"
+
+conditions:
+  kibana:
+    version: "^7.16.0 || ^8.0.0"
+
+screenshots:
+  - src: /img/kibana-envoyproxy.jpg
+    title: IP Tables Ubiquity Dashboard
+    size: 1492x1464
+    type: image/png
+
+policy_templates:
+  - name: logs
+    title: Logs datasource
+    description: Datasource for your log files.
+    categories:
+      - datastore
+    inputs:
+      - type: foo

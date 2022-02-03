@@ -236,10 +236,13 @@ func (i *FileSystemIndexer) getPackagePaths(packagesPath string) ([]string, erro
 type Filter struct {
 	AllVersions    bool
 	Category       string
-	Experimental   bool
+	Prerelease     bool
 	KibanaVersion  *semver.Version
 	PackageName    string
 	PackageVersion string
+
+	// Deprecated, release tags to be removed.
+	Experimental bool
 }
 
 // Apply applies the filter to the list of packages, if the filter is nil, no filtering is done.
@@ -256,6 +259,11 @@ func (f *Filter) Apply(ctx context.Context, packages Packages) Packages {
 	for _, p := range packages {
 		// Skip experimental packages if flag is not specified
 		if p.Release == ReleaseExperimental && !f.Experimental {
+			continue
+		}
+
+		// Skip prerelease packages by default
+		if p.IsPrerelease() && !f.Prerelease {
 			continue
 		}
 
@@ -342,6 +350,7 @@ func NameVersionFilter(name, version string) GetOptions {
 	return GetOptions{
 		Filter: &Filter{
 			Experimental:   true,
+			Prerelease:     true,
 			PackageName:    name,
 			PackageVersion: version,
 		},

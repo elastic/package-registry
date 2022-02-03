@@ -31,7 +31,7 @@
       "dataset": "hidden.hidden",
       "hidden": true,
       "title": "Hidden data stream and ilm policy overrride",
-      "release": "experimental",
+      "release": "beta",
       "package": "hidden",
       "elasticsearch": {
         "index_template.mappings": {

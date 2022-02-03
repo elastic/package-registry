@@ -1,18 +1,5 @@
 [
   {
-    "name": "dataset_is_prefix",
-    "title": "DatasetIsPrefix Flag",
-    "version": "0.0.1",
-    "release": "beta",
-    "description": "This package contains a datastream with the dataset_is_prefix flag set to true.\n",
-    "type": "integration",
-    "download": "/epr/dataset_is_prefix/dataset_is_prefix-0.0.1.zip",
-    "path": "/package/dataset_is_prefix/0.0.1",
-    "categories": [
-      "custom"
-    ]
-  },
-  {
     "name": "datasources",
     "title": "Default datasource Integration",
     "version": "1.0.0",
@@ -33,65 +20,6 @@
     ]
   },
   {
-    "name": "ecs_style_dataset",
-    "title": "Default pipeline Integration",
-    "version": "0.0.1",
-    "release": "beta",
-    "description": "Tests the registry validations works for dataset fields using the ecs style format",
-    "type": "integration",
-    "download": "/epr/ecs_style_dataset/ecs_style_dataset-0.0.1.zip",
-    "path": "/package/ecs_style_dataset/0.0.1",
-    "policy_templates": [
-      {
-        "name": "logs",
-        "title": "Logs datasource",
-        "description": "Datasource for your log files."
-      }
-    ],
-    "categories": [
-      "monitoring"
-    ]
-  },
-  {
-    "name": "default_pipeline",
-    "title": "Default pipeline Integration",
-    "version": "0.0.2",
-    "release": "beta",
-    "description": "Tests if no pipeline is set, it defaults to the default one",
-    "type": "integration",
-    "download": "/epr/default_pipeline/default_pipeline-0.0.2.zip",
-    "path": "/package/default_pipeline/0.0.2",
-    "policy_templates": [
-      {
-        "name": "logs",
-        "title": "Logs datasource",
-        "description": "Datasource for your log files."
-      }
-    ],
-    "categories": [
-      "containers",
-      "message_queue"
-    ]
-  },
-  {
-    "name": "example",
-    "title": "Example",
-    "version": "0.0.2",
-    "release": "beta",
-    "description": "This is the example integration.",
-    "type": "integration",
-    "download": "/epr/example/example-0.0.2.zip",
-    "path": "/package/example/0.0.2",
-    "conditions": {
-      "kibana": {
-        "version": ">=6.0.0"
-      }
-    },
-    "categories": [
-      "web"
-    ]
-  },
-  {
     "name": "metricsonly",
     "title": "Metrics Only",
     "version": "2.0.1",
@@ -105,26 +33,6 @@
         "src": "/img/icon.svg",
         "path": "/package/metricsonly/2.0.1/img/icon.svg",
         "type": "image/svg+xml"
-      }
-    ],
-    "categories": [
-      "custom"
-    ]
-  },
-  {
-    "name": "multiple_false",
-    "title": "Multiple false",
-    "version": "0.0.1",
-    "release": "beta",
-    "description": "Tests that multiple can be set to false",
-    "type": "integration",
-    "download": "/epr/multiple_false/multiple_false-0.0.1.zip",
-    "path": "/package/multiple_false/0.0.1",
-    "policy_templates": [
-      {
-        "name": "logs",
-        "title": "Logs datasource",
-        "description": "Datasource for your log files."
       }
     ],
     "categories": [

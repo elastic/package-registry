@@ -37,7 +37,7 @@
       "type": "logs",
       "dataset": "ecs_style_dataset.foo",
       "title": "Foo",
-      "release": "experimental",
+      "release": "beta",
       "package": "ecs_style_dataset",
       "path": "foo"
     }

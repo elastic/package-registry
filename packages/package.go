@@ -278,7 +278,7 @@ func NewPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) 
 	}
 
 	if p.Release == "" {
-		p.Release = DefaultRelease
+		p.Release = releaseForSemVerCompat(p.versionSemVer)
 	}
 
 	if !IsValidRelease(p.Release) {
@@ -346,6 +346,17 @@ func (p *Package) HasKibanaVersion(version *semver.Version) bool {
 
 func (p *Package) IsNewerOrEqual(pp *Package) bool {
 	return !p.versionSemVer.LessThan(pp.versionSemVer)
+}
+
+func (p *Package) IsPrerelease() bool {
+	return isPrerelease(p.versionSemVer)
+}
+
+func isPrerelease(version *semver.Version) bool {
+	if version.Major() < 1 {
+		return true
+	}
+	return version.Prerelease() != ""
 }
 
 // LoadAssets (re)loads all the assets of the package
