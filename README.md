@@ -19,16 +19,18 @@ The `/search` API endpoint has few additional query parameters. More might be ad
   By default this endpoint always returns only the newest compatible package.
 * `category`: Filters the package by the given category. Available categories can be seend when going to `/categories` endpoint.
 * `package`: Filters by a specific package name, for example `mysql`. Returns the most recent version.
-* `all`: This can be set to true to list all package versions. This is set to `false` by default.
-* `experimental`: This can be set to true to list packages considered to be experimental. This is set to `false` by default.
+* `all`: This can be set to `true` to list all package versions. This is set to `false` by default.
+* `prerelease`: This can be set to `true` to list prerelease versions of packages. This is set to `false` by default.
+* `experimental` (deprecated): This can be set to `true` to list packages considered to be experimental. This is set to `false` by default.
 
 The different query parameters above can be combined, so `?package=mysql&kibana.version=7.3.0` will return all mysql package versions
 which are compatible with `7.3.0`.
 
 The `/categories` API endpoint has two additional query parameters.
 
-* `experimental`: This can be set to true to list categories from experimental packages. This is set to `false` by default.
-* `include_policy_templates`: This can be set to true to include categories from policy templates. This is set to `false` by default.
+* `prerelease`: This can be set to `true` to list prerelease versions of packages. This is set to `false` by default.
+* `experimental` (deprecated): This can be set to `true` to list categories from experimental packages. This is set to `false` by default.
+* `include_policy_templates`: This can be set to `true` to include categories from policy templates. This is set to `false` by default.
 
 ## Package structure
 
