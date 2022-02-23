@@ -380,7 +380,7 @@ components:
       name: prerelease
       in: query
       required: false
-      description: Set to true to also list experimental packages
+      description: Set to true to also list prerelease versions of packages
       schema:
         type: boolean
         default: false
