@@ -5,7 +5,6 @@
 package main
 
 import (
-	"log"
 	"net/http"
 	"time"
 
@@ -44,7 +43,6 @@ func artifactsHandler(indexer Indexer, cacheTime time.Duration) func(w http.Resp
 		opts := packages.NameVersionFilter(packageName, packageVersion)
 		packageList, err := indexer.Get(r.Context(), &opts)
 		if err != nil {
-			log.Printf("getting package path failed: %v", err)
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}

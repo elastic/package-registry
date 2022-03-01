@@ -5,7 +5,6 @@
 package main
 
 import (
-	"log"
 	"mime"
 )
 
@@ -21,6 +20,6 @@ func init() {
 func mustAddMimeExtensionType(ext, typ string) {
 	err := mime.AddExtensionType(ext, typ)
 	if err != nil {
-		log.Fatal(err)
+		panic(err.Error())
 	}
 }

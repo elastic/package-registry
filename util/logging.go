@@ -1,0 +1,88 @@
+// Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
+// or more contributor license agreements. Licensed under the Elastic License;
+// you may not use this file except in compliance with the Elastic License.
+
+package util
+
+import (
+	"net"
+	"net/http"
+	"os"
+
+	"github.com/felixge/httpsnoop"
+	"github.com/gorilla/mux"
+	"go.elastic.co/ecszap"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
+)
+
+// NewLogger returns a new logger with default settings.
+func NewLogger() *zap.Logger {
+	return newECSLogger()
+}
+
+func newECSLogger() *zap.Logger {
+	encoderConfig := ecszap.NewDefaultEncoderConfig()
+	core := ecszap.NewCore(encoderConfig, os.Stderr, zap.InfoLevel)
+	return zap.New(core, zap.AddCaller())
+}
+
+func newDevelopmentLogger() *zap.Logger {
+	encoderConfig := zap.NewDevelopmentEncoderConfig()
+	encoder := zapcore.NewConsoleEncoder(encoderConfig)
+	core := zapcore.NewCore(encoder, os.Stderr, zap.DebugLevel)
+	return zap.New(core, zap.AddCaller())
+}
+
+// LoggingMiddleware is a middleware used to log requests to the given logger.
+func LoggingMiddleware(log *zap.Logger) mux.MiddlewareFunc {
+	log = log.Named("http")
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			// Do not log requests to the health endpoint
+			if r.RequestURI == "/health" {
+				next.ServeHTTP(w, r)
+				return
+			}
+
+			LogRequest(log, next, w, r)
+		})
+	}
+}
+
+// LogRequest captures information from a handler handling a request, and generates logs
+// using this information.
+func LogRequest(log *zap.Logger, handler http.Handler, w http.ResponseWriter, req *http.Request) {
+	resp := httpsnoop.CaptureMetrics(handler, w, req)
+
+	host, _, err := net.SplitHostPort(req.RemoteAddr)
+	if err != nil {
+		host = req.RemoteAddr
+	}
+	fields := []zap.Field{
+		zap.String("source.address", host),
+		zap.String("http.request.method", req.Method),
+
+		zap.Int("http.response.code", resp.Code),
+		zap.Int64("http.response.body.bytes", resp.Written),
+	}
+	if ip := net.ParseIP(host); ip != nil {
+		fields = append(fields, zap.String("source.ip", host))
+	} else {
+		fields = append(fields, zap.String("source.domain", host))
+	}
+	if referer := req.Referer(); referer != "" {
+		fields = append(fields, zap.String("http.request.referer", referer))
+	}
+	if userAgent := req.UserAgent(); userAgent != "" {
+		fields = append(fields, zap.String("user_agent.original", userAgent))
+	}
+	if user := req.URL.User; user != nil {
+		if username := user.Username(); username != "" {
+			fields = append(fields, zap.String("user.name", username))
+		}
+	}
+
+	message := req.Method + " " + req.URL.Path + " " + req.Proto
+	log.Info(message, fields...)
+}

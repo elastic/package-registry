@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Structured logging following JSON ECS format [#796](https://github.com/elastic/package-registry/pull/786).
+
 ### Deprecated
 
 ### Known Issues
