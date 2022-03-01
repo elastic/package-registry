@@ -17,6 +17,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
 
@@ -261,19 +262,15 @@ func getRouter(config *Config, indexer Indexer) (*mux.Router, error) {
 // In addition ?ready=true can be used for a ready request. Currently both are identical.
 func healthHandler(w http.ResponseWriter, r *http.Request) {}
 
-// logging middle to log all requests
+// loggingMiddleware is used to log requests
 func loggingMiddleware(next http.Handler) http.Handler {
+	logHandler := handlers.CombinedLoggingHandler(os.Stderr, next)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		logRequest(r)
-		next.ServeHTTP(w, r)
+		// Do not log requests to the health endpoint
+		if r.RequestURI == "/health" {
+			next.ServeHTTP(w, r)
+		} else {
+			logHandler.ServeHTTP(w, r)
+		}
 	})
-}
-
-// logRequest converts a request object into a proper logging event
-func logRequest(r *http.Request) {
-	// Do not log requests to the health endpoint
-	if r.RequestURI == "/health" {
-		return
-	}
-	log.Println(fmt.Sprintf("source.ip: %s, url.original: %s", r.RemoteAddr, r.RequestURI))
 }

@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Use Combined Log Format [#795](https://github.com/elastic/package-registry/pull/785).
+
 ### Deprecated
 
 ### Known Issues
