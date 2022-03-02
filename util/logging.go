@@ -27,7 +27,7 @@ const (
 )
 
 var logLevel = zap.LevelFlag("log-level", zap.InfoLevel, "log level (default \"info\")")
-var logType = flag.String("log-type", "ecs", "log type (ecs, dev)")
+var logType = flag.String("log-type", defaultLoggerType, "log type (ecs, dev)")
 
 var logger *zap.Logger
 var loggerMutex sync.Mutex
