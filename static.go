@@ -6,14 +6,15 @@ package main
 
 import (
 	"errors"
-	"log"
 	"net/http"
 	"time"
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/gorilla/mux"
+	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/packages"
+	"github.com/elastic/package-registry/util"
 )
 
 const staticRouterPath = "/package/{packageName}/{packageVersion}/{name:.*}"
@@ -25,6 +26,7 @@ type staticParams struct {
 }
 
 func staticHandler(indexer Indexer, cacheTime time.Duration) http.HandlerFunc {
+	logger := util.Logger()
 	return func(w http.ResponseWriter, r *http.Request) {
 		params, err := staticParamsFromRequest(r)
 		if err != nil {
@@ -35,7 +37,10 @@ func staticHandler(indexer Indexer, cacheTime time.Duration) http.HandlerFunc {
 		opts := packages.NameVersionFilter(params.packageName, params.packageVersion)
 		packageList, err := indexer.Get(r.Context(), &opts)
 		if err != nil {
-			log.Printf("getting package path failed: %v", err)
+			logger.Error("getting package path failed",
+				zap.String("package.name", params.packageName),
+				zap.String("package.version", params.packageVersion),
+				zap.Error(err))
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}

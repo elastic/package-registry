@@ -72,10 +72,11 @@ type Config struct {
 }
 
 func main() {
-	logger := util.NewLogger()
+	parseFlags()
+
+	logger := util.Logger()
 	defer logger.Sync()
 
-	parseFlags()
 	logger.Info("Package registry started")
 	defer logger.Info("Package registry stopped")
 
@@ -123,8 +124,8 @@ func initServer(logger *zap.Logger) *http.Server {
 	config := mustLoadConfig(logger)
 	packagesBasePaths := getPackagesBasePaths(config)
 	indexer := NewCombinedIndexer(
-		packages.NewFileSystemIndexer(logger, packagesBasePaths...),
-		packages.NewZipFileSystemIndexer(logger, packagesBasePaths...),
+		packages.NewFileSystemIndexer(packagesBasePaths...),
+		packages.NewZipFileSystemIndexer(packagesBasePaths...),
 	)
 	ensurePackagesAvailable(ctx, logger, indexer)
 

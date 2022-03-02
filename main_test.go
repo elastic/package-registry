@@ -27,6 +27,7 @@ import (
 	"gopkg.in/yaml.v2"
 
 	"github.com/elastic/package-registry/packages"
+	"github.com/elastic/package-registry/util"
 )
 
 var (
@@ -34,6 +35,10 @@ var (
 	testCacheTime      = 1 * time.Second
 	generatedFilesPath = filepath.Join("testdata", "generated")
 )
+
+func init() {
+	util.InitLogger(util.DevLogger)
+}
 
 func TestEndpoints(t *testing.T) {
 	packagesBasePaths := []string{"./testdata/second_package_path", "./testdata/package"}

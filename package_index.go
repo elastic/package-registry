@@ -5,11 +5,11 @@
 package main
 
 import (
-	"log"
 	"net/http"
 	"time"
 
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/gorilla/mux"
@@ -25,6 +25,7 @@ const (
 var errPackageRevisionNotFound = errors.New("package revision not found")
 
 func packageIndexHandler(indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+	logger := util.Logger()
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		packageName, ok := vars["packageName"]
@@ -48,7 +49,7 @@ func packageIndexHandler(indexer Indexer, cacheTime time.Duration) func(w http.R
 		opts := packages.NameVersionFilter(packageName, packageVersion)
 		packages, err := indexer.Get(r.Context(), &opts)
 		if err != nil {
-			log.Printf("getting package path failed: %v", err)
+			logger.Error("getting package path failed", zap.Error(err))
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
@@ -62,8 +63,9 @@ func packageIndexHandler(indexer Indexer, cacheTime time.Duration) func(w http.R
 
 		err = util.WriteJSONPretty(w, packages[0])
 		if err != nil {
-			log.Printf("marshaling package index failed (path '%s'): %v", packages[0].BasePath, err)
-
+			logger.Error("marshaling package index failed",
+				zap.String("path", packages[0].BasePath),
+				zap.Error(err))
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}

@@ -5,7 +5,6 @@
 package packages
 
 import (
-	"log"
 	"path/filepath"
 	"testing"
 
@@ -204,7 +203,6 @@ func TestHasKibanaVersion(t *testing.T) {
 			assert.NoError(t, err)
 
 			check := p.HasKibanaVersion(kibanaVersion)
-			log.Println(check)
 			assert.Equal(t, tt.check, check)
 
 		})

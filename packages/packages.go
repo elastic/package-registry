@@ -66,10 +66,8 @@ type FileSystemIndexer struct {
 }
 
 // NewFileSystemIndexer creates a new FileSystemIndexer for the given paths.
-func NewFileSystemIndexer(logger *zap.Logger, paths ...string) *FileSystemIndexer {
-	if logger == nil {
-		logger = util.NewLogger()
-	}
+func NewFileSystemIndexer(paths ...string) *FileSystemIndexer {
+	logger := util.Logger()
 	walkerFn := func(basePath, path string, info os.DirEntry) (bool, error) {
 		relativePath, err := filepath.Rel(basePath, path)
 		if err != nil {
@@ -109,10 +107,8 @@ func NewFileSystemIndexer(logger *zap.Logger, paths ...string) *FileSystemIndexe
 }
 
 // NewZipFileSystemIndexer creates a new ZipFileSystemIndexer for the given paths.
-func NewZipFileSystemIndexer(logger *zap.Logger, paths ...string) *FileSystemIndexer {
-	if logger == nil {
-		logger = util.NewLogger()
-	}
+func NewZipFileSystemIndexer(paths ...string) *FileSystemIndexer {
+	logger := util.Logger()
 	walkerFn := func(basePath, path string, info os.DirEntry) (bool, error) {
 		if info.IsDir() {
 			return false, nil

@@ -5,9 +5,11 @@
 package util
 
 import (
+	"flag"
 	"net"
 	"net/http"
 	"os"
+	"sync"
 
 	"github.com/felixge/httpsnoop"
 	"github.com/gorilla/mux"
@@ -16,14 +18,54 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-// NewLogger returns a new logger with default settings.
-func NewLogger() *zap.Logger {
-	return newECSLogger()
+// Types of available loggers.
+const (
+	ECSLogger = "ecs"
+	DevLogger = "dev"
+
+	defaultLoggerType = ECSLogger
+)
+
+var logLevel = zap.LevelFlag("log-level", zap.InfoLevel, "log level (default \"info\")")
+var logType = flag.String("log-type", "ecs", "log type (ecs, dev)")
+
+var logger *zap.Logger
+var loggerMutex sync.Mutex
+
+// InitLogger initializes the logger, this is ignored afer a logger has
+// been created for this process.
+func InitLogger(loggerType string) {
+	loggerMutex.Lock()
+	defer loggerMutex.Unlock()
+
+	if logger != nil {
+		return
+	}
+
+	if loggerType == "" {
+		loggerType = *logType
+	}
+
+	switch loggerType {
+	case ECSLogger:
+		logger = newECSLogger()
+	case DevLogger:
+		logger = newDevelopmentLogger()
+	default:
+		logger = newECSLogger()
+		logger.Warn("unknown log type " + loggerType + " using default")
+	}
+}
+
+// Logger returns a logger singleton.
+func Logger() *zap.Logger {
+	InitLogger("")
+	return logger
 }
 
 func newECSLogger() *zap.Logger {
 	encoderConfig := ecszap.NewDefaultEncoderConfig()
-	core := ecszap.NewCore(encoderConfig, os.Stderr, zap.InfoLevel)
+	core := ecszap.NewCore(encoderConfig, os.Stderr, *logLevel)
 	return zap.New(core, zap.AddCaller())
 }
 
