@@ -11,8 +11,10 @@ import (
 	"github.com/Masterminds/semver/v3"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/packages"
+	"github.com/elastic/package-registry/util"
 )
 
 const artifactsRouterPath = "/epr/{packageName}/{packageName:[a-z0-9_]+}-{packageVersion}.zip"
@@ -20,6 +22,7 @@ const artifactsRouterPath = "/epr/{packageName}/{packageName:[a-z0-9_]+}-{packag
 var errArtifactNotFound = errors.New("artifact not found")
 
 func artifactsHandler(indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+	logger := util.Logger()
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		packageName, ok := vars["packageName"]
@@ -43,6 +46,10 @@ func artifactsHandler(indexer Indexer, cacheTime time.Duration) func(w http.Resp
 		opts := packages.NameVersionFilter(packageName, packageVersion)
 		packageList, err := indexer.Get(r.Context(), &opts)
 		if err != nil {
+			logger.Error("getting package path failed",
+				zap.String("package.name", packageName),
+				zap.String("package.version", packageVersion),
+				zap.Error(err))
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
