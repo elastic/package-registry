@@ -64,7 +64,7 @@ func packageIndexHandler(indexer Indexer, cacheTime time.Duration) func(w http.R
 		err = util.WriteJSONPretty(w, packages[0])
 		if err != nil {
 			logger.Error("marshaling package index failed",
-				zap.String("path", packages[0].BasePath),
+				zap.String("package.path", packages[0].BasePath),
 				zap.Error(err))
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return

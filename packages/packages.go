@@ -83,7 +83,8 @@ func NewFileSystemIndexer(paths ...string) *FileSystemIndexer {
 			versionDir := dirs[1]
 			_, err := semver.StrictNewVersion(versionDir)
 			if err != nil {
-				logger.Warn("ignoring unexpected directory", zap.String("path", path))
+				logger.Warn("ignoring unexpected directory",
+					zap.String("file.path", path))
 				return false, filepath.SkipDir
 			}
 			return true, nil
@@ -91,7 +92,7 @@ func NewFileSystemIndexer(paths ...string) *FileSystemIndexer {
 		// Unexpected file, return nil in order to continue processing sibling directories
 		// Fixes an annoying problem when the .DS_Store file is left behind and the package
 		// is not loading without any error information
-		logger.Warn("ignoging unexpected file", zap.String("path", path))
+		logger.Warn("ignoging unexpected file", zap.String("file.path", path))
 		return false, nil
 	}
 	fsBuilder := func(p *Package) (PackageFileSystem, error) {
@@ -120,7 +121,8 @@ func NewZipFileSystemIndexer(paths ...string) *FileSystemIndexer {
 		// Check if the file is actually a zip file.
 		r, err := zip.OpenReader(path)
 		if err != nil {
-			logger.Warn("ignoring invalid zip file", zap.String("path", path), zap.Error(err))
+			logger.Warn("ignoring invalid zip file",
+				zap.String("file.path", path), zap.Error(err))
 			return false, nil
 		}
 		defer r.Close()
@@ -194,9 +196,9 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 			key := packageKey{name: p.Name, version: p.Version}
 			if _, found := packagesFound[key]; found {
 				i.logger.Info("duplicated package",
-					zap.String("name", p.Name),
-					zap.String("version", p.Version),
-					zap.String("path", p.BasePath))
+					zap.String("package.name", p.Name),
+					zap.String("package.version", p.Version),
+					zap.String("package.path", p.BasePath))
 				continue
 			}
 
@@ -204,9 +206,9 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 			pList = append(pList, p)
 
 			i.logger.Info("found package",
-				zap.String("name", p.Name),
-				zap.String("version", p.Version),
-				zap.String("path", p.BasePath))
+				zap.String("package.name", p.Name),
+				zap.String("package.version", p.Version),
+				zap.String("package.path", p.BasePath))
 		}
 	}
 	return pList, nil
