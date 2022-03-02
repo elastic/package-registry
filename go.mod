@@ -6,6 +6,7 @@ require (
 	github.com/Masterminds/semver/v3 v3.1.0
 	github.com/elastic/go-licenser v0.3.1
 	github.com/elastic/go-ucfg v0.8.4-0.20200415140258-1232bd4774a6
+	github.com/felixge/httpsnoop v1.0.2
 	github.com/gorilla/mux v1.8.0
 	github.com/joeshaw/multierror v0.0.0-20140124173710-69b34d4ec901
 	github.com/magefile/mage v1.9.0
@@ -24,7 +25,6 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/elastic/go-sysinfo v1.7.1 // indirect
 	github.com/elastic/go-windows v1.0.1 // indirect
-	github.com/felixge/httpsnoop v1.0.2 // indirect
 	github.com/jcchavezs/porto v0.3.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/prometheus/procfs v0.7.3 // indirect
