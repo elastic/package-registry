@@ -78,7 +78,9 @@ func newDevelopmentLogger() *zap.Logger {
 
 // LoggingMiddleware is a middleware used to log requests to the given logger.
 func LoggingMiddleware(logger *zap.Logger) mux.MiddlewareFunc {
-	logger = logger.Named("http")
+	// Disable logging of the file and number of the caller, because it will be the
+	// one of the helper.
+	logger = logger.Named("http").WithOptions(zap.WithCaller(false))
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			// Do not log requests to the health endpoint
