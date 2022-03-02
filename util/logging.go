@@ -77,8 +77,8 @@ func newDevelopmentLogger() *zap.Logger {
 }
 
 // LoggingMiddleware is a middleware used to log requests to the given logger.
-func LoggingMiddleware(log *zap.Logger) mux.MiddlewareFunc {
-	log = log.Named("http")
+func LoggingMiddleware(logger *zap.Logger) mux.MiddlewareFunc {
+	logger = logger.Named("http")
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			// Do not log requests to the health endpoint
@@ -87,14 +87,14 @@ func LoggingMiddleware(log *zap.Logger) mux.MiddlewareFunc {
 				return
 			}
 
-			LogRequest(log, next, w, r)
+			LogRequest(logger, next, w, r)
 		})
 	}
 }
 
 // LogRequest captures information from a handler handling a request, and generates logs
 // using this information.
-func LogRequest(log *zap.Logger, handler http.Handler, w http.ResponseWriter, req *http.Request) {
+func LogRequest(logger *zap.Logger, handler http.Handler, w http.ResponseWriter, req *http.Request) {
 	resp := httpsnoop.CaptureMetrics(handler, w, req)
 
 	host, _, err := net.SplitHostPort(req.RemoteAddr)
@@ -126,5 +126,5 @@ func LogRequest(log *zap.Logger, handler http.Handler, w http.ResponseWriter, re
 	}
 
 	message := req.Method + " " + req.URL.Path + " " + req.Proto
-	log.Info(message, fields...)
+	logger.Info(message, fields...)
 }
