@@ -9,6 +9,7 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"strconv"
 	"sync"
 
 	"github.com/felixge/httpsnoop"
@@ -110,23 +111,45 @@ func LoggingMiddleware(logger *zap.Logger) mux.MiddlewareFunc {
 // logRequest captures information from a handler handling a request, and generates logs
 // using this information.
 func logRequest(logger *zap.Logger, handler http.Handler, w http.ResponseWriter, req *http.Request) {
+	message, fields := captureZapFieldsForRequest(handler, w, req)
+	logger.Info(message, fields...)
+}
+
+// captureZapFieldsForRequest handles a request and captures fields for zap logger.
+func captureZapFieldsForRequest(handler http.Handler, w http.ResponseWriter, req *http.Request) (string, []zap.Field) {
 	resp := httpsnoop.CaptureMetrics(handler, w, req)
 
-	host, _, err := net.SplitHostPort(req.RemoteAddr)
+	domain, port, err := net.SplitHostPort(req.Host)
 	if err != nil {
-		host = req.RemoteAddr
+		domain = req.Host
+	}
+	if ip := net.ParseIP(domain); ip != nil && ip.To16() != nil && ip.To4() == nil {
+		// For ECS, if the host part of an url is an IPv6, it must keep the brackets
+		// when stored in `url.domain` (but not when stored in ip fields).
+		domain = "[" + domain + "]"
+	}
+	sourceHost, _, err := net.SplitHostPort(req.RemoteAddr)
+	if err != nil {
+		sourceHost = req.RemoteAddr
 	}
 	fields := []zap.Field{
-		zap.String("source.address", host),
+		// Request fields.
+		zap.String("source.address", sourceHost),
 		zap.String("http.request.method", req.Method),
+		zap.String("url.path", req.URL.Path),
+		zap.String("url.domain", domain),
 
+		// Response fields.
 		zap.Int("http.response.code", resp.Code),
 		zap.Int64("http.response.body.bytes", resp.Written),
+		zap.Int64("event.duration", resp.Duration.Nanoseconds()),
 	}
-	if ip := net.ParseIP(host); ip != nil {
-		fields = append(fields, zap.String("source.ip", host))
+
+	// Fields that are not always available.
+	if ip := net.ParseIP(sourceHost); ip != nil {
+		fields = append(fields, zap.String("source.ip", sourceHost))
 	} else {
-		fields = append(fields, zap.String("source.domain", host))
+		fields = append(fields, zap.String("source.domain", sourceHost))
 	}
 	if referer := req.Referer(); referer != "" {
 		fields = append(fields, zap.String("http.request.referer", referer))
@@ -134,12 +157,20 @@ func logRequest(logger *zap.Logger, handler http.Handler, w http.ResponseWriter,
 	if userAgent := req.UserAgent(); userAgent != "" {
 		fields = append(fields, zap.String("user_agent.original", userAgent))
 	}
+	if query := req.URL.RawQuery; query != "" {
+		fields = append(fields, zap.String("url.query", query))
+	}
+	if port != "" {
+		if intPort, err := strconv.Atoi(port); err == nil && intPort != 0 {
+			fields = append(fields, zap.Int("url.port", intPort))
+		}
+	}
 	if user := req.URL.User; user != nil {
 		if username := user.Username(); username != "" {
-			fields = append(fields, zap.String("user.name", username))
+			fields = append(fields, zap.String("url.username", username))
 		}
 	}
 
 	message := req.Method + " " + req.URL.Path + " " + req.Proto
-	logger.Info(message, fields...)
+	return message, fields
 }
