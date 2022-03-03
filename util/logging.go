@@ -32,9 +32,9 @@ var logType = flag.String("log-type", defaultLoggerType, "log type (ecs, dev)")
 var logger *zap.Logger
 var loggerMutex sync.Mutex
 
-// InitLogger initializes the logger, this is ignored afer a logger has
-// been created for this process.
-func InitLogger(loggerType string) {
+// UseECSLogger initializes the logger as an JSON ECS logger. It does nothing
+// if the logger has been already initialized.
+func UseECSLogger() {
 	loggerMutex.Lock()
 	defer loggerMutex.Unlock()
 
@@ -42,24 +42,37 @@ func InitLogger(loggerType string) {
 		return
 	}
 
-	if loggerType == "" {
-		loggerType = *logType
+	logger = newECSLogger()
+}
+
+// UseDevelopmentLogger initializes the logger as a development logger. It does nothing
+// if the logger has been already initialized.
+func UseDevelopmentLogger() {
+	loggerMutex.Lock()
+	defer loggerMutex.Unlock()
+
+	if logger != nil {
+		return
 	}
 
-	switch loggerType {
-	case ECSLogger:
-		logger = newECSLogger()
-	case DevLogger:
-		logger = newDevelopmentLogger()
-	default:
-		logger = newECSLogger()
-		logger.Warn("unknown log type " + loggerType + " using default")
-	}
+	logger = newDevelopmentLogger()
 }
+
+var warnInvalidTypeOnce sync.Once
 
 // Logger returns a logger singleton.
 func Logger() *zap.Logger {
-	InitLogger("")
+	switch *logType {
+	case ECSLogger:
+		UseECSLogger()
+	case DevLogger:
+		UseDevelopmentLogger()
+	default:
+		logger = newECSLogger()
+		warnInvalidTypeOnce.Do(func() {
+			logger.Warn("unknown log type " + *logType + " using default")
+		})
+	}
 	return logger
 }
 
@@ -89,14 +102,14 @@ func LoggingMiddleware(logger *zap.Logger) mux.MiddlewareFunc {
 				return
 			}
 
-			LogRequest(logger, next, w, r)
+			logRequest(logger, next, w, r)
 		})
 	}
 }
 
-// LogRequest captures information from a handler handling a request, and generates logs
+// logRequest captures information from a handler handling a request, and generates logs
 // using this information.
-func LogRequest(logger *zap.Logger, handler http.Handler, w http.ResponseWriter, req *http.Request) {
+func logRequest(logger *zap.Logger, handler http.Handler, w http.ResponseWriter, req *http.Request) {
 	resp := httpsnoop.CaptureMetrics(handler, w, req)
 
 	host, _, err := net.SplitHostPort(req.RemoteAddr)

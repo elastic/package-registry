@@ -37,7 +37,7 @@ var (
 )
 
 func init() {
-	util.InitLogger(util.DevLogger)
+	util.UseDevelopmentLogger()
 }
 
 func TestEndpoints(t *testing.T) {
