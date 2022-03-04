@@ -165,11 +165,6 @@ func captureZapFieldsForRequest(handler http.Handler, w http.ResponseWriter, req
 			fields = append(fields, zap.Int("url.port", intPort))
 		}
 	}
-	if user := req.URL.User; user != nil {
-		if username := user.Username(); username != "" {
-			fields = append(fields, zap.String("url.username", username))
-		}
-	}
 
 	message := req.Method + " " + req.URL.Path + " " + req.Proto
 	return message, fields
