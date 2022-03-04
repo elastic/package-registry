@@ -8,7 +8,6 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"log"
 	"net/http"
 	_ "net/http/pprof"
 	"os"
@@ -19,6 +18,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
 
 	"go.elastic.co/apm"
 	"go.elastic.co/apm/module/apmgorilla"
@@ -26,6 +26,7 @@ import (
 	ucfgYAML "github.com/elastic/go-ucfg/yaml"
 
 	"github.com/elastic/package-registry/packages"
+	"github.com/elastic/package-registry/util"
 )
 
 const (
@@ -72,16 +73,20 @@ type Config struct {
 
 func main() {
 	parseFlags()
-	log.Println("Package registry started.")
-	defer log.Println("Package registry stopped.")
 
-	initHttpProf()
+	logger := util.Logger()
+	defer logger.Sync()
 
-	server := initServer()
+	logger.Info("Package registry started")
+	defer logger.Info("Package registry stopped")
+
+	initHttpProf(logger)
+
+	server := initServer(logger)
 	go func() {
 		err := runServer(server)
 		if err != nil && err != http.ErrServerClosed {
-			log.Fatalf("Error occurred while serving: %s", err)
+			logger.Fatal("error occurred while serving", zap.Error(err))
 		}
 	}()
 
@@ -89,47 +94,47 @@ func main() {
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
 	<-stop
 
-	ctx := context.TODO()
+	ctx := context.Background()
 	if err := server.Shutdown(ctx); err != nil {
-		log.Fatal(err)
+		logger.Fatal("error on shutdown", zap.Error(err))
 	}
 }
 
-func initHttpProf() {
+func initHttpProf(logger *zap.Logger) {
 	if httpProfAddress == "" {
 		return
 	}
 
-	log.Printf("Starting http pprof in %s", httpProfAddress)
+	logger.Info("Starting http pprof in " + httpProfAddress)
 	go func() {
 		err := http.ListenAndServe(httpProfAddress, nil)
 		if err != nil {
-			log.Fatalf("failed to start HTTP profiler: %v", err)
+			logger.Fatal("failed to start HTTP profiler", zap.Error(err))
 		}
 	}()
 }
 
-func initServer() *http.Server {
-	apmTracer := initAPMTracer()
+func initServer(logger *zap.Logger) *http.Server {
+	apmTracer := initAPMTracer(logger)
 	tx := apmTracer.StartTransaction("initServer", "backend.init")
 	defer tx.End()
 
 	ctx := apm.ContextWithTransaction(context.TODO(), tx)
 
-	config := mustLoadConfig()
+	config := mustLoadConfig(logger)
 	packagesBasePaths := getPackagesBasePaths(config)
 	indexer := NewCombinedIndexer(
 		packages.NewFileSystemIndexer(packagesBasePaths...),
 		packages.NewZipFileSystemIndexer(packagesBasePaths...),
 	)
-	ensurePackagesAvailable(ctx, indexer)
+	ensurePackagesAvailable(ctx, logger, indexer)
 
 	// If -dry-run=true is set, service stops here after validation
 	if dryRun {
 		os.Exit(0)
 	}
 
-	router := mustLoadRouter(config, indexer)
+	router := mustLoadRouter(logger, config, indexer)
 	apmgorilla.Instrument(router, apmgorilla.WithTracer(apmTracer))
 
 	return &http.Server{Addr: address, Handler: router}
@@ -142,7 +147,7 @@ func runServer(server *http.Server) error {
 	return server.ListenAndServe()
 }
 
-func initAPMTracer() *apm.Tracer {
+func initAPMTracer(logger *zap.Logger) *apm.Tracer {
 	apm.DefaultTracer.Close()
 	if _, found := os.LookupEnv("ELASTIC_APM_SERVER_URL"); !found {
 		// Don't report anything if the Server URL hasn't been configured.
@@ -154,25 +159,24 @@ func initAPMTracer() *apm.Tracer {
 		ServiceVersion: version,
 	})
 	if err != nil {
-		log.Fatalf("Failed to initialize APM agent: %v", err)
+		logger.Fatal("Failed to initialize APM agent", zap.Error(err))
 	}
 	return tracer
 }
 
-func mustLoadConfig() *Config {
-	config, err := getConfig()
+func mustLoadConfig(logger *zap.Logger) *Config {
+	config, err := getConfig(logger)
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal("getting config", zap.Error(err))
 	}
-	printConfig(config)
+	printConfig(logger, config)
 	return config
 }
 
-func getConfig() (*Config, error) {
+func getConfig(logger *zap.Logger) (*Config, error) {
 	cfg, err := ucfgYAML.NewConfigWithFile(configPath)
 	if os.IsNotExist(err) {
-		log.Printf(`Using default configuration options as "%s" is not available.`, configPath)
-		return &defaultConfig, nil
+		logger.Fatal("Configuration file is not available: " + configPath)
 	}
 	if err != nil {
 		return nil, errors.Wrapf(err, "reading config failed (path: %s)", configPath)
@@ -192,40 +196,40 @@ func getPackagesBasePaths(config *Config) []string {
 	return paths
 }
 
-func printConfig(config *Config) {
-	log.Printf("Packages paths: %s\n", strings.Join(config.PackagePaths, ", "))
-	log.Println("Cache time for /search: ", config.CacheTimeSearch)
-	log.Println("Cache time for /categories: ", config.CacheTimeCategories)
-	log.Println("Cache time for all others: ", config.CacheTimeCatchAll)
+func printConfig(logger *zap.Logger, config *Config) {
+	logger.Info("Packages paths: " + strings.Join(config.PackagePaths, ", "))
+	logger.Info("Cache time for /search: " + config.CacheTimeSearch.String())
+	logger.Info("Cache time for /categories: " + config.CacheTimeCategories.String())
+	logger.Info("Cache time for all others: " + config.CacheTimeCatchAll.String())
 }
 
-func ensurePackagesAvailable(ctx context.Context, indexer Indexer) {
+func ensurePackagesAvailable(ctx context.Context, logger *zap.Logger, indexer Indexer) {
 	err := indexer.Init(ctx)
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal("Init failed", zap.Error(err))
 	}
 
 	packages, err := indexer.Get(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal("Cannot get packages from indexer", zap.Error(err))
 	}
 
 	if len(packages) == 0 {
-		log.Fatal("No packages available")
+		logger.Fatal("No packages available")
 	}
 
-	log.Printf("%v package manifests loaded.\n", len(packages))
+	logger.Info(fmt.Sprintf("%v package manifests loaded", len(packages)))
 }
 
-func mustLoadRouter(config *Config, indexer Indexer) *mux.Router {
-	router, err := getRouter(config, indexer)
+func mustLoadRouter(logger *zap.Logger, config *Config, indexer Indexer) *mux.Router {
+	router, err := getRouter(logger, config, indexer)
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal("failed go configure router", zap.Error(err))
 	}
 	return router
 }
 
-func getRouter(config *Config, indexer Indexer) (*mux.Router, error) {
+func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router, error) {
 	artifactsHandler := artifactsHandler(indexer, config.CacheTimeCatchAll)
 	signaturesHandler := signaturesHandler(indexer, config.CacheTimeCatchAll)
 	faviconHandleFunc, err := faviconHandler(config.CacheTimeCatchAll)
@@ -252,7 +256,7 @@ func getRouter(config *Config, indexer Indexer) (*mux.Router, error) {
 	router.HandleFunc(signaturesRouterPath, signaturesHandler)
 	router.HandleFunc(packageIndexRouterPath, packageIndexHandler)
 	router.HandleFunc(staticRouterPath, staticHandler)
-	router.Use(loggingMiddleware)
+	router.Use(util.LoggingMiddleware(logger))
 	router.NotFoundHandler = http.Handler(notFoundHandler(fmt.Errorf("404 page not found")))
 	return router, nil
 }
@@ -260,20 +264,3 @@ func getRouter(config *Config, indexer Indexer) (*mux.Router, error) {
 // healthHandler is used for Docker/K8s deployments. It returns 200 if the service is live
 // In addition ?ready=true can be used for a ready request. Currently both are identical.
 func healthHandler(w http.ResponseWriter, r *http.Request) {}
-
-// logging middle to log all requests
-func loggingMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		logRequest(r)
-		next.ServeHTTP(w, r)
-	})
-}
-
-// logRequest converts a request object into a proper logging event
-func logRequest(r *http.Request) {
-	// Do not log requests to the health endpoint
-	if r.RequestURI == "/health" {
-		return
-	}
-	log.Println(fmt.Sprintf("source.ip: %s, url.original: %s", r.RemoteAddr, r.RequestURI))
-}

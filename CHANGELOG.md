@@ -8,9 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Breaking changes
 
+* Structured logging following JSON ECS format. [#796](https://github.com/elastic/package-registry/pull/786).
+
 ### Bugfixes
 
 ### Added
+
+* Add `-log-level` and `-log-type` flags to configure logging. [#796](https://github.com/elastic/package-registry/pull/786).
 
 ### Deprecated
 

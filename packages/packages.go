@@ -7,7 +7,6 @@ package packages
 import (
 	"archive/zip"
 	"context"
-	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -15,6 +14,7 @@ import (
 	"github.com/Masterminds/semver/v3"
 	"github.com/pkg/errors"
 	"go.elastic.co/apm"
+	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/util"
 )
@@ -61,10 +61,13 @@ type FileSystemIndexer struct {
 
 	// Builder to access the files of a package in this indexer.
 	fsBuilder FileSystemBuilder
+
+	logger *zap.Logger
 }
 
 // NewFileSystemIndexer creates a new FileSystemIndexer for the given paths.
 func NewFileSystemIndexer(paths ...string) *FileSystemIndexer {
+	logger := util.Logger()
 	walkerFn := func(basePath, path string, info os.DirEntry) (bool, error) {
 		relativePath, err := filepath.Rel(basePath, path)
 		if err != nil {
@@ -80,7 +83,8 @@ func NewFileSystemIndexer(paths ...string) *FileSystemIndexer {
 			versionDir := dirs[1]
 			_, err := semver.StrictNewVersion(versionDir)
 			if err != nil {
-				log.Printf("warning: unexpected directory: %s, ignoring", path)
+				logger.Warn("ignoring unexpected directory",
+					zap.String("file.path", path))
 				return false, filepath.SkipDir
 			}
 			return true, nil
@@ -88,7 +92,7 @@ func NewFileSystemIndexer(paths ...string) *FileSystemIndexer {
 		// Unexpected file, return nil in order to continue processing sibling directories
 		// Fixes an annoying problem when the .DS_Store file is left behind and the package
 		// is not loading without any error information
-		log.Printf("warning: unexpected file: %s, ignoring", path)
+		logger.Warn("ignoging unexpected file", zap.String("file.path", path))
 		return false, nil
 	}
 	fsBuilder := func(p *Package) (PackageFileSystem, error) {
@@ -99,11 +103,13 @@ func NewFileSystemIndexer(paths ...string) *FileSystemIndexer {
 		label:     "FileSystemIndexer",
 		walkerFn:  walkerFn,
 		fsBuilder: fsBuilder,
+		logger:    logger,
 	}
 }
 
 // NewZipFileSystemIndexer creates a new ZipFileSystemIndexer for the given paths.
 func NewZipFileSystemIndexer(paths ...string) *FileSystemIndexer {
+	logger := util.Logger()
 	walkerFn := func(basePath, path string, info os.DirEntry) (bool, error) {
 		if info.IsDir() {
 			return false, nil
@@ -115,7 +121,8 @@ func NewZipFileSystemIndexer(paths ...string) *FileSystemIndexer {
 		// Check if the file is actually a zip file.
 		r, err := zip.OpenReader(path)
 		if err != nil {
-			log.Printf("warning: zip file cannot be opened as zip: %s, ignoring: %v", path, err)
+			logger.Warn("ignoring invalid zip file",
+				zap.String("file.path", path), zap.Error(err))
 			return false, nil
 		}
 		defer r.Close()
@@ -130,6 +137,7 @@ func NewZipFileSystemIndexer(paths ...string) *FileSystemIndexer {
 		label:     "ZipFileSystemIndexer",
 		walkerFn:  walkerFn,
 		fsBuilder: fsBuilder,
+		logger:    logger,
 	}
 }
 
@@ -178,7 +186,7 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 			return nil, err
 		}
 
-		log.Printf("Packages in %s:", basePath)
+		i.logger.Info("Packages in " + basePath + ":")
 		for _, path := range packagePaths {
 			p, err := NewPackage(path, i.fsBuilder)
 			if err != nil {
@@ -187,14 +195,20 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 
 			key := packageKey{name: p.Name, version: p.Version}
 			if _, found := packagesFound[key]; found {
-				log.Printf("%-20s\t%10s\t%s", p.Name+" (duplicated)", p.Version, p.BasePath)
+				i.logger.Info("duplicated package",
+					zap.String("package.name", p.Name),
+					zap.String("package.version", p.Version),
+					zap.String("package.path", p.BasePath))
 				continue
 			}
 
 			packagesFound[key] = struct{}{}
 			pList = append(pList, p)
 
-			log.Printf("%-20s\t%10s\t%s", p.Name, p.Version, p.BasePath)
+			i.logger.Info("found package",
+				zap.String("package.name", p.Name),
+				zap.String("package.version", p.Version),
+				zap.String("package.path", p.BasePath))
 		}
 	}
 	return pList, nil

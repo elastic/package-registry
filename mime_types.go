@@ -5,8 +5,9 @@
 package main
 
 import (
-	"log"
 	"mime"
+
+	"github.com/elastic/package-registry/util"
 )
 
 // init method defines MIME types important for the package content. Definitions ensure that the same Content-Type
@@ -21,6 +22,6 @@ func init() {
 func mustAddMimeExtensionType(ext, typ string) {
 	err := mime.AddExtensionType(ext, typ)
 	if err != nil {
-		log.Fatal(err)
+		util.Logger().Fatal(err.Error())
 	}
 }

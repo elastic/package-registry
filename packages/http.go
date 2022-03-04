@@ -5,13 +5,14 @@
 package packages
 
 import (
-	"log"
 	"net/http"
 	"os"
 
 	"go.elastic.co/apm"
+	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/archiver"
+	"github.com/elastic/package-registry/util"
 )
 
 func ServePackage(w http.ResponseWriter, r *http.Request, p *Package) {
@@ -19,9 +20,11 @@ func ServePackage(w http.ResponseWriter, r *http.Request, p *Package) {
 	defer span.End()
 
 	packagePath := p.BasePath
+	logger := util.Logger().With(zap.String("file.name", packagePath))
+
 	f, err := os.Stat(packagePath)
 	if err != nil {
-		log.Printf("stat package path '%s' failed: %v", packagePath, err)
+		logger.Error("stat package path failed", zap.Error(err))
 		http.Error(w, "internal server error", http.StatusInternalServerError)
 		return
 	}
@@ -35,7 +38,7 @@ func ServePackage(w http.ResponseWriter, r *http.Request, p *Package) {
 			Path:    packagePath,
 		})
 		if err != nil {
-			log.Printf("archiving package path '%s' failed: %v", packagePath, err)
+			logger.Error("archiving package path failed", zap.Error(err))
 			return
 		}
 	} else {
@@ -47,13 +50,15 @@ func ServeFile(w http.ResponseWriter, r *http.Request, p *Package, name string) 
 	span, _ := apm.StartSpan(r.Context(), "ServePackage", "app")
 	defer span.End()
 
+	logger := util.Logger().With(zap.String("file.name", name))
+
 	fs, err := p.fs()
 	if os.IsNotExist(err) {
 		http.Error(w, "resource not found", http.StatusNotFound)
 		return
 	}
 	if err != nil {
-		log.Printf("failed to open filesystem for package: %v", err)
+		logger.Error("failed to open filesystem", zap.Error(err))
 		http.Error(w, "internal server error", http.StatusInternalServerError)
 		return
 	}
@@ -64,14 +69,14 @@ func ServeFile(w http.ResponseWriter, r *http.Request, p *Package, name string) 
 		return
 	}
 	if err != nil {
-		log.Printf("stat failed for %s: %v", name, err)
+		logger.Error("stat failed", zap.Error(err))
 		http.Error(w, "internal server error", http.StatusInternalServerError)
 		return
 	}
 
 	f, err := fs.Open(name)
 	if err != nil {
-		log.Printf("failed to open file (%s) in package: %v", name, err)
+		logger.Error("failed to open file", zap.Error(err))
 		http.Error(w, "internal server error", http.StatusInternalServerError)
 		return
 	}
