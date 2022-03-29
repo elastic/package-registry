@@ -34,6 +34,6 @@ jobs:
               }
             }
           issueid: ${{ github.event.issue.node_id }}
-          labelids: "LA_kwDOEBH20c7PrEba"
+          labelids: "MDU6TGFiZWwzMzcxMTkyMzAw"
         env:
           GITHUB_TOKEN: ${{ secrets.ECOSYSTEM_USER_TOKEN }}
