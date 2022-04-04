@@ -30,6 +30,11 @@
     "count": 14
   },
   {
+    "id": "datastore",
+    "title": "Datastore",
+    "count": 1
+  },
+  {
     "id": "message_queue",
     "title": "Message Queue",
     "count": 1
@@ -37,7 +42,7 @@
   {
     "id": "monitoring",
     "title": "Monitoring",
-    "count": 2
+    "count": 3
   },
   {
     "id": "web",
