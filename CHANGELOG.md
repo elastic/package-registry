@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Add `-log-level` and `-log-type` flags to configure logging. [#796](https://github.com/elastic/package-registry/pull/786).
+* Update Go runtime to 1.18.0. [#805](https://github.com/elastic/package-registry/pull/805)
 
 ### Deprecated
 
