@@ -282,7 +282,7 @@ func NewPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) 
 	}
 
 	if !IsValidRelease(p.Release) {
-		return nil, fmt.Errorf("invalid release: %s", p.Release)
+		return nil, fmt.Errorf("invalid release: %q", p.Release)
 	}
 
 	readmePath := filepath.Join("docs", "README.md")
@@ -441,9 +441,13 @@ func (p *Package) Validate() error {
 		return fmt.Errorf("invalid package version: %s, %s", p.FormatVersion, err)
 	}
 
-	_, err = semver.StrictNewVersion(p.Version)
+	p.versionSemVer, err = semver.StrictNewVersion(p.Version)
 	if err != nil {
 		return err
+	}
+
+	if p.Release == "" {
+		p.Release = releaseForSemVerCompat(p.versionSemVer)
 	}
 
 	if p.Title == nil || *p.Title == "" {

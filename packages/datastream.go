@@ -174,7 +174,7 @@ func NewDataStream(basePath string, p *Package) (*DataStream, error) {
 	}
 
 	if !IsValidRelease(d.Release) {
-		return nil, fmt.Errorf("invalid release: %s", d.Release)
+		return nil, fmt.Errorf("invalid release: %q", d.Release)
 	}
 
 	pipelineDir := filepath.Join(d.BasePath, "elasticsearch", DirIngestPipeline)

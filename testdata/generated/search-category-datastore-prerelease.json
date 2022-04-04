@@ -1,5 +1,43 @@
 [
   {
+    "name": "datastream_without_release",
+    "title": "Apache Spark",
+    "version": "0.1.0",
+    "release": "beta",
+    "description": "Collect metrics from Apache Spark with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/datastream_without_release/datastream_without_release-0.1.0.zip",
+    "path": "/package/datastream_without_release/0.1.0",
+    "icons": [
+      {
+        "src": "/img/apache_spark-logo.svg",
+        "path": "/package/datastream_without_release/0.1.0/img/apache_spark-logo.svg",
+        "title": "Apache Spark logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "apache_spark",
+        "title": "Apache Spark metrics",
+        "description": "Collect Apache Spark metrics"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.1.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/obs-service-integrations"
+    },
+    "categories": [
+      "datastore",
+      "monitoring"
+    ]
+  },
+  {
     "name": "example",
     "title": "Example Integration",
     "version": "1.2.0-rc1",

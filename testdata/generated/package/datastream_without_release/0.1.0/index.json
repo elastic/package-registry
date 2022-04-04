@@ -1,0 +1,121 @@
+{
+  "name": "datastream_without_release",
+  "title": "Apache Spark",
+  "version": "0.1.0",
+  "release": "beta",
+  "description": "Collect metrics from Apache Spark with Elastic Agent.",
+  "type": "integration",
+  "download": "/epr/datastream_without_release/datastream_without_release-0.1.0.zip",
+  "path": "/package/datastream_without_release/0.1.0",
+  "icons": [
+    {
+      "src": "/img/apache_spark-logo.svg",
+      "path": "/package/datastream_without_release/0.1.0/img/apache_spark-logo.svg",
+      "title": "Apache Spark logo",
+      "size": "32x32",
+      "type": "image/svg+xml"
+    }
+  ],
+  "conditions": {
+    "kibana": {
+      "version": "^8.1.0"
+    }
+  },
+  "owner": {
+    "github": "elastic/obs-service-integrations"
+  },
+  "categories": [
+    "datastore",
+    "monitoring"
+  ],
+  "format_version": "1.0.0",
+  "readme": "/package/datastream_without_release/0.1.0/docs/README.md",
+  "license": "basic",
+  "screenshots": [
+    {
+      "src": "/img/apache_spark-screenshot.png",
+      "path": "/package/datastream_without_release/0.1.0/img/apache_spark-screenshot.png",
+      "title": "Apache Spark screenshot",
+      "size": "600x600",
+      "type": "image/png"
+    }
+  ],
+  "assets": [
+    "/package/datastream_without_release/0.1.0/changelog.yml",
+    "/package/datastream_without_release/0.1.0/manifest.yml",
+    "/package/datastream_without_release/0.1.0/docs/README.md",
+    "/package/datastream_without_release/0.1.0/img/apache_spark-logo.svg",
+    "/package/datastream_without_release/0.1.0/img/apache_spark-screenshot.png",
+    "/package/datastream_without_release/0.1.0/data_stream/nodes/manifest.yml",
+    "/package/datastream_without_release/0.1.0/data_stream/nodes/sample_event.json",
+    "/package/datastream_without_release/0.1.0/data_stream/nodes/fields/base-fields.yml",
+    "/package/datastream_without_release/0.1.0/data_stream/nodes/fields/ecs.yml",
+    "/package/datastream_without_release/0.1.0/data_stream/nodes/fields/fields.yml",
+    "/package/datastream_without_release/0.1.0/data_stream/nodes/agent/stream/stream.yml.hbs",
+    "/package/datastream_without_release/0.1.0/data_stream/nodes/elasticsearch/ingest_pipeline/default.yml"
+  ],
+  "policy_templates": [
+    {
+      "name": "apache_spark",
+      "title": "Apache Spark metrics",
+      "description": "Collect Apache Spark metrics",
+      "inputs": [
+        {
+          "type": "jolokia/metrics",
+          "title": "Collect Apache Spark Metrics using Jolokia",
+          "description": "Collecting metrics from Apache Spark."
+        }
+      ],
+      "multiple": true
+    }
+  ],
+  "data_streams": [
+    {
+      "type": "metrics",
+      "dataset": "datastream_without_release.nodes",
+      "title": "Apache Spark nodes metrics",
+      "release": "beta",
+      "ingest_pipeline": "default",
+      "streams": [
+        {
+          "input": "jolokia/metrics",
+          "vars": [
+            {
+              "name": "hosts",
+              "type": "text",
+              "title": "Hosts",
+              "description": "Full hosts for the Jolokia for Apache Spark (https://spark_main:jolokia_port).\n",
+              "multi": true,
+              "required": true,
+              "show_user": true
+            },
+            {
+              "name": "path",
+              "type": "text",
+              "title": "Path",
+              "multi": false,
+              "required": true,
+              "show_user": false,
+              "default": "/jolokia/?ignoreErrors=true&canonicalNaming=false"
+            },
+            {
+              "name": "period",
+              "type": "text",
+              "title": "Period",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "60s"
+            }
+          ],
+          "template_path": "stream.yml.hbs",
+          "title": "Apache Spark nodes metrics",
+          "description": "Collect Apache Spark nodes metrics using Jolokia agent.",
+          "enabled": true
+        }
+      ],
+      "package": "datastream_without_release",
+      "path": "nodes"
+    }
+  ]
+}
