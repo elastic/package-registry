@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Support input packages. [#809](https://github.com/elastic/package-registry/pull/809)
+
 ### Deprecated
 
 ### Known Issues
