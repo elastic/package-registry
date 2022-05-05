@@ -73,6 +73,10 @@ func newSearchFilterFromQuery(query url.Values) (*packages.Filter, error) {
 		filter.PackageName = v
 	}
 
+	if v := query.Get("type"); v != "" {
+		filter.PackageType = v
+	}
+
 	if v := query.Get("all"); v != "" {
 		// Default is false, also on error
 		filter.AllVersions, err = strconv.ParseBool(v)

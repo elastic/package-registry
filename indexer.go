@@ -18,7 +18,7 @@ type Indexer interface {
 type CombinedIndexer []Indexer
 
 func NewCombinedIndexer(indexers ...Indexer) CombinedIndexer {
-	return CombinedIndexer(indexers)
+	return indexers
 }
 
 func (c CombinedIndexer) Init(ctx context.Context) error {
