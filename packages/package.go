@@ -111,6 +111,11 @@ type PolicyTemplate struct {
 	Categories  []string `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
 	Screenshots []Image  `config:"screenshots,omitempty" json:"screenshots,omitempty" yaml:"screenshots,omitempty"`
 	Readme      *string  `config:"readme,omitempty" json:"readme,omitempty" yaml:"readme,omitempty"`
+
+	// For purposes of "input packages"
+	Type         string `config:"type,omitempty" json:"type,omitempty" yaml:"type,omitempty"`
+	Input        string `config:"input,omitempty" json:"input,omitempty" yaml:"input,omitempty"`
+	TemplatePath string `config:"template_path,omitempty" json:"template_path,omitempty" yaml:"template_path,omitempty"`
 }
 
 type Conditions struct {

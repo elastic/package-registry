@@ -47,7 +47,10 @@
       "name": "sql_query",
       "title": "SQL Query",
       "description": "Query the database to capture metrics.",
-      "multiple": true
+      "multiple": true,
+      "type": "metrics",
+      "input": "sql",
+      "template_path": "input.yml.hbs"
     }
   ]
 }
