@@ -105,7 +105,7 @@ type PolicyTemplate struct {
 	Title       string   `config:"title" json:"title" validate:"required"`
 	Description string   `config:"description" json:"description" validate:"required"`
 	DataStreams []string `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
-	Inputs      []Input  `config:"inputs" json:"inputs"`
+	Inputs      []Input  `config:"inputs" json:"inputs,omitempty" yaml:"inputs,omitempty"`
 	Multiple    *bool    `config:"multiple" json:"multiple,omitempty" yaml:"multiple,omitempty"`
 	Icons       []Image  `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
 	Categories  []string `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`

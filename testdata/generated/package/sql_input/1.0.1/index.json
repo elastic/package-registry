@@ -47,7 +47,6 @@
       "name": "sql_query",
       "title": "SQL Query",
       "description": "Query the database to capture metrics.",
-      "inputs": null,
       "multiple": true
     }
   ]
