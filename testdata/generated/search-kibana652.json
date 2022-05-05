@@ -53,6 +53,37 @@
     ]
   },
   {
+    "name": "sql_input",
+    "title": "SQL Input",
+    "version": "1.0.1",
+    "release": "ga",
+    "description": "Execute custom queries against an SQL database and store the results in Elasticsearch.",
+    "type": "input",
+    "download": "/epr/sql_input/sql_input-1.0.1.zip",
+    "path": "/package/sql_input/1.0.1",
+    "icons": [
+      {
+        "src": "/img/sample-logo.svg",
+        "path": "/package/sql_input/1.0.1/img/sample-logo.svg",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "sql_query",
+        "title": "SQL Query",
+        "description": "Query the database to capture metrics."
+      }
+    ],
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "custom",
+      "datastore"
+    ]
+  },
+  {
     "name": "yamlpipeline",
     "title": "Yaml Pipeline package",
     "version": "1.0.0",

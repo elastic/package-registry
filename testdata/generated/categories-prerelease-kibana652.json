@@ -12,7 +12,12 @@
   {
     "id": "custom",
     "title": "Custom",
-    "count": 6
+    "count": 7
+  },
+  {
+    "id": "datastore",
+    "title": "Datastore",
+    "count": 1
   },
   {
     "id": "message_queue",
