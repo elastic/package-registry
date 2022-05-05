@@ -1,0 +1,54 @@
+{
+  "name": "sql_input",
+  "title": "SQL Input",
+  "version": "1.0.1",
+  "release": "ga",
+  "description": "Execute custom queries against an SQL database and store the results in Elasticsearch.",
+  "type": "input",
+  "download": "/epr/sql_input/sql_input-1.0.1.zip",
+  "path": "/package/sql_input/1.0.1",
+  "icons": [
+    {
+      "src": "/img/sample-logo.svg",
+      "path": "/package/sql_input/1.0.1/img/sample-logo.svg",
+      "type": "image/svg+xml"
+    }
+  ],
+  "owner": {
+    "github": "elastic/integrations"
+  },
+  "categories": [
+    "custom",
+    "datastore"
+  ],
+  "format_version": "1.0.0",
+  "readme": "/package/sql_input/1.0.1/docs/README.md",
+  "license": "basic",
+  "screenshots": [
+    {
+      "src": "/img/sample-screenshot.png",
+      "path": "/package/sql_input/1.0.1/img/sample-screenshot.png",
+      "title": "Sample screenshot",
+      "size": "600x600",
+      "type": "image/png"
+    }
+  ],
+  "assets": [
+    "/package/sql_input/1.0.1/changelog.yml",
+    "/package/sql_input/1.0.1/manifest.yml",
+    "/package/sql_input/1.0.1/docs/README.md",
+    "/package/sql_input/1.0.1/fields/input.yml",
+    "/package/sql_input/1.0.1/img/sample-logo.svg",
+    "/package/sql_input/1.0.1/img/sample-screenshot.png",
+    "/package/sql_input/1.0.1/agent/input/input.yml.hbs"
+  ],
+  "policy_templates": [
+    {
+      "name": "sql_query",
+      "title": "SQL Query",
+      "description": "Query the database to capture metrics.",
+      "inputs": null,
+      "multiple": true
+    }
+  ]
+}
