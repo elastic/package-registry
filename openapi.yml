@@ -79,12 +79,17 @@ paths:
             type: string
           in: query
           name: category
-          description: Filters the package by the given category. Available categories can be seend when going to /categories endpoint.
+          description: Filters the package by the given category. Available categories can be seen when going to /categories endpoint.
         - schema:
             type: string
           in: query
           name: package
           description: 'Filters by a specific package name, for example mysql. In contrast to the other endpoints, it will return by default all versions of this package.'
+        - schema:
+            type: string
+          in: query
+          name: type
+          description: Filters the package by the package type. Available types are defined in the package-spec.
         - $ref: '#/components/parameters/experimentalPackageParam'
         - $ref: '#/components/parameters/prereleasePackageParam'
   '/package/{package}/{version}':
