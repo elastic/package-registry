@@ -446,16 +446,16 @@
   {
     "name": "sql_input",
     "title": "SQL Input",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "release": "ga",
     "description": "Execute custom queries against an SQL database and store the results in Elasticsearch.",
     "type": "input",
-    "download": "/epr/sql_input/sql_input-1.0.1.zip",
-    "path": "/package/sql_input/1.0.1",
+    "download": "/epr/sql_input/sql_input-1.0.2.zip",
+    "path": "/package/sql_input/1.0.2",
     "icons": [
       {
         "src": "/img/sample-logo.svg",
-        "path": "/package/sql_input/1.0.1/img/sample-logo.svg",
+        "path": "/package/sql_input/1.0.2/img/sample-logo.svg",
         "type": "image/svg+xml"
       }
     ],
