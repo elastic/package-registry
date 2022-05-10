@@ -1,0 +1,17 @@
+# This dataset has a different id then the path
+name: bar.noo
+
+title: Foo
+
+# Needs to describe the type of this input
+type: logs
+ingest_pipeline: pipeline-entry
+
+streams:
+  - input: foo
+    vars:
+      - name: paths
+        required: true
+        description: Path to log files to be collected
+        type: text
+        multi: true
