@@ -25,7 +25,7 @@ func (c *cursor) String() string {
 func loadCursor(ctx context.Context, storageClient *storage.Client, bucketName, rootStoragePath string) (*cursor, error) {
 	log.Println("Load cursor file")
 
-	rootedCursorStoragePath := joinObjectPaths(rootStoragePath, cursorStoragePath)
+	rootedCursorStoragePath := JoinObjectPaths(rootStoragePath, CursorStoragePath)
 	objectReader, err := storageClient.Bucket(bucketName).Object(rootedCursorStoragePath).NewReader(ctx)
 	if err == storage.ErrObjectNotExist {
 		log.Printf("Cursor file doesn't exist, most likely a first run (path: %s)", rootedCursorStoragePath)

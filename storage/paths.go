@@ -3,17 +3,22 @@ package storage
 import "path/filepath"
 
 const (
-	v2MetadataStoragePath = "v2/metadata"
+	// Internal bucket
+	V2MetadataStoragePath = "v2/metadata"
+	CursorStoragePath  = V2MetadataStoragePath + "/cursor.json"
+	SearchIndexAllFile = "search-index-all.json"
 
+	// Public bucket
 	artifactsStoragePath         = "artifacts"
 	artifactsPackagesStoragePath = artifactsStoragePath + "/packages"
 	artifactsStaticStoragePath   = artifactsStoragePath + "/static"
-
-	cursorFile         = "cursor.json"
-	cursorStoragePath  = v2MetadataStoragePath + "/" + cursorFile
 )
 
-func joinObjectPaths(paths ...string) string {
+func BuildSearchIndexAllStoragePath(cursorRevision, indexFile string) string {
+	return JoinObjectPaths(cursorRevision, indexFile)
+}
+
+func JoinObjectPaths(paths ...string) string {
 	p := filepath.Join(paths...)
 	return normalizeObjectPath(p)
 }
