@@ -1,3 +1,7 @@
+// Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
+// or more contributor license agreements. Licensed under the Elastic License;
+// you may not use this file except in compliance with the Elastic License.
+
 package storage
 
 import (
@@ -25,7 +29,7 @@ func (c *cursor) String() string {
 func loadCursor(ctx context.Context, storageClient *storage.Client, bucketName, rootStoragePath string) (*cursor, error) {
 	log.Println("Load cursor file")
 
-	rootedCursorStoragePath := JoinObjectPaths(rootStoragePath, CursorStoragePath)
+	rootedCursorStoragePath := joinObjectPaths(rootStoragePath, cursorStoragePath)
 	objectReader, err := storageClient.Bucket(bucketName).Object(rootedCursorStoragePath).NewReader(ctx)
 	if err == storage.ErrObjectNotExist {
 		log.Printf("Cursor file doesn't exist, most likely a first run (path: %s)", rootedCursorStoragePath)
