@@ -24,7 +24,7 @@ pipeline {
     quietPeriod(10)
   }
   parameters {
-    string(name: 'DOCKER_TAG', defaultValue: 'latest', description: 'The docker tag to be published (format: major.minor.patch).')
+    string(name: 'DOCKER_TAG', defaultValue: 'latest', description: 'The docker tag to be published (format: major.minor.patch(-prerelease)?).')
   }
   stages {
     stage('Validate docker tag'){
@@ -34,8 +34,8 @@ pipeline {
         // It's allowed to override existing published docker images. For instance, the build candidates generated
         // by the unified release process will share the same versioning, therefore the Git release tag will be
         // the last docker image to be republished.
-        whenFalse(isMajorMinorPatch(env.DOCKER_TAG)) {
-          error('unsupported docker tag, please use the major.minor.path format (for example: 1.2.3).')
+        whenFalse(isSemVerValid(env.DOCKER_TAG)) {
+          error('unsupported docker tag, please use the major.minor.path(-prerelease)? format (for example: 1.2.3 or 1.2.3-alpha).')
         }
       }
     }
@@ -60,7 +60,7 @@ pipeline {
   }
 }
 
-def isMajorMinorPatch(String version) {
-  def match = version =~ /\d+.\d+.\d+/
+def isSemVerValid(String version) {
+  def match = version =~ /\d+.\d+.\d+(-\w+)?/
   return match.matches()
 }

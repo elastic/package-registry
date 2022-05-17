@@ -8,7 +8,7 @@
       - string:
           name: DOCKER_TAG
           default: latest
-          description: "The docker tag to be published (format: major.minor.patch)."
+          description: "The docker tag to be published (format: major.minor.patch(-prerelease)?)."
     pipeline-scm:
       script-path: .ci/deploy-package-registry.groovy
       scm:
