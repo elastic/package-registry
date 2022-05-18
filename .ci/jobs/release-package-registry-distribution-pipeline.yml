@@ -1,8 +1,8 @@
 ---
 - job:
-    name: deploy-package-registry
-    display-name: deploy package registry
-    description: deploy package registry
+    name: release-package-registry-distribution
+    display-name: Release Package-registry Distribution
+    description: Release Package-registry Distribution
     project-type: pipeline
     parameters:
       - string:
@@ -10,7 +10,7 @@
           default: latest
           description: "The docker tag to be published (format: major.minor.patch(-prerelease)?)."
     pipeline-scm:
-      script-path: .ci/deploy-package-registry.groovy
+      script-path: .ci/release-package-registry-distribution.groovy
       scm:
         - git:
             url: git@github.com:elastic/package-registry.git
