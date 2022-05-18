@@ -30,7 +30,7 @@ pipeline {
     stage('Validate docker tag'){
       options { skipDefaultCheckout() }
       steps {
-        // Validate only semver are allowd for the docker tag.
+        // Validate only semver are allowed for the docker tag.
         // It's allowed to override existing published docker images. For instance, the build candidates generated
         // by the unified release process will share the same versioning, therefore the Git release tag will be
         // the last docker image to be republished.
