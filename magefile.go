@@ -14,7 +14,6 @@ import (
 
 	"github.com/magefile/mage/mg"
 	"github.com/magefile/mage/sh"
-	"github.com/pkg/errors"
 )
 
 var (
@@ -34,27 +33,7 @@ var (
 )
 
 func Build() error {
-	err := FetchPackageStorage()
-	if err != nil {
-		return err
-	}
 	return sh.Run("go", "build", ".")
-}
-
-func FetchPackageStorage() error {
-	// Remove old storage directory
-	if err := os.RemoveAll(storageRepoDir); err != nil {
-		return errors.Wrapf(err, "failed to remove existing storage directory: %s", storageRepoDir)
-	}
-
-	packageStorageRevision := os.Getenv("PACKAGE_STORAGE_REVISION")
-	if packageStorageRevision == "" {
-		packageStorageRevision = "production"
-	}
-
-	// Check out fresh storage directory
-	return sh.Run("git", "clone", "--depth=1", "--single-branch",
-		"--branch", packageStorageRevision, "https://github.com/elastic/package-storage.git", storageRepoDir)
 }
 
 func Check() error {

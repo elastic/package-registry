@@ -26,6 +26,7 @@ import (
 	ucfgYAML "github.com/elastic/go-ucfg/yaml"
 
 	"github.com/elastic/package-registry/packages"
+	"github.com/elastic/package-registry/storage"
 	"github.com/elastic/package-registry/util"
 )
 
@@ -44,6 +45,8 @@ var (
 	dryRun     bool
 	configPath string
 
+	featureStorageIndexer bool
+
 	defaultConfig = Config{
 		CacheTimeIndex:      10 * time.Second,
 		CacheTimeSearch:     10 * time.Minute,
@@ -61,6 +64,8 @@ func init() {
 	// This flag is experimental and might be removed in the future or renamed
 	flag.BoolVar(&dryRun, "dry-run", false, "Runs a dry-run of the registry without starting the web service (experimental).")
 	flag.BoolVar(&packages.ValidationDisabled, "disable-package-validation", false, "Disable package content validation.")
+	// This flag is a technical preview and might be removed in the future or renamed
+	flag.BoolVar(&featureStorageIndexer, "feature-storage-indexer", false, "Enable storage indexer to include packages from Package Storage v2 (technical preview).")
 }
 
 type Config struct {
@@ -123,18 +128,23 @@ func initServer(logger *zap.Logger) *http.Server {
 
 	config := mustLoadConfig(logger)
 	packagesBasePaths := getPackagesBasePaths(config)
-	indexer := NewCombinedIndexer(
-		packages.NewFileSystemIndexer(packagesBasePaths...),
-		packages.NewZipFileSystemIndexer(packagesBasePaths...),
-	)
-	ensurePackagesAvailable(ctx, logger, indexer)
+
+	var indexers []Indexer
+	if featureStorageIndexer {
+		indexers = append(indexers, storage.NewIndexer())
+	} else {
+		indexers = append(indexers, packages.NewFileSystemIndexer(packagesBasePaths...))
+		indexers = append(indexers, packages.NewZipFileSystemIndexer(packagesBasePaths...))
+	}
+	combinedIndexer := NewCombinedIndexer(indexers...)
+	ensurePackagesAvailable(ctx, logger, combinedIndexer)
 
 	// If -dry-run=true is set, service stops here after validation
 	if dryRun {
 		os.Exit(0)
 	}
 
-	router := mustLoadRouter(logger, config, indexer)
+	router := mustLoadRouter(logger, config, combinedIndexer)
 	apmgorilla.Instrument(router, apmgorilla.WithTracer(apmTracer))
 
 	return &http.Server{Addr: address, Handler: router}
