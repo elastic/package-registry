@@ -5,13 +5,13 @@
 package storage
 
 import (
-	"cloud.google.com/go/storage"
 	"context"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"os"
 	"testing"
 
+	"cloud.google.com/go/storage"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -37,7 +37,10 @@ func TestPrepareFakeServer(t *testing.T) {
 	assert.NotZero(t, len(packageZip), ".zip package must have fake content")
 
 	// check few static files
-
+	readme := readObject(t, client.Bucket(fakePackageStorageBucketPublic).Object(joinObjectPaths(artifactsStaticStoragePath, "1password-1.1.1", "docs/README.md")))
+	assert.Equal(t, []byte("README.md"), readme)
+	screenshot := readObject(t, client.Bucket(fakePackageStorageBucketPublic).Object(joinObjectPaths(artifactsStaticStoragePath, "1password-1.1.1", "img/1password-signinattempts-screenshot.png")))
+	assert.Equal(t, []byte("1password-signinattempts-screenshot.png"), screenshot)
 }
 
 func readObject(t *testing.T, handle *storage.ObjectHandle) []byte {
