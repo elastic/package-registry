@@ -7,13 +7,19 @@ package storage
 import (
 	"context"
 
+	"cloud.google.com/go/storage"
+
 	"github.com/elastic/package-registry/packages"
 )
 
-type Indexer struct{}
+type Indexer struct {
+	storageClient *storage.Client
+}
 
-func NewIndexer() *Indexer {
-	return new(Indexer)
+func NewIndexer(storageClient *storage.Client) *Indexer {
+	return &Indexer{
+		storageClient: storageClient,
+	}
 }
 
 func (i *Indexer) Init(context.Context) error {
