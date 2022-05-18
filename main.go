@@ -130,10 +130,11 @@ func initServer(logger *zap.Logger) *http.Server {
 	packagesBasePaths := getPackagesBasePaths(config)
 
 	var indexers []Indexer
-	indexers = append(indexers, packages.NewFileSystemIndexer(packagesBasePaths...))
-	indexers = append(indexers, packages.NewZipFileSystemIndexer(packagesBasePaths...))
 	if featureStorageIndexer {
 		indexers = append(indexers, storage.NewIndexer())
+	} else {
+		indexers = append(indexers, packages.NewFileSystemIndexer(packagesBasePaths...))
+		indexers = append(indexers, packages.NewZipFileSystemIndexer(packagesBasePaths...))
 	}
 	combinedIndexer := NewCombinedIndexer(indexers...)
 	ensurePackagesAvailable(ctx, logger, combinedIndexer)
