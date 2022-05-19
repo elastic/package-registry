@@ -1,0 +1,24 @@
+---
+- job:
+    name: release-package-registry-distribution
+    display-name: Release Package-registry Distribution
+    description: Release Package-registry Distribution
+    project-type: pipeline
+    parameters:
+      - string:
+          name: DOCKER_TAG
+          default: latest
+          description: "The docker tag to be published (format: major.minor.patch(-prerelease)?)."
+    pipeline-scm:
+      script-path: .ci/release-package-registry-distribution.groovy
+      scm:
+        - git:
+            url: git@github.com:elastic/package-registry.git
+            refspec: +refs/heads/*:refs/remotes/origin/* +refs/pull/*/head:refs/remotes/origin/pr/*
+            wipe-workspace: 'True'
+            name: origin
+            shallow-clone: true
+            credentials-id: f6c7695a-671e-4f4f-a331-acdce44ff9ba
+            reference-repo: /var/lib/jenkins/.git-references/package-registry.git
+            branches:
+              - main

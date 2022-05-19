@@ -14,7 +14,7 @@ import (
 	"github.com/Masterminds/semver/v3"
 	"github.com/pkg/errors"
 
-	ucfg "github.com/elastic/go-ucfg"
+	"github.com/elastic/go-ucfg"
 	"github.com/elastic/go-ucfg/yaml"
 
 	"github.com/elastic/package-registry/util"
