@@ -15,7 +15,7 @@ import (
 
 func TestInit(t *testing.T) {
 	// given
-	fs := prepareFakeServer(t, "search-index-all-1.json")
+	fs := prepareFakeServer(t, "testdata/search-index-all-1.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 	indexer := NewIndexer(storageClient)
@@ -29,7 +29,7 @@ func TestInit(t *testing.T) {
 
 func TestGet(t *testing.T) {
 	// given
-	fs := prepareFakeServer(t, "search-index-all-1.json")
+	fs := prepareFakeServer(t, "testdata/search-index-all-1.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 	indexer := NewIndexer(storageClient)
