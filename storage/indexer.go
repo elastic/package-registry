@@ -6,6 +6,8 @@ package storage
 
 import (
 	"context"
+	"fmt"
+	"strings"
 	"sync"
 	"time"
 
@@ -44,15 +46,31 @@ func (i *Indexer) Init(ctx context.Context) error {
 	logger := util.Logger()
 	logger.Debug("Initialize storage indexer")
 
-	// TODO validate options
+	err := validateIndexerOptions(i.options)
+	if err != nil {
+		return errors.Wrapf(err, "validation failed")
+	}
 
 	// Populate index file for the first time.
-	err := i.updateIndex(ctx)
+	err = i.updateIndex(ctx)
 	if err != nil {
 		logger.Error("can't update index file", zap.Error(err))
 	}
 
 	go i.watchIndices(ctx)
+	return nil
+}
+
+func validateIndexerOptions(options IndexerOptions) error {
+	if !strings.HasPrefix(options.PackageStorageBucketInternal, "gs://") {
+		return errors.New("missing or invalid options.PackageStorageBucketInternal")
+	}
+	if !strings.HasPrefix(options.PackageStorageBucketPublic, "gs://") {
+		return errors.New("missing or invalid options.PackageStorageBucketPublic")
+	}
+	if options.WatchInterval == 0 {
+		return errors.New("options.WatchInterval must be greater than 0")
+	}
 	return nil
 }
 
@@ -100,6 +118,12 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 		return nil
 	}
 	logger.Info("cursor will be updated", zap.String("cursor.current", i.cursor), zap.String("cursor.next", storageCursor.Current))
+
+	anIndex, err := loadSearchIndexAll(ctx, i.storageClient, bucketName, rootStoragePath, *storageCursor)
+	if err != nil {
+		return errors.Wrapf(err, "can't load the search-index-all index content")
+	}
+	logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", len(anIndex.Packages))))
 
 	// TODO Rebuild package list
 

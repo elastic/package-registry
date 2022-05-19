@@ -45,7 +45,10 @@ var (
 	dryRun     bool
 	configPath string
 
-	featureStorageIndexer bool
+	featureStorageIndexer        bool
+	storageIndexerBucketInternal string
+	storageIndexerBucketPublic   string
+	storageIndexerWatchInterval  time.Duration
 
 	defaultConfig = Config{
 		CacheTimeIndex:      10 * time.Second,
@@ -64,8 +67,12 @@ func init() {
 	// This flag is experimental and might be removed in the future or renamed
 	flag.BoolVar(&dryRun, "dry-run", false, "Runs a dry-run of the registry without starting the web service (experimental).")
 	flag.BoolVar(&packages.ValidationDisabled, "disable-package-validation", false, "Disable package content validation.")
-	// This flag is a technical preview and might be removed in the future or renamed
+	// The following storage related flags are technical preview and might be removed in the future or renamed
 	flag.BoolVar(&featureStorageIndexer, "feature-storage-indexer", false, "Enable storage indexer to include packages from Package Storage v2 (technical preview).")
+	flag.StringVar(&storageIndexerBucketInternal, "storage-indexer-bucket-internal", "", "Path to the internal Package Storage bucket (with gs:// prefix).")
+	flag.StringVar(&storageIndexerBucketPublic, "storage-indexer-bucket-public", "", "Path to the public Package Storage bucket (with gs:// prefix).")
+	flag.DurationVar(&storageIndexerWatchInterval, "storage-indexer-watch-interval", 1*time.Minute, "Address of the package-registry service.")
+
 }
 
 type Config struct {
@@ -135,7 +142,11 @@ func initServer(logger *zap.Logger) *http.Server {
 		if err != nil {
 			logger.Fatal("can't initialize storage client", zap.Error(err))
 		}
-		indexers = append(indexers, storage.NewIndexer(storageClient))
+		indexers = append(indexers, storage.NewIndexer(storageClient, storage.IndexerOptions{
+			PackageStorageBucketInternal: storageIndexerBucketInternal,
+			PackageStorageBucketPublic:   storageIndexerBucketPublic,
+			WatchInterval:                storageIndexerWatchInterval,
+		}))
 	} else {
 		indexers = append(indexers, packages.NewFileSystemIndexer(packagesBasePaths...))
 		indexers = append(indexers, packages.NewZipFileSystemIndexer(packagesBasePaths...))
