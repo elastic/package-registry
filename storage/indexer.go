@@ -93,7 +93,7 @@ func (i *Indexer) watchIndices(ctx context.Context) {
 		select {
 		case <-ctx.Done():
 			logger.Debug("watchIndices: quit")
-			break
+			return
 		case <-t.C:
 		}
 	}

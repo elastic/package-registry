@@ -7,6 +7,7 @@ package storage
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/require"
 
@@ -18,7 +19,11 @@ func TestInit(t *testing.T) {
 	fs := prepareFakeServer(t, "testdata/search-index-all-1.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
-	indexer := NewIndexer(storageClient)
+	indexer := NewIndexer(storageClient, IndexerOptions{
+		PackageStorageBucketInternal: "gs://" + fakePackageStorageBucketInternal,
+		PackageStorageBucketPublic:   "gs://" + fakePackageStorageBucketPublic,
+		WatchInterval:                1 * time.Second,
+	})
 
 	// when
 	err := indexer.Init(context.Background())
@@ -32,7 +37,14 @@ func TestGet(t *testing.T) {
 	fs := prepareFakeServer(t, "testdata/search-index-all-1.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
-	indexer := NewIndexer(storageClient)
+	indexer := NewIndexer(storageClient, IndexerOptions{
+		PackageStorageBucketInternal: "gs://" + fakePackageStorageBucketInternal,
+		PackageStorageBucketPublic:   "gs://" + fakePackageStorageBucketPublic,
+		WatchInterval:                1 * time.Second,
+	})
+
+	err := indexer.Init(context.Background())
+	require.NoError(t, err, "storage indexer must be initialized properly")
 
 	// when
 	foundPackages, err := indexer.Get(context.Background(), &packages.GetOptions{})
