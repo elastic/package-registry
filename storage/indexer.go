@@ -38,12 +38,13 @@ func (i *Indexer) Init(ctx context.Context) error {
 func (i *Indexer) watchIndices(ctx context.Context) {
 	logger := util.Logger()
 
+	var err error
 	t := time.NewTicker(watchInterval)
 	defer t.Stop()
 	for {
 		logger.Debug("watchIndices: start")
 
-		err := i.updateIndex()
+		err = i.updateIndex()
 		if err != nil {
 			logger.Error("can't update index file", zap.Error(err))
 		}
@@ -59,9 +60,15 @@ func (i *Indexer) watchIndices(ctx context.Context) {
 }
 
 func (i *Indexer) updateIndex() error {
-	return nil // TODO
+	i.anIndex = searchIndexAll{ // TODO
+		Packages: []packageIndex{},
+	}
+	return nil
 }
 
-func (i *Indexer) Get(context.Context, *packages.GetOptions) (packages.Packages, error) {
+func (i *Indexer) Get(ctx context.Context, options *packages.GetOptions) (packages.Packages, error) {
+	var pkgs packages.Packages
+
+
 	panic("not implemented yet")
 }
