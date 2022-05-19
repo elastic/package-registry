@@ -17,12 +17,13 @@ import (
 	"time"
 
 	gstorage "cloud.google.com/go/storage"
-	ucfgYAML "github.com/elastic/go-ucfg/yaml"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
 	"go.elastic.co/apm"
 	"go.elastic.co/apm/module/apmgorilla"
 	"go.uber.org/zap"
+
+	ucfgYAML "github.com/elastic/go-ucfg/yaml"
 
 	"github.com/elastic/package-registry/packages"
 	"github.com/elastic/package-registry/storage"

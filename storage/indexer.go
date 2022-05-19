@@ -10,14 +10,11 @@ import (
 	"time"
 
 	"cloud.google.com/go/storage"
+	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/packages"
 	"github.com/elastic/package-registry/util"
-)
-
-const (
-	watchInterval = 1 * time.Minute
 )
 
 type Indexer struct {
@@ -50,7 +47,7 @@ func (i *Indexer) Init(ctx context.Context) error {
 	// TODO validate options
 
 	// Populate index file for the first time.
-	err := i.updateIndex()
+	err := i.updateIndex(ctx)
 	if err != nil {
 		logger.Error("can't update index file", zap.Error(err))
 	}
@@ -64,12 +61,12 @@ func (i *Indexer) watchIndices(ctx context.Context) {
 	logger.Debug("Watch indices for changes")
 
 	var err error
-	t := time.NewTicker(watchInterval)
+	t := time.NewTicker(i.options.WatchInterval)
 	defer t.Stop()
 	for {
 		logger.Debug("watchIndices: start")
 
-		err = i.updateIndex()
+		err = i.updateIndex(ctx)
 		if err != nil {
 			logger.Error("can't update index file", zap.Error(err))
 		}
@@ -84,12 +81,26 @@ func (i *Indexer) watchIndices(ctx context.Context) {
 	}
 }
 
-func (i *Indexer) updateIndex() error {
+func (i *Indexer) updateIndex(ctx context.Context) error {
 	logger := util.Logger()
 	logger.Debug("Update indices")
 
-	// TODO Load cursor
-	// TODO Check if cursor moved
+	bucketName, rootStoragePath, err := extractBucketNameFromURL(i.options.PackageStorageBucketInternal)
+	if err != nil {
+		return errors.Wrapf(err, "can't extract bucket name from URL (url: %s)", i.options.PackageStorageBucketInternal)
+	}
+
+	storageCursor, err := loadCursor(ctx, i.storageClient, bucketName, rootStoragePath)
+	if err != nil {
+		return errors.Wrap(err, "can't load latest cursor")
+	}
+
+	if storageCursor.Current == i.cursor {
+		logger.Info("cursor is up-to-date", zap.String("cursor.current", i.cursor))
+		return nil
+	}
+	logger.Info("cursor will be updated", zap.String("cursor.current", i.cursor), zap.String("cursor.next", storageCursor.Current))
+
 	// TODO Rebuild package list
 
 	i.m.Lock()
