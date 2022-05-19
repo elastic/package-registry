@@ -71,8 +71,17 @@ func prepareFakeServer(t *testing.T, indexPath string) *fakestorage.Server {
 			})
 		}
 
+		// Add fake .zip.sig
+		path := joinObjectPaths(artifactsPackagesStoragePath, nameVersion+".zip.sig")
+		serverObjects = append(serverObjects, fakestorage.Object{
+			ObjectAttrs: fakestorage.ObjectAttrs{
+				BucketName: fakePackageStorageBucketPublic, Name: path,
+			},
+			Content: []byte(filepath.Base(path)),
+		})
+
 		// Add fake .zip package
-		path := joinObjectPaths(artifactsPackagesStoragePath, nameVersion+".zip")
+		path = joinObjectPaths(artifactsPackagesStoragePath, nameVersion+".zip")
 		serverObjects = append(serverObjects, fakestorage.Object{
 			ObjectAttrs: fakestorage.ObjectAttrs{
 				BucketName: fakePackageStorageBucketPublic, Name: path,
@@ -105,6 +114,8 @@ func TestPrepareFakeServer(t *testing.T) {
 	assert.Equal(t, testIndexFile, anIndex)
 	packageZip := readObject(t, client.Bucket(fakePackageStorageBucketPublic).Object(joinObjectPaths(artifactsPackagesStoragePath, "1password-1.1.1.zip")))
 	assert.NotZero(t, len(packageZip), ".zip package must have fake content")
+	packageSig := readObject(t, client.Bucket(fakePackageStorageBucketPublic).Object(joinObjectPaths(artifactsPackagesStoragePath, "1password-1.1.1.zip.sig")))
+	assert.NotZero(t, len(packageSig), ".zip.sig must have fake content")
 
 	// check few static files
 	readme := readObject(t, client.Bucket(fakePackageStorageBucketPublic).Object(joinObjectPaths(artifactsStaticStoragePath, "1password-1.1.1", "docs/README.md")))

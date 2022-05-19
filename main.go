@@ -16,12 +16,12 @@ import (
 	"syscall"
 	"time"
 
+	gstorage "cloud.google.com/go/storage"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
-	"go.uber.org/zap"
-
 	"go.elastic.co/apm"
 	"go.elastic.co/apm/module/apmgorilla"
+	"go.uber.org/zap"
 
 	ucfgYAML "github.com/elastic/go-ucfg/yaml"
 
@@ -131,7 +131,11 @@ func initServer(logger *zap.Logger) *http.Server {
 
 	var indexers []Indexer
 	if featureStorageIndexer {
-		indexers = append(indexers, storage.NewIndexer())
+		storageClient, err := gstorage.NewClient(ctx)
+		if err != nil {
+			logger.Fatal("can't initialize storage client", zap.Error(err))
+		}
+		indexers = append(indexers, storage.NewIndexer(storageClient))
 	} else {
 		indexers = append(indexers, packages.NewFileSystemIndexer(packagesBasePaths...))
 		indexers = append(indexers, packages.NewZipFileSystemIndexer(packagesBasePaths...))
