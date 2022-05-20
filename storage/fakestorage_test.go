@@ -53,7 +53,12 @@ func prepareFakeServer(t *testing.T, indexPath string) *fakestorage.Server {
 	})
 
 	for _, aPackage := range index.Packages {
-		nameVersion := fmt.Sprintf("%s-%s", aPackage.PackageManifest.Name, aPackage.PackageManifest.Version)
+		var pm struct{
+			Name string `json:"name"`
+			Version string `json:"version"`
+		}
+		json.Unmarshal(aPackage.PackageManifest, &pm)
+		nameVersion := fmt.Sprintf("%s-%s", pm.Name, pm.Version)
 
 		// Add fake static resources: docs, img
 		for _, asset := range aPackage.Assets {
