@@ -125,7 +125,10 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	}
 	logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", len(anIndex.Packages))))
 
-	refreshedList := transformSearchIndexAllToPackages(*anIndex)
+	refreshedList, err := transformSearchIndexAllToPackages(*anIndex)
+	if err != nil {
+		return errors.Wrap(err, "can't transform the search-index-all")
+	}
 
 	i.m.Lock()
 	defer i.m.Unlock()

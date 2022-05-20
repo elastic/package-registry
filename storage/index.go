@@ -74,8 +74,16 @@ func buildIndexStoragePath(rootStoragePath string, aCursor cursor, indexFile str
 	return joinObjectPaths(rootStoragePath, v2MetadataStoragePath, aCursor.Current, indexFile)
 }
 
-func transformSearchIndexAllToPackages(sia searchIndexAll) packages.Packages {
+func transformSearchIndexAllToPackages(sia searchIndexAll) (packages.Packages, error) {
 	var transformedPackages packages.Packages
-
-	return transformedPackages
+	for _, pi := range sia.Packages {
+		p, err := packages.NewPackage("/", func(p *packages.Package) (packages.PackageFileSystem, error) {
+			return newProxyPackageFileSystem(pi)
+		})
+		if err != nil {
+			return nil, errors.Wrap(err, "can't create new package")
+		}
+		transformedPackages = append(transformedPackages, p)
+	}
+	return transformedPackages, nil
 }
