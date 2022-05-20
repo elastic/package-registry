@@ -5,13 +5,13 @@
 package storage
 
 import (
+	"cloud.google.com/go/storage"
 	"context"
 	"encoding/json"
-	"io/ioutil"
-
-	"cloud.google.com/go/storage"
+	"github.com/elastic/package-registry/packages"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
+	"io/ioutil"
 
 	"github.com/elastic/package-registry/util"
 )
@@ -160,4 +160,10 @@ func loadIndexContent(ctx context.Context, storageClient *storage.Client, indexF
 
 func buildIndexStoragePath(rootStoragePath string, aCursor cursor, indexFile string) string {
 	return joinObjectPaths(rootStoragePath, v2MetadataStoragePath, aCursor.Current, indexFile)
+}
+
+func transformSearchIndexAllToPackages(sia searchIndexAll) packages.Packages {
+	var transformedPackages packages.Packages
+
+	return transformedPackages
 }

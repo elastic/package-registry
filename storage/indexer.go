@@ -125,12 +125,11 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	}
 	logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", len(anIndex.Packages))))
 
-	// TODO Rebuild package list
+	refreshedList := transformSearchIndexAllToPackages(*anIndex)
 
 	i.m.Lock()
 	defer i.m.Unlock()
-
-	i.packageList = packages.Packages{}
+	i.packageList = refreshedList
 	return nil
 }
 
