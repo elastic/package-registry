@@ -37,9 +37,6 @@ func Build() error {
 func Check() error {
 	Format()
 
-	// Setup the variables for the tests and not create tarGz files
-	packagePaths = []string{"testdata/package"}
-
 	err := Build()
 	if err != nil {
 		return err
