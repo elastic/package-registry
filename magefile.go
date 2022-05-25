@@ -27,7 +27,7 @@ var (
 	// GoLicenserImportPath controls the import path used to install go-licenser.
 	GoLicenserImportPath = "github.com/elastic/go-licenser"
 
-	buildDir       = "./build"
+	buildDir = "./build"
 )
 
 func Build() error {
