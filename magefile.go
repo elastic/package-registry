@@ -28,7 +28,6 @@ var (
 	GoLicenserImportPath = "github.com/elastic/go-licenser"
 
 	buildDir       = "./build"
-	storageRepoDir = filepath.Join(buildDir, "package-storage")
 	packagePaths   = []string{filepath.Join(storageRepoDir, "packages"), "./testdata/package/"}
 )
 
