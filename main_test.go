@@ -86,9 +86,9 @@ func TestEndpoints(t *testing.T) {
 		{"/search?prerelease=true", "/search", "search-package-prerelease.json", searchHandler(indexer, testCacheTime)},
 		{"/search?prerelease=foo", "/search", "search-package-prerelease-error.txt", searchHandler(indexer, testCacheTime)},
 		{"/search?category=datastore&prerelease=true", "/search", "search-category-datastore-prerelease.json", searchHandler(indexer, testCacheTime)},
-		{"/search?type=input", "/search", "search-input-packages.json", searchHandler(indexer, testCacheTime)},
-		{"/search?type=input&package=integration_input", "/search", "search-input-integration-package.json", searchHandler(indexer, testCacheTime)},
-		{"/search?type=integration&package=integration_input", "/search", "search-integration-integration-package.json", searchHandler(indexer, testCacheTime)},
+		{"/search?type=input&prerelease=true", "/search", "search-input-packages.json", searchHandler(indexer, testCacheTime)},
+		{"/search?type=input&package=integration_input&prerelease=true", "/search", "search-input-integration-package.json", searchHandler(indexer, testCacheTime)},
+		{"/search?type=integration&package=integration_input&prerelease=true", "/search", "search-integration-integration-package.json", searchHandler(indexer, testCacheTime)},
 		{"/favicon.ico", "", "favicon.ico", faviconHandleFunc},
 
 		// Removed flags, kept to ensure that they don't break requests from old versions.
