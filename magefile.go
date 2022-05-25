@@ -28,7 +28,6 @@ var (
 	GoLicenserImportPath = "github.com/elastic/go-licenser"
 
 	buildDir       = "./build"
-	packagePaths   = []string{filepath.Join(storageRepoDir, "packages"), "./testdata/package/"}
 )
 
 func Build() error {
