@@ -92,19 +92,20 @@ func NewFileSystemIndexer(paths ...string) *FileSystemIndexer {
 		// Unexpected file, return nil in order to continue processing sibling directories
 		// Fixes an annoying problem when the .DS_Store file is left behind and the package
 		// is not loading without any error information
-		logger.Warn("ignoging unexpected file", zap.String("file.path", path))
+		logger.Warn("ignoring unexpected file", zap.String("file.path", path))
 		return false, nil
-	}
-	fsBuilder := func(p *Package) (PackageFileSystem, error) {
-		return NewExtractedPackageFileSystem(p)
 	}
 	return &FileSystemIndexer{
 		paths:     paths,
 		label:     "FileSystemIndexer",
 		walkerFn:  walkerFn,
-		fsBuilder: fsBuilder,
+		fsBuilder: ExtractedFileSystemBuilder,
 		logger:    logger,
 	}
+}
+
+var ExtractedFileSystemBuilder = func(p *Package) (PackageFileSystem, error) {
+	return NewExtractedPackageFileSystem(p)
 }
 
 // NewZipFileSystemIndexer creates a new ZipFileSystemIndexer for the given paths.
@@ -129,16 +130,17 @@ func NewZipFileSystemIndexer(paths ...string) *FileSystemIndexer {
 
 		return true, nil
 	}
-	fsBuilder := func(p *Package) (PackageFileSystem, error) {
-		return NewZipPackageFileSystem(p)
-	}
 	return &FileSystemIndexer{
 		paths:     paths,
 		label:     "ZipFileSystemIndexer",
 		walkerFn:  walkerFn,
-		fsBuilder: fsBuilder,
+		fsBuilder: ZipFileSystemBuilder,
 		logger:    logger,
 	}
+}
+
+var ZipFileSystemBuilder = func(p *Package) (PackageFileSystem, error) {
+	return NewZipPackageFileSystem(p)
 }
 
 // Init initializes the indexer.
@@ -186,7 +188,7 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 			return nil, err
 		}
 
-		i.logger.Info("Packages in " + basePath + ":")
+		i.logger.Info("Searching packages in " + basePath)
 		for _, path := range packagePaths {
 			p, err := NewPackage(path, i.fsBuilder)
 			if err != nil {
@@ -195,7 +197,7 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 
 			key := packageKey{name: p.Name, version: p.Version}
 			if _, found := packagesFound[key]; found {
-				i.logger.Info("duplicated package",
+				i.logger.Debug("duplicated package",
 					zap.String("package.name", p.Name),
 					zap.String("package.version", p.Version),
 					zap.String("package.path", p.BasePath))
@@ -205,7 +207,7 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 			packagesFound[key] = struct{}{}
 			pList = append(pList, p)
 
-			i.logger.Info("found package",
+			i.logger.Debug("found package",
 				zap.String("package.name", p.Name),
 				zap.String("package.version", p.Version),
 				zap.String("package.path", p.BasePath))

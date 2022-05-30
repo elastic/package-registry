@@ -88,14 +88,14 @@
     ]
   },
   {
-    "name": "ilmpolicy",
+    "name": "ilm_policy",
     "title": "ILM Policy",
     "version": "1.0.0",
     "release": "beta",
     "description": "Test form ILM Policy in Package",
     "type": "solution",
-    "download": "/epr/ilmpolicy/ilmpolicy-1.0.0.zip",
-    "path": "/package/ilmpolicy/1.0.0",
+    "download": "/epr/ilm_policy/ilm_policy-1.0.0.zip",
+    "path": "/package/ilm_policy/1.0.0",
     "conditions": {
       "kibana": {
         "version": ">=7.0.0"

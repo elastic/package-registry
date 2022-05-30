@@ -1,5 +1,5 @@
 format_version: 1.0.0
-name: fakeapm
+name: traces
 description: Not actually APM
 version: 1.0.0
 title: Not actually APM

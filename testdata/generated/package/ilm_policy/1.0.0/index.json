@@ -1,0 +1,45 @@
+{
+  "name": "ilm_policy",
+  "title": "ILM Policy",
+  "version": "1.0.0",
+  "release": "beta",
+  "description": "Test form ILM Policy in Package",
+  "type": "solution",
+  "download": "/epr/ilm_policy/ilm_policy-1.0.0.zip",
+  "path": "/package/ilm_policy/1.0.0",
+  "conditions": {
+    "kibana": {
+      "version": ">=7.0.0"
+    }
+  },
+  "categories": [
+    "custom"
+  ],
+  "format_version": "1.0.0",
+  "readme": "/package/ilm_policy/1.0.0/docs/README.md",
+  "license": "basic",
+  "assets": [
+    "/package/ilm_policy/1.0.0/manifest.yml",
+    "/package/ilm_policy/1.0.0/docs/README.md",
+    "/package/ilm_policy/1.0.0/data_stream/ilm_policy/manifest.yml",
+    "/package/ilm_policy/1.0.0/data_stream/ilm_policy/fields/base-fields.yml",
+    "/package/ilm_policy/1.0.0/data_stream/ilm_policy/fields/some_fields.yml",
+    "/package/ilm_policy/1.0.0/data_stream/ilm_policy/elasticsearch/ilm/diagnostics.json"
+  ],
+  "data_streams": [
+    {
+      "type": "metrics",
+      "dataset": "ilm_policy.ilm_policy",
+      "ilm_policy": "diagnostics",
+      "title": "ILM policy overrride data stream",
+      "release": "beta",
+      "package": "ilm_policy",
+      "elasticsearch": {
+        "index_template.mappings": {
+          "dynamic": false
+        }
+      },
+      "path": "ilm_policy"
+    }
+  ]
+}
