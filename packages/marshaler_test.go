@@ -45,7 +45,7 @@ func TestUnmarshalJSON(t *testing.T) {
 	var packages Packages
 
 	// when
-	err = UnmarshalJSON(expectedFile, &packages)
+	err = UnmarshalJSON(expectedFile, &packages, ResolveBasePaths(packagesBasePaths...))
 
 	// then
 	require.NoError(t, err, "packages should be loaded")

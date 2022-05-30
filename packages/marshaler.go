@@ -6,6 +6,9 @@ package packages
 
 import (
 	"encoding/json"
+	"github.com/pkg/errors"
+	"os"
+	"path/filepath"
 )
 
 type MarshallerOption func(packages *Packages) error
@@ -34,4 +37,29 @@ func UnmarshalJSON(content []byte, pkgs *Packages, options ...MarshallerOption) 
 		}
 	}
 	return nil
+}
+
+func ResolveBasePaths(packagesPath ...string) MarshallerOption {
+	return func(packages *Packages) error {
+		for i := range *packages {
+			var manifestFound bool
+			for _, pp := range packagesPath {
+				maybePath := filepath.Join(pp, (*packages)[i].Name, (*packages)[i].Version)
+				maybeManifestPath := filepath.Join(maybePath, "manifest.yml")
+				_, err := os.Stat(maybeManifestPath)
+				if err != nil && !errors.Is(err, os.ErrNotExist) {
+					return err
+				}
+				if err == nil {
+					(*packages)[i].BasePath = maybePath
+					manifestFound = true
+					break
+				}
+			}
+			if !manifestFound {
+				return errors.Errorf("manifest file is missing (package: %s, version: %s)", (*packages)[i].Name, (*packages)[i].Version)
+			}
+		}
+		return nil
+	}
 }
