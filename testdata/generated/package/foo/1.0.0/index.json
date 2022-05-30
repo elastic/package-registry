@@ -9,7 +9,7 @@
   "path": "/package/foo/1.0.0",
   "conditions": {
     "kibana": {
-      "version": "\u003e=7.0.0"
+      "version": ">=7.0.0"
     }
   },
   "categories": [

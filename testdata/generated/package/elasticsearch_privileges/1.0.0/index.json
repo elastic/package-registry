@@ -9,7 +9,7 @@
   "path": "/package/elasticsearch_privileges/1.0.0",
   "conditions": {
     "kibana": {
-      "version": "\u003e=7.16.0"
+      "version": ">=7.16.0"
     }
   },
   "categories": [

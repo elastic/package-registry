@@ -5,7 +5,10 @@
 package packages
 
 import (
+	"bytes"
 	"encoding/json"
+
+	"github.com/elastic/package-registry/util"
 )
 
 var (
@@ -14,7 +17,9 @@ var (
 )
 
 func (p *Package) MarshalJSON() ([]byte, error) {
-	return json.MarshalIndent(*p, " ", " ")
+	var buf bytes.Buffer
+	err := util.WriteJSONPretty(&buf, *p)
+	return buf.Bytes(), err
 }
 
 func (p *Package) UnmarshalJSON(data []byte) error {
