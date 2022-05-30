@@ -8,10 +8,23 @@ import (
 	"encoding/json"
 )
 
+type MarshallerOption func(packages *Packages) error
+
 func MarshalJSON(pkgs *Packages) ([]byte, error) {
 	return json.MarshalIndent(pkgs, " ", " ")
 }
 
-func UnmarshalJSON(content []byte, pkgs *Packages) error {
-	return json.Unmarshal(content, pkgs)
+func UnmarshalJSON(content []byte, pkgs *Packages, options ...MarshallerOption) error {
+	err := json.Unmarshal(content, pkgs)
+	if err != nil {
+		return err
+	}
+
+	for _, opt := range options {
+		err = opt(pkgs)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
