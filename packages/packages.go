@@ -186,7 +186,7 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 			return nil, err
 		}
 
-		i.logger.Info("Packages in " + basePath + ":")
+		i.logger.Info("Searching packages in " + basePath)
 		for _, path := range packagePaths {
 			p, err := NewPackage(path, i.fsBuilder)
 			if err != nil {
@@ -195,7 +195,7 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 
 			key := packageKey{name: p.Name, version: p.Version}
 			if _, found := packagesFound[key]; found {
-				i.logger.Info("duplicated package",
+				i.logger.Debug("duplicated package",
 					zap.String("package.name", p.Name),
 					zap.String("package.version", p.Version),
 					zap.String("package.path", p.BasePath))
@@ -205,7 +205,7 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 			packagesFound[key] = struct{}{}
 			pList = append(pList, p)
 
-			i.logger.Info("found package",
+			i.logger.Debug("found package",
 				zap.String("package.name", p.Name),
 				zap.String("package.version", p.Version),
 				zap.String("package.path", p.BasePath))
