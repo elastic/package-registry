@@ -20,6 +20,13 @@ func UnmarshalJSON(content []byte, pkgs *Packages, options ...MarshallerOption) 
 		return err
 	}
 
+	for i := range *pkgs {
+		err = (*pkgs)[i].setRuntimeFields()
+		if err != nil {
+			return err
+		}
+	}
+
 	for _, opt := range options {
 		err = opt(pkgs)
 		if err != nil {

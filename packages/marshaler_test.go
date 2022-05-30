@@ -50,8 +50,6 @@ func TestUnmarshalJSON(t *testing.T) {
 	// then
 	require.NoError(t, err, "packages should be loaded")
 
-	// TODO constraint
-	// TODO semver
 	// TODO base path
 	// TODO fsBuilder
 	require.Equal(t, packages[0], indexer.packageList[0])
