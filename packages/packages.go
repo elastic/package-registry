@@ -92,19 +92,20 @@ func NewFileSystemIndexer(paths ...string) *FileSystemIndexer {
 		// Unexpected file, return nil in order to continue processing sibling directories
 		// Fixes an annoying problem when the .DS_Store file is left behind and the package
 		// is not loading without any error information
-		logger.Warn("ignoging unexpected file", zap.String("file.path", path))
+		logger.Warn("ignoring unexpected file", zap.String("file.path", path))
 		return false, nil
-	}
-	fsBuilder := func(p *Package) (PackageFileSystem, error) {
-		return NewExtractedPackageFileSystem(p)
 	}
 	return &FileSystemIndexer{
 		paths:     paths,
 		label:     "FileSystemIndexer",
 		walkerFn:  walkerFn,
-		fsBuilder: fsBuilder,
+		fsBuilder: ExtractedFileSystemBuilder,
 		logger:    logger,
 	}
+}
+
+var ExtractedFileSystemBuilder = func(p *Package) (PackageFileSystem, error) {
+	return NewExtractedPackageFileSystem(p)
 }
 
 // NewZipFileSystemIndexer creates a new ZipFileSystemIndexer for the given paths.
@@ -129,16 +130,17 @@ func NewZipFileSystemIndexer(paths ...string) *FileSystemIndexer {
 
 		return true, nil
 	}
-	fsBuilder := func(p *Package) (PackageFileSystem, error) {
-		return NewZipPackageFileSystem(p)
-	}
 	return &FileSystemIndexer{
 		paths:     paths,
 		label:     "ZipFileSystemIndexer",
 		walkerFn:  walkerFn,
-		fsBuilder: fsBuilder,
+		fsBuilder: ZipFileSystemBuilder,
 		logger:    logger,
 	}
+}
+
+var ZipFileSystemBuilder = func(p *Package) (PackageFileSystem, error) {
+	return NewZipPackageFileSystem(p)
 }
 
 // Init initializes the indexer.

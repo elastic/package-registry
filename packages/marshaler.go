@@ -6,9 +6,10 @@ package packages
 
 import (
 	"encoding/json"
-	"github.com/pkg/errors"
 	"os"
 	"path/filepath"
+
+	"github.com/pkg/errors"
 )
 
 type MarshallerOption func(packages *Packages) error
@@ -59,6 +60,15 @@ func ResolveBasePaths(packagesPath ...string) MarshallerOption {
 			if !manifestFound {
 				return errors.Errorf("manifest file is missing (package: %s, version: %s)", (*packages)[i].Name, (*packages)[i].Version)
 			}
+		}
+		return nil
+	}
+}
+
+func UseFsBuilder(builder FileSystemBuilder) MarshallerOption {
+	return func(packages *Packages) error {
+		for i := range *packages {
+			(*packages)[i].fsBuilder = builder
 		}
 		return nil
 	}

@@ -45,13 +45,22 @@ func TestUnmarshalJSON(t *testing.T) {
 	var packages Packages
 
 	// when
-	err = UnmarshalJSON(expectedFile, &packages, ResolveBasePaths(packagesBasePaths...))
+	err = UnmarshalJSON(expectedFile, &packages,
+		ResolveBasePaths(packagesBasePaths...),
+		UseFsBuilder(ExtractedFileSystemBuilder))
 
 	// then
 	require.NoError(t, err, "packages should be loaded")
-
-	// TODO fsBuilder
-	require.Equal(t, packages[0], indexer.packageList[0])
+	for i := range indexer.packageList {
+		require.Equal(t, packages[i].Name, indexer.packageList[i].Name)
+		require.Equal(t, packages[i].Version, indexer.packageList[i].Version)
+		require.Equal(t, packages[i].Title, indexer.packageList[i].Title)
+		require.Equal(t, packages[i].versionSemVer, indexer.packageList[i].versionSemVer)
+		if indexer.packageList[i].Conditions != nil && indexer.packageList[i].Conditions.Kibana != nil {
+			require.Equal(t, packages[i].Conditions.Kibana.constraint, indexer.packageList[i].Conditions.Kibana.constraint)
+		}
+		require.NotNil(t, packages[i].fsBuilder)
+	}
 }
 
 func assertExpectedContent(t *testing.T, expectedPath string, actual []byte) {
