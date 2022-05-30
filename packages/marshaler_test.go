@@ -6,6 +6,7 @@ package packages
 
 import (
 	"context"
+	"encoding/json"
 	"flag"
 	"os"
 	"testing"
@@ -26,7 +27,7 @@ func TestMarshalJSON(t *testing.T) {
 	require.NoError(t, err, "can't initialize indexer")
 
 	// when
-	m, err := MarshalJSON(&indexer.packageList)
+	m, err := json.MarshalIndent(&indexer.packageList, " ", " ")
 	require.NoError(t, err)
 
 	// then
@@ -45,9 +46,7 @@ func TestUnmarshalJSON(t *testing.T) {
 	var packages Packages
 
 	// when
-	err = UnmarshalJSON(expectedFile, &packages,
-		ResolveBasePaths(packagesBasePaths...),
-		UseFsBuilder(ExtractedFileSystemBuilder))
+	err = json.Unmarshal(expectedFile, &packages)
 
 	// then
 	require.NoError(t, err, "packages should be loaded")
@@ -59,7 +58,7 @@ func TestUnmarshalJSON(t *testing.T) {
 		if indexer.packageList[i].Conditions != nil && indexer.packageList[i].Conditions.Kibana != nil {
 			require.Equal(t, packages[i].Conditions.Kibana.constraint, indexer.packageList[i].Conditions.Kibana.constraint)
 		}
-		require.NotNil(t, packages[i].fsBuilder)
+		require.Nil(t, packages[i].fsBuilder)
 	}
 }
 

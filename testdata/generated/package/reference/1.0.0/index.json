@@ -17,7 +17,7 @@
   ],
   "conditions": {
     "kibana": {
-      "version": ">6.7.0  <7.6.0"
+      "version": "\u003e6.7.0  \u003c7.6.0"
     }
   },
   "owner": {

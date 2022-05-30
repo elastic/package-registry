@@ -9,7 +9,7 @@
   "path": "/package/ilm_policy/1.0.0",
   "conditions": {
     "kibana": {
-      "version": ">=7.0.0"
+      "version": "\u003e=7.0.0"
     }
   },
   "categories": [

@@ -6,70 +6,27 @@ package packages
 
 import (
 	"encoding/json"
-	"os"
-	"path/filepath"
-
-	"github.com/pkg/errors"
 )
 
-type MarshallerOption func(packages *Packages) error
+var (
+	_ json.Marshaler   = new(Package)
+	_ json.Unmarshaler = new(Package)
+)
 
-func MarshalJSON(pkgs *Packages) ([]byte, error) {
-	return json.MarshalIndent(pkgs, " ", " ")
+func (p *Package) MarshalJSON() ([]byte, error) {
+	return json.MarshalIndent(*p, " ", " ")
 }
 
-func UnmarshalJSON(content []byte, pkgs *Packages, options ...MarshallerOption) error {
-	err := json.Unmarshal(content, pkgs)
+func (p *Package) UnmarshalJSON(data []byte) error {
+	type Alias Package
+	aux := &struct {
+		*Alias
+	}{
+		(*Alias)(p),
+	}
+	err := json.Unmarshal(data, &aux)
 	if err != nil {
 		return err
 	}
-
-	for i := range *pkgs {
-		err = (*pkgs)[i].setRuntimeFields()
-		if err != nil {
-			return err
-		}
-	}
-
-	for _, opt := range options {
-		err = opt(pkgs)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func ResolveBasePaths(packagesPath ...string) MarshallerOption {
-	return func(packages *Packages) error {
-		for i := range *packages {
-			var manifestFound bool
-			for _, pp := range packagesPath {
-				maybePath := filepath.Join(pp, (*packages)[i].Name, (*packages)[i].Version)
-				maybeManifestPath := filepath.Join(maybePath, "manifest.yml")
-				_, err := os.Stat(maybeManifestPath)
-				if err != nil && !errors.Is(err, os.ErrNotExist) {
-					return err
-				}
-				if err == nil {
-					(*packages)[i].BasePath = maybePath
-					manifestFound = true
-					break
-				}
-			}
-			if !manifestFound {
-				return errors.Errorf("manifest file is missing (package: %s, version: %s)", (*packages)[i].Name, (*packages)[i].Version)
-			}
-		}
-		return nil
-	}
-}
-
-func UseFsBuilder(builder FileSystemBuilder) MarshallerOption {
-	return func(packages *Packages) error {
-		for i := range *packages {
-			(*packages)[i].fsBuilder = builder
-		}
-		return nil
-	}
+	return ((*Package)(aux.Alias)).setRuntimeFields()
 }

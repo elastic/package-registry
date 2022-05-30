@@ -96,7 +96,7 @@
               "multi": false,
               "required": true,
               "show_user": false,
-              "default": "/jolokia/?ignoreErrors=true&canonicalNaming=false"
+              "default": "/jolokia/?ignoreErrors=true\u0026canonicalNaming=false"
             },
             {
               "name": "period",

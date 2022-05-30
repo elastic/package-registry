@@ -13,7 +13,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Prepare stub for Storage Indexer. Disable fetching packages from Package Storage v1. [#811](https://github.com/elastic/package-registry/pull/811)
-* Add marshaler/unmarshaler logic to Packages. [#815](https://github.com/elastic/package-registry/pull/815)
 
 ### Deprecated
 

@@ -16,7 +16,7 @@
   ],
   "conditions": {
     "kibana": {
-      "version": ">6.7.0"
+      "version": "\u003e6.7.0"
     }
   },
   "categories": [
