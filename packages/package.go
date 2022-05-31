@@ -522,18 +522,9 @@ func (p *Package) GetDataStreamPaths() ([]string, error) {
 
 	dataStreamBasePath := "data_stream"
 
-	// Check if this package has dataStreams
-	_, err = fs.Stat(dataStreamBasePath)
-	// If no dataStreams exist, just return
-	if os.IsNotExist(err) {
-		return nil, nil
-	}
-	// An other error happened, report it
-	if err != nil {
-		return nil, err
-	}
-
-	paths, err := fs.Glob(filepath.Join(dataStreamBasePath, "*"))
+	// Look for a file here that a data_stream must have, some file systems as Zip files
+	// may not have entries for directories.
+	paths, err := fs.Glob(filepath.Join(dataStreamBasePath, "*", "manifest.yml"))
 	if err != nil {
 		return nil, err
 	}
@@ -543,7 +534,7 @@ func (p *Package) GetDataStreamPaths() ([]string, error) {
 		if err != nil {
 			return nil, fmt.Errorf("failed to get data stream path inside package (%s): %w", dataStreamBasePath, err)
 		}
-		paths[i] = relPath
+		paths[i] = filepath.Dir(relPath)
 	}
 
 	return paths, nil

@@ -289,6 +289,7 @@ func TestZippedArtifacts(t *testing.T) {
 		handler  func(w http.ResponseWriter, r *http.Request)
 	}{
 		{"/epr/example/example-1.0.1.zip", artifactsRouterPath, "example-1.0.1.zip-preview.txt", artifactsHandler},
+		{"/epr/example/nodirentries-1.0.0.zip", artifactsRouterPath, "nodirentries-1.0.0.zip-preview.txt", artifactsHandler},
 		{"/epr/example/example-999.0.2.zip", artifactsRouterPath, "artifact-package-version-not-found.txt", artifactsHandler},
 		{"/package/example/1.0.1/docs/README.md", staticRouterPath, "example-1.0.1-README.md", staticHandler},
 		{"/package/example/1.0.1/img/kibana-envoyproxy.jpg", staticRouterPath, "example-1.0.1-screenshot.jpg", staticHandler},
@@ -320,6 +321,7 @@ func TestPackageIndex(t *testing.T) {
 	}{
 		{"/package/example/1.0.0/", packageIndexRouterPath, "package.json", packageIndexHandler},
 		{"/package/example/1.0.1/", packageIndexRouterPath, "package-zip.json", packageIndexHandler},
+		{"/package/nodirentries/1.0.0/", packageIndexRouterPath, "package-zip-nodirentries.json", packageIndexHandler},
 		{"/package/missing/1.0.0/", packageIndexRouterPath, "index-package-not-found.txt", packageIndexHandler},
 		{"/package/example/999.0.0/", packageIndexRouterPath, "index-package-revision-not-found.txt", packageIndexHandler},
 		{"/package/example/a.b.c/", packageIndexRouterPath, "index-package-invalid-version.txt", packageIndexHandler},
