@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
+* Data streams are properly read from Zip packages without entries for directories. [#817](https://github.com/elastic/package-registry/pull/817)
+
 ### Added
 
 * Prepare stub for Storage Indexer. Disable fetching packages from Package Storage v1. [#811](https://github.com/elastic/package-registry/pull/811)
