@@ -1366,6 +1366,166 @@
    ]
   },
   {
+   "name": "integration_input",
+   "title": "Integration input",
+   "version": "1.0.0",
+   "release": "ga",
+   "description": "This is the example integration",
+   "type": "integration",
+   "download": "/epr/integration_input/integration_input-1.0.0.zip",
+   "path": "/package/integration_input/1.0.0",
+   "conditions": {
+    "kibana": {
+     "version": "^8.4.0"
+    }
+   },
+   "owner": {
+    "github": "ruflin"
+   },
+   "categories": [
+    "crm",
+    "azure"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/integration_input/1.0.0/docs/README.md",
+   "license": "basic",
+   "screenshots": [
+    {
+     "src": "/img/kibana-envoyproxy.jpg",
+     "path": "/package/integration_input/1.0.0/img/kibana-envoyproxy.jpg",
+     "title": "IP Tables Ubiquity Dashboard",
+     "size": "1492x1464",
+     "type": "image/png"
+    }
+   ],
+   "assets": [
+    "/package/integration_input/1.0.0/manifest.yml",
+    "/package/integration_input/1.0.0/docs/README.md",
+    "/package/integration_input/1.0.0/img/icon.png",
+    "/package/integration_input/1.0.0/img/kibana-envoyproxy.jpg",
+    "/package/integration_input/1.0.0/data_stream/foo/manifest.yml",
+    "/package/integration_input/1.0.0/kibana/dashboard/0c610510-5cbd-11e9-8477-077ec9664dbd.json",
+    "/package/integration_input/1.0.0/kibana/visualization/0a994af0-5c9d-11e9-8477-077ec9664dbd.json",
+    "/package/integration_input/1.0.0/kibana/visualization/36f872a0-5c03-11e9-85b4-19d0072eb4f2.json",
+    "/package/integration_input/1.0.0/kibana/visualization/38f96190-5c99-11e9-8477-077ec9664dbd.json",
+    "/package/integration_input/1.0.0/kibana/visualization/7e4084e0-5c99-11e9-8477-077ec9664dbd.json",
+    "/package/integration_input/1.0.0/kibana/visualization/80844540-5c97-11e9-8477-077ec9664dbd.json",
+    "/package/integration_input/1.0.0/kibana/visualization/ab48c3f0-5ca6-11e9-8477-077ec9664dbd.json",
+    "/package/integration_input/1.0.0/data_stream/foo/fields/base-fields.yml",
+    "/package/integration_input/1.0.0/data_stream/foo/agent/stream/stream.yml.hbs",
+    "/package/integration_input/1.0.0/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-entry.json",
+    "/package/integration_input/1.0.0/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-http.json",
+    "/package/integration_input/1.0.0/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-json.json",
+    "/package/integration_input/1.0.0/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-plaintext.json",
+    "/package/integration_input/1.0.0/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-tcp.json"
+   ],
+   "policy_templates": [
+    {
+     "name": "logs",
+     "title": "Logs datasource",
+     "description": "Datasource for your log files.",
+     "inputs": [
+      {
+       "type": "foo"
+      }
+     ],
+     "multiple": true,
+     "categories": [
+      "datastore"
+     ]
+    }
+   ],
+   "data_streams": [
+    {
+     "type": "logs",
+     "dataset": "integration_input.foo",
+     "title": "Foo",
+     "release": "ga",
+     "ingest_pipeline": "pipeline-entry",
+     "streams": [
+      {
+       "input": "foo",
+       "vars": [
+        {
+         "name": "paths",
+         "type": "text",
+         "description": "Path to log files to be collected",
+         "multi": true,
+         "required": true,
+         "show_user": false
+        }
+       ],
+       "template_path": "stream.yml.hbs",
+       "enabled": true
+      }
+     ],
+     "package": "integration_input",
+     "path": "foo"
+    }
+   ]
+  },
+  {
+   "name": "integration_input",
+   "title": "Integration Input",
+   "version": "1.0.2",
+   "release": "ga",
+   "description": "Sample package that was an integration and got migrated to input",
+   "type": "input",
+   "download": "/epr/integration_input/integration_input-1.0.2.zip",
+   "path": "/package/integration_input/1.0.2",
+   "icons": [
+    {
+     "src": "/img/sample-logo.svg",
+     "path": "/package/integration_input/1.0.2/img/sample-logo.svg",
+     "type": "image/svg+xml"
+    }
+   ],
+   "conditions": {
+    "kibana": {
+     "version": "^8.4.0"
+    }
+   },
+   "owner": {
+    "github": "elastic/integrations"
+   },
+   "categories": [
+    "custom",
+    "datastore"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/integration_input/1.0.2/docs/README.md",
+   "license": "basic",
+   "screenshots": [
+    {
+     "src": "/img/sample-screenshot.png",
+     "path": "/package/integration_input/1.0.2/img/sample-screenshot.png",
+     "title": "Sample screenshot",
+     "size": "600x600",
+     "type": "image/png"
+    }
+   ],
+   "assets": [
+    "/package/integration_input/1.0.2/changelog.yml",
+    "/package/integration_input/1.0.2/manifest.yml",
+    "/package/integration_input/1.0.2/docs/README.md",
+    "/package/integration_input/1.0.2/fields/input.yml",
+    "/package/integration_input/1.0.2/img/sample-logo.svg",
+    "/package/integration_input/1.0.2/img/sample-screenshot.png",
+    "/package/integration_input/1.0.2/agent/input/input.yml.hbs"
+   ],
+   "policy_templates": [
+    {
+     "name": "sql_query",
+     "title": "SQL Query",
+     "description": "Query the database to capture metrics.",
+     "multiple": true,
+     "type": "metrics",
+     "input": "sql",
+     "template_path": "input.yml.hbs"
+    }
+   ]
+  },
+  {
    "name": "longdocs",
    "title": "Long Docs",
    "version": "1.0.4",
@@ -1706,6 +1866,118 @@
       }
      },
      "path": "reference"
+    }
+   ]
+  },
+  {
+   "name": "sql_input",
+   "title": "SQL Input",
+   "version": "0.2.0",
+   "release": "beta",
+   "description": "Execute custom queries against an SQL database and store the results in Elasticsearch.",
+   "type": "input",
+   "download": "/epr/sql_input/sql_input-0.2.0.zip",
+   "path": "/package/sql_input/0.2.0",
+   "icons": [
+    {
+     "src": "/img/sample-logo.svg",
+     "path": "/package/sql_input/0.2.0/img/sample-logo.svg",
+     "type": "image/svg+xml"
+    }
+   ],
+   "owner": {
+    "github": "elastic/integrations"
+   },
+   "categories": [
+    "custom",
+    "datastore"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/sql_input/0.2.0/docs/README.md",
+   "license": "basic",
+   "screenshots": [
+    {
+     "src": "/img/sample-screenshot.png",
+     "path": "/package/sql_input/0.2.0/img/sample-screenshot.png",
+     "title": "Sample screenshot",
+     "size": "600x600",
+     "type": "image/png"
+    }
+   ],
+   "assets": [
+    "/package/sql_input/0.2.0/changelog.yml",
+    "/package/sql_input/0.2.0/manifest.yml",
+    "/package/sql_input/0.2.0/docs/README.md",
+    "/package/sql_input/0.2.0/fields/input.yml",
+    "/package/sql_input/0.2.0/img/sample-logo.svg",
+    "/package/sql_input/0.2.0/img/sample-screenshot.png",
+    "/package/sql_input/0.2.0/agent/input/input.yml.hbs"
+   ],
+   "policy_templates": [
+    {
+     "name": "sql_query",
+     "title": "SQL Query",
+     "description": "Query the database to capture metrics.",
+     "multiple": true,
+     "type": "metrics",
+     "input": "sql",
+     "template_path": "input.yml.hbs"
+    }
+   ]
+  },
+  {
+   "name": "sql_input",
+   "title": "SQL Input",
+   "version": "0.3.0",
+   "release": "beta",
+   "description": "Execute custom queries against an SQL database and store the results in Elasticsearch.",
+   "type": "input",
+   "download": "/epr/sql_input/sql_input-0.3.0.zip",
+   "path": "/package/sql_input/0.3.0",
+   "icons": [
+    {
+     "src": "/img/sample-logo.svg",
+     "path": "/package/sql_input/0.3.0/img/sample-logo.svg",
+     "type": "image/svg+xml"
+    }
+   ],
+   "owner": {
+    "github": "elastic/integrations"
+   },
+   "categories": [
+    "custom",
+    "datastore"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/sql_input/0.3.0/docs/README.md",
+   "license": "basic",
+   "screenshots": [
+    {
+     "src": "/img/sample-screenshot.png",
+     "path": "/package/sql_input/0.3.0/img/sample-screenshot.png",
+     "title": "Sample screenshot",
+     "size": "600x600",
+     "type": "image/png"
+    }
+   ],
+   "assets": [
+    "/package/sql_input/0.3.0/changelog.yml",
+    "/package/sql_input/0.3.0/manifest.yml",
+    "/package/sql_input/0.3.0/docs/README.md",
+    "/package/sql_input/0.3.0/fields/input.yml",
+    "/package/sql_input/0.3.0/img/sample-logo.svg",
+    "/package/sql_input/0.3.0/img/sample-screenshot.png",
+    "/package/sql_input/0.3.0/agent/input/input.yml.hbs"
+   ],
+   "policy_templates": [
+    {
+     "name": "sql_query",
+     "title": "SQL Query",
+     "description": "Query the database to capture metrics.",
+     "multiple": true,
+     "type": "metrics",
+     "input": "sql",
+     "template_path": "input.yml.hbs"
     }
    ]
   },
