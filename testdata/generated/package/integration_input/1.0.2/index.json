@@ -1,0 +1,61 @@
+{
+  "name": "integration_input",
+  "title": "Integration Input",
+  "version": "1.0.2",
+  "release": "ga",
+  "description": "Sample package that was an integration and got migrated to input",
+  "type": "input",
+  "download": "/epr/integration_input/integration_input-1.0.2.zip",
+  "path": "/package/integration_input/1.0.2",
+  "icons": [
+    {
+      "src": "/img/sample-logo.svg",
+      "path": "/package/integration_input/1.0.2/img/sample-logo.svg",
+      "type": "image/svg+xml"
+    }
+  ],
+  "conditions": {
+    "kibana": {
+      "version": "^8.4.0"
+    }
+  },
+  "owner": {
+    "github": "elastic/integrations"
+  },
+  "categories": [
+    "custom",
+    "datastore"
+  ],
+  "format_version": "1.0.0",
+  "readme": "/package/integration_input/1.0.2/docs/README.md",
+  "license": "basic",
+  "screenshots": [
+    {
+      "src": "/img/sample-screenshot.png",
+      "path": "/package/integration_input/1.0.2/img/sample-screenshot.png",
+      "title": "Sample screenshot",
+      "size": "600x600",
+      "type": "image/png"
+    }
+  ],
+  "assets": [
+    "/package/integration_input/1.0.2/changelog.yml",
+    "/package/integration_input/1.0.2/manifest.yml",
+    "/package/integration_input/1.0.2/docs/README.md",
+    "/package/integration_input/1.0.2/fields/input.yml",
+    "/package/integration_input/1.0.2/img/sample-logo.svg",
+    "/package/integration_input/1.0.2/img/sample-screenshot.png",
+    "/package/integration_input/1.0.2/agent/input/input.yml.hbs"
+  ],
+  "policy_templates": [
+    {
+      "name": "sql_query",
+      "title": "SQL Query",
+      "description": "Query the database to capture metrics.",
+      "multiple": true,
+      "type": "metrics",
+      "input": "sql",
+      "template_path": "input.yml.hbs"
+    }
+  ]
+}

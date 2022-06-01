@@ -256,6 +256,7 @@ type Filter struct {
 	KibanaVersion  *semver.Version
 	PackageName    string
 	PackageVersion string
+	PackageType    string
 
 	// Deprecated, release tags to be removed.
 	Experimental bool
@@ -294,6 +295,10 @@ func (f *Filter) Apply(ctx context.Context, packages Packages) Packages {
 		}
 
 		if f.PackageVersion != "" && f.PackageVersion != p.Version {
+			continue
+		}
+
+		if f.PackageType != "" && f.PackageType != p.Type {
 			continue
 		}
 

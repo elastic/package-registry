@@ -27,9 +27,7 @@ var (
 	// GoLicenserImportPath controls the import path used to install go-licenser.
 	GoLicenserImportPath = "github.com/elastic/go-licenser"
 
-	buildDir       = "./build"
-	storageRepoDir = filepath.Join(buildDir, "package-storage")
-	packagePaths   = []string{filepath.Join(storageRepoDir, "packages"), "./testdata/package/"}
+	buildDir = "./build"
 )
 
 func Build() error {
@@ -38,9 +36,6 @@ func Build() error {
 
 func Check() error {
 	Format()
-
-	// Setup the variables for the tests and not create tarGz files
-	packagePaths = []string{"testdata/package"}
 
 	err := Build()
 	if err != nil {

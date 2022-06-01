@@ -1,0 +1,69 @@
+[
+  {
+    "name": "integration_input",
+    "title": "Integration Input",
+    "version": "1.0.2",
+    "release": "ga",
+    "description": "Sample package that was an integration and got migrated to input",
+    "type": "input",
+    "download": "/epr/integration_input/integration_input-1.0.2.zip",
+    "path": "/package/integration_input/1.0.2",
+    "icons": [
+      {
+        "src": "/img/sample-logo.svg",
+        "path": "/package/integration_input/1.0.2/img/sample-logo.svg",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "sql_query",
+        "title": "SQL Query",
+        "description": "Query the database to capture metrics."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.4.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "custom",
+      "datastore"
+    ]
+  },
+  {
+    "name": "sql_input",
+    "title": "SQL Input",
+    "version": "0.3.0",
+    "release": "beta",
+    "description": "Execute custom queries against an SQL database and store the results in Elasticsearch.",
+    "type": "input",
+    "download": "/epr/sql_input/sql_input-0.3.0.zip",
+    "path": "/package/sql_input/0.3.0",
+    "icons": [
+      {
+        "src": "/img/sample-logo.svg",
+        "path": "/package/sql_input/0.3.0/img/sample-logo.svg",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "sql_query",
+        "title": "SQL Query",
+        "description": "Query the database to capture metrics."
+      }
+    ],
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "custom",
+      "datastore"
+    ]
+  }
+]
