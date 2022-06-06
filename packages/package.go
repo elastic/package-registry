@@ -56,9 +56,8 @@ type Package struct {
 	BasePackage   `config:",inline" json:",inline" yaml:",inline"`
 	FormatVersion string `config:"format_version" json:"format_version" yaml:"format_version"`
 
-	Readme          *string `config:"readme,omitempty" json:"readme,omitempty" yaml:"readme,omitempty"`
-	License         string  `config:"license,omitempty" json:"license,omitempty" yaml:"license,omitempty"`
-	versionSemVer   *semver.Version
+	Readme          *string               `config:"readme,omitempty" json:"readme,omitempty" yaml:"readme,omitempty"`
+	License         string                `config:"license,omitempty" json:"license,omitempty" yaml:"license,omitempty"`
 	Screenshots     []Image               `config:"screenshots,omitempty" json:"screenshots,omitempty" yaml:"screenshots,omitempty"`
 	Assets          []string              `config:"assets,omitempty" json:"assets,omitempty" yaml:"assets,omitempty"`
 	PolicyTemplates []PolicyTemplate      `config:"policy_templates,omitempty" json:"policy_templates,omitempty" yaml:"policy_templates,omitempty"`
@@ -67,6 +66,8 @@ type Package struct {
 	Elasticsearch   *PackageElasticsearch `config:"elasticsearch,omitempty" json:"elasticsearch,omitempty" yaml:"elasticsearch,omitempty"`
 	// Local path to the package dir
 	BasePath string `json:"-" yaml:"-"`
+
+	versionSemVer *semver.Version
 
 	fsBuilder FileSystemBuilder
 }
@@ -105,12 +106,17 @@ type PolicyTemplate struct {
 	Title       string   `config:"title" json:"title" validate:"required"`
 	Description string   `config:"description" json:"description" validate:"required"`
 	DataStreams []string `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
-	Inputs      []Input  `config:"inputs" json:"inputs"`
+	Inputs      []Input  `config:"inputs" json:"inputs,omitempty" yaml:"inputs,omitempty"`
 	Multiple    *bool    `config:"multiple" json:"multiple,omitempty" yaml:"multiple,omitempty"`
 	Icons       []Image  `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
 	Categories  []string `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
 	Screenshots []Image  `config:"screenshots,omitempty" json:"screenshots,omitempty" yaml:"screenshots,omitempty"`
 	Readme      *string  `config:"readme,omitempty" json:"readme,omitempty" yaml:"readme,omitempty"`
+
+	// For purposes of "input packages"
+	Type         string `config:"type,omitempty" json:"type,omitempty" yaml:"type,omitempty"`
+	Input        string `config:"input,omitempty" json:"input,omitempty" yaml:"input,omitempty"`
+	TemplatePath string `config:"template_path,omitempty" json:"template_path,omitempty" yaml:"template_path,omitempty"`
 }
 
 type Conditions struct {
@@ -253,9 +259,9 @@ func NewPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) 
 		p.License = DefaultLicense
 	}
 
-	p.versionSemVer, err = semver.StrictNewVersion(p.Version)
+	err = p.setRuntimeFields()
 	if err != nil {
-		return nil, errors.Wrap(err, "invalid package version")
+		return nil, err
 	}
 
 	if p.Icons != nil {
@@ -267,13 +273,6 @@ func NewPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) 
 	if p.Screenshots != nil {
 		for k, s := range p.Screenshots {
 			p.Screenshots[k].Path = s.getPath(p)
-		}
-	}
-
-	if p.Conditions != nil && p.Conditions.Kibana != nil {
-		p.Conditions.Kibana.constraint, err = semver.NewConstraint(p.Conditions.Kibana.Version)
-		if err != nil {
-			return nil, errors.Wrapf(err, "invalid Kibana versions range: %s", p.Conditions.Kibana.Version)
 		}
 	}
 
@@ -320,6 +319,23 @@ func NewPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) 
 		return nil, errors.Wrapf(err, "can't process the package signature")
 	}
 	return p, nil
+}
+
+func (p *Package) setRuntimeFields() error {
+	var err error
+
+	p.versionSemVer, err = semver.StrictNewVersion(p.Version)
+	if err != nil {
+		return errors.Wrap(err, "invalid package version")
+	}
+
+	if p.Conditions != nil && p.Conditions.Kibana != nil {
+		p.Conditions.Kibana.constraint, err = semver.NewConstraint(p.Conditions.Kibana.Version)
+		if err != nil {
+			return errors.Wrapf(err, "invalid Kibana versions range: %s", p.Conditions.Kibana.Version)
+		}
+	}
+	return nil
 }
 
 func (p *Package) HasCategory(category string) bool {
@@ -522,18 +538,9 @@ func (p *Package) GetDataStreamPaths() ([]string, error) {
 
 	dataStreamBasePath := "data_stream"
 
-	// Check if this package has dataStreams
-	_, err = fs.Stat(dataStreamBasePath)
-	// If no dataStreams exist, just return
-	if os.IsNotExist(err) {
-		return nil, nil
-	}
-	// An other error happened, report it
-	if err != nil {
-		return nil, err
-	}
-
-	paths, err := fs.Glob(filepath.Join(dataStreamBasePath, "*"))
+	// Look for a file here that a data_stream must have, some file systems as Zip files
+	// may not have entries for directories.
+	paths, err := fs.Glob(filepath.Join(dataStreamBasePath, "*", "manifest.yml"))
 	if err != nil {
 		return nil, err
 	}
@@ -543,7 +550,7 @@ func (p *Package) GetDataStreamPaths() ([]string, error) {
 		if err != nil {
 			return nil, fmt.Errorf("failed to get data stream path inside package (%s): %w", dataStreamBasePath, err)
 		}
-		paths[i] = relPath
+		paths[i] = filepath.Dir(relPath)
 	}
 
 	return paths, nil

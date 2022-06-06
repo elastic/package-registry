@@ -1,0 +1,2091 @@
+[
+  {
+   "name": "multiversion",
+   "title": "Multi Version Second with the same version! This one should win, because it is first.",
+   "version": "1.1.0",
+   "release": "ga",
+   "description": "Multiple versions of this integration exist.\n",
+   "type": "integration",
+   "download": "/epr/multiversion/multiversion-1.1.0.zip",
+   "path": "/package/multiversion/1.1.0",
+   "icons": [
+    {
+     "src": "/img/icon.svg",
+     "path": "/package/multiversion/1.1.0/img/icon.svg",
+     "type": "image/svg+xml"
+    }
+   ],
+   "conditions": {
+    "kibana": {
+     "version": "\u003e6.7.0"
+    }
+   },
+   "categories": [
+    "custom",
+    "web"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/multiversion/1.1.0/docs/README.md",
+   "license": "basic",
+   "assets": [
+    "/package/multiversion/1.1.0/changelog.yml",
+    "/package/multiversion/1.1.0/manifest.yml",
+    "/package/multiversion/1.1.0/docs/README.md",
+    "/package/multiversion/1.1.0/img/icon.svg"
+   ]
+  },
+  {
+   "name": "dataset_is_prefix",
+   "title": "DatasetIsPrefix Flag",
+   "version": "0.0.1",
+   "release": "beta",
+   "description": "This package contains a datastream with the dataset_is_prefix flag set to true.\n",
+   "type": "integration",
+   "download": "/epr/dataset_is_prefix/dataset_is_prefix-0.0.1.zip",
+   "path": "/package/dataset_is_prefix/0.0.1",
+   "categories": [
+    "custom"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/dataset_is_prefix/0.0.1/docs/README.md",
+   "license": "basic",
+   "assets": [
+    "/package/dataset_is_prefix/0.0.1/manifest.yml",
+    "/package/dataset_is_prefix/0.0.1/docs/README.md",
+    "/package/dataset_is_prefix/0.0.1/data_stream/test/manifest.yml",
+    "/package/dataset_is_prefix/0.0.1/data_stream/test/fields/base-fields.yml"
+   ],
+   "data_streams": [
+    {
+     "type": "metrics",
+     "dataset": "dataset_is_prefix.test",
+     "dataset_is_prefix": true,
+     "title": "dataset_is_prefix test data stream",
+     "release": "beta",
+     "package": "dataset_is_prefix",
+     "path": "test"
+    }
+   ]
+  },
+  {
+   "name": "datasources",
+   "title": "Default datasource Integration",
+   "version": "1.0.0",
+   "release": "beta",
+   "description": "Package with data sources",
+   "type": "integration",
+   "download": "/epr/datasources/datasources-1.0.0.zip",
+   "path": "/package/datasources/1.0.0",
+   "categories": [
+    "custom"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/datasources/1.0.0/docs/README.md",
+   "license": "basic",
+   "assets": [
+    "/package/datasources/1.0.0/manifest.yml",
+    "/package/datasources/1.0.0/docs/README.md",
+    "/package/datasources/1.0.0/data_stream/examplelog1/manifest.yml",
+    "/package/datasources/1.0.0/data_stream/examplelog2/manifest.yml",
+    "/package/datasources/1.0.0/data_stream/examplemetric/manifest.yml",
+    "/package/datasources/1.0.0/data_stream/examplelog1/fields/base-fields.yml",
+    "/package/datasources/1.0.0/data_stream/examplelog2/fields/base-fields.yml",
+    "/package/datasources/1.0.0/data_stream/examplemetric/fields/base-fields.yml",
+    "/package/datasources/1.0.0/data_stream/examplelog1/agent/stream/logs.yml",
+    "/package/datasources/1.0.0/data_stream/examplelog1/agent/stream/syslog.yml",
+    "/package/datasources/1.0.0/data_stream/examplelog2/agent/stream/stream.yml.hbs",
+    "/package/datasources/1.0.0/data_stream/examplemetric/agent/stream/stream.yml.hbs"
+   ],
+   "policy_templates": [
+    {
+     "name": "nginx",
+     "title": "Datasource title",
+     "description": "Details about the data source.",
+     "inputs": [
+      {
+       "type": "nginx/metrics",
+       "vars": [
+        {
+         "name": "hosts",
+         "type": "text",
+         "description": "Nginx hosts",
+         "multi": true,
+         "required": true,
+         "show_user": false,
+         "default": [
+          "http://127.0.0.1"
+         ]
+        },
+        {
+         "name": "period",
+         "type": "duration",
+         "description": "Collection period. Valid values: 10s, 5m, 2h",
+         "multi": false,
+         "required": false,
+         "show_user": false,
+         "default": "10s"
+        },
+        {
+         "name": "username",
+         "type": "text",
+         "multi": false,
+         "required": false,
+         "show_user": false
+        },
+        {
+         "name": "password",
+         "type": "password",
+         "multi": false,
+         "required": false,
+         "show_user": false
+        }
+       ],
+       "description": "Collecting metrics for nginx."
+      },
+      {
+       "type": "logs",
+       "description": "Collect nginx logs."
+      },
+      {
+       "type": "syslog"
+      }
+     ],
+     "multiple": true
+    }
+   ],
+   "data_streams": [
+    {
+     "type": "logs",
+     "dataset": "datasources.examplelog1",
+     "title": "Example dataset with inputs",
+     "release": "beta",
+     "streams": [
+      {
+       "input": "logs",
+       "vars": [
+        {
+         "name": "paths",
+         "type": "text",
+         "description": "Paths to the nginx error log file.",
+         "multi": true,
+         "required": true,
+         "show_user": false,
+         "default": [
+          "/var/log/nginx/error.log*"
+         ]
+        }
+       ],
+       "template_path": "logs.yml",
+       "title": "Title of the stream",
+       "description": "Description of the stream with more details.",
+       "enabled": true
+      },
+      {
+       "input": "syslog",
+       "template_path": "syslog.yml",
+       "title": "Title of the stream",
+       "description": "Description of the stream with more details.",
+       "enabled": true
+      }
+     ],
+     "package": "datasources",
+     "path": "examplelog1"
+    },
+    {
+     "type": "logs",
+     "dataset": "datasources.examplelog2",
+     "title": "Example dataset with inputs",
+     "release": "beta",
+     "streams": [
+      {
+       "input": "logs",
+       "vars": [
+        {
+         "name": "paths",
+         "type": "text",
+         "description": "Paths to the nginx access log file.",
+         "multi": true,
+         "required": true,
+         "show_user": false,
+         "default": [
+          "/var/log/nginx/access.log*"
+         ]
+        }
+       ],
+       "template_path": "stream.yml.hbs",
+       "title": "Title of the stream",
+       "description": "Description of the stream with more details.",
+       "enabled": true
+      }
+     ],
+     "package": "datasources",
+     "path": "examplelog2"
+    },
+    {
+     "type": "metrics",
+     "dataset": "datasources.examplemetric",
+     "title": "Example data stream with inputs",
+     "release": "beta",
+     "streams": [
+      {
+       "input": "nginx/metrics",
+       "vars": [
+        {
+         "name": "url",
+         "type": "text",
+         "description": "Paths to the nginx access log file.",
+         "multi": false,
+         "required": true,
+         "show_user": false,
+         "default": "localhost"
+        }
+       ],
+       "template_path": "stream.yml.hbs",
+       "title": "Title of the stream",
+       "description": "Not enabled data source.",
+       "enabled": false
+      }
+     ],
+     "package": "datasources",
+     "path": "examplemetric"
+    }
+   ]
+  },
+  {
+   "name": "datastream_without_release",
+   "title": "Apache Spark",
+   "version": "0.1.0",
+   "release": "beta",
+   "description": "Collect metrics from Apache Spark with Elastic Agent.",
+   "type": "integration",
+   "download": "/epr/datastream_without_release/datastream_without_release-0.1.0.zip",
+   "path": "/package/datastream_without_release/0.1.0",
+   "icons": [
+    {
+     "src": "/img/apache_spark-logo.svg",
+     "path": "/package/datastream_without_release/0.1.0/img/apache_spark-logo.svg",
+     "title": "Apache Spark logo",
+     "size": "32x32",
+     "type": "image/svg+xml"
+    }
+   ],
+   "conditions": {
+    "kibana": {
+     "version": "^8.1.0"
+    }
+   },
+   "owner": {
+    "github": "elastic/obs-service-integrations"
+   },
+   "categories": [
+    "datastore",
+    "monitoring"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/datastream_without_release/0.1.0/docs/README.md",
+   "license": "basic",
+   "screenshots": [
+    {
+     "src": "/img/apache_spark-screenshot.png",
+     "path": "/package/datastream_without_release/0.1.0/img/apache_spark-screenshot.png",
+     "title": "Apache Spark screenshot",
+     "size": "600x600",
+     "type": "image/png"
+    }
+   ],
+   "assets": [
+    "/package/datastream_without_release/0.1.0/changelog.yml",
+    "/package/datastream_without_release/0.1.0/manifest.yml",
+    "/package/datastream_without_release/0.1.0/docs/README.md",
+    "/package/datastream_without_release/0.1.0/img/apache_spark-logo.svg",
+    "/package/datastream_without_release/0.1.0/img/apache_spark-screenshot.png",
+    "/package/datastream_without_release/0.1.0/data_stream/nodes/manifest.yml",
+    "/package/datastream_without_release/0.1.0/data_stream/nodes/sample_event.json",
+    "/package/datastream_without_release/0.1.0/data_stream/nodes/fields/base-fields.yml",
+    "/package/datastream_without_release/0.1.0/data_stream/nodes/fields/ecs.yml",
+    "/package/datastream_without_release/0.1.0/data_stream/nodes/fields/fields.yml",
+    "/package/datastream_without_release/0.1.0/data_stream/nodes/agent/stream/stream.yml.hbs",
+    "/package/datastream_without_release/0.1.0/data_stream/nodes/elasticsearch/ingest_pipeline/default.yml"
+   ],
+   "policy_templates": [
+    {
+     "name": "apache_spark",
+     "title": "Apache Spark metrics",
+     "description": "Collect Apache Spark metrics",
+     "inputs": [
+      {
+       "type": "jolokia/metrics",
+       "title": "Collect Apache Spark Metrics using Jolokia",
+       "description": "Collecting metrics from Apache Spark."
+      }
+     ],
+     "multiple": true
+    }
+   ],
+   "data_streams": [
+    {
+     "type": "metrics",
+     "dataset": "datastream_without_release.nodes",
+     "title": "Apache Spark nodes metrics",
+     "release": "beta",
+     "ingest_pipeline": "default",
+     "streams": [
+      {
+       "input": "jolokia/metrics",
+       "vars": [
+        {
+         "name": "hosts",
+         "type": "text",
+         "title": "Hosts",
+         "description": "Full hosts for the Jolokia for Apache Spark (https://spark_main:jolokia_port).\n",
+         "multi": true,
+         "required": true,
+         "show_user": true
+        },
+        {
+         "name": "path",
+         "type": "text",
+         "title": "Path",
+         "multi": false,
+         "required": true,
+         "show_user": false,
+         "default": "/jolokia/?ignoreErrors=true\u0026canonicalNaming=false"
+        },
+        {
+         "name": "period",
+         "type": "text",
+         "title": "Period",
+         "multi": false,
+         "required": true,
+         "show_user": true,
+         "default": "60s"
+        }
+       ],
+       "template_path": "stream.yml.hbs",
+       "title": "Apache Spark nodes metrics",
+       "description": "Collect Apache Spark nodes metrics using Jolokia agent.",
+       "enabled": true
+      }
+     ],
+     "package": "datastream_without_release",
+     "path": "nodes"
+    }
+   ]
+  },
+  {
+   "name": "default_pipeline",
+   "title": "Default pipeline Integration",
+   "version": "0.0.2",
+   "release": "beta",
+   "description": "Tests if no pipeline is set, it defaults to the default one",
+   "type": "integration",
+   "download": "/epr/default_pipeline/default_pipeline-0.0.2.zip",
+   "path": "/package/default_pipeline/0.0.2",
+   "categories": [
+    "containers",
+    "message_queue"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/default_pipeline/0.0.2/docs/README.md",
+   "license": "basic",
+   "assets": [
+    "/package/default_pipeline/0.0.2/manifest.yml",
+    "/package/default_pipeline/0.0.2/docs/README.md",
+    "/package/default_pipeline/0.0.2/data_stream/foo/manifest.yml",
+    "/package/default_pipeline/0.0.2/data_stream/foo/fields/base-fields.yml",
+    "/package/default_pipeline/0.0.2/data_stream/foo/agent/stream/stream.yml.hbs",
+    "/package/default_pipeline/0.0.2/data_stream/foo/elasticsearch/ingest_pipeline/default.json"
+   ],
+   "policy_templates": [
+    {
+     "name": "logs",
+     "title": "Logs datasource",
+     "description": "Datasource for your log files.",
+     "inputs": [
+      {
+       "type": "logs"
+      }
+     ],
+     "multiple": true
+    }
+   ],
+   "data_streams": [
+    {
+     "type": "logs",
+     "dataset": "default_pipeline.foo",
+     "title": "Foo",
+     "release": "beta",
+     "ingest_pipeline": "default",
+     "streams": [
+      {
+       "input": "logs",
+       "vars": [
+        {
+         "name": "paths",
+         "type": "text",
+         "description": "Path to log files to be collected",
+         "multi": true,
+         "required": true,
+         "show_user": false
+        }
+       ],
+       "template_path": "stream.yml.hbs",
+       "enabled": true
+      }
+     ],
+     "package": "default_pipeline",
+     "path": "foo"
+    }
+   ]
+  },
+  {
+   "name": "defaultrelease",
+   "title": "Default Release",
+   "version": "0.0.1",
+   "release": "beta",
+   "description": "Package without release, should be set to default",
+   "type": "solution",
+   "download": "/epr/defaultrelease/defaultrelease-0.0.1.zip",
+   "path": "/package/defaultrelease/0.0.1",
+   "categories": [
+    "aws"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/defaultrelease/0.0.1/docs/README.md",
+   "license": "basic",
+   "assets": [
+    "/package/defaultrelease/0.0.1/manifest.yml",
+    "/package/defaultrelease/0.0.1/docs/README.md"
+   ]
+  },
+  {
+   "name": "ecs_style_dataset",
+   "title": "Default pipeline Integration",
+   "version": "0.0.1",
+   "release": "beta",
+   "description": "Tests the registry validations works for dataset fields using the ecs style format",
+   "type": "integration",
+   "download": "/epr/ecs_style_dataset/ecs_style_dataset-0.0.1.zip",
+   "path": "/package/ecs_style_dataset/0.0.1",
+   "categories": [
+    "monitoring"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/ecs_style_dataset/0.0.1/docs/README.md",
+   "license": "basic",
+   "assets": [
+    "/package/ecs_style_dataset/0.0.1/manifest.yml",
+    "/package/ecs_style_dataset/0.0.1/docs/README.md",
+    "/package/ecs_style_dataset/0.0.1/data_stream/foo/manifest.yml",
+    "/package/ecs_style_dataset/0.0.1/data_stream/foo/fields/fields.yml"
+   ],
+   "policy_templates": [
+    {
+     "name": "logs",
+     "title": "Logs datasource",
+     "description": "Datasource for your log files.",
+     "inputs": [
+      {
+       "type": "logs"
+      }
+     ],
+     "multiple": true
+    }
+   ],
+   "data_streams": [
+    {
+     "type": "logs",
+     "dataset": "ecs_style_dataset.foo",
+     "title": "Foo",
+     "release": "beta",
+     "package": "ecs_style_dataset",
+     "path": "foo"
+    }
+   ]
+  },
+  {
+   "name": "elasticsearch_privileges",
+   "title": "Elasticsearch Privileges",
+   "version": "1.0.0",
+   "release": "beta",
+   "description": "Test package-specified Elasticsearch index privileges and cluster privileges",
+   "type": "solution",
+   "download": "/epr/elasticsearch_privileges/elasticsearch_privileges-1.0.0.zip",
+   "path": "/package/elasticsearch_privileges/1.0.0",
+   "conditions": {
+    "kibana": {
+     "version": "\u003e=7.16.0"
+    }
+   },
+   "categories": [
+    "custom"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/elasticsearch_privileges/1.0.0/docs/README.md",
+   "license": "basic",
+   "assets": [
+    "/package/elasticsearch_privileges/1.0.0/manifest.yml",
+    "/package/elasticsearch_privileges/1.0.0/docs/README.md",
+    "/package/elasticsearch_privileges/1.0.0/data_stream/elasticsearch_privileges/manifest.yml",
+    "/package/elasticsearch_privileges/1.0.0/data_stream/elasticsearch_privileges/fields/base-fields.yml"
+   ],
+   "data_streams": [
+    {
+     "type": "metrics",
+     "dataset": "elasticsearch_privileges.elasticsearch_privileges",
+     "title": "Elasticsearch privileges data stream",
+     "release": "beta",
+     "package": "elasticsearch_privileges",
+     "elasticsearch": {
+      "privileges": {
+       "indices": [
+        "auto_configure",
+        "create_doc",
+        "maintenance",
+        "monitor",
+        "read"
+       ]
+      }
+     },
+     "path": "elasticsearch_privileges"
+    }
+   ],
+   "elasticsearch": {
+    "privileges": {
+     "cluster": [
+      "monitor"
+     ]
+    }
+   }
+  },
+  {
+   "name": "example",
+   "title": "Example",
+   "version": "0.0.2",
+   "release": "beta",
+   "description": "This is the example integration.",
+   "type": "integration",
+   "download": "/epr/example/example-0.0.2.zip",
+   "path": "/package/example/0.0.2",
+   "conditions": {
+    "kibana": {
+     "version": "\u003e=6.0.0"
+    }
+   },
+   "categories": [
+    "web"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/example/0.0.2/docs/README.md",
+   "license": "basic",
+   "assets": [
+    "/package/example/0.0.2/manifest.yml",
+    "/package/example/0.0.2/docs/README.md",
+    "/package/example/0.0.2/img/kibana-envoyproxy.jpg",
+    "/package/example/0.0.2/elasticsearch/ingest_pipeline/pipeline-entry.json",
+    "/package/example/0.0.2/elasticsearch/ingest_pipeline/pipeline-http.json",
+    "/package/example/0.0.2/elasticsearch/ingest_pipeline/pipeline-json.json",
+    "/package/example/0.0.2/elasticsearch/ingest_pipeline/pipeline-plaintext.json",
+    "/package/example/0.0.2/elasticsearch/ingest_pipeline/pipeline-tcp.json",
+    "/package/example/0.0.2/kibana/dashboard/0c610510-5cbd-11e9-8477-077ec9664dbd.json",
+    "/package/example/0.0.2/kibana/visualization/0a994af0-5c9d-11e9-8477-077ec9664dbd.json",
+    "/package/example/0.0.2/kibana/visualization/36f872a0-5c03-11e9-85b4-19d0072eb4f2.json",
+    "/package/example/0.0.2/kibana/visualization/38f96190-5c99-11e9-8477-077ec9664dbd.json",
+    "/package/example/0.0.2/kibana/visualization/7e4084e0-5c99-11e9-8477-077ec9664dbd.json",
+    "/package/example/0.0.2/kibana/visualization/80844540-5c97-11e9-8477-077ec9664dbd.json",
+    "/package/example/0.0.2/kibana/visualization/ab48c3f0-5ca6-11e9-8477-077ec9664dbd.json"
+   ]
+  },
+  {
+   "name": "example",
+   "title": "Example Integration",
+   "version": "1.0.0",
+   "release": "ga",
+   "description": "This is the example integration",
+   "type": "integration",
+   "download": "/epr/example/example-1.0.0.zip",
+   "path": "/package/example/1.0.0",
+   "conditions": {
+    "kibana": {
+     "version": "~7.x.x"
+    }
+   },
+   "owner": {
+    "github": "ruflin"
+   },
+   "categories": [
+    "crm",
+    "azure"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/example/1.0.0/docs/README.md",
+   "license": "basic",
+   "screenshots": [
+    {
+     "src": "/img/kibana-envoyproxy.jpg",
+     "path": "/package/example/1.0.0/img/kibana-envoyproxy.jpg",
+     "title": "IP Tables Ubiquity Dashboard",
+     "size": "1492x1464",
+     "type": "image/png"
+    }
+   ],
+   "assets": [
+    "/package/example/1.0.0/manifest.yml",
+    "/package/example/1.0.0/docs/README.md",
+    "/package/example/1.0.0/img/icon.png",
+    "/package/example/1.0.0/img/kibana-envoyproxy.jpg",
+    "/package/example/1.0.0/data_stream/foo/manifest.yml",
+    "/package/example/1.0.0/kibana/dashboard/0c610510-5cbd-11e9-8477-077ec9664dbd.json",
+    "/package/example/1.0.0/kibana/visualization/0a994af0-5c9d-11e9-8477-077ec9664dbd.json",
+    "/package/example/1.0.0/kibana/visualization/36f872a0-5c03-11e9-85b4-19d0072eb4f2.json",
+    "/package/example/1.0.0/kibana/visualization/38f96190-5c99-11e9-8477-077ec9664dbd.json",
+    "/package/example/1.0.0/kibana/visualization/7e4084e0-5c99-11e9-8477-077ec9664dbd.json",
+    "/package/example/1.0.0/kibana/visualization/80844540-5c97-11e9-8477-077ec9664dbd.json",
+    "/package/example/1.0.0/kibana/visualization/ab48c3f0-5ca6-11e9-8477-077ec9664dbd.json",
+    "/package/example/1.0.0/data_stream/foo/fields/base-fields.yml",
+    "/package/example/1.0.0/data_stream/foo/agent/stream/stream.yml.hbs",
+    "/package/example/1.0.0/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-entry.json",
+    "/package/example/1.0.0/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-http.json",
+    "/package/example/1.0.0/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-json.json",
+    "/package/example/1.0.0/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-plaintext.json",
+    "/package/example/1.0.0/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-tcp.json"
+   ],
+   "policy_templates": [
+    {
+     "name": "logs",
+     "title": "Logs datasource",
+     "description": "Datasource for your log files.",
+     "inputs": [
+      {
+       "type": "foo"
+      }
+     ],
+     "multiple": true,
+     "categories": [
+      "datastore"
+     ]
+    }
+   ],
+   "data_streams": [
+    {
+     "type": "logs",
+     "dataset": "example.foo",
+     "title": "Foo",
+     "release": "ga",
+     "ingest_pipeline": "pipeline-entry",
+     "streams": [
+      {
+       "input": "foo",
+       "vars": [
+        {
+         "name": "paths",
+         "type": "text",
+         "description": "Path to log files to be collected",
+         "multi": true,
+         "required": true,
+         "show_user": false
+        }
+       ],
+       "template_path": "stream.yml.hbs",
+       "enabled": true
+      }
+     ],
+     "package": "example",
+     "path": "foo"
+    }
+   ]
+  },
+  {
+   "name": "example",
+   "title": "Example Integration",
+   "version": "1.1.0",
+   "release": "ga",
+   "description": "This is the example integration",
+   "type": "integration",
+   "download": "/epr/example/example-1.1.0.zip",
+   "path": "/package/example/1.1.0",
+   "conditions": {
+    "kibana": {
+     "version": "^7.16.0 || ^8.0.0"
+    }
+   },
+   "owner": {
+    "github": "ruflin"
+   },
+   "categories": [
+    "crm",
+    "azure"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/example/1.1.0/docs/README.md",
+   "license": "basic",
+   "screenshots": [
+    {
+     "src": "/img/kibana-envoyproxy.jpg",
+     "path": "/package/example/1.1.0/img/kibana-envoyproxy.jpg",
+     "title": "IP Tables Ubiquity Dashboard",
+     "size": "1492x1464",
+     "type": "image/png"
+    }
+   ],
+   "assets": [
+    "/package/example/1.1.0/manifest.yml",
+    "/package/example/1.1.0/docs/README.md",
+    "/package/example/1.1.0/img/icon.png",
+    "/package/example/1.1.0/img/kibana-envoyproxy.jpg",
+    "/package/example/1.1.0/data_stream/foo/manifest.yml",
+    "/package/example/1.1.0/kibana/dashboard/0c610510-5cbd-11e9-8477-077ec9664dbd.json",
+    "/package/example/1.1.0/kibana/visualization/0a994af0-5c9d-11e9-8477-077ec9664dbd.json",
+    "/package/example/1.1.0/kibana/visualization/36f872a0-5c03-11e9-85b4-19d0072eb4f2.json",
+    "/package/example/1.1.0/kibana/visualization/38f96190-5c99-11e9-8477-077ec9664dbd.json",
+    "/package/example/1.1.0/kibana/visualization/7e4084e0-5c99-11e9-8477-077ec9664dbd.json",
+    "/package/example/1.1.0/kibana/visualization/80844540-5c97-11e9-8477-077ec9664dbd.json",
+    "/package/example/1.1.0/kibana/visualization/ab48c3f0-5ca6-11e9-8477-077ec9664dbd.json",
+    "/package/example/1.1.0/data_stream/foo/fields/base-fields.yml",
+    "/package/example/1.1.0/data_stream/foo/agent/stream/stream.yml.hbs",
+    "/package/example/1.1.0/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-entry.json",
+    "/package/example/1.1.0/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-http.json",
+    "/package/example/1.1.0/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-json.json",
+    "/package/example/1.1.0/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-plaintext.json",
+    "/package/example/1.1.0/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-tcp.json"
+   ],
+   "policy_templates": [
+    {
+     "name": "logs",
+     "title": "Logs datasource",
+     "description": "Datasource for your log files.",
+     "inputs": [
+      {
+       "type": "foo"
+      }
+     ],
+     "multiple": true,
+     "categories": [
+      "datastore"
+     ]
+    }
+   ],
+   "data_streams": [
+    {
+     "type": "logs",
+     "dataset": "example.foo",
+     "title": "Foo",
+     "release": "ga",
+     "ingest_pipeline": "pipeline-entry",
+     "streams": [
+      {
+       "input": "foo",
+       "vars": [
+        {
+         "name": "paths",
+         "type": "text",
+         "description": "Path to log files to be collected",
+         "multi": true,
+         "required": true,
+         "show_user": false
+        }
+       ],
+       "template_path": "stream.yml.hbs",
+       "enabled": true
+      }
+     ],
+     "package": "example",
+     "path": "foo"
+    }
+   ]
+  },
+  {
+   "name": "example",
+   "title": "Example Integration",
+   "version": "1.2.0-rc1",
+   "release": "ga",
+   "description": "This is the example integration",
+   "type": "integration",
+   "download": "/epr/example/example-1.2.0-rc1.zip",
+   "path": "/package/example/1.2.0-rc1",
+   "conditions": {
+    "kibana": {
+     "version": "^7.16.0 || ^8.0.0"
+    }
+   },
+   "owner": {
+    "github": "ruflin"
+   },
+   "categories": [
+    "crm",
+    "azure",
+    "cloud"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/example/1.2.0-rc1/docs/README.md",
+   "license": "basic",
+   "screenshots": [
+    {
+     "src": "/img/kibana-envoyproxy.jpg",
+     "path": "/package/example/1.2.0-rc1/img/kibana-envoyproxy.jpg",
+     "title": "IP Tables Ubiquity Dashboard",
+     "size": "1492x1464",
+     "type": "image/png"
+    }
+   ],
+   "assets": [
+    "/package/example/1.2.0-rc1/manifest.yml",
+    "/package/example/1.2.0-rc1/docs/README.md",
+    "/package/example/1.2.0-rc1/img/icon.png",
+    "/package/example/1.2.0-rc1/img/kibana-envoyproxy.jpg",
+    "/package/example/1.2.0-rc1/data_stream/foo/manifest.yml",
+    "/package/example/1.2.0-rc1/kibana/dashboard/0c610510-5cbd-11e9-8477-077ec9664dbd.json",
+    "/package/example/1.2.0-rc1/kibana/visualization/0a994af0-5c9d-11e9-8477-077ec9664dbd.json",
+    "/package/example/1.2.0-rc1/kibana/visualization/36f872a0-5c03-11e9-85b4-19d0072eb4f2.json",
+    "/package/example/1.2.0-rc1/kibana/visualization/38f96190-5c99-11e9-8477-077ec9664dbd.json",
+    "/package/example/1.2.0-rc1/kibana/visualization/7e4084e0-5c99-11e9-8477-077ec9664dbd.json",
+    "/package/example/1.2.0-rc1/kibana/visualization/80844540-5c97-11e9-8477-077ec9664dbd.json",
+    "/package/example/1.2.0-rc1/kibana/visualization/ab48c3f0-5ca6-11e9-8477-077ec9664dbd.json",
+    "/package/example/1.2.0-rc1/data_stream/foo/fields/base-fields.yml",
+    "/package/example/1.2.0-rc1/data_stream/foo/agent/stream/stream.yml.hbs",
+    "/package/example/1.2.0-rc1/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-entry.json",
+    "/package/example/1.2.0-rc1/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-http.json",
+    "/package/example/1.2.0-rc1/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-json.json",
+    "/package/example/1.2.0-rc1/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-plaintext.json",
+    "/package/example/1.2.0-rc1/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-tcp.json"
+   ],
+   "policy_templates": [
+    {
+     "name": "logs",
+     "title": "Logs datasource",
+     "description": "Datasource for your log files.",
+     "inputs": [
+      {
+       "type": "foo"
+      }
+     ],
+     "multiple": true,
+     "categories": [
+      "datastore"
+     ]
+    }
+   ],
+   "data_streams": [
+    {
+     "type": "logs",
+     "dataset": "example.foo",
+     "title": "Foo",
+     "release": "ga",
+     "ingest_pipeline": "pipeline-entry",
+     "streams": [
+      {
+       "input": "foo",
+       "vars": [
+        {
+         "name": "paths",
+         "type": "text",
+         "description": "Path to log files to be collected",
+         "multi": true,
+         "required": true,
+         "show_user": false
+        }
+       ],
+       "template_path": "stream.yml.hbs",
+       "enabled": true
+      }
+     ],
+     "package": "example",
+     "path": "foo"
+    }
+   ]
+  },
+  {
+   "name": "foo",
+   "title": "Foo",
+   "version": "1.0.0",
+   "release": "beta",
+   "description": "This is the foo integration",
+   "type": "solution",
+   "download": "/epr/foo/foo-1.0.0.zip",
+   "path": "/package/foo/1.0.0",
+   "conditions": {
+    "kibana": {
+     "version": "\u003e=7.0.0"
+    }
+   },
+   "categories": [
+    "custom"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/foo/1.0.0/docs/README.md",
+   "license": "basic",
+   "assets": [
+    "/package/foo/1.0.0/manifest.yml",
+    "/package/foo/1.0.0/docs/README.md"
+   ]
+  },
+  {
+   "name": "hidden",
+   "title": "Hidden",
+   "version": "1.0.0",
+   "release": "beta",
+   "description": "This is the hidden integration",
+   "type": "solution",
+   "download": "/epr/hidden/hidden-1.0.0.zip",
+   "path": "/package/hidden/1.0.0",
+   "conditions": {
+    "kibana": {
+     "version": "\u003e=7.0.0"
+    }
+   },
+   "categories": [
+    "custom"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/hidden/1.0.0/docs/README.md",
+   "license": "basic",
+   "assets": [
+    "/package/hidden/1.0.0/manifest.yml",
+    "/package/hidden/1.0.0/docs/README.md",
+    "/package/hidden/1.0.0/data_stream/hidden/manifest.yml",
+    "/package/hidden/1.0.0/data_stream/hidden/fields/base-fields.yml",
+    "/package/hidden/1.0.0/data_stream/hidden/fields/some_fields.yml"
+   ],
+   "data_streams": [
+    {
+     "type": "metrics",
+     "dataset": "hidden.hidden",
+     "hidden": true,
+     "title": "Hidden data stream and ilm policy overrride",
+     "release": "beta",
+     "package": "hidden",
+     "elasticsearch": {
+      "index_template.mappings": {
+       "dynamic": false
+      }
+     },
+     "path": "hidden"
+    }
+   ]
+  },
+  {
+   "name": "ilm_policy",
+   "title": "ILM Policy",
+   "version": "1.0.0",
+   "release": "beta",
+   "description": "Test form ILM Policy in Package",
+   "type": "solution",
+   "download": "/epr/ilm_policy/ilm_policy-1.0.0.zip",
+   "path": "/package/ilm_policy/1.0.0",
+   "conditions": {
+    "kibana": {
+     "version": "\u003e=7.0.0"
+    }
+   },
+   "categories": [
+    "custom"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/ilm_policy/1.0.0/docs/README.md",
+   "license": "basic",
+   "assets": [
+    "/package/ilm_policy/1.0.0/manifest.yml",
+    "/package/ilm_policy/1.0.0/docs/README.md",
+    "/package/ilm_policy/1.0.0/data_stream/ilm_policy/manifest.yml",
+    "/package/ilm_policy/1.0.0/data_stream/ilm_policy/fields/base-fields.yml",
+    "/package/ilm_policy/1.0.0/data_stream/ilm_policy/fields/some_fields.yml",
+    "/package/ilm_policy/1.0.0/data_stream/ilm_policy/elasticsearch/ilm/diagnostics.json"
+   ],
+   "data_streams": [
+    {
+     "type": "metrics",
+     "dataset": "ilm_policy.ilm_policy",
+     "ilm_policy": "diagnostics",
+     "title": "ILM policy overrride data stream",
+     "release": "beta",
+     "package": "ilm_policy",
+     "elasticsearch": {
+      "index_template.mappings": {
+       "dynamic": false
+      }
+     },
+     "path": "ilm_policy"
+    }
+   ]
+  },
+  {
+   "name": "input_groups",
+   "title": "Input Groups",
+   "version": "0.0.1",
+   "release": "beta",
+   "description": "AWS Integration for testing input groups",
+   "type": "integration",
+   "download": "/epr/input_groups/input_groups-0.0.1.zip",
+   "path": "/package/input_groups/0.0.1",
+   "icons": [
+    {
+     "src": "/img/logo_aws.svg",
+     "path": "/package/input_groups/0.0.1/img/logo_aws.svg",
+     "title": "logo aws",
+     "size": "32x32",
+     "type": "image/svg+xml"
+    }
+   ],
+   "conditions": {
+    "kibana": {
+     "version": "~7.x.x"
+    }
+   },
+   "categories": [
+    "aws",
+    "cloud"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/input_groups/0.0.1/docs/README.md",
+   "license": "basic",
+   "screenshots": [
+    {
+     "src": "/img/metricbeat-aws-overview.png",
+     "path": "/package/input_groups/0.0.1/img/metricbeat-aws-overview.png",
+     "title": "metricbeat aws overview",
+     "size": "3848x2440",
+     "type": "image/png"
+    }
+   ],
+   "assets": [
+    "/package/input_groups/0.0.1/manifest.yml",
+    "/package/input_groups/0.0.1/docs/README.md",
+    "/package/input_groups/0.0.1/docs/ec2.md",
+    "/package/input_groups/0.0.1/img/logo_aws.svg",
+    "/package/input_groups/0.0.1/img/logo_ec2.svg",
+    "/package/input_groups/0.0.1/img/metricbeat-aws-ec2-overview.png",
+    "/package/input_groups/0.0.1/img/metricbeat-aws-overview.png",
+    "/package/input_groups/0.0.1/data_stream/ec2_logs/manifest.yml",
+    "/package/input_groups/0.0.1/data_stream/ec2_metrics/manifest.yml",
+    "/package/input_groups/0.0.1/data_stream/ec2_metrics/sample_event.json",
+    "/package/input_groups/0.0.1/kibana/dashboard/0c610510-5cbd-11e9-8477-077ec9664dbd.json",
+    "/package/input_groups/0.0.1/kibana/visualization/0a994af0-5c9d-11e9-8477-077ec9664dbd.json",
+    "/package/input_groups/0.0.1/kibana/visualization/36f872a0-5c03-11e9-85b4-19d0072eb4f2.json",
+    "/package/input_groups/0.0.1/kibana/visualization/38f96190-5c99-11e9-8477-077ec9664dbd.json",
+    "/package/input_groups/0.0.1/kibana/visualization/7e4084e0-5c99-11e9-8477-077ec9664dbd.json",
+    "/package/input_groups/0.0.1/kibana/visualization/80844540-5c97-11e9-8477-077ec9664dbd.json",
+    "/package/input_groups/0.0.1/kibana/visualization/ab48c3f0-5ca6-11e9-8477-077ec9664dbd.json",
+    "/package/input_groups/0.0.1/data_stream/ec2_logs/fields/agent.yml",
+    "/package/input_groups/0.0.1/data_stream/ec2_logs/fields/base-fields.yml",
+    "/package/input_groups/0.0.1/data_stream/ec2_logs/fields/ecs.yml",
+    "/package/input_groups/0.0.1/data_stream/ec2_logs/fields/fields.yml",
+    "/package/input_groups/0.0.1/data_stream/ec2_metrics/fields/agent.yml",
+    "/package/input_groups/0.0.1/data_stream/ec2_metrics/fields/base-fields.yml",
+    "/package/input_groups/0.0.1/data_stream/ec2_metrics/fields/ecs.yml",
+    "/package/input_groups/0.0.1/data_stream/ec2_metrics/fields/fields.yml",
+    "/package/input_groups/0.0.1/data_stream/ec2_metrics/fields/package-fields.yml",
+    "/package/input_groups/0.0.1/data_stream/ec2_logs/agent/stream/s3.yml.hbs",
+    "/package/input_groups/0.0.1/data_stream/ec2_logs/elasticsearch/ingest_pipeline/default.yml",
+    "/package/input_groups/0.0.1/data_stream/ec2_metrics/agent/stream/stream.yml.hbs"
+   ],
+   "policy_templates": [
+    {
+     "name": "ec2",
+     "title": "AWS EC2",
+     "description": "Collect logs and metrics from EC2 service",
+     "data_streams": [
+      "ec2_logs",
+      "ec2_metrics"
+     ],
+     "inputs": [
+      {
+       "type": "s3",
+       "vars": [
+        {
+         "name": "visibility_timeout",
+         "type": "text",
+         "title": "Visibility Timeout",
+         "description": "The duration that the received messages are hidden from subsequent retrieve requests after being retrieved by a ReceiveMessage request.  The maximum is 12 hours.",
+         "multi": false,
+         "required": false,
+         "show_user": false
+        },
+        {
+         "name": "api_timeout",
+         "type": "text",
+         "title": "API Timeout",
+         "description": "The maximum duration of AWS API can take. The maximum is half of the visibility timeout value.",
+         "multi": false,
+         "required": false,
+         "show_user": false
+        }
+       ],
+       "title": "Collect logs from EC2 service",
+       "description": "Collecting EC2 logs using S3 input",
+       "input_group": "logs"
+      },
+      {
+       "type": "aws/metrics",
+       "title": "Collect metrics from EC2 service",
+       "description": "Collecting EC2 metrics using AWS CloudWatch",
+       "input_group": "metrics"
+      }
+     ],
+     "multiple": true,
+     "icons": [
+      {
+       "src": "/img/logo_ec2.svg",
+       "path": "/package/input_groups/0.0.1/img/logo_ec2.svg",
+       "title": "AWS EC2 logo",
+       "size": "32x32",
+       "type": "image/svg+xml"
+      }
+     ],
+     "categories": [
+      "compute"
+     ],
+     "screenshots": [
+      {
+       "src": "/img/metricbeat-aws-ec2-overview.png",
+       "path": "/package/input_groups/0.0.1/img/metricbeat-aws-ec2-overview.png",
+       "title": "metricbeat aws ec2 overview",
+       "size": "2640x2240",
+       "type": "image/png"
+      }
+     ],
+     "readme": "/package/input_groups/0.0.1/docs/ec2.md"
+    }
+   ],
+   "data_streams": [
+    {
+     "type": "logs",
+     "dataset": "input_groups.ec2_logs",
+     "title": "AWS EC2 logs",
+     "release": "beta",
+     "ingest_pipeline": "default",
+     "streams": [
+      {
+       "input": "s3",
+       "vars": [
+        {
+         "name": "queue_url",
+         "type": "text",
+         "title": "Queue URL",
+         "description": "URL of the AWS SQS queue that messages will be received from.",
+         "multi": false,
+         "required": true,
+         "show_user": true
+        },
+        {
+         "name": "fips_enabled",
+         "type": "bool",
+         "title": "Enable S3 FIPS",
+         "description": "Enabling this option changes the service name from `s3` to `s3-fips` for connecting to the correct service endpoint.",
+         "multi": false,
+         "required": false,
+         "show_user": false,
+         "default": false
+        }
+       ],
+       "template_path": "s3.yml.hbs",
+       "title": "AWS EC2 logs",
+       "description": "Collect AWS EC2 logs using s3 input",
+       "enabled": true
+      }
+     ],
+     "package": "input_groups",
+     "path": "ec2_logs"
+    },
+    {
+     "type": "metrics",
+     "dataset": "input_groups.ec2_metrics",
+     "title": "AWS EC2 metrics",
+     "release": "beta",
+     "streams": [
+      {
+       "input": "aws/metrics",
+       "vars": [
+        {
+         "name": "period",
+         "type": "text",
+         "title": "Period",
+         "multi": false,
+         "required": true,
+         "show_user": true,
+         "default": "5m"
+        },
+        {
+         "name": "regions",
+         "type": "text",
+         "title": "Regions",
+         "multi": true,
+         "required": false,
+         "show_user": true
+        },
+        {
+         "name": "latency",
+         "type": "text",
+         "title": "Latency",
+         "multi": false,
+         "required": false,
+         "show_user": false
+        },
+        {
+         "name": "tags_filter",
+         "type": "yaml",
+         "title": "Tags Filter",
+         "multi": false,
+         "required": false,
+         "show_user": false,
+         "default": "# - key: \"created-by\"\n  # value: \"foo\"\n"
+        }
+       ],
+       "template_path": "stream.yml.hbs",
+       "title": "AWS EC2 metrics",
+       "description": "Collect AWS EC2 metrics",
+       "enabled": true
+      }
+     ],
+     "package": "input_groups",
+     "path": "ec2_metrics"
+    }
+   ],
+   "vars": [
+    {
+     "name": "shared_credential_file",
+     "type": "text",
+     "title": "Shared Credential File",
+     "description": "Directory of the shared credentials file.",
+     "multi": false,
+     "required": false,
+     "show_user": false
+    },
+    {
+     "name": "credential_profile_name",
+     "type": "text",
+     "title": "Credential Profile Name",
+     "multi": false,
+     "required": false,
+     "show_user": true
+    },
+    {
+     "name": "access_key_id",
+     "type": "text",
+     "title": "Access Key ID",
+     "multi": false,
+     "required": false,
+     "show_user": false
+    },
+    {
+     "name": "secret_access_key",
+     "type": "text",
+     "title": "Secret Access Key",
+     "multi": false,
+     "required": false,
+     "show_user": false
+    },
+    {
+     "name": "session_token",
+     "type": "text",
+     "title": "Session Token",
+     "multi": false,
+     "required": false,
+     "show_user": false
+    },
+    {
+     "name": "role_arn",
+     "type": "text",
+     "title": "Role ARN",
+     "multi": false,
+     "required": false,
+     "show_user": false
+    },
+    {
+     "name": "endpoint",
+     "type": "text",
+     "title": "Endpoint",
+     "description": "URL of the entry point for an AWS web service.",
+     "multi": false,
+     "required": false,
+     "show_user": false,
+     "default": "amazonaws.com"
+    }
+   ]
+  },
+  {
+   "name": "input_level_templates",
+   "title": "Input level templates",
+   "version": "1.0.0",
+   "release": "beta",
+   "description": "This is a test package showing input-level agent yaml templates",
+   "type": "solution",
+   "download": "/epr/input_level_templates/input_level_templates-1.0.0.zip",
+   "path": "/package/input_level_templates/1.0.0",
+   "conditions": {
+    "kibana": {
+     "version": "\u003e=7.11.0"
+    }
+   },
+   "categories": [
+    "custom"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/input_level_templates/1.0.0/docs/README.md",
+   "license": "basic",
+   "assets": [
+    "/package/input_level_templates/1.0.0/manifest.yml",
+    "/package/input_level_templates/1.0.0/docs/README.md",
+    "/package/input_level_templates/1.0.0/agent/input/template.yml.hbs"
+   ],
+   "policy_templates": [
+    {
+     "name": "input_level_templates",
+     "title": "Input level templates",
+     "description": "Input with input-level template to use input-level vars with",
+     "inputs": [
+      {
+       "type": "logs",
+       "vars": [
+        {
+         "name": "paths",
+         "type": "text",
+         "title": "Paths",
+         "multi": true,
+         "required": true,
+         "show_user": false,
+         "default": [
+          "/foo/bar",
+          "/test/path"
+         ]
+        },
+        {
+         "name": "host",
+         "type": "text",
+         "title": "Host",
+         "multi": false,
+         "required": true,
+         "show_user": false
+        }
+       ],
+       "title": "Collect logs",
+       "template_path": "template.yml.hbs"
+      }
+     ],
+     "multiple": true
+    }
+   ]
+  },
+  {
+   "name": "integration_input",
+   "title": "Integration input",
+   "version": "1.0.0",
+   "release": "ga",
+   "description": "This is the example integration",
+   "type": "integration",
+   "download": "/epr/integration_input/integration_input-1.0.0.zip",
+   "path": "/package/integration_input/1.0.0",
+   "conditions": {
+    "kibana": {
+     "version": "^8.4.0"
+    }
+   },
+   "owner": {
+    "github": "ruflin"
+   },
+   "categories": [
+    "crm",
+    "azure"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/integration_input/1.0.0/docs/README.md",
+   "license": "basic",
+   "screenshots": [
+    {
+     "src": "/img/kibana-envoyproxy.jpg",
+     "path": "/package/integration_input/1.0.0/img/kibana-envoyproxy.jpg",
+     "title": "IP Tables Ubiquity Dashboard",
+     "size": "1492x1464",
+     "type": "image/png"
+    }
+   ],
+   "assets": [
+    "/package/integration_input/1.0.0/manifest.yml",
+    "/package/integration_input/1.0.0/docs/README.md",
+    "/package/integration_input/1.0.0/img/icon.png",
+    "/package/integration_input/1.0.0/img/kibana-envoyproxy.jpg",
+    "/package/integration_input/1.0.0/data_stream/foo/manifest.yml",
+    "/package/integration_input/1.0.0/kibana/dashboard/0c610510-5cbd-11e9-8477-077ec9664dbd.json",
+    "/package/integration_input/1.0.0/kibana/visualization/0a994af0-5c9d-11e9-8477-077ec9664dbd.json",
+    "/package/integration_input/1.0.0/kibana/visualization/36f872a0-5c03-11e9-85b4-19d0072eb4f2.json",
+    "/package/integration_input/1.0.0/kibana/visualization/38f96190-5c99-11e9-8477-077ec9664dbd.json",
+    "/package/integration_input/1.0.0/kibana/visualization/7e4084e0-5c99-11e9-8477-077ec9664dbd.json",
+    "/package/integration_input/1.0.0/kibana/visualization/80844540-5c97-11e9-8477-077ec9664dbd.json",
+    "/package/integration_input/1.0.0/kibana/visualization/ab48c3f0-5ca6-11e9-8477-077ec9664dbd.json",
+    "/package/integration_input/1.0.0/data_stream/foo/fields/base-fields.yml",
+    "/package/integration_input/1.0.0/data_stream/foo/agent/stream/stream.yml.hbs",
+    "/package/integration_input/1.0.0/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-entry.json",
+    "/package/integration_input/1.0.0/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-http.json",
+    "/package/integration_input/1.0.0/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-json.json",
+    "/package/integration_input/1.0.0/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-plaintext.json",
+    "/package/integration_input/1.0.0/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-tcp.json"
+   ],
+   "policy_templates": [
+    {
+     "name": "logs",
+     "title": "Logs datasource",
+     "description": "Datasource for your log files.",
+     "inputs": [
+      {
+       "type": "foo"
+      }
+     ],
+     "multiple": true,
+     "categories": [
+      "datastore"
+     ]
+    }
+   ],
+   "data_streams": [
+    {
+     "type": "logs",
+     "dataset": "integration_input.foo",
+     "title": "Foo",
+     "release": "ga",
+     "ingest_pipeline": "pipeline-entry",
+     "streams": [
+      {
+       "input": "foo",
+       "vars": [
+        {
+         "name": "paths",
+         "type": "text",
+         "description": "Path to log files to be collected",
+         "multi": true,
+         "required": true,
+         "show_user": false
+        }
+       ],
+       "template_path": "stream.yml.hbs",
+       "enabled": true
+      }
+     ],
+     "package": "integration_input",
+     "path": "foo"
+    }
+   ]
+  },
+  {
+   "name": "integration_input",
+   "title": "Integration Input",
+   "version": "1.0.2",
+   "release": "ga",
+   "description": "Sample package that was an integration and got migrated to input",
+   "type": "input",
+   "download": "/epr/integration_input/integration_input-1.0.2.zip",
+   "path": "/package/integration_input/1.0.2",
+   "icons": [
+    {
+     "src": "/img/sample-logo.svg",
+     "path": "/package/integration_input/1.0.2/img/sample-logo.svg",
+     "type": "image/svg+xml"
+    }
+   ],
+   "conditions": {
+    "kibana": {
+     "version": "^8.4.0"
+    }
+   },
+   "owner": {
+    "github": "elastic/integrations"
+   },
+   "categories": [
+    "custom",
+    "datastore"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/integration_input/1.0.2/docs/README.md",
+   "license": "basic",
+   "screenshots": [
+    {
+     "src": "/img/sample-screenshot.png",
+     "path": "/package/integration_input/1.0.2/img/sample-screenshot.png",
+     "title": "Sample screenshot",
+     "size": "600x600",
+     "type": "image/png"
+    }
+   ],
+   "assets": [
+    "/package/integration_input/1.0.2/changelog.yml",
+    "/package/integration_input/1.0.2/manifest.yml",
+    "/package/integration_input/1.0.2/docs/README.md",
+    "/package/integration_input/1.0.2/fields/input.yml",
+    "/package/integration_input/1.0.2/img/sample-logo.svg",
+    "/package/integration_input/1.0.2/img/sample-screenshot.png",
+    "/package/integration_input/1.0.2/agent/input/input.yml.hbs"
+   ],
+   "policy_templates": [
+    {
+     "name": "sql_query",
+     "title": "SQL Query",
+     "description": "Query the database to capture metrics.",
+     "multiple": true,
+     "type": "metrics",
+     "input": "sql",
+     "template_path": "input.yml.hbs"
+    }
+   ]
+  },
+  {
+   "name": "longdocs",
+   "title": "Long Docs",
+   "version": "1.0.4",
+   "release": "ga",
+   "description": "This integration contains pretty long documentation.\nIt is used to show the different visualisations inside a documentation to test how we handle it.\nThe integration does not contain any assets except the documentation page.\n",
+   "type": "integration",
+   "download": "/epr/longdocs/longdocs-1.0.4.zip",
+   "path": "/package/longdocs/1.0.4",
+   "icons": [
+    {
+     "src": "/img/icon.svg",
+     "path": "/package/longdocs/1.0.4/img/icon.svg",
+     "type": "image/svg+xml"
+    }
+   ],
+   "conditions": {
+    "kibana": {
+     "version": "\u003e6.7.0"
+    }
+   },
+   "categories": [
+    "custom",
+    "web"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/longdocs/1.0.4/docs/README.md",
+   "license": "basic",
+   "assets": [
+    "/package/longdocs/1.0.4/manifest.yml",
+    "/package/longdocs/1.0.4/docs/README.md",
+    "/package/longdocs/1.0.4/docs/data.json",
+    "/package/longdocs/1.0.4/img/icon.svg"
+   ]
+  },
+  {
+   "name": "metricsonly",
+   "title": "Metrics Only",
+   "version": "2.0.1",
+   "release": "ga",
+   "description": "This is an integration with only the metrics category.\n",
+   "type": "integration",
+   "download": "/epr/metricsonly/metricsonly-2.0.1.zip",
+   "path": "/package/metricsonly/2.0.1",
+   "icons": [
+    {
+     "src": "/img/icon.svg",
+     "path": "/package/metricsonly/2.0.1/img/icon.svg",
+     "type": "image/svg+xml"
+    }
+   ],
+   "categories": [
+    "custom"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/metricsonly/2.0.1/docs/README.md",
+   "license": "basic",
+   "assets": [
+    "/package/metricsonly/2.0.1/manifest.yml",
+    "/package/metricsonly/2.0.1/docs/README.md",
+    "/package/metricsonly/2.0.1/img/icon.svg"
+   ]
+  },
+  {
+   "name": "multiple_false",
+   "title": "Multiple false",
+   "version": "0.0.1",
+   "release": "beta",
+   "description": "Tests that multiple can be set to false",
+   "type": "integration",
+   "download": "/epr/multiple_false/multiple_false-0.0.1.zip",
+   "path": "/package/multiple_false/0.0.1",
+   "categories": [
+    "custom"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/multiple_false/0.0.1/docs/README.md",
+   "license": "basic",
+   "assets": [
+    "/package/multiple_false/0.0.1/manifest.yml",
+    "/package/multiple_false/0.0.1/docs/README.md",
+    "/package/multiple_false/0.0.1/data_stream/foo/manifest.yml",
+    "/package/multiple_false/0.0.1/data_stream/foo/fields/base-fields.yml",
+    "/package/multiple_false/0.0.1/data_stream/foo/agent/stream/stream.yml.hbs",
+    "/package/multiple_false/0.0.1/data_stream/foo/elasticsearch/ingest_pipeline/default.json"
+   ],
+   "policy_templates": [
+    {
+     "name": "logs",
+     "title": "Logs datasource",
+     "description": "Datasource for your log files.",
+     "inputs": [
+      {
+       "type": "logs"
+      }
+     ],
+     "multiple": false
+    }
+   ],
+   "data_streams": [
+    {
+     "type": "logs",
+     "dataset": "multiple_false.foo",
+     "title": "Foo",
+     "release": "beta",
+     "ingest_pipeline": "default",
+     "streams": [
+      {
+       "input": "logs",
+       "vars": [
+        {
+         "name": "paths",
+         "type": "text",
+         "description": "Path to log files to be collected",
+         "multi": true,
+         "required": true,
+         "show_user": false
+        }
+       ],
+       "template_path": "stream.yml.hbs",
+       "enabled": true
+      }
+     ],
+     "package": "multiple_false",
+     "path": "foo"
+    }
+   ]
+  },
+  {
+   "name": "multiversion",
+   "title": "Multi Version",
+   "version": "1.0.3",
+   "release": "ga",
+   "description": "Multiple versions of this integration exist.\n",
+   "type": "integration",
+   "download": "/epr/multiversion/multiversion-1.0.3.zip",
+   "path": "/package/multiversion/1.0.3",
+   "icons": [
+    {
+     "src": "/img/icon.svg",
+     "path": "/package/multiversion/1.0.3/img/icon.svg",
+     "type": "image/svg+xml"
+    }
+   ],
+   "conditions": {
+    "kibana": {
+     "version": "\u003e6.7.0"
+    }
+   },
+   "categories": [
+    "custom",
+    "web"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/multiversion/1.0.3/docs/README.md",
+   "license": "basic",
+   "assets": [
+    "/package/multiversion/1.0.3/changelog.yml",
+    "/package/multiversion/1.0.3/manifest.yml",
+    "/package/multiversion/1.0.3/docs/README.md",
+    "/package/multiversion/1.0.3/img/icon.svg"
+   ]
+  },
+  {
+   "name": "multiversion",
+   "title": "Multi Version",
+   "version": "1.0.4",
+   "release": "ga",
+   "description": "Multiple versions of this integration exist.\n",
+   "type": "integration",
+   "download": "/epr/multiversion/multiversion-1.0.4.zip",
+   "path": "/package/multiversion/1.0.4",
+   "icons": [
+    {
+     "src": "/img/icon.svg",
+     "path": "/package/multiversion/1.0.4/img/icon.svg",
+     "type": "image/svg+xml"
+    }
+   ],
+   "conditions": {
+    "kibana": {
+     "version": "\u003e6.7.0"
+    }
+   },
+   "categories": [
+    "custom",
+    "web"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/multiversion/1.0.4/docs/README.md",
+   "license": "basic",
+   "assets": [
+    "/package/multiversion/1.0.4/changelog.yml",
+    "/package/multiversion/1.0.4/manifest.yml",
+    "/package/multiversion/1.0.4/docs/README.md",
+    "/package/multiversion/1.0.4/img/icon.svg"
+   ]
+  },
+  {
+   "name": "no_stream_configs",
+   "title": "No Stream configs",
+   "version": "1.0.0",
+   "release": "beta",
+   "description": "This package does contain a dataset but not stream configs.\n",
+   "type": "integration",
+   "download": "/epr/no_stream_configs/no_stream_configs-1.0.0.zip",
+   "path": "/package/no_stream_configs/1.0.0",
+   "categories": [
+    "custom"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/no_stream_configs/1.0.0/docs/README.md",
+   "license": "basic",
+   "assets": [
+    "/package/no_stream_configs/1.0.0/manifest.yml",
+    "/package/no_stream_configs/1.0.0/docs/README.md",
+    "/package/no_stream_configs/1.0.0/data_stream/log/manifest.yml",
+    "/package/no_stream_configs/1.0.0/data_stream/log/fields/base-fields.yml",
+    "/package/no_stream_configs/1.0.0/data_stream/log/fields/ecs.yml"
+   ],
+   "data_streams": [
+    {
+     "type": "logs",
+     "dataset": "no_stream_configs.log",
+     "title": "Log Yaml pipeline",
+     "release": "beta",
+     "package": "no_stream_configs",
+     "path": "log"
+    }
+   ]
+  },
+  {
+   "name": "reference",
+   "title": "Reference package",
+   "version": "1.0.0",
+   "release": "ga",
+   "description": "This package is used for defining all the properties of a package, the possible assets etc. It serves as a reference on all the config options which are possible.\n",
+   "type": "integration",
+   "download": "/epr/reference/reference-1.0.0.zip",
+   "path": "/package/reference/1.0.0",
+   "icons": [
+    {
+     "src": "/img/icon.svg",
+     "path": "/package/reference/1.0.0/img/icon.svg",
+     "size": "32x32",
+     "type": "image/svg+xml"
+    }
+   ],
+   "conditions": {
+    "kibana": {
+     "version": "\u003e6.7.0  \u003c7.6.0"
+    }
+   },
+   "owner": {
+    "github": "ruflin"
+   },
+   "categories": [
+    "custom",
+    "web"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/reference/1.0.0/docs/README.md",
+   "license": "basic",
+   "assets": [
+    "/package/reference/1.0.0/changelog.yml",
+    "/package/reference/1.0.0/manifest.yml",
+    "/package/reference/1.0.0/docs/README.md",
+    "/package/reference/1.0.0/img/icon.svg",
+    "/package/reference/1.0.0/data_stream/reference/manifest.yml",
+    "/package/reference/1.0.0/data_stream/reference/fields/base-fields.yml"
+   ],
+   "policy_templates": [
+    {
+     "name": "nginx",
+     "title": "Nginx logs and metrics.",
+     "description": "Collecting logs and metrics from nginx.",
+     "inputs": [
+      {
+       "type": "nginx/metrics",
+       "vars": [
+        {
+         "name": "hosts",
+         "type": "text",
+         "title": "Hosts",
+         "description": "List of nginx hosts to collect data from.",
+         "multi": true,
+         "required": true,
+         "show_user": false,
+         "default": [
+          "http://127.0.0.1"
+         ]
+        }
+       ],
+       "title": "Collect metrics and logs from reference service",
+       "description": "Description of the reference input."
+      }
+     ],
+     "multiple": true
+    }
+   ],
+   "data_streams": [
+    {
+     "type": "logs",
+     "dataset": "reference.reference",
+     "title": "Reference Logs Title",
+     "release": "beta",
+     "streams": [
+      {
+       "input": "logs",
+       "vars": [
+        {
+         "name": "paths",
+         "type": "text",
+         "title": "Example variable title",
+         "description": "Description around how a variable should be used, what values it can contain and it can even contain **Markdown** or links.\n",
+         "multi": true,
+         "required": true,
+         "show_user": false,
+         "default": "foo"
+        }
+       ],
+       "template_path": "stream.yml.hbs",
+       "title": "Title reference stream",
+       "description": "Collecting the nginx access logs from file.",
+       "enabled": true
+      }
+     ],
+     "package": "reference",
+     "elasticsearch": {
+      "index_template.settings": {
+       "index": {
+        "lifecycle": {
+         "name": "reference"
+        }
+       }
+      },
+      "index_template.mappings": {
+       "dynamic": false
+      }
+     },
+     "path": "reference"
+    }
+   ]
+  },
+  {
+   "name": "sql_input",
+   "title": "SQL Input",
+   "version": "0.2.0",
+   "release": "beta",
+   "description": "Execute custom queries against an SQL database and store the results in Elasticsearch.",
+   "type": "input",
+   "download": "/epr/sql_input/sql_input-0.2.0.zip",
+   "path": "/package/sql_input/0.2.0",
+   "icons": [
+    {
+     "src": "/img/sample-logo.svg",
+     "path": "/package/sql_input/0.2.0/img/sample-logo.svg",
+     "type": "image/svg+xml"
+    }
+   ],
+   "owner": {
+    "github": "elastic/integrations"
+   },
+   "categories": [
+    "custom",
+    "datastore"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/sql_input/0.2.0/docs/README.md",
+   "license": "basic",
+   "screenshots": [
+    {
+     "src": "/img/sample-screenshot.png",
+     "path": "/package/sql_input/0.2.0/img/sample-screenshot.png",
+     "title": "Sample screenshot",
+     "size": "600x600",
+     "type": "image/png"
+    }
+   ],
+   "assets": [
+    "/package/sql_input/0.2.0/changelog.yml",
+    "/package/sql_input/0.2.0/manifest.yml",
+    "/package/sql_input/0.2.0/docs/README.md",
+    "/package/sql_input/0.2.0/fields/input.yml",
+    "/package/sql_input/0.2.0/img/sample-logo.svg",
+    "/package/sql_input/0.2.0/img/sample-screenshot.png",
+    "/package/sql_input/0.2.0/agent/input/input.yml.hbs"
+   ],
+   "policy_templates": [
+    {
+     "name": "sql_query",
+     "title": "SQL Query",
+     "description": "Query the database to capture metrics.",
+     "multiple": true,
+     "type": "metrics",
+     "input": "sql",
+     "template_path": "input.yml.hbs"
+    }
+   ]
+  },
+  {
+   "name": "sql_input",
+   "title": "SQL Input",
+   "version": "0.3.0",
+   "release": "beta",
+   "description": "Execute custom queries against an SQL database and store the results in Elasticsearch.",
+   "type": "input",
+   "download": "/epr/sql_input/sql_input-0.3.0.zip",
+   "path": "/package/sql_input/0.3.0",
+   "icons": [
+    {
+     "src": "/img/sample-logo.svg",
+     "path": "/package/sql_input/0.3.0/img/sample-logo.svg",
+     "type": "image/svg+xml"
+    }
+   ],
+   "owner": {
+    "github": "elastic/integrations"
+   },
+   "categories": [
+    "custom",
+    "datastore"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/sql_input/0.3.0/docs/README.md",
+   "license": "basic",
+   "screenshots": [
+    {
+     "src": "/img/sample-screenshot.png",
+     "path": "/package/sql_input/0.3.0/img/sample-screenshot.png",
+     "title": "Sample screenshot",
+     "size": "600x600",
+     "type": "image/png"
+    }
+   ],
+   "assets": [
+    "/package/sql_input/0.3.0/changelog.yml",
+    "/package/sql_input/0.3.0/manifest.yml",
+    "/package/sql_input/0.3.0/docs/README.md",
+    "/package/sql_input/0.3.0/fields/input.yml",
+    "/package/sql_input/0.3.0/img/sample-logo.svg",
+    "/package/sql_input/0.3.0/img/sample-screenshot.png",
+    "/package/sql_input/0.3.0/agent/input/input.yml.hbs"
+   ],
+   "policy_templates": [
+    {
+     "name": "sql_query",
+     "title": "SQL Query",
+     "description": "Query the database to capture metrics.",
+     "multiple": true,
+     "type": "metrics",
+     "input": "sql",
+     "template_path": "input.yml.hbs"
+    }
+   ]
+  },
+  {
+   "name": "traces",
+   "title": "Not actually APM",
+   "version": "1.0.0",
+   "release": "experimental",
+   "description": "Not actually APM",
+   "type": "integration",
+   "download": "/epr/traces/traces-1.0.0.zip",
+   "path": "/package/traces/1.0.0",
+   "conditions": {
+    "kibana": {
+     "version": "~7.x.x"
+    }
+   },
+   "owner": {
+    "github": "github.com/elastic/not-apm"
+   },
+   "categories": [
+    "monitoring"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/traces/1.0.0/docs/README.md",
+   "license": "basic",
+   "assets": [
+    "/package/traces/1.0.0/manifest.yml",
+    "/package/traces/1.0.0/docs/README.md",
+    "/package/traces/1.0.0/data_stream/traces/manifest.yml",
+    "/package/traces/1.0.0/data_stream/traces/fields/base-fields.yml"
+   ],
+   "data_streams": [
+    {
+     "type": "traces",
+     "dataset": "traces.traces",
+     "title": "notapmtraces",
+     "release": "experimental",
+     "package": "traces",
+     "path": "traces"
+    }
+   ]
+  },
+  {
+   "name": "yamlpipeline",
+   "title": "Yaml Pipeline package",
+   "version": "1.0.0",
+   "release": "beta",
+   "description": "This package contains a yaml pipeline.\n",
+   "type": "integration",
+   "download": "/epr/yamlpipeline/yamlpipeline-1.0.0.zip",
+   "path": "/package/yamlpipeline/1.0.0",
+   "categories": [
+    "custom"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/yamlpipeline/1.0.0/docs/README.md",
+   "license": "basic",
+   "assets": [
+    "/package/yamlpipeline/1.0.0/manifest.yml",
+    "/package/yamlpipeline/1.0.0/docs/README.md",
+    "/package/yamlpipeline/1.0.0/data_stream/log/manifest.yml",
+    "/package/yamlpipeline/1.0.0/data_stream/log/fields/base-fields.yml",
+    "/package/yamlpipeline/1.0.0/data_stream/log/agent/stream/stream.yml.hbs",
+    "/package/yamlpipeline/1.0.0/data_stream/log/elasticsearch/ingest_pipeline/pipeline-entry.yml",
+    "/package/yamlpipeline/1.0.0/data_stream/log/elasticsearch/ingest_pipeline/pipeline-json.yml",
+    "/package/yamlpipeline/1.0.0/data_stream/log/elasticsearch/ingest_pipeline/pipeline-plaintext.yml"
+   ],
+   "data_streams": [
+    {
+     "type": "logs",
+     "dataset": "yamlpipeline.log",
+     "title": "Log Yaml pipeline",
+     "release": "beta",
+     "ingest_pipeline": "pipeline-entry",
+     "streams": [
+      {
+       "input": "logs",
+       "vars": [
+        {
+         "name": "paths",
+         "type": "",
+         "multi": false,
+         "required": true,
+         "show_user": false
+        }
+       ],
+       "template_path": "stream.yml.hbs",
+       "title": "Yamlpipline example logs",
+       "description": "Yamlpipeline example",
+       "enabled": true
+      }
+     ],
+     "package": "yamlpipeline",
+     "elasticsearch": {
+      "index_template.settings": {
+       "index": {
+        "lifecycle": {
+         "name": "reference"
+        }
+       }
+      },
+      "index_template.mappings": {
+       "dynamic": false
+      }
+     },
+     "path": "log"
+    }
+   ]
+  }
+ ]

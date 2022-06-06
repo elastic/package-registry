@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased](https://github.com/elastic/package-registry/compare/v1.8.0...main)
+## [unreleased](https://github.com/elastic/package-registry/compare/v1.9.0...main)
 
 ### Breaking changes
 
@@ -12,7 +12,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Deprecated
+
+### Known Issues
+
+
+## [v1.9.0](https://github.com/elastic/package-registry/compare/v1.8.0...v1.9.0)
+
+### Breaking changes
+
+### Bugfixes
+
+* Data streams are properly read from Zip packages without entries for directories. [#817](https://github.com/elastic/package-registry/pull/817)
+
+### Added
+
 * Prepare stub for Storage Indexer. Disable fetching packages from Package Storage v1. [#811](https://github.com/elastic/package-registry/pull/811)
+* Support input packages. [#809](https://github.com/elastic/package-registry/pull/809)
 * Basic implement of Storage Indexer. [#814](https://github.com/elastic/package-registry/pull/814)
 
 ### Deprecated

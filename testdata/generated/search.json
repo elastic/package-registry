@@ -106,14 +106,14 @@
     ]
   },
   {
-    "name": "ilmpolicy",
+    "name": "ilm_policy",
     "title": "ILM Policy",
     "version": "1.0.0",
     "release": "beta",
     "description": "Test form ILM Policy in Package",
     "type": "solution",
-    "download": "/epr/ilmpolicy/ilmpolicy-1.0.0.zip",
-    "path": "/package/ilmpolicy/1.0.0",
+    "download": "/epr/ilm_policy/ilm_policy-1.0.0.zip",
+    "path": "/package/ilm_policy/1.0.0",
     "conditions": {
       "kibana": {
         "version": ">=7.0.0"
@@ -146,6 +146,42 @@
     },
     "categories": [
       "custom"
+    ]
+  },
+  {
+    "name": "integration_input",
+    "title": "Integration Input",
+    "version": "1.0.2",
+    "release": "ga",
+    "description": "Sample package that was an integration and got migrated to input",
+    "type": "input",
+    "download": "/epr/integration_input/integration_input-1.0.2.zip",
+    "path": "/package/integration_input/1.0.2",
+    "icons": [
+      {
+        "src": "/img/sample-logo.svg",
+        "path": "/package/integration_input/1.0.2/img/sample-logo.svg",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "sql_query",
+        "title": "SQL Query",
+        "description": "Query the database to capture metrics."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.4.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "custom",
+      "datastore"
     ]
   },
   {

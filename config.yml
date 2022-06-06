@@ -1,4 +1,3 @@
 package_paths:
   - ./testdata/package
   - ./testdata/local-storage
-  - ./build/package-storage/packages
