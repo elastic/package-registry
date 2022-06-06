@@ -6,8 +6,9 @@ package storage
 
 import (
 	"context"
-	"github.com/stretchr/testify/require"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 
 	"github.com/elastic/package-registry/packages"
 )
@@ -127,7 +128,7 @@ func TestGet_IndexUpdated(t *testing.T) {
 		Filter: &packages.Filter{
 			PackageName: "1password",
 			PackageType: "integration",
-			Prerelease: true,
+			Prerelease:  true,
 		},
 	})
 
@@ -147,7 +148,7 @@ func TestGet_IndexUpdated(t *testing.T) {
 		Filter: &packages.Filter{
 			PackageName: "1password",
 			PackageType: "integration",
-			Prerelease: true,
+			Prerelease:  true,
 		},
 	})
 
