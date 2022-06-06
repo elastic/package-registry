@@ -72,12 +72,14 @@ func prepareServerObjects(t *testing.T, revision string, indexContent []byte) []
 
 		// Add fake static resources: docs, img
 		for _, asset := range aPackage.PackageManifest.Assets {
-			if !strings.HasPrefix(asset, "docs") &&
-				!strings.HasPrefix(asset, "img") {
+			assetPath, err := filepath.Rel(filepath.Join("/package", aPackage.PackageManifest.Name, aPackage.PackageManifest.Version), asset)
+			require.NoError(t, err, "relative path expected")
+			if !strings.HasPrefix(assetPath, "docs") &&
+				!strings.HasPrefix(assetPath, "img") {
 				continue
 			}
 
-			path := joinObjectPaths(artifactsStaticStoragePath, nameVersion, asset)
+			path := joinObjectPaths(artifactsStaticStoragePath, nameVersion, assetPath)
 			serverObjects = append(serverObjects, fakestorage.Object{
 				ObjectAttrs: fakestorage.ObjectAttrs{
 					BucketName: fakePackageStorageBucketPublic, Name: path,
@@ -110,7 +112,7 @@ func prepareServerObjects(t *testing.T, revision string, indexContent []byte) []
 
 func TestPrepareFakeServer(t *testing.T) {
 	// given
-	indexFile := "testdata/search-index-all-1.json"
+	indexFile := "testdata/search-index-all-full.json"
 	testIndexFile, err := os.ReadFile(indexFile)
 	require.NoErrorf(t, err, "index file should be present in testdata")
 
@@ -123,7 +125,7 @@ func TestPrepareFakeServer(t *testing.T) {
 	require.NotNil(t, client, "client should be initialized")
 
 	aCursor := readObject(t, client.Bucket(fakePackageStorageBucketInternal).Object(cursorStoragePath))
-	assert.Equal(t, []byte(`{"cursor":"1"}`), aCursor)
+	assert.Equal(t, []byte(`{"current":"1"}`), aCursor)
 	anIndex := readObject(t, client.Bucket(fakePackageStorageBucketInternal).Object(joinObjectPaths(v2MetadataStoragePath, "1", searchIndexAllFile)))
 	assert.Equal(t, testIndexFile, anIndex)
 	packageZip := readObject(t, client.Bucket(fakePackageStorageBucketPublic).Object(joinObjectPaths(artifactsPackagesStoragePath, "1password-1.1.1.zip")))
