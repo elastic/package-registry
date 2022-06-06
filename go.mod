@@ -13,7 +13,6 @@ require (
 	github.com/joeshaw/multierror v0.0.0-20140124173710-69b34d4ec901
 	github.com/magefile/mage v1.9.0
 	github.com/pkg/errors v0.9.1
-	github.com/spf13/afero v1.8.2
 	github.com/stretchr/testify v1.7.1
 	go.elastic.co/apm v1.14.0
 	go.elastic.co/apm/module/apmgorilla v1.14.0
