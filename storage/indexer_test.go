@@ -6,23 +6,21 @@ package storage
 
 import (
 	"context"
-	"testing"
-	"time"
-
 	"github.com/stretchr/testify/require"
+	"testing"
 
 	"github.com/elastic/package-registry/packages"
 )
 
 func TestInit(t *testing.T) {
 	// given
-	fs := prepareFakeServer(t, "testdata/search-index-all-1.json")
+	fs := prepareFakeServer(t, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 	indexer := NewIndexer(storageClient, IndexerOptions{
 		PackageStorageBucketInternal: "gs://" + fakePackageStorageBucketInternal,
 		PackageStorageBucketPublic:   "gs://" + fakePackageStorageBucketPublic,
-		WatchInterval:                1 * time.Second,
+		WatchInterval:                0,
 	})
 
 	// when
@@ -32,15 +30,15 @@ func TestInit(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestGet(t *testing.T) {
+func TestGet_ListAllPackages(t *testing.T) {
 	// given
-	fs := prepareFakeServer(t, "testdata/search-index-all-1.json")
+	fs := prepareFakeServer(t, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 	indexer := NewIndexer(storageClient, IndexerOptions{
 		PackageStorageBucketInternal: "gs://" + fakePackageStorageBucketInternal,
 		PackageStorageBucketPublic:   "gs://" + fakePackageStorageBucketPublic,
-		WatchInterval:                1 * time.Second,
+		WatchInterval:                0,
 	})
 
 	err := indexer.Init(context.Background())
@@ -51,8 +49,111 @@ func TestGet(t *testing.T) {
 
 	// then
 	require.NoError(t, err, "packages should be returned")
-	require.Len(t, foundPackages, 123)
+	require.Len(t, foundPackages, 1112)
 }
 
-// TODO Package not present, 503?
-// TODO Package index got updated while running
+func TestGet_FindLatestPackage(t *testing.T) {
+	// given
+	fs := prepareFakeServer(t, "testdata/search-index-all-full.json")
+	defer fs.Stop()
+	storageClient := fs.Client()
+	indexer := NewIndexer(storageClient, IndexerOptions{
+		PackageStorageBucketInternal: "gs://" + fakePackageStorageBucketInternal,
+		PackageStorageBucketPublic:   "gs://" + fakePackageStorageBucketPublic,
+		WatchInterval:                0,
+	})
+
+	err := indexer.Init(context.Background())
+	require.NoError(t, err, "storage indexer must be initialized properly")
+
+	// when
+	foundPackages, err := indexer.Get(context.Background(), &packages.GetOptions{
+		Filter: &packages.Filter{
+			PackageName: "apm",
+			PackageType: "integration",
+		},
+	})
+
+	// then
+	require.NoError(t, err, "packages should be returned")
+	require.Len(t, foundPackages, 1)
+	require.Equal(t, "apm", foundPackages[0].Name)
+	require.Equal(t, "8.2.0", foundPackages[0].Version)
+}
+
+func TestGet_UnknownPackage(t *testing.T) {
+	// given
+	fs := prepareFakeServer(t, "testdata/search-index-all-full.json")
+	defer fs.Stop()
+	storageClient := fs.Client()
+	indexer := NewIndexer(storageClient, IndexerOptions{
+		PackageStorageBucketInternal: "gs://" + fakePackageStorageBucketInternal,
+		PackageStorageBucketPublic:   "gs://" + fakePackageStorageBucketPublic,
+		WatchInterval:                0,
+	})
+
+	err := indexer.Init(context.Background())
+	require.NoError(t, err, "storage indexer must be initialized properly")
+
+	// when
+	foundPackages, err := indexer.Get(context.Background(), &packages.GetOptions{
+		Filter: &packages.Filter{
+			PackageName: "qwertyuiop",
+			PackageType: "integration",
+		},
+	})
+
+	// then
+	require.NoError(t, err, "packages should be returned")
+	require.Len(t, foundPackages, 0)
+}
+
+func TestGet_IndexUpdated(t *testing.T) {
+	// given
+	fs := prepareFakeServer(t, "testdata/search-index-all-small.json")
+	defer fs.Stop()
+	storageClient := fs.Client()
+	indexer := NewIndexer(storageClient, IndexerOptions{
+		PackageStorageBucketInternal: "gs://" + fakePackageStorageBucketInternal,
+		PackageStorageBucketPublic:   "gs://" + fakePackageStorageBucketPublic,
+		WatchInterval:                0,
+	})
+
+	err := indexer.Init(context.Background())
+	require.NoError(t, err, "storage indexer must be initialized properly")
+
+	// when
+	foundPackages, err := indexer.Get(context.Background(), &packages.GetOptions{
+		Filter: &packages.Filter{
+			PackageName: "1password",
+			PackageType: "integration",
+			Prerelease: true,
+		},
+	})
+
+	// then
+	require.NoError(t, err, "packages should be returned")
+	require.Len(t, foundPackages, 1)
+	require.Equal(t, "1password", foundPackages[0].Name)
+	require.Equal(t, "0.2.0", foundPackages[0].Version)
+
+	// when: index update is performed
+	const secondRevision = "2"
+	updateFakeServer(t, fs, secondRevision, "testdata/search-index-all-full.json")
+	err = indexer.updateIndex(context.Background())
+	require.NoError(t, err, "index should be updated successfully")
+
+	foundPackages, err = indexer.Get(context.Background(), &packages.GetOptions{
+		Filter: &packages.Filter{
+			PackageName: "1password",
+			PackageType: "integration",
+			Prerelease: true,
+		},
+	})
+
+	// then
+	require.NoError(t, err, "packages should be returned")
+	require.Len(t, foundPackages, 1)
+	require.Equal(t, "1password", foundPackages[0].Name)
+	require.Equal(t, "1.4.0", foundPackages[0].Version)
+}

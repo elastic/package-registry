@@ -68,8 +68,8 @@ func validateIndexerOptions(options IndexerOptions) error {
 	if !strings.HasPrefix(options.PackageStorageBucketPublic, "gs://") {
 		return errors.New("missing or invalid options.PackageStorageBucketPublic")
 	}
-	if options.WatchInterval == 0 {
-		return errors.New("options.WatchInterval must be greater than 0")
+	if options.WatchInterval < 0 {
+		return errors.New("options.WatchInterval must be greater than or equal to 0")
 	}
 	return nil
 }
@@ -77,6 +77,10 @@ func validateIndexerOptions(options IndexerOptions) error {
 func (i *Indexer) watchIndices(ctx context.Context) {
 	logger := util.Logger()
 	logger.Debug("Watch indices for changes")
+	if i.options.WatchInterval == 0 {
+		logger.Debug("No watcher configured, indices will not be updated (use only for testing purposes)")
+		return
+	}
 
 	var err error
 	t := time.NewTicker(i.options.WatchInterval)

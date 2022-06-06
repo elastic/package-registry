@@ -30,12 +30,27 @@ func prepareFakeServer(t *testing.T, indexPath string) *fakestorage.Server {
 	indexContent, err := ioutil.ReadFile(indexPath)
 	require.NoError(t, err, "index file must be populated")
 
+	const firstRevision = "1"
+	serverObjects := prepareServerObjects(t, firstRevision, indexContent)
+	return fakestorage.NewServer(serverObjects)
+}
+
+func updateFakeServer(t *testing.T, server *fakestorage.Server, revision, indexPath string) {
+	indexContent, err := ioutil.ReadFile(indexPath)
+	require.NoError(t, err, "index file must be populated")
+
+	serverObjects := prepareServerObjects(t, revision, indexContent)
+
+	for _, so := range serverObjects {
+		server.CreateObject(so)
+	}
+}
+
+func prepareServerObjects(t *testing.T, revision string, indexContent []byte) []fakestorage.Object {
 	var index searchIndexAll
-	err = json.Unmarshal(indexContent, &index)
+	err := json.Unmarshal(indexContent, &index)
 	require.NoError(t, err, "index file must be valid")
 	require.NotEmpty(t, index.Packages, "index file must contain some package entries")
-
-	const firstRevision = "1"
 
 	var serverObjects []fakestorage.Object
 	// Add cursor and index file
@@ -43,25 +58,20 @@ func prepareFakeServer(t *testing.T, indexPath string) *fakestorage.Server {
 		ObjectAttrs: fakestorage.ObjectAttrs{
 			BucketName: fakePackageStorageBucketInternal, Name: cursorStoragePath,
 		},
-		Content: []byte(`{"cursor":"` + firstRevision + `"}`),
+		Content: []byte(`{"current":"` + revision + `"}`),
 	})
 	serverObjects = append(serverObjects, fakestorage.Object{
 		ObjectAttrs: fakestorage.ObjectAttrs{
-			BucketName: fakePackageStorageBucketInternal, Name: joinObjectPaths(v2MetadataStoragePath, firstRevision, searchIndexAllFile),
+			BucketName: fakePackageStorageBucketInternal, Name: joinObjectPaths(v2MetadataStoragePath, revision, searchIndexAllFile),
 		},
 		Content: indexContent,
 	})
 
 	for _, aPackage := range index.Packages {
-		var pm struct{
-			Name string `json:"name"`
-			Version string `json:"version"`
-		}
-		json.Unmarshal(aPackage.PackageManifest, &pm)
-		nameVersion := fmt.Sprintf("%s-%s", pm.Name, pm.Version)
+		nameVersion := fmt.Sprintf("%s-%s", aPackage.PackageManifest.Name, aPackage.PackageManifest.Version)
 
 		// Add fake static resources: docs, img
-		for _, asset := range aPackage.Assets {
+		for _, asset := range aPackage.PackageManifest.Assets {
 			if !strings.HasPrefix(asset, "docs") &&
 				!strings.HasPrefix(asset, "img") {
 				continue
@@ -94,9 +104,8 @@ func prepareFakeServer(t *testing.T, indexPath string) *fakestorage.Server {
 			Content: []byte(filepath.Base(path)),
 		})
 	}
-
 	t.Logf("Prepared %d packages with total %d server objects.", len(index.Packages), len(serverObjects))
-	return fakestorage.NewServer(serverObjects)
+	return serverObjects
 }
 
 func TestPrepareFakeServer(t *testing.T) {

@@ -22,10 +22,7 @@ type searchIndexAll struct {
 }
 
 type packageIndex struct {
-	PackageManifest     json.RawMessage      `json:"package"`
-	DataStreamManifests []json.RawMessage `json:"data_streams"`
-
-	Assets []string `json:"assets"`
+	PackageManifest packages.Package `json:"package_manifest"`
 }
 
 func loadSearchIndexAll(ctx context.Context, storageClient *storage.Client, bucketName, rootStoragePath string, aCursor cursor) (*searchIndexAll, error) {
@@ -76,14 +73,8 @@ func buildIndexStoragePath(rootStoragePath string, aCursor cursor, indexFile str
 
 func transformSearchIndexAllToPackages(sia searchIndexAll) (packages.Packages, error) {
 	var transformedPackages packages.Packages
-	for _, pi := range sia.Packages {
-		p, err := packages.NewPackage("/", func(p *packages.Package) (packages.PackageFileSystem, error) {
-			return newProxyPackageFileSystem(pi)
-		})
-		if err != nil {
-			return nil, errors.Wrap(err, "can't create new package")
-		}
-		transformedPackages = append(transformedPackages, p)
+	for i := range sia.Packages {
+		transformedPackages = append(transformedPackages, &sia.Packages[i].PackageManifest)
 	}
 	return transformedPackages, nil
 }
