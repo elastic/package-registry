@@ -81,7 +81,6 @@ func (i *Indexer) watchIndices(ctx context.Context) {
 		logger.Debug("No watcher configured, indices will not be updated (use only for testing purposes)")
 		return
 	}
-	i.storageClient.Bucket("f").Object("a").
 
 	var err error
 	t := time.NewTicker(i.options.WatchInterval)
