@@ -2,7 +2,7 @@
 # It expects packages to be mounted under /packages/package-registry or have a config file loaded into /package-registry/config.yml
 
 # Build binary
-ARG GO_VERSION=1.18.0
+ARG GO_VERSION=1.18.3
 FROM golang:${GO_VERSION} AS builder
 
 ENV GO111MODULE=on
@@ -12,7 +12,7 @@ RUN go build .
 
 
 # Run binary
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 # Get dependencies
 RUN apt-get update && \
