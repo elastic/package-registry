@@ -8,10 +8,12 @@ import (
 	"context"
 	"encoding/json"
 	"io/ioutil"
-	"log"
 
 	"cloud.google.com/go/storage"
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
+
+	"github.com/elastic/package-registry/util"
 )
 
 type cursor struct {
@@ -27,12 +29,13 @@ func (c *cursor) String() string {
 }
 
 func loadCursor(ctx context.Context, storageClient *storage.Client, bucketName, rootStoragePath string) (*cursor, error) {
-	log.Println("Load cursor file")
+	logger := util.Logger()
+	logger.Debug("load cursor file")
 
 	rootedCursorStoragePath := joinObjectPaths(rootStoragePath, cursorStoragePath)
 	objectReader, err := storageClient.Bucket(bucketName).Object(rootedCursorStoragePath).NewReader(ctx)
 	if err == storage.ErrObjectNotExist {
-		log.Printf("Cursor file doesn't exist, most likely a first run (path: %s)", rootedCursorStoragePath)
+		logger.Debug("cursor file doesn't exist, most likely a first run", zap.String("path", rootedCursorStoragePath))
 		return new(cursor), nil
 	}
 	if err != nil {
@@ -51,6 +54,7 @@ func loadCursor(ctx context.Context, storageClient *storage.Client, bucketName, 
 		return nil, errors.Wrapf(err, "can't unmarshal the cursor file")
 	}
 
-	log.Printf("Loaded cursor file: %s", c.String())
+	logger.Debug("cursor file doesn't exist, most likely a first run", zap.String("path", rootedCursorStoragePath))
+	logger.Debug("loaded cursor file", zap.String("cursor", c.String()))
 	return &c, nil
 }

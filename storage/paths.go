@@ -4,7 +4,12 @@
 
 package storage
 
-import "path/filepath"
+import (
+	"net/url"
+	"path/filepath"
+
+	"github.com/pkg/errors"
+)
 
 const (
 	// Internal bucket
@@ -17,6 +22,19 @@ const (
 	artifactsPackagesStoragePath = artifactsStoragePath + "/packages"
 	artifactsStaticStoragePath   = artifactsStoragePath + "/static"
 )
+
+func extractBucketNameFromURL(anURL string) (string, string, error) {
+	u, err := url.Parse(anURL)
+	if err != nil {
+		return "", "", errors.Wrap(err, "can't parse object URL")
+	}
+
+	uPath := u.Path
+	if len(uPath) == 0 {
+		return u.Host, "", nil
+	}
+	return u.Host, normalizeObjectPath(uPath), nil
+}
 
 func joinObjectPaths(paths ...string) string {
 	p := filepath.Join(paths...)

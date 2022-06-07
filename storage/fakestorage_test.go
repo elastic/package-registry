@@ -30,12 +30,27 @@ func prepareFakeServer(t *testing.T, indexPath string) *fakestorage.Server {
 	indexContent, err := ioutil.ReadFile(indexPath)
 	require.NoError(t, err, "index file must be populated")
 
+	const firstRevision = "1"
+	serverObjects := prepareServerObjects(t, firstRevision, indexContent)
+	return fakestorage.NewServer(serverObjects)
+}
+
+func updateFakeServer(t *testing.T, server *fakestorage.Server, revision, indexPath string) {
+	indexContent, err := ioutil.ReadFile(indexPath)
+	require.NoError(t, err, "index file must be populated")
+
+	serverObjects := prepareServerObjects(t, revision, indexContent)
+
+	for _, so := range serverObjects {
+		server.CreateObject(so)
+	}
+}
+
+func prepareServerObjects(t *testing.T, revision string, indexContent []byte) []fakestorage.Object {
 	var index searchIndexAll
-	err = json.Unmarshal(indexContent, &index)
+	err := json.Unmarshal(indexContent, &index)
 	require.NoError(t, err, "index file must be valid")
 	require.NotEmpty(t, index.Packages, "index file must contain some package entries")
-
-	const firstRevision = "1"
 
 	var serverObjects []fakestorage.Object
 	// Add cursor and index file
@@ -43,11 +58,11 @@ func prepareFakeServer(t *testing.T, indexPath string) *fakestorage.Server {
 		ObjectAttrs: fakestorage.ObjectAttrs{
 			BucketName: fakePackageStorageBucketInternal, Name: cursorStoragePath,
 		},
-		Content: []byte(`{"cursor":"` + firstRevision + `"}`),
+		Content: []byte(`{"current":"` + revision + `"}`),
 	})
 	serverObjects = append(serverObjects, fakestorage.Object{
 		ObjectAttrs: fakestorage.ObjectAttrs{
-			BucketName: fakePackageStorageBucketInternal, Name: joinObjectPaths(v2MetadataStoragePath, firstRevision, searchIndexAllFile),
+			BucketName: fakePackageStorageBucketInternal, Name: joinObjectPaths(v2MetadataStoragePath, revision, searchIndexAllFile),
 		},
 		Content: indexContent,
 	})
@@ -56,13 +71,15 @@ func prepareFakeServer(t *testing.T, indexPath string) *fakestorage.Server {
 		nameVersion := fmt.Sprintf("%s-%s", aPackage.PackageManifest.Name, aPackage.PackageManifest.Version)
 
 		// Add fake static resources: docs, img
-		for _, asset := range aPackage.Assets {
-			if !strings.HasPrefix(asset, "docs") &&
-				!strings.HasPrefix(asset, "img") {
+		for _, asset := range aPackage.PackageManifest.Assets {
+			assetPath, err := filepath.Rel(filepath.Join("/package", aPackage.PackageManifest.Name, aPackage.PackageManifest.Version), asset)
+			require.NoError(t, err, "relative path expected")
+			if !strings.HasPrefix(assetPath, "docs") &&
+				!strings.HasPrefix(assetPath, "img") {
 				continue
 			}
 
-			path := joinObjectPaths(artifactsStaticStoragePath, nameVersion, asset)
+			path := joinObjectPaths(artifactsStaticStoragePath, nameVersion, assetPath)
 			serverObjects = append(serverObjects, fakestorage.Object{
 				ObjectAttrs: fakestorage.ObjectAttrs{
 					BucketName: fakePackageStorageBucketPublic, Name: path,
@@ -71,8 +88,17 @@ func prepareFakeServer(t *testing.T, indexPath string) *fakestorage.Server {
 			})
 		}
 
+		// Add fake .zip.sig
+		path := joinObjectPaths(artifactsPackagesStoragePath, nameVersion+".zip.sig")
+		serverObjects = append(serverObjects, fakestorage.Object{
+			ObjectAttrs: fakestorage.ObjectAttrs{
+				BucketName: fakePackageStorageBucketPublic, Name: path,
+			},
+			Content: []byte(filepath.Base(path)),
+		})
+
 		// Add fake .zip package
-		path := joinObjectPaths(artifactsPackagesStoragePath, nameVersion+".zip")
+		path = joinObjectPaths(artifactsPackagesStoragePath, nameVersion+".zip")
 		serverObjects = append(serverObjects, fakestorage.Object{
 			ObjectAttrs: fakestorage.ObjectAttrs{
 				BucketName: fakePackageStorageBucketPublic, Name: path,
@@ -80,14 +106,13 @@ func prepareFakeServer(t *testing.T, indexPath string) *fakestorage.Server {
 			Content: []byte(filepath.Base(path)),
 		})
 	}
-
 	t.Logf("Prepared %d packages with total %d server objects.", len(index.Packages), len(serverObjects))
-	return fakestorage.NewServer(serverObjects)
+	return serverObjects
 }
 
 func TestPrepareFakeServer(t *testing.T) {
 	// given
-	indexFile := "testdata/search-index-all-1.json"
+	indexFile := "testdata/search-index-all-full.json"
 	testIndexFile, err := os.ReadFile(indexFile)
 	require.NoErrorf(t, err, "index file should be present in testdata")
 
@@ -100,11 +125,13 @@ func TestPrepareFakeServer(t *testing.T) {
 	require.NotNil(t, client, "client should be initialized")
 
 	aCursor := readObject(t, client.Bucket(fakePackageStorageBucketInternal).Object(cursorStoragePath))
-	assert.Equal(t, []byte(`{"cursor":"1"}`), aCursor)
+	assert.Equal(t, []byte(`{"current":"1"}`), aCursor)
 	anIndex := readObject(t, client.Bucket(fakePackageStorageBucketInternal).Object(joinObjectPaths(v2MetadataStoragePath, "1", searchIndexAllFile)))
 	assert.Equal(t, testIndexFile, anIndex)
 	packageZip := readObject(t, client.Bucket(fakePackageStorageBucketPublic).Object(joinObjectPaths(artifactsPackagesStoragePath, "1password-1.1.1.zip")))
 	assert.NotZero(t, len(packageZip), ".zip package must have fake content")
+	packageSig := readObject(t, client.Bucket(fakePackageStorageBucketPublic).Object(joinObjectPaths(artifactsPackagesStoragePath, "1password-1.1.1.zip.sig")))
+	assert.NotZero(t, len(packageSig), ".zip.sig must have fake content")
 
 	// check few static files
 	readme := readObject(t, client.Bucket(fakePackageStorageBucketPublic).Object(joinObjectPaths(artifactsStaticStoragePath, "1password-1.1.1", "docs/README.md")))
