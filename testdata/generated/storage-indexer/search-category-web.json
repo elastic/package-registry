@@ -1,0 +1,440 @@
+[
+  {
+    "name": "akamai",
+    "title": "Akamai",
+    "version": "1.0.0",
+    "release": "ga",
+    "description": "Akamai Integration",
+    "type": "integration",
+    "download": "/epr/akamai/akamai-1.0.0.zip",
+    "path": "/package/akamai/1.0.0",
+    "icons": [
+      {
+        "src": "/img/akamai_logo.svg",
+        "path": "/package/akamai/1.0.0/img/akamai_logo.svg",
+        "title": "Akamai",
+        "size": "409×167",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security",
+      "network",
+      "web",
+      "cloud"
+    ]
+  },
+  {
+    "name": "apache",
+    "title": "Apache HTTP Server",
+    "version": "1.3.5",
+    "release": "ga",
+    "description": "Collect logs and metrics from Apache servers with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/apache/apache-1.3.5.zip",
+    "path": "/package/apache/1.3.5",
+    "icons": [
+      {
+        "src": "/img/logo_apache.svg",
+        "path": "/package/apache/1.3.5/img/logo_apache.svg",
+        "title": "Apache Logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "web"
+    ]
+  },
+  {
+    "name": "tomcat",
+    "title": "Apache Tomcat",
+    "version": "1.3.1",
+    "release": "ga",
+    "description": "Collect and parse logs from Apache Tomcat servers with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/tomcat/tomcat-1.3.1.zip",
+    "path": "/package/tomcat/1.3.1",
+    "icons": [
+      {
+        "src": "/img/logo.svg",
+        "path": "/package/tomcat/1.3.1/img/logo.svg",
+        "title": "Apache Tomcat logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.1 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "web",
+      "security"
+    ]
+  },
+  {
+    "name": "atlassian_bitbucket",
+    "title": "Atlassian Bitbucket",
+    "version": "1.2.1",
+    "release": "ga",
+    "description": "Collect logs from Atlassian Bitbucket with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/atlassian_bitbucket/atlassian_bitbucket-1.2.1.zip",
+    "path": "/package/atlassian_bitbucket/1.2.1",
+    "icons": [
+      {
+        "src": "/img/bitbucket-logo.svg",
+        "path": "/package/atlassian_bitbucket/1.2.1/img/bitbucket-logo.svg",
+        "title": "Bitbucket Logo",
+        "size": "625x564",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security",
+      "web"
+    ]
+  },
+  {
+    "name": "atlassian_confluence",
+    "title": "Atlassian Confluence",
+    "version": "1.3.0",
+    "release": "ga",
+    "description": "Collect logs from Atlassian Confluence with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/atlassian_confluence/atlassian_confluence-1.3.0.zip",
+    "path": "/package/atlassian_confluence/1.3.0",
+    "icons": [
+      {
+        "src": "/img/confluence-logo.svg",
+        "path": "/package/atlassian_confluence/1.3.0/img/confluence-logo.svg",
+        "title": "Confluence Logo",
+        "size": "400x400",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security",
+      "web"
+    ]
+  },
+  {
+    "name": "atlassian_jira",
+    "title": "Atlassian Jira",
+    "version": "1.3.0",
+    "release": "ga",
+    "description": "Collect logs from Atlassian Jira with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/atlassian_jira/atlassian_jira-1.3.0.zip",
+    "path": "/package/atlassian_jira/1.3.0",
+    "icons": [
+      {
+        "src": "/img/jira-software-logo.svg",
+        "path": "/package/atlassian_jira/1.3.0/img/jira-software-logo.svg",
+        "title": "Jira Software Logo",
+        "size": "590x625",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security",
+      "web"
+    ]
+  },
+  {
+    "name": "azure_application_insights",
+    "title": "Azure Application Insights Metrics Overview",
+    "version": "1.0.1",
+    "release": "ga",
+    "description": "Collect application insights metrics from Azure Monitor with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/azure_application_insights/azure_application_insights-1.0.1.zip",
+    "path": "/package/azure_application_insights/1.0.1",
+    "icons": [
+      {
+        "src": "/img/app_insights.png",
+        "path": "/package/azure_application_insights/1.0.1/img/app_insights.png",
+        "title": "logo docker",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "azure",
+      "web"
+    ]
+  },
+  {
+    "name": "azure_metrics",
+    "title": "Azure Resource Metrics",
+    "version": "1.0.3",
+    "release": "ga",
+    "description": "Collect metrics from Azure resources with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/azure_metrics/azure_metrics-1.0.3.zip",
+    "path": "/package/azure_metrics/1.0.3",
+    "icons": [
+      {
+        "src": "/img/azure_metrics_logo.png",
+        "path": "/package/azure_metrics/1.0.3/img/azure_metrics_logo.png",
+        "title": "logo docker",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/obs-cloud-monitoring"
+    },
+    "categories": [
+      "azure",
+      "web"
+    ]
+  },
+  {
+    "name": "cloudflare",
+    "title": "Cloudflare",
+    "version": "2.0.0",
+    "release": "ga",
+    "description": "Collect and parse logs from Cloudflare API with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/cloudflare/cloudflare-2.0.0.zip",
+    "path": "/package/cloudflare/2.0.0",
+    "icons": [
+      {
+        "src": "/img/cf-logo-v.svg",
+        "path": "/package/cloudflare/2.0.0/img/cf-logo-v.svg",
+        "title": "Cloudflare",
+        "size": "216x216",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security",
+      "network",
+      "web",
+      "cloud"
+    ]
+  },
+  {
+    "name": "keycloak",
+    "title": "Keycloak",
+    "version": "1.2.1",
+    "release": "ga",
+    "description": "Keycloak Integration",
+    "type": "integration",
+    "download": "/epr/keycloak/keycloak-1.2.1.zip",
+    "path": "/package/keycloak/1.2.1",
+    "icons": [
+      {
+        "src": "/img/keycloak-logo.svg",
+        "path": "/package/keycloak/1.2.1/img/keycloak-logo.svg",
+        "title": "Keycloak",
+        "size": "256x256",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security",
+      "network",
+      "web"
+    ]
+  },
+  {
+    "name": "mattermost",
+    "title": "Mattermost",
+    "version": "1.1.1",
+    "release": "ga",
+    "description": "Collect and parse logs from Mattermost with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/mattermost/mattermost-1.1.1.zip",
+    "path": "/package/mattermost/1.1.1",
+    "icons": [
+      {
+        "src": "/img/mattermost-logo.svg",
+        "path": "/package/mattermost/1.1.1/img/mattermost-logo.svg",
+        "title": "Mattermost logo",
+        "size": "537x535",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security",
+      "web"
+    ]
+  },
+  {
+    "name": "nginx",
+    "title": "Nginx",
+    "version": "1.3.1",
+    "release": "ga",
+    "description": "Collect logs and metrics from Nginx HTTP servers with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/nginx/nginx-1.3.1.zip",
+    "path": "/package/nginx/1.3.1",
+    "icons": [
+      {
+        "src": "/img/logo_nginx.svg",
+        "path": "/package/nginx/1.3.1/img/logo_nginx.svg",
+        "title": "logo nginx",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "web",
+      "security"
+    ]
+  },
+  {
+    "name": "nginx_ingress_controller",
+    "title": "Nginx Ingress Controller Logs",
+    "version": "1.2.0",
+    "release": "ga",
+    "description": "Collect and parse logs from Nginx Ingress Controller instances with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/nginx_ingress_controller/nginx_ingress_controller-1.2.0.zip",
+    "path": "/package/nginx_ingress_controller/1.2.0",
+    "icons": [
+      {
+        "src": "/img/logo_nginx.svg",
+        "path": "/package/nginx_ingress_controller/1.2.0/img/logo_nginx.svg",
+        "title": "Nginx logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "web",
+      "security"
+    ]
+  },
+  {
+    "name": "traefik",
+    "title": "Traefik",
+    "version": "1.2.0",
+    "release": "ga",
+    "description": "Collect logs and metrics from Traefik servers with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/traefik/traefik-1.2.0.zip",
+    "path": "/package/traefik/1.2.0",
+    "icons": [
+      {
+        "src": "/img/traefik.svg",
+        "path": "/package/traefik/1.2.0/img/traefik.svg",
+        "title": "traefik",
+        "size": "259x296",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "web",
+      "security"
+    ]
+  }
+]

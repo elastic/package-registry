@@ -26,7 +26,13 @@ const (
 	fakePackageStorageBucketPublic   = "fake-package-storage-public"
 )
 
-func prepareFakeServer(t *testing.T, indexPath string) *fakestorage.Server {
+var FakeIndexerOptions = IndexerOptions{
+	PackageStorageBucketInternal: "gs://" + fakePackageStorageBucketInternal,
+	PackageStorageBucketPublic:   "gs://" + fakePackageStorageBucketPublic,
+	WatchInterval:                0,
+}
+
+func PrepareFakeServer(t *testing.T, indexPath string) *fakestorage.Server {
 	indexContent, err := ioutil.ReadFile(indexPath)
 	require.NoError(t, err, "index file must be populated")
 
@@ -117,7 +123,7 @@ func TestPrepareFakeServer(t *testing.T) {
 	require.NoErrorf(t, err, "index file should be present in testdata")
 
 	// when
-	fs := prepareFakeServer(t, indexFile)
+	fs := PrepareFakeServer(t, indexFile)
 	defer fs.Stop()
 
 	// then

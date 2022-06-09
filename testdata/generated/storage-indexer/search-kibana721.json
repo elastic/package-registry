@@ -1,0 +1,25 @@
+[
+  {
+    "name": "log",
+    "title": "Custom Logs",
+    "version": "1.0.0",
+    "release": "ga",
+    "description": "Collect custom logs with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/log/log-1.0.0.zip",
+    "path": "/package/log/1.0.0",
+    "icons": [
+      {
+        "src": "/img/icon.svg",
+        "path": "/package/log/1.0.0/img/icon.svg",
+        "type": "image/svg+xml"
+      }
+    ],
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "custom"
+    ]
+  }
+]

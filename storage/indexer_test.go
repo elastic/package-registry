@@ -15,14 +15,10 @@ import (
 
 func TestInit(t *testing.T) {
 	// given
-	fs := prepareFakeServer(t, "testdata/search-index-all-full.json")
+	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
-	indexer := NewIndexer(storageClient, IndexerOptions{
-		PackageStorageBucketInternal: "gs://" + fakePackageStorageBucketInternal,
-		PackageStorageBucketPublic:   "gs://" + fakePackageStorageBucketPublic,
-		WatchInterval:                0,
-	})
+	indexer := NewIndexer(storageClient, FakeIndexerOptions)
 
 	// when
 	err := indexer.Init(context.Background())
@@ -33,14 +29,10 @@ func TestInit(t *testing.T) {
 
 func TestGet_ListAllPackages(t *testing.T) {
 	// given
-	fs := prepareFakeServer(t, "testdata/search-index-all-full.json")
+	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
-	indexer := NewIndexer(storageClient, IndexerOptions{
-		PackageStorageBucketInternal: "gs://" + fakePackageStorageBucketInternal,
-		PackageStorageBucketPublic:   "gs://" + fakePackageStorageBucketPublic,
-		WatchInterval:                0,
-	})
+	indexer := NewIndexer(storageClient, FakeIndexerOptions)
 
 	err := indexer.Init(context.Background())
 	require.NoError(t, err, "storage indexer must be initialized properly")
@@ -55,14 +47,10 @@ func TestGet_ListAllPackages(t *testing.T) {
 
 func TestGet_FindLatestPackage(t *testing.T) {
 	// given
-	fs := prepareFakeServer(t, "testdata/search-index-all-full.json")
+	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
-	indexer := NewIndexer(storageClient, IndexerOptions{
-		PackageStorageBucketInternal: "gs://" + fakePackageStorageBucketInternal,
-		PackageStorageBucketPublic:   "gs://" + fakePackageStorageBucketPublic,
-		WatchInterval:                0,
-	})
+	indexer := NewIndexer(storageClient, FakeIndexerOptions)
 
 	err := indexer.Init(context.Background())
 	require.NoError(t, err, "storage indexer must be initialized properly")
@@ -84,14 +72,10 @@ func TestGet_FindLatestPackage(t *testing.T) {
 
 func TestGet_UnknownPackage(t *testing.T) {
 	// given
-	fs := prepareFakeServer(t, "testdata/search-index-all-full.json")
+	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
-	indexer := NewIndexer(storageClient, IndexerOptions{
-		PackageStorageBucketInternal: "gs://" + fakePackageStorageBucketInternal,
-		PackageStorageBucketPublic:   "gs://" + fakePackageStorageBucketPublic,
-		WatchInterval:                0,
-	})
+	indexer := NewIndexer(storageClient, FakeIndexerOptions)
 
 	err := indexer.Init(context.Background())
 	require.NoError(t, err, "storage indexer must be initialized properly")
@@ -111,14 +95,10 @@ func TestGet_UnknownPackage(t *testing.T) {
 
 func TestGet_IndexUpdated(t *testing.T) {
 	// given
-	fs := prepareFakeServer(t, "testdata/search-index-all-small.json")
+	fs := PrepareFakeServer(t, "testdata/search-index-all-small.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
-	indexer := NewIndexer(storageClient, IndexerOptions{
-		PackageStorageBucketInternal: "gs://" + fakePackageStorageBucketInternal,
-		PackageStorageBucketPublic:   "gs://" + fakePackageStorageBucketPublic,
-		WatchInterval:                0,
-	})
+	indexer := NewIndexer(storageClient, FakeIndexerOptions)
 
 	err := indexer.Init(context.Background())
 	require.NoError(t, err, "storage indexer must be initialized properly")

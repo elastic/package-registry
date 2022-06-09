@@ -52,13 +52,14 @@ func TestUnmarshalJSON(t *testing.T) {
 	require.NoError(t, err, "packages should be loaded")
 	for i := range indexer.packageList {
 		require.Equal(t, packages[i].Name, indexer.packageList[i].Name)
-		require.Equal(t, packages[i].Version, indexer.packageList[i].Version)
-		require.Equal(t, packages[i].Title, indexer.packageList[i].Title)
-		require.Equal(t, packages[i].versionSemVer, indexer.packageList[i].versionSemVer)
+		assert.Equal(t, packages[i].Version, indexer.packageList[i].Version)
+		assert.Equal(t, packages[i].Title, indexer.packageList[i].Title)
+		assert.Equal(t, packages[i].versionSemVer, indexer.packageList[i].versionSemVer)
+		assert.Len(t, packages[i].BasePolicyTemplates, len(packages[i].PolicyTemplates), packages[i].Name)
 		if indexer.packageList[i].Conditions != nil && indexer.packageList[i].Conditions.Kibana != nil {
-			require.Equal(t, packages[i].Conditions.Kibana.constraint, indexer.packageList[i].Conditions.Kibana.constraint)
+			assert.Equal(t, packages[i].Conditions.Kibana.constraint, indexer.packageList[i].Conditions.Kibana.constraint)
 		}
-		require.Nil(t, packages[i].fsBuilder)
+		assert.Nil(t, packages[i].fsBuilder)
 	}
 }
 
