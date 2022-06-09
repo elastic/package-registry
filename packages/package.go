@@ -213,19 +213,10 @@ func NewPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) 
 
 		// Collect basic information from policy templates and store into the /search endpoint
 		t := p.PolicyTemplates[i]
-		baseT := BasePolicyTemplate{
-			Name:        t.Name,
-			Title:       t.Title,
-			Description: t.Description,
-			Categories:  t.Categories,
-		}
 
 		for k, i := range p.PolicyTemplates[i].Icons {
 			t.Icons[k].Path = i.getPath(p)
 		}
-
-		baseT.Icons = t.Icons
-		p.BasePolicyTemplates = append(p.BasePolicyTemplates, baseT)
 
 		// Store paths for all screenshots under each policy template
 		if p.PolicyTemplates[i].Screenshots != nil {
@@ -249,6 +240,8 @@ func NewPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) 
 			p.PolicyTemplates[i].Readme = &readmePathShort
 		}
 	}
+
+	p.setBasePolicyTemplates()
 
 	if p.Type == "" {
 		p.Type = defaultType
@@ -336,6 +329,23 @@ func (p *Package) setRuntimeFields() error {
 		}
 	}
 	return nil
+}
+
+// setBasePolicyTemplates method mirrors policy_templates from Package to a corresponding property in BasePackage.
+// It's required to perform that sync, because PolicyTemplates and BasePolicyTemplates have same JSON annotation
+// (policy_template).
+func (p *Package) setBasePolicyTemplates() {
+	for _, t := range p.PolicyTemplates {
+		baseT := BasePolicyTemplate{
+			Name:        t.Name,
+			Title:       t.Title,
+			Description: t.Description,
+			Categories:  t.Categories,
+			Icons:       t.Icons,
+		}
+
+		p.BasePolicyTemplates = append(p.BasePolicyTemplates, baseT)
+	}
 }
 
 func (p *Package) HasCategory(category string) bool {
