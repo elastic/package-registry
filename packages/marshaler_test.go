@@ -55,7 +55,7 @@ func TestUnmarshalJSON(t *testing.T) {
 		assert.Equal(t, packages[i].Version, indexer.packageList[i].Version)
 		assert.Equal(t, packages[i].Title, indexer.packageList[i].Title)
 		assert.Equal(t, packages[i].versionSemVer, indexer.packageList[i].versionSemVer)
-		assert.Len(t, packages[i].BasePolicyTemplates, len(packages[i].PolicyTemplates), packages[i].Name)
+		assert.Len(t, packages[i].BasePolicyTemplates, len(packages[i].PolicyTemplates))
 		if indexer.packageList[i].Conditions != nil && indexer.packageList[i].Conditions.Kibana != nil {
 			assert.Equal(t, packages[i].Conditions.Kibana.constraint, indexer.packageList[i].Conditions.Kibana.constraint)
 		}
