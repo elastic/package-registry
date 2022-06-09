@@ -17,6 +17,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "1password",
+        "title": "1Password Events",
+        "description": "Collect events from 1Password Events Reporting"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.16.0 || ^8.0.0"
@@ -45,6 +52,349 @@
         "title": "logo aws",
         "size": "32x32",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "billing",
+        "title": "AWS Billing",
+        "description": "Collect billing metrics with Elastic Agent",
+        "icons": [
+          {
+            "src": "/img/logo_billing.svg",
+            "path": "/package/aws/1.16.0/img/logo_billing.svg",
+            "title": "AWS Billing logo",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "cloudtrail",
+        "title": "AWS CloudTrail",
+        "description": "Collect AWS CloudTrail logs with Elastic Agent",
+        "icons": [
+          {
+            "src": "/img/logo_cloudtrail.svg",
+            "path": "/package/aws/1.16.0/img/logo_cloudtrail.svg",
+            "title": "AWS Cloudtrail logo",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "categories": [
+          "security"
+        ]
+      },
+      {
+        "name": "cloudwatch",
+        "title": "AWS CloudWatch",
+        "description": "Use this integration to collect logs and metrics from Amazon CloudWatch with Elastic Agent, where no out of the box integration is available.",
+        "icons": [
+          {
+            "src": "/img/logo_cloudwatch.svg",
+            "path": "/package/aws/1.16.0/img/logo_cloudwatch.svg",
+            "title": "AWS CloudWatch logo",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "dynamodb",
+        "title": "Amazon DynamoDB",
+        "description": "Collect Amazon DynamoDB metrics with Elastic Agent",
+        "icons": [
+          {
+            "src": "/img/logo_dynamodb.svg",
+            "path": "/package/aws/1.16.0/img/logo_dynamodb.svg",
+            "title": "AWS DynamoDB logo",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "categories": [
+          "datastore"
+        ]
+      },
+      {
+        "name": "ebs",
+        "title": "Amazon EBS",
+        "description": "Collect Amazon Elastic Block Storage metrics with Elastic Agent",
+        "icons": [
+          {
+            "src": "/img/logo_ebs.svg",
+            "path": "/package/aws/1.16.0/img/logo_ebs.svg",
+            "title": "AWS EBS logo",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "categories": [
+          "datastore"
+        ]
+      },
+      {
+        "name": "ec2",
+        "title": "Amazon EC2",
+        "description": "Collect logs and metrics for Amazon Elastic Compute Cloud service with Elastic Agent",
+        "icons": [
+          {
+            "src": "/img/logo_ec2.svg",
+            "path": "/package/aws/1.16.0/img/logo_ec2.svg",
+            "title": "AWS EC2 logo",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "elb",
+        "title": "AWS ELB",
+        "description": "Collect logs and metrics for Amazon Elastic Load Balancing service with Elastic Agent",
+        "icons": [
+          {
+            "src": "/img/logo_elb.svg",
+            "path": "/package/aws/1.16.0/img/logo_elb.svg",
+            "title": "AWS ELB logo",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "categories": [
+          "network"
+        ]
+      },
+      {
+        "name": "lambda",
+        "title": "AWS Lambda",
+        "description": "Collect Lambda metrics with Elastic Agent",
+        "icons": [
+          {
+            "src": "/img/logo_lambda.svg",
+            "path": "/package/aws/1.16.0/img/logo_lambda.svg",
+            "title": "AWS Lambda logo",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "natgateway",
+        "title": "Amazon NAT Gateway",
+        "description": "Collect Amazon NAT Gateways metrics with Elastic Agent",
+        "icons": [
+          {
+            "src": "/img/logo_natgateway.svg",
+            "path": "/package/aws/1.16.0/img/logo_natgateway.svg",
+            "title": "AWS NATGateway logo",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "categories": [
+          "network"
+        ]
+      },
+      {
+        "name": "firewall",
+        "title": "AWS Network Firewall",
+        "description": "Collect AWS Network Firewall logs and metrics with Elastic Agent",
+        "icons": [
+          {
+            "src": "/img/logo_firewall.svg",
+            "path": "/package/aws/1.16.0/img/logo_firewall.svg",
+            "title": "AWS Network Firewall logo",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "categories": [
+          "security"
+        ]
+      },
+      {
+        "name": "rds",
+        "title": "Amazon RDS",
+        "description": "Collect Amazon Relational Database Service metrics with Elastic Agent",
+        "icons": [
+          {
+            "src": "/img/logo_rds.svg",
+            "path": "/package/aws/1.16.0/img/logo_rds.svg",
+            "title": "AWS RDS logo",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "categories": [
+          "datastore"
+        ]
+      },
+      {
+        "name": "s3",
+        "title": "Amazon S3",
+        "description": "Monitor Amazon S3 buckets by collecting access logs, storage & request metrics with Elastic Agent",
+        "icons": [
+          {
+            "src": "/img/logo_s3.svg",
+            "path": "/package/aws/1.16.0/img/logo_s3.svg",
+            "title": "AWS S3 logo",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "categories": [
+          "datastore",
+          "security"
+        ]
+      },
+      {
+        "name": "s3_storage_lens",
+        "title": "Amazon S3 Storage Lens",
+        "description": "Collect Amazon S3 Storage Lens metrics with Elastic Agent",
+        "icons": [
+          {
+            "src": "/img/logo_s3_storage_lens.svg",
+            "path": "/package/aws/1.16.0/img/logo_s3_storage_lens.svg",
+            "title": "AWS S3 storage lens logo",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "categories": [
+          "datastore"
+        ]
+      },
+      {
+        "name": "sns",
+        "title": "Amazon SNS",
+        "description": "Collect Amazon SNS metrics with Elastic Agent",
+        "icons": [
+          {
+            "src": "/img/logo_sns.svg",
+            "path": "/package/aws/1.16.0/img/logo_sns.svg",
+            "title": "AWS SNS logo",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "sqs",
+        "title": "Amazon SQS",
+        "description": "Collect Amazon SQS metrics with Elastic Agent",
+        "icons": [
+          {
+            "src": "/img/logo_sqs.svg",
+            "path": "/package/aws/1.16.0/img/logo_sqs.svg",
+            "title": "AWS SQS logo",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "transitgateway",
+        "title": "AWS Transit Gateway",
+        "description": "Collect AWS Transit Gateways metrics with Elastic Agent",
+        "icons": [
+          {
+            "src": "/img/logo_transitgateway.svg",
+            "path": "/package/aws/1.16.0/img/logo_transitgateway.svg",
+            "title": "AWS Transit Gateway logo",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "categories": [
+          "network"
+        ]
+      },
+      {
+        "name": "usage",
+        "title": "AWS Usage",
+        "description": "Collect AWS usage metrics with Elastic Agent"
+      },
+      {
+        "name": "vpcflow",
+        "title": "Amazon VPC",
+        "description": "Collect Amazon VPC flow logs with Elastic Agent",
+        "icons": [
+          {
+            "src": "/img/logo_vpcflow.svg",
+            "path": "/package/aws/1.16.0/img/logo_vpcflow.svg",
+            "title": "AWS VPC logo",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "categories": [
+          "network",
+          "security"
+        ]
+      },
+      {
+        "name": "vpn",
+        "title": "Amazon VPN",
+        "description": "Collect VPN metrics with Elastic Agent",
+        "icons": [
+          {
+            "src": "/img/logo_vpn.svg",
+            "path": "/package/aws/1.16.0/img/logo_vpn.svg",
+            "title": "AWS VPN logo",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "categories": [
+          "network"
+        ]
+      },
+      {
+        "name": "waf",
+        "title": "AWS WAF",
+        "description": "Collect AWS WAF logs with Elastic Agent",
+        "icons": [
+          {
+            "src": "/img/logo_waf.svg",
+            "path": "/package/aws/1.16.0/img/logo_waf.svg",
+            "title": "AWS VPC logo",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "categories": [
+          "network",
+          "security"
+        ]
+      },
+      {
+        "name": "route53",
+        "title": "AWS Route 53",
+        "description": "Collect AWS Route53 logs with Elastic Agent",
+        "icons": [
+          {
+            "src": "/img/logo_route53.svg",
+            "path": "/package/aws/1.16.0/img/logo_route53.svg",
+            "title": "AWS Route53 logo",
+            "size": "32x40",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "cloudfront",
+        "title": "Amazon CloudFront",
+        "description": "Collect Amazon CloudFront logs with Elastic Agent",
+        "icons": [
+          {
+            "src": "/img/logo_cloudfront.svg",
+            "path": "/package/aws/1.16.0/img/logo_cloudfront.svg",
+            "title": "AWS CloudFront logo",
+            "size": "33x39",
+            "type": "image/svg+xml"
+          }
+        ]
       }
     ],
     "conditions": {
@@ -76,6 +426,13 @@
         "title": "logo aws fargate",
         "size": "64x64",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "awsfargate",
+        "title": "AWS Fargate metrics from Amazon ECS clusters",
+        "description": "Collect metrics from instances running on Amazon ECS clusters"
       }
     ],
     "conditions": {
@@ -110,6 +467,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "ti_abusech",
+        "title": "AbuseCH API",
+        "description": "Collect threat intelligence from the AbuseCH API"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^8.0.0"
@@ -140,6 +504,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "activemq",
+        "title": "ActiveMQ logs and metrics",
+        "description": "Collect logs and metrics from ActiveMQ instances"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.16.0 || ^8.0.0"
@@ -168,6 +539,13 @@
         "title": "Akamai",
         "size": "409×167",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "akamai",
+        "title": "Akamai logs",
+        "description": "Collect SIEM logs from Akamai"
       }
     ],
     "conditions": {
@@ -203,6 +581,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "ti_otx",
+        "title": "Alienvault OTX",
+        "description": "Collect threat intelligence from the Alienvault OTX"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^8.0.0"
@@ -231,6 +616,13 @@
         "title": "Anomali",
         "size": "216x216",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "ti_anomali",
+        "title": "Anomali",
+        "description": "Collect threat intelligence from the Anomali Limo API and Anomali Threatstream."
       }
     ],
     "conditions": {
@@ -263,6 +655,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "apache",
+        "title": "Apache logs and metrics",
+        "description": "Collect logs and metrics from Apache instances"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.14.0 || ^8.0.0"
@@ -291,6 +690,13 @@
         "title": "Apache Tomcat logo",
         "size": "32x32",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "log",
+        "title": "Apache Tomcat",
+        "description": "Collect Apache Tomcat logs from syslog or a file."
       }
     ],
     "conditions": {
@@ -324,6 +730,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "audit",
+        "title": "Audit Logs",
+        "description": "Collect audit logs from Atlassian Bitbucket with Elastic Agent."
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.16.0 || ^8.0.0"
@@ -353,6 +766,13 @@
         "title": "Confluence Logo",
         "size": "400x400",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "audit",
+        "title": "Audit Logs",
+        "description": "Collect audit logs from Atlassian Confluence with Elastic Agent."
       }
     ],
     "conditions": {
@@ -386,6 +806,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "audit",
+        "title": "Audit Logs",
+        "description": "Collect audit logs from Atlassian Jira with Elastic Agent."
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.16.0 || ^8.0.0"
@@ -415,6 +842,13 @@
         "title": "linux",
         "size": "299x354",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "auditd",
+        "title": "Auditd logs",
+        "description": "Collect logs from Auditd instances"
       }
     ],
     "conditions": {
@@ -447,6 +881,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "auditd",
+        "title": "Auditd",
+        "description": "Collect auditd events"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^8.2.0"
@@ -476,6 +917,13 @@
         "title": "Auth0 logo",
         "size": "32x32",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "auth0_events",
+        "title": "Auth0 log stream events via Webhooks",
+        "description": "Collect Auth0 log streams events via Webhooks."
       }
     ],
     "conditions": {
@@ -510,6 +958,36 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "app_insights",
+        "title": "Azure Application Insights Metrics",
+        "description": "Collect application insights metrics from Azure Monitor with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img//app_insights.png",
+            "path": "/package/azure_application_insights/1.0.1/img/app_insights.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "app_state",
+        "title": "Azure Application State Insights Metrics",
+        "description": "Collect application state related metrics from Azure Monitor with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/application_insights_blue.png",
+            "path": "/package/azure_application_insights/1.0.1/img/application_insights_blue.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.14.0 || ^8.0.0"
@@ -541,6 +1019,22 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "billing",
+        "title": "Azure Billing Metrics",
+        "description": "Collect billing information with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img//billing.png",
+            "path": "/package/azure_billing/1.0.1/img/billing.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.15.0 || ^8.0.0"
@@ -569,6 +1063,78 @@
         "title": "logo azure",
         "size": "32x32",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "eventhub",
+        "title": "Azure Event Hub Input",
+        "description": "Azure Event Hub input integration",
+        "icons": [
+          {
+            "src": "/img/eventhub.png",
+            "path": "/package/azure/1.1.8/img/eventhub.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "adlogs",
+        "title": "Azure Active Directory logs",
+        "description": "Azure Directory logs integration",
+        "icons": [
+          {
+            "src": "/img/active_directory_logo.png",
+            "path": "/package/azure/1.1.8/img/active_directory_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "platformlogs",
+        "title": "Azure platform logs",
+        "description": "Azure platform logs integration",
+        "icons": [
+          {
+            "src": "/img/platformlogs_logo.png",
+            "path": "/package/azure/1.1.8/img/platformlogs_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "activitylogs",
+        "title": "Azure activity logs",
+        "description": "Azure activity logs integration",
+        "icons": [
+          {
+            "src": "/img/platformlogs_logo.png",
+            "path": "/package/azure/1.1.8/img/platformlogs_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "springcloudlogs",
+        "title": "Azure Spring Cloud logs",
+        "description": "Azure Spring Cloud logs integration",
+        "icons": [
+          {
+            "src": "/img/spring_logs.svg",
+            "path": "/package/azure/1.1.8/img/spring_logs.svg",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
       }
     ],
     "conditions": {
@@ -604,6 +1170,120 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "monitor",
+        "title": "Azure Monitor Metrics",
+        "description": "Collect metrics from Azure Monitor with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/monitor_logo.png",
+            "path": "/package/azure_metrics/1.0.3/img/monitor_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "compute_vm",
+        "title": "Azure Virtual Machines Metrics",
+        "description": "Collect metrics from Azure Virtual Machines with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/compute_vm_logo.png",
+            "path": "/package/azure_metrics/1.0.3/img/compute_vm_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "compute_vm_scaleset",
+        "title": "Azure Virtual Machines Scaleset Metrics",
+        "description": "Collect metrics from Azure Virtual Machine Scalesets with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/compute_vm_scaleset_logo.png",
+            "path": "/package/azure_metrics/1.0.3/img/compute_vm_scaleset_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "container_registry",
+        "title": "Azure Container Registry Metrics",
+        "description": "Collect metrics from Azure Container Registry with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/container_registry_logo.png",
+            "path": "/package/azure_metrics/1.0.3/img/container_registry_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "container_instance",
+        "title": "Azure Container Instance Metrics",
+        "description": "Collect metrics from Azure Container Instances with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/container_instance_logo.png",
+            "path": "/package/azure_metrics/1.0.3/img/container_instance_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "container_service",
+        "title": "Azure Container Service Metrics",
+        "description": "Collect metrics from Azure Container Service with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/container_service_logo.png",
+            "path": "/package/azure_metrics/1.0.3/img/container_service_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "database_account",
+        "title": "Azure Database Account Metrics",
+        "description": "Collect metrics from Azure Database accounts with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/database_account_logo.png",
+            "path": "/package/azure_metrics/1.0.3/img/database_account_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "storage_account",
+        "title": "Azure Storage Account Metrics",
+        "description": "Collect metrics from Azure Storage accounts with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/storage_account_logo.png",
+            "path": "/package/azure_metrics/1.0.3/img/storage_account_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.14.0 || ^8.0.0"
@@ -626,6 +1306,13 @@
     "type": "integration",
     "download": "/epr/cef/cef-2.0.0.zip",
     "path": "/package/cef/2.0.0",
+    "policy_templates": [
+      {
+        "name": "cef",
+        "title": "CEF logs",
+        "description": "Collect logs from CEF instances"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^8.0.0"
@@ -655,6 +1342,13 @@
         "title": "cassandra",
         "size": "279x187",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "cassandra",
+        "title": "Cassandra logs and metrics",
+        "description": "Collect logs and metrics from Cassandra"
       }
     ],
     "conditions": {
@@ -688,6 +1382,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "checkpoint",
+        "title": "Check Point logs",
+        "description": "Collect logs from Check Point instances"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.16.0 || ^8.0.0"
@@ -716,6 +1417,13 @@
         "title": "cisco",
         "size": "216x216",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "cisco_asa",
+        "title": "Cisco ASA logs",
+        "description": "Collect logs from Cisco ASA instances"
       }
     ],
     "conditions": {
@@ -749,6 +1457,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "cisco_duo",
+        "title": "Cisco Duo logs",
+        "description": "Collect Cisco Duo logs"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.17.2 || ^8.0.0"
@@ -777,6 +1492,13 @@
         "title": "cisco",
         "size": "216x216",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "cisco_ftd",
+        "title": "Cisco FTD logs",
+        "description": "Collect logs from Cisco FTD instances"
       }
     ],
     "conditions": {
@@ -810,6 +1532,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "cisco_ios",
+        "title": "Cisco IOS logs",
+        "description": "Collect logs from Cisco IOS instances"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.16.0 || ^8.0.0"
@@ -839,6 +1568,13 @@
         "title": "Cisco ISE logo",
         "size": "32x32",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "Cisco ISE",
+        "title": "Cisco_ISE logs",
+        "description": "Collect cisco_ise logs"
       }
     ],
     "conditions": {
@@ -871,6 +1607,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "Cisco Secure Email Gateway",
+        "title": "Cisco Secure Email Gateway logs",
+        "description": "Collect Cisco Secure Email Gateway logs."
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.17.0 || ^8.0.0"
@@ -899,6 +1642,13 @@
         "title": "cisco",
         "size": "216x216",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "cisco_secure_endpoint",
+        "title": "Cisco Secure Endpoint logs",
+        "description": "Collect logs from Cisco Secure Endpoint"
       }
     ],
     "conditions": {
@@ -932,6 +1682,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "cisco_umbrella",
+        "title": "Cisco Umbrella logs",
+        "description": "Collect logs from Cisco Umbrella instances"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^8.0.0"
@@ -961,6 +1718,13 @@
         "title": "Cloudflare",
         "size": "216x216",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "cloudflare",
+        "title": "Cloudflare logs",
+        "description": "Collect logs from Cloudflare"
       }
     ],
     "conditions": {
@@ -996,6 +1760,22 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "status",
+        "title": "CockroachDB",
+        "description": "CockroachDB metrics Integration",
+        "icons": [
+          {
+            "src": "/img/cockroachdb.png",
+            "path": "/package/cockroachdb/0.2.0/img/cockroachdb.png",
+            "title": "logo cockroachdb",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.14.0 || ^8.0.0"
@@ -1026,6 +1806,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "crowdstrike",
+        "title": "CrowdStrike",
+        "description": "Collect logs from CrowdStrike Falcon and FDR"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.16.0 || ^8.0.0"
@@ -1052,6 +1839,13 @@
         "src": "/img/icon.svg",
         "path": "/package/aws_logs/0.2.1/img/icon.svg",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "aws_logs",
+        "title": "Custom AWS Logs",
+        "description": "Collect raw logs from AWS S3 or CloudWatch with Elastic Agent."
       }
     ],
     "conditions": {
@@ -1086,6 +1880,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "gcp",
+        "title": "Custom Google Pub/Sub Logs",
+        "description": "Collect Logs from Google Pub/Sub topics"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.16.0 || ^8.0.0"
@@ -1116,6 +1917,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "http_endpoint",
+        "title": "Custom HTTP Endpoint Logs",
+        "description": "Collect JSON data from listening HTTP port with Elastic Agent."
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.16.0 || ^8.0.0"
@@ -1137,6 +1945,13 @@
     "type": "integration",
     "download": "/epr/httpjson/httpjson-1.1.1.zip",
     "path": "/package/httpjson/1.1.1",
+    "policy_templates": [
+      {
+        "name": "generic",
+        "title": "Custom HTTPJSON Input",
+        "description": "Collect custom data from REST API's"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.16.0 || ^8.0.0"
@@ -1165,6 +1980,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Custom logs",
+        "description": "Collect your custom log files."
+      }
+    ],
     "owner": {
       "github": "elastic/integrations"
     },
@@ -1186,6 +2008,13 @@
         "src": "/img/icon.svg",
         "path": "/package/tcp/1.0.0/img/icon.svg",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "tcp",
+        "title": "Custom TCP Logs",
+        "description": "Collect raw TCP data from listening TCP port with Elastic Agent."
       }
     ],
     "conditions": {
@@ -1216,6 +2045,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "udp",
+        "title": "Custom UDP Logs",
+        "description": "Collect raw UDP data from listening UDP port with Elastic Agent."
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.16.0 || ^8.0.0"
@@ -1242,6 +2078,13 @@
         "src": "/img/logo_windows.svg",
         "path": "/package/winlog/1.4.0/img/logo_windows.svg",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "winlogs",
+        "title": "Custom Windows event logs",
+        "description": "Collect your custom Windows event logs."
       }
     ],
     "conditions": {
@@ -1274,6 +2117,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "cyberarkpas",
+        "title": "CyberArk Privileged Access Security audit logs",
+        "description": "Collect logs from Vault instances"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.16.0 || ^8.0.0"
@@ -1302,6 +2152,13 @@
         "title": "Cybersixgill",
         "size": "32x32",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "cybersixgill",
+        "title": "Cybersixgill Threat Intel",
+        "description": "Collect Threat Intel from Cybersixgill"
       }
     ],
     "conditions": {
@@ -1335,6 +2192,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "docker",
+        "title": "Docker metrics",
+        "description": "Collect metrics from Docker instances"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.14.0 || ^8.0.0"
@@ -1364,6 +2228,13 @@
         "title": "APM Logo",
         "size": "32x32",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "apmserver",
+        "title": "Elastic APM Integration",
+        "description": "Elastic APM Integration"
       }
     ],
     "conditions": {
@@ -1426,6 +2297,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "synthetics",
+        "title": "Elastic Synthetics",
+        "description": "Perform synthetic health checks on network endpoints."
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^8.1.0"
@@ -1457,6 +2335,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "endpoint",
+        "title": "Endpoint Security Integration",
+        "description": "Interact with the endpoint."
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^8.3.0"
@@ -1486,6 +2371,13 @@
         "title": "Fireeye logo",
         "size": "32x32",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "fireeye",
+        "title": "Fireeye NX logs",
+        "description": "Collect Fireeye NX logs"
       }
     ],
     "conditions": {
@@ -1520,6 +2412,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "fleet_server",
+        "title": "Fleet Server",
+        "description": "Fleet Server setup"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.16.0 || ^8.0.0"
@@ -1550,6 +2449,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "fortinet",
+        "title": "Fortinet logs",
+        "description": "Collect logs from Fortinet instances"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.14.1 || ^8.0.0"
@@ -1578,6 +2484,13 @@
         "title": "logo gcp",
         "size": "32x32",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "gcp",
+        "title": "Google Cloud Platform (GCP) logs",
+        "description": "Collect logs from Google Cloud Platform (GCP) instances"
       }
     ],
     "conditions": {
@@ -1612,6 +2525,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "santa",
+        "title": "Google Santa logs",
+        "description": "Collect logs from Google Santa instances"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.17.0 || ^8.0.0"
@@ -1641,6 +2561,13 @@
         "title": "logo Google",
         "size": "32x32",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "google_workspace",
+        "title": "Google Workspace logs",
+        "description": "Collect logs from Google Workspace APIs"
       }
     ],
     "conditions": {
@@ -1673,6 +2600,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "hashicorp_vault",
+        "title": "Hashicorp Vault",
+        "description": "Collect logs and monitor Hashicorp Vault."
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.16.0 || ^8.0.0"
@@ -1701,6 +2635,13 @@
         "title": "logo Hitachi ID Bravura Monitor",
         "size": "50x50",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "hid_bravura_monitor",
+        "title": "Hitachi ID Bravura Monitor logs",
+        "description": "Collect logs from Hitachi ID Bravura Monitor instances"
       }
     ],
     "conditions": {
@@ -1733,6 +2674,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "iis",
+        "title": "IIS logs and metrics",
+        "description": "Collect logs and metrics from IIS instances"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.14.0 || ^8.0.0"
@@ -1761,6 +2709,13 @@
         "title": "linux",
         "size": "299x354",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "iptables",
+        "title": "Iptables logs",
+        "description": "Collect logs from iptables instances"
       }
     ],
     "conditions": {
@@ -1794,6 +2749,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "juniper",
+        "title": "Juniper logs",
+        "description": "Collect Juniper logs from syslog or a file."
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^8.0.0"
@@ -1823,6 +2785,13 @@
         "title": "Juniper logo",
         "size": "32x32",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "juniper",
+        "title": "Juniper SRX logs",
+        "description": "Collect Juniper SRX logs from syslog or a file."
       }
     ],
     "conditions": {
@@ -1856,6 +2825,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "kafka",
+        "title": "Kafka logs and metrics",
+        "description": "Collect logs and metrics from Kafka brokers"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.14.0 || ^8.0.0"
@@ -1884,6 +2860,13 @@
         "title": "Keycloak",
         "size": "256x256",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "keycloak",
+        "title": "Keycloak logs",
+        "description": "Collect logs from Keycloak"
       }
     ],
     "conditions": {
@@ -1918,6 +2901,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "kibana",
+        "title": "Kibana logs and metrics",
+        "description": "Collect logs and metrics from Kibana instances"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.15.0"
@@ -1948,6 +2938,134 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "kubelet",
+        "title": "Kubelet Metrics",
+        "description": "Collect metrics from Kubernetes Kubelet API with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/logo_kubernetes.svg",
+            "path": "/package/kubernetes/1.17.2/img/logo_kubernetes.svg",
+            "title": "Logo Kubernetes",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "kube-state-metrics",
+        "title": "Kube-state-metrics",
+        "description": "Collect container metrics from Kubernetes Kube-state-metrics with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/logo_kubernetes.svg",
+            "path": "/package/kubernetes/1.17.2/img/logo_kubernetes.svg",
+            "title": "Logo Kubernetes",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "kube-apiserver",
+        "title": "Kube-apiserver Metrics",
+        "description": "Collect metrics from Kubernetes API Server with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/logo_kubernetes.svg",
+            "path": "/package/kubernetes/1.17.2/img/logo_kubernetes.svg",
+            "title": "Logo Kubernetes",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "kube-proxy",
+        "title": "Kube-proxy Metrics",
+        "description": "Collect metrics from Kubernetes Proxy server with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/logo_kubernetes.svg",
+            "path": "/package/kubernetes/1.17.2/img/logo_kubernetes.svg",
+            "title": "Logo Kubernetes",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "kube-scheduler",
+        "title": "Kube-scheduler Metrics",
+        "description": "Collect metrics from Kubernetes Scheduler with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/logo_kubernetes.svg",
+            "path": "/package/kubernetes/1.17.2/img/logo_kubernetes.svg",
+            "title": "Logo Kubernetes",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "kube-controller-manager",
+        "title": "Kube-controller-manager Metrics",
+        "description": "Collect metrics from Kubernetes Controller Manager with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/logo_kubernetes.svg",
+            "path": "/package/kubernetes/1.17.2/img/logo_kubernetes.svg",
+            "title": "Logo Kubernetes",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "events",
+        "title": "Kubernetes Event Metrics",
+        "description": "Collect events related metrics from Kubernetes API server with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/logo_kubernetes.svg",
+            "path": "/package/kubernetes/1.17.2/img/logo_kubernetes.svg",
+            "title": "Logo Kubernetes",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "container-logs",
+        "title": "Kubernetes Container Logs",
+        "description": "Collect container related logs from Kubernetes clusters with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/logo_kubernetes.svg",
+            "path": "/package/kubernetes/1.17.2/img/logo_kubernetes.svg",
+            "title": "Logo Kubernetes",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "audit-logs",
+        "title": "Kubernetes Audit Logs",
+        "description": "Collect audit logs from Kubernetes nodes with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/logo_kubernetes.svg",
+            "path": "/package/kubernetes/1.17.2/img/logo_kubernetes.svg",
+            "title": "Logo Kubernetes",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.16.0 || ^8.0.0"
@@ -1970,6 +3088,13 @@
     "type": "integration",
     "download": "/epr/linux/linux-0.6.2.zip",
     "path": "/package/linux/0.6.2",
+    "policy_templates": [
+      {
+        "name": "system",
+        "title": "Linux kernel metrics",
+        "description": "Collect system metrics from Linux operating systems"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.14.0 || ^8.0.0"
@@ -2000,6 +3125,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "logstash",
+        "title": "Logstash logs and metrics",
+        "description": "Collect logs and metrics from Logstash instances"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.15.0"
@@ -2028,6 +3160,13 @@
         "title": "M365 logo",
         "size": "32x32",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "m365_defender",
+        "title": "M365 Defender Logs",
+        "description": "Collect logs from M365 Defender API"
       }
     ],
     "conditions": {
@@ -2062,6 +3201,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "ti_misp",
+        "title": "MISP",
+        "description": "Collect threat intelligence from the MISP API."
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^8.0.0"
@@ -2090,6 +3236,13 @@
         "title": "Mattermost logo",
         "size": "537x535",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Mattermost Logs",
+        "description": "Collect logs from Mattermost"
       }
     ],
     "conditions": {
@@ -2121,6 +3274,13 @@
         "title": "Microsoft logo",
         "size": "32x32",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "microsoft",
+        "title": "Microsoft",
+        "description": "Collect logs from Microsoft products"
       }
     ],
     "conditions": {
@@ -2155,6 +3315,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "microsoft_dhcp",
+        "title": "Microsoft DHCP",
+        "description": "Collect Microsoft DHCP logs."
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.14.0 || ^8.0.0"
@@ -2183,6 +3350,13 @@
         "title": "Microsoft Defender for Endpoint logo",
         "size": "32x32",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "microsoft_defender_endpoint",
+        "title": "Microsoft Defender for Endpoint",
+        "description": "Collect logs from Microsoft Defender for Endpoint"
       }
     ],
     "conditions": {
@@ -2217,6 +3391,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "audit_logs",
+        "title": "SQL Server audit logs",
+        "description": "Collect audit logs from Windows event logs"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.16.0 || ^8.0.0"
@@ -2246,6 +3427,13 @@
         "title": "logo mongodb",
         "size": "32x32",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "mongodb",
+        "title": "MongoDB logs and metrics",
+        "description": "Collect logs and metrics from MongoDB instances"
       }
     ],
     "conditions": {
@@ -2278,6 +3466,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "mysql",
+        "title": "MySQL logs and metrics",
+        "description": "Collect logs and metrics from MySQL instances"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.14.0 || ^8.0.0"
@@ -2306,6 +3501,13 @@
         "title": "MySQL",
         "size": "32x32",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "mysql_enterprise",
+        "title": "MySQL Enterprise audit logs",
+        "description": "Collect MySQL Enterprise audit logs"
       }
     ],
     "conditions": {
@@ -2339,6 +3541,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "nats",
+        "title": "NATS Logs and Metrics",
+        "description": "Collect logs and metrics from NATS instances"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.14.0 || ^8.0.0"
@@ -2360,6 +3569,13 @@
     "type": "integration",
     "download": "/epr/netflow/netflow-1.4.2.zip",
     "path": "/package/netflow/1.4.2",
+    "policy_templates": [
+      {
+        "name": "netflow",
+        "title": "NetFlow logs",
+        "description": "Collect Netflow logs from networks via UDP"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.14.0 || ^8.0.0"
@@ -2391,6 +3607,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "netskope",
+        "title": "Netskope logs",
+        "description": "Collect Netskope logs"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.17.0 || ^8.0.0"
@@ -2412,6 +3635,13 @@
     "type": "integration",
     "download": "/epr/network_traffic/network_traffic-0.8.1.zip",
     "path": "/package/network_traffic/0.8.1",
+    "policy_templates": [
+      {
+        "name": "network",
+        "title": "Network Packet Capture",
+        "description": "Capture network traffic"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.17.0 || ^8.0.0"
@@ -2440,6 +3670,13 @@
         "title": "logo nginx",
         "size": "32x32",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "nginx",
+        "title": "Nginx logs and metrics",
+        "description": "Collect logs and metrics from Nginx instances"
       }
     ],
     "conditions": {
@@ -2473,6 +3710,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "nginx_ingress_controller",
+        "title": "Nginx Ingress Controller logs",
+        "description": "Collect logs from Nginx Ingress Controller instances"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.14.0 || ^8.0.0"
@@ -2502,6 +3746,13 @@
         "title": "Microsoft Office 365",
         "size": "216x216",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "o365",
+        "title": "Office 365 logs",
+        "description": "Collect logs from Office 365"
       }
     ],
     "conditions": {
@@ -2534,6 +3785,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "okta",
+        "title": "Okta logs",
+        "description": "Collect logs from Okta"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.14.0 || ^8.0.0"
@@ -2562,6 +3820,13 @@
         "title": "Oracle",
         "size": "32x32",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "oracle",
+        "title": "Oracle Audit Logs",
+        "description": "Collect Oracle audit logs"
       }
     ],
     "conditions": {
@@ -2595,6 +3860,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "osquery",
+        "title": "Osquery logs",
+        "description": "Collect logs from Osquery instances"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.14.0 || ^8.0.0"
@@ -2624,6 +3896,13 @@
         "title": "logo osquery",
         "size": "32x32",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "osquery_manager",
+        "title": "Osquery Manager",
+        "description": "Send interactive or scheduled queries to the osquery instances executed by the elastic-agent."
       }
     ],
     "conditions": {
@@ -2658,6 +3937,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "alerts",
+        "title": "Palo Alto Cortex XDR API",
+        "description": "Collect logs from Palo Alto Cortex XDR API"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.15.0 || ^8.0.0"
@@ -2688,6 +3974,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "panw",
+        "title": "Palo Alto Networks PAN-OS firewall logs",
+        "description": "Collect logs from Palo Alto Networks PAN-OS firewall"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.16.0 || ^8.0.0"
@@ -2716,6 +4009,13 @@
         "title": "logo postgres",
         "size": "32x32",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "postgresql",
+        "title": "PostgreSQL logs and metrics",
+        "description": "Collect logs and metrics from PostgreSQL instances"
       }
     ],
     "conditions": {
@@ -2777,6 +4077,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "qnap",
+        "title": "QNAP NAS Event & Access logs",
+        "description": "Collect logs from QNAP NAS"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.16.0 || ^8.0.0"
@@ -2805,6 +4112,13 @@
         "title": "RabbitMQ Logo",
         "size": "32x32",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "rabbitmq",
+        "title": "RabbitMQ logs and metrics",
+        "description": "Collect logs and metrics from RabbitMQ instances"
       }
     ],
     "conditions": {
@@ -2837,6 +4151,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "ti_recordedfuture",
+        "title": "Recorded Future",
+        "description": "Collect threat intelligence from Recorded Future."
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^8.0.0"
@@ -2865,6 +4186,13 @@
         "title": "logo redis",
         "size": "32x32",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "redis",
+        "title": "Redis logs and metrics",
+        "description": "Collect logs and metrics from Redis instances"
       }
     ],
     "conditions": {
@@ -2898,6 +4226,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "stan",
+        "title": "STAN Logs and Metrics",
+        "description": "Collect logs and metrics from STAN instances"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.14.0 || ^8.0.0"
@@ -2927,6 +4262,13 @@
         "title": "Snyk logo",
         "size": "382x625",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "snyk",
+        "title": "Snyk Events",
+        "description": "Collect data from Snyk API"
       }
     ],
     "conditions": {
@@ -2959,6 +4301,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "sophos",
+        "title": "Sophos logs",
+        "description": "Collect Sophos logs from syslog or a file."
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.14.1 || ^8.0.0"
@@ -2987,6 +4336,13 @@
         "title": "suricata",
         "size": "309x309",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "suricata",
+        "title": "Suricata logs",
+        "description": "Collect logs from Suricata instances"
       }
     ],
     "conditions": {
@@ -3020,6 +4376,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "symantec",
+        "title": "Symantec Endpoint Protection logs",
+        "description": "Collect Symantec Endpoint Protection logs from file or over syslog."
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.16.0 || ^8.0.0"
@@ -3048,6 +4411,13 @@
         "title": "system",
         "size": "1000x1000",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "system",
+        "title": "System logs and metrics",
+        "description": "Collect logs and metrics from System instances"
       }
     ],
     "conditions": {
@@ -3081,6 +4451,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "tenable_sc",
+        "title": "Tenable.sc logs",
+        "description": "Collect Tenable.sc logs"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^8.1.0"
@@ -3111,6 +4488,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "ti_threatq",
+        "title": "ThreatQuotient",
+        "description": "Collect threat intelligence from the ThreatQuotient API."
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^8.0.0"
@@ -3139,6 +4523,13 @@
         "title": "traefik",
         "size": "259x296",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "traefik",
+        "title": "Traefik logs and metrics",
+        "description": "Collect logs and metrics from Traefik instances"
       }
     ],
     "conditions": {
@@ -3172,6 +4563,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "carbon_black_cloud",
+        "title": "Carbon Black Cloud",
+        "description": "Collect Logs from Carbon Black Cloud"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.17.0 || ^8.0.0"
@@ -3202,6 +4600,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "log",
+        "title": "Carbon Black EDR logs",
+        "description": "Collect logs from Carbon Black EDR"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.14.0 || ^8.0.0"
@@ -3230,6 +4635,13 @@
         "title": "VMware logo",
         "size": "512×83",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "vsphere",
+        "title": "vSphere logs and metrics",
+        "description": "vSphere logs and metrics"
       }
     ],
     "conditions": {
@@ -3263,6 +4675,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "windows",
+        "title": "Windows logs and metrics",
+        "description": "Collect logs and metrics from Windows instances"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.14.0 || ^8.0.0"
@@ -3292,6 +4711,13 @@
         "title": "zeek",
         "size": "214x203",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "zeek",
+        "title": "Zeek logs",
+        "description": "Collect logs from Zeek instances"
       }
     ],
     "conditions": {
@@ -3326,6 +4752,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "zerofox",
+        "title": "ZeroFox Alerts",
+        "description": "Collect alert from the ZeroFox API"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.14 || ^8.0.0"
@@ -3355,6 +4788,13 @@
         "title": "zookeeper",
         "size": "754x754",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "zookeeper",
+        "title": "ZooKeeper metrics",
+        "description": "Collect metrics from ZooKeeper instances"
       }
     ],
     "conditions": {
@@ -3388,6 +4828,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "zoom",
+        "title": "Zoom logs",
+        "description": "Collect logs from Zoom instances"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.14.0 || ^8.0.0"
@@ -3419,6 +4866,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "zscaler_zia",
+        "title": "Zscaler Internet Access logs",
+        "description": "Collect Zscaler Internet Access logs"
+      }
+    ],
     "conditions": {
       "kibana": {
         "version": "^7.16.2 || ^8.0.0"
@@ -3447,6 +4901,13 @@
         "title": "Zscaler logo",
         "size": "32x32",
         "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "zscaler_zpa",
+        "title": "Zscaler Private Access logs",
+        "description": "Collect Zscaler Private Access logs"
       }
     ],
     "conditions": {

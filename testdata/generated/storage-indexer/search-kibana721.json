@@ -15,6 +15,13 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Custom logs",
+        "description": "Collect your custom log files."
+      }
+    ],
     "owner": {
       "github": "elastic/integrations"
     },
