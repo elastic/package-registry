@@ -48,17 +48,12 @@ func TestPackageStorage_Endpoints(t *testing.T) {
 		{"/search?category=web", "/search", "search-category-web.json", searchHandler(indexer, testCacheTime)},
 		{"/search?category=web&all=true", "/search", "search-category-web-all.json", searchHandler(indexer, testCacheTime)},
 		{"/search?category=custom", "/search", "search-category-custom.json", searchHandler(indexer, testCacheTime)},
-		{"/search?package=example", "/search", "search-package-example.json", searchHandler(indexer, testCacheTime)},
-		{"/search?package=example&all=true", "/search", "search-package-example-all.json", searchHandler(indexer, testCacheTime)},
 		{"/search?experimental=true", "/search", "search-package-experimental.json", searchHandler(indexer, testCacheTime)},
 		{"/search?experimental=foo", "/search", "search-package-experimental-error.txt", searchHandler(indexer, testCacheTime)},
 		{"/search?category=datastore&experimental=true", "/search", "search-category-datastore.json", searchHandler(indexer, testCacheTime)},
 		{"/search?prerelease=true", "/search", "search-package-prerelease.json", searchHandler(indexer, testCacheTime)},
 		{"/search?prerelease=foo", "/search", "search-package-prerelease-error.txt", searchHandler(indexer, testCacheTime)},
 		{"/search?category=datastore&prerelease=true", "/search", "search-category-datastore-prerelease.json", searchHandler(indexer, testCacheTime)},
-		{"/search?type=input&prerelease=true", "/search", "search-input-packages.json", searchHandler(indexer, testCacheTime)},
-		{"/search?type=input&package=integration_input&prerelease=true", "/search", "search-input-integration-package.json", searchHandler(indexer, testCacheTime)},
-		{"/search?type=integration&package=integration_input&prerelease=true", "/search", "search-integration-integration-package.json", searchHandler(indexer, testCacheTime)},
 
 		// Removed flags, kept ensure that they don't break requests from old versions.
 		{"/search?internal=true", "/search", "search-package-internal.json", searchHandler(indexer, testCacheTime)},
