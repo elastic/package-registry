@@ -66,6 +66,34 @@ func TestPackageStorage_Endpoints(t *testing.T) {
 	}
 }
 
+func TestPackageStorage_PackageIndex(t *testing.T) {
+	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
+	defer fs.Stop()
+	indexer := storage.NewIndexer(fs.Client(), storage.FakeIndexerOptions)
+
+	err := indexer.Init(context.Background())
+	require.NoError(t, err)
+
+	packageIndexHandler := packageIndexHandler(indexer, testCacheTime)
+
+	tests := []struct {
+		endpoint string
+		path     string
+		file     string
+		handler  func(w http.ResponseWriter, r *http.Request)
+	}{
+		{"/package/1password/0.1.1/", packageIndexRouterPath, "1password-0.1.1.json", packageIndexHandler},
+		{"/package/kubernetes/0.3.0/", packageIndexRouterPath, "kubernetes-0.3.0.json", packageIndexHandler},
+		{"/package/osquery/1.0.3/", packageIndexRouterPath, "osquery-1.0.3.json", packageIndexHandler},
+	}
+
+	for _, test := range tests {
+		t.Run(test.endpoint, func(t *testing.T) {
+			runEndpointWithStorageIndexer(t, test.endpoint, test.path, test.file, test.handler)
+		})
+	}
+}
+
 func runEndpointWithStorageIndexer(t *testing.T, endpoint, path, file string, handler func(w http.ResponseWriter, r *http.Request)) {
 	runEndpoint(t, endpoint, path, filepath.Join(storageIndexerGoldenDir, file), handler)
 }

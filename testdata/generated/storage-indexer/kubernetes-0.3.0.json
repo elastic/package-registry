@@ -1,0 +1,1468 @@
+{
+  "name": "kubernetes",
+  "title": "Kubernetes",
+  "version": "0.3.0",
+  "release": "experimental",
+  "description": "Kubernetes Integration",
+  "type": "integration",
+  "download": "/epr/kubernetes/kubernetes-0.3.0.zip",
+  "path": "/package/kubernetes/0.3.0",
+  "icons": [
+    {
+      "src": "/img/logo_kubernetes.svg",
+      "path": "/package/kubernetes/0.3.0/img/logo_kubernetes.svg",
+      "title": "Logo Kubernetes",
+      "size": "32x32",
+      "type": "image/svg+xml"
+    }
+  ],
+  "conditions": {
+    "kibana": {
+      "version": "^7.9.0"
+    }
+  },
+  "owner": {
+    "github": "elastic/integrations-platforms"
+  },
+  "categories": [
+    "containers",
+    "kubernetes"
+  ],
+  "format_version": "1.0.0",
+  "readme": "/package/kubernetes/0.3.0/docs/README.md",
+  "license": "basic",
+  "screenshots": [
+    {
+      "src": "/img/metricbeat_kubernetes_overview.png",
+      "path": "/package/kubernetes/0.3.0/img/metricbeat_kubernetes_overview.png",
+      "title": "Metricbeat Kubernetes Overview",
+      "size": "1896x961",
+      "type": "image/png"
+    },
+    {
+      "src": "/img/metricbeat-kubernetes-controllermanager.png",
+      "path": "/package/kubernetes/0.3.0/img/metricbeat-kubernetes-controllermanager.png",
+      "title": "Metricbeat Kubernetes Controller Manager",
+      "size": "1896x961",
+      "type": "image/png"
+    },
+    {
+      "src": "/img/metricbeat_kubernetes_scheduler.png",
+      "path": "/package/kubernetes/0.3.0/img/metricbeat_kubernetes_scheduler.png",
+      "title": "Metricbeat Kubernetes Scheduler",
+      "size": "1856x897",
+      "type": "image/png"
+    },
+    {
+      "src": "/img/metricbeat-kubernetes-proxy.png",
+      "path": "/package/kubernetes/0.3.0/img/metricbeat-kubernetes-proxy.png",
+      "title": "Metricbeat Kubernetes Proxy",
+      "size": "1854x920",
+      "type": "image/png"
+    }
+  ],
+  "assets": [
+    "/package/kubernetes/0.3.0/manifest.yml",
+    "/package/kubernetes/0.3.0/docs/README.md",
+    "/package/kubernetes/0.3.0/img/logo_kubernetes.svg",
+    "/package/kubernetes/0.3.0/img/metricbeat-kubernetes-controllermanager.png",
+    "/package/kubernetes/0.3.0/img/metricbeat-kubernetes-proxy.png",
+    "/package/kubernetes/0.3.0/img/metricbeat_kubernetes_overview.png",
+    "/package/kubernetes/0.3.0/img/metricbeat_kubernetes_scheduler.png",
+    "/package/kubernetes/0.3.0/data_stream/apiserver/manifest.yml",
+    "/package/kubernetes/0.3.0/data_stream/apiserver/sample_event.json",
+    "/package/kubernetes/0.3.0/data_stream/container/manifest.yml",
+    "/package/kubernetes/0.3.0/data_stream/container/sample_event.json",
+    "/package/kubernetes/0.3.0/data_stream/controllermanager/manifest.yml",
+    "/package/kubernetes/0.3.0/data_stream/controllermanager/sample_event.json",
+    "/package/kubernetes/0.3.0/data_stream/event/manifest.yml",
+    "/package/kubernetes/0.3.0/data_stream/event/sample_event.json",
+    "/package/kubernetes/0.3.0/data_stream/node/manifest.yml",
+    "/package/kubernetes/0.3.0/data_stream/node/sample_event.json",
+    "/package/kubernetes/0.3.0/data_stream/pod/manifest.yml",
+    "/package/kubernetes/0.3.0/data_stream/pod/sample_event.json",
+    "/package/kubernetes/0.3.0/data_stream/proxy/manifest.yml",
+    "/package/kubernetes/0.3.0/data_stream/proxy/sample_event.json",
+    "/package/kubernetes/0.3.0/data_stream/scheduler/manifest.yml",
+    "/package/kubernetes/0.3.0/data_stream/scheduler/sample_event.json",
+    "/package/kubernetes/0.3.0/data_stream/state_container/manifest.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_container/sample_event.json",
+    "/package/kubernetes/0.3.0/data_stream/state_cronjob/manifest.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_cronjob/sample_event.json",
+    "/package/kubernetes/0.3.0/data_stream/state_daemonset/manifest.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_daemonset/sample_event.json",
+    "/package/kubernetes/0.3.0/data_stream/state_deployment/manifest.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_deployment/sample_event.json",
+    "/package/kubernetes/0.3.0/data_stream/state_node/manifest.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_node/sample_event.json",
+    "/package/kubernetes/0.3.0/data_stream/state_persistentvolume/manifest.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_persistentvolume/sample_event.json",
+    "/package/kubernetes/0.3.0/data_stream/state_persistentvolumeclaim/manifest.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_persistentvolumeclaim/sample_event.json",
+    "/package/kubernetes/0.3.0/data_stream/state_pod/manifest.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_pod/sample_event.json",
+    "/package/kubernetes/0.3.0/data_stream/state_replicaset/manifest.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_replicaset/sample_event.json",
+    "/package/kubernetes/0.3.0/data_stream/state_resourcequota/manifest.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_resourcequota/sample_event.json",
+    "/package/kubernetes/0.3.0/data_stream/state_service/manifest.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_service/sample_event.json",
+    "/package/kubernetes/0.3.0/data_stream/state_statefulset/manifest.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_statefulset/sample_event.json",
+    "/package/kubernetes/0.3.0/data_stream/state_storageclass/manifest.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_storageclass/sample_event.json",
+    "/package/kubernetes/0.3.0/data_stream/system/manifest.yml",
+    "/package/kubernetes/0.3.0/data_stream/system/sample_event.json",
+    "/package/kubernetes/0.3.0/data_stream/volume/manifest.yml",
+    "/package/kubernetes/0.3.0/data_stream/volume/sample_event.json",
+    "/package/kubernetes/0.3.0/kibana/dashboard/kubernetes-5e649d60-9901-11e9-ba57-b7ab4e2d4b58.json",
+    "/package/kubernetes/0.3.0/kibana/dashboard/kubernetes-97312060-9c1b-11e9-9dc8-fd27291d427f.json",
+    "/package/kubernetes/0.3.0/kibana/dashboard/kubernetes-AV4RGUqo5NkDleZmzKuZ.json",
+    "/package/kubernetes/0.3.0/kibana/dashboard/kubernetes-af7225b0-5794-11e8-afa2-e9067ea62228.json",
+    "/package/kubernetes/0.3.0/kibana/dashboard/kubernetes-f5ab5510-9c94-11e9-94fd-c91206cd5249.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-022a54c0-2bf5-11e7-859b-f78b612cde28.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-09b404f0-99af-11e9-ba57-b7ab4e2d4b58.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-0ca95350-9c24-11e9-9dc8-fd27291d427f.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-15bd4420-9c9b-11e9-94fd-c91206cd5249.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-16fa4470-2bfd-11e7-859b-f78b612cde28.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-174a6ad0-30e0-11e7-8df8-6d3604a72912.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-294546b0-30d6-11e7-8df8-6d3604a72912.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-2ba628e0-9c2a-11e9-9dc8-fd27291d427f.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-382ace30-9d98-11e9-b2ae-49acc4cbcea9.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-3dbf6230-9c20-11e9-9dc8-fd27291d427f.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-3e1e1fd0-9c27-11e9-9dc8-fd27291d427f.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-408fccf0-30d6-11e7-8df8-6d3604a72912.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-44f12b40-2bf4-11e7-859b-f78b612cde28.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-485c8550-9c3a-11e9-9dc8-fd27291d427f.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-58e644f0-30d6-11e7-8df8-6d3604a72912.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-7aac4fd0-30e0-11e7-8df8-6d3604a72912.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-7cbeb750-5794-11e8-afa2-e9067ea62228.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-7d80f790-9d96-11e9-b2ae-49acc4cbcea9.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-826d80c0-9c97-11e9-94fd-c91206cd5249.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-84d9b200-9d98-11e9-b2ae-49acc4cbcea9.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-8a95de50-9c38-11e9-9dc8-fd27291d427f.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-8c6c2690-9bd8-11e9-9dc8-fd27291d427f.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-95595810-9ca8-11e9-94fd-c91206cd5249.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-95a7f110-57a2-11e8-afa2-e9067ea62228.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-a4c9d360-30df-11e7-8df8-6d3604a72912.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-b8a24790-9bf0-11e9-9dc8-fd27291d427f.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-ba7bf750-9bf5-11e9-9dc8-fd27291d427f.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-bcb194a0-9bf8-11e9-9dc8-fd27291d427f.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-cac89fb0-9906-11e9-ba57-b7ab4e2d4b58.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-cd059410-2bfb-11e7-859b-f78b612cde28.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-d6564360-2bfc-11e7-859b-f78b612cde28.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-d86b2da0-9c20-11e9-9dc8-fd27291d427f.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-d9fc1b80-9c9c-11e9-94fd-c91206cd5249.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-da1ff7c0-30ed-11e7-b9e5-2b5b07213ab3.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-e0ddd3e0-98fe-11e9-ba57-b7ab4e2d4b58.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-e1018b90-2bfb-11e7-859b-f78b612cde28.json",
+    "/package/kubernetes/0.3.0/kibana/visualization/kubernetes-ec360ff0-57a0-11e8-afa2-e9067ea62228.json",
+    "/package/kubernetes/0.3.0/data_stream/apiserver/fields/agent.yml",
+    "/package/kubernetes/0.3.0/data_stream/apiserver/fields/base-fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/apiserver/fields/ecs.yml",
+    "/package/kubernetes/0.3.0/data_stream/apiserver/fields/fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/container/fields/agent.yml",
+    "/package/kubernetes/0.3.0/data_stream/container/fields/base-fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/container/fields/ecs.yml",
+    "/package/kubernetes/0.3.0/data_stream/container/fields/fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/controllermanager/fields/agent.yml",
+    "/package/kubernetes/0.3.0/data_stream/controllermanager/fields/base-fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/controllermanager/fields/ecs.yml",
+    "/package/kubernetes/0.3.0/data_stream/controllermanager/fields/fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/event/fields/agent.yml",
+    "/package/kubernetes/0.3.0/data_stream/event/fields/base-fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/event/fields/fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/node/fields/agent.yml",
+    "/package/kubernetes/0.3.0/data_stream/node/fields/base-fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/node/fields/ecs.yml",
+    "/package/kubernetes/0.3.0/data_stream/node/fields/fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/pod/fields/agent.yml",
+    "/package/kubernetes/0.3.0/data_stream/pod/fields/base-fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/pod/fields/ecs.yml",
+    "/package/kubernetes/0.3.0/data_stream/pod/fields/fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/proxy/fields/agent.yml",
+    "/package/kubernetes/0.3.0/data_stream/proxy/fields/base-fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/proxy/fields/ecs.yml",
+    "/package/kubernetes/0.3.0/data_stream/proxy/fields/fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/scheduler/fields/agent.yml",
+    "/package/kubernetes/0.3.0/data_stream/scheduler/fields/base-fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/scheduler/fields/ecs.yml",
+    "/package/kubernetes/0.3.0/data_stream/scheduler/fields/fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_container/fields/agent.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_container/fields/base-fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_container/fields/ecs.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_container/fields/fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_cronjob/fields/agent.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_cronjob/fields/base-fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_cronjob/fields/ecs.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_cronjob/fields/fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_daemonset/fields/agent.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_daemonset/fields/base-fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_daemonset/fields/ecs.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_daemonset/fields/fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_deployment/fields/agent.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_deployment/fields/base-fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_deployment/fields/ecs.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_deployment/fields/fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_node/fields/agent.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_node/fields/base-fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_node/fields/ecs.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_node/fields/fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_persistentvolume/fields/agent.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_persistentvolume/fields/base-fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_persistentvolume/fields/ecs.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_persistentvolume/fields/fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_persistentvolumeclaim/fields/agent.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_persistentvolumeclaim/fields/base-fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_persistentvolumeclaim/fields/ecs.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_persistentvolumeclaim/fields/fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_pod/fields/agent.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_pod/fields/base-fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_pod/fields/ecs.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_pod/fields/fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_replicaset/fields/agent.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_replicaset/fields/base-fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_replicaset/fields/ecs.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_replicaset/fields/fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_resourcequota/fields/agent.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_resourcequota/fields/base-fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_resourcequota/fields/ecs.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_resourcequota/fields/fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_service/fields/agent.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_service/fields/base-fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_service/fields/ecs.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_service/fields/fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_statefulset/fields/agent.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_statefulset/fields/base-fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_statefulset/fields/ecs.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_statefulset/fields/fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_storageclass/fields/agent.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_storageclass/fields/base-fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_storageclass/fields/ecs.yml",
+    "/package/kubernetes/0.3.0/data_stream/state_storageclass/fields/fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/system/fields/agent.yml",
+    "/package/kubernetes/0.3.0/data_stream/system/fields/base-fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/system/fields/ecs.yml",
+    "/package/kubernetes/0.3.0/data_stream/system/fields/fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/volume/fields/agent.yml",
+    "/package/kubernetes/0.3.0/data_stream/volume/fields/base-fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/volume/fields/ecs.yml",
+    "/package/kubernetes/0.3.0/data_stream/volume/fields/fields.yml",
+    "/package/kubernetes/0.3.0/data_stream/apiserver/agent/stream/stream.yml.hbs",
+    "/package/kubernetes/0.3.0/data_stream/container/agent/stream/stream.yml.hbs",
+    "/package/kubernetes/0.3.0/data_stream/controllermanager/agent/stream/stream.yml.hbs",
+    "/package/kubernetes/0.3.0/data_stream/event/agent/stream/stream.yml.hbs",
+    "/package/kubernetes/0.3.0/data_stream/node/agent/stream/stream.yml.hbs",
+    "/package/kubernetes/0.3.0/data_stream/pod/agent/stream/stream.yml.hbs",
+    "/package/kubernetes/0.3.0/data_stream/proxy/agent/stream/stream.yml.hbs",
+    "/package/kubernetes/0.3.0/data_stream/scheduler/agent/stream/stream.yml.hbs",
+    "/package/kubernetes/0.3.0/data_stream/state_container/agent/stream/stream.yml.hbs",
+    "/package/kubernetes/0.3.0/data_stream/state_cronjob/agent/stream/stream.yml.hbs",
+    "/package/kubernetes/0.3.0/data_stream/state_daemonset/agent/stream/stream.yml.hbs",
+    "/package/kubernetes/0.3.0/data_stream/state_deployment/agent/stream/stream.yml.hbs",
+    "/package/kubernetes/0.3.0/data_stream/state_node/agent/stream/stream.yml.hbs",
+    "/package/kubernetes/0.3.0/data_stream/state_persistentvolume/agent/stream/stream.yml.hbs",
+    "/package/kubernetes/0.3.0/data_stream/state_persistentvolumeclaim/agent/stream/stream.yml.hbs",
+    "/package/kubernetes/0.3.0/data_stream/state_pod/agent/stream/stream.yml.hbs",
+    "/package/kubernetes/0.3.0/data_stream/state_replicaset/agent/stream/stream.yml.hbs",
+    "/package/kubernetes/0.3.0/data_stream/state_resourcequota/agent/stream/stream.yml.hbs",
+    "/package/kubernetes/0.3.0/data_stream/state_service/agent/stream/stream.yml.hbs",
+    "/package/kubernetes/0.3.0/data_stream/state_statefulset/agent/stream/stream.yml.hbs",
+    "/package/kubernetes/0.3.0/data_stream/state_storageclass/agent/stream/stream.yml.hbs",
+    "/package/kubernetes/0.3.0/data_stream/system/agent/stream/stream.yml.hbs",
+    "/package/kubernetes/0.3.0/data_stream/volume/agent/stream/stream.yml.hbs"
+  ],
+  "policy_templates": [
+    {
+      "name": "kubernetes",
+      "title": "Kubernetes metrics",
+      "description": "Collect metrics from Kubernetes",
+      "inputs": [
+        {
+          "type": "kubernetes/metrics",
+          "title": "Collect Kubernetes metrics",
+          "description": "Collecting API Server, Controller Manager, Scheduler, Proxy and Event metrics as well as Node, Pod, Container, Volume and System metrics from Kubelet and metrics from kube_state_metrics (container, cronjob, deployment, daemonset, node, persistentvolume, persistentvolumeclaim, pod, replicaset, resourcequota, service, statefulset, storageclass)."
+        }
+      ],
+      "multiple": true
+    }
+  ],
+  "data_streams": [
+    {
+      "type": "metrics",
+      "dataset": "kubernetes.apiserver",
+      "title": "Kubernetes API Server metrics",
+      "release": "experimental",
+      "streams": [
+        {
+          "input": "kubernetes/metrics",
+          "vars": [
+            {
+              "name": "bearer_token_file",
+              "type": "text",
+              "title": "Bearer Token File",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "/var/run/secrets/kubernetes.io/serviceaccount/token"
+            },
+            {
+              "name": "hosts",
+              "type": "text",
+              "title": "Hosts",
+              "multi": true,
+              "required": true,
+              "show_user": true,
+              "default": [
+                "https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT}"
+              ]
+            },
+            {
+              "name": "period",
+              "type": "text",
+              "title": "Period",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "30s"
+            },
+            {
+              "name": "ssl.certificate_authorities",
+              "type": "text",
+              "title": "SSL Certificate Authorities",
+              "multi": true,
+              "required": true,
+              "show_user": true,
+              "default": [
+                "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+              ]
+            }
+          ],
+          "template_path": "stream.yml.hbs",
+          "title": "Kubernetes API Server metrics",
+          "description": "Collect Kubernetes API Server metrics",
+          "enabled": true
+        }
+      ],
+      "package": "kubernetes",
+      "path": "apiserver"
+    },
+    {
+      "type": "metrics",
+      "dataset": "kubernetes.container",
+      "title": "Kubernetes Container metrics",
+      "release": "experimental",
+      "streams": [
+        {
+          "input": "kubernetes/metrics",
+          "vars": [
+            {
+              "name": "add_metadata",
+              "type": "bool",
+              "title": "Add Metadata",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": true
+            },
+            {
+              "name": "bearer_token_file",
+              "type": "text",
+              "title": "Bearer Token File",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "/var/run/secrets/kubernetes.io/serviceaccount/token"
+            },
+            {
+              "name": "hosts",
+              "type": "text",
+              "title": "Hosts",
+              "multi": true,
+              "required": true,
+              "show_user": true,
+              "default": [
+                "https://${NODE_NAME}:10250"
+              ]
+            },
+            {
+              "name": "period",
+              "type": "text",
+              "title": "Period",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "10s"
+            },
+            {
+              "name": "ssl.verification_mode",
+              "type": "text",
+              "title": "SSL Verification Mode",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "none"
+            }
+          ],
+          "template_path": "stream.yml.hbs",
+          "title": "Kubernetes Container metrics",
+          "description": "Collect Kubernetes Container metrics",
+          "enabled": true
+        }
+      ],
+      "package": "kubernetes",
+      "path": "container"
+    },
+    {
+      "type": "metrics",
+      "dataset": "kubernetes.controllermanager",
+      "title": "Kubernetes Controller Manager metrics",
+      "release": "experimental",
+      "streams": [
+        {
+          "input": "kubernetes/metrics",
+          "vars": [
+            {
+              "name": "hosts",
+              "type": "text",
+              "title": "Hosts",
+              "multi": true,
+              "required": true,
+              "show_user": true,
+              "default": [
+                "localhost:10252"
+              ]
+            },
+            {
+              "name": "period",
+              "type": "text",
+              "title": "Period",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "10s"
+            }
+          ],
+          "template_path": "stream.yml.hbs",
+          "title": "Kubernetes Controller Manager metrics",
+          "description": "Collect Kubernetes Controller Manager metrics",
+          "enabled": true
+        }
+      ],
+      "package": "kubernetes",
+      "path": "controllermanager"
+    },
+    {
+      "type": "metrics",
+      "dataset": "kubernetes.event",
+      "title": "Kubernetes Event metrics",
+      "release": "experimental",
+      "streams": [
+        {
+          "input": "kubernetes/metrics",
+          "vars": [
+            {
+              "name": "period",
+              "type": "text",
+              "title": "Period",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "10s"
+            },
+            {
+              "name": "add_metadata",
+              "type": "bool",
+              "title": "Add Metadata",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": true
+            }
+          ],
+          "template_path": "stream.yml.hbs",
+          "title": "Kubernetes Event metrics",
+          "description": "Collect Kubernetes Event metrics",
+          "enabled": true
+        }
+      ],
+      "package": "kubernetes",
+      "path": "event"
+    },
+    {
+      "type": "metrics",
+      "dataset": "kubernetes.node",
+      "title": "Kubernetes Node metrics",
+      "release": "experimental",
+      "streams": [
+        {
+          "input": "kubernetes/metrics",
+          "vars": [
+            {
+              "name": "add_metadata",
+              "type": "bool",
+              "title": "Add Metadata",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": true
+            },
+            {
+              "name": "bearer_token_file",
+              "type": "text",
+              "title": "Bearer Token File",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "/var/run/secrets/kubernetes.io/serviceaccount/token"
+            },
+            {
+              "name": "hosts",
+              "type": "text",
+              "title": "Hosts",
+              "multi": true,
+              "required": true,
+              "show_user": true,
+              "default": [
+                "https://${NODE_NAME}:10250"
+              ]
+            },
+            {
+              "name": "period",
+              "type": "text",
+              "title": "Period",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "10s"
+            },
+            {
+              "name": "ssl.verification_mode",
+              "type": "text",
+              "title": "SSL Verification Mode",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "none"
+            }
+          ],
+          "template_path": "stream.yml.hbs",
+          "title": "Kubernetes Node metrics",
+          "description": "Collect Kubernetes Node metrics",
+          "enabled": true
+        }
+      ],
+      "package": "kubernetes",
+      "path": "node"
+    },
+    {
+      "type": "metrics",
+      "dataset": "kubernetes.pod",
+      "title": "Kubernetes Pod metrics",
+      "release": "experimental",
+      "streams": [
+        {
+          "input": "kubernetes/metrics",
+          "vars": [
+            {
+              "name": "add_metadata",
+              "type": "bool",
+              "title": "Add Metadata",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": true
+            },
+            {
+              "name": "bearer_token_file",
+              "type": "text",
+              "title": "Bearer Token File",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "/var/run/secrets/kubernetes.io/serviceaccount/token"
+            },
+            {
+              "name": "hosts",
+              "type": "text",
+              "title": "Hosts",
+              "multi": true,
+              "required": true,
+              "show_user": true,
+              "default": [
+                "https://${NODE_NAME}:10250"
+              ]
+            },
+            {
+              "name": "period",
+              "type": "text",
+              "title": "Period",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "10s"
+            },
+            {
+              "name": "ssl.verification_mode",
+              "type": "text",
+              "title": "SSL Verification Mode",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "none"
+            }
+          ],
+          "template_path": "stream.yml.hbs",
+          "title": "Kubernetes Pod metrics",
+          "description": "Collect Kubernetes Pod metrics",
+          "enabled": true
+        }
+      ],
+      "package": "kubernetes",
+      "path": "pod"
+    },
+    {
+      "type": "metrics",
+      "dataset": "kubernetes.proxy",
+      "title": "Kubernetes Proxy metrics",
+      "release": "experimental",
+      "streams": [
+        {
+          "input": "kubernetes/metrics",
+          "vars": [
+            {
+              "name": "hosts",
+              "type": "text",
+              "title": "Hosts",
+              "multi": true,
+              "required": true,
+              "show_user": true,
+              "default": [
+                "localhost:10249"
+              ]
+            },
+            {
+              "name": "period",
+              "type": "text",
+              "title": "Period",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "10s"
+            }
+          ],
+          "template_path": "stream.yml.hbs",
+          "title": "Kubernetes Proxy metrics",
+          "description": "Collect Kubernetes Proxy metrics",
+          "enabled": true
+        }
+      ],
+      "package": "kubernetes",
+      "path": "proxy"
+    },
+    {
+      "type": "metrics",
+      "dataset": "kubernetes.scheduler",
+      "title": "Kubernetes Scheduler metrics",
+      "release": "experimental",
+      "streams": [
+        {
+          "input": "kubernetes/metrics",
+          "vars": [
+            {
+              "name": "hosts",
+              "type": "text",
+              "title": "Hosts",
+              "multi": true,
+              "required": true,
+              "show_user": true,
+              "default": [
+                "localhost:10251"
+              ]
+            },
+            {
+              "name": "period",
+              "type": "text",
+              "title": "Period",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "10s"
+            },
+            {
+              "name": "period",
+              "type": "text",
+              "title": "Period",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "10s"
+            }
+          ],
+          "template_path": "stream.yml.hbs",
+          "title": "Kubernetes Scheduler metrics",
+          "description": "Collect Kubernetes Scheduler metrics",
+          "enabled": true
+        }
+      ],
+      "package": "kubernetes",
+      "path": "scheduler"
+    },
+    {
+      "type": "metrics",
+      "dataset": "kubernetes.state_container",
+      "title": "Kubernetes Container metrics",
+      "release": "experimental",
+      "streams": [
+        {
+          "input": "kubernetes/metrics",
+          "vars": [
+            {
+              "name": "add_metadata",
+              "type": "bool",
+              "title": "Add Metadata",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": true
+            },
+            {
+              "name": "hosts",
+              "type": "text",
+              "title": "Hosts",
+              "multi": true,
+              "required": true,
+              "show_user": true,
+              "default": [
+                "kube-state-metrics:8080"
+              ]
+            },
+            {
+              "name": "period",
+              "type": "text",
+              "title": "Period",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "10s"
+            }
+          ],
+          "template_path": "stream.yml.hbs",
+          "title": "Kubernetes Container metrics",
+          "description": "Collect Kubernetes Container metrics from kube_state_metrics",
+          "enabled": true
+        }
+      ],
+      "package": "kubernetes",
+      "path": "state_container"
+    },
+    {
+      "type": "metrics",
+      "dataset": "kubernetes.state_cronjob",
+      "title": "Kubernetes Cronjob metrics",
+      "release": "experimental",
+      "streams": [
+        {
+          "input": "kubernetes/metrics",
+          "vars": [
+            {
+              "name": "add_metadata",
+              "type": "bool",
+              "title": "Add Metadata",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": true
+            },
+            {
+              "name": "hosts",
+              "type": "text",
+              "title": "Hosts",
+              "multi": true,
+              "required": true,
+              "show_user": true,
+              "default": [
+                "kube-state-metrics:8080"
+              ]
+            },
+            {
+              "name": "period",
+              "type": "text",
+              "title": "Period",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "10s"
+            }
+          ],
+          "template_path": "stream.yml.hbs",
+          "title": "Kubernetes Cronjob metrics",
+          "description": "Collect Kubernetes Cronjob metrics from kube_state_metrics",
+          "enabled": true
+        }
+      ],
+      "package": "kubernetes",
+      "path": "state_cronjob"
+    },
+    {
+      "type": "metrics",
+      "dataset": "kubernetes.state_daemonset",
+      "title": "Kubernetes Deamonset metrics",
+      "release": "experimental",
+      "streams": [
+        {
+          "input": "kubernetes/metrics",
+          "vars": [
+            {
+              "name": "add_metadata",
+              "type": "bool",
+              "title": "Add Metadata",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": true
+            },
+            {
+              "name": "hosts",
+              "type": "text",
+              "title": "Hosts",
+              "multi": true,
+              "required": true,
+              "show_user": true,
+              "default": [
+                "kube-state-metrics:8080"
+              ]
+            },
+            {
+              "name": "period",
+              "type": "text",
+              "title": "Period",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "10s"
+            }
+          ],
+          "template_path": "stream.yml.hbs",
+          "title": "Kubernetes Deamonset metrics",
+          "description": "Collect Kubernetes Deamonset metrics from kube_state_metrics",
+          "enabled": true
+        }
+      ],
+      "package": "kubernetes",
+      "path": "state_daemonset"
+    },
+    {
+      "type": "metrics",
+      "dataset": "kubernetes.state_deployment",
+      "title": "Kubernetes Deployment metrics",
+      "release": "experimental",
+      "streams": [
+        {
+          "input": "kubernetes/metrics",
+          "vars": [
+            {
+              "name": "add_metadata",
+              "type": "bool",
+              "title": "Add Metadata",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": true
+            },
+            {
+              "name": "hosts",
+              "type": "text",
+              "title": "Hosts",
+              "multi": true,
+              "required": true,
+              "show_user": true,
+              "default": [
+                "kube-state-metrics:8080"
+              ]
+            },
+            {
+              "name": "period",
+              "type": "text",
+              "title": "Period",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "10s"
+            }
+          ],
+          "template_path": "stream.yml.hbs",
+          "title": "Kubernetes Deployment metrics",
+          "description": "Collect Kubernetes Deployment metrics from kube_state_metrics",
+          "enabled": true
+        }
+      ],
+      "package": "kubernetes",
+      "path": "state_deployment"
+    },
+    {
+      "type": "metrics",
+      "dataset": "kubernetes.state_node",
+      "title": "Kubernetes Node metrics",
+      "release": "experimental",
+      "streams": [
+        {
+          "input": "kubernetes/metrics",
+          "vars": [
+            {
+              "name": "add_metadata",
+              "type": "bool",
+              "title": "Add Metadata",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": true
+            },
+            {
+              "name": "hosts",
+              "type": "text",
+              "title": "Hosts",
+              "multi": true,
+              "required": true,
+              "show_user": true,
+              "default": [
+                "kube-state-metrics:8080"
+              ]
+            },
+            {
+              "name": "period",
+              "type": "text",
+              "title": "Period",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "10s"
+            }
+          ],
+          "template_path": "stream.yml.hbs",
+          "title": "Kubernetes Node metrics",
+          "description": "Collect Kubernetes Node metrics from kube_state_metrics",
+          "enabled": true
+        }
+      ],
+      "package": "kubernetes",
+      "path": "state_node"
+    },
+    {
+      "type": "metrics",
+      "dataset": "kubernetes.state_persistentvolume",
+      "title": "Kubernetes PersistentVolume metrics",
+      "release": "experimental",
+      "streams": [
+        {
+          "input": "kubernetes/metrics",
+          "vars": [
+            {
+              "name": "add_metadata",
+              "type": "bool",
+              "title": "Add Metadata",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": true
+            },
+            {
+              "name": "hosts",
+              "type": "text",
+              "title": "Hosts",
+              "multi": true,
+              "required": true,
+              "show_user": true,
+              "default": [
+                "kube-state-metrics:8080"
+              ]
+            },
+            {
+              "name": "period",
+              "type": "text",
+              "title": "Period",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "10s"
+            }
+          ],
+          "template_path": "stream.yml.hbs",
+          "title": "Kubernetes PersistentVolume metrics",
+          "description": "Collect Kubernetes PersistentVolume metrics from kube_state_metrics",
+          "enabled": true
+        }
+      ],
+      "package": "kubernetes",
+      "path": "state_persistentvolume"
+    },
+    {
+      "type": "metrics",
+      "dataset": "kubernetes.state_persistentvolumeclaim",
+      "title": "Kubernetes PersistentVolumeClaim metrics",
+      "release": "experimental",
+      "streams": [
+        {
+          "input": "kubernetes/metrics",
+          "vars": [
+            {
+              "name": "add_metadata",
+              "type": "bool",
+              "title": "Add Metadata",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": true
+            },
+            {
+              "name": "hosts",
+              "type": "text",
+              "title": "Hosts",
+              "multi": true,
+              "required": true,
+              "show_user": true,
+              "default": [
+                "kube-state-metrics:8080"
+              ]
+            },
+            {
+              "name": "period",
+              "type": "text",
+              "title": "Period",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "10s"
+            }
+          ],
+          "template_path": "stream.yml.hbs",
+          "title": "Kubernetes PersistentVolumeClaim metrics",
+          "description": "Collect Kubernetes PersistentVolumeClaim metrics from kube_state_metrics",
+          "enabled": true
+        }
+      ],
+      "package": "kubernetes",
+      "path": "state_persistentvolumeclaim"
+    },
+    {
+      "type": "metrics",
+      "dataset": "kubernetes.state_pod",
+      "title": "Kubernetes Pod metrics",
+      "release": "experimental",
+      "streams": [
+        {
+          "input": "kubernetes/metrics",
+          "vars": [
+            {
+              "name": "add_metadata",
+              "type": "bool",
+              "title": "Add Metadata",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": true
+            },
+            {
+              "name": "hosts",
+              "type": "text",
+              "title": "Hosts",
+              "multi": true,
+              "required": true,
+              "show_user": true,
+              "default": [
+                "kube-state-metrics:8080"
+              ]
+            },
+            {
+              "name": "period",
+              "type": "text",
+              "title": "Period",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "10s"
+            }
+          ],
+          "template_path": "stream.yml.hbs",
+          "title": "Kubernetes Pod metrics",
+          "description": "Collect Kubernetes Pod metrics from kube_state_metrics",
+          "enabled": true
+        }
+      ],
+      "package": "kubernetes",
+      "path": "state_pod"
+    },
+    {
+      "type": "metrics",
+      "dataset": "kubernetes.state_replicaset",
+      "title": "Kubernetes state_replicaset metrics",
+      "release": "experimental",
+      "streams": [
+        {
+          "input": "kubernetes/metrics",
+          "vars": [
+            {
+              "name": "add_metadata",
+              "type": "bool",
+              "title": "Add Metadata",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": true
+            },
+            {
+              "name": "hosts",
+              "type": "text",
+              "title": "Hosts",
+              "multi": true,
+              "required": true,
+              "show_user": true,
+              "default": [
+                "kube-state-metrics:8080"
+              ]
+            },
+            {
+              "name": "period",
+              "type": "text",
+              "title": "Period",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "10s"
+            }
+          ],
+          "template_path": "stream.yml.hbs",
+          "title": "Kubernetes Replicaset metrics",
+          "description": "Collect Kubernetes Replicaset metrics from kube_state_metrics",
+          "enabled": true
+        }
+      ],
+      "package": "kubernetes",
+      "path": "state_replicaset"
+    },
+    {
+      "type": "metrics",
+      "dataset": "kubernetes.state_resourcequota",
+      "title": "Kubernetes ResourceQuota metrics",
+      "release": "experimental",
+      "streams": [
+        {
+          "input": "kubernetes/metrics",
+          "vars": [
+            {
+              "name": "add_metadata",
+              "type": "bool",
+              "title": "Add Metadata",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": true
+            },
+            {
+              "name": "hosts",
+              "type": "text",
+              "title": "Hosts",
+              "multi": true,
+              "required": true,
+              "show_user": true,
+              "default": [
+                "kube-state-metrics:8080"
+              ]
+            },
+            {
+              "name": "period",
+              "type": "text",
+              "title": "Period",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "10s"
+            }
+          ],
+          "template_path": "stream.yml.hbs",
+          "title": "Kubernetes ResourceQuota metrics",
+          "description": "Collect Kubernetes ResourceQuota metrics from kube_state_metrics",
+          "enabled": true
+        }
+      ],
+      "package": "kubernetes",
+      "path": "state_resourcequota"
+    },
+    {
+      "type": "metrics",
+      "dataset": "kubernetes.state_service",
+      "title": "Kubernetes Service metrics",
+      "release": "experimental",
+      "streams": [
+        {
+          "input": "kubernetes/metrics",
+          "vars": [
+            {
+              "name": "add_metadata",
+              "type": "bool",
+              "title": "Add Metadata",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": true
+            },
+            {
+              "name": "hosts",
+              "type": "text",
+              "title": "Hosts",
+              "multi": true,
+              "required": true,
+              "show_user": true,
+              "default": [
+                "kube-state-metrics:8080"
+              ]
+            },
+            {
+              "name": "period",
+              "type": "text",
+              "title": "Period",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "10s"
+            }
+          ],
+          "template_path": "stream.yml.hbs",
+          "title": "Kubernetes Service metrics",
+          "description": "Collect Kubernetes Service metrics from kube_state_metrics",
+          "enabled": true
+        }
+      ],
+      "package": "kubernetes",
+      "path": "state_service"
+    },
+    {
+      "type": "metrics",
+      "dataset": "kubernetes.state_statefulset",
+      "title": "Kubernetes StatefulSet metrics",
+      "release": "experimental",
+      "streams": [
+        {
+          "input": "kubernetes/metrics",
+          "vars": [
+            {
+              "name": "add_metadata",
+              "type": "bool",
+              "title": "Add Metadata",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": true
+            },
+            {
+              "name": "hosts",
+              "type": "text",
+              "title": "Hosts",
+              "multi": true,
+              "required": true,
+              "show_user": true,
+              "default": [
+                "kube-state-metrics:8080"
+              ]
+            },
+            {
+              "name": "period",
+              "type": "text",
+              "title": "Period",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "10s"
+            }
+          ],
+          "template_path": "stream.yml.hbs",
+          "title": "Kubernetes StatefulSet metrics",
+          "description": "Collect Kubernetes StatefulSet metrics from kube_state_metrics",
+          "enabled": true
+        }
+      ],
+      "package": "kubernetes",
+      "path": "state_statefulset"
+    },
+    {
+      "type": "metrics",
+      "dataset": "kubernetes.state_storageclass",
+      "title": "Kubernetes StorageClass metrics",
+      "release": "experimental",
+      "streams": [
+        {
+          "input": "kubernetes/metrics",
+          "vars": [
+            {
+              "name": "add_metadata",
+              "type": "bool",
+              "title": "Add Metadata",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": true
+            },
+            {
+              "name": "hosts",
+              "type": "text",
+              "title": "Hosts",
+              "multi": true,
+              "required": true,
+              "show_user": true,
+              "default": [
+                "kube-state-metrics:8080"
+              ]
+            },
+            {
+              "name": "period",
+              "type": "text",
+              "title": "Period",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "10s"
+            }
+          ],
+          "template_path": "stream.yml.hbs",
+          "title": "Kubernetes StorageClass metrics",
+          "description": "Collect Kubernetes StorageClass metrics from kube_state_metrics",
+          "enabled": true
+        }
+      ],
+      "package": "kubernetes",
+      "path": "state_storageclass"
+    },
+    {
+      "type": "metrics",
+      "dataset": "kubernetes.system",
+      "title": "Kubernetes System metrics",
+      "release": "experimental",
+      "streams": [
+        {
+          "input": "kubernetes/metrics",
+          "vars": [
+            {
+              "name": "add_metadata",
+              "type": "bool",
+              "title": "Add Metadata",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": true
+            },
+            {
+              "name": "bearer_token_file",
+              "type": "text",
+              "title": "Bearer Token File",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "/var/run/secrets/kubernetes.io/serviceaccount/token"
+            },
+            {
+              "name": "hosts",
+              "type": "text",
+              "title": "Hosts",
+              "multi": true,
+              "required": true,
+              "show_user": true,
+              "default": [
+                "https://${NODE_NAME}:10250"
+              ]
+            },
+            {
+              "name": "period",
+              "type": "text",
+              "title": "Period",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "10s"
+            },
+            {
+              "name": "ssl.verification_mode",
+              "type": "text",
+              "title": "SSL Verification Mode",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "none"
+            }
+          ],
+          "template_path": "stream.yml.hbs",
+          "title": "Kubernetes System metrics",
+          "description": "Collect Kubernetes system metrics",
+          "enabled": true
+        }
+      ],
+      "package": "kubernetes",
+      "path": "system"
+    },
+    {
+      "type": "metrics",
+      "dataset": "kubernetes.volume",
+      "title": "Kubernetes Volume metrics",
+      "release": "experimental",
+      "streams": [
+        {
+          "input": "kubernetes/metrics",
+          "vars": [
+            {
+              "name": "add_metadata",
+              "type": "bool",
+              "title": "Add Metadata",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": true
+            },
+            {
+              "name": "bearer_token_file",
+              "type": "text",
+              "title": "Bearer Token File",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "/var/run/secrets/kubernetes.io/serviceaccount/token"
+            },
+            {
+              "name": "hosts",
+              "type": "text",
+              "title": "Hosts",
+              "multi": true,
+              "required": true,
+              "show_user": true,
+              "default": [
+                "https://${NODE_NAME}:10250"
+              ]
+            },
+            {
+              "name": "period",
+              "type": "text",
+              "title": "Period",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "10s"
+            },
+            {
+              "name": "ssl.verification_mode",
+              "type": "text",
+              "title": "SSL Verification Mode",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "none"
+            }
+          ],
+          "template_path": "stream.yml.hbs",
+          "title": "Kubernetes Volume metrics",
+          "description": "Collect Kubernetes Volume metrics",
+          "enabled": true
+        }
+      ],
+      "package": "kubernetes",
+      "path": "volume"
+    }
+  ]
+}
