@@ -52,7 +52,7 @@ func TestPackageStorage_Endpoints(t *testing.T) {
 		{"/search?package=example&all=true", "/search", "search-package-example-all.json", searchHandler(indexer, testCacheTime)},
 		{"/search?experimental=true", "/search", "search-package-experimental.json", searchHandler(indexer, testCacheTime)},
 		{"/search?experimental=foo", "/search", "search-package-experimental-error.txt", searchHandler(indexer, testCacheTime)},
-		//{"/search?category=datastore&experimental=true", "/search", "search-category-datastore.json", searchHandler(indexer, testCacheTime)},
+		{"/search?category=datastore&experimental=true", "/search", "search-category-datastore.json", searchHandler(indexer, testCacheTime)},
 		{"/search?prerelease=true", "/search", "search-package-prerelease.json", searchHandler(indexer, testCacheTime)},
 		{"/search?prerelease=foo", "/search", "search-package-prerelease-error.txt", searchHandler(indexer, testCacheTime)},
 		{"/search?category=datastore&prerelease=true", "/search", "search-category-datastore-prerelease.json", searchHandler(indexer, testCacheTime)},
@@ -60,7 +60,7 @@ func TestPackageStorage_Endpoints(t *testing.T) {
 		{"/search?type=input&package=integration_input&prerelease=true", "/search", "search-input-integration-package.json", searchHandler(indexer, testCacheTime)},
 		{"/search?type=integration&package=integration_input&prerelease=true", "/search", "search-integration-integration-package.json", searchHandler(indexer, testCacheTime)},
 
-		// Removed flags, kept to ensure that they don't break requests from old versions.
+		// Removed flags, kept ensure that they don't break requests from old versions.
 		{"/search?internal=true", "/search", "search-package-internal.json", searchHandler(indexer, testCacheTime)},
 	}
 
