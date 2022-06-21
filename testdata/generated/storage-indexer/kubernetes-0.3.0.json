@@ -28,6 +28,7 @@
     "containers",
     "kubernetes"
   ],
+  "signature_path": "/epr/kubernetes/kubernetes-0.3.0.zip.sig",
   "format_version": "1.0.0",
   "readme": "/package/kubernetes/0.3.0/docs/README.md",
   "license": "basic",

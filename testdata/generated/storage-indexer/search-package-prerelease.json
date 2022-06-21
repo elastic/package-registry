@@ -34,21 +34,22 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/1password/1password-1.4.0.zip.sig"
   },
   {
     "name": "aws",
     "title": "AWS",
-    "version": "1.16.0",
+    "version": "1.16.4",
     "release": "ga",
     "description": "Collect logs and metrics from Amazon Web Services with Elastic Agent.",
     "type": "integration",
-    "download": "/epr/aws/aws-1.16.0.zip",
-    "path": "/package/aws/1.16.0",
+    "download": "/epr/aws/aws-1.16.4.zip",
+    "path": "/package/aws/1.16.4",
     "icons": [
       {
         "src": "/img/logo_aws.svg",
-        "path": "/package/aws/1.16.0/img/logo_aws.svg",
+        "path": "/package/aws/1.16.4/img/logo_aws.svg",
         "title": "logo aws",
         "size": "32x32",
         "type": "image/svg+xml"
@@ -62,7 +63,7 @@
         "icons": [
           {
             "src": "/img/logo_billing.svg",
-            "path": "/package/aws/1.16.0/img/logo_billing.svg",
+            "path": "/package/aws/1.16.4/img/logo_billing.svg",
             "title": "AWS Billing logo",
             "size": "32x32",
             "type": "image/svg+xml"
@@ -76,7 +77,7 @@
         "icons": [
           {
             "src": "/img/logo_cloudtrail.svg",
-            "path": "/package/aws/1.16.0/img/logo_cloudtrail.svg",
+            "path": "/package/aws/1.16.4/img/logo_cloudtrail.svg",
             "title": "AWS Cloudtrail logo",
             "size": "32x32",
             "type": "image/svg+xml"
@@ -93,7 +94,7 @@
         "icons": [
           {
             "src": "/img/logo_cloudwatch.svg",
-            "path": "/package/aws/1.16.0/img/logo_cloudwatch.svg",
+            "path": "/package/aws/1.16.4/img/logo_cloudwatch.svg",
             "title": "AWS CloudWatch logo",
             "size": "32x32",
             "type": "image/svg+xml"
@@ -107,7 +108,7 @@
         "icons": [
           {
             "src": "/img/logo_dynamodb.svg",
-            "path": "/package/aws/1.16.0/img/logo_dynamodb.svg",
+            "path": "/package/aws/1.16.4/img/logo_dynamodb.svg",
             "title": "AWS DynamoDB logo",
             "size": "32x32",
             "type": "image/svg+xml"
@@ -124,7 +125,7 @@
         "icons": [
           {
             "src": "/img/logo_ebs.svg",
-            "path": "/package/aws/1.16.0/img/logo_ebs.svg",
+            "path": "/package/aws/1.16.4/img/logo_ebs.svg",
             "title": "AWS EBS logo",
             "size": "32x32",
             "type": "image/svg+xml"
@@ -141,7 +142,7 @@
         "icons": [
           {
             "src": "/img/logo_ec2.svg",
-            "path": "/package/aws/1.16.0/img/logo_ec2.svg",
+            "path": "/package/aws/1.16.4/img/logo_ec2.svg",
             "title": "AWS EC2 logo",
             "size": "32x32",
             "type": "image/svg+xml"
@@ -155,7 +156,7 @@
         "icons": [
           {
             "src": "/img/logo_elb.svg",
-            "path": "/package/aws/1.16.0/img/logo_elb.svg",
+            "path": "/package/aws/1.16.4/img/logo_elb.svg",
             "title": "AWS ELB logo",
             "size": "32x32",
             "type": "image/svg+xml"
@@ -172,7 +173,7 @@
         "icons": [
           {
             "src": "/img/logo_lambda.svg",
-            "path": "/package/aws/1.16.0/img/logo_lambda.svg",
+            "path": "/package/aws/1.16.4/img/logo_lambda.svg",
             "title": "AWS Lambda logo",
             "size": "32x32",
             "type": "image/svg+xml"
@@ -186,7 +187,7 @@
         "icons": [
           {
             "src": "/img/logo_natgateway.svg",
-            "path": "/package/aws/1.16.0/img/logo_natgateway.svg",
+            "path": "/package/aws/1.16.4/img/logo_natgateway.svg",
             "title": "AWS NATGateway logo",
             "size": "32x32",
             "type": "image/svg+xml"
@@ -203,7 +204,7 @@
         "icons": [
           {
             "src": "/img/logo_firewall.svg",
-            "path": "/package/aws/1.16.0/img/logo_firewall.svg",
+            "path": "/package/aws/1.16.4/img/logo_firewall.svg",
             "title": "AWS Network Firewall logo",
             "size": "32x32",
             "type": "image/svg+xml"
@@ -220,7 +221,7 @@
         "icons": [
           {
             "src": "/img/logo_rds.svg",
-            "path": "/package/aws/1.16.0/img/logo_rds.svg",
+            "path": "/package/aws/1.16.4/img/logo_rds.svg",
             "title": "AWS RDS logo",
             "size": "32x32",
             "type": "image/svg+xml"
@@ -237,7 +238,7 @@
         "icons": [
           {
             "src": "/img/logo_s3.svg",
-            "path": "/package/aws/1.16.0/img/logo_s3.svg",
+            "path": "/package/aws/1.16.4/img/logo_s3.svg",
             "title": "AWS S3 logo",
             "size": "32x32",
             "type": "image/svg+xml"
@@ -255,7 +256,7 @@
         "icons": [
           {
             "src": "/img/logo_s3_storage_lens.svg",
-            "path": "/package/aws/1.16.0/img/logo_s3_storage_lens.svg",
+            "path": "/package/aws/1.16.4/img/logo_s3_storage_lens.svg",
             "title": "AWS S3 storage lens logo",
             "size": "32x32",
             "type": "image/svg+xml"
@@ -272,7 +273,7 @@
         "icons": [
           {
             "src": "/img/logo_sns.svg",
-            "path": "/package/aws/1.16.0/img/logo_sns.svg",
+            "path": "/package/aws/1.16.4/img/logo_sns.svg",
             "title": "AWS SNS logo",
             "size": "32x32",
             "type": "image/svg+xml"
@@ -286,7 +287,7 @@
         "icons": [
           {
             "src": "/img/logo_sqs.svg",
-            "path": "/package/aws/1.16.0/img/logo_sqs.svg",
+            "path": "/package/aws/1.16.4/img/logo_sqs.svg",
             "title": "AWS SQS logo",
             "size": "32x32",
             "type": "image/svg+xml"
@@ -300,7 +301,7 @@
         "icons": [
           {
             "src": "/img/logo_transitgateway.svg",
-            "path": "/package/aws/1.16.0/img/logo_transitgateway.svg",
+            "path": "/package/aws/1.16.4/img/logo_transitgateway.svg",
             "title": "AWS Transit Gateway logo",
             "size": "32x32",
             "type": "image/svg+xml"
@@ -322,7 +323,7 @@
         "icons": [
           {
             "src": "/img/logo_vpcflow.svg",
-            "path": "/package/aws/1.16.0/img/logo_vpcflow.svg",
+            "path": "/package/aws/1.16.4/img/logo_vpcflow.svg",
             "title": "AWS VPC logo",
             "size": "32x32",
             "type": "image/svg+xml"
@@ -340,7 +341,7 @@
         "icons": [
           {
             "src": "/img/logo_vpn.svg",
-            "path": "/package/aws/1.16.0/img/logo_vpn.svg",
+            "path": "/package/aws/1.16.4/img/logo_vpn.svg",
             "title": "AWS VPN logo",
             "size": "32x32",
             "type": "image/svg+xml"
@@ -357,7 +358,7 @@
         "icons": [
           {
             "src": "/img/logo_waf.svg",
-            "path": "/package/aws/1.16.0/img/logo_waf.svg",
+            "path": "/package/aws/1.16.4/img/logo_waf.svg",
             "title": "AWS VPC logo",
             "size": "32x32",
             "type": "image/svg+xml"
@@ -375,7 +376,7 @@
         "icons": [
           {
             "src": "/img/logo_route53.svg",
-            "path": "/package/aws/1.16.0/img/logo_route53.svg",
+            "path": "/package/aws/1.16.4/img/logo_route53.svg",
             "title": "AWS Route53 logo",
             "size": "32x40",
             "type": "image/svg+xml"
@@ -389,7 +390,7 @@
         "icons": [
           {
             "src": "/img/logo_cloudfront.svg",
-            "path": "/package/aws/1.16.0/img/logo_cloudfront.svg",
+            "path": "/package/aws/1.16.4/img/logo_cloudfront.svg",
             "title": "AWS CloudFront logo",
             "size": "33x39",
             "type": "image/svg+xml"
@@ -408,7 +409,8 @@
     "categories": [
       "aws",
       "cloud"
-    ]
+    ],
+    "signature_path": "/epr/aws/aws-1.16.4.zip.sig"
   },
   {
     "name": "awsfargate",
@@ -447,7 +449,8 @@
       "aws",
       "cloud",
       "containers"
-    ]
+    ],
+    "signature_path": "/epr/awsfargate/awsfargate-0.1.1.zip.sig"
   },
   {
     "name": "ti_abusech",
@@ -484,7 +487,8 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/ti_abusech/ti_abusech-1.2.3.zip.sig"
   },
   {
     "name": "activemq",
@@ -521,7 +525,8 @@
     },
     "categories": [
       "web"
-    ]
+    ],
+    "signature_path": "/epr/activemq/activemq-0.3.0.zip.sig"
   },
   {
     "name": "akamai",
@@ -561,7 +566,8 @@
       "network",
       "web",
       "cloud"
-    ]
+    ],
+    "signature_path": "/epr/akamai/akamai-1.0.0.zip.sig"
   },
   {
     "name": "ti_otx",
@@ -598,7 +604,8 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/ti_otx/ti_otx-1.2.2.zip.sig"
   },
   {
     "name": "ti_anomali",
@@ -635,7 +642,8 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/ti_anomali/ti_anomali-1.2.3.zip.sig"
   },
   {
     "name": "apache",
@@ -672,7 +680,8 @@
     },
     "categories": [
       "web"
-    ]
+    ],
+    "signature_path": "/epr/apache/apache-1.3.5.zip.sig"
   },
   {
     "name": "tomcat",
@@ -710,7 +719,8 @@
     "categories": [
       "web",
       "security"
-    ]
+    ],
+    "signature_path": "/epr/tomcat/tomcat-1.3.1.zip.sig"
   },
   {
     "name": "atlassian_bitbucket",
@@ -748,7 +758,8 @@
     "categories": [
       "security",
       "web"
-    ]
+    ],
+    "signature_path": "/epr/atlassian_bitbucket/atlassian_bitbucket-1.2.1.zip.sig"
   },
   {
     "name": "atlassian_confluence",
@@ -786,7 +797,8 @@
     "categories": [
       "security",
       "web"
-    ]
+    ],
+    "signature_path": "/epr/atlassian_confluence/atlassian_confluence-1.3.0.zip.sig"
   },
   {
     "name": "atlassian_jira",
@@ -824,7 +836,8 @@
     "categories": [
       "security",
       "web"
-    ]
+    ],
+    "signature_path": "/epr/atlassian_jira/atlassian_jira-1.3.0.zip.sig"
   },
   {
     "name": "auditd",
@@ -861,7 +874,8 @@
     },
     "categories": [
       "os_system"
-    ]
+    ],
+    "signature_path": "/epr/auditd/auditd-3.1.0.zip.sig"
   },
   {
     "name": "auditd_manager",
@@ -899,7 +913,8 @@
     "categories": [
       "os_system",
       "security"
-    ]
+    ],
+    "signature_path": "/epr/auditd_manager/auditd_manager-1.0.0.zip.sig"
   },
   {
     "name": "auth0",
@@ -938,7 +953,8 @@
       "cloud",
       "network",
       "security"
-    ]
+    ],
+    "signature_path": "/epr/auth0/auth0-1.0.0.zip.sig"
   },
   {
     "name": "azure_application_insights",
@@ -999,7 +1015,8 @@
     "categories": [
       "azure",
       "web"
-    ]
+    ],
+    "signature_path": "/epr/azure_application_insights/azure_application_insights-1.0.1.zip.sig"
   },
   {
     "name": "azure_billing",
@@ -1045,7 +1062,8 @@
     },
     "categories": [
       "azure"
-    ]
+    ],
+    "signature_path": "/epr/azure_billing/azure_billing-1.0.1.zip.sig"
   },
   {
     "name": "azure",
@@ -1150,7 +1168,8 @@
       "cloud",
       "network",
       "security"
-    ]
+    ],
+    "signature_path": "/epr/azure/azure-1.1.8.zip.sig"
   },
   {
     "name": "azure_metrics",
@@ -1295,7 +1314,8 @@
     "categories": [
       "azure",
       "web"
-    ]
+    ],
+    "signature_path": "/epr/azure_metrics/azure_metrics-1.0.3.zip.sig"
   },
   {
     "name": "cef",
@@ -1324,7 +1344,8 @@
     "categories": [
       "network",
       "security"
-    ]
+    ],
+    "signature_path": "/epr/cef/cef-2.0.0.zip.sig"
   },
   {
     "name": "cassandra",
@@ -1362,7 +1383,8 @@
     "categories": [
       "datastore",
       "monitoring"
-    ]
+    ],
+    "signature_path": "/epr/cassandra/cassandra-1.1.0.zip.sig"
   },
   {
     "name": "checkpoint",
@@ -1399,7 +1421,8 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/checkpoint/checkpoint-1.5.0.zip.sig"
   },
   {
     "name": "cisco_asa",
@@ -1437,21 +1460,22 @@
     "categories": [
       "network",
       "security"
-    ]
+    ],
+    "signature_path": "/epr/cisco_asa/cisco_asa-2.4.1.zip.sig"
   },
   {
     "name": "cisco_duo",
     "title": "Cisco Duo",
-    "version": "1.2.2",
+    "version": "1.2.4",
     "release": "ga",
     "description": "Collect logs from Cisco Duo with Elastic Agent.",
     "type": "integration",
-    "download": "/epr/cisco_duo/cisco_duo-1.2.2.zip",
-    "path": "/package/cisco_duo/1.2.2",
+    "download": "/epr/cisco_duo/cisco_duo-1.2.4.zip",
+    "path": "/package/cisco_duo/1.2.4",
     "icons": [
       {
         "src": "/img/cisco_duo-logo.svg",
-        "path": "/package/cisco_duo/1.2.2/img/cisco_duo-logo.svg",
+        "path": "/package/cisco_duo/1.2.4/img/cisco_duo-logo.svg",
         "title": "Cisco Duo logo",
         "size": "32x32",
         "type": "image/svg+xml"
@@ -1474,7 +1498,8 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/cisco_duo/cisco_duo-1.2.4.zip.sig"
   },
   {
     "name": "cisco_ftd",
@@ -1512,7 +1537,8 @@
     "categories": [
       "network",
       "security"
-    ]
+    ],
+    "signature_path": "/epr/cisco_ftd/cisco_ftd-2.2.1.zip.sig"
   },
   {
     "name": "cisco_ios",
@@ -1550,7 +1576,8 @@
     "categories": [
       "network",
       "security"
-    ]
+    ],
+    "signature_path": "/epr/cisco_ios/cisco_ios-1.6.0.zip.sig"
   },
   {
     "name": "cisco_ise",
@@ -1587,7 +1614,8 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/cisco_ise/cisco_ise-0.1.0.zip.sig"
   },
   {
     "name": "cisco_secure_email_gateway",
@@ -1624,21 +1652,22 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/cisco_secure_email_gateway/cisco_secure_email_gateway-0.1.0.zip.sig"
   },
   {
     "name": "cisco_secure_endpoint",
     "title": "Cisco Secure Endpoint (AMP)",
-    "version": "2.4.0",
+    "version": "2.4.1",
     "release": "ga",
     "description": "Collect logs from Cisco Secure Endpoint (AMP) with Elastic Agent.",
     "type": "integration",
-    "download": "/epr/cisco_secure_endpoint/cisco_secure_endpoint-2.4.0.zip",
-    "path": "/package/cisco_secure_endpoint/2.4.0",
+    "download": "/epr/cisco_secure_endpoint/cisco_secure_endpoint-2.4.1.zip",
+    "path": "/package/cisco_secure_endpoint/2.4.1",
     "icons": [
       {
         "src": "/img/cisco.svg",
-        "path": "/package/cisco_secure_endpoint/2.4.0/img/cisco.svg",
+        "path": "/package/cisco_secure_endpoint/2.4.1/img/cisco.svg",
         "title": "cisco",
         "size": "216x216",
         "type": "image/svg+xml"
@@ -1662,7 +1691,8 @@
     "categories": [
       "network",
       "security"
-    ]
+    ],
+    "signature_path": "/epr/cisco_secure_endpoint/cisco_secure_endpoint-2.4.1.zip.sig"
   },
   {
     "name": "cisco_umbrella",
@@ -1700,7 +1730,8 @@
     "categories": [
       "network",
       "security"
-    ]
+    ],
+    "signature_path": "/epr/cisco_umbrella/cisco_umbrella-1.0.0.zip.sig"
   },
   {
     "name": "cloudflare",
@@ -1740,7 +1771,8 @@
       "network",
       "web",
       "cloud"
-    ]
+    ],
+    "signature_path": "/epr/cloudflare/cloudflare-2.0.0.zip.sig"
   },
   {
     "name": "cockroachdb",
@@ -1786,21 +1818,22 @@
     },
     "categories": [
       "datastore"
-    ]
+    ],
+    "signature_path": "/epr/cockroachdb/cockroachdb-0.2.0.zip.sig"
   },
   {
     "name": "crowdstrike",
     "title": "CrowdStrike Logs",
-    "version": "1.3.2",
+    "version": "1.3.3",
     "release": "ga",
     "description": "Collect and parse falcon logs from Crowdstrike products with Elastic Agent.",
     "type": "integration",
-    "download": "/epr/crowdstrike/crowdstrike-1.3.2.zip",
-    "path": "/package/crowdstrike/1.3.2",
+    "download": "/epr/crowdstrike/crowdstrike-1.3.3.zip",
+    "path": "/package/crowdstrike/1.3.3",
     "icons": [
       {
         "src": "/img/logo-integrations-crowdstrike.svg",
-        "path": "/package/crowdstrike/1.3.2/img/logo-integrations-crowdstrike.svg",
+        "path": "/package/crowdstrike/1.3.3/img/logo-integrations-crowdstrike.svg",
         "title": "CrowdStrike",
         "size": "216x216",
         "type": "image/svg+xml"
@@ -1815,7 +1848,7 @@
     ],
     "conditions": {
       "kibana": {
-        "version": "^7.16.0 || ^8.0.0"
+        "version": "^7.17.0 || ^8.0.0"
       }
     },
     "owner": {
@@ -1823,7 +1856,8 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/crowdstrike/crowdstrike-1.3.3.zip.sig"
   },
   {
     "name": "aws_logs",
@@ -1860,7 +1894,8 @@
       "custom",
       "cloud",
       "aws"
-    ]
+    ],
+    "signature_path": "/epr/aws_logs/aws_logs-0.2.1.zip.sig"
   },
   {
     "name": "gcp_pubsub",
@@ -1899,7 +1934,8 @@
       "google_cloud",
       "cloud",
       "custom"
-    ]
+    ],
+    "signature_path": "/epr/gcp_pubsub/gcp_pubsub-1.0.0.zip.sig"
   },
   {
     "name": "http_endpoint",
@@ -1934,7 +1970,8 @@
     },
     "categories": [
       "custom"
-    ]
+    ],
+    "signature_path": "/epr/http_endpoint/http_endpoint-1.0.1.zip.sig"
   },
   {
     "name": "httpjson",
@@ -1962,7 +1999,8 @@
     },
     "categories": [
       "custom"
-    ]
+    ],
+    "signature_path": "/epr/httpjson/httpjson-1.1.1.zip.sig"
   },
   {
     "name": "log",
@@ -1992,7 +2030,8 @@
     },
     "categories": [
       "custom"
-    ]
+    ],
+    "signature_path": "/epr/log/log-1.0.0.zip.sig"
   },
   {
     "name": "tcp",
@@ -2027,7 +2066,8 @@
     },
     "categories": [
       "custom"
-    ]
+    ],
+    "signature_path": "/epr/tcp/tcp-1.0.0.zip.sig"
   },
   {
     "name": "udp",
@@ -2062,7 +2102,8 @@
     },
     "categories": [
       "custom"
-    ]
+    ],
+    "signature_path": "/epr/udp/udp-1.0.1.zip.sig"
   },
   {
     "name": "winlog",
@@ -2097,21 +2138,22 @@
     },
     "categories": [
       "custom"
-    ]
+    ],
+    "signature_path": "/epr/winlog/winlog-1.4.0.zip.sig"
   },
   {
     "name": "cyberarkpas",
     "title": "CyberArk Privileged Access Security Logs",
-    "version": "2.4.0",
+    "version": "2.4.2",
     "release": "ga",
     "description": "Collect audit logs from Cyberark Vault servers with Elastic Agent.",
     "type": "integration",
-    "download": "/epr/cyberarkpas/cyberarkpas-2.4.0.zip",
-    "path": "/package/cyberarkpas/2.4.0",
+    "download": "/epr/cyberarkpas/cyberarkpas-2.4.2.zip",
+    "path": "/package/cyberarkpas/2.4.2",
     "icons": [
       {
         "src": "/img/logo.svg",
-        "path": "/package/cyberarkpas/2.4.0/img/logo.svg",
+        "path": "/package/cyberarkpas/2.4.2/img/logo.svg",
         "title": "CyberArk logo",
         "size": "32x32",
         "type": "image/svg+xml"
@@ -2134,7 +2176,8 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/cyberarkpas/cyberarkpas-2.4.2.zip.sig"
   },
   {
     "name": "ti_cybersixgill",
@@ -2172,7 +2215,8 @@
     "categories": [
       "security",
       "productivity"
-    ]
+    ],
+    "signature_path": "/epr/ti_cybersixgill/ti_cybersixgill-1.3.2.zip.sig"
   },
   {
     "name": "docker",
@@ -2210,7 +2254,8 @@
     "categories": [
       "containers",
       "os_system"
-    ]
+    ],
+    "signature_path": "/epr/docker/docker-1.2.0.zip.sig"
   },
   {
     "name": "apm",
@@ -2248,7 +2293,8 @@
     "categories": [
       "elastic_stack",
       "monitoring"
-    ]
+    ],
+    "signature_path": "/epr/apm/apm-8.2.0.zip.sig"
   },
   {
     "name": "elastic_agent",
@@ -2278,7 +2324,8 @@
     },
     "categories": [
       "elastic_stack"
-    ]
+    ],
+    "signature_path": "/epr/elastic_agent/elastic_agent-1.3.1.zip.sig"
   },
   {
     "name": "synthetics",
@@ -2316,7 +2363,8 @@
       "elastic_stack",
       "monitoring",
       "web"
-    ]
+    ],
+    "signature_path": "/epr/synthetics/synthetics-0.9.2.zip.sig"
   },
   {
     "name": "endpoint",
@@ -2353,21 +2401,62 @@
     "categories": [
       "security",
       "cloud"
-    ]
+    ],
+    "signature_path": "/epr/endpoint/endpoint-8.3.0.zip.sig"
+  },
+  {
+    "name": "fim",
+    "title": "File Integrity Monitoring",
+    "version": "1.0.0",
+    "release": "ga",
+    "description": "The File Integrity Monitoring integration reports filesystem changes in real time.",
+    "type": "integration",
+    "download": "/epr/fim/fim-1.0.0.zip",
+    "path": "/package/fim/1.0.0",
+    "icons": [
+      {
+        "src": "/img/sample-logo.svg",
+        "path": "/package/fim/1.0.0/img/sample-logo.svg",
+        "title": "Sample logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "fim",
+        "title": "File Integrity Monitoring",
+        "description": "Collect filesystem events"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.2.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "monitoring",
+      "os_system",
+      "security"
+    ],
+    "signature_path": "/epr/fim/fim-1.0.0.zip.sig"
   },
   {
     "name": "fireeye",
     "title": "Fireeye",
-    "version": "1.2.2",
+    "version": "1.3.1",
     "release": "ga",
     "description": "This Elastic integration collects Fireeye NX logs.",
     "type": "integration",
-    "download": "/epr/fireeye/fireeye-1.2.2.zip",
-    "path": "/package/fireeye/1.2.2",
+    "download": "/epr/fireeye/fireeye-1.3.1.zip",
+    "path": "/package/fireeye/1.3.1",
     "icons": [
       {
         "src": "/img/FireEye-logo.svg",
-        "path": "/package/fireeye/1.2.2/img/FireEye-logo.svg",
+        "path": "/package/fireeye/1.3.1/img/FireEye-logo.svg",
         "title": "Fireeye logo",
         "size": "32x32",
         "type": "image/svg+xml"
@@ -2392,21 +2481,22 @@
       "monitoring",
       "network",
       "security"
-    ]
+    ],
+    "signature_path": "/epr/fireeye/fireeye-1.3.1.zip.sig"
   },
   {
     "name": "fleet_server",
     "title": "Fleet Server",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "release": "ga",
-    "description": "Centrally manage Elastic Agents with the Fleet Server integration",
+    "description": "Centrally manage Elastic Agents with the Fleet Server integration.",
     "type": "integration",
-    "download": "/epr/fleet_server/fleet_server-1.1.0.zip",
-    "path": "/package/fleet_server/1.1.0",
+    "download": "/epr/fleet_server/fleet_server-1.1.1.zip",
+    "path": "/package/fleet_server/1.1.1",
     "icons": [
       {
         "src": "/img/logo_fleet_server.svg",
-        "path": "/package/fleet_server/1.1.0/img/logo_fleet_server.svg",
+        "path": "/package/fleet_server/1.1.1/img/logo_fleet_server.svg",
         "title": "logo Fleet Server",
         "size": "64x64",
         "type": "image/svg+xml"
@@ -2429,21 +2519,22 @@
     },
     "categories": [
       "elastic_stack"
-    ]
+    ],
+    "signature_path": "/epr/fleet_server/fleet_server-1.1.1.zip.sig"
   },
   {
     "name": "fortinet",
     "title": "Fortinet Logs",
-    "version": "1.4.3",
+    "version": "1.6.1",
     "release": "ga",
     "description": "Collect logs from Fortinet instances with Elastic Agent.",
     "type": "integration",
-    "download": "/epr/fortinet/fortinet-1.4.3.zip",
-    "path": "/package/fortinet/1.4.3",
+    "download": "/epr/fortinet/fortinet-1.6.1.zip",
+    "path": "/package/fortinet/1.6.1",
     "icons": [
       {
         "src": "/img/fortinet-logo.svg",
-        "path": "/package/fortinet/1.4.3/img/fortinet-logo.svg",
+        "path": "/package/fortinet/1.6.1/img/fortinet-logo.svg",
         "title": "Fortinet",
         "size": "216x216",
         "type": "image/svg+xml"
@@ -2466,21 +2557,60 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/fortinet/fortinet-1.6.1.zip.sig"
+  },
+  {
+    "name": "github",
+    "title": "GitHub",
+    "version": "1.0.0",
+    "release": "ga",
+    "description": "Collect events from GitHub with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/github/github-1.0.0.zip",
+    "path": "/package/github/1.0.0",
+    "icons": [
+      {
+        "src": "/img/github.svg",
+        "path": "/package/github/1.0.0/img/github.svg",
+        "title": "GitHub",
+        "size": "1024x1024",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "github",
+        "title": "GitHub logs",
+        "description": "Collect logs from GitHub"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security"
+    ],
+    "signature_path": "/epr/github/github-1.0.0.zip.sig"
   },
   {
     "name": "gcp",
     "title": "Google Cloud Platform",
-    "version": "1.5.1",
+    "version": "1.9.0",
     "release": "ga",
     "description": "Collect logs from Google Cloud Platform with Elastic Agent.",
     "type": "integration",
-    "download": "/epr/gcp/gcp-1.5.1.zip",
-    "path": "/package/gcp/1.5.1",
+    "download": "/epr/gcp/gcp-1.9.0.zip",
+    "path": "/package/gcp/1.9.0",
     "icons": [
       {
         "src": "/img/logo_gcp.svg",
-        "path": "/package/gcp/1.5.1/img/logo_gcp.svg",
+        "path": "/package/gcp/1.9.0/img/logo_gcp.svg",
         "title": "logo gcp",
         "size": "32x32",
         "type": "image/svg+xml"
@@ -2495,7 +2625,7 @@
     ],
     "conditions": {
       "kibana": {
-        "version": "^7.16.3 || ^8.0.0"
+        "version": "^7.17.0 || ^8.0.0"
       }
     },
     "owner": {
@@ -2506,7 +2636,8 @@
       "cloud",
       "network",
       "security"
-    ]
+    ],
+    "signature_path": "/epr/gcp/gcp-1.9.0.zip.sig"
   },
   {
     "name": "santa",
@@ -2543,21 +2674,22 @@
     "categories": [
       "security",
       "os_system"
-    ]
+    ],
+    "signature_path": "/epr/santa/santa-2.0.1.zip.sig"
   },
   {
     "name": "google_workspace",
     "title": "Google Workspace Audit Reports",
-    "version": "1.3.3",
+    "version": "1.5.0",
     "release": "ga",
     "description": "Collect audit reports from Google Workspaces with Elastic Agent.",
     "type": "integration",
-    "download": "/epr/google_workspace/google_workspace-1.3.3.zip",
-    "path": "/package/google_workspace/1.3.3",
+    "download": "/epr/google_workspace/google_workspace-1.5.0.zip",
+    "path": "/package/google_workspace/1.5.0",
     "icons": [
       {
         "src": "/img/logo.svg",
-        "path": "/package/google_workspace/1.3.3/img/logo.svg",
+        "path": "/package/google_workspace/1.5.0/img/logo.svg",
         "title": "logo Google",
         "size": "32x32",
         "type": "image/svg+xml"
@@ -2572,7 +2704,7 @@
     ],
     "conditions": {
       "kibana": {
-        "version": "^7.16.0 || ^8.0.0"
+        "version": "^8.4.0"
       }
     },
     "owner": {
@@ -2580,7 +2712,8 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/google_workspace/google_workspace-1.5.0.zip.sig"
   },
   {
     "name": "hashicorp_vault",
@@ -2617,7 +2750,8 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/hashicorp_vault/hashicorp_vault-1.3.3.zip.sig"
   },
   {
     "name": "hid_bravura_monitor",
@@ -2654,7 +2788,8 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/hid_bravura_monitor/hid_bravura_monitor-1.0.2.zip.sig"
   },
   {
     "name": "iis",
@@ -2691,7 +2826,8 @@
     },
     "categories": [
       "web"
-    ]
+    ],
+    "signature_path": "/epr/iis/iis-0.8.0.zip.sig"
   },
   {
     "name": "iptables",
@@ -2729,7 +2865,8 @@
     "categories": [
       "network",
       "security"
-    ]
+    ],
+    "signature_path": "/epr/iptables/iptables-0.8.1.zip.sig"
   },
   {
     "name": "juniper",
@@ -2767,7 +2904,8 @@
     "categories": [
       "network",
       "security"
-    ]
+    ],
+    "signature_path": "/epr/juniper/juniper-1.1.0.zip.sig"
   },
   {
     "name": "juniper_srx",
@@ -2805,7 +2943,8 @@
     "categories": [
       "network",
       "security"
-    ]
+    ],
+    "signature_path": "/epr/juniper_srx/juniper_srx-1.1.2.zip.sig"
   },
   {
     "name": "kafka",
@@ -2842,7 +2981,8 @@
     },
     "categories": [
       "message_queue"
-    ]
+    ],
+    "signature_path": "/epr/kafka/kafka-1.2.2.zip.sig"
   },
   {
     "name": "keycloak",
@@ -2881,7 +3021,8 @@
       "security",
       "network",
       "web"
-    ]
+    ],
+    "signature_path": "/epr/keycloak/keycloak-1.2.1.zip.sig"
   },
   {
     "name": "kibana",
@@ -2918,7 +3059,8 @@
     },
     "categories": [
       "elastic_stack"
-    ]
+    ],
+    "signature_path": "/epr/kibana/kibana-1.0.0.zip.sig"
   },
   {
     "name": "kubernetes",
@@ -3077,7 +3219,8 @@
     "categories": [
       "containers",
       "kubernetes"
-    ]
+    ],
+    "signature_path": "/epr/kubernetes/kubernetes-1.17.2.zip.sig"
   },
   {
     "name": "linux",
@@ -3105,7 +3248,8 @@
     },
     "categories": [
       "os_system"
-    ]
+    ],
+    "signature_path": "/epr/linux/linux-0.6.2.zip.sig"
   },
   {
     "name": "logstash",
@@ -3142,7 +3286,8 @@
     },
     "categories": [
       "elastic_stack"
-    ]
+    ],
+    "signature_path": "/epr/logstash/logstash-1.0.0.zip.sig"
   },
   {
     "name": "m365_defender",
@@ -3181,7 +3326,8 @@
       "network",
       "security",
       "azure"
-    ]
+    ],
+    "signature_path": "/epr/m365_defender/m365_defender-1.0.3.zip.sig"
   },
   {
     "name": "ti_misp",
@@ -3218,7 +3364,8 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/ti_misp/ti_misp-1.2.2.zip.sig"
   },
   {
     "name": "mattermost",
@@ -3256,7 +3403,8 @@
     "categories": [
       "security",
       "web"
-    ]
+    ],
+    "signature_path": "/epr/mattermost/mattermost-1.1.1.zip.sig"
   },
   {
     "name": "microsoft",
@@ -3295,7 +3443,8 @@
       "network",
       "security",
       "azure"
-    ]
+    ],
+    "signature_path": "/epr/microsoft/microsoft-1.0.0.zip.sig"
   },
   {
     "name": "microsoft_dhcp",
@@ -3332,7 +3481,8 @@
     },
     "categories": [
       "network"
-    ]
+    ],
+    "signature_path": "/epr/microsoft_dhcp/microsoft_dhcp-1.3.1.zip.sig"
   },
   {
     "name": "microsoft_defender_endpoint",
@@ -3371,7 +3521,8 @@
       "network",
       "security",
       "azure"
-    ]
+    ],
+    "signature_path": "/epr/microsoft_defender_endpoint/microsoft_defender_endpoint-2.1.0.zip.sig"
   },
   {
     "name": "microsoft_sqlserver",
@@ -3409,7 +3560,8 @@
     "categories": [
       "datastore",
       "security"
-    ]
+    ],
+    "signature_path": "/epr/microsoft_sqlserver/microsoft_sqlserver-0.4.5.zip.sig"
   },
   {
     "name": "mongodb",
@@ -3446,7 +3598,8 @@
     },
     "categories": [
       "datastore"
-    ]
+    ],
+    "signature_path": "/epr/mongodb/mongodb-1.3.1.zip.sig"
   },
   {
     "name": "mysql",
@@ -3483,7 +3636,8 @@
     },
     "categories": [
       "datastore"
-    ]
+    ],
+    "signature_path": "/epr/mysql/mysql-1.2.1.zip.sig"
   },
   {
     "name": "mysql_enterprise",
@@ -3521,7 +3675,8 @@
     "categories": [
       "security",
       "datastore"
-    ]
+    ],
+    "signature_path": "/epr/mysql_enterprise/mysql_enterprise-1.0.1.zip.sig"
   },
   {
     "name": "nats",
@@ -3558,7 +3713,8 @@
     },
     "categories": [
       "message_queue"
-    ]
+    ],
+    "signature_path": "/epr/nats/nats-1.2.0.zip.sig"
   },
   {
     "name": "netflow",
@@ -3587,7 +3743,8 @@
     "categories": [
       "network",
       "security"
-    ]
+    ],
+    "signature_path": "/epr/netflow/netflow-1.4.2.zip.sig"
   },
   {
     "name": "netskope",
@@ -3624,7 +3781,8 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/netskope/netskope-0.1.2.zip.sig"
   },
   {
     "name": "network_traffic",
@@ -3652,7 +3810,8 @@
     },
     "categories": [
       "web"
-    ]
+    ],
+    "signature_path": "/epr/network_traffic/network_traffic-0.8.1.zip.sig"
   },
   {
     "name": "nginx",
@@ -3690,7 +3849,8 @@
     "categories": [
       "web",
       "security"
-    ]
+    ],
+    "signature_path": "/epr/nginx/nginx-1.3.1.zip.sig"
   },
   {
     "name": "nginx_ingress_controller",
@@ -3728,7 +3888,8 @@
     "categories": [
       "web",
       "security"
-    ]
+    ],
+    "signature_path": "/epr/nginx_ingress_controller/nginx_ingress_controller-1.2.0.zip.sig"
   },
   {
     "name": "o365",
@@ -3765,7 +3926,8 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/o365/o365-1.4.3.zip.sig"
   },
   {
     "name": "okta",
@@ -3802,7 +3964,8 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/okta/okta-1.5.2.zip.sig"
   },
   {
     "name": "oracle",
@@ -3840,7 +4003,8 @@
     "categories": [
       "security",
       "datastore"
-    ]
+    ],
+    "signature_path": "/epr/oracle/oracle-1.0.1.zip.sig"
   },
   {
     "name": "osquery",
@@ -3878,7 +4042,8 @@
     "categories": [
       "security",
       "os_system"
-    ]
+    ],
+    "signature_path": "/epr/osquery/osquery-1.2.1.zip.sig"
   },
   {
     "name": "osquery_manager",
@@ -3917,7 +4082,8 @@
       "security",
       "os_system",
       "config_management"
-    ]
+    ],
+    "signature_path": "/epr/osquery_manager/osquery_manager-1.2.1.zip.sig"
   },
   {
     "name": "panw_cortex_xdr",
@@ -3954,7 +4120,8 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/panw_cortex_xdr/panw_cortex_xdr-1.1.1.zip.sig"
   },
   {
     "name": "panw",
@@ -3991,7 +4158,8 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/panw/panw-1.5.3.zip.sig"
   },
   {
     "name": "postgresql",
@@ -4028,7 +4196,8 @@
     },
     "categories": [
       "datastore"
-    ]
+    ],
+    "signature_path": "/epr/postgresql/postgresql-1.2.0.zip.sig"
   },
   {
     "name": "security_detection_engine",
@@ -4057,7 +4226,8 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/security_detection_engine/security_detection_engine-1.0.2.zip.sig"
   },
   {
     "name": "qnap_nas",
@@ -4094,7 +4264,8 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/qnap_nas/qnap_nas-1.1.1.zip.sig"
   },
   {
     "name": "rabbitmq",
@@ -4131,7 +4302,8 @@
     },
     "categories": [
       "message_queue"
-    ]
+    ],
+    "signature_path": "/epr/rabbitmq/rabbitmq-1.2.0.zip.sig"
   },
   {
     "name": "ti_recordedfuture",
@@ -4168,7 +4340,8 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/ti_recordedfuture/ti_recordedfuture-0.1.2.zip.sig"
   },
   {
     "name": "redis",
@@ -4206,7 +4379,8 @@
     "categories": [
       "datastore",
       "message_queue"
-    ]
+    ],
+    "signature_path": "/epr/redis/redis-1.2.0.zip.sig"
   },
   {
     "name": "stan",
@@ -4244,7 +4418,8 @@
     "categories": [
       "message_queue",
       "kubernetes"
-    ]
+    ],
+    "signature_path": "/epr/stan/stan-1.2.0.zip.sig"
   },
   {
     "name": "snyk",
@@ -4281,7 +4456,8 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/snyk/snyk-1.1.2.zip.sig"
   },
   {
     "name": "sophos",
@@ -4318,7 +4494,8 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/sophos/sophos-1.2.2.zip.sig"
   },
   {
     "name": "suricata",
@@ -4356,7 +4533,8 @@
     "categories": [
       "network",
       "security"
-    ]
+    ],
+    "signature_path": "/epr/suricata/suricata-1.6.1.zip.sig"
   },
   {
     "name": "symantec_endpoint",
@@ -4393,7 +4571,8 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/symantec_endpoint/symantec_endpoint-0.0.2.zip.sig"
   },
   {
     "name": "system",
@@ -4431,7 +4610,8 @@
     "categories": [
       "os_system",
       "security"
-    ]
+    ],
+    "signature_path": "/epr/system/system-1.6.4.zip.sig"
   },
   {
     "name": "tenable_sc",
@@ -4468,7 +4648,8 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/tenable_sc/tenable_sc-1.1.1.zip.sig"
   },
   {
     "name": "ti_threatq",
@@ -4505,7 +4686,8 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/ti_threatq/ti_threatq-1.2.2.zip.sig"
   },
   {
     "name": "traefik",
@@ -4543,21 +4725,22 @@
     "categories": [
       "web",
       "security"
-    ]
+    ],
+    "signature_path": "/epr/traefik/traefik-1.2.0.zip.sig"
   },
   {
     "name": "carbon_black_cloud",
     "title": "VMware Carbon Black Cloud",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "release": "ga",
     "description": "Collect logs from VMWare Carbon Black Cloud with Elastic Agent.",
     "type": "integration",
-    "download": "/epr/carbon_black_cloud/carbon_black_cloud-1.0.1.zip",
-    "path": "/package/carbon_black_cloud/1.0.1",
+    "download": "/epr/carbon_black_cloud/carbon_black_cloud-1.0.2.zip",
+    "path": "/package/carbon_black_cloud/1.0.2",
     "icons": [
       {
         "src": "/img/carbon_black_cloud-logo.svg",
-        "path": "/package/carbon_black_cloud/1.0.1/img/carbon_black_cloud-logo.svg",
+        "path": "/package/carbon_black_cloud/1.0.2/img/carbon_black_cloud-logo.svg",
         "title": "Carbon Black Cloud logo",
         "size": "32x32",
         "type": "image/svg+xml"
@@ -4580,7 +4763,8 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/carbon_black_cloud/carbon_black_cloud-1.0.2.zip.sig"
   },
   {
     "name": "carbonblack_edr",
@@ -4617,7 +4801,8 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/carbonblack_edr/carbonblack_edr-1.2.0.zip.sig"
   },
   {
     "name": "vsphere",
@@ -4655,7 +4840,8 @@
     "categories": [
       "monitoring",
       "os_system"
-    ]
+    ],
+    "signature_path": "/epr/vsphere/vsphere-0.1.0.zip.sig"
   },
   {
     "name": "windows",
@@ -4693,7 +4879,8 @@
     "categories": [
       "os_system",
       "security"
-    ]
+    ],
+    "signature_path": "/epr/windows/windows-1.5.0.zip.sig"
   },
   {
     "name": "zeek",
@@ -4732,7 +4919,8 @@
       "network",
       "monitoring",
       "security"
-    ]
+    ],
+    "signature_path": "/epr/zeek/zeek-1.6.1.zip.sig"
   },
   {
     "name": "zerofox",
@@ -4770,7 +4958,8 @@
     "categories": [
       "cloud",
       "security"
-    ]
+    ],
+    "signature_path": "/epr/zerofox/zerofox-1.2.1.zip.sig"
   },
   {
     "name": "zookeeper",
@@ -4808,7 +4997,8 @@
     "categories": [
       "datastore",
       "config_management"
-    ]
+    ],
+    "signature_path": "/epr/zookeeper/zookeeper-1.2.0.zip.sig"
   },
   {
     "name": "zoom",
@@ -4846,7 +5036,8 @@
     "categories": [
       "security",
       "productivity"
-    ]
+    ],
+    "signature_path": "/epr/zoom/zoom-1.2.1.zip.sig"
   },
   {
     "name": "zscaler_zia",
@@ -4883,7 +5074,8 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/zscaler_zia/zscaler_zia-0.1.3.zip.sig"
   },
   {
     "name": "zscaler_zpa",
@@ -4920,6 +5112,7 @@
     },
     "categories": [
       "security"
-    ]
+    ],
+    "signature_path": "/epr/zscaler_zpa/zscaler_zpa-0.1.2.zip.sig"
   }
 ]

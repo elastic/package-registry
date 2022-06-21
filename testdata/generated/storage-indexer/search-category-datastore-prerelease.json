@@ -2,16 +2,16 @@
   {
     "name": "aws",
     "title": "AWS",
-    "version": "1.16.0",
+    "version": "1.16.4",
     "release": "ga",
     "description": "Collect logs and metrics from Amazon Web Services with Elastic Agent.",
     "type": "integration",
-    "download": "/epr/aws/aws-1.16.0.zip",
-    "path": "/package/aws/1.16.0",
+    "download": "/epr/aws/aws-1.16.4.zip",
+    "path": "/package/aws/1.16.4",
     "icons": [
       {
         "src": "/img/logo_aws.svg",
-        "path": "/package/aws/1.16.0/img/logo_aws.svg",
+        "path": "/package/aws/1.16.4/img/logo_aws.svg",
         "title": "logo aws",
         "size": "32x32",
         "type": "image/svg+xml"
@@ -25,7 +25,7 @@
         "icons": [
           {
             "src": "/img/logo_dynamodb.svg",
-            "path": "/package/aws/1.16.0/img/logo_dynamodb.svg",
+            "path": "/package/aws/1.16.4/img/logo_dynamodb.svg",
             "title": "AWS DynamoDB logo",
             "size": "32x32",
             "type": "image/svg+xml"
@@ -42,7 +42,7 @@
         "icons": [
           {
             "src": "/img/logo_ebs.svg",
-            "path": "/package/aws/1.16.0/img/logo_ebs.svg",
+            "path": "/package/aws/1.16.4/img/logo_ebs.svg",
             "title": "AWS EBS logo",
             "size": "32x32",
             "type": "image/svg+xml"
@@ -59,7 +59,7 @@
         "icons": [
           {
             "src": "/img/logo_rds.svg",
-            "path": "/package/aws/1.16.0/img/logo_rds.svg",
+            "path": "/package/aws/1.16.4/img/logo_rds.svg",
             "title": "AWS RDS logo",
             "size": "32x32",
             "type": "image/svg+xml"
@@ -76,7 +76,7 @@
         "icons": [
           {
             "src": "/img/logo_s3.svg",
-            "path": "/package/aws/1.16.0/img/logo_s3.svg",
+            "path": "/package/aws/1.16.4/img/logo_s3.svg",
             "title": "AWS S3 logo",
             "size": "32x32",
             "type": "image/svg+xml"
@@ -94,7 +94,7 @@
         "icons": [
           {
             "src": "/img/logo_s3_storage_lens.svg",
-            "path": "/package/aws/1.16.0/img/logo_s3_storage_lens.svg",
+            "path": "/package/aws/1.16.4/img/logo_s3_storage_lens.svg",
             "title": "AWS S3 storage lens logo",
             "size": "32x32",
             "type": "image/svg+xml"
@@ -116,7 +116,8 @@
     "categories": [
       "aws",
       "cloud"
-    ]
+    ],
+    "signature_path": "/epr/aws/aws-1.16.4.zip.sig"
   },
   {
     "name": "cassandra",
@@ -154,7 +155,8 @@
     "categories": [
       "datastore",
       "monitoring"
-    ]
+    ],
+    "signature_path": "/epr/cassandra/cassandra-1.1.0.zip.sig"
   },
   {
     "name": "cockroachdb",
@@ -200,7 +202,8 @@
     },
     "categories": [
       "datastore"
-    ]
+    ],
+    "signature_path": "/epr/cockroachdb/cockroachdb-0.2.0.zip.sig"
   },
   {
     "name": "microsoft_sqlserver",
@@ -238,7 +241,8 @@
     "categories": [
       "datastore",
       "security"
-    ]
+    ],
+    "signature_path": "/epr/microsoft_sqlserver/microsoft_sqlserver-0.4.5.zip.sig"
   },
   {
     "name": "mongodb",
@@ -275,7 +279,8 @@
     },
     "categories": [
       "datastore"
-    ]
+    ],
+    "signature_path": "/epr/mongodb/mongodb-1.3.1.zip.sig"
   },
   {
     "name": "mysql",
@@ -312,7 +317,8 @@
     },
     "categories": [
       "datastore"
-    ]
+    ],
+    "signature_path": "/epr/mysql/mysql-1.2.1.zip.sig"
   },
   {
     "name": "mysql_enterprise",
@@ -350,7 +356,8 @@
     "categories": [
       "security",
       "datastore"
-    ]
+    ],
+    "signature_path": "/epr/mysql_enterprise/mysql_enterprise-1.0.1.zip.sig"
   },
   {
     "name": "oracle",
@@ -388,7 +395,8 @@
     "categories": [
       "security",
       "datastore"
-    ]
+    ],
+    "signature_path": "/epr/oracle/oracle-1.0.1.zip.sig"
   },
   {
     "name": "postgresql",
@@ -425,7 +433,8 @@
     },
     "categories": [
       "datastore"
-    ]
+    ],
+    "signature_path": "/epr/postgresql/postgresql-1.2.0.zip.sig"
   },
   {
     "name": "redis",
@@ -463,7 +472,8 @@
     "categories": [
       "datastore",
       "message_queue"
-    ]
+    ],
+    "signature_path": "/epr/redis/redis-1.2.0.zip.sig"
   },
   {
     "name": "zookeeper",
@@ -501,6 +511,7 @@
     "categories": [
       "datastore",
       "config_management"
-    ]
+    ],
+    "signature_path": "/epr/zookeeper/zookeeper-1.2.0.zip.sig"
   }
 ]

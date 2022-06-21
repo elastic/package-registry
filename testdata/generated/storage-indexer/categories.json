@@ -57,7 +57,7 @@
   {
     "id": "monitoring",
     "title": "Monitoring",
-    "count": 4
+    "count": 5
   },
   {
     "id": "network",
@@ -67,7 +67,7 @@
   {
     "id": "os_system",
     "title": "OS & System",
-    "count": 8
+    "count": 9
   },
   {
     "id": "productivity",
@@ -77,7 +77,7 @@
   {
     "id": "security",
     "title": "Security",
-    "count": 66
+    "count": 68
   },
   {
     "id": "web",

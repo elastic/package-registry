@@ -36,7 +36,8 @@
       "google_cloud",
       "cloud",
       "custom"
-    ]
+    ],
+    "signature_path": "/epr/gcp_pubsub/gcp_pubsub-1.0.0.zip.sig"
   },
   {
     "name": "http_endpoint",
@@ -71,7 +72,8 @@
     },
     "categories": [
       "custom"
-    ]
+    ],
+    "signature_path": "/epr/http_endpoint/http_endpoint-1.0.1.zip.sig"
   },
   {
     "name": "httpjson",
@@ -99,7 +101,8 @@
     },
     "categories": [
       "custom"
-    ]
+    ],
+    "signature_path": "/epr/httpjson/httpjson-1.1.1.zip.sig"
   },
   {
     "name": "log",
@@ -129,7 +132,8 @@
     },
     "categories": [
       "custom"
-    ]
+    ],
+    "signature_path": "/epr/log/log-1.0.0.zip.sig"
   },
   {
     "name": "tcp",
@@ -164,7 +168,8 @@
     },
     "categories": [
       "custom"
-    ]
+    ],
+    "signature_path": "/epr/tcp/tcp-1.0.0.zip.sig"
   },
   {
     "name": "udp",
@@ -199,7 +204,8 @@
     },
     "categories": [
       "custom"
-    ]
+    ],
+    "signature_path": "/epr/udp/udp-1.0.1.zip.sig"
   },
   {
     "name": "winlog",
@@ -234,6 +240,7 @@
     },
     "categories": [
       "custom"
-    ]
+    ],
+    "signature_path": "/epr/winlog/winlog-1.4.0.zip.sig"
   }
 ]

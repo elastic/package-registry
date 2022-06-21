@@ -37,7 +37,8 @@
       "network",
       "web",
       "cloud"
-    ]
+    ],
+    "signature_path": "/epr/akamai/akamai-1.0.0.zip.sig"
   },
   {
     "name": "apache",
@@ -74,7 +75,8 @@
     },
     "categories": [
       "web"
-    ]
+    ],
+    "signature_path": "/epr/apache/apache-1.3.5.zip.sig"
   },
   {
     "name": "tomcat",
@@ -112,7 +114,8 @@
     "categories": [
       "web",
       "security"
-    ]
+    ],
+    "signature_path": "/epr/tomcat/tomcat-1.3.1.zip.sig"
   },
   {
     "name": "atlassian_bitbucket",
@@ -150,7 +153,8 @@
     "categories": [
       "security",
       "web"
-    ]
+    ],
+    "signature_path": "/epr/atlassian_bitbucket/atlassian_bitbucket-1.2.1.zip.sig"
   },
   {
     "name": "atlassian_confluence",
@@ -188,7 +192,8 @@
     "categories": [
       "security",
       "web"
-    ]
+    ],
+    "signature_path": "/epr/atlassian_confluence/atlassian_confluence-1.3.0.zip.sig"
   },
   {
     "name": "atlassian_jira",
@@ -226,7 +231,8 @@
     "categories": [
       "security",
       "web"
-    ]
+    ],
+    "signature_path": "/epr/atlassian_jira/atlassian_jira-1.3.0.zip.sig"
   },
   {
     "name": "azure_application_insights",
@@ -287,7 +293,8 @@
     "categories": [
       "azure",
       "web"
-    ]
+    ],
+    "signature_path": "/epr/azure_application_insights/azure_application_insights-1.0.1.zip.sig"
   },
   {
     "name": "azure_metrics",
@@ -432,7 +439,8 @@
     "categories": [
       "azure",
       "web"
-    ]
+    ],
+    "signature_path": "/epr/azure_metrics/azure_metrics-1.0.3.zip.sig"
   },
   {
     "name": "cloudflare",
@@ -472,7 +480,8 @@
       "network",
       "web",
       "cloud"
-    ]
+    ],
+    "signature_path": "/epr/cloudflare/cloudflare-2.0.0.zip.sig"
   },
   {
     "name": "keycloak",
@@ -511,7 +520,8 @@
       "security",
       "network",
       "web"
-    ]
+    ],
+    "signature_path": "/epr/keycloak/keycloak-1.2.1.zip.sig"
   },
   {
     "name": "mattermost",
@@ -549,7 +559,8 @@
     "categories": [
       "security",
       "web"
-    ]
+    ],
+    "signature_path": "/epr/mattermost/mattermost-1.1.1.zip.sig"
   },
   {
     "name": "nginx",
@@ -587,7 +598,8 @@
     "categories": [
       "web",
       "security"
-    ]
+    ],
+    "signature_path": "/epr/nginx/nginx-1.3.1.zip.sig"
   },
   {
     "name": "nginx_ingress_controller",
@@ -625,7 +637,8 @@
     "categories": [
       "web",
       "security"
-    ]
+    ],
+    "signature_path": "/epr/nginx_ingress_controller/nginx_ingress_controller-1.2.0.zip.sig"
   },
   {
     "name": "traefik",
@@ -663,6 +676,7 @@
     "categories": [
       "web",
       "security"
-    ]
+    ],
+    "signature_path": "/epr/traefik/traefik-1.2.0.zip.sig"
   }
 ]

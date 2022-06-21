@@ -28,6 +28,7 @@
     "security",
     "os_system"
   ],
+  "signature_path": "/epr/osquery/osquery-1.0.3.zip.sig",
   "format_version": "1.0.0",
   "readme": "/package/osquery/1.0.3/docs/README.md",
   "license": "basic",

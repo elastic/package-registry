@@ -27,6 +27,7 @@
     },
     "categories": [
       "custom"
-    ]
+    ],
+    "signature_path": "/epr/log/log-1.0.0.zip.sig"
   }
 ]
