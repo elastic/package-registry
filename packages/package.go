@@ -70,6 +70,7 @@ type Package struct {
 	versionSemVer *semver.Version
 
 	fsBuilder FileSystemBuilder
+	location  PackageLocation
 }
 
 type FileSystemBuilder func(*Package) (PackageFileSystem, error)
@@ -307,7 +308,7 @@ func NewPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) 
 	}
 
 	// Read path for package signature
-	p.SignaturePath, err = p.GetSignaturePath()
+	p.SignaturePath, err = p.getSignaturePath()
 	if err != nil {
 		return nil, errors.Wrapf(err, "can't process the package signature")
 	}
@@ -449,6 +450,13 @@ func (p *Package) fs() (PackageFileSystem, error) {
 	}
 
 	return p.fsBuilder(p)
+}
+
+func (p *Package) packageLocation() PackageLocation {
+	if p.location == nil {
+		return NewLocalPackages()
+	}
+	return p.location
 }
 
 // Validate is called during Unpack of the manifest.
@@ -623,7 +631,7 @@ func (p *Package) GetUrlPath() string {
 	return path.Join(packagePathPrefix, p.Name, p.Version)
 }
 
-func (p *Package) GetSignaturePath() (string, error) {
+func (p *Package) getSignaturePath() (string, error) {
 	_, err := os.Stat(p.BasePath + ".sig")
 	if err != nil && errors.Is(err, os.ErrNotExist) {
 		return "", nil

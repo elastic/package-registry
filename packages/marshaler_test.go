@@ -60,6 +60,7 @@ func TestUnmarshalJSON(t *testing.T) {
 			assert.Equal(t, packages[i].Conditions.Kibana.constraint, indexer.packageList[i].Conditions.Kibana.constraint)
 		}
 		assert.Nil(t, packages[i].fsBuilder)
+		assert.Nil(t, packages[i].location)
 	}
 }
 

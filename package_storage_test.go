@@ -122,6 +122,10 @@ func TestPackageStorage_Artifacts(t *testing.T) {
 	}
 }
 
+// TODO Test staticsHandler
+// TODO Test contentTypes
+// TODO Test rangeDownloads
+
 func runEndpointWithStorageIndexer(t *testing.T, endpoint, path, file string, handler func(w http.ResponseWriter, r *http.Request)) {
 	runEndpoint(t, endpoint, path, filepath.Join(storageIndexerGoldenDir, file), handler)
 }

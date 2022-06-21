@@ -22,13 +22,12 @@ func ServePackage(w http.ResponseWriter, r *http.Request, p *Package) {
 	packagePath := p.BasePath
 	logger := util.Logger().With(zap.String("file.name", packagePath))
 
-	f, err := os.Stat(packagePath)
+	f, err := p.packageLocation().Stat(packagePath)
 	if err != nil {
 		logger.Error("stat package path failed", zap.Error(err))
 		http.Error(w, "internal server error", http.StatusInternalServerError)
 		return
 	}
-
 	w.Header().Set("Content-Type", "application/gzip")
 
 	if f.IsDir() {
