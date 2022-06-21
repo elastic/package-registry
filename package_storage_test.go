@@ -94,6 +94,34 @@ func TestPackageStorage_PackageIndex(t *testing.T) {
 	}
 }
 
+func TestPackageStorage_Artifacts(t *testing.T) {
+	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
+	defer fs.Stop()
+	indexer := storage.NewIndexer(fs.Client(), storage.FakeIndexerOptions)
+
+	err := indexer.Init(context.Background())
+	require.NoError(t, err)
+
+	artifactsHandler := artifactsHandler(indexer, testCacheTime)
+
+	tests := []struct {
+		endpoint string
+		path     string
+		file     string
+		handler  func(w http.ResponseWriter, r *http.Request)
+	}{
+		{"/epr/1password/1password-0.1.1.zip", artifactsRouterPath, "1password-0.1.1.zip-preview.txt", artifactsHandler},
+		{"/epr/kubernetes/kubernetes-999.999.999.zip", artifactsRouterPath, "artifact-package-version-not-found.txt", artifactsHandler},
+		{"/epr/missing/missing-1.0.3.zip", artifactsRouterPath, "artifact-package-not-found.txt", artifactsHandler},
+	}
+
+	for _, test := range tests {
+		t.Run(test.endpoint, func(t *testing.T) {
+			runEndpointWithStorageIndexer(t, test.endpoint, test.path, test.file, test.handler)
+		})
+	}
+}
+
 func runEndpointWithStorageIndexer(t *testing.T, endpoint, path, file string, handler func(w http.ResponseWriter, r *http.Request)) {
 	runEndpoint(t, endpoint, path, filepath.Join(storageIndexerGoldenDir, file), handler)
 }
