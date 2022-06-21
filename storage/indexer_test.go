@@ -42,7 +42,7 @@ func TestGet_ListAllPackages(t *testing.T) {
 
 	// then
 	require.NoError(t, err, "packages should be returned")
-	require.Len(t, foundPackages, 1112)
+	require.Len(t, foundPackages, 1133)
 }
 
 func TestGet_FindLatestPackage(t *testing.T) {
