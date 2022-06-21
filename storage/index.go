@@ -7,6 +7,7 @@ package storage
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 
 	"cloud.google.com/go/storage"
@@ -74,7 +75,13 @@ func buildIndexStoragePath(rootStoragePath string, aCursor cursor, indexFile str
 func transformSearchIndexAllToPackages(sia searchIndexAll) (packages.Packages, error) {
 	var transformedPackages packages.Packages
 	for i := range sia.Packages {
-		transformedPackages = append(transformedPackages, &sia.Packages[i].PackageManifest)
+		m := sia.Packages[i].PackageManifest
+		m.BasePath = fmt.Sprintf("%s-%s.zip", m.Name, m.Version)
+		m.SetFileSystemReference(packages.FileSystemReference{
+			Location:          nil,
+			FileSystemBuilder: nil,
+		})
+		transformedPackages = append(transformedPackages, &m)
 	}
 	return transformedPackages, nil
 }

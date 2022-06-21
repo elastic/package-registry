@@ -641,3 +641,13 @@ func (p *Package) getSignaturePath() (string, error) {
 	}
 	return p.GetDownloadPath() + ".sig", nil
 }
+
+type FileSystemReference struct {
+	Location          PackageLocation
+	FileSystemBuilder FileSystemBuilder
+}
+
+func (p *Package) SetFileSystemReference(ref FileSystemReference) {
+	p.location = ref.Location
+	p.fsBuilder = ref.FileSystemBuilder
+}
