@@ -7,6 +7,7 @@ package storage
 import (
 	"context"
 	"fmt"
+	"net/url"
 	"strings"
 	"sync"
 	"time"
@@ -32,7 +33,7 @@ type Indexer struct {
 
 type IndexerOptions struct {
 	PackageStorageBucketInternal string
-	PackageStorageBucketPublic   string
+	PackageStorageEndpoint       string
 	WatchInterval                time.Duration
 }
 
@@ -52,9 +53,9 @@ func (i *Indexer) Init(ctx context.Context) error {
 		return errors.Wrapf(err, "validation failed")
 	}
 
-	remotePackages, err := newRemotePackages(ctx, remotePackagesOptions{
-		storageClient:              i.storageClient,
-		packageStorageBucketPublic: i.options.PackageStorageBucketPublic,
+	remotePackages, err := newRemotePackages(remotePackagesOptions{
+		storageClient:          i.storageClient,
+		storageEndpoint: i.options.PackageStorageEndpoint,
 	})
 	if err != nil {
 		return errors.Wrapf(err, "can't prepare the remote packages location")
@@ -76,8 +77,9 @@ func validateIndexerOptions(options IndexerOptions) error {
 	if !strings.HasPrefix(options.PackageStorageBucketInternal, "gs://") {
 		return errors.New("missing or invalid options.PackageStorageBucketInternal")
 	}
-	if !strings.HasPrefix(options.PackageStorageBucketPublic, "gs://") {
-		return errors.New("missing or invalid options.PackageStorageBucketPublic")
+	_, err := url.Parse(options.PackageStorageEndpoint)
+	if err != nil {
+		return errors.Wrap(err, "invalid options.PackageStorageEndpoint, URL expected")
 	}
 	if options.WatchInterval < 0 {
 		return errors.New("options.WatchInterval must be greater than or equal to 0")

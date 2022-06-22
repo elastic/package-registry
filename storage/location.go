@@ -6,8 +6,6 @@ package storage
 
 import (
 	"context"
-	"fmt"
-	"path/filepath"
 	"time"
 
 	"cloud.google.com/go/storage"
@@ -26,23 +24,16 @@ type remotePackages struct {
 var _ packages.PackageLocation = new(remotePackages)
 
 type remotePackagesOptions struct {
-	storageClient              *storage.Client
-	packageStorageBucketPublic string
+	storageClient   *storage.Client
+	storageEndpoint string
 }
 
-type remotePackageInfo struct {
-	attrs storage.ObjectAttrs
-}
+type remotePackageInfo struct{}
 
 var _ packages.PackageInfo = new(remotePackageInfo)
 
-func newRemotePackages(ctx context.Context, options remotePackagesOptions) (*remotePackages, error) {
-	bucketName, rootStoragePath, err := extractBucketNameFromURL(options.packageStorageBucketPublic)
-	if err != nil {
-		return nil, fmt.Errorf("can't extract bucket name from URL (url: %s)", options.packageStorageBucketPublic)
-	}
+func newRemotePackages(options remotePackagesOptions) (*remotePackages, error) {
 	return &remotePackages{
-		ctx:             ctx,
 		storageClient:   options.storageClient,
 		bucketName:      bucketName,
 		rootStoragePath: rootStoragePath,
@@ -50,19 +41,11 @@ func newRemotePackages(ctx context.Context, options remotePackagesOptions) (*rem
 }
 
 func (r remotePackages) Open(packagePath string) (packages.PackageFile, error) {
-	objectHandle := r.storageClient.Bucket(r.bucketName).Object(filepath.Join(r.rootStoragePath, artifactsPackagesStoragePath, packagePath))
-	reader, err := NewGSReadSeekCloser(objectHandle, r.ctx, nil)
-	return &reader, err
+	panic("open: not implemented yet")
 }
 
 func (r remotePackages) Stat(packagePath string) (packages.PackageInfo, error) {
-	attrs, err := r.storageClient.Bucket(r.bucketName).Object(filepath.Join(r.rootStoragePath, artifactsPackagesStoragePath, packagePath)).Attrs(r.ctx)
-	if err != nil {
-		return nil, err
-	}
-	return &remotePackageInfo{
-		attrs: *attrs,
-	}, nil
+	panic("stat: not implemented yet")
 }
 
 func (r remotePackageInfo) IsDir() bool {
