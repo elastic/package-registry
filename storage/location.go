@@ -50,7 +50,9 @@ func newRemotePackages(ctx context.Context, options remotePackagesOptions) (*rem
 }
 
 func (r remotePackages) Open(packagePath string) (packages.PackageFile, error) {
-	panic("not implemented yet")
+	objectHandle := r.storageClient.Bucket(r.bucketName).Object(filepath.Join(r.rootStoragePath, artifactsPackagesStoragePath, packagePath))
+	reader, err := NewGSReadSeekCloser(objectHandle, r.ctx, nil)
+	return &reader, err
 }
 
 func (r remotePackages) Stat(packagePath string) (packages.PackageInfo, error) {

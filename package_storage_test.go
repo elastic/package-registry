@@ -110,7 +110,7 @@ func TestPackageStorage_Artifacts(t *testing.T) {
 		file     string
 		handler  func(w http.ResponseWriter, r *http.Request)
 	}{
-		{"/epr/1password/1password-0.1.1.zip", artifactsRouterPath, "1password-0.1.1.zip-preview.txt", artifactsHandler},
+		{"/epr/1password/1password-0.1.1.zip", artifactsRouterPath, "1password-0.1.1.zip-fake.txt", artifactsHandler},
 		{"/epr/kubernetes/kubernetes-999.999.999.zip", artifactsRouterPath, "artifact-package-version-not-found.txt", artifactsHandler},
 		{"/epr/missing/missing-1.0.3.zip", artifactsRouterPath, "artifact-package-not-found.txt", artifactsHandler},
 	}
