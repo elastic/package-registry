@@ -59,6 +59,6 @@ func artifactsHandler(indexer Indexer, cacheTime time.Duration) func(w http.Resp
 		}
 
 		cacheHeaders(w, cacheTime)
-		packages.ServePackage(w, r, packageList[0])
+		packages.ServePackageLocation(w, r, packageList[0], packageList[0].BasePath)
 	}
 }

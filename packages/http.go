@@ -15,12 +15,11 @@ import (
 	"github.com/elastic/package-registry/util"
 )
 
-// ServePackage is used by artifactsHandler.
-func ServePackage(w http.ResponseWriter, r *http.Request, p *Package) {
+// ServePackageLocation is used by artifactsHandler to serve packages and signatures.
+func ServePackageLocation(w http.ResponseWriter, r *http.Request, p *Package, packagePath string) {
 	span, _ := apm.StartSpan(r.Context(), "ServePackage", "app")
 	defer span.End()
 
-	packagePath := p.BasePath
 	logger := util.Logger().With(zap.String("file.name", packagePath))
 
 	f, err := p.packageLocation().Stat(packagePath)
@@ -55,12 +54,12 @@ func ServePackage(w http.ResponseWriter, r *http.Request, p *Package) {
 	http.ServeContent(w, r, packagePath, f.ModTime(), stream)
 }
 
-// ServeFile is used by staticHandler.
-func ServeFile(w http.ResponseWriter, r *http.Request, p *Package, name string) {
+// ServePackageFile is used by staticHandler.
+func ServePackageFile(w http.ResponseWriter, r *http.Request, p *Package, packageFilePath string) {
 	span, _ := apm.StartSpan(r.Context(), "ServePackage", "app")
 	defer span.End()
 
-	logger := util.Logger().With(zap.String("file.name", name))
+	logger := util.Logger().With(zap.String("file.name", packageFilePath))
 
 	fs, err := p.fs()
 	if os.IsNotExist(err) {
@@ -73,7 +72,7 @@ func ServeFile(w http.ResponseWriter, r *http.Request, p *Package, name string) 
 		return
 	}
 
-	stat, err := fs.Stat(name)
+	stat, err := fs.Stat(packageFilePath)
 	if os.IsNotExist(err) {
 		http.Error(w, "resource not found", http.StatusNotFound)
 		return
@@ -84,7 +83,7 @@ func ServeFile(w http.ResponseWriter, r *http.Request, p *Package, name string) 
 		return
 	}
 
-	f, err := fs.Open(name)
+	f, err := fs.Open(packageFilePath)
 	if err != nil {
 		logger.Error("failed to open file", zap.Error(err))
 		http.Error(w, "internal server error", http.StatusInternalServerError)
@@ -92,10 +91,5 @@ func ServeFile(w http.ResponseWriter, r *http.Request, p *Package, name string) 
 	}
 	defer f.Close()
 
-	http.ServeContent(w, r, name, stat.ModTime(), f)
-}
-
-// ServeSignature is used by signaturesHandler.
-func ServeSignature(w http.ResponseWriter, r *http.Request, p *Package) {
-	http.ServeFile(w, r, p.BasePath+".sig")
+	http.ServeContent(w, r, packageFilePath, stat.ModTime(), f)
 }
