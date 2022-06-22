@@ -25,6 +25,7 @@ type Indexer struct {
 
 	cursor      string
 	packageList packages.Packages
+	location    *RemotePackages
 
 	m sync.RWMutex
 }
@@ -50,6 +51,16 @@ func (i *Indexer) Init(ctx context.Context) error {
 	if err != nil {
 		return errors.Wrapf(err, "validation failed")
 	}
+
+	remotePackages, err := NewRemotePackages(ctx, RemotePackagesOptions{
+		StorageClient:              i.storageClient,
+		PackageStorageBucketPublic: i.options.PackageStorageBucketPublic,
+	})
+	if err != nil {
+		return errors.Wrapf(err, "can't prepare the remote packages location")
+	}
+
+	i.location = remotePackages
 
 	// Populate index file for the first time.
 	err = i.updateIndex(ctx)
@@ -129,7 +140,7 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	}
 	logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", len(anIndex.Packages))))
 
-	refreshedList, err := transformSearchIndexAllToPackages(*anIndex)
+	refreshedList, err := i.transformSearchIndexAllToPackages(*anIndex)
 	if err != nil {
 		return errors.Wrap(err, "can't transform the search-index-all")
 	}
@@ -148,4 +159,18 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 		return opts.Filter.Apply(ctx, i.packageList), nil
 	}
 	return i.packageList, nil
+}
+
+func (i *Indexer) transformSearchIndexAllToPackages(sia searchIndexAll) (packages.Packages, error) {
+	var transformedPackages packages.Packages
+	for j := range sia.Packages {
+		m := sia.Packages[j].PackageManifest
+		m.BasePath = fmt.Sprintf("%s-%s.zip", m.Name, m.Version)
+		m.SetFileSystemReference(packages.FileSystemReference{
+			Location:          i.location,
+			FileSystemBuilder: nil,
+		})
+		transformedPackages = append(transformedPackages, &m)
+	}
+	return transformedPackages, nil
 }
