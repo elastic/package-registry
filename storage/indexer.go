@@ -25,7 +25,7 @@ type Indexer struct {
 
 	cursor      string
 	packageList packages.Packages
-	location    *RemotePackages
+	location    *remotePackages
 
 	m sync.RWMutex
 }
@@ -52,9 +52,9 @@ func (i *Indexer) Init(ctx context.Context) error {
 		return errors.Wrapf(err, "validation failed")
 	}
 
-	remotePackages, err := NewRemotePackages(ctx, RemotePackagesOptions{
-		StorageClient:              i.storageClient,
-		PackageStorageBucketPublic: i.options.PackageStorageBucketPublic,
+	remotePackages, err := newRemotePackages(ctx, remotePackagesOptions{
+		storageClient:              i.storageClient,
+		packageStorageBucketPublic: i.options.PackageStorageBucketPublic,
 	})
 	if err != nil {
 		return errors.Wrapf(err, "can't prepare the remote packages location")

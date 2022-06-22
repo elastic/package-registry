@@ -454,7 +454,7 @@ func (p *Package) fs() (PackageFileSystem, error) {
 
 func (p *Package) packageLocation() PackageLocation {
 	if p.location == nil {
-		return NewLocalPackages()
+		return newLocalPackages()
 	}
 	return p.location
 }

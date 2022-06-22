@@ -6,23 +6,38 @@ package packages
 
 import (
 	"os"
+	"time"
 )
 
 type PackageLocation interface {
 	Stat(packagePath string) (PackageInfo, error)
+	Open(packagePath string) (PackageFile, error)
 }
 
 type PackageInfo interface {
 	IsDir() bool
+	ModTime() time.Time
 }
 
-type LocalPackages struct{}
+type localPackages struct{}
 
-func NewLocalPackages() *LocalPackages {
-	return new(LocalPackages)
+var _ PackageLocation = new(localPackages)
+
+type localPackageInfo struct {
+	fileInfo os.FileInfo
 }
 
-func (l LocalPackages) Stat(packagePath string) (PackageInfo, error) {
+var _ PackageInfo = new(localPackageInfo)
+
+func newLocalPackages() *localPackages {
+	return new(localPackages)
+}
+
+func (l localPackages) Open(packagePath string) (PackageFile, error) {
+	return os.Open(packagePath)
+}
+
+func (l localPackages) Stat(packagePath string) (PackageInfo, error) {
 	f, err := os.Stat(packagePath)
 	if err != nil {
 		return nil, err
@@ -32,14 +47,10 @@ func (l LocalPackages) Stat(packagePath string) (PackageInfo, error) {
 	}, nil
 }
 
-var _ PackageLocation = new(LocalPackages)
-
-type localPackageInfo struct {
-	fileInfo os.FileInfo
-}
-
 func (lpi localPackageInfo) IsDir() bool {
 	return lpi.fileInfo.IsDir()
 }
 
-var _ PackageInfo = new(localPackageInfo)
+func (lpi localPackageInfo) ModTime() time.Time {
+	return lpi.fileInfo.ModTime()
+}

@@ -15,6 +15,7 @@ import (
 	"github.com/elastic/package-registry/util"
 )
 
+// ServePackage is used by artifactsHandler.
 func ServePackage(w http.ResponseWriter, r *http.Request, p *Package) {
 	span, _ := apm.StartSpan(r.Context(), "ServePackage", "app")
 	defer span.End()
@@ -30,6 +31,7 @@ func ServePackage(w http.ResponseWriter, r *http.Request, p *Package) {
 	}
 	w.Header().Set("Content-Type", "application/gzip")
 
+	// Only packages stored locally in the unpacked form can be archived.
 	if f.IsDir() {
 		err = archiver.ArchivePackage(w, archiver.PackageProperties{
 			Name:    p.Name,
@@ -38,13 +40,22 @@ func ServePackage(w http.ResponseWriter, r *http.Request, p *Package) {
 		})
 		if err != nil {
 			logger.Error("archiving package path failed", zap.Error(err))
-			return
 		}
-	} else {
-		http.ServeFile(w, r, packagePath)
+		return
 	}
+
+	stream, err := p.packageLocation().Open(packagePath)
+	if err != nil {
+		logger.Error("failed to open file", zap.Error(err))
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+	defer stream.Close()
+
+	http.ServeContent(w, r, packagePath, f.ModTime(), stream)
 }
 
+// ServeFile is used by staticHandler.
 func ServeFile(w http.ResponseWriter, r *http.Request, p *Package, name string) {
 	span, _ := apm.StartSpan(r.Context(), "ServePackage", "app")
 	defer span.End()
@@ -84,6 +95,7 @@ func ServeFile(w http.ResponseWriter, r *http.Request, p *Package, name string) 
 	http.ServeContent(w, r, name, stat.ModTime(), f)
 }
 
+// ServeSignature is used by signaturesHandler.
 func ServeSignature(w http.ResponseWriter, r *http.Request, p *Package) {
 	http.ServeFile(w, r, p.BasePath+".sig")
 }
