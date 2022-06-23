@@ -64,7 +64,7 @@ func (i *Indexer) Init(ctx context.Context) error {
 	// Populate index file for the first time.
 	err = i.updateIndex(ctx)
 	if err != nil {
-		logger.Error("can't update index file", zap.Error(err))
+		return errors.Wrap(err, "can't update index file")
 	}
 
 	go i.watchIndices(ctx)
@@ -158,6 +158,7 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 
 	i.m.Lock()
 	defer i.m.Unlock()
+	i.cursor = storageCursor.Current
 	i.packageList = refreshedList
 	return nil
 }
@@ -166,7 +167,7 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	i.m.RLock()
 	defer i.m.RUnlock()
 
-	if opts.Filter != nil {
+	if opts != nil && opts.Filter != nil {
 		return opts.Filter.Apply(ctx, i.packageList), nil
 	}
 	return i.packageList, nil

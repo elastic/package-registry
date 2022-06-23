@@ -35,8 +35,7 @@ func loadCursor(ctx context.Context, storageClient *storage.Client, bucketName, 
 	rootedCursorStoragePath := joinObjectPaths(rootStoragePath, cursorStoragePath)
 	objectReader, err := storageClient.Bucket(bucketName).Object(rootedCursorStoragePath).NewReader(ctx)
 	if err == storage.ErrObjectNotExist {
-		logger.Debug("cursor file doesn't exist, most likely a first run", zap.String("path", rootedCursorStoragePath))
-		return new(cursor), nil
+		return nil, errors.Wrapf(err, "cursor file doesn't exist, most likely a first run (bucketName: %s, path: %s)", bucketName, rootedCursorStoragePath)
 	}
 	if err != nil {
 		return nil, errors.Wrapf(err, "can't read the cursor file (path: %s)", rootedCursorStoragePath)
@@ -54,7 +53,6 @@ func loadCursor(ctx context.Context, storageClient *storage.Client, bucketName, 
 		return nil, errors.Wrapf(err, "can't unmarshal the cursor file")
 	}
 
-	logger.Debug("cursor file doesn't exist, most likely a first run", zap.String("path", rootedCursorStoragePath))
 	logger.Debug("loaded cursor file", zap.String("cursor", c.String()))
 	return &c, nil
 }
