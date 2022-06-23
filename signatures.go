@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/elastic/package-registry/storage"
+
 	"github.com/Masterminds/semver/v3"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
@@ -55,6 +57,12 @@ func signaturesHandler(indexer Indexer, cacheTime time.Duration) func(w http.Res
 		}
 		if len(packageList) == 0 {
 			notFoundError(w, errSignatureFileNotFound)
+			return
+		}
+
+		aPackage := packageList[0]
+		if indexer, assert := indexer.(*storage.Indexer); assert {
+			indexer.SignatureRedirectHandler(w, r, aPackage)
 			return
 		}
 

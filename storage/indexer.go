@@ -7,6 +7,7 @@ package storage
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"net/url"
 	"strings"
 	"sync"
@@ -160,4 +161,16 @@ func (i *Indexer) transformSearchIndexAllToPackages(sia searchIndexAll) (package
 		transformedPackages = append(transformedPackages, &m)
 	}
 	return transformedPackages, nil
+}
+
+func (i *Indexer) PackageRedirectHandler(w http.ResponseWriter, r *http.Request, p *packages.Package) {
+	http.Redirect(w, r, "", http.StatusSeeOther)
+}
+
+func (i *Indexer) SignatureRedirectHandler(w http.ResponseWriter, r *http.Request, p *packages.Package) {
+	http.Redirect(w, r, "", http.StatusSeeOther)
+}
+
+func (i *Indexer) StaticRedirectHandler(w http.ResponseWriter, r *http.Request, p *packages.Package, resourcePath string) {
+	http.Redirect(w, r, "", http.StatusSeeOther)
 }

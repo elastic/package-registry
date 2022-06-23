@@ -9,6 +9,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/elastic/package-registry/storage"
+
 	"github.com/Masterminds/semver/v3"
 	"github.com/gorilla/mux"
 	"go.uber.org/zap"
@@ -49,8 +51,14 @@ func staticHandler(indexer Indexer, cacheTime time.Duration) http.HandlerFunc {
 			return
 		}
 
+		aPackage := packageList[0]
+		if indexer, assert := indexer.(*storage.Indexer); assert {
+			indexer.StaticRedirectHandler(w, r, aPackage, params.fileName)
+			return
+		}
+
 		cacheHeaders(w, cacheTime)
-		packages.ServeLocalPackageResource(w, r, packageList[0], params.fileName)
+		packages.ServeLocalPackageResource(w, r, aPackage, params.fileName)
 	}
 }
 

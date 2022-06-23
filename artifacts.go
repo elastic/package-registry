@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/elastic/package-registry/storage"
+
 	"github.com/Masterminds/semver/v3"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
@@ -55,6 +57,12 @@ func artifactsHandler(indexer Indexer, cacheTime time.Duration) func(w http.Resp
 		}
 		if len(packageList) == 0 {
 			notFoundError(w, errArtifactNotFound)
+			return
+		}
+
+		aPackage := packageList[0]
+		if indexer, assert := indexer.(*storage.Indexer); assert {
+			indexer.PackageRedirectHandler(w, r, aPackage)
 			return
 		}
 
