@@ -23,7 +23,7 @@ const artifactsRouterPath = "/epr/{packageName}/{packageName:[a-z0-9_]+}-{packag
 
 var errArtifactNotFound = errors.New("artifact not found")
 
-func artifactsHandler(indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+func artifactsHandler(indexer packages.Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	logger := util.Logger()
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
@@ -61,8 +61,8 @@ func artifactsHandler(indexer Indexer, cacheTime time.Duration) func(w http.Resp
 		}
 
 		aPackage := packageList[0]
-		if indexer, assert := indexer.(*storage.Indexer); assert {
-			indexer.HijackArtifactsHandler(w, r, aPackage)
+		if storageIndexer, assert := aPackage.Indexer().(*storage.Indexer); assert {
+			storageIndexer.HijackArtifactsHandler(w, r, aPackage)
 			return
 		}
 

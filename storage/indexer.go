@@ -178,6 +178,7 @@ func (i *Indexer) transformSearchIndexAllToPackages(sia searchIndexAll) (package
 	for j := range sia.Packages {
 		m := sia.Packages[j].PackageManifest
 		m.BasePath = fmt.Sprintf("%s-%s.zip", m.Name, m.Version)
+		m.SetIndexerReference(i)
 		transformedPackages = append(transformedPackages, &m)
 	}
 	return transformedPackages, nil

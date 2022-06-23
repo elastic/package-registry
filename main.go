@@ -136,7 +136,7 @@ func initServer(logger *zap.Logger) *http.Server {
 	config := mustLoadConfig(logger)
 	packagesBasePaths := getPackagesBasePaths(config)
 
-	var indexers []Indexer
+	var indexers []packages.Indexer
 	if featureStorageIndexer {
 		storageClient, err := gstorage.NewClient(ctx)
 		if err != nil {
@@ -151,7 +151,7 @@ func initServer(logger *zap.Logger) *http.Server {
 		indexers = append(indexers, packages.NewFileSystemIndexer(packagesBasePaths...))
 		indexers = append(indexers, packages.NewZipFileSystemIndexer(packagesBasePaths...))
 	}
-	combinedIndexer := NewCombinedIndexer(indexers...)
+	combinedIndexer := packages.NewCombinedIndexer(indexers...)
 	ensurePackagesAvailable(ctx, logger, combinedIndexer)
 
 	// If -dry-run=true is set, service stops here after validation
@@ -228,7 +228,7 @@ func printConfig(logger *zap.Logger, config *Config) {
 	logger.Info("Cache time for all others: " + config.CacheTimeCatchAll.String())
 }
 
-func ensurePackagesAvailable(ctx context.Context, logger *zap.Logger, indexer Indexer) {
+func ensurePackagesAvailable(ctx context.Context, logger *zap.Logger, indexer packages.Indexer) {
 	err := indexer.Init(ctx)
 	if err != nil {
 		logger.Fatal("Init failed", zap.Error(err))
@@ -246,7 +246,7 @@ func ensurePackagesAvailable(ctx context.Context, logger *zap.Logger, indexer In
 	logger.Info(fmt.Sprintf("%v package manifests loaded", len(packages)))
 }
 
-func mustLoadRouter(logger *zap.Logger, config *Config, indexer Indexer) *mux.Router {
+func mustLoadRouter(logger *zap.Logger, config *Config, indexer packages.Indexer) *mux.Router {
 	router, err := getRouter(logger, config, indexer)
 	if err != nil {
 		logger.Fatal("failed go configure router", zap.Error(err))
@@ -254,7 +254,7 @@ func mustLoadRouter(logger *zap.Logger, config *Config, indexer Indexer) *mux.Ro
 	return router
 }
 
-func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router, error) {
+func getRouter(logger *zap.Logger, config *Config, indexer packages.Indexer) (*mux.Router, error) {
 	artifactsHandler := artifactsHandler(indexer, config.CacheTimeCatchAll)
 	signaturesHandler := signaturesHandler(indexer, config.CacheTimeCatchAll)
 	faviconHandleFunc, err := faviconHandler(config.CacheTimeCatchAll)

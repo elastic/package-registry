@@ -24,7 +24,7 @@ const (
 
 var errPackageRevisionNotFound = errors.New("package revision not found")
 
-func packageIndexHandler(indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+func packageIndexHandler(indexer packages.Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	logger := util.Logger()
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)

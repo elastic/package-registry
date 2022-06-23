@@ -27,7 +27,7 @@ type staticParams struct {
 	fileName       string
 }
 
-func staticHandler(indexer Indexer, cacheTime time.Duration) http.HandlerFunc {
+func staticHandler(indexer packages.Indexer, cacheTime time.Duration) http.HandlerFunc {
 	logger := util.Logger()
 	return func(w http.ResponseWriter, r *http.Request) {
 		params, err := staticParamsFromRequest(r)
@@ -52,8 +52,8 @@ func staticHandler(indexer Indexer, cacheTime time.Duration) http.HandlerFunc {
 		}
 
 		aPackage := packageList[0]
-		if indexer, assert := indexer.(*storage.Indexer); assert {
-			indexer.HijackStaticHandler(w, r, aPackage, params.fileName)
+		if storageIndexer, assert := aPackage.Indexer().(*storage.Indexer); assert {
+			storageIndexer.HijackStaticHandler(w, r, aPackage, params.fileName)
 			return
 		}
 

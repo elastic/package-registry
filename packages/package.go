@@ -70,6 +70,7 @@ type Package struct {
 	versionSemVer *semver.Version
 
 	fsBuilder FileSystemBuilder
+	indexer   Indexer
 }
 
 type FileSystemBuilder func(*Package) (PackageFileSystem, error)
@@ -632,4 +633,12 @@ func (p *Package) getSignaturePath() (string, error) {
 		return "", errors.Wrap(err, "can't stat signature file")
 	}
 	return p.GetDownloadPath() + ".sig", nil
+}
+
+func (p *Package) Indexer() Indexer {
+	return p.indexer
+}
+
+func (p *Package) SetIndexerReference(ref Indexer) {
+	p.indexer = ref
 }
