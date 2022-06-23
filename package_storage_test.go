@@ -139,6 +139,7 @@ func TestPackageStorage_Signatures(t *testing.T) {
 		handler  func(w http.ResponseWriter, r *http.Request)
 	}{
 		{"/epr/1password/1password-0.1.1.zip.sig", signaturesRouterPath, "1password-0.1.1.zip.sig", signaturesHandler},
+		{"/epr/checkpoint/checkpoint-0.5.2.zip.sig", signaturesRouterPath, "checkpoint-0.5.2.zip.sig", signaturesHandler},
 	}
 
 	for _, test := range tests {
