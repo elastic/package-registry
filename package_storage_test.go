@@ -110,7 +110,7 @@ func TestPackageStorage_Artifacts(t *testing.T) {
 		file     string
 		handler  func(w http.ResponseWriter, r *http.Request)
 	}{
-		{"/epr/1password/1password-0.1.1.zip", artifactsRouterPath, "1password-0.1.1.zip-fake.txt", artifactsHandler},
+		{"/epr/1password/1password-0.1.1.zip", artifactsRouterPath, "1password-0.1.1.zip.txt", artifactsHandler},
 		{"/epr/kubernetes/kubernetes-999.999.999.zip", artifactsRouterPath, "artifact-package-version-not-found.txt", artifactsHandler},
 		{"/epr/missing/missing-1.0.3.zip", artifactsRouterPath, "artifact-package-not-found.txt", artifactsHandler},
 	}
@@ -122,9 +122,60 @@ func TestPackageStorage_Artifacts(t *testing.T) {
 	}
 }
 
-// TODO Test staticsHandler
-// TODO Test contentTypes
-// TODO Test rangeDownloads
+func TestPackageStorage_Signatures(t *testing.T) {
+	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
+	defer fs.Stop()
+	indexer := storage.NewIndexer(fs.Client(), storage.FakeIndexerOptions)
+
+	err := indexer.Init(context.Background())
+	require.NoError(t, err)
+
+	signaturesHandler := signaturesHandler(indexer, testCacheTime)
+
+	tests := []struct {
+		endpoint string
+		path     string
+		file     string
+		handler  func(w http.ResponseWriter, r *http.Request)
+	}{
+		{"/epr/1password/1password-0.1.1.zip.sig", signaturesRouterPath, "1password-0.1.1.zip.sig", signaturesHandler},
+	}
+
+	for _, test := range tests {
+		t.Run(test.endpoint, func(t *testing.T) {
+			runEndpoint(t, test.endpoint, test.path, test.file, test.handler)
+		})
+	}
+}
+
+func TestPackageStorage_Statics(t *testing.T) {
+	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
+	defer fs.Stop()
+	indexer := storage.NewIndexer(fs.Client(), storage.FakeIndexerOptions)
+
+	err := indexer.Init(context.Background())
+	require.NoError(t, err)
+
+	staticHandler := staticHandler(indexer, testCacheTime)
+
+	tests := []struct {
+		endpoint string
+		path     string
+		file     string
+		handler  func(w http.ResponseWriter, r *http.Request)
+	}{
+		{"/package/1password/0.1.1/img/1password-logo-light-bg.svg", staticRouterPath, "1password-logo-light-bg.svg", staticHandler},
+		{"/package/cassandra/1.1.0/img/[Logs Cassandra] System Logs.jpg", staticRouterPath, "logs-cassandra-system-logs.jpg", staticHandler},
+		{"/package/cef/0.1.0/docs/README.md", staticRouterPath, "cef-readme.md", staticHandler},
+	}
+
+	for _, test := range tests {
+		t.Run(test.endpoint, func(t *testing.T) {
+			runEndpoint(t, test.endpoint, test.path, test.file, test.handler)
+		})
+	}
+
+}
 
 func runEndpointWithStorageIndexer(t *testing.T, endpoint, path, file string, handler func(w http.ResponseWriter, r *http.Request)) {
 	runEndpoint(t, endpoint, path, filepath.Join(storageIndexerGoldenDir, file), handler)

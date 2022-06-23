@@ -195,6 +195,9 @@ func (i *Indexer) HijackSignaturesHandler(w http.ResponseWriter, r *http.Request
 }
 
 func (i *Indexer) HijackStaticHandler(w http.ResponseWriter, r *http.Request, p *packages.Package, resourcePath string) {
-	staticURL := i.artifactsStaticURL.ResolveReference(&url.URL{Path: resourcePath})
+	nameVersion := fmt.Sprintf("%s-%s/", p.Name, p.Version)
+	staticURL := i.artifactsStaticURL.
+		ResolveReference(&url.URL{Path: nameVersion}).
+		ResolveReference(&url.URL{Path: resourcePath})
 	http.Redirect(w, r, staticURL.String(), http.StatusSeeOther)
 }
