@@ -15,8 +15,8 @@ import (
 	"github.com/elastic/package-registry/util"
 )
 
-// ServePackageLocation is used by artifactsHandler to serve packages and signatures.
-func ServePackageLocation(w http.ResponseWriter, r *http.Request, p *Package, packagePath string) {
+// ServeLocalPackage is used by artifactsHandler to serve packages and signatures.
+func ServeLocalPackage(w http.ResponseWriter, r *http.Request, p *Package, packagePath string) {
 	span, _ := apm.StartSpan(r.Context(), "ServePackage", "app")
 	defer span.End()
 
@@ -53,8 +53,8 @@ func ServePackageLocation(w http.ResponseWriter, r *http.Request, p *Package, pa
 	http.ServeContent(w, r, packagePath, f.ModTime(), stream)
 }
 
-// ServePackageFile is used by staticHandler.
-func ServePackageFile(w http.ResponseWriter, r *http.Request, p *Package, packageFilePath string) {
+// ServeLocalPackageResource is used by staticHandler.
+func ServeLocalPackageResource(w http.ResponseWriter, r *http.Request, p *Package, packageFilePath string) {
 	span, _ := apm.StartSpan(r.Context(), "ServePackage", "app")
 	defer span.End()
 

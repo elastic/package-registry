@@ -59,6 +59,6 @@ func signaturesHandler(indexer Indexer, cacheTime time.Duration) func(w http.Res
 		}
 
 		cacheHeaders(w, cacheTime)
-		packages.ServePackageLocation(w, r, packageList[0], packageList[0].BasePath+".sig")
+		packages.ServeLocalPackage(w, r, packageList[0], packageList[0].BasePath+".sig")
 	}
 }

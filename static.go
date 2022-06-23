@@ -50,8 +50,7 @@ func staticHandler(indexer Indexer, cacheTime time.Duration) http.HandlerFunc {
 		}
 
 		cacheHeaders(w, cacheTime)
-
-		packages.ServePackageFile(w, r, packageList[0], params.fileName)
+		packages.ServeLocalPackageResource(w, r, packageList[0], params.fileName)
 	}
 }
 
