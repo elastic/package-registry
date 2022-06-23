@@ -17,6 +17,7 @@ const fakePackageStorageBucketInternal = "fake-package-storage-internal"
 
 var FakeIndexerOptions = IndexerOptions{
 	PackageStorageBucketInternal: "gs://" + fakePackageStorageBucketInternal,
+	PackageStorageEndpoint:       "https://package-storage.elastic.co/",
 	WatchInterval:                0,
 }
 

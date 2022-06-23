@@ -62,7 +62,7 @@ func artifactsHandler(indexer Indexer, cacheTime time.Duration) func(w http.Resp
 
 		aPackage := packageList[0]
 		if indexer, assert := indexer.(*storage.Indexer); assert {
-			indexer.PackageRedirectHandler(w, r, aPackage)
+			indexer.HijackArtifactsHandler(w, r, aPackage)
 			return
 		}
 

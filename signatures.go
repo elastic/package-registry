@@ -62,7 +62,7 @@ func signaturesHandler(indexer Indexer, cacheTime time.Duration) func(w http.Res
 
 		aPackage := packageList[0]
 		if indexer, assert := indexer.(*storage.Indexer); assert {
-			indexer.SignatureRedirectHandler(w, r, aPackage)
+			indexer.HijackSignaturesHandler(w, r, aPackage)
 			return
 		}
 

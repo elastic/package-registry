@@ -53,7 +53,7 @@ func staticHandler(indexer Indexer, cacheTime time.Duration) http.HandlerFunc {
 
 		aPackage := packageList[0]
 		if indexer, assert := indexer.(*storage.Indexer); assert {
-			indexer.StaticRedirectHandler(w, r, aPackage, params.fileName)
+			indexer.HijackStaticHandler(w, r, aPackage, params.fileName)
 			return
 		}
 

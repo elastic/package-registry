@@ -29,6 +29,9 @@ type Indexer struct {
 	packageList packages.Packages
 
 	m sync.RWMutex
+
+	artifactsPackagesURL *url.URL
+	artifactsStaticURL   *url.URL
 }
 
 type IndexerOptions struct {
@@ -53,6 +56,11 @@ func (i *Indexer) Init(ctx context.Context) error {
 		return errors.Wrapf(err, "validation failed")
 	}
 
+	err = i.setupEndpoints()
+	if err != nil {
+		return errors.Wrapf(err, "can't setup endpoints")
+	}
+
 	// Populate index file for the first time.
 	err = i.updateIndex(ctx)
 	if err != nil {
@@ -74,6 +82,17 @@ func validateIndexerOptions(options IndexerOptions) error {
 	if options.WatchInterval < 0 {
 		return errors.New("options.WatchInterval must be greater than or equal to 0")
 	}
+	return nil
+}
+
+func (i *Indexer) setupEndpoints() error {
+	baseURL, err := url.Parse(i.options.PackageStorageEndpoint)
+	if err != nil {
+		return err
+	}
+
+	i.artifactsPackagesURL = baseURL.ResolveReference(&url.URL{Path: artifactsPackagesStoragePath + "/"})
+	i.artifactsStaticURL = baseURL.ResolveReference(&url.URL{Path: artifactsStaticStoragePath + "/"})
 	return nil
 }
 
@@ -163,14 +182,19 @@ func (i *Indexer) transformSearchIndexAllToPackages(sia searchIndexAll) (package
 	return transformedPackages, nil
 }
 
-func (i *Indexer) PackageRedirectHandler(w http.ResponseWriter, r *http.Request, p *packages.Package) {
-	http.Redirect(w, r, "", http.StatusSeeOther)
+func (i *Indexer) HijackArtifactsHandler(w http.ResponseWriter, r *http.Request, p *packages.Package) {
+	nameVersionZip := fmt.Sprintf("%s-%s.zip", p.Name, p.Version)
+	artifactURL := i.artifactsPackagesURL.ResolveReference(&url.URL{Path: nameVersionZip})
+	http.Redirect(w, r, artifactURL.String(), http.StatusSeeOther)
 }
 
-func (i *Indexer) SignatureRedirectHandler(w http.ResponseWriter, r *http.Request, p *packages.Package) {
-	http.Redirect(w, r, "", http.StatusSeeOther)
+func (i *Indexer) HijackSignaturesHandler(w http.ResponseWriter, r *http.Request, p *packages.Package) {
+	nameVersionSigZip := fmt.Sprintf("%s-%s.zip.sig", p.Name, p.Version)
+	signatureURL := i.artifactsPackagesURL.ResolveReference(&url.URL{Path: nameVersionSigZip})
+	http.Redirect(w, r, signatureURL.String(), http.StatusSeeOther)
 }
 
-func (i *Indexer) StaticRedirectHandler(w http.ResponseWriter, r *http.Request, p *packages.Package, resourcePath string) {
-	http.Redirect(w, r, "", http.StatusSeeOther)
+func (i *Indexer) HijackStaticHandler(w http.ResponseWriter, r *http.Request, p *packages.Package, resourcePath string) {
+	staticURL := i.artifactsStaticURL.ResolveReference(&url.URL{Path: resourcePath})
+	http.Redirect(w, r, staticURL.String(), http.StatusSeeOther)
 }
