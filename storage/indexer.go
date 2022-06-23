@@ -26,7 +26,6 @@ type Indexer struct {
 
 	cursor      string
 	packageList packages.Packages
-	location    *remotePackages
 
 	m sync.RWMutex
 }
@@ -52,16 +51,6 @@ func (i *Indexer) Init(ctx context.Context) error {
 	if err != nil {
 		return errors.Wrapf(err, "validation failed")
 	}
-
-	remotePackages, err := newRemotePackages(remotePackagesOptions{
-		storageClient:          i.storageClient,
-		storageEndpoint: i.options.PackageStorageEndpoint,
-	})
-	if err != nil {
-		return errors.Wrapf(err, "can't prepare the remote packages location")
-	}
-
-	i.location = remotePackages
 
 	// Populate index file for the first time.
 	err = i.updateIndex(ctx)
@@ -168,10 +157,6 @@ func (i *Indexer) transformSearchIndexAllToPackages(sia searchIndexAll) (package
 	for j := range sia.Packages {
 		m := sia.Packages[j].PackageManifest
 		m.BasePath = fmt.Sprintf("%s-%s.zip", m.Name, m.Version)
-		m.SetFileSystemReference(packages.FileSystemReference{
-			Location:          i.location,
-			FileSystemBuilder: nil,
-		})
 		transformedPackages = append(transformedPackages, &m)
 	}
 	return transformedPackages, nil

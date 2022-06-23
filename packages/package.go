@@ -70,7 +70,6 @@ type Package struct {
 	versionSemVer *semver.Version
 
 	fsBuilder FileSystemBuilder
-	location  PackageLocation
 }
 
 type FileSystemBuilder func(*Package) (PackageFileSystem, error)
@@ -452,13 +451,6 @@ func (p *Package) fs() (PackageFileSystem, error) {
 	return p.fsBuilder(p)
 }
 
-func (p *Package) packageLocation() PackageLocation {
-	if p.location == nil {
-		return newLocalPackages()
-	}
-	return p.location
-}
-
 // Validate is called during Unpack of the manifest.
 // The validation here is only related to the fields directly specified in the manifest itself.
 func (p *Package) Validate() error {
@@ -640,14 +632,4 @@ func (p *Package) getSignaturePath() (string, error) {
 		return "", errors.Wrap(err, "can't stat signature file")
 	}
 	return p.GetDownloadPath() + ".sig", nil
-}
-
-type FileSystemReference struct {
-	Location          PackageLocation
-	FileSystemBuilder FileSystemBuilder
-}
-
-func (p *Package) SetFileSystemReference(ref FileSystemReference) {
-	p.location = ref.Location
-	p.fsBuilder = ref.FileSystemBuilder
 }

@@ -22,13 +22,12 @@ func ServePackageLocation(w http.ResponseWriter, r *http.Request, p *Package, pa
 
 	logger := util.Logger().With(zap.String("file.name", packagePath))
 
-	f, err := p.packageLocation().Stat(packagePath)
+	f, err := os.Stat(packagePath)
 	if err != nil {
 		logger.Error("stat package path failed", zap.Error(err))
 		http.Error(w, "internal server error", http.StatusInternalServerError)
 		return
 	}
-	w.Header().Set("Content-Type", "application/gzip")
 
 	// Only packages stored locally in the unpacked form can be archived.
 	if f.IsDir() {
@@ -43,7 +42,7 @@ func ServePackageLocation(w http.ResponseWriter, r *http.Request, p *Package, pa
 		return
 	}
 
-	stream, err := p.packageLocation().Open(packagePath)
+	stream, err := os.Open(packagePath)
 	if err != nil {
 		logger.Error("failed to open file", zap.Error(err))
 		http.Error(w, "internal server error", http.StatusInternalServerError)
