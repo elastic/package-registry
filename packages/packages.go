@@ -194,7 +194,6 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 			if err != nil {
 				return nil, errors.Wrapf(err, "loading package failed (path: %s)", path)
 			}
-			p.SetIndexerReference(i)
 
 			key := packageKey{name: p.Name, version: p.Version}
 			if _, found := packagesFound[key]; found {
