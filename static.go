@@ -9,8 +9,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/elastic/package-registry/storage"
-
 	"github.com/Masterminds/semver/v3"
 	"github.com/gorilla/mux"
 	"go.uber.org/zap"
@@ -52,8 +50,8 @@ func staticHandler(indexer packages.Indexer, cacheTime time.Duration) http.Handl
 		}
 
 		aPackage := packageList[0]
-		if storageIndexer, assert := aPackage.Indexer().(*storage.Indexer); assert {
-			storageIndexer.HijackStaticHandler(w, r, aPackage, params.fileName)
+		if aPackage.RemoteResolver() != nil {
+			aPackage.RemoteResolver().RedirectStaticHandler(w, r, aPackage, params.fileName)
 			return
 		}
 

@@ -70,7 +70,7 @@ type Package struct {
 	versionSemVer *semver.Version
 
 	fsBuilder FileSystemBuilder
-	indexer   Indexer
+	resolver  RemoteResolver
 }
 
 type FileSystemBuilder func(*Package) (PackageFileSystem, error)
@@ -635,10 +635,10 @@ func (p *Package) getSignaturePath() (string, error) {
 	return p.GetDownloadPath() + ".sig", nil
 }
 
-func (p *Package) Indexer() Indexer {
-	return p.indexer
+func (p *Package) SetRemoteResolver(r RemoteResolver) {
+	p.resolver = r
 }
 
-func (p *Package) SetIndexerReference(ref Indexer) {
-	p.indexer = ref
+func (p *Package) RemoteResolver() RemoteResolver {
+	return p.resolver
 }

@@ -8,8 +8,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/elastic/package-registry/storage"
-
 	"github.com/Masterminds/semver/v3"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
@@ -61,8 +59,8 @@ func signaturesHandler(indexer packages.Indexer, cacheTime time.Duration) func(w
 		}
 
 		aPackage := packageList[0]
-		if storageIndexer, assert := aPackage.Indexer().(*storage.Indexer); assert {
-			storageIndexer.HijackSignaturesHandler(w, r, aPackage)
+		if aPackage.RemoteResolver() != nil {
+			aPackage.RemoteResolver().RedirectSignaturesHandler(w, r, aPackage)
 			return
 		}
 
