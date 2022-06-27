@@ -58,13 +58,7 @@ func artifactsHandler(indexer Indexer, cacheTime time.Duration) func(w http.Resp
 			return
 		}
 
-		aPackage := packageList[0]
-		if aPackage.RemoteResolver() != nil {
-			aPackage.RemoteResolver().RedirectArtifactsHandler(w, r, aPackage)
-			return
-		}
-
 		cacheHeaders(w, cacheTime)
-		packages.ServeLocalPackage(w, r, packageList[0], packageList[0].BasePath)
+		packages.ServePackage(w, r, packageList[0], packageList[0].BasePath)
 	}
 }

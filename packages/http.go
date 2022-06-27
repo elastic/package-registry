@@ -15,8 +15,31 @@ import (
 	"github.com/elastic/package-registry/util"
 )
 
-// ServeLocalPackage is used by artifactsHandler to serve packages and signatures.
-func ServeLocalPackage(w http.ResponseWriter, r *http.Request, p *Package, packagePath string) {
+// ServePackage is used by artifactsHandler to serve packages and signatures.
+func ServePackage(w http.ResponseWriter, r *http.Request, p *Package, packagePath string) {
+	span, _ := apm.StartSpan(r.Context(), "ServePackage", "app")
+	defer span.End()
+
+	if p.RemoteResolver() != nil {
+		p.RemoteResolver().RedirectArtifactsHandler(w, r, p)
+		return
+	}
+	serveLocalPackage(w, r, p, packagePath)
+}
+
+// ServePackageSignature is used by signaturesHandler to serve signatures.
+func ServePackageSignature(w http.ResponseWriter, r *http.Request, p *Package, packagePath string) {
+	span, _ := apm.StartSpan(r.Context(), "ServePackageSignature", "app")
+	defer span.End()
+
+	if p.RemoteResolver() != nil {
+		p.RemoteResolver().RedirectSignaturesHandler(w, r, p)
+		return
+	}
+	serveLocalPackage(w, r, p, packagePath)
+}
+
+func serveLocalPackage(w http.ResponseWriter, r *http.Request, p *Package, packagePath string) {
 	span, _ := apm.StartSpan(r.Context(), "ServePackage", "app")
 	defer span.End()
 
@@ -53,10 +76,15 @@ func ServeLocalPackage(w http.ResponseWriter, r *http.Request, p *Package, packa
 	http.ServeContent(w, r, packagePath, f.ModTime(), stream)
 }
 
-// ServeLocalPackageResource is used by staticHandler.
-func ServeLocalPackageResource(w http.ResponseWriter, r *http.Request, p *Package, packageFilePath string) {
+// ServePackageResource is used by staticHandler.
+func ServePackageResource(w http.ResponseWriter, r *http.Request, p *Package, packageFilePath string) {
 	span, _ := apm.StartSpan(r.Context(), "ServePackage", "app")
 	defer span.End()
+
+	if p.RemoteResolver() != nil {
+		p.RemoteResolver().RedirectStaticHandler(w, r, p, packageFilePath)
+		return
+	}
 
 	logger := util.Logger().With(zap.String("file.name", packageFilePath))
 

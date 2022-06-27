@@ -58,13 +58,7 @@ func signaturesHandler(indexer Indexer, cacheTime time.Duration) func(w http.Res
 			return
 		}
 
-		aPackage := packageList[0]
-		if aPackage.RemoteResolver() != nil {
-			aPackage.RemoteResolver().RedirectSignaturesHandler(w, r, aPackage)
-			return
-		}
-
 		cacheHeaders(w, cacheTime)
-		packages.ServeLocalPackage(w, r, packageList[0], packageList[0].BasePath+".sig")
+		packages.ServePackageSignature(w, r, packageList[0], packageList[0].BasePath+".sig")
 	}
 }

@@ -49,14 +49,8 @@ func staticHandler(indexer Indexer, cacheTime time.Duration) http.HandlerFunc {
 			return
 		}
 
-		aPackage := packageList[0]
-		if aPackage.RemoteResolver() != nil {
-			aPackage.RemoteResolver().RedirectStaticHandler(w, r, aPackage, params.fileName)
-			return
-		}
-
 		cacheHeaders(w, cacheTime)
-		packages.ServeLocalPackageResource(w, r, aPackage, params.fileName)
+		packages.ServePackageResource(w, r, packageList[0], params.fileName)
 	}
 }
 
