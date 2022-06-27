@@ -70,11 +70,3 @@ func loadIndexContent(ctx context.Context, storageClient *storage.Client, indexF
 func buildIndexStoragePath(rootStoragePath string, aCursor cursor, indexFile string) string {
 	return joinObjectPaths(rootStoragePath, v2MetadataStoragePath, aCursor.Current, indexFile)
 }
-
-func transformSearchIndexAllToPackages(sia searchIndexAll) (packages.Packages, error) {
-	var transformedPackages packages.Packages
-	for i := range sia.Packages {
-		transformedPackages = append(transformedPackages, &sia.Packages[i].PackageManifest)
-	}
-	return transformedPackages, nil
-}

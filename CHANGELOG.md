@@ -32,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Prepare stub for Storage Indexer. Disable fetching packages from Package Storage v1. [#811](https://github.com/elastic/package-registry/pull/811)
 * Support input packages. [#809](https://github.com/elastic/package-registry/pull/809)
 * Implement storage indexer. [#814](https://github.com/elastic/package-registry/pull/814)
+* Implement remote resolver for storage indexer. [#823](https://github.com/elastic/package-registry/pull/823)
 
 ### Deprecated
 

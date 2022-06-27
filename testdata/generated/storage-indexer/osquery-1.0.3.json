@@ -1,0 +1,151 @@
+{
+  "name": "osquery",
+  "title": "Osquery Logs",
+  "version": "1.0.3",
+  "release": "ga",
+  "description": "Collect and parse logs from Osquery instances with Elastic Agent.",
+  "type": "integration",
+  "download": "/epr/osquery/osquery-1.0.3.zip",
+  "path": "/package/osquery/1.0.3",
+  "icons": [
+    {
+      "src": "/img/logo_osquery.svg",
+      "path": "/package/osquery/1.0.3/img/logo_osquery.svg",
+      "title": "logo osquery",
+      "size": "32x32",
+      "type": "image/svg+xml"
+    }
+  ],
+  "conditions": {
+    "kibana": {
+      "version": "^7.14.0"
+    }
+  },
+  "owner": {
+    "github": "elastic/security-external-integrations"
+  },
+  "categories": [
+    "security",
+    "os_system"
+  ],
+  "signature_path": "/epr/osquery/osquery-1.0.3.zip.sig",
+  "format_version": "1.0.0",
+  "readme": "/package/osquery/1.0.3/docs/README.md",
+  "license": "basic",
+  "screenshots": [
+    {
+      "src": "/img/kibana-osquery-compatibility.png",
+      "path": "/package/osquery/1.0.3/img/kibana-osquery-compatibility.png",
+      "title": "kibana osquery compatibility",
+      "size": "2204x1097",
+      "type": "image/png"
+    }
+  ],
+  "assets": [
+    "/package/osquery/1.0.3/changelog.yml",
+    "/package/osquery/1.0.3/manifest.yml",
+    "/package/osquery/1.0.3/docs/README.md",
+    "/package/osquery/1.0.3/img/kibana-osquery-compatibility.png",
+    "/package/osquery/1.0.3/img/logo_osquery.svg",
+    "/package/osquery/1.0.3/data_stream/result/manifest.yml",
+    "/package/osquery/1.0.3/data_stream/result/sample_event.json",
+    "/package/osquery/1.0.3/kibana/dashboard/osquery-69f5ae20-eb02-11e7-8f04-51231daa5b05.json",
+    "/package/osquery/1.0.3/kibana/dashboard/osquery-c0a7ce90-f4aa-11e7-8647-534bb4c21040.json",
+    "/package/osquery/1.0.3/kibana/search/osquery-0fe5dc00-f49b-11e7-8647-534bb4c21040.json",
+    "/package/osquery/1.0.3/kibana/search/osquery-3824b080-eb02-11e7-8f04-51231daa5b05.json",
+    "/package/osquery/1.0.3/kibana/search/osquery-7a9482d0-eb00-11e7-8f04-51231daa5b05.json",
+    "/package/osquery/1.0.3/kibana/search/osquery-b5d6baa0-eb02-11e7-8f04-51231daa5b05.json",
+    "/package/osquery/1.0.3/kibana/search/osquery-f59e21e0-eb03-11e7-8f04-51231daa5b05.json",
+    "/package/osquery/1.0.3/kibana/visualization/osquery-1da1ed30-eb03-11e7-8f04-51231daa5b05.json",
+    "/package/osquery/1.0.3/kibana/visualization/osquery-240f3630-eb05-11e7-8f04-51231daa5b05.json",
+    "/package/osquery/1.0.3/kibana/visualization/osquery-2d6e0760-f4ab-11e7-8647-534bb4c21040.json",
+    "/package/osquery/1.0.3/kibana/visualization/osquery-6ec10290-f4aa-11e7-8647-534bb4c21040.json",
+    "/package/osquery/1.0.3/kibana/visualization/osquery-a9fd8bb0-eb01-11e7-8f04-51231daa5b05.json",
+    "/package/osquery/1.0.3/kibana/visualization/osquery-ab587180-f4a9-11e7-8647-534bb4c21040.json",
+    "/package/osquery/1.0.3/kibana/visualization/osquery-ffdbba50-f4a9-11e7-8647-534bb4c21040.json",
+    "/package/osquery/1.0.3/data_stream/result/fields/agent.yml",
+    "/package/osquery/1.0.3/data_stream/result/fields/base-fields.yml",
+    "/package/osquery/1.0.3/data_stream/result/fields/ecs.yml",
+    "/package/osquery/1.0.3/data_stream/result/fields/fields.yml",
+    "/package/osquery/1.0.3/data_stream/result/agent/stream/log.yml.hbs",
+    "/package/osquery/1.0.3/data_stream/result/elasticsearch/ingest_pipeline/default.yml"
+  ],
+  "policy_templates": [
+    {
+      "name": "osquery",
+      "title": "Osquery logs",
+      "description": "Collect logs from Osquery instances",
+      "inputs": [
+        {
+          "type": "logfile",
+          "title": "Collect Osquery result logs (input: logfile)",
+          "description": "Collecting result logs from Osquery instances (input: logfile)"
+        }
+      ],
+      "multiple": true
+    }
+  ],
+  "data_streams": [
+    {
+      "type": "logs",
+      "dataset": "osquery.result",
+      "title": "Osquery result logs",
+      "release": "ga",
+      "ingest_pipeline": "default",
+      "streams": [
+        {
+          "input": "logfile",
+          "vars": [
+            {
+              "name": "paths",
+              "type": "text",
+              "title": "Paths",
+              "multi": true,
+              "required": true,
+              "show_user": true,
+              "default": [
+                "/var/log/osquery/osqueryd.results.log*"
+              ]
+            },
+            {
+              "name": "preserve_original_event",
+              "type": "bool",
+              "title": "Preserve original event",
+              "description": "Preserves a raw copy of the original event, added to the field `event.original`",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": false
+            },
+            {
+              "name": "tags",
+              "type": "text",
+              "title": "Tags",
+              "multi": true,
+              "required": true,
+              "show_user": false,
+              "default": [
+                "osquery"
+              ]
+            },
+            {
+              "name": "processors",
+              "type": "yaml",
+              "title": "Processors",
+              "description": "Processors are used to reduce the number of fields in the exported event or to enhance the event with metadata. \nThis executes in the agent before the logs are parsed. See [Processors](https://www.elastic.co/guide/en/beats/filebeat/current/filtering-and-enhancing-data.html) for details.\n",
+              "multi": false,
+              "required": false,
+              "show_user": false
+            }
+          ],
+          "template_path": "log.yml.hbs",
+          "title": "Osquery result logs (log)",
+          "description": "Collect Osquery result logs using log input",
+          "enabled": true
+        }
+      ],
+      "package": "osquery",
+      "path": "result"
+    }
+  ]
+}

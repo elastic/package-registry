@@ -70,6 +70,7 @@ type Package struct {
 	versionSemVer *semver.Version
 
 	fsBuilder FileSystemBuilder
+	resolver  RemoteResolver
 }
 
 type FileSystemBuilder func(*Package) (PackageFileSystem, error)
@@ -307,7 +308,7 @@ func NewPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) 
 	}
 
 	// Read path for package signature
-	p.SignaturePath, err = p.GetSignaturePath()
+	p.SignaturePath, err = p.getSignaturePath()
 	if err != nil {
 		return nil, errors.Wrapf(err, "can't process the package signature")
 	}
@@ -623,7 +624,7 @@ func (p *Package) GetUrlPath() string {
 	return path.Join(packagePathPrefix, p.Name, p.Version)
 }
 
-func (p *Package) GetSignaturePath() (string, error) {
+func (p *Package) getSignaturePath() (string, error) {
 	_, err := os.Stat(p.BasePath + ".sig")
 	if err != nil && errors.Is(err, os.ErrNotExist) {
 		return "", nil
@@ -632,4 +633,12 @@ func (p *Package) GetSignaturePath() (string, error) {
 		return "", errors.Wrap(err, "can't stat signature file")
 	}
 	return p.GetDownloadPath() + ".sig", nil
+}
+
+func (p *Package) SetRemoteResolver(r RemoteResolver) {
+	p.resolver = r
+}
+
+func (p *Package) RemoteResolver() RemoteResolver {
+	return p.resolver
 }

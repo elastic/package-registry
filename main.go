@@ -47,7 +47,7 @@ var (
 
 	featureStorageIndexer        bool
 	storageIndexerBucketInternal string
-	storageIndexerBucketPublic   string
+	storageEndpoint              string
 	storageIndexerWatchInterval  time.Duration
 
 	defaultConfig = Config{
@@ -70,7 +70,7 @@ func init() {
 	// The following storage related flags are technical preview and might be removed in the future or renamed
 	flag.BoolVar(&featureStorageIndexer, "feature-storage-indexer", false, "Enable storage indexer to include packages from Package Storage v2 (technical preview).")
 	flag.StringVar(&storageIndexerBucketInternal, "storage-indexer-bucket-internal", "", "Path to the internal Package Storage bucket (with gs:// prefix).")
-	flag.StringVar(&storageIndexerBucketPublic, "storage-indexer-bucket-public", "", "Path to the public Package Storage bucket (with gs:// prefix).")
+	flag.StringVar(&storageEndpoint, "storage-endpoint", "https://package-storage.elastic.co/", "Package Storage public endpoint.")
 	flag.DurationVar(&storageIndexerWatchInterval, "storage-indexer-watch-interval", 1*time.Minute, "Address of the package-registry service.")
 
 }
@@ -144,7 +144,7 @@ func initServer(logger *zap.Logger) *http.Server {
 		}
 		indexers = append(indexers, storage.NewIndexer(storageClient, storage.IndexerOptions{
 			PackageStorageBucketInternal: storageIndexerBucketInternal,
-			PackageStorageBucketPublic:   storageIndexerBucketPublic,
+			PackageStorageEndpoint:       storageEndpoint,
 			WatchInterval:                storageIndexerWatchInterval,
 		}))
 	} else {

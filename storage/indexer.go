@@ -7,6 +7,7 @@ package storage
 import (
 	"context"
 	"fmt"
+	"net/url"
 	"strings"
 	"sync"
 	"time"
@@ -27,11 +28,13 @@ type Indexer struct {
 	packageList packages.Packages
 
 	m sync.RWMutex
+
+	resolver packages.RemoteResolver
 }
 
 type IndexerOptions struct {
 	PackageStorageBucketInternal string
-	PackageStorageBucketPublic   string
+	PackageStorageEndpoint       string
 	WatchInterval                time.Duration
 }
 
@@ -51,10 +54,15 @@ func (i *Indexer) Init(ctx context.Context) error {
 		return errors.Wrapf(err, "validation failed")
 	}
 
+	err = i.setupResolver()
+	if err != nil {
+		return errors.Wrapf(err, "can't setup remote resolver")
+	}
+
 	// Populate index file for the first time.
 	err = i.updateIndex(ctx)
 	if err != nil {
-		logger.Error("can't update index file", zap.Error(err))
+		return errors.Wrap(err, "can't update index file")
 	}
 
 	go i.watchIndices(ctx)
@@ -65,11 +73,25 @@ func validateIndexerOptions(options IndexerOptions) error {
 	if !strings.HasPrefix(options.PackageStorageBucketInternal, "gs://") {
 		return errors.New("missing or invalid options.PackageStorageBucketInternal")
 	}
-	if !strings.HasPrefix(options.PackageStorageBucketPublic, "gs://") {
-		return errors.New("missing or invalid options.PackageStorageBucketPublic")
+	_, err := url.Parse(options.PackageStorageEndpoint)
+	if err != nil {
+		return errors.Wrap(err, "invalid options.PackageStorageEndpoint, URL expected")
 	}
 	if options.WatchInterval < 0 {
 		return errors.New("options.WatchInterval must be greater than or equal to 0")
+	}
+	return nil
+}
+
+func (i *Indexer) setupResolver() error {
+	baseURL, err := url.Parse(i.options.PackageStorageEndpoint)
+	if err != nil {
+		return err
+	}
+
+	i.resolver = storageResolver{
+		artifactsPackagesURL: *baseURL.ResolveReference(&url.URL{Path: artifactsPackagesStoragePath + "/"}),
+		artifactsStaticURL:   *baseURL.ResolveReference(&url.URL{Path: artifactsStaticStoragePath + "/"}),
 	}
 	return nil
 }
@@ -129,13 +151,14 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	}
 	logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", len(anIndex.Packages))))
 
-	refreshedList, err := transformSearchIndexAllToPackages(*anIndex)
+	refreshedList, err := i.transformSearchIndexAllToPackages(*anIndex)
 	if err != nil {
 		return errors.Wrap(err, "can't transform the search-index-all")
 	}
 
 	i.m.Lock()
 	defer i.m.Unlock()
+	i.cursor = storageCursor.Current
 	i.packageList = refreshedList
 	return nil
 }
@@ -144,8 +167,19 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	i.m.RLock()
 	defer i.m.RUnlock()
 
-	if opts.Filter != nil {
+	if opts != nil && opts.Filter != nil {
 		return opts.Filter.Apply(ctx, i.packageList), nil
 	}
 	return i.packageList, nil
+}
+
+func (i *Indexer) transformSearchIndexAllToPackages(sia searchIndexAll) (packages.Packages, error) {
+	var transformedPackages packages.Packages
+	for j := range sia.Packages {
+		m := sia.Packages[j].PackageManifest
+		m.BasePath = fmt.Sprintf("%s-%s.zip", m.Name, m.Version)
+		m.SetRemoteResolver(i.resolver)
+		transformedPackages = append(transformedPackages, &m)
+	}
+	return transformedPackages, nil
 }

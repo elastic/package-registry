@@ -1,0 +1,595 @@
+[
+  {
+    "name": "aws",
+    "title": "AWS",
+    "version": "1.16.4",
+    "release": "ga",
+    "description": "Collect logs and metrics from Amazon Web Services with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/aws/aws-1.16.4.zip",
+    "path": "/package/aws/1.16.4",
+    "icons": [
+      {
+        "src": "/img/logo_aws.svg",
+        "path": "/package/aws/1.16.4/img/logo_aws.svg",
+        "title": "logo aws",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "dynamodb",
+        "title": "Amazon DynamoDB",
+        "description": "Collect Amazon DynamoDB metrics with Elastic Agent",
+        "icons": [
+          {
+            "src": "/img/logo_dynamodb.svg",
+            "path": "/package/aws/1.16.4/img/logo_dynamodb.svg",
+            "title": "AWS DynamoDB logo",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "categories": [
+          "datastore"
+        ]
+      },
+      {
+        "name": "ebs",
+        "title": "Amazon EBS",
+        "description": "Collect Amazon Elastic Block Storage metrics with Elastic Agent",
+        "icons": [
+          {
+            "src": "/img/logo_ebs.svg",
+            "path": "/package/aws/1.16.4/img/logo_ebs.svg",
+            "title": "AWS EBS logo",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "categories": [
+          "datastore"
+        ]
+      },
+      {
+        "name": "rds",
+        "title": "Amazon RDS",
+        "description": "Collect Amazon Relational Database Service metrics with Elastic Agent",
+        "icons": [
+          {
+            "src": "/img/logo_rds.svg",
+            "path": "/package/aws/1.16.4/img/logo_rds.svg",
+            "title": "AWS RDS logo",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "categories": [
+          "datastore"
+        ]
+      },
+      {
+        "name": "s3",
+        "title": "Amazon S3",
+        "description": "Monitor Amazon S3 buckets by collecting access logs, storage & request metrics with Elastic Agent",
+        "icons": [
+          {
+            "src": "/img/logo_s3.svg",
+            "path": "/package/aws/1.16.4/img/logo_s3.svg",
+            "title": "AWS S3 logo",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "categories": [
+          "datastore",
+          "security"
+        ]
+      },
+      {
+        "name": "s3_storage_lens",
+        "title": "Amazon S3 Storage Lens",
+        "description": "Collect Amazon S3 Storage Lens metrics with Elastic Agent",
+        "icons": [
+          {
+            "src": "/img/logo_s3_storage_lens.svg",
+            "path": "/package/aws/1.16.4/img/logo_s3_storage_lens.svg",
+            "title": "AWS S3 storage lens logo",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "categories": [
+          "datastore"
+        ]
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.15.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/obs-cloud-monitoring"
+    },
+    "categories": [
+      "aws",
+      "cloud"
+    ],
+    "signature_path": "/epr/aws/aws-1.16.4.zip.sig"
+  },
+  {
+    "name": "cassandra",
+    "title": "Cassandra",
+    "version": "1.1.0",
+    "release": "ga",
+    "description": "This Elastic integration collects logs and metrics from cassandra.",
+    "type": "integration",
+    "download": "/epr/cassandra/cassandra-1.1.0.zip",
+    "path": "/package/cassandra/1.1.0",
+    "icons": [
+      {
+        "src": "/img/cassandra.svg",
+        "path": "/package/cassandra/1.1.0/img/cassandra.svg",
+        "title": "cassandra",
+        "size": "279x187",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "cassandra",
+        "title": "Cassandra logs and metrics",
+        "description": "Collect logs and metrics from Cassandra"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.15.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "datastore",
+      "monitoring"
+    ],
+    "signature_path": "/epr/cassandra/cassandra-1.1.0.zip.sig"
+  },
+  {
+    "name": "cockroachdb",
+    "title": "CockroachDB Metrics",
+    "version": "0.2.0",
+    "release": "beta",
+    "description": "Collect metrics from CockroachDB servers with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/cockroachdb/cockroachdb-0.2.0.zip",
+    "path": "/package/cockroachdb/0.2.0",
+    "icons": [
+      {
+        "src": "/img/cockroachdb.png",
+        "path": "/package/cockroachdb/0.2.0/img/cockroachdb.png",
+        "title": "logo docker",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "status",
+        "title": "CockroachDB",
+        "description": "CockroachDB metrics Integration",
+        "icons": [
+          {
+            "src": "/img/cockroachdb.png",
+            "path": "/package/cockroachdb/0.2.0/img/cockroachdb.png",
+            "title": "logo cockroachdb",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "datastore"
+    ],
+    "signature_path": "/epr/cockroachdb/cockroachdb-0.2.0.zip.sig"
+  },
+  {
+    "name": "elasticsearch",
+    "title": "Elasticsearch",
+    "version": "0.2.0",
+    "release": "experimental",
+    "description": "Elasticsearch Integration",
+    "type": "integration",
+    "download": "/epr/elasticsearch/elasticsearch-0.2.0.zip",
+    "path": "/package/elasticsearch/0.2.0",
+    "icons": [
+      {
+        "src": "/img/logo_elasticsearch.svg",
+        "path": "/package/elasticsearch/0.2.0/img/logo_elasticsearch.svg",
+        "title": "logo elasticsearch",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "elasticsearch",
+        "title": "Elasticsearch logs and metrics",
+        "description": "Collect logs and metrics from Elasticsearch instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.15.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "elastic_stack",
+      "datastore"
+    ],
+    "signature_path": "/epr/elasticsearch/elasticsearch-0.2.0.zip.sig"
+  },
+  {
+    "name": "microsoft_sqlserver",
+    "title": "Microsoft SQL Server",
+    "version": "0.4.5",
+    "release": "beta",
+    "description": "Collect audit events from Microsoft SQL Server with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/microsoft_sqlserver/microsoft_sqlserver-0.4.5.zip",
+    "path": "/package/microsoft_sqlserver/0.4.5",
+    "icons": [
+      {
+        "src": "/img/microsoft-sql-server-logo.svg",
+        "path": "/package/microsoft_sqlserver/0.4.5/img/microsoft-sql-server-logo.svg",
+        "title": "Microsof SQL Server",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "audit_logs",
+        "title": "SQL Server audit logs",
+        "description": "Collect audit logs from Windows event logs"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "datastore",
+      "security"
+    ],
+    "signature_path": "/epr/microsoft_sqlserver/microsoft_sqlserver-0.4.5.zip.sig"
+  },
+  {
+    "name": "mongodb",
+    "title": "MongoDB",
+    "version": "1.3.1",
+    "release": "ga",
+    "description": "Collect logs and metrics from MongoDB instances with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/mongodb/mongodb-1.3.1.zip",
+    "path": "/package/mongodb/1.3.1",
+    "icons": [
+      {
+        "src": "/img/logo_mongodb.svg",
+        "path": "/package/mongodb/1.3.1/img/logo_mongodb.svg",
+        "title": "logo mongodb",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "mongodb",
+        "title": "MongoDB logs and metrics",
+        "description": "Collect logs and metrics from MongoDB instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "datastore"
+    ],
+    "signature_path": "/epr/mongodb/mongodb-1.3.1.zip.sig"
+  },
+  {
+    "name": "mysql",
+    "title": "MySQL",
+    "version": "1.2.1",
+    "release": "ga",
+    "description": "Collect logs and metrics from MySQL servers with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/mysql/mysql-1.2.1.zip",
+    "path": "/package/mysql/1.2.1",
+    "icons": [
+      {
+        "src": "/img/logo_mysql.svg",
+        "path": "/package/mysql/1.2.1/img/logo_mysql.svg",
+        "title": "logo mysql",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "mysql",
+        "title": "MySQL logs and metrics",
+        "description": "Collect logs and metrics from MySQL instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "datastore"
+    ],
+    "signature_path": "/epr/mysql/mysql-1.2.1.zip.sig"
+  },
+  {
+    "name": "mysql_enterprise",
+    "title": "MySQL Enterprise",
+    "version": "1.0.1",
+    "release": "ga",
+    "description": "MySQL Enterprise Audit Log Integration",
+    "type": "integration",
+    "download": "/epr/mysql_enterprise/mysql_enterprise-1.0.1.zip",
+    "path": "/package/mysql_enterprise/1.0.1",
+    "icons": [
+      {
+        "src": "/img/logo_mysql.svg",
+        "path": "/package/mysql_enterprise/1.0.1/img/logo_mysql.svg",
+        "title": "MySQL",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "mysql_enterprise",
+        "title": "MySQL Enterprise audit logs",
+        "description": "Collect MySQL Enterprise audit logs"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.17.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security",
+      "datastore"
+    ],
+    "signature_path": "/epr/mysql_enterprise/mysql_enterprise-1.0.1.zip.sig"
+  },
+  {
+    "name": "oracle",
+    "title": "Oracle",
+    "version": "1.0.1",
+    "release": "ga",
+    "description": "Oracle Audit Log Integration",
+    "type": "integration",
+    "download": "/epr/oracle/oracle-1.0.1.zip",
+    "path": "/package/oracle/1.0.1",
+    "icons": [
+      {
+        "src": "/img/oracle_logo.svg",
+        "path": "/package/oracle/1.0.1/img/oracle_logo.svg",
+        "title": "Oracle",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "oracle",
+        "title": "Oracle Audit Logs",
+        "description": "Collect Oracle audit logs"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.17.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security",
+      "datastore"
+    ],
+    "signature_path": "/epr/oracle/oracle-1.0.1.zip.sig"
+  },
+  {
+    "name": "postgresql",
+    "title": "PostgreSQL",
+    "version": "1.2.0",
+    "release": "ga",
+    "description": "Collect logs and metrics from PostgreSQL servers with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/postgresql/postgresql-1.2.0.zip",
+    "path": "/package/postgresql/1.2.0",
+    "icons": [
+      {
+        "src": "/img/logo_postgres.svg",
+        "path": "/package/postgresql/1.2.0/img/logo_postgres.svg",
+        "title": "logo postgres",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "postgresql",
+        "title": "PostgreSQL logs and metrics",
+        "description": "Collect logs and metrics from PostgreSQL instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "datastore"
+    ],
+    "signature_path": "/epr/postgresql/postgresql-1.2.0.zip.sig"
+  },
+  {
+    "name": "prometheus",
+    "title": "Prometheus Metrics",
+    "version": "0.7.0",
+    "release": "experimental",
+    "description": "Collect metrics from Prometheus servers with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/prometheus/prometheus-0.7.0.zip",
+    "path": "/package/prometheus/0.7.0",
+    "icons": [
+      {
+        "src": "/img/logo_prometheus.svg",
+        "path": "/package/prometheus/0.7.0/img/logo_prometheus.svg",
+        "title": "logo prometheus",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "prometheus",
+        "title": "Prometheus metrics",
+        "description": "Collect metrics from Prometheus instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "monitoring",
+      "datastore"
+    ],
+    "signature_path": "/epr/prometheus/prometheus-0.7.0.zip.sig"
+  },
+  {
+    "name": "redis",
+    "title": "Redis",
+    "version": "1.2.0",
+    "release": "ga",
+    "description": "Collect logs and metrics from Redis servers with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/redis/redis-1.2.0.zip",
+    "path": "/package/redis/1.2.0",
+    "icons": [
+      {
+        "src": "/img/logo_redis.svg",
+        "path": "/package/redis/1.2.0/img/logo_redis.svg",
+        "title": "logo redis",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "redis",
+        "title": "Redis logs and metrics",
+        "description": "Collect logs and metrics from Redis instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "datastore",
+      "message_queue"
+    ],
+    "signature_path": "/epr/redis/redis-1.2.0.zip.sig"
+  },
+  {
+    "name": "zookeeper",
+    "title": "ZooKeeper Metrics",
+    "version": "1.2.0",
+    "release": "ga",
+    "description": "Collect metrics from ZooKeeper service with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/zookeeper/zookeeper-1.2.0.zip",
+    "path": "/package/zookeeper/1.2.0",
+    "icons": [
+      {
+        "src": "/img/zookeeper.svg",
+        "path": "/package/zookeeper/1.2.0/img/zookeeper.svg",
+        "title": "zookeeper",
+        "size": "754x754",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "zookeeper",
+        "title": "ZooKeeper metrics",
+        "description": "Collect metrics from ZooKeeper instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "datastore",
+      "config_management"
+    ],
+    "signature_path": "/epr/zookeeper/zookeeper-1.2.0.zip.sig"
+  }
+]

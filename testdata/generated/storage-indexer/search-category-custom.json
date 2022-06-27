@@ -1,0 +1,246 @@
+[
+  {
+    "name": "gcp_pubsub",
+    "title": "Custom Google Pub/Sub Logs",
+    "version": "1.0.0",
+    "release": "ga",
+    "description": "Collect Logs from Google Pub/Sub topics",
+    "type": "integration",
+    "download": "/epr/gcp_pubsub/gcp_pubsub-1.0.0.zip",
+    "path": "/package/gcp_pubsub/1.0.0",
+    "icons": [
+      {
+        "src": "/img/logo_gcp.svg",
+        "path": "/package/gcp_pubsub/1.0.0/img/logo_gcp.svg",
+        "title": "logo gcp",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "gcp",
+        "title": "Custom Google Pub/Sub Logs",
+        "description": "Collect Logs from Google Pub/Sub topics"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "google_cloud",
+      "cloud",
+      "custom"
+    ],
+    "signature_path": "/epr/gcp_pubsub/gcp_pubsub-1.0.0.zip.sig"
+  },
+  {
+    "name": "http_endpoint",
+    "title": "Custom HTTP Endpoint Logs",
+    "version": "1.0.1",
+    "release": "ga",
+    "description": "Collect JSON data from listening HTTP port with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/http_endpoint/http_endpoint-1.0.1.zip",
+    "path": "/package/http_endpoint/1.0.1",
+    "icons": [
+      {
+        "src": "/img/icon.svg",
+        "path": "/package/http_endpoint/1.0.1/img/icon.svg",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "http_endpoint",
+        "title": "Custom HTTP Endpoint Logs",
+        "description": "Collect JSON data from listening HTTP port with Elastic Agent."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "custom"
+    ],
+    "signature_path": "/epr/http_endpoint/http_endpoint-1.0.1.zip.sig"
+  },
+  {
+    "name": "httpjson",
+    "title": "Custom HTTPJSON Input",
+    "version": "1.1.1",
+    "release": "ga",
+    "description": "Collect custom data from REST API's with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/httpjson/httpjson-1.1.1.zip",
+    "path": "/package/httpjson/1.1.1",
+    "policy_templates": [
+      {
+        "name": "generic",
+        "title": "Custom HTTPJSON Input",
+        "description": "Collect custom data from REST API's"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "custom"
+    ],
+    "signature_path": "/epr/httpjson/httpjson-1.1.1.zip.sig"
+  },
+  {
+    "name": "log",
+    "title": "Custom Logs",
+    "version": "1.0.0",
+    "release": "ga",
+    "description": "Collect custom logs with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/log/log-1.0.0.zip",
+    "path": "/package/log/1.0.0",
+    "icons": [
+      {
+        "src": "/img/icon.svg",
+        "path": "/package/log/1.0.0/img/icon.svg",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Custom logs",
+        "description": "Collect your custom log files."
+      }
+    ],
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "custom"
+    ],
+    "signature_path": "/epr/log/log-1.0.0.zip.sig"
+  },
+  {
+    "name": "tcp",
+    "title": "Custom TCP Logs",
+    "version": "1.0.0",
+    "release": "ga",
+    "description": "Collect raw TCP data from listening TCP port with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/tcp/tcp-1.0.0.zip",
+    "path": "/package/tcp/1.0.0",
+    "icons": [
+      {
+        "src": "/img/icon.svg",
+        "path": "/package/tcp/1.0.0/img/icon.svg",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "tcp",
+        "title": "Custom TCP Logs",
+        "description": "Collect raw TCP data from listening TCP port with Elastic Agent."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "custom"
+    ],
+    "signature_path": "/epr/tcp/tcp-1.0.0.zip.sig"
+  },
+  {
+    "name": "udp",
+    "title": "Custom UDP Logs",
+    "version": "1.0.1",
+    "release": "ga",
+    "description": "Collect raw UDP data from listening UDP port with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/udp/udp-1.0.1.zip",
+    "path": "/package/udp/1.0.1",
+    "icons": [
+      {
+        "src": "/img/icon.svg",
+        "path": "/package/udp/1.0.1/img/icon.svg",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "udp",
+        "title": "Custom UDP Logs",
+        "description": "Collect raw UDP data from listening UDP port with Elastic Agent."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "custom"
+    ],
+    "signature_path": "/epr/udp/udp-1.0.1.zip.sig"
+  },
+  {
+    "name": "winlog",
+    "title": "Custom Windows Event Logs",
+    "version": "1.4.0",
+    "release": "ga",
+    "description": "Collect and parse logs from any Windows event log channel with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/winlog/winlog-1.4.0.zip",
+    "path": "/package/winlog/1.4.0",
+    "icons": [
+      {
+        "src": "/img/logo_windows.svg",
+        "path": "/package/winlog/1.4.0/img/logo_windows.svg",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "winlogs",
+        "title": "Custom Windows event logs",
+        "description": "Collect your custom Windows event logs."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "custom"
+    ],
+    "signature_path": "/epr/winlog/winlog-1.4.0.zip.sig"
+  }
+]
