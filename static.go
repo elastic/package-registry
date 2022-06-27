@@ -25,7 +25,7 @@ type staticParams struct {
 	fileName       string
 }
 
-func staticHandler(indexer packages.Indexer, cacheTime time.Duration) http.HandlerFunc {
+func staticHandler(indexer Indexer, cacheTime time.Duration) http.HandlerFunc {
 	logger := util.Logger()
 	return func(w http.ResponseWriter, r *http.Request) {
 		params, err := staticParamsFromRequest(r)

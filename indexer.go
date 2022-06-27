@@ -2,15 +2,17 @@
 // or more contributor license agreements. Licensed under the Elastic License;
 // you may not use this file except in compliance with the Elastic License.
 
-package packages
+package main
 
 import (
 	"context"
+
+	"github.com/elastic/package-registry/packages"
 )
 
 type Indexer interface {
 	Init(context.Context) error
-	Get(context.Context, *GetOptions) (Packages, error)
+	Get(context.Context, *packages.GetOptions) (packages.Packages, error)
 }
 
 type CombinedIndexer []Indexer
@@ -29,8 +31,8 @@ func (c CombinedIndexer) Init(ctx context.Context) error {
 	return nil
 }
 
-func (c CombinedIndexer) Get(ctx context.Context, opts *GetOptions) (Packages, error) {
-	var packages Packages
+func (c CombinedIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.Packages, error) {
+	var packages packages.Packages
 	for _, indexer := range c {
 		p, err := indexer.Get(ctx, opts)
 		if err != nil {

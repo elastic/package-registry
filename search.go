@@ -21,7 +21,7 @@ import (
 	"github.com/elastic/package-registry/util"
 )
 
-func searchHandler(indexer packages.Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+func searchHandler(indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		filter, err := newSearchFilterFromQuery(r.URL.Query())
 		if err != nil {

@@ -245,7 +245,7 @@ func TestStaticsModifiedTime(t *testing.T) {
 		},
 	}
 
-	indexer := packages.NewCombinedIndexer(
+	indexer := NewCombinedIndexer(
 		packages.NewFileSystemIndexer("./testdata/package"),
 		packages.NewZipFileSystemIndexer("./testdata/local-storage"),
 	)
@@ -306,7 +306,7 @@ func TestZippedArtifacts(t *testing.T) {
 }
 
 func TestPackageIndex(t *testing.T) {
-	indexer := packages.NewCombinedIndexer(
+	indexer := NewCombinedIndexer(
 		packages.NewFileSystemIndexer("./testdata/package"),
 		packages.NewZipFileSystemIndexer("./testdata/local-storage"),
 	)
@@ -424,7 +424,7 @@ func TestContentTypes(t *testing.T) {
 		{"/package/example/1.0.1/img/kibana-envoyproxy.jpg", "image/jpeg"},
 	}
 
-	indexer := packages.NewCombinedIndexer(
+	indexer := NewCombinedIndexer(
 		packages.NewFileSystemIndexer("./testdata/package"),
 		packages.NewZipFileSystemIndexer("./testdata/local-storage"),
 	)
@@ -453,7 +453,7 @@ func TestContentTypes(t *testing.T) {
 // TestRangeDownloads tests that range downloads continue working for packages stored
 // on different file systems.
 func TestRangeDownloads(t *testing.T) {
-	indexer := packages.NewCombinedIndexer(
+	indexer := NewCombinedIndexer(
 		packages.NewFileSystemIndexer("./testdata/package"),
 		packages.NewZipFileSystemIndexer("./testdata/local-storage"),
 	)
