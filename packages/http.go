@@ -52,8 +52,8 @@ func serveLocalPackage(w http.ResponseWriter, r *http.Request, p *Package, packa
 		return
 	}
 
-	// Only packages stored locally in the unpacked form can be archived.
 	if f.IsDir() {
+		w.Header().Set("Content-Type", "application/zip")
 		err = archiver.ArchivePackage(w, archiver.PackageProperties{
 			Name:    p.Name,
 			Version: p.Version,
@@ -65,15 +65,7 @@ func serveLocalPackage(w http.ResponseWriter, r *http.Request, p *Package, packa
 		return
 	}
 
-	stream, err := os.Open(packagePath)
-	if err != nil {
-		logger.Error("failed to open file", zap.Error(err))
-		http.Error(w, "internal server error", http.StatusInternalServerError)
-		return
-	}
-	defer stream.Close()
-
-	http.ServeContent(w, r, packagePath, f.ModTime(), stream)
+	http.ServeFile(w, r, packagePath)
 }
 
 // ServePackageResource is used by staticHandler.
