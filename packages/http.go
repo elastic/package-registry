@@ -16,7 +16,7 @@ import (
 )
 
 // ServePackage is used by artifactsHandler to serve packages and signatures.
-func ServePackage(w http.ResponseWriter, r *http.Request, p *Package, packagePath string) {
+func ServePackage(w http.ResponseWriter, r *http.Request, p *Package) {
 	span, _ := apm.StartSpan(r.Context(), "ServePackage", "app")
 	defer span.End()
 
@@ -24,11 +24,11 @@ func ServePackage(w http.ResponseWriter, r *http.Request, p *Package, packagePat
 		p.RemoteResolver().RedirectArtifactsHandler(w, r, p)
 		return
 	}
-	serveLocalPackage(w, r, p, packagePath)
+	serveLocalPackage(w, r, p, p.BasePath)
 }
 
 // ServePackageSignature is used by signaturesHandler to serve signatures.
-func ServePackageSignature(w http.ResponseWriter, r *http.Request, p *Package, packagePath string) {
+func ServePackageSignature(w http.ResponseWriter, r *http.Request, p *Package) {
 	span, _ := apm.StartSpan(r.Context(), "ServePackageSignature", "app")
 	defer span.End()
 
@@ -36,7 +36,7 @@ func ServePackageSignature(w http.ResponseWriter, r *http.Request, p *Package, p
 		p.RemoteResolver().RedirectSignaturesHandler(w, r, p)
 		return
 	}
-	serveLocalPackage(w, r, p, packagePath)
+	serveLocalPackage(w, r, p, p.BasePath+".sig")
 }
 
 func serveLocalPackage(w http.ResponseWriter, r *http.Request, p *Package, packagePath string) {
