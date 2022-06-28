@@ -210,7 +210,12 @@ package-registry -dry-run
 
 ## Performance monitoring
 
-Package Registry is instrumented with the [Elastic APM Go Agent](https://www.elastic.co/guide/en/apm/agent/go/current/index.html). You can configure the agent to send the data to any APM Server using the following environment variables:
+Package Registry is instrumented with the [Elastic APM Go Agent](https://www.elastic.co/guide/en/apm/agent/go/2.x/index.html).
+This Agent collects some [system and runtime metrics](https://www.elastic.co/guide/en/apm/agent/go/2.x/metrics.html), and detailed information
+about every request handled by the service. You can read more about the kind of
+information collected for requests in the [APM Guide](https://www.elastic.co/guide/en/apm/guide/8.2/data-model.html).
+
+You can configure the agent to send the data to any APM Server using the following environment variables:
 
 * `ELASTIC_APM_SERVER_URL`: Address of the APM Server. Instrumentation is
   disabled in Package Registry if this variable is not set.
