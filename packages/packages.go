@@ -257,6 +257,7 @@ type Filter struct {
 	PackageName    string
 	PackageVersion string
 	PackageType    string
+	Subscription   string
 
 	// Deprecated, release tags to be removed.
 	Experimental bool
@@ -288,6 +289,10 @@ func (f *Filter) Apply(ctx context.Context, packages Packages) Packages {
 			if valid := p.HasKibanaVersion(f.KibanaVersion); !valid {
 				continue
 			}
+		}
+
+		if f.Subscription != "" && !p.AllowedInSubscription(f.Subscription) {
+			continue
 		}
 
 		if f.PackageName != "" && f.PackageName != p.Name {

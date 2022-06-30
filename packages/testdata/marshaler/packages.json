@@ -806,6 +806,9 @@
    "conditions": {
     "kibana": {
      "version": "^7.16.0 || ^8.0.0"
+    },
+    "elastic": {
+     "subscription": "gold"
     }
    },
    "owner": {
@@ -1544,6 +1547,9 @@
    "conditions": {
     "kibana": {
      "version": "\u003e6.7.0"
+    },
+    "elastic": {
+     "subscription": "gold"
     }
    },
    "categories": [

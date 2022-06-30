@@ -65,6 +65,10 @@ func newSearchFilterFromQuery(query url.Values) (*packages.Filter, error) {
 		}
 	}
 
+	if v := query.Get("elastic.subscription"); v != "" {
+		filter.Subscription = v
+	}
+
 	if v := query.Get("category"); v != "" {
 		filter.Category = v
 	}

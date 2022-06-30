@@ -121,13 +121,46 @@ type PolicyTemplate struct {
 }
 
 type Conditions struct {
-	Kibana *KibanaConditions `config:"kibana,omitempty" json:"kibana,omitempty" yaml:"kibana,omitempty"`
+	Kibana  *KibanaConditions  `config:"kibana,omitempty" json:"kibana,omitempty" yaml:"kibana,omitempty"`
+	Elastic *ElasticConditions `config:"elastic,omitempty" json:"elastic,omitempty" yaml"elastic,omitempty"`
 }
 
 // KibanaConditions defines conditions for Kibana (e.g. required version).
 type KibanaConditions struct {
 	Version    string `config:"version" json:"version" yaml:"version"`
 	constraint *semver.Constraints
+}
+
+// ElasticConditions defines conditions related to Elastic subscriptions or partnerships.
+type ElasticConditions struct {
+	Subscription string `config:"subscription" json:"subscription" yaml:"subscription"`
+}
+
+var elasticSubscriptions = map[string]int{
+	"basic":      1,
+	"gold":       2,
+	"platinum":   3,
+	"enterprise": 4,
+}
+
+// CheckSubscription returns true if the given subscription includes the subscription in the condition.
+// It always returns true if there is no specified subscription.
+// It returns false if any of the subscriptions are unknown.
+func (ec *ElasticConditions) CheckSubscription(targetSubscription string) bool {
+	if ec.Subscription == "" {
+		return true
+	}
+
+	level, ok := elasticSubscriptions[ec.Subscription]
+	if !ok {
+		return false
+	}
+	targetLevel, ok := elasticSubscriptions[targetSubscription]
+	if !ok {
+		return false
+	}
+
+	return targetLevel >= level
 }
 
 type Version struct {
@@ -384,6 +417,14 @@ func isPrerelease(version *semver.Version) bool {
 		return true
 	}
 	return version.Prerelease() != ""
+}
+
+func (p *Package) AllowedInSubscription(subscription string) bool {
+	if p.Conditions == nil || p.Conditions.Elastic == nil {
+		return true
+	}
+
+	return p.Conditions.Elastic.CheckSubscription(subscription)
 }
 
 // LoadAssets (re)loads all the assets of the package

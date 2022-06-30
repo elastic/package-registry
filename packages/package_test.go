@@ -209,6 +209,59 @@ func TestHasKibanaVersion(t *testing.T) {
 	}
 }
 
+func TestElasticSubscriptionIncludes(t *testing.T) {
+	cases := []struct {
+		title             string
+		querySubscription string
+		condition         ElasticConditions
+		expected          bool
+	}{
+		{
+			title:             "no condition",
+			querySubscription: "basic",
+			condition:         ElasticConditions{},
+			expected:          true,
+		},
+		{
+			title:             "same subscription",
+			querySubscription: "basic",
+			condition:         ElasticConditions{Subscription: "basic"},
+			expected:          true,
+		},
+		{
+			title:             "subscription of higher level",
+			querySubscription: "gold",
+			condition:         ElasticConditions{Subscription: "basic"},
+			expected:          true,
+		},
+		{
+			title:             "subscription of lower level",
+			querySubscription: "gold",
+			condition:         ElasticConditions{Subscription: "enterprise"},
+			expected:          false,
+		},
+		{
+			title:             "invalid subscription in package",
+			querySubscription: "gold",
+			condition:         ElasticConditions{Subscription: "invalid"},
+			expected:          false,
+		},
+		{
+			title:             "invalid target subscription",
+			querySubscription: "invalid",
+			condition:         ElasticConditions{Subscription: "enterprise"},
+			expected:          false,
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.title, func(t *testing.T) {
+			supported := c.condition.CheckSubscription(c.querySubscription)
+			assert.Equal(t, c.expected, supported)
+		})
+	}
+}
+
 func TestNewPackageFromPath(t *testing.T) {
 	packagePath := "../testdata/package/reference/1.0.0"
 	absPath, err := filepath.Abs(packagePath)
