@@ -11,11 +11,12 @@ description: >
 version: 1.0.4
 categories: ["custom", "web"]
 release: ga
-license: basic
 
 conditions:
   kibana:
     version: ">6.7.0"
+  elastic:
+    subscription: "gold"
 
 icons:
 - src: "/img/icon.svg"

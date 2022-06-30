@@ -10,6 +10,9 @@
   "conditions": {
     "kibana": {
       "version": "^7.16.0 || ^8.0.0"
+    },
+    "elastic": {
+      "subscription": "gold"
     }
   },
   "owner": {
@@ -22,7 +25,7 @@
   ],
   "format_version": "1.0.0",
   "readme": "/package/example/1.2.0-rc1/docs/README.md",
-  "license": "basic",
+  "license": "gold",
   "screenshots": [
     {
       "src": "/img/kibana-envoyproxy.jpg",

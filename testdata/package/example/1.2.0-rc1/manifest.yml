@@ -13,6 +13,8 @@ owner.github: "ruflin"
 conditions:
   kibana:
     version: "^7.16.0 || ^8.0.0"
+  elastic:
+    subscription: "gold"
 
 screenshots:
   - src: /img/kibana-envoyproxy.jpg
