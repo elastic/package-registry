@@ -287,7 +287,7 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router
 	router.HandleFunc(staticRouterPath, staticHandler)
 	router.Handle("/metrics", promhttp.Handler())
 	router.Use(util.LoggingMiddleware(logger))
-	router.Use(util.MeticsMiddleware())
+	router.Use(util.MetricsMiddleware())
 	router.NotFoundHandler = http.Handler(notFoundHandler(fmt.Errorf("404 page not found")))
 	return router, nil
 }
