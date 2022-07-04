@@ -41,6 +41,7 @@ const (
 var (
 	address         string
 	httpProfAddress string
+	metricsAddress  string
 
 	tlsCertFile string
 	tlsKeyFile  string
@@ -63,6 +64,7 @@ var (
 
 func init() {
 	flag.StringVar(&address, "address", "localhost:8080", "Address of the package-registry service.")
+	flag.StringVar(&metricsAddress, "metrics-address", "localhost:9000", "Address to expose the Prometheus metrics.")
 	flag.StringVar(&tlsCertFile, "tls-cert", "", "Path of the TLS certificate.")
 	flag.StringVar(&tlsKeyFile, "tls-key", "", "Path of the TLS key.")
 	flag.StringVar(&configPath, "config", "config.yml", "Path to the configuration file.")
@@ -105,6 +107,8 @@ func main() {
 		}
 	}()
 
+	initMetricsServer(logger)
+
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
 	<-stop
@@ -127,6 +131,24 @@ func initHttpProf(logger *zap.Logger) {
 			logger.Fatal("failed to start HTTP profiler", zap.Error(err))
 		}
 	}()
+}
+
+func initMetricsServer(logger *zap.Logger) {
+	// If -dry-run=true is set, service stops here after validation
+	if dryRun {
+		os.Exit(0)
+	}
+
+	logger.Info("Starting http metrics in " + metricsAddress)
+	go func() {
+		router := http.NewServeMux()
+		router.Handle("/metrics", promhttp.Handler())
+		err := http.ListenAndServe(metricsAddress, router)
+		if err != nil {
+			logger.Fatal("failed to start Prometheus metrics endpoint", zap.Error(err))
+		}
+	}()
+
 }
 
 func initServer(logger *zap.Logger) *http.Server {
@@ -285,7 +307,6 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router
 	router.HandleFunc(signaturesRouterPath, signaturesHandler)
 	router.HandleFunc(packageIndexRouterPath, packageIndexHandler)
 	router.HandleFunc(staticRouterPath, staticHandler)
-	router.Handle("/metrics", promhttp.Handler())
 	router.Use(util.LoggingMiddleware(logger))
 	router.Use(util.MetricsMiddleware())
 	router.NotFoundHandler = http.Handler(notFoundHandler(fmt.Errorf("404 page not found")))

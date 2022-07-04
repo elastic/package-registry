@@ -98,7 +98,7 @@ func LoggingMiddleware(logger *zap.Logger) mux.MiddlewareFunc {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			switch r.RequestURI {
-			case "/health", "/metrics":
+			case "/health":
 				// Do not log requests to these endpoints
 				next.ServeHTTP(w, r)
 			default:
