@@ -11,12 +11,18 @@ import (
 )
 
 func parseFlags() {
-	flagsFromEnv()
-	flag.Parse()
+	parseFlagSetWithArgs(flag.CommandLine, os.Args)
 }
 
-func flagsFromEnv() {
-	flag.VisitAll(func(f *flag.Flag) {
+func parseFlagSetWithArgs(flagSet *flag.FlagSet, args []string) {
+	flagsFromEnv(flagSet)
+
+	// Skip args[0] as flag.Parse() does.
+	flagSet.Parse(args[1:])
+}
+
+func flagsFromEnv(flagSet *flag.FlagSet) {
+	flagSet.VisitAll(func(f *flag.Flag) {
 		envName := flagEnvName(f.Name)
 		if value, found := os.LookupEnv(envName); found {
 			f.Value.Set(value)
