@@ -84,7 +84,7 @@ var (
 	)
 )
 
-// MetricsMiddleware is a middleware used to metric every request received
+// MetricsMiddleware is a middleware used to measure every request received
 func MetricsMiddleware() mux.MiddlewareFunc {
 	// Rergister all metrics
 	prometheus.MustRegister(httpInFlightRequests)
