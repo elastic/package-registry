@@ -272,8 +272,9 @@ github.com/yuin/goldmark v1.1.32/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9de
 github.com/yuin/goldmark v1.2.1/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.3.5/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1Zlc8k=
 github.com/yuin/goldmark v1.4.0/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1Zlc8k=
-go.elastic.co/apm v1.14.0 h1:9yilcTbWpqhfyunUj6/SDpZbR4FOVB50xQgODe0TW/0=
 go.elastic.co/apm v1.14.0/go.mod h1:dylGv2HKR0tiCV+wliJz1KHtDyuD8SPe69oV7VyK6WY=
+go.elastic.co/apm v1.15.0 h1:uPk2g/whK7c7XiZyz/YCUnAUBNPiyNeE3ARX3G6Gx7Q=
+go.elastic.co/apm v1.15.0/go.mod h1:dylGv2HKR0tiCV+wliJz1KHtDyuD8SPe69oV7VyK6WY=
 go.elastic.co/apm/module/apmgorilla v1.14.0 h1:espCHSZ3ibkrffR6KLua+0jMeBSgO/087U9BZ46Cyv8=
 go.elastic.co/apm/module/apmgorilla v1.14.0/go.mod h1:+cDGiyPXN3EvTxoh7zcWOL1/Yw6zKhNkUU0a0OGyXsg=
 go.elastic.co/apm/module/apmhttp v1.14.0 h1:uDSIPr1BJOt1A/T5J9Beq9VtMtQHqOdqQUXCPRQF4C4=

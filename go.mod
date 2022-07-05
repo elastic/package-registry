@@ -14,7 +14,7 @@ require (
 	github.com/magefile/mage v1.13.0
 	github.com/pkg/errors v0.9.1
 	github.com/stretchr/testify v1.8.0
-	go.elastic.co/apm v1.14.0
+	go.elastic.co/apm v1.15.0
 	go.elastic.co/apm/module/apmgorilla v1.14.0
 	go.elastic.co/ecszap v1.0.1
 	go.uber.org/zap v1.21.0
