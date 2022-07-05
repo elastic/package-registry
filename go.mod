@@ -18,7 +18,7 @@ require (
 	go.elastic.co/apm/module/apmgorilla v1.14.0
 	go.elastic.co/ecszap v1.0.1
 	go.uber.org/zap v1.21.0
-	golang.org/x/tools v0.1.7
+	golang.org/x/tools v0.1.11
 	gopkg.in/yaml.v2 v2.2.8
 )
 
@@ -50,7 +50,7 @@ require (
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
 	golang.org/x/lint v0.0.0-20210508222113-6edffad5e616 // indirect
-	golang.org/x/mod v0.5.1 // indirect
+	golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4 // indirect
 	golang.org/x/net v0.0.0-20220425223048-2871e0cb64e4 // indirect
 	golang.org/x/oauth2 v0.0.0-20220411215720-9780585627b5 // indirect
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c // indirect
