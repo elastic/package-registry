@@ -1,0 +1,12 @@
+---
+version: 2
+updates:
+  - package-ecosystem: "gomod"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    labels:
+      - automation
+    reviewers:
+      - "elastic/integrations-developer-experience"
+    open-pull-requests-limit: 10

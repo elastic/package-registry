@@ -18,23 +18,25 @@ func TestFlagsFromEnv(t *testing.T) {
 	os.Setenv("EPR_TEST_DUMMY", expected)
 
 	var dummyFlag string
-	flag.StringVar(&dummyFlag, "test-dummy", "default", "Dummy flag used for testing.")
+	flagSet := flag.NewFlagSet("", flag.PanicOnError)
+	flagSet.StringVar(&dummyFlag, "test-dummy", "default", "Dummy flag used for testing.")
 	require.Equal(t, "default", dummyFlag)
 
-	flagsFromEnv()
+	flagsFromEnv(flagSet)
 	require.Equal(t, expected, dummyFlag)
 }
 
 func TestFlagsPrecedence(t *testing.T) {
 	expected := "flag value"
 	os.Setenv("EPR_TEST_PRECEDENCE_DUMMY", "other value")
-	os.Args = append(os.Args, "-test-precedence-dummy="+expected)
 
 	var dummyFlag string
-	flag.StringVar(&dummyFlag, "test-precedence-dummy", "default", "Dummy flag used for testing.")
+	flagSet := flag.NewFlagSet("", flag.PanicOnError)
+	flagSet.StringVar(&dummyFlag, "test-precedence-dummy", "default", "Dummy flag used for testing.")
 	require.Equal(t, "default", dummyFlag)
 
-	parseFlags()
+	args := []string{"test", "-test-precedence-dummy=" + expected}
+	parseFlagSetWithArgs(flagSet, args)
 	require.Equal(t, expected, dummyFlag)
 }
 
