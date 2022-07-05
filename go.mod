@@ -11,7 +11,7 @@ require (
 	github.com/fsouza/fake-gcs-server v1.37.12
 	github.com/gorilla/mux v1.8.0
 	github.com/joeshaw/multierror v0.0.0-20140124173710-69b34d4ec901
-	github.com/magefile/mage v1.9.0
+	github.com/magefile/mage v1.13.0
 	github.com/pkg/errors v0.9.1
 	github.com/stretchr/testify v1.8.0
 	go.elastic.co/apm v1.14.0
