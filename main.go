@@ -32,9 +32,9 @@ import (
 )
 
 const (
-	serviceName     = "package-registry"
-	version         = "1.9.1"
-	defaultInstance = "localhost"
+	serviceName         = "package-registry"
+	version             = "1.9.1"
+	defaultInstanceName = "localhost"
 )
 
 var (
@@ -151,12 +151,14 @@ func initMetricsServer(logger *zap.Logger) {
 	if dryRun {
 		return
 	}
-	logger.Info("Starting http metrics in " + metricsAddress)
+
 	hostname, found := os.LookupEnv("HOSTNAME")
 	if !found {
-		hostname = defaultInstance
+		hostname = defaultInstanceName
 	}
 	util.ServiceInfo.WithLabelValues(version, hostname).Set(1)
+
+	logger.Info("Starting http metrics in " + metricsAddress)
 	go func() {
 		router := http.NewServeMux()
 		router.Handle("/metrics", promhttp.Handler())
