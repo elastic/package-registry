@@ -72,11 +72,9 @@ var (
 				128,
 				256,
 				512,
-				1024,             /* 1KiB */
-				64 * 1024,        /* 64KiB */
-				256 * 1024,       /* 256KiB */
-				1024 * 1024,      /* 1MiB */
-				64 * 1024 * 1024, /* 64MiB */
+				1024,       /* 1KiB */
+				64 * 1024,  /* 64KiB */
+				256 * 1024, /* 256KiB */
 			},
 		},
 		[]string{"code", "method", "path"},
@@ -88,17 +86,15 @@ var (
 			Name:      "http_response_size_bytes",
 			Help:      "A histogram of response sizes for requests to the http server.",
 			Buckets: []float64{
-				10,
+				16,
+				32,
 				64,
+				128,
 				256,
 				512,
-				1024,              /* 1KiB */
-				64 * 1024,         /* 64KiB */
-				256 * 1024,        /* 256KiB */
-				512 * 1024,        /* 512KiB */
-				1024 * 1024,       /* 1MiB */
-				64 * 1024 * 1024,  /* 64MiB */
-				512 * 1024 * 1024, /* 512MiB */
+				1024,       /* 1KiB */
+				64 * 1024,  /* 64KiB */
+				256 * 1024, /* 256KiB */
 			},
 		},
 		[]string{"code", "method", "path"},
