@@ -14,6 +14,17 @@ import (
 
 const metricsNamespace = "epr"
 
+// search metrics
+var (
+	SearchProcessDurationSeconds = prometheus.NewHistogram(
+		prometheus.HistogramOpts{
+			Namespace: metricsNamespace,
+			Name:      "search_process_duration_seconds",
+			Help:      "A histogram of package search processes.",
+		},
+	)
+)
+
 // storage metrics
 var (
 	NumberIndexedPackages = prometheus.NewGauge(prometheus.GaugeOpts{
@@ -104,6 +115,7 @@ func MetricsMiddleware() mux.MiddlewareFunc {
 	prometheus.MustRegister(httpResponseSizeBytes)
 
 	prometheus.MustRegister(NumberIndexedPackages)
+	prometheus.MustRegister(SearchProcessDurationSeconds)
 
 	return func(next http.Handler) http.Handler {
 		handler := next

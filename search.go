@@ -32,11 +32,13 @@ func searchHandler(indexer Indexer, cacheTime time.Duration) func(w http.Respons
 			Filter: filter,
 		}
 
+		start := time.Now()
 		packages, err := indexer.Get(r.Context(), &opts)
 		if err != nil {
 			notFoundError(w, errors.Wrapf(err, "fetching package failed"))
 			return
 		}
+		util.SearchProcessDurationSeconds.Observe(time.Since(start).Seconds())
 
 		data, err := getPackageOutput(r.Context(), packages)
 		if err != nil {
