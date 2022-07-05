@@ -19,11 +19,9 @@ import (
 	gstorage "cloud.google.com/go/storage"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
-	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"go.elastic.co/apm"
 	"go.elastic.co/apm/module/apmgorilla"
-	"go.elastic.co/apm/module/apmprometheus"
 	"go.uber.org/zap"
 
 	ucfgYAML "github.com/elastic/go-ucfg/yaml"
@@ -210,7 +208,6 @@ func initAPMTracer(logger *zap.Logger) *apm.Tracer {
 	if err != nil {
 		logger.Fatal("Failed to initialize APM agent", zap.Error(err))
 	}
-	tracer.RegisterMetricsGatherer(apmprometheus.Wrap(prometheus.DefaultGatherer))
 	return tracer
 }
 

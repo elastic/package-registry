@@ -15,9 +15,8 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.12.2
 	github.com/stretchr/testify v1.7.1
-	go.elastic.co/apm v1.15.0
+	go.elastic.co/apm v1.14.0
 	go.elastic.co/apm/module/apmgorilla v1.14.0
-	go.elastic.co/apm/module/apmprometheus v1.15.0
 	go.elastic.co/ecszap v1.0.1
 	go.uber.org/zap v1.21.0
 	golang.org/x/tools v0.1.7
