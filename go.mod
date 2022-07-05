@@ -14,8 +14,8 @@ require (
 	github.com/magefile/mage v1.9.0
 	github.com/pkg/errors v0.9.1
 	github.com/stretchr/testify v1.8.0
-	go.elastic.co/apm v1.14.0
-	go.elastic.co/apm/module/apmgorilla v1.14.0
+	go.elastic.co/apm v1.15.0
+	go.elastic.co/apm/module/apmgorilla v1.15.0
 	go.elastic.co/ecszap v1.0.1
 	go.uber.org/zap v1.21.0
 	golang.org/x/tools v0.1.11
@@ -44,7 +44,7 @@ require (
 	github.com/prometheus/procfs v0.7.3 // indirect
 	github.com/santhosh-tekuri/jsonschema v1.2.4 // indirect
 	github.com/sirupsen/logrus v1.8.1 // indirect
-	go.elastic.co/apm/module/apmhttp v1.14.0 // indirect
+	go.elastic.co/apm/module/apmhttp v1.15.0 // indirect
 	go.elastic.co/fastjson v1.1.0 // indirect
 	go.opencensus.io v0.23.0 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
