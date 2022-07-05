@@ -100,6 +100,9 @@ func main() {
 	initHttpProf(logger)
 
 	server := initServer(logger)
+	if dryRun {
+		os.Exit(0)
+	}
 	go func() {
 		err := runServer(server)
 		if err != nil && err != http.ErrServerClosed {
@@ -124,6 +127,10 @@ func initHttpProf(logger *zap.Logger) {
 		return
 	}
 
+	if dryRun {
+		return
+	}
+
 	logger.Info("Starting http pprof in " + httpProfAddress)
 	go func() {
 		err := http.ListenAndServe(httpProfAddress, nil)
@@ -134,11 +141,9 @@ func initHttpProf(logger *zap.Logger) {
 }
 
 func initMetricsServer(logger *zap.Logger) {
-	// If -dry-run=true is set, service stops here after validation
 	if dryRun {
-		os.Exit(0)
+		return
 	}
-
 	logger.Info("Starting http metrics in " + metricsAddress)
 	go func() {
 		router := http.NewServeMux()
@@ -148,7 +153,6 @@ func initMetricsServer(logger *zap.Logger) {
 			logger.Fatal("failed to start Prometheus metrics endpoint", zap.Error(err))
 		}
 	}()
-
 }
 
 func initServer(logger *zap.Logger) *http.Server {
@@ -178,11 +182,6 @@ func initServer(logger *zap.Logger) *http.Server {
 	}
 	combinedIndexer := NewCombinedIndexer(indexers...)
 	ensurePackagesAvailable(ctx, logger, combinedIndexer)
-
-	// If -dry-run=true is set, service stops here after validation
-	if dryRun {
-		os.Exit(0)
-	}
 
 	router := mustLoadRouter(logger, config, combinedIndexer)
 	apmgorilla.Instrument(router, apmgorilla.WithTracer(apmTracer))
