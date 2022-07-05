@@ -245,6 +245,8 @@ func getPackagesBasePaths(config *Config) []string {
 
 func printConfig(logger *zap.Logger, config *Config) {
 	logger.Info("Packages paths: " + strings.Join(config.PackagePaths, ", "))
+	logger.Info("Cache time for /: " + config.CacheTimeIndex.String())
+	logger.Info("Cache time for /index.json: " + config.CacheTimeIndex.String())
 	logger.Info("Cache time for /search: " + config.CacheTimeSearch.String())
 	logger.Info("Cache time for /categories: " + config.CacheTimeCategories.String())
 	logger.Info("Cache time for all others: " + config.CacheTimeCatchAll.String())
