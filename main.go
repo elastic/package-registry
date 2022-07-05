@@ -32,8 +32,9 @@ import (
 )
 
 const (
-	serviceName = "package-registry"
-	version     = "1.9.1"
+	serviceName     = "package-registry"
+	version         = "1.9.1"
+	defaultInstance = "localhost"
 )
 
 var (
@@ -46,6 +47,8 @@ var (
 
 	dryRun     bool
 	configPath string
+
+	printVersionInfo bool
 
 	featureStorageIndexer        bool
 	storageIndexerBucketInternal string
@@ -61,6 +64,7 @@ var (
 )
 
 func init() {
+	flag.BoolVar(&printVersionInfo, "version", false, "Print Elastic Package Registry version")
 	flag.StringVar(&address, "address", "localhost:8080", "Address of the package-registry service.")
 	flag.StringVar(&metricsAddress, "metrics-address", "localhost:9000", "Address to expose the Prometheus metrics.")
 	flag.StringVar(&tlsCertFile, "tls-cert", "", "Path of the TLS certificate.")
@@ -88,6 +92,11 @@ type Config struct {
 
 func main() {
 	parseFlags()
+
+	if printVersionInfo {
+		fmt.Printf("Elastic Package Registry version %v\n", version)
+		os.Exit(0)
+	}
 
 	logger := util.Logger()
 	defer logger.Sync()
@@ -143,6 +152,11 @@ func initMetricsServer(logger *zap.Logger) {
 		return
 	}
 	logger.Info("Starting http metrics in " + metricsAddress)
+	hostname, found := os.LookupEnv("HOSTNAME")
+	if !found {
+		hostname = defaultInstance
+	}
+	util.ServiceInfo.WithLabelValues(version, hostname).Set(1)
 	go func() {
 		router := http.NewServeMux()
 		router.Handle("/metrics", promhttp.Handler())

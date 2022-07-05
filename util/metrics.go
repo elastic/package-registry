@@ -14,25 +14,31 @@ import (
 
 const metricsNamespace = "epr"
 
+// info metric
+var ServiceInfo = prometheus.NewGaugeVec(
+	prometheus.GaugeOpts{
+		Namespace: metricsNamespace,
+		Name:      "service_info",
+		Help:      "Version information about this binary",
+	},
+	[]string{"version", "instance"},
+)
+
 // search metrics
-var (
-	SearchProcessDurationSeconds = prometheus.NewHistogram(
-		prometheus.HistogramOpts{
-			Namespace: metricsNamespace,
-			Name:      "search_process_duration_seconds",
-			Help:      "A histogram of package search processes.",
-		},
-	)
+var SearchProcessDurationSeconds = prometheus.NewHistogram(
+	prometheus.HistogramOpts{
+		Namespace: metricsNamespace,
+		Name:      "search_process_duration_seconds",
+		Help:      "A histogram of package search processes.",
+	},
 )
 
 // storage metrics
-var (
-	NumberIndexedPackages = prometheus.NewGauge(prometheus.GaugeOpts{
-		Namespace: metricsNamespace,
-		Name:      "number_indexed_packages",
-		Help:      "A gauge for number of indexed packages",
-	})
-)
+var NumberIndexedPackages = prometheus.NewGauge(prometheus.GaugeOpts{
+	Namespace: metricsNamespace,
+	Name:      "number_indexed_packages",
+	Help:      "A gauge for number of indexed packages",
+})
 
 // common metrics for http requests
 var (
@@ -104,6 +110,8 @@ var (
 // MetricsMiddleware is a middleware used to measure every request received
 func MetricsMiddleware() mux.MiddlewareFunc {
 	// Rergister all metrics
+	prometheus.MustRegister(ServiceInfo)
+
 	prometheus.MustRegister(httpInFlightRequests)
 	prometheus.MustRegister(httpRequestsTotal)
 	prometheus.MustRegister(httpRequestDurationSeconds)
