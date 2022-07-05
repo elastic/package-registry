@@ -266,6 +266,7 @@ func ensurePackagesAvailable(ctx context.Context, logger *zap.Logger, indexer In
 	}
 
 	logger.Info(fmt.Sprintf("%v package manifests loaded", len(packages)))
+	util.NumberIndexedPackages.Set(float64(len(packages)))
 }
 
 func mustLoadRouter(logger *zap.Logger, config *Config, indexer Indexer) *mux.Router {

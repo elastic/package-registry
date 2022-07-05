@@ -14,6 +14,16 @@ import (
 
 const metricsNamespace = "epr"
 
+// storage metrics
+var (
+	NumberIndexedPackages = prometheus.NewGauge(prometheus.GaugeOpts{
+		Namespace: metricsNamespace,
+		Name:      "number_indexed_packages",
+		Help:      "A gauge for number of indexed packages",
+	})
+)
+
+// common metrics for http requests
 var (
 	httpInFlightRequests = prometheus.NewGauge(prometheus.GaugeOpts{
 		Namespace: metricsNamespace,
@@ -92,6 +102,8 @@ func MetricsMiddleware() mux.MiddlewareFunc {
 	prometheus.MustRegister(httpRequestDurationSeconds)
 	prometheus.MustRegister(httpRequestSizeBytes)
 	prometheus.MustRegister(httpResponseSizeBytes)
+
+	prometheus.MustRegister(NumberIndexedPackages)
 
 	return func(next http.Handler) http.Handler {
 		handler := next

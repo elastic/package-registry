@@ -160,6 +160,7 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	defer i.m.Unlock()
 	i.cursor = storageCursor.Current
 	i.packageList = refreshedList
+	util.NumberIndexedPackages.Set(float64(len(i.packageList)))
 	return nil
 }
 
