@@ -19,7 +19,7 @@ require (
 	go.elastic.co/ecszap v1.0.1
 	go.uber.org/zap v1.21.0
 	golang.org/x/tools v0.1.11
-	gopkg.in/yaml.v2 v2.2.8
+	gopkg.in/yaml.v2 v2.4.0
 )
 
 require (
