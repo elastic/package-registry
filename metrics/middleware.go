@@ -35,7 +35,10 @@ func MetricsMiddleware() mux.MiddlewareFunc {
 
 		return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 			route := mux.CurrentRoute(req)
-			path, _ := route.GetPathTemplate()
+			path, err := route.GetPathTemplate()
+			if err != nil {
+				path = "unknown"
+			}
 			labels := prometheus.Labels{"path": path}
 
 			handler = promhttp.InstrumentHandlerCounter(httpRequestsTotal.MustCurryWith(labels), handler)
