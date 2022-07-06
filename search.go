@@ -17,6 +17,7 @@ import (
 	"github.com/pkg/errors"
 	"go.elastic.co/apm"
 
+	"github.com/elastic/package-registry/metrics"
 	"github.com/elastic/package-registry/packages"
 	"github.com/elastic/package-registry/util"
 )
@@ -38,7 +39,7 @@ func searchHandler(indexer Indexer, cacheTime time.Duration) func(w http.Respons
 			notFoundError(w, errors.Wrapf(err, "fetching package failed"))
 			return
 		}
-		util.SearchProcessDurationSeconds.Observe(time.Since(start).Seconds())
+		metrics.SearchProcessDurationSeconds.Observe(time.Since(start).Seconds())
 
 		data, err := getPackageOutput(r.Context(), packages)
 		if err != nil {

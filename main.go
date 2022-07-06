@@ -26,6 +26,7 @@ import (
 
 	ucfgYAML "github.com/elastic/go-ucfg/yaml"
 
+	"github.com/elastic/package-registry/metrics"
 	"github.com/elastic/package-registry/packages"
 	"github.com/elastic/package-registry/storage"
 	"github.com/elastic/package-registry/util"
@@ -156,7 +157,7 @@ func initMetricsServer(logger *zap.Logger) {
 	if err != nil {
 		hostname = defaultInstanceName
 	}
-	util.ServiceInfo.WithLabelValues(version, hostname).Set(1)
+	metrics.ServiceInfo.WithLabelValues(version, hostname).Set(1)
 
 	logger.Info("Starting http metrics in " + metricsAddress)
 	go func() {
@@ -284,7 +285,7 @@ func ensurePackagesAvailable(ctx context.Context, logger *zap.Logger, indexer In
 	}
 
 	logger.Info(fmt.Sprintf("%v package manifests loaded", len(packages)))
-	util.NumberIndexedPackages.Set(float64(len(packages)))
+	metrics.NumberIndexedPackages.Set(float64(len(packages)))
 }
 
 func mustLoadRouter(logger *zap.Logger, config *Config, indexer Indexer) *mux.Router {
@@ -323,7 +324,7 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router
 	router.HandleFunc(packageIndexRouterPath, packageIndexHandler)
 	router.HandleFunc(staticRouterPath, staticHandler)
 	router.Use(util.LoggingMiddleware(logger))
-	router.Use(util.MetricsMiddleware())
+	router.Use(metrics.MetricsMiddleware())
 	router.NotFoundHandler = http.Handler(notFoundHandler(fmt.Errorf("404 page not found")))
 	return router, nil
 }
