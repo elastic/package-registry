@@ -153,7 +153,7 @@ func initMetricsServer(logger *zap.Logger) {
 	if err != nil {
 		hostname = defaultInstanceName
 	}
-	metrics.ServiceInfo.WithLabelValues(version, hostname).Set(1)
+	metrics.SetServiceInfo(version, hostname)
 
 	logger.Info("Starting http metrics in " + metricsAddress)
 	go func() {

@@ -10,8 +10,7 @@ import (
 
 const metricsNamespace = "epr"
 
-// info metric
-var ServiceInfo = prometheus.NewGaugeVec(
+var serviceInfo = prometheus.NewGaugeVec(
 	prometheus.GaugeOpts{
 		Namespace: metricsNamespace,
 		Name:      "service_info",
@@ -20,7 +19,6 @@ var ServiceInfo = prometheus.NewGaugeVec(
 	[]string{"version", "instance"},
 )
 
-// search metrics
 var SearchProcessDurationSeconds = prometheus.NewHistogram(
 	prometheus.HistogramOpts{
 		Namespace: metricsNamespace,
@@ -29,14 +27,31 @@ var SearchProcessDurationSeconds = prometheus.NewHistogram(
 	},
 )
 
-// storage metrics
-var NumberIndexedPackages = prometheus.NewGauge(prometheus.GaugeOpts{
-	Namespace: metricsNamespace,
-	Name:      "number_indexed_packages",
-	Help:      "A gauge for number of indexed packages",
-})
+var (
+	NumberIndexedPackages = prometheus.NewGauge(prometheus.GaugeOpts{
+		Namespace: metricsNamespace,
+		Name:      "number_indexed_packages",
+		Help:      "A gauge for number of indexed packages",
+	})
 
-// common metrics for http requests
+	CursorUpdatesTotal = prometheus.NewCounter(
+		prometheus.CounterOpts{
+			Namespace: metricsNamespace,
+			Name:      "cursor_updates_total",
+			Help:      "A counter for updates of the cursor",
+		},
+	)
+
+	StorageRequestsTotal = prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Namespace: metricsNamespace,
+			Name:      "storage_requests_total",
+			Help:      "A counter for requests performed to the storage",
+		},
+		[]string{"location", "component"},
+	)
+)
+
 var (
 	httpInFlightRequests = prometheus.NewGauge(prometheus.GaugeOpts{
 		Namespace: metricsNamespace,
@@ -102,3 +117,8 @@ var (
 		[]string{"code", "method", "path"},
 	)
 )
+
+// SetServiceInfo is used to set the main information of the service
+func SetServiceInfo(version, hostname string) {
+	serviceInfo.With(prometheus.Labels{"version": version, "instance": hostname}).Set(1)
+}
