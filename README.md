@@ -237,6 +237,7 @@ It will be listening in the given address.
 You can read more about this profiler and the available endpoints in the [pprof documentation](https://pkg.go.dev/net/http/pprof).
 
 ## Metrics
+
 Package registry is instrumented to expose Prometheus metrics. These metrics are exposed under the `/metrics` endpoint.
 By default this endpoint runs `localhost:9000`. These metrics can be scraped like:
 ```
