@@ -129,6 +129,8 @@ func (i *Indexer) watchIndices(ctx context.Context) {
 func (i *Indexer) updateIndex(ctx context.Context) error {
 	logger := util.Logger()
 	logger.Debug("Update indices")
+	start := time.Now()
+	defer metrics.StorageIndexerUpdateIndexDurationSeconds.Observe(time.Since(start).Seconds())
 
 	bucketName, rootStoragePath, err := extractBucketNameFromURL(i.options.PackageStorageBucketInternal)
 	if err != nil {

@@ -19,14 +19,6 @@ var ServiceInfo = prometheus.NewGaugeVec(
 	[]string{"version", "instance"},
 )
 
-var SearchProcessDurationSeconds = prometheus.NewHistogram(
-	prometheus.HistogramOpts{
-		Namespace: metricsNamespace,
-		Name:      "search_process_duration_seconds",
-		Help:      "A histogram of package search processes.",
-	},
-)
-
 var (
 	NumberIndexedPackages = prometheus.NewGauge(prometheus.GaugeOpts{
 		Namespace: metricsNamespace,
@@ -49,6 +41,22 @@ var (
 			Help:      "A counter for requests performed to the storage",
 		},
 		[]string{"location", "component"},
+	)
+
+	StorageIndexerUpdateIndexDurationSeconds = prometheus.NewHistogram(
+		prometheus.HistogramOpts{
+			Namespace: metricsNamespace,
+			Name:      "storage_indexer_update_index_duration_seconds",
+			Help:      "A histogram of update index processes run by the indexer",
+		},
+	)
+
+	StorageIndexerGetDurationSeconds = prometheus.NewHistogram(
+		prometheus.HistogramOpts{
+			Namespace: metricsNamespace,
+			Name:      "storage_indexer_get_duration_seconds",
+			Help:      "A histogram of package search processes.",
+		},
 	)
 )
 

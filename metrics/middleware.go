@@ -23,9 +23,10 @@ func MetricsMiddleware() mux.MiddlewareFunc {
 	prometheus.MustRegister(httpRequestSizeBytes)
 	prometheus.MustRegister(httpResponseSizeBytes)
 
-	prometheus.MustRegister(SearchProcessDurationSeconds)
 	prometheus.MustRegister(NumberIndexedPackages)
 	prometheus.MustRegister(CursorUpdatesTotal)
+	prometheus.MustRegister(StorageIndexerGetDurationSeconds)
+	prometheus.MustRegister(StorageIndexerUpdateIndexDurationSeconds)
 	prometheus.MustRegister(StorageRequestsTotal)
 
 	return func(next http.Handler) http.Handler {
