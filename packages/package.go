@@ -48,6 +48,7 @@ var CategoryTitles = map[string]string{
 	"security":          "Security",
 	"support":           "Support",
 	"ticketing":         "Ticketing",
+	"threat_intel":      "Threat Intelligence",
 	"version_control":   "Version Control",
 	"web":               "Web",
 }
