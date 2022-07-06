@@ -238,14 +238,13 @@ You can read more about this profiler and the available endpoints in the [pprof 
 
 ## Metrics
 
-Package registry is instrumented to expose Prometheus metrics. These metrics are exposed under the `/metrics` endpoint.
-By default this endpoint runs `localhost:9000`. These metrics can be scraped like:
-```
-curl http://localhost:9000
-```
+Package registry can be instrumented to expose Prometheus metrics under `/metrics` endpoint.
+By default this endpoint is disabled.
 
-The host and port where this endpoint runs can be configured by means of the parameter `-metrics-address`
-(or `EPR_METRICS_ADDRESS` environment variable):
+To enable this instrumentation, the required address (host and port) where this endpoint needs
+to run must be set using the parameter `metrics-address` (or the `EPR_METRICS_ADDRESS` environment variable).
+For example:
+
 ```
 package-registry --metrics-address 0.0.0.0:9000
 ```

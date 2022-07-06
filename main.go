@@ -68,7 +68,7 @@ var (
 func init() {
 	flag.BoolVar(&printVersionInfo, "version", false, "Print Elastic Package Registry version")
 	flag.StringVar(&address, "address", "localhost:8080", "Address of the package-registry service.")
-	flag.StringVar(&metricsAddress, "metrics-address", "localhost:9000", "Address to expose the Prometheus metrics.")
+	flag.StringVar(&metricsAddress, "metrics-address", "", "Address to expose the Prometheus metrics.")
 	flag.StringVar(&tlsCertFile, "tls-cert", "", "Path of the TLS certificate.")
 	flag.StringVar(&tlsKeyFile, "tls-key", "", "Path of the TLS key.")
 	flag.StringVar(&configPath, "config", "config.yml", "Path to the configuration file.")
@@ -158,6 +158,10 @@ func getHostname() string {
 }
 
 func initMetricsServer(logger *zap.Logger) {
+	if metricsAddress == "" {
+		return
+	}
+
 	hostname := getHostname()
 
 	metrics.ServiceInfo.With(prometheus.Labels{"version": version, "instance": hostname}).Set(1)
@@ -320,7 +324,6 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router
 	staticHandler := staticHandler(indexer, config.CacheTimeCatchAll)
 
 	router := mux.NewRouter().StrictSlash(true)
-
 	router.HandleFunc("/", indexHandlerFunc)
 	router.HandleFunc("/index.json", indexHandlerFunc)
 	router.HandleFunc("/search", searchHandler(indexer, config.CacheTimeSearch))
@@ -332,7 +335,9 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router
 	router.HandleFunc(packageIndexRouterPath, packageIndexHandler)
 	router.HandleFunc(staticRouterPath, staticHandler)
 	router.Use(util.LoggingMiddleware(logger))
-	router.Use(metrics.MetricsMiddleware())
+	if metricsAddress != "" {
+		router.Use(metrics.MetricsMiddleware())
+	}
 	router.NotFoundHandler = http.Handler(notFoundHandler(fmt.Errorf("404 page not found")))
 	return router, nil
 }
