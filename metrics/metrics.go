@@ -43,6 +43,14 @@ var (
 		[]string{"location", "component"},
 	)
 
+	StorageIndexerUpdateIndexErrorsTotal = prometheus.NewCounter(
+		prometheus.CounterOpts{
+			Namespace: metricsNamespace,
+			Name:      "storage_indexer_update_index_errors_total",
+			Help:      "A counter for all the update index processes that finished with error",
+		},
+	)
+
 	StorageIndexerUpdateIndexDurationSeconds = prometheus.NewHistogram(
 		prometheus.HistogramOpts{
 			Namespace: metricsNamespace,
