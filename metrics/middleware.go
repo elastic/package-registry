@@ -15,7 +15,7 @@ import (
 // MetricsMiddleware is a middleware used to measure every request received
 func MetricsMiddleware() mux.MiddlewareFunc {
 	// Rergister all metrics
-	prometheus.MustRegister(serviceInfo)
+	prometheus.MustRegister(ServiceInfo)
 
 	prometheus.MustRegister(httpInFlightRequests)
 	prometheus.MustRegister(httpRequestsTotal)

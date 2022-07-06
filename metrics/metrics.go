@@ -10,7 +10,7 @@ import (
 
 const metricsNamespace = "epr"
 
-var serviceInfo = prometheus.NewGaugeVec(
+var ServiceInfo = prometheus.NewGaugeVec(
 	prometheus.GaugeOpts{
 		Namespace: metricsNamespace,
 		Name:      "service_info",
@@ -117,8 +117,3 @@ var (
 		[]string{"code", "method", "path"},
 	)
 )
-
-// SetServiceInfo is used to set the main information of the service
-func SetServiceInfo(version, hostname string) {
-	serviceInfo.With(prometheus.Labels{"version": version, "instance": hostname}).Set(1)
-}

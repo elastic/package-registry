@@ -19,6 +19,7 @@ import (
 	gstorage "cloud.google.com/go/storage"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
+	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"go.elastic.co/apm"
 	"go.elastic.co/apm/module/apmgorilla"
@@ -153,7 +154,7 @@ func initMetricsServer(logger *zap.Logger) {
 	if err != nil {
 		hostname = defaultInstanceName
 	}
-	metrics.SetServiceInfo(version, hostname)
+	metrics.ServiceInfo.With(prometheus.Labels{"version": version, "instance": hostname}).Set(1)
 
 	logger.Info("Starting http metrics in " + metricsAddress)
 	go func() {
