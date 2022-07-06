@@ -149,11 +149,17 @@ func initHttpProf(logger *zap.Logger) {
 	}()
 }
 
-func initMetricsServer(logger *zap.Logger) {
+func getHostname() string {
 	hostname, err := os.Hostname()
 	if err != nil {
-		hostname = defaultInstanceName
+		return defaultInstanceName
 	}
+	return hostname
+}
+
+func initMetricsServer(logger *zap.Logger) {
+	hostname := getHostname()
+
 	metrics.ServiceInfo.With(prometheus.Labels{"version": version, "instance": hostname}).Set(1)
 
 	logger.Info("Starting http metrics in " + metricsAddress)
