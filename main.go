@@ -152,8 +152,8 @@ func initMetricsServer(logger *zap.Logger) {
 		return
 	}
 
-	hostname, found := os.LookupEnv("HOSTNAME")
-	if !found {
+	hostname, err := os.Hostname()
+	if err != nil {
 		hostname = defaultInstanceName
 	}
 	util.ServiceInfo.WithLabelValues(version, hostname).Set(1)
