@@ -26,14 +26,6 @@ var (
 		Help:      "A gauge for number of indexed packages",
 	})
 
-	CursorUpdatesTotal = prometheus.NewCounter(
-		prometheus.CounterOpts{
-			Namespace: metricsNamespace,
-			Name:      "cursor_updates_total",
-			Help:      "A counter for updates of the cursor",
-		},
-	)
-
 	StorageRequestsTotal = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
 			Namespace: metricsNamespace,
@@ -43,10 +35,18 @@ var (
 		[]string{"location", "component"},
 	)
 
+	StorageIndexerUpdateIndexSuccessTotal = prometheus.NewCounter(
+		prometheus.CounterOpts{
+			Namespace: metricsNamespace,
+			Name:      "storage_indexer_update_index_success_total",
+			Help:      "A counter for updates of the cursor",
+		},
+	)
+
 	StorageIndexerUpdateIndexErrorsTotal = prometheus.NewCounter(
 		prometheus.CounterOpts{
 			Namespace: metricsNamespace,
-			Name:      "storage_indexer_update_index_errors_total",
+			Name:      "storage_indexer_update_index_error_total",
 			Help:      "A counter for all the update index processes that finished with error",
 		},
 	)
