@@ -14,7 +14,7 @@ var ServiceInfo = prometheus.NewGaugeVec(
 	prometheus.GaugeOpts{
 		Namespace: metricsNamespace,
 		Name:      "service_info",
-		Help:      "Version information about this binary",
+		Help:      "Version information about this binary.",
 	},
 	[]string{"version", "instance"},
 )
@@ -23,14 +23,14 @@ var (
 	NumberIndexedPackages = prometheus.NewGauge(prometheus.GaugeOpts{
 		Namespace: metricsNamespace,
 		Name:      "number_indexed_packages",
-		Help:      "A gauge for number of indexed packages",
+		Help:      "A gauge for number of indexed packages.",
 	})
 
 	StorageRequestsTotal = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
 			Namespace: metricsNamespace,
 			Name:      "storage_requests_total",
-			Help:      "A counter for requests performed to the storage",
+			Help:      "A counter for requests performed to the storage.",
 		},
 		[]string{"location", "component"},
 	)
@@ -39,7 +39,7 @@ var (
 		prometheus.CounterOpts{
 			Namespace: metricsNamespace,
 			Name:      "storage_indexer_update_index_success_total",
-			Help:      "A counter for updates of the cursor",
+			Help:      "A counter for updates of the cursor.",
 		},
 	)
 
@@ -47,7 +47,7 @@ var (
 		prometheus.CounterOpts{
 			Namespace: metricsNamespace,
 			Name:      "storage_indexer_update_index_error_total",
-			Help:      "A counter for all the update index processes that finished with error",
+			Help:      "A counter for all the update index processes that finished with error.",
 		},
 	)
 
@@ -55,7 +55,7 @@ var (
 		prometheus.HistogramOpts{
 			Namespace: metricsNamespace,
 			Name:      "storage_indexer_update_index_duration_seconds",
-			Help:      "A histogram of update index processes run by the indexer",
+			Help:      "A histogram of latencies for update index processes run by the indexer.",
 		},
 	)
 
@@ -63,7 +63,7 @@ var (
 		prometheus.HistogramOpts{
 			Namespace: metricsNamespace,
 			Name:      "storage_indexer_get_duration_seconds",
-			Help:      "A histogram of package search processes.",
+			Help:      "A histogram of latencies for get processes run by the indexer.",
 		},
 	)
 )
