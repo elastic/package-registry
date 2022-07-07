@@ -19,31 +19,38 @@ import (
 	gstorage "cloud.google.com/go/storage"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"go.elastic.co/apm"
 	"go.elastic.co/apm/module/apmgorilla"
 	"go.uber.org/zap"
 
 	ucfgYAML "github.com/elastic/go-ucfg/yaml"
 
+	"github.com/elastic/package-registry/metrics"
 	"github.com/elastic/package-registry/packages"
 	"github.com/elastic/package-registry/storage"
 	"github.com/elastic/package-registry/util"
 )
 
 const (
-	serviceName = "package-registry"
-	version     = "1.9.1"
+	serviceName         = "package-registry"
+	version             = "1.9.1"
+	defaultInstanceName = "localhost"
 )
 
 var (
 	address         string
 	httpProfAddress string
+	metricsAddress  string
 
 	tlsCertFile string
 	tlsKeyFile  string
 
 	dryRun     bool
 	configPath string
+
+	printVersionInfo bool
 
 	featureStorageIndexer        bool
 	storageIndexerBucketInternal string
@@ -59,7 +66,9 @@ var (
 )
 
 func init() {
+	flag.BoolVar(&printVersionInfo, "version", false, "Print Elastic Package Registry version")
 	flag.StringVar(&address, "address", "localhost:8080", "Address of the package-registry service.")
+	flag.StringVar(&metricsAddress, "metrics-address", "", "Address to expose the Prometheus metrics.")
 	flag.StringVar(&tlsCertFile, "tls-cert", "", "Path of the TLS certificate.")
 	flag.StringVar(&tlsKeyFile, "tls-key", "", "Path of the TLS key.")
 	flag.StringVar(&configPath, "config", "config.yml", "Path to the configuration file.")
@@ -86,21 +95,35 @@ type Config struct {
 func main() {
 	parseFlags()
 
+	if printVersionInfo {
+		fmt.Printf("Elastic Package Registry version %v\n", version)
+		os.Exit(0)
+	}
+
 	logger := util.Logger()
 	defer logger.Sync()
+
+	config := mustLoadConfig(logger)
+	if dryRun {
+		logger.Info("Running dry-run mode")
+		_ = initIndexers(context.Background(), logger, config)
+		os.Exit(0)
+	}
 
 	logger.Info("Package registry started")
 	defer logger.Info("Package registry stopped")
 
 	initHttpProf(logger)
 
-	server := initServer(logger)
+	server := initServer(logger, config)
 	go func() {
 		err := runServer(server)
 		if err != nil && err != http.ErrServerClosed {
 			logger.Fatal("error occurred while serving", zap.Error(err))
 		}
 	}()
+
+	initMetricsServer(logger)
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
@@ -126,17 +149,38 @@ func initHttpProf(logger *zap.Logger) {
 	}()
 }
 
-func initServer(logger *zap.Logger) *http.Server {
-	apmTracer := initAPMTracer(logger)
-	tx := apmTracer.StartTransaction("initServer", "backend.init")
-	defer tx.End()
+func getHostname() string {
+	hostname, err := os.Hostname()
+	if err != nil {
+		return defaultInstanceName
+	}
+	return hostname
+}
 
-	ctx := apm.ContextWithTransaction(context.TODO(), tx)
+func initMetricsServer(logger *zap.Logger) {
+	if metricsAddress == "" {
+		return
+	}
 
-	config := mustLoadConfig(logger)
+	hostname := getHostname()
+
+	metrics.ServiceInfo.With(prometheus.Labels{"version": version, "instance": hostname}).Set(1)
+
+	logger.Info("Starting http metrics in " + metricsAddress)
+	go func() {
+		router := http.NewServeMux()
+		router.Handle("/metrics", promhttp.Handler())
+		err := http.ListenAndServe(metricsAddress, router)
+		if err != nil {
+			logger.Fatal("failed to start Prometheus metrics endpoint", zap.Error(err))
+		}
+	}()
+}
+
+func initIndexers(ctx context.Context, logger *zap.Logger, config *Config) CombinedIndexer {
 	packagesBasePaths := getPackagesBasePaths(config)
 
-	var indexers []Indexer
+	var indexers CombinedIndexer
 	if featureStorageIndexer {
 		storageClient, err := gstorage.NewClient(ctx)
 		if err != nil {
@@ -154,10 +198,17 @@ func initServer(logger *zap.Logger) *http.Server {
 	combinedIndexer := NewCombinedIndexer(indexers...)
 	ensurePackagesAvailable(ctx, logger, combinedIndexer)
 
-	// If -dry-run=true is set, service stops here after validation
-	if dryRun {
-		os.Exit(0)
-	}
+	return combinedIndexer
+}
+
+func initServer(logger *zap.Logger, config *Config) *http.Server {
+	apmTracer := initAPMTracer(logger)
+	tx := apmTracer.StartTransaction("initServer", "backend.init")
+	defer tx.End()
+
+	ctx := apm.ContextWithTransaction(context.TODO(), tx)
+
+	combinedIndexer := initIndexers(ctx, logger, config)
 
 	router := mustLoadRouter(logger, config, combinedIndexer)
 	apmgorilla.Instrument(router, apmgorilla.WithTracer(apmTracer))
@@ -223,6 +274,8 @@ func getPackagesBasePaths(config *Config) []string {
 
 func printConfig(logger *zap.Logger, config *Config) {
 	logger.Info("Packages paths: " + strings.Join(config.PackagePaths, ", "))
+	logger.Info("Cache time for /: " + config.CacheTimeIndex.String())
+	logger.Info("Cache time for /index.json: " + config.CacheTimeIndex.String())
 	logger.Info("Cache time for /search: " + config.CacheTimeSearch.String())
 	logger.Info("Cache time for /categories: " + config.CacheTimeCategories.String())
 	logger.Info("Cache time for all others: " + config.CacheTimeCatchAll.String())
@@ -244,6 +297,7 @@ func ensurePackagesAvailable(ctx context.Context, logger *zap.Logger, indexer In
 	}
 
 	logger.Info(fmt.Sprintf("%v package manifests loaded", len(packages)))
+	metrics.NumberIndexedPackages.Set(float64(len(packages)))
 }
 
 func mustLoadRouter(logger *zap.Logger, config *Config, indexer Indexer) *mux.Router {
@@ -270,7 +324,6 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router
 	staticHandler := staticHandler(indexer, config.CacheTimeCatchAll)
 
 	router := mux.NewRouter().StrictSlash(true)
-
 	router.HandleFunc("/", indexHandlerFunc)
 	router.HandleFunc("/index.json", indexHandlerFunc)
 	router.HandleFunc("/search", searchHandler(indexer, config.CacheTimeSearch))
@@ -282,6 +335,9 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router
 	router.HandleFunc(packageIndexRouterPath, packageIndexHandler)
 	router.HandleFunc(staticRouterPath, staticHandler)
 	router.Use(util.LoggingMiddleware(logger))
+	if metricsAddress != "" {
+		router.Use(metrics.MetricsMiddleware())
+	}
 	router.NotFoundHandler = http.Handler(notFoundHandler(fmt.Errorf("404 page not found")))
 	return router, nil
 }

@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Update Go version and base Ubuntu image. [#821](https://github.com/elastic/package-registry/pull/821)
 * Add support for "threat_intel" category. [#841](https://github.com/elastic/package-registry/pull/841)
+* Instrument package registry with Prometheus metrics. [#827](https://github.com/elastic/package-registry/pull/827)
 
 ### Deprecated
 

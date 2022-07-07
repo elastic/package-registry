@@ -8,7 +8,7 @@ Endpoints:
 * `/search`: Search for packages. By default returns all the most recent packages available.
 * `/categories`: List of the existing package categories and how many packages are in each category.
 * `/package/{name}/{version}`: Info about a package
-* `/epr/{name}/{name}-{version}.tar.gz`: Download a package
+* `/epr/{name}/{name}-{version}.zip`: Download a package
 
 Examples for each API endpoint can be found here: https://github.com/elastic/package-registry/tree/main/docs/api
 
@@ -235,6 +235,19 @@ You can enable the HTTP profiler in Package Registry starting it with the `-http
 It will be listening in the given address.
 
 You can read more about this profiler and the available endpoints in the [pprof documentation](https://pkg.go.dev/net/http/pprof).
+
+## Metrics
+
+Package registry can be instrumented to expose Prometheus metrics under `/metrics` endpoint.
+By default this endpoint is disabled.
+
+To enable this instrumentation, the required address (host and port) where this endpoint needs
+to run must be set using the parameter `metrics-address` (or the `EPR_METRICS_ADDRESS` environment variable).
+For example:
+
+```
+package-registry --metrics-address 0.0.0.0:9000
+```
 
 ## Release
 
