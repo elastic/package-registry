@@ -236,7 +236,7 @@ It will be listening in the given address.
 
 You can read more about this profiler and the available endpoints in the [pprof documentation](https://pkg.go.dev/net/http/pprof).
 
-## Metrics
+## Metrics
 
 Package registry can be instrumented to expose Prometheus metrics under `/metrics` endpoint.
 By default this endpoint is disabled.
