@@ -16,8 +16,8 @@ FROM ubuntu:22.04
 
 # Get dependencies
 RUN apt-get update && \
-    apt-get install -y mime-support zip rsync curl && \
-    apt-get clean all
+    apt-get install -y mime-support zip rsync curl \
+    && rm -rf /var/lib/apt/lists/*
 
 # Move binary from the builder image
 COPY --from=builder /package-registry/package-registry /package-registry/package-registry
