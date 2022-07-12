@@ -16,7 +16,7 @@ FROM ubuntu:22.04
 
 # Get dependencies
 RUN apt-get update && \
-    apt-get install -y mime-support zip rsync curl && \
+    apt-get install -y media-types zip rsync curl && \
     apt-get clean all
 
 # Move binary from the builder image
