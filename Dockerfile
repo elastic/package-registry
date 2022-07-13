@@ -5,7 +5,6 @@
 ARG GO_VERSION=1.18.3
 FROM golang:${GO_VERSION} AS builder
 
-ENV GO111MODULE=on
 COPY ./ /package-registry
 WORKDIR /package-registry
 RUN go build .
