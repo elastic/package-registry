@@ -5,7 +5,6 @@
 ARG GO_VERSION=1.18.3
 FROM golang:${GO_VERSION} AS builder
 
-ENV GO111MODULE=on
 COPY ./ /package-registry
 WORKDIR /package-registry
 RUN go build .
@@ -16,8 +15,8 @@ FROM ubuntu:22.04
 
 # Get dependencies
 RUN apt-get update && \
-    apt-get install -y mime-support zip rsync curl && \
-    apt-get clean all
+    apt-get install -y media-types zip rsync curl && \
+    rm -rf /var/lib/apt/lists/*
 
 # Move binary from the builder image
 COPY --from=builder /package-registry/package-registry /package-registry/package-registry

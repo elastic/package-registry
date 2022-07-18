@@ -4,7 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased](https://github.com/elastic/package-registry/compare/v1.9.0...main)
+## [Unreleased](https://github.com/elastic/package-registry/compare/v1.10.0...main)
+
+### Breaking changes
+
+### Bugfixes
+
+### Added
+
+### Deprecated
+
+### Known Issues
+
+
+## [v1.10.0](https://github.com/elastic/package-registry/compare/v1.9.0...v1.10.0)
 
 ### Breaking changes
 
@@ -13,6 +26,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Update Go version and base Ubuntu image. [#821](https://github.com/elastic/package-registry/pull/821)
+* Add support for "threat_intel" category. [#841](https://github.com/elastic/package-registry/pull/841)
+* Instrument package registry with Prometheus metrics. [#827](https://github.com/elastic/package-registry/pull/827)
 
 ### Deprecated
 

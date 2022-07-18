@@ -16,6 +16,7 @@ import (
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
+	"github.com/elastic/package-registry/metrics"
 	"github.com/elastic/package-registry/packages"
 	"github.com/elastic/package-registry/util"
 )
@@ -128,14 +129,18 @@ func (i *Indexer) watchIndices(ctx context.Context) {
 func (i *Indexer) updateIndex(ctx context.Context) error {
 	logger := util.Logger()
 	logger.Debug("Update indices")
+	start := time.Now()
+	defer metrics.StorageIndexerUpdateIndexDurationSeconds.Observe(time.Since(start).Seconds())
 
 	bucketName, rootStoragePath, err := extractBucketNameFromURL(i.options.PackageStorageBucketInternal)
 	if err != nil {
+		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 		return errors.Wrapf(err, "can't extract bucket name from URL (url: %s)", i.options.PackageStorageBucketInternal)
 	}
 
 	storageCursor, err := loadCursor(ctx, i.storageClient, bucketName, rootStoragePath)
 	if err != nil {
+		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 		return errors.Wrap(err, "can't load latest cursor")
 	}
 
@@ -147,12 +152,14 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 
 	anIndex, err := loadSearchIndexAll(ctx, i.storageClient, bucketName, rootStoragePath, *storageCursor)
 	if err != nil {
+		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 		return errors.Wrapf(err, "can't load the search-index-all index content")
 	}
 	logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", len(anIndex.Packages))))
 
 	refreshedList, err := i.transformSearchIndexAllToPackages(*anIndex)
 	if err != nil {
+		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 		return errors.Wrap(err, "can't transform the search-index-all")
 	}
 
@@ -160,6 +167,8 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	defer i.m.Unlock()
 	i.cursor = storageCursor.Current
 	i.packageList = refreshedList
+	metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
+	metrics.NumberIndexedPackages.Set(float64(len(i.packageList)))
 	return nil
 }
 

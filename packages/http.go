@@ -11,7 +11,10 @@ import (
 	"go.elastic.co/apm"
 	"go.uber.org/zap"
 
+	"github.com/prometheus/client_golang/prometheus"
+
 	"github.com/elastic/package-registry/archiver"
+	"github.com/elastic/package-registry/metrics"
 	"github.com/elastic/package-registry/util"
 )
 
@@ -22,9 +25,11 @@ func ServePackage(w http.ResponseWriter, r *http.Request, p *Package) {
 
 	if p.RemoteResolver() != nil {
 		p.RemoteResolver().RedirectArtifactsHandler(w, r, p)
+		metrics.StorageRequestsTotal.With(prometheus.Labels{"location": "remote", "component": "artifacts"}).Inc()
 		return
 	}
 	serveLocalPackage(w, r, p, p.BasePath)
+	metrics.StorageRequestsTotal.With(prometheus.Labels{"location": "local", "component": "artifacts"}).Inc()
 }
 
 // ServePackageSignature is used by signaturesHandler to serve signatures.
@@ -34,9 +39,11 @@ func ServePackageSignature(w http.ResponseWriter, r *http.Request, p *Package) {
 
 	if p.RemoteResolver() != nil {
 		p.RemoteResolver().RedirectSignaturesHandler(w, r, p)
+		metrics.StorageRequestsTotal.With(prometheus.Labels{"location": "remote", "component": "signatures"}).Inc()
 		return
 	}
 	serveLocalPackage(w, r, p, p.BasePath+".sig")
+	metrics.StorageRequestsTotal.With(prometheus.Labels{"location": "local", "component": "signatures"}).Inc()
 }
 
 func serveLocalPackage(w http.ResponseWriter, r *http.Request, p *Package, packagePath string) {
@@ -75,6 +82,7 @@ func ServePackageResource(w http.ResponseWriter, r *http.Request, p *Package, pa
 
 	if p.RemoteResolver() != nil {
 		p.RemoteResolver().RedirectStaticHandler(w, r, p, packageFilePath)
+		metrics.StorageRequestsTotal.With(prometheus.Labels{"location": "remote", "component": "static"}).Inc()
 		return
 	}
 
@@ -111,4 +119,5 @@ func ServePackageResource(w http.ResponseWriter, r *http.Request, p *Package, pa
 	defer f.Close()
 
 	http.ServeContent(w, r, packageFilePath, stat.ModTime(), f)
+	metrics.StorageRequestsTotal.With(prometheus.Labels{"location": "local", "component": "static"}).Inc()
 }
