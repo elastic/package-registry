@@ -42,7 +42,10 @@ func init() {
 
 func TestEndpoints(t *testing.T) {
 	packagesBasePaths := []string{"./testdata/second_package_path", "./testdata/package"}
-	indexer := packages.NewFileSystemIndexer(packagesBasePaths...)
+	indexer := NewCombinedIndexer(
+		packages.NewFileSystemIndexer(packagesBasePaths...),
+		packages.NewZipFileSystemIndexer("./testdata/local-storage"),
+	)
 
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
