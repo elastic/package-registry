@@ -122,13 +122,19 @@ type PolicyTemplate struct {
 }
 
 type Conditions struct {
-	Kibana *KibanaConditions `config:"kibana,omitempty" json:"kibana,omitempty" yaml:"kibana,omitempty"`
+	Kibana  *KibanaConditions  `config:"kibana,omitempty" json:"kibana,omitempty" yaml:"kibana,omitempty"`
+	Elastic *ElasticConditions `config:"elastic,omitempty" json:"elastic,omitempty" yaml"elastic,omitempty"`
 }
 
 // KibanaConditions defines conditions for Kibana (e.g. required version).
 type KibanaConditions struct {
 	Version    string `config:"version" json:"version" yaml:"version"`
 	constraint *semver.Constraints
+}
+
+// ElasticConditions defines conditions related to Elastic subscriptions or partnerships.
+type ElasticConditions struct {
+	Subscription string `config:"subscription" json:"subscription" yaml:"subscription"`
 }
 
 type Version struct {
@@ -251,7 +257,12 @@ func NewPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) 
 
 	// If not license is set, basic is assumed
 	if p.License == "" {
-		p.License = DefaultLicense
+		// Keep compatibility with deprecated license field.
+		if p.Conditions != nil && p.Conditions.Elastic != nil && p.Conditions.Elastic.Subscription != "" {
+			p.License = p.Conditions.Elastic.Subscription
+		} else {
+			p.License = DefaultLicense
+		}
 	}
 
 	err = p.setRuntimeFields()

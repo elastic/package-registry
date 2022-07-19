@@ -267,6 +267,9 @@
     "conditions": {
       "kibana": {
         "version": ">6.7.0"
+      },
+      "elastic": {
+        "subscription": "gold"
       }
     },
     "categories": [
