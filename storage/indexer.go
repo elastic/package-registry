@@ -173,6 +173,9 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 }
 
 func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.Packages, error) {
+	start := time.Now()
+	defer metrics.StorageIndexerGetDurationSeconds.Observe(time.Since(start).Seconds())
+
 	i.m.RLock()
 	defer i.m.RUnlock()
 

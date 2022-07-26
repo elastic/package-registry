@@ -6,9 +6,7 @@ package main
 
 import (
 	"context"
-	"time"
 
-	"github.com/elastic/package-registry/metrics"
 	"github.com/elastic/package-registry/packages"
 )
 
@@ -34,8 +32,6 @@ func (c CombinedIndexer) Init(ctx context.Context) error {
 }
 
 func (c CombinedIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.Packages, error) {
-	start := time.Now()
-	defer metrics.StorageIndexerGetDurationSeconds.Observe(time.Since(start).Seconds())
 	var packages packages.Packages
 	for _, indexer := range c {
 		p, err := indexer.Get(ctx, opts)
