@@ -10,12 +10,15 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/pkg/errors"
+	"github.com/prometheus/client_golang/prometheus"
 	"go.elastic.co/apm"
 	"go.uber.org/zap"
 
+	"github.com/elastic/package-registry/metrics"
 	"github.com/elastic/package-registry/util"
 )
 
@@ -159,6 +162,8 @@ func (i *FileSystemIndexer) Init(ctx context.Context) (err error) {
 // This assumes changes to packages only happen on restart (unless development mode is enabled).
 // Caching the packages request many file reads every time this method is called.
 func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages, error) {
+	start := time.Now()
+	defer metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": i.label}).Observe(time.Since(start).Seconds())
 	if opts == nil {
 		return i.packageList, nil
 	}

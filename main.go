@@ -68,7 +68,7 @@ var (
 func init() {
 	flag.BoolVar(&printVersionInfo, "version", false, "Print Elastic Package Registry version")
 	flag.StringVar(&address, "address", "localhost:8080", "Address of the package-registry service.")
-	flag.StringVar(&metricsAddress, "metrics-address", "", "Address to expose the Prometheus metrics.")
+	flag.StringVar(&metricsAddress, "metrics-address", "", "Address to expose the Prometheus metrics (experimental). ")
 	flag.StringVar(&tlsCertFile, "tls-cert", "", "Path of the TLS certificate.")
 	flag.StringVar(&tlsKeyFile, "tls-key", "", "Path of the TLS key.")
 	flag.StringVar(&configPath, "config", "config.yml", "Path to the configuration file.")

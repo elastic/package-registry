@@ -39,7 +39,7 @@ var (
 		prometheus.CounterOpts{
 			Namespace: metricsNamespace,
 			Name:      "storage_indexer_update_index_success_total",
-			Help:      "A counter for updates of the cursor.",
+			Help:      "A counter for updates of the cursor in the storage indexer.",
 		},
 	)
 
@@ -47,7 +47,7 @@ var (
 		prometheus.CounterOpts{
 			Namespace: metricsNamespace,
 			Name:      "storage_indexer_update_index_error_total",
-			Help:      "A counter for all the update index processes that finished with error.",
+			Help:      "A counter for all the update index processes that finished with error in the storage indexer.",
 		},
 	)
 
@@ -55,16 +55,17 @@ var (
 		prometheus.HistogramOpts{
 			Namespace: metricsNamespace,
 			Name:      "storage_indexer_update_index_duration_seconds",
-			Help:      "A histogram of latencies for update index processes run by the indexer.",
+			Help:      "A histogram of latencies for update index processes run by the storage indexer.",
 		},
 	)
 
-	StorageIndexerGetDurationSeconds = prometheus.NewHistogram(
+	IndexerGetDurationSeconds = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
 			Namespace: metricsNamespace,
-			Name:      "storage_indexer_get_duration_seconds",
+			Name:      "indexer_get_duration_seconds",
 			Help:      "A histogram of latencies for get processes run by the indexer.",
 		},
+		[]string{"indexer"},
 	)
 )
 

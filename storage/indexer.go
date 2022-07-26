@@ -14,6 +14,7 @@ import (
 
 	"cloud.google.com/go/storage"
 	"github.com/pkg/errors"
+	"github.com/prometheus/client_golang/prometheus"
 	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/metrics"
@@ -31,6 +32,8 @@ type Indexer struct {
 	m sync.RWMutex
 
 	resolver packages.RemoteResolver
+
+	label string
 }
 
 type IndexerOptions struct {
@@ -43,6 +46,7 @@ func NewIndexer(storageClient *storage.Client, options IndexerOptions) *Indexer 
 	return &Indexer{
 		storageClient: storageClient,
 		options:       options,
+		label:         "StorageIndexer",
 	}
 }
 
@@ -173,6 +177,9 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 }
 
 func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.Packages, error) {
+	start := time.Now()
+	defer metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": i.label}).Observe(time.Since(start).Seconds())
+
 	i.m.RLock()
 	defer i.m.RUnlock()
 
