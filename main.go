@@ -106,7 +106,7 @@ func main() {
 	config := mustLoadConfig(logger)
 	if dryRun {
 		logger.Info("Running dry-run mode")
-		_ = initIndexers(context.Background(), logger, config)
+		_ = initIndexer(context.Background(), logger, config)
 		os.Exit(0)
 	}
 
@@ -177,28 +177,29 @@ func initMetricsServer(logger *zap.Logger) {
 	}()
 }
 
-func initIndexers(ctx context.Context, logger *zap.Logger, config *Config) CombinedIndexer {
+func initIndexer(ctx context.Context, logger *zap.Logger, config *Config) Indexer {
 	packagesBasePaths := getPackagesBasePaths(config)
 
-	var indexers CombinedIndexer
+	var indexer Indexer
 	if featureStorageIndexer {
 		storageClient, err := gstorage.NewClient(ctx)
 		if err != nil {
 			logger.Fatal("can't initialize storage client", zap.Error(err))
 		}
-		indexers = append(indexers, storage.NewIndexer(storageClient, storage.IndexerOptions{
+		indexer = storage.NewIndexer(storageClient, storage.IndexerOptions{
 			PackageStorageBucketInternal: storageIndexerBucketInternal,
 			PackageStorageEndpoint:       storageEndpoint,
 			WatchInterval:                storageIndexerWatchInterval,
-		}))
+		})
 	} else {
-		indexers = append(indexers, packages.NewFileSystemIndexer(packagesBasePaths...))
-		indexers = append(indexers, packages.NewZipFileSystemIndexer(packagesBasePaths...))
+		indexer = NewCombinedIndexer(
+			packages.NewFileSystemIndexer(packagesBasePaths...),
+			packages.NewZipFileSystemIndexer(packagesBasePaths...),
+		)
 	}
-	combinedIndexer := NewCombinedIndexer(indexers...)
-	ensurePackagesAvailable(ctx, logger, combinedIndexer)
+	ensurePackagesAvailable(ctx, logger, indexer)
 
-	return combinedIndexer
+	return indexer
 }
 
 func initServer(logger *zap.Logger, config *Config) *http.Server {
@@ -208,9 +209,9 @@ func initServer(logger *zap.Logger, config *Config) *http.Server {
 
 	ctx := apm.ContextWithTransaction(context.TODO(), tx)
 
-	combinedIndexer := initIndexers(ctx, logger, config)
+	indexer := initIndexer(ctx, logger, config)
 
-	router := mustLoadRouter(logger, config, combinedIndexer)
+	router := mustLoadRouter(logger, config, indexer)
 	apmgorilla.Instrument(router, apmgorilla.WithTracer(apmTracer))
 
 	return &http.Server{Addr: address, Handler: router}
