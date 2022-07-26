@@ -7,8 +7,9 @@ package main
 import (
 	"testing"
 
-	"github.com/elastic/package-registry/packages"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/elastic/package-registry/packages"
 )
 
 func TestLatestPackagesVersion(t *testing.T) {

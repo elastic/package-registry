@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/Masterminds/semver/v3"
+
 	"github.com/elastic/package-registry/metrics"
 	"github.com/elastic/package-registry/packages"
 )
