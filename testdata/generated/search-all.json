@@ -38,35 +38,6 @@
     ]
   },
   {
-    "name": "nodirentries",
-    "title": "Example Integration",
-    "version": "1.0.0",
-    "release": "ga",
-    "description": "This is a zip package without directory entries.",
-    "type": "integration",
-    "download": "/epr/nodirentries/nodirentries-1.0.0.zip",
-    "path": "/package/nodirentries/1.0.0",
-    "policy_templates": [
-      {
-        "name": "logs",
-        "title": "Logs datasource",
-        "description": "Datasource for your log files."
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "~7.x.x"
-      }
-    },
-    "owner": {
-      "github": "ruflin"
-    },
-    "categories": [
-      "crm",
-      "azure"
-    ]
-  },
-  {
     "name": "example",
     "title": "Example Integration",
     "version": "1.0.0",
@@ -83,6 +54,35 @@
         "categories": [
           "datastore"
         ]
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "~7.x.x"
+      }
+    },
+    "owner": {
+      "github": "ruflin"
+    },
+    "categories": [
+      "crm",
+      "azure"
+    ]
+  },
+  {
+    "name": "nodirentries",
+    "title": "Example Integration",
+    "version": "1.0.0",
+    "release": "ga",
+    "description": "This is a zip package without directory entries.",
+    "type": "integration",
+    "download": "/epr/nodirentries/nodirentries-1.0.0.zip",
+    "path": "/package/nodirentries/1.0.0",
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Logs datasource",
+        "description": "Datasource for your log files."
       }
     ],
     "conditions": {

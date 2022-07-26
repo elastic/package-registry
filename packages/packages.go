@@ -34,10 +34,39 @@ func (p Packages) Less(i, j int) bool {
 	return p[i].Version < p[j].Version
 }
 
-// Join returns a set of packages that combines both sets.
+// Join returns a set of packages that combines both sets. Packages in `p2` overwrite
+// packages in `p1` when they have the same name and version.
 func (p1 Packages) Join(p2 Packages) Packages {
-	// TODO: Avoid duplications?
-	return append(p1, p2...)
+	for _, p := range p2 {
+		if i, found := p1.contains(p); found {
+			p1[i] = p
+		} else {
+			p1 = append(p1, p)
+		}
+	}
+	return p1
+}
+
+// contains finds if `ps` contains a package with the same name and version as `p`.
+// It returns the index where the package is found and true if it is found. It returns
+// -1 and false otherwhise.
+func (ps Packages) contains(p *Package) (int, bool) {
+	for i, candidate := range ps {
+		if candidate.Name != p.Name {
+			continue
+		}
+		if cv, pv := candidate.versionSemVer, p.versionSemVer; cv != nil && pv != nil {
+			if !cv.Equal(pv) {
+				continue
+			}
+		}
+		if candidate.Version != p.Version {
+			continue
+		}
+
+		return i, true
+	}
+	return -1, false
 }
 
 // GetOptions can be used to pass options to Get.
