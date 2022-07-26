@@ -38,7 +38,7 @@ func (p Packages) Less(i, j int) bool {
 // packages in `p1` when they have the same name and version.
 func (p1 Packages) Join(p2 Packages) Packages {
 	for _, p := range p2 {
-		if i, found := p1.contains(p); found {
+		if i := p1.index(p); i >= 0 {
 			p1[i] = p
 		} else {
 			p1 = append(p1, p)
@@ -47,10 +47,9 @@ func (p1 Packages) Join(p2 Packages) Packages {
 	return p1
 }
 
-// contains finds if `ps` contains a package with the same name and version as `p`.
-// It returns the index where the package is found and true if it is found. It returns
-// -1 and false otherwhise.
-func (ps Packages) contains(p *Package) (int, bool) {
+// index finds if `ps` contains a package with the same name and version as `p` and
+// returns its index. If it is not found, it returns -1.
+func (ps Packages) index(p *Package) int {
 	for i, candidate := range ps {
 		if candidate.Name != p.Name {
 			continue
@@ -64,9 +63,9 @@ func (ps Packages) contains(p *Package) (int, bool) {
 			continue
 		}
 
-		return i, true
+		return i
 	}
-	return -1, false
+	return -1
 }
 
 // GetOptions can be used to pass options to Get.
