@@ -10,7 +10,7 @@ Endpoints:
 * `/package/{name}/{version}`: Info about a package
 * `/epr/{name}/{name}-{version}.zip`: Download a package
 
-Examples for each API endpoint can be found here: https://github.com/elastic/package-registry/tree/main/docs/api
+### /search
 
 The `/search` API endpoint has few additional query parameters. More might be added in the future, but for now these are:
 
@@ -25,6 +25,8 @@ The `/search` API endpoint has few additional query parameters. More might be ad
 
 The different query parameters above can be combined, so `?package=mysql&kibana.version=7.3.0` will return all mysql package versions
 which are compatible with `7.3.0`.
+
+### /categories
 
 The `/categories` API endpoint has two additional query parameters.
 
