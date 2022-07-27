@@ -7,11 +7,9 @@ package main
 import (
 	"context"
 	"sort"
-	"time"
 
 	"github.com/Masterminds/semver/v3"
 
-	"github.com/elastic/package-registry/metrics"
 	"github.com/elastic/package-registry/packages"
 )
 
@@ -37,8 +35,6 @@ func (c CombinedIndexer) Init(ctx context.Context) error {
 }
 
 func (c CombinedIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.Packages, error) {
-	start := time.Now()
-	defer metrics.StorageIndexerGetDurationSeconds.Observe(time.Since(start).Seconds())
 	var packages packages.Packages
 	for _, indexer := range c {
 		p, err := indexer.Get(ctx, opts)
@@ -48,7 +44,7 @@ func (c CombinedIndexer) Get(ctx context.Context, opts *packages.GetOptions) (pa
 		packages = packages.Join(p)
 	}
 
-	if !opts.Filter.AllVersions {
+	if opts != nil && opts.Filter != nil && !opts.Filter.AllVersions {
 		return latestPackagesVersion(packages), nil
 	}
 

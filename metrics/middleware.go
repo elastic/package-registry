@@ -25,7 +25,7 @@ func MetricsMiddleware() mux.MiddlewareFunc {
 
 	prometheus.MustRegister(NumberIndexedPackages)
 	prometheus.MustRegister(StorageRequestsTotal)
-	prometheus.MustRegister(StorageIndexerGetDurationSeconds)
+	prometheus.MustRegister(IndexerGetDurationSeconds)
 	prometheus.MustRegister(StorageIndexerUpdateIndexDurationSeconds)
 	prometheus.MustRegister(StorageIndexerUpdateIndexSuccessTotal)
 	prometheus.MustRegister(StorageIndexerUpdateIndexErrorsTotal)

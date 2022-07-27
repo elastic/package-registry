@@ -14,12 +14,15 @@ import (
 
 	"cloud.google.com/go/storage"
 	"github.com/pkg/errors"
+	"github.com/prometheus/client_golang/prometheus"
 	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/metrics"
 	"github.com/elastic/package-registry/packages"
 	"github.com/elastic/package-registry/util"
 )
+
+const indexerGetDurationPrometheusLabel = "StorageIndexer"
 
 type Indexer struct {
 	options       IndexerOptions
@@ -173,6 +176,9 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 }
 
 func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.Packages, error) {
+	start := time.Now()
+	defer metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": indexerGetDurationPrometheusLabel}).Observe(time.Since(start).Seconds())
+
 	i.m.RLock()
 	defer i.m.RUnlock()
 

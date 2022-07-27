@@ -18,6 +18,15 @@ import (
 	"github.com/elastic/package-registry/util"
 )
 
+const (
+	localLocationPrometheusLabel  = "local"
+	remoteLocationPrometheusLabel = "remote"
+
+	artifactComponentPrometheusLabel  = "artifacts"
+	staticComponentPrometheusLabel    = "statics"
+	signatureComponentPrometheusLabel = "signatures"
+)
+
 // ServePackage is used by artifactsHandler to serve packages and signatures.
 func ServePackage(w http.ResponseWriter, r *http.Request, p *Package) {
 	span, _ := apm.StartSpan(r.Context(), "ServePackage", "app")
@@ -25,11 +34,15 @@ func ServePackage(w http.ResponseWriter, r *http.Request, p *Package) {
 
 	if p.RemoteResolver() != nil {
 		p.RemoteResolver().RedirectArtifactsHandler(w, r, p)
-		metrics.StorageRequestsTotal.With(prometheus.Labels{"location": "remote", "component": "artifacts"}).Inc()
+		metrics.StorageRequestsTotal.With(
+			prometheus.Labels{"location": remoteLocationPrometheusLabel, "component": artifactComponentPrometheusLabel},
+		).Inc()
 		return
 	}
 	serveLocalPackage(w, r, p, p.BasePath)
-	metrics.StorageRequestsTotal.With(prometheus.Labels{"location": "local", "component": "artifacts"}).Inc()
+	metrics.StorageRequestsTotal.With(
+		prometheus.Labels{"location": localLocationPrometheusLabel, "component": artifactComponentPrometheusLabel},
+	).Inc()
 }
 
 // ServePackageSignature is used by signaturesHandler to serve signatures.
@@ -39,11 +52,15 @@ func ServePackageSignature(w http.ResponseWriter, r *http.Request, p *Package) {
 
 	if p.RemoteResolver() != nil {
 		p.RemoteResolver().RedirectSignaturesHandler(w, r, p)
-		metrics.StorageRequestsTotal.With(prometheus.Labels{"location": "remote", "component": "signatures"}).Inc()
+		metrics.StorageRequestsTotal.With(
+			prometheus.Labels{"location": remoteLocationPrometheusLabel, "component": signatureComponentPrometheusLabel},
+		).Inc()
 		return
 	}
 	serveLocalPackage(w, r, p, p.BasePath+".sig")
-	metrics.StorageRequestsTotal.With(prometheus.Labels{"location": "local", "component": "signatures"}).Inc()
+	metrics.StorageRequestsTotal.With(
+		prometheus.Labels{"location": localLocationPrometheusLabel, "component": signatureComponentPrometheusLabel},
+	).Inc()
 }
 
 func serveLocalPackage(w http.ResponseWriter, r *http.Request, p *Package, packagePath string) {
@@ -82,7 +99,9 @@ func ServePackageResource(w http.ResponseWriter, r *http.Request, p *Package, pa
 
 	if p.RemoteResolver() != nil {
 		p.RemoteResolver().RedirectStaticHandler(w, r, p, packageFilePath)
-		metrics.StorageRequestsTotal.With(prometheus.Labels{"location": "remote", "component": "static"}).Inc()
+		metrics.StorageRequestsTotal.With(
+			prometheus.Labels{"location": remoteLocationPrometheusLabel, "component": staticComponentPrometheusLabel},
+		).Inc()
 		return
 	}
 
@@ -119,5 +138,7 @@ func ServePackageResource(w http.ResponseWriter, r *http.Request, p *Package, pa
 	defer f.Close()
 
 	http.ServeContent(w, r, packageFilePath, stat.ModTime(), f)
-	metrics.StorageRequestsTotal.With(prometheus.Labels{"location": "local", "component": "static"}).Inc()
+	metrics.StorageRequestsTotal.With(
+		prometheus.Labels{"location": localLocationPrometheusLabel, "component": staticComponentPrometheusLabel},
+	).Inc()
 }
