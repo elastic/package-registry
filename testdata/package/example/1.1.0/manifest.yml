@@ -7,6 +7,8 @@ title: Example Integration
 categories: ["crm", "azure"]
 type: integration
 release: ga
+source:
+  license: Elastic-2.0
 
 owner.github: "ruflin"
 

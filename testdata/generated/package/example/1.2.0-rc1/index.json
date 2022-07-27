@@ -3,6 +3,9 @@
   "title": "Example Integration",
   "version": "1.2.0-rc1",
   "release": "ga",
+  "source": {
+    "license": "Elastic-2.0"
+  },
   "description": "This is the example integration",
   "type": "integration",
   "download": "/epr/example/example-1.2.0-rc1.zip",

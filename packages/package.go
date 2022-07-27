@@ -82,6 +82,7 @@ type BasePackage struct {
 	Title               *string              `config:"title,omitempty" json:"title,omitempty" yaml:"title,omitempty"`
 	Version             string               `config:"version" json:"version"`
 	Release             string               `config:"release,omitempty" json:"release,omitempty"`
+	Source              *Source              `config:"source,omitempty" json:"source,omitempty"`
 	Description         string               `config:"description" json:"description"`
 	Type                string               `config:"type" json:"type"`
 	Download            string               `json:"download" yaml:"download,omitempty"`
@@ -119,6 +120,11 @@ type PolicyTemplate struct {
 	Type         string `config:"type,omitempty" json:"type,omitempty" yaml:"type,omitempty"`
 	Input        string `config:"input,omitempty" json:"input,omitempty" yaml:"input,omitempty"`
 	TemplatePath string `config:"template_path,omitempty" json:"template_path,omitempty" yaml:"template_path,omitempty"`
+}
+
+// Source contains metadata about the source of the package and its distribution.
+type Source struct {
+	License string `config:"license" json:"license"`
 }
 
 type Conditions struct {

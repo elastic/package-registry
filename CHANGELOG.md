@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Add `elastic.subscription` condition to package index metadata, use this value for backwards compatibility with previous `license` field. [#826](https://github.com/elastic/package-registry/pull/826)
+* Add `source.license` to relevant API responses when available. [#854](https://github.com/elastic/package-registry/pull/854)
 
 ### Deprecated
 
