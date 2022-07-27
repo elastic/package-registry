@@ -34,17 +34,22 @@ func (p Packages) Less(i, j int) bool {
 	return p[i].Version < p[j].Version
 }
 
-// Join returns a set of packages that combines both sets. Packages in `p2` overwrite
-// packages in `p1` when they have the same name and version.
+// Join returns a set of packages that combines both sets. If there is already
+// a package in `p1` with the same name and version that a package in `p2`, the
+// latter is not added.
 func (p1 Packages) Join(p2 Packages) Packages {
 	for _, p := range p2 {
-		if i := p1.index(p); i >= 0 {
-			p1[i] = p
-		} else {
-			p1 = append(p1, p)
+		if p1.contains(p) {
+			continue
 		}
+		p1 = append(p1, p)
 	}
 	return p1
+}
+
+// contains returns true if `ps` contains a package with the same name and version as `p`.
+func (ps Packages) contains(p *Package) bool {
+	return ps.index(p) >= 0
 }
 
 // index finds if `ps` contains a package with the same name and version as `p` and

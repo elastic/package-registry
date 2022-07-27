@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bugfixes
 
 * Return only the latest version of each package when a combined index is used. [#849](https://github.com/elastic/package-registry/pull/849)
-* Return only last appearance of the same version of a package when it is available in multiple indexes. [#849](https://github.com/elastic/package-registry/pull/849)
+* Return only first appearance of the same version of a package when it is available in multiple indexes. [#849](https://github.com/elastic/package-registry/pull/849)
 
 ### Added
 

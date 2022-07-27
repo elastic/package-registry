@@ -43,8 +43,8 @@ func init() {
 func TestEndpoints(t *testing.T) {
 	packagesBasePaths := []string{"./testdata/second_package_path", "./testdata/package"}
 	indexer := NewCombinedIndexer(
-		packages.NewFileSystemIndexer(packagesBasePaths...),
 		packages.NewZipFileSystemIndexer("./testdata/local-storage"),
+		packages.NewFileSystemIndexer(packagesBasePaths...),
 	)
 
 	err := indexer.Init(context.Background())
@@ -249,8 +249,8 @@ func TestStaticsModifiedTime(t *testing.T) {
 	}
 
 	indexer := NewCombinedIndexer(
-		packages.NewFileSystemIndexer("./testdata/package"),
 		packages.NewZipFileSystemIndexer("./testdata/local-storage"),
+		packages.NewFileSystemIndexer("./testdata/package"),
 	)
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
@@ -310,8 +310,8 @@ func TestZippedArtifacts(t *testing.T) {
 
 func TestPackageIndex(t *testing.T) {
 	indexer := NewCombinedIndexer(
-		packages.NewFileSystemIndexer("./testdata/package"),
 		packages.NewZipFileSystemIndexer("./testdata/local-storage"),
+		packages.NewFileSystemIndexer("./testdata/package"),
 	)
 
 	err := indexer.Init(context.Background())
@@ -428,8 +428,8 @@ func TestContentTypes(t *testing.T) {
 	}
 
 	indexer := NewCombinedIndexer(
-		packages.NewFileSystemIndexer("./testdata/package"),
 		packages.NewZipFileSystemIndexer("./testdata/local-storage"),
+		packages.NewFileSystemIndexer("./testdata/package"),
 	)
 
 	err := indexer.Init(context.Background())
@@ -457,8 +457,8 @@ func TestContentTypes(t *testing.T) {
 // on different file systems.
 func TestRangeDownloads(t *testing.T) {
 	indexer := NewCombinedIndexer(
-		packages.NewFileSystemIndexer("./testdata/package"),
 		packages.NewZipFileSystemIndexer("./testdata/local-storage"),
+		packages.NewFileSystemIndexer("./testdata/package"),
 	)
 
 	err := indexer.Init(context.Background())
