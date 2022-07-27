@@ -22,6 +22,8 @@ import (
 	"github.com/elastic/package-registry/util"
 )
 
+const indexerGetDurationPrometheusLabel = "StorageIndexer"
+
 type Indexer struct {
 	options       IndexerOptions
 	storageClient *storage.Client
@@ -32,8 +34,6 @@ type Indexer struct {
 	m sync.RWMutex
 
 	resolver packages.RemoteResolver
-
-	label string
 }
 
 type IndexerOptions struct {
@@ -46,7 +46,6 @@ func NewIndexer(storageClient *storage.Client, options IndexerOptions) *Indexer 
 	return &Indexer{
 		storageClient: storageClient,
 		options:       options,
-		label:         "StorageIndexer",
 	}
 }
 
@@ -178,7 +177,7 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 
 func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.Packages, error) {
 	start := time.Now()
-	defer metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": i.label}).Observe(time.Since(start).Seconds())
+	defer metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": indexerGetDurationPrometheusLabel}).Observe(time.Since(start).Seconds())
 
 	i.m.RLock()
 	defer i.m.RUnlock()
