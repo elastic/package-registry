@@ -124,7 +124,7 @@ type PolicyTemplate struct {
 
 // Source contains metadata about the source of the package and its distribution.
 type Source struct {
-	License string `config:"license" json:"license"`
+	License string `config:"license,omitempty" json:"license,omitempty" yaml:"license,omitempty"`
 }
 
 type Conditions struct {
