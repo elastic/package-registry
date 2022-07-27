@@ -193,8 +193,8 @@ func initIndexer(ctx context.Context, logger *zap.Logger, config *Config) Indexe
 		})
 	} else {
 		indexer = NewCombinedIndexer(
-			packages.NewFileSystemIndexer(packagesBasePaths...),
 			packages.NewZipFileSystemIndexer(packagesBasePaths...),
+			packages.NewFileSystemIndexer(packagesBasePaths...),
 		)
 	}
 	ensurePackagesAvailable(ctx, logger, indexer)
