@@ -192,8 +192,8 @@ func initIndexers(ctx context.Context, logger *zap.Logger, config *Config) Combi
 			WatchInterval:                storageIndexerWatchInterval,
 		}))
 	} else {
-		indexers = append(indexers, packages.NewFileSystemIndexer(packagesBasePaths...))
 		indexers = append(indexers, packages.NewZipFileSystemIndexer(packagesBasePaths...))
+		indexers = append(indexers, packages.NewFileSystemIndexer(packagesBasePaths...))
 	}
 	combinedIndexer := NewCombinedIndexer(indexers...)
 	ensurePackagesAvailable(ctx, logger, combinedIndexer)
