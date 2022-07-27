@@ -44,7 +44,7 @@ func (c CombinedIndexer) Get(ctx context.Context, opts *packages.GetOptions) (pa
 		packages = packages.Join(p)
 	}
 
-	if !opts.Filter.AllVersions {
+	if opts != nil && opts.Filter != nil && !opts.Filter.AllVersions {
 		return latestPackagesVersion(packages), nil
 	}
 
