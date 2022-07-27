@@ -39,7 +39,7 @@ var (
 		prometheus.CounterOpts{
 			Namespace: metricsNamespace,
 			Name:      "storage_indexer_update_index_success_total",
-			Help:      "A counter for updates of the cursor in the storage indexer.",
+			Help:      "A counter for all the updates index of the cursor that finished successfully in the storage indexer.",
 		},
 	)
 
@@ -47,7 +47,7 @@ var (
 		prometheus.CounterOpts{
 			Namespace: metricsNamespace,
 			Name:      "storage_indexer_update_index_error_total",
-			Help:      "A counter for all the update index processes that finished with error in the storage indexer.",
+			Help:      "A counter for all the update index of the cursor that finished with error in the storage indexer.",
 		},
 	)
 
