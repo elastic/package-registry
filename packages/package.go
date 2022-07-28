@@ -82,7 +82,7 @@ type BasePackage struct {
 	Title               *string              `config:"title,omitempty" json:"title,omitempty" yaml:"title,omitempty"`
 	Version             string               `config:"version" json:"version"`
 	Release             string               `config:"release,omitempty" json:"release,omitempty"`
-	Source              *Source              `config:"source,omitempty" json:"source,omitempty"`
+	Source              *Source              `config:"source,omitempty" json:"source,omitempty" yaml:"source,omitempty"`
 	Description         string               `config:"description" json:"description"`
 	Type                string               `config:"type" json:"type"`
 	Download            string               `json:"download" yaml:"download,omitempty"`
