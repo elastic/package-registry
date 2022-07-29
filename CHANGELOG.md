@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Update favicon to be the Elastic Package Registry logo. [#858](https://github.com/elastic/package-registry/pull/858)
+
 ### Deprecated
 
 ### Known Issues
