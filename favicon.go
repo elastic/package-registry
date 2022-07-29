@@ -5,23 +5,33 @@
 package main
 
 import (
-	"encoding/base64"
+	_ "embed"
 	"net/http"
+	"strings"
 	"time"
 )
 
 // Elastic Icon
-const faviconBase64 = "PHN2ZyB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgdmlld0JveD0iMCAwIDI1NiAyNTYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xMjguNSAxNTQuNDg3TDI0IDEwMVYxOTkuMzY4TDEyOC41IDI1NkwyMzMgMTk5LjM2OFYxMDFMMTI4LjUgMTU0LjQ4N0wxMjguNSAxNzIuNjY1TDIxOC4wNzEgMTI1LjQwMlYxOTAuODE3TDEyOC41IDIzOS4zNThMMzguOTI4NiAxOTAuODE3VjEyNS40MDJMMTI4LjUgMTcyLjY2NUwxMjguNSAxNTQuNDg3WiIgZmlsbD0iIzUzNTc2NiIvPgo8cGF0aCBkPSJNOTUuOTk1OCAxMjMuNDQzTDEyNy45OTYgMTQxLjE4TDE1OS45OTYgMTIzLjQ0M0wxNTkuOTk2IDEwOC44NUwxMjcuOTk2IDEyNi41ODdMOTUuOTk1OCAxMDguODQ5TDk1Ljk5NTggMTIzLjQ0M1oiIGZpbGw9IiMwMEJGQjMiLz4KPHBhdGggZD0iTTk1Ljk5NjIgOTcuNDg5MUwxMjcuOTk2IDExNS4yMjZMMTU5Ljk5NiA5Ny40ODkyTDE1OS45OTYgODIuODk1NEwxMjcuOTk2IDEwMC42MzJMOTUuOTk2MiA4Mi44OTUzTDk1Ljk5NjIgOTcuNDg5MVoiIGZpbGw9IiMwMEJGQjMiLz4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMjcuOTk2IDc0LjA1MDFMMTUzLjQzIDU5LjI2ODFMMTUzLjQzIDMwLjAwMzlMMTI3Ljk5NiAxNS4yMjE4TDEwMi41NjIgMzAuMDAzOUwxMDIuNTYyIDU5LjI2ODFMMTI3Ljk5NiA3NC4wNTAxWk04OS41OTYxIDY2Ljk1NEwxMjcuOTk2IDg5LjI3MTlMMTY2LjM5NiA2Ni45NTRMMTY2LjM5NiAyMi4zMThMMTI3Ljk5NiA5LjA1MzAyZS0wNkw4OS41OTYxIDIyLjMxOEw4OS41OTYxIDY2Ljk1NFoiIGZpbGw9IiMwMEJGQjMiLz4KPHJlY3QgeD0iMTIxIiB5PSIxNjAiIHdpZHRoPSIxNSIgaGVpZ2h0PSI4NCIgZmlsbD0iIzUzNTc2NiIvPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTY4LjM2MzIgNzVMMjMuNDYyMiA5OS44MzE5VjE5OS43MTRMMzguNDI5MyAxOTQuMzI4TDM4LjQyOTIgMTc1Ljc3MVYxMDguNTgxTDY4LjM2MzIgOTIuMDI2MVY3NVpNMTg4LjA5OSA5Mi4wMjYzTDIxOC4wMzMgMTA4LjU4MUwyMTguMDMzIDExMC40N1YxOTQuMzI4TDIzMyAxOTkuNzE0Vjk5LjgzMTlMMTg4LjA5OSA3NS4wMDAyVjkyLjAyNjNaIiBmaWxsPSIjNTM1NzY2Ii8+Cjwvc3ZnPgo="
+//go:embed favicon.ico
+var faviconICOBlob []byte
+
+//go:embed favicon.svg
+var faviconSVGBlob []byte
 
 func faviconHandler(cacheTime time.Duration) (func(w http.ResponseWriter, r *http.Request), error) {
-	faviconBlob, err := base64.StdEncoding.DecodeString(faviconBase64)
-	if err != nil {
-		return nil, err
-	}
-
 	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "image/svg+xml")
+		var response []byte
+		switch {
+		case strings.HasSuffix(r.URL.Path, ".ico"):
+			w.Header().Set("Content-Type", "image/x-icon")
+			response = faviconICOBlob
+		case strings.HasSuffix(r.URL.Path, ".svg"):
+			w.Header().Set("Content-Type", "image/svg+xml")
+			response = faviconSVGBlob
+		}
+		w.Header().Set("Content-Type", "image/x-icon")
+
 		cacheHeaders(w, cacheTime)
-		w.Write(faviconBlob)
+		w.Write(response)
 	}, nil
 }
