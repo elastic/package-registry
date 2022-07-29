@@ -92,7 +92,7 @@ func TestEndpoints(t *testing.T) {
 		{"/search?type=input&prerelease=true", "/search", "search-input-packages.json", searchHandler(indexer, testCacheTime)},
 		{"/search?type=input&package=integration_input&prerelease=true", "/search", "search-input-integration-package.json", searchHandler(indexer, testCacheTime)},
 		{"/search?type=integration&package=integration_input&prerelease=true", "/search", "search-integration-integration-package.json", searchHandler(indexer, testCacheTime)},
-		{"/favicon.ico", "", "favicon.ico", faviconHandleFunc},
+		{"/favicon.ico", "", "favicon.svg", faviconHandleFunc},
 
 		// Removed flags, kept to ensure that they don't break requests from old versions.
 		{"/search?internal=true", "/search", "search-package-internal.json", searchHandler(indexer, testCacheTime)},
