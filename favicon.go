@@ -29,8 +29,6 @@ func faviconHandler(cacheTime time.Duration) (func(w http.ResponseWriter, r *htt
 			w.Header().Set("Content-Type", "image/svg+xml")
 			response = faviconSVGBlob
 		}
-		w.Header().Set("Content-Type", "image/x-icon")
-
 		cacheHeaders(w, cacheTime)
 		w.Write(response)
 	}, nil
