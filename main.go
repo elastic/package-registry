@@ -16,6 +16,8 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/elastic/package-registry/proxy"
+
 	gstorage "cloud.google.com/go/storage"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
@@ -57,6 +59,9 @@ var (
 	storageEndpoint              string
 	storageIndexerWatchInterval  time.Duration
 
+	featureProxyIndexer bool
+	proxyTo             string
+
 	defaultConfig = Config{
 		CacheTimeIndex:      10 * time.Second,
 		CacheTimeSearch:     10 * time.Minute,
@@ -82,6 +87,9 @@ func init() {
 	flag.StringVar(&storageEndpoint, "storage-endpoint", "https://package-storage.elastic.co/", "Package Storage public endpoint.")
 	flag.DurationVar(&storageIndexerWatchInterval, "storage-indexer-watch-interval", 1*time.Minute, "Address of the package-registry service.")
 
+	// The following proxy-indexer related flags are technical preview and might be removed in the future or renamed
+	flag.BoolVar(&featureProxyIndexer, "feature-proxy-indexer", false, "Enable proxy indexer to include packages from other endpoint (technical preview).")
+	flag.StringVar(&storageEndpoint, "proxy-to", "https://epr.elastic.co/", "Source proxied endpoint")
 }
 
 type Config struct {
@@ -180,26 +188,33 @@ func initMetricsServer(logger *zap.Logger) {
 func initIndexer(ctx context.Context, logger *zap.Logger, config *Config) Indexer {
 	packagesBasePaths := getPackagesBasePaths(config)
 
-	var indexer Indexer
+	var combined CombinedIndexer
+
 	if featureStorageIndexer {
 		storageClient, err := gstorage.NewClient(ctx)
 		if err != nil {
 			logger.Fatal("can't initialize storage client", zap.Error(err))
 		}
-		indexer = storage.NewIndexer(storageClient, storage.IndexerOptions{
+		combined = append(combined, storage.NewIndexer(storageClient, storage.IndexerOptions{
 			PackageStorageBucketInternal: storageIndexerBucketInternal,
 			PackageStorageEndpoint:       storageEndpoint,
 			WatchInterval:                storageIndexerWatchInterval,
-		})
-	} else {
-		indexer = NewCombinedIndexer(
-			packages.NewZipFileSystemIndexer(packagesBasePaths...),
-			packages.NewFileSystemIndexer(packagesBasePaths...),
-		)
+		}))
 	}
-	ensurePackagesAvailable(ctx, logger, indexer)
 
-	return indexer
+	if featureProxyIndexer {
+		proxyIndexer := proxy.NewIndexer(proxy.IndexerOptions{
+			ProxyTo: proxyTo,
+		})
+		combined = append(combined, proxyIndexer)
+	}
+
+	combined = append(combined,
+		packages.NewZipFileSystemIndexer(packagesBasePaths...),
+		packages.NewFileSystemIndexer(packagesBasePaths...),
+	)
+	ensurePackagesAvailable(ctx, logger, combined)
+	return combined
 }
 
 func initServer(logger *zap.Logger, config *Config) *http.Server {
