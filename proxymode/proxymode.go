@@ -22,7 +22,7 @@ type ProxyOptions struct {
 	ProxyTo string
 }
 
-func Disabled() *ProxyMode {
+func NoProxy() *ProxyMode {
 	return NewProxyMode(ProxyOptions{})
 }
 
@@ -41,14 +41,30 @@ func NewProxyMode(options ProxyOptions) *ProxyMode {
 	}
 }
 
-func (pm *ProxyMode) Search(r http.Request) ([]packages.BasePackage, error) {
+func (pm *ProxyMode) Enabled() bool {
+	return pm.options.Enabled
+}
+
+func (pm *ProxyMode) Search(r *http.Request) ([]*packages.Package, error) {
+	if !pm.options.Enabled {
+		return []*packages.Package{}, nil
+	}
+
 	panic("search: not implemented yet")
 }
 
-func (pm *ProxyMode) Categories(r http.Request) (map[string]*packages.Category, error) {
+func (pm *ProxyMode) Categories(r *http.Request) (map[string]*packages.Category, error) {
+	if !pm.options.Enabled {
+		return map[string]*packages.Category{}, nil
+	}
+
 	panic("categories: not implemented yet")
 }
 
-func (pm *ProxyMode) Package(r http.Request) (*packages.Package, error) {
+func (pm *ProxyMode) Package(r *http.Request) (*packages.Package, error) {
+	if !pm.options.Enabled {
+		return nil, nil
+	}
+
 	panic("package: not implemented yet")
 }

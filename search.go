@@ -13,6 +13,8 @@ import (
 	"strconv"
 	"time"
 
+	"go.uber.org/zap"
+
 	"github.com/elastic/package-registry/proxymode"
 
 	"github.com/Masterminds/semver/v3"
@@ -24,10 +26,11 @@ import (
 )
 
 func searchHandler(indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
-	return searchHandlerWithProxyMode(indexer, proxymode.Disabled(), cacheTime)
+	return searchHandlerWithProxyMode(indexer, proxymode.NoProxy(), cacheTime)
 }
 
 func searchHandlerWithProxyMode(indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+	logger := util.Logger()
 	return func(w http.ResponseWriter, r *http.Request) {
 		filter, err := newSearchFilterFromQuery(r.URL.Query())
 		if err != nil {
@@ -42,6 +45,16 @@ func searchHandlerWithProxyMode(indexer Indexer, proxyMode *proxymode.ProxyMode,
 		if err != nil {
 			notFoundError(w, errors.Wrapf(err, "fetching package failed"))
 			return
+		}
+
+		if proxyMode.Enabled() {
+			proxiedPackages, err := proxyMode.Search(r)
+			if err != nil {
+				logger.Error("proxy mode: search failed", zap.Error(err))
+				http.Error(w, "internal server error", http.StatusInternalServerError)
+				return
+			}
+			packages = append(packages, proxiedPackages...)
 		}
 
 		data, err := getPackageOutput(r.Context(), packages)
