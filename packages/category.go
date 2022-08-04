@@ -2,11 +2,10 @@
 // or more contributor license agreements. Licensed under the Elastic License;
 // you may not use this file except in compliance with the Elastic License.
 
-package proxy
+package packages
 
-// TODO /search
-// TODO /categories
-// TODO package index
-// TODO .zip
-// TODO signatures
-// TODO package artifacts (images, docs, etc.)
+type Category struct {
+	Id    string `yaml:"id" json:"id"`
+	Title string `yaml:"title" json:"title"`
+	Count int    `yaml:"count" json:"count"`
+}

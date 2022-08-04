@@ -13,6 +13,8 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/elastic/package-registry/proxymode"
+
 	"github.com/Masterminds/semver/v3"
 	"github.com/pkg/errors"
 	"go.elastic.co/apm"
@@ -22,6 +24,10 @@ import (
 )
 
 func searchHandler(indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+	return searchHandlerWithProxyMode(indexer, proxymode.Disabled(), cacheTime)
+}
+
+func searchHandlerWithProxyMode(indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		filter, err := newSearchFilterFromQuery(r.URL.Query())
 		if err != nil {
@@ -116,6 +122,7 @@ func getPackageOutput(ctx context.Context, packageList packages.Packages) ([]byt
 
 	// Packages need to be sorted to be always outputted in the same order
 	sort.Sort(packageList)
+	// FIXME ensure unique packageName:packageVersion
 
 	var output []packages.BasePackage
 	for _, p := range packageList {

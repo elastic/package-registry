@@ -16,6 +16,8 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/elastic/package-registry/proxymode"
+
 	gstorage "cloud.google.com/go/storage"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
@@ -316,6 +318,11 @@ func mustLoadRouter(logger *zap.Logger, config *Config, indexer Indexer) *mux.Ro
 }
 
 func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router, error) {
+	proxyMode := proxymode.NewProxyMode(proxymode.ProxyOptions{
+		Enabled: featureProxyMode,
+		ProxyTo: proxyTo,
+	})
+
 	artifactsHandler := artifactsHandler(indexer, config.CacheTimeCatchAll)
 	signaturesHandler := signaturesHandler(indexer, config.CacheTimeCatchAll)
 	faviconHandleFunc, err := faviconHandler(config.CacheTimeCatchAll)
@@ -327,14 +334,16 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router
 		return nil, err
 	}
 
+	categoriesHandler := categoriesHandler(indexer, config.CacheTimeCategories)
 	packageIndexHandler := packageIndexHandler(indexer, config.CacheTimeCatchAll)
+	searchHandler := searchHandlerWithProxyMode(indexer, proxyMode, config.CacheTimeSearch)
 	staticHandler := staticHandler(indexer, config.CacheTimeCatchAll)
 
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/", indexHandlerFunc)
 	router.HandleFunc("/index.json", indexHandlerFunc)
-	router.HandleFunc("/search", searchHandler(indexer, config.CacheTimeSearch))
-	router.HandleFunc("/categories", categoriesHandler(indexer, config.CacheTimeCategories))
+	router.HandleFunc("/search", searchHandler)
+	router.HandleFunc("/categories", categoriesHandler)
 	router.HandleFunc("/health", healthHandler)
 	router.HandleFunc("/favicon.ico", faviconHandleFunc)
 	router.HandleFunc(artifactsRouterPath, artifactsHandler)
@@ -345,7 +354,7 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router
 	if metricsAddress != "" {
 		router.Use(metrics.MetricsMiddleware())
 	}
-	router.NotFoundHandler = http.Handler(notFoundHandler(fmt.Errorf("404 page not found")))
+	router.NotFoundHandler = notFoundHandler(fmt.Errorf("404 page not found"))
 	return router, nil
 }
 

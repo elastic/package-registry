@@ -20,12 +20,6 @@ import (
 	"github.com/elastic/package-registry/util"
 )
 
-type Category struct {
-	Id    string `yaml:"id" json:"id"`
-	Title string `yaml:"title" json:"title"`
-	Count int    `yaml:"count" json:"count"`
-}
-
 // categoriesHandler is a dynamic handler as it will also allow filtering in the future.
 func categoriesHandler(indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -108,16 +102,16 @@ func newCategoriesFilterFromQuery(query url.Values) (*packages.Filter, error) {
 	return &filter, nil
 }
 
-func getCategories(ctx context.Context, packages packages.Packages, includePolicyTemplates bool) map[string]*Category {
+func getCategories(ctx context.Context, pkgs packages.Packages, includePolicyTemplates bool) map[string]*packages.Category {
 	span, ctx := apm.StartSpan(ctx, "FilterCategories", "app")
 	defer span.End()
 
-	categories := map[string]*Category{}
+	categories := map[string]*packages.Category{}
 
-	for _, p := range packages {
+	for _, p := range pkgs {
 		for _, c := range p.Categories {
 			if _, ok := categories[c]; !ok {
-				categories[c] = &Category{
+				categories[c] = &packages.Category{
 					Id:    c,
 					Title: c,
 					Count: 0,
@@ -146,7 +140,7 @@ func getCategories(ctx context.Context, packages packages.Packages, includePolic
 				// Add policy template level categories.
 				for _, c := range t.Categories {
 					if _, ok := categories[c]; !ok {
-						categories[c] = &Category{
+						categories[c] = &packages.Category{
 							Id:    c,
 							Title: c,
 							Count: 0,
@@ -167,7 +161,7 @@ func getCategories(ctx context.Context, packages packages.Packages, includePolic
 	return categories
 }
 
-func getCategoriesOutput(ctx context.Context, categories map[string]*Category) ([]byte, error) {
+func getCategoriesOutput(ctx context.Context, categories map[string]*packages.Category) ([]byte, error) {
 	span, ctx := apm.StartSpan(ctx, "GetCategoriesOutput", "app")
 	defer span.End()
 
@@ -177,7 +171,7 @@ func getCategoriesOutput(ctx context.Context, categories map[string]*Category) (
 	}
 	sort.Strings(keys)
 
-	var outputCategories []*Category
+	var outputCategories []*packages.Category
 	for _, k := range keys {
 		c := categories[k]
 		if title, ok := packages.CategoryTitles[c.Title]; ok {
