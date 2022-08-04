@@ -16,8 +16,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/elastic/package-registry/proxy"
-
 	gstorage "cloud.google.com/go/storage"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
@@ -59,8 +57,8 @@ var (
 	storageEndpoint              string
 	storageIndexerWatchInterval  time.Duration
 
-	featureProxyIndexer bool
-	proxyTo             string
+	featureProxyMode bool
+	proxyTo          string
 
 	defaultConfig = Config{
 		CacheTimeIndex:      10 * time.Second,
@@ -88,8 +86,8 @@ func init() {
 	flag.DurationVar(&storageIndexerWatchInterval, "storage-indexer-watch-interval", 1*time.Minute, "Address of the package-registry service.")
 
 	// The following proxy-indexer related flags are technical preview and might be removed in the future or renamed
-	flag.BoolVar(&featureProxyIndexer, "feature-proxy-indexer", false, "Enable proxy indexer to include packages from other endpoint (technical preview).")
-	flag.StringVar(&storageEndpoint, "proxy-to", "https://epr.elastic.co/", "Source proxied endpoint")
+	flag.BoolVar(&featureProxyMode, "feature-proxy-mode", false, "Enable proxy mode to include packages from other endpoint (technical preview).")
+	flag.StringVar(&proxyTo, "proxy-to", "https://epr.elastic.co/", "Source proxied endpoint")
 }
 
 type Config struct {
@@ -200,13 +198,6 @@ func initIndexer(ctx context.Context, logger *zap.Logger, config *Config) Indexe
 			PackageStorageEndpoint:       storageEndpoint,
 			WatchInterval:                storageIndexerWatchInterval,
 		}))
-	}
-
-	if featureProxyIndexer {
-		proxyIndexer := proxy.NewIndexer(proxy.IndexerOptions{
-			ProxyTo: proxyTo,
-		})
-		combined = append(combined, proxyIndexer)
 	}
 
 	combined = append(combined,
