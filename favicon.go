@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-//go:embed docs/img/favicon.ico
+//go:embed img/favicon.ico
 var faviconBlob []byte
 
 func faviconHandler(cacheTime time.Duration) (func(w http.ResponseWriter, r *http.Request), error) {
