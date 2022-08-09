@@ -331,7 +331,6 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router
 	router.HandleFunc("/categories", categoriesHandler(indexer, config.CacheTimeCategories))
 	router.HandleFunc("/health", healthHandler)
 	router.HandleFunc("/favicon.ico", faviconHandleFunc)
-	router.HandleFunc("/favicon.svg", faviconHandleFunc)
 	router.HandleFunc(artifactsRouterPath, artifactsHandler)
 	router.HandleFunc(signaturesRouterPath, signaturesHandler)
 	router.HandleFunc(packageIndexRouterPath, packageIndexHandler)
