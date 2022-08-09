@@ -11,12 +11,12 @@ import (
 )
 
 //go:embed favicon.ico
-var faviconICOBlob []byte
+var faviconBlob []byte
 
 func faviconHandler(cacheTime time.Duration) (func(w http.ResponseWriter, r *http.Request), error) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "image/x-icon")
 		cacheHeaders(w, cacheTime)
-		w.Write(faviconICOBlob)
+		w.Write(faviconBlob)
 	}, nil
 }
