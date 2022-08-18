@@ -10,8 +10,6 @@ pipeline {
     DOCKER_REGISTRY = 'docker.elastic.co'
     DOCKER_REGISTRY_SECRET = 'secret/observability-team/ci/docker-registry/prod'
     DOCKER_TAG = "${params.DOCKER_TAG}"
-    DOCKER_IMG_SOURCE = "${env.DOCKER_REGISTRY}/package-registry/distribution:production"
-    DOCKER_IMG_TARGET = "${env.DOCKER_REGISTRY}/package-registry/distribution:${env.DOCKER_TAG}"
   }
   options {
     timeout(time: 1, unit: 'HOURS')
@@ -30,17 +28,15 @@ pipeline {
     stage('Validate docker tag'){
       options { skipDefaultCheckout() }
       steps {
-        // Validate only semver are allowed for the docker tag.
-        // It's allowed to override existing published docker images. For instance, the build candidates generated
-        // by the unified release process will share the same versioning, therefore the Git release tag will be
-        // the last docker image to be republished.
-        whenFalse(isSemVerValid(env.DOCKER_TAG)) {
-          error('unsupported docker tag, please use the major.minor.path(-prerelease)? format (for example: 1.2.3 or 1.2.3-alpha).')
-        }
+        transformTagAndValidate()
       }
     }
     stage('Publish Docker image'){
       options { skipDefaultCheckout() }
+      environment {
+        DOCKER_IMG_SOURCE = "${env.DOCKER_REGISTRY}/package-registry/distribution:production"
+        DOCKER_IMG_TARGET = "${env.DOCKER_REGISTRY}/package-registry/distribution:${env.DOCKER_TAG_VERSION}"
+      }
       steps {
         dockerLogin(secret: "${env.DOCKER_REGISTRY_SECRET}", registry: "${env.DOCKER_REGISTRY}")
         retryWithSleep(retries: 3, seconds: 5, backoff: true) {
@@ -63,4 +59,23 @@ pipeline {
 def isSemVerValid(String version) {
   def match = version =~ /\d+.\d+.\d+(-\w+)?/
   return match.matches()
+}
+
+/**
+* Transform the DOCKER_TAG to be a valid docker tag format in case
+* it contains the git tag with the 'v' prefix
+*/
+def transformTagAndValidate() {
+  // If the docker tag contains the 'v' prefix, then remove it.
+  // fleet-server and other projects use tag releases with v<major>.<minor>.<patch>
+  // i.e: v8.3.1
+  def version = env.DOCKER_TAG.replaceAll('^v', '')
+  // Validate only semver are allowed for the docker tag.
+  // It's allowed to override existing published docker images. For instance, the build candidates generated
+  // by the unified release process will share the same versioning, therefore the Git release tag will be
+  // the last docker image to be republished.
+  if (!isSemVerValid(version)) {
+    error('unsupported docker tag, please use the major.minor.path(-prerelease)? format (for example: 1.2.3 or 1.2.3-alpha).')
+  }
+  env.DOCKER_TAG_VERSION = version
 }
