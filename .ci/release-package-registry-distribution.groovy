@@ -10,7 +10,6 @@ pipeline {
     DOCKER_REGISTRY = 'docker.elastic.co'
     DOCKER_REGISTRY_SECRET = 'secret/observability-team/ci/docker-registry/prod'
     DOCKER_TAG = "${params.DOCKER_TAG}"
-    DOCKER_IMG_SOURCE = "${env.DOCKER_REGISTRY}/package-registry/distribution:production"
   }
   options {
     timeout(time: 1, unit: 'HOURS')
@@ -35,6 +34,7 @@ pipeline {
     stage('Publish Docker image'){
       options { skipDefaultCheckout() }
       environment {
+        DOCKER_IMG_SOURCE = "${env.DOCKER_REGISTRY}/package-registry/distribution:production"
         DOCKER_IMG_TARGET = "${env.DOCKER_REGISTRY}/package-registry/distribution:${env.DOCKER_TAG_VERSION}"
       }
       steps {
