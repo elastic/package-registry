@@ -323,8 +323,8 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router
 		ProxyTo: proxyTo,
 	})
 
-	artifactsHandler := artifactsHandler(indexer, config.CacheTimeCatchAll)
-	signaturesHandler := signaturesHandler(indexer, config.CacheTimeCatchAll)
+	artifactsHandler := artifactsHandlerWithProxyMode(indexer, proxyMode, config.CacheTimeCatchAll)
+	signaturesHandler := signaturesHandlerWithProxyMode(indexer, proxyMode, config.CacheTimeCatchAll)
 	faviconHandleFunc, err := faviconHandler(config.CacheTimeCatchAll)
 	if err != nil {
 		return nil, err
@@ -334,10 +334,10 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router
 		return nil, err
 	}
 
-	categoriesHandler := categoriesHandler(indexer, config.CacheTimeCategories)
-	packageIndexHandler := packageIndexHandler(indexer, config.CacheTimeCatchAll)
+	categoriesHandler := categoriesHandlerWithProxyMode(indexer, proxyMode, config.CacheTimeCategories)
+	packageIndexHandler := packageIndexHandlerWithProxyMode(indexer, proxyMode, config.CacheTimeCatchAll)
 	searchHandler := searchHandlerWithProxyMode(indexer, proxyMode, config.CacheTimeSearch)
-	staticHandler := staticHandler(indexer, config.CacheTimeCatchAll)
+	staticHandler := staticHandlerWithProxyMode(indexer, proxyMode, config.CacheTimeCatchAll)
 
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/", indexHandlerFunc)

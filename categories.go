@@ -7,6 +7,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"go.uber.org/zap"
 	"net/http"
 	"net/url"
 	"sort"
@@ -17,11 +18,18 @@ import (
 	"go.elastic.co/apm"
 
 	"github.com/elastic/package-registry/packages"
+	"github.com/elastic/package-registry/proxymode"
 	"github.com/elastic/package-registry/util"
 )
 
 // categoriesHandler is a dynamic handler as it will also allow filtering in the future.
 func categoriesHandler(indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+	return categoriesHandlerWithProxyMode(indexer, proxymode.NoProxy(), cacheTime)
+}
+
+// categoriesHandler is a dynamic handler as it will also allow filtering in the future.
+func categoriesHandlerWithProxyMode(indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+	logger := util.Logger()
 	return func(w http.ResponseWriter, r *http.Request) {
 		query := r.URL.Query()
 
@@ -48,8 +56,17 @@ func categoriesHandler(indexer Indexer, cacheTime time.Duration) func(w http.Res
 			notFoundError(w, err)
 			return
 		}
-
 		categories := getCategories(r.Context(), packages, includePolicyTemplates)
+
+		if proxyMode.Enabled() {
+			proxiedCategories, err := proxyMode.Categories(r)
+			if err != nil {
+				logger.Error("proxy mode: categories failed", zap.Error(err))
+				http.Error(w, "internal server error", http.StatusInternalServerError)
+				return
+			}
+			categories = proxiedCategories // FIXME merge categories instead of replacing
+		}
 
 		data, err := getCategoriesOutput(r.Context(), categories)
 		if err != nil {

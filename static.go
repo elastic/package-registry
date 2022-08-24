@@ -14,6 +14,7 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/packages"
+	"github.com/elastic/package-registry/proxymode"
 	"github.com/elastic/package-registry/util"
 )
 
@@ -26,6 +27,10 @@ type staticParams struct {
 }
 
 func staticHandler(indexer Indexer, cacheTime time.Duration) http.HandlerFunc {
+	return staticHandlerWithProxyMode(indexer, proxymode.NoProxy(), cacheTime)
+}
+
+func staticHandlerWithProxyMode(indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) http.HandlerFunc {
 	logger := util.Logger()
 	return func(w http.ResponseWriter, r *http.Request) {
 		params, err := staticParamsFromRequest(r)
@@ -43,6 +48,15 @@ func staticHandler(indexer Indexer, cacheTime time.Duration) http.HandlerFunc {
 				zap.Error(err))
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
+		}
+		if len(packageList) == 0 && proxyMode.Enabled() {
+			proxiedPackage, err := proxyMode.Package(r)
+			if err != nil {
+				logger.Error("proxy mode: package failed", zap.Error(err))
+				http.Error(w, "internal server error", http.StatusInternalServerError)
+				return
+			}
+			packageList = append(packageList, proxiedPackage)
 		}
 		if len(packageList) == 0 {
 			notFoundError(w, errPackageRevisionNotFound)

@@ -15,6 +15,7 @@ import (
 	"github.com/gorilla/mux"
 
 	"github.com/elastic/package-registry/packages"
+	"github.com/elastic/package-registry/proxymode"
 	"github.com/elastic/package-registry/util"
 )
 
@@ -25,6 +26,10 @@ const (
 var errPackageRevisionNotFound = errors.New("package revision not found")
 
 func packageIndexHandler(indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+	return packageIndexHandlerWithProxyMode(indexer, proxymode.NoProxy(), cacheTime)
+}
+
+func packageIndexHandlerWithProxyMode(indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	logger := util.Logger()
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
@@ -52,6 +57,15 @@ func packageIndexHandler(indexer Indexer, cacheTime time.Duration) func(w http.R
 			logger.Error("getting package path failed", zap.Error(err))
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
+		}
+		if len(packages) == 0 && proxyMode.Enabled() {
+			proxiedPackage, err := proxyMode.Package(r)
+			if err != nil {
+				logger.Error("proxy mode: package failed", zap.Error(err))
+				http.Error(w, "internal server error", http.StatusInternalServerError)
+				return
+			}
+			packages = append(packages, proxiedPackage)
 		}
 		if len(packages) == 0 {
 			notFoundError(w, errPackageRevisionNotFound)
