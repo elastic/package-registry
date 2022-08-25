@@ -18,9 +18,9 @@ const (
 	searchIndexAllFile    = "search-index-all.json"
 
 	// Public bucket
-	ArtifactsStoragePath         = "artifacts"
-	ArtifactsPackagesStoragePath = ArtifactsStoragePath + "/packages"
-	ArtifactsStaticStoragePath   = ArtifactsStoragePath + "/static"
+	artifactsStoragePath         = "artifacts"
+	artifactsPackagesStoragePath = artifactsStoragePath + "/packages"
+	artifactsStaticStoragePath   = artifactsStoragePath + "/static"
 )
 
 func extractBucketNameFromURL(anURL string) (string, string, error) {

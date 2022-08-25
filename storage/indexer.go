@@ -94,8 +94,8 @@ func (i *Indexer) setupResolver() error {
 	}
 
 	i.resolver = storageResolver{
-		artifactsPackagesURL: *baseURL.ResolveReference(&url.URL{Path: ArtifactsPackagesStoragePath + "/"}),
-		artifactsStaticURL:   *baseURL.ResolveReference(&url.URL{Path: ArtifactsStaticStoragePath + "/"}),
+		artifactsPackagesURL: *baseURL.ResolveReference(&url.URL{Path: artifactsPackagesStoragePath + "/"}),
+		artifactsStaticURL:   *baseURL.ResolveReference(&url.URL{Path: artifactsStaticStoragePath + "/"}),
 	}
 	return nil
 }
