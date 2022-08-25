@@ -16,8 +16,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/elastic/package-registry/proxymode"
-
 	gstorage "cloud.google.com/go/storage"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
@@ -31,6 +29,7 @@ import (
 
 	"github.com/elastic/package-registry/metrics"
 	"github.com/elastic/package-registry/packages"
+	"github.com/elastic/package-registry/proxymode"
 	"github.com/elastic/package-registry/storage"
 	"github.com/elastic/package-registry/util"
 )
