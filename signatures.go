@@ -49,7 +49,7 @@ func signaturesHandlerWithProxyMode(indexer Indexer, proxyMode *proxymode.ProxyM
 		}
 
 		opts := packages.NameVersionFilter(packageName, packageVersion)
-		packageList, err := indexer.Get(r.Context(), &opts)
+		pkgs, err := indexer.Get(r.Context(), &opts)
 		if err != nil {
 			logger.Error("getting package path failed",
 				zap.String("package.name", packageName),
@@ -58,21 +58,21 @@ func signaturesHandlerWithProxyMode(indexer Indexer, proxyMode *proxymode.ProxyM
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
-		if len(packageList) == 0 && proxyMode.Enabled() {
+		if len(pkgs) == 0 && proxyMode.Enabled() {
 			proxiedPackage, err := proxyMode.Package(r)
 			if err != nil {
 				logger.Error("proxy mode: package failed", zap.Error(err))
 				http.Error(w, "internal server error", http.StatusInternalServerError)
 				return
 			}
-			packageList = append(packageList, proxiedPackage)
+			pkgs = pkgs.Join(packages.Packages{proxiedPackage})
 		}
-		if len(packageList) == 0 {
+		if len(pkgs) == 0 {
 			notFoundError(w, errSignatureFileNotFound)
 			return
 		}
 
 		cacheHeaders(w, cacheTime)
-		packages.ServePackageSignature(w, r, packageList[0])
+		packages.ServePackageSignature(w, r, pkgs[0])
 	}
 }

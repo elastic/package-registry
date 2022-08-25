@@ -40,7 +40,7 @@ func staticHandlerWithProxyMode(indexer Indexer, proxyMode *proxymode.ProxyMode,
 		}
 
 		opts := packages.NameVersionFilter(params.packageName, params.packageVersion)
-		packageList, err := indexer.Get(r.Context(), &opts)
+		pkgs, err := indexer.Get(r.Context(), &opts)
 		if err != nil {
 			logger.Error("getting package path failed",
 				zap.String("package.name", params.packageName),
@@ -49,22 +49,22 @@ func staticHandlerWithProxyMode(indexer Indexer, proxyMode *proxymode.ProxyMode,
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
-		if len(packageList) == 0 && proxyMode.Enabled() {
+		if len(pkgs) == 0 && proxyMode.Enabled() {
 			proxiedPackage, err := proxyMode.Package(r)
 			if err != nil {
 				logger.Error("proxy mode: package failed", zap.Error(err))
 				http.Error(w, "internal server error", http.StatusInternalServerError)
 				return
 			}
-			packageList = append(packageList, proxiedPackage)
+			pkgs = pkgs.Join(packages.Packages{proxiedPackage})
 		}
-		if len(packageList) == 0 {
+		if len(pkgs) == 0 {
 			notFoundError(w, errPackageRevisionNotFound)
 			return
 		}
 
 		cacheHeaders(w, cacheTime)
-		packages.ServePackageResource(w, r, packageList[0], params.fileName)
+		packages.ServePackageResource(w, r, pkgs[0], params.fileName)
 	}
 }
 

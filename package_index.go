@@ -52,22 +52,22 @@ func packageIndexHandlerWithProxyMode(indexer Indexer, proxyMode *proxymode.Prox
 		}
 
 		opts := packages.NameVersionFilter(packageName, packageVersion)
-		packages, err := indexer.Get(r.Context(), &opts)
+		pkgs, err := indexer.Get(r.Context(), &opts)
 		if err != nil {
 			logger.Error("getting package path failed", zap.Error(err))
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
-		if len(packages) == 0 && proxyMode.Enabled() {
+		if len(pkgs) == 0 && proxyMode.Enabled() {
 			proxiedPackage, err := proxyMode.Package(r)
 			if err != nil {
 				logger.Error("proxy mode: package failed", zap.Error(err))
 				http.Error(w, "internal server error", http.StatusInternalServerError)
 				return
 			}
-			packages = append(packages, proxiedPackage)
+			pkgs = pkgs.Join(packages.Packages{proxiedPackage})
 		}
-		if len(packages) == 0 {
+		if len(pkgs) == 0 {
 			notFoundError(w, errPackageRevisionNotFound)
 			return
 		}
@@ -75,10 +75,10 @@ func packageIndexHandlerWithProxyMode(indexer Indexer, proxyMode *proxymode.Prox
 		w.Header().Set("Content-Type", "application/json")
 		cacheHeaders(w, cacheTime)
 
-		err = util.WriteJSONPretty(w, packages[0])
+		err = util.WriteJSONPretty(w, pkgs[0])
 		if err != nil {
 			logger.Error("marshaling package index failed",
-				zap.String("package.path", packages[0].BasePath),
+				zap.String("package.path", pkgs[0].BasePath),
 				zap.Error(err))
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return

@@ -5,10 +5,16 @@
 package proxymode
 
 import (
+	"encoding/json"
+	"go.uber.org/zap"
 	"net/http"
+	"net/url"
 	"time"
 
+	"github.com/pkg/errors"
+
 	"github.com/elastic/package-registry/packages"
+	"github.com/elastic/package-registry/util"
 )
 
 type ProxyMode struct {
@@ -45,12 +51,39 @@ func (pm *ProxyMode) Enabled() bool {
 	return pm.options.Enabled
 }
 
-func (pm *ProxyMode) Search(r *http.Request) ([]*packages.Package, error) {
+func (pm *ProxyMode) Search(r *http.Request) (packages.Packages, error) {
 	if !pm.options.Enabled {
-		return []*packages.Package{}, nil
+		return packages.Packages{}, nil
+	}
+	logger := util.Logger()
+
+	destinationURL, err := url.Parse(pm.options.ProxyTo)
+	if err != nil {
+		return nil, errors.Wrap(err, "can't create proxy destination url")
 	}
 
-	panic("search: not implemented yet")
+	proxyURL := *r.URL
+	proxyURL.Host = destinationURL.Host
+	proxyURL.Scheme = destinationURL.Scheme
+	proxyURL.User = destinationURL.User
+
+	proxyRequest, err := http.NewRequest("GET", proxyURL.String(), nil)
+	if err != nil {
+		return nil, errors.Wrap(err, "can't create proxy request")
+	}
+
+	logger.Debug("Proxy search request", zap.String("request.uri", proxyURL.String()))
+	response, err := pm.httpClient.Do(proxyRequest)
+	if err != nil {
+		return nil, errors.Wrap(err, "can't proxy search request")
+	}
+	defer response.Body.Close()
+	var pkgs packages.Packages
+	err = json.NewDecoder(response.Body).Decode(&pkgs)
+	if err != nil {
+		return nil, errors.Wrap(err, "can't proxy search request")
+	}
+	return pkgs, nil
 }
 
 func (pm *ProxyMode) Categories(r *http.Request) (map[string]*packages.Category, error) {

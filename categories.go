@@ -51,12 +51,12 @@ func categoriesHandlerWithProxyMode(indexer Indexer, proxyMode *proxymode.ProxyM
 		opts := packages.GetOptions{
 			Filter: filter,
 		}
-		packages, err := indexer.Get(r.Context(), &opts)
+		pkgs, err := indexer.Get(r.Context(), &opts)
 		if err != nil {
 			notFoundError(w, err)
 			return
 		}
-		categories := getCategories(r.Context(), packages, includePolicyTemplates)
+		categories := getCategories(r.Context(), pkgs, includePolicyTemplates)
 
 		if proxyMode.Enabled() {
 			proxiedCategories, err := proxyMode.Categories(r)

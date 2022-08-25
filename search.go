@@ -54,7 +54,7 @@ func searchHandlerWithProxyMode(indexer Indexer, proxyMode *proxymode.ProxyMode,
 				http.Error(w, "internal server error", http.StatusInternalServerError)
 				return
 			}
-			packages = append(packages, proxiedPackages...)
+			packages = packages.Join(proxiedPackages)
 		}
 
 		data, err := getPackageOutput(r.Context(), packages)
