@@ -7,6 +7,7 @@ package proxymode
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 	"time"
@@ -16,6 +17,7 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/packages"
+	"github.com/elastic/package-registry/storage"
 	"github.com/elastic/package-registry/util"
 )
 
@@ -23,6 +25,8 @@ type ProxyMode struct {
 	options ProxyOptions
 
 	httpClient *http.Client
+	destinationURL *url.URL
+	resolver *proxyResolver
 }
 
 type ProxyOptions struct {
@@ -31,11 +35,22 @@ type ProxyOptions struct {
 }
 
 func NoProxy() *ProxyMode {
-	return NewProxyMode(ProxyOptions{})
+	proxyMode, err := NewProxyMode(ProxyOptions{})
+	if err != nil {
+		log.Fatalf("no proxy mode should not return an error: %v", err)
+	}
+	return proxyMode
 }
 
-func NewProxyMode(options ProxyOptions) *ProxyMode {
-	httpClient := &http.Client{
+func NewProxyMode(options ProxyOptions) (*ProxyMode, error) {
+	var pm ProxyMode
+	pm.options = options
+
+	if !options.Enabled {
+		return &pm, nil
+	}
+
+	pm.httpClient = &http.Client{
 		Timeout: 10 * time.Second,
 		Transport: &http.Transport{
 			MaxIdleConns:        100,
@@ -43,10 +58,18 @@ func NewProxyMode(options ProxyOptions) *ProxyMode {
 			IdleConnTimeout:     90 * time.Second,
 		},
 	}
-	return &ProxyMode{
-		options:    options,
-		httpClient: httpClient,
+
+	var err error
+	pm.destinationURL, err = url.Parse(pm.options.ProxyTo)
+	if err != nil {
+		return nil, errors.Wrap(err, "can't create proxy destination URL")
 	}
+
+	pm.resolver = &proxyResolver{
+		artifactsPackagesURL: *pm.destinationURL.ResolveReference(&url.URL{Path: storage.ArtifactsPackagesStoragePath + "/"}),
+		artifactsStaticURL:   *pm.destinationURL.ResolveReference(&url.URL{Path: storage.ArtifactsStaticStoragePath + "/"}),
+	}
+	return &pm, nil
 }
 
 func (pm *ProxyMode) Enabled() bool {
@@ -59,22 +82,17 @@ func (pm *ProxyMode) Search(r *http.Request) (packages.Packages, error) {
 	}
 	logger := util.Logger()
 
-	destinationURL, err := url.Parse(pm.options.ProxyTo)
-	if err != nil {
-		return nil, errors.Wrap(err, "can't create proxy destination url")
-	}
-
 	proxyURL := *r.URL
-	proxyURL.Host = destinationURL.Host
-	proxyURL.Scheme = destinationURL.Scheme
-	proxyURL.User = destinationURL.User
+	proxyURL.Host = pm.destinationURL.Host
+	proxyURL.Scheme = pm.destinationURL.Scheme
+	proxyURL.User = pm.destinationURL.User
 
 	proxyRequest, err := http.NewRequest("GET", proxyURL.String(), nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't create proxy request")
 	}
 
-	logger.Debug("Proxy search request", zap.String("request.uri", proxyURL.String()))
+	logger.Debug("Proxy /search request", zap.String("request.uri", proxyURL.String()))
 	response, err := pm.httpClient.Do(proxyRequest)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't proxy search request")
@@ -84,6 +102,9 @@ func (pm *ProxyMode) Search(r *http.Request) (packages.Packages, error) {
 	err = json.NewDecoder(response.Body).Decode(&pkgs)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't proxy search request")
+	}
+	for i := 0; i < len(pkgs); i++ {
+		pkgs[i].SetRemoteResolver(pm.resolver)
 	}
 	return pkgs, nil
 }
@@ -99,11 +120,6 @@ func (pm *ProxyMode) Categories(r *http.Request) (map[string]*packages.Category,
 func (pm *ProxyMode) Package(r *http.Request) (*packages.Package, error) {
 	logger := util.Logger()
 
-	destinationURL, err := url.Parse(pm.options.ProxyTo)
-	if err != nil {
-		return nil, errors.Wrap(err, "can't create proxy destination url")
-	}
-
 	vars := mux.Vars(r)
 	packageName, ok := vars["packageName"]
 	if !ok {
@@ -116,13 +132,13 @@ func (pm *ProxyMode) Package(r *http.Request) (*packages.Package, error) {
 	}
 
 	urlPath := fmt.Sprintf("/package/%s/%s/", packageName, packageVersion)
-	proxyURL := destinationURL.ResolveReference(&url.URL{Path: urlPath})
+	proxyURL := pm.destinationURL.ResolveReference(&url.URL{Path: urlPath})
 	proxyRequest, err := http.NewRequest("GET", proxyURL.String(), nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't create proxy request")
 	}
 
-	logger.Debug("Proxy search request", zap.String("request.uri", proxyURL.String()))
+	logger.Debug("Proxy /package request", zap.String("request.uri", proxyURL.String()))
 	response, err := pm.httpClient.Do(proxyRequest)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't proxy search request")
@@ -133,5 +149,6 @@ func (pm *ProxyMode) Package(r *http.Request) (*packages.Package, error) {
 	if err != nil {
 		return nil, errors.Wrap(err, "can't proxy search request")
 	}
+	pkg.SetRemoteResolver(pm.resolver)
 	return &pkg, nil
 }

@@ -89,7 +89,7 @@ func init() {
 
 	// The following proxy-indexer related flags are technical preview and might be removed in the future or renamed
 	flag.BoolVar(&featureProxyMode, "feature-proxy-mode", false, "Enable proxy mode to include packages from other endpoint (technical preview).")
-	flag.StringVar(&proxyTo, "proxy-to", "https://epr-v2.ea-web.elastic.dev/", "Source proxied endpoint")
+	flag.StringVar(&proxyTo, "proxy-to", "https://epr-v2.ea-web.elastic.dev/", "Proxy-to endpoint")
 }
 
 type Config struct {
@@ -318,10 +318,13 @@ func mustLoadRouter(logger *zap.Logger, config *Config, indexer Indexer) *mux.Ro
 }
 
 func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router, error) {
-	proxyMode := proxymode.NewProxyMode(proxymode.ProxyOptions{
+	proxyMode, err := proxymode.NewProxyMode(proxymode.ProxyOptions{
 		Enabled: featureProxyMode,
 		ProxyTo: proxyTo,
 	})
+	if err != nil {
+		return nil, errors.Wrapf(err, "can't create proxy mode")
+	}
 
 	artifactsHandler := artifactsHandlerWithProxyMode(indexer, proxyMode, config.CacheTimeCatchAll)
 	signaturesHandler := signaturesHandlerWithProxyMode(indexer, proxyMode, config.CacheTimeCatchAll)
