@@ -17,16 +17,15 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/packages"
-	"github.com/elastic/package-registry/storage"
 	"github.com/elastic/package-registry/util"
 )
 
 type ProxyMode struct {
 	options ProxyOptions
 
-	httpClient *http.Client
+	httpClient     *http.Client
 	destinationURL *url.URL
-	resolver *proxyResolver
+	resolver       *proxyResolver
 }
 
 type ProxyOptions struct {
@@ -65,10 +64,7 @@ func NewProxyMode(options ProxyOptions) (*ProxyMode, error) {
 		return nil, errors.Wrap(err, "can't create proxy destination URL")
 	}
 
-	pm.resolver = &proxyResolver{
-		artifactsPackagesURL: *pm.destinationURL.ResolveReference(&url.URL{Path: storage.ArtifactsPackagesStoragePath + "/"}),
-		artifactsStaticURL:   *pm.destinationURL.ResolveReference(&url.URL{Path: storage.ArtifactsStaticStoragePath + "/"}),
-	}
+	pm.resolver = &proxyResolver{destinationURL: *pm.destinationURL}
 	return &pm, nil
 }
 
