@@ -7,12 +7,13 @@ package main
 import (
 	"context"
 	"fmt"
-	"go.uber.org/zap"
 	"net/http"
 	"net/url"
 	"sort"
 	"strconv"
 	"time"
+
+	"go.uber.org/zap"
 
 	"github.com/Masterminds/semver/v3"
 	"go.elastic.co/apm"

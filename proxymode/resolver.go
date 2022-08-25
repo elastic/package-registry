@@ -1,3 +1,7 @@
+// Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
+// or more contributor license agreements. Licensed under the Elastic License;
+// you may not use this file except in compliance with the Elastic License.
+
 package proxymode
 
 import (
@@ -13,7 +17,7 @@ type proxyResolver struct {
 }
 
 func (pr proxyResolver) RedirectArtifactsHandler(w http.ResponseWriter, r *http.Request, p *packages.Package) {
-	remotePath := fmt.Sprintf("/package/%s-%s.zip", p.Name, p.Version)
+	remotePath := fmt.Sprintf("/epr/package/%s-%s.zip", p.Name, p.Version)
 	anURL := pr.destinationURL.
 		ResolveReference(&url.URL{Path: remotePath})
 	http.Redirect(w, r, anURL.String(), http.StatusMovedPermanently)
@@ -27,7 +31,7 @@ func (pr proxyResolver) RedirectStaticHandler(w http.ResponseWriter, r *http.Req
 }
 
 func (pr proxyResolver) RedirectSignaturesHandler(w http.ResponseWriter, r *http.Request, p *packages.Package) {
-	remotePath := fmt.Sprintf("/package/%s-%s.zip.sig", p.Name, p.Version)
+	remotePath := fmt.Sprintf("/epr/package/%s-%s.zip.sig", p.Name, p.Version)
 	anURL := pr.destinationURL.
 		ResolveReference(&url.URL{Path: remotePath})
 	http.Redirect(w, r, anURL.String(), http.StatusMovedPermanently)
