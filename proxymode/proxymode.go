@@ -6,12 +6,14 @@ package proxymode
 
 import (
 	"encoding/json"
-	"go.uber.org/zap"
+	"fmt"
 	"net/http"
 	"net/url"
 	"time"
 
+	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/packages"
 	"github.com/elastic/package-registry/util"
@@ -95,9 +97,41 @@ func (pm *ProxyMode) Categories(r *http.Request) (map[string]*packages.Category,
 }
 
 func (pm *ProxyMode) Package(r *http.Request) (*packages.Package, error) {
-	if !pm.options.Enabled {
-		return nil, nil
+	logger := util.Logger()
+
+	destinationURL, err := url.Parse(pm.options.ProxyTo)
+	if err != nil {
+		return nil, errors.Wrap(err, "can't create proxy destination url")
 	}
 
-	panic("package: not implemented yet")
+	vars := mux.Vars(r)
+	packageName, ok := vars["packageName"]
+	if !ok {
+		return nil, errors.New("missing package name")
+	}
+
+	packageVersion, ok := vars["packageVersion"]
+	if !ok {
+		return nil, errors.New("missing package version")
+	}
+
+	urlPath := fmt.Sprintf("/package/%s/%s/", packageName, packageVersion)
+	proxyURL := destinationURL.ResolveReference(&url.URL{Path: urlPath})
+	proxyRequest, err := http.NewRequest("GET", proxyURL.String(), nil)
+	if err != nil {
+		return nil, errors.Wrap(err, "can't create proxy request")
+	}
+
+	logger.Debug("Proxy search request", zap.String("request.uri", proxyURL.String()))
+	response, err := pm.httpClient.Do(proxyRequest)
+	if err != nil {
+		return nil, errors.Wrap(err, "can't proxy search request")
+	}
+	defer response.Body.Close()
+	var pkg packages.Package
+	err = json.NewDecoder(response.Body).Decode(&pkg)
+	if err != nil {
+		return nil, errors.Wrap(err, "can't proxy search request")
+	}
+	return &pkg, nil
 }
