@@ -73,9 +73,6 @@ func (pm *ProxyMode) Enabled() bool {
 }
 
 func (pm *ProxyMode) Search(r *http.Request) (packages.Packages, error) {
-	if !pm.options.Enabled {
-		return packages.Packages{}, nil
-	}
 	logger := util.Logger()
 
 	proxyURL := *r.URL
@@ -105,12 +102,31 @@ func (pm *ProxyMode) Search(r *http.Request) (packages.Packages, error) {
 	return pkgs, nil
 }
 
-func (pm *ProxyMode) Categories(r *http.Request) (map[string]*packages.Category, error) {
-	if !pm.options.Enabled {
-		return map[string]*packages.Category{}, nil
+func (pm *ProxyMode) Categories(r *http.Request) ([]packages.Category, error) {
+	logger := util.Logger()
+
+	proxyURL := *r.URL
+	proxyURL.Host = pm.destinationURL.Host
+	proxyURL.Scheme = pm.destinationURL.Scheme
+	proxyURL.User = pm.destinationURL.User
+
+	proxyRequest, err := http.NewRequest("GET", proxyURL.String(), nil)
+	if err != nil {
+		return nil, errors.Wrap(err, "can't create proxy request")
 	}
 
-	panic("categories: not implemented yet")
+	logger.Debug("Proxy /categories request", zap.String("request.uri", proxyURL.String()))
+	response, err := pm.httpClient.Do(proxyRequest)
+	if err != nil {
+		return nil, errors.Wrap(err, "can't proxy search request")
+	}
+	defer response.Body.Close()
+	var cats []packages.Category
+	err = json.NewDecoder(response.Body).Decode(&cats)
+	if err != nil {
+		return nil, errors.Wrap(err, "can't proxy search request")
+	}
+	return cats, nil
 }
 
 func (pm *ProxyMode) Package(r *http.Request) (*packages.Package, error) {

@@ -66,7 +66,18 @@ func categoriesHandlerWithProxyMode(indexer Indexer, proxyMode *proxymode.ProxyM
 				http.Error(w, "internal server error", http.StatusInternalServerError)
 				return
 			}
-			categories = proxiedCategories // FIXME merge categories instead of replacing
+
+			for _, category := range proxiedCategories {
+				if _, ok := categories[category.Id]; !ok {
+					categories[category.Id] = &packages.Category{
+						Id:    category.Id,
+						Title: category.Title,
+						Count: category.Count,
+					}
+				} else {
+					categories[category.Id].Count += category.Count
+				}
+			}
 		}
 
 		data, err := getCategoriesOutput(r.Context(), categories)
