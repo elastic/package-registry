@@ -8,6 +8,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"log"
 	"net/http"
 	_ "net/http/pprof"
 	"os"
@@ -317,6 +318,9 @@ func mustLoadRouter(logger *zap.Logger, config *Config, indexer Indexer) *mux.Ro
 }
 
 func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router, error) {
+	if !featureProxyMode {
+		log.Println("Technical preview: Proxy mode is an experimental feature and it may be unstable.")
+	}
 	proxyMode, err := proxymode.NewProxyMode(proxymode.ProxyOptions{
 		Enabled: featureProxyMode,
 		ProxyTo: proxyTo,
@@ -324,7 +328,6 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router
 	if err != nil {
 		return nil, errors.Wrapf(err, "can't create proxy mode")
 	}
-
 	artifactsHandler := artifactsHandlerWithProxyMode(indexer, proxyMode, config.CacheTimeCatchAll)
 	signaturesHandler := signaturesHandlerWithProxyMode(indexer, proxyMode, config.CacheTimeCatchAll)
 	faviconHandleFunc, err := faviconHandler(config.CacheTimeCatchAll)

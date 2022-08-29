@@ -7,7 +7,6 @@ package proxymode
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"net/url"
 	"time"
@@ -34,9 +33,9 @@ type ProxyOptions struct {
 }
 
 func NoProxy() *ProxyMode {
-	proxyMode, err := NewProxyMode(ProxyOptions{})
+	proxyMode, err := NewProxyMode(ProxyOptions{Enabled: false})
 	if err != nil {
-		log.Fatalf("no proxy mode should not return an error: %v", err)
+		panic(errors.Wrapf(err, "no proxy mode should not return an error"))
 	}
 	return proxyMode
 }

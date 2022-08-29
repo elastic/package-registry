@@ -13,15 +13,13 @@ import (
 	"strconv"
 	"time"
 
-	"go.uber.org/zap"
-
-	"github.com/elastic/package-registry/proxymode"
-
 	"github.com/Masterminds/semver/v3"
 	"github.com/pkg/errors"
 	"go.elastic.co/apm"
+	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/packages"
+	"github.com/elastic/package-registry/proxymode"
 	"github.com/elastic/package-registry/util"
 )
 
@@ -135,7 +133,6 @@ func getPackageOutput(ctx context.Context, packageList packages.Packages) ([]byt
 
 	// Packages need to be sorted to be always outputted in the same order
 	sort.Sort(packageList)
-	// FIXME ensure unique packageName:packageVersion
 
 	var output []packages.BasePackage
 	for _, p := range packageList {
