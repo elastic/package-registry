@@ -35,7 +35,7 @@ type ProxyOptions struct {
 func NoProxy() *ProxyMode {
 	proxyMode, err := NewProxyMode(ProxyOptions{Enabled: false})
 	if err != nil {
-		panic(errors.Wrapf(err, "no proxy mode should not return an error"))
+		panic(errors.Wrapf(err, "unexpected error"))
 	}
 	return proxyMode
 }

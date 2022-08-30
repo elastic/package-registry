@@ -318,7 +318,7 @@ func mustLoadRouter(logger *zap.Logger, config *Config, indexer Indexer) *mux.Ro
 }
 
 func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router, error) {
-	if !featureProxyMode {
+	if featureProxyMode {
 		log.Println("Technical preview: Proxy mode is an experimental feature and it may be unstable.")
 	}
 	proxyMode, err := proxymode.NewProxyMode(proxymode.ProxyOptions{
