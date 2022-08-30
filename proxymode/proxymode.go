@@ -79,7 +79,7 @@ func (pm *ProxyMode) Search(r *http.Request) (packages.Packages, error) {
 	proxyURL.Scheme = pm.destinationURL.Scheme
 	proxyURL.User = pm.destinationURL.User
 
-	proxyRequest, err := http.NewRequest("GET", proxyURL.String(), nil)
+	proxyRequest, err := http.NewRequest(http.MethodGet, proxyURL.String(), nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't create proxy request")
 	}
@@ -109,7 +109,7 @@ func (pm *ProxyMode) Categories(r *http.Request) ([]packages.Category, error) {
 	proxyURL.Scheme = pm.destinationURL.Scheme
 	proxyURL.User = pm.destinationURL.User
 
-	proxyRequest, err := http.NewRequest("GET", proxyURL.String(), nil)
+	proxyRequest, err := http.NewRequest(http.MethodGet, proxyURL.String(), nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't create proxy request")
 	}
@@ -144,7 +144,7 @@ func (pm *ProxyMode) Package(r *http.Request) (*packages.Package, error) {
 
 	urlPath := fmt.Sprintf("/package/%s/%s/", packageName, packageVersion)
 	proxyURL := pm.destinationURL.ResolveReference(&url.URL{Path: urlPath})
-	proxyRequest, err := http.NewRequest("GET", proxyURL.String(), nil)
+	proxyRequest, err := http.NewRequest(http.MethodGet, proxyURL.String(), nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't create proxy request")
 	}
