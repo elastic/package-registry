@@ -14,6 +14,7 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/packages"
+	"github.com/elastic/package-registry/proxymode"
 	"github.com/elastic/package-registry/util"
 )
 
@@ -26,6 +27,10 @@ type staticParams struct {
 }
 
 func staticHandler(indexer Indexer, cacheTime time.Duration) http.HandlerFunc {
+	return staticHandlerWithProxyMode(indexer, proxymode.NoProxy(), cacheTime)
+}
+
+func staticHandlerWithProxyMode(indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) http.HandlerFunc {
 	logger := util.Logger()
 	return func(w http.ResponseWriter, r *http.Request) {
 		params, err := staticParamsFromRequest(r)
@@ -35,7 +40,7 @@ func staticHandler(indexer Indexer, cacheTime time.Duration) http.HandlerFunc {
 		}
 
 		opts := packages.NameVersionFilter(params.packageName, params.packageVersion)
-		packageList, err := indexer.Get(r.Context(), &opts)
+		pkgs, err := indexer.Get(r.Context(), &opts)
 		if err != nil {
 			logger.Error("getting package path failed",
 				zap.String("package.name", params.packageName),
@@ -44,13 +49,22 @@ func staticHandler(indexer Indexer, cacheTime time.Duration) http.HandlerFunc {
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
-		if len(packageList) == 0 {
+		if len(pkgs) == 0 && proxyMode.Enabled() {
+			proxiedPackage, err := proxyMode.Package(r)
+			if err != nil {
+				logger.Error("proxy mode: package failed", zap.Error(err))
+				http.Error(w, "internal server error", http.StatusInternalServerError)
+				return
+			}
+			pkgs = pkgs.Join(packages.Packages{proxiedPackage})
+		}
+		if len(pkgs) == 0 {
 			notFoundError(w, errPackageRevisionNotFound)
 			return
 		}
 
 		cacheHeaders(w, cacheTime)
-		packages.ServePackageResource(w, r, packageList[0], params.fileName)
+		packages.ServePackageResource(w, r, pkgs[0], params.fileName)
 	}
 }
 

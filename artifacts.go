@@ -14,6 +14,7 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/packages"
+	"github.com/elastic/package-registry/proxymode"
 	"github.com/elastic/package-registry/util"
 )
 
@@ -22,6 +23,10 @@ const artifactsRouterPath = "/epr/{packageName}/{packageName:[a-z0-9_]+}-{packag
 var errArtifactNotFound = errors.New("artifact not found")
 
 func artifactsHandler(indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+	return artifactsHandlerWithProxyMode(indexer, proxymode.NoProxy(), cacheTime)
+}
+
+func artifactsHandlerWithProxyMode(indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	logger := util.Logger()
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
@@ -44,7 +49,7 @@ func artifactsHandler(indexer Indexer, cacheTime time.Duration) func(w http.Resp
 		}
 
 		opts := packages.NameVersionFilter(packageName, packageVersion)
-		packageList, err := indexer.Get(r.Context(), &opts)
+		pkgs, err := indexer.Get(r.Context(), &opts)
 		if err != nil {
 			logger.Error("getting package path failed",
 				zap.String("package.name", packageName),
@@ -53,12 +58,21 @@ func artifactsHandler(indexer Indexer, cacheTime time.Duration) func(w http.Resp
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
-		if len(packageList) == 0 {
+		if len(pkgs) == 0 && proxyMode.Enabled() {
+			proxiedPackage, err := proxyMode.Package(r)
+			if err != nil {
+				logger.Error("proxy mode: package failed", zap.Error(err))
+				http.Error(w, "internal server error", http.StatusInternalServerError)
+				return
+			}
+			pkgs = pkgs.Join(packages.Packages{proxiedPackage})
+		}
+		if len(pkgs) == 0 {
 			notFoundError(w, errArtifactNotFound)
 			return
 		}
 
 		cacheHeaders(w, cacheTime)
-		packages.ServePackage(w, r, packageList[0])
+		packages.ServePackage(w, r, pkgs[0])
 	}
 }

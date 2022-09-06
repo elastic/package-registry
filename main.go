@@ -8,6 +8,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"log"
 	"net/http"
 	_ "net/http/pprof"
 	"os"
@@ -29,6 +30,7 @@ import (
 
 	"github.com/elastic/package-registry/metrics"
 	"github.com/elastic/package-registry/packages"
+	"github.com/elastic/package-registry/proxymode"
 	"github.com/elastic/package-registry/storage"
 	"github.com/elastic/package-registry/util"
 )
@@ -57,6 +59,9 @@ var (
 	storageEndpoint              string
 	storageIndexerWatchInterval  time.Duration
 
+	featureProxyMode bool
+	proxyTo          string
+
 	defaultConfig = Config{
 		CacheTimeIndex:      10 * time.Second,
 		CacheTimeSearch:     10 * time.Minute,
@@ -82,6 +87,9 @@ func init() {
 	flag.StringVar(&storageEndpoint, "storage-endpoint", "https://package-storage.elastic.co/", "Package Storage public endpoint.")
 	flag.DurationVar(&storageIndexerWatchInterval, "storage-indexer-watch-interval", 1*time.Minute, "Address of the package-registry service.")
 
+	// The following proxy-indexer related flags are technical preview and might be removed in the future or renamed
+	flag.BoolVar(&featureProxyMode, "feature-proxy-mode", false, "Enable proxy mode to include packages from other endpoint (technical preview).")
+	flag.StringVar(&proxyTo, "proxy-to", "https://epr-snapshot.elastic.co/", "Proxy-to endpoint")
 }
 
 type Config struct {
@@ -180,26 +188,26 @@ func initMetricsServer(logger *zap.Logger) {
 func initIndexer(ctx context.Context, logger *zap.Logger, config *Config) Indexer {
 	packagesBasePaths := getPackagesBasePaths(config)
 
-	var indexer Indexer
+	var combined CombinedIndexer
+
 	if featureStorageIndexer {
 		storageClient, err := gstorage.NewClient(ctx)
 		if err != nil {
 			logger.Fatal("can't initialize storage client", zap.Error(err))
 		}
-		indexer = storage.NewIndexer(storageClient, storage.IndexerOptions{
+		combined = append(combined, storage.NewIndexer(storageClient, storage.IndexerOptions{
 			PackageStorageBucketInternal: storageIndexerBucketInternal,
 			PackageStorageEndpoint:       storageEndpoint,
 			WatchInterval:                storageIndexerWatchInterval,
-		})
-	} else {
-		indexer = NewCombinedIndexer(
-			packages.NewZipFileSystemIndexer(packagesBasePaths...),
-			packages.NewFileSystemIndexer(packagesBasePaths...),
-		)
+		}))
 	}
-	ensurePackagesAvailable(ctx, logger, indexer)
 
-	return indexer
+	combined = append(combined,
+		packages.NewZipFileSystemIndexer(packagesBasePaths...),
+		packages.NewFileSystemIndexer(packagesBasePaths...),
+	)
+	ensurePackagesAvailable(ctx, logger, combined)
+	return combined
 }
 
 func initServer(logger *zap.Logger, config *Config) *http.Server {
@@ -310,8 +318,18 @@ func mustLoadRouter(logger *zap.Logger, config *Config, indexer Indexer) *mux.Ro
 }
 
 func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router, error) {
-	artifactsHandler := artifactsHandler(indexer, config.CacheTimeCatchAll)
-	signaturesHandler := signaturesHandler(indexer, config.CacheTimeCatchAll)
+	if featureProxyMode {
+		log.Println("Technical preview: Proxy mode is an experimental feature and it may be unstable.")
+	}
+	proxyMode, err := proxymode.NewProxyMode(proxymode.ProxyOptions{
+		Enabled: featureProxyMode,
+		ProxyTo: proxyTo,
+	})
+	if err != nil {
+		return nil, errors.Wrapf(err, "can't create proxy mode")
+	}
+	artifactsHandler := artifactsHandlerWithProxyMode(indexer, proxyMode, config.CacheTimeCatchAll)
+	signaturesHandler := signaturesHandlerWithProxyMode(indexer, proxyMode, config.CacheTimeCatchAll)
 	faviconHandleFunc, err := faviconHandler(config.CacheTimeCatchAll)
 	if err != nil {
 		return nil, err
@@ -321,14 +339,16 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router
 		return nil, err
 	}
 
-	packageIndexHandler := packageIndexHandler(indexer, config.CacheTimeCatchAll)
-	staticHandler := staticHandler(indexer, config.CacheTimeCatchAll)
+	categoriesHandler := categoriesHandlerWithProxyMode(indexer, proxyMode, config.CacheTimeCategories)
+	packageIndexHandler := packageIndexHandlerWithProxyMode(indexer, proxyMode, config.CacheTimeCatchAll)
+	searchHandler := searchHandlerWithProxyMode(indexer, proxyMode, config.CacheTimeSearch)
+	staticHandler := staticHandlerWithProxyMode(indexer, proxyMode, config.CacheTimeCatchAll)
 
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/", indexHandlerFunc)
 	router.HandleFunc("/index.json", indexHandlerFunc)
-	router.HandleFunc("/search", searchHandler(indexer, config.CacheTimeSearch))
-	router.HandleFunc("/categories", categoriesHandler(indexer, config.CacheTimeCategories))
+	router.HandleFunc("/search", searchHandler)
+	router.HandleFunc("/categories", categoriesHandler)
 	router.HandleFunc("/health", healthHandler)
 	router.HandleFunc("/favicon.ico", faviconHandleFunc)
 	router.HandleFunc(artifactsRouterPath, artifactsHandler)
@@ -339,7 +359,7 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router
 	if metricsAddress != "" {
 		router.Use(metrics.MetricsMiddleware())
 	}
-	router.NotFoundHandler = http.Handler(notFoundHandler(fmt.Errorf("404 page not found")))
+	router.NotFoundHandler = notFoundHandler(fmt.Errorf("404 page not found"))
 	return router, nil
 }
 

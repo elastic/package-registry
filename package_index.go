@@ -15,6 +15,7 @@ import (
 	"github.com/gorilla/mux"
 
 	"github.com/elastic/package-registry/packages"
+	"github.com/elastic/package-registry/proxymode"
 	"github.com/elastic/package-registry/util"
 )
 
@@ -25,6 +26,10 @@ const (
 var errPackageRevisionNotFound = errors.New("package revision not found")
 
 func packageIndexHandler(indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+	return packageIndexHandlerWithProxyMode(indexer, proxymode.NoProxy(), cacheTime)
+}
+
+func packageIndexHandlerWithProxyMode(indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	logger := util.Logger()
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
@@ -47,13 +52,22 @@ func packageIndexHandler(indexer Indexer, cacheTime time.Duration) func(w http.R
 		}
 
 		opts := packages.NameVersionFilter(packageName, packageVersion)
-		packages, err := indexer.Get(r.Context(), &opts)
+		pkgs, err := indexer.Get(r.Context(), &opts)
 		if err != nil {
 			logger.Error("getting package path failed", zap.Error(err))
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
-		if len(packages) == 0 {
+		if len(pkgs) == 0 && proxyMode.Enabled() {
+			proxiedPackage, err := proxyMode.Package(r)
+			if err != nil {
+				logger.Error("proxy mode: package failed", zap.Error(err))
+				http.Error(w, "internal server error", http.StatusInternalServerError)
+				return
+			}
+			pkgs = pkgs.Join(packages.Packages{proxiedPackage})
+		}
+		if len(pkgs) == 0 {
 			notFoundError(w, errPackageRevisionNotFound)
 			return
 		}
@@ -61,10 +75,10 @@ func packageIndexHandler(indexer Indexer, cacheTime time.Duration) func(w http.R
 		w.Header().Set("Content-Type", "application/json")
 		cacheHeaders(w, cacheTime)
 
-		err = util.WriteJSONPretty(w, packages[0])
+		err = util.WriteJSONPretty(w, pkgs[0])
 		if err != nil {
 			logger.Error("marshaling package index failed",
-				zap.String("package.path", packages[0].BasePath),
+				zap.String("package.path", pkgs[0].BasePath),
 				zap.Error(err))
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
