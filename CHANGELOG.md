@@ -10,12 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
-* Proxy mode doesn't need local packages. [#871](https://github.com/elastic/package-registry/pull/871)
-
 ### Added
 
 * Update favicon to be the Elastic Package Registry logo. [#858](https://github.com/elastic/package-registry/pull/858)
 * Implement proxy mode. [#860](https://github.com/elastic/package-registry/pull/860)
+* Proxy mode doesn't need local packages. [#871](https://github.com/elastic/package-registry/pull/871)
 
 ### Deprecated
 
