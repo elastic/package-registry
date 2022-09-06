@@ -89,7 +89,7 @@ func init() {
 
 	// The following proxy-indexer related flags are technical preview and might be removed in the future or renamed
 	flag.BoolVar(&featureProxyMode, "feature-proxy-mode", false, "Enable proxy mode to include packages from other endpoint (technical preview).")
-	flag.StringVar(&proxyTo, "proxy-to", "https://epr-v2.ea-web.elastic.dev/", "Proxy-to endpoint")
+	flag.StringVar(&proxyTo, "proxy-to", "https://epr-snapshot.elastic.co/", "Proxy-to endpoint")
 }
 
 type Config struct {
