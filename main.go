@@ -8,7 +8,6 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"log"
 	"net/http"
 	_ "net/http/pprof"
 	"os"
@@ -301,11 +300,13 @@ func ensurePackagesAvailable(ctx context.Context, logger *zap.Logger, indexer In
 		logger.Fatal("Cannot get packages from indexer", zap.Error(err))
 	}
 
-	if len(packages) == 0 {
-		logger.Fatal("No packages available")
+	if len(packages) > 0 {
+		logger.Info(fmt.Sprintf("%v local package manifests loaded.", len(packages)))
+	} else if featureProxyMode {
+		logger.Info("No local packages found, but the proxy mode can access remote ones.")
+	} else {
+		logger.Fatal("No local packages found.")
 	}
-
-	logger.Info(fmt.Sprintf("%v package manifests loaded", len(packages)))
 	metrics.NumberIndexedPackages.Set(float64(len(packages)))
 }
 
@@ -319,7 +320,7 @@ func mustLoadRouter(logger *zap.Logger, config *Config, indexer Indexer) *mux.Ro
 
 func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router, error) {
 	if featureProxyMode {
-		log.Println("Technical preview: Proxy mode is an experimental feature and it may be unstable.")
+		logger.Info("Technical preview: Proxy mode is an experimental feature and it may be unstable.")
 	}
 	proxyMode, err := proxymode.NewProxyMode(proxymode.ProxyOptions{
 		Enabled: featureProxyMode,
