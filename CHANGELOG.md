@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Update favicon to be the Elastic Package Registry logo. [#858](https://github.com/elastic/package-registry/pull/858)
 * Implement proxy mode. [#860](https://github.com/elastic/package-registry/pull/860) [#871](https://github.com/elastic/package-registry/pull/871)
+* Update Go runtime to 1.19.1. [#872](https:/github.com/elastic/package-registry/pull/872)
 
 ### Deprecated
 
