@@ -53,6 +53,7 @@ func searchHandlerWithProxyMode(indexer Indexer, proxyMode *proxymode.ProxyMode,
 				return
 			}
 			packages = packages.Join(proxiedPackages)
+			packages = latestPackagesVersion(packages)
 		}
 
 		data, err := getPackageOutput(r.Context(), packages)
