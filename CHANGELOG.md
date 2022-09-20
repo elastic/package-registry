@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
+* Don't use io.ReadAll while recycling indices. [#878](https://github.com/elastic/package-registry/pull/878)
+
 ### Added
 
 ### Deprecated

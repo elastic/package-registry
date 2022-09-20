@@ -7,7 +7,6 @@ package storage
 import (
 	"context"
 	"encoding/json"
-	"io/ioutil"
 
 	"cloud.google.com/go/storage"
 	"github.com/pkg/errors"
@@ -31,27 +30,6 @@ func loadSearchIndexAll(ctx context.Context, storageClient *storage.Client, buck
 	logger := util.Logger()
 	logger.Debug("load search-index-all index", zap.String("index.file", indexFile))
 
-	content, err := loadIndexContent(ctx, storageClient, indexFile, bucketName, rootStoragePath, aCursor)
-	if err != nil {
-		return nil, errors.Wrap(err, "can't load search-index-all content")
-	}
-
-	var sia searchIndexAll
-	if content == nil {
-		return &sia, nil
-	}
-
-	err = json.Unmarshal(content, &sia)
-	if err != nil {
-		return nil, errors.Wrap(err, "can't unmarshal search-index-all")
-	}
-	return &sia, nil
-}
-
-func loadIndexContent(ctx context.Context, storageClient *storage.Client, indexFile, bucketName, rootStoragePath string, aCursor cursor) ([]byte, error) {
-	logger := util.Logger()
-	logger.Debug("load index content", zap.String("index.file", indexFile))
-
 	rootedIndexStoragePath := buildIndexStoragePath(rootStoragePath, aCursor, indexFile)
 	objectReader, err := storageClient.Bucket(bucketName).Object(rootedIndexStoragePath).NewReader(ctx)
 	if err != nil {
@@ -59,12 +37,12 @@ func loadIndexContent(ctx context.Context, storageClient *storage.Client, indexF
 	}
 	defer objectReader.Close()
 
-	b, err := ioutil.ReadAll(objectReader)
+	var sia searchIndexAll
+	err = json.NewDecoder(objectReader).Decode(&sia)
 	if err != nil {
-		return nil, errors.Wrapf(err, "ioutil.ReadAll failed")
+		return nil, errors.Wrapf(err, "can't decode the index file (path: %s)", rootedIndexStoragePath)
 	}
-
-	return b, nil
+	return &sia, nil
 }
 
 func buildIndexStoragePath(rootStoragePath string, aCursor cursor, indexFile string) string {
