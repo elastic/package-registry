@@ -30,7 +30,7 @@ func (p *Package) UnmarshalJSON(data []byte) error {
 	}{
 		(*Alias)(p),
 	}
-	err := jsoniter.Unmarshal(data, &aux)
+	err := jsoniter.ConfigCompatibleWithStandardLibrary.Unmarshal(data, &aux)
 	if err != nil {
 		return err
 	}

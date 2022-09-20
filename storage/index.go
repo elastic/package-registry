@@ -38,7 +38,7 @@ func loadSearchIndexAll(ctx context.Context, storageClient *storage.Client, buck
 	defer objectReader.Close()
 
 	var sia searchIndexAll
-	err = jsoniter.NewDecoder(objectReader).Decode(&sia)
+	err = jsoniter.ConfigCompatibleWithStandardLibrary.NewDecoder(objectReader).Decode(&sia)
 	if err != nil {
 		return nil, errors.Wrapf(err, "can't decode the index file (path: %s)", rootedIndexStoragePath)
 	}

@@ -43,7 +43,7 @@ func loadCursor(ctx context.Context, storageClient *storage.Client, bucketName, 
 	defer objectReader.Close()
 
 	var c cursor
-	err = jsoniter.NewDecoder(objectReader).Decode(&c)
+	err = jsoniter.ConfigCompatibleWithStandardLibrary.NewDecoder(objectReader).Decode(&c)
 	if err != nil {
 		return nil, errors.Wrapf(err, "can't decode the cursor file")
 	}
