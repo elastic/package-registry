@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 
 	"cloud.google.com/go/storage"
+	jsoniter "github.com/json-iterator/go"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
@@ -42,7 +43,7 @@ func loadCursor(ctx context.Context, storageClient *storage.Client, bucketName, 
 	defer objectReader.Close()
 
 	var c cursor
-	err = json.NewDecoder(objectReader).Decode(&c)
+	err = jsoniter.NewDecoder(objectReader).Decode(&c)
 	if err != nil {
 		return nil, errors.Wrapf(err, "can't decode the cursor file")
 	}

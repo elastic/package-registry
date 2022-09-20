@@ -6,9 +6,9 @@ package storage
 
 import (
 	"context"
-	"encoding/json"
 
 	"cloud.google.com/go/storage"
+	jsoniter "github.com/json-iterator/go"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
@@ -38,7 +38,7 @@ func loadSearchIndexAll(ctx context.Context, storageClient *storage.Client, buck
 	defer objectReader.Close()
 
 	var sia searchIndexAll
-	err = json.NewDecoder(objectReader).Decode(&sia)
+	err = jsoniter.NewDecoder(objectReader).Decode(&sia)
 	if err != nil {
 		return nil, errors.Wrapf(err, "can't decode the index file (path: %s)", rootedIndexStoragePath)
 	}
