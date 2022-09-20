@@ -7,7 +7,6 @@ package storage
 import (
 	"context"
 	"encoding/json"
-	"io/ioutil"
 
 	"cloud.google.com/go/storage"
 	"github.com/pkg/errors"
@@ -21,7 +20,7 @@ type cursor struct {
 }
 
 func (c *cursor) String() string {
-	b, err := json.MarshalIndent(c, " ", " ")
+	b, err := json.Marshal(c)
 	if err != nil {
 		return err.Error()
 	}
@@ -42,15 +41,10 @@ func loadCursor(ctx context.Context, storageClient *storage.Client, bucketName, 
 	}
 	defer objectReader.Close()
 
-	b, err := ioutil.ReadAll(objectReader)
-	if err != nil {
-		return nil, errors.Wrapf(err, "ioutil.ReadAll failed")
-	}
-
 	var c cursor
-	err = json.Unmarshal(b, &c)
+	err = json.NewDecoder(objectReader).Decode(&c)
 	if err != nil {
-		return nil, errors.Wrapf(err, "can't unmarshal the cursor file")
+		return nil, errors.Wrapf(err, "can't decode the cursor file")
 	}
 
 	logger.Debug("loaded cursor file", zap.String("cursor", c.String()))
