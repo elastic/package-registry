@@ -9,7 +9,6 @@ import (
 	"encoding/json"
 
 	"github.com/elastic/package-registry/util"
-	jsoniter "github.com/json-iterator/go"
 )
 
 var (
@@ -30,7 +29,7 @@ func (p *Package) UnmarshalJSON(data []byte) error {
 	}{
 		(*Alias)(p),
 	}
-	err := jsoniter.ConfigCompatibleWithStandardLibrary.Unmarshal(data, &aux)
+	err := json.Unmarshal(data, &aux)
 	if err != nil {
 		return err
 	}
