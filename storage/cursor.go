@@ -5,9 +5,10 @@
 package storage
 
 import (
-	"cloud.google.com/go/storage"
 	"context"
 	"encoding/json"
+
+	"cloud.google.com/go/storage"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
