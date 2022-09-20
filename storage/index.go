@@ -5,11 +5,9 @@
 package storage
 
 import (
+	"cloud.google.com/go/storage"
 	"context"
 	"encoding/json"
-	"runtime"
-
-	"cloud.google.com/go/storage"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
@@ -43,8 +41,6 @@ func loadSearchIndexAll(ctx context.Context, storageClient *storage.Client, buck
 	if err != nil {
 		return nil, errors.Wrapf(err, "can't decode the index file (path: %s)", rootedIndexStoragePath)
 	}
-	runtime.GC()
-
 	return &sia, nil
 }
 

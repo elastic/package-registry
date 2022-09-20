@@ -5,11 +5,9 @@
 package storage
 
 import (
+	"cloud.google.com/go/storage"
 	"context"
 	"encoding/json"
-	"runtime"
-
-	"cloud.google.com/go/storage"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
@@ -47,7 +45,6 @@ func loadCursor(ctx context.Context, storageClient *storage.Client, bucketName, 
 	if err != nil {
 		return nil, errors.Wrapf(err, "can't decode the cursor file")
 	}
-	runtime.GC()
 
 	logger.Debug("loaded cursor file", zap.String("cursor", c.String()))
 	return &c, nil
