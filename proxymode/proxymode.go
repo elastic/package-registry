@@ -5,13 +5,16 @@
 package proxymode
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/hashicorp/go-retryablehttp"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
@@ -22,7 +25,7 @@ import (
 type ProxyMode struct {
 	options ProxyOptions
 
-	httpClient     *http.Client
+	httpClient     *retryablehttp.Client
 	destinationURL *url.URL
 	resolver       *proxyResolver
 }
@@ -48,13 +51,21 @@ func NewProxyMode(options ProxyOptions) (*ProxyMode, error) {
 		return &pm, nil
 	}
 
-	pm.httpClient = &http.Client{
-		Timeout: 10 * time.Second,
-		Transport: &http.Transport{
-			MaxIdleConns:        100,
-			MaxIdleConnsPerHost: 100,
-			IdleConnTimeout:     90 * time.Second,
+	pm.httpClient = &retryablehttp.Client{
+		HTTPClient: &http.Client{
+			Timeout: 10 * time.Second,
+			Transport: &http.Transport{
+				MaxIdleConns:        100,
+				MaxIdleConnsPerHost: 100,
+				IdleConnTimeout:     90 * time.Second,
+			},
 		},
+		Logger:       withZapLoggerAdapter(util.Logger()),
+		RetryWaitMin: 1 * time.Second,
+		RetryWaitMax: 15 * time.Second,
+		RetryMax:     4,
+		CheckRetry:   proxyRetryPolicy,
+		Backoff:      retryablehttp.DefaultBackoff,
 	}
 
 	var err error
@@ -65,6 +76,28 @@ func NewProxyMode(options ProxyOptions) (*ProxyMode, error) {
 
 	pm.resolver = &proxyResolver{destinationURL: *pm.destinationURL}
 	return &pm, nil
+}
+
+// proxyRetryPolicy function extends the DefaultRetryPolicy to check if the HTTP response content-type
+// is application/json. We found occurrences of requests being rejected by an intermittent proxy and causing
+// the json.Decoder to fail.
+func proxyRetryPolicy(ctx context.Context, resp *http.Response, err error) (bool, error) {
+	shouldRetry, err := retryablehttp.DefaultRetryPolicy(ctx, resp, err)
+	if shouldRetry {
+		return shouldRetry, err
+	}
+
+	// Chaining Package Registry servers (proxies) is allowed. HTTP client must get to the end of the chain.
+	locationHeader := resp.Header.Get("location")
+	if locationHeader != "" {
+		return false, nil
+	}
+
+	contentType := resp.Header.Get("content-type")
+	if strings.HasPrefix(contentType, "application/json") {
+		return false, nil
+	}
+	return true, fmt.Errorf("unexpected content type: %s", contentType)
 }
 
 func (pm *ProxyMode) Enabled() bool {
@@ -79,7 +112,7 @@ func (pm *ProxyMode) Search(r *http.Request) (packages.Packages, error) {
 	proxyURL.Scheme = pm.destinationURL.Scheme
 	proxyURL.User = pm.destinationURL.User
 
-	proxyRequest, err := http.NewRequest(http.MethodGet, proxyURL.String(), nil)
+	proxyRequest, err := retryablehttp.NewRequest(http.MethodGet, proxyURL.String(), nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't create proxy request")
 	}
@@ -109,7 +142,7 @@ func (pm *ProxyMode) Categories(r *http.Request) ([]packages.Category, error) {
 	proxyURL.Scheme = pm.destinationURL.Scheme
 	proxyURL.User = pm.destinationURL.User
 
-	proxyRequest, err := http.NewRequest(http.MethodGet, proxyURL.String(), nil)
+	proxyRequest, err := retryablehttp.NewRequest(http.MethodGet, proxyURL.String(), nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't create proxy request")
 	}
@@ -144,7 +177,7 @@ func (pm *ProxyMode) Package(r *http.Request) (*packages.Package, error) {
 
 	urlPath := fmt.Sprintf("/package/%s/%s/", packageName, packageVersion)
 	proxyURL := pm.destinationURL.ResolveReference(&url.URL{Path: urlPath})
-	proxyRequest, err := http.NewRequest(http.MethodGet, proxyURL.String(), nil)
+	proxyRequest, err := retryablehttp.NewRequest(http.MethodGet, proxyURL.String(), nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't create proxy request")
 	}
