@@ -43,6 +43,8 @@ func loadSearchIndexAll(ctx context.Context, storageClient *storage.Client, buck
 	// Using `Unmarshal(doc, &sia)` would require to read the whole document.
 	// Using `dec.Decode(&sia)` would also make the decoder to keep the whole document
 	// in memory.
+	// `jsoniter` seemed to be slightly faster, but to use more memory for our use case,
+	// and we are looking to optimize for memory use.
 	var sia searchIndexAll
 	dec := json.NewDecoder(objectReader)
 	for dec.More() {
@@ -71,7 +73,6 @@ func loadSearchIndexAll(ctx context.Context, storageClient *storage.Client, buck
 			if err != nil {
 				return nil, errors.Wrapf(err, "unexpected error parsing package from index file (token: %v)", token)
 			}
-			// TODO: Apply transforms for package here and directly build the `packages.Packages` array.
 			sia.Packages = append(sia.Packages, p)
 		}
 
