@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Use retriable HTTP client in proxy mode. [#883](https://github.com/elastic/package-registry/pull/883)
+
 ### Deprecated
 
 ### Known Issues
