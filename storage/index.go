@@ -66,6 +66,7 @@ func loadSearchIndexAll(ctx context.Context, storageClient *storage.Client, buck
 			if err != nil {
 				return nil, errors.Wrapf(err, "unexpected error parsing package from index file (token: %v)", token)
 			}
+			// TODO: Apply transforms for package here and directly build the `packages.Packages` array?
 			sia.Packages = append(sia.Packages, p)
 		}
 
@@ -74,7 +75,6 @@ func loadSearchIndexAll(ctx context.Context, storageClient *storage.Client, buck
 		if err != nil {
 			return nil, errors.Wrapf(err, "unexpected error while reading index file")
 		}
-		// We only want an array now.
 		if delim, ok := token.(json.Delim); !ok || delim != ']' {
 			return nil, errors.Errorf("expected closing array, found %v", token)
 		}
