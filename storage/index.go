@@ -38,9 +38,46 @@ func loadSearchIndexAll(ctx context.Context, storageClient *storage.Client, buck
 	defer objectReader.Close()
 
 	var sia searchIndexAll
-	err = json.NewDecoder(objectReader).Decode(&sia)
-	if err != nil {
-		return nil, errors.Wrapf(err, "can't decode the index file (path: %s)", rootedIndexStoragePath)
+	dec := json.NewDecoder(objectReader)
+
+	for dec.More() {
+		// Read everything till the "packages" key in the map.
+		token, err := dec.Token()
+		if err != nil {
+			return nil, errors.Wrapf(err, "unexpected error while reading index file")
+		}
+		if key, ok := token.(string); !ok || key != "packages" {
+			continue
+		}
+
+		// Read the opening array now.
+		token, err = dec.Token()
+		if err != nil {
+			return nil, errors.Wrapf(err, "unexpected error while reading index file")
+		}
+		if delim, ok := token.(json.Delim); !ok || delim != '[' {
+			return nil, errors.Errorf("expected opening array, found %v", token)
+		}
+
+		// Read the array of packages one by one.
+		for dec.More() {
+			var p packageIndex
+			err = dec.Decode(&p)
+			if err != nil {
+				return nil, errors.Wrapf(err, "unexpected error parsing package from index file (token: %v)", token)
+			}
+			sia.Packages = append(sia.Packages, p)
+		}
+
+		// Read the closing array delimiter.
+		token, err = dec.Token()
+		if err != nil {
+			return nil, errors.Wrapf(err, "unexpected error while reading index file")
+		}
+		// We only want an array now.
+		if delim, ok := token.(json.Delim); !ok || delim != ']' {
+			return nil, errors.Errorf("expected closing array, found %v", token)
+		}
 	}
 	return &sia, nil
 }
