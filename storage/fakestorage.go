@@ -21,12 +21,12 @@ var FakeIndexerOptions = IndexerOptions{
 	WatchInterval:                0,
 }
 
-func PrepareFakeServer(t *testing.T, indexPath string) *fakestorage.Server {
+func PrepareFakeServer(tb testing.TB, indexPath string) *fakestorage.Server {
 	indexContent, err := ioutil.ReadFile(indexPath)
-	require.NoError(t, err, "index file must be populated")
+	require.NoError(tb, err, "index file must be populated")
 
 	const firstRevision = "1"
-	serverObjects := prepareServerObjects(t, firstRevision, indexContent)
+	serverObjects := prepareServerObjects(tb, firstRevision, indexContent)
 	return fakestorage.NewServer(serverObjects)
 }
 
@@ -41,11 +41,11 @@ func updateFakeServer(t *testing.T, server *fakestorage.Server, revision, indexP
 	}
 }
 
-func prepareServerObjects(t *testing.T, revision string, indexContent []byte) []fakestorage.Object {
+func prepareServerObjects(tb testing.TB, revision string, indexContent []byte) []fakestorage.Object {
 	var index searchIndexAll
 	err := json.Unmarshal(indexContent, &index)
-	require.NoError(t, err, "index file must be valid")
-	require.NotEmpty(t, index.Packages, "index file must contain some package entries")
+	require.NoError(tb, err, "index file must be valid")
+	require.NotEmpty(tb, index.Packages, "index file must contain some package entries")
 
 	var serverObjects []fakestorage.Object
 	// Add cursor and index file
@@ -61,6 +61,6 @@ func prepareServerObjects(t *testing.T, revision string, indexContent []byte) []
 		},
 		Content: indexContent,
 	})
-	t.Logf("Prepared %d packages with total %d server objects.", len(index.Packages), len(serverObjects))
+	tb.Logf("Prepared %d packages with total %d server objects.", len(index.Packages), len(serverObjects))
 	return serverObjects
 }
