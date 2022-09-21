@@ -37,10 +37,53 @@ func loadSearchIndexAll(ctx context.Context, storageClient *storage.Client, buck
 	}
 	defer objectReader.Close()
 
+	// Using a decoder here as tokenizer to parse the list of packages as a stream
+	// instead of needing the whole document in memory at the same time. This helps
+	// reducing memory usage.
+	// Using `Unmarshal(doc, &sia)` would require to read the whole document.
+	// Using `dec.Decode(&sia)` would also make the decoder to keep the whole document
+	// in memory.
+	// `jsoniter` seemed to be slightly faster, but to use more memory for our use case,
+	// and we are looking to optimize for memory use.
 	var sia searchIndexAll
-	err = json.NewDecoder(objectReader).Decode(&sia)
-	if err != nil {
-		return nil, errors.Wrapf(err, "can't decode the index file (path: %s)", rootedIndexStoragePath)
+	dec := json.NewDecoder(objectReader)
+	for dec.More() {
+		// Read everything till the "packages" key in the map.
+		token, err := dec.Token()
+		if err != nil {
+			return nil, errors.Wrapf(err, "unexpected error while reading index file")
+		}
+		if key, ok := token.(string); !ok || key != "packages" {
+			continue
+		}
+
+		// Read the opening array now.
+		token, err = dec.Token()
+		if err != nil {
+			return nil, errors.Wrapf(err, "unexpected error while reading index file")
+		}
+		if delim, ok := token.(json.Delim); !ok || delim != '[' {
+			return nil, errors.Errorf("expected opening array, found %v", token)
+		}
+
+		// Read the array of packages one by one.
+		for dec.More() {
+			var p packageIndex
+			err = dec.Decode(&p)
+			if err != nil {
+				return nil, errors.Wrapf(err, "unexpected error parsing package from index file (token: %v)", token)
+			}
+			sia.Packages = append(sia.Packages, p)
+		}
+
+		// Read the closing array delimiter.
+		token, err = dec.Token()
+		if err != nil {
+			return nil, errors.Wrapf(err, "unexpected error while reading index file")
+		}
+		if delim, ok := token.(json.Delim); !ok || delim != ']' {
+			return nil, errors.Errorf("expected closing array, found %v", token)
+		}
 	}
 	return &sia, nil
 }

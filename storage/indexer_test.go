@@ -27,6 +27,19 @@ func TestInit(t *testing.T) {
 	require.NoError(t, err)
 }
 
+func BenchmarkInit(b *testing.B) {
+	// given
+	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
+	defer fs.Stop()
+	storageClient := fs.Client()
+
+	for i := 0; i < b.N; i++ {
+		indexer := NewIndexer(storageClient, FakeIndexerOptions)
+		err := indexer.Init(context.Background())
+		require.NoError(b, err)
+	}
+}
+
 func TestGet_ListAllPackages(t *testing.T) {
 	// given
 	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
