@@ -37,9 +37,14 @@ func loadSearchIndexAll(ctx context.Context, storageClient *storage.Client, buck
 	}
 	defer objectReader.Close()
 
+	// Using a decoder here as tokenizer to parse the list of packages as a stream
+	// instead of needing the whole document in memory at the same time. This helps
+	// reducing memory usage.
+	// Using `Unmarshal(doc, &sia)` would require to read the whole document.
+	// Using `dec.Decode(&sia)` would also make the decoder to keep the whole document
+	// in memory.
 	var sia searchIndexAll
 	dec := json.NewDecoder(objectReader)
-
 	for dec.More() {
 		// Read everything till the "packages" key in the map.
 		token, err := dec.Token()
@@ -66,7 +71,7 @@ func loadSearchIndexAll(ctx context.Context, storageClient *storage.Client, buck
 			if err != nil {
 				return nil, errors.Wrapf(err, "unexpected error parsing package from index file (token: %v)", token)
 			}
-			// TODO: Apply transforms for package here and directly build the `packages.Packages` array?
+			// TODO: Apply transforms for package here and directly build the `packages.Packages` array.
 			sia.Packages = append(sia.Packages, p)
 		}
 
