@@ -107,7 +107,7 @@ func TestPackagesFilter(t *testing.T) {
 				Experimental: true,
 			},
 			Expected: []filterTestPackage{
-				{Name: "apache", Version: "1.0.0"},
+				{Name: "apache", Version: "2.0.0-rc2"},
 			},
 		},
 		{
