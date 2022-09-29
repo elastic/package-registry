@@ -300,6 +300,11 @@ type Filter struct {
 	Experimental bool
 }
 
+// ExperimentalPrereleaseCompatibility helps to keep track where there is code
+// assuming that experimental=true also enables prerelease=true for compatibility
+// reasons.
+const ExperimentalPrereleaseCompatibility = true
+
 // Apply applies the filter to the list of packages, if the filter is nil, no filtering is done.
 func (f *Filter) Apply(ctx context.Context, packages Packages) Packages {
 	if f == nil {

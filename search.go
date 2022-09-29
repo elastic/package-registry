@@ -112,7 +112,7 @@ func newSearchFilterFromQuery(query url.Values) (*packages.Filter, error) {
 		}
 
 		// For compatibility with older versions of Kibana.
-		if filter.Experimental {
+		if packages.ExperimentalPrereleaseCompatibility && filter.Experimental {
 			filter.Prerelease = true
 		}
 	}
