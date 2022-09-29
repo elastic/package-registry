@@ -55,6 +55,25 @@ func TestPackagesFilter(t *testing.T) {
 			Expected: []filterTestPackage{},
 		},
 		{
+			Title: "not matching package version",
+			Filter: Filter{
+				PackageName:    "apache",
+				PackageVersion: "1.2.3",
+			},
+			Expected: []filterTestPackage{},
+		},
+		{
+			Title: "not matching package version and all enabled",
+			Filter: Filter{
+				PackageName:    "apache",
+				PackageVersion: "1.2.3",
+				Experimental:   true,
+				Prerelease:     true,
+				AllVersions:    true,
+			},
+			Expected: []filterTestPackage{},
+		},
+		{
 			Title:  "all packages",
 			Filter: Filter{},
 			Expected: []filterTestPackage{
