@@ -16301,6 +16301,44 @@
   {
     "name": "fortinet",
     "title": "Fortinet",
+    "version": "1.0.0",
+    "release": "experimental",
+    "description": "Fortinet Integration",
+    "type": "integration",
+    "download": "/epr/fortinet/fortinet-1.0.0.zip",
+    "path": "/package/fortinet/1.0.0",
+    "icons": [
+      {
+        "src": "/img/fortinet-logo.svg",
+        "path": "/package/fortinet/1.0.0/img/fortinet-logo.svg",
+        "title": "Fortinet",
+        "size": "216x216",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "fortinet",
+        "title": "Fortinet logs",
+        "description": "Collect logs from Fortinet instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security"
+    ],
+    "signature_path": "/epr/fortinet/fortinet-1.0.0.zip.sig"
+  },
+  {
+    "name": "fortinet",
+    "title": "Fortinet",
     "version": "1.1.2",
     "release": "ga",
     "description": "This Elastic integration collects logs from Fortinet instances",
@@ -18786,6 +18824,44 @@
     "signature_path": "/epr/kibana/kibana-1.0.0.zip.sig"
   },
   {
+    "name": "kibana",
+    "title": "Kibana",
+    "version": "1.0.2",
+    "release": "experimental",
+    "description": "Collect logs and metrics from Kibana with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/kibana/kibana-1.0.2.zip",
+    "path": "/package/kibana/1.0.2",
+    "icons": [
+      {
+        "src": "/img/logo_kibana.svg",
+        "path": "/package/kibana/1.0.2/img/logo_kibana.svg",
+        "title": "logo kibana",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "kibana",
+        "title": "Kibana logs and metrics",
+        "description": "Collect logs and metrics from Kibana instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.15.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "elastic_stack"
+    ],
+    "signature_path": "/epr/kibana/kibana-1.0.2.zip.sig"
+  },
+  {
     "name": "kubernetes",
     "title": "Kubernetes",
     "version": "1.1.0",
@@ -20500,6 +20576,82 @@
     "signature_path": "/epr/logstash/logstash-1.0.0.zip.sig"
   },
   {
+    "name": "logstash",
+    "title": "Logstash",
+    "version": "1.0.2",
+    "release": "experimental",
+    "description": "Collect logs and metrics from Logstash with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/logstash/logstash-1.0.2.zip",
+    "path": "/package/logstash/1.0.2",
+    "icons": [
+      {
+        "src": "/img/logo_logstash.svg",
+        "path": "/package/logstash/1.0.2/img/logo_logstash.svg",
+        "title": "logo logstash",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "logstash",
+        "title": "Logstash logs and metrics",
+        "description": "Collect logs and metrics from Logstash instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.15.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "elastic_stack"
+    ],
+    "signature_path": "/epr/logstash/logstash-1.0.2.zip.sig"
+  },
+  {
+    "name": "logstash",
+    "title": "Logstash",
+    "version": "1.1.0",
+    "release": "experimental",
+    "description": "Collect logs and metrics from Logstash with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/logstash/logstash-1.1.0.zip",
+    "path": "/package/logstash/1.1.0",
+    "icons": [
+      {
+        "src": "/img/logo_logstash.svg",
+        "path": "/package/logstash/1.1.0/img/logo_logstash.svg",
+        "title": "logo logstash",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "logstash",
+        "title": "Logstash logs and metrics",
+        "description": "Collect logs and metrics from Logstash instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.15.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "elastic_stack"
+    ],
+    "signature_path": "/epr/logstash/logstash-1.1.0.zip.sig"
+  },
+  {
     "name": "m365_defender",
     "title": "M365 Defender Logs",
     "version": "1.0.1",
@@ -20963,6 +21115,46 @@
       "azure"
     ],
     "signature_path": "/epr/microsoft/microsoft-1.0.0.zip.sig"
+  },
+  {
+    "name": "microsoft",
+    "title": "Microsoft",
+    "version": "1.1.0",
+    "release": "experimental",
+    "description": "Deprecated. Use a specific Microsoft package instead.",
+    "type": "integration",
+    "download": "/epr/microsoft/microsoft-1.1.0.zip",
+    "path": "/package/microsoft/1.1.0",
+    "icons": [
+      {
+        "src": "/img/logo.svg",
+        "path": "/package/microsoft/1.1.0/img/logo.svg",
+        "title": "Microsoft logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "microsoft",
+        "title": "Microsoft",
+        "description": "Collect logs from Microsoft products"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.1"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "network",
+      "security",
+      "azure"
+    ],
+    "signature_path": "/epr/microsoft/microsoft-1.1.0.zip.sig"
   },
   {
     "name": "microsoft_dhcp",

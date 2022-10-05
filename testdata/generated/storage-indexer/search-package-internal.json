@@ -2672,16 +2672,16 @@
   {
     "name": "kibana",
     "title": "Kibana",
-    "version": "1.0.0",
-    "release": "ga",
-    "description": "Kibana Integration",
+    "version": "1.0.2",
+    "release": "experimental",
+    "description": "Collect logs and metrics from Kibana with Elastic Agent.",
     "type": "integration",
-    "download": "/epr/kibana/kibana-1.0.0.zip",
-    "path": "/package/kibana/1.0.0",
+    "download": "/epr/kibana/kibana-1.0.2.zip",
+    "path": "/package/kibana/1.0.2",
     "icons": [
       {
         "src": "/img/logo_kibana.svg",
-        "path": "/package/kibana/1.0.0/img/logo_kibana.svg",
+        "path": "/package/kibana/1.0.2/img/logo_kibana.svg",
         "title": "logo kibana",
         "size": "32x32",
         "type": "image/svg+xml"
@@ -2705,7 +2705,7 @@
     "categories": [
       "elastic_stack"
     ],
-    "signature_path": "/epr/kibana/kibana-1.0.0.zip.sig"
+    "signature_path": "/epr/kibana/kibana-1.0.2.zip.sig"
   },
   {
     "name": "kubernetes",
@@ -2870,16 +2870,16 @@
   {
     "name": "logstash",
     "title": "Logstash",
-    "version": "1.0.0",
-    "release": "ga",
-    "description": "Logstash Integration",
+    "version": "1.1.0",
+    "release": "experimental",
+    "description": "Collect logs and metrics from Logstash with Elastic Agent.",
     "type": "integration",
-    "download": "/epr/logstash/logstash-1.0.0.zip",
-    "path": "/package/logstash/1.0.0",
+    "download": "/epr/logstash/logstash-1.1.0.zip",
+    "path": "/package/logstash/1.1.0",
     "icons": [
       {
         "src": "/img/logo_logstash.svg",
-        "path": "/package/logstash/1.0.0/img/logo_logstash.svg",
+        "path": "/package/logstash/1.1.0/img/logo_logstash.svg",
         "title": "logo logstash",
         "size": "32x32",
         "type": "image/svg+xml"
@@ -2894,7 +2894,7 @@
     ],
     "conditions": {
       "kibana": {
-        "version": "^7.15.0"
+        "version": "^7.15.0 || ^8.0.0"
       }
     },
     "owner": {
@@ -2903,7 +2903,7 @@
     "categories": [
       "elastic_stack"
     ],
-    "signature_path": "/epr/logstash/logstash-1.0.0.zip.sig"
+    "signature_path": "/epr/logstash/logstash-1.1.0.zip.sig"
   },
   {
     "name": "m365_defender",
@@ -3025,16 +3025,16 @@
   {
     "name": "microsoft",
     "title": "Microsoft",
-    "version": "1.0.0",
-    "release": "ga",
-    "description": "This Elastic integration collects logs from Microsoft products",
+    "version": "1.1.0",
+    "release": "experimental",
+    "description": "Deprecated. Use a specific Microsoft package instead.",
     "type": "integration",
-    "download": "/epr/microsoft/microsoft-1.0.0.zip",
-    "path": "/package/microsoft/1.0.0",
+    "download": "/epr/microsoft/microsoft-1.1.0.zip",
+    "path": "/package/microsoft/1.1.0",
     "icons": [
       {
         "src": "/img/logo.svg",
-        "path": "/package/microsoft/1.0.0/img/logo.svg",
+        "path": "/package/microsoft/1.1.0/img/logo.svg",
         "title": "Microsoft logo",
         "size": "32x32",
         "type": "image/svg+xml"
@@ -3049,7 +3049,7 @@
     ],
     "conditions": {
       "kibana": {
-        "version": "^7.15.0"
+        "version": "^7.14.1"
       }
     },
     "owner": {
@@ -3060,7 +3060,7 @@
       "security",
       "azure"
     ],
-    "signature_path": "/epr/microsoft/microsoft-1.0.0.zip.sig"
+    "signature_path": "/epr/microsoft/microsoft-1.1.0.zip.sig"
   },
   {
     "name": "microsoft_dhcp",

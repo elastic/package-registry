@@ -15,6 +15,13 @@ func TestPackagesFilter(t *testing.T) {
 	filterTestPackages := []filterTestPackage{
 		{
 			Name:          "apache",
+			Version:       "1.0.0-rc1",
+			Release:       "beta",
+			Type:          "integration",
+			KibanaVersion: "^7.17.0 || ^8.0.0",
+		},
+		{
+			Name:          "apache",
 			Version:       "1.0.0",
 			Release:       "ga",
 			Type:          "integration",
@@ -23,7 +30,6 @@ func TestPackagesFilter(t *testing.T) {
 		{
 			Name:          "apache",
 			Version:       "2.0.0-rc2",
-			Release:       "beta",
 			Type:          "integration",
 			KibanaVersion: "^7.17.0 || ^8.0.0",
 		},
@@ -52,6 +58,18 @@ func TestPackagesFilter(t *testing.T) {
 			Release:       "experimental",
 			Type:          "integration",
 			KibanaVersion: "^7.17.0 || ^8.0.0",
+		},
+		{
+			Name:          "etcd",
+			Version:       "1.0.0-rc1",
+			Type:          "integration",
+			KibanaVersion: "^8.0.0",
+		},
+		{
+			Name:          "etcd",
+			Version:       "1.0.0-rc2",
+			Type:          "integration",
+			KibanaVersion: "^8.0.0",
 		},
 	}
 	packages := buildFilterTestPackages(filterTestPackages)
@@ -98,7 +116,9 @@ func TestPackagesFilter(t *testing.T) {
 			Filter: Filter{
 				PackageName: "logstash",
 			},
-			Expected: []filterTestPackage{},
+			Expected: []filterTestPackage{
+				{Name: "logstash", Version: "1.1.0"},
+			},
 		},
 		{
 			Title: "non-prerelease package with experimental release flag prerelease search",
@@ -115,7 +135,6 @@ func TestPackagesFilter(t *testing.T) {
 			Filter: Filter{
 				PackageName:    "apache",
 				PackageVersion: "1.2.3",
-				Experimental:   true,
 				Prerelease:     true,
 				AllVersions:    true,
 			},
@@ -127,7 +146,16 @@ func TestPackagesFilter(t *testing.T) {
 			Expected: []filterTestPackage{
 				{Name: "apache", Version: "1.0.0"},
 				{Name: "nginx", Version: "2.0.0"},
+				{Name: "logstash", Version: "1.1.0"},
 			},
+		},
+		{
+			Title: "all packages and all versions",
+			Filter: Filter{
+				AllVersions: true,
+				Prerelease:  true,
+			},
+			Expected: filterTestPackages,
 		},
 		{
 			Title: "apache package default search",
@@ -148,26 +176,6 @@ func TestPackagesFilter(t *testing.T) {
 				{Name: "apache", Version: "2.0.0-rc2"},
 			},
 		},
-		{
-			Title: "apache package experimental search",
-			Filter: Filter{
-				PackageName:  "apache",
-				Experimental: true,
-			},
-			Expected: []filterTestPackage{
-				{Name: "apache", Version: "2.0.0-rc2"},
-			},
-		},
-		{
-			Title: "nginx package experimental search",
-			Filter: Filter{
-				PackageName:  "nginx",
-				Experimental: true,
-			},
-			Expected: []filterTestPackage{
-				{Name: "nginx", Version: "2.0.0"},
-			},
-		},
 
 		// Legacy Kibana, experimental is always true.
 		{
@@ -176,16 +184,34 @@ func TestPackagesFilter(t *testing.T) {
 				AllVersions:  true,
 				Experimental: true,
 			},
-			Expected: filterTestPackages,
+			Expected: removeFilterTestPackages(filterTestPackages,
+				filterTestPackage{Name: "apache", Version: "1.0.0-rc1"},
+				filterTestPackage{Name: "apache", Version: "2.0.0-rc2"},
+			),
 		},
 		{
+			// Prerelease versions must be skipped if there are GA versions.
+			// See: https://github.com/elastic/ingest-dev/issues/1285
 			Title: "apache package experimental search - legacy kibana",
 			Filter: Filter{
 				PackageName:  "apache",
 				Experimental: true,
 			},
 			Expected: []filterTestPackage{
-				{Name: "apache", Version: "2.0.0-rc2"},
+				{Name: "apache", Version: "1.0.0"},
+			},
+		},
+		{
+			// Prerelease versions must be skipped if there are GA versions.
+			// See: https://github.com/elastic/ingest-dev/issues/1285
+			Title: "apache package experimental search all versions - legacy kibana",
+			Filter: Filter{
+				PackageName:  "apache",
+				Experimental: true,
+				AllVersions:  true,
+			},
+			Expected: []filterTestPackage{
+				{Name: "apache", Version: "1.0.0"},
 			},
 		},
 		{
@@ -195,6 +221,18 @@ func TestPackagesFilter(t *testing.T) {
 				Experimental: true,
 			},
 			Expected: []filterTestPackage{
+				{Name: "nginx", Version: "2.0.0"},
+			},
+		},
+		{
+			Title: "nginx package experimental search all versions - legacy kibana",
+			Filter: Filter{
+				PackageName:  "nginx",
+				Experimental: true,
+				AllVersions:  true,
+			},
+			Expected: []filterTestPackage{
+				{Name: "nginx", Version: "1.0.0"},
 				{Name: "nginx", Version: "2.0.0"},
 			},
 		},
@@ -216,6 +254,28 @@ func TestPackagesFilter(t *testing.T) {
 			},
 			Expected: []filterTestPackage{
 				{Name: "mysql", Version: "0.9.0"},
+			},
+		},
+		{
+			Title: "etcd package experimental search - legacy kibana",
+			Filter: Filter{
+				PackageName:  "etcd",
+				Experimental: true,
+			},
+			Expected: []filterTestPackage{
+				{Name: "etcd", Version: "1.0.0-rc2"},
+			},
+		},
+		{
+			Title: "etcd package experimental search all versions - legacy kibana",
+			Filter: Filter{
+				PackageName:  "etcd",
+				Experimental: true,
+				AllVersions:  true,
+			},
+			Expected: []filterTestPackage{
+				{Name: "etcd", Version: "1.0.0-rc1"},
+				{Name: "etcd", Version: "1.0.0-rc2"},
 			},
 		},
 	}
@@ -278,6 +338,23 @@ func buildFilterTestPackages(testPackages []filterTestPackage) Packages {
 		packages[i] = p.Build()
 	}
 	return packages
+}
+
+func removeFilterTestPackages(testPackages []filterTestPackage, remove ...filterTestPackage) []filterTestPackage {
+	var filtered []filterTestPackage
+	for _, tp := range testPackages {
+		found := false
+		for _, rp := range remove {
+			if rp.Name == tp.Name && rp.Version == tp.Version {
+				found = true
+				break
+			}
+		}
+		if !found {
+			filtered = append(filtered, tp)
+		}
+	}
+	return filtered
 }
 
 func assertFilterPackagesResult(t *testing.T, expected []filterTestPackage, found Packages) {

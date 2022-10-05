@@ -305,6 +305,27 @@
     ]
   },
   {
+    "name": "traces",
+    "title": "Not actually APM",
+    "version": "1.0.0",
+    "release": "experimental",
+    "description": "Not actually APM",
+    "type": "integration",
+    "download": "/epr/traces/traces-1.0.0.zip",
+    "path": "/package/traces/1.0.0",
+    "conditions": {
+      "kibana": {
+        "version": "~7.x.x"
+      }
+    },
+    "owner": {
+      "github": "github.com/elastic/not-apm"
+    },
+    "categories": [
+      "monitoring"
+    ]
+  },
+  {
     "name": "reference",
     "title": "Reference package",
     "version": "1.0.0",

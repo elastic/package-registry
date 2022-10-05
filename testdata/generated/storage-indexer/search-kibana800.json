@@ -2750,6 +2750,44 @@
     "signature_path": "/epr/kubernetes/kubernetes-1.17.2.zip.sig"
   },
   {
+    "name": "logstash",
+    "title": "Logstash",
+    "version": "1.1.0",
+    "release": "experimental",
+    "description": "Collect logs and metrics from Logstash with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/logstash/logstash-1.1.0.zip",
+    "path": "/package/logstash/1.1.0",
+    "icons": [
+      {
+        "src": "/img/logo_logstash.svg",
+        "path": "/package/logstash/1.1.0/img/logo_logstash.svg",
+        "title": "logo logstash",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "logstash",
+        "title": "Logstash logs and metrics",
+        "description": "Collect logs and metrics from Logstash instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.15.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "elastic_stack"
+    ],
+    "signature_path": "/epr/logstash/logstash-1.1.0.zip.sig"
+  },
+  {
     "name": "m365_defender",
     "title": "M365 Defender Logs",
     "version": "1.0.3",
