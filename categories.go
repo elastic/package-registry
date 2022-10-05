@@ -113,11 +113,6 @@ func newCategoriesFilterFromQuery(query url.Values) (*packages.Filter, error) {
 		if err != nil {
 			return nil, fmt.Errorf("invalid 'experimental' query param: '%s'", v)
 		}
-
-		// For compatibility with older versions of Kibana.
-		if packages.ExperimentalPrereleaseCompatibility && filter.Experimental {
-			filter.Prerelease = true
-		}
 	}
 
 	if v := query.Get("prerelease"); v != "" {

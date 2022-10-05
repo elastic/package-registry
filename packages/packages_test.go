@@ -127,7 +127,6 @@ func TestPackagesFilter(t *testing.T) {
 			Filter: Filter{
 				AllVersions:  true,
 				Experimental: true,
-				Prerelease:   ExperimentalPrereleaseCompatibility,
 			},
 			Expected: filterTestPackages,
 		},
@@ -136,7 +135,6 @@ func TestPackagesFilter(t *testing.T) {
 			Filter: Filter{
 				PackageName:  "apache",
 				Experimental: true,
-				Prerelease:   ExperimentalPrereleaseCompatibility,
 			},
 			Expected: []filterTestPackage{
 				{Name: "apache", Version: "2.0.0-rc2"},
@@ -147,7 +145,6 @@ func TestPackagesFilter(t *testing.T) {
 			Filter: Filter{
 				PackageName:  "nginx",
 				Experimental: true,
-				Prerelease:   ExperimentalPrereleaseCompatibility,
 			},
 			Expected: []filterTestPackage{
 				{Name: "nginx", Version: "2.0.0"},
