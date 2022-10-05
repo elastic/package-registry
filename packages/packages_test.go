@@ -40,9 +40,17 @@ func TestPackagesFilter(t *testing.T) {
 			KibanaVersion: "^7.17.0 || ^8.0.0",
 		},
 		{
-			Name:          "logstash",
+			Name:          "mysql",
 			Version:       "0.9.0",
 			Release:       "experimental",
+			Type:          "integration",
+			KibanaVersion: "^7.17.0 || ^8.0.0",
+		},
+		{
+			Name:          "logstash",
+			Version:       "1.1.0",
+			Release:       "experimental",
+			Type:          "integration",
 			KibanaVersion: "^7.17.0 || ^8.0.0",
 		},
 	}
@@ -69,21 +77,38 @@ func TestPackagesFilter(t *testing.T) {
 			Expected: []filterTestPackage{},
 		},
 		{
-			Title: "prerelease package with experimental release flag",
+			Title: "prerelease package with experimental release flag default search",
+			Filter: Filter{
+				PackageName: "mysql",
+			},
+			Expected: []filterTestPackage{},
+		},
+		{
+			Title: "prerelease package with experimental release flag prerelease search",
+			Filter: Filter{
+				PackageName: "mysql",
+				Prerelease:  true,
+			},
+			Expected: []filterTestPackage{
+				{Name: "mysql", Version: "0.9.0"},
+			},
+		},
+		{
+			Title: "non-prerelease package with experimental release flag default search",
+			Filter: Filter{
+				PackageName: "logstash",
+			},
+			Expected: []filterTestPackage{},
+		},
+		{
+			Title: "non-prerelease package with experimental release flag prerelease search",
 			Filter: Filter{
 				PackageName: "logstash",
 				Prerelease:  true,
 			},
 			Expected: []filterTestPackage{
-				{Name: "logstash", Version: "0.9.0"},
+				{Name: "logstash", Version: "1.1.0"},
 			},
-		},
-		{
-			Title: "package with experimental release flag default search",
-			Filter: Filter{
-				PackageName: "logstash",
-			},
-			Expected: []filterTestPackage{},
 		},
 		{
 			Title: "not matching package version and all enabled",
@@ -144,7 +169,7 @@ func TestPackagesFilter(t *testing.T) {
 			},
 		},
 
-		// Legacy Kibana, experimental is always true, prerelease set to true for compatibility.
+		// Legacy Kibana, experimental is always true.
 		{
 			Title: "all packages and versions - legacy kibana",
 			Filter: Filter{
@@ -171,6 +196,26 @@ func TestPackagesFilter(t *testing.T) {
 			},
 			Expected: []filterTestPackage{
 				{Name: "nginx", Version: "2.0.0"},
+			},
+		},
+		{
+			Title: "logstash package experimental search - legacy kibana",
+			Filter: Filter{
+				PackageName:  "logstash",
+				Experimental: true,
+			},
+			Expected: []filterTestPackage{
+				{Name: "logstash", Version: "1.1.0"},
+			},
+		},
+		{
+			Title: "mysql package experimental search - legacy kibana",
+			Filter: Filter{
+				PackageName:  "mysql",
+				Experimental: true,
+			},
+			Expected: []filterTestPackage{
+				{Name: "mysql", Version: "0.9.0"},
 			},
 		},
 	}
