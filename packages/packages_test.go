@@ -192,19 +192,26 @@ func TestPackagesFilter(t *testing.T) {
 				AllVersions:  true,
 				Experimental: true,
 			},
-			Expected: filterTestPackages,
+			Expected: removeFilterTestPackages(filterTestPackages,
+				filterTestPackage{Name: "apache", Version: "1.0.0-rc1"},
+				filterTestPackage{Name: "apache", Version: "2.0.0-rc2"},
+			),
 		},
 		{
+			// Prerelease versions must be skipped if there are GA versions.
+			// See: https://github.com/elastic/ingest-dev/issues/1285
 			Title: "apache package experimental search - legacy kibana",
 			Filter: Filter{
 				PackageName:  "apache",
 				Experimental: true,
 			},
 			Expected: []filterTestPackage{
-				{Name: "apache", Version: "2.0.0-rc2"},
+				{Name: "apache", Version: "1.0.0"},
 			},
 		},
 		{
+			// Prerelease versions must be skipped if there are GA versions.
+			// See: https://github.com/elastic/ingest-dev/issues/1285
 			Title: "apache package experimental search all versions - legacy kibana",
 			Filter: Filter{
 				PackageName:  "apache",
@@ -212,9 +219,7 @@ func TestPackagesFilter(t *testing.T) {
 				AllVersions:  true,
 			},
 			Expected: []filterTestPackage{
-				{Name: "apache", Version: "1.0.0-rc1"},
 				{Name: "apache", Version: "1.0.0"},
-				{Name: "apache", Version: "2.0.0-rc2"},
 			},
 		},
 		{

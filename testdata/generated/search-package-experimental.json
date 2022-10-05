@@ -174,15 +174,15 @@
   {
     "name": "example",
     "title": "Example Integration",
-    "version": "1.2.0-rc1",
+    "version": "1.1.0",
     "release": "ga",
     "source": {
       "license": "Elastic-2.0"
     },
     "description": "This is the example integration",
     "type": "integration",
-    "download": "/epr/example/example-1.2.0-rc1.zip",
-    "path": "/package/example/1.2.0-rc1",
+    "download": "/epr/example/example-1.1.0.zip",
+    "path": "/package/example/1.1.0",
     "policy_templates": [
       {
         "name": "logs",
@@ -196,9 +196,6 @@
     "conditions": {
       "kibana": {
         "version": "^7.16.0 || ^8.0.0"
-      },
-      "elastic": {
-        "subscription": "gold"
       }
     },
     "owner": {
@@ -206,8 +203,7 @@
     },
     "categories": [
       "crm",
-      "azure",
-      "cloud"
+      "azure"
     ]
   },
   {
