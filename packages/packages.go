@@ -312,12 +312,14 @@ func (f *Filter) Apply(ctx context.Context, packages Packages) Packages {
 	// Checks that only the most recent version of an integration is added to the list
 	var packagesList Packages
 	for _, p := range packages {
-		// Skip experimental packages if flag is not specified
-		if p.Release == ReleaseExperimental && !f.Experimental {
+		// Skip experimental packages if flag is not specified.
+		// Ignore condition if prerelease flag is used (newer Kibanas).
+		if !f.Prerelease && p.Release == ReleaseExperimental && !f.Experimental {
 			continue
 		}
 
-		// Skip prerelease packages by default, unless experimental is enabled.
+		// Skip prerelease packages by default.
+		// Ignore condition if experimental flag is used (older Kibanas).
 		if !f.Experimental && p.IsPrerelease() && !f.Prerelease {
 			continue
 		}

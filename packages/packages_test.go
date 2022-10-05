@@ -39,6 +39,12 @@ func TestPackagesFilter(t *testing.T) {
 			Type:          "integration",
 			KibanaVersion: "^7.17.0 || ^8.0.0",
 		},
+		{
+			Name:          "logstash",
+			Version:       "0.9.0",
+			Release:       "experimental",
+			KibanaVersion: "^7.17.0 || ^8.0.0",
+		},
 	}
 	packages := buildFilterTestPackages(filterTestPackages)
 
@@ -59,6 +65,23 @@ func TestPackagesFilter(t *testing.T) {
 			Filter: Filter{
 				PackageName:    "apache",
 				PackageVersion: "1.2.3",
+			},
+			Expected: []filterTestPackage{},
+		},
+		{
+			Title: "prerelease package with experimental release flag",
+			Filter: Filter{
+				PackageName: "logstash",
+				Prerelease:  true,
+			},
+			Expected: []filterTestPackage{
+				{Name: "logstash", Version: "0.9.0"},
+			},
+		},
+		{
+			Title: "package with experimental release flag default search",
+			Filter: Filter{
+				PackageName: "logstash",
 			},
 			Expected: []filterTestPackage{},
 		},
