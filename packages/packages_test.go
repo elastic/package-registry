@@ -199,7 +199,7 @@ func TestPackagesFilter(t *testing.T) {
 		},
 		{
 			// Prerelease versions must be skipped if there are GA versions.
-			// See: https://github.com/elastic/ingest-dev/issues/1285
+			// See: https://github.com/elastic/package-registry/pull/893
 			Title: "apache package experimental search - legacy kibana",
 			Filter: Filter{
 				PackageName:  "apache",
@@ -211,7 +211,7 @@ func TestPackagesFilter(t *testing.T) {
 		},
 		{
 			// Prerelease versions must be skipped if there are GA versions.
-			// See: https://github.com/elastic/ingest-dev/issues/1285
+			// See: https://github.com/elastic/package-registry/pull/893
 			Title: "apache package experimental search all versions - legacy kibana",
 			Filter: Filter{
 				PackageName:  "apache",
