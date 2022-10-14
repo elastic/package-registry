@@ -121,8 +121,7 @@ func TestPackagesFilter(t *testing.T) {
 				Prerelease:  true,
 			},
 			Expected: []filterTestPackage{
-				// FIXME: This package should be returned.
-				// {Name: "mysql", Version: "0.9.0"},
+				{Name: "mysql", Version: "0.9.0"},
 			},
 		},
 		{
@@ -131,8 +130,11 @@ func TestPackagesFilter(t *testing.T) {
 				PackageName: "logstash",
 			},
 			Expected: []filterTestPackage{
-				// FIXME: This package should be returned.
-				// {Name: "logstash", Version: "1.1.0"},
+				// It is ok to don't return the following package, these cases
+				// should be released without experimental flag as they have
+				// GA versions. It would be returned in any case if
+				// `prerelease=true` is used, as in the following test.
+				// {Name: "logstash", Version: "1.1.0"}
 			},
 		},
 		{
@@ -142,8 +144,7 @@ func TestPackagesFilter(t *testing.T) {
 				Prerelease:  true,
 			},
 			Expected: []filterTestPackage{
-				// FIXME: This package should be returned.
-				// {Name: "logstash", Version: "1.1.0"},
+				{Name: "logstash", Version: "1.1.0"},
 			},
 		},
 		{
@@ -163,8 +164,6 @@ func TestPackagesFilter(t *testing.T) {
 				{Name: "apache", Version: "1.0.0"},
 				{Name: "nginx", Version: "2.0.0"},
 				{Name: "redisenterprise", Version: "1.0.0"},
-				// FIXME: This package should be returned.
-				// {Name: "logstash", Version: "1.1.0"},
 			},
 		},
 		{
@@ -173,11 +172,7 @@ func TestPackagesFilter(t *testing.T) {
 				AllVersions: true,
 				Prerelease:  true,
 			},
-			Expected: removeFilterTestPackages(filterTestPackages,
-				// FIXME: These packages should be also returned.
-				filterTestPackage{Name: "mysql", Version: "0.9.0"},
-				filterTestPackage{Name: "logstash", Version: "1.1.0"},
-			),
+			Expected: filterTestPackages,
 		},
 		{
 			Title: "apache package default search",
