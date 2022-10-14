@@ -309,6 +309,10 @@ func (f *Filter) Apply(ctx context.Context, packages Packages) Packages {
 	span, ctx := apm.StartSpan(ctx, "FilterPackages", "app")
 	defer span.End()
 
+	if f.Experimental {
+		return f.legacyApply(ctx, packages)
+	}
+
 	// Checks that only the most recent version of an integration is added to the list
 	var packagesList Packages
 	for _, p := range packages {
@@ -318,8 +322,7 @@ func (f *Filter) Apply(ctx context.Context, packages Packages) Packages {
 		}
 
 		// Skip prerelease packages by default.
-		// Ignore condition if experimental flag is used (older Kibanas).
-		if !f.Experimental && p.IsPrerelease() && !f.Prerelease {
+		if p.IsPrerelease() && !f.Prerelease {
 			continue
 		}
 
@@ -364,6 +367,94 @@ func (f *Filter) Apply(ctx context.Context, packages Packages) Packages {
 		if addPackage {
 			packagesList = append(packagesList, p)
 		}
+	}
+
+	// Filter by category after selecting the newer packages.
+	packagesList = filterCategories(packagesList, f.Category)
+
+	return packagesList
+}
+
+// legacyApply applies the filter to the list of packages for legacy clients using `experimental=true`.
+func (f *Filter) legacyApply(ctx context.Context, packages Packages) Packages {
+	if f == nil {
+		return packages
+	}
+
+	// Checks that only the most recent version of an integration is added to the list
+	var packagesList Packages
+	for _, p := range packages {
+		// Skip experimental packages if flag is not specified.
+		if p.Release == ReleaseExperimental && !f.Experimental {
+			continue
+		}
+
+		if f.KibanaVersion != nil {
+			if valid := p.HasKibanaVersion(f.KibanaVersion); !valid {
+				continue
+			}
+		}
+
+		if f.PackageName != "" && f.PackageName != p.Name {
+			continue
+		}
+
+		if f.PackageVersion != "" && f.PackageVersion != p.Version {
+			continue
+		}
+
+		if f.PackageType != "" && f.PackageType != p.Type {
+			continue
+		}
+
+		addPackage := true
+		if !f.AllVersions {
+			// Check if the version exists and if it should be added or not.
+			for i, current := range packagesList {
+				if current.Name != p.Name {
+					continue
+				}
+
+				addPackage = false
+
+				// If the package in the list is newer or equal, do nothing, unless it is a prerelease.
+				if current.IsPrerelease() == p.IsPrerelease() && current.IsNewerOrEqual(p) {
+					continue
+				}
+
+				// If the package in the list is not a prerelease, and current is, do nothing.
+				if !current.IsPrerelease() && p.IsPrerelease() {
+					continue
+				}
+
+				// Otherwise replace it.
+				packagesList[i] = p
+			}
+		}
+
+		if addPackage {
+			packagesList = append(packagesList, p)
+		}
+	}
+
+	if f.AllVersions {
+		packageHasNonPrerelease := make(map[string]bool)
+		for _, p := range packagesList {
+			if !p.IsPrerelease() {
+				packageHasNonPrerelease[p.Name] = true
+			}
+		}
+
+		i := 0
+		for _, p := range packagesList {
+			if packageHasNonPrerelease[p.Name] && p.IsPrerelease() {
+				continue
+			}
+			packagesList[i] = p
+			i++
+		}
+
+		packagesList = packagesList[:i]
 	}
 
 	// Filter by category after selecting the newer packages.
