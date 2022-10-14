@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Breaking changes
 
+* Search results for requests including `experimental=true` don't return
+  prerelease versions of packages that have been released at least once as GA. [#893](https://github.com/elastic/package-registry/pull/893)
+
 ### Bugfixes
 
 ### Added

@@ -71,6 +71,19 @@ func TestPackagesFilter(t *testing.T) {
 			Type:          "integration",
 			KibanaVersion: "^8.0.0",
 		},
+		{
+			Name:          "redisenterprise",
+			Version:       "0.1.1",
+			Release:       "beta",
+			Type:          "integration",
+			KibanaVersion: "^7.14.0 || ^8.0.0",
+		},
+		{
+			Name:          "redisenterprise",
+			Version:       "1.0.0",
+			Type:          "integration",
+			KibanaVersion: "^8.0.0",
+		},
 	}
 	packages := buildFilterTestPackages(filterTestPackages)
 
@@ -147,6 +160,7 @@ func TestPackagesFilter(t *testing.T) {
 				{Name: "apache", Version: "1.0.0"},
 				{Name: "nginx", Version: "2.0.0"},
 				{Name: "logstash", Version: "1.1.0"},
+				{Name: "redisenterprise", Version: "1.0.0"},
 			},
 		},
 		{
@@ -176,6 +190,30 @@ func TestPackagesFilter(t *testing.T) {
 				{Name: "apache", Version: "2.0.0-rc2"},
 			},
 		},
+		{
+			Title: "redisenterprise experimental search - future kibana",
+			Filter: Filter{
+				PackageName:   "redisenterprise",
+				Prerelease:    true,
+				KibanaVersion: semver.MustParse("8.7.0"),
+			},
+			Expected: []filterTestPackage{
+				{Name: "redisenterprise", Version: "1.0.0"},
+			},
+		},
+		{
+			Title: "redisenterprise experimental search all versions - future kibana",
+			Filter: Filter{
+				PackageName:   "redisenterprise",
+				Prerelease:    true,
+				KibanaVersion: semver.MustParse("8.7.0"),
+				AllVersions:   true,
+			},
+			Expected: []filterTestPackage{
+				{Name: "redisenterprise", Version: "0.1.1"},
+				{Name: "redisenterprise", Version: "1.0.0"},
+			},
+		},
 
 		// Legacy Kibana, experimental is always true.
 		{
@@ -185,13 +223,16 @@ func TestPackagesFilter(t *testing.T) {
 				Experimental: true,
 			},
 			Expected: removeFilterTestPackages(filterTestPackages,
+				// Prerelease versions must be skipped if there are GA versions.
+				// See: https://github.com/elastic/package-registry/pull/893
 				filterTestPackage{Name: "apache", Version: "1.0.0-rc1"},
 				filterTestPackage{Name: "apache", Version: "2.0.0-rc2"},
+				filterTestPackage{Name: "redisenterprise", Version: "0.1.1"},
 			),
 		},
 		{
 			// Prerelease versions must be skipped if there are GA versions.
-			// See: https://github.com/elastic/ingest-dev/issues/1285
+			// See: https://github.com/elastic/package-registry/pull/893
 			Title: "apache package experimental search - legacy kibana",
 			Filter: Filter{
 				PackageName:  "apache",
@@ -203,7 +244,7 @@ func TestPackagesFilter(t *testing.T) {
 		},
 		{
 			// Prerelease versions must be skipped if there are GA versions.
-			// See: https://github.com/elastic/ingest-dev/issues/1285
+			// See: https://github.com/elastic/package-registry/pull/893
 			Title: "apache package experimental search all versions - legacy kibana",
 			Filter: Filter{
 				PackageName:  "apache",
@@ -212,6 +253,34 @@ func TestPackagesFilter(t *testing.T) {
 			},
 			Expected: []filterTestPackage{
 				{Name: "apache", Version: "1.0.0"},
+			},
+		},
+		{
+			Title: "redisenterprise experimental search all versions - legacy kibana 7.14.0",
+			Filter: Filter{
+				PackageName:   "redisenterprise",
+				Experimental:  true,
+				KibanaVersion: semver.MustParse("7.14.0"),
+				AllVersions:   true,
+			},
+			Expected: []filterTestPackage{
+				// Only version available for 7.14 is 0.1.1, that is a prerelease.
+				{Name: "redisenterprise", Version: "0.1.1"},
+			},
+		},
+		{
+			Title: "redisenterprise experimental search all versions - legacy kibana 8.5.0",
+			Filter: Filter{
+				PackageName:   "redisenterprise",
+				Experimental:  true,
+				KibanaVersion: semver.MustParse("8.5.0"),
+				AllVersions:   true,
+			},
+			Expected: []filterTestPackage{
+				// There are two versions available for 8.5, but we return only
+				// the GA one to avoid exposing prereleases to legacy kibanas.
+				// See: https://github.com/elastic/package-registry/pull/893
+				{Name: "redisenterprise", Version: "1.0.0"},
 			},
 		},
 		{
