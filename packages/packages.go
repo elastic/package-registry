@@ -317,7 +317,7 @@ func (f *Filter) Apply(ctx context.Context, packages Packages) Packages {
 	var packagesList Packages
 	for _, p := range packages {
 		// Skip experimental packages if flag is not specified.
-		if p.Release == ReleaseExperimental && !f.Experimental {
+		if p.Release == ReleaseExperimental && !f.Prerelease {
 			continue
 		}
 

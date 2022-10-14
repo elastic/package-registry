@@ -22,22 +22,22 @@
   {
     "id": "containers",
     "title": "Containers",
-    "count": 3
+    "count": 4
   },
   {
     "id": "custom",
     "title": "Custom",
-    "count": 8
+    "count": 9
   },
   {
     "id": "datastore",
     "title": "Datastore",
-    "count": 10
+    "count": 12
   },
   {
     "id": "elastic_stack",
     "title": "Elastic Stack",
-    "count": 6
+    "count": 7
   },
   {
     "id": "google_cloud",
@@ -47,7 +47,7 @@
   {
     "id": "kubernetes",
     "title": "Kubernetes",
-    "count": 2
+    "count": 3
   },
   {
     "id": "message_queue",
@@ -57,12 +57,12 @@
   {
     "id": "monitoring",
     "title": "Monitoring",
-    "count": 7
+    "count": 8
   },
   {
     "id": "network",
     "title": "Network",
-    "count": 23
+    "count": 39
   },
   {
     "id": "os_system",
@@ -77,11 +77,11 @@
   {
     "id": "security",
     "title": "Security",
-    "count": 77
+    "count": 101
   },
   {
     "id": "web",
     "title": "Web",
-    "count": 18
+    "count": 20
   }
 ]

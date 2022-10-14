@@ -206,6 +206,45 @@
     "signature_path": "/epr/cockroachdb/cockroachdb-0.2.0.zip.sig"
   },
   {
+    "name": "elasticsearch",
+    "title": "Elasticsearch",
+    "version": "0.2.0",
+    "release": "experimental",
+    "description": "Elasticsearch Integration",
+    "type": "integration",
+    "download": "/epr/elasticsearch/elasticsearch-0.2.0.zip",
+    "path": "/package/elasticsearch/0.2.0",
+    "icons": [
+      {
+        "src": "/img/logo_elasticsearch.svg",
+        "path": "/package/elasticsearch/0.2.0/img/logo_elasticsearch.svg",
+        "title": "logo elasticsearch",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "elasticsearch",
+        "title": "Elasticsearch logs and metrics",
+        "description": "Collect logs and metrics from Elasticsearch instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.15.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "elastic_stack",
+      "datastore"
+    ],
+    "signature_path": "/epr/elasticsearch/elasticsearch-0.2.0.zip.sig"
+  },
+  {
     "name": "microsoft_sqlserver",
     "title": "Microsoft SQL Server",
     "version": "0.4.5",
@@ -435,6 +474,45 @@
       "datastore"
     ],
     "signature_path": "/epr/postgresql/postgresql-1.2.0.zip.sig"
+  },
+  {
+    "name": "prometheus",
+    "title": "Prometheus Metrics",
+    "version": "0.7.0",
+    "release": "experimental",
+    "description": "Collect metrics from Prometheus servers with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/prometheus/prometheus-0.7.0.zip",
+    "path": "/package/prometheus/0.7.0",
+    "icons": [
+      {
+        "src": "/img/logo_prometheus.svg",
+        "path": "/package/prometheus/0.7.0/img/logo_prometheus.svg",
+        "title": "logo prometheus",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "prometheus",
+        "title": "Prometheus metrics",
+        "description": "Collect metrics from Prometheus instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "monitoring",
+      "datastore"
+    ],
+    "signature_path": "/epr/prometheus/prometheus-0.7.0.zip.sig"
   },
   {
     "name": "redis",

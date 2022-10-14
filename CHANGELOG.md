@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
+* Return experimental packages on searches with `prerelease=true` and without
+  `experimental=true`. [#894](https://github.com/elastic/package-registry/pull/894)
+
 ### Added
 
 ### Deprecated
