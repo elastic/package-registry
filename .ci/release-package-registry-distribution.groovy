@@ -31,11 +31,28 @@ pipeline {
         transformTagAndValidate()
       }
     }
-    stage('Publish Docker image'){
+    stage('Publish Production Docker image'){
       options { skipDefaultCheckout() }
       environment {
         DOCKER_IMG_SOURCE = "${env.DOCKER_REGISTRY}/package-registry/distribution:production"
         DOCKER_IMG_TARGET = "${env.DOCKER_REGISTRY}/package-registry/distribution:${env.DOCKER_TAG_VERSION}"
+      }
+      steps {
+        dockerLogin(secret: "${env.DOCKER_REGISTRY_SECRET}", registry: "${env.DOCKER_REGISTRY}")
+        retryWithSleep(retries: 3, seconds: 5, backoff: true) {
+          sh(label: 'Docker pull', script: 'docker pull ${DOCKER_IMG_SOURCE}')
+        }
+        sh(label: 'Docker retag',  script: 'docker tag ${DOCKER_IMG_SOURCE} ${DOCKER_IMG_TARGET}')
+        retryWithSleep(retries: 3, seconds: 5, backoff: true) {
+          sh(label: 'Docker push', script: 'docker push ${DOCKER_IMG_TARGET}')
+        }
+      }
+    }
+    stage('Publish Lite Docker image'){
+      options { skipDefaultCheckout() }
+      environment {
+        DOCKER_IMG_SOURCE = "${env.DOCKER_REGISTRY}/package-registry/distribution:lite"
+        DOCKER_IMG_TARGET = "${env.DOCKER_REGISTRY}/package-registry/distribution:lite-${env.DOCKER_TAG_VERSION}"
       }
       steps {
         dockerLogin(secret: "${env.DOCKER_REGISTRY_SECRET}", registry: "${env.DOCKER_REGISTRY}")
