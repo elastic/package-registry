@@ -64,6 +64,8 @@ There are several options to run this for development purposes.
 ### Go command
 
 To use the correct golang version, run:
+- We recommend using [GVM](https://github.com/andrewkroh/gvm), same as done in the CI.
+  This tool allows you to install multiple versions of Go, setting the Go environment in consequence: `eval "$(gvm 1.15.9)"`
 
 ```
 gvm use $(cat .go-version)
@@ -84,15 +86,13 @@ Afterwards the service can be started:
 The following **active** endpoints exist:
 
 * prod, CDN: https://epr.elastic.co
-* staging, CDN: https://epr-staging.elastic.co
-* snapshot, CDN: https://epr-snapshot.elastic.co/
 
 Additionally, the following **frozen** endpoints exist and are **no longer updated**:
 
+* staging, CDN: https://epr-staging.elastic.co
+* snapshot, CDN: https://epr-snapshot.elastic.co/
 * experimental, CDN: https://epr-experimental.elastic.co
 * 7.9, CDN: https://epr-7-9.elastic.co
-
-An dev registry is running on `https://epr-staging.elastic.co/`. This is updated from time to time to be in sync with main.
 
 The deployment runs on an Elastic internal k8s cluster. To get all the deployments for the registry use the following command:
 
@@ -103,7 +103,7 @@ kubectl get deployment -n package-registry
 This will output the list of available deployments. To do a rolling restart of the staging deployment run:
 
 ```
-kubectl rollout restart deployment package-registry-staging-vanilla -n package-registry
+kubectl rollout restart deployment package-registry-v2-vanilla -n package-registry
 ```
 
 **General**
