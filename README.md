@@ -63,6 +63,9 @@ There are several options to run this for development purposes.
 
 ### Go command
 
+We recommend using [GVM](https://github.com/andrewkroh/gvm), same as done in the CI.
+This tool allows you to install multiple versions of Go, setting the Go environment in consequence: `eval "$(gvm 1.15.9)"`
+
 To use the correct golang version, run:
 
 ```
@@ -84,27 +87,13 @@ Afterwards the service can be started:
 The following **active** endpoints exist:
 
 * prod, CDN: https://epr.elastic.co
-* staging, CDN: https://epr-staging.elastic.co
-* snapshot, CDN: https://epr-snapshot.elastic.co/
 
 Additionally, the following **frozen** endpoints exist and are **no longer updated**:
 
+* staging, CDN: https://epr-staging.elastic.co
+* snapshot, CDN: https://epr-snapshot.elastic.co/
 * experimental, CDN: https://epr-experimental.elastic.co
 * 7.9, CDN: https://epr-7-9.elastic.co
-
-An dev registry is running on `https://epr-staging.elastic.co/`. This is updated from time to time to be in sync with main.
-
-The deployment runs on an Elastic internal k8s cluster. To get all the deployments for the registry use the following command:
-
-```
-kubectl get deployment -n package-registry
-```
-
-This will output the list of available deployments. To do a rolling restart of the staging deployment run:
-
-```
-kubectl rollout restart deployment package-registry-staging-vanilla -n package-registry
-```
 
 **General**
 ```
@@ -148,42 +137,30 @@ These images contain only the package registry, they don't contain any package.
 
 ### Testing with Kibana
 
-The Docker image of Package Registry is just an empty distribution without any packages. To test it with Kibana using
-[elastic-package](https://github.com/elastic/elastic-package), you need to rebuild the snapshot distribution first:
+The Docker image of Package Registry is just an empty distribution without any packages.
+To test it with Kibana using [elastic-package](https://github.com/elastic/elastic-package),
+you need to build a new package-registry docker image first from your required branch.
 
-0. Make sure you've built the Docker image for Package Registry:
+0. Make sure you've built the Docker image for Package Registry (let's consider in this example `main`):
 
-```bash
-docker build --rm -t docker.elastic.co/package-registry/package-registry:main .
-```
+   ```bash
+   docker build --rm -t docker.elastic.co/package-registry/package-registry:main .
+   ```
 
-1. Git clone latest `distribution:snapshot` from Git:
+1. Open the Dockerfile used by elastic-package and change the base image for the Packge Registry (use `main` instead of `v1.15.0`):
+    - Usually the path would be `${HOME}/.elastic-package/profiles/default/stack/Dockerfile.package-registry`
+    - This Dockerfile already enables the Proxy mode (more info at [section](#proxy-mode))
 
-```bash
-git clone --branch snapshot https://github.com/elastic/package-storage.git
-```
+   ```
+   FROM docker.elastic.co/package-registry/package-registry:main
+   ```
 
-2. Open Dockerfile and change the base image for the Package Registry (use `main` instead of `v0.19.0`):
+2. Now you're able to start the stack using Elastic Package (Elasticsearch, Kibana, Agent, Fleet Server) with your own Package Registry:
 
-```
-FROM docker.elastic.co/package-registry/package-registry:main
-```
+   ```
+   elastic-package stack up -v -d
+   ```
 
-(Docker builder will use the custom image you've built in step 0.)
-
-3. Rebuild the `distribution:snapshot`:
-
-```
-docker build --rm -t docker.elastic.co/package-registry/distribution:snapshot .
-```
-
-4. Now you're able to start the stack using Elastic Package (Elasticsearch, Kibana, Agent, Fleet Server, Package Registry):
-
-```
-elastic-package stack up -v -d
-```
-
-(Elastic Package uses the `distribution:snapshot` by default)
 
 ### Healthcheck
 
@@ -250,6 +227,22 @@ For example:
 ```
 package-registry --metrics-address 0.0.0.0:9000
 ```
+
+## Proxy Mode
+
+The Docker image of Package Registry is just an empty distribution without any packages.
+You can enable in Package Registry the proxy mode. This mode allows to take into account all the packages
+from other endpoint as part of the responses.
+
+This mode is enabled with the parameter `-feature-proxy-mode=true` (or `EPR_FEATURE_PROXY_MODE` environment variable).
+And it will use by default as proxy endpoint `https://epr.elastic.co`. This endpoint can be customized using the parameter `-proxy-to`
+(or `EPR_PROXY_TO`).
+For example:
+
+```
+package-registry --feature-proxy-mode=true -proxy-to=https://epr.elastic.co
+```
+
 
 ## Release
 
