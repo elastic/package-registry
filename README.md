@@ -240,7 +240,7 @@ And it will use by default as proxy endpoint `https://epr.elastic.co`. This endp
 For example:
 
 ```
-package-registry --feature-proxy-mode=true -proxy-mode=https://epr.elastic.co
+package-registry --feature-proxy-mode=true -proxy-to=https://epr.elastic.co
 ```
 
 
