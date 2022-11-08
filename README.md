@@ -63,9 +63,10 @@ There are several options to run this for development purposes.
 
 ### Go command
 
+We recommend using [GVM](https://github.com/andrewkroh/gvm), same as done in the CI.
+This tool allows you to install multiple versions of Go, setting the Go environment in consequence: `eval "$(gvm 1.15.9)"`
+
 To use the correct golang version, run:
-- We recommend using [GVM](https://github.com/andrewkroh/gvm), same as done in the CI.
-  This tool allows you to install multiple versions of Go, setting the Go environment in consequence: `eval "$(gvm 1.15.9)"`
 
 ```
 gvm use $(cat .go-version)
