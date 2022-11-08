@@ -95,18 +95,6 @@ Additionally, the following **frozen** endpoints exist and are **no longer updat
 * experimental, CDN: https://epr-experimental.elastic.co
 * 7.9, CDN: https://epr-7-9.elastic.co
 
-The deployment runs on an Elastic internal k8s cluster. To get all the deployments for the registry use the following command:
-
-```
-kubectl get deployment -n package-registry
-```
-
-This will output the list of available deployments. To do a rolling restart of the staging deployment run:
-
-```
-kubectl rollout restart deployment package-registry-v2-vanilla -n package-registry
-```
-
 **General**
 ```
 docker build .
@@ -150,12 +138,10 @@ These images contain only the package registry, they don't contain any package.
 ### Testing with Kibana
 
 The Docker image of Package Registry is just an empty distribution without any packages.
-By default, Package Registry has the proxy mode enabled. Thereby, even if there is no package in the
-docker image, Package Registry is able to show all the information about packages available at https://epr.elastic.co.
 To test it with Kibana using [elastic-package](https://github.com/elastic/elastic-package),
-you need to rebuild the snapshot distribution first:
+you need to build a new package-registry docker image first from your required branch.
 
-0. Make sure you've built the Docker image for Package Registry:
+0. Make sure you've built the Docker image for Package Registry (let's consider in this example `main`):
 
    ```bash
    docker build --rm -t docker.elastic.co/package-registry/package-registry:main .
@@ -163,19 +149,18 @@ you need to rebuild the snapshot distribution first:
 
 1. Open the Dockerfile used by elastic-package and change the base image for the Packge Registry (use `main` instead of `v1.15.0`):
     - Usually the path would be `${HOME}/.elastic-package/profiles/default/stack/Dockerfile.package-registry`
+    - This Dockerfile already enables the Proxy mode (more info at [section](#proxy-mode))
 
    ```
    FROM docker.elastic.co/package-registry/package-registry:main
    ```
 
-
-4. Now you're able to start the stack using Elastic Package (Elasticsearch, Kibana, Agent, Fleet Server, Package Registry):
+2. Now you're able to start the stack using Elastic Package (Elasticsearch, Kibana, Agent, Fleet Server) with your own Package Registry:
 
    ```
    elastic-package stack up -v -d
    ```
 
-Elastic Package uses the image of the latest release by default.
 
 ### Healthcheck
 
@@ -242,6 +227,22 @@ For example:
 ```
 package-registry --metrics-address 0.0.0.0:9000
 ```
+
+## Proxy Mode
+
+The Docker image of Package Registry is just an empty distribution without any packages.
+You can enable in Package Registry the proxy mode. This mode allows to take into account all the packages
+from other endpoint as part of the responses.
+
+This mode is enabled with the parameter `-feature-proxy-mode=true` (or `EPR_FEATURE_PROXY_MODE` environment variable).
+And it will use by default as proxy endpoint `https://epr.elastic.co`. This endpoint can be customized using the parameter `-proxy-to`
+(or `EPR_PROXY_TO`).
+For example:
+
+```
+package-registry --feature-proxy-mode=true -proxy-mode=https://epr.elastic.co
+```
+
 
 ## Release
 
