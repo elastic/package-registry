@@ -8,7 +8,7 @@ require (
 	github.com/elastic/go-licenser v0.4.1
 	github.com/elastic/go-ucfg v0.8.4-0.20200415140258-1232bd4774a6
 	github.com/felixge/httpsnoop v1.0.3
-	github.com/fsouza/fake-gcs-server v1.42.1
+	github.com/fsouza/fake-gcs-server v1.42.2
 	github.com/gorilla/mux v1.8.0
 	github.com/hashicorp/go-retryablehttp v0.7.1
 	github.com/joeshaw/multierror v0.0.0-20140124173710-69b34d4ec901

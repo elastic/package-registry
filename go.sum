@@ -93,8 +93,8 @@ github.com/envoyproxy/protoc-gen-validate v0.1.0/go.mod h1:iSmxcyjqTsJpI2R4NaDN7
 github.com/felixge/httpsnoop v1.0.1/go.mod h1:m8KPJKqk1gH5J9DgRY2ASl2lWCfGKXixSwevea8zH2U=
 github.com/felixge/httpsnoop v1.0.3 h1:s/nj+GCswXYzN5v2DpNMuMQYe+0DDwt5WVCU6CWBdXk=
 github.com/felixge/httpsnoop v1.0.3/go.mod h1:m8KPJKqk1gH5J9DgRY2ASl2lWCfGKXixSwevea8zH2U=
-github.com/fsouza/fake-gcs-server v1.42.1 h1:AV2JyX51WvXV6sn2AO2M20ZdDK6tCmI+bLd1wwDJMCE=
-github.com/fsouza/fake-gcs-server v1.42.1/go.mod h1:TIot/MGHrgpSCaGcNDK3qVi+vXIiHc6KThR2aXBFSDU=
+github.com/fsouza/fake-gcs-server v1.42.2 h1:J7IvZyB2vxxHVRfRd1AHfmtxz8XTMsHWrluYg/gXSGw=
+github.com/fsouza/fake-gcs-server v1.42.2/go.mod h1:TIot/MGHrgpSCaGcNDK3qVi+vXIiHc6KThR2aXBFSDU=
 github.com/go-gl/glfw v0.0.0-20190409004039-e6da0acd62b1/go.mod h1:vR7hzQXu2zJy9AVAgeJqvqgH9Q5CA+iKCZ2gyEVpxRU=
 github.com/go-gl/glfw/v3.3/glfw v0.0.0-20191125211704-12ad95a8df72/go.mod h1:tQ2UAYgL5IevRw8kRxooKSPJfGvJ9fJQFa0TUsXzTg8=
 github.com/go-gl/glfw/v3.3/glfw v0.0.0-20200222043503-6f7a984d4dc4/go.mod h1:tQ2UAYgL5IevRw8kRxooKSPJfGvJ9fJQFa0TUsXzTg8=
