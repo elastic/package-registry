@@ -121,8 +121,11 @@ pipeline {
       }
     }
     stage('Trigger bump Elastic Package Registry') {
+      when {
+        buildingTag()
+      }
       environment {
-        EPR_VERSION = "v99.99.99"
+        EPR_VERSION = env.TAG_NAME
       }
       steps {
         cleanup()
