@@ -125,7 +125,7 @@ pipeline {
         buildingTag()
       }
       environment {
-        EPR_VERSION = env.TAG_NAME
+        EPR_VERSION = "${env.TAG_NAME}"
       }
       steps {
         cleanup()
