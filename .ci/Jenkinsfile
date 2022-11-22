@@ -123,8 +123,7 @@ pipeline {
 
     stage('Trigger bump Elastic Package Registry') {
       environment {
-        DOCKER_IMG_TAG = "${env.DOCKER_IMG}:${env.GIT_BASE_COMMIT}"
-        DOCKER_IMG_TAG_BRANCH = "${env.DOCKER_IMG}:${env.BRANCH_NAME}"
+        EPR_VERSION = "v99.99.99"
       }
       steps {
         cleanup()
@@ -179,7 +178,7 @@ def triggerRemoteUpdateEPR() {
       parameters: [
         dry_run: true,
         draft: true,
-        version: "99.99.99"
+        version: env.EPR_VERSION
       ],
       useCrumbCache: true,
       useJobInfoCache: true)
