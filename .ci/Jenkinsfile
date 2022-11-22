@@ -120,7 +120,6 @@ pipeline {
         pushDockerImage()
       }
     }
-
     stage('Trigger bump Elastic Package Registry') {
       environment {
         EPR_VERSION = "v99.99.99"
@@ -170,7 +169,7 @@ def pushDockerImage(){
 }
 
 def triggerRemoteUpdateEPR() {
-  echo("Triggering update-package-registry-job-remote")
+  echo("Triggering update-package-registry-job-remote with version ${env.EPR_VERSION}")
   withCredentials([string(credentialsId: env.UPDATE_PACKAGE_REGISTRY_CREDENTIALS, variable: 'TOKEN')]) {
     triggerRemoteJob(auth: CredentialsAuth(credentials: 'local-readonly-api-token'),
       job: 'https://internal-ci.elastic.co/job/package_storage/job/update-package-registry-job-remote',
