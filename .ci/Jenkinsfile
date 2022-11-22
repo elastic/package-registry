@@ -178,8 +178,8 @@ def triggerRemoteUpdateEPR() {
       job: 'https://internal-ci.elastic.co/job/package_storage/job/update-package-registry-job-remote',
       token: TOKEN,
       parameters: [
-        dry_run: true,
-        draft: true,
+        dry_run: false,
+        draft: false,
         version: env.EPR_VERSION
       ],
       useCrumbCache: true,
