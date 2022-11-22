@@ -178,7 +178,7 @@ def triggerRemoteUpdateEPR() {
       token: TOKEN,
       parameters: [
         dry_run: true,
-        draft_pr: true,
+        draft: true,
         version: "99.99.99"
       ],
       useCrumbCache: true,
