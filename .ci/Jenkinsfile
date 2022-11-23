@@ -12,6 +12,9 @@ pipeline {
     DOCKER_REGISTRY_SECRET = 'secret/observability-team/ci/docker-registry/prod'
     DOCKER_IMG = "${env.DOCKER_REGISTRY}/package-registry/package-registry"
     DOCKER_IMG_PR = "${env.DOCKER_REGISTRY}/observability-ci/package-registry"
+
+    // Update EPR
+    UPDATE_PACKAGE_REGISTRY_CREDENTIALS = 'update-package-registry-version'
   }
   options {
     timeout(time: 1, unit: 'HOURS')
@@ -117,6 +120,18 @@ pipeline {
         pushDockerImage()
       }
     }
+    stage('Trigger bump Elastic Package Registry') {
+      when {
+        buildingTag()
+      }
+      environment {
+        EPR_VERSION = "${env.TAG_NAME}"
+      }
+      steps {
+        cleanup()
+        triggerRemoteUpdateEPR()
+      }
+    }
   }
   post {
     cleanup {
@@ -153,5 +168,21 @@ def pushDockerImage(){
       sh(label: 'Push Docker image name',
         script: "docker push ${env.DOCKER_IMG_TAG_BRANCH}")
     }
+  }
+}
+
+def triggerRemoteUpdateEPR() {
+  echo("Triggering update-package-registry-job-remote with version ${env.EPR_VERSION}")
+  withCredentials([string(credentialsId: env.UPDATE_PACKAGE_REGISTRY_CREDENTIALS, variable: 'TOKEN')]) {
+    triggerRemoteJob(auth: CredentialsAuth(credentials: 'local-readonly-api-token'),
+      job: 'https://internal-ci.elastic.co/job/package_storage/job/update-package-registry-job-remote',
+      token: TOKEN,
+      parameters: [
+        dry_run: false,
+        draft: false,
+        version: env.EPR_VERSION
+      ],
+      useCrumbCache: true,
+      useJobInfoCache: true)
   }
 }
