@@ -1,3 +1,8 @@
+# This file contains metadata about the supported categories. Other categories
+# may be also used, but they won't contain titles or other metadata. This is not
+# recommended.
+# Subcategories are only allowed at the root-level categories. That is, subcategories
+# cannot have nested subcategories.
 categories:
   aws:
     title: "AWS"
