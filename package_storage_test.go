@@ -207,6 +207,42 @@ func TestPackageStorage_Statics(t *testing.T) {
 
 }
 
+func TestPackageStorage_ResolverResponse(t *testing.T) {
+	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
+	defer fs.Stop()
+
+	webServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "%s\n%s\n%+v\n", r.Method, r.RequestURI, r.Header)
+	}))
+	defer webServer.Close()
+
+	testIndexerOptions := storage.FakeIndexerOptions
+	testIndexerOptions.PackageStorageEndpoint = webServer.URL
+
+	indexer := storage.NewIndexer(fs.Client(), testIndexerOptions)
+
+	err := indexer.Init(context.Background())
+	require.NoError(t, err)
+
+	staticHandler := staticHandler(indexer, testCacheTime)
+
+	tests := []struct {
+		endpoint string
+		path     string
+		file     string
+		handler  func(w http.ResponseWriter, r *http.Request)
+	}{
+		{"/package/1password/0.1.1/img/1password-logo-light-bg.svg", staticRouterPath, "1password-logo-light-bg.svg.response", staticHandler},
+	}
+
+	for _, test := range tests {
+		t.Run(test.endpoint, func(t *testing.T) {
+			runEndpoint(t, test.endpoint, test.path, test.file, test.handler)
+		})
+	}
+
+}
+
 func runEndpointWithStorageIndexer(t *testing.T, endpoint, path, file string, handler func(w http.ResponseWriter, r *http.Request)) {
 	runEndpoint(t, endpoint, path, filepath.Join(storageIndexerGoldenDir, file), handler)
 }
