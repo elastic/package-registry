@@ -7,7 +7,6 @@ package proxymode
 import (
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"net/url"
 
@@ -35,15 +34,12 @@ func (pr proxyResolver) pipeRequestProxy(w http.ResponseWriter, remotePath strin
 
 	for header, values := range resp.Header {
 		if len(w.Header().Values(header)) > 0 {
-			log.Printf(">>>> Filtered header (already exists) %s:%v", header, values)
 			continue
 		}
 		if _, ok := acceptedHeaders[header]; !ok {
-			log.Printf(">>>> Filtered header %s:%v", header, values)
 			continue
 		}
 		for _, value := range values {
-			log.Printf(">>>> Adding header %s:%s", header, value)
 			w.Header().Add(header, value)
 		}
 	}
