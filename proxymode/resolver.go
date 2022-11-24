@@ -22,7 +22,6 @@ var acceptedHeaders = map[string]string{
 	"Content-Length": "",
 	"Content-Type":   "",
 	"Last-Modified":  "",
-	"Age":            "",
 }
 
 func (pr proxyResolver) pipeRequestProxy(w http.ResponseWriter, remotePath string) error {
