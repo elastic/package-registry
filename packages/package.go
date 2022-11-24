@@ -17,6 +17,7 @@ import (
 	"github.com/elastic/go-ucfg"
 	"github.com/elastic/go-ucfg/yaml"
 
+	"github.com/elastic/package-registry/categories"
 	"github.com/elastic/package-registry/util"
 )
 
@@ -26,33 +27,7 @@ const (
 	packagePathPrefix = "/package"
 )
 
-var CategoryTitles = map[string]string{
-	"aws":               "AWS",
-	"azure":             "Azure",
-	"cloud":             "Cloud",
-	"config_management": "Config management",
-	"containers":        "Containers",
-	"crm":               "CRM",
-	"custom":            "Custom",
-	"datastore":         "Datastore",
-	"elastic_stack":     "Elastic Stack",
-	"google_cloud":      "Google Cloud",
-	"infrastructure":    "Infrastructure",
-	"kubernetes":        "Kubernetes",
-	"languages":         "Languages",
-	"message_queue":     "Message Queue",
-	"monitoring":        "Monitoring",
-	"network":           "Network",
-	"notification":      "Notification",
-	"os_system":         "OS & System",
-	"productivity":      "Productivity",
-	"security":          "Security",
-	"support":           "Support",
-	"ticketing":         "Ticketing",
-	"threat_intel":      "Threat Intelligence",
-	"version_control":   "Version Control",
-	"web":               "Web",
-}
+var CategoryTitles = categories.TitlesMap()
 
 type Package struct {
 	BasePackage   `config:",inline" json:",inline" yaml:",inline"`

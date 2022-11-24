@@ -1,0 +1,17 @@
+categories:
+  datastore:
+    title: "Datastore"
+  infrastructure:
+    title: "Infrastructure"
+    subcategories:
+      load_balancer:
+        title: "Load Balancer"
+      webserver:
+        title: "Web Server"
+  security:
+    title: "Security"
+    subcategories:
+      edr_xdr:
+        title: "EDR/XDR"
+      network_security:
+        title: "Network"
