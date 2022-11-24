@@ -6,7 +6,6 @@ package proxymode
 
 import (
 	"fmt"
-	"io"
 	"net/http"
 	"net/url"
 
@@ -17,57 +16,25 @@ type proxyResolver struct {
 	destinationURL url.URL
 }
 
-var acceptedHeaders = map[string]string{
-	"Content-Length": "",
-	"Content-Type":   "",
-	"Last-Modified":  "",
-}
-
-func (pr proxyResolver) pipeRequestProxy(w http.ResponseWriter, remotePath string) error {
-	remoteURL := pr.destinationURL.ResolveReference(&url.URL{Path: remotePath})
-
-	resp, err := http.Get(remoteURL.String())
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
-	for header, values := range resp.Header {
-		if len(w.Header().Values(header)) > 0 {
-			continue
-		}
-		if _, ok := acceptedHeaders[header]; !ok {
-			continue
-		}
-		for _, value := range values {
-			w.Header().Add(header, value)
-		}
-	}
-	w.WriteHeader(resp.StatusCode)
-
-	_, err = io.Copy(w, resp.Body)
-	if err != nil {
-		return err
-	}
-	return nil
+func (pr proxyResolver) redirectRequest(w http.ResponseWriter, r *http.Request, remotePath string) {
+	remoteURL := pr.destinationURL.
+		ResolveReference(&url.URL{Path: remotePath})
+	http.Redirect(w, r, remoteURL.String(), http.StatusMovedPermanently)
 }
 
 func (pr proxyResolver) RedirectArtifactsHandler(w http.ResponseWriter, r *http.Request, p *packages.Package) {
 	remotePath := fmt.Sprintf("/epr/package/%s-%s.zip", p.Name, p.Version)
-
-	pr.pipeRequestProxy(w, remotePath)
+	pr.redirectRequest(w, r, remotePath)
 }
 
 func (pr proxyResolver) RedirectStaticHandler(w http.ResponseWriter, r *http.Request, p *packages.Package, resourcePath string) {
 	remotePath := fmt.Sprintf("/package/%s/%s/%s", p.Name, p.Version, resourcePath)
-
-	pr.pipeRequestProxy(w, remotePath)
+	pr.redirectRequest(w, r, remotePath)
 }
 
 func (pr proxyResolver) RedirectSignaturesHandler(w http.ResponseWriter, r *http.Request, p *packages.Package) {
 	remotePath := fmt.Sprintf("/epr/package/%s-%s.zip.sig", p.Name, p.Version)
-
-	pr.pipeRequestProxy(w, remotePath)
+	pr.redirectRequest(w, r, remotePath)
 }
 
 var _ packages.RemoteResolver = new(proxyResolver)
