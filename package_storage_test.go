@@ -6,7 +6,9 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"net/http"
+	"net/http/httptest"
 	"path/filepath"
 	"testing"
 
@@ -97,7 +99,16 @@ func TestPackageStorage_PackageIndex(t *testing.T) {
 func TestPackageStorage_Artifacts(t *testing.T) {
 	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
-	indexer := storage.NewIndexer(fs.Client(), storage.FakeIndexerOptions)
+
+	webServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintln(w, r.RequestURI)
+	}))
+	defer webServer.Close()
+
+	testIndexerOptions := storage.FakeIndexerOptions
+	testIndexerOptions.PackageStorageEndpoint = webServer.URL
+
+	indexer := storage.NewIndexer(fs.Client(), testIndexerOptions)
 
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
@@ -125,7 +136,16 @@ func TestPackageStorage_Artifacts(t *testing.T) {
 func TestPackageStorage_Signatures(t *testing.T) {
 	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
-	indexer := storage.NewIndexer(fs.Client(), storage.FakeIndexerOptions)
+
+	webServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintln(w, r.RequestURI)
+	}))
+	defer webServer.Close()
+
+	testIndexerOptions := storage.FakeIndexerOptions
+	testIndexerOptions.PackageStorageEndpoint = webServer.URL
+
+	indexer := storage.NewIndexer(fs.Client(), testIndexerOptions)
 
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
@@ -152,7 +172,16 @@ func TestPackageStorage_Signatures(t *testing.T) {
 func TestPackageStorage_Statics(t *testing.T) {
 	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
-	indexer := storage.NewIndexer(fs.Client(), storage.FakeIndexerOptions)
+
+	webServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintln(w, r.RequestURI)
+	}))
+	defer webServer.Close()
+
+	testIndexerOptions := storage.FakeIndexerOptions
+	testIndexerOptions.PackageStorageEndpoint = webServer.URL
+
+	indexer := storage.NewIndexer(fs.Client(), testIndexerOptions)
 
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
