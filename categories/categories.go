@@ -5,7 +5,6 @@
 package categories
 
 import (
-	_ "embed"
 	"fmt"
 	"io"
 
