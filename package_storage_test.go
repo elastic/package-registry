@@ -212,6 +212,8 @@ func TestPackageStorage_ResolverResponse(t *testing.T) {
 	defer fs.Stop()
 
 	webServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Foo", "bar")
+		w.Header().Set("Last-Modified", "time")
 		fmt.Fprintf(w, "%s\n%s\n%+v\n", r.Method, r.RequestURI, r.Header)
 	}))
 	defer webServer.Close()
@@ -230,14 +232,15 @@ func TestPackageStorage_ResolverResponse(t *testing.T) {
 		endpoint string
 		path     string
 		file     string
+		headers  map[string]string
 		handler  func(w http.ResponseWriter, r *http.Request)
 	}{
-		{"/package/1password/0.1.1/img/1password-logo-light-bg.svg", staticRouterPath, "1password-logo-light-bg.svg.response", staticHandler},
+		{"/package/1password/0.1.1/img/1password-logo-light-bg.svg", staticRouterPath, "1password-logo-light-bg.svg.response", map[string]string{"Last-Modified": "time"}, staticHandler},
 	}
 
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
-			runEndpoint(t, test.endpoint, test.path, test.file, test.handler)
+			runEndpointWithHeaders(t, test.endpoint, test.path, test.file, test.headers, test.handler)
 		})
 	}
 

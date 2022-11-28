@@ -52,7 +52,6 @@ func addRequestHeadersToRequest(orig, forward *http.Request) {
 	log.Printf("Orig request headers %d", len(orig.Header))
 	for header, values := range orig.Header {
 		for _, value := range values {
-			log.Printf("Adding to forward request %s %s", header, value)
 			forward.Header.Add(header, value)
 		}
 	}
