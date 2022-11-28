@@ -7,7 +7,6 @@ package storage
 import (
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"net/url"
 
@@ -22,7 +21,10 @@ type storageResolver struct {
 var acceptedHeaders = map[string]string{
 	"Content-Length": "",
 	"Content-Type":   "",
+	"Accept-Ranges":  "",
+	"Content-Range":  "",
 	"Last-Modified":  "",
+	"Date":           "",
 }
 
 func (resolver storageResolver) pipeRequestProxy(w http.ResponseWriter, r *http.Request, remoteURL string) error {
@@ -49,7 +51,6 @@ func (resolver storageResolver) pipeRequestProxy(w http.ResponseWriter, r *http.
 }
 
 func addRequestHeadersToRequest(orig, forward *http.Request) {
-	log.Printf("Orig request headers %d", len(orig.Header))
 	for header, values := range orig.Header {
 		for _, value := range values {
 			forward.Header.Add(header, value)
@@ -60,6 +61,7 @@ func addRequestHeadersToRequest(orig, forward *http.Request) {
 func addRequestHeadersToResponse(w http.ResponseWriter, resp *http.Response) {
 	for header, values := range resp.Header {
 		if len(w.Header().Values(header)) > 0 {
+			// do not overwrite
 			continue
 		}
 		if _, ok := acceptedHeaders[header]; !ok {
