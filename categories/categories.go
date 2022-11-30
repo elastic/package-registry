@@ -56,6 +56,7 @@ func ReadCategories(r io.Reader) (Categories, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to decode categories: %w", err)
 	}
+
 	// TODO: Check for duplicated categories.
 	return categoriesFile.Categories, nil
 }

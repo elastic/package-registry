@@ -21,10 +21,8 @@ categories:
     subcategories:
       custom_logs:
         title: "Custom Logs"
-  database:
-    title: "Database" # TODO: New. Duplicate of "datastore"?
   datastore:
-    title: "Datastore"
+    title: "Database"
   elastic_stack:
     title: "Elastic Stack"
   elasticsearch_sdk:
@@ -34,7 +32,7 @@ categories:
     subcategories:
       app_search:
         title: "Application Search"
-      connector: # TODO: Do we want three different connector categories?
+      connector:
         title: "Connector"
       connector_client:
         title: "Connector Client"
@@ -59,17 +57,17 @@ categories:
     subcategories:
       analytics_engine:
         title: "Analytics Engine"
-      big_data: # TODO: Unify "big_data" and "analytics_engine"?
+      big_data:
         title: "Big Data"
-      kubernetes: # TODO: Duplicate of "kubernetes"?
+      kubernetes:
         title: "Kubernetes"
       load_balancer:
         title: "Load Balancer"
-      message_broker: # TODO: Duplicate of "message_queue"?
+      message_queue:
         title: "Message Broker"
-      monitoring: # TODO: Duplicate of "monitoring" and "observability/monitoring".
+      monitoring_infrastructure:
         title: "Monitoring"
-      notification: # TODO: Duplicate of "notification". Remove main category? Duplicate here with different id?
+      notification:
         title: "Notification"
       process_manager:
         title: "Process Manager"
@@ -77,22 +75,14 @@ categories:
         title: "Stream Processing"
       virtualization:
         title: "Virtualization Platform"
-      webserver: # TODO: Duplicate of "web"?
+      web:
         title: "Web Server"
-      websphere: # TODO: Too specific?
+      websphere:
         title: "WebSphere Application Server"
-  kubernetes:
-    title: "Kubernetes"
   languages:
     title: "Languages"
-  message_queue:
-    title: "Message Queue"
-  monitoring:
-    title: "Monitoring"
   network:
     title: "Network"
-  notification:
-    title: "Notification"
   observability:
     title: "Observability"
     subcategories:
@@ -100,12 +90,10 @@ categories:
         title: "Application"
       java_observability:
         title: "Java"
-      monitoring: # TODO: Duplicate of "monitoring" and "infrastructure/monitoring"?
+      monitoring:
         title: "Monitoring"
-  operating_system:
-    title: "Operating systems" # TODO: New. Duplicate of "os_system"?
   os_system:
-    title: "OS & System"
+    title: "Operating Systems"
   productivity:
     title: "Productivity"
   security:
@@ -139,7 +127,7 @@ categories:
         title: "Productivity"
       proxy_security:
         title: "Proxy"
-      threat_intel: # TODO: Duplicate of "threat_intel". Remove main category? or duplicate here with a different id?
+      threat_intel:
         title: "Threat Intelligence"
       vpn_security:
         title: "VPN"
@@ -149,9 +137,5 @@ categories:
     title: "Support"
   ticketing:
     title: "Ticketing"
-  threat_intel:
-    title: "Threat Intelligence"
   version_control:
     title: "Version Control"
-  web:
-    title: "Web"

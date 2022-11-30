@@ -31,7 +31,7 @@
   },
   {
     "id": "datastore",
-    "title": "Datastore",
+    "title": "Database",
     "count": 8
   },
   {
@@ -51,7 +51,7 @@
   },
   {
     "id": "message_queue",
-    "title": "Message Queue",
+    "title": "Message Broker",
     "count": 5
   },
   {
@@ -66,7 +66,7 @@
   },
   {
     "id": "os_system",
-    "title": "OS & System",
+    "title": "Operating Systems",
     "count": 9
   },
   {
@@ -81,7 +81,7 @@
   },
   {
     "id": "web",
-    "title": "Web",
+    "title": "Web Server",
     "count": 14
   }
 ]

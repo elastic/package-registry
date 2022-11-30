@@ -31,12 +31,12 @@
   },
   {
     "id": "datastore",
-    "title": "Datastore",
+    "title": "Database",
     "count": 3
   },
   {
     "id": "message_queue",
-    "title": "Message Queue",
+    "title": "Message Broker",
     "count": 1
   },
   {
@@ -46,7 +46,7 @@
   },
   {
     "id": "web",
-    "title": "Web",
+    "title": "Web Server",
     "count": 3
   }
 ]
