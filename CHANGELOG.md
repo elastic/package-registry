@@ -14,8 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Definition of additional categories and subcategories. [#914](https://github.com/elastic/package-registry/pull/914)
 * Update default value for `proxy-url` parameter to be Elastic Package Registry production. [#899](https://github.com/elastic/package-registry/pull/899)
+* Add additional categories and subcategories. [#914](https://github.com/elastic/package-registry/pull/914)
+* Support subcategories. Include parent category in categories API. [#914](https://github.com/elastic/package-registry/pull/914)
 
 ### Deprecated
 

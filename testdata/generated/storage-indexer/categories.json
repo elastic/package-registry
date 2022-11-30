@@ -47,17 +47,20 @@
   {
     "id": "kubernetes",
     "title": "Kubernetes",
-    "count": 2
+    "count": 2,
+    "subcategory_of": "infrastructure"
   },
   {
     "id": "message_queue",
     "title": "Message Broker",
-    "count": 5
+    "count": 5,
+    "subcategory_of": "infrastructure"
   },
   {
     "id": "monitoring",
     "title": "Monitoring",
-    "count": 5
+    "count": 5,
+    "subcategory_of": "observability"
   },
   {
     "id": "network",
@@ -82,6 +85,7 @@
   {
     "id": "web",
     "title": "Web Server",
-    "count": 14
+    "count": 14,
+    "subcategory_of": "infrastructure"
   }
 ]

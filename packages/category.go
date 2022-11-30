@@ -8,5 +8,5 @@ type Category struct {
 	Id            string `yaml:"id" json:"id"`
 	Title         string `yaml:"title" json:"title"`
 	Count         int    `yaml:"count" json:"count"`
-	SubcategoryOf string `yaml:"subcategoryOf,omitempty" json:"subcategoryOf,omitempty"`
+	SubcategoryOf string `yaml:"subcategory_of,omitempty" json:"subcategory_of,omitempty"`
 }

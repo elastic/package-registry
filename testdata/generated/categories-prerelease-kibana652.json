@@ -22,16 +22,19 @@
   {
     "id": "message_queue",
     "title": "Message Broker",
-    "count": 1
+    "count": 1,
+    "subcategory_of": "infrastructure"
   },
   {
     "id": "monitoring",
     "title": "Monitoring",
-    "count": 1
+    "count": 1,
+    "subcategory_of": "observability"
   },
   {
     "id": "web",
     "title": "Web Server",
-    "count": 1
+    "count": 1,
+    "subcategory_of": "infrastructure"
   }
 ]

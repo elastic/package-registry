@@ -22,6 +22,7 @@
   {
     "id": "web",
     "title": "Web Server",
-    "count": 3
+    "count": 3,
+    "subcategory_of": "infrastructure"
   }
 ]
