@@ -14,20 +14,12 @@ var defaultCategoriesYml []byte
 
 var defaultCategories Categories
 
-var defaultCategoriesTitlesMap map[string]string
-
 func init() {
 	r := bytes.NewReader(defaultCategoriesYml)
 	defaultCategories = MustReadCategories(r)
-	defaultCategoriesTitlesMap = defaultCategories.TitlesMap()
 }
 
 // DefaultCategories returns the default categories.
 func DefaultCategories() Categories {
 	return defaultCategories
-}
-
-// TitlesMap is a convenience method that returns the titles of the default categories.
-func TitlesMap() map[string]string {
-	return defaultCategoriesTitlesMap
 }

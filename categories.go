@@ -198,8 +198,8 @@ func getCategoriesOutput(ctx context.Context, categories map[string]*packages.Ca
 	var outputCategories []*packages.Category
 	for _, k := range keys {
 		c := categories[k]
-		if title, ok := packages.CategoryTitles[c.Title]; ok {
-			c.Title = title
+		if category, ok := packages.Categories[c.Title]; ok {
+			c.Title = category.Title
 		}
 		outputCategories = append(outputCategories, c)
 	}

@@ -20,11 +20,9 @@ func TestLoadCategories(t *testing.T) {
 	categories, err := ReadCategories(bytes.NewReader(sampleCategoriesYaml))
 	require.NoError(t, err)
 
-	if assert.Len(t, categories, 3) {
-		assert.Len(t, categories["security"].SubCategories, 2)
-	}
+	assert.Equal(t, "Security", categories["security"].Title)
+	assert.Equal(t, "Web Server", categories["webserver"].Title)
 
-	titles := categories.TitlesMap()
-	assert.Equal(t, "Security", titles["security"])
-	assert.Equal(t, "Web Server", titles["webserver"])
+	assert.Equal(t, "security", categories["edr_xdr"].SubcategoryOf)
+	assert.Equal(t, "security", categories["network_security"].SubcategoryOf)
 }

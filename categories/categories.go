@@ -13,43 +13,23 @@ import (
 
 // Category is a common structure for all kinds of categories.
 type Category struct {
-	Title string `yaml:"title"`
-}
-
-// MainCategory is a main category, that can have subcategories.
-type MainCategory struct {
-	Category `yaml:",inline"`
-
-	SubCategories map[string]SubCategory `yaml:"subcategories"`
-}
-
-// SubCategory is a sub-category, should be contained in a Category.
-type SubCategory struct {
-	Category `yaml:",inline"`
+	Name          string
+	Title         string
+	SubcategoryOf string
 }
 
 // Categories is a list of categories.
-type Categories map[string]MainCategory
-
-func (categories Categories) TitlesMap() map[string]string {
-	if len(categories) == 0 {
-		return nil
-	}
-	titles := make(map[string]string)
-	for name, category := range categories {
-		titles[name] = category.Title
-
-		for name, category := range category.SubCategories {
-			titles[name] = category.Title
-		}
-	}
-	return titles
-}
+type Categories map[string]Category
 
 // ReadCategories reads the categories from a reader.
 func ReadCategories(r io.Reader) (Categories, error) {
 	var categoriesFile struct {
-		Categories Categories `yaml:"categories"`
+		Categories map[string]struct {
+			Title         string `yaml:"title"`
+			Subcategories map[string]struct {
+				Title string `yaml:"title"`
+			} `yaml:"subcategories"`
+		} `yaml:"categories"`
 	}
 	dec := yaml.NewDecoder(r)
 	err := dec.Decode(&categoriesFile)
@@ -57,8 +37,33 @@ func ReadCategories(r io.Reader) (Categories, error) {
 		return nil, fmt.Errorf("failed to decode categories: %w", err)
 	}
 
-	// TODO: Check for duplicated categories.
-	return categoriesFile.Categories, nil
+	categories := make(Categories)
+	addCategory := func(name, title, parent string) error {
+		if _, found := categories[name]; found {
+			return fmt.Errorf("ambiguous definition for category %q", name)
+		}
+		categories[name] = Category{
+			Name:          name,
+			Title:         title,
+			SubcategoryOf: parent,
+		}
+		return nil
+	}
+	for name, category := range categoriesFile.Categories {
+		err := addCategory(name, category.Title, "")
+		if err != nil {
+			return nil, err
+		}
+
+		for subname, subcategory := range category.Subcategories {
+			err := addCategory(subname, subcategory.Title, name)
+			if err != nil {
+				return nil, err
+			}
+		}
+	}
+
+	return categories, nil
 }
 
 // MustReadCategories reads the categories from a reader and panics if there is any error.

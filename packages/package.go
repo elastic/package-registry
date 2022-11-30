@@ -27,7 +27,12 @@ const (
 	packagePathPrefix = "/package"
 )
 
-var CategoryTitles = categories.TitlesMap()
+var (
+	Categories = categories.DefaultCategories()
+
+	// Deprecated, keeping for backwards compatibility, Categories should be used instead.
+	CategoryTiles = categoryTitles(categories.DefaultCategories())
+)
 
 type Package struct {
 	BasePackage   `config:",inline" json:",inline" yaml:",inline"`
@@ -480,7 +485,7 @@ func (p *Package) Validate() error {
 	}
 
 	for _, c := range p.Categories {
-		if _, ok := CategoryTitles[c]; !ok {
+		if _, ok := Categories[c]; !ok {
 			return fmt.Errorf("invalid category: %s", c)
 		}
 	}
@@ -635,4 +640,12 @@ func (p *Package) SetRemoteResolver(r RemoteResolver) {
 
 func (p *Package) RemoteResolver() RemoteResolver {
 	return p.resolver
+}
+
+func categoryTitles(categories categories.Categories) map[string]string {
+	titles := make(map[string]string)
+	for _, category := range categories {
+		titles[category.Name] = category.Title
+	}
+	return titles
 }
