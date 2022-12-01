@@ -35,17 +35,16 @@ func (resolver storageResolver) pipeRequestProxy(w http.ResponseWriter, r *http.
 
 	resp, err := client.Do(forwardRequest)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		http.Error(w, "error from package-storage server", http.StatusInternalServerError)
 	}
 	defer resp.Body.Close()
 
-	addRequestHeadersToResponse(w, resp)
-
 	_, err = io.Copy(w, resp.Body)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		http.Error(w, "error writing response", http.StatusInternalServerError)
 	}
 
+	addRequestHeadersToResponse(w, resp)
 	w.WriteHeader(resp.StatusCode)
 	return nil
 }
