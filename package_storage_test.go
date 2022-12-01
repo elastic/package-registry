@@ -240,7 +240,7 @@ func TestPackageStorage_ResolverResponse(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
-			runEndpointWithHeaders(t, test.endpoint, test.path, test.file, test.headers, test.handler)
+			runEndpointWithStorageIndexerAndHeaders(t, test.endpoint, test.path, test.file, test.headers, test.handler)
 		})
 	}
 
@@ -248,4 +248,8 @@ func TestPackageStorage_ResolverResponse(t *testing.T) {
 
 func runEndpointWithStorageIndexer(t *testing.T, endpoint, path, file string, handler func(w http.ResponseWriter, r *http.Request)) {
 	runEndpoint(t, endpoint, path, filepath.Join(storageIndexerGoldenDir, file), handler)
+}
+
+func runEndpointWithStorageIndexerAndHeaders(t *testing.T, endpoint, path, file string, headers map[string]string, handler func(w http.ResponseWriter, r *http.Request)) {
+	runEndpointWithHeaders(t, endpoint, path, filepath.Join(storageIndexerGoldenDir, file), headers, handler)
 }
