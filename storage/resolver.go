@@ -73,13 +73,13 @@ func addRequestHeadersToResponse(w http.ResponseWriter, resp *http.Response) {
 	}
 }
 
-func (resolver storageResolver) RedirectArtifactsHandler(w http.ResponseWriter, r *http.Request, p *packages.Package) {
+func (resolver storageResolver) ForwardArtifactsHandler(w http.ResponseWriter, r *http.Request, p *packages.Package) {
 	nameVersionZip := fmt.Sprintf("%s-%s.zip", p.Name, p.Version)
 	artifactURL := resolver.artifactsPackagesURL.ResolveReference(&url.URL{Path: nameVersionZip})
 	resolver.pipeRequestProxy(w, r, artifactURL.String())
 }
 
-func (resolver storageResolver) RedirectStaticHandler(w http.ResponseWriter, r *http.Request, p *packages.Package, resourcePath string) {
+func (resolver storageResolver) ForwardStaticHandler(w http.ResponseWriter, r *http.Request, p *packages.Package, resourcePath string) {
 	nameVersion := fmt.Sprintf("%s-%s/", p.Name, p.Version)
 	staticURL := resolver.artifactsStaticURL.
 		ResolveReference(&url.URL{Path: nameVersion}).
@@ -87,7 +87,7 @@ func (resolver storageResolver) RedirectStaticHandler(w http.ResponseWriter, r *
 	resolver.pipeRequestProxy(w, r, staticURL.String())
 }
 
-func (resolver storageResolver) RedirectSignaturesHandler(w http.ResponseWriter, r *http.Request, p *packages.Package) {
+func (resolver storageResolver) ForwardSignaturesHandler(w http.ResponseWriter, r *http.Request, p *packages.Package) {
 	nameVersionSigZip := fmt.Sprintf("%s-%s.zip.sig", p.Name, p.Version)
 	signatureURL := resolver.artifactsPackagesURL.ResolveReference(&url.URL{Path: nameVersionSigZip})
 	resolver.pipeRequestProxy(w, r, signatureURL.String())

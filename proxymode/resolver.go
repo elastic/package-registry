@@ -22,17 +22,17 @@ func (pr proxyResolver) redirectRequest(w http.ResponseWriter, r *http.Request, 
 	http.Redirect(w, r, remoteURL.String(), http.StatusMovedPermanently)
 }
 
-func (pr proxyResolver) RedirectArtifactsHandler(w http.ResponseWriter, r *http.Request, p *packages.Package) {
+func (pr proxyResolver) ForwardArtifactsHandler(w http.ResponseWriter, r *http.Request, p *packages.Package) {
 	remotePath := fmt.Sprintf("/epr/package/%s-%s.zip", p.Name, p.Version)
 	pr.redirectRequest(w, r, remotePath)
 }
 
-func (pr proxyResolver) RedirectStaticHandler(w http.ResponseWriter, r *http.Request, p *packages.Package, resourcePath string) {
+func (pr proxyResolver) ForwardStaticHandler(w http.ResponseWriter, r *http.Request, p *packages.Package, resourcePath string) {
 	remotePath := fmt.Sprintf("/package/%s/%s/%s", p.Name, p.Version, resourcePath)
 	pr.redirectRequest(w, r, remotePath)
 }
 
-func (pr proxyResolver) RedirectSignaturesHandler(w http.ResponseWriter, r *http.Request, p *packages.Package) {
+func (pr proxyResolver) ForwardSignaturesHandler(w http.ResponseWriter, r *http.Request, p *packages.Package) {
 	remotePath := fmt.Sprintf("/epr/package/%s-%s.zip.sig", p.Name, p.Version)
 	pr.redirectRequest(w, r, remotePath)
 }

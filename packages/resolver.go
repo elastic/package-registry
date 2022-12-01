@@ -7,7 +7,7 @@ package packages
 import "net/http"
 
 type RemoteResolver interface {
-	RedirectArtifactsHandler(w http.ResponseWriter, r *http.Request, p *Package)
-	RedirectStaticHandler(w http.ResponseWriter, r *http.Request, p *Package, resourcePath string)
-	RedirectSignaturesHandler(w http.ResponseWriter, r *http.Request, p *Package)
+	ForwardArtifactsHandler(w http.ResponseWriter, r *http.Request, p *Package)
+	ForwardStaticHandler(w http.ResponseWriter, r *http.Request, p *Package, resourcePath string)
+	ForwardSignaturesHandler(w http.ResponseWriter, r *http.Request, p *Package)
 }
