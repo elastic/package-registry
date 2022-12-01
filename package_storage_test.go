@@ -207,7 +207,7 @@ func TestPackageStorage_Statics(t *testing.T) {
 
 }
 
-func TestPackageStorage_ResolverResponse(t *testing.T) {
+func TestPackageStorage_ResolverHeadersResponse(t *testing.T) {
 	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
@@ -229,18 +229,24 @@ func TestPackageStorage_ResolverResponse(t *testing.T) {
 	staticHandler := staticHandler(indexer, testCacheTime)
 
 	tests := []struct {
-		endpoint string
-		path     string
-		file     string
-		headers  map[string]string
-		handler  func(w http.ResponseWriter, r *http.Request)
+		endpoint        string
+		path            string
+		file            string
+		responseHeaders map[string]string
+		handler         func(w http.ResponseWriter, r *http.Request)
 	}{
-		{"/package/1password/0.1.1/img/1password-logo-light-bg.svg", staticRouterPath, "1password-logo-light-bg.svg.response", map[string]string{"Last-Modified": "time"}, staticHandler},
+		{
+			endpoint:        "/package/1password/0.1.1/img/1password-logo-light-bg.svg",
+			path:            staticRouterPath,
+			file:            "1password-logo-light-bg.svg.response",
+			responseHeaders: map[string]string{"Last-Modified": "time"},
+			handler:         staticHandler,
+		},
 	}
 
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
-			runEndpointWithStorageIndexerAndHeaders(t, test.endpoint, test.path, test.file, test.headers, test.handler)
+			runEndpointWithStorageIndexerAndHeaders(t, test.endpoint, test.path, test.file, test.responseHeaders, test.handler)
 		})
 	}
 
