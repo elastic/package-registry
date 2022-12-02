@@ -280,7 +280,7 @@ func TestPackageStorage_ResolverErrorResponse(t *testing.T) {
 		{
 			endpoint: "/package/1password/0.1.1/img/1password-logo-light-bg.svg",
 			path:     staticRouterPath,
-			file:     "1password-logo-light-bg.svg.response",
+			file:     "1password-logo-light-bg.svg.error-response",
 			handler:  staticHandler,
 		},
 	}
