@@ -33,7 +33,7 @@ func ServePackage(w http.ResponseWriter, r *http.Request, p *Package) {
 	defer span.End()
 
 	if p.RemoteResolver() != nil {
-		p.RemoteResolver().RedirectArtifactsHandler(w, r, p)
+		p.RemoteResolver().ArtifactsHandler(w, r, p)
 		metrics.StorageRequestsTotal.With(
 			prometheus.Labels{"location": remoteLocationPrometheusLabel, "component": artifactComponentPrometheusLabel},
 		).Inc()
@@ -51,7 +51,7 @@ func ServePackageSignature(w http.ResponseWriter, r *http.Request, p *Package) {
 	defer span.End()
 
 	if p.RemoteResolver() != nil {
-		p.RemoteResolver().RedirectSignaturesHandler(w, r, p)
+		p.RemoteResolver().SignaturesHandler(w, r, p)
 		metrics.StorageRequestsTotal.With(
 			prometheus.Labels{"location": remoteLocationPrometheusLabel, "component": signatureComponentPrometheusLabel},
 		).Inc()
@@ -98,7 +98,7 @@ func ServePackageResource(w http.ResponseWriter, r *http.Request, p *Package, pa
 	defer span.End()
 
 	if p.RemoteResolver() != nil {
-		p.RemoteResolver().RedirectStaticHandler(w, r, p, packageFilePath)
+		p.RemoteResolver().StaticHandler(w, r, p, packageFilePath)
 		metrics.StorageRequestsTotal.With(
 			prometheus.Labels{"location": remoteLocationPrometheusLabel, "component": staticComponentPrometheusLabel},
 		).Inc()

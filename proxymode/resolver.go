@@ -16,25 +16,25 @@ type proxyResolver struct {
 	destinationURL url.URL
 }
 
-func (pr proxyResolver) RedirectArtifactsHandler(w http.ResponseWriter, r *http.Request, p *packages.Package) {
+func (pr proxyResolver) redirectRequest(w http.ResponseWriter, r *http.Request, remotePath string) {
+	remoteURL := pr.destinationURL.
+		ResolveReference(&url.URL{Path: remotePath})
+	http.Redirect(w, r, remoteURL.String(), http.StatusMovedPermanently)
+}
+
+func (pr proxyResolver) ArtifactsHandler(w http.ResponseWriter, r *http.Request, p *packages.Package) {
 	remotePath := fmt.Sprintf("/epr/package/%s-%s.zip", p.Name, p.Version)
-	anURL := pr.destinationURL.
-		ResolveReference(&url.URL{Path: remotePath})
-	http.Redirect(w, r, anURL.String(), http.StatusMovedPermanently)
+	pr.redirectRequest(w, r, remotePath)
 }
 
-func (pr proxyResolver) RedirectStaticHandler(w http.ResponseWriter, r *http.Request, p *packages.Package, resourcePath string) {
+func (pr proxyResolver) StaticHandler(w http.ResponseWriter, r *http.Request, p *packages.Package, resourcePath string) {
 	remotePath := fmt.Sprintf("/package/%s/%s/%s", p.Name, p.Version, resourcePath)
-	staticURL := pr.destinationURL.
-		ResolveReference(&url.URL{Path: remotePath})
-	http.Redirect(w, r, staticURL.String(), http.StatusMovedPermanently)
+	pr.redirectRequest(w, r, remotePath)
 }
 
-func (pr proxyResolver) RedirectSignaturesHandler(w http.ResponseWriter, r *http.Request, p *packages.Package) {
+func (pr proxyResolver) SignaturesHandler(w http.ResponseWriter, r *http.Request, p *packages.Package) {
 	remotePath := fmt.Sprintf("/epr/package/%s-%s.zip.sig", p.Name, p.Version)
-	anURL := pr.destinationURL.
-		ResolveReference(&url.URL{Path: remotePath})
-	http.Redirect(w, r, anURL.String(), http.StatusMovedPermanently)
+	pr.redirectRequest(w, r, remotePath)
 }
 
 var _ packages.RemoteResolver = new(proxyResolver)

@@ -6,6 +6,7 @@ package storage
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 
@@ -17,24 +18,78 @@ type storageResolver struct {
 	artifactsStaticURL   url.URL
 }
 
-func (resolver storageResolver) RedirectArtifactsHandler(w http.ResponseWriter, r *http.Request, p *packages.Package) {
-	nameVersionZip := fmt.Sprintf("%s-%s.zip", p.Name, p.Version)
-	artifactURL := resolver.artifactsPackagesURL.ResolveReference(&url.URL{Path: nameVersionZip})
-	http.Redirect(w, r, artifactURL.String(), http.StatusMovedPermanently)
+var acceptedHeaders = map[string]string{
+	"Content-Length": "",
+	"Content-Type":   "",
+	"Accept-Ranges":  "",
+	"Content-Range":  "",
+	"Last-Modified":  "",
+	"Date":           "",
 }
 
-func (resolver storageResolver) RedirectStaticHandler(w http.ResponseWriter, r *http.Request, p *packages.Package, resourcePath string) {
+func (resolver storageResolver) pipeRequestProxy(w http.ResponseWriter, r *http.Request, remoteURL string) error {
+	client := &http.Client{}
+
+	forwardRequest, err := http.NewRequestWithContext(r.Context(), r.Method, remoteURL, nil)
+	addRequestHeadersToRequest(r, forwardRequest)
+
+	resp, err := client.Do(forwardRequest)
+	if err != nil {
+		http.Error(w, "error from package-storage server", http.StatusInternalServerError)
+	}
+	defer resp.Body.Close()
+
+	_, err = io.Copy(w, resp.Body)
+	if err != nil {
+		http.Error(w, "error writing response", http.StatusInternalServerError)
+	}
+
+	addRequestHeadersToResponse(w, resp)
+	w.WriteHeader(resp.StatusCode)
+	return nil
+}
+
+func addRequestHeadersToRequest(orig, forward *http.Request) {
+	for header, values := range orig.Header {
+		for _, value := range values {
+			forward.Header.Add(header, value)
+		}
+	}
+}
+
+func addRequestHeadersToResponse(w http.ResponseWriter, resp *http.Response) {
+	for header, values := range resp.Header {
+		if len(w.Header().Values(header)) > 0 {
+			// do not overwrite
+			continue
+		}
+		if _, ok := acceptedHeaders[header]; !ok {
+			continue
+		}
+		for _, value := range values {
+			w.Header().Add(header, value)
+		}
+	}
+}
+
+func (resolver storageResolver) ArtifactsHandler(w http.ResponseWriter, r *http.Request, p *packages.Package) {
+	nameVersionZip := fmt.Sprintf("%s-%s.zip", p.Name, p.Version)
+	artifactURL := resolver.artifactsPackagesURL.ResolveReference(&url.URL{Path: nameVersionZip})
+	resolver.pipeRequestProxy(w, r, artifactURL.String())
+}
+
+func (resolver storageResolver) StaticHandler(w http.ResponseWriter, r *http.Request, p *packages.Package, resourcePath string) {
 	nameVersion := fmt.Sprintf("%s-%s/", p.Name, p.Version)
 	staticURL := resolver.artifactsStaticURL.
 		ResolveReference(&url.URL{Path: nameVersion}).
 		ResolveReference(&url.URL{Path: resourcePath})
-	http.Redirect(w, r, staticURL.String(), http.StatusMovedPermanently)
+	resolver.pipeRequestProxy(w, r, staticURL.String())
 }
 
-func (resolver storageResolver) RedirectSignaturesHandler(w http.ResponseWriter, r *http.Request, p *packages.Package) {
+func (resolver storageResolver) SignaturesHandler(w http.ResponseWriter, r *http.Request, p *packages.Package) {
 	nameVersionSigZip := fmt.Sprintf("%s-%s.zip.sig", p.Name, p.Version)
 	signatureURL := resolver.artifactsPackagesURL.ResolveReference(&url.URL{Path: nameVersionSigZip})
-	http.Redirect(w, r, signatureURL.String(), http.StatusMovedPermanently)
+	resolver.pipeRequestProxy(w, r, signatureURL.String())
 }
 
 var _ packages.RemoteResolver = new(storageResolver)

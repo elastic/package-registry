@@ -12,6 +12,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -492,7 +493,37 @@ func TestRangeDownloads(t *testing.T) {
 	}
 }
 
+func runEndpointWithHeaders(t *testing.T, endpoint, path, file string, headers map[string]string, handler func(w http.ResponseWriter, r *http.Request)) {
+	recorder := recordRequest(t, endpoint, path, handler)
+
+	assertExpectedBody(t, recorder.Body, file)
+
+	// Skip cache check if 4xx error
+	if recorder.Code >= 200 && recorder.Code < 300 {
+		cacheTime := fmt.Sprintf("%.0f", testCacheTime.Seconds())
+		assert.Equal(t, recorder.Header()["Cache-Control"], []string{"max-age=" + cacheTime, "public"})
+
+		for key, value := range headers {
+			log.Printf("Checking header %s", key)
+			assert.Contains(t, recorder.Header(), key)
+			assert.Equal(t, []string{value}, recorder.Header()[key])
+		}
+	}
+}
+
 func runEndpoint(t *testing.T, endpoint, path, file string, handler func(w http.ResponseWriter, r *http.Request)) {
+	recorder := recordRequest(t, endpoint, path, handler)
+
+	assertExpectedBody(t, recorder.Body, file)
+
+	// Skip cache check if 4xx error
+	if recorder.Code >= 200 && recorder.Code < 300 {
+		cacheTime := fmt.Sprintf("%.0f", testCacheTime.Seconds())
+		assert.Equal(t, recorder.Header()["Cache-Control"], []string{"max-age=" + cacheTime, "public"})
+	}
+}
+
+func recordRequest(t *testing.T, endpoint, path string, handler func(w http.ResponseWriter, r *http.Request)) *httptest.ResponseRecorder {
 	req, err := http.NewRequest("GET", endpoint, nil)
 	if err != nil {
 		t.Fatal(err)
@@ -507,14 +538,7 @@ func runEndpoint(t *testing.T, endpoint, path, file string, handler func(w http.
 	}
 	req.RequestURI = endpoint
 	router.ServeHTTP(recorder, req)
-
-	assertExpectedBody(t, recorder.Body, file)
-
-	// Skip cache check if 4xx error
-	if recorder.Code >= 200 && recorder.Code < 300 {
-		cacheTime := fmt.Sprintf("%.0f", testCacheTime.Seconds())
-		assert.Equal(t, recorder.Header()["Cache-Control"], []string{"max-age=" + cacheTime, "public"})
-	}
+	return recorder
 }
 
 type recordedBody interface {
