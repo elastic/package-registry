@@ -1,0 +1,141 @@
+# This file contains metadata about the supported categories. Other categories
+# may be also used, but they won't contain titles or other metadata. This is not
+# recommended.
+# Subcategories are only allowed at the root-level categories. That is, subcategories
+# cannot have nested subcategories.
+categories:
+  aws:
+    title: "AWS"
+  azure:
+    title: "Azure"
+  cloud:
+    title: "Cloud"
+  config_management:
+    title: "Config management"
+  containers:
+    title: "Containers"
+  crm:
+    title: "CRM"
+  custom:
+    title: "Custom"
+    subcategories:
+      custom_logs:
+        title: "Custom Logs"
+  datastore:
+    title: "Database"
+  elastic_stack:
+    title: "Elastic Stack"
+  elasticsearch_sdk:
+    title: "Elasticsearch SDK"
+  enterprise_serch:
+    title: "Enterprise Search"
+    subcategories:
+      app_search:
+        title: "Application Search"
+      connector:
+        title: "Connector"
+      connector_client:
+        title: "Connector Client"
+      connector_package:
+        title: "Connector Package"
+      content_source:
+        title: "Content Source"
+      crawler:
+        title: "Crawler"
+      language_client:
+        title: "Language Client"
+      native_search:
+        title: "Native Search"
+      sdk_search:
+        title: "SDK"
+      workplace_search:
+        title: "Workplace Search"
+  google_cloud:
+    title: "Google Cloud"
+  infrastructure:
+    title: "Infrastructure"
+    subcategories:
+      analytics_engine:
+        title: "Analytics Engine"
+      big_data:
+        title: "Big Data"
+      kubernetes:
+        title: "Kubernetes"
+      load_balancer:
+        title: "Load Balancer"
+      message_queue:
+        title: "Message Broker"
+      monitoring_infrastructure:
+        title: "Monitoring"
+      notification:
+        title: "Notification"
+      process_manager:
+        title: "Process Manager"
+      stream_processing:
+        title: "Stream Processing"
+      virtualization:
+        title: "Virtualization Platform"
+      web:
+        title: "Web Server"
+      websphere:
+        title: "WebSphere Application Server"
+  languages:
+    title: "Languages"
+  network:
+    title: "Network"
+  observability:
+    title: "Observability"
+    subcategories:
+      application_observability:
+        title: "Application"
+      java_observability:
+        title: "Java"
+      monitoring:
+        title: "Monitoring"
+  os_system:
+    title: "Operating Systems"
+  productivity:
+    title: "Productivity"
+  security:
+    title: "Security"
+    subcategories:
+      auditd:
+        title: "AuditD"
+      authentication:
+        title: "Authentication"
+      cdn_security:
+        title: "Content Delivery Network"
+      credential_management:
+        title: "Credential Management"
+      database_security:
+        title: "Database"
+      dns_security:
+        title: "DNS"
+      edr_xdr:
+        title: "EDR/XDR"
+      email_security:
+        title: "e-mail"
+      firewall_security:
+        title: "Firewall"
+      iam:
+        title: "Identity and Access Management"
+      ids_ips:
+        title: "IDS/IPS"
+      network_security:
+        title: "Network"
+      productivity_security:
+        title: "Productivity"
+      proxy_security:
+        title: "Proxy"
+      threat_intel:
+        title: "Threat Intelligence"
+      vpn_security:
+        title: "VPN"
+      web_application_firewall:
+        title: "Web Application Firewall"
+  support:
+    title: "Support"
+  ticketing:
+    title: "Ticketing"
+  version_control:
+    title: "Version Control"

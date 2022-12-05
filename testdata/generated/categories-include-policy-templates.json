@@ -16,12 +16,14 @@
   },
   {
     "id": "datastore",
-    "title": "Datastore",
+    "title": "Database",
     "count": 3
   },
   {
     "id": "web",
-    "title": "Web",
-    "count": 3
+    "title": "Web Server",
+    "count": 3,
+    "parent_id": "infrastructure",
+    "parent_title": "Infrastructure"
   }
 ]

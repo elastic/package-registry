@@ -31,7 +31,7 @@
   },
   {
     "id": "datastore",
-    "title": "Datastore",
+    "title": "Database",
     "count": 14
   },
   {
@@ -47,17 +47,23 @@
   {
     "id": "kubernetes",
     "title": "Kubernetes",
-    "count": 11
+    "count": 11,
+    "parent_id": "infrastructure",
+    "parent_title": "Infrastructure"
   },
   {
     "id": "message_queue",
-    "title": "Message Queue",
-    "count": 5
+    "title": "Message Broker",
+    "count": 5,
+    "parent_id": "infrastructure",
+    "parent_title": "Infrastructure"
   },
   {
     "id": "monitoring",
     "title": "Monitoring",
-    "count": 5
+    "count": 5,
+    "parent_id": "observability",
+    "parent_title": "Observability"
   },
   {
     "id": "network",
@@ -66,7 +72,7 @@
   },
   {
     "id": "os_system",
-    "title": "OS & System",
+    "title": "Operating Systems",
     "count": 9
   },
   {
@@ -81,7 +87,9 @@
   },
   {
     "id": "web",
-    "title": "Web",
-    "count": 24
+    "title": "Web Server",
+    "count": 24,
+    "parent_id": "infrastructure",
+    "parent_title": "Infrastructure"
   }
 ]

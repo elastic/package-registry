@@ -17,6 +17,7 @@ import (
 	"github.com/elastic/go-ucfg"
 	"github.com/elastic/go-ucfg/yaml"
 
+	"github.com/elastic/package-registry/categories"
 	"github.com/elastic/package-registry/util"
 )
 
@@ -26,33 +27,12 @@ const (
 	packagePathPrefix = "/package"
 )
 
-var CategoryTitles = map[string]string{
-	"aws":               "AWS",
-	"azure":             "Azure",
-	"cloud":             "Cloud",
-	"config_management": "Config management",
-	"containers":        "Containers",
-	"crm":               "CRM",
-	"custom":            "Custom",
-	"datastore":         "Datastore",
-	"elastic_stack":     "Elastic Stack",
-	"google_cloud":      "Google Cloud",
-	"infrastructure":    "Infrastructure",
-	"kubernetes":        "Kubernetes",
-	"languages":         "Languages",
-	"message_queue":     "Message Queue",
-	"monitoring":        "Monitoring",
-	"network":           "Network",
-	"notification":      "Notification",
-	"os_system":         "OS & System",
-	"productivity":      "Productivity",
-	"security":          "Security",
-	"support":           "Support",
-	"ticketing":         "Ticketing",
-	"threat_intel":      "Threat Intelligence",
-	"version_control":   "Version Control",
-	"web":               "Web",
-}
+var (
+	Categories = categories.DefaultCategories()
+
+	// Deprecated, keeping for backwards compatibility, Categories should be used instead.
+	CategoryTiles = categoryTitles(categories.DefaultCategories())
+)
 
 type Package struct {
 	BasePackage   `config:",inline" json:",inline" yaml:",inline"`
@@ -505,7 +485,7 @@ func (p *Package) Validate() error {
 	}
 
 	for _, c := range p.Categories {
-		if _, ok := CategoryTitles[c]; !ok {
+		if _, ok := Categories[c]; !ok {
 			return fmt.Errorf("invalid category: %s", c)
 		}
 	}
@@ -660,4 +640,12 @@ func (p *Package) SetRemoteResolver(r RemoteResolver) {
 
 func (p *Package) RemoteResolver() RemoteResolver {
 	return p.resolver
+}
+
+func categoryTitles(categories categories.Categories) map[string]string {
+	titles := make(map[string]string)
+	for _, category := range categories {
+		titles[category.Name] = category.Title
+	}
+	return titles
 }
