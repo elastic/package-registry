@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Forward requests from package-storage instead of doing http redirects. [#915](https://github.com/elastic/package-registry/pull/915)
 * Update default value for `proxy-url` parameter to be Elastic Package Registry production. [#899](https://github.com/elastic/package-registry/pull/899)
-* Update Go runtime to 1.19.3. []()
+* Update Go runtime to 1.19.3. [#919](https://github.com/elastic/package-registry/pull/919)
 
 ### Deprecated
 
