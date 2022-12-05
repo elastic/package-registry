@@ -1,0 +1,94 @@
+[
+  {
+    "name": "longdocs",
+    "title": "Long Docs",
+    "version": "1.0.4",
+    "release": "ga",
+    "description": "This integration contains pretty long documentation.\nIt is used to show the different visualisations inside a documentation to test how we handle it.\nThe integration does not contain any assets except the documentation page.\n",
+    "type": "integration",
+    "download": "/epr/longdocs/longdocs-1.0.4.zip",
+    "path": "/package/longdocs/1.0.4",
+    "icons": [
+      {
+        "src": "/img/icon.svg",
+        "path": "/package/longdocs/1.0.4/img/icon.svg",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": ">6.7.0"
+      },
+      "elastic": {
+        "subscription": "gold"
+      }
+    },
+    "categories": [
+      "custom",
+      "web"
+    ]
+  },
+  {
+    "name": "multiversion",
+    "title": "Multi Version Second with the same version! This one should win, because it is first.",
+    "version": "1.1.0",
+    "release": "ga",
+    "description": "Multiple versions of this integration exist.\n",
+    "type": "integration",
+    "download": "/epr/multiversion/multiversion-1.1.0.zip",
+    "path": "/package/multiversion/1.1.0",
+    "icons": [
+      {
+        "src": "/img/icon.svg",
+        "path": "/package/multiversion/1.1.0/img/icon.svg",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": ">6.7.0"
+      }
+    },
+    "categories": [
+      "custom",
+      "web"
+    ]
+  },
+  {
+    "name": "reference",
+    "title": "Reference package",
+    "version": "1.0.0",
+    "release": "ga",
+    "description": "This package is used for defining all the properties of a package, the possible assets etc. It serves as a reference on all the config options which are possible.\n",
+    "type": "integration",
+    "download": "/epr/reference/reference-1.0.0.zip",
+    "path": "/package/reference/1.0.0",
+    "icons": [
+      {
+        "src": "/img/icon.svg",
+        "path": "/package/reference/1.0.0/img/icon.svg",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "nginx",
+        "title": "Nginx logs and metrics.",
+        "description": "Collecting logs and metrics from nginx."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": ">6.7.0  <7.6.0"
+      }
+    },
+    "owner": {
+      "github": "ruflin"
+    },
+    "categories": [
+      "custom",
+      "web"
+    ]
+  }
+]
