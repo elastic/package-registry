@@ -150,13 +150,13 @@ func (pm *ProxyMode) Categories(r *http.Request) ([]packages.Category, error) {
 	logger.Debug("Proxy /categories request", zap.String("request.uri", proxyURL.String()))
 	response, err := pm.httpClient.Do(proxyRequest)
 	if err != nil {
-		return nil, errors.Wrap(err, "can't proxy search request")
+		return nil, errors.Wrap(err, "can't proxy categories request")
 	}
 	defer response.Body.Close()
 	var cats []packages.Category
 	err = json.NewDecoder(response.Body).Decode(&cats)
 	if err != nil {
-		return nil, errors.Wrap(err, "can't proxy search request")
+		return nil, errors.Wrap(err, "can't proxy categories request")
 	}
 	return cats, nil
 }
@@ -185,13 +185,13 @@ func (pm *ProxyMode) Package(r *http.Request) (*packages.Package, error) {
 	logger.Debug("Proxy /package request", zap.String("request.uri", proxyURL.String()))
 	response, err := pm.httpClient.Do(proxyRequest)
 	if err != nil {
-		return nil, errors.Wrap(err, "can't proxy search request")
+		return nil, errors.Wrap(err, "can't proxy package request")
 	}
 	defer response.Body.Close()
 	var pkg packages.Package
 	err = json.NewDecoder(response.Body).Decode(&pkg)
 	if err != nil {
-		return nil, errors.Wrap(err, "can't proxy search request")
+		return nil, errors.Wrap(err, "can't proxy package request")
 	}
 	pkg.SetRemoteResolver(pm.resolver)
 	return &pkg, nil
