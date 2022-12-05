@@ -5,8 +5,9 @@
 package packages
 
 type Category struct {
-	Id            string `yaml:"id" json:"id"`
-	Title         string `yaml:"title" json:"title"`
-	Count         int    `yaml:"count" json:"count"`
-	SubcategoryOf string `yaml:"subcategory_of,omitempty" json:"subcategory_of,omitempty"`
+	Id          string `yaml:"id" json:"id"`
+	Title       string `yaml:"title" json:"title"`
+	Count       int    `yaml:"count" json:"count"`
+	ParentId    string `yaml:"parent_id,omitempty" json:"parent_id,omitempty"`
+	ParentTitle string `yaml:"parent_title,omitempty" json:"parent_title,omitempty"`
 }

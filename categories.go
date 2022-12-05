@@ -200,7 +200,10 @@ func getCategoriesOutput(ctx context.Context, categories map[string]*packages.Ca
 		c := categories[k]
 		if category, ok := packages.Categories[c.Title]; ok {
 			c.Title = category.Title
-			c.SubcategoryOf = category.SubcategoryOf
+			if parent := category.Parent; parent != nil {
+				c.ParentId = parent.Name
+				c.ParentTitle = parent.Title
+			}
 		}
 		outputCategories = append(outputCategories, c)
 	}

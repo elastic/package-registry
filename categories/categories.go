@@ -13,9 +13,9 @@ import (
 
 // Category is a common structure for all kinds of categories.
 type Category struct {
-	Name          string
-	Title         string
-	SubcategoryOf string
+	Name   string
+	Title  string
+	Parent *Category
 }
 
 // Categories is a list of categories.
@@ -38,25 +38,26 @@ func ReadCategories(r io.Reader) (Categories, error) {
 	}
 
 	categories := make(Categories)
-	addCategory := func(name, title, parent string) error {
+	addCategory := func(name, title string, parent *Category) error {
 		if _, found := categories[name]; found {
 			return fmt.Errorf("ambiguous definition for category %q", name)
 		}
 		categories[name] = Category{
-			Name:          name,
-			Title:         title,
-			SubcategoryOf: parent,
+			Name:   name,
+			Title:  title,
+			Parent: parent,
 		}
 		return nil
 	}
 	for name, category := range categoriesFile.Categories {
-		err := addCategory(name, category.Title, "")
+		err := addCategory(name, category.Title, nil)
 		if err != nil {
 			return nil, err
 		}
 
 		for subname, subcategory := range category.Subcategories {
-			err := addCategory(subname, subcategory.Title, name)
+			parent := categories[name]
+			err := addCategory(subname, subcategory.Title, &parent)
 			if err != nil {
 				return nil, err
 			}

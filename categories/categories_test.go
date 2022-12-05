@@ -23,6 +23,8 @@ func TestLoadCategories(t *testing.T) {
 	assert.Equal(t, "Security", categories["security"].Title)
 	assert.Equal(t, "Web Server", categories["webserver"].Title)
 
-	assert.Equal(t, "security", categories["edr_xdr"].SubcategoryOf)
-	assert.Equal(t, "security", categories["network_security"].SubcategoryOf)
+	assert.Equal(t, "security", categories["edr_xdr"].Parent.Name)
+	assert.Equal(t, "Security", categories["edr_xdr"].Parent.Title)
+	assert.Equal(t, "security", categories["network_security"].Parent.Name)
+	assert.Equal(t, "Security", categories["network_security"].Parent.Title)
 }
