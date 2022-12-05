@@ -80,6 +80,7 @@ func TestEndpoints(t *testing.T) {
 		{"/search?kibana.version=7.2.1", "/search", "search-kibana721.json", searchHandler(indexer, testCacheTime)},
 		{"/search?kibana.version=8.0.0", "/search", "search-kibana800.json", searchHandler(indexer, testCacheTime)},
 		{"/search?category=web", "/search", "search-category-web.json", searchHandler(indexer, testCacheTime)},
+		{"/search?category=infrastructure", "/search", "search-category-infrastructure-subcategories.json", searchHandler(indexer, testCacheTime)},
 		{"/search?category=web&all=true", "/search", "search-category-web-all.json", searchHandler(indexer, testCacheTime)},
 		{"/search?category=custom", "/search", "search-category-custom.json", searchHandler(indexer, testCacheTime)},
 		{"/search?package=example", "/search", "search-package-example.json", searchHandler(indexer, testCacheTime)},

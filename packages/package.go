@@ -349,12 +349,30 @@ func (p *Package) setBasePolicyTemplates() {
 }
 
 func (p *Package) HasCategory(category string) bool {
-	return util.StringsContains(p.Categories, category)
+	return hasCategory(p.Categories, category)
 }
 
 func (p *Package) HasPolicyTemplateWithCategory(category string) bool {
 	for _, pt := range p.PolicyTemplates {
-		if util.StringsContains(pt.Categories, category) {
+		if hasCategory(pt.Categories, category) {
+			return true
+		}
+	}
+	return false
+}
+
+func hasCategory(categories []string, category string) bool {
+	if util.StringsContains(categories, category) {
+		return true
+	}
+
+	// Check if this category has subcategories, and the package contains any of them.
+	for _, subcategory := range Categories {
+		if subcategory.Parent == nil || subcategory.Parent.Name != category {
+			continue
+		}
+
+		if util.StringsContains(categories, subcategory.Name) {
 			return true
 		}
 	}
