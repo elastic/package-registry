@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Update default value for `proxy-url` parameter to be Elastic Package Registry production. [#899](https://github.com/elastic/package-registry/pull/899)
+* Update Go runtime to 1.19.3. []()
 
 ### Deprecated
 
