@@ -103,8 +103,8 @@ docker run -p 8080:8080 {image id from prior step}
 
 **Commands ready to cut-and-paste**
 ```
-docker build --rm -t docker.elastic.co/package-registry/package-registry:main .
-docker run -it -p 8080:8080 $(docker images -q docker.elastic.co/package-registry/package-registry:main)
+docker build --rm -t docker.elastic.co/package-registry/distribution:main .
+docker run -it -p 8080:8080 $(docker images -q docker.elastic.co/package-registry/distribution:main)
 ```
 
 **Listening on HTTPS**
@@ -115,7 +115,7 @@ docker run -it -p 8443:8443 \
   -e EPR_ADDRESS=0.0.0.0:8443
   -e EPR_TLS_KEY=/etc/ssl/package-registry.key \
   -e EPR_TLS_CERT=/etc/ssl/package-registry.crt \
-  docker.elastic.co/package-registry/package-registry:main
+  docker.elastic.co/package-registry/distribution:main
 ```
 
 #### Docker images published
@@ -127,9 +127,9 @@ For each commit we have two docker image tags, one with the commit as tag
 
 Another Docker tag with the git branch or tag name
 
-* `docker.elastic.co/package-registry/package-registry:main`
-* `docker.elastic.co/package-registry/package-registry:pr-111`
-* `docker.elastic.co/package-registry/package-registry:v0.2.0`
+* `docker.elastic.co/package-registry/distribution:main`
+* `docker.elastic.co/package-registry/distribution:pr-111`
+* `docker.elastic.co/package-registry/distribution:0.2.0`
 
 If you want to run the most recent registry for development, run the main tag.
 
@@ -144,7 +144,7 @@ you need to build a new package-registry docker image first from your required b
 0. Make sure you've built the Docker image for Package Registry (let's consider in this example `main`):
 
    ```bash
-   docker build --rm -t docker.elastic.co/package-registry/package-registry:main .
+   docker build --rm -t docker.elastic.co/package-registry/distribution:main .
    ```
 
 1. Open the Dockerfile used by elastic-package and change the base image for the Packge Registry (use `main` instead of `v1.15.0`):
@@ -152,7 +152,7 @@ you need to build a new package-registry docker image first from your required b
     - This Dockerfile already enables the Proxy mode (more info at [section](#proxy-mode))
 
    ```
-   FROM docker.elastic.co/package-registry/package-registry:main
+   FROM docker.elastic.co/package-registry/distribution:main
    ```
 
 2. Now you're able to start the stack using Elastic Package (Elasticsearch, Kibana, Agent, Fleet Server) with your own Package Registry:
@@ -255,7 +255,7 @@ New versions of the package registry need to be released from time to time. The 
 5. Tag the new release by creating a new release in Github, put in the changelog in the release
 6. Update the main.go to increase the version number to the version of the potential next release version.
 
-CI automatically creates a new Docker image which will be available under `docker.elastic.co/package-registry/package-registry:vA.B.C` a few minutes after creating the tag.
+CI automatically creates a new Docker image which will be available under `docker.elastic.co/package-registry/ditribution:A.B.C` a few minutes after creating the tag.
 
 After the new registry Docker image is available, update the following projects that consume it:
 - Integrations: Update the version of the Package Registry Docker image as shown in this [sample PR](https://github.com/elastic/integrations/pull/581).
