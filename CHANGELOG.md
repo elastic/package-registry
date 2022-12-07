@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
+* Update Go runtime to 1.19.4. [#924](https://github.com/elastic/package-registry/pull/924)
+
 ### Added
 
 ### Deprecated
