@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bugfixes
 
 * Update Go runtime to 1.19.4. [#924](https://github.com/elastic/package-registry/pull/924)
+* Fix internal server error when proxy mode is used and a package that doesn't exist is requested. [#925](https://github.com/elastic/package-registry/pull/925)
 
 ### Added
 
