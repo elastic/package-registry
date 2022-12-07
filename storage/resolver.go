@@ -27,7 +27,7 @@ var acceptedHeaders = map[string]string{
 	"Date":           "",
 }
 
-func (resolver storageResolver) pipeRequestProxy(w http.ResponseWriter, r *http.Request, remoteURL string) error {
+func (resolver storageResolver) pipeRequestProxy(w http.ResponseWriter, r *http.Request, remoteURL string) {
 	client := &http.Client{}
 
 	forwardRequest, err := http.NewRequestWithContext(r.Context(), r.Method, remoteURL, nil)
@@ -36,17 +36,23 @@ func (resolver storageResolver) pipeRequestProxy(w http.ResponseWriter, r *http.
 	resp, err := client.Do(forwardRequest)
 	if err != nil {
 		http.Error(w, "error from package-storage server", http.StatusInternalServerError)
+		return
 	}
 	defer resp.Body.Close()
+
+	// Set headers before setting the body. If not, first call to w.Write will
+	// add some default values.
+	addRequestHeadersToResponse(w, resp)
 
 	_, err = io.Copy(w, resp.Body)
 	if err != nil {
 		http.Error(w, "error writing response", http.StatusInternalServerError)
+		return
 	}
 
-	addRequestHeadersToResponse(w, resp)
 	w.WriteHeader(resp.StatusCode)
-	return nil
+
+	return
 }
 
 func addRequestHeadersToRequest(orig, forward *http.Request) {

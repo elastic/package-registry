@@ -214,6 +214,7 @@ func TestPackageStorage_ResolverHeadersResponse(t *testing.T) {
 	webServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Foo", "bar")
 		w.Header().Set("Last-Modified", "time")
+		w.Header().Set("Content-Type", "image/svg+xml")
 		fmt.Fprintf(w, "%s\n%s\n%+v\n", r.Method, r.RequestURI, r.Header)
 	}))
 	defer webServer.Close()
@@ -236,11 +237,14 @@ func TestPackageStorage_ResolverHeadersResponse(t *testing.T) {
 		handler         func(w http.ResponseWriter, r *http.Request)
 	}{
 		{
-			endpoint:        "/package/1password/0.1.1/img/1password-logo-light-bg.svg",
-			path:            staticRouterPath,
-			file:            "1password-logo-light-bg.svg.response",
-			responseHeaders: map[string]string{"Last-Modified": "time"},
-			handler:         staticHandler,
+			endpoint: "/package/1password/0.1.1/img/1password-logo-light-bg.svg",
+			path:     staticRouterPath,
+			file:     "1password-logo-light-bg.svg.response",
+			responseHeaders: map[string]string{
+				"Last-Modified": "time",
+				"Content-Type":  "image/svg+xml",
+			},
+			handler: staticHandler,
 		},
 	}
 
