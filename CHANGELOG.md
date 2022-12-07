@@ -4,14 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased](https://github.com/elastic/package-registry/compare/v1.16.0...main)
+## [v1.16.1](https://github.com/elastic/package-registry/compare/v1.16.0...v1.16.1)
 
 ### Breaking changes
 
 ### Bugfixes
 
 * Update Go runtime to 1.19.4. [#924](https://github.com/elastic/package-registry/pull/924)
-* Fix headers forwarding when forwarding artifacts requests to the package storage. [#926](https://github.com/elastic/package-registry/pull/926)
+* Fix headers forwarding when forwarding artifacts requests to the package storage. [#928](https://github.com/elastic/package-registry/pull/928)
 
 ### Added
 
