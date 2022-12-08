@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
+* Remove headers mangling when forwarding requests to the package storage. [#931](https://github.com/elastic/package-registry/pull/931)
+
 ### Added
 
 ### Deprecated
