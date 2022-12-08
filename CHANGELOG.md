@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
+* Remove range headers when forwarding requests to package storage. [#932](https://github.com/elastic/package-registry/pull/932)
+
 ### Added
 
 ### Deprecated

@@ -21,8 +21,6 @@ type storageResolver struct {
 var acceptedHeaders = map[string]string{
 	"Content-Length": "",
 	"Content-Type":   "",
-	"Accept-Ranges":  "",
-	"Content-Range":  "",
 	"Last-Modified":  "",
 	"Date":           "",
 }
@@ -43,14 +41,13 @@ func (resolver storageResolver) pipeRequestProxy(w http.ResponseWriter, r *http.
 	// Set headers before setting the body. If not, first call to w.Write will
 	// add some default values.
 	addRequestHeadersToResponse(w, resp)
+	w.WriteHeader(resp.StatusCode)
 
 	_, err = io.Copy(w, resp.Body)
 	if err != nil {
 		http.Error(w, "error writing response", http.StatusInternalServerError)
 		return
 	}
-
-	w.WriteHeader(resp.StatusCode)
 
 	return
 }
