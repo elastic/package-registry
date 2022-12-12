@@ -93,11 +93,15 @@ func proxyRetryPolicy(ctx context.Context, resp *http.Response, err error) (bool
 		return false, nil
 	}
 
-	contentType := resp.Header.Get("content-type")
-	if strings.HasPrefix(contentType, "application/json") {
-		return false, nil
+	// Expect json content type only for success statuses.
+	if code := resp.StatusCode; code >= 200 && code < 300 {
+		contentType := resp.Header.Get("content-type")
+		if !strings.HasPrefix(contentType, "application/json") {
+			return true, fmt.Errorf("unexpected content type: %s", contentType)
+		}
 	}
-	return true, fmt.Errorf("unexpected content type: %s", contentType)
+
+	return false, nil
 }
 
 func (pm *ProxyMode) Enabled() bool {
@@ -188,6 +192,17 @@ func (pm *ProxyMode) Package(r *http.Request) (*packages.Package, error) {
 		return nil, errors.Wrap(err, "can't proxy package request")
 	}
 	defer response.Body.Close()
+
+	switch response.StatusCode {
+	case http.StatusOK:
+		// Package found, all good.
+	case http.StatusNotFound:
+		// Package doesn't exist, don't try to parse the response, just return an empty package.
+		return nil, nil
+	default:
+		return nil, errors.Errorf("unexpected status code %d received", response.StatusCode)
+	}
+
 	var pkg packages.Package
 	err = json.NewDecoder(response.Body).Decode(&pkg)
 	if err != nil {

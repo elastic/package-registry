@@ -65,7 +65,9 @@ func packageIndexHandlerWithProxyMode(indexer Indexer, proxyMode *proxymode.Prox
 				http.Error(w, "internal server error", http.StatusInternalServerError)
 				return
 			}
-			pkgs = pkgs.Join(packages.Packages{proxiedPackage})
+			if proxiedPackage != nil {
+				pkgs = pkgs.Join(packages.Packages{proxiedPackage})
+			}
 		}
 		if len(pkgs) == 0 {
 			notFoundError(w, errPackageRevisionNotFound)
