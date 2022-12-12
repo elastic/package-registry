@@ -29,7 +29,6 @@ func (resolver storageResolver) pipeRequestProxy(w http.ResponseWriter, r *http.
 	client := &http.Client{}
 
 	forwardRequest, err := http.NewRequestWithContext(r.Context(), r.Method, remoteURL, nil)
-	addRequestHeadersToRequest(r, forwardRequest)
 
 	resp, err := client.Do(forwardRequest)
 	if err != nil {
@@ -50,14 +49,6 @@ func (resolver storageResolver) pipeRequestProxy(w http.ResponseWriter, r *http.
 	}
 
 	return
-}
-
-func addRequestHeadersToRequest(orig, forward *http.Request) {
-	for header, values := range orig.Header {
-		for _, value := range values {
-			forward.Header.Add(header, value)
-		}
-	}
 }
 
 func addRequestHeadersToResponse(w http.ResponseWriter, resp *http.Response) {

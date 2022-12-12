@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bugfixes
 
 * Fix internal server error when proxy mode is used and a package that doesn't exist is requested. [#925](https://github.com/elastic/package-registry/pull/925)
+* Don't forward headers when requesting files from the package storage, just download them. [#935](https://github.com/elastic/package-registry/issues/935)
 
 ### Added
 
