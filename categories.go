@@ -126,7 +126,7 @@ func newCategoriesFilterFromQuery(query url.Values) (*packages.Filter, error) {
 }
 
 func getCategories(ctx context.Context, pkgs packages.Packages, includePolicyTemplates bool) map[string]*packages.Category {
-	span, ctx := apm.StartSpan(ctx, "FilterCategories", "app")
+	span, _ := apm.StartSpan(ctx, "FilterCategories", "app")
 	defer span.End()
 
 	categories := map[string]*packages.Category{}
@@ -185,7 +185,7 @@ func getCategories(ctx context.Context, pkgs packages.Packages, includePolicyTem
 }
 
 func getCategoriesOutput(ctx context.Context, categories map[string]*packages.Category) ([]byte, error) {
-	span, ctx := apm.StartSpan(ctx, "GetCategoriesOutput", "app")
+	span, _ := apm.StartSpan(ctx, "GetCategoriesOutput", "app")
 	defer span.End()
 
 	var keys []string

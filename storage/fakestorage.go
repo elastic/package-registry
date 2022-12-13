@@ -6,7 +6,7 @@ package storage
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"os"
 	"testing"
 
 	"github.com/fsouza/fake-gcs-server/fakestorage"
@@ -21,7 +21,7 @@ var FakeIndexerOptions = IndexerOptions{
 }
 
 func PrepareFakeServer(tb testing.TB, indexPath string) *fakestorage.Server {
-	indexContent, err := ioutil.ReadFile(indexPath)
+	indexContent, err := os.ReadFile(indexPath)
 	require.NoError(tb, err, "index file must be populated")
 
 	const firstRevision = "1"
@@ -30,7 +30,7 @@ func PrepareFakeServer(tb testing.TB, indexPath string) *fakestorage.Server {
 }
 
 func updateFakeServer(t *testing.T, server *fakestorage.Server, revision, indexPath string) {
-	indexContent, err := ioutil.ReadFile(indexPath)
+	indexContent, err := os.ReadFile(indexPath)
 	require.NoError(t, err, "index file must be populated")
 
 	serverObjects := prepareServerObjects(t, revision, indexContent)

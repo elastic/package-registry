@@ -47,6 +47,11 @@ func Check() error {
 		return err
 	}
 
+	err = Staticcheck()
+	if err != nil {
+		return err
+	}
+
 	// Check if no changes are shown
 	err = sh.RunV("git", "update-index", "--refresh")
 	if err != nil {
@@ -132,4 +137,9 @@ func Clean() error {
 // ModTidy cleans unused dependencies.
 func ModTidy() error {
 	return sh.RunV("go", "mod", "tidy")
+}
+
+// Staticcheck runs a static code analyzer.
+func Staticcheck() error {
+	return sh.RunV("go", "run", "honnef.co/go/tools/cmd/staticcheck", "./...")
 }

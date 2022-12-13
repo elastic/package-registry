@@ -10,7 +10,6 @@ import (
 	"net/http"
 	"os"
 	"strconv"
-	"sync"
 
 	"github.com/felixge/httpsnoop"
 	"github.com/gorilla/mux"
@@ -29,8 +28,6 @@ const (
 	DefaultLoggerType  = ECSLogger
 	DefaultLoggerLevel = zapcore.InfoLevel
 )
-
-var warnInvalidTypeOnce sync.Once
 
 type LoggerOptions struct {
 	Type      string

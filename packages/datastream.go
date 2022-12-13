@@ -47,7 +47,7 @@ type DataStream struct {
 	Release string `config:"release" json:"release"`
 
 	// Deprecated: Replaced by elasticsearch.ingest_pipeline.name
-	IngestPipeline string                   `config:"ingest_pipeline,omitempty" config:"ingest_pipeline" json:"ingest_pipeline,omitempty" yaml:"ingest_pipeline,omitempty"`
+	IngestPipeline string                   `config:"ingest_pipeline,omitempty" json:"ingest_pipeline,omitempty" yaml:"ingest_pipeline,omitempty"`
 	Streams        []Stream                 `config:"streams" json:"streams,omitempty" yaml:"streams,omitempty" `
 	Package        string                   `json:"package,omitempty" yaml:"package,omitempty"`
 	Elasticsearch  *DataStreamElasticsearch `config:"elasticsearch,omitempty" json:"elasticsearch,omitempty" yaml:"elasticsearch,omitempty"`
@@ -162,7 +162,7 @@ func NewDataStream(basePath string, p *Package) (*DataStream, error) {
 
 	// Default for the enabled flags is true.
 	trueValue := true
-	for i, _ := range d.Streams {
+	for i := range d.Streams {
 		if d.Streams[i].Enabled == nil {
 			d.Streams[i].Enabled = &trueValue
 		}
@@ -318,7 +318,6 @@ func (d *DataStream) validateRequiredFields(fs PackageFileSystem) error {
 		}
 
 		allFields = append(allFields, m...)
-		return nil
 	}
 	if err != nil {
 		return errors.Wrapf(err, "walking through fields files failed")

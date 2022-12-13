@@ -41,6 +41,7 @@ func TestUnmarshalJSON(t *testing.T) {
 	packagesBasePaths := []string{"../testdata/second_package_path", "../testdata/package"}
 	indexer := NewFileSystemIndexer(util.NewTestLogger(), packagesBasePaths...)
 	err := indexer.Init(context.Background())
+	require.NoError(t, err)
 
 	expectedFile, err := os.ReadFile(testFile)
 	require.NoError(t, err)

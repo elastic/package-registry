@@ -11,7 +11,6 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"net/http/httptest"
@@ -395,7 +394,7 @@ func TestAllPackageIndex(t *testing.T) {
 	var tests []Test
 	for _, manifest := range manifests {
 		var test Test
-		d, err := ioutil.ReadFile(manifest)
+		d, err := os.ReadFile(manifest)
 		require.NoError(t, err)
 		err = yaml.Unmarshal(d, &test)
 		require.NoError(t, err)
@@ -554,13 +553,13 @@ func assertExpectedBody(t *testing.T, body recordedBody, expectedFile string) {
 	}
 
 	if *generateFlag {
-		err = ioutil.WriteFile(fullPath, recorded, 0644)
+		err = os.WriteFile(fullPath, recorded, 0644)
 		if err != nil {
 			t.Fatal(err)
 		}
 	}
 
-	data, err := ioutil.ReadFile(fullPath)
+	data, err := os.ReadFile(fullPath)
 	if err != nil {
 		t.Fatal(err)
 	}

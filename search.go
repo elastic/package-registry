@@ -123,7 +123,7 @@ func newSearchFilterFromQuery(query url.Values) (*packages.Filter, error) {
 }
 
 func getPackageOutput(ctx context.Context, packageList packages.Packages) ([]byte, error) {
-	span, ctx := apm.StartSpan(ctx, "GetPackageOutput", "app")
+	span, _ := apm.StartSpan(ctx, "GetPackageOutput", "app")
 	defer span.End()
 
 	// Packages need to be sorted to be always outputted in the same order
