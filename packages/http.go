@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"os"
 
-	"go.elastic.co/apm"
+	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 
 	"github.com/prometheus/client_golang/prometheus"
