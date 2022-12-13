@@ -10,6 +10,7 @@ import (
 
 	"cloud.google.com/go/storage"
 	"github.com/pkg/errors"
+	"go.elastic.co/apm"
 	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/packages"
@@ -25,6 +26,9 @@ type packageIndex struct {
 }
 
 func loadSearchIndexAll(ctx context.Context, storageClient *storage.Client, bucketName, rootStoragePath string, aCursor cursor) (*searchIndexAll, error) {
+	span, ctx := apm.StartSpan(ctx, "LoadSearchIndexAll", "app")
+	defer span.End()
+
 	indexFile := searchIndexAllFile
 
 	logger := util.Logger()
