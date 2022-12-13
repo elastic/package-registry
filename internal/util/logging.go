@@ -167,3 +167,23 @@ func captureZapFieldsForRequest(handler http.Handler, w http.ResponseWriter, req
 	message := req.Method + " " + req.URL.Path + " " + req.Proto
 	return message, fields
 }
+
+type LoggerAdapter struct {
+	*zap.Logger
+}
+
+// Debugf logs a message at debug level.
+func (a *LoggerAdapter) Debugf(format string, args ...interface{}) {
+	if a.Logger.Level() > zapcore.DebugLevel {
+		return
+	}
+	a.Logger.Debug(fmt.Sprintf(format, args...))
+}
+
+// Errorf logs a message at error level.
+func (a *LoggerAdapter) Errorf(format string, args ...interface{}) {
+	if a.Logger.Level() > zapcore.ErrorLevel {
+		return
+	}
+	a.Logger.Error(fmt.Sprintf(format, args...))
+}

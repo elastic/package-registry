@@ -128,6 +128,8 @@ func main() {
 	}
 	defer logger.Sync()
 
+	apmTracer.SetLogger(&util.LoggerAdapter{logger.With(zap.String("log.logger", "apm"))})
+
 	config := mustLoadConfig(logger)
 	if dryRun {
 		logger.Info("Running dry-run mode")
