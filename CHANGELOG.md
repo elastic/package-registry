@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Errors are logged through APM. [#941](https://github.com/elastic/package-registry/pull/941)
+
 ### Deprecated
 
 ### Known Issues

@@ -18,8 +18,8 @@ import (
 	"go.elastic.co/apm"
 	"go.uber.org/zap"
 
+	"github.com/elastic/package-registry/internal/util"
 	"github.com/elastic/package-registry/metrics"
-	"github.com/elastic/package-registry/util"
 )
 
 // ValidationDisabled is a flag which can disable package content validation (package, data streams, assets, etc.).
@@ -102,8 +102,7 @@ type FileSystemIndexer struct {
 }
 
 // NewFileSystemIndexer creates a new FileSystemIndexer for the given paths.
-func NewFileSystemIndexer(paths ...string) *FileSystemIndexer {
-	logger := util.Logger()
+func NewFileSystemIndexer(logger *zap.Logger, paths ...string) *FileSystemIndexer {
 	walkerFn := func(basePath, path string, info os.DirEntry) (bool, error) {
 		relativePath, err := filepath.Rel(basePath, path)
 		if err != nil {
@@ -145,8 +144,7 @@ var ExtractedFileSystemBuilder = func(p *Package) (PackageFileSystem, error) {
 }
 
 // NewZipFileSystemIndexer creates a new ZipFileSystemIndexer for the given paths.
-func NewZipFileSystemIndexer(paths ...string) *FileSystemIndexer {
-	logger := util.Logger()
+func NewZipFileSystemIndexer(logger *zap.Logger, paths ...string) *FileSystemIndexer {
 	walkerFn := func(basePath, path string, info os.DirEntry) (bool, error) {
 		if info.IsDir() {
 			return false, nil

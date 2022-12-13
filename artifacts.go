@@ -15,19 +15,17 @@ import (
 
 	"github.com/elastic/package-registry/packages"
 	"github.com/elastic/package-registry/proxymode"
-	"github.com/elastic/package-registry/util"
 )
 
 const artifactsRouterPath = "/epr/{packageName}/{packageName:[a-z0-9_]+}-{packageVersion}.zip"
 
 var errArtifactNotFound = errors.New("artifact not found")
 
-func artifactsHandler(indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
-	return artifactsHandlerWithProxyMode(indexer, proxymode.NoProxy(), cacheTime)
+func artifactsHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+	return artifactsHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime)
 }
 
-func artifactsHandlerWithProxyMode(indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
-	logger := util.Logger()
+func artifactsHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		packageName, ok := vars["packageName"]
@@ -75,6 +73,6 @@ func artifactsHandlerWithProxyMode(indexer Indexer, proxyMode *proxymode.ProxyMo
 		}
 
 		cacheHeaders(w, cacheTime)
-		packages.ServePackage(w, r, pkgs[0])
+		packages.ServePackage(logger, w, r, pkgs[0])
 	}
 }

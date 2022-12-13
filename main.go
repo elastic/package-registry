@@ -8,6 +8,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"log"
 	"net/http"
 	_ "net/http/pprof"
 	"os"
@@ -24,14 +25,15 @@ import (
 	"go.elastic.co/apm"
 	"go.elastic.co/apm/module/apmgorilla"
 	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 
 	ucfgYAML "github.com/elastic/go-ucfg/yaml"
 
+	"github.com/elastic/package-registry/internal/util"
 	"github.com/elastic/package-registry/metrics"
 	"github.com/elastic/package-registry/packages"
 	"github.com/elastic/package-registry/proxymode"
 	"github.com/elastic/package-registry/storage"
-	"github.com/elastic/package-registry/util"
 )
 
 const (
@@ -44,6 +46,9 @@ var (
 	address         string
 	httpProfAddress string
 	metricsAddress  string
+
+	logLevel *zapcore.Level
+	logType  string
 
 	tlsCertFile string
 	tlsKeyFile  string
@@ -73,6 +78,9 @@ func init() {
 	flag.BoolVar(&printVersionInfo, "version", false, "Print Elastic Package Registry version")
 	flag.StringVar(&address, "address", "localhost:8080", "Address of the package-registry service.")
 	flag.StringVar(&metricsAddress, "metrics-address", "", "Address to expose the Prometheus metrics (experimental). ")
+
+	logLevel = zap.LevelFlag("log-level", zap.InfoLevel, "log level (default \"info\")")
+	flag.StringVar(&logType, "log-type", util.DefaultLoggerType, "log type (ecs, dev)")
 	flag.StringVar(&tlsCertFile, "tls-cert", "", "Path of the TLS certificate.")
 	flag.StringVar(&tlsKeyFile, "tls-key", "", "Path of the TLS key.")
 	flag.StringVar(&configPath, "config", "config.yml", "Path to the configuration file.")
@@ -107,7 +115,16 @@ func main() {
 		os.Exit(0)
 	}
 
-	logger := util.Logger()
+	apmTracer := initAPMTracer()
+
+	logger, err := util.NewLogger(util.LoggerOptions{
+		APMTracer: apmTracer,
+		Level:     logLevel,
+		Type:      logType,
+	})
+	if err != nil {
+		log.Fatalf("Failed to initialize logging: %v", err)
+	}
 	defer logger.Sync()
 
 	config := mustLoadConfig(logger)
@@ -122,7 +139,7 @@ func main() {
 
 	initHttpProf(logger)
 
-	server := initServer(logger, config)
+	server := initServer(logger, apmTracer, config)
 	go func() {
 		err := runServer(server)
 		if err != nil && err != http.ErrServerClosed {
@@ -194,7 +211,7 @@ func initIndexer(ctx context.Context, logger *zap.Logger, config *Config) Indexe
 		if err != nil {
 			logger.Fatal("can't initialize storage client", zap.Error(err))
 		}
-		combined = append(combined, storage.NewIndexer(storageClient, storage.IndexerOptions{
+		combined = append(combined, storage.NewIndexer(logger, storageClient, storage.IndexerOptions{
 			PackageStorageBucketInternal: storageIndexerBucketInternal,
 			PackageStorageEndpoint:       storageEndpoint,
 			WatchInterval:                storageIndexerWatchInterval,
@@ -202,15 +219,14 @@ func initIndexer(ctx context.Context, logger *zap.Logger, config *Config) Indexe
 	}
 
 	combined = append(combined,
-		packages.NewZipFileSystemIndexer(packagesBasePaths...),
-		packages.NewFileSystemIndexer(packagesBasePaths...),
+		packages.NewZipFileSystemIndexer(logger, packagesBasePaths...),
+		packages.NewFileSystemIndexer(logger, packagesBasePaths...),
 	)
 	ensurePackagesAvailable(ctx, logger, combined)
 	return combined
 }
 
-func initServer(logger *zap.Logger, config *Config) *http.Server {
-	apmTracer := initAPMTracer(logger)
+func initServer(logger *zap.Logger, apmTracer *apm.Tracer, config *Config) *http.Server {
 	tx := apmTracer.StartTransaction("initServer", "backend.init")
 	defer tx.End()
 
@@ -231,7 +247,7 @@ func runServer(server *http.Server) error {
 	return server.ListenAndServe()
 }
 
-func initAPMTracer(logger *zap.Logger) *apm.Tracer {
+func initAPMTracer() *apm.Tracer {
 	apm.DefaultTracer.Close()
 	if _, found := os.LookupEnv("ELASTIC_APM_SERVER_URL"); !found {
 		// Don't report anything if the Server URL hasn't been configured.
@@ -243,7 +259,7 @@ func initAPMTracer(logger *zap.Logger) *apm.Tracer {
 		ServiceVersion: version,
 	})
 	if err != nil {
-		logger.Fatal("Failed to initialize APM agent", zap.Error(err))
+		log.Fatalf("Failed to initialize APM agent: %v", err)
 	}
 	return tracer
 }
@@ -322,15 +338,15 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router
 	if featureProxyMode {
 		logger.Info("Technical preview: Proxy mode is an experimental feature and it may be unstable.")
 	}
-	proxyMode, err := proxymode.NewProxyMode(proxymode.ProxyOptions{
+	proxyMode, err := proxymode.NewProxyMode(logger, proxymode.ProxyOptions{
 		Enabled: featureProxyMode,
 		ProxyTo: proxyTo,
 	})
 	if err != nil {
 		return nil, errors.Wrapf(err, "can't create proxy mode")
 	}
-	artifactsHandler := artifactsHandlerWithProxyMode(indexer, proxyMode, config.CacheTimeCatchAll)
-	signaturesHandler := signaturesHandlerWithProxyMode(indexer, proxyMode, config.CacheTimeCatchAll)
+	artifactsHandler := artifactsHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeCatchAll)
+	signaturesHandler := signaturesHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeCatchAll)
 	faviconHandleFunc, err := faviconHandler(config.CacheTimeCatchAll)
 	if err != nil {
 		return nil, err
@@ -340,10 +356,10 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router
 		return nil, err
 	}
 
-	categoriesHandler := categoriesHandlerWithProxyMode(indexer, proxyMode, config.CacheTimeCategories)
-	packageIndexHandler := packageIndexHandlerWithProxyMode(indexer, proxyMode, config.CacheTimeCatchAll)
-	searchHandler := searchHandlerWithProxyMode(indexer, proxyMode, config.CacheTimeSearch)
-	staticHandler := staticHandlerWithProxyMode(indexer, proxyMode, config.CacheTimeCatchAll)
+	categoriesHandler := categoriesHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeCategories)
+	packageIndexHandler := packageIndexHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeCatchAll)
+	searchHandler := searchHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeSearch)
+	staticHandler := staticHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeCatchAll)
 
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/", indexHandlerFunc)

@@ -18,7 +18,7 @@ import (
 	"github.com/elastic/go-ucfg/yaml"
 
 	"github.com/elastic/package-registry/categories"
-	"github.com/elastic/package-registry/util"
+	"github.com/elastic/package-registry/internal/util"
 )
 
 const (

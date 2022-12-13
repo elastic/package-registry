@@ -18,6 +18,7 @@ require (
 	github.com/stretchr/testify v1.8.1
 	go.elastic.co/apm v1.15.0
 	go.elastic.co/apm/module/apmgorilla v1.15.0
+	go.elastic.co/apm/module/apmzap v1.15.0
 	go.elastic.co/ecszap v1.0.1
 	go.uber.org/zap v1.24.0
 	golang.org/x/tools v0.4.0

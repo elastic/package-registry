@@ -15,7 +15,6 @@ import (
 
 	"github.com/elastic/package-registry/archiver"
 	"github.com/elastic/package-registry/metrics"
-	"github.com/elastic/package-registry/util"
 )
 
 const (
@@ -28,7 +27,7 @@ const (
 )
 
 // ServePackage is used by artifactsHandler to serve packages and signatures.
-func ServePackage(w http.ResponseWriter, r *http.Request, p *Package) {
+func ServePackage(logger *zap.Logger, w http.ResponseWriter, r *http.Request, p *Package) {
 	span, _ := apm.StartSpan(r.Context(), "ServePackage", "app")
 	defer span.End()
 
@@ -39,14 +38,14 @@ func ServePackage(w http.ResponseWriter, r *http.Request, p *Package) {
 		).Inc()
 		return
 	}
-	serveLocalPackage(w, r, p, p.BasePath)
+	serveLocalPackage(logger, w, r, p, p.BasePath)
 	metrics.StorageRequestsTotal.With(
 		prometheus.Labels{"location": localLocationPrometheusLabel, "component": artifactComponentPrometheusLabel},
 	).Inc()
 }
 
 // ServePackageSignature is used by signaturesHandler to serve signatures.
-func ServePackageSignature(w http.ResponseWriter, r *http.Request, p *Package) {
+func ServePackageSignature(logger *zap.Logger, w http.ResponseWriter, r *http.Request, p *Package) {
 	span, _ := apm.StartSpan(r.Context(), "ServePackageSignature", "app")
 	defer span.End()
 
@@ -57,17 +56,17 @@ func ServePackageSignature(w http.ResponseWriter, r *http.Request, p *Package) {
 		).Inc()
 		return
 	}
-	serveLocalPackage(w, r, p, p.BasePath+".sig")
+	serveLocalPackage(logger, w, r, p, p.BasePath+".sig")
 	metrics.StorageRequestsTotal.With(
 		prometheus.Labels{"location": localLocationPrometheusLabel, "component": signatureComponentPrometheusLabel},
 	).Inc()
 }
 
-func serveLocalPackage(w http.ResponseWriter, r *http.Request, p *Package, packagePath string) {
+func serveLocalPackage(logger *zap.Logger, w http.ResponseWriter, r *http.Request, p *Package, packagePath string) {
 	span, _ := apm.StartSpan(r.Context(), "ServePackage", "app")
 	defer span.End()
 
-	logger := util.Logger().With(zap.String("file.name", packagePath))
+	logger = logger.With(zap.String("file.name", packagePath))
 
 	f, err := os.Stat(packagePath)
 	if err != nil {
@@ -93,7 +92,7 @@ func serveLocalPackage(w http.ResponseWriter, r *http.Request, p *Package, packa
 }
 
 // ServePackageResource is used by staticHandler.
-func ServePackageResource(w http.ResponseWriter, r *http.Request, p *Package, packageFilePath string) {
+func ServePackageResource(logger *zap.Logger, w http.ResponseWriter, r *http.Request, p *Package, packageFilePath string) {
 	span, _ := apm.StartSpan(r.Context(), "ServePackage", "app")
 	defer span.End()
 
@@ -105,7 +104,7 @@ func ServePackageResource(w http.ResponseWriter, r *http.Request, p *Package, pa
 		return
 	}
 
-	logger := util.Logger().With(zap.String("file.name", packageFilePath))
+	logger = logger.With(zap.String("file.name", packageFilePath))
 
 	fs, err := p.fs()
 	if os.IsNotExist(err) {

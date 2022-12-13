@@ -15,7 +15,6 @@ import (
 
 	"github.com/elastic/package-registry/packages"
 	"github.com/elastic/package-registry/proxymode"
-	"github.com/elastic/package-registry/util"
 )
 
 const staticRouterPath = "/package/{packageName}/{packageVersion}/{name:.*}"
@@ -26,12 +25,11 @@ type staticParams struct {
 	fileName       string
 }
 
-func staticHandler(indexer Indexer, cacheTime time.Duration) http.HandlerFunc {
-	return staticHandlerWithProxyMode(indexer, proxymode.NoProxy(), cacheTime)
+func staticHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration) http.HandlerFunc {
+	return staticHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime)
 }
 
-func staticHandlerWithProxyMode(indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) http.HandlerFunc {
-	logger := util.Logger()
+func staticHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		params, err := staticParamsFromRequest(r)
 		if err != nil {
@@ -66,7 +64,7 @@ func staticHandlerWithProxyMode(indexer Indexer, proxyMode *proxymode.ProxyMode,
 		}
 
 		cacheHeaders(w, cacheTime)
-		packages.ServePackageResource(w, r, pkgs[0], params.fileName)
+		packages.ServePackageResource(logger, w, r, pkgs[0], params.fileName)
 	}
 }
 

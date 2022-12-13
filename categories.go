@@ -18,19 +18,18 @@ import (
 	"github.com/Masterminds/semver/v3"
 	"go.elastic.co/apm"
 
+	"github.com/elastic/package-registry/internal/util"
 	"github.com/elastic/package-registry/packages"
 	"github.com/elastic/package-registry/proxymode"
-	"github.com/elastic/package-registry/util"
 )
 
 // categoriesHandler is a dynamic handler as it will also allow filtering in the future.
-func categoriesHandler(indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
-	return categoriesHandlerWithProxyMode(indexer, proxymode.NoProxy(), cacheTime)
+func categoriesHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+	return categoriesHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime)
 }
 
 // categoriesHandler is a dynamic handler as it will also allow filtering in the future.
-func categoriesHandlerWithProxyMode(indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
-	logger := util.Logger()
+func categoriesHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		query := r.URL.Query()
 

@@ -11,8 +11,6 @@ import (
 	"cloud.google.com/go/storage"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
-
-	"github.com/elastic/package-registry/util"
 )
 
 type cursor struct {
@@ -27,8 +25,7 @@ func (c *cursor) String() string {
 	return string(b)
 }
 
-func loadCursor(ctx context.Context, storageClient *storage.Client, bucketName, rootStoragePath string) (*cursor, error) {
-	logger := util.Logger()
+func loadCursor(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, bucketName, rootStoragePath string) (*cursor, error) {
 	logger.Debug("load cursor file")
 
 	rootedCursorStoragePath := joinObjectPaths(rootStoragePath, cursorStoragePath)

@@ -11,6 +11,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/elastic/package-registry/internal/util"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -22,7 +23,7 @@ var generateFlag = flag.Bool("generate", false, "Write golden files")
 func TestMarshalJSON(t *testing.T) {
 	// given
 	packagesBasePaths := []string{"../testdata/second_package_path", "../testdata/package"}
-	indexer := NewFileSystemIndexer(packagesBasePaths...)
+	indexer := NewFileSystemIndexer(util.NewTestLogger(), packagesBasePaths...)
 	err := indexer.Init(context.Background())
 	require.NoError(t, err, "can't initialize indexer")
 
@@ -37,7 +38,7 @@ func TestMarshalJSON(t *testing.T) {
 func TestUnmarshalJSON(t *testing.T) {
 	// given
 	packagesBasePaths := []string{"../testdata/second_package_path", "../testdata/package"}
-	indexer := NewFileSystemIndexer(packagesBasePaths...)
+	indexer := NewFileSystemIndexer(util.NewTestLogger(), packagesBasePaths...)
 	err := indexer.Init(context.Background())
 
 	expectedFile, err := os.ReadFile(testFile)

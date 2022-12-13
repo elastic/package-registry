@@ -15,19 +15,17 @@ import (
 
 	"github.com/elastic/package-registry/packages"
 	"github.com/elastic/package-registry/proxymode"
-	"github.com/elastic/package-registry/util"
 )
 
 const signaturesRouterPath = "/epr/{packageName}/{packageName:[a-z0-9_]+}-{packageVersion}.zip.sig"
 
 var errSignatureFileNotFound = errors.New("signature file not found")
 
-func signaturesHandler(indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
-	return signaturesHandlerWithProxyMode(indexer, proxymode.NoProxy(), cacheTime)
+func signaturesHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+	return signaturesHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime)
 }
 
-func signaturesHandlerWithProxyMode(indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
-	logger := util.Logger()
+func signaturesHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		packageName, ok := vars["packageName"]
@@ -75,6 +73,6 @@ func signaturesHandlerWithProxyMode(indexer Indexer, proxyMode *proxymode.ProxyM
 		}
 
 		cacheHeaders(w, cacheTime)
-		packages.ServePackageSignature(w, r, pkgs[0])
+		packages.ServePackageSignature(logger, w, r, pkgs[0])
 	}
 }

@@ -13,7 +13,6 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/packages"
-	"github.com/elastic/package-registry/util"
 )
 
 type searchIndexAll struct {
@@ -24,10 +23,9 @@ type packageIndex struct {
 	PackageManifest packages.Package `json:"package_manifest"`
 }
 
-func loadSearchIndexAll(ctx context.Context, storageClient *storage.Client, bucketName, rootStoragePath string, aCursor cursor) (*searchIndexAll, error) {
+func loadSearchIndexAll(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, bucketName, rootStoragePath string, aCursor cursor) (*searchIndexAll, error) {
 	indexFile := searchIndexAllFile
 
-	logger := util.Logger()
 	logger.Debug("load search-index-all index", zap.String("index.file", indexFile))
 
 	rootedIndexStoragePath := buildIndexStoragePath(rootStoragePath, aCursor, indexFile)
