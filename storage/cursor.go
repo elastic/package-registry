@@ -10,6 +10,7 @@ import (
 
 	"cloud.google.com/go/storage"
 	"github.com/pkg/errors"
+	"go.elastic.co/apm"
 	"go.uber.org/zap"
 )
 
@@ -26,6 +27,9 @@ func (c *cursor) String() string {
 }
 
 func loadCursor(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, bucketName, rootStoragePath string) (*cursor, error) {
+	span, ctx := apm.StartSpan(ctx, "LoadCursor", "app")
+	defer span.End()
+
 	logger.Debug("load cursor file")
 
 	rootedCursorStoragePath := joinObjectPaths(rootStoragePath, cursorStoragePath)

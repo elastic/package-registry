@@ -15,6 +15,7 @@ import (
 	"cloud.google.com/go/storage"
 	"github.com/pkg/errors"
 	"github.com/prometheus/client_golang/prometheus"
+	"go.elastic.co/apm"
 	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/metrics"
@@ -38,12 +39,16 @@ type Indexer struct {
 }
 
 type IndexerOptions struct {
+	APMTracer                    *apm.Tracer
 	PackageStorageBucketInternal string
 	PackageStorageEndpoint       string
 	WatchInterval                time.Duration
 }
 
 func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options IndexerOptions) *Indexer {
+	if options.APMTracer == nil {
+		options.APMTracer = apm.DefaultTracer
+	}
 	return &Indexer{
 		storageClient: storageClient,
 		options:       options,
@@ -114,10 +119,15 @@ func (i *Indexer) watchIndices(ctx context.Context) {
 	for {
 		i.logger.Debug("watchIndices: start")
 
-		err = i.updateIndex(ctx)
-		if err != nil {
-			i.logger.Error("can't update index file", zap.Error(err))
-		}
+		func() {
+			tx := i.options.APMTracer.StartTransaction("updateIndex", "backend.watcher")
+			defer tx.End()
+
+			err = i.updateIndex(ctx)
+			if err != nil {
+				i.logger.Error("can't update index file", zap.Error(err))
+			}
+		}()
 
 		i.logger.Debug("watchIndices: finished")
 		select {
@@ -130,6 +140,9 @@ func (i *Indexer) watchIndices(ctx context.Context) {
 }
 
 func (i *Indexer) updateIndex(ctx context.Context) error {
+	span, ctx := apm.StartSpan(ctx, "UpdateIndex", "app")
+	defer span.End()
+
 	i.logger.Debug("Update indices")
 	start := time.Now()
 	defer metrics.StorageIndexerUpdateIndexDurationSeconds.Observe(time.Since(start).Seconds())

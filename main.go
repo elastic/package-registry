@@ -116,6 +116,7 @@ func main() {
 	}
 
 	apmTracer := initAPMTracer()
+	defer apmTracer.Close()
 
 	logger, err := util.NewLogger(util.LoggerOptions{
 		APMTracer: apmTracer,
@@ -130,7 +131,7 @@ func main() {
 	config := mustLoadConfig(logger)
 	if dryRun {
 		logger.Info("Running dry-run mode")
-		_ = initIndexer(context.Background(), logger, config)
+		_ = initIndexer(context.Background(), logger, apmTracer, config)
 		os.Exit(0)
 	}
 
@@ -201,7 +202,7 @@ func initMetricsServer(logger *zap.Logger) {
 	}()
 }
 
-func initIndexer(ctx context.Context, logger *zap.Logger, config *Config) Indexer {
+func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer, config *Config) Indexer {
 	packagesBasePaths := getPackagesBasePaths(config)
 
 	var combined CombinedIndexer
@@ -212,6 +213,7 @@ func initIndexer(ctx context.Context, logger *zap.Logger, config *Config) Indexe
 			logger.Fatal("can't initialize storage client", zap.Error(err))
 		}
 		combined = append(combined, storage.NewIndexer(logger, storageClient, storage.IndexerOptions{
+			APMTracer:                    apmTracer,
 			PackageStorageBucketInternal: storageIndexerBucketInternal,
 			PackageStorageEndpoint:       storageEndpoint,
 			WatchInterval:                storageIndexerWatchInterval,
@@ -232,7 +234,7 @@ func initServer(logger *zap.Logger, apmTracer *apm.Tracer, config *Config) *http
 
 	ctx := apm.ContextWithTransaction(context.TODO(), tx)
 
-	indexer := initIndexer(ctx, logger, config)
+	indexer := initIndexer(ctx, logger, apmTracer, config)
 
 	router := mustLoadRouter(logger, config, indexer)
 	apmgorilla.Instrument(router, apmgorilla.WithTracer(apmTracer))
