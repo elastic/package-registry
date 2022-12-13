@@ -110,10 +110,13 @@ func main() {
 	logger := util.Logger()
 	defer logger.Sync()
 
+	apmTracer := initAPMTracer(logger)
+	defer apmTracer.Close()
+
 	config := mustLoadConfig(logger)
 	if dryRun {
 		logger.Info("Running dry-run mode")
-		_ = initIndexer(context.Background(), logger, config)
+		_ = initIndexer(context.Background(), logger, apmTracer, config)
 		os.Exit(0)
 	}
 
@@ -122,7 +125,7 @@ func main() {
 
 	initHttpProf(logger)
 
-	server := initServer(logger, config)
+	server := initServer(logger, apmTracer, config)
 	go func() {
 		err := runServer(server)
 		if err != nil && err != http.ErrServerClosed {
@@ -184,7 +187,7 @@ func initMetricsServer(logger *zap.Logger) {
 	}()
 }
 
-func initIndexer(ctx context.Context, logger *zap.Logger, config *Config) Indexer {
+func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer, config *Config) Indexer {
 	packagesBasePaths := getPackagesBasePaths(config)
 
 	var combined CombinedIndexer
@@ -195,6 +198,7 @@ func initIndexer(ctx context.Context, logger *zap.Logger, config *Config) Indexe
 			logger.Fatal("can't initialize storage client", zap.Error(err))
 		}
 		combined = append(combined, storage.NewIndexer(storageClient, storage.IndexerOptions{
+			APMTracer:                    apmTracer,
 			PackageStorageBucketInternal: storageIndexerBucketInternal,
 			PackageStorageEndpoint:       storageEndpoint,
 			WatchInterval:                storageIndexerWatchInterval,
@@ -209,14 +213,13 @@ func initIndexer(ctx context.Context, logger *zap.Logger, config *Config) Indexe
 	return combined
 }
 
-func initServer(logger *zap.Logger, config *Config) *http.Server {
-	apmTracer := initAPMTracer(logger)
+func initServer(logger *zap.Logger, apmTracer *apm.Tracer, config *Config) *http.Server {
 	tx := apmTracer.StartTransaction("initServer", "backend.init")
 	defer tx.End()
 
 	ctx := apm.ContextWithTransaction(context.TODO(), tx)
 
-	indexer := initIndexer(ctx, logger, config)
+	indexer := initIndexer(ctx, logger, apmTracer, config)
 
 	router := mustLoadRouter(logger, config, indexer)
 	apmgorilla.Instrument(router, apmgorilla.WithTracer(apmTracer))
