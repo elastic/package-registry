@@ -46,7 +46,7 @@ type IndexerOptions struct {
 
 func NewIndexer(storageClient *storage.Client, options IndexerOptions) *Indexer {
 	if options.APMTracer == nil {
-		options.APMTracer = apm.DefaultTracer
+		options.APMTracer = apm.DefaultTracer()
 	}
 	return &Indexer{
 		storageClient: storageClient,
