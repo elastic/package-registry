@@ -12,8 +12,6 @@ import (
 	"github.com/pkg/errors"
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
-
-	"github.com/elastic/package-registry/util"
 )
 
 type cursor struct {
@@ -28,11 +26,10 @@ func (c *cursor) String() string {
 	return string(b)
 }
 
-func loadCursor(ctx context.Context, storageClient *storage.Client, bucketName, rootStoragePath string) (*cursor, error) {
+func loadCursor(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, bucketName, rootStoragePath string) (*cursor, error) {
 	span, ctx := apm.StartSpan(ctx, "LoadCursor", "app")
 	defer span.End()
 
-	logger := util.Logger()
 	logger.Debug("load cursor file")
 
 	rootedCursorStoragePath := joinObjectPaths(rootStoragePath, cursorStoragePath)

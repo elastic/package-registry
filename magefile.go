@@ -16,7 +16,7 @@ import (
 	"github.com/magefile/mage/sh"
 )
 
-var (
+const (
 	// GoImportsImportPath controls the import path used to install goimports.
 	GoImportsImportPath = "golang.org/x/tools/cmd/goimports"
 
@@ -27,6 +27,9 @@ var (
 	// GoLicenserImportPath controls the import path used to install go-licenser.
 	GoLicenserImportPath = "github.com/elastic/go-licenser"
 
+	// StaticcheckImport path is the import path of the staticcheck tool.
+	StaticcheckImportPath = "honnef.co/go/tools/cmd/staticcheck"
+
 	buildDir = "./build"
 )
 
@@ -35,20 +38,15 @@ func Build() error {
 }
 
 func Check() error {
-	Format()
-
-	err := Build()
-	if err != nil {
-		return err
-	}
-
-	err = ModTidy()
-	if err != nil {
-		return err
-	}
+	mg.SerialDeps(
+		Format,
+		Build,
+		ModTidy,
+		Staticcheck,
+	)
 
 	// Check if no changes are shown
-	err = sh.RunV("git", "update-index", "--refresh")
+	err := sh.RunV("git", "update-index", "--refresh")
 	if err != nil {
 		return err
 	}
@@ -64,8 +62,10 @@ func Test() error {
 func Format() {
 	// Don't run AddLicenseHeaders and GoImports concurrently because they
 	// both can modify the same files.
-	mg.Deps(AddLicenseHeaders)
-	mg.Deps(GoImports)
+	mg.SerialDeps(
+		AddLicenseHeaders,
+		GoImports,
+	)
 }
 
 // GoImports executes goimports against all .go files in and below the CWD. It
@@ -131,5 +131,12 @@ func Clean() error {
 
 // ModTidy cleans unused dependencies.
 func ModTidy() error {
+	fmt.Println(">> fmt - go mod tidy: Generating go mod files")
 	return sh.RunV("go", "mod", "tidy")
+}
+
+// Staticcheck runs a static code analyzer.
+func Staticcheck() error {
+	fmt.Println(">> check - staticcheck: Running static code analyzer")
+	return sh.RunV("go", "run", StaticcheckImportPath, "./...")
 }

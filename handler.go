@@ -8,11 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"time"
-
-	"github.com/pkg/errors"
 )
-
-var errResourceNotFound = errors.New("resource not found")
 
 func notFoundHandler(err error) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

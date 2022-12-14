@@ -18,17 +18,16 @@ import (
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 
+	"github.com/elastic/package-registry/internal/util"
 	"github.com/elastic/package-registry/packages"
 	"github.com/elastic/package-registry/proxymode"
-	"github.com/elastic/package-registry/util"
 )
 
-func searchHandler(indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
-	return searchHandlerWithProxyMode(indexer, proxymode.NoProxy(), cacheTime)
+func searchHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+	return searchHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime)
 }
 
-func searchHandlerWithProxyMode(indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
-	logger := util.Logger()
+func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		filter, err := newSearchFilterFromQuery(r.URL.Query())
 		if err != nil {
@@ -124,7 +123,7 @@ func newSearchFilterFromQuery(query url.Values) (*packages.Filter, error) {
 }
 
 func getPackageOutput(ctx context.Context, packageList packages.Packages) ([]byte, error) {
-	span, ctx := apm.StartSpan(ctx, "GetPackageOutput", "app")
+	span, _ := apm.StartSpan(ctx, "GetPackageOutput", "app")
 	defer span.End()
 
 	// Packages need to be sorted to be always outputted in the same order

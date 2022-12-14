@@ -11,7 +11,6 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"net/http/httptest"
@@ -27,25 +26,22 @@ import (
 	"github.com/stretchr/testify/require"
 	"gopkg.in/yaml.v2"
 
+	"github.com/elastic/package-registry/internal/util"
 	"github.com/elastic/package-registry/packages"
-	"github.com/elastic/package-registry/util"
 )
 
 var (
 	generateFlag       = flag.Bool("generate", false, "Write golden files")
 	testCacheTime      = 1 * time.Second
 	generatedFilesPath = filepath.Join("testdata", "generated")
+	testLogger         = util.NewTestLogger()
 )
-
-func init() {
-	util.UseDevelopmentLogger()
-}
 
 func TestEndpoints(t *testing.T) {
 	packagesBasePaths := []string{"./testdata/second_package_path", "./testdata/package"}
 	indexer := NewCombinedIndexer(
-		packages.NewZipFileSystemIndexer("./testdata/local-storage"),
-		packages.NewFileSystemIndexer(packagesBasePaths...),
+		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
+		packages.NewFileSystemIndexer(testLogger, packagesBasePaths...),
 	)
 
 	err := indexer.Init(context.Background())
@@ -65,39 +61,39 @@ func TestEndpoints(t *testing.T) {
 	}{
 		{"/", "", "index.json", indexHandleFunc},
 		{"/index.json", "", "index.json", indexHandleFunc},
-		{"/search", "/search", "search.json", searchHandler(indexer, testCacheTime)},
-		{"/search?all=true", "/search", "search-all.json", searchHandler(indexer, testCacheTime)},
-		{"/categories", "/categories", "categories.json", categoriesHandler(indexer, testCacheTime)},
-		{"/categories?experimental=true", "/categories", "categories-experimental.json", categoriesHandler(indexer, testCacheTime)},
-		{"/categories?experimental=foo", "/categories", "categories-experimental-error.txt", categoriesHandler(indexer, testCacheTime)},
-		{"/categories?experimental=true&kibana.version=6.5.2", "/categories", "categories-kibana652.json", categoriesHandler(indexer, testCacheTime)},
-		{"/categories?prerelease=true", "/categories", "categories-prerelease.json", categoriesHandler(indexer, testCacheTime)},
-		{"/categories?prerelease=foo", "/categories", "categories-prerelease-error.txt", categoriesHandler(indexer, testCacheTime)},
-		{"/categories?prerelease=true&kibana.version=6.5.2", "/categories", "categories-prerelease-kibana652.json", categoriesHandler(indexer, testCacheTime)},
-		{"/categories?include_policy_templates=true", "/categories", "categories-include-policy-templates.json", categoriesHandler(indexer, testCacheTime)},
-		{"/categories?include_policy_templates=foo", "/categories", "categories-include-policy-templates-error.txt", categoriesHandler(indexer, testCacheTime)},
-		{"/search?kibana.version=6.5.2", "/search", "search-kibana652.json", searchHandler(indexer, testCacheTime)},
-		{"/search?kibana.version=7.2.1", "/search", "search-kibana721.json", searchHandler(indexer, testCacheTime)},
-		{"/search?kibana.version=8.0.0", "/search", "search-kibana800.json", searchHandler(indexer, testCacheTime)},
-		{"/search?category=web", "/search", "search-category-web.json", searchHandler(indexer, testCacheTime)},
-		{"/search?category=infrastructure", "/search", "search-category-infrastructure-subcategories.json", searchHandler(indexer, testCacheTime)},
-		{"/search?category=web&all=true", "/search", "search-category-web-all.json", searchHandler(indexer, testCacheTime)},
-		{"/search?category=custom", "/search", "search-category-custom.json", searchHandler(indexer, testCacheTime)},
-		{"/search?package=example", "/search", "search-package-example.json", searchHandler(indexer, testCacheTime)},
-		{"/search?package=example&all=true", "/search", "search-package-example-all.json", searchHandler(indexer, testCacheTime)},
-		{"/search?experimental=true", "/search", "search-package-experimental.json", searchHandler(indexer, testCacheTime)},
-		{"/search?experimental=foo", "/search", "search-package-experimental-error.txt", searchHandler(indexer, testCacheTime)},
-		{"/search?category=datastore&experimental=true", "/search", "search-category-datastore.json", searchHandler(indexer, testCacheTime)},
-		{"/search?prerelease=true", "/search", "search-package-prerelease.json", searchHandler(indexer, testCacheTime)},
-		{"/search?prerelease=foo", "/search", "search-package-prerelease-error.txt", searchHandler(indexer, testCacheTime)},
-		{"/search?category=datastore&prerelease=true", "/search", "search-category-datastore-prerelease.json", searchHandler(indexer, testCacheTime)},
-		{"/search?type=input&prerelease=true", "/search", "search-input-packages.json", searchHandler(indexer, testCacheTime)},
-		{"/search?type=input&package=integration_input&prerelease=true", "/search", "search-input-integration-package.json", searchHandler(indexer, testCacheTime)},
-		{"/search?type=integration&package=integration_input&prerelease=true", "/search", "search-integration-integration-package.json", searchHandler(indexer, testCacheTime)},
+		{"/search", "/search", "search.json", searchHandler(testLogger, indexer, testCacheTime)},
+		{"/search?all=true", "/search", "search-all.json", searchHandler(testLogger, indexer, testCacheTime)},
+		{"/categories", "/categories", "categories.json", categoriesHandler(testLogger, indexer, testCacheTime)},
+		{"/categories?experimental=true", "/categories", "categories-experimental.json", categoriesHandler(testLogger, indexer, testCacheTime)},
+		{"/categories?experimental=foo", "/categories", "categories-experimental-error.txt", categoriesHandler(testLogger, indexer, testCacheTime)},
+		{"/categories?experimental=true&kibana.version=6.5.2", "/categories", "categories-kibana652.json", categoriesHandler(testLogger, indexer, testCacheTime)},
+		{"/categories?prerelease=true", "/categories", "categories-prerelease.json", categoriesHandler(testLogger, indexer, testCacheTime)},
+		{"/categories?prerelease=foo", "/categories", "categories-prerelease-error.txt", categoriesHandler(testLogger, indexer, testCacheTime)},
+		{"/categories?prerelease=true&kibana.version=6.5.2", "/categories", "categories-prerelease-kibana652.json", categoriesHandler(testLogger, indexer, testCacheTime)},
+		{"/categories?include_policy_templates=true", "/categories", "categories-include-policy-templates.json", categoriesHandler(testLogger, indexer, testCacheTime)},
+		{"/categories?include_policy_templates=foo", "/categories", "categories-include-policy-templates-error.txt", categoriesHandler(testLogger, indexer, testCacheTime)},
+		{"/search?kibana.version=6.5.2", "/search", "search-kibana652.json", searchHandler(testLogger, indexer, testCacheTime)},
+		{"/search?kibana.version=7.2.1", "/search", "search-kibana721.json", searchHandler(testLogger, indexer, testCacheTime)},
+		{"/search?kibana.version=8.0.0", "/search", "search-kibana800.json", searchHandler(testLogger, indexer, testCacheTime)},
+		{"/search?category=web", "/search", "search-category-web.json", searchHandler(testLogger, indexer, testCacheTime)},
+		{"/search?category=infrastructure", "/search", "search-category-infrastructure-subcategories.json", searchHandler(testLogger, indexer, testCacheTime)},
+		{"/search?category=web&all=true", "/search", "search-category-web-all.json", searchHandler(testLogger, indexer, testCacheTime)},
+		{"/search?category=custom", "/search", "search-category-custom.json", searchHandler(testLogger, indexer, testCacheTime)},
+		{"/search?package=example", "/search", "search-package-example.json", searchHandler(testLogger, indexer, testCacheTime)},
+		{"/search?package=example&all=true", "/search", "search-package-example-all.json", searchHandler(testLogger, indexer, testCacheTime)},
+		{"/search?experimental=true", "/search", "search-package-experimental.json", searchHandler(testLogger, indexer, testCacheTime)},
+		{"/search?experimental=foo", "/search", "search-package-experimental-error.txt", searchHandler(testLogger, indexer, testCacheTime)},
+		{"/search?category=datastore&experimental=true", "/search", "search-category-datastore.json", searchHandler(testLogger, indexer, testCacheTime)},
+		{"/search?prerelease=true", "/search", "search-package-prerelease.json", searchHandler(testLogger, indexer, testCacheTime)},
+		{"/search?prerelease=foo", "/search", "search-package-prerelease-error.txt", searchHandler(testLogger, indexer, testCacheTime)},
+		{"/search?category=datastore&prerelease=true", "/search", "search-category-datastore-prerelease.json", searchHandler(testLogger, indexer, testCacheTime)},
+		{"/search?type=input&prerelease=true", "/search", "search-input-packages.json", searchHandler(testLogger, indexer, testCacheTime)},
+		{"/search?type=input&package=integration_input&prerelease=true", "/search", "search-input-integration-package.json", searchHandler(testLogger, indexer, testCacheTime)},
+		{"/search?type=integration&package=integration_input&prerelease=true", "/search", "search-integration-integration-package.json", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/favicon.ico", "", "favicon.ico", faviconHandleFunc},
 
 		// Removed flags, kept to ensure that they don't break requests from old versions.
-		{"/search?internal=true", "/search", "search-package-internal.json", searchHandler(indexer, testCacheTime)},
+		{"/search?internal=true", "/search", "search-package-internal.json", searchHandler(testLogger, indexer, testCacheTime)},
 	}
 
 	for _, test := range tests {
@@ -109,12 +105,12 @@ func TestEndpoints(t *testing.T) {
 
 func TestArtifacts(t *testing.T) {
 	packagesBasePaths := []string{"./testdata/package"}
-	indexer := packages.NewFileSystemIndexer(packagesBasePaths...)
+	indexer := packages.NewFileSystemIndexer(testLogger, packagesBasePaths...)
 
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
-	artifactsHandler := artifactsHandler(indexer, testCacheTime)
+	artifactsHandler := artifactsHandler(testLogger, indexer, testCacheTime)
 
 	tests := []struct {
 		endpoint string
@@ -136,12 +132,12 @@ func TestArtifacts(t *testing.T) {
 }
 
 func TestSignatures(t *testing.T) {
-	indexer := packages.NewZipFileSystemIndexer("./testdata/local-storage")
+	indexer := packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage")
 
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
-	signaturesHandler := signaturesHandler(indexer, testCacheTime)
+	signaturesHandler := signaturesHandler(testLogger, indexer, testCacheTime)
 
 	tests := []struct {
 		endpoint string
@@ -162,12 +158,12 @@ func TestSignatures(t *testing.T) {
 
 func TestStatics(t *testing.T) {
 	packagesBasePaths := []string{"./testdata/package"}
-	indexer := packages.NewFileSystemIndexer(packagesBasePaths...)
+	indexer := packages.NewFileSystemIndexer(testLogger, packagesBasePaths...)
 
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
-	staticHandler := staticHandler(indexer, testCacheTime)
+	staticHandler := staticHandler(testLogger, indexer, testCacheTime)
 
 	tests := []struct {
 		endpoint string
@@ -251,14 +247,14 @@ func TestStaticsModifiedTime(t *testing.T) {
 	}
 
 	indexer := NewCombinedIndexer(
-		packages.NewZipFileSystemIndexer("./testdata/local-storage"),
-		packages.NewFileSystemIndexer("./testdata/package"),
+		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
+		packages.NewFileSystemIndexer(testLogger, "./testdata/package"),
 	)
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
 	router := mux.NewRouter()
-	router.HandleFunc(staticRouterPath, staticHandler(indexer, testCacheTime))
+	router.HandleFunc(staticRouterPath, staticHandler(testLogger, indexer, testCacheTime))
 
 	for _, test := range tests {
 		t.Run(test.title, func(t *testing.T) {
@@ -281,14 +277,14 @@ func TestStaticsModifiedTime(t *testing.T) {
 }
 
 func TestZippedArtifacts(t *testing.T) {
-	indexer := packages.NewZipFileSystemIndexer("./testdata/local-storage")
+	indexer := packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage")
 
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
-	artifactsHandler := artifactsHandler(indexer, testCacheTime)
+	artifactsHandler := artifactsHandler(testLogger, indexer, testCacheTime)
 
-	staticHandler := staticHandler(indexer, testCacheTime)
+	staticHandler := staticHandler(testLogger, indexer, testCacheTime)
 
 	tests := []struct {
 		endpoint string
@@ -312,14 +308,14 @@ func TestZippedArtifacts(t *testing.T) {
 
 func TestPackageIndex(t *testing.T) {
 	indexer := NewCombinedIndexer(
-		packages.NewZipFileSystemIndexer("./testdata/local-storage"),
-		packages.NewFileSystemIndexer("./testdata/package"),
+		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
+		packages.NewFileSystemIndexer(testLogger, "./testdata/package"),
 	)
 
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
-	packageIndexHandler := packageIndexHandler(indexer, testCacheTime)
+	packageIndexHandler := packageIndexHandler(testLogger, indexer, testCacheTime)
 
 	tests := []struct {
 		endpoint string
@@ -345,12 +341,12 @@ func TestPackageIndex(t *testing.T) {
 
 func TestZippedPackageIndex(t *testing.T) {
 	packagesBasePaths := []string{"./testdata/local-storage"}
-	indexer := packages.NewZipFileSystemIndexer(packagesBasePaths...)
+	indexer := packages.NewZipFileSystemIndexer(testLogger, packagesBasePaths...)
 
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
-	packageIndexHandler := packageIndexHandler(indexer, testCacheTime)
+	packageIndexHandler := packageIndexHandler(testLogger, indexer, testCacheTime)
 
 	tests := []struct {
 		endpoint string
@@ -376,12 +372,12 @@ func TestAllPackageIndex(t *testing.T) {
 	testPackagePath := filepath.Join("testdata", "package")
 	secondPackagePath := filepath.Join("testdata", "second_package_path")
 	packagesBasePaths := []string{secondPackagePath, testPackagePath}
-	indexer := packages.NewFileSystemIndexer(packagesBasePaths...)
+	indexer := packages.NewFileSystemIndexer(testLogger, packagesBasePaths...)
 
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
-	packageIndexHandler := packageIndexHandler(indexer, testCacheTime)
+	packageIndexHandler := packageIndexHandler(testLogger, indexer, testCacheTime)
 
 	// find all manifests
 	var manifests []string
@@ -398,7 +394,7 @@ func TestAllPackageIndex(t *testing.T) {
 	var tests []Test
 	for _, manifest := range manifests {
 		var test Test
-		d, err := ioutil.ReadFile(manifest)
+		d, err := os.ReadFile(manifest)
 		require.NoError(t, err)
 		err = yaml.Unmarshal(d, &test)
 		require.NoError(t, err)
@@ -430,14 +426,14 @@ func TestContentTypes(t *testing.T) {
 	}
 
 	indexer := NewCombinedIndexer(
-		packages.NewZipFileSystemIndexer("./testdata/local-storage"),
-		packages.NewFileSystemIndexer("./testdata/package"),
+		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
+		packages.NewFileSystemIndexer(testLogger, "./testdata/package"),
 	)
 
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
-	handler := staticHandler(indexer, testCacheTime)
+	handler := staticHandler(testLogger, indexer, testCacheTime)
 	router := mux.NewRouter()
 	router.HandleFunc(staticRouterPath, handler)
 
@@ -459,16 +455,16 @@ func TestContentTypes(t *testing.T) {
 // on different file systems.
 func TestRangeDownloads(t *testing.T) {
 	indexer := NewCombinedIndexer(
-		packages.NewZipFileSystemIndexer("./testdata/local-storage"),
-		packages.NewFileSystemIndexer("./testdata/package"),
+		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
+		packages.NewFileSystemIndexer(testLogger, "./testdata/package"),
 	)
 
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
 	router := mux.NewRouter()
-	router.HandleFunc(staticRouterPath, staticHandler(indexer, testCacheTime))
-	router.HandleFunc(artifactsRouterPath, artifactsHandler(indexer, testCacheTime))
+	router.HandleFunc(staticRouterPath, staticHandler(testLogger, indexer, testCacheTime))
+	router.HandleFunc(artifactsRouterPath, artifactsHandler(testLogger, indexer, testCacheTime))
 
 	tests := []struct {
 		endpoint  string
@@ -557,13 +553,13 @@ func assertExpectedBody(t *testing.T, body recordedBody, expectedFile string) {
 	}
 
 	if *generateFlag {
-		err = ioutil.WriteFile(fullPath, recorded, 0644)
+		err = os.WriteFile(fullPath, recorded, 0644)
 		if err != nil {
 			t.Fatal(err)
 		}
 	}
 
-	data, err := ioutil.ReadFile(fullPath)
+	data, err := os.ReadFile(fullPath)
 	if err != nil {
 		t.Fatal(err)
 	}

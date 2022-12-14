@@ -18,7 +18,7 @@ import (
 	"github.com/elastic/go-ucfg/yaml"
 
 	"github.com/elastic/package-registry/categories"
-	"github.com/elastic/package-registry/util"
+	"github.com/elastic/package-registry/internal/util"
 )
 
 const (
@@ -201,7 +201,7 @@ func NewPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) 
 
 	// Default for the multiple flags is true.
 	trueValue := true
-	for i, _ := range p.PolicyTemplates {
+	for i := range p.PolicyTemplates {
 		if p.PolicyTemplates[i].Multiple == nil {
 			p.PolicyTemplates[i].Multiple = &trueValue
 		}
@@ -573,7 +573,7 @@ func (p *Package) GetDataStreamPaths() ([]string, error) {
 		return nil, err
 	}
 
-	for i, _ := range paths {
+	for i := range paths {
 		relPath, err := filepath.Rel(dataStreamBasePath, paths[i])
 		if err != nil {
 			return nil, fmt.Errorf("failed to get data stream path inside package (%s): %w", dataStreamBasePath, err)

@@ -18,19 +18,18 @@ import (
 	"github.com/Masterminds/semver/v3"
 	"go.elastic.co/apm/v2"
 
+	"github.com/elastic/package-registry/internal/util"
 	"github.com/elastic/package-registry/packages"
 	"github.com/elastic/package-registry/proxymode"
-	"github.com/elastic/package-registry/util"
 )
 
 // categoriesHandler is a dynamic handler as it will also allow filtering in the future.
-func categoriesHandler(indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
-	return categoriesHandlerWithProxyMode(indexer, proxymode.NoProxy(), cacheTime)
+func categoriesHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+	return categoriesHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime)
 }
 
 // categoriesHandler is a dynamic handler as it will also allow filtering in the future.
-func categoriesHandlerWithProxyMode(indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
-	logger := util.Logger()
+func categoriesHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		query := r.URL.Query()
 
@@ -127,7 +126,7 @@ func newCategoriesFilterFromQuery(query url.Values) (*packages.Filter, error) {
 }
 
 func getCategories(ctx context.Context, pkgs packages.Packages, includePolicyTemplates bool) map[string]*packages.Category {
-	span, ctx := apm.StartSpan(ctx, "FilterCategories", "app")
+	span, _ := apm.StartSpan(ctx, "FilterCategories", "app")
 	defer span.End()
 
 	categories := map[string]*packages.Category{}
@@ -186,7 +185,7 @@ func getCategories(ctx context.Context, pkgs packages.Packages, includePolicyTem
 }
 
 func getCategoriesOutput(ctx context.Context, categories map[string]*packages.Category) ([]byte, error) {
-	span, ctx := apm.StartSpan(ctx, "GetCategoriesOutput", "app")
+	span, _ := apm.StartSpan(ctx, "GetCategoriesOutput", "app")
 	defer span.End()
 
 	var keys []string

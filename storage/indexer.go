@@ -20,7 +20,6 @@ import (
 
 	"github.com/elastic/package-registry/metrics"
 	"github.com/elastic/package-registry/packages"
-	"github.com/elastic/package-registry/util"
 )
 
 const indexerGetDurationPrometheusLabel = "StorageIndexer"
@@ -35,6 +34,8 @@ type Indexer struct {
 	m sync.RWMutex
 
 	resolver packages.RemoteResolver
+
+	logger *zap.Logger
 }
 
 type IndexerOptions struct {
@@ -44,19 +45,19 @@ type IndexerOptions struct {
 	WatchInterval                time.Duration
 }
 
-func NewIndexer(storageClient *storage.Client, options IndexerOptions) *Indexer {
+func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options IndexerOptions) *Indexer {
 	if options.APMTracer == nil {
 		options.APMTracer = apm.DefaultTracer()
 	}
 	return &Indexer{
 		storageClient: storageClient,
 		options:       options,
+		logger:        logger,
 	}
 }
 
 func (i *Indexer) Init(ctx context.Context) error {
-	logger := util.Logger()
-	logger.Debug("Initialize storage indexer")
+	i.logger.Debug("Initialize storage indexer")
 
 	err := validateIndexerOptions(i.options)
 	if err != nil {
@@ -106,10 +107,9 @@ func (i *Indexer) setupResolver() error {
 }
 
 func (i *Indexer) watchIndices(ctx context.Context) {
-	logger := util.Logger()
-	logger.Debug("Watch indices for changes")
+	i.logger.Debug("Watch indices for changes")
 	if i.options.WatchInterval == 0 {
-		logger.Debug("No watcher configured, indices will not be updated (use only for testing purposes)")
+		i.logger.Debug("No watcher configured, indices will not be updated (use only for testing purposes)")
 		return
 	}
 
@@ -117,7 +117,7 @@ func (i *Indexer) watchIndices(ctx context.Context) {
 	t := time.NewTicker(i.options.WatchInterval)
 	defer t.Stop()
 	for {
-		logger.Debug("watchIndices: start")
+		i.logger.Debug("watchIndices: start")
 
 		func() {
 			tx := i.options.APMTracer.StartTransaction("updateIndex", "backend.watcher")
@@ -125,14 +125,14 @@ func (i *Indexer) watchIndices(ctx context.Context) {
 
 			err = i.updateIndex(ctx)
 			if err != nil {
-				logger.Error("can't update index file", zap.Error(err))
+				i.logger.Error("can't update index file", zap.Error(err))
 			}
 		}()
 
-		logger.Debug("watchIndices: finished")
+		i.logger.Debug("watchIndices: finished")
 		select {
 		case <-ctx.Done():
-			logger.Debug("watchIndices: quit")
+			i.logger.Debug("watchIndices: quit")
 			return
 		case <-t.C:
 		}
@@ -143,8 +143,7 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	span, ctx := apm.StartSpan(ctx, "UpdateIndex", "app")
 	defer span.End()
 
-	logger := util.Logger()
-	logger.Debug("Update indices")
+	i.logger.Debug("Update indices")
 	start := time.Now()
 	defer metrics.StorageIndexerUpdateIndexDurationSeconds.Observe(time.Since(start).Seconds())
 
@@ -154,24 +153,24 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 		return errors.Wrapf(err, "can't extract bucket name from URL (url: %s)", i.options.PackageStorageBucketInternal)
 	}
 
-	storageCursor, err := loadCursor(ctx, i.storageClient, bucketName, rootStoragePath)
+	storageCursor, err := loadCursor(ctx, i.logger, i.storageClient, bucketName, rootStoragePath)
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 		return errors.Wrap(err, "can't load latest cursor")
 	}
 
 	if storageCursor.Current == i.cursor {
-		logger.Info("cursor is up-to-date", zap.String("cursor.current", i.cursor))
+		i.logger.Info("cursor is up-to-date", zap.String("cursor.current", i.cursor))
 		return nil
 	}
-	logger.Info("cursor will be updated", zap.String("cursor.current", i.cursor), zap.String("cursor.next", storageCursor.Current))
+	i.logger.Info("cursor will be updated", zap.String("cursor.current", i.cursor), zap.String("cursor.next", storageCursor.Current))
 
-	anIndex, err := loadSearchIndexAll(ctx, i.storageClient, bucketName, rootStoragePath, *storageCursor)
+	anIndex, err := loadSearchIndexAll(ctx, i.logger, i.storageClient, bucketName, rootStoragePath, *storageCursor)
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 		return errors.Wrapf(err, "can't load the search-index-all index content")
 	}
-	logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", len(anIndex.Packages))))
+	i.logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", len(anIndex.Packages))))
 
 	refreshedList, err := i.transformSearchIndexAllToPackages(*anIndex)
 	if err != nil {

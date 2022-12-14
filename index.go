@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/elastic/package-registry/util"
+	"github.com/elastic/package-registry/internal/util"
 )
 
 type indexData struct {

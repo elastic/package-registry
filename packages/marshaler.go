@@ -8,7 +8,7 @@ import (
 	"bytes"
 	"encoding/json"
 
-	"github.com/elastic/package-registry/util"
+	"github.com/elastic/package-registry/internal/util"
 )
 
 var (

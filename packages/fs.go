@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"io"
 	"io/fs"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -153,7 +152,7 @@ func (f *zipFileSeeker) Seek(offset int64, whence int) (n int64, err error) {
 		}
 		if offset > 0 {
 			r := io.LimitReader(f.File, offset)
-			n, err = io.Copy(ioutil.Discard, r)
+			n, err = io.Copy(io.Discard, r)
 			if err != nil {
 				return -1, err
 			}
@@ -168,7 +167,7 @@ func (f *zipFileSeeker) Seek(offset int64, whence int) (n int64, err error) {
 		if err != nil {
 			return -1, err
 		}
-		_, err = io.Copy(ioutil.Discard, f.File)
+		_, err = io.Copy(io.Discard, f.File)
 		if err != nil {
 			return -1, err
 		}
@@ -185,7 +184,7 @@ func ReadAll(fs PackageFileSystem, name string) ([]byte, error) {
 	}
 	defer f.Close()
 
-	return ioutil.ReadAll(f)
+	return io.ReadAll(f)
 }
 
 // VirtualPackageFileSystem provide utils for package objects that don't correspond to

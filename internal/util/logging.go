@@ -5,15 +5,16 @@
 package util
 
 import (
-	"flag"
+	"fmt"
 	"net"
 	"net/http"
 	"os"
 	"strconv"
-	"sync"
 
 	"github.com/felixge/httpsnoop"
 	"github.com/gorilla/mux"
+	"go.elastic.co/apm/module/apmzap/v2"
+	"go.elastic.co/apm/v2"
 	"go.elastic.co/ecszap"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -24,70 +25,64 @@ const (
 	ECSLogger = "ecs"
 	DevLogger = "dev"
 
-	defaultLoggerType = ECSLogger
+	DefaultLoggerType  = ECSLogger
+	DefaultLoggerLevel = zapcore.InfoLevel
 )
 
-var logLevel = zap.LevelFlag("log-level", zap.InfoLevel, "log level (default \"info\")")
-var logType = flag.String("log-type", defaultLoggerType, "log type (ecs, dev)")
-
-var logger *zap.Logger
-var loggerMutex sync.Mutex
-
-// UseECSLogger initializes the logger as an JSON ECS logger. It does nothing
-// if the logger has been already initialized.
-func UseECSLogger() {
-	loggerMutex.Lock()
-	defer loggerMutex.Unlock()
-
-	if logger != nil {
-		return
-	}
-
-	logger = newECSLogger()
+type LoggerOptions struct {
+	Type      string
+	Level     *zapcore.Level
+	APMTracer *apm.Tracer
 }
 
-// UseDevelopmentLogger initializes the logger as a development logger. It does nothing
-// if the logger has been already initialized.
-func UseDevelopmentLogger() {
-	loggerMutex.Lock()
-	defer loggerMutex.Unlock()
-
-	if logger != nil {
-		return
+func NewLogger(options LoggerOptions) (*zap.Logger, error) {
+	if options.Type == "" {
+		options.Type = DefaultLoggerType
+	}
+	if options.Level == nil {
+		level := DefaultLoggerLevel
+		options.Level = &level
 	}
 
-	logger = newDevelopmentLogger()
+	core, err := newLoggerCore(options)
+	if err != nil {
+		return nil, err
+	}
+
+	if options.APMTracer != nil {
+		apmCore := apmzap.Core{
+			Tracer: options.APMTracer,
+		}
+		core = apmCore.WrapCore(core)
+	}
+
+	return zap.New(core, zap.AddCaller()), nil
 }
 
-var warnInvalidTypeOnce sync.Once
-
-// Logger returns a logger singleton.
-func Logger() *zap.Logger {
-	switch *logType {
-	case ECSLogger:
-		UseECSLogger()
-	case DevLogger:
-		UseDevelopmentLogger()
-	default:
-		logger = newECSLogger()
-		warnInvalidTypeOnce.Do(func() {
-			logger.Warn("unknown log type " + *logType + " using default")
-		})
+func NewTestLogger() *zap.Logger {
+	level := zap.DebugLevel
+	logger, err := NewLogger(LoggerOptions{
+		Type:  DevLogger,
+		Level: &level,
+	})
+	if err != nil {
+		panic("failed to initialize logger")
 	}
 	return logger
 }
 
-func newECSLogger() *zap.Logger {
-	encoderConfig := ecszap.NewDefaultEncoderConfig()
-	core := ecszap.NewCore(encoderConfig, os.Stderr, *logLevel)
-	return zap.New(core, zap.AddCaller())
-}
+func newLoggerCore(options LoggerOptions) (zapcore.Core, error) {
+	switch options.Type {
+	case ECSLogger:
+		encoderConfig := ecszap.NewDefaultEncoderConfig()
+		return ecszap.NewCore(encoderConfig, os.Stderr, *options.Level), nil
+	case DevLogger:
+		encoderConfig := zap.NewDevelopmentEncoderConfig()
+		encoder := zapcore.NewConsoleEncoder(encoderConfig)
+		return zapcore.NewCore(encoder, os.Stderr, *options.Level), nil
+	}
 
-func newDevelopmentLogger() *zap.Logger {
-	encoderConfig := zap.NewDevelopmentEncoderConfig()
-	encoder := zapcore.NewConsoleEncoder(encoderConfig)
-	core := zapcore.NewCore(encoder, os.Stderr, zap.DebugLevel)
-	return zap.New(core, zap.AddCaller())
+	return nil, fmt.Errorf("invalid logger type %q", options.Type)
 }
 
 // LoggingMiddleware is a middleware used to log requests to the given logger.
@@ -168,4 +163,33 @@ func captureZapFieldsForRequest(handler http.Handler, w http.ResponseWriter, req
 
 	message := req.Method + " " + req.URL.Path + " " + req.Proto
 	return message, fields
+}
+
+// LoggerAdapter adapts a zap logger so it can be used as logger of other features as APM.
+type LoggerAdapter struct {
+	*zap.Logger
+}
+
+// Debugf logs a message at debug level.
+func (a *LoggerAdapter) Debugf(format string, args ...interface{}) {
+	if a.Logger.Level() > zapcore.DebugLevel {
+		return
+	}
+	a.Logger.Debug(fmt.Sprintf(format, args...))
+}
+
+// Errorf logs a message at error level.
+func (a *LoggerAdapter) Errorf(format string, args ...interface{}) {
+	if a.Logger.Level() > zapcore.ErrorLevel {
+		return
+	}
+	a.Logger.Error(fmt.Sprintf(format, args...))
+}
+
+// Warningf logs a message at warning level.
+func (a *LoggerAdapter) Warningf(format string, args ...interface{}) {
+	if a.Logger.Level() > zapcore.WarnLevel {
+		return
+	}
+	a.Logger.Warn(fmt.Sprintf(format, args...))
 }
