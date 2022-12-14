@@ -16,7 +16,7 @@ import (
 	"github.com/magefile/mage/sh"
 )
 
-var (
+const (
 	// GoImportsImportPath controls the import path used to install goimports.
 	GoImportsImportPath = "golang.org/x/tools/cmd/goimports"
 
@@ -26,6 +26,9 @@ var (
 
 	// GoLicenserImportPath controls the import path used to install go-licenser.
 	GoLicenserImportPath = "github.com/elastic/go-licenser"
+
+	// StaticcheckImport path is the import path of the staticcheck tool.
+	StaticcheckImportPath = "honnef.co/go/tools/cmd/staticcheck"
 
 	buildDir = "./build"
 )
@@ -135,5 +138,5 @@ func ModTidy() error {
 // Staticcheck runs a static code analyzer.
 func Staticcheck() error {
 	fmt.Println(">> check - staticcheck: Running static code analyzer")
-	return sh.RunV("go", "run", "honnef.co/go/tools/cmd/staticcheck", "./...")
+	return sh.RunV("go", "run", StaticcheckImportPath, "./...")
 }
