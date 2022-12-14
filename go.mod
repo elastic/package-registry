@@ -16,9 +16,9 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.14.0
 	github.com/stretchr/testify v1.8.1
-	go.elastic.co/apm v1.15.0
-	go.elastic.co/apm/module/apmgorilla v1.15.0
-	go.elastic.co/apm/module/apmzap v1.15.0
+	go.elastic.co/apm/module/apmgorilla/v2 v2.2.0
+	go.elastic.co/apm/module/apmzap/v2 v2.2.0
+	go.elastic.co/apm/v2 v2.2.0
 	go.elastic.co/ecszap v1.0.1
 	go.uber.org/zap v1.24.0
 	golang.org/x/tools v0.4.0
@@ -58,13 +58,12 @@ require (
 	github.com/prometheus/procfs v0.8.0 // indirect
 	github.com/santhosh-tekuri/jsonschema v1.2.4 // indirect
 	github.com/sirupsen/logrus v1.9.0 // indirect
-	go.elastic.co/apm/module/apmhttp v1.15.0 // indirect
+	go.elastic.co/apm/module/apmhttp/v2 v2.2.0 // indirect
 	go.elastic.co/fastjson v1.1.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
 	golang.org/x/exp/typeparams v0.0.0-20220218215828-6cf2b201936e // indirect
-	golang.org/x/lint v0.0.0-20210508222113-6edffad5e616 // indirect
 	golang.org/x/mod v0.7.0 // indirect
 	golang.org/x/net v0.3.0 // indirect
 	golang.org/x/oauth2 v0.0.0-20221014153046-6fdb5e3db783 // indirect
@@ -78,5 +77,5 @@ require (
 	google.golang.org/grpc v1.50.1 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	howett.net/plist v0.0.0-20201203080718-1454fab16a06 // indirect
+	howett.net/plist v1.0.0 // indirect
 )

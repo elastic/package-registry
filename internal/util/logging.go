@@ -13,8 +13,8 @@ import (
 
 	"github.com/felixge/httpsnoop"
 	"github.com/gorilla/mux"
-	"go.elastic.co/apm"
-	"go.elastic.co/apm/module/apmzap"
+	"go.elastic.co/apm/module/apmzap/v2"
+	"go.elastic.co/apm/v2"
 	"go.elastic.co/ecszap"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -165,6 +165,7 @@ func captureZapFieldsForRequest(handler http.Handler, w http.ResponseWriter, req
 	return message, fields
 }
 
+// LoggerAdapter adapts a zap logger so it can be used as logger of other features as APM.
 type LoggerAdapter struct {
 	*zap.Logger
 }
@@ -183,4 +184,12 @@ func (a *LoggerAdapter) Errorf(format string, args ...interface{}) {
 		return
 	}
 	a.Logger.Error(fmt.Sprintf(format, args...))
+}
+
+// Warningf logs a message at warning level.
+func (a *LoggerAdapter) Warningf(format string, args ...interface{}) {
+	if a.Logger.Level() > zapcore.WarnLevel {
+		return
+	}
+	a.Logger.Warn(fmt.Sprintf(format, args...))
 }
