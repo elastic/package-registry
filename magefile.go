@@ -35,25 +35,15 @@ func Build() error {
 }
 
 func Check() error {
-	Format()
-
-	err := Build()
-	if err != nil {
-		return err
-	}
-
-	err = ModTidy()
-	if err != nil {
-		return err
-	}
-
-	err = Staticcheck()
-	if err != nil {
-		return err
-	}
+	mg.SerialDeps(
+		Format,
+		Build,
+		ModTidy,
+		Staticcheck,
+	)
 
 	// Check if no changes are shown
-	err = sh.RunV("git", "update-index", "--refresh")
+	err := sh.RunV("git", "update-index", "--refresh")
 	if err != nil {
 		return err
 	}
@@ -69,8 +59,10 @@ func Test() error {
 func Format() {
 	// Don't run AddLicenseHeaders and GoImports concurrently because they
 	// both can modify the same files.
-	mg.Deps(AddLicenseHeaders)
-	mg.Deps(GoImports)
+	mg.SerialDeps(
+		AddLicenseHeaders,
+		GoImports,
+	)
 }
 
 // GoImports executes goimports against all .go files in and below the CWD. It
@@ -136,10 +128,12 @@ func Clean() error {
 
 // ModTidy cleans unused dependencies.
 func ModTidy() error {
+	fmt.Println(">> fmt - go mod tidy: Generating go mod files")
 	return sh.RunV("go", "mod", "tidy")
 }
 
 // Staticcheck runs a static code analyzer.
 func Staticcheck() error {
+	fmt.Println(">> check - staticcheck: Running static code analyzer")
 	return sh.RunV("go", "run", "honnef.co/go/tools/cmd/staticcheck", "./...")
 }
