@@ -16,7 +16,7 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/Masterminds/semver/v3"
-	"go.elastic.co/apm"
+	"go.elastic.co/apm/v2"
 
 	"github.com/elastic/package-registry/packages"
 	"github.com/elastic/package-registry/proxymode"

@@ -21,8 +21,8 @@ import (
 	"github.com/pkg/errors"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"go.elastic.co/apm"
-	"go.elastic.co/apm/module/apmgorilla"
+	"go.elastic.co/apm/module/apmgorilla/v2"
+	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 
 	ucfgYAML "github.com/elastic/go-ucfg/yaml"
@@ -235,10 +235,10 @@ func runServer(server *http.Server) error {
 }
 
 func initAPMTracer(logger *zap.Logger) *apm.Tracer {
-	apm.DefaultTracer.Close()
+	apm.DefaultTracer().Close()
 	if _, found := os.LookupEnv("ELASTIC_APM_SERVER_URL"); !found {
 		// Don't report anything if the Server URL hasn't been configured.
-		return apm.DefaultTracer
+		return apm.DefaultTracer()
 	}
 
 	tracer, err := apm.NewTracerOptions(apm.TracerOptions{

@@ -15,7 +15,7 @@ import (
 	"cloud.google.com/go/storage"
 	"github.com/pkg/errors"
 	"github.com/prometheus/client_golang/prometheus"
-	"go.elastic.co/apm"
+	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/metrics"
@@ -46,7 +46,7 @@ type IndexerOptions struct {
 
 func NewIndexer(storageClient *storage.Client, options IndexerOptions) *Indexer {
 	if options.APMTracer == nil {
-		options.APMTracer = apm.DefaultTracer
+		options.APMTracer = apm.DefaultTracer()
 	}
 	return &Indexer{
 		storageClient: storageClient,
