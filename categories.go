@@ -16,6 +16,7 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/Masterminds/semver/v3"
+	"go.elastic.co/apm/module/apmzap/v2"
 	"go.elastic.co/apm/v2"
 
 	"github.com/elastic/package-registry/internal/util"
@@ -31,6 +32,8 @@ func categoriesHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Durat
 // categoriesHandler is a dynamic handler as it will also allow filtering in the future.
 func categoriesHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
+		logger := logger.With(apmzap.TraceContext(r.Context())...)
+
 		query := r.URL.Query()
 
 		filter, err := newCategoriesFilterFromQuery(query)

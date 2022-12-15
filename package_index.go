@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/pkg/errors"
+	"go.elastic.co/apm/module/apmzap/v2"
 	"go.uber.org/zap"
 
 	"github.com/Masterminds/semver/v3"
@@ -31,6 +32,8 @@ func packageIndexHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Dur
 
 func packageIndexHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
+		logger := logger.With(apmzap.TraceContext(r.Context())...)
+
 		vars := mux.Vars(r)
 		packageName, ok := vars["packageName"]
 		if !ok {

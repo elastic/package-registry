@@ -11,6 +11,7 @@ import (
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/gorilla/mux"
+	"go.elastic.co/apm/module/apmzap/v2"
 	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/packages"
@@ -31,6 +32,8 @@ func staticHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration)
 
 func staticHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		logger := logger.With(apmzap.TraceContext(r.Context())...)
+
 		params, err := staticParamsFromRequest(r)
 		if err != nil {
 			badRequest(w, err.Error())

@@ -15,6 +15,7 @@ import (
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/pkg/errors"
+	"go.elastic.co/apm/module/apmzap/v2"
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 
@@ -29,6 +30,8 @@ func searchHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration)
 
 func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
+		logger := logger.With(apmzap.TraceContext(r.Context())...)
+
 		filter, err := newSearchFilterFromQuery(r.URL.Query())
 		if err != nil {
 			badRequest(w, err.Error())

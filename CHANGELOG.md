@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Add some APM instrumentation to storage indexer. [#939](https://github.com/elastic/package-registry/pull/939)
-* Errors are logged through APM. [#941](https://github.com/elastic/package-registry/pull/941)
+* Errors are logged through APM. [#941](https://github.com/elastic/package-registry/pull/941) [#942](https://github.com/elastic/package-registry/pull/941)
 
 ### Deprecated
 
