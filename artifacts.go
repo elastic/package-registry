@@ -11,6 +11,7 @@ import (
 	"github.com/Masterminds/semver/v3"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
+	"go.elastic.co/apm/module/apmzap/v2"
 	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/packages"
@@ -27,6 +28,8 @@ func artifactsHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Durati
 
 func artifactsHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
+		logger := logger.With(apmzap.TraceContext(r.Context())...)
+
 		vars := mux.Vars(r)
 		packageName, ok := vars["packageName"]
 		if !ok {
