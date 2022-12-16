@@ -178,13 +178,31 @@ the reference configuration file for the available settings.
 
 Additional runtime settings can be provided using flags, for more information
 about the available flags, use `package-registry -help`. Flags can be provided
-also as environment variables, in their uppercased form, for example the
+also as environment variables, in their uppercased form and prefixed by `EPR_`. For example, the
 following commands are equivalent:
 ```
 EPR_DRY_RUN=true package-registry
 ```
 ```
 package-registry -dry-run
+```
+
+## Troubleshooting
+
+Package Registry can generate debugging logs when started with the `-log-level` flag. For example
+
+```
+EPR_LOG_LEVEL=debug package-registry
+```
+
+```
+package-registry -log-level debug
+```
+
+Or with Docker
+
+```
+docker run -it -e "EPR_LOG_LEVEL=debug" <docker-image-identifier>
 ```
 
 ## Performance monitoring
