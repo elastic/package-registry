@@ -8,7 +8,7 @@ require (
 	github.com/elastic/go-licenser v0.4.1
 	github.com/elastic/go-ucfg v0.8.4-0.20200415140258-1232bd4774a6
 	github.com/felixge/httpsnoop v1.0.3
-	github.com/fsouza/fake-gcs-server v1.43.0
+	github.com/fsouza/fake-gcs-server v1.44.0
 	github.com/gorilla/mux v1.8.0
 	github.com/hashicorp/go-retryablehttp v0.7.2
 	github.com/joeshaw/multierror v0.0.0-20140124173710-69b34d4ec901
@@ -28,8 +28,8 @@ require (
 
 require (
 	cloud.google.com/go v0.105.0 // indirect
-	cloud.google.com/go/compute v1.13.0 // indirect
-	cloud.google.com/go/compute/metadata v0.2.2 // indirect
+	cloud.google.com/go/compute v1.14.0 // indirect
+	cloud.google.com/go/compute/metadata v0.2.3 // indirect
 	cloud.google.com/go/iam v0.8.0 // indirect
 	cloud.google.com/go/pubsub v1.28.0 // indirect
 	github.com/BurntSushi/toml v0.4.1 // indirect
@@ -44,7 +44,7 @@ require (
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/renameio/v2 v2.0.0 // indirect
 	github.com/google/uuid v1.3.0 // indirect
-	github.com/googleapis/enterprise-certificate-proxy v0.2.0 // indirect
+	github.com/googleapis/enterprise-certificate-proxy v0.2.1 // indirect
 	github.com/googleapis/gax-go/v2 v2.7.0 // indirect
 	github.com/gorilla/handlers v1.5.1 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
@@ -71,9 +71,9 @@ require (
 	golang.org/x/sys v0.4.0 // indirect
 	golang.org/x/text v0.6.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
-	google.golang.org/api v0.105.0 // indirect
+	google.golang.org/api v0.106.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/genproto v0.0.0-20221206210731-b1a01be3a5f6 // indirect
+	google.golang.org/genproto v0.0.0-20221227171554-f9683d7f8bef // indirect
 	google.golang.org/grpc v1.51.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
