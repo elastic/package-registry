@@ -114,7 +114,7 @@ categories:
       edr_xdr:
         title: "EDR/XDR"
       email_security:
-        title: "e-mail"
+        title: "Email"
       firewall_security:
         title: "Firewall"
       iam:
