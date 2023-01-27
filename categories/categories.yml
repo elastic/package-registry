@@ -27,7 +27,7 @@ categories:
     title: "Elastic Stack"
   elasticsearch_sdk:
     title: "Elasticsearch SDK"
-  enterprise_serch:
+  enterprise_search:
     title: "Enterprise Search"
     subcategories:
       app_search:
