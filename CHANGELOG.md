@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Capitalize "Email" category title. [#952](https://github.com/elastic/package-registry/pull/951)
+* New Security subcategory "Vulnerability Management". [#953](https://github.com/elastic/package-registry/pull/953)
 
 ### Deprecated
 

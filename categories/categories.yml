@@ -131,6 +131,8 @@ categories:
         title: "Threat Intelligence"
       vpn_security:
         title: "VPN"
+      vulnerability_management:
+        title: "Vulnerability Management"
       web_application_firewall:
         title: "Web Application Firewall"
   support:
