@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"os"
 	"path"
-	"path/filepath"
 	"strings"
 
 	"github.com/Masterminds/semver/v3"
@@ -221,7 +220,7 @@ func NewPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) 
 		}
 
 		// Store policy template specific README
-		readmePath := filepath.Join("docs", p.PolicyTemplates[i].Name+".md")
+		readmePath := path.Join("docs", p.PolicyTemplates[i].Name+".md")
 		readme, err := fs.Stat(readmePath)
 		if err != nil {
 			if _, ok := err.(*os.PathError); !ok {
@@ -277,7 +276,7 @@ func NewPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) 
 		return nil, fmt.Errorf("invalid release: %q", p.Release)
 	}
 
-	readmePath := filepath.Join("docs", "README.md")
+	readmePath := path.Join("docs", "README.md")
 	// Check if readme
 	readme, err := fs.Stat(readmePath)
 	if err != nil {
@@ -452,7 +451,7 @@ func collectAssets(fs PackageFileSystem, pattern string) ([]string, error) {
 		return nil, err
 	}
 	if len(assets) != 0 {
-		a, err := collectAssets(fs, filepath.Join(pattern, "*"))
+		a, err := collectAssets(fs, path.Join(pattern, "*"))
 		if err != nil {
 			return nil, err
 		}
@@ -542,7 +541,7 @@ func (p *Package) validateVersionConsistency() error {
 		return errors.Wrap(err, "invalid version defined in manifest")
 	}
 
-	baseDir := filepath.Base(p.BasePath)
+	baseDir := path.Base(p.BasePath)
 	versionDir, err := semver.NewVersion(baseDir)
 	if err != nil {
 		// TODO: There should be a flag passed to the registry to accept these kind of packages
@@ -568,17 +567,17 @@ func (p *Package) GetDataStreamPaths() ([]string, error) {
 
 	// Look for a file here that a data_stream must have, some file systems as Zip files
 	// may not have entries for directories.
-	paths, err := fs.Glob(filepath.Join(dataStreamBasePath, "*", "manifest.yml"))
+	paths, err := fs.Glob(path.Join(dataStreamBasePath, "*", "manifest.yml"))
 	if err != nil {
 		return nil, err
 	}
 
 	for i := range paths {
-		relPath, err := filepath.Rel(dataStreamBasePath, paths[i])
-		if err != nil {
-			return nil, fmt.Errorf("failed to get data stream path inside package (%s): %w", dataStreamBasePath, err)
+		if !strings.HasPrefix(paths[i], dataStreamBasePath) && !strings.HasPrefix(paths[i], "/data_stream") {
+			return nil, fmt.Errorf("failed to get data stream path inside package: cannot make %q relative to %q", paths[i], dataStreamBasePath)
 		}
-		paths[i] = filepath.Dir(relPath)
+		relPath := strings.TrimPrefix(paths[i], dataStreamBasePath)
+		paths[i] = path.Dir(relPath)
 	}
 
 	return paths, nil
@@ -592,7 +591,7 @@ func (p *Package) LoadDataSets() error {
 
 	dataStreamsBasePath := "data_stream"
 	for _, dataStreamPath := range dataStreamPaths {
-		dataStreamBasePath := filepath.Join(dataStreamsBasePath, dataStreamPath)
+		dataStreamBasePath := path.Join(dataStreamsBasePath, dataStreamPath)
 
 		d, err := NewDataStream(dataStreamBasePath, p)
 		if err != nil {
@@ -614,7 +613,7 @@ func (p *Package) ValidateDataStreams() error {
 
 	dataStreamsBasePath := "data_stream"
 	for _, dataStreamPath := range dataStreamPaths {
-		dataStreamBasePath := filepath.Join(dataStreamsBasePath, dataStreamPath)
+		dataStreamBasePath := path.Join(dataStreamsBasePath, dataStreamPath)
 
 		d, err := NewDataStream(dataStreamBasePath, p)
 		if err != nil {

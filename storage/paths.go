@@ -6,7 +6,7 @@ package storage
 
 import (
 	"net/url"
-	"path/filepath"
+	"path"
 
 	"github.com/pkg/errors"
 )
@@ -37,7 +37,7 @@ func extractBucketNameFromURL(anURL string) (string, string, error) {
 }
 
 func joinObjectPaths(paths ...string) string {
-	p := filepath.Join(paths...)
+	p := path.Join(paths...)
 	return normalizeObjectPath(p)
 }
 

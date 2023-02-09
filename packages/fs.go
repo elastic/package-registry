@@ -10,7 +10,7 @@ import (
 	"io"
 	"io/fs"
 	"os"
-	"path/filepath"
+	"path"
 	"strings"
 )
 
@@ -28,32 +28,47 @@ type PackageFileSystem interface {
 // ExtractedPackageFileSystem provides utils to access files in an extracted package.
 type ExtractedPackageFileSystem struct {
 	path string
+	root fs.FS
 }
 
 func NewExtractedPackageFileSystem(p *Package) (*ExtractedPackageFileSystem, error) {
-	return &ExtractedPackageFileSystem{path: p.BasePath}, nil
+	return &ExtractedPackageFileSystem{path: p.BasePath, root: os.DirFS(p.BasePath)}, nil
 }
 
-func (fs *ExtractedPackageFileSystem) Stat(name string) (os.FileInfo, error) {
-	return os.Stat(filepath.Join(fs.path, name))
+func (fsys *ExtractedPackageFileSystem) Stat(name string) (os.FileInfo, error) {
+	name = strings.TrimPrefix(name, "/")
+	return fs.Stat(fsys.root, name)
 }
 
-func (fs *ExtractedPackageFileSystem) Open(name string) (PackageFile, error) {
-	return os.Open(filepath.Join(fs.path, name))
-}
-
-func (fs *ExtractedPackageFileSystem) Glob(pattern string) (matches []string, err error) {
-	matches, err = filepath.Glob(filepath.Join(fs.path, pattern))
+func (fsys *ExtractedPackageFileSystem) Open(name string) (PackageFile, error) {
+	name = strings.TrimPrefix(name, "/")
+	f, err := fsys.root.Open(name)
 	if err != nil {
-		return
+		return nil, err
 	}
-	for i := range matches {
-		match, err := filepath.Rel(fs.path, matches[i])
+	pf, ok := f.(PackageFile)
+	if !ok {
+		defer f.Close()
+		return nil, fmt.Errorf("file does not implement PackageFile interface: %q", name)
+	}
+	return pf, nil
+}
+
+func (fsys *ExtractedPackageFileSystem) Glob(pattern string) (matches []string, err error) {
+	fs.WalkDir(fsys.root, ".", func(p string, d fs.DirEntry, err error) error {
 		if err != nil {
-			return nil, fmt.Errorf("failed to obtain path under package root path (%s): %w", fs.path, err)
+			return fmt.Errorf("failed to walk path %q: %w", p, err)
 		}
-		matches[i] = match
-	}
+		match, err := path.Match(pattern, p)
+		if err != nil {
+			return fmt.Errorf("failed to obtain path under package root path (%s): %w", pattern, err)
+		}
+		if match {
+			name := p
+			matches = append(matches, name)
+		}
+		return nil
+	})
 	return
 }
 
@@ -73,10 +88,12 @@ func NewZipPackageFileSystem(p *Package) (*ZipPackageFileSystem, error) {
 	var root string
 	found := false
 	for _, f := range reader.File {
-		name := filepath.Clean(f.Name)
-		parts := strings.Split(name, string(filepath.Separator))
-		if len(parts) == 2 && parts[1] == "manifest.yml" {
-			root = parts[0]
+		name := path.Clean(f.Name)
+		dir, base := path.Split(name)
+		dir = path.Clean(dir)
+		// Find manifest files at the root of the package
+		if dir != "." && path.Dir(dir) == "." && base == "manifest.yml" {
+			root = dir
 			found = true
 			break
 		}
@@ -91,7 +108,7 @@ func NewZipPackageFileSystem(p *Package) (*ZipPackageFileSystem, error) {
 }
 
 func (fs *ZipPackageFileSystem) Stat(name string) (os.FileInfo, error) {
-	path := filepath.Join(fs.root, name)
+	path := path.Join(fs.root, name)
 	f, err := fs.reader.Open(path)
 	if err != nil {
 		return nil, err
@@ -101,7 +118,7 @@ func (fs *ZipPackageFileSystem) Stat(name string) (os.FileInfo, error) {
 }
 
 func (fs *ZipPackageFileSystem) Open(name string) (PackageFile, error) {
-	path := filepath.Join(fs.root, name)
+	path := path.Join(fs.root, name)
 	f, err := fs.reader.Open(path)
 	if err != nil {
 		return nil, err
@@ -114,14 +131,14 @@ func (fs *ZipPackageFileSystem) Open(name string) (PackageFile, error) {
 }
 
 func (fs *ZipPackageFileSystem) Glob(pattern string) (matches []string, err error) {
-	pattern = filepath.Join(fs.root, pattern)
+	pattern = path.Join(fs.root, pattern)
 	for _, f := range fs.reader.File {
-		match, err := filepath.Match(pattern, filepath.Clean(f.Name))
+		match, err := path.Match(pattern, path.Clean(f.Name))
 		if err != nil {
 			return nil, err
 		}
 		if match {
-			name := strings.TrimPrefix(f.Name, fs.root+string(filepath.Separator))
+			name := strings.TrimPrefix(f.Name, fs.root+"/")
 			matches = append(matches, name)
 		}
 	}
