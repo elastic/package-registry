@@ -71,20 +71,42 @@ pipeline {
      Execute unit tests.
      */
     stage('Test') {
-      steps {
-        cleanup()
-        withMageEnv(){
-          dir("${BASE_DIR}"){
-            sh(label: 'Runs the (unit) tests',script: 'mage -debug test|tee tests-report.txt')
+      parallel {
+        stage('Test on Linux') {
+          options { skipDefaultCheckout() }
+          steps {
+            cleanup()
+            withMageEnv(){
+              dir("${BASE_DIR}"){
+                sh(label: 'Runs the (unit) tests',script: 'mage -debug test|tee tests-report.txt')
+              }
+            }
           }
-        }
+          post {
+            always {
+              convertGoTestResults(
+                input: "${BASE_DIR}/tests-report.txt",
+                output: "${BASE_DIR}/junit-report.xml"
+              )
+            }
       }
-      post {
-        always {
-          convertGoTestResults(
-            input: "${BASE_DIR}/tests-report.txt",
-            output: "${BASE_DIR}/junit-report.xml"
-          )
+        }
+        stage('Test on Windows') {
+          agent { label 'windows-2022' }
+          options { skipDefaultCheckout() }
+          steps {
+            cleanup()
+            dir("${BASE_DIR}"){
+              withGoEnv() {
+                goTestJUnit(options: '-v ./...', output: 'junit-report.xml')
+              }
+            }
+          }
+          post {
+            always {
+              junit(allowEmptyResults: true, keepLongStdio: true, testResults: "${BASE_DIR}/junit-report.xml")
+            }
+          }
         }
       }
     }

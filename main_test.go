@@ -382,7 +382,7 @@ func TestAllPackageIndex(t *testing.T) {
 	// find all manifests
 	var manifests []string
 	for _, path := range packagesBasePaths {
-		m, err := filepath.Glob(path + "/*/*/manifest.yml")
+		m, err := filepath.Glob(filepath.Join(path, "*", "*", "manifest.yml"))
 		require.NoError(t, err)
 		manifests = append(manifests, m...)
 	}
@@ -574,7 +574,10 @@ func listArchivedFiles(t *testing.T, body []byte) []byte {
 	var listing bytes.Buffer
 
 	for _, f := range zipReader.File {
-		listing.WriteString(fmt.Sprintf("%d %s\n", f.UncompressedSize64, f.Name))
+		// f.Name is populated from the zip file directly and is not validated for correctness.
+		// Using filepath.ToSlash(f.Name) ensures that the file name has the expected format
+		// regardless of the OS.
+		listing.WriteString(fmt.Sprintf("%d %s\n", f.UncompressedSize64, filepath.ToSlash(f.Name)))
 
 	}
 	return listing.Bytes()
