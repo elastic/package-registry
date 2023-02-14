@@ -574,6 +574,9 @@ func listArchivedFiles(t *testing.T, body []byte) []byte {
 	var listing bytes.Buffer
 
 	for _, f := range zipReader.File {
+		// f.Name is populated from the zip file directly and is not validated for correctness.
+		// Using filepath.ToSlash(f.Name) ensures that the file name has the expected format
+		// regardless of the OS.
 		listing.WriteString(fmt.Sprintf("%d %s\n", f.UncompressedSize64, filepath.ToSlash(f.Name)))
 
 	}

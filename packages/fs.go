@@ -11,6 +11,7 @@ import (
 	"io/fs"
 	"os"
 	"path"
+	"path/filepath"
 	"strings"
 )
 
@@ -46,22 +47,25 @@ func (fsys *ExtractedPackageFileSystem) Open(name string) (PackageFile, error) {
 	if err != nil {
 		return nil, err
 	}
+	// f is a plain os.File expected to implement the PackageFile interface.
 	pf, ok := f.(PackageFile)
 	if !ok {
 		defer f.Close()
-		return nil, fmt.Errorf("file does not implement PackageFile interface: %q", name)
+		return nil, fmt.Errorf("file does not implement PackageFile interface: %q", filepath.Join(fsys.path, filepath.FromSlash(name)))
 	}
 	return pf, nil
 }
 
 func (fsys *ExtractedPackageFileSystem) Glob(pattern string) (matches []string, err error) {
-	fs.WalkDir(fsys.root, ".", func(p string, d fs.DirEntry, err error) error {
+	e := fs.WalkDir(fsys.root, ".", func(p string, d fs.DirEntry, err error) error {
 		if err != nil {
+			// Path related error: returning it will cause WalkDir to stop walking the entire tree.
 			return fmt.Errorf("failed to walk path %q: %w", p, err)
 		}
 		match, err := path.Match(pattern, p)
 		if err != nil {
-			return fmt.Errorf("failed to obtain path under package root path (%s): %w", pattern, err)
+			// ErrBadPattern error: returning it will cause WalkDir to stop walking the entire tree.
+			return fmt.Errorf("failed to match path %q against pattern %s: %w", p, pattern, err)
 		}
 		if match {
 			name := p
@@ -69,6 +73,9 @@ func (fsys *ExtractedPackageFileSystem) Glob(pattern string) (matches []string, 
 		}
 		return nil
 	})
+	if e != nil {
+		return nil, fmt.Errorf("failed to obtain path under package root path (%s): %w", pattern, e)
+	}
 	return
 }
 
