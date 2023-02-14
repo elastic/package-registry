@@ -57,7 +57,7 @@ func (fsys *ExtractedPackageFileSystem) Open(name string) (PackageFile, error) {
 }
 
 func (fsys *ExtractedPackageFileSystem) Glob(pattern string) (matches []string, err error) {
-	e := fs.WalkDir(fsys.root, ".", func(p string, d fs.DirEntry, err error) error {
+	err = fs.WalkDir(fsys.root, ".", func(p string, d fs.DirEntry, err error) error {
 		if err != nil {
 			// Path related error: returning it will cause WalkDir to stop walking the entire tree.
 			return fmt.Errorf("failed to walk path %q: %w", p, err)
@@ -73,8 +73,8 @@ func (fsys *ExtractedPackageFileSystem) Glob(pattern string) (matches []string, 
 		}
 		return nil
 	})
-	if e != nil {
-		return nil, fmt.Errorf("failed to obtain path under package root path (%s): %w", pattern, e)
+	if err != nil {
+		return nil, fmt.Errorf("failed to obtain path under package root path (%s): %w", pattern, err)
 	}
 	return
 }
@@ -93,7 +93,6 @@ func NewZipPackageFileSystem(p *Package) (*ZipPackageFileSystem, error) {
 		return nil, err
 	}
 	var root string
-	found := false
 	for _, f := range reader.File {
 		name := path.Clean(f.Name)
 		dir, base := path.Split(name)
@@ -101,11 +100,10 @@ func NewZipPackageFileSystem(p *Package) (*ZipPackageFileSystem, error) {
 		// Find manifest files at the root of the package
 		if dir != "." && path.Dir(dir) == "." && base == "manifest.yml" {
 			root = dir
-			found = true
 			break
 		}
 	}
-	if !found {
+	if root == "" {
 		return nil, fmt.Errorf("failed to determine root directory in package (path: %s)", p.BasePath)
 	}
 	return &ZipPackageFileSystem{
