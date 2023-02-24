@@ -6,7 +6,7 @@ require (
 	cloud.google.com/go/storage v1.29.0
 	github.com/Masterminds/semver/v3 v3.2.0
 	github.com/elastic/go-licenser v0.4.1
-	github.com/elastic/go-ucfg v0.8.4-0.20200415140258-1232bd4774a6
+	github.com/elastic/go-ucfg v0.8.6
 	github.com/felixge/httpsnoop v1.0.3
 	github.com/fsouza/fake-gcs-server v1.44.0
 	github.com/gorilla/mux v1.8.0
@@ -49,7 +49,7 @@ require (
 	github.com/gorilla/handlers v1.5.1 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/jcchavezs/porto v0.3.0 // indirect
-	github.com/kr/pretty v0.3.0 // indirect
+	github.com/kr/text v0.2.0 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.1 // indirect
 	github.com/pkg/xattr v0.4.9 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
