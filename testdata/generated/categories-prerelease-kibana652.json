@@ -23,8 +23,8 @@
     "id": "message_queue",
     "title": "Message Broker",
     "count": 1,
-    "parent_id": "infrastructure",
-    "parent_title": "Infrastructure"
+    "parent_id": "observability",
+    "parent_title": "Observability"
   },
   {
     "id": "monitoring",
@@ -37,7 +37,7 @@
     "id": "web",
     "title": "Web Server",
     "count": 1,
-    "parent_id": "infrastructure",
-    "parent_title": "Infrastructure"
+    "parent_id": "observability",
+    "parent_title": "Observability"
   }
 ]

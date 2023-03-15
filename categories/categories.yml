@@ -53,19 +53,30 @@ categories:
   google_cloud:
     title: "Google Cloud"
   infrastructure:
+    # Deprecated in favor of Observability, kept for BWC
     title: "Infrastructure"
+  languages:
+    title: "Languages"
+  network:
+    title: "Network"
+  observability:
+    title: "Observability"
     subcategories:
+      application_observability:
+        title: "Application"
       analytics_engine:
         title: "Analytics Engine"
       big_data:
         title: "Big Data"
+      java_observability:
+        title: "Java"
       kubernetes:
         title: "Kubernetes"
       load_balancer:
         title: "Load Balancer"
       message_queue:
         title: "Message Broker"
-      monitoring_infrastructure:
+      monitoring:
         title: "Monitoring"
       notification:
         title: "Notification"
@@ -79,19 +90,6 @@ categories:
         title: "Web Server"
       websphere:
         title: "WebSphere Application Server"
-  languages:
-    title: "Languages"
-  network:
-    title: "Network"
-  observability:
-    title: "Observability"
-    subcategories:
-      application_observability:
-        title: "Application"
-      java_observability:
-        title: "Java"
-      monitoring:
-        title: "Monitoring"
   os_system:
     title: "Operating Systems"
   productivity:

@@ -1,8 +1,8 @@
 categories:
   datastore:
     title: "Datastore"
-  infrastructure:
-    title: "Infrastructure"
+  observability:
+    title: "Observability"
     subcategories:
       load_balancer:
         title: "Load Balancer"
