@@ -48,15 +48,15 @@
     "id": "kubernetes",
     "title": "Kubernetes",
     "count": 3,
-    "parent_id": "infrastructure",
-    "parent_title": "Infrastructure"
+    "parent_id": "observability",
+    "parent_title": "Observability"
   },
   {
     "id": "message_queue",
     "title": "Message Broker",
     "count": 5,
-    "parent_id": "infrastructure",
-    "parent_title": "Infrastructure"
+    "parent_id": "observability",
+    "parent_title": "Observability"
   },
   {
     "id": "monitoring",
@@ -89,7 +89,7 @@
     "id": "web",
     "title": "Web Server",
     "count": 20,
-    "parent_id": "infrastructure",
-    "parent_title": "Infrastructure"
+    "parent_id": "observability",
+    "parent_title": "Observability"
   }
 ]
