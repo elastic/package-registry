@@ -52,6 +52,9 @@ categories:
         title: "Workplace Search"
   google_cloud:
     title: "Google Cloud"
+  infrastructure:
+    # Deprecated in favor of Observability, kept for BWC
+    title: "Infrastructure"
   languages:
     title: "Languages"
   network:
