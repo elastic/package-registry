@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Update Go runtime to 1.20.2. [#957](https://github.com/elastic/package-registry/pull/957)
+
 ### Deprecated
 
 * Deprecate Infrastructure category. [#970](https://github.com/elastic/package-registry/pull/970)
