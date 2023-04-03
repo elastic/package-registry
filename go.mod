@@ -17,8 +17,8 @@ require (
 	github.com/prometheus/client_golang v1.14.0
 	github.com/stretchr/testify v1.8.2
 	go.elastic.co/apm/module/apmgorilla/v2 v2.2.0
-	go.elastic.co/apm/module/apmzap/v2 v2.2.0
-	go.elastic.co/apm/v2 v2.2.0
+	go.elastic.co/apm/module/apmzap/v2 v2.3.0
+	go.elastic.co/apm/v2 v2.3.0
 	go.elastic.co/ecszap v1.0.1
 	go.uber.org/zap v1.24.0
 	golang.org/x/tools v0.7.0
@@ -56,7 +56,6 @@ require (
 	github.com/prometheus/client_model v0.3.0 // indirect
 	github.com/prometheus/common v0.37.0 // indirect
 	github.com/prometheus/procfs v0.8.0 // indirect
-	github.com/santhosh-tekuri/jsonschema v1.2.4 // indirect
 	github.com/sirupsen/logrus v1.9.0 // indirect
 	go.elastic.co/apm/module/apmhttp/v2 v2.2.0 // indirect
 	go.elastic.co/fastjson v1.1.0 // indirect
