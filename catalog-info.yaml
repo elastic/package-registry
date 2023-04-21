@@ -23,6 +23,7 @@
        repository: elastic/package-registry
        pipeline_file: ".buildkite/pipeline.yml"
        teams:
+         ecosystem: {}
          ingest-fp:
            access_level: MANAGE_BUILD_AND_READ
          everyone:
