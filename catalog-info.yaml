@@ -18,6 +18,7 @@
      kind: Pipeline
      metadata:
        name: package-registry
+       description: Buildkite Pipeline for the Package Registry project
      spec:
        repository: elastic/package-registry
        pipeline_file: ".buildkite/pipeline.yml"
