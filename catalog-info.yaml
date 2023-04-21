@@ -4,7 +4,7 @@
  kind: Resource
  metadata:
    name: buildkite-pipeline-package-registry
-   description: Buildkite Pipeline for package-registry
+   description: Buildkite Pipeline for the Package Registry project
    links:
      - title: Pipeline
        url: https://buildkite.com/elastic/package-registry
