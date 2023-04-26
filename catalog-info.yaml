@@ -22,6 +22,9 @@ spec:
     spec:
       repository: elastic/package-registry
       pipeline_file: ".buildkite/pipeline.yml"
+      provider_settings:
+        build_pull_request_forks: false
+        build_pull_requests: false # PR builds are managed by buildkite-pr-bot
       teams:
         ecosystem: {}
         ingest-fp:
