@@ -97,6 +97,8 @@ categories:
   security:
     title: "Security"
     subcategories:
+      advanced_analytics_ueba:
+        title: "Advanced Analytics (UEBA)"
       auditd:
         title: "AuditD"
       authentication:
