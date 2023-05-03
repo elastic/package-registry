@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bugfixes
 
 * Update Go runtime to 1.20.3. [#987](https://github.com/elastic/package-registry/pull/987)
+* Add fields related to subcategories into categories entrypoint with proxy mode [#1004](https://github.com/elastic/package-registry/pull/1004)
 
 ### Added
 
