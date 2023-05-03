@@ -24,7 +24,7 @@ spec:
       pipeline_file: ".buildkite/pipeline.yml"
       provider_settings:
         build_pull_request_forks: false
-        build_pull_requests: false # PR builds are managed by buildkite-pr-bot
+        build_pull_requests: true
       teams:
         ecosystem: {}
         ingest-fp:
