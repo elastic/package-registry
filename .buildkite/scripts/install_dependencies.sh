@@ -21,5 +21,8 @@ with_mage() {
     mage --version
 }
 
+WORKSPACE=${WORKSPACE:-"$(pwd)"}
+SETUP_MAGE_VERSION=${SETUP_MAGE_VERSION:-"1.14.0"}
+
 add_bin_path
 with_mage
