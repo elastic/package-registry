@@ -24,5 +24,6 @@ with_mage() {
 WORKSPACE=${WORKSPACE:-"$(pwd)"}
 SETUP_MAGE_VERSION=${SETUP_MAGE_VERSION:-"1.14.0"}
 
+uname -a
 add_bin_path
 with_mage
