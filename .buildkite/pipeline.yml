@@ -5,8 +5,10 @@ env:
 
 steps:
   - label: "Checks formatting / linting"
-    command: ".buildkite/scripts/install_dependencies.sh && mage -debug check"
+    command:
+      - "mage -debug check"
     agents:
       image: "golang:1.20.3"
       cpu: "8"
       memory: "4G"
+      bootstrap-script: ".buildkite/scripts/install_dependencies.sh"
