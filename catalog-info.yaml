@@ -22,6 +22,7 @@ spec:
     spec:
       repository: elastic/package-registry
       pipeline_file: ".buildkite/pipeline.yml"
+      branch_configuration: "main v1.* v2.*"
       provider_settings:
         build_pull_request_forks: false
         build_pull_requests: true
