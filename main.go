@@ -38,7 +38,7 @@ import (
 
 const (
 	serviceName         = "package-registry"
-	version             = "1.19.1"
+	version             = "1.20.0"
 	defaultInstanceName = "localhost"
 )
 
