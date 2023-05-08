@@ -24,3 +24,7 @@ steps:
     command:
       - "mage -debug test|tee tests-report.txt"
       - ls
+    agents:
+      image: "golang:1.20.3"
+      cpu: "8"
+      memory: "4G"
