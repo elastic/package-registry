@@ -28,7 +28,7 @@ spec:
         build_pull_requests: true
         build_tags: true
         filter_enabled: true
-        filter_condition: |
+        filter_condition: >-
           build.pull_request.id == null || (build.creator.name == 'elasticmachine' && build.pull_request.id != null)
       teams:
         ecosystem: {}
