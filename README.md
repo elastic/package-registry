@@ -261,6 +261,8 @@ For example:
 package-registry --feature-proxy-mode=true -proxy-to=https://epr.elastic.co
 ```
 
+
+
 ## Release
 
 New versions of the package registry need to be released from time to time. The following steps should be followed to create a new release:
