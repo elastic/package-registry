@@ -19,3 +19,8 @@ steps:
       image: "golang:1.20.3"
       cpu: "8"
       memory: "4G"
+
+  - label: "Test on Linux"
+    command:
+      - "mage -debug test|tee tests-report.txt"
+      - ls
