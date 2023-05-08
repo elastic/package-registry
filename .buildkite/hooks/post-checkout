@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+source .buildkite/scripts/install_dependencies.sh
+
 checkout_merge() {
     local target_branch=$1
     local pr_commit=$2

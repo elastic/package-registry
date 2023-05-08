@@ -11,4 +11,3 @@ steps:
       image: "golang:1.20.3"
       cpu: "8"
       memory: "4G"
-      bootstrap-script: ".buildkite/scripts/install_dependencies.sh"
