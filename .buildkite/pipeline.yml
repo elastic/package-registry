@@ -6,7 +6,7 @@ env:
 steps:
   - label: "Checks formatting / linting"
     command:
-      - "./pre-install-command.sh 'mage -debug check'"
+      - ".buildkite/scripts/pre-install-command.sh 'mage -debug check'"
     agents:
       image: "golang:1.20.3"
       cpu: "8"
@@ -14,7 +14,7 @@ steps:
 
   - label: "Build"
     command:
-      - "./pre-install-command.sh 'mage -debug build'"
+      - ".buildkite/scripts/pre-install-command.sh 'mage -debug build'"
     agents:
       image: "golang:1.20.3"
       cpu: "8"
@@ -22,7 +22,7 @@ steps:
 
   - label: "Test on Linux"
     command:
-      - "./pre-install-command.sh 'mage -debug test'|tee tests-report.txt"
+      - ".buildkite/scripts/pre-install-command.sh 'mage -debug test'|tee tests-report.txt"
       - ls
     agents:
       image: "golang:1.20.3"
