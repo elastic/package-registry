@@ -28,3 +28,10 @@ steps:
       image: "golang:1.20.3"
       cpu: "8"
       memory: "4G"
+
+  - label: "Test on Windows"
+    command:
+      - "choco --version"
+    agents:
+      provider: "gcp"
+      image: "family/ci-windows-2022"
