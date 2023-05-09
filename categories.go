@@ -72,9 +72,11 @@ func categoriesHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMo
 			for _, category := range proxiedCategories {
 				if _, ok := categories[category.Id]; !ok {
 					categories[category.Id] = &packages.Category{
-						Id:    category.Id,
-						Title: category.Title,
-						Count: category.Count,
+						Id:          category.Id,
+						Title:       category.Title,
+						Count:       category.Count,
+						ParentId:    category.ParentId,
+						ParentTitle: category.ParentTitle,
 					}
 				} else {
 					categories[category.Id].Count += category.Count

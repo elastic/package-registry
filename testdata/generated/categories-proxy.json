@@ -1,0 +1,21 @@
+[
+  {
+    "id": "custom",
+    "title": "Custom",
+    "count": 11
+  },
+  {
+    "id": "custom_logs",
+    "title": "Custom Logs",
+    "count": 3,
+    "parent_id": "custom",
+    "parent_title": "Custom"
+  },
+  {
+    "id": "web",
+    "title": "Web Server",
+    "count": 1,
+    "parent_id": "observability",
+    "parent_title": "Observability"
+  }
+]

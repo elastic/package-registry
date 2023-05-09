@@ -4,13 +4,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased](https://github.com/elastic/package-registry/compare/v1.19.0...main)
+## [unreleased](https://github.com/elastic/package-registry/compare/v1.20.0...main)
 
 ### Breaking changes
 
 ### Bugfixes
 
-* Update Go runtime to 1.20.3. [#987](https://github.com/elastic/package-registry/pull/987)
+### Added
+
+### Deprecated
+
+### Known Issues
+
+
+## [v1.20.0](https://github.com/elastic/package-registry/compare/v1.19.0...v1.20.0)
+
+### Breaking changes
+
+### Bugfixes
+
+* Update Go runtime to 1.20.4. [#987](https://github.com/elastic/package-registry/pull/987) [#1002](https://github.com/elastic/package-registry/pull/1002)
+* Add fields related to subcategories into categories entrypoint with proxy mode [#1004](https://github.com/elastic/package-registry/pull/1004)
 
 ### Added
 

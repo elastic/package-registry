@@ -22,9 +22,14 @@ spec:
     spec:
       repository: elastic/package-registry
       pipeline_file: ".buildkite/pipeline.yml"
+      branch_configuration: "main v1.* v2.*"
       provider_settings:
         build_pull_request_forks: false
         build_pull_requests: true
+        build_tags: true
+        filter_enabled: true
+        filter_condition: >-
+          build.pull_request.id == null || (build.creator.name == 'elasticmachine' && build.pull_request.id != null)
       teams:
         ecosystem: {}
         ingest-fp:
