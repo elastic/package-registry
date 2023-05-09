@@ -14,7 +14,7 @@ with_mage() {
 
     tar -xvf "${WORKSPACE}/bin/mage.tar.gz" -C "${WORKSPACE}/bin"
     chmod +x "${WORKSPACE}/bin/mage"
-    # mage --version
+    mage --version
 }
 
 # Required env variables:
@@ -29,4 +29,4 @@ add_bin_path
 with_mage
 
 command=$1
-"${command}"
+eval "${command}"
