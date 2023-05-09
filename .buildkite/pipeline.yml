@@ -6,7 +6,7 @@ env:
 steps:
   - label: "Checks formatting / linting"
     command:
-      - "mage -debug check"
+      - "./pre-install-command.sh 'mage -debug check'"
     agents:
       image: "golang:1.20.3"
       cpu: "8"
@@ -14,7 +14,7 @@ steps:
 
   - label: "Build"
     command:
-      - "mage -debug build"
+      - "./pre-install-command.sh 'mage -debug build'"
     agents:
       image: "golang:1.20.3"
       cpu: "8"
@@ -22,7 +22,7 @@ steps:
 
   - label: "Test on Linux"
     command:
-      - "mage -debug test|tee tests-report.txt"
+      - "./pre-install-command.sh 'mage -debug test'|tee tests-report.txt"
       - ls
     agents:
       image: "golang:1.20.3"

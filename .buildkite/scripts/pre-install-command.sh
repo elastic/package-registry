@@ -1,9 +1,4 @@
 #!/bin/bash
-
-# Required env variables:
-#   WORKSPACE
-#   SETUP_MAGE_VERSION
-
 set -euo pipefail
 
 source .buildkite/scripts/tooling.sh
@@ -19,12 +14,19 @@ with_mage() {
 
     tar -xvf "${WORKSPACE}/bin/mage.tar.gz" -C "${WORKSPACE}/bin"
     chmod +x "${WORKSPACE}/bin/mage"
-    mage --version
+    # mage --version
 }
 
+# Required env variables:
+#   WORKSPACE
+#   SETUP_MAGE_VERSION
 WORKSPACE=${WORKSPACE:-"$(pwd)"}
 SETUP_MAGE_VERSION=${SETUP_MAGE_VERSION:-"1.14.0"}
 
+# Pre install:
 uname -a
 add_bin_path
 with_mage
+
+command=$1
+"${command}"
