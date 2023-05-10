@@ -31,7 +31,7 @@ steps:
 
   - label: "Test on Windows"
     command:
-      - "choco --version"
+      - ".buildkite/scripts/pre-install-command.ps1"
     agents:
       provider: "gcp"
       image: "family/ci-windows-2022"
