@@ -277,4 +277,4 @@ CI automatically creates a new Docker image which will be available under `docke
 
 After the new registry Docker image is available, update the following projects that consume it:
 - Integrations: Update the version of the Package Registry Docker image as shown in this [sample PR](https://github.com/elastic/integrations/pull/581).
-- Kibana: Update the version of the Package Registry Distribution Docker image as shown in this [sample PR](https://github.com/elastic/kibana/pull/89776).
+- Elastic Package: Update the version of the Package Registry used in the docker-compose as shown in this [sample PR](https://github.com/elastic/elastic-package/pull/1254)
