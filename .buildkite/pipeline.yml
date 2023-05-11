@@ -2,13 +2,14 @@
 
 env:
   SETUP_MAGE_VERSION: '1.14.0'
+  SETUP_GOLANG_VERSION: '1.20.3'
 
 steps:
   - label: "Checks formatting / linting"
     command:
       - ".buildkite/scripts/pre-install-command.sh 'mage -debug check'"
     agents:
-      image: "golang:1.20.3"
+      image: "golang:${SETUP_GOLANG_VERSION}"
       cpu: "8"
       memory: "4G"
 
@@ -16,7 +17,7 @@ steps:
     command:
       - ".buildkite/scripts/pre-install-command.sh 'mage -debug build'"
     agents:
-      image: "golang:1.20.3"
+      image: "golang:${SETUP_GOLANG_VERSION}"
       cpu: "8"
       memory: "4G"
 
@@ -25,7 +26,7 @@ steps:
       - ".buildkite/scripts/pre-install-command.sh 'mage -debug test'|tee tests-report.txt"
       - ls
     agents:
-      image: "golang:1.20.3"
+      image: "golang:${SETUP_GOLANG_VERSION}"
       cpu: "8"
       memory: "4G"
 
