@@ -2,7 +2,7 @@
 
 env:
   SETUP_MAGE_VERSION: '1.14.0'
-  SETUP_GOLANG_VERSION: '1.20.4'
+  SETUP_GOLANG_VERSION: $(cat .go-version)
 
 steps:
   - label: "Checks formatting / linting"
