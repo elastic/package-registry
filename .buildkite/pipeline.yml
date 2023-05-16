@@ -31,7 +31,7 @@ steps:
       cpu: "8"
       memory: "4G"
     artifact_paths:
-      - "tests-report-linux.txt"
+      - "tmp/tests-report-linux.txt"
 
   - label: ":windows: Test on Windows"
     key: test-win
@@ -41,14 +41,12 @@ steps:
       provider: "gcp"
       image: "family/ci-windows-2022"
     artifact_paths:
-      - "tests-report-win.xml"
+      - "tmp/tests-report-win.xml"
 
   - label: ":junit: Junit annotate"
-    commands:
-      - "buildkite-agent artifact download '*.xml' build/"
     plugins:
       - junit-annotate#v2.4.1:
-          artifacts: "tests-report-*.xml"
+          artifacts: "tmp/tests-report-*.xml"
     agents:
       provider: "gcp" # junit plugin requires docker
     depends_on:
