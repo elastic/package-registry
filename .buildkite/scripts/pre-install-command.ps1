@@ -13,10 +13,10 @@ refreshenv
 go version
 go env
 
+Write-Host "-- Install go-junit-report --"
+go install github.com/jstemmer/go-junit-report/v2@latest
+
 Write-Host "-- Run test --"
 go mod download -x
-go test ./... > tests-report.txt
-
-go install github.com/jstemmer/go-junit-report/v2@latest
-go-junit-report > "tests-report.xml" < tests-report.txt
+go test -v 2>&1 ./... | go-junit-report > "tests-report.xml"
 ls
