@@ -2,7 +2,7 @@
 
 env:
   SETUP_MAGE_VERSION: '1.14.0'
-  SETUP_GOLANG_VERSION: $(cat .go-version)
+  SETUP_GOLANG_VERSION: '1.20.4'
 
 steps:
   - label: "Checks formatting / linting"
@@ -22,6 +22,7 @@ steps:
       memory: "4G"
 
   - label: "Test on Linux"
+    key: test-linux
     command:
       - ".buildkite/scripts/pre-install-command.sh 'mage -debug test'|tee tests-report-linux.txt"
       - go install github.com/jstemmer/go-junit-report/v2@latest && go-junit-report > tests-report-linux.xml < tests-report-linux.txt
@@ -33,6 +34,7 @@ steps:
       - "tests-report-linux.txt"
 
   - label: "Test on Windows"
+    key: test-win
     command:
       - ".buildkite/scripts/pre-install-command.ps1"
     agents:
@@ -40,3 +42,17 @@ steps:
       image: "family/ci-windows-2022"
     artifact_paths:
       - "tests-report-win.xml"
+
+  - label: ":junit: Junit annotate"
+    commands:
+      - "buildkite-agent artifact download '*.xml' build/"
+    plugins:
+      - junit-annotate#v2.4.1:
+          artifacts: "build/*.xml"
+    agents:
+      provider: "gcp" # junit plugin requires docker
+    depends_on:
+      - step: "test-linux"
+        allow_failure: true
+      - step: "test-win"
+        allow_failure: true
