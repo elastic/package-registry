@@ -18,5 +18,5 @@ go install github.com/jstemmer/go-junit-report/v2@latest
 
 Write-Host "-- Run test --"
 go mod download -x
-go test -v 2>&1 ./... | go-junit-report > "tests-report.xml"
+go test -v 2>&1 ./... | go-junit-report > "tests-report-win.xml"
 ls

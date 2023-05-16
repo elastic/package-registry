@@ -23,12 +23,14 @@ steps:
 
   - label: "Test on Linux"
     command:
-      - ".buildkite/scripts/pre-install-command.sh 'mage -debug test'|tee tests-report.txt"
-      - ls
+      - ".buildkite/scripts/pre-install-command.sh 'mage -debug test'|tee tests-report-linux.txt"
+      - go install github.com/jstemmer/go-junit-report/v2@latest && go-junit-report > tests-report-linux.xml < tests-report-linux.txt
     agents:
       image: "golang:${SETUP_GOLANG_VERSION}"
       cpu: "8"
       memory: "4G"
+    artifact_paths:
+      - "tests-report-linux.txt"
 
   - label: "Test on Windows"
     command:
@@ -36,3 +38,5 @@ steps:
     agents:
       provider: "gcp"
       image: "family/ci-windows-2022"
+    artifact_paths:
+      - "tests-report-win.xml"
