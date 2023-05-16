@@ -15,4 +15,8 @@ go env
 
 Write-Host "-- Run test --"
 go mod download -x
-go test ./...
+go test ./... > tests-report.txt
+
+go install github.com/jstemmer/go-junit-report/v2@latest
+go-junit-report > "tests-report.xml" < tests-report.txt
+ls
