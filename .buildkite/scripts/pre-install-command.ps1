@@ -18,6 +18,6 @@ go install github.com/jstemmer/go-junit-report/v2@latest
 
 Write-Host "-- Run test --"
 go mod download -x
-go test -v 2>&1 ./... | go-junit-report > "tests-report-win-output.xml"
-Get-Content tests-report-win-output.xml -Encoding Unicode | Set-Content -Encoding UTF8 tests-report-win.xml
+go test -v 2>&1 ./... | go-junit-report > "tests-report-win-unicode.xml"
+Get-Content tests-report-win-unicode.xml -Encoding Unicode | Set-Content -Encoding UTF8 tests-report-win.xml
 ls

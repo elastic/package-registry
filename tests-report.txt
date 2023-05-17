@@ -1,0 +1,1005 @@
+?   	github.com/elastic/package-registry/archiver	[no test files]
+?   	github.com/elastic/package-registry/metrics	[no test files]
+?   	github.com/elastic/package-registry/proxymode	[no test files]
+=== RUN   TestFlagsFromEnv
+--- PASS: TestFlagsFromEnv (0.00s)
+=== RUN   TestFlagsPrecedence
+--- PASS: TestFlagsPrecedence (0.00s)
+=== RUN   TestFlagEnvName
+--- PASS: TestFlagEnvName (0.00s)
+=== RUN   TestLatestPackagesVersion
+=== RUN   TestLatestPackagesVersion/single_package
+=== RUN   TestLatestPackagesVersion/single_package_sorted_versions
+=== RUN   TestLatestPackagesVersion/single_package_unsorted_versions
+=== RUN   TestLatestPackagesVersion/multiple_packages_with_multiple_versions
+--- PASS: TestLatestPackagesVersion (0.00s)
+    --- PASS: TestLatestPackagesVersion/single_package (0.00s)
+    --- PASS: TestLatestPackagesVersion/single_package_sorted_versions (0.00s)
+    --- PASS: TestLatestPackagesVersion/single_package_unsorted_versions (0.00s)
+    --- PASS: TestLatestPackagesVersion/multiple_packages_with_multiple_versions (0.00s)
+=== RUN   TestEndpoints
+2023-05-11T17:04:29.552+0200	INFO	packages/packages.go:227	Searching packages in ./testdata/local-storage
+2023-05-11T17:04:29.554+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.0.1", "package.path": "testdata/local-storage/example-1.0.1.zip"}
+2023-05-11T17:04:29.555+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "nodirentries", "package.version": "1.0.0", "package.path": "testdata/local-storage/nodirentries-1.0.0.zip"}
+2023-05-11T17:04:29.556+0200	INFO	packages/packages.go:227	Searching packages in ./testdata/second_package_path
+2023-05-11T17:04:29.557+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.1.0", "package.path": "testdata/second_package_path/multiversion/1.1.0"}
+2023-05-11T17:04:29.560+0200	INFO	packages/packages.go:227	Searching packages in ./testdata/package
+2023-05-11T17:04:29.563+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "dataset_is_prefix", "package.version": "0.0.1", "package.path": "testdata/package/dataset_is_prefix/0.0.1"}
+2023-05-11T17:04:29.578+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "datasources", "package.version": "1.0.0", "package.path": "testdata/package/datasources/1.0.0"}
+2023-05-11T17:04:29.584+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "datastream_without_release", "package.version": "0.1.0", "package.path": "testdata/package/datastream_without_release/0.1.0"}
+2023-05-11T17:04:29.589+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "default_pipeline", "package.version": "0.0.2", "package.path": "testdata/package/default_pipeline/0.0.2"}
+2023-05-11T17:04:29.589+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "defaultrelease", "package.version": "0.0.1", "package.path": "testdata/package/defaultrelease/0.0.1"}
+2023-05-11T17:04:29.592+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "ecs_style_dataset", "package.version": "0.0.1", "package.path": "testdata/package/ecs_style_dataset/0.0.1"}
+2023-05-11T17:04:29.596+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "elasticsearch_privileges", "package.version": "1.0.0", "package.path": "testdata/package/elasticsearch_privileges/1.0.0"}
+2023-05-11T17:04:29.599+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "0.0.2", "package.path": "testdata/package/example/0.0.2"}
+2023-05-11T17:04:29.606+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.0.0", "package.path": "testdata/package/example/1.0.0"}
+2023-05-11T17:04:29.615+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.0.1", "package.path": "testdata/package/example/1.0.1"}
+2023-05-11T17:04:29.624+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.1.0", "package.path": "testdata/package/example/1.1.0"}
+2023-05-11T17:04:29.632+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.2.0-rc1", "package.path": "testdata/package/example/1.2.0-rc1"}
+2023-05-11T17:04:29.633+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "foo", "package.version": "1.0.0", "package.path": "testdata/package/foo/1.0.0"}
+2023-05-11T17:04:29.637+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "hidden", "package.version": "1.0.0", "package.path": "testdata/package/hidden/1.0.0"}
+2023-05-11T17:04:29.641+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "ilm_policy", "package.version": "1.0.0", "package.path": "testdata/package/ilm_policy/1.0.0"}
+2023-05-11T17:04:29.656+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "input_groups", "package.version": "0.0.1", "package.path": "testdata/package/input_groups/0.0.1"}
+2023-05-11T17:04:29.657+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "input_level_templates", "package.version": "1.0.0", "package.path": "testdata/package/input_level_templates/1.0.0"}
+2023-05-11T17:04:29.675+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "integration_input", "package.version": "1.0.0", "package.path": "testdata/package/integration_input/1.0.0"}
+2023-05-11T17:04:29.677+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "integration_input", "package.version": "1.0.2", "package.path": "testdata/package/integration_input/1.0.2"}
+2023-05-11T17:04:29.678+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "longdocs", "package.version": "1.0.4", "package.path": "testdata/package/longdocs/1.0.4"}
+2023-05-11T17:04:29.678+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "metricsonly", "package.version": "2.0.1", "package.path": "testdata/package/metricsonly/2.0.1"}
+2023-05-11T17:04:29.682+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiple_false", "package.version": "0.0.1", "package.path": "testdata/package/multiple_false/0.0.1"}
+2023-05-11T17:04:29.683+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.0.3", "package.path": "testdata/package/multiversion/1.0.3"}
+2023-05-11T17:04:29.685+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.0.4", "package.path": "testdata/package/multiversion/1.0.4"}
+2023-05-11T17:04:29.687+0200	DEBUG	packages/packages.go:236	duplicated package	{"package.name": "multiversion", "package.version": "1.1.0", "package.path": "testdata/package/multiversion/1.1.0"}
+2023-05-11T17:04:29.689+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "no_stream_configs", "package.version": "1.0.0", "package.path": "testdata/package/no_stream_configs/1.0.0"}
+2023-05-11T17:04:29.695+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "reference", "package.version": "1.0.0", "package.path": "testdata/package/reference/1.0.0"}
+2023-05-11T17:04:29.696+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "sql_input", "package.version": "0.2.0", "package.path": "testdata/package/sql_input/0.2.0"}
+2023-05-11T17:04:29.697+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "sql_input", "package.version": "0.3.0", "package.path": "testdata/package/sql_input/0.3.0"}
+2023-05-11T17:04:29.700+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "traces", "package.version": "1.0.0", "package.path": "testdata/package/traces/1.0.0"}
+2023-05-11T17:04:29.705+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "yamlpipeline", "package.version": "1.0.0", "package.path": "testdata/package/yamlpipeline/1.0.0"}
+=== RUN   TestEndpoints//
+=== RUN   TestEndpoints//index.json
+=== RUN   TestEndpoints//search
+=== RUN   TestEndpoints//search?all=true
+=== RUN   TestEndpoints//categories
+=== RUN   TestEndpoints//categories?experimental=true
+=== RUN   TestEndpoints//categories?experimental=foo
+=== RUN   TestEndpoints//categories?experimental=true&kibana.version=6.5.2
+=== RUN   TestEndpoints//categories?prerelease=true
+=== RUN   TestEndpoints//categories?prerelease=foo
+=== RUN   TestEndpoints//categories?prerelease=true&kibana.version=6.5.2
+=== RUN   TestEndpoints//categories?include_policy_templates=true
+=== RUN   TestEndpoints//categories?include_policy_templates=foo
+=== RUN   TestEndpoints//search?kibana.version=6.5.2
+=== RUN   TestEndpoints//search?kibana.version=7.2.1
+=== RUN   TestEndpoints//search?kibana.version=8.0.0
+=== RUN   TestEndpoints//search?category=web
+=== RUN   TestEndpoints//search?category=observability
+=== RUN   TestEndpoints//search?category=web&all=true
+=== RUN   TestEndpoints//search?category=custom
+=== RUN   TestEndpoints//search?package=example
+=== RUN   TestEndpoints//search?package=example&all=true
+=== RUN   TestEndpoints//search?experimental=true
+=== RUN   TestEndpoints//search?experimental=foo
+=== RUN   TestEndpoints//search?category=datastore&experimental=true
+=== RUN   TestEndpoints//search?prerelease=true
+=== RUN   TestEndpoints//search?prerelease=foo
+=== RUN   TestEndpoints//search?category=datastore&prerelease=true
+=== RUN   TestEndpoints//search?type=input&prerelease=true
+=== RUN   TestEndpoints//search?type=input&package=integration_input&prerelease=true
+=== RUN   TestEndpoints//search?type=integration&package=integration_input&prerelease=true
+=== RUN   TestEndpoints//favicon.ico
+=== RUN   TestEndpoints//search?internal=true
+--- PASS: TestEndpoints (0.16s)
+    --- PASS: TestEndpoints// (0.00s)
+    --- PASS: TestEndpoints//index.json (0.00s)
+    --- PASS: TestEndpoints//search (0.00s)
+    --- PASS: TestEndpoints//search?all=true (0.00s)
+    --- PASS: TestEndpoints//categories (0.00s)
+    --- PASS: TestEndpoints//categories?experimental=true (0.00s)
+    --- PASS: TestEndpoints//categories?experimental=foo (0.00s)
+    --- PASS: TestEndpoints//categories?experimental=true&kibana.version=6.5.2 (0.00s)
+    --- PASS: TestEndpoints//categories?prerelease=true (0.00s)
+    --- PASS: TestEndpoints//categories?prerelease=foo (0.00s)
+    --- PASS: TestEndpoints//categories?prerelease=true&kibana.version=6.5.2 (0.00s)
+    --- PASS: TestEndpoints//categories?include_policy_templates=true (0.00s)
+    --- PASS: TestEndpoints//categories?include_policy_templates=foo (0.00s)
+    --- PASS: TestEndpoints//search?kibana.version=6.5.2 (0.00s)
+    --- PASS: TestEndpoints//search?kibana.version=7.2.1 (0.00s)
+    --- PASS: TestEndpoints//search?kibana.version=8.0.0 (0.00s)
+    --- PASS: TestEndpoints//search?category=web (0.00s)
+    --- PASS: TestEndpoints//search?category=observability (0.00s)
+    --- PASS: TestEndpoints//search?category=web&all=true (0.00s)
+    --- PASS: TestEndpoints//search?category=custom (0.00s)
+    --- PASS: TestEndpoints//search?package=example (0.00s)
+    --- PASS: TestEndpoints//search?package=example&all=true (0.00s)
+    --- PASS: TestEndpoints//search?experimental=true (0.00s)
+    --- PASS: TestEndpoints//search?experimental=foo (0.00s)
+    --- PASS: TestEndpoints//search?category=datastore&experimental=true (0.00s)
+    --- PASS: TestEndpoints//search?prerelease=true (0.00s)
+    --- PASS: TestEndpoints//search?prerelease=foo (0.00s)
+    --- PASS: TestEndpoints//search?category=datastore&prerelease=true (0.00s)
+    --- PASS: TestEndpoints//search?type=input&prerelease=true (0.00s)
+    --- PASS: TestEndpoints//search?type=input&package=integration_input&prerelease=true (0.00s)
+    --- PASS: TestEndpoints//search?type=integration&package=integration_input&prerelease=true (0.00s)
+    --- PASS: TestEndpoints//favicon.ico (0.00s)
+    --- PASS: TestEndpoints//search?internal=true (0.00s)
+=== RUN   TestArtifacts
+2023-05-11T17:04:29.713+0200	INFO	packages/packages.go:227	Searching packages in ./testdata/package
+2023-05-11T17:04:29.716+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "dataset_is_prefix", "package.version": "0.0.1", "package.path": "testdata/package/dataset_is_prefix/0.0.1"}
+2023-05-11T17:04:29.727+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "datasources", "package.version": "1.0.0", "package.path": "testdata/package/datasources/1.0.0"}
+2023-05-11T17:04:29.735+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "datastream_without_release", "package.version": "0.1.0", "package.path": "testdata/package/datastream_without_release/0.1.0"}
+2023-05-11T17:04:29.739+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "default_pipeline", "package.version": "0.0.2", "package.path": "testdata/package/default_pipeline/0.0.2"}
+2023-05-11T17:04:29.739+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "defaultrelease", "package.version": "0.0.1", "package.path": "testdata/package/defaultrelease/0.0.1"}
+2023-05-11T17:04:29.741+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "ecs_style_dataset", "package.version": "0.0.1", "package.path": "testdata/package/ecs_style_dataset/0.0.1"}
+2023-05-11T17:04:29.743+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "elasticsearch_privileges", "package.version": "1.0.0", "package.path": "testdata/package/elasticsearch_privileges/1.0.0"}
+2023-05-11T17:04:29.745+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "0.0.2", "package.path": "testdata/package/example/0.0.2"}
+2023-05-11T17:04:29.754+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.0.0", "package.path": "testdata/package/example/1.0.0"}
+2023-05-11T17:04:29.761+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.0.1", "package.path": "testdata/package/example/1.0.1"}
+2023-05-11T17:04:29.765+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.1.0", "package.path": "testdata/package/example/1.1.0"}
+2023-05-11T17:04:29.773+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.2.0-rc1", "package.path": "testdata/package/example/1.2.0-rc1"}
+2023-05-11T17:04:29.773+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "foo", "package.version": "1.0.0", "package.path": "testdata/package/foo/1.0.0"}
+2023-05-11T17:04:29.776+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "hidden", "package.version": "1.0.0", "package.path": "testdata/package/hidden/1.0.0"}
+2023-05-11T17:04:29.780+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "ilm_policy", "package.version": "1.0.0", "package.path": "testdata/package/ilm_policy/1.0.0"}
+2023-05-11T17:04:29.796+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "input_groups", "package.version": "0.0.1", "package.path": "testdata/package/input_groups/0.0.1"}
+2023-05-11T17:04:29.797+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "input_level_templates", "package.version": "1.0.0", "package.path": "testdata/package/input_level_templates/1.0.0"}
+2023-05-11T17:04:29.803+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "integration_input", "package.version": "1.0.0", "package.path": "testdata/package/integration_input/1.0.0"}
+2023-05-11T17:04:29.804+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "integration_input", "package.version": "1.0.2", "package.path": "testdata/package/integration_input/1.0.2"}
+2023-05-11T17:04:29.805+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "longdocs", "package.version": "1.0.4", "package.path": "testdata/package/longdocs/1.0.4"}
+2023-05-11T17:04:29.805+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "metricsonly", "package.version": "2.0.1", "package.path": "testdata/package/metricsonly/2.0.1"}
+2023-05-11T17:04:29.809+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiple_false", "package.version": "0.0.1", "package.path": "testdata/package/multiple_false/0.0.1"}
+2023-05-11T17:04:29.809+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.0.3", "package.path": "testdata/package/multiversion/1.0.3"}
+2023-05-11T17:04:29.810+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.0.4", "package.path": "testdata/package/multiversion/1.0.4"}
+2023-05-11T17:04:29.811+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.1.0", "package.path": "testdata/package/multiversion/1.1.0"}
+2023-05-11T17:04:29.816+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "no_stream_configs", "package.version": "1.0.0", "package.path": "testdata/package/no_stream_configs/1.0.0"}
+2023-05-11T17:04:29.822+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "reference", "package.version": "1.0.0", "package.path": "testdata/package/reference/1.0.0"}
+2023-05-11T17:04:29.826+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "sql_input", "package.version": "0.2.0", "package.path": "testdata/package/sql_input/0.2.0"}
+2023-05-11T17:04:29.828+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "sql_input", "package.version": "0.3.0", "package.path": "testdata/package/sql_input/0.3.0"}
+2023-05-11T17:04:29.831+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "traces", "package.version": "1.0.0", "package.path": "testdata/package/traces/1.0.0"}
+2023-05-11T17:04:29.835+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "yamlpipeline", "package.version": "1.0.0", "package.path": "testdata/package/yamlpipeline/1.0.0"}
+=== RUN   TestArtifacts//epr/example/example-0.0.2.zip
+=== RUN   TestArtifacts//epr/example/example-999.0.2.zip
+=== RUN   TestArtifacts//epr/example/missing-0.1.2.zip
+=== RUN   TestArtifacts//epr/example/example-a.b.c.zip
+--- PASS: TestArtifacts (0.14s)
+    --- PASS: TestArtifacts//epr/example/example-0.0.2.zip (0.02s)
+    --- PASS: TestArtifacts//epr/example/example-999.0.2.zip (0.00s)
+    --- PASS: TestArtifacts//epr/example/missing-0.1.2.zip (0.00s)
+    --- PASS: TestArtifacts//epr/example/example-a.b.c.zip (0.00s)
+=== RUN   TestSignatures
+2023-05-11T17:04:29.856+0200	INFO	packages/packages.go:227	Searching packages in ./testdata/local-storage
+2023-05-11T17:04:29.858+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.0.1", "package.path": "testdata/local-storage/example-1.0.1.zip"}
+2023-05-11T17:04:29.860+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "nodirentries", "package.version": "1.0.0", "package.path": "testdata/local-storage/nodirentries-1.0.0.zip"}
+=== RUN   TestSignatures//epr/example/example-1.0.1.zip.sig
+=== RUN   TestSignatures//epr/example/example-0.0.1.zip.sig
+--- PASS: TestSignatures (0.01s)
+    --- PASS: TestSignatures//epr/example/example-1.0.1.zip.sig (0.00s)
+    --- PASS: TestSignatures//epr/example/example-0.0.1.zip.sig (0.00s)
+=== RUN   TestStatics
+2023-05-11T17:04:29.863+0200	INFO	packages/packages.go:227	Searching packages in ./testdata/package
+2023-05-11T17:04:29.870+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "dataset_is_prefix", "package.version": "0.0.1", "package.path": "testdata/package/dataset_is_prefix/0.0.1"}
+2023-05-11T17:04:29.896+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "datasources", "package.version": "1.0.0", "package.path": "testdata/package/datasources/1.0.0"}
+2023-05-11T17:04:29.907+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "datastream_without_release", "package.version": "0.1.0", "package.path": "testdata/package/datastream_without_release/0.1.0"}
+2023-05-11T17:04:29.913+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "default_pipeline", "package.version": "0.0.2", "package.path": "testdata/package/default_pipeline/0.0.2"}
+2023-05-11T17:04:29.916+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "defaultrelease", "package.version": "0.0.1", "package.path": "testdata/package/defaultrelease/0.0.1"}
+2023-05-11T17:04:29.922+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "ecs_style_dataset", "package.version": "0.0.1", "package.path": "testdata/package/ecs_style_dataset/0.0.1"}
+2023-05-11T17:04:29.925+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "elasticsearch_privileges", "package.version": "1.0.0", "package.path": "testdata/package/elasticsearch_privileges/1.0.0"}
+2023-05-11T17:04:29.927+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "0.0.2", "package.path": "testdata/package/example/0.0.2"}
+2023-05-11T17:04:29.936+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.0.0", "package.path": "testdata/package/example/1.0.0"}
+2023-05-11T17:04:29.946+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.0.1", "package.path": "testdata/package/example/1.0.1"}
+2023-05-11T17:04:29.955+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.1.0", "package.path": "testdata/package/example/1.1.0"}
+2023-05-11T17:04:29.963+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.2.0-rc1", "package.path": "testdata/package/example/1.2.0-rc1"}
+2023-05-11T17:04:29.963+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "foo", "package.version": "1.0.0", "package.path": "testdata/package/foo/1.0.0"}
+2023-05-11T17:04:29.966+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "hidden", "package.version": "1.0.0", "package.path": "testdata/package/hidden/1.0.0"}
+2023-05-11T17:04:29.975+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "ilm_policy", "package.version": "1.0.0", "package.path": "testdata/package/ilm_policy/1.0.0"}
+2023-05-11T17:04:29.995+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "input_groups", "package.version": "0.0.1", "package.path": "testdata/package/input_groups/0.0.1"}
+2023-05-11T17:04:29.996+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "input_level_templates", "package.version": "1.0.0", "package.path": "testdata/package/input_level_templates/1.0.0"}
+2023-05-11T17:04:30.007+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "integration_input", "package.version": "1.0.0", "package.path": "testdata/package/integration_input/1.0.0"}
+2023-05-11T17:04:30.009+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "integration_input", "package.version": "1.0.2", "package.path": "testdata/package/integration_input/1.0.2"}
+2023-05-11T17:04:30.009+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "longdocs", "package.version": "1.0.4", "package.path": "testdata/package/longdocs/1.0.4"}
+2023-05-11T17:04:30.010+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "metricsonly", "package.version": "2.0.1", "package.path": "testdata/package/metricsonly/2.0.1"}
+2023-05-11T17:04:30.014+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiple_false", "package.version": "0.0.1", "package.path": "testdata/package/multiple_false/0.0.1"}
+2023-05-11T17:04:30.015+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.0.3", "package.path": "testdata/package/multiversion/1.0.3"}
+2023-05-11T17:04:30.017+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.0.4", "package.path": "testdata/package/multiversion/1.0.4"}
+2023-05-11T17:04:30.020+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.1.0", "package.path": "testdata/package/multiversion/1.1.0"}
+2023-05-11T17:04:30.026+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "no_stream_configs", "package.version": "1.0.0", "package.path": "testdata/package/no_stream_configs/1.0.0"}
+2023-05-11T17:04:30.029+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "reference", "package.version": "1.0.0", "package.path": "testdata/package/reference/1.0.0"}
+2023-05-11T17:04:30.031+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "sql_input", "package.version": "0.2.0", "package.path": "testdata/package/sql_input/0.2.0"}
+2023-05-11T17:04:30.032+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "sql_input", "package.version": "0.3.0", "package.path": "testdata/package/sql_input/0.3.0"}
+2023-05-11T17:04:30.034+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "traces", "package.version": "1.0.0", "package.path": "testdata/package/traces/1.0.0"}
+2023-05-11T17:04:30.039+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "yamlpipeline", "package.version": "1.0.0", "package.path": "testdata/package/yamlpipeline/1.0.0"}
+=== RUN   TestStatics//package/example/1.0.0/docs/README.md
+=== RUN   TestStatics//package/example/1.0.0/img/kibana-envoyproxy.jpg
+--- PASS: TestStatics (0.18s)
+    --- PASS: TestStatics//package/example/1.0.0/docs/README.md (0.00s)
+    --- PASS: TestStatics//package/example/1.0.0/img/kibana-envoyproxy.jpg (0.00s)
+=== RUN   TestStaticsModifiedTime
+2023-05-11T17:04:30.041+0200	INFO	packages/packages.go:227	Searching packages in ./testdata/local-storage
+2023-05-11T17:04:30.045+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.0.1", "package.path": "testdata/local-storage/example-1.0.1.zip"}
+2023-05-11T17:04:30.046+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "nodirentries", "package.version": "1.0.0", "package.path": "testdata/local-storage/nodirentries-1.0.0.zip"}
+2023-05-11T17:04:30.047+0200	INFO	packages/packages.go:227	Searching packages in ./testdata/package
+2023-05-11T17:04:30.048+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "dataset_is_prefix", "package.version": "0.0.1", "package.path": "testdata/package/dataset_is_prefix/0.0.1"}
+2023-05-11T17:04:30.060+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "datasources", "package.version": "1.0.0", "package.path": "testdata/package/datasources/1.0.0"}
+2023-05-11T17:04:30.072+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "datastream_without_release", "package.version": "0.1.0", "package.path": "testdata/package/datastream_without_release/0.1.0"}
+2023-05-11T17:04:30.082+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "default_pipeline", "package.version": "0.0.2", "package.path": "testdata/package/default_pipeline/0.0.2"}
+2023-05-11T17:04:30.082+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "defaultrelease", "package.version": "0.0.1", "package.path": "testdata/package/defaultrelease/0.0.1"}
+2023-05-11T17:04:30.086+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "ecs_style_dataset", "package.version": "0.0.1", "package.path": "testdata/package/ecs_style_dataset/0.0.1"}
+2023-05-11T17:04:30.089+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "elasticsearch_privileges", "package.version": "1.0.0", "package.path": "testdata/package/elasticsearch_privileges/1.0.0"}
+2023-05-11T17:04:30.092+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "0.0.2", "package.path": "testdata/package/example/0.0.2"}
+2023-05-11T17:04:30.103+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.0.0", "package.path": "testdata/package/example/1.0.0"}
+2023-05-11T17:04:30.115+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.0.1", "package.path": "testdata/package/example/1.0.1"}
+2023-05-11T17:04:30.128+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.1.0", "package.path": "testdata/package/example/1.1.0"}
+2023-05-11T17:04:30.138+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.2.0-rc1", "package.path": "testdata/package/example/1.2.0-rc1"}
+2023-05-11T17:04:30.139+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "foo", "package.version": "1.0.0", "package.path": "testdata/package/foo/1.0.0"}
+2023-05-11T17:04:30.168+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "hidden", "package.version": "1.0.0", "package.path": "testdata/package/hidden/1.0.0"}
+2023-05-11T17:04:30.173+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "ilm_policy", "package.version": "1.0.0", "package.path": "testdata/package/ilm_policy/1.0.0"}
+2023-05-11T17:04:30.204+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "input_groups", "package.version": "0.0.1", "package.path": "testdata/package/input_groups/0.0.1"}
+2023-05-11T17:04:30.207+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "input_level_templates", "package.version": "1.0.0", "package.path": "testdata/package/input_level_templates/1.0.0"}
+2023-05-11T17:04:30.221+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "integration_input", "package.version": "1.0.0", "package.path": "testdata/package/integration_input/1.0.0"}
+2023-05-11T17:04:30.225+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "integration_input", "package.version": "1.0.2", "package.path": "testdata/package/integration_input/1.0.2"}
+2023-05-11T17:04:30.226+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "longdocs", "package.version": "1.0.4", "package.path": "testdata/package/longdocs/1.0.4"}
+2023-05-11T17:04:30.229+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "metricsonly", "package.version": "2.0.1", "package.path": "testdata/package/metricsonly/2.0.1"}
+2023-05-11T17:04:30.254+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiple_false", "package.version": "0.0.1", "package.path": "testdata/package/multiple_false/0.0.1"}
+2023-05-11T17:04:30.255+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.0.3", "package.path": "testdata/package/multiversion/1.0.3"}
+2023-05-11T17:04:30.255+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.0.4", "package.path": "testdata/package/multiversion/1.0.4"}
+2023-05-11T17:04:30.256+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.1.0", "package.path": "testdata/package/multiversion/1.1.0"}
+2023-05-11T17:04:30.262+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "no_stream_configs", "package.version": "1.0.0", "package.path": "testdata/package/no_stream_configs/1.0.0"}
+2023-05-11T17:04:30.265+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "reference", "package.version": "1.0.0", "package.path": "testdata/package/reference/1.0.0"}
+2023-05-11T17:04:30.266+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "sql_input", "package.version": "0.2.0", "package.path": "testdata/package/sql_input/0.2.0"}
+2023-05-11T17:04:30.267+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "sql_input", "package.version": "0.3.0", "package.path": "testdata/package/sql_input/0.3.0"}
+2023-05-11T17:04:30.270+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "traces", "package.version": "1.0.0", "package.path": "testdata/package/traces/1.0.0"}
+2023-05-11T17:04:30.278+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "yamlpipeline", "package.version": "1.0.0", "package.path": "testdata/package/yamlpipeline/1.0.0"}
+=== RUN   TestStaticsModifiedTime/No_cache_headers
+=== RUN   TestStaticsModifiedTime/Doesn't_exist
+=== RUN   TestStaticsModifiedTime/Cached_entry
+=== RUN   TestStaticsModifiedTime/Old_cached_entry
+=== RUN   TestStaticsModifiedTime/No_cache_headers_from_zip
+=== RUN   TestStaticsModifiedTime/Cached_entry_from_zip
+=== RUN   TestStaticsModifiedTime/Old_cached_entry_from_zip
+--- PASS: TestStaticsModifiedTime (0.27s)
+    --- PASS: TestStaticsModifiedTime/No_cache_headers (0.00s)
+    --- PASS: TestStaticsModifiedTime/Doesn't_exist (0.00s)
+    --- PASS: TestStaticsModifiedTime/Cached_entry (0.00s)
+    --- PASS: TestStaticsModifiedTime/Old_cached_entry (0.00s)
+    --- PASS: TestStaticsModifiedTime/No_cache_headers_from_zip (0.01s)
+    --- PASS: TestStaticsModifiedTime/Cached_entry_from_zip (0.00s)
+    --- PASS: TestStaticsModifiedTime/Old_cached_entry_from_zip (0.01s)
+=== RUN   TestZippedArtifacts
+2023-05-11T17:04:30.309+0200	INFO	packages/packages.go:227	Searching packages in ./testdata/local-storage
+2023-05-11T17:04:30.310+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.0.1", "package.path": "testdata/local-storage/example-1.0.1.zip"}
+2023-05-11T17:04:30.314+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "nodirentries", "package.version": "1.0.0", "package.path": "testdata/local-storage/nodirentries-1.0.0.zip"}
+=== RUN   TestZippedArtifacts//epr/example/example-1.0.1.zip
+=== RUN   TestZippedArtifacts//epr/example/nodirentries-1.0.0.zip
+=== RUN   TestZippedArtifacts//epr/example/example-999.0.2.zip
+=== RUN   TestZippedArtifacts//package/example/1.0.1/docs/README.md
+=== RUN   TestZippedArtifacts//package/example/1.0.1/img/kibana-envoyproxy.jpg
+--- PASS: TestZippedArtifacts (0.02s)
+    --- PASS: TestZippedArtifacts//epr/example/example-1.0.1.zip (0.00s)
+    --- PASS: TestZippedArtifacts//epr/example/nodirentries-1.0.0.zip (0.00s)
+    --- PASS: TestZippedArtifacts//epr/example/example-999.0.2.zip (0.00s)
+    --- PASS: TestZippedArtifacts//package/example/1.0.1/docs/README.md (0.00s)
+    --- PASS: TestZippedArtifacts//package/example/1.0.1/img/kibana-envoyproxy.jpg (0.01s)
+=== RUN   TestPackageIndex
+2023-05-11T17:04:30.330+0200	INFO	packages/packages.go:227	Searching packages in ./testdata/local-storage
+2023-05-11T17:04:30.332+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.0.1", "package.path": "testdata/local-storage/example-1.0.1.zip"}
+2023-05-11T17:04:30.334+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "nodirentries", "package.version": "1.0.0", "package.path": "testdata/local-storage/nodirentries-1.0.0.zip"}
+2023-05-11T17:04:30.335+0200	INFO	packages/packages.go:227	Searching packages in ./testdata/package
+2023-05-11T17:04:30.338+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "dataset_is_prefix", "package.version": "0.0.1", "package.path": "testdata/package/dataset_is_prefix/0.0.1"}
+2023-05-11T17:04:30.360+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "datasources", "package.version": "1.0.0", "package.path": "testdata/package/datasources/1.0.0"}
+2023-05-11T17:04:30.372+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "datastream_without_release", "package.version": "0.1.0", "package.path": "testdata/package/datastream_without_release/0.1.0"}
+2023-05-11T17:04:30.395+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "default_pipeline", "package.version": "0.0.2", "package.path": "testdata/package/default_pipeline/0.0.2"}
+2023-05-11T17:04:30.395+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "defaultrelease", "package.version": "0.0.1", "package.path": "testdata/package/defaultrelease/0.0.1"}
+2023-05-11T17:04:30.418+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "ecs_style_dataset", "package.version": "0.0.1", "package.path": "testdata/package/ecs_style_dataset/0.0.1"}
+2023-05-11T17:04:30.427+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "elasticsearch_privileges", "package.version": "1.0.0", "package.path": "testdata/package/elasticsearch_privileges/1.0.0"}
+2023-05-11T17:04:30.429+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "0.0.2", "package.path": "testdata/package/example/0.0.2"}
+2023-05-11T17:04:30.438+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.0.0", "package.path": "testdata/package/example/1.0.0"}
+2023-05-11T17:04:30.458+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.0.1", "package.path": "testdata/package/example/1.0.1"}
+2023-05-11T17:04:30.464+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.1.0", "package.path": "testdata/package/example/1.1.0"}
+2023-05-11T17:04:30.471+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.2.0-rc1", "package.path": "testdata/package/example/1.2.0-rc1"}
+2023-05-11T17:04:30.473+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "foo", "package.version": "1.0.0", "package.path": "testdata/package/foo/1.0.0"}
+2023-05-11T17:04:30.477+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "hidden", "package.version": "1.0.0", "package.path": "testdata/package/hidden/1.0.0"}
+2023-05-11T17:04:30.482+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "ilm_policy", "package.version": "1.0.0", "package.path": "testdata/package/ilm_policy/1.0.0"}
+2023-05-11T17:04:30.512+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "input_groups", "package.version": "0.0.1", "package.path": "testdata/package/input_groups/0.0.1"}
+2023-05-11T17:04:30.513+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "input_level_templates", "package.version": "1.0.0", "package.path": "testdata/package/input_level_templates/1.0.0"}
+2023-05-11T17:04:30.519+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "integration_input", "package.version": "1.0.0", "package.path": "testdata/package/integration_input/1.0.0"}
+2023-05-11T17:04:30.521+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "integration_input", "package.version": "1.0.2", "package.path": "testdata/package/integration_input/1.0.2"}
+2023-05-11T17:04:30.522+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "longdocs", "package.version": "1.0.4", "package.path": "testdata/package/longdocs/1.0.4"}
+2023-05-11T17:04:30.522+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "metricsonly", "package.version": "2.0.1", "package.path": "testdata/package/metricsonly/2.0.1"}
+2023-05-11T17:04:30.528+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiple_false", "package.version": "0.0.1", "package.path": "testdata/package/multiple_false/0.0.1"}
+2023-05-11T17:04:30.529+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.0.3", "package.path": "testdata/package/multiversion/1.0.3"}
+2023-05-11T17:04:30.530+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.0.4", "package.path": "testdata/package/multiversion/1.0.4"}
+2023-05-11T17:04:30.530+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.1.0", "package.path": "testdata/package/multiversion/1.1.0"}
+2023-05-11T17:04:30.533+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "no_stream_configs", "package.version": "1.0.0", "package.path": "testdata/package/no_stream_configs/1.0.0"}
+2023-05-11T17:04:30.538+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "reference", "package.version": "1.0.0", "package.path": "testdata/package/reference/1.0.0"}
+2023-05-11T17:04:30.542+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "sql_input", "package.version": "0.2.0", "package.path": "testdata/package/sql_input/0.2.0"}
+2023-05-11T17:04:30.544+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "sql_input", "package.version": "0.3.0", "package.path": "testdata/package/sql_input/0.3.0"}
+2023-05-11T17:04:30.547+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "traces", "package.version": "1.0.0", "package.path": "testdata/package/traces/1.0.0"}
+2023-05-11T17:04:30.553+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "yamlpipeline", "package.version": "1.0.0", "package.path": "testdata/package/yamlpipeline/1.0.0"}
+=== RUN   TestPackageIndex//package/example/1.0.0/
+=== RUN   TestPackageIndex//package/example/1.0.1/
+=== RUN   TestPackageIndex//package/nodirentries/1.0.0/
+=== RUN   TestPackageIndex//package/missing/1.0.0/
+=== RUN   TestPackageIndex//package/example/999.0.0/
+=== RUN   TestPackageIndex//package/example/a.b.c/
+=== RUN   TestPackageIndex//package/sql_input/1.0.1/
+--- PASS: TestPackageIndex (0.23s)
+    --- PASS: TestPackageIndex//package/example/1.0.0/ (0.00s)
+    --- PASS: TestPackageIndex//package/example/1.0.1/ (0.00s)
+    --- PASS: TestPackageIndex//package/nodirentries/1.0.0/ (0.00s)
+    --- PASS: TestPackageIndex//package/missing/1.0.0/ (0.00s)
+    --- PASS: TestPackageIndex//package/example/999.0.0/ (0.00s)
+    --- PASS: TestPackageIndex//package/example/a.b.c/ (0.00s)
+    --- PASS: TestPackageIndex//package/sql_input/1.0.1/ (0.00s)
+=== RUN   TestZippedPackageIndex
+2023-05-11T17:04:30.556+0200	INFO	packages/packages.go:227	Searching packages in ./testdata/local-storage
+2023-05-11T17:04:30.558+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.0.1", "package.path": "testdata/local-storage/example-1.0.1.zip"}
+2023-05-11T17:04:30.561+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "nodirentries", "package.version": "1.0.0", "package.path": "testdata/local-storage/nodirentries-1.0.0.zip"}
+=== RUN   TestZippedPackageIndex//package/example/1.0.1/
+=== RUN   TestZippedPackageIndex//package/missing/1.0.0/
+=== RUN   TestZippedPackageIndex//package/example/999.0.0/
+=== RUN   TestZippedPackageIndex//package/example/a.b.c/
+--- PASS: TestZippedPackageIndex (0.01s)
+    --- PASS: TestZippedPackageIndex//package/example/1.0.1/ (0.00s)
+    --- PASS: TestZippedPackageIndex//package/missing/1.0.0/ (0.00s)
+    --- PASS: TestZippedPackageIndex//package/example/999.0.0/ (0.00s)
+    --- PASS: TestZippedPackageIndex//package/example/a.b.c/ (0.00s)
+=== RUN   TestAllPackageIndex
+2023-05-11T17:04:30.562+0200	INFO	packages/packages.go:227	Searching packages in testdata/second_package_path
+2023-05-11T17:04:30.565+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.1.0", "package.path": "testdata/second_package_path/multiversion/1.1.0"}
+2023-05-11T17:04:30.566+0200	INFO	packages/packages.go:227	Searching packages in testdata/package
+2023-05-11T17:04:30.569+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "dataset_is_prefix", "package.version": "0.0.1", "package.path": "testdata/package/dataset_is_prefix/0.0.1"}
+2023-05-11T17:04:30.645+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "datasources", "package.version": "1.0.0", "package.path": "testdata/package/datasources/1.0.0"}
+2023-05-11T17:04:30.659+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "datastream_without_release", "package.version": "0.1.0", "package.path": "testdata/package/datastream_without_release/0.1.0"}
+2023-05-11T17:04:30.663+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "default_pipeline", "package.version": "0.0.2", "package.path": "testdata/package/default_pipeline/0.0.2"}
+2023-05-11T17:04:30.663+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "defaultrelease", "package.version": "0.0.1", "package.path": "testdata/package/defaultrelease/0.0.1"}
+2023-05-11T17:04:30.665+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "ecs_style_dataset", "package.version": "0.0.1", "package.path": "testdata/package/ecs_style_dataset/0.0.1"}
+2023-05-11T17:04:30.667+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "elasticsearch_privileges", "package.version": "1.0.0", "package.path": "testdata/package/elasticsearch_privileges/1.0.0"}
+2023-05-11T17:04:30.669+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "0.0.2", "package.path": "testdata/package/example/0.0.2"}
+2023-05-11T17:04:30.674+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.0.0", "package.path": "testdata/package/example/1.0.0"}
+2023-05-11T17:04:30.679+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.0.1", "package.path": "testdata/package/example/1.0.1"}
+2023-05-11T17:04:30.685+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.1.0", "package.path": "testdata/package/example/1.1.0"}
+2023-05-11T17:04:30.692+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.2.0-rc1", "package.path": "testdata/package/example/1.2.0-rc1"}
+2023-05-11T17:04:30.692+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "foo", "package.version": "1.0.0", "package.path": "testdata/package/foo/1.0.0"}
+2023-05-11T17:04:30.694+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "hidden", "package.version": "1.0.0", "package.path": "testdata/package/hidden/1.0.0"}
+2023-05-11T17:04:30.716+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "ilm_policy", "package.version": "1.0.0", "package.path": "testdata/package/ilm_policy/1.0.0"}
+2023-05-11T17:04:30.731+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "input_groups", "package.version": "0.0.1", "package.path": "testdata/package/input_groups/0.0.1"}
+2023-05-11T17:04:30.732+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "input_level_templates", "package.version": "1.0.0", "package.path": "testdata/package/input_level_templates/1.0.0"}
+2023-05-11T17:04:30.742+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "integration_input", "package.version": "1.0.0", "package.path": "testdata/package/integration_input/1.0.0"}
+2023-05-11T17:04:30.743+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "integration_input", "package.version": "1.0.2", "package.path": "testdata/package/integration_input/1.0.2"}
+2023-05-11T17:04:30.744+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "longdocs", "package.version": "1.0.4", "package.path": "testdata/package/longdocs/1.0.4"}
+2023-05-11T17:04:30.744+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "metricsonly", "package.version": "2.0.1", "package.path": "testdata/package/metricsonly/2.0.1"}
+2023-05-11T17:04:30.752+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiple_false", "package.version": "0.0.1", "package.path": "testdata/package/multiple_false/0.0.1"}
+2023-05-11T17:04:30.753+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.0.3", "package.path": "testdata/package/multiversion/1.0.3"}
+2023-05-11T17:04:30.753+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.0.4", "package.path": "testdata/package/multiversion/1.0.4"}
+2023-05-11T17:04:30.754+0200	DEBUG	packages/packages.go:236	duplicated package	{"package.name": "multiversion", "package.version": "1.1.0", "package.path": "testdata/package/multiversion/1.1.0"}
+2023-05-11T17:04:30.756+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "no_stream_configs", "package.version": "1.0.0", "package.path": "testdata/package/no_stream_configs/1.0.0"}
+2023-05-11T17:04:30.764+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "reference", "package.version": "1.0.0", "package.path": "testdata/package/reference/1.0.0"}
+2023-05-11T17:04:30.767+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "sql_input", "package.version": "0.2.0", "package.path": "testdata/package/sql_input/0.2.0"}
+2023-05-11T17:04:30.769+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "sql_input", "package.version": "0.3.0", "package.path": "testdata/package/sql_input/0.3.0"}
+2023-05-11T17:04:30.779+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "traces", "package.version": "1.0.0", "package.path": "testdata/package/traces/1.0.0"}
+2023-05-11T17:04:30.783+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "yamlpipeline", "package.version": "1.0.0", "package.path": "testdata/package/yamlpipeline/1.0.0"}
+=== RUN   TestAllPackageIndex/multiversion/1.1.0
+=== RUN   TestAllPackageIndex/dataset_is_prefix/0.0.1
+=== RUN   TestAllPackageIndex/datasources/1.0.0
+=== RUN   TestAllPackageIndex/datastream_without_release/0.1.0
+=== RUN   TestAllPackageIndex/default_pipeline/0.0.2
+=== RUN   TestAllPackageIndex/defaultrelease/0.0.1
+=== RUN   TestAllPackageIndex/ecs_style_dataset/0.0.1
+=== RUN   TestAllPackageIndex/elasticsearch_privileges/1.0.0
+=== RUN   TestAllPackageIndex/example/0.0.2
+=== RUN   TestAllPackageIndex/example/1.0.0
+=== RUN   TestAllPackageIndex/example/1.0.1
+=== RUN   TestAllPackageIndex/example/1.1.0
+=== RUN   TestAllPackageIndex/example/1.2.0-rc1
+=== RUN   TestAllPackageIndex/foo/1.0.0
+=== RUN   TestAllPackageIndex/hidden/1.0.0
+=== RUN   TestAllPackageIndex/ilm_policy/1.0.0
+=== RUN   TestAllPackageIndex/input_groups/0.0.1
+=== RUN   TestAllPackageIndex/input_level_templates/1.0.0
+=== RUN   TestAllPackageIndex/integration_input/1.0.0
+=== RUN   TestAllPackageIndex/integration_input/1.0.2
+=== RUN   TestAllPackageIndex/longdocs/1.0.4
+=== RUN   TestAllPackageIndex/metricsonly/2.0.1
+=== RUN   TestAllPackageIndex/multiple_false/0.0.1
+=== RUN   TestAllPackageIndex/multiversion/1.0.3
+=== RUN   TestAllPackageIndex/multiversion/1.0.4
+=== RUN   TestAllPackageIndex/multiversion/1.1.0#01
+=== RUN   TestAllPackageIndex/no_stream_configs/1.0.0
+=== RUN   TestAllPackageIndex/reference/1.0.0
+=== RUN   TestAllPackageIndex/sql_input/0.2.0
+=== RUN   TestAllPackageIndex/sql_input/0.3.0
+=== RUN   TestAllPackageIndex/traces/1.0.0
+=== RUN   TestAllPackageIndex/yamlpipeline/1.0.0
+--- PASS: TestAllPackageIndex (0.23s)
+    --- PASS: TestAllPackageIndex/multiversion/1.1.0 (0.00s)
+    --- PASS: TestAllPackageIndex/dataset_is_prefix/0.0.1 (0.00s)
+    --- PASS: TestAllPackageIndex/datasources/1.0.0 (0.00s)
+    --- PASS: TestAllPackageIndex/datastream_without_release/0.1.0 (0.00s)
+    --- PASS: TestAllPackageIndex/default_pipeline/0.0.2 (0.00s)
+    --- PASS: TestAllPackageIndex/defaultrelease/0.0.1 (0.00s)
+    --- PASS: TestAllPackageIndex/ecs_style_dataset/0.0.1 (0.00s)
+    --- PASS: TestAllPackageIndex/elasticsearch_privileges/1.0.0 (0.00s)
+    --- PASS: TestAllPackageIndex/example/0.0.2 (0.00s)
+    --- PASS: TestAllPackageIndex/example/1.0.0 (0.00s)
+    --- PASS: TestAllPackageIndex/example/1.0.1 (0.00s)
+    --- PASS: TestAllPackageIndex/example/1.1.0 (0.00s)
+    --- PASS: TestAllPackageIndex/example/1.2.0-rc1 (0.00s)
+    --- PASS: TestAllPackageIndex/foo/1.0.0 (0.00s)
+    --- PASS: TestAllPackageIndex/hidden/1.0.0 (0.00s)
+    --- PASS: TestAllPackageIndex/ilm_policy/1.0.0 (0.00s)
+    --- PASS: TestAllPackageIndex/input_groups/0.0.1 (0.00s)
+    --- PASS: TestAllPackageIndex/input_level_templates/1.0.0 (0.00s)
+    --- PASS: TestAllPackageIndex/integration_input/1.0.0 (0.00s)
+    --- PASS: TestAllPackageIndex/integration_input/1.0.2 (0.00s)
+    --- PASS: TestAllPackageIndex/longdocs/1.0.4 (0.00s)
+    --- PASS: TestAllPackageIndex/metricsonly/2.0.1 (0.00s)
+    --- PASS: TestAllPackageIndex/multiple_false/0.0.1 (0.00s)
+    --- PASS: TestAllPackageIndex/multiversion/1.0.3 (0.00s)
+    --- PASS: TestAllPackageIndex/multiversion/1.0.4 (0.00s)
+    --- PASS: TestAllPackageIndex/multiversion/1.1.0#01 (0.00s)
+    --- PASS: TestAllPackageIndex/no_stream_configs/1.0.0 (0.00s)
+    --- PASS: TestAllPackageIndex/reference/1.0.0 (0.00s)
+    --- PASS: TestAllPackageIndex/sql_input/0.2.0 (0.00s)
+    --- PASS: TestAllPackageIndex/sql_input/0.3.0 (0.00s)
+    --- PASS: TestAllPackageIndex/traces/1.0.0 (0.00s)
+    --- PASS: TestAllPackageIndex/yamlpipeline/1.0.0 (0.00s)
+=== RUN   TestContentTypes
+2023-05-11T17:04:30.793+0200	INFO	packages/packages.go:227	Searching packages in ./testdata/local-storage
+2023-05-11T17:04:30.794+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.0.1", "package.path": "testdata/local-storage/example-1.0.1.zip"}
+2023-05-11T17:04:30.796+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "nodirentries", "package.version": "1.0.0", "package.path": "testdata/local-storage/nodirentries-1.0.0.zip"}
+2023-05-11T17:04:30.797+0200	INFO	packages/packages.go:227	Searching packages in ./testdata/package
+2023-05-11T17:04:30.799+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "dataset_is_prefix", "package.version": "0.0.1", "package.path": "testdata/package/dataset_is_prefix/0.0.1"}
+2023-05-11T17:04:30.810+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "datasources", "package.version": "1.0.0", "package.path": "testdata/package/datasources/1.0.0"}
+2023-05-11T17:04:30.815+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "datastream_without_release", "package.version": "0.1.0", "package.path": "testdata/package/datastream_without_release/0.1.0"}
+2023-05-11T17:04:30.820+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "default_pipeline", "package.version": "0.0.2", "package.path": "testdata/package/default_pipeline/0.0.2"}
+2023-05-11T17:04:30.820+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "defaultrelease", "package.version": "0.0.1", "package.path": "testdata/package/defaultrelease/0.0.1"}
+2023-05-11T17:04:30.826+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "ecs_style_dataset", "package.version": "0.0.1", "package.path": "testdata/package/ecs_style_dataset/0.0.1"}
+2023-05-11T17:04:30.829+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "elasticsearch_privileges", "package.version": "1.0.0", "package.path": "testdata/package/elasticsearch_privileges/1.0.0"}
+2023-05-11T17:04:30.832+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "0.0.2", "package.path": "testdata/package/example/0.0.2"}
+2023-05-11T17:04:30.841+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.0.0", "package.path": "testdata/package/example/1.0.0"}
+2023-05-11T17:04:30.847+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.0.1", "package.path": "testdata/package/example/1.0.1"}
+2023-05-11T17:04:30.855+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.1.0", "package.path": "testdata/package/example/1.1.0"}
+2023-05-11T17:04:30.861+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.2.0-rc1", "package.path": "testdata/package/example/1.2.0-rc1"}
+2023-05-11T17:04:30.862+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "foo", "package.version": "1.0.0", "package.path": "testdata/package/foo/1.0.0"}
+2023-05-11T17:04:30.864+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "hidden", "package.version": "1.0.0", "package.path": "testdata/package/hidden/1.0.0"}
+2023-05-11T17:04:30.867+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "ilm_policy", "package.version": "1.0.0", "package.path": "testdata/package/ilm_policy/1.0.0"}
+2023-05-11T17:04:30.885+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "input_groups", "package.version": "0.0.1", "package.path": "testdata/package/input_groups/0.0.1"}
+2023-05-11T17:04:30.886+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "input_level_templates", "package.version": "1.0.0", "package.path": "testdata/package/input_level_templates/1.0.0"}
+2023-05-11T17:04:30.891+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "integration_input", "package.version": "1.0.0", "package.path": "testdata/package/integration_input/1.0.0"}
+2023-05-11T17:04:30.893+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "integration_input", "package.version": "1.0.2", "package.path": "testdata/package/integration_input/1.0.2"}
+2023-05-11T17:04:30.893+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "longdocs", "package.version": "1.0.4", "package.path": "testdata/package/longdocs/1.0.4"}
+2023-05-11T17:04:30.894+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "metricsonly", "package.version": "2.0.1", "package.path": "testdata/package/metricsonly/2.0.1"}
+2023-05-11T17:04:30.897+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiple_false", "package.version": "0.0.1", "package.path": "testdata/package/multiple_false/0.0.1"}
+2023-05-11T17:04:30.897+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.0.3", "package.path": "testdata/package/multiversion/1.0.3"}
+2023-05-11T17:04:30.898+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.0.4", "package.path": "testdata/package/multiversion/1.0.4"}
+2023-05-11T17:04:30.898+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.1.0", "package.path": "testdata/package/multiversion/1.1.0"}
+2023-05-11T17:04:30.902+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "no_stream_configs", "package.version": "1.0.0", "package.path": "testdata/package/no_stream_configs/1.0.0"}
+2023-05-11T17:04:30.905+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "reference", "package.version": "1.0.0", "package.path": "testdata/package/reference/1.0.0"}
+2023-05-11T17:04:30.909+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "sql_input", "package.version": "0.2.0", "package.path": "testdata/package/sql_input/0.2.0"}
+2023-05-11T17:04:30.911+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "sql_input", "package.version": "0.3.0", "package.path": "testdata/package/sql_input/0.3.0"}
+2023-05-11T17:04:30.913+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "traces", "package.version": "1.0.0", "package.path": "testdata/package/traces/1.0.0"}
+2023-05-11T17:04:30.918+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "yamlpipeline", "package.version": "1.0.0", "package.path": "testdata/package/yamlpipeline/1.0.0"}
+=== RUN   TestContentTypes//package/example/1.0.0/manifest.yml
+    main_test.go:447: status response: 200
+=== RUN   TestContentTypes//package/example/1.0.0/docs/README.md
+    main_test.go:447: status response: 200
+=== RUN   TestContentTypes//package/example/1.0.0/img/kibana-envoyproxy.jpg
+    main_test.go:447: status response: 200
+=== RUN   TestContentTypes//package/example/1.0.1/manifest.yml
+    main_test.go:447: status response: 200
+=== RUN   TestContentTypes//package/example/1.0.1/docs/README.md
+    main_test.go:447: status response: 200
+=== RUN   TestContentTypes//package/example/1.0.1/img/kibana-envoyproxy.jpg
+    main_test.go:447: status response: 200
+--- PASS: TestContentTypes (0.15s)
+    --- PASS: TestContentTypes//package/example/1.0.0/manifest.yml (0.00s)
+    --- PASS: TestContentTypes//package/example/1.0.0/docs/README.md (0.00s)
+    --- PASS: TestContentTypes//package/example/1.0.0/img/kibana-envoyproxy.jpg (0.00s)
+    --- PASS: TestContentTypes//package/example/1.0.1/manifest.yml (0.00s)
+    --- PASS: TestContentTypes//package/example/1.0.1/docs/README.md (0.01s)
+    --- PASS: TestContentTypes//package/example/1.0.1/img/kibana-envoyproxy.jpg (0.01s)
+=== RUN   TestRangeDownloads
+2023-05-11T17:04:30.946+0200	INFO	packages/packages.go:227	Searching packages in ./testdata/local-storage
+2023-05-11T17:04:30.948+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.0.1", "package.path": "testdata/local-storage/example-1.0.1.zip"}
+2023-05-11T17:04:30.950+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "nodirentries", "package.version": "1.0.0", "package.path": "testdata/local-storage/nodirentries-1.0.0.zip"}
+2023-05-11T17:04:30.952+0200	INFO	packages/packages.go:227	Searching packages in ./testdata/package
+2023-05-11T17:04:30.956+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "dataset_is_prefix", "package.version": "0.0.1", "package.path": "testdata/package/dataset_is_prefix/0.0.1"}
+2023-05-11T17:04:30.970+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "datasources", "package.version": "1.0.0", "package.path": "testdata/package/datasources/1.0.0"}
+2023-05-11T17:04:30.974+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "datastream_without_release", "package.version": "0.1.0", "package.path": "testdata/package/datastream_without_release/0.1.0"}
+2023-05-11T17:04:30.978+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "default_pipeline", "package.version": "0.0.2", "package.path": "testdata/package/default_pipeline/0.0.2"}
+2023-05-11T17:04:30.978+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "defaultrelease", "package.version": "0.0.1", "package.path": "testdata/package/defaultrelease/0.0.1"}
+2023-05-11T17:04:30.983+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "ecs_style_dataset", "package.version": "0.0.1", "package.path": "testdata/package/ecs_style_dataset/0.0.1"}
+2023-05-11T17:04:30.985+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "elasticsearch_privileges", "package.version": "1.0.0", "package.path": "testdata/package/elasticsearch_privileges/1.0.0"}
+2023-05-11T17:04:30.986+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "0.0.2", "package.path": "testdata/package/example/0.0.2"}
+2023-05-11T17:04:30.992+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.0.0", "package.path": "testdata/package/example/1.0.0"}
+2023-05-11T17:04:31.001+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.0.1", "package.path": "testdata/package/example/1.0.1"}
+2023-05-11T17:04:31.007+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.1.0", "package.path": "testdata/package/example/1.1.0"}
+2023-05-11T17:04:31.014+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.2.0-rc1", "package.path": "testdata/package/example/1.2.0-rc1"}
+2023-05-11T17:04:31.014+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "foo", "package.version": "1.0.0", "package.path": "testdata/package/foo/1.0.0"}
+2023-05-11T17:04:31.016+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "hidden", "package.version": "1.0.0", "package.path": "testdata/package/hidden/1.0.0"}
+2023-05-11T17:04:31.019+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "ilm_policy", "package.version": "1.0.0", "package.path": "testdata/package/ilm_policy/1.0.0"}
+2023-05-11T17:04:31.033+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "input_groups", "package.version": "0.0.1", "package.path": "testdata/package/input_groups/0.0.1"}
+2023-05-11T17:04:31.033+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "input_level_templates", "package.version": "1.0.0", "package.path": "testdata/package/input_level_templates/1.0.0"}
+2023-05-11T17:04:31.039+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "integration_input", "package.version": "1.0.0", "package.path": "testdata/package/integration_input/1.0.0"}
+2023-05-11T17:04:31.042+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "integration_input", "package.version": "1.0.2", "package.path": "testdata/package/integration_input/1.0.2"}
+2023-05-11T17:04:31.044+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "longdocs", "package.version": "1.0.4", "package.path": "testdata/package/longdocs/1.0.4"}
+2023-05-11T17:04:31.045+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "metricsonly", "package.version": "2.0.1", "package.path": "testdata/package/metricsonly/2.0.1"}
+2023-05-11T17:04:31.049+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiple_false", "package.version": "0.0.1", "package.path": "testdata/package/multiple_false/0.0.1"}
+2023-05-11T17:04:31.049+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.0.3", "package.path": "testdata/package/multiversion/1.0.3"}
+2023-05-11T17:04:31.050+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.0.4", "package.path": "testdata/package/multiversion/1.0.4"}
+2023-05-11T17:04:31.050+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.1.0", "package.path": "testdata/package/multiversion/1.1.0"}
+2023-05-11T17:04:31.054+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "no_stream_configs", "package.version": "1.0.0", "package.path": "testdata/package/no_stream_configs/1.0.0"}
+2023-05-11T17:04:31.056+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "reference", "package.version": "1.0.0", "package.path": "testdata/package/reference/1.0.0"}
+2023-05-11T17:04:31.057+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "sql_input", "package.version": "0.2.0", "package.path": "testdata/package/sql_input/0.2.0"}
+2023-05-11T17:04:31.059+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "sql_input", "package.version": "0.3.0", "package.path": "testdata/package/sql_input/0.3.0"}
+2023-05-11T17:04:31.062+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "traces", "package.version": "1.0.0", "package.path": "testdata/package/traces/1.0.0"}
+2023-05-11T17:04:31.072+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "yamlpipeline", "package.version": "1.0.0", "package.path": "testdata/package/yamlpipeline/1.0.0"}
+=== RUN   TestRangeDownloads//epr/example/example-0.0.2.zip
+    main_test.go:595: ranges not supported for endpoint (/epr/example/example-0.0.2.zip)
+=== RUN   TestRangeDownloads//package/example/1.0.0/img/kibana-envoyproxy.jpg
+    main_test.go:605: endpoint: /package/example/1.0.0/img/kibana-envoyproxy.jpg, size: 482070
+=== RUN   TestRangeDownloads//epr/example/example-1.0.1.zip
+    main_test.go:605: endpoint: /epr/example/example-1.0.1.zip, size: 351104
+=== RUN   TestRangeDownloads//package/example/1.0.1/img/kibana-envoyproxy.jpg
+    main_test.go:605: endpoint: /package/example/1.0.1/img/kibana-envoyproxy.jpg, size: 482070
+--- PASS: TestRangeDownloads (0.18s)
+    --- PASS: TestRangeDownloads//epr/example/example-0.0.2.zip (0.01s)
+    --- PASS: TestRangeDownloads//package/example/1.0.0/img/kibana-envoyproxy.jpg (0.00s)
+    --- PASS: TestRangeDownloads//epr/example/example-1.0.1.zip (0.00s)
+    --- PASS: TestRangeDownloads//package/example/1.0.1/img/kibana-envoyproxy.jpg (0.04s)
+=== RUN   TestPackageStorage_Endpoints
+    fakestorage.go:63: Prepared 1133 packages with total 2 server objects.
+2023-05-11T17:04:31.538+0200	DEBUG	storage/indexer.go:60	Initialize storage indexer
+2023-05-11T17:04:31.538+0200	DEBUG	storage/indexer.go:146	Update indices
+2023-05-11T17:04:31.538+0200	DEBUG	storage/cursor.go:33	load cursor file
+2023-05-11T17:04:31.539+0200	DEBUG	storage/cursor.go:51	loaded cursor file	{"cursor": "{\"current\":\"1\"}"}
+2023-05-11T17:04:31.539+0200	INFO	storage/indexer.go:166	cursor will be updated	{"cursor.current": "", "cursor.next": "1"}
+2023-05-11T17:04:31.539+0200	DEBUG	storage/index.go:33	load search-index-all index	{"index.file": "search-index-all.json"}
+2023-05-11T17:04:31.895+0200	INFO	storage/indexer.go:173	Downloaded new search-index-all index	{"index.packages.size": "1133"}
+=== RUN   TestPackageStorage_Endpoints//search
+=== RUN   TestPackageStorage_Endpoints//search?all=true
+2023-05-11T17:04:31.898+0200	DEBUG	storage/indexer.go:110	Watch indices for changes
+2023-05-11T17:04:31.898+0200	DEBUG	storage/indexer.go:112	No watcher configured, indices will not be updated (use only for testing purposes)
+=== RUN   TestPackageStorage_Endpoints//categories
+=== RUN   TestPackageStorage_Endpoints//categories?experimental=true
+=== RUN   TestPackageStorage_Endpoints//categories?experimental=foo
+=== RUN   TestPackageStorage_Endpoints//categories?experimental=true&kibana.version=6.5.2
+=== RUN   TestPackageStorage_Endpoints//categories?prerelease=true
+=== RUN   TestPackageStorage_Endpoints//categories?prerelease=foo
+=== RUN   TestPackageStorage_Endpoints//categories?prerelease=true&kibana.version=6.5.2
+=== RUN   TestPackageStorage_Endpoints//categories?include_policy_templates=true
+=== RUN   TestPackageStorage_Endpoints//categories?include_policy_templates=foo
+=== RUN   TestPackageStorage_Endpoints//search?kibana.version=6.5.2
+=== RUN   TestPackageStorage_Endpoints//search?kibana.version=7.2.1
+=== RUN   TestPackageStorage_Endpoints//search?kibana.version=8.0.0
+=== RUN   TestPackageStorage_Endpoints//search?category=web
+=== RUN   TestPackageStorage_Endpoints//search?category=web&all=true
+=== RUN   TestPackageStorage_Endpoints//search?category=custom
+=== RUN   TestPackageStorage_Endpoints//search?experimental=true
+=== RUN   TestPackageStorage_Endpoints//search?experimental=foo
+=== RUN   TestPackageStorage_Endpoints//search?category=datastore&experimental=true
+=== RUN   TestPackageStorage_Endpoints//search?prerelease=true
+=== RUN   TestPackageStorage_Endpoints//search?prerelease=foo
+=== RUN   TestPackageStorage_Endpoints//search?category=datastore&prerelease=true
+=== RUN   TestPackageStorage_Endpoints//search?internal=true
+--- PASS: TestPackageStorage_Endpoints (0.79s)
+    --- PASS: TestPackageStorage_Endpoints//search (0.00s)
+    --- PASS: TestPackageStorage_Endpoints//search?all=true (0.01s)
+    --- PASS: TestPackageStorage_Endpoints//categories (0.00s)
+    --- PASS: TestPackageStorage_Endpoints//categories?experimental=true (0.00s)
+    --- PASS: TestPackageStorage_Endpoints//categories?experimental=foo (0.00s)
+    --- PASS: TestPackageStorage_Endpoints//categories?experimental=true&kibana.version=6.5.2 (0.00s)
+    --- PASS: TestPackageStorage_Endpoints//categories?prerelease=true (0.00s)
+    --- PASS: TestPackageStorage_Endpoints//categories?prerelease=foo (0.00s)
+    --- PASS: TestPackageStorage_Endpoints//categories?prerelease=true&kibana.version=6.5.2 (0.00s)
+    --- PASS: TestPackageStorage_Endpoints//categories?include_policy_templates=true (0.00s)
+    --- PASS: TestPackageStorage_Endpoints//categories?include_policy_templates=foo (0.00s)
+    --- PASS: TestPackageStorage_Endpoints//search?kibana.version=6.5.2 (0.00s)
+    --- PASS: TestPackageStorage_Endpoints//search?kibana.version=7.2.1 (0.00s)
+    --- PASS: TestPackageStorage_Endpoints//search?kibana.version=8.0.0 (0.00s)
+    --- PASS: TestPackageStorage_Endpoints//search?category=web (0.00s)
+    --- PASS: TestPackageStorage_Endpoints//search?category=web&all=true (0.00s)
+    --- PASS: TestPackageStorage_Endpoints//search?category=custom (0.00s)
+    --- PASS: TestPackageStorage_Endpoints//search?experimental=true (0.00s)
+    --- PASS: TestPackageStorage_Endpoints//search?experimental=foo (0.00s)
+    --- PASS: TestPackageStorage_Endpoints//search?category=datastore&experimental=true (0.00s)
+    --- PASS: TestPackageStorage_Endpoints//search?prerelease=true (0.00s)
+    --- PASS: TestPackageStorage_Endpoints//search?prerelease=foo (0.00s)
+    --- PASS: TestPackageStorage_Endpoints//search?category=datastore&prerelease=true (0.00s)
+    --- PASS: TestPackageStorage_Endpoints//search?internal=true (0.00s)
+=== RUN   TestPackageStorage_PackageIndex
+    fakestorage.go:63: Prepared 1133 packages with total 2 server objects.
+2023-05-11T17:04:32.311+0200	DEBUG	storage/indexer.go:60	Initialize storage indexer
+2023-05-11T17:04:32.311+0200	DEBUG	storage/indexer.go:146	Update indices
+2023-05-11T17:04:32.311+0200	DEBUG	storage/cursor.go:33	load cursor file
+2023-05-11T17:04:32.311+0200	DEBUG	storage/cursor.go:51	loaded cursor file	{"cursor": "{\"current\":\"1\"}"}
+2023-05-11T17:04:32.311+0200	INFO	storage/indexer.go:166	cursor will be updated	{"cursor.current": "", "cursor.next": "1"}
+2023-05-11T17:04:32.311+0200	DEBUG	storage/index.go:33	load search-index-all index	{"index.file": "search-index-all.json"}
+2023-05-11T17:04:32.611+0200	INFO	storage/indexer.go:173	Downloaded new search-index-all index	{"index.packages.size": "1133"}
+=== RUN   TestPackageStorage_PackageIndex//package/1password/0.1.1/
+2023-05-11T17:04:32.612+0200	DEBUG	storage/indexer.go:110	Watch indices for changes
+2023-05-11T17:04:32.612+0200	DEBUG	storage/indexer.go:112	No watcher configured, indices will not be updated (use only for testing purposes)
+=== RUN   TestPackageStorage_PackageIndex//package/kubernetes/0.3.0/
+=== RUN   TestPackageStorage_PackageIndex//package/osquery/1.0.3/
+--- PASS: TestPackageStorage_PackageIndex (0.70s)
+    --- PASS: TestPackageStorage_PackageIndex//package/1password/0.1.1/ (0.00s)
+    --- PASS: TestPackageStorage_PackageIndex//package/kubernetes/0.3.0/ (0.00s)
+    --- PASS: TestPackageStorage_PackageIndex//package/osquery/1.0.3/ (0.00s)
+=== RUN   TestPackageStorage_Artifacts
+    fakestorage.go:63: Prepared 1133 packages with total 2 server objects.
+2023-05-11T17:04:32.936+0200	DEBUG	storage/indexer.go:60	Initialize storage indexer
+2023-05-11T17:04:32.936+0200	DEBUG	storage/indexer.go:146	Update indices
+2023-05-11T17:04:32.936+0200	DEBUG	storage/cursor.go:33	load cursor file
+2023-05-11T17:04:32.937+0200	DEBUG	storage/cursor.go:51	loaded cursor file	{"cursor": "{\"current\":\"1\"}"}
+2023-05-11T17:04:32.937+0200	INFO	storage/indexer.go:166	cursor will be updated	{"cursor.current": "", "cursor.next": "1"}
+2023-05-11T17:04:32.937+0200	DEBUG	storage/index.go:33	load search-index-all index	{"index.file": "search-index-all.json"}
+2023-05-11T17:04:33.265+0200	INFO	storage/indexer.go:173	Downloaded new search-index-all index	{"index.packages.size": "1133"}
+=== RUN   TestPackageStorage_Artifacts//epr/1password/1password-0.1.1.zip
+2023-05-11T17:04:33.265+0200	DEBUG	storage/indexer.go:110	Watch indices for changes
+2023-05-11T17:04:33.265+0200	DEBUG	storage/indexer.go:112	No watcher configured, indices will not be updated (use only for testing purposes)
+=== RUN   TestPackageStorage_Artifacts//epr/kubernetes/kubernetes-999.999.999.zip
+=== RUN   TestPackageStorage_Artifacts//epr/missing/missing-1.0.3.zip
+--- PASS: TestPackageStorage_Artifacts (0.66s)
+    --- PASS: TestPackageStorage_Artifacts//epr/1password/1password-0.1.1.zip (0.01s)
+    --- PASS: TestPackageStorage_Artifacts//epr/kubernetes/kubernetes-999.999.999.zip (0.00s)
+    --- PASS: TestPackageStorage_Artifacts//epr/missing/missing-1.0.3.zip (0.00s)
+=== RUN   TestPackageStorage_Signatures
+    fakestorage.go:63: Prepared 1133 packages with total 2 server objects.
+2023-05-11T17:04:33.670+0200	DEBUG	storage/indexer.go:60	Initialize storage indexer
+2023-05-11T17:04:33.670+0200	DEBUG	storage/indexer.go:146	Update indices
+2023-05-11T17:04:33.670+0200	DEBUG	storage/cursor.go:33	load cursor file
+2023-05-11T17:04:33.670+0200	DEBUG	storage/cursor.go:51	loaded cursor file	{"cursor": "{\"current\":\"1\"}"}
+2023-05-11T17:04:33.670+0200	INFO	storage/indexer.go:166	cursor will be updated	{"cursor.current": "", "cursor.next": "1"}
+2023-05-11T17:04:33.670+0200	DEBUG	storage/index.go:33	load search-index-all index	{"index.file": "search-index-all.json"}
+2023-05-11T17:04:33.957+0200	INFO	storage/indexer.go:173	Downloaded new search-index-all index	{"index.packages.size": "1133"}
+=== RUN   TestPackageStorage_Signatures//epr/1password/1password-0.1.1.zip.sig
+2023-05-11T17:04:33.958+0200	DEBUG	storage/indexer.go:110	Watch indices for changes
+2023-05-11T17:04:33.958+0200	DEBUG	storage/indexer.go:112	No watcher configured, indices will not be updated (use only for testing purposes)
+=== RUN   TestPackageStorage_Signatures//epr/checkpoint/checkpoint-0.5.2.zip.sig
+--- PASS: TestPackageStorage_Signatures (0.69s)
+    --- PASS: TestPackageStorage_Signatures//epr/1password/1password-0.1.1.zip.sig (0.01s)
+    --- PASS: TestPackageStorage_Signatures//epr/checkpoint/checkpoint-0.5.2.zip.sig (0.00s)
+=== RUN   TestPackageStorage_Statics
+    fakestorage.go:63: Prepared 1133 packages with total 2 server objects.
+2023-05-11T17:04:34.320+0200	DEBUG	storage/indexer.go:60	Initialize storage indexer
+2023-05-11T17:04:34.320+0200	DEBUG	storage/indexer.go:146	Update indices
+2023-05-11T17:04:34.320+0200	DEBUG	storage/cursor.go:33	load cursor file
+2023-05-11T17:04:34.320+0200	DEBUG	storage/cursor.go:51	loaded cursor file	{"cursor": "{\"current\":\"1\"}"}
+2023-05-11T17:04:34.320+0200	INFO	storage/indexer.go:166	cursor will be updated	{"cursor.current": "", "cursor.next": "1"}
+2023-05-11T17:04:34.320+0200	DEBUG	storage/index.go:33	load search-index-all index	{"index.file": "search-index-all.json"}
+2023-05-11T17:04:34.643+0200	INFO	storage/indexer.go:173	Downloaded new search-index-all index	{"index.packages.size": "1133"}
+=== RUN   TestPackageStorage_Statics//package/1password/0.1.1/img/1password-logo-light-bg.svg
+2023-05-11T17:04:34.643+0200	DEBUG	storage/indexer.go:110	Watch indices for changes
+2023-05-11T17:04:34.643+0200	DEBUG	storage/indexer.go:112	No watcher configured, indices will not be updated (use only for testing purposes)
+=== RUN   TestPackageStorage_Statics//package/cassandra/1.1.0/img/[Logs_Cassandra]_System_Logs.jpg
+=== RUN   TestPackageStorage_Statics//package/cef/0.1.0/docs/README.md
+--- PASS: TestPackageStorage_Statics (0.68s)
+    --- PASS: TestPackageStorage_Statics//package/1password/0.1.1/img/1password-logo-light-bg.svg (0.01s)
+    --- PASS: TestPackageStorage_Statics//package/cassandra/1.1.0/img/[Logs_Cassandra]_System_Logs.jpg (0.00s)
+    --- PASS: TestPackageStorage_Statics//package/cef/0.1.0/docs/README.md (0.00s)
+=== RUN   TestPackageStorage_ResolverHeadersResponse
+    fakestorage.go:63: Prepared 1133 packages with total 2 server objects.
+2023-05-11T17:04:34.976+0200	DEBUG	storage/indexer.go:60	Initialize storage indexer
+2023-05-11T17:04:34.976+0200	DEBUG	storage/indexer.go:146	Update indices
+2023-05-11T17:04:34.976+0200	DEBUG	storage/cursor.go:33	load cursor file
+2023-05-11T17:04:34.976+0200	DEBUG	storage/cursor.go:51	loaded cursor file	{"cursor": "{\"current\":\"1\"}"}
+2023-05-11T17:04:34.976+0200	INFO	storage/indexer.go:166	cursor will be updated	{"cursor.current": "", "cursor.next": "1"}
+2023-05-11T17:04:34.976+0200	DEBUG	storage/index.go:33	load search-index-all index	{"index.file": "search-index-all.json"}
+2023-05-11T17:04:35.367+0200	INFO	storage/indexer.go:173	Downloaded new search-index-all index	{"index.packages.size": "1133"}
+=== RUN   TestPackageStorage_ResolverHeadersResponse//package/1password/0.1.1/img/1password-logo-light-bg.svg
+2023-05-11T17:04:35.368+0200	DEBUG	storage/indexer.go:110	Watch indices for changes
+2023-05-11T17:04:35.368+0200	DEBUG	storage/indexer.go:112	No watcher configured, indices will not be updated (use only for testing purposes)
+2023/05/11 17:04:35 Checking header Last-Modified
+2023/05/11 17:04:35 Checking header Content-Type
+--- PASS: TestPackageStorage_ResolverHeadersResponse (0.72s)
+    --- PASS: TestPackageStorage_ResolverHeadersResponse//package/1password/0.1.1/img/1password-logo-light-bg.svg (0.01s)
+=== RUN   TestPackageStorage_ResolverErrorResponse
+    fakestorage.go:63: Prepared 1133 packages with total 2 server objects.
+2023-05-11T17:04:35.746+0200	DEBUG	storage/indexer.go:60	Initialize storage indexer
+2023-05-11T17:04:35.746+0200	DEBUG	storage/indexer.go:146	Update indices
+2023-05-11T17:04:35.746+0200	DEBUG	storage/cursor.go:33	load cursor file
+2023-05-11T17:04:35.746+0200	DEBUG	storage/cursor.go:51	loaded cursor file	{"cursor": "{\"current\":\"1\"}"}
+2023-05-11T17:04:35.746+0200	INFO	storage/indexer.go:166	cursor will be updated	{"cursor.current": "", "cursor.next": "1"}
+2023-05-11T17:04:35.746+0200	DEBUG	storage/index.go:33	load search-index-all index	{"index.file": "search-index-all.json"}
+2023-05-11T17:04:36.034+0200	INFO	storage/indexer.go:173	Downloaded new search-index-all index	{"index.packages.size": "1133"}
+=== RUN   TestPackageStorage_ResolverErrorResponse//package/1password/0.1.1/img/1password-logo-light-bg.svg
+2023-05-11T17:04:36.034+0200	DEBUG	storage/indexer.go:110	Watch indices for changes
+2023-05-11T17:04:36.034+0200	DEBUG	storage/indexer.go:112	No watcher configured, indices will not be updated (use only for testing purposes)
+--- PASS: TestPackageStorage_ResolverErrorResponse (0.67s)
+    --- PASS: TestPackageStorage_ResolverErrorResponse//package/1password/0.1.1/img/1password-logo-light-bg.svg (0.01s)
+=== RUN   TestCategoriesWithProxyMode
+2023-05-11T17:04:36.042+0200	INFO	packages/packages.go:227	Searching packages in ./testdata/second_package_path
+2023-05-11T17:04:36.042+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.1.0", "package.path": "testdata/second_package_path/multiversion/1.1.0"}
+=== RUN   TestCategoriesWithProxyMode//categories
+2023-05-11T17:04:36.042+0200	DEBUG	proxymode/proxymode.go:152	Proxy /categories request	{"request.uri": "http://127.0.0.1:61275/categories"}
+2023-05-11T17:04:36.042+0200	DEBUG	proxymode/logger.go:33	performing request	{"method": "GET", "url": "http://127.0.0.1:61275/categories"}
+=== RUN   TestCategoriesWithProxyMode//categories?kibana.version=6.5.0
+2023-05-11T17:04:36.049+0200	DEBUG	proxymode/proxymode.go:152	Proxy /categories request	{"request.uri": "http://127.0.0.1:61275/categories?kibana.version=6.5.0"}
+2023-05-11T17:04:36.049+0200	DEBUG	proxymode/logger.go:33	performing request	{"method": "GET", "url": "http://127.0.0.1:61275/categories?kibana.version=6.5.0"}
+--- PASS: TestCategoriesWithProxyMode (0.01s)
+    --- PASS: TestCategoriesWithProxyMode//categories (0.01s)
+    --- PASS: TestCategoriesWithProxyMode//categories?kibana.version=6.5.0 (0.00s)
+PASS
+ok  	github.com/elastic/package-registry	6.993s
+=== RUN   TestLoadCategories
+--- PASS: TestLoadCategories (0.00s)
+PASS
+ok  	github.com/elastic/package-registry/categories	0.566s
+=== RUN   TestCaptureZapFieldsForRequest
+=== RUN   TestCaptureZapFieldsForRequest/Normal_GET
+=== RUN   TestCaptureZapFieldsForRequest/404
+=== RUN   TestCaptureZapFieldsForRequest/Empty_response_on_500_error
+=== RUN   TestCaptureZapFieldsForRequest/IPv4_address
+=== RUN   TestCaptureZapFieldsForRequest/IPv6_address
+--- PASS: TestCaptureZapFieldsForRequest (0.00s)
+    --- PASS: TestCaptureZapFieldsForRequest/Normal_GET (0.00s)
+    --- PASS: TestCaptureZapFieldsForRequest/404 (0.00s)
+    --- PASS: TestCaptureZapFieldsForRequest/Empty_response_on_500_error (0.00s)
+    --- PASS: TestCaptureZapFieldsForRequest/IPv4_address (0.00s)
+    --- PASS: TestCaptureZapFieldsForRequest/IPv6_address (0.00s)
+PASS
+ok  	github.com/elastic/package-registry/internal/util	0.227s
+=== RUN   TestMarshalJSON
+2023-05-11T17:04:29.837+0200	INFO	packages/packages.go:227	Searching packages in ../testdata/second_package_path
+2023-05-11T17:04:29.838+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.1.0", "package.path": "../testdata/second_package_path/multiversion/1.1.0"}
+2023-05-11T17:04:29.839+0200	INFO	packages/packages.go:227	Searching packages in ../testdata/package
+2023-05-11T17:04:29.841+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "dataset_is_prefix", "package.version": "0.0.1", "package.path": "../testdata/package/dataset_is_prefix/0.0.1"}
+2023-05-11T17:04:29.853+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "datasources", "package.version": "1.0.0", "package.path": "../testdata/package/datasources/1.0.0"}
+2023-05-11T17:04:29.860+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "datastream_without_release", "package.version": "0.1.0", "package.path": "../testdata/package/datastream_without_release/0.1.0"}
+2023-05-11T17:04:29.867+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "default_pipeline", "package.version": "0.0.2", "package.path": "../testdata/package/default_pipeline/0.0.2"}
+2023-05-11T17:04:29.868+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "defaultrelease", "package.version": "0.0.1", "package.path": "../testdata/package/defaultrelease/0.0.1"}
+2023-05-11T17:04:29.871+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "ecs_style_dataset", "package.version": "0.0.1", "package.path": "../testdata/package/ecs_style_dataset/0.0.1"}
+2023-05-11T17:04:29.874+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "elasticsearch_privileges", "package.version": "1.0.0", "package.path": "../testdata/package/elasticsearch_privileges/1.0.0"}
+2023-05-11T17:04:29.875+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "0.0.2", "package.path": "../testdata/package/example/0.0.2"}
+2023-05-11T17:04:29.882+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.0.0", "package.path": "../testdata/package/example/1.0.0"}
+2023-05-11T17:04:29.891+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.0.1", "package.path": "../testdata/package/example/1.0.1"}
+2023-05-11T17:04:29.900+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.1.0", "package.path": "../testdata/package/example/1.1.0"}
+2023-05-11T17:04:29.908+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.2.0-rc1", "package.path": "../testdata/package/example/1.2.0-rc1"}
+2023-05-11T17:04:29.908+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "foo", "package.version": "1.0.0", "package.path": "../testdata/package/foo/1.0.0"}
+2023-05-11T17:04:29.912+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "hidden", "package.version": "1.0.0", "package.path": "../testdata/package/hidden/1.0.0"}
+2023-05-11T17:04:29.915+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "ilm_policy", "package.version": "1.0.0", "package.path": "../testdata/package/ilm_policy/1.0.0"}
+2023-05-11T17:04:29.933+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "input_groups", "package.version": "0.0.1", "package.path": "../testdata/package/input_groups/0.0.1"}
+2023-05-11T17:04:29.934+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "input_level_templates", "package.version": "1.0.0", "package.path": "../testdata/package/input_level_templates/1.0.0"}
+2023-05-11T17:04:29.942+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "integration_input", "package.version": "1.0.0", "package.path": "../testdata/package/integration_input/1.0.0"}
+2023-05-11T17:04:29.944+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "integration_input", "package.version": "1.0.2", "package.path": "../testdata/package/integration_input/1.0.2"}
+2023-05-11T17:04:29.945+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "longdocs", "package.version": "1.0.4", "package.path": "../testdata/package/longdocs/1.0.4"}
+2023-05-11T17:04:29.946+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "metricsonly", "package.version": "2.0.1", "package.path": "../testdata/package/metricsonly/2.0.1"}
+2023-05-11T17:04:29.952+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiple_false", "package.version": "0.0.1", "package.path": "../testdata/package/multiple_false/0.0.1"}
+2023-05-11T17:04:29.952+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.0.3", "package.path": "../testdata/package/multiversion/1.0.3"}
+2023-05-11T17:04:29.953+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.0.4", "package.path": "../testdata/package/multiversion/1.0.4"}
+2023-05-11T17:04:29.954+0200	DEBUG	packages/packages.go:236	duplicated package	{"package.name": "multiversion", "package.version": "1.1.0", "package.path": "../testdata/package/multiversion/1.1.0"}
+2023-05-11T17:04:29.959+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "no_stream_configs", "package.version": "1.0.0", "package.path": "../testdata/package/no_stream_configs/1.0.0"}
+2023-05-11T17:04:29.963+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "reference", "package.version": "1.0.0", "package.path": "../testdata/package/reference/1.0.0"}
+2023-05-11T17:04:29.965+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "sql_input", "package.version": "0.2.0", "package.path": "../testdata/package/sql_input/0.2.0"}
+2023-05-11T17:04:29.966+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "sql_input", "package.version": "0.3.0", "package.path": "../testdata/package/sql_input/0.3.0"}
+2023-05-11T17:04:29.969+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "traces", "package.version": "1.0.0", "package.path": "../testdata/package/traces/1.0.0"}
+2023-05-11T17:04:29.976+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "yamlpipeline", "package.version": "1.0.0", "package.path": "../testdata/package/yamlpipeline/1.0.0"}
+--- PASS: TestMarshalJSON (0.14s)
+=== RUN   TestUnmarshalJSON
+2023-05-11T17:04:29.977+0200	INFO	packages/packages.go:227	Searching packages in ../testdata/second_package_path
+2023-05-11T17:04:29.979+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.1.0", "package.path": "../testdata/second_package_path/multiversion/1.1.0"}
+2023-05-11T17:04:29.982+0200	INFO	packages/packages.go:227	Searching packages in ../testdata/package
+2023-05-11T17:04:29.984+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "dataset_is_prefix", "package.version": "0.0.1", "package.path": "../testdata/package/dataset_is_prefix/0.0.1"}
+2023-05-11T17:04:30.013+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "datasources", "package.version": "1.0.0", "package.path": "../testdata/package/datasources/1.0.0"}
+2023-05-11T17:04:30.021+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "datastream_without_release", "package.version": "0.1.0", "package.path": "../testdata/package/datastream_without_release/0.1.0"}
+2023-05-11T17:04:30.025+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "default_pipeline", "package.version": "0.0.2", "package.path": "../testdata/package/default_pipeline/0.0.2"}
+2023-05-11T17:04:30.026+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "defaultrelease", "package.version": "0.0.1", "package.path": "../testdata/package/defaultrelease/0.0.1"}
+2023-05-11T17:04:30.028+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "ecs_style_dataset", "package.version": "0.0.1", "package.path": "../testdata/package/ecs_style_dataset/0.0.1"}
+2023-05-11T17:04:30.033+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "elasticsearch_privileges", "package.version": "1.0.0", "package.path": "../testdata/package/elasticsearch_privileges/1.0.0"}
+2023-05-11T17:04:30.040+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "0.0.2", "package.path": "../testdata/package/example/0.0.2"}
+2023-05-11T17:04:30.062+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.0.0", "package.path": "../testdata/package/example/1.0.0"}
+2023-05-11T17:04:30.070+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.0.1", "package.path": "../testdata/package/example/1.0.1"}
+2023-05-11T17:04:30.080+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.1.0", "package.path": "../testdata/package/example/1.1.0"}
+2023-05-11T17:04:30.088+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "example", "package.version": "1.2.0-rc1", "package.path": "../testdata/package/example/1.2.0-rc1"}
+2023-05-11T17:04:30.088+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "foo", "package.version": "1.0.0", "package.path": "../testdata/package/foo/1.0.0"}
+2023-05-11T17:04:30.091+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "hidden", "package.version": "1.0.0", "package.path": "../testdata/package/hidden/1.0.0"}
+2023-05-11T17:04:30.096+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "ilm_policy", "package.version": "1.0.0", "package.path": "../testdata/package/ilm_policy/1.0.0"}
+2023-05-11T17:04:30.122+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "input_groups", "package.version": "0.0.1", "package.path": "../testdata/package/input_groups/0.0.1"}
+2023-05-11T17:04:30.124+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "input_level_templates", "package.version": "1.0.0", "package.path": "../testdata/package/input_level_templates/1.0.0"}
+2023-05-11T17:04:30.133+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "integration_input", "package.version": "1.0.0", "package.path": "../testdata/package/integration_input/1.0.0"}
+2023-05-11T17:04:30.135+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "integration_input", "package.version": "1.0.2", "package.path": "../testdata/package/integration_input/1.0.2"}
+2023-05-11T17:04:30.136+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "longdocs", "package.version": "1.0.4", "package.path": "../testdata/package/longdocs/1.0.4"}
+2023-05-11T17:04:30.137+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "metricsonly", "package.version": "2.0.1", "package.path": "../testdata/package/metricsonly/2.0.1"}
+2023-05-11T17:04:30.175+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiple_false", "package.version": "0.0.1", "package.path": "../testdata/package/multiple_false/0.0.1"}
+2023-05-11T17:04:30.175+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.0.3", "package.path": "../testdata/package/multiversion/1.0.3"}
+2023-05-11T17:04:30.176+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "multiversion", "package.version": "1.0.4", "package.path": "../testdata/package/multiversion/1.0.4"}
+2023-05-11T17:04:30.180+0200	DEBUG	packages/packages.go:236	duplicated package	{"package.name": "multiversion", "package.version": "1.1.0", "package.path": "../testdata/package/multiversion/1.1.0"}
+2023-05-11T17:04:30.183+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "no_stream_configs", "package.version": "1.0.0", "package.path": "../testdata/package/no_stream_configs/1.0.0"}
+2023-05-11T17:04:30.186+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "reference", "package.version": "1.0.0", "package.path": "../testdata/package/reference/1.0.0"}
+2023-05-11T17:04:30.188+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "sql_input", "package.version": "0.2.0", "package.path": "../testdata/package/sql_input/0.2.0"}
+2023-05-11T17:04:30.190+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "sql_input", "package.version": "0.3.0", "package.path": "../testdata/package/sql_input/0.3.0"}
+2023-05-11T17:04:30.192+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "traces", "package.version": "1.0.0", "package.path": "../testdata/package/traces/1.0.0"}
+2023-05-11T17:04:30.205+0200	DEBUG	packages/packages.go:246	found package	{"package.name": "yamlpipeline", "package.version": "1.0.0", "package.path": "../testdata/package/yamlpipeline/1.0.0"}
+--- PASS: TestUnmarshalJSON (0.24s)
+=== RUN   TestValidate
+=== RUN   TestValidate/empty
+=== RUN   TestValidate/missing_description
+=== RUN   TestValidate/invalid_Kibana_version
+=== RUN   TestValidate/invalid_category_
+=== RUN   TestValidate/missing_format_version
+=== RUN   TestValidate/invalid_format_version
+=== RUN   TestValidate/invalid_package_version
+=== RUN   TestValidate/complete
+--- PASS: TestValidate (0.00s)
+    --- PASS: TestValidate/empty (0.00s)
+    --- PASS: TestValidate/missing_description (0.00s)
+    --- PASS: TestValidate/invalid_Kibana_version (0.00s)
+    --- PASS: TestValidate/invalid_category_ (0.00s)
+    --- PASS: TestValidate/missing_format_version (0.00s)
+    --- PASS: TestValidate/invalid_format_version (0.00s)
+    --- PASS: TestValidate/invalid_package_version (0.00s)
+    --- PASS: TestValidate/complete (0.00s)
+=== RUN   TestHasKibanaVersion
+=== RUN   TestHasKibanaVersion/last_major
+=== RUN   TestHasKibanaVersion/next_minor
+=== RUN   TestHasKibanaVersion/next_minor_tilde
+=== RUN   TestHasKibanaVersion/next_minor_tilde,_x
+=== RUN   TestHasKibanaVersion/next_minor_tilde,_not_matching
+=== RUN   TestHasKibanaVersion/next_minor_tilde,_matching
+=== RUN   TestHasKibanaVersion/inside_major,_not
+=== RUN   TestHasKibanaVersion/inside_major
+--- PASS: TestHasKibanaVersion (0.00s)
+    --- PASS: TestHasKibanaVersion/last_major (0.00s)
+    --- PASS: TestHasKibanaVersion/next_minor (0.00s)
+    --- PASS: TestHasKibanaVersion/next_minor_tilde (0.00s)
+    --- PASS: TestHasKibanaVersion/next_minor_tilde,_x (0.00s)
+    --- PASS: TestHasKibanaVersion/next_minor_tilde,_not_matching (0.00s)
+    --- PASS: TestHasKibanaVersion/next_minor_tilde,_matching (0.00s)
+    --- PASS: TestHasKibanaVersion/inside_major,_not (0.00s)
+    --- PASS: TestHasKibanaVersion/inside_major (0.00s)
+=== RUN   TestNewPackageFromPath
+=== RUN   TestNewPackageFromPath/relative_path
+=== RUN   TestNewPackageFromPath/relative_path_with_slash
+=== RUN   TestNewPackageFromPath/absolute_path
+=== RUN   TestNewPackageFromPath/absolute_path_with_slash
+--- PASS: TestNewPackageFromPath (0.02s)
+    --- PASS: TestNewPackageFromPath/relative_path (0.01s)
+    --- PASS: TestNewPackageFromPath/relative_path_with_slash (0.00s)
+    --- PASS: TestNewPackageFromPath/absolute_path (0.00s)
+    --- PASS: TestNewPackageFromPath/absolute_path_with_slash (0.00s)
+=== RUN   TestIsPrerelease
+=== RUN   TestIsPrerelease/0.1.0-rc1
+=== RUN   TestIsPrerelease/0.1.0
+=== RUN   TestIsPrerelease/1.0.0-beta1
+=== RUN   TestIsPrerelease/1.0.0-rc.1
+=== RUN   TestIsPrerelease/1.0.0-SNAPSHOT
+=== RUN   TestIsPrerelease/1.0.0
+--- PASS: TestIsPrerelease (0.00s)
+    --- PASS: TestIsPrerelease/0.1.0-rc1 (0.00s)
+    --- PASS: TestIsPrerelease/0.1.0 (0.00s)
+    --- PASS: TestIsPrerelease/1.0.0-beta1 (0.00s)
+    --- PASS: TestIsPrerelease/1.0.0-rc.1 (0.00s)
+    --- PASS: TestIsPrerelease/1.0.0-SNAPSHOT (0.00s)
+    --- PASS: TestIsPrerelease/1.0.0 (0.00s)
+=== RUN   TestPackagesFilter
+=== RUN   TestPackagesFilter/not_matching_package_name
+=== RUN   TestPackagesFilter/not_matching_package_version
+=== RUN   TestPackagesFilter/prerelease_package_with_experimental_release_flag_default_search
+=== RUN   TestPackagesFilter/prerelease_package_with_experimental_release_flag_prerelease_search
+=== RUN   TestPackagesFilter/non-prerelease_package_with_experimental_release_flag_default_search
+=== RUN   TestPackagesFilter/non-prerelease_package_with_experimental_release_flag_prerelease_search
+=== RUN   TestPackagesFilter/not_matching_package_version_and_all_enabled
+=== RUN   TestPackagesFilter/all_packages
+=== RUN   TestPackagesFilter/all_packages_and_all_versions
+=== RUN   TestPackagesFilter/apache_package_default_search
+=== RUN   TestPackagesFilter/apache_package_prerelease_search
+=== RUN   TestPackagesFilter/redisenterprise_experimental_search_-_future_kibana
+=== RUN   TestPackagesFilter/redisenterprise_experimental_search_all_versions_-_future_kibana
+=== RUN   TestPackagesFilter/all_packages_and_versions_-_legacy_kibana
+=== RUN   TestPackagesFilter/apache_package_experimental_search_-_legacy_kibana
+=== RUN   TestPackagesFilter/apache_package_experimental_search_all_versions_-_legacy_kibana
+=== RUN   TestPackagesFilter/redisenterprise_experimental_search_all_versions_-_legacy_kibana_7.14.0
+=== RUN   TestPackagesFilter/redisenterprise_experimental_search_all_versions_-_legacy_kibana_8.5.0
+=== RUN   TestPackagesFilter/nginx_package_experimental_search_-_legacy_kibana
+=== RUN   TestPackagesFilter/nginx_package_experimental_search_all_versions_-_legacy_kibana
+=== RUN   TestPackagesFilter/logstash_package_experimental_search_-_legacy_kibana
+=== RUN   TestPackagesFilter/mysql_package_experimental_search_-_legacy_kibana
+=== RUN   TestPackagesFilter/etcd_package_experimental_search_-_legacy_kibana
+=== RUN   TestPackagesFilter/etcd_package_experimental_search_all_versions_-_legacy_kibana
+--- PASS: TestPackagesFilter (0.00s)
+    --- PASS: TestPackagesFilter/not_matching_package_name (0.00s)
+    --- PASS: TestPackagesFilter/not_matching_package_version (0.00s)
+    --- PASS: TestPackagesFilter/prerelease_package_with_experimental_release_flag_default_search (0.00s)
+    --- PASS: TestPackagesFilter/prerelease_package_with_experimental_release_flag_prerelease_search (0.00s)
+    --- PASS: TestPackagesFilter/non-prerelease_package_with_experimental_release_flag_default_search (0.00s)
+    --- PASS: TestPackagesFilter/non-prerelease_package_with_experimental_release_flag_prerelease_search (0.00s)
+    --- PASS: TestPackagesFilter/not_matching_package_version_and_all_enabled (0.00s)
+    --- PASS: TestPackagesFilter/all_packages (0.00s)
+    --- PASS: TestPackagesFilter/all_packages_and_all_versions (0.00s)
+    --- PASS: TestPackagesFilter/apache_package_default_search (0.00s)
+    --- PASS: TestPackagesFilter/apache_package_prerelease_search (0.00s)
+    --- PASS: TestPackagesFilter/redisenterprise_experimental_search_-_future_kibana (0.00s)
+    --- PASS: TestPackagesFilter/redisenterprise_experimental_search_all_versions_-_future_kibana (0.00s)
+    --- PASS: TestPackagesFilter/all_packages_and_versions_-_legacy_kibana (0.00s)
+    --- PASS: TestPackagesFilter/apache_package_experimental_search_-_legacy_kibana (0.00s)
+    --- PASS: TestPackagesFilter/apache_package_experimental_search_all_versions_-_legacy_kibana (0.00s)
+    --- PASS: TestPackagesFilter/redisenterprise_experimental_search_all_versions_-_legacy_kibana_7.14.0 (0.00s)
+    --- PASS: TestPackagesFilter/redisenterprise_experimental_search_all_versions_-_legacy_kibana_8.5.0 (0.00s)
+    --- PASS: TestPackagesFilter/nginx_package_experimental_search_-_legacy_kibana (0.00s)
+    --- PASS: TestPackagesFilter/nginx_package_experimental_search_all_versions_-_legacy_kibana (0.00s)
+    --- PASS: TestPackagesFilter/logstash_package_experimental_search_-_legacy_kibana (0.00s)
+    --- PASS: TestPackagesFilter/mysql_package_experimental_search_-_legacy_kibana (0.00s)
+    --- PASS: TestPackagesFilter/etcd_package_experimental_search_-_legacy_kibana (0.00s)
+    --- PASS: TestPackagesFilter/etcd_package_experimental_search_all_versions_-_legacy_kibana (0.00s)
+=== RUN   TestReleases
+=== RUN   TestReleases/beta
+=== RUN   TestReleases/foo
+=== RUN   TestReleases/experimental
+=== RUN   TestReleases/ga
+--- PASS: TestReleases (0.00s)
+    --- PASS: TestReleases/beta (0.00s)
+    --- PASS: TestReleases/foo (0.00s)
+    --- PASS: TestReleases/experimental (0.00s)
+    --- PASS: TestReleases/ga (0.00s)
+PASS
+ok  	github.com/elastic/package-registry/packages	1.178s
+=== RUN   TestPrepareFakeServer
+    fakestorage.go:63: Prepared 1133 packages with total 2 server objects.
+--- PASS: TestPrepareFakeServer (0.87s)
+=== RUN   TestInit
+    fakestorage.go:63: Prepared 1133 packages with total 2 server objects.
+2023-05-11T17:04:31.539+0200	DEBUG	storage/indexer.go:60	Initialize storage indexer
+2023-05-11T17:04:31.539+0200	DEBUG	storage/indexer.go:146	Update indices
+2023-05-11T17:04:31.539+0200	DEBUG	storage/cursor.go:33	load cursor file
+2023-05-11T17:04:31.539+0200	DEBUG	storage/cursor.go:51	loaded cursor file	{"cursor": "{\"current\":\"1\"}"}
+2023-05-11T17:04:31.539+0200	INFO	storage/indexer.go:166	cursor will be updated	{"cursor.current": "", "cursor.next": "1"}
+2023-05-11T17:04:31.539+0200	DEBUG	storage/index.go:33	load search-index-all index	{"index.file": "search-index-all.json"}
+2023-05-11T17:04:31.986+0200	INFO	storage/indexer.go:173	Downloaded new search-index-all index	{"index.packages.size": "1133"}
+2023-05-11T17:04:31.986+0200	DEBUG	storage/indexer.go:110	Watch indices for changes
+2023-05-11T17:04:31.986+0200	DEBUG	storage/indexer.go:112	No watcher configured, indices will not be updated (use only for testing purposes)
+--- PASS: TestInit (1.03s)
+=== RUN   TestGet_ListAllPackages
+    fakestorage.go:63: Prepared 1133 packages with total 2 server objects.
+2023-05-11T17:04:32.352+0200	DEBUG	storage/indexer.go:60	Initialize storage indexer
+2023-05-11T17:04:32.352+0200	DEBUG	storage/indexer.go:146	Update indices
+2023-05-11T17:04:32.352+0200	DEBUG	storage/cursor.go:33	load cursor file
+2023-05-11T17:04:32.352+0200	DEBUG	storage/cursor.go:51	loaded cursor file	{"cursor": "{\"current\":\"1\"}"}
+2023-05-11T17:04:32.352+0200	INFO	storage/indexer.go:166	cursor will be updated	{"cursor.current": "", "cursor.next": "1"}
+2023-05-11T17:04:32.352+0200	DEBUG	storage/index.go:33	load search-index-all index	{"index.file": "search-index-all.json"}
+2023-05-11T17:04:32.642+0200	INFO	storage/indexer.go:173	Downloaded new search-index-all index	{"index.packages.size": "1133"}
+2023-05-11T17:04:32.643+0200	DEBUG	storage/indexer.go:110	Watch indices for changes
+2023-05-11T17:04:32.643+0200	DEBUG	storage/indexer.go:112	No watcher configured, indices will not be updated (use only for testing purposes)
+--- PASS: TestGet_ListAllPackages (0.66s)
+=== RUN   TestGet_FindLatestPackage
+    fakestorage.go:63: Prepared 1133 packages with total 2 server objects.
+2023-05-11T17:04:32.969+0200	DEBUG	storage/indexer.go:60	Initialize storage indexer
+2023-05-11T17:04:32.969+0200	DEBUG	storage/indexer.go:146	Update indices
+2023-05-11T17:04:32.969+0200	DEBUG	storage/cursor.go:33	load cursor file
+2023-05-11T17:04:32.969+0200	DEBUG	storage/cursor.go:51	loaded cursor file	{"cursor": "{\"current\":\"1\"}"}
+2023-05-11T17:04:32.969+0200	INFO	storage/indexer.go:166	cursor will be updated	{"cursor.current": "", "cursor.next": "1"}
+2023-05-11T17:04:32.969+0200	DEBUG	storage/index.go:33	load search-index-all index	{"index.file": "search-index-all.json"}
+2023-05-11T17:04:33.306+0200	INFO	storage/indexer.go:173	Downloaded new search-index-all index	{"index.packages.size": "1133"}
+--- PASS: TestGet_FindLatestPackage (0.66s)
+=== RUN   TestGet_UnknownPackage
+2023-05-11T17:04:33.307+0200	DEBUG	storage/indexer.go:110	Watch indices for changes
+2023-05-11T17:04:33.307+0200	DEBUG	storage/indexer.go:112	No watcher configured, indices will not be updated (use only for testing purposes)
+    fakestorage.go:63: Prepared 1133 packages with total 2 server objects.
+2023-05-11T17:04:33.752+0200	DEBUG	storage/indexer.go:60	Initialize storage indexer
+2023-05-11T17:04:33.752+0200	DEBUG	storage/indexer.go:146	Update indices
+2023-05-11T17:04:33.752+0200	DEBUG	storage/cursor.go:33	load cursor file
+2023-05-11T17:04:33.752+0200	DEBUG	storage/cursor.go:51	loaded cursor file	{"cursor": "{\"current\":\"1\"}"}
+2023-05-11T17:04:33.752+0200	INFO	storage/indexer.go:166	cursor will be updated	{"cursor.current": "", "cursor.next": "1"}
+2023-05-11T17:04:33.752+0200	DEBUG	storage/index.go:33	load search-index-all index	{"index.file": "search-index-all.json"}
+2023-05-11T17:04:34.037+0200	INFO	storage/indexer.go:173	Downloaded new search-index-all index	{"index.packages.size": "1133"}
+2023-05-11T17:04:34.038+0200	DEBUG	storage/indexer.go:110	Watch indices for changes
+2023-05-11T17:04:34.038+0200	DEBUG	storage/indexer.go:112	No watcher configured, indices will not be updated (use only for testing purposes)
+--- PASS: TestGet_UnknownPackage (0.73s)
+=== RUN   TestGet_IndexUpdated
+    fakestorage.go:63: Prepared 2 packages with total 2 server objects.
+2023-05-11T17:04:34.041+0200	DEBUG	storage/indexer.go:60	Initialize storage indexer
+2023-05-11T17:04:34.041+0200	DEBUG	storage/indexer.go:146	Update indices
+2023-05-11T17:04:34.041+0200	DEBUG	storage/cursor.go:33	load cursor file
+2023-05-11T17:04:34.041+0200	DEBUG	storage/cursor.go:51	loaded cursor file	{"cursor": "{\"current\":\"1\"}"}
+2023-05-11T17:04:34.041+0200	INFO	storage/indexer.go:166	cursor will be updated	{"cursor.current": "", "cursor.next": "1"}
+2023-05-11T17:04:34.041+0200	DEBUG	storage/index.go:33	load search-index-all index	{"index.file": "search-index-all.json"}
+2023-05-11T17:04:34.041+0200	INFO	storage/indexer.go:173	Downloaded new search-index-all index	{"index.packages.size": "2"}
+2023-05-11T17:04:34.042+0200	DEBUG	storage/indexer.go:110	Watch indices for changes
+2023-05-11T17:04:34.042+0200	DEBUG	storage/indexer.go:112	No watcher configured, indices will not be updated (use only for testing purposes)
+    fakestorage.go:63: Prepared 1133 packages with total 2 server objects.
+2023-05-11T17:04:34.427+0200	DEBUG	storage/indexer.go:146	Update indices
+2023-05-11T17:04:34.427+0200	DEBUG	storage/cursor.go:33	load cursor file
+2023-05-11T17:04:34.427+0200	DEBUG	storage/cursor.go:51	loaded cursor file	{"cursor": "{\"current\":\"2\"}"}
+2023-05-11T17:04:34.427+0200	INFO	storage/indexer.go:166	cursor will be updated	{"cursor.current": "1", "cursor.next": "2"}
+2023-05-11T17:04:34.427+0200	DEBUG	storage/index.go:33	load search-index-all index	{"index.file": "search-index-all.json"}
+2023-05-11T17:04:34.718+0200	INFO	storage/indexer.go:173	Downloaded new search-index-all index	{"index.packages.size": "1133"}
+--- PASS: TestGet_IndexUpdated (0.68s)
+PASS
+ok  	github.com/elastic/package-registry/storage	5.660s
