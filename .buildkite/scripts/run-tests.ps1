@@ -24,6 +24,12 @@ function withGoTestSum {
     go install gotest.tools/gotestsum@latest
 }
 
+function withMage($version) {
+    Invoke-WebRequest -Uri https://github.com/magefile/mage/releases/download/v$version/mage_$version_Windows-64bit.zip -OutFile mage.zip
+    Expand-Archive -Path mage.zip -DestinationPath mage
+    mage --version
+}
+
 # Run test, prepare junit-xml by gotestsum
 function goTestJUnit($output_file, $options) {
     Write-Host "-- Run test, prepare junit-xml --"
@@ -34,5 +40,9 @@ function goTestJUnit($output_file, $options) {
 
 fixCRLF
 withGolang $env:SETUP_GOLANG_VERSION
-withGoTestSum
-goTestJUnit 'tests-report-win.xml' '-v ./...'
+withMage $env:SETUP_MAGE_VERSION
+
+mage -debug test
+scoop help #debug
+# withGoTestSum
+#goTestJUnit 'tests-report-win.xml' '-v ./...'
