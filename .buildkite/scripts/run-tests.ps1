@@ -17,11 +17,9 @@ function withGolang($version) {
     go env
 }
 
-# Install gotestsum for junit reports
-function withGoTestSum {
-    Write-Host "-- Install gotestsum --"
-    # go install github.com/jstemmer/go-junit-report/v2@latest
-    go install gotest.tools/gotestsum@latest
+function withGoJUnitReport {
+    Write-Host "-- Install go-junit-report --"
+    go install github.com/jstemmer/go-junit-report/v2@latest
 }
 
 function withMage($version) {
@@ -41,8 +39,8 @@ function goTestJUnit($output_file, $options) {
 fixCRLF
 withGolang $env:SETUP_GOLANG_VERSION
 withMage $env:SETUP_MAGE_VERSION
+withGoJUnitReport
 
-mage -debug test > tests-report-win.xml
-
-# withGoTestSum
-#goTestJUnit 'tests-report-win.xml' '-v ./...'
+mage -debug test 2>&1 | go-junit-report > "tests-report-win-unicode.xml"
+Get-Content tests-report-win-unicode.xml -Encoding Unicode | Set-Content -Encoding UTF8 tests-report-win.xml
+Remove-Item tests-report-win-unicode.xml
