@@ -26,9 +26,8 @@ function withGoTestSum {
 
 function withMage($version) {
     Write-Host "-- Install Mage --"
-    curl -Uri https://github.com/magefile/mage/releases/download/v$version/mage_$version_Windows-64bit.zip -OutFile mage.zip
-    Expand-Archive -Path mage.zip -DestinationPath mage
-    mage --version
+    go mod download -x
+    go install github.com/magefile/mage@$version
 }
 
 # Run test, prepare junit-xml by gotestsum
@@ -38,7 +37,7 @@ function goTestJUnit($output_file, $options) {
     go install gotest.tools/gotestsum@latest
     gotestsum --format testname --junitfile $output_file -- $options
 }
-Get-Host
+
 fixCRLF
 withGolang $env:SETUP_GOLANG_VERSION
 withMage $env:SETUP_MAGE_VERSION
