@@ -8,11 +8,11 @@ require (
 	github.com/elastic/go-licenser v0.4.1
 	github.com/elastic/go-ucfg v0.8.6
 	github.com/felixge/httpsnoop v1.0.3
-	github.com/fsouza/fake-gcs-server v1.45.0
+	github.com/fsouza/fake-gcs-server v1.45.1
 	github.com/gorilla/mux v1.8.0
 	github.com/hashicorp/go-retryablehttp v0.7.2
 	github.com/joeshaw/multierror v0.0.0-20140124173710-69b34d4ec901
-	github.com/magefile/mage v1.14.0
+	github.com/magefile/mage v1.15.0
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.15.1
 	github.com/stretchr/testify v1.8.2
@@ -21,7 +21,7 @@ require (
 	go.elastic.co/apm/v2 v2.4.1
 	go.elastic.co/ecszap v1.0.1
 	go.uber.org/zap v1.24.0
-	golang.org/x/tools v0.9.0
+	golang.org/x/tools v0.9.1
 	gopkg.in/yaml.v2 v2.4.0
 	honnef.co/go/tools v0.4.3
 )
@@ -68,12 +68,12 @@ require (
 	golang.org/x/exp/typeparams v0.0.0-20221208152030-732eee02a75a // indirect
 	golang.org/x/mod v0.10.0 // indirect
 	golang.org/x/net v0.10.0 // indirect
-	golang.org/x/oauth2 v0.7.0 // indirect
+	golang.org/x/oauth2 v0.8.0 // indirect
 	golang.org/x/sync v0.2.0 // indirect
 	golang.org/x/sys v0.8.0 // indirect
 	golang.org/x/text v0.9.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
-	google.golang.org/api v0.121.0 // indirect
+	google.golang.org/api v0.122.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20230410155749-daa745c078e1 // indirect
 	google.golang.org/grpc v1.55.0 // indirect
