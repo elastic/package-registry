@@ -7,7 +7,7 @@ env:
 steps:
   - label: ":golangci-lint: Checks formatting / linting"
     command:
-      - ".buildkite/scripts/pre-install-command.sh 'mage -debug check'"
+      - ".buildkite/scripts/lint.sh"
     agents:
       image: "golang:${SETUP_GOLANG_VERSION}"
       cpu: "8"
@@ -15,7 +15,7 @@ steps:
 
   - label: ":hammer: Build"
     command:
-      - ".buildkite/scripts/pre-install-command.sh 'mage -debug build'"
+      - ".buildkite/scripts/build.sh"
     agents:
       image: "golang:${SETUP_GOLANG_VERSION}"
       cpu: "8"
@@ -24,9 +24,7 @@ steps:
   - label: "Test on Linux"
     key: test-linux
     command:
-      - ".buildkite/scripts/pre-install-command.sh 'mage -debug test'|tee tests-report-linux.txt"
-      - go install github.com/jstemmer/go-junit-report/v2@latest && go-junit-report > tests-report-linux.xml < tests-report-linux.txt
-      - ls
+      - ".buildkite/scripts/run-tests.sh"
     agents:
       image: "golang:${SETUP_GOLANG_VERSION}"
       cpu: "8"
@@ -37,7 +35,7 @@ steps:
   - label: ":windows: Test on Windows"
     key: test-win
     command:
-      - ".buildkite/scripts/pre-install-command.ps1"
+      - ".buildkite/scripts/run-tests.ps1"
     agents:
       provider: "gcp"
       image: "family/ci-windows-2022"

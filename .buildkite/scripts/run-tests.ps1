@@ -22,4 +22,3 @@ go test -v 2>&1 ./... | go-junit-report > "tests-report-win-unicode.xml"
 # Junit-Report will be used in linux enviroment.
 Get-Content tests-report-win-unicode.xml -Encoding Unicode | Set-Content -Encoding UTF8 tests-report-win.xml
 Remove-Item tests-report-win-unicode.xml
-ls

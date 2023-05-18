@@ -17,16 +17,12 @@ with_mage() {
     mage --version
 }
 
+with_go_junit_report() {
+    go install github.com/jstemmer/go-junit-report/v2@latest
+}
+
 # Required env variables:
 #   WORKSPACE
 #   SETUP_MAGE_VERSION
 WORKSPACE=${WORKSPACE:-"$(pwd)"}
 SETUP_MAGE_VERSION=${SETUP_MAGE_VERSION:-"1.14.0"}
-
-# Pre install:
-uname -a
-add_bin_path
-with_mage
-
-command=$1
-eval "${command}"
