@@ -42,7 +42,7 @@ fixCRLF
 withGolang $env:SETUP_GOLANG_VERSION
 withMage $env:SETUP_MAGE_VERSION
 
-mage -debug test
+mage -debug test > tests-report-win.xml
 
 # withGoTestSum
 #goTestJUnit 'tests-report-win.xml' '-v ./...'
