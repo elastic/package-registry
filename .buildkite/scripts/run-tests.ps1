@@ -27,7 +27,7 @@ function withGoTestSum {
 function withMage($version) {
     Write-Host "-- Install Mage --"
     go mod download -x
-    go install github.com/magefile/mage@$version
+    go install github.com/magefile/mage@v$version
 }
 
 # Run test, prepare junit-xml by gotestsum
