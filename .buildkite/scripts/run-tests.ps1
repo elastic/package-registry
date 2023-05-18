@@ -38,9 +38,7 @@ function goTestJUnit($output_file, $options) {
     go install gotest.tools/gotestsum@latest
     gotestsum --format testname --junitfile $output_file -- $options
 }
-
-scoop help #debug
-
+Get-Host
 fixCRLF
 withGolang $env:SETUP_GOLANG_VERSION
 withMage $env:SETUP_MAGE_VERSION
