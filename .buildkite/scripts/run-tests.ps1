@@ -25,7 +25,8 @@ function withGoTestSum {
 }
 
 function withMage($version) {
-    Invoke-WebRequest -Uri https://github.com/magefile/mage/releases/download/v$version/mage_$version_Windows-64bit.zip -OutFile mage.zip
+    Write-Host "-- Install Mage --"
+    curl -Uri https://github.com/magefile/mage/releases/download/v$version/mage_$version_Windows-64bit.zip -OutFile mage.zip
     Expand-Archive -Path mage.zip -DestinationPath mage
     mage --version
 }
@@ -38,11 +39,13 @@ function goTestJUnit($output_file, $options) {
     gotestsum --format testname --junitfile $output_file -- $options
 }
 
+scoop help #debug
+
 fixCRLF
 withGolang $env:SETUP_GOLANG_VERSION
 withMage $env:SETUP_MAGE_VERSION
 
 mage -debug test
-scoop help #debug
+
 # withGoTestSum
 #goTestJUnit 'tests-report-win.xml' '-v ./...'
