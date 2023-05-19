@@ -15,7 +15,7 @@ require (
 	github.com/magefile/mage v1.15.0
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.15.1
-	github.com/stretchr/testify v1.8.2
+	github.com/stretchr/testify v1.8.3
 	go.elastic.co/apm/module/apmgorilla/v2 v2.4.1
 	go.elastic.co/apm/module/apmzap/v2 v2.4.1
 	go.elastic.co/apm/v2 v2.4.1
