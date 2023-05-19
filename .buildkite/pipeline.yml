@@ -47,7 +47,7 @@ steps:
       - junit-annotate#v2.4.1:
           artifacts: "tests-report-*.xml"
     agents:
-      provider: "gcp" # junit plugin requires docker
+      provider: "gcp" #junit plugin requires docker
     depends_on:
       - step: "test-linux"
         allow_failure: true
