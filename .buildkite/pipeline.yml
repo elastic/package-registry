@@ -41,6 +41,8 @@ steps:
       image: "family/ci-windows-2022"
     artifact_paths:
       - "tests-report-win.xml"
+      - "tests-report-win-unicode.xml"
+      - "test-report.txt"
 
   - label: ":junit: Junit annotate"
     plugins:
