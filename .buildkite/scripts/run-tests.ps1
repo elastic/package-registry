@@ -42,7 +42,7 @@ withMage $env:SETUP_MAGE_VERSION
 withGoJUnitReport
 
 mage -debug test > test-report.txt
-Get-Content test-report.txt | go-junit-report > "tests-report-win-unicode.xml"
+Get-Content test-report.txt | go-junit-report > "unicode-tests-report-win.xml"
 
-Get-Content tests-report-win-unicode.xml -Encoding Unicode | Set-Content -Encoding UTF8 tests-report-win.xml
-# Remove-Item tests-report-win-unicode.xml
+Get-Content unicode-tests-report-win.xml -Encoding Unicode | Set-Content -Encoding UTF8 tests-report-win.xml
+Remove-Item unicode-tests-report-win.xml, test-report.txt
