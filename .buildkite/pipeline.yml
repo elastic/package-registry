@@ -32,6 +32,16 @@ steps:
     artifact_paths:
       - "tests-report-linux.xml"
 
+  - label: ":windows: Test on Windows"
+    key: test-win
+    command:
+      - ".buildkite/scripts/run-tests.ps1"
+    agents:
+      provider: "gcp"
+      image: "family/ci-windows-2022"
+    artifact_paths:
+      - "tests-report-win.xml"
+
   - label: ":junit: Junit annotate"
     plugins:
       - junit-annotate#v2.4.1:
@@ -40,4 +50,6 @@ steps:
       provider: "gcp" #junit plugin requires docker
     depends_on:
       - step: "test-linux"
+        allow_failure: true
+      - step: "test-win"
         allow_failure: true
