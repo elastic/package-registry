@@ -1,3 +1,4 @@
+$ErrorActionPreference = "Stop" # set -e
 # Forcing to checkout again all the files with a correct autocrlf.
 # Doing this here because we cannot set git clone options before.
 function fixCRLF {
@@ -28,21 +29,18 @@ function withMage($version) {
     go install github.com/magefile/mage@v$version
 }
 
-# Run test, prepare junit-xml by gotestsum
-function goTestJUnit($output_file, $options) {
-    Write-Host "-- Run test, prepare junit-xml --"
-    go mod download -x
-    go install gotest.tools/gotestsum@latest
-    gotestsum --format testname --junitfile $output_file -- $options
-}
-
 fixCRLF
 withGolang $env:SETUP_GOLANG_VERSION
 withMage $env:SETUP_MAGE_VERSION
 withGoJUnitReport
 
+$ErrorActionPreference = "Continue" # set +e
 mage -debug test > test-report.txt
+EXITCODE=$LASTEXITCODE
+$ErrorActionPreference = "Stop"
 Get-Content test-report.txt | go-junit-report > "unicode-tests-report-win.xml"
 
 Get-Content unicode-tests-report-win.xml -Encoding Unicode | Set-Content -Encoding UTF8 tests-report-win.xml
 Remove-Item unicode-tests-report-win.xml, test-report.txt
+
+Exit $EXITCODE
