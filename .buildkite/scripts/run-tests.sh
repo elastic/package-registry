@@ -7,8 +7,7 @@ add_bin_path
 with_mage
 with_go_junit_report
 
-set +e
-mage -debug test |tee tests-report-linux.txt
+mage -debug test || true | tee tests-report-linux.txt
 
 # Create Junit report for junit annotation plugin
 go-junit-report > tests-report-linux.xml < tests-report-linux.txt
