@@ -60,7 +60,7 @@ func TestCategoriesWithProxyMode(t *testing.T) {
 		handler  func(w http.ResponseWriter, r *http.Request)
 	}{
 		{"/categories", "/categories", "categories-proxy.json", categoriesWithProxyHandler},
-		{"/categories?kibana.version=6.5.0", "/categoies", "categories-proxy-kibana-filter.json", categoriesWithProxyHandler},
+		{"/categories?kibana.version=6.5.0", "/categories", "categories-proxy-kibana-filter.json", categoriesWithProxyHandler},
 	}
 
 	for _, test := range tests {
