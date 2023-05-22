@@ -36,7 +36,7 @@ withGoJUnitReport
 
 $ErrorActionPreference = "Continue" # set +e
 mage -debug test > test-report.txt
-$EXITCODE=$?
+$EXITCODE=$LASTEXITCODE
 $ErrorActionPreference = "Stop"
 
 Get-Content test-report.txt | go-junit-report > "unicode-tests-report-win.xml"
