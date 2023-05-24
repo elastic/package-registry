@@ -1,0 +1,6 @@
+#!/bin/bash
+set -euo pipefail
+
+if [[ "$BUILDKITE_PIPELINE_SLUG" == "package-registry" && "$BUILDKITE_STEP_KEY" == "publish" ]]; then
+    docker logout ${DOCKER_REGISTRY}
+fi
