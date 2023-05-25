@@ -20,7 +20,7 @@ func TestLoadCategories(t *testing.T) {
 	categories, err := ReadCategories(bytes.NewReader(sampleCategoriesYaml))
 	require.NoError(t, err)
 
-	assert.Equal(t, "Security", categories["security"].Title)
+	assert.Equal(t, "Securityssss", categories["security"].Title)
 	assert.Equal(t, "Web Server", categories["webserver"].Title)
 
 	assert.Equal(t, "security", categories["edr_xdr"].Parent.Name)
