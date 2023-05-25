@@ -78,11 +78,7 @@ pipeline {
             cleanup()
             withMageEnv(){
               dir("${BASE_DIR}"){
-                sh(label: 'Runs the (unit) tests',script: '''
-                  exit_code=$(mage -debug test > tests-report.txt)
-                  cat  tests-report.txt
-                  exit $exit_code
-                ''')
+                sh(label: 'Runs the (unit) tests',script: 'mage -debug test|tee tests-report.txt')
               }
             }
           }
