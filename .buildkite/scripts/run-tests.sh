@@ -12,6 +12,8 @@ mage -debug test | tee tests-report-linux.txt
 exit_code=$?
 
 set -e
+# Show output
+cat tests-report-linux.txt
 
 # Create Junit report for junit annotation plugin
 go-junit-report > tests-report-linux.xml < tests-report-linux.txt
