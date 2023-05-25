@@ -78,7 +78,10 @@ pipeline {
             cleanup()
             withMageEnv(){
               dir("${BASE_DIR}"){
-                sh(label: 'Runs the (unit) tests',script: 'mage -debug test|tee tests-report.txt')
+                sh(label: 'Runs the (unit) tests',script: ''''
+                set -o pipefail
+                mage -debug test|tee tests-report.txt
+                ''')
               }
             }
           }
