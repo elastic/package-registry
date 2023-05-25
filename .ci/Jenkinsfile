@@ -78,7 +78,7 @@ pipeline {
             cleanup()
             withMageEnv(){
               dir("${BASE_DIR}"){
-                sh(label: 'Runs the (unit) tests',script: ''''
+                sh(label: 'Runs the (unit) tests',script: '''
                 set -o pipefail
                 mage -debug test|tee tests-report.txt
                 ''')
