@@ -9,6 +9,7 @@ env:
 
 steps:
   - label: ":golangci-lint: Checks formatting / linting"
+    key: lint
     command:
       - ".buildkite/scripts/lint.sh"
     agents:
@@ -17,6 +18,7 @@ steps:
       memory: "4G"
 
   - label: ":hammer: Build"
+    key: build
     command:
       - ".buildkite/scripts/build.sh"
     agents:
@@ -66,4 +68,8 @@ steps:
       - step: "test-linux"
         allow_failure: false
       - step: "test-win"
+        allow_failure: false
+      - step: "build"
+        allow_failure: false
+      - step: "lint"
         allow_failure: false
