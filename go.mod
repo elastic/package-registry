@@ -17,7 +17,7 @@ require (
 	github.com/prometheus/client_golang v1.15.1
 	github.com/stretchr/testify v1.8.3
 	go.elastic.co/apm/module/apmgorilla/v2 v2.4.2
-	go.elastic.co/apm/module/apmzap/v2 v2.4.1
+	go.elastic.co/apm/module/apmzap/v2 v2.4.2
 	go.elastic.co/apm/v2 v2.4.2
 	go.elastic.co/ecszap v1.0.1
 	go.uber.org/zap v1.24.0
