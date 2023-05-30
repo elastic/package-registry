@@ -23,7 +23,7 @@ else
 fi
 
 TAG_NAME="${GITHUB_PR_BRANCH}"
-# if branch is empty get tag
+# if tag exists use tag instead
 if [[ -n ${BUILDKITE_TAG} ]]; then
     TAG_NAME=${BUILDKITE_TAG}
 fi

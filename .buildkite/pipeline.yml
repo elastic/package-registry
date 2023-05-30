@@ -4,7 +4,8 @@ env:
   SETUP_MAGE_VERSION: '1.14.0'
   SETUP_GOLANG_VERSION: '1.20.4'
   DOCKER_REGISTRY: 'docker.elastic.co'
-  DOCKER_IMG: "${DOCKER_REGISTRY}/package-registry/temp-package-registry" # TODO needs to rename after tests: remove prefix temp
+  # TODO change namespace to `package-registry` for DOCKER_IMG
+  DOCKER_IMG: "${DOCKER_REGISTRY}/observability-ci/temp-package-registry" # TODO needs to rename after tests: remove prefix temp
   DOCKER_IMG_PR: "${DOCKER_REGISTRY}/observability-ci/temp-package-registry" # TODO needs to rename after tests: remove prefix temp
 
 steps:
