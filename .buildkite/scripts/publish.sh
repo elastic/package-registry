@@ -12,7 +12,7 @@ pushDockerImage() {
         --label TIMESTAMP="$(date +%Y-%m-%d_%H:%M)" \
         .
     retry 3 docker push "${DOCKER_IMG_TAG}"
-    retry 3 docker tag "${DOCKER_IMG_TAG}" "${DOCKER_IMG_TAG_BRANCH}"
+    docker tag "${DOCKER_IMG_TAG}" "${DOCKER_IMG_TAG_BRANCH}"
     retry 3 docker push "${DOCKER_IMG_TAG_BRANCH}"
 }
 
