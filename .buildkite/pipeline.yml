@@ -3,9 +3,14 @@
 env:
   SETUP_MAGE_VERSION: '1.14.0'
   SETUP_GOLANG_VERSION: '1.20.4'
+  DOCKER_REGISTRY: 'docker.elastic.co'
+  # TODO change namespace to `package-registry` for DOCKER_IMG
+  DOCKER_IMG: "${DOCKER_REGISTRY}/observability-ci/temp-package-registry" # TODO needs to rename after tests: remove prefix temp
+  DOCKER_IMG_PR: "${DOCKER_REGISTRY}/observability-ci/temp-package-registry" # TODO needs to rename after tests: remove prefix temp
 
 steps:
   - label: ":golangci-lint: Checks formatting / linting"
+    key: lint
     command:
       - ".buildkite/scripts/lint.sh"
     agents:
@@ -14,6 +19,7 @@ steps:
       memory: "4G"
 
   - label: ":hammer: Build"
+    key: build
     command:
       - ".buildkite/scripts/build.sh"
     agents:
@@ -53,3 +59,18 @@ steps:
         allow_failure: true
       - step: "test-win"
         allow_failure: true
+
+  - label: "Publish docker image"
+    key: "publish"
+    command: ".buildkite/scripts/publish.sh"
+    agents:
+      provider: "gcp"
+    depends_on:
+      - step: "test-linux"
+        allow_failure: false
+      - step: "test-win"
+        allow_failure: false
+      - step: "build"
+        allow_failure: false
+      - step: "lint"
+        allow_failure: false

@@ -1,5 +1,4 @@
 #!/bin/bash
-set -euo pipefail
 
 retry() {
     local retries=$1
