@@ -76,6 +76,7 @@ steps:
         allow_failure: false
 
   - label: "Triggering update-package-registry-job-remote with version"
+    key: "triggering-jenkins"
     if: build.tag =~ /^v\d+\.\d+\.\d+$/
     # command: ".buildkite/scripts/trigger-jenkins-job.sh" #TODO uncomment
     command: "echo Triggering"
