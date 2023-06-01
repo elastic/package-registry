@@ -36,6 +36,9 @@ func retry(f retryableFunction, retries int, growthFactor float64, delay, maxDel
 			waitingTime = minDuration(waitingTime, maxDelay)
 
 			log.Printf("Function failed, retrying in %v -> %.2f", waitingTime, waitingTimeSeconds)
+			if err != nil {
+				log.Printf("error: %v", err)
+			}
 
 			select {
 			case <-time.After(waitingTime):

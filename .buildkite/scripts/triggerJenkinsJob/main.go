@@ -48,7 +48,7 @@ func main() {
 	maxWaitingTime := flag.Duration("max-waiting-time", 60*time.Minute, fmt.Sprintf("Maximum waiting time per each retry"))
 
 	version := flag.String("version", "", "Package registry version")
-	dryRun := flag.Bool("dry_run", true, "Dry run true by default")
+	dryRun := flag.Bool("dry-run", true, "Dry run true by default")
 	draft := flag.Bool("draft", true, "Create draft PRs. True by default")
 
 	async := flag.Bool("async", false, "Run async the Jenkins job")
@@ -63,7 +63,7 @@ func main() {
 	ctx := context.Background()
 	client, err := jenkins.NewJenkinsClient(ctx, jenkinsHost, jenkinsUser, jenkinsToken)
 	if err != nil {
-		log.Fatalf("error creating jenkins client")
+		log.Fatalf("error creating jenkins client: %v", err)
 	}
 
 	opts := jenkins.Options{
@@ -76,7 +76,7 @@ func main() {
 	switch *jenkinsJob {
 	case updatePackageRemoteJobKey:
 		err = runUpdateJob(ctx, client, *async, allowedJenkinsJobs[*jenkinsJob],
-			version, strconv.FormatBool(draft), strconv.FormatBool(dryRun), opts)
+			*version, strconv.FormatBool(*draft), strconv.FormatBool(*dryRun), opts)
 	default:
 		log.Fatal("unsupported jenkins job")
 	}
