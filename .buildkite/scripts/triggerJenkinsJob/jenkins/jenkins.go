@@ -115,7 +115,7 @@ func (j *JenkinsClient) getBuildFromQueueID(ctx context.Context, job *gojenkins.
 
 	build, err := job.GetBuild(ctx, task.Raw.Executable.Number)
 	if err != nil {
-		return nil, fmt.Errorf("not able to retrieve build %s", task.Raw.Executable.Number, err)
+		return nil, fmt.Errorf("not able to retrieve build %d: %v", task.Raw.Executable.Number, err)
 	}
 	return build, nil
 }
