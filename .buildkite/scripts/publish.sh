@@ -22,9 +22,9 @@ else
     DOCKER_NAMESPACE="${DOCKER_IMG_PR}"
 fi
 
-TAG_NAME="${GITHUB_PR_BRANCH}"
+TAG_NAME="${BUILDKITE_BRANCH//\:/-}" # forked branches have names: "<account>:<name-of-the-branch>"
 # if tag exists use tag instead
-if [[ -n ${BUILDKITE_TAG} ]]; then
+if [[ -n ${BUILDKITE_TAG:-} ]]; then
     TAG_NAME=${BUILDKITE_TAG}
 fi
 
