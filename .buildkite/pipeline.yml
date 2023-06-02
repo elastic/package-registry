@@ -80,6 +80,9 @@ steps:
     if: build.tag =~ /^v\d+\.\d+\.\d+$$/
     # command: ".buildkite/scripts/trigger-jenkins-job.sh" #TODO uncomment
     command: "buildkite-agent --version"
+    env:
+      DRAFT_PR: true
+      DRY_RUN: true
     agents:
       image: "golang:${SETUP_GOLANG_VERSION}"
       cpu: "8"
