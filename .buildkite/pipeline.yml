@@ -82,6 +82,7 @@ steps:
     env:
       DRAFT_PR: true
       DRY_RUN: true
+      VERSION: "test-bk1"
     agents:
       image: "golang:${SETUP_GOLANG_VERSION}"
       cpu: "8"
