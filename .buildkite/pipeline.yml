@@ -77,12 +77,12 @@ steps:
 
   - label: "Triggering update-package-registry-job-remote with version"
     key: "triggering-jenkins"
-    # if: build.tag =~ /^v\d+\.\d+\.\d+$$/
+    if: build.tag =~ /^v\d+\.\d+\.\d+$$/
     command: ".buildkite/scripts/trigger-jenkins-job.sh"
     env:
       DRAFT_PR: true
       DRY_RUN: true
-      VERSION: "test-bk1"
+      VERSION: "${BUILDKITE_TAG}"
     agents:
       image: "golang:${SETUP_GOLANG_VERSION}"
       cpu: "8"
