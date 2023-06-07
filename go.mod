@@ -10,7 +10,7 @@ require (
 	github.com/felixge/httpsnoop v1.0.3
 	github.com/fsouza/fake-gcs-server v1.45.2
 	github.com/gorilla/mux v1.8.0
-	github.com/hashicorp/go-retryablehttp v0.7.2
+	github.com/hashicorp/go-retryablehttp v0.7.4
 	github.com/joeshaw/multierror v0.0.0-20140124173710-69b34d4ec901
 	github.com/magefile/mage v1.15.0
 	github.com/pkg/errors v0.9.1
