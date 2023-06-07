@@ -1,0 +1,35 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/buildkite/pipeline-schema/main/schema.json
+
+env:
+  SETUP_GOLANG_VERSION: '1.20.4'
+  DOCKER_REGISTRY: 'docker.elastic.co'
+
+steps:
+  - input: "Input version for docker tag"
+    fields:
+      - text: "The docker tag to be published (format: major.minor.patch(-prerelease)?)."
+        hint: "e.g. 0.0.1"
+        key: "VERSION_TAG"
+        required: true
+        default: "latest"
+  - wait
+
+  - label: ":hammer: Release registry distribution lite"
+    env:
+      TAG_NAME: "lite"
+    command:
+      - ".buildkite/scripts/publish-distribution.sh"
+    agents:
+      image: "golang:${SETUP_GOLANG_VERSION}"
+      cpu: "8"
+      memory: "4G"
+
+  - label: ":hammer: Release registry distribution production"
+    env:
+      TAG_NAME: "production"
+    command:
+      - ".buildkite/scripts/publish-distribution.sh"
+    agents:
+      image: "golang:${SETUP_GOLANG_VERSION}"
+      cpu: "8"
+      memory: "4G"
