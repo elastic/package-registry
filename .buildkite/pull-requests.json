@@ -10,7 +10,6 @@
             "build_on_comment": true,
             "trigger_comment_regex": "^(?:(?:buildkite\\W+)?(?:build|test)\\W+(?:this|it))",
             "always_trigger_comment_regex": "^(?:(?:buildkite\\W+)?(?:build|test)\\W+(?:this|it))",
-            "skip_ci_on_only_changed": ["\\.md$", "\\.txt$"]
         },
         {
             "enabled": true,
