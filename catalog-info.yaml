@@ -72,7 +72,7 @@ spec:
       name: package-registry-release-package-registry-distribution
       description: 'Buildkite pipeline for running release of package registry distribution'
     spec:
-      pipeline_file: ".buildkite/pipeline.release-package-registry-distribution.yml"
+      pipeline_file: ".buildkite/release-package-registry-distribution.yml"
       provider_settings:
         build_tags: false # just run on demand
         build_branches: false # just run on demand
