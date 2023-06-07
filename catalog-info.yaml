@@ -73,7 +73,7 @@ spec:
       description: 'Buildkite pipeline for running release of package registry distribution'
     spec:
       branch_configuration: "main v1.* v2.*"
-      pipeline_file: ".buildkite/pipeline.test-with-integrations-repo.yml"
+      pipeline_file: ".buildkite/pipeline.release-package-registry-distribution.yml"
       provider_settings:
         build_tags: false # just run on demand
         build_branches: false # just run on demand
