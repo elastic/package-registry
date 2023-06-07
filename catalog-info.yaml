@@ -69,7 +69,7 @@ spec:
     apiVersion: buildkite.elastic.dev/v1
     kind: Pipeline
     metadata:
-      name: release-package-registry-distribution
+      name: package-registry-release-package-registry-distribution
       description: 'Buildkite pipeline for running release of package registry distribution'
     spec:
       pipeline_file: ".buildkite/pipeline.release-package-registry-distribution.yml"
@@ -79,6 +79,9 @@ spec:
         publish_commit_status: false # do not update status of commits for this pipeline
         build_pull_request_forks: false # just run on demand
         build_pull_requests: false # just run on demand
+        filter_enabled: true
+        filter_condition: |
+          build.pull_request.id == null || (build.creator.name == 'elasticmachine' && build.pull_request.id != null)
       repository: elastic/package-registry
       cancel_intermediate_builds: false
       skip_intermediate_builds: false
