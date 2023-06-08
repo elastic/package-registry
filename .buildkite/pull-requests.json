@@ -13,7 +13,7 @@
         },
         {
             "enabled": true,
-            "pipelineSlug": "package-registry-release-package-registry-distributions",
+            "pipelineSlug": "package-registry-release-package-registry-distribution",
             "allow_org_users": true,
             "allowed_repo_permissions": ["admin", "write"],
             "allowed_list": [ ],
