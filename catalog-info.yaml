@@ -80,7 +80,7 @@ spec:
         build_pull_request_forks: false # just run on demand
         build_pull_requests: true
         filter_enabled: true
-        filter_condition: |
+        filter_condition: >-
           build.pull_request.id == null || (build.creator.name == 'elasticmachine' && build.pull_request.id != null)
       repository: elastic/package-registry
       cancel_intermediate_builds: false
