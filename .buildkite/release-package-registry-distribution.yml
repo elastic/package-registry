@@ -14,15 +14,23 @@ steps:
         default: "latest"
   - wait
 
+  - label: ":hammer: Validate docker tag"
+    key: validate
+    command:
+      - ".buildkite/scripts/validate-tag.sh"
+
   - label: ":hammer: Release registry distribution lite"
     matrix:
       setup:
         tag_name:
           - "lite"
-          # - "production"
+          - "production"
     env:
       TAG_NAME: "{{matrix.tag_name}}"
     command:
       - ".buildkite/scripts/publish-distribution.sh"
     agents:
       provider: "gcp"
+    depends_on:
+      - step: "validate"
+        allow_failure: false
