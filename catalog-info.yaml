@@ -78,7 +78,7 @@ spec:
         build_branches: false # just run on demand
         publish_commit_status: false # do not update status of commits for this pipeline
         build_pull_request_forks: false # just run on demand
-        build_pull_requests: false # just run on demand
+        build_pull_requests: true
         filter_enabled: true
         filter_condition: |
           build.pull_request.id == null || (build.creator.name == 'elasticmachine' && build.pull_request.id != null)
