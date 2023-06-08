@@ -25,6 +25,4 @@ steps:
     command:
       - ".buildkite/scripts/publish-distribution.sh"
     agents:
-      image: "golang:${SETUP_GOLANG_VERSION}"
-      cpu: "8"
-      memory: "4G"
+      provider: "gcp"
