@@ -3,7 +3,8 @@ set -euo pipefail
 
 source .buildkite/scripts/tooling.sh
 
-buildkite-agent meta-data get DOCKER_TAG_VERSION
+DOCKER_TAG_VERSION=$(buildkite-agent meta-data get DOCKER_TAG_VERSION)
+echo "version for tagging: ${DOCKER_TAG_VERSION}"
 DOCKER_IMG_SOURCE="${DOCKER_REGISTRY}/package-registry/distribution:${TAG_NAME}"
 DOCKER_IMG_TARGET="${DOCKER_REGISTRY}/package-registry/distribution:${TAG_NAME}-${DOCKER_TAG_VERSION}"
 
