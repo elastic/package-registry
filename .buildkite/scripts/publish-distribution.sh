@@ -16,6 +16,6 @@ docker tag "${DOCKER_IMG_SOURCE}" "${DOCKER_IMG_TARGET}"
 if [[ ${DRY_RUN:-true} == "true" ]]; then
     echo "Docker push command will be: retry 3 docker push ${DOCKER_IMG_TARGET}"
 else
-    echo "Docker push"
-    retry 3 docker push "${DOCKER_IMG_TARGET}"
+    echo "Docker future push"
+    # retry 3 docker push "${DOCKER_IMG_TARGET}"
 fi
