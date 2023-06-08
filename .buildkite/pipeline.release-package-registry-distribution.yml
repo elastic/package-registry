@@ -9,24 +9,19 @@ steps:
     fields:
       - text: "The docker tag to be published (format: major.minor.patch(-prerelease)?)."
         hint: "e.g. 0.0.1"
-        key: "VERSION_TAG"
+        key: "DOCKER_TAG_VERSION"
         required: true
         default: "latest"
   - wait
 
   - label: ":hammer: Release registry distribution lite"
+    matrix:
+      setup:
+        tag_name:
+          - "lite"
+          # - "production"
     env:
-      TAG_NAME: "lite"
-    command:
-      - ".buildkite/scripts/publish-distribution.sh"
-    agents:
-      image: "golang:${SETUP_GOLANG_VERSION}"
-      cpu: "8"
-      memory: "4G"
-
-  - label: ":hammer: Release registry distribution production"
-    env:
-      TAG_NAME: "production"
+      TAG_NAME: "{{matrix.tag_name}}"
     command:
       - ".buildkite/scripts/publish-distribution.sh"
     agents:
