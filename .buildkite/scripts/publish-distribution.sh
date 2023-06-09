@@ -4,10 +4,10 @@ set -euo pipefail
 
 source .buildkite/scripts/tooling.sh
 
-DOCKER_TAG_VERSION=$(buildkite-agent meta-data get DOCKER_TAG_VERSION)
-echo "version for tagging: ${DOCKER_TAG_VERSION}"
+DOCKER_TAG=$(buildkite-agent meta-data get DOCKER_TAG)
+echo "version for tagging: ${DOCKER_TAG}"
 DOCKER_IMG_SOURCE="${DOCKER_REGISTRY}/package-registry/distribution:${TAG_NAME}"
-DOCKER_IMG_TARGET="${DOCKER_REGISTRY}/package-registry/distribution:${TAG_NAME}-${DOCKER_TAG_VERSION}"
+DOCKER_IMG_TARGET="${DOCKER_REGISTRY}/package-registry/distribution:${TAG_NAME}-${DOCKER_TAG}"
 
 echo "Docker pull"
 retry 3 docker pull "${DOCKER_IMG_SOURCE}"

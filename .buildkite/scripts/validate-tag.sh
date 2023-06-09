@@ -8,7 +8,7 @@ transformTagAndValidate() {
     version=${version//\v/}
     if [[ $version =~ ^[0-9]+.[0-9]+.[0-9]+(-[A-Za-z0-9_]+)?$ ]]; then
         echo "valid version: ${version}"
-        DOCKER_TAG_VERSION=${version}
+        DOCKER_TAG=${version}
     else
         echo "invalid version: ${version}"
         echo "unsupported docker tag, please use the major.minor.path(-prerelease)? format (for example: 1.2.3 or 1.2.3-alpha)."
@@ -16,6 +16,6 @@ transformTagAndValidate() {
     fi
 }
 
-DOCKER_TAG_VERSION=$(buildkite-agent meta-data get DOCKER_TAG_VERSION)
-transformTagAndValidate "$DOCKER_TAG_VERSION"
-buildkite-agent meta-data set DOCKER_TAG_VERSION "${DOCKER_TAG_VERSION}"
+DOCKER_TAG=$(buildkite-agent meta-data get DOCKER_TAG)
+transformTagAndValidate "$DOCKER_TAG"
+buildkite-agent meta-data set DOCKER_TAG "${DOCKER_TAG}"
