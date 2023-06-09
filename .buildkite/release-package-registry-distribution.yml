@@ -27,6 +27,7 @@ steps:
           - "production"
     env:
       TAG_NAME: "{{matrix.tag_name}}"
+      DRY_RUN: false
     command:
       - ".buildkite/scripts/publish-distribution.sh"
     agents:
