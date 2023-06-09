@@ -1,4 +1,5 @@
 #!/bin/bash
+# DRY_RUN is true by default - script will not push to registry
 set -euo pipefail
 
 source .buildkite/scripts/tooling.sh
