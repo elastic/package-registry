@@ -19,7 +19,7 @@ steps:
     command:
       - ".buildkite/scripts/validate-tag.sh"
 
-  - label: ":hammer: Release registry distribution lite"
+  - label: ":hammer: Release registry distribution {{matrix.tag_name}}"
     matrix:
       setup:
         tag_name:
