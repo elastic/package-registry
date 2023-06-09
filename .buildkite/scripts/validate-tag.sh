@@ -10,6 +10,7 @@ transformTagAndValidate() {
         echo "valid version: ${version}"
     else
         echo "unvalid version: ${version}"
+        echo "unsupported docker tag, please use the major.minor.path(-prerelease)? format (for example: 1.2.3 or 1.2.3-alpha)."
         exit 1
     fi
 }
