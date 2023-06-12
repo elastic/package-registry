@@ -5,7 +5,8 @@ source .buildkite/scripts/tooling.sh
 
 transformTagAndValidate() {
     local version=$1
-    version=${version//\v/}
+    version=${version/#v/}
+
     if [[ $version =~ ^[0-9]+.[0-9]+.[0-9]+(-[A-Za-z0-9_]+)?$ ]]; then
         echo "valid version: ${version}"
         DOCKER_TAG=${version}
