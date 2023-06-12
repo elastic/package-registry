@@ -18,5 +18,6 @@ transformTagAndValidate() {
 }
 
 DOCKER_TAG=$(buildkite-agent meta-data get DOCKER_TAG)
+echo "Validating tag parameter: ${DOCKER_TAG}..."
 transformTagAndValidate "$DOCKER_TAG"
 buildkite-agent meta-data set DOCKER_TAG "${DOCKER_TAG}"
