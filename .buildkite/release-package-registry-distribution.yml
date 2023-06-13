@@ -5,6 +5,10 @@ env:
   DOCKER_REGISTRY: 'docker.elastic.co'
 
 steps:
+  - label: ":thought_balloon: Notification"
+    command:
+      - "echo 'Please notice the pipeline runs for build.source=trigger_job only'"
+
   - input: "Input version for docker tag"
     key: input
     if: build.source == 'trigger_job'
