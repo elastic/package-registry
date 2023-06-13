@@ -6,6 +6,7 @@ env:
 
 steps:
   - input: "Input version for docker tag"
+    key: input
     if: build.source == 'trigger_job'
     fields:
       - text: "The docker tag to be published (format: major.minor.patch(-prerelease)?)."
@@ -13,15 +14,18 @@ steps:
         key: "DOCKER_TAG"
         required: true
         default: "latest"
-  - wait
 
   - label: ":hammer: Validate docker tag"
     if: build.source == 'trigger_job'
     key: validate
     command:
       - ".buildkite/scripts/validate-tag.sh"
+    depends_on:
+      - step: "input"
+        allow_failure: false
 
   - label: ":hammer: Release registry distribution {{matrix.tag_name}}"
+    if: build.source == 'trigger_job'
     matrix:
       setup:
         tag_name:
