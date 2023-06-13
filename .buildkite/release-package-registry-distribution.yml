@@ -7,7 +7,7 @@ env:
 steps:
   - label: ":thought_balloon: Notification"
     command:
-      - "echo 'Please notice the pipeline runs for build.source=trigger_job only'"
+      - "echo 'Please notice the pipeline runs for build.source=trigger_job or ui only'"
 
   - input: "Input version for docker tag"
     key: input
