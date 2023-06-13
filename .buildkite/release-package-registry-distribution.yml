@@ -11,7 +11,7 @@ steps:
 
   - input: "Input version for docker tag"
     key: input
-    if: "build.source == 'trigger_job' || build.source == 'ui'"
+    if: "build.source == 'ui'"
     fields:
       - text: "The docker tag to be published (format: major.minor.patch(-prerelease)?)."
         hint: "e.g. 0.0.1"
