@@ -18,83 +18,75 @@ steps:
       cpu: "8"
       memory: "4G"
 
-  - label: "temporary test step"
-    trigger: "package-registry-release-package-registry-distribution"
+  - label: ":hammer: Build"
+    key: build
+    command:
+      - ".buildkite/scripts/build.sh"
+    agents:
+      image: "golang:${SETUP_GOLANG_VERSION}"
+      cpu: "8"
+      memory: "4G"
 
-    build:
-      branch: "${BUILDKITE_BRANCH}"
-      meta_data:
-        DOCKER_TAG: "v0.0.0-test"
+  - label: ":linux: Test on Linux"
+    key: test-linux
+    command:
+      - ".buildkite/scripts/run-tests.sh"
+    agents:
+      image: "golang:${SETUP_GOLANG_VERSION}"
+      cpu: "8"
+      memory: "4G"
+    artifact_paths:
+      - "tests-report-linux.xml"
 
-  # - label: ":hammer: Build"
-  #   key: build
-  #   command:
-  #     - ".buildkite/scripts/build.sh"
-  #   agents:
-  #     image: "golang:${SETUP_GOLANG_VERSION}"
-  #     cpu: "8"
-  #     memory: "4G"
+  - label: ":windows: Test on Windows"
+    key: test-win
+    command:
+      - ".buildkite/scripts/run-tests.ps1"
+    agents:
+      provider: "gcp"
+      image: "family/ci-windows-2022"
+    artifact_paths:
+      - "tests-report-win.xml"
 
-  # - label: ":linux: Test on Linux"
-  #   key: test-linux
-  #   command:
-  #     - ".buildkite/scripts/run-tests.sh"
-  #   agents:
-  #     image: "golang:${SETUP_GOLANG_VERSION}"
-  #     cpu: "8"
-  #     memory: "4G"
-  #   artifact_paths:
-  #     - "tests-report-linux.xml"
+  - label: ":junit: Junit annotate"
+    plugins:
+      - junit-annotate#v2.4.1:
+          artifacts: "tests-report-*.xml"
+    agents:
+      provider: "gcp" #junit plugin requires docker
+    depends_on:
+      - step: "test-linux"
+        allow_failure: true
+      - step: "test-win"
+        allow_failure: true
 
-  # - label: ":windows: Test on Windows"
-  #   key: test-win
-  #   command:
-  #     - ".buildkite/scripts/run-tests.ps1"
-  #   agents:
-  #     provider: "gcp"
-  #     image: "family/ci-windows-2022"
-  #   artifact_paths:
-  #     - "tests-report-win.xml"
+  - label: "Publish docker image"
+    key: "publish"
+    command: ".buildkite/scripts/publish.sh"
+    agents:
+      provider: "gcp"
+    depends_on:
+      - step: "test-linux"
+        allow_failure: false
+      - step: "test-win"
+        allow_failure: false
+      - step: "build"
+        allow_failure: false
+      - step: "lint"
+        allow_failure: false
 
-  # - label: ":junit: Junit annotate"
-  #   plugins:
-  #     - junit-annotate#v2.4.1:
-  #         artifacts: "tests-report-*.xml"
-  #   agents:
-  #     provider: "gcp" #junit plugin requires docker
-  #   depends_on:
-  #     - step: "test-linux"
-  #       allow_failure: true
-  #     - step: "test-win"
-  #       allow_failure: true
-
-  # - label: "Publish docker image"
-  #   key: "publish"
-  #   command: ".buildkite/scripts/publish.sh"
-  #   agents:
-  #     provider: "gcp"
-  #   depends_on:
-  #     - step: "test-linux"
-  #       allow_failure: false
-  #     - step: "test-win"
-  #       allow_failure: false
-  #     - step: "build"
-  #       allow_failure: false
-  #     - step: "lint"
-  #       allow_failure: false
-
-  # - label: "Triggering update-package-registry-job-remote with version"
-  #   key: "triggering-jenkins"
-  #   if: build.tag =~ /^v\d+\.\d+\.\d+$$/
-  #   command: ".buildkite/scripts/trigger-jenkins-job.sh"
-  #   env:
-  #     DRAFT_PR: true
-  #     DRY_RUN: true
-  #     VERSION: "${BUILDKITE_TAG}"
-  #   agents:
-  #     image: "golang:${SETUP_GOLANG_VERSION}"
-  #     cpu: "8"
-  #     memory: "4G"
-  #   depends_on:
-  #     - step: "publish"
-  #       allow_failure: false
+  - label: "Triggering update-package-registry-job-remote with version"
+    key: "triggering-jenkins"
+    if: build.tag =~ /^v\d+\.\d+\.\d+$$/
+    command: ".buildkite/scripts/trigger-jenkins-job.sh"
+    env:
+      DRAFT_PR: true
+      DRY_RUN: true
+      VERSION: "${BUILDKITE_TAG}"
+    agents:
+      image: "golang:${SETUP_GOLANG_VERSION}"
+      cpu: "8"
+      memory: "4G"
+    depends_on:
+      - step: "publish"
+        allow_failure: false

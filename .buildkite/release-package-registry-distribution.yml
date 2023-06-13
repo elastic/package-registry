@@ -16,6 +16,7 @@ steps:
   - wait
 
   - label: ":hammer: Validate docker tag"
+    if: build.source == 'trigger_job'
     key: validate
     command:
       - ".buildkite/scripts/validate-tag.sh"
