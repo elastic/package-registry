@@ -20,10 +20,12 @@ steps:
 
   - label: "temporary test step"
     trigger: "package-registry-release-package-registry-distribution"
+
     build:
+      branch: "${BUILDKITE_BRANCH}"
       meta_data:
         DOCKER_TAG: "v0.0.0-test"
-        branch: "${BUILDKITE_BRANCH}"
+
   # - label: ":hammer: Build"
   #   key: build
   #   command:
