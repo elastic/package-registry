@@ -19,7 +19,7 @@ steps:
       memory: "4G"
 
   - label: "temporary test step"
-    trigger: "release-package-registry-distribution"
+    trigger: "package-registry-release-package-registry-distribution"
     build:
       meta_data:
         DOCKER_TAG: "v0.0.0-test"
