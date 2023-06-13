@@ -6,6 +6,7 @@ env:
 
 steps:
   - input: "Input version for docker tag"
+    if: build.source == 'trigger_job'
     fields:
       - text: "The docker tag to be published (format: major.minor.patch(-prerelease)?)."
         hint: "e.g. 0.0.1"
