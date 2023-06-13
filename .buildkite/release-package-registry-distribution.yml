@@ -11,7 +11,7 @@ steps:
 
   - input: "Input version for docker tag"
     key: input
-    if: "build.source == 'ui'"
+    if: "build.source == 'ui' || build.source == 'api'"
     fields:
       - text: "The docker tag to be published (format: major.minor.patch(-prerelease)?)."
         hint: "e.g. 0.0.1"
