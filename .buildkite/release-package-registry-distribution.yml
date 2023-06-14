@@ -3,24 +3,25 @@
 env:
   SETUP_GOLANG_VERSION: '1.20.4'
   DOCKER_REGISTRY: 'docker.elastic.co'
+  DEFAULT_TAG: "latest"
 
 steps:
   - label: ":thought_balloon: Notification"
     command:
-      - "echo 'Please notice the pipeline runs for build.source=trigger_job or ui only'"
+      - "echo 'Please notice the pipeline runs for build.source=api / ui, or BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG == fleet-server only'"
 
   - input: "Input version for docker tag"
     key: input
-    if: "build.source == 'ui' || build.source == 'api' || build.env('BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG') == 'package-registry' || build.env('BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG') == 'fleet-server'"
+    if: "build.source == 'ui'"
     fields:
       - text: "The docker tag to be published (format: major.minor.patch(-prerelease)?)."
         hint: "e.g. 0.0.1"
         key: "DOCKER_TAG"
         required: true
-        default: "latest"
+        default: ${DEFAULT_TAG}
 
   - label: ":hammer: Validate docker tag"
-    if: "build.source == 'ui' || build.source == 'api' || build.env('BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG') == 'package-registry' || build.env('BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG') == 'fleet-server'"
+    if: "build.source == 'ui' || build.source == 'api' || build.env('BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG') == 'fleet-server'"
     key: validate
     command:
       - ".buildkite/scripts/validate-tag.sh"
@@ -29,7 +30,7 @@ steps:
         allow_failure: false
 
   - label: ":hammer: Release registry distribution {{matrix.tag_name}}"
-    if: "build.source == 'ui' || build.source == 'api' || build.env('BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG') == 'package-registry' || build.env('BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG') == 'fleet-server'"
+    if: "build.source == 'ui' || build.source == 'api' || build.env('BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG') == 'fleet-server'"
     matrix:
       setup:
         tag_name:
