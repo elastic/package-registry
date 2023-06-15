@@ -3,7 +3,6 @@
 env:
   SETUP_GOLANG_VERSION: '1.20.4'
   DOCKER_REGISTRY: 'docker.elastic.co'
-  DEFAULT_TAG: "latest"
 
 steps:
   - label: ":thought_balloon: Notification"
@@ -18,7 +17,6 @@ steps:
         hint: "e.g. 0.0.1"
         key: "DOCKER_TAG"
         required: true
-        default: ${DEFAULT_TAG}
 
   - label: ":hammer: Validate docker tag"
     if: "build.source == 'ui' || build.source == 'api' || build.env('BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG') == 'fleet-server'"

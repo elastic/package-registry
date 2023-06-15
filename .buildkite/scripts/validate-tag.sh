@@ -7,7 +7,7 @@ transformTagAndValidate() {
     local version=$1
     version=${version/#v/}
 
-    if [[ $version =~ ^[0-9]+.[0-9]+.[0-9]+(-[A-Za-z0-9_]+)?$ || $version == "latest" ]]; then
+    if [[ $version =~ ^[0-9]+.[0-9]+.[0-9]+(-[A-Za-z0-9_]+)?$ ]]; then
         echo "valid version: ${version}"
         DOCKER_TAG="${version}"
     else
@@ -18,13 +18,11 @@ transformTagAndValidate() {
 }
 
 set +e
-meta=$(buildkite-agent meta-data get DOCKER_TAG)
+DOCKER_TAG=$(buildkite-agent meta-data get DOCKER_TAG)
 set -e
-if [ -z "${meta:-}" ]; then
-    echo "DOCKER_TAG is not set up, DOCKER_TAG will be equal: ${DEFAULT_TAG}"
-    DOCKER_TAG=$DEFAULT_TAG
-else
-    DOCKER_TAG=$meta
+if [ -z "${DOCKER_TAG:-}" ]; then
+    echo "erorr: DOCKER_TAG is not set up, Please setup, DOCKER_TAG"
+    exit 1
 fi
 
 echo "Validating tag parameter: ${DOCKER_TAG}..."
