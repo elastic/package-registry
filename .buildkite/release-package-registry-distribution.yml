@@ -28,6 +28,7 @@ steps:
         allow_failure: false
 
   - label: ":hammer: Release registry distribution {{matrix.tag_name}}"
+    key: release-distribution
     if: "build.source == 'ui' || build.env('BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG') == 'fleet-server'"
     matrix:
       setup:
