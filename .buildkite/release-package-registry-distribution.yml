@@ -1,6 +1,47 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/buildkite/pipeline-schema/main/schema.json
 
+env:
+  SETUP_GOLANG_VERSION: '1.20.4'
+  DOCKER_REGISTRY: 'docker.elastic.co'
+
 steps:
-  - label: ":golangci-lint: Checks"
+  - label: ":thought_balloon: Notification"
     command:
-      - "echo 'For testing'"
+      - "echo 'Please notice the pipeline runs for build.source=ui, or BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG == fleet-server only'"
+
+  - input: ":truffleruby: Input version for docker tag"
+    key: input
+    if: "build.source == 'ui'"
+    fields:
+      - text: "The docker tag to be published (format: major.minor.patch(-prerelease)?)."
+        hint: "e.g. 0.0.1"
+        key: "DOCKER_TAG"
+        required: true
+
+  - label: ":hammer: Validate docker tag"
+    if: "build.source == 'ui' || build.env('BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG') == 'fleet-server'"
+    key: validate
+    command:
+      - ".buildkite/scripts/validate-tag.sh"
+    depends_on:
+      - step: "input"
+        allow_failure: false
+
+  - label: ":hammer: Release registry distribution {{matrix.tag_name}}"
+    key: release-distribution
+    if: "build.source == 'ui' || build.env('BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG') == 'fleet-server'"
+    matrix:
+      setup:
+        tag_name:
+          - "lite"
+          - "production"
+    env:
+      TAG_NAME: "{{matrix.tag_name}}"
+      DRY_RUN: true
+    command:
+      - ".buildkite/scripts/publish-distribution.sh"
+    agents:
+      provider: "gcp"
+    depends_on:
+      - step: "validate"
+        allow_failure: false
