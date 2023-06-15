@@ -7,7 +7,7 @@ env:
 steps:
   - label: ":thought_balloon: Notification"
     command:
-      - "echo 'Please notice the pipeline runs for build.source=api / ui, or BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG == fleet-server only'"
+      - "echo 'Please notice the pipeline runs for build.source=ui, or BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG == fleet-server only'"
 
   - input: ":truffleruby: Input version for docker tag"
     key: input
@@ -19,7 +19,7 @@ steps:
         required: true
 
   - label: ":hammer: Validate docker tag"
-    if: "build.source == 'ui' || build.source == 'api' || build.env('BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG') == 'fleet-server'"
+    if: "build.source == 'ui' || build.env('BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG') == 'fleet-server'"
     key: validate
     command:
       - ".buildkite/scripts/validate-tag.sh"
@@ -28,7 +28,7 @@ steps:
         allow_failure: false
 
   - label: ":hammer: Release registry distribution {{matrix.tag_name}}"
-    if: "build.source == 'ui' || build.source == 'api' || build.env('BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG') == 'fleet-server'"
+    if: "build.source == 'ui' || build.env('BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG') == 'fleet-server'"
     matrix:
       setup:
         tag_name:
