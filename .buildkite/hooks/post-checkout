@@ -2,6 +2,11 @@
 
 set -euo pipefail
 
+echo "Golang version:"
+version=$(cat .go-version)
+export SETUP_GOLANG_VERSION="${version}"
+echo "${SETUP_GOLANG_VERSION}"
+
 checkout_merge() {
     local target_branch=$1
     local pr_commit=$2
@@ -48,11 +53,6 @@ checkout_merge "${TARGET_BRANCH}" "${PR_COMMIT}" "${MERGE_BRANCH}"
 
 echo "Commit information"
 git log --format=%B -n 1
-
-echo "Golang version:"
-version=$(cat .go-version)
-export SETUP_GOLANG_VERSION="${version}"
-echo "${SETUP_GOLANG_VERSION}"
 
 # Ensure buildkite groups are rendered
 echo ""
