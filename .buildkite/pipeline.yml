@@ -1,7 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/buildkite/pipeline-schema/main/schema.json
 
 env:
-  # SETUP_GOLANG_VERSION from .go-version on post-checkout hook
   SETUP_MAGE_VERSION: '1.14.0'
   DOCKER_REGISTRY: 'docker.elastic.co'
   # TODO change namespace to `package-registry` for DOCKER_IMG
