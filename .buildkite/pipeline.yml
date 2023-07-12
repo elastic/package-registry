@@ -2,7 +2,6 @@
 
 env:
   SETUP_MAGE_VERSION: '1.14.0'
-  SETUP_GOLANG_VERSION: '1.20.4'
   DOCKER_REGISTRY: 'docker.elastic.co'
   # TODO change namespace to `package-registry` for DOCKER_IMG
   DOCKER_IMG: "${DOCKER_REGISTRY}/observability-ci/temp-package-registry" # TODO needs to rename after tests: remove prefix temp
@@ -52,6 +51,7 @@ steps:
     plugins:
       - junit-annotate#v2.4.1:
           artifacts: "tests-report-*.xml"
+          fail-build-on-error: true
     agents:
       provider: "gcp" #junit plugin requires docker
     depends_on:

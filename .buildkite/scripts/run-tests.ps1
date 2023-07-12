@@ -39,6 +39,8 @@ mage -debug test > test-report.txt
 $EXITCODE=$LASTEXITCODE
 $ErrorActionPreference = "Stop"
 
+Get-Content test-report.txt
+
 Get-Content test-report.txt | go-junit-report > "unicode-tests-report-win.xml"
 Get-Content unicode-tests-report-win.xml -Encoding Unicode | Set-Content -Encoding UTF8 tests-report-win.xml
 Remove-Item unicode-tests-report-win.xml, test-report.txt
