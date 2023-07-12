@@ -11,6 +11,7 @@ import (
 	"net/url"
 	"sort"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/Masterminds/semver/v3"
@@ -95,6 +96,10 @@ func newSearchFilterFromQuery(query url.Values) (*packages.Filter, error) {
 
 	if v := query.Get("type"); v != "" {
 		filter.PackageType = v
+	}
+
+	if v := query.Get("capabilities"); v != "" {
+		filter.Capabilities = strings.Split(v, ",")
 	}
 
 	if v := query.Get("all"); v != "" {

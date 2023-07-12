@@ -293,6 +293,7 @@ type Filter struct {
 	PackageName    string
 	PackageVersion string
 	PackageType    string
+	Capabilities   []string
 
 	// Deprecated, release tags to be removed.
 	Experimental bool
@@ -340,6 +341,12 @@ func (f *Filter) Apply(ctx context.Context, packages Packages) Packages {
 
 		if f.PackageType != "" && f.PackageType != p.Type {
 			continue
+		}
+
+		if f.Capabilities != nil {
+			if valid := p.HasCapabilities(f.Capabilities); !valid {
+				continue
+			}
 		}
 
 		addPackage := true
@@ -403,6 +410,12 @@ func (f *Filter) legacyApply(ctx context.Context, packages Packages) Packages {
 
 		if f.PackageType != "" && f.PackageType != p.Type {
 			continue
+		}
+
+		if f.Capabilities != nil {
+			if valid := p.HasCapabilities(f.Capabilities); !valid {
+				continue
+			}
 		}
 
 		addPackage := true
