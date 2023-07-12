@@ -79,7 +79,7 @@ steps:
     if: build.tag =~ /^v\d+\.\d+\.\d+$$/
     command: ".buildkite/scripts/trigger-jenkins-job.sh"
     env:
-      DRAFT_PR: true
+      DRAFT_PR: false
       DRY_RUN: false
       VERSION: "${BUILDKITE_TAG}"
     agents:
