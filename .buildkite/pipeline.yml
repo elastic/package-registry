@@ -80,7 +80,7 @@ steps:
     command: ".buildkite/scripts/trigger-jenkins-job.sh"
     env:
       DRAFT_PR: true
-      DRY_RUN: true
+      DRY_RUN: false
       VERSION: "${BUILDKITE_TAG}"
     agents:
       image: "golang:${SETUP_GOLANG_VERSION}"
