@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
+* Update Go runtime to 1.20.6. [#1053](https://github.com/elastic/package-registry/pull/1053)
 * Return all packages when using proxy mode and "all" query parameter is not set [#1055](https://github.com/elastic/package-registry/pull/1055)
 
 ### Added

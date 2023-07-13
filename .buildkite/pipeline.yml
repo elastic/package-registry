@@ -3,9 +3,8 @@
 env:
   SETUP_MAGE_VERSION: '1.14.0'
   DOCKER_REGISTRY: 'docker.elastic.co'
-  # TODO change namespace to `package-registry` for DOCKER_IMG
-  DOCKER_IMG: "${DOCKER_REGISTRY}/observability-ci/temp-package-registry" # TODO needs to rename after tests: remove prefix temp
-  DOCKER_IMG_PR: "${DOCKER_REGISTRY}/observability-ci/temp-package-registry" # TODO needs to rename after tests: remove prefix temp
+  DOCKER_IMG: "${DOCKER_REGISTRY}/package-registry/package-registry"
+  DOCKER_IMG_PR: "${DOCKER_REGISTRY}/observability-ci/package-registry"
 
 steps:
   - label: ":golangci-lint: Checks formatting / linting"
@@ -80,8 +79,8 @@ steps:
     if: build.tag =~ /^v\d+\.\d+\.\d+$$/
     command: ".buildkite/scripts/trigger-jenkins-job.sh"
     env:
-      DRAFT_PR: true
-      DRY_RUN: true
+      DRAFT_PR: false
+      DRY_RUN: false
       VERSION: "${BUILDKITE_TAG}"
     agents:
       image: "golang:${SETUP_GOLANG_VERSION}"
