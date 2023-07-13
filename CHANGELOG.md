@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
+* Return all packages when using proxy mode and "all" query parameter is not set [#1055](https://github.com/elastic/package-registry/pull/1055)
+
 ### Added
 
 ### Deprecated
