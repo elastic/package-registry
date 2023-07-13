@@ -1,0 +1,396 @@
+[
+  {
+    "name": "datasources",
+    "title": "Default datasource Integration",
+    "version": "1.0.0",
+    "release": "beta",
+    "description": "Package with data sources",
+    "type": "integration",
+    "download": "/epr/datasources/datasources-1.0.0.zip",
+    "path": "/package/datasources/1.0.0",
+    "policy_templates": [
+      {
+        "name": "nginx",
+        "title": "Datasource title",
+        "description": "Details about the data source."
+      }
+    ],
+    "categories": [
+      "custom"
+    ]
+  },
+  {
+    "name": "elasticsearch_privileges",
+    "title": "Elasticsearch Privileges",
+    "version": "1.0.0",
+    "release": "beta",
+    "description": "Test package-specified Elasticsearch index privileges and cluster privileges",
+    "type": "solution",
+    "download": "/epr/elasticsearch_privileges/elasticsearch_privileges-1.0.0.zip",
+    "path": "/package/elasticsearch_privileges/1.0.0",
+    "conditions": {
+      "kibana": {
+        "version": ">=7.16.0"
+      }
+    },
+    "categories": [
+      "custom"
+    ]
+  },
+  {
+    "name": "nodirentries",
+    "title": "Example Integration",
+    "version": "1.0.0",
+    "release": "ga",
+    "description": "This is a zip package without directory entries.",
+    "type": "integration",
+    "download": "/epr/nodirentries/nodirentries-1.0.0.zip",
+    "path": "/package/nodirentries/1.0.0",
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Logs datasource",
+        "description": "Datasource for your log files."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "~7.x.x"
+      }
+    },
+    "owner": {
+      "github": "ruflin"
+    },
+    "categories": [
+      "crm",
+      "azure"
+    ]
+  },
+  {
+    "name": "example",
+    "title": "Example Integration",
+    "version": "1.1.0",
+    "release": "ga",
+    "source": {
+      "license": "Elastic-2.0"
+    },
+    "description": "This is the example integration",
+    "type": "integration",
+    "download": "/epr/example/example-1.1.0.zip",
+    "path": "/package/example/1.1.0",
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Logs datasource",
+        "description": "Datasource for your log files.",
+        "categories": [
+          "datastore"
+        ]
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "ruflin"
+    },
+    "categories": [
+      "crm",
+      "azure"
+    ]
+  },
+  {
+    "name": "foo",
+    "title": "Foo",
+    "version": "1.0.0",
+    "release": "beta",
+    "description": "This is the foo integration",
+    "type": "solution",
+    "download": "/epr/foo/foo-1.0.0.zip",
+    "path": "/package/foo/1.0.0",
+    "conditions": {
+      "kibana": {
+        "version": ">=7.0.0"
+      }
+    },
+    "categories": [
+      "custom"
+    ]
+  },
+  {
+    "name": "hidden",
+    "title": "Hidden",
+    "version": "1.0.0",
+    "release": "beta",
+    "description": "This is the hidden integration",
+    "type": "solution",
+    "download": "/epr/hidden/hidden-1.0.0.zip",
+    "path": "/package/hidden/1.0.0",
+    "conditions": {
+      "kibana": {
+        "version": ">=7.0.0"
+      }
+    },
+    "categories": [
+      "custom"
+    ]
+  },
+  {
+    "name": "ilm_policy",
+    "title": "ILM Policy",
+    "version": "1.0.0",
+    "release": "beta",
+    "description": "Test form ILM Policy in Package",
+    "type": "solution",
+    "download": "/epr/ilm_policy/ilm_policy-1.0.0.zip",
+    "path": "/package/ilm_policy/1.0.0",
+    "conditions": {
+      "kibana": {
+        "version": ">=7.0.0"
+      }
+    },
+    "categories": [
+      "custom"
+    ]
+  },
+  {
+    "name": "input_level_templates",
+    "title": "Input level templates",
+    "version": "1.0.0",
+    "release": "beta",
+    "description": "This is a test package showing input-level agent yaml templates",
+    "type": "solution",
+    "download": "/epr/input_level_templates/input_level_templates-1.0.0.zip",
+    "path": "/package/input_level_templates/1.0.0",
+    "policy_templates": [
+      {
+        "name": "input_level_templates",
+        "title": "Input level templates",
+        "description": "Input with input-level template to use input-level vars with"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": ">=7.11.0"
+      }
+    },
+    "categories": [
+      "custom"
+    ]
+  },
+  {
+    "name": "integration_input",
+    "title": "Integration Input",
+    "version": "1.0.2",
+    "release": "ga",
+    "description": "Sample package that was an integration and got migrated to input",
+    "type": "input",
+    "download": "/epr/integration_input/integration_input-1.0.2.zip",
+    "path": "/package/integration_input/1.0.2",
+    "icons": [
+      {
+        "src": "/img/sample-logo.svg",
+        "path": "/package/integration_input/1.0.2/img/sample-logo.svg",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "sql_query",
+        "title": "SQL Query",
+        "description": "Query the database to capture metrics."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.4.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "custom",
+      "datastore"
+    ]
+  },
+  {
+    "name": "longdocs",
+    "title": "Long Docs",
+    "version": "1.0.4",
+    "release": "ga",
+    "description": "This integration contains pretty long documentation.\nIt is used to show the different visualisations inside a documentation to test how we handle it.\nThe integration does not contain any assets except the documentation page.\n",
+    "type": "integration",
+    "download": "/epr/longdocs/longdocs-1.0.4.zip",
+    "path": "/package/longdocs/1.0.4",
+    "icons": [
+      {
+        "src": "/img/icon.svg",
+        "path": "/package/longdocs/1.0.4/img/icon.svg",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": ">6.7.0"
+      },
+      "elastic": {
+        "subscription": "gold"
+      }
+    },
+    "categories": [
+      "custom",
+      "web"
+    ]
+  },
+  {
+    "name": "metricsonly",
+    "title": "Metrics Only",
+    "version": "2.0.1",
+    "release": "ga",
+    "description": "This is an integration with only the metrics category.\n",
+    "type": "integration",
+    "download": "/epr/metricsonly/metricsonly-2.0.1.zip",
+    "path": "/package/metricsonly/2.0.1",
+    "icons": [
+      {
+        "src": "/img/icon.svg",
+        "path": "/package/metricsonly/2.0.1/img/icon.svg",
+        "type": "image/svg+xml"
+      }
+    ],
+    "categories": [
+      "custom"
+    ]
+  },
+  {
+    "name": "multiversion",
+    "title": "Multi Version Second with the same version! This one should win, because it is first.",
+    "version": "1.1.0",
+    "release": "ga",
+    "description": "Multiple versions of this integration exist.\n",
+    "type": "integration",
+    "download": "/epr/multiversion/multiversion-1.1.0.zip",
+    "path": "/package/multiversion/1.1.0",
+    "icons": [
+      {
+        "src": "/img/icon.svg",
+        "path": "/package/multiversion/1.1.0/img/icon.svg",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": ">6.7.0"
+      }
+    },
+    "categories": [
+      "custom",
+      "web"
+    ]
+  },
+  {
+    "name": "nginx",
+    "title": "Nginx",
+    "version": "1.15.0",
+    "release": "ga",
+    "description": "Collect logs and metrics from Nginx HTTP servers with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/nginx/nginx-1.15.0.zip",
+    "path": "/package/nginx/1.15.0",
+    "icons": [
+      {
+        "src": "/img/logo_nginx.svg",
+        "path": "/package/nginx/1.15.0/img/logo_nginx.svg",
+        "title": "logo nginx",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "nginx",
+        "title": "Nginx logs and metrics",
+        "description": "Collect logs and metrics from Nginx instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.8.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/obs-infraobs-integrations"
+    },
+    "categories": [
+      "web",
+      "observability"
+    ],
+    "signature_path": "/epr/nginx/nginx-1.15.0.zip.sig"
+  },
+  {
+    "name": "no_stream_configs",
+    "title": "No Stream configs",
+    "version": "1.0.0",
+    "release": "beta",
+    "description": "This package does contain a dataset but not stream configs.\n",
+    "type": "integration",
+    "download": "/epr/no_stream_configs/no_stream_configs-1.0.0.zip",
+    "path": "/package/no_stream_configs/1.0.0",
+    "categories": [
+      "custom"
+    ]
+  },
+  {
+    "name": "reference",
+    "title": "Reference package",
+    "version": "1.0.0",
+    "release": "ga",
+    "description": "This package is used for defining all the properties of a package, the possible assets etc. It serves as a reference on all the config options which are possible.\n",
+    "type": "integration",
+    "download": "/epr/reference/reference-1.0.0.zip",
+    "path": "/package/reference/1.0.0",
+    "icons": [
+      {
+        "src": "/img/icon.svg",
+        "path": "/package/reference/1.0.0/img/icon.svg",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "nginx",
+        "title": "Nginx logs and metrics.",
+        "description": "Collecting logs and metrics from nginx."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": ">6.7.0  <7.6.0"
+      }
+    },
+    "owner": {
+      "github": "ruflin"
+    },
+    "categories": [
+      "custom",
+      "web"
+    ]
+  },
+  {
+    "name": "yamlpipeline",
+    "title": "Yaml Pipeline package",
+    "version": "1.0.0",
+    "release": "beta",
+    "description": "This package contains a yaml pipeline.\n",
+    "type": "integration",
+    "download": "/epr/yamlpipeline/yamlpipeline-1.0.0.zip",
+    "path": "/package/yamlpipeline/1.0.0",
+    "categories": [
+      "custom"
+    ]
+  }
+]

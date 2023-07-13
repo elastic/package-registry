@@ -55,7 +55,9 @@ func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *
 				return
 			}
 			packages = packages.Join(proxiedPackages)
-			packages = latestPackagesVersion(packages)
+			if !opts.Filter.AllVersions {
+				packages = latestPackagesVersion(packages)
+			}
 		}
 
 		data, err := getPackageOutput(r.Context(), packages)
