@@ -344,7 +344,7 @@ func (f *Filter) Apply(ctx context.Context, packages Packages) Packages {
 		}
 
 		if f.Capabilities != nil {
-			if valid := p.HasCapabilities(f.Capabilities); !valid {
+			if valid := p.WorksWithCapabilities(f.Capabilities); !valid {
 				continue
 			}
 		}
@@ -413,7 +413,7 @@ func (f *Filter) legacyApply(ctx context.Context, packages Packages) Packages {
 		}
 
 		if f.Capabilities != nil {
-			if valid := p.HasCapabilities(f.Capabilities); !valid {
+			if valid := p.WorksWithCapabilities(f.Capabilities); !valid {
 				continue
 			}
 		}

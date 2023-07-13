@@ -405,8 +405,6 @@ func TestPackagesFilter(t *testing.T) {
 				{Name: "nginx", Version: "2.0.0"},
 				{Name: "redisenterprise", Version: "1.0.0"},
 				{Name: "obs_package", Version: "1.1.0"},
-				{Name: "obs_sec_package", Version: "2.0.0"},
-				{Name: "obs_sec_uptime_package", Version: "2.0.0"},
 			},
 		},
 		{
@@ -418,8 +416,8 @@ func TestPackagesFilter(t *testing.T) {
 				{Name: "apache", Version: "1.0.0"},
 				{Name: "nginx", Version: "2.0.0"},
 				{Name: "redisenterprise", Version: "1.0.0"},
+				{Name: "obs_package", Version: "1.1.0"},
 				{Name: "obs_sec_package", Version: "2.0.0"},
-				{Name: "obs_sec_uptime_package", Version: "2.0.0"},
 			},
 		},
 		{
@@ -435,6 +433,8 @@ func TestPackagesFilter(t *testing.T) {
 				{Name: "logstash", Version: "1.1.0"},
 				{Name: "etcd", Version: "1.0.0-rc2"},
 				{Name: "redisenterprise", Version: "1.0.0"},
+				{Name: "obs_package", Version: "1.1.0"},
+				{Name: "obs_sec_package", Version: "2.0.0"},
 				{Name: "obs_sec_uptime_package", Version: "2.0.0"},
 			},
 		},

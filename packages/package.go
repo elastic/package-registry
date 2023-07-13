@@ -388,14 +388,13 @@ func (p *Package) HasKibanaVersion(version *semver.Version) bool {
 	return p.Conditions.Kibana.constraint.Check(version)
 }
 
-func (p *Package) HasCapabilities(capabilities []string) bool {
+func (p *Package) WorksWithCapabilities(capabilities []string) bool {
 	if p.Conditions == nil || p.Conditions.Elastic == nil || p.Conditions.Elastic.Capabilities == nil || capabilities == nil {
 		return true
 	}
 
-	// TODO if there are several capabilities in the query, should all of them match with the ones defined in the package ?
-	for _, c := range capabilities {
-		if !util.StringsContains(p.Conditions.Elastic.Capabilities, c) {
+	for _, requiredCapability := range p.Conditions.Elastic.Capabilities {
+		if !util.StringsContains(capabilities, requiredCapability) {
 			return false
 		}
 	}
