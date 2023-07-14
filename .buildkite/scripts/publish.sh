@@ -12,8 +12,10 @@ pushDockerImage() {
         --label TIMESTAMP="$(date +%Y-%m-%d_%H:%M)" \
         .
     retry 3 docker push "${DOCKER_IMG_TAG}"
+    echo "Docker image pushed: ${DOCKER_IMG_TAG}"
     docker tag "${DOCKER_IMG_TAG}" "${DOCKER_IMG_TAG_BRANCH}"
     retry 3 docker push "${DOCKER_IMG_TAG_BRANCH}"
+    echo "Docker image pushed: ${DOCKER_IMG_TAG_BRANCH}"
 }
 
 if [[ -n "${BUILDKITE_PULL_REQUEST:-}" ]]; then
