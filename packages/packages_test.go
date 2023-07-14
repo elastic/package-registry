@@ -84,6 +84,36 @@ func TestPackagesFilter(t *testing.T) {
 			Type:          "integration",
 			KibanaVersion: "^8.0.0",
 		},
+		{
+			Name:         "obs_package",
+			Version:      "1.1.0",
+			Type:         "integration",
+			Capabilities: []string{"observability"},
+		},
+		{
+			Name:         "obs_sec_package",
+			Version:      "1.0.0",
+			Type:         "integration",
+			Capabilities: []string{"observability", "security"},
+		},
+		{
+			Name:         "obs_sec_package",
+			Version:      "2.0.0-rc1",
+			Type:         "integration",
+			Capabilities: []string{"observability", "security"},
+		},
+		{
+			Name:         "obs_sec_package",
+			Version:      "2.0.0",
+			Type:         "integration",
+			Capabilities: []string{"observability", "security"},
+		},
+		{
+			Name:         "obs_sec_uptime_package",
+			Version:      "2.0.0",
+			Type:         "integration",
+			Capabilities: []string{"observability", "security", "uptime"},
+		},
 	}
 	packages := buildFilterTestPackages(filterTestPackages)
 
@@ -164,6 +194,9 @@ func TestPackagesFilter(t *testing.T) {
 				{Name: "apache", Version: "1.0.0"},
 				{Name: "nginx", Version: "2.0.0"},
 				{Name: "redisenterprise", Version: "1.0.0"},
+				{Name: "obs_package", Version: "1.1.0"},
+				{Name: "obs_sec_package", Version: "2.0.0"},
+				{Name: "obs_sec_uptime_package", Version: "2.0.0"},
 			},
 		},
 		{
@@ -231,6 +264,7 @@ func TestPackagesFilter(t *testing.T) {
 				filterTestPackage{Name: "apache", Version: "1.0.0-rc1"},
 				filterTestPackage{Name: "apache", Version: "2.0.0-rc2"},
 				filterTestPackage{Name: "redisenterprise", Version: "0.1.1"},
+				filterTestPackage{Name: "obs_sec_package", Version: "2.0.0-rc1"},
 			),
 		},
 		{
@@ -350,6 +384,60 @@ func TestPackagesFilter(t *testing.T) {
 				{Name: "etcd", Version: "1.0.0-rc2"},
 			},
 		},
+		{
+			Title: "non existing capabilities search",
+			Filter: Filter{
+				Capabilities: []string{"no_match"},
+			},
+			Expected: []filterTestPackage{
+				{Name: "apache", Version: "1.0.0"},
+				{Name: "nginx", Version: "2.0.0"},
+				{Name: "redisenterprise", Version: "1.0.0"},
+			},
+		},
+		{
+			Title: "observability capabilities search",
+			Filter: Filter{
+				Capabilities: []string{"observability"},
+			},
+			Expected: []filterTestPackage{
+				{Name: "apache", Version: "1.0.0"},
+				{Name: "nginx", Version: "2.0.0"},
+				{Name: "redisenterprise", Version: "1.0.0"},
+				{Name: "obs_package", Version: "1.1.0"},
+			},
+		},
+		{
+			Title: "observability and security capabilities search",
+			Filter: Filter{
+				Capabilities: []string{"observability", "security"},
+			},
+			Expected: []filterTestPackage{
+				{Name: "apache", Version: "1.0.0"},
+				{Name: "nginx", Version: "2.0.0"},
+				{Name: "redisenterprise", Version: "1.0.0"},
+				{Name: "obs_package", Version: "1.1.0"},
+				{Name: "obs_sec_package", Version: "2.0.0"},
+			},
+		},
+		{
+			Title: "observability, security and uptime capabilities search - legacy kibana",
+			Filter: Filter{
+				Experimental: true,
+				Capabilities: []string{"observability", "security", "uptime"},
+			},
+			Expected: []filterTestPackage{
+				{Name: "apache", Version: "1.0.0"},
+				{Name: "nginx", Version: "2.0.0"},
+				{Name: "mysql", Version: "0.9.0"},
+				{Name: "logstash", Version: "1.1.0"},
+				{Name: "etcd", Version: "1.0.0-rc2"},
+				{Name: "redisenterprise", Version: "1.0.0"},
+				{Name: "obs_package", Version: "1.1.0"},
+				{Name: "obs_sec_package", Version: "2.0.0"},
+				{Name: "obs_sec_uptime_package", Version: "2.0.0"},
+			},
+		},
 	}
 
 	for _, c := range cases {
@@ -366,6 +454,7 @@ type filterTestPackage struct {
 	Release       string
 	Type          string
 	KibanaVersion string
+	Capabilities  []string
 }
 
 func (p filterTestPackage) Build() *Package {
@@ -377,15 +466,29 @@ func (p filterTestPackage) Build() *Package {
 	build.Release = p.Release
 	build.Type = p.Type
 
-	constraints, err := semver.NewConstraint(p.KibanaVersion)
-	if err != nil {
-		panic(err)
+	if p.KibanaVersion != "" {
+		constraints, err := semver.NewConstraint(p.KibanaVersion)
+		if err != nil {
+			panic(err)
+		}
+		build.Conditions = &Conditions{
+			Kibana: &KibanaConditions{
+				Version:    p.KibanaVersion,
+				constraint: constraints,
+			},
+		}
 	}
-	build.Conditions = &Conditions{
-		Kibana: &KibanaConditions{
-			Version:    p.KibanaVersion,
-			constraint: constraints,
-		},
+	if p.Capabilities != nil {
+		elasticConditions := ElasticConditions{
+			Capabilities: p.Capabilities,
+		}
+		if build.Conditions != nil {
+			build.Conditions.Elastic = &elasticConditions
+		} else {
+			build.Conditions = &Conditions{
+				Elastic: &elasticConditions,
+			}
+		}
 	}
 	return &build
 }

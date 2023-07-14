@@ -120,7 +120,8 @@ type KibanaConditions struct {
 
 // ElasticConditions defines conditions related to Elastic subscriptions or partnerships.
 type ElasticConditions struct {
-	Subscription string `config:"subscription" json:"subscription" yaml:"subscription"`
+	Subscription string   `config:"subscription" json:"subscription" yaml:"subscription"`
+	Capabilities []string `config:"capabilities,omitempty" json:"capabilities,omitempty" yaml:"capabilities,omitempty"`
 }
 
 type Version struct {
@@ -385,6 +386,19 @@ func (p *Package) HasKibanaVersion(version *semver.Version) bool {
 	}
 
 	return p.Conditions.Kibana.constraint.Check(version)
+}
+
+func (p *Package) WorksWithCapabilities(capabilities []string) bool {
+	if p.Conditions == nil || p.Conditions.Elastic == nil || p.Conditions.Elastic.Capabilities == nil || capabilities == nil {
+		return true
+	}
+
+	for _, requiredCapability := range p.Conditions.Elastic.Capabilities {
+		if !util.StringsContains(capabilities, requiredCapability) {
+			return false
+		}
+	}
+	return true
 }
 
 func (p *Package) IsNewerOrEqual(pp *Package) bool {

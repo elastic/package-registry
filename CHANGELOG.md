@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Add new query parameter "capabilities" in search endpoint [#1054](https://github.com/elastic/package-registry/pull/1054)
+
 ### Deprecated
 
 ### Known Issues
