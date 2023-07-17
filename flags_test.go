@@ -45,7 +45,7 @@ func TestFlagEnvName(t *testing.T) {
 		flagName string
 		expected string
 	}{
-		{"dry-run44", "EPR_DRY_RUN"},
+		{"dry-run", "EPR_DRY_RUN"},
 		{"test-dummy", "EPR_TEST_DUMMY"},
 	}
 
