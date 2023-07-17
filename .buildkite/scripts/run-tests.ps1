@@ -39,7 +39,13 @@ mage -debug test > test-report.txt
 $EXITCODE=$LASTEXITCODE
 $ErrorActionPreference = "Stop"
 
-Get-Content test-report.txt
+# Buildkite collapse logs under --- symbols
+# need to change --- to anything else or switch off collapsing (note: not available at the moment of this commit)
+$contest = Get-Content test-report.txt
+foreach ($line in $contest) {
+    $changed = $line -replace '---', '----'
+    Write-Host $changed
+}
 
 Get-Content test-report.txt | go-junit-report > "unicode-tests-report-win.xml"
 Get-Content unicode-tests-report-win.xml -Encoding Unicode | Set-Content -Encoding UTF8 tests-report-win.xml
