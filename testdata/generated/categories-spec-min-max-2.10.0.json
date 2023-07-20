@@ -1,0 +1,17 @@
+[
+  {
+    "id": "azure",
+    "title": "Azure",
+    "count": 1
+  },
+  {
+    "id": "crm",
+    "title": "CRM",
+    "count": 1
+  },
+  {
+    "id": "custom",
+    "title": "Custom",
+    "count": 1
+  }
+]
