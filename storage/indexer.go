@@ -195,7 +195,7 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	defer i.m.RUnlock()
 
 	if opts != nil && opts.Filter != nil {
-		return opts.Filter.Apply(ctx, i.packageList), nil
+		return opts.Filter.Apply(ctx, i.packageList)
 	}
 	return i.packageList, nil
 }

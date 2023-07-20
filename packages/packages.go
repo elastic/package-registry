@@ -7,6 +7,7 @@ package packages
 import (
 	"archive/zip"
 	"context"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -200,7 +201,7 @@ func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages
 	}
 
 	if opts.Filter != nil {
-		return opts.Filter.Apply(ctx, i.packageList), nil
+		return opts.Filter.Apply(ctx, i.packageList)
 	}
 
 	return i.packageList, nil
@@ -302,9 +303,9 @@ type Filter struct {
 }
 
 // Apply applies the filter to the list of packages, if the filter is nil, no filtering is done.
-func (f *Filter) Apply(ctx context.Context, packages Packages) Packages {
+func (f *Filter) Apply(ctx context.Context, packages Packages) (Packages, error) {
 	if f == nil {
-		return packages
+		return packages, nil
 	}
 
 	span, ctx := apm.StartSpan(ctx, "FilterPackages", "app")
@@ -333,12 +334,6 @@ func (f *Filter) Apply(ctx context.Context, packages Packages) Packages {
 			}
 		}
 
-		if f.SpecMin != nil || f.SpecMax != nil {
-			if valid := p.HasCompatibleSpec(f.SpecMin, f.SpecMax, f.KibanaVersion); !valid {
-				continue
-			}
-		}
-
 		if f.PackageName != "" && f.PackageName != p.Name {
 			continue
 		}
@@ -353,6 +348,17 @@ func (f *Filter) Apply(ctx context.Context, packages Packages) Packages {
 
 		if f.Capabilities != nil {
 			if valid := p.WorksWithCapabilities(f.Capabilities); !valid {
+				continue
+			}
+		}
+
+		if f.SpecMin != nil || f.SpecMax != nil {
+			valid, err := p.HasCompatibleSpec(f.SpecMin, f.SpecMax, f.KibanaVersion)
+			if err != nil {
+				return nil, fmt.Errorf("can't compare spec version for %s (%s-%s): %w", p.Name, f.SpecMin, f.SpecMax, err)
+			}
+
+			if !valid {
 				continue
 			}
 		}
@@ -385,13 +391,13 @@ func (f *Filter) Apply(ctx context.Context, packages Packages) Packages {
 	// Filter by category after selecting the newer packages.
 	packagesList = filterCategories(packagesList, f.Category)
 
-	return packagesList
+	return packagesList, nil
 }
 
 // legacyApply applies the filter to the list of packages for legacy clients using `experimental=true`.
-func (f *Filter) legacyApply(ctx context.Context, packages Packages) Packages {
+func (f *Filter) legacyApply(ctx context.Context, packages Packages) (Packages, error) {
 	if f == nil {
-		return packages
+		return packages, nil
 	}
 
 	// Checks that only the most recent version of an integration is added to the list
@@ -422,6 +428,17 @@ func (f *Filter) legacyApply(ctx context.Context, packages Packages) Packages {
 
 		if f.Capabilities != nil {
 			if valid := p.WorksWithCapabilities(f.Capabilities); !valid {
+				continue
+			}
+		}
+
+		if f.SpecMin != nil || f.SpecMax != nil {
+			valid, err := p.HasCompatibleSpec(f.SpecMin, f.SpecMax, f.KibanaVersion)
+			if err != nil {
+				return nil, fmt.Errorf("can't compare spec version for %s (%s-%s): %w", p.Name, f.SpecMin, f.SpecMax, err)
+			}
+
+			if !valid {
 				continue
 			}
 		}
@@ -479,7 +496,7 @@ func (f *Filter) legacyApply(ctx context.Context, packages Packages) Packages {
 	// Filter by category after selecting the newer packages.
 	packagesList = filterCategories(packagesList, f.Category)
 
-	return packagesList
+	return packagesList, nil
 }
 
 func filterCategories(packages Packages, category string) Packages {
