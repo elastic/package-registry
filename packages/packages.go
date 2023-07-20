@@ -294,6 +294,8 @@ type Filter struct {
 	PackageVersion string
 	PackageType    string
 	Capabilities   []string
+	SpecMin        *semver.Version
+	SpecMax        *semver.Version
 
 	// Deprecated, release tags to be removed.
 	Experimental bool
@@ -327,6 +329,12 @@ func (f *Filter) Apply(ctx context.Context, packages Packages) Packages {
 
 		if f.KibanaVersion != nil {
 			if valid := p.HasKibanaVersion(f.KibanaVersion); !valid {
+				continue
+			}
+		}
+
+		if f.SpecMin != nil || f.SpecMax != nil {
+			if valid := p.HasCompatibleSpec(f.SpecMin, f.SpecMax, f.KibanaVersion); !valid {
 				continue
 			}
 		}

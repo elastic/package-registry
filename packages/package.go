@@ -401,6 +401,30 @@ func (p *Package) WorksWithCapabilities(capabilities []string) bool {
 	return true
 }
 
+func (p *Package) HasCompatibleSpec(specMin, specMax, kibanaVersion *semver.Version) bool {
+	if specMin == nil && kibanaVersion == nil {
+		specMin = semver.MustParse("3.0.0")
+	}
+
+	constraints := []string{}
+	if specMin != nil {
+		constraints = append(constraints, fmt.Sprintf(">=%s", specMin.String()))
+	}
+	if specMax != nil {
+		constraints = append(constraints, fmt.Sprintf("<=%s", specMax.String()))
+	}
+
+	fullConstraint := strings.Join(constraints, ",")
+	constraint, err := semver.NewConstraint(fullConstraint)
+	if err != nil {
+		// TODO
+		return false
+	}
+
+	formatVersion := semver.MustParse(p.FormatVersion)
+	return constraint.Check(formatVersion)
+}
+
 func (p *Package) IsNewerOrEqual(pp *Package) bool {
 	return !p.versionSemVer.LessThan(pp.versionSemVer)
 }
