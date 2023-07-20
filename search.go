@@ -107,14 +107,14 @@ func newSearchFilterFromQuery(query url.Values) (*packages.Filter, error) {
 	if v := query.Get("spec.min"); v != "" {
 		filter.SpecMin, err = semver.NewVersion(v)
 		if err != nil {
-			return nil, fmt.Errorf("invalid Spec (min) version '%s': %w", v, err)
+			return nil, fmt.Errorf("invalid 'spec.min' version '%s': %w", v, err)
 		}
 	}
 
 	if v := query.Get("spec.max"); v != "" {
 		filter.SpecMax, err = semver.NewVersion(v)
 		if err != nil {
-			return nil, fmt.Errorf("invalid Spec (max) version '%s': %w", v, err)
+			return nil, fmt.Errorf("invalid 'spec.max' version '%s': %w", v, err)
 		}
 	}
 
