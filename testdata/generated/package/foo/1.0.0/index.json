@@ -10,12 +10,19 @@
   "conditions": {
     "kibana": {
       "version": ">=7.0.0"
+    },
+    "elastic": {
+      "subscription": "",
+      "capabilities": [
+        "observability",
+        "uptime"
+      ]
     }
   },
   "categories": [
     "custom"
   ],
-  "format_version": "1.0.0",
+  "format_version": "2.10.0",
   "readme": "/package/foo/1.0.0/docs/README.md",
   "license": "basic",
   "assets": [

@@ -84,6 +84,13 @@
     "conditions": {
       "kibana": {
         "version": ">=7.0.0"
+      },
+      "elastic": {
+        "subscription": "",
+        "capabilities": [
+          "observability",
+          "uptime"
+        ]
       }
     },
     "categories": [

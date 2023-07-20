@@ -1,4 +1,4 @@
-format_version: 1.0.0
+format_version: 2.10.0
 
 name: foo
 description: This is the foo integration
@@ -11,4 +11,8 @@ release: beta
 conditions:
   kibana:
     version: ">=7.0.0"
+  elastic:
+    capabilities:
+      - observability
+      - uptime
 
