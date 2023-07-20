@@ -426,23 +426,6 @@ func (f *Filter) legacyApply(ctx context.Context, packages Packages) (Packages, 
 			continue
 		}
 
-		if f.Capabilities != nil {
-			if valid := p.WorksWithCapabilities(f.Capabilities); !valid {
-				continue
-			}
-		}
-
-		if f.SpecMin != nil || f.SpecMax != nil {
-			valid, err := p.HasCompatibleSpec(f.SpecMin, f.SpecMax, f.KibanaVersion)
-			if err != nil {
-				return nil, fmt.Errorf("can't compare spec version for %s (%s-%s): %w", p.Name, f.SpecMin, f.SpecMax, err)
-			}
-
-			if !valid {
-				continue
-			}
-		}
-
 		addPackage := true
 		if !f.AllVersions {
 			// Check if the version exists and if it should be added or not.
