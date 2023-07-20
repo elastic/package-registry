@@ -312,7 +312,7 @@ func (f *Filter) Apply(ctx context.Context, packages Packages) (Packages, error)
 	defer span.End()
 
 	if f.Experimental {
-		return f.legacyApply(ctx, packages)
+		return f.legacyApply(ctx, packages), nil
 	}
 
 	// Checks that only the most recent version of an integration is added to the list
@@ -395,9 +395,9 @@ func (f *Filter) Apply(ctx context.Context, packages Packages) (Packages, error)
 }
 
 // legacyApply applies the filter to the list of packages for legacy clients using `experimental=true`.
-func (f *Filter) legacyApply(ctx context.Context, packages Packages) (Packages, error) {
+func (f *Filter) legacyApply(ctx context.Context, packages Packages) Packages {
 	if f == nil {
-		return packages, nil
+		return packages
 	}
 
 	// Checks that only the most recent version of an integration is added to the list
@@ -479,7 +479,7 @@ func (f *Filter) legacyApply(ctx context.Context, packages Packages) (Packages, 
 	// Filter by category after selecting the newer packages.
 	packagesList = filterCategories(packagesList, f.Category)
 
-	return packagesList, nil
+	return packagesList
 }
 
 func filterCategories(packages Packages, category string) Packages {
