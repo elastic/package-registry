@@ -405,9 +405,6 @@ func (p *Package) HasCompatibleSpec(specMin, specMax, kibanaVersion *semver.Vers
 	if specMin == nil && specMax == nil {
 		return true, nil
 	}
-	if specMin == nil && kibanaVersion == nil {
-		specMin = semver.MustParse("3.0.0")
-	}
 
 	constraints := []string{}
 	if specMin != nil {

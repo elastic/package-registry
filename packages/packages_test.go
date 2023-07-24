@@ -597,24 +597,11 @@ func TestPackagesSpecMinMaxFilter(t *testing.T) {
 			},
 		},
 		{
-			Title: "use max spec to filter packages without Kibana version - default min spec",
+			Title: "use max spec to filter packages with no Kibana version and no min spec",
 			Filter: Filter{
 				AllVersions: true,
 				Prerelease:  true,
-				SpecMax:     semver.MustParse("3.4.0"),
-			},
-			Expected: []filterTestPackage{
-				{Name: "logstash", Version: "1.1.0"},
-				{Name: "logstash", Version: "2.0.0"},
-			},
-		},
-		{
-			Title: "use just max spec to filter packages with Kibana version",
-			Filter: Filter{
-				AllVersions:   true,
-				Prerelease:    true,
-				KibanaVersion: semver.MustParse("8.1.0"),
-				SpecMax:       semver.MustParse("3.0.0"),
+				SpecMax:     semver.MustParse("3.0.0"),
 			},
 			Expected: []filterTestPackage{
 				{Name: "apache", Version: "1.0.0"},
@@ -624,6 +611,23 @@ func TestPackagesSpecMinMaxFilter(t *testing.T) {
 				{Name: "logstash", Version: "1.1.0"},
 				{Name: "etcd", Version: "1.0.0-rc1"},
 				{Name: "etcd", Version: "1.0.0-rc2"},
+				{Name: "redisenterprise", Version: "0.1.1"},
+			},
+		},
+		{
+			Title: "use just max spec to filter packages with Kibana version",
+			Filter: Filter{
+				AllVersions:   true,
+				Prerelease:    true,
+				KibanaVersion: semver.MustParse("7.17.0"),
+				SpecMax:       semver.MustParse("3.0.0"),
+			},
+			Expected: []filterTestPackage{
+				{Name: "apache", Version: "1.0.0"},
+				{Name: "apache", Version: "2.0.0-rc2"},
+				{Name: "nginx", Version: "2.0.0"},
+				{Name: "mysql", Version: "0.9.0"},
+				{Name: "logstash", Version: "1.1.0"},
 				{Name: "redisenterprise", Version: "0.1.1"},
 			},
 		},
