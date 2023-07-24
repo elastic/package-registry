@@ -11,6 +11,7 @@ import (
 	"net/url"
 	"sort"
 	"strconv"
+	"strings"
 	"time"
 
 	"go.uber.org/zap"
@@ -125,6 +126,10 @@ func newCategoriesFilterFromQuery(query url.Values) (*packages.Filter, error) {
 		if err != nil {
 			return nil, fmt.Errorf("invalid 'prerelease' query param: '%s'", v)
 		}
+	}
+
+	if v := query.Get("capabilities"); v != "" {
+		filter.Capabilities = strings.Split(v, ",")
 	}
 
 	return &filter, nil
