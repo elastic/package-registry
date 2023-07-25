@@ -105,16 +105,16 @@ func newSearchFilterFromQuery(query url.Values) (*packages.Filter, error) {
 	}
 
 	if v := query.Get("spec.min"); v != "" {
-		filter.SpecMin, err = semver.NewVersion(v)
+		filter.SpecMin, err = getSpecVersion(v)
 		if err != nil {
-			return nil, fmt.Errorf("invalid 'spec.min' version '%s': %w", v, err)
+			return nil, fmt.Errorf("invalid 'spec.min' version: %w", err)
 		}
 	}
 
 	if v := query.Get("spec.max"); v != "" {
-		filter.SpecMax, err = semver.NewVersion(v)
+		filter.SpecMax, err = getSpecVersion(v)
 		if err != nil {
-			return nil, fmt.Errorf("invalid 'spec.max' version '%s': %w", v, err)
+			return nil, fmt.Errorf("invalid 'spec.max' version: %w", err)
 		}
 	}
 
@@ -144,6 +144,18 @@ func newSearchFilterFromQuery(query url.Values) (*packages.Filter, error) {
 	}
 
 	return &filter, nil
+}
+
+func getSpecVersion(version string) (*semver.Version, error) {
+	// version must cointain just <major.minor>
+	if len(strings.Split(version, ".")) != 2 {
+		return nil, fmt.Errorf("invalid version '%s': it should be <major.version>", version)
+	}
+	specVersion, err := semver.NewVersion(version)
+	if err != nil {
+		return nil, fmt.Errorf("invalid spec version '%s': %w", version, err)
+	}
+	return specVersion, nil
 }
 
 func getPackageOutput(ctx context.Context, packageList packages.Packages) ([]byte, error) {
