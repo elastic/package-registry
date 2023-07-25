@@ -50,6 +50,9 @@ type Package struct {
 
 	versionSemVer *semver.Version
 
+	specSemVer           *semver.Version
+	specMajorMinorSemVer *semver.Version
+
 	fsBuilder FileSystemBuilder
 	resolver  RemoteResolver
 }
@@ -328,6 +331,20 @@ func (p *Package) setRuntimeFields() error {
 			return errors.Wrapf(err, "invalid Kibana versions range: %s", p.Conditions.Kibana.Version)
 		}
 	}
+
+	p.specSemVer, err = semver.StrictNewVersion(p.FormatVersion)
+	if err != nil {
+		return errors.Wrap(err, "invalid format spec version")
+	}
+
+	versionSplit := strings.Split(p.FormatVersion, ".")
+	versionSplit[2] = "0"
+
+	p.specMajorMinorSemVer, err = semver.StrictNewVersion(strings.Join(versionSplit, "."))
+	if err != nil {
+		return fmt.Errorf("invalid format spec version: %w", err)
+	}
+
 	return nil
 }
 
@@ -420,8 +437,7 @@ func (p *Package) HasCompatibleSpec(specMin, specMax, kibanaVersion *semver.Vers
 		return false, fmt.Errorf("cannot create constraint %s: %w", fullConstraint, err)
 	}
 
-	formatVersion := semver.MustParse(p.FormatVersion)
-	return constraint.Check(formatVersion), nil
+	return constraint.Check(p.specMajorMinorSemVer), nil
 }
 
 func (p *Package) IsNewerOrEqual(pp *Package) bool {
