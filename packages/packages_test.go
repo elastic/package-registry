@@ -694,6 +694,10 @@ func (p filterTestPackage) Build() *Package {
 	build.Version = p.Version
 	build.versionSemVer = semver.MustParse(p.Version)
 	build.FormatVersion = p.FormatVersion
+	if p.FormatVersion == "" {
+		// set a default format_spec version for tests
+		build.FormatVersion = "1.0.0"
+	}
 
 	build.Release = p.Release
 	build.Type = p.Type

@@ -50,7 +50,6 @@ type Package struct {
 
 	versionSemVer *semver.Version
 
-	specSemVer           *semver.Version
 	specMajorMinorSemVer *semver.Version
 
 	fsBuilder FileSystemBuilder
@@ -322,27 +321,31 @@ func (p *Package) setRuntimeFields() error {
 
 	p.versionSemVer, err = semver.StrictNewVersion(p.Version)
 	if err != nil {
-		return errors.Wrap(err, "invalid package version")
+		return fmt.Errorf("invalid package version: %w", err)
 	}
 
 	if p.Conditions != nil && p.Conditions.Kibana != nil {
 		p.Conditions.Kibana.constraint, err = semver.NewConstraint(p.Conditions.Kibana.Version)
 		if err != nil {
-			return errors.Wrapf(err, "invalid Kibana versions range: %s", p.Conditions.Kibana.Version)
+			return fmt.Errorf("invalid Kibana versions range %s: %w", p.Conditions.Kibana.Version, err)
 		}
 	}
 
-	p.specSemVer, err = semver.StrictNewVersion(p.FormatVersion)
-	if err != nil {
-		return errors.Wrap(err, "invalid format spec version")
+	// Packages from proxy mode do not have "format_version" field
+	if p.FormatVersion == "" {
+		return nil
 	}
 
-	versionSplit := strings.Split(p.FormatVersion, ".")
-	versionSplit[2] = "0"
-
-	p.specMajorMinorSemVer, err = semver.StrictNewVersion(strings.Join(versionSplit, "."))
+	specSemVer, err := semver.StrictNewVersion(p.FormatVersion)
 	if err != nil {
-		return fmt.Errorf("invalid format spec version: %w", err)
+		return fmt.Errorf("invalid format spec version '%s': %w", p.FormatVersion, err)
+	}
+
+	specMajorMinorVersion := fmt.Sprintf("%d.%d.0", specSemVer.Major(), specSemVer.Minor())
+
+	p.specMajorMinorSemVer, err = semver.StrictNewVersion(specMajorMinorVersion)
+	if err != nil {
+		return fmt.Errorf("invalid format spec version '%s': %w", specMajorMinorVersion, err)
 	}
 
 	return nil
