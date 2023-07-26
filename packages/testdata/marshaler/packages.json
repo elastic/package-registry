@@ -815,7 +815,7 @@
     "crm",
     "azure"
    ],
-   "format_version": "1.0.0",
+   "format_version": "2.10.0",
    "readme": "/package/example/1.1.0/docs/README.md",
    "license": "basic",
    "screenshots": [
@@ -910,7 +910,11 @@
      "version": "^7.16.0 || ^8.0.0"
     },
     "elastic": {
-     "subscription": "gold"
+     "subscription": "gold",
+     "capabilities": [
+      "observability",
+      "security"
+     ]
     }
    },
    "owner": {
@@ -921,7 +925,7 @@
     "azure",
     "cloud"
    ],
-   "format_version": "1.0.0",
+   "format_version": "3.0.0",
    "readme": "/package/example/1.2.0-rc1/docs/README.md",
    "license": "gold",
    "screenshots": [
@@ -1011,12 +1015,19 @@
    "conditions": {
     "kibana": {
      "version": "\u003e=7.0.0"
+    },
+    "elastic": {
+     "subscription": "",
+     "capabilities": [
+      "observability",
+      "uptime"
+     ]
     }
    },
    "categories": [
     "custom"
    ],
-   "format_version": "1.0.0",
+   "format_version": "2.10.0",
    "readme": "/package/foo/1.0.0/docs/README.md",
    "license": "basic",
    "assets": [

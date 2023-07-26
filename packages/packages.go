@@ -7,6 +7,7 @@ package packages
 import (
 	"archive/zip"
 	"context"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -200,7 +201,7 @@ func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages
 	}
 
 	if opts.Filter != nil {
-		return opts.Filter.Apply(ctx, i.packageList), nil
+		return opts.Filter.Apply(ctx, i.packageList)
 	}
 
 	return i.packageList, nil
@@ -294,22 +295,24 @@ type Filter struct {
 	PackageVersion string
 	PackageType    string
 	Capabilities   []string
+	SpecMin        *semver.Version
+	SpecMax        *semver.Version
 
 	// Deprecated, release tags to be removed.
 	Experimental bool
 }
 
 // Apply applies the filter to the list of packages, if the filter is nil, no filtering is done.
-func (f *Filter) Apply(ctx context.Context, packages Packages) Packages {
+func (f *Filter) Apply(ctx context.Context, packages Packages) (Packages, error) {
 	if f == nil {
-		return packages
+		return packages, nil
 	}
 
 	span, ctx := apm.StartSpan(ctx, "FilterPackages", "app")
 	defer span.End()
 
 	if f.Experimental {
-		return f.legacyApply(ctx, packages)
+		return f.legacyApply(ctx, packages), nil
 	}
 
 	// Checks that only the most recent version of an integration is added to the list
@@ -349,6 +352,17 @@ func (f *Filter) Apply(ctx context.Context, packages Packages) Packages {
 			}
 		}
 
+		if f.SpecMin != nil || f.SpecMax != nil {
+			valid, err := p.HasCompatibleSpec(f.SpecMin, f.SpecMax, f.KibanaVersion)
+			if err != nil {
+				return nil, fmt.Errorf("can't compare spec version for %s (%s-%s): %w", p.Name, f.SpecMin, f.SpecMax, err)
+			}
+
+			if !valid {
+				continue
+			}
+		}
+
 		addPackage := true
 		if !f.AllVersions {
 			// Check if the version exists and if it should be added or not.
@@ -377,7 +391,7 @@ func (f *Filter) Apply(ctx context.Context, packages Packages) Packages {
 	// Filter by category after selecting the newer packages.
 	packagesList = filterCategories(packagesList, f.Category)
 
-	return packagesList
+	return packagesList, nil
 }
 
 // legacyApply applies the filter to the list of packages for legacy clients using `experimental=true`.
@@ -410,12 +424,6 @@ func (f *Filter) legacyApply(ctx context.Context, packages Packages) Packages {
 
 		if f.PackageType != "" && f.PackageType != p.Type {
 			continue
-		}
-
-		if f.Capabilities != nil {
-			if valid := p.WorksWithCapabilities(f.Capabilities); !valid {
-				continue
-			}
 		}
 
 		addPackage := true

@@ -198,7 +198,11 @@
         "version": "^7.16.0 || ^8.0.0"
       },
       "elastic": {
-        "subscription": "gold"
+        "subscription": "gold",
+        "capabilities": [
+          "observability",
+          "security"
+        ]
       }
     },
     "owner": {
@@ -222,6 +226,13 @@
     "conditions": {
       "kibana": {
         "version": ">=7.0.0"
+      },
+      "elastic": {
+        "subscription": "",
+        "capabilities": [
+          "observability",
+          "uptime"
+        ]
       }
     },
     "categories": [

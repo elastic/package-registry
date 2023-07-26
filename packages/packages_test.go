@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/Masterminds/semver/v3"
+	"github.com/stretchr/testify/require"
 )
 
 func TestPackagesFilter(t *testing.T) {
@@ -442,13 +443,243 @@ func TestPackagesFilter(t *testing.T) {
 
 	for _, c := range cases {
 		t.Run(c.Title, func(t *testing.T) {
-			result := c.Filter.Apply(context.Background(), packages)
+			result, err := c.Filter.Apply(context.Background(), packages)
+			require.NoError(t, err)
+			assertFilterPackagesResult(t, c.Expected, result)
+		})
+	}
+}
+
+func TestPackagesSpecMinMaxFilter(t *testing.T) {
+	filterTestPackages := []filterTestPackage{
+		{
+			FormatVersion: "2.0.0",
+			Name:          "apache",
+			Version:       "1.0.0",
+			Release:       "ga",
+			Type:          "integration",
+			KibanaVersion: "^7.17.0 || ^8.0.0",
+		},
+		{
+			FormatVersion: "2.0.0",
+			Name:          "apache",
+			Version:       "2.0.0-rc2",
+			Type:          "integration",
+			KibanaVersion: "^7.17.0 || ^8.0.0",
+		},
+		{
+			FormatVersion: "2.1.0",
+			Name:          "nginx",
+			Version:       "2.0.0",
+			Type:          "integration",
+			KibanaVersion: "^7.17.0 || ^8.0.0",
+		},
+		{
+			FormatVersion: "1.0.0",
+			Name:          "mysql",
+			Version:       "0.9.0",
+			Release:       "experimental",
+			Type:          "integration",
+			KibanaVersion: "^7.17.0 || ^8.0.0",
+		},
+		{
+			FormatVersion: "3.0.0",
+			Name:          "logstash",
+			Version:       "1.1.0",
+			Release:       "experimental",
+			Type:          "integration",
+			KibanaVersion: "^7.17.0 || ^8.0.0",
+		},
+		{
+			FormatVersion: "3.1.0",
+			Name:          "logstash",
+			Version:       "2.0.0",
+			Type:          "integration",
+			KibanaVersion: "^8.4.0",
+		},
+		{
+			FormatVersion: "2.9.0",
+			Name:          "etcd",
+			Version:       "1.0.0-rc1",
+			Type:          "integration",
+			KibanaVersion: "^8.0.0",
+		},
+		{
+			FormatVersion: "2.9.0",
+			Name:          "etcd",
+			Version:       "1.0.0-rc2",
+			Type:          "integration",
+			KibanaVersion: "^8.0.0",
+		},
+		{
+			FormatVersion: "2.9.0",
+			Name:          "redisenterprise",
+			Version:       "0.1.1",
+			Release:       "beta",
+			Type:          "integration",
+			KibanaVersion: "^7.14.0 || ^8.0.0",
+		},
+		{
+			FormatVersion: "3.5.0",
+			Name:          "redisenterprise",
+			Version:       "1.0.0",
+			Type:          "integration",
+			KibanaVersion: "^8.0.0",
+		},
+		{
+			FormatVersion: "3.6.0",
+			Name:          "redisenterprise",
+			Version:       "1.1.0",
+			Type:          "integration",
+			KibanaVersion: "^8.5.0",
+		},
+		{
+			FormatVersion: "3.6.1",
+			Name:          "redisenterprise",
+			Version:       "1.1.1",
+			Type:          "integration",
+			KibanaVersion: "^8.5.0",
+		},
+	}
+	packages := buildFilterTestPackages(filterTestPackages)
+
+	cases := []struct {
+		Title    string
+		Filter   Filter
+		Expected []filterTestPackage
+	}{
+		{
+			Title: "all packages",
+			Filter: Filter{
+				AllVersions: true,
+				Prerelease:  true,
+				SpecMin:     semver.MustParse("0.0"),
+				SpecMax:     semver.MustParse("5.0"),
+			},
+			Expected: filterTestPackages,
+		},
+		{
+			Title: "no packages match spec",
+			Filter: Filter{
+				AllVersions: true,
+				Prerelease:  true,
+				SpecMin:     semver.MustParse("5.0"),
+				SpecMax:     semver.MustParse("6.0"),
+			},
+			Expected: []filterTestPackage{},
+		},
+		{
+			Title: "use min and max spec to filter packages",
+			Filter: Filter{
+				AllVersions: true,
+				Prerelease:  true,
+				SpecMin:     semver.MustParse("2.2"),
+				SpecMax:     semver.MustParse("3.6"),
+			},
+			Expected: []filterTestPackage{
+				{Name: "logstash", Version: "1.1.0"},
+				{Name: "logstash", Version: "2.0.0"},
+				{Name: "etcd", Version: "1.0.0-rc1"},
+				{Name: "etcd", Version: "1.0.0-rc2"},
+				{Name: "redisenterprise", Version: "0.1.1"},
+				{Name: "redisenterprise", Version: "1.0.0"},
+				{Name: "redisenterprise", Version: "1.1.0"},
+				{Name: "redisenterprise", Version: "1.1.1"},
+			},
+		},
+		{
+			Title: "use spec and kibana.version to filter packages",
+			Filter: Filter{
+				AllVersions:   true,
+				Prerelease:    true,
+				KibanaVersion: semver.MustParse("8.1.0"),
+				SpecMin:       semver.MustParse("2.2"),
+				SpecMax:       semver.MustParse("3.6"),
+			},
+			Expected: []filterTestPackage{
+				{Name: "logstash", Version: "1.1.0"},
+				{Name: "etcd", Version: "1.0.0-rc1"},
+				{Name: "etcd", Version: "1.0.0-rc2"},
+				{Name: "redisenterprise", Version: "0.1.1"},
+				{Name: "redisenterprise", Version: "1.0.0"},
+			},
+		},
+		{
+			Title: "use max spec to filter packages with no Kibana version and no min spec",
+			Filter: Filter{
+				AllVersions: true,
+				Prerelease:  true,
+				SpecMax:     semver.MustParse("3.0"),
+			},
+			Expected: []filterTestPackage{
+				{Name: "apache", Version: "1.0.0"},
+				{Name: "apache", Version: "2.0.0-rc2"},
+				{Name: "nginx", Version: "2.0.0"},
+				{Name: "mysql", Version: "0.9.0"},
+				{Name: "logstash", Version: "1.1.0"},
+				{Name: "etcd", Version: "1.0.0-rc1"},
+				{Name: "etcd", Version: "1.0.0-rc2"},
+				{Name: "redisenterprise", Version: "0.1.1"},
+			},
+		},
+		{
+			Title: "use just max spec to filter packages with Kibana version",
+			Filter: Filter{
+				AllVersions:   true,
+				Prerelease:    true,
+				KibanaVersion: semver.MustParse("7.17.0"),
+				SpecMax:       semver.MustParse("3.0"),
+			},
+			Expected: []filterTestPackage{
+				{Name: "apache", Version: "1.0.0"},
+				{Name: "apache", Version: "2.0.0-rc2"},
+				{Name: "nginx", Version: "2.0.0"},
+				{Name: "mysql", Version: "0.9.0"},
+				{Name: "logstash", Version: "1.1.0"},
+				{Name: "redisenterprise", Version: "0.1.1"},
+			},
+		},
+		{
+			Title: "use just min spec to filter packages",
+			Filter: Filter{
+				AllVersions: true,
+				Prerelease:  true,
+				SpecMin:     semver.MustParse("3.0"),
+			},
+			Expected: []filterTestPackage{
+				{Name: "logstash", Version: "1.1.0"},
+				{Name: "logstash", Version: "2.0.0"},
+				{Name: "redisenterprise", Version: "1.0.0"},
+				{Name: "redisenterprise", Version: "1.1.0"},
+				{Name: "redisenterprise", Version: "1.1.1"},
+			},
+		},
+		{
+			Title: "use just min spec to filter packages with kibana version",
+			Filter: Filter{
+				AllVersions:   true,
+				Prerelease:    true,
+				KibanaVersion: semver.MustParse("8.1.0"),
+				SpecMin:       semver.MustParse("3.0"),
+			},
+			Expected: []filterTestPackage{
+				{Name: "logstash", Version: "1.1.0"},
+				{Name: "redisenterprise", Version: "1.0.0"},
+			},
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.Title, func(t *testing.T) {
+			result, err := c.Filter.Apply(context.Background(), packages)
+			require.NoError(t, err)
 			assertFilterPackagesResult(t, c.Expected, result)
 		})
 	}
 }
 
 type filterTestPackage struct {
+	FormatVersion string
 	Name          string
 	Version       string
 	Release       string
@@ -462,6 +693,11 @@ func (p filterTestPackage) Build() *Package {
 	build.Name = p.Name
 	build.Version = p.Version
 	build.versionSemVer = semver.MustParse(p.Version)
+	build.FormatVersion = p.FormatVersion
+	if p.FormatVersion == "" {
+		// set a default format_spec version for tests
+		build.FormatVersion = "1.0.0"
+	}
 
 	build.Release = p.Release
 	build.Type = p.Type
@@ -490,6 +726,9 @@ func (p filterTestPackage) Build() *Package {
 			}
 		}
 	}
+
+	// set spec semver.Version variables
+	build.setRuntimeFields()
 	return &build
 }
 
