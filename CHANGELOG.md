@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Add new query parameter "capabilities" in search endpoint [#1054](https://github.com/elastic/package-registry/pull/1054)
 * Add new query parameter "capabilities" in categories endpoint [#1061](https://github.com/elastic/package-registry/pull/1061))
 * Add new query parameters "spec.min" and "spec.max" in search endpoint [#1058](https://github.com/elastic/package-registry/pull/1058)
+* Add new query parameters "spec.min" and "spec.max" in categories endpoint [#1059](https://github.com/elastic/package-registry/pull/1059)
 
 ### Deprecated
 

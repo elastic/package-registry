@@ -132,6 +132,20 @@ func newCategoriesFilterFromQuery(query url.Values) (*packages.Filter, error) {
 		filter.Capabilities = strings.Split(v, ",")
 	}
 
+	if v := query.Get("spec.min"); v != "" {
+		filter.SpecMin, err = getSpecVersion(v)
+		if err != nil {
+			return nil, fmt.Errorf("invalid 'spec.min' version: %w", err)
+		}
+	}
+
+	if v := query.Get("spec.max"); v != "" {
+		filter.SpecMax, err = getSpecVersion(v)
+		if err != nil {
+			return nil, fmt.Errorf("invalid 'spec.max' version: %w", err)
+		}
+	}
+
 	return &filter, nil
 }
 
