@@ -7,7 +7,12 @@ source .buildkite/scripts/tooling.sh
 DOCKER_TAG=$(buildkite-agent meta-data get DOCKER_TAG)
 echo "version for tagging: ${DOCKER_TAG}"
 DOCKER_IMG_SOURCE="${DOCKER_REGISTRY}/package-registry/distribution:${TAG_NAME}"
-DOCKER_IMG_TARGET="${DOCKER_REGISTRY}/package-registry/distribution:${TAG_NAME}-${DOCKER_TAG}"
+
+if [[ "${TAG_NAME}" == "production" ]]; then
+    DOCKER_IMG_TARGET="${DOCKER_REGISTRY}/package-registry/distribution:${DOCKER_TAG}"
+else
+    DOCKER_IMG_TARGET="${DOCKER_REGISTRY}/package-registry/distribution:${TAG_NAME}-${DOCKER_TAG}"
+fi
 
 echo "Docker pull"
 retry 3 docker pull "${DOCKER_IMG_SOURCE}"
