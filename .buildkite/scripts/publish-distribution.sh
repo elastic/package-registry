@@ -25,4 +25,5 @@ if [[ ${DRY_RUN:-true} == "true" ]]; then
 else
     echo "Docker push:"
     retry 3 docker push "${DOCKER_IMG_TARGET}"
+    echo "Docker image pushed: ${DOCKER_IMG_TARGET}"
 fi
