@@ -13,8 +13,9 @@ pull_request_rules:
         message: Automatically approving dependabot
   - name: automatic merge of bot 🤖
     conditions:
-      - check-success=package-registry/pr-merge
+      - check-success=buildkite/package-registry
       - check-success=CLA
+      - approved-reviews-by=@elastic/ecosystem
       - base=main
       - author~=^dependabot(|-preview)\[bot\]$
     actions:
