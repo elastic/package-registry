@@ -1,7 +1,7 @@
 queue_rules:
   - name: default
     conditions:
-      - check-success=package-registry/pr-merge
+      - check-success=buildkite/package-registry
 
 pull_request_rules:
   - name: automatic approval for Dependabot pull requests
