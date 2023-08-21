@@ -18,7 +18,7 @@ pushDockerImage() {
     echo "Docker image pushed: ${DOCKER_IMG_TAG_BRANCH}"
 }
 
-if [[ -n "${BUILDKITE_PULL_REQUEST:-}" ]]; then
+if [[ "${BUILDKITE_PULL_REQUEST}" != "false" ]]; then
     DOCKER_NAMESPACE="${DOCKER_IMG_PR}"
     TAG_NAME="PR-${BUILDKITE_PULL_REQUEST}"
 else
