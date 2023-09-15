@@ -20,7 +20,7 @@ require (
 	go.elastic.co/apm/module/apmzap/v2 v2.4.4
 	go.elastic.co/apm/v2 v2.4.4
 	go.elastic.co/ecszap v1.0.2
-	go.uber.org/zap v1.25.0
+	go.uber.org/zap v1.26.0
 	golang.org/x/tools v0.13.0
 	gopkg.in/yaml.v2 v2.4.0
 	honnef.co/go/tools v0.4.6
