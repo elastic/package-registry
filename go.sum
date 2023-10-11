@@ -155,10 +155,10 @@ github.com/stretchr/testify v1.8.4/go.mod h1:sz/lmYIOXD/1dqDmKjjqLyZ2RngseejIcXl
 github.com/yuin/goldmark v1.1.27/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.3.5/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1Zlc8k=
 github.com/yuin/goldmark v1.4.0/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1Zlc8k=
-go.elastic.co/apm/module/apmgorilla/v2 v2.4.4 h1:J/J5po3bdCJD6NhnJ+qjC6tvnVT3L/x2iun4RXSQjbc=
-go.elastic.co/apm/module/apmgorilla/v2 v2.4.4/go.mod h1:TFgGtb72KWjXDBuTkX+SWwSZipqHJYTQ5qIVlKvZkyg=
-go.elastic.co/apm/module/apmhttp/v2 v2.4.4 h1:BcJDLFztZByHiJRXXvAHY7bue9+vhzMLn2OBK5N8HDw=
-go.elastic.co/apm/module/apmhttp/v2 v2.4.4/go.mod h1:694qsHWRPVkfYqQ224ZSeRx9Dt2FS/xF1igNBGkHi6o=
+go.elastic.co/apm/module/apmgorilla/v2 v2.4.5 h1:6guHehl63uyoSDY3Vky6ThyB3TeZz19pMqHoB65C/6c=
+go.elastic.co/apm/module/apmgorilla/v2 v2.4.5/go.mod h1:78U6qST9CGdUzqlSQara7FF69z/3+1/4UCRPHwr0w9M=
+go.elastic.co/apm/module/apmhttp/v2 v2.4.5 h1:t51CtOQdn6KSp11wNb0PxnhH09TjE+V4ajU8bqkLxmg=
+go.elastic.co/apm/module/apmhttp/v2 v2.4.5/go.mod h1:dmgyWIKzVk76gSgOWkTmPcSCqjRl7dfjWbBzFq8W3y0=
 go.elastic.co/apm/module/apmzap/v2 v2.4.5 h1:bur6hW7oKdAkV+0ZNzLAAEt+CLyIrS18OSXJmhV+W5E=
 go.elastic.co/apm/module/apmzap/v2 v2.4.5/go.mod h1:4Fbxw/7rzArL+cXjE2epEuEinlq2mUuDstJ4reA+JBA=
 go.elastic.co/apm/v2 v2.4.5 h1:+01xPucS6YazBMYxbTSwNEsV9sgznFC0WW7x5dzxyPg=
