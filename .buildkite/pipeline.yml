@@ -98,8 +98,9 @@ steps:
       branch: "main"
       env:
         DRY_RUN: "true"       #TODO: replace with "false" after tests
-        DRAFT_PR: "true"
+        DRAFT_PR: "true"      #TODO: replace with "false" after tests
         EPR_VERSION: "${BUILDKITE_TAG}"
+        VERSION: "${BUILDKITE_TAG}"
     depends_on:
       - step: "publish"
         allow_failure: false
