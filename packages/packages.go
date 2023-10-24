@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 	"time"
 
@@ -19,7 +20,6 @@ import (
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 
-	"github.com/elastic/package-registry/internal/util"
 	"github.com/elastic/package-registry/metrics"
 )
 
@@ -504,7 +504,7 @@ func filterPolicyTemplates(p Package, category string) *Package {
 	var updatedPolicyTemplates []PolicyTemplate
 	var updatedBasePolicyTemplates []BasePolicyTemplate
 	for i, pt := range p.PolicyTemplates {
-		if util.StringsContains(pt.Categories, category) {
+		if slices.Contains(pt.Categories, category) {
 			updatedPolicyTemplates = append(updatedPolicyTemplates, pt)
 			updatedBasePolicyTemplates = append(updatedBasePolicyTemplates, p.BasePackage.BasePolicyTemplates[i])
 		}
