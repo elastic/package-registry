@@ -74,22 +74,6 @@ steps:
       - step: "lint"
         allow_failure: false
 
-  # - label: "Triggering update-package-registry-job-remote with version"
-  #   key: "triggering-jenkins"
-  #   if: build.tag =~ /^v\d+\.\d+\.\d+$$/
-  #   command: ".buildkite/scripts/trigger-jenkins-job.sh"
-  #   env:
-  #     DRAFT_PR: false
-  #     DRY_RUN: false
-  #     VERSION: "${BUILDKITE_TAG}"
-  #   agents:
-  #     image: "golang:${SETUP_GOLANG_VERSION}"
-  #     cpu: "8"
-  #     memory: "4G"
-  #   depends_on:
-  #     - step: "publish"
-  #       allow_failure: false
-
   - trigger: "package-storage-infra-update-package-registry"
     label: ":esbuild: Downstream - Update package registry"
     key: "downstream-update-package-registry"
@@ -97,10 +81,10 @@ steps:
     build:
       branch: "main"
       env:
-        DRY_RUN: "true"           #TODO: replace with "false" after tests
-        DRAFT_PR: "true"          #TODO: replace with "false" after tests
-        EPR_VERSION: "v99.99.99"  #TODO: replace with "${BUILDKITE_TAG}" after tests
+        DRY_RUN: "false"
+        DRAFT_PR: "false"
+        EPR_VERSION: "${BUILDKITE_TAG}"
     depends_on:
       - step: "publish"
         allow_failure: false
-    # if: build.tag =~ /^v\d+\.\d+\.\d+$$/
+    if: build.tag =~ /^v\d+\.\d+\.\d+$$/
