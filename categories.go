@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 	"sort"
 	"strconv"
 	"strings"
@@ -194,7 +195,7 @@ func getCategories(ctx context.Context, pkgs packages.Packages, includePolicyTem
 						}
 					}
 
-					if !p.HasCategory(c) && !util.StringsContains(extraPackageCategories, c) {
+					if !p.HasCategory(c) && !slices.Contains(extraPackageCategories, c) {
 						extraPackageCategories = append(extraPackageCategories, c)
 						categories[c].Count = categories[c].Count + 1
 					}

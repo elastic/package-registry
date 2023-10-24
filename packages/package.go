@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"slices"
 	"strings"
 
 	"github.com/Masterminds/semver/v3"
@@ -17,7 +18,6 @@ import (
 	"github.com/elastic/go-ucfg/yaml"
 
 	"github.com/elastic/package-registry/categories"
-	"github.com/elastic/package-registry/internal/util"
 )
 
 const (
@@ -382,7 +382,7 @@ func (p *Package) HasPolicyTemplateWithCategory(category string) bool {
 }
 
 func hasCategory(categories []string, category string) bool {
-	if util.StringsContains(categories, category) {
+	if slices.Contains(categories, category) {
 		return true
 	}
 
@@ -392,7 +392,7 @@ func hasCategory(categories []string, category string) bool {
 			continue
 		}
 
-		if util.StringsContains(categories, subcategory.Name) {
+		if slices.Contains(categories, subcategory.Name) {
 			return true
 		}
 	}
@@ -414,7 +414,7 @@ func (p *Package) WorksWithCapabilities(capabilities []string) bool {
 	}
 
 	for _, requiredCapability := range p.Conditions.Elastic.Capabilities {
-		if !util.StringsContains(capabilities, requiredCapability) {
+		if !slices.Contains(capabilities, requiredCapability) {
 			return false
 		}
 	}
