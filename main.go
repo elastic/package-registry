@@ -6,6 +6,7 @@ package main
 
 import (
 	"context"
+	"crypto/tls"
 	"flag"
 	"fmt"
 	"log"
@@ -50,8 +51,9 @@ var (
 	logLevel *zapcore.Level
 	logType  string
 
-	tlsCertFile string
-	tlsKeyFile  string
+	tlsCertFile   string
+	tlsKeyFile    string
+	tlsMinVersion string
 
 	dryRun     bool
 	configPath string
@@ -83,6 +85,7 @@ func init() {
 	flag.StringVar(&logType, "log-type", util.DefaultLoggerType, "log type (ecs, dev)")
 	flag.StringVar(&tlsCertFile, "tls-cert", "", "Path of the TLS certificate.")
 	flag.StringVar(&tlsKeyFile, "tls-key", "", "Path of the TLS key.")
+	flag.StringVar(&tlsMinVersion, "tls-min-version", "", "Minimum version TLS supported.")
 	flag.StringVar(&configPath, "config", "config.yml", "Path to the configuration file.")
 	flag.StringVar(&httpProfAddress, "httpprof", "", "Enable HTTP profiler listening on the given address.")
 	// This flag is experimental and might be removed in the future or renamed
@@ -142,7 +145,10 @@ func main() {
 
 	initHttpProf(logger)
 
-	server := initServer(logger, apmTracer, config)
+	server, err := initServer(logger, apmTracer, config)
+	if err != nil {
+		logger.Fatal("error occurred while initializing the server", zap.Error(err))
+	}
 	go func() {
 		err := runServer(server)
 		if err != nil && err != http.ErrServerClosed {
@@ -230,7 +236,7 @@ func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer,
 	return combined
 }
 
-func initServer(logger *zap.Logger, apmTracer *apm.Tracer, config *Config) *http.Server {
+func initServer(logger *zap.Logger, apmTracer *apm.Tracer, config *Config) (*http.Server, error) {
 	tx := apmTracer.StartTransaction("initServer", "backend.init")
 	defer tx.End()
 
@@ -241,7 +247,25 @@ func initServer(logger *zap.Logger, apmTracer *apm.Tracer, config *Config) *http
 	router := mustLoadRouter(logger, config, indexer)
 	apmgorilla.Instrument(router, apmgorilla.WithTracer(apmTracer))
 
-	return &http.Server{Addr: address, Handler: router}
+	if tlsMinVersion == "" {
+		return &http.Server{Addr: address, Handler: router}, nil
+	}
+
+	TLSConfig := &tls.Config{}
+	switch tlsMinVersion {
+	// SSLv3 option is considered deprecated: https://cs.opensource.google/go/go/+/refs/tags/go1.21.3:src/crypto/tls/common.go;l=34
+	case "1.0":
+		TLSConfig.MinVersion = tls.VersionTLS10
+	case "1.1":
+		TLSConfig.MinVersion = tls.VersionTLS11
+	case "1.2":
+		TLSConfig.MinVersion = tls.VersionTLS12
+	case "1.3":
+		TLSConfig.MinVersion = tls.VersionTLS13
+	default:
+		return nil, fmt.Errorf("unsupported TLS version %s", tlsMinVersion)
+	}
+	return &http.Server{Addr: address, Handler: router, TLSConfig: TLSConfig}, nil
 }
 
 func runServer(server *http.Server) error {
