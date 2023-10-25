@@ -5,29 +5,68 @@
 package main
 
 import (
+	"crypto/tls"
+	"errors"
 	"flag"
+	"fmt"
 	"os"
 	"strings"
 )
 
-func parseFlags() {
-	parseFlagSetWithArgs(flag.CommandLine, os.Args)
+var supportedTLSVersions map[string]uint16 = map[string]uint16{
+	"1.0": tls.VersionTLS10,
+	"1.1": tls.VersionTLS11,
+	"1.2": tls.VersionTLS12,
+	"1.3": tls.VersionTLS13,
 }
 
-func parseFlagSetWithArgs(flagSet *flag.FlagSet, args []string) {
-	flagsFromEnv(flagSet)
+type tlsMinVersionValue struct {
+	version     *string
+	versionCode *uint16
+}
+
+func (t tlsMinVersionValue) String() string {
+	if t.version != nil {
+		return *t.version
+	}
+	return ""
+}
+
+func (t tlsMinVersionValue) Set(s string) error {
+	if _, ok := supportedTLSVersions[s]; !ok {
+		return fmt.Errorf("unsupported TLS version: %s", s)
+	}
+	*t.version = s
+	*t.versionCode = supportedTLSVersions[s]
+	return nil
+}
+
+func parseFlags() error {
+	return parseFlagSetWithArgs(flag.CommandLine, os.Args)
+}
+
+func parseFlagSetWithArgs(flagSet *flag.FlagSet, args []string) error {
+	err := flagsFromEnv(flagSet)
+	if err != nil {
+		return err
+	}
 
 	// Skip args[0] as flag.Parse() does.
 	flagSet.Parse(args[1:])
+	return nil
 }
 
-func flagsFromEnv(flagSet *flag.FlagSet) {
+func flagsFromEnv(flagSet *flag.FlagSet) error {
+	var flagErrors error
 	flagSet.VisitAll(func(f *flag.Flag) {
 		envName := flagEnvName(f.Name)
 		if value, found := os.LookupEnv(envName); found {
-			f.Value.Set(value)
+			if err := f.Value.Set(value); err != nil {
+				flagErrors = errors.Join(flagErrors, fmt.Errorf("failed to set -%s: %v", f.Name, err))
+			}
 		}
 	})
+	return flagErrors
 }
 
 const flagEnvPrefix = "EPR_"
