@@ -11,8 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bugfixes
 
 * Update Go runtime to 1.21.3. [#1102](https://github.com/elastic/package-registry/pull/1102)
+* Raise an error if the value of environment variables used to set parameters are not valid [#1103](https://github.com/elastic/package-registry/pull/1103)
 
 ### Added
+
+* Add new parameter to specify minimum TLS version [#1103](https://github.com/elastic/package-registry/pull/1103)
 
 ### Deprecated
 

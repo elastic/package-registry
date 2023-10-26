@@ -6,6 +6,7 @@ package main
 
 import (
 	"context"
+	"crypto/tls"
 	"flag"
 	"fmt"
 	"log"
@@ -53,6 +54,8 @@ var (
 	tlsCertFile string
 	tlsKeyFile  string
 
+	tlsMinVersionValue tlsVersionValue
+
 	dryRun     bool
 	configPath string
 
@@ -83,6 +86,7 @@ func init() {
 	flag.StringVar(&logType, "log-type", util.DefaultLoggerType, "log type (ecs, dev)")
 	flag.StringVar(&tlsCertFile, "tls-cert", "", "Path of the TLS certificate.")
 	flag.StringVar(&tlsKeyFile, "tls-key", "", "Path of the TLS key.")
+	flag.Var(&tlsMinVersionValue, "tls-min-version", "Minimum version TLS supported.")
 	flag.StringVar(&configPath, "config", "config.yml", "Path to the configuration file.")
 	flag.StringVar(&httpProfAddress, "httpprof", "", "Enable HTTP profiler listening on the given address.")
 	// This flag is experimental and might be removed in the future or renamed
@@ -108,7 +112,16 @@ type Config struct {
 }
 
 func main() {
-	parseFlags()
+	err := parseFlags()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if tlsMinVersionValue > 0 {
+		if tlsCertFile == "" || tlsKeyFile == "" {
+			log.Fatalf("-tls-min-version set but missing TLS cert and key files (-tls-cert and -tls-key)")
+		}
+	}
 
 	if printVersionInfo {
 		fmt.Printf("Elastic Package Registry version %v\n", version)
@@ -241,7 +254,11 @@ func initServer(logger *zap.Logger, apmTracer *apm.Tracer, config *Config) *http
 	router := mustLoadRouter(logger, config, indexer)
 	apmgorilla.Instrument(router, apmgorilla.WithTracer(apmTracer))
 
-	return &http.Server{Addr: address, Handler: router}
+	var tlsConfig tls.Config
+	if tlsMinVersionValue > 0 {
+		tlsConfig.MinVersion = uint16(tlsMinVersionValue)
+	}
+	return &http.Server{Addr: address, Handler: router, TLSConfig: &tlsConfig}
 }
 
 func runServer(server *http.Server) error {

@@ -36,7 +36,8 @@ func TestFlagsPrecedence(t *testing.T) {
 	require.Equal(t, "default", dummyFlag)
 
 	args := []string{"test", "-test-precedence-dummy=" + expected}
-	parseFlagSetWithArgs(flagSet, args)
+	err := parseFlagSetWithArgs(flagSet, args)
+	require.NoError(t, err)
 	require.Equal(t, expected, dummyFlag)
 }
 
