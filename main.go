@@ -117,7 +117,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if tlsMinVersionValue.String() != "" {
+	if tlsMinVersionValue > 0 {
 		if tlsCertFile == "" || tlsKeyFile == "" {
 			log.Fatalf("-tls-min-version set but missing TLS cert and key files (-tls-cert and -tls-key)")
 		}
