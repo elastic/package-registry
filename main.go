@@ -54,8 +54,8 @@ var (
 	tlsCertFile string
 	tlsKeyFile  string
 
-	tlsMinVersion     string
-	tlsMinVersionCode uint16
+	tlsMinVersionCode  uint16
+	tlsMinVersionValue tlsVersionValue
 
 	dryRun     bool
 	configPath string
@@ -79,6 +79,8 @@ var (
 )
 
 func init() {
+	tlsMinVersionValue = tlsVersionValue{version: &tlsMinVersionCode}
+
 	flag.BoolVar(&printVersionInfo, "version", false, "Print Elastic Package Registry version")
 	flag.StringVar(&address, "address", "localhost:8080", "Address of the package-registry service.")
 	flag.StringVar(&metricsAddress, "metrics-address", "", "Address to expose the Prometheus metrics (experimental). ")
@@ -87,7 +89,7 @@ func init() {
 	flag.StringVar(&logType, "log-type", util.DefaultLoggerType, "log type (ecs, dev)")
 	flag.StringVar(&tlsCertFile, "tls-cert", "", "Path of the TLS certificate.")
 	flag.StringVar(&tlsKeyFile, "tls-key", "", "Path of the TLS key.")
-	flag.Var(&tlsMinVersionValue{version: &tlsMinVersion, versionCode: &tlsMinVersionCode}, "tls-min-version", "Minimum version TLS supported.")
+	flag.Var(&tlsMinVersionValue, "tls-min-version", "Minimum version TLS supported.")
 	flag.StringVar(&configPath, "config", "config.yml", "Path to the configuration file.")
 	flag.StringVar(&httpProfAddress, "httpprof", "", "Enable HTTP profiler listening on the given address.")
 	// This flag is experimental and might be removed in the future or renamed
@@ -118,7 +120,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if tlsMinVersion != "" {
+	if tlsMinVersionValue.String() != "" {
 		if tlsCertFile == "" || tlsKeyFile == "" {
 			log.Fatalf("-tls-min-version set but missing TLS cert and key files (-tls-cert and -tls-key)")
 		}
@@ -255,12 +257,11 @@ func initServer(logger *zap.Logger, apmTracer *apm.Tracer, config *Config) *http
 	router := mustLoadRouter(logger, config, indexer)
 	apmgorilla.Instrument(router, apmgorilla.WithTracer(apmTracer))
 
-	if tlsMinVersion == "" {
-		return &http.Server{Addr: address, Handler: router}
+	var tlsConfig tls.Config
+	if tlsMinVersionValue.String() != "" {
+		tlsConfig.MinVersion = tlsMinVersionValue.Value()
 	}
-
-	TLSConfig := &tls.Config{MinVersion: tlsMinVersionCode}
-	return &http.Server{Addr: address, Handler: router, TLSConfig: TLSConfig}
+	return &http.Server{Addr: address, Handler: router, TLSConfig: &tlsConfig}
 }
 
 func runServer(server *http.Server) error {

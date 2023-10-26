@@ -20,24 +20,37 @@ var supportedTLSVersions map[string]uint16 = map[string]uint16{
 	"1.3": tls.VersionTLS13,
 }
 
-type tlsMinVersionValue struct {
-	version     *string
-	versionCode *uint16
+type tlsVersionValue struct {
+	version *uint16
 }
 
-func (t tlsMinVersionValue) String() string {
-	if t.version != nil {
-		return *t.version
+func (t tlsVersionValue) String() string {
+	if t.version == nil {
+		return ""
 	}
-	return ""
+	switch *t.version {
+	case tls.VersionTLS10:
+		return "1.0"
+	case tls.VersionTLS11:
+		return "1.1"
+	case tls.VersionTLS12:
+		return "1.2"
+	case tls.VersionTLS13:
+		return "1.3"
+	default:
+		return ""
+	}
 }
 
-func (t tlsMinVersionValue) Set(s string) error {
+func (t tlsVersionValue) Value() uint16 {
+	return *t.version
+}
+
+func (t tlsVersionValue) Set(s string) error {
 	if _, ok := supportedTLSVersions[s]; !ok {
 		return fmt.Errorf("unsupported TLS version: %s", s)
 	}
-	*t.version = s
-	*t.versionCode = supportedTLSVersions[s]
+	*t.version = supportedTLSVersions[s]
 	return nil
 }
 
