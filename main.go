@@ -255,8 +255,8 @@ func initServer(logger *zap.Logger, apmTracer *apm.Tracer, config *Config) *http
 	apmgorilla.Instrument(router, apmgorilla.WithTracer(apmTracer))
 
 	var tlsConfig tls.Config
-	if tlsMinVersionValue.String() != "" {
-		tlsConfig.MinVersion = tlsMinVersionValue.Value()
+	if tlsMinVersionValue > 0 {
+		tlsConfig.MinVersion = uint16(tlsMinVersionValue)
 	}
 	return &http.Server{Addr: address, Handler: router, TLSConfig: &tlsConfig}
 }
