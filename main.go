@@ -54,7 +54,6 @@ var (
 	tlsCertFile string
 	tlsKeyFile  string
 
-	tlsMinVersionCode  uint16
 	tlsMinVersionValue tlsVersionValue
 
 	dryRun     bool
@@ -79,8 +78,6 @@ var (
 )
 
 func init() {
-	tlsMinVersionValue = tlsVersionValue{version: &tlsMinVersionCode}
-
 	flag.BoolVar(&printVersionInfo, "version", false, "Print Elastic Package Registry version")
 	flag.StringVar(&address, "address", "localhost:8080", "Address of the package-registry service.")
 	flag.StringVar(&metricsAddress, "metrics-address", "", "Address to expose the Prometheus metrics (experimental). ")
