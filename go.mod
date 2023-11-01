@@ -3,7 +3,7 @@ module github.com/elastic/package-registry
 go 1.21.0
 
 require (
-	cloud.google.com/go/storage v1.33.0
+	cloud.google.com/go/storage v1.34.0
 	github.com/Masterminds/semver/v3 v3.2.1
 	github.com/elastic/go-licenser v0.4.1
 	github.com/elastic/go-ucfg v0.8.6
