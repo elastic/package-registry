@@ -51,6 +51,7 @@ type DataStream struct {
 	Streams        []Stream                 `config:"streams" json:"streams,omitempty" yaml:"streams,omitempty" `
 	Package        string                   `json:"package,omitempty" yaml:"package,omitempty"`
 	Elasticsearch  *DataStreamElasticsearch `config:"elasticsearch,omitempty" json:"elasticsearch,omitempty" yaml:"elasticsearch,omitempty"`
+	Agent          *DataStreamAgent         `config:"agent,omitempty" json:"agent,omitempty" yaml:"agent,omitempty"`
 
 	// Generated fields
 	Path string `json:"path,omitempty" yaml:"path,omitempty"`
@@ -92,6 +93,14 @@ type Variable struct {
 	Required    bool        `config:"required" json:"required" yaml:"required"`
 	ShowUser    bool        `config:"show_user" json:"show_user" yaml:"show_user"`
 	Default     interface{} `config:"default" json:"default,omitempty" yaml:"default,omitempty"`
+}
+
+type DataStreamAgent struct {
+	Privileges *DataStreamAgentPrivileges `config:"privileges,omitempty" json:"privileges,omitempty" yaml:"privileges,omitempty"`
+}
+
+type DataStreamAgentPrivileges struct {
+	Root bool `config:"root,omitempty" json:"root,omitempty" yaml:"root,omitempty"`
 }
 
 type DataStreamElasticsearch struct {
