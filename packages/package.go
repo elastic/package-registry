@@ -45,6 +45,7 @@ type Package struct {
 	DataStreams     []*DataStream         `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
 	Vars            []Variable            `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
 	Elasticsearch   *PackageElasticsearch `config:"elasticsearch,omitempty" json:"elasticsearch,omitempty" yaml:"elasticsearch,omitempty"`
+	Agent           *PackageAgent         `config:"agent,omitempty" json:"agent,omitempty" yaml:"agent,omitempty"`
 	// Local path to the package dir
 	BasePath string `json:"-" yaml:"-"`
 
@@ -144,6 +145,14 @@ type Image struct {
 	Title string `config:"title" json:"title,omitempty"`
 	Size  string `config:"size" json:"size,omitempty"`
 	Type  string `config:"type" json:"type,omitempty"`
+}
+
+type PackageAgent struct {
+	Privileges *PackageAgentPrivileges `config:"privileges,omitempty" json:"privileges,omitempty" yaml:"privileges,omitempty"`
+}
+
+type PackageAgentPrivileges struct {
+	Root bool `config:"root,omitempty" json:"root,omitempty" yaml:"root,omitempty"`
 }
 
 type PackageElasticsearch struct {

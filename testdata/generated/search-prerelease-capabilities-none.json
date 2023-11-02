@@ -1,5 +1,23 @@
 [
   {
+    "name": "agent_privileges",
+    "title": "Agent Privileges",
+    "version": "1.0.0",
+    "release": "beta",
+    "description": "Test package-specified agent privileges",
+    "type": "solution",
+    "download": "/epr/agent_privileges/agent_privileges-1.0.0.zip",
+    "path": "/package/agent_privileges/1.0.0",
+    "conditions": {
+      "kibana": {
+        "version": ">=7.16.0"
+      }
+    },
+    "categories": [
+      "custom"
+    ]
+  },
+  {
     "name": "datastream_without_release",
     "title": "Apache Spark",
     "version": "0.1.0",

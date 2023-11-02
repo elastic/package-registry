@@ -1,0 +1,17 @@
+format_version: 1.0.0
+
+name: agent_privileges
+description: Test package-specified agent privileges
+version: 1.0.0
+title: Agent Privileges
+categories: ["custom"]
+type: solution
+release: beta
+
+agent:
+  privileges:
+    root: true
+
+conditions:
+  kibana:
+    version: ">=7.16.0"

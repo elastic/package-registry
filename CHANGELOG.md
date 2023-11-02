@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Add package and datastream agent privileges in the package endpoint [#1109](https://github.com/elastic/package-registry/pull/1109)
+
 ### Deprecated
 
 ### Known Issues
