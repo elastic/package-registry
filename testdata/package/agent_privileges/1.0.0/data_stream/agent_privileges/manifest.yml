@@ -1,0 +1,5 @@
+title: Agent privileges data stream
+type: metrics
+agent:
+  privileges:
+    root: true

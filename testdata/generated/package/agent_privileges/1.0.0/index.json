@@ -1,0 +1,47 @@
+{
+  "name": "agent_privileges",
+  "title": "Agent Privileges",
+  "version": "1.0.0",
+  "release": "beta",
+  "description": "Test package-specified agent privileges",
+  "type": "solution",
+  "download": "/epr/agent_privileges/agent_privileges-1.0.0.zip",
+  "path": "/package/agent_privileges/1.0.0",
+  "conditions": {
+    "kibana": {
+      "version": ">=7.16.0"
+    }
+  },
+  "categories": [
+    "custom"
+  ],
+  "format_version": "1.0.0",
+  "readme": "/package/agent_privileges/1.0.0/docs/README.md",
+  "license": "basic",
+  "assets": [
+    "/package/agent_privileges/1.0.0/manifest.yml",
+    "/package/agent_privileges/1.0.0/docs/README.md",
+    "/package/agent_privileges/1.0.0/data_stream/agent_privileges/manifest.yml",
+    "/package/agent_privileges/1.0.0/data_stream/agent_privileges/fields/base-fields.yml"
+  ],
+  "data_streams": [
+    {
+      "type": "metrics",
+      "dataset": "agent_privileges.agent_privileges",
+      "title": "Agent privileges data stream",
+      "release": "beta",
+      "package": "agent_privileges",
+      "agent": {
+        "privileges": {
+          "root": true
+        }
+      },
+      "path": "agent_privileges"
+    }
+  ],
+  "agent": {
+    "privileges": {
+      "root": true
+    }
+  }
+}
