@@ -84,6 +84,7 @@
       }
     },
     "owner": {
+      "type": "elastic",
       "github": "ruflin"
     },
     "categories": [
