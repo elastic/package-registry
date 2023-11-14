@@ -153,7 +153,7 @@ type PackageAgent struct {
 }
 
 type PackageAgentPrivileges struct {
-	root bool `config:"root,omitempty" json:"root,omitempty" yaml:"root,omitempty"`
+	Root bool `config:"root,omitempty" json:"root,omitempty" yaml:"root,omitempty"`
 }
 
 type PackageElasticsearch struct {
