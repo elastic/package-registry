@@ -133,6 +133,7 @@ type Version struct {
 }
 
 type Owner struct {
+	Type   string `config:"type,omitempty" json:"type,omitempty"`
 	Github string `config:"github,omitempty" json:"github,omitempty"`
 }
 
@@ -152,7 +153,7 @@ type PackageAgent struct {
 }
 
 type PackageAgentPrivileges struct {
-	Root bool `config:"root,omitempty" json:"root,omitempty" yaml:"root,omitempty"`
+	root bool `config:"root,omitempty" json:"root,omitempty" yaml:"root,omitempty"`
 }
 
 type PackageElasticsearch struct {
