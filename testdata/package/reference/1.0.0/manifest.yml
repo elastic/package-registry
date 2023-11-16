@@ -31,6 +31,7 @@ type: integration
 # Details about the owner of the package. Current only github link is supported.
 # A package can only have a single owner, the owner can be a user or a team.
 owner:
+  type: elastic
   github: "ruflin"
 
 conditions:
@@ -68,8 +69,7 @@ screenshots:
 # Icons options are commented out as currently not icons added
 # It is expected that icons are in svg, but other formats are supported.
 icons:
-  -
-    # src is a required field
+  - # src is a required field
     src: "/img/icon.svg"
     # This helps to send the right header
     type: "image/svg+xml"
@@ -79,16 +79,14 @@ icons:
 # Defining a datasource allows the UI to generate a form for each input and generate the agent
 # config out of it. For a visual guide on what fields is used how in the UI, check out https://github.com/elastic/package-registry/pull/242
 policy_templates:
-  -
-    # Do we need a name for the data source?
+  - # Do we need a name for the data source?
     name: nginx
     title: Nginx logs and metrics.
     description: Collecting logs and metrics from nginx.
 
     # List of inputs this datasource supports
     inputs:
-      -
-        # An id can be given, in case the type used here is not unique
+      - # An id can be given, in case the type used here is not unique
         # This is for selection in the stream
         # id: nginx
 
@@ -109,8 +107,7 @@ policy_templates:
             title: Hosts
 
             description: List of nginx hosts to collect data from.
-            default:
-              ["http://127.0.0.1"]
+            default: ["http://127.0.0.1"]
             # All the config options that are required should be shown in the UI
             required: true
             multi: true

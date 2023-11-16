@@ -133,6 +133,7 @@ type Version struct {
 }
 
 type Owner struct {
+	Type   string `config:"type,omitempty" json:"type,omitempty"`
 	Github string `config:"github,omitempty" json:"github,omitempty"`
 }
 
