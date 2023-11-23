@@ -177,8 +177,8 @@ go.elastic.co/apm/module/apmhttp/v2 v2.4.5 h1:t51CtOQdn6KSp11wNb0PxnhH09TjE+V4aj
 go.elastic.co/apm/module/apmhttp/v2 v2.4.5/go.mod h1:dmgyWIKzVk76gSgOWkTmPcSCqjRl7dfjWbBzFq8W3y0=
 go.elastic.co/apm/module/apmzap/v2 v2.4.5 h1:bur6hW7oKdAkV+0ZNzLAAEt+CLyIrS18OSXJmhV+W5E=
 go.elastic.co/apm/module/apmzap/v2 v2.4.5/go.mod h1:4Fbxw/7rzArL+cXjE2epEuEinlq2mUuDstJ4reA+JBA=
-go.elastic.co/apm/v2 v2.4.5 h1:+01xPucS6YazBMYxbTSwNEsV9sgznFC0WW7x5dzxyPg=
-go.elastic.co/apm/v2 v2.4.5/go.mod h1:+CiBUdrrAGnGCL9TNx7tQz3BrfYV23L8Ljvotoc87so=
+go.elastic.co/apm/v2 v2.4.6 h1:q4OSaOEbeITSaWHONyX7eVnnpW6nRnjgJuPQz7LTwv0=
+go.elastic.co/apm/v2 v2.4.6/go.mod h1:+CiBUdrrAGnGCL9TNx7tQz3BrfYV23L8Ljvotoc87so=
 go.elastic.co/ecszap v1.0.2 h1:iW5OGx8IiokiUzx/shD4AJCPFMC9uUtr7ycaiEIU++I=
 go.elastic.co/ecszap v1.0.2/go.mod h1:dJkSlK3BTiwG/qXhCwe50Mz/jwu854vSip8sIeQhNZg=
 go.elastic.co/fastjson v1.1.0 h1:3MrGBWWVIxe/xvsbpghtkFoPciPhOCmjsR/HfwEeQR4=
