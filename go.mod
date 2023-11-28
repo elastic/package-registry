@@ -21,7 +21,7 @@ require (
 	go.elastic.co/apm/v2 v2.4.7
 	go.elastic.co/ecszap v1.0.2
 	go.uber.org/zap v1.26.0
-	golang.org/x/tools v0.15.0
+	golang.org/x/tools v0.16.0
 	gopkg.in/yaml.v2 v2.4.0
 	honnef.co/go/tools v0.4.6
 )
@@ -58,13 +58,13 @@ require (
 	go.elastic.co/fastjson v1.1.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.uber.org/multierr v1.10.0 // indirect
-	golang.org/x/crypto v0.15.0 // indirect
+	golang.org/x/crypto v0.16.0 // indirect
 	golang.org/x/exp/typeparams v0.0.0-20221208152030-732eee02a75a // indirect
 	golang.org/x/mod v0.14.0 // indirect
-	golang.org/x/net v0.18.0 // indirect
+	golang.org/x/net v0.19.0 // indirect
 	golang.org/x/oauth2 v0.13.0 // indirect
 	golang.org/x/sync v0.5.0 // indirect
-	golang.org/x/sys v0.14.0 // indirect
+	golang.org/x/sys v0.15.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
