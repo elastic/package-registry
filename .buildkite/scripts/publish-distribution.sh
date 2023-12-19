@@ -1,8 +1,8 @@
 #!/bin/bash
 # DRY_RUN is true by default - script will not push to registry
-set -euo pipefail
-
 source .buildkite/scripts/tooling.sh
+
+set -euo pipefail
 
 DOCKER_TAG=$(buildkite-agent meta-data get DOCKER_TAG)
 echo "version for tagging: ${DOCKER_TAG}"

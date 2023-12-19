@@ -1,8 +1,8 @@
 #!/bin/bash
+source .buildkite/scripts/pre-install-command.sh
 set -euo pipefail
 
 # Pre install:
-source .buildkite/scripts/pre-install-command.sh
 add_bin_path
 with_mage
 with_go_junit_report

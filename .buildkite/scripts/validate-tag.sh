@@ -1,7 +1,8 @@
 #!/bin/bash
+source .buildkite/scripts/tooling.sh
+
 set -euo pipefail
 
-source .buildkite/scripts/tooling.sh
 
 transformTagAndValidate() {
     local version=$1

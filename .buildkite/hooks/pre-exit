@@ -1,7 +1,12 @@
 #!/bin/bash
+
+source .buildkite/scripts/tooling.sh
+
 set -euo pipefail
 
 if [[ "$BUILDKITE_PIPELINE_SLUG" == "package-registry" && "$BUILDKITE_STEP_KEY" == "publish" ]] || \
     [[ "$BUILDKITE_PIPELINE_SLUG" == "package-registry-release-package-registry-distribution" && "$BUILDKITE_STEP_KEY" == "release-distribution" ]]; then
-    docker logout ${DOCKER_REGISTRY}
+    docker logout "${DOCKER_REGISTRY}"
 fi
+
+unset_secrets
