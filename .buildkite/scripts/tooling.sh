@@ -19,3 +19,11 @@ retry() {
     done
     return 0
 }
+
+unset_secrets () {
+  for var in $(printenv | sed 's;=.*;;' | sort); do
+    if [[ "$var" == *_SECRET || "$var" == *_TOKEN ]]; then
+      unset "$var"
+    fi
+  done
+}

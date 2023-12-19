@@ -1,15 +1,19 @@
 #!/bin/bash
-set -euo pipefail
-
 source .buildkite/scripts/tooling.sh
 
-add_bin_path(){
+set -euo pipefail
+
+create_bin_folder() {
     mkdir -p "${WORKSPACE}/bin"
+}
+
+add_bin_path(){
+    create_bin_folder
     export PATH="${WORKSPACE}/bin:${PATH}"
 }
 
 with_mage() {
-    mkdir -p "${WORKSPACE}/bin"
+    create_bin_folder
     retry 5 curl -sL -o "${WORKSPACE}/bin/mage.tar.gz" "https://github.com/magefile/mage/releases/download/v${SETUP_MAGE_VERSION}/mage_${SETUP_MAGE_VERSION}_Linux-64bit.tar.gz"
 
     tar -xvf "${WORKSPACE}/bin/mage.tar.gz" -C "${WORKSPACE}/bin"

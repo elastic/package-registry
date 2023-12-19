@@ -1,8 +1,8 @@
 #!/bin/bash
 
-set -euo pipefail
-
 source .buildkite/scripts/tooling.sh
+
+set -euo pipefail
 
 echo "Golang version:"
 version=$(cat .go-version)
