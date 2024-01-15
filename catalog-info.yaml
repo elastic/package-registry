@@ -62,7 +62,7 @@ metadata:
   description: 'Buildkite pipeline for running release of package registry distribution'
   links:
     - title: Pipeline
-      url: https://buildkite.com/elastic/release-package-registry-distribution
+      url: https://buildkite.com/elastic/package-registry-release-package-registry-distribution
 
 spec:
   type: buildkite-pipeline
