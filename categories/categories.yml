@@ -113,6 +113,8 @@ categories:
         title: "DNS"
       edr_xdr:
         title: "EDR/XDR"
+      cloudsecurity_cdr:
+        title: "CDR"
       email_security:
         title: "Email"
       firewall_security:
