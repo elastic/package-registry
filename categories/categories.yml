@@ -105,6 +105,8 @@ categories:
         title: "Authentication"
       cdn_security:
         title: "Content Delivery Network"
+      cloudsecurity_cdr:
+        title: "Cloud Security/CDR"
       credential_management:
         title: "Credential Management"
       database_security:
@@ -113,8 +115,6 @@ categories:
         title: "DNS"
       edr_xdr:
         title: "EDR/XDR"
-      cloudsecurity_cdr:
-        title: "CDR"
       email_security:
         title: "Email"
       firewall_security:
