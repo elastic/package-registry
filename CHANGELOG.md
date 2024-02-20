@@ -4,13 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased](https://github.com/elastic/package-registry/compare/v1.23.0...main)
+## [v1.23.1](https://github.com/elastic/package-registry/compare/v1.23.0...v1.23.1)
 
 ### Breaking changes
 
 ### Bugfixes
 
+* Update Go Runtime to 1.21.7. [#1144](https://github.com/elastic/package-registry/issues/1144)
+
 ### Added
+
 * New Security subcategory "cloudsecurity_cdr" [#1142](https://github.com/elastic/package-registry/pull/1142)
 
 ### Deprecated
@@ -24,12 +27,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
-- Update Go Runtime to 1.21.4. [#1124](https://github.com/elastic/package-registry/issues/1124)
+* Update Go Runtime to 1.21.4. [#1124](https://github.com/elastic/package-registry/issues/1124)
 
 ### Added
 
-- Add package and datastream agent privileges in the package endpoint [#1109](https://github.com/elastic/package-registry/pull/1109)
-- Add owner.type to the package endpoint [#1109](https://github.com/elastic/package-registry/pull/1115)
+* Add package and datastream agent privileges in the package endpoint [#1109](https://github.com/elastic/package-registry/pull/1109)
+* Add owner.type to the package endpoint [#1109](https://github.com/elastic/package-registry/pull/1115)
 
 ### Deprecated
 
