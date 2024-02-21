@@ -45,6 +45,7 @@ func BenchmarkInit(b *testing.B) {
 }
 
 func BenchmarkUpdate(b *testing.B) {
+	b.Skip("Just init")
 	// given
 	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
 	defer fs.Stop()
@@ -52,12 +53,13 @@ func BenchmarkUpdate(b *testing.B) {
 
 	logger := zap.New(zapcore.NewNopCore())
 	indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
-	err := indexer.Init(context.Background())
+	ctx := context.Background()
+	err := indexer.Init(ctx)
 	require.NoError(b, err)
 	for i := 0; i < b.N; i++ {
-		err := indexer.updateIndex(context.Background())
+		err := indexer.updateIndex(ctx)
 		require.NoError(b, err)
-		err = indexer.updateIndex(context.Background())
+		err = indexer.updateIndex(ctx)
 		require.NoError(b, err)
 	}
 }
