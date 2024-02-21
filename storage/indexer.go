@@ -123,7 +123,7 @@ func (i *Indexer) watchIndices(ctx context.Context) {
 			tx := i.options.APMTracer.StartTransaction("updateIndex", "backend.watcher")
 			defer tx.End()
 
-			err = i.updateIndex(ctx)
+			err = i.updateIndex(apm.ContextWithTransaction(ctx, tx))
 			if err != nil {
 				i.logger.Error("can't update index file", zap.Error(err))
 			}
