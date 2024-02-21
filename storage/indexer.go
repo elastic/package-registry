@@ -7,6 +7,7 @@ package storage
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/url"
 	"strings"
@@ -14,7 +15,7 @@ import (
 	"time"
 
 	"cloud.google.com/go/storage"
-	"github.com/pkg/errors"
+
 	"github.com/prometheus/client_golang/prometheus"
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
@@ -62,18 +63,18 @@ func (i *Indexer) Init(ctx context.Context) error {
 
 	err := validateIndexerOptions(i.options)
 	if err != nil {
-		return errors.Wrapf(err, "validation failed")
+		return fmt.Errorf("validation failed: %w", err)
 	}
 
 	err = i.setupResolver()
 	if err != nil {
-		return errors.Wrapf(err, "can't setup remote resolver")
+		return fmt.Errorf("can't setup remote resolver: %w", err)
 	}
 
 	// Populate index file for the first time.
 	err = i.updateIndex(ctx)
 	if err != nil {
-		return errors.Wrap(err, "can't update index file")
+		return fmt.Errorf("can't update index file: %w", err)
 	}
 
 	go i.watchIndices(ctx)
@@ -86,7 +87,7 @@ func validateIndexerOptions(options IndexerOptions) error {
 	}
 	_, err := url.Parse(options.PackageStorageEndpoint)
 	if err != nil {
-		return errors.Wrap(err, "invalid options.PackageStorageEndpoint, URL expected")
+		return fmt.Errorf("invalid options.PackageStorageEndpoint, URL expected: %w", err)
 	}
 	if options.WatchInterval < 0 {
 		return errors.New("options.WatchInterval must be greater than or equal to 0")
@@ -124,7 +125,7 @@ func (i *Indexer) watchIndices(ctx context.Context) {
 			tx := i.options.APMTracer.StartTransaction("updateIndex", "backend.watcher")
 			defer tx.End()
 
-			err = i.updateIndex(ctx)
+			err = i.updateIndex(apm.ContextWithTransaction(ctx, tx))
 			if err != nil {
 				i.logger.Error("can't update index file", zap.Error(err))
 			}
@@ -151,13 +152,13 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	bucketName, rootStoragePath, err := extractBucketNameFromURL(i.options.PackageStorageBucketInternal)
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
-		return errors.Wrapf(err, "can't extract bucket name from URL (url: %s)", i.options.PackageStorageBucketInternal)
+		return fmt.Errorf("can't extract bucket name from URL (url: %s): %w", i.options.PackageStorageBucketInternal, err)
 	}
 
 	storageCursor, err := loadCursor(ctx, i.logger, i.storageClient, bucketName, rootStoragePath)
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
-		return errors.Wrap(err, "can't load latest cursor")
+		return fmt.Errorf("can't load latest cursor: %w", err)
 	}
 
 	if storageCursor.Current == i.cursor {
@@ -169,14 +170,14 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	indexReader, err := loadReaderSearchIndex(ctx, i.logger, i.storageClient, bucketName, rootStoragePath, *storageCursor)
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
-		return errors.Wrapf(err, "can't create the reader for the search-index-all index")
+		return fmt.Errorf("can't create the reader for the search-index-all index: %w", err)
 	}
 	defer indexReader.Close()
 
 	refreshedList, err := i.readPackagesFromIndex(indexReader)
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
-		return errors.Wrap(err, "can't transform the search-index-all")
+		return fmt.Errorf("can't transform the search-index-all: %w", err)
 	}
 
 	i.m.Lock()
@@ -208,7 +209,7 @@ func (i *Indexer) readPackagesFromIndex(reader *storage.Reader) (packages.Packag
 		// Read everything till the "packages" key in the map.
 		token, err := dec.Token()
 		if err != nil {
-			return nil, errors.Wrapf(err, "unexpected error while reading index file")
+			return nil, fmt.Errorf("unexpected error while reading index file: %w", err)
 		}
 		if key, ok := token.(string); !ok || key != "packages" {
 			continue
@@ -217,10 +218,10 @@ func (i *Indexer) readPackagesFromIndex(reader *storage.Reader) (packages.Packag
 		// Read the opening array now.
 		token, err = dec.Token()
 		if err != nil {
-			return nil, errors.Wrapf(err, "unexpected error while reading index file")
+			return nil, fmt.Errorf("unexpected error while reading index file: %w", err)
 		}
 		if delim, ok := token.(json.Delim); !ok || delim != '[' {
-			return nil, errors.Errorf("expected opening array, found %v", token)
+			return nil, fmt.Errorf("expected opening array, found %v", token)
 		}
 
 		// Read the array of packages one by one.
@@ -228,7 +229,7 @@ func (i *Indexer) readPackagesFromIndex(reader *storage.Reader) (packages.Packag
 			var p packageIndex
 			err = dec.Decode(&p)
 			if err != nil {
-				return nil, errors.Wrapf(err, "unexpected error parsing package from index file (token: %v)", token)
+				return nil, fmt.Errorf("unexpected error parsing package from index file (token: %v): %w", token, err)
 			}
 			m := p.PackageManifest
 			m.BasePath = fmt.Sprintf("%s-%s.zip", m.Name, m.Version)
@@ -240,10 +241,10 @@ func (i *Indexer) readPackagesFromIndex(reader *storage.Reader) (packages.Packag
 		// Read the closing array delimiter.
 		token, err = dec.Token()
 		if err != nil {
-			return nil, errors.Wrapf(err, "unexpected error while reading index file")
+			return nil, fmt.Errorf("unexpected error while reading index file: %w", err)
 		}
 		if delim, ok := token.(json.Delim); !ok || delim != ']' {
-			return nil, errors.Errorf("expected closing array, found %v", token)
+			return nil, fmt.Errorf("expected closing array, found %v: %w", token, err)
 		}
 	}
 	return transformedPackages, nil

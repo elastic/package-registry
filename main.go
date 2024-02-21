@@ -20,7 +20,7 @@ import (
 
 	gstorage "cloud.google.com/go/storage"
 	"github.com/gorilla/mux"
-	"github.com/pkg/errors"
+
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"go.elastic.co/apm/module/apmgorilla/v2"
@@ -300,13 +300,13 @@ func getConfig(logger *zap.Logger) (*Config, error) {
 		logger.Fatal("Configuration file is not available: " + configPath)
 	}
 	if err != nil {
-		return nil, errors.Wrapf(err, "reading config failed (path: %s)", configPath)
+		return nil, fmt.Errorf("reading config failed (path: %s): %w", configPath, err)
 	}
 
 	config := defaultConfig
 	err = cfg.Unpack(&config)
 	if err != nil {
-		return nil, errors.Wrapf(err, "unpacking config failed (path: %s)", configPath)
+		return nil, fmt.Errorf("unpacking config failed (path: %s): %w", configPath, err)
 	}
 	return &config, nil
 }
@@ -364,7 +364,7 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router
 		ProxyTo: proxyTo,
 	})
 	if err != nil {
-		return nil, errors.Wrapf(err, "can't create proxy mode")
+		return nil, fmt.Errorf("can't create proxy mode: %w", err)
 	}
 	artifactsHandler := artifactsHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeCatchAll)
 	signaturesHandler := signaturesHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeCatchAll)

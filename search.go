@@ -15,7 +15,7 @@ import (
 	"time"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/pkg/errors"
+
 	"go.elastic.co/apm/module/apmzap/v2"
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
@@ -44,7 +44,7 @@ func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *
 
 		packages, err := indexer.Get(r.Context(), &opts)
 		if err != nil {
-			notFoundError(w, errors.Wrapf(err, "fetching package failed"))
+			notFoundError(w, fmt.Errorf("fetching package failed: %w", err))
 			return
 		}
 

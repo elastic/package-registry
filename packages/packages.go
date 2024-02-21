@@ -15,7 +15,7 @@ import (
 	"time"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/pkg/errors"
+
 	"github.com/prometheus/client_golang/prometheus"
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
@@ -182,7 +182,7 @@ var ZipFileSystemBuilder = func(p *Package) (PackageFileSystem, error) {
 func (i *FileSystemIndexer) Init(ctx context.Context) (err error) {
 	i.packageList, err = i.getPackagesFromFileSystem(ctx)
 	if err != nil {
-		return errors.Wrapf(err, "reading packages from filesystem failed")
+		return fmt.Errorf("reading packages from filesystem failed: %w", err)
 	}
 	return nil
 }
@@ -229,7 +229,7 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 		for _, path := range packagePaths {
 			p, err := NewPackage(path, i.fsBuilder)
 			if err != nil {
-				return nil, errors.Wrapf(err, "loading package failed (path: %s)", path)
+				return nil, fmt.Errorf("loading package failed (path: %s): %w", path, err)
 			}
 
 			key := packageKey{name: p.Name, version: p.Version}
@@ -280,7 +280,7 @@ func (i *FileSystemIndexer) getPackagePaths(packagesPath string) ([]string, erro
 		return nil
 	})
 	if err != nil {
-		return nil, errors.Wrapf(err, "listing packages failed (path: %s)", packagesPath)
+		return nil, fmt.Errorf("listing packages failed (path: %s): %w", packagesPath, err)
 	}
 	return foundPaths, nil
 }

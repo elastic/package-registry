@@ -13,7 +13,6 @@ import (
 	"strings"
 
 	"github.com/joeshaw/multierror"
-	"github.com/pkg/errors"
 )
 
 // PackageProperties defines properties describing the package. The structure is used for archiving.
@@ -35,7 +34,7 @@ func ArchivePackage(w io.Writer, properties PackageProperties) (err error) {
 
 		err = zipWriter.Close()
 		if err != nil {
-			multiErr = append(multiErr, errors.Wrapf(err, "closing zip writer failed"))
+			multiErr = append(multiErr, fmt.Errorf("closing zip writer failed: %w", err))
 		}
 
 		if multiErr != nil {
@@ -51,7 +50,7 @@ func ArchivePackage(w io.Writer, properties PackageProperties) (err error) {
 
 		relativePath, err := filepath.Rel(properties.Path, path)
 		if err != nil {
-			return errors.Wrapf(err, "finding relative path failed (packagePath: %s, path: %s)", properties.Path, path)
+			return fmt.Errorf("finding relative path failed (packagePath: %s, path: %s): %w", properties.Path, path, err)
 		}
 
 		if relativePath == "." {
@@ -60,29 +59,29 @@ func ArchivePackage(w io.Writer, properties PackageProperties) (err error) {
 
 		header, err := buildArchiveHeader(info, filepath.Join(rootDir, relativePath))
 		if err != nil {
-			return errors.Wrapf(err, "building archive header failed (path: %s)", relativePath)
+			return fmt.Errorf("building archive header failed (path: %s): %w", relativePath, err)
 		}
 
 		w, err = zipWriter.CreateHeader(header)
 		if err != nil {
-			return errors.Wrapf(err, "writing header failed (path: %s)", relativePath)
+			return fmt.Errorf("writing header failed (path: %s): %w", relativePath, err)
 		}
 
 		if !info.IsDir() {
 			err = writeFileContentToArchive(path, w)
 			if err != nil {
-				return errors.Wrapf(err, "archiving file content failed (path: %s)", path)
+				return fmt.Errorf("archiving file content failed (path: %s): %w", path, err)
 			}
 		}
 		return nil
 	})
 	if err != nil {
-		return errors.Wrapf(err, "processing package path '%s' failed", properties.Path)
+		return fmt.Errorf("processing package path '%s' failed: %w", properties.Path, err)
 	}
 
 	err = zipWriter.Flush()
 	if err != nil {
-		return errors.Wrap(err, "flushing zip writer failed")
+		return fmt.Errorf("flushing zip writer failed: %w", err)
 	}
 	return nil
 }
@@ -90,7 +89,7 @@ func ArchivePackage(w io.Writer, properties PackageProperties) (err error) {
 func buildArchiveHeader(info os.FileInfo, relativePath string) (*zip.FileHeader, error) {
 	header, err := zip.FileInfoHeader(info)
 	if err != nil {
-		return nil, errors.Wrapf(err, "reading file info header failed (info: %s)", info.Name())
+		return nil, fmt.Errorf("reading file info header failed (info: %s): %w", info.Name(), err)
 	}
 
 	header.Method = zip.Deflate
@@ -105,7 +104,7 @@ func writeFileContentToArchive(path string, writer io.Writer) (err error) {
 	var f *os.File
 	f, err = os.Open(path)
 	if err != nil {
-		return errors.Wrapf(err, "opening file failed (path: %s)", path)
+		return fmt.Errorf("opening file failed (path: %s): %w", path, err)
 	}
 	defer func() {
 		var multiErr multierror.Errors
@@ -115,7 +114,7 @@ func writeFileContentToArchive(path string, writer io.Writer) (err error) {
 
 		err = f.Close()
 		if err != nil {
-			multiErr = append(multiErr, errors.Wrapf(err, "closing file failed (path: %s)", path))
+			multiErr = append(multiErr, fmt.Errorf("closing file failed (path: %s): %w", path, err))
 		}
 
 		if multiErr != nil {
@@ -125,7 +124,7 @@ func writeFileContentToArchive(path string, writer io.Writer) (err error) {
 
 	_, err = io.Copy(writer, f)
 	if err != nil {
-		return errors.Wrapf(err, "copying file content failed (path: %s)", path)
+		return fmt.Errorf("copying file content failed (path: %s): %w", path, err)
 	}
 	return nil
 }

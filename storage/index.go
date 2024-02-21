@@ -7,9 +7,10 @@ package storage
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 
 	"cloud.google.com/go/storage"
-	"github.com/pkg/errors"
+
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 
@@ -35,7 +36,7 @@ func loadReaderSearchIndex(ctx context.Context, logger *zap.Logger, storageClien
 	rootedIndexStoragePath := buildIndexStoragePath(rootStoragePath, aCursor, indexFile)
 	objectReader, err := storageClient.Bucket(bucketName).Object(rootedIndexStoragePath).NewReader(ctx)
 	if err != nil {
-		return nil, errors.Wrapf(err, "can't read the index file (path: %s)", rootedIndexStoragePath)
+		return nil, fmt.Errorf("can't read the index file (path: %s): %w", rootedIndexStoragePath, err)
 	}
 	return objectReader, nil
 }
@@ -51,7 +52,7 @@ func loadSearchIndexAll(ctx context.Context, logger *zap.Logger, storageClient *
 	rootedIndexStoragePath := buildIndexStoragePath(rootStoragePath, aCursor, indexFile)
 	objectReader, err := storageClient.Bucket(bucketName).Object(rootedIndexStoragePath).NewReader(ctx)
 	if err != nil {
-		return nil, errors.Wrapf(err, "can't read the index file (path: %s)", rootedIndexStoragePath)
+		return nil, fmt.Errorf("can't read the index file (path: %s): %w", rootedIndexStoragePath, err)
 	}
 	defer objectReader.Close()
 
@@ -69,7 +70,7 @@ func loadSearchIndexAll(ctx context.Context, logger *zap.Logger, storageClient *
 		// Read everything till the "packages" key in the map.
 		token, err := dec.Token()
 		if err != nil {
-			return nil, errors.Wrapf(err, "unexpected error while reading index file")
+			return nil, fmt.Errorf("unexpected error while reading index file: %w", err)
 		}
 		if key, ok := token.(string); !ok || key != "packages" {
 			continue
@@ -78,10 +79,10 @@ func loadSearchIndexAll(ctx context.Context, logger *zap.Logger, storageClient *
 		// Read the opening array now.
 		token, err = dec.Token()
 		if err != nil {
-			return nil, errors.Wrapf(err, "unexpected error while reading index file")
+			return nil, fmt.Errorf("unexpected error while reading index file: %w", err)
 		}
 		if delim, ok := token.(json.Delim); !ok || delim != '[' {
-			return nil, errors.Errorf("expected opening array, found %v", token)
+			return nil, fmt.Errorf("expected opening array, found %v", token)
 		}
 
 		// Read the array of packages one by one.
@@ -89,7 +90,7 @@ func loadSearchIndexAll(ctx context.Context, logger *zap.Logger, storageClient *
 			var p packageIndex
 			err = dec.Decode(&p)
 			if err != nil {
-				return nil, errors.Wrapf(err, "unexpected error parsing package from index file (token: %v)", token)
+				return nil, fmt.Errorf("unexpected error parsing package from index file (token: %v): %w", token, err)
 			}
 			sia.Packages = append(sia.Packages, p)
 		}
@@ -97,10 +98,10 @@ func loadSearchIndexAll(ctx context.Context, logger *zap.Logger, storageClient *
 		// Read the closing array delimiter.
 		token, err = dec.Token()
 		if err != nil {
-			return nil, errors.Wrapf(err, "unexpected error while reading index file")
+			return nil, fmt.Errorf("unexpected error while reading index file: %w", err)
 		}
 		if delim, ok := token.(json.Delim); !ok || delim != ']' {
-			return nil, errors.Errorf("expected closing array, found %v", token)
+			return nil, fmt.Errorf("expected closing array, found %v", token)
 		}
 	}
 	return &sia, nil
