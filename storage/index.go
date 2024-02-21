@@ -24,6 +24,22 @@ type packageIndex struct {
 	PackageManifest packages.Package `json:"package_manifest"`
 }
 
+func loadReaderSearchIndex(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, bucketName, rootStoragePath string, aCursor cursor) (*storage.Reader, error) {
+	span, ctx := apm.StartSpan(ctx, "LoadReaderSearchIndexAll", "app")
+	defer span.End()
+
+	indexFile := searchIndexAllFile
+
+	logger.Debug("load search-index-all index", zap.String("index.file", indexFile))
+
+	rootedIndexStoragePath := buildIndexStoragePath(rootStoragePath, aCursor, indexFile)
+	objectReader, err := storageClient.Bucket(bucketName).Object(rootedIndexStoragePath).NewReader(ctx)
+	if err != nil {
+		return nil, errors.Wrapf(err, "can't read the index file (path: %s)", rootedIndexStoragePath)
+	}
+	return objectReader, nil
+}
+
 func loadSearchIndexAll(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, bucketName, rootStoragePath string, aCursor cursor) (*searchIndexAll, error) {
 	span, ctx := apm.StartSpan(ctx, "LoadSearchIndexAll", "app")
 	defer span.End()

@@ -6,6 +6,7 @@ package storage
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/url"
 	"strings"
@@ -165,17 +166,23 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	}
 	i.logger.Info("cursor will be updated", zap.String("cursor.current", i.cursor), zap.String("cursor.next", storageCursor.Current))
 
-	anIndex, err := loadSearchIndexAll(ctx, i.logger, i.storageClient, bucketName, rootStoragePath, *storageCursor)
+	indexReader, err := loadReaderSearchIndex(ctx, i.logger, i.storageClient, bucketName, rootStoragePath, *storageCursor)
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
-		return errors.Wrapf(err, "can't load the search-index-all index content")
+		return errors.Wrapf(err, "can't create the reader for the search-index-all index")
 	}
-	i.logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", len(anIndex.Packages))))
+	defer indexReader.Close()
+
+	refreshedList, err := i.readPackagesFromIndex(indexReader)
+	if err != nil {
+		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
+		return errors.Wrap(err, "can't transform the search-index-all")
+	}
 
 	i.m.Lock()
 	defer i.m.Unlock()
 	i.cursor = storageCursor.Current
-	i.transformSearchIndexAllToPackages(*anIndex)
+	i.packageList = refreshedList
 	metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
 	metrics.NumberIndexedPackages.Set(float64(len(i.packageList)))
 	return nil
@@ -194,21 +201,61 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	return i.packageList, nil
 }
 
-func (i *Indexer) transformSearchIndexAllToPackages(sia searchIndexAll) {
+func (i *Indexer) readPackagesFromIndex(reader *storage.Reader) (packages.Packages, error) {
+	var transformedPackages packages.Packages
+	dec := json.NewDecoder(reader)
+	for dec.More() {
+		// Read everything till the "packages" key in the map.
+		token, err := dec.Token()
+		if err != nil {
+			return nil, errors.Wrapf(err, "unexpected error while reading index file")
+		}
+		if key, ok := token.(string); !ok || key != "packages" {
+			continue
+		}
+
+		// Read the opening array now.
+		token, err = dec.Token()
+		if err != nil {
+			return nil, errors.Wrapf(err, "unexpected error while reading index file")
+		}
+		if delim, ok := token.(json.Delim); !ok || delim != '[' {
+			return nil, errors.Errorf("expected opening array, found %v", token)
+		}
+
+		// Read the array of packages one by one.
+		for dec.More() {
+			var p packageIndex
+			err = dec.Decode(&p)
+			if err != nil {
+				return nil, errors.Wrapf(err, "unexpected error parsing package from index file (token: %v)", token)
+			}
+			m := p.PackageManifest
+			m.BasePath = fmt.Sprintf("%s-%s.zip", m.Name, m.Version)
+			m.SetRemoteResolver(i.resolver)
+
+			transformedPackages = append(transformedPackages, &m)
+		}
+
+		// Read the closing array delimiter.
+		token, err = dec.Token()
+		if err != nil {
+			return nil, errors.Wrapf(err, "unexpected error while reading index file")
+		}
+		if delim, ok := token.(json.Delim); !ok || delim != ']' {
+			return nil, errors.Errorf("expected closing array, found %v", token)
+		}
+	}
+	return transformedPackages, nil
+}
+
+func (i *Indexer) transformSearchIndexAllToPackages(sia searchIndexAll) (packages.Packages, error) {
+	var transformedPackages packages.Packages
 	for j := range sia.Packages {
 		m := sia.Packages[j].PackageManifest
 		m.BasePath = fmt.Sprintf("%s-%s.zip", m.Name, m.Version)
 		m.SetRemoteResolver(i.resolver)
-		found := false
-		for k := range i.packageList {
-			if i.packageList[k].BasePath == m.BasePath {
-				found = true
-				i.packageList[j] = &m
-				break
-			}
-		}
-		if !found {
-			i.packageList = append(i.packageList, &m)
-		}
+		transformedPackages = append(transformedPackages, &m)
 	}
+	return transformedPackages, nil
 }

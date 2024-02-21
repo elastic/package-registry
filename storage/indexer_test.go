@@ -31,7 +31,6 @@ func TestInit(t *testing.T) {
 }
 
 func BenchmarkInit(b *testing.B) {
-	b.Skip("Just init")
 	// given
 	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
 	defer fs.Stop()
