@@ -10,10 +10,9 @@ package util
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strings"
-
-	"github.com/pkg/errors"
 )
 
 var (
@@ -215,7 +214,7 @@ func flatten(prefix string, in, out MapStr) MapStr {
 func toMapStr(v interface{}) (MapStr, error) {
 	m, ok := tryToMapStr(v)
 	if !ok {
-		return nil, errors.Errorf("expected map but type is %T", v)
+		return nil, fmt.Errorf("expected map but type is %T", v)
 	}
 	return m, nil
 }
