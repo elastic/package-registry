@@ -46,11 +46,9 @@ func BenchmarkInit(b *testing.B) {
 }
 
 func BenchmarkUpdate(b *testing.B) {
-	// given
-
 	logger := zap.New(zapcore.NewNopCore())
 	for i := 0; i < b.N; i++ {
-		fs := PrepareFakeServer(b, "testdata/search-index-all-small.json")
+		fs := PrepareFakeServer(b, "testdata/search-index-all-full-except-one.json")
 		storageClient := fs.Client()
 
 		indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
