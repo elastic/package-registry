@@ -172,16 +172,10 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	}
 	i.logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", len(anIndex.Packages))))
 
-	refreshedList, err := i.transformSearchIndexAllToPackages(*anIndex)
-	if err != nil {
-		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
-		return errors.Wrap(err, "can't transform the search-index-all")
-	}
-
 	i.m.Lock()
 	defer i.m.Unlock()
 	i.cursor = storageCursor.Current
-	i.packageList = refreshedList
+	i.transformSearchIndexAllToPackages(*anIndex)
 	metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
 	metrics.NumberIndexedPackages.Set(float64(len(i.packageList)))
 	return nil
@@ -200,13 +194,21 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	return i.packageList, nil
 }
 
-func (i *Indexer) transformSearchIndexAllToPackages(sia searchIndexAll) (packages.Packages, error) {
-	var transformedPackages packages.Packages
+func (i *Indexer) transformSearchIndexAllToPackages(sia searchIndexAll) {
 	for j := range sia.Packages {
 		m := sia.Packages[j].PackageManifest
-		m.BasePath = fmt.Sprintf("%s-%s.zip", m.Name, m.Version)
-		m.SetRemoteResolver(i.resolver)
-		transformedPackages = append(transformedPackages, &m)
+		basePath := fmt.Sprintf("%s-%s.zip", m.Name, m.Version)
+		found := false
+		for k := range i.packageList {
+			if i.packageList[k].BasePath == basePath {
+				found = true
+				break
+			}
+		}
+		if !found {
+			m.BasePath = fmt.Sprintf("%s-%s.zip", m.Name, m.Version)
+			m.SetRemoteResolver(i.resolver)
+			i.packageList = append(i.packageList, &m)
+		}
 	}
-	return transformedPackages, nil
 }
