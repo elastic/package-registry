@@ -6,7 +6,6 @@ package storage
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 
 	"cloud.google.com/go/storage"
@@ -39,72 +38,6 @@ func loadReaderSearchIndex(ctx context.Context, logger *zap.Logger, storageClien
 		return nil, fmt.Errorf("can't read the index file (path: %s): %w", rootedIndexStoragePath, err)
 	}
 	return objectReader, nil
-}
-
-func loadSearchIndexAll(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, bucketName, rootStoragePath string, aCursor cursor) (*searchIndexAll, error) {
-	span, ctx := apm.StartSpan(ctx, "LoadSearchIndexAll", "app")
-	defer span.End()
-
-	indexFile := searchIndexAllFile
-
-	logger.Debug("load search-index-all index", zap.String("index.file", indexFile))
-
-	rootedIndexStoragePath := buildIndexStoragePath(rootStoragePath, aCursor, indexFile)
-	objectReader, err := storageClient.Bucket(bucketName).Object(rootedIndexStoragePath).NewReader(ctx)
-	if err != nil {
-		return nil, fmt.Errorf("can't read the index file (path: %s): %w", rootedIndexStoragePath, err)
-	}
-	defer objectReader.Close()
-
-	// Using a decoder here as tokenizer to parse the list of packages as a stream
-	// instead of needing the whole document in memory at the same time. This helps
-	// reducing memory usage.
-	// Using `Unmarshal(doc, &sia)` would require to read the whole document.
-	// Using `dec.Decode(&sia)` would also make the decoder to keep the whole document
-	// in memory.
-	// `jsoniter` seemed to be slightly faster, but to use more memory for our use case,
-	// and we are looking to optimize for memory use.
-	var sia searchIndexAll
-	dec := json.NewDecoder(objectReader)
-	for dec.More() {
-		// Read everything till the "packages" key in the map.
-		token, err := dec.Token()
-		if err != nil {
-			return nil, fmt.Errorf("unexpected error while reading index file: %w", err)
-		}
-		if key, ok := token.(string); !ok || key != "packages" {
-			continue
-		}
-
-		// Read the opening array now.
-		token, err = dec.Token()
-		if err != nil {
-			return nil, fmt.Errorf("unexpected error while reading index file: %w", err)
-		}
-		if delim, ok := token.(json.Delim); !ok || delim != '[' {
-			return nil, fmt.Errorf("expected opening array, found %v", token)
-		}
-
-		// Read the array of packages one by one.
-		for dec.More() {
-			var p packageIndex
-			err = dec.Decode(&p)
-			if err != nil {
-				return nil, fmt.Errorf("unexpected error parsing package from index file (token: %v): %w", token, err)
-			}
-			sia.Packages = append(sia.Packages, p)
-		}
-
-		// Read the closing array delimiter.
-		token, err = dec.Token()
-		if err != nil {
-			return nil, fmt.Errorf("unexpected error while reading index file: %w", err)
-		}
-		if delim, ok := token.(json.Delim); !ok || delim != ']' {
-			return nil, fmt.Errorf("expected closing array, found %v", token)
-		}
-	}
-	return &sia, nil
 }
 
 func buildIndexStoragePath(rootStoragePath string, aCursor cursor, indexFile string) string {

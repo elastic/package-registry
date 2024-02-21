@@ -203,6 +203,14 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 }
 
 func (i *Indexer) readPackagesFromIndex(reader *storage.Reader) (packages.Packages, error) {
+	// Using a decoder here as tokenizer to parse the list of packages as a stream
+	// instead of needing the whole document in memory at the same time. This helps
+	// reducing memory usage.
+	// Using `Unmarshal(doc, &sia)` would require to read the whole document.
+	// Using `dec.Decode(&sia)` would also make the decoder to keep the whole document
+	// in memory.
+	// `jsoniter` seemed to be slightly faster, but to use more memory for our use case,
+	// and we are looking to optimize for memory use.
 	var transformedPackages packages.Packages
 	dec := json.NewDecoder(reader)
 	for dec.More() {
@@ -246,17 +254,6 @@ func (i *Indexer) readPackagesFromIndex(reader *storage.Reader) (packages.Packag
 		if delim, ok := token.(json.Delim); !ok || delim != ']' {
 			return nil, fmt.Errorf("expected closing array, found %v: %w", token, err)
 		}
-	}
-	return transformedPackages, nil
-}
-
-func (i *Indexer) transformSearchIndexAllToPackages(sia searchIndexAll) (packages.Packages, error) {
-	var transformedPackages packages.Packages
-	for j := range sia.Packages {
-		m := sia.Packages[j].PackageManifest
-		m.BasePath = fmt.Sprintf("%s-%s.zip", m.Name, m.Version)
-		m.SetRemoteResolver(i.resolver)
-		transformedPackages = append(transformedPackages, &m)
 	}
 	return transformedPackages, nil
 }
