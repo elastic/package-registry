@@ -7,6 +7,8 @@ package storage
 import (
 	"context"
 	"fmt"
+	"net"
+	"net/http"
 	"net/url"
 	"strings"
 	"sync"
@@ -99,7 +101,17 @@ func (i *Indexer) setupResolver() error {
 		return err
 	}
 
+	httpClient := http.Client{
+		Transport: &http.Transport{
+			DialContext: (&net.Dialer{
+				// Connect timeout.
+				Timeout: 20 * time.Second,
+			}).DialContext,
+		},
+	}
+
 	i.resolver = storageResolver{
+		client:               &httpClient,
 		artifactsPackagesURL: *baseURL.ResolveReference(&url.URL{Path: artifactsPackagesStoragePath + "/"}),
 		artifactsStaticURL:   *baseURL.ResolveReference(&url.URL{Path: artifactsStaticStoragePath + "/"}),
 	}
