@@ -7,6 +7,7 @@ package proxymode
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -15,7 +16,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/hashicorp/go-retryablehttp"
-	"github.com/pkg/errors"
+
 	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/packages"
@@ -39,7 +40,7 @@ type ProxyOptions struct {
 func NoProxy(logger *zap.Logger) *ProxyMode {
 	proxyMode, err := NewProxyMode(logger, ProxyOptions{Enabled: false})
 	if err != nil {
-		panic(errors.Wrapf(err, "unexpected error"))
+		panic(fmt.Errorf("unexpected error: %w", err))
 	}
 	return proxyMode
 }
@@ -73,7 +74,7 @@ func NewProxyMode(logger *zap.Logger, options ProxyOptions) (*ProxyMode, error) 
 	var err error
 	pm.destinationURL, err = url.Parse(pm.options.ProxyTo)
 	if err != nil {
-		return nil, errors.Wrap(err, "can't create proxy destination URL")
+		return nil, fmt.Errorf("can't create proxy destination URL: %w", err)
 	}
 
 	pm.resolver = &proxyResolver{destinationURL: *pm.destinationURL}
@@ -118,19 +119,19 @@ func (pm *ProxyMode) Search(r *http.Request) (packages.Packages, error) {
 
 	proxyRequest, err := retryablehttp.NewRequest(http.MethodGet, proxyURL.String(), nil)
 	if err != nil {
-		return nil, errors.Wrap(err, "can't create proxy request")
+		return nil, fmt.Errorf("can't create proxy request: %w", err)
 	}
 
 	pm.logger.Debug("Proxy /search request", zap.String("request.uri", proxyURL.String()))
 	response, err := pm.httpClient.Do(proxyRequest)
 	if err != nil {
-		return nil, errors.Wrap(err, "can't proxy search request")
+		return nil, fmt.Errorf("can't proxy search request: %w", err)
 	}
 	defer response.Body.Close()
 	var pkgs packages.Packages
 	err = json.NewDecoder(response.Body).Decode(&pkgs)
 	if err != nil {
-		return nil, errors.Wrap(err, "can't proxy search request")
+		return nil, fmt.Errorf("can't proxy search request: %w", err)
 	}
 	for i := 0; i < len(pkgs); i++ {
 		pkgs[i].SetRemoteResolver(pm.resolver)
@@ -146,19 +147,19 @@ func (pm *ProxyMode) Categories(r *http.Request) ([]packages.Category, error) {
 
 	proxyRequest, err := retryablehttp.NewRequest(http.MethodGet, proxyURL.String(), nil)
 	if err != nil {
-		return nil, errors.Wrap(err, "can't create proxy request")
+		return nil, fmt.Errorf("can't create proxy request: %w", err)
 	}
 
 	pm.logger.Debug("Proxy /categories request", zap.String("request.uri", proxyURL.String()))
 	response, err := pm.httpClient.Do(proxyRequest)
 	if err != nil {
-		return nil, errors.Wrap(err, "can't proxy categories request")
+		return nil, fmt.Errorf("can't proxy categories request: %w", err)
 	}
 	defer response.Body.Close()
 	var cats []packages.Category
 	err = json.NewDecoder(response.Body).Decode(&cats)
 	if err != nil {
-		return nil, errors.Wrap(err, "can't proxy categories request")
+		return nil, fmt.Errorf("can't proxy categories request: %w", err)
 	}
 	return cats, nil
 }
@@ -179,13 +180,13 @@ func (pm *ProxyMode) Package(r *http.Request) (*packages.Package, error) {
 	proxyURL := pm.destinationURL.ResolveReference(&url.URL{Path: urlPath})
 	proxyRequest, err := retryablehttp.NewRequest(http.MethodGet, proxyURL.String(), nil)
 	if err != nil {
-		return nil, errors.Wrap(err, "can't create proxy request")
+		return nil, fmt.Errorf("can't create proxy request: %w", err)
 	}
 
 	pm.logger.Debug("Proxy /package request", zap.String("request.uri", proxyURL.String()))
 	response, err := pm.httpClient.Do(proxyRequest)
 	if err != nil {
-		return nil, errors.Wrap(err, "can't proxy package request")
+		return nil, fmt.Errorf("can't proxy package request: %w", err)
 	}
 	defer response.Body.Close()
 
@@ -196,13 +197,13 @@ func (pm *ProxyMode) Package(r *http.Request) (*packages.Package, error) {
 		// Package doesn't exist, don't try to parse the response, just return an empty package.
 		return nil, nil
 	default:
-		return nil, errors.Errorf("unexpected status code %d received", response.StatusCode)
+		return nil, fmt.Errorf("unexpected status code %d received", response.StatusCode)
 	}
 
 	var pkg packages.Package
 	err = json.NewDecoder(response.Body).Decode(&pkg)
 	if err != nil {
-		return nil, errors.Wrap(err, "can't proxy package request")
+		return nil, fmt.Errorf("can't proxy package request: %w", err)
 	}
 	pkg.SetRemoteResolver(pm.resolver)
 	return &pkg, nil

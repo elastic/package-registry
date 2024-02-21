@@ -4,7 +4,9 @@
 
 package packages
 
-import "net/http"
+import (
+	"net/http"
+)
 
 type RemoteResolver interface {
 	ArtifactsHandler(w http.ResponseWriter, r *http.Request, p *Package)

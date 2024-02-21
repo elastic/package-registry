@@ -5,6 +5,7 @@
 package packages
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"path"
@@ -12,7 +13,6 @@ import (
 	"strings"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/pkg/errors"
 
 	"github.com/elastic/go-ucfg"
 	"github.com/elastic/go-ucfg/yaml"
@@ -310,18 +310,18 @@ func NewPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) 
 
 	err = p.LoadAssets()
 	if err != nil {
-		return nil, errors.Wrapf(err, "loading package assets failed (path '%s')", p.BasePath)
+		return nil, fmt.Errorf("loading package assets failed (path '%s'): %w", p.BasePath, err)
 	}
 
 	err = p.LoadDataSets()
 	if err != nil {
-		return nil, errors.Wrapf(err, "loading package data streams failed (path '%s')", p.BasePath)
+		return nil, fmt.Errorf("loading package data streams failed (path '%s'): %w", p.BasePath, err)
 	}
 
 	// Read path for package signature
 	p.SignaturePath, err = p.getSignaturePath()
 	if err != nil {
-		return nil, errors.Wrapf(err, "can't process the package signature")
+		return nil, fmt.Errorf("can't process the package signature: %w", err)
 	}
 	return p, nil
 }
@@ -595,7 +595,7 @@ func (p *Package) Validate() error {
 
 	err = p.validateVersionConsistency()
 	if err != nil {
-		return errors.Wrap(err, "version in manifest file is not consistent with path")
+		return fmt.Errorf("version in manifest file is not consistent with path: %w", err)
 	}
 
 	return p.ValidateDataStreams()
@@ -604,7 +604,7 @@ func (p *Package) Validate() error {
 func (p *Package) validateVersionConsistency() error {
 	versionPackage, err := semver.NewVersion(p.Version)
 	if err != nil {
-		return errors.Wrap(err, "invalid version defined in manifest")
+		return fmt.Errorf("invalid version defined in manifest: %w", err)
 	}
 
 	baseDir := path.Base(p.BasePath)
@@ -683,12 +683,12 @@ func (p *Package) ValidateDataStreams() error {
 
 		d, err := NewDataStream(dataStreamBasePath, p)
 		if err != nil {
-			return errors.Wrapf(err, "building data stream failed (path: %s)", dataStreamBasePath)
+			return fmt.Errorf("building data stream failed (path: %s): %w", dataStreamBasePath, err)
 		}
 
 		err = d.Validate()
 		if err != nil {
-			return errors.Wrapf(err, "validating data stream failed (path: %s)", dataStreamBasePath)
+			return fmt.Errorf("validating data stream failed (path: %s): %w", dataStreamBasePath, err)
 		}
 	}
 	return nil
@@ -712,7 +712,7 @@ func (p *Package) getSignaturePath() (string, error) {
 		return "", nil
 	}
 	if err != nil {
-		return "", errors.Wrap(err, "can't stat signature file")
+		return "", fmt.Errorf("can't stat signature file: %w", err)
 	}
 	return p.GetDownloadPath() + ".sig", nil
 }

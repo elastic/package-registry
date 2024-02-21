@@ -11,7 +11,6 @@ import (
 	"path"
 	"strings"
 
-	"github.com/pkg/errors"
 	yamlv2 "gopkg.in/yaml.v2"
 
 	ucfg "github.com/elastic/go-ucfg"
@@ -131,19 +130,19 @@ func NewDataStream(basePath string, p *Package) (*DataStream, error) {
 	// Check if manifest exists
 	_, err = fsys.Stat(manifestPath)
 	if err != nil && os.IsNotExist(err) {
-		return nil, errors.Wrapf(err, "manifest does not exist for data stream: %s", p.BasePath)
+		return nil, fmt.Errorf("manifest does not exist for data stream: %s: %w", p.BasePath, err)
 	}
 
 	dataStreamPath := path.Base(basePath)
 
 	b, err := ReadAll(fsys, manifestPath)
 	if err != nil {
-		return nil, errors.Wrapf(err, "failed to read manifest: %s", err)
+		return nil, fmt.Errorf("failed to read manifest: %s: %w", err, err)
 	}
 
 	manifest, err := yaml.NewConfig(b, ucfg.PathSep("."))
 	if err != nil {
-		return nil, errors.Wrapf(err, "error creating new manifest config")
+		return nil, fmt.Errorf("error creating new manifest config: %w", err)
 	}
 	var d = &DataStream{
 		Package:    p.Name,
@@ -157,7 +156,7 @@ func NewDataStream(basePath string, p *Package) (*DataStream, error) {
 	// go-ucfg automatically calls the `Validate` method on the DataStream object here
 	err = manifest.Unpack(d, ucfg.PathSep("."))
 	if err != nil {
-		return nil, errors.Wrapf(err, "error building data stream (path: %s) in package: %s", dataStreamPath, p.Name)
+		return nil, fmt.Errorf("error building data stream (path: %s) in package: %s: %w", dataStreamPath, p.Name, err)
 	}
 
 	// if id is not set, {package}.{dataStreamPath} is the default
@@ -245,12 +244,12 @@ func (d *DataStream) Validate() error {
 		jsonPipelinePath := path.Join(pipelineDir, d.IngestPipeline+".json")
 		_, errJSON := fsys.Stat(jsonPipelinePath)
 		if errJSON != nil && !os.IsNotExist(errJSON) {
-			return errors.Wrapf(errJSON, "stat ingest pipeline JSON file failed (path: %s)", jsonPipelinePath)
+			return fmt.Errorf("stat ingest pipeline JSON file failed (path: %s): %w", jsonPipelinePath, errJSON)
 		}
 		if !os.IsNotExist(errJSON) {
 			err := validateIngestPipelineFile(fsys, jsonPipelinePath)
 			if err != nil {
-				return errors.Wrapf(err, "validating ingest pipeline JSON file failed (path: %s)", jsonPipelinePath)
+				return fmt.Errorf("validating ingest pipeline JSON file failed (path: %s): %w", jsonPipelinePath, err)
 			}
 			validFound = true
 		}
@@ -258,12 +257,12 @@ func (d *DataStream) Validate() error {
 		yamlPipelinePath := path.Join(pipelineDir, d.IngestPipeline+".yml")
 		_, errYAML := fsys.Stat(yamlPipelinePath)
 		if errYAML != nil && !os.IsNotExist(errYAML) {
-			return errors.Wrapf(errYAML, "stat ingest pipeline YAML file failed (path: %s)", jsonPipelinePath)
+			return fmt.Errorf("stat ingest pipeline YAML file failed (path: %s): %w", jsonPipelinePath, errYAML)
 		}
 		if !os.IsNotExist(errYAML) {
 			err := validateIngestPipelineFile(fsys, yamlPipelinePath)
 			if err != nil {
-				return errors.Wrapf(err, "validating ingest pipeline YAML file failed (path: %s)", jsonPipelinePath)
+				return fmt.Errorf("validating ingest pipeline YAML file failed (path: %s): %w", jsonPipelinePath, err)
 			}
 			validFound = true
 		}
@@ -275,7 +274,7 @@ func (d *DataStream) Validate() error {
 
 	err = d.validateRequiredFields(fsys)
 	if err != nil {
-		return errors.Wrap(err, "validating required fields failed")
+		return fmt.Errorf("validating required fields failed: %w", err)
 	}
 	return nil
 }
@@ -288,7 +287,7 @@ func (d *DataStream) validType() bool {
 func validateIngestPipelineFile(fs PackageFileSystem, pipelinePath string) error {
 	f, err := ReadAll(fs, pipelinePath)
 	if err != nil {
-		return errors.Wrapf(err, "reading ingest pipeline file failed (path: %s)", pipelinePath)
+		return fmt.Errorf("reading ingest pipeline file failed (path: %s): %w", pipelinePath, err)
 	}
 
 	ext := path.Ext(pipelinePath)
@@ -317,19 +316,19 @@ func (d *DataStream) validateRequiredFields(fs PackageFileSystem) error {
 	for _, path := range fieldsFiles {
 		body, err := ReadAll(fs, path)
 		if err != nil {
-			return errors.Wrapf(err, "reading file failed (path: %s)", path)
+			return fmt.Errorf("reading file failed (path: %s): %w", path, err)
 		}
 
 		var m []util.MapStr
 		err = yamlv2.Unmarshal(body, &m)
 		if err != nil {
-			return errors.Wrapf(err, "unmarshaling file failed (path: %s)", path)
+			return fmt.Errorf("unmarshaling file failed (path: %s): %w", path, err)
 		}
 
 		allFields = append(allFields, m...)
 	}
 	if err != nil {
-		return errors.Wrapf(err, "walking through fields files failed")
+		return fmt.Errorf("walking through fields files failed: %w", err)
 	}
 
 	// Flatten all fields
@@ -354,7 +353,7 @@ func requireField(allFields []util.MapStr, searchedName, expectedType string, va
 	if err != nil {
 		f, err = findFieldSplit(allFields, searchedName)
 		if err != nil {
-			return errors.Wrapf(err, "finding field failed (searchedName: %s)", searchedName)
+			return fmt.Errorf("finding field failed (searchedName: %s): %w", searchedName, err)
 		}
 	}
 
@@ -371,7 +370,7 @@ func findFieldSplit(allFields []util.MapStr, searchedName string) (*fieldEntry, 
 	for _, part := range levels[:len(levels)-1] {
 		curFields, err = getFieldsArray(curFields, part)
 		if err != nil {
-			return nil, errors.Wrapf(err, "failed to find fields array")
+			return nil, fmt.Errorf("failed to find fields array: %w", err)
 		}
 	}
 	return findField(curFields, levels[len(levels)-1])
@@ -393,12 +392,12 @@ func getFieldsArray(allFields []util.MapStr, searchedName string) ([]util.MapStr
 	for _, fields := range allFields {
 		name, err := fields.GetValue("name")
 		if err != nil {
-			return nil, errors.Wrapf(err, "cannot get value (key: name)")
+			return nil, fmt.Errorf("cannot get value (key: name): %w", err)
 		}
 		if name == searchedName {
 			value, err := fields.GetValue("fields")
 			if err != nil {
-				return nil, errors.Wrapf(err, "cannot get fields")
+				return nil, fmt.Errorf("cannot get fields: %w", err)
 			}
 
 			if inArray, ok := value.([]interface{}); ok {
@@ -406,7 +405,7 @@ func getFieldsArray(allFields []util.MapStr, searchedName string) ([]util.MapStr
 				for _, in := range inArray {
 					mapStr, err := createMapStr(in)
 					if err != nil {
-						return nil, errors.Wrapf(err, "cannot create MapStr")
+						return nil, fmt.Errorf("cannot create MapStr: %w", err)
 					}
 					m = append(m, mapStr)
 				}
@@ -422,7 +421,7 @@ func findField(allFields []util.MapStr, searchedName string) (*fieldEntry, error
 	for _, fields := range allFields {
 		name, err := fields.GetValue("name")
 		if err != nil {
-			return nil, errors.Wrapf(err, "cannot get value (key: name)")
+			return nil, fmt.Errorf("cannot get value (key: name): %w", err)
 		}
 
 		if name != searchedName {
@@ -431,7 +430,7 @@ func findField(allFields []util.MapStr, searchedName string) (*fieldEntry, error
 
 		aType, err := fields.GetValue("type")
 		if err != nil {
-			return nil, errors.Wrapf(err, "cannot get value (key: type)")
+			return nil, fmt.Errorf("cannot get value (key: type): %w", err)
 		}
 
 		if aType == "" {

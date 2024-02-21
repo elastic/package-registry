@@ -5,10 +5,10 @@
 package main
 
 import (
+	"errors"
 	"net/http"
 	"time"
 
-	"github.com/pkg/errors"
 	"go.elastic.co/apm/module/apmzap/v2"
 	"go.uber.org/zap"
 
