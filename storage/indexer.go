@@ -197,17 +197,17 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 func (i *Indexer) transformSearchIndexAllToPackages(sia searchIndexAll) {
 	for j := range sia.Packages {
 		m := sia.Packages[j].PackageManifest
-		basePath := fmt.Sprintf("%s-%s.zip", m.Name, m.Version)
+		m.BasePath = fmt.Sprintf("%s-%s.zip", m.Name, m.Version)
+		m.SetRemoteResolver(i.resolver)
 		found := false
 		for k := range i.packageList {
-			if i.packageList[k].BasePath == basePath {
+			if i.packageList[k].BasePath == m.BasePath {
 				found = true
+				i.packageList[j] = &m
 				break
 			}
 		}
 		if !found {
-			m.BasePath = fmt.Sprintf("%s-%s.zip", m.Name, m.Version)
-			m.SetRemoteResolver(i.resolver)
 			i.packageList = append(i.packageList, &m)
 		}
 	}
