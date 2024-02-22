@@ -174,16 +174,13 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	}
 	defer indexReader.Close()
 
-	refreshedList, err := i.readPackagesFromIndex(indexReader)
-	if err != nil {
-		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
-		return fmt.Errorf("can't transform the search-index-all: %w", err)
-	}
-
 	i.m.Lock()
 	defer i.m.Unlock()
 	i.cursor = storageCursor.Current
-	i.packageList = refreshedList
+	if err = i.readPackagesFromIndex(indexReader); err != nil {
+		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
+		return fmt.Errorf("can't transform the search-index-all: %w", err)
+	}
 	metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
 	metrics.NumberIndexedPackages.Set(float64(len(i.packageList)))
 	return nil
@@ -202,7 +199,7 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	return i.packageList, nil
 }
 
-func (i *Indexer) readPackagesFromIndex(reader *storage.Reader) (packages.Packages, error) {
+func (i *Indexer) readPackagesFromIndex(reader *storage.Reader) error {
 	// Using a decoder here as tokenizer to parse the list of packages as a stream
 	// instead of needing the whole document in memory at the same time. This helps
 	// reducing memory usage.
@@ -211,13 +208,12 @@ func (i *Indexer) readPackagesFromIndex(reader *storage.Reader) (packages.Packag
 	// in memory.
 	// `jsoniter` seemed to be slightly faster, but to use more memory for our use case,
 	// and we are looking to optimize for memory use.
-	var transformedPackages packages.Packages
 	dec := json.NewDecoder(reader)
 	for dec.More() {
 		// Read everything till the "packages" key in the map.
 		token, err := dec.Token()
 		if err != nil {
-			return nil, fmt.Errorf("unexpected error while reading index file: %w", err)
+			return fmt.Errorf("unexpected error while reading index file: %w", err)
 		}
 		if key, ok := token.(string); !ok || key != "packages" {
 			continue
@@ -226,10 +222,10 @@ func (i *Indexer) readPackagesFromIndex(reader *storage.Reader) (packages.Packag
 		// Read the opening array now.
 		token, err = dec.Token()
 		if err != nil {
-			return nil, fmt.Errorf("unexpected error while reading index file: %w", err)
+			return fmt.Errorf("unexpected error while reading index file: %w", err)
 		}
 		if delim, ok := token.(json.Delim); !ok || delim != '[' {
-			return nil, fmt.Errorf("expected opening array, found %v", token)
+			return fmt.Errorf("expected opening array, found %v", token)
 		}
 
 		// Read the array of packages one by one.
@@ -237,23 +233,36 @@ func (i *Indexer) readPackagesFromIndex(reader *storage.Reader) (packages.Packag
 			var p packageIndex
 			err = dec.Decode(&p)
 			if err != nil {
-				return nil, fmt.Errorf("unexpected error parsing package from index file (token: %v): %w", token, err)
+				return fmt.Errorf("unexpected error parsing package from index file (token: %v): %w", token, err)
 			}
 			m := p.PackageManifest
 			m.BasePath = fmt.Sprintf("%s-%s.zip", m.Name, m.Version)
 			m.SetRemoteResolver(i.resolver)
 
-			transformedPackages = append(transformedPackages, &m)
+			found := false
+			for j := range i.packageList {
+				if i.packageList[j].BasePath == m.BasePath {
+					found = true
+					// required to replace the package in case there has been
+					// introduced new fields in the PackageManifest that needs to be
+					// included in the API responses
+					i.packageList[j] = &m
+					break
+				}
+			}
+			if !found {
+				i.packageList = append(i.packageList, &m)
+			}
 		}
 
 		// Read the closing array delimiter.
 		token, err = dec.Token()
 		if err != nil {
-			return nil, fmt.Errorf("unexpected error while reading index file: %w", err)
+			return fmt.Errorf("unexpected error while reading index file: %w", err)
 		}
 		if delim, ok := token.(json.Delim); !ok || delim != ']' {
-			return nil, fmt.Errorf("expected closing array, found %v: %w", token, err)
+			return fmt.Errorf("expected closing array, found %v: %w", token, err)
 		}
 	}
-	return transformedPackages, nil
+	return nil
 }
