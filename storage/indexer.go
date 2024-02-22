@@ -9,7 +9,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
+	"math/rand"
 	"net/url"
+	"os"
+	"runtime/pprof"
 	"strings"
 	"sync"
 	"time"
@@ -253,6 +257,13 @@ func (i *Indexer) readPackagesFromIndex(reader *storage.Reader) error {
 			if !found {
 				i.packageList = append(i.packageList, &m)
 			}
+			memprofile := fmt.Sprintf("mem.pprof.count.%d.out", rand.Intn(1000000000))
+			f, err := os.Create(memprofile)
+			if err != nil {
+				log.Fatal(err)
+			}
+			pprof.WriteHeapProfile(f)
+			f.Close()
 		}
 
 		// Read the closing array delimiter.
