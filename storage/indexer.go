@@ -197,9 +197,17 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 }
 
 func (i *Indexer) readPackagesFromIndex(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, bucketName, rootStoragePath string, aCursor cursor) error {
-	reader, err := loadReaderSearchIndex(ctx, logger, storageClient, bucketName, rootStoragePath, aCursor)
+	span, ctx := apm.StartSpan(ctx, "LoadReaderSearchIndexAll", "app")
+	defer span.End()
+
+	indexFile := searchIndexAllFile
+
+	logger.Debug("load search-index-all index", zap.String("index.file", indexFile))
+
+	rootedIndexStoragePath := buildIndexStoragePath(rootStoragePath, aCursor, indexFile)
+	reader, err := storageClient.Bucket(bucketName).Object(rootedIndexStoragePath).NewReader(ctx)
 	if err != nil {
-		return err
+		return fmt.Errorf("can't read the index file (path: %s): %w", rootedIndexStoragePath, err)
 	}
 	defer reader.Close()
 	// Using a decoder here as tokenizer to parse the list of packages as a stream
@@ -210,9 +218,6 @@ func (i *Indexer) readPackagesFromIndex(ctx context.Context, logger *zap.Logger,
 	// in memory.
 	// `jsoniter` seemed to be slightly faster, but to use more memory for our use case,
 	// and we are looking to optimize for memory use.
-	span, _ := apm.StartSpan(ctx, "LoadPackagesFromReader", "app")
-	defer span.End()
-
 	dec := json.NewDecoder(reader)
 	for dec.More() {
 		// Read everything till the "packages" key in the map.
