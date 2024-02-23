@@ -171,17 +171,10 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	}
 	i.logger.Info("cursor will be updated", zap.String("cursor.current", i.cursor), zap.String("cursor.next", storageCursor.Current))
 
-	indexReader, err := loadReaderSearchIndex(ctx, i.logger, i.storageClient, bucketName, rootStoragePath, *storageCursor)
-	if err != nil {
-		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
-		return fmt.Errorf("can't create the reader for the search-index-all index: %w", err)
-	}
-	defer indexReader.Close()
-
 	i.m.Lock()
 	defer i.m.Unlock()
 	i.cursor = storageCursor.Current
-	if err = i.readPackagesFromIndex(indexReader); err != nil {
+	if err = i.readPackagesFromIndex(ctx, i.logger, i.storageClient, bucketName, rootStoragePath, *storageCursor); err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 		return fmt.Errorf("can't transform the search-index-all: %w", err)
 	}
@@ -203,7 +196,20 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	return i.packageList, nil
 }
 
-func (i *Indexer) readPackagesFromIndex(reader *storage.Reader) error {
+func (i *Indexer) readPackagesFromIndex(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, bucketName, rootStoragePath string, aCursor cursor) error {
+	span, ctx := apm.StartSpan(ctx, "LoadReaderSearchIndexAll", "app")
+	defer span.End()
+
+	indexFile := searchIndexAllFile
+
+	logger.Debug("load search-index-all index", zap.String("index.file", indexFile))
+
+	rootedIndexStoragePath := buildIndexStoragePath(rootStoragePath, aCursor, indexFile)
+	reader, err := storageClient.Bucket(bucketName).Object(rootedIndexStoragePath).NewReader(ctx)
+	if err != nil {
+		return fmt.Errorf("can't read the index file (path: %s): %w", rootedIndexStoragePath, err)
+	}
+	defer reader.Close()
 	// Using a decoder here as tokenizer to parse the list of packages as a stream
 	// instead of needing the whole document in memory at the same time. This helps
 	// reducing memory usage.
@@ -258,7 +264,7 @@ func (i *Indexer) readPackagesFromIndex(reader *storage.Reader) error {
 				i.packageList = append(i.packageList, &m)
 			}
 		}
-		memprofile := fmt.Sprintf("mem.pprof.other.count.%d.out", rand.Intn(1000000000))
+		memprofile := fmt.Sprintf("mem.pprof.other.move.count.%d.out", rand.Intn(1000000000))
 		f, err := os.Create(memprofile)
 		if err != nil {
 			log.Fatal(err)
