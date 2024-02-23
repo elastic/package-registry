@@ -28,11 +28,9 @@ func loadReaderSearchIndex(ctx context.Context, logger *zap.Logger, storageClien
 	span, ctx := apm.StartSpan(ctx, "LoadReaderSearchIndexAll", "app")
 	defer span.End()
 
-	indexFile := searchIndexAllFile
+	logger.Debug("load search-index-all index", zap.String("index.file", searchIndexAllFile))
 
-	logger.Debug("load search-index-all index", zap.String("index.file", indexFile))
-
-	rootedIndexStoragePath := buildIndexStoragePath(rootStoragePath, aCursor, indexFile)
+	rootedIndexStoragePath := buildIndexStoragePath(rootStoragePath, aCursor, searchIndexAllFile)
 	objectReader, err := storageClient.Bucket(bucketName).Object(rootedIndexStoragePath).NewReader(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("can't read the index file (path: %s): %w", rootedIndexStoragePath, err)

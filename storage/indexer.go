@@ -200,9 +200,11 @@ func (i *Indexer) readPackagesFromIndex(ctx context.Context, logger *zap.Logger,
 	span, ctx := apm.StartSpan(ctx, "LoadReaderSearchIndexAll", "app")
 	defer span.End()
 
-	logger.Debug("load search-index-all index", zap.String("index.file", searchIndexAllFile))
+	indexFile := searchIndexAllFile
 
-	rootedIndexStoragePath := buildIndexStoragePath(rootStoragePath, aCursor, searchIndexAllFile)
+	logger.Debug("load search-index-all index", zap.String("index.file", indexFile))
+
+	rootedIndexStoragePath := buildIndexStoragePath(rootStoragePath, aCursor, indexFile)
 	reader, err := storageClient.Bucket(bucketName).Object(rootedIndexStoragePath).NewReader(ctx)
 	if err != nil {
 		return fmt.Errorf("can't read the index file (path: %s): %w", rootedIndexStoragePath, err)
@@ -236,6 +238,7 @@ func (i *Indexer) readPackagesFromIndex(ctx context.Context, logger *zap.Logger,
 			return fmt.Errorf("expected opening array, found %v", token)
 		}
 
+		first := true
 		// Read the array of packages one by one.
 		for dec.More() {
 			var p packageIndex
@@ -261,14 +264,17 @@ func (i *Indexer) readPackagesFromIndex(ctx context.Context, logger *zap.Logger,
 			if !found {
 				i.packageList = append(i.packageList, &m)
 			}
+			if first {
+				memprofile := fmt.Sprintf("mem.pprof.other.move.count.%d.out", rand.Intn(1000000000))
+				f, err := os.Create(memprofile)
+				if err != nil {
+					log.Fatal(err)
+				}
+				pprof.WriteHeapProfile(f)
+				f.Close()
+			}
+			first = false
 		}
-		memprofile := fmt.Sprintf("mem.pprof.other.move.count.%d.out", rand.Intn(1000000000))
-		f, err := os.Create(memprofile)
-		if err != nil {
-			log.Fatal(err)
-		}
-		pprof.WriteHeapProfile(f)
-		f.Close()
 
 		// Read the closing array delimiter.
 		token, err = dec.Token()
