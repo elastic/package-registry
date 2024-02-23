@@ -32,6 +32,8 @@ func TestInit(t *testing.T) {
 
 func BenchmarkInit(b *testing.B) {
 	// given
+	b.Skip("skip")
+
 	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
@@ -45,18 +47,20 @@ func BenchmarkInit(b *testing.B) {
 }
 
 func BenchmarkUpdate(b *testing.B) {
-	b.Skip("skip")
 	logger := zap.New(zapcore.NewNopCore())
 	for i := 0; i < b.N; i++ {
-		fs := PrepareFakeServer(b, "testdata/search-index-all-full-except-one.json")
+		fs := PrepareFakeServer(b, "testdata/search-index-all-small.json")
 		storageClient := fs.Client()
 
 		indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
 		err := indexer.Init(context.Background())
 		require.NoError(b, err)
 
-		const secondRevision = "2"
-		updateFakeServer(b, fs, secondRevision, "testdata/search-index-all-full.json")
+		updateFakeServer(b, fs, "2", "testdata/search-index-all-full-except-one.json")
+		err = indexer.updateIndex(context.Background())
+		require.NoError(b, err)
+
+		updateFakeServer(b, fs, "3", "testdata/search-index-all-full.json")
 		err = indexer.updateIndex(context.Background())
 		require.NoError(b, err)
 

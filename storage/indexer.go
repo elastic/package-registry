@@ -257,14 +257,14 @@ func (i *Indexer) readPackagesFromIndex(reader *storage.Reader) error {
 			if !found {
 				i.packageList = append(i.packageList, &m)
 			}
-			memprofile := fmt.Sprintf("mem.pprof.count.%d.out", rand.Intn(1000000000))
-			f, err := os.Create(memprofile)
-			if err != nil {
-				log.Fatal(err)
-			}
-			pprof.WriteHeapProfile(f)
-			f.Close()
 		}
+		memprofile := fmt.Sprintf("mem.pprof.other.count.%d.out", rand.Intn(1000000000))
+		f, err := os.Create(memprofile)
+		if err != nil {
+			log.Fatal(err)
+		}
+		pprof.WriteHeapProfile(f)
+		f.Close()
 
 		// Read the closing array delimiter.
 		token, err = dec.Token()
