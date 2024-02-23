@@ -265,6 +265,7 @@ func (i *Indexer) readPackagesFromIndex(ctx context.Context, logger *zap.Logger,
 				i.packageList = append(i.packageList, &m)
 			}
 			if first {
+				// TODO: remove profiling
 				memprofile := fmt.Sprintf("mem.pprof.other.move.count.%d.out", rand.Intn(1000000000))
 				f, err := os.Create(memprofile)
 				if err != nil {
