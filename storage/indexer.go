@@ -76,7 +76,7 @@ func (i *Indexer) Init(ctx context.Context) error {
 		return fmt.Errorf("can't update index file: %w", err)
 	}
 
-	go i.watchIndices(ctx)
+	go i.watchIndices(apm.ContextWithTransaction(ctx, nil))
 	return nil
 }
 
