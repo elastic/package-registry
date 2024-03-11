@@ -14,6 +14,7 @@ import (
 )
 
 type storageResolver struct {
+	client               *http.Client
 	artifactsPackagesURL url.URL
 	artifactsStaticURL   url.URL
 }
@@ -26,15 +27,13 @@ var acceptedHeaders = map[string]string{
 }
 
 func (resolver storageResolver) pipeRequestProxy(w http.ResponseWriter, r *http.Request, remoteURL string) {
-	client := &http.Client{}
-
 	forwardRequest, err := http.NewRequestWithContext(r.Context(), r.Method, remoteURL, nil)
 	if err != nil {
 		http.Error(w, "failed to create request for the package-storage", http.StatusInternalServerError)
 		return
 	}
 
-	resp, err := client.Do(forwardRequest)
+	resp, err := resolver.client.Do(forwardRequest)
 	if err != nil {
 		http.Error(w, "error from package-storage server", http.StatusInternalServerError)
 		return
