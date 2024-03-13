@@ -7,7 +7,7 @@ set -euo pipefail
 pushDockerImage() {
     docker buildx create --use
     docker buildx build --push \
-        --platform linux/amd64,linux/arm64 \
+        --platform linux/amd64,linux/arm64/v8 \
         -t "${DOCKER_IMG_TAG}" \
         -t "${DOCKER_IMG_TAG_BRANCH}" \
         --label BRANCH_NAME="${TAG_NAME}" \
