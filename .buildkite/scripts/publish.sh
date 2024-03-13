@@ -5,18 +5,18 @@ set -euo pipefail
 
 
 pushDockerImage() {
-    docker build \
+    docker buildx create --use
+    docker buildx build --push \
+        --platform linux/amd64,linux/arm64 \
         -t "${DOCKER_IMG_TAG}" \
+        -t "${DOCKER_IMG_TAG_BRANCH}" \
         --label BRANCH_NAME="${TAG_NAME}" \
         --label GIT_SHA="${BUILDKITE_COMMIT}" \
         --label GO_VERSION="${SETUP_GOLANG_VERSION}" \
         --label TIMESTAMP="$(date +%Y-%m-%d_%H:%M)" \
         .
-    retry 3 docker push "${DOCKER_IMG_TAG}"
-    echo "Docker image pushed: ${DOCKER_IMG_TAG}"
-    docker tag "${DOCKER_IMG_TAG}" "${DOCKER_IMG_TAG_BRANCH}"
-    retry 3 docker push "${DOCKER_IMG_TAG_BRANCH}"
-    echo "Docker image pushed: ${DOCKER_IMG_TAG_BRANCH}"
+
+    echo "Docker images pushed: ${DOCKER_IMG_TAG} ${DOCKER_IMG_TAG_BRANCH}"
 }
 
 if [[ "${BUILDKITE_PULL_REQUEST}" != "false" ]]; then

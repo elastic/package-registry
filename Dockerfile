@@ -3,7 +3,7 @@
 
 # Build binary
 ARG GO_VERSION=1.21.7
-FROM golang:${GO_VERSION} AS builder
+FROM --platform=${BUILDPLATFORM:-linux} golang:${GO_VERSION} AS builder
 
 COPY ./ /package-registry
 WORKDIR /package-registry
