@@ -7,7 +7,10 @@ FROM --platform=${BUILDPLATFORM:-linux} golang:${GO_VERSION} AS builder
 
 COPY ./ /package-registry
 WORKDIR /package-registry
-RUN go build .
+
+ARG TARGETPLATFORM
+
+RUN make release-${TARGETPLATFORM:-linux}
 
 
 # Run binary
