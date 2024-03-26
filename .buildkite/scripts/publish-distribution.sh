@@ -21,6 +21,6 @@ docker buildx create --use
 if [[ ${DRY_RUN:-true} == "true" ]]; then
     docker buildx imagetools create --dry-run -t "${DOCKER_IMG_TARGET}" "${DOCKER_IMG_SOURCE}"
 else
-    docker buildx imagetools create -t "${DOCKER_IMG_TARGET}" "${DOCKER_IMG_SOURCE}"
+    retry 3 docker buildx imagetools create -t "${DOCKER_IMG_TARGET}" "${DOCKER_IMG_SOURCE}"
     echo "Docker image pushed: ${DOCKER_IMG_TARGET}"
 fi
