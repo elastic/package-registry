@@ -6,9 +6,14 @@ package storage
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
+	"math/rand"
 	"net/url"
+	"os"
+	"runtime/pprof"
 	"strings"
 	"sync"
 	"time"
@@ -166,23 +171,13 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	}
 	i.logger.Info("cursor will be updated", zap.String("cursor.current", i.cursor), zap.String("cursor.next", storageCursor.Current))
 
-	anIndex, err := loadSearchIndexAll(ctx, i.logger, i.storageClient, bucketName, rootStoragePath, *storageCursor)
-	if err != nil {
-		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
-		return fmt.Errorf("can't load the search-index-all index content: %w", err)
-	}
-	i.logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", len(anIndex.Packages))))
-
-	refreshedList, err := i.transformSearchIndexAllToPackages(*anIndex)
-	if err != nil {
-		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
-		return fmt.Errorf("can't transform the search-index-all: %w", err)
-	}
-
 	i.m.Lock()
 	defer i.m.Unlock()
 	i.cursor = storageCursor.Current
-	i.packageList = refreshedList
+	if err = i.readPackagesFromIndex(ctx, i.logger, i.storageClient, bucketName, rootStoragePath, *storageCursor); err != nil {
+		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
+		return fmt.Errorf("can't transform the search-index-all: %w", err)
+	}
 	metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
 	metrics.NumberIndexedPackages.Set(float64(len(i.packageList)))
 	return nil
@@ -201,13 +196,95 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	return i.packageList, nil
 }
 
-func (i *Indexer) transformSearchIndexAllToPackages(sia searchIndexAll) (packages.Packages, error) {
-	var transformedPackages packages.Packages
-	for j := range sia.Packages {
-		m := sia.Packages[j].PackageManifest
-		m.BasePath = fmt.Sprintf("%s-%s.zip", m.Name, m.Version)
-		m.SetRemoteResolver(i.resolver)
-		transformedPackages = append(transformedPackages, &m)
+func (i *Indexer) readPackagesFromIndex(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, bucketName, rootStoragePath string, aCursor cursor) error {
+	span, ctx := apm.StartSpan(ctx, "LoadReaderSearchIndexAll", "app")
+	defer span.End()
+
+	indexFile := searchIndexAllFile
+
+	logger.Debug("load search-index-all index", zap.String("index.file", indexFile))
+
+	rootedIndexStoragePath := buildIndexStoragePath(rootStoragePath, aCursor, indexFile)
+	reader, err := storageClient.Bucket(bucketName).Object(rootedIndexStoragePath).NewReader(ctx)
+	if err != nil {
+		return fmt.Errorf("can't read the index file (path: %s): %w", rootedIndexStoragePath, err)
 	}
-	return transformedPackages, nil
+	defer reader.Close()
+	// Using a decoder here as tokenizer to parse the list of packages as a stream
+	// instead of needing the whole document in memory at the same time. This helps
+	// reducing memory usage.
+	// Using `Unmarshal(doc, &sia)` would require to read the whole document.
+	// Using `dec.Decode(&sia)` would also make the decoder to keep the whole document
+	// in memory.
+	// `jsoniter` seemed to be slightly faster, but to use more memory for our use case,
+	// and we are looking to optimize for memory use.
+	dec := json.NewDecoder(reader)
+	for dec.More() {
+		// Read everything till the "packages" key in the map.
+		token, err := dec.Token()
+		if err != nil {
+			return fmt.Errorf("unexpected error while reading index file: %w", err)
+		}
+		if key, ok := token.(string); !ok || key != "packages" {
+			continue
+		}
+
+		// Read the opening array now.
+		token, err = dec.Token()
+		if err != nil {
+			return fmt.Errorf("unexpected error while reading index file: %w", err)
+		}
+		if delim, ok := token.(json.Delim); !ok || delim != '[' {
+			return fmt.Errorf("expected opening array, found %v", token)
+		}
+
+		first := true
+		// Read the array of packages one by one.
+		for dec.More() {
+			var p packageIndex
+			err = dec.Decode(&p)
+			if err != nil {
+				return fmt.Errorf("unexpected error parsing package from index file (token: %v): %w", token, err)
+			}
+			m := p.PackageManifest
+			m.BasePath = fmt.Sprintf("%s-%s.zip", m.Name, m.Version)
+			m.SetRemoteResolver(i.resolver)
+
+			found := false
+			for j := range i.packageList {
+				if i.packageList[j].BasePath == m.BasePath {
+					found = true
+					// required to replace the package in case there has been
+					// introduced new fields in the PackageManifest that needs to be
+					// included in the API responses
+					i.packageList[j] = &m
+					break
+				}
+			}
+			if !found {
+				i.packageList = append(i.packageList, &m)
+			}
+			if first {
+				// TODO: remove profiling
+				memprofile := fmt.Sprintf("mem.pprof.other.move.count.%d.out", rand.Intn(1000000000))
+				f, err := os.Create(memprofile)
+				if err != nil {
+					log.Fatal(err)
+				}
+				pprof.WriteHeapProfile(f)
+				f.Close()
+			}
+			first = false
+		}
+
+		// Read the closing array delimiter.
+		token, err = dec.Token()
+		if err != nil {
+			return fmt.Errorf("unexpected error while reading index file: %w", err)
+		}
+		if delim, ok := token.(json.Delim); !ok || delim != ']' {
+			return fmt.Errorf("expected closing array, found %v: %w", token, err)
+		}
+	}
+	return nil
 }

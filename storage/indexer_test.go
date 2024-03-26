@@ -9,6 +9,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 
 	"github.com/elastic/package-registry/internal/util"
 	"github.com/elastic/package-registry/packages"
@@ -30,14 +32,42 @@ func TestInit(t *testing.T) {
 
 func BenchmarkInit(b *testing.B) {
 	// given
+	b.Skip("skip")
+
 	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 
-	logger := util.NewTestLogger()
+	logger := zap.New(zapcore.NewNopCore())
+
+	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
 		err := indexer.Init(context.Background())
+		require.NoError(b, err)
+	}
+}
+
+func BenchmarkUpdate(b *testing.B) {
+	logger := zap.New(zapcore.NewNopCore())
+
+	fs := PrepareFakeServer(b, "testdata/search-index-all-small.json")
+	storageClient := fs.Client()
+	defer fs.Stop()
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
+		err := indexer.Init(context.Background())
+		require.NoError(b, err)
+
+		updateFakeServer(b, fs, "2", "testdata/search-index-all-full-except-one.json")
+		err = indexer.updateIndex(context.Background())
+		require.NoError(b, err)
+
+		updateFakeServer(b, fs, "3", "testdata/search-index-all-full.json")
+		err = indexer.updateIndex(context.Background())
 		require.NoError(b, err)
 	}
 }
