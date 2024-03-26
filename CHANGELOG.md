@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Add support for multi-platform container images. [#1162](https://github.com/elastic/package-registry/pull/1162)
+
 ### Deprecated
 
 ### Known Issues
