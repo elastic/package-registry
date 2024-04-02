@@ -20,6 +20,8 @@ pushDockerImage() {
     # essentially the same as above with --push flag; the build should be in the cache
     retry 3 docker buildx build --push \
         --platform linux/amd64,linux/arm64/v8 \
+	--build-arg BUILDER_IMAGE=docker.elastic.co/wolfi/go \
+	--build-arg RUNNER_IMAGE=docker.elastic.co/wolfi/chainguard-base \
         -t "${DOCKER_IMG_TAG}" \
         -t "${DOCKER_IMG_TAG_BRANCH}" \
         --label BRANCH_NAME="${TAG_NAME}" \
