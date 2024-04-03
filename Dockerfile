@@ -1,9 +1,12 @@
 # This image contains the package-registry binary.
 # It expects packages to be mounted under /packages/package-registry or have a config file loaded into /package-registry/config.yml
 
+ARG GO_VERSION=1.22.7
+ARG BUILDER_IMAGE=golang
+ARG RUNNER_IMAGE=cgr.dev/chainguard/wolfi-base
+
 # Build binary
-ARG GO_VERSION=1.22.2
-FROM --platform=${BUILDPLATFORM:-linux} golang:${GO_VERSION} AS builder
+FROM --platform=${BUILDPLATFORM:-linux} ${BUILDER_IMAGE}:${GO_VERSION} AS builder
 
 COPY ./ /package-registry
 WORKDIR /package-registry
@@ -14,12 +17,13 @@ RUN make release-${TARGETPLATFORM:-linux}
 
 
 # Run binary
-FROM ubuntu:22.04
+FROM ${RUNNER_IMAGE}
 
 # Get dependencies
-RUN apt-get update && \
-    apt-get install -y media-types zip rsync curl && \
-    rm -rf /var/lib/apt/lists/*
+# Mailcap is installed to get mime types information.
+RUN apk update && \
+    apk add mailcap zip rsync curl && \
+    rm -rf /var/cache/apk/*
 
 # Move binary from the builder image
 COPY --from=builder /package-registry/package-registry /package-registry/package-registry

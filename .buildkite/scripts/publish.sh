@@ -3,30 +3,28 @@ source .buildkite/scripts/tooling.sh
 
 set -euo pipefail
 
-
-pushDockerImage() {
-    docker buildx create --use
-    # first build the image without push
-    docker buildx build \
+build_docker_image() {
+    docker buildx build "$@" \
         --platform linux/amd64,linux/arm64/v8 \
         -t "${DOCKER_IMG_TAG}" \
         -t "${DOCKER_IMG_TAG_BRANCH}" \
+        --build-arg BUILDER_IMAGE=docker.elastic.co/wolfi/go \
+        --build-arg RUNNER_IMAGE=docker.elastic.co/wolfi/chainguard-base \
         --label BRANCH_NAME="${TAG_NAME}" \
         --label GIT_SHA="${BUILDKITE_COMMIT}" \
         --label GO_VERSION="${SETUP_GOLANG_VERSION}" \
         --label TIMESTAMP="$(date +%Y-%m-%d_%H:%M)" \
         .
+}
+
+push_docker_image() {
+    docker buildx create --use
+
+    # first build the image without push
+    build_docker_image
 
     # essentially the same as above with --push flag; the build should be in the cache
-    retry 3 docker buildx build --push \
-        --platform linux/amd64,linux/arm64/v8 \
-        -t "${DOCKER_IMG_TAG}" \
-        -t "${DOCKER_IMG_TAG_BRANCH}" \
-        --label BRANCH_NAME="${TAG_NAME}" \
-        --label GIT_SHA="${BUILDKITE_COMMIT}" \
-        --label GO_VERSION="${SETUP_GOLANG_VERSION}" \
-        --label TIMESTAMP="$(date +%Y-%m-%d_%H:%M)" \
-        .
+    retry 3 build_docker_image --push
 
     echo "Docker images pushed: ${DOCKER_IMG_TAG} ${DOCKER_IMG_TAG_BRANCH}"
 }
@@ -47,4 +45,4 @@ fi
 DOCKER_IMG_TAG="${DOCKER_NAMESPACE}:${BUILDKITE_COMMIT}"
 DOCKER_IMG_TAG_BRANCH="${DOCKER_NAMESPACE}:${TAG_NAME}"
 
-pushDockerImage
+push_docker_image
