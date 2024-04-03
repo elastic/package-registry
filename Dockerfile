@@ -2,7 +2,7 @@
 # It expects packages to be mounted under /packages/package-registry or have a config file loaded into /package-registry/config.yml
 
 # Build binary
-ARG GO_VERSION=1.21.7
+ARG GO_VERSION=1.22.2
 FROM --platform=${BUILDPLATFORM:-linux} golang:${GO_VERSION} AS builder
 
 COPY ./ /package-registry
