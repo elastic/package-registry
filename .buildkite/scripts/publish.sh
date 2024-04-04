@@ -4,10 +4,14 @@ source .buildkite/scripts/tooling.sh
 set -euo pipefail
 
 build_docker_image() {
+    local go_version
+    go_version=$(cat .go-version)
+
     docker buildx build "$@" \
         --platform linux/amd64,linux/arm64/v8 \
         -t "${DOCKER_IMG_TAG}" \
         -t "${DOCKER_IMG_TAG_BRANCH}" \
+        --build-arg GO_VERSION="${go_version}" \
         --build-arg BUILDER_IMAGE=docker.elastic.co/wolfi/go \
         --build-arg RUNNER_IMAGE=docker.elastic.co/wolfi/chainguard-base \
         --label BRANCH_NAME="${TAG_NAME}" \

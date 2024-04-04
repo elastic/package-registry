@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bugfixes
 
 * Fix context propagation in APM transaction for watcher backend process. [#1150](https://github.com/elastic/package-registry/pull/1150) [#1152](https://github.com/elastic/package-registry/pull/1152)
+* Update Go Runtime to 1.22.2. [#1170](https://github.com/elastic/package-registry/issues/1170)
 
 ### Added
 
