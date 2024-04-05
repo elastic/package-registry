@@ -7,9 +7,10 @@ package storage
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 
 	"cloud.google.com/go/storage"
-	"github.com/pkg/errors"
+
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 )
@@ -35,17 +36,17 @@ func loadCursor(ctx context.Context, logger *zap.Logger, storageClient *storage.
 	rootedCursorStoragePath := joinObjectPaths(rootStoragePath, cursorStoragePath)
 	objectReader, err := storageClient.Bucket(bucketName).Object(rootedCursorStoragePath).NewReader(ctx)
 	if err == storage.ErrObjectNotExist {
-		return nil, errors.Wrapf(err, "cursor file doesn't exist, most likely a first run (bucketName: %s, path: %s)", bucketName, rootedCursorStoragePath)
+		return nil, fmt.Errorf("cursor file doesn't exist, most likely a first run (bucketName: %s, path: %s): %w", bucketName, rootedCursorStoragePath, err)
 	}
 	if err != nil {
-		return nil, errors.Wrapf(err, "can't read the cursor file (path: %s)", rootedCursorStoragePath)
+		return nil, fmt.Errorf("can't read the cursor file (path: %s): %w", rootedCursorStoragePath, err)
 	}
 	defer objectReader.Close()
 
 	var c cursor
 	err = json.NewDecoder(objectReader).Decode(&c)
 	if err != nil {
-		return nil, errors.Wrapf(err, "can't decode the cursor file")
+		return nil, fmt.Errorf("can't decode the cursor file: %w", err)
 	}
 
 	logger.Debug("loaded cursor file", zap.String("cursor", c.String()))

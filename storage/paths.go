@@ -5,10 +5,9 @@
 package storage
 
 import (
+	"fmt"
 	"net/url"
 	"path"
-
-	"github.com/pkg/errors"
 )
 
 const (
@@ -26,7 +25,7 @@ const (
 func extractBucketNameFromURL(anURL string) (string, string, error) {
 	u, err := url.Parse(anURL)
 	if err != nil {
-		return "", "", errors.Wrap(err, "can't parse object URL")
+		return "", "", fmt.Errorf("can't parse object URL: %w", err)
 	}
 
 	uPath := u.Path

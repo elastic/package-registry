@@ -6,6 +6,7 @@ package storage
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net"
 	"net/http"
@@ -15,7 +16,7 @@ import (
 	"time"
 
 	"cloud.google.com/go/storage"
-	"github.com/pkg/errors"
+
 	"github.com/prometheus/client_golang/prometheus"
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
@@ -63,21 +64,21 @@ func (i *Indexer) Init(ctx context.Context) error {
 
 	err := validateIndexerOptions(i.options)
 	if err != nil {
-		return errors.Wrapf(err, "validation failed")
+		return fmt.Errorf("validation failed: %w", err)
 	}
 
 	err = i.setupResolver()
 	if err != nil {
-		return errors.Wrapf(err, "can't setup remote resolver")
+		return fmt.Errorf("can't setup remote resolver: %w", err)
 	}
 
 	// Populate index file for the first time.
 	err = i.updateIndex(ctx)
 	if err != nil {
-		return errors.Wrap(err, "can't update index file")
+		return fmt.Errorf("can't update index file: %w", err)
 	}
 
-	go i.watchIndices(ctx)
+	go i.watchIndices(apm.ContextWithTransaction(ctx, nil))
 	return nil
 }
 
@@ -87,7 +88,7 @@ func validateIndexerOptions(options IndexerOptions) error {
 	}
 	_, err := url.Parse(options.PackageStorageEndpoint)
 	if err != nil {
-		return errors.Wrap(err, "invalid options.PackageStorageEndpoint, URL expected")
+		return fmt.Errorf("invalid options.PackageStorageEndpoint, URL expected: %w", err)
 	}
 	if options.WatchInterval < 0 {
 		return errors.New("options.WatchInterval must be greater than or equal to 0")
@@ -135,7 +136,7 @@ func (i *Indexer) watchIndices(ctx context.Context) {
 			tx := i.options.APMTracer.StartTransaction("updateIndex", "backend.watcher")
 			defer tx.End()
 
-			err = i.updateIndex(ctx)
+			err = i.updateIndex(apm.ContextWithTransaction(ctx, tx))
 			if err != nil {
 				i.logger.Error("can't update index file", zap.Error(err))
 			}
@@ -162,13 +163,13 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	bucketName, rootStoragePath, err := extractBucketNameFromURL(i.options.PackageStorageBucketInternal)
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
-		return errors.Wrapf(err, "can't extract bucket name from URL (url: %s)", i.options.PackageStorageBucketInternal)
+		return fmt.Errorf("can't extract bucket name from URL (url: %s): %w", i.options.PackageStorageBucketInternal, err)
 	}
 
 	storageCursor, err := loadCursor(ctx, i.logger, i.storageClient, bucketName, rootStoragePath)
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
-		return errors.Wrap(err, "can't load latest cursor")
+		return fmt.Errorf("can't load latest cursor: %w", err)
 	}
 
 	if storageCursor.Current == i.cursor {
@@ -180,14 +181,14 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	anIndex, err := loadSearchIndexAll(ctx, i.logger, i.storageClient, bucketName, rootStoragePath, *storageCursor)
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
-		return errors.Wrapf(err, "can't load the search-index-all index content")
+		return fmt.Errorf("can't load the search-index-all index content: %w", err)
 	}
 	i.logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", len(anIndex.Packages))))
 
 	refreshedList, err := i.transformSearchIndexAllToPackages(*anIndex)
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
-		return errors.Wrap(err, "can't transform the search-index-all")
+		return fmt.Errorf("can't transform the search-index-all: %w", err)
 	}
 
 	i.m.Lock()
