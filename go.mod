@@ -13,7 +13,7 @@ require (
 	github.com/hashicorp/go-retryablehttp v0.7.5
 	github.com/joeshaw/multierror v0.0.0-20140124173710-69b34d4ec901
 	github.com/magefile/mage v1.15.0
-	github.com/prometheus/client_golang v1.19.0
+	github.com/prometheus/client_golang v1.19.1
 	github.com/stretchr/testify v1.9.0
 	go.elastic.co/apm/module/apmgorilla/v2 v2.6.0
 	go.elastic.co/apm/module/apmzap/v2 v2.6.0
