@@ -63,6 +63,7 @@ func TestEndpoints(t *testing.T) {
 		{"/index.json", "", "index.json", indexHandleFunc},
 		{"/search", "/search", "search.json", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/search?all=true", "/search", "search-all.json", searchHandler(testLogger, indexer, testCacheTime)},
+		{"/detection_rules", "/detection_rules", "detection_rules.json", detectionRulesHandler(testLogger, indexer, testCacheTime)},
 		{"/categories", "/categories", "categories.json", categoriesHandler(testLogger, indexer, testCacheTime)},
 		{"/categories?experimental=true", "/categories", "categories-experimental.json", categoriesHandler(testLogger, indexer, testCacheTime)},
 		{"/categories?experimental=foo", "/categories", "categories-experimental-error.txt", categoriesHandler(testLogger, indexer, testCacheTime)},

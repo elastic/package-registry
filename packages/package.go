@@ -46,6 +46,7 @@ type Package struct {
 	Vars            []Variable            `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
 	Elasticsearch   *PackageElasticsearch `config:"elasticsearch,omitempty" json:"elasticsearch,omitempty" yaml:"elasticsearch,omitempty"`
 	Agent           *PackageAgent         `config:"agent,omitempty" json:"agent,omitempty" yaml:"agent,omitempty"`
+	DetectionRules  []DetectionRule       `config:"detection_rules,omitempty" json:"detection_rules,omitempty" yaml:"detection_rules,omitempty"`
 	// Local path to the package dir
 	BasePath string `json:"-" yaml:"-"`
 
@@ -55,6 +56,11 @@ type Package struct {
 
 	fsBuilder FileSystemBuilder
 	resolver  RemoteResolver
+}
+
+type DetectionRule struct {
+	Query    string `config:"query" json:"query" validate:"required"`
+	Contents string `config:"contents" json:"contents" validate:"required"`
 }
 
 type FileSystemBuilder func(*Package) (PackageFileSystem, error)
@@ -76,6 +82,11 @@ type BasePackage struct {
 	Owner               *Owner               `config:"owner,omitempty" json:"owner,omitempty" yaml:"owner,omitempty"`
 	Categories          []string             `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
 	SignaturePath       string               `config:"signature_path,omitempty" json:"signature_path,omitempty" yaml:"signature_path,omitempty"`
+}
+
+type DetectionRulePackage struct {
+	Name           string          `config:"name" json:"name"`
+	DetectionRules []DetectionRule `config:"detection_rules,omitempty" json:"detection_rules,omitempty" yaml:"detection_rules,omitempty"`
 }
 
 // BasePolicyTemplate is used for the package policy templates in the /search endpoint
