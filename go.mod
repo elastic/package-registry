@@ -5,7 +5,7 @@ go 1.22.0
 require (
 	cloud.google.com/go/storage v1.42.0
 	github.com/Masterminds/semver/v3 v3.2.1
-	github.com/elastic/go-licenser v0.4.1
+	github.com/elastic/go-licenser v0.4.2
 	github.com/elastic/go-ucfg v0.8.8
 	github.com/felixge/httpsnoop v1.0.4
 	github.com/fsouza/fake-gcs-server v1.49.2
