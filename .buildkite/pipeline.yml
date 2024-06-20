@@ -42,7 +42,7 @@ steps:
       - ".buildkite/scripts/run-tests.ps1"
     agents:
       provider: "gcp"
-      image: "family/ci-windows-2022"
+      image: "family/core-windows-2022"
     artifact_paths:
       - "tests-report-win.xml"
 
