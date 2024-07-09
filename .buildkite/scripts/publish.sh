@@ -15,6 +15,7 @@ build_docker_image() {
         --build-arg BUILDER_IMAGE=docker.elastic.co/wolfi/go \
         --build-arg RUNNER_IMAGE=docker.elastic.co/wolfi/chainguard-base \
         --label BRANCH_NAME="${TAG_NAME}" \
+        --label PACKAGE_REGISTRY="${TAG_NAME}" \
         --label GIT_SHA="${BUILDKITE_COMMIT}" \
         --label GO_VERSION="${SETUP_GOLANG_VERSION}" \
         --label TIMESTAMP="$(date +%Y-%m-%d_%H:%M)" \
