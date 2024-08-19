@@ -3,6 +3,27 @@ source .buildkite/scripts/tooling.sh
 
 set -euo pipefail
 
+platform_type="$(uname)"
+hw_type="$(uname -m)"
+platform_type_lowercase="$(echo "${platform_type}" | tr '[:upper:]' '[:lower:]')"
+
+check_platform_architecture() {
+  case "${hw_type}" in
+    "x86_64")
+      arch_type="amd64"
+      ;;
+    "aarch64")
+      arch_type="arm64"
+      ;;
+    "arm64")
+      arch_type="arm64"
+      ;;
+    *)
+    echo "The current platform/OS type is unsupported yet"
+    ;;
+  esac
+}
+
 create_bin_folder() {
     mkdir -p "${WORKSPACE}/bin"
 }
@@ -12,13 +33,29 @@ add_bin_path(){
     export PATH="${WORKSPACE}/bin:${PATH}"
 }
 
-with_mage() {
+with_go() {
     create_bin_folder
-    retry 5 curl -sL -o "${WORKSPACE}/bin/mage.tar.gz" "https://github.com/magefile/mage/releases/download/v${SETUP_MAGE_VERSION}/mage_${SETUP_MAGE_VERSION}_Linux-64bit.tar.gz"
+    check_platform_architecture
 
-    tar -xvf "${WORKSPACE}/bin/mage.tar.gz" -C "${WORKSPACE}/bin"
-    chmod +x "${WORKSPACE}/bin/mage"
-    rm "${WORKSPACE}/bin/mage.tar.gz"
+    echo "--- Install Golang"
+    echo "GVM ${SETUP_GVM_VERSION} (platform ${platform_type_lowercase} arch ${arch_type}"
+    retry 5 curl -sL -o "${WORKSPACE}/bin/gvm" "https://github.com/andrewkroh/gvm/releases/download/${SETUP_GVM_VERSION}/gvm-${platform_type_lowercase}-${arch_type}"
+
+    chmod +x "${WORKSPACE}/bin/gvm"
+    eval "$(gvm "$(cat .go-version)")"
+    go version
+    which go
+    PATH="${PATH}:$(go env GOPATH)/bin"
+    export PATH
+}
+
+with_mage() {
+    if ! command -v go &> /dev/null ; then
+        with_go
+    fi
+
+    echo "--- Install mage"
+    go install "github.com/magefile/mage@${SETUP_MAGE_VERSION}"
     mage --version
 }
 
