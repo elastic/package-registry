@@ -147,8 +147,8 @@ These images contain only the package registry, they don't contain any package.
 ### Testing with Kibana
 
 The Docker image of Package Registry is just an empty distribution without any packages.
-To test it with Kibana using [elastic-package](https://github.com/elastic/elastic-package),
-you need to build a new package-registry docker image first from your required branch.
+You can test your own code with Kibana using [elastic-package](https://github.com/elastic/elastic-package).
+For that, you need to build a new Package Registry docker image from your required branch:
 
 0. Make sure you've built the Docker image for Package Registry (let's consider in this example `main`):
 
@@ -158,16 +158,16 @@ you need to build a new package-registry docker image first from your required b
      -t docker.elastic.co/package-registry/package-registry:main .
    ```
 
-1. Open the Dockerfile used by elastic-package and change the base image for the Package Registry (use `main` instead of `v1.15.0`):
-    - Usually the path would be `${HOME}/.elastic-package/profiles/default/stack/Dockerfile.package-registry`
-    - This Dockerfile already enables the Proxy mode (more info at [section](#proxy-mode))
+1. Build `elastic-package` changing the base image used for the Package Registry docker image (use `main` instead of `v1.24.0`):
+    - Update the docker image (and docker tag) used for package-registry [here](https://github.com/elastic/elastic-package/blob/db40e519788a4340f21d166e012f7a2298633cc4/internal/stack/versions.go#L9).
+        - Dockerfile used in `elastic-package` already [enables the Proxy mode](https://github.com/elastic/elastic-package/blob/db40e519788a4340f21d166e012f7a2298633cc4/internal/stack/_static/Dockerfile.package-registry.tmpl#L9) (more info at [section](#proxy-mode)).
 
-   ```Dockerfile
-   FROM docker.elastic.co/package-registry/package-registry:main
-   ```
+      ```golang
+      PackageRegistryBaseImage = "docker.elastic.co/package-registry/package-registry:main"
+      ```
+    - Build `elastic-package` (follow [elastic-package instructions](https://github.com/elastic/elastic-package/blob/main/README.md#development)).
 
-2. Now you're able to start the stack using Elastic Package (Elasticsearch, Kibana, Agent, Fleet Server) with your own Package Registry:
-
+2. Now you're able to start the stack using Elastic Package (running Elasticsearch, Kibana, Agent and Fleet Server services) with your own Package Registry service:
    ```shell
    elastic-package stack up -v -d
    ```
