@@ -97,19 +97,19 @@ Additionally, the following **frozen** endpoints exist and are **no longer updat
 
 **General**
 ```
-docker build .
-docker run -p 8080:8080 {image id from prior step}
+docker build --build-arg GO_VERSION="$(cat .go-version)" .
+docker run --rm -p 8080:8080 {image id from prior step}
 ```
 
 **Commands ready to cut-and-paste**
 ```
-docker build --rm -t docker.elastic.co/package-registry/package-registry:main .
-docker run -it -p 8080:8080 $(docker images -q docker.elastic.co/package-registry/package-registry:main)
+docker build --build-arg GO_VERSION="$(cat .go-version)" --rm -t docker.elastic.co/package-registry/package-registry:main .
+docker run --rm -it -p 8080:8080 $(docker images -q docker.elastic.co/package-registry/package-registry:main)
 ```
 
 **Listening on HTTPS**
 ```
-docker run -it -p 8443:8443 \
+docker run --rm -it -p 8443:8443 \
   -v /etc/ssl/package-registry.key:/etc/ssl/package-registry.key:ro \
   -v /etc/ssl/package-registry.crt:/etc/ssl/package-registry.crt:ro \
   -e EPR_ADDRESS=0.0.0.0:8443
@@ -144,7 +144,7 @@ you need to build a new package-registry docker image first from your required b
 0. Make sure you've built the Docker image for Package Registry (let's consider in this example `main`):
 
    ```bash
-   docker build --rm -t docker.elastic.co/package-registry/package-registry:main .
+   docker build --build-arg GO_VERSION="$(cat .go-version)" --rm -t docker.elastic.co/package-registry/package-registry:main .
    ```
 
 1. Open the Dockerfile used by elastic-package and change the base image for the Packge Registry (use `main` instead of `v1.15.0`):
@@ -202,7 +202,7 @@ package-registry -log-level debug
 Or with Docker
 
 ```
-docker run -it -e "EPR_LOG_LEVEL=debug" <docker-image-identifier>
+docker run --rm -it -e "EPR_LOG_LEVEL=debug" <docker-image-identifier>
 ```
 
 ## Performance monitoring
