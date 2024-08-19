@@ -96,20 +96,29 @@ Additionally, the following **frozen** endpoints exist and are **no longer updat
 * 7.9, CDN: https://epr-7-9.elastic.co
 
 **General**
-```
-docker build .
-docker run -p 8080:8080 {image id from prior step}
+```bash
+docker build --build-arg GO_VERSION="$(cat .go-version)" .
+docker run --rm -p 8080:8080 {image id from prior step}
 ```
 
 **Commands ready to cut-and-paste**
+```bash
+docker build --build-arg GO_VERSION="$(cat .go-version)" --rm -t docker.elastic.co/package-registry/package-registry:main .
+docker run --rm -it -p 8080:8080 $(docker images -q docker.elastic.co/package-registry/package-registry:main)
 ```
-docker build --rm -t docker.elastic.co/package-registry/package-registry:main .
-docker run -it -p 8080:8080 $(docker images -q docker.elastic.co/package-registry/package-registry:main)
+
+**Testing service with local packages**
+- Default configuration used in the image: [`config.docker.yml`](./config.docker.yml):
+
+```bash
+docker run --rm -it -p 8080:8080 \
+  -v /path/to/local/packages:/packages/package-registry \
+  $(docker images -q docker.elastic.co/package-registry/package-registry:main)
 ```
 
 **Listening on HTTPS**
-```
-docker run -it -p 8443:8443 \
+```bash
+docker run --rm -it -p 8443:8443 \
   -v /etc/ssl/package-registry.key:/etc/ssl/package-registry.key:ro \
   -v /etc/ssl/package-registry.crt:/etc/ssl/package-registry.crt:ro \
   -e EPR_ADDRESS=0.0.0.0:8443
@@ -138,26 +147,28 @@ These images contain only the package registry, they don't contain any package.
 ### Testing with Kibana
 
 The Docker image of Package Registry is just an empty distribution without any packages.
-To test it with Kibana using [elastic-package](https://github.com/elastic/elastic-package),
-you need to build a new package-registry docker image first from your required branch.
+You can test your own code with Kibana using [elastic-package](https://github.com/elastic/elastic-package).
+For that, you need to build a new Package Registry docker image from your required branch:
 
 0. Make sure you've built the Docker image for Package Registry (let's consider in this example `main`):
 
    ```bash
-   docker build --rm -t docker.elastic.co/package-registry/package-registry:main .
+   docker build --rm \
+     --build-arg GO_VERSION="$(cat .go-version)" \
+     -t docker.elastic.co/package-registry/package-registry:main .
    ```
 
-1. Open the Dockerfile used by elastic-package and change the base image for the Packge Registry (use `main` instead of `v1.15.0`):
-    - Usually the path would be `${HOME}/.elastic-package/profiles/default/stack/Dockerfile.package-registry`
-    - This Dockerfile already enables the Proxy mode (more info at [section](#proxy-mode))
+1. Build `elastic-package` changing the base image used for the Package Registry docker image (use `main` instead of `v1.24.0`):
+    - Update the docker image (and docker tag) used for package-registry [here](https://github.com/elastic/elastic-package/blob/db40e519788a4340f21d166e012f7a2298633cc4/internal/stack/versions.go#L9).
+        - Dockerfile used in `elastic-package` already [enables the Proxy mode](https://github.com/elastic/elastic-package/blob/db40e519788a4340f21d166e012f7a2298633cc4/internal/stack/_static/Dockerfile.package-registry.tmpl#L9) (more info at [section](#proxy-mode)).
 
-   ```
-   FROM docker.elastic.co/package-registry/package-registry:main
-   ```
+      ```golang
+      PackageRegistryBaseImage = "docker.elastic.co/package-registry/package-registry:main"
+      ```
+    - Build `elastic-package` (follow [elastic-package instructions](https://github.com/elastic/elastic-package/blob/main/README.md#development)).
 
-2. Now you're able to start the stack using Elastic Package (Elasticsearch, Kibana, Agent, Fleet Server) with your own Package Registry:
-
-   ```
+2. Now you're able to start the stack using Elastic Package (running Elasticsearch, Kibana, Agent and Fleet Server services) with your own Package Registry service:
+   ```shell
    elastic-package stack up -v -d
    ```
 
@@ -180,10 +191,10 @@ Additional runtime settings can be provided using flags, for more information
 about the available flags, use `package-registry -help`. Flags can be provided
 also as environment variables, in their uppercased form and prefixed by `EPR_`. For example, the
 following commands are equivalent:
-```
+```bash
 EPR_DRY_RUN=true package-registry
 ```
-```
+```bash
 package-registry -dry-run
 ```
 
@@ -191,18 +202,18 @@ package-registry -dry-run
 
 Package Registry can generate debugging logs when started with the `-log-level` flag. For example
 
-```
+```bash
 EPR_LOG_LEVEL=debug package-registry
 ```
 
-```
+```bash
 package-registry -log-level debug
 ```
 
 Or with Docker
 
-```
-docker run -it -e "EPR_LOG_LEVEL=debug" <docker-image-identifier>
+```bash
+docker run --rm -it -e "EPR_LOG_LEVEL=debug" <docker-image-identifier>
 ```
 
 ## Performance monitoring
@@ -242,7 +253,7 @@ To enable this instrumentation, the required address (host and port) where this 
 to run must be set using the parameter `metrics-address` (or the `EPR_METRICS_ADDRESS` environment variable).
 For example:
 
-```
+```bash
 package-registry --metrics-address 0.0.0.0:9000
 ```
 
@@ -257,7 +268,7 @@ And it will use by default as proxy endpoint `https://epr.elastic.co`. This endp
 (or `EPR_PROXY_TO`).
 For example:
 
-```
+```bash
 package-registry --feature-proxy-mode=true -proxy-to=https://epr.elastic.co
 ```
 
@@ -270,7 +281,7 @@ New versions of the package registry need to be released from time to time. The 
 2. Update the changelog by putting in a line for the release, remove all not needed section and put in a new Unreleased section. Don't forget to update the links to the diffs.
 3. Update the registry version in the `main.go` file to be the same version as the release is planned and update the generated files with `go test . -generate`.
 4. Open a pull request and get it merged
-5. Tag the new release by creating a new release in Github, put in the changelog in the release
+5. Tag the new release by creating a new release in GitHub, put in the changelog in the release
 6. Update the main.go to increase the version number to the version of the potential next release version.
 
 CI automatically creates a new Docker image which will be available under `docker.elastic.co/package-registry/package-registry:vA.B.C` a few minutes after creating the tag.
