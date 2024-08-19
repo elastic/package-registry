@@ -18,6 +18,7 @@ with_mage() {
 
     tar -xvf "${WORKSPACE}/bin/mage.tar.gz" -C "${WORKSPACE}/bin"
     chmod +x "${WORKSPACE}/bin/mage"
+    rm "${WORKSPACE}/bin/mage.tar.gz"
     mage --version
 }
 
