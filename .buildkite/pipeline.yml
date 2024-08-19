@@ -5,6 +5,10 @@ env:
   DOCKER_REGISTRY: 'docker.elastic.co'
   DOCKER_IMG: "${DOCKER_REGISTRY}/package-registry/package-registry"
   DOCKER_IMG_PR: "${DOCKER_REGISTRY}/observability-ci/package-registry"
+  # Agent images used in pipeline steps
+  LINUX_AGENT_IMAGE: "golang:${SETUP_GOLANG_VERSION}"
+  WINDOWS_AGENT_IMAGE: "family/core-windows-2022"
+  IMAGE_MACOS_ARM: "generic-13-ventura-arm"
 
 steps:
   - label: ":golangci-lint: Checks formatting / linting"
@@ -12,7 +16,7 @@ steps:
     command:
       - ".buildkite/scripts/lint.sh"
     agents:
-      image: "golang:${SETUP_GOLANG_VERSION}"
+      image: "${LINUX_AGENT_IMAGE}"
       cpu: "8"
       memory: "4G"
 
@@ -21,7 +25,7 @@ steps:
     command:
       - ".buildkite/scripts/build.sh"
     agents:
-      image: "golang:${SETUP_GOLANG_VERSION}"
+      image: "${LINUX_AGENT_IMAGE}"
       cpu: "8"
       memory: "4G"
 
@@ -30,7 +34,7 @@ steps:
     command:
       - ".buildkite/scripts/run-tests.sh"
     agents:
-      image: "golang:${SETUP_GOLANG_VERSION}"
+      image: "${LINUX_AGENT_IMAGE}"
       cpu: "8"
       memory: "4G"
     artifact_paths:
@@ -42,7 +46,7 @@ steps:
       - ".buildkite/scripts/run-tests.ps1"
     agents:
       provider: "gcp"
-      image: "family/core-windows-2022"
+      image: "${WINDOWS_AGENT_IMAGE}"
     artifact_paths:
       - "tests-report-win.xml"
 
