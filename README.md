@@ -158,7 +158,7 @@ you need to build a new package-registry docker image first from your required b
      -t docker.elastic.co/package-registry/package-registry:main .
    ```
 
-1. Open the Dockerfile used by elastic-package and change the base image for the Packge Registry (use `main` instead of `v1.15.0`):
+1. Open the Dockerfile used by elastic-package and change the base image for the Package Registry (use `main` instead of `v1.15.0`):
     - Usually the path would be `${HOME}/.elastic-package/profiles/default/stack/Dockerfile.package-registry`
     - This Dockerfile already enables the Proxy mode (more info at [section](#proxy-mode))
 
