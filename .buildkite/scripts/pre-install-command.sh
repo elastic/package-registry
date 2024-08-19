@@ -60,6 +60,7 @@ with_mage() {
 }
 
 with_go_junit_report() {
+    echo "--- Install go-junit-report"
     go install github.com/jstemmer/go-junit-report/v2@latest
 }
 
