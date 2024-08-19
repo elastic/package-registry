@@ -107,7 +107,7 @@ docker build --build-arg GO_VERSION="$(cat .go-version)" --rm -t docker.elastic.
 docker run --rm -it -p 8080:8080 $(docker images -q docker.elastic.co/package-registry/package-registry:main)
 ```
 
-**Adding packages to the service**
+**Testing service with local packages**
 - Default configuration used in the image: [`config.docker.yml`](./config.docker.yml):
 
 ```bash
