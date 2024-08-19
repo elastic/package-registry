@@ -55,7 +55,7 @@ with_mage() {
     fi
 
     echo "--- Install mage"
-    go install "github.com/magefile/mage@${SETUP_MAGE_VERSION}"
+    go install "github.com/magefile/mage@v${SETUP_MAGE_VERSION}"
     mage --version
 }
 
