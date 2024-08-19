@@ -51,6 +51,16 @@ steps:
     artifact_paths:
       - "tests-report-win.xml"
 
+  - label: ":macos: Test on Macos ARM"
+    key: test-macos-arm
+    command:
+      - ".buildkite/scripts/run-tests.sh"
+    agents:
+      provider: "orka"
+      imagePrefix: "${IMAGE_MACOS_ARM}"
+    artifact_paths:
+      - "tests-report-linux.xml"
+
   - label: ":junit: Junit annotate"
     plugins:
       - junit-annotate#v2.5.0:
