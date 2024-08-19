@@ -59,7 +59,7 @@ steps:
       provider: "orka"
       imagePrefix: "${IMAGE_MACOS_ARM}"
     artifact_paths:
-      - "tests-report-linux.xml"
+      - "tests-report-darwin.xml"
 
   - label: ":junit: Junit annotate"
     plugins:

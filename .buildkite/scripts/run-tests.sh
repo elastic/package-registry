@@ -20,6 +20,6 @@ set -e
 # need to change --- to anything else or switch off collapsing (note: not available at the moment of this commit)
 awk '{gsub("---", "----"); print }' "${tests_report_txt_file}"
 
-echo "Create Junit report for junit annotation plugin"
+echo "Create Junit report for junit annotation plugin ${tests_report_xml_file}"
 go-junit-report > "${tests_report_xml_file}" < "${tests_report_txt_file}"
 exit $exit_code
