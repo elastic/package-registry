@@ -50,7 +50,10 @@ with_go() {
 }
 
 with_mage() {
-    if ! command -v go &> /dev/null ; then
+    check_platform_architecture
+
+    if [[ "${platform_type_lowercase}" == "darwin" ]]; then
+        # MacOS ARM VM images do not have golang installed by default
         with_go
     fi
 
