@@ -74,6 +74,8 @@ steps:
         allow_failure: true
       - step: "test-win"
         allow_failure: true
+      - step: "test-macos-arm"
+        allow_failure: true
 
   - label: "Publish docker image"
     key: "publish"
