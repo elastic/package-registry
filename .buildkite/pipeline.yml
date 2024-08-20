@@ -67,6 +67,7 @@ steps:
           artifacts: "tests-report-*.xml"
           fail-build-on-error: true
           report-skipped: true
+          always-annotate: true
     agents:
       provider: "gcp" #junit plugin requires docker
     depends_on:
