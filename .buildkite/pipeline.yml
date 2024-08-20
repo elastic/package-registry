@@ -85,6 +85,8 @@ steps:
         allow_failure: false
       - step: "test-win"
         allow_failure: false
+      - step: "test-macos-arm"
+        allow_failure: false
       - step: "build"
         allow_failure: false
       - step: "lint"
