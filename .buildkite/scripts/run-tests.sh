@@ -7,7 +7,7 @@ add_bin_path
 with_mage
 with_go_junit_report
 
-platform_type="$(uname)"
+platform_type="$(uname | tr '[:upper:]' '[:lower:]')"
 tests_report_txt_file="tests-report-${platform_type}.txt"
 tests_report_xml_file="tests-report-${platform_type}.xml"
 echo "--- Run Unit tests"
