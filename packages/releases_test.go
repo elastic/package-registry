@@ -20,7 +20,7 @@ var releaseTests = []struct {
 	},
 	{
 		"foo",
-		true,
+		false,
 	},
 	{
 		ReleaseExperimental,
