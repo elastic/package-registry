@@ -30,36 +30,39 @@ steps:
       cpu: "8"
       memory: "4G"
 
-  - label: ":linux: Test on Linux"
-    key: test-linux
-    command:
-      - ".buildkite/scripts/run-tests.sh"
-    agents:
-      image: "${LINUX_AGENT_IMAGE}"
-      cpu: "8"
-      memory: "4G"
-    artifact_paths:
-      - "tests-report-linux.xml"
+  - group: ":go: Run Unit tests"
+    key: unit-tests
+    steps:
+      - label: ":linux: Test on Linux"
+        key: test-linux
+        command:
+          - ".buildkite/scripts/run-tests.sh"
+        agents:
+          image: "${LINUX_AGENT_IMAGE}"
+          cpu: "8"
+          memory: "4G"
+        artifact_paths:
+          - "tests-report-linux.xml"
 
-  - label: ":windows: Test on Windows"
-    key: test-win
-    command:
-      - ".buildkite/scripts/run-tests.ps1"
-    agents:
-      provider: "gcp"
-      image: "${WINDOWS_AGENT_IMAGE}"
-    artifact_paths:
-      - "tests-report-win.xml"
+      - label: ":windows: Test on Windows"
+        key: test-win
+        command:
+          - ".buildkite/scripts/run-tests.ps1"
+        agents:
+          provider: "gcp"
+          image: "${WINDOWS_AGENT_IMAGE}"
+        artifact_paths:
+          - "tests-report-win.xml"
 
-  - label: ":macos: Test on Macos ARM"
-    key: test-macos-arm
-    command:
-      - ".buildkite/scripts/run-tests.sh"
-    agents:
-      provider: "orka"
-      imagePrefix: "${MACOS_ARM_AGENT_IMAGE}"
-    artifact_paths:
-      - "tests-report-darwin.xml"
+      - label: ":macos: Test on Macos ARM"
+        key: test-macos-arm
+        command:
+          - ".buildkite/scripts/run-tests.sh"
+        agents:
+          provider: "orka"
+          imagePrefix: "${MACOS_ARM_AGENT_IMAGE}"
+        artifact_paths:
+          - "tests-report-darwin.xml"
 
   - label: ":junit: Junit annotate"
     plugins:
