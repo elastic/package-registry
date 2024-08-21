@@ -1,10 +1,15 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/buildkite/pipeline-schema/main/schema.json
 
 env:
-  SETUP_MAGE_VERSION: '1.14.0'
+  SETUP_GVM_VERSION: 'v0.5.2' # https://github.com/andrewkroh/gvm/issues/44#issuecomment-1013231151
+  SETUP_MAGE_VERSION: '1.15.0'
   DOCKER_REGISTRY: 'docker.elastic.co'
   DOCKER_IMG: "${DOCKER_REGISTRY}/package-registry/package-registry"
   DOCKER_IMG_PR: "${DOCKER_REGISTRY}/observability-ci/package-registry"
+  # Agent images used in pipeline steps
+  LINUX_GOLANG_AGENT_IMAGE: "golang:${SETUP_GOLANG_VERSION}"
+  WINDOWS_AGENT_IMAGE: "family/core-windows-2022"
+  MACOS_ARM_AGENT_IMAGE: "generic-13-ventura-arm"
 
 steps:
   - label: ":golangci-lint: Checks formatting / linting"
@@ -12,7 +17,7 @@ steps:
     command:
       - ".buildkite/scripts/lint.sh"
     agents:
-      image: "golang:${SETUP_GOLANG_VERSION}"
+      image: "${LINUX_GOLANG_AGENT_IMAGE}"
       cpu: "8"
       memory: "4G"
 
@@ -21,30 +26,43 @@ steps:
     command:
       - ".buildkite/scripts/build.sh"
     agents:
-      image: "golang:${SETUP_GOLANG_VERSION}"
+      image: "${LINUX_GOLANG_AGENT_IMAGE}"
       cpu: "8"
       memory: "4G"
 
-  - label: ":linux: Test on Linux"
-    key: test-linux
-    command:
-      - ".buildkite/scripts/run-tests.sh"
-    agents:
-      image: "golang:${SETUP_GOLANG_VERSION}"
-      cpu: "8"
-      memory: "4G"
-    artifact_paths:
-      - "tests-report-linux.xml"
+  - group: ":go: Run Unit tests"
+    key: unit-tests
+    steps:
+      - label: ":linux: Test on Linux"
+        key: test-linux
+        command:
+          - ".buildkite/scripts/run-tests.sh"
+        agents:
+          image: "${LINUX_GOLANG_AGENT_IMAGE}"
+          cpu: "8"
+          memory: "4G"
+        artifact_paths:
+          - "tests-report-linux.xml"
 
-  - label: ":windows: Test on Windows"
-    key: test-win
-    command:
-      - ".buildkite/scripts/run-tests.ps1"
-    agents:
-      provider: "gcp"
-      image: "family/core-windows-2022"
-    artifact_paths:
-      - "tests-report-win.xml"
+      - label: ":windows: Test on Windows"
+        key: test-win
+        command:
+          - ".buildkite/scripts/run-tests.ps1"
+        agents:
+          provider: "gcp"
+          image: "${WINDOWS_AGENT_IMAGE}"
+        artifact_paths:
+          - "tests-report-win.xml"
+
+      - label: ":macos: Test on Macos ARM"
+        key: test-macos-arm
+        command:
+          - ".buildkite/scripts/run-tests.sh"
+        agents:
+          provider: "orka"
+          imagePrefix: "${MACOS_ARM_AGENT_IMAGE}"
+        artifact_paths:
+          - "tests-report-darwin.xml"
 
   - label: ":junit: Junit annotate"
     plugins:
@@ -52,12 +70,15 @@ steps:
           artifacts: "tests-report-*.xml"
           fail-build-on-error: true
           report-skipped: true
+          always-annotate: true
     agents:
       provider: "gcp" #junit plugin requires docker
     depends_on:
       - step: "test-linux"
         allow_failure: true
       - step: "test-win"
+        allow_failure: true
+      - step: "test-macos-arm"
         allow_failure: true
 
   - label: "Publish docker image"
@@ -69,6 +90,8 @@ steps:
       - step: "test-linux"
         allow_failure: false
       - step: "test-win"
+        allow_failure: false
+      - step: "test-macos-arm"
         allow_failure: false
       - step: "build"
         allow_failure: false

@@ -7,15 +7,19 @@ add_bin_path
 with_mage
 with_go_junit_report
 
+platform_type="$(uname | tr '[:upper:]' '[:lower:]')"
+tests_report_txt_file="tests-report-${platform_type}.txt"
+tests_report_xml_file="tests-report-${platform_type}.xml"
+echo "--- Run Unit tests"
 set +e
-mage -debug test > tests-report-linux.txt
+mage -debug test > "${tests_report_txt_file}"
 exit_code=$?
 set -e
 
 # Buildkite collapse logs under --- symbols
 # need to change --- to anything else or switch off collapsing (note: not available at the moment of this commit)
-awk '{gsub("---", "----"); print }' tests-report-linux.txt
+awk '{gsub("---", "----"); print }' "${tests_report_txt_file}"
 
-# Create Junit report for junit annotation plugin
-go-junit-report > tests-report-linux.xml < tests-report-linux.txt
+echo "Create Junit report for junit annotation plugin ${tests_report_xml_file}"
+go-junit-report > "${tests_report_xml_file}" < "${tests_report_txt_file}"
 exit $exit_code
