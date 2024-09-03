@@ -50,12 +50,9 @@ As much of the endpoints as possible is generated in advance. All package data i
 The only exceptions here are the `/categories` and `/search` endpoint as they allow query parameters which leads to many
 variations and will also get more complex over time.
 
-`mage build` takes all the packages and generates the content under `public`. The generated content itself is not checked in.
-
 ## Directories
 
-* build/packages: Contains all the example packages. These are only example packages used for development. Run `mage build` to generate these.
-* testdata/package: Contains the package for testing. This also serves as an example for a package.
+* testdata/package: Contains the packages for testing.
 
 ## Running
 
@@ -72,13 +69,22 @@ To use the correct golang version, run:
 gvm use $(cat .go-version)
 ```
 
-When using the go command, first the example packages must be built:
+Afterwards the service can be started for development with:
 
-`mage build`
+```
+go run .
+```
 
-Afterwards the service can be started:
+### Single binary
 
-`go run .`
+You can build the `package-registry` binary usig [`mage`](https://magefile.org):
+```
+mage build
+```
+
+Once built, the Package Registry can be run as `./package-registry`. Find below
+more details about the available configuration options.
+
 
 ### Docker
 
@@ -175,7 +181,7 @@ For that, you need to build a new Package Registry docker image from your requir
 
 ### Healthcheck
 
-For Docker / Kubernetes the `/health` endpoint can be queried. As soon as `/health` returns a 200, the service is ready.
+Availability of the service can be queried using the `/health` endpoint. As soon as `/health` returns a 200, the service is ready to handle requests.
 
 ## Configuration
 
