@@ -4,13 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased](https://github.com/elastic/package-registry/compare/v1.24.0...main)
+## [v1.24.1](https://github.com/elastic/package-registry/compare/v1.24.0...v1.24.1)
 
 ### Breaking changes
 
 ### Bugfixes
 
-* Update Go Runtime to 1.22.5. [#1198](https://github.com/elastic/package-registry/pull/1198)
+* Update Go Runtime to 1.22.6. [#1215](https://github.com/elastic/package-registry/pull/1215)
 
 ### Added
 
