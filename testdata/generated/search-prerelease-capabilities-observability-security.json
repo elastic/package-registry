@@ -264,6 +264,13 @@
     "owner": {
       "type": "elastic",
       "github": "elastic/ecosystem"
+    },
+    "discovery": {
+      "fields": [
+        {
+          "name": "process.pid"
+        }
+      ]
     }
   },
   {
