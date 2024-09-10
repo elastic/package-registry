@@ -17,10 +17,10 @@ The `/search` API endpoint has few additional query parameters. More might be ad
 * `kibana.version`: Filters out all the packages which are not compatible with the given Kibana version. If it is set to `7.3.1` and
   a package requires 7.4, the package will not be returned or an older compatible package will be shown.
   By default this endpoint always returns only the newest compatible package.
-* `category`: Filters the package by the given category. Available categories can be seend when going to `/categories` endpoint.
+* `category`: Filters the package by the given category. Available categories can be seen when going to `/categories` endpoint.
 * `package`: Filters by a specific package name, for example `mysql`. Returns the most recent version.
 * `all`: This can be set to `true` to list all package versions. This is set to `false` by default.
-* `prerelease`: This can be set to `true` to list prerelease versions of packages. Versions are considered prereleases if they are not stable according to sematic versioning, that is, if they are 0.x versions, or if they contain a prerelease tag. This is set to `false` by default.
+* `prerelease`: This can be set to `true` to list prerelease versions of packages. Versions are considered prereleases if they are not stable according to semantic versioning, that is, if they are 0.x versions, or if they contain a prerelease tag. This is set to `false` by default.
 * `experimental` (deprecated): This can be set to `true` to list packages considered to be experimental. This is set to `false` by default.
 
 The different query parameters above can be combined, so `?package=mysql&kibana.version=7.3.0` will return all mysql package versions
@@ -30,7 +30,7 @@ which are compatible with `7.3.0`.
 
 The `/categories` API endpoint has two additional query parameters.
 
-* `prerelease`: This can be set to `true` to list prerelease versions of packages. Versions are considered prereleases if they are not stable according to sematic versioning, that is, if they are 0.x versions, or if they contain a prerelease tag. This is set to `false` by default.
+* `prerelease`: This can be set to `true` to list prerelease versions of packages. Versions are considered prereleases if they are not stable according to semantic versioning, that is, if they are 0.x versions, or if they contain a prerelease tag. This is set to `false` by default.
 * `experimental` (deprecated): This can be set to `true` to list categories from experimental packages. This is set to `false` by default.
 * `include_policy_templates`: This can be set to `true` to include categories from policy templates. This is set to `false` by default.
 
@@ -77,7 +77,7 @@ go run .
 
 ### Single binary
 
-You can build the `package-registry` binary usig [`mage`](https://magefile.org):
+You can build the `package-registry` binary using [`mage`](https://magefile.org):
 ```
 mage build
 ```
