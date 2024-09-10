@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added support for content packages and its discovery fields. [#1220](https://github.com/elastic/package-registry/pull/1220)
+
 ### Deprecated
 
 ### Known Issues

@@ -76,6 +76,7 @@ type BasePackage struct {
 	Owner               *Owner               `config:"owner,omitempty" json:"owner,omitempty" yaml:"owner,omitempty"`
 	Categories          []string             `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
 	SignaturePath       string               `config:"signature_path,omitempty" json:"signature_path,omitempty" yaml:"signature_path,omitempty"`
+	Discovery           *Discovery           `config:"discovery,omitempty" json:"discovery,omitempty" yaml:"discovery,omitempty"`
 }
 
 // BasePolicyTemplate is used for the package policy templates in the /search endpoint
@@ -160,6 +161,16 @@ type PackageElasticsearch struct {
 	Privileges *PackageElasticsearchPrivileges `config:"privileges,omitempty" json:"privileges,omitempty" yaml:"privileges,omitempty"`
 }
 
+// Discovery define indications for the data this package can be useful with.
+type Discovery struct {
+	Fields []DiscoveryField `config:"fields,omitempty" json:"fields,omitempty" yaml:"fields,omitempty"`
+}
+
+// DiscoveryField defines a field used for discovery.
+type DiscoveryField struct {
+	Name string `config:"name" json:"name" yaml:"name"`
+}
+
 type PackageElasticsearchPrivileges struct {
 	Cluster []string `config:"cluster,omitempty" json:"cluster,omitempty" yaml:"cluster,omitempty"`
 }
@@ -187,7 +198,7 @@ func getDownloadPath(p Package, t string) string {
 // NewPackage creates a new package instances based on the given base path.
 // The path passed goes to the root of the package where the manifest.yml is.
 func NewPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) {
-	var p = &Package{
+	p := &Package{
 		BasePath:  basePath,
 		fsBuilder: fsBuilder,
 	}
