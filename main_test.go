@@ -554,7 +554,7 @@ type recordedBody interface {
 
 func assertExpectedBody(t *testing.T, body recordedBody, expectedFile string) {
 	fullPath := filepath.Join(generatedFilesPath, expectedFile)
-	err := os.MkdirAll(filepath.Dir(fullPath), 0o755)
+	err := os.MkdirAll(filepath.Dir(fullPath), 0755)
 	require.NoError(t, err)
 
 	recorded := body.Bytes()
@@ -563,7 +563,7 @@ func assertExpectedBody(t *testing.T, body recordedBody, expectedFile string) {
 	}
 
 	if *generateFlag {
-		err = os.WriteFile(fullPath, recorded, 0o644)
+		err = os.WriteFile(fullPath, recorded, 0644)
 		if err != nil {
 			t.Fatal(err)
 		}
