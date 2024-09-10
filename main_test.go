@@ -92,6 +92,7 @@ func TestEndpoints(t *testing.T) {
 		{"/search?prerelease=true", "/search", "search-package-prerelease.json", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/search?prerelease=foo", "/search", "search-package-prerelease-error.txt", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/search?category=datastore&prerelease=true", "/search", "search-category-datastore-prerelease.json", searchHandler(testLogger, indexer, testCacheTime)},
+		{"/search?type=content&prerelease=true", "/search", "search-content-packages.json", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/search?type=input&prerelease=true", "/search", "search-input-packages.json", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/search?type=input&package=integration_input&prerelease=true", "/search", "search-input-integration-package.json", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/search?type=integration&package=integration_input&prerelease=true", "/search", "search-integration-integration-package.json", searchHandler(testLogger, indexer, testCacheTime)},
@@ -190,7 +191,6 @@ func TestStatics(t *testing.T) {
 			runEndpoint(t, test.endpoint, test.path, test.file, test.handler)
 		})
 	}
-
 }
 
 func TestStaticsModifiedTime(t *testing.T) {
@@ -554,7 +554,7 @@ type recordedBody interface {
 
 func assertExpectedBody(t *testing.T, body recordedBody, expectedFile string) {
 	fullPath := filepath.Join(generatedFilesPath, expectedFile)
-	err := os.MkdirAll(filepath.Dir(fullPath), 0755)
+	err := os.MkdirAll(filepath.Dir(fullPath), 0o755)
 	require.NoError(t, err)
 
 	recorded := body.Bytes()
@@ -563,7 +563,7 @@ func assertExpectedBody(t *testing.T, body recordedBody, expectedFile string) {
 	}
 
 	if *generateFlag {
-		err = os.WriteFile(fullPath, recorded, 0644)
+		err = os.WriteFile(fullPath, recorded, 0o644)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -588,7 +588,6 @@ func listArchivedFiles(t *testing.T, body []byte) []byte {
 		// Using filepath.ToSlash(f.Name) ensures that the file name has the expected format
 		// regardless of the OS.
 		listing.WriteString(fmt.Sprintf("%d %s\n", f.UncompressedSize64, filepath.ToSlash(f.Name)))
-
 	}
 	return listing.Bytes()
 }
