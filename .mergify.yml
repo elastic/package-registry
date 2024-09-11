@@ -1,5 +1,6 @@
 queue_rules:
   - name: default
+    merge_method: squash
     conditions:
       - check-success=buildkite/package-registry
 
@@ -20,5 +21,4 @@ pull_request_rules:
       - author~=^dependabot(|-preview)\[bot\]$
     actions:
       queue:
-        method: squash
         name: default
