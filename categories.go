@@ -147,6 +147,14 @@ func newCategoriesFilterFromQuery(query url.Values) (*packages.Filter, error) {
 		}
 	}
 
+	if v := query.Get("discovery"); v != "" {
+		discovery, err := packages.NewDiscoveryFilter(v)
+		if err != nil {
+			return nil, fmt.Errorf("invalid 'discovery' query param: '%s': %w", v, err)
+		}
+		filter.Discovery = discovery
+	}
+
 	return &filter, nil
 }
 
@@ -219,7 +227,7 @@ func getCategoriesOutput(ctx context.Context, categories map[string]*packages.Ca
 	}
 	sort.Strings(keys)
 
-	var outputCategories []*packages.Category
+	outputCategories := []*packages.Category{}
 	for _, k := range keys {
 		c := categories[k]
 		if category, ok := packages.Categories[c.Title]; ok {

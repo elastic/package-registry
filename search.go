@@ -143,6 +143,14 @@ func newSearchFilterFromQuery(query url.Values) (*packages.Filter, error) {
 		}
 	}
 
+	if v := query.Get("discovery"); v != "" {
+		discovery, err := packages.NewDiscoveryFilter(v)
+		if err != nil {
+			return nil, fmt.Errorf("invalid 'discovery' query param: '%s': %w", v, err)
+		}
+		filter.Discovery = discovery
+	}
+
 	return &filter, nil
 }
 
