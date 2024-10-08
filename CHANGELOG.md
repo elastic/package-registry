@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Add new `discovery` parameter to search and category endpoints. [#1235](https://github.com/elastic/package-registry/pull/1235)
+
 ### Deprecated
 
 ### Known Issues

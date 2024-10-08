@@ -31,6 +31,9 @@
     "type": "elastic",
     "github": "elastic/ecosystem"
   },
+  "categories": [
+    "web"
+  ],
   "discovery": {
     "fields": [
       {

@@ -473,6 +473,10 @@ func TestPackagesSpecMinMaxFilter(t *testing.T) {
 			Version:       "2.0.0",
 			Type:          "integration",
 			KibanaVersion: "^7.17.0 || ^8.0.0",
+			DiscoveryFields: []string{
+				"host.ip",
+				"nginx.stubstatus.hostname",
+			},
 		},
 		{
 			FormatVersion: "1.0.0",
@@ -667,6 +671,26 @@ func TestPackagesSpecMinMaxFilter(t *testing.T) {
 				{Name: "redisenterprise", Version: "1.0.0"},
 			},
 		},
+		{
+			Title: "use fields discovery filter that no packages match",
+			Filter: Filter{
+				AllVersions: true,
+				Prerelease:  true,
+				Discovery:   mustBuildDiscoveryFilter("fields:apache.status.total_bytes"),
+			},
+			Expected: []filterTestPackage{},
+		},
+		{
+			Title: "use fields discovery filter for the nginx package",
+			Filter: Filter{
+				AllVersions: true,
+				Prerelease:  true,
+				Discovery:   mustBuildDiscoveryFilter("fields:host.ip,nginx.stubstatus.hostname"),
+			},
+			Expected: []filterTestPackage{
+				{Name: "nginx", Version: "2.0.0"},
+			},
+		},
 	}
 
 	for _, c := range cases {
@@ -678,14 +702,23 @@ func TestPackagesSpecMinMaxFilter(t *testing.T) {
 	}
 }
 
+func mustBuildDiscoveryFilter(filter string) *discoveryFilter {
+	f, err := NewDiscoveryFilter(filter)
+	if err != nil {
+		panic(err)
+	}
+	return f
+}
+
 type filterTestPackage struct {
-	FormatVersion string
-	Name          string
-	Version       string
-	Release       string
-	Type          string
-	KibanaVersion string
-	Capabilities  []string
+	FormatVersion   string
+	Name            string
+	Version         string
+	Release         string
+	Type            string
+	KibanaVersion   string
+	Capabilities    []string
+	DiscoveryFields []string
 }
 
 func (p filterTestPackage) Build() *Package {
@@ -725,6 +758,15 @@ func (p filterTestPackage) Build() *Package {
 				Elastic: &elasticConditions,
 			}
 		}
+	}
+
+	for _, name := range p.DiscoveryFields {
+		if build.Discovery == nil {
+			build.Discovery = &Discovery{}
+		}
+		build.Discovery.Fields = append(build.Discovery.Fields, DiscoveryField{
+			Name: name,
+		})
 	}
 
 	// set spec semver.Version variables
