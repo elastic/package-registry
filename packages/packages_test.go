@@ -702,7 +702,7 @@ func TestPackagesSpecMinMaxFilter(t *testing.T) {
 	}
 }
 
-func mustBuildDiscoveryFilter(filter string) *DiscoveryFilter {
+func mustBuildDiscoveryFilter(filter string) *discoveryFilter {
 	f, err := NewDiscoveryFilter(filter)
 	if err != nil {
 		panic(err)

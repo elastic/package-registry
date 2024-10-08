@@ -297,23 +297,23 @@ type Filter struct {
 	Capabilities   []string
 	SpecMin        *semver.Version
 	SpecMax        *semver.Version
-	Discovery      *DiscoveryFilter
+	Discovery      *discoveryFilter
 
 	// Deprecated, release tags to be removed.
 	Experimental bool
 }
 
-type DiscoveryFilter struct {
-	Fields DiscoveryFilterFields
+type discoveryFilter struct {
+	Fields discoveryFilterFields
 }
 
-func NewDiscoveryFilter(filter string) (*DiscoveryFilter, error) {
+func NewDiscoveryFilter(filter string) (*discoveryFilter, error) {
 	filterType, args, found := strings.Cut(filter, ":")
 	if !found {
 		return nil, fmt.Errorf("could not parse filter %q", filter)
 	}
 
-	var result DiscoveryFilter
+	var result discoveryFilter
 	switch filterType {
 	case "fields":
 		for _, name := range strings.Split(args, ",") {
@@ -328,18 +328,18 @@ func NewDiscoveryFilter(filter string) (*DiscoveryFilter, error) {
 	return &result, nil
 }
 
-func (f *DiscoveryFilter) Matches(p *Package) bool {
+func (f *discoveryFilter) Matches(p *Package) bool {
 	if f == nil {
 		return true
 	}
 	return f.Fields.Matches(p)
 }
 
-type DiscoveryFilterFields []DiscoveryField
+type discoveryFilterFields []DiscoveryField
 
 // Matches implements matching for a collection of fields used as discovery filter.
 // It matches if all fields in the package are included in the list of fields in the query.
-func (fields DiscoveryFilterFields) Matches(p *Package) bool {
+func (fields discoveryFilterFields) Matches(p *Package) bool {
 	// If the package doesn't define this filter, it doesn't match.
 	if p.Discovery == nil || len(p.Discovery.Fields) == 0 {
 		return false
