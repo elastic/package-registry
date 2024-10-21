@@ -5,7 +5,7 @@ go 1.22.1
 toolchain go1.23.1
 
 require (
-	cloud.google.com/go/storage v1.44.0
+	cloud.google.com/go/storage v1.45.0
 	github.com/Masterminds/semver/v3 v3.3.0
 	github.com/elastic/go-licenser v0.4.2
 	github.com/elastic/go-ucfg v0.8.8
