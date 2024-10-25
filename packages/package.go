@@ -81,24 +81,26 @@ type BasePackage struct {
 
 // BasePolicyTemplate is used for the package policy templates in the /search endpoint
 type BasePolicyTemplate struct {
-	Name        string   `config:"name" json:"name" validate:"required"`
-	Title       string   `config:"title" json:"title" validate:"required"`
-	Description string   `config:"description" json:"description" validate:"required"`
-	Icons       []Image  `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
-	Categories  []string `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
+	Name            string           `config:"name" json:"name" validate:"required"`
+	Title           string           `config:"title" json:"title" validate:"required"`
+	Description     string           `config:"description" json:"description" validate:"required"`
+	Icons           []Image          `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
+	Categories      []string         `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
+	DeploymentModes *DeploymentModes `config:"deployment_modes,omitempty" json:"deployment_modes,omitempty" yaml:"deployment_modes,omitempty"`
 }
 
 type PolicyTemplate struct {
-	Name        string   `config:"name" json:"name" validate:"required"`
-	Title       string   `config:"title" json:"title" validate:"required"`
-	Description string   `config:"description" json:"description" validate:"required"`
-	DataStreams []string `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
-	Inputs      []Input  `config:"inputs" json:"inputs,omitempty" yaml:"inputs,omitempty"`
-	Multiple    *bool    `config:"multiple" json:"multiple,omitempty" yaml:"multiple,omitempty"`
-	Icons       []Image  `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
-	Categories  []string `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
-	Screenshots []Image  `config:"screenshots,omitempty" json:"screenshots,omitempty" yaml:"screenshots,omitempty"`
-	Readme      *string  `config:"readme,omitempty" json:"readme,omitempty" yaml:"readme,omitempty"`
+	Name            string           `config:"name" json:"name" validate:"required"`
+	Title           string           `config:"title" json:"title" validate:"required"`
+	Description     string           `config:"description" json:"description" validate:"required"`
+	DataStreams     []string         `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
+	Inputs          []Input          `config:"inputs" json:"inputs,omitempty" yaml:"inputs,omitempty"`
+	Multiple        *bool            `config:"multiple" json:"multiple,omitempty" yaml:"multiple,omitempty"`
+	Icons           []Image          `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
+	Categories      []string         `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
+	Screenshots     []Image          `config:"screenshots,omitempty" json:"screenshots,omitempty" yaml:"screenshots,omitempty"`
+	Readme          *string          `config:"readme,omitempty" json:"readme,omitempty" yaml:"readme,omitempty"`
+	DeploymentModes *DeploymentModes `config:"deployment_modes,omitempty" json:"deployment_modes,omitempty" yaml:"deployment_modes,omitempty"`
 
 	// For purposes of "input packages"
 	Type         string `config:"type,omitempty" json:"type,omitempty" yaml:"type,omitempty"`
@@ -182,6 +184,15 @@ func (i Image) getPath(p *Package) string {
 type Download struct {
 	Path string `config:"path" json:"path" validate:"required"`
 	Type string `config:"type" json:"type" validate:"required"`
+}
+
+type DeploymentModes struct {
+	Default   *DeploymentMode `config:"default,omitempty" json:"default,omitempty" yaml:"default,omitempty"`
+	Agentless *DeploymentMode `config:"agentless,omitempty" json:"agentless,omitempty" yaml:"agentless,omitempty"`
+}
+
+type DeploymentMode struct {
+	Enabled bool `config:"enabled" json:"enabled" yaml:"enabled" validate:"required"`
 }
 
 func NewDownload(p Package, t string) Download {
@@ -378,11 +389,12 @@ func (p *Package) setRuntimeFields() error {
 func (p *Package) setBasePolicyTemplates() {
 	for _, t := range p.PolicyTemplates {
 		baseT := BasePolicyTemplate{
-			Name:        t.Name,
-			Title:       t.Title,
-			Description: t.Description,
-			Categories:  t.Categories,
-			Icons:       t.Icons,
+			Name:            t.Name,
+			Title:           t.Title,
+			Description:     t.Description,
+			Categories:      t.Categories,
+			Icons:           t.Icons,
+			DeploymentModes: t.DeploymentModes,
 		}
 
 		p.BasePolicyTemplates = append(p.BasePolicyTemplates, baseT)

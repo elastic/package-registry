@@ -84,14 +84,15 @@ type Stream struct {
 }
 
 type Variable struct {
-	Name        string      `config:"name" json:"name" yaml:"name"`
-	Type        string      `config:"type" json:"type" yaml:"type"`
-	Title       string      `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
-	Description string      `config:"description" json:"description,omitempty" yaml:"description,omitempty"`
-	Multi       bool        `config:"multi" json:"multi" yaml:"multi"`
-	Required    bool        `config:"required" json:"required" yaml:"required"`
-	ShowUser    bool        `config:"show_user" json:"show_user" yaml:"show_user"`
-	Default     interface{} `config:"default" json:"default,omitempty" yaml:"default,omitempty"`
+	Name                  string      `config:"name" json:"name" yaml:"name"`
+	Type                  string      `config:"type" json:"type" yaml:"type"`
+	Title                 string      `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
+	Description           string      `config:"description" json:"description,omitempty" yaml:"description,omitempty"`
+	Multi                 bool        `config:"multi" json:"multi" yaml:"multi"`
+	Required              bool        `config:"required" json:"required" yaml:"required"`
+	ShowUser              bool        `config:"show_user" json:"show_user" yaml:"show_user"`
+	Default               interface{} `config:"default" json:"default,omitempty" yaml:"default,omitempty"`
+	HideInDeploymentModes []string    `config:"hide_in_deployment_modes,omitempty" json:"hide_in_deployment_modes,omitempty" yaml:"hide_in_deployment_modes,omitempty"`
 }
 
 type DataStreamAgent struct {
