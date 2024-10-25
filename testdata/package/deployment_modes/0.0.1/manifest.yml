@@ -1,0 +1,68 @@
+format_version: 3.3.0
+name: deployment_modes
+title: "Deployment Modes"
+version: 0.0.1
+source:
+  license: "Elastic-2.0"
+description: "Package containing policy templates with different deployment modes"
+type: integration
+categories:
+  - custom
+conditions:
+  kibana:
+    version: "^8.15.2"
+  elastic:
+    subscription: "basic"
+screenshots:
+  - src: /img/sample-screenshot.png
+    title: Sample screenshot
+    size: 600x600
+    type: image/png
+icons:
+  - src: /img/sample-logo.svg
+    title: Sample logo
+    size: 32x32
+    type: image/svg+xml
+policy_templates:
+  - name: agentless
+    title: Sample logs
+    description: Collect sample logs
+    inputs:
+      - type: logfile
+        title: Collect sample logs from instances
+        description: Collecting sample logs
+        vars:
+          - name: path
+            type: text
+            show_user: true
+          - name: tags
+            type: text
+            multi: true
+            show_user: false
+            hide_in_deployment_modes:
+              - agentless
+    deployment_modes:
+      default:
+        enabled: false
+      agentless:
+        enabled: true
+        organization: elastic
+        division: observability
+        team: integration
+    multiple: false
+  - name: default
+    title: Sample logs
+    description: Collect sample logs
+    inputs:
+      - type: logfile
+        title: Collect sample logs from instances
+        description: Collecting sample logs
+    deployment_modes:
+      default:
+        enabled: true
+      agentless:
+        enabled: false
+    multiple: false
+owner:
+  github: elastic/integrations
+  type: elastic
