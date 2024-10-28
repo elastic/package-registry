@@ -1,6 +1,6 @@
 module github.com/elastic/package-registry
 
-go 1.22.8
+go 1.22.1
 
 toolchain go1.23.2
 
