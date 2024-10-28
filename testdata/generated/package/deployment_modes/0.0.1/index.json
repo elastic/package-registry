@@ -76,10 +76,7 @@
               "type": "text",
               "multi": true,
               "required": false,
-              "show_user": false,
-              "hide_in_deployment_modes": [
-                "agentless"
-              ]
+              "show_user": false
             }
           ],
           "title": "Collect sample logs from instances",
