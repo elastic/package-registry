@@ -61,22 +61,23 @@ type FileSystemBuilder func(*Package) (PackageFileSystem, error)
 
 // BasePackage is used for the output of the package info in the /search endpoint
 type BasePackage struct {
-	Name                string               `config:"name" json:"name"`
-	Title               *string              `config:"title,omitempty" json:"title,omitempty" yaml:"title,omitempty"`
-	Version             string               `config:"version" json:"version"`
-	Release             string               `config:"release,omitempty" json:"release,omitempty"`
-	Source              *Source              `config:"source,omitempty" json:"source,omitempty" yaml:"source,omitempty"`
-	Description         string               `config:"description" json:"description"`
-	Type                string               `config:"type" json:"type"`
-	Download            string               `json:"download" yaml:"download,omitempty"`
-	Path                string               `json:"path" yaml:"path,omitempty"`
-	Icons               []Image              `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
-	BasePolicyTemplates []BasePolicyTemplate `json:"policy_templates,omitempty"`
-	Conditions          *Conditions          `config:"conditions,omitempty" json:"conditions,omitempty" yaml:"conditions,omitempty"`
-	Owner               *Owner               `config:"owner,omitempty" json:"owner,omitempty" yaml:"owner,omitempty"`
-	Categories          []string             `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
-	SignaturePath       string               `config:"signature_path,omitempty" json:"signature_path,omitempty" yaml:"signature_path,omitempty"`
-	Discovery           *Discovery           `config:"discovery,omitempty" json:"discovery,omitempty" yaml:"discovery,omitempty"`
+	Name                    string               `config:"name" json:"name"`
+	Title                   *string              `config:"title,omitempty" json:"title,omitempty" yaml:"title,omitempty"`
+	Version                 string               `config:"version" json:"version"`
+	Release                 string               `config:"release,omitempty" json:"release,omitempty"`
+	Source                  *Source              `config:"source,omitempty" json:"source,omitempty" yaml:"source,omitempty"`
+	Description             string               `config:"description" json:"description"`
+	Type                    string               `config:"type" json:"type"`
+	Download                string               `json:"download" yaml:"download,omitempty"`
+	Path                    string               `json:"path" yaml:"path,omitempty"`
+	Icons                   []Image              `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
+	PolicyTemplatesBehavior string               `config:"policy_templates_behavior,omitempty" json:"policy_templates_behavior,omitempty" yaml:"policy_templates_behavior,omitempty"`
+	BasePolicyTemplates     []BasePolicyTemplate `json:"policy_templates,omitempty"`
+	Conditions              *Conditions          `config:"conditions,omitempty" json:"conditions,omitempty" yaml:"conditions,omitempty"`
+	Owner                   *Owner               `config:"owner,omitempty" json:"owner,omitempty" yaml:"owner,omitempty"`
+	Categories              []string             `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
+	SignaturePath           string               `config:"signature_path,omitempty" json:"signature_path,omitempty" yaml:"signature_path,omitempty"`
+	Discovery               *Discovery           `config:"discovery,omitempty" json:"discovery,omitempty" yaml:"discovery,omitempty"`
 }
 
 // BasePolicyTemplate is used for the package policy templates in the /search endpoint

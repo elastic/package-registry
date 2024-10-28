@@ -526,6 +526,7 @@
      "type": "image/svg+xml"
     }
    ],
+   "policy_templates_behavior": "combined_policy",
    "conditions": {
     "kibana": {
      "version": "^8.15.2"

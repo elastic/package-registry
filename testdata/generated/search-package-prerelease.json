@@ -163,6 +163,7 @@
         "type": "image/svg+xml"
       }
     ],
+    "policy_templates_behavior": "combined_policy",
     "policy_templates": [
       {
         "name": "agentless",

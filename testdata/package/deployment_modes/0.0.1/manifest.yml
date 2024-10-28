@@ -23,6 +23,7 @@ icons:
     title: Sample logo
     size: 32x32
     type: image/svg+xml
+policy_templates_behavior: combined_policy
 policy_templates:
   - name: agentless
     title: Sample logs
