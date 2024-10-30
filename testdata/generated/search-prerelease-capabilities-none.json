@@ -143,6 +143,72 @@
     ]
   },
   {
+    "name": "deployment_modes",
+    "title": "Deployment Modes",
+    "version": "0.0.1",
+    "release": "beta",
+    "source": {
+      "license": "Elastic-2.0"
+    },
+    "description": "Package containing policy templates with different deployment modes",
+    "type": "integration",
+    "download": "/epr/deployment_modes/deployment_modes-0.0.1.zip",
+    "path": "/package/deployment_modes/0.0.1",
+    "icons": [
+      {
+        "src": "/img/sample-logo.svg",
+        "path": "/package/deployment_modes/0.0.1/img/sample-logo.svg",
+        "title": "Sample logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates_behavior": "combined_policy",
+    "policy_templates": [
+      {
+        "name": "agentless",
+        "title": "Sample logs",
+        "description": "Collect sample logs",
+        "deployment_modes": {
+          "default": {
+            "enabled": false
+          },
+          "agentless": {
+            "enabled": true
+          }
+        }
+      },
+      {
+        "name": "default",
+        "title": "Sample logs",
+        "description": "Collect sample logs",
+        "deployment_modes": {
+          "default": {
+            "enabled": true
+          },
+          "agentless": {
+            "enabled": false
+          }
+        }
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.15.2"
+      },
+      "elastic": {
+        "subscription": "basic"
+      }
+    },
+    "owner": {
+      "type": "elastic",
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "custom"
+    ]
+  },
+  {
     "name": "elasticsearch_privileges",
     "title": "Elasticsearch Privileges",
     "version": "1.0.0",

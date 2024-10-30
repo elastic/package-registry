@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Add new `discovery` parameter to search and category endpoints. [#1235](https://github.com/elastic/package-registry/pull/1235)
+* Expose `policy_templates.*.deployment_modes` field in both search and package endpoints. [#1244](https://github.com/elastic/package-registry/pull/1244)
+* Expose `policy_templates_behavior` field in both search and package endpoints. [#1244](https://github.com/elastic/package-registry/pull/1244)
 
 ### Deprecated
 
