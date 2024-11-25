@@ -16,7 +16,7 @@ require (
 	github.com/joeshaw/multierror v0.0.0-20140124173710-69b34d4ec901
 	github.com/magefile/mage v1.15.0
 	github.com/prometheus/client_golang v1.20.5
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.10.0
 	go.elastic.co/apm/module/apmgorilla/v2 v2.6.2
 	go.elastic.co/apm/module/apmzap/v2 v2.6.2
 	go.elastic.co/apm/v2 v2.6.2
