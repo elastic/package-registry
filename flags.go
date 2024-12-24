@@ -14,7 +14,6 @@ import (
 )
 
 var supportedTLSVersions map[string]uint16 = map[string]uint16{
-	"1.0": tls.VersionTLS10,
 	"1.1": tls.VersionTLS11,
 	"1.2": tls.VersionTLS12,
 	"1.3": tls.VersionTLS13,
@@ -24,8 +23,6 @@ type tlsVersionValue uint16
 
 func (t tlsVersionValue) String() string {
 	switch t {
-	case tls.VersionTLS10:
-		return "1.0"
 	case tls.VersionTLS11:
 		return "1.1"
 	case tls.VersionTLS12:
