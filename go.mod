@@ -1,7 +1,8 @@
 module github.com/elastic/package-registry
 
-go 1.22.1
-toolchain go1.23.2
+go 1.22.9
+
+toolchain go1.23.4
 
 require (
 	cloud.google.com/go/storage v1.49.0
