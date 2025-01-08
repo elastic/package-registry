@@ -43,7 +43,7 @@ type DataStream struct {
 	DatasetIsPrefix bool   `config:"dataset_is_prefix" json:"dataset_is_prefix,omitempty" yaml:"dataset_is_prefix,omitempty"`
 
 	Title   string `config:"title" json:"title" validate:"required"`
-	Release string `config:"release" json:"release"`
+	Release string `config:"release" json:"release,omitempty"`
 
 	// Deprecated: Replaced by elasticsearch.ingest_pipeline.name
 	IngestPipeline string                   `config:"ingest_pipeline,omitempty" json:"ingest_pipeline,omitempty" yaml:"ingest_pipeline,omitempty"`

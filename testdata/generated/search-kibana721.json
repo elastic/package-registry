@@ -17,6 +17,23 @@
     ],
     "categories": [
       "custom"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "datasources.examplelog1",
+        "title": "Example dataset with inputs"
+      },
+      {
+        "type": "logs",
+        "dataset": "datasources.examplelog2",
+        "title": "Example dataset with inputs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "datasources.examplemetric",
+        "title": "Example data stream with inputs"
+      }
     ]
   },
   {
@@ -46,6 +63,13 @@
     "categories": [
       "crm",
       "azure"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "nodirentries.foo",
+        "title": "Foo"
+      }
     ]
   },
   {
@@ -76,7 +100,14 @@
       "crm",
       "azure"
     ],
-    "signature_path": "/epr/example/example-1.0.1.zip.sig"
+    "signature_path": "/epr/example/example-1.0.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "example.foo",
+        "title": "Foo"
+      }
+    ]
   },
   {
     "name": "foo",
@@ -119,6 +150,13 @@
     },
     "categories": [
       "custom"
+    ],
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "hidden.hidden",
+        "title": "Hidden data stream and ilm policy overrride"
+      }
     ]
   },
   {
@@ -137,6 +175,13 @@
     },
     "categories": [
       "custom"
+    ],
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "ilm_policy.ilm_policy",
+        "title": "ILM policy overrride data stream"
+      }
     ]
   },
   {
@@ -225,6 +270,13 @@
     "path": "/package/no_stream_configs/1.0.0",
     "categories": [
       "custom"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "no_stream_configs.log",
+        "title": "Log Yaml pipeline"
+      }
     ]
   },
   {
@@ -263,6 +315,13 @@
     "categories": [
       "custom",
       "web"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "reference.reference",
+        "title": "Reference Logs Title"
+      }
     ]
   },
   {
@@ -276,6 +335,13 @@
     "path": "/package/yamlpipeline/1.0.0",
     "categories": [
       "custom"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "yamlpipeline.log",
+        "title": "Log Yaml pipeline"
+      }
     ]
   }
 ]

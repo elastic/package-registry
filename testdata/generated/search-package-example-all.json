@@ -29,6 +29,13 @@
     "categories": [
       "crm",
       "azure"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "example.foo",
+        "title": "Foo"
+      }
     ]
   },
   {
@@ -59,7 +66,14 @@
       "crm",
       "azure"
     ],
-    "signature_path": "/epr/example/example-1.0.1.zip.sig"
+    "signature_path": "/epr/example/example-1.0.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "example.foo",
+        "title": "Foo"
+      }
+    ]
   },
   {
     "name": "example",
@@ -94,6 +108,13 @@
     "categories": [
       "crm",
       "azure"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "example.foo",
+        "title": "Foo"
+      }
     ]
   }
 ]

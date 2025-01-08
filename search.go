@@ -61,7 +61,7 @@ func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *
 			}
 		}
 
-		data, err := getPackageOutput(r.Context(), packages)
+		data, err := getSearchOutput(r.Context(), packages)
 		if err != nil {
 			notFoundError(w, err)
 			return
@@ -166,7 +166,7 @@ func getSpecVersion(version string) (*semver.Version, error) {
 	return specVersion, nil
 }
 
-func getPackageOutput(ctx context.Context, packageList packages.Packages) ([]byte, error) {
+func getSearchOutput(ctx context.Context, packageList packages.Packages) ([]byte, error) {
 	span, _ := apm.StartSpan(ctx, "GetPackageOutput", "app")
 	defer span.End()
 
@@ -175,7 +175,7 @@ func getPackageOutput(ctx context.Context, packageList packages.Packages) ([]byt
 
 	var output []packages.BasePackage
 	for _, p := range packageList {
-		data := p.BasePackage
+		data := getPackageSummaryOutput(p)
 		output = append(output, data)
 	}
 
@@ -185,4 +185,22 @@ func getPackageOutput(ctx context.Context, packageList packages.Packages) ([]byt
 	}
 
 	return util.MarshalJSONPretty(output)
+}
+
+func getPackageSummaryOutput(index *packages.Package) packages.BasePackage {
+	if len(index.DataStreams) == 0 {
+		return index.BasePackage
+	}
+
+	data := index.BasePackage
+	data.DataStreams = make([]*packages.DataStream, len(index.DataStreams))
+	for i, datastream := range index.DataStreams {
+		data.DataStreams[i] = &packages.DataStream{
+			Type:    datastream.Type,
+			Dataset: datastream.Dataset,
+			Title:   datastream.Title,
+		}
+	}
+
+	return data
 }

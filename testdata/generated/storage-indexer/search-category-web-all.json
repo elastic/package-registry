@@ -38,7 +38,14 @@
       "web",
       "cloud"
     ],
-    "signature_path": "/epr/akamai/akamai-1.0.0.zip.sig"
+    "signature_path": "/epr/akamai/akamai-1.0.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "akamai.siem",
+        "title": "Akamai SIEM Logs"
+      }
+    ]
   },
   {
     "name": "apache",
@@ -76,7 +83,24 @@
     "categories": [
       "web"
     ],
-    "signature_path": "/epr/apache/apache-1.1.0.zip.sig"
+    "signature_path": "/epr/apache/apache-1.1.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "apache.access",
+        "title": "Apache access logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "apache.error",
+        "title": "Apache error logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "apache.status",
+        "title": "Apache status metrics"
+      }
+    ]
   },
   {
     "name": "apache",
@@ -114,7 +138,24 @@
     "categories": [
       "web"
     ],
-    "signature_path": "/epr/apache/apache-1.3.0.zip.sig"
+    "signature_path": "/epr/apache/apache-1.3.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "apache.access",
+        "title": "Apache access logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "apache.error",
+        "title": "Apache error logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "apache.status",
+        "title": "Apache status metrics"
+      }
+    ]
   },
   {
     "name": "apache",
@@ -152,7 +193,24 @@
     "categories": [
       "web"
     ],
-    "signature_path": "/epr/apache/apache-1.3.2.zip.sig"
+    "signature_path": "/epr/apache/apache-1.3.2.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "apache.access",
+        "title": "Apache access logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "apache.error",
+        "title": "Apache error logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "apache.status",
+        "title": "Apache status metrics"
+      }
+    ]
   },
   {
     "name": "apache",
@@ -190,7 +248,24 @@
     "categories": [
       "web"
     ],
-    "signature_path": "/epr/apache/apache-1.3.5.zip.sig"
+    "signature_path": "/epr/apache/apache-1.3.5.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "apache.access",
+        "title": "Apache access logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "apache.error",
+        "title": "Apache error logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "apache.status",
+        "title": "Apache status metrics"
+      }
+    ]
   },
   {
     "name": "tomcat",
@@ -229,7 +304,14 @@
       "web",
       "security"
     ],
-    "signature_path": "/epr/tomcat/tomcat-1.0.0.zip.sig"
+    "signature_path": "/epr/tomcat/tomcat-1.0.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "tomcat.log",
+        "title": "Apache Tomcat logs"
+      }
+    ]
   },
   {
     "name": "tomcat",
@@ -268,7 +350,14 @@
       "web",
       "security"
     ],
-    "signature_path": "/epr/tomcat/tomcat-1.1.0.zip.sig"
+    "signature_path": "/epr/tomcat/tomcat-1.1.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "tomcat.log",
+        "title": "Apache Tomcat logs"
+      }
+    ]
   },
   {
     "name": "tomcat",
@@ -307,7 +396,14 @@
       "web",
       "security"
     ],
-    "signature_path": "/epr/tomcat/tomcat-1.1.4.zip.sig"
+    "signature_path": "/epr/tomcat/tomcat-1.1.4.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "tomcat.log",
+        "title": "Apache Tomcat logs"
+      }
+    ]
   },
   {
     "name": "tomcat",
@@ -346,7 +442,14 @@
       "web",
       "security"
     ],
-    "signature_path": "/epr/tomcat/tomcat-1.2.0.zip.sig"
+    "signature_path": "/epr/tomcat/tomcat-1.2.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "tomcat.log",
+        "title": "Apache Tomcat logs"
+      }
+    ]
   },
   {
     "name": "tomcat",
@@ -385,7 +488,14 @@
       "web",
       "security"
     ],
-    "signature_path": "/epr/tomcat/tomcat-1.2.1.zip.sig"
+    "signature_path": "/epr/tomcat/tomcat-1.2.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "tomcat.log",
+        "title": "Apache Tomcat logs"
+      }
+    ]
   },
   {
     "name": "tomcat",
@@ -424,7 +534,14 @@
       "web",
       "security"
     ],
-    "signature_path": "/epr/tomcat/tomcat-1.3.0.zip.sig"
+    "signature_path": "/epr/tomcat/tomcat-1.3.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "tomcat.log",
+        "title": "Apache Tomcat logs"
+      }
+    ]
   },
   {
     "name": "tomcat",
@@ -463,7 +580,14 @@
       "web",
       "security"
     ],
-    "signature_path": "/epr/tomcat/tomcat-1.3.1.zip.sig"
+    "signature_path": "/epr/tomcat/tomcat-1.3.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "tomcat.log",
+        "title": "Apache Tomcat logs"
+      }
+    ]
   },
   {
     "name": "atlassian_bitbucket",
@@ -502,7 +626,14 @@
       "security",
       "web"
     ],
-    "signature_path": "/epr/atlassian_bitbucket/atlassian_bitbucket-1.0.0.zip.sig"
+    "signature_path": "/epr/atlassian_bitbucket/atlassian_bitbucket-1.0.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "atlassian_bitbucket.audit",
+        "title": "Bitbucket Audit Logs"
+      }
+    ]
   },
   {
     "name": "atlassian_bitbucket",
@@ -541,7 +672,14 @@
       "security",
       "web"
     ],
-    "signature_path": "/epr/atlassian_bitbucket/atlassian_bitbucket-1.0.1.zip.sig"
+    "signature_path": "/epr/atlassian_bitbucket/atlassian_bitbucket-1.0.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "atlassian_bitbucket.audit",
+        "title": "Bitbucket Audit Logs"
+      }
+    ]
   },
   {
     "name": "atlassian_bitbucket",
@@ -580,7 +718,14 @@
       "security",
       "web"
     ],
-    "signature_path": "/epr/atlassian_bitbucket/atlassian_bitbucket-1.1.0.zip.sig"
+    "signature_path": "/epr/atlassian_bitbucket/atlassian_bitbucket-1.1.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "atlassian_bitbucket.audit",
+        "title": "Bitbucket Audit Logs"
+      }
+    ]
   },
   {
     "name": "atlassian_bitbucket",
@@ -619,7 +764,14 @@
       "security",
       "web"
     ],
-    "signature_path": "/epr/atlassian_bitbucket/atlassian_bitbucket-1.1.1.zip.sig"
+    "signature_path": "/epr/atlassian_bitbucket/atlassian_bitbucket-1.1.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "atlassian_bitbucket.audit",
+        "title": "Bitbucket Audit Logs"
+      }
+    ]
   },
   {
     "name": "atlassian_bitbucket",
@@ -658,7 +810,14 @@
       "security",
       "web"
     ],
-    "signature_path": "/epr/atlassian_bitbucket/atlassian_bitbucket-1.2.1.zip.sig"
+    "signature_path": "/epr/atlassian_bitbucket/atlassian_bitbucket-1.2.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "atlassian_bitbucket.audit",
+        "title": "Bitbucket Audit Logs"
+      }
+    ]
   },
   {
     "name": "atlassian_confluence",
@@ -697,7 +856,14 @@
       "security",
       "web"
     ],
-    "signature_path": "/epr/atlassian_confluence/atlassian_confluence-1.0.1.zip.sig"
+    "signature_path": "/epr/atlassian_confluence/atlassian_confluence-1.0.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "atlassian_confluence.audit",
+        "title": "Confluence Audit Logs"
+      }
+    ]
   },
   {
     "name": "atlassian_confluence",
@@ -736,7 +902,14 @@
       "security",
       "web"
     ],
-    "signature_path": "/epr/atlassian_confluence/atlassian_confluence-1.1.0.zip.sig"
+    "signature_path": "/epr/atlassian_confluence/atlassian_confluence-1.1.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "atlassian_confluence.audit",
+        "title": "Confluence Audit Logs"
+      }
+    ]
   },
   {
     "name": "atlassian_confluence",
@@ -775,7 +948,14 @@
       "security",
       "web"
     ],
-    "signature_path": "/epr/atlassian_confluence/atlassian_confluence-1.1.1.zip.sig"
+    "signature_path": "/epr/atlassian_confluence/atlassian_confluence-1.1.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "atlassian_confluence.audit",
+        "title": "Confluence Audit Logs"
+      }
+    ]
   },
   {
     "name": "atlassian_confluence",
@@ -814,7 +994,14 @@
       "security",
       "web"
     ],
-    "signature_path": "/epr/atlassian_confluence/atlassian_confluence-1.1.2.zip.sig"
+    "signature_path": "/epr/atlassian_confluence/atlassian_confluence-1.1.2.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "atlassian_confluence.audit",
+        "title": "Confluence Audit Logs"
+      }
+    ]
   },
   {
     "name": "atlassian_confluence",
@@ -853,7 +1040,14 @@
       "security",
       "web"
     ],
-    "signature_path": "/epr/atlassian_confluence/atlassian_confluence-1.3.0.zip.sig"
+    "signature_path": "/epr/atlassian_confluence/atlassian_confluence-1.3.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "atlassian_confluence.audit",
+        "title": "Confluence Audit Logs"
+      }
+    ]
   },
   {
     "name": "atlassian_jira",
@@ -892,7 +1086,14 @@
       "security",
       "web"
     ],
-    "signature_path": "/epr/atlassian_jira/atlassian_jira-1.0.0.zip.sig"
+    "signature_path": "/epr/atlassian_jira/atlassian_jira-1.0.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "atlassian_jira.audit",
+        "title": "Jira Audit Logs"
+      }
+    ]
   },
   {
     "name": "atlassian_jira",
@@ -931,7 +1132,14 @@
       "security",
       "web"
     ],
-    "signature_path": "/epr/atlassian_jira/atlassian_jira-1.0.1.zip.sig"
+    "signature_path": "/epr/atlassian_jira/atlassian_jira-1.0.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "atlassian_jira.audit",
+        "title": "Jira Audit Logs"
+      }
+    ]
   },
   {
     "name": "atlassian_jira",
@@ -970,7 +1178,14 @@
       "security",
       "web"
     ],
-    "signature_path": "/epr/atlassian_jira/atlassian_jira-1.1.0.zip.sig"
+    "signature_path": "/epr/atlassian_jira/atlassian_jira-1.1.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "atlassian_jira.audit",
+        "title": "Jira Audit Logs"
+      }
+    ]
   },
   {
     "name": "atlassian_jira",
@@ -1009,7 +1224,14 @@
       "security",
       "web"
     ],
-    "signature_path": "/epr/atlassian_jira/atlassian_jira-1.1.1.zip.sig"
+    "signature_path": "/epr/atlassian_jira/atlassian_jira-1.1.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "atlassian_jira.audit",
+        "title": "Jira Audit Logs"
+      }
+    ]
   },
   {
     "name": "atlassian_jira",
@@ -1048,7 +1270,14 @@
       "security",
       "web"
     ],
-    "signature_path": "/epr/atlassian_jira/atlassian_jira-1.1.2.zip.sig"
+    "signature_path": "/epr/atlassian_jira/atlassian_jira-1.1.2.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "atlassian_jira.audit",
+        "title": "Jira Audit Logs"
+      }
+    ]
   },
   {
     "name": "atlassian_jira",
@@ -1087,7 +1316,14 @@
       "security",
       "web"
     ],
-    "signature_path": "/epr/atlassian_jira/atlassian_jira-1.2.0.zip.sig"
+    "signature_path": "/epr/atlassian_jira/atlassian_jira-1.2.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "atlassian_jira.audit",
+        "title": "Jira Audit Logs"
+      }
+    ]
   },
   {
     "name": "atlassian_jira",
@@ -1126,7 +1362,14 @@
       "security",
       "web"
     ],
-    "signature_path": "/epr/atlassian_jira/atlassian_jira-1.3.0.zip.sig"
+    "signature_path": "/epr/atlassian_jira/atlassian_jira-1.3.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "atlassian_jira.audit",
+        "title": "Jira Audit Logs"
+      }
+    ]
   },
   {
     "name": "azure_application_insights",
@@ -1188,7 +1431,19 @@
       "azure",
       "web"
     ],
-    "signature_path": "/epr/azure_application_insights/azure_application_insights-1.0.0.zip.sig"
+    "signature_path": "/epr/azure_application_insights/azure_application_insights-1.0.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "azure.app_insights",
+        "title": "Azure Application Insights"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.app_state",
+        "title": "Azure Application State"
+      }
+    ]
   },
   {
     "name": "azure_application_insights",
@@ -1250,7 +1505,19 @@
       "azure",
       "web"
     ],
-    "signature_path": "/epr/azure_application_insights/azure_application_insights-1.0.1.zip.sig"
+    "signature_path": "/epr/azure_application_insights/azure_application_insights-1.0.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "azure.app_insights",
+        "title": "Azure Application Insights"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.app_state",
+        "title": "Azure Application State"
+      }
+    ]
   },
   {
     "name": "azure_metrics",
@@ -1396,7 +1663,49 @@
       "azure",
       "web"
     ],
-    "signature_path": "/epr/azure_metrics/azure_metrics-1.0.0.zip.sig"
+    "signature_path": "/epr/azure_metrics/azure_metrics-1.0.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "azure.compute_vm",
+        "title": "Compute VM"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.compute_vm_scaleset",
+        "title": "Compute VM Scaleset"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.container_instance",
+        "title": "Container Instance"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.container_registry",
+        "title": "Container Registry"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.container_service",
+        "title": "Container Service"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.database_account",
+        "title": "Database Account"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.monitor",
+        "title": "Monitor"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.storage_account",
+        "title": "Storage Account"
+      }
+    ]
   },
   {
     "name": "azure_metrics",
@@ -1542,7 +1851,49 @@
       "azure",
       "web"
     ],
-    "signature_path": "/epr/azure_metrics/azure_metrics-1.0.1.zip.sig"
+    "signature_path": "/epr/azure_metrics/azure_metrics-1.0.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "azure.compute_vm",
+        "title": "Compute VM"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.compute_vm_scaleset",
+        "title": "Compute VM Scaleset"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.container_instance",
+        "title": "Container Instance"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.container_registry",
+        "title": "Container Registry"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.container_service",
+        "title": "Container Service"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.database_account",
+        "title": "Database Account"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.monitor",
+        "title": "Monitor"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.storage_account",
+        "title": "Storage Account"
+      }
+    ]
   },
   {
     "name": "azure_metrics",
@@ -1688,7 +2039,49 @@
       "azure",
       "web"
     ],
-    "signature_path": "/epr/azure_metrics/azure_metrics-1.0.3.zip.sig"
+    "signature_path": "/epr/azure_metrics/azure_metrics-1.0.3.zip.sig",
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "azure.compute_vm",
+        "title": "Compute VM"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.compute_vm_scaleset",
+        "title": "Compute VM Scaleset"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.container_instance",
+        "title": "Container Instance"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.container_registry",
+        "title": "Container Registry"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.container_service",
+        "title": "Container Service"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.database_account",
+        "title": "Database Account"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.monitor",
+        "title": "Monitor"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.storage_account",
+        "title": "Storage Account"
+      }
+    ]
   },
   {
     "name": "cloudflare",
@@ -1728,7 +2121,14 @@
       "network",
       "web"
     ],
-    "signature_path": "/epr/cloudflare/cloudflare-1.0.2.zip.sig"
+    "signature_path": "/epr/cloudflare/cloudflare-1.0.2.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "cloudflare.logpull",
+        "title": "Cloudflare Logpull"
+      }
+    ]
   },
   {
     "name": "cloudflare",
@@ -1768,7 +2168,14 @@
       "network",
       "web"
     ],
-    "signature_path": "/epr/cloudflare/cloudflare-1.0.3.zip.sig"
+    "signature_path": "/epr/cloudflare/cloudflare-1.0.3.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "cloudflare.logpull",
+        "title": "Cloudflare Logpull"
+      }
+    ]
   },
   {
     "name": "cloudflare",
@@ -1808,7 +2215,14 @@
       "network",
       "web"
     ],
-    "signature_path": "/epr/cloudflare/cloudflare-1.1.0.zip.sig"
+    "signature_path": "/epr/cloudflare/cloudflare-1.1.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "cloudflare.logpull",
+        "title": "Cloudflare Logpull"
+      }
+    ]
   },
   {
     "name": "cloudflare",
@@ -1849,7 +2263,19 @@
       "web",
       "cloud"
     ],
-    "signature_path": "/epr/cloudflare/cloudflare-1.2.1.zip.sig"
+    "signature_path": "/epr/cloudflare/cloudflare-1.2.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "cloudflare.audit",
+        "title": "Cloudflare Audit Logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "cloudflare.logpull",
+        "title": "Cloudflare Logpull"
+      }
+    ]
   },
   {
     "name": "cloudflare",
@@ -1890,7 +2316,19 @@
       "web",
       "cloud"
     ],
-    "signature_path": "/epr/cloudflare/cloudflare-1.3.0.zip.sig"
+    "signature_path": "/epr/cloudflare/cloudflare-1.3.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "cloudflare.audit",
+        "title": "Cloudflare Audit Logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "cloudflare.logpull",
+        "title": "Cloudflare Logpull"
+      }
+    ]
   },
   {
     "name": "cloudflare",
@@ -1931,7 +2369,19 @@
       "web",
       "cloud"
     ],
-    "signature_path": "/epr/cloudflare/cloudflare-1.3.1.zip.sig"
+    "signature_path": "/epr/cloudflare/cloudflare-1.3.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "cloudflare.audit",
+        "title": "Cloudflare Audit Logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "cloudflare.logpull",
+        "title": "Cloudflare Logpull"
+      }
+    ]
   },
   {
     "name": "cloudflare",
@@ -1972,7 +2422,19 @@
       "web",
       "cloud"
     ],
-    "signature_path": "/epr/cloudflare/cloudflare-1.3.2.zip.sig"
+    "signature_path": "/epr/cloudflare/cloudflare-1.3.2.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "cloudflare.audit",
+        "title": "Cloudflare Audit Logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "cloudflare.logpull",
+        "title": "Cloudflare Logpull"
+      }
+    ]
   },
   {
     "name": "cloudflare",
@@ -2013,7 +2475,19 @@
       "web",
       "cloud"
     ],
-    "signature_path": "/epr/cloudflare/cloudflare-1.4.2.zip.sig"
+    "signature_path": "/epr/cloudflare/cloudflare-1.4.2.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "cloudflare.audit",
+        "title": "Cloudflare Audit Logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "cloudflare.logpull",
+        "title": "Cloudflare Logpull"
+      }
+    ]
   },
   {
     "name": "cloudflare",
@@ -2054,7 +2528,19 @@
       "web",
       "cloud"
     ],
-    "signature_path": "/epr/cloudflare/cloudflare-2.0.0.zip.sig"
+    "signature_path": "/epr/cloudflare/cloudflare-2.0.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "cloudflare.audit",
+        "title": "Cloudflare Audit Logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "cloudflare.logpull",
+        "title": "Cloudflare Logpull"
+      }
+    ]
   },
   {
     "name": "keycloak",
@@ -2094,7 +2580,14 @@
       "network",
       "web"
     ],
-    "signature_path": "/epr/keycloak/keycloak-1.0.0.zip.sig"
+    "signature_path": "/epr/keycloak/keycloak-1.0.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "keycloak.log",
+        "title": "Keycloak"
+      }
+    ]
   },
   {
     "name": "keycloak",
@@ -2134,7 +2627,14 @@
       "network",
       "web"
     ],
-    "signature_path": "/epr/keycloak/keycloak-1.1.0.zip.sig"
+    "signature_path": "/epr/keycloak/keycloak-1.1.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "keycloak.log",
+        "title": "Keycloak"
+      }
+    ]
   },
   {
     "name": "keycloak",
@@ -2174,7 +2674,14 @@
       "network",
       "web"
     ],
-    "signature_path": "/epr/keycloak/keycloak-1.2.0.zip.sig"
+    "signature_path": "/epr/keycloak/keycloak-1.2.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "keycloak.log",
+        "title": "Keycloak"
+      }
+    ]
   },
   {
     "name": "keycloak",
@@ -2214,7 +2721,14 @@
       "network",
       "web"
     ],
-    "signature_path": "/epr/keycloak/keycloak-1.2.1.zip.sig"
+    "signature_path": "/epr/keycloak/keycloak-1.2.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "keycloak.log",
+        "title": "Keycloak"
+      }
+    ]
   },
   {
     "name": "mattermost",
@@ -2253,7 +2767,14 @@
       "security",
       "web"
     ],
-    "signature_path": "/epr/mattermost/mattermost-1.0.0.zip.sig"
+    "signature_path": "/epr/mattermost/mattermost-1.0.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "mattermost.audit",
+        "title": "Audit Logs"
+      }
+    ]
   },
   {
     "name": "mattermost",
@@ -2292,7 +2813,14 @@
       "security",
       "web"
     ],
-    "signature_path": "/epr/mattermost/mattermost-1.1.0.zip.sig"
+    "signature_path": "/epr/mattermost/mattermost-1.1.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "mattermost.audit",
+        "title": "Audit Logs"
+      }
+    ]
   },
   {
     "name": "mattermost",
@@ -2331,7 +2859,14 @@
       "security",
       "web"
     ],
-    "signature_path": "/epr/mattermost/mattermost-1.1.1.zip.sig"
+    "signature_path": "/epr/mattermost/mattermost-1.1.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "mattermost.audit",
+        "title": "Audit Logs"
+      }
+    ]
   },
   {
     "name": "nginx",
@@ -2370,7 +2905,24 @@
       "web",
       "security"
     ],
-    "signature_path": "/epr/nginx/nginx-1.1.0.zip.sig"
+    "signature_path": "/epr/nginx/nginx-1.1.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "nginx.access",
+        "title": "Nginx access logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "nginx.error",
+        "title": "Nginx error logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "nginx.stubstatus",
+        "title": "Nginx stubstatus metrics"
+      }
+    ]
   },
   {
     "name": "nginx",
@@ -2409,7 +2961,24 @@
       "web",
       "security"
     ],
-    "signature_path": "/epr/nginx/nginx-1.2.0.zip.sig"
+    "signature_path": "/epr/nginx/nginx-1.2.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "nginx.access",
+        "title": "Nginx access logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "nginx.error",
+        "title": "Nginx error logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "nginx.stubstatus",
+        "title": "Nginx stubstatus metrics"
+      }
+    ]
   },
   {
     "name": "nginx",
@@ -2448,7 +3017,24 @@
       "web",
       "security"
     ],
-    "signature_path": "/epr/nginx/nginx-1.2.1.zip.sig"
+    "signature_path": "/epr/nginx/nginx-1.2.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "nginx.access",
+        "title": "Nginx access logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "nginx.error",
+        "title": "Nginx error logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "nginx.stubstatus",
+        "title": "Nginx stubstatus metrics"
+      }
+    ]
   },
   {
     "name": "nginx",
@@ -2487,7 +3073,24 @@
       "web",
       "security"
     ],
-    "signature_path": "/epr/nginx/nginx-1.3.1.zip.sig"
+    "signature_path": "/epr/nginx/nginx-1.3.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "nginx.access",
+        "title": "Nginx access logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "nginx.error",
+        "title": "Nginx error logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "nginx.stubstatus",
+        "title": "Nginx stubstatus metrics"
+      }
+    ]
   },
   {
     "name": "nginx_ingress_controller",
@@ -2526,7 +3129,19 @@
       "web",
       "security"
     ],
-    "signature_path": "/epr/nginx_ingress_controller/nginx_ingress_controller-1.0.0.zip.sig"
+    "signature_path": "/epr/nginx_ingress_controller/nginx_ingress_controller-1.0.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "nginx_ingress_controller.access",
+        "title": "Nginx Ingress Controller access logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "nginx_ingress_controller.error",
+        "title": "Nginx Ingress Controller error logs"
+      }
+    ]
   },
   {
     "name": "nginx_ingress_controller",
@@ -2565,7 +3180,19 @@
       "web",
       "security"
     ],
-    "signature_path": "/epr/nginx_ingress_controller/nginx_ingress_controller-1.2.0.zip.sig"
+    "signature_path": "/epr/nginx_ingress_controller/nginx_ingress_controller-1.2.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "nginx_ingress_controller.access",
+        "title": "Nginx Ingress Controller access logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "nginx_ingress_controller.error",
+        "title": "Nginx Ingress Controller error logs"
+      }
+    ]
   },
   {
     "name": "traefik",
@@ -2604,7 +3231,19 @@
       "web",
       "security"
     ],
-    "signature_path": "/epr/traefik/traefik-1.1.0.zip.sig"
+    "signature_path": "/epr/traefik/traefik-1.1.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "traefik.access",
+        "title": "Traefik access logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "traefik.health",
+        "title": "Traefik health metrics"
+      }
+    ]
   },
   {
     "name": "traefik",
@@ -2643,6 +3282,18 @@
       "web",
       "security"
     ],
-    "signature_path": "/epr/traefik/traefik-1.2.0.zip.sig"
+    "signature_path": "/epr/traefik/traefik-1.2.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "traefik.access",
+        "title": "Traefik access logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "traefik.health",
+        "title": "Traefik health metrics"
+      }
+    ]
   }
 ]

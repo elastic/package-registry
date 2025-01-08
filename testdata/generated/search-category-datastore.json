@@ -35,6 +35,13 @@
     "categories": [
       "datastore",
       "monitoring"
+    ],
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "datastream_without_release.nodes",
+        "title": "Apache Spark nodes metrics"
+      }
     ]
   },
   {
@@ -70,6 +77,13 @@
     "categories": [
       "crm",
       "azure"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "example.foo",
+        "title": "Foo"
+      }
     ]
   },
   {

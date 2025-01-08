@@ -37,7 +37,14 @@
       "cloud",
       "custom"
     ],
-    "signature_path": "/epr/gcp_pubsub/gcp_pubsub-1.0.0.zip.sig"
+    "signature_path": "/epr/gcp_pubsub/gcp_pubsub-1.0.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "gcp_pubsub.generic",
+        "title": "Custom Google Pub/Sub Logs"
+      }
+    ]
   },
   {
     "name": "http_endpoint",
@@ -73,7 +80,14 @@
     "categories": [
       "custom"
     ],
-    "signature_path": "/epr/http_endpoint/http_endpoint-1.0.1.zip.sig"
+    "signature_path": "/epr/http_endpoint/http_endpoint-1.0.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "http_endpoint.generic",
+        "title": "Custom HTTP Endpoint Logs"
+      }
+    ]
   },
   {
     "name": "httpjson",
@@ -102,7 +116,14 @@
     "categories": [
       "custom"
     ],
-    "signature_path": "/epr/httpjson/httpjson-1.1.1.zip.sig"
+    "signature_path": "/epr/httpjson/httpjson-1.1.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "httpjson.generic",
+        "title": "Custom HTTPJSON Input"
+      }
+    ]
   },
   {
     "name": "log",
@@ -133,7 +154,14 @@
     "categories": [
       "custom"
     ],
-    "signature_path": "/epr/log/log-1.0.0.zip.sig"
+    "signature_path": "/epr/log/log-1.0.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "log.log",
+        "title": "Log Dataset"
+      }
+    ]
   },
   {
     "name": "tcp",
@@ -169,7 +197,14 @@
     "categories": [
       "custom"
     ],
-    "signature_path": "/epr/tcp/tcp-1.0.0.zip.sig"
+    "signature_path": "/epr/tcp/tcp-1.0.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "tcp.generic",
+        "title": "Custom TCP Logs"
+      }
+    ]
   },
   {
     "name": "udp",
@@ -205,7 +240,14 @@
     "categories": [
       "custom"
     ],
-    "signature_path": "/epr/udp/udp-1.0.1.zip.sig"
+    "signature_path": "/epr/udp/udp-1.0.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "udp.generic",
+        "title": "Custom UDP Logs"
+      }
+    ]
   },
   {
     "name": "winlog",
@@ -241,6 +283,13 @@
     "categories": [
       "custom"
     ],
-    "signature_path": "/epr/winlog/winlog-1.4.0.zip.sig"
+    "signature_path": "/epr/winlog/winlog-1.4.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "winlog.winlog",
+        "title": "Custom Windows Event Log Dataset"
+      }
+    ]
   }
 ]

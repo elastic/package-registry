@@ -78,6 +78,7 @@ type BasePackage struct {
 	Categories              []string             `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
 	SignaturePath           string               `config:"signature_path,omitempty" json:"signature_path,omitempty" yaml:"signature_path,omitempty"`
 	Discovery               *Discovery           `config:"discovery,omitempty" json:"discovery,omitempty" yaml:"discovery,omitempty"`
+	DataStreams             []*DataStream        `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
 }
 
 // BasePolicyTemplate is used for the package policy templates in the /search endpoint

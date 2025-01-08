@@ -29,6 +29,13 @@
     "categories": [
       "crm",
       "azure"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "integration_input.foo",
+        "title": "Foo"
+      }
     ]
   }
 ]
