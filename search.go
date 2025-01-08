@@ -173,7 +173,7 @@ func getSearchOutput(ctx context.Context, packageList packages.Packages) ([]byte
 	// Packages need to be sorted to be always outputted in the same order
 	sort.Sort(packageList)
 
-	var output []packages.BasePackage
+	var output []packageSummary
 	for _, p := range packageList {
 		data := getPackageSummaryOutput(p)
 		output = append(output, data)
@@ -187,20 +187,27 @@ func getSearchOutput(ctx context.Context, packageList packages.Packages) ([]byte
 	return util.MarshalJSONPretty(output)
 }
 
-func getPackageSummaryOutput(index *packages.Package) packages.BasePackage {
+type packageSummary struct {
+	packages.BasePackage `json:",inline"`
+	DataStreams          []*packages.DataStream `json:"data_streams,omitempty"`
+}
+
+func getPackageSummaryOutput(index *packages.Package) packageSummary {
+	summary := packageSummary{
+		BasePackage: index.BasePackage,
+	}
 	if len(index.DataStreams) == 0 {
-		return index.BasePackage
+		return summary
 	}
 
-	data := index.BasePackage
-	data.DataStreams = make([]*packages.DataStream, len(index.DataStreams))
+	summary.DataStreams = make([]*packages.DataStream, len(index.DataStreams))
 	for i, datastream := range index.DataStreams {
-		data.DataStreams[i] = &packages.DataStream{
+		summary.DataStreams[i] = &packages.DataStream{
 			Type:    datastream.Type,
 			Dataset: datastream.Dataset,
 			Title:   datastream.Title,
 		}
 	}
 
-	return data
+	return summary
 }
