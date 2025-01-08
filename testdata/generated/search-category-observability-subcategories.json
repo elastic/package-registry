@@ -90,6 +90,13 @@
     "categories": [
       "custom",
       "web"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "reference.reference",
+        "title": "Reference Logs Title"
+      }
     ]
   }
 ]

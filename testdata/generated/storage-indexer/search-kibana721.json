@@ -28,6 +28,13 @@
     "categories": [
       "custom"
     ],
-    "signature_path": "/epr/log/log-1.0.0.zip.sig"
+    "signature_path": "/epr/log/log-1.0.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "log.log",
+        "title": "Log Dataset"
+      }
+    ]
   }
 ]

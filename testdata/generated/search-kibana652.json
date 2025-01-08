@@ -17,6 +17,23 @@
     ],
     "categories": [
       "custom"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "datasources.examplelog1",
+        "title": "Example dataset with inputs"
+      },
+      {
+        "type": "logs",
+        "dataset": "datasources.examplelog2",
+        "title": "Example dataset with inputs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "datasources.examplemetric",
+        "title": "Example data stream with inputs"
+      }
     ]
   },
   {
@@ -50,6 +67,13 @@
     "path": "/package/no_stream_configs/1.0.0",
     "categories": [
       "custom"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "no_stream_configs.log",
+        "title": "Log Yaml pipeline"
+      }
     ]
   },
   {
@@ -63,6 +87,13 @@
     "path": "/package/yamlpipeline/1.0.0",
     "categories": [
       "custom"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "yamlpipeline.log",
+        "title": "Log Yaml pipeline"
+      }
     ]
   }
 ]

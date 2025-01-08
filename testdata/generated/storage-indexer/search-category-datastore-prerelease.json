@@ -117,7 +117,154 @@
       "aws",
       "cloud"
     ],
-    "signature_path": "/epr/aws/aws-1.16.4.zip.sig"
+    "signature_path": "/epr/aws/aws-1.16.4.zip.sig",
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "aws.billing",
+        "title": "AWS Billing Metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "aws.cloudfront_logs",
+        "title": "AWS CloudFront logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "aws.cloudtrail",
+        "title": "AWS CloudTrail Logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "aws.cloudwatch_logs",
+        "title": "AWS CloudWatch logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "aws.cloudwatch_metrics",
+        "title": "AWS CloudWatch metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "aws.dynamodb",
+        "title": "AWS DynamoDB metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "aws.ebs",
+        "title": "AWS EBS metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "aws.ec2_logs",
+        "title": "AWS EC2 logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "aws.ec2_metrics",
+        "title": "AWS EC2 metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "aws.elb_logs",
+        "title": "AWS ELB logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "aws.elb_metrics",
+        "title": "AWS ELB metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "aws.firewall_logs",
+        "title": "AWS Network Firewall logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "aws.firewall_metrics",
+        "title": "AWS Network Firewall metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "aws.lambda",
+        "title": "AWS Lambda metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "aws.natgateway",
+        "title": "AWS NAT gateway metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "aws.rds",
+        "title": "AWS RDS metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "aws.route53_public_logs",
+        "title": "AWS Route 53 Public Zone Logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "aws.route53_resolver_logs",
+        "title": "AWS Route 53 Resolver Query Logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "aws.s3_daily_storage",
+        "title": "AWS S3 daily storage metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "aws.s3_request",
+        "title": "AWS S3 request metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "aws.s3_storage_lens",
+        "title": "AWS S3 Storage Lens metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "aws.s3access",
+        "title": "AWS s3access logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "aws.sns",
+        "title": "AWS SNS metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "aws.sqs",
+        "title": "AWS SQS metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "aws.transitgateway",
+        "title": "AWS Transit Gateway metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "aws.usage",
+        "title": "AWS usage metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "aws.vpcflow",
+        "title": "AWS vpcflow logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "aws.vpn",
+        "title": "AWS VPN metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "aws.waf",
+        "title": "AWS WAF logs"
+      }
+    ]
   },
   {
     "name": "cassandra",
@@ -156,7 +303,19 @@
       "datastore",
       "monitoring"
     ],
-    "signature_path": "/epr/cassandra/cassandra-1.1.0.zip.sig"
+    "signature_path": "/epr/cassandra/cassandra-1.1.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "cassandra.log",
+        "title": "Cassandra System Logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "cassandra.metrics",
+        "title": "metrics"
+      }
+    ]
   },
   {
     "name": "cockroachdb",
@@ -203,7 +362,14 @@
     "categories": [
       "datastore"
     ],
-    "signature_path": "/epr/cockroachdb/cockroachdb-0.2.0.zip.sig"
+    "signature_path": "/epr/cockroachdb/cockroachdb-0.2.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "cockroachdb.status",
+        "title": "Status"
+      }
+    ]
   },
   {
     "name": "elasticsearch",
@@ -242,7 +408,89 @@
       "elastic_stack",
       "datastore"
     ],
-    "signature_path": "/epr/elasticsearch/elasticsearch-0.2.0.zip.sig"
+    "signature_path": "/epr/elasticsearch/elasticsearch-0.2.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "elasticsearch.audit",
+        "title": "Elasticsearch audit logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "elasticsearch.ccr",
+        "title": "Elasticsearch ccr metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "elasticsearch.cluster_stats",
+        "title": "Elasticsearch cluster_stats metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "elasticsearch.deprecation",
+        "title": "Elasticsearch deprecation logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "elasticsearch.enrich",
+        "title": "Elasticsearch enrich metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "elasticsearch.gc",
+        "title": "Elasticsearch gc logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "elasticsearch.index",
+        "title": "Elasticsearch index metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "elasticsearch.index_recovery",
+        "title": "Elasticsearch index_recovery metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "elasticsearch.index_summary",
+        "title": "Elasticsearch index_summary metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "elasticsearch.ml_job",
+        "title": "Elasticsearch ml_job metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "elasticsearch.node",
+        "title": "Elasticsearch node metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "elasticsearch.node_stats",
+        "title": "Elasticsearch node_stats metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "elasticsearch.pending_tasks",
+        "title": "Elasticsearch pending_tasks metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "elasticsearch.server",
+        "title": "Elasticsearch server logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "elasticsearch.shard",
+        "title": "Elasticsearch shard metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "elasticsearch.slowlog",
+        "title": "Elasticsearch slowlog logs"
+      }
+    ]
   },
   {
     "name": "microsoft_sqlserver",
@@ -281,7 +529,14 @@
       "datastore",
       "security"
     ],
-    "signature_path": "/epr/microsoft_sqlserver/microsoft_sqlserver-0.4.5.zip.sig"
+    "signature_path": "/epr/microsoft_sqlserver/microsoft_sqlserver-0.4.5.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "microsoft_sqlserver.audit",
+        "title": "SQL Server audit events"
+      }
+    ]
   },
   {
     "name": "mongodb",
@@ -319,7 +574,39 @@
     "categories": [
       "datastore"
     ],
-    "signature_path": "/epr/mongodb/mongodb-1.3.1.zip.sig"
+    "signature_path": "/epr/mongodb/mongodb-1.3.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "mongodb.collstats",
+        "title": "MongoDB collstats metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "mongodb.dbstats",
+        "title": "MongoDB dbstats metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "mongodb.log",
+        "title": "mongodb log logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "mongodb.metrics",
+        "title": "MongoDB metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "mongodb.replstatus",
+        "title": "MongoDB replstatus metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "mongodb.status",
+        "title": "MongoDB status metrics"
+      }
+    ]
   },
   {
     "name": "mysql",
@@ -357,7 +644,34 @@
     "categories": [
       "datastore"
     ],
-    "signature_path": "/epr/mysql/mysql-1.2.1.zip.sig"
+    "signature_path": "/epr/mysql/mysql-1.2.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "mysql.error",
+        "title": "MySQL error logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "mysql.galera_status",
+        "title": "MySQL galera_status metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "mysql.performance",
+        "title": "MySQL performance metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "mysql.slowlog",
+        "title": "MySQL slowlog logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "mysql.status",
+        "title": "MySQL status metrics"
+      }
+    ]
   },
   {
     "name": "mysql_enterprise",
@@ -396,7 +710,14 @@
       "security",
       "datastore"
     ],
-    "signature_path": "/epr/mysql_enterprise/mysql_enterprise-1.0.1.zip.sig"
+    "signature_path": "/epr/mysql_enterprise/mysql_enterprise-1.0.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "mysql_enterprise.audit",
+        "title": "MySQL Enterprise Audit Log"
+      }
+    ]
   },
   {
     "name": "oracle",
@@ -435,7 +756,14 @@
       "security",
       "datastore"
     ],
-    "signature_path": "/epr/oracle/oracle-1.0.1.zip.sig"
+    "signature_path": "/epr/oracle/oracle-1.0.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "oracle.database_audit",
+        "title": "Oracle Audit Log"
+      }
+    ]
   },
   {
     "name": "postgresql",
@@ -473,7 +801,34 @@
     "categories": [
       "datastore"
     ],
-    "signature_path": "/epr/postgresql/postgresql-1.2.0.zip.sig"
+    "signature_path": "/epr/postgresql/postgresql-1.2.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "postgresql.activity",
+        "title": "PostgreSQL activity metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "postgresql.bgwriter",
+        "title": "PostgreSQL bgwriter metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "postgresql.database",
+        "title": "PostgreSQL database metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "postgresql.log",
+        "title": "PostgreSQL logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "postgresql.statement",
+        "title": "PostgreSQL statement metrics"
+      }
+    ]
   },
   {
     "name": "prometheus",
@@ -512,7 +867,24 @@
       "monitoring",
       "datastore"
     ],
-    "signature_path": "/epr/prometheus/prometheus-0.7.0.zip.sig"
+    "signature_path": "/epr/prometheus/prometheus-0.7.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "prometheus.collector",
+        "title": "Prometheus collector metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "prometheus.query",
+        "title": "Prometheus query metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "prometheus.remote_write",
+        "title": "Prometheus remote_write metrics"
+      }
+    ]
   },
   {
     "name": "redis",
@@ -551,7 +923,34 @@
       "datastore",
       "message_queue"
     ],
-    "signature_path": "/epr/redis/redis-1.2.0.zip.sig"
+    "signature_path": "/epr/redis/redis-1.2.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "redis.info",
+        "title": "Redis info metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "redis.key",
+        "title": "Redis key metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "redis.keyspace",
+        "title": "Redis keyspace metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "redis.log",
+        "title": "Redis application logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "redis.slowlog",
+        "title": "Redis slow logs"
+      }
+    ]
   },
   {
     "name": "zookeeper",
@@ -590,6 +989,23 @@
       "datastore",
       "config_management"
     ],
-    "signature_path": "/epr/zookeeper/zookeeper-1.2.0.zip.sig"
+    "signature_path": "/epr/zookeeper/zookeeper-1.2.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "zookeeper.connection",
+        "title": "ZooKeeper connection metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "zookeeper.mntr",
+        "title": "ZooKeeper mntr metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "zookeeper.server",
+        "title": "ZooKeeper server metrics"
+      }
+    ]
   }
 ]

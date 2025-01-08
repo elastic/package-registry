@@ -32,6 +32,13 @@
     "categories": [
       "crm",
       "azure"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "example.foo",
+        "title": "Foo"
+      }
     ]
   },
   {
