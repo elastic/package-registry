@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Include summary of data streams in search responses. [#1264](https://github.com/elastic/package-registry/pull/1264)
+* Add Access-Control-Allow-Origin header for all origins. [#1266](https://github.com/elastic/package-registry/pull/1266)
 
 ### Deprecated
 

@@ -394,6 +394,7 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router
 	router.HandleFunc(packageIndexRouterPath, packageIndexHandler)
 	router.HandleFunc(staticRouterPath, staticHandler)
 	router.Use(util.LoggingMiddleware(logger))
+	router.Use(util.CORSMiddleware())
 	if metricsAddress != "" {
 		router.Use(metrics.MetricsMiddleware())
 	}
