@@ -37,6 +37,23 @@ var (
 	testLogger         = util.NewTestLogger()
 )
 
+func TestRouter(t *testing.T) {
+	logger := util.NewTestLogger()
+	config := defaultConfig
+	indexer := NewCombinedIndexer()
+
+	router, err := getRouter(logger, &config, indexer)
+	require.NoError(t, err)
+
+	recorder := httptest.NewRecorder()
+	request, _ := http.NewRequest(http.MethodGet, "/", nil)
+
+	router.ServeHTTP(recorder, request)
+
+	allowOrigin := recorder.Header().Values("Access-Control-Allow-Origin")
+	assert.Equal(t, []string{"*"}, allowOrigin)
+}
+
 func TestEndpoints(t *testing.T) {
 	packagesBasePaths := []string{"./testdata/second_package_path", "./testdata/package"}
 	indexer := NewCombinedIndexer(
