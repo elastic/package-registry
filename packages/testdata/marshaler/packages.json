@@ -596,7 +596,8 @@
        "enabled": false
       },
       "agentless": {
-       "enabled": true
+       "enabled": true,
+       "is_default": true
       }
      }
     },

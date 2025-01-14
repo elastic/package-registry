@@ -193,7 +193,8 @@ type DeploymentModes struct {
 }
 
 type DeploymentMode struct {
-	Enabled bool `config:"enabled" json:"enabled" yaml:"enabled" validate:"required"`
+	Enabled   bool  `config:"enabled" json:"enabled" yaml:"enabled" validate:"required"`
+	IsDefault *bool `config:"is_default" json:"is_default,omitempty" yaml:"is_default,omitempty"`
 }
 
 func NewDownload(p Package, t string) Download {
