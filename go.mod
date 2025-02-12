@@ -1,7 +1,6 @@
 module github.com/elastic/package-registry
 
 go 1.22.9
-
 toolchain go1.23.4
 
 require (
@@ -24,7 +23,7 @@ require (
 	go.uber.org/zap v1.27.0
 	golang.org/x/tools v0.30.0
 	gopkg.in/yaml.v2 v2.4.0
-	honnef.co/go/tools v0.5.1
+	honnef.co/go/tools v0.6.0
 )
 
 require (
