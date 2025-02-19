@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "release": "beta",
   "description": "Test package-specified Elasticsearch index privileges and cluster privileges",
-  "type": "solution",
+  "type": "integration",
   "download": "/epr/elasticsearch_privileges/elasticsearch_privileges-1.0.0.zip",
   "path": "/package/elasticsearch_privileges/1.0.0",
   "conditions": {

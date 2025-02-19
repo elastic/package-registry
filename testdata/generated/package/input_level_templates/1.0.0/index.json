@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "release": "beta",
   "description": "This is a test package showing input-level agent yaml templates",
-  "type": "solution",
+  "type": "integration",
   "download": "/epr/input_level_templates/input_level_templates-1.0.0.zip",
   "path": "/package/input_level_templates/1.0.0",
   "conditions": {

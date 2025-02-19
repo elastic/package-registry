@@ -5,6 +5,6 @@ description: Package without release, should be set to default
 version: 0.0.1
 title: Default Release
 categories: ["aws"]
-type: solution
+type: integration
 
 

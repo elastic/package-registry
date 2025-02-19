@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "release": "beta",
   "description": "This is the hidden integration",
-  "type": "solution",
+  "type": "integration",
   "download": "/epr/hidden/hidden-1.0.0.zip",
   "path": "/package/hidden/1.0.0",
   "conditions": {

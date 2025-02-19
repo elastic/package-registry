@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "release": "beta",
     "description": "Test package-specified agent privileges",
-    "type": "solution",
+    "type": "integration",
     "download": "/epr/agent_privileges/agent_privileges-1.0.0.zip",
     "path": "/package/agent_privileges/1.0.0",
     "conditions": {
@@ -67,7 +67,7 @@
     "version": "1.0.0",
     "release": "beta",
     "description": "Test package-specified Elasticsearch index privileges and cluster privileges",
-    "type": "solution",
+    "type": "integration",
     "download": "/epr/elasticsearch_privileges/elasticsearch_privileges-1.0.0.zip",
     "path": "/package/elasticsearch_privileges/1.0.0",
     "conditions": {
@@ -246,7 +246,7 @@
     "version": "1.0.0",
     "release": "beta",
     "description": "This is the foo integration",
-    "type": "solution",
+    "type": "integration",
     "download": "/epr/foo/foo-1.0.0.zip",
     "path": "/package/foo/1.0.0",
     "conditions": {
@@ -271,7 +271,7 @@
     "version": "1.0.0",
     "release": "beta",
     "description": "This is the hidden integration",
-    "type": "solution",
+    "type": "integration",
     "download": "/epr/hidden/hidden-1.0.0.zip",
     "path": "/package/hidden/1.0.0",
     "conditions": {
@@ -296,7 +296,7 @@
     "version": "1.0.0",
     "release": "beta",
     "description": "Test form ILM Policy in Package",
-    "type": "solution",
+    "type": "integration",
     "download": "/epr/ilm_policy/ilm_policy-1.0.0.zip",
     "path": "/package/ilm_policy/1.0.0",
     "conditions": {
@@ -321,7 +321,7 @@
     "version": "1.0.0",
     "release": "beta",
     "description": "This is a test package showing input-level agent yaml templates",
-    "type": "solution",
+    "type": "integration",
     "download": "/epr/input_level_templates/input_level_templates-1.0.0.zip",
     "path": "/package/input_level_templates/1.0.0",
     "policy_templates": [

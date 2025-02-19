@@ -5,7 +5,7 @@ description: This is a test package showing input-level agent yaml templates
 version: 1.0.0
 title: Input level templates
 categories: ["custom"]
-type: solution
+type: integration
 release: beta
 
 conditions:

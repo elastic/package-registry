@@ -5,7 +5,7 @@ description: This is the foo integration
 version: 1.0.0
 title: Foo
 categories: ["custom"]
-type: solution
+type: integration
 release: beta
 
 conditions:

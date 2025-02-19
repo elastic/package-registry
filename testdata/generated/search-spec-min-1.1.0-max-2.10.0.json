@@ -47,7 +47,7 @@
     "version": "1.0.0",
     "release": "beta",
     "description": "This is the foo integration",
-    "type": "solution",
+    "type": "integration",
     "download": "/epr/foo/foo-1.0.0.zip",
     "path": "/package/foo/1.0.0",
     "conditions": {

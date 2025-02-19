@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "release": "beta",
   "description": "Test package-specified agent privileges",
-  "type": "solution",
+  "type": "integration",
   "download": "/epr/agent_privileges/agent_privileges-1.0.0.zip",
   "path": "/package/agent_privileges/1.0.0",
   "conditions": {

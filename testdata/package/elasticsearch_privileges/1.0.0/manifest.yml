@@ -5,7 +5,7 @@ description: Test package-specified Elasticsearch index privileges and cluster p
 version: 1.0.0
 title: Elasticsearch Privileges
 categories: ["custom"]
-type: solution
+type: integration
 release: beta
 
 elasticsearch:

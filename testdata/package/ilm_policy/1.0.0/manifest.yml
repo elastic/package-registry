@@ -5,7 +5,7 @@ description: Test form ILM Policy in Package
 version: 1.0.0
 title: ILM Policy
 categories: ["custom"]
-type: solution
+type: integration
 release: beta
 
 conditions:

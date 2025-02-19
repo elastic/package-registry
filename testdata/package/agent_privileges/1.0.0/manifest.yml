@@ -5,7 +5,7 @@ description: Test package-specified agent privileges
 version: 1.0.0
 title: Agent Privileges
 categories: ["custom"]
-type: solution
+type: integration
 release: beta
 
 agent:
