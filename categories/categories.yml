@@ -129,6 +129,8 @@ categories:
         title: "Productivity"
       proxy_security:
         title: "Proxy"
+      siem:
+        title: "SIEM"
       threat_intel:
         title: "Threat Intelligence"
       vpn_security:
