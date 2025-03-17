@@ -2,7 +2,7 @@ module github.com/elastic/package-registry
 
 go 1.23.0
 
-toolchain go1.23.4
+toolchain go1.24.1
 
 require (
 	cloud.google.com/go/storage v1.50.0
@@ -17,9 +17,9 @@ require (
 	github.com/magefile/mage v1.15.0
 	github.com/prometheus/client_golang v1.21.1
 	github.com/stretchr/testify v1.10.0
-	go.elastic.co/apm/module/apmgorilla/v2 v2.6.3
-	go.elastic.co/apm/module/apmzap/v2 v2.6.3
-	go.elastic.co/apm/v2 v2.6.3
+	go.elastic.co/apm/module/apmgorilla/v2 v2.7.0
+	go.elastic.co/apm/module/apmzap/v2 v2.7.0
+	go.elastic.co/apm/v2 v2.7.0
 	go.elastic.co/ecszap v1.0.3
 	go.uber.org/zap v1.27.0
 	golang.org/x/tools v0.31.0
@@ -68,7 +68,7 @@ require (
 	github.com/prometheus/client_model v0.6.1 // indirect
 	github.com/prometheus/common v0.62.0 // indirect
 	github.com/prometheus/procfs v0.15.1 // indirect
-	go.elastic.co/apm/module/apmhttp/v2 v2.6.3 // indirect
+	go.elastic.co/apm/module/apmhttp/v2 v2.7.0 // indirect
 	go.elastic.co/fastjson v1.1.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
