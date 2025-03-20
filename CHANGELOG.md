@@ -4,15 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased](https://github.com/elastic/package-registry/compare/v1.27.0...main)
+## [v1.28.0](https://github.com/elastic/package-registry/compare/v1.27.0...v1.28.0)
 
 ### Breaking changes
 
 ### Bugfixes
 
+* Update Go runtime to 1.24.1. [#1286](https://github.com/elastic/package-registry/pull/1286)
+
 ### Added
 
-* Added new security subcategory `siem` [#1284](https://github.com/elastic/package-registry/pull/1284)
+* Added new security subcategory `siem`. [#1284](https://github.com/elastic/package-registry/pull/1284)
 
 ### Deprecated
 
