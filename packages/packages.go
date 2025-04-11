@@ -7,6 +7,7 @@ package packages
 import (
 	"archive/zip"
 	"context"
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -20,6 +21,7 @@ import (
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 
+	"github.com/elastic/package-registry/internal/database"
 	"github.com/elastic/package-registry/metrics"
 )
 
@@ -100,10 +102,12 @@ type FileSystemIndexer struct {
 	fsBuilder FileSystemBuilder
 
 	logger *zap.Logger
+
+	database database.Repository
 }
 
 // NewFileSystemIndexer creates a new FileSystemIndexer for the given paths.
-func NewFileSystemIndexer(logger *zap.Logger, paths ...string) *FileSystemIndexer {
+func NewFileSystemIndexer(logger *zap.Logger, dbRepository database.Repository, paths ...string) *FileSystemIndexer {
 	walkerFn := func(basePath, path string, info os.DirEntry) (bool, error) {
 		relativePath, err := filepath.Rel(basePath, path)
 		if err != nil {
@@ -137,6 +141,7 @@ func NewFileSystemIndexer(logger *zap.Logger, paths ...string) *FileSystemIndexe
 		walkerFn:  walkerFn,
 		fsBuilder: ExtractedFileSystemBuilder,
 		logger:    logger,
+		database:  dbRepository,
 	}
 }
 
@@ -145,7 +150,7 @@ var ExtractedFileSystemBuilder = func(p *Package) (PackageFileSystem, error) {
 }
 
 // NewZipFileSystemIndexer creates a new ZipFileSystemIndexer for the given paths.
-func NewZipFileSystemIndexer(logger *zap.Logger, paths ...string) *FileSystemIndexer {
+func NewZipFileSystemIndexer(logger *zap.Logger, dbRepository database.Repository, paths ...string) *FileSystemIndexer {
 	walkerFn := func(basePath, path string, info os.DirEntry) (bool, error) {
 		if info.IsDir() {
 			return false, nil
@@ -171,6 +176,7 @@ func NewZipFileSystemIndexer(logger *zap.Logger, paths ...string) *FileSystemInd
 		walkerFn:  walkerFn,
 		fsBuilder: ZipFileSystemBuilder,
 		logger:    logger,
+		database:  dbRepository,
 	}
 }
 
@@ -248,6 +254,21 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 				zap.String("package.name", p.Name),
 				zap.String("package.version", p.Version),
 				zap.String("package.path", p.BasePath))
+
+			// database
+			contents, err := json.Marshal(p)
+			if err != nil {
+				return nil, fmt.Errorf("failed to marshal package (path: %s): %w", path, err)
+			}
+			dbPackage := database.Package{
+				Name:    p.Name,
+				Version: p.Version,
+				Data:    string(contents),
+			}
+			_, err = i.database.Create(dbPackage)
+			if err != nil {
+				return nil, fmt.Errorf("failed to create package (path: %s): %w", path, err)
+			}
 		}
 	}
 	return pList, nil

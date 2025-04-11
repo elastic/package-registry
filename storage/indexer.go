@@ -21,6 +21,7 @@ import (
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 
+	"github.com/elastic/package-registry/internal/database"
 	"github.com/elastic/package-registry/metrics"
 	"github.com/elastic/package-registry/packages"
 )
@@ -46,6 +47,7 @@ type IndexerOptions struct {
 	PackageStorageBucketInternal string
 	PackageStorageEndpoint       string
 	WatchInterval                time.Duration
+	Database                     database.Repository
 }
 
 func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options IndexerOptions) *Indexer {

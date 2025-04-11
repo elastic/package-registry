@@ -7,6 +7,7 @@ package main
 import (
 	"context"
 	"crypto/tls"
+	"database/sql"
 	"flag"
 	"fmt"
 	"log"
@@ -30,6 +31,7 @@ import (
 
 	ucfgYAML "github.com/elastic/go-ucfg/yaml"
 
+	"github.com/elastic/package-registry/internal/database"
 	"github.com/elastic/package-registry/internal/util"
 	"github.com/elastic/package-registry/metrics"
 	"github.com/elastic/package-registry/packages"
@@ -74,6 +76,7 @@ var (
 		CacheTimeSearch:     10 * time.Minute,
 		CacheTimeCategories: 10 * time.Minute,
 		CacheTimeCatchAll:   10 * time.Minute,
+		DatabasePath:        "/tmp/packages.db",
 	}
 )
 
@@ -109,6 +112,7 @@ type Config struct {
 	CacheTimeSearch     time.Duration `config:"cache_time.search"`
 	CacheTimeCategories time.Duration `config:"cache_time.categories"`
 	CacheTimeCatchAll   time.Duration `config:"cache_time.catch_all"`
+	DatabasePath        string        `config:"database_path"`
 }
 
 func main() {
@@ -144,9 +148,13 @@ func main() {
 	apmTracer.SetLogger(&util.LoggerAdapter{logger.With(zap.String("log.logger", "apm"))})
 
 	config := mustLoadConfig(logger)
+	dbRepository, err := initDatabase(logger, config)
+	if err != nil {
+		logger.Fatal("Failed to initialize database", zap.Error(err))
+	}
 	if dryRun {
 		logger.Info("Running dry-run mode")
-		_ = initIndexer(context.Background(), logger, apmTracer, config)
+		_ = initIndexer(context.Background(), logger, apmTracer, dbRepository, config)
 		os.Exit(0)
 	}
 
@@ -155,7 +163,7 @@ func main() {
 
 	initHttpProf(logger)
 
-	server := initServer(logger, apmTracer, config)
+	server := initServer(logger, apmTracer, dbRepository, config)
 	go func() {
 		err := runServer(server)
 		if err != nil && err != http.ErrServerClosed {
@@ -173,6 +181,29 @@ func main() {
 	if err := server.Shutdown(ctx); err != nil {
 		logger.Fatal("error on shutdown", zap.Error(err))
 	}
+}
+
+func initDatabase(logger *zap.Logger, config *Config) (database.Repository, error) {
+	logger.Debug("Creating database", zap.String("path", config.DatabasePath))
+	err := os.Remove(config.DatabasePath)
+	if err != nil {
+		logger.Fatal("failed to delete previous database", zap.String("path", config.DatabasePath), zap.Error(err))
+		return nil, fmt.Errorf("failed to delete previous database (path %q): %w", config.DatabasePath, err)
+	}
+
+	db, err := sql.Open("sqlite3", config.DatabasePath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to open database (path %q): %w", config.DatabasePath, err)
+	}
+
+	packageRepository := database.NewSQLiteRepository(db)
+
+	if err := packageRepository.Migrate(); err != nil {
+		return nil, fmt.Errorf("failed to prepare the database (path %q): %w", config.DatabasePath, err)
+	}
+	logger.Debug("Database created successfully", zap.String("path", config.DatabasePath))
+
+	return packageRepository, nil
 }
 
 func initHttpProf(logger *zap.Logger) {
@@ -217,7 +248,7 @@ func initMetricsServer(logger *zap.Logger) {
 	}()
 }
 
-func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer, config *Config) Indexer {
+func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer, dbRepository database.Repository, config *Config) Indexer {
 	packagesBasePaths := getPackagesBasePaths(config)
 
 	var combined CombinedIndexer
@@ -232,24 +263,25 @@ func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer,
 			PackageStorageBucketInternal: storageIndexerBucketInternal,
 			PackageStorageEndpoint:       storageEndpoint,
 			WatchInterval:                storageIndexerWatchInterval,
+			Database:                     dbRepository,
 		}))
 	}
 
 	combined = append(combined,
-		packages.NewZipFileSystemIndexer(logger, packagesBasePaths...),
-		packages.NewFileSystemIndexer(logger, packagesBasePaths...),
+		packages.NewZipFileSystemIndexer(logger, dbRepository, packagesBasePaths...),
+		packages.NewFileSystemIndexer(logger, dbRepository, packagesBasePaths...),
 	)
 	ensurePackagesAvailable(ctx, logger, combined)
 	return combined
 }
 
-func initServer(logger *zap.Logger, apmTracer *apm.Tracer, config *Config) *http.Server {
+func initServer(logger *zap.Logger, apmTracer *apm.Tracer, dbRepository database.Repository, config *Config) *http.Server {
 	tx := apmTracer.StartTransaction("initServer", "backend.init")
 	defer tx.End()
 
 	ctx := apm.ContextWithTransaction(context.TODO(), tx)
 
-	indexer := initIndexer(ctx, logger, apmTracer, config)
+	indexer := initIndexer(ctx, logger, apmTracer, dbRepository, config)
 
 	router := mustLoadRouter(logger, config, indexer)
 	apmgorilla.Instrument(router, apmgorilla.WithTracer(apmTracer))

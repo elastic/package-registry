@@ -6,14 +6,17 @@ package packages
 
 import (
 	"context"
+	"database/sql"
 	"encoding/json"
 	"flag"
+	"fmt"
 	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
+	"github.com/elastic/package-registry/internal/database"
 	"github.com/elastic/package-registry/internal/util"
 )
 
@@ -21,11 +24,21 @@ const testFile = "./testdata/marshaler/packages.json"
 
 var generateFlag = flag.Bool("generate", false, "Write golden files")
 
+func newSQLDBTest() (*database.SQLiteRepository, error) {
+	db, err := sql.Open("sqlite3", ":memory:")
+	if err != nil {
+		return nil, fmt.Errorf("failed to open database", err)
+	}
+	return database.NewSQLiteRepository(db), nil
+}
+
 func TestMarshalJSON(t *testing.T) {
 	// given
+	db, err := newSQLDBTest()
+	require.NoError(t, err)
 	packagesBasePaths := []string{"../testdata/second_package_path", "../testdata/package"}
-	indexer := NewFileSystemIndexer(util.NewTestLogger(), packagesBasePaths...)
-	err := indexer.Init(context.Background())
+	indexer := NewFileSystemIndexer(util.NewTestLogger(), db, packagesBasePaths...)
+	err = indexer.Init(context.Background())
 	require.NoError(t, err, "can't initialize indexer")
 
 	// when
@@ -38,9 +51,11 @@ func TestMarshalJSON(t *testing.T) {
 
 func TestUnmarshalJSON(t *testing.T) {
 	// given
+	db, err := newSQLDBTest()
+	require.NoError(t, err)
 	packagesBasePaths := []string{"../testdata/second_package_path", "../testdata/package"}
-	indexer := NewFileSystemIndexer(util.NewTestLogger(), packagesBasePaths...)
-	err := indexer.Init(context.Background())
+	indexer := NewFileSystemIndexer(util.NewTestLogger(), db, packagesBasePaths...)
+	err = indexer.Init(context.Background())
 	require.NoError(t, err)
 
 	expectedFile, err := os.ReadFile(testFile)
