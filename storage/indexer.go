@@ -6,6 +6,7 @@ package storage
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net"
@@ -32,16 +33,16 @@ type Indexer struct {
 	options       IndexerOptions
 	storageClient *storage.Client
 
-	cursor      string
-	packageList packages.Packages
+	cursor string
 
 	m sync.RWMutex
 
 	resolver packages.RemoteResolver
 
+	database database.Repository
+
 	logger *zap.Logger
 }
-
 type IndexerOptions struct {
 	APMTracer                    *apm.Tracer
 	PackageStorageBucketInternal string
@@ -58,6 +59,7 @@ func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options Index
 		storageClient: storageClient,
 		options:       options,
 		logger:        logger,
+		database:      options.Database,
 	}
 }
 
@@ -196,9 +198,23 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	i.m.Lock()
 	defer i.m.Unlock()
 	i.cursor = storageCursor.Current
-	i.packageList = refreshedList
+	for _, p := range refreshedList {
+		contents, err := json.Marshal(p)
+		if err != nil {
+			return fmt.Errorf("failed to marshal package %s-%s: %w", p.Name, p.Version, err)
+		}
+		dbPackage := database.Package{
+			Name:    p.Name,
+			Version: p.Version,
+			Data:    string(contents),
+		}
+		_, err = i.database.Create(dbPackage)
+		if err != nil {
+			return fmt.Errorf("failed to create package %s-%s: %w", p.Name, p.Version, err)
+		}
+	}
 	metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
-	metrics.NumberIndexedPackages.Set(float64(len(i.packageList)))
+	metrics.NumberIndexedPackages.Set(float64(len(refreshedList)))
 	return nil
 }
 
@@ -206,13 +222,34 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	start := time.Now()
 	defer metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": indexerGetDurationPrometheusLabel}).Observe(time.Since(start).Seconds())
 
-	i.m.RLock()
-	defer i.m.RUnlock()
+	var packagesDatabase []database.Package
+	err := func() error {
+		i.m.RLock()
+		defer i.m.RUnlock()
+		var err error
+		packagesDatabase, err = i.database.All()
+		if err != nil {
+			return fmt.Errorf("failed to obtain all packages: %w", err)
+		}
+		return nil
+	}()
+	if err != nil {
+		return nil, err
+	}
+	var readPackages packages.Packages
+	for _, p := range packagesDatabase {
+		var newPackage packages.Package
+		err := json.Unmarshal([]byte(p.Data), &newPackage)
+		if err != nil {
+			return nil, err
+		}
+		readPackages = append(readPackages, &newPackage)
+	}
 
 	if opts != nil && opts.Filter != nil {
-		return opts.Filter.Apply(ctx, i.packageList)
+		return opts.Filter.Apply(ctx, readPackages)
 	}
-	return i.packageList, nil
+	return readPackages, nil
 }
 
 func (i *Indexer) transformSearchIndexAllToPackages(sia searchIndexAll) (packages.Packages, error) {
