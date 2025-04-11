@@ -35,6 +35,8 @@ func (r *SQLiteRepository) Migrate() error {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
 		version TEXT NOT NULL,
+		path TEXT NOT NULL,
+		indexer TEXT NOT NULL,
         data TEXT NOT NULL
     );
     `, databaseName)
@@ -43,8 +45,8 @@ func (r *SQLiteRepository) Migrate() error {
 }
 
 func (r *SQLiteRepository) Create(pkg Package) (*Package, error) {
-	query := fmt.Sprintf("INSERT INTO %s(name, version, data) values(?,?,?)", databaseName)
-	res, err := r.db.Exec(query, pkg.Name, pkg.Version, pkg.Data)
+	query := fmt.Sprintf("INSERT INTO %s(name, version, path, indexer, data) values(?,?,?,?,?)", databaseName)
+	res, err := r.db.Exec(query, pkg.Name, pkg.Version, pkg.Path, pkg.Indexer, pkg.Data)
 	if err != nil {
 		var sqliteErr sqlite3.Error
 		if errors.As(err, &sqliteErr) {
@@ -75,7 +77,7 @@ func (r *SQLiteRepository) All() ([]Package, error) {
 	var all []Package
 	for rows.Next() {
 		var pkg Package
-		if err := rows.Scan(&pkg.ID, &pkg.Name, &pkg.Version, &pkg.Data); err != nil {
+		if err := rows.Scan(&pkg.ID, &pkg.Name, &pkg.Version, &pkg.Path, &pkg.Indexer, &pkg.Data); err != nil {
 			return nil, err
 		}
 		all = append(all, pkg)
@@ -84,11 +86,11 @@ func (r *SQLiteRepository) All() ([]Package, error) {
 }
 
 func (r *SQLiteRepository) GetByName(name string) (*Package, error) {
-	query := fmt.Sprintf("SELECT * FROM %s WHERE name = ?", name)
-	row := r.db.QueryRow(query)
+	query := fmt.Sprintf("SELECT * FROM %s WHERE name = ?", databaseName)
+	row := r.db.QueryRow(query, name)
 
 	var pkg Package
-	if err := row.Scan(&pkg.ID, &pkg.Name, &pkg.Version, &pkg.Data); err != nil {
+	if err := row.Scan(&pkg.ID, &pkg.Name, &pkg.Version, &pkg.Path, &pkg.Indexer, &pkg.Data); err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, ErrNotExists
 		}
@@ -96,12 +98,32 @@ func (r *SQLiteRepository) GetByName(name string) (*Package, error) {
 	}
 	return &pkg, nil
 }
+
+func (r *SQLiteRepository) GetByIndexer(indexer string) ([]Package, error) {
+	query := fmt.Sprintf("SELECT * FROM %s WHERE indexer = ?", databaseName)
+	rows, err := r.db.Query(query, indexer)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var all []Package
+	for rows.Next() {
+		var pkg Package
+		if err := rows.Scan(&pkg.ID, &pkg.Name, &pkg.Version, &pkg.Path, &pkg.Indexer, &pkg.Data); err != nil {
+			return nil, err
+		}
+		all = append(all, pkg)
+	}
+	return all, nil
+}
+
 func (r *SQLiteRepository) Update(id int64, updated Package) (*Package, error) {
 	if id == 0 {
 		return nil, errors.New("invalid updated ID")
 	}
-	query := fmt.Sprintf("UPDATE %s SET name = ?, version = ?, data = ? WHERE id = ?", databaseName)
-	res, err := r.db.Exec(query, updated.Name, updated.Version, updated.Data, id)
+	query := fmt.Sprintf("UPDATE %s SET name = ?, version = ?, path = ? indexer = ? data = ? WHERE id = ?", databaseName)
+	res, err := r.db.Exec(query, updated.Name, updated.Version, updated.Path, updated.Indexer, updated.Data, id)
 	if err != nil {
 		return nil, err
 	}

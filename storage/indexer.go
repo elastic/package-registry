@@ -206,6 +206,7 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 		dbPackage := database.Package{
 			Name:    p.Name,
 			Version: p.Version,
+			Path:    p.BasePath,
 			Data:    string(contents),
 		}
 		_, err = i.database.Create(dbPackage)
@@ -238,12 +239,12 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	}
 	var readPackages packages.Packages
 	for _, p := range packagesDatabase {
-		var newPackage packages.Package
-		err := json.Unmarshal([]byte(p.Data), &newPackage)
+		// FIXME
+		newPackage, err := packages.NewPackage(p.Path, nil)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("failed to parse package %s-%s: %w", p.Name, p.Version, err)
 		}
-		readPackages = append(readPackages, &newPackage)
+		readPackages = append(readPackages, newPackage)
 	}
 
 	if opts != nil && opts.Filter != nil {

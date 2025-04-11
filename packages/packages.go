@@ -186,7 +186,7 @@ var ZipFileSystemBuilder = func(p *Package) (PackageFileSystem, error) {
 
 // Init initializes the indexer.
 func (i *FileSystemIndexer) Init(ctx context.Context) (err error) {
-	i.packageList, err = i.getPackagesFromFileSystem(ctx)
+	_, err = i.getPackagesFromFileSystem(ctx)
 	if err != nil {
 		return fmt.Errorf("reading packages from filesystem failed: %w", err)
 	}
@@ -202,18 +202,18 @@ func (i *FileSystemIndexer) Init(ctx context.Context) (err error) {
 func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages, error) {
 	start := time.Now()
 	defer metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": i.label}).Observe(time.Since(start).Seconds())
-	packagesDatabase, err := i.database.All()
+	packagesDatabase, err := i.database.GetByIndexer(i.label)
 	if err != nil {
 		return nil, fmt.Errorf("failed to obtain all packages: %w", err)
 	}
 	var packages Packages
 	for _, p := range packagesDatabase {
-		var newPackage Package
-		err := json.Unmarshal([]byte(p.Data), &newPackage)
+		newPackage, err := NewPackage(p.Path, i.fsBuilder)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("failed to parse package %s-%s: %w", p.Name, p.Version, err)
 		}
-		packages = append(packages, &newPackage)
+
+		packages = append(packages, newPackage)
 	}
 	if opts == nil {
 		return packages, nil
@@ -244,7 +244,7 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 			return nil, err
 		}
 
-		i.logger.Info("Searching packages in " + basePath)
+		i.logger.Info("Searching packages in "+basePath, zap.Int("pathsNum", len(packagePaths)))
 		for _, path := range packagePaths {
 			p, err := NewPackage(path, i.fsBuilder)
 			if err != nil {
@@ -276,6 +276,8 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 			dbPackage := database.Package{
 				Name:    p.Name,
 				Version: p.Version,
+				Path:    path,
+				Indexer: i.label,
 				Data:    string(contents),
 			}
 			_, err = i.database.Create(dbPackage)

@@ -5,6 +5,7 @@ type Repository interface {
 	Create(Package) (*Package, error)
 	All() ([]Package, error)
 	GetByName(name string) (*Package, error)
+	GetByIndexer(indexer string) ([]Package, error)
 	Update(id int64, updated Package) (*Package, error)
 	Delete(id int64) error
 }
