@@ -202,15 +202,28 @@ func (i *FileSystemIndexer) Init(ctx context.Context) (err error) {
 func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages, error) {
 	start := time.Now()
 	defer metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": i.label}).Observe(time.Since(start).Seconds())
+	packagesDatabase, err := i.database.All()
+	if err != nil {
+		return nil, fmt.Errorf("failed to obtain all packages: %w", err)
+	}
+	var packages Packages
+	for _, p := range packagesDatabase {
+		var newPackage Package
+		err := json.Unmarshal([]byte(p.Data), &newPackage)
+		if err != nil {
+			return nil, err
+		}
+		packages = append(packages, &newPackage)
+	}
 	if opts == nil {
-		return i.packageList, nil
+		return packages, nil
 	}
 
 	if opts.Filter != nil {
-		return opts.Filter.Apply(ctx, i.packageList)
+		return opts.Filter.Apply(ctx, packages)
 	}
 
-	return i.packageList, nil
+	return packages, nil
 }
 
 func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Packages, error) {
