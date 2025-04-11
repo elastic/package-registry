@@ -22,9 +22,13 @@ import (
 func newSQLDBTest() (*database.SQLiteRepository, error) {
 	db, err := sql.Open("sqlite3", ":memory:")
 	if err != nil {
-		return nil, fmt.Errorf("failed to open database", err)
+		return nil, fmt.Errorf("failed to open database: %w", err)
 	}
-	return database.NewSQLiteRepository(db), nil
+	dbRepo := database.NewSQLiteRepository(db)
+	if err := dbRepo.Migrate(); err != nil {
+		return nil, fmt.Errorf("failed to create database: %w", err)
+	}
+	return dbRepo, nil
 }
 
 func TestSearchWithProxyMode(t *testing.T) {

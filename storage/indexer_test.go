@@ -16,7 +16,7 @@ import (
 
 func TestInit(t *testing.T) {
 	// given
-	options, err := createFakeIndexerOptions()
+	options, err := CreateFakeIndexerOptions()
 	require.NoError(t, err)
 	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
 	defer fs.Stop()
@@ -32,7 +32,7 @@ func TestInit(t *testing.T) {
 
 func BenchmarkInit(b *testing.B) {
 	// given
-	options, err := createFakeIndexerOptions()
+	options, err := CreateFakeIndexerOptions()
 	require.NoError(b, err)
 	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
 	defer fs.Stop()
@@ -48,7 +48,7 @@ func BenchmarkInit(b *testing.B) {
 
 func TestGet_ListAllPackages(t *testing.T) {
 	// given
-	options, err := createFakeIndexerOptions()
+	options, err := CreateFakeIndexerOptions()
 	require.NoError(t, err)
 	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
 	defer fs.Stop()
@@ -68,7 +68,7 @@ func TestGet_ListAllPackages(t *testing.T) {
 
 func TestGet_FindLatestPackage(t *testing.T) {
 	// given
-	options, err := createFakeIndexerOptions()
+	options, err := CreateFakeIndexerOptions()
 	require.NoError(t, err)
 	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
 	defer fs.Stop()
@@ -95,7 +95,7 @@ func TestGet_FindLatestPackage(t *testing.T) {
 
 func TestGet_UnknownPackage(t *testing.T) {
 	// given
-	options, err := createFakeIndexerOptions()
+	options, err := CreateFakeIndexerOptions()
 	require.NoError(t, err)
 	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
 	defer fs.Stop()
@@ -120,7 +120,7 @@ func TestGet_UnknownPackage(t *testing.T) {
 
 func TestGet_IndexUpdated(t *testing.T) {
 	// given
-	options, err := createFakeIndexerOptions()
+	options, err := CreateFakeIndexerOptions()
 	require.NoError(t, err)
 	fs := PrepareFakeServer(t, "testdata/search-index-all-small.json")
 	defer fs.Stop()

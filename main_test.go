@@ -55,13 +55,15 @@ func TestRouter(t *testing.T) {
 }
 
 func TestEndpoints(t *testing.T) {
+	db, err := newSQLDBTest()
+	require.NoError(t, err)
 	packagesBasePaths := []string{"./testdata/second_package_path", "./testdata/package"}
 	indexer := NewCombinedIndexer(
-		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
-		packages.NewFileSystemIndexer(testLogger, packagesBasePaths...),
+		packages.NewZipFileSystemIndexer(testLogger, db, "./testdata/local-storage"),
+		packages.NewFileSystemIndexer(testLogger, db, packagesBasePaths...),
 	)
 
-	err := indexer.Init(context.Background())
+	err = indexer.Init(context.Background())
 	require.NoError(t, err)
 
 	faviconHandleFunc, err := faviconHandler(testCacheTime)
@@ -135,10 +137,12 @@ func TestEndpoints(t *testing.T) {
 }
 
 func TestArtifacts(t *testing.T) {
+	db, err := newSQLDBTest()
+	require.NoError(t, err)
 	packagesBasePaths := []string{"./testdata/package"}
-	indexer := packages.NewFileSystemIndexer(testLogger, packagesBasePaths...)
+	indexer := packages.NewFileSystemIndexer(testLogger, db, packagesBasePaths...)
 
-	err := indexer.Init(context.Background())
+	err = indexer.Init(context.Background())
 	require.NoError(t, err)
 
 	artifactsHandler := artifactsHandler(testLogger, indexer, testCacheTime)
@@ -163,9 +167,11 @@ func TestArtifacts(t *testing.T) {
 }
 
 func TestSignatures(t *testing.T) {
-	indexer := packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage")
+	db, err := newSQLDBTest()
+	require.NoError(t, err)
+	indexer := packages.NewZipFileSystemIndexer(testLogger, db, "./testdata/local-storage")
 
-	err := indexer.Init(context.Background())
+	err = indexer.Init(context.Background())
 	require.NoError(t, err)
 
 	signaturesHandler := signaturesHandler(testLogger, indexer, testCacheTime)
@@ -188,10 +194,12 @@ func TestSignatures(t *testing.T) {
 }
 
 func TestStatics(t *testing.T) {
+	db, err := newSQLDBTest()
+	require.NoError(t, err)
 	packagesBasePaths := []string{"./testdata/package"}
-	indexer := packages.NewFileSystemIndexer(testLogger, packagesBasePaths...)
+	indexer := packages.NewFileSystemIndexer(testLogger, db, packagesBasePaths...)
 
-	err := indexer.Init(context.Background())
+	err = indexer.Init(context.Background())
 	require.NoError(t, err)
 
 	staticHandler := staticHandler(testLogger, indexer, testCacheTime)
@@ -276,11 +284,14 @@ func TestStaticsModifiedTime(t *testing.T) {
 		},
 	}
 
+	db, err := newSQLDBTest()
+	require.NoError(t, err)
+
 	indexer := NewCombinedIndexer(
-		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
-		packages.NewFileSystemIndexer(testLogger, "./testdata/package"),
+		packages.NewZipFileSystemIndexer(testLogger, db, "./testdata/local-storage"),
+		packages.NewFileSystemIndexer(testLogger, db, "./testdata/package"),
 	)
-	err := indexer.Init(context.Background())
+	err = indexer.Init(context.Background())
 	require.NoError(t, err)
 
 	router := mux.NewRouter()
@@ -307,9 +318,11 @@ func TestStaticsModifiedTime(t *testing.T) {
 }
 
 func TestZippedArtifacts(t *testing.T) {
-	indexer := packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage")
+	db, err := newSQLDBTest()
+	require.NoError(t, err)
+	indexer := packages.NewZipFileSystemIndexer(testLogger, db, "./testdata/local-storage")
 
-	err := indexer.Init(context.Background())
+	err = indexer.Init(context.Background())
 	require.NoError(t, err)
 
 	artifactsHandler := artifactsHandler(testLogger, indexer, testCacheTime)
@@ -337,12 +350,14 @@ func TestZippedArtifacts(t *testing.T) {
 }
 
 func TestPackageIndex(t *testing.T) {
+	db, err := newSQLDBTest()
+	require.NoError(t, err)
 	indexer := NewCombinedIndexer(
-		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
-		packages.NewFileSystemIndexer(testLogger, "./testdata/package"),
+		packages.NewZipFileSystemIndexer(testLogger, db, "./testdata/local-storage"),
+		packages.NewFileSystemIndexer(testLogger, db, "./testdata/package"),
 	)
 
-	err := indexer.Init(context.Background())
+	err = indexer.Init(context.Background())
 	require.NoError(t, err)
 
 	packageIndexHandler := packageIndexHandler(testLogger, indexer, testCacheTime)
@@ -370,10 +385,13 @@ func TestPackageIndex(t *testing.T) {
 }
 
 func TestZippedPackageIndex(t *testing.T) {
-	packagesBasePaths := []string{"./testdata/local-storage"}
-	indexer := packages.NewZipFileSystemIndexer(testLogger, packagesBasePaths...)
+	db, err := newSQLDBTest()
+	require.NoError(t, err)
 
-	err := indexer.Init(context.Background())
+	packagesBasePaths := []string{"./testdata/local-storage"}
+	indexer := packages.NewZipFileSystemIndexer(testLogger, db, packagesBasePaths...)
+
+	err = indexer.Init(context.Background())
 	require.NoError(t, err)
 
 	packageIndexHandler := packageIndexHandler(testLogger, indexer, testCacheTime)
@@ -399,12 +417,14 @@ func TestZippedPackageIndex(t *testing.T) {
 
 // TestAllPackageIndex generates and compares all index.json files for the test packages
 func TestAllPackageIndex(t *testing.T) {
+	db, err := newSQLDBTest()
+	require.NoError(t, err)
 	testPackagePath := filepath.Join("testdata", "package")
 	secondPackagePath := filepath.Join("testdata", "second_package_path")
 	packagesBasePaths := []string{secondPackagePath, testPackagePath}
-	indexer := packages.NewFileSystemIndexer(testLogger, packagesBasePaths...)
+	indexer := packages.NewFileSystemIndexer(testLogger, db, packagesBasePaths...)
 
-	err := indexer.Init(context.Background())
+	err = indexer.Init(context.Background())
 	require.NoError(t, err)
 
 	packageIndexHandler := packageIndexHandler(testLogger, indexer, testCacheTime)
@@ -454,13 +474,15 @@ func TestContentTypes(t *testing.T) {
 		{"/package/example/1.0.1/docs/README.md", "text/markdown; charset=utf-8"},
 		{"/package/example/1.0.1/img/kibana-envoyproxy.jpg", "image/jpeg"},
 	}
+	db, err := newSQLDBTest()
+	require.NoError(t, err)
 
 	indexer := NewCombinedIndexer(
-		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
-		packages.NewFileSystemIndexer(testLogger, "./testdata/package"),
+		packages.NewZipFileSystemIndexer(testLogger, db, "./testdata/local-storage"),
+		packages.NewFileSystemIndexer(testLogger, db, "./testdata/package"),
 	)
 
-	err := indexer.Init(context.Background())
+	err = indexer.Init(context.Background())
 	require.NoError(t, err)
 
 	handler := staticHandler(testLogger, indexer, testCacheTime)
@@ -484,12 +506,14 @@ func TestContentTypes(t *testing.T) {
 // TestRangeDownloads tests that range downloads continue working for packages stored
 // on different file systems.
 func TestRangeDownloads(t *testing.T) {
+	db, err := newSQLDBTest()
+	require.NoError(t, err)
 	indexer := NewCombinedIndexer(
-		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
-		packages.NewFileSystemIndexer(testLogger, "./testdata/package"),
+		packages.NewZipFileSystemIndexer(testLogger, db, "./testdata/local-storage"),
+		packages.NewFileSystemIndexer(testLogger, db, "./testdata/package"),
 	)
 
-	err := indexer.Init(context.Background())
+	err = indexer.Init(context.Background())
 	require.NoError(t, err)
 
 	router := mux.NewRouter()
