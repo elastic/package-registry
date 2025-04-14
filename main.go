@@ -148,7 +148,7 @@ func main() {
 	apmTracer.SetLogger(&util.LoggerAdapter{logger.With(zap.String("log.logger", "apm"))})
 
 	config := mustLoadConfig(logger)
-	dbRepository, err := initDatabase(logger, config)
+	dbRepository, err := initDatabase(context.Background(), logger, config)
 	if err != nil {
 		logger.Fatal("Failed to initialize database", zap.Error(err))
 	}
@@ -183,7 +183,7 @@ func main() {
 	}
 }
 
-func initDatabase(logger *zap.Logger, config *Config) (database.Repository, error) {
+func initDatabase(ctx context.Context, logger *zap.Logger, config *Config) (database.Repository, error) {
 	logger.Debug("Creating database", zap.String("path", config.DatabasePath))
 	err := os.Remove(config.DatabasePath)
 	if err != nil {
@@ -198,7 +198,7 @@ func initDatabase(logger *zap.Logger, config *Config) (database.Repository, erro
 
 	packageRepository := database.NewSQLiteRepository(db)
 
-	if err := packageRepository.Migrate(); err != nil {
+	if err := packageRepository.Migrate(ctx); err != nil {
 		return nil, fmt.Errorf("failed to prepare the database (path %q): %w", config.DatabasePath, err)
 	}
 	logger.Debug("Database created successfully", zap.String("path", config.DatabasePath))

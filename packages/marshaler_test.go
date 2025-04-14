@@ -30,7 +30,7 @@ func newSQLDBTest() (*database.SQLiteRepository, error) {
 		return nil, fmt.Errorf("failed to open database: %w", err)
 	}
 	dbRepo := database.NewSQLiteRepository(db)
-	if err := dbRepo.Migrate(); err != nil {
+	if err := dbRepo.Migrate(context.Background()); err != nil {
 		return nil, fmt.Errorf("failed to create database: %w", err)
 	}
 	return dbRepo, nil

@@ -201,6 +201,7 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	i.m.Lock()
 	defer i.m.Unlock()
 	i.cursor = storageCursor.Current
+	// TODO: Create new database for each update ?
 	for _, p := range refreshedList {
 		contents, err := json.Marshal(p)
 		if err != nil {
@@ -213,7 +214,7 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 			Indexer: i.label,
 			Data:    string(contents),
 		}
-		_, err = i.database.Create(dbPackage)
+		_, err = i.database.Create(ctx, dbPackage)
 		if err != nil {
 			return fmt.Errorf("failed to create package %s-%s: %w", p.Name, p.Version, err)
 		}
@@ -232,7 +233,7 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 		i.m.RLock()
 		defer i.m.RUnlock()
 		var err error
-		packagesDatabase, err = i.database.GetByIndexer(i.label)
+		packagesDatabase, err = i.database.GetByIndexer(ctx, i.label)
 		if err != nil {
 			return fmt.Errorf("failed to obtain all packages: %w", err)
 		}

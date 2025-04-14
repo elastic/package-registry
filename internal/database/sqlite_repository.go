@@ -1,6 +1,7 @@
 package database
 
 import (
+	"context"
 	"database/sql"
 	"errors"
 	"fmt"
@@ -29,7 +30,7 @@ func NewSQLiteRepository(db *sql.DB) *SQLiteRepository {
 	}
 }
 
-func (r *SQLiteRepository) Migrate() error {
+func (r *SQLiteRepository) Migrate(ctx context.Context) error {
 	query := fmt.Sprintf(`
     CREATE TABLE IF NOT EXISTS %s (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -40,13 +41,13 @@ func (r *SQLiteRepository) Migrate() error {
         data TEXT NOT NULL
     );
     `, databaseName)
-	_, err := r.db.Exec(query)
+	_, err := r.db.ExecContext(ctx, query)
 	return err
 }
 
-func (r *SQLiteRepository) Create(pkg Package) (*Package, error) {
+func (r *SQLiteRepository) Create(ctx context.Context, pkg Package) (*Package, error) {
 	query := fmt.Sprintf("INSERT INTO %s(name, version, path, indexer, data) values(?,?,?,?,?)", databaseName)
-	res, err := r.db.Exec(query, pkg.Name, pkg.Version, pkg.Path, pkg.Indexer, pkg.Data)
+	res, err := r.db.ExecContext(ctx, query, pkg.Name, pkg.Version, pkg.Path, pkg.Indexer, pkg.Data)
 	if err != nil {
 		var sqliteErr sqlite3.Error
 		if errors.As(err, &sqliteErr) {
@@ -66,9 +67,9 @@ func (r *SQLiteRepository) Create(pkg Package) (*Package, error) {
 	return &pkg, nil
 }
 
-func (r *SQLiteRepository) All() ([]Package, error) {
+func (r *SQLiteRepository) All(ctx context.Context) ([]Package, error) {
 	query := fmt.Sprintf("SELECT * FROM %s", databaseName)
-	rows, err := r.db.Query(query)
+	rows, err := r.db.QueryContext(ctx, query)
 	if err != nil {
 		return nil, err
 	}
@@ -85,9 +86,9 @@ func (r *SQLiteRepository) All() ([]Package, error) {
 	return all, nil
 }
 
-func (r *SQLiteRepository) GetByName(name string) (*Package, error) {
+func (r *SQLiteRepository) GetByName(ctx context.Context, name string) (*Package, error) {
 	query := fmt.Sprintf("SELECT * FROM %s WHERE name = ?", databaseName)
-	row := r.db.QueryRow(query, name)
+	row := r.db.QueryRowContext(ctx, query, name)
 
 	var pkg Package
 	if err := row.Scan(&pkg.ID, &pkg.Name, &pkg.Version, &pkg.Path, &pkg.Indexer, &pkg.Data); err != nil {
@@ -99,9 +100,9 @@ func (r *SQLiteRepository) GetByName(name string) (*Package, error) {
 	return &pkg, nil
 }
 
-func (r *SQLiteRepository) GetByIndexer(indexer string) ([]Package, error) {
+func (r *SQLiteRepository) GetByIndexer(ctx context.Context, indexer string) ([]Package, error) {
 	query := fmt.Sprintf("SELECT * FROM %s WHERE indexer = ?", databaseName)
-	rows, err := r.db.Query(query, indexer)
+	rows, err := r.db.QueryContext(ctx, query, indexer)
 	if err != nil {
 		return nil, err
 	}
@@ -118,12 +119,12 @@ func (r *SQLiteRepository) GetByIndexer(indexer string) ([]Package, error) {
 	return all, nil
 }
 
-func (r *SQLiteRepository) Update(id int64, updated Package) (*Package, error) {
+func (r *SQLiteRepository) Update(ctx context.Context, id int64, updated Package) (*Package, error) {
 	if id == 0 {
 		return nil, errors.New("invalid updated ID")
 	}
 	query := fmt.Sprintf("UPDATE %s SET name = ?, version = ?, path = ? indexer = ? data = ? WHERE id = ?", databaseName)
-	res, err := r.db.Exec(query, updated.Name, updated.Version, updated.Path, updated.Indexer, updated.Data, id)
+	res, err := r.db.ExecContext(ctx, query, updated.Name, updated.Version, updated.Path, updated.Indexer, updated.Data, id)
 	if err != nil {
 		return nil, err
 	}
@@ -140,9 +141,9 @@ func (r *SQLiteRepository) Update(id int64, updated Package) (*Package, error) {
 	return &updated, nil
 }
 
-func (r *SQLiteRepository) Delete(id int64) error {
+func (r *SQLiteRepository) Delete(ctx context.Context, id int64) error {
 	query := fmt.Sprintf("DELETE FROM %s WHERE id = ?", databaseName)
-	res, err := r.db.Exec(query, id)
+	res, err := r.db.ExecContext(ctx, query, id)
 	if err != nil {
 		return err
 	}
