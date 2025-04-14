@@ -35,6 +35,8 @@ type Indexer struct {
 
 	cursor string
 
+	label string
+
 	m sync.RWMutex
 
 	resolver packages.RemoteResolver
@@ -60,6 +62,7 @@ func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options Index
 		options:       options,
 		logger:        logger,
 		database:      options.Database,
+		label:         fmt.Sprintf("storage-%s", options.PackageStorageEndpoint),
 	}
 }
 
@@ -207,6 +210,7 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 			Name:    p.Name,
 			Version: p.Version,
 			Path:    p.BasePath,
+			Indexer: i.label,
 			Data:    string(contents),
 		}
 		_, err = i.database.Create(dbPackage)
@@ -228,7 +232,7 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 		i.m.RLock()
 		defer i.m.RUnlock()
 		var err error
-		packagesDatabase, err = i.database.All()
+		packagesDatabase, err = i.database.GetByIndexer(i.label)
 		if err != nil {
 			return fmt.Errorf("failed to obtain all packages: %w", err)
 		}
@@ -239,12 +243,13 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	}
 	var readPackages packages.Packages
 	for _, p := range packagesDatabase {
-		// FIXME
-		newPackage, err := packages.NewPackage(p.Path, nil)
+		var pkg packages.Package
+		err := json.Unmarshal([]byte(p.Data), &pkg)
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse package %s-%s: %w", p.Name, p.Version, err)
 		}
-		readPackages = append(readPackages, newPackage)
+		pkg.SetRemoteResolver(i.resolver)
+		readPackages = append(readPackages, &pkg)
 	}
 
 	if opts != nil && opts.Filter != nil {

@@ -46,7 +46,9 @@ func TestMarshalJSON(t *testing.T) {
 	require.NoError(t, err, "can't initialize indexer")
 
 	// when
-	m, err := json.MarshalIndent(&indexer.packageList, " ", " ")
+	packageList, err := indexer.Get(context.Background(), nil)
+	require.NoError(t, err)
+	m, err := json.MarshalIndent(packageList, " ", " ")
 	require.NoError(t, err)
 
 	// then
