@@ -14,6 +14,7 @@ import (
 	_ "net/http/pprof"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"strings"
 	"syscall"
 	"time"
@@ -75,7 +76,7 @@ var (
 		CacheTimeSearch:     10 * time.Minute,
 		CacheTimeCategories: 10 * time.Minute,
 		CacheTimeCatchAll:   10 * time.Minute,
-		DatabasePath:        "/tmp/packages.db",
+		DatabaseFolderPath:  "/tmp/", // TODO: Another default directory?
 	}
 )
 
@@ -111,7 +112,7 @@ type Config struct {
 	CacheTimeSearch     time.Duration `config:"cache_time.search"`
 	CacheTimeCategories time.Duration `config:"cache_time.categories"`
 	CacheTimeCatchAll   time.Duration `config:"cache_time.catch_all"`
-	DatabasePath        string        `config:"database_path"`
+	DatabaseFolderPath  string        `config:"database_folder_path"`
 }
 
 func main() {
@@ -147,13 +148,9 @@ func main() {
 	apmTracer.SetLogger(&util.LoggerAdapter{logger.With(zap.String("log.logger", "apm"))})
 
 	config := mustLoadConfig(logger)
-	dbRepository, err := initDatabase(context.Background(), logger, config)
-	if err != nil {
-		logger.Fatal("Failed to initialize database", zap.Error(err))
-	}
 	if dryRun {
 		logger.Info("Running dry-run mode")
-		_ = initIndexer(context.Background(), logger, apmTracer, dbRepository, config)
+		_ = initIndexer(context.Background(), logger, apmTracer, config)
 		os.Exit(0)
 	}
 
@@ -162,7 +159,7 @@ func main() {
 
 	initHttpProf(logger)
 
-	server := initServer(logger, apmTracer, dbRepository, config)
+	server := initServer(logger, apmTracer, config)
 	go func() {
 		err := runServer(server)
 		if err != nil && err != http.ErrServerClosed {
@@ -182,23 +179,25 @@ func main() {
 	}
 }
 
-func initDatabase(ctx context.Context, logger *zap.Logger, config *Config) (database.Repository, error) {
-	logger.Debug("Creating database", zap.String("path", config.DatabasePath))
-	err := os.Remove(config.DatabasePath)
+func initDatabase(ctx context.Context, logger *zap.Logger, databaseFolderPath, dbFileName string) (database.Repository, error) {
+	dbPath := filepath.Join(databaseFolderPath, dbFileName)
+
+	logger.Debug("Creating database", zap.String("path", dbPath))
+	err := os.Remove(dbPath)
 	if err != nil {
-		logger.Fatal("failed to delete previous database", zap.String("path", config.DatabasePath), zap.Error(err))
-		return nil, fmt.Errorf("failed to delete previous database (path %q): %w", config.DatabasePath, err)
+		logger.Fatal("failed to delete previous database", zap.String("path", dbPath), zap.Error(err))
+		return nil, fmt.Errorf("failed to delete previous database (path %q): %w", dbPath, err)
 	}
 
-	packageRepository, err := database.NewFileSQLDB(config.DatabasePath)
+	packageRepository, err := database.NewFileSQLDB(dbPath)
 	if err != nil {
-		return nil, fmt.Errorf("failed to open database (path %q): %w", config.DatabasePath, err)
+		return nil, fmt.Errorf("failed to open database (path %q): %w", dbPath, err)
 	}
 
 	if err := packageRepository.Migrate(ctx); err != nil {
-		return nil, fmt.Errorf("failed to prepare the database (path %q): %w", config.DatabasePath, err)
+		return nil, fmt.Errorf("failed to prepare the database (path %q): %w", dbPath, err)
 	}
-	logger.Debug("Database created successfully", zap.String("path", config.DatabasePath))
+	logger.Debug("Database created successfully", zap.String("path", dbPath))
 
 	return packageRepository, nil
 }
@@ -245,12 +244,16 @@ func initMetricsServer(logger *zap.Logger) {
 	}()
 }
 
-func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer, dbRepository database.Repository, config *Config) Indexer {
+func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer, config *Config) Indexer {
 	packagesBasePaths := getPackagesBasePaths(config)
 
 	var combined CombinedIndexer
 
 	if featureStorageIndexer {
+		storageDatabase, err := initDatabase(ctx, logger, config.DatabaseFolderPath, "storage_packages.db")
+		if err != nil {
+			logger.Fatal("can't initialize storage database", zap.Error(err))
+		}
 		storageClient, err := gstorage.NewClient(ctx)
 		if err != nil {
 			logger.Fatal("can't initialize storage client", zap.Error(err))
@@ -260,25 +263,35 @@ func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer,
 			PackageStorageBucketInternal: storageIndexerBucketInternal,
 			PackageStorageEndpoint:       storageEndpoint,
 			WatchInterval:                storageIndexerWatchInterval,
-			Database:                     dbRepository,
+			Database:                     storageDatabase,
 		}))
 	}
 
+	zipDatabase, err := initDatabase(ctx, logger, config.DatabaseFolderPath, "zip_packages.db")
+	if err != nil {
+		logger.Fatal("can't initialize zip database", zap.Error(err))
+	}
+
+	foldersDatabase, err := initDatabase(ctx, logger, config.DatabaseFolderPath, "folders_packages.db")
+	if err != nil {
+		logger.Fatal("can't initialize folders database", zap.Error(err))
+	}
+
 	combined = append(combined,
-		packages.NewZipFileSystemIndexer(logger, dbRepository, packagesBasePaths...),
-		packages.NewFileSystemIndexer(logger, dbRepository, packagesBasePaths...),
+		packages.NewZipFileSystemIndexer(logger, zipDatabase, packagesBasePaths...),
+		packages.NewFileSystemIndexer(logger, foldersDatabase, packagesBasePaths...),
 	)
 	ensurePackagesAvailable(ctx, logger, combined)
 	return combined
 }
 
-func initServer(logger *zap.Logger, apmTracer *apm.Tracer, dbRepository database.Repository, config *Config) *http.Server {
+func initServer(logger *zap.Logger, apmTracer *apm.Tracer, config *Config) *http.Server {
 	tx := apmTracer.StartTransaction("initServer", "backend.init")
 	defer tx.End()
 
 	ctx := apm.ContextWithTransaction(context.TODO(), tx)
 
-	indexer := initIndexer(ctx, logger, apmTracer, dbRepository, config)
+	indexer := initIndexer(ctx, logger, apmTracer, config)
 
 	router := mustLoadRouter(logger, config, indexer)
 	apmgorilla.Instrument(router, apmgorilla.WithTracer(apmTracer))

@@ -170,6 +170,7 @@ func NewZipFileSystemIndexer(logger *zap.Logger, dbRepository database.Repositor
 
 		return true, nil
 	}
+
 	return &FileSystemIndexer{
 		paths:     paths,
 		label:     "ZipFileSystemIndexer",
