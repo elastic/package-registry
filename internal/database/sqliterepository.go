@@ -10,7 +10,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/mattn/go-sqlite3"
+	_ "modernc.org/sqlite"
 )
 
 const databaseName = "packages"
@@ -28,6 +28,18 @@ type SQLiteRepository struct {
 
 var _ Repository = new(SQLiteRepository)
 
+func NewFileSQLDB(path string) (*SQLiteRepository, error) {
+	db, err := sql.Open("sqlite", path)
+	if err != nil {
+		return nil, fmt.Errorf("failed to open database: %w", err)
+	}
+	dbRepo := NewSQLiteRepository(db)
+	if err := dbRepo.Migrate(context.Background()); err != nil {
+		return nil, fmt.Errorf("failed to create database: %w", err)
+	}
+	return dbRepo, nil
+}
+
 func NewSQLiteRepository(db *sql.DB) *SQLiteRepository {
 	return &SQLiteRepository{
 		db: db,
@@ -35,6 +47,7 @@ func NewSQLiteRepository(db *sql.DB) *SQLiteRepository {
 }
 
 func (r *SQLiteRepository) Migrate(ctx context.Context) error {
+	// TODO : Set name and version as primary keys ?
 	query := fmt.Sprintf(`
     CREATE TABLE IF NOT EXISTS %s (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -53,12 +66,13 @@ func (r *SQLiteRepository) Create(ctx context.Context, pkg Package) (*Package, e
 	query := fmt.Sprintf("INSERT INTO %s(name, version, path, indexer, data) values(?,?,?,?,?)", databaseName)
 	res, err := r.db.ExecContext(ctx, query, pkg.Name, pkg.Version, pkg.Path, pkg.Indexer, pkg.Data)
 	if err != nil {
-		var sqliteErr sqlite3.Error
-		if errors.As(err, &sqliteErr) {
-			if errors.Is(sqliteErr.ExtendedCode, sqlite3.ErrConstraintUnique) {
-				return nil, ErrDuplicate
-			}
-		}
+		// From github.com/mattn/go-sqlite3
+		// var sqliteErr sqlite3.Error
+		// if errors.As(err, &sqliteErr) {
+		// 	if errors.Is(sqliteErr.ExtendedCode, sqlite.ErrConstraintUnique) {
+		// 		return nil, ErrDuplicate
+		// 	}
+		// }
 		return nil, err
 	}
 

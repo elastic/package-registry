@@ -7,7 +7,6 @@ package main
 import (
 	"context"
 	"crypto/tls"
-	"database/sql"
 	"flag"
 	"fmt"
 	"log"
@@ -191,12 +190,10 @@ func initDatabase(ctx context.Context, logger *zap.Logger, config *Config) (data
 		return nil, fmt.Errorf("failed to delete previous database (path %q): %w", config.DatabasePath, err)
 	}
 
-	db, err := sql.Open("sqlite3", config.DatabasePath)
+	packageRepository, err := database.NewFileSQLDB(config.DatabasePath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open database (path %q): %w", config.DatabasePath, err)
 	}
-
-	packageRepository := database.NewSQLiteRepository(db)
 
 	if err := packageRepository.Migrate(ctx); err != nil {
 		return nil, fmt.Errorf("failed to prepare the database (path %q): %w", config.DatabasePath, err)

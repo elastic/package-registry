@@ -8,10 +8,12 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+
+	_ "modernc.org/sqlite"
 )
 
 func NewMemorySQLDB() (*SQLiteRepository, error) {
-	db, err := sql.Open("sqlite3", ":memory:")
+	db, err := sql.Open("sqlite", ":memory:")
 	if err != nil {
 		return nil, fmt.Errorf("failed to open database: %w", err)
 	}
