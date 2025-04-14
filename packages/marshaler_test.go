@@ -6,10 +6,8 @@ package packages
 
 import (
 	"context"
-	"database/sql"
 	"encoding/json"
 	"flag"
-	"fmt"
 	"os"
 	"testing"
 
@@ -24,21 +22,9 @@ const testFile = "./testdata/marshaler/packages.json"
 
 var generateFlag = flag.Bool("generate", false, "Write golden files")
 
-func newSQLDBTest() (*database.SQLiteRepository, error) {
-	db, err := sql.Open("sqlite3", ":memory:")
-	if err != nil {
-		return nil, fmt.Errorf("failed to open database: %w", err)
-	}
-	dbRepo := database.NewSQLiteRepository(db)
-	if err := dbRepo.Migrate(context.Background()); err != nil {
-		return nil, fmt.Errorf("failed to create database: %w", err)
-	}
-	return dbRepo, nil
-}
-
 func TestMarshalJSON(t *testing.T) {
 	// given
-	db, err := newSQLDBTest()
+	db, err := database.NewMemorySQLDB()
 	require.NoError(t, err)
 	packagesBasePaths := []string{"../testdata/second_package_path", "../testdata/package"}
 	indexer := NewFileSystemIndexer(util.NewTestLogger(), db, packagesBasePaths...)
@@ -57,7 +43,7 @@ func TestMarshalJSON(t *testing.T) {
 
 func TestUnmarshalJSON(t *testing.T) {
 	// given
-	db, err := newSQLDBTest()
+	db, err := database.NewMemorySQLDB()
 	require.NoError(t, err)
 	packagesBasePaths := []string{"../testdata/second_package_path", "../testdata/package"}
 	indexer := NewFileSystemIndexer(util.NewTestLogger(), db, packagesBasePaths...)

@@ -6,7 +6,6 @@ package main
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -18,18 +17,6 @@ import (
 	"github.com/elastic/package-registry/packages"
 	"github.com/elastic/package-registry/proxymode"
 )
-
-func newSQLDBTest() (*database.SQLiteRepository, error) {
-	db, err := sql.Open("sqlite3", ":memory:")
-	if err != nil {
-		return nil, fmt.Errorf("failed to open database: %w", err)
-	}
-	dbRepo := database.NewSQLiteRepository(db)
-	if err := dbRepo.Migrate(context.Background()); err != nil {
-		return nil, fmt.Errorf("failed to create database: %w", err)
-	}
-	return dbRepo, nil
-}
 
 func TestSearchWithProxyMode(t *testing.T) {
 
@@ -104,7 +91,7 @@ func TestSearchWithProxyMode(t *testing.T) {
 	}))
 	defer webServer.Close()
 
-	db, err := newSQLDBTest()
+	db, err := database.NewMemorySQLDB()
 	require.NoError(t, err)
 	packagesBasePaths := []string{"./testdata/second_package_path", "./testdata/package"}
 	indexer := NewCombinedIndexer(

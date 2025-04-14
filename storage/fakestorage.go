@@ -5,34 +5,20 @@
 package storage
 
 import (
-	"context"
-	"database/sql"
 	"encoding/json"
-	"fmt"
 	"os"
 	"testing"
 
-	"github.com/elastic/package-registry/internal/database"
 	"github.com/fsouza/fake-gcs-server/fakestorage"
 	"github.com/stretchr/testify/require"
+
+	"github.com/elastic/package-registry/internal/database"
 )
 
 const fakePackageStorageBucketInternal = "fake-package-storage-internal"
 
-func newSQLDBTest() (*database.SQLiteRepository, error) {
-	db, err := sql.Open("sqlite3", ":memory:")
-	if err != nil {
-		return nil, fmt.Errorf("failed to open database: %w", err)
-	}
-	dbRepo := database.NewSQLiteRepository(db)
-	if err := dbRepo.Migrate(context.Background()); err != nil {
-		return nil, fmt.Errorf("failed to create database: %w", err)
-	}
-	return dbRepo, nil
-}
-
 func CreateFakeIndexerOptions() (IndexerOptions, error) {
-	db, err := newSQLDBTest()
+	db, err := database.NewMemorySQLDB()
 	if err != nil {
 		return IndexerOptions{}, err
 	}
