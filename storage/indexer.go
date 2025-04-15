@@ -259,6 +259,15 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 				return fmt.Errorf("failed to parse package %s-%s: %w", p.Name, p.Version, err)
 			}
 			pkg.SetRemoteResolver(i.resolver)
+			if opts != nil && opts.Filter != nil {
+				pkgs, err := opts.Filter.Apply(ctx, packages.Packages{&pkg})
+				if err != nil {
+					return err
+				}
+				if len(pkgs) == 0 {
+					return nil
+				}
+			}
 			readPackages = append(readPackages, &pkg)
 			return nil
 		})
@@ -271,6 +280,7 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 		return nil, err
 	}
 
+	// Required to filter packages if condition `all=false`
 	if opts != nil && opts.Filter != nil {
 		pkgs, err := opts.Filter.Apply(ctx, readPackages)
 		return pkgs, err

@@ -210,6 +210,16 @@ func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages
 			return fmt.Errorf("failed to parse package %s-%s: %w", p.Name, p.Version, err)
 		}
 
+		if opts != nil && opts.Filter != nil {
+			pkgs, err := opts.Filter.Apply(ctx, Packages{newPackage})
+			if err != nil {
+				return err
+			}
+			if len(pkgs) == 0 {
+				return nil
+			}
+		}
+
 		packages = append(packages, newPackage)
 		return nil
 	})
@@ -220,6 +230,7 @@ func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages
 		return packages, nil
 	}
 
+	// Required to filter packages if condition `all=false`
 	if opts.Filter != nil {
 		return opts.Filter.Apply(ctx, packages)
 	}
@@ -396,7 +407,6 @@ func (f *Filter) Apply(ctx context.Context, packages Packages) (Packages, error)
 	if f == nil {
 		return packages, nil
 	}
-	fmt.Printf("Filter: Number of packagers %d\n", len(packages))
 
 	span, ctx := apm.StartSpan(ctx, "FilterPackages", "app")
 	defer span.End()
