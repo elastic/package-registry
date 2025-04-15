@@ -53,7 +53,7 @@ func BenchmarkIndexerUpdateIndex(b *testing.B) {
 	// given
 	options, err := CreateFakeIndexerOptions()
 	require.NoError(b, err)
-	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
+	fs := PrepareFakeServer(b, "testdata/search-index-all.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 
