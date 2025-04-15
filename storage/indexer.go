@@ -192,17 +192,13 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	}
 	i.logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", len(anIndex.Packages))))
 
-	refreshedList, err := i.transformSearchIndexAllToPackages(*anIndex)
-	if err != nil {
-		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
-		return fmt.Errorf("can't transform the search-index-all: %w", err)
-	}
-
-	for _, p := range refreshedList {
+	totalPackages := 0
+	err = i.transformSearchIndexAllToPackages(*anIndex, func(p *packages.Package) error {
 		contents, err := json.Marshal(p)
 		if err != nil {
 			return fmt.Errorf("failed to marshal package %s-%s: %w", p.Name, p.Version, err)
 		}
+		totalPackages++
 		dbPackage := database.Package{
 			Name:    p.Name,
 			Version: p.Version,
@@ -210,10 +206,16 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 			Indexer: i.label,
 			Data:    string(contents),
 		}
-		_, err = i.database.Create(ctx, "packages_new", dbPackage)
+		_, err = i.database.Create(ctx, "packages_new", &dbPackage)
 		if err != nil {
 			return fmt.Errorf("failed to create package %s-%s: %w", p.Name, p.Version, err)
 		}
+
+		return nil
+	})
+	if err != nil {
+		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
+		return fmt.Errorf("can't transform the search-index-all: %w", err)
 	}
 
 	err = func() error {
@@ -230,7 +232,7 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 			return fmt.Errorf("failed to rename database packages_new to packages: %w", err)
 		}
 		metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
-		metrics.NumberIndexedPackages.Set(float64(len(refreshedList)))
+		metrics.NumberIndexedPackages.Set(float64(totalPackages))
 		return nil
 	}()
 	if err != nil {
@@ -258,7 +260,6 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 			if err != nil {
 				return fmt.Errorf("failed to parse package %s-%s: %w", p.Name, p.Version, err)
 			}
-			pkg.SetRemoteResolver(i.resolver)
 			if opts != nil && opts.Filter != nil {
 				pkgs, err := opts.Filter.Apply(ctx, packages.Packages{&pkg})
 				if err != nil {
@@ -288,13 +289,15 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	return readPackages, nil
 }
 
-func (i *Indexer) transformSearchIndexAllToPackages(sia searchIndexAll) (packages.Packages, error) {
-	var transformedPackages packages.Packages
+func (i *Indexer) transformSearchIndexAllToPackages(sia searchIndexAll, process func(p *packages.Package) error) error {
 	for j := range sia.Packages {
 		m := sia.Packages[j].PackageManifest
 		m.BasePath = fmt.Sprintf("%s-%s.zip", m.Name, m.Version)
 		m.SetRemoteResolver(i.resolver)
-		transformedPackages = append(transformedPackages, &m)
+		err := process(&m)
+		if err != nil {
+			return err
+		}
 	}
-	return transformedPackages, nil
+	return nil
 }

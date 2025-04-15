@@ -67,7 +67,7 @@ func (r *SQLiteRepository) Migrate(ctx context.Context) error {
 	return nil
 }
 
-func (r *SQLiteRepository) Create(ctx context.Context, database string, pkg Package) (*Package, error) {
+func (r *SQLiteRepository) Create(ctx context.Context, database string, pkg *Package) (*Package, error) {
 	query := fmt.Sprintf("INSERT INTO %s(name, version, path, indexer, data) values(?,?,?,?,?)", database)
 	res, err := r.db.ExecContext(ctx, query, pkg.Name, pkg.Version, pkg.Path, pkg.Indexer, pkg.Data)
 	if err != nil {
@@ -87,7 +87,7 @@ func (r *SQLiteRepository) Create(ctx context.Context, database string, pkg Pack
 	}
 	pkg.ID = id
 
-	return &pkg, nil
+	return pkg, nil
 }
 
 func (r *SQLiteRepository) All(ctx context.Context, database string) ([]Package, error) {
@@ -163,7 +163,7 @@ func (r *SQLiteRepository) GetByIndexerFunc(ctx context.Context, database, index
 	return nil
 }
 
-func (r *SQLiteRepository) Update(ctx context.Context, database string, id int64, updated Package) (*Package, error) {
+func (r *SQLiteRepository) Update(ctx context.Context, database string, id int64, updated *Package) (*Package, error) {
 	if id == 0 {
 		return nil, errors.New("invalid updated ID")
 	}
@@ -182,7 +182,7 @@ func (r *SQLiteRepository) Update(ctx context.Context, database string, id int64
 		return nil, ErrUpdateFailed
 	}
 
-	return &updated, nil
+	return updated, nil
 }
 
 func (r *SQLiteRepository) Delete(ctx context.Context, database string, id int64) error {

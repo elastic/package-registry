@@ -292,7 +292,7 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 				Indexer: i.label,
 				Data:    string(contents),
 			}
-			_, err = i.database.Create(ctx, "packages", dbPackage)
+			_, err = i.database.Create(ctx, "packages", &dbPackage)
 			if err != nil {
 				return nil, fmt.Errorf("failed to create package (path: %s): %w", path, err)
 			}
