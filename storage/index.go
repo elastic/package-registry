@@ -18,11 +18,11 @@ import (
 )
 
 type searchIndexAll struct {
-	Packages []packageIndex `json:"packages"`
+	Packages []*packageIndex `json:"packages"`
 }
 
 type packageIndex struct {
-	PackageManifest packages.Package `json:"package_manifest"`
+	PackageManifest *packages.Package `json:"package_manifest"`
 }
 
 func loadSearchIndexAll(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, bucketName, rootStoragePath string, aCursor cursor) (*searchIndexAll, error) {
@@ -76,7 +76,7 @@ func loadSearchIndexAll(ctx context.Context, logger *zap.Logger, storageClient *
 			if err != nil {
 				return nil, fmt.Errorf("unexpected error parsing package from index file (token: %v): %w", token, err)
 			}
-			sia.Packages = append(sia.Packages, p)
+			sia.Packages = append(sia.Packages, &p)
 		}
 
 		// Read the closing array delimiter.
