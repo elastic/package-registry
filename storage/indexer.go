@@ -198,10 +198,6 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 		return fmt.Errorf("can't transform the search-index-all: %w", err)
 	}
 
-	i.m.Lock()
-	defer i.m.Unlock()
-	i.cursor = storageCursor.Current
-	// TODO: Create new database for each update ?
 	for _, p := range refreshedList {
 		contents, err := json.Marshal(p)
 		if err != nil {
@@ -214,14 +210,38 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 			Indexer: i.label,
 			Data:    string(contents),
 		}
-		_, err = i.database.Create(ctx, dbPackage)
+		_, err = i.database.Create(ctx, "packages_new", dbPackage)
 		if err != nil {
 			return fmt.Errorf("failed to create package %s-%s: %w", p.Name, p.Version, err)
 		}
 	}
-	metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
-	metrics.NumberIndexedPackages.Set(float64(len(refreshedList)))
+
+	err = func() error {
+		i.m.Lock()
+		defer i.m.Unlock()
+		i.cursor = storageCursor.Current
+		// TODO: Create new database for each update ?
+		err = i.database.Drop(ctx, "packages")
+		if err != nil {
+			return fmt.Errorf("failed to drop database packages: %w", err)
+		}
+		err = i.database.Rename(ctx, "packages_new", "packages")
+		if err != nil {
+			return fmt.Errorf("failed to rename database packages_new to packages: %w", err)
+		}
+		metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
+		metrics.NumberIndexedPackages.Set(float64(len(refreshedList)))
+		return nil
+	}()
+	if err != nil {
+		return err
+	}
+	err = i.database.Migrate(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to create databases: %w", err)
+	}
 	return nil
+
 }
 
 func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.Packages, error) {
@@ -233,7 +253,7 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 		i.m.RLock()
 		defer i.m.RUnlock()
 		var err error
-		packagesDatabase, err = i.database.GetByIndexer(ctx, i.label)
+		packagesDatabase, err = i.database.GetByIndexer(ctx, "packages", i.label)
 		if err != nil {
 			return fmt.Errorf("failed to obtain all packages: %w", err)
 		}

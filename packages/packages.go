@@ -203,7 +203,7 @@ func (i *FileSystemIndexer) Init(ctx context.Context) (err error) {
 func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages, error) {
 	start := time.Now()
 	defer metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": i.label}).Observe(time.Since(start).Seconds())
-	packagesDatabase, err := i.database.GetByIndexer(ctx, i.label)
+	packagesDatabase, err := i.database.GetByIndexer(ctx, "packages", i.label)
 	if err != nil {
 		return nil, fmt.Errorf("failed to obtain all packages: %w", err)
 	}
@@ -281,7 +281,7 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 				Indexer: i.label,
 				Data:    string(contents),
 			}
-			_, err = i.database.Create(ctx, dbPackage)
+			_, err = i.database.Create(ctx, "packages", dbPackage)
 			if err != nil {
 				return nil, fmt.Errorf("failed to create package (path: %s): %w", path, err)
 			}

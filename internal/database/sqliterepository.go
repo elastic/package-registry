@@ -48,7 +48,7 @@ func NewSQLiteRepository(db *sql.DB) *SQLiteRepository {
 
 func (r *SQLiteRepository) Migrate(ctx context.Context) error {
 	// TODO : Set name and version as primary keys ?
-	query := fmt.Sprintf(`
+	query := `
     CREATE TABLE IF NOT EXISTS %s (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
@@ -57,13 +57,18 @@ func (r *SQLiteRepository) Migrate(ctx context.Context) error {
 		indexer TEXT NOT NULL,
         data TEXT NOT NULL
     );
-    `, databaseName)
-	_, err := r.db.ExecContext(ctx, query)
-	return err
+	`
+	if _, err := r.db.ExecContext(ctx, fmt.Sprintf(query, "packages")); err != nil {
+		return err
+	}
+	if _, err := r.db.ExecContext(ctx, fmt.Sprintf(query, "packages_new")); err != nil {
+		return err
+	}
+	return nil
 }
 
-func (r *SQLiteRepository) Create(ctx context.Context, pkg Package) (*Package, error) {
-	query := fmt.Sprintf("INSERT INTO %s(name, version, path, indexer, data) values(?,?,?,?,?)", databaseName)
+func (r *SQLiteRepository) Create(ctx context.Context, database string, pkg Package) (*Package, error) {
+	query := fmt.Sprintf("INSERT INTO %s(name, version, path, indexer, data) values(?,?,?,?,?)", database)
 	res, err := r.db.ExecContext(ctx, query, pkg.Name, pkg.Version, pkg.Path, pkg.Indexer, pkg.Data)
 	if err != nil {
 		// From github.com/mattn/go-sqlite3
@@ -85,8 +90,8 @@ func (r *SQLiteRepository) Create(ctx context.Context, pkg Package) (*Package, e
 	return &pkg, nil
 }
 
-func (r *SQLiteRepository) All(ctx context.Context) ([]Package, error) {
-	query := fmt.Sprintf("SELECT * FROM %s", databaseName)
+func (r *SQLiteRepository) All(ctx context.Context, database string) ([]Package, error) {
+	query := fmt.Sprintf("SELECT * FROM %s", database)
 	rows, err := r.db.QueryContext(ctx, query)
 	if err != nil {
 		return nil, err
@@ -104,8 +109,8 @@ func (r *SQLiteRepository) All(ctx context.Context) ([]Package, error) {
 	return all, nil
 }
 
-func (r *SQLiteRepository) GetByName(ctx context.Context, name string) (*Package, error) {
-	query := fmt.Sprintf("SELECT * FROM %s WHERE name = ?", databaseName)
+func (r *SQLiteRepository) GetByName(ctx context.Context, database, name string) (*Package, error) {
+	query := fmt.Sprintf("SELECT * FROM %s WHERE name = ?", database)
 	row := r.db.QueryRowContext(ctx, query, name)
 
 	var pkg Package
@@ -118,8 +123,8 @@ func (r *SQLiteRepository) GetByName(ctx context.Context, name string) (*Package
 	return &pkg, nil
 }
 
-func (r *SQLiteRepository) GetByIndexer(ctx context.Context, indexer string) ([]Package, error) {
-	query := fmt.Sprintf("SELECT * FROM %s WHERE indexer = ?", databaseName)
+func (r *SQLiteRepository) GetByIndexer(ctx context.Context, database, indexer string) ([]Package, error) {
+	query := fmt.Sprintf("SELECT * FROM %s WHERE indexer = ?", database)
 	rows, err := r.db.QueryContext(ctx, query, indexer)
 	if err != nil {
 		return nil, err
@@ -137,11 +142,11 @@ func (r *SQLiteRepository) GetByIndexer(ctx context.Context, indexer string) ([]
 	return all, nil
 }
 
-func (r *SQLiteRepository) Update(ctx context.Context, id int64, updated Package) (*Package, error) {
+func (r *SQLiteRepository) Update(ctx context.Context, database string, id int64, updated Package) (*Package, error) {
 	if id == 0 {
 		return nil, errors.New("invalid updated ID")
 	}
-	query := fmt.Sprintf("UPDATE %s SET name = ?, version = ?, path = ? indexer = ? data = ? WHERE id = ?", databaseName)
+	query := fmt.Sprintf("UPDATE %s SET name = ?, version = ?, path = ? indexer = ? data = ? WHERE id = ?", database)
 	res, err := r.db.ExecContext(ctx, query, updated.Name, updated.Version, updated.Path, updated.Indexer, updated.Data, id)
 	if err != nil {
 		return nil, err
@@ -159,8 +164,8 @@ func (r *SQLiteRepository) Update(ctx context.Context, id int64, updated Package
 	return &updated, nil
 }
 
-func (r *SQLiteRepository) Delete(ctx context.Context, id int64) error {
-	query := fmt.Sprintf("DELETE FROM %s WHERE id = ?", databaseName)
+func (r *SQLiteRepository) Delete(ctx context.Context, database string, id int64) error {
+	query := fmt.Sprintf("DELETE FROM %s WHERE id = ?", database)
 	res, err := r.db.ExecContext(ctx, query, id)
 	if err != nil {
 		return err
@@ -176,4 +181,22 @@ func (r *SQLiteRepository) Delete(ctx context.Context, id int64) error {
 	}
 
 	return err
+}
+
+func (r *SQLiteRepository) Drop(ctx context.Context, table string) error {
+	query := fmt.Sprintf("DROP TABLE IF EXISTS %s", table)
+	_, err := r.db.ExecContext(ctx, query)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *SQLiteRepository) Rename(ctx context.Context, from, to string) error {
+	query := fmt.Sprintf("ALTER TABLE %s RENAME TO %s", from, to)
+	_, err := r.db.ExecContext(ctx, query)
+	if err != nil {
+		return err
+	}
+	return nil
 }
