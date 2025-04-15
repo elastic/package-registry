@@ -10,6 +10,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
+	"go.uber.org/zap/zapcore"
 
 	"github.com/elastic/package-registry/internal/util"
 	"github.com/elastic/package-registry/packages"
@@ -35,7 +36,7 @@ func BenchmarkInit(b *testing.B) {
 	defer fs.Stop()
 	storageClient := fs.Client()
 
-	logger := util.NewTestLogger()
+	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
@@ -50,7 +51,7 @@ func BenchmarkIndexerUpdateIndex(b *testing.B) {
 	defer fs.Stop()
 	storageClient := fs.Client()
 
-	logger := util.NewTestLogger()
+	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
 	indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
 	err := indexer.Init(context.Background())
 	require.NoError(b, err)
@@ -72,7 +73,7 @@ func BenchmarkIndexerGet(b *testing.B) {
 	defer fs.Stop()
 	storageClient := fs.Client()
 
-	logger := util.NewTestLogger()
+	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
 	indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
 	err := indexer.Init(context.Background())
 	require.NoError(b, err)
