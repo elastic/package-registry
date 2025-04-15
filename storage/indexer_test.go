@@ -6,9 +6,11 @@ package storage
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/require"
+	"go.uber.org/zap/zapcore"
 
 	"github.com/elastic/package-registry/internal/util"
 	"github.com/elastic/package-registry/packages"
@@ -34,16 +36,65 @@ func BenchmarkInit(b *testing.B) {
 	// given
 	options, err := CreateFakeIndexerOptions()
 	require.NoError(b, err)
-	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
+	fs := PrepareFakeServer(b, "testdata/search-index-all.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 
-	logger := util.NewTestLogger()
+	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
+	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		indexer := NewIndexer(logger, storageClient, options)
 		err := indexer.Init(context.Background())
 		require.NoError(b, err)
 	}
+}
+
+func BenchmarkIndexerUpdateIndex(b *testing.B) {
+	// given
+	options, err := CreateFakeIndexerOptions()
+	require.NoError(b, err)
+	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
+	defer fs.Stop()
+	storageClient := fs.Client()
+
+	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
+	indexer := NewIndexer(logger, storageClient, options)
+	err = indexer.Init(context.Background())
+	require.NoError(b, err)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		b.StopTimer()
+		revision := fmt.Sprintf("%d", i+2)
+		updateFakeServer(b, fs, revision, "testdata/search-index-all.json")
+		b.StartTimer()
+		err = indexer.updateIndex(context.Background())
+		require.NoError(b, err, "index should be updated successfully")
+	}
+}
+
+func BenchmarkIndexerGet(b *testing.B) {
+	// given
+	options, err := CreateFakeIndexerOptions()
+	require.NoError(b, err)
+	fs := PrepareFakeServer(b, "testdata/search-index-all.json")
+	defer fs.Stop()
+	storageClient := fs.Client()
+
+	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
+	indexer := NewIndexer(logger, storageClient, options)
+	err = indexer.Init(context.Background())
+	require.NoError(b, err)
+	b.ResetTimer()
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			indexer.Get(context.Background(), &packages.GetOptions{
+				Filter: &packages.Filter{
+					PackageName: "apm",
+					PackageType: "integration",
+				},
+			})
+		}
+	})
 }
 
 func TestGet_ListAllPackages(t *testing.T) {

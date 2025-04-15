@@ -40,11 +40,11 @@ func PrepareFakeServer(tb testing.TB, indexPath string) *fakestorage.Server {
 	return fakestorage.NewServer(serverObjects)
 }
 
-func updateFakeServer(t *testing.T, server *fakestorage.Server, revision, indexPath string) {
+func updateFakeServer(tb testing.TB, server *fakestorage.Server, revision, indexPath string) {
 	indexContent, err := os.ReadFile(indexPath)
-	require.NoError(t, err, "index file must be populated")
+	require.NoError(tb, err, "index file must be populated")
 
-	serverObjects := prepareServerObjects(t, revision, indexContent)
+	serverObjects := prepareServerObjects(tb, revision, indexContent)
 
 	for _, so := range serverObjects {
 		server.CreateObject(so)
@@ -71,6 +71,6 @@ func prepareServerObjects(tb testing.TB, revision string, indexContent []byte) [
 		},
 		Content: indexContent,
 	})
-	tb.Logf("Prepared %d packages with total %d server objects.", len(index.Packages), len(serverObjects))
+	// tb.Logf("Prepared %d packages with total %d server objects.", len(index.Packages), len(serverObjects))
 	return serverObjects
 }
