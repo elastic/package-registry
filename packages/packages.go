@@ -202,19 +202,19 @@ func (i *FileSystemIndexer) Init(ctx context.Context) (err error) {
 // Caching the packages request many file reads every time this method is called.
 func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages, error) {
 	start := time.Now()
-	defer metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": i.label}).Observe(time.Since(start).Seconds())
-	packagesDatabase, err := i.database.GetByIndexer(ctx, "packages", i.label)
-	if err != nil {
-		return nil, fmt.Errorf("failed to obtain all packages: %w", err)
-	}
 	var packages Packages
-	for _, p := range packagesDatabase {
+	defer metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": i.label}).Observe(time.Since(start).Seconds())
+	err := i.database.GetByIndexerFunc(ctx, "packages", i.label, func(ctx context.Context, p *database.Package) error {
 		newPackage, err := NewPackage(p.Path, i.fsBuilder)
 		if err != nil {
-			return nil, fmt.Errorf("failed to parse package %s-%s: %w", p.Name, p.Version, err)
+			return fmt.Errorf("failed to parse package %s-%s: %w", p.Name, p.Version, err)
 		}
 
 		packages = append(packages, newPackage)
+		return nil
+	})
+	if err != nil {
+		return nil, fmt.Errorf("failed to obtain all packages: %w", err)
 	}
 	if opts == nil {
 		return packages, nil
@@ -396,6 +396,7 @@ func (f *Filter) Apply(ctx context.Context, packages Packages) (Packages, error)
 	if f == nil {
 		return packages, nil
 	}
+	fmt.Printf("Filter: Number of packagers %d\n", len(packages))
 
 	span, ctx := apm.StartSpan(ctx, "FilterPackages", "app")
 	defer span.End()

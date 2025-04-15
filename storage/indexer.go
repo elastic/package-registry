@@ -248,12 +248,20 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	start := time.Now()
 	defer metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": indexerGetDurationPrometheusLabel}).Observe(time.Since(start).Seconds())
 
-	var packagesDatabase []database.Package
+	var readPackages packages.Packages
 	err := func() error {
 		i.m.RLock()
 		defer i.m.RUnlock()
-		var err error
-		packagesDatabase, err = i.database.GetByIndexer(ctx, "packages", i.label)
+		err := i.database.GetByIndexerFunc(ctx, "packages", i.label, func(ctx context.Context, p *database.Package) error {
+			var pkg packages.Package
+			err := json.Unmarshal([]byte(p.Data), &pkg)
+			if err != nil {
+				return fmt.Errorf("failed to parse package %s-%s: %w", p.Name, p.Version, err)
+			}
+			pkg.SetRemoteResolver(i.resolver)
+			readPackages = append(readPackages, &pkg)
+			return nil
+		})
 		if err != nil {
 			return fmt.Errorf("failed to obtain all packages: %w", err)
 		}
@@ -262,19 +270,10 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	if err != nil {
 		return nil, err
 	}
-	var readPackages packages.Packages
-	for _, p := range packagesDatabase {
-		var pkg packages.Package
-		err := json.Unmarshal([]byte(p.Data), &pkg)
-		if err != nil {
-			return nil, fmt.Errorf("failed to parse package %s-%s: %w", p.Name, p.Version, err)
-		}
-		pkg.SetRemoteResolver(i.resolver)
-		readPackages = append(readPackages, &pkg)
-	}
 
 	if opts != nil && opts.Filter != nil {
-		return opts.Filter.Apply(ctx, readPackages)
+		pkgs, err := opts.Filter.Apply(ctx, readPackages)
+		return pkgs, err
 	}
 	return readPackages, nil
 }

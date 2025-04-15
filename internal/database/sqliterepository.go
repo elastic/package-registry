@@ -142,6 +142,27 @@ func (r *SQLiteRepository) GetByIndexer(ctx context.Context, database, indexer s
 	return all, nil
 }
 
+func (r *SQLiteRepository) GetByIndexerFunc(ctx context.Context, database, indexer string, process func(ctx context.Context, pkg *Package) error) error {
+	query := fmt.Sprintf("SELECT * FROM %s WHERE indexer = ?", database)
+	rows, err := r.db.QueryContext(ctx, query, indexer)
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var pkg Package
+		if err := rows.Scan(&pkg.ID, &pkg.Name, &pkg.Version, &pkg.Path, &pkg.Indexer, &pkg.Data); err != nil {
+			return err
+		}
+		err = process(ctx, &pkg)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func (r *SQLiteRepository) Update(ctx context.Context, database string, id int64, updated Package) (*Package, error) {
 	if id == 0 {
 		return nil, errors.New("invalid updated ID")

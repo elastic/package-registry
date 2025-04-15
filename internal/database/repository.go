@@ -12,6 +12,7 @@ type Repository interface {
 	All(ctx context.Context, database string) ([]Package, error)
 	GetByName(ctx context.Context, database, name string) (*Package, error)
 	GetByIndexer(ctx context.Context, database, indexer string) ([]Package, error)
+	GetByIndexerFunc(ctx context.Context, database, indexer string, process func(ctx context.Context, pkg *Package) error) error
 	Update(ctx context.Context, database string, id int64, updated Package) (*Package, error)
 	Delete(ctx context.Context, database string, id int64) error
 	Drop(ctx context.Context, table string) error
