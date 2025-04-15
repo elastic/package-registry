@@ -36,7 +36,7 @@ func BenchmarkInit(b *testing.B) {
 	// given
 	options, err := CreateFakeIndexerOptions()
 	require.NoError(b, err)
-	fs := PrepareFakeServer(b, "testdata/search-index-all.json")
+	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 
@@ -53,7 +53,7 @@ func BenchmarkIndexerUpdateIndex(b *testing.B) {
 	// given
 	options, err := CreateFakeIndexerOptions()
 	require.NoError(b, err)
-	fs := PrepareFakeServer(b, "testdata/search-index-all.json")
+	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 
@@ -65,7 +65,7 @@ func BenchmarkIndexerUpdateIndex(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		b.StopTimer()
 		revision := fmt.Sprintf("%d", i+2)
-		updateFakeServer(b, fs, revision, "testdata/search-index-all.json")
+		updateFakeServer(b, fs, revision, "testdata/search-index-all-full.json")
 		b.StartTimer()
 		err = indexer.updateIndex(context.Background())
 		require.NoError(b, err, "index should be updated successfully")
@@ -76,7 +76,7 @@ func BenchmarkIndexerGet(b *testing.B) {
 	// given
 	options, err := CreateFakeIndexerOptions()
 	require.NoError(b, err)
-	fs := PrepareFakeServer(b, "testdata/search-index-all.json")
+	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 
@@ -87,12 +87,7 @@ func BenchmarkIndexerGet(b *testing.B) {
 	b.ResetTimer()
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
-			indexer.Get(context.Background(), &packages.GetOptions{
-				Filter: &packages.Filter{
-					PackageName: "apm",
-					PackageType: "integration",
-				},
-			})
+			indexer.Get(context.Background(), &packages.GetOptions{})
 		}
 	})
 }
