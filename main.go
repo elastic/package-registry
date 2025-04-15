@@ -7,6 +7,7 @@ package main
 import (
 	"context"
 	"crypto/tls"
+	"errors"
 	"flag"
 	"fmt"
 	"log"
@@ -183,10 +184,21 @@ func initDatabase(ctx context.Context, logger *zap.Logger, databaseFolderPath, d
 	dbPath := filepath.Join(databaseFolderPath, dbFileName)
 
 	logger.Debug("Creating database", zap.String("path", dbPath))
-	err := os.Remove(dbPath)
+	exists := true
+	_, err := os.Stat(dbPath)
 	if err != nil {
-		logger.Fatal("failed to delete previous database", zap.String("path", dbPath), zap.Error(err))
-		return nil, fmt.Errorf("failed to delete previous database (path %q): %w", dbPath, err)
+		if errors.Is(err, os.ErrNotExist) {
+			exists = false
+		} else {
+			return nil, err
+		}
+	}
+	if exists {
+		err = os.Remove(dbPath)
+		if err != nil {
+			logger.Fatal("failed to delete previous database", zap.String("path", dbPath), zap.Error(err))
+			return nil, fmt.Errorf("failed to delete previous database (path %q): %w", dbPath, err)
+		}
 	}
 
 	packageRepository, err := database.NewFileSQLDB(dbPath)
