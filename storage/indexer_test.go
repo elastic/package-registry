@@ -6,6 +6,7 @@ package storage
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -35,11 +36,54 @@ func BenchmarkInit(b *testing.B) {
 	storageClient := fs.Client()
 
 	logger := util.NewTestLogger()
+	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
 		err := indexer.Init(context.Background())
 		require.NoError(b, err)
 	}
+}
+
+func BenchmarkIndexerUpdateIndex(b *testing.B) {
+	// given
+	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
+	defer fs.Stop()
+	storageClient := fs.Client()
+
+	logger := util.NewTestLogger()
+	indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
+	err := indexer.Init(context.Background())
+	require.NoError(b, err)
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		b.StopTimer()
+		revision := fmt.Sprintf("%d", i+2)
+		updateFakeServer(b, fs, revision, "testdata/search-index-all-full.json")
+		b.StartTimer()
+		err = indexer.updateIndex(context.Background())
+		require.NoError(b, err, "index should be updated successfully")
+	}
+}
+
+func BenchmarkIndexerGet(b *testing.B) {
+	// given
+	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
+	defer fs.Stop()
+	storageClient := fs.Client()
+
+	logger := util.NewTestLogger()
+	indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
+	err := indexer.Init(context.Background())
+	require.NoError(b, err)
+
+	b.ResetTimer()
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			indexer.Get(context.Background(), &packages.GetOptions{})
+		}
+	})
+
 }
 
 func TestGet_ListAllPackages(t *testing.T) {
