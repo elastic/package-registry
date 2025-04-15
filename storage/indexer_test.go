@@ -50,7 +50,7 @@ func TestGet_ListAllPackages(t *testing.T) {
 	// given
 	options, err := CreateFakeIndexerOptions()
 	require.NoError(t, err)
-	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
+	fs := PrepareFakeServer(t, "testdata/search-index-all-small.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 	indexer := NewIndexer(util.NewTestLogger(), storageClient, options)
@@ -63,6 +63,16 @@ func TestGet_ListAllPackages(t *testing.T) {
 
 	// then
 	require.NoError(t, err, "packages should be returned")
+	require.Len(t, foundPackages, 2)
+
+	// when: index update is performed
+	const secondRevision = "2"
+	updateFakeServer(t, fs, secondRevision, "testdata/search-index-all-full.json")
+	err = indexer.updateIndex(context.Background())
+	require.NoError(t, err, "index should be updated successfully")
+
+	// then
+	foundPackages, err = indexer.Get(context.Background(), &packages.GetOptions{})
 	require.Len(t, foundPackages, 1133)
 }
 
