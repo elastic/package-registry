@@ -183,11 +183,12 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 		return fmt.Errorf("can't load the search-index-all index content: %w", err)
 	}
-	i.logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", len(anIndex.Packages))))
-
 	if anIndex == nil {
+		i.logger.Info("Downloaded new search-index-all index. No packages found.")
 		return nil
 	}
+	i.logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", len(anIndex.Packages))))
+
 	refreshedList := i.transformSearchIndexAllToPackages(anIndex)
 
 	i.m.Lock()
