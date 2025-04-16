@@ -18,7 +18,7 @@ import (
 )
 
 type searchIndexAll struct {
-	Packages []*packageIndex `json:"packages"`
+	Packages []packageIndex `json:"packages"`
 }
 
 type packageIndex struct {
@@ -76,7 +76,7 @@ func loadSearchIndexAll(ctx context.Context, logger *zap.Logger, storageClient *
 			if err != nil {
 				return nil, fmt.Errorf("unexpected error parsing package from index file (token: %v): %w", token, err)
 			}
-			sia.Packages = append(sia.Packages, &p)
+			sia.Packages = append(sia.Packages, p)
 		}
 
 		// Read the closing array delimiter.
