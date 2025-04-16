@@ -272,6 +272,7 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 					return nil
 				}
 			}
+			pkg.SetRemoteResolver(i.resolver)
 			readPackages = append(readPackages, &pkg)
 			return nil
 		})
