@@ -60,7 +60,10 @@ func NewLogger(options LoggerOptions) (*zap.Logger, error) {
 }
 
 func NewTestLogger() *zap.Logger {
-	level := zap.DebugLevel
+	return NewTestLoggerLevel(zap.DebugLevel)
+}
+
+func NewTestLoggerLevel(level zapcore.Level) *zap.Logger {
 	logger, err := NewLogger(LoggerOptions{
 		Type:  DevLogger,
 		Level: &level,
