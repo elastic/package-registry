@@ -220,4 +220,24 @@ func TestGet_IndexUpdated(t *testing.T) {
 	require.Len(t, foundPackages, 1)
 	require.Equal(t, "1password", foundPackages[0].Name)
 	require.Equal(t, "1.4.0", foundPackages[0].Version)
+
+	// when: index update is performed removing packages
+	const thirdRevision = "3"
+	updateFakeServer(t, fs, thirdRevision, "testdata/search-index-all-small.json")
+	err = indexer.updateIndex(context.Background())
+	require.NoError(t, err, "index should be updated successfully")
+
+	foundPackages, err = indexer.Get(context.Background(), &packages.GetOptions{
+		Filter: &packages.Filter{
+			PackageName: "1password",
+			PackageType: "integration",
+			Prerelease:  true,
+		},
+	})
+
+	// then
+	require.NoError(t, err, "packages should be returned")
+	require.Len(t, foundPackages, 1)
+	require.Equal(t, "1password", foundPackages[0].Name)
+	require.Equal(t, "0.2.0", foundPackages[0].Version)
 }
