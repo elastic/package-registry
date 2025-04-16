@@ -193,7 +193,7 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	i.logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", len(anIndex.Packages))))
 
 	totalPackages := 0
-	err = i.transformSearchIndexAllToPackages(*anIndex, func(p *packages.Package) error {
+	err = i.transformSearchIndexAllToPackages(anIndex, func(p *packages.Package) error {
 		contents, err := json.Marshal(p)
 		if err != nil {
 			return fmt.Errorf("failed to marshal package %s-%s: %w", p.Name, p.Version, err)
@@ -292,12 +292,12 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	return readPackages, nil
 }
 
-func (i *Indexer) transformSearchIndexAllToPackages(sia searchIndexAll, process func(p *packages.Package) error) error {
+func (i *Indexer) transformSearchIndexAllToPackages(sia *searchIndexAll, process func(p *packages.Package) error) error {
 	for j := range sia.Packages {
 		m := sia.Packages[j].PackageManifest
 		m.BasePath = fmt.Sprintf("%s-%s.zip", m.Name, m.Version)
 		m.SetRemoteResolver(i.resolver)
-		err := process(&m)
+		err := process(m)
 		if err != nil {
 			return err
 		}

@@ -22,7 +22,7 @@ type searchIndexAll struct {
 }
 
 type packageIndex struct {
-	PackageManifest packages.Package `json:"package_manifest"`
+	PackageManifest *packages.Package `json:"package_manifest"`
 }
 
 func loadSearchIndexAll(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, bucketName, rootStoragePath string, aCursor cursor) (*searchIndexAll, error) {
