@@ -23,10 +23,13 @@ func TestInit(t *testing.T) {
 	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
+
+	ctx := context.Background()
 	indexer := NewIndexer(util.NewTestLogger(), storageClient, options)
+	defer indexer.Close(ctx)
 
 	// when
-	err = indexer.Init(context.Background())
+	err = indexer.Init(ctx)
 
 	// then
 	require.NoError(t, err)
@@ -43,8 +46,12 @@ func BenchmarkInit(b *testing.B) {
 	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
+		ctx := context.Background()
+
 		indexer := NewIndexer(logger, storageClient, options)
-		err := indexer.Init(context.Background())
+		defer indexer.Close(ctx)
+
+		err := indexer.Init(ctx)
 		require.NoError(b, err)
 	}
 }
@@ -58,8 +65,12 @@ func BenchmarkIndexerUpdateIndex(b *testing.B) {
 	storageClient := fs.Client()
 
 	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
+	ctx := context.Background()
+
 	indexer := NewIndexer(logger, storageClient, options)
-	err = indexer.Init(context.Background())
+	defer indexer.Close(ctx)
+
+	err = indexer.Init(ctx)
 	require.NoError(b, err)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -67,7 +78,7 @@ func BenchmarkIndexerUpdateIndex(b *testing.B) {
 		revision := fmt.Sprintf("%d", i+2)
 		updateFakeServer(b, fs, revision, "testdata/search-index-all-full.json")
 		b.StartTimer()
-		err = indexer.updateIndex(context.Background())
+		err = indexer.updateIndex(ctx)
 		require.NoError(b, err, "index should be updated successfully")
 	}
 }
@@ -81,8 +92,12 @@ func BenchmarkIndexerGet(b *testing.B) {
 	storageClient := fs.Client()
 
 	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
+
+	ctx := context.Background()
 	indexer := NewIndexer(logger, storageClient, options)
-	err = indexer.Init(context.Background())
+	defer indexer.Close(ctx)
+
+	err = indexer.Init(ctx)
 	require.NoError(b, err)
 	b.ResetTimer()
 	b.RunParallel(func(pb *testing.PB) {
@@ -99,13 +114,16 @@ func TestGet_ListAllPackages(t *testing.T) {
 	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
-	indexer := NewIndexer(util.NewTestLogger(), storageClient, options)
 
-	err = indexer.Init(context.Background())
+	ctx := context.Background()
+	indexer := NewIndexer(util.NewTestLogger(), storageClient, options)
+	defer indexer.Close(ctx)
+
+	err = indexer.Init(ctx)
 	require.NoError(t, err, "storage indexer must be initialized properly")
 
 	// when
-	foundPackages, err := indexer.Get(context.Background(), &packages.GetOptions{})
+	foundPackages, err := indexer.Get(ctx, &packages.GetOptions{})
 
 	// then
 	require.NoError(t, err, "packages should be returned")
@@ -119,13 +137,16 @@ func TestGet_FindLatestPackage(t *testing.T) {
 	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
-	indexer := NewIndexer(util.NewTestLogger(), storageClient, options)
 
-	err = indexer.Init(context.Background())
+	ctx := context.Background()
+	indexer := NewIndexer(util.NewTestLogger(), storageClient, options)
+	defer indexer.Close(ctx)
+
+	err = indexer.Init(ctx)
 	require.NoError(t, err, "storage indexer must be initialized properly")
 
 	// when
-	foundPackages, err := indexer.Get(context.Background(), &packages.GetOptions{
+	foundPackages, err := indexer.Get(ctx, &packages.GetOptions{
 		Filter: &packages.Filter{
 			PackageName: "apm",
 			PackageType: "integration",
@@ -146,13 +167,16 @@ func TestGet_UnknownPackage(t *testing.T) {
 	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
-	indexer := NewIndexer(util.NewTestLogger(), storageClient, options)
 
-	err = indexer.Init(context.Background())
+	ctx := context.Background()
+	indexer := NewIndexer(util.NewTestLogger(), storageClient, options)
+	defer indexer.Close(ctx)
+
+	err = indexer.Init(ctx)
 	require.NoError(t, err, "storage indexer must be initialized properly")
 
 	// when
-	foundPackages, err := indexer.Get(context.Background(), &packages.GetOptions{
+	foundPackages, err := indexer.Get(ctx, &packages.GetOptions{
 		Filter: &packages.Filter{
 			PackageName: "qwertyuiop",
 			PackageType: "integration",
@@ -171,13 +195,16 @@ func TestGet_IndexUpdated(t *testing.T) {
 	fs := PrepareFakeServer(t, "testdata/search-index-all-small.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
-	indexer := NewIndexer(util.NewTestLogger(), storageClient, options)
 
-	err = indexer.Init(context.Background())
+	ctx := context.Background()
+	indexer := NewIndexer(util.NewTestLogger(), storageClient, options)
+	defer indexer.Close(ctx)
+
+	err = indexer.Init(ctx)
 	require.NoError(t, err, "storage indexer must be initialized properly")
 
 	// when
-	foundPackages, err := indexer.Get(context.Background(), &packages.GetOptions{
+	foundPackages, err := indexer.Get(ctx, &packages.GetOptions{
 		Filter: &packages.Filter{
 			PackageName: "1password",
 			PackageType: "integration",
@@ -194,10 +221,10 @@ func TestGet_IndexUpdated(t *testing.T) {
 	// when: index update is performed
 	const secondRevision = "2"
 	updateFakeServer(t, fs, secondRevision, "testdata/search-index-all-full.json")
-	err = indexer.updateIndex(context.Background())
+	err = indexer.updateIndex(ctx)
 	require.NoError(t, err, "index should be updated successfully")
 
-	foundPackages, err = indexer.Get(context.Background(), &packages.GetOptions{
+	foundPackages, err = indexer.Get(ctx, &packages.GetOptions{
 		Filter: &packages.Filter{
 			PackageName: "1password",
 			PackageType: "integration",
@@ -214,10 +241,10 @@ func TestGet_IndexUpdated(t *testing.T) {
 	// when: index update is performed removing packages
 	const thirdRevision = "3"
 	updateFakeServer(t, fs, thirdRevision, "testdata/search-index-all-small.json")
-	err = indexer.updateIndex(context.Background())
+	err = indexer.updateIndex(ctx)
 	require.NoError(t, err, "index should be updated successfully")
 
-	foundPackages, err = indexer.Get(context.Background(), &packages.GetOptions{
+	foundPackages, err = indexer.Get(ctx, &packages.GetOptions{
 		Filter: &packages.Filter{
 			PackageName: "1password",
 			PackageType: "integration",
