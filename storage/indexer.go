@@ -304,3 +304,7 @@ func (i *Indexer) transformSearchIndexAllToPackages(sia *searchIndexAll, process
 	}
 	return nil
 }
+
+func (i *Indexer) Close(ctx context.Context) error {
+	return i.database.Close(ctx)
+}

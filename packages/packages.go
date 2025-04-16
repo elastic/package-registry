@@ -333,6 +333,14 @@ func (i *FileSystemIndexer) getPackagePaths(packagesPath string) ([]string, erro
 	return foundPaths, nil
 }
 
+func (i *FileSystemIndexer) Close(ctx context.Context) error {
+	err := i.database.Close(ctx)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // Filter can be used to filter a list of packages.
 type Filter struct {
 	AllVersions    bool

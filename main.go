@@ -148,10 +148,13 @@ func main() {
 
 	apmTracer.SetLogger(&util.LoggerAdapter{logger.With(zap.String("log.logger", "apm"))})
 
+	ctx := context.Background()
+
 	config := mustLoadConfig(logger)
 	if dryRun {
 		logger.Info("Running dry-run mode")
-		_ = initIndexer(context.Background(), logger, apmTracer, config)
+		indexer := initIndexer(ctx, logger, apmTracer, config)
+		defer indexer.Close(ctx)
 		os.Exit(0)
 	}
 
@@ -160,7 +163,10 @@ func main() {
 
 	initHttpProf(logger)
 
-	server := initServer(logger, apmTracer, config)
+	indexer := initIndexer(ctx, logger, apmTracer, config)
+	defer indexer.Close(ctx)
+
+	server := initServer(logger, apmTracer, config, indexer)
 	go func() {
 		err := runServer(server)
 		if err != nil && err != http.ErrServerClosed {
@@ -174,13 +180,15 @@ func main() {
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
 	<-stop
 
-	ctx := context.Background()
 	if err := server.Shutdown(ctx); err != nil {
 		logger.Fatal("error on shutdown", zap.Error(err))
 	}
 }
 
 func initDatabase(ctx context.Context, logger *zap.Logger, databaseFolderPath, dbFileName string) (database.Repository, error) {
+	span, _ := apm.StartSpan(ctx, "initDatabase", fmt.Sprintf("backend.init.%s", dbFileName))
+	defer span.End()
+
 	dbPath := filepath.Join(databaseFolderPath, dbFileName)
 
 	logger.Debug("Creating database", zap.String("path", dbPath))
@@ -257,6 +265,10 @@ func initMetricsServer(logger *zap.Logger) {
 }
 
 func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer, config *Config) Indexer {
+	tx := apmTracer.StartTransaction("initIndexer", "backend.init")
+	defer tx.End()
+
+	ctx = apm.ContextWithTransaction(ctx, tx)
 	packagesBasePaths := getPackagesBasePaths(config)
 
 	var combined CombinedIndexer
@@ -297,14 +309,7 @@ func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer,
 	return combined
 }
 
-func initServer(logger *zap.Logger, apmTracer *apm.Tracer, config *Config) *http.Server {
-	tx := apmTracer.StartTransaction("initServer", "backend.init")
-	defer tx.End()
-
-	ctx := apm.ContextWithTransaction(context.TODO(), tx)
-
-	indexer := initIndexer(ctx, logger, apmTracer, config)
-
+func initServer(logger *zap.Logger, apmTracer *apm.Tracer, config *Config, indexer Indexer) *http.Server {
 	router := mustLoadRouter(logger, config, indexer)
 	apmgorilla.Instrument(router, apmgorilla.WithTracer(apmTracer))
 

@@ -17,4 +17,5 @@ type Repository interface {
 	Delete(ctx context.Context, database string, id int64) error
 	Drop(ctx context.Context, table string) error
 	Rename(ctx context.Context, from, to string) error
+	Close(ctx context.Context) error
 }

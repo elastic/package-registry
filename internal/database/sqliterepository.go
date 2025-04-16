@@ -227,3 +227,7 @@ func (r *SQLiteRepository) Rename(ctx context.Context, from, to string) error {
 	}
 	return nil
 }
+
+func (r *SQLiteRepository) Close(ctx context.Context) error {
+	return r.db.Close()
+}
