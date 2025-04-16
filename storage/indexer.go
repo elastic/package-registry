@@ -222,7 +222,7 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 		i.m.Lock()
 		defer i.m.Unlock()
 		i.cursor = storageCursor.Current
-		// TODO: Create new database for each update ?
+
 		err = i.database.Drop(ctx, "packages")
 		if err != nil {
 			return fmt.Errorf("failed to drop database packages: %w", err)
@@ -231,16 +231,18 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 		if err != nil {
 			return fmt.Errorf("failed to rename database packages_new to packages: %w", err)
 		}
+		err = i.database.Migrate(ctx)
+		if err != nil {
+			return fmt.Errorf("failed to create databases: %w", err)
+		}
+
 		metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
 		metrics.NumberIndexedPackages.Set(float64(totalPackages))
 		return nil
 	}()
 	if err != nil {
+		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 		return err
-	}
-	err = i.database.Migrate(ctx)
-	if err != nil {
-		return fmt.Errorf("failed to create databases: %w", err)
 	}
 	return nil
 
@@ -260,6 +262,7 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 			if err != nil {
 				return fmt.Errorf("failed to parse package %s-%s: %w", p.Name, p.Version, err)
 			}
+			// First phase filtering packages
 			if opts != nil && opts.Filter != nil {
 				pkgs, err := opts.Filter.Apply(ctx, packages.Packages{&pkg})
 				if err != nil {
@@ -281,7 +284,7 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 		return nil, err
 	}
 
-	// Required to filter packages if condition `all=false`
+	// Required to filter packages again if condition `all=false`
 	if opts != nil && opts.Filter != nil {
 		pkgs, err := opts.Filter.Apply(ctx, readPackages)
 		return pkgs, err
