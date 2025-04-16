@@ -139,6 +139,9 @@ func (r *SQLiteRepository) GetByIndexer(ctx context.Context, database, indexer s
 		}
 		all = append(all, pkg)
 	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
 	return all, nil
 }
 
@@ -159,6 +162,9 @@ func (r *SQLiteRepository) GetByIndexerFunc(ctx context.Context, database, index
 		if err != nil {
 			return err
 		}
+	}
+	if err := rows.Err(); err != nil {
+		return err
 	}
 	return nil
 }
