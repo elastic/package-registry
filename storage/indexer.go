@@ -185,6 +185,9 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	}
 	i.logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", len(anIndex.Packages))))
 
+	if anIndex == nil {
+		return nil
+	}
 	refreshedList := i.transformSearchIndexAllToPackages(anIndex)
 
 	i.m.Lock()
