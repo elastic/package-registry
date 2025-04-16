@@ -13,8 +13,6 @@ import (
 	_ "modernc.org/sqlite"
 )
 
-const databaseName = "packages"
-
 var (
 	ErrDuplicate    = errors.New("record already exists")
 	ErrNotExists    = errors.New("row not exists")
