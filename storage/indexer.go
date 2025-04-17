@@ -185,53 +185,37 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	}
 	i.logger.Info("cursor will be updated", zap.String("cursor.current", i.cursor), zap.String("cursor.next", storageCursor.Current))
 
-	totalPackages := 0
-	err = loadSearchIndexAllFunc(ctx, i.logger, i.storageClient, bucketName, rootStoragePath, *storageCursor, func(ctx context.Context, p *packageIndex) error {
-		contents, err := json.Marshal(p.PackageManifest)
-		if err != nil {
-			return fmt.Errorf("failed to marshal package %s-%s: %w", p.PackageManifest.Name, p.PackageManifest.Version, err)
+	allPackagesVisited := map[string]visitedPackage{}
+	err = i.database.AllFunc(ctx, "packages", func(ctx context.Context, pkg *database.Package) error {
+		key := fmt.Sprintf("%s-%s", pkg.Name, pkg.Version)
+		allPackagesVisited[key] = visitedPackage{
+			visited: false,
+			id:      pkg.ID,
 		}
-		dbPackage := database.Package{
-			Name:    p.PackageManifest.Name,
-			Version: p.PackageManifest.Version,
-			Path:    p.PackageManifest.BasePath,
-			Data:    string(contents),
-		}
-		_, err = i.database.Create(ctx, "packages_new", &dbPackage)
-		if err != nil {
-			return fmt.Errorf("failed to create package %s-%s: %w", p.PackageManifest.Name, p.PackageManifest.Version, err)
-		}
-		totalPackages++
-
 		return nil
 	})
+	if err != nil {
+		return fmt.Errorf("failed to obtain all packages: %w", err)
+	}
+	anIndex, err := loadSearchIndexAll(ctx, i.logger, i.storageClient, bucketName, rootStoragePath, *storageCursor)
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 		return fmt.Errorf("can't load the search-index-all index content: %w", err)
 	}
-	i.logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", totalPackages)))
+	i.logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", len(anIndex.Packages))))
 
 	err = func() error {
 		i.m.Lock()
 		defer i.m.Unlock()
 		i.cursor = storageCursor.Current
 
-		// FIXME: SQLITE locks at file level in read and write transactions/operations
-		err = i.database.Drop(ctx, "packages")
+		err := i.updateDatabase(ctx, anIndex, allPackagesVisited)
 		if err != nil {
-			return fmt.Errorf("failed to drop database packages: %w", err)
-		}
-		err = i.database.Rename(ctx, "packages_new", "packages")
-		if err != nil {
-			return fmt.Errorf("failed to rename database packages_new to packages: %w", err)
-		}
-		err = i.database.Migrate(ctx)
-		if err != nil {
-			return fmt.Errorf("failed to create databases: %w", err)
+			return fmt.Errorf("failed to update database: %w", err)
 		}
 
 		metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
-		metrics.NumberIndexedPackages.Set(float64(totalPackages))
+		metrics.NumberIndexedPackages.Set(float64(len(anIndex.Packages)))
 		return nil
 	}()
 	if err != nil {
@@ -239,7 +223,65 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 		return err
 	}
 	return nil
+}
 
+type visitedPackage struct {
+	id      int64
+	visited bool
+}
+
+func (i *Indexer) updateDatabase(ctx context.Context, index *searchIndexAll, visited map[string]visitedPackage) error {
+	for _, p := range index.Packages {
+		contents, err := json.Marshal(p.PackageManifest)
+		if err != nil {
+			return fmt.Errorf("failed to marshal package %s-%s: %w", p.PackageManifest.Name, p.PackageManifest.Version, err)
+		}
+		dbPackage, err := i.database.GetByNameAndVersion(ctx, "packages", p.PackageManifest.Name, p.PackageManifest.Version)
+		if err != nil && !errors.Is(err, database.ErrNotExists) {
+			return fmt.Errorf("failed to search for package %s-%s", p.PackageManifest.Name, p.PackageManifest.Version)
+		}
+		if err != nil {
+			// Package does not exist, it requires to be created
+			newPackage := database.Package{
+				Name:    p.PackageManifest.Name,
+				Version: p.PackageManifest.Version,
+				Path:    p.PackageManifest.BasePath,
+				Data:    string(contents),
+			}
+			_, err = i.database.Create(ctx, "packages", &newPackage)
+			if err != nil {
+				return fmt.Errorf("failed to create package %s-%s: %w", p.PackageManifest.Name, p.PackageManifest.Version, err)
+			}
+			continue
+		}
+		key := fmt.Sprintf("%s-%s", dbPackage.Name, dbPackage.Version)
+		visited[key] = visitedPackage{
+			id:      visited[key].id,
+			visited: true,
+		}
+
+		if dbPackage.Data != string(contents) {
+			// Package differs in its contents, it requires to be updated
+			dbPackage.Data = string(contents)
+			_, err = i.database.Update(ctx, "packages", dbPackage.ID, dbPackage)
+			if err != nil {
+				return fmt.Errorf("failed to update package %s-%s: %w", p.PackageManifest.Name, p.PackageManifest.Version, err)
+			}
+			continue
+		}
+	}
+	for k, v := range visited {
+		if v.visited {
+			continue
+		}
+		// Package not present anymore in the remote index, it requires to be deleted
+		err := i.database.Delete(ctx, "packages", v.id)
+		if err != nil {
+			return fmt.Errorf("failed to delete package %s: %w", k, err)
+		}
+	}
+
+	return nil
 }
 
 func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.Packages, error) {
@@ -285,19 +327,6 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 		return pkgs, err
 	}
 	return readPackages, nil
-}
-
-func (i *Indexer) transformSearchIndexAllToPackages(sia *searchIndexAll, process func(p *packages.Package) error) error {
-	for j := range sia.Packages {
-		m := sia.Packages[j].PackageManifest
-		m.BasePath = fmt.Sprintf("%s-%s.zip", m.Name, m.Version)
-		m.SetRemoteResolver(i.resolver)
-		err := process(m)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 func (i *Indexer) Close(ctx context.Context) error {

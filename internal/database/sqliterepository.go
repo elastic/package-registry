@@ -141,11 +141,25 @@ func (r *SQLiteRepository) GetByName(ctx context.Context, database, name string)
 	return &pkg, nil
 }
 
+func (r *SQLiteRepository) GetByNameAndVersion(ctx context.Context, database, name, version string) (*Package, error) {
+	query := fmt.Sprintf("SELECT * FROM %s WHERE name = ? AND version = ?", database)
+	row := r.db.QueryRowContext(ctx, query, name, version)
+
+	var pkg Package
+	if err := row.Scan(&pkg.ID, &pkg.Name, &pkg.Version, &pkg.Path, &pkg.Data); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, ErrNotExists
+		}
+		return nil, err
+	}
+	return &pkg, nil
+}
+
 func (r *SQLiteRepository) Update(ctx context.Context, database string, id int64, updated *Package) (*Package, error) {
 	if id == 0 {
 		return nil, errors.New("invalid updated ID")
 	}
-	query := fmt.Sprintf("UPDATE %s SET name = ?, version = ?, path = ? data = ? WHERE id = ?", database)
+	query := fmt.Sprintf("UPDATE %s SET name = ?, version = ?, path = ?, data = ? WHERE id = ?", database)
 	res, err := r.db.ExecContext(ctx, query, updated.Name, updated.Version, updated.Path, updated.Data, id)
 	if err != nil {
 		return nil, err

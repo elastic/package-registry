@@ -12,6 +12,7 @@ type Repository interface {
 	All(ctx context.Context, database string) ([]Package, error)
 	AllFunc(ctx context.Context, database string, process func(ctx context.Context, pkg *Package) error) error
 	GetByName(ctx context.Context, database, name string) (*Package, error)
+	GetByNameAndVersion(ctx context.Context, database, name, version string) (*Package, error)
 	Update(ctx context.Context, database string, id int64, updated *Package) (*Package, error)
 	Delete(ctx context.Context, database string, id int64) error
 	Drop(ctx context.Context, table string) error
