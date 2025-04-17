@@ -185,43 +185,38 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	}
 	i.logger.Info("cursor will be updated", zap.String("cursor.current", i.cursor), zap.String("cursor.next", storageCursor.Current))
 
-	anIndex, err := loadSearchIndexAll(ctx, i.logger, i.storageClient, bucketName, rootStoragePath, *storageCursor)
-	if err != nil {
-		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
-		return fmt.Errorf("can't load the search-index-all index content: %w", err)
-	}
-	i.logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", len(anIndex.Packages))))
-
 	totalPackages := 0
-	err = i.transformSearchIndexAllToPackages(anIndex, func(p *packages.Package) error {
-		contents, err := json.Marshal(p)
+	err = loadSearchIndexAllFunc(ctx, i.logger, i.storageClient, bucketName, rootStoragePath, *storageCursor, func(ctx context.Context, p *packageIndex) error {
+		contents, err := json.Marshal(p.PackageManifest)
 		if err != nil {
-			return fmt.Errorf("failed to marshal package %s-%s: %w", p.Name, p.Version, err)
+			return fmt.Errorf("failed to marshal package %s-%s: %w", p.PackageManifest.Name, p.PackageManifest.Version, err)
 		}
-		totalPackages++
 		dbPackage := database.Package{
-			Name:    p.Name,
-			Version: p.Version,
-			Path:    p.BasePath,
+			Name:    p.PackageManifest.Name,
+			Version: p.PackageManifest.Version,
+			Path:    p.PackageManifest.BasePath,
 			Data:    string(contents),
 		}
 		_, err = i.database.Create(ctx, "packages_new", &dbPackage)
 		if err != nil {
-			return fmt.Errorf("failed to create package %s-%s: %w", p.Name, p.Version, err)
+			return fmt.Errorf("failed to create package %s-%s: %w", p.PackageManifest.Name, p.PackageManifest.Version, err)
 		}
+		totalPackages++
 
 		return nil
 	})
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
-		return fmt.Errorf("can't transform the search-index-all: %w", err)
+		return fmt.Errorf("can't load the search-index-all index content: %w", err)
 	}
+	i.logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", totalPackages)))
 
 	err = func() error {
 		i.m.Lock()
 		defer i.m.Unlock()
 		i.cursor = storageCursor.Current
 
+		// FIXME: SQLITE locks at file level in read and write transactions/operations
 		err = i.database.Drop(ctx, "packages")
 		if err != nil {
 			return fmt.Errorf("failed to drop database packages: %w", err)
