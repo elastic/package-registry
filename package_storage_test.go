@@ -14,6 +14,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
+	"github.com/elastic/package-registry/internal/database"
 	"github.com/elastic/package-registry/storage"
 )
 
@@ -22,7 +23,11 @@ const storageIndexerGoldenDir = "storage-indexer"
 func TestPackageStorage_Endpoints(t *testing.T) {
 	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
-	options, err := storage.CreateFakeIndexerOptions()
+
+	db, err := database.NewMemorySQLDB()
+	require.NoError(t, err)
+
+	options, err := storage.CreateFakeIndexerOptions(db)
 	require.NoError(t, err)
 	indexer := storage.NewIndexer(testLogger, fs.Client(), options)
 
@@ -73,7 +78,11 @@ func TestPackageStorage_Endpoints(t *testing.T) {
 func TestPackageStorage_PackageIndex(t *testing.T) {
 	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
-	options, err := storage.CreateFakeIndexerOptions()
+
+	db, err := database.NewMemorySQLDB()
+	require.NoError(t, err)
+
+	options, err := storage.CreateFakeIndexerOptions(db)
 	require.NoError(t, err)
 	indexer := storage.NewIndexer(testLogger, fs.Client(), options)
 
@@ -109,7 +118,10 @@ func TestPackageStorage_Artifacts(t *testing.T) {
 	}))
 	defer webServer.Close()
 
-	testIndexerOptions, err := storage.CreateFakeIndexerOptions()
+	db, err := database.NewMemorySQLDB()
+	require.NoError(t, err)
+
+	testIndexerOptions, err := storage.CreateFakeIndexerOptions(db)
 	require.NoError(t, err)
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
@@ -147,7 +159,10 @@ func TestPackageStorage_Signatures(t *testing.T) {
 	}))
 	defer webServer.Close()
 
-	testIndexerOptions, err := storage.CreateFakeIndexerOptions()
+	db, err := database.NewMemorySQLDB()
+	require.NoError(t, err)
+
+	testIndexerOptions, err := storage.CreateFakeIndexerOptions(db)
 	require.NoError(t, err)
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
@@ -184,7 +199,10 @@ func TestPackageStorage_Statics(t *testing.T) {
 	}))
 	defer webServer.Close()
 
-	testIndexerOptions, err := storage.CreateFakeIndexerOptions()
+	db, err := database.NewMemorySQLDB()
+	require.NoError(t, err)
+
+	testIndexerOptions, err := storage.CreateFakeIndexerOptions(db)
 	require.NoError(t, err)
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
@@ -226,7 +244,10 @@ func TestPackageStorage_ResolverHeadersResponse(t *testing.T) {
 	}))
 	defer webServer.Close()
 
-	testIndexerOptions, err := storage.CreateFakeIndexerOptions()
+	db, err := database.NewMemorySQLDB()
+	require.NoError(t, err)
+
+	testIndexerOptions, err := storage.CreateFakeIndexerOptions(db)
 	require.NoError(t, err)
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
@@ -273,7 +294,10 @@ func TestPackageStorage_ResolverErrorResponse(t *testing.T) {
 	}))
 	defer webServer.Close()
 
-	testIndexerOptions, err := storage.CreateFakeIndexerOptions()
+	db, err := database.NewMemorySQLDB()
+	require.NoError(t, err)
+
+	testIndexerOptions, err := storage.CreateFakeIndexerOptions(db)
 	require.NoError(t, err)
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 

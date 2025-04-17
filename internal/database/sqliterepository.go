@@ -31,14 +31,14 @@ func NewFileSQLDB(path string) (*SQLiteRepository, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to open database: %w", err)
 	}
-	dbRepo := NewSQLiteRepository(db)
+	dbRepo := newSQLiteRepository(db)
 	if err := dbRepo.Migrate(context.Background()); err != nil {
 		return nil, fmt.Errorf("failed to create database: %w", err)
 	}
 	return dbRepo, nil
 }
 
-func NewSQLiteRepository(db *sql.DB) *SQLiteRepository {
+func newSQLiteRepository(db *sql.DB) *SQLiteRepository {
 	return &SQLiteRepository{
 		db: db,
 	}

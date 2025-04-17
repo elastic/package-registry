@@ -17,11 +17,7 @@ import (
 
 const fakePackageStorageBucketInternal = "fake-package-storage-internal"
 
-func CreateFakeIndexerOptions() (IndexerOptions, error) {
-	db, err := database.NewMemorySQLDB()
-	if err != nil {
-		return IndexerOptions{}, err
-	}
+func CreateFakeIndexerOptions(db database.Repository) (IndexerOptions, error) {
 	fakeIndexerOptions := IndexerOptions{
 		PackageStorageBucketInternal: "gs://" + fakePackageStorageBucketInternal,
 		WatchInterval:                0,

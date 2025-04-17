@@ -7,19 +7,25 @@ package storage
 import (
 	"context"
 	"fmt"
+	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/require"
 	"go.uber.org/zap/zapcore"
 
+	"github.com/elastic/package-registry/internal/database"
 	"github.com/elastic/package-registry/internal/util"
 	"github.com/elastic/package-registry/packages"
 )
 
 func TestInit(t *testing.T) {
 	// given
-	options, err := CreateFakeIndexerOptions()
+	db, err := database.NewMemorySQLDB()
 	require.NoError(t, err)
+
+	options, err := CreateFakeIndexerOptions(db)
+	require.NoError(t, err)
+
 	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
@@ -37,8 +43,14 @@ func TestInit(t *testing.T) {
 
 func BenchmarkInit(b *testing.B) {
 	// given
-	options, err := CreateFakeIndexerOptions()
+	folder := b.TempDir()
+	dbPath := filepath.Join(folder, "test.db")
+	db, err := database.NewFileSQLDB(dbPath)
 	require.NoError(b, err)
+
+	options, err := CreateFakeIndexerOptions(db)
+	require.NoError(b, err)
+
 	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
@@ -58,8 +70,14 @@ func BenchmarkInit(b *testing.B) {
 
 func BenchmarkIndexerUpdateIndex(b *testing.B) {
 	// given
-	options, err := CreateFakeIndexerOptions()
+	folder := b.TempDir()
+	dbPath := filepath.Join(folder, "test.db")
+	db, err := database.NewFileSQLDB(dbPath)
 	require.NoError(b, err)
+
+	options, err := CreateFakeIndexerOptions(db)
+	require.NoError(b, err)
+
 	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
@@ -85,8 +103,14 @@ func BenchmarkIndexerUpdateIndex(b *testing.B) {
 
 func BenchmarkIndexerGet(b *testing.B) {
 	// given
-	options, err := CreateFakeIndexerOptions()
+	folder := b.TempDir()
+	dbPath := filepath.Join(folder, "test.db")
+	db, err := database.NewFileSQLDB(dbPath)
 	require.NoError(b, err)
+
+	options, err := CreateFakeIndexerOptions(db)
+	require.NoError(b, err)
+
 	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
@@ -109,8 +133,12 @@ func BenchmarkIndexerGet(b *testing.B) {
 
 func TestGet_ListAllPackages(t *testing.T) {
 	// given
-	options, err := CreateFakeIndexerOptions()
+	db, err := database.NewMemorySQLDB()
 	require.NoError(t, err)
+
+	options, err := CreateFakeIndexerOptions(db)
+	require.NoError(t, err)
+
 	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
@@ -132,8 +160,12 @@ func TestGet_ListAllPackages(t *testing.T) {
 
 func TestGet_FindLatestPackage(t *testing.T) {
 	// given
-	options, err := CreateFakeIndexerOptions()
+	db, err := database.NewMemorySQLDB()
 	require.NoError(t, err)
+
+	options, err := CreateFakeIndexerOptions(db)
+	require.NoError(t, err)
+
 	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
@@ -162,8 +194,12 @@ func TestGet_FindLatestPackage(t *testing.T) {
 
 func TestGet_UnknownPackage(t *testing.T) {
 	// given
-	options, err := CreateFakeIndexerOptions()
+	db, err := database.NewMemorySQLDB()
 	require.NoError(t, err)
+
+	options, err := CreateFakeIndexerOptions(db)
+	require.NoError(t, err)
+
 	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
@@ -190,8 +226,12 @@ func TestGet_UnknownPackage(t *testing.T) {
 
 func TestGet_IndexUpdated(t *testing.T) {
 	// given
-	options, err := CreateFakeIndexerOptions()
+	db, err := database.NewMemorySQLDB()
 	require.NoError(t, err)
+
+	options, err := CreateFakeIndexerOptions(db)
+	require.NoError(t, err)
+
 	fs := PrepareFakeServer(t, "testdata/search-index-all-small.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
