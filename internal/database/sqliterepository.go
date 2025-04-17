@@ -52,7 +52,6 @@ func (r *SQLiteRepository) Migrate(ctx context.Context) error {
         name TEXT NOT NULL,
 		version TEXT NOT NULL,
 		path TEXT NOT NULL,
-		indexer TEXT NOT NULL,
         data TEXT NOT NULL
     );
 	`
@@ -66,8 +65,8 @@ func (r *SQLiteRepository) Migrate(ctx context.Context) error {
 }
 
 func (r *SQLiteRepository) Create(ctx context.Context, database string, pkg *Package) (*Package, error) {
-	query := fmt.Sprintf("INSERT INTO %s(name, version, path, indexer, data) values(?,?,?,?,?)", database)
-	res, err := r.db.ExecContext(ctx, query, pkg.Name, pkg.Version, pkg.Path, pkg.Indexer, pkg.Data)
+	query := fmt.Sprintf("INSERT INTO %s(name, version, path, data) values(?,?,?,?)", database)
+	res, err := r.db.ExecContext(ctx, query, pkg.Name, pkg.Version, pkg.Path, pkg.Data)
 	if err != nil {
 		// From github.com/mattn/go-sqlite3
 		// var sqliteErr sqlite3.Error
@@ -99,7 +98,7 @@ func (r *SQLiteRepository) All(ctx context.Context, database string) ([]Package,
 	var all []Package
 	for rows.Next() {
 		var pkg Package
-		if err := rows.Scan(&pkg.ID, &pkg.Name, &pkg.Version, &pkg.Path, &pkg.Indexer, &pkg.Data); err != nil {
+		if err := rows.Scan(&pkg.ID, &pkg.Name, &pkg.Version, &pkg.Path, &pkg.Data); err != nil {
 			return nil, err
 		}
 		all = append(all, pkg)
@@ -107,12 +106,33 @@ func (r *SQLiteRepository) All(ctx context.Context, database string) ([]Package,
 	return all, nil
 }
 
+func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, process func(ctx context.Context, pkg *Package) error) error {
+	query := fmt.Sprintf("SELECT * FROM %s", database)
+	rows, err := r.db.QueryContext(ctx, query)
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var pkg Package
+		if err := rows.Scan(&pkg.ID, &pkg.Name, &pkg.Version, &pkg.Path, &pkg.Data); err != nil {
+			return err
+		}
+		err = process(ctx, &pkg)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func (r *SQLiteRepository) GetByName(ctx context.Context, database, name string) (*Package, error) {
 	query := fmt.Sprintf("SELECT * FROM %s WHERE name = ?", database)
 	row := r.db.QueryRowContext(ctx, query, name)
 
 	var pkg Package
-	if err := row.Scan(&pkg.ID, &pkg.Name, &pkg.Version, &pkg.Path, &pkg.Indexer, &pkg.Data); err != nil {
+	if err := row.Scan(&pkg.ID, &pkg.Name, &pkg.Version, &pkg.Path, &pkg.Data); err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, ErrNotExists
 		}
@@ -121,58 +141,12 @@ func (r *SQLiteRepository) GetByName(ctx context.Context, database, name string)
 	return &pkg, nil
 }
 
-func (r *SQLiteRepository) GetByIndexer(ctx context.Context, database, indexer string) ([]Package, error) {
-	query := fmt.Sprintf("SELECT * FROM %s WHERE indexer = ?", database)
-	rows, err := r.db.QueryContext(ctx, query, indexer)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	var all []Package
-	for rows.Next() {
-		var pkg Package
-		if err := rows.Scan(&pkg.ID, &pkg.Name, &pkg.Version, &pkg.Path, &pkg.Indexer, &pkg.Data); err != nil {
-			return nil, err
-		}
-		all = append(all, pkg)
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return all, nil
-}
-
-func (r *SQLiteRepository) GetByIndexerFunc(ctx context.Context, database, indexer string, process func(ctx context.Context, pkg *Package) error) error {
-	query := fmt.Sprintf("SELECT * FROM %s WHERE indexer = ?", database)
-	rows, err := r.db.QueryContext(ctx, query, indexer)
-	if err != nil {
-		return err
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var pkg Package
-		if err := rows.Scan(&pkg.ID, &pkg.Name, &pkg.Version, &pkg.Path, &pkg.Indexer, &pkg.Data); err != nil {
-			return err
-		}
-		err = process(ctx, &pkg)
-		if err != nil {
-			return err
-		}
-	}
-	if err := rows.Err(); err != nil {
-		return err
-	}
-	return nil
-}
-
 func (r *SQLiteRepository) Update(ctx context.Context, database string, id int64, updated *Package) (*Package, error) {
 	if id == 0 {
 		return nil, errors.New("invalid updated ID")
 	}
-	query := fmt.Sprintf("UPDATE %s SET name = ?, version = ?, path = ? indexer = ? data = ? WHERE id = ?", database)
-	res, err := r.db.ExecContext(ctx, query, updated.Name, updated.Version, updated.Path, updated.Indexer, updated.Data, id)
+	query := fmt.Sprintf("UPDATE %s SET name = ?, version = ?, path = ? data = ? WHERE id = ?", database)
+	res, err := r.db.ExecContext(ctx, query, updated.Name, updated.Version, updated.Path, updated.Data, id)
 	if err != nil {
 		return nil, err
 	}

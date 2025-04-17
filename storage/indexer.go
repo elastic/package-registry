@@ -203,7 +203,6 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 			Name:    p.Name,
 			Version: p.Version,
 			Path:    p.BasePath,
-			Indexer: i.label,
 			Data:    string(contents),
 		}
 		_, err = i.database.Create(ctx, "packages_new", &dbPackage)
@@ -256,7 +255,7 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	err := func() error {
 		i.m.RLock()
 		defer i.m.RUnlock()
-		err := i.database.GetByIndexerFunc(ctx, "packages", i.label, func(ctx context.Context, p *database.Package) error {
+		err := i.database.AllFunc(ctx, "packages", func(ctx context.Context, p *database.Package) error {
 			var pkg packages.Package
 			err := json.Unmarshal([]byte(p.Data), &pkg)
 			if err != nil {

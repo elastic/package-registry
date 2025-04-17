@@ -9,6 +9,5 @@ type Package struct {
 	Name    string
 	Path    string
 	Version string
-	Indexer string
 	Data    string
 }

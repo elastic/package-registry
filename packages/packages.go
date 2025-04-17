@@ -204,7 +204,7 @@ func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages
 	start := time.Now()
 	var packages Packages
 	defer metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": i.label}).Observe(time.Since(start).Seconds())
-	err := i.database.GetByIndexerFunc(ctx, "packages", i.label, func(ctx context.Context, p *database.Package) error {
+	err := i.database.AllFunc(ctx, "packages", func(ctx context.Context, p *database.Package) error {
 		newPackage, err := NewPackage(p.Path, i.fsBuilder)
 		if err != nil {
 			return fmt.Errorf("failed to parse package %s-%s: %w", p.Name, p.Version, err)
@@ -289,7 +289,6 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 				Name:    p.Name,
 				Version: p.Version,
 				Path:    path,
-				Indexer: i.label,
 				Data:    string(contents),
 			}
 			_, err = i.database.Create(ctx, "packages", &dbPackage)
