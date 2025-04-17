@@ -26,8 +26,11 @@ func TestMarshalJSON(t *testing.T) {
 	// given
 	db, err := database.NewMemorySQLDB()
 	require.NoError(t, err)
+
 	packagesBasePaths := []string{"../testdata/second_package_path", "../testdata/package"}
 	indexer := NewFileSystemIndexer(util.NewTestLogger(), db, packagesBasePaths...)
+	defer indexer.Close(context.Background())
+
 	err = indexer.Init(context.Background())
 	require.NoError(t, err, "can't initialize indexer")
 
@@ -45,8 +48,11 @@ func TestUnmarshalJSON(t *testing.T) {
 	// given
 	db, err := database.NewMemorySQLDB()
 	require.NoError(t, err)
+
 	packagesBasePaths := []string{"../testdata/second_package_path", "../testdata/package"}
 	indexer := NewFileSystemIndexer(util.NewTestLogger(), db, packagesBasePaths...)
+	defer indexer.Close(context.Background())
+
 	err = indexer.Init(context.Background())
 	require.NoError(t, err)
 

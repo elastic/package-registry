@@ -91,13 +91,17 @@ func TestSearchWithProxyMode(t *testing.T) {
 	}))
 	defer webServer.Close()
 
-	db, err := database.NewMemorySQLDB()
+	zipDb, err := database.NewMemorySQLDB()
 	require.NoError(t, err)
+	foldersDb, err := database.NewMemorySQLDB()
+	require.NoError(t, err)
+
 	packagesBasePaths := []string{"./testdata/second_package_path", "./testdata/package"}
 	indexer := NewCombinedIndexer(
-		packages.NewZipFileSystemIndexer(testLogger, db, "./testdata/local-storage"),
-		packages.NewFileSystemIndexer(testLogger, db, packagesBasePaths...),
+		packages.NewZipFileSystemIndexer(testLogger, zipDb, "./testdata/local-storage"),
+		packages.NewFileSystemIndexer(testLogger, foldersDb, packagesBasePaths...),
 	)
+	defer indexer.Close(context.Background())
 
 	err = indexer.Init(context.Background())
 	require.NoError(t, err)

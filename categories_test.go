@@ -42,7 +42,10 @@ func TestCategoriesWithProxyMode(t *testing.T) {
 
 	db, err := database.NewMemorySQLDB()
 	require.NoError(t, err)
+
 	indexerProxy := packages.NewFileSystemIndexer(testLogger, db, "./testdata/second_package_path")
+	defer indexerProxy.Close(context.Background())
+
 	err = indexerProxy.Init(context.Background())
 	require.NoError(t, err)
 
