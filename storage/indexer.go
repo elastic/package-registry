@@ -6,6 +6,7 @@ package storage
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net"
@@ -21,6 +22,7 @@ import (
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 
+	"github.com/elastic/package-registry/internal/database"
 	"github.com/elastic/package-registry/metrics"
 	"github.com/elastic/package-registry/packages"
 )
@@ -31,21 +33,24 @@ type Indexer struct {
 	options       IndexerOptions
 	storageClient *storage.Client
 
-	cursor      string
-	packageList packages.Packages
+	cursor string
+
+	label string
 
 	m sync.RWMutex
 
 	resolver packages.RemoteResolver
 
+	database database.Repository
+
 	logger *zap.Logger
 }
-
 type IndexerOptions struct {
 	APMTracer                    *apm.Tracer
 	PackageStorageBucketInternal string
 	PackageStorageEndpoint       string
 	WatchInterval                time.Duration
+	Database                     database.Repository
 }
 
 func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options IndexerOptions) *Indexer {
@@ -56,6 +61,8 @@ func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options Index
 		storageClient: storageClient,
 		options:       options,
 		logger:        logger,
+		database:      options.Database,
+		label:         fmt.Sprintf("storage-%s", options.PackageStorageEndpoint),
 	}
 }
 
@@ -178,6 +185,18 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	}
 	i.logger.Info("cursor will be updated", zap.String("cursor.current", i.cursor), zap.String("cursor.next", storageCursor.Current))
 
+	allPackagesVisited := map[string]visitedPackage{}
+	err = i.database.AllFunc(ctx, "packages", func(ctx context.Context, pkg *database.Package) error {
+		key := fmt.Sprintf("%s-%s", pkg.Name, pkg.Version)
+		allPackagesVisited[key] = visitedPackage{
+			visited: false,
+			id:      pkg.ID,
+		}
+		return nil
+	})
+	if err != nil {
+		return fmt.Errorf("failed to obtain all packages: %w", err)
+	}
 	anIndex, err := loadSearchIndexAll(ctx, i.logger, i.storageClient, bucketName, rootStoragePath, *storageCursor)
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
@@ -185,18 +204,83 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	}
 	i.logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", len(anIndex.Packages))))
 
-	refreshedList, err := i.transformSearchIndexAllToPackages(*anIndex)
+	err = func() error {
+		i.m.Lock()
+		defer i.m.Unlock()
+		i.cursor = storageCursor.Current
+
+		err := i.updateDatabase(ctx, anIndex, allPackagesVisited)
+		if err != nil {
+			return fmt.Errorf("failed to update database: %w", err)
+		}
+
+		metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
+		metrics.NumberIndexedPackages.Set(float64(len(anIndex.Packages)))
+		return nil
+	}()
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
-		return fmt.Errorf("can't transform the search-index-all: %w", err)
+		return err
+	}
+	return nil
+}
+
+type visitedPackage struct {
+	id      int64
+	visited bool
+}
+
+func (i *Indexer) updateDatabase(ctx context.Context, index *searchIndexAll, visited map[string]visitedPackage) error {
+	for _, p := range index.Packages {
+		contents, err := json.Marshal(p.PackageManifest)
+		if err != nil {
+			return fmt.Errorf("failed to marshal package %s-%s: %w", p.PackageManifest.Name, p.PackageManifest.Version, err)
+		}
+		dbPackage, err := i.database.GetByNameAndVersion(ctx, "packages", p.PackageManifest.Name, p.PackageManifest.Version)
+		if err != nil && !errors.Is(err, database.ErrNotExists) {
+			return fmt.Errorf("failed to search for package %s-%s", p.PackageManifest.Name, p.PackageManifest.Version)
+		}
+		if err != nil {
+			// Package does not exist, it requires to be created
+			newPackage := database.Package{
+				Name:    p.PackageManifest.Name,
+				Version: p.PackageManifest.Version,
+				Path:    p.PackageManifest.BasePath,
+				Data:    string(contents),
+			}
+			_, err = i.database.Create(ctx, "packages", &newPackage)
+			if err != nil {
+				return fmt.Errorf("failed to create package %s-%s: %w", p.PackageManifest.Name, p.PackageManifest.Version, err)
+			}
+			continue
+		}
+		key := fmt.Sprintf("%s-%s", dbPackage.Name, dbPackage.Version)
+		visited[key] = visitedPackage{
+			id:      visited[key].id,
+			visited: true,
+		}
+
+		if dbPackage.Data != string(contents) {
+			// Package differs in its contents, it requires to be updated
+			dbPackage.Data = string(contents)
+			_, err = i.database.Update(ctx, "packages", dbPackage.ID, dbPackage)
+			if err != nil {
+				return fmt.Errorf("failed to update package %s-%s: %w", p.PackageManifest.Name, p.PackageManifest.Version, err)
+			}
+			continue
+		}
+	}
+	for k, v := range visited {
+		if v.visited {
+			continue
+		}
+		// Package not present anymore in the remote index, it requires to be deleted
+		err := i.database.Delete(ctx, "packages", v.id)
+		if err != nil {
+			return fmt.Errorf("failed to delete package %s: %w", k, err)
+		}
 	}
 
-	i.m.Lock()
-	defer i.m.Unlock()
-	i.cursor = storageCursor.Current
-	i.packageList = refreshedList
-	metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
-	metrics.NumberIndexedPackages.Set(float64(len(i.packageList)))
 	return nil
 }
 
@@ -204,22 +288,47 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	start := time.Now()
 	defer metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": indexerGetDurationPrometheusLabel}).Observe(time.Since(start).Seconds())
 
-	i.m.RLock()
-	defer i.m.RUnlock()
-
-	if opts != nil && opts.Filter != nil {
-		return opts.Filter.Apply(ctx, i.packageList)
+	var readPackages packages.Packages
+	err := func() error {
+		i.m.RLock()
+		defer i.m.RUnlock()
+		err := i.database.AllFunc(ctx, "packages", func(ctx context.Context, p *database.Package) error {
+			var pkg packages.Package
+			err := json.Unmarshal([]byte(p.Data), &pkg)
+			if err != nil {
+				return fmt.Errorf("failed to parse package %s-%s: %w", p.Name, p.Version, err)
+			}
+			// First phase filtering packages
+			if opts != nil && opts.Filter != nil {
+				pkgs, err := opts.Filter.Apply(ctx, packages.Packages{&pkg})
+				if err != nil {
+					return err
+				}
+				if len(pkgs) == 0 {
+					return nil
+				}
+			}
+			pkg.SetRemoteResolver(i.resolver)
+			readPackages = append(readPackages, &pkg)
+			return nil
+		})
+		if err != nil {
+			return fmt.Errorf("failed to obtain all packages: %w", err)
+		}
+		return nil
+	}()
+	if err != nil {
+		return nil, err
 	}
-	return i.packageList, nil
+
+	// Required to filter packages again if condition `all=false`
+	if opts != nil && opts.Filter != nil {
+		pkgs, err := opts.Filter.Apply(ctx, readPackages)
+		return pkgs, err
+	}
+	return readPackages, nil
 }
 
-func (i *Indexer) transformSearchIndexAllToPackages(sia searchIndexAll) (packages.Packages, error) {
-	var transformedPackages packages.Packages
-	for j := range sia.Packages {
-		m := sia.Packages[j].PackageManifest
-		m.BasePath = fmt.Sprintf("%s-%s.zip", m.Name, m.Version)
-		m.SetRemoteResolver(i.resolver)
-		transformedPackages = append(transformedPackages, &m)
-	}
-	return transformedPackages, nil
+func (i *Indexer) Close(ctx context.Context) error {
+	return i.database.Close(ctx)
 }

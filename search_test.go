@@ -13,6 +13,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
+	"github.com/elastic/package-registry/internal/database"
 	"github.com/elastic/package-registry/packages"
 	"github.com/elastic/package-registry/proxymode"
 )
@@ -90,13 +91,19 @@ func TestSearchWithProxyMode(t *testing.T) {
 	}))
 	defer webServer.Close()
 
+	zipDb, err := database.NewMemorySQLDB()
+	require.NoError(t, err)
+	foldersDb, err := database.NewMemorySQLDB()
+	require.NoError(t, err)
+
 	packagesBasePaths := []string{"./testdata/second_package_path", "./testdata/package"}
 	indexer := NewCombinedIndexer(
-		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
-		packages.NewFileSystemIndexer(testLogger, packagesBasePaths...),
+		packages.NewZipFileSystemIndexer(testLogger, zipDb, "./testdata/local-storage"),
+		packages.NewFileSystemIndexer(testLogger, foldersDb, packagesBasePaths...),
 	)
+	defer indexer.Close(context.Background())
 
-	err := indexer.Init(context.Background())
+	err = indexer.Init(context.Background())
 	require.NoError(t, err)
 
 	proxyMode, err := proxymode.NewProxyMode(

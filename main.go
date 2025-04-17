@@ -7,6 +7,7 @@ package main
 import (
 	"context"
 	"crypto/tls"
+	"errors"
 	"flag"
 	"fmt"
 	"log"
@@ -14,6 +15,7 @@ import (
 	_ "net/http/pprof"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"strings"
 	"syscall"
 	"time"
@@ -30,6 +32,7 @@ import (
 
 	ucfgYAML "github.com/elastic/go-ucfg/yaml"
 
+	"github.com/elastic/package-registry/internal/database"
 	"github.com/elastic/package-registry/internal/util"
 	"github.com/elastic/package-registry/metrics"
 	"github.com/elastic/package-registry/packages"
@@ -74,6 +77,7 @@ var (
 		CacheTimeSearch:     10 * time.Minute,
 		CacheTimeCategories: 10 * time.Minute,
 		CacheTimeCatchAll:   10 * time.Minute,
+		DatabaseFolderPath:  "/tmp/", // TODO: Another default directory?
 	}
 )
 
@@ -109,6 +113,7 @@ type Config struct {
 	CacheTimeSearch     time.Duration `config:"cache_time.search"`
 	CacheTimeCategories time.Duration `config:"cache_time.categories"`
 	CacheTimeCatchAll   time.Duration `config:"cache_time.catch_all"`
+	DatabaseFolderPath  string        `config:"database_folder_path"`
 }
 
 func main() {
@@ -143,10 +148,13 @@ func main() {
 
 	apmTracer.SetLogger(&util.LoggerAdapter{logger.With(zap.String("log.logger", "apm"))})
 
+	ctx := context.Background()
+
 	config := mustLoadConfig(logger)
 	if dryRun {
 		logger.Info("Running dry-run mode")
-		_ = initIndexer(context.Background(), logger, apmTracer, config)
+		indexer := initIndexer(ctx, logger, apmTracer, config)
+		defer indexer.Close(ctx)
 		os.Exit(0)
 	}
 
@@ -155,7 +163,10 @@ func main() {
 
 	initHttpProf(logger)
 
-	server := initServer(logger, apmTracer, config)
+	indexer := initIndexer(ctx, logger, apmTracer, config)
+	defer indexer.Close(ctx)
+
+	server := initServer(logger, apmTracer, config, indexer)
 	go func() {
 		err := runServer(server)
 		if err != nil && err != http.ErrServerClosed {
@@ -169,10 +180,46 @@ func main() {
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
 	<-stop
 
-	ctx := context.Background()
 	if err := server.Shutdown(ctx); err != nil {
 		logger.Fatal("error on shutdown", zap.Error(err))
 	}
+}
+
+func initDatabase(ctx context.Context, logger *zap.Logger, databaseFolderPath, dbFileName string) (database.Repository, error) {
+	span, _ := apm.StartSpan(ctx, "initDatabase", fmt.Sprintf("backend.init.%s", dbFileName))
+	defer span.End()
+
+	dbPath := filepath.Join(databaseFolderPath, dbFileName)
+
+	logger.Debug("Creating database", zap.String("path", dbPath))
+	exists := true
+	_, err := os.Stat(dbPath)
+	if err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			exists = false
+		} else {
+			return nil, err
+		}
+	}
+	if exists {
+		err = os.Remove(dbPath)
+		if err != nil {
+			logger.Fatal("failed to delete previous database", zap.String("path", dbPath), zap.Error(err))
+			return nil, fmt.Errorf("failed to delete previous database (path %q): %w", dbPath, err)
+		}
+	}
+
+	packageRepository, err := database.NewFileSQLDB(dbPath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to open database (path %q): %w", dbPath, err)
+	}
+
+	if err := packageRepository.Migrate(ctx); err != nil {
+		return nil, fmt.Errorf("failed to prepare the database (path %q): %w", dbPath, err)
+	}
+	logger.Debug("Database created successfully", zap.String("path", dbPath))
+
+	return packageRepository, nil
 }
 
 func initHttpProf(logger *zap.Logger) {
@@ -218,11 +265,19 @@ func initMetricsServer(logger *zap.Logger) {
 }
 
 func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer, config *Config) Indexer {
+	tx := apmTracer.StartTransaction("initIndexer", "backend.init")
+	defer tx.End()
+
+	ctx = apm.ContextWithTransaction(ctx, tx)
 	packagesBasePaths := getPackagesBasePaths(config)
 
 	var combined CombinedIndexer
 
 	if featureStorageIndexer {
+		storageDatabase, err := initDatabase(ctx, logger, config.DatabaseFolderPath, "storage_packages.db")
+		if err != nil {
+			logger.Fatal("can't initialize storage database", zap.Error(err))
+		}
 		storageClient, err := gstorage.NewClient(ctx)
 		if err != nil {
 			logger.Fatal("can't initialize storage client", zap.Error(err))
@@ -232,25 +287,29 @@ func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer,
 			PackageStorageBucketInternal: storageIndexerBucketInternal,
 			PackageStorageEndpoint:       storageEndpoint,
 			WatchInterval:                storageIndexerWatchInterval,
+			Database:                     storageDatabase,
 		}))
 	}
 
+	zipDatabase, err := initDatabase(ctx, logger, config.DatabaseFolderPath, "zip_packages.db")
+	if err != nil {
+		logger.Fatal("can't initialize zip database", zap.Error(err))
+	}
+
+	foldersDatabase, err := initDatabase(ctx, logger, config.DatabaseFolderPath, "folders_packages.db")
+	if err != nil {
+		logger.Fatal("can't initialize folders database", zap.Error(err))
+	}
+
 	combined = append(combined,
-		packages.NewZipFileSystemIndexer(logger, packagesBasePaths...),
-		packages.NewFileSystemIndexer(logger, packagesBasePaths...),
+		packages.NewZipFileSystemIndexer(logger, zipDatabase, packagesBasePaths...),
+		packages.NewFileSystemIndexer(logger, foldersDatabase, packagesBasePaths...),
 	)
 	ensurePackagesAvailable(ctx, logger, combined)
 	return combined
 }
 
-func initServer(logger *zap.Logger, apmTracer *apm.Tracer, config *Config) *http.Server {
-	tx := apmTracer.StartTransaction("initServer", "backend.init")
-	defer tx.End()
-
-	ctx := apm.ContextWithTransaction(context.TODO(), tx)
-
-	indexer := initIndexer(ctx, logger, apmTracer, config)
-
+func initServer(logger *zap.Logger, apmTracer *apm.Tracer, config *Config, indexer Indexer) *http.Server {
 	router := mustLoadRouter(logger, config, indexer)
 	apmgorilla.Instrument(router, apmgorilla.WithTracer(apmTracer))
 
