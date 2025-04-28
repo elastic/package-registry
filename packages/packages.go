@@ -227,7 +227,7 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 
 		i.logger.Info("Searching packages in " + basePath)
 		for _, path := range packagePaths {
-			p, err := NewPackage(path, i.fsBuilder)
+			p, err := NewPackage(i.logger, path, i.fsBuilder)
 			if err != nil {
 				return nil, fmt.Errorf("loading package failed (path: %s): %w", path, err)
 			}

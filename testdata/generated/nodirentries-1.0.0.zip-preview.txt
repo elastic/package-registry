@@ -1,4 +1,4 @@
-538 nodirentries-1.0.0/manifest.yml
+549 nodirentries-1.0.0/manifest.yml
 892 nodirentries-1.0.0/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-entry.json
 3584 nodirentries-1.0.0/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-plaintext.json
 887 nodirentries-1.0.0/data_stream/foo/elasticsearch/ingest_pipeline/pipeline-json.json
