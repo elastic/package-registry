@@ -238,8 +238,7 @@ func NewPackage(logger *zap.Logger, basePath string, fsBuilder FileSystemBuilder
 	if err != nil {
 		return nil, err
 	}
-
-	p.logger = logger.With(zap.String("package", p.Name), zap.String("version", p.Version))
+	p.logger = p.logger.With(zap.String("package", p.Name), zap.String("version", p.Version))
 
 	// Default for the multiple flags is true.
 	trueValue := true
@@ -602,6 +601,8 @@ func (p *Package) Validate() error {
 	for i, c := range p.Categories {
 		if _, ok := Categories[c]; !ok {
 			p.logger.Warn("package uses an unknown category, will be ignored",
+				zap.String("package", p.Name),
+				zap.String("version", p.Version),
 				zap.String("category", c))
 			continue
 		}
