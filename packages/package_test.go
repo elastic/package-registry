@@ -65,7 +65,7 @@ func TestValidate(t *testing.T) {
 				logger:        zap.Must(zap.NewDevelopment()),
 			},
 			true,
-			"unknown category ",
+			"unknown category",
 		},
 		{
 			Package{
