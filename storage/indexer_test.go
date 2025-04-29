@@ -90,6 +90,7 @@ func BenchmarkIndexerUpdateIndex(b *testing.B) {
 
 	err = indexer.Init(ctx)
 	require.NoError(b, err)
+
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		b.StopTimer()
@@ -123,6 +124,7 @@ func BenchmarkIndexerGet(b *testing.B) {
 
 	err = indexer.Init(ctx)
 	require.NoError(b, err)
+
 	b.ResetTimer()
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
