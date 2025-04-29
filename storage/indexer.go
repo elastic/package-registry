@@ -187,18 +187,14 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 		i.logger.Info("Downloaded new search-index-all index. No packages found.")
 		return nil
 	}
-	i.logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", len(anIndex.Packages))))
+	i.logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", len(*anIndex))))
 
-	refreshedList, err := i.transformSearchIndexAllToPackages(anIndex)
-	if err != nil {
-		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
-		return fmt.Errorf("can't transform the search-index-all: %w", err)
-	}
+	i.transformSearchIndexAllToPackages(anIndex)
 
 	i.m.Lock()
 	defer i.m.Unlock()
 	i.cursor = storageCursor.Current
-	i.packageList = refreshedList
+	i.packageList = *anIndex
 	metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
 	metrics.NumberIndexedPackages.Set(float64(len(i.packageList)))
 	return nil
@@ -217,16 +213,9 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	return i.packageList, nil
 }
 
-func (i *Indexer) transformSearchIndexAllToPackages(sia *searchIndexAll) (packages.Packages, error) {
-	var transformedPackages packages.Packages
-	for j := range sia.Packages {
-		m := sia.Packages[j].PackageManifest
-		if m == nil {
-			return nil, fmt.Errorf("invalid package found: nil element")
-		}
+func (i *Indexer) transformSearchIndexAllToPackages(packages *packages.Packages) {
+	for _, m := range *packages {
 		m.BasePath = fmt.Sprintf("%s-%s.zip", m.Name, m.Version)
 		m.SetRemoteResolver(i.resolver)
-		transformedPackages = append(transformedPackages, m)
 	}
-	return transformedPackages, nil
 }

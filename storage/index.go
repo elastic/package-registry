@@ -17,15 +17,11 @@ import (
 	"github.com/elastic/package-registry/packages"
 )
 
-type searchIndexAll struct {
-	Packages []packageIndex `json:"packages"`
-}
-
 type packageIndex struct {
 	PackageManifest *packages.Package `json:"package_manifest"`
 }
 
-func loadSearchIndexAll(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, bucketName, rootStoragePath string, aCursor cursor) (*searchIndexAll, error) {
+func loadSearchIndexAll(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, bucketName, rootStoragePath string, aCursor cursor) (*packages.Packages, error) {
 	span, ctx := apm.StartSpan(ctx, "LoadSearchIndexAll", "app")
 	defer span.End()
 
@@ -48,7 +44,7 @@ func loadSearchIndexAll(ctx context.Context, logger *zap.Logger, storageClient *
 	// in memory.
 	// `jsoniter` seemed to be slightly faster, but to use more memory for our use case,
 	// and we are looking to optimize for memory use.
-	var sia searchIndexAll
+	var packages packages.Packages
 	dec := json.NewDecoder(objectReader)
 	for dec.More() {
 		// Read everything till the "packages" key in the map.
@@ -76,7 +72,7 @@ func loadSearchIndexAll(ctx context.Context, logger *zap.Logger, storageClient *
 			if err != nil {
 				return nil, fmt.Errorf("unexpected error parsing package from index file (token: %v): %w", token, err)
 			}
-			sia.Packages = append(sia.Packages, p)
+			packages = append(packages[0:], p.PackageManifest)
 		}
 
 		// Read the closing array delimiter.
@@ -88,7 +84,7 @@ func loadSearchIndexAll(ctx context.Context, logger *zap.Logger, storageClient *
 			return nil, fmt.Errorf("expected closing array, found %v", token)
 		}
 	}
-	return &sia, nil
+	return &packages, nil
 }
 
 func buildIndexStoragePath(rootStoragePath string, aCursor cursor, indexFile string) string {

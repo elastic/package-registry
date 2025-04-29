@@ -40,6 +40,10 @@ func updateFakeServer(tb testing.TB, server *fakestorage.Server, revision, index
 	}
 }
 
+type searchIndexAll struct {
+	Packages []packageIndex `json:"packages"`
+}
+
 func prepareServerObjects(tb testing.TB, revision string, indexContent []byte) []fakestorage.Object {
 	var index searchIndexAll
 	err := json.Unmarshal(indexContent, &index)
