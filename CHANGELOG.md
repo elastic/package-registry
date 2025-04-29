@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Change license from Elastic v1 to Elastic v2.
+
 ### Deprecated
 
 ### Known Issues
