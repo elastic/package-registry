@@ -84,7 +84,6 @@ func BenchmarkIndexerGet(b *testing.B) {
 			indexer.Get(context.Background(), &packages.GetOptions{})
 		}
 	})
-
 }
 
 func TestGet_ListAllPackages(t *testing.T) {
