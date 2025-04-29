@@ -72,7 +72,7 @@ func loadSearchIndexAll(ctx context.Context, logger *zap.Logger, storageClient *
 			if err != nil {
 				return nil, fmt.Errorf("unexpected error parsing package from index file (token: %v): %w", token, err)
 			}
-			packages = append(packages[0:], p.PackageManifest)
+			packages = append(packages, p.PackageManifest)
 		}
 
 		// Read the closing array delimiter.
