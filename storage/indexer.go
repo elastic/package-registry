@@ -1,6 +1,6 @@
 // Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
-// or more contributor license agreements. Licensed under the Elastic License;
-// you may not use this file except in compliance with the Elastic License.
+// or more contributor license agreements. Licensed under the Elastic License 2.0;
+// you may not use this file except in compliance with the Elastic License 2.0.
 
 package storage
 
@@ -202,7 +202,14 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 		return fmt.Errorf("can't load the search-index-all index content: %w", err)
 	}
-	i.logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", len(anIndex.Packages))))
+
+	if anIndex == nil {
+		i.logger.Info("Downloaded new search-index-all index. No packages found.")
+		return nil
+	}
+	i.logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", len(*anIndex))))
+
+	i.transformSearchIndexAllToPackages(anIndex)
 
 	err = func() error {
 		i.m.Lock()
@@ -215,7 +222,7 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 		}
 
 		metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
-		metrics.NumberIndexedPackages.Set(float64(len(anIndex.Packages)))
+		metrics.NumberIndexedPackages.Set(float64(len(*anIndex)))
 		return nil
 	}()
 	if err != nil {
@@ -230,27 +237,27 @@ type visitedPackage struct {
 	visited bool
 }
 
-func (i *Indexer) updateDatabase(ctx context.Context, index *searchIndexAll, visited map[string]visitedPackage) error {
-	for _, p := range index.Packages {
-		contents, err := json.Marshal(p.PackageManifest)
+func (i *Indexer) updateDatabase(ctx context.Context, index *packages.Packages, visited map[string]visitedPackage) error {
+	for _, p := range *index {
+		contents, err := json.Marshal(p)
 		if err != nil {
-			return fmt.Errorf("failed to marshal package %s-%s: %w", p.PackageManifest.Name, p.PackageManifest.Version, err)
+			return fmt.Errorf("failed to marshal package %s-%s: %w", p.Name, p.Version, err)
 		}
-		dbPackage, err := i.database.GetByNameAndVersion(ctx, "packages", p.PackageManifest.Name, p.PackageManifest.Version)
+		dbPackage, err := i.database.GetByNameAndVersion(ctx, "packages", p.Name, p.Version)
 		if err != nil && !errors.Is(err, database.ErrNotExists) {
-			return fmt.Errorf("failed to search for package %s-%s", p.PackageManifest.Name, p.PackageManifest.Version)
+			return fmt.Errorf("failed to search for package %s-%s", p.Name, p.Version)
 		}
 		if err != nil {
 			// Package does not exist, it requires to be created
 			newPackage := database.Package{
-				Name:    p.PackageManifest.Name,
-				Version: p.PackageManifest.Version,
-				Path:    p.PackageManifest.BasePath,
+				Name:    p.Name,
+				Version: p.Version,
+				Path:    p.BasePath,
 				Data:    string(contents),
 			}
 			_, err = i.database.Create(ctx, "packages", &newPackage)
 			if err != nil {
-				return fmt.Errorf("failed to create package %s-%s: %w", p.PackageManifest.Name, p.PackageManifest.Version, err)
+				return fmt.Errorf("failed to create package %s-%s: %w", p.Name, p.Version, err)
 			}
 			continue
 		}
@@ -265,7 +272,7 @@ func (i *Indexer) updateDatabase(ctx context.Context, index *searchIndexAll, vis
 			dbPackage.Data = string(contents)
 			_, err = i.database.Update(ctx, "packages", dbPackage.ID, dbPackage)
 			if err != nil {
-				return fmt.Errorf("failed to update package %s-%s: %w", p.PackageManifest.Name, p.PackageManifest.Version, err)
+				return fmt.Errorf("failed to update package %s-%s: %w", p.Name, p.Version, err)
 			}
 			continue
 		}
@@ -331,4 +338,11 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 
 func (i *Indexer) Close(ctx context.Context) error {
 	return i.database.Close(ctx)
+}
+
+func (i *Indexer) transformSearchIndexAllToPackages(packages *packages.Packages) {
+	for _, m := range *packages {
+		m.BasePath = fmt.Sprintf("%s-%s.zip", m.Name, m.Version)
+		m.SetRemoteResolver(i.resolver)
+	}
 }

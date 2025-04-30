@@ -1,6 +1,6 @@
 // Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
-// or more contributor license agreements. Licensed under the Elastic License;
-// you may not use this file except in compliance with the Elastic License.
+// or more contributor license agreements. Licensed under the Elastic License 2.0;
+// you may not use this file except in compliance with the Elastic License 2.0.
 
 package packages
 
@@ -11,108 +11,112 @@ import (
 	"github.com/Masterminds/semver/v3"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"go.uber.org/zap"
 )
 
 var (
 	title = "foo"
 )
-var packageTests = []struct {
-	p           Package
-	valid       bool
-	description string
-}{
-	{
-		Package{},
-		false,
-		"empty",
-	},
-	{
-		Package{
-			BasePackage: BasePackage{
-				Title: &title,
-			},
-		},
-		false,
-		"missing description",
-	},
-	{
-		Package{
-			BasePackage: BasePackage{
-				Title: &title,
-				Conditions: &Conditions{
-					Kibana: &KibanaConditions{Version: "bar"},
-				},
-			},
-		},
-		false,
-		"invalid Kibana version",
-	},
-	{
-		Package{
-			BasePackage: BasePackage{
-				Title:       &title,
-				Description: "my description",
-				Conditions: &Conditions{
-					Kibana: &KibanaConditions{Version: ">=1.2.3 <=4.5.6"},
-				},
-				Categories: []string{"custom", "foo"},
-			},
-		},
-		false,
-		"invalid category ",
-	},
-	{
-		Package{
-			BasePackage: BasePackage{
-				Title:       &title,
-				Description: "my description",
-				Categories:  []string{"custom", "web"},
-			},
-		},
-		false,
-		"missing format_version",
-	},
-	{
-		Package{
-			BasePackage: BasePackage{
-				Title:       &title,
-				Description: "my description",
-				Categories:  []string{"custom", "web"},
-			},
-			FormatVersion: "1.0",
-		},
-		false,
-		"invalid format_version",
-	},
-	{
-		Package{
-			BasePackage: BasePackage{
-				Title:       &title,
-				Description: "my description",
-				Version:     "1.0",
-				Categories:  []string{"custom", "web"},
-			},
-			FormatVersion: "1.0.0",
-		},
-		false,
-		"invalid package version",
-	},
-	{
-		Package{
-			BasePackage: BasePackage{
-				Title:       &title,
-				Description: "my description",
-				Version:     "1.2.3",
-				Categories:  []string{"custom", "web"},
-			},
-			FormatVersion: "1.0.0",
-		},
-		true,
-		"complete",
-	},
-}
 
 func TestValidate(t *testing.T) {
+	var packageTests = []struct {
+		p           Package
+		valid       bool
+		description string
+	}{
+		{
+			Package{},
+			false,
+			"empty",
+		},
+		{
+			Package{
+				BasePackage: BasePackage{
+					Title: &title,
+				},
+			},
+			false,
+			"missing description",
+		},
+		{
+			Package{
+				BasePackage: BasePackage{
+					Title: &title,
+					Conditions: &Conditions{
+						Kibana: &KibanaConditions{Version: "bar"},
+					},
+				},
+			},
+			false,
+			"invalid Kibana version",
+		},
+		{
+			Package{
+				BasePackage: BasePackage{
+					Title:       &title,
+					Description: "my description",
+					Conditions: &Conditions{
+						Kibana: &KibanaConditions{Version: ">=1.2.3 <=4.5.6"},
+					},
+					Categories: []string{"custom", "foo"},
+					Version:    "1.2.3",
+				},
+				FormatVersion: "1.0.0",
+				logger:        zap.Must(zap.NewDevelopment()),
+			},
+			true,
+			"unknown category",
+		},
+		{
+			Package{
+				BasePackage: BasePackage{
+					Title:       &title,
+					Description: "my description",
+					Categories:  []string{"custom", "web"},
+				},
+			},
+			false,
+			"missing format_version",
+		},
+		{
+			Package{
+				BasePackage: BasePackage{
+					Title:       &title,
+					Description: "my description",
+					Categories:  []string{"custom", "web"},
+				},
+				FormatVersion: "1.0",
+			},
+			false,
+			"invalid format_version",
+		},
+		{
+			Package{
+				BasePackage: BasePackage{
+					Title:       &title,
+					Description: "my description",
+					Version:     "1.0",
+					Categories:  []string{"custom", "web"},
+				},
+				FormatVersion: "1.0.0",
+			},
+			false,
+			"invalid package version",
+		},
+		{
+			Package{
+				BasePackage: BasePackage{
+					Title:       &title,
+					Description: "my description",
+					Version:     "1.2.3",
+					Categories:  []string{"custom", "web"},
+				},
+				FormatVersion: "1.0.0",
+			},
+			true,
+			"complete",
+		},
+	}
 	for _, tt := range packageTests {
 		t.Run(tt.description, func(t *testing.T) {
 			err := tt.p.Validate()
@@ -240,9 +244,10 @@ func TestNewPackageFromPath(t *testing.T) {
 		return NewExtractedPackageFileSystem(p)
 	}
 
+	logger := zap.Must(zap.NewDevelopment())
 	for _, c := range cases {
 		t.Run(c.title, func(t *testing.T) {
-			_, err := NewPackage(c.path, fsBuilder)
+			_, err := NewPackage(logger, c.path, fsBuilder)
 			assert.NoError(t, err)
 		})
 	}
@@ -273,8 +278,9 @@ func BenchmarkNewPackage(b *testing.B) {
 	fsBuilder := func(p *Package) (PackageFileSystem, error) {
 		return NewExtractedPackageFileSystem(p)
 	}
-	for i := 0; i < b.N; i++ {
-		_, err := NewPackage("../testdata/package/reference/1.0.0", fsBuilder)
+	logger := zap.Must(zap.NewDevelopment())
+	for b.Loop() {
+		_, err := NewPackage(logger, "../testdata/package/reference/1.0.0", fsBuilder)
 		assert.NoError(b, err)
 	}
 }
@@ -283,8 +289,9 @@ func BenchmarkNewZipPackage(b *testing.B) {
 	fsBuilder := func(p *Package) (PackageFileSystem, error) {
 		return NewZipPackageFileSystem(p)
 	}
-	for i := 0; i < b.N; i++ {
-		_, err := NewPackage("../testdata/local-storage/example-1.0.1.zip", fsBuilder)
+	logger := zap.Must(zap.NewDevelopment())
+	for b.Loop() {
+		_, err := NewPackage(logger, "../testdata/local-storage/example-1.0.1.zip", fsBuilder)
 		assert.NoError(b, err)
 	}
 }

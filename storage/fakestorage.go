@@ -1,6 +1,6 @@
 // Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
-// or more contributor license agreements. Licensed under the Elastic License;
-// you may not use this file except in compliance with the Elastic License.
+// or more contributor license agreements. Licensed under the Elastic License 2.0;
+// you may not use this file except in compliance with the Elastic License 2.0.
 
 package storage
 
@@ -45,6 +45,10 @@ func updateFakeServer(tb testing.TB, server *fakestorage.Server, revision, index
 	for _, so := range serverObjects {
 		server.CreateObject(so)
 	}
+}
+
+type searchIndexAll struct {
+	Packages []packageIndex `json:"packages"`
 }
 
 func prepareServerObjects(tb testing.TB, revision string, indexContent []byte) []fakestorage.Object {

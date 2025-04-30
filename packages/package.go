@@ -1,6 +1,6 @@
 // Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
-// or more contributor license agreements. Licensed under the Elastic License;
-// you may not use this file except in compliance with the Elastic License.
+// or more contributor license agreements. Licensed under the Elastic License 2.0;
+// you may not use this file except in compliance with the Elastic License 2.0.
 
 package packages
 
@@ -13,6 +13,7 @@ import (
 	"strings"
 
 	"github.com/Masterminds/semver/v3"
+	"go.uber.org/zap"
 
 	"github.com/elastic/go-ucfg"
 	"github.com/elastic/go-ucfg/yaml"
@@ -55,6 +56,8 @@ type Package struct {
 
 	fsBuilder FileSystemBuilder
 	resolver  RemoteResolver
+
+	logger *zap.Logger
 }
 
 type FileSystemBuilder func(*Package) (PackageFileSystem, error)
@@ -210,10 +213,11 @@ func getDownloadPath(p Package, t string) string {
 
 // NewPackage creates a new package instances based on the given base path.
 // The path passed goes to the root of the package where the manifest.yml is.
-func NewPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) {
+func NewPackage(logger *zap.Logger, basePath string, fsBuilder FileSystemBuilder) (*Package, error) {
 	p := &Package{
 		BasePath:  basePath,
 		fsBuilder: fsBuilder,
+		logger:    logger,
 	}
 	fs, err := p.fs()
 	if err != nil {
@@ -234,6 +238,7 @@ func NewPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) 
 	if err != nil {
 		return nil, err
 	}
+	p.logger = p.logger.With(zap.String("package", p.Name), zap.String("version", p.Version))
 
 	// Default for the multiple flags is true.
 	trueValue := true
@@ -592,11 +597,19 @@ func (p *Package) Validate() error {
 		return fmt.Errorf("no description set")
 	}
 
-	for _, c := range p.Categories {
+	j := 0
+	for i, c := range p.Categories {
 		if _, ok := Categories[c]; !ok {
-			return fmt.Errorf("invalid category: %s", c)
+			p.logger.Warn("package uses an unknown category, will be ignored",
+				zap.String("package", p.Name),
+				zap.String("version", p.Version),
+				zap.String("category", c))
+			continue
 		}
+		p.Categories[j] = p.Categories[i]
+		j += 1
 	}
+	p.Categories = p.Categories[:j]
 
 	fs, err := p.fs()
 	if err != nil {

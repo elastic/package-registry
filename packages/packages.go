@@ -1,6 +1,6 @@
 // Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
-// or more contributor license agreements. Licensed under the Elastic License;
-// you may not use this file except in compliance with the Elastic License.
+// or more contributor license agreements. Licensed under the Elastic License 2.0;
+// you may not use this file except in compliance with the Elastic License 2.0.
 
 package packages
 
@@ -205,7 +205,7 @@ func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages
 	var packages Packages
 	defer metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": i.label}).Observe(time.Since(start).Seconds())
 	err := i.database.AllFunc(ctx, "packages", func(ctx context.Context, p *database.Package) error {
-		newPackage, err := NewPackage(p.Path, i.fsBuilder)
+		newPackage, err := NewPackage(i.logger, p.Path, i.fsBuilder)
 		if err != nil {
 			return fmt.Errorf("failed to parse package %s-%s: %w", p.Name, p.Version, err)
 		}
@@ -258,7 +258,7 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 
 		i.logger.Info("Searching packages in "+basePath, zap.Int("pathsNum", len(packagePaths)))
 		for _, path := range packagePaths {
-			p, err := NewPackage(path, i.fsBuilder)
+			p, err := NewPackage(i.logger, path, i.fsBuilder)
 			if err != nil {
 				return nil, fmt.Errorf("loading package failed (path: %s): %w", path, err)
 			}

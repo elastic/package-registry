@@ -1,6 +1,6 @@
 // Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
-// or more contributor license agreements. Licensed under the Elastic License;
-// you may not use this file except in compliance with the Elastic License.
+// or more contributor license agreements. Licensed under the Elastic License 2.0;
+// you may not use this file except in compliance with the Elastic License 2.0.
 
 //go:build mage
 
@@ -94,7 +94,7 @@ func GoImports() error {
 // appropriate license header based on the value of mage.BeatLicense.
 func AddLicenseHeaders() error {
 	fmt.Println(">> fmt - go-licenser: Adding missing headers")
-	return sh.RunV("go", "run", GoLicenserImportPath, "-license", "Elastic")
+	return sh.RunV("go", "run", GoLicenserImportPath, "-license", "Elasticv2")
 }
 
 // FindFilesRecursive recursively traverses from the CWD and invokes the given
