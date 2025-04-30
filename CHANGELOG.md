@@ -10,9 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
+* Update Go runtime to 1.24.2 [#1299](https://github.com/elastic/package-registry/pull/1299)
+
 ### Added
 
-* Change license from Elastic License to Elastic License 2.0 [#1298](https://github.com/elastic/package-registry/pull/1298).
+* Change license from Elastic License to Elastic License 2.0 [#1298](https://github.com/elastic/package-registry/pull/1298)
 
 ### Deprecated
 
