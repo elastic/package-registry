@@ -44,6 +44,8 @@ type Indexer struct {
 	database database.Repository
 
 	logger *zap.Logger
+
+	initializing bool
 }
 type IndexerOptions struct {
 	APMTracer                    *apm.Tracer
@@ -63,6 +65,7 @@ func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options Index
 		logger:        logger,
 		database:      options.Database,
 		label:         fmt.Sprintf("storage-%s", options.PackageStorageEndpoint),
+		initializing:  true,
 	}
 }
 
@@ -80,11 +83,14 @@ func (i *Indexer) Init(ctx context.Context) error {
 	}
 
 	// Populate index file for the first time.
+	start := time.Now()
 	err = i.updateIndex(ctx)
 	if err != nil {
 		return fmt.Errorf("can't update index file: %w", err)
 	}
+	i.logger.Info("Elapsed time to init database", zap.Duration("duration", time.Since(start)))
 
+	i.initializing = false
 	go i.watchIndices(apm.ContextWithTransaction(ctx, nil))
 	return nil
 }
@@ -216,9 +222,18 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 		defer i.m.Unlock()
 		i.cursor = storageCursor.Current
 
-		err := i.updateDatabase(ctx, anIndex, allPackagesVisited)
-		if err != nil {
-			return fmt.Errorf("failed to update database: %w", err)
+		if i.initializing {
+			i.logger.Info("Creating first data")
+			err := i.addInitialDataToDatabase(ctx, anIndex)
+			if err != nil {
+				return fmt.Errorf("failed to add initial data to database: %w", err)
+			}
+		} else {
+			i.logger.Info("Updating database")
+			err := i.updateDatabase(ctx, anIndex, allPackagesVisited)
+			if err != nil {
+				return fmt.Errorf("failed to update database: %w", err)
+			}
 		}
 
 		metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
@@ -237,6 +252,31 @@ type visitedPackage struct {
 	visited bool
 }
 
+func (i *Indexer) addInitialDataToDatabase(ctx context.Context, index *packages.Packages) error {
+	dbPackages := make([]*database.Package, len(*index))
+	for index, pkg := range *index {
+		contents, err := json.Marshal(pkg)
+		if err != nil {
+			return fmt.Errorf("failed to marshal package %s-%s: %w", pkg.Name, pkg.Version, err)
+		}
+
+		newPackage := database.Package{
+			Name:    pkg.Name,
+			Version: pkg.Version,
+			Path:    pkg.BasePath,
+			Data:    string(contents),
+		}
+
+		dbPackages[index] = &newPackage
+	}
+
+	err := i.database.BulkCreate(ctx, "packages", dbPackages)
+	if err != nil {
+		return fmt.Errorf("failed to create all packages (bulk operation): %w", err)
+	}
+
+	return nil
+}
 func (i *Indexer) updateDatabase(ctx context.Context, index *packages.Packages, visited map[string]visitedPackage) error {
 	for _, p := range *index {
 		contents, err := json.Marshal(p)

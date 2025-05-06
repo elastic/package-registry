@@ -9,6 +9,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"strings"
 
 	_ "modernc.org/sqlite"
 )
@@ -85,6 +86,48 @@ func (r *SQLiteRepository) Create(ctx context.Context, database string, pkg *Pac
 	pkg.ID = id
 
 	return pkg, nil
+}
+
+func (r *SQLiteRepository) BulkCreate(ctx context.Context, database string, pkgs []*Package) error {
+	totalProcessed := 0
+	maxBatch := 2000
+	for {
+		read := 0
+		args := []any{} // make([]any, len(pkgs)*4)
+		var sb strings.Builder
+		sb.WriteString("INSERT INTO ")
+		sb.WriteString(database)
+		sb.WriteString("(name, version, path, data) values ")
+		endBatch := totalProcessed + maxBatch
+		for i := totalProcessed; i < endBatch && i < len(pkgs); i++ {
+			sb.WriteString("(?, ?, ?, ?)")
+			if i < endBatch-1 && i < len(pkgs)-1 {
+				sb.WriteString(",")
+			}
+			args = append(args, pkgs[i].Name, pkgs[i].Version, pkgs[i].Path, pkgs[i].Data)
+			read += 1
+		}
+		query := sb.String()
+
+		_, err := r.db.ExecContext(ctx, query, args...)
+		if err != nil {
+			// From github.com/mattn/go-sqlite3
+			// var sqliteErr sqlite3.Error
+			// if errors.As(err, &sqliteErr) {
+			// 	if errors.Is(sqliteErr.ExtendedCode, sqlite.ErrConstraintUnique) {
+			// 		return nil, ErrDuplicate
+			// 	}
+			// }
+			return err
+		}
+
+		totalProcessed += read
+		if totalProcessed == len(pkgs) {
+			break
+		}
+	}
+
+	return nil
 }
 
 func (r *SQLiteRepository) All(ctx context.Context, database string) ([]Package, error) {
