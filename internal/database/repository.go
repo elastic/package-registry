@@ -8,8 +8,8 @@ import "context"
 
 type Repository interface {
 	Migrate(ctx context.Context) error
-	Create(ctx context.Context, database string, pkg *Package) (*Package, error)
-	BulkCreate(ctx context.Context, database string, pkgs []*Package) error
+	Add(ctx context.Context, database string, pkg *Package) (*Package, error)
+	BulkAdd(ctx context.Context, database string, pkgs []*Package) error
 	All(ctx context.Context, database string) ([]Package, error)
 	AllFunc(ctx context.Context, database string, process func(ctx context.Context, pkg *Package) error) error
 	GetByName(ctx context.Context, database, name string) (*Package, error)

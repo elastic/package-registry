@@ -298,7 +298,7 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 		}
 	}
 
-	err := i.database.BulkCreate(ctx, "packages", dbPackages)
+	err := i.database.BulkAdd(ctx, "packages", dbPackages)
 	if err != nil {
 		return nil, fmt.Errorf("failed to add packages: %w", err)
 	}

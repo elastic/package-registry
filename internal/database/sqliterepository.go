@@ -65,7 +65,7 @@ func (r *SQLiteRepository) Migrate(ctx context.Context) error {
 	return nil
 }
 
-func (r *SQLiteRepository) Create(ctx context.Context, database string, pkg *Package) (*Package, error) {
+func (r *SQLiteRepository) Add(ctx context.Context, database string, pkg *Package) (*Package, error) {
 	query := fmt.Sprintf("INSERT INTO %s(name, version, path, data) values(?,?,?,?)", database)
 	res, err := r.db.ExecContext(ctx, query, pkg.Name, pkg.Version, pkg.Path, pkg.Data)
 	if err != nil {
@@ -88,7 +88,7 @@ func (r *SQLiteRepository) Create(ctx context.Context, database string, pkg *Pac
 	return pkg, nil
 }
 
-func (r *SQLiteRepository) BulkCreate(ctx context.Context, database string, pkgs []*Package) error {
+func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []*Package) error {
 	totalProcessed := 0
 	maxBatch := 2000
 	for {

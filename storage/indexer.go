@@ -270,7 +270,7 @@ func (i *Indexer) addInitialDataToDatabase(ctx context.Context, index *packages.
 		dbPackages[index] = &newPackage
 	}
 
-	err := i.database.BulkCreate(ctx, "packages", dbPackages)
+	err := i.database.BulkAdd(ctx, "packages", dbPackages)
 	if err != nil {
 		return fmt.Errorf("failed to create all packages (bulk operation): %w", err)
 	}
@@ -295,7 +295,7 @@ func (i *Indexer) updateDatabase(ctx context.Context, index *packages.Packages, 
 				Path:    p.BasePath,
 				Data:    string(contents),
 			}
-			_, err = i.database.Create(ctx, "packages", &newPackage)
+			_, err = i.database.Add(ctx, "packages", &newPackage)
 			if err != nil {
 				return fmt.Errorf("failed to create package %s-%s: %w", p.Name, p.Version, err)
 			}
