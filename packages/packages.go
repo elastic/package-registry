@@ -250,6 +250,8 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 	packagesFound := make(map[packageKey]struct{})
 
 	var pList Packages
+	var dbPackages []*database.Package
+
 	for _, basePath := range i.paths {
 		packagePaths, err := i.getPackagePaths(basePath)
 		if err != nil {
@@ -291,11 +293,14 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 				Path:    path,
 				Data:    string(contents),
 			}
-			_, err = i.database.Create(ctx, "packages", &dbPackage)
-			if err != nil {
-				return nil, fmt.Errorf("failed to create package (path: %s): %w", path, err)
-			}
+
+			dbPackages = append(dbPackages, &dbPackage)
 		}
+	}
+
+	err := i.database.BulkCreate(ctx, "packages", dbPackages)
+	if err != nil {
+		return nil, fmt.Errorf("failed to add packages: %w", err)
 	}
 	return pList, nil
 }
