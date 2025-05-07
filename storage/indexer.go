@@ -158,7 +158,9 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 
 	i.logger.Debug("Update indices")
 	start := time.Now()
-	defer metrics.StorageIndexerUpdateIndexDurationSeconds.Observe(time.Since(start).Seconds())
+	defer func() {
+		metrics.StorageIndexerUpdateIndexDurationSeconds.Observe(time.Since(start).Seconds())
+	}()
 
 	bucketName, rootStoragePath, err := extractBucketNameFromURL(i.options.PackageStorageBucketInternal)
 	if err != nil {
@@ -202,7 +204,9 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 
 func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.Packages, error) {
 	start := time.Now()
-	defer metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": indexerGetDurationPrometheusLabel}).Observe(time.Since(start).Seconds())
+	defer func() {
+		metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": indexerGetDurationPrometheusLabel}).Observe(time.Since(start).Seconds())
+	}()
 
 	i.m.RLock()
 	defer i.m.RUnlock()

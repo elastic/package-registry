@@ -195,7 +195,9 @@ func (i *FileSystemIndexer) Init(ctx context.Context) (err error) {
 // Caching the packages request many file reads every time this method is called.
 func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages, error) {
 	start := time.Now()
-	defer metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": i.label}).Observe(time.Since(start).Seconds())
+	defer func() {
+		metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": i.label}).Observe(time.Since(start).Seconds())
+	}()
 	if opts == nil {
 		return i.packageList, nil
 	}
