@@ -19,4 +19,6 @@ type Repository interface {
 	Drop(ctx context.Context, table string) error
 	Rename(ctx context.Context, from, to string) error
 	Close(ctx context.Context) error
+
+	File(ctx context.Context) string
 }

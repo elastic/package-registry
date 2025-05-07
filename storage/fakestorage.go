@@ -17,11 +17,12 @@ import (
 
 const fakePackageStorageBucketInternal = "fake-package-storage-internal"
 
-func CreateFakeIndexerOptions(db database.Repository) (IndexerOptions, error) {
+func CreateFakeIndexerOptions(db, swapDb database.Repository) (IndexerOptions, error) {
 	fakeIndexerOptions := IndexerOptions{
 		PackageStorageBucketInternal: "gs://" + fakePackageStorageBucketInternal,
 		WatchInterval:                0,
 		Database:                     db,
+		SwapDatabase:                 swapDb,
 	}
 	return fakeIndexerOptions, nil
 

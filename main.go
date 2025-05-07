@@ -213,6 +213,7 @@ func initDatabase(ctx context.Context, logger *zap.Logger, databaseFolderPath, d
 	if err != nil {
 		return nil, fmt.Errorf("failed to open database (path %q): %w", dbPath, err)
 	}
+	fmt.Println("> init >> Created ", packageRepository.File(ctx))
 
 	if err := packageRepository.Migrate(ctx); err != nil {
 		return nil, fmt.Errorf("failed to prepare the database (path %q): %w", dbPath, err)
@@ -278,6 +279,10 @@ func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer,
 		if err != nil {
 			logger.Fatal("can't initialize storage database", zap.Error(err))
 		}
+		storageSwapDatabase, err := initDatabase(ctx, logger, config.DatabaseFolderPath, "storage_packages_swap.db")
+		if err != nil {
+			logger.Fatal("can't initialize storage backup database", zap.Error(err))
+		}
 		storageClient, err := gstorage.NewClient(ctx)
 		if err != nil {
 			logger.Fatal("can't initialize storage client", zap.Error(err))
@@ -288,6 +293,7 @@ func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer,
 			PackageStorageEndpoint:       storageEndpoint,
 			WatchInterval:                storageIndexerWatchInterval,
 			Database:                     storageDatabase,
+			SwapDatabase:                 storageSwapDatabase,
 		}))
 	}
 

@@ -91,9 +91,9 @@ func TestSearchWithProxyMode(t *testing.T) {
 	}))
 	defer webServer.Close()
 
-	zipDb, err := database.NewMemorySQLDB()
+	zipDb, err := database.NewMemorySQLDB("zip")
 	require.NoError(t, err)
-	foldersDb, err := database.NewMemorySQLDB()
+	foldersDb, err := database.NewMemorySQLDB("folders")
 	require.NoError(t, err)
 
 	packagesBasePaths := []string{"./testdata/second_package_path", "./testdata/package"}

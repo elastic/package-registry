@@ -12,7 +12,7 @@ import (
 	_ "modernc.org/sqlite"
 )
 
-func NewMemorySQLDB() (*SQLiteRepository, error) {
+func NewMemorySQLDB(path string) (*SQLiteRepository, error) {
 	db, err := sql.Open("sqlite", ":memory:")
 	if err != nil {
 		return nil, fmt.Errorf("failed to open database: %w", err)
@@ -21,5 +21,6 @@ func NewMemorySQLDB() (*SQLiteRepository, error) {
 	if err := dbRepo.Migrate(context.Background()); err != nil {
 		return nil, fmt.Errorf("failed to create database: %w", err)
 	}
+	dbRepo.path = "memory-" + path
 	return dbRepo, nil
 }

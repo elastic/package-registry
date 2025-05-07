@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"path/filepath"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/require"
 	"go.uber.org/zap/zapcore"
@@ -20,10 +21,13 @@ import (
 
 func TestInit(t *testing.T) {
 	// given
-	db, err := database.NewMemorySQLDB()
+	db, err := database.NewMemorySQLDB("main")
 	require.NoError(t, err)
 
-	options, err := CreateFakeIndexerOptions(db)
+	swapDb, err := database.NewMemorySQLDB("swap")
+	require.NoError(t, err)
+
+	options, err := CreateFakeIndexerOptions(db, swapDb)
 	require.NoError(t, err)
 
 	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
@@ -48,7 +52,11 @@ func BenchmarkInit(b *testing.B) {
 	db, err := database.NewFileSQLDB(dbPath)
 	require.NoError(b, err)
 
-	options, err := CreateFakeIndexerOptions(db)
+	swapDbPath := filepath.Join(folder, "swap_test.db")
+	swapDb, err := database.NewFileSQLDB(swapDbPath)
+	require.NoError(b, err)
+
+	options, err := CreateFakeIndexerOptions(db, swapDb)
 	require.NoError(b, err)
 
 	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
@@ -75,20 +83,26 @@ func BenchmarkIndexerUpdateIndex(b *testing.B) {
 	db, err := database.NewFileSQLDB(dbPath)
 	require.NoError(b, err)
 
-	options, err := CreateFakeIndexerOptions(db)
+	swapDbPath := filepath.Join(folder, "swap_test.db")
+	swapDb, err := database.NewFileSQLDB(swapDbPath)
+	require.NoError(b, err)
+
+	options, err := CreateFakeIndexerOptions(db, swapDb)
 	require.NoError(b, err)
 
 	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 
-	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
+	logger := util.NewTestLoggerLevel(zapcore.InfoLevel)
 	ctx := context.Background()
 
 	indexer := NewIndexer(logger, storageClient, options)
 	defer indexer.Close(ctx)
 
+	start := time.Now()
 	err = indexer.Init(ctx)
+	b.Logf("Elapsed time init database: %s", time.Since(start))
 	require.NoError(b, err)
 
 	b.ResetTimer()
@@ -97,7 +111,9 @@ func BenchmarkIndexerUpdateIndex(b *testing.B) {
 		revision := fmt.Sprintf("%d", i+2)
 		updateFakeServer(b, fs, revision, "testdata/search-index-all-full.json")
 		b.StartTimer()
+		start = time.Now()
 		err = indexer.updateIndex(ctx)
+		b.Logf("Elapsed time updating database: %s", time.Since(start))
 		require.NoError(b, err, "index should be updated successfully")
 	}
 }
@@ -109,7 +125,11 @@ func BenchmarkIndexerGet(b *testing.B) {
 	db, err := database.NewFileSQLDB(dbPath)
 	require.NoError(b, err)
 
-	options, err := CreateFakeIndexerOptions(db)
+	swapDbPath := filepath.Join(folder, "swap_test.db")
+	swapDb, err := database.NewFileSQLDB(swapDbPath)
+	require.NoError(b, err)
+
+	options, err := CreateFakeIndexerOptions(db, swapDb)
 	require.NoError(b, err)
 
 	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
@@ -135,10 +155,13 @@ func BenchmarkIndexerGet(b *testing.B) {
 
 func TestGet_ListAllPackages(t *testing.T) {
 	// given
-	db, err := database.NewMemorySQLDB()
+	db, err := database.NewMemorySQLDB("main")
 	require.NoError(t, err)
 
-	options, err := CreateFakeIndexerOptions(db)
+	swapDb, err := database.NewMemorySQLDB("swap")
+	require.NoError(t, err)
+
+	options, err := CreateFakeIndexerOptions(db, swapDb)
 	require.NoError(t, err)
 
 	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
@@ -162,10 +185,13 @@ func TestGet_ListAllPackages(t *testing.T) {
 
 func TestGet_FindLatestPackage(t *testing.T) {
 	// given
-	db, err := database.NewMemorySQLDB()
+	db, err := database.NewMemorySQLDB("main")
 	require.NoError(t, err)
 
-	options, err := CreateFakeIndexerOptions(db)
+	swapDb, err := database.NewMemorySQLDB("swap")
+	require.NoError(t, err)
+
+	options, err := CreateFakeIndexerOptions(db, swapDb)
 	require.NoError(t, err)
 
 	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
@@ -196,10 +222,13 @@ func TestGet_FindLatestPackage(t *testing.T) {
 
 func TestGet_UnknownPackage(t *testing.T) {
 	// given
-	db, err := database.NewMemorySQLDB()
+	db, err := database.NewMemorySQLDB("main")
 	require.NoError(t, err)
 
-	options, err := CreateFakeIndexerOptions(db)
+	swapDb, err := database.NewMemorySQLDB("swap")
+	require.NoError(t, err)
+
+	options, err := CreateFakeIndexerOptions(db, swapDb)
 	require.NoError(t, err)
 
 	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
@@ -228,10 +257,13 @@ func TestGet_UnknownPackage(t *testing.T) {
 
 func TestGet_IndexUpdated(t *testing.T) {
 	// given
-	db, err := database.NewMemorySQLDB()
+	db, err := database.NewMemorySQLDB("main")
 	require.NoError(t, err)
 
-	options, err := CreateFakeIndexerOptions(db)
+	swapDb, err := database.NewMemorySQLDB("swap")
+	require.NoError(t, err)
+
+	options, err := CreateFakeIndexerOptions(db, swapDb)
 	require.NoError(t, err)
 
 	fs := PrepareFakeServer(t, "testdata/search-index-all-small.json")

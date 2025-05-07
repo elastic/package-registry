@@ -24,7 +24,7 @@ var generateFlag = flag.Bool("generate", false, "Write golden files")
 
 func TestMarshalJSON(t *testing.T) {
 	// given
-	db, err := database.NewMemorySQLDB()
+	db, err := database.NewMemorySQLDB("main")
 	require.NoError(t, err)
 
 	packagesBasePaths := []string{"../testdata/second_package_path", "../testdata/package"}
@@ -46,7 +46,7 @@ func TestMarshalJSON(t *testing.T) {
 
 func TestUnmarshalJSON(t *testing.T) {
 	// given
-	db, err := database.NewMemorySQLDB()
+	db, err := database.NewMemorySQLDB("main")
 	require.NoError(t, err)
 
 	packagesBasePaths := []string{"../testdata/second_package_path", "../testdata/package"}

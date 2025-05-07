@@ -56,9 +56,9 @@ func TestRouter(t *testing.T) {
 }
 
 func TestEndpoints(t *testing.T) {
-	zipDb, err := database.NewMemorySQLDB()
+	zipDb, err := database.NewMemorySQLDB("zip")
 	require.NoError(t, err)
-	foldersDb, err := database.NewMemorySQLDB()
+	foldersDb, err := database.NewMemorySQLDB("folders")
 	require.NoError(t, err)
 
 	packagesBasePaths := []string{"./testdata/second_package_path", "./testdata/package"}
@@ -142,7 +142,7 @@ func TestEndpoints(t *testing.T) {
 }
 
 func TestArtifacts(t *testing.T) {
-	db, err := database.NewMemorySQLDB()
+	db, err := database.NewMemorySQLDB("main")
 	require.NoError(t, err)
 
 	packagesBasePaths := []string{"./testdata/package"}
@@ -174,7 +174,7 @@ func TestArtifacts(t *testing.T) {
 }
 
 func TestSignatures(t *testing.T) {
-	db, err := database.NewMemorySQLDB()
+	db, err := database.NewMemorySQLDB("main")
 	require.NoError(t, err)
 	indexer := packages.NewZipFileSystemIndexer(testLogger, db, "./testdata/local-storage")
 
@@ -201,7 +201,7 @@ func TestSignatures(t *testing.T) {
 }
 
 func TestStatics(t *testing.T) {
-	db, err := database.NewMemorySQLDB()
+	db, err := database.NewMemorySQLDB("main")
 	require.NoError(t, err)
 
 	packagesBasePaths := []string{"./testdata/package"}
@@ -293,9 +293,9 @@ func TestStaticsModifiedTime(t *testing.T) {
 		},
 	}
 
-	zipDb, err := database.NewMemorySQLDB()
+	zipDb, err := database.NewMemorySQLDB("zip")
 	require.NoError(t, err)
-	folderDb, err := database.NewMemorySQLDB()
+	folderDb, err := database.NewMemorySQLDB("folders")
 	require.NoError(t, err)
 
 	indexer := NewCombinedIndexer(
@@ -331,7 +331,7 @@ func TestStaticsModifiedTime(t *testing.T) {
 }
 
 func TestZippedArtifacts(t *testing.T) {
-	db, err := database.NewMemorySQLDB()
+	db, err := database.NewMemorySQLDB("main")
 	require.NoError(t, err)
 	indexer := packages.NewZipFileSystemIndexer(testLogger, db, "./testdata/local-storage")
 	defer indexer.Close(context.Background())
@@ -364,9 +364,9 @@ func TestZippedArtifacts(t *testing.T) {
 }
 
 func TestPackageIndex(t *testing.T) {
-	zipDb, err := database.NewMemorySQLDB()
+	zipDb, err := database.NewMemorySQLDB("zip")
 	require.NoError(t, err)
-	folderDb, err := database.NewMemorySQLDB()
+	folderDb, err := database.NewMemorySQLDB("folders")
 	require.NoError(t, err)
 
 	indexer := NewCombinedIndexer(
@@ -403,7 +403,7 @@ func TestPackageIndex(t *testing.T) {
 }
 
 func TestZippedPackageIndex(t *testing.T) {
-	db, err := database.NewMemorySQLDB()
+	db, err := database.NewMemorySQLDB("main")
 	require.NoError(t, err)
 
 	packagesBasePaths := []string{"./testdata/local-storage"}
@@ -435,7 +435,7 @@ func TestZippedPackageIndex(t *testing.T) {
 
 // TestAllPackageIndex generates and compares all index.json files for the test packages
 func TestAllPackageIndex(t *testing.T) {
-	db, err := database.NewMemorySQLDB()
+	db, err := database.NewMemorySQLDB("main")
 	require.NoError(t, err)
 	testPackagePath := filepath.Join("testdata", "package")
 	secondPackagePath := filepath.Join("testdata", "second_package_path")
@@ -492,9 +492,9 @@ func TestContentTypes(t *testing.T) {
 		{"/package/example/1.0.1/docs/README.md", "text/markdown; charset=utf-8"},
 		{"/package/example/1.0.1/img/kibana-envoyproxy.jpg", "image/jpeg"},
 	}
-	zipDb, err := database.NewMemorySQLDB()
+	zipDb, err := database.NewMemorySQLDB("zip")
 	require.NoError(t, err)
-	folderDb, err := database.NewMemorySQLDB()
+	folderDb, err := database.NewMemorySQLDB("folders")
 	require.NoError(t, err)
 
 	indexer := NewCombinedIndexer(
@@ -527,9 +527,9 @@ func TestContentTypes(t *testing.T) {
 // TestRangeDownloads tests that range downloads continue working for packages stored
 // on different file systems.
 func TestRangeDownloads(t *testing.T) {
-	zipDb, err := database.NewMemorySQLDB()
+	zipDb, err := database.NewMemorySQLDB("main")
 	require.NoError(t, err)
-	folderDb, err := database.NewMemorySQLDB()
+	folderDb, err := database.NewMemorySQLDB("folders")
 
 	require.NoError(t, err)
 	indexer := NewCombinedIndexer(

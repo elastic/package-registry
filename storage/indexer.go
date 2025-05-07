@@ -41,7 +41,11 @@ type Indexer struct {
 
 	resolver packages.RemoteResolver
 
-	database database.Repository
+	database     database.Repository
+	swapDatabase database.Repository
+
+	current *database.Repository
+	backup  *database.Repository
 
 	logger *zap.Logger
 
@@ -53,20 +57,30 @@ type IndexerOptions struct {
 	PackageStorageEndpoint       string
 	WatchInterval                time.Duration
 	Database                     database.Repository
+	SwapDatabase                 database.Repository
 }
 
 func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options IndexerOptions) *Indexer {
 	if options.APMTracer == nil {
 		options.APMTracer = apm.DefaultTracer()
 	}
-	return &Indexer{
+
+	indexer := &Indexer{
 		storageClient: storageClient,
 		options:       options,
 		logger:        logger,
 		database:      options.Database,
+		swapDatabase:  options.SwapDatabase,
 		label:         fmt.Sprintf("storage-%s", options.PackageStorageEndpoint),
 		initializing:  true,
 	}
+
+	fmt.Println("Created database: ", indexer.database.File(context.TODO()))
+	fmt.Println("Created swap database: ", indexer.swapDatabase.File(context.TODO()))
+	indexer.current = &indexer.database
+	indexer.backup = &indexer.swapDatabase
+
+	return indexer
 }
 
 func (i *Indexer) Init(ctx context.Context) error {
@@ -191,18 +205,6 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	}
 	i.logger.Info("cursor will be updated", zap.String("cursor.current", i.cursor), zap.String("cursor.next", storageCursor.Current))
 
-	allPackagesVisited := map[string]visitedPackage{}
-	err = i.database.AllFunc(ctx, "packages", func(ctx context.Context, pkg *database.Package) error {
-		key := fmt.Sprintf("%s-%s", pkg.Name, pkg.Version)
-		allPackagesVisited[key] = visitedPackage{
-			visited: false,
-			id:      pkg.ID,
-		}
-		return nil
-	})
-	if err != nil {
-		return fmt.Errorf("failed to obtain all packages: %w", err)
-	}
 	anIndex, err := loadSearchIndexAll(ctx, i.logger, i.storageClient, bucketName, rootStoragePath, *storageCursor)
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
@@ -217,6 +219,15 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 
 	i.transformSearchIndexAllToPackages(anIndex)
 
+	if !i.initializing {
+		i.logger.Info("Updating database")
+		err := i.updateDatabase(ctx, anIndex)
+		if err != nil {
+			return fmt.Errorf("failed to update database: %w", err)
+		}
+	}
+
+	startLock := time.Now()
 	err = func() error {
 		i.m.Lock()
 		defer i.m.Unlock()
@@ -229,21 +240,21 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 				return fmt.Errorf("failed to add initial data to database: %w", err)
 			}
 		} else {
-			i.logger.Info("Updating database")
-			err := i.updateDatabase(ctx, anIndex, allPackagesVisited)
-			if err != nil {
-				return fmt.Errorf("failed to update database: %w", err)
-			}
+			// swap databases
+			i.current, i.backup = i.backup, i.current
 		}
 
 		metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
 		metrics.NumberIndexedPackages.Set(float64(len(*anIndex)))
 		return nil
 	}()
+
+	i.logger.Debug("Elapsed time in lock for updating index database", zap.Duration("lock.duration", time.Since(startLock)))
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 		return err
 	}
+	fmt.Println("Current database path: ", (*i.current).File(ctx))
 	return nil
 }
 
@@ -270,64 +281,45 @@ func (i *Indexer) addInitialDataToDatabase(ctx context.Context, index *packages.
 		dbPackages[index] = &newPackage
 	}
 
-	err := i.database.BulkAdd(ctx, "packages", dbPackages)
+	err := (*i.current).BulkAdd(ctx, "packages", dbPackages)
 	if err != nil {
 		return fmt.Errorf("failed to create all packages (bulk operation): %w", err)
 	}
 
 	return nil
 }
-func (i *Indexer) updateDatabase(ctx context.Context, index *packages.Packages, visited map[string]visitedPackage) error {
-	for _, p := range *index {
-		contents, err := json.Marshal(p)
+func (i *Indexer) updateDatabase(ctx context.Context, index *packages.Packages) error {
+	dbPackages := make([]*database.Package, len(*index))
+	for index, pkg := range *index {
+		contents, err := json.Marshal(pkg)
 		if err != nil {
-			return fmt.Errorf("failed to marshal package %s-%s: %w", p.Name, p.Version, err)
-		}
-		dbPackage, err := i.database.GetByNameAndVersion(ctx, "packages", p.Name, p.Version)
-		if err != nil && !errors.Is(err, database.ErrNotExists) {
-			return fmt.Errorf("failed to search for package %s-%s", p.Name, p.Version)
-		}
-		if err != nil {
-			// Package does not exist, it requires to be created
-			newPackage := database.Package{
-				Name:    p.Name,
-				Version: p.Version,
-				Path:    p.BasePath,
-				Data:    string(contents),
-			}
-			_, err = i.database.Add(ctx, "packages", &newPackage)
-			if err != nil {
-				return fmt.Errorf("failed to create package %s-%s: %w", p.Name, p.Version, err)
-			}
-			continue
-		}
-		key := fmt.Sprintf("%s-%s", dbPackage.Name, dbPackage.Version)
-		visited[key] = visitedPackage{
-			id:      visited[key].id,
-			visited: true,
+			return fmt.Errorf("failed to marshal package %s-%s: %w", pkg.Name, pkg.Version, err)
 		}
 
-		if dbPackage.Data != string(contents) {
-			// Package differs in its contents, it requires to be updated
-			dbPackage.Data = string(contents)
-			_, err = i.database.Update(ctx, "packages", dbPackage.ID, dbPackage)
-			if err != nil {
-				return fmt.Errorf("failed to update package %s-%s: %w", p.Name, p.Version, err)
-			}
-			continue
+		newPackage := database.Package{
+			Name:    pkg.Name,
+			Version: pkg.Version,
+			Path:    pkg.BasePath,
+			Data:    string(contents),
 		}
-	}
-	for k, v := range visited {
-		if v.visited {
-			continue
-		}
-		// Package not present anymore in the remote index, it requires to be deleted
-		err := i.database.Delete(ctx, "packages", v.id)
-		if err != nil {
-			return fmt.Errorf("failed to delete package %s: %w", k, err)
-		}
+
+		dbPackages[index] = &newPackage
 	}
 
+	err := (*i.backup).Drop(ctx, "packages")
+	if err != nil {
+		return fmt.Errorf("failed to drop packages table: %w", err)
+	}
+
+	err = (*i.backup).Migrate(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to create schema in backup database: %w", err)
+	}
+
+	err = (*i.backup).BulkAdd(ctx, "packages", dbPackages)
+	if err != nil {
+		return fmt.Errorf("failed to create all packages (bulk operation): %w", err)
+	}
 	return nil
 }
 
@@ -339,7 +331,7 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	err := func() error {
 		i.m.RLock()
 		defer i.m.RUnlock()
-		err := i.database.AllFunc(ctx, "packages", func(ctx context.Context, p *database.Package) error {
+		err := (*i.current).AllFunc(ctx, "packages", func(ctx context.Context, p *database.Package) error {
 			var pkg packages.Package
 			err := json.Unmarshal([]byte(p.Data), &pkg)
 			if err != nil {
@@ -377,7 +369,12 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 }
 
 func (i *Indexer) Close(ctx context.Context) error {
-	return i.database.Close(ctx)
+	// Try to close all databases
+	err := i.database.Close(ctx)
+	errSwap := i.swapDatabase.Close(ctx)
+
+	errors.Join(err, errSwap)
+	return errors.Join(err, errSwap)
 }
 
 func (i *Indexer) transformSearchIndexAllToPackages(packages *packages.Packages) {

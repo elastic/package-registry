@@ -22,7 +22,8 @@ var (
 )
 
 type SQLiteRepository struct {
-	db *sql.DB
+	db   *sql.DB
+	path string
 }
 
 var _ Repository = new(SQLiteRepository)
@@ -36,6 +37,7 @@ func NewFileSQLDB(path string) (*SQLiteRepository, error) {
 	if err := dbRepo.Migrate(context.Background()); err != nil {
 		return nil, fmt.Errorf("failed to create database: %w", err)
 	}
+	dbRepo.path = path
 	return dbRepo, nil
 }
 
@@ -45,7 +47,13 @@ func newSQLiteRepository(db *sql.DB) *SQLiteRepository {
 	}
 }
 
+func (r *SQLiteRepository) File(ctx context.Context) string {
+	return r.path
+}
+
 func (r *SQLiteRepository) Migrate(ctx context.Context) error {
+	fmt.Println("Running query in Migrate ", r.path)
+
 	// TODO : Set name and version as primary keys ?
 	query := `
     CREATE TABLE IF NOT EXISTS %s (
@@ -89,6 +97,7 @@ func (r *SQLiteRepository) Add(ctx context.Context, database string, pkg *Packag
 }
 
 func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []*Package) error {
+	fmt.Println("Running query in BulkAdd ", r.path)
 	totalProcessed := 0
 	maxBatch := 2000
 	for {
@@ -150,6 +159,7 @@ func (r *SQLiteRepository) All(ctx context.Context, database string) ([]Package,
 }
 
 func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, process func(ctx context.Context, pkg *Package) error) error {
+	fmt.Println("Running query in AllFunc ", r.path)
 	query := fmt.Sprintf("SELECT * FROM %s", database)
 	rows, err := r.db.QueryContext(ctx, query)
 	if err != nil {
@@ -240,6 +250,7 @@ func (r *SQLiteRepository) Delete(ctx context.Context, database string, id int64
 }
 
 func (r *SQLiteRepository) Drop(ctx context.Context, table string) error {
+	fmt.Println("Running query in Drop", r.path)
 	query := fmt.Sprintf("DROP TABLE IF EXISTS %s", table)
 	_, err := r.db.ExecContext(ctx, query)
 	if err != nil {
