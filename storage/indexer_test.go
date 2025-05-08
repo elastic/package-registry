@@ -175,12 +175,74 @@ func TestGet_ListAllPackages(t *testing.T) {
 	err = indexer.Init(ctx)
 	require.NoError(t, err, "storage indexer must be initialized properly")
 
-	// when
-	foundPackages, err := indexer.Get(ctx, &packages.GetOptions{})
+	cases := []struct {
+		name     string
+		options  *packages.GetOptions
+		expected int
+	}{
+		{
+			name:     "all packages filter nil",
+			options:  &packages.GetOptions{},
+			expected: 1133,
+		},
+		{
+			name: "all packages including prerelease",
+			options: &packages.GetOptions{
+				Filter: &packages.Filter{
+					AllVersions: true,
+					Prerelease:  true,
+				},
+			},
+			expected: 1133,
+		},
+		{
+			name: "not all packages including prerelease",
+			options: &packages.GetOptions{
+				Filter: &packages.Filter{
+					AllVersions: false,
+					Prerelease:  false,
+				},
+			},
+			expected: 99,
+		},
+		{
+			name: "all packages with all versions and no prerelease",
+			options: &packages.GetOptions{
+				Filter: &packages.Filter{
+					AllVersions: true,
+				},
+			},
+			expected: 494,
+		},
+		{
+			name: "all packages with all versions with no prerelease",
+			options: &packages.GetOptions{
+				Filter: &packages.Filter{
+					Prerelease: false,
+				},
+			},
+			expected: 99,
+		},
+		{
+			name: "all packages prerelease",
+			options: &packages.GetOptions{
+				Filter: &packages.Filter{
+					Prerelease: true,
+				},
+			},
+			expected: 147,
+		},
+	}
 
-	// then
-	require.NoError(t, err, "packages should be returned")
-	require.Len(t, foundPackages, 1133)
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			// when
+			foundPackages, err := indexer.Get(ctx, c.options)
+			// then
+			require.NoError(t, err, "packages should be returned")
+			require.Len(t, foundPackages, c.expected)
+		})
+	}
 }
 
 func TestGet_FindLatestPackage(t *testing.T) {
