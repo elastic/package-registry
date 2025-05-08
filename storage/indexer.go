@@ -258,11 +258,6 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	return nil
 }
 
-type visitedPackage struct {
-	id      int64
-	visited bool
-}
-
 func (i *Indexer) addInitialDataToDatabase(ctx context.Context, index *packages.Packages) error {
 	dbPackages := make([]*database.Package, len(*index))
 	for index, pkg := range *index {
