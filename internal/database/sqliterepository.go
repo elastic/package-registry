@@ -58,6 +58,7 @@ func (r *SQLiteRepository) Migrate(ctx context.Context) error {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
 		version TEXT NOT NULL,
+		type TEXT NOT NULL,
 		path TEXT NOT NULL,
         data TEXT NOT NULL
     );
@@ -80,14 +81,14 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 		var sb strings.Builder
 		sb.WriteString("INSERT INTO ")
 		sb.WriteString(database)
-		sb.WriteString("(name, version, path, data) values ")
+		sb.WriteString("(name, version, type, path, data) values ")
 		endBatch := totalProcessed + maxBatch
 		for i := totalProcessed; i < endBatch && i < len(pkgs); i++ {
-			sb.WriteString("(?, ?, ?, ?)")
+			sb.WriteString("(?, ?, ?, ?, ?)")
 			if i < endBatch-1 && i < len(pkgs)-1 {
 				sb.WriteString(",")
 			}
-			args = append(args, pkgs[i].Name, pkgs[i].Version, pkgs[i].Path, pkgs[i].Data)
+			args = append(args, pkgs[i].Name, pkgs[i].Version, pkgs[i].Type, pkgs[i].Path, pkgs[i].Data)
 			read += 1
 		}
 		query := sb.String()
@@ -124,7 +125,7 @@ func (r *SQLiteRepository) All(ctx context.Context, database string) ([]Package,
 	var all []Package
 	for rows.Next() {
 		var pkg Package
-		if err := rows.Scan(&pkg.ID, &pkg.Name, &pkg.Version, &pkg.Path, &pkg.Data); err != nil {
+		if err := rows.Scan(&pkg.ID, &pkg.Name, &pkg.Version, &pkg.Type, &pkg.Path, &pkg.Data); err != nil {
 			return nil, err
 		}
 		all = append(all, pkg)
@@ -132,9 +133,15 @@ func (r *SQLiteRepository) All(ctx context.Context, database string) ([]Package,
 	return all, nil
 }
 
-func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, process func(ctx context.Context, pkg *Package) error) error {
-	query := fmt.Sprintf("SELECT * FROM %s", database)
-	rows, err := r.db.QueryContext(ctx, query)
+func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOptions WhereOptions, process func(ctx context.Context, pkg *Package) error) error {
+	var query strings.Builder
+	query.WriteString("SELECT * FROM ")
+	query.WriteString(database)
+	if whereOptions != nil {
+		query.WriteString(whereOptions.Where())
+	}
+	fmt.Println(query.String())
+	rows, err := r.db.QueryContext(ctx, query.String())
 	if err != nil {
 		return err
 	}
@@ -142,7 +149,7 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, process
 
 	for rows.Next() {
 		var pkg Package
-		if err := rows.Scan(&pkg.ID, &pkg.Name, &pkg.Version, &pkg.Path, &pkg.Data); err != nil {
+		if err := rows.Scan(&pkg.ID, &pkg.Name, &pkg.Version, &pkg.Type, &pkg.Path, &pkg.Data); err != nil {
 			return err
 		}
 		err = process(ctx, &pkg)
@@ -164,4 +171,36 @@ func (r *SQLiteRepository) Drop(ctx context.Context, table string) error {
 
 func (r *SQLiteRepository) Close(ctx context.Context) error {
 	return r.db.Close()
+}
+
+type AllOptions struct {
+	Type string
+	Name string
+}
+
+func (o *AllOptions) Where() string {
+	if o == nil {
+		return ""
+	}
+	var sb strings.Builder
+	if o.Type != "" {
+		sb.WriteString("type = '")
+		sb.WriteString(o.Type)
+		sb.WriteString("'")
+	}
+
+	if o.Name != "" {
+		if sb.Len() > 0 {
+			sb.WriteString(" AND ")
+		}
+		sb.WriteString("name = '")
+		sb.WriteString(o.Name)
+		sb.WriteString("'")
+	}
+
+	clause := sb.String()
+	if clause == "" {
+		return ""
+	}
+	return fmt.Sprintf(" WHERE %s", clause)
 }

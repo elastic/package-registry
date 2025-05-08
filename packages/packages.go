@@ -207,7 +207,7 @@ func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages
 	}()
 
 	var packages Packages
-	err := i.database.AllFunc(ctx, "packages", func(ctx context.Context, p *database.Package) error {
+	err := i.database.AllFunc(ctx, "packages", nil, func(ctx context.Context, p *database.Package) error {
 		newPackage, err := NewPackage(i.logger, p.Path, i.fsBuilder)
 		if err != nil {
 			return fmt.Errorf("failed to parse package %s-%s: %w", p.Name, p.Version, err)
@@ -293,6 +293,7 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 			dbPackage := database.Package{
 				Name:    p.Name,
 				Version: p.Version,
+				Type:    p.Type,
 				Path:    path,
 				Data:    string(contents),
 			}

@@ -7,7 +7,8 @@ package database
 type Package struct {
 	ID      int64
 	Name    string
-	Path    string
 	Version string
+	Type    string
+	Path    string
 	Data    string
 }

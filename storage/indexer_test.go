@@ -232,6 +232,28 @@ func TestGet_ListAllPackages(t *testing.T) {
 			},
 			expected: 147,
 		},
+		{
+			name: "all zeek packages with prerelease",
+			options: &packages.GetOptions{
+				Filter: &packages.Filter{
+					AllVersions: true,
+					Prerelease:  true,
+					PackageName: "zeek",
+				},
+			},
+			expected: 17,
+		},
+		{
+			name: "all packages of a giventype",
+			options: &packages.GetOptions{
+				Filter: &packages.Filter{
+					AllVersions: true,
+					Prerelease:  true,
+					PackageType: "solution",
+				},
+			},
+			expected: 2,
+		},
 	}
 
 	for _, c := range cases {

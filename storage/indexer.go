@@ -282,6 +282,7 @@ func (i *Indexer) updateDatabase(ctx context.Context, index *packages.Packages) 
 			Name:    pkg.Name,
 			Version: pkg.Version,
 			Path:    pkg.BasePath,
+			Type:    pkg.Type,
 			Data:    string(contents),
 		}
 
@@ -316,12 +317,21 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 		i.m.RLock()
 		defer i.m.RUnlock()
 
-		err := (*i.current).AllFunc(ctx, "packages", func(ctx context.Context, p *database.Package) error {
+		options := database.AllOptions{}
+		if opts != nil && opts.Filter != nil {
+			options.Type = opts.Filter.PackageType
+			options.Name = opts.Filter.PackageName
+		}
+
+		numPackages := 0
+		err := (*i.current).AllFunc(ctx, "packages", &options, func(ctx context.Context, p *database.Package) error {
+
 			var pkg packages.Package
 			err := json.Unmarshal([]byte(p.Data), &pkg)
 			if err != nil {
 				return fmt.Errorf("failed to parse package %s-%s: %w", p.Name, p.Version, err)
 			}
+			numPackages++
 			// First phase filtering packages
 			if opts != nil && opts.Filter != nil {
 				pkgs, err := opts.Filter.Apply(ctx, packages.Packages{&pkg})
@@ -339,6 +349,7 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 		if err != nil {
 			return fmt.Errorf("failed to obtain all packages: %w", err)
 		}
+		i.logger.Debug("Number of packages read from database", zap.Int("num.packages", numPackages))
 		return nil
 	}()
 	if err != nil {
