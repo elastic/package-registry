@@ -48,9 +48,8 @@ type Indexer struct {
 	backup  *database.Repository
 
 	logger *zap.Logger
-
-	initializing bool
 }
+
 type IndexerOptions struct {
 	APMTracer                    *apm.Tracer
 	PackageStorageBucketInternal string
@@ -72,7 +71,6 @@ func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options Index
 		database:      options.Database,
 		swapDatabase:  options.SwapDatabase,
 		label:         fmt.Sprintf("storage-%s", options.PackageStorageEndpoint),
-		initializing:  true,
 	}
 
 	indexer.current = &indexer.database
@@ -102,7 +100,6 @@ func (i *Indexer) Init(ctx context.Context) error {
 	}
 	i.logger.Info("Elapsed time to init database", zap.Duration("duration", time.Since(start)))
 
-	i.initializing = false
 	go i.watchIndices(apm.ContextWithTransaction(ctx, nil))
 	return nil
 }
@@ -219,12 +216,10 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 
 	i.transformSearchIndexAllToPackages(anIndex)
 
-	if !i.initializing {
-		i.logger.Info("Updating database")
-		err := i.updateDatabase(ctx, anIndex)
-		if err != nil {
-			return fmt.Errorf("failed to update database: %w", err)
-		}
+	i.logger.Info("Updating database")
+	err = i.updateDatabase(ctx, anIndex)
+	if err != nil {
+		return fmt.Errorf("failed to update database: %w", err)
 	}
 
 	startLock := time.Now()
@@ -233,16 +228,8 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 		defer i.m.Unlock()
 		i.cursor = storageCursor.Current
 
-		if i.initializing {
-			i.logger.Info("Creating first data")
-			err := i.addInitialDataToDatabase(ctx, anIndex)
-			if err != nil {
-				return fmt.Errorf("failed to add initial data to database: %w", err)
-			}
-		} else {
-			// swap databases
-			i.current, i.backup = i.backup, i.current
-		}
+		// swap databases
+		i.current, i.backup = i.backup, i.current
 		i.logger.Debug("Current database changed", zap.String("current.database.path", (*i.current).File(ctx)), zap.String("previous.database.path", (*i.backup).File(ctx)))
 
 		metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
@@ -328,6 +315,7 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	err := func() error {
 		i.m.RLock()
 		defer i.m.RUnlock()
+
 		err := (*i.current).AllFunc(ctx, "packages", func(ctx context.Context, p *database.Package) error {
 			var pkg packages.Package
 			err := json.Unmarshal([]byte(p.Data), &pkg)
