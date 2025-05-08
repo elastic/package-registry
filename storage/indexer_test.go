@@ -94,7 +94,7 @@ func BenchmarkIndexerUpdateIndex(b *testing.B) {
 	defer fs.Stop()
 	storageClient := fs.Client()
 
-	logger := util.NewTestLoggerLevel(zapcore.InfoLevel)
+	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
 	ctx := context.Background()
 
 	indexer := NewIndexer(logger, storageClient, options)

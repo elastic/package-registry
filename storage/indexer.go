@@ -75,8 +75,6 @@ func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options Index
 		initializing:  true,
 	}
 
-	fmt.Println("Created database: ", indexer.database.File(context.TODO()))
-	fmt.Println("Created swap database: ", indexer.swapDatabase.File(context.TODO()))
 	indexer.current = &indexer.database
 	indexer.backup = &indexer.swapDatabase
 
@@ -243,6 +241,7 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 			// swap databases
 			i.current, i.backup = i.backup, i.current
 		}
+		i.logger.Debug("Current database changed", zap.String("current.database.path", (*i.current).File(ctx)), zap.String("previous.database.path", (*i.backup).File(ctx)))
 
 		metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
 		metrics.NumberIndexedPackages.Set(float64(len(*anIndex)))
@@ -254,7 +253,6 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 		return err
 	}
-	fmt.Println("Current database path: ", (*i.current).File(ctx))
 	return nil
 }
 
