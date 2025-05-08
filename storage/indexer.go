@@ -245,31 +245,6 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	return nil
 }
 
-func (i *Indexer) addInitialDataToDatabase(ctx context.Context, index *packages.Packages) error {
-	dbPackages := make([]*database.Package, len(*index))
-	for index, pkg := range *index {
-		contents, err := json.Marshal(pkg)
-		if err != nil {
-			return fmt.Errorf("failed to marshal package %s-%s: %w", pkg.Name, pkg.Version, err)
-		}
-
-		newPackage := database.Package{
-			Name:    pkg.Name,
-			Version: pkg.Version,
-			Path:    pkg.BasePath,
-			Data:    string(contents),
-		}
-
-		dbPackages[index] = &newPackage
-	}
-
-	err := (*i.current).BulkAdd(ctx, "packages", dbPackages)
-	if err != nil {
-		return fmt.Errorf("failed to create all packages (bulk operation): %w", err)
-	}
-
-	return nil
-}
 func (i *Indexer) updateDatabase(ctx context.Context, index *packages.Packages) error {
 	dbPackages := make([]*database.Package, len(*index))
 	for index, pkg := range *index {
