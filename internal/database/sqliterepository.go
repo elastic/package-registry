@@ -174,8 +174,9 @@ func (r *SQLiteRepository) Close(ctx context.Context) error {
 }
 
 type AllOptions struct {
-	Type string
-	Name string
+	Type    string
+	Name    string
+	Version string
 }
 
 func (o *AllOptions) Where() string {
@@ -195,6 +196,15 @@ func (o *AllOptions) Where() string {
 		}
 		sb.WriteString("name = '")
 		sb.WriteString(o.Name)
+		sb.WriteString("'")
+	}
+
+	if o.Version != "" {
+		if sb.Len() > 0 {
+			sb.WriteString(" AND ")
+		}
+		sb.WriteString("version = '")
+		sb.WriteString(o.Version)
 		sb.WriteString("'")
 	}
 

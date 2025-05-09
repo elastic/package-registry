@@ -296,6 +296,7 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 		if opts != nil && opts.Filter != nil {
 			options.Type = opts.Filter.PackageType
 			options.Name = opts.Filter.PackageName
+			options.Version = opts.Filter.PackageVersion
 		}
 
 		numPackages := 0

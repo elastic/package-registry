@@ -254,6 +254,17 @@ func TestGet_ListAllPackages(t *testing.T) {
 			},
 			expected: 2,
 		},
+		{
+			name: "one package of a giventype",
+			options: &packages.GetOptions{
+				Filter: &packages.Filter{
+					Prerelease:     true,
+					PackageName:    "tomcat",
+					PackageVersion: "0.3.0",
+				},
+			},
+			expected: 1,
+		},
 	}
 
 	for _, c := range cases {
