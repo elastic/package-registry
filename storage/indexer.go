@@ -246,24 +246,6 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 }
 
 func (i *Indexer) updateDatabase(ctx context.Context, index *packages.Packages) error {
-	dbPackages := make([]*database.Package, len(*index))
-	for index, pkg := range *index {
-		contents, err := json.Marshal(pkg)
-		if err != nil {
-			return fmt.Errorf("failed to marshal package %s-%s: %w", pkg.Name, pkg.Version, err)
-		}
-
-		newPackage := database.Package{
-			Name:    pkg.Name,
-			Version: pkg.Version,
-			Path:    pkg.BasePath,
-			Type:    pkg.Type,
-			Data:    string(contents),
-		}
-
-		dbPackages[index] = &newPackage
-	}
-
 	err := (*i.backup).Drop(ctx, "packages")
 	if err != nil {
 		return fmt.Errorf("failed to drop packages table: %w", err)
@@ -274,10 +256,41 @@ func (i *Indexer) updateDatabase(ctx context.Context, index *packages.Packages) 
 		return fmt.Errorf("failed to create schema in backup database: %w", err)
 	}
 
-	err = (*i.backup).BulkAdd(ctx, "packages", dbPackages)
-	if err != nil {
-		return fmt.Errorf("failed to create all packages (bulk operation): %w", err)
+	totalProcessed := 0
+	maxBatch := 500
+	dbPackages := make([]*database.Package, 0, maxBatch)
+	for {
+		read := 0
+		// reuse slice to avoid allocations
+		dbPackages = dbPackages[:0]
+		endBatch := totalProcessed + maxBatch
+		for i := totalProcessed; i < endBatch && i < len(*index); i++ {
+			contents, err := json.Marshal((*index)[i])
+			if err != nil {
+				return fmt.Errorf("failed to marshal package %s-%s: %w", (*index)[i].Name, (*index)[i].Version, err)
+			}
+
+			newPackage := database.Package{
+				Name:    (*index)[i].Name,
+				Version: (*index)[i].Version,
+				Path:    (*index)[i].BasePath,
+				Type:    (*index)[i].Type,
+				Data:    string(contents),
+			}
+
+			dbPackages = append(dbPackages, &newPackage)
+			read++
+		}
+		err = (*i.backup).BulkAdd(ctx, "packages", dbPackages)
+		if err != nil {
+			return fmt.Errorf("failed to create all packages (bulk operation): %w", err)
+		}
+		totalProcessed += read
+		if totalProcessed >= len(*index) {
+			break
+		}
 	}
+
 	return nil
 }
 

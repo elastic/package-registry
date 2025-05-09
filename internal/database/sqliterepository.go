@@ -75,9 +75,11 @@ func (r *SQLiteRepository) Migrate(ctx context.Context) error {
 func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []*Package) error {
 	totalProcessed := 0
 	maxBatch := 2000
+	args := make([]any, 0, maxBatch*5)
 	for {
 		read := 0
-		args := []any{} // make([]any, len(pkgs)*4)
+		// reuse args slice
+		args = args[:0]
 		var sb strings.Builder
 		sb.WriteString("INSERT INTO ")
 		sb.WriteString(database)
@@ -89,7 +91,7 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 				sb.WriteString(",")
 			}
 			args = append(args, pkgs[i].Name, pkgs[i].Version, pkgs[i].Type, pkgs[i].Path, pkgs[i].Data)
-			read += 1
+			read++
 		}
 		query := sb.String()
 
@@ -106,7 +108,7 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 		}
 
 		totalProcessed += read
-		if totalProcessed == len(pkgs) {
+		if totalProcessed >= len(pkgs) {
 			break
 		}
 	}
