@@ -6,6 +6,7 @@ package storage
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net"
@@ -21,6 +22,7 @@ import (
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 
+	"github.com/elastic/package-registry/internal/database"
 	"github.com/elastic/package-registry/metrics"
 	"github.com/elastic/package-registry/packages"
 )
@@ -31,12 +33,19 @@ type Indexer struct {
 	options       IndexerOptions
 	storageClient *storage.Client
 
-	cursor      string
-	packageList packages.Packages
+	cursor string
+
+	label string
 
 	m sync.RWMutex
 
 	resolver packages.RemoteResolver
+
+	database     database.Repository
+	swapDatabase database.Repository
+
+	current *database.Repository
+	backup  *database.Repository
 
 	logger *zap.Logger
 }
@@ -46,17 +55,28 @@ type IndexerOptions struct {
 	PackageStorageBucketInternal string
 	PackageStorageEndpoint       string
 	WatchInterval                time.Duration
+	Database                     database.Repository
+	SwapDatabase                 database.Repository
 }
 
 func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options IndexerOptions) *Indexer {
 	if options.APMTracer == nil {
 		options.APMTracer = apm.DefaultTracer()
 	}
-	return &Indexer{
+
+	indexer := &Indexer{
 		storageClient: storageClient,
 		options:       options,
 		logger:        logger,
+		database:      options.Database,
+		swapDatabase:  options.SwapDatabase,
+		label:         fmt.Sprintf("storage-%s", options.PackageStorageEndpoint),
 	}
+
+	indexer.current = &indexer.database
+	indexer.backup = &indexer.swapDatabase
+
+	return indexer
 }
 
 func (i *Indexer) Init(ctx context.Context) error {
@@ -73,10 +93,12 @@ func (i *Indexer) Init(ctx context.Context) error {
 	}
 
 	// Populate index file for the first time.
+	start := time.Now()
 	err = i.updateIndex(ctx)
 	if err != nil {
 		return fmt.Errorf("can't update index file: %w", err)
 	}
+	i.logger.Info("Elapsed time to init database", zap.Duration("duration", time.Since(start)))
 
 	go i.watchIndices(apm.ContextWithTransaction(ctx, nil))
 	return nil
@@ -185,6 +207,7 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 		return fmt.Errorf("can't load the search-index-all index content: %w", err)
 	}
+
 	if anIndex == nil {
 		i.logger.Info("Downloaded new search-index-all index. No packages found.")
 		return nil
@@ -193,12 +216,81 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 
 	i.transformSearchIndexAllToPackages(anIndex)
 
-	i.m.Lock()
-	defer i.m.Unlock()
-	i.cursor = storageCursor.Current
-	i.packageList = *anIndex
-	metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
-	metrics.NumberIndexedPackages.Set(float64(len(i.packageList)))
+	i.logger.Info("Updating database")
+	err = i.updateDatabase(ctx, anIndex)
+	if err != nil {
+		return fmt.Errorf("failed to update database: %w", err)
+	}
+
+	startLock := time.Now()
+	err = func() error {
+		i.m.Lock()
+		defer i.m.Unlock()
+		i.cursor = storageCursor.Current
+
+		// swap databases
+		i.current, i.backup = i.backup, i.current
+		i.logger.Debug("Current database changed", zap.String("current.database.path", (*i.current).File(ctx)), zap.String("previous.database.path", (*i.backup).File(ctx)))
+
+		metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
+		metrics.NumberIndexedPackages.Set(float64(len(*anIndex)))
+		return nil
+	}()
+
+	i.logger.Debug("Elapsed time in lock for updating index database", zap.Duration("lock.duration", time.Since(startLock)))
+	if err != nil {
+		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
+		return err
+	}
+	return nil
+}
+
+func (i *Indexer) updateDatabase(ctx context.Context, index *packages.Packages) error {
+	err := (*i.backup).Drop(ctx, "packages")
+	if err != nil {
+		return fmt.Errorf("failed to drop packages table: %w", err)
+	}
+
+	err = (*i.backup).Migrate(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to create schema in backup database: %w", err)
+	}
+
+	totalProcessed := 0
+	maxBatch := 500
+	dbPackages := make([]*database.Package, 0, maxBatch)
+	for {
+		read := 0
+		// reuse slice to avoid allocations
+		dbPackages = dbPackages[:0]
+		endBatch := totalProcessed + maxBatch
+		for i := totalProcessed; i < endBatch && i < len(*index); i++ {
+			contents, err := json.Marshal((*index)[i])
+			if err != nil {
+				return fmt.Errorf("failed to marshal package %s-%s: %w", (*index)[i].Name, (*index)[i].Version, err)
+			}
+
+			newPackage := database.Package{
+				Name:    (*index)[i].Name,
+				Version: (*index)[i].Version,
+				Path:    (*index)[i].BasePath,
+				Type:    (*index)[i].Type,
+				Data:    string(contents),
+			}
+
+			dbPackages = append(dbPackages, &newPackage)
+			read++
+		}
+		err = (*i.backup).BulkAdd(ctx, "packages", dbPackages)
+		if err != nil {
+			return fmt.Errorf("failed to create all packages (bulk operation): %w", err)
+		}
+		totalProcessed += read
+		if totalProcessed >= len(*index) {
+			break
+		}
+	}
+
 	return nil
 }
 
@@ -208,13 +300,66 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 		metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": indexerGetDurationPrometheusLabel}).Observe(time.Since(start).Seconds())
 	}()
 
-	i.m.RLock()
-	defer i.m.RUnlock()
+	var readPackages packages.Packages
+	err := func() error {
+		i.m.RLock()
+		defer i.m.RUnlock()
 
-	if opts != nil && opts.Filter != nil {
-		return opts.Filter.Apply(ctx, i.packageList)
+		options := database.AllOptions{}
+		if opts != nil && opts.Filter != nil {
+			options.Type = opts.Filter.PackageType
+			options.Name = opts.Filter.PackageName
+			options.Version = opts.Filter.PackageVersion
+		}
+
+		numPackages := 0
+		err := (*i.current).AllFunc(ctx, "packages", &options, func(ctx context.Context, p *database.Package) error {
+
+			var pkg packages.Package
+			err := json.Unmarshal([]byte(p.Data), &pkg)
+			if err != nil {
+				return fmt.Errorf("failed to parse package %s-%s: %w", p.Name, p.Version, err)
+			}
+			numPackages++
+			// First phase filtering packages
+			if opts != nil && opts.Filter != nil {
+				pkgs, err := opts.Filter.Apply(ctx, packages.Packages{&pkg})
+				if err != nil {
+					return err
+				}
+				if len(pkgs) == 0 {
+					return nil
+				}
+			}
+			pkg.SetRemoteResolver(i.resolver)
+			readPackages = append(readPackages, &pkg)
+			return nil
+		})
+		if err != nil {
+			return fmt.Errorf("failed to obtain all packages: %w", err)
+		}
+		i.logger.Debug("Number of packages read from database", zap.Int("num.packages", numPackages))
+		return nil
+	}()
+	if err != nil {
+		return nil, err
 	}
-	return i.packageList, nil
+
+	// Required to filter packages again if condition `all=false`
+	if opts != nil && opts.Filter != nil {
+		pkgs, err := opts.Filter.Apply(ctx, readPackages)
+		return pkgs, err
+	}
+	return readPackages, nil
+}
+
+func (i *Indexer) Close(ctx context.Context) error {
+	// Try to close all databases
+	err := i.database.Close(ctx)
+	errSwap := i.swapDatabase.Close(ctx)
+
+	errors.Join(err, errSwap)
+	return errors.Join(err, errSwap)
 }
 
 func (i *Indexer) transformSearchIndexAllToPackages(packages *packages.Packages) {
