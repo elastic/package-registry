@@ -7,6 +7,7 @@ package packages
 import (
 	"archive/zip"
 	"context"
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -20,6 +21,7 @@ import (
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 
+	"github.com/elastic/package-registry/internal/database"
 	"github.com/elastic/package-registry/metrics"
 )
 
@@ -100,10 +102,12 @@ type FileSystemIndexer struct {
 	fsBuilder FileSystemBuilder
 
 	logger *zap.Logger
+
+	database database.Repository
 }
 
 // NewFileSystemIndexer creates a new FileSystemIndexer for the given paths.
-func NewFileSystemIndexer(logger *zap.Logger, paths ...string) *FileSystemIndexer {
+func NewFileSystemIndexer(logger *zap.Logger, dbRepository database.Repository, paths ...string) *FileSystemIndexer {
 	walkerFn := func(basePath, path string, info os.DirEntry) (bool, error) {
 		relativePath, err := filepath.Rel(basePath, path)
 		if err != nil {
@@ -137,6 +141,7 @@ func NewFileSystemIndexer(logger *zap.Logger, paths ...string) *FileSystemIndexe
 		walkerFn:  walkerFn,
 		fsBuilder: ExtractedFileSystemBuilder,
 		logger:    logger,
+		database:  dbRepository,
 	}
 }
 
@@ -145,7 +150,7 @@ var ExtractedFileSystemBuilder = func(p *Package) (PackageFileSystem, error) {
 }
 
 // NewZipFileSystemIndexer creates a new ZipFileSystemIndexer for the given paths.
-func NewZipFileSystemIndexer(logger *zap.Logger, paths ...string) *FileSystemIndexer {
+func NewZipFileSystemIndexer(logger *zap.Logger, dbRepository database.Repository, paths ...string) *FileSystemIndexer {
 	walkerFn := func(basePath, path string, info os.DirEntry) (bool, error) {
 		if info.IsDir() {
 			return false, nil
@@ -165,12 +170,14 @@ func NewZipFileSystemIndexer(logger *zap.Logger, paths ...string) *FileSystemInd
 
 		return true, nil
 	}
+
 	return &FileSystemIndexer{
 		paths:     paths,
 		label:     "ZipFileSystemIndexer",
 		walkerFn:  walkerFn,
 		fsBuilder: ZipFileSystemBuilder,
 		logger:    logger,
+		database:  dbRepository,
 	}
 }
 
@@ -180,7 +187,7 @@ var ZipFileSystemBuilder = func(p *Package) (PackageFileSystem, error) {
 
 // Init initializes the indexer.
 func (i *FileSystemIndexer) Init(ctx context.Context) (err error) {
-	i.packageList, err = i.getPackagesFromFileSystem(ctx)
+	_, err = i.getPackagesFromFileSystem(ctx)
 	if err != nil {
 		return fmt.Errorf("reading packages from filesystem failed: %w", err)
 	}
@@ -198,15 +205,40 @@ func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages
 	defer func() {
 		metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": i.label}).Observe(time.Since(start).Seconds())
 	}()
+
+	var packages Packages
+	err := i.database.AllFunc(ctx, "packages", nil, func(ctx context.Context, p *database.Package) error {
+		newPackage, err := NewPackage(i.logger, p.Path, i.fsBuilder)
+		if err != nil {
+			return fmt.Errorf("failed to parse package %s-%s: %w", p.Name, p.Version, err)
+		}
+
+		if opts != nil && opts.Filter != nil {
+			pkgs, err := opts.Filter.Apply(ctx, Packages{newPackage})
+			if err != nil {
+				return err
+			}
+			if len(pkgs) == 0 {
+				return nil
+			}
+		}
+
+		packages = append(packages, newPackage)
+		return nil
+	})
+	if err != nil {
+		return nil, fmt.Errorf("failed to obtain all packages: %w", err)
+	}
 	if opts == nil {
-		return i.packageList, nil
+		return packages, nil
 	}
 
+	// Required to filter packages if condition `all=false`
 	if opts.Filter != nil {
-		return opts.Filter.Apply(ctx, i.packageList)
+		return opts.Filter.Apply(ctx, packages)
 	}
 
-	return i.packageList, nil
+	return packages, nil
 }
 
 func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Packages, error) {
@@ -221,13 +253,15 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 	packagesFound := make(map[packageKey]struct{})
 
 	var pList Packages
+	var dbPackages []*database.Package
+
 	for _, basePath := range i.paths {
 		packagePaths, err := i.getPackagePaths(basePath)
 		if err != nil {
 			return nil, err
 		}
 
-		i.logger.Info("Searching packages in " + basePath)
+		i.logger.Info("Searching packages in "+basePath, zap.Int("pathsNum", len(packagePaths)))
 		for _, path := range packagePaths {
 			p, err := NewPackage(i.logger, path, i.fsBuilder)
 			if err != nil {
@@ -250,7 +284,27 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 				zap.String("package.name", p.Name),
 				zap.String("package.version", p.Version),
 				zap.String("package.path", p.BasePath))
+
+			// database
+			contents, err := json.Marshal(p)
+			if err != nil {
+				return nil, fmt.Errorf("failed to marshal package (path: %s): %w", path, err)
+			}
+			dbPackage := database.Package{
+				Name:    p.Name,
+				Version: p.Version,
+				Type:    p.Type,
+				Path:    path,
+				Data:    string(contents),
+			}
+
+			dbPackages = append(dbPackages, &dbPackage)
 		}
+	}
+
+	err := i.database.BulkAdd(ctx, "packages", dbPackages)
+	if err != nil {
+		return nil, fmt.Errorf("failed to add packages: %w", err)
 	}
 	return pList, nil
 }
@@ -285,6 +339,14 @@ func (i *FileSystemIndexer) getPackagePaths(packagesPath string) ([]string, erro
 		return nil, fmt.Errorf("listing packages failed (path: %s): %w", packagesPath, err)
 	}
 	return foundPaths, nil
+}
+
+func (i *FileSystemIndexer) Close(ctx context.Context) error {
+	err := i.database.Close(ctx)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // Filter can be used to filter a list of packages.

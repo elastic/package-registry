@@ -14,6 +14,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
+	"github.com/elastic/package-registry/internal/database"
 	"github.com/elastic/package-registry/packages"
 	"github.com/elastic/package-registry/proxymode"
 )
@@ -39,8 +40,13 @@ func TestCategoriesWithProxyMode(t *testing.T) {
 	}))
 	defer webServer.Close()
 
-	indexerProxy := packages.NewFileSystemIndexer(testLogger, "./testdata/second_package_path")
-	err := indexerProxy.Init(context.Background())
+	db, err := database.NewMemorySQLDB("main")
+	require.NoError(t, err)
+
+	indexerProxy := packages.NewFileSystemIndexer(testLogger, db, "./testdata/second_package_path")
+	defer indexerProxy.Close(context.Background())
+
+	err = indexerProxy.Init(context.Background())
 	require.NoError(t, err)
 
 	proxyMode, err := proxymode.NewProxyMode(
