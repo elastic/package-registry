@@ -1,0 +1,74 @@
+# Base address of the Package Registry
+address: "https://epr.elastic.co"
+
+# Queries are executed with each one of the parameters of the matrix.
+matrix:
+  - spec.max: 3.0
+    type: input
+  - prerelease: true
+    spec.max: 3.0
+    type: input
+
+# Queries to execute to discover packages.
+queries:
+  - kibana.version: 7.17.26
+  - kibana.version: 7.17.27
+  - kibana.version: 7.17.28
+  - kibana.version: 7.17.29
+  - kibana.version: 8.15.4
+  - kibana.version: 8.15.5
+  - kibana.version: 8.15.6
+  - kibana.version: 8.16.0
+    spec.max: 3.3
+  - kibana.version: 8.16.1
+    spec.max: 3.3
+  - kibana.version: 8.16.2
+    spec.max: 3.3
+  - kibana.version: 8.16.3
+    spec.max: 3.3
+  - kibana.version: 8.16.4
+    spec.max: 3.3
+  - kibana.version: 8.16.5
+    spec.max: 3.3
+  - kibana.version: 8.16.6
+    spec.max: 3.3
+  - kibana.version: 8.16.7
+    spec.max: 3.3
+  - kibana.version: 8.17.0
+    spec.max: 3.3
+  - kibana.version: 8.17.1
+    spec.max: 3.3
+  - kibana.version: 8.17.2
+    spec.max: 3.3
+  - kibana.version: 8.17.3
+    spec.max: 3.3
+  - kibana.version: 8.17.4
+    spec.max: 3.3
+  - kibana.version: 8.17.5
+    spec.max: 3.3
+  - kibana.version: 8.17.6
+    spec.max: 3.3
+  - kibana.version: 8.17.7
+    spec.max: 3.3
+  - kibana.version: 8.18.0
+    spec.max: 3.3
+  - kibana.version: 8.18.1
+    spec.max: 3.3
+  - kibana.version: 8.18.2
+    spec.max: 3.3
+  - kibana.version: 8.19.0
+    spec.max: 3.3
+  - kibana.version: 9.0.0
+    spec.min: 2.3
+    spec.max: 3.3
+  - kibana.version: 9.0.1
+    spec.min: 2.3
+    spec.max: 3.3
+  - kibana.version: 9.0.2
+    spec.min: 2.3
+    spec.max: 3.3
+
+actions:
+  - print:
+  - download:
+      destination: ./build/distribution-test

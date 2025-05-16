@@ -11,6 +11,7 @@ require (
 	github.com/elastic/go-ucfg v0.8.8
 	github.com/felixge/httpsnoop v1.0.4
 	github.com/fsouza/fake-gcs-server v1.52.2
+	github.com/google/go-querystring v1.1.0
 	github.com/gorilla/mux v1.8.1
 	github.com/hashicorp/go-retryablehttp v0.7.7
 	github.com/joeshaw/multierror v0.0.0-20140124173710-69b34d4ec901
@@ -22,8 +23,10 @@ require (
 	go.elastic.co/apm/v2 v2.7.0
 	go.elastic.co/ecszap v1.0.3
 	go.uber.org/zap v1.27.0
+	golang.org/x/mod v0.24.0
 	golang.org/x/tools v0.33.0
 	gopkg.in/yaml.v2 v2.4.0
+	gopkg.in/yaml.v3 v3.0.1
 	honnef.co/go/tools v0.6.1
 )
 
@@ -84,7 +87,6 @@ require (
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/crypto v0.38.0 // indirect
 	golang.org/x/exp/typeparams v0.0.0-20231108232855-2478ac86f678 // indirect
-	golang.org/x/mod v0.24.0 // indirect
 	golang.org/x/net v0.40.0 // indirect
 	golang.org/x/oauth2 v0.30.0 // indirect
 	golang.org/x/sync v0.14.0 // indirect
@@ -97,6 +99,5 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250505200425-f936aa4a68b2 // indirect
 	google.golang.org/grpc v1.72.0 // indirect
 	google.golang.org/protobuf v1.36.6 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 	howett.net/plist v1.0.1 // indirect
 )
