@@ -153,7 +153,7 @@ func BenchmarkIndexerGet(b *testing.B) {
 	})
 }
 
-func TestGet_ListAllPackages(t *testing.T) {
+func TestGet_ListPackages(t *testing.T) {
 	// given
 	db, err := database.NewMemorySQLDB("main")
 	require.NoError(t, err)
@@ -186,7 +186,7 @@ func TestGet_ListAllPackages(t *testing.T) {
 			expected: 1133,
 		},
 		{
-			name: "all packages including prerelease",
+			name: "all versions of packages including prerelease",
 			options: &packages.GetOptions{
 				Filter: &packages.Filter{
 					AllVersions: true,
@@ -196,7 +196,7 @@ func TestGet_ListAllPackages(t *testing.T) {
 			expected: 1133,
 		},
 		{
-			name: "not all packages including prerelease",
+			name: "latest versions of packages not including prerelease",
 			options: &packages.GetOptions{
 				Filter: &packages.Filter{
 					AllVersions: false,
@@ -215,7 +215,7 @@ func TestGet_ListAllPackages(t *testing.T) {
 			expected: 494,
 		},
 		{
-			name: "all packages with all versions with no prerelease",
+			name: "all packages with latest versions and no prerelease",
 			options: &packages.GetOptions{
 				Filter: &packages.Filter{
 					Prerelease: false,
@@ -244,7 +244,7 @@ func TestGet_ListAllPackages(t *testing.T) {
 			expected: 17,
 		},
 		{
-			name: "all packages of a giventype",
+			name: "all packages with all versions of a giventype",
 			options: &packages.GetOptions{
 				Filter: &packages.Filter{
 					AllVersions: true,
@@ -265,12 +265,24 @@ func TestGet_ListAllPackages(t *testing.T) {
 			},
 			expected: 1,
 		},
+		{
+			name: "unknown package",
+			options: &packages.GetOptions{
+				Filter: &packages.Filter{
+					PackageName: "qwertyuiop",
+					PackageType: "integration",
+				},
+			},
+			expected: 0,
+		},
 	}
 
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			// when
+			startTest := time.Now()
 			foundPackages, err := indexer.Get(ctx, c.options)
+			t.Logf("Elapsed time: %s", time.Since(startTest))
 			// then
 			require.NoError(t, err, "packages should be returned")
 			require.Len(t, foundPackages, c.expected)
@@ -313,41 +325,6 @@ func TestGet_FindLatestPackage(t *testing.T) {
 	require.Len(t, foundPackages, 1)
 	require.Equal(t, "apm", foundPackages[0].Name)
 	require.Equal(t, "8.2.0", foundPackages[0].Version)
-}
-
-func TestGet_UnknownPackage(t *testing.T) {
-	// given
-	db, err := database.NewMemorySQLDB("main")
-	require.NoError(t, err)
-
-	swapDb, err := database.NewMemorySQLDB("swap")
-	require.NoError(t, err)
-
-	options, err := CreateFakeIndexerOptions(db, swapDb)
-	require.NoError(t, err)
-
-	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
-	defer fs.Stop()
-	storageClient := fs.Client()
-
-	ctx := context.Background()
-	indexer := NewIndexer(util.NewTestLogger(), storageClient, options)
-	defer indexer.Close(ctx)
-
-	err = indexer.Init(ctx)
-	require.NoError(t, err, "storage indexer must be initialized properly")
-
-	// when
-	foundPackages, err := indexer.Get(ctx, &packages.GetOptions{
-		Filter: &packages.Filter{
-			PackageName: "qwertyuiop",
-			PackageType: "integration",
-		},
-	})
-
-	// then
-	require.NoError(t, err, "packages should be returned")
-	require.Len(t, foundPackages, 0)
 }
 
 func TestGet_IndexUpdated(t *testing.T) {
