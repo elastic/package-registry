@@ -86,22 +86,128 @@ func BenchmarkIndexerGet(b *testing.B) {
 	})
 }
 
-func TestGet_ListAllPackages(t *testing.T) {
+func TestGet_ListPackages(t *testing.T) {
 	// given
 	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 	indexer := NewIndexer(util.NewTestLogger(), storageClient, FakeIndexerOptions)
 
-	err := indexer.Init(context.Background())
+	ctx := context.Background()
+	err := indexer.Init(ctx)
 	require.NoError(t, err, "storage indexer must be initialized properly")
 
-	// when
-	foundPackages, err := indexer.Get(context.Background(), &packages.GetOptions{})
+	cases := []struct {
+		name     string
+		options  *packages.GetOptions
+		expected int
+	}{
+		{
+			name:     "all packages filter nil",
+			options:  &packages.GetOptions{},
+			expected: 1133,
+		},
+		{
+			name: "all versions of packages including prerelease",
+			options: &packages.GetOptions{
+				Filter: &packages.Filter{
+					AllVersions: true,
+					Prerelease:  true,
+				},
+			},
+			expected: 1133,
+		},
+		{
+			name: "latest versions of packages not including prerelease",
+			options: &packages.GetOptions{
+				Filter: &packages.Filter{
+					AllVersions: false,
+					Prerelease:  false,
+				},
+			},
+			expected: 99,
+		},
+		{
+			name: "all packages with all versions and no prerelease",
+			options: &packages.GetOptions{
+				Filter: &packages.Filter{
+					AllVersions: true,
+				},
+			},
+			expected: 494,
+		},
+		{
+			name: "all packages with latest versions and no prerelease",
+			options: &packages.GetOptions{
+				Filter: &packages.Filter{
+					Prerelease: false,
+				},
+			},
+			expected: 99,
+		},
+		{
+			name: "all packages prerelease",
+			options: &packages.GetOptions{
+				Filter: &packages.Filter{
+					Prerelease: true,
+				},
+			},
+			expected: 147,
+		},
+		{
+			name: "all zeek packages with prerelease",
+			options: &packages.GetOptions{
+				Filter: &packages.Filter{
+					AllVersions: true,
+					Prerelease:  true,
+					PackageName: "zeek",
+				},
+			},
+			expected: 17,
+		},
+		{
+			name: "all packages with all versions of a giventype",
+			options: &packages.GetOptions{
+				Filter: &packages.Filter{
+					AllVersions: true,
+					Prerelease:  true,
+					PackageType: "solution",
+				},
+			},
+			expected: 2,
+		},
+		{
+			name: "one package of a giventype",
+			options: &packages.GetOptions{
+				Filter: &packages.Filter{
+					Prerelease:     true,
+					PackageName:    "tomcat",
+					PackageVersion: "0.3.0",
+				},
+			},
+			expected: 1,
+		},
+		{
+			name: "unknown package",
+			options: &packages.GetOptions{
+				Filter: &packages.Filter{
+					PackageName: "qwertyuiop",
+					PackageType: "integration",
+				},
+			},
+			expected: 0,
+		},
+	}
 
-	// then
-	require.NoError(t, err, "packages should be returned")
-	require.Len(t, foundPackages, 1133)
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			// when
+			foundPackages, err := indexer.Get(ctx, c.options)
+			// then
+			require.NoError(t, err, "packages should be returned")
+			require.Len(t, foundPackages, c.expected)
+		})
+	}
 }
 
 func TestGet_FindLatestPackage(t *testing.T) {
@@ -111,11 +217,12 @@ func TestGet_FindLatestPackage(t *testing.T) {
 	storageClient := fs.Client()
 	indexer := NewIndexer(util.NewTestLogger(), storageClient, FakeIndexerOptions)
 
-	err := indexer.Init(context.Background())
+	ctx := context.Background()
+	err := indexer.Init(ctx)
 	require.NoError(t, err, "storage indexer must be initialized properly")
 
 	// when
-	foundPackages, err := indexer.Get(context.Background(), &packages.GetOptions{
+	foundPackages, err := indexer.Get(ctx, &packages.GetOptions{
 		Filter: &packages.Filter{
 			PackageName: "apm",
 			PackageType: "integration",
@@ -127,29 +234,6 @@ func TestGet_FindLatestPackage(t *testing.T) {
 	require.Len(t, foundPackages, 1)
 	require.Equal(t, "apm", foundPackages[0].Name)
 	require.Equal(t, "8.2.0", foundPackages[0].Version)
-}
-
-func TestGet_UnknownPackage(t *testing.T) {
-	// given
-	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
-	defer fs.Stop()
-	storageClient := fs.Client()
-	indexer := NewIndexer(util.NewTestLogger(), storageClient, FakeIndexerOptions)
-
-	err := indexer.Init(context.Background())
-	require.NoError(t, err, "storage indexer must be initialized properly")
-
-	// when
-	foundPackages, err := indexer.Get(context.Background(), &packages.GetOptions{
-		Filter: &packages.Filter{
-			PackageName: "qwertyuiop",
-			PackageType: "integration",
-		},
-	})
-
-	// then
-	require.NoError(t, err, "packages should be returned")
-	require.Len(t, foundPackages, 0)
 }
 
 func TestGet_IndexUpdated(t *testing.T) {
