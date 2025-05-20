@@ -58,7 +58,11 @@ func (r *SQLiteRepository) Migrate(ctx context.Context) error {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
 		version TEXT NOT NULL,
+		formatVersion TEXT NOT NULL,
 		prerelease INTEGER NOT NULL,
+		release TEXT NOT NULL,
+		kibanaVersion TEXT NOT NULL,
+		Capabilities TEXT NOT NULL,
 		type TEXT NOT NULL,
 		path TEXT NOT NULL,
         data TEXT NOT NULL
@@ -84,14 +88,14 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 		var sb strings.Builder
 		sb.WriteString("INSERT INTO ")
 		sb.WriteString(database)
-		sb.WriteString("(name, version, prerelease, type, path, data) values ")
+		sb.WriteString("(name, version, formatVersion, release, prerelease, kibanaVersion, capabilities, specMajorMinorSemver, type, path, data) values ")
 		endBatch := totalProcessed + maxBatch
 		for i := totalProcessed; i < endBatch && i < len(pkgs); i++ {
-			sb.WriteString("(?, ?, ?, ?, ?, ?)")
+			sb.WriteString("(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
 			if i < endBatch-1 && i < len(pkgs)-1 {
 				sb.WriteString(",")
 			}
-			args = append(args, pkgs[i].Name, pkgs[i].Version, pkgs[i].Prerelease, pkgs[i].Type, pkgs[i].Path, pkgs[i].Data)
+			args = append(args, pkgs[i].Name, pkgs[i].Version, pkgs[i].FormatVersion, pkgs[i].Release, pkgs[i].Prerelease, pkgs[i].KibanaVersion, pkgs[i].Capabilities, pkgs[i].Type, pkgs[i].Path, pkgs[i].Data)
 			read++
 		}
 		query := sb.String()
@@ -128,7 +132,7 @@ func (r *SQLiteRepository) All(ctx context.Context, database string) ([]Package,
 	var all []Package
 	for rows.Next() {
 		var pkg Package
-		if err := rows.Scan(&pkg.ID, &pkg.Name, &pkg.Version, &pkg.Prerelease, &pkg.Type, &pkg.Path, &pkg.Data); err != nil {
+		if err := rows.Scan(&pkg.ID, &pkg.Name, &pkg.Version, &pkg.FormatVersion, &pkg.Release, &pkg.Prerelease, &pkg.KibanaVersion, &pkg.Capabilities, &pkg.Type, &pkg.Path, &pkg.Data); err != nil {
 			return nil, err
 		}
 		all = append(all, pkg)
@@ -152,7 +156,7 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 
 	for rows.Next() {
 		var pkg Package
-		if err := rows.Scan(&pkg.ID, &pkg.Name, &pkg.Version, &pkg.Prerelease, &pkg.Type, &pkg.Path, &pkg.Data); err != nil {
+		if err := rows.Scan(&pkg.ID, &pkg.Name, &pkg.Version, &pkg.FormatVersion, &pkg.Release, &pkg.Prerelease, &pkg.KibanaVersion, &pkg.Capabilities, &pkg.Type, &pkg.Path, &pkg.Data); err != nil {
 			return err
 		}
 		err = process(ctx, &pkg)

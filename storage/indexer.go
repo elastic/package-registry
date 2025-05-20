@@ -276,12 +276,16 @@ func (i *Indexer) updateDatabase(ctx context.Context, index *packages.Packages) 
 			}
 
 			newPackage := database.Package{
-				Name:       (*index)[i].Name,
-				Version:    (*index)[i].Version,
-				Path:       (*index)[i].BasePath,
-				Type:       (*index)[i].Type,
-				Prerelease: (*index)[i].IsPrerelease(),
-				Data:       string(contents),
+				Name:          (*index)[i].Name,
+				Version:       (*index)[i].Version,
+				FormatVersion: (*index)[i].FormatVersion,
+				Path:          (*index)[i].BasePath,
+				Type:          (*index)[i].Type,
+				Release:       (*index)[i].Release,
+				KibanaVersion: (*index)[i].Conditions.Kibana.Version,
+				Capabilities:  strings.Join((*index)[i].Conditions.Elastic.Capabilities, ","),
+				Prerelease:    (*index)[i].IsPrerelease(),
+				Data:          string(contents),
 			}
 
 			dbPackages = append(dbPackages, &newPackage)
