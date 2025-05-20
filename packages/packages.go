@@ -206,8 +206,18 @@ func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages
 		metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": i.label}).Observe(time.Since(start).Seconds())
 	}()
 
+	options := &database.SQLOptions{}
+	if opts != nil && opts.Filter != nil {
+		options.Filter = &database.FilterOptions{
+			Type:       opts.Filter.PackageType,
+			Name:       opts.Filter.PackageName,
+			Version:    opts.Filter.PackageVersion,
+			Prerelease: opts.Filter.Prerelease,
+		}
+	}
+
 	var packages Packages
-	err := i.database.AllFunc(ctx, "packages", nil, func(ctx context.Context, p *database.Package) error {
+	err := i.database.AllFunc(ctx, "packages", options, func(ctx context.Context, p *database.Package) error {
 		newPackage, err := NewPackage(i.logger, p.Path, i.fsBuilder)
 		if err != nil {
 			return fmt.Errorf("failed to parse package %s-%s: %w", p.Name, p.Version, err)
@@ -291,11 +301,12 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 				return nil, fmt.Errorf("failed to marshal package (path: %s): %w", path, err)
 			}
 			dbPackage := database.Package{
-				Name:    p.Name,
-				Version: p.Version,
-				Type:    p.Type,
-				Path:    path,
-				Data:    string(contents),
+				Name:       p.Name,
+				Version:    p.Version,
+				Type:       p.Type,
+				Path:       path,
+				Prerelease: p.IsPrerelease(),
+				Data:       string(contents),
 			}
 
 			dbPackages = append(dbPackages, &dbPackage)
