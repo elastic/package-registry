@@ -33,6 +33,7 @@ func TestPackageStorage_Endpoints(t *testing.T) {
 	options, err := storage.CreateFakeIndexerOptions(db, swapDb)
 	require.NoError(t, err)
 	indexer := storage.NewIndexer(testLogger, fs.Client(), options)
+	defer indexer.Close(context.Background())
 
 	err = indexer.Init(context.Background())
 	require.NoError(t, err)
@@ -91,6 +92,7 @@ func TestPackageStorage_PackageIndex(t *testing.T) {
 	options, err := storage.CreateFakeIndexerOptions(db, swapDb)
 	require.NoError(t, err)
 	indexer := storage.NewIndexer(testLogger, fs.Client(), options)
+	defer indexer.Close(context.Background())
 
 	err = indexer.Init(context.Background())
 	require.NoError(t, err)
@@ -136,6 +138,7 @@ func TestPackageStorage_Artifacts(t *testing.T) {
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
 	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
+	defer indexer.Close(context.Background())
 
 	err = indexer.Init(context.Background())
 	require.NoError(t, err)
@@ -180,6 +183,7 @@ func TestPackageStorage_Signatures(t *testing.T) {
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
 	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
+	defer indexer.Close(context.Background())
 
 	err = indexer.Init(context.Background())
 	require.NoError(t, err)
@@ -223,6 +227,7 @@ func TestPackageStorage_Statics(t *testing.T) {
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
 	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
+	defer indexer.Close(context.Background())
 
 	err = indexer.Init(context.Background())
 	require.NoError(t, err)
@@ -271,6 +276,7 @@ func TestPackageStorage_ResolverHeadersResponse(t *testing.T) {
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
 	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
+	defer indexer.Close(context.Background())
 
 	err = indexer.Init(context.Background())
 	require.NoError(t, err)
@@ -324,6 +330,7 @@ func TestPackageStorage_ResolverErrorResponse(t *testing.T) {
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
 	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
+	defer indexer.Close(context.Background())
 
 	err = indexer.Init(context.Background())
 	require.NoError(t, err)
