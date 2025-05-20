@@ -63,7 +63,7 @@ func ServePackageSignature(logger *zap.Logger, w http.ResponseWriter, r *http.Re
 }
 
 func serveLocalPackage(logger *zap.Logger, w http.ResponseWriter, r *http.Request, p *Package, packagePath string) {
-	span, _ := apm.StartSpan(r.Context(), "ServePackage", "app")
+	span, _ := apm.StartSpan(r.Context(), "ServeLocalPackage", "app")
 	defer span.End()
 
 	logger = logger.With(zap.String("file.name", packagePath))
@@ -93,7 +93,7 @@ func serveLocalPackage(logger *zap.Logger, w http.ResponseWriter, r *http.Reques
 
 // ServePackageResource is used by staticHandler.
 func ServePackageResource(logger *zap.Logger, w http.ResponseWriter, r *http.Request, p *Package, packageFilePath string) {
-	span, _ := apm.StartSpan(r.Context(), "ServePackage", "app")
+	span, _ := apm.StartSpan(r.Context(), "ServePackageResource", "app")
 	defer span.End()
 
 	if p.RemoteResolver() != nil {

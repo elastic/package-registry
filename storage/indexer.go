@@ -208,6 +208,9 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 		metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": indexerGetDurationPrometheusLabel}).Observe(time.Since(start).Seconds())
 	}()
 
+	span, ctx := apm.StartSpan(ctx, "GetStorageIndexer", "app")
+	defer span.End()
+
 	i.m.RLock()
 	defer i.m.RUnlock()
 
