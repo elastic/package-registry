@@ -5,10 +5,11 @@
 package database
 
 type Package struct {
-	ID      int64
-	Name    string
-	Version string
-	Type    string
-	Path    string
-	Data    string
+	ID         int64
+	Name       string
+	Version    string
+	Prerelease bool
+	Type       string
+	Path       string
+	Data       string
 }

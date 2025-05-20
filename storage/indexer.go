@@ -236,8 +236,8 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 		metrics.NumberIndexedPackages.Set(float64(len(*anIndex)))
 		return nil
 	}()
+	i.logger.Info("Elapsed time in lock for updating index database", zap.Duration("lock.duration", time.Since(startLock)))
 
-	i.logger.Debug("Elapsed time in lock for updating index database", zap.Duration("lock.duration", time.Since(startLock)))
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 		return err
@@ -271,11 +271,12 @@ func (i *Indexer) updateDatabase(ctx context.Context, index *packages.Packages) 
 			}
 
 			newPackage := database.Package{
-				Name:    (*index)[i].Name,
-				Version: (*index)[i].Version,
-				Path:    (*index)[i].BasePath,
-				Type:    (*index)[i].Type,
-				Data:    string(contents),
+				Name:       (*index)[i].Name,
+				Version:    (*index)[i].Version,
+				Path:       (*index)[i].BasePath,
+				Type:       (*index)[i].Type,
+				Prerelease: (*index)[i].IsPrerelease(),
+				Data:       string(contents),
 			}
 
 			dbPackages = append(dbPackages, &newPackage)
@@ -289,6 +290,7 @@ func (i *Indexer) updateDatabase(ctx context.Context, index *packages.Packages) 
 		if totalProcessed >= len(*index) {
 			break
 		}
+		printMemUsage()
 	}
 
 	return nil
@@ -305,15 +307,18 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 		i.m.RLock()
 		defer i.m.RUnlock()
 
-		options := database.AllOptions{}
+		options := &database.SQLOptions{}
 		if opts != nil && opts.Filter != nil {
-			options.Type = opts.Filter.PackageType
-			options.Name = opts.Filter.PackageName
-			options.Version = opts.Filter.PackageVersion
+			options.Filter = &database.FilterOptions{
+				Type:       opts.Filter.PackageType,
+				Name:       opts.Filter.PackageName,
+				Version:    opts.Filter.PackageVersion,
+				Prerelease: opts.Filter.Prerelease,
+			}
 		}
 
 		numPackages := 0
-		err := (*i.current).AllFunc(ctx, "packages", &options, func(ctx context.Context, p *database.Package) error {
+		err := (*i.current).AllFunc(ctx, "packages", options, func(ctx context.Context, p *database.Package) error {
 
 			var pkg packages.Package
 			err := json.Unmarshal([]byte(p.Data), &pkg)
@@ -367,4 +372,15 @@ func (i *Indexer) transformSearchIndexAllToPackages(packages *packages.Packages)
 		m.BasePath = fmt.Sprintf("%s-%s.zip", m.Name, m.Version)
 		m.SetRemoteResolver(i.resolver)
 	}
+}
+
+func printMemUsage() {
+	return
+	// var m runtime.MemStats
+	// runtime.GC()
+	// runtime.ReadMemStats(&m)
+	// fmt.Printf("Alloc = %v MiB", m.Alloc/1024/1024)
+	// fmt.Printf("\tTotalAlloc = %v MiB", m.TotalAlloc/1024/1024)
+	// fmt.Printf("\tSys = %v MiB", m.Sys/1024/1024)
+	// fmt.Printf("\tNumGC = %v\n", m.NumGC)
 }

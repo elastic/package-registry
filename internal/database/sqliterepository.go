@@ -58,6 +58,7 @@ func (r *SQLiteRepository) Migrate(ctx context.Context) error {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
 		version TEXT NOT NULL,
+		prerelease INTEGER NOT NULL,
 		type TEXT NOT NULL,
 		path TEXT NOT NULL,
         data TEXT NOT NULL
@@ -83,14 +84,14 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 		var sb strings.Builder
 		sb.WriteString("INSERT INTO ")
 		sb.WriteString(database)
-		sb.WriteString("(name, version, type, path, data) values ")
+		sb.WriteString("(name, version, prerelease, type, path, data) values ")
 		endBatch := totalProcessed + maxBatch
 		for i := totalProcessed; i < endBatch && i < len(pkgs); i++ {
-			sb.WriteString("(?, ?, ?, ?, ?)")
+			sb.WriteString("(?, ?, ?, ?, ?, ?)")
 			if i < endBatch-1 && i < len(pkgs)-1 {
 				sb.WriteString(",")
 			}
-			args = append(args, pkgs[i].Name, pkgs[i].Version, pkgs[i].Type, pkgs[i].Path, pkgs[i].Data)
+			args = append(args, pkgs[i].Name, pkgs[i].Version, pkgs[i].Prerelease, pkgs[i].Type, pkgs[i].Path, pkgs[i].Data)
 			read++
 		}
 		query := sb.String()
@@ -127,7 +128,7 @@ func (r *SQLiteRepository) All(ctx context.Context, database string) ([]Package,
 	var all []Package
 	for rows.Next() {
 		var pkg Package
-		if err := rows.Scan(&pkg.ID, &pkg.Name, &pkg.Version, &pkg.Type, &pkg.Path, &pkg.Data); err != nil {
+		if err := rows.Scan(&pkg.ID, &pkg.Name, &pkg.Version, &pkg.Prerelease, &pkg.Type, &pkg.Path, &pkg.Data); err != nil {
 			return nil, err
 		}
 		all = append(all, pkg)
@@ -151,7 +152,7 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 
 	for rows.Next() {
 		var pkg Package
-		if err := rows.Scan(&pkg.ID, &pkg.Name, &pkg.Version, &pkg.Type, &pkg.Path, &pkg.Data); err != nil {
+		if err := rows.Scan(&pkg.ID, &pkg.Name, &pkg.Version, &pkg.Prerelease, &pkg.Type, &pkg.Path, &pkg.Data); err != nil {
 			return err
 		}
 		err = process(ctx, &pkg)
@@ -175,39 +176,51 @@ func (r *SQLiteRepository) Close(ctx context.Context) error {
 	return r.db.Close()
 }
 
-type AllOptions struct {
-	Type    string
-	Name    string
-	Version string
+type FilterOptions struct {
+	Type       string
+	Name       string
+	Version    string
+	Prerelease bool
 }
 
-func (o *AllOptions) Where() string {
-	if o == nil {
+type SQLOptions struct {
+	Filter *FilterOptions
+}
+
+func (o *SQLOptions) Where() string {
+	if o == nil || o.Filter == nil {
 		return ""
 	}
 	var sb strings.Builder
-	if o.Type != "" {
+	if o.Filter.Type != "" {
 		sb.WriteString("type = '")
-		sb.WriteString(o.Type)
+		sb.WriteString(o.Filter.Type)
 		sb.WriteString("'")
 	}
 
-	if o.Name != "" {
+	if o.Filter.Name != "" {
 		if sb.Len() > 0 {
 			sb.WriteString(" AND ")
 		}
 		sb.WriteString("name = '")
-		sb.WriteString(o.Name)
+		sb.WriteString(o.Filter.Name)
 		sb.WriteString("'")
 	}
 
-	if o.Version != "" {
+	if o.Filter.Version != "" {
 		if sb.Len() > 0 {
 			sb.WriteString(" AND ")
 		}
 		sb.WriteString("version = '")
-		sb.WriteString(o.Version)
+		sb.WriteString(o.Filter.Version)
 		sb.WriteString("'")
+	}
+
+	if !o.Filter.Prerelease {
+		if sb.Len() > 0 {
+			sb.WriteString(" AND ")
+		}
+		sb.WriteString("prerelease = 0")
 	}
 
 	clause := sb.String()
