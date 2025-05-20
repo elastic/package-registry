@@ -12,6 +12,8 @@ import (
 	"net"
 	"net/http"
 	"net/url"
+	"os"
+	"runtime/pprof"
 	"strings"
 	"sync"
 	"time"
@@ -246,6 +248,9 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 }
 
 func (i *Indexer) updateDatabase(ctx context.Context, index *packages.Packages) error {
+	span, ctx := apm.StartSpan(ctx, "updateDatabase", "app")
+	defer span.End()
+
 	err := (*i.backup).Drop(ctx, "packages")
 	if err != nil {
 		return fmt.Errorf("failed to drop packages table: %w", err)
@@ -301,9 +306,23 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	defer func() {
 		metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": indexerGetDurationPrometheusLabel}).Observe(time.Since(start).Seconds())
 	}()
+	span, ctx := apm.StartSpan(ctx, "GetPackages-StorageIndexer", "app")
+	defer span.End()
+
+	// TODO: To be removed
+	f, err := os.Create("cpu-get.prof")
+	if err != nil {
+		return nil, fmt.Errorf("failed to create CPU profile: %w", err)
+	}
+	defer f.Close()
+
+	if err := pprof.StartCPUProfile(f); err != nil {
+		return nil, fmt.Errorf("failed to start CPU profile: %w", err)
+	}
+	defer pprof.StopCPUProfile()
 
 	var readPackages packages.Packages
-	err := func() error {
+	err = func() error {
 		i.m.RLock()
 		defer i.m.RUnlock()
 
@@ -355,6 +374,7 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 		pkgs, err := opts.Filter.Apply(ctx, readPackages)
 		return pkgs, err
 	}
+
 	return readPackages, nil
 }
 

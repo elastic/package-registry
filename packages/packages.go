@@ -206,6 +206,9 @@ func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages
 		metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": i.label}).Observe(time.Since(start).Seconds())
 	}()
 
+	span, ctx := apm.StartSpan(ctx, "GetPackages-FileSystemIndexer", "app")
+	defer span.End()
+
 	options := &database.SQLOptions{}
 	if opts != nil && opts.Filter != nil {
 		options.Filter = &database.FilterOptions{
@@ -252,7 +255,7 @@ func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages
 }
 
 func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Packages, error) {
-	span, _ := apm.StartSpan(ctx, "GetFromFileSystem", "app")
+	span, ctx := apm.StartSpan(ctx, "GetFromFileSystem", "app")
 	span.Context.SetLabel("indexer", i.label)
 	defer span.End()
 
