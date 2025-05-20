@@ -375,7 +375,6 @@ func (i *Indexer) transformSearchIndexAllToPackages(packages *packages.Packages)
 }
 
 func printMemUsage() {
-	return
 	// var m runtime.MemStats
 	// runtime.GC()
 	// runtime.ReadMemStats(&m)
