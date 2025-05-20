@@ -334,6 +334,9 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 				Version:    opts.Filter.PackageVersion,
 				Prerelease: opts.Filter.Prerelease,
 			}
+			if opts.Filter.Experimental {
+				options.Filter.Prerelease = true
+			}
 		}
 
 		numPackages := 0

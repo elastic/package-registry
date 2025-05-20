@@ -217,6 +217,9 @@ func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages
 			Version:    opts.Filter.PackageVersion,
 			Prerelease: opts.Filter.Prerelease,
 		}
+		if opts.Filter.Experimental {
+			options.Filter.Prerelease = true
+		}
 	}
 
 	var packages Packages
