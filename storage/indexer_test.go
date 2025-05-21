@@ -282,10 +282,10 @@ func TestGet_ListPackages(t *testing.T) {
 			// when
 			startTest := time.Now()
 			foundPackages, err := indexer.Get(ctx, c.options)
-			t.Logf("Elapsed time: %s", time.Since(startTest))
+			t.Logf("Elapsed time GET: %s", time.Since(startTest))
 			// then
 			require.NoError(t, err, "packages should be returned")
-			require.Len(t, foundPackages, c.expected)
+			assert.Len(t, foundPackages, c.expected, "number of packages should be equal to expected")
 		})
 	}
 }

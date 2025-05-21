@@ -85,6 +85,8 @@ type GetOptions struct {
 	// all packages are returned. This is different to a zero-object filter,
 	// where experimental packages are filtered by default.
 	Filter *Filter
+
+	FullData bool
 }
 
 // FileSystemIndexer indexes packages from the filesystem.
@@ -226,7 +228,7 @@ func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages
 	err := i.database.AllFunc(ctx, "packages", options, func(ctx context.Context, p *database.Package) error {
 		newPackage, err := NewPackage(i.logger, p.Path, i.fsBuilder)
 		if err != nil {
-			return fmt.Errorf("failed to parse package %s-%s: %w", p.Name, p.Version, err)
+			return fmt.Errorf("failed to parse package %s-%s (path %q): %w", p.Name, p.Version, p.Path, err)
 		}
 
 		if opts != nil && opts.Filter != nil {

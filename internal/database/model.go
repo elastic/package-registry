@@ -18,4 +18,5 @@ type Package struct {
 	Type            string
 	Path            string
 	Data            string
+	BaseData        string
 }

@@ -67,7 +67,8 @@ func (r *SQLiteRepository) Migrate(ctx context.Context) error {
 		discoveryFields TEXT NOT NULL,
 		type TEXT NOT NULL,
 		path TEXT NOT NULL,
-        data TEXT NOT NULL
+		data TEXT NOT NULL,
+		baseData TEXT NOT NULL
     );
 	`
 	if _, err := r.db.ExecContext(ctx, fmt.Sprintf(query, "packages")); err != nil {
@@ -90,14 +91,30 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 		var sb strings.Builder
 		sb.WriteString("INSERT INTO ")
 		sb.WriteString(database)
-		sb.WriteString("(name, version, formatVersion, release, prerelease, kibanaVersion, categories, capabilities, discoveryFields, type, path, data) values ")
+		sb.WriteString("(name, version, formatVersion, release, prerelease, kibanaVersion, ")
+		sb.WriteString("categories, capabilities, discoveryFields, type, path, data, baseData) ")
+		sb.WriteString(" values ")
 		endBatch := totalProcessed + maxBatch
 		for i := totalProcessed; i < endBatch && i < len(pkgs); i++ {
-			sb.WriteString("(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+			sb.WriteString("(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
 			if i < endBatch-1 && i < len(pkgs)-1 {
 				sb.WriteString(",")
 			}
-			args = append(args, pkgs[i].Name, pkgs[i].Version, pkgs[i].FormatVersion, pkgs[i].Release, pkgs[i].Prerelease, pkgs[i].KibanaVersion, pkgs[i].Categories, pkgs[i].Capabilities, pkgs[i].DiscoveryFields, pkgs[i].Type, pkgs[i].Path, pkgs[i].Data)
+			args = append(args,
+				pkgs[i].Name,
+				pkgs[i].Version,
+				pkgs[i].FormatVersion,
+				pkgs[i].Release,
+				pkgs[i].Prerelease,
+				pkgs[i].KibanaVersion,
+				pkgs[i].Categories,
+				pkgs[i].Capabilities,
+				pkgs[i].DiscoveryFields,
+				pkgs[i].Type,
+				pkgs[i].Path,
+				pkgs[i].Data,
+				pkgs[i].BaseData,
+			)
 			read++
 		}
 		query := sb.String()
@@ -141,7 +158,22 @@ func (r *SQLiteRepository) All(ctx context.Context, database string, whereOption
 	var all []Package
 	for rows.Next() {
 		var pkg Package
-		if err := rows.Scan(&pkg.ID, &pkg.Name, &pkg.Version, &pkg.FormatVersion, &pkg.Release, &pkg.Prerelease, &pkg.KibanaVersion, &pkg.Categories, &pkg.Capabilities, &pkg.DiscoveryFields, &pkg.Type, &pkg.Path, &pkg.Data); err != nil {
+		if err := rows.Scan(
+			&pkg.ID,
+			&pkg.Name,
+			&pkg.Version,
+			&pkg.FormatVersion,
+			&pkg.Release,
+			&pkg.Prerelease,
+			&pkg.KibanaVersion,
+			&pkg.Categories,
+			&pkg.Capabilities,
+			&pkg.DiscoveryFields,
+			&pkg.Type,
+			&pkg.Path,
+			&pkg.Data,
+			&pkg.BaseData,
+		); err != nil {
 			return nil, err
 		}
 		all = append(all, pkg)
@@ -166,7 +198,22 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 
 	for rows.Next() {
 		var pkg Package
-		if err := rows.Scan(&pkg.ID, &pkg.Name, &pkg.Version, &pkg.FormatVersion, &pkg.Release, &pkg.Prerelease, &pkg.KibanaVersion, &pkg.Categories, &pkg.Capabilities, &pkg.DiscoveryFields, &pkg.Type, &pkg.Path, &pkg.Data); err != nil {
+		if err := rows.Scan(
+			&pkg.ID,
+			&pkg.Name,
+			&pkg.Version,
+			&pkg.FormatVersion,
+			&pkg.Release,
+			&pkg.Prerelease,
+			&pkg.KibanaVersion,
+			&pkg.Categories,
+			&pkg.Capabilities,
+			&pkg.DiscoveryFields,
+			&pkg.Type,
+			&pkg.Path,
+			&pkg.Data,
+			&pkg.BaseData,
+		); err != nil {
 			return err
 		}
 		err = process(ctx, &pkg)

@@ -6,7 +6,6 @@ package storage
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net"
@@ -19,7 +18,7 @@ import (
 	"sync"
 	"time"
 
-	// "github.com/goccy/go-json"
+	"github.com/goccy/go-json"
 
 	"cloud.google.com/go/storage"
 
@@ -273,9 +272,13 @@ func (i *Indexer) updateDatabase(ctx context.Context, index *packages.Packages) 
 		dbPackages = dbPackages[:0]
 		endBatch := totalProcessed + maxBatch
 		for i := totalProcessed; i < endBatch && i < len(*index); i++ {
-			contents, err := json.Marshal((*index)[i])
+			fullContents, err := json.Marshal((*index)[i])
 			if err != nil {
 				return fmt.Errorf("failed to marshal package %s-%s: %w", (*index)[i].Name, (*index)[i].Version, err)
+			}
+			baseContents, err := json.Marshal((*index)[i].BasePackage)
+			if err != nil {
+				return fmt.Errorf("failed to marshal base package %s-%s: %w", (*index)[i].Name, (*index)[i].Version, err)
 			}
 
 			discoveryFields := strings.Builder{}
@@ -322,7 +325,8 @@ func (i *Indexer) updateDatabase(ctx context.Context, index *packages.Packages) 
 				Capabilities:    capabilities,
 				DiscoveryFields: discoveryFields.String(),
 				Prerelease:      (*index)[i].IsPrerelease(),
-				Data:            string(contents),
+				Data:            string(fullContents),
+				BaseData:        string(baseContents),
 			}
 
 			dbPackages = append(dbPackages, &newPackage)
@@ -351,20 +355,20 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	defer span.End()
 
 	// TODO: To be removed
-	profBaseName := "get-preprocess-columns-all-map.prof"
-	f, err := os.Create("cpu-" + profBaseName)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create CPU profile: %w", err)
-	}
-	defer f.Close()
+	profBaseName := "get-preprocess-columns-all-basedata-fast-json.prof"
+	// f, err := os.Create("cpu-" + profBaseName)
+	// if err != nil {
+	// 	return nil, fmt.Errorf("failed to create CPU profile: %w", err)
+	// }
+	// defer f.Close()
 
-	if err := pprof.StartCPUProfile(f); err != nil {
-		return nil, fmt.Errorf("failed to start CPU profile: %w", err)
-	}
-	defer pprof.StopCPUProfile()
+	// if err := pprof.StartCPUProfile(f); err != nil {
+	// 	return nil, fmt.Errorf("failed to start CPU profile: %w", err)
+	// }
+	// defer pprof.StopCPUProfile()
 
 	var readPackages packages.Packages
-	err = func() error {
+	err := func() error {
 		i.m.RLock()
 		defer i.m.RUnlock()
 
@@ -410,7 +414,11 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 					return nil
 				}
 			}
-			err = json.Unmarshal([]byte(p.Data), pkg)
+			if opts.FullData {
+				err = json.Unmarshal([]byte(p.Data), pkg)
+			} else {
+				err = json.Unmarshal([]byte(p.BaseData), pkg)
+			}
 			if err != nil {
 				return fmt.Errorf("failed to parse package %s-%s: %w", p.Name, p.Version, err)
 			}
