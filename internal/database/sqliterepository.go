@@ -123,9 +123,16 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 	return nil
 }
 
-func (r *SQLiteRepository) All(ctx context.Context, database string) ([]Package, error) {
-	query := fmt.Sprintf("SELECT * FROM %s", database)
-	rows, err := r.db.QueryContext(ctx, query)
+func (r *SQLiteRepository) All(ctx context.Context, database string, whereOptions WhereOptions) ([]Package, error) {
+	var query strings.Builder
+	query.WriteString("SELECT * FROM ")
+	query.WriteString(database)
+	if whereOptions != nil {
+		query.WriteString(whereOptions.Where())
+	}
+	// TODO: remove debug
+	fmt.Println(query.String())
+	rows, err := r.db.QueryContext(ctx, query.String())
 	if err != nil {
 		return nil, err
 	}
@@ -149,6 +156,7 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 	if whereOptions != nil {
 		query.WriteString(whereOptions.Where())
 	}
+	// TODO: remove debug
 	fmt.Println(query.String())
 	rows, err := r.db.QueryContext(ctx, query.String())
 	if err != nil {

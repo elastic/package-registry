@@ -388,7 +388,7 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 				packages.WithFormatVersion(p.FormatVersion),
 				packages.WithRelease(p.Release),
 				packages.WithKibanaVersion(p.KibanaVersion),
-				packages.WithCategories(p.Capabilities),
+				packages.WithCapabilities(p.Capabilities),
 				packages.WithCategories(p.Categories),
 				packages.WithType(p.Type),
 				packages.WithDiscoveryFields(p.DiscoveryFields),
