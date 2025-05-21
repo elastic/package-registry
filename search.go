@@ -33,7 +33,7 @@ func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger := logger.With(apmzap.TraceContext(r.Context())...)
 
-		filter, err := newSearchFilterFromQuery(r.Context(), r.URL.Query())
+		filter, err := newSearchFilterFromQuery(r.URL.Query())
 		if err != nil {
 			badRequest(w, err.Error())
 			return
@@ -73,10 +73,7 @@ func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *
 	}
 }
 
-func newSearchFilterFromQuery(ctx context.Context, query url.Values) (*packages.Filter, error) {
-	span, _ := apm.StartSpan(ctx, "NewSearchFilterFromQuery", "app")
-	defer span.End()
-
+func newSearchFilterFromQuery(query url.Values) (*packages.Filter, error) {
 	var filter packages.Filter
 
 	if len(query) == 0 {
