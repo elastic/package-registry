@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Change license from Elastic License to Elastic License 2.0. [#1298](https://github.com/elastic/package-registry/pull/1298)
-* Add APM spans for proxy requests. [#1306](https://github.com/elastic/package-registry/pull/1306)
+* Add APM spans for proxy requests and storage indexer Get calls. [#1306](https://github.com/elastic/package-registry/pull/1306)
 
 ### Deprecated
 
