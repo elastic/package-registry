@@ -5,15 +5,17 @@
 package database
 
 type Package struct {
-	ID            int64
-	Name          string
-	Version       string
-	FormatVersion string
-	Release       string
-	Prerelease    bool
-	KibanaVersion string
-	Capabilities  string
-	Type          string
-	Path          string
-	Data          string
+	ID              int64
+	Name            string
+	Version         string
+	FormatVersion   string
+	Release         string
+	Prerelease      bool
+	KibanaVersion   string
+	Capabilities    string
+	Categories      string
+	DiscoveryFields string
+	Type            string
+	Path            string
+	Data            string
 }

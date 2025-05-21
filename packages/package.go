@@ -62,6 +62,141 @@ type Package struct {
 
 type FileSystemBuilder func(*Package) (PackageFileSystem, error)
 
+// Option is a functional option for configuring a Package.
+type Option func(*Package) error
+
+// WithName sets the package name
+func WithName(name string) Option {
+	return func(p *Package) error {
+		p.Name = name
+		return nil
+	}
+}
+
+// WithVersion sets the package version.
+func WithVersion(version string) Option {
+	return func(p *Package) error {
+		p.Version = version
+		var err error
+		p.versionSemVer, err = semver.NewVersion(version)
+		if err != nil {
+			return fmt.Errorf("invalid package version: %w", err)
+		}
+		return nil
+	}
+}
+
+// WithFormatVersion sets the package format version (spec).
+func WithFormatVersion(version string) Option {
+	return func(p *Package) error {
+		p.FormatVersion = version
+		var err error
+		specSemVer, err := semver.NewVersion(version)
+		if err != nil {
+			return fmt.Errorf("invalid package format version: %w", err)
+		}
+
+		specMajorMinorVersion := fmt.Sprintf("%d.%d.0", specSemVer.Major(), specSemVer.Minor())
+
+		p.specMajorMinorSemVer, err = semver.NewVersion(specMajorMinorVersion)
+		if err != nil {
+			return fmt.Errorf("invalid package format version: %w", err)
+		}
+		return nil
+	}
+}
+
+// WithRelease sets the package release according to the semantic versioning.
+func WithRelease(release string) Option {
+	return func(p *Package) error {
+		p.Release = release
+		return nil
+	}
+}
+
+// WithKibanaVersion sets the package Kibana version condition.
+func WithKibanaVersion(version string) Option {
+	return func(p *Package) error {
+		if version == "" {
+			return nil
+		}
+		if p.Conditions == nil {
+			p.Conditions = &Conditions{}
+		}
+		if p.Conditions.Kibana == nil {
+			p.Conditions.Kibana = &KibanaConditions{}
+		}
+		p.Conditions.Kibana.Version = version
+		return nil
+	}
+}
+
+// WithCategories sets the categories for this package.
+func WithCategories(categories string) Option {
+	return func(p *Package) error {
+		if categories == "" {
+			return nil
+		}
+		// It does not assign the categories to the policy templates.
+		// All categories are assigned to the package itself.
+		p.Categories = strings.Split(categories, ",")
+		return nil
+	}
+}
+
+// WithCapabilities sets the capabilities for this package.
+func WithCapabilities(capabilities string) Option {
+	return func(p *Package) error {
+		if capabilities == "" {
+			return nil
+		}
+		if p.Conditions == nil {
+			p.Conditions = &Conditions{}
+		}
+		if p.Conditions.Elastic == nil {
+			p.Conditions.Elastic = &ElasticConditions{}
+		}
+		p.Conditions.Elastic.Capabilities = strings.Split(capabilities, ",")
+		return nil
+	}
+}
+
+// WithType sets the package type.
+func WithType(packageType string) Option {
+	return func(p *Package) error {
+		p.Type = packageType
+		return nil
+	}
+}
+
+func WithDiscoveryFields(fields string) Option {
+	return func(p *Package) error {
+		if fields == "" {
+			return nil
+		}
+		if p.Discovery == nil {
+			p.Discovery = &Discovery{}
+		}
+
+		p.Discovery.Fields = []DiscoveryField{}
+		for _, field := range strings.Split(fields, ",") {
+			p.Discovery.Fields = append(p.Discovery.Fields, DiscoveryField{Name: field})
+		}
+		return nil
+	}
+}
+
+// NewPackageWithOptions creates a new Package using functional options.
+func NewPackageWithOptions(opts ...Option) (*Package, error) {
+	p := &Package{}
+	for _, opt := range opts {
+		if err := opt(p); err != nil {
+			return nil, err
+		}
+	}
+	return p, nil
+}
+
 // BasePackage is used for the output of the package info in the /search endpoint
 type BasePackage struct {
 	Name                    string               `config:"name" json:"name"`

@@ -18,6 +18,8 @@ import (
 	"sync"
 	"time"
 
+	// "github.com/goccy/go-json"
+
 	"cloud.google.com/go/storage"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -275,17 +277,51 @@ func (i *Indexer) updateDatabase(ctx context.Context, index *packages.Packages) 
 				return fmt.Errorf("failed to marshal package %s-%s: %w", (*index)[i].Name, (*index)[i].Version, err)
 			}
 
+			discoveryFields := strings.Builder{}
+			if (*index)[i].Discovery != nil {
+				for i, field := range (*index)[i].Discovery.Fields {
+					discoveryFields.WriteString(field.Name)
+					if i < len((*index)[i].Discovery.Fields)-1 {
+						discoveryFields.WriteString(",")
+					}
+				}
+			}
+
+			kibanaVersion := ""
+			if (*index)[i].Conditions != nil && (*index)[i].Conditions.Kibana != nil {
+				kibanaVersion = (*index)[i].Conditions.Kibana.Version
+			}
+
+			capabilities := ""
+			if (*index)[i].Conditions != nil && (*index)[i].Conditions.Elastic != nil {
+				capabilities = strings.Join((*index)[i].Conditions.Elastic.Capabilities, ",")
+			}
+
+			categories := strings.Join((*index)[i].Categories, ",")
+			for _, policyTemplate := range (*index)[i].PolicyTemplates {
+				if len(policyTemplate.Categories) == 0 {
+					continue
+				}
+				categories += fmt.Sprintf(",%s", strings.Join(policyTemplate.Categories, ","))
+			}
+
+			if (*index)[i].Conditions != nil && (*index)[i].Conditions.Elastic != nil {
+				categories = strings.Join((*index)[i].Conditions.Elastic.Capabilities, ",")
+			}
+
 			newPackage := database.Package{
-				Name:          (*index)[i].Name,
-				Version:       (*index)[i].Version,
-				FormatVersion: (*index)[i].FormatVersion,
-				Path:          (*index)[i].BasePath,
-				Type:          (*index)[i].Type,
-				Release:       (*index)[i].Release,
-				KibanaVersion: (*index)[i].Conditions.Kibana.Version,
-				Capabilities:  strings.Join((*index)[i].Conditions.Elastic.Capabilities, ","),
-				Prerelease:    (*index)[i].IsPrerelease(),
-				Data:          string(contents),
+				Name:            (*index)[i].Name,
+				Version:         (*index)[i].Version,
+				FormatVersion:   (*index)[i].FormatVersion,
+				Path:            (*index)[i].BasePath,
+				Type:            (*index)[i].Type,
+				Release:         (*index)[i].Release,
+				KibanaVersion:   kibanaVersion,
+				Categories:      categories,
+				Capabilities:    capabilities,
+				DiscoveryFields: discoveryFields.String(),
+				Prerelease:      (*index)[i].IsPrerelease(),
+				Data:            string(contents),
 			}
 
 			dbPackages = append(dbPackages, &newPackage)
@@ -314,7 +350,7 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	defer span.End()
 
 	// TODO: To be removed
-	f, err := os.Create("cpu-get.prof")
+	f, err := os.Create("cpu-get-preprocess-columns.prof")
 	if err != nil {
 		return nil, fmt.Errorf("failed to create CPU profile: %w", err)
 	}
@@ -346,15 +382,25 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 		numPackages := 0
 		err := (*i.current).AllFunc(ctx, "packages", options, func(ctx context.Context, p *database.Package) error {
 
-			var pkg packages.Package
-			err := json.Unmarshal([]byte(p.Data), &pkg)
+			pkg, err := packages.NewPackageWithOptions(
+				packages.WithName(p.Name),
+				packages.WithVersion(p.Version),
+				packages.WithFormatVersion(p.FormatVersion),
+				packages.WithRelease(p.Release),
+				packages.WithKibanaVersion(p.KibanaVersion),
+				packages.WithCategories(p.Capabilities),
+				packages.WithCategories(p.Categories),
+				packages.WithType(p.Type),
+				packages.WithDiscoveryFields(p.DiscoveryFields),
+			)
 			if err != nil {
-				return fmt.Errorf("failed to parse package %s-%s: %w", p.Name, p.Version, err)
+				return fmt.Errorf("failed to create package %s-%s: %w", p.Name, p.Version, err)
 			}
+
 			numPackages++
 			// First phase filtering packages
 			if opts != nil && opts.Filter != nil {
-				pkgs, err := opts.Filter.Apply(ctx, packages.Packages{&pkg})
+				pkgs, err := opts.Filter.Apply(ctx, packages.Packages{pkg})
 				if err != nil {
 					return err
 				}
@@ -362,8 +408,12 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 					return nil
 				}
 			}
+			err = json.Unmarshal([]byte(p.Data), pkg)
+			if err != nil {
+				return fmt.Errorf("failed to parse package %s-%s: %w", p.Name, p.Version, err)
+			}
 			pkg.SetRemoteResolver(i.resolver)
-			readPackages = append(readPackages, &pkg)
+			readPackages = append(readPackages, pkg)
 			return nil
 		})
 		if err != nil {
