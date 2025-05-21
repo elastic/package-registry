@@ -13,6 +13,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"runtime"
 	"runtime/pprof"
 	"strings"
 	"sync"
@@ -350,7 +351,8 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	defer span.End()
 
 	// TODO: To be removed
-	f, err := os.Create("cpu-get-preprocess-columns.prof")
+	profBaseName := "get-preprocess-columns-all-map.prof"
+	f, err := os.Create("cpu-" + profBaseName)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create CPU profile: %w", err)
 	}
@@ -420,16 +422,32 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 			return fmt.Errorf("failed to obtain all packages: %w", err)
 		}
 		i.logger.Debug("Number of packages read from database", zap.Int("num.packages", numPackages))
+
+		// Required to filter packages again if condition `all=false`
+		if opts != nil && opts.Filter != nil {
+			readPackages, err = opts.Filter.Apply(ctx, readPackages)
+			if err != nil {
+				return fmt.Errorf("failed to filter packages: %w", err)
+			}
+			return nil
+		}
+
 		return nil
 	}()
 	if err != nil {
 		return nil, err
 	}
 
-	// Required to filter packages again if condition `all=false`
-	if opts != nil && opts.Filter != nil {
-		pkgs, err := opts.Filter.Apply(ctx, readPackages)
-		return pkgs, err
+	// TODO: To be removed
+	mf, err := os.Create("mem-" + profBaseName)
+	if err != nil {
+		return nil, fmt.Errorf("could not create memory profile: %w", err)
+	}
+	defer mf.Close()
+	runtime.GC() // get up-to-date statistics
+
+	if err := pprof.Lookup("heap").WriteTo(mf, 0); err != nil {
+		return nil, fmt.Errorf("could not write memory profile: %w", err)
 	}
 
 	return readPackages, nil
