@@ -11,9 +11,6 @@ import (
 	"net"
 	"net/http"
 	"net/url"
-	"os"
-	"runtime"
-	"runtime/pprof"
 	"strings"
 	"sync"
 	"time"
@@ -52,7 +49,11 @@ type Indexer struct {
 	backup  *database.Repository
 
 	logger *zap.Logger
+
+	maxBulkAddBatch int
 }
+
+const defaultMaxBulkAddBatch = 1500
 
 type IndexerOptions struct {
 	APMTracer                    *apm.Tracer
@@ -69,12 +70,13 @@ func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options Index
 	}
 
 	indexer := &Indexer{
-		storageClient: storageClient,
-		options:       options,
-		logger:        logger,
-		database:      options.Database,
-		swapDatabase:  options.SwapDatabase,
-		label:         fmt.Sprintf("storage-%s", options.PackageStorageEndpoint),
+		storageClient:   storageClient,
+		options:         options,
+		logger:          logger,
+		database:        options.Database,
+		swapDatabase:    options.SwapDatabase,
+		label:           fmt.Sprintf("storage-%s", options.PackageStorageEndpoint),
+		maxBulkAddBatch: defaultMaxBulkAddBatch,
 	}
 
 	indexer.current = &indexer.database
@@ -264,13 +266,12 @@ func (i *Indexer) updateDatabase(ctx context.Context, index *packages.Packages) 
 	}
 
 	totalProcessed := 0
-	maxBatch := 500
-	dbPackages := make([]*database.Package, 0, maxBatch)
+	dbPackages := make([]*database.Package, 0, i.maxBulkAddBatch)
 	for {
 		read := 0
 		// reuse slice to avoid allocations
 		dbPackages = dbPackages[:0]
-		endBatch := totalProcessed + maxBatch
+		endBatch := totalProcessed + i.maxBulkAddBatch
 		for i := totalProcessed; i < endBatch && i < len(*index); i++ {
 			fullContents, err := json.Marshal((*index)[i])
 			if err != nil {
@@ -355,7 +356,7 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	defer span.End()
 
 	// TODO: To be removed
-	profBaseName := "get-preprocess-columns-all-basedata-fast-json.prof"
+	//profBaseName := "get-preprocess-columns-all-basedata-fast-json.prof"
 	// f, err := os.Create("cpu-" + profBaseName)
 	// if err != nil {
 	// 	return nil, fmt.Errorf("failed to create CPU profile: %w", err)
@@ -447,16 +448,16 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	}
 
 	// TODO: To be removed
-	mf, err := os.Create("mem-" + profBaseName)
-	if err != nil {
-		return nil, fmt.Errorf("could not create memory profile: %w", err)
-	}
-	defer mf.Close()
-	runtime.GC() // get up-to-date statistics
+	// mf, err := os.Create("mem-" + profBaseName)
+	// if err != nil {
+	// 	return nil, fmt.Errorf("could not create memory profile: %w", err)
+	// }
+	// defer mf.Close()
+	// runtime.GC() // get up-to-date statistics
 
-	if err := pprof.Lookup("heap").WriteTo(mf, 0); err != nil {
-		return nil, fmt.Errorf("could not write memory profile: %w", err)
-	}
+	// if err := pprof.Lookup("heap").WriteTo(mf, 0); err != nil {
+	// 	return nil, fmt.Errorf("could not write memory profile: %w", err)
+	// }
 
 	return readPackages, nil
 }
