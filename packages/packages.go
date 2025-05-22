@@ -227,9 +227,22 @@ func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages
 
 	var packages Packages
 	err := i.database.AllFunc(ctx, "packages", options, func(ctx context.Context, p *database.Package) error {
-		newPackage, err := NewPackage(i.logger, p.Path, i.fsBuilder)
+		var newPackage *Package
+		err := func() error {
+			span, _ := apm.StartSpan(ctx, "Process new package", "app")
+			span.Context.SetLabel("package.path", p.Path)
+			defer span.End()
+
+			var err error
+			newPackage, err = NewPackage(i.logger, p.Path, i.fsBuilder)
+			if err != nil {
+				return fmt.Errorf("failed to parse package %s-%s (path %q): %w", p.Name, p.Version, p.Path, err)
+			}
+			return nil
+		}()
 		if err != nil {
-			return fmt.Errorf("failed to parse package %s-%s (path %q): %w", p.Name, p.Version, p.Path, err)
+			i.logger.Error("failed to parse package", zap.String("package.name", p.Name), zap.String("package.version", p.Version), zap.String("package.path", p.Path), zap.Error(err))
+			return nil
 		}
 
 		if opts != nil && opts.Filter != nil {
