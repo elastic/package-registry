@@ -252,6 +252,10 @@ func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages
 		return packages, nil
 	}
 
+	if len(packages) == 0 {
+		return packages, nil
+	}
+
 	// Required to filter packages if condition `all=false`
 	if opts.Filter != nil {
 		return opts.Filter.Apply(ctx, packages)
@@ -280,7 +284,7 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 			return nil, err
 		}
 
-		i.logger.Info("Searching packages in "+basePath, zap.Int("pathsNum", len(packagePaths)))
+		i.logger.Info("Searching packages in "+basePath, zap.Int("pathsNum", len(packagePaths)), zap.String("indexer", i.label))
 		for _, path := range packagePaths {
 			p, err := NewPackage(i.logger, path, i.fsBuilder)
 			if err != nil {
@@ -322,6 +326,9 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 		}
 	}
 
+	if len(dbPackages) == 0 {
+		return pList, nil
+	}
 	err := i.database.BulkAdd(ctx, "packages", dbPackages)
 	if err != nil {
 		return nil, fmt.Errorf("failed to add packages: %w", err)
