@@ -37,6 +37,23 @@ func Build() error {
 	return sh.Run("go", "build", ".")
 }
 
+func DockerBuild(tag string) error {
+	contents, err := os.ReadFile(".go-version")
+	if err != nil {
+		return fmt.Errorf("failed to read .go-version: %w", err)
+	}
+	goVersion := strings.TrimSpace(string(contents))
+	if goVersion == "" {
+		return fmt.Errorf("empty go version in .go-version")
+	}
+	dockerImage := fmt.Sprintf("docker.elastic.co/package-registry/package-registry:%s", tag)
+	err = sh.Run("docker", "build", "--build-arg", fmt.Sprintf("GO_VERSION=%s", goVersion), "-t", dockerImage, ".")
+	if err != nil {
+		return fmt.Errorf("failed to build docker image: %w", err)
+	}
+	return nil
+}
+
 func Check() error {
 	mg.SerialDeps(
 		Format,
