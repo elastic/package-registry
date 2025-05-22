@@ -177,9 +177,11 @@ func TestGet_ListPackages(t *testing.T) {
 	require.NoError(t, err, "storage indexer must be initialized properly")
 
 	cases := []struct {
-		name     string
-		options  *packages.GetOptions
-		expected int
+		name            string
+		options         *packages.GetOptions
+		expected        int
+		expectedName    string
+		expectedVersion string
 	}{
 		{
 			name:     "all packages filter nil",
@@ -276,6 +278,18 @@ func TestGet_ListPackages(t *testing.T) {
 			},
 			expected: 0,
 		},
+		{
+			name: "latest package",
+			options: &packages.GetOptions{
+				Filter: &packages.Filter{
+					PackageName: "apm",
+					PackageType: "integration",
+				},
+			},
+			expected:        1,
+			expectedName:    "apm",
+			expectedVersion: "8.2.0",
+		},
 	}
 
 	for _, c := range cases {
@@ -287,45 +301,14 @@ func TestGet_ListPackages(t *testing.T) {
 			// then
 			require.NoError(t, err, "packages should be returned")
 			assert.Len(t, foundPackages, c.expected, "number of packages should be equal to expected")
+			if c.expectedName != "" {
+				assert.Equal(t, c.expectedName, foundPackages[0].Name)
+			}
+			if c.expectedVersion != "" {
+				assert.Equal(t, c.expectedVersion, foundPackages[0].Version)
+			}
 		})
 	}
-}
-
-func TestGet_FindLatestPackage(t *testing.T) {
-	// given
-	db, err := database.NewMemorySQLDB("main")
-	require.NoError(t, err)
-
-	swapDb, err := database.NewMemorySQLDB("swap")
-	require.NoError(t, err)
-
-	options, err := CreateFakeIndexerOptions(db, swapDb)
-	require.NoError(t, err)
-
-	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
-	defer fs.Stop()
-	storageClient := fs.Client()
-
-	ctx := context.Background()
-	indexer := NewIndexer(util.NewTestLogger(), storageClient, options)
-	defer indexer.Close(ctx)
-
-	err = indexer.Init(ctx)
-	require.NoError(t, err, "storage indexer must be initialized properly")
-
-	// when
-	foundPackages, err := indexer.Get(ctx, &packages.GetOptions{
-		Filter: &packages.Filter{
-			PackageName: "apm",
-			PackageType: "integration",
-		},
-	})
-
-	// then
-	require.NoError(t, err, "packages should be returned")
-	require.Len(t, foundPackages, 1)
-	require.Equal(t, "apm", foundPackages[0].Name)
-	require.Equal(t, "8.2.0", foundPackages[0].Version)
 }
 
 func TestGet_IndexUpdated(t *testing.T) {

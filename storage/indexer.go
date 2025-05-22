@@ -351,7 +351,7 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	defer func() {
 		metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": indexerGetDurationPrometheusLabel}).Observe(time.Since(start).Seconds())
 	}()
-	span, ctx := apm.StartSpan(ctx, "GetPackages-StorageIndexer", "app")
+	span, ctx := apm.StartSpan(ctx, "GetStorageIndexer", "app")
 	defer span.End()
 
 	// TODO: To be removed

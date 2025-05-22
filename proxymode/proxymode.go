@@ -16,6 +16,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/hashicorp/go-retryablehttp"
+	"go.elastic.co/apm/v2"
 
 	"go.uber.org/zap"
 
@@ -112,6 +113,9 @@ func (pm *ProxyMode) Enabled() bool {
 }
 
 func (pm *ProxyMode) Search(r *http.Request) (packages.Packages, error) {
+	span, _ := apm.StartSpan(r.Context(), "Proxy Search", "app")
+	defer span.End()
+
 	proxyURL := *r.URL
 	proxyURL.Host = pm.destinationURL.Host
 	proxyURL.Scheme = pm.destinationURL.Scheme
@@ -140,6 +144,9 @@ func (pm *ProxyMode) Search(r *http.Request) (packages.Packages, error) {
 }
 
 func (pm *ProxyMode) Categories(r *http.Request) ([]packages.Category, error) {
+	span, _ := apm.StartSpan(r.Context(), "Proxy Categories", "app")
+	defer span.End()
+
 	proxyURL := *r.URL
 	proxyURL.Host = pm.destinationURL.Host
 	proxyURL.Scheme = pm.destinationURL.Scheme
@@ -165,6 +172,9 @@ func (pm *ProxyMode) Categories(r *http.Request) ([]packages.Category, error) {
 }
 
 func (pm *ProxyMode) Package(r *http.Request) (*packages.Package, error) {
+	span, _ := apm.StartSpan(r.Context(), "Proxy Package", "app")
+	defer span.End()
+
 	vars := mux.Vars(r)
 	packageName, ok := vars["packageName"]
 	if !ok {

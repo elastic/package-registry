@@ -13,10 +13,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Update Go runtime to 1.24.2. [#1299](https://github.com/elastic/package-registry/pull/1299)
 * Ignore unknown categories instead of producing fatal errors. [#1297](https://github.com/elastic/package-registry/pull/1297)
 * Fix usages of time.Since in defer statements used to obtain duration Prometheus metrics in the indexer. [#1304](https://github.com/elastic/package-registry/pull/1304)
+* Rename some spans to avoid conflicts. [#1306](https://github.com/elastic/package-registry/pull/1306)
 
 ### Added
 
 * Change license from Elastic License to Elastic License 2.0. [#1298](https://github.com/elastic/package-registry/pull/1298)
+* Add APM spans for proxy requests and storage indexer Get calls. [#1306](https://github.com/elastic/package-registry/pull/1306)
 
 ### Deprecated
 
