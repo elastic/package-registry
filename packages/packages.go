@@ -28,6 +28,8 @@ import (
 // ValidationDisabled is a flag which can disable package content validation (package, data streams, assets, etc.).
 var ValidationDisabled bool
 
+const defaultMaxBulkAddBatch = 2000
+
 // Packages is a list of packages.
 type Packages []*Package
 
@@ -106,6 +108,8 @@ type FileSystemIndexer struct {
 	logger *zap.Logger
 
 	database database.Repository
+
+	maxBulkAddBatch int
 }
 
 // NewFileSystemIndexer creates a new FileSystemIndexer for the given paths.
@@ -138,12 +142,13 @@ func NewFileSystemIndexer(logger *zap.Logger, dbRepository database.Repository, 
 		return false, nil
 	}
 	return &FileSystemIndexer{
-		paths:     paths,
-		label:     "FileSystemIndexer",
-		walkerFn:  walkerFn,
-		fsBuilder: ExtractedFileSystemBuilder,
-		logger:    logger,
-		database:  dbRepository,
+		paths:           paths,
+		label:           "FileSystemIndexer",
+		walkerFn:        walkerFn,
+		fsBuilder:       ExtractedFileSystemBuilder,
+		logger:          logger,
+		database:        dbRepository,
+		maxBulkAddBatch: defaultMaxBulkAddBatch,
 	}
 }
 
@@ -174,12 +179,13 @@ func NewZipFileSystemIndexer(logger *zap.Logger, dbRepository database.Repositor
 	}
 
 	return &FileSystemIndexer{
-		paths:     paths,
-		label:     "ZipFileSystemIndexer",
-		walkerFn:  walkerFn,
-		fsBuilder: ZipFileSystemBuilder,
-		logger:    logger,
-		database:  dbRepository,
+		paths:           paths,
+		label:           "ZipFileSystemIndexer",
+		walkerFn:        walkerFn,
+		fsBuilder:       ZipFileSystemBuilder,
+		logger:          logger,
+		database:        dbRepository,
+		maxBulkAddBatch: defaultMaxBulkAddBatch,
 	}
 }
 
@@ -189,7 +195,7 @@ var ZipFileSystemBuilder = func(p *Package) (PackageFileSystem, error) {
 
 // Init initializes the indexer.
 func (i *FileSystemIndexer) Init(ctx context.Context) (err error) {
-	_, err = i.getPackagesFromFileSystem(ctx)
+	err = i.getPackagesFromFileSystem(ctx)
 	if err != nil {
 		return fmt.Errorf("reading packages from filesystem failed: %w", err)
 	}
@@ -277,35 +283,55 @@ func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages
 	return packages, nil
 }
 
-func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Packages, error) {
+type packageKey struct {
+	name    string
+	version string
+}
+
+func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) error {
 	span, ctx := apm.StartSpan(ctx, "GetFromFileSystem", "app")
 	span.Context.SetLabel("indexer", i.label)
 	defer span.End()
 
-	type packageKey struct {
-		name    string
-		version string
-	}
 	packagesFound := make(map[packageKey]struct{})
 
-	var pList Packages
-	var dbPackages []*database.Package
-
 	for _, basePath := range i.paths {
-		packagePaths, err := i.getPackagePaths(basePath)
+		err := i.addPackagesToDatabase(ctx, basePath, &packagesFound)
 		if err != nil {
-			return nil, err
+			return fmt.Errorf("adding packages to database failed (path: %s): %w", basePath, err)
 		}
+	}
 
-		i.logger.Info("Searching packages in "+basePath, zap.Int("pathsNum", len(packagePaths)), zap.String("indexer", i.label))
-		for _, path := range packagePaths {
-			p, err := NewPackage(i.logger, path, i.fsBuilder)
+	return nil
+}
+
+func (i *FileSystemIndexer) addPackagesToDatabase(ctx context.Context, basePath string, packagesFound *map[packageKey]struct{}) error {
+	packagePaths, err := i.getPackagePaths(basePath)
+	if err != nil {
+		return err
+	}
+
+	totalProcessed := 0
+	dbPackages := make([]*database.Package, 0, i.maxBulkAddBatch)
+
+	i.logger.Info("Searching packages in "+basePath, zap.Int("pathsNum", len(packagePaths)), zap.String("indexer", i.label))
+	for {
+		read := 0
+		// reuse slice to avoid allocations
+		dbPackages = dbPackages[:0]
+		endBatch := totalProcessed + i.maxBulkAddBatch
+
+		for j := totalProcessed; j < endBatch && j < len(packagePaths); j++ {
+			currentPackagePath := packagePaths[j]
+			p, err := NewPackage(i.logger, currentPackagePath, i.fsBuilder)
 			if err != nil {
-				return nil, fmt.Errorf("loading package failed (path: %s): %w", path, err)
+				return fmt.Errorf("loading package failed (path: %s): %w", currentPackagePath, err)
 			}
 
+			read++
+
 			key := packageKey{name: p.Name, version: p.Version}
-			if _, found := packagesFound[key]; found {
+			if _, found := (*packagesFound)[key]; found {
 				i.logger.Debug("duplicated package",
 					zap.String("package.name", p.Name),
 					zap.String("package.version", p.Version),
@@ -313,8 +339,7 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 				continue
 			}
 
-			packagesFound[key] = struct{}{}
-			pList = append(pList, p)
+			(*packagesFound)[key] = struct{}{}
 
 			i.logger.Debug("found package",
 				zap.String("package.name", p.Name),
@@ -324,29 +349,32 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 			// database
 			contents, err := json.Marshal(p)
 			if err != nil {
-				return nil, fmt.Errorf("failed to marshal package (path: %s): %w", path, err)
+				return fmt.Errorf("failed to marshal package (path: %s): %w", currentPackagePath, err)
 			}
 			dbPackage := database.Package{
 				Name:       p.Name,
 				Version:    p.Version,
 				Type:       p.Type,
-				Path:       path,
+				Path:       currentPackagePath,
 				Prerelease: p.IsPrerelease(),
 				Data:       string(contents),
 			}
 
 			dbPackages = append(dbPackages, &dbPackage)
 		}
+		if len(dbPackages) > 0 {
+			err = i.database.BulkAdd(ctx, "packages", dbPackages)
+			if err != nil {
+				return fmt.Errorf("failed to create all packages (bulk operation): %w", err)
+			}
+		}
+		totalProcessed += read
+		if totalProcessed >= len(packagePaths) {
+			break
+		}
 	}
 
-	if len(dbPackages) == 0 {
-		return pList, nil
-	}
-	err := i.database.BulkAdd(ctx, "packages", dbPackages)
-	if err != nil {
-		return nil, fmt.Errorf("failed to add packages: %w", err)
-	}
-	return pList, nil
+	return nil
 }
 
 // getPackagePaths returns list of available packages, one for each version.
