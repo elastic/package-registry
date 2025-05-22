@@ -280,6 +280,7 @@ type ElasticConditions struct {
 	Capabilities []string `config:"capabilities,omitempty" json:"capabilities,omitempty" yaml:"capabilities,omitempty"`
 }
 
+// Deprecated: Version is not currently used and will be removed in a future release.
 type Version struct {
 	Min string `config:"min,omitempty" json:"min,omitempty"`
 	Max string `config:"max,omitempty" json:"max,omitempty"`
@@ -331,6 +332,7 @@ func (i Image) getPath(p *Package) string {
 	return path.Join(packagePathPrefix, p.Name, p.Version, i.Src)
 }
 
+// Deprecated: Command is not currently used and will be removed in a future release.
 type Download struct {
 	Path string `config:"path" json:"path" validate:"required"`
 	Type string `config:"type" json:"type" validate:"required"`
@@ -346,6 +348,7 @@ type DeploymentMode struct {
 	IsDefault *bool `config:"is_default" json:"is_default,omitempty" yaml:"is_default,omitempty"`
 }
 
+// Deprecated: NewCommand is not currently used and will be removed in a future release.
 func NewDownload(p Package, t string) Download {
 	return Download{
 		Path: getDownloadPath(p, t),
@@ -353,6 +356,7 @@ func NewDownload(p Package, t string) Download {
 	}
 }
 
+// Deprecated: getDownloadPath is not currently used and will be removed in a future release.
 func getDownloadPath(p Package, t string) string {
 	return path.Join("/epr", p.Name, p.Name+"-"+p.Version+".zip")
 }
