@@ -23,8 +23,9 @@ var (
 )
 
 type SQLiteRepository struct {
-	db   *sql.DB
-	path string
+	db              *sql.DB
+	path            string
+	maxBulkAddBatch int
 }
 
 var _ Repository = new(SQLiteRepository)
@@ -44,7 +45,8 @@ func NewFileSQLDB(path string) (*SQLiteRepository, error) {
 
 func newSQLiteRepository(db *sql.DB) *SQLiteRepository {
 	return &SQLiteRepository{
-		db: db,
+		db:              db,
+		maxBulkAddBatch: 2000,
 	}
 }
 
@@ -88,8 +90,7 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 	defer span.End()
 
 	totalProcessed := 0
-	maxBatch := 2000
-	args := make([]any, 0, maxBatch*5)
+	args := make([]any, 0, r.maxBulkAddBatch*13)
 	for {
 		read := 0
 		// reuse args slice
@@ -100,7 +101,7 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 		sb.WriteString("(name, version, formatVersion, release, prerelease, kibanaVersion, ")
 		sb.WriteString("categories, capabilities, discoveryFields, type, path, data, baseData) ")
 		sb.WriteString(" values ")
-		endBatch := totalProcessed + maxBatch
+		endBatch := totalProcessed + r.maxBulkAddBatch
 		for i := totalProcessed; i < endBatch && i < len(pkgs); i++ {
 			sb.WriteString("(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
 			if i < endBatch-1 && i < len(pkgs)-1 {
