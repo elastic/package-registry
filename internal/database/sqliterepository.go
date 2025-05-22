@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"strings"
 
+	"go.elastic.co/apm/v2"
 	_ "modernc.org/sqlite"
 )
 
@@ -52,6 +53,8 @@ func (r *SQLiteRepository) File(ctx context.Context) string {
 }
 
 func (r *SQLiteRepository) Migrate(ctx context.Context) error {
+	span, ctx := apm.StartSpan(ctx, "SQL: Migrate", "app")
+	defer span.End()
 	// TODO : Set name and version as primary keys ?
 	query := `
     CREATE TABLE IF NOT EXISTS %s (
@@ -81,6 +84,9 @@ func (r *SQLiteRepository) Migrate(ctx context.Context) error {
 }
 
 func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []*Package) error {
+	span, ctx := apm.StartSpan(ctx, "SQL: Insert batches", "app")
+	defer span.End()
+
 	totalProcessed := 0
 	maxBatch := 2000
 	args := make([]any, 0, maxBatch*5)
@@ -141,6 +147,9 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 }
 
 func (r *SQLiteRepository) All(ctx context.Context, database string, whereOptions WhereOptions) ([]Package, error) {
+	span, ctx := apm.StartSpan(ctx, "SQL: Get All", "app")
+	defer span.End()
+
 	var query strings.Builder
 	query.WriteString("SELECT * FROM ")
 	query.WriteString(database)
@@ -182,6 +191,9 @@ func (r *SQLiteRepository) All(ctx context.Context, database string, whereOption
 }
 
 func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOptions WhereOptions, process func(ctx context.Context, pkg *Package) error) error {
+	span, ctx := apm.StartSpan(ctx, "SQL: Get All (process each package)", "app")
+	defer span.End()
+
 	var query strings.Builder
 	query.WriteString("SELECT * FROM ")
 	query.WriteString(database)
@@ -225,6 +237,8 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 }
 
 func (r *SQLiteRepository) Drop(ctx context.Context, table string) error {
+	span, ctx := apm.StartSpan(ctx, "SQL: Drop", "app")
+	defer span.End()
 	query := fmt.Sprintf("DROP TABLE IF EXISTS %s", table)
 	_, err := r.db.ExecContext(ctx, query)
 	if err != nil {
