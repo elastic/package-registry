@@ -22,10 +22,13 @@ var (
 	ErrDeleteFailed = errors.New("delete failed")
 )
 
+const defaultMaxBulkAddBatch = 2000
+
 type SQLiteRepository struct {
 	db              *sql.DB
 	path            string
 	maxBulkAddBatch int
+	numberFields    int
 }
 
 var _ Repository = new(SQLiteRepository)
@@ -46,7 +49,8 @@ func NewFileSQLDB(path string) (*SQLiteRepository, error) {
 func newSQLiteRepository(db *sql.DB) *SQLiteRepository {
 	return &SQLiteRepository{
 		db:              db,
-		maxBulkAddBatch: 2000,
+		maxBulkAddBatch: defaultMaxBulkAddBatch,
+		numberFields:    13,
 	}
 }
 
@@ -89,8 +93,12 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 	span, ctx := apm.StartSpan(ctx, "SQL: Insert batches", "app")
 	defer span.End()
 
+	if len(pkgs) == 0 {
+		return nil
+	}
+
 	totalProcessed := 0
-	args := make([]any, 0, r.maxBulkAddBatch*13)
+	args := make([]any, 0, r.maxBulkAddBatch*r.numberFields)
 	for {
 		read := 0
 		// reuse args slice
