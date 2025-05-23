@@ -62,6 +62,141 @@ type Package struct {
 
 type FileSystemBuilder func(*Package) (PackageFileSystem, error)
 
+// Option is a functional option for configuring a Package.
+type Option func(*Package) error
+
+// WithName sets the package name
+func WithName(name string) Option {
+	return func(p *Package) error {
+		p.Name = name
+		return nil
+	}
+}
+
+// WithVersion sets the package version.
+func WithVersion(version string) Option {
+	return func(p *Package) error {
+		p.Version = version
+		var err error
+		p.versionSemVer, err = semver.NewVersion(version)
+		if err != nil {
+			return fmt.Errorf("invalid package version: %w", err)
+		}
+		return nil
+	}
+}
+
+// WithFormatVersion sets the package format version (spec).
+func WithFormatVersion(version string) Option {
+	return func(p *Package) error {
+		p.FormatVersion = version
+		var err error
+		specSemVer, err := semver.NewVersion(version)
+		if err != nil {
+			return fmt.Errorf("invalid package format version: %w", err)
+		}
+
+		specMajorMinorVersion := fmt.Sprintf("%d.%d.0", specSemVer.Major(), specSemVer.Minor())
+
+		p.specMajorMinorSemVer, err = semver.NewVersion(specMajorMinorVersion)
+		if err != nil {
+			return fmt.Errorf("invalid package format version: %w", err)
+		}
+		return nil
+	}
+}
+
+// WithRelease sets the package release according to the semantic versioning.
+func WithRelease(release string) Option {
+	return func(p *Package) error {
+		p.Release = release
+		return nil
+	}
+}
+
+// WithKibanaVersion sets the package Kibana version condition.
+func WithKibanaVersion(version string) Option {
+	return func(p *Package) error {
+		if version == "" {
+			return nil
+		}
+		if p.Conditions == nil {
+			p.Conditions = &Conditions{}
+		}
+		if p.Conditions.Kibana == nil {
+			p.Conditions.Kibana = &KibanaConditions{}
+		}
+		p.Conditions.Kibana.Version = version
+		return nil
+	}
+}
+
+// WithCategories sets the categories for this package.
+func WithCategories(categories string) Option {
+	return func(p *Package) error {
+		if categories == "" {
+			return nil
+		}
+		// It does not assign the categories to the policy templates.
+		// All categories are assigned to the package itself.
+		p.Categories = strings.Split(categories, ",")
+		return nil
+	}
+}
+
+// WithCapabilities sets the capabilities for this package.
+func WithCapabilities(capabilities string) Option {
+	return func(p *Package) error {
+		if capabilities == "" {
+			return nil
+		}
+		if p.Conditions == nil {
+			p.Conditions = &Conditions{}
+		}
+		if p.Conditions.Elastic == nil {
+			p.Conditions.Elastic = &ElasticConditions{}
+		}
+		p.Conditions.Elastic.Capabilities = strings.Split(capabilities, ",")
+		return nil
+	}
+}
+
+// WithType sets the package type.
+func WithType(packageType string) Option {
+	return func(p *Package) error {
+		p.Type = packageType
+		return nil
+	}
+}
+
+func WithDiscoveryFields(fields string) Option {
+	return func(p *Package) error {
+		if fields == "" {
+			return nil
+		}
+		if p.Discovery == nil {
+			p.Discovery = &Discovery{}
+		}
+
+		p.Discovery.Fields = []DiscoveryField{}
+		for _, field := range strings.Split(fields, ",") {
+			p.Discovery.Fields = append(p.Discovery.Fields, DiscoveryField{Name: field})
+		}
+		return nil
+	}
+}
+
+// NewPackageWithOptions creates a new Package using functional options.
+func NewPackageWithOptions(opts ...Option) (*Package, error) {
+	p := &Package{}
+	for _, opt := range opts {
+		if err := opt(p); err != nil {
+			return nil, err
+		}
+	}
+	return p, nil
+}
+
 // BasePackage is used for the output of the package info in the /search endpoint
 type BasePackage struct {
 	Name                    string               `config:"name" json:"name"`
@@ -81,6 +216,17 @@ type BasePackage struct {
 	Categories              []string             `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
 	SignaturePath           string               `config:"signature_path,omitempty" json:"signature_path,omitempty" yaml:"signature_path,omitempty"`
 	Discovery               *Discovery           `config:"discovery,omitempty" json:"discovery,omitempty" yaml:"discovery,omitempty"`
+	BaseDataStreams         []*BaseDataStream    `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
+}
+
+// BaseDataStream is used for the data streams in the /search endpoint
+type BaseDataStream struct {
+	// For purposes of "input packages"
+	Type string `config:"type,omitempty" json:"type,omitempty" yaml:"type,omitempty"`
+
+	// Full
+	Dataset string `config:"dataset" json:"dataset" validate:"required"`
+	Title   string `config:"title" json:"title" validate:"required"`
 }
 
 // BasePolicyTemplate is used for the package policy templates in the /search endpoint
@@ -134,6 +280,7 @@ type ElasticConditions struct {
 	Capabilities []string `config:"capabilities,omitempty" json:"capabilities,omitempty" yaml:"capabilities,omitempty"`
 }
 
+// Deprecated: Version is not currently used and will be removed in a future release.
 type Version struct {
 	Min string `config:"min,omitempty" json:"min,omitempty"`
 	Max string `config:"max,omitempty" json:"max,omitempty"`
@@ -185,6 +332,7 @@ func (i Image) getPath(p *Package) string {
 	return path.Join(packagePathPrefix, p.Name, p.Version, i.Src)
 }
 
+// Deprecated: Command is not currently used and will be removed in a future release.
 type Download struct {
 	Path string `config:"path" json:"path" validate:"required"`
 	Type string `config:"type" json:"type" validate:"required"`
@@ -200,6 +348,7 @@ type DeploymentMode struct {
 	IsDefault *bool `config:"is_default" json:"is_default,omitempty" yaml:"is_default,omitempty"`
 }
 
+// Deprecated: NewCommand is not currently used and will be removed in a future release.
 func NewDownload(p Package, t string) Download {
 	return Download{
 		Path: getDownloadPath(p, t),
@@ -207,6 +356,7 @@ func NewDownload(p Package, t string) Download {
 	}
 }
 
+// Deprecated: getDownloadPath is not currently used and will be removed in a future release.
 func getDownloadPath(p Package, t string) string {
 	return path.Join("/epr", p.Name, p.Name+"-"+p.Version+".zip")
 }
@@ -347,6 +497,8 @@ func NewPackage(logger *zap.Logger, basePath string, fsBuilder FileSystemBuilder
 		return nil, fmt.Errorf("loading package data streams failed (path '%s'): %w", p.BasePath, err)
 	}
 
+	p.setBaseDataStreams()
+
 	// Read path for package signature
 	p.SignaturePath, err = p.getSignaturePath()
 	if err != nil {
@@ -405,6 +557,20 @@ func (p *Package) setBasePolicyTemplates() {
 		}
 
 		p.BasePolicyTemplates = append(p.BasePolicyTemplates, baseT)
+	}
+}
+
+// setBaseDataStreams method mirrors data_streams from Package to a corresponding property in BasePackage.
+// It's required to perform that sync, because DataStreams and BaseDataStreams have same JSON annotation
+// (data_streams).
+func (p *Package) setBaseDataStreams() {
+	for _, ds := range p.DataStreams {
+		baseStream := &BaseDataStream{
+			Type:    ds.Type,
+			Dataset: ds.Dataset,
+			Title:   ds.Title,
+		}
+		p.BaseDataStreams = append(p.BaseDataStreams, baseStream)
 	}
 }
 

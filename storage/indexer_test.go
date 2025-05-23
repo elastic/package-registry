@@ -238,11 +238,12 @@ func TestGet_IndexUpdated(t *testing.T) {
 	storageClient := fs.Client()
 	indexer := NewIndexer(util.NewTestLogger(), storageClient, FakeIndexerOptions)
 
-	err := indexer.Init(context.Background())
+	ctx := context.Background()
+	err := indexer.Init(ctx)
 	require.NoError(t, err, "storage indexer must be initialized properly")
 
 	// when
-	foundPackages, err := indexer.Get(context.Background(), &packages.GetOptions{
+	foundPackages, err := indexer.Get(ctx, &packages.GetOptions{
 		Filter: &packages.Filter{
 			PackageName: "1password",
 			PackageType: "integration",
@@ -259,10 +260,10 @@ func TestGet_IndexUpdated(t *testing.T) {
 	// when: index update is performed adding new packages
 	const secondRevision = "2"
 	updateFakeServer(t, fs, secondRevision, "testdata/search-index-all-full.json")
-	err = indexer.updateIndex(context.Background())
+	err = indexer.updateIndex(ctx)
 	require.NoError(t, err, "index should be updated successfully")
 
-	foundPackages, err = indexer.Get(context.Background(), &packages.GetOptions{
+	foundPackages, err = indexer.Get(ctx, &packages.GetOptions{
 		Filter: &packages.Filter{
 			PackageName: "1password",
 			PackageType: "integration",
@@ -279,10 +280,10 @@ func TestGet_IndexUpdated(t *testing.T) {
 	// when: index update is performed removing packages
 	const thirdRevision = "3"
 	updateFakeServer(t, fs, thirdRevision, "testdata/search-index-all-small.json")
-	err = indexer.updateIndex(context.Background())
+	err = indexer.updateIndex(ctx)
 	require.NoError(t, err, "index should be updated successfully")
 
-	foundPackages, err = indexer.Get(context.Background(), &packages.GetOptions{
+	foundPackages, err = indexer.Get(ctx, &packages.GetOptions{
 		Filter: &packages.Filter{
 			PackageName: "1password",
 			PackageType: "integration",
@@ -295,4 +296,26 @@ func TestGet_IndexUpdated(t *testing.T) {
 	require.Len(t, foundPackages, 1)
 	require.Equal(t, "1password", foundPackages[0].Name)
 	require.Equal(t, "0.2.0", foundPackages[0].Version)
+
+	// when: index update is performed updating some field of an existing pacakage
+	updateFakeServer(t, fs, "4", "testdata/search-index-all-small-updated-fields.json")
+	err = indexer.updateIndex(ctx)
+	require.NoError(t, err, "index should be updated successfully")
+
+	foundPackages, err = indexer.Get(ctx, &packages.GetOptions{
+		Filter: &packages.Filter{
+			PackageName: "1password",
+			PackageType: "integration",
+			Prerelease:  true,
+		},
+	})
+
+	// then
+	// Adding new fields require to update packages.Package struct definition
+	// Tested updating one of the known fields (title)
+	require.NoError(t, err, "packages should be returned")
+	require.Len(t, foundPackages, 1)
+	require.Equal(t, "1password", foundPackages[0].Name)
+	require.Equal(t, "0.2.0", foundPackages[0].Version)
+	require.Equal(t, "1Password Events Reporting UPDATED", *foundPackages[0].Title)
 }
