@@ -273,64 +273,13 @@ func (i *Indexer) updateDatabase(ctx context.Context, index *packages.Packages) 
 		dbPackages = dbPackages[:0]
 		endBatch := totalProcessed + i.maxBulkAddBatch
 		for i := totalProcessed; i < endBatch && i < len(*index); i++ {
-			fullContents, err := json.Marshal((*index)[i])
+
+			newPackage, err := createDatabasePackage((*index)[i])
 			if err != nil {
-				return fmt.Errorf("failed to marshal package %s-%s: %w", (*index)[i].Name, (*index)[i].Version, err)
-			}
-			baseContents, err := json.Marshal((*index)[i].BasePackage)
-			if err != nil {
-				return fmt.Errorf("failed to marshal base package %s-%s: %w", (*index)[i].Name, (*index)[i].Version, err)
+				return fmt.Errorf("failed to create database package %s-%s: %w", (*index)[i].Name, (*index)[i].Version, err)
 			}
 
-			discoveryFields := strings.Builder{}
-			if (*index)[i].Discovery != nil {
-				for i, field := range (*index)[i].Discovery.Fields {
-					discoveryFields.WriteString(field.Name)
-					if i < len((*index)[i].Discovery.Fields)-1 {
-						discoveryFields.WriteString(",")
-					}
-				}
-			}
-
-			kibanaVersion := ""
-			if (*index)[i].Conditions != nil && (*index)[i].Conditions.Kibana != nil {
-				kibanaVersion = (*index)[i].Conditions.Kibana.Version
-			}
-
-			capabilities := ""
-			if (*index)[i].Conditions != nil && (*index)[i].Conditions.Elastic != nil {
-				capabilities = strings.Join((*index)[i].Conditions.Elastic.Capabilities, ",")
-			}
-
-			categories := strings.Join((*index)[i].Categories, ",")
-			for _, policyTemplate := range (*index)[i].PolicyTemplates {
-				if len(policyTemplate.Categories) == 0 {
-					continue
-				}
-				categories += fmt.Sprintf(",%s", strings.Join(policyTemplate.Categories, ","))
-			}
-
-			if (*index)[i].Conditions != nil && (*index)[i].Conditions.Elastic != nil {
-				categories = strings.Join((*index)[i].Conditions.Elastic.Capabilities, ",")
-			}
-
-			newPackage := database.Package{
-				Name:            (*index)[i].Name,
-				Version:         (*index)[i].Version,
-				FormatVersion:   (*index)[i].FormatVersion,
-				Path:            (*index)[i].BasePath,
-				Type:            (*index)[i].Type,
-				Release:         (*index)[i].Release,
-				KibanaVersion:   kibanaVersion,
-				Categories:      categories,
-				Capabilities:    capabilities,
-				DiscoveryFields: discoveryFields.String(),
-				Prerelease:      (*index)[i].IsPrerelease(),
-				Data:            string(fullContents),
-				BaseData:        string(baseContents),
-			}
-
-			dbPackages = append(dbPackages, &newPackage)
+			dbPackages = append(dbPackages, newPackage)
 			read++
 		}
 		err = (*i.backup).BulkAdd(ctx, "packages", dbPackages)
@@ -345,6 +294,67 @@ func (i *Indexer) updateDatabase(ctx context.Context, index *packages.Packages) 
 	}
 
 	return nil
+}
+
+func createDatabasePackage(pkg *packages.Package) (*database.Package, error) {
+	fullContents, err := json.Marshal(pkg)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal package %s-%s: %w", pkg.Name, pkg.Version, err)
+	}
+	baseContents, err := json.Marshal(pkg.BasePackage)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal base package %s-%s: %w", pkg.Name, pkg.Version, err)
+	}
+
+	discoveryFields := strings.Builder{}
+	if pkg.Discovery != nil {
+		for i, field := range pkg.Discovery.Fields {
+			discoveryFields.WriteString(field.Name)
+			if i < len(pkg.Discovery.Fields)-1 {
+				discoveryFields.WriteString(",")
+			}
+		}
+	}
+
+	kibanaVersion := ""
+	if pkg.Conditions != nil && pkg.Conditions.Kibana != nil {
+		kibanaVersion = pkg.Conditions.Kibana.Version
+	}
+
+	capabilities := ""
+	if pkg.Conditions != nil && pkg.Conditions.Elastic != nil {
+		capabilities = strings.Join(pkg.Conditions.Elastic.Capabilities, ",")
+	}
+
+	categories := strings.Join(pkg.Categories, ",")
+	for _, policyTemplate := range pkg.PolicyTemplates {
+		if len(policyTemplate.Categories) == 0 {
+			continue
+		}
+		categories += fmt.Sprintf(",%s", strings.Join(policyTemplate.Categories, ","))
+	}
+
+	if pkg.Conditions != nil && pkg.Conditions.Elastic != nil {
+		categories = strings.Join(pkg.Conditions.Elastic.Capabilities, ",")
+	}
+
+	newPackage := database.Package{
+		Name:            pkg.Name,
+		Version:         pkg.Version,
+		FormatVersion:   pkg.FormatVersion,
+		Path:            pkg.BasePath,
+		Type:            pkg.Type,
+		Release:         pkg.Release,
+		KibanaVersion:   kibanaVersion,
+		Categories:      categories,
+		Capabilities:    capabilities,
+		DiscoveryFields: discoveryFields.String(),
+		Prerelease:      pkg.IsPrerelease(),
+		Data:            string(fullContents),
+		BaseData:        string(baseContents),
+	}
+
+	return &newPackage, nil
 }
 
 func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.Packages, error) {
@@ -433,6 +443,7 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 		i.logger.Debug("Number of packages read from database", zap.Int("num.packages", numPackages))
 
 		// Required to filter packages again if condition `all=false`
+		// and filter the policy templates if the `category` parameter is set
 		if opts != nil && opts.Filter != nil {
 			readPackages, err = opts.Filter.Apply(ctx, readPackages)
 			if err != nil {
