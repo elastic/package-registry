@@ -14,7 +14,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/elastic/package-registry/internal/database"
 	"github.com/elastic/package-registry/internal/util"
 )
 
@@ -24,14 +23,11 @@ var generateFlag = flag.Bool("generate", false, "Write golden files")
 
 func TestMarshalJSON(t *testing.T) {
 	// given
-	db, err := database.NewMemorySQLDB("main")
-	require.NoError(t, err)
-
 	packagesBasePaths := []string{"../testdata/second_package_path", "../testdata/package"}
-	indexer := NewFileSystemIndexer(util.NewTestLogger(), db, packagesBasePaths...)
+	indexer := NewFileSystemIndexer(util.NewTestLogger(), packagesBasePaths...)
 	defer indexer.Close(context.Background())
 
-	err = indexer.Init(context.Background())
+	err := indexer.Init(context.Background())
 	require.NoError(t, err, "can't initialize indexer")
 
 	// when
@@ -46,14 +42,11 @@ func TestMarshalJSON(t *testing.T) {
 
 func TestUnmarshalJSON(t *testing.T) {
 	// given
-	db, err := database.NewMemorySQLDB("main")
-	require.NoError(t, err)
-
 	packagesBasePaths := []string{"../testdata/second_package_path", "../testdata/package"}
-	indexer := NewFileSystemIndexer(util.NewTestLogger(), db, packagesBasePaths...)
+	indexer := NewFileSystemIndexer(util.NewTestLogger(), packagesBasePaths...)
 	defer indexer.Close(context.Background())
 
-	err = indexer.Init(context.Background())
+	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
 	expectedFile, err := os.ReadFile(testFile)

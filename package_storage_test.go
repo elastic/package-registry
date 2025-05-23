@@ -15,6 +15,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/elastic/package-registry/internal/database"
+	internalStorage "github.com/elastic/package-registry/internal/storage"
 	"github.com/elastic/package-registry/storage"
 )
 
@@ -30,14 +31,15 @@ func TestPackageStorage_Endpoints(t *testing.T) {
 	swapDb, err := database.NewMemorySQLDB("swap")
 	require.NoError(t, err)
 
-	options, err := storage.CreateFakeIndexerOptions(db, swapDb)
+	options, err := internalStorage.CreateFakeIndexerOptions(db, swapDb)
 	require.NoError(t, err)
-	indexer := storage.NewIndexer(testLogger, fs.Client(), options)
+	indexer := internalStorage.NewIndexer(testLogger, fs.Client(), options)
 	defer indexer.Close(context.Background())
 
 	err = indexer.Init(context.Background())
 	require.NoError(t, err)
 
+	// tests := generateTestEndpointCases(t, indexer)
 	tests := []struct {
 		endpoint string
 		path     string
@@ -89,9 +91,9 @@ func TestPackageStorage_PackageIndex(t *testing.T) {
 	swapDb, err := database.NewMemorySQLDB("swap")
 	require.NoError(t, err)
 
-	options, err := storage.CreateFakeIndexerOptions(db, swapDb)
+	options, err := internalStorage.CreateFakeIndexerOptions(db, swapDb)
 	require.NoError(t, err)
-	indexer := storage.NewIndexer(testLogger, fs.Client(), options)
+	indexer := internalStorage.NewIndexer(testLogger, fs.Client(), options)
 	defer indexer.Close(context.Background())
 
 	err = indexer.Init(context.Background())
@@ -132,12 +134,12 @@ func TestPackageStorage_Artifacts(t *testing.T) {
 	swapDb, err := database.NewMemorySQLDB("swap")
 	require.NoError(t, err)
 
-	testIndexerOptions, err := storage.CreateFakeIndexerOptions(db, swapDb)
+	testIndexerOptions, err := internalStorage.CreateFakeIndexerOptions(db, swapDb)
 	require.NoError(t, err)
 
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
-	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
+	indexer := internalStorage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
 	defer indexer.Close(context.Background())
 
 	err = indexer.Init(context.Background())
@@ -178,11 +180,11 @@ func TestPackageStorage_Signatures(t *testing.T) {
 	swapDb, err := database.NewMemorySQLDB("swap")
 	require.NoError(t, err)
 
-	testIndexerOptions, err := storage.CreateFakeIndexerOptions(db, swapDb)
+	testIndexerOptions, err := internalStorage.CreateFakeIndexerOptions(db, swapDb)
 	require.NoError(t, err)
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
-	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
+	indexer := internalStorage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
 	defer indexer.Close(context.Background())
 
 	err = indexer.Init(context.Background())
@@ -222,11 +224,11 @@ func TestPackageStorage_Statics(t *testing.T) {
 	swapDb, err := database.NewMemorySQLDB("swap")
 	require.NoError(t, err)
 
-	testIndexerOptions, err := storage.CreateFakeIndexerOptions(db, swapDb)
+	testIndexerOptions, err := internalStorage.CreateFakeIndexerOptions(db, swapDb)
 	require.NoError(t, err)
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
-	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
+	indexer := internalStorage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
 	defer indexer.Close(context.Background())
 
 	err = indexer.Init(context.Background())
@@ -271,11 +273,11 @@ func TestPackageStorage_ResolverHeadersResponse(t *testing.T) {
 	swapDb, err := database.NewMemorySQLDB("swap")
 	require.NoError(t, err)
 
-	testIndexerOptions, err := storage.CreateFakeIndexerOptions(db, swapDb)
+	testIndexerOptions, err := internalStorage.CreateFakeIndexerOptions(db, swapDb)
 	require.NoError(t, err)
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
-	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
+	indexer := internalStorage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
 	defer indexer.Close(context.Background())
 
 	err = indexer.Init(context.Background())
@@ -325,11 +327,11 @@ func TestPackageStorage_ResolverErrorResponse(t *testing.T) {
 	swapDb, err := database.NewMemorySQLDB("swap")
 	require.NoError(t, err)
 
-	testIndexerOptions, err := storage.CreateFakeIndexerOptions(db, swapDb)
+	testIndexerOptions, err := internalStorage.CreateFakeIndexerOptions(db, swapDb)
 	require.NoError(t, err)
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
-	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
+	indexer := internalStorage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
 	defer indexer.Close(context.Background())
 
 	err = indexer.Init(context.Background())

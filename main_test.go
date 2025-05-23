@@ -27,6 +27,7 @@ import (
 	"gopkg.in/yaml.v2"
 
 	"github.com/elastic/package-registry/internal/database"
+	"github.com/elastic/package-registry/internal/filesystem"
 	"github.com/elastic/package-registry/internal/util"
 	"github.com/elastic/package-registry/packages"
 )
@@ -55,22 +56,12 @@ func TestRouter(t *testing.T) {
 	assert.Equal(t, []string{"*"}, allowOrigin)
 }
 
-func TestEndpoints(t *testing.T) {
-	zipDb, err := database.NewMemorySQLDB("zip")
-	require.NoError(t, err)
-	foldersDb, err := database.NewMemorySQLDB("folders")
-	require.NoError(t, err)
-
-	packagesBasePaths := []string{"./testdata/second_package_path", "./testdata/package"}
-	indexer := NewCombinedIndexer(
-		packages.NewZipFileSystemIndexer(testLogger, zipDb, "./testdata/local-storage"),
-		packages.NewFileSystemIndexer(testLogger, foldersDb, packagesBasePaths...),
-	)
-	defer indexer.Close(context.Background())
-
-	err = indexer.Init(context.Background())
-	require.NoError(t, err)
-
+func generateTestEndpointCases(t *testing.T, indexer Indexer) []struct {
+	endpoint string
+	path     string
+	file     string
+	handler  func(w http.ResponseWriter, r *http.Request)
+} {
 	faviconHandleFunc, err := faviconHandler(testCacheTime)
 	require.NoError(t, err)
 
@@ -133,7 +124,21 @@ func TestEndpoints(t *testing.T) {
 		// Removed flags, kept to ensure that they don't break requests from old versions.
 		{"/search?internal=true", "/search", "search-package-internal.json", searchHandler(testLogger, indexer, testCacheTime)},
 	}
+	return tests
+}
 
+func TestEndpoints(t *testing.T) {
+	packagesBasePaths := []string{"./testdata/second_package_path", "./testdata/package"}
+	indexer := NewCombinedIndexer(
+		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
+		packages.NewFileSystemIndexer(testLogger, packagesBasePaths...),
+	)
+	defer indexer.Close(context.Background())
+
+	err := indexer.Init(context.Background())
+	require.NoError(t, err)
+
+	tests := generateTestEndpointCases(t, indexer)
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
 			runEndpoint(t, test.endpoint, test.path, test.file, test.handler)
@@ -141,16 +146,37 @@ func TestEndpoints(t *testing.T) {
 	}
 }
 
-func TestArtifacts(t *testing.T) {
-	db, err := database.NewMemorySQLDB("main")
+func TestSQLEndpoints(t *testing.T) {
+	zipDb, err := database.NewMemorySQLDB("zip")
+	require.NoError(t, err)
+	foldersDb, err := database.NewMemorySQLDB("folders")
 	require.NoError(t, err)
 
-	packagesBasePaths := []string{"./testdata/package"}
-	indexer := packages.NewFileSystemIndexer(testLogger, db, packagesBasePaths...)
+	packagesBasePaths := []string{"./testdata/second_package_path", "./testdata/package"}
+	indexer := NewCombinedIndexer(
+		filesystem.NewZipFileSystemSQLIndexer(testLogger, zipDb, "./testdata/local-storage"),
+		filesystem.NewFileSystemSQLIndexer(testLogger, foldersDb, packagesBasePaths...),
+	)
 	defer indexer.Close(context.Background())
 
 	err = indexer.Init(context.Background())
 	require.NoError(t, err)
+
+	tests := generateTestEndpointCases(t, indexer)
+	for _, test := range tests {
+		t.Run(test.endpoint, func(t *testing.T) {
+			runEndpoint(t, test.endpoint, test.path, test.file, test.handler)
+		})
+	}
+}
+
+func generateTestArtifactsCases(indexer Indexer) []struct {
+	endpoint string
+	path     string
+
+	file    string
+	handler func(w http.ResponseWriter, r *http.Request)
+} {
 
 	artifactsHandler := artifactsHandler(testLogger, indexer, testCacheTime)
 
@@ -166,6 +192,18 @@ func TestArtifacts(t *testing.T) {
 		{"/epr/example/example-a.b.c.zip", artifactsRouterPath, "artifact-package-invalid-version.txt", artifactsHandler},
 	}
 
+	return tests
+}
+
+func TestArtifacts(t *testing.T) {
+	packagesBasePaths := []string{"./testdata/package"}
+	indexer := packages.NewFileSystemIndexer(testLogger, packagesBasePaths...)
+	defer indexer.Close(context.Background())
+
+	err := indexer.Init(context.Background())
+	require.NoError(t, err)
+
+	tests := generateTestArtifactsCases(indexer)
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
 			runEndpoint(t, test.endpoint, test.path, test.file, test.handler)
@@ -173,13 +211,31 @@ func TestArtifacts(t *testing.T) {
 	}
 }
 
-func TestSignatures(t *testing.T) {
+func TestArtifactsSQL(t *testing.T) {
 	db, err := database.NewMemorySQLDB("main")
 	require.NoError(t, err)
-	indexer := packages.NewZipFileSystemIndexer(testLogger, db, "./testdata/local-storage")
+
+	packagesBasePaths := []string{"./testdata/package"}
+	indexer := filesystem.NewFileSystemSQLIndexer(testLogger, db, packagesBasePaths...)
+	defer indexer.Close(context.Background())
 
 	err = indexer.Init(context.Background())
 	require.NoError(t, err)
+
+	tests := generateTestArtifactsCases(indexer)
+	for _, test := range tests {
+		t.Run(test.endpoint, func(t *testing.T) {
+			runEndpoint(t, test.endpoint, test.path, test.file, test.handler)
+		})
+	}
+}
+
+func generateTestSignaturesCases(indexer Indexer) []struct {
+	endpoint string
+	path     string
+	file     string
+	handler  func(w http.ResponseWriter, r *http.Request)
+} {
 
 	signaturesHandler := signaturesHandler(testLogger, indexer, testCacheTime)
 
@@ -192,7 +248,16 @@ func TestSignatures(t *testing.T) {
 		{"/epr/example/example-1.0.1.zip.sig", signaturesRouterPath, "example-1.0.1.zip.sig", signaturesHandler},
 		{"/epr/example/example-0.0.1.zip.sig", signaturesRouterPath, "missing-signature.txt", signaturesHandler},
 	}
+	return tests
+}
 
+func TestSignatures(t *testing.T) {
+	indexer := packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage")
+
+	err := indexer.Init(context.Background())
+	require.NoError(t, err)
+
+	tests := generateTestSignaturesCases(indexer)
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
 			runEndpoint(t, test.endpoint, test.path, test.file, test.handler)
@@ -200,16 +265,28 @@ func TestSignatures(t *testing.T) {
 	}
 }
 
-func TestStatics(t *testing.T) {
+func TestSignaturesSQL(t *testing.T) {
 	db, err := database.NewMemorySQLDB("main")
 	require.NoError(t, err)
-
-	packagesBasePaths := []string{"./testdata/package"}
-	indexer := packages.NewFileSystemIndexer(testLogger, db, packagesBasePaths...)
-	defer indexer.Close(context.Background())
+	indexer := filesystem.NewZipFileSystemSQLIndexer(testLogger, db, "./testdata/local-storage")
 
 	err = indexer.Init(context.Background())
 	require.NoError(t, err)
+
+	tests := generateTestSignaturesCases(indexer)
+	for _, test := range tests {
+		t.Run(test.endpoint, func(t *testing.T) {
+			runEndpoint(t, test.endpoint, test.path, test.file, test.handler)
+		})
+	}
+}
+
+func generateTestStaticCases(indexer Indexer) []struct {
+	endpoint string
+	path     string
+	file     string
+	handler  func(w http.ResponseWriter, r *http.Request)
+} {
 
 	staticHandler := staticHandler(testLogger, indexer, testCacheTime)
 
@@ -222,7 +299,37 @@ func TestStatics(t *testing.T) {
 		{"/package/example/1.0.0/docs/README.md", staticRouterPath, "example-1.0.0-README.md", staticHandler},
 		{"/package/example/1.0.0/img/kibana-envoyproxy.jpg", staticRouterPath, "example-1.0.0-screenshot.jpg", staticHandler},
 	}
+	return tests
+}
 
+func TestStatics(t *testing.T) {
+	packagesBasePaths := []string{"./testdata/package"}
+	indexer := packages.NewFileSystemIndexer(testLogger, packagesBasePaths...)
+	defer indexer.Close(context.Background())
+
+	err := indexer.Init(context.Background())
+	require.NoError(t, err)
+
+	tests := generateTestStaticCases(indexer)
+	for _, test := range tests {
+		t.Run(test.endpoint, func(t *testing.T) {
+			runEndpoint(t, test.endpoint, test.path, test.file, test.handler)
+		})
+	}
+}
+
+func TestStaticsSQL(t *testing.T) {
+	db, err := database.NewMemorySQLDB("main")
+	require.NoError(t, err)
+
+	packagesBasePaths := []string{"./testdata/package"}
+	indexer := filesystem.NewFileSystemSQLIndexer(testLogger, db, packagesBasePaths...)
+	defer indexer.Close(context.Background())
+
+	err = indexer.Init(context.Background())
+	require.NoError(t, err)
+
+	tests := generateTestStaticCases(indexer)
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
 			runEndpoint(t, test.endpoint, test.path, test.file, test.handler)
@@ -293,18 +400,13 @@ func TestStaticsModifiedTime(t *testing.T) {
 		},
 	}
 
-	zipDb, err := database.NewMemorySQLDB("zip")
-	require.NoError(t, err)
-	folderDb, err := database.NewMemorySQLDB("folders")
-	require.NoError(t, err)
-
 	indexer := NewCombinedIndexer(
-		packages.NewZipFileSystemIndexer(testLogger, zipDb, "./testdata/local-storage"),
-		packages.NewFileSystemIndexer(testLogger, folderDb, "./testdata/package"),
+		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
+		packages.NewFileSystemIndexer(testLogger, "./testdata/package"),
 	)
 	defer indexer.Close(context.Background())
 
-	err = indexer.Init(context.Background())
+	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
 	router := mux.NewRouter()
@@ -331,12 +433,10 @@ func TestStaticsModifiedTime(t *testing.T) {
 }
 
 func TestZippedArtifacts(t *testing.T) {
-	db, err := database.NewMemorySQLDB("main")
-	require.NoError(t, err)
-	indexer := packages.NewZipFileSystemIndexer(testLogger, db, "./testdata/local-storage")
+	indexer := packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage")
 	defer indexer.Close(context.Background())
 
-	err = indexer.Init(context.Background())
+	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
 	artifactsHandler := artifactsHandler(testLogger, indexer, testCacheTime)
@@ -363,21 +463,12 @@ func TestZippedArtifacts(t *testing.T) {
 	}
 }
 
-func TestPackageIndex(t *testing.T) {
-	zipDb, err := database.NewMemorySQLDB("zip")
-	require.NoError(t, err)
-	folderDb, err := database.NewMemorySQLDB("folders")
-	require.NoError(t, err)
-
-	indexer := NewCombinedIndexer(
-		packages.NewZipFileSystemIndexer(testLogger, zipDb, "./testdata/local-storage"),
-		packages.NewFileSystemIndexer(testLogger, folderDb, "./testdata/package"),
-	)
-	defer indexer.Close(context.Background())
-
-	err = indexer.Init(context.Background())
-	require.NoError(t, err)
-
+func generatePackageIndexCases(indexer Indexer) []struct {
+	endpoint string
+	path     string
+	file     string
+	handler  func(w http.ResponseWriter, r *http.Request)
+} {
 	packageIndexHandler := packageIndexHandler(testLogger, indexer, testCacheTime)
 
 	tests := []struct {
@@ -394,6 +485,20 @@ func TestPackageIndex(t *testing.T) {
 		{"/package/example/a.b.c/", packageIndexRouterPath, "index-package-invalid-version.txt", packageIndexHandler},
 		{"/package/sql_input/1.0.1/", packageIndexRouterPath, "sql-input-package.json", packageIndexHandler},
 	}
+	return tests
+}
+
+func TestPackageIndex(t *testing.T) {
+	indexer := NewCombinedIndexer(
+		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
+		packages.NewFileSystemIndexer(testLogger, "./testdata/package"),
+	)
+	defer indexer.Close(context.Background())
+
+	err := indexer.Init(context.Background())
+	require.NoError(t, err)
+
+	tests := generatePackageIndexCases(indexer)
 
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
@@ -402,14 +507,34 @@ func TestPackageIndex(t *testing.T) {
 	}
 }
 
-func TestZippedPackageIndex(t *testing.T) {
-	db, err := database.NewMemorySQLDB("main")
+func TestPackageIndexSQL(t *testing.T) {
+	zipDb, err := database.NewMemorySQLDB("zip")
+	require.NoError(t, err)
+	folderDb, err := database.NewMemorySQLDB("folders")
 	require.NoError(t, err)
 
-	packagesBasePaths := []string{"./testdata/local-storage"}
-	indexer := packages.NewZipFileSystemIndexer(testLogger, db, packagesBasePaths...)
+	indexer := NewCombinedIndexer(
+		filesystem.NewZipFileSystemSQLIndexer(testLogger, zipDb, "./testdata/local-storage"),
+		filesystem.NewFileSystemSQLIndexer(testLogger, folderDb, "./testdata/package"),
+	)
+	defer indexer.Close(context.Background())
 
 	err = indexer.Init(context.Background())
+	require.NoError(t, err)
+
+	tests := generatePackageIndexCases(indexer)
+	for _, test := range tests {
+		t.Run(test.endpoint, func(t *testing.T) {
+			runEndpoint(t, test.endpoint, test.path, test.file, test.handler)
+		})
+	}
+}
+
+func TestZippedPackageIndex(t *testing.T) {
+	packagesBasePaths := []string{"./testdata/local-storage"}
+	indexer := packages.NewZipFileSystemIndexer(testLogger, packagesBasePaths...)
+
+	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
 	packageIndexHandler := packageIndexHandler(testLogger, indexer, testCacheTime)
@@ -435,14 +560,12 @@ func TestZippedPackageIndex(t *testing.T) {
 
 // TestAllPackageIndex generates and compares all index.json files for the test packages
 func TestAllPackageIndex(t *testing.T) {
-	db, err := database.NewMemorySQLDB("main")
-	require.NoError(t, err)
 	testPackagePath := filepath.Join("testdata", "package")
 	secondPackagePath := filepath.Join("testdata", "second_package_path")
 	packagesBasePaths := []string{secondPackagePath, testPackagePath}
-	indexer := packages.NewFileSystemIndexer(testLogger, db, packagesBasePaths...)
+	indexer := packages.NewFileSystemIndexer(testLogger, packagesBasePaths...)
 
-	err = indexer.Init(context.Background())
+	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
 	packageIndexHandler := packageIndexHandler(testLogger, indexer, testCacheTime)
@@ -492,18 +615,14 @@ func TestContentTypes(t *testing.T) {
 		{"/package/example/1.0.1/docs/README.md", "text/markdown; charset=utf-8"},
 		{"/package/example/1.0.1/img/kibana-envoyproxy.jpg", "image/jpeg"},
 	}
-	zipDb, err := database.NewMemorySQLDB("zip")
-	require.NoError(t, err)
-	folderDb, err := database.NewMemorySQLDB("folders")
-	require.NoError(t, err)
 
 	indexer := NewCombinedIndexer(
-		packages.NewZipFileSystemIndexer(testLogger, zipDb, "./testdata/local-storage"),
-		packages.NewFileSystemIndexer(testLogger, folderDb, "./testdata/package"),
+		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
+		packages.NewFileSystemIndexer(testLogger, "./testdata/package"),
 	)
 	defer indexer.Close(context.Background())
 
-	err = indexer.Init(context.Background())
+	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
 	handler := staticHandler(testLogger, indexer, testCacheTime)
@@ -527,18 +646,13 @@ func TestContentTypes(t *testing.T) {
 // TestRangeDownloads tests that range downloads continue working for packages stored
 // on different file systems.
 func TestRangeDownloads(t *testing.T) {
-	zipDb, err := database.NewMemorySQLDB("main")
-	require.NoError(t, err)
-	folderDb, err := database.NewMemorySQLDB("folders")
-
-	require.NoError(t, err)
 	indexer := NewCombinedIndexer(
-		packages.NewZipFileSystemIndexer(testLogger, zipDb, "./testdata/local-storage"),
-		packages.NewFileSystemIndexer(testLogger, folderDb, "./testdata/package"),
+		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
+		packages.NewFileSystemIndexer(testLogger, "./testdata/package"),
 	)
 	defer indexer.Close(context.Background())
 
-	err = indexer.Init(context.Background())
+	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
 	router := mux.NewRouter()

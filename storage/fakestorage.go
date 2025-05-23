@@ -11,21 +11,13 @@ import (
 
 	"github.com/fsouza/fake-gcs-server/fakestorage"
 	"github.com/stretchr/testify/require"
-
-	"github.com/elastic/package-registry/internal/database"
 )
 
 const fakePackageStorageBucketInternal = "fake-package-storage-internal"
 
-func CreateFakeIndexerOptions(db, swapDb database.Repository) (IndexerOptions, error) {
-	fakeIndexerOptions := IndexerOptions{
-		PackageStorageBucketInternal: "gs://" + fakePackageStorageBucketInternal,
-		WatchInterval:                0,
-		Database:                     db,
-		SwapDatabase:                 swapDb,
-	}
-	return fakeIndexerOptions, nil
-
+var FakeIndexerOptions = IndexerOptions{
+	PackageStorageBucketInternal: "gs://" + fakePackageStorageBucketInternal,
+	WatchInterval:                0,
 }
 
 func PrepareFakeServer(tb testing.TB, indexPath string) *fakestorage.Server {
@@ -72,6 +64,6 @@ func prepareServerObjects(tb testing.TB, revision string, indexContent []byte) [
 		},
 		Content: indexContent,
 	})
-	// tb.Logf("Prepared %d packages with total %d server objects.", len(index.Packages), len(serverObjects))
+	tb.Logf("Prepared %d packages with total %d server objects.", len(index.Packages), len(serverObjects))
 	return serverObjects
 }

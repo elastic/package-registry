@@ -33,6 +33,8 @@ import (
 	ucfgYAML "github.com/elastic/go-ucfg/yaml"
 
 	"github.com/elastic/package-registry/internal/database"
+	"github.com/elastic/package-registry/internal/filesystem"
+	internalStorage "github.com/elastic/package-registry/internal/storage"
 	"github.com/elastic/package-registry/internal/util"
 	"github.com/elastic/package-registry/metrics"
 	"github.com/elastic/package-registry/packages"
@@ -63,6 +65,9 @@ var (
 	configPath string
 
 	printVersionInfo bool
+
+	featureSQLFilesystemIndexer bool
+	featureSQLStorageIndexer    bool
 
 	featureStorageIndexer        bool
 	storageIndexerBucketInternal string
@@ -98,6 +103,8 @@ func init() {
 	flag.BoolVar(&packages.ValidationDisabled, "disable-package-validation", false, "Disable package content validation.")
 	// The following storage related flags are technical preview and might be removed in the future or renamed
 	flag.BoolVar(&featureStorageIndexer, "feature-storage-indexer", false, "Enable storage indexer to include packages from Package Storage v2 (technical preview).")
+	flag.BoolVar(&featureSQLStorageIndexer, "feature-sql-storage-indexer", false, "Enable SQL storage indexer to include packages from Package Storage v2 (technical preview).")
+	flag.BoolVar(&featureSQLFilesystemIndexer, "feature-sql-filesystem-indexer", false, "Enable SQL storage indexer to include packages from Package Storage v2 (technical preview).")
 	flag.StringVar(&storageIndexerBucketInternal, "storage-indexer-bucket-internal", "", "Path to the internal Package Storage bucket (with gs:// prefix).")
 	flag.StringVar(&storageEndpoint, "storage-endpoint", "https://package-storage.elastic.co/", "Package Storage public endpoint.")
 	flag.DurationVar(&storageIndexerWatchInterval, "storage-indexer-watch-interval", 1*time.Minute, "Address of the package-registry service.")
@@ -162,6 +169,10 @@ func main() {
 	defer logger.Info("Package registry stopped")
 
 	initHttpProf(logger)
+
+	if featureStorageIndexer && featureSQLStorageIndexer {
+		log.Fatal("Both feature-storage-indexer and feature-sql-storage-indexer are enabled. Please choose one.")
+	}
 
 	indexer := initIndexer(ctx, logger, apmTracer, config)
 	defer indexer.Close(ctx)
@@ -272,7 +283,7 @@ func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer,
 
 	var combined CombinedIndexer
 
-	if featureStorageIndexer {
+	if featureSQLStorageIndexer {
 		storageDatabase, err := initDatabase(ctx, logger, config.DatabaseFolderPath, "storage_packages.db")
 		if err != nil {
 			logger.Fatal("can't initialize storage database", zap.Error(err))
@@ -285,7 +296,7 @@ func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer,
 		if err != nil {
 			logger.Fatal("can't initialize storage client", zap.Error(err))
 		}
-		combined = append(combined, storage.NewIndexer(logger, storageClient, storage.IndexerOptions{
+		combined = append(combined, internalStorage.NewIndexer(logger, storageClient, internalStorage.IndexerOptions{
 			APMTracer:                    apmTracer,
 			PackageStorageBucketInternal: storageIndexerBucketInternal,
 			PackageStorageEndpoint:       storageEndpoint,
@@ -293,22 +304,40 @@ func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer,
 			Database:                     storageDatabase,
 			SwapDatabase:                 storageSwapDatabase,
 		}))
+	} else if featureStorageIndexer {
+		storageClient, err := gstorage.NewClient(ctx)
+		if err != nil {
+			logger.Fatal("can't initialize storage client", zap.Error(err))
+		}
+		combined = append(combined, storage.NewIndexer(logger, storageClient, storage.IndexerOptions{
+			APMTracer:                    apmTracer,
+			PackageStorageBucketInternal: storageIndexerBucketInternal,
+			PackageStorageEndpoint:       storageEndpoint,
+			WatchInterval:                storageIndexerWatchInterval,
+		}))
 	}
 
-	zipDatabase, err := initDatabase(ctx, logger, config.DatabaseFolderPath, "zip_packages.db")
-	if err != nil {
-		logger.Fatal("can't initialize zip database", zap.Error(err))
-	}
+	if featureSQLFilesystemIndexer {
+		zipDatabase, err := initDatabase(ctx, logger, config.DatabaseFolderPath, "zip_packages.db")
+		if err != nil {
+			logger.Fatal("can't initialize zip database", zap.Error(err))
+		}
 
-	foldersDatabase, err := initDatabase(ctx, logger, config.DatabaseFolderPath, "folders_packages.db")
-	if err != nil {
-		logger.Fatal("can't initialize folders database", zap.Error(err))
-	}
+		foldersDatabase, err := initDatabase(ctx, logger, config.DatabaseFolderPath, "folders_packages.db")
+		if err != nil {
+			logger.Fatal("can't initialize folders database", zap.Error(err))
+		}
 
-	combined = append(combined,
-		packages.NewZipFileSystemIndexer(logger, zipDatabase, packagesBasePaths...),
-		packages.NewFileSystemIndexer(logger, foldersDatabase, packagesBasePaths...),
-	)
+		combined = append(combined,
+			filesystem.NewZipFileSystemSQLIndexer(logger, zipDatabase, packagesBasePaths...),
+			filesystem.NewFileSystemSQLIndexer(logger, foldersDatabase, packagesBasePaths...),
+		)
+	} else {
+		combined = append(combined,
+			packages.NewZipFileSystemIndexer(logger, packagesBasePaths...),
+			packages.NewFileSystemIndexer(logger, packagesBasePaths...),
+		)
+	}
 	ensurePackagesAvailable(ctx, logger, combined)
 	return combined
 }

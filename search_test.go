@@ -14,12 +14,12 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/elastic/package-registry/internal/database"
+	"github.com/elastic/package-registry/internal/filesystem"
 	"github.com/elastic/package-registry/packages"
 	"github.com/elastic/package-registry/proxymode"
 )
 
-func TestSearchWithProxyMode(t *testing.T) {
-
+func createWebServerSearch() *httptest.Server {
 	// nginx 1.15.0 is not included as part of the local packages
 	// datasources 1.0.0 is included as part of the local packages
 	webServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -89,6 +89,31 @@ func TestSearchWithProxyMode(t *testing.T) {
 		w.Header().Set("Content-Type", "application/json")
 		fmt.Fprintln(w, response)
 	}))
+	return webServer
+}
+
+func generateTestCasesSearchProxy(t *testing.T, indexer Indexer, proxyMode *proxymode.ProxyMode) []struct {
+	endpoint string
+	path     string
+	file     string
+	handler  func(w http.ResponseWriter, r *http.Request)
+} {
+	searchWithProxyHandler := searchHandlerWithProxyMode(testLogger, indexer, proxyMode, testCacheTime)
+	tests := []struct {
+		endpoint string
+		path     string
+		file     string
+		handler  func(w http.ResponseWriter, r *http.Request)
+	}{
+		{"/search?all=true", "/search", "search-all-proxy.json", searchWithProxyHandler},
+		{"/search", "/search", "search-just-latest-proxy.json", searchWithProxyHandler},
+	}
+	return tests
+}
+
+func TestSearchWithProxyModeSQL(t *testing.T) {
+
+	webServer := createWebServerSearch()
 	defer webServer.Close()
 
 	zipDb, err := database.NewMemorySQLDB("zip")
@@ -98,8 +123,8 @@ func TestSearchWithProxyMode(t *testing.T) {
 
 	packagesBasePaths := []string{"./testdata/second_package_path", "./testdata/package"}
 	indexer := NewCombinedIndexer(
-		packages.NewZipFileSystemIndexer(testLogger, zipDb, "./testdata/local-storage"),
-		packages.NewFileSystemIndexer(testLogger, foldersDb, packagesBasePaths...),
+		filesystem.NewZipFileSystemSQLIndexer(testLogger, zipDb, "./testdata/local-storage"),
+		filesystem.NewFileSystemSQLIndexer(testLogger, foldersDb, packagesBasePaths...),
 	)
 	defer indexer.Close(context.Background())
 
@@ -115,16 +140,40 @@ func TestSearchWithProxyMode(t *testing.T) {
 	)
 	require.NoError(t, err)
 
-	searchWithProxyHandler := searchHandlerWithProxyMode(testLogger, indexer, proxyMode, testCacheTime)
-	tests := []struct {
-		endpoint string
-		path     string
-		file     string
-		handler  func(w http.ResponseWriter, r *http.Request)
-	}{
-		{"/search?all=true", "/search", "search-all-proxy.json", searchWithProxyHandler},
-		{"/search", "/search", "search-just-latest-proxy.json", searchWithProxyHandler},
+	tests := generateTestCasesSearchProxy(t, indexer, proxyMode)
+
+	for _, test := range tests {
+		t.Run(test.endpoint, func(t *testing.T) {
+			runEndpoint(t, test.endpoint, test.path, test.file, test.handler)
+		})
 	}
+}
+
+func TestSearchWithProxyMode(t *testing.T) {
+
+	webServer := createWebServerSearch()
+	defer webServer.Close()
+
+	packagesBasePaths := []string{"./testdata/second_package_path", "./testdata/package"}
+	indexer := NewCombinedIndexer(
+		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
+		packages.NewFileSystemIndexer(testLogger, packagesBasePaths...),
+	)
+	defer indexer.Close(context.Background())
+
+	err := indexer.Init(context.Background())
+	require.NoError(t, err)
+
+	proxyMode, err := proxymode.NewProxyMode(
+		testLogger,
+		proxymode.ProxyOptions{
+			Enabled: true,
+			ProxyTo: webServer.URL,
+		},
+	)
+	require.NoError(t, err)
+
+	tests := generateTestCasesSearchProxy(t, indexer, proxyMode)
 
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {

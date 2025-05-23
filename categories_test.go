@@ -15,6 +15,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/elastic/package-registry/internal/database"
+	"github.com/elastic/package-registry/internal/filesystem"
 	"github.com/elastic/package-registry/packages"
 	"github.com/elastic/package-registry/proxymode"
 )
@@ -40,10 +41,65 @@ func TestCategoriesWithProxyMode(t *testing.T) {
 	}))
 	defer webServer.Close()
 
+	indexerProxy := packages.NewFileSystemIndexer(testLogger, "./testdata/second_package_path")
+	defer indexerProxy.Close(context.Background())
+
+	err := indexerProxy.Init(context.Background())
+	require.NoError(t, err)
+
+	proxyMode, err := proxymode.NewProxyMode(
+		testLogger,
+		proxymode.ProxyOptions{
+			Enabled: true,
+			ProxyTo: webServer.URL,
+		},
+	)
+	require.NoError(t, err)
+
+	categoriesWithProxyHandler := categoriesHandlerWithProxyMode(testLogger, indexerProxy, proxyMode, testCacheTime)
+
+	tests := []struct {
+		endpoint string
+		path     string
+		file     string
+		handler  func(w http.ResponseWriter, r *http.Request)
+	}{
+		{"/categories", "/categories", "categories-proxy.json", categoriesWithProxyHandler},
+		{"/categories?kibana.version=6.5.0", "/categories", "categories-proxy-kibana-filter.json", categoriesWithProxyHandler},
+	}
+
+	for _, test := range tests {
+		t.Run(test.endpoint, func(t *testing.T) {
+			runEndpoint(t, test.endpoint, test.path, test.file, test.handler)
+		})
+	}
+}
+
+func TestCategoriesWithProxyModeSQL(t *testing.T) {
+	webServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		response := `[
+  {
+    "id": "custom",
+    "title": "Custom",
+    "count": 10
+  },
+  {
+    "id": "custom_logs",
+    "title": "Custom Logs",
+    "count": 3,
+    "parent_id": "custom",
+    "parent_title": "Custom"
+  }
+]`
+		w.Header().Set("Content-Type", "application/json")
+		fmt.Fprintln(w, response)
+	}))
+	defer webServer.Close()
+
 	db, err := database.NewMemorySQLDB("main")
 	require.NoError(t, err)
 
-	indexerProxy := packages.NewFileSystemIndexer(testLogger, db, "./testdata/second_package_path")
+	indexerProxy := filesystem.NewFileSystemSQLIndexer(testLogger, db, "./testdata/second_package_path")
 	defer indexerProxy.Close(context.Background())
 
 	err = indexerProxy.Init(context.Background())

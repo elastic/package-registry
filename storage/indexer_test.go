@@ -7,40 +7,25 @@ package storage
 import (
 	"context"
 	"fmt"
-	"path/filepath"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/zap/zapcore"
 
-	"github.com/elastic/package-registry/internal/database"
 	"github.com/elastic/package-registry/internal/util"
 	"github.com/elastic/package-registry/packages"
 )
 
 func TestInit(t *testing.T) {
 	// given
-	db, err := database.NewMemorySQLDB("main")
-	require.NoError(t, err)
-
-	swapDb, err := database.NewMemorySQLDB("swap")
-	require.NoError(t, err)
-
-	options, err := CreateFakeIndexerOptions(db, swapDb)
-	require.NoError(t, err)
-
 	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
-
-	ctx := context.Background()
-	indexer := NewIndexer(util.NewTestLogger(), storageClient, options)
-	defer indexer.Close(ctx)
+	indexer := NewIndexer(util.NewTestLogger(), storageClient, FakeIndexerOptions)
 
 	// when
-	err = indexer.Init(ctx)
+	err := indexer.Init(context.Background())
 
 	// then
 	require.NoError(t, err)
@@ -48,18 +33,6 @@ func TestInit(t *testing.T) {
 
 func BenchmarkInit(b *testing.B) {
 	// given
-	folder := b.TempDir()
-	dbPath := filepath.Join(folder, "test.db")
-	db, err := database.NewFileSQLDB(dbPath)
-	require.NoError(b, err)
-
-	swapDbPath := filepath.Join(folder, "swap_test.db")
-	swapDb, err := database.NewFileSQLDB(swapDbPath)
-	require.NoError(b, err)
-
-	options, err := CreateFakeIndexerOptions(db, swapDb)
-	require.NoError(b, err)
-
 	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
@@ -67,43 +40,21 @@ func BenchmarkInit(b *testing.B) {
 	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		ctx := context.Background()
-
-		indexer := NewIndexer(logger, storageClient, options)
-		defer indexer.Close(ctx)
-
-		err := indexer.Init(ctx)
+		indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
+		err := indexer.Init(context.Background())
 		require.NoError(b, err)
 	}
 }
 
 func BenchmarkIndexerUpdateIndex(b *testing.B) {
 	// given
-	folder := b.TempDir()
-	dbPath := filepath.Join(folder, "test.db")
-	db, err := database.NewFileSQLDB(dbPath)
-	require.NoError(b, err)
-
-	swapDbPath := filepath.Join(folder, "swap_test.db")
-	swapDb, err := database.NewFileSQLDB(swapDbPath)
-	require.NoError(b, err)
-
-	options, err := CreateFakeIndexerOptions(db, swapDb)
-	require.NoError(b, err)
-
 	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 
 	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
-	ctx := context.Background()
-
-	indexer := NewIndexer(logger, storageClient, options)
-	defer indexer.Close(ctx)
-
-	start := time.Now()
-	err = indexer.Init(ctx)
-	b.Logf("Elapsed time init database: %s", time.Since(start))
+	indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
+	err := indexer.Init(context.Background())
 	require.NoError(b, err)
 
 	b.ResetTimer()
@@ -112,38 +63,20 @@ func BenchmarkIndexerUpdateIndex(b *testing.B) {
 		revision := fmt.Sprintf("%d", i+2)
 		updateFakeServer(b, fs, revision, "testdata/search-index-all-full.json")
 		b.StartTimer()
-		start = time.Now()
-		err = indexer.updateIndex(ctx)
-		b.Logf("Elapsed time updating database: %s", time.Since(start))
+		err = indexer.updateIndex(context.Background())
 		require.NoError(b, err, "index should be updated successfully")
 	}
 }
 
 func BenchmarkIndexerGet(b *testing.B) {
 	// given
-	folder := b.TempDir()
-	dbPath := filepath.Join(folder, "test.db")
-	db, err := database.NewFileSQLDB(dbPath)
-	require.NoError(b, err)
-
-	swapDbPath := filepath.Join(folder, "swap_test.db")
-	swapDb, err := database.NewFileSQLDB(swapDbPath)
-	require.NoError(b, err)
-
-	options, err := CreateFakeIndexerOptions(db, swapDb)
-	require.NoError(b, err)
-
 	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 
 	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
-
-	ctx := context.Background()
-	indexer := NewIndexer(logger, storageClient, options)
-	defer indexer.Close(ctx)
-
-	err = indexer.Init(ctx)
+	indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
+	err := indexer.Init(context.Background())
 	require.NoError(b, err)
 
 	b.ResetTimer()
@@ -156,24 +89,13 @@ func BenchmarkIndexerGet(b *testing.B) {
 
 func TestGet_ListPackages(t *testing.T) {
 	// given
-	db, err := database.NewMemorySQLDB("main")
-	require.NoError(t, err)
-
-	swapDb, err := database.NewMemorySQLDB("swap")
-	require.NoError(t, err)
-
-	options, err := CreateFakeIndexerOptions(db, swapDb)
-	require.NoError(t, err)
-
 	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
+	indexer := NewIndexer(util.NewTestLogger(), storageClient, FakeIndexerOptions)
 
 	ctx := context.Background()
-	indexer := NewIndexer(util.NewTestLogger(), storageClient, options)
-	defer indexer.Close(ctx)
-
-	err = indexer.Init(ctx)
+	err := indexer.Init(ctx)
 	require.NoError(t, err, "storage indexer must be initialized properly")
 
 	cases := []struct {
@@ -295,12 +217,10 @@ func TestGet_ListPackages(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			// when
-			startTest := time.Now()
 			foundPackages, err := indexer.Get(ctx, c.options)
-			t.Logf("Elapsed time GET: %s", time.Since(startTest))
 			// then
 			require.NoError(t, err, "packages should be returned")
-			assert.Len(t, foundPackages, c.expected, "number of packages should be equal to expected")
+			require.Len(t, foundPackages, c.expected)
 			if c.expectedName != "" {
 				assert.Equal(t, c.expectedName, foundPackages[0].Name)
 			}
@@ -313,24 +233,13 @@ func TestGet_ListPackages(t *testing.T) {
 
 func TestGet_IndexUpdated(t *testing.T) {
 	// given
-	db, err := database.NewMemorySQLDB("main")
-	require.NoError(t, err)
-
-	swapDb, err := database.NewMemorySQLDB("swap")
-	require.NoError(t, err)
-
-	options, err := CreateFakeIndexerOptions(db, swapDb)
-	require.NoError(t, err)
-
 	fs := PrepareFakeServer(t, "testdata/search-index-all-small.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
+	indexer := NewIndexer(util.NewTestLogger(), storageClient, FakeIndexerOptions)
 
 	ctx := context.Background()
-	indexer := NewIndexer(util.NewTestLogger(), storageClient, options)
-	defer indexer.Close(ctx)
-
-	err = indexer.Init(ctx)
+	err := indexer.Init(ctx)
 	require.NoError(t, err, "storage indexer must be initialized properly")
 
 	// when
@@ -348,8 +257,9 @@ func TestGet_IndexUpdated(t *testing.T) {
 	require.Equal(t, "1password", foundPackages[0].Name)
 	require.Equal(t, "0.2.0", foundPackages[0].Version)
 
-	// when: index update is performed
-	updateFakeServer(t, fs, "2", "testdata/search-index-all-full.json")
+	// when: index update is performed adding new packages
+	const secondRevision = "2"
+	updateFakeServer(t, fs, secondRevision, "testdata/search-index-all-full.json")
 	err = indexer.updateIndex(ctx)
 	require.NoError(t, err, "index should be updated successfully")
 
@@ -368,7 +278,8 @@ func TestGet_IndexUpdated(t *testing.T) {
 	require.Equal(t, "1.4.0", foundPackages[0].Version)
 
 	// when: index update is performed removing packages
-	updateFakeServer(t, fs, "3", "testdata/search-index-all-small.json")
+	const thirdRevision = "3"
+	updateFakeServer(t, fs, thirdRevision, "testdata/search-index-all-small.json")
 	err = indexer.updateIndex(ctx)
 	require.NoError(t, err, "index should be updated successfully")
 
@@ -385,9 +296,8 @@ func TestGet_IndexUpdated(t *testing.T) {
 	require.Len(t, foundPackages, 1)
 	require.Equal(t, "1password", foundPackages[0].Name)
 	require.Equal(t, "0.2.0", foundPackages[0].Version)
-	require.Equal(t, "1Password Events Reporting", *foundPackages[0].Title)
 
-	// when: index update is performed removing packages
+	// when: index update is performed updating some field of an existing pacakage
 	updateFakeServer(t, fs, "4", "testdata/search-index-all-small-updated-fields.json")
 	err = indexer.updateIndex(ctx)
 	require.NoError(t, err, "index should be updated successfully")

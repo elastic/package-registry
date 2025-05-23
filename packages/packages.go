@@ -7,7 +7,6 @@ package packages
 import (
 	"archive/zip"
 	"context"
-	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -21,14 +20,11 @@ import (
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 
-	"github.com/elastic/package-registry/internal/database"
 	"github.com/elastic/package-registry/metrics"
 )
 
 // ValidationDisabled is a flag which can disable package content validation (package, data streams, assets, etc.).
 var ValidationDisabled bool
-
-const defaultMaxBulkAddBatch = 2000
 
 // Packages is a list of packages.
 type Packages []*Package
@@ -106,14 +102,10 @@ type FileSystemIndexer struct {
 	fsBuilder FileSystemBuilder
 
 	logger *zap.Logger
-
-	database database.Repository
-
-	maxBulkAddBatch int
 }
 
 // NewFileSystemIndexer creates a new FileSystemIndexer for the given paths.
-func NewFileSystemIndexer(logger *zap.Logger, dbRepository database.Repository, paths ...string) *FileSystemIndexer {
+func NewFileSystemIndexer(logger *zap.Logger, paths ...string) *FileSystemIndexer {
 	walkerFn := func(basePath, path string, info os.DirEntry) (bool, error) {
 		relativePath, err := filepath.Rel(basePath, path)
 		if err != nil {
@@ -142,13 +134,11 @@ func NewFileSystemIndexer(logger *zap.Logger, dbRepository database.Repository, 
 		return false, nil
 	}
 	return &FileSystemIndexer{
-		paths:           paths,
-		label:           "FileSystemIndexer",
-		walkerFn:        walkerFn,
-		fsBuilder:       ExtractedFileSystemBuilder,
-		logger:          logger,
-		database:        dbRepository,
-		maxBulkAddBatch: defaultMaxBulkAddBatch,
+		paths:     paths,
+		label:     "FileSystemIndexer",
+		walkerFn:  walkerFn,
+		fsBuilder: ExtractedFileSystemBuilder,
+		logger:    logger,
 	}
 }
 
@@ -157,7 +147,7 @@ var ExtractedFileSystemBuilder = func(p *Package) (PackageFileSystem, error) {
 }
 
 // NewZipFileSystemIndexer creates a new ZipFileSystemIndexer for the given paths.
-func NewZipFileSystemIndexer(logger *zap.Logger, dbRepository database.Repository, paths ...string) *FileSystemIndexer {
+func NewZipFileSystemIndexer(logger *zap.Logger, paths ...string) *FileSystemIndexer {
 	walkerFn := func(basePath, path string, info os.DirEntry) (bool, error) {
 		if info.IsDir() {
 			return false, nil
@@ -177,15 +167,12 @@ func NewZipFileSystemIndexer(logger *zap.Logger, dbRepository database.Repositor
 
 		return true, nil
 	}
-
 	return &FileSystemIndexer{
-		paths:           paths,
-		label:           "ZipFileSystemIndexer",
-		walkerFn:        walkerFn,
-		fsBuilder:       ZipFileSystemBuilder,
-		logger:          logger,
-		database:        dbRepository,
-		maxBulkAddBatch: defaultMaxBulkAddBatch,
+		paths:     paths,
+		label:     "ZipFileSystemIndexer",
+		walkerFn:  walkerFn,
+		fsBuilder: ZipFileSystemBuilder,
+		logger:    logger,
 	}
 }
 
@@ -195,7 +182,7 @@ var ZipFileSystemBuilder = func(p *Package) (PackageFileSystem, error) {
 
 // Init initializes the indexer.
 func (i *FileSystemIndexer) Init(ctx context.Context) (err error) {
-	err = i.getPackagesFromFileSystem(ctx)
+	i.packageList, err = i.getPackagesFromFileSystem(ctx)
 	if err != nil {
 		return fmt.Errorf("reading packages from filesystem failed: %w", err)
 	}
@@ -213,125 +200,52 @@ func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages
 	defer func() {
 		metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": i.label}).Observe(time.Since(start).Seconds())
 	}()
-
 	span, ctx := apm.StartSpan(ctx, "GetFileSystemIndexer", "app")
 	span.Context.SetLabel("indexer", i.label)
 	defer span.End()
 
-	options := &database.SQLOptions{}
-	if opts != nil && opts.Filter != nil {
-		options.Filter = &database.FilterOptions{
-			Type:       opts.Filter.PackageType,
-			Name:       opts.Filter.PackageName,
-			Version:    opts.Filter.PackageVersion,
-			Prerelease: opts.Filter.Prerelease,
-		}
-		if opts.Filter.Experimental {
-			options.Filter.Prerelease = true
-		}
-	}
-
-	var packages Packages
-	err := i.database.AllFunc(ctx, "packages", options, func(ctx context.Context, p *database.Package) error {
-		var newPackage *Package
-		err := func() error {
-			span, _ := apm.StartSpan(ctx, "Process new package", "app")
-			span.Context.SetLabel("package.path", p.Path)
-			defer span.End()
-
-			var err error
-			newPackage, err = NewPackage(i.logger, p.Path, i.fsBuilder)
-			if err != nil {
-				return fmt.Errorf("failed to parse package %s-%s (path %q): %w", p.Name, p.Version, p.Path, err)
-			}
-			return nil
-		}()
-		if err != nil {
-			i.logger.Error("failed to parse package", zap.String("package.name", p.Name), zap.String("package.version", p.Version), zap.String("package.path", p.Path), zap.Error(err))
-			return nil
-		}
-
-		if opts != nil && opts.Filter != nil {
-			pkgs, err := opts.Filter.Apply(ctx, Packages{newPackage})
-			if err != nil {
-				return err
-			}
-			if len(pkgs) == 0 {
-				return nil
-			}
-		}
-
-		packages = append(packages, newPackage)
-		return nil
-	})
-	if err != nil {
-		return nil, fmt.Errorf("failed to obtain all packages: %w", err)
-	}
 	if opts == nil {
-		return packages, nil
+		return i.packageList, nil
 	}
 
-	if len(packages) == 0 {
-		return packages, nil
-	}
-
-	// Required to filter packages if condition `all=false`
 	if opts.Filter != nil {
-		return opts.Filter.Apply(ctx, packages)
+		return opts.Filter.Apply(ctx, i.packageList)
 	}
 
-	return packages, nil
+	return i.packageList, nil
 }
 
-type packageKey struct {
-	name    string
-	version string
-}
-
-func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) error {
-	span, ctx := apm.StartSpan(ctx, "GetFromFileSystem", "app")
-	span.Context.SetLabel("indexer", i.label)
-	defer span.End()
-
-	packagesFound := make(map[packageKey]struct{})
-
-	for _, basePath := range i.paths {
-		err := i.addPackagesToDatabase(ctx, basePath, &packagesFound)
-		if err != nil {
-			return fmt.Errorf("adding packages to database failed (path: %s): %w", basePath, err)
-		}
-	}
-
+func (i *FileSystemIndexer) Close(ctx context.Context) error {
 	return nil
 }
 
-func (i *FileSystemIndexer) addPackagesToDatabase(ctx context.Context, basePath string, packagesFound *map[packageKey]struct{}) error {
-	packagePaths, err := i.getPackagePaths(basePath)
-	if err != nil {
-		return err
+func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Packages, error) {
+	span, _ := apm.StartSpan(ctx, "GetFromFileSystem", "app")
+	span.Context.SetLabel("indexer", i.label)
+	defer span.End()
+
+	type packageKey struct {
+		name    string
+		version string
 	}
+	packagesFound := make(map[packageKey]struct{})
 
-	totalProcessed := 0
-	dbPackages := make([]*database.Package, 0, i.maxBulkAddBatch)
+	var pList Packages
+	for _, basePath := range i.paths {
+		packagePaths, err := i.getPackagePaths(basePath)
+		if err != nil {
+			return nil, err
+		}
 
-	i.logger.Info("Searching packages in "+basePath, zap.Int("pathsNum", len(packagePaths)), zap.String("indexer", i.label))
-	for {
-		read := 0
-		// reuse slice to avoid allocations
-		dbPackages = dbPackages[:0]
-		endBatch := totalProcessed + i.maxBulkAddBatch
-
-		for j := totalProcessed; j < endBatch && j < len(packagePaths); j++ {
-			currentPackagePath := packagePaths[j]
-			p, err := NewPackage(i.logger, currentPackagePath, i.fsBuilder)
+		i.logger.Info("Searching packages in " + basePath)
+		for _, path := range packagePaths {
+			p, err := NewPackage(i.logger, path, i.fsBuilder)
 			if err != nil {
-				return fmt.Errorf("loading package failed (path: %s): %w", currentPackagePath, err)
+				return nil, fmt.Errorf("loading package failed (path: %s): %w", path, err)
 			}
 
-			read++
-
 			key := packageKey{name: p.Name, version: p.Version}
-			if _, found := (*packagesFound)[key]; found {
+			if _, found := packagesFound[key]; found {
 				i.logger.Debug("duplicated package",
 					zap.String("package.name", p.Name),
 					zap.String("package.version", p.Version),
@@ -339,42 +253,16 @@ func (i *FileSystemIndexer) addPackagesToDatabase(ctx context.Context, basePath 
 				continue
 			}
 
-			(*packagesFound)[key] = struct{}{}
+			packagesFound[key] = struct{}{}
+			pList = append(pList, p)
 
 			i.logger.Debug("found package",
 				zap.String("package.name", p.Name),
 				zap.String("package.version", p.Version),
 				zap.String("package.path", p.BasePath))
-
-			// database
-			contents, err := json.Marshal(p)
-			if err != nil {
-				return fmt.Errorf("failed to marshal package (path: %s): %w", currentPackagePath, err)
-			}
-			dbPackage := database.Package{
-				Name:       p.Name,
-				Version:    p.Version,
-				Type:       p.Type,
-				Path:       currentPackagePath,
-				Prerelease: p.IsPrerelease(),
-				Data:       string(contents),
-			}
-
-			dbPackages = append(dbPackages, &dbPackage)
-		}
-		if len(dbPackages) > 0 {
-			err = i.database.BulkAdd(ctx, "packages", dbPackages)
-			if err != nil {
-				return fmt.Errorf("failed to create all packages (bulk operation): %w", err)
-			}
-		}
-		totalProcessed += read
-		if totalProcessed >= len(packagePaths) {
-			break
 		}
 	}
-
-	return nil
+	return pList, nil
 }
 
 // getPackagePaths returns list of available packages, one for each version.
@@ -407,14 +295,6 @@ func (i *FileSystemIndexer) getPackagePaths(packagesPath string) ([]string, erro
 		return nil, fmt.Errorf("listing packages failed (path: %s): %w", packagesPath, err)
 	}
 	return foundPaths, nil
-}
-
-func (i *FileSystemIndexer) Close(ctx context.Context) error {
-	err := i.database.Close(ctx)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // Filter can be used to filter a list of packages.
