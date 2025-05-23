@@ -83,9 +83,6 @@ func (r *SQLiteRepository) Migrate(ctx context.Context) error {
 	if _, err := r.db.ExecContext(ctx, fmt.Sprintf(query, "packages")); err != nil {
 		return err
 	}
-	if _, err := r.db.ExecContext(ctx, fmt.Sprintf(query, "packages_new")); err != nil {
-		return err
-	}
 	return nil
 }
 
