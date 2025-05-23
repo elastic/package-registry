@@ -83,6 +83,16 @@ func (r *SQLiteRepository) Migrate(ctx context.Context) error {
 	if _, err := r.db.ExecContext(ctx, fmt.Sprintf(query, "packages")); err != nil {
 		return err
 	}
+	// TODO: review if category index is needed
+	query = `
+	CREATE INDEX idx_prerelease ON packages (prerelease);
+	CREATE INDEX idx_name_version ON packages ( name, version);
+	CREATE INDEX idx_type ON packages (type);
+	CREATE INDEX idx_category ON packages (categories);
+	`
+	if _, err := r.db.ExecContext(ctx, query); err != nil {
+		return fmt.Errorf("failed to create indices: %w", err)
+	}
 	return nil
 }
 
@@ -112,6 +122,14 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 			if i < endBatch-1 && i < len(pkgs)-1 {
 				sb.WriteString(",")
 			}
+
+			// Add commas to categories to make it easier to search for
+			// categories in the SQL query
+			categories := pkgs[i].Categories
+			if categories != "" {
+				categories = fmt.Sprintf(",%s,", categories)
+			}
+
 			args = append(args,
 				pkgs[i].Name,
 				pkgs[i].Version,
@@ -119,7 +137,7 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 				pkgs[i].Release,
 				pkgs[i].Prerelease,
 				pkgs[i].KibanaVersion,
-				pkgs[i].Categories,
+				categories,
 				pkgs[i].Capabilities,
 				pkgs[i].DiscoveryFields,
 				pkgs[i].Type,
@@ -200,6 +218,7 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 	span, ctx := apm.StartSpan(ctx, "SQL: Get All (process each package)", "app")
 	defer span.End()
 
+	// TODO: return data or baseData column depending on the query required
 	var query strings.Builder
 	query.WriteString("SELECT * FROM ")
 	query.WriteString(database)
@@ -262,6 +281,7 @@ type FilterOptions struct {
 	Name       string
 	Version    string
 	Prerelease bool
+	Category   string
 }
 
 type SQLOptions struct {
@@ -302,6 +322,15 @@ func (o *SQLOptions) Where() string {
 			sb.WriteString(" AND ")
 		}
 		sb.WriteString("prerelease = 0")
+	}
+
+	if o.Filter.Category != "" {
+		if sb.Len() > 0 {
+			sb.WriteString(" AND ")
+		}
+		sb.WriteString("categories LIKE '%,")
+		sb.WriteString(o.Filter.Category)
+		sb.WriteString(",%'")
 	}
 
 	clause := sb.String()

@@ -11,6 +11,8 @@ import (
 	"net"
 	"net/http"
 	"net/url"
+	"os"
+	"runtime/pprof"
 	"strings"
 	"sync"
 	"time"
@@ -366,20 +368,31 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	defer span.End()
 
 	// TODO: To be removed
-	//profBaseName := "get-preprocess-columns-all-basedata-fast-json.prof"
-	// f, err := os.Create("cpu-" + profBaseName)
-	// if err != nil {
-	// 	return nil, fmt.Errorf("failed to create CPU profile: %w", err)
-	// }
-	// defer f.Close()
+	profBaseName := "get-preprocess-columns-all-basedata-fast-json-category-no-index.prof"
+	f, err := os.Create("cpu-" + profBaseName)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create CPU profile: %w", err)
+	}
+	defer f.Close()
 
-	// if err := pprof.StartCPUProfile(f); err != nil {
-	// 	return nil, fmt.Errorf("failed to start CPU profile: %w", err)
+	if err := pprof.StartCPUProfile(f); err != nil {
+		return nil, fmt.Errorf("failed to start CPU profile: %w", err)
+	}
+	defer pprof.StopCPUProfile()
+
+	// mf, err := os.Create("mem-" + profBaseName + "-base")
+	// if err != nil {
+	// 	return nil, fmt.Errorf("could not create memory profile: %w", err)
 	// }
-	// defer pprof.StopCPUProfile()
+	// defer mf.Close()
+	// runtime.GC() // get up-to-date statistics
+
+	// if err := pprof.Lookup("heap").WriteTo(mf, 0); err != nil {
+	// 	return nil, fmt.Errorf("could not write memory profile: %w", err)
+	// }
 
 	var readPackages packages.Packages
-	err := func() error {
+	err = func() error {
 		i.m.RLock()
 		defer i.m.RUnlock()
 
@@ -390,6 +403,7 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 				Name:       opts.Filter.PackageName,
 				Version:    opts.Filter.PackageVersion,
 				Prerelease: opts.Filter.Prerelease,
+				Category:   opts.Filter.Category,
 			}
 			if opts.Filter.Experimental {
 				options.Filter.Prerelease = true
@@ -459,14 +473,14 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	}
 
 	// TODO: To be removed
-	// mf, err := os.Create("mem-" + profBaseName)
+	// mf2, err := os.Create("mem-" + profBaseName)
 	// if err != nil {
 	// 	return nil, fmt.Errorf("could not create memory profile: %w", err)
 	// }
-	// defer mf.Close()
+	// defer mf2.Close()
 	// runtime.GC() // get up-to-date statistics
 
-	// if err := pprof.Lookup("heap").WriteTo(mf, 0); err != nil {
+	// if err := pprof.Lookup("heap").WriteTo(mf2, 0); err != nil {
 	// 	return nil, fmt.Errorf("could not write memory profile: %w", err)
 	// }
 
