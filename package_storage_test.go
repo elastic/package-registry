@@ -49,6 +49,7 @@ func generateTestCaseStorageEndpoints(indexer Indexer) []struct {
 		{"/search?kibana.version=8.0.0", "/search", "search-kibana800.json", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/search?category=web", "/search", "search-category-web.json", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/search?category=web&all=true", "/search", "search-category-web-all.json", searchHandler(testLogger, indexer, testCacheTime)},
+		{"/search?category=observability", "/search", "search-category-observability-subcategories.json", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/search?category=custom", "/search", "search-category-custom.json", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/search?experimental=true", "/search", "search-package-experimental.json", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/search?experimental=foo", "/search", "search-package-experimental-error.txt", searchHandler(testLogger, indexer, testCacheTime)},

@@ -25,12 +25,18 @@ import (
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 
+	"github.com/elastic/package-registry/categories"
 	"github.com/elastic/package-registry/internal/database"
 	"github.com/elastic/package-registry/metrics"
 	"github.com/elastic/package-registry/packages"
 )
 
-const indexerGetDurationPrometheusLabel = "StorageIndexer"
+const (
+	indexerGetDurationPrometheusLabel = "StorageIndexer"
+	defaultMaxBulkAddBatch            = 1500
+)
+
+var allCategories = categories.DefaultCategories()
 
 type Indexer struct {
 	options       IndexerOptions
@@ -54,8 +60,6 @@ type Indexer struct {
 
 	maxBulkAddBatch int
 }
-
-const defaultMaxBulkAddBatch = 1500
 
 type IndexerOptions struct {
 	APMTracer                    *apm.Tracer
@@ -328,16 +332,27 @@ func createDatabasePackage(pkg *packages.Package) (*database.Package, error) {
 		capabilities = strings.Join(pkg.Conditions.Elastic.Capabilities, ",")
 	}
 
-	categories := strings.Join(pkg.Categories, ",")
+	pkgCategories := []string{}
+	pkgCategories = append(pkgCategories, pkg.Categories...)
 	for _, policyTemplate := range pkg.PolicyTemplates {
 		if len(policyTemplate.Categories) == 0 {
 			continue
 		}
-		categories += fmt.Sprintf(",%s", strings.Join(policyTemplate.Categories, ","))
+		pkgCategories = append(pkgCategories, policyTemplate.Categories...)
+	}
+
+	for _, category := range pkgCategories {
+		if _, found := allCategories[category]; !found {
+			continue
+		}
+		if allCategories[category].Parent == nil {
+			continue
+		}
+		pkgCategories = append(pkgCategories, allCategories[category].Parent.Name)
 	}
 
 	if pkg.Conditions != nil && pkg.Conditions.Elastic != nil {
-		categories = strings.Join(pkg.Conditions.Elastic.Capabilities, ",")
+		capabilities = strings.Join(pkg.Conditions.Elastic.Capabilities, ",")
 	}
 
 	newPackage := database.Package{
@@ -348,7 +363,7 @@ func createDatabasePackage(pkg *packages.Package) (*database.Package, error) {
 		Type:            pkg.Type,
 		Release:         pkg.Release,
 		KibanaVersion:   kibanaVersion,
-		Categories:      categories,
+		Categories:      strings.Join(pkgCategories, ","),
 		Capabilities:    capabilities,
 		DiscoveryFields: discoveryFields.String(),
 		Prerelease:      pkg.IsPrerelease(),

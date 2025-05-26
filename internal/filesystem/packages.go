@@ -20,13 +20,17 @@ import (
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 
+	"github.com/elastic/package-registry/categories"
 	"github.com/elastic/package-registry/internal/database"
 	"github.com/elastic/package-registry/metrics"
 	"github.com/elastic/package-registry/packages"
 )
 
 // ValidationDisabled is a flag which can disable package content validation (package, data streams, assets, etc.).
-var ValidationDisabled bool
+var (
+	ValidationDisabled bool
+	allCategories      = categories.DefaultCategories()
+)
 
 const defaultMaxBulkAddBatch = 2000
 
@@ -159,6 +163,7 @@ func (i *FileSystemSQLIndexer) Get(ctx context.Context, opts *packages.GetOption
 			Name:       opts.Filter.PackageName,
 			Version:    opts.Filter.PackageVersion,
 			Prerelease: opts.Filter.Prerelease,
+			Category:   opts.Filter.Category,
 		}
 		if opts.Filter.Experimental {
 			options.Filter.Prerelease = true
@@ -285,13 +290,40 @@ func (i *FileSystemSQLIndexer) addPackagesToDatabase(ctx context.Context, basePa
 			if err != nil {
 				return fmt.Errorf("failed to marshal package (path: %s): %w", currentPackagePath, err)
 			}
+
+			// TODO: move to packages.NewPackage() ?
+			pkgCategories := []string{}
+			pkgCategories = append(pkgCategories, p.Categories...)
+			for _, policyTemplate := range p.PolicyTemplates {
+				if len(policyTemplate.Categories) == 0 {
+					continue
+				}
+				pkgCategories = append(pkgCategories, policyTemplate.Categories...)
+			}
+
+			for _, category := range pkgCategories {
+				if _, found := allCategories[category]; !found {
+					continue
+				}
+				if allCategories[category].Parent == nil {
+					continue
+				}
+				pkgCategories = append(pkgCategories, allCategories[category].Parent.Name)
+			}
+
 			dbPackage := database.Package{
 				Name:       p.Name,
 				Version:    p.Version,
 				Type:       p.Type,
+				Categories: strings.Join(pkgCategories, ","),
 				Path:       currentPackagePath,
 				Prerelease: p.IsPrerelease(),
+				Release:    p.Release,
 				Data:       string(contents),
+				// TODO: set these fields properly as in SQLIndexer
+				KibanaVersion:   "",
+				Capabilities:    "",
+				DiscoveryFields: "",
 			}
 
 			dbPackages = append(dbPackages, &dbPackage)
