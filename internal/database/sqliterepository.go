@@ -147,12 +147,11 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 				sb.WriteString(",")
 			}
 
-			// Add commas to categories to make it easier to search for
-			// categories in the SQL query
-			categories := pkgs[i].Categories
-			if categories != "" {
-				categories = fmt.Sprintf(",%s,", categories)
-			}
+			// Add commas to make it easier to search for these fields
+			// in the SQL query
+			categories := addCommasToString(pkgs[i].Categories)
+			capabilities := addCommasToString(pkgs[i].Capabilities)
+			discoveryFields := addCommasToString(pkgs[i].DiscoveryFields)
 
 			args = append(args,
 				pkgs[i].Name,
@@ -162,8 +161,8 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 				pkgs[i].Prerelease,
 				pkgs[i].KibanaVersion,
 				categories,
-				pkgs[i].Capabilities,
-				pkgs[i].DiscoveryFields,
+				capabilities,
+				discoveryFields,
 				pkgs[i].Type,
 				pkgs[i].Path,
 				pkgs[i].Data,
@@ -194,13 +193,20 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 	return nil
 }
 
+func addCommasToString(s string) string {
+	// Add commas to the string to make it easier to search for
+	if s != "" {
+		s = fmt.Sprintf(",%s,", s)
+	}
+	return s
+}
+
 func (r *SQLiteRepository) All(ctx context.Context, database string, whereOptions WhereOptions) ([]Package, error) {
 	span, ctx := apm.StartSpan(ctx, "SQL: Get All", "app")
 	defer span.End()
 
 	var all []Package
 	r.AllFunc(ctx, database, whereOptions, func(ctx context.Context, pkg *Package) error {
-		// No-op function for AllFunc, just to satisfy the interface
 		all = append(all, *pkg)
 		return nil
 	})
