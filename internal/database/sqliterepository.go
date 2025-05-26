@@ -198,42 +198,13 @@ func (r *SQLiteRepository) All(ctx context.Context, database string, whereOption
 	span, ctx := apm.StartSpan(ctx, "SQL: Get All", "app")
 	defer span.End()
 
-	var query strings.Builder
-	query.WriteString("SELECT * FROM ")
-	query.WriteString(database)
-	if whereOptions != nil {
-		query.WriteString(whereOptions.Where())
-	}
-	// TODO: remove debug
-	fmt.Println(query.String())
-	rows, err := r.db.QueryContext(ctx, query.String())
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
 	var all []Package
-	for rows.Next() {
-		var pkg Package
-		if err := rows.Scan(
-			&pkg.Name,
-			&pkg.Version,
-			&pkg.FormatVersion,
-			&pkg.Release,
-			&pkg.Prerelease,
-			&pkg.KibanaVersion,
-			&pkg.Categories,
-			&pkg.Capabilities,
-			&pkg.DiscoveryFields,
-			&pkg.Type,
-			&pkg.Path,
-			&pkg.Data,
-			&pkg.BaseData,
-		); err != nil {
-			return nil, err
-		}
-		all = append(all, pkg)
-	}
+	r.AllFunc(ctx, database, whereOptions, func(ctx context.Context, pkg *Package) error {
+		// No-op function for AllFunc, just to satisfy the interface
+		all = append(all, *pkg)
+		return nil
+	})
+
 	return all, nil
 }
 
