@@ -61,10 +61,8 @@ func (r *SQLiteRepository) File(ctx context.Context) string {
 func (r *SQLiteRepository) Migrate(ctx context.Context) error {
 	span, ctx := apm.StartSpan(ctx, "SQL: Migrate", "app")
 	defer span.End()
-	// TODO : Set name and version as primary keys ?
 	query := `
     CREATE TABLE IF NOT EXISTS %s (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
 		version TEXT NOT NULL,
 		formatVersion TEXT NOT NULL,
@@ -77,7 +75,8 @@ func (r *SQLiteRepository) Migrate(ctx context.Context) error {
 		type TEXT NOT NULL,
 		path TEXT NOT NULL,
 		data TEXT NOT NULL,
-		baseData TEXT NOT NULL
+		baseData TEXT NOT NULL,
+		PRIMARY KEY (name, version)
     );
 	`
 	if _, err := r.db.ExecContext(ctx, fmt.Sprintf(query, "packages")); err != nil {
@@ -192,7 +191,6 @@ func (r *SQLiteRepository) All(ctx context.Context, database string, whereOption
 	for rows.Next() {
 		var pkg Package
 		if err := rows.Scan(
-			&pkg.ID,
 			&pkg.Name,
 			&pkg.Version,
 			&pkg.FormatVersion,
@@ -236,7 +234,6 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 	for rows.Next() {
 		var pkg Package
 		if err := rows.Scan(
-			&pkg.ID,
 			&pkg.Name,
 			&pkg.Version,
 			&pkg.FormatVersion,
