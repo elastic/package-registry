@@ -22,6 +22,27 @@ var (
 	ErrDeleteFailed = errors.New("delete failed")
 )
 
+type keyDefinition struct {
+	Name    string
+	SQLType string
+}
+
+var keys = []keyDefinition{
+	{"name", "TEXT NOT NULL"},
+	{"version", "TEXT NOT NULL"},
+	{"formatVersion", "TEXT NOT NULL"},
+	{"release", "TEXT NOT NULL"},
+	{"prerelease", "INTEGER NOT NULL"},
+	{"kibanaVersion", "TEXT NOT NULL"},
+	{"categories", "TEXT NOT NULL"},
+	{"capabilities", "TEXT NOT NULL"},
+	{"discoveryFields", "TEXT NOT NULL"},
+	{"type", "TEXT NOT NULL"},
+	{"path", "TEXT NOT NULL"},
+	{"data", "TEXT NOT NULL"},
+	{"baseData", "TEXT NOT NULL"},
+}
+
 const defaultMaxBulkAddBatch = 2000
 
 type SQLiteRepository struct {
@@ -50,7 +71,7 @@ func newSQLiteRepository(db *sql.DB) *SQLiteRepository {
 	return &SQLiteRepository{
 		db:              db,
 		maxBulkAddBatch: defaultMaxBulkAddBatch,
-		numberFields:    13,
+		numberFields:    len(keys),
 	}
 }
 
@@ -61,29 +82,18 @@ func (r *SQLiteRepository) File(ctx context.Context) string {
 func (r *SQLiteRepository) Migrate(ctx context.Context) error {
 	span, ctx := apm.StartSpan(ctx, "SQL: Migrate", "app")
 	defer span.End()
-	query := `
-    CREATE TABLE IF NOT EXISTS %s (
-        name TEXT NOT NULL,
-		version TEXT NOT NULL,
-		formatVersion TEXT NOT NULL,
-		release TEXT NOT NULL,
-		prerelease INTEGER NOT NULL,
-		kibanaVersion TEXT NOT NULL,
-		categories TEXT NOT NULL,
-		capabilities TEXT NOT NULL,
-		discoveryFields TEXT NOT NULL,
-		type TEXT NOT NULL,
-		path TEXT NOT NULL,
-		data TEXT NOT NULL,
-		baseData TEXT NOT NULL,
-		PRIMARY KEY (name, version)
-    );
-	`
-	if _, err := r.db.ExecContext(ctx, fmt.Sprintf(query, "packages")); err != nil {
+	createQuery := strings.Builder{}
+	createQuery.WriteString("CREATE TABLE IF NOT EXISTS ")
+	createQuery.WriteString("packages (")
+	for _, i := range keys {
+		createQuery.WriteString(fmt.Sprintf("%s %s, ", i.Name, i.SQLType))
+	}
+	createQuery.WriteString("PRIMARY KEY (name, version));")
+	if _, err := r.db.ExecContext(ctx, createQuery.String()); err != nil {
 		return err
 	}
 	// TODO: review if category index is needed
-	query = `
+	query := `
 	CREATE INDEX idx_prerelease ON packages (prerelease);
 	CREATE INDEX idx_name_version ON packages ( name, version);
 	CREATE INDEX idx_type ON packages (type);
@@ -109,15 +119,30 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 		read := 0
 		// reuse args slice
 		args = args[:0]
+
 		var sb strings.Builder
 		sb.WriteString("INSERT INTO ")
 		sb.WriteString(database)
-		sb.WriteString("(name, version, formatVersion, release, prerelease, kibanaVersion, ")
-		sb.WriteString("categories, capabilities, discoveryFields, type, path, data, baseData) ")
-		sb.WriteString(" values ")
+		sb.WriteString("(")
+		for i, k := range keys {
+			sb.WriteString(k.Name)
+			if i < len(keys)-1 {
+				sb.WriteString(", ")
+			}
+		}
+		sb.WriteString(") values")
+
 		endBatch := totalProcessed + r.maxBulkAddBatch
 		for i := totalProcessed; i < endBatch && i < len(pkgs); i++ {
-			sb.WriteString("(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+			sb.WriteString("(")
+			for j := range keys {
+				sb.WriteString("?")
+				if j < len(keys)-1 {
+					sb.WriteString(", ")
+				}
+			}
+			sb.WriteString(")")
+
 			if i < endBatch-1 && i < len(pkgs)-1 {
 				sb.WriteString(",")
 			}
