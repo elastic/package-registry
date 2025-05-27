@@ -42,6 +42,11 @@ func (p Packages) Less(i, j int) bool {
 // a package in `p1` with the same name and version that a package in `p2`, the
 // latter is not added.
 func (p1 Packages) Join(p2 Packages) Packages {
+	// If p1 is empty, return p2 as it is.
+	// This is a special case to avoid unnecessary checks.
+	if len(p1) == 0 {
+		return p2
+	}
 	for _, p := range p2 {
 		if p1.contains(p) {
 			continue
