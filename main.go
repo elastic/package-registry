@@ -283,7 +283,7 @@ func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer,
 
 	var combined CombinedIndexer
 
-	if featureSQLStorageIndexer || featureSQLFilesystemIndexer {
+	if featureSQLStorageIndexer || featureStorageIndexer {
 		opts := []option.ClientOption{}
 		if featureStorageIndexerLocalDev {
 			logger.Info("Using local development setup for storage indexer")
