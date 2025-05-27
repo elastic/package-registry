@@ -11,8 +11,6 @@ import (
 	"net"
 	"net/http"
 	"net/url"
-	"os"
-	"runtime/pprof"
 	"strings"
 	"sync"
 	"time"
@@ -383,17 +381,17 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	defer span.End()
 
 	// TODO: To be removed
-	profBaseName := "get-preprocess-columns-all-basedata-fast-json-category-no-index.prof"
-	f, err := os.Create("cpu-" + profBaseName)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create CPU profile: %w", err)
-	}
-	defer f.Close()
+	// profBaseName := "get-preprocess-columns-all-basedata-fast-json-not-full-data-response.prof"
+	// f, err := os.Create("cpu-" + profBaseName)
+	// if err != nil {
+	// 	return nil, fmt.Errorf("failed to create CPU profile: %w", err)
+	// }
+	// defer f.Close()
 
-	if err := pprof.StartCPUProfile(f); err != nil {
-		return nil, fmt.Errorf("failed to start CPU profile: %w", err)
-	}
-	defer pprof.StopCPUProfile()
+	// if err := pprof.StartCPUProfile(f); err != nil {
+	// 	return nil, fmt.Errorf("failed to start CPU profile: %w", err)
+	// }
+	// defer pprof.StopCPUProfile()
 
 	// mf, err := os.Create("mem-" + profBaseName + "-base")
 	// if err != nil {
@@ -407,7 +405,7 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	// }
 
 	var readPackages packages.Packages
-	err = func() error {
+	err := func() error {
 		i.m.RLock()
 		defer i.m.RUnlock()
 
@@ -428,54 +426,26 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 			options.IncludeFullData = opts.FullData
 		}
 
-		numPackages := 0
 		err := (*i.current).AllFunc(ctx, "packages", options, func(ctx context.Context, p *database.Package) error {
-
-			pkg, err := packages.NewPackageWithOptions(
-				packages.WithName(p.Name),
-				packages.WithVersion(p.Version),
-				packages.WithFormatVersion(p.FormatVersion),
-				packages.WithRelease(p.Release),
-				packages.WithKibanaVersion(p.KibanaVersion),
-				packages.WithCapabilities(p.Capabilities),
-				packages.WithCategories(p.Categories),
-				packages.WithType(p.Type),
-				packages.WithDiscoveryFields(p.DiscoveryFields),
-			)
-			if err != nil {
-				return fmt.Errorf("failed to create package %s-%s: %w", p.Name, p.Version, err)
-			}
-
-			numPackages++
-			// First phase filtering packages
-			if opts != nil && opts.Filter != nil {
-				pkgs, err := opts.Filter.Apply(ctx, packages.Packages{pkg})
-				if err != nil {
-					return err
-				}
-				if len(pkgs) == 0 {
-					return nil
-				}
-			}
+			var pkg packages.Package
+			var err error
 			if opts != nil && opts.FullData {
-				err = json.Unmarshal([]byte(p.Data), pkg)
+				err = json.Unmarshal([]byte(p.Data), &pkg)
 			} else {
-				err = json.Unmarshal([]byte(p.BaseData), pkg)
+				err = json.Unmarshal([]byte(p.BaseData), &pkg)
 			}
 			if err != nil {
 				return fmt.Errorf("failed to parse package %s-%s: %w", p.Name, p.Version, err)
 			}
 			pkg.SetRemoteResolver(i.resolver)
-			readPackages = append(readPackages, pkg)
+			readPackages = append(readPackages, &pkg)
 			return nil
 		})
 		if err != nil {
 			return fmt.Errorf("failed to obtain all packages: %w", err)
 		}
-		i.logger.Debug("Number of packages read from database", zap.Int("num.packages", numPackages))
+		i.logger.Debug("Number of packages read from database", zap.Int("num.packages", len(readPackages)))
 
-		// Required to filter packages again if condition `all=false`
-		// and filter the policy templates if the `category` parameter is set
 		if opts != nil && opts.Filter != nil {
 			readPackages, err = opts.Filter.Apply(ctx, readPackages)
 			if err != nil {
