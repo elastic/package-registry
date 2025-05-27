@@ -77,11 +77,6 @@ func WithName(name string) Option {
 func WithVersion(version string) Option {
 	return func(p *Package) error {
 		p.Version = version
-		var err error
-		p.versionSemVer, err = semver.NewVersion(version)
-		if err != nil {
-			return fmt.Errorf("invalid package version: %w", err)
-		}
 		return nil
 	}
 }
@@ -90,18 +85,6 @@ func WithVersion(version string) Option {
 func WithFormatVersion(version string) Option {
 	return func(p *Package) error {
 		p.FormatVersion = version
-		var err error
-		specSemVer, err := semver.NewVersion(version)
-		if err != nil {
-			return fmt.Errorf("invalid package format version: %w", err)
-		}
-
-		specMajorMinorVersion := fmt.Sprintf("%d.%d.0", specSemVer.Major(), specSemVer.Minor())
-
-		p.specMajorMinorSemVer, err = semver.NewVersion(specMajorMinorVersion)
-		if err != nil {
-			return fmt.Errorf("invalid package format version: %w", err)
-		}
 		return nil
 	}
 }
@@ -127,11 +110,6 @@ func WithKibanaVersion(version string) Option {
 			p.Conditions.Kibana = &KibanaConditions{}
 		}
 		p.Conditions.Kibana.Version = version
-		var err error
-		p.Conditions.Kibana.constraint, err = semver.NewConstraint(p.Conditions.Kibana.Version)
-		if err != nil {
-			return fmt.Errorf("invalid Kibana versions range %s: %w", p.Conditions.Kibana.Version, err)
-		}
 		return nil
 	}
 }
@@ -199,6 +177,7 @@ func NewPackageWithOptions(opts ...Option) (*Package, error) {
 			return nil, err
 		}
 	}
+	p.setRuntimeFields()
 	return p, nil
 }
 
