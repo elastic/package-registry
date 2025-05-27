@@ -229,8 +229,11 @@ func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer,
 		opts := []option.ClientOption{}
 		if featureStorageIndexerLocalDev {
 			logger.Info("Using local development setup for storage indexer")
+			// Required to add this option when using STORAGE_EMULATOR_HOST
+			// Related to https://github.com/fsouza/fake-gcs-server/issues/1202#issuecomment-1644877525
 			opts = append(opts, gstorage.WithJSONReads())
 			if os.Getenv("STORAGE_EMULATOR_HOST") == "" {
+				// https://pkg.go.dev/cloud.google.com/go/storage#hdr-Creating_a_Client
 				logger.Fatal("STORAGE_EMULATOR_HOST environment variable is not set. Please set it to use local development setup for storage indexer.")
 			}
 		}
