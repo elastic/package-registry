@@ -17,9 +17,9 @@ require (
 	github.com/magefile/mage v1.15.0
 	github.com/prometheus/client_golang v1.22.0
 	github.com/stretchr/testify v1.10.0
-	go.elastic.co/apm/module/apmgorilla/v2 v2.7.0
-	go.elastic.co/apm/module/apmzap/v2 v2.7.0
-	go.elastic.co/apm/v2 v2.7.0
+	go.elastic.co/apm/module/apmgorilla/v2 v2.7.1
+	go.elastic.co/apm/module/apmzap/v2 v2.7.1
+	go.elastic.co/apm/v2 v2.7.1
 	go.elastic.co/ecszap v1.0.3
 	go.uber.org/zap v1.27.0
 	golang.org/x/tools v0.33.0
@@ -69,8 +69,8 @@ require (
 	github.com/prometheus/procfs v0.16.0 // indirect
 	github.com/spiffe/go-spiffe/v2 v2.5.0 // indirect
 	github.com/zeebo/errs v1.4.0 // indirect
-	go.elastic.co/apm/module/apmhttp/v2 v2.7.0 // indirect
-	go.elastic.co/fastjson v1.5.0 // indirect
+	go.elastic.co/apm/module/apmhttp/v2 v2.7.1 // indirect
+	go.elastic.co/fastjson v1.5.1 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 	go.opentelemetry.io/contrib/detectors/gcp v1.35.0 // indirect
