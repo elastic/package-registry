@@ -94,10 +94,10 @@ func (r *SQLiteRepository) Migrate(ctx context.Context) error {
 	}
 	// TODO: review if category index is needed
 	query := `
-	CREATE INDEX idx_prerelease ON packages (prerelease);
-	CREATE INDEX idx_name_version ON packages ( name, version);
-	CREATE INDEX idx_type ON packages (type);
-	CREATE INDEX idx_category ON packages (categories);
+	CREATE INDEX IF NOT EXISTS idx_prerelease ON packages (prerelease);
+	CREATE INDEX IF NOT EXISTS idx_name_version ON packages ( name, version);
+	CREATE INDEX IF NOT EXISTS idx_type ON packages (type);
+	CREATE INDEX IF NOT EXISTS idx_category ON packages (categories);
 	`
 	if _, err := r.db.ExecContext(ctx, query); err != nil {
 		return fmt.Errorf("failed to create indices: %w", err)

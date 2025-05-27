@@ -224,9 +224,6 @@ func initDatabase(ctx context.Context, logger *zap.Logger, databaseFolderPath, d
 	if err != nil {
 		return nil, fmt.Errorf("failed to open database (path %q): %w", dbPath, err)
 	}
-	if err := packageRepository.Migrate(ctx); err != nil {
-		return nil, fmt.Errorf("failed to prepare the database (path %q): %w", dbPath, err)
-	}
 	logger.Debug("Database created successfully", zap.String("path", dbPath))
 
 	return packageRepository, nil
