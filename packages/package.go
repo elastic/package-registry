@@ -127,6 +127,11 @@ func WithKibanaVersion(version string) Option {
 			p.Conditions.Kibana = &KibanaConditions{}
 		}
 		p.Conditions.Kibana.Version = version
+		var err error
+		p.Conditions.Kibana.constraint, err = semver.NewConstraint(p.Conditions.Kibana.Version)
+		if err != nil {
+			return fmt.Errorf("invalid Kibana versions range %s: %w", p.Conditions.Kibana.Version, err)
+		}
 		return nil
 	}
 }
