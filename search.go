@@ -9,6 +9,9 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"os"
+	"runtime"
+	"runtime/pprof"
 	"sort"
 	"strconv"
 	"strings"
@@ -31,6 +34,42 @@ func searchHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration)
 
 func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
+		testCPU := false
+		testMem := false
+		profBaseName := "poc-search-request.prof"
+		if testCPU {
+			f, err := os.Create("cpu-" + profBaseName)
+			if err != nil {
+				http.Error(w, fmt.Sprintf("failed to create CPU profile file: %s", profBaseName), http.StatusInternalServerError)
+				logger.Error("failed to create CPU profile file", zap.String("file", profBaseName), zap.Error(err))
+				return
+			}
+			defer f.Close()
+
+			if err := pprof.StartCPUProfile(f); err != nil {
+				http.Error(w, fmt.Sprintf("failed to start CPU profile: %s", profBaseName), http.StatusInternalServerError)
+				logger.Error("failed to start CPU profile", zap.String("file", profBaseName), zap.Error(err))
+				return
+			}
+			defer pprof.StopCPUProfile()
+		}
+		if testMem {
+			mf, err := os.Create("mem-" + profBaseName + "-base")
+			if err != nil {
+				http.Error(w, fmt.Sprintf("failed to create Memory profile file: %s", profBaseName), http.StatusInternalServerError)
+				logger.Error("failed to create Memory profile file", zap.String("file", profBaseName), zap.Error(err))
+				return
+			}
+			defer mf.Close()
+			runtime.GC() // get up-to-date statistics
+
+			if err := pprof.Lookup("heap").WriteTo(mf, 0); err != nil {
+				http.Error(w, fmt.Sprintf("could not write memory profile: %s", err), http.StatusInternalServerError)
+				logger.Error("could not write memory profile", zap.Error(err))
+				return
+			}
+		}
+
 		logger := logger.With(apmzap.TraceContext(r.Context())...)
 
 		filter, err := newSearchFilterFromQuery(r.URL.Query())
@@ -70,6 +109,23 @@ func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *
 		cacheHeaders(w, cacheTime)
 		jsonHeader(w)
 		fmt.Fprint(w, string(data))
+
+		if testMem {
+			mf2, err := os.Create("mem-" + profBaseName)
+			if err != nil {
+				http.Error(w, fmt.Sprintf("failed to create Memory profile file: %s", profBaseName), http.StatusInternalServerError)
+				logger.Error("failed to create Memory profile file", zap.String("file", profBaseName), zap.Error(err))
+				return
+			}
+			defer mf2.Close()
+			runtime.GC() // get up-to-date statistics
+
+			if err := pprof.Lookup("heap").WriteTo(mf2, 0); err != nil {
+				http.Error(w, fmt.Sprintf("could not write memory profile: %s", err), http.StatusInternalServerError)
+				logger.Error("could not write memory profile", zap.Error(err))
+				return
+			}
+		}
 	}
 }
 
