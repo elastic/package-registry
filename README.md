@@ -178,6 +178,76 @@ For that, you need to build a new Package Registry docker image from your requir
    elastic-package stack up -v -d
    ```
 
+### Testing Storage indexers
+
+By default, Package Registry uses the FileSystem indexers. In order to be able to test locally Storage Indexer is required to follow these steps:
+
+1. Create a folder with the expected contents of the bucket.
+    - The first folder name is going to be the `bucket` name. In this example, the bucket name is `example`:
+```shell
+cd /path/to/repo/package-registry/
+# create the bucket folder (`example`) under `build/fakegcsserver` folder
+# and the required folders in the bucket (v2/metadata/<cursor>)
+mkdir -p build/fakegcsserver/example/v2/metadata/1
+
+# current value must match the folder `example/v2/metadata/1`
+cat <<EOF > build/fakegcsserver/example/v2/metadata/cursor.json
+{
+  "current": "1"
+}
+EOF
+
+# search-index-all-json can also be downloaded from
+# https://buildkite.com/elastic/package-storage-infra-indexing/builds?branch=main
+cp storage/testdata/search-index-all-full.json build/fakegcsserver/example/v2/metadata/1/search-index-all.json
+
+# `example` is going to be the bucket name
+# These should be the contents of the folder:
+#  $ tree build/example/
+# build/example/
+# └── v2
+#     └── metadata
+#         ├── 1
+#         │   └── search-index-all.json
+#         └── cursor.json
+```
+2. Run fake GCP server using the previous folder as bucket (more documentation about fake GCS server [here](https://github.com/fsouza/fake-gcs-server/blob/79d71622f893b4661a435b34ca9a197a911a8d43/README.md)):
+    - In this example, it is used the latest docker tag `1.52.2` available at the moment of writing this section.
+```shell
+cd /path/to/repo/package-registry/
+docker run --rm \
+  --name fake-gcs-server \
+  -p 4443:4443 \
+  -v ./build/fakegcsserver/:/data \
+  fsouza/fake-gcs-server:1.52.2 -scheme http
+```
+3. Tune the configuration used by Package Registry as you require (default `config.yml`).
+4. Trigger EPR service pointing to the fake GCP server
+```shell
+# build package-registry
+mage build
+
+export EPR_FEATURE_STORAGE_INDEXER_LOCAL_DEV=true
+export STORAGE_EMULATOR_HOST="http://localhost:4443/"
+
+export EPR_STORAGE_INDEXER_BUCKET_INTERNAL="gs://example"
+export EPR_FEATURE_STORAGE_INDEXER="true"
+
+export EPR_DISABLE_PACKAGE_VALIDATION="true"
+
+./package-registry
+```
+
+Following these steps, EPR service should be reading files from the storage indexer and there should be log messages like these ones:
+```json
+{"log.level":"info","@timestamp":"2024-05-27T20:03:35.489+0200","log.origin":{"function":"github.com/elastic/package-registry/storage.(*Indexer).updateIndex","file.name":"storage/indexer.go","file.line":181},"message":"cursor will be updated","cursor.current":"","cursor.next":"1","ecs.version":"1.6.0"}
+{"log.level":"info","@timestamp":"2024-05-27T20:03:35.827+0200","log.origin":{"function":"github.com/elastic/package-registry/storage.(*Indexer).updateIndex","file.name":"storage/indexer.go","file.line":192},"message":"Downloaded new search-index-all index","index.packages.size":"1133","ecs.version":"1.6.0"}
+```
+
+Package registry service is available at `http://localhost:8080`. Example of query using `curl`:
+```shell
+curl -s "http://localhost:8080/search"
+```
 
 ### Healthcheck
 
