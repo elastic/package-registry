@@ -5,11 +5,11 @@
 package storage
 
 import (
-	"encoding/json"
 	"os"
 	"testing"
 
 	"github.com/fsouza/fake-gcs-server/fakestorage"
+	"github.com/goccy/go-json"
 	"github.com/stretchr/testify/require"
 )
 

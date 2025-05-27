@@ -6,11 +6,11 @@ package packages
 
 import (
 	"context"
-	"encoding/json"
 	"flag"
 	"os"
 	"testing"
 
+	"github.com/goccy/go-json"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 

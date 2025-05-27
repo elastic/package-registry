@@ -239,7 +239,7 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 		query.WriteString(whereOptions.Where())
 	}
 	// TODO: remove debug
-	fmt.Println(query.String())
+	// fmt.Println(query.String())
 	rows, err := r.db.QueryContext(ctx, query.String())
 	if err != nil {
 		return err

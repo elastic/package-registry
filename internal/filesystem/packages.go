@@ -7,7 +7,6 @@ package filesystem
 import (
 	"archive/zip"
 	"context"
-	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -15,10 +14,11 @@ import (
 	"time"
 
 	"github.com/Masterminds/semver/v3"
-
+	"github.com/goccy/go-json"
 	"github.com/prometheus/client_golang/prometheus"
-	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
+
+	"go.elastic.co/apm/v2"
 
 	"github.com/elastic/package-registry/categories"
 	"github.com/elastic/package-registry/internal/database"
