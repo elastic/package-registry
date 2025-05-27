@@ -197,7 +197,7 @@ func main() {
 }
 
 func initDatabase(ctx context.Context, logger *zap.Logger, databaseFolderPath, dbFileName string) (database.Repository, error) {
-	span, ctx := apm.StartSpan(ctx, "initDatabase", fmt.Sprintf("backend.init.%s", dbFileName))
+	span, _ := apm.StartSpan(ctx, "initDatabase", fmt.Sprintf("backend.init.%s", dbFileName))
 	defer span.End()
 
 	dbPath := filepath.Join(databaseFolderPath, dbFileName)
