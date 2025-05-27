@@ -169,6 +169,8 @@ func (i *FileSystemSQLIndexer) Get(ctx context.Context, opts *packages.GetOption
 			options.Filter.Prerelease = true
 		}
 	}
+	// Packages are always read from file system, so we don't need full data.
+	options.IncludeFullData = false
 
 	var allPackages packages.Packages
 	err := i.database.AllFunc(ctx, "packages", options, func(ctx context.Context, p *database.Package) error {

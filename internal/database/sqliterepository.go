@@ -218,9 +218,22 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 	span, ctx := apm.StartSpan(ctx, "SQL: Get All (process each package)", "app")
 	defer span.End()
 
-	// TODO: return data or baseData column depending on the query required
+	useBaseData := whereOptions == nil || !whereOptions.UseFullData()
+
+	var getKeys []string
 	var query strings.Builder
-	query.WriteString("SELECT * FROM ")
+	query.WriteString("SELECT ")
+	for _, k := range keys {
+		if k.Name == "data" && useBaseData {
+			continue
+		}
+		if k.Name == "baseData" && !useBaseData {
+			continue
+		}
+		getKeys = append(getKeys, k.Name)
+	}
+	query.WriteString(strings.Join(getKeys, ", "))
+	query.WriteString(" FROM ")
 	query.WriteString(database)
 	if whereOptions != nil {
 		query.WriteString(whereOptions.Where())
@@ -235,6 +248,7 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 
 	for rows.Next() {
 		var pkg Package
+		var pkgData string
 		if err := rows.Scan(
 			&pkg.Name,
 			&pkg.Version,
@@ -247,10 +261,14 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 			&pkg.DiscoveryFields,
 			&pkg.Type,
 			&pkg.Path,
-			&pkg.Data,
-			&pkg.BaseData,
+			&pkgData, // This will be either Data or BaseData depending on the query
 		); err != nil {
 			return err
+		}
+		if useBaseData {
+			pkg.BaseData = pkgData
+		} else {
+			pkg.Data = pkgData
 		}
 		err = process(ctx, &pkg)
 		if err != nil {
@@ -285,6 +303,8 @@ type FilterOptions struct {
 
 type SQLOptions struct {
 	Filter *FilterOptions
+
+	IncludeFullData bool // If true, the query will return the full data field instead of the base data field
 }
 
 func (o *SQLOptions) Where() string {
@@ -337,4 +357,11 @@ func (o *SQLOptions) Where() string {
 		return ""
 	}
 	return fmt.Sprintf(" WHERE %s", clause)
+}
+
+func (o *SQLOptions) UseFullData() bool {
+	if o == nil {
+		return false
+	}
+	return o.IncludeFullData
 }

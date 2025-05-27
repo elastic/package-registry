@@ -19,4 +19,5 @@ type Repository interface {
 
 type WhereOptions interface {
 	Where() string
+	UseFullData() bool
 }

@@ -424,6 +424,9 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 				options.Filter.Prerelease = true
 			}
 		}
+		if opts != nil {
+			options.IncludeFullData = opts.FullData
+		}
 
 		numPackages := 0
 		err := (*i.current).AllFunc(ctx, "packages", options, func(ctx context.Context, p *database.Package) error {
@@ -454,7 +457,7 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 					return nil
 				}
 			}
-			if opts.FullData {
+			if opts != nil && opts.FullData {
 				err = json.Unmarshal([]byte(p.Data), pkg)
 			} else {
 				err = json.Unmarshal([]byte(p.BaseData), pkg)
