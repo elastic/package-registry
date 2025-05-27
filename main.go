@@ -22,6 +22,7 @@ import (
 
 	gstorage "cloud.google.com/go/storage"
 	"github.com/gorilla/mux"
+	"google.golang.org/api/option"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -66,8 +67,9 @@ var (
 
 	printVersionInfo bool
 
-	featureSQLFilesystemIndexer bool
-	featureSQLStorageIndexer    bool
+	featureSQLFilesystemIndexer   bool
+	featureSQLStorageIndexer      bool
+	featureStorageIndexerLocalDev bool
 
 	featureStorageIndexer        bool
 	storageIndexerBucketInternal string
@@ -104,6 +106,7 @@ func init() {
 	// The following storage related flags are technical preview and might be removed in the future or renamed
 	flag.BoolVar(&featureStorageIndexer, "feature-storage-indexer", false, "Enable storage indexer to include packages from Package Storage v2 (technical preview).")
 	flag.BoolVar(&featureSQLStorageIndexer, "feature-sql-storage-indexer", false, "Enable SQL storage indexer to include packages from Package Storage v2 (technical preview).")
+	flag.BoolVar(&featureStorageIndexerLocalDev, "feature-storage-indexer-local-dev", false, "Enable local development setup to test storage indexers (technical preview).")
 	flag.BoolVar(&featureSQLFilesystemIndexer, "feature-sql-filesystem-indexer", false, "Enable SQL storage indexer to include packages from Package Storage v2 (technical preview).")
 	flag.StringVar(&storageIndexerBucketInternal, "storage-indexer-bucket-internal", "", "Path to the internal Package Storage bucket (with gs:// prefix).")
 	flag.StringVar(&storageEndpoint, "storage-endpoint", "https://package-storage.elastic.co/", "Package Storage public endpoint.")
@@ -280,38 +283,46 @@ func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer,
 
 	var combined CombinedIndexer
 
-	if featureSQLStorageIndexer {
-		storageDatabase, err := initDatabase(ctx, logger, config.DatabaseFolderPath, "storage_packages.db")
-		if err != nil {
-			logger.Fatal("can't initialize storage database", zap.Error(err))
+	if featureSQLStorageIndexer || featureSQLFilesystemIndexer {
+		opts := []option.ClientOption{}
+		if featureStorageIndexerLocalDev {
+			logger.Info("Using local development setup for storage indexer")
+			opts = append(opts, gstorage.WithJSONReads())
+			if os.Getenv("STORAGE_EMULATOR_HOST") == "" {
+				logger.Fatal("STORAGE_EMULATOR_HOST environment variable is not set. Please set it to use local development setup for storage indexer.")
+			}
 		}
-		storageSwapDatabase, err := initDatabase(ctx, logger, config.DatabaseFolderPath, "storage_packages_swap.db")
-		if err != nil {
-			logger.Fatal("can't initialize storage backup database", zap.Error(err))
-		}
-		storageClient, err := gstorage.NewClient(ctx)
-		if err != nil {
-			logger.Fatal("can't initialize storage client", zap.Error(err))
-		}
-		combined = append(combined, internalStorage.NewIndexer(logger, storageClient, internalStorage.IndexerOptions{
-			APMTracer:                    apmTracer,
-			PackageStorageBucketInternal: storageIndexerBucketInternal,
-			PackageStorageEndpoint:       storageEndpoint,
-			WatchInterval:                storageIndexerWatchInterval,
-			Database:                     storageDatabase,
-			SwapDatabase:                 storageSwapDatabase,
-		}))
-	} else if featureStorageIndexer {
-		storageClient, err := gstorage.NewClient(ctx)
+		storageClient, err := gstorage.NewClient(ctx, opts...)
 		if err != nil {
 			logger.Fatal("can't initialize storage client", zap.Error(err))
 		}
-		combined = append(combined, storage.NewIndexer(logger, storageClient, storage.IndexerOptions{
-			APMTracer:                    apmTracer,
-			PackageStorageBucketInternal: storageIndexerBucketInternal,
-			PackageStorageEndpoint:       storageEndpoint,
-			WatchInterval:                storageIndexerWatchInterval,
-		}))
+
+		if featureSQLStorageIndexer {
+			storageDatabase, err := initDatabase(ctx, logger, config.DatabaseFolderPath, "storage_packages.db")
+			if err != nil {
+				logger.Fatal("can't initialize storage database", zap.Error(err))
+			}
+			storageSwapDatabase, err := initDatabase(ctx, logger, config.DatabaseFolderPath, "storage_packages_swap.db")
+			if err != nil {
+				logger.Fatal("can't initialize storage backup database", zap.Error(err))
+			}
+
+			combined = append(combined, internalStorage.NewIndexer(logger, storageClient, internalStorage.IndexerOptions{
+				APMTracer:                    apmTracer,
+				PackageStorageBucketInternal: storageIndexerBucketInternal,
+				PackageStorageEndpoint:       storageEndpoint,
+				WatchInterval:                storageIndexerWatchInterval,
+				Database:                     storageDatabase,
+				SwapDatabase:                 storageSwapDatabase,
+			}))
+		} else if featureStorageIndexer {
+			combined = append(combined, storage.NewIndexer(logger, storageClient, storage.IndexerOptions{
+				APMTracer:                    apmTracer,
+				PackageStorageBucketInternal: storageIndexerBucketInternal,
+				PackageStorageEndpoint:       storageEndpoint,
+				WatchInterval:                storageIndexerWatchInterval,
+			}))
+		}
 	}
 
 	if featureSQLFilesystemIndexer {
