@@ -201,13 +201,13 @@ func addCommasToString(s string) string {
 	return s
 }
 
-func (r *SQLiteRepository) All(ctx context.Context, database string, whereOptions WhereOptions) ([]Package, error) {
+func (r *SQLiteRepository) All(ctx context.Context, database string, whereOptions WhereOptions) ([]*Package, error) {
 	span, ctx := apm.StartSpan(ctx, "SQL: Get All", "app")
 	defer span.End()
 
-	var all []Package
+	var all []*Package
 	r.AllFunc(ctx, database, whereOptions, func(ctx context.Context, pkg *Package) error {
-		all = append(all, *pkg)
+		all = append(all, pkg)
 		return nil
 	})
 
