@@ -36,7 +36,6 @@ done
 cd "${SCRIPT_DIR}/.."
 mage build
 
-export EPR_FEATURE_STORAGE_INDEXER_LOCAL_DEV=true
 export STORAGE_EMULATOR_HOST="http://localhost:4443/"
 
 export EPR_STORAGE_INDEXER_BUCKET_INTERNAL="gs://${BUCKET_NAME}"

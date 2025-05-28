@@ -62,11 +62,10 @@ var (
 
 	printVersionInfo bool
 
-	featureStorageIndexer         bool
-	featureStorageIndexerLocalDev bool
-	storageIndexerBucketInternal  string
-	storageEndpoint               string
-	storageIndexerWatchInterval   time.Duration
+	featureStorageIndexer        bool
+	storageIndexerBucketInternal string
+	storageEndpoint              string
+	storageIndexerWatchInterval  time.Duration
 
 	featureProxyMode bool
 	proxyTo          string
@@ -96,7 +95,6 @@ func init() {
 	flag.BoolVar(&packages.ValidationDisabled, "disable-package-validation", false, "Disable package content validation.")
 	// The following storage related flags are technical preview and might be removed in the future or renamed
 	flag.BoolVar(&featureStorageIndexer, "feature-storage-indexer", false, "Enable storage indexer to include packages from Package Storage v2 (technical preview).")
-	flag.BoolVar(&featureStorageIndexerLocalDev, "feature-storage-indexer-local-dev", false, "Enable local development setup to test storage indexers (technical preview).")
 	flag.StringVar(&storageIndexerBucketInternal, "storage-indexer-bucket-internal", "", "Path to the internal Package Storage bucket (with gs:// prefix).")
 	flag.StringVar(&storageEndpoint, "storage-endpoint", "https://package-storage.elastic.co/", "Package Storage public endpoint.")
 	flag.DurationVar(&storageIndexerWatchInterval, "storage-indexer-watch-interval", 1*time.Minute, "Address of the package-registry service.")
@@ -227,15 +225,12 @@ func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer,
 
 	if featureStorageIndexer {
 		opts := []option.ClientOption{}
-		if featureStorageIndexerLocalDev {
-			logger.Info("Using local development setup for storage indexer")
+		if os.Getenv("STORAGE_EMULATOR_HOST") != "" {
+			// https://pkg.go.dev/cloud.google.com/go/storage#hdr-Creating_a_Client
+			logger.Info("Using local development setup for storage indexer", zap.String("STORAGE_EMULATOR_HOST", os.Getenv("STORAGE_EMULATOR_HOST")))
 			// Required to add this option when using STORAGE_EMULATOR_HOST
 			// Related to https://github.com/fsouza/fake-gcs-server/issues/1202#issuecomment-1644877525
 			opts = append(opts, gstorage.WithJSONReads())
-			if os.Getenv("STORAGE_EMULATOR_HOST") == "" {
-				// https://pkg.go.dev/cloud.google.com/go/storage#hdr-Creating_a_Client
-				logger.Fatal("STORAGE_EMULATOR_HOST environment variable is not set. Please set it to use local development setup for storage indexer.")
-			}
 		}
 		storageClient, err := gstorage.NewClient(ctx, opts...)
 		if err != nil {
