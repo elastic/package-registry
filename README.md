@@ -186,6 +186,7 @@ In order to be able to test locally Storage Indexer is required to follow these 
 1. Launch the fake GCS server in one terminal:
     - It creates a new folder with the expected contents for the bucket.
     - It manages a docker-compose scenario with the fake GCS server.
+    - The search index JSON file can be downloaded from the [internal CI](https://buildkite.com/elastic/package-storage-infra-indexing/builds?branch=main) and set that file via `-i` parameter.
    ```shell
    cd /path/to/repo/package-registry/
    cd dev
