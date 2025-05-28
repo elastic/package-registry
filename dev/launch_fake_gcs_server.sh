@@ -79,6 +79,6 @@ cd "${SCRIPT_DIR}"
 
 docker-compose up -d
 
-docker-compose logs -f 
+docker-compose logs -f
 
 
