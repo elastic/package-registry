@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/Masterminds/semver/v3"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/zap/zapcore"
@@ -169,6 +170,17 @@ func TestGet_ListPackages(t *testing.T) {
 			expected: 17,
 		},
 		{
+			name: "all packages of a given category",
+			options: &packages.GetOptions{
+				Filter: &packages.Filter{
+					AllVersions: true,
+					Prerelease:  true,
+					Category:    "datastore",
+				},
+			},
+			expected: 75,
+		},
+		{
 			name: "all packages with all versions of a giventype",
 			options: &packages.GetOptions{
 				Filter: &packages.Filter{
@@ -199,6 +211,18 @@ func TestGet_ListPackages(t *testing.T) {
 				},
 			},
 			expected: 0,
+		},
+		{
+			name: "packages in a specific spec version range",
+			options: &packages.GetOptions{
+				Filter: &packages.Filter{
+					AllVersions: false,
+					Prerelease:  false,
+					SpecMin:     semver.MustParse("1.1"),
+					SpecMax:     semver.MustParse("1.1"),
+				},
+			},
+			expected: 1,
 		},
 		{
 			name: "latest package",

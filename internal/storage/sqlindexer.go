@@ -432,6 +432,9 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 			if opts != nil && opts.FullData {
 				err = json.Unmarshal([]byte(p.Data), &pkg)
 			} else {
+				// BaseData is used for performance reasons, it contains only the fields that are needed for the search index.
+				// FormatVersion needs to be set from database to ensure compatibility with the package structure.
+				pkg.FormatVersion = p.FormatVersion
 				err = json.Unmarshal([]byte(p.BaseData), &pkg)
 			}
 			if err != nil {
