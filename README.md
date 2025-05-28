@@ -192,7 +192,9 @@ In order to be able to test locally Storage Indexer is required to follow these 
    cd dev
    bash launch_fake_gcs_server.sh -i ../storage/testdata/search-index-all-full.json -b example -c 1
    ```
-2. Launch EPR service in a different terminal:
+2. Tune the configuration used by Package Registry as you require:
+    - By default, it uses the `config.yml` file at the root of the repository.
+3. Launch EPR service in a different terminal:
     - It builds package-registry with the contents of the working copy.
     - It triggers the EPR service with the required environment variables to use storage indexers.
    ```shell
