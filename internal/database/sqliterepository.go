@@ -93,11 +93,14 @@ func (r *SQLiteRepository) Migrate(ctx context.Context) error {
 		return err
 	}
 	// TODO: review if category index is needed
+	// Not required to create an index for name and version as they are already part of the primary key
+	// NOt required to create an index for categories column, it is not used in the queries. Example:
+	//  > "EXPLAIN QUERY PLAN SELECT name, version FROM packages WHERE categories LIKE '%,observability,%';"
+	// QUERY PLAN
+	// `--SCAN packages
 	query := `
 	CREATE INDEX IF NOT EXISTS idx_prerelease ON packages (prerelease);
-	CREATE INDEX IF NOT EXISTS idx_name_version ON packages ( name, version);
 	CREATE INDEX IF NOT EXISTS idx_type ON packages (type);
-	CREATE INDEX IF NOT EXISTS idx_category ON packages (categories);
 	`
 	if _, err := r.db.ExecContext(ctx, query); err != nil {
 		return fmt.Errorf("failed to create indices: %w", err)
