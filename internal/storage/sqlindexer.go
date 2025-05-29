@@ -411,12 +411,14 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 
 		options := &database.SQLOptions{}
 		if opts != nil && opts.Filter != nil {
+			// TODO: Add support to filter by discovery fields if possible.
 			options.Filter = &database.FilterOptions{
-				Type:       opts.Filter.PackageType,
-				Name:       opts.Filter.PackageName,
-				Version:    opts.Filter.PackageVersion,
-				Prerelease: opts.Filter.Prerelease,
-				Category:   opts.Filter.Category,
+				Type:         opts.Filter.PackageType,
+				Name:         opts.Filter.PackageName,
+				Version:      opts.Filter.PackageVersion,
+				Prerelease:   opts.Filter.Prerelease,
+				Category:     opts.Filter.Category,
+				Capabilities: opts.Filter.Capabilities,
 			}
 			if opts.Filter.Experimental {
 				options.Filter.Prerelease = true

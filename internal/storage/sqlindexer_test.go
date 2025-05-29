@@ -311,6 +311,28 @@ func TestSQLGet_ListPackages(t *testing.T) {
 			expected: 1,
 		},
 		{
+			name: "filtering packages with uptime capabilities",
+			options: &packages.GetOptions{
+				Filter: &packages.Filter{
+					AllVersions:  false,
+					Prerelease:   false,
+					Capabilities: []string{"uptime"},
+				},
+			},
+			expected: 98,
+		},
+		{
+			name: "filtering packages with security capabilities",
+			options: &packages.GetOptions{
+				Filter: &packages.Filter{
+					AllVersions:  false,
+					Prerelease:   false,
+					Capabilities: []string{"security"},
+				},
+			},
+			expected: 99,
+		},
+		{
 			name: "latest package",
 			options: &packages.GetOptions{
 				Filter: &packages.Filter{

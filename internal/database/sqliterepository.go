@@ -92,7 +92,6 @@ func (r *SQLiteRepository) Migrate(ctx context.Context) error {
 	if _, err := r.db.ExecContext(ctx, createQuery.String()); err != nil {
 		return err
 	}
-	// TODO: review if category index is needed
 	// Not required to create an index for name and version as they are already part of the primary key
 	// NOt required to create an index for categories column, it is not used in the queries. Example:
 	//  > "EXPLAIN QUERY PLAN SELECT name, version FROM packages WHERE categories LIKE '%,observability,%';"
@@ -297,11 +296,12 @@ func (r *SQLiteRepository) Close(ctx context.Context) error {
 }
 
 type FilterOptions struct {
-	Type       string
-	Name       string
-	Version    string
-	Prerelease bool
-	Category   string
+	Type         string
+	Name         string
+	Version      string
+	Prerelease   bool
+	Category     string
+	Capabilities []string
 }
 
 type SQLOptions struct {
@@ -353,6 +353,23 @@ func (o *SQLOptions) Where() string {
 		sb.WriteString("categories LIKE '%,")
 		sb.WriteString(o.Filter.Category)
 		sb.WriteString(",%'")
+	}
+
+	if len(o.Filter.Capabilities) > 0 {
+		if sb.Len() > 0 {
+			sb.WriteString(" AND ")
+		}
+		// If capabilities column value is empty, those packages are not filtered out
+		sb.WriteString("( capabilities == '' OR (")
+		for i, capability := range o.Filter.Capabilities {
+			sb.WriteString("capabilities LIKE '%,")
+			sb.WriteString(capability)
+			sb.WriteString(",%'")
+			if i < len(o.Filter.Capabilities)-1 {
+				sb.WriteString(" AND ")
+			}
+		}
+		sb.WriteString(") )")
 	}
 
 	clause := sb.String()
