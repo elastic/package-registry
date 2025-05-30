@@ -248,9 +248,9 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 	}
 	defer rows.Close()
 
+	// Reuse pkg variable since all fields are scanned into it
+	var pkg Package
 	for rows.Next() {
-		var pkg Package
-		var pkgData string
 		if err := rows.Scan(
 			&pkg.Name,
 			&pkg.Version,
@@ -263,14 +263,16 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 			&pkg.DiscoveryFields,
 			&pkg.Type,
 			&pkg.Path,
-			&pkgData, // This will be either Data or BaseData depending on the query
+			&pkg.Data, // this variable will be assigned to BaseData if useBaseData is true
+			// to avoid creting a new variable, we reuse pkg.Data
 		); err != nil {
 			return err
 		}
 		if useBaseData {
-			pkg.BaseData = pkgData
+			pkg.BaseData = pkg.Data
+			pkg.Data = ""
 		} else {
-			pkg.Data = pkgData
+			pkg.BaseData = ""
 		}
 		err = process(ctx, &pkg)
 		if err != nil {
@@ -372,11 +374,10 @@ func (o *SQLOptions) Where() string {
 		sb.WriteString(") )")
 	}
 
-	clause := sb.String()
-	if clause == "" {
+	if sb.String() == "" {
 		return ""
 	}
-	return fmt.Sprintf(" WHERE %s", clause)
+	return fmt.Sprintf(" WHERE %s", sb.String())
 }
 
 func (o *SQLOptions) UseFullData() bool {
