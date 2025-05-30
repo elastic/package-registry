@@ -182,11 +182,6 @@ func main() {
 	if featureSQLStorageIndexer {
 		searchCache = expirable.NewLRU[string, string](50, nil, config.CacheTimeSearch)
 	}
-	if searchCache == nil {
-		logger.Info("Cache is disabled")
-	} else {
-		logger.Info("Cache is enabled")
-	}
 
 	indexer := initIndexer(ctx, logger, apmTracer, config, searchCache)
 	defer indexer.Close(ctx)
