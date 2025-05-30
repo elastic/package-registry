@@ -224,8 +224,6 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	}
 	i.logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", len(*anIndex))))
 
-	i.transformSearchIndexAllToPackages(anIndex)
-
 	i.logger.Info("Updating database")
 	err = i.updateDatabase(ctx, anIndex)
 	if err != nil {
@@ -357,7 +355,7 @@ func createDatabasePackage(pkg *packages.Package) (*database.Package, error) {
 		Name:            pkg.Name,
 		Version:         pkg.Version,
 		FormatVersion:   pkg.FormatVersion,
-		Path:            pkg.BasePath,
+		Path:            fmt.Sprintf("%s-%s.zip", pkg.Name, pkg.Version),
 		Type:            pkg.Type,
 		Release:         pkg.Release,
 		KibanaVersion:   kibanaVersion,
@@ -442,6 +440,7 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 			if err != nil {
 				return fmt.Errorf("failed to parse package %s-%s: %w", p.Name, p.Version, err)
 			}
+			pkg.BasePath = p.Path
 			pkg.SetRemoteResolver(i.resolver)
 			readPackages = append(readPackages, &pkg)
 			return nil
@@ -487,13 +486,6 @@ func (i *Indexer) Close(ctx context.Context) error {
 
 	errors.Join(err, errSwap)
 	return errors.Join(err, errSwap)
-}
-
-func (i *Indexer) transformSearchIndexAllToPackages(packages *packages.Packages) {
-	for _, m := range *packages {
-		m.BasePath = fmt.Sprintf("%s-%s.zip", m.Name, m.Version)
-		m.SetRemoteResolver(i.resolver)
-	}
 }
 
 func printMemUsage() {
