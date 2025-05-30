@@ -18,6 +18,7 @@ import (
 	"time"
 
 	"github.com/Masterminds/semver/v3"
+	"github.com/hashicorp/golang-lru/v2/expirable"
 
 	"go.elastic.co/apm/module/apmzap/v2"
 	"go.elastic.co/apm/v2"
@@ -29,14 +30,14 @@ import (
 )
 
 func searchHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
-	return searchHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime)
+	return searchHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime, nil)
 }
 
-func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration, lru *expirable.LRU[string, string]) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		testCPU := false
 		testMem := false
-		profBaseName := "poc-search-request.prof"
+		profBaseName := "poc-search-request-mattn-request-cache.prof"
 		if testCPU {
 			f, err := os.Create("cpu-" + profBaseName)
 			if err != nil {
@@ -71,6 +72,16 @@ func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *
 		}
 
 		logger := logger.With(apmzap.TraceContext(r.Context())...)
+
+		if lru != nil {
+			if response, ok := lru.Get(r.URL.String()); ok {
+				logger.Info("lrud request", zap.String("url", r.URL.String()), zap.Int("lruSize", lru.Len()))
+				cacheHeaders(w, cacheTime)
+				jsonHeader(w)
+				fmt.Fprint(w, response)
+				return
+			}
+		}
 
 		filter, err := newSearchFilterFromQuery(r.URL.Query())
 		if err != nil {
@@ -110,6 +121,12 @@ func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *
 		jsonHeader(w)
 		fmt.Fprint(w, string(data))
 
+		if lru != nil {
+			logger.Info("Caching request", zap.String("url", r.URL.String()), zap.Int("lruSize", lru.Len()))
+			val := lru.Add(r.URL.String(), string(data))
+			logger.Info("Added to lru", zap.String("url", r.URL.String()), zap.Int("lruSize", lru.Len()), zap.Bool("added", val))
+		}
+
 		if testMem {
 			mf2, err := os.Create("mem-" + profBaseName)
 			if err != nil {
@@ -118,7 +135,7 @@ func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *
 				return
 			}
 			defer mf2.Close()
-			runtime.GC() // get up-to-date statistics
+			// runtime.GC() // get up-to-date statistics
 
 			if err := pprof.Lookup("heap").WriteTo(mf2, 0); err != nil {
 				http.Error(w, fmt.Sprintf("could not write memory profile: %s", err), http.StatusInternalServerError)

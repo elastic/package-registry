@@ -9,7 +9,8 @@ import (
 	"database/sql"
 	"fmt"
 
-	_ "modernc.org/sqlite"
+	// _ "github.com/mattn/go-sqlite3" // Import the SQLite driver
+	_ "modernc.org/sqlite" // Import the SQLite driver
 )
 
 func NewMemorySQLDB(path string) (*SQLiteRepository, error) {

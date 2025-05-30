@@ -22,6 +22,7 @@ import (
 
 	gstorage "cloud.google.com/go/storage"
 	"github.com/gorilla/mux"
+	"github.com/hashicorp/golang-lru/v2/expirable"
 	"google.golang.org/api/option"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -163,7 +164,7 @@ func main() {
 	config := mustLoadConfig(logger)
 	if dryRun {
 		logger.Info("Running dry-run mode")
-		indexer := initIndexer(ctx, logger, apmTracer, config)
+		indexer := initIndexer(ctx, logger, apmTracer, config, nil)
 		defer indexer.Close(ctx)
 		os.Exit(0)
 	}
@@ -177,10 +178,20 @@ func main() {
 		log.Fatal("Both feature-storage-indexer and feature-sql-storage-indexer are enabled. Please choose one.")
 	}
 
-	indexer := initIndexer(ctx, logger, apmTracer, config)
+	var searchCache *expirable.LRU[string, string]
+	if featureSQLStorageIndexer {
+		searchCache = expirable.NewLRU[string, string](50, nil, config.CacheTimeSearch)
+	}
+	if searchCache == nil {
+		logger.Info("Cache is disabled")
+	} else {
+		logger.Info("Cache is enabled")
+	}
+
+	indexer := initIndexer(ctx, logger, apmTracer, config, searchCache)
 	defer indexer.Close(ctx)
 
-	server := initServer(logger, apmTracer, config, indexer)
+	server := initServer(logger, apmTracer, config, indexer, searchCache)
 	go func() {
 		err := runServer(server)
 		if err != nil && err != http.ErrServerClosed {
@@ -274,7 +285,7 @@ func initMetricsServer(logger *zap.Logger) {
 	}()
 }
 
-func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer, config *Config) Indexer {
+func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer, config *Config, cache *expirable.LRU[string, string]) Indexer {
 	tx := apmTracer.StartTransaction("initIndexer", "backend.init")
 	defer tx.End()
 
@@ -314,6 +325,7 @@ func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer,
 				WatchInterval:                storageIndexerWatchInterval,
 				Database:                     storageDatabase,
 				SwapDatabase:                 storageSwapDatabase,
+				Cache:                        cache,
 			}))
 		} else if featureStorageIndexer {
 			combined = append(combined, storage.NewIndexer(logger, storageClient, storage.IndexerOptions{
@@ -350,8 +362,8 @@ func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer,
 	return combined
 }
 
-func initServer(logger *zap.Logger, apmTracer *apm.Tracer, config *Config, indexer Indexer) *http.Server {
-	router := mustLoadRouter(logger, config, indexer)
+func initServer(logger *zap.Logger, apmTracer *apm.Tracer, config *Config, indexer Indexer, cache *expirable.LRU[string, string]) *http.Server {
+	router := mustLoadRouter(logger, config, indexer, cache)
 	apmgorilla.Instrument(router, apmgorilla.WithTracer(apmTracer))
 
 	var tlsConfig tls.Config
@@ -447,15 +459,15 @@ func ensurePackagesAvailable(ctx context.Context, logger *zap.Logger, indexer In
 	metrics.NumberIndexedPackages.Set(float64(len(packages)))
 }
 
-func mustLoadRouter(logger *zap.Logger, config *Config, indexer Indexer) *mux.Router {
-	router, err := getRouter(logger, config, indexer)
+func mustLoadRouter(logger *zap.Logger, config *Config, indexer Indexer, cache *expirable.LRU[string, string]) *mux.Router {
+	router, err := getRouter(logger, config, indexer, cache)
 	if err != nil {
 		logger.Fatal("failed go configure router", zap.Error(err))
 	}
 	return router
 }
 
-func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router, error) {
+func getRouter(logger *zap.Logger, config *Config, indexer Indexer, cache *expirable.LRU[string, string]) (*mux.Router, error) {
 	if featureProxyMode {
 		logger.Info("Technical preview: Proxy mode is an experimental feature and it may be unstable.")
 	}
@@ -479,7 +491,7 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router
 
 	categoriesHandler := categoriesHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeCategories)
 	packageIndexHandler := packageIndexHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeCatchAll)
-	searchHandler := searchHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeSearch)
+	searchHandler := searchHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeSearch, cache)
 	staticHandler := staticHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeCatchAll)
 
 	router := mux.NewRouter().StrictSlash(true)

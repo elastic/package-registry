@@ -98,7 +98,7 @@ func generateTestCasesSearchProxy(t *testing.T, indexer Indexer, proxyMode *prox
 	file     string
 	handler  func(w http.ResponseWriter, r *http.Request)
 } {
-	searchWithProxyHandler := searchHandlerWithProxyMode(testLogger, indexer, proxyMode, testCacheTime)
+	searchWithProxyHandler := searchHandlerWithProxyMode(testLogger, indexer, proxyMode, testCacheTime, nil)
 	tests := []struct {
 		endpoint string
 		path     string

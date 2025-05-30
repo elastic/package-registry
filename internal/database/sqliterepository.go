@@ -11,8 +11,10 @@ import (
 	"fmt"
 	"strings"
 
+	// _ "github.com/mattn/go-sqlite3" // Import the SQLite driver
+	_ "modernc.org/sqlite" // Import the SQLite driver
+
 	"go.elastic.co/apm/v2"
-	_ "modernc.org/sqlite"
 )
 
 var (
@@ -45,6 +47,8 @@ var keys = []keyDefinition{
 
 const defaultMaxBulkAddBatch = 2000
 
+// const defaultMaxRowsToCache  = 1000000 // 1 million rows
+
 type SQLiteRepository struct {
 	db              *sql.DB
 	path            string
@@ -52,9 +56,40 @@ type SQLiteRepository struct {
 	numberFields    int
 }
 
+// func newRistrettoCache(maxRowsToCache int64) (cache.Cacher, error) {
+// 	c, err := ristretto.NewCache(&ristretto.Config{
+// 		NumCounters: 10 * maxRowsToCache,
+// 		MaxCost:     maxRowsToCache,
+// 		BufferItems: 64,
+// 	})
+// 	if err != nil {
+// 		return nil, err
+// 	}
+//
+// 	return sqlcache.NewRistretto(c), nil
+// }
+
 var _ Repository = new(SQLiteRepository)
 
 func NewFileSQLDB(path string) (*SQLiteRepository, error) {
+	// NOTE: Even using sqlcache (with Ristretto or Redis), data column needs to be processed (Unmarshalled) in
+	// all the Get queries, so there is no advantage of using sqlcache with SQLite.
+
+	// cache, err := newRistrettoCache(defaultMaxRowsToCache)
+	// if err != nil {
+	// 	return nil, fmt.Errorf("newRistrettoCache() failed: %w", err)
+	// }
+
+	// interceptor, err := sqlcache.NewInterceptor(&sqlcache.Config{
+	// 	Cache: cache, // pick a Cacher interface implementation of your choice (redis or ristretto)
+	// })
+	// if err != nil {
+	// 	return nil, fmt.Errorf("sqlcache.NewInterceptor() failed: %v", err)
+	// }
+
+	// sql.Register("sqlite"+path, interceptor.Driver(&sqlite3.SQLiteDriver{}))
+
+	// db, err := sql.Open("sqlite"+path, path)
 	db, err := sql.Open("sqlite", path)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open database: %w", err)
