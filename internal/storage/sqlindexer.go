@@ -328,28 +328,7 @@ func createDatabasePackage(pkg *packages.Package) (*database.Package, error) {
 		capabilities = strings.Join(pkg.Conditions.Elastic.Capabilities, ",")
 	}
 
-	pkgCategories := []string{}
-	pkgCategories = append(pkgCategories, pkg.Categories...)
-	for _, policyTemplate := range pkg.PolicyTemplates {
-		if len(policyTemplate.Categories) == 0 {
-			continue
-		}
-		pkgCategories = append(pkgCategories, policyTemplate.Categories...)
-	}
-
-	for _, category := range pkgCategories {
-		if _, found := allCategories[category]; !found {
-			continue
-		}
-		if allCategories[category].Parent == nil {
-			continue
-		}
-		pkgCategories = append(pkgCategories, allCategories[category].Parent.Name)
-	}
-
-	if pkg.Conditions != nil && pkg.Conditions.Elastic != nil {
-		capabilities = strings.Join(pkg.Conditions.Elastic.Capabilities, ",")
-	}
+	pkgCategories := calculateAllCategories(pkg)
 
 	newPackage := database.Package{
 		Name:            pkg.Name,
@@ -368,6 +347,29 @@ func createDatabasePackage(pkg *packages.Package) (*database.Package, error) {
 	}
 
 	return &newPackage, nil
+}
+
+// calculateAllCategories returns all categories for a given package, including those from policy templates and parent categories.
+func calculateAllCategories(pkg *packages.Package) []string {
+	pkgCategories := []string{}
+	pkgCategories = append(pkgCategories, pkg.Categories...)
+	for _, policyTemplate := range pkg.PolicyTemplates {
+		if len(policyTemplate.Categories) == 0 {
+			continue
+		}
+		pkgCategories = append(pkgCategories, policyTemplate.Categories...)
+	}
+
+	for _, category := range pkgCategories {
+		if _, found := allCategories[category]; !found {
+			continue
+		}
+		if allCategories[category].Parent == nil {
+			continue
+		}
+		pkgCategories = append(pkgCategories, allCategories[category].Parent.Name)
+	}
+	return pkgCategories
 }
 
 func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.Packages, error) {
