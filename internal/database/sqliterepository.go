@@ -94,26 +94,59 @@ func NewFileSQLDB(path string) (*SQLiteRepository, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to open database: %w", err)
 	}
-	dbRepo := newSQLiteRepository(db)
-	if err := dbRepo.Migrate(context.Background()); err != nil {
-		return nil, fmt.Errorf("failed to create database: %w", err)
-	}
-	dbRepo.path = path
 
 	// Test the connection to the database
 	if err := db.Ping(); err != nil {
 		return nil, fmt.Errorf("failed to connect to database: %w", err)
 	}
 
+	dbRepo, err := newSQLiteRepository(db)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create SQLite repository: %w", err)
+	}
+	if err := dbRepo.Migrate(context.Background()); err != nil {
+		return nil, fmt.Errorf("failed to create database: %w", err)
+	}
+	dbRepo.path = path
+
 	return dbRepo, nil
 }
 
-func newSQLiteRepository(db *sql.DB) *SQLiteRepository {
+func newSQLiteRepository(db *sql.DB) (*SQLiteRepository, error) {
+	var err error
+	// https://www.sqlite.org/pragma.html#pragma_journal_mode
+	// Not observed any performance difference with WAL mode, so keeping it as DELETE mode for now.
+	// _, err = db.Exec("PRAGMA journal_mode = WAL;")
+	// if err != nil {
+	// 	return nil, fmt.Errorf("failed to update journal_mode: %w", err)
+	// }
+
+	// // https://www.sqlite.org/pragma.html#pragma_synchronous
+	// // Default is FULL, which is the safest mode, but it can be slow.
+	// _, err = db.Exec("PRAGMA synchronous = NORMAL;")
+	// if err != nil {
+	// 	return nil, fmt.Errorf("failed to update synchronous: %w", err)
+	// }
+
+	// https://www.sqlite.org/pragma.html#pragma_busy_timeout
+	// Setting busy_timeout to 5000ms (5 seconds) as the time to wait for a lock to go away
+	// before returning an error
+	// _, err = db.Exec("PRAGMA busy_timeout = 5000;")
+	// if err != nil {
+	// 	return nil, fmt.Errorf("failed to update busy_timeout: %w", err)
+	// }
+
+	// https://www.sqlite.org/pragma.html#pragma_cache_size
+	// By default, SQLite uses a 2MB cache size. We can increase it to 10MB.
+	_, err = db.Exec("PRAGMA cache_size = -10000;")
+	if err != nil {
+		return nil, fmt.Errorf("failed to update cache_size: %w", err)
+	}
 	return &SQLiteRepository{
 		db:              db,
 		maxBulkAddBatch: defaultMaxBulkAddBatch,
 		numberFields:    len(keys),
-	}
+	}, nil
 }
 
 func (r *SQLiteRepository) File(ctx context.Context) string {

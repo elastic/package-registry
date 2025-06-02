@@ -18,7 +18,11 @@ func NewMemorySQLDB(path string) (*SQLiteRepository, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to open database: %w", err)
 	}
-	dbRepo := newSQLiteRepository(db)
+	dbRepo, err := newSQLiteRepository(db)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create SQLite repository: %w", err)
+	}
+
 	if err := dbRepo.Migrate(context.Background()); err != nil {
 		return nil, fmt.Errorf("failed to create database: %w", err)
 	}

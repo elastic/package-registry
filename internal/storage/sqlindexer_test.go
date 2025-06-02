@@ -148,11 +148,25 @@ func BenchmarkSQLIndexerGet(b *testing.B) {
 	require.NoError(b, err)
 
 	b.ResetTimer()
-	b.RunParallel(func(pb *testing.PB) {
-		for pb.Next() {
-			indexer.Get(context.Background(), &packages.GetOptions{})
-		}
-	})
+	for i := 0; i < b.N; i++ {
+		indexer.Get(context.Background(), &packages.GetOptions{})
+		indexer.Get(context.Background(), &packages.GetOptions{
+			Filter: &packages.Filter{
+				AllVersions: true,
+				Prerelease:  true,
+			},
+		})
+		indexer.Get(context.Background(), &packages.GetOptions{Filter: &packages.Filter{
+			AllVersions: false,
+			Prerelease:  false,
+		}})
+		indexer.Get(context.Background(), &packages.GetOptions{Filter: &packages.Filter{
+			AllVersions: false,
+			Prerelease:  false,
+			SpecMin:     semver.MustParse("3.0"),
+			SpecMax:     semver.MustParse("3.3"),
+		}})
+	}
 }
 
 func TestSQLGet_ListPackages(t *testing.T) {
