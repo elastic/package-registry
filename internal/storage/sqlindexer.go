@@ -229,11 +229,14 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	}
 	i.logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", len(*anIndex))))
 
-	i.logger.Info("Updating database")
+	i.logger.Info("Filling database")
+	startUpdate := time.Now()
 	err = i.updateDatabase(ctx, anIndex)
 	if err != nil {
 		return fmt.Errorf("failed to update database: %w", err)
 	}
+	startDuration := time.Since(startUpdate)
+	i.logger.Info("Filled database with latest packages", zap.Duration("elapsed.time", startDuration), zap.String("elapsed.time.human", startDuration.String()))
 
 	startLock := time.Now()
 	err = func() error {
