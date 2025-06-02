@@ -14,6 +14,8 @@ type Repository interface {
 	Drop(ctx context.Context, table string) error
 	Close(ctx context.Context) error
 
+	Ping(ctx context.Context) error
+
 	File(ctx context.Context) string
 }
 

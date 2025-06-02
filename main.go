@@ -235,6 +235,12 @@ func initDatabase(ctx context.Context, logger *zap.Logger, databaseFolderPath, d
 	}
 	logger.Debug("Database created successfully", zap.String("path", dbPath))
 
+	// Test the connection to the database
+	if err := packageRepository.Ping(ctx); err != nil {
+		return nil, fmt.Errorf("failed to connect to database: %w", err)
+	}
+	logger.Info("Test database conneection successfully", zap.String("path", dbPath))
+
 	return packageRepository, nil
 }
 

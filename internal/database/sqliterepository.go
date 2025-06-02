@@ -99,6 +99,12 @@ func NewFileSQLDB(path string) (*SQLiteRepository, error) {
 		return nil, fmt.Errorf("failed to create database: %w", err)
 	}
 	dbRepo.path = path
+
+	// Test the connection to the database
+	if err := db.Ping(); err != nil {
+		return nil, fmt.Errorf("failed to connect to database: %w", err)
+	}
+
 	return dbRepo, nil
 }
 
@@ -112,6 +118,18 @@ func newSQLiteRepository(db *sql.DB) *SQLiteRepository {
 
 func (r *SQLiteRepository) File(ctx context.Context) string {
 	return r.path
+}
+
+func (r *SQLiteRepository) Ping(ctx context.Context) error {
+	span, ctx := apm.StartSpan(ctx, "SQL: Ping", "app")
+	defer span.End()
+	if r.db == nil {
+		return errors.New("database is not initialized")
+	}
+	if err := r.db.PingContext(ctx); err != nil {
+		return fmt.Errorf("failed to ping database: %w", err)
+	}
+	return nil
 }
 
 func (r *SQLiteRepository) Migrate(ctx context.Context) error {
