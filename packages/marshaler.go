@@ -6,7 +6,8 @@ package packages
 
 import (
 	"bytes"
-	"encoding/json"
+
+	"github.com/goccy/go-json"
 
 	"github.com/elastic/package-registry/internal/util"
 )
@@ -34,5 +35,6 @@ func (p *Package) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	((*Package)(aux.Alias)).setBasePolicyTemplates()
+	((*Package)(aux.Alias)).setBaseDataStreams()
 	return ((*Package)(aux.Alias)).setRuntimeFields()
 }

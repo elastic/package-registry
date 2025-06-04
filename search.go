@@ -9,12 +9,16 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"os"
+	"runtime"
+	"runtime/pprof"
 	"sort"
 	"strconv"
 	"strings"
 	"time"
 
 	"github.com/Masterminds/semver/v3"
+	"github.com/hashicorp/golang-lru/v2/expirable"
 
 	"go.elastic.co/apm/module/apmzap/v2"
 	"go.elastic.co/apm/v2"
@@ -26,12 +30,58 @@ import (
 )
 
 func searchHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
-	return searchHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime)
+	return searchHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime, nil)
 }
 
-func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration, lru *expirable.LRU[string, string]) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
+		testCPU := false
+		testMem := false
+		profBaseName := "poc-search-request-mattn-request-cache.prof"
+		if testCPU {
+			f, err := os.Create("cpu-" + profBaseName)
+			if err != nil {
+				http.Error(w, fmt.Sprintf("failed to create CPU profile file: %s", profBaseName), http.StatusInternalServerError)
+				logger.Error("failed to create CPU profile file", zap.String("file", profBaseName), zap.Error(err))
+				return
+			}
+			defer f.Close()
+
+			if err := pprof.StartCPUProfile(f); err != nil {
+				http.Error(w, fmt.Sprintf("failed to start CPU profile: %s", profBaseName), http.StatusInternalServerError)
+				logger.Error("failed to start CPU profile", zap.String("file", profBaseName), zap.Error(err))
+				return
+			}
+			defer pprof.StopCPUProfile()
+		}
+		if testMem {
+			mf, err := os.Create("mem-" + profBaseName + "-base")
+			if err != nil {
+				http.Error(w, fmt.Sprintf("failed to create Memory profile file: %s", profBaseName), http.StatusInternalServerError)
+				logger.Error("failed to create Memory profile file", zap.String("file", profBaseName), zap.Error(err))
+				return
+			}
+			defer mf.Close()
+			runtime.GC() // get up-to-date statistics
+
+			if err := pprof.Lookup("heap").WriteTo(mf, 0); err != nil {
+				http.Error(w, fmt.Sprintf("could not write memory profile: %s", err), http.StatusInternalServerError)
+				logger.Error("could not write memory profile", zap.Error(err))
+				return
+			}
+		}
+
 		logger := logger.With(apmzap.TraceContext(r.Context())...)
+
+		if lru != nil {
+			if response, ok := lru.Get(r.URL.String()); ok {
+				logger.Info("lrud request", zap.String("url", r.URL.String()), zap.Int("lruSize", lru.Len()))
+				cacheHeaders(w, cacheTime)
+				jsonHeader(w)
+				fmt.Fprint(w, response)
+				return
+			}
+		}
 
 		filter, err := newSearchFilterFromQuery(r.URL.Query())
 		if err != nil {
@@ -70,6 +120,29 @@ func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *
 		cacheHeaders(w, cacheTime)
 		jsonHeader(w)
 		fmt.Fprint(w, string(data))
+
+		if lru != nil {
+			logger.Info("Caching request", zap.String("url", r.URL.String()), zap.Int("lruSize", lru.Len()))
+			val := lru.Add(r.URL.String(), string(data))
+			logger.Info("Added to lru", zap.String("url", r.URL.String()), zap.Int("lruSize", lru.Len()), zap.Bool("added", val))
+		}
+
+		if testMem {
+			mf2, err := os.Create("mem-" + profBaseName)
+			if err != nil {
+				http.Error(w, fmt.Sprintf("failed to create Memory profile file: %s", profBaseName), http.StatusInternalServerError)
+				logger.Error("failed to create Memory profile file", zap.String("file", profBaseName), zap.Error(err))
+				return
+			}
+			defer mf2.Close()
+			// runtime.GC() // get up-to-date statistics
+
+			if err := pprof.Lookup("heap").WriteTo(mf2, 0); err != nil {
+				http.Error(w, fmt.Sprintf("could not write memory profile: %s", err), http.StatusInternalServerError)
+				logger.Error("could not write memory profile", zap.Error(err))
+				return
+			}
+		}
 	}
 }
 
@@ -189,25 +262,25 @@ func getSearchOutput(ctx context.Context, packageList packages.Packages) ([]byte
 
 type packageSummary struct {
 	packages.BasePackage `json:",inline"`
-	DataStreams          []*packages.DataStream `json:"data_streams,omitempty"`
+	// DataStreams          []*packages.BaseDataStream `json:"data_streams,omitempty"`
 }
 
 func getPackageSummaryOutput(index *packages.Package) packageSummary {
 	summary := packageSummary{
 		BasePackage: index.BasePackage,
 	}
-	if len(index.DataStreams) == 0 {
-		return summary
-	}
+	// if len(index.BaseDataStreams) == 0 {
+	// 	return summary
+	// }
 
-	summary.DataStreams = make([]*packages.DataStream, len(index.DataStreams))
-	for i, datastream := range index.DataStreams {
-		summary.DataStreams[i] = &packages.DataStream{
-			Type:    datastream.Type,
-			Dataset: datastream.Dataset,
-			Title:   datastream.Title,
-		}
-	}
+	// summary.DataStreams = make([]*packages.BaseDataStream, len(index.BaseDataStreams))
+	// for i, datastream := range index.BaseDataStreams {
+	// 	summary.DataStreams[i] = &packages.BaseDataStream{
+	// 		Type:    datastream.Type,
+	// 		Dataset: datastream.Dataset,
+	// 		Title:   datastream.Title,
+	// 	}
+	// }
 
 	return summary
 }

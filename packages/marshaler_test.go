@@ -6,11 +6,11 @@ package packages
 
 import (
 	"context"
-	"encoding/json"
 	"flag"
 	"os"
 	"testing"
 
+	"github.com/goccy/go-json"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
@@ -25,11 +25,15 @@ func TestMarshalJSON(t *testing.T) {
 	// given
 	packagesBasePaths := []string{"../testdata/second_package_path", "../testdata/package"}
 	indexer := NewFileSystemIndexer(util.NewTestLogger(), packagesBasePaths...)
+	defer indexer.Close(context.Background())
+
 	err := indexer.Init(context.Background())
 	require.NoError(t, err, "can't initialize indexer")
 
 	// when
-	m, err := json.MarshalIndent(&indexer.packageList, " ", " ")
+	packageList, err := indexer.Get(context.Background(), nil)
+	require.NoError(t, err)
+	m, err := json.MarshalIndent(packageList, " ", " ")
 	require.NoError(t, err)
 
 	// then
@@ -40,6 +44,8 @@ func TestUnmarshalJSON(t *testing.T) {
 	// given
 	packagesBasePaths := []string{"../testdata/second_package_path", "../testdata/package"}
 	indexer := NewFileSystemIndexer(util.NewTestLogger(), packagesBasePaths...)
+	defer indexer.Close(context.Background())
+
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 

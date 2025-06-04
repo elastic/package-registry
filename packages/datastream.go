@@ -5,12 +5,12 @@
 package packages
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 	"path"
 	"strings"
 
+	"github.com/goccy/go-json"
 	yamlv2 "gopkg.in/yaml.v2"
 
 	ucfg "github.com/elastic/go-ucfg"
