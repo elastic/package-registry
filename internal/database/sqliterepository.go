@@ -323,12 +323,16 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 	query.WriteString(strings.Join(getKeys, ", "))
 	query.WriteString(" FROM ")
 	query.WriteString(database)
+	var whereArgs []any
 	if whereOptions != nil {
-		query.WriteString(whereOptions.Where())
+		var clause string
+		clause, whereArgs = whereOptions.Where()
+		query.WriteString(clause)
 	}
 	// TODO: remove debug
-	// fmt.Println(query.String())
-	rows, err := r.db.QueryContext(ctx, query.String())
+	fmt.Println("Query:", query.String())
+	fmt.Println("Where args:", whereArgs)
+	rows, err := r.db.QueryContext(ctx, query.String(), whereArgs...)
 	if err != nil {
 		return err
 	}
@@ -398,33 +402,31 @@ type SQLOptions struct {
 	IncludeFullData bool // If true, the query will return the full data field instead of the base data field
 }
 
-func (o *SQLOptions) Where() string {
+func (o *SQLOptions) Where() (string, []any) {
 	if o == nil || o.Filter == nil {
-		return ""
+		return "", nil
 	}
 	var sb strings.Builder
+	var args []any
 	if o.Filter.Type != "" {
-		sb.WriteString("type = '")
-		sb.WriteString(o.Filter.Type)
-		sb.WriteString("'")
+		sb.WriteString("type = ?")
+		args = append(args, o.Filter.Type)
 	}
 
 	if o.Filter.Name != "" {
 		if sb.Len() > 0 {
 			sb.WriteString(" AND ")
 		}
-		sb.WriteString("name = '")
-		sb.WriteString(o.Filter.Name)
-		sb.WriteString("'")
+		sb.WriteString("name = ?")
+		args = append(args, o.Filter.Name)
 	}
 
 	if o.Filter.Version != "" {
 		if sb.Len() > 0 {
 			sb.WriteString(" AND ")
 		}
-		sb.WriteString("version = '")
-		sb.WriteString(o.Filter.Version)
-		sb.WriteString("'")
+		sb.WriteString("version = ?")
+		args = append(args, o.Filter.Version)
 	}
 
 	if !o.Filter.Prerelease {
@@ -438,9 +440,8 @@ func (o *SQLOptions) Where() string {
 		if sb.Len() > 0 {
 			sb.WriteString(" AND ")
 		}
-		sb.WriteString("categories LIKE '%,")
-		sb.WriteString(o.Filter.Category)
-		sb.WriteString(",%'")
+		sb.WriteString("categories LIKE ?")
+		args = append(args, fmt.Sprintf("%%,%s,%%", o.Filter.Category))
 	}
 
 	if len(o.Filter.Capabilities) > 0 {
@@ -450,9 +451,8 @@ func (o *SQLOptions) Where() string {
 		// If capabilities column value is empty, those packages are not filtered out
 		sb.WriteString("( capabilities == '' OR (")
 		for i, capability := range o.Filter.Capabilities {
-			sb.WriteString("capabilities LIKE '%,")
-			sb.WriteString(capability)
-			sb.WriteString(",%'")
+			sb.WriteString("capabilities LIKE ?")
+			args = append(args, fmt.Sprintf("%%,%s,%%", capability))
 			if i < len(o.Filter.Capabilities)-1 {
 				sb.WriteString(" AND ")
 			}
@@ -461,9 +461,9 @@ func (o *SQLOptions) Where() string {
 	}
 
 	if sb.String() == "" {
-		return ""
+		return "", nil
 	}
-	return fmt.Sprintf(" WHERE %s", sb.String())
+	return fmt.Sprintf(" WHERE %s", sb.String()), args
 }
 
 func (o *SQLOptions) UseFullData() bool {
