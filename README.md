@@ -178,6 +178,43 @@ For that, you need to build a new Package Registry docker image from your requir
    elastic-package stack up -v -d
    ```
 
+### Testing Storage indexers
+
+By default, Package Registry uses the FileSystem indexers.
+In order to be able to test locally Storage Indexer is required to follow these steps:
+
+1. Launch the fake GCS server in one terminal:
+    - It creates a new folder with the expected contents for the bucket.
+    - It manages a docker-compose scenario with the fake GCS server.
+    - The search index JSON file can be downloaded from the [internal CI](https://buildkite.com/elastic/package-storage-infra-indexing/builds?branch=main) and set that file via `-i` parameter.
+   ```shell
+   cd /path/to/repo/package-registry/
+   cd dev
+   bash launch_fake_gcs_server.sh -i ../storage/testdata/search-index-all-full.json -b example -c 1
+   ```
+2. Tune the configuration used by Package Registry as you require:
+    - By default, it uses the `config.yml` file at the root of the repository.
+3. Launch EPR service in a different terminal:
+    - It builds package-registry with the contents of the working copy.
+    - It triggers the EPR service with the required environment variables to use storage indexers.
+   ```shell
+   cd /path/to/repo/package-registry/
+   cd dev
+   bash launch_epr_service_storage_indexer.sh
+   ```
+
+Following these steps, EPR service should be reading files from the storage indexer and there should be log messages like these ones:
+```json
+{"log.level":"info","@timestamp":"2024-05-27T20:03:35.489+0200","log.origin":{"function":"github.com/elastic/package-registry/storage.(*Indexer).updateIndex","file.name":"storage/indexer.go","file.line":181},"message":"cursor will be updated","cursor.current":"","cursor.next":"1","ecs.version":"1.6.0"}
+{"log.level":"info","@timestamp":"2024-05-27T20:03:35.827+0200","log.origin":{"function":"github.com/elastic/package-registry/storage.(*Indexer).updateIndex","file.name":"storage/indexer.go","file.line":192},"message":"Downloaded new search-index-all index","index.packages.size":"1133","ecs.version":"1.6.0"}
+```
+
+Package registry service is available at `http://localhost:8080`. Example of query using `curl`:
+```shell
+curl -s "http://localhost:8080/search"
+```
+
+To stop both services, you just need to press `CTRL+Z` on each terminal. The scripts also manage the cleanup process.
 
 ### Healthcheck
 

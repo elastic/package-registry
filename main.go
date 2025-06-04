@@ -20,6 +20,7 @@ import (
 
 	gstorage "cloud.google.com/go/storage"
 	"github.com/gorilla/mux"
+	"google.golang.org/api/option"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -223,7 +224,15 @@ func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer,
 	var combined CombinedIndexer
 
 	if featureStorageIndexer {
-		storageClient, err := gstorage.NewClient(ctx)
+		opts := []option.ClientOption{}
+		if os.Getenv("STORAGE_EMULATOR_HOST") != "" {
+			// https://pkg.go.dev/cloud.google.com/go/storage#hdr-Creating_a_Client
+			logger.Info("Using local development setup for storage indexer", zap.String("STORAGE_EMULATOR_HOST", os.Getenv("STORAGE_EMULATOR_HOST")))
+			// Required to add this option when using STORAGE_EMULATOR_HOST
+			// Related to https://github.com/fsouza/fake-gcs-server/issues/1202#issuecomment-1644877525
+			opts = append(opts, gstorage.WithJSONReads())
+		}
+		storageClient, err := gstorage.NewClient(ctx, opts...)
 		if err != nil {
 			logger.Fatal("can't initialize storage client", zap.Error(err))
 		}
