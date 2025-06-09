@@ -103,12 +103,6 @@ Additionally, the following **frozen** endpoints exist and are **no longer updat
 
 **General**
 ```bash
-mage dockerBuild
-docker run --rm -p 8080:8080 docker.elastic.co/package-registry/package-registry:main
-```
-
-**Commands ready to cut-and-paste**
-```bash
 mage dockerBuild main
 docker run --rm -it -p 8080:8080 docker.elastic.co/package-registry/package-registry:main
 ```

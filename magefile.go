@@ -51,7 +51,7 @@ func DockerBuild(tag string) error {
 	dockerImage := fmt.Sprintf("docker.elastic.co/package-registry/package-registry:%s", tag)
 
 	fmt.Println(">> Building Docker image:", dockerImage)
-	err = sh.Run("docker", "build", "--build-arg", fmt.Sprintf("GO_VERSION=%s", goVersion), "-t", dockerImage, ".")
+	err = sh.Run("docker", "build", "--rm", "--build-arg", fmt.Sprintf("GO_VERSION=%s", goVersion), "-t", dockerImage, ".")
 	if err != nil {
 		return fmt.Errorf("failed to build docker image: %w", err)
 	}
