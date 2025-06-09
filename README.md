@@ -103,14 +103,14 @@ Additionally, the following **frozen** endpoints exist and are **no longer updat
 
 **General**
 ```bash
-docker build --build-arg GO_VERSION="$(cat .go-version)" .
-docker run --rm -p 8080:8080 {image id from prior step}
+mage dockerBuild
+docker run --rm -p 8080:8080 docker.elastic.co/package-registry/package-registry:main
 ```
 
 **Commands ready to cut-and-paste**
 ```bash
-docker build --build-arg GO_VERSION="$(cat .go-version)" --rm -t docker.elastic.co/package-registry/package-registry:main .
-docker run --rm -it -p 8080:8080 $(docker images -q docker.elastic.co/package-registry/package-registry:main)
+mage dockerBuild main
+docker run --rm -it -p 8080:8080 docker.elastic.co/package-registry/package-registry:main
 ```
 
 **Testing service with local packages**
@@ -159,9 +159,7 @@ For that, you need to build a new Package Registry docker image from your requir
 0. Make sure you've built the Docker image for Package Registry (let's consider in this example `main`):
 
    ```bash
-   docker build --rm \
-     --build-arg GO_VERSION="$(cat .go-version)" \
-     -t docker.elastic.co/package-registry/package-registry:main .
+   mage dockerBuild main
    ```
 
 1. Build `elastic-package` changing the base image used for the Package Registry docker image (use `main` instead of `v1.24.0`):
