@@ -73,7 +73,7 @@ cat <<EOF > "${METADATA_FOLDER}/cursor.json"
 EOF
 
 echo "Contents of bucket ${BUCKET_NAME}"
-tree "${SOURCE_FOLDER_PATH}"
+find "${SOURCE_FOLDER_PATH}" -type f -print
 
 cd "${SCRIPT_DIR}"
 
