@@ -6,11 +6,10 @@ package storage
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
-	"testing"
 
 	"github.com/fsouza/fake-gcs-server/fakestorage"
-	"github.com/stretchr/testify/require"
 )
 
 const fakePackageStorageBucketInternal = "fake-package-storage-internal"
@@ -20,35 +19,70 @@ var FakeIndexerOptions = IndexerOptions{
 	WatchInterval:                0,
 }
 
-func PrepareFakeServer(tb testing.TB, indexPath string) *fakestorage.Server {
+func RunFakeServerOnHostPort(indexPath, host string, port uint16) (*fakestorage.Server, error) {
 	indexContent, err := os.ReadFile(indexPath)
-	require.NoError(tb, err, "index file must be populated")
+	if err != nil {
+		return nil, fmt.Errorf("failed to read index file %s: %w", indexPath, err)
+	}
 
 	const firstRevision = "1"
-	serverObjects := prepareServerObjects(tb, firstRevision, indexContent)
-	return fakestorage.NewServer(serverObjects)
+	serverObjects, err := prepareServerObjects(firstRevision, indexContent)
+	if err != nil {
+		return nil, fmt.Errorf("failed to prepare server objects: %w", err)
+	}
+	return fakestorage.NewServerWithOptions(fakestorage.Options{
+		InitialObjects: serverObjects,
+		Host:           host,
+		Port:           port,
+		Scheme:         "http",
+	})
+
 }
 
-func updateFakeServer(tb testing.TB, server *fakestorage.Server, revision, indexPath string) {
+func PrepareFakeServer(indexPath string) (*fakestorage.Server, error) {
 	indexContent, err := os.ReadFile(indexPath)
-	require.NoError(tb, err, "index file must be populated")
+	if err != nil {
+		return nil, fmt.Errorf("failed to read index file %s: %w", indexPath, err)
+	}
 
-	serverObjects := prepareServerObjects(tb, revision, indexContent)
+	const firstRevision = "1"
+	serverObjects, err := prepareServerObjects(firstRevision, indexContent)
+	if err != nil {
+		return nil, fmt.Errorf("failed to prepare server objects: %w", err)
+	}
+	return fakestorage.NewServer(serverObjects), nil
+}
+
+func updateFakeServer(server *fakestorage.Server, revision, indexPath string) error {
+	indexContent, err := os.ReadFile(indexPath)
+	if err != nil {
+		return fmt.Errorf("failed to read index file %s: %w", indexPath, err)
+	}
+
+	serverObjects, err := prepareServerObjects(revision, indexContent)
+	if err != nil {
+		return fmt.Errorf("failed to prepare server objects: %w", err)
+	}
 
 	for _, so := range serverObjects {
 		server.CreateObject(so)
 	}
+	return nil
 }
 
 type searchIndexAll struct {
 	Packages []packageIndex `json:"packages"`
 }
 
-func prepareServerObjects(tb testing.TB, revision string, indexContent []byte) []fakestorage.Object {
+func prepareServerObjects(revision string, indexContent []byte) ([]fakestorage.Object, error) {
 	var index searchIndexAll
 	err := json.Unmarshal(indexContent, &index)
-	require.NoError(tb, err, "index file must be valid")
-	require.NotEmpty(tb, index.Packages, "index file must contain some package entries")
+	if err != nil {
+		return nil, fmt.Errorf("failed to unmarshal index content: %w", err)
+	}
+	if len(index.Packages) == 0 {
+		return nil, fmt.Errorf("index file must contain some package entries")
+	}
 
 	var serverObjects []fakestorage.Object
 	// Add cursor and index file
@@ -64,6 +98,5 @@ func prepareServerObjects(tb testing.TB, revision string, indexContent []byte) [
 		},
 		Content: indexContent,
 	})
-	tb.Logf("Prepared %d packages with total %d server objects.", len(index.Packages), len(serverObjects))
-	return serverObjects
+	return serverObjects, nil
 }

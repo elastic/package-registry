@@ -10,15 +10,18 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"net"
 	"net/http"
 	_ "net/http/pprof"
 	"os"
 	"os/signal"
+	"strconv"
 	"strings"
 	"syscall"
 	"time"
 
 	gstorage "cloud.google.com/go/storage"
+	"github.com/fsouza/fake-gcs-server/fakestorage"
 	"github.com/gorilla/mux"
 	"google.golang.org/api/option"
 
@@ -156,6 +159,14 @@ func main() {
 
 	initHttpProf(logger)
 
+	if indexPath := os.Getenv("EPR_EMULATOR_INDEX_PATH"); indexPath != "" {
+		fakeServer, err := initFakeGCSServer(logger, indexPath)
+		if err != nil {
+			logger.Fatal("failed to initialize fake GCS server", zap.Error(err))
+		}
+		defer fakeServer.Stop()
+	}
+
 	server := initServer(logger, apmTracer, config)
 	go func() {
 		err := runServer(server)
@@ -188,6 +199,38 @@ func initHttpProf(logger *zap.Logger) {
 			logger.Fatal("failed to start HTTP profiler", zap.Error(err))
 		}
 	}()
+}
+
+func initFakeGCSServer(logger *zap.Logger, indexPath string) (*fakestorage.Server, error) {
+	var fakeServer *fakestorage.Server
+	var err error
+	emulatorHost := os.Getenv("STORAGE_EMULATOR_HOST")
+	if emulatorHost != "" {
+		logger.Info("Create fake GCS server based on STORAGE_EMULATOR_HOST environment variable", zap.String("STORAGE_EMULATOR_HOST", emulatorHost))
+		host, port, err := net.SplitHostPort(emulatorHost)
+		if err != nil {
+			return nil, fmt.Errorf("failed to split host and port from STORAGE_EMULATOR_HOST: %w", err)
+		}
+		portInt, err := strconv.Atoi(port)
+		if err != nil {
+			return nil, fmt.Errorf("failed to convert port to integer from STORAGE_EMULATOR_HOST: %w", err)
+		}
+		fakeServer, err = storage.RunFakeServerOnHostPort(indexPath, host, uint16(portInt))
+		if err != nil {
+			return nil, fmt.Errorf("failed to prepare fake storage server: %w", err)
+		}
+	} else {
+		logger.Info("Create fake GCS server on random port")
+		// let the fake server choose a random port
+		fakeServer, err = storage.RunFakeServerOnHostPort(indexPath, "localhost", 0)
+		if err != nil {
+			return nil, fmt.Errorf("failed to prepare fake storage server: %w", err)
+		}
+		os.Setenv("STORAGE_EMULATOR_HOST", fakeServer.URL())
+	}
+	logger.Info("Using fake storage server for indexer", zap.String("URL", fakeServer.URL()))
+
+	return fakeServer, nil
 }
 
 func getHostname() string {
