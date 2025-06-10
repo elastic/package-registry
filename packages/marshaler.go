@@ -35,5 +35,6 @@ func (p *Package) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	((*Package)(aux.Alias)).setBasePolicyTemplates()
+	((*Package)(aux.Alias)).setBaseDataStreams()
 	return ((*Package)(aux.Alias)).setRuntimeFields()
 }

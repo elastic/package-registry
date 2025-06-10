@@ -192,7 +192,9 @@ func getSearchOutput(ctx context.Context, packageList packages.Packages) ([]byte
 
 	var output []packageSummary
 	for _, p := range packageList {
-		data := getPackageSummaryOutput(p)
+		data := packageSummary{
+			BasePackage: p.BasePackage,
+		}
 		output = append(output, data)
 	}
 
@@ -206,25 +208,4 @@ func getSearchOutput(ctx context.Context, packageList packages.Packages) ([]byte
 
 type packageSummary struct {
 	packages.BasePackage `json:",inline"`
-	DataStreams          []*packages.DataStream `json:"data_streams,omitempty"`
-}
-
-func getPackageSummaryOutput(index *packages.Package) packageSummary {
-	summary := packageSummary{
-		BasePackage: index.BasePackage,
-	}
-	if len(index.DataStreams) == 0 {
-		return summary
-	}
-
-	summary.DataStreams = make([]*packages.DataStream, len(index.DataStreams))
-	for i, datastream := range index.DataStreams {
-		summary.DataStreams[i] = &packages.DataStream{
-			Type:    datastream.Type,
-			Dataset: datastream.Dataset,
-			Title:   datastream.Title,
-		}
-	}
-
-	return summary
 }

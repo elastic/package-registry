@@ -14,21 +14,20 @@ import (
 
 	"github.com/stretchr/testify/require"
 
+	"github.com/elastic/package-registry/internal/database"
+	internalStorage "github.com/elastic/package-registry/internal/storage"
 	"github.com/elastic/package-registry/storage"
 )
 
 const storageIndexerGoldenDir = "storage-indexer"
 
-func TestPackageStorage_Endpoints(t *testing.T) {
-	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
-	defer fs.Stop()
-	indexer := storage.NewIndexer(testLogger, fs.Client(), storage.FakeIndexerOptions)
-	defer indexer.Close(context.Background())
-
-	err := indexer.Init(context.Background())
-	require.NoError(t, err)
-
-	tests := []struct {
+func generateTestCaseStorageEndpoints(indexer Indexer) []struct {
+	endpoint string
+	path     string
+	file     string
+	handler  func(w http.ResponseWriter, r *http.Request)
+} {
+	return []struct {
 		endpoint string
 		path     string
 		file     string
@@ -50,6 +49,7 @@ func TestPackageStorage_Endpoints(t *testing.T) {
 		{"/search?kibana.version=8.0.0", "/search", "search-kibana800.json", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/search?category=web", "/search", "search-category-web.json", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/search?category=web&all=true", "/search", "search-category-web-all.json", searchHandler(testLogger, indexer, testCacheTime)},
+		{"/search?category=observability", "/search", "search-category-observability-subcategories.json", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/search?category=custom", "/search", "search-category-custom.json", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/search?experimental=true", "/search", "search-package-experimental.json", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/search?experimental=foo", "/search", "search-package-experimental-error.txt", searchHandler(testLogger, indexer, testCacheTime)},
@@ -61,7 +61,47 @@ func TestPackageStorage_Endpoints(t *testing.T) {
 		// Removed flags, kept ensure that they don't break requests from old versions.
 		{"/search?internal=true", "/search", "search-package-internal.json", searchHandler(testLogger, indexer, testCacheTime)},
 	}
+}
 
+func TestPackageStorage_Endpoints(t *testing.T) {
+	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
+	defer fs.Stop()
+
+	indexer := storage.NewIndexer(testLogger, fs.Client(), storage.FakeIndexerOptions)
+	defer indexer.Close(context.Background())
+
+	err := indexer.Init(context.Background())
+	require.NoError(t, err)
+
+	// tests := generateTestEndpointCases(t, indexer)
+	tests := generateTestCaseStorageEndpoints(indexer)
+	for _, test := range tests {
+		t.Run(test.endpoint, func(t *testing.T) {
+			runEndpointWithStorageIndexer(t, test.endpoint, test.path, test.file, test.handler)
+		})
+	}
+}
+
+func TestPackageStorageSQL_Endpoints(t *testing.T) {
+	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
+	defer fs.Stop()
+
+	db, err := database.NewMemorySQLDB("main")
+	require.NoError(t, err)
+
+	swapDb, err := database.NewMemorySQLDB("swap")
+	require.NoError(t, err)
+
+	options, err := internalStorage.CreateFakeIndexerOptions(db, swapDb)
+	require.NoError(t, err)
+	indexer := internalStorage.NewIndexer(testLogger, fs.Client(), options)
+	defer indexer.Close(context.Background())
+
+	err = indexer.Init(context.Background())
+	require.NoError(t, err)
+
+	// tests := generateTestEndpointCases(t, indexer)
+	tests := generateTestCaseStorageEndpoints(indexer)
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
 			runEndpointWithStorageIndexer(t, test.endpoint, test.path, test.file, test.handler)
