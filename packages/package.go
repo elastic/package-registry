@@ -466,6 +466,7 @@ func (p *Package) WorksWithCapabilities(capabilities []string) bool {
 }
 
 func (p *Package) HasCompatibleSpec(specMin, specMax, kibanaVersion *semver.Version) (bool, error) {
+	// FIXME: kibanaVersion parameter is not used, it should be removed.
 	if specMin == nil && specMax == nil {
 		return true, nil
 	}
@@ -482,6 +483,10 @@ func (p *Package) HasCompatibleSpec(specMin, specMax, kibanaVersion *semver.Vers
 	constraint, err := semver.NewConstraint(fullConstraint)
 	if err != nil {
 		return false, fmt.Errorf("cannot create constraint %s: %w", fullConstraint, err)
+	}
+
+	if p.specMajorMinorSemVer == nil {
+		return false, errors.New("package spec version is not set")
 	}
 
 	return constraint.Check(p.specMajorMinorSemVer), nil
