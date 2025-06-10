@@ -6,8 +6,9 @@ package util
 
 import (
 	"bytes"
-	"encoding/json"
 	"io"
+
+	"github.com/goccy/go-json"
 )
 
 // MarshalJSONPretty marshals a value to "pretty" JSON without HTML escaping.
