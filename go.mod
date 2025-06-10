@@ -11,8 +11,10 @@ require (
 	github.com/elastic/go-ucfg v0.8.8
 	github.com/felixge/httpsnoop v1.0.4
 	github.com/fsouza/fake-gcs-server v1.52.2
+	github.com/goccy/go-json v0.10.5
 	github.com/gorilla/mux v1.8.1
 	github.com/hashicorp/go-retryablehttp v0.7.7
+	github.com/hashicorp/golang-lru/v2 v2.0.7
 	github.com/joeshaw/multierror v0.0.0-20140124173710-69b34d4ec901
 	github.com/magefile/mage v1.15.0
 	github.com/prometheus/client_golang v1.22.0
@@ -23,8 +25,10 @@ require (
 	go.elastic.co/ecszap v1.0.3
 	go.uber.org/zap v1.27.0
 	golang.org/x/tools v0.34.0
+	google.golang.org/api v0.235.0
 	gopkg.in/yaml.v2 v2.4.0
 	honnef.co/go/tools v0.6.1
+	modernc.org/sqlite v1.38.0
 )
 
 require (
@@ -45,6 +49,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cncf/xds/go v0.0.0-20250121191232-2f005788dc42 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/elastic/go-sysinfo v1.15.1 // indirect
 	github.com/elastic/go-windows v1.0.2 // indirect
 	github.com/envoyproxy/go-control-plane/envoy v1.32.4 // indirect
@@ -59,7 +64,9 @@ require (
 	github.com/googleapis/gax-go/v2 v2.14.2 // indirect
 	github.com/gorilla/handlers v1.5.2 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
+	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
+	github.com/ncruces/go-strftime v0.1.9 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pkg/xattr v0.4.10 // indirect
 	github.com/planetscale/vtprotobuf v0.6.1-0.20240319094008-0393e58bdf10 // indirect
@@ -67,6 +74,7 @@ require (
 	github.com/prometheus/client_model v0.6.1 // indirect
 	github.com/prometheus/common v0.63.0 // indirect
 	github.com/prometheus/procfs v0.16.0 // indirect
+	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/spiffe/go-spiffe/v2 v2.5.0 // indirect
 	github.com/zeebo/errs v1.4.0 // indirect
 	go.elastic.co/apm/module/apmhttp/v2 v2.7.1 // indirect
@@ -83,6 +91,7 @@ require (
 	go.opentelemetry.io/otel/trace v1.36.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/crypto v0.39.0 // indirect
+	golang.org/x/exp v0.0.0-20250408133849-7e4ce0ab07d0 // indirect
 	golang.org/x/exp/typeparams v0.0.0-20231108232855-2478ac86f678 // indirect
 	golang.org/x/mod v0.25.0 // indirect
 	golang.org/x/net v0.41.0 // indirect
@@ -91,7 +100,6 @@ require (
 	golang.org/x/sys v0.33.0 // indirect
 	golang.org/x/text v0.26.0 // indirect
 	golang.org/x/time v0.11.0 // indirect
-	google.golang.org/api v0.235.0 // indirect
 	google.golang.org/genproto v0.0.0-20250505200425-f936aa4a68b2 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20250512202823-5a2f75b736a9 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250512202823-5a2f75b736a9 // indirect
@@ -99,4 +107,7 @@ require (
 	google.golang.org/protobuf v1.36.6 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	howett.net/plist v1.0.1 // indirect
+	modernc.org/libc v1.65.10 // indirect
+	modernc.org/mathutil v1.7.1 // indirect
+	modernc.org/memory v1.11.0 // indirect
 )

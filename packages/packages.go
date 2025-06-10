@@ -83,6 +83,8 @@ type GetOptions struct {
 	// all packages are returned. This is different to a zero-object filter,
 	// where experimental packages are filtered by default.
 	Filter *Filter
+
+	FullData bool
 }
 
 // FileSystemIndexer indexes packages from the filesystem.
@@ -211,6 +213,10 @@ func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages
 	}
 
 	return i.packageList, nil
+}
+
+func (i *FileSystemIndexer) Close(ctx context.Context) error {
+	return nil
 }
 
 func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Packages, error) {

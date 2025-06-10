@@ -95,6 +95,7 @@ func TestSearchWithProxyMode(t *testing.T) {
 		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
 		packages.NewFileSystemIndexer(testLogger, packagesBasePaths...),
 	)
+	defer indexer.Close(context.Background())
 
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)

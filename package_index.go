@@ -54,6 +54,9 @@ func packageIndexHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxy
 		}
 
 		opts := packages.NameVersionFilter(packageName, packageVersion)
+		// Just this endpoint needs the full data, so we set it here.
+		opts.FullData = true
+
 		pkgs, err := indexer.Get(r.Context(), &opts)
 		if err != nil {
 			logger.Error("getting package path failed", zap.Error(err))

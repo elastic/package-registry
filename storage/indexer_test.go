@@ -23,6 +23,7 @@ func TestInit(t *testing.T) {
 	defer fs.Stop()
 	storageClient := fs.Client()
 	indexer := NewIndexer(util.NewTestLogger(), storageClient, FakeIndexerOptions)
+	defer indexer.Close(context.Background())
 
 	// when
 	err := indexer.Init(context.Background())
@@ -40,9 +41,13 @@ func BenchmarkInit(b *testing.B) {
 	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
-		err := indexer.Init(context.Background())
-		require.NoError(b, err)
+		func() {
+			indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
+			defer indexer.Close(context.Background())
+
+			err := indexer.Init(context.Background())
+			require.NoError(b, err)
+		}()
 	}
 }
 
@@ -54,6 +59,8 @@ func BenchmarkIndexerUpdateIndex(b *testing.B) {
 
 	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
 	indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
+	defer indexer.Close(context.Background())
+
 	err := indexer.Init(context.Background())
 	require.NoError(b, err)
 
@@ -76,6 +83,8 @@ func BenchmarkIndexerGet(b *testing.B) {
 
 	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
 	indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
+	defer indexer.Close(context.Background())
+
 	err := indexer.Init(context.Background())
 	require.NoError(b, err)
 
@@ -93,6 +102,7 @@ func TestGet_ListPackages(t *testing.T) {
 	defer fs.Stop()
 	storageClient := fs.Client()
 	indexer := NewIndexer(util.NewTestLogger(), storageClient, FakeIndexerOptions)
+	defer indexer.Close(context.Background())
 
 	ctx := context.Background()
 	err := indexer.Init(ctx)
@@ -237,6 +247,7 @@ func TestGet_IndexUpdated(t *testing.T) {
 	defer fs.Stop()
 	storageClient := fs.Client()
 	indexer := NewIndexer(util.NewTestLogger(), storageClient, FakeIndexerOptions)
+	defer indexer.Close(context.Background())
 
 	err := indexer.Init(context.Background())
 	require.NoError(t, err, "storage indexer must be initialized properly")

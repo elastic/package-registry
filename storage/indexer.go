@@ -226,3 +226,7 @@ func (i *Indexer) transformSearchIndexAllToPackages(packages *packages.Packages)
 		m.SetRemoteResolver(i.resolver)
 	}
 }
+
+func (i *Indexer) Close(ctx context.Context) error {
+	return nil
+}
