@@ -163,33 +163,30 @@ func (i *Indexer) watchIndices(ctx context.Context) {
 		return
 	}
 
-	// TODO: Remove this after running tests/benchmarks
-	return
+	var err error
+	t := time.NewTicker(i.options.WatchInterval)
+	defer t.Stop()
+	for {
+		i.logger.Debug("watchIndices: start")
 
-	// var err error
-	// t := time.NewTicker(i.options.WatchInterval)
-	// defer t.Stop()
-	// for {
-	// 	i.logger.Debug("watchIndices: start")
+		func() {
+			tx := i.options.APMTracer.StartTransaction("updateIndex", "backend.watcher")
+			defer tx.End()
 
-	// 	func() {
-	// 		tx := i.options.APMTracer.StartTransaction("updateIndex", "backend.watcher")
-	// 		defer tx.End()
+			err = i.updateIndex(apm.ContextWithTransaction(ctx, tx))
+			if err != nil {
+				i.logger.Error("can't update index file", zap.Error(err))
+			}
+		}()
 
-	// 		err = i.updateIndex(apm.ContextWithTransaction(ctx, tx))
-	// 		if err != nil {
-	// 			i.logger.Error("can't update index file", zap.Error(err))
-	// 		}
-	// 	}()
-
-	// 	i.logger.Debug("watchIndices: finished")
-	// 	select {
-	// 	case <-ctx.Done():
-	// 		i.logger.Debug("watchIndices: quit")
-	// 		return
-	// 	case <-t.C:
-	// 	}
-	// }
+		i.logger.Debug("watchIndices: finished")
+		select {
+		case <-ctx.Done():
+			i.logger.Debug("watchIndices: quit")
+			return
+		case <-t.C:
+		}
+	}
 }
 
 func (i *Indexer) updateIndex(ctx context.Context) error {
