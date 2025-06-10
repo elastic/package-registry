@@ -16,6 +16,7 @@ import (
 	"time"
 
 	"github.com/goccy/go-json"
+	"github.com/hashicorp/golang-lru/v2/expirable"
 
 	"cloud.google.com/go/storage"
 
@@ -57,6 +58,8 @@ type Indexer struct {
 	logger *zap.Logger
 
 	maxBulkAddBatch int
+
+	cache *expirable.LRU[string, string] // Cache for search results
 }
 
 type IndexerOptions struct {
@@ -66,6 +69,7 @@ type IndexerOptions struct {
 	WatchInterval                time.Duration
 	Database                     database.Repository
 	SwapDatabase                 database.Repository
+	Cache                        *expirable.LRU[string, string] // Cache for search results
 }
 
 func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options IndexerOptions) *Indexer {
@@ -81,6 +85,7 @@ func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options Index
 		swapDatabase:    options.SwapDatabase,
 		label:           fmt.Sprintf("storage-%s", options.PackageStorageEndpoint),
 		maxBulkAddBatch: defaultMaxBulkAddBatch,
+		cache:           options.Cache,
 	}
 
 	indexer.current = &indexer.database
@@ -245,6 +250,10 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 		// swap databases
 		i.current, i.backup = i.backup, i.current
 		i.logger.Debug("Current database changed", zap.String("current.database.path", (*i.current).File(ctx)), zap.String("previous.database.path", (*i.backup).File(ctx)))
+
+		if i.cache != nil {
+			i.cache.Purge() // Clear the cache after updating the index
+		}
 
 		metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
 		metrics.NumberIndexedPackages.Set(float64(len(*anIndex)))

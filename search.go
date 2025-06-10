@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/Masterminds/semver/v3"
+	"github.com/hashicorp/golang-lru/v2/expirable"
 
 	"go.elastic.co/apm/module/apmzap/v2"
 	"go.elastic.co/apm/v2"
@@ -26,12 +27,22 @@ import (
 )
 
 func searchHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
-	return searchHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime)
+	return searchHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime, nil)
 }
 
-func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration, cache *expirable.LRU[string, string]) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger := logger.With(apmzap.TraceContext(r.Context())...)
+
+		if cache != nil {
+			if response, ok := cache.Get(r.URL.String()); ok {
+				logger.Info("cached request", zap.String("url", r.URL.String()), zap.Int("lruSize", cache.Len()))
+				cacheHeaders(w, cacheTime)
+				jsonHeader(w)
+				fmt.Fprint(w, response)
+				return
+			}
+		}
 
 		filter, err := newSearchFilterFromQuery(r.URL.Query())
 		if err != nil {
@@ -70,6 +81,12 @@ func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *
 		cacheHeaders(w, cacheTime)
 		jsonHeader(w)
 		fmt.Fprint(w, string(data))
+
+		if cache != nil {
+			logger.Info("caching request", zap.String("url", r.URL.String()), zap.Int("lruSize", cache.Len()))
+			val := cache.Add(r.URL.String(), string(data))
+			logger.Info("Added to lru", zap.String("url", r.URL.String()), zap.Int("lruSize", cache.Len()), zap.Bool("added", val))
+		}
 	}
 }
 
