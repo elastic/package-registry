@@ -1,0 +1,34 @@
+services:
+  fakegcsserver:
+    image: fsouza/fake-gcs-server:${FAKE_GCS_SERVER_VERSION:-1.52.2}
+    ports:
+      - "4443:4443"
+    volumes:
+      - ${LOCAL_BUCKET_PATH}:/data
+    command: "-scheme http"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      start_period: 300s
+      interval: 5s
+  package-registry:
+    image: docker.elastic.co/package-registry/package-registry:latest
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      start_period: 300s
+      interval: 5s
+    environment:
+      - STORAGE_EMULATOR_HOST=fakegcsserver:4443
+      - EPR_STORAGE_INDEXER_BUCKET_INTERNAL=gs://${BUCKET_NAME:-fake-package-storage-internal}
+      - EPR_FEATURE_STORAGE_INDEXER=true
+      - EPR_DISABLE_PACKAGE_VALIDATION=true
+      - EPR_ADDRESS=0.0.0.0:8080
+  package-registry_is_ready:
+    image: tianon/true:multiarch
+    depends_on:
+      package-registry:
+        condition: service_healthy
+
+
+

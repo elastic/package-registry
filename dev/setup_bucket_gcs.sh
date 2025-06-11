@@ -1,16 +1,6 @@
 #!/bin/bash
+
 set -euo pipefail
-
-cleanup () {
-    echo "Cleaning up..."
-    docker-compose -f docker-compose-gcs.yml down -v
-    echo "Removing source folder: ${SOURCE_FOLDER_PATH}"
-    rm -rf "${SOURCE_FOLDER_PATH}"
-    echo "Done."
-    exit 0
-}
-trap cleanup EXIT
-
 SCRIPT_DIR="$( cd -- "$(dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 DEFAULT_SOURCE_FOLDER_PATH="${SCRIPT_DIR}/../build/fakeserver/"
@@ -25,7 +15,7 @@ usage() {
 
 CURSOR="1"
 BUCKET_NAME="example"
-SOURCE_FOLDER_PATH="${DEFAULT_SOURCE_FOLDER_PATH}"
+SOURCE_FOLDER_PATH="${SCRIPT_DIR}/../build/fakeserver/"
 INDEX_PATH=""
 
 while getopts ":b:c:i:p:h" o; do
@@ -59,18 +49,26 @@ while getopts ":b:c:i:p:h" o; do
   esac
 done
 
-"${SCRIPT_DIR}/setup_bucket_gcs.sh" -b "${BUCKET_NAME}" -c "${CURSOR}" -i "${INDEX_PATH}" -p "${SOURCE_FOLDER_PATH}"
+if [[ "${INDEX_PATH}" == "" ]]; then
+    echo "Missing index path parameter"
+    usage
+    exit 1
+fi
 
-cd "${SCRIPT_DIR}"
+METADATA_FOLDER="${SOURCE_FOLDER_PATH}/${BUCKET_NAME}/v2/metadata"
+echo "Cleaning up metadata folder: ${METADATA_FOLDER}"
+rm -rf "${METADATA_FOLDER}"
 
-# version fake-gcs-server
-FAKE_GCS_SERVER_VERSION="$(grep fake-gcs-server ../go.mod | awk '{print $2}' | tr -d 'v')"
-export FAKE_GCS_SERVER_VERSION
+CURSOR_FOLDER="${METADATA_FOLDER}/${CURSOR}"
+mkdir -p "${CURSOR_FOLDER}"
 
-export LOCAL_BUCKET_PATH="${SOURCE_FOLDER_PATH}"
+cp "${INDEX_PATH}" "${CURSOR_FOLDER}/search-index-all.json"
 
-docker-compose -f docker-compose-gcs.yml up -d
+cat <<EOF > "${METADATA_FOLDER}/cursor.json"
+{
+  "current": "${CURSOR}"
+}
+EOF
 
-docker-compose -f docker-compose-gcs.yml logs -f
-
-
+echo "Contents of bucket ${BUCKET_NAME}"
+find "${SOURCE_FOLDER_PATH}" -type f -print
