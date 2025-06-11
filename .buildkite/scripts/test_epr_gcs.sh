@@ -64,7 +64,7 @@ test_services() {
 }
 
 cd "${WORKSPACE}"
-# mage dockerBuild latest
+mage dockerBuild latest
 
 cd "${WORKSPACE}/dev/"
 DOCKER_COMPOSE_EPR_PATH="$(pwd)/docker-compose-epr.yml"
