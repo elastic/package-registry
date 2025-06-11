@@ -2,13 +2,13 @@
 
 cleanup () {
     echo "~~~ Cleaning up..."
-    if [[ "${DOCKER_COMPOSE_EPR_PATH}" != "" ]]; then
+    if [[ "${DOCKER_COMPOSE_EPR_PATH:-""}" != "" ]]; then
         echo "Stopping docker-compose projects and removing volumes"
         docker-compose -f "${DOCKER_COMPOSE_EPR_PATH}" down -v || true
         docker-compose -f "${DOCKER_COMPOSE_EPR_GCS_PATH}" down -v || true
     fi
 
-    if [[ "${LOCAL_BUCKET_PATH}" != "" ]]; then
+    if [[ "${LOCAL_BUCKET_PATH:-""}" != "" ]]; then
         echo "Removing local bucket folder: ${LOCAL_BUCKET_PATH}"
         rm -rf "${LOCAL_BUCKET_PATH}" || true
     fi
@@ -23,6 +23,7 @@ set -euo pipefail
 if running_on_buildkite ; then
     add_bin_path
     with_jq
+    with_mage
 fi
 
 test_service() {
