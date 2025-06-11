@@ -71,7 +71,7 @@ test_services() {
 
 cd "${WORKSPACE}"
 echo "--- Building EPR Docker image"
-export BUILDKITE_PROGRESS="plain"
+export BUILDKIT_PROGRESS="plain"
 mage dockerBuild latest
 
 cd "${WORKSPACE}/dev/"
