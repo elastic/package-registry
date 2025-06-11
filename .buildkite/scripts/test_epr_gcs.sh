@@ -23,6 +23,7 @@ set -euo pipefail
 if running_on_buildkite ; then
     add_bin_path
     with_jq
+    with_go
     with_mage
 fi
 
