@@ -89,28 +89,6 @@ steps:
       - step: "test-macos-arm"
         allow_failure: true
 
-  - label: ":docker: Test build docker image"
-    key: "test-docker-build"
-    command: ".buildkite/scripts/publish.sh"
-    agents:
-      provider: "gcp"
-    env:
-      DRY_RUN: "true"
-    depends_on:
-      - step: "test-linux"
-        allow_failure: false
-      - step: "test-win"
-        allow_failure: false
-      - step: "test-macos-arm"
-        allow_failure: false
-      - step: "build"
-        allow_failure: false
-      - step: "lint"
-        allow_failure: false
-      - step: "smoke-test-fake-gcs-server"
-        allow_failure: false
-    if: build.env("BUILDKITE_PULL_REQUEST") != "false"
-
   - label: ":docker: Publish docker image"
     key: "publish"
     command: ".buildkite/scripts/publish.sh"
@@ -129,7 +107,6 @@ steps:
         allow_failure: false
       - step: "smoke-test-fake-gcs-server"
         allow_failure: false
-    if: build.env("BUILDKITE_PULL_REQUEST") == "false" || build.env("GITHUB_PR_TRIGGER_COMMENT") =~ /^buildkite build this/
 
   - trigger: "package-storage-infra-update-package-registry"
     label: ":esbuild: Downstream - Update package registry"
