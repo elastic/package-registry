@@ -50,4 +50,6 @@ fi
 DOCKER_IMG_TAG="${DOCKER_NAMESPACE}:${BUILDKITE_COMMIT}"
 DOCKER_IMG_TAG_BRANCH="${DOCKER_NAMESPACE}:${TAG_NAME}"
 
-push_docker_image
+if [[ "${DRY_RUN:-"false"}" == "false" ]]; then
+    push_docker_image
+fi
