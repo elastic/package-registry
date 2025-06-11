@@ -94,8 +94,8 @@ steps:
     command: ".buildkite/scripts/publish.sh"
     agents:
       provider: "gcp"
-    environment:
-      - DRY_RUN: "true"
+    env:
+      DRY_RUN: "true"
     depends_on:
       - step: "test-linux"
         allow_failure: false
