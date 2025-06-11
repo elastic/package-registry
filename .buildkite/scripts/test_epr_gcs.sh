@@ -70,6 +70,7 @@ test_services() {
 }
 
 cd "${WORKSPACE}"
+echo "--- Building EPR Docker image"
 mage dockerBuild latest
 
 cd "${WORKSPACE}/dev/"
