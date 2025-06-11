@@ -30,6 +30,13 @@ steps:
       cpu: "8"
       memory: "4G"
 
+  - label: ":wrench: Smoke tests running EPR with fake GCS server"
+    key: smoke-test-fake-gcs-server
+    command:
+      - ".buildkite/scripts/test_epr_gcp.sh"
+    agents:
+      provider: "gcp"
+
   - group: ":go: Run Unit tests"
     key: unit-tests
     steps:
@@ -96,6 +103,8 @@ steps:
       - step: "build"
         allow_failure: false
       - step: "lint"
+        allow_failure: false
+      - step: "smoke-test-fake-gcs-server"
         allow_failure: false
 
   - trigger: "package-storage-infra-update-package-registry"
