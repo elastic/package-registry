@@ -81,6 +81,7 @@ export EPR_FEATURE_STORAGE_INDEXER="true"
 export EPR_DISABLE_PACKAGE_VALIDATION="true"
 export EPR_ADDRESS="${ADDRESS}"
 
+# export EPR_LOG_LEVEL="debug"
 export EPR_CONFIG="${CONFIG_PATH}"
 
 ./package-registry

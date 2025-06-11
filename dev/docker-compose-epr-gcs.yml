@@ -24,6 +24,7 @@ services:
       - EPR_FEATURE_STORAGE_INDEXER=true
       - EPR_DISABLE_PACKAGE_VALIDATION=true
       - EPR_ADDRESS=0.0.0.0:8080
+      # - EPR_LOG_LEVEL=debug
   package-registry_is_ready:
     image: tianon/true:multiarch
     depends_on:
