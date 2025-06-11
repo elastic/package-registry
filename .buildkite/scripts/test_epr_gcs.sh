@@ -2,12 +2,16 @@
 
 cleanup () {
     echo "~~~ Cleaning up..."
-    echo "Stopping docker-compose projects and removing volumes"
-    docker-compose -f "${DOCKER_COMPOSE_EPR_PATH}" down -v || true
-    docker-compose -f "${DOCKER_COMPOSE_EPR_GCS_PATH}" down -v || true
+    if [[ "${DOCKER_COMPOSE_EPR_PATH}" != "" ]]; then
+        echo "Stopping docker-compose projects and removing volumes"
+        docker-compose -f "${DOCKER_COMPOSE_EPR_PATH}" down -v || true
+        docker-compose -f "${DOCKER_COMPOSE_EPR_GCS_PATH}" down -v || true
+    fi
 
-    echo "Removing local bucket folder: ${LOCAL_BUCKET_PATH}"
-    rm -rf "${LOCAL_BUCKET_PATH}" || true
+    if [[ "${LOCAL_BUCKET_PATH}" != "" ]]; then
+        echo "Removing local bucket folder: ${LOCAL_BUCKET_PATH}"
+        rm -rf "${LOCAL_BUCKET_PATH}" || true
+    fi
 }
 
 trap cleanup EXIT
