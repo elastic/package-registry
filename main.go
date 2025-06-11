@@ -69,6 +69,7 @@ var (
 	printVersionInfo bool
 
 	featureSQLStorageIndexer bool
+	featureEnableSearchCache bool
 
 	featureStorageIndexer        bool
 	storageIndexerBucketInternal string
@@ -79,12 +80,12 @@ var (
 	proxyTo          string
 
 	defaultConfig = Config{
-		CacheTimeIndex:      10 * time.Second,
-		CacheTimeSearch:     10 * time.Minute,
-		CacheTimeCategories: 10 * time.Minute,
-		CacheTimeCatchAll:   10 * time.Minute,
-		DatabaseFolderPath:  "/tmp/", // TODO: Another default directory?
-		CacheSize:           100,
+		CacheTimeIndex:               10 * time.Second,
+		CacheTimeSearch:              10 * time.Minute,
+		CacheTimeCategories:          10 * time.Minute,
+		CacheTimeCatchAll:            10 * time.Minute,
+		SQLIndexerDatabaseFolderPath: "/tmp/", // TODO: Another default directory?
+		SearchCacheSize:              100,
 	}
 )
 
@@ -106,6 +107,7 @@ func init() {
 	// The following storage related flags are technical preview and might be removed in the future or renamed
 	flag.BoolVar(&featureStorageIndexer, "feature-storage-indexer", false, "Enable storage indexer to include packages from Package Storage v2 (technical preview).")
 	flag.BoolVar(&featureSQLStorageIndexer, "feature-sql-storage-indexer", false, "Enable SQL storage indexer to include packages from Package Storage v2 (technical preview).")
+	flag.BoolVar(&featureEnableSearchCache, "feature-enable-search-cache", false, "Enable cache for search requests. Just supported with the SQL storage indexer. (technical preview).")
 	flag.StringVar(&storageIndexerBucketInternal, "storage-indexer-bucket-internal", "", "Path to the internal Package Storage bucket (with gs:// prefix).")
 	flag.StringVar(&storageEndpoint, "storage-endpoint", "https://package-storage.elastic.co/", "Package Storage public endpoint.")
 	flag.DurationVar(&storageIndexerWatchInterval, "storage-indexer-watch-interval", 1*time.Minute, "Address of the package-registry service.")
@@ -116,13 +118,13 @@ func init() {
 }
 
 type Config struct {
-	PackagePaths        []string      `config:"package_paths"`
-	CacheTimeIndex      time.Duration `config:"cache_time.index"`
-	CacheTimeSearch     time.Duration `config:"cache_time.search"`
-	CacheTimeCategories time.Duration `config:"cache_time.categories"`
-	CacheTimeCatchAll   time.Duration `config:"cache_time.catch_all"`
-	DatabaseFolderPath  string        `config:"database_folder_path"`
-	CacheSize           int           `config:"cache_size"`
+	PackagePaths                 []string      `config:"package_paths"`
+	CacheTimeIndex               time.Duration `config:"cache_time.index"`
+	CacheTimeSearch              time.Duration `config:"cache_time.search"`
+	CacheTimeCategories          time.Duration `config:"cache_time.categories"`
+	CacheTimeCatchAll            time.Duration `config:"cache_time.catch_all"`
+	SQLIndexerDatabaseFolderPath string        `config:"sql_indexer.database_folder_path"`
+	SearchCacheSize              int           `config:"search.cache_size"`
 }
 
 func main() {
@@ -177,8 +179,8 @@ func main() {
 	}
 
 	var searchCache *expirable.LRU[string, string]
-	if featureSQLStorageIndexer {
-		searchCache = expirable.NewLRU[string, string](config.CacheSize, nil, config.CacheTimeSearch)
+	if featureSQLStorageIndexer && featureEnableSearchCache {
+		searchCache = expirable.NewLRU[string, string](config.SearchCacheSize, nil, config.CacheTimeSearch)
 	}
 
 	indexer := initIndexer(ctx, logger, apmTracer, config, searchCache)
@@ -305,11 +307,11 @@ func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer,
 		}
 
 		if featureSQLStorageIndexer {
-			storageDatabase, err := initDatabase(ctx, logger, config.DatabaseFolderPath, "storage_packages.db")
+			storageDatabase, err := initDatabase(ctx, logger, config.SQLIndexerDatabaseFolderPath, "storage_packages.db")
 			if err != nil {
 				logger.Fatal("can't initialize storage database", zap.Error(err))
 			}
-			storageSwapDatabase, err := initDatabase(ctx, logger, config.DatabaseFolderPath, "storage_packages_swap.db")
+			storageSwapDatabase, err := initDatabase(ctx, logger, config.SQLIndexerDatabaseFolderPath, "storage_packages_swap.db")
 			if err != nil {
 				logger.Fatal("can't initialize storage backup database", zap.Error(err))
 			}
@@ -415,8 +417,8 @@ func printConfig(logger *zap.Logger, config *Config) {
 	logger.Info("Cache time for /search: " + config.CacheTimeSearch.String())
 	logger.Info("Cache time for /categories: " + config.CacheTimeCategories.String())
 	logger.Info("Cache time for all others: " + config.CacheTimeCatchAll.String())
-	logger.Info("Database path: " + config.DatabaseFolderPath)
-	logger.Info("LRU cache size (search requests): " + strconv.Itoa(config.CacheSize))
+	logger.Info("Database path: " + config.SQLIndexerDatabaseFolderPath)
+	logger.Info("LRU cache size (search requests): " + strconv.Itoa(config.SearchCacheSize))
 }
 
 func ensurePackagesAvailable(ctx context.Context, logger *zap.Logger, indexer Indexer) {
