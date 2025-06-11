@@ -28,8 +28,10 @@ push_docker_image() {
     # first build the image without push
     build_docker_image
 
-    # essentially the same as above with --push flag; the build should be in the cache
-    retry 3 build_docker_image --push
+    if [[ "${DRY_RUN:-"fale"}" == "false" ]]; then
+        # essentially the same as above with --push flag; the build should be in the cache
+        retry 3 build_docker_image --push
+    fi
 
     echo "Docker images pushed: ${DOCKER_IMG_TAG} ${DOCKER_IMG_TAG_BRANCH}"
 }
@@ -50,6 +52,4 @@ fi
 DOCKER_IMG_TAG="${DOCKER_NAMESPACE}:${BUILDKITE_COMMIT}"
 DOCKER_IMG_TAG_BRANCH="${DOCKER_NAMESPACE}:${TAG_NAME}"
 
-if [[ "${DRY_RUN:-"false"}" == "false" ]]; then
-    push_docker_image
-fi
+push_docker_image
