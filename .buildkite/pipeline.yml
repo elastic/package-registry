@@ -33,7 +33,7 @@ steps:
   - label: ":wrench: Smoke tests running EPR with fake GCS server"
     key: smoke-test-fake-gcs-server
     command:
-      - ".buildkite/scripts/test_epr_gcp.sh"
+      - ".buildkite/scripts/test_epr_gcs.sh"
     agents:
       provider: "gcp"
 
