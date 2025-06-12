@@ -61,13 +61,18 @@ done
 
 "${SCRIPT_DIR}/setup_bucket_gcs.sh" -b "${BUCKET_NAME}" -c "${CURSOR}" -i "${INDEX_PATH}" -p "${SOURCE_FOLDER_PATH}"
 
+LOCAL_BUCKET_PATH="${SOURCE_FOLDER_PATH}"
+if [[ ! "${SOURCE_FOLDER_PATH}" =~ ^/ ]]; then
+    LOCAL_BUCKET_PATH="$(pwd)/${SOURCE_FOLDER_PATH}"
+fi
+export LOCAL_BUCKET_PATH
+
 cd "${SCRIPT_DIR}"
 
 # version fake-gcs-server
 FAKE_GCS_SERVER_VERSION="$(grep fake-gcs-server ../go.mod | awk '{print $2}' | tr -d 'v')"
 export FAKE_GCS_SERVER_VERSION
 
-export LOCAL_BUCKET_PATH="${SOURCE_FOLDER_PATH}"
 
 docker-compose -f docker-compose-gcs.yml up -d
 

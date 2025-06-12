@@ -16,6 +16,7 @@ usage() {
     echo -e "\t-p <epr_address>: Address of the package registry service. Default: localhost:8080"
     echo -e "\t-e <emulator_address>: Address of the emulator host (fake GCS server). Default: localhost:4443"
     echo -e "\t-i <index_path>: Path to the search index JSON. Default: \"\""
+    echo -e "\t\t\tIf set, the bucket name will be ignored (-b parameter) and Package Registry will use its default development bucket gs://fake-package-storage-internal"
     echo -e "\t-c <config_path>: Path to the configurastion file. Default: \"\""
     echo -e "\t-h: Show this message"
 }
@@ -70,10 +71,11 @@ if [[ "$(pwd)" != "${CURRENT_DIR}" ]]; then
 fi
 
 export STORAGE_EMULATOR_HOST="${EMULATOR_HOST}"
-export EPR_STORAGE_INDEXER_BUCKET_INTERNAL="gs://${BUCKET_NAME}"
 if [[ "${INDEX_PATH}" != "" ]]; then
     export EPR_EMULATOR_INDEX_PATH="${INDEX_PATH}"
-    export EPR_STORAGE_INDEXER_BUCKET_INTERNAL="gs://fake-package-storage-internal"
+    echo "EPR will use the default development bucket gs://fake-package-storage-internal"
+else
+    export EPR_STORAGE_INDEXER_BUCKET_INTERNAL="gs://${BUCKET_NAME}"
 fi
 
 export EPR_FEATURE_STORAGE_INDEXER="true"
