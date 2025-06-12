@@ -66,7 +66,6 @@ var (
 	printVersionInfo bool
 
 	featureStorageIndexer        bool
-	emulatorIndexPath            string
 	storageIndexerBucketInternal string
 	storageEndpoint              string
 	storageIndexerWatchInterval  time.Duration
@@ -99,7 +98,6 @@ func init() {
 	flag.BoolVar(&packages.ValidationDisabled, "disable-package-validation", false, "Disable package content validation.")
 	// The following storage related flags are technical preview and might be removed in the future or renamed
 	flag.BoolVar(&featureStorageIndexer, "feature-storage-indexer", false, "Enable storage indexer to include packages from Package Storage v2 (technical preview).")
-	flag.StringVar(&emulatorIndexPath, "emulator-index-path", "", "Path to the index JSON file with the packages data to be used for debugging purposes.")
 	flag.StringVar(&storageIndexerBucketInternal, "storage-indexer-bucket-internal", "", "Path to the internal Package Storage bucket (with gs:// prefix).")
 	flag.StringVar(&storageEndpoint, "storage-endpoint", "https://package-storage.elastic.co/", "Package Storage public endpoint.")
 	flag.DurationVar(&storageIndexerWatchInterval, "storage-indexer-watch-interval", 1*time.Minute, "Address of the package-registry service.")
@@ -161,8 +159,8 @@ func main() {
 
 	initHttpProf(logger)
 
-	if emulatorIndexPath != "" {
-		fakeServer, err := initFakeGCSServer(logger, emulatorIndexPath)
+	if indexPath := os.Getenv("EPR_EMULATOR_INDEX_PATH"); indexPath != "" {
+		fakeServer, err := initFakeGCSServer(logger, indexPath)
 		if err != nil {
 			logger.Fatal("failed to initialize fake GCS server", zap.Error(err))
 		}
