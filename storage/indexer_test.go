@@ -40,11 +40,9 @@ func BenchmarkInit(b *testing.B) {
 	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		func() {
-			indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
-			err := indexer.Init(context.Background())
-			require.NoError(b, err)
-		}()
+		indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
+		err := indexer.Init(context.Background())
+		require.NoError(b, err)
 	}
 }
 
