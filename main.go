@@ -163,6 +163,11 @@ func main() {
 		if !featureStorageIndexer {
 			logger.Fatal("EPR_EMULATOR_INDEX_PATH environment variable is set, but feature-storage-indexer is not enabled. Please enable it to use the fake GCS server.")
 		}
+		if storageIndexerBucketInternal != "" && storageIndexerBucketInternal != storage.FakeIndexerOptions.PackageStorageBucketInternal {
+			logger.Fatal("EPR_EMULATOR_INDEX_PATH environment variable is set, but storage-indexer-bucket-internal is already set to a different value. Please remove the flag or set it to the fake GCS server bucket " + storage.FakeIndexerOptions.PackageStorageBucketInternal)
+		}
+		// In this mode, the internal bucket is set to the fake GCS server bucket.
+		storageIndexerBucketInternal = storage.FakeIndexerOptions.PackageStorageBucketInternal
 		fakeServer, err := initFakeGCSServer(logger, indexPath)
 		if err != nil {
 			logger.Fatal("failed to initialize fake GCS server", zap.Error(err))
