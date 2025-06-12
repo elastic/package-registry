@@ -160,6 +160,9 @@ func main() {
 	initHttpProf(logger)
 
 	if indexPath := os.Getenv("EPR_EMULATOR_INDEX_PATH"); indexPath != "" {
+		if !featureStorageIndexer {
+			logger.Fatal("EPR_EMULATOR_INDEX_PATH environment variable is set, but feature-storage-indexer is not enabled. Please enable it to use the fake GCS server.")
+		}
 		fakeServer, err := initFakeGCSServer(logger, indexPath)
 		if err != nil {
 			logger.Fatal("failed to initialize fake GCS server", zap.Error(err))
