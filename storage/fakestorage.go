@@ -51,21 +51,16 @@ func PrepareFakeServer(tb testing.TB, indexPath string) *fakestorage.Server {
 	return fakestorage.NewServer(serverObjects)
 }
 
-func updateFakeServer(server *fakestorage.Server, revision, indexPath string) error {
+func updateFakeServer(tb testing.TB, server *fakestorage.Server, revision, indexPath string) {
 	indexContent, err := os.ReadFile(indexPath)
-	if err != nil {
-		return fmt.Errorf("failed to read index file %s: %w", indexPath, err)
-	}
+	require.NoError(tb, err, "index file must be populated")
 
 	serverObjects, err := prepareServerObjects(revision, indexContent)
-	if err != nil {
-		return fmt.Errorf("failed to prepare server objects: %w", err)
-	}
+	require.NoError(tb, err, "failed to prepare server objects")
 
 	for _, so := range serverObjects {
 		server.CreateObject(so)
 	}
-	return nil
 }
 
 type searchIndexAll struct {

@@ -63,7 +63,7 @@ func BenchmarkIndexerUpdateIndex(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		b.StopTimer()
 		revision := fmt.Sprintf("%d", i+2)
-		err = updateFakeServer(fs, revision, "testdata/search-index-all-full.json")
+		updateFakeServer(b, fs, revision, "testdata/search-index-all-full.json")
 		require.NoError(b, err, "fake server should be updated successfully")
 		b.StartTimer()
 		err = indexer.updateIndex(context.Background())
@@ -261,7 +261,7 @@ func TestGet_IndexUpdated(t *testing.T) {
 
 	// when: index update is performed adding new packages
 	const secondRevision = "2"
-	err = updateFakeServer(fs, secondRevision, "testdata/search-index-all-full.json")
+	updateFakeServer(t, fs, secondRevision, "testdata/search-index-all-full.json")
 	require.NoError(t, err, "fake server should be updated successfully")
 	err = indexer.updateIndex(context.Background())
 	require.NoError(t, err, "index should be updated successfully")
@@ -282,7 +282,7 @@ func TestGet_IndexUpdated(t *testing.T) {
 
 	// when: index update is performed removing packages
 	const thirdRevision = "3"
-	err = updateFakeServer(fs, thirdRevision, "testdata/search-index-all-small.json")
+	updateFakeServer(t, fs, thirdRevision, "testdata/search-index-all-small.json")
 	require.NoError(t, err, "fake server should be updated successfully")
 	err = indexer.updateIndex(context.Background())
 	require.NoError(t, err, "index should be updated successfully")
