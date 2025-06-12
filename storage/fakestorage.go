@@ -38,7 +38,6 @@ func RunFakeServerOnHostPort(indexPath, host string, port uint16) (*fakestorage.
 		Port:           port,
 		Scheme:         "http",
 	})
-
 }
 
 func PrepareFakeServer(tb testing.TB, indexPath string) *fakestorage.Server {
@@ -91,7 +90,5 @@ func prepareServerObjects(revision string, indexContent []byte) ([]fakestorage.O
 		},
 		Content: indexContent,
 	})
-	fmt.Println("Preparing fake server objects for revision:", revision)
-	fmt.Println("Number of packages in index:", len(index.Packages))
 	return serverObjects, nil
 }
