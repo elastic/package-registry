@@ -19,14 +19,13 @@ import (
 
 func TestInit(t *testing.T) {
 	// given
-	fs, err := PrepareFakeServer("testdata/search-index-all-full.json")
-	require.NoError(t, err, "PrepareFakeServer should not return an error")
+	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 	indexer := NewIndexer(util.NewTestLogger(), storageClient, FakeIndexerOptions)
 
 	// when
-	err = indexer.Init(context.Background())
+	err := indexer.Init(context.Background())
 
 	// then
 	require.NoError(t, err)
@@ -34,8 +33,7 @@ func TestInit(t *testing.T) {
 
 func BenchmarkInit(b *testing.B) {
 	// given
-	fs, err := PrepareFakeServer("testdata/search-index-all-full.json")
-	require.NoError(b, err, "PrepareFakeServer should not return an error")
+	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 
@@ -52,14 +50,13 @@ func BenchmarkInit(b *testing.B) {
 
 func BenchmarkIndexerUpdateIndex(b *testing.B) {
 	// given
-	fs, err := PrepareFakeServer("testdata/search-index-all-full.json")
-	require.NoError(b, err, "PrepareFakeServer should not return an error")
+	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 
 	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
 	indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
-	err = indexer.Init(context.Background())
+	err := indexer.Init(context.Background())
 	require.NoError(b, err)
 
 	b.ResetTimer()
@@ -76,14 +73,13 @@ func BenchmarkIndexerUpdateIndex(b *testing.B) {
 
 func BenchmarkIndexerGet(b *testing.B) {
 	// given
-	fs, err := PrepareFakeServer("testdata/search-index-all-full.json")
-	require.NoError(b, err, "PrepareFakeServer should not return an error")
+	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 
 	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
 	indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
-	err = indexer.Init(context.Background())
+	err := indexer.Init(context.Background())
 	require.NoError(b, err)
 
 	b.ResetTimer()
@@ -96,14 +92,13 @@ func BenchmarkIndexerGet(b *testing.B) {
 
 func TestGet_ListPackages(t *testing.T) {
 	// given
-	fs, err := PrepareFakeServer("testdata/search-index-all-full.json")
-	require.NoError(t, err, "PrepareFakeServer should not return an error")
+	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 	indexer := NewIndexer(util.NewTestLogger(), storageClient, FakeIndexerOptions)
 
 	ctx := context.Background()
-	err = indexer.Init(ctx)
+	err := indexer.Init(ctx)
 	require.NoError(t, err, "storage indexer must be initialized properly")
 
 	cases := []struct {
@@ -241,13 +236,12 @@ func TestGet_ListPackages(t *testing.T) {
 
 func TestGet_IndexUpdated(t *testing.T) {
 	// given
-	fs, err := PrepareFakeServer("testdata/search-index-all-small.json")
-	require.NoError(t, err, "PrepareFakeServer should not return an error")
+	fs := PrepareFakeServer(t, "testdata/search-index-all-small.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 	indexer := NewIndexer(util.NewTestLogger(), storageClient, FakeIndexerOptions)
 
-	err = indexer.Init(context.Background())
+	err := indexer.Init(context.Background())
 	require.NoError(t, err, "storage indexer must be initialized properly")
 
 	// when

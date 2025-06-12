@@ -8,8 +8,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"testing"
 
 	"github.com/fsouza/fake-gcs-server/fakestorage"
+	"github.com/stretchr/testify/require"
 )
 
 const fakePackageStorageBucketInternal = "fake-package-storage-internal"
@@ -39,18 +41,14 @@ func RunFakeServerOnHostPort(indexPath, host string, port uint16) (*fakestorage.
 
 }
 
-func PrepareFakeServer(indexPath string) (*fakestorage.Server, error) {
+func PrepareFakeServer(tb testing.TB, indexPath string) *fakestorage.Server {
 	indexContent, err := os.ReadFile(indexPath)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read index file %s: %w", indexPath, err)
-	}
+	require.NoError(tb, err, "index file must be populated")
 
 	const firstRevision = "1"
 	serverObjects, err := prepareServerObjects(firstRevision, indexContent)
-	if err != nil {
-		return nil, fmt.Errorf("failed to prepare server objects: %w", err)
-	}
-	return fakestorage.NewServer(serverObjects), nil
+	require.NoError(tb, err, "failed to prepare server objects")
+	return fakestorage.NewServer(serverObjects)
 }
 
 func updateFakeServer(server *fakestorage.Server, revision, indexPath string) error {
@@ -98,5 +96,7 @@ func prepareServerObjects(revision string, indexContent []byte) ([]fakestorage.O
 		},
 		Content: indexContent,
 	})
+	fmt.Println("Preparing fake server objects for revision:", revision)
+	fmt.Println("Number of packages in index:", len(index.Packages))
 	return serverObjects, nil
 }

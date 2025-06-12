@@ -22,8 +22,7 @@ func TestPrepareFakeServer(t *testing.T) {
 	require.NoErrorf(t, err, "index file should be present in testdata")
 
 	// when
-	fs, err := PrepareFakeServer(indexFile)
-	require.NoErrorf(t, err, "PrepareFakeServer should not return an error")
+	fs := PrepareFakeServer(t, indexFile)
 	defer fs.Stop()
 
 	// then

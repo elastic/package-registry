@@ -20,12 +20,11 @@ import (
 const storageIndexerGoldenDir = "storage-indexer"
 
 func TestPackageStorage_Endpoints(t *testing.T) {
-	fs, err := storage.PrepareFakeServer("./storage/testdata/search-index-all-full.json")
-	require.NoError(t, err)
+	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 	indexer := storage.NewIndexer(testLogger, fs.Client(), storage.FakeIndexerOptions)
 
-	err = indexer.Init(context.Background())
+	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
 	tests := []struct {
@@ -70,12 +69,11 @@ func TestPackageStorage_Endpoints(t *testing.T) {
 }
 
 func TestPackageStorage_PackageIndex(t *testing.T) {
-	fs, err := storage.PrepareFakeServer("./storage/testdata/search-index-all-full.json")
-	require.NoError(t, err)
+	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 	indexer := storage.NewIndexer(testLogger, fs.Client(), storage.FakeIndexerOptions)
 
-	err = indexer.Init(context.Background())
+	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
 	packageIndexHandler := packageIndexHandler(testLogger, indexer, testCacheTime)
@@ -99,8 +97,7 @@ func TestPackageStorage_PackageIndex(t *testing.T) {
 }
 
 func TestPackageStorage_Artifacts(t *testing.T) {
-	fs, err := storage.PrepareFakeServer("./storage/testdata/search-index-all-full.json")
-	require.NoError(t, err)
+	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
 	webServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -113,7 +110,7 @@ func TestPackageStorage_Artifacts(t *testing.T) {
 
 	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
 
-	err = indexer.Init(context.Background())
+	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
 	artifactsHandler := artifactsHandler(testLogger, indexer, testCacheTime)
@@ -137,8 +134,7 @@ func TestPackageStorage_Artifacts(t *testing.T) {
 }
 
 func TestPackageStorage_Signatures(t *testing.T) {
-	fs, err := storage.PrepareFakeServer("./storage/testdata/search-index-all-full.json")
-	require.NoError(t, err)
+	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
 	webServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -151,7 +147,7 @@ func TestPackageStorage_Signatures(t *testing.T) {
 
 	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
 
-	err = indexer.Init(context.Background())
+	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
 	signaturesHandler := signaturesHandler(testLogger, indexer, testCacheTime)
@@ -174,8 +170,7 @@ func TestPackageStorage_Signatures(t *testing.T) {
 }
 
 func TestPackageStorage_Statics(t *testing.T) {
-	fs, err := storage.PrepareFakeServer("./storage/testdata/search-index-all-full.json")
-	require.NoError(t, err)
+	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
 	webServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -188,7 +183,7 @@ func TestPackageStorage_Statics(t *testing.T) {
 
 	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
 
-	err = indexer.Init(context.Background())
+	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
 	staticHandler := staticHandler(testLogger, indexer, testCacheTime)
@@ -213,8 +208,7 @@ func TestPackageStorage_Statics(t *testing.T) {
 }
 
 func TestPackageStorage_ResolverHeadersResponse(t *testing.T) {
-	fs, err := storage.PrepareFakeServer("./storage/testdata/search-index-all-full.json")
-	require.NoError(t, err)
+	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
 	webServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -230,7 +224,7 @@ func TestPackageStorage_ResolverHeadersResponse(t *testing.T) {
 
 	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
 
-	err = indexer.Init(context.Background())
+	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
 	staticHandler := staticHandler(testLogger, indexer, testCacheTime)
@@ -262,8 +256,7 @@ func TestPackageStorage_ResolverHeadersResponse(t *testing.T) {
 }
 
 func TestPackageStorage_ResolverErrorResponse(t *testing.T) {
-	fs, err := storage.PrepareFakeServer("./storage/testdata/search-index-all-full.json")
-	require.NoError(t, err)
+	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
 	webServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -277,7 +270,7 @@ func TestPackageStorage_ResolverErrorResponse(t *testing.T) {
 
 	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
 
-	err = indexer.Init(context.Background())
+	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
 	staticHandler := staticHandler(testLogger, indexer, testCacheTime)
