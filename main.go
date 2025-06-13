@@ -141,6 +141,14 @@ func main() {
 		}
 	}
 
+	if featureStorageIndexer && featureSQLStorageIndexer {
+		log.Fatal("Both feature-storage-indexer and feature-sql-storage-indexer are enabled. Please choose one.")
+	}
+
+	if featureEnableSearchCache && !featureSQLStorageIndexer {
+		log.Fatal("feature-enable-search-cache is enabled, but feature-sql-storage-indexer is not enabled. Search cache is just supported with SQL Storage indexer.")
+	}
+
 	if printVersionInfo {
 		fmt.Printf("Elastic Package Registry version %v\n", version)
 		os.Exit(0)
@@ -177,8 +185,8 @@ func main() {
 	initHttpProf(logger)
 
 	if indexPath := os.Getenv("EPR_EMULATOR_INDEX_PATH"); indexPath != "" {
-		if !featureStorageIndexer {
-			logger.Fatal("EPR_EMULATOR_INDEX_PATH environment variable is set, but feature-storage-indexer is not enabled. Please enable it to use the fake GCS server.")
+		if !featureStorageIndexer && !featureSQLStorageIndexer {
+			logger.Fatal("EPR_EMULATOR_INDEX_PATH environment variable is set, but feature-storage-indexer or feature-sql-storage-indexer are not enabled. Please enable one of them to use the fake GCS server.")
 		}
 		if storageIndexerBucketInternal != "" && storageIndexerBucketInternal != storage.FakeIndexerOptions.PackageStorageBucketInternal {
 			logger.Fatal("EPR_EMULATOR_INDEX_PATH environment variable is set, but storage-indexer-bucket-internal is already set to a different value. Please remove the flag or set it to the fake GCS server bucket " + storage.FakeIndexerOptions.PackageStorageBucketInternal)
@@ -190,9 +198,6 @@ func main() {
 			logger.Fatal("failed to initialize fake GCS server", zap.Error(err))
 		}
 		defer fakeServer.Stop()
-	}
-	if featureStorageIndexer && featureSQLStorageIndexer {
-		log.Fatal("Both feature-storage-indexer and feature-sql-storage-indexer are enabled. Please choose one.")
 	}
 
 	var searchCache *expirable.LRU[string, string]
