@@ -88,13 +88,31 @@ export FAKE_GCS_SERVER_VERSION
 export SEARCH_INDEX_PATH="../storage/testdata/search-index-all-full.json"
 NUMBER_OF_PACKAGES=$( jq -r '.packages | length' "${SEARCH_INDEX_PATH}" )
 
-echo "--- Running EPR service with fakce GCS server running within EPR"
+echo "--- Running EPR service with fakce GCS server running within EPR - storage indexer enabled"
 
+export ENABLE_STORAGE_INDEXER=true
+export ENABLE_SQL_STORAGE_INDEXER=false
+test_services "${DOCKER_COMPOSE_EPR_PATH}"
+
+echo "--- Running EPR service with fakce GCS server running within EPR - SQL storage indexer enabled"
+
+export ENABLE_STORAGE_INDEXER=false
+export ENABLE_SQL_STORAGE_INDEXER=true
 test_services "${DOCKER_COMPOSE_EPR_PATH}"
 
 
-echo "--- Running EPR and fake GCS server as services"
+echo "--- Running EPR and fake GCS server as services - storage indexer enabled"
 
 ./setup_bucket_gcs.sh -b "${BUCKET_NAME}" -c 1 -i ../storage/testdata/search-index-all-full.json -p "${LOCAL_BUCKET_PATH}"
 
+export ENABLE_STORAGE_INDEXER=true
+export ENABLE_SQL_STORAGE_INDEXER=false
+test_services "${DOCKER_COMPOSE_EPR_GCS_PATH}"
+
+echo "--- Running EPR and fake GCS server as services - SQL storage indexer enabled"
+
+./setup_bucket_gcs.sh -b "${BUCKET_NAME}" -c 1 -i ../storage/testdata/search-index-all-full.json -p "${LOCAL_BUCKET_PATH}"
+
+export ENABLE_STORAGE_INDEXER=false
+export ENABLE_SQL_STORAGE_INDEXER=true
 test_services "${DOCKER_COMPOSE_EPR_GCS_PATH}"

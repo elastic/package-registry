@@ -21,7 +21,8 @@ services:
     environment:
       - STORAGE_EMULATOR_HOST=fakegcsserver:4443
       - EPR_STORAGE_INDEXER_BUCKET_INTERNAL=gs://${BUCKET_NAME:-fake-package-storage-internal}
-      - EPR_FEATURE_STORAGE_INDEXER=true
+      - EPR_FEATURE_STORAGE_INDEXER=${ENABLE_STORAGE_INDEXER:-false}
+      - EPR_FEATURE_SQL_STORAGE_INDEXER=${ENABLE_SQL_STORAGE_INDEXER:-false}
       - EPR_DISABLE_PACKAGE_VALIDATION=true
       - EPR_ADDRESS=0.0.0.0:8080
       # - EPR_LOG_LEVEL=debug
