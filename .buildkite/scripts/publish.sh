@@ -9,6 +9,7 @@ build_docker_image() {
 
     docker buildx build "$@" \
         --platform linux/amd64,linux/arm64/v8 \
+        --progress plain \
         -t "${DOCKER_IMG_TAG}" \
         -t "${DOCKER_IMG_TAG_BRANCH}" \
         --build-arg GO_VERSION="${go_version}" \
