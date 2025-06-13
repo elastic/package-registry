@@ -11,7 +11,7 @@ CURRENT_DIR="$(pwd)"
 SCRIPT_DIR="$( cd -- "$(dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 usage() {
-    echo "$0 [-b <bucket_name>] [-p <epr_address>] [-e <emulator_address>] [-i <index_path>] [-c <config_path>] [-s] [-h]"
+    echo "$0 [-b <bucket_name>] [-p <epr_address>] [-e <emulator_address>] [-i <index_path>] [-c <config_path>] [-s] [-C] [-h]"
     echo -e "\t-b <bucket_name>: Bucket name. Default: example"
     echo -e "\t-p <epr_address>: Address of the package registry service. Default: localhost:8080"
     echo -e "\t-e <emulator_address>: Address of the emulator host (fake GCS server). Default: localhost:4443"
@@ -19,6 +19,7 @@ usage() {
     echo -e "\t\t\tIf set, the bucket name will be ignored (-b parameter) and Package Registry will use its default development bucket gs://fake-package-storage-internal"
     echo -e "\t-c <config_path>: Path to the configurastion file. Default: \"\""
     echo -e "\t-s : Enable SQL Storage indexer. By default Storage Indexer is enabled."
+    echo -e "\t-C : Enable Search Cache. Just supported with SQL Storage indexer. By default Search Cache is disabled."
     echo -e "\t-h: Show this message"
 }
 
@@ -28,8 +29,9 @@ INDEX_PATH=""
 EMULATOR_HOST="localhost:4443"
 CONFIG_PATH="${SCRIPT_DIR}/../config.yml"
 ENABLE_STORAGE_SQL_INDEXER=0
+ENABLE_SEARCH_CACHE=0
 
-while getopts ":b:p:i:e:c:sh" o; do
+while getopts ":b:p:i:e:c:sCh" o; do
   case "${o}" in
     b)
       BUCKET_NAME="${OPTARG}"
@@ -48,6 +50,9 @@ while getopts ":b:p:i:e:c:sh" o; do
       ;;
     s)
       ENABLE_STORAGE_SQL_INDEXER=1
+      ;;
+    C)
+      ENABLE_SEARCH_CACHE=1
       ;;
     h)
       usage
@@ -89,6 +94,10 @@ if [[ "${ENABLE_STORAGE_SQL_INDEXER}" == 0 ]]; then
 else
     export EPR_FEATURE_SQL_STORAGE_INDEXER="true"
     export EPR_FEATURE_STORAGE_INDEXER="false"
+fi
+
+if [[ "${ENABLE_SEARCH_CACHE}" == 1 ]]; then
+    export EPR_FEATURE_ENABLE_SEARCH_CACHE="true"
 fi
 
 export EPR_DISABLE_PACKAGE_VALIDATION="true"
