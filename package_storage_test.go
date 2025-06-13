@@ -12,22 +12,43 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/fsouza/fake-gcs-server/fakestorage"
 	"github.com/stretchr/testify/require"
 
+	"github.com/elastic/package-registry/internal/database"
+	internalStorage "github.com/elastic/package-registry/internal/storage"
 	"github.com/elastic/package-registry/storage"
 )
 
 const storageIndexerGoldenDir = "storage-indexer"
 
-func TestPackageStorage_Endpoints(t *testing.T) {
-	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
-	defer fs.Stop()
-	indexer := storage.NewIndexer(testLogger, fs.Client(), storage.FakeIndexerOptions)
+func generateSQLStorageIndexer(fs *fakestorage.Server, webServer string) (Indexer, error) {
+	db, err := database.NewMemorySQLDB("main")
+	if err != nil {
+		return nil, err
+	}
 
-	err := indexer.Init(context.Background())
-	require.NoError(t, err)
+	swapDb, err := database.NewMemorySQLDB("swap")
+	if err != nil {
+		return nil, err
+	}
 
-	tests := []struct {
+	options, err := internalStorage.CreateFakeIndexerOptions(db, swapDb)
+	if err != nil {
+		return nil, err
+	}
+	options.PackageStorageEndpoint = webServer
+
+	return internalStorage.NewIndexer(testLogger, fs.Client(), options), nil
+}
+
+func generateTestCaseStorageEndpoints(indexer Indexer) []struct {
+	endpoint string
+	path     string
+	file     string
+	handler  func(w http.ResponseWriter, r *http.Request)
+} {
+	return []struct {
 		endpoint string
 		path     string
 		file     string
@@ -49,6 +70,7 @@ func TestPackageStorage_Endpoints(t *testing.T) {
 		{"/search?kibana.version=8.0.0", "/search", "search-kibana800.json", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/search?category=web", "/search", "search-category-web.json", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/search?category=web&all=true", "/search", "search-category-web-all.json", searchHandler(testLogger, indexer, testCacheTime)},
+		{"/search?category=observability", "/search", "search-category-observability-subcategories.json", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/search?category=custom", "/search", "search-category-custom.json", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/search?experimental=true", "/search", "search-package-experimental.json", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/search?experimental=foo", "/search", "search-package-experimental-error.txt", searchHandler(testLogger, indexer, testCacheTime)},
@@ -60,7 +82,20 @@ func TestPackageStorage_Endpoints(t *testing.T) {
 		// Removed flags, kept ensure that they don't break requests from old versions.
 		{"/search?internal=true", "/search", "search-package-internal.json", searchHandler(testLogger, indexer, testCacheTime)},
 	}
+}
 
+func TestPackageStorage_Endpoints(t *testing.T) {
+	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
+	defer fs.Stop()
+
+	indexer := storage.NewIndexer(testLogger, fs.Client(), storage.FakeIndexerOptions)
+	defer indexer.Close(context.Background())
+
+	err := indexer.Init(context.Background())
+	require.NoError(t, err)
+
+	// tests := generateTestEndpointCases(t, indexer)
+	tests := generateTestCaseStorageEndpoints(indexer)
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
 			runEndpointWithStorageIndexer(t, test.endpoint, test.path, test.file, test.handler)
@@ -68,17 +103,34 @@ func TestPackageStorage_Endpoints(t *testing.T) {
 	}
 }
 
-func TestPackageStorage_PackageIndex(t *testing.T) {
+func TestPackageStorageSQL_Endpoints(t *testing.T) {
 	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
-	indexer := storage.NewIndexer(testLogger, fs.Client(), storage.FakeIndexerOptions)
 
-	err := indexer.Init(context.Background())
+	indexer, err := generateSQLStorageIndexer(fs, "")
+	require.NoError(t, err)
+	defer indexer.Close(context.Background())
+
+	err = indexer.Init(context.Background())
 	require.NoError(t, err)
 
-	packageIndexHandler := packageIndexHandler(testLogger, indexer, testCacheTime)
+	// tests := generateTestEndpointCases(t, indexer)
+	tests := generateTestCaseStorageEndpoints(indexer)
+	for _, test := range tests {
+		t.Run(test.endpoint, func(t *testing.T) {
+			runEndpointWithStorageIndexer(t, test.endpoint, test.path, test.file, test.handler)
+		})
+	}
+}
 
-	tests := []struct {
+func generateTestPackageIndexEndpoints(indexer Indexer) []struct {
+	endpoint string
+	path     string
+	file     string
+	handler  func(w http.ResponseWriter, r *http.Request)
+} {
+	packageIndexHandler := packageIndexHandler(testLogger, indexer, testCacheTime)
+	return []struct {
 		endpoint string
 		path     string
 		file     string
@@ -88,11 +140,62 @@ func TestPackageStorage_PackageIndex(t *testing.T) {
 		{"/package/kubernetes/0.3.0/", packageIndexRouterPath, "kubernetes-0.3.0.json", packageIndexHandler},
 		{"/package/osquery/1.0.3/", packageIndexRouterPath, "osquery-1.0.3.json", packageIndexHandler},
 	}
+}
+
+func TestPackageStorage_PackageIndex(t *testing.T) {
+	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
+	defer fs.Stop()
+	indexer := storage.NewIndexer(testLogger, fs.Client(), storage.FakeIndexerOptions)
+	defer indexer.Close(context.Background())
+
+	err := indexer.Init(context.Background())
+	require.NoError(t, err)
+
+	tests := generateTestPackageIndexEndpoints(indexer)
 
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
 			runEndpointWithStorageIndexer(t, test.endpoint, test.path, test.file, test.handler)
 		})
+	}
+}
+
+func TestPackageSQLStorage_PackageIndex(t *testing.T) {
+	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
+	defer fs.Stop()
+
+	indexer, err := generateSQLStorageIndexer(fs, "")
+	require.NoError(t, err)
+	defer indexer.Close(context.Background())
+
+	err = indexer.Init(context.Background())
+	require.NoError(t, err)
+
+	tests := generateTestPackageIndexEndpoints(indexer)
+
+	for _, test := range tests {
+		t.Run(test.endpoint, func(t *testing.T) {
+			runEndpointWithStorageIndexer(t, test.endpoint, test.path, test.file, test.handler)
+		})
+	}
+}
+
+func generateTestArtifactsEndpoints(indexer Indexer) []struct {
+	endpoint string
+	path     string
+	file     string
+	handler  func(w http.ResponseWriter, r *http.Request)
+} {
+	artifactsHandler := artifactsHandler(testLogger, indexer, testCacheTime)
+	return []struct {
+		endpoint string
+		path     string
+		file     string
+		handler  func(w http.ResponseWriter, r *http.Request)
+	}{
+		{"/epr/1password/1password-0.1.1.zip", artifactsRouterPath, "1password-0.1.1.zip.txt", artifactsHandler},
+		{"/epr/kubernetes/kubernetes-999.999.999.zip", artifactsRouterPath, "artifact-package-version-not-found.txt", artifactsHandler},
+		{"/epr/missing/missing-1.0.3.zip", artifactsRouterPath, "artifact-package-not-found.txt", artifactsHandler},
 	}
 }
 
@@ -109,27 +212,60 @@ func TestPackageStorage_Artifacts(t *testing.T) {
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
 	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
+	defer indexer.Close(context.Background())
 
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
-	artifactsHandler := artifactsHandler(testLogger, indexer, testCacheTime)
-
-	tests := []struct {
-		endpoint string
-		path     string
-		file     string
-		handler  func(w http.ResponseWriter, r *http.Request)
-	}{
-		{"/epr/1password/1password-0.1.1.zip", artifactsRouterPath, "1password-0.1.1.zip.txt", artifactsHandler},
-		{"/epr/kubernetes/kubernetes-999.999.999.zip", artifactsRouterPath, "artifact-package-version-not-found.txt", artifactsHandler},
-		{"/epr/missing/missing-1.0.3.zip", artifactsRouterPath, "artifact-package-not-found.txt", artifactsHandler},
-	}
+	tests := generateTestArtifactsEndpoints(indexer)
 
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
 			runEndpointWithStorageIndexer(t, test.endpoint, test.path, test.file, test.handler)
 		})
+	}
+}
+
+func TestPackageSQLStorage_Artifacts(t *testing.T) {
+	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
+	defer fs.Stop()
+
+	webServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintln(w, r.RequestURI)
+	}))
+	defer webServer.Close()
+
+	indexer, err := generateSQLStorageIndexer(fs, webServer.URL)
+	require.NoError(t, err)
+	defer indexer.Close(context.Background())
+
+	err = indexer.Init(context.Background())
+	require.NoError(t, err)
+
+	tests := generateTestArtifactsEndpoints(indexer)
+
+	for _, test := range tests {
+		t.Run(test.endpoint, func(t *testing.T) {
+			runEndpointWithStorageIndexer(t, test.endpoint, test.path, test.file, test.handler)
+		})
+	}
+}
+
+func generateTestSignaturesEndpoints(indexer Indexer) []struct {
+	endpoint string
+	path     string
+	file     string
+	handler  func(w http.ResponseWriter, r *http.Request)
+} {
+	signaturesHandler := signaturesHandler(testLogger, indexer, testCacheTime)
+	return []struct {
+		endpoint string
+		path     string
+		file     string
+		handler  func(w http.ResponseWriter, r *http.Request)
+	}{
+		{"/epr/1password/1password-0.1.1.zip.sig", signaturesRouterPath, "1password-0.1.1.zip.sig", signaturesHandler},
+		{"/epr/checkpoint/checkpoint-0.5.2.zip.sig", signaturesRouterPath, "checkpoint-0.5.2.zip.sig", signaturesHandler},
 	}
 }
 
@@ -146,26 +282,61 @@ func TestPackageStorage_Signatures(t *testing.T) {
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
 	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
+	defer indexer.Close(context.Background())
 
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
-	signaturesHandler := signaturesHandler(testLogger, indexer, testCacheTime)
-
-	tests := []struct {
-		endpoint string
-		path     string
-		file     string
-		handler  func(w http.ResponseWriter, r *http.Request)
-	}{
-		{"/epr/1password/1password-0.1.1.zip.sig", signaturesRouterPath, "1password-0.1.1.zip.sig", signaturesHandler},
-		{"/epr/checkpoint/checkpoint-0.5.2.zip.sig", signaturesRouterPath, "checkpoint-0.5.2.zip.sig", signaturesHandler},
-	}
+	tests := generateTestSignaturesEndpoints(indexer)
 
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
 			runEndpoint(t, test.endpoint, test.path, test.file, test.handler)
 		})
+	}
+}
+
+func TestPackageSQLStorage_Signatures(t *testing.T) {
+	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
+	defer fs.Stop()
+
+	webServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintln(w, r.RequestURI)
+	}))
+	defer webServer.Close()
+
+	indexer, err := generateSQLStorageIndexer(fs, webServer.URL)
+	require.NoError(t, err)
+	defer indexer.Close(context.Background())
+
+	err = indexer.Init(context.Background())
+	require.NoError(t, err)
+
+	tests := generateTestSignaturesEndpoints(indexer)
+
+	for _, test := range tests {
+		t.Run(test.endpoint, func(t *testing.T) {
+			runEndpoint(t, test.endpoint, test.path, test.file, test.handler)
+		})
+	}
+}
+
+func generateTestStaticEndpoints(indexer Indexer) []struct {
+	endpoint string
+	path     string
+	file     string
+	handler  func(w http.ResponseWriter, r *http.Request)
+} {
+	staticHandler := staticHandler(testLogger, indexer, testCacheTime)
+	return []struct {
+		endpoint string
+		path     string
+		file     string
+		handler  func(w http.ResponseWriter, r *http.Request)
+	}{
+		{"/package/1password/0.1.1/img/1password-logo-light-bg.svg", staticRouterPath, "1password-logo-light-bg.svg", staticHandler},
+		{"/package/cassandra/1.1.0/img/[Logs Cassandra] System Logs.jpg", staticRouterPath, "logs-cassandra-system-logs.jpg", staticHandler},
+		{"/package/cef/0.1.0/docs/README.md", staticRouterPath, "cef-readme.md", staticHandler},
 	}
 }
 
@@ -182,29 +353,71 @@ func TestPackageStorage_Statics(t *testing.T) {
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
 	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
+	defer indexer.Close(context.Background())
 
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
-	staticHandler := staticHandler(testLogger, indexer, testCacheTime)
-
-	tests := []struct {
-		endpoint string
-		path     string
-		file     string
-		handler  func(w http.ResponseWriter, r *http.Request)
-	}{
-		{"/package/1password/0.1.1/img/1password-logo-light-bg.svg", staticRouterPath, "1password-logo-light-bg.svg", staticHandler},
-		{"/package/cassandra/1.1.0/img/[Logs Cassandra] System Logs.jpg", staticRouterPath, "logs-cassandra-system-logs.jpg", staticHandler},
-		{"/package/cef/0.1.0/docs/README.md", staticRouterPath, "cef-readme.md", staticHandler},
-	}
+	tests := generateTestStaticEndpoints(indexer)
 
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
 			runEndpoint(t, test.endpoint, test.path, test.file, test.handler)
 		})
 	}
+}
 
+func TestPackagesQLStorage_Statics(t *testing.T) {
+	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
+	defer fs.Stop()
+
+	webServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintln(w, r.RequestURI)
+	}))
+	defer webServer.Close()
+
+	indexer, err := generateSQLStorageIndexer(fs, webServer.URL)
+	require.NoError(t, err)
+	defer indexer.Close(context.Background())
+
+	err = indexer.Init(context.Background())
+	require.NoError(t, err)
+
+	tests := generateTestStaticEndpoints(indexer)
+
+	for _, test := range tests {
+		t.Run(test.endpoint, func(t *testing.T) {
+			runEndpoint(t, test.endpoint, test.path, test.file, test.handler)
+		})
+	}
+}
+
+func generateTestResolveHeadersEndpoints(indexer Indexer) []struct {
+	endpoint        string
+	path            string
+	file            string
+	responseHeaders map[string]string
+	handler         func(w http.ResponseWriter, r *http.Request)
+} {
+	staticHandler := staticHandler(testLogger, indexer, testCacheTime)
+	return []struct {
+		endpoint        string
+		path            string
+		file            string
+		responseHeaders map[string]string
+		handler         func(w http.ResponseWriter, r *http.Request)
+	}{
+		{
+			endpoint: "/package/1password/0.1.1/img/1password-logo-light-bg.svg",
+			path:     staticRouterPath,
+			file:     "1password-logo-light-bg.svg.response",
+			responseHeaders: map[string]string{
+				"Last-Modified": "time",
+				"Content-Type":  "image/svg+xml",
+			},
+			handler: staticHandler,
+		},
+	}
 }
 
 func TestPackageStorage_ResolverHeadersResponse(t *testing.T) {
@@ -223,35 +436,67 @@ func TestPackageStorage_ResolverHeadersResponse(t *testing.T) {
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
 	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
+	defer indexer.Close(context.Background())
 
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
-	staticHandler := staticHandler(testLogger, indexer, testCacheTime)
-
-	tests := []struct {
-		endpoint        string
-		path            string
-		file            string
-		responseHeaders map[string]string
-		handler         func(w http.ResponseWriter, r *http.Request)
-	}{
-		{
-			endpoint: "/package/1password/0.1.1/img/1password-logo-light-bg.svg",
-			path:     staticRouterPath,
-			file:     "1password-logo-light-bg.svg.response",
-			responseHeaders: map[string]string{
-				"Last-Modified": "time",
-				"Content-Type":  "image/svg+xml",
-			},
-			handler: staticHandler,
-		},
-	}
+	tests := generateTestResolveHeadersEndpoints(indexer)
 
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
 			runEndpointWithStorageIndexerAndHeaders(t, test.endpoint, test.path, test.file, test.responseHeaders, test.handler)
 		})
+	}
+}
+
+func TestPackageSQLStorage_ResolverHeadersResponse(t *testing.T) {
+	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
+	defer fs.Stop()
+
+	webServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Foo", "bar")
+		w.Header().Set("Last-Modified", "time")
+		w.Header().Set("Content-Type", "image/svg+xml")
+		fmt.Fprintf(w, "%s\n%s\n%+v\n", r.Method, r.RequestURI, r.Header)
+	}))
+	defer webServer.Close()
+
+	indexer, err := generateSQLStorageIndexer(fs, webServer.URL)
+	require.NoError(t, err)
+	defer indexer.Close(context.Background())
+
+	err = indexer.Init(context.Background())
+	require.NoError(t, err)
+
+	tests := generateTestResolveHeadersEndpoints(indexer)
+
+	for _, test := range tests {
+		t.Run(test.endpoint, func(t *testing.T) {
+			runEndpointWithStorageIndexerAndHeaders(t, test.endpoint, test.path, test.file, test.responseHeaders, test.handler)
+		})
+	}
+}
+
+func generateTestResolveErrorResponseEndpoints(indexer Indexer) []struct {
+	endpoint string
+	path     string
+	file     string
+	handler  func(w http.ResponseWriter, r *http.Request)
+} {
+	staticHandler := staticHandler(testLogger, indexer, testCacheTime)
+	return []struct {
+		endpoint string
+		path     string
+		file     string
+		handler  func(w http.ResponseWriter, r *http.Request)
+	}{
+		{
+			endpoint: "/package/1password/0.1.1/img/1password-logo-light-bg.svg",
+			path:     staticRouterPath,
+			file:     "1password-logo-light-bg.svg.error-response",
+			handler:  staticHandler,
+		},
 	}
 }
 
@@ -269,26 +514,37 @@ func TestPackageStorage_ResolverErrorResponse(t *testing.T) {
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
 	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
+	defer indexer.Close(context.Background())
 
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
-	staticHandler := staticHandler(testLogger, indexer, testCacheTime)
-
-	tests := []struct {
-		endpoint string
-		path     string
-		file     string
-		handler  func(w http.ResponseWriter, r *http.Request)
-	}{
-		{
-			endpoint: "/package/1password/0.1.1/img/1password-logo-light-bg.svg",
-			path:     staticRouterPath,
-			file:     "1password-logo-light-bg.svg.error-response",
-			handler:  staticHandler,
-		},
+	tests := generateTestResolveErrorResponseEndpoints(indexer)
+	for _, test := range tests {
+		t.Run(test.endpoint, func(t *testing.T) {
+			runEndpointWithStorageIndexer(t, test.endpoint, test.path, test.file, test.handler)
+		})
 	}
+}
 
+func TestPackageSQLStorage_ResolverErrorResponse(t *testing.T) {
+	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
+	defer fs.Stop()
+
+	webServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		message := fmt.Sprintf("internal error\n%s\n%s\n%+v\n", r.Method, r.RequestURI, r.Header)
+		http.Error(w, message, http.StatusInternalServerError)
+	}))
+	defer webServer.Close()
+
+	indexer, err := generateSQLStorageIndexer(fs, webServer.URL)
+	require.NoError(t, err)
+	defer indexer.Close(context.Background())
+
+	err = indexer.Init(context.Background())
+	require.NoError(t, err)
+
+	tests := generateTestResolveErrorResponseEndpoints(indexer)
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
 			runEndpointWithStorageIndexer(t, test.endpoint, test.path, test.file, test.handler)
@@ -296,7 +552,6 @@ func TestPackageStorage_ResolverErrorResponse(t *testing.T) {
 	}
 
 }
-
 func runEndpointWithStorageIndexer(t *testing.T, endpoint, path, file string, handler func(w http.ResponseWriter, r *http.Request)) {
 	runEndpoint(t, endpoint, path, filepath.Join(storageIndexerGoldenDir, file), handler)
 }

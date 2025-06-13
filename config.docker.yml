@@ -7,3 +7,6 @@ cache_time.index: 10s
 cache_time.search: 10m
 cache_time.categories: 10m
 cache_time.catch_all: 10m
+
+sql_indexer.database_folder_path: "/tmp"
+search.cache_size: 100

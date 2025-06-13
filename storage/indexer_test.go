@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/Masterminds/semver/v3"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/zap/zapcore"
@@ -23,6 +24,7 @@ func TestInit(t *testing.T) {
 	defer fs.Stop()
 	storageClient := fs.Client()
 	indexer := NewIndexer(util.NewTestLogger(), storageClient, FakeIndexerOptions)
+	defer indexer.Close(context.Background())
 
 	// when
 	err := indexer.Init(context.Background())
@@ -40,9 +42,13 @@ func BenchmarkInit(b *testing.B) {
 	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
-		err := indexer.Init(context.Background())
-		require.NoError(b, err)
+		func() {
+			indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
+			defer indexer.Close(context.Background())
+
+			err := indexer.Init(context.Background())
+			require.NoError(b, err)
+		}()
 	}
 }
 
@@ -54,6 +60,8 @@ func BenchmarkIndexerUpdateIndex(b *testing.B) {
 
 	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
 	indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
+	defer indexer.Close(context.Background())
+
 	err := indexer.Init(context.Background())
 	require.NoError(b, err)
 
@@ -76,15 +84,31 @@ func BenchmarkIndexerGet(b *testing.B) {
 
 	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
 	indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
+	defer indexer.Close(context.Background())
+
 	err := indexer.Init(context.Background())
 	require.NoError(b, err)
 
 	b.ResetTimer()
-	b.RunParallel(func(pb *testing.PB) {
-		for pb.Next() {
-			indexer.Get(context.Background(), &packages.GetOptions{})
-		}
-	})
+	for i := 0; i < b.N; i++ {
+		indexer.Get(context.Background(), &packages.GetOptions{})
+		indexer.Get(context.Background(), &packages.GetOptions{
+			Filter: &packages.Filter{
+				AllVersions: true,
+				Prerelease:  true,
+			},
+		})
+		indexer.Get(context.Background(), &packages.GetOptions{Filter: &packages.Filter{
+			AllVersions: false,
+			Prerelease:  false,
+		}})
+		indexer.Get(context.Background(), &packages.GetOptions{Filter: &packages.Filter{
+			AllVersions: false,
+			Prerelease:  false,
+			SpecMin:     semver.MustParse("3.0.0"),
+			SpecMax:     semver.MustParse("3.3.0"),
+		}})
+	}
 }
 
 func TestGet_ListPackages(t *testing.T) {
@@ -93,6 +117,7 @@ func TestGet_ListPackages(t *testing.T) {
 	defer fs.Stop()
 	storageClient := fs.Client()
 	indexer := NewIndexer(util.NewTestLogger(), storageClient, FakeIndexerOptions)
+	defer indexer.Close(context.Background())
 
 	ctx := context.Background()
 	err := indexer.Init(ctx)
@@ -169,6 +194,17 @@ func TestGet_ListPackages(t *testing.T) {
 			expected: 17,
 		},
 		{
+			name: "all packages of a given category",
+			options: &packages.GetOptions{
+				Filter: &packages.Filter{
+					AllVersions: true,
+					Prerelease:  true,
+					Category:    "datastore",
+				},
+			},
+			expected: 75,
+		},
+		{
 			name: "all packages with all versions of a giventype",
 			options: &packages.GetOptions{
 				Filter: &packages.Filter{
@@ -199,6 +235,40 @@ func TestGet_ListPackages(t *testing.T) {
 				},
 			},
 			expected: 0,
+		},
+		{
+			name: "packages in a specific spec version range",
+			options: &packages.GetOptions{
+				Filter: &packages.Filter{
+					AllVersions: false,
+					Prerelease:  false,
+					SpecMin:     semver.MustParse("1.1"),
+					SpecMax:     semver.MustParse("1.1"),
+				},
+			},
+			expected: 1,
+		},
+		{
+			name: "filtering packages with uptime capabilities",
+			options: &packages.GetOptions{
+				Filter: &packages.Filter{
+					AllVersions:  false,
+					Prerelease:   false,
+					Capabilities: []string{"uptime"},
+				},
+			},
+			expected: 98,
+		},
+		{
+			name: "filtering packages with security capabilities",
+			options: &packages.GetOptions{
+				Filter: &packages.Filter{
+					AllVersions:  false,
+					Prerelease:   false,
+					Capabilities: []string{"security"},
+				},
+			},
+			expected: 99,
 		},
 		{
 			name: "latest package",
@@ -236,13 +306,16 @@ func TestGet_IndexUpdated(t *testing.T) {
 	fs := PrepareFakeServer(t, "testdata/search-index-all-small.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
-	indexer := NewIndexer(util.NewTestLogger(), storageClient, FakeIndexerOptions)
+	ctx := context.Background()
 
-	err := indexer.Init(context.Background())
+	indexer := NewIndexer(util.NewTestLogger(), storageClient, FakeIndexerOptions)
+	defer indexer.Close(ctx)
+
+	err := indexer.Init(ctx)
 	require.NoError(t, err, "storage indexer must be initialized properly")
 
 	// when
-	foundPackages, err := indexer.Get(context.Background(), &packages.GetOptions{
+	foundPackages, err := indexer.Get(ctx, &packages.GetOptions{
 		Filter: &packages.Filter{
 			PackageName: "1password",
 			PackageType: "integration",
@@ -259,10 +332,10 @@ func TestGet_IndexUpdated(t *testing.T) {
 	// when: index update is performed adding new packages
 	const secondRevision = "2"
 	updateFakeServer(t, fs, secondRevision, "testdata/search-index-all-full.json")
-	err = indexer.updateIndex(context.Background())
+	err = indexer.updateIndex(ctx)
 	require.NoError(t, err, "index should be updated successfully")
 
-	foundPackages, err = indexer.Get(context.Background(), &packages.GetOptions{
+	foundPackages, err = indexer.Get(ctx, &packages.GetOptions{
 		Filter: &packages.Filter{
 			PackageName: "1password",
 			PackageType: "integration",
@@ -279,10 +352,10 @@ func TestGet_IndexUpdated(t *testing.T) {
 	// when: index update is performed removing packages
 	const thirdRevision = "3"
 	updateFakeServer(t, fs, thirdRevision, "testdata/search-index-all-small.json")
-	err = indexer.updateIndex(context.Background())
+	err = indexer.updateIndex(ctx)
 	require.NoError(t, err, "index should be updated successfully")
 
-	foundPackages, err = indexer.Get(context.Background(), &packages.GetOptions{
+	foundPackages, err = indexer.Get(ctx, &packages.GetOptions{
 		Filter: &packages.Filter{
 			PackageName: "1password",
 			PackageType: "integration",
@@ -295,4 +368,26 @@ func TestGet_IndexUpdated(t *testing.T) {
 	require.Len(t, foundPackages, 1)
 	require.Equal(t, "1password", foundPackages[0].Name)
 	require.Equal(t, "0.2.0", foundPackages[0].Version)
+
+	// when: index update is performed updating some field of an existing pacakage
+	updateFakeServer(t, fs, "4", "testdata/search-index-all-small-updated-fields.json")
+	err = indexer.updateIndex(ctx)
+	require.NoError(t, err, "index should be updated successfully")
+
+	foundPackages, err = indexer.Get(ctx, &packages.GetOptions{
+		Filter: &packages.Filter{
+			PackageName: "1password",
+			PackageType: "integration",
+			Prerelease:  true,
+		},
+	})
+
+	// then
+	// Adding new fields require to update packages.Package struct definition
+	// Tested updating one of the known fields (title)
+	require.NoError(t, err, "packages should be returned")
+	require.Len(t, foundPackages, 1)
+	require.Equal(t, "1password", foundPackages[0].Name)
+	require.Equal(t, "0.2.0", foundPackages[0].Version)
+	require.Equal(t, "1Password Events Reporting UPDATED", *foundPackages[0].Title)
 }

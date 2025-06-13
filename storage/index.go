@@ -6,11 +6,11 @@ package storage
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 
 	"cloud.google.com/go/storage"
 
+	"github.com/goccy/go-json"
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 
