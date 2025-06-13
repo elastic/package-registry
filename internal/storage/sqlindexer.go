@@ -31,7 +31,7 @@ import (
 )
 
 const (
-	indexerGetDurationPrometheusLabel = "StorageIndexer"
+	indexerGetDurationPrometheusLabel = "SQLStorageIndexer"
 	defaultMaxBulkAddBatch            = 1500
 )
 
