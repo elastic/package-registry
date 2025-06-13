@@ -23,6 +23,10 @@ spec:
       repository: elastic/package-registry
       pipeline_file: ".buildkite/pipeline.yml"
       branch_configuration: "main v1.* v2.*"
+      cancel_intermediate_builds: true
+      cancel_intermediate_builds_branch_filter: '!main'
+      skip_intermediate_builds: true
+      skip_intermediate_builds_branch_filter: '!main'
       provider_settings:
         build_pull_request_forks: false
         build_pull_requests: true
