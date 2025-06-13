@@ -25,7 +25,6 @@ func CreateFakeIndexerOptions(db, swapDb database.Repository) (IndexerOptions, e
 		SwapDatabase:                 swapDb,
 	}
 	return fakeIndexerOptions, nil
-
 }
 
 func PrepareFakeServer(tb testing.TB, indexPath string) *fakestorage.Server {
@@ -72,6 +71,6 @@ func prepareServerObjects(tb testing.TB, revision string, indexContent []byte) [
 		},
 		Content: indexContent,
 	})
-	// tb.Logf("Prepared %d packages with total %d server objects.", len(index.Packages), len(serverObjects))
+	tb.Logf("Prepared %d packages with total %d server objects.", len(index.Packages), len(serverObjects))
 	return serverObjects
 }
