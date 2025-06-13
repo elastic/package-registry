@@ -12,6 +12,7 @@ import (
 
 	"github.com/fsouza/fake-gcs-server/fakestorage"
 	"github.com/stretchr/testify/require"
+	"go.uber.org/zap"
 )
 
 const fakePackageStorageBucketInternal = "fake-package-storage-internal"
@@ -21,17 +22,18 @@ var FakeIndexerOptions = IndexerOptions{
 	WatchInterval:                0,
 }
 
-func RunFakeServerOnHostPort(indexPath, host string, port uint16) (*fakestorage.Server, error) {
+func RunFakeServerOnHostPort(logger *zap.Logger, indexPath, host string, port uint16) (*fakestorage.Server, error) {
 	indexContent, err := os.ReadFile(indexPath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read index file %s: %w", indexPath, err)
 	}
 
 	const firstRevision = "1"
-	serverObjects, _, err := prepareServerObjects(firstRevision, indexContent)
+	serverObjects, numPackages, err := prepareServerObjects(firstRevision, indexContent)
 	if err != nil {
 		return nil, fmt.Errorf("failed to prepare server objects: %w", err)
 	}
+	logger.Debug(fmt.Sprintf("Prepared %d packages with total %d server objects.", numPackages, len(serverObjects)))
 	return fakestorage.NewServerWithOptions(fakestorage.Options{
 		InitialObjects: serverObjects,
 		Host:           host,
