@@ -223,14 +223,14 @@ func initFakeGCSServer(logger *zap.Logger, indexPath string) (*fakestorage.Serve
 		if err != nil {
 			return nil, fmt.Errorf("failed to convert port to integer from STORAGE_EMULATOR_HOST: %w", err)
 		}
-		fakeServer, err = storage.RunFakeServerOnHostPort(indexPath, host, uint16(portInt))
+		fakeServer, err = storage.RunFakeServerOnHostPort(logger, indexPath, host, uint16(portInt))
 		if err != nil {
 			return nil, fmt.Errorf("failed to prepare fake storage server: %w", err)
 		}
 	} else {
 		logger.Info("Create fake GCS server on random port")
 		// let the fake server choose a random port
-		fakeServer, err = storage.RunFakeServerOnHostPort(indexPath, "localhost", 0)
+		fakeServer, err = storage.RunFakeServerOnHostPort(logger, indexPath, "localhost", 0)
 		if err != nil {
 			return nil, fmt.Errorf("failed to prepare fake storage server: %w", err)
 		}
