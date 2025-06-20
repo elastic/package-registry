@@ -130,6 +130,10 @@ func validateIndexerOptions(options IndexerOptions) error {
 	if options.WatchInterval < 0 {
 		return errors.New("options.WatchInterval must be greater than or equal to 0")
 	}
+
+	if options.Database == nil || options.SwapDatabase == nil {
+		return errors.New("options.Database and options.SwapDatabase must be set")
+	}
 	return nil
 }
 
