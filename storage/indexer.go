@@ -113,11 +113,7 @@ func (i *Indexer) setupResolver() error {
 		},
 	}
 
-	i.resolver = storageResolver{
-		client:               &httpClient,
-		artifactsPackagesURL: *baseURL.ResolveReference(&url.URL{Path: internalStorage.ArtifactsPackagesStoragePath + "/"}),
-		artifactsStaticURL:   *baseURL.ResolveReference(&url.URL{Path: internalStorage.ArtifactsStaticStoragePath + "/"}),
-	}
+	i.resolver = internalStorage.NewStorageResolver(&httpClient, baseURL)
 	return nil
 }
 

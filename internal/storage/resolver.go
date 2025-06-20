@@ -26,6 +26,14 @@ var acceptedHeaders = map[string]string{
 	"Date":           "",
 }
 
+func NewStorageResolver(client *http.Client, baseURL *url.URL) packages.RemoteResolver {
+	return storageResolver{
+		client:               client,
+		artifactsPackagesURL: *baseURL.ResolveReference(&url.URL{Path: artifactsPackagesStoragePath + "/"}),
+		artifactsStaticURL:   *baseURL.ResolveReference(&url.URL{Path: artifactsStaticStoragePath + "/"}),
+	}
+}
+
 func (resolver storageResolver) pipeRequestProxy(w http.ResponseWriter, r *http.Request, remoteURL string) {
 	forwardRequest, err := http.NewRequestWithContext(r.Context(), r.Method, remoteURL, nil)
 	if err != nil {

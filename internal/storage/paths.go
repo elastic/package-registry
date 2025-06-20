@@ -18,8 +18,8 @@ const (
 
 	// Public bucket
 	artifactsStoragePath         = "artifacts"
-	ArtifactsPackagesStoragePath = artifactsStoragePath + "/packages"
-	ArtifactsStaticStoragePath   = artifactsStoragePath + "/static"
+	artifactsPackagesStoragePath = artifactsStoragePath + "/packages"
+	artifactsStaticStoragePath   = artifactsStoragePath + "/static"
 )
 
 func extractBucketNameFromURL(anURL string) (string, string, error) {
