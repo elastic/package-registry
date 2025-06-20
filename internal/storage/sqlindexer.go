@@ -239,7 +239,7 @@ func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 	i.logger.Info("Filled database with latest packages", zap.Duration("elapsed.time", startDuration), zap.String("elapsed.time.human", startDuration.String()))
 
 	startLock := time.Now()
-	i.swapDatabases(storageCursor.Current, len(*anIndex))
+	i.swapDatabases(ctx, storageCursor.Current, len(*anIndex))
 	i.logger.Info("Elapsed time in lock for updating index database", zap.Duration("lock.duration", time.Since(startLock)))
 
 	if err != nil {
@@ -294,7 +294,7 @@ func (i *SQLIndexer) updateDatabase(ctx context.Context, index *packages.Package
 	return nil
 }
 
-func (i *SQLIndexer) swapDatabases(currentCursor string, numPackages int) {
+func (i *SQLIndexer) swapDatabases(ctx context.Context, currentCursor string, numPackages int) {
 	i.m.Lock()
 	defer i.m.Unlock()
 	i.cursor = currentCursor
