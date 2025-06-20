@@ -342,47 +342,19 @@ func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer,
 
 	var combined CombinedIndexer
 
-	if featureSQLStorageIndexer || featureStorageIndexer {
-		opts := []option.ClientOption{}
-		if os.Getenv("STORAGE_EMULATOR_HOST") != "" {
-			// https://pkg.go.dev/cloud.google.com/go/storage#hdr-Creating_a_Client
-			logger.Info("Using local development setup for storage indexer", zap.String("STORAGE_EMULATOR_HOST", os.Getenv("STORAGE_EMULATOR_HOST")))
-			// Required to add this option when using STORAGE_EMULATOR_HOST
-			// Related to https://github.com/fsouza/fake-gcs-server/issues/1202#issuecomment-1644877525
-			opts = append(opts, gstorage.WithJSONReads())
-		}
-		storageClient, err := gstorage.NewClient(ctx, opts...)
+	switch {
+	case featureSQLStorageIndexer:
+		indexer, err := initSQLStorageIndexer(ctx, logger, apmTracer, config, cache)
 		if err != nil {
-			logger.Fatal("can't initialize storage client", zap.Error(err))
+			logger.Fatal("failed to initialize SQL storage indexer", zap.Error(err))
 		}
-
-		if featureSQLStorageIndexer {
-			storageDatabase, err := initDatabase(ctx, logger, config.SQLIndexerDatabaseFolderPath, "storage_packages.db")
-			if err != nil {
-				logger.Fatal("can't initialize storage database", zap.Error(err))
-			}
-			storageSwapDatabase, err := initDatabase(ctx, logger, config.SQLIndexerDatabaseFolderPath, "storage_packages_swap.db")
-			if err != nil {
-				logger.Fatal("can't initialize storage backup database", zap.Error(err))
-			}
-
-			combined = append(combined, internalStorage.NewIndexer(logger, storageClient, internalStorage.IndexerOptions{
-				APMTracer:                    apmTracer,
-				PackageStorageBucketInternal: storageIndexerBucketInternal,
-				PackageStorageEndpoint:       storageEndpoint,
-				WatchInterval:                storageIndexerWatchInterval,
-				Database:                     storageDatabase,
-				SwapDatabase:                 storageSwapDatabase,
-				Cache:                        cache,
-			}))
-		} else if featureStorageIndexer {
-			combined = append(combined, storage.NewIndexer(logger, storageClient, storage.IndexerOptions{
-				APMTracer:                    apmTracer,
-				PackageStorageBucketInternal: storageIndexerBucketInternal,
-				PackageStorageEndpoint:       storageEndpoint,
-				WatchInterval:                storageIndexerWatchInterval,
-			}))
+		combined = append(combined, indexer)
+	case featureStorageIndexer:
+		indexer, err := initStorageIndexer(ctx, logger, apmTracer, config)
+		if err != nil {
+			logger.Fatal("failed to initialize storage indexer", zap.Error(err))
 		}
+		combined = append(combined, indexer)
 	}
 
 	combined = append(combined,
@@ -391,6 +363,57 @@ func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer,
 	)
 	ensurePackagesAvailable(ctx, logger, combined)
 	return combined
+}
+
+func initStorageIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer, config *Config) (*storage.Indexer, error) {
+	storageClient, err := newStorageClient(ctx, logger)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create storage client: %w", err)
+	}
+	return storage.NewIndexer(logger, storageClient, storage.IndexerOptions{
+		APMTracer:                    apmTracer,
+		PackageStorageBucketInternal: storageIndexerBucketInternal,
+		PackageStorageEndpoint:       storageEndpoint,
+		WatchInterval:                storageIndexerWatchInterval,
+	}), nil
+}
+
+func initSQLStorageIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer, config *Config, cache *expirable.LRU[string, string]) (*internalStorage.SQLIndexer, error) {
+	storageClient, err := newStorageClient(ctx, logger)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create storage client: %w", err)
+	}
+
+	storageDatabase, err := initDatabase(ctx, logger, config.SQLIndexerDatabaseFolderPath, "storage_packages.db")
+	if err != nil {
+		return nil, fmt.Errorf("failed to initialize storage database: %w", err)
+	}
+	storageSwapDatabase, err := initDatabase(ctx, logger, config.SQLIndexerDatabaseFolderPath, "storage_packages_swap.db")
+	if err != nil {
+		return nil, fmt.Errorf("failed to initialize storage backup database: %w", err)
+	}
+
+	return internalStorage.NewIndexer(logger, storageClient, internalStorage.IndexerOptions{
+		APMTracer:                    apmTracer,
+		PackageStorageBucketInternal: storageIndexerBucketInternal,
+		PackageStorageEndpoint:       storageEndpoint,
+		WatchInterval:                storageIndexerWatchInterval,
+		Database:                     storageDatabase,
+		SwapDatabase:                 storageSwapDatabase,
+		Cache:                        cache,
+	}), nil
+}
+
+func newStorageClient(ctx context.Context, logger *zap.Logger) (*gstorage.Client, error) {
+	opts := []option.ClientOption{}
+	if os.Getenv("STORAGE_EMULATOR_HOST") != "" {
+		// https://pkg.go.dev/cloud.google.com/go/storage#hdr-Creating_a_Client
+		logger.Info("Using local development setup for storage indexer", zap.String("STORAGE_EMULATOR_HOST", os.Getenv("STORAGE_EMULATOR_HOST")))
+		// Required to add this option when using STORAGE_EMULATOR_HOST
+		// Related to https://github.com/fsouza/fake-gcs-server/issues/1202#issuecomment-1644877525
+		opts = append(opts, gstorage.WithJSONReads())
+	}
+	return gstorage.NewClient(ctx, opts...)
 }
 
 func initServer(logger *zap.Logger, apmTracer *apm.Tracer, config *Config, indexer Indexer, cache *expirable.LRU[string, string]) *http.Server {
