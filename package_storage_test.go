@@ -94,7 +94,6 @@ func TestPackageStorage_Endpoints(t *testing.T) {
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
-	// tests := generateTestEndpointCases(t, indexer)
 	tests := generateTestCaseStorageEndpoints(indexer)
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
@@ -114,7 +113,6 @@ func TestPackageStorageSQL_Endpoints(t *testing.T) {
 	err = indexer.Init(context.Background())
 	require.NoError(t, err)
 
-	// tests := generateTestEndpointCases(t, indexer)
 	tests := generateTestCaseStorageEndpoints(indexer)
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
@@ -550,8 +548,8 @@ func TestPackageSQLStorage_ResolverErrorResponse(t *testing.T) {
 			runEndpointWithStorageIndexer(t, test.endpoint, test.path, test.file, test.handler)
 		})
 	}
-
 }
+
 func runEndpointWithStorageIndexer(t *testing.T, endpoint, path, file string, handler func(w http.ResponseWriter, r *http.Request)) {
 	runEndpoint(t, endpoint, path, filepath.Join(storageIndexerGoldenDir, file), handler)
 }
