@@ -239,23 +239,7 @@ func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 	i.logger.Info("Filled database with latest packages", zap.Duration("elapsed.time", startDuration), zap.String("elapsed.time.human", startDuration.String()))
 
 	startLock := time.Now()
-	err = func() error {
-		i.m.Lock()
-		defer i.m.Unlock()
-		i.cursor = storageCursor.Current
-
-		// swap databases
-		i.current, i.backup = i.backup, i.current
-		i.logger.Debug("Current database changed", zap.String("current.database.path", (*i.current).File(ctx)), zap.String("previous.database.path", (*i.backup).File(ctx)))
-
-		if i.cache != nil {
-			i.cache.Purge() // Clear the cache after updating the index
-		}
-
-		metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
-		metrics.NumberIndexedPackages.Set(float64(len(*anIndex)))
-		return nil
-	}()
+	i.swapDatabases(storageCursor.Current, len(*anIndex))
 	i.logger.Info("Elapsed time in lock for updating index database", zap.Duration("lock.duration", time.Since(startLock)))
 
 	if err != nil {
@@ -308,6 +292,24 @@ func (i *SQLIndexer) updateDatabase(ctx context.Context, index *packages.Package
 	}
 
 	return nil
+}
+
+func (i *SQLIndexer) swapDatabases(currentCursor string, numPackages int) {
+	i.m.Lock()
+	defer i.m.Unlock()
+	i.cursor = currentCursor
+
+	i.current, i.backup = i.backup, i.current
+	i.logger.Debug("Current database changed", zap.String("current.database.path", (*i.current).File(ctx)), zap.String("previous.database.path", (*i.backup).File(ctx)))
+
+	if i.cache != nil {
+		// Clear the cache after updating the index
+		// there could be new, updated or removed packages
+		i.cache.Purge()
+	}
+
+	metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
+	metrics.NumberIndexedPackages.Set(float64(numPackages))
 }
 
 func createDatabasePackage(pkg *packages.Package) (*database.Package, error) {
