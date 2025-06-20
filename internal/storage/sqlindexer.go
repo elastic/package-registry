@@ -148,11 +148,7 @@ func (i *SQLIndexer) setupResolver() error {
 		},
 	}
 
-	i.resolver = storageResolver{
-		client:               &httpClient,
-		artifactsPackagesURL: *baseURL.ResolveReference(&url.URL{Path: artifactsPackagesStoragePath + "/"}),
-		artifactsStaticURL:   *baseURL.ResolveReference(&url.URL{Path: artifactsStaticStoragePath + "/"}),
-	}
+	i.resolver = NewStorageResolver(&httpClient, baseURL)
 	return nil
 }
 
