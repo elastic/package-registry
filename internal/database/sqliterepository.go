@@ -252,7 +252,15 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 }
 
 func addCommasToString(s string) string {
-	// Add commas to the string to make it easier to search for
+	// Adding commas at the beginning and end of the string ensures that there is no
+	// special case for the first and last elements of comma separated list when setting
+	// the Where clause of the SQL query.
+	// All elements can be searched as `column LIKE '%,element,%'`
+	// Example: `categories LIKE '%,observability,%'`
+	// And the categoories value could be like:
+	// - `,observability,security,`
+	// - `,observability,`
+	// - `,security,observability,`
 	if s != "" {
 		s = fmt.Sprintf(",%s,", s)
 	}
