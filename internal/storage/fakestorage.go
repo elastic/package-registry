@@ -5,6 +5,7 @@
 package storage
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
@@ -15,11 +16,30 @@ import (
 	"github.com/elastic/package-registry/internal/database"
 )
 
-const fakePackageStorageBucketInternal = "fake-package-storage-internal"
+const FakePackageStorageBucketInternal = "fake-package-storage-internal"
+
+func RunFakeServerOnHostPort(indexPath, host string, port uint16) (*fakestorage.Server, error) {
+	indexContent, err := os.ReadFile(indexPath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read index file %s: %w", indexPath, err)
+	}
+
+	const firstRevision = "1"
+	serverObjects, _, err := PrepareServerObjects(firstRevision, indexContent)
+	if err != nil {
+		return nil, fmt.Errorf("failed to prepare server objects: %w", err)
+	}
+	return fakestorage.NewServerWithOptions(fakestorage.Options{
+		InitialObjects: serverObjects,
+		Host:           host,
+		Port:           port,
+		Scheme:         "http",
+	})
+}
 
 func CreateFakeIndexerOptions(db, swapDb database.Repository) (IndexerOptions, error) {
 	fakeIndexerOptions := IndexerOptions{
-		PackageStorageBucketInternal: "gs://" + fakePackageStorageBucketInternal,
+		PackageStorageBucketInternal: "gs://" + FakePackageStorageBucketInternal,
 		WatchInterval:                0,
 		Database:                     db,
 		SwapDatabase:                 swapDb,
@@ -32,15 +52,19 @@ func PrepareFakeServer(tb testing.TB, indexPath string) *fakestorage.Server {
 	require.NoError(tb, err, "index file must be populated")
 
 	const firstRevision = "1"
-	serverObjects := prepareServerObjects(tb, firstRevision, indexContent)
+	serverObjects, numPackages, err := PrepareServerObjects(firstRevision, indexContent)
+	require.NoError(tb, err, "failed to prepare server objects")
+	tb.Logf("Prepared %d packages with total %d server objects.", numPackages, len(serverObjects))
 	return fakestorage.NewServer(serverObjects)
 }
 
-func updateFakeServer(tb testing.TB, server *fakestorage.Server, revision, indexPath string) {
+func UpdateFakeServer(tb testing.TB, server *fakestorage.Server, revision, indexPath string) {
 	indexContent, err := os.ReadFile(indexPath)
 	require.NoError(tb, err, "index file must be populated")
 
-	serverObjects := prepareServerObjects(tb, revision, indexContent)
+	serverObjects, numPackages, err := PrepareServerObjects(revision, indexContent)
+	require.NoError(tb, err, "failed to prepare server objects")
+	tb.Logf("Prepared %d packages with total %d server objects.", numPackages, len(serverObjects))
 
 	for _, so := range serverObjects {
 		server.CreateObject(so)
@@ -51,26 +75,29 @@ type searchIndexAll struct {
 	Packages []PackageIndex `json:"packages"`
 }
 
-func prepareServerObjects(tb testing.TB, revision string, indexContent []byte) []fakestorage.Object {
+func PrepareServerObjects(revision string, indexContent []byte) ([]fakestorage.Object, int, error) {
 	var index searchIndexAll
 	err := json.Unmarshal(indexContent, &index)
-	require.NoError(tb, err, "index file must be valid")
-	require.NotEmpty(tb, index.Packages, "index file must contain some package entries")
+	if err != nil {
+		return nil, 0, fmt.Errorf("failed to unmarshal index content: %w", err)
+	}
+	if len(index.Packages) == 0 {
+		return nil, 0, fmt.Errorf("index file must contain some package entries")
+	}
 
 	var serverObjects []fakestorage.Object
 	// Add cursor and index file
 	serverObjects = append(serverObjects, fakestorage.Object{
 		ObjectAttrs: fakestorage.ObjectAttrs{
-			BucketName: fakePackageStorageBucketInternal, Name: CursorStoragePath,
+			BucketName: FakePackageStorageBucketInternal, Name: CursorStoragePath,
 		},
 		Content: []byte(`{"current":"` + revision + `"}`),
 	})
 	serverObjects = append(serverObjects, fakestorage.Object{
 		ObjectAttrs: fakestorage.ObjectAttrs{
-			BucketName: fakePackageStorageBucketInternal, Name: JoinObjectPaths(V2MetadataStoragePath, revision, SearchIndexAllFile),
+			BucketName: FakePackageStorageBucketInternal, Name: JoinObjectPaths(V2MetadataStoragePath, revision, SearchIndexAllFile),
 		},
 		Content: indexContent,
 	})
-	tb.Logf("Prepared %d packages with total %d server objects.", len(index.Packages), len(serverObjects))
-	return serverObjects
+	return serverObjects, len(index.Packages), nil
 }

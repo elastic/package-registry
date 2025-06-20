@@ -114,7 +114,7 @@ func BenchmarkSQLIndexerUpdateIndex(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		b.StopTimer()
 		revision := fmt.Sprintf("%d", i+2)
-		updateFakeServer(b, fs, revision, "testdata/search-index-all.json")
+		UpdateFakeServer(b, fs, revision, "testdata/search-index-all.json")
 		b.StartTimer()
 		start = time.Now()
 		err = indexer.updateIndex(ctx)
@@ -420,7 +420,7 @@ func TestSQLGet_IndexUpdated(t *testing.T) {
 	require.Equal(t, "0.2.0", foundPackages[0].Version)
 
 	// when: index update is performed
-	updateFakeServer(t, fs, "2", "testdata/search-index-all-full.json")
+	UpdateFakeServer(t, fs, "2", "testdata/search-index-all-full.json")
 	err = indexer.updateIndex(ctx)
 	require.NoError(t, err, "index should be updated successfully")
 
@@ -439,7 +439,7 @@ func TestSQLGet_IndexUpdated(t *testing.T) {
 	require.Equal(t, "1.4.0", foundPackages[0].Version)
 
 	// when: index update is performed removing packages
-	updateFakeServer(t, fs, "3", "testdata/search-index-all-small.json")
+	UpdateFakeServer(t, fs, "3", "testdata/search-index-all-small.json")
 	err = indexer.updateIndex(ctx)
 	require.NoError(t, err, "index should be updated successfully")
 
@@ -459,7 +459,7 @@ func TestSQLGet_IndexUpdated(t *testing.T) {
 	require.Equal(t, "1Password Events Reporting", *foundPackages[0].Title)
 
 	// when: index update is performed updating some field of an existing package
-	updateFakeServer(t, fs, "4", "testdata/search-index-all-small-updated-fields.json")
+	UpdateFakeServer(t, fs, "4", "testdata/search-index-all-small-updated-fields.json")
 	err = indexer.updateIndex(ctx)
 	require.NoError(t, err, "index should be updated successfully")
 

@@ -14,6 +14,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"go.uber.org/zap/zapcore"
 
+	internalStorage "github.com/elastic/package-registry/internal/storage"
 	"github.com/elastic/package-registry/internal/util"
 	"github.com/elastic/package-registry/packages"
 )
@@ -72,7 +73,7 @@ func BenchmarkIndexerUpdateIndex(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		b.StopTimer()
 		revision := fmt.Sprintf("%d", i+2)
-		updateFakeServer(b, fs, revision, "testdata/search-index-all-full.json")
+		internalStorage.UpdateFakeServer(b, fs, revision, "testdata/search-index-all-full.json")
 		b.StartTimer()
 		err = indexer.updateIndex(context.Background())
 		require.NoError(b, err, "index should be updated successfully")
@@ -334,7 +335,7 @@ func TestGet_IndexUpdated(t *testing.T) {
 
 	// when: index update is performed adding new packages
 	const secondRevision = "2"
-	updateFakeServer(t, fs, secondRevision, "testdata/search-index-all-full.json")
+	internalStorage.UpdateFakeServer(t, fs, secondRevision, "testdata/search-index-all-full.json")
 	err = indexer.updateIndex(ctx)
 	require.NoError(t, err, "index should be updated successfully")
 
@@ -354,7 +355,7 @@ func TestGet_IndexUpdated(t *testing.T) {
 
 	// when: index update is performed removing packages
 	const thirdRevision = "3"
-	updateFakeServer(t, fs, thirdRevision, "testdata/search-index-all-small.json")
+	internalStorage.UpdateFakeServer(t, fs, thirdRevision, "testdata/search-index-all-small.json")
 	err = indexer.updateIndex(ctx)
 	require.NoError(t, err, "index should be updated successfully")
 
@@ -373,7 +374,7 @@ func TestGet_IndexUpdated(t *testing.T) {
 	require.Equal(t, "0.2.0", foundPackages[0].Version)
 
 	// when: index update is performed updating some field of an existing pacakage
-	updateFakeServer(t, fs, "4", "testdata/search-index-all-small-updated-fields.json")
+	internalStorage.UpdateFakeServer(t, fs, "4", "testdata/search-index-all-small-updated-fields.json")
 	err = indexer.updateIndex(ctx)
 	require.NoError(t, err, "index should be updated successfully")
 
