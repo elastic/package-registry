@@ -7,7 +7,7 @@ package database
 import "context"
 
 type Repository interface {
-	Migrate(ctx context.Context) error
+	Initialize(ctx context.Context) error
 	BulkAdd(ctx context.Context, database string, pkgs []*Package) error
 	All(ctx context.Context, database string, whereOptions WhereOptions) ([]*Package, error)
 	AllFunc(ctx context.Context, database string, whereOptions WhereOptions, process func(ctx context.Context, pkg *Package) error) error

@@ -258,7 +258,7 @@ func (i *SQLIndexer) updateDatabase(ctx context.Context, index *packages.Package
 		return fmt.Errorf("failed to drop packages table: %w", err)
 	}
 
-	err = (*i.backup).Migrate(ctx)
+	err = (*i.backup).Initialize(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to create schema in backup database: %w", err)
 	}

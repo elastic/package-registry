@@ -22,7 +22,7 @@ func NewMemorySQLDB(path string) (*SQLiteRepository, error) {
 		return nil, fmt.Errorf("failed to create SQLite repository: %w", err)
 	}
 
-	if err := dbRepo.Migrate(context.Background()); err != nil {
+	if err := dbRepo.Initialize(context.Background()); err != nil {
 		return nil, fmt.Errorf("failed to create database: %w", err)
 	}
 	dbRepo.path = "memory-" + path

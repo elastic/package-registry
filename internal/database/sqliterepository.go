@@ -74,7 +74,7 @@ func NewFileSQLDB(path string) (*SQLiteRepository, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to create SQLite repository: %w", err)
 	}
-	if err := dbRepo.Migrate(context.Background()); err != nil {
+	if err := dbRepo.Initialize(context.Background()); err != nil {
 		return nil, fmt.Errorf("failed to create database: %w", err)
 	}
 	dbRepo.path = path
@@ -135,8 +135,8 @@ func (r *SQLiteRepository) Ping(ctx context.Context) error {
 	return nil
 }
 
-func (r *SQLiteRepository) Migrate(ctx context.Context) error {
-	span, ctx := apm.StartSpan(ctx, "SQL: Migrate", "app")
+func (r *SQLiteRepository) Initialize(ctx context.Context) error {
+	span, ctx := apm.StartSpan(ctx, "SQL: Initialize", "app")
 	defer span.End()
 	createQuery := strings.Builder{}
 	createQuery.WriteString("CREATE TABLE IF NOT EXISTS ")
