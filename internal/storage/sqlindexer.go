@@ -37,7 +37,7 @@ const (
 
 var allCategories = categories.DefaultCategories()
 
-type Indexer struct {
+type SQLIndexer struct {
 	options       IndexerOptions
 	storageClient *storage.Client
 
@@ -72,12 +72,12 @@ type IndexerOptions struct {
 	Cache                        *expirable.LRU[string, string] // Cache for search results
 }
 
-func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options IndexerOptions) *Indexer {
+func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options IndexerOptions) *SQLIndexer {
 	if options.APMTracer == nil {
 		options.APMTracer = apm.DefaultTracer()
 	}
 
-	indexer := &Indexer{
+	indexer := &SQLIndexer{
 		storageClient:   storageClient,
 		options:         options,
 		logger:          logger,
@@ -94,7 +94,7 @@ func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options Index
 	return indexer
 }
 
-func (i *Indexer) Init(ctx context.Context) error {
+func (i *SQLIndexer) Init(ctx context.Context) error {
 	i.logger.Debug("Initialize storage indexer")
 
 	err := validateIndexerOptions(i.options)
@@ -133,7 +133,7 @@ func validateIndexerOptions(options IndexerOptions) error {
 	return nil
 }
 
-func (i *Indexer) setupResolver() error {
+func (i *SQLIndexer) setupResolver() error {
 	baseURL, err := url.Parse(i.options.PackageStorageEndpoint)
 	if err != nil {
 		return err
@@ -156,7 +156,7 @@ func (i *Indexer) setupResolver() error {
 	return nil
 }
 
-func (i *Indexer) watchIndices(ctx context.Context) {
+func (i *SQLIndexer) watchIndices(ctx context.Context) {
 	i.logger.Debug("Watch indices for changes")
 	if i.options.WatchInterval == 0 {
 		i.logger.Debug("No watcher configured, indices will not be updated (use only for testing purposes)")
@@ -189,7 +189,7 @@ func (i *Indexer) watchIndices(ctx context.Context) {
 	}
 }
 
-func (i *Indexer) updateIndex(ctx context.Context) error {
+func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 	span, ctx := apm.StartSpan(ctx, "UpdateIndex", "app")
 	defer span.End()
 
@@ -265,7 +265,7 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	return nil
 }
 
-func (i *Indexer) updateDatabase(ctx context.Context, index *packages.Packages) error {
+func (i *SQLIndexer) updateDatabase(ctx context.Context, index *packages.Packages) error {
 	span, ctx := apm.StartSpan(ctx, "updateDatabase", "app")
 	defer span.End()
 
@@ -384,7 +384,7 @@ func calculateAllCategories(pkg *packages.Package) []string {
 	return pkgCategories
 }
 
-func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.Packages, error) {
+func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.Packages, error) {
 	start := time.Now()
 	defer func() {
 		metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": indexerGetDurationPrometheusLabel}).Observe(time.Since(start).Seconds())
@@ -496,7 +496,7 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	return readPackages, nil
 }
 
-func (i *Indexer) Close(ctx context.Context) error {
+func (i *SQLIndexer) Close(ctx context.Context) error {
 	// Try to close all databases
 	err := i.database.Close(ctx)
 	errSwap := i.swapDatabase.Close(ctx)
