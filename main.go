@@ -237,12 +237,10 @@ func initDatabase(ctx context.Context, logger *zap.Logger, databaseFolderPath, d
 	logger.Debug("Creating database", zap.String("path", dbPath))
 	exists := true
 	_, err := os.Stat(dbPath)
-	if err != nil {
-		if errors.Is(err, os.ErrNotExist) {
-			exists = false
-		} else {
-			return nil, err
-		}
+	if errors.Is(err, os.ErrNotExist) {
+		exists = false
+	} else if err != nil {
+		return nil, err
 	}
 	if exists {
 		err = os.Remove(dbPath)
@@ -262,7 +260,7 @@ func initDatabase(ctx context.Context, logger *zap.Logger, databaseFolderPath, d
 	if err := packageRepository.Ping(ctx); err != nil {
 		return nil, fmt.Errorf("failed to connect to database: %w", err)
 	}
-	logger.Info("Test database conneection successfully", zap.String("path", dbPath))
+	logger.Info("Test database connection successfully", zap.String("path", dbPath))
 
 	return packageRepository, nil
 }
