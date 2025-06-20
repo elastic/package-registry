@@ -17,6 +17,11 @@ func NewMemorySQLDB(path string) (*SQLiteRepository, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to open database: %w", err)
 	}
+
+	if err := db.Ping(); err != nil {
+		return nil, fmt.Errorf("failed to connect to database: %w", err)
+	}
+
 	dbRepo, err := newSQLiteRepository(db)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create SQLite repository: %w", err)

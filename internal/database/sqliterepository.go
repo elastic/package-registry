@@ -65,7 +65,6 @@ func NewFileSQLDB(path string) (*SQLiteRepository, error) {
 		return nil, fmt.Errorf("failed to open database: %w", err)
 	}
 
-	// Test the connection to the database
 	if err := db.Ping(); err != nil {
 		return nil, fmt.Errorf("failed to connect to database: %w", err)
 	}
