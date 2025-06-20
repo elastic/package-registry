@@ -164,25 +164,7 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 		metrics.StorageIndexerUpdateIndexDurationSeconds.Observe(time.Since(start).Seconds())
 	}()
 
-	bucketName, rootStoragePath, err := internalStorage.ExtractBucketNameFromURL(i.options.PackageStorageBucketInternal)
-	if err != nil {
-		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
-		return fmt.Errorf("can't extract bucket name from URL (url: %s): %w", i.options.PackageStorageBucketInternal, err)
-	}
-
-	storageCursor, err := internalStorage.LoadCursor(ctx, i.logger, i.storageClient, bucketName, rootStoragePath)
-	if err != nil {
-		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
-		return fmt.Errorf("can't load latest cursor: %w", err)
-	}
-
-	if storageCursor.Current == i.cursor {
-		i.logger.Info("cursor is up-to-date", zap.String("cursor.current", i.cursor))
-		return nil
-	}
-	i.logger.Info("cursor will be updated", zap.String("cursor.current", i.cursor), zap.String("cursor.next", storageCursor.Current))
-
-	anIndex, err := internalStorage.LoadSearchIndexAll(ctx, i.logger, i.storageClient, bucketName, rootStoragePath, *storageCursor)
+	anIndex, currentCursor, err := internalStorage.LoadPackagesAndCursorFromIndex(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, i.cursor)
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 		return fmt.Errorf("can't load the search-index-all index content: %w", err)
@@ -197,7 +179,7 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 
 	i.m.Lock()
 	defer i.m.Unlock()
-	i.cursor = storageCursor.Current
+	i.cursor = currentCursor
 	i.packageList = *anIndex
 	metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
 	metrics.NumberIndexedPackages.Set(float64(len(i.packageList)))

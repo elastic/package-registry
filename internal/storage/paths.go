@@ -12,9 +12,9 @@ import (
 
 const (
 	// Internal bucket
-	V2MetadataStoragePath = "v2/metadata"
-	CursorStoragePath     = V2MetadataStoragePath + "/cursor.json"
-	SearchIndexAllFile    = "search-index-all.json"
+	v2MetadataStoragePath = "v2/metadata"
+	cursorStoragePath     = v2MetadataStoragePath + "/cursor.json"
+	searchIndexAllFile    = "search-index-all.json"
 
 	// Public bucket
 	artifactsStoragePath         = "artifacts"
@@ -22,7 +22,7 @@ const (
 	ArtifactsStaticStoragePath   = artifactsStoragePath + "/static"
 )
 
-func ExtractBucketNameFromURL(anURL string) (string, string, error) {
+func extractBucketNameFromURL(anURL string) (string, string, error) {
 	u, err := url.Parse(anURL)
 	if err != nil {
 		return "", "", fmt.Errorf("can't parse object URL: %w", err)
@@ -35,7 +35,7 @@ func ExtractBucketNameFromURL(anURL string) (string, string, error) {
 	return u.Host, normalizeObjectPath(uPath), nil
 }
 
-func JoinObjectPaths(paths ...string) string {
+func joinObjectPaths(paths ...string) string {
 	p := path.Join(paths...)
 	return normalizeObjectPath(p)
 }

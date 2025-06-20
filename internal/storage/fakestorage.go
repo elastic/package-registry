@@ -72,7 +72,7 @@ func UpdateFakeServer(tb testing.TB, server *fakestorage.Server, revision, index
 }
 
 type searchIndexAll struct {
-	Packages []PackageIndex `json:"packages"`
+	Packages []packageIndex `json:"packages"`
 }
 
 func PrepareServerObjects(revision string, indexContent []byte) ([]fakestorage.Object, int, error) {
@@ -89,13 +89,13 @@ func PrepareServerObjects(revision string, indexContent []byte) ([]fakestorage.O
 	// Add cursor and index file
 	serverObjects = append(serverObjects, fakestorage.Object{
 		ObjectAttrs: fakestorage.ObjectAttrs{
-			BucketName: FakePackageStorageBucketInternal, Name: CursorStoragePath,
+			BucketName: FakePackageStorageBucketInternal, Name: cursorStoragePath,
 		},
 		Content: []byte(`{"current":"` + revision + `"}`),
 	})
 	serverObjects = append(serverObjects, fakestorage.Object{
 		ObjectAttrs: fakestorage.ObjectAttrs{
-			BucketName: FakePackageStorageBucketInternal, Name: JoinObjectPaths(V2MetadataStoragePath, revision, SearchIndexAllFile),
+			BucketName: FakePackageStorageBucketInternal, Name: joinObjectPaths(v2MetadataStoragePath, revision, searchIndexAllFile),
 		},
 		Content: indexContent,
 	})

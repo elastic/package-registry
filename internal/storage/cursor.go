@@ -27,13 +27,13 @@ func (c *cursor) String() string {
 	return string(b)
 }
 
-func LoadCursor(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, bucketName, rootStoragePath string) (*cursor, error) {
+func loadCursor(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, bucketName, rootStoragePath string) (*cursor, error) {
 	span, ctx := apm.StartSpan(ctx, "LoadCursor", "app")
 	defer span.End()
 
 	logger.Debug("load cursor file")
 
-	rootedCursorStoragePath := JoinObjectPaths(rootStoragePath, CursorStoragePath)
+	rootedCursorStoragePath := joinObjectPaths(rootStoragePath, cursorStoragePath)
 	objectReader, err := storageClient.Bucket(bucketName).Object(rootedCursorStoragePath).NewReader(ctx)
 	if err == storage.ErrObjectNotExist {
 		return nil, fmt.Errorf("cursor file doesn't exist, most likely a first run (bucketName: %s, path: %s): %w", bucketName, rootedCursorStoragePath, err)

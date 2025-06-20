@@ -29,9 +29,9 @@ func TestPrepareFakeServer(t *testing.T) {
 	client := fs.Client()
 	require.NotNil(t, client, "client should be initialized")
 
-	aCursor := readObject(t, client.Bucket(FakePackageStorageBucketInternal).Object(CursorStoragePath))
+	aCursor := readObject(t, client.Bucket(FakePackageStorageBucketInternal).Object(cursorStoragePath))
 	assert.Equal(t, []byte(`{"current":"1"}`), aCursor)
-	anIndex := readObject(t, client.Bucket(FakePackageStorageBucketInternal).Object(JoinObjectPaths(V2MetadataStoragePath, "1", SearchIndexAllFile)))
+	anIndex := readObject(t, client.Bucket(FakePackageStorageBucketInternal).Object(joinObjectPaths(v2MetadataStoragePath, "1", searchIndexAllFile)))
 	assert.Equal(t, testIndexFile, anIndex)
 }
 

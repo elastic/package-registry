@@ -199,30 +199,11 @@ func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 		metrics.StorageIndexerUpdateIndexDurationSeconds.Observe(time.Since(start).Seconds())
 	}()
 
-	bucketName, rootStoragePath, err := ExtractBucketNameFromURL(i.options.PackageStorageBucketInternal)
-	if err != nil {
-		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
-		return fmt.Errorf("can't extract bucket name from URL (url: %s): %w", i.options.PackageStorageBucketInternal, err)
-	}
-
-	storageCursor, err := LoadCursor(ctx, i.logger, i.storageClient, bucketName, rootStoragePath)
-	if err != nil {
-		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
-		return fmt.Errorf("can't load latest cursor: %w", err)
-	}
-
-	if storageCursor.Current == i.cursor {
-		i.logger.Info("cursor is up-to-date", zap.String("cursor.current", i.cursor))
-		return nil
-	}
-	i.logger.Info("cursor will be updated", zap.String("cursor.current", i.cursor), zap.String("cursor.next", storageCursor.Current))
-
-	anIndex, err := LoadSearchIndexAll(ctx, i.logger, i.storageClient, bucketName, rootStoragePath, *storageCursor)
+	anIndex, currentCursor, err := LoadPackagesAndCursorFromIndex(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, i.cursor)
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 		return fmt.Errorf("can't load the search-index-all index content: %w", err)
 	}
-
 	if anIndex == nil {
 		i.logger.Info("Downloaded new search-index-all index. No packages found.")
 		return nil
@@ -239,7 +220,7 @@ func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 	i.logger.Info("Filled database with latest packages", zap.Duration("elapsed.time", startDuration), zap.String("elapsed.time.human", startDuration.String()))
 
 	startLock := time.Now()
-	i.swapDatabases(ctx, storageCursor.Current, len(*anIndex))
+	i.swapDatabases(ctx, currentCursor, len(*anIndex))
 	i.logger.Info("Elapsed time in lock for updating index database", zap.Duration("lock.duration", time.Since(startLock)))
 
 	if err != nil {
