@@ -27,7 +27,7 @@ func (c *cursor) String() string {
 	return string(b)
 }
 
-func loadCursor(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, bucketName, rootStoragePath string) (*cursor, error) {
+func LoadCursor(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, bucketName, rootStoragePath string) (*cursor, error) {
 	span, ctx := apm.StartSpan(ctx, "LoadCursor", "app")
 	defer span.End()
 

@@ -170,7 +170,7 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 		return fmt.Errorf("can't extract bucket name from URL (url: %s): %w", i.options.PackageStorageBucketInternal, err)
 	}
 
-	storageCursor, err := loadCursor(ctx, i.logger, i.storageClient, bucketName, rootStoragePath)
+	storageCursor, err := internalStorage.LoadCursor(ctx, i.logger, i.storageClient, bucketName, rootStoragePath)
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 		return fmt.Errorf("can't load latest cursor: %w", err)
@@ -182,7 +182,7 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	}
 	i.logger.Info("cursor will be updated", zap.String("cursor.current", i.cursor), zap.String("cursor.next", storageCursor.Current))
 
-	anIndex, err := loadSearchIndexAll(ctx, i.logger, i.storageClient, bucketName, rootStoragePath, *storageCursor)
+	anIndex, err := internalStorage.LoadSearchIndexAll(ctx, i.logger, i.storageClient, bucketName, rootStoragePath, *storageCursor)
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 		return fmt.Errorf("can't load the search-index-all index content: %w", err)

@@ -17,11 +17,11 @@ import (
 	"github.com/elastic/package-registry/packages"
 )
 
-type packageIndex struct {
+type PackageIndex struct {
 	PackageManifest *packages.Package `json:"package_manifest"`
 }
 
-func loadSearchIndexAll(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, bucketName, rootStoragePath string, aCursor cursor) (*packages.Packages, error) {
+func LoadSearchIndexAll(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, bucketName, rootStoragePath string, aCursor cursor) (*packages.Packages, error) {
 	span, ctx := apm.StartSpan(ctx, "LoadSearchIndexAll", "app")
 	defer span.End()
 
@@ -67,7 +67,7 @@ func loadSearchIndexAll(ctx context.Context, logger *zap.Logger, storageClient *
 
 		// Read the array of packages one by one.
 		for dec.More() {
-			var p packageIndex
+			var p PackageIndex
 			err = dec.Decode(&p)
 			if err != nil {
 				return nil, fmt.Errorf("unexpected error parsing package from index file (token: %v): %w", token, err)

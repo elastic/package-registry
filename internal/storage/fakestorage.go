@@ -48,7 +48,7 @@ func updateFakeServer(tb testing.TB, server *fakestorage.Server, revision, index
 }
 
 type searchIndexAll struct {
-	Packages []packageIndex `json:"packages"`
+	Packages []PackageIndex `json:"packages"`
 }
 
 func prepareServerObjects(tb testing.TB, revision string, indexContent []byte) []fakestorage.Object {
