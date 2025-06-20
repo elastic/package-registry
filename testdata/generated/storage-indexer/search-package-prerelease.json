@@ -6910,6 +6910,12 @@
     "conditions": {
       "kibana": {
         "version": "^8.0.0"
+      },
+      "elastic": {
+        "subscription": "basic",
+        "capabilities": [
+          "security"
+        ]
       }
     },
     "owner": {

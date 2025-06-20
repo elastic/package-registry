@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/Masterminds/semver/v3"
+	"github.com/hashicorp/golang-lru/v2/expirable"
 
 	"go.elastic.co/apm/module/apmzap/v2"
 	"go.elastic.co/apm/v2"
@@ -26,12 +27,22 @@ import (
 )
 
 func searchHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
-	return searchHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime)
+	return searchHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime, nil)
 }
 
-func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration, cache *expirable.LRU[string, string]) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger := logger.With(apmzap.TraceContext(r.Context())...)
+
+		if cache != nil {
+			if response, ok := cache.Get(r.URL.String()); ok {
+				logger.Info("cached request", zap.String("url", r.URL.String()), zap.Int("lruSize", cache.Len()))
+				cacheHeaders(w, cacheTime)
+				jsonHeader(w)
+				fmt.Fprint(w, response)
+				return
+			}
+		}
 
 		filter, err := newSearchFilterFromQuery(r.URL.Query())
 		if err != nil {
@@ -70,6 +81,12 @@ func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *
 		cacheHeaders(w, cacheTime)
 		jsonHeader(w)
 		fmt.Fprint(w, string(data))
+
+		if cache != nil {
+			logger.Info("caching request", zap.String("url", r.URL.String()), zap.Int("lruSize", cache.Len()))
+			val := cache.Add(r.URL.String(), string(data))
+			logger.Info("Added to lru", zap.String("url", r.URL.String()), zap.Int("lruSize", cache.Len()), zap.Bool("added", val))
+		}
 	}
 }
 
@@ -175,7 +192,9 @@ func getSearchOutput(ctx context.Context, packageList packages.Packages) ([]byte
 
 	var output []packageSummary
 	for _, p := range packageList {
-		data := getPackageSummaryOutput(p)
+		data := packageSummary{
+			BasePackage: p.BasePackage,
+		}
 		output = append(output, data)
 	}
 
@@ -189,25 +208,4 @@ func getSearchOutput(ctx context.Context, packageList packages.Packages) ([]byte
 
 type packageSummary struct {
 	packages.BasePackage `json:",inline"`
-	DataStreams          []*packages.DataStream `json:"data_streams,omitempty"`
-}
-
-func getPackageSummaryOutput(index *packages.Package) packageSummary {
-	summary := packageSummary{
-		BasePackage: index.BasePackage,
-	}
-	if len(index.DataStreams) == 0 {
-		return summary
-	}
-
-	summary.DataStreams = make([]*packages.DataStream, len(index.DataStreams))
-	for i, datastream := range index.DataStreams {
-		summary.DataStreams[i] = &packages.DataStream{
-			Type:    datastream.Type,
-			Dataset: datastream.Dataset,
-			Title:   datastream.Title,
-		}
-	}
-
-	return summary
 }

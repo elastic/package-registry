@@ -95,6 +95,7 @@ func TestSearchWithProxyMode(t *testing.T) {
 		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
 		packages.NewFileSystemIndexer(testLogger, packagesBasePaths...),
 	)
+	defer indexer.Close(context.Background())
 
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
@@ -108,7 +109,7 @@ func TestSearchWithProxyMode(t *testing.T) {
 	)
 	require.NoError(t, err)
 
-	searchWithProxyHandler := searchHandlerWithProxyMode(testLogger, indexer, proxyMode, testCacheTime)
+	searchWithProxyHandler := searchHandlerWithProxyMode(testLogger, indexer, proxyMode, testCacheTime, nil)
 	tests := []struct {
 		endpoint string
 		path     string
