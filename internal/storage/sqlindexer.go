@@ -288,7 +288,6 @@ func (i *SQLIndexer) updateDatabase(ctx context.Context, index *packages.Package
 		if totalProcessed >= len(*index) {
 			break
 		}
-		printMemUsage()
 	}
 
 	return nil
@@ -394,34 +393,7 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 	span, ctx := apm.StartSpan(ctx, "GetStorageIndexer", "app")
 	defer span.End()
 
-	// TODO: To be removed
-	// profBaseName := "get-preprocess-columns-all-basedata-fast-json-not-full-data-response.prof"
-	// f, err := os.Create("cpu-" + profBaseName)
-	// if err != nil {
-	// 	return nil, fmt.Errorf("failed to create CPU profile: %w", err)
-	// }
-	// defer f.Close()
-
-	// if err := pprof.StartCPUProfile(f); err != nil {
-	// 	return nil, fmt.Errorf("failed to start CPU profile: %w", err)
-	// }
-	// defer pprof.StopCPUProfile()
-
-	// mf, err := os.Create("mem-" + profBaseName + "-base")
-	// if err != nil {
-	// 	return nil, fmt.Errorf("could not create memory profile: %w", err)
-	// }
-	// defer mf.Close()
-	// runtime.GC() // get up-to-date statistics
-
-	// if err := pprof.Lookup("heap").WriteTo(mf, 0); err != nil {
-	// 	return nil, fmt.Errorf("could not write memory profile: %w", err)
-	// }
-
 	var readPackages packages.Packages
-	// if opts != nil && opts.FullData {
-	// 	readPackages = make(packages.Packages, 0, 10000) // Preallocate a slice for full data
-	// }
 	err := func() error {
 		i.m.RLock()
 		defer i.m.RUnlock()
@@ -483,36 +455,13 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 		return nil, err
 	}
 
-	// TODO: To be removed
-	// mf2, err := os.Create("mem-" + profBaseName)
-	// if err != nil {
-	// 	return nil, fmt.Errorf("could not create memory profile: %w", err)
-	// }
-	// defer mf2.Close()
-	// runtime.GC() // get up-to-date statistics
-
-	// if err := pprof.Lookup("heap").WriteTo(mf2, 0); err != nil {
-	// 	return nil, fmt.Errorf("could not write memory profile: %w", err)
-	// }
-
 	return readPackages, nil
 }
 
 func (i *SQLIndexer) Close(ctx context.Context) error {
-	// Try to close all databases
 	err := i.database.Close(ctx)
 	errSwap := i.swapDatabase.Close(ctx)
 
 	errors.Join(err, errSwap)
 	return errors.Join(err, errSwap)
-}
-
-func printMemUsage() {
-	// var m runtime.MemStats
-	// runtime.GC()
-	// runtime.ReadMemStats(&m)
-	// fmt.Printf("Alloc = %v MiB", m.Alloc/1024/1024)
-	// fmt.Printf("\tTotalAlloc = %v MiB", m.TotalAlloc/1024/1024)
-	// fmt.Printf("\tSys = %v MiB", m.Sys/1024/1024)
-	// fmt.Printf("\tNumGC = %v\n", m.NumGC)
 }

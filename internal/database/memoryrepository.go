@@ -9,7 +9,6 @@ import (
 	"database/sql"
 	"fmt"
 
-	// _ "github.com/mattn/go-sqlite3" // Import the SQLite driver
 	_ "modernc.org/sqlite" // Import the SQLite driver
 )
 
