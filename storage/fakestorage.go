@@ -12,6 +12,8 @@ import (
 	"github.com/fsouza/fake-gcs-server/fakestorage"
 	"github.com/goccy/go-json"
 	"github.com/stretchr/testify/require"
+
+	internalStorage "github.com/elastic/package-registry/internal/storage"
 )
 
 const fakePackageStorageBucketInternal = "fake-package-storage-internal"
@@ -82,13 +84,13 @@ func prepareServerObjects(revision string, indexContent []byte) ([]fakestorage.O
 	// Add cursor and index file
 	serverObjects = append(serverObjects, fakestorage.Object{
 		ObjectAttrs: fakestorage.ObjectAttrs{
-			BucketName: fakePackageStorageBucketInternal, Name: cursorStoragePath,
+			BucketName: fakePackageStorageBucketInternal, Name: internalStorage.CursorStoragePath,
 		},
 		Content: []byte(`{"current":"` + revision + `"}`),
 	})
 	serverObjects = append(serverObjects, fakestorage.Object{
 		ObjectAttrs: fakestorage.ObjectAttrs{
-			BucketName: fakePackageStorageBucketInternal, Name: joinObjectPaths(v2MetadataStoragePath, revision, searchIndexAllFile),
+			BucketName: fakePackageStorageBucketInternal, Name: internalStorage.JoinObjectPaths(internalStorage.V2MetadataStoragePath, revision, internalStorage.SearchIndexAllFile),
 		},
 		Content: indexContent,
 	})

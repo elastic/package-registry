@@ -13,6 +13,8 @@ import (
 	"cloud.google.com/go/storage"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	internalStorage "github.com/elastic/package-registry/internal/storage"
 )
 
 func TestPrepareFakeServer(t *testing.T) {
@@ -29,9 +31,9 @@ func TestPrepareFakeServer(t *testing.T) {
 	client := fs.Client()
 	require.NotNil(t, client, "client should be initialized")
 
-	aCursor := readObject(t, client.Bucket(fakePackageStorageBucketInternal).Object(cursorStoragePath))
+	aCursor := readObject(t, client.Bucket(fakePackageStorageBucketInternal).Object(internalStorage.CursorStoragePath))
 	assert.Equal(t, []byte(`{"current":"1"}`), aCursor)
-	anIndex := readObject(t, client.Bucket(fakePackageStorageBucketInternal).Object(joinObjectPaths(v2MetadataStoragePath, "1", searchIndexAllFile)))
+	anIndex := readObject(t, client.Bucket(fakePackageStorageBucketInternal).Object(internalStorage.JoinObjectPaths(internalStorage.V2MetadataStoragePath, "1", internalStorage.SearchIndexAllFile)))
 	assert.Equal(t, testIndexFile, anIndex)
 }
 

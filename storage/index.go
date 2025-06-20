@@ -14,6 +14,7 @@ import (
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 
+	internalStorage "github.com/elastic/package-registry/internal/storage"
 	"github.com/elastic/package-registry/packages"
 )
 
@@ -25,7 +26,7 @@ func loadSearchIndexAll(ctx context.Context, logger *zap.Logger, storageClient *
 	span, ctx := apm.StartSpan(ctx, "LoadSearchIndexAll", "app")
 	defer span.End()
 
-	indexFile := searchIndexAllFile
+	indexFile := internalStorage.SearchIndexAllFile
 
 	logger.Debug("load search-index-all index", zap.String("index.file", indexFile))
 
@@ -88,5 +89,5 @@ func loadSearchIndexAll(ctx context.Context, logger *zap.Logger, storageClient *
 }
 
 func buildIndexStoragePath(rootStoragePath string, aCursor cursor, indexFile string) string {
-	return joinObjectPaths(rootStoragePath, v2MetadataStoragePath, aCursor.Current, indexFile)
+	return internalStorage.JoinObjectPaths(rootStoragePath, internalStorage.V2MetadataStoragePath, aCursor.Current, indexFile)
 }

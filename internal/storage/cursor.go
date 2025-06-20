@@ -33,7 +33,7 @@ func loadCursor(ctx context.Context, logger *zap.Logger, storageClient *storage.
 
 	logger.Debug("load cursor file")
 
-	rootedCursorStoragePath := joinObjectPaths(rootStoragePath, cursorStoragePath)
+	rootedCursorStoragePath := JoinObjectPaths(rootStoragePath, CursorStoragePath)
 	objectReader, err := storageClient.Bucket(bucketName).Object(rootedCursorStoragePath).NewReader(ctx)
 	if err == storage.ErrObjectNotExist {
 		return nil, fmt.Errorf("cursor file doesn't exist, most likely a first run (bucketName: %s, path: %s): %w", bucketName, rootedCursorStoragePath, err)

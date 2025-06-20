@@ -25,7 +25,7 @@ func loadSearchIndexAll(ctx context.Context, logger *zap.Logger, storageClient *
 	span, ctx := apm.StartSpan(ctx, "LoadSearchIndexAll", "app")
 	defer span.End()
 
-	indexFile := searchIndexAllFile
+	indexFile := SearchIndexAllFile
 
 	logger.Debug("load search-index-all index", zap.String("index.file", indexFile))
 
@@ -88,5 +88,5 @@ func loadSearchIndexAll(ctx context.Context, logger *zap.Logger, storageClient *
 }
 
 func buildIndexStoragePath(rootStoragePath string, aCursor cursor, indexFile string) string {
-	return joinObjectPaths(rootStoragePath, v2MetadataStoragePath, aCursor.Current, indexFile)
+	return JoinObjectPaths(rootStoragePath, V2MetadataStoragePath, aCursor.Current, indexFile)
 }

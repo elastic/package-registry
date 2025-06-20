@@ -150,8 +150,8 @@ func (i *SQLIndexer) setupResolver() error {
 
 	i.resolver = storageResolver{
 		client:               &httpClient,
-		artifactsPackagesURL: *baseURL.ResolveReference(&url.URL{Path: artifactsPackagesStoragePath + "/"}),
-		artifactsStaticURL:   *baseURL.ResolveReference(&url.URL{Path: artifactsStaticStoragePath + "/"}),
+		artifactsPackagesURL: *baseURL.ResolveReference(&url.URL{Path: ArtifactsPackagesStoragePath + "/"}),
+		artifactsStaticURL:   *baseURL.ResolveReference(&url.URL{Path: ArtifactsStaticStoragePath + "/"}),
 	}
 	return nil
 }
@@ -199,7 +199,7 @@ func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 		metrics.StorageIndexerUpdateIndexDurationSeconds.Observe(time.Since(start).Seconds())
 	}()
 
-	bucketName, rootStoragePath, err := extractBucketNameFromURL(i.options.PackageStorageBucketInternal)
+	bucketName, rootStoragePath, err := ExtractBucketNameFromURL(i.options.PackageStorageBucketInternal)
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 		return fmt.Errorf("can't extract bucket name from URL (url: %s): %w", i.options.PackageStorageBucketInternal, err)

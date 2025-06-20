@@ -61,13 +61,13 @@ func prepareServerObjects(tb testing.TB, revision string, indexContent []byte) [
 	// Add cursor and index file
 	serverObjects = append(serverObjects, fakestorage.Object{
 		ObjectAttrs: fakestorage.ObjectAttrs{
-			BucketName: fakePackageStorageBucketInternal, Name: cursorStoragePath,
+			BucketName: fakePackageStorageBucketInternal, Name: CursorStoragePath,
 		},
 		Content: []byte(`{"current":"` + revision + `"}`),
 	})
 	serverObjects = append(serverObjects, fakestorage.Object{
 		ObjectAttrs: fakestorage.ObjectAttrs{
-			BucketName: fakePackageStorageBucketInternal, Name: joinObjectPaths(v2MetadataStoragePath, revision, searchIndexAllFile),
+			BucketName: fakePackageStorageBucketInternal, Name: JoinObjectPaths(V2MetadataStoragePath, revision, SearchIndexAllFile),
 		},
 		Content: indexContent,
 	})
