@@ -71,10 +71,13 @@ func BenchmarkSQLInit(b *testing.B) {
 		ctx := context.Background()
 
 		indexer := NewIndexer(logger, storageClient, options)
-		defer indexer.Close(ctx)
 
 		err := indexer.Init(ctx)
 		require.NoError(b, err)
+
+		b.StopTimer()
+		require.NoError(b, indexer.Close(ctx))
+		b.StartTimer()
 	}
 }
 

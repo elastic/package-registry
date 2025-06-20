@@ -44,10 +44,13 @@ func BenchmarkInit(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		func() {
 			indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
-			defer indexer.Close(context.Background())
 
 			err := indexer.Init(context.Background())
 			require.NoError(b, err)
+
+			b.StopTimer()
+			require.NoError(b, indexer.Close(context.Background()))
+			b.StartTimer()
 		}()
 	}
 }
