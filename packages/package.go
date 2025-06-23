@@ -84,16 +84,6 @@ type BasePackage struct {
 	BaseDataStreams         []*BaseDataStream    `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
 }
 
-// BaseDataStream is used for the data streams in the /search endpoint
-type BaseDataStream struct {
-	// For purposes of "input packages"
-	Type string `config:"type,omitempty" json:"type,omitempty" yaml:"type,omitempty"`
-
-	// Full
-	Dataset string `config:"dataset" json:"dataset" validate:"required"`
-	Title   string `config:"title" json:"title" validate:"required"`
-}
-
 // BasePolicyTemplate is used for the package policy templates in the /search endpoint
 type BasePolicyTemplate struct {
 	Name            string           `config:"name" json:"name" validate:"required"`
