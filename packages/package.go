@@ -81,6 +81,17 @@ type BasePackage struct {
 	Categories              []string             `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
 	SignaturePath           string               `config:"signature_path,omitempty" json:"signature_path,omitempty" yaml:"signature_path,omitempty"`
 	Discovery               *Discovery           `config:"discovery,omitempty" json:"discovery,omitempty" yaml:"discovery,omitempty"`
+	BaseDataStreams         []*BaseDataStream    `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
+}
+
+// BaseDataStream is used for the data streams in the /search endpoint
+type BaseDataStream struct {
+	// For purposes of "input packages"
+	Type string `config:"type,omitempty" json:"type,omitempty" yaml:"type,omitempty"`
+
+	// Full
+	Dataset string `config:"dataset" json:"dataset" validate:"required"`
+	Title   string `config:"title" json:"title" validate:"required"`
 }
 
 // BasePolicyTemplate is used for the package policy templates in the /search endpoint
@@ -347,6 +358,8 @@ func NewPackage(logger *zap.Logger, basePath string, fsBuilder FileSystemBuilder
 		return nil, fmt.Errorf("loading package data streams failed (path '%s'): %w", p.BasePath, err)
 	}
 
+	p.setBaseDataStreams()
+
 	// Read path for package signature
 	p.SignaturePath, err = p.getSignaturePath()
 	if err != nil {
@@ -405,6 +418,20 @@ func (p *Package) setBasePolicyTemplates() {
 		}
 
 		p.BasePolicyTemplates = append(p.BasePolicyTemplates, baseT)
+	}
+}
+
+// setBaseDataStreams method mirrors data_streams from Package to a corresponding property in BasePackage.
+// It's required to perform that sync, because DataStreams and BaseDataStreams have same JSON annotation
+// (data_streams).
+func (p *Package) setBaseDataStreams() {
+	for _, ds := range p.DataStreams {
+		baseStream := &BaseDataStream{
+			Type:    ds.Type,
+			Dataset: ds.Dataset,
+			Title:   ds.Title,
+		}
+		p.BaseDataStreams = append(p.BaseDataStreams, baseStream)
 	}
 }
 
