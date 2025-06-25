@@ -34,6 +34,15 @@ var validTypes = map[string]string{
 	"traces":     "Traces",
 }
 
+// BaseDataStream is used for the data streams in the /search endpoint
+type BaseDataStream struct {
+	// Name and type of the data stream. This is linked to data_stream.dataset and data_stream.type fields.
+	Type    string `config:"type,omitempty" json:"type,omitempty" yaml:"type,omitempty"`
+	Dataset string `config:"dataset" json:"dataset" validate:"required"`
+
+	Title string `config:"title" json:"title" validate:"required"`
+}
+
 type DataStream struct {
 	// Name and type of the data stream. This is linked to data_stream.dataset and data_stream.type fields.
 	Type            string `config:"type" json:"type" validate:"required"`
