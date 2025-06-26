@@ -204,6 +204,9 @@ func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 		return fmt.Errorf("can't load the search-index-all index content: %w", err)
 	}
+	if i.cursor == currentCursor {
+		return nil
+	}
 	if anIndex == nil {
 		i.logger.Info("Downloaded new search-index-all index. No packages found.")
 		return nil
