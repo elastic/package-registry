@@ -9,11 +9,10 @@ package util
 // Not needed methods / variables were removed, but no changes made to the logic.
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"strings"
-
-	"github.com/goccy/go-json"
 )
 
 var (

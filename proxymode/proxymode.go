@@ -6,6 +6,7 @@ package proxymode
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -13,7 +14,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/goccy/go-json"
 	"github.com/gorilla/mux"
 	"github.com/hashicorp/go-retryablehttp"
 	"go.elastic.co/apm/v2"

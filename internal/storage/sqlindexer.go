@@ -6,6 +6,7 @@ package storage
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net"
@@ -15,7 +16,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/goccy/go-json"
 	"github.com/hashicorp/golang-lru/v2/expirable"
 
 	"cloud.google.com/go/storage"

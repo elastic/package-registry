@@ -11,7 +11,6 @@ require (
 	github.com/elastic/go-ucfg v0.8.8
 	github.com/felixge/httpsnoop v1.0.4
 	github.com/fsouza/fake-gcs-server v1.52.2
-	github.com/goccy/go-json v0.10.5
 	github.com/gorilla/mux v1.8.1
 	github.com/hashicorp/go-retryablehttp v0.7.8
 	github.com/hashicorp/golang-lru/v2 v2.0.7
