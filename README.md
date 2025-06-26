@@ -281,39 +281,11 @@ in the Elastic Package Registry service locally. For that you need to follow the
    ```json
    {"log.level":"info","@timestamp":"2025-06-11T10:02:17.680+0200","log.origin":{"function":"github.com/elastic/package-registry/storage.(*Indexer).updateIndex","file.name":"storage/indexer.go","file.line":178},"message":"cursor is up-to-date","cursor.current":"1","ecs.version":"1.6.0"}
    ```
-2. Update the new index JSON file to the new path `v2/metadata/<cursor>/search-index-all.json`:
-   ```
-   curl -X POST \
-     --data-binary @<path_to_index_json> \
-     -H "Content-Type: application/json" \
-     "http://localhost:4443/upload/storage/v1/b/fake-package-storage-internal/o?uploadType=media&name=v2%2Fmetadata%2F<cursor>%2Fsearch-index-all.json"
-   ```
-   - Example uploading JSON file to path for cursor `2` (v2/metadata/2/cursor.json)
-   ```
-   curl -X POST \
-     --data-binary @../storage/testdata/search-index-all.json \
-     -H "Content-Type: application/json" \
-     "http://localhost:4443/upload/storage/v1/b/fake-package-storage-internal/o?uploadType=media&name=v2%2Fmetadata%2F2%2Fsearch-index-all.json"
-   ```
-3. Create the new cursor file `cursor.json` with the next cursor as string value. In this example `2`:
-   ```
-   {
-     "current": "2"
-   }
-   ```
-4. Update the new contents of the cursor file to the path `v2/metadata/cursor.json`:
-   ```
-   curl -X POST \
-     --data-binary @<path_to_cursor_json> \
-     -H "Content-Type: application/json" \
-     "http://localhost:4443/upload/storage/v1/b/fake-package-storage-internal/o?uploadType=media&name=v2%2Fmetadata%2Fcursor.json"
-   ```
-   - Example uploading JSON file to path for cursor `2` (v2/metadata/2/cursor.json)
-   ```
-   curl -X POST \
-     --data-binary @cursor-new.json \
-     -H "Content-Type: application/json" \
-     "http://localhost:4443/upload/storage/v1/b/fake-package-storage-internal/o?uploadType=media&name=v2%2Fmetadata%2Fcursor.json"
+2. Update the new index JSON file to the new path `v2/metadata/<cursor>/search-index-all.json` and also update `cursor.json` file in the fake GCS server using the script helper:
+   ```shell
+   # bash dev/updateIndexDatabase.sh -i <path_to_index> -c <cursor_string> -b <bucket>
+   # Example adding a new index using as cursor "2":
+   bash dev/updateIndexDatabase.sh -i ./search-index-all.json -c 2 -b fake-package-storage-internal
    ```
 
 After following these steps, the next log messages must appear in the EPR service:
