@@ -1,6 +1,12 @@
 #!/bin/bash
 set -euo pipefail
-set -x
+
+cleanup() {
+    local exit_code=$?
+    rm -rf cursor-new.json
+    exit "$exit_code"
+}
+trap cleanup EXIT
 
 usage() {
     echo "$0 -c <cursor> -i <index_path> [-b <bucket_name>] [-e <emulator_address>] [-h]"
