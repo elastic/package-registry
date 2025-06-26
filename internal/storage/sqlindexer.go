@@ -227,22 +227,20 @@ func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 		return err
 	}
+
+	startClean := time.Now()
+	err = i.cleanBackupDatabase(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to clean backup database: %w", err)
+	}
+	startCleanDuration := time.Since(startClean)
+	i.logger.Info("Cleaned backup database", zap.Duration("elapsed.time", time.Since(startClean)), zap.String("elapsed.time.human", startCleanDuration.String()))
 	return nil
 }
 
 func (i *SQLIndexer) updateDatabase(ctx context.Context, index *packages.Packages) error {
 	span, ctx := apm.StartSpan(ctx, "updateDatabase", "app")
 	defer span.End()
-
-	err := (*i.backup).Drop(ctx, "packages")
-	if err != nil {
-		return fmt.Errorf("failed to drop packages table: %w", err)
-	}
-
-	err = (*i.backup).Initialize(ctx)
-	if err != nil {
-		return fmt.Errorf("failed to create schema in backup database: %w", err)
-	}
 
 	totalProcessed := 0
 	dbPackages := make([]*database.Package, 0, i.maxBulkAddBatch)
@@ -261,7 +259,7 @@ func (i *SQLIndexer) updateDatabase(ctx context.Context, index *packages.Package
 			dbPackages = append(dbPackages, newPackage)
 			read++
 		}
-		err = (*i.backup).BulkAdd(ctx, "packages", dbPackages)
+		err := (*i.backup).BulkAdd(ctx, "packages", dbPackages)
 		if err != nil {
 			return fmt.Errorf("failed to create all packages (bulk operation): %w", err)
 		}
@@ -271,6 +269,22 @@ func (i *SQLIndexer) updateDatabase(ctx context.Context, index *packages.Package
 		}
 	}
 
+	return nil
+}
+
+func (i *SQLIndexer) cleanBackupDatabase(ctx context.Context) error {
+	span, ctx := apm.StartSpan(ctx, "cleanBackupDatabase", "app")
+	defer span.End()
+
+	err := (*i.backup).Drop(ctx, "packages")
+	if err != nil {
+		return fmt.Errorf("failed to drop packages table: %w", err)
+	}
+
+	err = (*i.backup).Initialize(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to create schema in backup database: %w", err)
+	}
 	return nil
 }
 
