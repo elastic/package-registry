@@ -17,6 +17,10 @@ var FakeIndexerOptions = IndexerOptions{
 	WatchInterval:                0,
 }
 
+// PrepareFakeServer initializes a fake storage server for testing purposes.
+//
+// Deprecated: Function kept for backwards compatibility, it could be eventually removed.
+// Please, use internalStorage.PrepareFakeServer instead.
 func PrepareFakeServer(tb testing.TB, indexPath string) *fakestorage.Server {
 	return internalStorage.PrepareFakeServer(tb, indexPath)
 }
