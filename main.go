@@ -344,6 +344,7 @@ func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer,
 
 	switch {
 	case featureSQLStorageIndexer:
+		logger.Warn("Technical preview: SQL storage indexer is an experimental feature and it may be unstable.")
 		indexer, err := initSQLStorageIndexer(ctx, logger, apmTracer, config, cache)
 		if err != nil {
 			logger.Fatal("failed to initialize SQL storage indexer", zap.Error(err))
