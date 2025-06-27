@@ -207,7 +207,7 @@ func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 			return fmt.Errorf("failed to update database: %w", err)
 		}
 		startDuration := time.Since(startUpdate)
-		i.logger.Info("Filled database with a batch of packages", zap.Duration("elapsed.time", startDuration), zap.String("elapsed.time.human", startDuration.String()), zap.Int("num.packages", len(*pkgs)))
+		i.logger.Debug("Filled database with a batch of packages", zap.Duration("elapsed.time", startDuration), zap.String("elapsed.time.human", startDuration.String()), zap.Int("num.packages", len(*pkgs)))
 		return nil
 	})
 	if err != nil {
@@ -221,7 +221,7 @@ func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 
 	startLock := time.Now()
 	i.swapDatabases(ctx, currentCursor, numPackages)
-	i.logger.Info("Elapsed time in lock for updating index database", zap.Duration("lock.duration", time.Since(startLock)))
+	i.logger.Debug("Elapsed time in lock for updating index database", zap.Duration("lock.duration", time.Since(startLock)))
 
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
@@ -234,7 +234,7 @@ func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 		return fmt.Errorf("failed to clean backup database: %w", err)
 	}
 	startCleanDuration := time.Since(startClean)
-	i.logger.Info("Cleaned backup database", zap.Duration("elapsed.time", time.Since(startClean)), zap.String("elapsed.time.human", startCleanDuration.String()))
+	i.logger.Debug("Cleaned backup database", zap.Duration("elapsed.time", time.Since(startClean)), zap.String("elapsed.time.human", startCleanDuration.String()))
 	return nil
 }
 
