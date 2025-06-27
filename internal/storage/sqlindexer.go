@@ -199,14 +199,23 @@ func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 		metrics.StorageIndexerUpdateIndexDurationSeconds.Observe(time.Since(start).Seconds())
 	}()
 
+	defer func() {
+		startClean := time.Now()
+		if err := i.cleanBackupDatabase(ctx); err != nil {
+			i.logger.Error("Failed to clean backup database", zap.Error(err))
+		}
+		startCleanDuration := time.Since(startClean)
+		i.logger.Debug("Cleaned backup database", zap.Duration("elapsed.time", time.Since(startClean)), zap.String("elapsed.time.human", startCleanDuration.String()))
+	}()
+
 	numPackages := 0
 	currentCursor, err := LoadPackagesAndCursorFromIndexBatches(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, i.cursor, i.maxBulkAddBatch, func(pkgs *packages.Packages) error { // This function is called for each batch of packages read from the index.
-		numPackages += len(*pkgs)
 		startUpdate := time.Now()
 		if err := i.updateDatabase(ctx, pkgs); err != nil {
 			return fmt.Errorf("failed to update database: %w", err)
 		}
 		startDuration := time.Since(startUpdate)
+		numPackages += len(*pkgs)
 		i.logger.Debug("Filled database with a batch of packages", zap.Duration("elapsed.time", startDuration), zap.String("elapsed.time.human", startDuration.String()), zap.Int("num.packages", len(*pkgs)))
 		return nil
 	})
@@ -228,13 +237,6 @@ func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 		return err
 	}
 
-	startClean := time.Now()
-	err = i.cleanBackupDatabase(ctx)
-	if err != nil {
-		return fmt.Errorf("failed to clean backup database: %w", err)
-	}
-	startCleanDuration := time.Since(startClean)
-	i.logger.Debug("Cleaned backup database", zap.Duration("elapsed.time", time.Since(startClean)), zap.String("elapsed.time.human", startCleanDuration.String()))
 	return nil
 }
 
