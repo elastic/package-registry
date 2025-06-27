@@ -40,6 +40,8 @@ func TestCategoriesWithProxyMode(t *testing.T) {
 	defer webServer.Close()
 
 	indexerProxy := packages.NewFileSystemIndexer(testLogger, "./testdata/second_package_path")
+	defer indexerProxy.Close(context.Background())
+
 	err := indexerProxy.Init(context.Background())
 	require.NoError(t, err)
 

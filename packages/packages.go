@@ -42,6 +42,12 @@ func (p Packages) Less(i, j int) bool {
 // a package in `p1` with the same name and version that a package in `p2`, the
 // latter is not added.
 func (p1 Packages) Join(p2 Packages) Packages {
+	// If p1 is empty, return p2 as it is.
+	// This is a special case to avoid unnecessary checks.
+	if len(p1) == 0 {
+		return p2
+	}
+
 	for _, p := range p2 {
 		if p1.contains(p) {
 			continue
@@ -83,6 +89,8 @@ type GetOptions struct {
 	// all packages are returned. This is different to a zero-object filter,
 	// where experimental packages are filtered by default.
 	Filter *Filter
+
+	FullData bool
 }
 
 // FileSystemIndexer indexes packages from the filesystem.
@@ -211,6 +219,10 @@ func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages
 	}
 
 	return i.packageList, nil
+}
+
+func (i *FileSystemIndexer) Close(ctx context.Context) error {
+	return nil
 }
 
 func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Packages, error) {

@@ -7,6 +7,7 @@ package main
 import (
 	"context"
 	"crypto/tls"
+	"errors"
 	"flag"
 	"fmt"
 	"log"
@@ -15,6 +16,7 @@ import (
 	_ "net/http/pprof"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"syscall"
@@ -23,6 +25,7 @@ import (
 	gstorage "cloud.google.com/go/storage"
 	"github.com/fsouza/fake-gcs-server/fakestorage"
 	"github.com/gorilla/mux"
+	"github.com/hashicorp/golang-lru/v2/expirable"
 	"google.golang.org/api/option"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -34,6 +37,8 @@ import (
 
 	ucfgYAML "github.com/elastic/go-ucfg/yaml"
 
+	"github.com/elastic/package-registry/internal/database"
+	internalStorage "github.com/elastic/package-registry/internal/storage"
 	"github.com/elastic/package-registry/internal/util"
 	"github.com/elastic/package-registry/metrics"
 	"github.com/elastic/package-registry/packages"
@@ -65,6 +70,9 @@ var (
 
 	printVersionInfo bool
 
+	featureSQLStorageIndexer bool
+	featureEnableSearchCache bool
+
 	featureStorageIndexer        bool
 	storageIndexerBucketInternal string
 	storageEndpoint              string
@@ -74,10 +82,12 @@ var (
 	proxyTo          string
 
 	defaultConfig = Config{
-		CacheTimeIndex:      10 * time.Second,
-		CacheTimeSearch:     10 * time.Minute,
-		CacheTimeCategories: 10 * time.Minute,
-		CacheTimeCatchAll:   10 * time.Minute,
+		CacheTimeIndex:               10 * time.Second,
+		CacheTimeSearch:              10 * time.Minute,
+		CacheTimeCategories:          10 * time.Minute,
+		CacheTimeCatchAll:            10 * time.Minute,
+		SQLIndexerDatabaseFolderPath: "/tmp/", // TODO: Another default directory?
+		SearchCacheSize:              100,
 	}
 )
 
@@ -98,6 +108,8 @@ func init() {
 	flag.BoolVar(&packages.ValidationDisabled, "disable-package-validation", false, "Disable package content validation.")
 	// The following storage related flags are technical preview and might be removed in the future or renamed
 	flag.BoolVar(&featureStorageIndexer, "feature-storage-indexer", false, "Enable storage indexer to include packages from Package Storage v2 (technical preview).")
+	flag.BoolVar(&featureSQLStorageIndexer, "feature-sql-storage-indexer", false, "Enable SQL storage indexer to include packages from Package Storage v2 (technical preview).")
+	flag.BoolVar(&featureEnableSearchCache, "feature-enable-search-cache", false, "Enable cache for search requests. Just supported with the SQL storage indexer. (technical preview).")
 	flag.StringVar(&storageIndexerBucketInternal, "storage-indexer-bucket-internal", "", "Path to the internal Package Storage bucket (with gs:// prefix).")
 	flag.StringVar(&storageEndpoint, "storage-endpoint", "https://package-storage.elastic.co/", "Package Storage public endpoint.")
 	flag.DurationVar(&storageIndexerWatchInterval, "storage-indexer-watch-interval", 1*time.Minute, "Address of the package-registry service.")
@@ -108,11 +120,13 @@ func init() {
 }
 
 type Config struct {
-	PackagePaths        []string      `config:"package_paths"`
-	CacheTimeIndex      time.Duration `config:"cache_time.index"`
-	CacheTimeSearch     time.Duration `config:"cache_time.search"`
-	CacheTimeCategories time.Duration `config:"cache_time.categories"`
-	CacheTimeCatchAll   time.Duration `config:"cache_time.catch_all"`
+	PackagePaths                 []string      `config:"package_paths"`
+	CacheTimeIndex               time.Duration `config:"cache_time.index"`
+	CacheTimeSearch              time.Duration `config:"cache_time.search"`
+	CacheTimeCategories          time.Duration `config:"cache_time.categories"`
+	CacheTimeCatchAll            time.Duration `config:"cache_time.catch_all"`
+	SQLIndexerDatabaseFolderPath string        `config:"sql_indexer.database_folder_path"`
+	SearchCacheSize              int           `config:"search.cache_size"`
 }
 
 func main() {
@@ -125,6 +139,14 @@ func main() {
 		if tlsCertFile == "" || tlsKeyFile == "" {
 			log.Fatalf("-tls-min-version set but missing TLS cert and key files (-tls-cert and -tls-key)")
 		}
+	}
+
+	if featureStorageIndexer && featureSQLStorageIndexer {
+		log.Fatal("Both feature-storage-indexer and feature-sql-storage-indexer are enabled. Please choose one.")
+	}
+
+	if featureEnableSearchCache && !featureSQLStorageIndexer {
+		log.Fatal("feature-enable-search-cache is enabled, but feature-sql-storage-indexer is not enabled. Search cache is just supported with SQL Storage indexer.")
 	}
 
 	if printVersionInfo {
@@ -147,10 +169,13 @@ func main() {
 
 	apmTracer.SetLogger(&util.LoggerAdapter{logger.With(zap.String("log.logger", "apm"))})
 
+	ctx := context.Background()
+
 	config := mustLoadConfig(logger)
 	if dryRun {
 		logger.Info("Running dry-run mode")
-		_ = initIndexer(context.Background(), logger, apmTracer, config)
+		indexer := initIndexer(ctx, logger, apmTracer, config, nil)
+		defer indexer.Close(ctx)
 		os.Exit(0)
 	}
 
@@ -160,8 +185,8 @@ func main() {
 	initHttpProf(logger)
 
 	if indexPath := os.Getenv("EPR_EMULATOR_INDEX_PATH"); indexPath != "" {
-		if !featureStorageIndexer {
-			logger.Fatal("EPR_EMULATOR_INDEX_PATH environment variable is set, but feature-storage-indexer is not enabled. Please enable it to use the fake GCS server.")
+		if !featureStorageIndexer && !featureSQLStorageIndexer {
+			logger.Fatal("EPR_EMULATOR_INDEX_PATH environment variable is set, but feature-storage-indexer or feature-sql-storage-indexer are not enabled. Please enable one of them to use the fake GCS server.")
 		}
 		if storageIndexerBucketInternal != "" && storageIndexerBucketInternal != storage.FakeIndexerOptions.PackageStorageBucketInternal {
 			logger.Fatal("EPR_EMULATOR_INDEX_PATH environment variable is set, but storage-indexer-bucket-internal is already set to a different value. Please remove the flag or set it to the fake GCS server bucket " + storage.FakeIndexerOptions.PackageStorageBucketInternal)
@@ -175,7 +200,16 @@ func main() {
 		defer fakeServer.Stop()
 	}
 
-	server := initServer(logger, apmTracer, config)
+	var searchCache *expirable.LRU[string, string]
+	if featureSQLStorageIndexer && featureEnableSearchCache {
+		searchCache = expirable.NewLRU[string, string](config.SearchCacheSize, nil, config.CacheTimeSearch)
+	}
+
+	indexer := initIndexer(ctx, logger, apmTracer, config, searchCache)
+	defer indexer.Close(ctx)
+
+	server := initServer(logger, apmTracer, config, indexer, searchCache)
+
 	go func() {
 		err := runServer(server)
 		if err != nil && err != http.ErrServerClosed {
@@ -189,10 +223,40 @@ func main() {
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
 	<-stop
 
-	ctx := context.Background()
 	if err := server.Shutdown(ctx); err != nil {
 		logger.Fatal("error on shutdown", zap.Error(err))
 	}
+}
+
+func initDatabase(ctx context.Context, logger *zap.Logger, databaseFolderPath, dbFileName string) (database.Repository, error) {
+	span, _ := apm.StartSpan(ctx, "initDatabase", fmt.Sprintf("backend.init.%s", dbFileName))
+	defer span.End()
+
+	dbPath := filepath.Join(databaseFolderPath, dbFileName)
+
+	logger.Debug("Creating database", zap.String("path", dbPath))
+	exists := true
+	_, err := os.Stat(dbPath)
+	if errors.Is(err, os.ErrNotExist) {
+		exists = false
+	} else if err != nil {
+		return nil, err
+	}
+	if exists {
+		err = os.Remove(dbPath)
+		if err != nil {
+			logger.Fatal("failed to delete previous database", zap.String("path", dbPath), zap.Error(err))
+			return nil, fmt.Errorf("failed to delete previous database (path %q): %w", dbPath, err)
+		}
+	}
+
+	packageRepository, err := database.NewFileSQLDB(dbPath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to open database (path %q): %w", dbPath, err)
+	}
+	logger.Debug("Database created successfully", zap.String("path", dbPath))
+
+	return packageRepository, nil
 }
 
 func initHttpProf(logger *zap.Logger) {
@@ -223,14 +287,14 @@ func initFakeGCSServer(logger *zap.Logger, indexPath string) (*fakestorage.Serve
 		if err != nil {
 			return nil, fmt.Errorf("failed to convert port to integer from STORAGE_EMULATOR_HOST: %w", err)
 		}
-		fakeServer, err = storage.RunFakeServerOnHostPort(indexPath, host, uint16(portInt))
+		fakeServer, err = internalStorage.RunFakeServerOnHostPort(indexPath, host, uint16(portInt))
 		if err != nil {
 			return nil, fmt.Errorf("failed to prepare fake storage server: %w", err)
 		}
 	} else {
 		logger.Info("Create fake GCS server on random port")
 		// let the fake server choose a random port
-		fakeServer, err = storage.RunFakeServerOnHostPort(indexPath, "localhost", 0)
+		fakeServer, err = internalStorage.RunFakeServerOnHostPort(indexPath, "localhost", 0)
 		if err != nil {
 			return nil, fmt.Errorf("failed to prepare fake storage server: %w", err)
 		}
@@ -269,30 +333,29 @@ func initMetricsServer(logger *zap.Logger) {
 	}()
 }
 
-func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer, config *Config) Indexer {
+func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer, config *Config, cache *expirable.LRU[string, string]) Indexer {
+	tx := apmTracer.StartTransaction("initIndexer", "backend.init")
+	defer tx.End()
+
+	ctx = apm.ContextWithTransaction(ctx, tx)
 	packagesBasePaths := getPackagesBasePaths(config)
 
 	var combined CombinedIndexer
 
-	if featureStorageIndexer {
-		opts := []option.ClientOption{}
-		if os.Getenv("STORAGE_EMULATOR_HOST") != "" {
-			// https://pkg.go.dev/cloud.google.com/go/storage#hdr-Creating_a_Client
-			logger.Info("Using local development setup for storage indexer", zap.String("STORAGE_EMULATOR_HOST", os.Getenv("STORAGE_EMULATOR_HOST")))
-			// Required to add this option when using STORAGE_EMULATOR_HOST
-			// Related to https://github.com/fsouza/fake-gcs-server/issues/1202#issuecomment-1644877525
-			opts = append(opts, gstorage.WithJSONReads())
-		}
-		storageClient, err := gstorage.NewClient(ctx, opts...)
+	switch {
+	case featureSQLStorageIndexer:
+		logger.Warn("Technical preview: SQL storage indexer is an experimental feature and it may be unstable.")
+		indexer, err := initSQLStorageIndexer(ctx, logger, apmTracer, config, cache)
 		if err != nil {
-			logger.Fatal("can't initialize storage client", zap.Error(err))
+			logger.Fatal("failed to initialize SQL storage indexer", zap.Error(err))
 		}
-		combined = append(combined, storage.NewIndexer(logger, storageClient, storage.IndexerOptions{
-			APMTracer:                    apmTracer,
-			PackageStorageBucketInternal: storageIndexerBucketInternal,
-			PackageStorageEndpoint:       storageEndpoint,
-			WatchInterval:                storageIndexerWatchInterval,
-		}))
+		combined = append(combined, indexer)
+	case featureStorageIndexer:
+		indexer, err := initStorageIndexer(ctx, logger, apmTracer, config)
+		if err != nil {
+			logger.Fatal("failed to initialize storage indexer", zap.Error(err))
+		}
+		combined = append(combined, indexer)
 	}
 
 	combined = append(combined,
@@ -303,15 +366,59 @@ func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer,
 	return combined
 }
 
-func initServer(logger *zap.Logger, apmTracer *apm.Tracer, config *Config) *http.Server {
-	tx := apmTracer.StartTransaction("initServer", "backend.init")
-	defer tx.End()
+func initStorageIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer, config *Config) (*storage.Indexer, error) {
+	storageClient, err := newStorageClient(ctx, logger)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create storage client: %w", err)
+	}
+	return storage.NewIndexer(logger, storageClient, storage.IndexerOptions{
+		APMTracer:                    apmTracer,
+		PackageStorageBucketInternal: storageIndexerBucketInternal,
+		PackageStorageEndpoint:       storageEndpoint,
+		WatchInterval:                storageIndexerWatchInterval,
+	}), nil
+}
 
-	ctx := apm.ContextWithTransaction(context.TODO(), tx)
+func initSQLStorageIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer, config *Config, cache *expirable.LRU[string, string]) (*internalStorage.SQLIndexer, error) {
+	storageClient, err := newStorageClient(ctx, logger)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create storage client: %w", err)
+	}
 
-	indexer := initIndexer(ctx, logger, apmTracer, config)
+	storageDatabase, err := initDatabase(ctx, logger, config.SQLIndexerDatabaseFolderPath, "storage_packages.db")
+	if err != nil {
+		return nil, fmt.Errorf("failed to initialize storage database: %w", err)
+	}
+	storageSwapDatabase, err := initDatabase(ctx, logger, config.SQLIndexerDatabaseFolderPath, "storage_packages_swap.db")
+	if err != nil {
+		return nil, fmt.Errorf("failed to initialize storage backup database: %w", err)
+	}
 
-	router := mustLoadRouter(logger, config, indexer)
+	return internalStorage.NewIndexer(logger, storageClient, internalStorage.IndexerOptions{
+		APMTracer:                    apmTracer,
+		PackageStorageBucketInternal: storageIndexerBucketInternal,
+		PackageStorageEndpoint:       storageEndpoint,
+		WatchInterval:                storageIndexerWatchInterval,
+		Database:                     storageDatabase,
+		SwapDatabase:                 storageSwapDatabase,
+		Cache:                        cache,
+	}), nil
+}
+
+func newStorageClient(ctx context.Context, logger *zap.Logger) (*gstorage.Client, error) {
+	opts := []option.ClientOption{}
+	if os.Getenv("STORAGE_EMULATOR_HOST") != "" {
+		// https://pkg.go.dev/cloud.google.com/go/storage#hdr-Creating_a_Client
+		logger.Info("Using local development setup for storage indexer", zap.String("STORAGE_EMULATOR_HOST", os.Getenv("STORAGE_EMULATOR_HOST")))
+		// Required to add this option when using STORAGE_EMULATOR_HOST
+		// Related to https://github.com/fsouza/fake-gcs-server/issues/1202#issuecomment-1644877525
+		opts = append(opts, gstorage.WithJSONReads())
+	}
+	return gstorage.NewClient(ctx, opts...)
+}
+
+func initServer(logger *zap.Logger, apmTracer *apm.Tracer, config *Config, indexer Indexer, cache *expirable.LRU[string, string]) *http.Server {
+	router := mustLoadRouter(logger, config, indexer, cache)
 	apmgorilla.Instrument(router, apmgorilla.WithTracer(apmTracer))
 
 	var tlsConfig tls.Config
@@ -384,6 +491,8 @@ func printConfig(logger *zap.Logger, config *Config) {
 	logger.Info("Cache time for /search: " + config.CacheTimeSearch.String())
 	logger.Info("Cache time for /categories: " + config.CacheTimeCategories.String())
 	logger.Info("Cache time for all others: " + config.CacheTimeCatchAll.String())
+	logger.Info("Database path: " + config.SQLIndexerDatabaseFolderPath)
+	logger.Info("LRU cache size (search requests): " + strconv.Itoa(config.SearchCacheSize))
 }
 
 func ensurePackagesAvailable(ctx context.Context, logger *zap.Logger, indexer Indexer) {
@@ -407,15 +516,15 @@ func ensurePackagesAvailable(ctx context.Context, logger *zap.Logger, indexer In
 	metrics.NumberIndexedPackages.Set(float64(len(packages)))
 }
 
-func mustLoadRouter(logger *zap.Logger, config *Config, indexer Indexer) *mux.Router {
-	router, err := getRouter(logger, config, indexer)
+func mustLoadRouter(logger *zap.Logger, config *Config, indexer Indexer, cache *expirable.LRU[string, string]) *mux.Router {
+	router, err := getRouter(logger, config, indexer, cache)
 	if err != nil {
 		logger.Fatal("failed go configure router", zap.Error(err))
 	}
 	return router
 }
 
-func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router, error) {
+func getRouter(logger *zap.Logger, config *Config, indexer Indexer, cache *expirable.LRU[string, string]) (*mux.Router, error) {
 	if featureProxyMode {
 		logger.Info("Technical preview: Proxy mode is an experimental feature and it may be unstable.")
 	}
@@ -439,7 +548,7 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer) (*mux.Router
 
 	categoriesHandler := categoriesHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeCategories)
 	packageIndexHandler := packageIndexHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeCatchAll)
-	searchHandler := searchHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeSearch)
+	searchHandler := searchHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeSearch, cache)
 	staticHandler := staticHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeCatchAll)
 
 	router := mux.NewRouter().StrictSlash(true)
