@@ -85,7 +85,7 @@ func generateTestCaseStorageEndpoints(indexer Indexer) []struct {
 }
 
 func TestPackageStorage_Endpoints(t *testing.T) {
-	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
+	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
 	indexer := storage.NewIndexer(testLogger, fs.Client(), storage.FakeIndexerOptions)
@@ -103,7 +103,7 @@ func TestPackageStorage_Endpoints(t *testing.T) {
 }
 
 func TestPackageStorageSQL_Endpoints(t *testing.T) {
-	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
+	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
 	indexer, err := generateSQLStorageIndexer(fs, "")
@@ -141,7 +141,7 @@ func generateTestPackageIndexEndpoints(indexer Indexer) []struct {
 }
 
 func TestPackageStorage_PackageIndex(t *testing.T) {
-	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
+	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 	indexer := storage.NewIndexer(testLogger, fs.Client(), storage.FakeIndexerOptions)
 	defer indexer.Close(context.Background())
@@ -159,7 +159,7 @@ func TestPackageStorage_PackageIndex(t *testing.T) {
 }
 
 func TestPackageSQLStorage_PackageIndex(t *testing.T) {
-	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
+	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
 	indexer, err := generateSQLStorageIndexer(fs, "")
@@ -198,7 +198,7 @@ func generateTestArtifactsEndpoints(indexer Indexer) []struct {
 }
 
 func TestPackageStorage_Artifacts(t *testing.T) {
-	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
+	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
 	webServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -225,7 +225,7 @@ func TestPackageStorage_Artifacts(t *testing.T) {
 }
 
 func TestPackageSQLStorage_Artifacts(t *testing.T) {
-	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
+	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
 	webServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -268,7 +268,7 @@ func generateTestSignaturesEndpoints(indexer Indexer) []struct {
 }
 
 func TestPackageStorage_Signatures(t *testing.T) {
-	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
+	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
 	webServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -295,7 +295,7 @@ func TestPackageStorage_Signatures(t *testing.T) {
 }
 
 func TestPackageSQLStorage_Signatures(t *testing.T) {
-	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
+	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
 	webServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -339,7 +339,7 @@ func generateTestStaticEndpoints(indexer Indexer) []struct {
 }
 
 func TestPackageStorage_Statics(t *testing.T) {
-	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
+	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
 	webServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -366,7 +366,7 @@ func TestPackageStorage_Statics(t *testing.T) {
 }
 
 func TestPackagesQLStorage_Statics(t *testing.T) {
-	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
+	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
 	webServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -419,7 +419,7 @@ func generateTestResolveHeadersEndpoints(indexer Indexer) []struct {
 }
 
 func TestPackageStorage_ResolverHeadersResponse(t *testing.T) {
-	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
+	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
 	webServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -449,7 +449,7 @@ func TestPackageStorage_ResolverHeadersResponse(t *testing.T) {
 }
 
 func TestPackageSQLStorage_ResolverHeadersResponse(t *testing.T) {
-	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
+	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
 	webServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -499,7 +499,7 @@ func generateTestResolveErrorResponseEndpoints(indexer Indexer) []struct {
 }
 
 func TestPackageStorage_ResolverErrorResponse(t *testing.T) {
-	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
+	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
 	webServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -526,7 +526,7 @@ func TestPackageStorage_ResolverErrorResponse(t *testing.T) {
 }
 
 func TestPackageSQLStorage_ResolverErrorResponse(t *testing.T) {
-	fs := storage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
+	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
 	webServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

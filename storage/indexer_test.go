@@ -21,7 +21,7 @@ import (
 
 func TestInit(t *testing.T) {
 	// given
-	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
+	fs := internalStorage.PrepareFakeServer(t, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 	indexer := NewIndexer(util.NewTestLogger(), storageClient, FakeIndexerOptions)
@@ -36,7 +36,7 @@ func TestInit(t *testing.T) {
 
 func BenchmarkInit(b *testing.B) {
 	// given
-	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
+	fs := internalStorage.PrepareFakeServer(b, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 
@@ -56,7 +56,7 @@ func BenchmarkInit(b *testing.B) {
 
 func BenchmarkIndexerUpdateIndex(b *testing.B) {
 	// given
-	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
+	fs := internalStorage.PrepareFakeServer(b, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 
@@ -80,7 +80,7 @@ func BenchmarkIndexerUpdateIndex(b *testing.B) {
 
 func BenchmarkIndexerGet(b *testing.B) {
 	// given
-	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
+	fs := internalStorage.PrepareFakeServer(b, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 
@@ -115,7 +115,7 @@ func BenchmarkIndexerGet(b *testing.B) {
 
 func TestGet_ListPackages(t *testing.T) {
 	// given
-	fs := PrepareFakeServer(t, "testdata/search-index-all-full.json")
+	fs := internalStorage.PrepareFakeServer(t, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 	indexer := NewIndexer(util.NewTestLogger(), storageClient, FakeIndexerOptions)
@@ -305,7 +305,7 @@ func TestGet_ListPackages(t *testing.T) {
 
 func TestGet_IndexUpdated(t *testing.T) {
 	// given
-	fs := PrepareFakeServer(t, "testdata/search-index-all-small.json")
+	fs := internalStorage.PrepareFakeServer(t, "testdata/search-index-all-small.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 	ctx := context.Background()
