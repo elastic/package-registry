@@ -95,7 +95,7 @@ func BenchmarkSQLIndexerUpdateIndex(b *testing.B) {
 	options, err := CreateFakeIndexerOptions(db, swapDb)
 	require.NoError(b, err)
 
-	fs := PrepareFakeServer(b, "testdata/search-index-all.json")
+	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 
@@ -114,7 +114,7 @@ func BenchmarkSQLIndexerUpdateIndex(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		b.StopTimer()
 		revision := fmt.Sprintf("%d", i+2)
-		UpdateFakeServer(b, fs, revision, "testdata/search-index-all.json")
+		UpdateFakeServer(b, fs, revision, "testdata/search-index-all-full.json")
 		b.StartTimer()
 		start = time.Now()
 		err = indexer.updateIndex(ctx)
@@ -137,7 +137,7 @@ func BenchmarkSQLIndexerGet(b *testing.B) {
 	options, err := CreateFakeIndexerOptions(db, swapDb)
 	require.NoError(b, err)
 
-	fs := PrepareFakeServer(b, "testdata/search-index-all.json")
+	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 
