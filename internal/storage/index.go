@@ -173,7 +173,7 @@ func loadSearchIndexAllBatches(ctx context.Context, logger *zap.Logger, storageC
 			packages = append(packages, p.PackageManifest)
 			count++
 
-			if count == batchSize {
+			if count >= batchSize {
 				err = process(&packages)
 				if err != nil {
 					return fmt.Errorf("error processing batch of packages: %w", err)
