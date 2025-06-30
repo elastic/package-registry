@@ -23,6 +23,7 @@ type packageIndex struct {
 
 func loadSearchIndexAll(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, bucketName, rootStoragePath string, aCursor cursor) (*packages.Packages, error) {
 	span, ctx := apm.StartSpan(ctx, "LoadSearchIndexAll", "app")
+	span.Context.SetLabel("load.method", "full")
 	defer span.End()
 
 	indexFile := searchIndexAllFile
@@ -117,6 +118,8 @@ func LoadPackagesAndCursorFromIndex(ctx context.Context, logger *zap.Logger, sto
 
 func loadSearchIndexAllBatches(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, bucketName, rootStoragePath string, aCursor cursor, batchSize int, process func(*packages.Packages) error) error {
 	span, ctx := apm.StartSpan(ctx, "LoadSearchIndexAll", "app")
+	span.Context.SetLabel("load.method", "batches")
+	span.Context.SetLabel("load.batch.size", batchSize)
 	defer span.End()
 
 	indexFile := searchIndexAllFile
