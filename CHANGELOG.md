@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Change license from Elastic License to Elastic License 2.0. [#1298](https://github.com/elastic/package-registry/pull/1298)
 * Add APM spans for proxy requests and storage indexer Get calls. [#1306](https://github.com/elastic/package-registry/pull/1306)
-* Add SQL storage indexer in technical preview. [#1313](https://github.com/elastic/package-registry/pull/1313)
+* Add SQL storage indexer in technical preview. [#1313](https://github.com/elastic/package-registry/pull/1313) [#1326](https://github.com/elastic/package-registry/pull/1326)
 
 ### Deprecated
 
