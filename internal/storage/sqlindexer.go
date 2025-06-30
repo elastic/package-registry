@@ -209,15 +209,15 @@ func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 	}()
 
 	numPackages := 0
-	currentCursor, err := LoadPackagesAndCursorFromIndexBatches(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, i.cursor, i.maxBulkAddBatch, func(pkgs *packages.Packages) error {
+	currentCursor, err := LoadPackagesAndCursorFromIndexBatches(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, i.cursor, i.maxBulkAddBatch, func(pkgs packages.Packages) error {
 		// This function is called for each batch of packages read from the index.
 		startUpdate := time.Now()
-		if err := i.updateDatabase(ctx, pkgs); err != nil {
+		if err := i.updateDatabase(ctx, &pkgs); err != nil {
 			return fmt.Errorf("failed to update database: %w", err)
 		}
 		startDuration := time.Since(startUpdate)
-		numPackages += len(*pkgs)
-		i.logger.Debug("Filled database with a batch of packages", zap.Duration("elapsed.time", startDuration), zap.String("elapsed.time.human", startDuration.String()), zap.Int("num.packages", len(*pkgs)))
+		numPackages += len(pkgs)
+		i.logger.Debug("Filled database with a batch of packages", zap.Duration("elapsed.time", startDuration), zap.String("elapsed.time.human", startDuration.String()), zap.Int("num.packages", len(pkgs)))
 		return nil
 	})
 	if err != nil {
