@@ -199,7 +199,27 @@ func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 		metrics.StorageIndexerUpdateIndexDurationSeconds.Observe(time.Since(start).Seconds())
 	}()
 
-	anIndex, currentCursor, err := LoadPackagesAndCursorFromIndex(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, i.cursor)
+	defer func() {
+		startClean := time.Now()
+		if err := i.cleanBackupDatabase(ctx); err != nil {
+			i.logger.Error("Failed to clean backup database", zap.Error(err))
+		}
+		startCleanDuration := time.Since(startClean)
+		i.logger.Debug("Cleaned backup database", zap.Duration("elapsed.time", time.Since(startClean)), zap.String("elapsed.time.human", startCleanDuration.String()))
+	}()
+
+	numPackages := 0
+	currentCursor, err := LoadPackagesAndCursorFromIndexBatches(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, i.cursor, i.maxBulkAddBatch, func(pkgs packages.Packages) error {
+		// This function is called for each batch of packages read from the index.
+		startUpdate := time.Now()
+		if err := i.updateDatabase(ctx, &pkgs); err != nil {
+			return fmt.Errorf("failed to update database: %w", err)
+		}
+		startDuration := time.Since(startUpdate)
+		numPackages += len(pkgs)
+		i.logger.Debug("Filled database with a batch of packages", zap.Duration("elapsed.time", startDuration), zap.String("elapsed.time.human", startDuration.String()), zap.Int("num.packages", len(pkgs)))
+		return nil
+	})
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 		return fmt.Errorf("can't load the search-index-all index content: %w", err)
@@ -207,37 +227,17 @@ func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 	if i.cursor == currentCursor {
 		return nil
 	}
-	if anIndex == nil {
-		i.logger.Info("Downloaded new search-index-all index. No packages found.")
-		return nil
-	}
-	i.logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", len(*anIndex))))
-
-	i.logger.Info("Filling database")
-	startUpdate := time.Now()
-	err = i.updateDatabase(ctx, anIndex)
-	if err != nil {
-		return fmt.Errorf("failed to update database: %w", err)
-	}
-	startDuration := time.Since(startUpdate)
-	i.logger.Info("Filled database with latest packages", zap.Duration("elapsed.time", startDuration), zap.String("elapsed.time.human", startDuration.String()))
+	i.logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", numPackages)))
 
 	startLock := time.Now()
-	i.swapDatabases(ctx, currentCursor, len(*anIndex))
-	i.logger.Info("Elapsed time in lock for updating index database", zap.Duration("lock.duration", time.Since(startLock)))
+	i.swapDatabases(ctx, currentCursor, numPackages)
+	i.logger.Debug("Elapsed time in lock for updating index database", zap.Duration("lock.duration", time.Since(startLock)))
 
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 		return err
 	}
 
-	startClean := time.Now()
-	err = i.cleanBackupDatabase(ctx)
-	if err != nil {
-		return fmt.Errorf("failed to clean backup database: %w", err)
-	}
-	startCleanDuration := time.Since(startClean)
-	i.logger.Info("Cleaned backup database", zap.Duration("elapsed.time", time.Since(startClean)), zap.String("elapsed.time.human", startCleanDuration.String()))
 	return nil
 }
 
