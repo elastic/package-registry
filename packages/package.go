@@ -176,7 +176,8 @@ type Discovery struct {
 
 // DiscoveryField defines a field used for discovery.
 type DiscoveryField struct {
-	Name string `config:"name" json:"name" yaml:"name"`
+	Name  string `config:"name" json:"name" yaml:"name" validate:"required"`
+	Value string `config:"value,omitempty" json:"value,omitempty" yaml:"value,omitempty"`
 }
 
 type PackageElasticsearchPrivileges struct {

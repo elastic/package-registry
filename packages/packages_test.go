@@ -116,7 +116,8 @@ func TestPackagesFilter(t *testing.T) {
 			Capabilities: []string{"observability", "security", "uptime"},
 		},
 	}
-	packages := buildFilterTestPackages(filterTestPackages)
+	packages, err := buildFilterTestPackages(filterTestPackages)
+	require.NoError(t, err)
 
 	cases := []struct {
 		Title    string
@@ -500,6 +501,10 @@ func TestPackagesSpecMinMaxFilter(t *testing.T) {
 			Version:       "2.0.0",
 			Type:          "integration",
 			KibanaVersion: "^8.4.0",
+			DiscoveryFields: []string{
+				"event.dataset:logstash.logs",
+				"event.dataset:logstash.metrics",
+			},
 		},
 		{
 			FormatVersion: "2.9.0",
@@ -545,7 +550,8 @@ func TestPackagesSpecMinMaxFilter(t *testing.T) {
 			KibanaVersion: "^8.5.0",
 		},
 	}
-	packages := buildFilterTestPackages(filterTestPackages)
+	packages, err := buildFilterTestPackages(filterTestPackages)
+	require.NoError(t, err)
 
 	cases := []struct {
 		Title    string
@@ -691,6 +697,39 @@ func TestPackagesSpecMinMaxFilter(t *testing.T) {
 				{Name: "nginx", Version: "2.0.0"},
 			},
 		},
+		{
+			Title: "use fields discovery filter for the nginx package with more query parameters",
+			Filter: Filter{
+				AllVersions: true,
+				Prerelease:  true,
+				Discovery:   mustBuildDiscoveryFilter("fields:nginx.stubstatus.hostname,host.ip,other"),
+			},
+			Expected: []filterTestPackage{
+				{Name: "nginx", Version: "2.0.0"},
+			},
+		},
+		{
+			Title: "use fields discovery filter for the nginx package setting a value",
+			Filter: Filter{
+				AllVersions: true,
+				Prerelease:  true,
+				Discovery:   mustBuildDiscoveryFilter("fields:event.dataset:logstash.logs,event.dataset:logstash.metrics"),
+			},
+			Expected: []filterTestPackage{
+				{Name: "logstash", Version: "2.0.0"},
+			},
+		},
+		{
+			Title: "use fields discovery filter for the logstash package setting a value with wildcard",
+			Filter: Filter{
+				AllVersions: true,
+				Prerelease:  true,
+				Discovery:   mustBuildDiscoveryFilter("fields:event.dataset:logstash.*"),
+			},
+			Expected: []filterTestPackage{
+				{Name: "logstash", Version: "2.0.0"},
+			},
+		},
 	}
 
 	for _, c := range cases {
@@ -721,7 +760,7 @@ type filterTestPackage struct {
 	DiscoveryFields []string
 }
 
-func (p filterTestPackage) Build() *Package {
+func (p filterTestPackage) Build() (*Package, error) {
 	var build Package
 	build.Name = p.Name
 	build.Version = p.Version
@@ -760,18 +799,20 @@ func (p filterTestPackage) Build() *Package {
 		}
 	}
 
-	for _, name := range p.DiscoveryFields {
+	for _, parameter := range p.DiscoveryFields {
 		if build.Discovery == nil {
 			build.Discovery = &Discovery{}
 		}
-		build.Discovery.Fields = append(build.Discovery.Fields, DiscoveryField{
-			Name: name,
-		})
+		filterField, err := newDiscoveryFilterField(parameter)
+		if err != nil {
+			return nil, err
+		}
+		build.Discovery.Fields = append(build.Discovery.Fields, filterField)
 	}
 
 	// set spec semver.Version variables
 	build.setRuntimeFields()
-	return &build
+	return &build, nil
 }
 
 func (p filterTestPackage) Instances(i *Package) bool {
@@ -788,12 +829,16 @@ func (p filterTestPackage) String() string {
 	return p.Name + "-" + p.Version
 }
 
-func buildFilterTestPackages(testPackages []filterTestPackage) Packages {
+func buildFilterTestPackages(testPackages []filterTestPackage) (Packages, error) {
 	packages := make(Packages, len(testPackages))
+	var err error
 	for i, p := range testPackages {
-		packages[i] = p.Build()
+		packages[i], err = p.Build()
+		if err != nil {
+			return nil, err
+		}
 	}
-	return packages
+	return packages, nil
 }
 
 func removeFilterTestPackages(testPackages []filterTestPackage, remove ...filterTestPackage) []filterTestPackage {

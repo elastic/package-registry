@@ -334,16 +334,36 @@ func NewDiscoveryFilter(filter string) (*discoveryFilter, error) {
 	var result discoveryFilter
 	switch filterType {
 	case "fields":
-		for _, name := range strings.Split(args, ",") {
-			result.Fields = append(result.Fields, DiscoveryField{
-				Name: name,
-			})
+		for _, parameter := range strings.Split(args, ",") {
+			filterField, err := newDiscoveryFilterField(parameter)
+			if err != nil {
+				return nil, fmt.Errorf("could not parse discovery filter field %q: %w", parameter, err)
+			}
+			result.Fields = append(result.Fields, filterField)
 		}
 	default:
 		return nil, fmt.Errorf("unknown discovery filter %q", filterType)
 	}
 
 	return &result, nil
+}
+
+func newDiscoveryFilterField(parameter string) (DiscoveryField, error) {
+	discoveryField := DiscoveryField{
+		Name: parameter,
+	}
+	name, value, found := strings.Cut(parameter, ":")
+	if found {
+		discoveryField.Name = name
+		discoveryField.Value = value
+	}
+
+	_, err := filepath.Match(discoveryField.Value, "*")
+	if err != nil {
+		return DiscoveryField{}, fmt.Errorf("invalid discovery field value %q: %w", discoveryField.Value, err)
+	}
+
+	return discoveryField, nil
 }
 
 func (f *discoveryFilter) Matches(p *Package) bool {
@@ -364,7 +384,25 @@ func (fields discoveryFilterFields) Matches(p *Package) bool {
 	}
 
 	for _, packageField := range p.Discovery.Fields {
-		if !slices.Contains([]DiscoveryField(fields), packageField) {
+		if !slices.ContainsFunc([]DiscoveryField(fields), func(field DiscoveryField) bool {
+			if field.Name != packageField.Name {
+				return false
+			}
+			if packageField.Value == "" {
+				return true
+			}
+
+			// Using filepath.Match to allow for wildcard matching.
+			// This allows for patterns like "event.dataset:logstash.*" to match
+			matched, err := filepath.Match(field.Value, packageField.Value)
+			// The only possible returned error is [ErrBadPattern], when pattern is malformed.
+			// But we check for that while creating the discoveryFilterFields, so we can safely ignore it here.
+			if err != nil {
+				// If the value is not a valid pattern, we can't match it.
+				return false
+			}
+			return matched
+		}) {
 			return false
 		}
 	}
