@@ -36,7 +36,7 @@ func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *
 
 		if cache != nil {
 			if response, ok := cache.Get(r.URL.String()); ok {
-				logger.Info("cached request", zap.String("url", r.URL.String()), zap.Int("lruSize", cache.Len()))
+				logger.Debug("using as response cached search request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", cache.Len()))
 				cacheHeaders(w, cacheTime)
 				jsonHeader(w)
 				fmt.Fprint(w, response)
@@ -83,9 +83,8 @@ func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *
 		fmt.Fprint(w, string(data))
 
 		if cache != nil {
-			logger.Info("caching request", zap.String("url", r.URL.String()), zap.Int("lruSize", cache.Len()))
 			val := cache.Add(r.URL.String(), string(data))
-			logger.Info("Added to lru", zap.String("url", r.URL.String()), zap.Int("lruSize", cache.Len()), zap.Bool("added", val))
+			logger.Debug("added to cache request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", cache.Len()), zap.Bool("cache.added", val))
 		}
 	}
 }
