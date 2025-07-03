@@ -1241,6 +1241,10 @@
     "fields": [
      {
       "name": "process.pid"
+     },
+     {
+      "name": "event.dataset",
+      "value": "good_content.logs"
      }
     ]
    },
