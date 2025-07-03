@@ -116,7 +116,7 @@ func LoadPackagesAndCursorFromIndex(ctx context.Context, logger *zap.Logger, sto
 	return anIndex, storageCursor.Current, nil
 }
 
-func loadSearchIndexAllBatches(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, bucketName, rootStoragePath string, aCursor cursor, batchSize int, process func(packages.Packages) error) error {
+func loadSearchIndexAllBatches(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, bucketName, rootStoragePath string, aCursor cursor, batchSize int, process func(context.Context, packages.Packages) error) error {
 	span, ctx := apm.StartSpan(ctx, "LoadSearchIndexAll", "app")
 	span.Context.SetLabel("load.method", "batches")
 	span.Context.SetLabel("load.batch.size", batchSize)
@@ -174,7 +174,7 @@ func loadSearchIndexAllBatches(ctx context.Context, logger *zap.Logger, storageC
 			count++
 
 			if count >= batchSize {
-				err = process(packages)
+				err = process(ctx, packages)
 				if err != nil {
 					return fmt.Errorf("error processing batch of packages: %w", err)
 				}
@@ -193,7 +193,7 @@ func loadSearchIndexAllBatches(ctx context.Context, logger *zap.Logger, storageC
 		}
 	}
 	if len(packages) > 0 {
-		err = process(packages)
+		err = process(ctx, packages)
 		if err != nil {
 			return fmt.Errorf("error processing final batch of packages: %w", err)
 		}
@@ -201,7 +201,7 @@ func loadSearchIndexAllBatches(ctx context.Context, logger *zap.Logger, storageC
 	return nil
 }
 
-func LoadPackagesAndCursorFromIndexBatches(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, storageBucketInternal, currentCursor string, batchSize int, process func(packages.Packages) error) (string, error) {
+func LoadPackagesAndCursorFromIndexBatches(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, storageBucketInternal, currentCursor string, batchSize int, process func(context.Context, packages.Packages) error) (string, error) {
 	bucketName, rootStoragePath, err := extractBucketNameFromURL(storageBucketInternal)
 	if err != nil {
 		return "", fmt.Errorf("can't extract bucket name from URL (url: %s): %w", storageBucketInternal, err)
