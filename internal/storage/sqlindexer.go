@@ -199,7 +199,12 @@ func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 		metrics.StorageIndexerUpdateIndexDurationSeconds.Observe(time.Since(start).Seconds())
 	}()
 
+	shouldClean := false
+
 	defer func() {
+		if !shouldClean {
+			return
+		}
 		startClean := time.Now()
 		if err := i.cleanBackupDatabase(ctx); err != nil {
 			i.logger.Error("Failed to clean backup database", zap.Error(err))
@@ -227,6 +232,7 @@ func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 	if i.cursor == currentCursor {
 		return nil
 	}
+	shouldClean = true
 	i.logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", numPackages)))
 
 	startLock := time.Now()
