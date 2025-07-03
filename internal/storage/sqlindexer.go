@@ -199,10 +199,8 @@ func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 		metrics.StorageIndexerUpdateIndexDurationSeconds.Observe(time.Since(start).Seconds())
 	}()
 
-	shouldClean := false
-
-	defer func() {
-		if !shouldClean {
+	defer func(initialCursor string) {
+		if initialCursor == i.cursor {
 			return
 		}
 		startClean := time.Now()
@@ -211,7 +209,7 @@ func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 		}
 		startCleanDuration := time.Since(startClean)
 		i.logger.Debug("Cleaned backup database", zap.Duration("elapsed.time", time.Since(startClean)), zap.String("elapsed.time.human", startCleanDuration.String()))
-	}()
+	}(i.cursor)
 
 	numPackages := 0
 	currentCursor, err := LoadPackagesAndCursorFromIndexBatches(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, i.cursor, i.maxBulkAddBatch, func(ctx context.Context, pkgs packages.Packages) error {
@@ -232,7 +230,6 @@ func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 	if i.cursor == currentCursor {
 		return nil
 	}
-	shouldClean = true
 	i.logger.Info("Downloaded new search-index-all index", zap.String("index.packages.size", fmt.Sprintf("%d", numPackages)))
 
 	startLock := time.Now()
