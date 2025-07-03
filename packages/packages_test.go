@@ -486,6 +486,9 @@ func TestPackagesSpecMinMaxFilter(t *testing.T) {
 			Release:       "experimental",
 			Type:          "integration",
 			KibanaVersion: "^7.17.0 || ^8.0.0",
+			DiscoveryFields: []string{
+				"server.fqdn",
+			},
 		},
 		{
 			FormatVersion: "3.0.0",
@@ -709,7 +712,7 @@ func TestPackagesSpecMinMaxFilter(t *testing.T) {
 			},
 		},
 		{
-			Title: "use fields discovery filter for the nginx package setting a value",
+			Title: "use fields discovery filter for the logstash package setting a value",
 			Filter: Filter{
 				AllVersions: true,
 				Prerelease:  true,
@@ -729,6 +732,24 @@ func TestPackagesSpecMinMaxFilter(t *testing.T) {
 			Expected: []filterTestPackage{
 				{Name: "logstash", Version: "2.0.0"},
 			},
+		},
+		{
+			Title: "use fields discovery filter with no value and no matching any package",
+			Filter: Filter{
+				AllVersions: true,
+				Prerelease:  true,
+				Discovery:   mustBuildDiscoveryFilter("fields:event.dataset"),
+			},
+			Expected: []filterTestPackage{},
+		},
+		{
+			Title: "use fields discovery filter with value but packages do not have value",
+			Filter: Filter{
+				AllVersions: true,
+				Prerelease:  true,
+				Discovery:   mustBuildDiscoveryFilter("fields:server.fqdn:mysql.host.*"),
+			},
+			Expected: []filterTestPackage{},
 		},
 	}
 

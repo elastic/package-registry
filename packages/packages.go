@@ -353,14 +353,15 @@ func newDiscoveryFilterField(parameter string) (DiscoveryField, error) {
 		Name: parameter,
 	}
 	name, value, found := strings.Cut(parameter, ":")
-	if found {
-		discoveryField.Name = name
-		discoveryField.Value = value
+	if !found {
+		return discoveryField, nil
 	}
+	discoveryField.Name = name
+	discoveryField.Value = &value
 
-	_, err := filepath.Match(discoveryField.Value, "*")
+	_, err := filepath.Match(*discoveryField.Value, "*")
 	if err != nil {
-		return DiscoveryField{}, fmt.Errorf("invalid discovery field value %q: %w", discoveryField.Value, err)
+		return DiscoveryField{}, fmt.Errorf("invalid discovery field value %q: %w", *discoveryField.Value, err)
 	}
 
 	return discoveryField, nil
@@ -388,13 +389,16 @@ func (fields discoveryFilterFields) Matches(p *Package) bool {
 			if field.Name != packageField.Name {
 				return false
 			}
-			if packageField.Value == "" {
+			if packageField.Value == nil && field.Value == nil {
 				return true
+			}
+			if packageField.Value == nil || field.Value == nil {
+				return false
 			}
 
 			// Using filepath.Match to allow for wildcard matching.
 			// This allows for patterns like "event.dataset:logstash.*" to match
-			matched, err := filepath.Match(field.Value, packageField.Value)
+			matched, err := filepath.Match(*field.Value, *packageField.Value)
 			// The only possible returned error is [ErrBadPattern], when pattern is malformed.
 			// But we check for that while creating the discoveryFilterFields, so we can safely ignore it here.
 			if err != nil {
