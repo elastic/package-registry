@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Include values for discovery fields in search and category endpoints. [#1332](https://github.com/elastic/package-registry/pull/1332)
+
 ### Deprecated
 
 ### Known Issues
