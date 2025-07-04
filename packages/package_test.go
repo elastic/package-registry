@@ -253,6 +253,51 @@ func TestNewPackageFromPath(t *testing.T) {
 	}
 }
 
+func TestMustParsePackageFromPath(t *testing.T) {
+	cases := []struct {
+		title         string
+		path          string
+		zip           bool
+		expectedError bool
+	}{
+		{
+			title:         "unknown category",
+			path:          "../testdata/local-storage/nodirentries-1.0.0.zip",
+			zip:           true,
+			expectedError: true,
+		},
+		{
+			title:         "valid package",
+			path:          "../testdata/package/reference/1.0.0",
+			zip:           false,
+			expectedError: false,
+		},
+	}
+
+	zipFsBuilder := func(p *Package) (PackageFileSystem, error) {
+		return NewZipPackageFileSystem(p)
+	}
+	fsBuilder := func(p *Package) (PackageFileSystem, error) {
+		return NewExtractedPackageFileSystem(p)
+	}
+
+	logger := zap.Must(zap.NewDevelopment())
+	for _, c := range cases {
+		t.Run(c.title, func(t *testing.T) {
+			builder := fsBuilder
+			if c.zip {
+				builder = zipFsBuilder
+			}
+			_, err := MustParsePackage(logger, c.path, builder)
+			if c.expectedError {
+				assert.Error(t, err)
+				return
+			}
+			assert.NoError(t, err)
+		})
+	}
+}
+
 func TestIsPrerelease(t *testing.T) {
 	cases := []struct {
 		version    string

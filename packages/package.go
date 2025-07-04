@@ -216,9 +216,44 @@ func getDownloadPath(p Package, t string) string {
 	return path.Join("/epr", p.Name, p.Name+"-"+p.Version+".zip")
 }
 
+// MustParsePackage creates a new package instances based on the given base path.
+// The path passed goes to the root of the package where the manifest.yml is.
+// It runs more strict validation than NewPackage, e.g. ensuring that all categories are valid.
+func MustParsePackage(logger *zap.Logger, basePath string, fsBuilder FileSystemBuilder) (*Package, error) {
+	p, err := newPackage(logger, basePath, fsBuilder)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create package from path %s: %w", basePath, err)
+	}
+	for _, c := range p.Categories {
+		if _, ok := Categories[c]; !ok {
+			return nil, fmt.Errorf("invalid category: %s", c)
+		}
+	}
+	return p, nil
+}
+
 // NewPackage creates a new package instances based on the given base path.
 // The path passed goes to the root of the package where the manifest.yml is.
 func NewPackage(logger *zap.Logger, basePath string, fsBuilder FileSystemBuilder) (*Package, error) {
+	p, err := newPackage(logger, basePath, fsBuilder)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create package from path %s: %w", basePath, err)
+	}
+	j := 0
+	for i, c := range p.Categories {
+		if _, ok := Categories[c]; !ok {
+			p.logger.Warn("package uses an unknown category, will be ignored",
+				zap.String("category", c))
+			continue
+		}
+		p.Categories[j] = p.Categories[i]
+		j += 1
+	}
+	p.Categories = p.Categories[:j]
+	return p, nil
+}
+
+func newPackage(logger *zap.Logger, basePath string, fsBuilder FileSystemBuilder) (*Package, error) {
 	p := &Package{
 		BasePath:  basePath,
 		fsBuilder: fsBuilder,
@@ -622,20 +657,6 @@ func (p *Package) Validate() error {
 	if p.Description == "" {
 		return fmt.Errorf("no description set")
 	}
-
-	j := 0
-	for i, c := range p.Categories {
-		if _, ok := Categories[c]; !ok {
-			p.logger.Warn("package uses an unknown category, will be ignored",
-				zap.String("package", p.Name),
-				zap.String("version", p.Version),
-				zap.String("category", c))
-			continue
-		}
-		p.Categories[j] = p.Categories[i]
-		j += 1
-	}
-	p.Categories = p.Categories[:j]
 
 	fs, err := p.fs()
 	if err != nil {
