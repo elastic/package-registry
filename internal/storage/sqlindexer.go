@@ -252,9 +252,6 @@ func (i *SQLIndexer) updateDatabase(ctx context.Context, index *packages.Package
 	totalProcessed := 0
 	dbPackages := make([]*database.Package, 0, i.maxBulkAddBatch)
 	for {
-		read := 0
-		// reuse slice to avoid allocations
-		dbPackages = dbPackages[:0]
 		endBatch := totalProcessed + i.maxBulkAddBatch
 		for j := totalProcessed; j < endBatch && j < len(*index); j++ {
 
@@ -264,16 +261,17 @@ func (i *SQLIndexer) updateDatabase(ctx context.Context, index *packages.Package
 			}
 
 			dbPackages = append(dbPackages, newPackage)
-			read++
 		}
 		err := (*i.backup).BulkAdd(ctx, "packages", dbPackages)
 		if err != nil {
 			return fmt.Errorf("failed to create all packages (bulk operation): %w", err)
 		}
-		totalProcessed += read
+		totalProcessed += len(dbPackages)
 		if totalProcessed >= len(*index) {
 			break
 		}
+		// reuse slice to avoid allocations
+		dbPackages = dbPackages[:0]
 	}
 
 	return nil

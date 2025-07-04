@@ -170,9 +170,6 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 	args := make([]any, 0, r.maxBulkAddBatch*r.numberFields)
 	for {
 		read := 0
-		// reuse args slice
-		args = args[:0]
-
 		var sb strings.Builder
 		sb.WriteString("INSERT INTO ")
 		sb.WriteString(database)
@@ -242,6 +239,9 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 		if totalProcessed >= len(pkgs) {
 			break
 		}
+
+		// reuse args slice
+		args = args[:0]
 	}
 
 	return nil
