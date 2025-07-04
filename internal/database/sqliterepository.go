@@ -303,8 +303,6 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 		clause, whereArgs = whereOptions.Where()
 		query.WriteString(clause)
 	}
-	// TODO: remove debug
-	// fmt.Println("Query:", query.String())
 	rows, err := r.db.QueryContext(ctx, query.String(), whereArgs...)
 	if err != nil {
 		return err
