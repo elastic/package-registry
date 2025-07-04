@@ -5,11 +5,13 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"net/http"
 	"time"
 
 	"go.elastic.co/apm/module/apmzap/v2"
+	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 
 	"github.com/Masterminds/semver/v3"
@@ -79,10 +81,7 @@ func packageIndexHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxy
 			return
 		}
 
-		w.Header().Set("Content-Type", "application/json")
-		cacheHeaders(w, cacheTime)
-
-		err = util.WriteJSONPretty(w, pkgs[0])
+		data, err := getPackageOutput(r.Context(), pkgs[0])
 		if err != nil {
 			logger.Error("marshaling package index failed",
 				zap.String("package.path", pkgs[0].BasePath),
@@ -90,5 +89,14 @@ func packageIndexHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxy
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
+
+		serveJSONResponse(r.Context(), w, cacheTime, data)
 	}
+}
+
+func getPackageOutput(ctx context.Context, pkg *packages.Package) ([]byte, error) {
+	span, ctx := apm.StartSpan(ctx, "Get Package Output", "app")
+	defer span.End()
+
+	return util.MarshalJSONPretty(pkg)
 }
