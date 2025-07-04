@@ -95,7 +95,7 @@ func packageIndexHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxy
 }
 
 func getPackageOutput(ctx context.Context, pkg *packages.Package) ([]byte, error) {
-	span, ctx := apm.StartSpan(ctx, "Get Package Output", "app")
+	span, _ := apm.StartSpan(ctx, "Get Package Output", "app")
 	defer span.End()
 
 	return util.MarshalJSONPretty(pkg)

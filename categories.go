@@ -242,7 +242,7 @@ func getCategoriesOutput(ctx context.Context, categories map[string]*packages.Ca
 }
 
 func serveJSONResponse(ctx context.Context, w http.ResponseWriter, cacheTime time.Duration, data []byte) {
-	span, ctx := apm.StartSpan(ctx, "Serve JSON Response", "app")
+	span, _ := apm.StartSpan(ctx, "Serve JSON Response", "app")
 	defer span.End()
 
 	cacheHeaders(w, cacheTime)
