@@ -86,6 +86,7 @@ func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options Index
 		label:           fmt.Sprintf("storage-%s", options.PackageStorageEndpoint),
 		maxBulkAddBatch: defaultMaxBulkAddBatch,
 		cache:           options.Cache,
+		cursor:          "init",
 	}
 
 	indexer.current = &indexer.database
@@ -212,10 +213,10 @@ func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 	}(i.cursor)
 
 	numPackages := 0
-	currentCursor, err := LoadPackagesAndCursorFromIndexBatches(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, i.cursor, i.maxBulkAddBatch, func(ctx context.Context, pkgs packages.Packages) error {
+	currentCursor, err := LoadPackagesAndCursorFromIndexBatches(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, i.cursor, i.maxBulkAddBatch, func(ctx context.Context, pkgs packages.Packages, newCursor string) error {
 		// This function is called for each batch of packages read from the index.
 		startUpdate := time.Now()
-		if err := i.updateDatabase(ctx, &pkgs); err != nil {
+		if err := i.updateDatabase(ctx, &pkgs, newCursor); err != nil {
 			return fmt.Errorf("failed to update database: %w", err)
 		}
 		startDuration := time.Since(startUpdate)
@@ -244,7 +245,7 @@ func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 	return nil
 }
 
-func (i *SQLIndexer) updateDatabase(ctx context.Context, index *packages.Packages) error {
+func (i *SQLIndexer) updateDatabase(ctx context.Context, index *packages.Packages, cursor string) error {
 	span, ctx := apm.StartSpan(ctx, "updateDatabase", "app")
 	defer span.End()
 
@@ -255,11 +256,11 @@ func (i *SQLIndexer) updateDatabase(ctx context.Context, index *packages.Package
 		// reuse slice to avoid allocations
 		dbPackages = dbPackages[:0]
 		endBatch := totalProcessed + i.maxBulkAddBatch
-		for i := totalProcessed; i < endBatch && i < len(*index); i++ {
+		for j := totalProcessed; j < endBatch && j < len(*index); j++ {
 
-			newPackage, err := createDatabasePackage((*index)[i])
+			newPackage, err := createDatabasePackage((*index)[j], cursor)
 			if err != nil {
-				return fmt.Errorf("failed to create database package %s-%s: %w", (*index)[i].Name, (*index)[i].Version, err)
+				return fmt.Errorf("failed to create database package %s-%s: %w", (*index)[j].Name, (*index)[j].Version, err)
 			}
 
 			dbPackages = append(dbPackages, newPackage)
@@ -312,7 +313,7 @@ func (i *SQLIndexer) swapDatabases(ctx context.Context, currentCursor string, nu
 	metrics.NumberIndexedPackages.Set(float64(numPackages))
 }
 
-func createDatabasePackage(pkg *packages.Package) (*database.Package, error) {
+func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Package, error) {
 	fullContents, err := json.Marshal(pkg)
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal package %s-%s: %w", pkg.Name, pkg.Version, err)
@@ -345,6 +346,7 @@ func createDatabasePackage(pkg *packages.Package) (*database.Package, error) {
 	pkgCategories := calculateAllCategories(pkg)
 
 	newPackage := database.Package{
+		Cursor:          cursor,
 		Name:            pkg.Name,
 		Version:         pkg.Version,
 		FormatVersion:   pkg.FormatVersion,
@@ -399,7 +401,9 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 		i.m.RLock()
 		defer i.m.RUnlock()
 
-		options := &database.SQLOptions{}
+		options := &database.SQLOptions{
+			CurrentCursor: i.cursor,
+		}
 		if opts != nil && opts.Filter != nil {
 			// TODO: Add support to filter by discovery fields if possible.
 			options.Filter = &database.FilterOptions{

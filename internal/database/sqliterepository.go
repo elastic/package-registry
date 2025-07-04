@@ -29,6 +29,7 @@ type keyDefinition struct {
 }
 
 var keys = []keyDefinition{
+	{"cursor", "TEXT NOT NULL"},
 	{"name", "TEXT NOT NULL"},
 	{"version", "TEXT NOT NULL"},
 	{"formatVersion", "TEXT NOT NULL"},
@@ -138,7 +139,7 @@ func (r *SQLiteRepository) Initialize(ctx context.Context) error {
 	for _, i := range keys {
 		createQuery.WriteString(fmt.Sprintf("%s %s, ", i.Name, i.SQLType))
 	}
-	createQuery.WriteString("PRIMARY KEY (name, version));")
+	createQuery.WriteString("PRIMARY KEY (cursor, name, version));")
 	if _, err := r.db.ExecContext(ctx, createQuery.String()); err != nil {
 		return err
 	}
@@ -206,6 +207,7 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 			discoveryFields := addCommasToString(pkgs[i].DiscoveryFields)
 
 			args = append(args,
+				pkgs[i].Cursor,
 				pkgs[i].Name,
 				pkgs[i].Version,
 				pkgs[i].FormatVersion,
@@ -313,6 +315,7 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 	var pkg Package
 	for rows.Next() {
 		if err := rows.Scan(
+			&pkg.Cursor,
 			&pkg.Name,
 			&pkg.Version,
 			&pkg.FormatVersion,
@@ -370,16 +373,34 @@ type FilterOptions struct {
 type SQLOptions struct {
 	Filter *FilterOptions
 
+	CurrentCursor string
+
 	IncludeFullData bool // If true, the query will return the full data field instead of the base data field
 }
 
 func (o *SQLOptions) Where() (string, []any) {
-	if o == nil || o.Filter == nil {
+	if o == nil {
 		return "", nil
 	}
 	var sb strings.Builder
 	var args []any
+	// Always filter by cursor
+	if o.CurrentCursor != "" {
+		sb.WriteString("cursor = ?")
+		args = append(args, o.CurrentCursor)
+	}
+
+	if o.Filter == nil {
+		if sb.Len() == 0 {
+			return "", nil
+		}
+		return fmt.Sprintf(" WHERE %s", sb.String()), args
+	}
+
 	if o.Filter.Type != "" {
+		if sb.Len() > 0 {
+			sb.WriteString(" AND ")
+		}
 		sb.WriteString("type = ?")
 		args = append(args, o.Filter.Type)
 	}
