@@ -106,5 +106,7 @@ export EPR_ADDRESS="${ADDRESS}"
 # export EPR_LOG_LEVEL="debug"
 export EPR_CONFIG="${CONFIG_PATH}"
 
+# export EPR_SQL_INDEXER_READ_PACKAGES_BATCH_SIZE=2000
+# export EPR_SQL_DB_INSERT_BATCH_SIZE=2000
 ./package-registry
 

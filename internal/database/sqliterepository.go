@@ -48,20 +48,25 @@ var keys = []keyDefinition{
 const defaultMaxBulkAddBatch = 2000
 
 type SQLiteRepository struct {
-	db              *sql.DB
-	path            string
-	maxBulkAddBatch int
-	numberFields    int
+	db                  *sql.DB
+	path                string
+	maxBulkAddBatchSize int
+	maxTotalArgs        int
 }
 
 var _ Repository = new(SQLiteRepository)
 
-func NewFileSQLDB(path string) (*SQLiteRepository, error) {
+type FileSQLDBOptions struct {
+	Path             string
+	BatchSizeInserts int
+}
+
+func NewFileSQLDB(options FileSQLDBOptions) (*SQLiteRepository, error) {
 	// NOTE: Even using sqlcache (with Ristretto or Redis), data column needs to be processed (Unmarshalled)
 	// again for all the Get queries performed, so there is no advantage in time of using sqlcache with SQLite
 	// for our use case.
 
-	db, err := sql.Open("sqlite", path)
+	db, err := sql.Open("sqlite", options.Path)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open database: %w", err)
 	}
@@ -70,19 +75,27 @@ func NewFileSQLDB(path string) (*SQLiteRepository, error) {
 		return nil, fmt.Errorf("failed to connect to database: %w", err)
 	}
 
-	dbRepo, err := newSQLiteRepository(db)
+	dbRepo, err := newSQLiteRepository(sqlDBOptions{
+		db:               db,
+		batchSizeInserts: options.BatchSizeInserts,
+	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to create SQLite repository: %w", err)
 	}
 	if err := dbRepo.Initialize(context.Background()); err != nil {
 		return nil, fmt.Errorf("failed to create database: %w", err)
 	}
-	dbRepo.path = path
+	dbRepo.path = options.Path
 
 	return dbRepo, nil
 }
 
-func newSQLiteRepository(db *sql.DB) (*SQLiteRepository, error) {
+type sqlDBOptions struct {
+	db               *sql.DB
+	batchSizeInserts int
+}
+
+func newSQLiteRepository(options sqlDBOptions) (*SQLiteRepository, error) {
 	// https://www.sqlite.org/pragma.html#pragma_journal_mode
 	// Not observed any performance difference with WAL mode, so keeping it as DELETE mode for now.
 	// if _, err = db.Exec("PRAGMA journal_mode = WAL;"); err != nil {
@@ -107,10 +120,14 @@ func newSQLiteRepository(db *sql.DB) (*SQLiteRepository, error) {
 	// if _, err := db.Exec("PRAGMA cache_size = -10000;"); err != nil {
 	// 	return nil, fmt.Errorf("failed to update cache_size: %w", err)
 	// }
+	batchSize := defaultMaxBulkAddBatch
+	if options.batchSizeInserts > 0 {
+		batchSize = options.batchSizeInserts
+	}
 	return &SQLiteRepository{
-		db:              db,
-		maxBulkAddBatch: defaultMaxBulkAddBatch,
-		numberFields:    len(keys),
+		db:                  options.db,
+		maxBulkAddBatchSize: batchSize,
+		maxTotalArgs:        batchSize * len(keys),
 	}, nil
 }
 
@@ -120,6 +137,7 @@ func (r *SQLiteRepository) File(ctx context.Context) string {
 
 func (r *SQLiteRepository) Ping(ctx context.Context) error {
 	span, ctx := apm.StartSpan(ctx, "SQL: Ping", "app")
+	span.Context.SetLabel("database.path", r.File(ctx))
 	defer span.End()
 	if r.db == nil {
 		return errors.New("database is not initialized")
@@ -132,6 +150,7 @@ func (r *SQLiteRepository) Ping(ctx context.Context) error {
 
 func (r *SQLiteRepository) Initialize(ctx context.Context) error {
 	span, ctx := apm.StartSpan(ctx, "SQL: Initialize", "app")
+	span.Context.SetLabel("database.path", r.File(ctx))
 	defer span.End()
 	createQuery := strings.Builder{}
 	createQuery.WriteString("CREATE TABLE IF NOT EXISTS ")
@@ -160,6 +179,8 @@ func (r *SQLiteRepository) Initialize(ctx context.Context) error {
 
 func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []*Package) error {
 	span, ctx := apm.StartSpan(ctx, "SQL: Insert batches", "app")
+	span.Context.SetLabel("insert.batch.size", r.maxBulkAddBatchSize)
+	span.Context.SetLabel("database.path", r.File(ctx))
 	defer span.End()
 
 	if len(pkgs) == 0 {
@@ -167,7 +188,7 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 	}
 
 	totalProcessed := 0
-	args := make([]any, 0, r.maxBulkAddBatch*r.numberFields)
+	args := make([]any, 0, r.maxTotalArgs)
 	for {
 		read := 0
 		var sb strings.Builder
@@ -182,7 +203,7 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 		}
 		sb.WriteString(") values")
 
-		endBatch := totalProcessed + r.maxBulkAddBatch
+		endBatch := totalProcessed + r.maxBulkAddBatchSize
 		for i := totalProcessed; i < endBatch && i < len(pkgs); i++ {
 			sb.WriteString("(")
 			for j := range keys {
@@ -265,6 +286,7 @@ func addCommasToString(s string) string {
 
 func (r *SQLiteRepository) All(ctx context.Context, database string, whereOptions WhereOptions) ([]*Package, error) {
 	span, ctx := apm.StartSpan(ctx, "SQL: Get All", "app")
+	span.Context.SetLabel("database.path", r.File(ctx))
 	defer span.End()
 
 	var all []*Package
@@ -278,6 +300,7 @@ func (r *SQLiteRepository) All(ctx context.Context, database string, whereOption
 
 func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOptions WhereOptions, process func(ctx context.Context, pkg *Package) error) error {
 	span, ctx := apm.StartSpan(ctx, "SQL: Get All (process each package)", "app")
+	span.Context.SetLabel("database.path", r.File(ctx))
 	defer span.End()
 
 	useBaseData := whereOptions == nil || !whereOptions.UseFullData()
@@ -346,6 +369,7 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 
 func (r *SQLiteRepository) Drop(ctx context.Context, table string) error {
 	span, ctx := apm.StartSpan(ctx, "SQL: Drop", "app")
+	span.Context.SetLabel("database.path", r.File(ctx))
 	defer span.End()
 	query := fmt.Sprintf("DROP TABLE IF EXISTS %s", table)
 	_, err := r.db.ExecContext(ctx, query)

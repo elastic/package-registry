@@ -32,7 +32,7 @@ import (
 
 const (
 	indexerGetDurationPrometheusLabel = "SQLStorageIndexer"
-	defaultMaxBulkAddBatch            = 1500
+	defaultReadPackagesBatchSize      = 2000
 )
 
 var allCategories = categories.DefaultCategories()
@@ -57,7 +57,7 @@ type SQLIndexer struct {
 
 	logger *zap.Logger
 
-	maxBulkAddBatch int
+	readPackagesBatchSize int
 
 	cache *expirable.LRU[string, []byte] // Cache for search results
 }
@@ -70,6 +70,7 @@ type IndexerOptions struct {
 	Database                     database.Repository
 	SwapDatabase                 database.Repository
 	Cache                        *expirable.LRU[string, []byte] // Cache for search results
+	ReadPackagesBatchsize        int
 }
 
 func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options IndexerOptions) *SQLIndexer {
@@ -78,19 +79,23 @@ func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options Index
 	}
 
 	indexer := &SQLIndexer{
-		storageClient:   storageClient,
-		options:         options,
-		logger:          logger,
-		database:        options.Database,
-		swapDatabase:    options.SwapDatabase,
-		label:           fmt.Sprintf("storage-%s", options.PackageStorageEndpoint),
-		maxBulkAddBatch: defaultMaxBulkAddBatch,
-		cache:           options.Cache,
-		cursor:          "init",
+		storageClient:         storageClient,
+		options:               options,
+		logger:                logger,
+		database:              options.Database,
+		swapDatabase:          options.SwapDatabase,
+		label:                 fmt.Sprintf("storage-%s", options.PackageStorageEndpoint),
+		readPackagesBatchSize: defaultReadPackagesBatchSize,
+		cache:                 options.Cache,
+		cursor:                "init",
 	}
 
 	indexer.current = &indexer.database
 	indexer.backup = &indexer.swapDatabase
+
+	if options.ReadPackagesBatchsize > 0 {
+		indexer.readPackagesBatchSize = options.ReadPackagesBatchsize
+	}
 
 	return indexer
 }
@@ -192,6 +197,7 @@ func (i *SQLIndexer) watchIndices(ctx context.Context) {
 
 func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 	span, ctx := apm.StartSpan(ctx, "UpdateIndex", "app")
+	span.Context.SetLabel("read.packages.batch.size", i.readPackagesBatchSize)
 	defer span.End()
 
 	i.logger.Debug("Update indices")
@@ -213,7 +219,7 @@ func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 	}(i.cursor)
 
 	numPackages := 0
-	currentCursor, err := LoadPackagesAndCursorFromIndexBatches(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, i.cursor, i.maxBulkAddBatch, func(ctx context.Context, pkgs packages.Packages, newCursor string) error {
+	currentCursor, err := LoadPackagesAndCursorFromIndexBatches(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, i.cursor, i.readPackagesBatchSize, func(ctx context.Context, pkgs packages.Packages, newCursor string) error {
 		// This function is called for each batch of packages read from the index.
 		startUpdate := time.Now()
 		if err := i.updateDatabase(ctx, &pkgs, newCursor); err != nil {
@@ -250,9 +256,9 @@ func (i *SQLIndexer) updateDatabase(ctx context.Context, index *packages.Package
 	defer span.End()
 
 	totalProcessed := 0
-	dbPackages := make([]*database.Package, 0, i.maxBulkAddBatch)
+	dbPackages := make([]*database.Package, 0, i.readPackagesBatchSize)
 	for {
-		endBatch := totalProcessed + i.maxBulkAddBatch
+		endBatch := totalProcessed + i.readPackagesBatchSize
 		for j := totalProcessed; j < endBatch && j < len(*index); j++ {
 
 			newPackage, err := createDatabasePackage((*index)[j], cursor)

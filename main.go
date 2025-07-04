@@ -250,7 +250,20 @@ func initDatabase(ctx context.Context, logger *zap.Logger, databaseFolderPath, d
 		}
 	}
 
-	packageRepository, err := database.NewFileSQLDB(dbPath)
+	options := database.FileSQLDBOptions{
+		Path: dbPath,
+	}
+
+	if os.Getenv("EPR_SQL_DB_INSERT_BATCH_SIZE") != "" {
+		maxInsertBatchSize, err := strconv.Atoi(os.Getenv("EPR_SQL_DB_INSERT_BATCH_SIZE"))
+		if err != nil {
+			logger.Fatal("failed to parse EPR_SQL_DB_INSERT_BATCH_SIZE environment variable", zap.Error(err))
+			return nil, fmt.Errorf("failed to parse EPR_SQL_DB_INSERT_BATCH_SIZE environment variable: %w", err)
+		}
+		options.BatchSizeInserts = maxInsertBatchSize
+	}
+
+	packageRepository, err := database.NewFileSQLDB(options)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open database (path %q): %w", dbPath, err)
 	}
@@ -394,7 +407,7 @@ func initSQLStorageIndexer(ctx context.Context, logger *zap.Logger, apmTracer *a
 		return nil, fmt.Errorf("failed to initialize storage backup database: %w", err)
 	}
 
-	return internalStorage.NewIndexer(logger, storageClient, internalStorage.IndexerOptions{
+	options := internalStorage.IndexerOptions{
 		APMTracer:                    apmTracer,
 		PackageStorageBucketInternal: storageIndexerBucketInternal,
 		PackageStorageEndpoint:       storageEndpoint,
@@ -402,7 +415,18 @@ func initSQLStorageIndexer(ctx context.Context, logger *zap.Logger, apmTracer *a
 		Database:                     storageDatabase,
 		SwapDatabase:                 storageSwapDatabase,
 		Cache:                        cache,
-	}), nil
+	}
+
+	if os.Getenv("EPR_SQL_INDEXER_READ_PACKAGES_BATCH_SIZE") != "" {
+		readPackagesBatchSize, err := strconv.Atoi(os.Getenv("EPR_SQL_INDEXER_READ_PACKAGES_BATCH_SIZE"))
+		if err != nil {
+			logger.Fatal("failed to parse EPR_SQL_INDEXER_READ_PACKAGES_BATCH_SIZE environment variable", zap.Error(err))
+			return nil, fmt.Errorf("failed to parse EPR_SQL_INDEXER_READ_PACKAGES_BATCH_SIZE environment variable: %w", err)
+		}
+		options.ReadPackagesBatchsize = readPackagesBatchSize
+	}
+
+	return internalStorage.NewIndexer(logger, storageClient, options), nil
 }
 
 func newStorageClient(ctx context.Context, logger *zap.Logger) (*gstorage.Client, error) {
