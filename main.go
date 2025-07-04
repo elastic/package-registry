@@ -200,9 +200,9 @@ func main() {
 		defer fakeServer.Stop()
 	}
 
-	var searchCache *expirable.LRU[string, string]
+	var searchCache *expirable.LRU[string, []byte]
 	if featureSQLStorageIndexer && featureEnableSearchCache {
-		searchCache = expirable.NewLRU[string, string](config.SearchCacheSize, nil, config.CacheTimeSearch)
+		searchCache = expirable.NewLRU[string, []byte](config.SearchCacheSize, nil, config.CacheTimeSearch)
 	}
 
 	indexer := initIndexer(ctx, logger, apmTracer, config, searchCache)
@@ -333,7 +333,7 @@ func initMetricsServer(logger *zap.Logger) {
 	}()
 }
 
-func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer, config *Config, cache *expirable.LRU[string, string]) Indexer {
+func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer, config *Config, cache *expirable.LRU[string, []byte]) Indexer {
 	tx := apmTracer.StartTransaction("initIndexer", "backend.init")
 	defer tx.End()
 
@@ -379,7 +379,7 @@ func initStorageIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.
 	}), nil
 }
 
-func initSQLStorageIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer, config *Config, cache *expirable.LRU[string, string]) (*internalStorage.SQLIndexer, error) {
+func initSQLStorageIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer, config *Config, cache *expirable.LRU[string, []byte]) (*internalStorage.SQLIndexer, error) {
 	storageClient, err := newStorageClient(ctx, logger)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create storage client: %w", err)
@@ -417,7 +417,7 @@ func newStorageClient(ctx context.Context, logger *zap.Logger) (*gstorage.Client
 	return gstorage.NewClient(ctx, opts...)
 }
 
-func initServer(logger *zap.Logger, apmTracer *apm.Tracer, config *Config, indexer Indexer, cache *expirable.LRU[string, string]) *http.Server {
+func initServer(logger *zap.Logger, apmTracer *apm.Tracer, config *Config, indexer Indexer, cache *expirable.LRU[string, []byte]) *http.Server {
 	router := mustLoadRouter(logger, config, indexer, cache)
 	apmgorilla.Instrument(router, apmgorilla.WithTracer(apmTracer))
 
@@ -516,7 +516,7 @@ func ensurePackagesAvailable(ctx context.Context, logger *zap.Logger, indexer In
 	metrics.NumberIndexedPackages.Set(float64(len(packages)))
 }
 
-func mustLoadRouter(logger *zap.Logger, config *Config, indexer Indexer, cache *expirable.LRU[string, string]) *mux.Router {
+func mustLoadRouter(logger *zap.Logger, config *Config, indexer Indexer, cache *expirable.LRU[string, []byte]) *mux.Router {
 	router, err := getRouter(logger, config, indexer, cache)
 	if err != nil {
 		logger.Fatal("failed go configure router", zap.Error(err))
@@ -524,7 +524,7 @@ func mustLoadRouter(logger *zap.Logger, config *Config, indexer Indexer, cache *
 	return router
 }
 
-func getRouter(logger *zap.Logger, config *Config, indexer Indexer, cache *expirable.LRU[string, string]) (*mux.Router, error) {
+func getRouter(logger *zap.Logger, config *Config, indexer Indexer, cache *expirable.LRU[string, []byte]) (*mux.Router, error) {
 	if featureProxyMode {
 		logger.Info("Technical preview: Proxy mode is an experimental feature and it may be unstable.")
 	}

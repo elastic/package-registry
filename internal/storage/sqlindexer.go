@@ -59,7 +59,7 @@ type SQLIndexer struct {
 
 	maxBulkAddBatch int
 
-	cache *expirable.LRU[string, string] // Cache for search results
+	cache *expirable.LRU[string, []byte] // Cache for search results
 }
 
 type IndexerOptions struct {
@@ -69,7 +69,7 @@ type IndexerOptions struct {
 	WatchInterval                time.Duration
 	Database                     database.Repository
 	SwapDatabase                 database.Repository
-	Cache                        *expirable.LRU[string, string] // Cache for search results
+	Cache                        *expirable.LRU[string, []byte] // Cache for search results
 }
 
 func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options IndexerOptions) *SQLIndexer {
