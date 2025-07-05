@@ -4,19 +4,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased](https://github.com/elastic/package-registry/compare/v1.28.0...main)
+## [unreleased](https://github.com/elastic/package-registry/compare/v1.29.0...main)
 
 ### Breaking changes
 
 ### Bugfixes
 
-* Update Go runtime to 1.24.2. [#1299](https://github.com/elastic/package-registry/pull/1299)
+### Added
+
+### Deprecated
+
+### Known Issues
+
+
+## [v1.29.0](https://github.com/elastic/package-registry/compare/v1.28.0...v1.29.0)
+
+### Breaking changes
+
+### Bugfixes
+
+* Update Go runtime to 1.24.4. [#1324](https://github.com/elastic/package-registry/pull/1324)
 * Ignore unknown categories instead of producing fatal errors. [#1297](https://github.com/elastic/package-registry/pull/1297)
 * Fix usages of time.Since in defer statements used to obtain duration Prometheus metrics in the indexer. [#1304](https://github.com/elastic/package-registry/pull/1304)
+* Rename some spans to avoid conflicts. [#1306](https://github.com/elastic/package-registry/pull/1306)
 
 ### Added
 
 * Change license from Elastic License to Elastic License 2.0. [#1298](https://github.com/elastic/package-registry/pull/1298)
+* Add APM spans for proxy requests and storage indexer Get calls. [#1306](https://github.com/elastic/package-registry/pull/1306)
+* Add SQL storage indexer in technical preview. [#1313](https://github.com/elastic/package-registry/pull/1313) [#1326](https://github.com/elastic/package-registry/pull/1326)
 
 ### Deprecated
 

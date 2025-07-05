@@ -81,6 +81,7 @@ type BasePackage struct {
 	Categories              []string             `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
 	SignaturePath           string               `config:"signature_path,omitempty" json:"signature_path,omitempty" yaml:"signature_path,omitempty"`
 	Discovery               *Discovery           `config:"discovery,omitempty" json:"discovery,omitempty" yaml:"discovery,omitempty"`
+	BaseDataStreams         []*BaseDataStream    `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
 }
 
 // BasePolicyTemplate is used for the package policy templates in the /search endpoint
@@ -134,6 +135,7 @@ type ElasticConditions struct {
 	Capabilities []string `config:"capabilities,omitempty" json:"capabilities,omitempty" yaml:"capabilities,omitempty"`
 }
 
+// Deprecated: Version is not currently used and will be removed in a future release.
 type Version struct {
 	Min string `config:"min,omitempty" json:"min,omitempty"`
 	Max string `config:"max,omitempty" json:"max,omitempty"`
@@ -185,6 +187,7 @@ func (i Image) getPath(p *Package) string {
 	return path.Join(packagePathPrefix, p.Name, p.Version, i.Src)
 }
 
+// Deprecated: Download is not currently used and will be removed in a future release.
 type Download struct {
 	Path string `config:"path" json:"path" validate:"required"`
 	Type string `config:"type" json:"type" validate:"required"`
@@ -200,6 +203,7 @@ type DeploymentMode struct {
 	IsDefault *bool `config:"is_default" json:"is_default,omitempty" yaml:"is_default,omitempty"`
 }
 
+// Deprecated: NewCommand is not currently used and will be removed in a future release.
 func NewDownload(p Package, t string) Download {
 	return Download{
 		Path: getDownloadPath(p, t),
@@ -207,6 +211,7 @@ func NewDownload(p Package, t string) Download {
 	}
 }
 
+// Deprecated: getDownloadPath is not currently used and will be removed in a future release.
 func getDownloadPath(p Package, t string) string {
 	return path.Join("/epr", p.Name, p.Name+"-"+p.Version+".zip")
 }
@@ -347,6 +352,8 @@ func NewPackage(logger *zap.Logger, basePath string, fsBuilder FileSystemBuilder
 		return nil, fmt.Errorf("loading package data streams failed (path '%s'): %w", p.BasePath, err)
 	}
 
+	p.setBaseDataStreams()
+
 	// Read path for package signature
 	p.SignaturePath, err = p.getSignaturePath()
 	if err != nil {
@@ -408,6 +415,20 @@ func (p *Package) setBasePolicyTemplates() {
 	}
 }
 
+// setBaseDataStreams method mirrors data_streams from Package to a corresponding property in BasePackage.
+// It's required to perform that sync, because DataStreams and BaseDataStreams have same JSON annotation
+// (data_streams).
+func (p *Package) setBaseDataStreams() {
+	for _, ds := range p.DataStreams {
+		baseStream := &BaseDataStream{
+			Type:    ds.Type,
+			Dataset: ds.Dataset,
+			Title:   ds.Title,
+		}
+		p.BaseDataStreams = append(p.BaseDataStreams, baseStream)
+	}
+}
+
 func (p *Package) HasCategory(category string) bool {
 	return hasCategory(p.Categories, category)
 }
@@ -462,6 +483,7 @@ func (p *Package) WorksWithCapabilities(capabilities []string) bool {
 }
 
 func (p *Package) HasCompatibleSpec(specMin, specMax, kibanaVersion *semver.Version) (bool, error) {
+	// FIXME: kibanaVersion parameter is not used, it should be removed.
 	if specMin == nil && specMax == nil {
 		return true, nil
 	}
@@ -478,6 +500,10 @@ func (p *Package) HasCompatibleSpec(specMin, specMax, kibanaVersion *semver.Vers
 	constraint, err := semver.NewConstraint(fullConstraint)
 	if err != nil {
 		return false, fmt.Errorf("cannot create constraint %s: %w", fullConstraint, err)
+	}
+
+	if p.specMajorMinorSemVer == nil {
+		return false, errors.New("package spec version is not set")
 	}
 
 	return constraint.Check(p.specMajorMinorSemVer), nil

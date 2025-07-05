@@ -3,6 +3,7 @@
 env:
   SETUP_GVM_VERSION: 'v0.5.2' # https://github.com/andrewkroh/gvm/issues/44#issuecomment-1013231151
   SETUP_MAGE_VERSION: '1.15.0'
+  JQ_VERSION: '1.7'
   DOCKER_REGISTRY: 'docker.elastic.co'
   DOCKER_IMG: "${DOCKER_REGISTRY}/package-registry/package-registry"
   DOCKER_IMG_PR: "${DOCKER_REGISTRY}/observability-ci/package-registry"
@@ -29,6 +30,13 @@ steps:
       image: "${LINUX_GOLANG_AGENT_IMAGE}"
       cpu: "8"
       memory: "4G"
+
+  - label: ":wrench: Smoke tests running EPR with fake GCS server"
+    key: smoke-test-fake-gcs-server
+    command:
+      - ".buildkite/scripts/test-epr-gcs.sh"
+    agents:
+      provider: "gcp"
 
   - group: ":go: Run Unit tests"
     key: unit-tests
@@ -81,7 +89,7 @@ steps:
       - step: "test-macos-arm"
         allow_failure: true
 
-  - label: "Publish docker image"
+  - label: ":docker: Publish docker image"
     key: "publish"
     command: ".buildkite/scripts/publish.sh"
     agents:
@@ -96,6 +104,8 @@ steps:
       - step: "build"
         allow_failure: false
       - step: "lint"
+        allow_failure: false
+      - step: "smoke-test-fake-gcs-server"
         allow_failure: false
 
   - trigger: "package-storage-infra-update-package-registry"

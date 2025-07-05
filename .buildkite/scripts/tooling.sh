@@ -27,3 +27,10 @@ unset_secrets () {
     fi
   done
 }
+
+running_on_buildkite() {
+    if [[ "${BUILDKITE:-"false"}" == "true" ]]; then
+        return 0
+    fi
+    return 1
+}

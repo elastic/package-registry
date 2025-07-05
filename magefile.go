@@ -37,6 +37,27 @@ func Build() error {
 	return sh.Run("go", "build", ".")
 }
 
+// DockerBuild builds the Docker image for the package registry. It must be specified
+// the docker tag to be used as an argument (e.g. main, latest).
+func DockerBuild(tag string) error {
+	contents, err := os.ReadFile(".go-version")
+	if err != nil {
+		return fmt.Errorf("failed to read .go-version: %w", err)
+	}
+	goVersion := strings.TrimSpace(string(contents))
+	if goVersion == "" {
+		return fmt.Errorf("empty go version in .go-version")
+	}
+	dockerImage := fmt.Sprintf("docker.elastic.co/package-registry/package-registry:%s", tag)
+
+	fmt.Println(">> Building Docker image:", dockerImage)
+	err = sh.Run("docker", "build", "--rm", "--build-arg", fmt.Sprintf("GO_VERSION=%s", goVersion), "-t", dockerImage, ".")
+	if err != nil {
+		return fmt.Errorf("failed to build docker image: %w", err)
+	}
+	return nil
+}
+
 func Check() error {
 	mg.SerialDeps(
 		Format,

@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/Masterminds/semver/v3"
+	"github.com/hashicorp/golang-lru/v2/expirable"
 
 	"go.elastic.co/apm/module/apmzap/v2"
 	"go.elastic.co/apm/v2"
@@ -26,12 +27,22 @@ import (
 )
 
 func searchHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
-	return searchHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime)
+	return searchHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime, nil)
 }
 
-func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration, cache *expirable.LRU[string, string]) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger := logger.With(apmzap.TraceContext(r.Context())...)
+
+		if cache != nil {
+			if response, ok := cache.Get(r.URL.String()); ok {
+				logger.Debug("using as response cached search request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", cache.Len()))
+				cacheHeaders(w, cacheTime)
+				jsonHeader(w)
+				fmt.Fprint(w, response)
+				return
+			}
+		}
 
 		filter, err := newSearchFilterFromQuery(r.URL.Query())
 		if err != nil {
@@ -70,6 +81,11 @@ func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *
 		cacheHeaders(w, cacheTime)
 		jsonHeader(w)
 		fmt.Fprint(w, string(data))
+
+		if cache != nil {
+			val := cache.Add(r.URL.String(), string(data))
+			logger.Debug("added to cache request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", cache.Len()), zap.Bool("cache.added", val))
+		}
 	}
 }
 
@@ -173,10 +189,9 @@ func getSearchOutput(ctx context.Context, packageList packages.Packages) ([]byte
 	// Packages need to be sorted to be always outputted in the same order
 	sort.Sort(packageList)
 
-	var output []packageSummary
+	var output []packages.BasePackage
 	for _, p := range packageList {
-		data := getPackageSummaryOutput(p)
-		output = append(output, data)
+		output = append(output, p.BasePackage)
 	}
 
 	// Instead of return `null` in case of an empty array, return []
@@ -185,29 +200,4 @@ func getSearchOutput(ctx context.Context, packageList packages.Packages) ([]byte
 	}
 
 	return util.MarshalJSONPretty(output)
-}
-
-type packageSummary struct {
-	packages.BasePackage `json:",inline"`
-	DataStreams          []*packages.DataStream `json:"data_streams,omitempty"`
-}
-
-func getPackageSummaryOutput(index *packages.Package) packageSummary {
-	summary := packageSummary{
-		BasePackage: index.BasePackage,
-	}
-	if len(index.DataStreams) == 0 {
-		return summary
-	}
-
-	summary.DataStreams = make([]*packages.DataStream, len(index.DataStreams))
-	for i, datastream := range index.DataStreams {
-		summary.DataStreams[i] = &packages.DataStream{
-			Type:    datastream.Type,
-			Dataset: datastream.Dataset,
-			Title:   datastream.Title,
-		}
-	}
-
-	return summary
 }

@@ -67,6 +67,18 @@ with_go_junit_report() {
     go install github.com/jstemmer/go-junit-report/v2@latest
 }
 
+with_jq() {
+    create_bin_folder
+    check_platform_architecture
+    # filename for versions <=1.6 is jq-linux64
+    local binary="jq-${platform_type_lowercase}-${arch_type}"
+
+    retry 5 curl -sL -o "${WORKSPACE}/bin/jq" "https://github.com/jqlang/jq/releases/download/jq-${JQ_VERSION}/${binary}"
+
+    chmod +x "${WORKSPACE}/bin/jq"
+    jq --version
+}
+
 # Required env variables:
 #   WORKSPACE
 #   SETUP_MAGE_VERSION

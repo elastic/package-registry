@@ -23,6 +23,8 @@ import (
 
 	"github.com/elastic/package-registry/metrics"
 	"github.com/elastic/package-registry/packages"
+
+	internalStorage "github.com/elastic/package-registry/internal/storage"
 )
 
 const indexerGetDurationPrometheusLabel = "StorageIndexer"
@@ -111,11 +113,7 @@ func (i *Indexer) setupResolver() error {
 		},
 	}
 
-	i.resolver = storageResolver{
-		client:               &httpClient,
-		artifactsPackagesURL: *baseURL.ResolveReference(&url.URL{Path: artifactsPackagesStoragePath + "/"}),
-		artifactsStaticURL:   *baseURL.ResolveReference(&url.URL{Path: artifactsStaticStoragePath + "/"}),
-	}
+	i.resolver = internalStorage.NewStorageResolver(&httpClient, baseURL)
 	return nil
 }
 
@@ -162,28 +160,13 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 		metrics.StorageIndexerUpdateIndexDurationSeconds.Observe(time.Since(start).Seconds())
 	}()
 
-	bucketName, rootStoragePath, err := extractBucketNameFromURL(i.options.PackageStorageBucketInternal)
-	if err != nil {
-		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
-		return fmt.Errorf("can't extract bucket name from URL (url: %s): %w", i.options.PackageStorageBucketInternal, err)
-	}
-
-	storageCursor, err := loadCursor(ctx, i.logger, i.storageClient, bucketName, rootStoragePath)
-	if err != nil {
-		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
-		return fmt.Errorf("can't load latest cursor: %w", err)
-	}
-
-	if storageCursor.Current == i.cursor {
-		i.logger.Info("cursor is up-to-date", zap.String("cursor.current", i.cursor))
-		return nil
-	}
-	i.logger.Info("cursor will be updated", zap.String("cursor.current", i.cursor), zap.String("cursor.next", storageCursor.Current))
-
-	anIndex, err := loadSearchIndexAll(ctx, i.logger, i.storageClient, bucketName, rootStoragePath, *storageCursor)
+	anIndex, currentCursor, err := internalStorage.LoadPackagesAndCursorFromIndex(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, i.cursor)
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 		return fmt.Errorf("can't load the search-index-all index content: %w", err)
+	}
+	if i.cursor == currentCursor {
+		return nil
 	}
 	if anIndex == nil {
 		i.logger.Info("Downloaded new search-index-all index. No packages found.")
@@ -195,7 +178,7 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 
 	i.m.Lock()
 	defer i.m.Unlock()
-	i.cursor = storageCursor.Current
+	i.cursor = currentCursor
 	i.packageList = *anIndex
 	metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
 	metrics.NumberIndexedPackages.Set(float64(len(i.packageList)))
@@ -207,6 +190,9 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	defer func() {
 		metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": indexerGetDurationPrometheusLabel}).Observe(time.Since(start).Seconds())
 	}()
+
+	span, ctx := apm.StartSpan(ctx, "GetStorageIndexer", "app")
+	defer span.End()
 
 	i.m.RLock()
 	defer i.m.RUnlock()
@@ -222,4 +208,8 @@ func (i *Indexer) transformSearchIndexAllToPackages(packages *packages.Packages)
 		m.BasePath = fmt.Sprintf("%s-%s.zip", m.Name, m.Version)
 		m.SetRemoteResolver(i.resolver)
 	}
+}
+
+func (i *Indexer) Close(ctx context.Context) error {
+	return nil
 }
