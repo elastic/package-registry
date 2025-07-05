@@ -1,0 +1,30 @@
+# Base address of the Package Registry
+address: "https://epr.elastic.co"
+
+# Queries are executed with each one of the parameters of the matrix.
+matrix:
+  - all: true
+
+# Queries to execute to discover packages.
+queries:
+  - package: apache
+  - package: apm
+  - package: elastic_agent
+  - package: endpoint
+  - package: fleet_server
+  - package: linux
+  - package: log
+  - package: mysql
+  - package: nginx
+  - package: profiler_collector
+  - package: profiler_symbolizer
+  - package: security_ai_prompts
+  - package: security_detection_engine
+  - package: synthetics
+  - package: system
+  - package: windows
+
+actions:
+  - print:
+  - download:
+      destination: ./build/distribution-lite

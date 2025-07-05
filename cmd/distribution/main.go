@@ -15,6 +15,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"runtime"
 	"slices"
 	"strings"
 
@@ -37,7 +38,7 @@ func main() {
 	for _, action := range config.Actions {
 		err := action.init(config)
 		if err != nil {
-			fmt.Printf("failed to initialize actions: %w", err)
+			fmt.Printf("failed to initialize actions: %s", err)
 			os.Exit(-1)
 		}
 	}
@@ -48,14 +49,21 @@ func main() {
 		os.Exit(-1)
 	}
 
+	taskpool := newTaskPool(runtime.GOMAXPROCS(0))
 	for _, info := range packages {
-		for _, action := range config.Actions {
-			err := action.perform(info)
-			if err != nil {
-				fmt.Printf("failed to collect packages: %s", err)
-				os.Exit(-1)
+		taskpool.Do(func() error {
+			for _, action := range config.Actions {
+				err := action.perform(info)
+				if err != nil {
+					return fmt.Errorf("failed to collect packages: %w", err)
+				}
 			}
-		}
+			return nil
+		})
+	}
+	if err := taskpool.Wait(); err != nil {
+		fmt.Println(err)
+		os.Exit(-1)
 	}
 	fmt.Println(len(packages), "packages total")
 }
@@ -124,33 +132,40 @@ func (c config) collect(client *http.Client) ([]packageInfo, error) {
 		Name, Version string
 	}
 	packagesMap := make(map[key]packageInfo)
+	taskPool := newTaskPool(runtime.GOMAXPROCS(0))
 	for u := range urls {
-		fmt.Println(u.String())
-		resp, err := client.Get(u.String())
-		if err != nil {
-			return nil, fmt.Errorf("failed to GET %s: %w", u, err)
-		}
-		if resp.StatusCode != http.StatusOK {
-			resp.Body.Close()
-			return nil, fmt.Errorf("failed to GET %s (status code %d)", u, resp.StatusCode)
-		}
-
-		var packages []packageInfo
-		err = json.NewDecoder(resp.Body).Decode(&packages)
-		if err != nil {
-			resp.Body.Close()
-			return nil, fmt.Errorf("failed to parse search response: %w", err)
-		}
-		resp.Body.Close()
-		fmt.Println(len(packages), "packages")
-
-		for _, p := range packages {
-			k := key{Name: p.Name, Version: p.Version}
-			if _, found := packagesMap[k]; found {
-				continue
+		taskPool.Do(func() error {
+			resp, err := client.Get(u.String())
+			if err != nil {
+				return fmt.Errorf("failed to GET %s: %w", u, err)
 			}
-			packagesMap[k] = p
-		}
+			if resp.StatusCode != http.StatusOK {
+				resp.Body.Close()
+				return fmt.Errorf("failed to GET %s (status code %d)", u, resp.StatusCode)
+			}
+
+			var packages []packageInfo
+			err = json.NewDecoder(resp.Body).Decode(&packages)
+			if err != nil {
+				resp.Body.Close()
+				return fmt.Errorf("failed to parse search response: %w", err)
+			}
+			resp.Body.Close()
+			fmt.Println(u.String(), len(packages), "packages")
+
+			for _, p := range packages {
+				k := key{Name: p.Name, Version: p.Version}
+				if _, found := packagesMap[k]; found {
+					continue
+				}
+				packagesMap[k] = p
+			}
+
+			return nil
+		})
+	}
+	if err := taskPool.Wait(); err != nil {
+		return nil, err
 	}
 
 	result := make([]packageInfo, 0, len(packagesMap))
@@ -170,6 +185,7 @@ func (c config) collect(client *http.Client) ([]packageInfo, error) {
 }
 
 type configQuery struct {
+	Package       string `yaml:"package" url:"package,omitempty"`
 	All           bool   `yaml:"all" url:"all,omitempty"`
 	Prerelease    bool   `yaml:"prerelease" url:"prerelease,omitempty"`
 	Type          string `yaml:"type" url:"type,omitempty"`
