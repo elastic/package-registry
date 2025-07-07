@@ -169,13 +169,19 @@ type PackageElasticsearch struct {
 
 // Discovery define indications for the data this package can be useful with.
 type Discovery struct {
-	Fields []DiscoveryField `config:"fields,omitempty" json:"fields,omitempty" yaml:"fields,omitempty"`
+	Fields   []DiscoveryField   `config:"fields,omitempty" json:"fields,omitempty" yaml:"fields,omitempty"`
+	Datasets []DiscoveryDataset `config:"datasets,omitempty" json:"datasets,omitempty" yaml:"datasets,omitempty"`
 }
 
 // DiscoveryField defines a field used for discovery.
 type DiscoveryField struct {
 	Name  string  `config:"name" json:"name" yaml:"name" validate:"required"`
 	Value *string `config:"value,omitempty" json:"value,omitempty" yaml:"value,omitempty"`
+}
+
+// DiscoveryDataset defines a dataset used for discovery.
+type DiscoveryDataset struct {
+	Name string `config:"name" json:"name" yaml:"name" validate:"required"`
 }
 
 type PackageElasticsearchPrivileges struct {
