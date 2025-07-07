@@ -226,7 +226,7 @@ func MustParsePackage(logger *zap.Logger, basePath string, fsBuilder FileSystemB
 	}
 	for _, c := range p.Categories {
 		if _, ok := Categories[c]; !ok {
-			return nil, fmt.Errorf("invalid category: %s", c)
+			return nil, fmt.Errorf("invalid category in package %s-%s: %s", p.Name, p.Version, c)
 		}
 	}
 	return p, nil
