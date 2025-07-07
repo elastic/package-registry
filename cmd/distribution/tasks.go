@@ -40,7 +40,7 @@ func (p *taskPool) Do(task func() error) {
 	p.pool <- struct{}{}
 	p.wg.Add(1)
 	go func() {
-		defer func() { _ = <-p.pool }()
+		defer func() { <-p.pool }()
 		defer p.wg.Done()
 		p.errC <- task()
 	}()
