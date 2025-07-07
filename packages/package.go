@@ -56,8 +56,6 @@ type Package struct {
 
 	fsBuilder FileSystemBuilder
 	resolver  RemoteResolver
-
-	logger *zap.Logger
 }
 
 type FileSystemBuilder func(*Package) (PackageFileSystem, error)
@@ -219,8 +217,8 @@ func getDownloadPath(p Package, t string) string {
 // MustParsePackage creates a new package instances based on the given base path.
 // The path passed goes to the root of the package where the manifest.yml is.
 // It runs more strict validation than NewPackage, e.g. ensuring that all categories are valid.
-func MustParsePackage(logger *zap.Logger, basePath string, fsBuilder FileSystemBuilder) (*Package, error) {
-	p, err := newPackage(logger, basePath, fsBuilder)
+func MustParsePackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) {
+	p, err := newPackage(basePath, fsBuilder)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create package from path %s: %w", basePath, err)
 	}
@@ -235,14 +233,16 @@ func MustParsePackage(logger *zap.Logger, basePath string, fsBuilder FileSystemB
 // NewPackage creates a new package instances based on the given base path.
 // The path passed goes to the root of the package where the manifest.yml is.
 func NewPackage(logger *zap.Logger, basePath string, fsBuilder FileSystemBuilder) (*Package, error) {
-	p, err := newPackage(logger, basePath, fsBuilder)
+	p, err := newPackage(basePath, fsBuilder)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create package from path %s: %w", basePath, err)
 	}
 	j := 0
 	for i, c := range p.Categories {
 		if _, ok := Categories[c]; !ok {
-			p.logger.Warn("package uses an unknown category, will be ignored",
+			logger.Warn("package uses an unknown category, will be ignored",
+				zap.String("package", p.Name),
+				zap.String("version", p.Version),
 				zap.String("category", c))
 			continue
 		}
@@ -253,11 +253,10 @@ func NewPackage(logger *zap.Logger, basePath string, fsBuilder FileSystemBuilder
 	return p, nil
 }
 
-func newPackage(logger *zap.Logger, basePath string, fsBuilder FileSystemBuilder) (*Package, error) {
+func newPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) {
 	p := &Package{
 		BasePath:  basePath,
 		fsBuilder: fsBuilder,
-		logger:    logger,
 	}
 	fs, err := p.fs()
 	if err != nil {
@@ -278,7 +277,6 @@ func newPackage(logger *zap.Logger, basePath string, fsBuilder FileSystemBuilder
 	if err != nil {
 		return nil, err
 	}
-	p.logger = p.logger.With(zap.String("package", p.Name), zap.String("version", p.Version))
 
 	// Default for the multiple flags is true.
 	trueValue := true

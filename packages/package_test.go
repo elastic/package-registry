@@ -62,7 +62,6 @@ func TestValidate(t *testing.T) {
 					Version:    "1.2.3",
 				},
 				FormatVersion: "1.0.0",
-				logger:        zap.Must(zap.NewDevelopment()),
 			},
 			true,
 			"unknown category",
@@ -281,14 +280,13 @@ func TestMustParsePackageFromPath(t *testing.T) {
 		return NewExtractedPackageFileSystem(p)
 	}
 
-	logger := zap.Must(zap.NewDevelopment())
 	for _, c := range cases {
 		t.Run(c.title, func(t *testing.T) {
 			builder := fsBuilder
 			if c.zip {
 				builder = zipFsBuilder
 			}
-			_, err := MustParsePackage(logger, c.path, builder)
+			_, err := MustParsePackage(c.path, builder)
 			if c.expectedError {
 				assert.Error(t, err)
 				return
