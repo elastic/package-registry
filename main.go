@@ -245,7 +245,6 @@ func initDatabase(ctx context.Context, logger *zap.Logger, databaseFolderPath, d
 	if exists {
 		err = os.Remove(dbPath)
 		if err != nil {
-			logger.Fatal("failed to delete previous database", zap.String("path", dbPath), zap.Error(err))
 			return nil, fmt.Errorf("failed to delete previous database (path %q): %w", dbPath, err)
 		}
 	}
@@ -257,7 +256,6 @@ func initDatabase(ctx context.Context, logger *zap.Logger, databaseFolderPath, d
 	if os.Getenv("EPR_SQL_DB_INSERT_BATCH_SIZE") != "" {
 		maxInsertBatchSize, err := strconv.Atoi(os.Getenv("EPR_SQL_DB_INSERT_BATCH_SIZE"))
 		if err != nil {
-			logger.Fatal("failed to parse EPR_SQL_DB_INSERT_BATCH_SIZE environment variable", zap.Error(err))
 			return nil, fmt.Errorf("failed to parse EPR_SQL_DB_INSERT_BATCH_SIZE environment variable: %w", err)
 		}
 		options.BatchSizeInserts = maxInsertBatchSize
@@ -420,7 +418,6 @@ func initSQLStorageIndexer(ctx context.Context, logger *zap.Logger, apmTracer *a
 	if os.Getenv("EPR_SQL_INDEXER_READ_PACKAGES_BATCH_SIZE") != "" {
 		readPackagesBatchSize, err := strconv.Atoi(os.Getenv("EPR_SQL_INDEXER_READ_PACKAGES_BATCH_SIZE"))
 		if err != nil {
-			logger.Fatal("failed to parse EPR_SQL_INDEXER_READ_PACKAGES_BATCH_SIZE environment variable", zap.Error(err))
 			return nil, fmt.Errorf("failed to parse EPR_SQL_INDEXER_READ_PACKAGES_BATCH_SIZE environment variable: %w", err)
 		}
 		options.ReadPackagesBatchsize = readPackagesBatchSize
