@@ -315,11 +315,13 @@ type Filter struct {
 	Capabilities   []string
 	SpecMin        *semver.Version
 	SpecMax        *semver.Version
-	Discovery      *discoveryFilter
+	Discovery      discoveryFilters
 
 	// Deprecated, release tags to be removed.
 	Experimental bool
 }
+
+type discoveryFilters []discoveryFilter
 
 type discoveryFilter struct {
 	Fields   discoveryFilterFields
@@ -376,6 +378,18 @@ func newDiscoveryFilterDataset(parameter string) DiscoveryDataset {
 	return DiscoveryDataset{
 		Name: parameter,
 	}
+}
+
+func (f *discoveryFilters) Matches(p *Package) bool {
+	if f == nil {
+		return true
+	}
+	for _, filter := range *f {
+		if !filter.Matches(p) {
+			return false
+		}
+	}
+	return true
 }
 
 func (f *discoveryFilter) Matches(p *Package) bool {
