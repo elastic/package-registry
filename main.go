@@ -88,6 +88,7 @@ var (
 		CacheTimeCatchAll:            10 * time.Minute,
 		SQLIndexerDatabaseFolderPath: "/tmp/", // TODO: Another default directory?
 		SearchCacheSize:              100,
+		SearchCacheTTL:               10 * time.Minute,
 	}
 )
 
@@ -125,8 +126,9 @@ type Config struct {
 	CacheTimeSearch              time.Duration `config:"cache_time.search"`
 	CacheTimeCategories          time.Duration `config:"cache_time.categories"`
 	CacheTimeCatchAll            time.Duration `config:"cache_time.catch_all"`
-	SQLIndexerDatabaseFolderPath string        `config:"sql_indexer.database_folder_path"`
-	SearchCacheSize              int           `config:"search.cache_size"`
+	SQLIndexerDatabaseFolderPath string        `config:"sql_indexer.database_folder_path"` // technical preview, used by the SQL storage indexer
+	SearchCacheSize              int           `config:"search.cache_size"`                // technical preview, used by the SQL storage indexer
+	SearchCacheTTL               time.Duration `config:"search.cache_ttl"`                 // technical preview, used by the SQL storage indexe^
 }
 
 func main() {
@@ -202,7 +204,7 @@ func main() {
 
 	var searchCache *expirable.LRU[string, string]
 	if featureSQLStorageIndexer && featureEnableSearchCache {
-		searchCache = expirable.NewLRU[string, string](config.SearchCacheSize, nil, config.CacheTimeSearch)
+		searchCache = expirable.NewLRU[string, string](config.SearchCacheSize, nil, config.SearchCacheTTL)
 	}
 
 	indexer := initIndexer(ctx, logger, apmTracer, config, searchCache)
@@ -245,7 +247,6 @@ func initDatabase(ctx context.Context, logger *zap.Logger, databaseFolderPath, d
 	if exists {
 		err = os.Remove(dbPath)
 		if err != nil {
-			logger.Fatal("failed to delete previous database", zap.String("path", dbPath), zap.Error(err))
 			return nil, fmt.Errorf("failed to delete previous database (path %q): %w", dbPath, err)
 		}
 	}
@@ -475,6 +476,25 @@ func getConfig(logger *zap.Logger) (*Config, error) {
 	if err != nil {
 		return nil, fmt.Errorf("unpacking config failed (path: %s): %w", configPath, err)
 	}
+
+	// Parse environment variables to override config values in technical preview mode
+	if os.Getenv("EPR_SQL_INDEXER_DATABASE_FOLDER_PATH") != "" {
+		config.SQLIndexerDatabaseFolderPath = os.Getenv("EPR_SQL_INDEXER_DATABASE_FOLDER_PATH")
+	}
+	if os.Getenv("EPR_SQL_INDEXER_CACHE_SIZE") != "" {
+		cacheSize, err := strconv.Atoi(os.Getenv("EPR_SQL_INDEXER_CACHE_SIZE"))
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse EPR_SQL_INDEXER_CACHE_SIZE environment variable: %w", err)
+		}
+		config.SearchCacheSize = cacheSize
+	}
+	if os.Getenv("EPR_SQL_INDEXER_CACHE_TTL") != "" {
+		cacheTTL, err := time.ParseDuration(os.Getenv("EPR_SQL_INDEXER_CACHE_TTL"))
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse EPR_SQL_INDEXER_CACHE_TTL environment variable: %w", err)
+		}
+		config.SearchCacheTTL = cacheTTL
+	}
 	return &config, nil
 }
 
@@ -491,8 +511,9 @@ func printConfig(logger *zap.Logger, config *Config) {
 	logger.Info("Cache time for /search: " + config.CacheTimeSearch.String())
 	logger.Info("Cache time for /categories: " + config.CacheTimeCategories.String())
 	logger.Info("Cache time for all others: " + config.CacheTimeCatchAll.String())
-	logger.Info("Database path: " + config.SQLIndexerDatabaseFolderPath)
-	logger.Info("LRU cache size (search requests): " + strconv.Itoa(config.SearchCacheSize))
+	logger.Info("(technical preview) SQL storage indexer database path: " + config.SQLIndexerDatabaseFolderPath)
+	logger.Info("(technical preview) Search cache size (SQL storage indexer): " + strconv.Itoa(config.SearchCacheSize))
+	logger.Info("(technical preview) Search cache TTL (SQL storage indexer): " + config.SearchCacheTTL.String())
 }
 
 func ensurePackagesAvailable(ctx context.Context, logger *zap.Logger, indexer Indexer) {
