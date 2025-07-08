@@ -43,6 +43,14 @@
         "name": "event.dataset",
         "value": "good_content.logs"
       }
+    ],
+    "datasets": [
+      {
+        "name": "good_content.access"
+      },
+      {
+        "name": "good_content.errors"
+      }
     ]
   },
   "format_version": "3.4.0",

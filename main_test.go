@@ -97,6 +97,7 @@ func TestEndpoints(t *testing.T) {
 		{"/categories?spec.max=2.10&prerelease=true", "/categories", "categories-spec-max-2.10.0.json", categoriesHandler(testLogger, indexer, testCacheTime)},
 		{"/categories?spec.max=2.10.1&prerelease=true", "/categories", "categories-spec-max-error.txt", categoriesHandler(testLogger, indexer, testCacheTime)},
 		{"/categories?discovery=fields:process.pid,event.dataset:good_content.*&prerelease=true", "/categories", "categories-discovery-fields-process-pid.txt", categoriesHandler(testLogger, indexer, testCacheTime)},
+		{"/categories?discovery=datasets:good_content.errors&prerelease=true", "/categories", "categories-discovery-fields-datasets.txt", categoriesHandler(testLogger, indexer, testCacheTime)},
 		{"/search?kibana.version=6.5.2", "/search", "search-kibana652.json", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/search?kibana.version=7.2.1", "/search", "search-kibana721.json", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/search?kibana.version=8.0.0", "/search", "search-kibana800.json", searchHandler(testLogger, indexer, testCacheTime)},
@@ -123,6 +124,7 @@ func TestEndpoints(t *testing.T) {
 		{"/search?spec.max=2.10.1&prerelease=true", "/search", "search-spec-max-error.txt", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/search?prerelease=true&discovery=fields:process.pid,event.dataset:*", "/search", "search-discovery-fields-process-pid.txt", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/search?prerelease=true&discovery=fields:non.existing.field", "/search", "search-discovery-fields-empty.txt", searchHandler(testLogger, indexer, testCacheTime)},
+		{"/search?prerelease=true&discovery=datasets:good_content.errors", "/search", "search-discovery-fields-datasets.txt", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/favicon.ico", "", "favicon.ico", faviconHandleFunc},
 
 		// Removed flags, kept to ensure that they don't break requests from old versions.
