@@ -105,6 +105,9 @@ export EPR_ADDRESS="${ADDRESS}"
 
 # export EPR_LOG_LEVEL="debug"
 export EPR_CONFIG="${CONFIG_PATH}"
+# export EPR_SQL_INDEXER_DATABASE_FOLDER_PATH=/tmp
+# export EPR_SQL_INDEXER_SEARCH_CACHE_SIZE=1500
+# export EPR_SQL_INDEXER_SEARCH_CACHE_TTL=10m
 
 ./package-registry
 
