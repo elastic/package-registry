@@ -9,8 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Breaking changes
 
 ### Bugfixes
+* Fix spans used in SQL storage indexer (technical preview). [#1334](https://github.com/elastic/package-registry/pull/1334)
 
 ### Added
+* Allow to customize settings related to SQL storage indexer (technical preview). [#1334](https://github.com/elastic/package-registry/pull/1334)
 
 ### Deprecated
 
