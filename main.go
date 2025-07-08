@@ -478,18 +478,18 @@ func getConfig(logger *zap.Logger) (*Config, error) {
 	}
 
 	// Parse environment variables to override config values in technical preview mode
-	if os.Getenv("EPR_SQL_INDEXER_DATABASE_FOLDER_PATH") != "" {
-		config.SQLIndexerDatabaseFolderPath = os.Getenv("EPR_SQL_INDEXER_DATABASE_FOLDER_PATH")
+	if path, found := os.LookupEnv("EPR_SQL_INDEXER_DATABASE_FOLDER_PATH"); found && path != "" {
+		config.SQLIndexerDatabaseFolderPath = path
 	}
-	if os.Getenv("EPR_SQL_INDEXER_SEARCH_CACHE_SIZE") != "" {
-		cacheSize, err := strconv.Atoi(os.Getenv("EPR_SQL_INDEXER_SEARCH_CACHE_SIZE"))
+	if v, found := os.LookupEnv("EPR_SQL_INDEXER_SEARCH_CACHE_SIZE"); found && v != "" {
+		cacheSize, err := strconv.Atoi(v)
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse EPR_SQL_INDEXER_SEARCH_CACHE_SIZE environment variable: %w", err)
 		}
 		config.SearchCacheSize = cacheSize
 	}
-	if os.Getenv("EPR_SQL_INDEXER_SEARCH_CACHE_TTL") != "" {
-		cacheTTL, err := time.ParseDuration(os.Getenv("EPR_SQL_INDEXER_SEARCH_CACHE_TTL"))
+	if v, found := os.LookupEnv("EPR_SQL_INDEXER_SEARCH_CACHE_TTL"); found && v != "" {
+		cacheTTL, err := time.ParseDuration(v)
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse EPR_SQL_INDEXER_SEARCH_CACHE_TTL environment variable: %w", err)
 		}
