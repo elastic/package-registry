@@ -253,10 +253,10 @@ func initDatabase(ctx context.Context, logger *zap.Logger, databaseFolderPath, d
 		Path: dbPath,
 	}
 
-	if os.Getenv("EPR_SQL_DB_INSERT_BATCH_SIZE") != "" {
-		maxInsertBatchSize, err := strconv.Atoi(os.Getenv("EPR_SQL_DB_INSERT_BATCH_SIZE"))
+	if os.Getenv("EPR_SQL_INDEXER_DB_INSERT_BATCH_SIZE") != "" {
+		maxInsertBatchSize, err := strconv.Atoi(os.Getenv("EPR_SQL_INDEXER_DB_INSERT_BATCH_SIZE"))
 		if err != nil {
-			return nil, fmt.Errorf("failed to parse EPR_SQL_DB_INSERT_BATCH_SIZE environment variable: %w", err)
+			return nil, fmt.Errorf("failed to parse EPR_SQL_INDEXER_DB_INSERT_BATCH_SIZE environment variable: %w", err)
 		}
 		options.BatchSizeInserts = maxInsertBatchSize
 	}
