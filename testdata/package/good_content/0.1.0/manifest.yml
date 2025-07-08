@@ -20,6 +20,9 @@ discovery:
     - name: process.pid
     - name: event.dataset
       value: good_content.logs
+  datasets:
+    - name: good_content.access
+    - name: good_content.errors
 screenshots:
   - src: /img/kibana-system.png
     title: kibana system
