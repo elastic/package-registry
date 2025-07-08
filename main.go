@@ -253,8 +253,8 @@ func initDatabase(ctx context.Context, logger *zap.Logger, databaseFolderPath, d
 		Path: dbPath,
 	}
 
-	if os.Getenv("EPR_SQL_INDEXER_DB_INSERT_BATCH_SIZE") != "" {
-		maxInsertBatchSize, err := strconv.Atoi(os.Getenv("EPR_SQL_INDEXER_DB_INSERT_BATCH_SIZE"))
+	if v, found := os.LookupEnv("EPR_SQL_INDEXER_DB_INSERT_BATCH_SIZE"); found && v != "" {
+		maxInsertBatchSize, err := strconv.Atoi(v)
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse EPR_SQL_INDEXER_DB_INSERT_BATCH_SIZE environment variable: %w", err)
 		}
@@ -287,8 +287,7 @@ func initHttpProf(logger *zap.Logger) {
 func initFakeGCSServer(logger *zap.Logger, indexPath string) (*fakestorage.Server, error) {
 	var fakeServer *fakestorage.Server
 	var err error
-	emulatorHost := os.Getenv("STORAGE_EMULATOR_HOST")
-	if emulatorHost != "" {
+	if emulatorHost := os.Getenv("STORAGE_EMULATOR_HOST"); emulatorHost != "" {
 		logger.Info("Create fake GCS server based on STORAGE_EMULATOR_HOST environment variable", zap.String("STORAGE_EMULATOR_HOST", emulatorHost))
 		host, port, err := net.SplitHostPort(emulatorHost)
 		if err != nil {
@@ -415,8 +414,8 @@ func initSQLStorageIndexer(ctx context.Context, logger *zap.Logger, apmTracer *a
 		Cache:                        cache,
 	}
 
-	if os.Getenv("EPR_SQL_INDEXER_READ_PACKAGES_BATCH_SIZE") != "" {
-		readPackagesBatchSize, err := strconv.Atoi(os.Getenv("EPR_SQL_INDEXER_READ_PACKAGES_BATCH_SIZE"))
+	if v, found := os.LookupEnv("EPR_SQL_INDEXER_READ_PACKAGES_BATCH_SIZE"); found && v != "" {
+		readPackagesBatchSize, err := strconv.Atoi(v)
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse EPR_SQL_INDEXER_READ_PACKAGES_BATCH_SIZE environment variable: %w", err)
 		}
@@ -428,9 +427,9 @@ func initSQLStorageIndexer(ctx context.Context, logger *zap.Logger, apmTracer *a
 
 func newStorageClient(ctx context.Context, logger *zap.Logger) (*gstorage.Client, error) {
 	opts := []option.ClientOption{}
-	if os.Getenv("STORAGE_EMULATOR_HOST") != "" {
+	if emulatorHost := os.Getenv("STORAGE_EMULATOR_HOST"); emulatorHost != "" {
 		// https://pkg.go.dev/cloud.google.com/go/storage#hdr-Creating_a_Client
-		logger.Info("Using local development setup for storage indexer", zap.String("STORAGE_EMULATOR_HOST", os.Getenv("STORAGE_EMULATOR_HOST")))
+		logger.Info("Using local development setup for storage indexer", zap.String("STORAGE_EMULATOR_HOST", emulatorHost))
 		// Required to add this option when using STORAGE_EMULATOR_HOST
 		// Related to https://github.com/fsouza/fake-gcs-server/issues/1202#issuecomment-1644877525
 		opts = append(opts, gstorage.WithJSONReads())
