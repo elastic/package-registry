@@ -99,6 +99,7 @@ func TestEndpoints(t *testing.T) {
 		{"/categories?discovery=fields:process.pid,event.dataset:good_content.*&prerelease=true", "/categories", "categories-discovery-fields-process-pid.txt", categoriesHandler(testLogger, indexer, testCacheTime)},
 		{"/categories?discovery=datasets:good_content.errors&prerelease=true", "/categories", "categories-discovery-datasets.txt", categoriesHandler(testLogger, indexer, testCacheTime)},
 		{"/categories?discovery=datasets:good_content.errors&prerelease=true&discovery=fields:process.pid,event.dataset:good_content.logs", "/categories", "categories-discovery-multiple.txt", categoriesHandler(testLogger, indexer, testCacheTime)},
+		{"/categories?discovery=datasets:good_content.errors&prerelease=true&discovery=fields:process.pid,event.dataset:good_content.other", "/categories", "categories-discovery-multiple-no-match.txt", categoriesHandler(testLogger, indexer, testCacheTime)},
 		{"/search?kibana.version=6.5.2", "/search", "search-kibana652.json", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/search?kibana.version=7.2.1", "/search", "search-kibana721.json", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/search?kibana.version=8.0.0", "/search", "search-kibana800.json", searchHandler(testLogger, indexer, testCacheTime)},
@@ -127,6 +128,7 @@ func TestEndpoints(t *testing.T) {
 		{"/search?prerelease=true&discovery=fields:non.existing.field", "/search", "search-discovery-fields-empty.txt", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/search?prerelease=true&discovery=datasets:good_content.errors", "/search", "search-discovery-datasets.txt", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/search?prerelease=true&discovery=datasets:good_content.errors&discovery=fields:process.pid,event.dataset:good_content.logs", "/search", "search-discovery-multiple.txt", searchHandler(testLogger, indexer, testCacheTime)},
+		{"/search?prerelease=true&discovery=datasets:good_content.errors&discovery=fields:process.pid,event.dataset:good_content.other", "/search", "search-discovery-multiple-no-match.txt", searchHandler(testLogger, indexer, testCacheTime)},
 		{"/favicon.ico", "", "favicon.ico", faviconHandleFunc},
 
 		// Removed flags, kept to ensure that they don't break requests from old versions.
