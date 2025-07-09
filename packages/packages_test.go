@@ -504,10 +504,6 @@ func TestPackagesSpecMinMaxFilter(t *testing.T) {
 			Version:       "2.0.0",
 			Type:          "integration",
 			KibanaVersion: "^8.4.0",
-			DiscoveryFields: []string{
-				"event.dataset:logstash.logs",
-				"event.dataset:logstash.metrics",
-			},
 		},
 		{
 			FormatVersion: "2.9.0",
@@ -719,42 +715,11 @@ func TestPackagesSpecMinMaxFilter(t *testing.T) {
 			},
 		},
 		{
-			Title: "use fields discovery filter for the logstash package setting a value",
-			Filter: Filter{
-				AllVersions: true,
-				Prerelease:  true,
-				Discovery:   mustBuildDiscoveryFilter([]string{"fields:event.dataset:logstash.logs,event.dataset:logstash.metrics"}),
-			},
-			Expected: []filterTestPackage{
-				{Name: "logstash", Version: "2.0.0"},
-			},
-		},
-		{
-			Title: "use fields discovery filter for the logstash package setting a value with wildcard",
-			Filter: Filter{
-				AllVersions: true,
-				Prerelease:  true,
-				Discovery:   mustBuildDiscoveryFilter([]string{"fields:event.dataset:logstash.*"}),
-			},
-			Expected: []filterTestPackage{
-				{Name: "logstash", Version: "2.0.0"},
-			},
-		},
-		{
 			Title: "use fields discovery filter with no value and no matching any package",
 			Filter: Filter{
 				AllVersions: true,
 				Prerelease:  true,
 				Discovery:   mustBuildDiscoveryFilter([]string{"fields:event.dataset"}),
-			},
-			Expected: []filterTestPackage{},
-		},
-		{
-			Title: "use fields discovery filter with value but packages do not have value",
-			Filter: Filter{
-				AllVersions: true,
-				Prerelease:  true,
-				Discovery:   mustBuildDiscoveryFilter([]string{"fields:server.fqdn:mysql.host.*"}),
 			},
 			Expected: []filterTestPackage{},
 		},
@@ -887,10 +852,7 @@ func (p filterTestPackage) Build() (*Package, error) {
 		if build.Discovery == nil {
 			build.Discovery = &Discovery{}
 		}
-		filterField, err := newDiscoveryFilterField(parameter)
-		if err != nil {
-			return nil, err
-		}
+		filterField := newDiscoveryFilterField(parameter)
 		build.Discovery.Fields = append(build.Discovery.Fields, filterField)
 	}
 

@@ -338,11 +338,7 @@ func NewDiscoveryFilter(filter string) (*discoveryFilter, error) {
 	switch filterType {
 	case "fields":
 		for _, parameter := range strings.Split(args, ",") {
-			filterField, err := newDiscoveryFilterField(parameter)
-			if err != nil {
-				return nil, fmt.Errorf("could not parse discovery filter field %q: %w", parameter, err)
-			}
-			result.Fields = append(result.Fields, filterField)
+			result.Fields = append(result.Fields, newDiscoveryFilterField(parameter))
 		}
 	case "datasets":
 		for _, parameter := range strings.Split(args, ",") {
@@ -355,23 +351,10 @@ func NewDiscoveryFilter(filter string) (*discoveryFilter, error) {
 	return &result, nil
 }
 
-func newDiscoveryFilterField(parameter string) (DiscoveryField, error) {
-	discoveryField := DiscoveryField{
+func newDiscoveryFilterField(parameter string) DiscoveryField {
+	return DiscoveryField{
 		Name: parameter,
 	}
-	name, value, found := strings.Cut(parameter, ":")
-	if !found {
-		return discoveryField, nil
-	}
-	discoveryField.Name = name
-	discoveryField.Value = &value
-
-	_, err := filepath.Match(*discoveryField.Value, "*")
-	if err != nil {
-		return DiscoveryField{}, fmt.Errorf("invalid discovery field value %q: %w", *discoveryField.Value, err)
-	}
-
-	return discoveryField, nil
 }
 
 func newDiscoveryFilterDataset(parameter string) DiscoveryDataset {
@@ -416,28 +399,7 @@ func (fields discoveryFilterFields) Matches(p *Package) bool {
 	}
 
 	for _, packageField := range p.Discovery.Fields {
-		if !slices.ContainsFunc([]DiscoveryField(fields), func(field DiscoveryField) bool {
-			if field.Name != packageField.Name {
-				return false
-			}
-			if packageField.Value == nil && field.Value == nil {
-				return true
-			}
-			if packageField.Value == nil || field.Value == nil {
-				return false
-			}
-
-			// Using filepath.Match to allow for wildcard matching.
-			// This allows for patterns like "event.dataset:logstash.*" to match
-			matched, err := filepath.Match(*field.Value, *packageField.Value)
-			// The only possible returned error is [ErrBadPattern], when pattern is malformed.
-			// But we check for that while creating the discoveryFilterFields, so we can safely ignore it here.
-			if err != nil {
-				// If the value is not a valid pattern, we can't match it.
-				return false
-			}
-			return matched
-		}) {
+		if !slices.Contains([]DiscoveryField(fields), packageField) {
 			return false
 		}
 	}
