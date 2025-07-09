@@ -321,7 +321,7 @@ type Filter struct {
 	Experimental bool
 }
 
-type discoveryFilters []discoveryFilter
+type discoveryFilters []*discoveryFilter
 
 type discoveryFilter struct {
 	Fields   discoveryFilterFields

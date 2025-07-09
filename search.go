@@ -164,7 +164,7 @@ func newSearchFilterFromQuery(query url.Values) (*packages.Filter, error) {
 		if err != nil {
 			return nil, fmt.Errorf("invalid 'discovery' query param: '%s': %w", v, err)
 		}
-		filter.Discovery = append(filter.Discovery, *discovery)
+		filter.Discovery = append(filter.Discovery, discovery)
 	}
 
 	return &filter, nil

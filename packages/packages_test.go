@@ -781,7 +781,7 @@ func TestPackagesSpecMinMaxFilter(t *testing.T) {
 }
 
 func mustBuildDiscoveryFilter(filters []string) discoveryFilters {
-	discoveryFilters := make([]discoveryFilter, len(filters))
+	discoveryFilters := make([]*discoveryFilter, 0, len(filters))
 	for _, filter := range filters {
 		if filter == "" {
 			panic("discovery filter cannot be empty")
@@ -790,7 +790,7 @@ func mustBuildDiscoveryFilter(filters []string) discoveryFilters {
 		if err != nil {
 			panic(err)
 		}
-		discoveryFilters = append(discoveryFilters, *f)
+		discoveryFilters = append(discoveryFilters, f)
 	}
 	return discoveryFilters
 }
