@@ -116,8 +116,7 @@ func TestPackagesFilter(t *testing.T) {
 			Capabilities: []string{"observability", "security", "uptime"},
 		},
 	}
-	packages, err := buildFilterTestPackages(filterTestPackages)
-	require.NoError(t, err)
+	packages := buildFilterTestPackages(filterTestPackages)
 
 	cases := []struct {
 		Title    string
@@ -556,8 +555,7 @@ func TestPackagesSpecMinMaxFilter(t *testing.T) {
 			},
 		},
 	}
-	packages, err := buildFilterTestPackages(filterTestPackages)
-	require.NoError(t, err)
+	packages := buildFilterTestPackages(filterTestPackages)
 
 	cases := []struct {
 		Title    string
@@ -809,7 +807,7 @@ type filterTestPackage struct {
 	DiscoveryDatasets []string
 }
 
-func (p filterTestPackage) Build() (*Package, error) {
+func (p filterTestPackage) Build() *Package {
 	var build Package
 	build.Name = p.Name
 	build.Version = p.Version
@@ -866,7 +864,7 @@ func (p filterTestPackage) Build() (*Package, error) {
 
 	// set spec semver.Version variables
 	build.setRuntimeFields()
-	return &build, nil
+	return &build
 }
 
 func (p filterTestPackage) Instances(i *Package) bool {
@@ -883,16 +881,12 @@ func (p filterTestPackage) String() string {
 	return p.Name + "-" + p.Version
 }
 
-func buildFilterTestPackages(testPackages []filterTestPackage) (Packages, error) {
+func buildFilterTestPackages(testPackages []filterTestPackage) Packages {
 	packages := make(Packages, len(testPackages))
-	var err error
 	for i, p := range testPackages {
-		packages[i], err = p.Build()
-		if err != nil {
-			return nil, err
-		}
+		packages[i] = p.Build()
 	}
-	return packages, nil
+	return packages
 }
 
 func removeFilterTestPackages(testPackages []filterTestPackage, remove ...filterTestPackage) []filterTestPackage {
