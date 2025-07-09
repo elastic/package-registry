@@ -49,9 +49,14 @@
     "parent_title": "Observability"
   },
   {
+    "id": "support",
+    "title": "Support",
+    "count": 1
+  },
+  {
     "id": "web",
     "title": "Web Server",
-    "count": 5,
+    "count": 4,
     "parent_id": "observability",
     "parent_title": "Observability"
   }
