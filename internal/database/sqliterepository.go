@@ -11,7 +11,7 @@ import (
 	"fmt"
 	"strings"
 
-	_ "modernc.org/sqlite" // Import the SQLite driver
+	"github.com/mattn/go-sqlite3"
 
 	"go.elastic.co/apm/v2"
 )
@@ -66,7 +66,11 @@ func NewFileSQLDB(options FileSQLDBOptions) (*SQLiteRepository, error) {
 	// again for all the Get queries performed, so there is no advantage in time of using sqlcache with SQLite
 	// for our use case.
 
-	db, err := sql.Open("sqlite", options.Path)
+	if !CGOEnabled {
+		return nil, fmt.Errorf("cgo is not enabled, cannot create SQLite database")
+	}
+
+	db, err := sql.Open("sqlite3", options.Path)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open database: %w", err)
 	}
@@ -247,12 +251,12 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 		_, err := r.db.ExecContext(ctx, query, args...)
 		if err != nil {
 			// From github.com/mattn/go-sqlite3
-			// var sqliteErr sqlite3.Error
-			// if errors.As(err, &sqliteErr) {
-			// 	if errors.Is(sqliteErr.ExtendedCode, sqlite.ErrConstraintUnique) {
-			// 		return nil, ErrDuplicate
-			// 	}
-			// }
+			var sqliteErr sqlite3.Error
+			if errors.As(err, &sqliteErr) {
+				if errors.Is(sqliteErr.ExtendedCode, sqlite3.ErrConstraintUnique) {
+					return ErrDuplicate
+				}
+			}
 			return err
 		}
 
