@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 * Add new method `MustParsePackage` to create new packages, running more validations. [#1333](https://github.com/elastic/package-registry/pull/1333)
+* Allow to customize SQL storage indexer configurations (technical preview). [#1337](https://github.coim/elastic/package-registry/pull/1337)
 
 ### Deprecated
 
