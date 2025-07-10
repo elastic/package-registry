@@ -12,7 +12,11 @@ import (
 	_ "modernc.org/sqlite" // Import the SQLite driver
 )
 
-func NewMemorySQLDB(path string) (*SQLiteRepository, error) {
+type MemorySQLDBOptions struct {
+	Path string
+}
+
+func NewMemorySQLDB(options MemorySQLDBOptions) (*SQLiteRepository, error) {
 	db, err := sql.Open("sqlite", ":memory:")
 	if err != nil {
 		return nil, fmt.Errorf("failed to open database: %w", err)
@@ -22,7 +26,7 @@ func NewMemorySQLDB(path string) (*SQLiteRepository, error) {
 		return nil, fmt.Errorf("failed to connect to database: %w", err)
 	}
 
-	dbRepo, err := newSQLiteRepository(db)
+	dbRepo, err := newSQLiteRepository(sqlDBOptions{db: db})
 	if err != nil {
 		return nil, fmt.Errorf("failed to create SQLite repository: %w", err)
 	}
@@ -30,6 +34,6 @@ func NewMemorySQLDB(path string) (*SQLiteRepository, error) {
 	if err := dbRepo.Initialize(context.Background()); err != nil {
 		return nil, fmt.Errorf("failed to create database: %w", err)
 	}
-	dbRepo.path = "memory-" + path
+	dbRepo.path = "memory-" + options.Path
 	return dbRepo, nil
 }

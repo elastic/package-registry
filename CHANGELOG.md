@@ -9,10 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Breaking changes
 
 ### Bugfixes
+* Fix spans used in SQL storage indexer (technical preview). [#1334](https://github.com/elastic/package-registry/pull/1334)
 
 ### Added
 * Add new method `MustParsePackage` to create new packages, running more validations. [#1333](https://github.com/elastic/package-registry/pull/1333)
-* Allow to customize SQL storage indexer configurations (technical preview). [#1337](https://github.coim/elastic/package-registry/pull/1337)
+* Allow to customize settings related to SQL storage indexer (technical preview). [#1334](https://github.com/elastic/package-registry/pull/1334) [#1337](https://github.coim/elastic/package-registry/pull/1337)
+* Cleanup SQL storage indexer backup database only when a new index version is downloaded (technical preview). [#1337](https://github.coim/elastic/package-registry/pull/1337)
 * Add support to discover content packages based on the datasets defined in the discovery parameter. [#1338](https://github.com/elastic/package-registry/pull/1338)
 
 ### Deprecated

@@ -26,8 +26,6 @@ func indexHandler(cacheTime time.Duration) (func(w http.ResponseWriter, r *http.
 		return nil, err
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		cacheHeaders(w, cacheTime)
-		w.Write(body)
+		serveJSONResponse(r.Context(), w, cacheTime, body)
 	}, nil
 }
