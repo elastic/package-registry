@@ -30,8 +30,8 @@ function withMage($version) {
 }
 
 function withGCC() {
-    Write-Host "-- Install gcc --"
-    choco install gcc -y -r
+    Write-Host "-- Install mingw (gcc) --"
+    choco install mingw -y -r
     $env:ChocolateyInstall = Convert-Path "$((Get-Command choco).Path)\..\.."
     Import-Module "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
     refreshenv
