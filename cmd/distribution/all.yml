@@ -1,0 +1,6 @@
+# Base address of the Package Registry
+address: "https://epr.elastic.co"
+
+queries:
+  - all: true
+    prerelease: true
