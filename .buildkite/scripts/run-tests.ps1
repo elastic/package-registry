@@ -29,10 +29,20 @@ function withMage($version) {
     go install github.com/magefile/mage@v$version
 }
 
+function withGCC() {
+    Write-Host "-- Install gcc --"
+    choco install gcc -y -r
+    $env:ChocolateyInstall = Convert-Path "$((Get-Command choco).Path)\..\.."
+    Import-Module "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
+    refreshenv
+    gcc --version
+}
+
 fixCRLF
 withGolang $env:SETUP_GOLANG_VERSION
 withMage $env:SETUP_MAGE_VERSION
 withGoJUnitReport
+withGCC
 
 $ErrorActionPreference = "Continue" # set +e
 mage -debug test > test-report.txt
