@@ -9,7 +9,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	_ "modernc.org/sqlite" // Import the SQLite driver
+	_ "github.com/mattn/go-sqlite3" // Import the SQLite driver
 )
 
 type MemorySQLDBOptions struct {
@@ -17,7 +17,10 @@ type MemorySQLDBOptions struct {
 }
 
 func NewMemorySQLDB(options MemorySQLDBOptions) (*SQLiteRepository, error) {
-	db, err := sql.Open("sqlite", ":memory:")
+	if !CGOEnabled {
+		return nil, fmt.Errorf("cgo is not enabled, cannot create in-memory SQLite database")
+	}
+	db, err := sql.Open("sqlite3", ":memory:")
 	if err != nil {
 		return nil, fmt.Errorf("failed to open database: %w", err)
 	}
