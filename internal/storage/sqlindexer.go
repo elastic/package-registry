@@ -32,7 +32,7 @@ import (
 
 const (
 	indexerGetDurationPrometheusLabel = "SQLStorageIndexer"
-	defaultMaxBulkAddBatch            = 1500
+	defaultReadPackagesBatchSize      = 2000
 )
 
 var allCategories = categories.DefaultCategories()
@@ -57,7 +57,7 @@ type SQLIndexer struct {
 
 	logger *zap.Logger
 
-	maxBulkAddBatch int
+	readPackagesBatchSize int
 
 	cache *expirable.LRU[string, []byte] // Cache for search results
 }
@@ -70,6 +70,7 @@ type IndexerOptions struct {
 	Database                     database.Repository
 	SwapDatabase                 database.Repository
 	Cache                        *expirable.LRU[string, []byte] // Cache for search results
+	ReadPackagesBatchsize        int
 }
 
 func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options IndexerOptions) *SQLIndexer {
@@ -78,18 +79,23 @@ func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options Index
 	}
 
 	indexer := &SQLIndexer{
-		storageClient:   storageClient,
-		options:         options,
-		logger:          logger,
-		database:        options.Database,
-		swapDatabase:    options.SwapDatabase,
-		label:           fmt.Sprintf("storage-%s", options.PackageStorageEndpoint),
-		maxBulkAddBatch: defaultMaxBulkAddBatch,
-		cache:           options.Cache,
+		storageClient:         storageClient,
+		options:               options,
+		logger:                logger,
+		database:              options.Database,
+		swapDatabase:          options.SwapDatabase,
+		label:                 fmt.Sprintf("storage-%s", options.PackageStorageEndpoint),
+		readPackagesBatchSize: defaultReadPackagesBatchSize,
+		cache:                 options.Cache,
+		cursor:                "init",
 	}
 
 	indexer.current = &indexer.database
 	indexer.backup = &indexer.swapDatabase
+
+	if options.ReadPackagesBatchsize > 0 {
+		indexer.readPackagesBatchSize = options.ReadPackagesBatchsize
+	}
 
 	return indexer
 }
@@ -191,6 +197,7 @@ func (i *SQLIndexer) watchIndices(ctx context.Context) {
 
 func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 	span, ctx := apm.StartSpan(ctx, "UpdateIndex", "app")
+	span.Context.SetLabel("read.packages.batch.size", i.readPackagesBatchSize)
 	defer span.End()
 
 	i.logger.Debug("Update indices")
@@ -199,20 +206,23 @@ func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 		metrics.StorageIndexerUpdateIndexDurationSeconds.Observe(time.Since(start).Seconds())
 	}()
 
-	defer func() {
+	defer func(initialCursor string) {
+		if initialCursor == i.cursor {
+			return
+		}
 		startClean := time.Now()
 		if err := i.cleanBackupDatabase(ctx); err != nil {
 			i.logger.Error("Failed to clean backup database", zap.Error(err))
 		}
 		startCleanDuration := time.Since(startClean)
 		i.logger.Debug("Cleaned backup database", zap.Duration("elapsed.time", time.Since(startClean)), zap.String("elapsed.time.human", startCleanDuration.String()))
-	}()
+	}(i.cursor)
 
 	numPackages := 0
-	currentCursor, err := LoadPackagesAndCursorFromIndexBatches(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, i.cursor, i.maxBulkAddBatch, func(pkgs packages.Packages) error {
+	currentCursor, err := LoadPackagesAndCursorFromIndexBatches(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, i.cursor, i.readPackagesBatchSize, func(ctx context.Context, pkgs packages.Packages, newCursor string) error {
 		// This function is called for each batch of packages read from the index.
 		startUpdate := time.Now()
-		if err := i.updateDatabase(ctx, &pkgs); err != nil {
+		if err := i.updateDatabase(ctx, &pkgs, newCursor); err != nil {
 			return fmt.Errorf("failed to update database: %w", err)
 		}
 		startDuration := time.Since(startUpdate)
@@ -241,35 +251,33 @@ func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 	return nil
 }
 
-func (i *SQLIndexer) updateDatabase(ctx context.Context, index *packages.Packages) error {
+func (i *SQLIndexer) updateDatabase(ctx context.Context, index *packages.Packages, cursor string) error {
 	span, ctx := apm.StartSpan(ctx, "updateDatabase", "app")
 	defer span.End()
 
 	totalProcessed := 0
-	dbPackages := make([]*database.Package, 0, i.maxBulkAddBatch)
+	dbPackages := make([]*database.Package, 0, i.readPackagesBatchSize)
 	for {
-		read := 0
-		// reuse slice to avoid allocations
-		dbPackages = dbPackages[:0]
-		endBatch := totalProcessed + i.maxBulkAddBatch
-		for i := totalProcessed; i < endBatch && i < len(*index); i++ {
+		endBatch := totalProcessed + i.readPackagesBatchSize
+		for j := totalProcessed; j < endBatch && j < len(*index); j++ {
 
-			newPackage, err := createDatabasePackage((*index)[i])
+			newPackage, err := createDatabasePackage((*index)[j], cursor)
 			if err != nil {
-				return fmt.Errorf("failed to create database package %s-%s: %w", (*index)[i].Name, (*index)[i].Version, err)
+				return fmt.Errorf("failed to create database package %s-%s: %w", (*index)[j].Name, (*index)[j].Version, err)
 			}
 
 			dbPackages = append(dbPackages, newPackage)
-			read++
 		}
 		err := (*i.backup).BulkAdd(ctx, "packages", dbPackages)
 		if err != nil {
 			return fmt.Errorf("failed to create all packages (bulk operation): %w", err)
 		}
-		totalProcessed += read
+		totalProcessed += len(dbPackages)
 		if totalProcessed >= len(*index) {
 			break
 		}
+		// reuse slice to avoid allocations
+		dbPackages = dbPackages[:0]
 	}
 
 	return nil
@@ -309,7 +317,7 @@ func (i *SQLIndexer) swapDatabases(ctx context.Context, currentCursor string, nu
 	metrics.NumberIndexedPackages.Set(float64(numPackages))
 }
 
-func createDatabasePackage(pkg *packages.Package) (*database.Package, error) {
+func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Package, error) {
 	fullContents, err := json.Marshal(pkg)
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal package %s-%s: %w", pkg.Name, pkg.Version, err)
@@ -342,6 +350,7 @@ func createDatabasePackage(pkg *packages.Package) (*database.Package, error) {
 	pkgCategories := calculateAllCategories(pkg)
 
 	newPackage := database.Package{
+		Cursor:          cursor,
 		Name:            pkg.Name,
 		Version:         pkg.Version,
 		FormatVersion:   pkg.FormatVersion,
@@ -396,7 +405,9 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 		i.m.RLock()
 		defer i.m.RUnlock()
 
-		options := &database.SQLOptions{}
+		options := &database.SQLOptions{
+			CurrentCursor: i.cursor,
+		}
 		if opts != nil && opts.Filter != nil {
 			// TODO: Add support to filter by discovery fields if possible.
 			options.Filter = &database.FilterOptions{

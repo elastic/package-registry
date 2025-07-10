@@ -92,9 +92,7 @@ func categoriesHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMo
 			return
 		}
 
-		cacheHeaders(w, cacheTime)
-		jsonHeader(w)
-		w.Write(data)
+		serveJSONResponse(r.Context(), w, cacheTime, data)
 	}
 }
 
@@ -241,4 +239,13 @@ func getCategoriesOutput(ctx context.Context, categories map[string]*packages.Ca
 	}
 
 	return util.MarshalJSONPretty(outputCategories)
+}
+
+func serveJSONResponse(ctx context.Context, w http.ResponseWriter, cacheTime time.Duration, data []byte) {
+	span, _ := apm.StartSpan(ctx, "Serve JSON Response", "app")
+	defer span.End()
+
+	cacheHeaders(w, cacheTime)
+	jsonHeader(w)
+	w.Write(data)
 }

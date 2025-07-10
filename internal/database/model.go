@@ -5,6 +5,7 @@
 package database
 
 type Package struct {
+	Cursor          string
 	Name            string
 	Version         string
 	FormatVersion   string
