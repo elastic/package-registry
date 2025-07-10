@@ -363,11 +363,8 @@ func newDiscoveryFilterDataset(parameter string) DiscoveryDataset {
 	}
 }
 
-func (f *discoveryFilters) Matches(p *Package) bool {
-	if f == nil {
-		return true
-	}
-	for _, filter := range *f {
+func (f discoveryFilters) Matches(p *Package) bool {
+	for _, filter := range f {
 		if !filter.Matches(p) {
 			return false
 		}
