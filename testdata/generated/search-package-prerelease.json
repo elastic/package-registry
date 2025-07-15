@@ -296,8 +296,7 @@
     },
     "categories": [
       "support"
-    ],
-    "discovery": {}
+    ]
   },
   {
     "name": "elasticsearch_privileges",
