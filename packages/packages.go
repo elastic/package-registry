@@ -315,14 +315,17 @@ type Filter struct {
 	Capabilities   []string
 	SpecMin        *semver.Version
 	SpecMax        *semver.Version
-	Discovery      *discoveryFilter
+	Discovery      discoveryFilters
 
 	// Deprecated, release tags to be removed.
 	Experimental bool
 }
 
+type discoveryFilters []*discoveryFilter
+
 type discoveryFilter struct {
-	Fields discoveryFilterFields
+	Fields   discoveryFilterFields
+	Datasets discoveryFilterDatasets
 }
 
 func NewDiscoveryFilter(filter string) (*discoveryFilter, error) {
@@ -334,10 +337,12 @@ func NewDiscoveryFilter(filter string) (*discoveryFilter, error) {
 	var result discoveryFilter
 	switch filterType {
 	case "fields":
-		for _, name := range strings.Split(args, ",") {
-			result.Fields = append(result.Fields, DiscoveryField{
-				Name: name,
-			})
+		for _, parameter := range strings.Split(args, ",") {
+			result.Fields = append(result.Fields, newDiscoveryFilterField(parameter))
+		}
+	case "datasets":
+		for _, parameter := range strings.Split(args, ",") {
+			result.Datasets = append(result.Datasets, newDiscoveryFilterDataset(parameter))
 		}
 	default:
 		return nil, fmt.Errorf("unknown discovery filter %q", filterType)
@@ -346,11 +351,38 @@ func NewDiscoveryFilter(filter string) (*discoveryFilter, error) {
 	return &result, nil
 }
 
+func newDiscoveryFilterField(parameter string) DiscoveryField {
+	return DiscoveryField{
+		Name: parameter,
+	}
+}
+
+func newDiscoveryFilterDataset(parameter string) DiscoveryDataset {
+	return DiscoveryDataset{
+		Name: parameter,
+	}
+}
+
+func (f discoveryFilters) Matches(p *Package) bool {
+	for _, filter := range f {
+		if !filter.Matches(p) {
+			return false
+		}
+	}
+	return true
+}
+
 func (f *discoveryFilter) Matches(p *Package) bool {
 	if f == nil {
 		return true
 	}
-	return f.Fields.Matches(p)
+	if len(f.Fields) > 0 && !f.Fields.Matches(p) {
+		return false
+	}
+	if len(f.Datasets) > 0 && !f.Datasets.Matches(p) {
+		return false
+	}
+	return true
 }
 
 type discoveryFilterFields []DiscoveryField
@@ -370,6 +402,25 @@ func (fields discoveryFilterFields) Matches(p *Package) bool {
 	}
 
 	return true
+}
+
+type discoveryFilterDatasets []DiscoveryDataset
+
+// Matches implements matching for a collection of datasets used as discovery filter.
+// It matches if at least one dataset in the package are included in the list of datasets in the query.
+func (datasets discoveryFilterDatasets) Matches(p *Package) bool {
+	// If the package doesn't define this filter, it doesn't match.
+	if p.Discovery == nil || len(p.Discovery.Datasets) == 0 {
+		return false
+	}
+
+	for _, packageDataset := range p.Discovery.Datasets {
+		if slices.Contains([]DiscoveryDataset(datasets), packageDataset) {
+			return true
+		}
+	}
+
+	return false
 }
 
 // Apply applies the filter to the list of packages, if the filter is nil, no filtering is done.
