@@ -485,6 +485,9 @@ func TestPackagesSpecMinMaxFilter(t *testing.T) {
 			Release:       "experimental",
 			Type:          "integration",
 			KibanaVersion: "^7.17.0 || ^8.0.0",
+			DiscoveryFields: []string{
+				"server.fqdn",
+			},
 		},
 		{
 			FormatVersion: "3.0.0",
@@ -543,6 +546,13 @@ func TestPackagesSpecMinMaxFilter(t *testing.T) {
 			Version:       "1.1.1",
 			Type:          "integration",
 			KibanaVersion: "^8.5.0",
+			DiscoveryFields: []string{
+				"redis.cluster.name",
+			},
+			DiscoveryDatasets: []string{
+				"redisenterprise.cluster",
+				"redisenterprise.database",
+			},
 		},
 	}
 	packages := buildFilterTestPackages(filterTestPackages)
@@ -676,7 +686,7 @@ func TestPackagesSpecMinMaxFilter(t *testing.T) {
 			Filter: Filter{
 				AllVersions: true,
 				Prerelease:  true,
-				Discovery:   mustBuildDiscoveryFilter("fields:apache.status.total_bytes"),
+				Discovery:   mustBuildDiscoveryFilter([]string{"fields:apache.status.total_bytes"}),
 			},
 			Expected: []filterTestPackage{},
 		},
@@ -685,11 +695,79 @@ func TestPackagesSpecMinMaxFilter(t *testing.T) {
 			Filter: Filter{
 				AllVersions: true,
 				Prerelease:  true,
-				Discovery:   mustBuildDiscoveryFilter("fields:host.ip,nginx.stubstatus.hostname"),
+				Discovery:   mustBuildDiscoveryFilter([]string{"fields:host.ip,nginx.stubstatus.hostname"}),
 			},
 			Expected: []filterTestPackage{
 				{Name: "nginx", Version: "2.0.0"},
 			},
+		},
+		{
+			Title: "use fields discovery filter for the nginx package with more query parameters",
+			Filter: Filter{
+				AllVersions: true,
+				Prerelease:  true,
+				Discovery:   mustBuildDiscoveryFilter([]string{"fields:nginx.stubstatus.hostname,host.ip,other"}),
+			},
+			Expected: []filterTestPackage{
+				{Name: "nginx", Version: "2.0.0"},
+			},
+		},
+		{
+			Title: "use fields discovery filter with no value and no matching any package",
+			Filter: Filter{
+				AllVersions: true,
+				Prerelease:  true,
+				Discovery:   mustBuildDiscoveryFilter([]string{"fields:event.dataset"}),
+			},
+			Expected: []filterTestPackage{},
+		},
+		{
+			Title: "use datasets discovery filter with all redisenterprise datasets",
+			Filter: Filter{
+				AllVersions: true,
+				Prerelease:  true,
+				Discovery:   mustBuildDiscoveryFilter([]string{"datasets:redisenterprise.cluster,redisenterprise.database"}),
+			},
+			Expected: []filterTestPackage{
+				{Name: "redisenterprise", Version: "1.1.1"},
+			},
+		},
+		{
+			Title: "use datasets discovery filter with just one redisenterprise dataset",
+			Filter: Filter{
+				AllVersions: true,
+				Prerelease:  true,
+				Discovery:   mustBuildDiscoveryFilter([]string{"datasets:redisenterprise.cluster"}),
+			},
+			Expected: []filterTestPackage{
+				{Name: "redisenterprise", Version: "1.1.1"},
+			},
+		},
+		{
+			Title: "use discovery filter with datasets and fields matching both",
+			Filter: Filter{
+				AllVersions: true,
+				Prerelease:  true,
+				Discovery: mustBuildDiscoveryFilter([]string{
+					"datasets:redisenterprise.cluster",
+					"fields:redis.cluster.name",
+				}),
+			},
+			Expected: []filterTestPackage{
+				{Name: "redisenterprise", Version: "1.1.1"},
+			},
+		},
+		{
+			Title: "use discovery filter with datasets and fields but not matching both",
+			Filter: Filter{
+				AllVersions: true,
+				Prerelease:  true,
+				Discovery: mustBuildDiscoveryFilter([]string{
+					"datasets:redisenterprise.cluster",
+					"fields:redis.host.name",
+				}),
+			},
+			Expected: []filterTestPackage{},
 		},
 	}
 
@@ -702,23 +780,31 @@ func TestPackagesSpecMinMaxFilter(t *testing.T) {
 	}
 }
 
-func mustBuildDiscoveryFilter(filter string) *discoveryFilter {
-	f, err := NewDiscoveryFilter(filter)
-	if err != nil {
-		panic(err)
+func mustBuildDiscoveryFilter(filters []string) discoveryFilters {
+	discoveryFilters := make([]*discoveryFilter, 0, len(filters))
+	for _, filter := range filters {
+		if filter == "" {
+			panic("discovery filter cannot be empty")
+		}
+		f, err := NewDiscoveryFilter(filter)
+		if err != nil {
+			panic(err)
+		}
+		discoveryFilters = append(discoveryFilters, f)
 	}
-	return f
+	return discoveryFilters
 }
 
 type filterTestPackage struct {
-	FormatVersion   string
-	Name            string
-	Version         string
-	Release         string
-	Type            string
-	KibanaVersion   string
-	Capabilities    []string
-	DiscoveryFields []string
+	FormatVersion     string
+	Name              string
+	Version           string
+	Release           string
+	Type              string
+	KibanaVersion     string
+	Capabilities      []string
+	DiscoveryFields   []string
+	DiscoveryDatasets []string
 }
 
 func (p filterTestPackage) Build() *Package {
@@ -760,13 +846,20 @@ func (p filterTestPackage) Build() *Package {
 		}
 	}
 
-	for _, name := range p.DiscoveryFields {
+	for _, parameter := range p.DiscoveryFields {
 		if build.Discovery == nil {
 			build.Discovery = &Discovery{}
 		}
-		build.Discovery.Fields = append(build.Discovery.Fields, DiscoveryField{
-			Name: name,
-		})
+		filterField := newDiscoveryFilterField(parameter)
+		build.Discovery.Fields = append(build.Discovery.Fields, filterField)
+	}
+
+	for _, parameter := range p.DiscoveryDatasets {
+		if build.Discovery == nil {
+			build.Discovery = &Discovery{}
+		}
+		filterDataset := newDiscoveryFilterDataset(parameter)
+		build.Discovery.Datasets = append(build.Discovery.Datasets, filterDataset)
 	}
 
 	// set spec semver.Version variables
