@@ -173,7 +173,10 @@ type Discovery struct {
 	Datasets []DiscoveryDataset `config:"datasets,omitempty" json:"datasets,omitempty" yaml:"datasets,omitempty"`
 }
 
-func (d Discovery) IsZero() bool {
+func (d *Discovery) IsZero() bool {
+	if d == nil {
+		return true
+	}
 	return len(d.Fields) == 0 && len(d.Datasets) == 0
 }
 
