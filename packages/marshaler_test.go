@@ -66,7 +66,7 @@ func TestUnmarshalJSON(t *testing.T) {
 		if indexer.packageList[i].Conditions != nil && indexer.packageList[i].Conditions.Kibana != nil {
 			assert.Equal(t, packages[i].Conditions.Kibana.constraint, indexer.packageList[i].Conditions.Kibana.constraint)
 		}
-		if packages[i].Discovery == nil {
+		if packages[i].Discovery.IsZero() {
 			assert.True(t, indexer.packageList[i].Discovery.IsZero())
 		} else {
 			assert.Equal(t, packages[i].Discovery.Fields, indexer.packageList[i].Discovery.Fields)
