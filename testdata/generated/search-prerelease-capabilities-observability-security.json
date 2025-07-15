@@ -240,7 +240,7 @@
             "enabled": true
           },
           "agentless": {
-            "enabled": false
+            "enabled": true
           }
         }
       }
