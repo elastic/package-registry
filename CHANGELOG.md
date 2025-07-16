@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 * Fix spans used in SQL storage indexer (technical preview). [#1334](https://github.com/elastic/package-registry/pull/1334)
+* Update Go runtime to 1.24.5. [#1346](https://github.com/elastic/package-registry/pull/1346)
 
 ### Added
 * Add new method `MustParsePackage` to create new packages, running more validations. [#1333](https://github.com/elastic/package-registry/pull/1333)
