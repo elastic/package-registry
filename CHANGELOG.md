@@ -4,12 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased](https://github.com/elastic/package-registry/compare/v1.29.0...main)
+## [v1.30.0](https://github.com/elastic/package-registry/compare/v1.29.0...v1.30.0)
 
 ### Breaking changes
 
 ### Bugfixes
 * Fix spans used in SQL storage indexer (technical preview). [#1334](https://github.com/elastic/package-registry/pull/1334)
+* Update Go runtime to 1.24.5. [#1346](https://github.com/elastic/package-registry/pull/1346)
 
 ### Added
 * Add new method `MustParsePackage` to create new packages, running more validations. [#1333](https://github.com/elastic/package-registry/pull/1333)
