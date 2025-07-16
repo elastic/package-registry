@@ -158,7 +158,7 @@ func (r *SQLiteRepository) Initialize(ctx context.Context) error {
 	for _, i := range keys {
 		createQuery.WriteString(fmt.Sprintf("%s %s, ", i.Name, i.SQLType))
 	}
-	createQuery.WriteString("PRIMARY KEY (cursor, name, version));")
+	createQuery.WriteString("PRIMARY KEY (name, version, cursor));")
 	if _, err := r.db.ExecContext(ctx, createQuery.String()); err != nil {
 		return err
 	}
