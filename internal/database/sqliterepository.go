@@ -41,8 +41,8 @@ var keys = []keyDefinition{
 	{"discoveryFields", "TEXT NOT NULL"},
 	{"type", "TEXT NOT NULL"},
 	{"path", "TEXT NOT NULL"},
-	{"data", "TEXT NOT NULL"},
-	{"baseData", "TEXT NOT NULL"},
+	{"data", "BLOB NOT NULL"},
+	{"baseData", "BLOB NOT NULL"},
 }
 
 const defaultMaxBulkAddBatch = 2000
@@ -355,9 +355,9 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 		}
 		if useBaseData {
 			pkg.BaseData = pkg.Data
-			pkg.Data = ""
+			pkg.Data = []byte{}
 		} else {
-			pkg.BaseData = ""
+			pkg.BaseData = []byte{}
 		}
 		err = process(ctx, &pkg)
 		if err != nil {

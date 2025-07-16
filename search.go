@@ -80,7 +80,7 @@ func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *
 
 		if cache != nil {
 			val := cache.Add(r.URL.String(), data)
-			logger.Debug("added to cache request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", cache.Len()), zap.Bool("cache.added", val))
+			logger.Debug("added to cache request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", cache.Len()), zap.Bool("cache.eviction", val))
 		}
 	}
 }
