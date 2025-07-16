@@ -80,7 +80,7 @@ func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *
 
 		if cache != nil {
 			val := cache.Add(r.URL.String(), data)
-			logger.Debug("added to cache request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", cache.Len()), zap.Bool("cache.added", val))
+			logger.Debug("added to cache request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", cache.Len()), zap.Bool("cache.eviction", val))
 		}
 	}
 }
@@ -155,12 +155,12 @@ func newSearchFilterFromQuery(query url.Values) (*packages.Filter, error) {
 		}
 	}
 
-	if v := query.Get("discovery"); v != "" {
+	for _, v := range query["discovery"] {
 		discovery, err := packages.NewDiscoveryFilter(v)
 		if err != nil {
 			return nil, fmt.Errorf("invalid 'discovery' query param: '%s': %w", v, err)
 		}
-		filter.Discovery = discovery
+		filter.Discovery = append(filter.Discovery, discovery)
 	}
 
 	return &filter, nil

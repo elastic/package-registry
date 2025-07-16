@@ -78,7 +78,7 @@ type BasePackage struct {
 	Owner                   *Owner               `config:"owner,omitempty" json:"owner,omitempty" yaml:"owner,omitempty"`
 	Categories              []string             `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
 	SignaturePath           string               `config:"signature_path,omitempty" json:"signature_path,omitempty" yaml:"signature_path,omitempty"`
-	Discovery               *Discovery           `config:"discovery,omitempty" json:"discovery,omitempty" yaml:"discovery,omitempty"`
+	Discovery               *Discovery           `config:"discovery,omitempty" json:"discovery,omitempty,omitzero" yaml:"discovery,omitempty"`
 	BaseDataStreams         []*BaseDataStream    `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
 }
 
@@ -169,12 +169,25 @@ type PackageElasticsearch struct {
 
 // Discovery define indications for the data this package can be useful with.
 type Discovery struct {
-	Fields []DiscoveryField `config:"fields,omitempty" json:"fields,omitempty" yaml:"fields,omitempty"`
+	Fields   []DiscoveryField   `config:"fields,omitempty" json:"fields,omitempty" yaml:"fields,omitempty"`
+	Datasets []DiscoveryDataset `config:"datasets,omitempty" json:"datasets,omitempty" yaml:"datasets,omitempty"`
+}
+
+func (d *Discovery) IsZero() bool {
+	if d == nil {
+		return true
+	}
+	return len(d.Fields) == 0 && len(d.Datasets) == 0
 }
 
 // DiscoveryField defines a field used for discovery.
 type DiscoveryField struct {
-	Name string `config:"name" json:"name" yaml:"name"`
+	Name string `config:"name" json:"name" yaml:"name" validate:"required"`
+}
+
+// DiscoveryDataset defines a dataset used for discovery.
+type DiscoveryDataset struct {
+	Name string `config:"name" json:"name" yaml:"name" validate:"required"`
 }
 
 type PackageElasticsearchPrivileges struct {

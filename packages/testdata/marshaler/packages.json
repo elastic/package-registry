@@ -587,7 +587,15 @@
         }
        ],
        "title": "Collect sample logs from instances",
-       "description": "Collecting sample logs"
+       "description": "Collecting sample logs",
+       "deployment_modes": [
+        "agentless"
+       ]
+      },
+      {
+       "type": "httpjson",
+       "title": "Collect data via HTTP JSON API",
+       "description": "Collecting data from HTTP JSON API (default only)"
       }
      ],
      "multiple": false,
@@ -609,7 +617,24 @@
       {
        "type": "logfile",
        "title": "Collect sample logs from instances",
-       "description": "Collecting sample logs"
+       "description": "Collecting sample logs",
+       "deployment_modes": [
+        "agentless",
+        "default"
+       ]
+      },
+      {
+       "type": "logfile",
+       "title": "Collect more logs",
+       "description": "Collecting more logs"
+      },
+      {
+       "type": "httpjson",
+       "title": "Collect data via HTTP JSON API",
+       "description": "Collecting data from HTTP JSON API (default only)",
+       "deployment_modes": [
+        "default"
+       ]
       }
      ],
      "multiple": false,
@@ -618,10 +643,68 @@
        "enabled": true
       },
       "agentless": {
-       "enabled": false
+       "enabled": true
       }
      }
     }
+   ]
+  },
+  {
+   "name": "discovery_empty",
+   "title": "Discovery Empty",
+   "version": "0.1.0",
+   "release": "beta",
+   "source": {
+    "license": "Apache-2.0"
+   },
+   "description": "This package is a dummy example for packages with the content type and discovery field empty. These packages contain resources that are useful with data ingested by other integrations. They are not used to configure data sources.\n",
+   "type": "content",
+   "download": "/epr/discovery_empty/discovery_empty-0.1.0.zip",
+   "path": "/package/discovery_empty/0.1.0",
+   "icons": [
+    {
+     "src": "/img/system.svg",
+     "path": "/package/discovery_empty/0.1.0/img/system.svg",
+     "title": "system",
+     "size": "1000x1000",
+     "type": "image/svg+xml"
+    }
+   ],
+   "conditions": {
+    "kibana": {
+     "version": "^8.16.0"
+    },
+    "elastic": {
+     "subscription": "basic"
+    }
+   },
+   "owner": {
+    "type": "elastic",
+    "github": "elastic/ecosystem"
+   },
+   "categories": [
+    "support"
+   ],
+   "format_version": "3.4.0",
+   "readme": "/package/discovery_empty/0.1.0/docs/README.md",
+   "license": "basic",
+   "screenshots": [
+    {
+     "src": "/img/kibana-system.png",
+     "path": "/package/discovery_empty/0.1.0/img/kibana-system.png",
+     "title": "kibana system",
+     "size": "1220x852",
+     "type": "image/png"
+    }
+   ],
+   "assets": [
+    "/package/discovery_empty/0.1.0/LICENSE.txt",
+    "/package/discovery_empty/0.1.0/changelog.yml",
+    "/package/discovery_empty/0.1.0/manifest.yml",
+    "/package/discovery_empty/0.1.0/validation.yml",
+    "/package/discovery_empty/0.1.0/docs/README.md",
+    "/package/discovery_empty/0.1.0/img/kibana-system.png",
+    "/package/discovery_empty/0.1.0/img/system.svg"
    ]
   },
   {
@@ -1241,6 +1324,14 @@
     "fields": [
      {
       "name": "process.pid"
+     }
+    ],
+    "datasets": [
+     {
+      "name": "good_content.access"
+     },
+     {
+      "name": "good_content.errors"
      }
     ]
    },

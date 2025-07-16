@@ -362,8 +362,8 @@ func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Pack
 		Capabilities:    capabilities,
 		DiscoveryFields: discoveryFields.String(),
 		Prerelease:      pkg.IsPrerelease(),
-		Data:            string(fullContents),
-		BaseData:        string(baseContents),
+		Data:            fullContents,
+		BaseData:        baseContents,
 	}
 
 	return &newPackage, nil
@@ -430,12 +430,12 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 			var pkg packages.Package
 			var err error
 			if opts != nil && opts.FullData {
-				err = json.Unmarshal([]byte(p.Data), &pkg)
+				err = json.Unmarshal(p.Data, &pkg)
 			} else {
 				// BaseData is used for performance reasons, it contains only the fields that are needed for the search index.
 				// FormatVersion needs to be set from database to ensure compatibility with the package structure.
 				pkg.FormatVersion = p.FormatVersion
-				err = json.Unmarshal([]byte(p.BaseData), &pkg)
+				err = json.Unmarshal(p.BaseData, &pkg)
 			}
 			if err != nil {
 				return fmt.Errorf("failed to parse package %s-%s: %w", p.Name, p.Version, err)
