@@ -587,7 +587,15 @@
         }
        ],
        "title": "Collect sample logs from instances",
-       "description": "Collecting sample logs"
+       "description": "Collecting sample logs",
+       "deployment_modes": [
+        "agentless"
+       ]
+      },
+      {
+       "type": "httpjson",
+       "title": "Collect data via HTTP JSON API",
+       "description": "Collecting data from HTTP JSON API (default only)"
       }
      ],
      "multiple": false,
@@ -609,7 +617,24 @@
       {
        "type": "logfile",
        "title": "Collect sample logs from instances",
-       "description": "Collecting sample logs"
+       "description": "Collecting sample logs",
+       "deployment_modes": [
+        "agentless",
+        "default"
+       ]
+      },
+      {
+       "type": "logfile",
+       "title": "Collect more logs",
+       "description": "Collecting more logs"
+      },
+      {
+       "type": "httpjson",
+       "title": "Collect data via HTTP JSON API",
+       "description": "Collecting data from HTTP JSON API (default only)",
+       "deployment_modes": [
+        "default"
+       ]
       }
      ],
      "multiple": false,
@@ -618,7 +643,7 @@
        "enabled": true
       },
       "agentless": {
-       "enabled": false
+       "enabled": true
       }
      }
     }
