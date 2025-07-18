@@ -29,7 +29,8 @@ push_docker_image() {
     build_docker_image
 
     # essentially the same as above with --push flag; the build should be in the cache
-    retry 3 build_docker_image --push
+    # TODO: Reenable
+    # retry 3 build_docker_image --push
 
     echo "Docker images pushed: ${DOCKER_IMG_TAG} ${DOCKER_IMG_TAG_BRANCH}"
 }
