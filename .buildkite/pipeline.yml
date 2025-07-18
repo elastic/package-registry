@@ -45,6 +45,8 @@ steps:
         key: test-linux
         command:
           - ".buildkite/scripts/run-tests.sh"
+        env:
+          CGO_ENABLED: 1
         agents:
           image: "${LINUX_GOLANG_AGENT_IMAGE}"
           cpu: "8"
@@ -56,6 +58,8 @@ steps:
         key: test-win
         command:
           - ".buildkite/scripts/run-tests.ps1"
+        env:
+          CGO_ENABLED: 1
         agents:
           provider: "gcp"
           image: "${WINDOWS_AGENT_IMAGE}"
@@ -66,6 +70,8 @@ steps:
         key: test-macos-arm
         command:
           - ".buildkite/scripts/run-tests.sh"
+        env:
+          CGO_ENABLED: 1
         agents:
           provider: "orka"
           imagePrefix: "${MACOS_ARM_AGENT_IMAGE}"
