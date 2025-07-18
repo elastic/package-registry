@@ -16,7 +16,8 @@ ARG TARGETPLATFORM
 ENV CGO_ENABLED=1
 
 RUN case "${TARGETPLATFORM}" in \
-    "linux/arm64") apt-get update && echo "--" && echo "--" && apt-get install -y gcc-aarch64-linux-gnu && apt-get clean && rm -rf /var/lib/apt/lists/*;; \
+    "linux/arm")  apt-get update && apt-get install -y gcc-arm-linux-gnueabihf && apt-get clean && rm -rf /var/lib/apt/lists/* ;; \
+    "linux/arm64") apt-get update && apt-get install -y gcc-aarch64-linux-gnu && apt-get clean && rm -rf /var/lib/apt/lists/* ;; \
     "linux/amd64") true ;; \
     *) exit 1 ;; \
   esac
