@@ -13,7 +13,20 @@ WORKDIR /package-registry
 
 ARG TARGETPLATFORM
 
-RUN make release-${TARGETPLATFORM:-linux}
+ENV CGO_ENABLED=1
+
+RUN case "${TARGETPLATFORM}" in \
+    "linux/arm64") apt-get update && echo "--" && echo "--" && apt-get install -y gcc-aarch64-linux-gnu && apt-get clean && rm -rf /var/lib/apt/lists/*;; \
+    "linux/amd64") true ;; \
+    *) exit 1 ;; \
+  esac
+
+RUN case "${TARGETPLATFORM}" in \
+    "linux/arm") CC=arm-linux-gnueabihf-gcc CXX=arm-linux-gnueabihf-g++ make release-${TARGETPLATFORM:-linux} ;; \
+    "linux/arm64") CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ make release-${TARGETPLATFORM:-linux} ;; \
+    "linux/amd64") make release-${TARGETPLATFORM:-linux} ;; \
+    *) exit 1 ;; \
+  esac
 
 
 # Run binary

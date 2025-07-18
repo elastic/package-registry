@@ -12,7 +12,7 @@ build_docker_image() {
         --progress plain \
         -t "${DOCKER_IMG_TAG}" \
         -t "${DOCKER_IMG_TAG_BRANCH}" \
-        --build-arg GO_VERSION="${go_version}" \
+        --build-arg GO_VERSION="${go_version}-dev" \
         --build-arg BUILDER_IMAGE=docker.elastic.co/wolfi/go \
         --build-arg RUNNER_IMAGE=docker.elastic.co/wolfi/chainguard-base \
         --label BRANCH_NAME="${TAG_NAME}" \
