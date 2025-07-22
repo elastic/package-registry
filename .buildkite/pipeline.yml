@@ -5,7 +5,7 @@ env:
   SETUP_MAGE_VERSION: '1.15.0'
   JQ_VERSION: '1.7'
   DOCKER_IMG: "docker.elastic.co/package-registry/package-registry"
-  DOCKER_IMG_PR: "docker.elasti.co/observability-ci/package-registry"
+  DOCKER_IMG_PR: "docker.elastic.co/observability-ci/package-registry"
   # Agent images used in pipeline steps
   LINUX_GOLANG_AGENT_IMAGE: "golang:${SETUP_GOLANG_VERSION}"
   WINDOWS_AGENT_IMAGE: "family/core-windows-2022"
