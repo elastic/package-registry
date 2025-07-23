@@ -8,11 +8,3 @@ echo "Golang version:"
 version=$(cat .go-version)
 export SETUP_GOLANG_VERSION="${version}"
 echo "${SETUP_GOLANG_VERSION}"
-
-DOCKER_REGISTRY_SECRET_PATH="kv/ci-shared/platform-ingest/docker_registry_prod"
-if [[ "$BUILDKITE_PIPELINE_SLUG" == "package-registry" && "$BUILDKITE_STEP_KEY" == "publish" ]] || \
-    [[ "$BUILDKITE_PIPELINE_SLUG" == "package-registry-release-package-registry-distribution" && "$BUILDKITE_STEP_KEY" == "release-distribution" ]]; then
-    DOCKER_USERNAME_SECRET=$(retry 5 vault kv get -field user "${DOCKER_REGISTRY_SECRET_PATH}")
-    DOCKER_PASSWORD_SECRET=$(retry 5 vault kv get -field password "${DOCKER_REGISTRY_SECRET_PATH}")
-    docker login -u "${DOCKER_USERNAME_SECRET}" -p "${DOCKER_PASSWORD_SECRET}" "${DOCKER_REGISTRY}" 2>/dev/null
-fi

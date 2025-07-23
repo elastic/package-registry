@@ -4,9 +4,8 @@ env:
   SETUP_GVM_VERSION: 'v0.5.2' # https://github.com/andrewkroh/gvm/issues/44#issuecomment-1013231151
   SETUP_MAGE_VERSION: '1.15.0'
   JQ_VERSION: '1.7'
-  DOCKER_REGISTRY: 'docker.elastic.co'
-  DOCKER_IMG: "${DOCKER_REGISTRY}/package-registry/package-registry"
-  DOCKER_IMG_PR: "${DOCKER_REGISTRY}/observability-ci/package-registry"
+  DOCKER_IMG: "docker.elastic.co/package-registry/package-registry"
+  DOCKER_IMG_PR: "docker.elastic.co/observability-ci/package-registry"
   # Agent images used in pipeline steps
   LINUX_GOLANG_AGENT_IMAGE: "golang:${SETUP_GOLANG_VERSION}"
   WINDOWS_AGENT_IMAGE: "family/core-windows-2022"
@@ -107,6 +106,9 @@ steps:
         allow_failure: false
       - step: "smoke-test-fake-gcs-server"
         allow_failure: false
+    plugins:
+      - elastic/vault-docker-login#v0.6.0:
+          secret_path: 'kv/ci-shared/platform-ingest/elastic_docker_registry'
 
   - trigger: "package-storage-infra-update-package-registry"
     label: ":esbuild: Downstream - Update package registry"
