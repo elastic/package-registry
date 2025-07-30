@@ -99,6 +99,8 @@ categories:
     subcategories:
       advanced_analytics_ueba:
         title: "Advanced Analytics (UEBA)"
+      asset_inventory:
+        title: "Asset Inventory"
       auditd:
         title: "AuditD"
       authentication:
