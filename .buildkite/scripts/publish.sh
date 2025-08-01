@@ -12,7 +12,7 @@ build_docker_image() {
         --progress plain \
         -t "${DOCKER_IMG_TAG}" \
         -t "${DOCKER_IMG_TAG_BRANCH}" \
-        --build-arg GO_VERSION="${go_version}" \
+        --build-arg GO_VERSION="${go_version}-dev" \
         --build-arg BUILDER_IMAGE=docker.elastic.co/wolfi/go \
         --build-arg RUNNER_IMAGE=docker.elastic.co/wolfi/chainguard-base \
         --label BRANCH_NAME="${TAG_NAME}" \
@@ -29,7 +29,8 @@ push_docker_image() {
     build_docker_image
 
     # essentially the same as above with --push flag; the build should be in the cache
-    retry 3 build_docker_image --push
+    # TODO: Reenable
+    # retry 3 build_docker_image --push
 
     echo "Docker images pushed: ${DOCKER_IMG_TAG} ${DOCKER_IMG_TAG_BRANCH}"
 }
