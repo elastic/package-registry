@@ -13,7 +13,8 @@ import (
 )
 
 type MemorySQLDBOptions struct {
-	Path string
+	Path             string
+	BatchSizeInserts int
 }
 
 func NewMemorySQLDB(options MemorySQLDBOptions) (*SQLiteRepository, error) {
@@ -26,7 +27,7 @@ func NewMemorySQLDB(options MemorySQLDBOptions) (*SQLiteRepository, error) {
 		return nil, fmt.Errorf("failed to connect to database: %w", err)
 	}
 
-	dbRepo, err := newSQLiteRepository(sqlDBOptions{db: db})
+	dbRepo, err := newSQLiteRepository(sqlDBOptions{db: db, batchSizeInserts: options.BatchSizeInserts})
 	if err != nil {
 		return nil, fmt.Errorf("failed to create SQLite repository: %w", err)
 	}
