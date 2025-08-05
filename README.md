@@ -5,6 +5,7 @@
 Endpoints:
 
 * `/`: Info about the registry
+* `/health`: Health of the service. Returns 200 if service is ready.
 * `/search`: Search for packages. By default returns all the most recent packages available.
 * `/categories`: List of the existing package categories and how many packages are in each category.
 * `/package/{name}/{version}`: Info about a package
@@ -20,6 +21,15 @@ The `/search` API endpoint has few additional query parameters. More might be ad
 * `category`: Filters the package by the given category. Available categories can be seen when going to `/categories` endpoint.
 * `package`: Filters by a specific package name, for example `mysql`. Returns the most recent version.
 * `all`: This can be set to `true` to list all package versions. This is set to `false` by default.
+* `type`: Filters by a specific package type, for example `input`.
+* `capabilities`: Filters the packages according to the given capabilities. This query parameter accepts a comma-separated list.
+* `spec.min` and `spec.max`: Filters the packages by their `format_version` field given the version (major and minor numbers) set in the query parameter. It is not required to set both parameters. Examples:
+    - `?spec.min=2.2&spec.max=3.3`
+    - `?spec.max=3.3`
+    - `?spec.min=3.0`
+* `discovery`: Returns the packages that define the `discovery` field and fulfill the conditions in the query parameter. Example of requests:
+    - `?discovery=fields:process.pid`
+    - `?discovery=datasets:nginx.access`
 * `prerelease`: This can be set to `true` to list prerelease versions of packages. Versions are considered prereleases if they are not stable according to semantic versioning, that is, if they are 0.x versions, or if they contain a prerelease tag. This is set to `false` by default.
 * `experimental` (deprecated): This can be set to `true` to list packages considered to be experimental. This is set to `false` by default.
 
@@ -33,6 +43,14 @@ The `/categories` API endpoint has two additional query parameters.
 * `prerelease`: This can be set to `true` to list prerelease versions of packages. Versions are considered prereleases if they are not stable according to semantic versioning, that is, if they are 0.x versions, or if they contain a prerelease tag. This is set to `false` by default.
 * `experimental` (deprecated): This can be set to `true` to list categories from experimental packages. This is set to `false` by default.
 * `include_policy_templates`: This can be set to `true` to include categories from policy templates. This is set to `false` by default.
+* `capabilities`: List categories filtering the packages according to the given capabilities. This query parameter accepts a comma-separated list.
+* `spec.min` and `spec.max`: List categories filtering the packages by their `format_version` field given the version (major and minor numbers) set in the query parameter. It is not required to set both parameters. Examples:
+    - `?spec.min=2.2&spec.max=3.3`
+    - `?spec.max=3.3`
+    - `?spec.min=3.0`
+* `discovery`: List categories filtering the packages that define the `discovery` field and fulfill the conditions in the query parameter. Example of requests:
+    - `?discovery=fields:process.pid`
+    - `?discovery=datasets:nginx.access`
 
 ## Package structure
 
