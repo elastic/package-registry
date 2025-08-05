@@ -16,6 +16,8 @@ import (
 	"go.elastic.co/apm/v2"
 )
 
+const defaultMaxBulkAddBatch = 500
+
 var (
 	ErrDuplicate    = errors.New("record already exists")
 	ErrNotExists    = errors.New("row not exists")
@@ -44,8 +46,6 @@ var keys = []keyDefinition{
 	{"data", "BLOB NOT NULL"},
 	{"baseData", "BLOB NOT NULL"},
 }
-
-const defaultMaxBulkAddBatch = 2000
 
 type SQLiteRepository struct {
 	db                  *sql.DB

@@ -243,11 +243,6 @@ func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 	i.swapDatabases(ctx, currentCursor, numPackages)
 	i.logger.Debug("Elapsed time in lock for updating index database", zap.Duration("lock.duration", time.Since(startLock)))
 
-	if err != nil {
-		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
-		return err
-	}
-
 	return nil
 }
 
