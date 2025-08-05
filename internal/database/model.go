@@ -5,6 +5,7 @@
 package database
 
 type Package struct {
+	Cursor          string
 	Name            string
 	Version         string
 	FormatVersion   string
@@ -16,6 +17,6 @@ type Package struct {
 	DiscoveryFields string
 	Type            string
 	Path            string
-	Data            string
-	BaseData        string
+	Data            []byte
+	BaseData        []byte
 }

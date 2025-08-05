@@ -23,12 +23,12 @@ import (
 const storageIndexerGoldenDir = "storage-indexer"
 
 func generateSQLStorageIndexer(fs *fakestorage.Server, webServer string) (Indexer, error) {
-	db, err := database.NewMemorySQLDB("main")
+	db, err := database.NewMemorySQLDB(database.MemorySQLDBOptions{Path: "main"})
 	if err != nil {
 		return nil, err
 	}
 
-	swapDb, err := database.NewMemorySQLDB("swap")
+	swapDb, err := database.NewMemorySQLDB(database.MemorySQLDBOptions{Path: "swap"})
 	if err != nil {
 		return nil, err
 	}

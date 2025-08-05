@@ -62,7 +62,6 @@ func TestValidate(t *testing.T) {
 					Version:    "1.2.3",
 				},
 				FormatVersion: "1.0.0",
-				logger:        zap.Must(zap.NewDevelopment()),
 			},
 			true,
 			"unknown category",
@@ -248,6 +247,50 @@ func TestNewPackageFromPath(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.title, func(t *testing.T) {
 			_, err := NewPackage(logger, c.path, fsBuilder)
+			assert.NoError(t, err)
+		})
+	}
+}
+
+func TestMustParsePackageFromPath(t *testing.T) {
+	cases := []struct {
+		title         string
+		path          string
+		zip           bool
+		expectedError bool
+	}{
+		{
+			title:         "unknown category",
+			path:          "../testdata/local-storage/nodirentries-1.0.0.zip",
+			zip:           true,
+			expectedError: true,
+		},
+		{
+			title:         "valid package",
+			path:          "../testdata/package/reference/1.0.0",
+			zip:           false,
+			expectedError: false,
+		},
+	}
+
+	zipFsBuilder := func(p *Package) (PackageFileSystem, error) {
+		return NewZipPackageFileSystem(p)
+	}
+	fsBuilder := func(p *Package) (PackageFileSystem, error) {
+		return NewExtractedPackageFileSystem(p)
+	}
+
+	for _, c := range cases {
+		t.Run(c.title, func(t *testing.T) {
+			builder := fsBuilder
+			if c.zip {
+				builder = zipFsBuilder
+			}
+			_, err := MustParsePackage(c.path, builder)
+			if c.expectedError {
+				assert.Error(t, err)
+				return
+			}
 			assert.NoError(t, err)
 		})
 	}

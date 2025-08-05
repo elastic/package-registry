@@ -30,16 +30,14 @@ func searchHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration)
 	return searchHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime, nil)
 }
 
-func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration, cache *expirable.LRU[string, string]) func(w http.ResponseWriter, r *http.Request) {
+func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration, cache *expirable.LRU[string, []byte]) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger := logger.With(apmzap.TraceContext(r.Context())...)
 
 		if cache != nil {
 			if response, ok := cache.Get(r.URL.String()); ok {
 				logger.Debug("using as response cached search request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", cache.Len()))
-				cacheHeaders(w, cacheTime)
-				jsonHeader(w)
-				fmt.Fprint(w, response)
+				serveJSONResponse(r.Context(), w, cacheTime, response)
 				return
 			}
 		}
@@ -78,13 +76,11 @@ func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *
 			return
 		}
 
-		cacheHeaders(w, cacheTime)
-		jsonHeader(w)
-		fmt.Fprint(w, string(data))
+		serveJSONResponse(r.Context(), w, cacheTime, data)
 
 		if cache != nil {
-			val := cache.Add(r.URL.String(), string(data))
-			logger.Debug("added to cache request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", cache.Len()), zap.Bool("cache.added", val))
+			val := cache.Add(r.URL.String(), data)
+			logger.Debug("added to cache request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", cache.Len()), zap.Bool("cache.eviction", val))
 		}
 	}
 }
@@ -159,12 +155,12 @@ func newSearchFilterFromQuery(query url.Values) (*packages.Filter, error) {
 		}
 	}
 
-	if v := query.Get("discovery"); v != "" {
+	for _, v := range query["discovery"] {
 		discovery, err := packages.NewDiscoveryFilter(v)
 		if err != nil {
 			return nil, fmt.Errorf("invalid 'discovery' query param: '%s': %w", v, err)
 		}
-		filter.Discovery = discovery
+		filter.Discovery = append(filter.Discovery, discovery)
 	}
 
 	return &filter, nil

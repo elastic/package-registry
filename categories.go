@@ -92,9 +92,7 @@ func categoriesHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMo
 			return
 		}
 
-		cacheHeaders(w, cacheTime)
-		jsonHeader(w)
-		w.Write(data)
+		serveJSONResponse(r.Context(), w, cacheTime, data)
 	}
 }
 
@@ -147,12 +145,12 @@ func newCategoriesFilterFromQuery(query url.Values) (*packages.Filter, error) {
 		}
 	}
 
-	if v := query.Get("discovery"); v != "" {
+	for _, v := range query["discovery"] {
 		discovery, err := packages.NewDiscoveryFilter(v)
 		if err != nil {
 			return nil, fmt.Errorf("invalid 'discovery' query param: '%s': %w", v, err)
 		}
-		filter.Discovery = discovery
+		filter.Discovery = append(filter.Discovery, discovery)
 	}
 
 	return &filter, nil
@@ -241,4 +239,13 @@ func getCategoriesOutput(ctx context.Context, categories map[string]*packages.Ca
 	}
 
 	return util.MarshalJSONPretty(outputCategories)
+}
+
+func serveJSONResponse(ctx context.Context, w http.ResponseWriter, cacheTime time.Duration, data []byte) {
+	span, _ := apm.StartSpan(ctx, "Serve JSON Response", "app")
+	defer span.End()
+
+	cacheHeaders(w, cacheTime)
+	jsonHeader(w)
+	w.Write(data)
 }

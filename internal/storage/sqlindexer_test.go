@@ -23,10 +23,10 @@ import (
 
 func TestSQLInit(t *testing.T) {
 	// given
-	db, err := database.NewMemorySQLDB("main")
+	db, err := database.NewMemorySQLDB(database.MemorySQLDBOptions{Path: "main"})
 	require.NoError(t, err)
 
-	swapDb, err := database.NewMemorySQLDB("swap")
+	swapDb, err := database.NewMemorySQLDB(database.MemorySQLDBOptions{Path: "swap"})
 	require.NoError(t, err)
 
 	options, err := CreateFakeIndexerOptions(db, swapDb)
@@ -51,11 +51,11 @@ func BenchmarkSQLInit(b *testing.B) {
 	// given
 	folder := b.TempDir()
 	dbPath := filepath.Join(folder, "test.db")
-	db, err := database.NewFileSQLDB(dbPath)
+	db, err := database.NewFileSQLDB(database.FileSQLDBOptions{Path: dbPath})
 	require.NoError(b, err)
 
 	swapDbPath := filepath.Join(folder, "swap_test.db")
-	swapDb, err := database.NewFileSQLDB(swapDbPath)
+	swapDb, err := database.NewFileSQLDB(database.FileSQLDBOptions{Path: swapDbPath})
 	require.NoError(b, err)
 
 	options, err := CreateFakeIndexerOptions(db, swapDb)
@@ -85,11 +85,11 @@ func BenchmarkSQLIndexerUpdateIndex(b *testing.B) {
 	// given
 	folder := b.TempDir()
 	dbPath := filepath.Join(folder, "test.db")
-	db, err := database.NewFileSQLDB(dbPath)
+	db, err := database.NewFileSQLDB(database.FileSQLDBOptions{Path: dbPath})
 	require.NoError(b, err)
 
 	swapDbPath := filepath.Join(folder, "swap_test.db")
-	swapDb, err := database.NewFileSQLDB(swapDbPath)
+	swapDb, err := database.NewFileSQLDB(database.FileSQLDBOptions{Path: swapDbPath})
 	require.NoError(b, err)
 
 	options, err := CreateFakeIndexerOptions(db, swapDb)
@@ -127,11 +127,11 @@ func BenchmarkSQLIndexerGet(b *testing.B) {
 	// given
 	folder := b.TempDir()
 	dbPath := filepath.Join(folder, "test.db")
-	db, err := database.NewFileSQLDB(dbPath)
+	db, err := database.NewFileSQLDB(database.FileSQLDBOptions{Path: dbPath})
 	require.NoError(b, err)
 
 	swapDbPath := filepath.Join(folder, "swap_test.db")
-	swapDb, err := database.NewFileSQLDB(swapDbPath)
+	swapDb, err := database.NewFileSQLDB(database.FileSQLDBOptions{Path: swapDbPath})
 	require.NoError(b, err)
 
 	options, err := CreateFakeIndexerOptions(db, swapDb)
@@ -174,18 +174,18 @@ func BenchmarkSQLIndexerGet(b *testing.B) {
 
 func TestSQLGet_ListPackages(t *testing.T) {
 	// given
-	// db, err := database.NewMemorySQLDB("main")
+	// db, err := database.NewMemorySQLDB(database.MemorySQLDBOptions{Path: "main"})
 	// require.NoError(t, err)
 
-	// swapDb, err := database.NewMemorySQLDB("swap")
+	// swapDb, err := database.NewMemorySQLDB(database.MemorySQLDBOptions{Path: "swap"})
 	// require.NoError(t, err)
 	folder := t.TempDir()
 	dbPath := filepath.Join(folder, "test.db")
-	db, err := database.NewFileSQLDB(dbPath)
+	db, err := database.NewFileSQLDB(database.FileSQLDBOptions{Path: dbPath})
 	require.NoError(t, err)
 
 	swapDbPath := filepath.Join(folder, "swap_test.db")
-	swapDb, err := database.NewFileSQLDB(swapDbPath)
+	swapDb, err := database.NewFileSQLDB(database.FileSQLDBOptions{Path: swapDbPath})
 	require.NoError(t, err)
 
 	options, err := CreateFakeIndexerOptions(db, swapDb)
@@ -384,10 +384,10 @@ func TestSQLGet_ListPackages(t *testing.T) {
 
 func TestSQLGet_IndexUpdated(t *testing.T) {
 	// given
-	db, err := database.NewMemorySQLDB("main")
+	db, err := database.NewMemorySQLDB(database.MemorySQLDBOptions{Path: "main"})
 	require.NoError(t, err)
 
-	swapDb, err := database.NewMemorySQLDB("swap")
+	swapDb, err := database.NewMemorySQLDB(database.MemorySQLDBOptions{Path: "swap"})
 	require.NoError(t, err)
 
 	options, err := CreateFakeIndexerOptions(db, swapDb)
