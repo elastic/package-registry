@@ -16,10 +16,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/hashicorp/golang-lru/v2/expirable"
-
 	"cloud.google.com/go/storage"
-
+	"github.com/hashicorp/golang-lru/v2/expirable"
 	"github.com/prometheus/client_golang/prometheus"
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
