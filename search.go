@@ -79,8 +79,15 @@ func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *
 		serveJSONResponse(r.Context(), w, cacheTime, data)
 
 		if cache != nil {
-			val := cache.Add(r.URL.String(), data)
-			logger.Debug("added to cache request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", cache.Len()), zap.Bool("cache.eviction", val))
+			switch {
+			case filter.PackageName != "" && !filter.AllVersions:
+				// requests like `/search?package=foo` are not added to the cache
+				// but `/search?package=foo&all=true` is added
+				logger.Debug("skipped add to cache for search request with package query parameter", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", cache.Len()))
+			default:
+				val := cache.Add(r.URL.String(), data)
+				logger.Debug("added to cache request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", cache.Len()), zap.Bool("cache.eviction", val))
+			}
 		}
 	}
 }
