@@ -213,21 +213,15 @@ func main() {
 		}
 		defer fakeServer.Stop()
 	}
-	var searchCache *expirable.LRU[string, []byte]
 	if featureSQLStorageIndexer && featureEnableSearchCache {
-		searchCache = expirable.NewLRU[string, []byte](config.SearchCacheSize, nil, config.SearchCacheTTL)
+		options.searchCache = expirable.NewLRU[string, []byte](config.SearchCacheSize, nil, config.SearchCacheTTL)
 	}
-	var categoriesCache *expirable.LRU[string, []byte]
 	if featureSQLStorageIndexer && featureEnableCategoriesCache {
-		categoriesCache = expirable.NewLRU[string, []byte](config.CategoriesCacheSize, nil, config.CategoriesCacheTTL)
+		options.categoriesCache = expirable.NewLRU[string, []byte](config.CategoriesCacheSize, nil, config.CategoriesCacheTTL)
 	}
 
-	indexer := initIndexer(ctx, logger, options)
-	defer indexer.Close(ctx)
-
-	options.indexer = indexer
-	options.searchCache = searchCache
-	options.categoriesCache = categoriesCache
+	options.indexer = initIndexer(ctx, logger, options)
+	defer options.indexer.Close(ctx)
 
 	server := initServer(logger, options)
 
