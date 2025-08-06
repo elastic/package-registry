@@ -93,74 +93,76 @@ func newSearchFilterFromQuery(query url.Values) (*packages.Filter, error) {
 	}
 
 	var err error
-	if v := query.Get("kibana.version"); v != "" {
-		filter.KibanaVersion, err = semver.NewVersion(v)
-		if err != nil {
-			return nil, fmt.Errorf("invalid Kibana version '%s': %w", v, err)
+	for key, values := range query {
+		switch key {
+		case "kibana.version":
+			if v := values[0]; v != "" {
+				filter.KibanaVersion, err = semver.NewVersion(v)
+				if err != nil {
+					return nil, fmt.Errorf("invalid Kibana version '%s': %w", v, err)
+				}
+			}
+		case "category":
+			if v := values[0]; v != "" {
+				filter.Category = v
+			}
+		case "package":
+			if v := values[0]; v != "" {
+				filter.PackageName = v
+			}
+		case "type":
+			if v := values[0]; v != "" {
+				filter.PackageType = v
+			}
+		case "capabilities":
+			if v := values[0]; v != "" {
+				filter.Capabilities = strings.Split(v, ",")
+			}
+		case "spec.min":
+			if v := values[0]; v != "" {
+				filter.SpecMin, err = getSpecVersion(v)
+				if err != nil {
+					return nil, fmt.Errorf("invalid 'spec.min' version: %w", err)
+				}
+			}
+		case "spec.max":
+			if v := values[0]; v != "" {
+				filter.SpecMax, err = getSpecVersion(v)
+				if err != nil {
+					return nil, fmt.Errorf("invalid 'spec.max' version: %w", err)
+				}
+			}
+		case "all":
+			if v := values[0]; v != "" {
+				filter.AllVersions, err = strconv.ParseBool(v)
+				if err != nil {
+					return nil, fmt.Errorf("invalid 'all' query param: '%s'", v)
+				}
+			}
+		case "experimental":
+			// Deprecated: release tags to be removed
+			if v := values[0]; v != "" {
+				filter.Experimental, err = strconv.ParseBool(v)
+				if err != nil {
+					return nil, fmt.Errorf("invalid 'experimental' query param: '%s'", v)
+				}
+			}
+		case "prerelease":
+			if v := values[0]; v != "" {
+				filter.Prerelease, err = strconv.ParseBool(v)
+				if err != nil {
+					return nil, fmt.Errorf("invalid 'prerelease' query param: '%s'", v)
+				}
+			}
+		case "discovery":
+			for _, v := range values {
+				discovery, err := packages.NewDiscoveryFilter(v)
+				if err != nil {
+					return nil, fmt.Errorf("invalid 'discovery' query param: '%s': %w", v, err)
+				}
+				filter.Discovery = append(filter.Discovery, discovery)
+			}
 		}
-	}
-
-	if v := query.Get("category"); v != "" {
-		filter.Category = v
-	}
-
-	if v := query.Get("package"); v != "" {
-		filter.PackageName = v
-	}
-
-	if v := query.Get("type"); v != "" {
-		filter.PackageType = v
-	}
-
-	if v := query.Get("capabilities"); v != "" {
-		filter.Capabilities = strings.Split(v, ",")
-	}
-
-	if v := query.Get("spec.min"); v != "" {
-		filter.SpecMin, err = getSpecVersion(v)
-		if err != nil {
-			return nil, fmt.Errorf("invalid 'spec.min' version: %w", err)
-		}
-	}
-
-	if v := query.Get("spec.max"); v != "" {
-		filter.SpecMax, err = getSpecVersion(v)
-		if err != nil {
-			return nil, fmt.Errorf("invalid 'spec.max' version: %w", err)
-		}
-	}
-
-	if v := query.Get("all"); v != "" {
-		// Default is false, also on error
-		filter.AllVersions, err = strconv.ParseBool(v)
-		if err != nil {
-			return nil, fmt.Errorf("invalid 'all' query param: '%s'", v)
-		}
-	}
-
-	// Deprecated: release tags to be removed.
-	if v := query.Get("experimental"); v != "" {
-		// In case of error, keep it false
-		filter.Experimental, err = strconv.ParseBool(v)
-		if err != nil {
-			return nil, fmt.Errorf("invalid 'experimental' query param: '%s'", v)
-		}
-	}
-
-	if v := query.Get("prerelease"); v != "" {
-		// In case of error, keep it false
-		filter.Prerelease, err = strconv.ParseBool(v)
-		if err != nil {
-			return nil, fmt.Errorf("invalid 'prerelease' query param: '%s'", v)
-		}
-	}
-
-	for _, v := range query["discovery"] {
-		discovery, err := packages.NewDiscoveryFilter(v)
-		if err != nil {
-			return nil, fmt.Errorf("invalid 'discovery' query param: '%s': %w", v, err)
-		}
-		filter.Discovery = append(filter.Discovery, discovery)
 	}
 
 	return &filter, nil
