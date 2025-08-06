@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bugfixes
 
 ### Added
+* Update default value for the batch size used in SQL storage indexer. [#1372](https://github.com/elastic/package-registry/pull/1372)
+* Skip adding to cache requests containing package query parameter. [#1378](https://github.com/elastic/package-registry/pull/1378)
 
 ### Deprecated
 
