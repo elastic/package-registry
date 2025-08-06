@@ -59,7 +59,8 @@ type SQLIndexer struct {
 
 	readPackagesBatchSize int
 
-	cache *expirable.LRU[string, []byte] // Cache for search results
+	searchCache     *expirable.LRU[string, []byte] // Cache for search results
+	categoriesCache *expirable.LRU[string, []byte] // Cache for categories results
 }
 
 type IndexerOptions struct {
@@ -69,7 +70,8 @@ type IndexerOptions struct {
 	WatchInterval                time.Duration
 	Database                     database.Repository
 	SwapDatabase                 database.Repository
-	Cache                        *expirable.LRU[string, []byte] // Cache for search results
+	SearchCache                  *expirable.LRU[string, []byte] // Cache for search results
+	CategoriesCache              *expirable.LRU[string, []byte] // Cache for categories results
 	ReadPackagesBatchsize        int
 }
 
@@ -86,7 +88,8 @@ func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options Index
 		swapDatabase:          options.SwapDatabase,
 		label:                 fmt.Sprintf("storage-%s", options.PackageStorageEndpoint),
 		readPackagesBatchSize: defaultReadPackagesBatchSize,
-		cache:                 options.Cache,
+		searchCache:           options.SearchCache,
+		categoriesCache:       options.CategoriesCache,
 		cursor:                "init",
 	}
 
@@ -302,10 +305,11 @@ func (i *SQLIndexer) swapDatabases(ctx context.Context, currentCursor string, nu
 	i.current, i.backup = i.backup, i.current
 	i.logger.Debug("Current database changed", zap.String("current.database.path", (*i.current).File(ctx)), zap.String("previous.database.path", (*i.backup).File(ctx)))
 
-	if i.cache != nil {
+	if i.searchCache != nil {
 		// Clear the cache after updating the index
 		// there could be new, updated or removed packages
-		i.cache.Purge()
+		i.searchCache.Purge()
+		i.categoriesCache.Purge()
 	}
 
 	metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()

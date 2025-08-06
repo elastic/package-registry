@@ -70,8 +70,9 @@ var (
 
 	printVersionInfo bool
 
-	featureSQLStorageIndexer bool
-	featureEnableSearchCache bool
+	featureSQLStorageIndexer     bool
+	featureEnableSearchCache     bool
+	featureEnableCategoriesCache bool
 
 	featureStorageIndexer        bool
 	storageIndexerBucketInternal string
@@ -89,6 +90,8 @@ var (
 		SQLIndexerDatabaseFolderPath: "/tmp/", // TODO: Another default directory?
 		SearchCacheSize:              100,
 		SearchCacheTTL:               10 * time.Minute,
+		CategoriesCacheSize:          100,
+		CategoriesCacheTTL:           10 * time.Minute,
 	}
 )
 
@@ -111,6 +114,7 @@ func init() {
 	flag.BoolVar(&featureStorageIndexer, "feature-storage-indexer", false, "Enable storage indexer to include packages from Package Storage v2 (technical preview).")
 	flag.BoolVar(&featureSQLStorageIndexer, "feature-sql-storage-indexer", false, "Enable SQL storage indexer to include packages from Package Storage v2 (technical preview).")
 	flag.BoolVar(&featureEnableSearchCache, "feature-enable-search-cache", false, "Enable cache for search requests. Just supported with the SQL storage indexer. (technical preview).")
+	flag.BoolVar(&featureEnableCategoriesCache, "feature-enable-categories-cache", false, "Enable cache for categories requests. Just supported with the SQL storage indexer. (technical preview).")
 	flag.StringVar(&storageIndexerBucketInternal, "storage-indexer-bucket-internal", "", "Path to the internal Package Storage bucket (with gs:// prefix).")
 	flag.StringVar(&storageEndpoint, "storage-endpoint", "https://package-storage.elastic.co/", "Package Storage public endpoint.")
 	flag.DurationVar(&storageIndexerWatchInterval, "storage-indexer-watch-interval", 1*time.Minute, "Address of the package-registry service.")
@@ -129,6 +133,8 @@ type Config struct {
 	SQLIndexerDatabaseFolderPath string        `config:"sql_indexer.database_folder_path"` // technical preview, used by the SQL storage indexer
 	SearchCacheSize              int           `config:"search.cache_size"`                // technical preview, used by the SQL storage indexer
 	SearchCacheTTL               time.Duration `config:"search.cache_ttl"`                 // technical preview, used by the SQL storage indexe^
+	CategoriesCacheSize          int           `config:"categories.cache_size"`            // technical preview, used by the SQL storage indexer
+	CategoriesCacheTTL           time.Duration `config:"categories.cache_ttl"`             // technical preview, used by the SQL storage indexe^
 }
 
 func main() {
@@ -176,7 +182,7 @@ func main() {
 	config := mustLoadConfig(logger)
 	if dryRun {
 		logger.Info("Running dry-run mode")
-		indexer := initIndexer(ctx, logger, apmTracer, config, nil)
+		indexer := initIndexer(ctx, logger, apmTracer, config, nil, nil)
 		defer indexer.Close(ctx)
 		os.Exit(0)
 	}
@@ -206,11 +212,15 @@ func main() {
 	if featureSQLStorageIndexer && featureEnableSearchCache {
 		searchCache = expirable.NewLRU[string, []byte](config.SearchCacheSize, nil, config.SearchCacheTTL)
 	}
+	var categoriesCache *expirable.LRU[string, []byte]
+	if featureSQLStorageIndexer && featureEnableCategoriesCache {
+		categoriesCache = expirable.NewLRU[string, []byte](config.CategoriesCacheSize, nil, config.CategoriesCacheTTL)
+	}
 
-	indexer := initIndexer(ctx, logger, apmTracer, config, searchCache)
+	indexer := initIndexer(ctx, logger, apmTracer, config, searchCache, categoriesCache)
 	defer indexer.Close(ctx)
 
-	server := initServer(logger, apmTracer, config, indexer, searchCache)
+	server := initServer(logger, apmTracer, config, indexer, searchCache, categoriesCache)
 
 	go func() {
 		err := runServer(server)
@@ -345,7 +355,7 @@ func initMetricsServer(logger *zap.Logger) {
 	}()
 }
 
-func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer, config *Config, cache *expirable.LRU[string, []byte]) Indexer {
+func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer, config *Config, searchCache, categoriesCache *expirable.LRU[string, []byte]) Indexer {
 	tx := apmTracer.StartTransaction("initIndexer", "backend.init")
 	defer tx.End()
 
@@ -357,7 +367,7 @@ func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer,
 	switch {
 	case featureSQLStorageIndexer:
 		logger.Warn("Technical preview: SQL storage indexer is an experimental feature and it may be unstable.")
-		indexer, err := initSQLStorageIndexer(ctx, logger, apmTracer, config, cache)
+		indexer, err := initSQLStorageIndexer(ctx, logger, apmTracer, config, searchCache, categoriesCache)
 		if err != nil {
 			logger.Fatal("failed to initialize SQL storage indexer", zap.Error(err))
 		}
@@ -391,7 +401,7 @@ func initStorageIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.
 	}), nil
 }
 
-func initSQLStorageIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer, config *Config, cache *expirable.LRU[string, []byte]) (*internalStorage.SQLIndexer, error) {
+func initSQLStorageIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer, config *Config, searchCache, categoriesCache *expirable.LRU[string, []byte]) (*internalStorage.SQLIndexer, error) {
 	storageClient, err := newStorageClient(ctx, logger)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create storage client: %w", err)
@@ -413,7 +423,8 @@ func initSQLStorageIndexer(ctx context.Context, logger *zap.Logger, apmTracer *a
 		WatchInterval:                storageIndexerWatchInterval,
 		Database:                     storageDatabase,
 		SwapDatabase:                 storageSwapDatabase,
-		Cache:                        cache,
+		SearchCache:                  searchCache,
+		//Cache:                        categoriesCache,
 	}
 
 	if v, found := os.LookupEnv("EPR_SQL_INDEXER_READ_PACKAGES_BATCH_SIZE"); found && v != "" {
@@ -439,8 +450,8 @@ func newStorageClient(ctx context.Context, logger *zap.Logger) (*gstorage.Client
 	return gstorage.NewClient(ctx, opts...)
 }
 
-func initServer(logger *zap.Logger, apmTracer *apm.Tracer, config *Config, indexer Indexer, cache *expirable.LRU[string, []byte]) *http.Server {
-	router := mustLoadRouter(logger, config, indexer, cache)
+func initServer(logger *zap.Logger, apmTracer *apm.Tracer, config *Config, indexer Indexer, searchCache, categoriesCache *expirable.LRU[string, []byte]) *http.Server {
+	router := mustLoadRouter(logger, config, indexer, searchCache, categoriesCache)
 	apmgorilla.Instrument(router, apmgorilla.WithTracer(apmTracer))
 
 	var tlsConfig tls.Config
@@ -516,6 +527,20 @@ func getConfig(logger *zap.Logger) (*Config, error) {
 		}
 		config.SearchCacheTTL = cacheTTL
 	}
+	if v, found := os.LookupEnv("EPR_SQL_INDEXER_CATEGORIES_CACHE_SIZE"); found && v != "" {
+		cacheSize, err := strconv.Atoi(v)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse EPR_SQL_INDEXER_CATEGORIES_CACHE_SIZE environment variable: %w", err)
+		}
+		config.CategoriesCacheSize = cacheSize
+	}
+	if v, found := os.LookupEnv("EPR_SQL_INDEXER_CATEGORIES_CACHE_TTL"); found && v != "" {
+		cacheTTL, err := time.ParseDuration(v)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse EPR_SQL_INDEXER_CATEGORIES_CACHE_TTL environment variable: %w", err)
+		}
+		config.CategoriesCacheTTL = cacheTTL
+	}
 	return &config, nil
 }
 
@@ -535,6 +560,8 @@ func printConfig(logger *zap.Logger, config *Config) {
 	logger.Info("(technical preview) SQL storage indexer database path: " + config.SQLIndexerDatabaseFolderPath)
 	logger.Info("(technical preview) Search cache size (SQL storage indexer): " + strconv.Itoa(config.SearchCacheSize))
 	logger.Info("(technical preview) Search cache TTL (SQL storage indexer): " + config.SearchCacheTTL.String())
+	logger.Info("(technical preview) Categories cache size (SQL storage indexer): " + strconv.Itoa(config.CategoriesCacheSize))
+	logger.Info("(technical preview) Categories cache TTL (SQL storage indexer): " + config.CategoriesCacheTTL.String())
 }
 
 func ensurePackagesAvailable(ctx context.Context, logger *zap.Logger, indexer Indexer) {
@@ -558,15 +585,15 @@ func ensurePackagesAvailable(ctx context.Context, logger *zap.Logger, indexer In
 	metrics.NumberIndexedPackages.Set(float64(len(packages)))
 }
 
-func mustLoadRouter(logger *zap.Logger, config *Config, indexer Indexer, cache *expirable.LRU[string, []byte]) *mux.Router {
-	router, err := getRouter(logger, config, indexer, cache)
+func mustLoadRouter(logger *zap.Logger, config *Config, indexer Indexer, searchCache, categoriesCache *expirable.LRU[string, []byte]) *mux.Router {
+	router, err := getRouter(logger, config, indexer, searchCache, categoriesCache)
 	if err != nil {
 		logger.Fatal("failed go configure router", zap.Error(err))
 	}
 	return router
 }
 
-func getRouter(logger *zap.Logger, config *Config, indexer Indexer, cache *expirable.LRU[string, []byte]) (*mux.Router, error) {
+func getRouter(logger *zap.Logger, config *Config, indexer Indexer, searchCache, categoriesCache *expirable.LRU[string, []byte]) (*mux.Router, error) {
 	if featureProxyMode {
 		logger.Info("Technical preview: Proxy mode is an experimental feature and it may be unstable.")
 	}
@@ -588,9 +615,9 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer, cache *expir
 		return nil, err
 	}
 
-	categoriesHandler := categoriesHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeCategories)
+	categoriesHandler := categoriesHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeCategories, categoriesCache)
 	packageIndexHandler := packageIndexHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeCatchAll)
-	searchHandler := searchHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeSearch, cache)
+	searchHandler := searchHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeSearch, searchCache)
 	staticHandler := staticHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeCatchAll)
 
 	router := mux.NewRouter().StrictSlash(true)

@@ -29,7 +29,7 @@ INDEX_PATH=""
 EMULATOR_HOST="localhost:4443"
 CONFIG_PATH="${SCRIPT_DIR}/../config.yml"
 ENABLE_STORAGE_SQL_INDEXER=0
-ENABLE_SEARCH_CACHE=0
+ENABLE_CACHE=0
 
 while getopts ":b:p:i:e:c:sCh" o; do
   case "${o}" in
@@ -52,7 +52,7 @@ while getopts ":b:p:i:e:c:sCh" o; do
       ENABLE_STORAGE_SQL_INDEXER=1
       ;;
     C)
-      ENABLE_SEARCH_CACHE=1
+      ENABLE_CACHE=1
       ;;
     h)
       usage
@@ -96,18 +96,21 @@ else
     export EPR_FEATURE_STORAGE_INDEXER="false"
 fi
 
-if [[ "${ENABLE_SEARCH_CACHE}" == 1 ]]; then
+if [[ "${ENABLE_CACHE}" == 1 ]]; then
     export EPR_FEATURE_ENABLE_SEARCH_CACHE="true"
+    export EPR_FEATURE_ENABLE_CATEGORIES_CACHE="true"
 fi
 
 export EPR_DISABLE_PACKAGE_VALIDATION="true"
 export EPR_ADDRESS="${ADDRESS}"
 
-# export EPR_LOG_LEVEL="debug"
+export EPR_LOG_LEVEL="debug"
 export EPR_CONFIG="${CONFIG_PATH}"
 # export EPR_SQL_INDEXER_DATABASE_FOLDER_PATH=/tmp
 # export EPR_SQL_INDEXER_SEARCH_CACHE_SIZE=100
 # export EPR_SQL_INDEXER_SEARCH_CACHE_TTL=10m
+# export EPR_SQL_INDEXER_CATEGORIES_CACHE_SIZE=100
+# export EPR_SQL_INDEXER_CATEGORIES_CACHE_TTL=10m
 # export EPR_SQL_INDEXER_READ_PACKAGES_BATCH_SIZE=2000
 # export EPR_SQL_INDEXER_DB_INSERT_BATCH_SIZE=2000
 
