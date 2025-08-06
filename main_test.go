@@ -43,7 +43,11 @@ func TestRouter(t *testing.T) {
 	indexer := NewCombinedIndexer()
 	defer indexer.Close(context.Background())
 
-	router, err := getRouter(logger, &config, indexer, nil, nil)
+	router, err := getRouter(serverOptions{
+		logger:  logger,
+		config:  &config,
+		indexer: indexer,
+	})
 	require.NoError(t, err)
 
 	recorder := httptest.NewRecorder()

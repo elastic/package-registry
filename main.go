@@ -376,13 +376,13 @@ func initIndexer(ctx context.Context, options serverOptions) Indexer {
 	switch {
 	case featureSQLStorageIndexer:
 		logger.Warn("Technical preview: SQL storage indexer is an experimental feature and it may be unstable.")
-		indexer, err := initSQLStorageIndexer(ctx, logger, options.apmTracer, options.config, options.searchCache, options.categoriesCache)
+		indexer, err := initSQLStorageIndexer(ctx, options)
 		if err != nil {
 			logger.Fatal("failed to initialize SQL storage indexer", zap.Error(err))
 		}
 		combined = append(combined, indexer)
 	case featureStorageIndexer:
-		indexer, err := initStorageIndexer(ctx, logger, options.apmTracer, options.config)
+		indexer, err := initStorageIndexer(ctx, options)
 		if err != nil {
 			logger.Fatal("failed to initialize storage indexer", zap.Error(err))
 		}
@@ -397,43 +397,43 @@ func initIndexer(ctx context.Context, options serverOptions) Indexer {
 	return combined
 }
 
-func initStorageIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer, config *Config) (*storage.Indexer, error) {
-	storageClient, err := newStorageClient(ctx, logger)
+func initStorageIndexer(ctx context.Context, options serverOptions) (*storage.Indexer, error) {
+	storageClient, err := newStorageClient(ctx, options.logger)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create storage client: %w", err)
 	}
-	return storage.NewIndexer(logger, storageClient, storage.IndexerOptions{
-		APMTracer:                    apmTracer,
+	return storage.NewIndexer(options.logger, storageClient, storage.IndexerOptions{
+		APMTracer:                    options.apmTracer,
 		PackageStorageBucketInternal: storageIndexerBucketInternal,
 		PackageStorageEndpoint:       storageEndpoint,
 		WatchInterval:                storageIndexerWatchInterval,
 	}), nil
 }
 
-func initSQLStorageIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer, config *Config, searchCache, categoriesCache *expirable.LRU[string, []byte]) (*internalStorage.SQLIndexer, error) {
-	storageClient, err := newStorageClient(ctx, logger)
+func initSQLStorageIndexer(ctx context.Context, options serverOptions) (*internalStorage.SQLIndexer, error) {
+	storageClient, err := newStorageClient(ctx, options.logger)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create storage client: %w", err)
 	}
 
-	storageDatabase, err := initDatabase(ctx, logger, config.SQLIndexerDatabaseFolderPath, "storage_packages.db")
+	storageDatabase, err := initDatabase(ctx, options.logger, options.config.SQLIndexerDatabaseFolderPath, "storage_packages.db")
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize storage database: %w", err)
 	}
-	storageSwapDatabase, err := initDatabase(ctx, logger, config.SQLIndexerDatabaseFolderPath, "storage_packages_swap.db")
+	storageSwapDatabase, err := initDatabase(ctx, options.logger, options.config.SQLIndexerDatabaseFolderPath, "storage_packages_swap.db")
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize storage backup database: %w", err)
 	}
 
-	options := internalStorage.IndexerOptions{
-		APMTracer:                    apmTracer,
+	indexerOptions := internalStorage.IndexerOptions{
+		APMTracer:                    options.apmTracer,
 		PackageStorageBucketInternal: storageIndexerBucketInternal,
 		PackageStorageEndpoint:       storageEndpoint,
 		WatchInterval:                storageIndexerWatchInterval,
 		Database:                     storageDatabase,
 		SwapDatabase:                 storageSwapDatabase,
-		SearchCache:                  searchCache,
-		//Cache:                        categoriesCache,
+		SearchCache:                  options.searchCache,
+		CategoriesCache:              options.categoriesCache,
 	}
 
 	if v, found := os.LookupEnv("EPR_SQL_INDEXER_READ_PACKAGES_BATCH_SIZE"); found && v != "" {
@@ -441,10 +441,10 @@ func initSQLStorageIndexer(ctx context.Context, logger *zap.Logger, apmTracer *a
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse EPR_SQL_INDEXER_READ_PACKAGES_BATCH_SIZE environment variable: %w", err)
 		}
-		options.ReadPackagesBatchsize = readPackagesBatchSize
+		indexerOptions.ReadPackagesBatchsize = readPackagesBatchSize
 	}
 
-	return internalStorage.NewIndexer(logger, storageClient, options), nil
+	return internalStorage.NewIndexer(options.logger, storageClient, indexerOptions), nil
 }
 
 func newStorageClient(ctx context.Context, logger *zap.Logger) (*gstorage.Client, error) {

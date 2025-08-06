@@ -305,15 +305,20 @@ func (i *SQLIndexer) swapDatabases(ctx context.Context, currentCursor string, nu
 	i.current, i.backup = i.backup, i.current
 	i.logger.Debug("Current database changed", zap.String("current.database.path", (*i.current).File(ctx)), zap.String("previous.database.path", (*i.backup).File(ctx)))
 
-	if i.searchCache != nil {
-		// Clear the cache after updating the index
-		// there could be new, updated or removed packages
-		i.searchCache.Purge()
-		i.categoriesCache.Purge()
-	}
+	i.purgeCaches()
 
 	metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
 	metrics.NumberIndexedPackages.Set(float64(numPackages))
+}
+
+func (i *SQLIndexer) purgeCaches() {
+	if i.searchCache == nil {
+		return
+	}
+	// Clear the cache after updating the index
+	// there could be new, updated or removed packages
+	i.searchCache.Purge()
+	i.categoriesCache.Purge()
 }
 
 func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Package, error) {
