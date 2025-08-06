@@ -36,6 +36,12 @@ func packageIndexHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxy
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger := logger.With(apmzap.TraceContext(r.Context())...)
 
+		// Return error if any query parameter is present
+		if len(r.URL.Query()) > 0 {
+			badRequest(w, "unknown query parameters")
+			return
+		}
+
 		vars := mux.Vars(r)
 		packageName, ok := vars["packageName"]
 		if !ok {

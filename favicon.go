@@ -15,6 +15,12 @@ var faviconBlob []byte
 
 func faviconHandler(cacheTime time.Duration) (func(w http.ResponseWriter, r *http.Request), error) {
 	return func(w http.ResponseWriter, r *http.Request) {
+		// Return error if any query parameter is present
+		if len(r.URL.Query()) > 0 {
+			badRequest(w, "unknown query parameters")
+			return
+		}
+
 		w.Header().Set("Content-Type", "image/x-icon")
 		cacheHeaders(w, cacheTime)
 		w.Write(faviconBlob)

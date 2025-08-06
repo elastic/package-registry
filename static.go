@@ -40,6 +40,12 @@ func staticHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *
 			return
 		}
 
+		// Return error if any query parameter is present
+		if len(r.URL.Query()) > 0 {
+			badRequest(w, "unknown query parameters")
+			return
+		}
+
 		opts := packages.NameVersionFilter(params.packageName, params.packageVersion)
 		pkgs, err := indexer.Get(r.Context(), &opts)
 		if err != nil {

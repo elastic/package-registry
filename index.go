@@ -26,6 +26,12 @@ func indexHandler(cacheTime time.Duration) (func(w http.ResponseWriter, r *http.
 		return nil, err
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
+		// Return error if any query parameter is present
+		if len(r.URL.Query()) > 0 {
+			badRequest(w, "unknown query parameters")
+			return
+		}
+
 		serveJSONResponse(r.Context(), w, cacheTime, body)
 	}, nil
 }
