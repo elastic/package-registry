@@ -157,6 +157,10 @@ func main() {
 		log.Fatal("feature-enable-search-cache is enabled, but feature-sql-storage-indexer is not enabled. Search cache is just supported with SQL Storage indexer.")
 	}
 
+	if featureEnableCategoriesCache && !featureSQLStorageIndexer {
+		log.Fatal("feature-enable-categories-cache is enabled, but feature-sql-storage-indexer is not enabled. Categories cache is just supported with SQL Storage indexer.")
+	}
+
 	if printVersionInfo {
 		fmt.Printf("Elastic Package Registry version %v\n", version)
 		os.Exit(0)
