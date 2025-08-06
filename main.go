@@ -216,16 +216,18 @@ func main() {
 	var searchCache *expirable.LRU[string, []byte]
 	if featureSQLStorageIndexer && featureEnableSearchCache {
 		searchCache = expirable.NewLRU[string, []byte](config.SearchCacheSize, nil, config.SearchCacheTTL)
-		options.searchCache = searchCache
 	}
 	var categoriesCache *expirable.LRU[string, []byte]
 	if featureSQLStorageIndexer && featureEnableCategoriesCache {
 		categoriesCache = expirable.NewLRU[string, []byte](config.CategoriesCacheSize, nil, config.CategoriesCacheTTL)
-		options.categoriesCache = categoriesCache
 	}
 
 	indexer := initIndexer(ctx, logger, options)
 	defer indexer.Close(ctx)
+
+	options.indexer = indexer
+	options.searchCache = searchCache
+	options.categoriesCache = categoriesCache
 
 	server := initServer(logger, options)
 
