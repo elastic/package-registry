@@ -162,6 +162,11 @@ func newSearchFilterFromQuery(query url.Values) (*packages.Filter, error) {
 				}
 				filter.Discovery = append(filter.Discovery, discovery)
 			}
+		case "internal":
+			// Parameter removed in https://github.com/elastic/package-registry/pull/765
+			// Keep it here to avoid breaking existing clients.
+		default:
+			return nil, fmt.Errorf("unknown query parameter: %q", key)
 		}
 	}
 

@@ -155,6 +155,8 @@ func newCategoriesFilterFromQuery(query url.Values) (*packages.Filter, error) {
 			}
 		case "include_policy_templates":
 			// This query parameter is allowed, but not used as a filter
+		default:
+			return nil, fmt.Errorf("unknown query parameter: %q", key)
 		}
 
 	}
