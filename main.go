@@ -143,22 +143,8 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if tlsMinVersionValue > 0 {
-		if tlsCertFile == "" || tlsKeyFile == "" {
-			log.Fatalf("-tls-min-version set but missing TLS cert and key files (-tls-cert and -tls-key)")
-		}
-	}
-
-	if featureStorageIndexer && featureSQLStorageIndexer {
-		log.Fatal("Both feature-storage-indexer and feature-sql-storage-indexer are enabled. Please choose one.")
-	}
-
-	if featureEnableSearchCache && !featureSQLStorageIndexer {
-		log.Fatal("feature-enable-search-cache is enabled, but feature-sql-storage-indexer is not enabled. Search cache is just supported with SQL Storage indexer.")
-	}
-
-	if featureEnableCategoriesCache && !featureSQLStorageIndexer {
-		log.Fatal("feature-enable-categories-cache is enabled, but feature-sql-storage-indexer is not enabled. Categories cache is just supported with SQL Storage indexer.")
+	if err := validateFlags(); err != nil {
+		log.Fatal(err)
 	}
 
 	if printVersionInfo {
@@ -658,3 +644,25 @@ func getRouter(logger *zap.Logger, options serverOptions) (*mux.Router, error) {
 // healthHandler is used for Docker/K8s deployments. It returns 200 if the service is live
 // In addition ?ready=true can be used for a ready request. Currently both are identical.
 func healthHandler(w http.ResponseWriter, r *http.Request) {}
+
+func validateFlags() error {
+	if tlsMinVersionValue > 0 {
+		if tlsCertFile == "" || tlsKeyFile == "" {
+			return fmt.Errorf("-tls-min-version set but missing TLS cert and key files (-tls-cert and -tls-key)")
+		}
+	}
+
+	if featureStorageIndexer && featureSQLStorageIndexer {
+		return fmt.Errorf("both -feature-storage-indexer and -feature-sql-storage-indexer flags are enabled but are mutually exclusive")
+	}
+
+	if featureEnableSearchCache && !featureSQLStorageIndexer {
+		return fmt.Errorf("search cache is only supported in SQL storage indexer: feature-enable-search-cache is enabled, but feature-sql-storage-indexer is not enabled")
+	}
+
+	if featureEnableCategoriesCache && !featureSQLStorageIndexer {
+		return fmt.Errorf("categories cache is just supported with SQL Storage indexer: feature-enable-categories-cache is enabled, but feature-sql-storage-indexer is not enabled")
+	}
+
+	return nil
+}
