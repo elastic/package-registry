@@ -153,7 +153,10 @@ func newCategoriesFilterFromQuery(query url.Values) (*packages.Filter, error) {
 				}
 				filter.Discovery = append(filter.Discovery, discovery)
 			}
+		case "include_policy_templates":
+			// This query parameter is allowed, but not used as a filter
 		}
+
 	}
 
 	return &filter, nil
