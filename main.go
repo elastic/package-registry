@@ -182,14 +182,13 @@ func main() {
 	config := mustLoadConfig(logger)
 
 	options := serverOptions{
-		logger:    logger,
 		apmTracer: apmTracer,
 		config:    config,
 	}
 
 	if dryRun {
 		logger.Info("Running dry-run mode")
-		indexer := initIndexer(ctx, options)
+		indexer := initIndexer(ctx, logger, options)
 		defer indexer.Close(ctx)
 		os.Exit(0)
 	}
@@ -225,10 +224,10 @@ func main() {
 		options.categoriesCache = categoriesCache
 	}
 
-	indexer := initIndexer(ctx, options)
+	indexer := initIndexer(ctx, logger, options)
 	defer indexer.Close(ctx)
 
-	server := initServer(options)
+	server := initServer(logger, options)
 
 	go func() {
 		err := runServer(server)
@@ -363,8 +362,7 @@ func initMetricsServer(logger *zap.Logger) {
 	}()
 }
 
-func initIndexer(ctx context.Context, options serverOptions) Indexer {
-	logger := options.logger
+func initIndexer(ctx context.Context, logger *zap.Logger, options serverOptions) Indexer {
 	tx := options.apmTracer.StartTransaction("initIndexer", "backend.init")
 	defer tx.End()
 
@@ -376,13 +374,13 @@ func initIndexer(ctx context.Context, options serverOptions) Indexer {
 	switch {
 	case featureSQLStorageIndexer:
 		logger.Warn("Technical preview: SQL storage indexer is an experimental feature and it may be unstable.")
-		indexer, err := initSQLStorageIndexer(ctx, options)
+		indexer, err := initSQLStorageIndexer(ctx, logger, options)
 		if err != nil {
 			logger.Fatal("failed to initialize SQL storage indexer", zap.Error(err))
 		}
 		combined = append(combined, indexer)
 	case featureStorageIndexer:
-		indexer, err := initStorageIndexer(ctx, options)
+		indexer, err := initStorageIndexer(ctx, logger, options)
 		if err != nil {
 			logger.Fatal("failed to initialize storage indexer", zap.Error(err))
 		}
@@ -397,12 +395,12 @@ func initIndexer(ctx context.Context, options serverOptions) Indexer {
 	return combined
 }
 
-func initStorageIndexer(ctx context.Context, options serverOptions) (*storage.Indexer, error) {
-	storageClient, err := newStorageClient(ctx, options.logger)
+func initStorageIndexer(ctx context.Context, logger *zap.Logger, options serverOptions) (*storage.Indexer, error) {
+	storageClient, err := newStorageClient(ctx, logger)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create storage client: %w", err)
 	}
-	return storage.NewIndexer(options.logger, storageClient, storage.IndexerOptions{
+	return storage.NewIndexer(logger, storageClient, storage.IndexerOptions{
 		APMTracer:                    options.apmTracer,
 		PackageStorageBucketInternal: storageIndexerBucketInternal,
 		PackageStorageEndpoint:       storageEndpoint,
@@ -410,17 +408,17 @@ func initStorageIndexer(ctx context.Context, options serverOptions) (*storage.In
 	}), nil
 }
 
-func initSQLStorageIndexer(ctx context.Context, options serverOptions) (*internalStorage.SQLIndexer, error) {
-	storageClient, err := newStorageClient(ctx, options.logger)
+func initSQLStorageIndexer(ctx context.Context, logger *zap.Logger, options serverOptions) (*internalStorage.SQLIndexer, error) {
+	storageClient, err := newStorageClient(ctx, logger)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create storage client: %w", err)
 	}
 
-	storageDatabase, err := initDatabase(ctx, options.logger, options.config.SQLIndexerDatabaseFolderPath, "storage_packages.db")
+	storageDatabase, err := initDatabase(ctx, logger, options.config.SQLIndexerDatabaseFolderPath, "storage_packages.db")
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize storage database: %w", err)
 	}
-	storageSwapDatabase, err := initDatabase(ctx, options.logger, options.config.SQLIndexerDatabaseFolderPath, "storage_packages_swap.db")
+	storageSwapDatabase, err := initDatabase(ctx, logger, options.config.SQLIndexerDatabaseFolderPath, "storage_packages_swap.db")
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize storage backup database: %w", err)
 	}
@@ -444,7 +442,7 @@ func initSQLStorageIndexer(ctx context.Context, options serverOptions) (*interna
 		indexerOptions.ReadPackagesBatchsize = readPackagesBatchSize
 	}
 
-	return internalStorage.NewIndexer(options.logger, storageClient, indexerOptions), nil
+	return internalStorage.NewIndexer(logger, storageClient, indexerOptions), nil
 }
 
 func newStorageClient(ctx context.Context, logger *zap.Logger) (*gstorage.Client, error) {
@@ -460,7 +458,6 @@ func newStorageClient(ctx context.Context, logger *zap.Logger) (*gstorage.Client
 }
 
 type serverOptions struct {
-	logger          *zap.Logger
 	apmTracer       *apm.Tracer
 	config          *Config
 	indexer         Indexer
@@ -468,8 +465,8 @@ type serverOptions struct {
 	categoriesCache *expirable.LRU[string, []byte]
 }
 
-func initServer(options serverOptions) *http.Server {
-	router := mustLoadRouter(options)
+func initServer(logger *zap.Logger, options serverOptions) *http.Server {
+	router := mustLoadRouter(logger, options)
 	apmgorilla.Instrument(router, apmgorilla.WithTracer(options.apmTracer))
 
 	var tlsConfig tls.Config
@@ -603,16 +600,15 @@ func ensurePackagesAvailable(ctx context.Context, logger *zap.Logger, indexer In
 	metrics.NumberIndexedPackages.Set(float64(len(packages)))
 }
 
-func mustLoadRouter(options serverOptions) *mux.Router {
-	router, err := getRouter(options)
+func mustLoadRouter(logger *zap.Logger, options serverOptions) *mux.Router {
+	router, err := getRouter(logger, options)
 	if err != nil {
-		options.logger.Fatal("failed go configure router", zap.Error(err))
+		logger.Fatal("failed go configure router", zap.Error(err))
 	}
 	return router
 }
 
-func getRouter(options serverOptions) (*mux.Router, error) {
-	logger := options.logger
+func getRouter(logger *zap.Logger, options serverOptions) (*mux.Router, error) {
 	if featureProxyMode {
 		logger.Info("Technical preview: Proxy mode is an experimental feature and it may be unstable.")
 	}

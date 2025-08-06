@@ -43,8 +43,7 @@ func TestRouter(t *testing.T) {
 	indexer := NewCombinedIndexer()
 	defer indexer.Close(context.Background())
 
-	router, err := getRouter(serverOptions{
-		logger:  logger,
+	router, err := getRouter(logger, serverOptions{
 		config:  &config,
 		indexer: indexer,
 	})
