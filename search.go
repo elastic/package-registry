@@ -92,8 +92,6 @@ func newSearchFilterFromQuery(query url.Values, allowUnknownQueryParameters bool
 		return &filter, nil
 	}
 
-	query.Get("something")
-
 	var err error
 	for key, values := range query {
 		if len(values) == 0 {

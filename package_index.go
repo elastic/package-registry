@@ -29,7 +29,6 @@ var errPackageRevisionNotFound = errors.New("package revision not found")
 
 func packageIndexHandler(logger *zap.Logger, options handlerOptions) func(w http.ResponseWriter, r *http.Request) {
 	options.proxyMode = proxymode.NoProxy(logger)
-	options.cache = nil
 	return packageIndexHandlerWithProxyMode(logger, options)
 }
 
