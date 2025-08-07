@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bugfixes
 
 ### Added
+* New Security subcategory "asset_inventory" [#1357](https://github.com/elastic/package-registry/pull/1357)
 * Added cache for categories endpoint (SQL storage indexer). [#1379](https://github.com/elastic/package-registry/1379)
 * Update default values for cache search and TTL settings search (SQL storage indexer). [#1379](https://github.com/elastic/package-registry/1379)
 
@@ -47,7 +48,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Cleanup SQL storage indexer backup database only when a new index version is downloaded (technical preview). [#1334](https://github.com/elastic/package-registry/pull/1334)
 * Add support to discover content packages based on the datasets defined in the discovery parameter. [#1338](https://github.com/elastic/package-registry/pull/1338)
 * Include deployment modes in responses when they are defined at inputs of the policy templates. [#1345](https://github.com/elastic/package-registry/pull/1345)
-* New Security subcategory "asset_inventory" [#1357](https://github.com/elastic/package-registry/pull/1357)
 
 ### Deprecated
 
