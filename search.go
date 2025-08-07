@@ -81,8 +81,12 @@ func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *
 		if cache != nil {
 			switch {
 			case filter.PackageName != "" && !filter.AllVersions:
-				// requests like `/search?package=foo` are not added to the cache
-				// but `/search?package=foo&all=true` is added
+				// Due to the potential for a large volume of unique requests,
+				// the cache could be easily filled just with those requests or causing evictions.
+				// Moreover, these requests (just querying for a package) typically have rapid response times,
+				// which means not using the cache is acceptable. Example:
+				// - `/search?package=foo` request is not added to the cache
+				// - `/search?package=foo&all=true` request is is added
 				logger.Debug("skipped add to cache for search request with package query parameter", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", cache.Len()))
 			default:
 				val := cache.Add(r.URL.String(), data)
