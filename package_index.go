@@ -38,7 +38,7 @@ func packageIndexHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxy
 
 		// Return error if any query parameter is present
 		if len(r.URL.Query()) > 0 {
-			badRequest(w, "unknown query parameters")
+			badRequest(w, "not supported query parameters")
 			return
 		}
 
