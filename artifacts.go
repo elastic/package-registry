@@ -7,7 +7,6 @@ package main
 import (
 	"errors"
 	"net/http"
-	"time"
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/gorilla/mux"
@@ -23,16 +22,17 @@ const artifactsRouterPath = "/epr/{packageName}/{packageName:[a-z0-9_]+}-{packag
 
 var errArtifactNotFound = errors.New("artifact not found")
 
-func artifactsHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration, allowUnknownQueryParameters bool) func(w http.ResponseWriter, r *http.Request) {
-	return artifactsHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime, allowUnknownQueryParameters)
+func artifactsHandler(logger *zap.Logger, options handlerOptions) func(w http.ResponseWriter, r *http.Request) {
+	options.proxyMode = proxymode.NoProxy(logger)
+	return artifactsHandlerWithProxyMode(logger, options)
 }
 
-func artifactsHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration, allowUnknownQueryParameters bool) func(w http.ResponseWriter, r *http.Request) {
+func artifactsHandlerWithProxyMode(logger *zap.Logger, options handlerOptions) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger := logger.With(apmzap.TraceContext(r.Context())...)
 
 		// Return error if any query parameter is present
-		if !allowUnknownQueryParameters && len(r.URL.Query()) > 0 {
+		if !options.allowUnknownQueryParameters && len(r.URL.Query()) > 0 {
 			badRequest(w, "not supported query parameters")
 			return
 		}
@@ -57,7 +57,7 @@ func artifactsHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMod
 		}
 
 		opts := packages.NameVersionFilter(packageName, packageVersion)
-		pkgs, err := indexer.Get(r.Context(), &opts)
+		pkgs, err := options.indexer.Get(r.Context(), &opts)
 		if err != nil {
 			logger.Error("getting package path failed",
 				zap.String("package.name", packageName),
@@ -66,8 +66,8 @@ func artifactsHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMod
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
-		if len(pkgs) == 0 && proxyMode.Enabled() {
-			proxiedPackage, err := proxyMode.Package(r)
+		if len(pkgs) == 0 && options.proxyMode.Enabled() {
+			proxiedPackage, err := options.proxyMode.Package(r)
 			if err != nil {
 				logger.Error("proxy mode: package failed", zap.Error(err))
 				http.Error(w, "internal server error", http.StatusInternalServerError)
@@ -82,7 +82,7 @@ func artifactsHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMod
 			return
 		}
 
-		cacheHeaders(w, cacheTime)
+		cacheHeaders(w, options.cacheTime)
 		packages.ServePackage(logger, w, r, pkgs[0])
 	}
 }

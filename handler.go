@@ -8,7 +8,19 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+
+	"github.com/hashicorp/golang-lru/v2/expirable"
+
+	"github.com/elastic/package-registry/proxymode"
 )
+
+type handlerOptions struct {
+	indexer                     Indexer
+	proxyMode                   *proxymode.ProxyMode
+	cacheTime                   time.Duration
+	cache                       *expirable.LRU[string, []byte]
+	allowUnknownQueryParameters bool
+}
 
 func notFoundHandler(err error) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

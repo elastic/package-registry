@@ -12,10 +12,8 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/hashicorp/golang-lru/v2/expirable"
 
 	"go.elastic.co/apm/module/apmzap/v2"
 	"go.elastic.co/apm/v2"
@@ -26,23 +24,25 @@ import (
 	"github.com/elastic/package-registry/proxymode"
 )
 
-func searchHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration, allowUnknownQueryParameters bool) func(w http.ResponseWriter, r *http.Request) {
-	return searchHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime, nil, allowUnknownQueryParameters)
+func searchHandler(logger *zap.Logger, options handlerOptions) func(w http.ResponseWriter, r *http.Request) {
+	options.proxyMode = proxymode.NoProxy(logger)
+	options.cache = nil
+	return searchHandlerWithProxyMode(logger, options)
 }
 
-func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration, cache *expirable.LRU[string, []byte], allowUnknownQueryParameters bool) func(w http.ResponseWriter, r *http.Request) {
+func searchHandlerWithProxyMode(logger *zap.Logger, options handlerOptions) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger := logger.With(apmzap.TraceContext(r.Context())...)
 
-		if cache != nil {
-			if response, ok := cache.Get(r.URL.String()); ok {
-				logger.Debug("using as response cached search request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", cache.Len()))
-				serveJSONResponse(r.Context(), w, cacheTime, response)
+		if options.cache != nil {
+			if response, ok := options.cache.Get(r.URL.String()); ok {
+				logger.Debug("using as response cached search request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", options.cache.Len()))
+				serveJSONResponse(r.Context(), w, options.cacheTime, response)
 				return
 			}
 		}
 
-		filter, err := newSearchFilterFromQuery(r.URL.Query(), allowUnknownQueryParameters)
+		filter, err := newSearchFilterFromQuery(r.URL.Query(), options.allowUnknownQueryParameters)
 		if err != nil {
 			badRequest(w, err.Error())
 			return
@@ -51,14 +51,14 @@ func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *
 			Filter: filter,
 		}
 
-		packages, err := indexer.Get(r.Context(), &opts)
+		packages, err := options.indexer.Get(r.Context(), &opts)
 		if err != nil {
 			notFoundError(w, fmt.Errorf("fetching package failed: %w", err))
 			return
 		}
 
-		if proxyMode.Enabled() {
-			proxiedPackages, err := proxyMode.Search(r)
+		if options.proxyMode.Enabled() {
+			proxiedPackages, err := options.proxyMode.Search(r)
 			if err != nil {
 				logger.Error("proxy mode: search failed", zap.Error(err))
 				http.Error(w, "internal server error", http.StatusInternalServerError)
@@ -76,11 +76,11 @@ func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *
 			return
 		}
 
-		serveJSONResponse(r.Context(), w, cacheTime, data)
+		serveJSONResponse(r.Context(), w, options.cacheTime, data)
 
-		if cache != nil {
-			val := cache.Add(r.URL.String(), data)
-			logger.Debug("added to cache request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", cache.Len()), zap.Bool("cache.eviction", val))
+		if options.cache != nil {
+			val := options.cache.Add(r.URL.String(), data)
+			logger.Debug("added to cache request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", options.cache.Len()), zap.Bool("cache.eviction", val))
 		}
 	}
 }

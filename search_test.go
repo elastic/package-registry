@@ -109,7 +109,12 @@ func TestSearchWithProxyMode(t *testing.T) {
 	)
 	require.NoError(t, err)
 
-	searchWithProxyHandler := searchHandlerWithProxyMode(testLogger, indexer, proxyMode, testCacheTime, nil, defaultAllowUnknownQueryParametersTests)
+	searchWithProxyHandler := searchHandlerWithProxyMode(testLogger, handlerOptions{
+		indexer:                     indexer,
+		proxyMode:                   proxyMode,
+		cacheTime:                   testCacheTime,
+		allowUnknownQueryParameters: defaultAllowUnknownQueryParametersTests,
+	})
 	tests := []struct {
 		endpoint string
 		path     string

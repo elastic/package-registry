@@ -27,18 +27,19 @@ import (
 )
 
 // categoriesHandler is a dynamic handler as it will also allow filtering in the future.
-func categoriesHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration, allowUnknownQueryParameters bool) func(w http.ResponseWriter, r *http.Request) {
-	return categoriesHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime, allowUnknownQueryParameters)
+func categoriesHandler(logger *zap.Logger, options handlerOptions) func(w http.ResponseWriter, r *http.Request) {
+	options.proxyMode = proxymode.NoProxy(logger)
+	return categoriesHandlerWithProxyMode(logger, options)
 }
 
 // categoriesHandler is a dynamic handler as it will also allow filtering in the future.
-func categoriesHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration, allowUnknownQueryParameters bool) func(w http.ResponseWriter, r *http.Request) {
+func categoriesHandlerWithProxyMode(logger *zap.Logger, options handlerOptions) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger := logger.With(apmzap.TraceContext(r.Context())...)
 
 		query := r.URL.Query()
 
-		filter, err := newCategoriesFilterFromQuery(query, allowUnknownQueryParameters)
+		filter, err := newCategoriesFilterFromQuery(query, options.allowUnknownQueryParameters)
 		if err != nil {
 			badRequest(w, err.Error())
 			return
@@ -56,15 +57,15 @@ func categoriesHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMo
 		opts := packages.GetOptions{
 			Filter: filter,
 		}
-		pkgs, err := indexer.Get(r.Context(), &opts)
+		pkgs, err := options.indexer.Get(r.Context(), &opts)
 		if err != nil {
 			notFoundError(w, err)
 			return
 		}
 		categories := getCategories(r.Context(), pkgs, includePolicyTemplates)
 
-		if proxyMode.Enabled() {
-			proxiedCategories, err := proxyMode.Categories(r)
+		if options.proxyMode.Enabled() {
+			proxiedCategories, err := options.proxyMode.Categories(r)
 			if err != nil {
 				logger.Error("proxy mode: categories failed", zap.Error(err))
 				http.Error(w, "internal server error", http.StatusInternalServerError)
@@ -92,7 +93,7 @@ func categoriesHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMo
 			return
 		}
 
-		serveJSONResponse(r.Context(), w, cacheTime, data)
+		serveJSONResponse(r.Context(), w, options.cacheTime, data)
 	}
 }
 

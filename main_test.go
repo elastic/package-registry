@@ -66,11 +66,23 @@ func TestEndpoints(t *testing.T) {
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
-	faviconHandleFunc, err := faviconHandler(testCacheTime, defaultAllowUnknownQueryParametersTests)
+	faviconHandleFunc, err := faviconHandler(handlerOptions{
+		cacheTime:                   testCacheTime,
+		allowUnknownQueryParameters: defaultAllowUnknownQueryParametersTests,
+	})
 	require.NoError(t, err)
 
-	indexHandleFunc, err := indexHandler(testCacheTime, defaultAllowUnknownQueryParametersTests)
+	indexHandleFunc, err := indexHandler(handlerOptions{
+		cacheTime:                   testCacheTime,
+		allowUnknownQueryParameters: defaultAllowUnknownQueryParametersTests,
+	})
 	require.NoError(t, err)
+
+	defaultHandlerOptions := handlerOptions{
+		indexer:                     indexer,
+		cacheTime:                   testCacheTime,
+		allowUnknownQueryParameters: defaultAllowUnknownQueryParametersTests,
+	}
 
 	tests := []struct {
 		endpoint string
@@ -80,59 +92,59 @@ func TestEndpoints(t *testing.T) {
 	}{
 		{"/", "", "index.json", indexHandleFunc},
 		{"/index.json", "", "index.json", indexHandleFunc},
-		{"/search", "/search", "search.json", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/search?all=true", "/search", "search-all.json", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/categories", "/categories", "categories.json", categoriesHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/categories?experimental=true", "/categories", "categories-experimental.json", categoriesHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/categories?experimental=foo", "/categories", "categories-experimental-error.txt", categoriesHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/categories?experimental=true&kibana.version=6.5.2", "/categories", "categories-kibana652.json", categoriesHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/categories?prerelease=true", "/categories", "categories-prerelease.json", categoriesHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/categories?prerelease=foo", "/categories", "categories-prerelease-error.txt", categoriesHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/categories?prerelease=true&kibana.version=6.5.2", "/categories", "categories-prerelease-kibana652.json", categoriesHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/categories?include_policy_templates=true", "/categories", "categories-include-policy-templates.json", categoriesHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/categories?include_policy_templates=foo", "/categories", "categories-include-policy-templates-error.txt", categoriesHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/categories?capabilities=observability,security&prerelease=true", "/categories", "categories-prerelease-capabilities-observability-security.json", categoriesHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/categories?capabilities=none&prerelease=true", "/categories", "categories-prerelease-capabilities-none.json", categoriesHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/categories?spec.min=1.1&spec.max=2.10&prerelease=true", "/categories", "categories-spec-min-1.1.0-max-2.10.0.json", categoriesHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/categories?spec.max=2.10&prerelease=true", "/categories", "categories-spec-max-2.10.0.json", categoriesHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/categories?spec.max=2.10.1&prerelease=true", "/categories", "categories-spec-max-error.txt", categoriesHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/categories?discovery=fields:process.pid&prerelease=true", "/categories", "categories-discovery-fields-process-pid.txt", categoriesHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/categories?discovery=datasets:good_content.errors&prerelease=true", "/categories", "categories-discovery-datasets.txt", categoriesHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/categories?discovery=datasets:good_content.errors&prerelease=true&discovery=fields:process.pid", "/categories", "categories-discovery-multiple.txt", categoriesHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/categories?discovery=datasets:good_content.errors&prerelease=true&discovery=fields:process.path", "/categories", "categories-discovery-multiple-no-match.txt", categoriesHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/search?kibana.version=6.5.2", "/search", "search-kibana652.json", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/search?kibana.version=7.2.1", "/search", "search-kibana721.json", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/search?kibana.version=8.0.0", "/search", "search-kibana800.json", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/search?category=web", "/search", "search-category-web.json", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/search?category=observability", "/search", "search-category-observability-subcategories.json", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/search?category=web&all=true", "/search", "search-category-web-all.json", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/search?category=custom", "/search", "search-category-custom.json", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/search?package=example", "/search", "search-package-example.json", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/search?package=example&all=true", "/search", "search-package-example-all.json", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/search?experimental=true", "/search", "search-package-experimental.json", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/search?experimental=foo", "/search", "search-package-experimental-error.txt", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/search?category=datastore&experimental=true", "/search", "search-category-datastore.json", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/search?prerelease=true", "/search", "search-package-prerelease.json", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/search?prerelease=foo", "/search", "search-package-prerelease-error.txt", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/search?category=datastore&prerelease=true", "/search", "search-category-datastore-prerelease.json", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/search?type=content&prerelease=true", "/search", "search-content-packages.json", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/search?type=input&prerelease=true", "/search", "search-input-packages.json", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/search?type=input&package=integration_input&prerelease=true", "/search", "search-input-integration-package.json", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/search?type=integration&package=integration_input&prerelease=true", "/search", "search-integration-integration-package.json", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/search?capabilities=observability,security&prerelease=true", "/search", "search-prerelease-capabilities-observability-security.json", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/search?capabilities=none&prerelease=true", "/search", "search-prerelease-capabilities-none.json", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/search?spec.min=1.1&spec.max=2.10&prerelease=true", "/search", "search-spec-min-1.1.0-max-2.10.0.json", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/search?spec.max=2.10&prerelease=true", "/search", "search-spec-max-2.10.0.json", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/search?spec.max=2.10.1&prerelease=true", "/search", "search-spec-max-error.txt", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/search?prerelease=true&discovery=fields:process.pid", "/search", "search-discovery-fields-process-pid.txt", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/search?prerelease=true&discovery=fields:non.existing.field", "/search", "search-discovery-fields-empty.txt", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/search?prerelease=true&discovery=datasets:good_content.errors", "/search", "search-discovery-datasets.txt", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/search?prerelease=true&discovery=datasets:good_content.errors&discovery=fields:process.pid", "/search", "search-discovery-multiple.txt", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
-		{"/search?prerelease=true&discovery=datasets:good_content.errors&discovery=fields:process.path", "/search", "search-discovery-multiple-no-match.txt", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
+		{"/search", "/search", "search.json", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/search?all=true", "/search", "search-all.json", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/categories", "/categories", "categories.json", categoriesHandler(testLogger, defaultHandlerOptions)},
+		{"/categories?experimental=true", "/categories", "categories-experimental.json", categoriesHandler(testLogger, defaultHandlerOptions)},
+		{"/categories?experimental=foo", "/categories", "categories-experimental-error.txt", categoriesHandler(testLogger, defaultHandlerOptions)},
+		{"/categories?experimental=true&kibana.version=6.5.2", "/categories", "categories-kibana652.json", categoriesHandler(testLogger, defaultHandlerOptions)},
+		{"/categories?prerelease=true", "/categories", "categories-prerelease.json", categoriesHandler(testLogger, defaultHandlerOptions)},
+		{"/categories?prerelease=foo", "/categories", "categories-prerelease-error.txt", categoriesHandler(testLogger, defaultHandlerOptions)},
+		{"/categories?prerelease=true&kibana.version=6.5.2", "/categories", "categories-prerelease-kibana652.json", categoriesHandler(testLogger, defaultHandlerOptions)},
+		{"/categories?include_policy_templates=true", "/categories", "categories-include-policy-templates.json", categoriesHandler(testLogger, defaultHandlerOptions)},
+		{"/categories?include_policy_templates=foo", "/categories", "categories-include-policy-templates-error.txt", categoriesHandler(testLogger, defaultHandlerOptions)},
+		{"/categories?capabilities=observability,security&prerelease=true", "/categories", "categories-prerelease-capabilities-observability-security.json", categoriesHandler(testLogger, defaultHandlerOptions)},
+		{"/categories?capabilities=none&prerelease=true", "/categories", "categories-prerelease-capabilities-none.json", categoriesHandler(testLogger, defaultHandlerOptions)},
+		{"/categories?spec.min=1.1&spec.max=2.10&prerelease=true", "/categories", "categories-spec-min-1.1.0-max-2.10.0.json", categoriesHandler(testLogger, defaultHandlerOptions)},
+		{"/categories?spec.max=2.10&prerelease=true", "/categories", "categories-spec-max-2.10.0.json", categoriesHandler(testLogger, defaultHandlerOptions)},
+		{"/categories?spec.max=2.10.1&prerelease=true", "/categories", "categories-spec-max-error.txt", categoriesHandler(testLogger, defaultHandlerOptions)},
+		{"/categories?discovery=fields:process.pid&prerelease=true", "/categories", "categories-discovery-fields-process-pid.txt", categoriesHandler(testLogger, defaultHandlerOptions)},
+		{"/categories?discovery=datasets:good_content.errors&prerelease=true", "/categories", "categories-discovery-datasets.txt", categoriesHandler(testLogger, defaultHandlerOptions)},
+		{"/categories?discovery=datasets:good_content.errors&prerelease=true&discovery=fields:process.pid", "/categories", "categories-discovery-multiple.txt", categoriesHandler(testLogger, defaultHandlerOptions)},
+		{"/categories?discovery=datasets:good_content.errors&prerelease=true&discovery=fields:process.path", "/categories", "categories-discovery-multiple-no-match.txt", categoriesHandler(testLogger, defaultHandlerOptions)},
+		{"/search?kibana.version=6.5.2", "/search", "search-kibana652.json", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/search?kibana.version=7.2.1", "/search", "search-kibana721.json", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/search?kibana.version=8.0.0", "/search", "search-kibana800.json", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/search?category=web", "/search", "search-category-web.json", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/search?category=observability", "/search", "search-category-observability-subcategories.json", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/search?category=web&all=true", "/search", "search-category-web-all.json", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/search?category=custom", "/search", "search-category-custom.json", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/search?package=example", "/search", "search-package-example.json", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/search?package=example&all=true", "/search", "search-package-example-all.json", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/search?experimental=true", "/search", "search-package-experimental.json", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/search?experimental=foo", "/search", "search-package-experimental-error.txt", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/search?category=datastore&experimental=true", "/search", "search-category-datastore.json", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/search?prerelease=true", "/search", "search-package-prerelease.json", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/search?prerelease=foo", "/search", "search-package-prerelease-error.txt", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/search?category=datastore&prerelease=true", "/search", "search-category-datastore-prerelease.json", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/search?type=content&prerelease=true", "/search", "search-content-packages.json", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/search?type=input&prerelease=true", "/search", "search-input-packages.json", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/search?type=input&package=integration_input&prerelease=true", "/search", "search-input-integration-package.json", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/search?type=integration&package=integration_input&prerelease=true", "/search", "search-integration-integration-package.json", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/search?capabilities=observability,security&prerelease=true", "/search", "search-prerelease-capabilities-observability-security.json", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/search?capabilities=none&prerelease=true", "/search", "search-prerelease-capabilities-none.json", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/search?spec.min=1.1&spec.max=2.10&prerelease=true", "/search", "search-spec-min-1.1.0-max-2.10.0.json", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/search?spec.max=2.10&prerelease=true", "/search", "search-spec-max-2.10.0.json", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/search?spec.max=2.10.1&prerelease=true", "/search", "search-spec-max-error.txt", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/search?prerelease=true&discovery=fields:process.pid", "/search", "search-discovery-fields-process-pid.txt", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/search?prerelease=true&discovery=fields:non.existing.field", "/search", "search-discovery-fields-empty.txt", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/search?prerelease=true&discovery=datasets:good_content.errors", "/search", "search-discovery-datasets.txt", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/search?prerelease=true&discovery=datasets:good_content.errors&discovery=fields:process.pid", "/search", "search-discovery-multiple.txt", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/search?prerelease=true&discovery=datasets:good_content.errors&discovery=fields:process.path", "/search", "search-discovery-multiple-no-match.txt", searchHandler(testLogger, defaultHandlerOptions)},
 		{"/favicon.ico", "", "favicon.ico", faviconHandleFunc},
 
 		// Removed flags, kept to ensure that they don't break requests from old versions.
-		{"/search?internal=true", "/search", "search-package-internal.json", searchHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)},
+		{"/search?internal=true", "/search", "search-package-internal.json", searchHandler(testLogger, defaultHandlerOptions)},
 	}
 
 	for _, test := range tests {
@@ -150,7 +162,11 @@ func TestArtifacts(t *testing.T) {
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
-	artifactsHandler := artifactsHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)
+	artifactsHandler := artifactsHandler(testLogger, handlerOptions{
+		indexer:                     indexer,
+		cacheTime:                   testCacheTime,
+		allowUnknownQueryParameters: defaultAllowUnknownQueryParametersTests,
+	})
 
 	tests := []struct {
 		endpoint string
@@ -178,7 +194,11 @@ func TestSignatures(t *testing.T) {
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
-	signaturesHandler := signaturesHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)
+	signaturesHandler := signaturesHandler(testLogger, handlerOptions{
+		indexer:                     indexer,
+		cacheTime:                   testCacheTime,
+		allowUnknownQueryParameters: defaultAllowUnknownQueryParametersTests,
+	})
 
 	tests := []struct {
 		endpoint string
@@ -205,7 +225,11 @@ func TestStatics(t *testing.T) {
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
-	staticHandler := staticHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)
+	staticHandler := staticHandler(testLogger, handlerOptions{
+		indexer:                     indexer,
+		cacheTime:                   testCacheTime,
+		allowUnknownQueryParameters: defaultAllowUnknownQueryParametersTests,
+	})
 
 	tests := []struct {
 		endpoint string
@@ -297,7 +321,11 @@ func TestStaticsModifiedTime(t *testing.T) {
 	require.NoError(t, err)
 
 	router := mux.NewRouter()
-	router.HandleFunc(staticRouterPath, staticHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests))
+	router.HandleFunc(staticRouterPath, staticHandler(testLogger, handlerOptions{
+		indexer:                     indexer,
+		cacheTime:                   testCacheTime,
+		allowUnknownQueryParameters: defaultAllowUnknownQueryParametersTests,
+	}))
 
 	for _, test := range tests {
 		t.Run(test.title, func(t *testing.T) {
@@ -326,9 +354,17 @@ func TestZippedArtifacts(t *testing.T) {
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
-	artifactsHandler := artifactsHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)
+	artifactsHandler := artifactsHandler(testLogger, handlerOptions{
+		indexer:                     indexer,
+		cacheTime:                   testCacheTime,
+		allowUnknownQueryParameters: defaultAllowUnknownQueryParametersTests,
+	})
 
-	staticHandler := staticHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)
+	staticHandler := staticHandler(testLogger, handlerOptions{
+		indexer:                     indexer,
+		cacheTime:                   testCacheTime,
+		allowUnknownQueryParameters: defaultAllowUnknownQueryParametersTests,
+	})
 
 	tests := []struct {
 		endpoint string
@@ -360,7 +396,11 @@ func TestPackageIndex(t *testing.T) {
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
-	packageIndexHandler := packageIndexHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)
+	packageIndexHandler := packageIndexHandler(testLogger, handlerOptions{
+		indexer:                     indexer,
+		cacheTime:                   testCacheTime,
+		allowUnknownQueryParameters: defaultAllowUnknownQueryParametersTests,
+	})
 
 	tests := []struct {
 		endpoint string
@@ -392,7 +432,11 @@ func TestZippedPackageIndex(t *testing.T) {
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
-	packageIndexHandler := packageIndexHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)
+	packageIndexHandler := packageIndexHandler(testLogger, handlerOptions{
+		indexer:                     indexer,
+		cacheTime:                   testCacheTime,
+		allowUnknownQueryParameters: defaultAllowUnknownQueryParametersTests,
+	})
 
 	tests := []struct {
 		endpoint string
@@ -424,7 +468,11 @@ func TestAllPackageIndex(t *testing.T) {
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
-	packageIndexHandler := packageIndexHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)
+	packageIndexHandler := packageIndexHandler(testLogger, handlerOptions{
+		indexer:                     indexer,
+		cacheTime:                   testCacheTime,
+		allowUnknownQueryParameters: defaultAllowUnknownQueryParametersTests,
+	})
 
 	// find all manifests
 	var manifests []string
@@ -481,7 +529,11 @@ func TestContentTypes(t *testing.T) {
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
 
-	handler := staticHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests)
+	handler := staticHandler(testLogger, handlerOptions{
+		indexer:                     indexer,
+		cacheTime:                   testCacheTime,
+		allowUnknownQueryParameters: defaultAllowUnknownQueryParametersTests,
+	})
 	router := mux.NewRouter()
 	router.HandleFunc(staticRouterPath, handler)
 
@@ -512,8 +564,16 @@ func TestRangeDownloads(t *testing.T) {
 	require.NoError(t, err)
 
 	router := mux.NewRouter()
-	router.HandleFunc(staticRouterPath, staticHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests))
-	router.HandleFunc(artifactsRouterPath, artifactsHandler(testLogger, indexer, testCacheTime, defaultAllowUnknownQueryParametersTests))
+	router.HandleFunc(staticRouterPath, staticHandler(testLogger, handlerOptions{
+		indexer:                     indexer,
+		cacheTime:                   testCacheTime,
+		allowUnknownQueryParameters: defaultAllowUnknownQueryParametersTests,
+	}))
+	router.HandleFunc(artifactsRouterPath, artifactsHandler(testLogger, handlerOptions{
+		indexer:                     indexer,
+		cacheTime:                   testCacheTime,
+		allowUnknownQueryParameters: defaultAllowUnknownQueryParametersTests,
+	}))
 
 	tests := []struct {
 		endpoint  string

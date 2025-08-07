@@ -580,23 +580,60 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer, cache *expir
 	if err != nil {
 		return nil, fmt.Errorf("can't create proxy mode: %w", err)
 	}
-	artifactsHandler := artifactsHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeCatchAll, allowUnknownQueryParameters)
-	signaturesHandler := signaturesHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeCatchAll, allowUnknownQueryParameters)
-	faviconHandleFunc, err := faviconHandler(config.CacheTimeCatchAll, allowUnknownQueryParameters)
+	artifactsHandler := artifactsHandlerWithProxyMode(logger, handlerOptions{
+		indexer:                     indexer,
+		proxyMode:                   proxyMode,
+		cacheTime:                   config.CacheTimeCatchAll,
+		allowUnknownQueryParameters: allowUnknownQueryParameters,
+	})
+	signaturesHandler := signaturesHandlerWithProxyMode(logger, handlerOptions{
+		indexer:                     indexer,
+		proxyMode:                   proxyMode,
+		cacheTime:                   config.CacheTimeCatchAll,
+		allowUnknownQueryParameters: allowUnknownQueryParameters,
+	})
+	faviconHandleFunc, err := faviconHandler(handlerOptions{
+		cacheTime:                   config.CacheTimeCatchAll,
+		allowUnknownQueryParameters: allowUnknownQueryParameters,
+	})
 	if err != nil {
 		return nil, err
 	}
-	indexHandlerFunc, err := indexHandler(config.CacheTimeIndex, allowUnknownQueryParameters)
+	indexHandlerFunc, err := indexHandler(handlerOptions{
+		cacheTime:                   config.CacheTimeIndex,
+		allowUnknownQueryParameters: allowUnknownQueryParameters,
+	})
 	if err != nil {
 		return nil, err
 	}
 
-	healthHandlerFunc := healthHandler(allowUnknownQueryParameters)
+	healthHandlerFunc := healthHandler(handlerOptions{allowUnknownQueryParameters: allowUnknownQueryParameters})
 
-	categoriesHandler := categoriesHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeCategories, allowUnknownQueryParameters)
-	packageIndexHandler := packageIndexHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeCatchAll, allowUnknownQueryParameters)
-	searchHandler := searchHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeSearch, cache, allowUnknownQueryParameters)
-	staticHandler := staticHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeCatchAll, allowUnknownQueryParameters)
+	categoriesHandler := categoriesHandlerWithProxyMode(logger, handlerOptions{
+		indexer:                     indexer,
+		proxyMode:                   proxyMode,
+		cacheTime:                   config.CacheTimeCategories,
+		allowUnknownQueryParameters: allowUnknownQueryParameters,
+	})
+	packageIndexHandler := packageIndexHandlerWithProxyMode(logger, handlerOptions{
+		indexer:                     indexer,
+		proxyMode:                   proxyMode,
+		cacheTime:                   config.CacheTimeCatchAll,
+		allowUnknownQueryParameters: allowUnknownQueryParameters,
+	})
+	searchHandler := searchHandlerWithProxyMode(logger, handlerOptions{
+		indexer:                     indexer,
+		proxyMode:                   proxyMode,
+		cacheTime:                   config.CacheTimeSearch,
+		cache:                       cache,
+		allowUnknownQueryParameters: allowUnknownQueryParameters,
+	})
+	staticHandler := staticHandlerWithProxyMode(logger, handlerOptions{
+		indexer:                     indexer,
+		proxyMode:                   proxyMode,
+		cacheTime:                   config.CacheTimeCatchAll,
+		allowUnknownQueryParameters: allowUnknownQueryParameters,
+	})
 
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/", indexHandlerFunc)
@@ -620,14 +657,14 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer, cache *expir
 
 // healthHandler is used for Docker/K8s deployments. It returns 200 if the service is live
 // In addition ?ready=true can be used for a ready request. Currently both are identical.
-func healthHandler(allowUnknownQueryParameters bool) func(http.ResponseWriter, *http.Request) {
+func healthHandler(options handlerOptions) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		for k := range r.URL.Query() {
 			switch k {
 			case "ready":
 				// Ready check, currently same as live check
 			default:
-				if !allowUnknownQueryParameters {
+				if !options.allowUnknownQueryParameters {
 					badRequest(w, fmt.Sprintf("unknown query parameter: %s", k))
 				}
 				return

@@ -8,7 +8,6 @@ import (
 	"context"
 	"errors"
 	"net/http"
-	"time"
 
 	"go.elastic.co/apm/module/apmzap/v2"
 	"go.elastic.co/apm/v2"
@@ -28,16 +27,18 @@ const (
 
 var errPackageRevisionNotFound = errors.New("package revision not found")
 
-func packageIndexHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration, allowUnknownQueryParameters bool) func(w http.ResponseWriter, r *http.Request) {
-	return packageIndexHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime, allowUnknownQueryParameters)
+func packageIndexHandler(logger *zap.Logger, options handlerOptions) func(w http.ResponseWriter, r *http.Request) {
+	options.proxyMode = proxymode.NoProxy(logger)
+	options.cache = nil
+	return packageIndexHandlerWithProxyMode(logger, options)
 }
 
-func packageIndexHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration, allowUnknownQueryParameters bool) func(w http.ResponseWriter, r *http.Request) {
+func packageIndexHandlerWithProxyMode(logger *zap.Logger, options handlerOptions) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger := logger.With(apmzap.TraceContext(r.Context())...)
 
 		// Return error if any query parameter is present
-		if !allowUnknownQueryParameters && len(r.URL.Query()) > 0 {
+		if !options.allowUnknownQueryParameters && len(r.URL.Query()) > 0 {
 			badRequest(w, "not supported query parameters")
 			return
 		}
@@ -65,14 +66,14 @@ func packageIndexHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxy
 		// Just this endpoint needs the full data, so we set it here.
 		opts.FullData = true
 
-		pkgs, err := indexer.Get(r.Context(), &opts)
+		pkgs, err := options.indexer.Get(r.Context(), &opts)
 		if err != nil {
 			logger.Error("getting package path failed", zap.Error(err))
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
-		if len(pkgs) == 0 && proxyMode.Enabled() {
-			proxiedPackage, err := proxyMode.Package(r)
+		if len(pkgs) == 0 && options.proxyMode.Enabled() {
+			proxiedPackage, err := options.proxyMode.Package(r)
 			if err != nil {
 				logger.Error("proxy mode: package failed", zap.Error(err))
 				http.Error(w, "internal server error", http.StatusInternalServerError)
@@ -96,7 +97,7 @@ func packageIndexHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxy
 			return
 		}
 
-		serveJSONResponse(r.Context(), w, cacheTime, data)
+		serveJSONResponse(r.Context(), w, options.cacheTime, data)
 	}
 }
 
