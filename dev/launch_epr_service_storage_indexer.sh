@@ -19,7 +19,7 @@ usage() {
     echo -e "\t\t\tIf set, the bucket name will be ignored (-b parameter) and Package Registry will use its default development bucket gs://fake-package-storage-internal"
     echo -e "\t-c <config_path>: Path to the configurastion file. Default: \"\""
     echo -e "\t-s : Enable SQL Storage indexer. By default Storage Indexer is enabled."
-    echo -e "\t-C : Enable Search Cache. Just supported with SQL Storage indexer. By default Search Cache is disabled."
+    echo -e "\t-C : Enable Cache for Search and Categories endpoints. Just supported with the SQL Storage indexer. By default both Caches are disabled."
     echo -e "\t-h: Show this message"
 }
 
