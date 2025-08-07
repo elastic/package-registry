@@ -92,48 +92,54 @@ func newSearchFilterFromQuery(query url.Values) (*packages.Filter, error) {
 		return &filter, nil
 	}
 
+	query.Get("something")
+
 	var err error
 	for key, values := range query {
+		if len(values) == 0 {
+			continue // Skip empty values for backward compatibility without returning an error
+		}
+		v := values[0]
 		switch key {
 		case "kibana.version":
-			if v := values[0]; v != "" {
+			if v != "" {
 				filter.KibanaVersion, err = semver.NewVersion(v)
 				if err != nil {
 					return nil, fmt.Errorf("invalid Kibana version '%s': %w", v, err)
 				}
 			}
 		case "category":
-			if v := values[0]; v != "" {
+			if v != "" {
 				filter.Category = v
 			}
 		case "package":
-			if v := values[0]; v != "" {
+			if v != "" {
 				filter.PackageName = v
 			}
 		case "type":
-			if v := values[0]; v != "" {
+			if v != "" {
 				filter.PackageType = v
 			}
 		case "capabilities":
-			if v := values[0]; v != "" {
+			if v != "" {
 				filter.Capabilities = strings.Split(v, ",")
 			}
 		case "spec.min":
-			if v := values[0]; v != "" {
+			if v != "" {
 				filter.SpecMin, err = getSpecVersion(v)
 				if err != nil {
 					return nil, fmt.Errorf("invalid 'spec.min' version: %w", err)
 				}
 			}
 		case "spec.max":
-			if v := values[0]; v != "" {
+			if v != "" {
 				filter.SpecMax, err = getSpecVersion(v)
 				if err != nil {
 					return nil, fmt.Errorf("invalid 'spec.max' version: %w", err)
 				}
 			}
 		case "all":
-			if v := values[0]; v != "" {
+			if v != "" {
 				filter.AllVersions, err = strconv.ParseBool(v)
 				if err != nil {
 					return nil, fmt.Errorf("invalid 'all' query param: '%s'", v)
@@ -141,14 +147,14 @@ func newSearchFilterFromQuery(query url.Values) (*packages.Filter, error) {
 			}
 		case "experimental":
 			// Deprecated: release tags to be removed
-			if v := values[0]; v != "" {
+			if v != "" {
 				filter.Experimental, err = strconv.ParseBool(v)
 				if err != nil {
 					return nil, fmt.Errorf("invalid 'experimental' query param: '%s'", v)
 				}
 			}
 		case "prerelease":
-			if v := values[0]; v != "" {
+			if v != "" {
 				filter.Prerelease, err = strconv.ParseBool(v)
 				if err != nil {
 					return nil, fmt.Errorf("invalid 'prerelease' query param: '%s'", v)
