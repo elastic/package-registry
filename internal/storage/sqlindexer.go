@@ -312,13 +312,14 @@ func (i *SQLIndexer) swapDatabases(ctx context.Context, currentCursor string, nu
 }
 
 func (i *SQLIndexer) purgeCaches() {
-	if i.searchCache == nil {
-		return
-	}
-	// Clear the cache after updating the index
+	// Purge the caches after updating the index
 	// there could be new, updated or removed packages
-	i.searchCache.Purge()
-	i.categoriesCache.Purge()
+	if i.searchCache != nil {
+		i.searchCache.Purge()
+	}
+	if i.categoriesCache != nil {
+		i.categoriesCache.Purge()
+	}
 }
 
 func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Package, error) {
