@@ -145,6 +145,13 @@ func TestEndpoints(t *testing.T) {
 
 		// Removed flags, kept to ensure that they don't break requests from old versions.
 		{"/search?internal=true", "/search", "search-package-internal.json", searchHandler(testLogger, defaultHandlerOptions)},
+
+		{"/search?package=yamlpipeline&unknown=true", "/search", "search-unknown-query-parameter-error.txt", searchHandler(testLogger, defaultHandlerOptions)},
+		{"/search?unknown=true", "/search", "search-allowed-unknown-query-parameter.json", searchHandler(testLogger, handlerOptions{
+			indexer:                     indexer,
+			cacheTime:                   testCacheTime,
+			allowUnknownQueryParameters: true,
+		})},
 	}
 
 	for _, test := range tests {
