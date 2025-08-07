@@ -31,6 +31,9 @@ func staticHandler(logger *zap.Logger, options handlerOptions) http.HandlerFunc 
 }
 
 func staticHandlerWithProxyMode(logger *zap.Logger, options handlerOptions) http.HandlerFunc {
+	if options.proxyMode == nil {
+		options.proxyMode = proxymode.NoProxy(logger)
+	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger := logger.With(apmzap.TraceContext(r.Context())...)
 

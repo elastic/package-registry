@@ -34,6 +34,9 @@ func categoriesHandler(logger *zap.Logger, options handlerOptions) func(w http.R
 
 // categoriesHandler is a dynamic handler as it will also allow filtering in the future.
 func categoriesHandlerWithProxyMode(logger *zap.Logger, options handlerOptions) func(w http.ResponseWriter, r *http.Request) {
+	if options.proxyMode == nil {
+		options.proxyMode = proxymode.NoProxy(logger)
+	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger := logger.With(apmzap.TraceContext(r.Context())...)
 

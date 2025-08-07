@@ -33,6 +33,9 @@ func packageIndexHandler(logger *zap.Logger, options handlerOptions) func(w http
 }
 
 func packageIndexHandlerWithProxyMode(logger *zap.Logger, options handlerOptions) func(w http.ResponseWriter, r *http.Request) {
+	if options.proxyMode == nil {
+		options.proxyMode = proxymode.NoProxy(logger)
+	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger := logger.With(apmzap.TraceContext(r.Context())...)
 
