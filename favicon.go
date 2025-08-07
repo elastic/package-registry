@@ -13,10 +13,10 @@ import (
 //go:embed img/favicon.ico
 var faviconBlob []byte
 
-func faviconHandler(cacheTime time.Duration) (func(w http.ResponseWriter, r *http.Request), error) {
+func faviconHandler(cacheTime time.Duration, allowUnknownQueryParameters bool) (func(w http.ResponseWriter, r *http.Request), error) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Return error if any query parameter is present
-		if len(r.URL.Query()) > 0 {
+		if !allowUnknownQueryParameters && len(r.URL.Query()) > 0 {
 			badRequest(w, "not supported query parameters")
 			return
 		}

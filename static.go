@@ -26,11 +26,11 @@ type staticParams struct {
 	fileName       string
 }
 
-func staticHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration) http.HandlerFunc {
-	return staticHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime)
+func staticHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration, allowUnknownQueryParameters bool) http.HandlerFunc {
+	return staticHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime, allowUnknownQueryParameters)
 }
 
-func staticHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) http.HandlerFunc {
+func staticHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration, allowUnknownQueryParameters bool) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger := logger.With(apmzap.TraceContext(r.Context())...)
 
@@ -41,7 +41,7 @@ func staticHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *
 		}
 
 		// Return error if any query parameter is present
-		if len(r.URL.Query()) > 0 {
+		if !allowUnknownQueryParameters && len(r.URL.Query()) > 0 {
 			badRequest(w, "not supported query parameters")
 			return
 		}

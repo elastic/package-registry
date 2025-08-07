@@ -28,16 +28,16 @@ const (
 
 var errPackageRevisionNotFound = errors.New("package revision not found")
 
-func packageIndexHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
-	return packageIndexHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime)
+func packageIndexHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration, allowUnknownQueryParameters bool) func(w http.ResponseWriter, r *http.Request) {
+	return packageIndexHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime, allowUnknownQueryParameters)
 }
 
-func packageIndexHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+func packageIndexHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration, allowUnknownQueryParameters bool) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger := logger.With(apmzap.TraceContext(r.Context())...)
 
 		// Return error if any query parameter is present
-		if len(r.URL.Query()) > 0 {
+		if !allowUnknownQueryParameters && len(r.URL.Query()) > 0 {
 			badRequest(w, "not supported query parameters")
 			return
 		}

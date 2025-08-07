@@ -16,7 +16,7 @@ type indexData struct {
 	Version     string `json:"service.version"`
 }
 
-func indexHandler(cacheTime time.Duration) (func(w http.ResponseWriter, r *http.Request), error) {
+func indexHandler(cacheTime time.Duration, allowUnknownQueryParameters bool) (func(w http.ResponseWriter, r *http.Request), error) {
 	data := indexData{
 		ServiceName: serviceName,
 		Version:     version,
@@ -27,7 +27,7 @@ func indexHandler(cacheTime time.Duration) (func(w http.ResponseWriter, r *http.
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Return error if any query parameter is present
-		if len(r.URL.Query()) > 0 {
+		if !allowUnknownQueryParameters && len(r.URL.Query()) > 0 {
 			badRequest(w, "not supported query parameters")
 			return
 		}

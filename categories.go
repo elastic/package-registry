@@ -27,18 +27,18 @@ import (
 )
 
 // categoriesHandler is a dynamic handler as it will also allow filtering in the future.
-func categoriesHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
-	return categoriesHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime)
+func categoriesHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration, allowUnknownQueryParameters bool) func(w http.ResponseWriter, r *http.Request) {
+	return categoriesHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime, allowUnknownQueryParameters)
 }
 
 // categoriesHandler is a dynamic handler as it will also allow filtering in the future.
-func categoriesHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+func categoriesHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration, allowUnknownQueryParameters bool) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger := logger.With(apmzap.TraceContext(r.Context())...)
 
 		query := r.URL.Query()
 
-		filter, err := newCategoriesFilterFromQuery(query)
+		filter, err := newCategoriesFilterFromQuery(query, allowUnknownQueryParameters)
 		if err != nil {
 			badRequest(w, err.Error())
 			return
@@ -96,7 +96,7 @@ func categoriesHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMo
 	}
 }
 
-func newCategoriesFilterFromQuery(query url.Values) (*packages.Filter, error) {
+func newCategoriesFilterFromQuery(query url.Values, allowUnknownQueryParameters bool) (*packages.Filter, error) {
 	var filter packages.Filter
 
 	if len(query) == 0 {
@@ -161,7 +161,9 @@ func newCategoriesFilterFromQuery(query url.Values) (*packages.Filter, error) {
 		case "include_policy_templates":
 			// This query parameter is allowed, but not used as a filter
 		default:
-			return nil, fmt.Errorf("unknown query parameter: %q", key)
+			if !allowUnknownQueryParameters {
+				return nil, fmt.Errorf("unknown query parameter: %q", key)
+			}
 		}
 
 	}
