@@ -88,10 +88,12 @@ var (
 		CacheTimeCategories:          10 * time.Minute,
 		CacheTimeCatchAll:            10 * time.Minute,
 		SQLIndexerDatabaseFolderPath: "/tmp/", // TODO: Another default directory?
-		SearchCacheSize:              250,
-		SearchCacheTTL:               24 * time.Hour,
-		CategoriesCacheSize:          100,
-		CategoriesCacheTTL:           24 * time.Hour,
+
+		// Search cache size is bigger than the categories size because that endpoint used to process more requests
+		SearchCacheSize:     250,
+		SearchCacheTTL:      24 * time.Hour,
+		CategoriesCacheSize: 100,
+		CategoriesCacheTTL:  24 * time.Hour,
 	}
 )
 
