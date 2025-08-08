@@ -10,7 +10,6 @@ import (
 	"fmt"
 
 	"cloud.google.com/go/storage"
-
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 
