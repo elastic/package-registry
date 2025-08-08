@@ -27,18 +27,23 @@ import (
 )
 
 // categoriesHandler is a dynamic handler as it will also allow filtering in the future.
-func categoriesHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
-	return categoriesHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime)
-}
-
-// categoriesHandler is a dynamic handler as it will also allow filtering in the future.
-func categoriesHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+func categoriesHandler(logger *zap.Logger, options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
+	if options.proxyMode == nil {
+		logger.Warn("artifactsHandlerWithProxyMode called without proxy mode, defaulting to no proxy")
+		options.proxyMode = proxymode.NoProxy(logger)
+	}
+	if options.indexer == nil {
+		return nil, fmt.Errorf("indexer is required for categories handler")
+	}
+	if options.cacheTime == 0 {
+		return nil, fmt.Errorf("cache time must be set for categories handler")
+	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger := logger.With(apmzap.TraceContext(r.Context())...)
 
 		query := r.URL.Query()
 
-		filter, err := newCategoriesFilterFromQuery(query)
+		filter, err := newCategoriesFilterFromQuery(query, options.allowUnknownQueryParameters)
 		if err != nil {
 			badRequest(w, err.Error())
 			return
@@ -56,15 +61,15 @@ func categoriesHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMo
 		opts := packages.GetOptions{
 			Filter: filter,
 		}
-		pkgs, err := indexer.Get(r.Context(), &opts)
+		pkgs, err := options.indexer.Get(r.Context(), &opts)
 		if err != nil {
 			notFoundError(w, err)
 			return
 		}
 		categories := getCategories(r.Context(), pkgs, includePolicyTemplates)
 
-		if proxyMode.Enabled() {
-			proxiedCategories, err := proxyMode.Categories(r)
+		if options.proxyMode.Enabled() {
+			proxiedCategories, err := options.proxyMode.Categories(r)
 			if err != nil {
 				logger.Error("proxy mode: categories failed", zap.Error(err))
 				http.Error(w, "internal server error", http.StatusInternalServerError)
@@ -92,11 +97,11 @@ func categoriesHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMo
 			return
 		}
 
-		serveJSONResponse(r.Context(), w, cacheTime, data)
-	}
+		serveJSONResponse(r.Context(), w, options.cacheTime, data)
+	}, nil
 }
 
-func newCategoriesFilterFromQuery(query url.Values) (*packages.Filter, error) {
+func newCategoriesFilterFromQuery(query url.Values, allowUnknownQueryParameters bool) (*packages.Filter, error) {
 	var filter packages.Filter
 
 	if len(query) == 0 {
@@ -104,53 +109,68 @@ func newCategoriesFilterFromQuery(query url.Values) (*packages.Filter, error) {
 	}
 
 	var err error
-	if v := query.Get("kibana.version"); v != "" {
-		filter.KibanaVersion, err = semver.NewVersion(v)
-		if err != nil {
-			return nil, fmt.Errorf("invalid Kibana version '%s': %w", v, err)
+	for key, values := range query {
+		if len(values) == 0 {
+			continue // Skip empty values for backward compatibility without returning an error
 		}
-	}
-
-	// Deprecated: release tags to be removed.
-	if v := query.Get("experimental"); v != "" {
-		filter.Experimental, err = strconv.ParseBool(v)
-		if err != nil {
-			return nil, fmt.Errorf("invalid 'experimental' query param: '%s'", v)
+		v := values[0]
+		switch key {
+		case "kibana.version":
+			if v != "" {
+				filter.KibanaVersion, err = semver.NewVersion(v)
+				if err != nil {
+					return nil, fmt.Errorf("invalid Kibana version '%s': %w", v, err)
+				}
+			}
+		case "experimental":
+			// Deprecated: release tags to be removed
+			if v != "" {
+				filter.Experimental, err = strconv.ParseBool(v)
+				if err != nil {
+					return nil, fmt.Errorf("invalid 'experimental' query param: '%s'", v)
+				}
+			}
+		case "prerelease":
+			if v != "" {
+				filter.Prerelease, err = strconv.ParseBool(v)
+				if err != nil {
+					return nil, fmt.Errorf("invalid 'prerelease' query param: '%s'", v)
+				}
+			}
+		case "capabilities":
+			if v != "" {
+				filter.Capabilities = strings.Split(v, ",")
+			}
+		case "spec.min":
+			if v != "" {
+				filter.SpecMin, err = getSpecVersion(v)
+				if err != nil {
+					return nil, fmt.Errorf("invalid 'spec.min' version: %w", err)
+				}
+			}
+		case "spec.max":
+			if v != "" {
+				filter.SpecMax, err = getSpecVersion(v)
+				if err != nil {
+					return nil, fmt.Errorf("invalid 'spec.max' version: %w", err)
+				}
+			}
+		case "discovery":
+			for _, v := range values {
+				discovery, err := packages.NewDiscoveryFilter(v)
+				if err != nil {
+					return nil, fmt.Errorf("invalid 'discovery' query param: '%s': %w", v, err)
+				}
+				filter.Discovery = append(filter.Discovery, discovery)
+			}
+		case "include_policy_templates":
+			// This query parameter is allowed, but not used as a filter
+		default:
+			if !allowUnknownQueryParameters {
+				return nil, fmt.Errorf("unknown query parameter: %q", key)
+			}
 		}
-	}
 
-	if v := query.Get("prerelease"); v != "" {
-		// In case of error, keep it false
-		filter.Prerelease, err = strconv.ParseBool(v)
-		if err != nil {
-			return nil, fmt.Errorf("invalid 'prerelease' query param: '%s'", v)
-		}
-	}
-
-	if v := query.Get("capabilities"); v != "" {
-		filter.Capabilities = strings.Split(v, ",")
-	}
-
-	if v := query.Get("spec.min"); v != "" {
-		filter.SpecMin, err = getSpecVersion(v)
-		if err != nil {
-			return nil, fmt.Errorf("invalid 'spec.min' version: %w", err)
-		}
-	}
-
-	if v := query.Get("spec.max"); v != "" {
-		filter.SpecMax, err = getSpecVersion(v)
-		if err != nil {
-			return nil, fmt.Errorf("invalid 'spec.max' version: %w", err)
-		}
-	}
-
-	for _, v := range query["discovery"] {
-		discovery, err := packages.NewDiscoveryFilter(v)
-		if err != nil {
-			return nil, fmt.Errorf("invalid 'discovery' query param: '%s': %w", v, err)
-		}
-		filter.Discovery = append(filter.Discovery, discovery)
 	}
 
 	return &filter, nil

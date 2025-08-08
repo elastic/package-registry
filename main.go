@@ -78,6 +78,8 @@ var (
 	storageEndpoint              string
 	storageIndexerWatchInterval  time.Duration
 
+	allowUnknownQueryParameters bool
+
 	featureProxyMode bool
 	proxyTo          string
 
@@ -114,6 +116,7 @@ func init() {
 	flag.StringVar(&storageIndexerBucketInternal, "storage-indexer-bucket-internal", "", "Path to the internal Package Storage bucket (with gs:// prefix).")
 	flag.StringVar(&storageEndpoint, "storage-endpoint", "https://package-storage.elastic.co/", "Package Storage public endpoint.")
 	flag.DurationVar(&storageIndexerWatchInterval, "storage-indexer-watch-interval", 1*time.Minute, "Address of the package-registry service.")
+	flag.BoolVar(&allowUnknownQueryParameters, "allow-unknown-query-parameters", false, "Allow unknown query parameters in the request. If set to false, the server will return an error if any unknown query parameter is present in the request.")
 
 	// The following proxy-indexer related flags are technical preview and might be removed in the future or renamed
 	flag.BoolVar(&featureProxyMode, "feature-proxy-mode", false, "Enable proxy mode to include packages from other endpoint (technical preview).")
@@ -577,28 +580,85 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer, cache *expir
 	if err != nil {
 		return nil, fmt.Errorf("can't create proxy mode: %w", err)
 	}
-	artifactsHandler := artifactsHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeCatchAll)
-	signaturesHandler := signaturesHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeCatchAll)
-	faviconHandleFunc, err := faviconHandler(config.CacheTimeCatchAll)
+	artifactsHandler, err := artifactsHandler(logger, handlerOptions{
+		indexer:                     indexer,
+		proxyMode:                   proxyMode,
+		cacheTime:                   config.CacheTimeCatchAll,
+		allowUnknownQueryParameters: allowUnknownQueryParameters,
+	})
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("can't create artifacts handler: %w", err)
 	}
-	indexHandlerFunc, err := indexHandler(config.CacheTimeIndex)
+	signaturesHandler, err := signaturesHandler(logger, handlerOptions{
+		indexer:                     indexer,
+		proxyMode:                   proxyMode,
+		cacheTime:                   config.CacheTimeCatchAll,
+		allowUnknownQueryParameters: allowUnknownQueryParameters,
+	})
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("can't create signatures handler: %w", err)
+	}
+	faviconHandleFunc, err := faviconHandler(handlerOptions{
+		cacheTime:                   config.CacheTimeCatchAll,
+		allowUnknownQueryParameters: allowUnknownQueryParameters,
+	})
+	if err != nil {
+		return nil, fmt.Errorf("can't create favicon handler: %w", err)
+	}
+	indexHandlerFunc, err := indexHandler(handlerOptions{
+		cacheTime:                   config.CacheTimeIndex,
+		allowUnknownQueryParameters: allowUnknownQueryParameters,
+	})
+	if err != nil {
+		return nil, fmt.Errorf("can't create index handler: %w", err)
 	}
 
-	categoriesHandler := categoriesHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeCategories)
-	packageIndexHandler := packageIndexHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeCatchAll)
-	searchHandler := searchHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeSearch, cache)
-	staticHandler := staticHandlerWithProxyMode(logger, indexer, proxyMode, config.CacheTimeCatchAll)
+	healthHandlerFunc := healthHandler(handlerOptions{allowUnknownQueryParameters: allowUnknownQueryParameters})
+
+	categoriesHandler, err := categoriesHandler(logger, handlerOptions{
+		indexer:                     indexer,
+		proxyMode:                   proxyMode,
+		cacheTime:                   config.CacheTimeCategories,
+		allowUnknownQueryParameters: allowUnknownQueryParameters,
+	})
+	if err != nil {
+		return nil, fmt.Errorf("can't create categories handler: %w", err)
+	}
+	packageIndexHandler, err := packageIndexHandler(logger, handlerOptions{
+		indexer:                     indexer,
+		proxyMode:                   proxyMode,
+		cacheTime:                   config.CacheTimeCatchAll,
+		allowUnknownQueryParameters: allowUnknownQueryParameters,
+	})
+	if err != nil {
+		return nil, fmt.Errorf("can't create package index handler: %w", err)
+	}
+	searchHandler, err := searchHandler(logger, handlerOptions{
+		indexer:                     indexer,
+		proxyMode:                   proxyMode,
+		cacheTime:                   config.CacheTimeSearch,
+		cache:                       cache,
+		allowUnknownQueryParameters: allowUnknownQueryParameters,
+	})
+	if err != nil {
+		return nil, fmt.Errorf("can't create search handler: %w", err)
+	}
+	staticHandler, err := staticHandler(logger, handlerOptions{
+		indexer:                     indexer,
+		proxyMode:                   proxyMode,
+		cacheTime:                   config.CacheTimeCatchAll,
+		allowUnknownQueryParameters: allowUnknownQueryParameters,
+	})
+	if err != nil {
+		return nil, fmt.Errorf("can't create static handler: %w", err)
+	}
 
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/", indexHandlerFunc)
 	router.HandleFunc("/index.json", indexHandlerFunc)
 	router.HandleFunc("/search", searchHandler)
 	router.HandleFunc("/categories", categoriesHandler)
-	router.HandleFunc("/health", healthHandler)
+	router.HandleFunc("/health", healthHandlerFunc)
 	router.HandleFunc("/favicon.ico", faviconHandleFunc)
 	router.HandleFunc(artifactsRouterPath, artifactsHandler)
 	router.HandleFunc(signaturesRouterPath, signaturesHandler)
@@ -615,4 +675,18 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer, cache *expir
 
 // healthHandler is used for Docker/K8s deployments. It returns 200 if the service is live
 // In addition ?ready=true can be used for a ready request. Currently both are identical.
-func healthHandler(w http.ResponseWriter, r *http.Request) {}
+func healthHandler(options handlerOptions) func(http.ResponseWriter, *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		for k := range r.URL.Query() {
+			switch k {
+			case "ready":
+				// Ready check, currently same as live check
+			default:
+				if !options.allowUnknownQueryParameters {
+					badRequest(w, fmt.Sprintf("unknown query parameter: %s", k))
+				}
+				return
+			}
+		}
+	}
+}

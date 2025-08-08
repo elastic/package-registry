@@ -5,8 +5,8 @@
 package main
 
 import (
+	"errors"
 	"net/http"
-	"time"
 
 	"github.com/elastic/package-registry/internal/util"
 )
@@ -16,7 +16,7 @@ type indexData struct {
 	Version     string `json:"service.version"`
 }
 
-func indexHandler(cacheTime time.Duration) (func(w http.ResponseWriter, r *http.Request), error) {
+func indexHandler(options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
 	data := indexData{
 		ServiceName: serviceName,
 		Version:     version,
@@ -25,7 +25,16 @@ func indexHandler(cacheTime time.Duration) (func(w http.ResponseWriter, r *http.
 	if err != nil {
 		return nil, err
 	}
+	if options.cacheTime == 0 {
+		return nil, errors.New("cache time must be set for index handler")
+	}
 	return func(w http.ResponseWriter, r *http.Request) {
-		serveJSONResponse(r.Context(), w, cacheTime, body)
+		// Return error if any query parameter is present
+		if !options.allowUnknownQueryParameters && len(r.URL.Query()) > 0 {
+			badRequest(w, "not supported query parameters")
+			return
+		}
+
+		serveJSONResponse(r.Context(), w, options.cacheTime, body)
 	}, nil
 }

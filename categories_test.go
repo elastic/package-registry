@@ -54,7 +54,13 @@ func TestCategoriesWithProxyMode(t *testing.T) {
 	)
 	require.NoError(t, err)
 
-	categoriesWithProxyHandler := categoriesHandlerWithProxyMode(testLogger, indexerProxy, proxyMode, testCacheTime)
+	categoriesWithProxyHandler, err := categoriesHandler(testLogger, handlerOptions{
+		indexer:                     indexerProxy,
+		proxyMode:                   proxyMode,
+		cacheTime:                   testCacheTime,
+		allowUnknownQueryParameters: defaultAllowUnknownQueryParametersTests,
+	})
+	require.NoError(t, err)
 
 	tests := []struct {
 		endpoint string

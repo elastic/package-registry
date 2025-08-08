@@ -12,10 +12,8 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/hashicorp/golang-lru/v2/expirable"
 
 	"go.elastic.co/apm/module/apmzap/v2"
 	"go.elastic.co/apm/v2"
@@ -26,23 +24,29 @@ import (
 	"github.com/elastic/package-registry/proxymode"
 )
 
-func searchHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
-	return searchHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime, nil)
-}
-
-func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration, cache *expirable.LRU[string, []byte]) func(w http.ResponseWriter, r *http.Request) {
+func searchHandler(logger *zap.Logger, options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
+	if options.proxyMode == nil {
+		logger.Warn("packageIndexHandlerWithProxyMode called without proxy mode, defaulting to no proxy")
+		options.proxyMode = proxymode.NoProxy(logger)
+	}
+	if options.cacheTime == 0 {
+		return nil, fmt.Errorf("cache time must be set for search handler")
+	}
+	if options.indexer == nil {
+		return nil, fmt.Errorf("indexer is required for search handler")
+	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger := logger.With(apmzap.TraceContext(r.Context())...)
 
-		if cache != nil {
-			if response, ok := cache.Get(r.URL.String()); ok {
-				logger.Debug("using as response cached search request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", cache.Len()))
-				serveJSONResponse(r.Context(), w, cacheTime, response)
+		if options.cache != nil {
+			if response, ok := options.cache.Get(r.URL.String()); ok {
+				logger.Debug("using as response cached request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", options.cache.Len()))
+				serveJSONResponse(r.Context(), w, options.cacheTime, response)
 				return
 			}
 		}
 
-		filter, err := newSearchFilterFromQuery(r.URL.Query())
+		filter, err := newSearchFilterFromQuery(r.URL.Query(), options.allowUnknownQueryParameters)
 		if err != nil {
 			badRequest(w, err.Error())
 			return
@@ -51,14 +55,14 @@ func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *
 			Filter: filter,
 		}
 
-		packages, err := indexer.Get(r.Context(), &opts)
+		packages, err := options.indexer.Get(r.Context(), &opts)
 		if err != nil {
 			notFoundError(w, fmt.Errorf("fetching package failed: %w", err))
 			return
 		}
 
-		if proxyMode.Enabled() {
-			proxiedPackages, err := proxyMode.Search(r)
+		if options.proxyMode.Enabled() {
+			proxiedPackages, err := options.proxyMode.Search(r)
 			if err != nil {
 				logger.Error("proxy mode: search failed", zap.Error(err))
 				http.Error(w, "internal server error", http.StatusInternalServerError)
@@ -76,9 +80,9 @@ func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *
 			return
 		}
 
-		serveJSONResponse(r.Context(), w, cacheTime, data)
+		serveJSONResponse(r.Context(), w, options.cacheTime, data)
 
-		if cache != nil {
+		if options.cache != nil {
 			switch {
 			case filter.PackageName != "" && !filter.AllVersions:
 				// Due to the potential for a large volume of unique requests,
@@ -87,16 +91,16 @@ func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *
 				// which means not using the cache is acceptable. Example:
 				// - `/search?package=foo` request is not added to the cache
 				// - `/search?package=foo&all=true` request is is added
-				logger.Debug("skipped add to cache for search request with package query parameter", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", cache.Len()))
+				logger.Debug("skipped add to cache for search request with package query parameter", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", options.cache.Len()))
 			default:
-				val := cache.Add(r.URL.String(), data)
-				logger.Debug("added to cache request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", cache.Len()), zap.Bool("cache.eviction", val))
+				val := options.cache.Add(r.URL.String(), data)
+				logger.Debug("added to cache request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", options.cache.Len()), zap.Bool("cache.eviction", val))
 			}
 		}
-	}
+	}, nil
 }
 
-func newSearchFilterFromQuery(query url.Values) (*packages.Filter, error) {
+func newSearchFilterFromQuery(query url.Values, allowUnknownQueryParameters bool) (*packages.Filter, error) {
 	var filter packages.Filter
 
 	if len(query) == 0 {
@@ -104,74 +108,87 @@ func newSearchFilterFromQuery(query url.Values) (*packages.Filter, error) {
 	}
 
 	var err error
-	if v := query.Get("kibana.version"); v != "" {
-		filter.KibanaVersion, err = semver.NewVersion(v)
-		if err != nil {
-			return nil, fmt.Errorf("invalid Kibana version '%s': %w", v, err)
+	for key, values := range query {
+		if len(values) == 0 {
+			continue // Skip empty values for backward compatibility without returning an error
 		}
-	}
-
-	if v := query.Get("category"); v != "" {
-		filter.Category = v
-	}
-
-	if v := query.Get("package"); v != "" {
-		filter.PackageName = v
-	}
-
-	if v := query.Get("type"); v != "" {
-		filter.PackageType = v
-	}
-
-	if v := query.Get("capabilities"); v != "" {
-		filter.Capabilities = strings.Split(v, ",")
-	}
-
-	if v := query.Get("spec.min"); v != "" {
-		filter.SpecMin, err = getSpecVersion(v)
-		if err != nil {
-			return nil, fmt.Errorf("invalid 'spec.min' version: %w", err)
+		v := values[0]
+		switch key {
+		case "kibana.version":
+			if v != "" {
+				filter.KibanaVersion, err = semver.NewVersion(v)
+				if err != nil {
+					return nil, fmt.Errorf("invalid Kibana version '%s': %w", v, err)
+				}
+			}
+		case "category":
+			if v != "" {
+				filter.Category = v
+			}
+		case "package":
+			if v != "" {
+				filter.PackageName = v
+			}
+		case "type":
+			if v != "" {
+				filter.PackageType = v
+			}
+		case "capabilities":
+			if v != "" {
+				filter.Capabilities = strings.Split(v, ",")
+			}
+		case "spec.min":
+			if v != "" {
+				filter.SpecMin, err = getSpecVersion(v)
+				if err != nil {
+					return nil, fmt.Errorf("invalid 'spec.min' version: %w", err)
+				}
+			}
+		case "spec.max":
+			if v != "" {
+				filter.SpecMax, err = getSpecVersion(v)
+				if err != nil {
+					return nil, fmt.Errorf("invalid 'spec.max' version: %w", err)
+				}
+			}
+		case "all":
+			if v != "" {
+				filter.AllVersions, err = strconv.ParseBool(v)
+				if err != nil {
+					return nil, fmt.Errorf("invalid 'all' query param: '%s'", v)
+				}
+			}
+		case "experimental":
+			// Deprecated: release tags to be removed
+			if v != "" {
+				filter.Experimental, err = strconv.ParseBool(v)
+				if err != nil {
+					return nil, fmt.Errorf("invalid 'experimental' query param: '%s'", v)
+				}
+			}
+		case "prerelease":
+			if v != "" {
+				filter.Prerelease, err = strconv.ParseBool(v)
+				if err != nil {
+					return nil, fmt.Errorf("invalid 'prerelease' query param: '%s'", v)
+				}
+			}
+		case "discovery":
+			for _, v := range values {
+				discovery, err := packages.NewDiscoveryFilter(v)
+				if err != nil {
+					return nil, fmt.Errorf("invalid 'discovery' query param: '%s': %w", v, err)
+				}
+				filter.Discovery = append(filter.Discovery, discovery)
+			}
+		case "internal":
+			// Parameter removed in https://github.com/elastic/package-registry/pull/765
+			// Keep it here to avoid breaking existing clients.
+		default:
+			if !allowUnknownQueryParameters {
+				return nil, fmt.Errorf("unknown query parameter: %q", key)
+			}
 		}
-	}
-
-	if v := query.Get("spec.max"); v != "" {
-		filter.SpecMax, err = getSpecVersion(v)
-		if err != nil {
-			return nil, fmt.Errorf("invalid 'spec.max' version: %w", err)
-		}
-	}
-
-	if v := query.Get("all"); v != "" {
-		// Default is false, also on error
-		filter.AllVersions, err = strconv.ParseBool(v)
-		if err != nil {
-			return nil, fmt.Errorf("invalid 'all' query param: '%s'", v)
-		}
-	}
-
-	// Deprecated: release tags to be removed.
-	if v := query.Get("experimental"); v != "" {
-		// In case of error, keep it false
-		filter.Experimental, err = strconv.ParseBool(v)
-		if err != nil {
-			return nil, fmt.Errorf("invalid 'experimental' query param: '%s'", v)
-		}
-	}
-
-	if v := query.Get("prerelease"); v != "" {
-		// In case of error, keep it false
-		filter.Prerelease, err = strconv.ParseBool(v)
-		if err != nil {
-			return nil, fmt.Errorf("invalid 'prerelease' query param: '%s'", v)
-		}
-	}
-
-	for _, v := range query["discovery"] {
-		discovery, err := packages.NewDiscoveryFilter(v)
-		if err != nil {
-			return nil, fmt.Errorf("invalid 'discovery' query param: '%s': %w", v, err)
-		}
-		filter.Discovery = append(filter.Discovery, discovery)
 	}
 
 	return &filter, nil

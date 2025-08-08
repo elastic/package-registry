@@ -7,7 +7,6 @@ package main
 import (
 	"errors"
 	"net/http"
-	"time"
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/gorilla/mux"
@@ -23,13 +22,26 @@ const signaturesRouterPath = "/epr/{packageName}/{packageName:[a-z0-9_]+}-{packa
 
 var errSignatureFileNotFound = errors.New("signature file not found")
 
-func signaturesHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
-	return signaturesHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime)
-}
+func signaturesHandler(logger *zap.Logger, options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
+	if options.proxyMode == nil {
+		logger.Warn("packageIndexHandlerWithProxyMode called without proxy mode, defaulting to no proxy")
+		options.proxyMode = proxymode.NoProxy(logger)
+	}
+	if options.cacheTime == 0 {
+		return nil, errors.New("cache time must be set for signatures handler")
+	}
+	if options.indexer == nil {
+		return nil, errors.New("indexer is required for signatures handler")
+	}
 
-func signaturesHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger := logger.With(apmzap.TraceContext(r.Context())...)
+
+		// Return error if any query parameter is present
+		if !options.allowUnknownQueryParameters && len(r.URL.Query()) > 0 {
+			badRequest(w, "not supported query parameters")
+			return
+		}
 
 		vars := mux.Vars(r)
 		packageName, ok := vars["packageName"]
@@ -51,7 +63,7 @@ func signaturesHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMo
 		}
 
 		opts := packages.NameVersionFilter(packageName, packageVersion)
-		pkgs, err := indexer.Get(r.Context(), &opts)
+		pkgs, err := options.indexer.Get(r.Context(), &opts)
 		if err != nil {
 			logger.Error("getting package path failed",
 				zap.String("package.name", packageName),
@@ -60,8 +72,8 @@ func signaturesHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMo
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
-		if len(pkgs) == 0 && proxyMode.Enabled() {
-			proxiedPackage, err := proxyMode.Package(r)
+		if len(pkgs) == 0 && options.proxyMode.Enabled() {
+			proxiedPackage, err := options.proxyMode.Package(r)
 			if err != nil {
 				logger.Error("proxy mode: package failed", zap.Error(err))
 				http.Error(w, "internal server error", http.StatusInternalServerError)
@@ -76,7 +88,7 @@ func signaturesHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMo
 			return
 		}
 
-		cacheHeaders(w, cacheTime)
+		cacheHeaders(w, options.cacheTime)
 		packages.ServePackageSignature(logger, w, r, pkgs[0])
-	}
+	}, nil
 }
