@@ -23,11 +23,6 @@ const signaturesRouterPath = "/epr/{packageName}/{packageName:[a-z0-9_]+}-{packa
 var errSignatureFileNotFound = errors.New("signature file not found")
 
 func signaturesHandler(logger *zap.Logger, options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
-	options.proxyMode = proxymode.NoProxy(logger)
-	return signaturesHandlerWithProxyMode(logger, options)
-}
-
-func signaturesHandlerWithProxyMode(logger *zap.Logger, options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
 	if options.proxyMode == nil {
 		logger.Warn("packageIndexHandlerWithProxyMode called without proxy mode, defaulting to no proxy")
 		options.proxyMode = proxymode.NoProxy(logger)

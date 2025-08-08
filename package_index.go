@@ -28,11 +28,6 @@ const (
 var errPackageRevisionNotFound = errors.New("package revision not found")
 
 func packageIndexHandler(logger *zap.Logger, options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
-	options.proxyMode = proxymode.NoProxy(logger)
-	return packageIndexHandlerWithProxyMode(logger, options)
-}
-
-func packageIndexHandlerWithProxyMode(logger *zap.Logger, options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
 	if options.proxyMode == nil {
 		logger.Warn("packageIndexHandlerWithProxyMode called without proxy mode, defaulting to no proxy")
 		options.proxyMode = proxymode.NoProxy(logger)

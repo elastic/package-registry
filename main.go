@@ -580,7 +580,7 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer, cache *expir
 	if err != nil {
 		return nil, fmt.Errorf("can't create proxy mode: %w", err)
 	}
-	artifactsHandler, err := artifactsHandlerWithProxyMode(logger, handlerOptions{
+	artifactsHandler, err := artifactsHandler(logger, handlerOptions{
 		indexer:                     indexer,
 		proxyMode:                   proxyMode,
 		cacheTime:                   config.CacheTimeCatchAll,
@@ -589,7 +589,7 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer, cache *expir
 	if err != nil {
 		return nil, fmt.Errorf("can't create artifacts handler: %w", err)
 	}
-	signaturesHandler, err := signaturesHandlerWithProxyMode(logger, handlerOptions{
+	signaturesHandler, err := signaturesHandler(logger, handlerOptions{
 		indexer:                     indexer,
 		proxyMode:                   proxyMode,
 		cacheTime:                   config.CacheTimeCatchAll,
@@ -615,7 +615,7 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer, cache *expir
 
 	healthHandlerFunc := healthHandler(handlerOptions{allowUnknownQueryParameters: allowUnknownQueryParameters})
 
-	categoriesHandler, err := categoriesHandlerWithProxyMode(logger, handlerOptions{
+	categoriesHandler, err := categoriesHandler(logger, handlerOptions{
 		indexer:                     indexer,
 		proxyMode:                   proxyMode,
 		cacheTime:                   config.CacheTimeCategories,
@@ -624,7 +624,7 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer, cache *expir
 	if err != nil {
 		return nil, fmt.Errorf("can't create categories handler: %w", err)
 	}
-	packageIndexHandler, err := packageIndexHandlerWithProxyMode(logger, handlerOptions{
+	packageIndexHandler, err := packageIndexHandler(logger, handlerOptions{
 		indexer:                     indexer,
 		proxyMode:                   proxyMode,
 		cacheTime:                   config.CacheTimeCatchAll,
@@ -633,7 +633,7 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer, cache *expir
 	if err != nil {
 		return nil, fmt.Errorf("can't create package index handler: %w", err)
 	}
-	searchHandler, err := searchHandlerWithProxyMode(logger, handlerOptions{
+	searchHandler, err := searchHandler(logger, handlerOptions{
 		indexer:                     indexer,
 		proxyMode:                   proxyMode,
 		cacheTime:                   config.CacheTimeSearch,
@@ -643,7 +643,7 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer, cache *expir
 	if err != nil {
 		return nil, fmt.Errorf("can't create search handler: %w", err)
 	}
-	staticHandler, err := staticHandlerWithProxyMode(logger, handlerOptions{
+	staticHandler, err := staticHandler(logger, handlerOptions{
 		indexer:                     indexer,
 		proxyMode:                   proxyMode,
 		cacheTime:                   config.CacheTimeCatchAll,

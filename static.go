@@ -26,11 +26,6 @@ type staticParams struct {
 }
 
 func staticHandler(logger *zap.Logger, options handlerOptions) (http.HandlerFunc, error) {
-	options.proxyMode = proxymode.NoProxy(logger)
-	return staticHandlerWithProxyMode(logger, options)
-}
-
-func staticHandlerWithProxyMode(logger *zap.Logger, options handlerOptions) (http.HandlerFunc, error) {
 	if options.proxyMode == nil {
 		logger.Warn("packageIndexHandlerWithProxyMode called without proxy mode, defaulting to no proxy")
 		options.proxyMode = proxymode.NoProxy(logger)

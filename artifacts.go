@@ -23,11 +23,6 @@ const artifactsRouterPath = "/epr/{packageName}/{packageName:[a-z0-9_]+}-{packag
 var errArtifactNotFound = errors.New("artifact not found")
 
 func artifactsHandler(logger *zap.Logger, options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
-	options.proxyMode = proxymode.NoProxy(logger)
-	return artifactsHandlerWithProxyMode(logger, options)
-}
-
-func artifactsHandlerWithProxyMode(logger *zap.Logger, options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
 	if options.proxyMode == nil {
 		logger.Warn("artifactsHandlerWithProxyMode called without proxy mode, defaulting to no proxy")
 		options.proxyMode = proxymode.NoProxy(logger)

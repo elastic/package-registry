@@ -109,7 +109,7 @@ func TestSearchWithProxyMode(t *testing.T) {
 	)
 	require.NoError(t, err)
 
-	searchWithProxyHandler, err := searchHandlerWithProxyMode(testLogger, handlerOptions{
+	searchWithProxyHandler, err := searchHandler(testLogger, handlerOptions{
 		indexer:                     indexer,
 		proxyMode:                   proxyMode,
 		cacheTime:                   testCacheTime,

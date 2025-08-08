@@ -25,11 +25,6 @@ import (
 )
 
 func searchHandler(logger *zap.Logger, options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
-	options.proxyMode = proxymode.NoProxy(logger)
-	return searchHandlerWithProxyMode(logger, options)
-}
-
-func searchHandlerWithProxyMode(logger *zap.Logger, options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
 	if options.proxyMode == nil {
 		logger.Warn("packageIndexHandlerWithProxyMode called without proxy mode, defaulting to no proxy")
 		options.proxyMode = proxymode.NoProxy(logger)
@@ -45,7 +40,7 @@ func searchHandlerWithProxyMode(logger *zap.Logger, options handlerOptions) (fun
 
 		if options.cache != nil {
 			if response, ok := options.cache.Get(r.URL.String()); ok {
-				logger.Debug("using as response cached search request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", options.cache.Len()))
+				logger.Debug("using as response cached request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", options.cache.Len()))
 				serveJSONResponse(r.Context(), w, options.cacheTime, response)
 				return
 			}
