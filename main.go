@@ -418,8 +418,13 @@ func initSQLStorageIndexer(ctx context.Context, logger *zap.Logger, options serv
 		WatchInterval:                storageIndexerWatchInterval,
 		Database:                     storageDatabase,
 		SwapDatabase:                 storageSwapDatabase,
-		SearchCache:                  options.searchCache,
-		CategoriesCache:              options.categoriesCache,
+		AfterUpdateHook: func(context.Context) {
+			// Purge the caches after updating the index
+			// there could be new, updated or removed packages
+			logger.Debug("Invalidating caches after update")
+			options.searchCache.Purge()
+			options.categoriesCache.Purge()
+		},
 	}
 
 	if v, found := os.LookupEnv("EPR_SQL_INDEXER_READ_PACKAGES_BATCH_SIZE"); found && v != "" {

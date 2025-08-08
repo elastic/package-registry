@@ -16,8 +16,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/hashicorp/golang-lru/v2/expirable"
-
 	"cloud.google.com/go/storage"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -59,8 +57,7 @@ type SQLIndexer struct {
 
 	readPackagesBatchSize int
 
-	searchCache     *expirable.LRU[string, []byte] // Cache for search results
-	categoriesCache *expirable.LRU[string, []byte] // Cache for categories results
+	afterUpdateHook func(ctx context.Context)
 }
 
 type IndexerOptions struct {
@@ -70,9 +67,8 @@ type IndexerOptions struct {
 	WatchInterval                time.Duration
 	Database                     database.Repository
 	SwapDatabase                 database.Repository
-	SearchCache                  *expirable.LRU[string, []byte] // Cache for search results
-	CategoriesCache              *expirable.LRU[string, []byte] // Cache for categories results
 	ReadPackagesBatchsize        int
+	AfterUpdateHook              func(ctx context.Context)
 }
 
 func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options IndexerOptions) *SQLIndexer {
@@ -88,9 +84,8 @@ func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options Index
 		swapDatabase:          options.SwapDatabase,
 		label:                 fmt.Sprintf("storage-%s", options.PackageStorageEndpoint),
 		readPackagesBatchSize: defaultReadPackagesBatchSize,
-		searchCache:           options.SearchCache,
-		categoriesCache:       options.CategoriesCache,
 		cursor:                "init",
+		afterUpdateHook:       options.AfterUpdateHook,
 	}
 
 	indexer.current = &indexer.database
@@ -305,21 +300,10 @@ func (i *SQLIndexer) swapDatabases(ctx context.Context, currentCursor string, nu
 	i.current, i.backup = i.backup, i.current
 	i.logger.Debug("Current database changed", zap.String("current.database.path", (*i.current).File(ctx)), zap.String("previous.database.path", (*i.backup).File(ctx)))
 
-	i.purgeCaches()
+	i.afterUpdateHook(ctx)
 
 	metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
 	metrics.NumberIndexedPackages.Set(float64(numPackages))
-}
-
-func (i *SQLIndexer) purgeCaches() {
-	// Purge the caches after updating the index
-	// there could be new, updated or removed packages
-	if i.searchCache != nil {
-		i.searchCache.Purge()
-	}
-	if i.categoriesCache != nil {
-		i.categoriesCache.Purge()
-	}
 }
 
 func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Package, error) {
