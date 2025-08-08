@@ -2,9 +2,9 @@
 
 Elastic Package Registry (EPR) supports multiple ways to retrieve package information. By default, it uses the File system indexer to read packages (folders or zip files).
 
-EPR also provides additional indexers (called storage indexers) that work with Package Storage V2 (technical preview). There are two storage indexer available:
+EPR also provides additional indexers (called storage indexers) that work with remote indices loaded from Google Cloud Storage (Package Storage V2). There are two storage indexer available:
 - [Storage indexer](#storage-indexer)
-- [SQL storage indexer](#sql-storage-indexer)
+- [SQL storage indexer](#sql-storage-indexer) (technical preview)
 
 You can test and debug these storage indexers locally by following the steps in [this section](#how-to-test-storage-indexers).
 
@@ -12,7 +12,7 @@ You can test and debug these storage indexers locally by following the steps in 
 
 **Technical Preview**: This indexer is currently in technical preview. Its behavior and configuration options may change in future releases without prior notice.
 
-In this indexer, package information from a remote index (Package Storage V2) is loaded and kept in memory. The storage indexer periodically checks for updates and refreshes the package data whenever a new index is available.
+In this indexer, package information from a remote index loaded from Google Cloud Storage (Package Storage V2) is loaded and kept in memory. The storage indexer periodically checks for updates and refreshes the package data whenever a new index is available.
 
 To enable this indexer, it is required to set these flags (or the corresponding environment variables):
 - `feature-storage-indexer`
@@ -25,7 +25,7 @@ To enable this indexer, it is required to set these flags (or the corresponding 
 
 **Technical Preview**: This indexer is currently in technical preview. Its behavior and configuration options may change in future releases without prior notice.
 
-In this indexer, package information from a remote index (Package Storage V2) is stored in a SQLite database instead of memory. This approach helps reduce memory usage and aims to make it easier to manage large sets of package data.
+In this indexer, package information from a remote index loaded from Google Cloud Storage (Package Storage V2) is stored in a SQLite database instead of memory. This approach helps reduce memory usage and aims to make it easier to manage large sets of package data.
 
 Just like the regular storage indexer, the SQL storage indexer periodically updates the database with the latest package information, ensuring your data stays current.
 
