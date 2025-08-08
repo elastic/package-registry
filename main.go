@@ -580,60 +580,78 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer, cache *expir
 	if err != nil {
 		return nil, fmt.Errorf("can't create proxy mode: %w", err)
 	}
-	artifactsHandler := artifactsHandlerWithProxyMode(logger, handlerOptions{
+	artifactsHandler, err := artifactsHandlerWithProxyMode(logger, handlerOptions{
 		indexer:                     indexer,
 		proxyMode:                   proxyMode,
 		cacheTime:                   config.CacheTimeCatchAll,
 		allowUnknownQueryParameters: allowUnknownQueryParameters,
 	})
-	signaturesHandler := signaturesHandlerWithProxyMode(logger, handlerOptions{
+	if err != nil {
+		return nil, fmt.Errorf("can't create artifacts handler: %w", err)
+	}
+	signaturesHandler, err := signaturesHandlerWithProxyMode(logger, handlerOptions{
 		indexer:                     indexer,
 		proxyMode:                   proxyMode,
 		cacheTime:                   config.CacheTimeCatchAll,
 		allowUnknownQueryParameters: allowUnknownQueryParameters,
 	})
+	if err != nil {
+		return nil, fmt.Errorf("can't create signatures handler: %w", err)
+	}
 	faviconHandleFunc, err := faviconHandler(handlerOptions{
 		cacheTime:                   config.CacheTimeCatchAll,
 		allowUnknownQueryParameters: allowUnknownQueryParameters,
 	})
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("can't create favicon handler: %w", err)
 	}
 	indexHandlerFunc, err := indexHandler(handlerOptions{
 		cacheTime:                   config.CacheTimeIndex,
 		allowUnknownQueryParameters: allowUnknownQueryParameters,
 	})
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("can't create index handler: %w", err)
 	}
 
 	healthHandlerFunc := healthHandler(handlerOptions{allowUnknownQueryParameters: allowUnknownQueryParameters})
 
-	categoriesHandler := categoriesHandlerWithProxyMode(logger, handlerOptions{
+	categoriesHandler, err := categoriesHandlerWithProxyMode(logger, handlerOptions{
 		indexer:                     indexer,
 		proxyMode:                   proxyMode,
 		cacheTime:                   config.CacheTimeCategories,
 		allowUnknownQueryParameters: allowUnknownQueryParameters,
 	})
-	packageIndexHandler := packageIndexHandlerWithProxyMode(logger, handlerOptions{
+	if err != nil {
+		return nil, fmt.Errorf("can't create categories handler: %w", err)
+	}
+	packageIndexHandler, err := packageIndexHandlerWithProxyMode(logger, handlerOptions{
 		indexer:                     indexer,
 		proxyMode:                   proxyMode,
 		cacheTime:                   config.CacheTimeCatchAll,
 		allowUnknownQueryParameters: allowUnknownQueryParameters,
 	})
-	searchHandler := searchHandlerWithProxyMode(logger, handlerOptions{
+	if err != nil {
+		return nil, fmt.Errorf("can't create package index handler: %w", err)
+	}
+	searchHandler, err := searchHandlerWithProxyMode(logger, handlerOptions{
 		indexer:                     indexer,
 		proxyMode:                   proxyMode,
 		cacheTime:                   config.CacheTimeSearch,
 		cache:                       cache,
 		allowUnknownQueryParameters: allowUnknownQueryParameters,
 	})
-	staticHandler := staticHandlerWithProxyMode(logger, handlerOptions{
+	if err != nil {
+		return nil, fmt.Errorf("can't create search handler: %w", err)
+	}
+	staticHandler, err := staticHandlerWithProxyMode(logger, handlerOptions{
 		indexer:                     indexer,
 		proxyMode:                   proxyMode,
 		cacheTime:                   config.CacheTimeCatchAll,
 		allowUnknownQueryParameters: allowUnknownQueryParameters,
 	})
+	if err != nil {
+		return nil, fmt.Errorf("can't create static handler: %w", err)
+	}
 
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/", indexHandlerFunc)

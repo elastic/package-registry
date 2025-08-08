@@ -25,15 +25,23 @@ type staticParams struct {
 	fileName       string
 }
 
-func staticHandler(logger *zap.Logger, options handlerOptions) http.HandlerFunc {
+func staticHandler(logger *zap.Logger, options handlerOptions) (http.HandlerFunc, error) {
 	options.proxyMode = proxymode.NoProxy(logger)
 	return staticHandlerWithProxyMode(logger, options)
 }
 
-func staticHandlerWithProxyMode(logger *zap.Logger, options handlerOptions) http.HandlerFunc {
+func staticHandlerWithProxyMode(logger *zap.Logger, options handlerOptions) (http.HandlerFunc, error) {
 	if options.proxyMode == nil {
+		logger.Warn("packageIndexHandlerWithProxyMode called without proxy mode, defaulting to no proxy")
 		options.proxyMode = proxymode.NoProxy(logger)
 	}
+	if options.cacheTime < 0 {
+		return nil, errors.New("cache time must be non-negative for static handler")
+	}
+	if options.indexer == nil {
+		return nil, errors.New("indexer is required for static handler")
+	}
+
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger := logger.With(apmzap.TraceContext(r.Context())...)
 
@@ -77,7 +85,7 @@ func staticHandlerWithProxyMode(logger *zap.Logger, options handlerOptions) http
 
 		cacheHeaders(w, options.cacheTime)
 		packages.ServePackageResource(logger, w, r, pkgs[0], params.fileName)
-	}
+	}, nil
 }
 
 func staticParamsFromRequest(r *http.Request) (*staticParams, error) {

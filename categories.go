@@ -27,15 +27,21 @@ import (
 )
 
 // categoriesHandler is a dynamic handler as it will also allow filtering in the future.
-func categoriesHandler(logger *zap.Logger, options handlerOptions) func(w http.ResponseWriter, r *http.Request) {
+func categoriesHandler(logger *zap.Logger, options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
 	options.proxyMode = proxymode.NoProxy(logger)
 	return categoriesHandlerWithProxyMode(logger, options)
 }
 
 // categoriesHandler is a dynamic handler as it will also allow filtering in the future.
-func categoriesHandlerWithProxyMode(logger *zap.Logger, options handlerOptions) func(w http.ResponseWriter, r *http.Request) {
+func categoriesHandlerWithProxyMode(logger *zap.Logger, options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
 	if options.proxyMode == nil {
 		options.proxyMode = proxymode.NoProxy(logger)
+	}
+	if options.indexer == nil {
+		return nil, fmt.Errorf("indexer is required for categories handler")
+	}
+	if options.cacheTime < 0 {
+		return nil, fmt.Errorf("cache time must be non-negative for categories handler")
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger := logger.With(apmzap.TraceContext(r.Context())...)
@@ -97,7 +103,7 @@ func categoriesHandlerWithProxyMode(logger *zap.Logger, options handlerOptions) 
 		}
 
 		serveJSONResponse(r.Context(), w, options.cacheTime, data)
-	}
+	}, nil
 }
 
 func newCategoriesFilterFromQuery(query url.Values, allowUnknownQueryParameters bool) (*packages.Filter, error) {

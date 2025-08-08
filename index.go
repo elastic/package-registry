@@ -5,6 +5,7 @@
 package main
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/elastic/package-registry/internal/util"
@@ -23,6 +24,9 @@ func indexHandler(options handlerOptions) (func(w http.ResponseWriter, r *http.R
 	body, err := util.MarshalJSONPretty(&data)
 	if err != nil {
 		return nil, err
+	}
+	if options.cacheTime < 0 {
+		return nil, errors.New("cache time must be non-negative for index handler")
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Return error if any query parameter is present

@@ -22,14 +22,21 @@ const artifactsRouterPath = "/epr/{packageName}/{packageName:[a-z0-9_]+}-{packag
 
 var errArtifactNotFound = errors.New("artifact not found")
 
-func artifactsHandler(logger *zap.Logger, options handlerOptions) func(w http.ResponseWriter, r *http.Request) {
+func artifactsHandler(logger *zap.Logger, options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
 	options.proxyMode = proxymode.NoProxy(logger)
 	return artifactsHandlerWithProxyMode(logger, options)
 }
 
-func artifactsHandlerWithProxyMode(logger *zap.Logger, options handlerOptions) func(w http.ResponseWriter, r *http.Request) {
+func artifactsHandlerWithProxyMode(logger *zap.Logger, options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
 	if options.proxyMode == nil {
+		logger.Warn("artifactsHandlerWithProxyMode called without proxy mode, defaulting to no proxy")
 		options.proxyMode = proxymode.NoProxy(logger)
+	}
+	if options.cacheTime < 0 {
+		return nil, errors.New("cache time must be non-negative for artifacts handler")
+	}
+	if options.indexer == nil {
+		return nil, errors.New("indexer is required for artifacts handler")
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger := logger.With(apmzap.TraceContext(r.Context())...)
@@ -87,5 +94,5 @@ func artifactsHandlerWithProxyMode(logger *zap.Logger, options handlerOptions) f
 
 		cacheHeaders(w, options.cacheTime)
 		packages.ServePackage(logger, w, r, pkgs[0])
-	}
+	}, nil
 }

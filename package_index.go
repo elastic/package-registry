@@ -27,14 +27,21 @@ const (
 
 var errPackageRevisionNotFound = errors.New("package revision not found")
 
-func packageIndexHandler(logger *zap.Logger, options handlerOptions) func(w http.ResponseWriter, r *http.Request) {
+func packageIndexHandler(logger *zap.Logger, options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
 	options.proxyMode = proxymode.NoProxy(logger)
 	return packageIndexHandlerWithProxyMode(logger, options)
 }
 
-func packageIndexHandlerWithProxyMode(logger *zap.Logger, options handlerOptions) func(w http.ResponseWriter, r *http.Request) {
+func packageIndexHandlerWithProxyMode(logger *zap.Logger, options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
 	if options.proxyMode == nil {
+		logger.Warn("packageIndexHandlerWithProxyMode called without proxy mode, defaulting to no proxy")
 		options.proxyMode = proxymode.NoProxy(logger)
+	}
+	if options.cacheTime < 0 {
+		return nil, errors.New("cache time must be non-negative for package index handler")
+	}
+	if options.indexer == nil {
+		return nil, errors.New("indexer is required for package index handler")
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger := logger.With(apmzap.TraceContext(r.Context())...)
@@ -100,7 +107,7 @@ func packageIndexHandlerWithProxyMode(logger *zap.Logger, options handlerOptions
 		}
 
 		serveJSONResponse(r.Context(), w, options.cacheTime, data)
-	}
+	}, nil
 }
 
 func getPackageOutput(ctx context.Context, pkg *packages.Package) ([]byte, error) {

@@ -24,15 +24,22 @@ import (
 	"github.com/elastic/package-registry/proxymode"
 )
 
-func searchHandler(logger *zap.Logger, options handlerOptions) func(w http.ResponseWriter, r *http.Request) {
+func searchHandler(logger *zap.Logger, options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
 	options.proxyMode = proxymode.NoProxy(logger)
 	options.cache = nil
 	return searchHandlerWithProxyMode(logger, options)
 }
 
-func searchHandlerWithProxyMode(logger *zap.Logger, options handlerOptions) func(w http.ResponseWriter, r *http.Request) {
+func searchHandlerWithProxyMode(logger *zap.Logger, options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
 	if options.proxyMode == nil {
+		logger.Warn("packageIndexHandlerWithProxyMode called without proxy mode, defaulting to no proxy")
 		options.proxyMode = proxymode.NoProxy(logger)
+	}
+	if options.cacheTime < 0 {
+		return nil, fmt.Errorf("cache time must be non-negative for search handler")
+	}
+	if options.indexer == nil {
+		return nil, fmt.Errorf("indexer is required for search handler")
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger := logger.With(apmzap.TraceContext(r.Context())...)
@@ -85,7 +92,7 @@ func searchHandlerWithProxyMode(logger *zap.Logger, options handlerOptions) func
 			val := options.cache.Add(r.URL.String(), data)
 			logger.Debug("added to cache request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", options.cache.Len()), zap.Bool("cache.eviction", val))
 		}
-	}
+	}, nil
 }
 
 func newSearchFilterFromQuery(query url.Values, allowUnknownQueryParameters bool) (*packages.Filter, error) {
