@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Breaking changes
 
+* Fail requests with 400 error code if there are unknown query parameters. This can be disabled via flag (-allow-unknown-query-parameters). [#1382](https://github.com/elastic/package-registry/pull/1382)
+
 ### Bugfixes
 
 ### Added
