@@ -26,7 +26,6 @@ import (
 
 func searchHandler(logger *zap.Logger, options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
 	options.proxyMode = proxymode.NoProxy(logger)
-	options.cache = nil
 	return searchHandlerWithProxyMode(logger, options)
 }
 
