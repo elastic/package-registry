@@ -18,6 +18,7 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/Masterminds/semver/v3"
+	"github.com/hashicorp/golang-lru/v2/expirable"
 	"go.elastic.co/apm/module/apmzap/v2"
 	"go.elastic.co/apm/v2"
 
@@ -28,13 +29,21 @@ import (
 
 // categoriesHandler is a dynamic handler as it will also allow filtering in the future.
 func categoriesHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
-	return categoriesHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime)
+	return categoriesHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime, nil)
 }
 
 // categoriesHandler is a dynamic handler as it will also allow filtering in the future.
-func categoriesHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
+func categoriesHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration, cache *expirable.LRU[string, []byte]) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger := logger.With(apmzap.TraceContext(r.Context())...)
+
+		if cache != nil {
+			if response, ok := cache.Get(r.URL.String()); ok {
+				logger.Debug("using as response cached request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", cache.Len()))
+				serveJSONResponse(r.Context(), w, cacheTime, response)
+				return
+			}
+		}
 
 		query := r.URL.Query()
 
@@ -93,6 +102,11 @@ func categoriesHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMo
 		}
 
 		serveJSONResponse(r.Context(), w, cacheTime, data)
+
+		if cache != nil {
+			val := cache.Add(r.URL.String(), data)
+			logger.Debug("added to cache request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", cache.Len()), zap.Bool("cache.eviction", val))
+		}
 	}
 }
 

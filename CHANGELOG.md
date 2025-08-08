@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * New Security subcategory "asset_inventory" [#1357](https://github.com/elastic/package-registry/pull/1357)
 * Update default value for the batch size used in SQL storage indexer. [#1372](https://github.com/elastic/package-registry/pull/1372)
 * Skip adding to cache requests containing package query parameter. [#1378](https://github.com/elastic/package-registry/pull/1378)
+* Added cache for categories endpoint (SQL storage indexer). [#1379](https://github.com/elastic/package-registry/1379)
+* Update default values for cache search and TTL settings search (SQL storage indexer). [#1379](https://github.com/elastic/package-registry/1379)
 
 ### Deprecated
 
