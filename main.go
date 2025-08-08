@@ -560,11 +560,18 @@ func printConfig(logger *zap.Logger, config *Config) {
 	logger.Info("Cache time for /search: " + config.CacheTimeSearch.String())
 	logger.Info("Cache time for /categories: " + config.CacheTimeCategories.String())
 	logger.Info("Cache time for all others: " + config.CacheTimeCatchAll.String())
-	logger.Info("(technical preview) SQL storage indexer database path: " + config.SQLIndexerDatabaseFolderPath)
-	logger.Info("(technical preview) Search cache size (SQL storage indexer): " + strconv.Itoa(config.SearchCacheSize))
-	logger.Info("(technical preview) Search cache TTL (SQL storage indexer): " + config.SearchCacheTTL.String())
-	logger.Info("(technical preview) Categories cache size (SQL storage indexer): " + strconv.Itoa(config.CategoriesCacheSize))
-	logger.Info("(technical preview) Categories cache TTL (SQL storage indexer): " + config.CategoriesCacheTTL.String())
+
+	if featureSQLStorageIndexer {
+		logger.Info("(technical preview) SQL storage indexer database path: " + config.SQLIndexerDatabaseFolderPath)
+		if featureEnableSearchCache {
+			logger.Info("(technical preview) Search cache size (SQL storage indexer): " + strconv.Itoa(config.SearchCacheSize))
+			logger.Info("(technical preview) Search cache TTL (SQL storage indexer): " + config.SearchCacheTTL.String())
+		}
+		if featureEnableCategoriesCache {
+			logger.Info("(technical preview) Categories cache size (SQL storage indexer): " + strconv.Itoa(config.CategoriesCacheSize))
+			logger.Info("(technical preview) Categories cache TTL (SQL storage indexer): " + config.CategoriesCacheTTL.String())
+		}
+	}
 }
 
 func ensurePackagesAvailable(ctx context.Context, logger *zap.Logger, indexer Indexer) {
