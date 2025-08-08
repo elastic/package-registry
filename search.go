@@ -79,8 +79,19 @@ func searchHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *
 		serveJSONResponse(r.Context(), w, cacheTime, data)
 
 		if cache != nil {
-			val := cache.Add(r.URL.String(), data)
-			logger.Debug("added to cache request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", cache.Len()), zap.Bool("cache.eviction", val))
+			switch {
+			case filter.PackageName != "" && !filter.AllVersions:
+				// Due to the potential for a large volume of unique requests,
+				// the cache could be easily filled just with those requests or causing evictions.
+				// Moreover, these requests (just querying for a package) typically have rapid response times,
+				// which means not using the cache is acceptable. Example:
+				// - `/search?package=foo` request is not added to the cache
+				// - `/search?package=foo&all=true` request is is added
+				logger.Debug("skipped add to cache for search request with package query parameter", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", cache.Len()))
+			default:
+				val := cache.Add(r.URL.String(), data)
+				logger.Debug("added to cache request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", cache.Len()), zap.Bool("cache.eviction", val))
+			}
 		}
 	}
 }
