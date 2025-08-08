@@ -25,8 +25,8 @@ func indexHandler(options handlerOptions) (func(w http.ResponseWriter, r *http.R
 	if err != nil {
 		return nil, err
 	}
-	if options.cacheTime < 0 {
-		return nil, errors.New("cache time must be non-negative for index handler")
+	if options.cacheTime == 0 {
+		return nil, errors.New("cache time must be set for index handler")
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Return error if any query parameter is present

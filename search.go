@@ -29,8 +29,8 @@ func searchHandler(logger *zap.Logger, options handlerOptions) (func(w http.Resp
 		logger.Warn("packageIndexHandlerWithProxyMode called without proxy mode, defaulting to no proxy")
 		options.proxyMode = proxymode.NoProxy(logger)
 	}
-	if options.cacheTime < 0 {
-		return nil, fmt.Errorf("cache time must be non-negative for search handler")
+	if options.cacheTime == 0 {
+		return nil, fmt.Errorf("cache time must be set for search handler")
 	}
 	if options.indexer == nil {
 		return nil, fmt.Errorf("indexer is required for search handler")

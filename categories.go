@@ -34,8 +34,8 @@ func categoriesHandler(logger *zap.Logger, options handlerOptions) (func(w http.
 	if options.indexer == nil {
 		return nil, fmt.Errorf("indexer is required for categories handler")
 	}
-	if options.cacheTime < 0 {
-		return nil, fmt.Errorf("cache time must be non-negative for categories handler")
+	if options.cacheTime == 0 {
+		return nil, fmt.Errorf("cache time must be set for categories handler")
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger := logger.With(apmzap.TraceContext(r.Context())...)

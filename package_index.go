@@ -32,8 +32,8 @@ func packageIndexHandler(logger *zap.Logger, options handlerOptions) (func(w htt
 		logger.Warn("packageIndexHandlerWithProxyMode called without proxy mode, defaulting to no proxy")
 		options.proxyMode = proxymode.NoProxy(logger)
 	}
-	if options.cacheTime < 0 {
-		return nil, errors.New("cache time must be non-negative for package index handler")
+	if options.cacheTime == 0 {
+		return nil, errors.New("cache time must be set for package index handler")
 	}
 	if options.indexer == nil {
 		return nil, errors.New("indexer is required for package index handler")
