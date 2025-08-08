@@ -27,9 +27,11 @@ The `/search` API endpoint has few additional query parameters. More might be ad
     - `?spec.min=2.2&spec.max=3.3`
     - `?spec.max=3.3`
     - `?spec.min=3.0`
-* `discovery`: Returns the packages that define the `discovery` field and fulfill the conditions in the query parameter. Example of requests:
-    - `?discovery=fields:process.pid`
-    - `?discovery=datasets:nginx.access`
+* `discovery`: Returns the packages that define the `discovery` setting and fulfill the conditions in the query parameter. There are two different options:
+    - Based on fields: Packages must include discovery fields in their manifest and all of fields must be included in the list included in the request
+        - Example: Packages that contain both `process.pid` and `host.os.name` fields: `?discovery=fields:process.pid,host.os.name`
+    - Based on datasets: Packages must include discovery datasets in their manifest and at least one of the datasets must be included in the list included in the request:
+        - Example: Packages that contain at least one of `nginx.access` or `nginx.error` datasets: `?discovery=datasets:nginx.access,nginx.error`
 * `prerelease`: This can be set to `true` to list prerelease versions of packages. Versions are considered prereleases if they are not stable according to semantic versioning, that is, if they are 0.x versions, or if they contain a prerelease tag. This is set to `false` by default.
 * `experimental` (deprecated): This can be set to `true` to list packages considered to be experimental. This is set to `false` by default.
 
@@ -48,9 +50,7 @@ The `/categories` API endpoint has two additional query parameters.
     - `?spec.min=2.2&spec.max=3.3`
     - `?spec.max=3.3`
     - `?spec.min=3.0`
-* `discovery`: List categories filtering the packages that define the `discovery` field and fulfill the conditions in the query parameter. Example of requests:
-    - `?discovery=fields:process.pid`
-    - `?discovery=datasets:nginx.access`
+* `discovery`: List categories filtering the packages that define the `discovery` setting and fulfill the conditions in the query parameter. These query parameter follow the same syntax and behaviour to obtain the corresponding categories as in [`/search` endpoint](#search).
 
 ## Package structure
 
