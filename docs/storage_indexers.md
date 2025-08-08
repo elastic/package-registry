@@ -10,8 +10,6 @@ You can test and debug these storage indexers locally by following the steps in 
 
 ## Storage Indexer
 
-**Technical Preview**: This indexer is currently in technical preview. Its behavior and configuration options may change in future releases without prior notice.
-
 In this indexer, package information from a remote index loaded from Google Cloud Storage (Package Storage V2) is loaded and kept in memory. The storage indexer periodically checks for updates and refreshes the package data whenever a new index is available.
 
 To enable this indexer, it is required to set these flags (or the corresponding environment variables):
