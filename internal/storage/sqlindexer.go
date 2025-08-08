@@ -300,7 +300,9 @@ func (i *SQLIndexer) swapDatabases(ctx context.Context, currentCursor string, nu
 	i.current, i.backup = i.backup, i.current
 	i.logger.Debug("Current database changed", zap.String("current.database.path", (*i.current).File(ctx)), zap.String("previous.database.path", (*i.backup).File(ctx)))
 
-	i.afterUpdateHook(ctx)
+	if i.afterUpdateHook != nil {
+		i.afterUpdateHook(ctx)
+	}
 
 	metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
 	metrics.NumberIndexedPackages.Set(float64(numPackages))
