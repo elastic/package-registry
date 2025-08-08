@@ -68,7 +68,7 @@ type IndexerOptions struct {
 	Database                     database.Repository
 	SwapDatabase                 database.Repository
 	ReadPackagesBatchsize        int
-	AfterUpdateHook              func(ctx context.Context)
+	AfterUpdateIndexHook         func(ctx context.Context)
 }
 
 func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options IndexerOptions) *SQLIndexer {
@@ -85,7 +85,7 @@ func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options Index
 		label:                 fmt.Sprintf("storage-%s", options.PackageStorageEndpoint),
 		readPackagesBatchSize: defaultReadPackagesBatchSize,
 		cursor:                "init",
-		afterUpdateHook:       options.AfterUpdateHook,
+		afterUpdateHook:       options.AfterUpdateIndexHook,
 	}
 
 	indexer.current = &indexer.database

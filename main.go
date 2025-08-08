@@ -418,12 +418,22 @@ func initSQLStorageIndexer(ctx context.Context, logger *zap.Logger, options serv
 		WatchInterval:                storageIndexerWatchInterval,
 		Database:                     storageDatabase,
 		SwapDatabase:                 storageSwapDatabase,
-		AfterUpdateHook: func(context.Context) {
+		AfterUpdateIndexHook: func(context.Context) {
 			// Purge the caches after updating the index
 			// there could be new, updated or removed packages
-			logger.Debug("Invalidating caches after update")
-			options.searchCache.Purge()
-			options.categoriesCache.Purge()
+			logger.Debug("Running after update index hook")
+			purged := false
+			if options.searchCache != nil {
+				options.searchCache.Purge()
+				purged = true
+			}
+			if options.categoriesCache != nil {
+				options.categoriesCache.Purge()
+				purged = true
+			}
+			if purged {
+				logger.Debug("Caches purged after updating the index")
+			}
 		},
 	}
 
