@@ -29,6 +29,7 @@ import (
 // categoriesHandler is a dynamic handler as it will also allow filtering in the future.
 func categoriesHandler(logger *zap.Logger, options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
 	if options.proxyMode == nil {
+		logger.Warn("artifactsHandlerWithProxyMode called without proxy mode, defaulting to no proxy")
 		options.proxyMode = proxymode.NoProxy(logger)
 	}
 	if options.indexer == nil {
