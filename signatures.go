@@ -82,6 +82,8 @@ func (h *signaturesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	opts := packages.NameVersionFilter(packageName, packageVersion)
+	opts.SkipJSON = true
+
 	pkgs, err := h.indexer.Get(r.Context(), &opts)
 	if err != nil {
 		logger.Error("getting package path failed",
