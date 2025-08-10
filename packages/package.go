@@ -247,6 +247,60 @@ func MustParsePackage(basePath string, fsBuilder FileSystemBuilder) (*Package, e
 	return p, nil
 }
 
+type PackageOption func(p *Package) error
+
+func NewPackageWithOpts(logger *zap.Logger, opts ...PackageOption) (*Package, error) {
+	p := Package{}
+	for _, opt := range opts {
+		if err := opt(&p); err != nil {
+			return nil, err
+		}
+	}
+	return &p, nil
+
+}
+
+func WithPackageName(packageName string) PackageOption {
+	return func(p *Package) error {
+		p.Name = packageName
+		return nil
+	}
+}
+
+func WithPackageVersion(packageVersion string) PackageOption {
+	return func(p *Package) error {
+		p.Version = packageVersion
+		var err error
+		p.versionSemVer, err = semver.StrictNewVersion(packageVersion)
+		if err != nil {
+			return err
+		}
+		if p.Release == "" {
+			p.Release = releaseForSemVerCompat(p.versionSemVer)
+		}
+		return nil
+	}
+}
+
+func WithFormatVersion(specVersion string) PackageOption {
+	return func(p *Package) error {
+		p.FormatVersion = specVersion
+
+		specSemVer, err := semver.StrictNewVersion(p.FormatVersion)
+		if err != nil {
+			return fmt.Errorf("invalid format spec version '%s': %w", p.FormatVersion, err)
+		}
+
+		specMajorMinorVersion := fmt.Sprintf("%d.%d.0", specSemVer.Major(), specSemVer.Minor())
+
+		p.specMajorMinorSemVer, err = semver.StrictNewVersion(specMajorMinorVersion)
+		if err != nil {
+			return fmt.Errorf("invalid format spec version '%s': %w", specMajorMinorVersion, err)
+		}
+		return nil
+	}
+}
+
 // NewPackage creates a new package instances based on the given base path.
 // The path passed goes to the root of the package where the manifest.yml is.
 func NewPackage(logger *zap.Logger, basePath string, fsBuilder FileSystemBuilder) (*Package, error) {
