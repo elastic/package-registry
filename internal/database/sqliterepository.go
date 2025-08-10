@@ -271,12 +271,16 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 	span.Context.SetLabel("database.path", r.File(ctx))
 	defer span.End()
 
+	useJSONFields := whereOptions == nil || !whereOptions.SkipJSONFields()
 	useBaseData := whereOptions == nil || !whereOptions.UseFullData()
 
 	var getKeys []string
 	var query strings.Builder
 	query.WriteString("SELECT ")
 	for _, k := range keys {
+		if !useJSONFields && (k.Name == "data" || k.Name == "baseData") {
+			continue
+		}
 		if k.Name == "data" && useBaseData {
 			continue
 		}
@@ -303,7 +307,7 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 	// Reuse pkg variable since all fields are scanned into it
 	var pkg Package
 	for rows.Next() {
-		if err := rows.Scan(
+		columns := []any{
 			&pkg.Cursor,
 			&pkg.Name,
 			&pkg.Version,
@@ -313,9 +317,13 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 			&pkg.KibanaVersion,
 			&pkg.Type,
 			&pkg.Path,
-			&pkg.Data, // this variable will be assigned to BaseData if useBaseData is true
-			// to avoid creting a new variable, we reuse pkg.Data
-		); err != nil {
+		}
+		if useJSONFields {
+			// this variable will be assigned to BaseData if useBaseData is true
+			// to avoid creating a new variable, we reuse pkg.Data
+			columns = append(columns, &pkg.Data)
+		}
+		if err := rows.Scan(columns...); err != nil {
 			return err
 		}
 		if useBaseData {
@@ -369,6 +377,7 @@ type SQLOptions struct {
 	CurrentCursor string
 
 	IncludeFullData bool // If true, the query will return the full data field instead of the base data field
+	SkipJSON        bool // If true, no need to retrieve Data nor BaseData fields
 }
 
 func (o *SQLOptions) Where() (string, []any) {
@@ -432,4 +441,11 @@ func (o *SQLOptions) UseFullData() bool {
 		return false
 	}
 	return o.IncludeFullData
+}
+
+func (o *SQLOptions) SkipJSONFields() bool {
+	if o == nil {
+		return false
+	}
+	return o.SkipJSON
 }

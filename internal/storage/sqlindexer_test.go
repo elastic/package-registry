@@ -169,6 +169,52 @@ func BenchmarkSQLIndexerGet(b *testing.B) {
 	}
 }
 
+func BenchmarkSQLIndexerGetStaticsAndArtifacts(b *testing.B) {
+	// given
+	folder := b.TempDir()
+	dbPath := filepath.Join(folder, "test.db")
+	db, err := database.NewFileSQLDB(database.FileSQLDBOptions{Path: dbPath})
+	require.NoError(b, err)
+
+	swapDbPath := filepath.Join(folder, "swap_test.db")
+	swapDb, err := database.NewFileSQLDB(database.FileSQLDBOptions{Path: swapDbPath})
+	require.NoError(b, err)
+
+	options, err := CreateFakeIndexerOptions(db, swapDb)
+	require.NoError(b, err)
+
+	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
+	defer fs.Stop()
+	storageClient := fs.Client()
+
+	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
+
+	ctx := context.Background()
+	indexer := NewIndexer(logger, storageClient, options)
+	defer indexer.Close(ctx)
+
+	err = indexer.Init(ctx)
+	require.NoError(b, err)
+
+	skipJSON := false
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		// Mimic call to static handler
+		indexer.Get(context.Background(), &packages.GetOptions{Filter: &packages.Filter{
+			PackageName:    "aws",
+			PackageVersion: "1.16.4",
+			Prerelease:     true,
+			// Experimental:   true,
+		}, SkipJSON: skipJSON})
+		indexer.Get(context.Background(), &packages.GetOptions{Filter: &packages.Filter{
+			PackageName:    "zoom",
+			PackageVersion: "1.2.1",
+			Prerelease:     true,
+			// Experimental:   true,
+		}, SkipJSON: skipJSON})
+	}
+}
+
 func TestSQLGet_ListPackages(t *testing.T) {
 	t.Parallel()
 
