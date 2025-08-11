@@ -82,7 +82,7 @@ func TestEndpoints(t *testing.T) {
 	require.NoError(t, err)
 
 	allowUnknownQueryParamsSearchHandler, err := newSearchHandler(testLogger, indexer, testCacheTime,
-		SearchWithAllowUnknownQueryParameters(true),
+		searchWithAllowUnknownQueryParameters(true),
 	)
 	require.NoError(t, err)
 

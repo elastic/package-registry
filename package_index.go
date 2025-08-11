@@ -56,12 +56,12 @@ func newPackageIndexHandler(logger *zap.Logger, indexer Indexer, cacheTime time.
 	return h, nil
 }
 
-func PackageIndexWithProxy(pm *proxymode.ProxyMode) packageIndexOption {
+func packageIndexWithProxy(pm *proxymode.ProxyMode) packageIndexOption {
 	return func(h *packageIndexHandler) {
 		h.proxyMode = pm
 	}
 }
-func PackageIndexWithAllowUnknownQueryParameters(allow bool) packageIndexOption {
+func packageIndexWithAllowUnknownQueryParameters(allow bool) packageIndexOption {
 	return func(h *packageIndexHandler) {
 		h.allowUnknownQueryParameters = allow
 	}

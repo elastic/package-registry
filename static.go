@@ -55,13 +55,13 @@ func newStaticHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Durati
 	return s, nil
 }
 
-func StaticWithProxy(pm *proxymode.ProxyMode) staticOption {
+func staticWithProxy(pm *proxymode.ProxyMode) staticOption {
 	return func(h *staticHandler) {
 		h.proxyMode = pm
 	}
 }
 
-func StaticWithAllowUnknownQueryParameters(allow bool) staticOption {
+func staticWithAllowUnknownQueryParameters(allow bool) staticOption {
 	return func(h *staticHandler) {
 		h.allowUnknownQueryParameters = allow
 	}

@@ -52,13 +52,13 @@ func newSignaturesHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Du
 	return s, nil
 }
 
-func SignaturesWithProxy(pm *proxymode.ProxyMode) signaturesOption {
+func signaturesWithProxy(pm *proxymode.ProxyMode) signaturesOption {
 	return func(h *signaturesHandler) {
 		h.proxyMode = pm
 	}
 }
 
-func SignaturesWithAllowUnknownQueryParameters(allow bool) signaturesOption {
+func signaturesWithAllowUnknownQueryParameters(allow bool) signaturesOption {
 	return func(h *signaturesHandler) {
 		h.allowUnknownQueryParameters = allow
 	}

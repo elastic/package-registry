@@ -55,7 +55,7 @@ func TestCategoriesWithProxyMode(t *testing.T) {
 	require.NoError(t, err)
 
 	categoriesHandler, err := newCategoriesHandler(testLogger, indexerProxy, testCacheTime,
-		CategoriesWithProxy(proxyMode),
+		categoriesWithProxy(proxyMode),
 	)
 	require.NoError(t, err)
 

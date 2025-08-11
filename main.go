@@ -633,15 +633,15 @@ func getRouter(logger *zap.Logger, options serverOptions) (*mux.Router, error) {
 		return nil, fmt.Errorf("can't create proxy mode: %w", err)
 	}
 	artifactsHandler, err := newArtifactsHandler(logger, options.indexer, options.config.CacheTimeCatchAll,
-		ArtifactsWithProxy(proxyMode),
-		ArtifactsWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
+		artifactsWithProxy(proxyMode),
+		artifactsWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("can't create artifacts handler: %w", err)
 	}
 	signaturesHandler, err := newSignaturesHandler(logger, options.indexer, options.config.CacheTimeCatchAll,
-		SignaturesWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
-		SignaturesWithProxy(proxyMode),
+		signaturesWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
+		signaturesWithProxy(proxyMode),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("can't create signatures handler: %w", err)
@@ -654,40 +654,40 @@ func getRouter(logger *zap.Logger, options serverOptions) (*mux.Router, error) {
 	}
 
 	indexHandler, err := newIndexHandler(options.config.CacheTimeIndex,
-		IndexWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
+		indexWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("can't create index handler: %w", err)
 	}
 
-	healthHandler := newHealthHandler(HealthWithAllowUnknownQueryParameters(allowUnknownQueryParameters))
+	healthHandler := newHealthHandler(healthWithAllowUnknownQueryParameters(allowUnknownQueryParameters))
 
 	categoriesHandler, err := newCategoriesHandler(logger, options.indexer, options.config.CacheTimeCategories,
-		CategoriesWithProxy(proxyMode),
-		CategoriesWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
+		categoriesWithProxy(proxyMode),
+		categoriesWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("can't create categories handler: %w", err)
 	}
 	packageIndexHandler, err := newPackageIndexHandler(logger, options.indexer, options.config.CacheTimeIndex,
-		PackageIndexWithProxy(proxyMode),
-		PackageIndexWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
+		packageIndexWithProxy(proxyMode),
+		packageIndexWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("can't create package index handler: %w", err)
 	}
 
 	searchHandler, err := newSearchHandler(logger, options.indexer, options.config.CacheTimeSearch,
-		SearchWithProxy(proxyMode),
-		SearchWithCache(options.searchCache),
-		SearchWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
+		searchWithProxy(proxyMode),
+		searchWithCache(options.searchCache),
+		searchWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("can't create search handler: %w", err)
 	}
 	staticHandler, err := newStaticHandler(logger, options.indexer, options.config.CacheTimeCatchAll,
-		StaticWithProxy(proxyMode),
-		StaticWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
+		staticWithProxy(proxyMode),
+		staticWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("can't create static handler: %w", err)

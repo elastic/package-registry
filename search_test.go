@@ -110,7 +110,7 @@ func TestSearchWithProxyMode(t *testing.T) {
 	require.NoError(t, err)
 
 	searchHandler, err := newSearchHandler(testLogger, indexer, testCacheTime,
-		SearchWithProxy(proxyMode),
+		searchWithProxy(proxyMode),
 	)
 	require.NoError(t, err)
 	tests := []struct {

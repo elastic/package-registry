@@ -57,19 +57,19 @@ func newCategoriesHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Du
 	return h, nil
 }
 
-func CategoriesWithProxy(pm *proxymode.ProxyMode) categoriesOption {
+func categoriesWithProxy(pm *proxymode.ProxyMode) categoriesOption {
 	return func(h *categoriesHandler) {
 		h.proxyMode = pm
 	}
 }
 
-func CategoriesWithCache(cache *expirable.LRU[string, []byte]) categoriesOption {
+func categoriesWithCache(cache *expirable.LRU[string, []byte]) categoriesOption {
 	return func(h *categoriesHandler) {
 		h.cache = cache
 	}
 }
 
-func CategoriesWithAllowUnknownQueryParameters(allow bool) categoriesOption {
+func categoriesWithAllowUnknownQueryParameters(allow bool) categoriesOption {
 	return func(h *categoriesHandler) {
 		h.allowUnknownQueryParameters = allow
 	}

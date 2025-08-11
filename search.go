@@ -55,19 +55,19 @@ func newSearchHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Durati
 	return h, nil
 }
 
-func SearchWithProxy(pm *proxymode.ProxyMode) searchOption {
+func searchWithProxy(pm *proxymode.ProxyMode) searchOption {
 	return func(h *searchHandler) {
 		h.proxyMode = pm
 	}
 }
 
-func SearchWithCache(cache *expirable.LRU[string, []byte]) searchOption {
+func searchWithCache(cache *expirable.LRU[string, []byte]) searchOption {
 	return func(h *searchHandler) {
 		h.cache = cache
 	}
 }
 
-func SearchWithAllowUnknownQueryParameters(allow bool) searchOption {
+func searchWithAllowUnknownQueryParameters(allow bool) searchOption {
 	return func(h *searchHandler) {
 		h.allowUnknownQueryParameters = allow
 	}

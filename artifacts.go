@@ -51,13 +51,13 @@ func newArtifactsHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Dur
 	return a, nil
 }
 
-func ArtifactsWithProxy(pm *proxymode.ProxyMode) artifactsOption {
+func artifactsWithProxy(pm *proxymode.ProxyMode) artifactsOption {
 	return func(h *artifactsHandler) {
 		h.proxyMode = pm
 	}
 }
 
-func ArtifactsWithAllowUnknownQueryParameters(allow bool) artifactsOption {
+func artifactsWithAllowUnknownQueryParameters(allow bool) artifactsOption {
 	return func(h *artifactsHandler) {
 		h.allowUnknownQueryParameters = allow
 	}

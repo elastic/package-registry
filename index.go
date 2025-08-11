@@ -46,7 +46,7 @@ func newIndexHandler(cacheTime time.Duration, opts ...indexOption) (*indexHandle
 	return h, nil
 }
 
-func IndexWithAllowUnknownQueryParameters(allow bool) indexOption {
+func indexWithAllowUnknownQueryParameters(allow bool) indexOption {
 	return func(h *indexHandler) {
 		h.allowUnknownQueryParameters = allow
 	}

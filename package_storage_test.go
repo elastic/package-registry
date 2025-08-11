@@ -57,7 +57,7 @@ func generateTestCaseStorageEndpoints(indexer Indexer) ([]struct {
 		return nil, err
 	}
 	allowUnknownQueryParamsSearchHandler, err := newSearchHandler(testLogger, indexer, testCacheTime,
-		SearchWithAllowUnknownQueryParameters(true),
+		searchWithAllowUnknownQueryParameters(true),
 	)
 	if err != nil {
 		return nil, err

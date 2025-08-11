@@ -25,7 +25,7 @@ func newHealthHandler(opts ...func(*healthHandler)) *healthHandler {
 	return h
 }
 
-func HealthWithAllowUnknownQueryParameters(allow bool) healthOption {
+func healthWithAllowUnknownQueryParameters(allow bool) healthOption {
 	return func(h *healthHandler) {
 		h.allowUnknownQueryParameters = allow
 	}
