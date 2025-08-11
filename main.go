@@ -648,7 +648,7 @@ func getRouter(logger *zap.Logger, options serverOptions) (*mux.Router, error) {
 		return nil, fmt.Errorf("can't create signatures handler: %w", err)
 	}
 	faviconHandler, err := newFaviconHandler(options.config.CacheTimeCatchAll,
-		FaviconWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
+		faviconWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("can't create favicon handler: %w", err)
