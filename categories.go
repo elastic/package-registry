@@ -163,10 +163,11 @@ func newCategoriesFilterFromQuery(query url.Values, allowUnknownQueryParameters 
 
 	var err error
 	for key, values := range query {
-		if len(values) == 0 {
-			continue // Skip empty values for backward compatibility without returning an error
+		// Same behavior as query.Get(key) to keep compatibility with previous versions
+		v := ""
+		if len(values) > 0 {
+			v = values[0]
 		}
-		v := values[0]
 		switch key {
 		case "kibana.version":
 			if v != "" {
