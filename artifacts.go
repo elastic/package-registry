@@ -24,7 +24,6 @@ var errArtifactNotFound = errors.New("artifact not found")
 
 func artifactsHandler(logger *zap.Logger, options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
 	if options.proxyMode == nil {
-		logger.Warn("artifactsHandlerWithProxyMode called without proxy mode, defaulting to no proxy")
 		options.proxyMode = proxymode.NoProxy(logger)
 	}
 	if options.cacheTime == 0 {
