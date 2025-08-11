@@ -30,6 +30,7 @@ INDEX_PATH=""
 EMULATOR_HOST="localhost:4443"
 CONFIG_PATH="${SCRIPT_DIR}/../config.yml"
 ENABLE_STORAGE_SQL_INDEXER=0
+ENABLE_DEBUG_MODE=0
 ENABLE_CACHE=0
 
 while getopts ":b:p:i:e:c:sdCh" o; do
