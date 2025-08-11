@@ -665,6 +665,7 @@ func getRouter(logger *zap.Logger, options serverOptions) (*mux.Router, error) {
 
 	categoriesHandler, err := newCategoriesHandler(logger, options.indexer, options.config.CacheTimeCategories,
 		categoriesWithProxy(proxyMode),
+		categoriesWithCache(options.categoriesCache),
 		categoriesWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
 	)
 	if err != nil {
