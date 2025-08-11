@@ -660,7 +660,7 @@ func getRouter(logger *zap.Logger, options serverOptions) (*mux.Router, error) {
 		return nil, fmt.Errorf("can't create index handler: %w", err)
 	}
 
-	healthHandler := &healthHandler{allowUnknownQueryParameters: allowUnknownQueryParameters}
+	healthHandler := newHealthHandler(HealthWithAllowUnknownQueryParameters(allowUnknownQueryParameters))
 
 	categoriesHandler, err := newCategoriesHandler(logger, options.indexer, options.config.CacheTimeCategories,
 		CategoriesWithProxy(proxyMode),

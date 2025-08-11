@@ -15,6 +15,22 @@ type healthHandler struct {
 	allowUnknownQueryParameters bool
 }
 
+type healthOption func(*healthHandler)
+
+func newHealthHandler(opts ...func(*healthHandler)) *healthHandler {
+	h := &healthHandler{}
+	for _, opt := range opts {
+		opt(h)
+	}
+	return h
+}
+
+func HealthWithAllowUnknownQueryParameters(allow bool) healthOption {
+	return func(h *healthHandler) {
+		h.allowUnknownQueryParameters = allow
+	}
+}
+
 func (h *healthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	for k := range r.URL.Query() {
 		switch k {
