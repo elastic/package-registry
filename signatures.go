@@ -6,7 +6,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -36,10 +35,10 @@ type signaturesOption func(*signaturesHandler)
 
 func newSignaturesHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration, opts ...signaturesOption) (*signaturesHandler, error) {
 	if indexer == nil {
-		return nil, fmt.Errorf("indexer is required for categories handler")
+		return nil, errors.New("indexer is required for categories handler")
 	}
 	if cacheTime == 0 {
-		return nil, fmt.Errorf("cache time must be set for categories handler")
+		return nil, errors.New("cache time must be set for categories handler")
 	}
 
 	s := &signaturesHandler{

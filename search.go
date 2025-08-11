@@ -6,6 +6,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -39,10 +40,10 @@ type searchOption func(*searchHandler)
 
 func newSearchHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration, opts ...searchOption) (*searchHandler, error) {
 	if indexer == nil {
-		return nil, fmt.Errorf("indexer is required for search handler")
+		return nil, errors.New("indexer is required for search handler")
 	}
 	if cacheTime == 0 {
-		return nil, fmt.Errorf("cache time must be set for search handler")
+		return nil, errors.New("cache time must be set for search handler")
 	}
 
 	h := &searchHandler{

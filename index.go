@@ -5,6 +5,7 @@
 package main
 
 import (
+	"errors"
 	"net/http"
 	"time"
 
@@ -26,6 +27,9 @@ type indexHandler struct {
 type indexOption func(*indexHandler)
 
 func newIndexHandler(cacheTime time.Duration, opts ...indexOption) (*indexHandler, error) {
+	if cacheTime == 0 {
+		return nil, errors.New("cache time must be set for search handler")
+	}
 	data := indexData{
 		ServiceName: serviceName,
 		Version:     version,
