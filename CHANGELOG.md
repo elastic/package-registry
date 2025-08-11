@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Skip adding to cache requests containing package query parameter. [#1378](https://github.com/elastic/package-registry/pull/1378)
 * Added cache for categories endpoint (SQL storage indexer). [#1379](https://github.com/elastic/package-registry/1379)
 * Update default values for cache search and TTL settings search (SQL storage indexer). [#1379](https://github.com/elastic/package-registry/1379)
+* Storage indexer based on Google Cloud Storage is now GA. [#1374](https://github.com/elastic/package-registry/pull/1374)
 
 ### Deprecated
 
