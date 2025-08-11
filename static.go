@@ -41,9 +41,6 @@ func newStaticHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Durati
 	if indexer == nil {
 		return nil, errors.New("indexer is required for static handler")
 	}
-	if cacheTime == 0 {
-		return nil, errors.New("cache time must be set for static handler")
-	}
 
 	s := &staticHandler{
 		logger:    logger,
