@@ -6,6 +6,7 @@ package main
 
 import (
 	_ "embed"
+	"errors"
 	"net/http"
 	"time"
 )
@@ -22,6 +23,10 @@ type faviconHandler struct {
 type faviconOption func(*faviconHandler)
 
 func newFaviconHandler(cacheTime time.Duration, opts ...faviconOption) (*faviconHandler, error) {
+	if cacheTime == 0 {
+		return nil, errors.New("cache time must be set for favicon handler")
+	}
+
 	h := &faviconHandler{
 		cacheTime: cacheTime,
 	}

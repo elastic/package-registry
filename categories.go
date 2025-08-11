@@ -43,6 +43,9 @@ func newCategoriesHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Du
 	if indexer == nil {
 		return nil, fmt.Errorf("indexer is required for categories handler")
 	}
+	if cacheTime == 0 {
+		return nil, fmt.Errorf("cache time must be set for categories handler")
+	}
 
 	h := &categoriesHandler{
 		logger:    logger,

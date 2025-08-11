@@ -41,6 +41,9 @@ func newSearchHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Durati
 	if indexer == nil {
 		return nil, fmt.Errorf("indexer is required for search handler")
 	}
+	if cacheTime == 0 {
+		return nil, fmt.Errorf("cache time must be set for search handler")
+	}
 
 	h := &searchHandler{
 		logger:    logger,
