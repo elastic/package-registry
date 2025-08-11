@@ -8,24 +8,48 @@ import (
 	_ "embed"
 	"errors"
 	"net/http"
+	"time"
 )
 
 //go:embed img/favicon.ico
 var faviconBlob []byte
 
-func faviconHandler(options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
-	if options.cacheTime == 0 {
+type faviconHandler struct {
+	cacheTime time.Duration
+
+	allowUnknownQueryParameters bool
+}
+
+type faviconOption func(*faviconHandler)
+
+func newFaviconHandler(cacheTime time.Duration, opts ...faviconOption) (*faviconHandler, error) {
+	if cacheTime == 0 {
 		return nil, errors.New("cache time must be set for favicon handler")
 	}
-	return func(w http.ResponseWriter, r *http.Request) {
-		// Return error if any query parameter is present
-		if !options.allowUnknownQueryParameters && len(r.URL.Query()) > 0 {
-			badRequest(w, "not supported query parameters")
-			return
-		}
 
-		w.Header().Set("Content-Type", "image/x-icon")
-		cacheHeaders(w, options.cacheTime)
-		w.Write(faviconBlob)
-	}, nil
+	h := &faviconHandler{
+		cacheTime: cacheTime,
+	}
+	for _, opt := range opts {
+		opt(h)
+	}
+	return h, nil
+}
+
+func (h *faviconHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	// Return error if any query parameter is present
+	if !h.allowUnknownQueryParameters && len(r.URL.Query()) > 0 {
+		badRequest(w, "not supported query parameters")
+		return
+	}
+
+	w.Header().Set("Content-Type", "image/x-icon")
+	cacheHeaders(w, h.cacheTime)
+	w.Write(faviconBlob)
+}
+
+func FaviconWithAllowUnknownQueryParameters(allow bool) faviconOption {
+	return func(h *faviconHandler) {
+		h.allowUnknownQueryParameters = allow
+	}
 }

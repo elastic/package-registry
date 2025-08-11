@@ -109,21 +109,18 @@ func TestSearchWithProxyMode(t *testing.T) {
 	)
 	require.NoError(t, err)
 
-	searchWithProxyHandler, err := searchHandler(testLogger, handlerOptions{
-		indexer:                     indexer,
-		proxyMode:                   proxyMode,
-		cacheTime:                   testCacheTime,
-		allowUnknownQueryParameters: defaultAllowUnknownQueryParametersTests,
-	})
+	searchHandler, err := newSearchHandler(testLogger, indexer, testCacheTime,
+		SearchWithProxy(proxyMode),
+	)
 	require.NoError(t, err)
 	tests := []struct {
 		endpoint string
 		path     string
 		file     string
-		handler  func(w http.ResponseWriter, r *http.Request)
+		handler  http.Handler
 	}{
-		{"/search?all=true", "/search", "search-all-proxy.json", searchWithProxyHandler},
-		{"/search", "/search", "search-just-latest-proxy.json", searchWithProxyHandler},
+		{"/search?all=true", "/search", "search-all-proxy.json", searchHandler},
+		{"/search", "/search", "search-just-latest-proxy.json", searchHandler},
 	}
 
 	for _, test := range tests {

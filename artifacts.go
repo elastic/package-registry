@@ -7,6 +7,7 @@ package main
 import (
 	"errors"
 	"net/http"
+	"time"
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/gorilla/mux"
@@ -14,74 +15,111 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/packages"
+	"github.com/elastic/package-registry/proxymode"
 )
 
 const artifactsRouterPath = "/epr/{packageName}/{packageName:[a-z0-9_]+}-{packageVersion}.zip"
 
 var errArtifactNotFound = errors.New("artifact not found")
 
-func artifactsHandler(logger *zap.Logger, options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
-	if options.cacheTime == 0 {
-		return nil, errors.New("cache time must be set for artifacts handler")
-	}
-	if options.indexer == nil {
+type artifactsHandler struct {
+	logger    *zap.Logger
+	indexer   Indexer
+	cacheTime time.Duration
+
+	proxyMode                   *proxymode.ProxyMode
+	allowUnknownQueryParameters bool
+}
+
+type artifactsOption func(*artifactsHandler)
+
+func newArtifactsHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration, opts ...artifactsOption) (*artifactsHandler, error) {
+	if indexer == nil {
 		return nil, errors.New("indexer is required for artifacts handler")
 	}
-	return func(w http.ResponseWriter, r *http.Request) {
-		logger := logger.With(apmzap.TraceContext(r.Context())...)
+	if cacheTime == 0 {
+		return nil, errors.New("cache time must be set for artifacts handler")
+	}
 
-		// Return error if any query parameter is present
-		if !options.allowUnknownQueryParameters && len(r.URL.Query()) > 0 {
-			badRequest(w, "not supported query parameters")
-			return
-		}
+	a := &artifactsHandler{
+		logger:    logger,
+		indexer:   indexer,
+		cacheTime: cacheTime,
+	}
 
-		vars := mux.Vars(r)
-		packageName, ok := vars["packageName"]
-		if !ok {
-			badRequest(w, "missing package name")
-			return
-		}
+	for _, opt := range opts {
+		opt(a)
+	}
 
-		packageVersion, ok := vars["packageVersion"]
-		if !ok {
-			badRequest(w, "missing package version")
-			return
-		}
+	return a, nil
+}
 
-		_, err := semver.StrictNewVersion(packageVersion)
+func ArtifactsWithProxy(pm *proxymode.ProxyMode) artifactsOption {
+	return func(h *artifactsHandler) {
+		h.proxyMode = pm
+	}
+}
+
+func ArtifactsWithAllowUnknownQueryParameters(allow bool) artifactsOption {
+	return func(h *artifactsHandler) {
+		h.allowUnknownQueryParameters = allow
+	}
+}
+
+func (h *artifactsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	logger := h.logger.With(apmzap.TraceContext(r.Context())...)
+
+	// Return error if any query parameter is present
+	if !h.allowUnknownQueryParameters && len(r.URL.Query()) > 0 {
+		badRequest(w, "not supported query parameters")
+		return
+	}
+
+	vars := mux.Vars(r)
+	packageName, ok := vars["packageName"]
+	if !ok {
+		badRequest(w, "missing package name")
+		return
+	}
+
+	packageVersion, ok := vars["packageVersion"]
+	if !ok {
+		badRequest(w, "missing package version")
+		return
+	}
+
+	_, err := semver.StrictNewVersion(packageVersion)
+	if err != nil {
+		badRequest(w, "invalid package version")
+		return
+	}
+
+	opts := packages.NameVersionFilter(packageName, packageVersion)
+	pkgs, err := h.indexer.Get(r.Context(), &opts)
+	if err != nil {
+		logger.Error("getting package path failed",
+			zap.String("package.name", packageName),
+			zap.String("package.version", packageVersion),
+			zap.Error(err))
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+	if len(pkgs) == 0 && h.proxyMode.Enabled() {
+		proxiedPackage, err := h.proxyMode.Package(r)
 		if err != nil {
-			badRequest(w, "invalid package version")
-			return
-		}
-
-		opts := packages.NameVersionFilter(packageName, packageVersion)
-		pkgs, err := options.indexer.Get(r.Context(), &opts)
-		if err != nil {
-			logger.Error("getting package path failed",
-				zap.String("package.name", packageName),
-				zap.String("package.version", packageVersion),
-				zap.Error(err))
+			logger.Error("proxy mode: package failed", zap.Error(err))
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
-		if len(pkgs) == 0 && options.proxyMode.Enabled() {
-			proxiedPackage, err := options.proxyMode.Package(r)
-			if err != nil {
-				logger.Error("proxy mode: package failed", zap.Error(err))
-				http.Error(w, "internal server error", http.StatusInternalServerError)
-				return
-			}
-			if proxiedPackage != nil {
-				pkgs = pkgs.Join(packages.Packages{proxiedPackage})
-			}
+		if proxiedPackage != nil {
+			pkgs = pkgs.Join(packages.Packages{proxiedPackage})
 		}
-		if len(pkgs) == 0 {
-			notFoundError(w, errArtifactNotFound)
-			return
-		}
+	}
+	if len(pkgs) == 0 {
+		notFoundError(w, errArtifactNotFound)
+		return
+	}
 
-		cacheHeaders(w, options.cacheTime)
-		packages.ServePackage(logger, w, r, pkgs[0])
-	}, nil
+	cacheHeaders(w, h.cacheTime)
+	packages.ServePackage(logger, w, r, pkgs[0])
 }

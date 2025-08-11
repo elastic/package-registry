@@ -5,8 +5,8 @@
 package main
 
 import (
-	"errors"
 	"net/http"
+	"time"
 
 	"github.com/elastic/package-registry/internal/util"
 )
@@ -16,7 +16,16 @@ type indexData struct {
 	Version     string `json:"service.version"`
 }
 
-func indexHandler(options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
+type indexHandler struct {
+	cacheTime time.Duration
+	body      []byte
+
+	allowUnknownQueryParameters bool
+}
+
+type indexOption func(*indexHandler)
+
+func newIndexHandler(cacheTime time.Duration, opts ...indexOption) (*indexHandler, error) {
 	data := indexData{
 		ServiceName: serviceName,
 		Version:     version,
@@ -25,16 +34,30 @@ func indexHandler(options handlerOptions) (func(w http.ResponseWriter, r *http.R
 	if err != nil {
 		return nil, err
 	}
-	if options.cacheTime == 0 {
-		return nil, errors.New("cache time must be set for index handler")
-	}
-	return func(w http.ResponseWriter, r *http.Request) {
-		// Return error if any query parameter is present
-		if !options.allowUnknownQueryParameters && len(r.URL.Query()) > 0 {
-			badRequest(w, "not supported query parameters")
-			return
-		}
 
-		serveJSONResponse(r.Context(), w, options.cacheTime, body)
-	}, nil
+	h := &indexHandler{
+		cacheTime: cacheTime,
+		body:      body,
+	}
+	for _, opt := range opts {
+		opt(h)
+	}
+
+	return h, nil
+}
+
+func IndexWithAllowUnknownQueryParameters(allow bool) indexOption {
+	return func(h *indexHandler) {
+		h.allowUnknownQueryParameters = allow
+	}
+}
+
+func (h *indexHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	// Return error if any query parameter is present
+	if !h.allowUnknownQueryParameters && len(r.URL.Query()) > 0 {
+		badRequest(w, "not supported query parameters")
+		return
+	}
+
+	serveJSONResponse(r.Context(), w, h.cacheTime, h.body)
 }

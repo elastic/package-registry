@@ -6,7 +6,9 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/gorilla/mux"
@@ -14,75 +16,111 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/packages"
+	"github.com/elastic/package-registry/proxymode"
 )
 
 const signaturesRouterPath = "/epr/{packageName}/{packageName:[a-z0-9_]+}-{packageVersion}.zip.sig"
 
 var errSignatureFileNotFound = errors.New("signature file not found")
 
-func signaturesHandler(logger *zap.Logger, options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
-	if options.cacheTime == 0 {
-		return nil, errors.New("cache time must be set for signatures handler")
+type signaturesHandler struct {
+	logger    *zap.Logger
+	indexer   Indexer
+	cacheTime time.Duration
+
+	proxyMode                   *proxymode.ProxyMode
+	allowUnknownQueryParameters bool
+}
+
+type signaturesOption func(*signaturesHandler)
+
+func newSignaturesHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration, opts ...signaturesOption) (*signaturesHandler, error) {
+	if indexer == nil {
+		return nil, fmt.Errorf("indexer is required for categories handler")
 	}
-	if options.indexer == nil {
-		return nil, errors.New("indexer is required for signatures handler")
+	if cacheTime == 0 {
+		return nil, fmt.Errorf("cache time must be set for categories handler")
 	}
 
-	return func(w http.ResponseWriter, r *http.Request) {
-		logger := logger.With(apmzap.TraceContext(r.Context())...)
+	s := &signaturesHandler{
+		logger:    logger,
+		indexer:   indexer,
+		cacheTime: cacheTime,
+	}
 
-		// Return error if any query parameter is present
-		if !options.allowUnknownQueryParameters && len(r.URL.Query()) > 0 {
-			badRequest(w, "not supported query parameters")
-			return
-		}
+	for _, opt := range opts {
+		opt(s)
+	}
 
-		vars := mux.Vars(r)
-		packageName, ok := vars["packageName"]
-		if !ok {
-			badRequest(w, "missing package name")
-			return
-		}
+	return s, nil
+}
 
-		packageVersion, ok := vars["packageVersion"]
-		if !ok {
-			badRequest(w, "missing package version")
-			return
-		}
+func SignaturesWithProxy(pm *proxymode.ProxyMode) signaturesOption {
+	return func(h *signaturesHandler) {
+		h.proxyMode = pm
+	}
+}
 
-		_, err := semver.StrictNewVersion(packageVersion)
+func SignaturesWithAllowUnknownQueryParameters(allow bool) signaturesOption {
+	return func(h *signaturesHandler) {
+		h.allowUnknownQueryParameters = allow
+	}
+}
+
+func (h *signaturesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	logger := h.logger.With(apmzap.TraceContext(r.Context())...)
+
+	// Return error if any query parameter is present
+	if !h.allowUnknownQueryParameters && len(r.URL.Query()) > 0 {
+		badRequest(w, "not supported query parameters")
+		return
+	}
+
+	vars := mux.Vars(r)
+	packageName, ok := vars["packageName"]
+	if !ok {
+		badRequest(w, "missing package name")
+		return
+	}
+
+	packageVersion, ok := vars["packageVersion"]
+	if !ok {
+		badRequest(w, "missing package version")
+		return
+	}
+
+	_, err := semver.StrictNewVersion(packageVersion)
+	if err != nil {
+		badRequest(w, "invalid package version")
+		return
+	}
+
+	opts := packages.NameVersionFilter(packageName, packageVersion)
+	pkgs, err := h.indexer.Get(r.Context(), &opts)
+	if err != nil {
+		logger.Error("getting package path failed",
+			zap.String("package.name", packageName),
+			zap.String("package.version", packageVersion),
+			zap.Error(err))
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+	if len(pkgs) == 0 && h.proxyMode.Enabled() {
+		proxiedPackage, err := h.proxyMode.Package(r)
 		if err != nil {
-			badRequest(w, "invalid package version")
-			return
-		}
-
-		opts := packages.NameVersionFilter(packageName, packageVersion)
-		pkgs, err := options.indexer.Get(r.Context(), &opts)
-		if err != nil {
-			logger.Error("getting package path failed",
-				zap.String("package.name", packageName),
-				zap.String("package.version", packageVersion),
-				zap.Error(err))
+			logger.Error("proxy mode: package failed", zap.Error(err))
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
-		if len(pkgs) == 0 && options.proxyMode.Enabled() {
-			proxiedPackage, err := options.proxyMode.Package(r)
-			if err != nil {
-				logger.Error("proxy mode: package failed", zap.Error(err))
-				http.Error(w, "internal server error", http.StatusInternalServerError)
-				return
-			}
-			if proxiedPackage != nil {
-				pkgs = pkgs.Join(packages.Packages{proxiedPackage})
-			}
+		if proxiedPackage != nil {
+			pkgs = pkgs.Join(packages.Packages{proxiedPackage})
 		}
-		if len(pkgs) == 0 {
-			notFoundError(w, errSignatureFileNotFound)
-			return
-		}
+	}
+	if len(pkgs) == 0 {
+		notFoundError(w, errSignatureFileNotFound)
+		return
+	}
 
-		cacheHeaders(w, options.cacheTime)
-		packages.ServePackageSignature(logger, w, r, pkgs[0])
-	}, nil
+	cacheHeaders(w, h.cacheTime)
+	packages.ServePackageSignature(logger, w, r, pkgs[0])
 }

@@ -16,96 +16,141 @@ import (
 	"time"
 
 	"github.com/Masterminds/semver/v3"
+	"github.com/hashicorp/golang-lru/v2/expirable"
 	"go.elastic.co/apm/module/apmzap/v2"
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/internal/util"
 	"github.com/elastic/package-registry/packages"
+	"github.com/elastic/package-registry/proxymode"
 )
 
 // categoriesHandler is a dynamic handler as it will also allow filtering in the future.
-func categoriesHandler(logger *zap.Logger, options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
-	if options.indexer == nil {
+type categoriesHandler struct {
+	logger    *zap.Logger
+	indexer   Indexer
+	cacheTime time.Duration
+
+	cache                       *expirable.LRU[string, []byte]
+	proxyMode                   *proxymode.ProxyMode
+	allowUnknownQueryParameters bool
+}
+
+type categoriesOption func(h *categoriesHandler)
+
+func newCategoriesHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration, opts ...categoriesOption) (*categoriesHandler, error) {
+	if indexer == nil {
 		return nil, fmt.Errorf("indexer is required for categories handler")
 	}
-	if options.cacheTime == 0 {
+	if cacheTime == 0 {
 		return nil, fmt.Errorf("cache time must be set for categories handler")
 	}
-	return func(w http.ResponseWriter, r *http.Request) {
-		logger := logger.With(apmzap.TraceContext(r.Context())...)
 
-		if options.cache != nil {
-			if response, ok := options.cache.Get(r.URL.String()); ok {
-				logger.Debug("using as response cached request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", options.cache.Len()))
-				serveJSONResponse(r.Context(), w, options.cacheTime, response)
-				return
-			}
+	h := &categoriesHandler{
+		logger:    logger,
+		indexer:   indexer,
+		cacheTime: cacheTime,
+	}
+
+	for _, opt := range opts {
+		opt(h)
+	}
+
+	return h, nil
+}
+
+func CategoriesWithProxy(pm *proxymode.ProxyMode) categoriesOption {
+	return func(h *categoriesHandler) {
+		h.proxyMode = pm
+	}
+}
+
+func CategoriesWithCache(cache *expirable.LRU[string, []byte]) categoriesOption {
+	return func(h *categoriesHandler) {
+		h.cache = cache
+	}
+}
+
+func CategoriesWithAllowUnknownQueryParameters(allow bool) categoriesOption {
+	return func(h *categoriesHandler) {
+		h.allowUnknownQueryParameters = allow
+	}
+}
+
+func (h *categoriesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	logger := h.logger.With(apmzap.TraceContext(r.Context())...)
+
+	if h.cache != nil {
+		if response, ok := h.cache.Get(r.URL.String()); ok {
+			logger.Debug("using as response cached request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", h.cache.Len()))
+			serveJSONResponse(r.Context(), w, h.cacheTime, response)
+			return
 		}
+	}
 
-		query := r.URL.Query()
+	query := r.URL.Query()
 
-		filter, err := newCategoriesFilterFromQuery(query, options.allowUnknownQueryParameters)
+	filter, err := newCategoriesFilterFromQuery(query, h.allowUnknownQueryParameters)
+	if err != nil {
+		badRequest(w, err.Error())
+		return
+	}
+
+	includePolicyTemplates := false
+	if v := query.Get("include_policy_templates"); v != "" {
+		includePolicyTemplates, err = strconv.ParseBool(v)
 		if err != nil {
-			badRequest(w, err.Error())
+			badRequest(w, fmt.Sprintf("invalid 'include_policy_templates' query param: '%s'", v))
+			return
+		}
+	}
+
+	opts := packages.GetOptions{
+		Filter: filter,
+	}
+	pkgs, err := h.indexer.Get(r.Context(), &opts)
+	if err != nil {
+		notFoundError(w, err)
+		return
+	}
+	categories := getCategories(r.Context(), pkgs, includePolicyTemplates)
+
+	if h.proxyMode.Enabled() {
+		proxiedCategories, err := h.proxyMode.Categories(r)
+		if err != nil {
+			logger.Error("proxy mode: categories failed", zap.Error(err))
+			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
 
-		includePolicyTemplates := false
-		if v := query.Get("include_policy_templates"); v != "" {
-			includePolicyTemplates, err = strconv.ParseBool(v)
-			if err != nil {
-				badRequest(w, fmt.Sprintf("invalid 'include_policy_templates' query param: '%s'", v))
-				return
-			}
-		}
-
-		opts := packages.GetOptions{
-			Filter: filter,
-		}
-		pkgs, err := options.indexer.Get(r.Context(), &opts)
-		if err != nil {
-			notFoundError(w, err)
-			return
-		}
-		categories := getCategories(r.Context(), pkgs, includePolicyTemplates)
-
-		if options.proxyMode.Enabled() {
-			proxiedCategories, err := options.proxyMode.Categories(r)
-			if err != nil {
-				logger.Error("proxy mode: categories failed", zap.Error(err))
-				http.Error(w, "internal server error", http.StatusInternalServerError)
-				return
-			}
-
-			for _, category := range proxiedCategories {
-				if _, ok := categories[category.Id]; !ok {
-					categories[category.Id] = &packages.Category{
-						Id:          category.Id,
-						Title:       category.Title,
-						Count:       category.Count,
-						ParentId:    category.ParentId,
-						ParentTitle: category.ParentTitle,
-					}
-				} else {
-					categories[category.Id].Count += category.Count
+		for _, category := range proxiedCategories {
+			if _, ok := categories[category.Id]; !ok {
+				categories[category.Id] = &packages.Category{
+					Id:          category.Id,
+					Title:       category.Title,
+					Count:       category.Count,
+					ParentId:    category.ParentId,
+					ParentTitle: category.ParentTitle,
 				}
+			} else {
+				categories[category.Id].Count += category.Count
 			}
 		}
+	}
 
-		data, err := getCategoriesOutput(r.Context(), categories)
-		if err != nil {
-			notFoundError(w, err)
-			return
-		}
+	data, err := getCategoriesOutput(r.Context(), categories)
+	if err != nil {
+		notFoundError(w, err)
+		return
+	}
 
-		serveJSONResponse(r.Context(), w, options.cacheTime, data)
+	serveJSONResponse(r.Context(), w, h.cacheTime, data)
 
-		if options.cache != nil {
-			val := options.cache.Add(r.URL.String(), data)
-			logger.Debug("added to cache request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", options.cache.Len()), zap.Bool("cache.eviction", val))
-		}
-	}, nil
+	if h.cache != nil {
+		val := h.cache.Add(r.URL.String(), data)
+		logger.Debug("added to cache request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", h.cache.Len()), zap.Bool("cache.eviction", val))
+	}
 }
 
 func newCategoriesFilterFromQuery(query url.Values, allowUnknownQueryParameters bool) (*packages.Filter, error) {

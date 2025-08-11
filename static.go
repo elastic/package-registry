@@ -7,6 +7,7 @@ package main
 import (
 	"errors"
 	"net/http"
+	"time"
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/gorilla/mux"
@@ -14,6 +15,7 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/packages"
+	"github.com/elastic/package-registry/proxymode"
 )
 
 const staticRouterPath = "/package/{packageName}/{packageVersion}/{name:.*}"
@@ -24,58 +26,93 @@ type staticParams struct {
 	fileName       string
 }
 
-func staticHandler(logger *zap.Logger, options handlerOptions) (http.HandlerFunc, error) {
-	if options.cacheTime == 0 {
-		return nil, errors.New("cache time must be set for static handler")
-	}
-	if options.indexer == nil {
+type staticHandler struct {
+	logger    *zap.Logger
+	indexer   Indexer
+	cacheTime time.Duration
+
+	proxyMode                   *proxymode.ProxyMode
+	allowUnknownQueryParameters bool
+}
+
+type staticOption func(*staticHandler)
+
+func newStaticHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration, opts ...staticOption) (*staticHandler, error) {
+	if indexer == nil {
 		return nil, errors.New("indexer is required for static handler")
 	}
+	if cacheTime == 0 {
+		return nil, errors.New("cache time must be set for static handler")
+	}
 
-	return func(w http.ResponseWriter, r *http.Request) {
-		logger := logger.With(apmzap.TraceContext(r.Context())...)
+	s := &staticHandler{
+		logger:    logger,
+		indexer:   indexer,
+		cacheTime: cacheTime,
+	}
 
-		params, err := staticParamsFromRequest(r)
+	for _, opt := range opts {
+		opt(s)
+	}
+
+	return s, nil
+}
+
+func StaticWithProxy(pm *proxymode.ProxyMode) staticOption {
+	return func(h *staticHandler) {
+		h.proxyMode = pm
+	}
+}
+
+func StaticWithAllowUnknownQueryParameters(allow bool) staticOption {
+	return func(h *staticHandler) {
+		h.allowUnknownQueryParameters = allow
+	}
+}
+
+func (h *staticHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	logger := h.logger.With(apmzap.TraceContext(r.Context())...)
+
+	params, err := staticParamsFromRequest(r)
+	if err != nil {
+		badRequest(w, err.Error())
+		return
+	}
+
+	// Return error if any query parameter is present
+	if !h.allowUnknownQueryParameters && len(r.URL.Query()) > 0 {
+		badRequest(w, "not supported query parameters")
+		return
+	}
+
+	opts := packages.NameVersionFilter(params.packageName, params.packageVersion)
+	pkgs, err := h.indexer.Get(r.Context(), &opts)
+	if err != nil {
+		logger.Error("getting package path failed",
+			zap.String("package.name", params.packageName),
+			zap.String("package.version", params.packageVersion),
+			zap.Error(err))
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+	if len(pkgs) == 0 && h.proxyMode.Enabled() {
+		proxiedPackage, err := h.proxyMode.Package(r)
 		if err != nil {
-			badRequest(w, err.Error())
-			return
-		}
-
-		// Return error if any query parameter is present
-		if !options.allowUnknownQueryParameters && len(r.URL.Query()) > 0 {
-			badRequest(w, "not supported query parameters")
-			return
-		}
-
-		opts := packages.NameVersionFilter(params.packageName, params.packageVersion)
-		pkgs, err := options.indexer.Get(r.Context(), &opts)
-		if err != nil {
-			logger.Error("getting package path failed",
-				zap.String("package.name", params.packageName),
-				zap.String("package.version", params.packageVersion),
-				zap.Error(err))
+			logger.Error("proxy mode: package failed", zap.Error(err))
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
-		if len(pkgs) == 0 && options.proxyMode.Enabled() {
-			proxiedPackage, err := options.proxyMode.Package(r)
-			if err != nil {
-				logger.Error("proxy mode: package failed", zap.Error(err))
-				http.Error(w, "internal server error", http.StatusInternalServerError)
-				return
-			}
-			if proxiedPackage != nil {
-				pkgs = pkgs.Join(packages.Packages{proxiedPackage})
-			}
+		if proxiedPackage != nil {
+			pkgs = pkgs.Join(packages.Packages{proxiedPackage})
 		}
-		if len(pkgs) == 0 {
-			notFoundError(w, errPackageRevisionNotFound)
-			return
-		}
+	}
+	if len(pkgs) == 0 {
+		notFoundError(w, errPackageRevisionNotFound)
+		return
+	}
 
-		cacheHeaders(w, options.cacheTime)
-		packages.ServePackageResource(logger, w, r, pkgs[0], params.fileName)
-	}, nil
+	cacheHeaders(w, h.cacheTime)
+	packages.ServePackageResource(logger, w, r, pkgs[0], params.fileName)
 }
 
 func staticParamsFromRequest(r *http.Request) (*staticParams, error) {
