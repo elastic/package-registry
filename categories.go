@@ -41,6 +41,14 @@ func categoriesHandler(logger *zap.Logger, options handlerOptions) (func(w http.
 	return func(w http.ResponseWriter, r *http.Request) {
 		logger := logger.With(apmzap.TraceContext(r.Context())...)
 
+		if options.cache != nil {
+			if response, ok := options.cache.Get(r.URL.String()); ok {
+				logger.Debug("using as response cached request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", options.cache.Len()))
+				serveJSONResponse(r.Context(), w, options.cacheTime, response)
+				return
+			}
+		}
+
 		query := r.URL.Query()
 
 		filter, err := newCategoriesFilterFromQuery(query, options.allowUnknownQueryParameters)
@@ -98,6 +106,11 @@ func categoriesHandler(logger *zap.Logger, options handlerOptions) (func(w http.
 		}
 
 		serveJSONResponse(r.Context(), w, options.cacheTime, data)
+
+		if options.cache != nil {
+			val := options.cache.Add(r.URL.String(), data)
+			logger.Debug("added to cache request", zap.String("cache.url", r.URL.String()), zap.Int("cache.size", options.cache.Len()), zap.Bool("cache.eviction", val))
+		}
 	}, nil
 }
 

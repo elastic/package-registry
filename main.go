@@ -70,8 +70,9 @@ var (
 
 	printVersionInfo bool
 
-	featureSQLStorageIndexer bool
-	featureEnableSearchCache bool
+	featureSQLStorageIndexer     bool
+	featureEnableSearchCache     bool
+	featureEnableCategoriesCache bool
 
 	featureStorageIndexer        bool
 	storageIndexerBucketInternal string
@@ -89,8 +90,12 @@ var (
 		CacheTimeCategories:          10 * time.Minute,
 		CacheTimeCatchAll:            10 * time.Minute,
 		SQLIndexerDatabaseFolderPath: "/tmp/", // TODO: Another default directory?
-		SearchCacheSize:              100,
-		SearchCacheTTL:               10 * time.Minute,
+
+		// Search cache size is bigger than the categories size because that endpoint used to process more requests
+		SearchCacheSize:     250,
+		SearchCacheTTL:      24 * time.Hour,
+		CategoriesCacheSize: 100,
+		CategoriesCacheTTL:  24 * time.Hour,
 	}
 )
 
@@ -113,6 +118,7 @@ func init() {
 	flag.BoolVar(&featureStorageIndexer, "feature-storage-indexer", false, "Enable storage indexer to include packages from Package Storage v2 (technical preview).")
 	flag.BoolVar(&featureSQLStorageIndexer, "feature-sql-storage-indexer", false, "Enable SQL storage indexer to include packages from Package Storage v2 (technical preview).")
 	flag.BoolVar(&featureEnableSearchCache, "feature-enable-search-cache", false, "Enable cache for search requests. Just supported with the SQL storage indexer. (technical preview).")
+	flag.BoolVar(&featureEnableCategoriesCache, "feature-enable-categories-cache", false, "Enable cache for categories requests. Just supported with the SQL storage indexer. (technical preview).")
 	flag.StringVar(&storageIndexerBucketInternal, "storage-indexer-bucket-internal", "", "Path to the internal Package Storage bucket (with gs:// prefix).")
 	flag.StringVar(&storageEndpoint, "storage-endpoint", "https://package-storage.elastic.co/", "Package Storage public endpoint.")
 	flag.DurationVar(&storageIndexerWatchInterval, "storage-indexer-watch-interval", 1*time.Minute, "Address of the package-registry service.")
@@ -132,6 +138,8 @@ type Config struct {
 	SQLIndexerDatabaseFolderPath string        `config:"sql_indexer.database_folder_path"` // technical preview, used by the SQL storage indexer
 	SearchCacheSize              int           `config:"search.cache_size"`                // technical preview, used by the SQL storage indexer
 	SearchCacheTTL               time.Duration `config:"search.cache_ttl"`                 // technical preview, used by the SQL storage indexe^
+	CategoriesCacheSize          int           `config:"categories.cache_size"`            // technical preview, used by the SQL storage indexer
+	CategoriesCacheTTL           time.Duration `config:"categories.cache_ttl"`             // technical preview, used by the SQL storage indexe^
 }
 
 func main() {
@@ -140,18 +148,8 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if tlsMinVersionValue > 0 {
-		if tlsCertFile == "" || tlsKeyFile == "" {
-			log.Fatalf("-tls-min-version set but missing TLS cert and key files (-tls-cert and -tls-key)")
-		}
-	}
-
-	if featureStorageIndexer && featureSQLStorageIndexer {
-		log.Fatal("Both feature-storage-indexer and feature-sql-storage-indexer are enabled. Please choose one.")
-	}
-
-	if featureEnableSearchCache && !featureSQLStorageIndexer {
-		log.Fatal("feature-enable-search-cache is enabled, but feature-sql-storage-indexer is not enabled. Search cache is just supported with SQL Storage indexer.")
+	if err := validateFlags(); err != nil {
+		log.Fatal(err)
 	}
 
 	if printVersionInfo {
@@ -177,9 +175,15 @@ func main() {
 	ctx := context.Background()
 
 	config := mustLoadConfig(logger)
+
+	options := serverOptions{
+		apmTracer: apmTracer,
+		config:    config,
+	}
+
 	if dryRun {
 		logger.Info("Running dry-run mode")
-		indexer := initIndexer(ctx, logger, apmTracer, config, nil)
+		indexer := initIndexer(ctx, logger, options)
 		defer indexer.Close(ctx)
 		os.Exit(0)
 	}
@@ -204,16 +208,17 @@ func main() {
 		}
 		defer fakeServer.Stop()
 	}
-
-	var searchCache *expirable.LRU[string, []byte]
 	if featureSQLStorageIndexer && featureEnableSearchCache {
-		searchCache = expirable.NewLRU[string, []byte](config.SearchCacheSize, nil, config.SearchCacheTTL)
+		options.searchCache = expirable.NewLRU[string, []byte](config.SearchCacheSize, nil, config.SearchCacheTTL)
+	}
+	if featureSQLStorageIndexer && featureEnableCategoriesCache {
+		options.categoriesCache = expirable.NewLRU[string, []byte](config.CategoriesCacheSize, nil, config.CategoriesCacheTTL)
 	}
 
-	indexer := initIndexer(ctx, logger, apmTracer, config, searchCache)
-	defer indexer.Close(ctx)
+	options.indexer = initIndexer(ctx, logger, options)
+	defer options.indexer.Close(ctx)
 
-	server := initServer(logger, apmTracer, config, indexer, searchCache)
+	server := initServer(logger, options)
 
 	go func() {
 		err := runServer(server)
@@ -348,25 +353,25 @@ func initMetricsServer(logger *zap.Logger) {
 	}()
 }
 
-func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer, config *Config, cache *expirable.LRU[string, []byte]) Indexer {
-	tx := apmTracer.StartTransaction("initIndexer", "backend.init")
+func initIndexer(ctx context.Context, logger *zap.Logger, options serverOptions) Indexer {
+	tx := options.apmTracer.StartTransaction("initIndexer", "backend.init")
 	defer tx.End()
 
 	ctx = apm.ContextWithTransaction(ctx, tx)
-	packagesBasePaths := getPackagesBasePaths(config)
+	packagesBasePaths := getPackagesBasePaths(options.config)
 
 	var combined CombinedIndexer
 
 	switch {
 	case featureSQLStorageIndexer:
 		logger.Warn("Technical preview: SQL storage indexer is an experimental feature and it may be unstable.")
-		indexer, err := initSQLStorageIndexer(ctx, logger, apmTracer, config, cache)
+		indexer, err := initSQLStorageIndexer(ctx, logger, options)
 		if err != nil {
 			logger.Fatal("failed to initialize SQL storage indexer", zap.Error(err))
 		}
 		combined = append(combined, indexer)
 	case featureStorageIndexer:
-		indexer, err := initStorageIndexer(ctx, logger, apmTracer, config)
+		indexer, err := initStorageIndexer(ctx, logger, options)
 		if err != nil {
 			logger.Fatal("failed to initialize storage indexer", zap.Error(err))
 		}
@@ -381,42 +386,58 @@ func initIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer,
 	return combined
 }
 
-func initStorageIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer, config *Config) (*storage.Indexer, error) {
+func initStorageIndexer(ctx context.Context, logger *zap.Logger, options serverOptions) (*storage.Indexer, error) {
 	storageClient, err := newStorageClient(ctx, logger)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create storage client: %w", err)
 	}
 	return storage.NewIndexer(logger, storageClient, storage.IndexerOptions{
-		APMTracer:                    apmTracer,
+		APMTracer:                    options.apmTracer,
 		PackageStorageBucketInternal: storageIndexerBucketInternal,
 		PackageStorageEndpoint:       storageEndpoint,
 		WatchInterval:                storageIndexerWatchInterval,
 	}), nil
 }
 
-func initSQLStorageIndexer(ctx context.Context, logger *zap.Logger, apmTracer *apm.Tracer, config *Config, cache *expirable.LRU[string, []byte]) (*internalStorage.SQLIndexer, error) {
+func initSQLStorageIndexer(ctx context.Context, logger *zap.Logger, options serverOptions) (*internalStorage.SQLIndexer, error) {
 	storageClient, err := newStorageClient(ctx, logger)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create storage client: %w", err)
 	}
 
-	storageDatabase, err := initDatabase(ctx, logger, config.SQLIndexerDatabaseFolderPath, "storage_packages.db")
+	storageDatabase, err := initDatabase(ctx, logger, options.config.SQLIndexerDatabaseFolderPath, "storage_packages.db")
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize storage database: %w", err)
 	}
-	storageSwapDatabase, err := initDatabase(ctx, logger, config.SQLIndexerDatabaseFolderPath, "storage_packages_swap.db")
+	storageSwapDatabase, err := initDatabase(ctx, logger, options.config.SQLIndexerDatabaseFolderPath, "storage_packages_swap.db")
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize storage backup database: %w", err)
 	}
 
-	options := internalStorage.IndexerOptions{
-		APMTracer:                    apmTracer,
+	indexerOptions := internalStorage.IndexerOptions{
+		APMTracer:                    options.apmTracer,
 		PackageStorageBucketInternal: storageIndexerBucketInternal,
 		PackageStorageEndpoint:       storageEndpoint,
 		WatchInterval:                storageIndexerWatchInterval,
 		Database:                     storageDatabase,
 		SwapDatabase:                 storageSwapDatabase,
-		Cache:                        cache,
+		AfterUpdateIndexHook: func(context.Context) {
+			// Purge the caches after updating the index
+			// there could be new, updated or removed packages
+			logger.Debug("Running after update index hook")
+			purged := false
+			if options.searchCache != nil {
+				options.searchCache.Purge()
+				purged = true
+			}
+			if options.categoriesCache != nil {
+				options.categoriesCache.Purge()
+				purged = true
+			}
+			if purged {
+				logger.Debug("Caches purged after updating the index")
+			}
+		},
 	}
 
 	if v, found := os.LookupEnv("EPR_SQL_INDEXER_READ_PACKAGES_BATCH_SIZE"); found && v != "" {
@@ -424,10 +445,10 @@ func initSQLStorageIndexer(ctx context.Context, logger *zap.Logger, apmTracer *a
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse EPR_SQL_INDEXER_READ_PACKAGES_BATCH_SIZE environment variable: %w", err)
 		}
-		options.ReadPackagesBatchsize = readPackagesBatchSize
+		indexerOptions.ReadPackagesBatchsize = readPackagesBatchSize
 	}
 
-	return internalStorage.NewIndexer(logger, storageClient, options), nil
+	return internalStorage.NewIndexer(logger, storageClient, indexerOptions), nil
 }
 
 func newStorageClient(ctx context.Context, logger *zap.Logger) (*gstorage.Client, error) {
@@ -442,9 +463,17 @@ func newStorageClient(ctx context.Context, logger *zap.Logger) (*gstorage.Client
 	return gstorage.NewClient(ctx, opts...)
 }
 
-func initServer(logger *zap.Logger, apmTracer *apm.Tracer, config *Config, indexer Indexer, cache *expirable.LRU[string, []byte]) *http.Server {
-	router := mustLoadRouter(logger, config, indexer, cache)
-	apmgorilla.Instrument(router, apmgorilla.WithTracer(apmTracer))
+type serverOptions struct {
+	apmTracer       *apm.Tracer
+	config          *Config
+	indexer         Indexer
+	searchCache     *expirable.LRU[string, []byte]
+	categoriesCache *expirable.LRU[string, []byte]
+}
+
+func initServer(logger *zap.Logger, options serverOptions) *http.Server {
+	router := mustLoadRouter(logger, options)
+	apmgorilla.Instrument(router, apmgorilla.WithTracer(options.apmTracer))
 
 	var tlsConfig tls.Config
 	if tlsMinVersionValue > 0 {
@@ -519,6 +548,20 @@ func getConfig(logger *zap.Logger) (*Config, error) {
 		}
 		config.SearchCacheTTL = cacheTTL
 	}
+	if v, found := os.LookupEnv("EPR_SQL_INDEXER_CATEGORIES_CACHE_SIZE"); found && v != "" {
+		cacheSize, err := strconv.Atoi(v)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse EPR_SQL_INDEXER_CATEGORIES_CACHE_SIZE environment variable: %w", err)
+		}
+		config.CategoriesCacheSize = cacheSize
+	}
+	if v, found := os.LookupEnv("EPR_SQL_INDEXER_CATEGORIES_CACHE_TTL"); found && v != "" {
+		cacheTTL, err := time.ParseDuration(v)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse EPR_SQL_INDEXER_CATEGORIES_CACHE_TTL environment variable: %w", err)
+		}
+		config.CategoriesCacheTTL = cacheTTL
+	}
 	return &config, nil
 }
 
@@ -535,9 +578,18 @@ func printConfig(logger *zap.Logger, config *Config) {
 	logger.Info("Cache time for /search: " + config.CacheTimeSearch.String())
 	logger.Info("Cache time for /categories: " + config.CacheTimeCategories.String())
 	logger.Info("Cache time for all others: " + config.CacheTimeCatchAll.String())
-	logger.Info("(technical preview) SQL storage indexer database path: " + config.SQLIndexerDatabaseFolderPath)
-	logger.Info("(technical preview) Search cache size (SQL storage indexer): " + strconv.Itoa(config.SearchCacheSize))
-	logger.Info("(technical preview) Search cache TTL (SQL storage indexer): " + config.SearchCacheTTL.String())
+
+	if featureSQLStorageIndexer {
+		logger.Info("(technical preview) SQL storage indexer database path: " + config.SQLIndexerDatabaseFolderPath)
+		if featureEnableSearchCache {
+			logger.Info("(technical preview) Search cache size (SQL storage indexer): " + strconv.Itoa(config.SearchCacheSize))
+			logger.Info("(technical preview) Search cache TTL (SQL storage indexer): " + config.SearchCacheTTL.String())
+		}
+		if featureEnableCategoriesCache {
+			logger.Info("(technical preview) Categories cache size (SQL storage indexer): " + strconv.Itoa(config.CategoriesCacheSize))
+			logger.Info("(technical preview) Categories cache TTL (SQL storage indexer): " + config.CategoriesCacheTTL.String())
+		}
+	}
 }
 
 func ensurePackagesAvailable(ctx context.Context, logger *zap.Logger, indexer Indexer) {
@@ -561,15 +613,15 @@ func ensurePackagesAvailable(ctx context.Context, logger *zap.Logger, indexer In
 	metrics.NumberIndexedPackages.Set(float64(len(packages)))
 }
 
-func mustLoadRouter(logger *zap.Logger, config *Config, indexer Indexer, cache *expirable.LRU[string, []byte]) *mux.Router {
-	router, err := getRouter(logger, config, indexer, cache)
+func mustLoadRouter(logger *zap.Logger, options serverOptions) *mux.Router {
+	router, err := getRouter(logger, options)
 	if err != nil {
 		logger.Fatal("failed go configure router", zap.Error(err))
 	}
 	return router
 }
 
-func getRouter(logger *zap.Logger, config *Config, indexer Indexer, cache *expirable.LRU[string, []byte]) (*mux.Router, error) {
+func getRouter(logger *zap.Logger, options serverOptions) (*mux.Router, error) {
 	if featureProxyMode {
 		logger.Info("Technical preview: Proxy mode is an experimental feature and it may be unstable.")
 	}
@@ -581,32 +633,32 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer, cache *expir
 		return nil, fmt.Errorf("can't create proxy mode: %w", err)
 	}
 	artifactsHandler, err := artifactsHandler(logger, handlerOptions{
-		indexer:                     indexer,
+		indexer:                     options.indexer,
 		proxyMode:                   proxyMode,
-		cacheTime:                   config.CacheTimeCatchAll,
+		cacheTime:                   options.config.CacheTimeCatchAll,
 		allowUnknownQueryParameters: allowUnknownQueryParameters,
 	})
 	if err != nil {
 		return nil, fmt.Errorf("can't create artifacts handler: %w", err)
 	}
 	signaturesHandler, err := signaturesHandler(logger, handlerOptions{
-		indexer:                     indexer,
+		indexer:                     options.indexer,
 		proxyMode:                   proxyMode,
-		cacheTime:                   config.CacheTimeCatchAll,
+		cacheTime:                   options.config.CacheTimeCatchAll,
 		allowUnknownQueryParameters: allowUnknownQueryParameters,
 	})
 	if err != nil {
 		return nil, fmt.Errorf("can't create signatures handler: %w", err)
 	}
 	faviconHandleFunc, err := faviconHandler(handlerOptions{
-		cacheTime:                   config.CacheTimeCatchAll,
+		cacheTime:                   options.config.CacheTimeCatchAll,
 		allowUnknownQueryParameters: allowUnknownQueryParameters,
 	})
 	if err != nil {
 		return nil, fmt.Errorf("can't create favicon handler: %w", err)
 	}
 	indexHandlerFunc, err := indexHandler(handlerOptions{
-		cacheTime:                   config.CacheTimeIndex,
+		cacheTime:                   options.config.CacheTimeIndex,
 		allowUnknownQueryParameters: allowUnknownQueryParameters,
 	})
 	if err != nil {
@@ -616,37 +668,38 @@ func getRouter(logger *zap.Logger, config *Config, indexer Indexer, cache *expir
 	healthHandlerFunc := healthHandler(handlerOptions{allowUnknownQueryParameters: allowUnknownQueryParameters})
 
 	categoriesHandler, err := categoriesHandler(logger, handlerOptions{
-		indexer:                     indexer,
+		indexer:                     options.indexer,
 		proxyMode:                   proxyMode,
-		cacheTime:                   config.CacheTimeCategories,
+		cacheTime:                   options.config.CacheTimeCategories,
+		cache:                       options.categoriesCache,
 		allowUnknownQueryParameters: allowUnknownQueryParameters,
 	})
 	if err != nil {
 		return nil, fmt.Errorf("can't create categories handler: %w", err)
 	}
 	packageIndexHandler, err := packageIndexHandler(logger, handlerOptions{
-		indexer:                     indexer,
+		indexer:                     options.indexer,
 		proxyMode:                   proxyMode,
-		cacheTime:                   config.CacheTimeCatchAll,
+		cacheTime:                   options.config.CacheTimeCatchAll,
 		allowUnknownQueryParameters: allowUnknownQueryParameters,
 	})
 	if err != nil {
 		return nil, fmt.Errorf("can't create package index handler: %w", err)
 	}
 	searchHandler, err := searchHandler(logger, handlerOptions{
-		indexer:                     indexer,
+		indexer:                     options.indexer,
 		proxyMode:                   proxyMode,
-		cacheTime:                   config.CacheTimeSearch,
-		cache:                       cache,
+		cacheTime:                   options.config.CacheTimeSearch,
+		cache:                       options.searchCache,
 		allowUnknownQueryParameters: allowUnknownQueryParameters,
 	})
 	if err != nil {
 		return nil, fmt.Errorf("can't create search handler: %w", err)
 	}
 	staticHandler, err := staticHandler(logger, handlerOptions{
-		indexer:                     indexer,
+		indexer:                     options.indexer,
 		proxyMode:                   proxyMode,
-		cacheTime:                   config.CacheTimeCatchAll,
+		cacheTime:                   options.config.CacheTimeCatchAll,
 		allowUnknownQueryParameters: allowUnknownQueryParameters,
 	})
 	if err != nil {
@@ -689,4 +742,26 @@ func healthHandler(options handlerOptions) func(http.ResponseWriter, *http.Reque
 			}
 		}
 	}
+}
+
+func validateFlags() error {
+	if tlsMinVersionValue > 0 {
+		if tlsCertFile == "" || tlsKeyFile == "" {
+			return fmt.Errorf("-tls-min-version set but missing TLS cert and key files (-tls-cert and -tls-key)")
+		}
+	}
+
+	if featureStorageIndexer && featureSQLStorageIndexer {
+		return fmt.Errorf("both -feature-storage-indexer and -feature-sql-storage-indexer flags are enabled but are mutually exclusive")
+	}
+
+	if featureEnableSearchCache && !featureSQLStorageIndexer {
+		return fmt.Errorf("search cache is only supported in SQL storage indexer: feature-enable-search-cache is enabled, but feature-sql-storage-indexer is not enabled")
+	}
+
+	if featureEnableCategoriesCache && !featureSQLStorageIndexer {
+		return fmt.Errorf("categories cache is just supported with SQL Storage indexer: feature-enable-categories-cache is enabled, but feature-sql-storage-indexer is not enabled")
+	}
+
+	return nil
 }
