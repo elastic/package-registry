@@ -17,7 +17,6 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/hashicorp/go-retryablehttp"
 	"go.elastic.co/apm/v2"
-
 	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/packages"
@@ -109,6 +108,9 @@ func proxyRetryPolicy(ctx context.Context, resp *http.Response, err error) (bool
 }
 
 func (pm *ProxyMode) Enabled() bool {
+	if pm == nil {
+		return false
+	}
 	return pm.options.Enabled
 }
 

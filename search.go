@@ -14,20 +14,15 @@ import (
 	"strings"
 
 	"github.com/Masterminds/semver/v3"
-
 	"go.elastic.co/apm/module/apmzap/v2"
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/internal/util"
 	"github.com/elastic/package-registry/packages"
-	"github.com/elastic/package-registry/proxymode"
 )
 
 func searchHandler(logger *zap.Logger, options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
-	if options.proxyMode == nil {
-		options.proxyMode = proxymode.NoProxy(logger)
-	}
 	if options.cacheTime == 0 {
 		return nil, fmt.Errorf("cache time must be set for search handler")
 	}

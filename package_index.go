@@ -9,16 +9,14 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/Masterminds/semver/v3"
+	"github.com/gorilla/mux"
 	"go.elastic.co/apm/module/apmzap/v2"
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 
-	"github.com/Masterminds/semver/v3"
-	"github.com/gorilla/mux"
-
 	"github.com/elastic/package-registry/internal/util"
 	"github.com/elastic/package-registry/packages"
-	"github.com/elastic/package-registry/proxymode"
 )
 
 const (
@@ -28,9 +26,6 @@ const (
 var errPackageRevisionNotFound = errors.New("package revision not found")
 
 func packageIndexHandler(logger *zap.Logger, options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
-	if options.proxyMode == nil {
-		options.proxyMode = proxymode.NoProxy(logger)
-	}
 	if options.cacheTime == 0 {
 		return nil, errors.New("cache time must be set for package index handler")
 	}

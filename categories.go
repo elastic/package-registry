@@ -15,22 +15,17 @@ import (
 	"strings"
 	"time"
 
-	"go.uber.org/zap"
-
 	"github.com/Masterminds/semver/v3"
 	"go.elastic.co/apm/module/apmzap/v2"
 	"go.elastic.co/apm/v2"
+	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/internal/util"
 	"github.com/elastic/package-registry/packages"
-	"github.com/elastic/package-registry/proxymode"
 )
 
 // categoriesHandler is a dynamic handler as it will also allow filtering in the future.
 func categoriesHandler(logger *zap.Logger, options handlerOptions) (func(w http.ResponseWriter, r *http.Request), error) {
-	if options.proxyMode == nil {
-		options.proxyMode = proxymode.NoProxy(logger)
-	}
 	if options.indexer == nil {
 		return nil, fmt.Errorf("indexer is required for categories handler")
 	}

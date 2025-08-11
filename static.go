@@ -14,7 +14,6 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/packages"
-	"github.com/elastic/package-registry/proxymode"
 )
 
 const staticRouterPath = "/package/{packageName}/{packageVersion}/{name:.*}"
@@ -26,9 +25,6 @@ type staticParams struct {
 }
 
 func staticHandler(logger *zap.Logger, options handlerOptions) (http.HandlerFunc, error) {
-	if options.proxyMode == nil {
-		options.proxyMode = proxymode.NoProxy(logger)
-	}
 	if options.cacheTime == 0 {
 		return nil, errors.New("cache time must be set for static handler")
 	}
