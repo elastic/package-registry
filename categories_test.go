@@ -54,16 +54,19 @@ func TestCategoriesWithProxyMode(t *testing.T) {
 	)
 	require.NoError(t, err)
 
-	categoriesWithProxyHandler := categoriesHandlerWithProxyMode(testLogger, indexerProxy, proxyMode, testCacheTime, nil)
+	categoriesHandler, err := newCategoriesHandler(testLogger, indexerProxy, testCacheTime,
+		categoriesWithProxy(proxyMode),
+	)
+	require.NoError(t, err)
 
 	tests := []struct {
 		endpoint string
 		path     string
 		file     string
-		handler  func(w http.ResponseWriter, r *http.Request)
+		handler  http.Handler
 	}{
-		{"/categories", "/categories", "categories-proxy.json", categoriesWithProxyHandler},
-		{"/categories?kibana.version=6.5.0", "/categories", "categories-proxy-kibana-filter.json", categoriesWithProxyHandler},
+		{"/categories", "/categories", "categories-proxy.json", categoriesHandler},
+		{"/categories?kibana.version=6.5.0", "/categories", "categories-proxy-kibana-filter.json", categoriesHandler},
 	}
 
 	for _, test := range tests {

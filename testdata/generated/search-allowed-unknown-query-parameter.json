@@ -1,0 +1,22 @@
+[
+  {
+    "name": "yamlpipeline",
+    "title": "Yaml Pipeline package",
+    "version": "1.0.0",
+    "release": "beta",
+    "description": "This package contains a yaml pipeline.\n",
+    "type": "integration",
+    "download": "/epr/yamlpipeline/yamlpipeline-1.0.0.zip",
+    "path": "/package/yamlpipeline/1.0.0",
+    "categories": [
+      "custom"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "yamlpipeline.log",
+        "title": "Log Yaml pipeline"
+      }
+    ]
+  }
+]

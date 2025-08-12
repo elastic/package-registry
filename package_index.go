@@ -10,12 +10,11 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/Masterminds/semver/v3"
+	"github.com/gorilla/mux"
 	"go.elastic.co/apm/module/apmzap/v2"
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
-
-	"github.com/Masterminds/semver/v3"
-	"github.com/gorilla/mux"
 
 	"github.com/elastic/package-registry/internal/util"
 	"github.com/elastic/package-registry/packages"
@@ -28,70 +27,113 @@ const (
 
 var errPackageRevisionNotFound = errors.New("package revision not found")
 
-func packageIndexHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
-	return packageIndexHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime)
+type packageIndexHandler struct {
+	logger    *zap.Logger
+	cacheTime time.Duration
+	indexer   Indexer
+
+	proxyMode                   *proxymode.ProxyMode
+	allowUnknownQueryParameters bool
 }
 
-func packageIndexHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
-	return func(w http.ResponseWriter, r *http.Request) {
-		logger := logger.With(apmzap.TraceContext(r.Context())...)
+type packageIndexOption func(*packageIndexHandler)
 
-		vars := mux.Vars(r)
-		packageName, ok := vars["packageName"]
-		if !ok {
-			badRequest(w, "missing package name")
-			return
-		}
-
-		packageVersion, ok := vars["packageVersion"]
-		if !ok {
-			badRequest(w, "missing package version")
-			return
-		}
-
-		_, err := semver.StrictNewVersion(packageVersion)
-		if err != nil {
-			badRequest(w, "invalid package version")
-			return
-		}
-
-		opts := packages.NameVersionFilter(packageName, packageVersion)
-		// Just this endpoint needs the full data, so we set it here.
-		opts.FullData = true
-
-		pkgs, err := indexer.Get(r.Context(), &opts)
-		if err != nil {
-			logger.Error("getting package path failed", zap.Error(err))
-			http.Error(w, "internal server error", http.StatusInternalServerError)
-			return
-		}
-		if len(pkgs) == 0 && proxyMode.Enabled() {
-			proxiedPackage, err := proxyMode.Package(r)
-			if err != nil {
-				logger.Error("proxy mode: package failed", zap.Error(err))
-				http.Error(w, "internal server error", http.StatusInternalServerError)
-				return
-			}
-			if proxiedPackage != nil {
-				pkgs = pkgs.Join(packages.Packages{proxiedPackage})
-			}
-		}
-		if len(pkgs) == 0 {
-			notFoundError(w, errPackageRevisionNotFound)
-			return
-		}
-
-		data, err := getPackageOutput(r.Context(), pkgs[0])
-		if err != nil {
-			logger.Error("marshaling package index failed",
-				zap.String("package.path", pkgs[0].BasePath),
-				zap.Error(err))
-			http.Error(w, "internal server error", http.StatusInternalServerError)
-			return
-		}
-
-		serveJSONResponse(r.Context(), w, cacheTime, data)
+func newPackageIndexHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration, opts ...packageIndexOption) (*packageIndexHandler, error) {
+	if indexer == nil {
+		return nil, errors.New("indexer is required for package index handler")
 	}
+	if cacheTime <= 0 {
+		return nil, errors.New("cache time must be greater than 0s")
+	}
+
+	h := &packageIndexHandler{
+		logger:    logger,
+		indexer:   indexer,
+		cacheTime: cacheTime,
+	}
+
+	for _, opt := range opts {
+		opt(h)
+	}
+
+	return h, nil
+}
+
+func packageIndexWithProxy(pm *proxymode.ProxyMode) packageIndexOption {
+	return func(h *packageIndexHandler) {
+		h.proxyMode = pm
+	}
+}
+func packageIndexWithAllowUnknownQueryParameters(allow bool) packageIndexOption {
+	return func(h *packageIndexHandler) {
+		h.allowUnknownQueryParameters = allow
+	}
+}
+
+func (h *packageIndexHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	logger := h.logger.With(apmzap.TraceContext(r.Context())...)
+
+	// Return error if any query parameter is present
+	if !h.allowUnknownQueryParameters && len(r.URL.Query()) > 0 {
+		badRequest(w, "not supported query parameters")
+		return
+	}
+
+	vars := mux.Vars(r)
+	packageName, ok := vars["packageName"]
+	if !ok {
+		badRequest(w, "missing package name")
+		return
+	}
+
+	packageVersion, ok := vars["packageVersion"]
+	if !ok {
+		badRequest(w, "missing package version")
+		return
+	}
+
+	_, err := semver.StrictNewVersion(packageVersion)
+	if err != nil {
+		badRequest(w, "invalid package version")
+		return
+	}
+
+	opts := packages.NameVersionFilter(packageName, packageVersion)
+	// Just this endpoint needs the full data, so we set it here.
+	opts.FullData = true
+
+	pkgs, err := h.indexer.Get(r.Context(), &opts)
+	if err != nil {
+		logger.Error("getting package path failed", zap.Error(err))
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+	if len(pkgs) == 0 && h.proxyMode.Enabled() {
+		proxiedPackage, err := h.proxyMode.Package(r)
+		if err != nil {
+			logger.Error("proxy mode: package failed", zap.Error(err))
+			http.Error(w, "internal server error", http.StatusInternalServerError)
+			return
+		}
+		if proxiedPackage != nil {
+			pkgs = pkgs.Join(packages.Packages{proxiedPackage})
+		}
+	}
+	if len(pkgs) == 0 {
+		notFoundError(w, errPackageRevisionNotFound)
+		return
+	}
+
+	data, err := getPackageOutput(r.Context(), pkgs[0])
+	if err != nil {
+		logger.Error("marshaling package index failed",
+			zap.String("package.path", pkgs[0].BasePath),
+			zap.Error(err))
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	serveJSONResponse(r.Context(), w, h.cacheTime, data)
 }
 
 func getPackageOutput(ctx context.Context, pkg *packages.Package) ([]byte, error) {

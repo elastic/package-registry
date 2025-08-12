@@ -79,6 +79,8 @@ var (
 	storageEndpoint              string
 	storageIndexerWatchInterval  time.Duration
 
+	allowUnknownQueryParameters bool
+
 	featureProxyMode bool
 	proxyTo          string
 
@@ -112,6 +114,7 @@ func init() {
 	// This flag is experimental and might be removed in the future or renamed
 	flag.BoolVar(&dryRun, "dry-run", false, "Runs a dry-run of the registry without starting the web service (experimental).")
 	flag.BoolVar(&packages.ValidationDisabled, "disable-package-validation", false, "Disable package content validation.")
+	flag.BoolVar(&allowUnknownQueryParameters, "allow-unknown-query-parameters", false, "Allow unknown query parameters in the request. If set to false, the server will return an error if any unknown query parameter is present in the request.")
 
 	flag.BoolVar(&featureStorageIndexer, "feature-storage-indexer", false, "Enable storage indexer to include packages from Package Storage v2.")
 	flag.StringVar(&storageIndexerBucketInternal, "storage-indexer-bucket-internal", "", "Path to the internal Package Storage bucket (with gs:// prefix).")
@@ -630,33 +633,79 @@ func getRouter(logger *zap.Logger, options serverOptions) (*mux.Router, error) {
 	if err != nil {
 		return nil, fmt.Errorf("can't create proxy mode: %w", err)
 	}
-	artifactsHandler := artifactsHandlerWithProxyMode(logger, options.indexer, proxyMode, options.config.CacheTimeCatchAll)
-	signaturesHandler := signaturesHandlerWithProxyMode(logger, options.indexer, proxyMode, options.config.CacheTimeCatchAll)
-	faviconHandleFunc, err := faviconHandler(options.config.CacheTimeCatchAll)
+	artifactsHandler, err := newArtifactsHandler(logger, options.indexer, options.config.CacheTimeCatchAll,
+		artifactsWithProxy(proxyMode),
+		artifactsWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
+	)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("can't create artifacts handler: %w", err)
 	}
-	indexHandlerFunc, err := indexHandler(options.config.CacheTimeIndex)
+	signaturesHandler, err := newSignaturesHandler(logger, options.indexer, options.config.CacheTimeCatchAll,
+		signaturesWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
+		signaturesWithProxy(proxyMode),
+	)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("can't create signatures handler: %w", err)
+	}
+	faviconHandler, err := newFaviconHandler(options.config.CacheTimeCatchAll,
+		faviconWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
+	)
+	if err != nil {
+		return nil, fmt.Errorf("can't create favicon handler: %w", err)
 	}
 
-	categoriesHandler := categoriesHandlerWithProxyMode(logger, options.indexer, proxyMode, options.config.CacheTimeCategories, options.categoriesCache)
-	packageIndexHandler := packageIndexHandlerWithProxyMode(logger, options.indexer, proxyMode, options.config.CacheTimeCatchAll)
-	searchHandler := searchHandlerWithProxyMode(logger, options.indexer, proxyMode, options.config.CacheTimeSearch, options.searchCache)
-	staticHandler := staticHandlerWithProxyMode(logger, options.indexer, proxyMode, options.config.CacheTimeCatchAll)
+	indexHandler, err := newIndexHandler(options.config.CacheTimeIndex,
+		indexWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
+	)
+	if err != nil {
+		return nil, fmt.Errorf("can't create index handler: %w", err)
+	}
+
+	healthHandler := newHealthHandler(healthWithAllowUnknownQueryParameters(allowUnknownQueryParameters))
+
+	categoriesHandler, err := newCategoriesHandler(logger, options.indexer, options.config.CacheTimeCategories,
+		categoriesWithProxy(proxyMode),
+		categoriesWithCache(options.categoriesCache),
+		categoriesWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
+	)
+	if err != nil {
+		return nil, fmt.Errorf("can't create categories handler: %w", err)
+	}
+	packageIndexHandler, err := newPackageIndexHandler(logger, options.indexer, options.config.CacheTimeIndex,
+		packageIndexWithProxy(proxyMode),
+		packageIndexWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
+	)
+	if err != nil {
+		return nil, fmt.Errorf("can't create package index handler: %w", err)
+	}
+
+	searchHandler, err := newSearchHandler(logger, options.indexer, options.config.CacheTimeSearch,
+		searchWithProxy(proxyMode),
+		searchWithCache(options.searchCache),
+		searchWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
+	)
+	if err != nil {
+		return nil, fmt.Errorf("can't create search handler: %w", err)
+	}
+	staticHandler, err := newStaticHandler(logger, options.indexer, options.config.CacheTimeCatchAll,
+		staticWithProxy(proxyMode),
+		staticWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
+	)
+	if err != nil {
+		return nil, fmt.Errorf("can't create static handler: %w", err)
+	}
 
 	router := mux.NewRouter().StrictSlash(true)
-	router.HandleFunc("/", indexHandlerFunc)
-	router.HandleFunc("/index.json", indexHandlerFunc)
-	router.HandleFunc("/search", searchHandler)
-	router.HandleFunc("/categories", categoriesHandler)
-	router.HandleFunc("/health", healthHandler)
-	router.HandleFunc("/favicon.ico", faviconHandleFunc)
-	router.HandleFunc(artifactsRouterPath, artifactsHandler)
-	router.HandleFunc(signaturesRouterPath, signaturesHandler)
-	router.HandleFunc(packageIndexRouterPath, packageIndexHandler)
-	router.HandleFunc(staticRouterPath, staticHandler)
+	router.Handle("/", indexHandler)
+	router.Handle("/index.json", indexHandler)
+	router.Handle("/search", searchHandler)
+	router.Handle("/categories", categoriesHandler)
+	router.Handle("/health", healthHandler)
+	router.Handle("/favicon.ico", faviconHandler)
+	router.Handle(artifactsRouterPath, artifactsHandler)
+	router.Handle(signaturesRouterPath, signaturesHandler)
+	router.Handle(packageIndexRouterPath, packageIndexHandler)
+	router.Handle(staticRouterPath, staticHandler)
 	router.Use(util.LoggingMiddleware(logger))
 	router.Use(util.CORSMiddleware())
 	if metricsAddress != "" {
@@ -665,10 +714,6 @@ func getRouter(logger *zap.Logger, options serverOptions) (*mux.Router, error) {
 	router.NotFoundHandler = notFoundHandler(fmt.Errorf("404 page not found"))
 	return router, nil
 }
-
-// healthHandler is used for Docker/K8s deployments. It returns 200 if the service is live
-// In addition ?ready=true can be used for a ready request. Currently both are identical.
-func healthHandler(w http.ResponseWriter, r *http.Request) {}
 
 func validateFlags() error {
 	if tlsMinVersionValue > 0 {
