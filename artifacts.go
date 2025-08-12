@@ -37,8 +37,8 @@ func newArtifactsHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Dur
 	if indexer == nil {
 		return nil, errors.New("indexer is required for artifacts handler")
 	}
-	if cacheTime == 0 {
-		return nil, errors.New("cache time must be set for artifacts handler")
+	if cacheTime <= 0 {
+		return nil, errors.New("cache time must be greater than 0s")
 	}
 
 	a := &artifactsHandler{

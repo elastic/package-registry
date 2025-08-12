@@ -37,8 +37,8 @@ func newSignaturesHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Du
 	if indexer == nil {
 		return nil, errors.New("indexer is required for categories handler")
 	}
-	if cacheTime == 0 {
-		return nil, errors.New("cache time must be set for categories handler")
+	if cacheTime <= 0 {
+		return nil, errors.New("cache time must be greater than 0s")
 	}
 
 	s := &signaturesHandler{

@@ -42,8 +42,8 @@ func newPackageIndexHandler(logger *zap.Logger, indexer Indexer, cacheTime time.
 	if indexer == nil {
 		return nil, errors.New("indexer is required for package index handler")
 	}
-	if cacheTime == 0 {
-		return nil, errors.New("cache time must be set for package index handler")
+	if cacheTime <= 0 {
+		return nil, errors.New("cache time must be greater than 0s")
 	}
 
 	h := &packageIndexHandler{

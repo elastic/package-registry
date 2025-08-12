@@ -23,8 +23,8 @@ type faviconHandler struct {
 type faviconOption func(*faviconHandler)
 
 func newFaviconHandler(cacheTime time.Duration, opts ...faviconOption) (*faviconHandler, error) {
-	if cacheTime == 0 {
-		return nil, errors.New("cache time must be set for favicon handler")
+	if cacheTime <= 0 {
+		return nil, errors.New("cache time must be greater than 0s")
 	}
 
 	h := &faviconHandler{
