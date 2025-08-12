@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Breaking changes
 
 ### Bugfixes
+* Update Go runtime to 1.24.6. [#1388](https://github.com/elastic/package-registry/pull/1388)
 
 ### Added
 * New Security subcategory "asset_inventory" [#1357](https://github.com/elastic/package-registry/pull/1357)
