@@ -3,6 +3,69 @@ import { check, group, sleep } from 'k6';
 
 const BASE = `${__ENV.TARGET_HOST}`;
 
+export const options = {
+  scenarios: {
+    // 1a. Steady (Load) Test
+    steady_load: {
+      executor: 'shared-iterations',
+      exec: 'default',
+      vus: `${__ENV.VUS_NUMBER}`,
+      iterations: `${__ENV.ITERATIONS_NUMBER}`,
+      tags: { test_type: 'steady_iters' },
+    },
+    // 1b. Steady (Load) Test
+    // steady_load: {
+    //   executor: 'constant-vus',
+    //   exec: 'default',
+    //   vus: `${__ENV.VUS_NUMBER}`,
+    //   iterations: `${__ENV.ITERATIONS_NUMBER}`,
+    //   tags: { test_type: 'steady_vus' },
+    // },
+    // 2. Stress Test - progressively increasing load
+    // stress: {
+    //   executor: 'ramping-vus',
+    //   exec: 'stressTest',
+    //   startTime: '5m10s',
+    //   stages: [
+    //     { duration: '2m', target: 100 },
+    //     { duration: '3m', target: 200 },
+    //     { duration: '2m', target: 400 },
+    //     { duration: '2m', target: 0 }, // ramp down
+    //   ],
+    //   tags: { test_type: 'stress' },
+    // },
+    // // 3. Spike Test - sudden surge
+    // spike: {
+    //   executor: 'ramping-vus',
+    //   exec: 'default',
+    //   startTime: '12m10s',
+    //   stages: [
+    //     { duration: '10s', target: 50 },   // baseline
+    //     { duration: '20s', target: 300 },  // sudden spike
+    //     { duration: '2m', target: 300 },   // hold at peak
+    //     { duration: '30s', target: 0 },    // ramp down
+    //   ],
+    //   tags: { test_type: 'spike' },
+    // },
+    // // 4. Soak (Endurance) Test - sustained high load
+    // soak: {
+    //   executor: 'constant-vus',
+    //   exec: 'default',
+    //   startTime: '15m10s',
+    //   vus: 75,
+    //   duration: '10m',
+    //   tags: { test_type: 'soak' },
+    // },
+  },
+  thresholds: {
+    'http_req_duration{test_type:steady_iters}': ['p(95)<4000'],  // 95% of requests should be below 4000ms
+    // 'http_req_duration{test_type:steady_vus}': ['p(95)<4000'], // 95% of requests should be below 4000ms
+    // 'http_req_duration{test_type:stress}': ['p(95)<1000'], // Not run
+    // 'http_req_duration{test_type:spike}': ['p(95)<1500'],  // Not run
+    // 'http_req_duration{test_type:soak}': ['p(95)<800'],    // Not run
+  },
+}
+
 const packages = [
   '/package/zoom/1.2.1/',
   '/package/aws/1.16.4/',
