@@ -60,7 +60,7 @@ fi
 export TARGET_HOST
 export VUS_NUMBER="${USERS}"
 export ITERATIONS_NUMBER="${ITERATIONS}"
-k6 run \
+time k6 run \
     --no-usage-report \
     --quiet \
     --summary-mode full \
