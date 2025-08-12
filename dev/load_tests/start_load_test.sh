@@ -18,14 +18,22 @@ fi
 
 ITERATIONS=10
 SCRIPT_FILE=""
+USERS=1
+TARGET_HOST="http://localhost:8080"
 
-while getopts ":i:f:h" o; do
+while getopts ":i:f:u:t:h" o; do
   case "${o}" in
     i)
       ITERATIONS="${OPTARG}"
       ;;
     f)
       SCRIPT_FILE="${OPTARG}"
+      ;;
+    u)
+      USERS="${OPTARG}"
+      ;;
+    t)
+      TARGET_HOST="${OPTARG}"
       ;;
     h)
       usage
@@ -49,7 +57,11 @@ if [[ "${SCRIPT_FILE}" == "" ]] ; then
     exit 1
 fi
 
+export TARGET_HOST
 k6 run \
+    --no-usage-report \
+    --quiet \
     --iterations "${ITERATIONS}"  \
+    --vus "${USERS}" \
     --summary-mode full \
     "${SCRIPT_FILE}"
