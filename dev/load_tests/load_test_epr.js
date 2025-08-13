@@ -92,7 +92,7 @@ const searches = [
   '/search?spec.min=2.0&spec.max=3.0',
   '/search?spec.min=2.0&spec.max=3.0&prerelease=true',
   '/search?prerelease=true&capabilities=security',
-  '/search?prerelease=true&categories=security',
+  '/search?prerelease=true&category=security',
   '/search?package=aws',
   '/search?package=security_detection_engine',
   '/search?type=integration',
@@ -107,7 +107,6 @@ const categories = [
   '/categories?prerelease=false',
   '/categories?spec.min=2.0&spec.max=3.0',
   '/categories?spec.min=2.0&spec.max=3.0&prerelease=true',
-  '/categories?prerelease=true&categories=security',
   '/categories?prerelease=true&capabilities=security',
   '/categories?kibana.version=9.0.0',
   // add more combinations as needed
