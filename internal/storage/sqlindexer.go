@@ -21,7 +21,6 @@ import (
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 
-	"github.com/elastic/package-registry/categories"
 	"github.com/elastic/package-registry/internal/database"
 	"github.com/elastic/package-registry/metrics"
 	"github.com/elastic/package-registry/packages"
@@ -31,8 +30,6 @@ const (
 	indexerGetDurationPrometheusLabel = "SQLStorageIndexer"
 	defaultReadPackagesBatchSize      = 2000
 )
-
-var allCategories = categories.DefaultCategories()
 
 type SQLIndexer struct {
 	options       IndexerOptions
