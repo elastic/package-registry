@@ -102,8 +102,8 @@ const searches = [
 
 const categories = [
   '/categories',
-  '/categories?all=true&prerelease=true',
-  '/categories?all=true&prerelease=false',
+  '/categories?prerelease=true',
+  '/categories?prerelease=false',
   '/categories?spec.min=2.0&spec.max=3.0',
   '/categories?spec.min=2.0&spec.max=3.0&prerelease=true',
   '/categories?prerelease=true&categories=security',
@@ -123,10 +123,12 @@ export default function () {
     packages.forEach((path) => {
       const res = http.get(`${BASE}${path}`, { tags: { endpoint: "package" } });
       check(res, { 'status 200': r => r.status === 200 });
+      sleep(0.1)
     });
     artifacts.forEach((path) => {
       const res = http.get(`${BASE}${path}`, { tags: { endpoint: "artifacts" } });
       check(res, { 'status 200': r => r.status === 200 });
+      sleep(0.1)
     });
   });
 
@@ -134,6 +136,7 @@ export default function () {
     statics.forEach((path) => {
       const res = http.get(`${BASE}${path}`, { tags: { endpoint: "statics" } });
       check(res, { 'status 200': r => r.status === 200 });
+      sleep(0.1)
     });
   });
 
@@ -143,6 +146,7 @@ export default function () {
     searches.forEach((path) => {
       const res = http.get(`${BASE}${path}`, { tags: { endpoint: "search" } });
       check(res, { 'status 200': r => r.status === 200 });
+      sleep(0.1)
     });
   });
 
@@ -151,9 +155,9 @@ export default function () {
     categories.forEach((path) => {
       const res = http.get(`${BASE}${path}`, { tags: { endpoint: "categories" } });
       check(res, { 'status 200': r => r.status === 200 });
+      sleep(0.1)
     });
   });
-
 
   sleep(1);
 }
