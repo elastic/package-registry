@@ -31,9 +31,8 @@ type searchHandler struct {
 	indexer   Indexer
 	cacheTime time.Duration
 
-	cache                       *expirable.LRU[string, []byte]
-	proxyMode                   *proxymode.ProxyMode
-	allowUnknownQueryParameters bool
+	cache     *expirable.LRU[string, []byte]
+	proxyMode *proxymode.ProxyMode
 }
 
 type searchOption func(*searchHandler)
@@ -71,12 +70,6 @@ func searchWithCache(cache *expirable.LRU[string, []byte]) searchOption {
 	}
 }
 
-func searchWithAllowUnknownQueryParameters(allow bool) searchOption {
-	return func(h *searchHandler) {
-		h.allowUnknownQueryParameters = allow
-	}
-}
-
 func (h *searchHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	logger := h.logger.With(apmzap.TraceContext(r.Context())...)
 
@@ -88,7 +81,7 @@ func (h *searchHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	filter, err := newSearchFilterFromQuery(r.URL.Query(), h.allowUnknownQueryParameters)
+	filter, err := newSearchFilterFromQuery(r.URL.Query())
 	if err != nil {
 		badRequest(w, err.Error())
 		return
@@ -141,7 +134,7 @@ func (h *searchHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func newSearchFilterFromQuery(query url.Values, allowUnknownQueryParameters bool) (*packages.Filter, error) {
+func newSearchFilterFromQuery(query url.Values) (*packages.Filter, error) {
 	var filter packages.Filter
 
 	if len(query) == 0 {
@@ -226,10 +219,6 @@ func newSearchFilterFromQuery(query url.Values, allowUnknownQueryParameters bool
 		case "internal":
 			// Parameter removed in https://github.com/elastic/package-registry/pull/765
 			// Keep it here to avoid breaking existing clients.
-		default:
-			if !allowUnknownQueryParameters {
-				return nil, fmt.Errorf("unknown query parameter: %q", key)
-			}
 		}
 	}
 

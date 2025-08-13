@@ -16,8 +16,6 @@ var faviconBlob []byte
 
 type faviconHandler struct {
 	cacheTime time.Duration
-
-	allowUnknownQueryParameters bool
 }
 
 type faviconOption func(*faviconHandler)
@@ -36,19 +34,7 @@ func newFaviconHandler(cacheTime time.Duration, opts ...faviconOption) (*favicon
 	return h, nil
 }
 
-func faviconWithAllowUnknownQueryParameters(allow bool) faviconOption {
-	return func(h *faviconHandler) {
-		h.allowUnknownQueryParameters = allow
-	}
-}
-
 func (h *faviconHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	// Return error if any query parameter is present
-	if !h.allowUnknownQueryParameters && len(r.URL.Query()) > 0 {
-		badRequest(w, "not supported query parameters")
-		return
-	}
-
 	w.Header().Set("Content-Type", "image/x-icon")
 	cacheHeaders(w, h.cacheTime)
 	w.Write(faviconBlob)

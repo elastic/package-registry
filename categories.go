@@ -33,9 +33,9 @@ type categoriesHandler struct {
 	indexer   Indexer
 	cacheTime time.Duration
 
-	cache                       *expirable.LRU[string, []byte]
-	proxyMode                   *proxymode.ProxyMode
-	allowUnknownQueryParameters bool
+	cache      *expirable.LRU[string, []byte]
+	proxyMode  *proxymode.ProxyMode
+	Parameters bool
 }
 
 type categoriesOption func(h *categoriesHandler)
@@ -73,12 +73,6 @@ func categoriesWithCache(cache *expirable.LRU[string, []byte]) categoriesOption 
 	}
 }
 
-func categoriesWithAllowUnknownQueryParameters(allow bool) categoriesOption {
-	return func(h *categoriesHandler) {
-		h.allowUnknownQueryParameters = allow
-	}
-}
-
 func (h *categoriesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	logger := h.logger.With(apmzap.TraceContext(r.Context())...)
 
@@ -92,7 +86,7 @@ func (h *categoriesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	query := r.URL.Query()
 
-	filter, err := newCategoriesFilterFromQuery(query, h.allowUnknownQueryParameters)
+	filter, err := newCategoriesFilterFromQuery(query)
 	if err != nil {
 		badRequest(w, err.Error())
 		return
@@ -154,7 +148,7 @@ func (h *categoriesHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func newCategoriesFilterFromQuery(query url.Values, allowUnknownQueryParameters bool) (*packages.Filter, error) {
+func newCategoriesFilterFromQuery(query url.Values) (*packages.Filter, error) {
 	var filter packages.Filter
 
 	if len(query) == 0 {
@@ -219,10 +213,6 @@ func newCategoriesFilterFromQuery(query url.Values, allowUnknownQueryParameters 
 			}
 		case "include_policy_templates":
 			// This query parameter is allowed, but not used as a filter
-		default:
-			if !allowUnknownQueryParameters {
-				return nil, fmt.Errorf("unknown query parameter: %q", key)
-			}
 		}
 
 	}

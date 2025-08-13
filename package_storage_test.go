@@ -56,12 +56,6 @@ func generateTestCaseStorageEndpoints(indexer Indexer) ([]struct {
 	if err != nil {
 		return nil, err
 	}
-	allowUnknownQueryParamsSearchHandler, err := newSearchHandler(testLogger, indexer, testCacheTime,
-		searchWithAllowUnknownQueryParameters(true),
-	)
-	if err != nil {
-		return nil, err
-	}
 	return []struct {
 		endpoint string
 		path     string
@@ -97,8 +91,7 @@ func generateTestCaseStorageEndpoints(indexer Indexer) ([]struct {
 		{"/search?internal=true", "/search", "search-package-internal.json", searchHandler},
 
 		// Test queries with unknown query parameters
-		{"/search?package=yamlpipeline&unknown=true", "/search", "search-unknown-query-parameter-error.txt", searchHandler},
-		{"/search?package=yamlpipeline&unknown=true", "/search", "search-allowed-unknown-query-parameter.json", allowUnknownQueryParamsSearchHandler},
+		{"/search?package=yamlpipeline&unknown=true", "/search", "search-allowed-unknown-query-parameter.json", searchHandler},
 	}, nil
 }
 
