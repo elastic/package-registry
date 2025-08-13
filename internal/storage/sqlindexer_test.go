@@ -196,7 +196,7 @@ func BenchmarkSQLIndexerGetStaticsAndArtifacts(b *testing.B) {
 	err = indexer.Init(ctx)
 	require.NoError(b, err)
 
-	skipJSON := false
+	skipJSON := true
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		// Mimic call to static handler
@@ -204,13 +204,23 @@ func BenchmarkSQLIndexerGetStaticsAndArtifacts(b *testing.B) {
 			PackageName:    "aws",
 			PackageVersion: "1.16.4",
 			Prerelease:     true,
-			// Experimental:   true,
 		}, SkipJSON: skipJSON})
 		indexer.Get(context.Background(), &packages.GetOptions{Filter: &packages.Filter{
 			PackageName:    "zoom",
 			PackageVersion: "1.2.1",
 			Prerelease:     true,
-			// Experimental:   true,
+		}, SkipJSON: skipJSON})
+		indexer.Get(context.Background(), &packages.GetOptions{Filter: &packages.Filter{
+			PackageName:    "aws",
+			PackageVersion: "1.16.4",
+			Prerelease:     true,
+			Experimental:   true,
+		}, SkipJSON: skipJSON})
+		indexer.Get(context.Background(), &packages.GetOptions{Filter: &packages.Filter{
+			PackageName:    "zoom",
+			PackageVersion: "1.2.1",
+			Prerelease:     true,
+			Experimental:   true,
 		}, SkipJSON: skipJSON})
 	}
 }
