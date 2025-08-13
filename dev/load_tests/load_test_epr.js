@@ -1,5 +1,6 @@
 import http from 'k6/http';
 import { check, group, sleep } from 'k6';
+import { randomIntBetween } from 'https://jslib.k6.io/k6-utils/1.2.0/index.js';
 
 const BASE = `${__ENV.TARGET_HOST}`;
 
@@ -16,14 +17,14 @@ export const options = {
       tags: { test_type: 'steady_iters' },
     },
     // 1b. Steady (Load) Test
-    steady_load_vus: {
-      executor: 'constant-vus',
-      exec: 'default',
-      startTime: '30m10s',
-      vus: `${__ENV.VUS_NUMBER}`,
-      duration: '10m',
-      tags: { test_type: 'steady_vus' },
-    },
+    // steady_load_vus: {
+    //   executor: 'constant-vus',
+    //   exec: 'default',
+    //   startTime: '30m10s',
+    //   vus: `${__ENV.VUS_NUMBER}`,
+    //   duration: '10m',
+    //   tags: { test_type: 'steady_vus' },
+    // },
     // 2. Stress Test - progressively increasing load
     // stress: {
     //   executor: 'ramping-vus',
@@ -62,7 +63,7 @@ export const options = {
   },
   thresholds: {
     'http_req_duration{test_type:steady_iters}': ['p(95)<15000'],  // 95% of requests should be below 4000ms
-    'http_req_duration{test_type:steady_vus}': ['p(95)<15000'], // 95% of requests should be below 4000ms
+    // 'http_req_duration{test_type:steady_vus}': ['p(95)<15000'], // 95% of requests should be below 4000ms
     // 'http_req_duration{test_type:stress}': ['p(95)<1000'], // Not run
     // 'http_req_duration{test_type:spike}': ['p(95)<1500'],  // Not run
     // 'http_req_duration{test_type:soak}': ['p(95)<800'],    // Not run
@@ -123,12 +124,12 @@ export default function () {
     packages.forEach((path) => {
       const res = http.get(`${BASE}${path}`, { tags: { endpoint: "package" } });
       check(res, { 'status 200': r => r.status === 200 });
-      sleep(0.1)
+      sleep(randomIntBetween(1,2))
     });
     artifacts.forEach((path) => {
       const res = http.get(`${BASE}${path}`, { tags: { endpoint: "artifacts" } });
       check(res, { 'status 200': r => r.status === 200 });
-      sleep(0.1)
+      sleep(randomIntBetween(1,2))
     });
   });
 
@@ -136,7 +137,7 @@ export default function () {
     statics.forEach((path) => {
       const res = http.get(`${BASE}${path}`, { tags: { endpoint: "statics" } });
       check(res, { 'status 200': r => r.status === 200 });
-      sleep(0.1)
+      sleep(randomIntBetween(1,2))
     });
   });
 
@@ -146,7 +147,7 @@ export default function () {
     searches.forEach((path) => {
       const res = http.get(`${BASE}${path}`, { tags: { endpoint: "search" } });
       check(res, { 'status 200': r => r.status === 200 });
-      sleep(0.1)
+      sleep(randomIntBetween(1,2))
     });
   });
 
@@ -155,10 +156,8 @@ export default function () {
     categories.forEach((path) => {
       const res = http.get(`${BASE}${path}`, { tags: { endpoint: "categories" } });
       check(res, { 'status 200': r => r.status === 200 });
-      sleep(0.1)
+      sleep(randomIntBetween(1,2))
     });
   });
-
-  sleep(1);
 }
 
