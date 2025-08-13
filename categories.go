@@ -33,9 +33,8 @@ type categoriesHandler struct {
 	indexer   Indexer
 	cacheTime time.Duration
 
-	cache      *expirable.LRU[string, []byte]
-	proxyMode  *proxymode.ProxyMode
-	Parameters bool
+	cache     *expirable.LRU[string, []byte]
+	proxyMode *proxymode.ProxyMode
 }
 
 type categoriesOption func(h *categoriesHandler)
