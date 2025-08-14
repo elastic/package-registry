@@ -12,7 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Fix filtering by category in search endpoint (SQL Storage Indexer). [#1394](https://github.com/elastic/package-registry/pull/1394)
 * Update -allow-unknown-query-parameters flag to allow unknown query parameters by default. [#1395](https://github.com/elastic/package-registry/pull/1395)
-* Narrow the scope of the endpoints that validate the unknown parameters to just /search and /categories.. [#1395](https://github.com/elastic/package-registry/pull/1395)
+* Narrow the scope of the endpoints that validate the unknown parameters to just /search and /categories. [#1395](https://github.com/elastic/package-registry/pull/1395)
+* Fix filtering by capabilities in search and categories endpoint (SQL Storage Indexer). [#1396](https://github.com/elastic/package-registry/pull/1396)
 
 ### Added
 
@@ -43,6 +44,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Deprecated
 
 ### Known Issues
+
+* Breaking change introduced in [#1382](https://github.com/elastic/package-registry/pull/1382) is removed in the following release. By default, Elastic Package Registry service will accept unknown query parameters and if the validation is enabled this will affect just search and categories endpoints. [#1395](https://github.com/elastic/package-registry/pull/1395)
 
 
 ## [v1.30.1](https://github.com/elastic/package-registry/compare/v1.30.0...v1.30.1)
