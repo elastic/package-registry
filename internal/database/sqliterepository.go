@@ -38,7 +38,6 @@ var keys = []keyDefinition{
 	{"release", "TEXT NOT NULL"},
 	{"prerelease", "INTEGER NOT NULL"},
 	{"kibanaVersion", "TEXT NOT NULL"},
-	{"capabilities", "TEXT NOT NULL"},
 	{"discoveryFields", "TEXT NOT NULL"},
 	{"type", "TEXT NOT NULL"},
 	{"path", "TEXT NOT NULL"},
@@ -215,7 +214,6 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 
 			// Add commas to make it easier to search for these fields
 			// in the SQL query
-			capabilities := addCommasToString(pkgs[i].Capabilities)
 			discoveryFields := addCommasToString(pkgs[i].DiscoveryFields)
 
 			args = append(args,
@@ -226,7 +224,6 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 				pkgs[i].Release,
 				pkgs[i].Prerelease,
 				pkgs[i].KibanaVersion,
-				capabilities,
 				discoveryFields,
 				pkgs[i].Type,
 				pkgs[i].Path,
@@ -266,8 +263,8 @@ func addCommasToString(s string) string {
 	// special case for the first and last elements of comma separated list when setting
 	// the Where clause of the SQL query.
 	// All elements can be searched as `column LIKE '%,element,%'`
-	// Example: `capabilities LIKE '%,observability,%'`
-	// And the capabilities value could be like:
+	// Example: `column LIKE '%,observability,%'`
+	// And the column value could be like:
 	// - `,observability,security,`
 	// - `,observability,`
 	// - `,security,observability,`
@@ -336,7 +333,6 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 			&pkg.Release,
 			&pkg.Prerelease,
 			&pkg.KibanaVersion,
-			&pkg.Capabilities,
 			&pkg.DiscoveryFields,
 			&pkg.Type,
 			&pkg.Path,
@@ -376,11 +372,14 @@ func (r *SQLiteRepository) Close(ctx context.Context) error {
 }
 
 type FilterOptions struct {
-	Type         string
-	Name         string
-	Version      string
-	Prerelease   bool
-	Capabilities []string
+	Type       string
+	Name       string
+	Version    string
+	Prerelease bool
+	// It cannot be filtered by capabilities at database level, since it would be
+	// complicated using SQL logic to ensure that all the capabilities defined in the package
+	// are present in the query filter.
+
 	// It cannot be filtered by categories at database level, since
 	// the category filter is applied once all the others have been processed.
 	// Therefore, it must be handled at the application level.
@@ -443,22 +442,6 @@ func (o *SQLOptions) Where() (string, []any) {
 			sb.WriteString(" AND ")
 		}
 		sb.WriteString("prerelease = 0")
-	}
-
-	if len(o.Filter.Capabilities) > 0 {
-		if sb.Len() > 0 {
-			sb.WriteString(" AND ")
-		}
-		// If capabilities column value is empty, those packages are not filtered out
-		sb.WriteString("( capabilities == '' OR (")
-		for i, capability := range o.Filter.Capabilities {
-			sb.WriteString("capabilities LIKE ?")
-			args = append(args, fmt.Sprintf("%%,%s,%%", capability))
-			if i < len(o.Filter.Capabilities)-1 {
-				sb.WriteString(" AND ")
-			}
-		}
-		sb.WriteString(") )")
 	}
 
 	if sb.String() == "" {

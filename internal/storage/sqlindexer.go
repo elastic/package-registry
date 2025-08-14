@@ -329,11 +329,6 @@ func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Pack
 		kibanaVersion = pkg.Conditions.Kibana.Version
 	}
 
-	capabilities := ""
-	if pkg.Conditions != nil && pkg.Conditions.Elastic != nil {
-		capabilities = strings.Join(pkg.Conditions.Elastic.Capabilities, ",")
-	}
-
 	newPackage := database.Package{
 		Cursor:          cursor,
 		Name:            pkg.Name,
@@ -343,7 +338,6 @@ func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Pack
 		Type:            pkg.Type,
 		Release:         pkg.Release,
 		KibanaVersion:   kibanaVersion,
-		Capabilities:    capabilities,
 		DiscoveryFields: discoveryFields.String(),
 		Prerelease:      pkg.IsPrerelease(),
 		Data:            fullContents,
@@ -372,11 +366,10 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 		if opts != nil && opts.Filter != nil {
 			// TODO: Add support to filter by discovery fields if possible.
 			options.Filter = &database.FilterOptions{
-				Type:         opts.Filter.PackageType,
-				Name:         opts.Filter.PackageName,
-				Version:      opts.Filter.PackageVersion,
-				Prerelease:   opts.Filter.Prerelease,
-				Capabilities: opts.Filter.Capabilities,
+				Type:       opts.Filter.PackageType,
+				Name:       opts.Filter.PackageName,
+				Version:    opts.Filter.PackageVersion,
+				Prerelease: opts.Filter.Prerelease,
 			}
 			if opts.Filter.Experimental {
 				options.Filter.Prerelease = true
