@@ -38,7 +38,6 @@ var keys = []keyDefinition{
 	{"release", "TEXT NOT NULL"},
 	{"prerelease", "INTEGER NOT NULL"},
 	{"kibanaVersion", "TEXT NOT NULL"},
-	{"categories", "TEXT NOT NULL"},
 	{"capabilities", "TEXT NOT NULL"},
 	{"discoveryFields", "TEXT NOT NULL"},
 	{"type", "TEXT NOT NULL"},
@@ -163,10 +162,6 @@ func (r *SQLiteRepository) Initialize(ctx context.Context) error {
 		return err
 	}
 	// Not required to create an index for name and version as they are already part of the primary key
-	// NOt required to create an index for categories column, it is not used in the queries. Example:
-	//  > "EXPLAIN QUERY PLAN SELECT name, version FROM packages WHERE categories LIKE '%,observability,%';"
-	// QUERY PLAN
-	// `--SCAN packages
 	query := `
 	CREATE INDEX IF NOT EXISTS idx_prerelease ON packages (prerelease);
 	CREATE INDEX IF NOT EXISTS idx_type ON packages (type);
@@ -220,7 +215,6 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 
 			// Add commas to make it easier to search for these fields
 			// in the SQL query
-			categories := addCommasToString(pkgs[i].Categories)
 			capabilities := addCommasToString(pkgs[i].Capabilities)
 			discoveryFields := addCommasToString(pkgs[i].DiscoveryFields)
 
@@ -232,7 +226,6 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 				pkgs[i].Release,
 				pkgs[i].Prerelease,
 				pkgs[i].KibanaVersion,
-				categories,
 				capabilities,
 				discoveryFields,
 				pkgs[i].Type,
@@ -273,8 +266,8 @@ func addCommasToString(s string) string {
 	// special case for the first and last elements of comma separated list when setting
 	// the Where clause of the SQL query.
 	// All elements can be searched as `column LIKE '%,element,%'`
-	// Example: `categories LIKE '%,observability,%'`
-	// And the categoories value could be like:
+	// Example: `capabilities LIKE '%,observability,%'`
+	// And the capabilities value could be like:
 	// - `,observability,security,`
 	// - `,observability,`
 	// - `,security,observability,`
@@ -343,7 +336,6 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 			&pkg.Release,
 			&pkg.Prerelease,
 			&pkg.KibanaVersion,
-			&pkg.Categories,
 			&pkg.Capabilities,
 			&pkg.DiscoveryFields,
 			&pkg.Type,
@@ -388,8 +380,11 @@ type FilterOptions struct {
 	Name         string
 	Version      string
 	Prerelease   bool
-	Category     string
 	Capabilities []string
+	// It cannot be filtered by categories at database level, since
+	// the category filter is applied once all the others have been processed.
+	// Therefore, it must be handled at the application level.
+	// https://github.com/elastic/package-registry/blob/d0337e5ac884897bfef1f03e332c259018e00535/packages/packages.go#L516-L517
 }
 
 type SQLOptions struct {
@@ -448,14 +443,6 @@ func (o *SQLOptions) Where() (string, []any) {
 			sb.WriteString(" AND ")
 		}
 		sb.WriteString("prerelease = 0")
-	}
-
-	if o.Filter.Category != "" {
-		if sb.Len() > 0 {
-			sb.WriteString(" AND ")
-		}
-		sb.WriteString("categories LIKE ?")
-		args = append(args, fmt.Sprintf("%%,%s,%%", o.Filter.Category))
 	}
 
 	if len(o.Filter.Capabilities) > 0 {
