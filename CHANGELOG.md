@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Breaking changes
 
 ### Bugfixes
+* Update -allow-unknown-query-parameters flag to allow unknown query parameters by default. [#1395](https://github.com/elastic/package-registry/pull/1395)
+* Narrow the scope of the endpoints that validate the unknown parameters to just /search and /categories.. [#1395](https://github.com/elastic/package-registry/pull/1395)
 
 ### Added
 
