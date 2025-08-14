@@ -1,0 +1,125 @@
+[
+  {
+    "name": "discovery_empty",
+    "title": "Discovery Empty",
+    "version": "0.1.0",
+    "release": "beta",
+    "source": {
+      "license": "Apache-2.0"
+    },
+    "description": "This package is a dummy example for packages with the content type and discovery field empty. These packages contain resources that are useful with data ingested by other integrations. They are not used to configure data sources.\n",
+    "type": "content",
+    "download": "/epr/discovery_empty/discovery_empty-0.1.0.zip",
+    "path": "/package/discovery_empty/0.1.0",
+    "icons": [
+      {
+        "src": "/img/system.svg",
+        "path": "/package/discovery_empty/0.1.0/img/system.svg",
+        "title": "system",
+        "size": "1000x1000",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.16.0"
+      },
+      "elastic": {
+        "subscription": "basic"
+      }
+    },
+    "owner": {
+      "type": "elastic",
+      "github": "elastic/ecosystem"
+    },
+    "categories": [
+      "support"
+    ]
+  },
+  {
+    "name": "discovery_fields",
+    "title": "Discovery Empty",
+    "version": "0.1.0",
+    "release": "beta",
+    "source": {
+      "license": "Apache-2.0"
+    },
+    "description": "This package is a dummy example for packages with the content type and discovery fields defined. These packages contain resources that are useful with data ingested by other integrations. They are not used to configure data sources.\n",
+    "type": "content",
+    "download": "/epr/discovery_fields/discovery_fields-0.1.0.zip",
+    "path": "/package/discovery_fields/0.1.0",
+    "icons": [
+      {
+        "src": "/img/system.svg",
+        "path": "/package/discovery_fields/0.1.0/img/system.svg",
+        "title": "system",
+        "size": "1000x1000",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.16.0"
+      },
+      "elastic": {
+        "subscription": "basic"
+      }
+    },
+    "owner": {
+      "type": "elastic",
+      "github": "elastic/ecosystem"
+    },
+    "categories": [
+      "support"
+    ],
+    "discovery": {
+      "fields": [
+        {
+          "name": "process.pid"
+        }
+      ],
+      "datasets": [
+        {
+          "name": "good_content.access"
+        },
+        {
+          "name": "good_content.errors"
+        }
+      ]
+    }
+  },
+  {
+    "name": "kubernetes_otel",
+    "title": "Kubernetes OpenTelemetry Assets",
+    "version": "0.0.6",
+    "release": "beta",
+    "description": "Utilise the pre-built dashboard for OTel-native metrics and events collected from a Kubernetes cluster",
+    "type": "content",
+    "download": "/epr/kubernetes_otel/kubernetes_otel-0.0.6.zip",
+    "path": "/package/kubernetes_otel/0.0.6",
+    "icons": [
+      {
+        "src": "/img/kubernetes-otel-logo.svg",
+        "path": "/package/kubernetes_otel/0.0.6/img/kubernetes-otel-logo.svg",
+        "title": "Sample logo",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.16.0"
+      },
+      "elastic": {
+        "subscription": "basic"
+      }
+    },
+    "owner": {
+      "type": "elastic",
+      "github": "elastic/obs-cloudnative-monitoring"
+    },
+    "categories": [
+      "kubernetes"
+    ],
+    "signature_path": "/epr/kubernetes_otel/kubernetes_otel-0.0.6.zip.sig"
+  }
+]

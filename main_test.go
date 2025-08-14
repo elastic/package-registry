@@ -92,6 +92,7 @@ func TestEndpoints(t *testing.T) {
 		file     string
 		handler  http.Handler
 	}{
+		// TODO: Ensure that the these requests are the same as the ones defined in "package_storage_test.go" to avoid regressions.
 		{"/", "", "index.json", indexHandler},
 		{"/index.json", "", "index.json", indexHandler},
 		{"/search", "/search", "search.json", searchHandler},
