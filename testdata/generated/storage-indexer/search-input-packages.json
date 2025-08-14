@@ -1,1 +1,43 @@
-[]
+[
+  {
+    "name": "sql",
+    "title": "SQL Input",
+    "version": "0.5.0",
+    "release": "beta",
+    "description": "Collects Metrics by Quering on SQL Databases",
+    "type": "input",
+    "download": "/epr/sql/sql-0.5.0.zip",
+    "path": "/package/sql/0.5.0",
+    "icons": [
+      {
+        "src": "/img/sql-server-icon.svg",
+        "path": "/package/sql/0.5.0/img/sql-server-icon.svg",
+        "title": "SQL logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "sql",
+        "title": "SQL Metrics",
+        "description": "Collects Metrics by Quering on SQL Databases"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.13.0"
+      },
+      "elastic": {
+        "subscription": "basic"
+      }
+    },
+    "owner": {
+      "github": "elastic/obs-infraobs-integrations"
+    },
+    "categories": [
+      "custom"
+    ],
+    "signature_path": "/epr/sql/sql-0.5.0.zip.sig"
+  }
+]

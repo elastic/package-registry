@@ -1,1 +1,36 @@
-[]
+[
+  {
+    "name": "kubernetes_otel",
+    "title": "Kubernetes OpenTelemetry Assets",
+    "version": "0.0.6",
+    "release": "beta",
+    "description": "Utilise the pre-built dashboard for OTel-native metrics and events collected from a Kubernetes cluster",
+    "type": "content",
+    "download": "/epr/kubernetes_otel/kubernetes_otel-0.0.6.zip",
+    "path": "/package/kubernetes_otel/0.0.6",
+    "icons": [
+      {
+        "src": "/img/kubernetes-otel-logo.svg",
+        "path": "/package/kubernetes_otel/0.0.6/img/kubernetes-otel-logo.svg",
+        "title": "Sample logo",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.16.0"
+      },
+      "elastic": {
+        "subscription": "basic"
+      }
+    },
+    "owner": {
+      "type": "elastic",
+      "github": "elastic/obs-cloudnative-monitoring"
+    },
+    "categories": [
+      "kubernetes"
+    ],
+    "signature_path": "/epr/kubernetes_otel/kubernetes_otel-0.0.6.zip.sig"
+  }
+]

@@ -34,7 +34,7 @@
   {
     "id": "custom",
     "title": "Custom",
-    "count": 9
+    "count": 10
   },
   {
     "id": "datastore",
@@ -54,7 +54,7 @@
   {
     "id": "kubernetes",
     "title": "Kubernetes",
-    "count": 3,
+    "count": 4,
     "parent_id": "observability",
     "parent_title": "Observability"
   },
