@@ -91,6 +91,7 @@ type GetOptions struct {
 	Filter *Filter
 
 	FullData bool
+	SkipJSON bool
 }
 
 // FileSystemIndexer indexes packages from the filesystem.
