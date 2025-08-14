@@ -27,8 +27,7 @@ type artifactsHandler struct {
 	indexer   Indexer
 	cacheTime time.Duration
 
-	proxyMode                   *proxymode.ProxyMode
-	allowUnknownQueryParameters bool
+	proxyMode *proxymode.ProxyMode
 }
 
 type artifactsOption func(*artifactsHandler)
@@ -60,20 +59,8 @@ func artifactsWithProxy(pm *proxymode.ProxyMode) artifactsOption {
 	}
 }
 
-func artifactsWithAllowUnknownQueryParameters(allow bool) artifactsOption {
-	return func(h *artifactsHandler) {
-		h.allowUnknownQueryParameters = allow
-	}
-}
-
 func (h *artifactsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	logger := h.logger.With(apmzap.TraceContext(r.Context())...)
-
-	// Return error if any query parameter is present
-	if !h.allowUnknownQueryParameters && len(r.URL.Query()) > 0 {
-		badRequest(w, "not supported query parameters")
-		return
-	}
 
 	vars := mux.Vars(r)
 	packageName, ok := vars["packageName"]

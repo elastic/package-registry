@@ -47,9 +47,10 @@ func newSearchHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Durati
 	}
 
 	h := &searchHandler{
-		logger:    logger,
-		indexer:   indexer,
-		cacheTime: cacheTime,
+		logger:                      logger,
+		indexer:                     indexer,
+		cacheTime:                   cacheTime,
+		allowUnknownQueryParameters: true,
 	}
 
 	for _, opt := range opts {
