@@ -32,8 +32,7 @@ type packageIndexHandler struct {
 	cacheTime time.Duration
 	indexer   Indexer
 
-	proxyMode                   *proxymode.ProxyMode
-	allowUnknownQueryParameters bool
+	proxyMode *proxymode.ProxyMode
 }
 
 type packageIndexOption func(*packageIndexHandler)
@@ -64,20 +63,8 @@ func packageIndexWithProxy(pm *proxymode.ProxyMode) packageIndexOption {
 		h.proxyMode = pm
 	}
 }
-func packageIndexWithAllowUnknownQueryParameters(allow bool) packageIndexOption {
-	return func(h *packageIndexHandler) {
-		h.allowUnknownQueryParameters = allow
-	}
-}
-
 func (h *packageIndexHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	logger := h.logger.With(apmzap.TraceContext(r.Context())...)
-
-	// Return error if any query parameter is present
-	if !h.allowUnknownQueryParameters && len(r.URL.Query()) > 0 {
-		badRequest(w, "not supported query parameters")
-		return
-	}
 
 	vars := mux.Vars(r)
 	packageName, ok := vars["packageName"]

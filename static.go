@@ -31,8 +31,7 @@ type staticHandler struct {
 	indexer   Indexer
 	cacheTime time.Duration
 
-	proxyMode                   *proxymode.ProxyMode
-	allowUnknownQueryParameters bool
+	proxyMode *proxymode.ProxyMode
 }
 
 type staticOption func(*staticHandler)
@@ -64,24 +63,12 @@ func staticWithProxy(pm *proxymode.ProxyMode) staticOption {
 	}
 }
 
-func staticWithAllowUnknownQueryParameters(allow bool) staticOption {
-	return func(h *staticHandler) {
-		h.allowUnknownQueryParameters = allow
-	}
-}
-
 func (h *staticHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	logger := h.logger.With(apmzap.TraceContext(r.Context())...)
 
 	params, err := staticParamsFromRequest(r)
 	if err != nil {
 		badRequest(w, err.Error())
-		return
-	}
-
-	// Return error if any query parameter is present
-	if !h.allowUnknownQueryParameters && len(r.URL.Query()) > 0 {
-		badRequest(w, "not supported query parameters")
 		return
 	}
 

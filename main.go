@@ -114,7 +114,7 @@ func init() {
 	// This flag is experimental and might be removed in the future or renamed
 	flag.BoolVar(&dryRun, "dry-run", false, "Runs a dry-run of the registry without starting the web service (experimental).")
 	flag.BoolVar(&packages.ValidationDisabled, "disable-package-validation", false, "Disable package content validation.")
-	flag.BoolVar(&allowUnknownQueryParameters, "allow-unknown-query-parameters", false, "Allow unknown query parameters in the request. If set to false, the server will return an error if any unknown query parameter is present in the request.")
+	flag.BoolVar(&allowUnknownQueryParameters, "allow-unknown-query-parameters", true, "Allow unknown query parameters in the request. If set to false, the server will return an error if any unknown query parameter is present in the request.")
 
 	flag.BoolVar(&featureStorageIndexer, "feature-storage-indexer", false, "Enable storage indexer to include packages from Package Storage v2.")
 	flag.StringVar(&storageIndexerBucketInternal, "storage-indexer-bucket-internal", "", "Path to the internal Package Storage bucket (with gs:// prefix).")
@@ -635,33 +635,27 @@ func getRouter(logger *zap.Logger, options serverOptions) (*mux.Router, error) {
 	}
 	artifactsHandler, err := newArtifactsHandler(logger, options.indexer, options.config.CacheTimeCatchAll,
 		artifactsWithProxy(proxyMode),
-		artifactsWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("can't create artifacts handler: %w", err)
 	}
 	signaturesHandler, err := newSignaturesHandler(logger, options.indexer, options.config.CacheTimeCatchAll,
-		signaturesWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
 		signaturesWithProxy(proxyMode),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("can't create signatures handler: %w", err)
 	}
-	faviconHandler, err := newFaviconHandler(options.config.CacheTimeCatchAll,
-		faviconWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
-	)
+	faviconHandler, err := newFaviconHandler(options.config.CacheTimeCatchAll)
 	if err != nil {
 		return nil, fmt.Errorf("can't create favicon handler: %w", err)
 	}
 
-	indexHandler, err := newIndexHandler(options.config.CacheTimeIndex,
-		indexWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
-	)
+	indexHandler, err := newIndexHandler(options.config.CacheTimeIndex)
 	if err != nil {
 		return nil, fmt.Errorf("can't create index handler: %w", err)
 	}
 
-	healthHandler := newHealthHandler(healthWithAllowUnknownQueryParameters(allowUnknownQueryParameters))
+	healthHandler := newHealthHandler()
 
 	categoriesHandler, err := newCategoriesHandler(logger, options.indexer, options.config.CacheTimeCategories,
 		categoriesWithProxy(proxyMode),
@@ -673,7 +667,6 @@ func getRouter(logger *zap.Logger, options serverOptions) (*mux.Router, error) {
 	}
 	packageIndexHandler, err := newPackageIndexHandler(logger, options.indexer, options.config.CacheTimeIndex,
 		packageIndexWithProxy(proxyMode),
-		packageIndexWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("can't create package index handler: %w", err)
@@ -689,7 +682,6 @@ func getRouter(logger *zap.Logger, options serverOptions) (*mux.Router, error) {
 	}
 	staticHandler, err := newStaticHandler(logger, options.indexer, options.config.CacheTimeCatchAll,
 		staticWithProxy(proxyMode),
-		staticWithAllowUnknownQueryParameters(allowUnknownQueryParameters),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("can't create static handler: %w", err)
