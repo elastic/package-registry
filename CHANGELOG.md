@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
-* Revert failing requests with 400 error code if there are unknown query parameters. [1393](https://github.com/elastic/package-registry/pull/1393)
+* Revert failing requests with 400 error code if there are unknown query parameters. [#1393](https://github.com/elastic/package-registry/pull/1393)
 
 ### Added
 
