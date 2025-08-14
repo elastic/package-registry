@@ -38,7 +38,6 @@ var keys = []keyDefinition{
 	{"release", "TEXT NOT NULL"},
 	{"prerelease", "INTEGER NOT NULL"},
 	{"kibanaVersion", "TEXT NOT NULL"},
-	{"discoveryFields", "TEXT NOT NULL"},
 	{"type", "TEXT NOT NULL"},
 	{"path", "TEXT NOT NULL"},
 	{"data", "BLOB NOT NULL"},
@@ -212,10 +211,6 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 				sb.WriteString(",")
 			}
 
-			// Add commas to make it easier to search for these fields
-			// in the SQL query
-			discoveryFields := addCommasToString(pkgs[i].DiscoveryFields)
-
 			args = append(args,
 				pkgs[i].Cursor,
 				pkgs[i].Name,
@@ -224,7 +219,6 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 				pkgs[i].Release,
 				pkgs[i].Prerelease,
 				pkgs[i].KibanaVersion,
-				discoveryFields,
 				pkgs[i].Type,
 				pkgs[i].Path,
 				pkgs[i].Data,
@@ -333,7 +327,6 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 			&pkg.Release,
 			&pkg.Prerelease,
 			&pkg.KibanaVersion,
-			&pkg.DiscoveryFields,
 			&pkg.Type,
 			&pkg.Path,
 			&pkg.Data, // this variable will be assigned to BaseData if useBaseData is true

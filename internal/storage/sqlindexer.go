@@ -314,34 +314,23 @@ func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Pack
 		return nil, fmt.Errorf("failed to marshal base package %s-%s: %w", pkg.Name, pkg.Version, err)
 	}
 
-	discoveryFields := strings.Builder{}
-	if pkg.Discovery != nil {
-		for i, field := range pkg.Discovery.Fields {
-			discoveryFields.WriteString(field.Name)
-			if i < len(pkg.Discovery.Fields)-1 {
-				discoveryFields.WriteString(",")
-			}
-		}
-	}
-
 	kibanaVersion := ""
 	if pkg.Conditions != nil && pkg.Conditions.Kibana != nil {
 		kibanaVersion = pkg.Conditions.Kibana.Version
 	}
 
 	newPackage := database.Package{
-		Cursor:          cursor,
-		Name:            pkg.Name,
-		Version:         pkg.Version,
-		FormatVersion:   pkg.FormatVersion,
-		Path:            fmt.Sprintf("%s-%s.zip", pkg.Name, pkg.Version),
-		Type:            pkg.Type,
-		Release:         pkg.Release,
-		KibanaVersion:   kibanaVersion,
-		DiscoveryFields: discoveryFields.String(),
-		Prerelease:      pkg.IsPrerelease(),
-		Data:            fullContents,
-		BaseData:        baseContents,
+		Cursor:        cursor,
+		Name:          pkg.Name,
+		Version:       pkg.Version,
+		FormatVersion: pkg.FormatVersion,
+		Path:          fmt.Sprintf("%s-%s.zip", pkg.Name, pkg.Version),
+		Type:          pkg.Type,
+		Release:       pkg.Release,
+		KibanaVersion: kibanaVersion,
+		Prerelease:    pkg.IsPrerelease(),
+		Data:          fullContents,
+		BaseData:      baseContents,
 	}
 
 	return &newPackage, nil
