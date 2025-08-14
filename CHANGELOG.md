@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fix filtering by category in search endpoint (SQL Storage Indexer). [#1394](https://github.com/elastic/package-registry/pull/1394)
 * Update -allow-unknown-query-parameters flag to allow unknown query parameters by default. [#1395](https://github.com/elastic/package-registry/pull/1395)
 * Narrow the scope of the endpoints that validate the unknown parameters to just /search and /categories. [#1395](https://github.com/elastic/package-registry/pull/1395)
+* Fix filtering by capabilities in search and categories endpoint (SQL Storage Indexer). [#1396](https://github.com/elastic/package-registry/pull/1396)
 
 ### Added
 
