@@ -252,22 +252,6 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 	return nil
 }
 
-func addCommasToString(s string) string {
-	// Adding commas at the beginning and end of the string ensures that there is no
-	// special case for the first and last elements of comma separated list when setting
-	// the Where clause of the SQL query.
-	// All elements can be searched as `column LIKE '%,element,%'`
-	// Example: `column LIKE '%,observability,%'`
-	// And the column value could be like:
-	// - `,observability,security,`
-	// - `,observability,`
-	// - `,security,observability,`
-	if s != "" {
-		s = fmt.Sprintf(",%s,", s)
-	}
-	return s
-}
-
 func (r *SQLiteRepository) All(ctx context.Context, database string, whereOptions WhereOptions) ([]*Package, error) {
 	span, ctx := apm.StartSpan(ctx, "SQL: Get All", "app")
 	span.Context.SetLabel("database.path", r.File(ctx))
