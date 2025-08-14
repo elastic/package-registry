@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
+* Fix filtering by category in search endpoint (SQL Storage Indexer). [#1394](https://github.com/elastic/package-registry/pull/1394)
 * Revert failing requests with 400 error code if there are unknown query parameters. [#1393](https://github.com/elastic/package-registry/pull/1393)
 
 ### Added

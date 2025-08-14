@@ -21,7 +21,6 @@ import (
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 
-	"github.com/elastic/package-registry/categories"
 	"github.com/elastic/package-registry/internal/database"
 	"github.com/elastic/package-registry/metrics"
 	"github.com/elastic/package-registry/packages"
@@ -31,8 +30,6 @@ const (
 	indexerGetDurationPrometheusLabel = "SQLStorageIndexer"
 	defaultReadPackagesBatchSize      = 2000
 )
-
-var allCategories = categories.DefaultCategories()
 
 type SQLIndexer struct {
 	options       IndexerOptions
@@ -337,8 +334,6 @@ func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Pack
 		capabilities = strings.Join(pkg.Conditions.Elastic.Capabilities, ",")
 	}
 
-	pkgCategories := calculateAllCategories(pkg)
-
 	newPackage := database.Package{
 		Cursor:          cursor,
 		Name:            pkg.Name,
@@ -348,7 +343,6 @@ func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Pack
 		Type:            pkg.Type,
 		Release:         pkg.Release,
 		KibanaVersion:   kibanaVersion,
-		Categories:      strings.Join(pkgCategories, ","),
 		Capabilities:    capabilities,
 		DiscoveryFields: discoveryFields.String(),
 		Prerelease:      pkg.IsPrerelease(),
@@ -357,29 +351,6 @@ func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Pack
 	}
 
 	return &newPackage, nil
-}
-
-// calculateAllCategories returns all categories for a given package, including those from policy templates and parent categories.
-func calculateAllCategories(pkg *packages.Package) []string {
-	pkgCategories := []string{}
-	pkgCategories = append(pkgCategories, pkg.Categories...)
-	for _, policyTemplate := range pkg.PolicyTemplates {
-		if len(policyTemplate.Categories) == 0 {
-			continue
-		}
-		pkgCategories = append(pkgCategories, policyTemplate.Categories...)
-	}
-
-	for _, category := range pkgCategories {
-		if _, found := allCategories[category]; !found {
-			continue
-		}
-		if allCategories[category].Parent == nil {
-			continue
-		}
-		pkgCategories = append(pkgCategories, allCategories[category].Parent.Name)
-	}
-	return pkgCategories
 }
 
 func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.Packages, error) {
@@ -405,7 +376,6 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 				Name:         opts.Filter.PackageName,
 				Version:      opts.Filter.PackageVersion,
 				Prerelease:   opts.Filter.Prerelease,
-				Category:     opts.Filter.Category,
 				Capabilities: opts.Filter.Capabilities,
 			}
 			if opts.Filter.Experimental {
