@@ -68,6 +68,7 @@ func generateTestCaseStorageEndpoints(indexer Indexer) ([]struct {
 		file     string
 		handler  http.Handler
 	}{
+		// TODO: Ensure that the these requests are the same as the ones defined in "main_test.go" to avoid regressions in storage indexers.
 		{"/search", "/search", "search.json", searchHandler},
 		{"/search?all=true", "/search", "search-all.json", searchHandler},
 		{"/categories", "/categories", "categories.json", categoriesHandler},
