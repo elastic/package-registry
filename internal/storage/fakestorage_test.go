@@ -17,7 +17,7 @@ import (
 
 func TestPrepareFakeServer(t *testing.T) {
 	// given
-	indexFile := "testdata/search-index-all-full.json"
+	indexFile := "../../storage/testdata/search-index-all-full.json"
 	testIndexFile, err := os.ReadFile(indexFile)
 	require.NoErrorf(t, err, "index file should be present in testdata")
 
