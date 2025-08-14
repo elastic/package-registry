@@ -44,8 +44,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Known Issues
 
-* Breaking change introduced in [#1382](https://github.com/elastic/package-registry/pull/1382) is removed in the following release. By default, Elastic Package Registry service will accept unknown query parameters and if the validation is enabled this will affect just search and categories endpoints. [#1395](https://github.com/elastic/package-registry/pull/1395)
-
+* This release includes a breaking change introduced in [#1382](https://github.com/elastic/package-registry/pull/1382).
+  Requests with unknown query parameters fail with a 400 error code. This behaviour changes in the next release:
+  Elastic Package Registry will accept any unknown query parameters by default. If you choose to enable query parameter
+  validation, it will only affect the search and categories endpoints.[#1395](https://github.com/elastic/package-registry/pull/1395)
 
 ## [v1.30.1](https://github.com/elastic/package-registry/compare/v1.30.0...v1.30.1)
 
