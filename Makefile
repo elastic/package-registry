@@ -7,7 +7,7 @@ TARGET_ARCH_arm64=arm64
 OSS ?= linux
 OSS_TARGETS=$(addprefix release-, $(OSS))
 
-BUILD_FLAGS=-trimpath -ldflags=-s
+BUILD_FLAGS=-tags=grpcnotrace -trimpath -ldflags=-s
 
 .PHONY: $(OSS_TARGETS)
 $(OSS_TARGETS): release-%:
