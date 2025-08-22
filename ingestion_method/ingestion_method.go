@@ -2,7 +2,7 @@
 // or more contributor license agreements. Licensed under the Elastic License;
 // you may not use this file except in compliance with the Elastic License.
 
-package ingestion_method
+package ingestion_methods
 
 import (
 	"fmt"
@@ -11,11 +11,11 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-// IngestionMethods is a map of input types to their ingestion methods
-type IngestionMethods map[string]string
+// IngestionMethod is a map of input types to their ingestion methods
+type IngestionMethod map[string]string
 
 // ReadIngestionMethods reads the ingestion method mappings from a reader
-func ReadIngestionMethods(r io.Reader) (IngestionMethods, error) {
+func ReadIngestionMethod(r io.Reader) (IngestionMethod, error) {
 	var methodsFile struct {
 		Mappings map[string]string `yaml:"mappings"`
 	}
@@ -26,12 +26,12 @@ func ReadIngestionMethods(r io.Reader) (IngestionMethods, error) {
 		return nil, fmt.Errorf("failed to decode ingestion methods: %w", err)
 	}
 
-	return IngestionMethods(methodsFile.Mappings), nil
+	return IngestionMethod(methodsFile.Mappings), nil
 }
 
 // MustReadIngestionMethods reads the ingestion methods from a reader and panics if there is any error
-func MustReadIngestionMethods(r io.Reader) IngestionMethods {
-	methods, err := ReadIngestionMethods(r)
+func MustReadIngestionMethod(r io.Reader) IngestionMethod {
+	methods, err := ReadIngestionMethod(r)
 	if err != nil {
 		panic(err)
 	}
@@ -40,7 +40,7 @@ func MustReadIngestionMethods(r io.Reader) IngestionMethods {
 
 // Get returns the ingestion method for a given input type
 // Returns empty string if no mapping exists
-func (im IngestionMethods) Get(inputType string) string {
+func (im IngestionMethod) Get(inputType string) string {
 	if method, ok := im[inputType]; ok {
 		return method
 	}
