@@ -18,6 +18,7 @@ import (
 	"github.com/elastic/go-ucfg/yaml"
 
 	"github.com/elastic/package-registry/categories"
+	"github.com/elastic/package-registry/ingestion_methods"
 )
 
 const (
@@ -28,6 +29,7 @@ const (
 
 var (
 	Categories = categories.DefaultCategories()
+	IngestionMethods = ingestion_methods.DefaultIngestionMethods()
 
 	// Deprecated, keeping for backwards compatibility, Categories should be used instead.
 	CategoryTiles = categoryTitles(categories.DefaultCategories())
