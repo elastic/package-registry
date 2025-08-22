@@ -29,7 +29,7 @@ const (
 
 var (
 	Categories       = categories.DefaultCategories()
-	IngestionMethods = ingestion_method.DefaultIngestionMethods()
+	IngestionMethods = ingestion_method.DefaultIngestionMethod()
 
 	// Deprecated, keeping for backwards compatibility, Categories should be used instead.
 	CategoryTiles = categoryTitles(categories.DefaultCategories())

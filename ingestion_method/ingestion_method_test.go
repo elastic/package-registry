@@ -17,7 +17,7 @@ import (
 var sampleIngestionMethodsYaml []byte
 
 func TestLoadIngestionMethods(t *testing.T) {
-	methods, err := ReadIngestionMethods(bytes.NewReader(sampleIngestionMethodsYaml))
+	methods, err := ReadIngestionMethod(bytes.NewReader(sampleIngestionMethodsYaml))
 	require.NoError(t, err)
 
 	assert.Equal(t, "API", methods["httpjson"])
@@ -37,7 +37,7 @@ func TestLoadIngestionMethods(t *testing.T) {
 }
 
 func TestIngestionMethodsGet(t *testing.T) {
-	methods, err := ReadIngestionMethods(bytes.NewReader(sampleIngestionMethodsYaml))
+	methods, err := ReadIngestionMethod(bytes.NewReader(sampleIngestionMethodsYaml))
 	require.NoError(t, err)
 
 	// Test existing mappings
@@ -50,8 +50,8 @@ func TestIngestionMethodsGet(t *testing.T) {
 	assert.Equal(t, "", methods.Get("unknown_input"))
 }
 
-func TestDefaultIngestionMethods(t *testing.T) {
-	methods := DefaultIngestionMethods()
+func TestDefaultIngestionMethod(t *testing.T) {
+	methods := DefaultIngestionMethod()
 	assert.NotNil(t, methods)
 
 	// Test a few known mappings from the default file
@@ -65,6 +65,6 @@ func TestMustReadIngestionMethodsPanics(t *testing.T) {
 	invalidYAML := []byte("invalid: yaml: content:")
 
 	assert.Panics(t, func() {
-		MustReadIngestionMethods(bytes.NewReader(invalidYAML))
+		MustReadIngestionMethod(bytes.NewReader(invalidYAML))
 	})
 }

@@ -12,7 +12,7 @@ import (
 //go:embed ingestion_method.yml
 var defaultIngestionMethodFile []byte
 
-// DefaultIngestionMethods loads the default ingestion methods from the embedded file
-func DefaultIngestionMethods() IngestionMethods {
-	return MustReadIngestionMethods(bytes.NewReader(defaultIngestionMethodFile))
+// DefaultIngestionMethod loads the default ingestion methods from the embedded file
+func DefaultIngestionMethod() IngestionMethod {
+	return MustReadIngestionMethod(bytes.NewReader(defaultIngestionMethodFile))
 }
