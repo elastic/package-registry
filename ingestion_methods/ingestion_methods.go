@@ -19,7 +19,7 @@ func ReadIngestionMethods(r io.Reader) (IngestionMethods, error) {
 	var methodsFile struct {
 		Mappings map[string]string `yaml:"mappings"`
 	}
-	
+
 	dec := yaml.NewDecoder(r)
 	err := dec.Decode(&methodsFile)
 	if err != nil {

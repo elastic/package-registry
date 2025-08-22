@@ -23,28 +23,28 @@ func TestLoadIngestionMethods(t *testing.T) {
 	assert.Equal(t, "API", methods["httpjson"])
 	assert.Equal(t, "API", methods["cel"])
 	assert.Equal(t, "API", methods["apache/metrics"])
-	
+
 	assert.Equal(t, "Database", methods["redis"])
 	assert.Equal(t, "Database", methods["mysql/metrics"])
-	
+
 	assert.Equal(t, "File", methods["filestream"])
 	assert.Equal(t, "File", methods["system/metrics"])
-	
+
 	assert.Equal(t, "Network Protocol", methods["tcp"])
 	assert.Equal(t, "Network Protocol", methods["udp"])
-	
+
 	assert.Equal(t, "Webhook", methods["http_endpoint"])
 }
 
 func TestIngestionMethodsGet(t *testing.T) {
 	methods, err := ReadIngestionMethods(bytes.NewReader(sampleIngestionMethodsYaml))
 	require.NoError(t, err)
-	
+
 	// Test existing mappings
 	assert.Equal(t, "API", methods.Get("httpjson"))
 	assert.Equal(t, "Database", methods.Get("redis"))
 	assert.Equal(t, "File", methods.Get("filestream"))
-	
+
 	// Test non-existing mapping
 	assert.Equal(t, "", methods.Get("nonexistent"))
 	assert.Equal(t, "", methods.Get("unknown_input"))
@@ -53,7 +53,7 @@ func TestIngestionMethodsGet(t *testing.T) {
 func TestDefaultIngestionMethods(t *testing.T) {
 	methods := DefaultIngestionMethods()
 	assert.NotNil(t, methods)
-	
+
 	// Test a few known mappings from the default file
 	assert.Equal(t, "API", methods.Get("httpjson"))
 	assert.Equal(t, "Database", methods.Get("redis"))
@@ -63,7 +63,7 @@ func TestDefaultIngestionMethods(t *testing.T) {
 
 func TestMustReadIngestionMethodsPanics(t *testing.T) {
 	invalidYAML := []byte("invalid: yaml: content:")
-	
+
 	assert.Panics(t, func() {
 		MustReadIngestionMethods(bytes.NewReader(invalidYAML))
 	})

@@ -46,12 +46,12 @@ type DataStream struct {
 	Release string `config:"release" json:"release,omitempty"`
 
 	// Deprecated: Replaced by elasticsearch.ingest_pipeline.name
-	IngestPipeline string                   `config:"ingest_pipeline,omitempty" json:"ingest_pipeline,omitempty" yaml:"ingest_pipeline,omitempty"`
-	Streams        []Stream                 `config:"streams" json:"streams,omitempty" yaml:"streams,omitempty" `
-	Package        string                   `json:"package,omitempty" yaml:"package,omitempty"`
-	IngestionMethod string                  `json:"ingestion_method,omitempty" yaml:"ingestion_method,omitempty"`
-	Elasticsearch  *DataStreamElasticsearch `config:"elasticsearch,omitempty" json:"elasticsearch,omitempty" yaml:"elasticsearch,omitempty"`
-	Agent          *DataStreamAgent         `config:"agent,omitempty" json:"agent,omitempty" yaml:"agent,omitempty"`
+	IngestPipeline  string                   `config:"ingest_pipeline,omitempty" json:"ingest_pipeline,omitempty" yaml:"ingest_pipeline,omitempty"`
+	Streams         []Stream                 `config:"streams" json:"streams,omitempty" yaml:"streams,omitempty" `
+	Package         string                   `json:"package,omitempty" yaml:"package,omitempty"`
+	IngestionMethod string                   `json:"ingestion_method,omitempty" yaml:"ingestion_method,omitempty"`
+	Elasticsearch   *DataStreamElasticsearch `config:"elasticsearch,omitempty" json:"elasticsearch,omitempty" yaml:"elasticsearch,omitempty"`
+	Agent           *DataStreamAgent         `config:"agent,omitempty" json:"agent,omitempty" yaml:"agent,omitempty"`
 
 	// Generated fields
 	Path string `json:"path,omitempty" yaml:"path,omitempty"`
@@ -74,9 +74,9 @@ type Input struct {
 }
 
 type Stream struct {
-	Input           string     `config:"input" json:"input" validate:"required"`
-	Vars            []Variable `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
-	DataStream      string     `config:"data_stream" json:"data_stream,omitempty" yaml:"data_stream,omitempty"`
+	Input      string     `config:"input" json:"input" validate:"required"`
+	Vars       []Variable `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
+	DataStream string     `config:"data_stream" json:"data_stream,omitempty" yaml:"data_stream,omitempty"`
 	// TODO: This might cause issues when consuming the json as the key contains . (had been an issue in the past if I remember correctly)
 	TemplatePath    string `config:"template_path" json:"template_path,omitempty" yaml:"template_path,omitempty"`
 	Title           string `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
