@@ -4,6 +4,11 @@
 # If no mapping exists, no ingestion_method field will be added
 
 mappings:
+
+  # API category: Inputs that actively fetch data from remote HTTP/HTTPS endpoints
+  # This includes REST APIs, metrics endpoints, cloud provider APIs, and SaaS APIs
+  # These inputs make outbound HTTP requests to collect data (pull model)
+
   # API mappings - Log/Event collection APIs
   cel: API
   entity-analytics: API
