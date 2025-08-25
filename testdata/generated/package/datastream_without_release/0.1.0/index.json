@@ -111,7 +111,8 @@
           "template_path": "stream.yml.hbs",
           "title": "Apache Spark nodes metrics",
           "description": "Collect Apache Spark nodes metrics using Jolokia agent.",
-          "enabled": true
+          "enabled": true,
+          "ingestion_method": "Jolokia"
         }
       ],
       "package": "datastream_without_release",

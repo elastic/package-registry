@@ -1,0 +1,90 @@
+# Ingestion Method Mappings
+
+# Maps input types to their corresponding ingestion methods
+# If no mapping exists, no ingestion_method field will be added
+
+mappings:
+
+  # API category: Inputs that actively fetch data from remote HTTP/HTTPS endpoints
+  # This includes REST APIs, metrics endpoints, cloud provider APIs, and SaaS APIs
+  # These inputs make outbound HTTP requests to collect data (pull model)
+  # Used when no more specific category exists
+
+  # API mappings - Log/Event collection APIs
+  cel: API
+  entity-analytics: API
+  httpjson: API
+  o365audit: API
+  salesforce: API
+  streaming: API
+  websocket: API
+  winlog: API
+
+  # API mappings - Metrics collection APIs
+  apache/metrics: API
+  aws/metrics: API
+  awsfargate/metrics: API
+  containerd/metrics: API
+  docker/metrics: API
+  elasticsearch/metrics: API
+  enterprisesearch/metrics: API
+  etcd/metrics: API
+  gcp/metrics: API
+  haproxy/metrics: API
+  http/metrics: API
+  kibana/metrics: API
+  kubernetes/metrics: API
+  logstash/metrics: API
+  meraki/metrics: API
+  nats/metrics: API
+  nginx/metrics: API
+  panw/metrics: API
+  rabbitmq/metrics: API
+  stan/metrics: API
+  vsphere/metrics: API
+  windows/metrics: API
+
+  # Database mappings
+  memcached/metrics: Database
+  mongodb/metrics: Database
+  mysql/metrics: Database
+  postgresql/metrics: Database
+  redis: Database
+  redis/metrics: Database
+  sql/metrics: Database
+  zookeeper/metrics: Database
+
+  # Jolokia mappings
+  activemq/metrics: Jolokia
+  jolokia/metrics: Jolokia
+  kafka/metrics: Jolokia
+
+  # File mappings
+  filestream: File
+  logfile: File
+  linux/metrics: File
+  system/metrics: File
+
+  # Network mappings
+  syslog: Network Protocol
+  tcp: Network Protocol
+  udp: Network Protocol
+  statsd/metrics: Network Protocol
+
+  # Webhook mappings
+  http_endpoint: Webhook
+
+  # Unmapped
+  aws-s3: AWS S3
+  azure-blob-storage: Azure Blob Storage
+  aws-cloudwatch: AWS CloudWatch
+  azure-eventhub: Azure Event Hub
+  etw: ETW
+  gcp-pubsub: GCP Pub/Sub
+  gcs: Google Cloud Storage
+  iis/metrics: Windows Performance Counters
+  journald: journald
+  kafka: Kafka
+  lumberjack: Lumberjack
+  netflow: NetFlow
+  prometheus/metrics: Prometheus
