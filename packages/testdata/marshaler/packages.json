@@ -237,7 +237,8 @@
        "template_path": "syslog.yml",
        "title": "Title of the stream",
        "description": "Description of the stream with more details.",
-       "enabled": true
+       "enabled": true,
+       "ingestion_method": "Network Protocol"
       }
      ],
      "package": "datasources",
@@ -295,7 +296,8 @@
        "template_path": "stream.yml.hbs",
        "title": "Title of the stream",
        "description": "Not enabled data source.",
-       "enabled": false
+       "enabled": false,
+       "ingestion_method": "API"
       }
      ],
      "package": "datasources",
@@ -416,7 +418,8 @@
        "template_path": "stream.yml.hbs",
        "title": "Apache Spark nodes metrics",
        "description": "Collect Apache Spark nodes metrics using Jolokia agent.",
-       "enabled": true
+       "enabled": true,
+       "ingestion_method": "Jolokia"
       }
      ],
      "package": "datastream_without_release",
@@ -1676,7 +1679,8 @@
        "template_path": "stream.yml.hbs",
        "title": "AWS EC2 metrics",
        "description": "Collect AWS EC2 metrics",
-       "enabled": true
+       "enabled": true,
+       "ingestion_method": "API"
       }
      ],
      "package": "input_groups",

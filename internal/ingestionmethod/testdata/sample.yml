@@ -1,0 +1,21 @@
+# Sample ingestion method mappings for testing
+mappings:
+  # API mappings
+  httpjson: API
+  cel: API
+  apache/metrics: API
+  
+  # Database mappings
+  redis: Database
+  mysql/metrics: Database
+  
+  # File mappings
+  filestream: File
+  system/metrics: File
+  
+  # Network mappings
+  tcp: Network Protocol
+  udp: Network Protocol
+  
+  # Webhook mapping
+  http_endpoint: Webhook

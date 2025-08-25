@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added "ingestion_method" mapping to data_streams to provide a high-level understanding of data collection in order to support downstream documentation. [#1402](https://github.com/elastic/package-registry/pull/1402)
 * Add data_streams to search policy_templates. [#1408](https://github.com/elastic/package-registry/pull/1408)
 
 ### Deprecated

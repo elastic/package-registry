@@ -223,7 +223,8 @@
           "template_path": "stream.yml.hbs",
           "title": "AWS EC2 metrics",
           "description": "Collect AWS EC2 metrics",
-          "enabled": true
+          "enabled": true,
+          "ingestion_method": "API"
         }
       ],
       "package": "input_groups",

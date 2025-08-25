@@ -121,7 +121,8 @@
           "template_path": "syslog.yml",
           "title": "Title of the stream",
           "description": "Description of the stream with more details.",
-          "enabled": true
+          "enabled": true,
+          "ingestion_method": "Network Protocol"
         }
       ],
       "package": "datasources",
@@ -179,7 +180,8 @@
           "template_path": "stream.yml.hbs",
           "title": "Title of the stream",
           "description": "Not enabled data source.",
-          "enabled": false
+          "enabled": false,
+          "ingestion_method": "API"
         }
       ],
       "package": "datasources",
