@@ -1,6 +1,6 @@
 // Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
-// or more contributor license agreements. Licensed under the Elastic License;
-// you may not use this file except in compliance with the Elastic License.
+// or more contributor license agreements. Licensed under the Elastic License 2.0;
+// you may not use this file except in compliance with the Elastic License 2.0.
 
 package packages
 
@@ -13,6 +13,7 @@ import (
 	"strings"
 
 	"github.com/Masterminds/semver/v3"
+	"go.uber.org/zap"
 
 	"github.com/elastic/go-ucfg"
 	"github.com/elastic/go-ucfg/yaml"
@@ -79,7 +80,8 @@ type BasePackage struct {
 	Owner                   *Owner               `config:"owner,omitempty" json:"owner,omitempty" yaml:"owner,omitempty"`
 	Categories              []string             `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
 	SignaturePath           string               `config:"signature_path,omitempty" json:"signature_path,omitempty" yaml:"signature_path,omitempty"`
-	Discovery               *Discovery           `config:"discovery,omitempty" json:"discovery,omitempty" yaml:"discovery,omitempty"`
+	Discovery               *Discovery           `config:"discovery,omitempty" json:"discovery,omitempty,omitzero" yaml:"discovery,omitempty"`
+	BaseDataStreams         []*BaseDataStream    `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
 }
 
 // BasePolicyTemplate is used for the package policy templates in the /search endpoint
@@ -133,6 +135,7 @@ type ElasticConditions struct {
 	Capabilities []string `config:"capabilities,omitempty" json:"capabilities,omitempty" yaml:"capabilities,omitempty"`
 }
 
+// Deprecated: Version is not currently used and will be removed in a future release.
 type Version struct {
 	Min string `config:"min,omitempty" json:"min,omitempty"`
 	Max string `config:"max,omitempty" json:"max,omitempty"`
@@ -168,12 +171,25 @@ type PackageElasticsearch struct {
 
 // Discovery define indications for the data this package can be useful with.
 type Discovery struct {
-	Fields []DiscoveryField `config:"fields,omitempty" json:"fields,omitempty" yaml:"fields,omitempty"`
+	Fields   []DiscoveryField   `config:"fields,omitempty" json:"fields,omitempty" yaml:"fields,omitempty"`
+	Datasets []DiscoveryDataset `config:"datasets,omitempty" json:"datasets,omitempty" yaml:"datasets,omitempty"`
+}
+
+func (d *Discovery) IsZero() bool {
+	if d == nil {
+		return true
+	}
+	return len(d.Fields) == 0 && len(d.Datasets) == 0
 }
 
 // DiscoveryField defines a field used for discovery.
 type DiscoveryField struct {
-	Name string `config:"name" json:"name" yaml:"name"`
+	Name string `config:"name" json:"name" yaml:"name" validate:"required"`
+}
+
+// DiscoveryDataset defines a dataset used for discovery.
+type DiscoveryDataset struct {
+	Name string `config:"name" json:"name" yaml:"name" validate:"required"`
 }
 
 type PackageElasticsearchPrivileges struct {
@@ -184,6 +200,7 @@ func (i Image) getPath(p *Package) string {
 	return path.Join(packagePathPrefix, p.Name, p.Version, i.Src)
 }
 
+// Deprecated: Download is not currently used and will be removed in a future release.
 type Download struct {
 	Path string `config:"path" json:"path" validate:"required"`
 	Type string `config:"type" json:"type" validate:"required"`
@@ -199,6 +216,7 @@ type DeploymentMode struct {
 	IsDefault *bool `config:"is_default" json:"is_default,omitempty" yaml:"is_default,omitempty"`
 }
 
+// Deprecated: NewCommand is not currently used and will be removed in a future release.
 func NewDownload(p Package, t string) Download {
 	return Download{
 		Path: getDownloadPath(p, t),
@@ -206,13 +224,51 @@ func NewDownload(p Package, t string) Download {
 	}
 }
 
+// Deprecated: getDownloadPath is not currently used and will be removed in a future release.
 func getDownloadPath(p Package, t string) string {
 	return path.Join("/epr", p.Name, p.Name+"-"+p.Version+".zip")
 }
 
+// MustParsePackage creates a new package instances based on the given base path.
+// The path passed goes to the root of the package where the manifest.yml is.
+// It runs more strict validation than NewPackage, e.g. ensuring that all categories are valid.
+func MustParsePackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) {
+	p, err := newPackage(basePath, fsBuilder)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create package from path %s: %w", basePath, err)
+	}
+	for _, c := range p.Categories {
+		if _, ok := Categories[c]; !ok {
+			return nil, fmt.Errorf("invalid category in package %s-%s: %s", p.Name, p.Version, c)
+		}
+	}
+	return p, nil
+}
+
 // NewPackage creates a new package instances based on the given base path.
 // The path passed goes to the root of the package where the manifest.yml is.
-func NewPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) {
+func NewPackage(logger *zap.Logger, basePath string, fsBuilder FileSystemBuilder) (*Package, error) {
+	p, err := newPackage(basePath, fsBuilder)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create package from path %s: %w", basePath, err)
+	}
+	j := 0
+	for i, c := range p.Categories {
+		if _, ok := Categories[c]; !ok {
+			logger.Warn("package uses an unknown category, will be ignored",
+				zap.String("package", p.Name),
+				zap.String("version", p.Version),
+				zap.String("category", c))
+			continue
+		}
+		p.Categories[j] = p.Categories[i]
+		j += 1
+	}
+	p.Categories = p.Categories[:j]
+	return p, nil
+}
+
+func newPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) {
 	p := &Package{
 		BasePath:  basePath,
 		fsBuilder: fsBuilder,
@@ -344,6 +400,8 @@ func NewPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) 
 		return nil, fmt.Errorf("loading package data streams failed (path '%s'): %w", p.BasePath, err)
 	}
 
+	p.setBaseDataStreams()
+
 	// Read path for package signature
 	p.SignaturePath, err = p.getSignaturePath()
 	if err != nil {
@@ -405,6 +463,20 @@ func (p *Package) setBasePolicyTemplates() {
 	}
 }
 
+// setBaseDataStreams method mirrors data_streams from Package to a corresponding property in BasePackage.
+// It's required to perform that sync, because DataStreams and BaseDataStreams have same JSON annotation
+// (data_streams).
+func (p *Package) setBaseDataStreams() {
+	for _, ds := range p.DataStreams {
+		baseStream := &BaseDataStream{
+			Type:    ds.Type,
+			Dataset: ds.Dataset,
+			Title:   ds.Title,
+		}
+		p.BaseDataStreams = append(p.BaseDataStreams, baseStream)
+	}
+}
+
 func (p *Package) HasCategory(category string) bool {
 	return hasCategory(p.Categories, category)
 }
@@ -459,6 +531,7 @@ func (p *Package) WorksWithCapabilities(capabilities []string) bool {
 }
 
 func (p *Package) HasCompatibleSpec(specMin, specMax, kibanaVersion *semver.Version) (bool, error) {
+	// FIXME: kibanaVersion parameter is not used, it should be removed.
 	if specMin == nil && specMax == nil {
 		return true, nil
 	}
@@ -475,6 +548,10 @@ func (p *Package) HasCompatibleSpec(specMin, specMax, kibanaVersion *semver.Vers
 	constraint, err := semver.NewConstraint(fullConstraint)
 	if err != nil {
 		return false, fmt.Errorf("cannot create constraint %s: %w", fullConstraint, err)
+	}
+
+	if p.specMajorMinorSemVer == nil {
+		return false, errors.New("package spec version is not set")
 	}
 
 	return constraint.Check(p.specMajorMinorSemVer), nil
@@ -592,12 +669,6 @@ func (p *Package) Validate() error {
 
 	if p.Description == "" {
 		return fmt.Errorf("no description set")
-	}
-
-	for _, c := range p.Categories {
-		if _, ok := Categories[c]; !ok {
-			return fmt.Errorf("invalid category: %s", c)
-		}
 	}
 
 	fs, err := p.fs()

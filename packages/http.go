@@ -1,6 +1,6 @@
 // Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
-// or more contributor license agreements. Licensed under the Elastic License;
-// you may not use this file except in compliance with the Elastic License.
+// or more contributor license agreements. Licensed under the Elastic License 2.0;
+// you may not use this file except in compliance with the Elastic License 2.0.
 
 package packages
 
@@ -63,7 +63,8 @@ func ServePackageSignature(logger *zap.Logger, w http.ResponseWriter, r *http.Re
 }
 
 func serveLocalPackage(logger *zap.Logger, w http.ResponseWriter, r *http.Request, p *Package, packagePath string) {
-	span, _ := apm.StartSpan(r.Context(), "ServePackage", "app")
+	span, _ := apm.StartSpan(r.Context(), "ServeLocalPackage", "app")
+	span.Context.SetLabel("file.name", packagePath)
 	defer span.End()
 
 	logger = logger.With(zap.String("file.name", packagePath))
@@ -93,7 +94,8 @@ func serveLocalPackage(logger *zap.Logger, w http.ResponseWriter, r *http.Reques
 
 // ServePackageResource is used by staticHandler.
 func ServePackageResource(logger *zap.Logger, w http.ResponseWriter, r *http.Request, p *Package, packageFilePath string) {
-	span, _ := apm.StartSpan(r.Context(), "ServePackage", "app")
+	span, _ := apm.StartSpan(r.Context(), "ServePackageResource", "app")
+	span.Context.SetLabel("file.name", packageFilePath)
 	defer span.End()
 
 	if p.RemoteResolver() != nil {

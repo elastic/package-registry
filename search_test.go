@@ -1,6 +1,6 @@
 // Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
-// or more contributor license agreements. Licensed under the Elastic License;
-// you may not use this file except in compliance with the Elastic License.
+// or more contributor license agreements. Licensed under the Elastic License 2.0;
+// you may not use this file except in compliance with the Elastic License 2.0.
 
 package main
 
@@ -95,6 +95,7 @@ func TestSearchWithProxyMode(t *testing.T) {
 		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
 		packages.NewFileSystemIndexer(testLogger, packagesBasePaths...),
 	)
+	defer indexer.Close(context.Background())
 
 	err := indexer.Init(context.Background())
 	require.NoError(t, err)
@@ -108,15 +109,18 @@ func TestSearchWithProxyMode(t *testing.T) {
 	)
 	require.NoError(t, err)
 
-	searchWithProxyHandler := searchHandlerWithProxyMode(testLogger, indexer, proxyMode, testCacheTime)
+	searchHandler, err := newSearchHandler(testLogger, indexer, testCacheTime,
+		searchWithProxy(proxyMode),
+	)
+	require.NoError(t, err)
 	tests := []struct {
 		endpoint string
 		path     string
 		file     string
-		handler  func(w http.ResponseWriter, r *http.Request)
+		handler  http.Handler
 	}{
-		{"/search?all=true", "/search", "search-all-proxy.json", searchWithProxyHandler},
-		{"/search", "/search", "search-just-latest-proxy.json", searchWithProxyHandler},
+		{"/search?all=true", "/search", "search-all-proxy.json", searchHandler},
+		{"/search", "/search", "search-just-latest-proxy.json", searchHandler},
 	}
 
 	for _, test := range tests {

@@ -1,6 +1,6 @@
 // Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
-// or more contributor license agreements. Licensed under the Elastic License;
-// you may not use this file except in compliance with the Elastic License.
+// or more contributor license agreements. Licensed under the Elastic License 2.0;
+// you may not use this file except in compliance with the Elastic License 2.0.
 
 package packages
 
@@ -34,6 +34,15 @@ var validTypes = map[string]string{
 	"traces":     "Traces",
 }
 
+// BaseDataStream is used for the data streams in the /search endpoint
+type BaseDataStream struct {
+	// Name and type of the data stream. This is linked to data_stream.dataset and data_stream.type fields.
+	Type    string `config:"type,omitempty" json:"type,omitempty" yaml:"type,omitempty"`
+	Dataset string `config:"dataset" json:"dataset" validate:"required"`
+
+	Title string `config:"title" json:"title" validate:"required"`
+}
+
 type DataStream struct {
 	// Name and type of the data stream. This is linked to data_stream.dataset and data_stream.type fields.
 	Type            string `config:"type" json:"type" validate:"required"`
@@ -64,13 +73,14 @@ type DataStream struct {
 }
 
 type Input struct {
-	Type         string     `config:"type" json:"type" validate:"required"`
-	Vars         []Variable `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
-	Title        string     `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
-	Description  string     `config:"description" json:"description,omitempty" yaml:"description,omitempty"`
-	Streams      []Stream   `config:"streams" json:"streams,omitempty" yaml:"streams,omitempty"`
-	TemplatePath string     `config:"template_path" json:"template_path,omitempty" yaml:"template_path,omitempty"`
-	InputGroup   string     `config:"input_group" json:"input_group,omitempty" yaml:"input_group,omitempty"`
+	Type            string     `config:"type" json:"type" validate:"required"`
+	Vars            []Variable `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
+	Title           string     `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
+	Description     string     `config:"description" json:"description,omitempty" yaml:"description,omitempty"`
+	Streams         []Stream   `config:"streams" json:"streams,omitempty" yaml:"streams,omitempty"`
+	TemplatePath    string     `config:"template_path" json:"template_path,omitempty" yaml:"template_path,omitempty"`
+	InputGroup      string     `config:"input_group" json:"input_group,omitempty" yaml:"input_group,omitempty"`
+	DeploymentModes []string   `config:"deployment_modes,omitempty" json:"deployment_modes,omitempty" yaml:"deployment_modes,omitempty"`
 }
 
 type Stream struct {

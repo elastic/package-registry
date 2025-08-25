@@ -1,6 +1,6 @@
 // Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
-// or more contributor license agreements. Licensed under the Elastic License;
-// you may not use this file except in compliance with the Elastic License.
+// or more contributor license agreements. Licensed under the Elastic License 2.0;
+// you may not use this file except in compliance with the Elastic License 2.0.
 
 package proxymode
 
@@ -16,7 +16,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/hashicorp/go-retryablehttp"
-
+	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/packages"
@@ -108,10 +108,16 @@ func proxyRetryPolicy(ctx context.Context, resp *http.Response, err error) (bool
 }
 
 func (pm *ProxyMode) Enabled() bool {
+	if pm == nil {
+		return false
+	}
 	return pm.options.Enabled
 }
 
 func (pm *ProxyMode) Search(r *http.Request) (packages.Packages, error) {
+	span, _ := apm.StartSpan(r.Context(), "Proxy Search", "app")
+	defer span.End()
+
 	proxyURL := *r.URL
 	proxyURL.Host = pm.destinationURL.Host
 	proxyURL.Scheme = pm.destinationURL.Scheme
@@ -140,6 +146,9 @@ func (pm *ProxyMode) Search(r *http.Request) (packages.Packages, error) {
 }
 
 func (pm *ProxyMode) Categories(r *http.Request) ([]packages.Category, error) {
+	span, _ := apm.StartSpan(r.Context(), "Proxy Categories", "app")
+	defer span.End()
+
 	proxyURL := *r.URL
 	proxyURL.Host = pm.destinationURL.Host
 	proxyURL.Scheme = pm.destinationURL.Scheme
@@ -165,6 +174,9 @@ func (pm *ProxyMode) Categories(r *http.Request) ([]packages.Category, error) {
 }
 
 func (pm *ProxyMode) Package(r *http.Request) (*packages.Package, error) {
+	span, _ := apm.StartSpan(r.Context(), "Proxy Package", "app")
+	defer span.End()
+
 	vars := mux.Vars(r)
 	packageName, ok := vars["packageName"]
 	if !ok {

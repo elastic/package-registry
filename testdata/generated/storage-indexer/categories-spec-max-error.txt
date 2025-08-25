@@ -1,0 +1,1 @@
+invalid 'spec.max' version: invalid version '2.10.1': it should be <major.version>

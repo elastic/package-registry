@@ -1,6 +1,6 @@
 // Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
-// or more contributor license agreements. Licensed under the Elastic License;
-// you may not use this file except in compliance with the Elastic License.
+// or more contributor license agreements. Licensed under the Elastic License 2.0;
+// you may not use this file except in compliance with the Elastic License 2.0.
 
 package main
 
@@ -16,6 +16,7 @@ import (
 type Indexer interface {
 	Init(context.Context) error
 	Get(context.Context, *packages.GetOptions) (packages.Packages, error)
+	Close(context.Context) error
 }
 
 type CombinedIndexer []Indexer
@@ -49,6 +50,17 @@ func (c CombinedIndexer) Get(ctx context.Context, opts *packages.GetOptions) (pa
 	}
 
 	return packages, nil
+}
+
+func (c CombinedIndexer) Close(ctx context.Context) error {
+	for _, indexer := range c {
+		err := indexer.Close(ctx)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func latestPackagesVersion(source packages.Packages) (result packages.Packages) {

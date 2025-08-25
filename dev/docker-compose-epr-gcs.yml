@@ -1,0 +1,41 @@
+services:
+  fakegcsserver:
+    image: fsouza/fake-gcs-server:${FAKE_GCS_SERVER_VERSION:-1.52.2}
+    ports:
+      - "4443:4443"
+    volumes:
+      - ${LOCAL_BUCKET_PATH}:/data
+    command: "-scheme http"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      start_period: 300s
+      interval: 5s
+  package-registry:
+    image: docker.elastic.co/package-registry/package-registry:latest
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      start_period: 300s
+      interval: 5s
+    environment:
+      - STORAGE_EMULATOR_HOST=fakegcsserver:4443
+      - EPR_STORAGE_INDEXER_BUCKET_INTERNAL=gs://${BUCKET_NAME:-fake-package-storage-internal}
+      - EPR_FEATURE_STORAGE_INDEXER=${ENABLE_STORAGE_INDEXER:-false}
+      - EPR_FEATURE_SQL_STORAGE_INDEXER=${ENABLE_SQL_STORAGE_INDEXER:-false}
+      - EPR_DISABLE_PACKAGE_VALIDATION=true
+      - EPR_ADDRESS=0.0.0.0:8080
+      # - EPR_LOG_LEVEL=debug
+      # - EPR_SQL_INDEXER_READ_PACKAGES_BATCH_SIZE=2000
+      # - EPR_SQL_INDEXER_DB_INSERT_BATCH_SIZE=2000
+      # - EPR_SQL_INDEXER_DATABASE_FOLDER_PATH=/tmp
+      # - EPR_SQL_INDEXER_SEARCH_CACHE_SIZE=100
+      # - EPR_SQL_INDEXER_SEARCH_CACHE_TTL=10m
+  package-registry_is_ready:
+    image: tianon/true:multiarch
+    depends_on:
+      package-registry:
+        condition: service_healthy
+
+
+

@@ -32,6 +32,8 @@ policy_templates:
       - type: logfile
         title: Collect sample logs from instances
         description: Collecting sample logs
+        deployment_modes:
+          - agentless
         vars:
           - name: path
             type: text
@@ -42,6 +44,9 @@ policy_templates:
             show_user: false
             hide_in_deployment_modes:
               - agentless
+      - type: httpjson
+        title: Collect data via HTTP JSON API
+        description: Collecting data from HTTP JSON API (default only)
     deployment_modes:
       default:
         enabled: false
@@ -51,6 +56,10 @@ policy_templates:
         organization: elastic
         division: observability
         team: integration
+        resources:
+          requests:
+            memorty: 1024M
+            cpu: "0.5"
     multiple: false
   - name: default
     title: Sample logs
@@ -59,11 +68,22 @@ policy_templates:
       - type: logfile
         title: Collect sample logs from instances
         description: Collecting sample logs
+        deployment_modes:
+          - agentless
+          - default
+      - type: logfile
+        title: Collect more logs
+        description: Collecting more logs
+      - type: httpjson
+        title: Collect data via HTTP JSON API
+        description: Collecting data from HTTP JSON API (default only)
+        deployment_modes:
+          - default
     deployment_modes:
       default:
         enabled: true
       agentless:
-        enabled: false
+        enabled: true
     multiple: false
 owner:
   github: elastic/integrations

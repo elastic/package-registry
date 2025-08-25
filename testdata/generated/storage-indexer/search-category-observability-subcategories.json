@@ -1,0 +1,1889 @@
+[
+  {
+    "name": "apache",
+    "title": "Apache HTTP Server",
+    "version": "1.3.5",
+    "release": "ga",
+    "description": "Collect logs and metrics from Apache servers with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/apache/apache-1.3.5.zip",
+    "path": "/package/apache/1.3.5",
+    "icons": [
+      {
+        "src": "/img/logo_apache.svg",
+        "path": "/package/apache/1.3.5/img/logo_apache.svg",
+        "title": "Apache Logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "apache",
+        "title": "Apache logs and metrics",
+        "description": "Collect logs and metrics from Apache instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "web"
+    ],
+    "signature_path": "/epr/apache/apache-1.3.5.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "apache.access",
+        "title": "Apache access logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "apache.error",
+        "title": "Apache error logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "apache.status",
+        "title": "Apache status metrics"
+      }
+    ]
+  },
+  {
+    "name": "tomcat",
+    "title": "Apache Tomcat",
+    "version": "1.3.1",
+    "release": "ga",
+    "description": "Collect and parse logs from Apache Tomcat servers with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/tomcat/tomcat-1.3.1.zip",
+    "path": "/package/tomcat/1.3.1",
+    "icons": [
+      {
+        "src": "/img/logo.svg",
+        "path": "/package/tomcat/1.3.1/img/logo.svg",
+        "title": "Apache Tomcat logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "log",
+        "title": "Apache Tomcat",
+        "description": "Collect Apache Tomcat logs from syslog or a file."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.1 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "web",
+      "security"
+    ],
+    "signature_path": "/epr/tomcat/tomcat-1.3.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "tomcat.log",
+        "title": "Apache Tomcat logs"
+      }
+    ]
+  },
+  {
+    "name": "atlassian_bitbucket",
+    "title": "Atlassian Bitbucket",
+    "version": "1.2.1",
+    "release": "ga",
+    "description": "Collect logs from Atlassian Bitbucket with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/atlassian_bitbucket/atlassian_bitbucket-1.2.1.zip",
+    "path": "/package/atlassian_bitbucket/1.2.1",
+    "icons": [
+      {
+        "src": "/img/bitbucket-logo.svg",
+        "path": "/package/atlassian_bitbucket/1.2.1/img/bitbucket-logo.svg",
+        "title": "Bitbucket Logo",
+        "size": "625x564",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "audit",
+        "title": "Audit Logs",
+        "description": "Collect audit logs from Atlassian Bitbucket with Elastic Agent."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security",
+      "web"
+    ],
+    "signature_path": "/epr/atlassian_bitbucket/atlassian_bitbucket-1.2.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "atlassian_bitbucket.audit",
+        "title": "Bitbucket Audit Logs"
+      }
+    ]
+  },
+  {
+    "name": "atlassian_confluence",
+    "title": "Atlassian Confluence",
+    "version": "1.3.0",
+    "release": "ga",
+    "description": "Collect logs from Atlassian Confluence with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/atlassian_confluence/atlassian_confluence-1.3.0.zip",
+    "path": "/package/atlassian_confluence/1.3.0",
+    "icons": [
+      {
+        "src": "/img/confluence-logo.svg",
+        "path": "/package/atlassian_confluence/1.3.0/img/confluence-logo.svg",
+        "title": "Confluence Logo",
+        "size": "400x400",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "audit",
+        "title": "Audit Logs",
+        "description": "Collect audit logs from Atlassian Confluence with Elastic Agent."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security",
+      "web"
+    ],
+    "signature_path": "/epr/atlassian_confluence/atlassian_confluence-1.3.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "atlassian_confluence.audit",
+        "title": "Confluence Audit Logs"
+      }
+    ]
+  },
+  {
+    "name": "atlassian_jira",
+    "title": "Atlassian Jira",
+    "version": "1.3.0",
+    "release": "ga",
+    "description": "Collect logs from Atlassian Jira with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/atlassian_jira/atlassian_jira-1.3.0.zip",
+    "path": "/package/atlassian_jira/1.3.0",
+    "icons": [
+      {
+        "src": "/img/jira-software-logo.svg",
+        "path": "/package/atlassian_jira/1.3.0/img/jira-software-logo.svg",
+        "title": "Jira Software Logo",
+        "size": "590x625",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "audit",
+        "title": "Audit Logs",
+        "description": "Collect audit logs from Atlassian Jira with Elastic Agent."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security",
+      "web"
+    ],
+    "signature_path": "/epr/atlassian_jira/atlassian_jira-1.3.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "atlassian_jira.audit",
+        "title": "Jira Audit Logs"
+      }
+    ]
+  },
+  {
+    "name": "azure_application_insights",
+    "title": "Azure Application Insights Metrics Overview",
+    "version": "1.0.1",
+    "release": "ga",
+    "description": "Collect application insights metrics from Azure Monitor with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/azure_application_insights/azure_application_insights-1.0.1.zip",
+    "path": "/package/azure_application_insights/1.0.1",
+    "icons": [
+      {
+        "src": "/img/app_insights.png",
+        "path": "/package/azure_application_insights/1.0.1/img/app_insights.png",
+        "title": "logo docker",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "app_insights",
+        "title": "Azure Application Insights Metrics",
+        "description": "Collect application insights metrics from Azure Monitor with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img//app_insights.png",
+            "path": "/package/azure_application_insights/1.0.1/img/app_insights.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "app_state",
+        "title": "Azure Application State Insights Metrics",
+        "description": "Collect application state related metrics from Azure Monitor with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/application_insights_blue.png",
+            "path": "/package/azure_application_insights/1.0.1/img/application_insights_blue.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "azure",
+      "web"
+    ],
+    "signature_path": "/epr/azure_application_insights/azure_application_insights-1.0.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "azure.app_insights",
+        "title": "Azure Application Insights"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.app_state",
+        "title": "Azure Application State"
+      }
+    ]
+  },
+  {
+    "name": "azure_metrics",
+    "title": "Azure Resource Metrics",
+    "version": "1.0.3",
+    "release": "ga",
+    "description": "Collect metrics from Azure resources with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/azure_metrics/azure_metrics-1.0.3.zip",
+    "path": "/package/azure_metrics/1.0.3",
+    "icons": [
+      {
+        "src": "/img/azure_metrics_logo.png",
+        "path": "/package/azure_metrics/1.0.3/img/azure_metrics_logo.png",
+        "title": "logo docker",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "monitor",
+        "title": "Azure Monitor Metrics",
+        "description": "Collect metrics from Azure Monitor with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/monitor_logo.png",
+            "path": "/package/azure_metrics/1.0.3/img/monitor_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "compute_vm",
+        "title": "Azure Virtual Machines Metrics",
+        "description": "Collect metrics from Azure Virtual Machines with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/compute_vm_logo.png",
+            "path": "/package/azure_metrics/1.0.3/img/compute_vm_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "compute_vm_scaleset",
+        "title": "Azure Virtual Machines Scaleset Metrics",
+        "description": "Collect metrics from Azure Virtual Machine Scalesets with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/compute_vm_scaleset_logo.png",
+            "path": "/package/azure_metrics/1.0.3/img/compute_vm_scaleset_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "container_registry",
+        "title": "Azure Container Registry Metrics",
+        "description": "Collect metrics from Azure Container Registry with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/container_registry_logo.png",
+            "path": "/package/azure_metrics/1.0.3/img/container_registry_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "container_instance",
+        "title": "Azure Container Instance Metrics",
+        "description": "Collect metrics from Azure Container Instances with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/container_instance_logo.png",
+            "path": "/package/azure_metrics/1.0.3/img/container_instance_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "container_service",
+        "title": "Azure Container Service Metrics",
+        "description": "Collect metrics from Azure Container Service with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/container_service_logo.png",
+            "path": "/package/azure_metrics/1.0.3/img/container_service_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "database_account",
+        "title": "Azure Database Account Metrics",
+        "description": "Collect metrics from Azure Database accounts with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/database_account_logo.png",
+            "path": "/package/azure_metrics/1.0.3/img/database_account_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "storage_account",
+        "title": "Azure Storage Account Metrics",
+        "description": "Collect metrics from Azure Storage accounts with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/storage_account_logo.png",
+            "path": "/package/azure_metrics/1.0.3/img/storage_account_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/obs-cloud-monitoring"
+    },
+    "categories": [
+      "azure",
+      "web"
+    ],
+    "signature_path": "/epr/azure_metrics/azure_metrics-1.0.3.zip.sig",
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "azure.compute_vm",
+        "title": "Compute VM"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.compute_vm_scaleset",
+        "title": "Compute VM Scaleset"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.container_instance",
+        "title": "Container Instance"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.container_registry",
+        "title": "Container Registry"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.container_service",
+        "title": "Container Service"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.database_account",
+        "title": "Database Account"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.monitor",
+        "title": "Monitor"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.storage_account",
+        "title": "Storage Account"
+      }
+    ]
+  },
+  {
+    "name": "cassandra",
+    "title": "Cassandra",
+    "version": "1.1.0",
+    "release": "ga",
+    "description": "This Elastic integration collects logs and metrics from cassandra.",
+    "type": "integration",
+    "download": "/epr/cassandra/cassandra-1.1.0.zip",
+    "path": "/package/cassandra/1.1.0",
+    "icons": [
+      {
+        "src": "/img/cassandra.svg",
+        "path": "/package/cassandra/1.1.0/img/cassandra.svg",
+        "title": "cassandra",
+        "size": "279x187",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "cassandra",
+        "title": "Cassandra logs and metrics",
+        "description": "Collect logs and metrics from Cassandra"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.15.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "datastore",
+      "monitoring"
+    ],
+    "signature_path": "/epr/cassandra/cassandra-1.1.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "cassandra.log",
+        "title": "Cassandra System Logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "cassandra.metrics",
+        "title": "metrics"
+      }
+    ]
+  },
+  {
+    "name": "cloudflare",
+    "title": "Cloudflare",
+    "version": "2.0.0",
+    "release": "ga",
+    "description": "Collect and parse logs from Cloudflare API with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/cloudflare/cloudflare-2.0.0.zip",
+    "path": "/package/cloudflare/2.0.0",
+    "icons": [
+      {
+        "src": "/img/cf-logo-v.svg",
+        "path": "/package/cloudflare/2.0.0/img/cf-logo-v.svg",
+        "title": "Cloudflare",
+        "size": "216x216",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "cloudflare",
+        "title": "Cloudflare logs",
+        "description": "Collect logs from Cloudflare"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security",
+      "network",
+      "web",
+      "cloud"
+    ],
+    "signature_path": "/epr/cloudflare/cloudflare-2.0.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "cloudflare.audit",
+        "title": "Cloudflare Audit Logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "cloudflare.logpull",
+        "title": "Cloudflare Logpull"
+      }
+    ]
+  },
+  {
+    "name": "apm",
+    "title": "Elastic APM",
+    "version": "8.2.0",
+    "release": "ga",
+    "description": "Ingest APM data",
+    "type": "integration",
+    "download": "/epr/apm/apm-8.2.0.zip",
+    "path": "/package/apm/8.2.0",
+    "icons": [
+      {
+        "src": "/img/logo_apm.svg",
+        "path": "/package/apm/8.2.0/img/logo_apm.svg",
+        "title": "APM Logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "apmserver",
+        "title": "Elastic APM Integration",
+        "description": "Elastic APM Integration"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.2.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/apm-server"
+    },
+    "categories": [
+      "elastic_stack",
+      "monitoring"
+    ],
+    "signature_path": "/epr/apm/apm-8.2.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "apm.app",
+        "title": "APM application logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "apm.app",
+        "title": "APM application metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "apm.error",
+        "title": "APM errors"
+      },
+      {
+        "type": "metrics",
+        "dataset": "apm.internal",
+        "title": "APM internal metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "apm.profiling",
+        "title": "APM profiles"
+      },
+      {
+        "type": "traces",
+        "dataset": "apm.rum",
+        "title": "APM RUM traces"
+      },
+      {
+        "type": "traces",
+        "dataset": "apm.sampled",
+        "title": "APM tail-sampled traces"
+      },
+      {
+        "type": "traces",
+        "dataset": "apm",
+        "title": "APM traces"
+      }
+    ]
+  },
+  {
+    "name": "fim",
+    "title": "File Integrity Monitoring",
+    "version": "1.0.0",
+    "release": "ga",
+    "description": "The File Integrity Monitoring integration reports filesystem changes in real time.",
+    "type": "integration",
+    "download": "/epr/fim/fim-1.0.0.zip",
+    "path": "/package/fim/1.0.0",
+    "icons": [
+      {
+        "src": "/img/sample-logo.svg",
+        "path": "/package/fim/1.0.0/img/sample-logo.svg",
+        "title": "Sample logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "fim",
+        "title": "File Integrity Monitoring",
+        "description": "Collect filesystem events"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.2.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "monitoring",
+      "os_system",
+      "security"
+    ],
+    "signature_path": "/epr/fim/fim-1.0.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "fim.event",
+        "title": "Filesystem events"
+      }
+    ]
+  },
+  {
+    "name": "fireeye",
+    "title": "Fireeye",
+    "version": "1.3.1",
+    "release": "ga",
+    "description": "This Elastic integration collects Fireeye NX logs.",
+    "type": "integration",
+    "download": "/epr/fireeye/fireeye-1.3.1.zip",
+    "path": "/package/fireeye/1.3.1",
+    "icons": [
+      {
+        "src": "/img/FireEye-logo.svg",
+        "path": "/package/fireeye/1.3.1/img/FireEye-logo.svg",
+        "title": "Fireeye logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "fireeye",
+        "title": "Fireeye NX logs",
+        "description": "Collect Fireeye NX logs"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "monitoring",
+      "network",
+      "security"
+    ],
+    "signature_path": "/epr/fireeye/fireeye-1.3.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "fireeye.nx",
+        "title": "Fireeye NX"
+      }
+    ]
+  },
+  {
+    "name": "kafka",
+    "title": "Kafka",
+    "version": "1.2.2",
+    "release": "ga",
+    "description": "Collect logs and metrics from Kafka servers with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/kafka/kafka-1.2.2.zip",
+    "path": "/package/kafka/1.2.2",
+    "icons": [
+      {
+        "src": "/img/logo_kafka.svg",
+        "path": "/package/kafka/1.2.2/img/logo_kafka.svg",
+        "title": "logo kafka",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "kafka",
+        "title": "Kafka logs and metrics",
+        "description": "Collect logs and metrics from Kafka brokers"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "message_queue"
+    ],
+    "signature_path": "/epr/kafka/kafka-1.2.2.zip.sig",
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "kafka.broker",
+        "title": "Kafka broker metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "kafka.consumergroup",
+        "title": "Kafka consumergroup metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "kafka.log",
+        "title": "Kafka log logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "kafka.partition",
+        "title": "Kafka partition metrics"
+      }
+    ]
+  },
+  {
+    "name": "keycloak",
+    "title": "Keycloak",
+    "version": "1.2.1",
+    "release": "ga",
+    "description": "Keycloak Integration",
+    "type": "integration",
+    "download": "/epr/keycloak/keycloak-1.2.1.zip",
+    "path": "/package/keycloak/1.2.1",
+    "icons": [
+      {
+        "src": "/img/keycloak-logo.svg",
+        "path": "/package/keycloak/1.2.1/img/keycloak-logo.svg",
+        "title": "Keycloak",
+        "size": "256x256",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "keycloak",
+        "title": "Keycloak logs",
+        "description": "Collect logs from Keycloak"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security",
+      "network",
+      "web"
+    ],
+    "signature_path": "/epr/keycloak/keycloak-1.2.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "keycloak.log",
+        "title": "Keycloak"
+      }
+    ]
+  },
+  {
+    "name": "kubernetes",
+    "title": "Kubernetes",
+    "version": "1.17.2",
+    "release": "ga",
+    "description": "Collect logs and metrics from Kubernetes clusters with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/kubernetes/kubernetes-1.17.2.zip",
+    "path": "/package/kubernetes/1.17.2",
+    "icons": [
+      {
+        "src": "/img/logo_kubernetes.svg",
+        "path": "/package/kubernetes/1.17.2/img/logo_kubernetes.svg",
+        "title": "Logo Kubernetes",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "kubelet",
+        "title": "Kubelet Metrics",
+        "description": "Collect metrics from Kubernetes Kubelet API with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/logo_kubernetes.svg",
+            "path": "/package/kubernetes/1.17.2/img/logo_kubernetes.svg",
+            "title": "Logo Kubernetes",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "kube-state-metrics",
+        "title": "Kube-state-metrics",
+        "description": "Collect container metrics from Kubernetes Kube-state-metrics with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/logo_kubernetes.svg",
+            "path": "/package/kubernetes/1.17.2/img/logo_kubernetes.svg",
+            "title": "Logo Kubernetes",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "kube-apiserver",
+        "title": "Kube-apiserver Metrics",
+        "description": "Collect metrics from Kubernetes API Server with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/logo_kubernetes.svg",
+            "path": "/package/kubernetes/1.17.2/img/logo_kubernetes.svg",
+            "title": "Logo Kubernetes",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "kube-proxy",
+        "title": "Kube-proxy Metrics",
+        "description": "Collect metrics from Kubernetes Proxy server with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/logo_kubernetes.svg",
+            "path": "/package/kubernetes/1.17.2/img/logo_kubernetes.svg",
+            "title": "Logo Kubernetes",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "kube-scheduler",
+        "title": "Kube-scheduler Metrics",
+        "description": "Collect metrics from Kubernetes Scheduler with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/logo_kubernetes.svg",
+            "path": "/package/kubernetes/1.17.2/img/logo_kubernetes.svg",
+            "title": "Logo Kubernetes",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "kube-controller-manager",
+        "title": "Kube-controller-manager Metrics",
+        "description": "Collect metrics from Kubernetes Controller Manager with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/logo_kubernetes.svg",
+            "path": "/package/kubernetes/1.17.2/img/logo_kubernetes.svg",
+            "title": "Logo Kubernetes",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "events",
+        "title": "Kubernetes Event Metrics",
+        "description": "Collect events related metrics from Kubernetes API server with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/logo_kubernetes.svg",
+            "path": "/package/kubernetes/1.17.2/img/logo_kubernetes.svg",
+            "title": "Logo Kubernetes",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "container-logs",
+        "title": "Kubernetes Container Logs",
+        "description": "Collect container related logs from Kubernetes clusters with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/logo_kubernetes.svg",
+            "path": "/package/kubernetes/1.17.2/img/logo_kubernetes.svg",
+            "title": "Logo Kubernetes",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      },
+      {
+        "name": "audit-logs",
+        "title": "Kubernetes Audit Logs",
+        "description": "Collect audit logs from Kubernetes nodes with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/logo_kubernetes.svg",
+            "path": "/package/kubernetes/1.17.2/img/logo_kubernetes.svg",
+            "title": "Logo Kubernetes",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ]
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "containers",
+      "kubernetes"
+    ],
+    "signature_path": "/epr/kubernetes/kubernetes-1.17.2.zip.sig",
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "kubernetes.apiserver",
+        "title": "Kubernetes API Server metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "kubernetes.audit_logs",
+        "title": "Kubernetes audit logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "kubernetes.container",
+        "title": "Kubernetes Container metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "kubernetes.container_logs",
+        "title": "Kubernetes container logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "kubernetes.controllermanager",
+        "title": "Kubernetes Controller Manager metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "kubernetes.event",
+        "title": "Kubernetes Event metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "kubernetes.node",
+        "title": "Kubernetes Node metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "kubernetes.pod",
+        "title": "Kubernetes Pod metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "kubernetes.proxy",
+        "title": "Kubernetes Proxy metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "kubernetes.scheduler",
+        "title": "Kubernetes Scheduler metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "kubernetes.state_container",
+        "title": "Kubernetes Container metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "kubernetes.state_cronjob",
+        "title": "Kubernetes Cronjob metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "kubernetes.state_daemonset",
+        "title": "Kubernetes Deamonset metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "kubernetes.state_deployment",
+        "title": "Kubernetes Deployment metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "kubernetes.state_job",
+        "title": "Kubernetes Job metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "kubernetes.state_node",
+        "title": "Kubernetes Node metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "kubernetes.state_persistentvolume",
+        "title": "Kubernetes PersistentVolume metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "kubernetes.state_persistentvolumeclaim",
+        "title": "Kubernetes PersistentVolumeClaim metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "kubernetes.state_pod",
+        "title": "Kubernetes Pod metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "kubernetes.state_replicaset",
+        "title": "Kubernetes state_replicaset metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "kubernetes.state_resourcequota",
+        "title": "Kubernetes ResourceQuota metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "kubernetes.state_service",
+        "title": "Kubernetes Service metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "kubernetes.state_statefulset",
+        "title": "Kubernetes StatefulSet metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "kubernetes.state_storageclass",
+        "title": "Kubernetes StorageClass metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "kubernetes.system",
+        "title": "Kubernetes System metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "kubernetes.volume",
+        "title": "Kubernetes Volume metrics"
+      }
+    ]
+  },
+  {
+    "name": "mattermost",
+    "title": "Mattermost",
+    "version": "1.1.1",
+    "release": "ga",
+    "description": "Collect and parse logs from Mattermost with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/mattermost/mattermost-1.1.1.zip",
+    "path": "/package/mattermost/1.1.1",
+    "icons": [
+      {
+        "src": "/img/mattermost-logo.svg",
+        "path": "/package/mattermost/1.1.1/img/mattermost-logo.svg",
+        "title": "Mattermost logo",
+        "size": "537x535",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Mattermost Logs",
+        "description": "Collect logs from Mattermost"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security",
+      "web"
+    ],
+    "signature_path": "/epr/mattermost/mattermost-1.1.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "mattermost.audit",
+        "title": "Audit Logs"
+      }
+    ]
+  },
+  {
+    "name": "nats",
+    "title": "NATS",
+    "version": "1.2.0",
+    "release": "ga",
+    "description": "Collect logs and metrics from NATS servers with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/nats/nats-1.2.0.zip",
+    "path": "/package/nats/1.2.0",
+    "icons": [
+      {
+        "src": "/img/nats.svg",
+        "path": "/package/nats/1.2.0/img/nats.svg",
+        "title": "NATS Logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "nats",
+        "title": "NATS Logs and Metrics",
+        "description": "Collect logs and metrics from NATS instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "message_queue"
+    ],
+    "signature_path": "/epr/nats/nats-1.2.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "nats.connection",
+        "title": "NATS connection metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "nats.connections",
+        "title": "NATS connections metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "nats.log",
+        "title": "NATS logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "nats.route",
+        "title": "NATS route metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "nats.routes",
+        "title": "NATS routes metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "nats.stats",
+        "title": "NATS stats metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "nats.subscriptions",
+        "title": "NATS subscriptions metrics"
+      }
+    ]
+  },
+  {
+    "name": "nginx",
+    "title": "Nginx",
+    "version": "1.3.1",
+    "release": "ga",
+    "description": "Collect logs and metrics from Nginx HTTP servers with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/nginx/nginx-1.3.1.zip",
+    "path": "/package/nginx/1.3.1",
+    "icons": [
+      {
+        "src": "/img/logo_nginx.svg",
+        "path": "/package/nginx/1.3.1/img/logo_nginx.svg",
+        "title": "logo nginx",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "nginx",
+        "title": "Nginx logs and metrics",
+        "description": "Collect logs and metrics from Nginx instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "web",
+      "security"
+    ],
+    "signature_path": "/epr/nginx/nginx-1.3.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "nginx.access",
+        "title": "Nginx access logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "nginx.error",
+        "title": "Nginx error logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "nginx.stubstatus",
+        "title": "Nginx stubstatus metrics"
+      }
+    ]
+  },
+  {
+    "name": "nginx_ingress_controller",
+    "title": "Nginx Ingress Controller Logs",
+    "version": "1.2.0",
+    "release": "ga",
+    "description": "Collect and parse logs from Nginx Ingress Controller instances with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/nginx_ingress_controller/nginx_ingress_controller-1.2.0.zip",
+    "path": "/package/nginx_ingress_controller/1.2.0",
+    "icons": [
+      {
+        "src": "/img/logo_nginx.svg",
+        "path": "/package/nginx_ingress_controller/1.2.0/img/logo_nginx.svg",
+        "title": "Nginx logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "nginx_ingress_controller",
+        "title": "Nginx Ingress Controller logs",
+        "description": "Collect logs from Nginx Ingress Controller instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "web",
+      "security"
+    ],
+    "signature_path": "/epr/nginx_ingress_controller/nginx_ingress_controller-1.2.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "nginx_ingress_controller.access",
+        "title": "Nginx Ingress Controller access logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "nginx_ingress_controller.error",
+        "title": "Nginx Ingress Controller error logs"
+      }
+    ]
+  },
+  {
+    "name": "rabbitmq",
+    "title": "RabbitMQ Logs",
+    "version": "1.2.0",
+    "release": "ga",
+    "description": "Collect and parse logs from RabbitMQ servers with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/rabbitmq/rabbitmq-1.2.0.zip",
+    "path": "/package/rabbitmq/1.2.0",
+    "icons": [
+      {
+        "src": "/img/logo_rabbitmq.svg",
+        "path": "/package/rabbitmq/1.2.0/img/logo_rabbitmq.svg",
+        "title": "RabbitMQ Logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "rabbitmq",
+        "title": "RabbitMQ logs and metrics",
+        "description": "Collect logs and metrics from RabbitMQ instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "message_queue"
+    ],
+    "signature_path": "/epr/rabbitmq/rabbitmq-1.2.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "rabbitmq.connection",
+        "title": "RabbitMQ connection metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "rabbitmq.exchange",
+        "title": "RabbitMQ exchange metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "rabbitmq.log",
+        "title": "RabbitMQ application logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "rabbitmq.node",
+        "title": "RabbitMQ node metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "rabbitmq.queue",
+        "title": "RabbitMQ queue metrics"
+      }
+    ]
+  },
+  {
+    "name": "redis",
+    "title": "Redis",
+    "version": "1.2.0",
+    "release": "ga",
+    "description": "Collect logs and metrics from Redis servers with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/redis/redis-1.2.0.zip",
+    "path": "/package/redis/1.2.0",
+    "icons": [
+      {
+        "src": "/img/logo_redis.svg",
+        "path": "/package/redis/1.2.0/img/logo_redis.svg",
+        "title": "logo redis",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "redis",
+        "title": "Redis logs and metrics",
+        "description": "Collect logs and metrics from Redis instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "datastore",
+      "message_queue"
+    ],
+    "signature_path": "/epr/redis/redis-1.2.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "redis.info",
+        "title": "Redis info metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "redis.key",
+        "title": "Redis key metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "redis.keyspace",
+        "title": "Redis keyspace metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "redis.log",
+        "title": "Redis application logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "redis.slowlog",
+        "title": "Redis slow logs"
+      }
+    ]
+  },
+  {
+    "name": "stan",
+    "title": "STAN",
+    "version": "1.2.0",
+    "release": "ga",
+    "description": "Collect logs and metrics from STAN servers with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/stan/stan-1.2.0.zip",
+    "path": "/package/stan/1.2.0",
+    "icons": [
+      {
+        "src": "/img/stan.svg",
+        "path": "/package/stan/1.2.0/img/stan.svg",
+        "title": "STAN Logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "stan",
+        "title": "STAN Logs and Metrics",
+        "description": "Collect logs and metrics from STAN instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "message_queue",
+      "kubernetes"
+    ],
+    "signature_path": "/epr/stan/stan-1.2.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "stan.channels",
+        "title": "Stan channels metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "stan.log",
+        "title": "STAN logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "stan.stats",
+        "title": "Stan stats metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "stan.subscriptions",
+        "title": "Stan subscriptions metrics"
+      }
+    ]
+  },
+  {
+    "name": "traefik",
+    "title": "Traefik",
+    "version": "1.2.0",
+    "release": "ga",
+    "description": "Collect logs and metrics from Traefik servers with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/traefik/traefik-1.2.0.zip",
+    "path": "/package/traefik/1.2.0",
+    "icons": [
+      {
+        "src": "/img/traefik.svg",
+        "path": "/package/traefik/1.2.0/img/traefik.svg",
+        "title": "traefik",
+        "size": "259x296",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "traefik",
+        "title": "Traefik logs and metrics",
+        "description": "Collect logs and metrics from Traefik instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "web",
+      "security"
+    ],
+    "signature_path": "/epr/traefik/traefik-1.2.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "traefik.access",
+        "title": "Traefik access logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "traefik.health",
+        "title": "Traefik health metrics"
+      }
+    ]
+  },
+  {
+    "name": "zeek",
+    "title": "Zeek Logs",
+    "version": "1.6.1",
+    "release": "ga",
+    "description": "Collect and parse logs from Zeek network security with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/zeek/zeek-1.6.1.zip",
+    "path": "/package/zeek/1.6.1",
+    "icons": [
+      {
+        "src": "/img/zeek.svg",
+        "path": "/package/zeek/1.6.1/img/zeek.svg",
+        "title": "zeek",
+        "size": "214x203",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "zeek",
+        "title": "Zeek logs",
+        "description": "Collect logs from Zeek instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "network",
+      "monitoring",
+      "security"
+    ],
+    "signature_path": "/epr/zeek/zeek-1.6.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "zeek.capture_loss",
+        "title": "Zeek capture_loss logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.connection",
+        "title": "Zeek connection logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.dce_rpc",
+        "title": "Zeek dce_rpc logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.dhcp",
+        "title": "Zeek dhcp logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.dnp3",
+        "title": "Zeek dnp3 logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.dns",
+        "title": "Zeek dns logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.dpd",
+        "title": "Zeek dpd logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.files",
+        "title": "Zeek files logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.ftp",
+        "title": "Zeek ftp logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.http",
+        "title": "Zeek http logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.intel",
+        "title": "Zeek intel logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.irc",
+        "title": "Zeek irc logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.kerberos",
+        "title": "Zeek kerberos logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.modbus",
+        "title": "Zeek modbus logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.mysql",
+        "title": "Zeek mysql logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.notice",
+        "title": "Zeek notice logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.ntlm",
+        "title": "Zeek ntlm logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.ntp",
+        "title": "Zeek ntp logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.ocsp",
+        "title": "Zeek ocsp logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.pe",
+        "title": "Zeek pe logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.radius",
+        "title": "Zeek radius logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.rdp",
+        "title": "Zeek rdp logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.rfb",
+        "title": "Zeek rfb logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.signature",
+        "title": "Zeek signature logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.sip",
+        "title": "Zeek sip logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.smb_cmd",
+        "title": "Zeek smb_cmd logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.smb_files",
+        "title": "Zeek smb_files logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.smb_mapping",
+        "title": "Zeek smb_mapping logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.smtp",
+        "title": "Zeek smtp logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.snmp",
+        "title": "Zeek snmp logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.socks",
+        "title": "Zeek socks logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.ssh",
+        "title": "Zeek ssh logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.ssl",
+        "title": "Zeek ssl logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.stats",
+        "title": "Zeek stats logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.syslog",
+        "title": "Zeek syslog logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.traceroute",
+        "title": "Zeek traceroute logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.tunnel",
+        "title": "Zeek tunnel logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.weird",
+        "title": "Zeek weird logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "zeek.x509",
+        "title": "Zeek x509 logs"
+      }
+    ]
+  }
+]

@@ -10,9 +10,16 @@
     "count": 7
   },
   {
+    "id": "cdn_security",
+    "title": "Content Delivery Network",
+    "count": 1,
+    "parent_id": "security",
+    "parent_title": "Security"
+  },
+  {
     "id": "cloud",
     "title": "Cloud",
-    "count": 11
+    "count": 10
   },
   {
     "id": "config_management",
@@ -27,7 +34,7 @@
   {
     "id": "custom",
     "title": "Custom",
-    "count": 9
+    "count": 10
   },
   {
     "id": "datastore",
@@ -47,7 +54,7 @@
   {
     "id": "kubernetes",
     "title": "Kubernetes",
-    "count": 3,
+    "count": 4,
     "parent_id": "observability",
     "parent_title": "Observability"
   },
@@ -68,7 +75,7 @@
   {
     "id": "network",
     "title": "Network",
-    "count": 39
+    "count": 38
   },
   {
     "id": "os_system",
@@ -86,9 +93,14 @@
     "count": 101
   },
   {
+    "id": "support",
+    "title": "Support",
+    "count": 2
+  },
+  {
     "id": "web",
     "title": "Web Server",
-    "count": 20,
+    "count": 19,
     "parent_id": "observability",
     "parent_title": "Observability"
   }

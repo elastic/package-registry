@@ -1,6 +1,6 @@
 // Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
-// or more contributor license agreements. Licensed under the Elastic License;
-// you may not use this file except in compliance with the Elastic License.
+// or more contributor license agreements. Licensed under the Elastic License 2.0;
+// you may not use this file except in compliance with the Elastic License 2.0.
 
 package packages
 
@@ -42,6 +42,12 @@ func (p Packages) Less(i, j int) bool {
 // a package in `p1` with the same name and version that a package in `p2`, the
 // latter is not added.
 func (p1 Packages) Join(p2 Packages) Packages {
+	// If p1 is empty, return p2 as it is.
+	// This is a special case to avoid unnecessary checks.
+	if len(p1) == 0 {
+		return p2
+	}
+
 	for _, p := range p2 {
 		if p1.contains(p) {
 			continue
@@ -83,6 +89,8 @@ type GetOptions struct {
 	// all packages are returned. This is different to a zero-object filter,
 	// where experimental packages are filtered by default.
 	Filter *Filter
+
+	FullData bool
 }
 
 // FileSystemIndexer indexes packages from the filesystem.
@@ -195,7 +203,13 @@ func (i *FileSystemIndexer) Init(ctx context.Context) (err error) {
 // Caching the packages request many file reads every time this method is called.
 func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages, error) {
 	start := time.Now()
-	defer metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": i.label}).Observe(time.Since(start).Seconds())
+	defer func() {
+		metrics.IndexerGetDurationSeconds.With(prometheus.Labels{"indexer": i.label}).Observe(time.Since(start).Seconds())
+	}()
+	span, ctx := apm.StartSpan(ctx, "GetFileSystemIndexer", "app")
+	span.Context.SetLabel("indexer", i.label)
+	defer span.End()
+
 	if opts == nil {
 		return i.packageList, nil
 	}
@@ -205,6 +219,10 @@ func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages
 	}
 
 	return i.packageList, nil
+}
+
+func (i *FileSystemIndexer) Close(ctx context.Context) error {
+	return nil
 }
 
 func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Packages, error) {
@@ -227,7 +245,7 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 
 		i.logger.Info("Searching packages in " + basePath)
 		for _, path := range packagePaths {
-			p, err := NewPackage(path, i.fsBuilder)
+			p, err := NewPackage(i.logger, path, i.fsBuilder)
 			if err != nil {
 				return nil, fmt.Errorf("loading package failed (path: %s): %w", path, err)
 			}
@@ -297,14 +315,17 @@ type Filter struct {
 	Capabilities   []string
 	SpecMin        *semver.Version
 	SpecMax        *semver.Version
-	Discovery      *discoveryFilter
+	Discovery      discoveryFilters
 
 	// Deprecated, release tags to be removed.
 	Experimental bool
 }
 
+type discoveryFilters []*discoveryFilter
+
 type discoveryFilter struct {
-	Fields discoveryFilterFields
+	Fields   discoveryFilterFields
+	Datasets discoveryFilterDatasets
 }
 
 func NewDiscoveryFilter(filter string) (*discoveryFilter, error) {
@@ -316,10 +337,12 @@ func NewDiscoveryFilter(filter string) (*discoveryFilter, error) {
 	var result discoveryFilter
 	switch filterType {
 	case "fields":
-		for _, name := range strings.Split(args, ",") {
-			result.Fields = append(result.Fields, DiscoveryField{
-				Name: name,
-			})
+		for _, parameter := range strings.Split(args, ",") {
+			result.Fields = append(result.Fields, newDiscoveryFilterField(parameter))
+		}
+	case "datasets":
+		for _, parameter := range strings.Split(args, ",") {
+			result.Datasets = append(result.Datasets, newDiscoveryFilterDataset(parameter))
 		}
 	default:
 		return nil, fmt.Errorf("unknown discovery filter %q", filterType)
@@ -328,11 +351,38 @@ func NewDiscoveryFilter(filter string) (*discoveryFilter, error) {
 	return &result, nil
 }
 
+func newDiscoveryFilterField(parameter string) DiscoveryField {
+	return DiscoveryField{
+		Name: parameter,
+	}
+}
+
+func newDiscoveryFilterDataset(parameter string) DiscoveryDataset {
+	return DiscoveryDataset{
+		Name: parameter,
+	}
+}
+
+func (f discoveryFilters) Matches(p *Package) bool {
+	for _, filter := range f {
+		if !filter.Matches(p) {
+			return false
+		}
+	}
+	return true
+}
+
 func (f *discoveryFilter) Matches(p *Package) bool {
 	if f == nil {
 		return true
 	}
-	return f.Fields.Matches(p)
+	if len(f.Fields) > 0 && !f.Fields.Matches(p) {
+		return false
+	}
+	if len(f.Datasets) > 0 && !f.Datasets.Matches(p) {
+		return false
+	}
+	return true
 }
 
 type discoveryFilterFields []DiscoveryField
@@ -352,6 +402,25 @@ func (fields discoveryFilterFields) Matches(p *Package) bool {
 	}
 
 	return true
+}
+
+type discoveryFilterDatasets []DiscoveryDataset
+
+// Matches implements matching for a collection of datasets used as discovery filter.
+// It matches if at least one dataset in the package are included in the list of datasets in the query.
+func (datasets discoveryFilterDatasets) Matches(p *Package) bool {
+	// If the package doesn't define this filter, it doesn't match.
+	if p.Discovery == nil || len(p.Discovery.Datasets) == 0 {
+		return false
+	}
+
+	for _, packageDataset := range p.Discovery.Datasets {
+		if slices.Contains([]DiscoveryDataset(datasets), packageDataset) {
+			return true
+		}
+	}
+
+	return false
 }
 
 // Apply applies the filter to the list of packages, if the filter is nil, no filtering is done.

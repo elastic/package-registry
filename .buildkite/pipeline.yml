@@ -3,9 +3,9 @@
 env:
   SETUP_GVM_VERSION: 'v0.5.2' # https://github.com/andrewkroh/gvm/issues/44#issuecomment-1013231151
   SETUP_MAGE_VERSION: '1.15.0'
-  DOCKER_REGISTRY: 'docker.elastic.co'
-  DOCKER_IMG: "${DOCKER_REGISTRY}/package-registry/package-registry"
-  DOCKER_IMG_PR: "${DOCKER_REGISTRY}/observability-ci/package-registry"
+  JQ_VERSION: '1.7'
+  DOCKER_IMG: "docker.elastic.co/package-registry/package-registry"
+  DOCKER_IMG_PR: "docker.elastic.co/observability-ci/package-registry"
   # Agent images used in pipeline steps
   LINUX_GOLANG_AGENT_IMAGE: "golang:${SETUP_GOLANG_VERSION}"
   WINDOWS_AGENT_IMAGE: "family/core-windows-2022"
@@ -29,6 +29,13 @@ steps:
       image: "${LINUX_GOLANG_AGENT_IMAGE}"
       cpu: "8"
       memory: "4G"
+
+  - label: ":wrench: Smoke tests running EPR with fake GCS server"
+    key: smoke-test-fake-gcs-server
+    command:
+      - ".buildkite/scripts/test-epr-gcs.sh"
+    agents:
+      provider: "gcp"
 
   - group: ":go: Run Unit tests"
     key: unit-tests
@@ -65,14 +72,16 @@ steps:
           - "tests-report-darwin.xml"
 
   - label: ":junit: Junit annotate"
+    agents:
+      # requires at least "bash", "curl" and "git"
+      image: "docker.elastic.co/ci-agent-images/buildkite-junit-annotate:1.0"
     plugins:
-      - junit-annotate#v2.5.0:
+      - junit-annotate#v2.7.0:
           artifacts: "tests-report-*.xml"
           fail-build-on-error: true
           report-skipped: true
           always-annotate: true
-    agents:
-      provider: "gcp" #junit plugin requires docker
+          run-in-docker: false
     depends_on:
       - step: "test-linux"
         allow_failure: true
@@ -81,7 +90,7 @@ steps:
       - step: "test-macos-arm"
         allow_failure: true
 
-  - label: "Publish docker image"
+  - label: ":docker: Publish docker image"
     key: "publish"
     command: ".buildkite/scripts/publish.sh"
     agents:
@@ -97,6 +106,11 @@ steps:
         allow_failure: false
       - step: "lint"
         allow_failure: false
+      - step: "smoke-test-fake-gcs-server"
+        allow_failure: false
+    plugins:
+      - elastic/vault-docker-login#v0.6.0:
+          secret_path: 'kv/ci-shared/platform-ingest/elastic_docker_registry'
 
   - trigger: "package-storage-infra-update-package-registry"
     label: ":esbuild: Downstream - Update package registry"

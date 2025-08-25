@@ -1,0 +1,11 @@
+services:
+  fakegcsserver:
+    image: fsouza/fake-gcs-server:${FAKE_GCS_SERVER_VERSION:-1.52.2}
+    ports:
+      - "4443:4443"
+    volumes:
+      - ${LOCAL_BUCKET_PATH}:/data
+    command: "-scheme http"
+
+
+

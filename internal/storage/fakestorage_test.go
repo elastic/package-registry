@@ -1,6 +1,6 @@
 // Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
-// or more contributor license agreements. Licensed under the Elastic License;
-// you may not use this file except in compliance with the Elastic License.
+// or more contributor license agreements. Licensed under the Elastic License 2.0;
+// you may not use this file except in compliance with the Elastic License 2.0.
 
 package storage
 
@@ -17,7 +17,7 @@ import (
 
 func TestPrepareFakeServer(t *testing.T) {
 	// given
-	indexFile := "testdata/search-index-all-full.json"
+	indexFile := "../../storage/testdata/search-index-all-full.json"
 	testIndexFile, err := os.ReadFile(indexFile)
 	require.NoErrorf(t, err, "index file should be present in testdata")
 
@@ -29,9 +29,9 @@ func TestPrepareFakeServer(t *testing.T) {
 	client := fs.Client()
 	require.NotNil(t, client, "client should be initialized")
 
-	aCursor := readObject(t, client.Bucket(fakePackageStorageBucketInternal).Object(cursorStoragePath))
+	aCursor := readObject(t, client.Bucket(FakePackageStorageBucketInternal).Object(cursorStoragePath))
 	assert.Equal(t, []byte(`{"current":"1"}`), aCursor)
-	anIndex := readObject(t, client.Bucket(fakePackageStorageBucketInternal).Object(joinObjectPaths(v2MetadataStoragePath, "1", searchIndexAllFile)))
+	anIndex := readObject(t, client.Bucket(FakePackageStorageBucketInternal).Object(joinObjectPaths(v2MetadataStoragePath, "1", searchIndexAllFile)))
 	assert.Equal(t, testIndexFile, anIndex)
 }
 

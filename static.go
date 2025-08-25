@@ -1,6 +1,6 @@
 // Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
-// or more contributor license agreements. Licensed under the Elastic License;
-// you may not use this file except in compliance with the Elastic License.
+// or more contributor license agreements. Licensed under the Elastic License 2.0;
+// you may not use this file except in compliance with the Elastic License 2.0.
 
 package main
 
@@ -26,49 +26,80 @@ type staticParams struct {
 	fileName       string
 }
 
-func staticHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration) http.HandlerFunc {
-	return staticHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime)
+type staticHandler struct {
+	logger    *zap.Logger
+	indexer   Indexer
+	cacheTime time.Duration
+
+	proxyMode *proxymode.ProxyMode
 }
 
-func staticHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		logger := logger.With(apmzap.TraceContext(r.Context())...)
+type staticOption func(*staticHandler)
 
-		params, err := staticParamsFromRequest(r)
-		if err != nil {
-			badRequest(w, err.Error())
-			return
-		}
+func newStaticHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration, opts ...staticOption) (*staticHandler, error) {
+	if indexer == nil {
+		return nil, errors.New("indexer is required for static handler")
+	}
+	if cacheTime <= 0 {
+		return nil, errors.New("cache time must be greater than 0s")
+	}
 
-		opts := packages.NameVersionFilter(params.packageName, params.packageVersion)
-		pkgs, err := indexer.Get(r.Context(), &opts)
+	s := &staticHandler{
+		logger:    logger,
+		indexer:   indexer,
+		cacheTime: cacheTime,
+	}
+
+	for _, opt := range opts {
+		opt(s)
+	}
+
+	return s, nil
+}
+
+func staticWithProxy(pm *proxymode.ProxyMode) staticOption {
+	return func(h *staticHandler) {
+		h.proxyMode = pm
+	}
+}
+
+func (h *staticHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	logger := h.logger.With(apmzap.TraceContext(r.Context())...)
+
+	params, err := staticParamsFromRequest(r)
+	if err != nil {
+		badRequest(w, err.Error())
+		return
+	}
+
+	opts := packages.NameVersionFilter(params.packageName, params.packageVersion)
+	pkgs, err := h.indexer.Get(r.Context(), &opts)
+	if err != nil {
+		logger.Error("getting package path failed",
+			zap.String("package.name", params.packageName),
+			zap.String("package.version", params.packageVersion),
+			zap.Error(err))
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+	if len(pkgs) == 0 && h.proxyMode.Enabled() {
+		proxiedPackage, err := h.proxyMode.Package(r)
 		if err != nil {
-			logger.Error("getting package path failed",
-				zap.String("package.name", params.packageName),
-				zap.String("package.version", params.packageVersion),
-				zap.Error(err))
+			logger.Error("proxy mode: package failed", zap.Error(err))
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
-		if len(pkgs) == 0 && proxyMode.Enabled() {
-			proxiedPackage, err := proxyMode.Package(r)
-			if err != nil {
-				logger.Error("proxy mode: package failed", zap.Error(err))
-				http.Error(w, "internal server error", http.StatusInternalServerError)
-				return
-			}
-			if proxiedPackage != nil {
-				pkgs = pkgs.Join(packages.Packages{proxiedPackage})
-			}
+		if proxiedPackage != nil {
+			pkgs = pkgs.Join(packages.Packages{proxiedPackage})
 		}
-		if len(pkgs) == 0 {
-			notFoundError(w, errPackageRevisionNotFound)
-			return
-		}
-
-		cacheHeaders(w, cacheTime)
-		packages.ServePackageResource(logger, w, r, pkgs[0], params.fileName)
 	}
+	if len(pkgs) == 0 {
+		notFoundError(w, errPackageRevisionNotFound)
+		return
+	}
+
+	cacheHeaders(w, h.cacheTime)
+	packages.ServePackageResource(logger, w, r, pkgs[0], params.fileName)
 }
 
 func staticParamsFromRequest(r *http.Request) (*staticParams, error) {

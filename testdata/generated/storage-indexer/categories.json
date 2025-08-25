@@ -10,9 +10,16 @@
     "count": 7
   },
   {
+    "id": "cdn_security",
+    "title": "Content Delivery Network",
+    "count": 1,
+    "parent_id": "security",
+    "parent_title": "Security"
+  },
+  {
     "id": "cloud",
     "title": "Cloud",
-    "count": 9
+    "count": 8
   },
   {
     "id": "config_management",
@@ -68,7 +75,7 @@
   {
     "id": "network",
     "title": "Network",
-    "count": 22
+    "count": 21
   },
   {
     "id": "os_system",
@@ -88,7 +95,7 @@
   {
     "id": "web",
     "title": "Web Server",
-    "count": 14,
+    "count": 13,
     "parent_id": "observability",
     "parent_title": "Observability"
   }

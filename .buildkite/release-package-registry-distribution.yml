@@ -1,7 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/buildkite/pipeline-schema/main/schema.json
 
 env:
-  DOCKER_REGISTRY: 'docker.elastic.co'
   NOTIFY_TO: "ecosystem-team@elastic.co"
 
 steps:
@@ -37,6 +36,7 @@ steps:
           - "production"
     env:
       TAG_NAME: "{{matrix.tag_name}}"
+      DOCKER_IMAGE: "docker.elastic.co/package-registry/distribution"
       DRY_RUN: false
     command:
       - ".buildkite/scripts/publish-distribution.sh"
@@ -45,6 +45,9 @@ steps:
     depends_on:
       - step: "validate"
         allow_failure: false
+    plugins:
+      - elastic/vault-docker-login#v0.6.0:
+          secret_path: 'kv/ci-shared/platform-ingest/elastic_docker_registry'
 
 notify:
   - email: "$NOTIFY_TO"

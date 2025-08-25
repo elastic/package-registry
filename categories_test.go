@@ -1,6 +1,6 @@
 // Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
-// or more contributor license agreements. Licensed under the Elastic License;
-// you may not use this file except in compliance with the Elastic License.
+// or more contributor license agreements. Licensed under the Elastic License 2.0;
+// you may not use this file except in compliance with the Elastic License 2.0.
 
 package main
 
@@ -40,6 +40,8 @@ func TestCategoriesWithProxyMode(t *testing.T) {
 	defer webServer.Close()
 
 	indexerProxy := packages.NewFileSystemIndexer(testLogger, "./testdata/second_package_path")
+	defer indexerProxy.Close(context.Background())
+
 	err := indexerProxy.Init(context.Background())
 	require.NoError(t, err)
 
@@ -52,16 +54,19 @@ func TestCategoriesWithProxyMode(t *testing.T) {
 	)
 	require.NoError(t, err)
 
-	categoriesWithProxyHandler := categoriesHandlerWithProxyMode(testLogger, indexerProxy, proxyMode, testCacheTime)
+	categoriesHandler, err := newCategoriesHandler(testLogger, indexerProxy, testCacheTime,
+		categoriesWithProxy(proxyMode),
+	)
+	require.NoError(t, err)
 
 	tests := []struct {
 		endpoint string
 		path     string
 		file     string
-		handler  func(w http.ResponseWriter, r *http.Request)
+		handler  http.Handler
 	}{
-		{"/categories", "/categories", "categories-proxy.json", categoriesWithProxyHandler},
-		{"/categories?kibana.version=6.5.0", "/categories", "categories-proxy-kibana-filter.json", categoriesWithProxyHandler},
+		{"/categories", "/categories", "categories-proxy.json", categoriesHandler},
+		{"/categories?kibana.version=6.5.0", "/categories", "categories-proxy-kibana-filter.json", categoriesHandler},
 	}
 
 	for _, test := range tests {
