@@ -8,6 +8,7 @@ mappings:
   # API category: Inputs that actively fetch data from remote HTTP/HTTPS endpoints
   # This includes REST APIs, metrics endpoints, cloud provider APIs, and SaaS APIs
   # These inputs make outbound HTTP requests to collect data (pull model)
+  # Used when no more specific category exists
 
   # API mappings - Log/Event collection APIs
   cel: API
