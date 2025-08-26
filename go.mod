@@ -1,6 +1,6 @@
 module github.com/elastic/package-registry
 
-go 1.23.0
+go 1.24.0
 
 toolchain go1.24.6
 
@@ -10,7 +10,7 @@ require (
 	github.com/elastic/go-licenser v0.4.2
 	github.com/elastic/go-ucfg v0.8.8
 	github.com/felixge/httpsnoop v1.0.4
-	github.com/fsouza/fake-gcs-server v1.52.2
+	github.com/fsouza/fake-gcs-server v1.52.3
 	github.com/gorilla/mux v1.8.1
 	github.com/hashicorp/go-retryablehttp v0.7.8
 	github.com/hashicorp/golang-lru/v2 v2.0.7
@@ -38,7 +38,7 @@ require (
 	cloud.google.com/go/compute/metadata v0.8.0 // indirect
 	cloud.google.com/go/iam v1.5.2 // indirect
 	cloud.google.com/go/monitoring v1.24.2 // indirect
-	cloud.google.com/go/pubsub v1.49.0 // indirect
+	cloud.google.com/go/pubsub/v2 v2.0.0 // indirect
 	github.com/BurntSushi/toml v1.4.1-0.20240526193622-a339e1f7089c // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.27.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.53.0 // indirect
