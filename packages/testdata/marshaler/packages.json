@@ -148,6 +148,11 @@
      "name": "nginx",
      "title": "Datasource title",
      "description": "Details about the data source.",
+     "data_streams": [
+      "datasources.examplelog1",
+      "datasources.examplelog2",
+      "datasources.examplemetric"
+     ],
      "inputs": [
       {
        "type": "nginx/metrics",

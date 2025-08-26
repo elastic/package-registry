@@ -76,7 +76,12 @@ func TestSearchWithProxyMode(t *testing.T) {
       {
         "name": "nginx",
         "title": "Datasource title",
-        "description": "Details about the data source."
+        "description": "Details about the data source.",
+        "data_streams": [
+          "datasources.examplelog1",
+          "datasources.examplelog2",
+          "datasources.examplemetric"
+        ]
       }
     ],
     "categories": [

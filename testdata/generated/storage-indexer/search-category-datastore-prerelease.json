@@ -33,6 +33,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "dynamodb"
         ]
       },
       {
@@ -50,6 +53,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "ebs"
         ]
       },
       {
@@ -67,6 +73,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "rds"
         ]
       },
       {
@@ -85,6 +94,11 @@
         "categories": [
           "datastore",
           "security"
+        ],
+        "data_streams": [
+          "s3_daily_storage",
+          "s3_request",
+          "s3access"
         ]
       },
       {
@@ -102,6 +116,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "s3_storage_lens"
         ]
       }
     ],
@@ -348,6 +365,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "status"
         ]
       }
     ],
