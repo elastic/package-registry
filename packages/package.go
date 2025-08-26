@@ -92,7 +92,7 @@ type BasePolicyTemplate struct {
 	Icons           []Image          `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
 	Categories      []string         `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
 	DeploymentModes *DeploymentModes `config:"deployment_modes,omitempty" json:"deployment_modes,omitempty" yaml:"deployment_modes,omitempty"`
-	BaseDataStreams []string         `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
+	DataStreams     []string         `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
 }
 
 type PolicyTemplate struct {
@@ -458,7 +458,7 @@ func (p *Package) setBasePolicyTemplates() {
 			Categories:      t.Categories,
 			Icons:           t.Icons,
 			DeploymentModes: t.DeploymentModes,
-			BaseDataStreams: t.DataStreams,
+			DataStreams:     t.DataStreams,
 		}
 
 		p.BasePolicyTemplates = append(p.BasePolicyTemplates, baseT)
