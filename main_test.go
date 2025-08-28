@@ -41,7 +41,7 @@ func TestRouter(t *testing.T) {
 	logger := util.NewTestLogger()
 	config := defaultConfig
 	indexer := NewCombinedIndexer()
-	defer indexer.Close(context.Background())
+	defer indexer.Close(t.Context())
 
 	router, err := getRouter(logger, serverOptions{
 		config:  &config,
@@ -59,14 +59,16 @@ func TestRouter(t *testing.T) {
 }
 
 func TestEndpoints(t *testing.T) {
+	t.Parallel()
+
 	packagesBasePaths := []string{"./testdata/second_package_path", "./testdata/package"}
 	indexer := NewCombinedIndexer(
 		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
 		packages.NewFileSystemIndexer(testLogger, packagesBasePaths...),
 	)
-	defer indexer.Close(context.Background())
+	t.Cleanup(func() { indexer.Close(context.Background()) })
 
-	err := indexer.Init(context.Background())
+	err := indexer.Init(t.Context())
 	require.NoError(t, err)
 
 	faviconHandler, err := newFaviconHandler(testCacheTime)
@@ -162,11 +164,13 @@ func TestEndpoints(t *testing.T) {
 }
 
 func TestArtifacts(t *testing.T) {
+	t.Parallel()
+
 	packagesBasePaths := []string{"./testdata/package"}
 	indexer := packages.NewFileSystemIndexer(testLogger, packagesBasePaths...)
-	defer indexer.Close(context.Background())
+	t.Cleanup(func() { indexer.Close(context.Background()) })
 
-	err := indexer.Init(context.Background())
+	err := indexer.Init(t.Context())
 	require.NoError(t, err)
 
 	artifactsHandler, err := newArtifactsHandler(testLogger, indexer, testCacheTime)
@@ -192,10 +196,12 @@ func TestArtifacts(t *testing.T) {
 }
 
 func TestSignatures(t *testing.T) {
-	indexer := packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage")
-	defer indexer.Close(context.Background())
+	t.Parallel()
 
-	err := indexer.Init(context.Background())
+	indexer := packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage")
+	t.Cleanup(func() { indexer.Close(context.Background()) })
+
+	err := indexer.Init(t.Context())
 	require.NoError(t, err)
 
 	signaturesHandler, err := newSignaturesHandler(testLogger, indexer, testCacheTime)
@@ -219,11 +225,13 @@ func TestSignatures(t *testing.T) {
 }
 
 func TestStatics(t *testing.T) {
+	t.Parallel()
+
 	packagesBasePaths := []string{"./testdata/package"}
 	indexer := packages.NewFileSystemIndexer(testLogger, packagesBasePaths...)
-	defer indexer.Close(context.Background())
+	t.Cleanup(func() { indexer.Close(context.Background()) })
 
-	err := indexer.Init(context.Background())
+	err := indexer.Init(t.Context())
 	require.NoError(t, err)
 
 	staticHandler, err := newStaticHandler(testLogger, indexer, testCacheTime)
@@ -247,6 +255,8 @@ func TestStatics(t *testing.T) {
 }
 
 func TestStaticsModifiedTime(t *testing.T) {
+	t.Parallel()
+
 	const ifModifiedSinceHeader = "If-Modified-Since"
 	const lastModifiedHeader = "Last-Modified"
 
@@ -313,9 +323,9 @@ func TestStaticsModifiedTime(t *testing.T) {
 		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
 		packages.NewFileSystemIndexer(testLogger, "./testdata/package"),
 	)
-	defer indexer.Close(context.Background())
+	t.Cleanup(func() { indexer.Close(context.Background()) })
 
-	err := indexer.Init(context.Background())
+	err := indexer.Init(t.Context())
 	require.NoError(t, err)
 
 	router := mux.NewRouter()
@@ -344,10 +354,12 @@ func TestStaticsModifiedTime(t *testing.T) {
 }
 
 func TestZippedArtifacts(t *testing.T) {
-	indexer := packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage")
-	defer indexer.Close(context.Background())
+	t.Parallel()
 
-	err := indexer.Init(context.Background())
+	indexer := packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage")
+	t.Cleanup(func() { indexer.Close(context.Background()) })
+
+	err := indexer.Init(t.Context())
 	require.NoError(t, err)
 
 	artifactsHandler, err := newArtifactsHandler(testLogger, indexer, testCacheTime)
@@ -377,13 +389,15 @@ func TestZippedArtifacts(t *testing.T) {
 }
 
 func TestPackageIndex(t *testing.T) {
+	t.Parallel()
+
 	indexer := NewCombinedIndexer(
 		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
 		packages.NewFileSystemIndexer(testLogger, "./testdata/package"),
 	)
-	defer indexer.Close(context.Background())
+	t.Cleanup(func() { indexer.Close(context.Background()) })
 
-	err := indexer.Init(context.Background())
+	err := indexer.Init(t.Context())
 	require.NoError(t, err)
 
 	packageIndexHandler, err := newPackageIndexHandler(testLogger, indexer, testCacheTime)
@@ -412,11 +426,13 @@ func TestPackageIndex(t *testing.T) {
 }
 
 func TestZippedPackageIndex(t *testing.T) {
+	t.Parallel()
+
 	packagesBasePaths := []string{"./testdata/local-storage"}
 	indexer := packages.NewZipFileSystemIndexer(testLogger, packagesBasePaths...)
-	defer indexer.Close(context.Background())
+	t.Cleanup(func() { indexer.Close(context.Background()) })
 
-	err := indexer.Init(context.Background())
+	err := indexer.Init(t.Context())
 	require.NoError(t, err)
 
 	packageIndexHandler, err := newPackageIndexHandler(testLogger, indexer, testCacheTime)
@@ -443,13 +459,15 @@ func TestZippedPackageIndex(t *testing.T) {
 
 // TestAllPackageIndex generates and compares all index.json files for the test packages
 func TestAllPackageIndex(t *testing.T) {
+	t.Parallel()
+
 	testPackagePath := filepath.Join("testdata", "package")
 	secondPackagePath := filepath.Join("testdata", "second_package_path")
 	packagesBasePaths := []string{secondPackagePath, testPackagePath}
 	indexer := packages.NewFileSystemIndexer(testLogger, packagesBasePaths...)
-	defer indexer.Close(context.Background())
+	t.Cleanup(func() { indexer.Close(context.Background()) })
 
-	err := indexer.Init(context.Background())
+	err := indexer.Init(t.Context())
 	require.NoError(t, err)
 
 	packageIndexHandler, err := newPackageIndexHandler(testLogger, indexer, testCacheTime)
@@ -487,6 +505,8 @@ func TestAllPackageIndex(t *testing.T) {
 }
 
 func TestContentTypes(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		endpoint    string
 		contentType string
@@ -505,9 +525,9 @@ func TestContentTypes(t *testing.T) {
 		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
 		packages.NewFileSystemIndexer(testLogger, "./testdata/package"),
 	)
-	defer indexer.Close(context.Background())
+	t.Cleanup(func() { indexer.Close(context.Background()) })
 
-	err := indexer.Init(context.Background())
+	err := indexer.Init(t.Context())
 	require.NoError(t, err)
 
 	staticHandler, err := newStaticHandler(testLogger, indexer, testCacheTime)
@@ -533,13 +553,15 @@ func TestContentTypes(t *testing.T) {
 // TestRangeDownloads tests that range downloads continue working for packages stored
 // on different file systems.
 func TestRangeDownloads(t *testing.T) {
+	t.Parallel()
+
 	indexer := NewCombinedIndexer(
 		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
 		packages.NewFileSystemIndexer(testLogger, "./testdata/package"),
 	)
-	defer indexer.Close(context.Background())
+	t.Cleanup(func() { indexer.Close(context.Background()) })
 
-	err := indexer.Init(context.Background())
+	err := indexer.Init(t.Context())
 	require.NoError(t, err)
 
 	router := mux.NewRouter()

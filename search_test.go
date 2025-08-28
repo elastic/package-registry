@@ -5,7 +5,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -100,9 +99,9 @@ func TestSearchWithProxyMode(t *testing.T) {
 		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
 		packages.NewFileSystemIndexer(testLogger, packagesBasePaths...),
 	)
-	defer indexer.Close(context.Background())
+	defer indexer.Close(t.Context())
 
-	err := indexer.Init(context.Background())
+	err := indexer.Init(t.Context())
 	require.NoError(t, err)
 
 	proxyMode, err := proxymode.NewProxyMode(

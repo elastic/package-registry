@@ -5,7 +5,6 @@
 package packages
 
 import (
-	"context"
 	"testing"
 
 	"github.com/Masterminds/semver/v3"
@@ -443,7 +442,7 @@ func TestPackagesFilter(t *testing.T) {
 
 	for _, c := range cases {
 		t.Run(c.Title, func(t *testing.T) {
-			result, err := c.Filter.Apply(context.Background(), packages)
+			result, err := c.Filter.Apply(t.Context(), packages)
 			require.NoError(t, err)
 			assertFilterPackagesResult(t, c.Expected, result)
 		})
@@ -773,7 +772,7 @@ func TestPackagesSpecMinMaxFilter(t *testing.T) {
 
 	for _, c := range cases {
 		t.Run(c.Title, func(t *testing.T) {
-			result, err := c.Filter.Apply(context.Background(), packages)
+			result, err := c.Filter.Apply(t.Context(), packages)
 			require.NoError(t, err)
 			assertFilterPackagesResult(t, c.Expected, result)
 		})
