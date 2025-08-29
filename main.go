@@ -474,7 +474,8 @@ type serverOptions struct {
 
 func initServer(logger *zap.Logger, options serverOptions) *http.Server {
 	router := mustLoadRouter(logger, options)
-	apmgorilla.Instrument(router, apmgorilla.WithTracer(options.apmTracer))
+	router.Use(apmgorilla.Middleware(apmgorilla.WithTracer(options.apmTracer)))
+	router.Use(util.LoggingMiddleware(logger))
 
 	var tlsConfig tls.Config
 	if tlsMinVersionValue > 0 {
@@ -698,7 +699,6 @@ func getRouter(logger *zap.Logger, options serverOptions) (*mux.Router, error) {
 	router.Handle(signaturesRouterPath, signaturesHandler)
 	router.Handle(packageIndexRouterPath, packageIndexHandler)
 	router.Handle(staticRouterPath, staticHandler)
-	router.Use(util.LoggingMiddleware(logger))
 	router.Use(util.CORSMiddleware())
 	if metricsAddress != "" {
 		router.Use(metrics.MetricsMiddleware())

@@ -110,7 +110,7 @@ func LoggingMiddleware(logger *zap.Logger) mux.MiddlewareFunc {
 // using this information.
 func logRequest(logger *zap.Logger, handler http.Handler, w http.ResponseWriter, req *http.Request) {
 	message, fields := captureZapFieldsForRequest(handler, w, req)
-	logger.Info(message, fields...)
+	logger.With(apmzap.TraceContext(req.Context())...).Info(message, fields...)
 }
 
 // captureZapFieldsForRequest handles a request and captures fields for zap logger.
