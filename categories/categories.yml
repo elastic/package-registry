@@ -125,8 +125,8 @@ categories:
         title: "Identity and Access Management"
       ids_ips:
         title: "IDS/IPS"
-      misconfiguration_workflow_supported:
-        title: "Misconfiguration Workflow Supported"
+      misconfiguration_workflow:
+        title: "Misconfiguration Workflow"
       network_security:
         title: "Network"
       productivity_security:
@@ -141,8 +141,8 @@ categories:
         title: "VPN"
       vulnerability_management:
         title: "Vulnerability Management"
-      vulnerability_workflow_supported:
-        title: "Vulnerability Workflow Supported"
+      vulnerability_workflow:
+        title: "Vulnerability Workflow"
       web_application_firewall:
         title: "Web Application Firewall"
   support:
