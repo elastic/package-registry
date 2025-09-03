@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added "ingestion_method" mapping to data_streams to provide a high-level understanding of data collection in order to support downstream documentation. [#1402](https://github.com/elastic/package-registry/pull/1402)
 * Add data_streams to search policy_templates. [#1408](https://github.com/elastic/package-registry/pull/1408)
+* Added Security Subcategory "misconfiguration_workflow" and "vulnerability_workflow" [#1414](https://github.com/elastic/package-registry/pull/1414)
 
 ### Deprecated
 
@@ -32,8 +33,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fix filtering by capabilities in search and categories endpoint (SQL Storage Indexer). [#1396](https://github.com/elastic/package-registry/pull/1396)
 
 ### Added
-
-* Added Security Subcategory "misconfiguration_workflow" and "vulnerability_workflow" [#1414](https://github.com/elastic/package-registry/pull/1414)
 
 ### Deprecated
 
