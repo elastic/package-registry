@@ -5,7 +5,6 @@
 package storage
 
 import (
-	"context"
 	"io"
 	"os"
 	"testing"
@@ -36,7 +35,7 @@ func TestPrepareFakeServer(t *testing.T) {
 }
 
 func readObject(t *testing.T, handle *storage.ObjectHandle) []byte {
-	reader, err := handle.NewReader(context.Background())
+	reader, err := handle.NewReader(t.Context())
 	require.NoErrorf(t, err, "can't initialize reader for object %s", handle.ObjectName())
 	content, err := io.ReadAll(reader)
 	require.NoErrorf(t, err, "io.ReadAll failed for object %s", handle.ObjectName())
