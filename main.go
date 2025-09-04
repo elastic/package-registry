@@ -162,9 +162,11 @@ func main() {
 	defer apmTracer.Close()
 
 	logger, err := util.NewLogger(util.LoggerOptions{
-		APMTracer: apmTracer,
-		Level:     logLevel,
-		Type:      logType,
+		APMTracer:      apmTracer,
+		Level:          logLevel,
+		Type:           logType,
+		ServiceName:    serviceName,
+		ServiceVersion: version,
 	})
 	if err != nil {
 		log.Fatalf("Failed to initialize logging: %v", err)
