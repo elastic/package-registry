@@ -22,6 +22,8 @@ import (
 )
 
 func TestSQLInit(t *testing.T) {
+	t.Parallel()
+
 	// given
 	db, err := database.NewMemorySQLDB(database.MemorySQLDBOptions{Path: "main"})
 	require.NoError(t, err)
@@ -36,12 +38,11 @@ func TestSQLInit(t *testing.T) {
 	defer fs.Stop()
 	storageClient := fs.Client()
 
-	ctx := context.Background()
 	indexer := NewIndexer(util.NewTestLogger(), storageClient, options)
-	defer indexer.Close(ctx)
+	defer indexer.Close(t.Context())
 
 	// when
-	err = indexer.Init(ctx)
+	err = indexer.Init(t.Context())
 
 	// then
 	require.NoError(t, err)
@@ -68,15 +69,13 @@ func BenchmarkSQLInit(b *testing.B) {
 	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		ctx := context.Background()
-
 		indexer := NewIndexer(logger, storageClient, options)
 
-		err := indexer.Init(ctx)
+		err := indexer.Init(b.Context())
 		require.NoError(b, err)
 
 		b.StopTimer()
-		require.NoError(b, indexer.Close(ctx))
+		require.NoError(b, indexer.Close(b.Context()))
 		b.StartTimer()
 	}
 }
@@ -100,13 +99,12 @@ func BenchmarkSQLIndexerUpdateIndex(b *testing.B) {
 	storageClient := fs.Client()
 
 	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
-	ctx := context.Background()
 
 	indexer := NewIndexer(logger, storageClient, options)
-	defer indexer.Close(ctx)
+	defer indexer.Close(b.Context())
 
 	start := time.Now()
-	err = indexer.Init(ctx)
+	err = indexer.Init(b.Context())
 	b.Logf("Elapsed time init database: %s", time.Since(start))
 	require.NoError(b, err)
 
@@ -117,7 +115,7 @@ func BenchmarkSQLIndexerUpdateIndex(b *testing.B) {
 		UpdateFakeServer(b, fs, revision, "../../storage/testdata/search-index-all-full.json")
 		b.StartTimer()
 		start = time.Now()
-		err = indexer.updateIndex(ctx)
+		err = indexer.updateIndex(b.Context())
 		b.Logf("Elapsed time updating database: %s", time.Since(start))
 		require.NoError(b, err, "index should be updated successfully")
 	}
@@ -143,27 +141,26 @@ func BenchmarkSQLIndexerGet(b *testing.B) {
 
 	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
 
-	ctx := context.Background()
 	indexer := NewIndexer(logger, storageClient, options)
-	defer indexer.Close(ctx)
+	defer indexer.Close(b.Context())
 
-	err = indexer.Init(ctx)
+	err = indexer.Init(b.Context())
 	require.NoError(b, err)
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		indexer.Get(context.Background(), &packages.GetOptions{})
-		indexer.Get(context.Background(), &packages.GetOptions{
+		indexer.Get(b.Context(), &packages.GetOptions{})
+		indexer.Get(b.Context(), &packages.GetOptions{
 			Filter: &packages.Filter{
 				AllVersions: true,
 				Prerelease:  true,
 			},
 		})
-		indexer.Get(context.Background(), &packages.GetOptions{Filter: &packages.Filter{
+		indexer.Get(b.Context(), &packages.GetOptions{Filter: &packages.Filter{
 			AllVersions: false,
 			Prerelease:  false,
 		}})
-		indexer.Get(context.Background(), &packages.GetOptions{Filter: &packages.Filter{
+		indexer.Get(b.Context(), &packages.GetOptions{Filter: &packages.Filter{
 			AllVersions: false,
 			Prerelease:  false,
 			SpecMin:     semver.MustParse("3.0"),
@@ -173,6 +170,8 @@ func BenchmarkSQLIndexerGet(b *testing.B) {
 }
 
 func TestSQLGet_ListPackages(t *testing.T) {
+	t.Parallel()
+
 	// given
 	// db, err := database.NewMemorySQLDB(database.MemorySQLDBOptions{Path: "main"})
 	// require.NoError(t, err)
@@ -192,14 +191,13 @@ func TestSQLGet_ListPackages(t *testing.T) {
 	require.NoError(t, err)
 
 	fs := PrepareFakeServer(t, "../../storage/testdata/search-index-all-full.json")
-	defer fs.Stop()
+	t.Cleanup(fs.Stop)
 	storageClient := fs.Client()
 
-	ctx := context.Background()
 	indexer := NewIndexer(util.NewTestLogger(), storageClient, options)
-	defer indexer.Close(ctx)
+	t.Cleanup(func() { indexer.Close(context.Background()) })
 
-	err = indexer.Init(ctx)
+	err = indexer.Init(t.Context())
 	require.NoError(t, err, "storage indexer must be initialized properly")
 
 	cases := []struct {
@@ -365,9 +363,11 @@ func TestSQLGet_ListPackages(t *testing.T) {
 
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
+			t.Parallel()
+
 			// when
 			startTest := time.Now()
-			foundPackages, err := indexer.Get(ctx, c.options)
+			foundPackages, err := indexer.Get(t.Context(), c.options)
 			t.Logf("Elapsed time GET: %s", time.Since(startTest))
 			// then
 			require.NoError(t, err, "packages should be returned")
@@ -383,6 +383,8 @@ func TestSQLGet_ListPackages(t *testing.T) {
 }
 
 func TestSQLGet_IndexUpdated(t *testing.T) {
+	t.Parallel()
+
 	// given
 	db, err := database.NewMemorySQLDB(database.MemorySQLDBOptions{Path: "main"})
 	require.NoError(t, err)
@@ -394,18 +396,17 @@ func TestSQLGet_IndexUpdated(t *testing.T) {
 	require.NoError(t, err)
 
 	fs := PrepareFakeServer(t, "../../storage/testdata/search-index-all-small.json")
-	defer fs.Stop()
+	t.Cleanup(fs.Stop)
 	storageClient := fs.Client()
 
-	ctx := context.Background()
 	indexer := NewIndexer(util.NewTestLogger(), storageClient, options)
-	defer indexer.Close(ctx)
+	t.Cleanup(func() { indexer.Close(context.Background()) })
 
-	err = indexer.Init(ctx)
+	err = indexer.Init(t.Context())
 	require.NoError(t, err, "storage indexer must be initialized properly")
 
 	// when
-	foundPackages, err := indexer.Get(ctx, &packages.GetOptions{
+	foundPackages, err := indexer.Get(t.Context(), &packages.GetOptions{
 		Filter: &packages.Filter{
 			PackageName: "1password",
 			PackageType: "integration",
@@ -421,10 +422,10 @@ func TestSQLGet_IndexUpdated(t *testing.T) {
 
 	// when: index update is performed
 	UpdateFakeServer(t, fs, "2", "../../storage/testdata/search-index-all-full.json")
-	err = indexer.updateIndex(ctx)
+	err = indexer.updateIndex(t.Context())
 	require.NoError(t, err, "index should be updated successfully")
 
-	foundPackages, err = indexer.Get(ctx, &packages.GetOptions{
+	foundPackages, err = indexer.Get(t.Context(), &packages.GetOptions{
 		Filter: &packages.Filter{
 			PackageName: "1password",
 			PackageType: "integration",
@@ -440,10 +441,10 @@ func TestSQLGet_IndexUpdated(t *testing.T) {
 
 	// when: index update is performed removing packages
 	UpdateFakeServer(t, fs, "3", "../../storage/testdata/search-index-all-small.json")
-	err = indexer.updateIndex(ctx)
+	err = indexer.updateIndex(t.Context())
 	require.NoError(t, err, "index should be updated successfully")
 
-	foundPackages, err = indexer.Get(ctx, &packages.GetOptions{
+	foundPackages, err = indexer.Get(t.Context(), &packages.GetOptions{
 		Filter: &packages.Filter{
 			PackageName: "1password",
 			PackageType: "integration",
@@ -460,10 +461,10 @@ func TestSQLGet_IndexUpdated(t *testing.T) {
 
 	// when: index update is performed updating some field of an existing package
 	UpdateFakeServer(t, fs, "4", "../../storage/testdata/search-index-all-small-updated-fields.json")
-	err = indexer.updateIndex(ctx)
+	err = indexer.updateIndex(t.Context())
 	require.NoError(t, err, "index should be updated successfully")
 
-	foundPackages, err = indexer.Get(ctx, &packages.GetOptions{
+	foundPackages, err = indexer.Get(t.Context(), &packages.GetOptions{
 		Filter: &packages.Filter{
 			PackageName: "1password",
 			PackageType: "integration",
