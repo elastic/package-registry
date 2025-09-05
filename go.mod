@@ -16,7 +16,7 @@ require (
 	github.com/hashicorp/golang-lru/v2 v2.0.7
 	github.com/joeshaw/multierror v0.0.0-20140124173710-69b34d4ec901
 	github.com/magefile/mage v1.15.0
-	github.com/prometheus/client_golang v1.23.0
+	github.com/prometheus/client_golang v1.23.1
 	github.com/stretchr/testify v1.11.1
 	go.elastic.co/apm/module/apmgorilla/v2 v2.7.1
 	go.elastic.co/apm/module/apmzap/v2 v2.7.1
@@ -62,6 +62,7 @@ require (
 	github.com/googleapis/enterprise-certificate-proxy v0.3.6 // indirect
 	github.com/googleapis/gax-go/v2 v2.15.0 // indirect
 	github.com/gorilla/handlers v1.5.2 // indirect
+	github.com/grafana/regexp v0.0.0-20240518133315-a468a5bfb3bc // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
@@ -71,7 +72,7 @@ require (
 	github.com/planetscale/vtprotobuf v0.6.1-0.20240319094008-0393e58bdf10 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/prometheus/client_model v0.6.2 // indirect
-	github.com/prometheus/common v0.65.0 // indirect
+	github.com/prometheus/common v0.66.0 // indirect
 	github.com/prometheus/procfs v0.16.1 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/spiffe/go-spiffe/v2 v2.5.0 // indirect
@@ -104,7 +105,7 @@ require (
 	google.golang.org/genproto/googleapis/api v0.0.0-20250818200422-3122310a409c // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250818200422-3122310a409c // indirect
 	google.golang.org/grpc v1.74.2 // indirect
-	google.golang.org/protobuf v1.36.7 // indirect
+	google.golang.org/protobuf v1.36.8 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	howett.net/plist v1.0.1 // indirect
 	modernc.org/libc v1.66.3 // indirect
