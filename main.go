@@ -476,13 +476,14 @@ type serverOptions struct {
 
 func initServer(logger *zap.Logger, options serverOptions) *http.Server {
 	router := mustLoadRouter(logger, options)
-	router.Use(apmgorilla.Middleware(apmgorilla.WithTracer(options.apmTracer)))
+	apmgorilla.Instrument(router, apmgorilla.WithTracer(options.apmTracer))
 	router.Use(util.LoggingMiddleware(logger))
 
 	var tlsConfig tls.Config
 	if tlsMinVersionValue > 0 {
 		tlsConfig.MinVersion = uint16(tlsMinVersionValue)
 	}
+
 	return &http.Server{Addr: address, Handler: router, TLSConfig: &tlsConfig}
 }
 
