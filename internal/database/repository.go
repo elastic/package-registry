@@ -22,4 +22,5 @@ type Repository interface {
 type WhereOptions interface {
 	Where() (string, []any)
 	UseFullData() bool
+	SkipJSONFields() bool
 }

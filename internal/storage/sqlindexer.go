@@ -366,14 +366,28 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 		}
 		if opts != nil {
 			options.IncludeFullData = opts.FullData
+			options.SkipJSON = opts.SkipJSON
 		}
 
 		err := (*i.current).AllFunc(ctx, "packages", options, func(ctx context.Context, p *database.Package) error {
 			var pkg packages.Package
 			var err error
-			if opts != nil && opts.FullData {
+			switch {
+			case opts != nil && opts.SkipJSON:
+				var pPkg *packages.Package
+				pPkg, err = packages.NewPackageWithOpts(i.logger,
+					packages.WithFormatVersion(p.FormatVersion),
+					packages.WithPackageName(p.Name),
+					packages.WithPackageVersion(p.Version),
+				)
+				if err != nil {
+					return nil
+				}
+				pkg = *pPkg
+				i.logger.Debug("Skip marshaling JSON")
+			case opts != nil && opts.FullData:
 				err = json.Unmarshal(p.Data, &pkg)
-			} else {
+			default:
 				// BaseData is used for performance reasons, it contains only the fields that are needed for the search index.
 				// FormatVersion needs to be set from database to ensure compatibility with the package structure.
 				pkg.FormatVersion = p.FormatVersion
