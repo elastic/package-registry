@@ -90,6 +90,8 @@ categories:
         title: "Web Server"
       websphere:
         title: "WebSphere Application Server"
+  opentelemetry:
+    title: "OpenTelemetry"
   os_system:
     title: "Operating Systems"
   productivity:
