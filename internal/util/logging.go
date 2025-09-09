@@ -30,9 +30,11 @@ const (
 )
 
 type LoggerOptions struct {
-	Type      string
-	Level     *zapcore.Level
-	APMTracer *apm.Tracer
+	Type           string
+	Level          *zapcore.Level
+	APMTracer      *apm.Tracer
+	ServiceName    string
+	ServiceVersion string
 }
 
 func NewLogger(options LoggerOptions) (*zap.Logger, error) {
@@ -49,6 +51,19 @@ func NewLogger(options LoggerOptions) (*zap.Logger, error) {
 		return nil, err
 	}
 
+	zapOptions := []zap.Option{zap.AddCaller()}
+
+	serviceFields := []zap.Field{
+		zap.String("service.name", options.ServiceName),
+		zap.String("service.version", options.ServiceVersion),
+	}
+
+	if serviceEnv := os.Getenv("ELASTIC_APM_ENVIRONMENT"); serviceEnv != "" {
+		serviceFields = append(serviceFields, zap.String("service.environment", serviceEnv))
+	}
+
+	zapOptions = append(zapOptions, zap.Fields(serviceFields...))
+
 	if options.APMTracer != nil {
 		apmCore := apmzap.Core{
 			Tracer: options.APMTracer,
@@ -56,7 +71,7 @@ func NewLogger(options LoggerOptions) (*zap.Logger, error) {
 		core = apmCore.WrapCore(core)
 	}
 
-	return zap.New(core, zap.AddCaller()), nil
+	return zap.New(core, zapOptions...), nil
 }
 
 func NewTestLogger() *zap.Logger {
@@ -110,7 +125,7 @@ func LoggingMiddleware(logger *zap.Logger) mux.MiddlewareFunc {
 // using this information.
 func logRequest(logger *zap.Logger, handler http.Handler, w http.ResponseWriter, req *http.Request) {
 	message, fields := captureZapFieldsForRequest(handler, w, req)
-	logger.Info(message, fields...)
+	logger.With(apmzap.TraceContext(req.Context())...).Info(message, fields...)
 }
 
 // captureZapFieldsForRequest handles a request and captures fields for zap logger.

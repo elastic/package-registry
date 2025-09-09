@@ -162,9 +162,11 @@ func main() {
 	defer apmTracer.Close()
 
 	logger, err := util.NewLogger(util.LoggerOptions{
-		APMTracer: apmTracer,
-		Level:     logLevel,
-		Type:      logType,
+		APMTracer:      apmTracer,
+		Level:          logLevel,
+		Type:           logType,
+		ServiceName:    serviceName,
+		ServiceVersion: version,
 	})
 	if err != nil {
 		log.Fatalf("Failed to initialize logging: %v", err)
@@ -475,11 +477,13 @@ type serverOptions struct {
 func initServer(logger *zap.Logger, options serverOptions) *http.Server {
 	router := mustLoadRouter(logger, options)
 	apmgorilla.Instrument(router, apmgorilla.WithTracer(options.apmTracer))
+	router.Use(util.LoggingMiddleware(logger))
 
 	var tlsConfig tls.Config
 	if tlsMinVersionValue > 0 {
 		tlsConfig.MinVersion = uint16(tlsMinVersionValue)
 	}
+
 	return &http.Server{Addr: address, Handler: router, TLSConfig: &tlsConfig}
 }
 
@@ -698,7 +702,6 @@ func getRouter(logger *zap.Logger, options serverOptions) (*mux.Router, error) {
 	router.Handle(signaturesRouterPath, signaturesHandler)
 	router.Handle(packageIndexRouterPath, packageIndexHandler)
 	router.Handle(staticRouterPath, staticHandler)
-	router.Use(util.LoggingMiddleware(logger))
 	router.Use(util.CORSMiddleware())
 	if metricsAddress != "" {
 		router.Use(metrics.MetricsMiddleware())

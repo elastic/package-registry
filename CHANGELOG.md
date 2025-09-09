@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Add data_streams to search policy_templates. [#1408](https://github.com/elastic/package-registry/pull/1408)
 * Added Security Subcategory "misconfiguration_workflow" and "vulnerability_workflow" [#1414](https://github.com/elastic/package-registry/pull/1414)
 * Add "opentelemetry" category for packages related to OpenTelemetry. [#1415](https://github.com/elastic/package-registry/pull/1415)
+* Added APM information (trace.id, transaction.id, service.name, service.version, service.environment) to the logs in order to correlate signals in kibana [#1413]https://github.com/elastic/package-registry/pull/1413
 
 ### Deprecated
 
