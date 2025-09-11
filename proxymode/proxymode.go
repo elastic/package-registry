@@ -16,7 +16,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/hashicorp/go-retryablehttp"
-	"go.elastic.co/apm/v2"
+	"go.elastic.co/apm/module/apmhttp/v2"
 	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/packages"
@@ -57,11 +57,11 @@ func NewProxyMode(logger *zap.Logger, options ProxyOptions) (*ProxyMode, error) 
 	pm.httpClient = &retryablehttp.Client{
 		HTTPClient: &http.Client{
 			Timeout: 10 * time.Second,
-			Transport: &http.Transport{
+			Transport: apmhttp.WrapRoundTripper(&http.Transport{
 				MaxIdleConns:        100,
 				MaxIdleConnsPerHost: 100,
 				IdleConnTimeout:     90 * time.Second,
-			},
+			}),
 		},
 		Logger:       withZapLoggerAdapter(logger),
 		RetryWaitMin: 1 * time.Second,
@@ -115,8 +115,6 @@ func (pm *ProxyMode) Enabled() bool {
 }
 
 func (pm *ProxyMode) Search(r *http.Request) (packages.Packages, error) {
-	span, _ := apm.StartSpan(r.Context(), "Proxy Search", "app")
-	defer span.End()
 
 	proxyURL := *r.URL
 	proxyURL.Host = pm.destinationURL.Host
@@ -127,6 +125,8 @@ func (pm *ProxyMode) Search(r *http.Request) (packages.Packages, error) {
 	if err != nil {
 		return nil, fmt.Errorf("can't create proxy request: %w", err)
 	}
+
+	proxyRequest.Request = proxyRequest.Request.WithContext(r.Context())
 
 	pm.logger.Debug("Proxy /search request", zap.String("request.uri", proxyURL.String()))
 	response, err := pm.httpClient.Do(proxyRequest)
@@ -146,8 +146,6 @@ func (pm *ProxyMode) Search(r *http.Request) (packages.Packages, error) {
 }
 
 func (pm *ProxyMode) Categories(r *http.Request) ([]packages.Category, error) {
-	span, _ := apm.StartSpan(r.Context(), "Proxy Categories", "app")
-	defer span.End()
 
 	proxyURL := *r.URL
 	proxyURL.Host = pm.destinationURL.Host
@@ -158,6 +156,8 @@ func (pm *ProxyMode) Categories(r *http.Request) ([]packages.Category, error) {
 	if err != nil {
 		return nil, fmt.Errorf("can't create proxy request: %w", err)
 	}
+
+	proxyRequest.Request = proxyRequest.Request.WithContext(r.Context())
 
 	pm.logger.Debug("Proxy /categories request", zap.String("request.uri", proxyURL.String()))
 	response, err := pm.httpClient.Do(proxyRequest)
@@ -174,8 +174,6 @@ func (pm *ProxyMode) Categories(r *http.Request) ([]packages.Category, error) {
 }
 
 func (pm *ProxyMode) Package(r *http.Request) (*packages.Package, error) {
-	span, _ := apm.StartSpan(r.Context(), "Proxy Package", "app")
-	defer span.End()
 
 	vars := mux.Vars(r)
 	packageName, ok := vars["packageName"]
@@ -194,6 +192,8 @@ func (pm *ProxyMode) Package(r *http.Request) (*packages.Package, error) {
 	if err != nil {
 		return nil, fmt.Errorf("can't create proxy request: %w", err)
 	}
+
+	proxyRequest.Request = proxyRequest.Request.WithContext(r.Context())
 
 	pm.logger.Debug("Proxy /package request", zap.String("request.uri", proxyURL.String()))
 	response, err := pm.httpClient.Do(proxyRequest)
