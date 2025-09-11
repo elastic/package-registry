@@ -10,6 +10,11 @@ function fixCRLF {
 
 function withGolang($version) {
     Write-Host "-- Install golang --"
+    $latest_1_24_versions = '1.24.7', '1.24.8'
+    if ($version -in $latest_1_24_versions) {
+        # latest Golang version available for 1.24.x
+        $version = '1.24.6'
+    }
     choco install -y golang --version $version
     $env:ChocolateyInstall = Convert-Path "$((Get-Command choco).Path)\..\.."
     Import-Module "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
