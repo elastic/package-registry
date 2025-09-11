@@ -2,14 +2,21 @@ $ErrorActionPreference = "Stop" # set -e
 # Forcing to checkout again all the files with a correct autocrlf.
 # Doing this here because we cannot set git clone options before.
 function fixCRLF {
-    Write-Host "-- Fixing CRLF in git checkout --"
+    Write-Host "--- Fixing CRLF in git checkout"
     git config core.autocrlf input
     git rm --quiet --cached -r .
     git reset --quiet --hard
 }
 
 function withGolang($version) {
-    Write-Host "-- Install golang --"
+    Write-Host "--- Install golang"
+    $latest_1_24_versions = @('1.24.7')
+    # not all latest Golang versions of 1.24.x are available since 1.25.0 is released
+    if ($version -in $latest_1_24_versions) {
+        Write-Host "$version not available in cholocatey, using 1.24.6"
+        # latest Golang version available for 1.24.x
+        $version = '1.24.6'
+    }
     choco install -y golang --version $version
     $env:ChocolateyInstall = Convert-Path "$((Get-Command choco).Path)\..\.."
     Import-Module "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
@@ -19,12 +26,12 @@ function withGolang($version) {
 }
 
 function withGoJUnitReport {
-    Write-Host "-- Install go-junit-report --"
+    Write-Host "--- Install go-junit-report"
     go install github.com/jstemmer/go-junit-report/v2@latest
 }
 
 function withMage($version) {
-    Write-Host "-- Install Mage --"
+    Write-Host "--- Install Mage"
     go mod download -x
     go install github.com/magefile/mage@v$version
 }
@@ -34,6 +41,7 @@ withGolang $env:SETUP_GOLANG_VERSION
 withMage $env:SETUP_MAGE_VERSION
 withGoJUnitReport
 
+Write-Host "--- Run Unit tests"
 $ErrorActionPreference = "Continue" # set +e
 mage -debug test > test-report.txt
 $EXITCODE=$LASTEXITCODE
@@ -47,6 +55,7 @@ foreach ($line in $contest) {
     Write-Host $changed
 }
 
+Write-Host "--- Create Junit report for junit annotation plugin"
 Get-Content test-report.txt | go-junit-report > "unicode-tests-report-win.xml"
 Get-Content unicode-tests-report-win.xml -Encoding Unicode | Set-Content -Encoding UTF8 tests-report-win.xml
 Remove-Item unicode-tests-report-win.xml, test-report.txt
