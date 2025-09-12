@@ -121,12 +121,10 @@ func (pm *ProxyMode) Search(r *http.Request) (packages.Packages, error) {
 	proxyURL.Scheme = pm.destinationURL.Scheme
 	proxyURL.User = pm.destinationURL.User
 
-	proxyRequest, err := retryablehttp.NewRequest(http.MethodGet, proxyURL.String(), nil)
+	proxyRequest, err := retryablehttp.NewRequestWithContext(r.Context(), http.MethodGet, proxyURL.String(), nil)
 	if err != nil {
 		return nil, fmt.Errorf("can't create proxy request: %w", err)
 	}
-
-	proxyRequest.Request = proxyRequest.Request.WithContext(r.Context())
 
 	pm.logger.Debug("Proxy /search request", zap.String("request.uri", proxyURL.String()))
 	response, err := pm.httpClient.Do(proxyRequest)
@@ -152,12 +150,10 @@ func (pm *ProxyMode) Categories(r *http.Request) ([]packages.Category, error) {
 	proxyURL.Scheme = pm.destinationURL.Scheme
 	proxyURL.User = pm.destinationURL.User
 
-	proxyRequest, err := retryablehttp.NewRequest(http.MethodGet, proxyURL.String(), nil)
+	proxyRequest, err := retryablehttp.NewRequestWithContext(r.Context(), http.MethodGet, proxyURL.String(), nil)
 	if err != nil {
 		return nil, fmt.Errorf("can't create proxy request: %w", err)
 	}
-
-	proxyRequest.Request = proxyRequest.Request.WithContext(r.Context())
 
 	pm.logger.Debug("Proxy /categories request", zap.String("request.uri", proxyURL.String()))
 	response, err := pm.httpClient.Do(proxyRequest)
@@ -188,12 +184,10 @@ func (pm *ProxyMode) Package(r *http.Request) (*packages.Package, error) {
 
 	urlPath := fmt.Sprintf("/package/%s/%s/", packageName, packageVersion)
 	proxyURL := pm.destinationURL.ResolveReference(&url.URL{Path: urlPath})
-	proxyRequest, err := retryablehttp.NewRequest(http.MethodGet, proxyURL.String(), nil)
+	proxyRequest, err := retryablehttp.NewRequestWithContext(r.Context(), http.MethodGet, proxyURL.String(), nil)
 	if err != nil {
 		return nil, fmt.Errorf("can't create proxy request: %w", err)
 	}
-
-	proxyRequest.Request = proxyRequest.Request.WithContext(r.Context())
 
 	pm.logger.Debug("Proxy /package request", zap.String("request.uri", proxyURL.String()))
 	response, err := pm.httpClient.Do(proxyRequest)
