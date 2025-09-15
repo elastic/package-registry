@@ -4,13 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased](https://github.com/elastic/package-registry/compare/v1.31.1...main)
+## [v1.32.0](https://github.com/elastic/package-registry/compare/v1.31.1...v1.32.0)
 
 ### Breaking changes
 
 ### Bugfixes
 
 * Update Go runtime to 1.25.1. [#1426](https://github.com/elastic/package-registry/pull/1426)
+* Fix context propagation in APM instrumentation in proxy mode. [#1424](https://github.com/elastic/package-registry/pull/1424)
 
 ### Added
 
