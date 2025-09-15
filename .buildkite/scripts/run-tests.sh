@@ -17,6 +17,7 @@ exit_code=$?
 set -e
 
 echo "--- Check go version"
+go env |grep GOTOOLCHAIN
 go version
 
 # Buildkite collapse logs under --- symbols
