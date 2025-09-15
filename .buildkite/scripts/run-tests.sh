@@ -16,6 +16,9 @@ mage -debug test > "${tests_report_txt_file}"
 exit_code=$?
 set -e
 
+echo "--- Check go version"
+go version
+
 # Buildkite collapse logs under --- symbols
 # need to change --- to anything else or switch off collapsing (note: not available at the moment of this commit)
 awk '{gsub("---", "----"); print }' "${tests_report_txt_file}"
