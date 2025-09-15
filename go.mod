@@ -2,8 +2,6 @@ module github.com/elastic/package-registry
 
 go 1.24.0
 
-toolchain go1.25.1
-
 require (
 	cloud.google.com/go/storage v1.56.1
 	github.com/Masterminds/semver/v3 v3.4.0
