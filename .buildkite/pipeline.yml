@@ -11,6 +11,9 @@ env:
   WINDOWS_AGENT_IMAGE: "family/core-windows-2022"
   MACOS_ARM_AGENT_IMAGE: "generic-13-ventura-arm"
 
+  # Allow to select and run a newer Go version depending on the toolchain specified in go.mod
+  GOTOOLCHAIN: "auto"
+
 steps:
   - label: ":golangci-lint: Checks formatting / linting"
     key: lint
