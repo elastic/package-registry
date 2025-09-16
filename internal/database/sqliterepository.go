@@ -278,16 +278,16 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 	var query strings.Builder
 	query.WriteString("SELECT ")
 	for _, k := range keys {
-		if !useJSONFields && (k.Name == "data" || k.Name == "baseData") {
+		switch {
+		case !useJSONFields && (k.Name == "data" || k.Name == "baseData"):
 			continue
-		}
-		if k.Name == "data" && useBaseData {
+		case k.Name == "data" && useBaseData:
 			continue
-		}
-		if k.Name == "baseData" && !useBaseData {
+		case k.Name == "baseData" && !useBaseData:
 			continue
+		default:
+			getKeys = append(getKeys, k.Name)
 		}
-		getKeys = append(getKeys, k.Name)
 	}
 	query.WriteString(strings.Join(getKeys, ", "))
 	query.WriteString(" FROM ")
