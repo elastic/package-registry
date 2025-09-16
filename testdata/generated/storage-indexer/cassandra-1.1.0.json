@@ -1,0 +1,222 @@
+{
+  "name": "cassandra",
+  "title": "Cassandra",
+  "version": "1.1.0",
+  "release": "ga",
+  "description": "This Elastic integration collects logs and metrics from cassandra.",
+  "type": "integration",
+  "download": "/epr/cassandra/cassandra-1.1.0.zip",
+  "path": "/package/cassandra/1.1.0",
+  "icons": [
+    {
+      "src": "/img/cassandra.svg",
+      "path": "/package/cassandra/1.1.0/img/cassandra.svg",
+      "title": "cassandra",
+      "size": "279x187",
+      "type": "image/svg+xml"
+    }
+  ],
+  "conditions": {
+    "kibana": {
+      "version": "^7.15.0 || ^8.0.0"
+    }
+  },
+  "owner": {
+    "github": "elastic/integrations"
+  },
+  "categories": [
+    "datastore",
+    "monitoring"
+  ],
+  "signature_path": "/epr/cassandra/cassandra-1.1.0.zip.sig",
+  "format_version": "1.0.0",
+  "readme": "/package/cassandra/1.1.0/docs/README.md",
+  "license": "basic",
+  "screenshots": [
+    {
+      "src": "/img/[Metrics Cassandra] Overview.png",
+      "path": "/package/cassandra/1.1.0/img/[Metrics Cassandra] Overview.png",
+      "title": "Overview Dashboard",
+      "size": "600x600",
+      "type": "image/png"
+    },
+    {
+      "src": "/img/[Logs Cassandra] System Logs.jpg",
+      "path": "/package/cassandra/1.1.0/img/[Logs Cassandra] System Logs.jpg",
+      "title": "System Logs Dashboard",
+      "size": "600x600",
+      "type": "image/jpg"
+    }
+  ],
+  "assets": [
+    "/package/cassandra/1.1.0/changelog.yml",
+    "/package/cassandra/1.1.0/manifest.yml",
+    "/package/cassandra/1.1.0/docs/README.md",
+    "/package/cassandra/1.1.0/img/[Logs Cassandra] System Logs.jpg",
+    "/package/cassandra/1.1.0/img/[Metrics Cassandra] Overview.png",
+    "/package/cassandra/1.1.0/img/cassandra.svg",
+    "/package/cassandra/1.1.0/data_stream/log/manifest.yml",
+    "/package/cassandra/1.1.0/data_stream/log/sample_event.json",
+    "/package/cassandra/1.1.0/data_stream/metrics/manifest.yml",
+    "/package/cassandra/1.1.0/data_stream/metrics/sample_event.json",
+    "/package/cassandra/1.1.0/kibana/dashboard/cassandra-25b7d6d0-1c71-11ec-84f1-e1733c643874.json",
+    "/package/cassandra/1.1.0/kibana/dashboard/cassandra-dd325020-1f8b-11ec-ba68-fbf426daf104.json",
+    "/package/cassandra/1.1.0/kibana/search/cassandra-7ff6a1a0-1c6f-11ec-84f1-e1733c643874.json",
+    "/package/cassandra/1.1.0/kibana/search/cassandra-a7a48e10-1f8a-11ec-ba68-fbf426daf104.json",
+    "/package/cassandra/1.1.0/kibana/visualization/cassandra-01880100-1f5e-11ec-a3a3-6bd3ff5963e5.json",
+    "/package/cassandra/1.1.0/kibana/visualization/cassandra-33068620-1f90-11ec-ba68-fbf426daf104.json",
+    "/package/cassandra/1.1.0/kibana/visualization/cassandra-3437c610-1f83-11ec-ba68-fbf426daf104.json",
+    "/package/cassandra/1.1.0/kibana/visualization/cassandra-49575c60-1f8b-11ec-ba68-fbf426daf104.json",
+    "/package/cassandra/1.1.0/kibana/visualization/cassandra-49daddb0-1f5e-11ec-a3a3-6bd3ff5963e5.json",
+    "/package/cassandra/1.1.0/kibana/visualization/cassandra-54c57b30-1f91-11ec-ba68-fbf426daf104.json",
+    "/package/cassandra/1.1.0/kibana/visualization/cassandra-5ba3b360-2020-11ec-ba68-fbf426daf104.json",
+    "/package/cassandra/1.1.0/kibana/visualization/cassandra-700c4f60-2020-11ec-ba68-fbf426daf104.json",
+    "/package/cassandra/1.1.0/kibana/visualization/cassandra-86a4d8e0-1f5e-11ec-a3a3-6bd3ff5963e5.json",
+    "/package/cassandra/1.1.0/kibana/visualization/cassandra-87490750-1f8e-11ec-ba68-fbf426daf104.json",
+    "/package/cassandra/1.1.0/kibana/visualization/cassandra-88fb36d0-2020-11ec-ba68-fbf426daf104.json",
+    "/package/cassandra/1.1.0/kibana/visualization/cassandra-8d84a7e0-1f62-11ec-a3a3-6bd3ff5963e5.json",
+    "/package/cassandra/1.1.0/kibana/visualization/cassandra-90562c80-1f64-11ec-a3a3-6bd3ff5963e5.json",
+    "/package/cassandra/1.1.0/kibana/visualization/cassandra-aa19ff10-1f83-11ec-ba68-fbf426daf104.json",
+    "/package/cassandra/1.1.0/kibana/visualization/cassandra-ae0768e0-1f62-11ec-a3a3-6bd3ff5963e5.json",
+    "/package/cassandra/1.1.0/kibana/visualization/cassandra-b5f8a180-1f5e-11ec-a3a3-6bd3ff5963e5.json",
+    "/package/cassandra/1.1.0/kibana/visualization/cassandra-c0d1d7b0-1f82-11ec-ba68-fbf426daf104.json",
+    "/package/cassandra/1.1.0/kibana/visualization/cassandra-c6465e10-1f5e-11ec-a3a3-6bd3ff5963e5.json",
+    "/package/cassandra/1.1.0/kibana/visualization/cassandra-d83fced0-1f5e-11ec-a3a3-6bd3ff5963e5.json",
+    "/package/cassandra/1.1.0/kibana/visualization/cassandra-e84ad280-1f5d-11ec-a3a3-6bd3ff5963e5.json",
+    "/package/cassandra/1.1.0/kibana/visualization/cassandra-f733d980-1f5e-11ec-a3a3-6bd3ff5963e5.json",
+    "/package/cassandra/1.1.0/data_stream/log/fields/agent.yml",
+    "/package/cassandra/1.1.0/data_stream/log/fields/base-fields.yml",
+    "/package/cassandra/1.1.0/data_stream/log/fields/ecs.yml",
+    "/package/cassandra/1.1.0/data_stream/log/fields/fields.yml",
+    "/package/cassandra/1.1.0/data_stream/metrics/fields/base-fields.yml",
+    "/package/cassandra/1.1.0/data_stream/metrics/fields/ecs.yml",
+    "/package/cassandra/1.1.0/data_stream/metrics/fields/fields.yml",
+    "/package/cassandra/1.1.0/data_stream/log/agent/stream/log.yml.hbs",
+    "/package/cassandra/1.1.0/data_stream/log/elasticsearch/ingest_pipeline/default.yml",
+    "/package/cassandra/1.1.0/data_stream/metrics/agent/stream/stream.yml.hbs",
+    "/package/cassandra/1.1.0/data_stream/metrics/elasticsearch/ingest_pipeline/default.yml"
+  ],
+  "policy_templates": [
+    {
+      "name": "cassandra",
+      "title": "Cassandra logs and metrics",
+      "description": "Collect logs and metrics from Cassandra",
+      "inputs": [
+        {
+          "type": "logfile",
+          "title": "Collect System logs from Cassandra",
+          "description": "Collecting System logs from Cassandra"
+        },
+        {
+          "type": "jolokia/metrics",
+          "vars": [
+            {
+              "name": "hosts",
+              "type": "text",
+              "title": "Hosts",
+              "multi": true,
+              "required": true,
+              "show_user": true,
+              "default": [
+                "localhost:8778"
+              ]
+            },
+            {
+              "name": "path",
+              "type": "text",
+              "title": "Path",
+              "multi": false,
+              "required": true,
+              "show_user": false,
+              "default": "/jolokia/?ignoreErrors=true&canonicalNaming=false"
+            },
+            {
+              "name": "username",
+              "type": "text",
+              "title": "Username",
+              "multi": false,
+              "required": false,
+              "show_user": false,
+              "default": "admin"
+            },
+            {
+              "name": "password",
+              "type": "password",
+              "title": "Password",
+              "multi": false,
+              "required": false,
+              "show_user": false,
+              "default": "admin"
+            }
+          ],
+          "title": "Collect Cassandra metrics",
+          "description": "Collecting metrics from Cassandra using jolokia"
+        }
+      ],
+      "multiple": true
+    }
+  ],
+  "data_streams": [
+    {
+      "type": "logs",
+      "dataset": "cassandra.log",
+      "title": "Cassandra System Logs",
+      "release": "ga",
+      "ingest_pipeline": "default",
+      "streams": [
+        {
+          "input": "logfile",
+          "vars": [
+            {
+              "name": "paths",
+              "type": "text",
+              "title": "Paths",
+              "multi": true,
+              "required": true,
+              "show_user": true,
+              "default": [
+                "/opt/cassandra*/data/system.log"
+              ]
+            }
+          ],
+          "template_path": "log.yml.hbs",
+          "title": "Cassandra logs",
+          "description": "Collect Cassandra system logs",
+          "enabled": true
+        }
+      ],
+      "package": "cassandra",
+      "path": "log"
+    },
+    {
+      "type": "metrics",
+      "dataset": "cassandra.metrics",
+      "title": "metrics",
+      "release": "ga",
+      "ingest_pipeline": "default",
+      "streams": [
+        {
+          "input": "jolokia/metrics",
+          "vars": [
+            {
+              "name": "period",
+              "type": "text",
+              "title": "Period",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "10s"
+            }
+          ],
+          "template_path": "stream.yml.hbs",
+          "title": "Cassandra metrics",
+          "description": "Collect cassandra metrics using jolokia agent",
+          "enabled": true,
+          "ingestion_method": "Jolokia"
+        }
+      ],
+      "package": "cassandra",
+      "path": "metrics"
+    }
+  ]
+}

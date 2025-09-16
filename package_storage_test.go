@@ -188,6 +188,7 @@ func generateTestPackageIndexEndpoints(indexer Indexer) ([]struct {
 		{"/package/kubernetes/0.3.0/", packageIndexRouterPath, "kubernetes-0.3.0.json", packageIndexHandler},
 		{"/package/osquery/1.0.3/", packageIndexRouterPath, "osquery-1.0.3.json", packageIndexHandler},
 		{"/package/sql/0.5.0/", packageIndexRouterPath, "sql-0.5.0.json", packageIndexHandler},
+		{"/package/cassandra/1.1.0/", packageIndexRouterPath, "cassandra-1.1.0.json", packageIndexHandler},
 	}, nil
 }
 
