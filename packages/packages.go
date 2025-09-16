@@ -90,7 +90,8 @@ type GetOptions struct {
 	// where experimental packages are filtered by default.
 	Filter *Filter
 
-	FullData bool
+	FullData        bool
+	SkipPackageData bool
 }
 
 // FileSystemIndexer indexes packages from the filesystem.

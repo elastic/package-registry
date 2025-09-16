@@ -73,6 +73,8 @@ func (h *staticHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	opts := packages.NameVersionFilter(params.packageName, params.packageVersion)
+	opts.SkipPackageData = true
+
 	pkgs, err := h.indexer.Get(r.Context(), &opts)
 	if err != nil {
 		logger.Error("getting package path failed",
