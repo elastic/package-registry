@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [unreleased](https://github.com/elastic/package-registry/compare/v1.32.0...main)
+
+### Breaking changes
+
+### Bugfixes
+
+* Include ingestion method also for input packages. [#1431](https://github.com/elastic/package-registry/pull/1431)
+
+### Added
+
+### Deprecated
+
+### Known Issues
+
+
 ## [v1.32.0](https://github.com/elastic/package-registry/compare/v1.31.1...v1.32.0)
 
 ### Breaking changes

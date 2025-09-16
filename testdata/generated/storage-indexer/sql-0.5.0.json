@@ -1,0 +1,60 @@
+{
+  "name": "sql",
+  "title": "SQL Input",
+  "version": "0.5.0",
+  "release": "beta",
+  "description": "Collects Metrics by Quering on SQL Databases",
+  "type": "input",
+  "download": "/epr/sql/sql-0.5.0.zip",
+  "path": "/package/sql/0.5.0",
+  "icons": [
+    {
+      "src": "/img/sql-server-icon.svg",
+      "path": "/package/sql/0.5.0/img/sql-server-icon.svg",
+      "title": "SQL logo",
+      "size": "32x32",
+      "type": "image/svg+xml"
+    }
+  ],
+  "conditions": {
+    "kibana": {
+      "version": "^8.13.0"
+    },
+    "elastic": {
+      "subscription": "basic"
+    }
+  },
+  "owner": {
+    "github": "elastic/obs-infraobs-integrations"
+  },
+  "categories": [
+    "custom"
+  ],
+  "signature_path": "/epr/sql/sql-0.5.0.zip.sig",
+  "format_version": "2.0.0",
+  "readme": "/package/sql/0.5.0/docs/README.md",
+  "license": "basic",
+  "assets": [
+    "/package/sql/0.5.0/LICENSE.txt",
+    "/package/sql/0.5.0/changelog.yml",
+    "/package/sql/0.5.0/manifest.yml",
+    "/package/sql/0.5.0/sample_event.json",
+    "/package/sql/0.5.0/docs/README.md",
+    "/package/sql/0.5.0/fields/base-fields.yml",
+    "/package/sql/0.5.0/fields/input.yml",
+    "/package/sql/0.5.0/img/sql-server-icon.svg",
+    "/package/sql/0.5.0/agent/input/input.yml.hbs"
+  ],
+  "policy_templates": [
+    {
+      "name": "sql",
+      "title": "SQL Metrics",
+      "description": "Collects Metrics by Quering on SQL Databases",
+      "multiple": true,
+      "type": "metrics",
+      "input": "sql/metrics",
+      "ingestion_method": "Database",
+      "template_path": "input.yml.hbs"
+    }
+  ]
+}

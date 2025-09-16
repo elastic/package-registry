@@ -415,8 +415,9 @@ func TestPackageIndex(t *testing.T) {
 		{"/package/missing/1.0.0/", packageIndexRouterPath, "index-package-not-found.txt", packageIndexHandler},
 		{"/package/example/999.0.0/", packageIndexRouterPath, "index-package-revision-not-found.txt", packageIndexHandler},
 		{"/package/example/a.b.c/", packageIndexRouterPath, "index-package-invalid-version.txt", packageIndexHandler},
+		{"/package/sql_input/1.0.1/", packageIndexRouterPath, "sql-input-package-not-found.json", packageIndexHandler},
+		{"/package/sql_input/0.3.0/", packageIndexRouterPath, "sql-input-package.json", packageIndexHandler},
 		{"/package/datasources/1.0.0/", packageIndexRouterPath, "datasources-1.0.0-package.json", packageIndexHandler},
-		{"/package/sql_input/1.0.1/", packageIndexRouterPath, "sql-input-package.json", packageIndexHandler},
 	}
 
 	for _, test := range tests {
