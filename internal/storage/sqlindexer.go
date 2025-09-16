@@ -366,14 +366,14 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 		}
 		if opts != nil {
 			options.IncludeFullData = opts.FullData
-			options.SkipJSON = opts.SkipJSON
+			options.SkipPackageData = opts.SkipPackageData
 		}
 
 		err := (*i.current).AllFunc(ctx, "packages", options, func(ctx context.Context, p *database.Package) error {
 			var pkg packages.Package
 			var err error
 			switch {
-			case opts != nil && opts.SkipJSON:
+			case opts != nil && opts.SkipPackageData:
 				var pPkg *packages.Package
 				pPkg, err = packages.NewPackageWithOpts(i.logger,
 					packages.WithFormatVersion(p.FormatVersion),
