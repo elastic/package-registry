@@ -377,7 +377,7 @@ type SQLOptions struct {
 	CurrentCursor string
 
 	IncludeFullData bool // If true, the query will return the full data field instead of the base data field
-	SkipJSON        bool // If true, no need to retrieve Data nor BaseData fields
+	SkipPackageData bool // If true, no need to retrieve Data nor BaseData fields
 }
 
 func (o *SQLOptions) Where() (string, []any) {
@@ -447,5 +447,5 @@ func (o *SQLOptions) SkipJSONFields() bool {
 	if o == nil {
 		return false
 	}
-	return o.SkipJSON
+	return o.SkipPackageData
 }

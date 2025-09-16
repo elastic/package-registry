@@ -82,7 +82,7 @@ func (h *artifactsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	opts := packages.NameVersionFilter(packageName, packageVersion)
-	opts.SkipJSON = true
+	opts.SkipPackageData = true
 
 	pkgs, err := h.indexer.Get(r.Context(), &opts)
 	if err != nil {
