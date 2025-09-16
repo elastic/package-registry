@@ -109,9 +109,10 @@ type PolicyTemplate struct {
 	DeploymentModes *DeploymentModes `config:"deployment_modes,omitempty" json:"deployment_modes,omitempty" yaml:"deployment_modes,omitempty"`
 
 	// For purposes of "input packages"
-	Type         string `config:"type,omitempty" json:"type,omitempty" yaml:"type,omitempty"`
-	Input        string `config:"input,omitempty" json:"input,omitempty" yaml:"input,omitempty"`
-	TemplatePath string `config:"template_path,omitempty" json:"template_path,omitempty" yaml:"template_path,omitempty"`
+	Type            string `config:"type,omitempty" json:"type,omitempty" yaml:"type,omitempty"`
+	Input           string `config:"input,omitempty" json:"input,omitempty" yaml:"input,omitempty"`
+	IngestionMethod string `config:"ingestion_method,omitempty" json:"ingestion_method,omitempty" yaml:"ingestion_method,omitempty"`
+	TemplatePath    string `config:"template_path,omitempty" json:"template_path,omitempty" yaml:"template_path,omitempty"`
 }
 
 // Source contains metadata about the source of the package and its distribution.
@@ -328,6 +329,11 @@ func newPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) 
 			}
 			readmePathShort := path.Join(packagePathPrefix, p.Name, p.Version, "docs", p.PolicyTemplates[i].Name+".md")
 			p.PolicyTemplates[i].Readme = &readmePathShort
+		}
+
+		// Fill ingestion method for input packages.
+		if p.Type == "input" && p.PolicyTemplates[i].Input != "" {
+			p.PolicyTemplates[i].IngestionMethod = IngestionMethods.Get(p.PolicyTemplates[i].Input)
 		}
 	}
 
