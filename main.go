@@ -632,7 +632,7 @@ func getRouter(logger *zap.Logger, options serverOptions) (*mux.Router, error) {
 	}
 	proxyMode, err := proxymode.NewProxyMode(logger, proxymode.ProxyOptions{
 		Enabled: featureProxyMode,
-		ProxyTo: proxyTo,
+		ProxyTo: []string{proxyTo},
 	})
 	if err != nil {
 		return nil, fmt.Errorf("can't create proxy mode: %w", err)
