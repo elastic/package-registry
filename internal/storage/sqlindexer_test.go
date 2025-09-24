@@ -183,7 +183,7 @@ func BenchmarkSQLIndexerGetStaticsAndArtifacts(b *testing.B) {
 	options, err := CreateFakeIndexerOptions(db, swapDb)
 	require.NoError(b, err)
 
-	fs := PrepareFakeServer(b, "testdata/search-index-all-full.json")
+	fs := PrepareFakeServer(b, "../../storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 
