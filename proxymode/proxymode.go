@@ -31,17 +31,18 @@ type backend struct {
 	Resolver *proxyResolver
 }
 
+// ProxyMode now stores the shared transport, not a shared client.
 type ProxyMode struct {
-	options    ProxyOptions
-	httpClient *retryablehttp.Client
-	backends   []backend // Changed from single destinationURL
-	logger     *zap.Logger
+	options       ProxyOptions
+	httpTransport http.RoundTripper
+	backends      []backend
+	logger        *zap.Logger
 }
 
 // ProxyOptions now supports multiple backends.
 type ProxyOptions struct {
 	Enabled bool
-	ProxyTo []string // Changed from single string
+	ProxyTo []string
 }
 
 func NoProxy(logger *zap.Logger) *ProxyMode {
@@ -61,22 +62,12 @@ func NewProxyMode(logger *zap.Logger, options ProxyOptions) (*ProxyMode, error) 
 		return &pm, nil
 	}
 
-	pm.httpClient = &retryablehttp.Client{
-		HTTPClient: &http.Client{
-			Timeout: 10 * time.Second,
-			Transport: apmhttp.WrapRoundTripper(&http.Transport{
-				MaxIdleConns:        100,
-				MaxIdleConnsPerHost: 100,
-				IdleConnTimeout:     90 * time.Second,
-			}),
-		},
-		Logger:       withZapLoggerAdapter(logger),
-		RetryWaitMin: 1 * time.Second,
-		RetryWaitMax: 15 * time.Second,
-		RetryMax:     4,
-		CheckRetry:   proxyRetryPolicy,
-		Backoff:      retryablehttp.DefaultBackoff,
-	}
+	// Create one shared, instrumented transport for all clients to use.
+	pm.httpTransport = apmhttp.WrapRoundTripper(&http.Transport{
+		MaxIdleConns:        100,
+		MaxIdleConnsPerHost: 100,
+		IdleConnTimeout:     90 * time.Second,
+	})
 
 	// Parse all configured backends.
 	pm.backends = make([]backend, 0, len(options.ProxyTo))
@@ -113,22 +104,16 @@ func NewProxyMode(logger *zap.Logger, options ProxyOptions) (*ProxyMode, error) 
 	return &pm, nil
 }
 
-// proxyRetryPolicy function extends the DefaultRetryPolicy to check if the HTTP response content-type
-// is application/json. We found occurrences of requests being rejected by an intermittent proxy and causing
-// the json.Decoder to fail.
+// proxyRetryPolicy function remains unchanged.
 func proxyRetryPolicy(ctx context.Context, resp *http.Response, err error) (bool, error) {
 	shouldRetry, err := retryablehttp.DefaultRetryPolicy(ctx, resp, err)
 	if shouldRetry {
 		return shouldRetry, err
 	}
-
-	// Chaining Package Registry servers (proxies) is allowed. HTTP client must get to the end of the chain.
 	locationHeader := resp.Header.Get("location")
 	if locationHeader != "" {
 		return false, nil
 	}
-
-	// Expect json content type only for success statuses.
 	if code := resp.StatusCode; code >= 200 && code < 300 {
 		contentType := resp.Header.Get("content-type")
 		if !strings.HasPrefix(contentType, "application/json") {
@@ -160,6 +145,21 @@ func (pm *ProxyMode) Search(r *http.Request) (packages.Packages, error) {
 		wg.Add(1)
 		go func(backend backend) {
 			defer wg.Done()
+
+			// Create a new, lightweight client for each goroutine.
+			httpClient := &retryablehttp.Client{
+				HTTPClient: &http.Client{
+					Timeout:   10 * time.Second,
+					Transport: pm.httpTransport, // All clients share the same transport.
+				},
+				Logger:       withZapLoggerAdapter(pm.logger),
+				RetryWaitMin: 1 * time.Second,
+				RetryWaitMax: 15 * time.Second,
+				RetryMax:     4,
+				CheckRetry:   proxyRetryPolicy,
+				Backoff:      retryablehttp.DefaultBackoff,
+			}
+
 			proxyURL := *r.URL
 			proxyURL.Host = backend.URL.Host
 			proxyURL.Scheme = backend.URL.Scheme
@@ -172,7 +172,7 @@ func (pm *ProxyMode) Search(r *http.Request) (packages.Packages, error) {
 			}
 
 			pm.logger.Debug("Proxying /search request", zap.String("request.uri", proxyURL.String()))
-			response, err := pm.httpClient.Do(proxyRequest)
+			response, err := httpClient.Do(proxyRequest)
 			if err != nil {
 				resultsChan <- searchResult{Err: fmt.Errorf("can't proxy search request to %s: %w", backend.URL, err)}
 				return
@@ -206,11 +206,10 @@ func (pm *ProxyMode) Search(r *http.Request) (packages.Packages, error) {
 		mergedPackages = mergedPackages.Join(result.Packages)
 	}
 
-	// NOTE: This is where complex merging/conflict resolution would be added.
-	// For now, we simply combine them.
 	return mergedPackages, nil
 }
 
+// Categories also queries all backends in parallel.
 func (pm *ProxyMode) Categories(r *http.Request) ([]packages.Category, error) {
 	type categoriesResult struct {
 		Categories []packages.Category
@@ -224,6 +223,20 @@ func (pm *ProxyMode) Categories(r *http.Request) ([]packages.Category, error) {
 		wg.Add(1)
 		go func(backend backend) {
 			defer wg.Done()
+
+			httpClient := &retryablehttp.Client{
+				HTTPClient: &http.Client{
+					Timeout:   10 * time.Second,
+					Transport: pm.httpTransport,
+				},
+				Logger:       withZapLoggerAdapter(pm.logger),
+				RetryWaitMin: 1 * time.Second,
+				RetryWaitMax: 15 * time.Second,
+				RetryMax:     4,
+				CheckRetry:   proxyRetryPolicy,
+				Backoff:      retryablehttp.DefaultBackoff,
+			}
+
 			proxyURL := *r.URL
 			proxyURL.Host = backend.URL.Host
 			proxyURL.Scheme = backend.URL.Scheme
@@ -236,7 +249,7 @@ func (pm *ProxyMode) Categories(r *http.Request) ([]packages.Category, error) {
 			}
 
 			pm.logger.Debug("Proxying /categories request", zap.String("request.uri", proxyURL.String()))
-			response, err := pm.httpClient.Do(proxyRequest)
+			response, err := httpClient.Do(proxyRequest)
 			if err != nil {
 				resultsChan <- categoriesResult{Err: fmt.Errorf("can't proxy categories request to %s: %w", backend.URL, err)}
 				return
@@ -310,6 +323,20 @@ func (pm *ProxyMode) Package(r *http.Request) (*packages.Package, error) {
 		wg.Add(1)
 		go func(backend backend) {
 			defer wg.Done()
+
+			httpClient := &retryablehttp.Client{
+				HTTPClient: &http.Client{
+					Timeout:   10 * time.Second,
+					Transport: pm.httpTransport,
+				},
+				Logger:       withZapLoggerAdapter(pm.logger),
+				RetryWaitMin: 1 * time.Second,
+				RetryWaitMax: 15 * time.Second,
+				RetryMax:     4,
+				CheckRetry:   proxyRetryPolicy,
+				Backoff:      retryablehttp.DefaultBackoff,
+			}
+
 			urlPath := fmt.Sprintf("/package/%s/%s/", packageName, packageVersion)
 			proxyURL := backend.URL.ResolveReference(&url.URL{Path: urlPath})
 
@@ -320,7 +347,7 @@ func (pm *ProxyMode) Package(r *http.Request) (*packages.Package, error) {
 			}
 
 			pm.logger.Debug("Proxying /package request", zap.String("request.uri", proxyURL.String()))
-			response, err := pm.httpClient.Do(proxyRequest)
+			response, err := httpClient.Do(proxyRequest)
 			if err != nil {
 				resultsChan <- packageResult{Err: fmt.Errorf("can't proxy package request to %s: %w", backend.URL, err)}
 				return
