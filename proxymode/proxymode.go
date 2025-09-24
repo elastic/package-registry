@@ -16,8 +16,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/gorilla/mux"
 	"github.com/hashicorp/go-retryablehttp"
-	"github.comcom/gorilla/mux"
 	"go.elastic.co/apm/module/apmhttp/v2"
 	"go.uber.org/zap"
 
