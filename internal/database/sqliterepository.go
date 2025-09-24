@@ -274,7 +274,7 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 	useJSONFields := whereOptions == nil || !whereOptions.SkipJSONFields()
 	useBaseData := whereOptions == nil || !whereOptions.UseFullData()
 
-	var getKeys []string
+	getKeys := make([]string, 0, len(keys))
 	var query strings.Builder
 	query.WriteString("SELECT ")
 	for _, k := range keys {
