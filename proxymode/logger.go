@@ -5,39 +5,48 @@
 package proxymode
 
 import (
+	"context"
+
 	"github.com/hashicorp/go-retryablehttp"
+	"go.elastic.co/apm/module/apmzap/v2"
 	"go.uber.org/zap"
 )
 
 type zapLoggerAdapter struct {
 	target *zap.Logger
+	ctx    context.Context
 }
 
 var _ retryablehttp.LeveledLogger = new(zapLoggerAdapter)
 
-func withZapLoggerAdapter(target *zap.Logger) retryablehttp.LeveledLogger {
+// The constructor is still needed to pass the context.
+func newZapLoggerAdapter(ctx context.Context, target *zap.Logger) retryablehttp.LeveledLogger {
 	return &zapLoggerAdapter{
 		target: target,
+		ctx:    ctx,
 	}
 }
 
 func (a zapLoggerAdapter) Error(msg string, keysAndValues ...interface{}) {
-	a.target.Error(msg, keysAndValuesAsZapFields(keysAndValues...)...)
+	loggerWithContext := a.target.With(apmzap.TraceContext(a.ctx)...)
+	loggerWithContext.Error(msg, keysAndValuesAsZapFields(keysAndValues...)...)
 }
 
 func (a zapLoggerAdapter) Info(msg string, keysAndValues ...interface{}) {
-	a.target.Info(msg, keysAndValuesAsZapFields(keysAndValues...)...)
+	loggerWithContext := a.target.With(apmzap.TraceContext(a.ctx)...)
+	loggerWithContext.Info(msg, keysAndValuesAsZapFields(keysAndValues...)...)
 }
 
 func (a zapLoggerAdapter) Debug(msg string, keysAndValues ...interface{}) {
-	a.target.Debug(msg, keysAndValuesAsZapFields(keysAndValues...)...)
+	loggerWithContext := a.target.With(apmzap.TraceContext(a.ctx)...)
+	loggerWithContext.Debug(msg, keysAndValuesAsZapFields(keysAndValues...)...)
 }
 
 func (a zapLoggerAdapter) Warn(msg string, keysAndValues ...interface{}) {
-	a.target.Warn(msg, keysAndValuesAsZapFields(keysAndValues...)...)
+	loggerWithContext := a.target.With(apmzap.TraceContext(a.ctx)...)
+	loggerWithContext.Warn(msg, keysAndValuesAsZapFields(keysAndValues...)...)
 }
 
-// keysAndValuesAsZapFields function transforms the LeveledLogger arguments to the zap.Logger interface.
 func keysAndValuesAsZapFields(keysAndValues ...interface{}) []zap.Field {
 	fields := make([]zap.Field, len(keysAndValues)/2)
 	var j int

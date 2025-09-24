@@ -31,7 +31,7 @@ type backend struct {
 	Resolver *proxyResolver
 }
 
-// ProxyMode now stores the shared transport, not a shared client.
+// ProxyMode stores the shared transport, not a shared client.
 type ProxyMode struct {
 	options       ProxyOptions
 	httpTransport http.RoundTripper
@@ -39,10 +39,11 @@ type ProxyMode struct {
 	logger        *zap.Logger
 }
 
-// ProxyOptions now supports multiple backends.
+// ProxyOptions supports multiple backends and a configurable timeout.
 type ProxyOptions struct {
 	Enabled bool
 	ProxyTo []string
+	Timeout time.Duration
 }
 
 func NoProxy(logger *zap.Logger) *ProxyMode {
@@ -74,7 +75,7 @@ func NewProxyMode(logger *zap.Logger, options ProxyOptions) (*ProxyMode, error) 
 	for _, proxyAddr := range options.ProxyTo {
 		parts := strings.Split(proxyAddr, ";")
 		addr := parts[0]
-		priority := 0 // Default priority
+		priority := 0
 
 		if len(parts) > 1 {
 			p, err := strconv.Atoi(parts[1])
@@ -104,7 +105,6 @@ func NewProxyMode(logger *zap.Logger, options ProxyOptions) (*ProxyMode, error) 
 	return &pm, nil
 }
 
-// proxyRetryPolicy function remains unchanged.
 func proxyRetryPolicy(ctx context.Context, resp *http.Response, err error) (bool, error) {
 	shouldRetry, err := retryablehttp.DefaultRetryPolicy(ctx, resp, err)
 	if shouldRetry {
@@ -146,13 +146,12 @@ func (pm *ProxyMode) Search(r *http.Request) (packages.Packages, error) {
 		go func(backend backend) {
 			defer wg.Done()
 
-			// Create a new, lightweight client for each goroutine.
 			httpClient := &retryablehttp.Client{
 				HTTPClient: &http.Client{
-					Timeout:   10 * time.Second,
-					Transport: pm.httpTransport, // All clients share the same transport.
+					Timeout:   pm.options.Timeout,
+					Transport: pm.httpTransport,
 				},
-				Logger:       withZapLoggerAdapter(pm.logger),
+				Logger:       newZapLoggerAdapter(r.Context(), pm.logger),
 				RetryWaitMin: 1 * time.Second,
 				RetryWaitMax: 15 * time.Second,
 				RetryMax:     4,
@@ -199,7 +198,6 @@ func (pm *ProxyMode) Search(r *http.Request) (packages.Packages, error) {
 			pm.logger.Warn("Failed to fetch from proxy backend", zap.Error(result.Err))
 			continue
 		}
-		// Set the resolver for each package to its backend of origin.
 		for i := range result.Packages {
 			result.Packages[i].SetRemoteResolver(result.Backend.Resolver)
 		}
@@ -226,10 +224,10 @@ func (pm *ProxyMode) Categories(r *http.Request) ([]packages.Category, error) {
 
 			httpClient := &retryablehttp.Client{
 				HTTPClient: &http.Client{
-					Timeout:   10 * time.Second,
+					Timeout:   pm.options.Timeout,
 					Transport: pm.httpTransport,
 				},
-				Logger:       withZapLoggerAdapter(pm.logger),
+				Logger:       newZapLoggerAdapter(r.Context(), pm.logger),
 				RetryWaitMin: 1 * time.Second,
 				RetryWaitMax: 15 * time.Second,
 				RetryMax:     4,
@@ -270,7 +268,6 @@ func (pm *ProxyMode) Categories(r *http.Request) ([]packages.Category, error) {
 		close(resultsChan)
 	}()
 
-	// Merge categories and sum counts for duplicates.
 	mergedCategories := make(map[string]packages.Category)
 	for result := range resultsChan {
 		if result.Err != nil {
@@ -312,7 +309,6 @@ func (pm *ProxyMode) Package(r *http.Request) (*packages.Package, error) {
 		Err     error
 	}
 
-	// We use a context that can be canceled once we find a result.
 	ctx, cancel := context.WithCancel(r.Context())
 	defer cancel()
 
@@ -326,10 +322,10 @@ func (pm *ProxyMode) Package(r *http.Request) (*packages.Package, error) {
 
 			httpClient := &retryablehttp.Client{
 				HTTPClient: &http.Client{
-					Timeout:   10 * time.Second,
+					Timeout:   pm.options.Timeout,
 					Transport: pm.httpTransport,
 				},
-				Logger:       withZapLoggerAdapter(pm.logger),
+				Logger:       newZapLoggerAdapter(r.Context(), pm.logger),
 				RetryWaitMin: 1 * time.Second,
 				RetryWaitMax: 15 * time.Second,
 				RetryMax:     4,
@@ -364,7 +360,6 @@ func (pm *ProxyMode) Package(r *http.Request) (*packages.Package, error) {
 				pkg.SetRemoteResolver(backend.Resolver)
 				resultsChan <- packageResult{Package: &pkg}
 			case http.StatusNotFound:
-				// Not an error, just not found on this backend.
 				resultsChan <- packageResult{Package: nil}
 			default:
 				resultsChan <- packageResult{Err: fmt.Errorf("unexpected status code %d from %s", response.StatusCode, backend.URL)}
@@ -384,14 +379,12 @@ func (pm *ProxyMode) Package(r *http.Request) (*packages.Package, error) {
 			pm.logger.Warn("Failed to fetch package from proxy backend", zap.Error(result.Err))
 			continue
 		}
-		// If we found a package, cancel other requests and return immediately.
 		if result.Package != nil {
-			cancel() // Signal other goroutines to stop.
+			cancel()
 			return result.Package, nil
 		}
 	}
 
-	// If we get here, no package was found on any backend.
 	if lastErr != nil {
 		return nil, lastErr
 	}
