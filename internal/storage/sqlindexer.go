@@ -374,11 +374,6 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 			var err error
 			switch {
 			case opts != nil && opts.SkipPackageData:
-				// pkg, err = packages.NewPackageWithOpts(i.logger,
-				// 	packages.WithFormatVersion(p.FormatVersion),
-				// 	packages.WithPackageName(p.Name),
-				// 	packages.WithPackageVersion(p.Version),
-				// )
 				pkg, err = packages.NewMinimalPackage(p.Name, p.Version, p.FormatVersion)
 				if err != nil {
 					return fmt.Errorf("failed to create minimal package %s-%s: %w", p.Name, p.Version, err)
