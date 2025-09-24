@@ -630,9 +630,23 @@ func getRouter(logger *zap.Logger, options serverOptions) (*mux.Router, error) {
 	if featureProxyMode {
 		logger.Info("Technical preview: Proxy mode is an experimental feature and it may be unstable.")
 	}
+
+	// Default proxy backend timeout
+	proxyTimeout := 2 * time.Second
+
+	// Override the default from an environment variable if any.
+	if v := os.Getenv("EPR_PROXY_TIMEOUT"); v != "" {
+		if d, err := time.ParseDuration(v); err == nil {
+			proxyTimeout = d
+		} else {
+			logger.Warn("invalid EPR_PROXY_TIMEOUT format, using default", zap.String("value", v))
+		}
+	}
+
 	proxyMode, err := proxymode.NewProxyMode(logger, proxymode.ProxyOptions{
 		Enabled: featureProxyMode,
 		ProxyTo: strings.Split(proxyTo, ","),
+		Timeout: proxyTimeout,
 	})
 	if err != nil {
 		return nil, fmt.Errorf("can't create proxy mode: %w", err)
