@@ -247,6 +247,21 @@ func MustParsePackage(basePath string, fsBuilder FileSystemBuilder) (*Package, e
 	return p, nil
 }
 
+func NewMinimalPackage(name, packageVersion, specVersion string) (*Package, error) {
+	p := Package{
+		FormatVersion: specVersion,
+	}
+	p.Name = name
+	p.Version = packageVersion
+
+	err := p.setRuntimeFields()
+	if err != nil {
+		return nil, err
+	}
+	p.Release = releaseForSemVerCompat(p.versionSemVer)
+	return &p, nil
+}
+
 type PackageOption func(p *Package) error
 
 func NewPackageWithOpts(logger *zap.Logger, opts ...PackageOption) (*Package, error) {

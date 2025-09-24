@@ -370,35 +370,36 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 		}
 
 		err := (*i.current).AllFunc(ctx, "packages", options, func(ctx context.Context, p *database.Package) error {
-			var pkg packages.Package
+			pkg := &packages.Package{}
 			var err error
 			switch {
 			case opts != nil && opts.SkipPackageData:
-				var pPkg *packages.Package
-				pPkg, err = packages.NewPackageWithOpts(i.logger,
-					packages.WithFormatVersion(p.FormatVersion),
-					packages.WithPackageName(p.Name),
-					packages.WithPackageVersion(p.Version),
-				)
+				// pkg, err = packages.NewPackageWithOpts(i.logger,
+				// 	packages.WithFormatVersion(p.FormatVersion),
+				// 	packages.WithPackageName(p.Name),
+				// 	packages.WithPackageVersion(p.Version),
+				// )
+				pkg, err = packages.NewMinimalPackage(p.Name, p.Version, p.FormatVersion)
 				if err != nil {
-					return nil
+					return fmt.Errorf("failed to create minimal package %s-%s: %w", p.Name, p.Version, err)
 				}
-				pkg = *pPkg
-				i.logger.Debug("Skip marshaling JSON")
 			case opts != nil && opts.FullData:
-				err = json.Unmarshal(p.Data, &pkg)
+				err = json.Unmarshal(p.Data, pkg)
+				if err != nil {
+					return fmt.Errorf("failed to parse full package %s-%s: %w", p.Name, p.Version, err)
+				}
 			default:
 				// BaseData is used for performance reasons, it contains only the fields that are needed for the search index.
 				// FormatVersion needs to be set from database to ensure compatibility with the package structure.
 				pkg.FormatVersion = p.FormatVersion
-				err = json.Unmarshal(p.BaseData, &pkg)
-			}
-			if err != nil {
-				return fmt.Errorf("failed to parse package %s-%s: %w", p.Name, p.Version, err)
+				err = json.Unmarshal(p.BaseData, pkg)
+				if err != nil {
+					return fmt.Errorf("failed to parse base package %s-%s: %w", p.Name, p.Version, err)
+				}
 			}
 			pkg.BasePath = p.Path
 			pkg.SetRemoteResolver(i.resolver)
-			readPackages = append(readPackages, &pkg)
+			readPackages = append(readPackages, pkg)
 			return nil
 		})
 		if err != nil {
