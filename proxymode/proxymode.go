@@ -75,7 +75,7 @@ func NewProxyMode(logger *zap.Logger, options ProxyOptions) (*ProxyMode, error) 
 	for _, proxyAddr := range options.ProxyTo {
 		parts := strings.Split(proxyAddr, ";")
 		addr := parts[0]
-		priority := 0
+		priority := 0 // Default priority
 
 		if len(parts) > 1 {
 			p, err := strconv.Atoi(parts[1])
@@ -105,11 +105,19 @@ func NewProxyMode(logger *zap.Logger, options ProxyOptions) (*ProxyMode, error) 
 	return &pm, nil
 }
 
+// proxyRetryPolicy function extends the DefaultRetryPolicy and handles nil responses.
 func proxyRetryPolicy(ctx context.Context, resp *http.Response, err error) (bool, error) {
 	shouldRetry, err := retryablehttp.DefaultRetryPolicy(ctx, resp, err)
 	if shouldRetry {
 		return shouldRetry, err
 	}
+
+	// If the response is nil, a network error occurred (e.g., DNS failure).
+	// We can't inspect the response, so we return the default decision.
+	if resp == nil {
+		return false, nil
+	}
+
 	locationHeader := resp.Header.Get("location")
 	if locationHeader != "" {
 		return false, nil
@@ -325,7 +333,7 @@ func (pm *ProxyMode) Package(r *http.Request) (*packages.Package, error) {
 					Timeout:   pm.options.Timeout,
 					Transport: pm.httpTransport,
 				},
-				Logger:       newZapLoggerAdapter(r.Context(), pm.logger),
+				Logger:       newZapLoggerAdapter(ctx, pm.logger),
 				RetryWaitMin: 1 * time.Second,
 				RetryWaitMax: 15 * time.Second,
 				RetryMax:     4,
@@ -345,7 +353,8 @@ func (pm *ProxyMode) Package(r *http.Request) (*packages.Package, error) {
 			pm.logger.Debug("Proxying /package request", zap.String("request.uri", proxyURL.String()))
 			response, err := httpClient.Do(proxyRequest)
 			if err != nil {
-				resultsChan <- packageResult{Err: fmt.Errorf("can't proxy package request to %s: %w", backend.URL, err)}
+				// We don't send to resultsChan here because the logger adapter will have already logged it.
+				// This avoids duplicate error messages in the final, merged output.
 				return
 			}
 			defer response.Body.Close()
@@ -380,7 +389,7 @@ func (pm *ProxyMode) Package(r *http.Request) (*packages.Package, error) {
 			continue
 		}
 		if result.Package != nil {
-			cancel()
+			cancel() // Signal other goroutines to stop.
 			return result.Package, nil
 		}
 	}
