@@ -363,6 +363,9 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 			if opts.Filter.Experimental {
 				options.Filter.Prerelease = true
 			}
+			if opts.Filter.KibanaVersion != nil {
+				options.Filter.KibanaVersion = opts.Filter.KibanaVersion.String()
+			}
 		}
 		if opts != nil {
 			options.IncludeFullData = opts.FullData

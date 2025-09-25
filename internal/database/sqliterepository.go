@@ -349,10 +349,11 @@ func (r *SQLiteRepository) Close(ctx context.Context) error {
 }
 
 type FilterOptions struct {
-	Type       string
-	Name       string
-	Version    string
-	Prerelease bool
+	Type          string
+	Name          string
+	Version       string
+	Prerelease    bool
+	KibanaVersion string
 	// It cannot be filtered by capabilities at database level, since it would be
 	// complicated using SQL logic to ensure that all the capabilities defined in the package
 	// are present in the query filter.
@@ -419,6 +420,14 @@ func (o *SQLOptions) Where() (string, []any) {
 			sb.WriteString(" AND ")
 		}
 		sb.WriteString("prerelease = 0")
+	}
+
+	if o.Filter.KibanaVersion != "" {
+		if sb.Len() > 0 {
+			sb.WriteString(" AND ")
+		}
+		sb.WriteString("semver_compare(?, kibanaVersion) = 1")
+		args = append(args, o.Filter.KibanaVersion)
 	}
 
 	if sb.String() == "" {
