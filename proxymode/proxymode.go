@@ -41,9 +41,12 @@ type ProxyMode struct {
 
 // ProxyOptions supports multiple backends and a configurable timeout.
 type ProxyOptions struct {
-	Enabled bool
-	ProxyTo []string
-	Timeout time.Duration
+	Enabled      bool
+	ProxyTo      []string
+	Timeout      time.Duration
+	RetryMax     int
+	RetryWaitMin time.Duration
+	RetryWaitMax time.Duration
 }
 
 func NoProxy(logger *zap.Logger) *ProxyMode {
@@ -160,9 +163,9 @@ func (pm *ProxyMode) Search(r *http.Request) (packages.Packages, error) {
 					Transport: pm.httpTransport,
 				},
 				Logger:       newZapLoggerAdapter(r.Context(), pm.logger),
-				RetryWaitMin: 1 * time.Second,
-				RetryWaitMax: 15 * time.Second,
-				RetryMax:     4,
+				RetryWaitMin: pm.options.RetryWaitMin,
+				RetryWaitMax: pm.options.RetryWaitMax,
+				RetryMax:     pm.options.RetryMax,
 				CheckRetry:   proxyRetryPolicy,
 				Backoff:      retryablehttp.DefaultBackoff,
 			}
@@ -236,9 +239,9 @@ func (pm *ProxyMode) Categories(r *http.Request) ([]packages.Category, error) {
 					Transport: pm.httpTransport,
 				},
 				Logger:       newZapLoggerAdapter(r.Context(), pm.logger),
-				RetryWaitMin: 1 * time.Second,
-				RetryWaitMax: 15 * time.Second,
-				RetryMax:     4,
+				RetryWaitMin: pm.options.RetryWaitMin,
+				RetryWaitMax: pm.options.RetryWaitMax,
+				RetryMax:     pm.options.RetryMax,
 				CheckRetry:   proxyRetryPolicy,
 				Backoff:      retryablehttp.DefaultBackoff,
 			}
@@ -334,9 +337,9 @@ func (pm *ProxyMode) Package(r *http.Request) (*packages.Package, error) {
 					Transport: pm.httpTransport,
 				},
 				Logger:       newZapLoggerAdapter(ctx, pm.logger),
-				RetryWaitMin: 1 * time.Second,
-				RetryWaitMax: 15 * time.Second,
-				RetryMax:     4,
+				RetryWaitMin: pm.options.RetryWaitMin,
+				RetryWaitMax: pm.options.RetryWaitMax,
+				RetryMax:     pm.options.RetryMax,
 				CheckRetry:   proxyRetryPolicy,
 				Backoff:      retryablehttp.DefaultBackoff,
 			}
