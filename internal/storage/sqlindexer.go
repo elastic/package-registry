@@ -407,11 +407,11 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 		i.logger.Debug("Number of packages read from database", zap.Int("num.packages", len(readPackages)))
 
 		if opts != nil && opts.Filter != nil {
-			if opts.SkipPackageData && opts.Filter.PackageName != "" && opts.Filter.PackageVersion != "" {
+			if opts.Filter.PackageName != "" && opts.Filter.PackageVersion != "" {
 				if len(readPackages) > 1 {
 					return fmt.Errorf("expected at most one package when filtering by name and version, got %d", len(readPackages))
 				}
-				// If we are filtering by name and version and we are skipping package data, we can return early.
+				// If we are filtering by name and version at database level, there should be at most one package and it can be returned early.
 				return nil
 			}
 			readPackages, err = opts.Filter.Apply(ctx, readPackages)
