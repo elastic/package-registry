@@ -204,11 +204,13 @@ func BenchmarkSQLIndexerGetStaticsAndArtifacts(b *testing.B) {
 			PackageName:    "aws",
 			PackageVersion: "1.16.4",
 			Prerelease:     true,
+			Experimental:   true,
 		}, SkipPackageData: skipJSON})
 		indexer.Get(context.Background(), &packages.GetOptions{Filter: &packages.Filter{
 			PackageName:    "zoom",
 			PackageVersion: "1.2.1",
 			Prerelease:     true,
+			Experimental:   true,
 		}, SkipPackageData: skipJSON})
 		indexer.Get(context.Background(), &packages.GetOptions{Filter: &packages.Filter{
 			PackageName:    "aws",
