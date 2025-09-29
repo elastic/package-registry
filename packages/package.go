@@ -247,25 +247,6 @@ func MustParsePackage(basePath string, fsBuilder FileSystemBuilder) (*Package, e
 	return p, nil
 }
 
-// NewMinimalPackage creates a new minimal package instance with the given name, version, and spec version
-// without loading any files from disk. It also sets runtime fields like versionSemVer and specMajorMinorSemVer.
-// It is used in scenarios where only basic package information is needed.
-// The returned package instance will not have fields like Assets, DataStreams, PolicyTemplates, etc. populated.
-func NewMinimalPackage(name, packageVersion, specVersion string) (*Package, error) {
-	p := Package{
-		FormatVersion: specVersion,
-	}
-	p.Name = name
-	p.Version = packageVersion
-
-	err := p.setRuntimeFields()
-	if err != nil {
-		return nil, err
-	}
-	p.Release = releaseForSemVerCompat(p.versionSemVer)
-	return &p, nil
-}
-
 // NewPackage creates a new package instances based on the given base path.
 // The path passed goes to the root of the package where the manifest.yml is.
 func NewPackage(logger *zap.Logger, basePath string, fsBuilder FileSystemBuilder) (*Package, error) {

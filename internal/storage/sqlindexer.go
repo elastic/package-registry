@@ -374,10 +374,14 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 			var err error
 			switch {
 			case opts != nil && opts.SkipPackageData:
-				pkg, err = packages.NewMinimalPackage(p.Name, p.Version, p.FormatVersion)
-				if err != nil {
-					return fmt.Errorf("failed to create minimal package %s-%s: %w", p.Name, p.Version, err)
-				}
+				// Set minimal package data.
+				// There are some private fields of the package that are not set here (versionSemver, specMajorMinorSemver, etc.),
+				// but they should not be needed when SkipPackageData is used.
+				pkg.Name = p.Name
+				pkg.Version = p.Version
+				pkg.FormatVersion = p.FormatVersion
+				pkg.Release = p.Release
+				pkg.Path = p.Path
 			case opts != nil && opts.FullData:
 				err = json.Unmarshal(p.Data, pkg)
 				if err != nil {
@@ -403,6 +407,13 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 		i.logger.Debug("Number of packages read from database", zap.Int("num.packages", len(readPackages)))
 
 		if opts != nil && opts.Filter != nil {
+			if opts.SkipPackageData && opts.Filter.PackageName != "" && opts.Filter.PackageVersion != "" {
+				if len(readPackages) > 1 {
+					return fmt.Errorf("expected at most one package when filtering by name and version, got %d", len(readPackages))
+				}
+				// If we are filtering by name and version and we are skipping package data, we can return early.
+				return nil
+			}
 			readPackages, err = opts.Filter.Apply(ctx, readPackages)
 			if err != nil {
 				return fmt.Errorf("failed to filter packages: %w", err)
