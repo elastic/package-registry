@@ -135,7 +135,7 @@ func BenchmarkSQLIndexerGet(b *testing.B) {
 	options, err := CreateFakeIndexerOptions(db, swapDb)
 	require.NoError(b, err)
 
-	fs := PrepareFakeServer(b, "../../storage/testdata/search-index-all-full.json")
+	fs := PrepareFakeServer(b, "../../storage/testdata/search-index-all.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 
@@ -165,6 +165,11 @@ func BenchmarkSQLIndexerGet(b *testing.B) {
 			Prerelease:  false,
 			SpecMin:     semver.MustParse("3.0"),
 			SpecMax:     semver.MustParse("3.3"),
+		}})
+		indexer.Get(b.Context(), &packages.GetOptions{Filter: &packages.Filter{
+			AllVersions:   false,
+			Prerelease:    false,
+			KibanaVersion: semver.MustParse("9.0.0"),
 		}})
 	}
 }
