@@ -35,6 +35,7 @@ var keys = []keyDefinition{
 	{"name", "TEXT NOT NULL"},
 	{"version", "TEXT NOT NULL"},
 	{"formatVersion", "TEXT NOT NULL"},
+	{"formatVersionMajorMinor", "TEXT NOT NULL"},
 	{"release", "TEXT NOT NULL"},
 	{"prerelease", "INTEGER NOT NULL"},
 	{"kibanaVersion", "TEXT NOT NULL"},
@@ -216,6 +217,7 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 				pkgs[i].Name,
 				pkgs[i].Version,
 				pkgs[i].FormatVersion,
+				pkgs[i].FormatVersionMajorMinor,
 				pkgs[i].Release,
 				pkgs[i].Prerelease,
 				pkgs[i].KibanaVersion,
@@ -308,6 +310,7 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 			&pkg.Name,
 			&pkg.Version,
 			&pkg.FormatVersion,
+			&pkg.FormatVersionMajorMinor,
 			&pkg.Release,
 			&pkg.Prerelease,
 			&pkg.KibanaVersion,
@@ -354,6 +357,8 @@ type FilterOptions struct {
 	Version       string
 	Prerelease    bool
 	KibanaVersion string
+	SpecMin       string
+	SpecMax       string
 	// It cannot be filtered by capabilities at database level, since it would be
 	// complicated using SQL logic to ensure that all the capabilities defined in the package
 	// are present in the query filter.
@@ -426,8 +431,24 @@ func (o *SQLOptions) Where() (string, []any) {
 		if sb.Len() > 0 {
 			sb.WriteString(" AND ")
 		}
-		sb.WriteString("semver_compare(?, kibanaVersion) = 1")
+		sb.WriteString("semver_compare_constraint(?, kibanaVersion) = 1")
 		args = append(args, o.Filter.KibanaVersion)
+	}
+
+	if o.Filter.SpecMin != "" {
+		if sb.Len() > 0 {
+			sb.WriteString(" AND ")
+		}
+		sb.WriteString("semver_compare_op(formatVersionMajorMinor, '>=', ?) = 1")
+		args = append(args, o.Filter.SpecMin)
+	}
+
+	if o.Filter.SpecMax != "" {
+		if sb.Len() > 0 {
+			sb.WriteString(" AND ")
+		}
+		sb.WriteString("semver_compare_op(formatVersionMajorMinor, '<=', ?) = 1")
+		args = append(args, o.Filter.SpecMax)
 	}
 
 	if sb.String() == "" {
