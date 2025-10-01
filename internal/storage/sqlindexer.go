@@ -324,7 +324,7 @@ func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Pack
 	if err != nil {
 		return nil, fmt.Errorf("invalid format version '%s' for package %s-%s: %w", pkg.FormatVersion, pkg.Name, pkg.Version, err)
 	}
-	formatVersionMajorMinor := fmt.Sprintf("%d.%d", formatVersionSemver.Major(), formatVersionSemver.Minor())
+	formatVersionMajorMinor := fmt.Sprintf("%d.%d.0", formatVersionSemver.Major(), formatVersionSemver.Minor())
 
 	newPackage := database.Package{
 		Cursor:                  cursor,
