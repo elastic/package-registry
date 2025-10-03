@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Include SQL functions to improve filtering (SQL storage indexer). [#1442](https://github.com/elastic/package-registry/pull/1442)
+
 ### Deprecated
 
 ### Known Issues
