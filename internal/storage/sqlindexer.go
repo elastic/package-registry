@@ -344,6 +344,8 @@ func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Pack
 	return &newPackage, nil
 }
 
+// Get returns the list of packages from the indexer, optionally filtered by the provided options.
+// If filter is nil, all packages are returned with the base data of the package.
 func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.Packages, error) {
 	start := time.Now()
 	defer func() {
