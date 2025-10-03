@@ -366,25 +366,39 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 		}
 		if opts != nil {
 			options.IncludeFullData = opts.FullData
+			options.SkipPackageData = opts.SkipPackageData
 		}
 
 		err := (*i.current).AllFunc(ctx, "packages", options, func(ctx context.Context, p *database.Package) error {
-			var pkg packages.Package
+			pkg := &packages.Package{}
 			var err error
-			if opts != nil && opts.FullData {
-				err = json.Unmarshal(p.Data, &pkg)
-			} else {
+			switch {
+			case opts != nil && opts.SkipPackageData:
+				// Set minimal package data.
+				// There are some private fields of the package that are not set here (versionSemver, specMajorMinorSemver, etc.),
+				// but they should not be needed when SkipPackageData is used.
+				pkg.Name = p.Name
+				pkg.Version = p.Version
+				pkg.FormatVersion = p.FormatVersion
+				pkg.Release = p.Release
+				pkg.Path = p.Path
+			case opts != nil && opts.FullData:
+				err = json.Unmarshal(p.Data, pkg)
+				if err != nil {
+					return fmt.Errorf("failed to parse full package %s-%s: %w", p.Name, p.Version, err)
+				}
+			default:
 				// BaseData is used for performance reasons, it contains only the fields that are needed for the search index.
 				// FormatVersion needs to be set from database to ensure compatibility with the package structure.
 				pkg.FormatVersion = p.FormatVersion
-				err = json.Unmarshal(p.BaseData, &pkg)
-			}
-			if err != nil {
-				return fmt.Errorf("failed to parse package %s-%s: %w", p.Name, p.Version, err)
+				err = json.Unmarshal(p.BaseData, pkg)
+				if err != nil {
+					return fmt.Errorf("failed to parse base package %s-%s: %w", p.Name, p.Version, err)
+				}
 			}
 			pkg.BasePath = p.Path
 			pkg.SetRemoteResolver(i.resolver)
-			readPackages = append(readPackages, &pkg)
+			readPackages = append(readPackages, pkg)
 			return nil
 		})
 		if err != nil {
@@ -393,6 +407,13 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 		i.logger.Debug("Number of packages read from database", zap.Int("num.packages", len(readPackages)))
 
 		if opts != nil && opts.Filter != nil {
+			if opts.Filter.PackageName != "" && opts.Filter.PackageVersion != "" {
+				if len(readPackages) > 1 {
+					return fmt.Errorf("expected at most one package when filtering by name and version, got %d", len(readPackages))
+				}
+				// If we are filtering by name and version at database level, there should be at most one package and it can be returned early.
+				return nil
+			}
 			readPackages, err = opts.Filter.Apply(ctx, readPackages)
 			if err != nil {
 				return fmt.Errorf("failed to filter packages: %w", err)
