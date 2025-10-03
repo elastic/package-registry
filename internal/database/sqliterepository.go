@@ -276,8 +276,8 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 	span.Context.SetLabel("database.path", r.File(ctx))
 	defer span.End()
 
-	useJSONFields := whereOptions == nil || !whereOptions.SkipJSONFields()
-	useBaseData := whereOptions == nil || !whereOptions.UseFullData()
+	useJSONFields := !whereOptions.SkipJSONFields()
+	useBaseData := !whereOptions.UseFullData()
 
 	getKeys := make([]string, 0, len(keys))
 	var query strings.Builder
