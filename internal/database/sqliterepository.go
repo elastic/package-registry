@@ -9,6 +9,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"log"
 	"strings"
 
 	_ "modernc.org/sqlite" // Import the SQLite driver
@@ -39,6 +40,10 @@ var keys = []keyDefinition{
 	{"cursor", "TEXT NOT NULL"},
 	{"name", "TEXT NOT NULL"},
 	{"version", "TEXT NOT NULL"},
+	{"versionMajor", "INTEGER"},
+	{"versionMinor", "INTEGER"},
+	{"versionPatch", "INTEGER"},
+	{"versionBuild", "TEXT NOT NULL"},
 	{"formatVersion", "TEXT NOT NULL"},
 	{"release", "TEXT NOT NULL"},
 	{"prerelease", "INTEGER NOT NULL"},
@@ -220,6 +225,10 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 				pkgs[i].Cursor,
 				pkgs[i].Name,
 				pkgs[i].Version,
+				pkgs[i].VersionMajor,
+				pkgs[i].VersionMinor,
+				pkgs[i].VersionPatch,
+				pkgs[i].VersionBuild,
 				pkgs[i].FormatVersion,
 				pkgs[i].Release,
 				pkgs[i].Prerelease,
@@ -271,6 +280,98 @@ func (r *SQLiteRepository) All(ctx context.Context, database string, whereOption
 	return all, nil
 }
 
+func (r *SQLiteRepository) LatestFunc(ctx context.Context, database string, whereOptions WhereOptions, process func(ctx context.Context, pkg *Package) error) error {
+	span, ctx := apm.StartSpan(ctx, "SQL: Get Latest (process each package)", "app")
+	span.Context.SetLabel("database.path", r.File(ctx))
+	defer span.End()
+
+	useJSONFields := !whereOptions.SkipJSONFields()
+	useBaseData := !whereOptions.UseFullData()
+
+	getKeys := make([]string, 0, len(keys))
+	var query strings.Builder
+	query.WriteString("SELECT ")
+	for _, k := range keys {
+		switch {
+		case !useJSONFields && (k.Name == dataColumnName || k.Name == baseDataColumnName):
+			continue
+		case k.Name == dataColumnName && useBaseData:
+			continue
+		case k.Name == baseDataColumnName && !useBaseData:
+			continue
+		case k.Name == "versionMajor" || k.Name == "versionMinor" || k.Name == "versionPatch" || k.Name == "versionBuild":
+			continue
+		default:
+			getKeys = append(getKeys, k.Name)
+		}
+	}
+	query.WriteString(strings.Join(getKeys, ", "))
+	query.WriteString(` FROM (
+    SELECT p.*,
+            DENSE_RANK() OVER (
+               PARTITION BY name
+               ORDER BY
+                versionMajor DESC,
+                versionMinor DESC,
+                versionPatch DESC
+            ) AS rnk
+    FROM (
+        SELECT pp.* FROM packages pp
+	`)
+	//query.WriteString(database)
+	var whereArgs []any
+	if whereOptions != nil {
+		var clause string
+		clause, whereArgs = whereOptions.Where()
+		query.WriteString(clause)
+	}
+    query.WriteString(`
+	 ) p
+) WHERE rnk = 1
+    `)
+	log.Println("Query\n",query.String())
+	rows, err := r.db.QueryContext(ctx, query.String(), whereArgs...)
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
+
+	// Reuse pkg variable since all fields are scanned into it
+	var pkg Package
+	for rows.Next() {
+		columns := []any{
+			&pkg.Cursor,
+			&pkg.Name,
+			&pkg.Version,
+			&pkg.FormatVersion,
+			&pkg.Release,
+			&pkg.Prerelease,
+			&pkg.KibanaVersion,
+			&pkg.Type,
+			&pkg.Path,
+		}
+		if useJSONFields {
+			// this variable will be assigned to BaseData if useBaseData is true
+			// to avoid creating a new variable, we reuse pkg.Data
+			columns = append(columns, &pkg.Data)
+		}
+		if err := rows.Scan(columns...); err != nil {
+			return err
+		}
+		if useBaseData {
+			pkg.BaseData = pkg.Data
+			pkg.Data = []byte{}
+		} else {
+			pkg.BaseData = []byte{}
+		}
+		err = process(ctx, &pkg)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOptions WhereOptions, process func(ctx context.Context, pkg *Package) error) error {
 	span, ctx := apm.StartSpan(ctx, "SQL: Get All (process each package)", "app")
 	span.Context.SetLabel("database.path", r.File(ctx))
@@ -290,10 +391,13 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 			continue
 		case k.Name == baseDataColumnName && !useBaseData:
 			continue
+		case k.Name == "versionMajor" || k.Name == "versionMinor" || k.Name == "versionPatch" || k.Name == "versionBuild":
+			continue
 		default:
 			getKeys = append(getKeys, k.Name)
 		}
 	}
+	fmt.Println(strings.Join(getKeys, ", "))
 	query.WriteString(strings.Join(getKeys, ", "))
 	query.WriteString(" FROM ")
 	query.WriteString(database)

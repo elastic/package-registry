@@ -17,6 +17,7 @@ import (
 	"time"
 
 	"cloud.google.com/go/storage"
+	"github.com/Masterminds/semver/v3"
 	"github.com/prometheus/client_golang/prometheus"
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
@@ -319,16 +320,25 @@ func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Pack
 		kibanaVersion = pkg.Conditions.Kibana.Version
 	}
 
+	pkgVersionSemver, err := semver.NewVersion(pkg.Version)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create version from %q: %w", pkgVersionSemver, err)
+	}
+
 	newPackage := database.Package{
 		Cursor:        cursor,
 		Name:          pkg.Name,
 		Version:       pkg.Version,
+		VersionMajor:  int(pkgVersionSemver.Major()),
+		VersionMinor:  int(pkgVersionSemver.Minor()),
+		VersionPatch:  int(pkgVersionSemver.Patch()),
+		VersionBuild:  pkgVersionSemver.Prerelease(),
 		FormatVersion: pkg.FormatVersion,
 		Path:          fmt.Sprintf("%s-%s.zip", pkg.Name, pkg.Version),
 		Type:          pkg.Type,
 		Release:       pkg.Release,
 		KibanaVersion: kibanaVersion,
-		Prerelease:    pkg.IsPrerelease(),
+		Prerelease:    pkg.IsPrerelease() || pkg.Release == packages.ReleaseExperimental,
 		Data:          fullContents,
 		BaseData:      baseContents,
 	}
@@ -352,6 +362,8 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 		options := &database.SQLOptions{
 			CurrentCursor: i.cursor,
 		}
+
+		queryJustLatestPackages := false
 		if opts != nil && opts.Filter != nil {
 			// TODO: Add support to filter by discovery fields if possible.
 			options.Filter = &database.FilterOptions{
@@ -363,13 +375,19 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 			if opts.Filter.Experimental {
 				options.Filter.Prerelease = true
 			}
+			queryJustLatestPackages = !opts.Filter.AllVersions && opts.Filter.PackageVersion == "" && len(opts.Filter.Capabilities) == 0 && opts.Filter.Discovery == nil
 		}
 		if opts != nil {
 			options.IncludeFullData = opts.FullData
 			options.SkipPackageData = opts.SkipPackageData
 		}
 
-		err := (*i.current).AllFunc(ctx, "packages", options, func(ctx context.Context, p *database.Package) error {
+		queryFunc := (*i.current).AllFunc
+		if queryJustLatestPackages {
+			queryFunc = (*i.current).LatestFunc
+		}
+
+		err := queryFunc(ctx, "packages", options, func(ctx context.Context, p *database.Package) error {
 			pkg := &packages.Package{}
 			var err error
 			switch {
@@ -402,7 +420,7 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 			return nil
 		})
 		if err != nil {
-			return fmt.Errorf("failed to obtain all packages: %w", err)
+			return fmt.Errorf("failed to obtain packages: %w", err)
 		}
 		i.logger.Debug("Number of packages read from database", zap.Int("num.packages", len(readPackages)))
 
@@ -414,6 +432,7 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 				// If we are filtering by name and version at database level, there should be at most one package and it can be returned early.
 				return nil
 			}
+			var err error
 			readPackages, err = opts.Filter.Apply(ctx, readPackages)
 			if err != nil {
 				return fmt.Errorf("failed to filter packages: %w", err)
