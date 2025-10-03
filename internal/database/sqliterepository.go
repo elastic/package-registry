@@ -16,7 +16,12 @@ import (
 	"go.elastic.co/apm/v2"
 )
 
-const defaultMaxBulkAddBatch = 500
+const (
+	defaultMaxBulkAddBatch = 500
+
+	dataColumnName     = "data"
+	baseDataColumnName = "baseData"
+)
 
 var (
 	ErrDuplicate    = errors.New("record already exists")
@@ -40,8 +45,8 @@ var keys = []keyDefinition{
 	{"kibanaVersion", "TEXT NOT NULL"},
 	{"type", "TEXT NOT NULL"},
 	{"path", "TEXT NOT NULL"},
-	{"data", "BLOB NOT NULL"},
-	{"baseData", "BLOB NOT NULL"},
+	{dataColumnName, "BLOB NOT NULL"},
+	{baseDataColumnName, "BLOB NOT NULL"},
 }
 
 type SQLiteRepository struct {
@@ -279,11 +284,11 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 	query.WriteString("SELECT ")
 	for _, k := range keys {
 		switch {
-		case !useJSONFields && (k.Name == "data" || k.Name == "baseData"):
+		case !useJSONFields && (k.Name == dataColumnName || k.Name == baseDataColumnName):
 			continue
-		case k.Name == "data" && useBaseData:
+		case k.Name == dataColumnName && useBaseData:
 			continue
-		case k.Name == "baseData" && !useBaseData:
+		case k.Name == baseDataColumnName && !useBaseData:
 			continue
 		default:
 			getKeys = append(getKeys, k.Name)
