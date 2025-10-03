@@ -439,7 +439,7 @@ func (o *SQLOptions) Where() (string, []any) {
 		if sb.Len() > 0 {
 			sb.WriteString(" AND ")
 		}
-		sb.WriteString("semver_compare_op(formatVersionMajorMinor, '>=', ?) = 1")
+		sb.WriteString("semver_compare_ge(formatVersionMajorMinor, ?) = 1")
 		args = append(args, o.Filter.SpecMin)
 	}
 
@@ -447,7 +447,7 @@ func (o *SQLOptions) Where() (string, []any) {
 		if sb.Len() > 0 {
 			sb.WriteString(" AND ")
 		}
-		sb.WriteString("semver_compare_op(formatVersionMajorMinor, '<=', ?) = 1")
+		sb.WriteString("semver_compare_le(formatVersionMajorMinor, ?) = 1")
 		args = append(args, o.Filter.SpecMax)
 	}
 

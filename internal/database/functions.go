@@ -15,20 +15,17 @@ import (
 
 func init() {
 	sqlite.MustRegisterScalarFunction("semver_compare_constraint", 2, semverCompareConstraint)
-	sqlite.MustRegisterScalarFunction("semver_compare_op", 3, semverCompareOperation)
+	sqlite.MustRegisterScalarFunction("semver_compare_ge", 2, semverCompareGreaterThanEqual)
+	sqlite.MustRegisterScalarFunction("semver_compare_le", 2, semverCompareLessThanEqual)
 }
 
 // semverCompare checks if a version satisfies a given semver constraint.
 // It takes two string arguments: the version and the constraint.
 // It returns a boolean indicating whether the version satisfies the constraint.
 func semverCompareConstraint(ctx *sqlite.FunctionContext, args []driver.Value) (driver.Value, error) {
-	version, ok := args[0].(string)
-	if !ok {
-		return nil, errors.New("version argument must be a string")
-	}
-	versionSemver, err := semver.NewVersion(version)
+	version, err := parseArgAsSemver(args[0])
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to parse version: %w", err)
 	}
 
 	constraint, ok := args[1].(string)
@@ -46,29 +43,47 @@ func semverCompareConstraint(ctx *sqlite.FunctionContext, args []driver.Value) (
 		return nil, fmt.Errorf("invalid semver constraint: %w", err)
 	}
 
-	return constraintSemver.Check(versionSemver), nil
+	return constraintSemver.Check(version), nil
 }
 
-// semverCompareOperation compares two semantic versions based on a given operation.
-// It takes three string arguments: the first version, the operation (e.g., '>=', '<=', etc.), and the second version.
-// It returns a boolean indicating whether the comparison holds true.
-func semverCompareOperation(ctx *sqlite.FunctionContext, args []driver.Value) (driver.Value, error) {
-	firstVersion, ok := args[0].(string)
+func parseArgAsSemver(arg driver.Value) (*semver.Version, error) {
+	version, ok := arg.(string)
 	if !ok {
-		return nil, fmt.Errorf("firstVersion argument must be a string")
+		return nil, fmt.Errorf("argument must be a string")
 	}
 
-	operation, ok := args[1].(string)
-	if !ok {
-		return nil, fmt.Errorf("operation argument must be a string")
+	semver, err := semver.NewVersion(version)
+	if err != nil {
+		return nil, err
 	}
 
-	secondVersion, ok := args[2].(string)
-	if !ok {
-		return nil, fmt.Errorf("secondVersion argument must be a string")
+	return semver, nil
+}
+
+// semverCompareGreaterThanEqual checks if the first semantic version is greater than or equal to the second.
+func semverCompareGreaterThanEqual(ctx *sqlite.FunctionContext, args []driver.Value) (driver.Value, error) {
+	firstVersion, err := parseArgAsSemver(args[0])
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse firstVersion: %w", err)
+	}
+	secondVersion, err := parseArgAsSemver(args[1])
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse firstVersion: %w", err)
 	}
 
-	newArgs := []driver.Value{firstVersion, fmt.Sprintf("%s%s", operation, secondVersion)}
+	return firstVersion.GreaterThanEqual(secondVersion), nil
+}
 
-	return semverCompareConstraint(ctx, newArgs)
+// semverCompareLessThanEqual checks if the first semantic version is less than or equal to the second.
+func semverCompareLessThanEqual(ctx *sqlite.FunctionContext, args []driver.Value) (driver.Value, error) {
+	firstVersion, err := parseArgAsSemver(args[0])
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse firstVersion: %w", err)
+	}
+	secondVersion, err := parseArgAsSemver(args[1])
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse firstVersion: %w", err)
+	}
+
+	return firstVersion.LessThanEqual(secondVersion), nil
 }
