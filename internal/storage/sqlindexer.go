@@ -325,27 +325,36 @@ func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Pack
 		return nil, fmt.Errorf("failed to create version from %q: %w", pkgVersionSemver, err)
 	}
 
+	formatVersionSemver, err := semver.NewVersion(pkg.FormatVersion)
+	if err != nil {
+		return nil, fmt.Errorf("invalid format version '%s' for package %s-%s: %w", pkg.FormatVersion, pkg.Name, pkg.Version, err)
+	}
+	formatVersionMajorMinor := fmt.Sprintf("%d.%d.0", formatVersionSemver.Major(), formatVersionSemver.Minor())
+
 	newPackage := database.Package{
-		Cursor:        cursor,
-		Name:          pkg.Name,
-		Version:       pkg.Version,
-		VersionMajor:  int(pkgVersionSemver.Major()),
-		VersionMinor:  int(pkgVersionSemver.Minor()),
-		VersionPatch:  int(pkgVersionSemver.Patch()),
-		VersionBuild:  pkgVersionSemver.Prerelease(),
-		FormatVersion: pkg.FormatVersion,
-		Path:          fmt.Sprintf("%s-%s.zip", pkg.Name, pkg.Version),
-		Type:          pkg.Type,
-		Release:       pkg.Release,
-		KibanaVersion: kibanaVersion,
-		Prerelease:    pkg.IsPrerelease() || pkg.Release == packages.ReleaseExperimental,
-		Data:          fullContents,
-		BaseData:      baseContents,
+		Cursor:                  cursor,
+		Name:                    pkg.Name,
+		Version:                 pkg.Version,
+		VersionMajor:            int(pkgVersionSemver.Major()),
+		VersionMinor:            int(pkgVersionSemver.Minor()),
+		VersionPatch:            int(pkgVersionSemver.Patch()),
+		VersionBuild:            pkgVersionSemver.Prerelease(),
+		FormatVersion:           pkg.FormatVersion,
+		FormatVersionMajorMinor: formatVersionMajorMinor,
+		Path:                    fmt.Sprintf("%s-%s.zip", pkg.Name, pkg.Version),
+		Type:                    pkg.Type,
+		Release:                 pkg.Release,
+		KibanaVersion:           kibanaVersion,
+		Prerelease:              pkg.IsPrerelease() || pkg.Release == packages.ReleaseExperimental,
+		Data:                    fullContents,
+		BaseData:                baseContents,
 	}
 
 	return &newPackage, nil
 }
 
+// Get returns the list of packages from the indexer, optionally filtered by the provided options.
+// If filter is nil, all packages are returned with the base data of the package.
 func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.Packages, error) {
 	start := time.Now()
 	defer func() {
@@ -365,7 +374,6 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 
 		queryJustLatestPackages := false
 		if opts != nil && opts.Filter != nil {
-			// TODO: Add support to filter by discovery fields if possible.
 			options.Filter = &database.FilterOptions{
 				Type:       opts.Filter.PackageType,
 				Name:       opts.Filter.PackageName,
@@ -376,6 +384,15 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 				options.Filter.Prerelease = true
 			}
 			queryJustLatestPackages = !opts.Filter.AllVersions && opts.Filter.PackageVersion == "" && len(opts.Filter.Capabilities) == 0 && opts.Filter.Discovery == nil
+			if opts.Filter.KibanaVersion != nil {
+				options.Filter.KibanaVersion = opts.Filter.KibanaVersion.String()
+			}
+			if opts.Filter.SpecMin != nil {
+				options.Filter.SpecMin = opts.Filter.SpecMin.String()
+			}
+			if opts.Filter.SpecMax != nil {
+				options.Filter.SpecMax = opts.Filter.SpecMax.String()
+			}
 		}
 		if opts != nil {
 			options.IncludeFullData = opts.FullData
@@ -387,6 +404,7 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 			queryFunc = (*i.current).LatestFunc
 		}
 
+		startQuery := time.Now()
 		err := queryFunc(ctx, "packages", options, func(ctx context.Context, p *database.Package) error {
 			pkg := &packages.Package{}
 			var err error
@@ -422,6 +440,7 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 		if err != nil {
 			return fmt.Errorf("failed to obtain packages: %w", err)
 		}
+		i.logger.Debug("Elapsed time in query to database", zap.Duration("query.duration", time.Since(startQuery)), zap.String("query.duration.human", time.Since(startQuery).String()))
 		i.logger.Debug("Number of packages read from database", zap.Int("num.packages", len(readPackages)))
 
 		if opts != nil && opts.Filter != nil {

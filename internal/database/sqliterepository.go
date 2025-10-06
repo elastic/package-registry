@@ -45,6 +45,7 @@ var keys = []keyDefinition{
 	{"versionPatch", "INTEGER"},
 	{"versionBuild", "TEXT NOT NULL"},
 	{"formatVersion", "TEXT NOT NULL"},
+	{"formatVersionMajorMinor", "TEXT NOT NULL"},
 	{"release", "TEXT NOT NULL"},
 	{"prerelease", "INTEGER NOT NULL"},
 	{"kibanaVersion", "TEXT NOT NULL"},
@@ -230,6 +231,7 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 				pkgs[i].VersionPatch,
 				pkgs[i].VersionBuild,
 				pkgs[i].FormatVersion,
+				pkgs[i].FormatVersionMajorMinor,
 				pkgs[i].Release,
 				pkgs[i].Prerelease,
 				pkgs[i].KibanaVersion,
@@ -421,6 +423,7 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 			&pkg.Name,
 			&pkg.Version,
 			&pkg.FormatVersion,
+			&pkg.FormatVersionMajorMinor,
 			&pkg.Release,
 			&pkg.Prerelease,
 			&pkg.KibanaVersion,
@@ -466,10 +469,13 @@ func (r *SQLiteRepository) Close(ctx context.Context) error {
 }
 
 type FilterOptions struct {
-	Type       string
-	Name       string
-	Version    string
-	Prerelease bool
+	Type          string
+	Name          string
+	Version       string
+	Prerelease    bool
+	KibanaVersion string
+	SpecMin       string
+	SpecMax       string
 	// It cannot be filtered by capabilities at database level, since it would be
 	// complicated using SQL logic to ensure that all the capabilities defined in the package
 	// are present in the query filter.
@@ -537,6 +543,30 @@ func (o *SQLOptions) Where() (string, []any) {
 			sb.WriteString(" AND ")
 		}
 		sb.WriteString("prerelease = 0")
+	}
+
+	if o.Filter.KibanaVersion != "" {
+		if sb.Len() > 0 {
+			sb.WriteString(" AND ")
+		}
+		sb.WriteString("semver_compare_constraint(?, kibanaVersion) = 1")
+		args = append(args, o.Filter.KibanaVersion)
+	}
+
+	if o.Filter.SpecMin != "" {
+		if sb.Len() > 0 {
+			sb.WriteString(" AND ")
+		}
+		sb.WriteString("semver_compare_ge(formatVersionMajorMinor, ?) = 1")
+		args = append(args, o.Filter.SpecMin)
+	}
+
+	if o.Filter.SpecMax != "" {
+		if sb.Len() > 0 {
+			sb.WriteString(" AND ")
+		}
+		sb.WriteString("semver_compare_le(formatVersionMajorMinor, ?) = 1")
+		args = append(args, o.Filter.SpecMax)
 	}
 
 	if sb.String() == "" {
