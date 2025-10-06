@@ -345,7 +345,7 @@ func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Pack
 		Type:                    pkg.Type,
 		Release:                 pkg.Release,
 		KibanaVersion:           kibanaVersion,
-		Prerelease:              pkg.IsPrerelease() || pkg.Release == packages.ReleaseExperimental,
+		Prerelease:              pkg.IsPrerelease(),
 		Data:                    fullContents,
 		BaseData:                baseContents,
 	}

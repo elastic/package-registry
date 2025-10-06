@@ -9,12 +9,13 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"log"
 	"strings"
 
 	_ "modernc.org/sqlite" // Import the SQLite driver
 
 	"go.elastic.co/apm/v2"
+
+	"github.com/elastic/package-registry/packages"
 )
 
 const (
@@ -543,6 +544,9 @@ func (o *SQLOptions) Where() (string, []any) {
 			sb.WriteString(" AND ")
 		}
 		sb.WriteString("prerelease = 0")
+		sb.WriteString(" AND release != '")
+		sb.WriteString(packages.ReleaseExperimental)
+		sb.WriteString("'")
 	}
 
 	if o.Filter.KibanaVersion != "" {
