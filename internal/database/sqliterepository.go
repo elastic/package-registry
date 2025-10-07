@@ -302,11 +302,9 @@ func (r *SQLiteRepository) LatestFunc(ctx context.Context, database string, wher
 	var pkg Package
 	for rows.Next() {
 		columns := []any{
-			&pkg.Cursor,
 			&pkg.Name,
 			&pkg.Version,
 			&pkg.FormatVersion,
-			&pkg.FormatVersionMajorMinor,
 			&pkg.Release,
 			&pkg.Prerelease,
 			&pkg.KibanaVersion,
@@ -400,6 +398,8 @@ func filterKeysForSelect(useBaseData, useJSONFields bool) []string {
 			continue
 		case k.Name == "versionMajor" || k.Name == "versionMinor" || k.Name == "versionPatch" || k.Name == "versionBuild":
 			continue
+		case k.Name == "cursor" || k.Name == "formatVersionMajorMinor":
+			continue
 		default:
 			getKeys = append(getKeys, k.Name)
 		}
@@ -427,11 +427,9 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 	var pkg Package
 	for rows.Next() {
 		columns := []any{
-			&pkg.Cursor,
 			&pkg.Name,
 			&pkg.Version,
 			&pkg.FormatVersion,
-			&pkg.FormatVersionMajorMinor,
 			&pkg.Release,
 			&pkg.Prerelease,
 			&pkg.KibanaVersion,
