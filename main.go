@@ -613,7 +613,7 @@ func ensurePackagesAvailable(ctx context.Context, logger *zap.Logger, indexer In
 	} else if featureProxyMode {
 		logger.Info("No local packages found, but the proxy mode can access remote ones.")
 	} else {
-		logger.Fatal("No local packages found.")
+		logger.Warn("No packages found at startup. The registry is running but no content is available yet.")
 	}
 	metrics.NumberIndexedPackages.Set(float64(len(packages)))
 }
