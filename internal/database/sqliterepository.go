@@ -495,8 +495,7 @@ func (o *SQLOptions) Where() (string, []any) {
 		}
 
 		queryCapabilities := strings.Join(o.Filter.Capabilities, ",")
-		// If capabilities column value is empty, those packages are not filtered out
-		sb.WriteString("( capabilities == '' OR all_elements_in_array(?, capabilities) = 1 )")
+		sb.WriteString("( capabilities == '' OR all_capabilities_are_supported(capabilities, ?) = 1 )")
 		args = append(args, queryCapabilities)
 	}
 
