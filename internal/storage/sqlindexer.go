@@ -374,6 +374,8 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 
 		queryJustLatestPackages := false
 		if opts != nil && opts.Filter != nil {
+			// TODO: Add support to filter by discovery fields if possible.
+			// TODO: Add support to filter by capabilities if possible, relates to https://github.com/elastic/package-registry/pull/1396/
 			options.Filter = &database.FilterOptions{
 				Type:       opts.Filter.PackageType,
 				Name:       opts.Filter.PackageName,
@@ -383,6 +385,13 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 			if opts.Filter.Experimental {
 				options.Filter.Prerelease = true
 			}
+
+			// Determine if we can use the optimized query to get just the latest packages.
+			// We can use it when we are not filtering by version, not requesting all versions,
+			// and not filtering by capabilities or discovery. As capabilities and discovery are not
+			// supported at database level, we can only use the optimized query when they are not set.
+			// If capabilities or discovery filters are added, it needs to be checked that they can be
+			// applied when querying for the latest packages.
 			queryJustLatestPackages = !opts.Filter.AllVersions && opts.Filter.PackageVersion == "" && len(opts.Filter.Capabilities) == 0 && opts.Filter.Discovery == nil
 			if opts.Filter.KibanaVersion != nil {
 				options.Filter.KibanaVersion = opts.Filter.KibanaVersion.String()
