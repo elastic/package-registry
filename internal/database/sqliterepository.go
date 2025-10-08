@@ -44,6 +44,7 @@ var keys = []keyDefinition{
 	{"release", "TEXT NOT NULL"},
 	{"prerelease", "INTEGER NOT NULL"},
 	{"kibanaVersion", "TEXT NOT NULL"},
+	{"capabilities", "TEXT NOT NULL"},
 	{"type", "TEXT NOT NULL"},
 	{"path", "TEXT NOT NULL"},
 	{dataColumnName, "BLOB NOT NULL"},
@@ -217,6 +218,10 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 				sb.WriteString(",")
 			}
 
+			// Add commas to make it easier to search for these fields
+			// in the SQL query
+			// capabilities := addCommasToString(pkgs[i].Capabilities)
+
 			args = append(args,
 				pkgs[i].Cursor,
 				pkgs[i].Name,
@@ -226,6 +231,7 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 				pkgs[i].Release,
 				pkgs[i].Prerelease,
 				pkgs[i].KibanaVersion,
+				pkgs[i].Capabilities,
 				pkgs[i].Type,
 				pkgs[i].Path,
 				pkgs[i].Data,
@@ -259,6 +265,21 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 	return nil
 }
 
+//	func addCommasToString(s string) string {
+//		// Adding commas at the beginning and end of the string ensures that there is no
+//		// special case for the first and last elements of comma separated list when setting
+//		// the Where clause of the SQL query.
+//		// All elements can be searched as `column LIKE '%,element,%'`
+//		// Example: `capabilities LIKE '%,observability,%'`
+//		// And the capabilities value could be like:
+//		// - `,observability,security,`
+//		// - `,observability,`
+//		// - `,security,observability,`
+//		if s != "" {
+//			s = fmt.Sprintf(",%s,", s)
+//		}
+//		return s
+//	}
 func (r *SQLiteRepository) All(ctx context.Context, database string, whereOptions WhereOptions) ([]*Package, error) {
 	span, ctx := apm.StartSpan(ctx, "SQL: Get All", "app")
 	span.Context.SetLabel("database.path", r.File(ctx))
@@ -291,6 +312,8 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 		case k.Name == dataColumnName && useBaseData:
 			continue
 		case k.Name == baseDataColumnName && !useBaseData:
+			continue
+		case k.Name == "capabilities":
 			continue
 		default:
 			getKeys = append(getKeys, k.Name)
@@ -372,6 +395,7 @@ type FilterOptions struct {
 	KibanaVersion string
 	SpecMin       string
 	SpecMax       string
+	Capabilities  []string
 	// It cannot be filtered by capabilities at database level, since it would be
 	// complicated using SQL logic to ensure that all the capabilities defined in the package
 	// are present in the query filter.
@@ -463,6 +487,17 @@ func (o *SQLOptions) Where() (string, []any) {
 		}
 		sb.WriteString("semver_compare_le(formatVersionMajorMinor, ?) = 1")
 		args = append(args, o.Filter.SpecMax)
+	}
+
+	if len(o.Filter.Capabilities) > 0 {
+		if sb.Len() > 0 {
+			sb.WriteString(" AND ")
+		}
+
+		queryCapabilities := strings.Join(o.Filter.Capabilities, ",")
+		// If capabilities column value is empty, those packages are not filtered out
+		sb.WriteString("( capabilities == '' OR all_elements_in_array(?, capabilities) = 1 )")
+		args = append(args, queryCapabilities)
 	}
 
 	if sb.String() == "" {

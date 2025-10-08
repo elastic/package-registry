@@ -8,6 +8,8 @@ import (
 	"database/sql/driver"
 	"errors"
 	"fmt"
+	"slices"
+	"strings"
 
 	"github.com/Masterminds/semver/v3"
 	"modernc.org/sqlite"
@@ -17,6 +19,7 @@ func init() {
 	sqlite.MustRegisterScalarFunction("semver_compare_constraint", 2, semverCompareConstraint)
 	sqlite.MustRegisterScalarFunction("semver_compare_ge", 2, semverCompareGreaterThanEqual)
 	sqlite.MustRegisterScalarFunction("semver_compare_le", 2, semverCompareLessThanEqual)
+	sqlite.MustRegisterScalarFunction("all_elements_in_array", 2, allElementsInArray)
 }
 
 // semverCompare checks if a version satisfies a given semver constraint.
@@ -86,4 +89,32 @@ func semverCompareLessThanEqual(ctx *sqlite.FunctionContext, args []driver.Value
 	}
 
 	return firstVersion.LessThanEqual(secondVersion), nil
+}
+
+// allElementsInArray checks if all elements in the source array are present in the target array.
+// Both arrays are represented as comma-separated strings.
+// It returns true if all elements are present, false otherwise.
+func allElementsInArray(ctx *sqlite.FunctionContext, args []driver.Value) (driver.Value, error) {
+	sourceArray, ok := args[0].(string)
+	if !ok {
+		return nil, fmt.Errorf("first argument must be a string")
+	}
+	targetArray, ok := args[1].(string)
+	if !ok {
+		return nil, fmt.Errorf("second argument must be a string")
+	}
+
+	if sourceArray == "" {
+		// An empty source array means there are no requirements, so it's always satisfied.
+		return true, nil
+	}
+
+	targetArrayElements := strings.Split(targetArray, ",")
+
+	for sourceArrayElement := range strings.SplitSeq(sourceArray, ",") {
+		if !slices.Contains(targetArrayElements, sourceArrayElement) {
+			return false, nil
+		}
+	}
+	return true, nil
 }
