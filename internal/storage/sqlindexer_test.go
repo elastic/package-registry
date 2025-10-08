@@ -167,6 +167,11 @@ func BenchmarkSQLIndexerGet(b *testing.B) {
 			SpecMin:     semver.MustParse("3.0"),
 			SpecMax:     semver.MustParse("3.3"),
 		}})
+		indexer.Get(b.Context(), &packages.GetOptions{Filter: &packages.Filter{
+			AllVersions:   false,
+			Prerelease:    false,
+			KibanaVersion: semver.MustParse("9.0.0"),
+		}})
 	}
 }
 
@@ -184,7 +189,7 @@ func BenchmarkSQLIndexerGetStaticsAndArtifacts(b *testing.B) {
 	options, err := CreateFakeIndexerOptions(db, swapDb)
 	require.NoError(b, err)
 
-	fs := PrepareFakeServer(b, "../../storage/testdata/search-index-all.json")
+	fs := PrepareFakeServer(b, "../../storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 	storageClient := fs.Client()
 
@@ -567,16 +572,17 @@ func TestCreateDatabasePackage(t *testing.T) {
 }`),
 			cursor: "1",
 			expected: &database.Package{
-				Cursor:        "1",
-				Name:          "mypackage",
-				Version:       "1.2.3",
-				KibanaVersion: "^8.17.0",
-				FormatVersion: "2.2.2",
-				Type:          "integration",
-				Path:          "mypackage-1.2.3.zip",
-				Data:          []byte(`{"name":"mypackage","version":"1.2.3","description":"My package description","type":"integration","download":"","path":"","conditions":{"kibana":{"version":"^8.17.0"}},"categories":["cat1","cat2"],"format_version":"2.2.2"}`),
-				BaseData:      []byte(`{"name":"mypackage","version":"1.2.3","description":"My package description","type":"integration","download":"","path":"","conditions":{"kibana":{"version":"^8.17.0"}},"categories":["cat1","cat2"]}`),
-				Prerelease:    false,
+				Cursor:                  "1",
+				Name:                    "mypackage",
+				Version:                 "1.2.3",
+				KibanaVersion:           "^8.17.0",
+				FormatVersion:           "2.2.2",
+				FormatVersionMajorMinor: "2.2.0",
+				Type:                    "integration",
+				Path:                    "mypackage-1.2.3.zip",
+				Data:                    []byte(`{"name":"mypackage","version":"1.2.3","description":"My package description","type":"integration","download":"","path":"","conditions":{"kibana":{"version":"^8.17.0"}},"categories":["cat1","cat2"],"format_version":"2.2.2"}`),
+				BaseData:                []byte(`{"name":"mypackage","version":"1.2.3","description":"My package description","type":"integration","download":"","path":"","conditions":{"kibana":{"version":"^8.17.0"}},"categories":["cat1","cat2"]}`),
+				Prerelease:              false,
 			},
 		},
 		{
@@ -596,16 +602,17 @@ func TestCreateDatabasePackage(t *testing.T) {
 }`),
 			cursor: "1",
 			expected: &database.Package{
-				Cursor:        "1",
-				Name:          "mypackage",
-				Version:       "1.2.3-beta1",
-				KibanaVersion: "^8.17.0",
-				FormatVersion: "2.2.2",
-				Type:          "integration",
-				Path:          "mypackage-1.2.3-beta1.zip",
-				Data:          []byte(`{"name":"mypackage","version":"1.2.3-beta1","description":"My package description","type":"integration","download":"","path":"","conditions":{"kibana":{"version":"^8.17.0"}},"categories":["cat1","cat2"],"format_version":"2.2.2"}`),
-				BaseData:      []byte(`{"name":"mypackage","version":"1.2.3-beta1","description":"My package description","type":"integration","download":"","path":"","conditions":{"kibana":{"version":"^8.17.0"}},"categories":["cat1","cat2"]}`),
-				Prerelease:    true,
+				Cursor:                  "1",
+				Name:                    "mypackage",
+				Version:                 "1.2.3-beta1",
+				KibanaVersion:           "^8.17.0",
+				FormatVersion:           "2.2.2",
+				FormatVersionMajorMinor: "2.2.0",
+				Type:                    "integration",
+				Path:                    "mypackage-1.2.3-beta1.zip",
+				Data:                    []byte(`{"name":"mypackage","version":"1.2.3-beta1","description":"My package description","type":"integration","download":"","path":"","conditions":{"kibana":{"version":"^8.17.0"}},"categories":["cat1","cat2"],"format_version":"2.2.2"}`),
+				BaseData:                []byte(`{"name":"mypackage","version":"1.2.3-beta1","description":"My package description","type":"integration","download":"","path":"","conditions":{"kibana":{"version":"^8.17.0"}},"categories":["cat1","cat2"]}`),
+				Prerelease:              true,
 			},
 		},
 	}
