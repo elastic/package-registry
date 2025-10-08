@@ -305,6 +305,7 @@ func (r *SQLiteRepository) LatestFunc(ctx context.Context, database string, wher
 			&pkg.Name,
 			&pkg.Version,
 			&pkg.FormatVersion,
+			&pkg.FormatVersionMajorMinor,
 			&pkg.Release,
 			&pkg.Prerelease,
 			&pkg.KibanaVersion,
@@ -569,6 +570,30 @@ func (o *SQLOptions) Where() (string, []any) {
 		sb.WriteString(" AND release != '")
 		sb.WriteString(packages.ReleaseExperimental)
 		sb.WriteString("'")
+	}
+
+	if o.Filter.KibanaVersion != "" {
+		if sb.Len() > 0 {
+			sb.WriteString(" AND ")
+		}
+		sb.WriteString("semver_compare_constraint(?, kibanaVersion) = 1")
+		args = append(args, o.Filter.KibanaVersion)
+	}
+
+	if o.Filter.SpecMin != "" {
+		if sb.Len() > 0 {
+			sb.WriteString(" AND ")
+		}
+		sb.WriteString("semver_compare_ge(formatVersionMajorMinor, ?) = 1")
+		args = append(args, o.Filter.SpecMin)
+	}
+
+	if o.Filter.SpecMax != "" {
+		if sb.Len() > 0 {
+			sb.WriteString(" AND ")
+		}
+		sb.WriteString("semver_compare_le(formatVersionMajorMinor, ?) = 1")
+		args = append(args, o.Filter.SpecMax)
 	}
 
 	if o.Filter.KibanaVersion != "" {
