@@ -305,7 +305,6 @@ func (r *SQLiteRepository) LatestFunc(ctx context.Context, database string, wher
 			&pkg.Name,
 			&pkg.Version,
 			&pkg.FormatVersion,
-			&pkg.FormatVersionMajorMinor,
 			&pkg.Release,
 			&pkg.Prerelease,
 			&pkg.KibanaVersion,
