@@ -343,18 +343,6 @@ func sqlQueryWithWindowing(useBaseData, useJSONFields bool, database string, whe
 	var query strings.Builder
 	query.WriteString("SELECT ")
 	query.WriteString(mainkeysSelector)
-	// query.WriteString(` FROM (
-	//    SELECT p.*,
-	//            RANK() OVER (
-	//               PARTITION BY name
-	//               ORDER BY
-	//                versionMajor DESC,
-	//                versionMinor DESC,
-	//                versionPatch DESC
-	//            ) AS rnk
-	//    FROM (
-	//        SELECT pp.* FROM packages pp
-	// `)
 	query.WriteString(` FROM (
     SELECT `)
 	query.WriteString(partitionKeySelector)
@@ -379,10 +367,25 @@ func sqlQueryWithWindowing(useBaseData, useJSONFields bool, database string, whe
 		query.WriteString(clause)
 	}
 	query.WriteString(`
-	 ) p
-) WHERE rnk = 1
-    `)
-	// fmt.Println("Query:\n", query.String())
+    ) p
+) WHERE rnk = 1`)
+	// Example of query generated:
+	// SELECT name, version, formatVersion, release, prerelease, kibanaVersion, type, path, baseData FROM (
+	//    SELECT p.name, p.version, p.formatVersion, p.release, p.prerelease, p.kibanaVersion, p.type, p.path, p.baseData ,
+	//            RANK() OVER (
+	//               PARTITION BY name
+	//               ORDER BY
+	//                versionMajor DESC,
+	//                versionMinor DESC,
+	//                versionPatch DESC
+	//            ) AS rnk
+	//    FROM (
+	//        SELECT pp.name, pp.version, pp.formatVersion, pp.release, pp.prerelease, pp.kibanaVersion, pp.type, pp.path, pp.baseData, pp.versionMajor, pp.versionMinor, pp.versionPatch, pp.versionBuild
+	//        FROM packages pp
+	//        WHERE cursor = ? AND prerelease = 0 AND release != 'experimental' AND semver_compare_ge(formatVersionMajorMinor, ?) = 1 AND semver_compare_le(formatVersionMajorMinor, ?) = 1
+	//    ) p
+	// ) WHERE rnk = 1
+
 	return query.String(), whereArgs
 }
 
