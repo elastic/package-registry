@@ -172,6 +172,11 @@ func BenchmarkSQLIndexerGet(b *testing.B) {
 			Prerelease:    false,
 			KibanaVersion: semver.MustParse("9.0.0"),
 		}})
+		indexer.Get(b.Context(), &packages.GetOptions{Filter: &packages.Filter{
+			AllVersions:  false,
+			Prerelease:   false,
+			Capabilities: []string{"security"},
+		}})
 	}
 }
 
