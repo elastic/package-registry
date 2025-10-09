@@ -71,4 +71,4 @@ DOCKER_IMG_TAG="${DOCKER_NAMESPACE}:${BUILDKITE_COMMIT}"
 DOCKER_IMG_TAG_BRANCH="${DOCKER_NAMESPACE}:${TAG_NAME}"
 
 push_docker_image "docker.elastic.co/wolfi/chainguard-base" ""
-push_docker_image "registry.redhat.io/ubi9/ubi-minimal@sha256:7c5495d5fad59aaee12abc3cbbd2b283818ee1e814b00dbc7f25bf2d14fa4f0c" "-ubi" "-f" "Dockerfile-ubi"
+push_docker_image "registry.access.redhat.com/ubi9/ubi-minimal:9.6" "-ubi" "-f" "Dockerfile-ubi"
