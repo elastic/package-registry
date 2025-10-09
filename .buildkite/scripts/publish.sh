@@ -32,10 +32,10 @@ push_docker_image() {
     docker buildx create --use
 
     # first build the image without push
-    build_docker_image "${runner_image}" "${tag_suffix}"
+    build_docker_image "${runner_image}" "${tag_suffix}" "$@"
 
     # essentially the same as above with --push flag; the build should be in the cache
-    retry 3 build_docker_image "${runner_image}" "${tag_suffix}" --push
+    retry 3 build_docker_image "${runner_image}" "${tag_suffix}" "--push" "$@"
 
     echo "Docker images pushed: ${DOCKER_IMG_TAG}${tag_suffix} ${DOCKER_IMG_TAG_BRANCH}${tag_suffix}"
 }
@@ -57,4 +57,4 @@ DOCKER_IMG_TAG="${DOCKER_NAMESPACE}:${BUILDKITE_COMMIT}"
 DOCKER_IMG_TAG_BRANCH="${DOCKER_NAMESPACE}:${TAG_NAME}"
 
 push_docker_image "docker.elastic.co/wolfi/chainguard-base" ""
-push_docker_image "registry.access.redhat.com/ubi9/ubi-micro:9.6-1754467928" "-ubi"
+push_docker_image "registry.redhat.io/ubi9/ubi-minimal@sha256:7c5495d5fad59aaee12abc3cbbd2b283818ee1e814b00dbc7f25bf2d14fa4f0c" "-ubi" "-f" "Dockerfile-ubi"
