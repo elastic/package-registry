@@ -5,16 +5,19 @@ set -euo pipefail
 
 build_docker_image() {
     local go_version
+    local runner_image="${1}"
+    local docker_img_tag="${DOCKER_IMG_TAG}${2}"
+    local docker_img_tag_branch="${DOCKER_IMG_TAG_BRANCH}${2}"
     go_version=$(cat .go-version)
 
     docker buildx build "$@" \
         --platform linux/amd64,linux/arm64/v8 \
         --progress plain \
-        -t "${DOCKER_IMG_TAG}" \
-        -t "${DOCKER_IMG_TAG_BRANCH}" \
+        -t "${docker_img_tag}" \
+        -t "${docker_img_tag_branch}" \
         --build-arg GO_VERSION="${go_version}" \
         --build-arg BUILDER_IMAGE=docker.elastic.co/wolfi/go \
-        --build-arg RUNNER_IMAGE="${RUNNER_IMAGE}" \
+        --build-arg RUNNER_IMAGE="${runner_image}" \
         --label BRANCH_NAME="${TAG_NAME}" \
         --label GIT_SHA="${BUILDKITE_COMMIT}" \
         --label GO_VERSION="${SETUP_GOLANG_VERSION}" \
@@ -23,28 +26,18 @@ build_docker_image() {
 }
 
 push_docker_image() {
+    local runner_image="${1}"
+    local tag_suffix="${2}"
+
     docker buildx create --use
 
     # first build the image without push
-    build_docker_image
+    build_docker_image "${runner_image}" "${tag_suffix}"
 
     # essentially the same as above with --push flag; the build should be in the cache
-    retry 3 build_docker_image --push
+    retry 3 build_docker_image "${runner_image}" "${tag_suffix}" --push
 
-    echo "Docker images pushed: ${DOCKER_IMG_TAG} ${DOCKER_IMG_TAG_BRANCH}"
-
-    # also build an UBI image
-    DOCKER_IMG_TAG="${DOCKER_NAMESPACE}:${BUILDKITE_COMMIT}-ubi"
-    DOCKER_IMG_TAG_BRANCH="${DOCKER_NAMESPACE}:${TAG_NAME}-ubi"
-    RUNNER_IMAGE="registry.access.redhat.com/ubi9/ubi-micro:9.6-1754467928"
-
-    # first build the UBI image without push
-    build_docker_image
-
-    # the same as above with --push flag with the UBI image; the build should be in the cache
-    retry 3 build_docker_image --push
-
-    echo "Docker images pushed: ${DOCKER_IMG_TAG} ${DOCKER_IMG_TAG_BRANCH}"
+    echo "Docker images pushed: ${DOCKER_IMG_TAG}${tag_suffix} ${DOCKER_IMG_TAG_BRANCH}${tag_suffix}"
 }
 
 if [[ "${BUILDKITE_PULL_REQUEST}" != "false" ]]; then
@@ -62,6 +55,6 @@ fi
 
 DOCKER_IMG_TAG="${DOCKER_NAMESPACE}:${BUILDKITE_COMMIT}"
 DOCKER_IMG_TAG_BRANCH="${DOCKER_NAMESPACE}:${TAG_NAME}"
-RUNNER_IMAGE="docker.elastic.co/wolfi/chainguard-base"
 
-push_docker_image
+push_docker_image "docker.elastic.co/wolfi/chainguard-base" ""
+push_docker_image "registry.access.redhat.com/ubi9/ubi-micro:9.6-1754467928" "-ubi"
