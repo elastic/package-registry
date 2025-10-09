@@ -21,7 +21,7 @@ FROM ${RUNNER_IMAGE}
 
 # Get dependencies
 # Mailcap is installed to get mime types information.
-RUN microdnf install mailcap zip rsync && \
+RUN microdnf install -y mailcap zip rsync && \
     microdnf clean all
 
 # Move binary from the builder image
