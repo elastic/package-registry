@@ -11,6 +11,8 @@ build_docker_image() {
     local docker_img_tag="${DOCKER_IMG_TAG}${2}"
     local docker_img_tag_branch="${DOCKER_IMG_TAG_BRANCH}${2}"
     go_version=$(cat .go-version)
+    # remove the last 2 arguments as use the remainder for the build command
+    shift; shift;
 
     docker buildx build "$@" \
         --platform linux/amd64,linux/arm64/v8 \
@@ -30,6 +32,16 @@ build_docker_image() {
 push_docker_image() {
     local runner_image="${1}"
     local tag_suffix="${2}"
+    # remove the last 2 arguments as you send the remainder to the build command
+    shift; shift;
+
+    # if there is no tag suffix, then remove the last empty argument
+    # as it causes issues with the build command.
+    if [[ -z "${tag_suffix}" ]]
+    then
+        echo "Removing last argument"
+        set -- "${@:1:$(($#-1))}"
+    fi
 
     docker buildx create --use
 
