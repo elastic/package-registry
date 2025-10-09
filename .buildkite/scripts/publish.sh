@@ -14,7 +14,7 @@ build_docker_image() {
         -t "${DOCKER_IMG_TAG_BRANCH}" \
         --build-arg GO_VERSION="${go_version}" \
         --build-arg BUILDER_IMAGE=docker.elastic.co/wolfi/go \
-        --build-arg RUNNER_IMAGE=docker.elastic.co/wolfi/chainguard-base \
+        --build-arg RUNNER_IMAGE="${RUNNER_IMAGE}" \
         --label BRANCH_NAME="${TAG_NAME}" \
         --label GIT_SHA="${BUILDKITE_COMMIT}" \
         --label GO_VERSION="${SETUP_GOLANG_VERSION}" \
@@ -29,6 +29,19 @@ push_docker_image() {
     build_docker_image
 
     # essentially the same as above with --push flag; the build should be in the cache
+    retry 3 build_docker_image --push
+
+    echo "Docker images pushed: ${DOCKER_IMG_TAG} ${DOCKER_IMG_TAG_BRANCH}"
+
+    # also build an UBI image
+    DOCKER_IMG_TAG="${DOCKER_NAMESPACE}:${BUILDKITE_COMMIT}-ubi"
+    DOCKER_IMG_TAG_BRANCH="${DOCKER_NAMESPACE}:${TAG_NAME}-ubi"
+    RUNNER_IMAGE="registry.access.redhat.com/ubi9/ubi-micro:9.6-1754467928"
+
+    # first build the UBI image without push
+    build_docker_image
+
+    # the same as above with --push flag with the UBI image; the build should be in the cache
     retry 3 build_docker_image --push
 
     echo "Docker images pushed: ${DOCKER_IMG_TAG} ${DOCKER_IMG_TAG_BRANCH}"
@@ -49,5 +62,6 @@ fi
 
 DOCKER_IMG_TAG="${DOCKER_NAMESPACE}:${BUILDKITE_COMMIT}"
 DOCKER_IMG_TAG_BRANCH="${DOCKER_NAMESPACE}:${TAG_NAME}"
+RUNNER_IMAGE="docker.elastic.co/wolfi/chainguard-base"
 
 push_docker_image
