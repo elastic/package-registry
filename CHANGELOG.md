@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Avoid parsing JSON columns in queries performed to artifacts related endpoints (SQL storage indexer). [#1386](https://github.com/elastic/package-registry/pull/1386)
 * Include SQL functions to improve filtering (SQL storage indexer). [#1442](https://github.com/elastic/package-registry/pull/1442)
+* Apply a capabilities filter at database level if capabilities query parameter is set (SQL storage indexer). [#1448](https://github.com/elastic/package-registry/pull/1448)
 
 ### Deprecated
 

@@ -93,3 +93,31 @@ func TestSemverCompareLessThanEqual(t *testing.T) {
 		})
 	}
 }
+
+func TestAllCapabilitiesAreSupported(t *testing.T) {
+	tests := []struct {
+		requiredCaps  string
+		supportedCaps string
+		expected      bool
+	}{
+		{"a,b", "a,b,c", true},
+		{"a,c", "a,b,c", true},
+		{"a,d", "a,b,c", false},
+		{"", "a,b,c", true},            // An empty required capabilities array means there are no requirements, so it's always satisfied.
+		{"a,b", "", true},              // An empty supported capabilities array means there are no capabilities to check against, so it's always satisfied.
+		{"", "", true},                 // Both arrays empty means no requirements and nothing to check against, so it's satisfied.
+		{"a,b,a", "a,b,c", true},       // Duplicates in required capabilities array should not affect the outcome.
+		{"a,b", "b,a,c", true},         // Order in supported capabilities array should not affect the outcome.
+		{"a,b", "a,b", true},           // Exact match.
+		{"a,b,c", "a,b", false},        // Required capabilities has more elements than supported capabilities.
+		{"a,b,c", "a,b,c,d,e,f", true}, // Required capabilities is a subset of supported capabilities.
+	}
+
+	for _, tt := range tests {
+		t.Run(fmt.Sprintf("source: [%s] target: [%s]", tt.requiredCaps, tt.supportedCaps), func(t *testing.T) {
+			result, err := allCapabilitiesAreSupported(nil, []driver.Value{tt.requiredCaps, tt.supportedCaps})
+			require.NoError(t, err)
+			assert.Equal(t, tt.expected, result)
+		})
+	}
+}
