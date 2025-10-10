@@ -11,6 +11,7 @@ type Repository interface {
 	BulkAdd(ctx context.Context, database string, pkgs []*Package) error
 	All(ctx context.Context, database string, whereOptions WhereOptions) ([]*Package, error)
 	AllFunc(ctx context.Context, database string, whereOptions WhereOptions, process func(ctx context.Context, pkg *Package) error) error
+	LatestFunc(ctx context.Context, database string, whereOptions WhereOptions, process func(ctx context.Context, pkg *Package) error) error
 	Drop(ctx context.Context, table string) error
 	Close(ctx context.Context) error
 

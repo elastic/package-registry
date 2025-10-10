@@ -14,6 +14,8 @@ import (
 	_ "modernc.org/sqlite" // Import the SQLite driver
 
 	"go.elastic.co/apm/v2"
+
+	"github.com/elastic/package-registry/packages"
 )
 
 const (
@@ -39,6 +41,10 @@ var keys = []keyDefinition{
 	{"cursor", "TEXT NOT NULL"},
 	{"name", "TEXT NOT NULL"},
 	{"version", "TEXT NOT NULL"},
+	{"versionMajor", "INTEGER"},
+	{"versionMinor", "INTEGER"},
+	{"versionPatch", "INTEGER"},
+	{"versionBuild", "TEXT NOT NULL"},
 	{"formatVersion", "TEXT NOT NULL"},
 	{"formatVersionMajorMinor", "TEXT NOT NULL"},
 	{"release", "TEXT NOT NULL"},
@@ -221,6 +227,10 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 				pkgs[i].Cursor,
 				pkgs[i].Name,
 				pkgs[i].Version,
+				pkgs[i].VersionMajor,
+				pkgs[i].VersionMinor,
+				pkgs[i].VersionPatch,
+				pkgs[i].VersionBuild,
 				pkgs[i].FormatVersion,
 				pkgs[i].FormatVersionMajorMinor,
 				pkgs[i].Release,
@@ -273,39 +283,16 @@ func (r *SQLiteRepository) All(ctx context.Context, database string, whereOption
 	return all, nil
 }
 
-func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOptions WhereOptions, process func(ctx context.Context, pkg *Package) error) error {
-	span, ctx := apm.StartSpan(ctx, "SQL: Get All (process each package)", "app")
+func (r *SQLiteRepository) LatestFunc(ctx context.Context, database string, whereOptions WhereOptions, process func(ctx context.Context, pkg *Package) error) error {
+	span, ctx := apm.StartSpan(ctx, "SQL: Get Latest (process each package)", "app")
 	span.Context.SetLabel("database.path", r.File(ctx))
 	defer span.End()
 
 	useJSONFields := !whereOptions.SkipJSONFields()
 	useBaseData := !whereOptions.UseFullData()
 
-	getKeys := make([]string, 0, len(keys))
-	var query strings.Builder
-	query.WriteString("SELECT ")
-	for _, k := range keys {
-		switch {
-		case !useJSONFields && (k.Name == dataColumnName || k.Name == baseDataColumnName):
-			continue
-		case k.Name == dataColumnName && useBaseData:
-			continue
-		case k.Name == baseDataColumnName && !useBaseData:
-			continue
-		default:
-			getKeys = append(getKeys, k.Name)
-		}
-	}
-	query.WriteString(strings.Join(getKeys, ", "))
-	query.WriteString(" FROM ")
-	query.WriteString(database)
-	var whereArgs []any
-	if whereOptions != nil {
-		var clause string
-		clause, whereArgs = whereOptions.Where()
-		query.WriteString(clause)
-	}
-	rows, err := r.db.QueryContext(ctx, query.String(), whereArgs...)
+	query, whereArgs := sqlQueryWithWindowing(useBaseData, useJSONFields, database, whereOptions)
+	rows, err := r.db.QueryContext(ctx, query, whereArgs...)
 	if err != nil {
 		return err
 	}
@@ -315,11 +302,9 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 	var pkg Package
 	for rows.Next() {
 		columns := []any{
-			&pkg.Cursor,
 			&pkg.Name,
 			&pkg.Version,
 			&pkg.FormatVersion,
-			&pkg.FormatVersionMajorMinor,
 			&pkg.Release,
 			&pkg.Prerelease,
 			&pkg.KibanaVersion,
@@ -346,6 +331,151 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 		}
 	}
 	return nil
+}
+
+func sqlQueryWithWindowing(useBaseData, useJSONFields bool, database string, whereOptions WhereOptions) (string, []any) {
+	getKeys := filterKeysForSelect(useBaseData, useJSONFields)
+
+	mainkeysSelector := strings.Join(getKeys, ", ")
+	partitionKeySelector := fmt.Sprintf("p.%s", strings.Join(getKeys, ", p."))
+	filterSubTableKeySelector := fmt.Sprintf("pp.%s, pp.versionMajor, pp.versionMinor, pp.versionPatch, pp.versionBuild", strings.Join(getKeys, ", pp."))
+
+	var query strings.Builder
+	query.WriteString("SELECT ")
+	query.WriteString(mainkeysSelector)
+	query.WriteString(` FROM (
+    SELECT `)
+	query.WriteString(partitionKeySelector)
+	query.WriteString(` ,
+            RANK() OVER (
+               PARTITION BY name
+               ORDER BY
+                versionMajor DESC,
+                versionMinor DESC,
+                versionPatch DESC
+            ) AS rnk
+    FROM (
+        SELECT `)
+	query.WriteString(filterSubTableKeySelector)
+	query.WriteString(` FROM `)
+	query.WriteString(database)
+	query.WriteString(` pp `)
+	var whereArgs []any
+	if whereOptions != nil {
+		var clause string
+		clause, whereArgs = whereOptions.Where()
+		query.WriteString(clause)
+	}
+	query.WriteString(`
+    ) p
+) WHERE rnk = 1`)
+	// Example of query generated:
+	// SELECT name, version, formatVersion, release, prerelease, kibanaVersion, type, path, baseData FROM (
+	//    SELECT p.name, p.version, p.formatVersion, p.release, p.prerelease, p.kibanaVersion, p.type, p.path, p.baseData ,
+	//            RANK() OVER (
+	//               PARTITION BY name
+	//               ORDER BY
+	//                versionMajor DESC,
+	//                versionMinor DESC,
+	//                versionPatch DESC
+	//            ) AS rnk
+	//    FROM (
+	//        SELECT pp.name, pp.version, pp.formatVersion, pp.release, pp.prerelease, pp.kibanaVersion, pp.type, pp.path, pp.baseData, pp.versionMajor, pp.versionMinor, pp.versionPatch, pp.versionBuild
+	//        FROM packages pp
+	//        WHERE cursor = ? AND prerelease = 0 AND release != 'experimental' AND semver_compare_ge(formatVersionMajorMinor, ?) = 1 AND semver_compare_le(formatVersionMajorMinor, ?) = 1
+	//    ) p
+	// ) WHERE rnk = 1
+
+	return query.String(), whereArgs
+}
+
+func filterKeysForSelect(useBaseData, useJSONFields bool) []string {
+	getKeys := make([]string, 0, len(keys))
+	for _, k := range keys {
+		switch {
+		case !useJSONFields && (k.Name == dataColumnName || k.Name == baseDataColumnName):
+			continue
+		case k.Name == dataColumnName && useBaseData:
+			continue
+		case k.Name == baseDataColumnName && !useBaseData:
+			continue
+		case k.Name == "versionMajor" || k.Name == "versionMinor" || k.Name == "versionPatch" || k.Name == "versionBuild":
+			continue
+		case k.Name == "cursor" || k.Name == "formatVersionMajorMinor":
+			continue
+		default:
+			getKeys = append(getKeys, k.Name)
+		}
+	}
+	return getKeys
+}
+
+func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOptions WhereOptions, process func(ctx context.Context, pkg *Package) error) error {
+	span, ctx := apm.StartSpan(ctx, "SQL: Get All (process each package)", "app")
+	span.Context.SetLabel("database.path", r.File(ctx))
+	defer span.End()
+
+	useJSONFields := !whereOptions.SkipJSONFields()
+	useBaseData := !whereOptions.UseFullData()
+
+	query, whereArgs := sqlQueryGeneric(useBaseData, useJSONFields, database, whereOptions)
+
+	rows, err := r.db.QueryContext(ctx, query, whereArgs...)
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
+
+	// Reuse pkg variable since all fields are scanned into it
+	var pkg Package
+	for rows.Next() {
+		columns := []any{
+			&pkg.Name,
+			&pkg.Version,
+			&pkg.FormatVersion,
+			&pkg.Release,
+			&pkg.Prerelease,
+			&pkg.KibanaVersion,
+			&pkg.Type,
+			&pkg.Path,
+		}
+		if useJSONFields {
+			// this variable will be assigned to BaseData if useBaseData is true
+			// to avoid creating a new variable, we reuse pkg.Data
+			columns = append(columns, &pkg.Data)
+		}
+		if err := rows.Scan(columns...); err != nil {
+			return err
+		}
+		if useBaseData {
+			pkg.BaseData = pkg.Data
+			pkg.Data = []byte{}
+		} else {
+			pkg.BaseData = []byte{}
+		}
+		err = process(ctx, &pkg)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func sqlQueryGeneric(useBaseData, useJSONFields bool, database string, whereOptions WhereOptions) (string, []any) {
+	getKeys := filterKeysForSelect(useBaseData, useJSONFields)
+
+	var query strings.Builder
+	query.WriteString("SELECT ")
+	query.WriteString(strings.Join(getKeys, ", "))
+	query.WriteString(" FROM ")
+	query.WriteString(database)
+	var whereArgs []any
+	if whereOptions != nil {
+		var clause string
+		clause, whereArgs = whereOptions.Where()
+		query.WriteString(clause)
+	}
+	return query.String(), whereArgs
 }
 
 func (r *SQLiteRepository) Drop(ctx context.Context, table string) error {
@@ -439,6 +569,33 @@ func (o *SQLOptions) Where() (string, []any) {
 			sb.WriteString(" AND ")
 		}
 		sb.WriteString("prerelease = 0")
+		sb.WriteString(" AND release != '")
+		sb.WriteString(packages.ReleaseExperimental)
+		sb.WriteString("'")
+	}
+
+	if o.Filter.KibanaVersion != "" {
+		if sb.Len() > 0 {
+			sb.WriteString(" AND ")
+		}
+		sb.WriteString("semver_compare_constraint(?, kibanaVersion) = 1")
+		args = append(args, o.Filter.KibanaVersion)
+	}
+
+	if o.Filter.SpecMin != "" {
+		if sb.Len() > 0 {
+			sb.WriteString(" AND ")
+		}
+		sb.WriteString("semver_compare_ge(formatVersionMajorMinor, ?) = 1")
+		args = append(args, o.Filter.SpecMin)
+	}
+
+	if o.Filter.SpecMax != "" {
+		if sb.Len() > 0 {
+			sb.WriteString(" AND ")
+		}
+		sb.WriteString("semver_compare_le(formatVersionMajorMinor, ?) = 1")
+		args = append(args, o.Filter.SpecMax)
 	}
 
 	if o.Filter.KibanaVersion != "" {

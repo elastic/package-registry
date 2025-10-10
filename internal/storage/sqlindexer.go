@@ -320,6 +320,11 @@ func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Pack
 		kibanaVersion = pkg.Conditions.Kibana.Version
 	}
 
+	pkgVersionSemver, err := semver.NewVersion(pkg.Version)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create version from %q: %w", pkgVersionSemver, err)
+	}
+
 	formatVersionSemver, err := semver.NewVersion(pkg.FormatVersion)
 	if err != nil {
 		return nil, fmt.Errorf("invalid format version '%s' for package %s-%s: %w", pkg.FormatVersion, pkg.Name, pkg.Version, err)
@@ -330,6 +335,10 @@ func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Pack
 		Cursor:                  cursor,
 		Name:                    pkg.Name,
 		Version:                 pkg.Version,
+		VersionMajor:            int(pkgVersionSemver.Major()),
+		VersionMinor:            int(pkgVersionSemver.Minor()),
+		VersionPatch:            int(pkgVersionSemver.Patch()),
+		VersionBuild:            pkgVersionSemver.Prerelease(),
 		FormatVersion:           pkg.FormatVersion,
 		FormatVersionMajorMinor: formatVersionMajorMinor,
 		Path:                    fmt.Sprintf("%s-%s.zip", pkg.Name, pkg.Version),
@@ -362,8 +371,11 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 		options := &database.SQLOptions{
 			CurrentCursor: i.cursor,
 		}
+
+		queryJustLatestPackages := false
 		if opts != nil && opts.Filter != nil {
 			// TODO: Add support to filter by discovery fields if possible.
+			// TODO: Add support to filter by capabilities if possible, relates to https://github.com/elastic/package-registry/pull/1396/
 			options.Filter = &database.FilterOptions{
 				Type:       opts.Filter.PackageType,
 				Name:       opts.Filter.PackageName,
@@ -373,6 +385,14 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 			if opts.Filter.Experimental {
 				options.Filter.Prerelease = true
 			}
+
+			// Determine if we can use the optimized query to get just the latest packages.
+			// We can use it when we are not filtering by version, not requesting all versions,
+			// and not filtering by capabilities or discovery. As capabilities and discovery are not
+			// supported at database level, we can only use the optimized query when they are not set.
+			// If capabilities or discovery filters are added, it needs to be checked that they can be
+			// applied when querying for the latest packages.
+			queryJustLatestPackages = !opts.Filter.AllVersions && opts.Filter.PackageVersion == "" && len(opts.Filter.Capabilities) == 0 && opts.Filter.Discovery == nil
 			if opts.Filter.KibanaVersion != nil {
 				options.Filter.KibanaVersion = opts.Filter.KibanaVersion.String()
 			}
@@ -388,7 +408,13 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 			options.SkipPackageData = opts.SkipPackageData
 		}
 
-		err := (*i.current).AllFunc(ctx, "packages", options, func(ctx context.Context, p *database.Package) error {
+		queryFunc := (*i.current).AllFunc
+		if queryJustLatestPackages {
+			queryFunc = (*i.current).LatestFunc
+		}
+
+		startQuery := time.Now()
+		err := queryFunc(ctx, "packages", options, func(ctx context.Context, p *database.Package) error {
 			pkg := &packages.Package{}
 			var err error
 			switch {
@@ -421,8 +447,9 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 			return nil
 		})
 		if err != nil {
-			return fmt.Errorf("failed to obtain all packages: %w", err)
+			return fmt.Errorf("failed to obtain packages: %w", err)
 		}
+		i.logger.Debug("Elapsed time in query to database", zap.Duration("query.duration", time.Since(startQuery)), zap.String("query.duration.human", time.Since(startQuery).String()))
 		i.logger.Debug("Number of packages read from database", zap.Int("num.packages", len(readPackages)))
 
 		if opts != nil && opts.Filter != nil {
@@ -433,6 +460,7 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 				// If we are filtering by name and version at database level, there should be at most one package and it can be returned early.
 				return nil
 			}
+			var err error
 			readPackages, err = opts.Filter.Apply(ctx, readPackages)
 			if err != nil {
 				return fmt.Errorf("failed to filter packages: %w", err)
