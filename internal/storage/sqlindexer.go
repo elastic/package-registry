@@ -364,6 +364,8 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 	defer span.End()
 
 	var readPackages packages.Packages
+
+	// Use a function to ensure the read lock is released as soon as possible.
 	err := func() error {
 		i.m.RLock()
 		defer i.m.RUnlock()
@@ -406,26 +408,25 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 		}
 		i.logger.Debug("Number of packages read from database", zap.Int("num.packages", len(readPackages)))
 
-		if opts != nil && opts.Filter != nil {
-			if opts.Filter.PackageName != "" && opts.Filter.PackageVersion != "" {
-				if len(readPackages) > 1 {
-					return fmt.Errorf("expected at most one package when filtering by name and version, got %d", len(readPackages))
-				}
-				// If we are filtering by name and version at database level, there should be at most one package and it can be returned early.
-				return nil
-			}
-			var err error
-			readPackages, err = opts.Filter.Apply(ctx, readPackages)
-			if err != nil {
-				return fmt.Errorf("failed to filter packages: %w", err)
-			}
-			return nil
-		}
-
 		return nil
 	}()
 	if err != nil {
 		return nil, err
+	}
+
+	// Apply filtering at application level if needed, not required anymore access to the database.
+	if opts != nil && opts.Filter != nil {
+		if opts.Filter.PackageName != "" && opts.Filter.PackageVersion != "" {
+			if len(readPackages) > 1 {
+				return nil, fmt.Errorf("expected at most one package when filtering by name and version, got %d", len(readPackages))
+			}
+			// If we are filtering by name and version at database level, there should be at most one package and it can be returned early.
+			return readPackages, nil
+		}
+		readPackages, err = opts.Filter.Apply(ctx, readPackages)
+		if err != nil {
+			return nil, fmt.Errorf("failed to filter packages: %w", err)
+		}
 	}
 
 	return readPackages, nil
