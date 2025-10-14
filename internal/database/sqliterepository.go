@@ -288,21 +288,30 @@ func (r *SQLiteRepository) FilterFunc(ctx context.Context, database string, wher
 	span.Context.SetLabel("database.path", r.File(ctx))
 	defer span.End()
 
-	useJSONFields := !whereOptions.SkipJSONFields()
-	useBaseData := !whereOptions.UseFullData()
-
 	var query string
 	var whereArgs []any
 	if whereOptions.GetLatestPackages() {
-		query, whereArgs = sqlQueryWithWindowing(useBaseData, useJSONFields, database, whereOptions)
+		query, whereArgs = sqlQueryWithWindowing(database, whereOptions)
 	} else {
-		query, whereArgs = sqlQueryGeneric(useBaseData, useJSONFields, database, whereOptions)
+		query, whereArgs = sqlQueryGeneric(database, whereOptions)
 	}
+
+	return r.runQuery(ctx, query, whereArgs, whereOptions, process)
+}
+
+func (r *SQLiteRepository) runQuery(ctx context.Context, query string, whereArgs []any, whereOptions WhereOptions, process func(ctx context.Context, pkg *Package) error) error {
+	span, ctx := apm.StartSpan(ctx, "SQL: Run query", "app")
+	span.Context.SetLabel("database.path", r.File(ctx))
+	defer span.End()
+
 	rows, err := r.db.QueryContext(ctx, query, whereArgs...)
 	if err != nil {
 		return err
 	}
 	defer rows.Close()
+
+	useJSONFields := !whereOptions.SkipJSONFields()
+	useBaseData := !whereOptions.UseFullData()
 
 	// Reuse pkg variable since all fields are scanned into it
 	var pkg Package
@@ -344,52 +353,25 @@ func (r *SQLiteRepository) LatestFunc(ctx context.Context, database string, wher
 	span.Context.SetLabel("database.path", r.File(ctx))
 	defer span.End()
 
+	query, whereArgs := sqlQueryWithWindowing(database, whereOptions)
+
+	return r.runQuery(ctx, query, whereArgs, whereOptions, process)
+}
+
+func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOptions WhereOptions, process func(ctx context.Context, pkg *Package) error) error {
+	span, ctx := apm.StartSpan(ctx, "SQL: Get All (process each package)", "app")
+	span.Context.SetLabel("database.path", r.File(ctx))
+	defer span.End()
+
+	query, whereArgs := sqlQueryGeneric(database, whereOptions)
+
+	return r.runQuery(ctx, query, whereArgs, whereOptions, process)
+}
+
+func sqlQueryWithWindowing(database string, whereOptions WhereOptions) (string, []any) {
 	useJSONFields := !whereOptions.SkipJSONFields()
 	useBaseData := !whereOptions.UseFullData()
 
-	query, whereArgs := sqlQueryWithWindowing(useBaseData, useJSONFields, database, whereOptions)
-	rows, err := r.db.QueryContext(ctx, query, whereArgs...)
-	if err != nil {
-		return err
-	}
-	defer rows.Close()
-
-	// Reuse pkg variable since all fields are scanned into it
-	var pkg Package
-	for rows.Next() {
-		columns := []any{
-			&pkg.Name,
-			&pkg.Version,
-			&pkg.FormatVersion,
-			&pkg.Release,
-			&pkg.Prerelease,
-			&pkg.KibanaVersion,
-			&pkg.Type,
-			&pkg.Path,
-		}
-		if useJSONFields {
-			// this variable will be assigned to BaseData if useBaseData is true
-			// to avoid creating a new variable, we reuse pkg.Data
-			columns = append(columns, &pkg.Data)
-		}
-		if err := rows.Scan(columns...); err != nil {
-			return err
-		}
-		if useBaseData {
-			pkg.BaseData = pkg.Data
-			pkg.Data = []byte{}
-		} else {
-			pkg.BaseData = []byte{}
-		}
-		err = process(ctx, &pkg)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func sqlQueryWithWindowing(useBaseData, useJSONFields bool, database string, whereOptions WhereOptions) (string, []any) {
 	getKeys := filterKeysForSelect(useBaseData, useJSONFields)
 
 	mainkeysSelector := strings.Join(getKeys, ", ")
@@ -445,6 +427,26 @@ func sqlQueryWithWindowing(useBaseData, useJSONFields bool, database string, whe
 	return query.String(), whereArgs
 }
 
+func sqlQueryGeneric(database string, whereOptions WhereOptions) (string, []any) {
+	useJSONFields := !whereOptions.SkipJSONFields()
+	useBaseData := !whereOptions.UseFullData()
+
+	getKeys := filterKeysForSelect(useBaseData, useJSONFields)
+
+	var query strings.Builder
+	query.WriteString("SELECT ")
+	query.WriteString(strings.Join(getKeys, ", "))
+	query.WriteString(" FROM ")
+	query.WriteString(database)
+	var whereArgs []any
+	if whereOptions != nil {
+		var clause string
+		clause, whereArgs = whereOptions.Where()
+		query.WriteString(clause)
+	}
+	return query.String(), whereArgs
+}
+
 func filterKeysForSelect(useBaseData, useJSONFields bool) []string {
 	getKeys := make([]string, 0, len(keys))
 	for _, k := range keys {
@@ -464,74 +466,6 @@ func filterKeysForSelect(useBaseData, useJSONFields bool) []string {
 		}
 	}
 	return getKeys
-}
-
-func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOptions WhereOptions, process func(ctx context.Context, pkg *Package) error) error {
-	span, ctx := apm.StartSpan(ctx, "SQL: Get All (process each package)", "app")
-	span.Context.SetLabel("database.path", r.File(ctx))
-	defer span.End()
-
-	useJSONFields := !whereOptions.SkipJSONFields()
-	useBaseData := !whereOptions.UseFullData()
-
-	query, whereArgs := sqlQueryGeneric(useBaseData, useJSONFields, database, whereOptions)
-
-	rows, err := r.db.QueryContext(ctx, query, whereArgs...)
-	if err != nil {
-		return err
-	}
-	defer rows.Close()
-
-	// Reuse pkg variable since all fields are scanned into it
-	var pkg Package
-	for rows.Next() {
-		columns := []any{
-			&pkg.Name,
-			&pkg.Version,
-			&pkg.FormatVersion,
-			&pkg.Release,
-			&pkg.Prerelease,
-			&pkg.KibanaVersion,
-			&pkg.Type,
-			&pkg.Path,
-		}
-		if useJSONFields {
-			// this variable will be assigned to BaseData if useBaseData is true
-			// to avoid creating a new variable, we reuse pkg.Data
-			columns = append(columns, &pkg.Data)
-		}
-		if err := rows.Scan(columns...); err != nil {
-			return err
-		}
-		if useBaseData {
-			pkg.BaseData = pkg.Data
-			pkg.Data = []byte{}
-		} else {
-			pkg.BaseData = []byte{}
-		}
-		err = process(ctx, &pkg)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func sqlQueryGeneric(useBaseData, useJSONFields bool, database string, whereOptions WhereOptions) (string, []any) {
-	getKeys := filterKeysForSelect(useBaseData, useJSONFields)
-
-	var query strings.Builder
-	query.WriteString("SELECT ")
-	query.WriteString(strings.Join(getKeys, ", "))
-	query.WriteString(" FROM ")
-	query.WriteString(database)
-	var whereArgs []any
-	if whereOptions != nil {
-		var clause string
-		clause, whereArgs = whereOptions.Where()
-		query.WriteString(clause)
-	}
-	return query.String(), whereArgs
 }
 
 func (r *SQLiteRepository) Drop(ctx context.Context, table string) error {
