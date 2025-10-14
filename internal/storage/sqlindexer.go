@@ -372,7 +372,6 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 
 		err := (*i.current).FilterFunc(ctx, "packages", options, func(ctx context.Context, p *database.Package) error {
 			pkg := &packages.Package{}
-			var err error
 			switch {
 			case opts != nil && opts.SkipPackageData:
 				// Set minimal package data.
@@ -384,7 +383,7 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 				pkg.Release = p.Release
 				pkg.Path = p.Path
 			case opts != nil && opts.FullData:
-				err = json.Unmarshal(p.Data, pkg)
+				err := json.Unmarshal(p.Data, pkg)
 				if err != nil {
 					return fmt.Errorf("failed to parse full package %s-%s: %w", p.Name, p.Version, err)
 				}
@@ -392,7 +391,7 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 				// BaseData is used for performance reasons, it contains only the fields that are needed for the search index.
 				// FormatVersion needs to be set from database to ensure compatibility with the package structure.
 				pkg.FormatVersion = p.FormatVersion
-				err = json.Unmarshal(p.BaseData, pkg)
+				err := json.Unmarshal(p.BaseData, pkg)
 				if err != nil {
 					return fmt.Errorf("failed to parse base package %s-%s: %w", p.Name, p.Version, err)
 				}
