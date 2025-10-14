@@ -368,24 +368,9 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 		i.m.RLock()
 		defer i.m.RUnlock()
 
-		options := &database.SQLOptions{
-			CurrentCursor: i.cursor,
-		}
-
+		options := createDatabaseOptions(i.cursor, opts)
 		queryJustLatestPackages := false
 		if opts != nil && opts.Filter != nil {
-			// TODO: Add support to filter by discovery fields if possible.
-			// TODO: Add support to filter by capabilities if possible, relates to https://github.com/elastic/package-registry/pull/1396/
-			options.Filter = &database.FilterOptions{
-				Type:       opts.Filter.PackageType,
-				Name:       opts.Filter.PackageName,
-				Version:    opts.Filter.PackageVersion,
-				Prerelease: opts.Filter.Prerelease,
-			}
-			if opts.Filter.Experimental {
-				options.Filter.Prerelease = true
-			}
-
 			// Determine if we can use the optimized query to get just the latest packages.
 			// We can use it when we are not filtering by version, not requesting all versions,
 			// and not filtering by capabilities or discovery. As capabilities and discovery are not
@@ -393,27 +378,12 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 			// If capabilities or discovery filters are added, it needs to be checked that they can be
 			// applied when querying for the latest packages.
 			queryJustLatestPackages = !opts.Filter.AllVersions && opts.Filter.PackageVersion == "" && len(opts.Filter.Capabilities) == 0 && opts.Filter.Discovery == nil
-			if opts.Filter.KibanaVersion != nil {
-				options.Filter.KibanaVersion = opts.Filter.KibanaVersion.String()
-			}
-			if opts.Filter.SpecMin != nil {
-				options.Filter.SpecMin = opts.Filter.SpecMin.String()
-			}
-			if opts.Filter.SpecMax != nil {
-				options.Filter.SpecMax = opts.Filter.SpecMax.String()
-			}
 		}
-		if opts != nil {
-			options.IncludeFullData = opts.FullData
-			options.SkipPackageData = opts.SkipPackageData
-		}
-
 		queryFunc := (*i.current).AllFunc
 		if queryJustLatestPackages {
 			queryFunc = (*i.current).LatestFunc
 		}
 
-		startQuery := time.Now()
 		err := queryFunc(ctx, "packages", options, func(ctx context.Context, p *database.Package) error {
 			pkg := &packages.Package{}
 			var err error
@@ -449,7 +419,6 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 		if err != nil {
 			return fmt.Errorf("failed to obtain packages: %w", err)
 		}
-		i.logger.Debug("Elapsed time in query to database", zap.Duration("query.duration", time.Since(startQuery)), zap.String("query.duration.human", time.Since(startQuery).String()))
 		i.logger.Debug("Number of packages read from database", zap.Int("num.packages", len(readPackages)))
 
 		if opts != nil && opts.Filter != nil {
@@ -475,6 +444,65 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 	}
 
 	return readPackages, nil
+}
+
+func createDatabaseOptions(cursor string, opts *packages.GetOptions) *database.SQLOptions {
+	sqlOptions := &database.SQLOptions{
+		CurrentCursor:   cursor,
+		IncludeFullData: false,
+		SkipPackageData: false,
+	}
+	if opts == nil {
+		return sqlOptions
+	}
+
+	sqlOptions.IncludeFullData = opts.FullData
+	sqlOptions.SkipPackageData = opts.SkipPackageData
+
+	if opts.Filter == nil {
+		return sqlOptions
+	}
+
+	if opts.Filter.Experimental {
+		// Experimental is also used in endpoints like /package or /epr to get a specific package.
+		// https://github.com/elastic/package-registry/blob/4b4eea9301902c15a75a8ef303c6e719f9ff6abd/packages/packages.go#L645
+
+		// If experimental is set, then it should be applied the same filters as in the legacyApply function:
+		// https://github.com/elastic/package-registry/blob/4b4eea9301902c15a75a8ef303c6e719f9ff6abd/packages/packages.go#L524
+		sqlOptions.Filter = &database.FilterOptions{
+			Type:    opts.Filter.PackageType,
+			Name:    opts.Filter.PackageName,
+			Version: opts.Filter.PackageVersion,
+			// When experimental is set, prerelease should also be included.
+			Prerelease: true,
+		}
+
+		if opts.Filter.KibanaVersion != nil {
+			sqlOptions.Filter.KibanaVersion = opts.Filter.KibanaVersion.String()
+		}
+
+		return sqlOptions
+	}
+
+	// TODO: Add support to filter by discovery fields if possible.
+	// TODO: Add support to filter by capabilities if possible, relates to https://github.com/elastic/package-registry/pull/1396/
+	sqlOptions.Filter = &database.FilterOptions{
+		Type:       opts.Filter.PackageType,
+		Name:       opts.Filter.PackageName,
+		Version:    opts.Filter.PackageVersion,
+		Prerelease: opts.Filter.Prerelease,
+	}
+	if opts.Filter.KibanaVersion != nil {
+		sqlOptions.Filter.KibanaVersion = opts.Filter.KibanaVersion.String()
+	}
+	if opts.Filter.SpecMin != nil {
+		sqlOptions.Filter.SpecMin = opts.Filter.SpecMin.String()
+	}
+	if opts.Filter.SpecMax != nil {
+		sqlOptions.Filter.SpecMax = opts.Filter.SpecMax.String()
+	}
+
+	return sqlOptions
 }
 
 func (i *SQLIndexer) Close(ctx context.Context) error {

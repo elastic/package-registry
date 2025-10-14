@@ -499,6 +499,7 @@ type FilterOptions struct {
 	Name          string
 	Version       string
 	Prerelease    bool
+	Experimental  bool
 	KibanaVersion string
 	SpecMin       string
 	SpecMax       string
@@ -568,34 +569,9 @@ func (o *SQLOptions) Where() (string, []any) {
 		if sb.Len() > 0 {
 			sb.WriteString(" AND ")
 		}
-		sb.WriteString("prerelease = 0")
-		sb.WriteString(" AND release != '")
+		sb.WriteString("prerelease = 0 AND release != '")
 		sb.WriteString(packages.ReleaseExperimental)
 		sb.WriteString("'")
-	}
-
-	if o.Filter.KibanaVersion != "" {
-		if sb.Len() > 0 {
-			sb.WriteString(" AND ")
-		}
-		sb.WriteString("semver_compare_constraint(?, kibanaVersion) = 1")
-		args = append(args, o.Filter.KibanaVersion)
-	}
-
-	if o.Filter.SpecMin != "" {
-		if sb.Len() > 0 {
-			sb.WriteString(" AND ")
-		}
-		sb.WriteString("semver_compare_ge(formatVersionMajorMinor, ?) = 1")
-		args = append(args, o.Filter.SpecMin)
-	}
-
-	if o.Filter.SpecMax != "" {
-		if sb.Len() > 0 {
-			sb.WriteString(" AND ")
-		}
-		sb.WriteString("semver_compare_le(formatVersionMajorMinor, ?) = 1")
-		args = append(args, o.Filter.SpecMax)
 	}
 
 	if o.Filter.KibanaVersion != "" {
