@@ -283,6 +283,62 @@ func (r *SQLiteRepository) All(ctx context.Context, database string, whereOption
 	return all, nil
 }
 
+func (r *SQLiteRepository) FilterFunc(ctx context.Context, database string, whereOptions WhereOptions, process func(ctx context.Context, pkg *Package) error) error {
+	span, ctx := apm.StartSpan(ctx, "SQL: Filter packages", "app")
+	span.Context.SetLabel("database.path", r.File(ctx))
+	defer span.End()
+
+	useJSONFields := !whereOptions.SkipJSONFields()
+	useBaseData := !whereOptions.UseFullData()
+
+	var query string
+	var whereArgs []any
+	if whereOptions.GetLatestPackages() {
+		query, whereArgs = sqlQueryWithWindowing(useBaseData, useJSONFields, database, whereOptions)
+	} else {
+		query, whereArgs = sqlQueryGeneric(useBaseData, useJSONFields, database, whereOptions)
+	}
+	rows, err := r.db.QueryContext(ctx, query, whereArgs...)
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
+
+	// Reuse pkg variable since all fields are scanned into it
+	var pkg Package
+	for rows.Next() {
+		columns := []any{
+			&pkg.Name,
+			&pkg.Version,
+			&pkg.FormatVersion,
+			&pkg.Release,
+			&pkg.Prerelease,
+			&pkg.KibanaVersion,
+			&pkg.Type,
+			&pkg.Path,
+		}
+		if useJSONFields {
+			// this variable will be assigned to BaseData if useBaseData is true
+			// to avoid creating a new variable, we reuse pkg.Data
+			columns = append(columns, &pkg.Data)
+		}
+		if err := rows.Scan(columns...); err != nil {
+			return err
+		}
+		if useBaseData {
+			pkg.BaseData = pkg.Data
+			pkg.Data = []byte{}
+		} else {
+			pkg.BaseData = []byte{}
+		}
+		err = process(ctx, &pkg)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func (r *SQLiteRepository) LatestFunc(ctx context.Context, database string, whereOptions WhereOptions, process func(ctx context.Context, pkg *Package) error) error {
 	span, ctx := apm.StartSpan(ctx, "SQL: Get Latest (process each package)", "app")
 	span.Context.SetLabel("database.path", r.File(ctx))
@@ -520,6 +576,8 @@ type SQLOptions struct {
 
 	IncludeFullData bool // If true, the query will return the full data field instead of the base data field
 	SkipPackageData bool // If true, no need to retrieve Data nor BaseData fields
+
+	JustLatestPackages bool // If true, only the latest packages will be retrieved
 }
 
 func (o *SQLOptions) Where() (string, []any) {
@@ -616,4 +674,11 @@ func (o *SQLOptions) SkipJSONFields() bool {
 		return false
 	}
 	return o.SkipPackageData
+}
+
+func (o *SQLOptions) GetLatestPackages() bool {
+	if o == nil {
+		return false
+	}
+	return o.JustLatestPackages
 }

@@ -10,6 +10,7 @@ type Repository interface {
 	Initialize(ctx context.Context) error
 	BulkAdd(ctx context.Context, database string, pkgs []*Package) error
 	All(ctx context.Context, database string, whereOptions WhereOptions) ([]*Package, error)
+	FilterFunc(ctx context.Context, database string, whereOptions WhereOptions, process func(ctx context.Context, pkg *Package) error) error
 	AllFunc(ctx context.Context, database string, whereOptions WhereOptions, process func(ctx context.Context, pkg *Package) error) error
 	LatestFunc(ctx context.Context, database string, whereOptions WhereOptions, process func(ctx context.Context, pkg *Package) error) error
 	Drop(ctx context.Context, table string) error
@@ -24,4 +25,5 @@ type WhereOptions interface {
 	Where() (string, []any)
 	UseFullData() bool
 	SkipJSONFields() bool
+	GetLatestPackages() bool
 }

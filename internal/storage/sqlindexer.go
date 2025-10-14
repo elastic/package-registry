@@ -369,22 +369,8 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 		defer i.m.RUnlock()
 
 		options := createDatabaseOptions(i.cursor, opts)
-		queryJustLatestPackages := false
-		if opts != nil && opts.Filter != nil {
-			// Determine if we can use the optimized query to get just the latest packages.
-			// We can use it when we are not filtering by version, not requesting all versions,
-			// and not filtering by capabilities or discovery. As capabilities and discovery are not
-			// supported at database level, we can only use the optimized query when they are not set.
-			// If capabilities or discovery filters are added, it needs to be checked that they can be
-			// applied when querying for the latest packages.
-			queryJustLatestPackages = !opts.Filter.AllVersions && opts.Filter.PackageVersion == "" && len(opts.Filter.Capabilities) == 0 && opts.Filter.Discovery == nil
-		}
-		queryFunc := (*i.current).AllFunc
-		if queryJustLatestPackages {
-			queryFunc = (*i.current).LatestFunc
-		}
 
-		err := queryFunc(ctx, "packages", options, func(ctx context.Context, p *database.Package) error {
+		err := (*i.current).FilterFunc(ctx, "packages", options, func(ctx context.Context, p *database.Package) error {
 			pkg := &packages.Package{}
 			var err error
 			switch {
@@ -448,9 +434,10 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 
 func createDatabaseOptions(cursor string, opts *packages.GetOptions) *database.SQLOptions {
 	sqlOptions := &database.SQLOptions{
-		CurrentCursor:   cursor,
-		IncludeFullData: false,
-		SkipPackageData: false,
+		CurrentCursor:      cursor,
+		IncludeFullData:    false,
+		SkipPackageData:    false,
+		JustLatestPackages: false,
 	}
 	if opts == nil {
 		return sqlOptions
@@ -481,6 +468,10 @@ func createDatabaseOptions(cursor string, opts *packages.GetOptions) *database.S
 			sqlOptions.Filter.KibanaVersion = opts.Filter.KibanaVersion.String()
 		}
 
+		// Determine if we can use the optimized query to get just the latest packages.
+		// We can use it when we are not filtering by version, not requesting all versions,
+		sqlOptions.JustLatestPackages = !opts.Filter.AllVersions && opts.Filter.PackageVersion == ""
+
 		return sqlOptions
 	}
 
@@ -501,6 +492,14 @@ func createDatabaseOptions(cursor string, opts *packages.GetOptions) *database.S
 	if opts.Filter.SpecMax != nil {
 		sqlOptions.Filter.SpecMax = opts.Filter.SpecMax.String()
 	}
+
+	// Determine if we can use the optimized query to get just the latest packages.
+	// We can use it when we are not filtering by version, not requesting all versions,
+	// and not filtering by capabilities or discovery. As capabilities and discovery are not
+	// supported at database level, we can only use the optimized query when they are not set.
+	// If capabilities or discovery filters are added, it needs to be checked that they can be
+	// applied when querying for the latest packages.
+	sqlOptions.JustLatestPackages = !opts.Filter.AllVersions && opts.Filter.PackageVersion == "" && len(opts.Filter.Capabilities) == 0 && opts.Filter.Discovery == nil
 
 	return sqlOptions
 }
