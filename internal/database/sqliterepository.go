@@ -14,6 +14,8 @@ import (
 	_ "modernc.org/sqlite" // Import the SQLite driver
 
 	"go.elastic.co/apm/v2"
+
+	"github.com/elastic/package-registry/packages"
 )
 
 const (
@@ -373,6 +375,7 @@ type FilterOptions struct {
 	Name          string
 	Version       string
 	Prerelease    bool
+	Experimental  bool
 	KibanaVersion string
 	SpecMin       string
 	SpecMax       string
@@ -443,7 +446,9 @@ func (o *SQLOptions) Where() (string, []any) {
 		if sb.Len() > 0 {
 			sb.WriteString(" AND ")
 		}
-		sb.WriteString("prerelease = 0")
+		sb.WriteString("prerelease = 0 AND release != '")
+		sb.WriteString(packages.ReleaseExperimental)
+		sb.WriteString("'")
 	}
 
 	if o.Filter.KibanaVersion != "" {

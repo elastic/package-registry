@@ -365,35 +365,7 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 		i.m.RLock()
 		defer i.m.RUnlock()
 
-		options := &database.SQLOptions{
-			CurrentCursor: i.cursor,
-		}
-		if opts != nil && opts.Filter != nil {
-			// TODO: Add support to filter by discovery fields if possible.
-			options.Filter = &database.FilterOptions{
-				Type:         opts.Filter.PackageType,
-				Name:         opts.Filter.PackageName,
-				Version:      opts.Filter.PackageVersion,
-				Prerelease:   opts.Filter.Prerelease,
-				Capabilities: opts.Filter.Capabilities,
-			}
-			if opts.Filter.Experimental {
-				options.Filter.Prerelease = true
-			}
-			if opts.Filter.KibanaVersion != nil {
-				options.Filter.KibanaVersion = opts.Filter.KibanaVersion.String()
-			}
-			if opts.Filter.SpecMin != nil {
-				options.Filter.SpecMin = opts.Filter.SpecMin.String()
-			}
-			if opts.Filter.SpecMax != nil {
-				options.Filter.SpecMax = opts.Filter.SpecMax.String()
-			}
-		}
-		if opts != nil {
-			options.IncludeFullData = opts.FullData
-			options.SkipPackageData = opts.SkipPackageData
-		}
+		options := createDatabaseOptions(i.cursor, opts)
 
 		err := (*i.current).AllFunc(ctx, "packages", options, func(ctx context.Context, p *database.Package) error {
 			pkg := &packages.Package{}
@@ -454,6 +426,64 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 	}
 
 	return readPackages, nil
+}
+
+func createDatabaseOptions(cursor string, opts *packages.GetOptions) *database.SQLOptions {
+	sqlOptions := &database.SQLOptions{
+		CurrentCursor:   cursor,
+		IncludeFullData: false,
+		SkipPackageData: false,
+	}
+	if opts == nil {
+		return sqlOptions
+	}
+
+	sqlOptions.IncludeFullData = opts.FullData
+	sqlOptions.SkipPackageData = opts.SkipPackageData
+
+	if opts.Filter == nil {
+		return sqlOptions
+	}
+
+	if opts.Filter.Experimental {
+		// Experimental is also used in endpoints like /package or /epr to get a specific package.
+		// https://github.com/elastic/package-registry/blob/4b4eea9301902c15a75a8ef303c6e719f9ff6abd/packages/packages.go#L645
+
+		// If experimental is set, then it should be applied the same filters as in the legacyApply function:
+		// https://github.com/elastic/package-registry/blob/4b4eea9301902c15a75a8ef303c6e719f9ff6abd/packages/packages.go#L524
+		sqlOptions.Filter = &database.FilterOptions{
+			Type:    opts.Filter.PackageType,
+			Name:    opts.Filter.PackageName,
+			Version: opts.Filter.PackageVersion,
+			// When experimental is set, prerelease should also be included.
+			Prerelease: true,
+		}
+
+		if opts.Filter.KibanaVersion != nil {
+			sqlOptions.Filter.KibanaVersion = opts.Filter.KibanaVersion.String()
+		}
+
+		return sqlOptions
+	}
+
+	sqlOptions.Filter = &database.FilterOptions{
+		Type:         opts.Filter.PackageType,
+		Name:         opts.Filter.PackageName,
+		Version:      opts.Filter.PackageVersion,
+		Prerelease:   opts.Filter.Prerelease,
+		Capabilities: opts.Filter.Capabilities,
+	}
+	if opts.Filter.KibanaVersion != nil {
+		sqlOptions.Filter.KibanaVersion = opts.Filter.KibanaVersion.String()
+	}
+	if opts.Filter.SpecMin != nil {
+		sqlOptions.Filter.SpecMin = opts.Filter.SpecMin.String()
+	}
+	if opts.Filter.SpecMax != nil {
+		sqlOptions.Filter.SpecMax = opts.Filter.SpecMax.String()
+	}
+
+	return sqlOptions
 }
 
 func (i *SQLIndexer) Close(ctx context.Context) error {
