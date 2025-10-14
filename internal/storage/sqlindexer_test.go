@@ -616,7 +616,7 @@ func TestCreateDatabasePackage(t *testing.T) {
 				VersionMajor:            1,
 				VersionMinor:            2,
 				VersionPatch:            3,
-				VersionBuild:            "beta1",
+				VersionPrerelease:       "beta1",
 				KibanaVersion:           "^8.17.0",
 				FormatVersion:           "2.2.2",
 				FormatVersionMajorMinor: "2.2.0",

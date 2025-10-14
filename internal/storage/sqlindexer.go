@@ -338,7 +338,7 @@ func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Pack
 		VersionMajor:            int(pkgVersionSemver.Major()),
 		VersionMinor:            int(pkgVersionSemver.Minor()),
 		VersionPatch:            int(pkgVersionSemver.Patch()),
-		VersionBuild:            pkgVersionSemver.Prerelease(),
+		VersionPrerelease:       pkgVersionSemver.Prerelease(),
 		FormatVersion:           pkg.FormatVersion,
 		FormatVersionMajorMinor: formatVersionMajorMinor,
 		Path:                    fmt.Sprintf("%s-%s.zip", pkg.Name, pkg.Version),

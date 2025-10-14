@@ -11,7 +11,7 @@ type Package struct {
 	VersionMajor            int
 	VersionMinor            int
 	VersionPatch            int
-	VersionBuild            string
+	VersionPrerelease       string
 	FormatVersion           string
 	FormatVersionMajorMinor string
 	Release                 string

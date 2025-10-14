@@ -44,7 +44,7 @@ var keys = []keyDefinition{
 	{"versionMajor", "INTEGER"},
 	{"versionMinor", "INTEGER"},
 	{"versionPatch", "INTEGER"},
-	{"versionBuild", "TEXT NOT NULL"},
+	{"versionPrerelease", "TEXT NOT NULL"},
 	{"formatVersion", "TEXT NOT NULL"},
 	{"formatVersionMajorMinor", "TEXT NOT NULL"},
 	{"release", "TEXT NOT NULL"},
@@ -230,7 +230,7 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 				pkgs[i].VersionMajor,
 				pkgs[i].VersionMinor,
 				pkgs[i].VersionPatch,
-				pkgs[i].VersionBuild,
+				pkgs[i].VersionPrerelease,
 				pkgs[i].FormatVersion,
 				pkgs[i].FormatVersionMajorMinor,
 				pkgs[i].Release,
@@ -376,7 +376,7 @@ func sqlQueryWithWindowing(database string, whereOptions WhereOptions) (string, 
 
 	mainkeysSelector := strings.Join(getKeys, ", ")
 	partitionKeySelector := fmt.Sprintf("p.%s", strings.Join(getKeys, ", p."))
-	filterSubTableKeySelector := fmt.Sprintf("pp.%s, pp.versionMajor, pp.versionMinor, pp.versionPatch, pp.versionBuild", strings.Join(getKeys, ", pp."))
+	filterSubTableKeySelector := fmt.Sprintf("pp.%s, pp.versionMajor, pp.versionMinor, pp.versionPatch, pp.versionPrerelease", strings.Join(getKeys, ", pp."))
 
 	var query strings.Builder
 	query.WriteString("SELECT ")
@@ -418,7 +418,7 @@ func sqlQueryWithWindowing(database string, whereOptions WhereOptions) (string, 
 	//                versionPatch DESC
 	//            ) AS rnk
 	//    FROM (
-	//        SELECT pp.name, pp.version, pp.formatVersion, pp.release, pp.prerelease, pp.kibanaVersion, pp.type, pp.path, pp.baseData, pp.versionMajor, pp.versionMinor, pp.versionPatch, pp.versionBuild
+	//        SELECT pp.name, pp.version, pp.formatVersion, pp.release, pp.prerelease, pp.kibanaVersion, pp.type, pp.path, pp.baseData, pp.versionMajor, pp.versionMinor, pp.versionPatch, pp.versionPrerelease
 	//        FROM packages pp
 	//        WHERE cursor = ? AND prerelease = 0 AND release != 'experimental' AND semver_compare_ge(formatVersionMajorMinor, ?) = 1 AND semver_compare_le(formatVersionMajorMinor, ?) = 1
 	//    ) p
@@ -457,7 +457,7 @@ func filterKeysForSelect(useBaseData, useJSONFields bool) []string {
 			continue
 		case k.Name == baseDataColumnName && !useBaseData:
 			continue
-		case k.Name == "versionMajor" || k.Name == "versionMinor" || k.Name == "versionPatch" || k.Name == "versionBuild":
+		case k.Name == "versionMajor" || k.Name == "versionMinor" || k.Name == "versionPatch" || k.Name == "versionPrerelease":
 			continue
 		case k.Name == "cursor" || k.Name == "formatVersionMajorMinor":
 			continue
