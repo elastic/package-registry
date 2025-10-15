@@ -529,11 +529,11 @@ func createDatabaseOptions(cursor string, opts *packages.GetOptions) *database.S
 
 	// Determine if we can use the optimized query to get just the latest packages.
 	// We can use it when we are not filtering by version, not requesting all versions,
-	// and not filtering by capabilities or discovery. As capabilities and discovery are not
-	// supported at database level, we can only use the optimized query when they are not set.
-	// If capabilities or discovery filters are added, it needs to be checked that they can be
+	// and not filtering by capabilities. As capabilities filter is not
+	// supported at database level, we can only use the optimized query when that filter is not set.
+	// If capabilities filter is added, it needs to be checked that they can be
 	// applied when querying for the latest packages.
-	sqlOptions.JustLatestPackages = !opts.Filter.AllVersions && opts.Filter.PackageVersion == "" && len(opts.Filter.Capabilities) == 0 && opts.Filter.Discovery == nil
+	sqlOptions.JustLatestPackages = !opts.Filter.AllVersions && opts.Filter.PackageVersion == "" && len(opts.Filter.Capabilities) == 0
 
 	return sqlOptions
 }
