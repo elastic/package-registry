@@ -41,6 +41,10 @@ var keys = []keyDefinition{
 	{"cursor", "TEXT NOT NULL"},
 	{"name", "TEXT NOT NULL"},
 	{"version", "TEXT NOT NULL"},
+	{"versionMajor", "INTEGER"},
+	{"versionMinor", "INTEGER"},
+	{"versionPatch", "INTEGER"},
+	{"versionPrerelease", "TEXT NOT NULL"},
 	{"formatVersion", "TEXT NOT NULL"},
 	{"formatVersionMajorMinor", "TEXT NOT NULL"},
 	{"release", "TEXT NOT NULL"},
@@ -223,6 +227,10 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 				pkgs[i].Cursor,
 				pkgs[i].Name,
 				pkgs[i].Version,
+				pkgs[i].VersionMajor,
+				pkgs[i].VersionMinor,
+				pkgs[i].VersionPatch,
+				pkgs[i].VersionPrerelease,
 				pkgs[i].FormatVersion,
 				pkgs[i].FormatVersionMajorMinor,
 				pkgs[i].Release,
@@ -275,53 +283,43 @@ func (r *SQLiteRepository) All(ctx context.Context, database string, whereOption
 	return all, nil
 }
 
-func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOptions WhereOptions, process func(ctx context.Context, pkg *Package) error) error {
-	span, ctx := apm.StartSpan(ctx, "SQL: Get All (process each package)", "app")
+func (r *SQLiteRepository) FilterFunc(ctx context.Context, database string, whereOptions WhereOptions, process func(ctx context.Context, pkg *Package) error) error {
+	span, ctx := apm.StartSpan(ctx, "SQL: Filter packages", "app")
 	span.Context.SetLabel("database.path", r.File(ctx))
 	defer span.End()
 
-	useJSONFields := !whereOptions.SkipJSONFields()
-	useBaseData := !whereOptions.UseFullData()
-
-	getKeys := make([]string, 0, len(keys))
-	var query strings.Builder
-	query.WriteString("SELECT ")
-	for _, k := range keys {
-		switch {
-		case !useJSONFields && (k.Name == dataColumnName || k.Name == baseDataColumnName):
-			continue
-		case k.Name == dataColumnName && useBaseData:
-			continue
-		case k.Name == baseDataColumnName && !useBaseData:
-			continue
-		default:
-			getKeys = append(getKeys, k.Name)
-		}
-	}
-	query.WriteString(strings.Join(getKeys, ", "))
-	query.WriteString(" FROM ")
-	query.WriteString(database)
+	var query string
 	var whereArgs []any
-	if whereOptions != nil {
-		var clause string
-		clause, whereArgs = whereOptions.Where()
-		query.WriteString(clause)
+	if whereOptions.GetLatestPackages() {
+		query, whereArgs = sqlQueryWithWindowing(database, whereOptions)
+	} else {
+		query, whereArgs = sqlQueryGeneric(database, whereOptions)
 	}
-	rows, err := r.db.QueryContext(ctx, query.String(), whereArgs...)
+
+	return r.runQuery(ctx, query, whereArgs, whereOptions, process)
+}
+
+func (r *SQLiteRepository) runQuery(ctx context.Context, query string, whereArgs []any, whereOptions WhereOptions, process func(ctx context.Context, pkg *Package) error) error {
+	span, ctx := apm.StartSpan(ctx, "SQL: Run query", "app")
+	span.Context.SetLabel("database.path", r.File(ctx))
+	defer span.End()
+
+	rows, err := r.db.QueryContext(ctx, query, whereArgs...)
 	if err != nil {
 		return err
 	}
 	defer rows.Close()
 
+	useJSONFields := !whereOptions.SkipJSONFields()
+	useBaseData := !whereOptions.UseFullData()
+
 	// Reuse pkg variable since all fields are scanned into it
 	var pkg Package
 	for rows.Next() {
 		columns := []any{
-			&pkg.Cursor,
 			&pkg.Name,
 			&pkg.Version,
 			&pkg.FormatVersion,
-			&pkg.FormatVersionMajorMinor,
 			&pkg.Release,
 			&pkg.Prerelease,
 			&pkg.KibanaVersion,
@@ -348,6 +346,126 @@ func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOp
 		}
 	}
 	return nil
+}
+
+func (r *SQLiteRepository) LatestFunc(ctx context.Context, database string, whereOptions WhereOptions, process func(ctx context.Context, pkg *Package) error) error {
+	span, ctx := apm.StartSpan(ctx, "SQL: Get Latest (process each package)", "app")
+	span.Context.SetLabel("database.path", r.File(ctx))
+	defer span.End()
+
+	query, whereArgs := sqlQueryWithWindowing(database, whereOptions)
+
+	return r.runQuery(ctx, query, whereArgs, whereOptions, process)
+}
+
+func (r *SQLiteRepository) AllFunc(ctx context.Context, database string, whereOptions WhereOptions, process func(ctx context.Context, pkg *Package) error) error {
+	span, ctx := apm.StartSpan(ctx, "SQL: Get All (process each package)", "app")
+	span.Context.SetLabel("database.path", r.File(ctx))
+	defer span.End()
+
+	query, whereArgs := sqlQueryGeneric(database, whereOptions)
+
+	return r.runQuery(ctx, query, whereArgs, whereOptions, process)
+}
+
+func sqlQueryWithWindowing(database string, whereOptions WhereOptions) (string, []any) {
+	useJSONFields := !whereOptions.SkipJSONFields()
+	useBaseData := !whereOptions.UseFullData()
+
+	getKeys := filterKeysForSelect(useBaseData, useJSONFields)
+
+	mainkeysSelector := strings.Join(getKeys, ", ")
+	partitionKeySelector := fmt.Sprintf("p.%s", strings.Join(getKeys, ", p."))
+	filterSubTableKeySelector := fmt.Sprintf("pp.%s, pp.versionMajor, pp.versionMinor, pp.versionPatch, pp.versionPrerelease", strings.Join(getKeys, ", pp."))
+
+	var query strings.Builder
+	query.WriteString("SELECT ")
+	query.WriteString(mainkeysSelector)
+	query.WriteString(` FROM (
+    SELECT `)
+	query.WriteString(partitionKeySelector)
+	query.WriteString(` ,
+            RANK() OVER (
+               PARTITION BY name
+               ORDER BY
+                versionMajor DESC,
+                versionMinor DESC,
+                versionPatch DESC
+            ) AS rnk
+    FROM (
+        SELECT `)
+	query.WriteString(filterSubTableKeySelector)
+	query.WriteString(` FROM `)
+	query.WriteString(database)
+	query.WriteString(` pp `)
+	var whereArgs []any
+	if whereOptions != nil {
+		var clause string
+		clause, whereArgs = whereOptions.Where()
+		query.WriteString(clause)
+	}
+	query.WriteString(`
+    ) p
+) WHERE rnk = 1`)
+	// Example of query generated:
+	// SELECT name, version, formatVersion, release, prerelease, kibanaVersion, type, path, baseData FROM (
+	//    SELECT p.name, p.version, p.formatVersion, p.release, p.prerelease, p.kibanaVersion, p.type, p.path, p.baseData ,
+	//            RANK() OVER (
+	//               PARTITION BY name
+	//               ORDER BY
+	//                versionMajor DESC,
+	//                versionMinor DESC,
+	//                versionPatch DESC
+	//            ) AS rnk
+	//    FROM (
+	//        SELECT pp.name, pp.version, pp.formatVersion, pp.release, pp.prerelease, pp.kibanaVersion, pp.type, pp.path, pp.baseData, pp.versionMajor, pp.versionMinor, pp.versionPatch, pp.versionPrerelease
+	//        FROM packages pp
+	//        WHERE cursor = ? AND prerelease = 0 AND release != 'experimental' AND semver_compare_ge(formatVersionMajorMinor, ?) = 1 AND semver_compare_le(formatVersionMajorMinor, ?) = 1
+	//    ) p
+	// ) WHERE rnk = 1
+
+	return query.String(), whereArgs
+}
+
+func sqlQueryGeneric(database string, whereOptions WhereOptions) (string, []any) {
+	useJSONFields := !whereOptions.SkipJSONFields()
+	useBaseData := !whereOptions.UseFullData()
+
+	getKeys := filterKeysForSelect(useBaseData, useJSONFields)
+
+	var query strings.Builder
+	query.WriteString("SELECT ")
+	query.WriteString(strings.Join(getKeys, ", "))
+	query.WriteString(" FROM ")
+	query.WriteString(database)
+	var whereArgs []any
+	if whereOptions != nil {
+		var clause string
+		clause, whereArgs = whereOptions.Where()
+		query.WriteString(clause)
+	}
+	return query.String(), whereArgs
+}
+
+func filterKeysForSelect(useBaseData, useJSONFields bool) []string {
+	getKeys := make([]string, 0, len(keys))
+	for _, k := range keys {
+		switch {
+		case !useJSONFields && (k.Name == dataColumnName || k.Name == baseDataColumnName):
+			continue
+		case k.Name == dataColumnName && useBaseData:
+			continue
+		case k.Name == baseDataColumnName && !useBaseData:
+			continue
+		case k.Name == "versionMajor" || k.Name == "versionMinor" || k.Name == "versionPatch" || k.Name == "versionPrerelease":
+			continue
+		case k.Name == "cursor" || k.Name == "formatVersionMajorMinor":
+			continue
+		default:
+			getKeys = append(getKeys, k.Name)
+		}
+	}
+	return getKeys
 }
 
 func (r *SQLiteRepository) Drop(ctx context.Context, table string) error {
@@ -392,6 +510,8 @@ type SQLOptions struct {
 
 	IncludeFullData bool // If true, the query will return the full data field instead of the base data field
 	SkipPackageData bool // If true, no need to retrieve Data nor BaseData fields
+
+	JustLatestPackages bool // If true, only the latest packages will be retrieved
 }
 
 func (o *SQLOptions) Where() (string, []any) {
@@ -488,4 +608,11 @@ func (o *SQLOptions) SkipJSONFields() bool {
 		return false
 	}
 	return o.SkipPackageData
+}
+
+func (o *SQLOptions) GetLatestPackages() bool {
+	if o == nil {
+		return false
+	}
+	return o.JustLatestPackages
 }

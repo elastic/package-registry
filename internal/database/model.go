@@ -8,6 +8,10 @@ type Package struct {
 	Cursor                  string
 	Name                    string
 	Version                 string
+	VersionMajor            int
+	VersionMinor            int
+	VersionPatch            int
+	VersionPrerelease       string
 	FormatVersion           string
 	FormatVersionMajorMinor string
 	Release                 string

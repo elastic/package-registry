@@ -172,6 +172,11 @@ func BenchmarkSQLIndexerGet(b *testing.B) {
 			Prerelease:    false,
 			KibanaVersion: semver.MustParse("9.0.0"),
 		}})
+		indexer.Get(b.Context(), &packages.GetOptions{Filter: &packages.Filter{
+			AllVersions:  false,
+			Prerelease:   false,
+			Capabilities: []string{"security"},
+		}})
 	}
 }
 
@@ -575,6 +580,9 @@ func TestCreateDatabasePackage(t *testing.T) {
 				Cursor:                  "1",
 				Name:                    "mypackage",
 				Version:                 "1.2.3",
+				VersionMajor:            1,
+				VersionMinor:            2,
+				VersionPatch:            3,
 				KibanaVersion:           "^8.17.0",
 				FormatVersion:           "2.2.2",
 				FormatVersionMajorMinor: "2.2.0",
@@ -605,6 +613,10 @@ func TestCreateDatabasePackage(t *testing.T) {
 				Cursor:                  "1",
 				Name:                    "mypackage",
 				Version:                 "1.2.3-beta1",
+				VersionMajor:            1,
+				VersionMinor:            2,
+				VersionPatch:            3,
+				VersionPrerelease:       "beta1",
 				KibanaVersion:           "^8.17.0",
 				FormatVersion:           "2.2.2",
 				FormatVersionMajorMinor: "2.2.0",
