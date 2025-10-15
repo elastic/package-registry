@@ -8,6 +8,8 @@ import (
 	"database/sql/driver"
 	"errors"
 	"fmt"
+	"slices"
+	"strings"
 
 	"github.com/Masterminds/semver/v3"
 	"modernc.org/sqlite"
@@ -17,6 +19,8 @@ func init() {
 	sqlite.MustRegisterScalarFunction("semver_compare_constraint", 2, semverCompareConstraint)
 	sqlite.MustRegisterScalarFunction("semver_compare_ge", 2, semverCompareGreaterThanEqual)
 	sqlite.MustRegisterScalarFunction("semver_compare_le", 2, semverCompareLessThanEqual)
+	sqlite.MustRegisterScalarFunction("all_discovery_filters_are_supported", 2, allDiscoveryFiltersAreSupported)
+	sqlite.MustRegisterScalarFunction("any_discovery_filter_is_supported", 2, anyDiscoveryFilterIsSupported)
 }
 
 // semverCompare checks if a version satisfies a given semver constraint.
@@ -86,4 +90,72 @@ func semverCompareLessThanEqual(ctx *sqlite.FunctionContext, args []driver.Value
 	}
 
 	return firstVersion.LessThanEqual(secondVersion), nil
+}
+
+// allDiscoveryFiltersAreSupported checks if all required discovery filters in the package are present in the query filters.
+// It takes two string arguments: the required filters and the query filters.
+// It returns a boolean indicating whether all required filters are present in the query filters.
+func allDiscoveryFiltersAreSupported(ctx *sqlite.FunctionContext, args []driver.Value) (driver.Value, error) {
+	packageFilters, ok := args[0].(string)
+	if !ok {
+		return nil, fmt.Errorf("first argument must be a string")
+	}
+	queryFilters, ok := args[1].(string)
+	if !ok {
+		return nil, fmt.Errorf("second argument must be a string")
+	}
+
+	if packageFilters == "" {
+		// If no package filters are specified, it is not a match.
+		return false, nil
+	}
+
+	if queryFilters == "" {
+		// No discovery filters used, it is not a match.
+		// Based on (discoveryFilterFields).Matches(p *Package) function logic.
+		return false, nil
+	}
+
+	queryFilterElements := strings.Split(queryFilters, ",")
+
+	for requiredFilter := range strings.SplitSeq(packageFilters, ",") {
+		if !slices.Contains(queryFilterElements, requiredFilter) {
+			return false, nil
+		}
+	}
+	return true, nil
+}
+
+// anyDiscoveryFilterIsSupported checks if any of the required discovery filters in the package are present in the query filters.
+// It takes two string arguments: the required filters and the query filters.
+// It returns a boolean indicating whether any required filter is present in the query filters.
+func anyDiscoveryFilterIsSupported(ctx *sqlite.FunctionContext, args []driver.Value) (driver.Value, error) {
+	packageFilters, ok := args[0].(string)
+	if !ok {
+		return nil, fmt.Errorf("first argument must be a string")
+	}
+	queryFilters, ok := args[1].(string)
+	if !ok {
+		return nil, fmt.Errorf("second argument must be a string")
+	}
+
+	if packageFilters == "" {
+		// If no package filters are specified, it is not a match.
+		return false, nil
+	}
+
+	if queryFilters == "" {
+		// No discovery filters used, it is not a match.
+		// Based on (discoveryFilterDatasets).Matches(p *Package) function logic.
+		return false, nil
+	}
+
+	queryFilterElements := strings.Split(queryFilters, ",")
+
+	for requiredFilter := range strings.SplitSeq(packageFilters, ",") {
+		if slices.Contains(queryFilterElements, requiredFilter) {
+			return true, nil
+		}
+	}
+	return false, nil
 }

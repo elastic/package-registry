@@ -93,3 +93,54 @@ func TestSemverCompareLessThanEqual(t *testing.T) {
 		})
 	}
 }
+
+func TestAllDiscoveryFiltersAreSupported(t *testing.T) {
+	tests := []struct {
+		packageFilters string
+		queryFilters   string
+		expected       bool
+	}{
+		{"filter1,filter2", "filter1,filter2,filter3", true},
+		{"filter1,filter2", "filter1,filter3", false},
+		{"filter1", "filter1", true},
+		{"filter1", "filter2", false},
+		{"", "filter1", false},                       // No required filters means no match
+		{"filter1", "", false},                       // No query filters means no match if package requires filters
+		{"", "", false},                              // No required filters means no match
+		{"filter1,filter2", "filter2,filter1", true}, // Order doesn't matter
+	}
+
+	for _, tt := range tests {
+		t.Run(fmt.Sprintf("packageFilters: '%s', queryFilters: '%s'", tt.packageFilters, tt.queryFilters), func(t *testing.T) {
+			result, err := allDiscoveryFiltersAreSupported(nil, []driver.Value{tt.packageFilters, tt.queryFilters})
+			require.NoError(t, err)
+			assert.Equal(t, tt.expected, result)
+		})
+	}
+}
+
+func TestAnyDiscoveryFilterIsSupported(t *testing.T) {
+	tests := []struct {
+		packageFilters string
+		queryFilters   string
+		expected       bool
+	}{
+		{"filter1,filter2", "filter1,filter2,filter3", true},
+		{"filter1,filter2", "filter1,filter3", true},
+		{"filter1", "filter1", true},
+		{"filter1", "filter2", false},
+		{"", "filter1", false},                        // No required filters means no match
+		{"filter1", "", false},                        // No query filters means no match if package requires filters
+		{"", "", false},                               // No required filters means no match
+		{"filter1,filter2", "filter2,filter1", true},  // Order doesn't matter
+		{"filter1,filter2", "filter3,filter4", false}, // No matching filters
+	}
+
+	for _, tt := range tests {
+		t.Run(fmt.Sprintf("packageFilters: '%s', queryFilters: '%s'", tt.packageFilters, tt.queryFilters), func(t *testing.T) {
+			result, err := anyDiscoveryFilterIsSupported(nil, []driver.Value{tt.packageFilters, tt.queryFilters})
+			require.NoError(t, err)
+			assert.Equal(t, tt.expected, result)
+		})
+	}
+}

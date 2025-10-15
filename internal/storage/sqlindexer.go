@@ -331,6 +331,23 @@ func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Pack
 	}
 	formatVersionMajorMinor := fmt.Sprintf("%d.%d.0", formatVersionSemver.Major(), formatVersionSemver.Minor())
 
+	discoveryFields := ""
+	fieldNames := []string{}
+	if pkg.Discovery != nil && pkg.Discovery.Fields != nil {
+		for _, field := range pkg.Discovery.Fields {
+			fieldNames = append(fieldNames, field.Name)
+		}
+		discoveryFields = strings.Join(fieldNames, ",")
+	}
+	discoveryDatasets := ""
+	datasetNames := []string{}
+	if pkg.Discovery != nil && pkg.Discovery.Datasets != nil {
+		for _, dataset := range pkg.Discovery.Datasets {
+			datasetNames = append(datasetNames, dataset.Name)
+		}
+		discoveryDatasets = strings.Join(datasetNames, ",")
+	}
+
 	newPackage := database.Package{
 		Cursor:                  cursor,
 		Name:                    pkg.Name,
@@ -339,6 +356,8 @@ func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Pack
 		VersionMinor:            int(pkgVersionSemver.Minor()),
 		VersionPatch:            int(pkgVersionSemver.Patch()),
 		VersionPrerelease:       pkgVersionSemver.Prerelease(),
+		DiscoveryFilterFields:   discoveryFields,
+		DiscoveryFilterDatasets: discoveryDatasets,
 		FormatVersion:           pkg.FormatVersion,
 		FormatVersionMajorMinor: formatVersionMajorMinor,
 		Path:                    fmt.Sprintf("%s-%s.zip", pkg.Name, pkg.Version),
@@ -491,6 +510,21 @@ func createDatabaseOptions(cursor string, opts *packages.GetOptions) *database.S
 	}
 	if opts.Filter.SpecMax != nil {
 		sqlOptions.Filter.SpecMax = opts.Filter.SpecMax.String()
+	}
+
+	if opts.Filter.Discovery != nil {
+		discoveryFields := []string{}
+		discoveryDatasets := []string{}
+		for _, filter := range opts.Filter.Discovery {
+			for _, field := range filter.Fields {
+				discoveryFields = append(discoveryFields, field.Name)
+			}
+			for _, dataset := range filter.Datasets {
+				discoveryDatasets = append(discoveryDatasets, dataset.Name)
+			}
+		}
+		sqlOptions.Filter.DiscoveryFilterFields = strings.Join(discoveryFields, ",")
+		sqlOptions.Filter.DiscoveryFilterDatasets = strings.Join(discoveryDatasets, ",")
 	}
 
 	// Determine if we can use the optimized query to get just the latest packages.

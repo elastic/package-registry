@@ -47,6 +47,8 @@ var keys = []keyDefinition{
 	{"versionPrerelease", "TEXT NOT NULL"},
 	{"formatVersion", "TEXT NOT NULL"},
 	{"formatVersionMajorMinor", "TEXT NOT NULL"},
+	{"discoveryFilterFields", "TEXT NOT NULL"},
+	{"discoveryFilterDatasets", "TEXT NOT NULL"},
 	{"release", "TEXT NOT NULL"},
 	{"prerelease", "INTEGER NOT NULL"},
 	{"kibanaVersion", "TEXT NOT NULL"},
@@ -233,6 +235,8 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 				pkgs[i].VersionPrerelease,
 				pkgs[i].FormatVersion,
 				pkgs[i].FormatVersionMajorMinor,
+				pkgs[i].DiscoveryFilterFields,
+				pkgs[i].DiscoveryFilterDatasets,
 				pkgs[i].Release,
 				pkgs[i].Prerelease,
 				pkgs[i].KibanaVersion,
@@ -461,6 +465,8 @@ func filterKeysForSelect(useBaseData, useJSONFields bool) []string {
 			continue
 		case k.Name == "cursor" || k.Name == "formatVersionMajorMinor":
 			continue
+		case k.Name == "discoveryFilterFields" || k.Name == "discoveryFilterDatasets":
+			continue
 		default:
 			getKeys = append(getKeys, k.Name)
 		}
@@ -493,6 +499,9 @@ type FilterOptions struct {
 	KibanaVersion string
 	SpecMin       string
 	SpecMax       string
+
+	DiscoveryFilterFields   string
+	DiscoveryFilterDatasets string
 	// It cannot be filtered by capabilities at database level, since it would be
 	// complicated using SQL logic to ensure that all the capabilities defined in the package
 	// are present in the query filter.
@@ -588,6 +597,22 @@ func (o *SQLOptions) Where() (string, []any) {
 		}
 		sb.WriteString("semver_compare_le(formatVersionMajorMinor, ?) = 1")
 		args = append(args, o.Filter.SpecMax)
+	}
+
+	if o.Filter.DiscoveryFilterFields != "" {
+		if sb.Len() > 0 {
+			sb.WriteString(" AND ")
+		}
+		sb.WriteString("all_discovery_filters_are_supported(discoveryFilterFields, ?) = 1")
+		args = append(args, o.Filter.DiscoveryFilterFields)
+	}
+
+	if o.Filter.DiscoveryFilterDatasets != "" {
+		if sb.Len() > 0 {
+			sb.WriteString(" AND ")
+		}
+		sb.WriteString("any_discovery_filter_is_supported(discoveryFilterDatasets, ?) = 1")
+		args = append(args, o.Filter.DiscoveryFilterDatasets)
 	}
 
 	if sb.String() == "" {
