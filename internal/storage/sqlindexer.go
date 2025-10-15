@@ -533,6 +533,7 @@ func createDatabaseOptions(cursor string, opts *packages.GetOptions) *database.S
 	// supported at database level, we can only use the optimized query when that filter is not set.
 	// If capabilities filter is added, it needs to be checked that they can be
 	// applied when querying for the latest packages.
+	// Relates: https://github.com/elastic/package-registry/pull/1448
 	sqlOptions.JustLatestPackages = !opts.Filter.AllVersions && opts.Filter.PackageVersion == "" && len(opts.Filter.Capabilities) == 0
 
 	return sqlOptions

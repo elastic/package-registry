@@ -505,6 +505,7 @@ type FilterOptions struct {
 	// It cannot be filtered by capabilities at database level, since it would be
 	// complicated using SQL logic to ensure that all the capabilities defined in the package
 	// are present in the query filter.
+	// Relates: https://github.com/elastic/package-registry/pull/1448
 
 	// It cannot be filtered by categories at database level, since
 	// the category filter is applied once all the others have been processed.
