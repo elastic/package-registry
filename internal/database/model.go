@@ -17,6 +17,7 @@ type Package struct {
 	Release                 string
 	Prerelease              bool
 	KibanaVersion           string
+	Capabilities            string
 	DiscoveryFilterFields   string
 	DiscoveryFilterDatasets string
 	Type                    string

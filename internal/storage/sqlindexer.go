@@ -339,6 +339,7 @@ func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Pack
 		}
 		discoveryFields = strings.Join(fieldNames, ",")
 	}
+
 	discoveryDatasets := ""
 	datasetNames := []string{}
 	if pkg.Discovery != nil && pkg.Discovery.Datasets != nil {
@@ -346,6 +347,11 @@ func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Pack
 			datasetNames = append(datasetNames, dataset.Name)
 		}
 		discoveryDatasets = strings.Join(datasetNames, ",")
+	}
+
+	capabilities := ""
+	if pkg.Conditions != nil && pkg.Conditions.Elastic != nil {
+		capabilities = strings.Join(pkg.Conditions.Elastic.Capabilities, ",")
 	}
 
 	newPackage := database.Package{
@@ -364,6 +370,7 @@ func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Pack
 		Type:                    pkg.Type,
 		Release:                 pkg.Release,
 		KibanaVersion:           kibanaVersion,
+		Capabilities:            capabilities,
 		Prerelease:              pkg.IsPrerelease(),
 		Data:                    fullContents,
 		BaseData:                baseContents,
@@ -494,13 +501,12 @@ func createDatabaseOptions(cursor string, opts *packages.GetOptions) *database.S
 		return sqlOptions
 	}
 
-	// TODO: Add support to filter by discovery fields if possible.
-	// TODO: Add support to filter by capabilities if possible, relates to https://github.com/elastic/package-registry/pull/1396/
 	sqlOptions.Filter = &database.FilterOptions{
-		Type:       opts.Filter.PackageType,
-		Name:       opts.Filter.PackageName,
-		Version:    opts.Filter.PackageVersion,
-		Prerelease: opts.Filter.Prerelease,
+		Type:         opts.Filter.PackageType,
+		Name:         opts.Filter.PackageName,
+		Version:      opts.Filter.PackageVersion,
+		Prerelease:   opts.Filter.Prerelease,
+		Capabilities: opts.Filter.Capabilities,
 	}
 	if opts.Filter.KibanaVersion != nil {
 		sqlOptions.Filter.KibanaVersion = opts.Filter.KibanaVersion.String()
@@ -527,14 +533,9 @@ func createDatabaseOptions(cursor string, opts *packages.GetOptions) *database.S
 		sqlOptions.Filter.DiscoveryFilterDatasets = strings.Join(discoveryDatasets, ",")
 	}
 
-	// Determine if we can use the optimized query to get just the latest packages.
-	// We can use it when we are not filtering by version, not requesting all versions,
-	// and not filtering by capabilities. As capabilities filter is not
-	// supported at database level, we can only use the optimized query when that filter is not set.
-	// If capabilities filter is added, it needs to be checked that they can be
-	// applied when querying for the latest packages.
-	// Relates: https://github.com/elastic/package-registry/pull/1448
-	sqlOptions.JustLatestPackages = !opts.Filter.AllVersions && opts.Filter.PackageVersion == "" && len(opts.Filter.Capabilities) == 0
+	// Determine if we can use the optimized query to get just the latest versions of the packages.
+	// We can use it when we are not filtering by version and not requesting all versions.
+	sqlOptions.JustLatestPackages = !opts.Filter.AllVersions && opts.Filter.PackageVersion == ""
 
 	return sqlOptions
 }

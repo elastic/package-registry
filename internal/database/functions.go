@@ -19,6 +19,7 @@ func init() {
 	sqlite.MustRegisterScalarFunction("semver_compare_constraint", 2, semverCompareConstraint)
 	sqlite.MustRegisterScalarFunction("semver_compare_ge", 2, semverCompareGreaterThanEqual)
 	sqlite.MustRegisterScalarFunction("semver_compare_le", 2, semverCompareLessThanEqual)
+	sqlite.MustRegisterScalarFunction("all_capabilities_are_supported", 2, allCapabilitiesAreSupported)
 	sqlite.MustRegisterScalarFunction("all_discovery_filters_are_supported", 2, allDiscoveryFiltersAreSupported)
 	sqlite.MustRegisterScalarFunction("any_discovery_filter_is_supported", 2, anyDiscoveryFilterIsSupported)
 }
@@ -90,6 +91,40 @@ func semverCompareLessThanEqual(ctx *sqlite.FunctionContext, args []driver.Value
 	}
 
 	return firstVersion.LessThanEqual(secondVersion), nil
+}
+
+// allCapabilitiesAreSupported checks if all the required capabilities (first array) are present in the second array (supported capabilities).
+// Both arrays are represented as comma-separated strings.
+// It returns true if all elements are present, false otherwise.
+func allCapabilitiesAreSupported(ctx *sqlite.FunctionContext, args []driver.Value) (driver.Value, error) {
+	requiredCaps, ok := args[0].(string)
+	if !ok {
+		return nil, fmt.Errorf("first argument must be a string")
+	}
+	supportedCaps, ok := args[1].(string)
+	if !ok {
+		return nil, fmt.Errorf("second argument must be a string")
+	}
+
+	if requiredCaps == "" {
+		// No required capabilities, always satisfied.
+		return true, nil
+	}
+
+	if supportedCaps == "" {
+		// No supported capabilities used, always satisfied.
+		// Based on (package).WorksWithCapabilities function logic.
+		return true, nil
+	}
+
+	supportedCapsElements := strings.Split(supportedCaps, ",")
+
+	for requiredCapability := range strings.SplitSeq(requiredCaps, ",") {
+		if !slices.Contains(supportedCapsElements, requiredCapability) {
+			return false, nil
+		}
+	}
+	return true, nil
 }
 
 // allDiscoveryFiltersAreSupported checks if all required discovery filters in the package are present in the query filters.

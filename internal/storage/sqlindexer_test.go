@@ -182,7 +182,12 @@ func BenchmarkSQLIndexerGet(b *testing.B) {
 		indexer.Get(b.Context(), &packages.GetOptions{Filter: &packages.Filter{
 			AllVersions:  false,
 			Prerelease:   false,
-			Capabilities: []string{"security"},
+			Capabilities: []string{"security", "observability"},
+		}})
+		indexer.Get(b.Context(), &packages.GetOptions{Filter: &packages.Filter{
+			AllVersions:  false,
+			Prerelease:   false,
+			Capabilities: []string{"apm"},
 		}})
 		indexer.Get(b.Context(), &packages.GetOptions{Filter: &discoveryPackageFilter})
 	}
