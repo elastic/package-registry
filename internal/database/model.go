@@ -17,6 +17,7 @@ type Package struct {
 	Release                 string
 	Prerelease              bool
 	KibanaVersion           string
+	Capabilities            string
 	Type                    string
 	Path                    string
 	Data                    []byte

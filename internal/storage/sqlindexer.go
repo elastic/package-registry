@@ -331,6 +331,11 @@ func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Pack
 	}
 	formatVersionMajorMinor := fmt.Sprintf("%d.%d.0", formatVersionSemver.Major(), formatVersionSemver.Minor())
 
+	capabilities := ""
+	if pkg.Conditions != nil && pkg.Conditions.Elastic != nil {
+		capabilities = strings.Join(pkg.Conditions.Elastic.Capabilities, ",")
+	}
+
 	newPackage := database.Package{
 		Cursor:                  cursor,
 		Name:                    pkg.Name,
@@ -345,6 +350,7 @@ func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Pack
 		Type:                    pkg.Type,
 		Release:                 pkg.Release,
 		KibanaVersion:           kibanaVersion,
+		Capabilities:            capabilities,
 		Prerelease:              pkg.IsPrerelease(),
 		Data:                    fullContents,
 		BaseData:                baseContents,
@@ -476,12 +482,12 @@ func createDatabaseOptions(cursor string, opts *packages.GetOptions) *database.S
 	}
 
 	// TODO: Add support to filter by discovery fields if possible.
-	// TODO: Add support to filter by capabilities if possible, relates to https://github.com/elastic/package-registry/pull/1396/
 	sqlOptions.Filter = &database.FilterOptions{
-		Type:       opts.Filter.PackageType,
-		Name:       opts.Filter.PackageName,
-		Version:    opts.Filter.PackageVersion,
-		Prerelease: opts.Filter.Prerelease,
+		Type:         opts.Filter.PackageType,
+		Name:         opts.Filter.PackageName,
+		Version:      opts.Filter.PackageVersion,
+		Prerelease:   opts.Filter.Prerelease,
+		Capabilities: opts.Filter.Capabilities,
 	}
 	if opts.Filter.KibanaVersion != nil {
 		sqlOptions.Filter.KibanaVersion = opts.Filter.KibanaVersion.String()
@@ -495,11 +501,11 @@ func createDatabaseOptions(cursor string, opts *packages.GetOptions) *database.S
 
 	// Determine if we can use the optimized query to get just the latest packages.
 	// We can use it when we are not filtering by version, not requesting all versions,
-	// and not filtering by capabilities or discovery. As capabilities and discovery are not
-	// supported at database level, we can only use the optimized query when they are not set.
-	// If capabilities or discovery filters are added, it needs to be checked that they can be
-	// applied when querying for the latest packages.
-	sqlOptions.JustLatestPackages = !opts.Filter.AllVersions && opts.Filter.PackageVersion == "" && len(opts.Filter.Capabilities) == 0 && opts.Filter.Discovery == nil
+	// and not filtering by discovery. As discovery filter is not supported at database
+	// level, we can only use the optimized query when that is not set.
+	// If discovery filter is added, it needs to be checked that they can be applied when
+	// querying for the latest packages too.
+	sqlOptions.JustLatestPackages = !opts.Filter.AllVersions && opts.Filter.PackageVersion == "" && opts.Filter.Discovery == nil
 
 	return sqlOptions
 }

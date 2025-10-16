@@ -50,6 +50,7 @@ var keys = []keyDefinition{
 	{"release", "TEXT NOT NULL"},
 	{"prerelease", "INTEGER NOT NULL"},
 	{"kibanaVersion", "TEXT NOT NULL"},
+	{"capabilities", "TEXT NOT NULL"},
 	{"type", "TEXT NOT NULL"},
 	{"path", "TEXT NOT NULL"},
 	{dataColumnName, "BLOB NOT NULL"},
@@ -236,6 +237,7 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 				pkgs[i].Release,
 				pkgs[i].Prerelease,
 				pkgs[i].KibanaVersion,
+				pkgs[i].Capabilities,
 				pkgs[i].Type,
 				pkgs[i].Path,
 				pkgs[i].Data,
@@ -459,7 +461,7 @@ func filterKeysForSelect(useBaseData, useJSONFields bool) []string {
 			continue
 		case k.Name == "versionMajor" || k.Name == "versionMinor" || k.Name == "versionPatch" || k.Name == "versionPrerelease":
 			continue
-		case k.Name == "cursor" || k.Name == "formatVersionMajorMinor":
+		case k.Name == "cursor" || k.Name == "formatVersionMajorMinor" || k.Name == "capabilities":
 			continue
 		default:
 			getKeys = append(getKeys, k.Name)
@@ -493,9 +495,7 @@ type FilterOptions struct {
 	KibanaVersion string
 	SpecMin       string
 	SpecMax       string
-	// It cannot be filtered by capabilities at database level, since it would be
-	// complicated using SQL logic to ensure that all the capabilities defined in the package
-	// are present in the query filter.
+	Capabilities  []string
 
 	// It cannot be filtered by categories at database level, since
 	// the category filter is applied once all the others have been processed.
@@ -588,6 +588,16 @@ func (o *SQLOptions) Where() (string, []any) {
 		}
 		sb.WriteString("semver_compare_le(formatVersionMajorMinor, ?) = 1")
 		args = append(args, o.Filter.SpecMax)
+	}
+
+	if len(o.Filter.Capabilities) > 0 {
+		if sb.Len() > 0 {
+			sb.WriteString(" AND ")
+		}
+
+		queryCapabilities := strings.Join(o.Filter.Capabilities, ",")
+		sb.WriteString("( capabilities == '' OR all_capabilities_are_supported(capabilities, ?) = 1 )")
+		args = append(args, queryCapabilities)
 	}
 
 	if sb.String() == "" {
