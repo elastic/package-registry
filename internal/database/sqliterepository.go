@@ -47,6 +47,8 @@ var keys = []keyDefinition{
 	{"versionPrerelease", "TEXT NOT NULL"},
 	{"formatVersion", "TEXT NOT NULL"},
 	{"formatVersionMajorMinor", "TEXT NOT NULL"},
+	{"discoveryFilterFields", "TEXT NOT NULL"},
+	{"discoveryFilterDatasets", "TEXT NOT NULL"},
 	{"release", "TEXT NOT NULL"},
 	{"prerelease", "INTEGER NOT NULL"},
 	{"kibanaVersion", "TEXT NOT NULL"},
@@ -234,6 +236,8 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 				pkgs[i].VersionPrerelease,
 				pkgs[i].FormatVersion,
 				pkgs[i].FormatVersionMajorMinor,
+				pkgs[i].DiscoveryFilterFields,
+				pkgs[i].DiscoveryFilterDatasets,
 				pkgs[i].Release,
 				pkgs[i].Prerelease,
 				pkgs[i].KibanaVersion,
@@ -463,6 +467,8 @@ func filterKeysForSelect(useBaseData, useJSONFields bool) []string {
 			continue
 		case k.Name == "cursor" || k.Name == "formatVersionMajorMinor" || k.Name == "capabilities":
 			continue
+		case k.Name == "discoveryFilterFields" || k.Name == "discoveryFilterDatasets":
+			continue
 		default:
 			getKeys = append(getKeys, k.Name)
 		}
@@ -487,15 +493,17 @@ func (r *SQLiteRepository) Close(ctx context.Context) error {
 }
 
 type FilterOptions struct {
-	Type          string
-	Name          string
-	Version       string
-	Prerelease    bool
-	Experimental  bool
-	KibanaVersion string
-	SpecMin       string
-	SpecMax       string
-	Capabilities  []string
+	Type                    string
+	Name                    string
+	Version                 string
+	Prerelease              bool
+	Experimental            bool
+	KibanaVersion           string
+	SpecMin                 string
+	SpecMax                 string
+	Capabilities            []string
+	DiscoveryFilterFields   string
+	DiscoveryFilterDatasets string
 
 	// It cannot be filtered by categories at database level, since
 	// the category filter is applied once all the others have been processed.
@@ -598,6 +606,22 @@ func (o *SQLOptions) Where() (string, []any) {
 		queryCapabilities := strings.Join(o.Filter.Capabilities, ",")
 		sb.WriteString("( capabilities == '' OR all_capabilities_are_supported(capabilities, ?) = 1 )")
 		args = append(args, queryCapabilities)
+	}
+
+	if o.Filter.DiscoveryFilterFields != "" {
+		if sb.Len() > 0 {
+			sb.WriteString(" AND ")
+		}
+		sb.WriteString("all_discovery_filters_are_supported(discoveryFilterFields, ?) = 1")
+		args = append(args, o.Filter.DiscoveryFilterFields)
+	}
+
+	if o.Filter.DiscoveryFilterDatasets != "" {
+		if sb.Len() > 0 {
+			sb.WriteString(" AND ")
+		}
+		sb.WriteString("any_discovery_filter_is_supported(discoveryFilterDatasets, ?) = 1")
+		args = append(args, o.Filter.DiscoveryFilterDatasets)
 	}
 
 	if sb.String() == "" {

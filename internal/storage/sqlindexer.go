@@ -331,6 +331,24 @@ func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Pack
 	}
 	formatVersionMajorMinor := fmt.Sprintf("%d.%d.0", formatVersionSemver.Major(), formatVersionSemver.Minor())
 
+	discoveryFields := ""
+	fieldNames := []string{}
+	if pkg.Discovery != nil && pkg.Discovery.Fields != nil {
+		for _, field := range pkg.Discovery.Fields {
+			fieldNames = append(fieldNames, field.Name)
+		}
+		discoveryFields = strings.Join(fieldNames, ",")
+	}
+
+	discoveryDatasets := ""
+	datasetNames := []string{}
+	if pkg.Discovery != nil && pkg.Discovery.Datasets != nil {
+		for _, dataset := range pkg.Discovery.Datasets {
+			datasetNames = append(datasetNames, dataset.Name)
+		}
+		discoveryDatasets = strings.Join(datasetNames, ",")
+	}
+
 	capabilities := ""
 	if pkg.Conditions != nil && pkg.Conditions.Elastic != nil {
 		capabilities = strings.Join(pkg.Conditions.Elastic.Capabilities, ",")
@@ -344,6 +362,8 @@ func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Pack
 		VersionMinor:            int(pkgVersionSemver.Minor()),
 		VersionPatch:            int(pkgVersionSemver.Patch()),
 		VersionPrerelease:       pkgVersionSemver.Prerelease(),
+		DiscoveryFilterFields:   discoveryFields,
+		DiscoveryFilterDatasets: discoveryDatasets,
 		FormatVersion:           pkg.FormatVersion,
 		FormatVersionMajorMinor: formatVersionMajorMinor,
 		Path:                    fmt.Sprintf("%s-%s.zip", pkg.Name, pkg.Version),
@@ -481,7 +501,6 @@ func createDatabaseOptions(cursor string, opts *packages.GetOptions) *database.S
 		return sqlOptions
 	}
 
-	// TODO: Add support to filter by discovery fields if possible.
 	sqlOptions.Filter = &database.FilterOptions{
 		Type:         opts.Filter.PackageType,
 		Name:         opts.Filter.PackageName,
@@ -499,13 +518,24 @@ func createDatabaseOptions(cursor string, opts *packages.GetOptions) *database.S
 		sqlOptions.Filter.SpecMax = opts.Filter.SpecMax.String()
 	}
 
-	// Determine if we can use the optimized query to get just the latest packages.
-	// We can use it when we are not filtering by version, not requesting all versions,
-	// and not filtering by discovery. As discovery filter is not supported at database
-	// level, we can only use the optimized query when that is not set.
-	// If discovery filter is added, it needs to be checked that they can be applied when
-	// querying for the latest packages too.
-	sqlOptions.JustLatestPackages = !opts.Filter.AllVersions && opts.Filter.PackageVersion == "" && opts.Filter.Discovery == nil
+	if opts.Filter.Discovery != nil {
+		discoveryFields := []string{}
+		discoveryDatasets := []string{}
+		for _, filter := range opts.Filter.Discovery {
+			for _, field := range filter.Fields {
+				discoveryFields = append(discoveryFields, field.Name)
+			}
+			for _, dataset := range filter.Datasets {
+				discoveryDatasets = append(discoveryDatasets, dataset.Name)
+			}
+		}
+		sqlOptions.Filter.DiscoveryFilterFields = strings.Join(discoveryFields, ",")
+		sqlOptions.Filter.DiscoveryFilterDatasets = strings.Join(discoveryDatasets, ",")
+	}
+
+	// Determine if we can use the optimized query to get just the latest versions of the packages.
+	// We can use it when we are not filtering by version and not requesting all versions.
+	sqlOptions.JustLatestPackages = !opts.Filter.AllVersions && opts.Filter.PackageVersion == ""
 
 	return sqlOptions
 }

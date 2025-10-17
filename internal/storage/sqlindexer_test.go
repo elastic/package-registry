@@ -148,6 +148,13 @@ func BenchmarkSQLIndexerGet(b *testing.B) {
 	err = indexer.Init(b.Context())
 	require.NoError(b, err)
 
+	var discoveryPackageFilter packages.Filter
+	discoveryFilterDataset, err := packages.NewDiscoveryFilter("fields:process.pid")
+	require.NoError(b, err)
+	discoveryPackageFilter.Discovery = append(discoveryPackageFilter.Discovery, discoveryFilterDataset)
+	discoveryPackageFilter.AllVersions = false
+	discoveryPackageFilter.Prerelease = false
+
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		indexer.Get(b.Context(), &packages.GetOptions{})
@@ -182,6 +189,7 @@ func BenchmarkSQLIndexerGet(b *testing.B) {
 			Prerelease:   false,
 			Capabilities: []string{"apm"},
 		}})
+		indexer.Get(b.Context(), &packages.GetOptions{Filter: &discoveryPackageFilter})
 	}
 }
 

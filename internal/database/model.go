@@ -18,6 +18,8 @@ type Package struct {
 	Prerelease              bool
 	KibanaVersion           string
 	Capabilities            string
+	DiscoveryFilterFields   string
+	DiscoveryFilterDatasets string
 	Type                    string
 	Path                    string
 	Data                    []byte

@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Include SQL functions to improve filtering (SQL storage indexer). [#1442](https://github.com/elastic/package-registry/pull/1442)
 * Return just latest packages based on semantic versioning if `all=false` (SQL storage indexer). [#1445](https://github.com/elastic/package-registry/pull/1445)
 * Apply a capabilities filter at database level if capabilities query parameter is set (SQL storage indexer). [#1448](https://github.com/elastic/package-registry/pull/1448)
+* Apply the discovery filter at database level if discovery query parameter is set (SQL storage indexer). [#1454](https://github.com/elastic/package-registry/pull/1454)
 
 ### Deprecated
 
