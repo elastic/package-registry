@@ -131,7 +131,7 @@ docker run --rm -it -p 8080:8080 docker.elastic.co/package-registry/package-regi
 ```bash
 docker run --rm -it -p 8080:8080 \
   -v /path/to/local/packages:/packages/package-registry \
-  $(docker images -q docker.elastic.co/package-registry/package-registry:main)
+  docker.elastic.co/package-registry/package-registry:main
 ```
 
 **Listening on HTTPS**
