@@ -122,7 +122,7 @@ type Source struct {
 
 type Conditions struct {
 	Kibana  *KibanaConditions  `config:"kibana,omitempty" json:"kibana,omitempty" yaml:"kibana,omitempty"`
-	Elastic *ElasticConditions `config:"elastic,omitempty" json:"elastic,omitempty" yaml"elastic,omitempty"`
+	Elastic *ElasticConditions `config:"elastic,omitempty" json:"elastic,omitempty" yaml:"elastic,omitempty"`
 }
 
 // KibanaConditions defines conditions for Kibana (e.g. required version).
