@@ -438,6 +438,13 @@ func (p *Package) setRuntimeFields() error {
 		}
 	}
 
+	if p.Conditions != nil && p.Conditions.Agent != nil {
+		p.Conditions.Agent.constraint, err = semver.NewConstraint(p.Conditions.Agent.Version)
+		if err != nil {
+			return fmt.Errorf("invalid Agent versions range %s: %w", p.Conditions.Agent.Version, err)
+		}
+	}
+
 	// Packages from proxy mode do not have "format_version" field
 	if p.FormatVersion == "" {
 		return nil

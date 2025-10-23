@@ -338,3 +338,39 @@ func BenchmarkNewZipPackage(b *testing.B) {
 		assert.NoError(b, err)
 	}
 }
+
+func TestPackageSetRuntimeFields(t *testing.T) {
+	p := &Package{
+		FormatVersion: "3.5.0",
+		BasePackage: BasePackage{
+			Version: "3.6.0",
+			Conditions: &Conditions{
+				Kibana: &KibanaConditions{
+					Version: "^8.5.0",
+				},
+				Agent: &AgentConditions{
+					Version: "^8.5.0",
+				},
+			},
+		},
+	}
+
+	expectedVersion, err := semver.NewVersion("3.6.0")
+	require.NoError(t, err)
+	expectedKibanaConstraint, err := semver.NewConstraint("^8.5.0")
+	require.NoError(t, err)
+	expectedAgentConstraint, err := semver.NewConstraint("^8.5.0")
+	require.NoError(t, err)
+
+	err = p.setRuntimeFields()
+	require.NoError(t, err)
+	require.NotNil(t, p.versionSemVer)
+	require.NotNil(t, p.Conditions.Kibana.constraint)
+	require.NotNil(t, p.Conditions.Agent.constraint)
+	require.NotNil(t, p.specMajorMinorSemVer)
+
+	assert.Equal(t, expectedVersion, p.versionSemVer)
+	assert.Equal(t, expectedKibanaConstraint, p.Conditions.Kibana.constraint)
+	assert.Equal(t, expectedAgentConstraint, p.Conditions.Agent.constraint)
+	assert.Equal(t, "3.5.0", p.specMajorMinorSemVer.String())
+}
