@@ -123,6 +123,12 @@ type Source struct {
 type Conditions struct {
 	Kibana  *KibanaConditions  `config:"kibana,omitempty" json:"kibana,omitempty" yaml:"kibana,omitempty"`
 	Elastic *ElasticConditions `config:"elastic,omitempty" json:"elastic,omitempty" yaml:"elastic,omitempty"`
+	Agent   *AgentConditions   `config:"agent,omitempty" json:"agent,omitempty" yaml:"agent,omitempty"`
+}
+
+type AgentConditions struct {
+	Version    string `config:"version" json:"version" yaml:"version"`
+	constraint *semver.Constraints
 }
 
 // KibanaConditions defines conditions for Kibana (e.g. required version).
