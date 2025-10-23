@@ -374,3 +374,101 @@ func TestPackageSetRuntimeFields(t *testing.T) {
 	assert.Equal(t, expectedAgentConstraint, p.Conditions.Agent.constraint)
 	assert.Equal(t, "3.5.0", p.specMajorMinorSemVer.String())
 }
+
+func TestHasAgentVersion(t *testing.T) {
+	constraint, err := semver.NewConstraint("^5.6.0")
+	require.NoError(t, err)
+
+	tests := []struct {
+		name       string
+		pkg        *Package
+		versionStr string
+		expected   bool
+	}{
+		{
+			name: "no agent conditions",
+			pkg: &Package{
+				BasePackage: BasePackage{
+					Conditions: &Conditions{},
+				},
+			},
+			versionStr: "8.5.0",
+			expected:   true,
+		},
+		{
+			name: "no conditions",
+			pkg: &Package{
+				BasePackage: BasePackage{},
+			},
+			versionStr: "8.5.0",
+			expected:   true,
+		},
+		{
+			name: "empty input version",
+			pkg: &Package{
+				BasePackage: BasePackage{},
+			},
+			versionStr: "",
+			expected:   true,
+		},
+		{
+			name: "package without runtime conditions",
+			pkg: &Package{
+				BasePackage: BasePackage{
+					Conditions: &Conditions{
+						Agent: &AgentConditions{
+							Version: "^5.6.0",
+						},
+					},
+				},
+			},
+			versionStr: "4.5.0",
+			expected:   true,
+		},
+		{
+			name: "package with runtime conditions, valid check",
+			pkg: &Package{
+				BasePackage: BasePackage{
+					Conditions: &Conditions{
+						Agent: &AgentConditions{
+							Version:    "^5.6.0",
+							constraint: constraint,
+						},
+					},
+				},
+			},
+			versionStr: "5.8.0",
+			expected:   true,
+		},
+		{
+			name: "package with runtime conditions, not valid check",
+			pkg: &Package{
+				BasePackage: BasePackage{
+					Conditions: &Conditions{
+						Agent: &AgentConditions{
+							Version:    "^5.6.0",
+							constraint: constraint,
+						},
+					},
+				},
+			},
+			versionStr: "5.5.0",
+			expected:   false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+
+			var version *semver.Version
+			if tt.versionStr != "" {
+				var err error
+				version, err = semver.NewVersion(tt.versionStr)
+				require.NoError(t, err)
+			}
+
+			result := tt.pkg.HasAgentVersion(version)
+			assert.Equal(t, tt.expected, result)
+		})
+	}
+}

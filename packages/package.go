@@ -538,6 +538,15 @@ func (p *Package) HasKibanaVersion(version *semver.Version) bool {
 	return p.Conditions.Kibana.constraint.Check(version)
 }
 
+func (p *Package) HasAgentVersion(version *semver.Version) bool {
+	// If the version is not specified, it is for all versions
+	if p.Conditions == nil || p.Conditions.Agent == nil || p.Conditions.Agent.constraint == nil || version == nil {
+		return true
+	}
+
+	return p.Conditions.Agent.constraint.Check(version)
+}
+
 func (p *Package) WorksWithCapabilities(capabilities []string) bool {
 	if p.Conditions == nil || p.Conditions.Elastic == nil || p.Conditions.Elastic.Capabilities == nil || capabilities == nil {
 		return true
