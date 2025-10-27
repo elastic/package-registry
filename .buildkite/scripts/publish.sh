@@ -3,16 +3,12 @@ source .buildkite/scripts/tooling.sh
 
 set -euo pipefail
 
-set -x
-
 build_docker_image() {
     local go_version
     local runner_image="${1}"
     local docker_img_tag="${DOCKER_IMG_TAG}${2}"
     local docker_img_tag_branch="${DOCKER_IMG_TAG_BRANCH}${2}"
     go_version=$(cat .go-version)
-    # remove the last 2 arguments as use the remainder for the build command
-    shift; shift;
 
     docker buildx build "$@" \
         --platform linux/amd64,linux/arm64/v8 \
@@ -32,8 +28,6 @@ build_docker_image() {
 push_docker_image() {
     local runner_image="${1}"
     local tag_suffix="${2}"
-    # remove the last 2 arguments as you send the remainder to the build command
-    shift; shift;
 
     # if there is no tag suffix, then remove the last empty argument
     # as it causes issues with the build command.
@@ -71,4 +65,4 @@ DOCKER_IMG_TAG="${DOCKER_NAMESPACE}:${BUILDKITE_COMMIT}"
 DOCKER_IMG_TAG_BRANCH="${DOCKER_NAMESPACE}:${TAG_NAME}"
 
 push_docker_image "docker.elastic.co/wolfi/chainguard-base" ""
-push_docker_image "registry.access.redhat.com/ubi9/ubi-minimal:9.6" "-ubi" "-f" "Dockerfile-ubi"
+push_docker_image "registry.access.redhat.com/ubi9/ubi-minimal:9.6" "-ubi"
