@@ -8,11 +8,15 @@ set -x
 build_docker_image() {
     local go_version
     local runner_image="${1}"
-    local docker_img_tag="${DOCKER_IMG_TAG}${2}"
-    local docker_img_tag_branch="${DOCKER_IMG_TAG_BRANCH}${2}"
+    local tag_suffix=""
+    if [ $# -ge 2 ]; then
+        tag_suffix="${2}"
+    fi
+    local docker_img_tag="${DOCKER_IMG_TAG}${tag_suffix}"
+    local docker_img_tag_branch="${DOCKER_IMG_TAG_BRANCH}${tag_suffix}"
     go_version=$(cat .go-version)
 
-    docker buildx build "$@" \
+    docker buildx build --push \
         --platform linux/amd64,linux/arm64/v8 \
         --progress plain \
         -t "${docker_img_tag}" \
@@ -31,21 +35,9 @@ push_docker_image() {
     local runner_image="${1}"
     local tag_suffix="${2}"
 
-    # if there is no tag suffix, then remove the last empty argument
-    # as it causes issues with the build command.
-    if [[ -z "${tag_suffix}" ]]
-    then
-        echo "Removing last argument"
-        set -- "${@:1:$(($#-1))}"
-    fi
-
     docker buildx create --use
 
-    # first build the image without push
-    build_docker_image "${runner_image}" "${tag_suffix}" "$@"
-
-    # essentially the same as above with --push flag; the build should be in the cache
-    retry 3 build_docker_image "${runner_image}" "${tag_suffix}" "--push" "$@"
+    retry 3 build_docker_image ${runner_image} ${tag_suffix}
 
     echo "Docker images pushed: ${DOCKER_IMG_TAG}${tag_suffix} ${DOCKER_IMG_TAG_BRANCH}${tag_suffix}"
 }
