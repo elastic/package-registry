@@ -1,0 +1,8 @@
+- version: 1.0.3
+  changes:
+    - description: Fix broken template
+      type: bugfix
+      link: https://github.com/elastic/beats/issues/13507
+    - description: It is a known issue that the dashboard does not load properly
+      type: known-issue
+      link: https://github.com/elastic/beats/issues/13506

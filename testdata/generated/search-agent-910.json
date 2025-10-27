@@ -25,35 +25,6 @@
     ]
   },
   {
-    "name": "agent_version",
-    "title": "Agent Version",
-    "version": "1.0.0",
-    "release": "ga",
-    "description": "An agent version integration.\n",
-    "type": "integration",
-    "download": "/epr/agent_version/agent_version-1.0.0.zip",
-    "path": "/package/agent_version/1.0.0",
-    "icons": [
-      {
-        "src": "/img/icon.svg",
-        "path": "/package/agent_version/1.0.0/img/icon.svg",
-        "type": "image/svg+xml"
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": ">6.7.0"
-      },
-      "agent": {
-        "version": "^9.2.0"
-      }
-    },
-    "categories": [
-      "custom",
-      "web"
-    ]
-  },
-  {
     "name": "datasources",
     "title": "Default datasource Integration",
     "version": "1.0.0",
@@ -408,45 +379,6 @@
       "custom",
       "web"
     ]
-  },
-  {
-    "name": "nginx",
-    "title": "Nginx",
-    "version": "1.15.0",
-    "release": "ga",
-    "description": "Collect logs and metrics from Nginx HTTP servers with Elastic Agent.",
-    "type": "integration",
-    "download": "/epr/nginx/nginx-1.15.0.zip",
-    "path": "/package/nginx/1.15.0",
-    "icons": [
-      {
-        "src": "/img/logo_nginx.svg",
-        "path": "/package/nginx/1.15.0/img/logo_nginx.svg",
-        "title": "logo nginx",
-        "size": "32x32",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "nginx",
-        "title": "Nginx logs and metrics",
-        "description": "Collect logs and metrics from Nginx instances"
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^8.8.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/obs-infraobs-integrations"
-    },
-    "categories": [
-      "web",
-      "observability"
-    ],
-    "signature_path": "/epr/nginx/nginx-1.15.0.zip.sig"
   },
   {
     "name": "no_stream_configs",

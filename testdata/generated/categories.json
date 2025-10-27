@@ -12,7 +12,7 @@
   {
     "id": "custom",
     "title": "Custom",
-    "count": 14
+    "count": 15
   },
   {
     "id": "datastore",
@@ -22,7 +22,7 @@
   {
     "id": "web",
     "title": "Web Server",
-    "count": 3,
+    "count": 4,
     "parent_id": "observability",
     "parent_title": "Observability"
   }

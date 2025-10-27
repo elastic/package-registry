@@ -147,6 +147,8 @@ func TestEndpoints(t *testing.T) {
 		{"/search?prerelease=true&discovery=datasets:good_content.errors&discovery=fields:process.pid", "/search", "search-discovery-multiple.txt", searchHandler},
 		{"/search?prerelease=true&discovery=datasets:good_content.errors&discovery=fields:process.path", "/search", "search-discovery-multiple-no-match.txt", searchHandler},
 		{"/favicon.ico", "", "favicon.ico", faviconHandler},
+		{"/search?agent.version=9.1.0", "/search", "search-agent-910.json", searchHandler},
+		{"/search?agent.version=9.5.0", "/search", "search-agent-950.json", searchHandler},
 
 		// Removed flags, kept to ensure that they don't break requests from old versions.
 		{"/search?internal=true", "/search", "search-package-internal.json", searchHandler},
