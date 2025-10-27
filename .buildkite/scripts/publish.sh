@@ -3,6 +3,8 @@ source .buildkite/scripts/tooling.sh
 
 set -euo pipefail
 
+set -x
+
 build_docker_image() {
     local go_version
     local runner_image="${1}"
