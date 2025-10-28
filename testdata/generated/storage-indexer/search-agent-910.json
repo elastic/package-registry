@@ -1,58 +1,5 @@
 [
   {
-    "name": "1password",
-    "title": "1Password",
-    "version": "1.4.0",
-    "release": "ga",
-    "description": "Collect events from 1Password Events API with Elastic Agent.",
-    "type": "integration",
-    "download": "/epr/1password/1password-1.4.0.zip",
-    "path": "/package/1password/1.4.0",
-    "icons": [
-      {
-        "src": "/img/1password-logo-light-bg.svg",
-        "path": "/package/1password/1.4.0/img/1password-logo-light-bg.svg",
-        "title": "1Password",
-        "size": "116x116",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "1password",
-        "title": "1Password Events",
-        "description": "Collect events from 1Password Events Reporting"
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^7.16.0 || ^8.0.0"
-      },
-      "agent": {
-        "version": "^9.5.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/security-external-integrations"
-    },
-    "categories": [
-      "security"
-    ],
-    "signature_path": "/epr/1password/1password-1.4.0.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "1password.item_usages",
-        "title": "Collect 1Password item usages events"
-      },
-      {
-        "type": "logs",
-        "dataset": "1password.signin_attempts",
-        "title": "1Password sign-in attempt events"
-      }
-    ]
-  },
-  {
     "name": "aws",
     "title": "AWS",
     "version": "1.16.4",
@@ -705,16 +652,16 @@
   {
     "name": "akamai",
     "title": "Akamai",
-    "version": "1.0.0",
+    "version": "2.28.0",
     "release": "ga",
-    "description": "Akamai Integration",
+    "description": "Collect logs from Akamai with Elastic Agent.",
     "type": "integration",
-    "download": "/epr/akamai/akamai-1.0.0.zip",
-    "path": "/package/akamai/1.0.0",
+    "download": "/epr/akamai/akamai-2.28.0.zip",
+    "path": "/package/akamai/2.28.0",
     "icons": [
       {
         "src": "/img/akamai_logo.svg",
-        "path": "/package/akamai/1.0.0/img/akamai_logo.svg",
+        "path": "/package/akamai/2.28.0/img/akamai_logo.svg",
         "title": "Akamai",
         "size": "409×167",
         "type": "image/svg+xml"
@@ -729,19 +676,18 @@
     ],
     "conditions": {
       "kibana": {
-        "version": "^7.16.0 || ^8.0.0"
+        "version": "^8.13.0 || ^9.0.0"
       }
     },
     "owner": {
-      "github": "elastic/security-external-integrations"
+      "type": "community",
+      "github": "elastic/security-service-integrations"
     },
     "categories": [
       "security",
-      "network",
-      "web",
-      "cloud"
+      "cdn_security"
     ],
-    "signature_path": "/epr/akamai/akamai-1.0.0.zip.sig",
+    "signature_path": "/epr/akamai/akamai-2.28.0.zip.sig",
     "data_streams": [
       {
         "type": "logs",
@@ -1126,6 +1072,52 @@
         "type": "logs",
         "dataset": "auditd.log",
         "title": "Auditd logs"
+      }
+    ]
+  },
+  {
+    "name": "auditd_manager",
+    "title": "Auditd Manager",
+    "version": "1.0.0",
+    "release": "ga",
+    "description": "The Auditd Manager Integration receives audit events from the Linux Audit Framework that is a part of the Linux kernel.",
+    "type": "integration",
+    "download": "/epr/auditd_manager/auditd_manager-1.0.0.zip",
+    "path": "/package/auditd_manager/1.0.0",
+    "icons": [
+      {
+        "src": "/img/linux.svg",
+        "path": "/package/auditd_manager/1.0.0/img/linux.svg",
+        "title": "linux",
+        "size": "299x354",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "auditd",
+        "title": "Auditd",
+        "description": "Collect auditd events"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.2.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "os_system",
+      "security"
+    ],
+    "signature_path": "/epr/auditd_manager/auditd_manager-1.0.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "auditd_manager.auditd",
+        "title": "Auditd Manager"
       }
     ]
   },
@@ -2683,16 +2675,16 @@
   {
     "name": "apm",
     "title": "Elastic APM",
-    "version": "8.0.0",
+    "version": "8.2.0",
     "release": "ga",
     "description": "Ingest APM data",
     "type": "integration",
-    "download": "/epr/apm/apm-8.0.0.zip",
-    "path": "/package/apm/8.0.0",
+    "download": "/epr/apm/apm-8.2.0.zip",
+    "path": "/package/apm/8.2.0",
     "icons": [
       {
         "src": "/img/logo_apm.svg",
-        "path": "/package/apm/8.0.0/img/logo_apm.svg",
+        "path": "/package/apm/8.2.0/img/logo_apm.svg",
         "title": "APM Logo",
         "size": "32x32",
         "type": "image/svg+xml"
@@ -2707,7 +2699,7 @@
     ],
     "conditions": {
       "kibana": {
-        "version": "^8.0.0"
+        "version": "^8.2.0"
       }
     },
     "owner": {
@@ -2717,7 +2709,7 @@
       "elastic_stack",
       "monitoring"
     ],
-    "signature_path": "/epr/apm/apm-8.0.0.zip.sig",
+    "signature_path": "/epr/apm/apm-8.2.0.zip.sig",
     "data_streams": [
       {
         "type": "logs",
@@ -2896,17 +2888,17 @@
   },
   {
     "name": "endpoint",
-    "title": "Endpoint Security",
-    "version": "8.2.0",
+    "title": "Endpoint and Cloud Security",
+    "version": "8.3.0",
     "release": "ga",
-    "description": "Protect your hosts with threat prevention, detection, and deep security data visibility.",
+    "description": "Protect your hosts and cloud workloads with threat prevention, detection, and deep security data visibility.",
     "type": "integration",
-    "download": "/epr/endpoint/endpoint-8.2.0.zip",
-    "path": "/package/endpoint/8.2.0",
+    "download": "/epr/endpoint/endpoint-8.3.0.zip",
+    "path": "/package/endpoint/8.3.0",
     "icons": [
       {
         "src": "/img/security-logo-color-64px.svg",
-        "path": "/package/endpoint/8.2.0/img/security-logo-color-64px.svg",
+        "path": "/package/endpoint/8.3.0/img/security-logo-color-64px.svg",
         "size": "16x16",
         "type": "image/svg+xml"
       }
@@ -2920,16 +2912,17 @@
     ],
     "conditions": {
       "kibana": {
-        "version": "^8.0.0"
+        "version": "^8.3.0"
       }
     },
     "owner": {
       "github": "elastic/security-onboarding-and-lifecycle-mgt"
     },
     "categories": [
-      "security"
+      "security",
+      "cloud"
     ],
-    "signature_path": "/epr/endpoint/endpoint-8.2.0.zip.sig",
+    "signature_path": "/epr/endpoint/endpoint-8.3.0.zip.sig",
     "data_streams": [
       {
         "type": "logs",
@@ -2995,6 +2988,53 @@
         "type": "logs",
         "dataset": "endpoint.events.security",
         "title": "Endpoint Security Events"
+      }
+    ]
+  },
+  {
+    "name": "fim",
+    "title": "File Integrity Monitoring",
+    "version": "1.0.0",
+    "release": "ga",
+    "description": "The File Integrity Monitoring integration reports filesystem changes in real time.",
+    "type": "integration",
+    "download": "/epr/fim/fim-1.0.0.zip",
+    "path": "/package/fim/1.0.0",
+    "icons": [
+      {
+        "src": "/img/sample-logo.svg",
+        "path": "/package/fim/1.0.0/img/sample-logo.svg",
+        "title": "Sample logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "fim",
+        "title": "File Integrity Monitoring",
+        "description": "Collect filesystem events"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.2.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "monitoring",
+      "os_system",
+      "security"
+    ],
+    "signature_path": "/epr/fim/fim-1.0.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "fim.event",
+        "title": "Filesystem events"
       }
     ]
   },
@@ -3299,16 +3339,16 @@
   {
     "name": "google_workspace",
     "title": "Google Workspace Audit Reports",
-    "version": "1.4.0",
+    "version": "1.5.0",
     "release": "ga",
     "description": "Collect audit reports from Google Workspaces with Elastic Agent.",
     "type": "integration",
-    "download": "/epr/google_workspace/google_workspace-1.4.0.zip",
-    "path": "/package/google_workspace/1.4.0",
+    "download": "/epr/google_workspace/google_workspace-1.5.0.zip",
+    "path": "/package/google_workspace/1.5.0",
     "icons": [
       {
         "src": "/img/logo.svg",
-        "path": "/package/google_workspace/1.4.0/img/logo.svg",
+        "path": "/package/google_workspace/1.5.0/img/logo.svg",
         "title": "logo Google",
         "size": "32x32",
         "type": "image/svg+xml"
@@ -3323,7 +3363,7 @@
     ],
     "conditions": {
       "kibana": {
-        "version": "^7.16.0 || ^8.0.0"
+        "version": "^8.4.0"
       }
     },
     "owner": {
@@ -3332,7 +3372,7 @@
     "categories": [
       "security"
     ],
-    "signature_path": "/epr/google_workspace/google_workspace-1.4.0.zip.sig",
+    "signature_path": "/epr/google_workspace/google_workspace-1.5.0.zip.sig",
     "data_streams": [
       {
         "type": "logs",
@@ -3681,6 +3721,66 @@
     ]
   },
   {
+    "name": "kibana",
+    "title": "Kibana",
+    "version": "1.0.0",
+    "release": "ga",
+    "description": "Kibana Integration",
+    "type": "integration",
+    "download": "/epr/kibana/kibana-1.0.0.zip",
+    "path": "/package/kibana/1.0.0",
+    "icons": [
+      {
+        "src": "/img/logo_kibana.svg",
+        "path": "/package/kibana/1.0.0/img/logo_kibana.svg",
+        "title": "logo kibana",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "kibana",
+        "title": "Kibana logs and metrics",
+        "description": "Collect logs and metrics from Kibana instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.15.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "elastic_stack"
+    ],
+    "signature_path": "/epr/kibana/kibana-1.0.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "kibana.audit",
+        "title": "kibana audit logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "kibana.log",
+        "title": "Kibana logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "kibana.stats",
+        "title": "Kibana stats metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "kibana.status",
+        "title": "Kibana status metrics"
+      }
+    ]
+  },
+  {
     "name": "kubernetes",
     "title": "Kubernetes",
     "version": "1.17.2",
@@ -4017,6 +4117,66 @@
     ]
   },
   {
+    "name": "logstash",
+    "title": "Logstash",
+    "version": "1.0.0",
+    "release": "ga",
+    "description": "Logstash Integration",
+    "type": "integration",
+    "download": "/epr/logstash/logstash-1.0.0.zip",
+    "path": "/package/logstash/1.0.0",
+    "icons": [
+      {
+        "src": "/img/logo_logstash.svg",
+        "path": "/package/logstash/1.0.0/img/logo_logstash.svg",
+        "title": "logo logstash",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "logstash",
+        "title": "Logstash logs and metrics",
+        "description": "Collect logs and metrics from Logstash instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.15.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "elastic_stack"
+    ],
+    "signature_path": "/epr/logstash/logstash-1.0.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "logstash.log",
+        "title": "Logstash logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "logstash.node",
+        "title": "Logstash node metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "logstash.node_stats",
+        "title": "Logstash node_stats metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "logstash.slowlog",
+        "title": "logstash slowlog logs"
+      }
+    ]
+  },
+  {
     "name": "m365_defender",
     "title": "M365 Defender Logs",
     "version": "1.0.3",
@@ -4151,6 +4311,58 @@
         "type": "logs",
         "dataset": "mattermost.audit",
         "title": "Audit Logs"
+      }
+    ]
+  },
+  {
+    "name": "microsoft",
+    "title": "Microsoft",
+    "version": "1.0.0",
+    "release": "ga",
+    "description": "This Elastic integration collects logs from Microsoft products",
+    "type": "integration",
+    "download": "/epr/microsoft/microsoft-1.0.0.zip",
+    "path": "/package/microsoft/1.0.0",
+    "icons": [
+      {
+        "src": "/img/logo.svg",
+        "path": "/package/microsoft/1.0.0/img/logo.svg",
+        "title": "Microsoft logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "microsoft",
+        "title": "Microsoft",
+        "description": "Collect logs from Microsoft products"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.15.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "network",
+      "security",
+      "azure"
+    ],
+    "signature_path": "/epr/microsoft/microsoft-1.0.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "microsoft.defender_atp",
+        "title": "Microsoft Defender for Endpoint"
+      },
+      {
+        "type": "logs",
+        "dataset": "microsoft.dhcp",
+        "title": "Microsoft DHCP logs"
       }
     ]
   },
@@ -4831,16 +5043,16 @@
   {
     "name": "osquery_manager",
     "title": "Osquery Manager",
-    "version": "1.0.0",
+    "version": "1.2.1",
     "release": "ga",
     "description": "Deploy osquery with Elastic Agent, then run and schedule queries in Kibana",
     "type": "integration",
-    "download": "/epr/osquery_manager/osquery_manager-1.0.0.zip",
-    "path": "/package/osquery_manager/1.0.0",
+    "download": "/epr/osquery_manager/osquery_manager-1.2.1.zip",
+    "path": "/package/osquery_manager/1.2.1",
     "icons": [
       {
         "src": "/img/logo_osquery.svg",
-        "path": "/package/osquery_manager/1.0.0/img/logo_osquery.svg",
+        "path": "/package/osquery_manager/1.2.1/img/logo_osquery.svg",
         "title": "logo osquery",
         "size": "32x32",
         "type": "image/svg+xml"
@@ -4855,7 +5067,7 @@
     ],
     "conditions": {
       "kibana": {
-        "version": "^7.16.0 || ^8.0.0"
+        "version": "^8.2.0"
       }
     },
     "owner": {
@@ -4866,7 +5078,7 @@
       "os_system",
       "config_management"
     ],
-    "signature_path": "/epr/osquery_manager/osquery_manager-1.0.0.zip.sig",
+    "signature_path": "/epr/osquery_manager/osquery_manager-1.2.1.zip.sig",
     "data_streams": [
       {
         "type": "logs",
@@ -5578,16 +5790,16 @@
   {
     "name": "tenable_sc",
     "title": "Tenable.sc",
-    "version": "1.0.0",
+    "version": "1.1.1",
     "release": "ga",
     "description": "Collect logs from Tenable.sc with Elastic Agent.\n",
     "type": "integration",
-    "download": "/epr/tenable_sc/tenable_sc-1.0.0.zip",
-    "path": "/package/tenable_sc/1.0.0",
+    "download": "/epr/tenable_sc/tenable_sc-1.1.1.zip",
+    "path": "/package/tenable_sc/1.1.1",
     "icons": [
       {
         "src": "/img/tenable_sc-logo.svg",
-        "path": "/package/tenable_sc/1.0.0/img/tenable_sc-logo.svg",
+        "path": "/package/tenable_sc/1.1.1/img/tenable_sc-logo.svg",
         "title": "Tenable.sc logo",
         "size": "32x32",
         "type": "image/svg+xml"
@@ -5602,7 +5814,7 @@
     ],
     "conditions": {
       "kibana": {
-        "version": "^7.16.0 || ^8.0.0"
+        "version": "^8.1.0"
       }
     },
     "owner": {
@@ -5611,7 +5823,7 @@
     "categories": [
       "security"
     ],
-    "signature_path": "/epr/tenable_sc/tenable_sc-1.0.0.zip.sig",
+    "signature_path": "/epr/tenable_sc/tenable_sc-1.1.1.zip.sig",
     "data_streams": [
       {
         "type": "logs",
