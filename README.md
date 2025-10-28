@@ -321,12 +321,14 @@ To run tests and generate JSON responses follow these steps:
 1. **Main package tests**: Execute the following command to run all tests from the main package and generate its response files:
   ```bash
   mage testGenerateMain
+  mage test
   ```
 
   or
 
   ```bash
-  go test . -v -generate
+  go test ./... -v -generate
+  go test ./... -v
   ```
 
 
