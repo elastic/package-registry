@@ -21,9 +21,14 @@ FROM ${RUNNER_IMAGE}
 
 # Get dependencies
 # Mailcap is installed to get mime types information.
-RUN apk update && \
+RUN if grep -q "Red Hat" /etc/os-release ; then \
+    microdnf install -y mailcap zip rsync && \
+    microdnf clean all ; \
+  else \
+    apk update && \
     apk add mailcap zip rsync curl && \
-    rm -rf /var/cache/apk/*
+    rm -rf /var/cache/apk/* ; \
+  fi
 
 # Move binary from the builder image
 COPY --from=builder /package-registry/package-registry /package-registry/package-registry
@@ -42,4 +47,3 @@ ENTRYPOINT ["./package-registry"]
 ENV EPR_ADDRESS=0.0.0.0:8080
 
 HEALTHCHECK --interval=1s --retries=30 CMD curl --silent --fail localhost:8080/health || exit 1
-
