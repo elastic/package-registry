@@ -314,31 +314,14 @@ After the new registry Docker image is available, update the following projects 
 
 ## Development
 
-### Running Tests and Generating JSON Responses
+### Running Tests
 
-To run tests and generate JSON responses follow these steps:
+While developing on a new branch, there are some [Magefile targets](https://github.com/elastic/package-registry/blob/main/magefile.go) available that will help you in this development phase:
 
-1. **Main package tests**: Execute the following command to run all tests from the main package and generate its response files:
-  ```bash
-  mage testGenerateMain
-  mage test
-  ```
-
-  or
-
-  ```bash
-  go test ./... -v -generate
-  go test ./... -v
-  ```
-
-
-2. **Packages tests**: Use the following command to generate JSON responses from the packages package tests:
-  ```bash
-  mage testGeneratePackages
-  ```
-
-  or
-
-  ```bash
-  go test ./packages/... -v -generate
-  ```
+- `mage test`: Run all tests.
+- `mage check`: Run static checks (format, add license headers, run `go mod tidy`, etc.).
+- `mage clean`: Delete generated files (e.g. `package-registry` binary).
+- `mage writeTestGoldenFiles`: Re-generate the expected test values of all tests if needed.
+    - Examples to use this target:
+      - a new package is added under `testdata/package`
+      - the `storage/testdata/search-index-all-full.json` file is updated with new packages or new fields.
