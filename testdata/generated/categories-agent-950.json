@@ -1,0 +1,29 @@
+[
+  {
+    "id": "azure",
+    "title": "Azure",
+    "count": 2
+  },
+  {
+    "id": "crm",
+    "title": "CRM",
+    "count": 2
+  },
+  {
+    "id": "custom",
+    "title": "Custom",
+    "count": 15
+  },
+  {
+    "id": "datastore",
+    "title": "Database",
+    "count": 1
+  },
+  {
+    "id": "web",
+    "title": "Web Server",
+    "count": 4,
+    "parent_id": "observability",
+    "parent_title": "Observability"
+  }
+]

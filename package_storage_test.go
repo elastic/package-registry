@@ -128,6 +128,8 @@ func generateTestCaseStorageEndpoints(indexer Indexer) ([]struct {
 		// Test agent.version filtering
 		{"/search?agent.version=9.1.0", "/search", "search-agent-910.json", searchHandler},
 		{"/search?agent.version=9.5.0", "/search", "search-agent-950.json", searchHandler},
+		{"/categories?agent.version=9.1.0", "/categories", "categories-agent-910.json", categoriesHandler},
+		{"/categories?agent.version=9.5.0", "/categories", "categories-agent-950.json", categoriesHandler},
 	}, nil
 }
 
