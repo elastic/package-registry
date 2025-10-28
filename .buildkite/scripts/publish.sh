@@ -3,10 +3,9 @@ source .buildkite/scripts/tooling.sh
 
 set -euo pipefail
 
-build_docker_image() {
-	local go_version
+build_push_docker_image() {
 	local runner_image="${1}"
-	local tag_suffix=""
+	local tag_suffix="${2:-}"
 	if [ $# -ge 2 ]; then
 		tag_suffix="${2}"
 	fi
@@ -14,7 +13,9 @@ build_docker_image() {
 	local docker_img_tag_branch="${DOCKER_IMG_TAG_BRANCH}${tag_suffix}"
 	go_version=$(cat .go-version)
 
-	docker buildx build --push \
+	docker buildx create --use
+
+	retry 3 docker buildx build --push \
 		--platform linux/amd64,linux/arm64/v8 \
 		--progress plain \
 		-t "${docker_img_tag}" \
@@ -26,16 +27,7 @@ build_docker_image() {
 		--label GIT_SHA="${BUILDKITE_COMMIT}" \
 		--label GO_VERSION="${SETUP_GOLANG_VERSION}" \
 		--label TIMESTAMP="$(date +%Y-%m-%d_%H:%M)" \
-		.
-}
-
-push_docker_image() {
-	local runner_image="${1}"
-	local tag_suffix="${2}"
-
-	docker buildx create --use
-
-	retry 3 build_docker_image ${runner_image} ${tag_suffix}
+	   .
 
 	echo "Docker images pushed: ${DOCKER_IMG_TAG}${tag_suffix} ${DOCKER_IMG_TAG_BRANCH}${tag_suffix}"
 }
@@ -56,5 +48,5 @@ fi
 DOCKER_IMG_TAG="${DOCKER_NAMESPACE}:${BUILDKITE_COMMIT}"
 DOCKER_IMG_TAG_BRANCH="${DOCKER_NAMESPACE}:${TAG_NAME}"
 
-push_docker_image "docker.elastic.co/wolfi/chainguard-base" ""
-push_docker_image "registry.access.redhat.com/ubi9/ubi-minimal:9.6" "-ubi"
+build_push_docker_image "docker.elastic.co/wolfi/chainguard-base" ""
+build_push_docker_image "registry.access.redhat.com/ubi9/ubi-minimal:9.6" "-ubi"
