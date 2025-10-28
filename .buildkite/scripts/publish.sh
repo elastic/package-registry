@@ -6,9 +6,6 @@ set -euo pipefail
 build_push_docker_image() {
 	local runner_image="${1}"
 	local tag_suffix="${2:-}"
-	if [ $# -ge 2 ]; then
-		tag_suffix="${2}"
-	fi
 	local docker_img_tag="${DOCKER_IMG_TAG}${tag_suffix}"
 	local docker_img_tag_branch="${DOCKER_IMG_TAG_BRANCH}${tag_suffix}"
 	go_version=$(cat .go-version)
@@ -27,7 +24,7 @@ build_push_docker_image() {
 		--label GIT_SHA="${BUILDKITE_COMMIT}" \
 		--label GO_VERSION="${SETUP_GOLANG_VERSION}" \
 		--label TIMESTAMP="$(date +%Y-%m-%d_%H:%M)" \
-	   .
+		.
 
 	echo "Docker images pushed: ${DOCKER_IMG_TAG}${tag_suffix} ${DOCKER_IMG_TAG_BRANCH}${tag_suffix}"
 }
