@@ -78,6 +78,14 @@ func Test() error {
 	return sh.RunV("go", "test", "./...", "-v")
 }
 
+func TestGenerateMain() error {
+	return sh.RunV("go", "test", ".", "-v", "-generate")
+}
+
+func TestGeneratePackages() error {
+	return sh.RunV("go", "test", "./packages/...", "-v", "-generate")
+}
+
 // Format adds license headers, formats .go files with goimports, and formats
 // .py files with autopep8.
 func Format() {
