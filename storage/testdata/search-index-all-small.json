@@ -22,6 +22,9 @@
                 "conditions": {
                     "kibana": {
                         "version": "^7.16.0"
+                    }, 
+                    "agent": {
+                        "version": "^9.2.0"
                     }
                 },
                 "owner": {
