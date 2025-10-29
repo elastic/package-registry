@@ -5,6 +5,7 @@
 package packages
 
 import (
+	"bytes"
 	"encoding/json"
 	"flag"
 	"os"
@@ -30,11 +31,15 @@ func TestMarshalJSON(t *testing.T) {
 	require.NoError(t, err, "can't initialize indexer")
 
 	// when
-	b, err := util.MarshalJSONPretty(&indexer.packageList)
+	var buf bytes.Buffer
+	en := json.NewEncoder(&buf)
+	en.SetEscapeHTML(false)
+	en.SetIndent(" ", "  ")
+	err = en.Encode(indexer.packageList)
 	require.NoError(t, err, "packages should be encoded to JSON")
 
 	// then
-	assertExpectedContent(t, testFile, b)
+	assertExpectedContent(t, testFile, buf.Bytes())
 }
 
 func TestUnmarshalJSON(t *testing.T) {
