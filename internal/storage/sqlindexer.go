@@ -535,7 +535,11 @@ func createDatabaseOptions(cursor string, opts *packages.GetOptions) *database.S
 
 	// Determine if we can use the optimized query to get just the latest versions of the packages.
 	// We can use it when we are not filtering by version and not requesting all versions.
-	sqlOptions.JustLatestPackages = !opts.Filter.AllVersions && opts.Filter.PackageVersion == ""
+	sqlOptions.JustLatestPackages = !opts.Filter.AllVersions && opts.Filter.PackageVersion == "" &&
+		// AgentVersion filtering is not compatible with just latest packages optimization.
+		// TODO: revisit this when AgentVersion filtering is implemented at database level.
+		// https://github.com/elastic/package-registry/issues/1461
+		opts.Filter.AgentVersion == nil
 
 	return sqlOptions
 }
