@@ -1,3 +1,3 @@
-# Multi version
+# Agent version
 
-There are multiple versions of this package.
+This package has defined an agent version.
