@@ -10,6 +10,29 @@ import (
 	"io"
 )
 
+// MarshalJSON marshals a value to compact JSON without HTML escaping.
+func MarshalJSON(v interface{}) ([]byte, error) {
+	buf := new(bytes.Buffer)
+	enc := json.NewEncoder(buf)
+	enc.SetEscapeHTML(false)
+	if err := enc.Encode(v); err != nil {
+		return nil, err
+	}
+	// json.Encoder.Encode adds a trailing newline, trim it for compact output
+	result := buf.Bytes()
+	if len(result) > 0 && result[len(result)-1] == '\n' {
+		result = result[:len(result)-1]
+	}
+	return result, nil
+}
+
+// WriteJSON writes a value as compact JSON without HTML escaping.
+func WriteJSON(w io.Writer, v interface{}) error {
+	enc := json.NewEncoder(w)
+	enc.SetEscapeHTML(false)
+	return enc.Encode(v)
+}
+
 // MarshalJSONPretty marshals a value to "pretty" JSON without HTML escaping.
 func MarshalJSONPretty(v interface{}) ([]byte, error) {
 	buf := new(bytes.Buffer)
