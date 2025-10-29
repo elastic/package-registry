@@ -29,7 +29,7 @@
         "version": "^7.16.0 || ^8.0.0"
       },
       "agent": {
-        "version": "^9.5.0"
+        "version": "^9.2.0"
       }
     },
     "owner": {
