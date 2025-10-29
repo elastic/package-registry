@@ -13,9 +13,7 @@ import (
 // MarshalJSON marshals a value to compact JSON without HTML escaping.
 func MarshalJSON(v interface{}) ([]byte, error) {
 	buf := new(bytes.Buffer)
-	enc := json.NewEncoder(buf)
-	enc.SetEscapeHTML(false)
-	if err := enc.Encode(v); err != nil {
+	if err := WriteJSON(buf, v); err != nil {
 		return nil, err
 	}
 	// json.Encoder.Encode adds a trailing newline, trim it for compact output
