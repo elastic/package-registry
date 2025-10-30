@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Add new `agent.version` condition to search and categories[1460](https://github.com/elastic/package-registry/pull/1460)
+* Add new `agent.version` condition to search and categories endpoints. [#1460](https://github.com/elastic/package-registry/pull/1460)
 * Avoid parsing JSON columns in queries performed to artifacts related endpoints (SQL storage indexer). [#1386](https://github.com/elastic/package-registry/pull/1386)
 * Include SQL functions to improve filtering (SQL storage indexer). [#1442](https://github.com/elastic/package-registry/pull/1442)
 * Return just latest packages based on semantic versioning if `all=false` (SQL storage indexer). [#1445](https://github.com/elastic/package-registry/pull/1445)
