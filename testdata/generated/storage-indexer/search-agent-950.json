@@ -36,7 +36,8 @@
       "github": "elastic/security-external-integrations"
     },
     "categories": [
-      "security"
+      "security",
+      "credential_management"
     ],
     "signature_path": "/epr/1password/1password-1.4.0.zip.sig",
     "data_streams": [

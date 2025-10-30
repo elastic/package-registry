@@ -32,6 +32,13 @@
     "count": 11
   },
   {
+    "id": "credential_management",
+    "title": "Credential Management",
+    "count": 1,
+    "parent_id": "security",
+    "parent_title": "Security"
+  },
+  {
     "id": "custom",
     "title": "Custom",
     "count": 7
