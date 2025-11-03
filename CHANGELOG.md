@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
+* Update Go runtime to 1.25.3.
+* Fix performance issues when parsing some invalid certificates.
+
 ### Added
 
 * Avoid parsing JSON columns in queries performed to artifacts related endpoints (SQL storage indexer). [#1386](https://github.com/elastic/package-registry/pull/1386)
