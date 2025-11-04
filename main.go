@@ -47,7 +47,7 @@ import (
 )
 
 const (
-	version             = "1.32.2"
+	version             = "1.33.0"
 	defaultInstanceName = "localhost"
 )
 
