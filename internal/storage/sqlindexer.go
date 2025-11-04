@@ -23,6 +23,7 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/internal/database"
+	"github.com/elastic/package-registry/internal/util"
 	"github.com/elastic/package-registry/metrics"
 	"github.com/elastic/package-registry/packages"
 )
@@ -306,11 +307,11 @@ func (i *SQLIndexer) swapDatabases(ctx context.Context, currentCursor string, nu
 }
 
 func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Package, error) {
-	fullContents, err := json.Marshal(pkg)
+	fullContents, err := util.MarshalJSON(pkg)
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal package %s-%s: %w", pkg.Name, pkg.Version, err)
 	}
-	baseContents, err := json.Marshal(pkg.BasePackage)
+	baseContents, err := util.MarshalJSON(pkg.BasePackage)
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal base package %s-%s: %w", pkg.Name, pkg.Version, err)
 	}

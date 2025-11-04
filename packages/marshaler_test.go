@@ -30,7 +30,7 @@ func TestMarshalJSON(t *testing.T) {
 	require.NoError(t, err, "can't initialize indexer")
 
 	// when
-	m, err := json.MarshalIndent(&indexer.packageList, " ", " ")
+	m, err := util.MarshalJSONPretty(&indexer.packageList)
 	require.NoError(t, err)
 
 	// then
