@@ -637,9 +637,47 @@ func getRouter(logger *zap.Logger, options serverOptions) (*mux.Router, error) {
 	if featureProxyMode {
 		logger.Info("Technical preview: Proxy mode is an experimental feature and it may be unstable.")
 	}
+
+	// Default proxy backend and retry timeout
+	proxyTimeout := 2 * time.Second
+	retryMax := 1
+	retryWaitMin := 1 * time.Second
+	retryWaitMax := 3 * time.Second
+
+	// Override the default from an environment variable if any.
+	if v := os.Getenv("EPR_PROXY_TIMEOUT"); v != "" {
+		if d, err := time.ParseDuration(v); err == nil {
+			proxyTimeout = d
+		} else {
+			logger.Warn("invalid EPR_PROXY_TIMEOUT format, using default", zap.String("value", v))
+		}
+	}
+
+	if v := os.Getenv("EPR_PROXY_RETRY_MAX"); v != "" {
+		if i, err := strconv.Atoi(v); err == nil {
+			retryMax = i
+		}
+	}
+
+	if v := os.Getenv("EPR_PROXY_RETRY_WAIT_MIN"); v != "" {
+		if d, err := time.ParseDuration(v); err == nil {
+			retryWaitMin = d
+		}
+	}
+
+	if v := os.Getenv("EPR_PROXY_RETRY_WAIT_MAX"); v != "" {
+		if d, err := time.ParseDuration(v); err == nil {
+			retryWaitMax = d
+		}
+	}
+
 	proxyMode, err := proxymode.NewProxyMode(logger, proxymode.ProxyOptions{
-		Enabled: featureProxyMode,
-		ProxyTo: proxyTo,
+		Enabled:      featureProxyMode,
+		ProxyTo:      strings.Split(proxyTo, ","),
+		Timeout:      proxyTimeout,
+		RetryMax:     retryMax,
+		RetryWaitMin: retryWaitMin,
+		RetryWaitMax: retryWaitMax,
 	})
 	if err != nil {
 		return nil, fmt.Errorf("can't create proxy mode: %w", err)
