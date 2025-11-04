@@ -27,13 +27,17 @@
     "conditions": {
       "kibana": {
         "version": "^7.16.0 || ^8.0.0"
+      },
+      "agent": {
+        "version": "^9.2.0"
       }
     },
     "owner": {
       "github": "elastic/security-external-integrations"
     },
     "categories": [
-      "security"
+      "security",
+      "credential_management"
     ],
     "signature_path": "/epr/1password/1password-1.4.0.zip.sig",
     "data_streams": [

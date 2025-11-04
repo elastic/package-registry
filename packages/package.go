@@ -122,7 +122,13 @@ type Source struct {
 
 type Conditions struct {
 	Kibana  *KibanaConditions  `config:"kibana,omitempty" json:"kibana,omitempty" yaml:"kibana,omitempty"`
-	Elastic *ElasticConditions `config:"elastic,omitempty" json:"elastic,omitempty" yaml"elastic,omitempty"`
+	Elastic *ElasticConditions `config:"elastic,omitempty" json:"elastic,omitempty" yaml:"elastic,omitempty"`
+	Agent   *AgentConditions   `config:"agent,omitempty" json:"agent,omitempty" yaml:"agent,omitempty"`
+}
+
+type AgentConditions struct {
+	Version    string `config:"version" json:"version" yaml:"version"`
+	constraint *semver.Constraints
 }
 
 // KibanaConditions defines conditions for Kibana (e.g. required version).
@@ -432,6 +438,13 @@ func (p *Package) setRuntimeFields() error {
 		}
 	}
 
+	if p.Conditions != nil && p.Conditions.Agent != nil {
+		p.Conditions.Agent.constraint, err = semver.NewConstraint(p.Conditions.Agent.Version)
+		if err != nil {
+			return fmt.Errorf("invalid Agent versions range %s: %w", p.Conditions.Agent.Version, err)
+		}
+	}
+
 	// Packages from proxy mode do not have "format_version" field
 	if p.FormatVersion == "" {
 		return nil
@@ -523,6 +536,15 @@ func (p *Package) HasKibanaVersion(version *semver.Version) bool {
 	}
 
 	return p.Conditions.Kibana.constraint.Check(version)
+}
+
+func (p *Package) HasAgentVersion(version *semver.Version) bool {
+	// If the version is not specified, it is for all versions
+	if p.Conditions == nil || p.Conditions.Agent == nil || p.Conditions.Agent.constraint == nil || version == nil {
+		return true
+	}
+
+	return p.Conditions.Agent.constraint.Check(version)
 }
 
 func (p *Package) WorksWithCapabilities(capabilities []string) bool {
