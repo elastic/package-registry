@@ -7,24 +7,24 @@ const BASE = `${__ENV.TARGET_HOST}`;
 export const options = {
   scenarios: {
     // 1a. Steady (Load) Test
-    steady_load_iters: {
-      executor: 'shared-iterations',
-      exec: 'default',
-      vus: `${__ENV.VUS_NUMBER}`,
-      iterations: `${__ENV.ITERATIONS_NUMBER}`,
-      maxDuration: '20m',
-      startTime: '0s',
-      tags: { test_type: 'steady_iters' },
-    },
-    // 1b. Steady (Load) Test
-    // steady_load_vus: {
-    //   executor: 'constant-vus',
+    // steady_load_iters: {
+    //   executor: 'shared-iterations',
     //   exec: 'default',
-    //   startTime: '30m10s',
     //   vus: `${__ENV.VUS_NUMBER}`,
-    //   duration: '10m',
-    //   tags: { test_type: 'steady_vus' },
+    //   iterations: `${__ENV.ITERATIONS_NUMBER}`,
+    //   maxDuration: '20m',
+    //   startTime: '0s',
+    //   tags: { test_type: 'steady_iters' },
     // },
+    // 1b. Steady (Load) Test
+    steady_load_vus: {
+      executor: 'constant-vus',
+      exec: 'default',
+      // startTime: '30m10s',
+      vus: `${__ENV.VUS_NUMBER}`,
+      duration: '20m',
+      tags: { test_type: 'steady_vus' },
+    },
     // 2. Stress Test - progressively increasing load
     // stress: {
     //   executor: 'ramping-vus',
@@ -62,8 +62,8 @@ export const options = {
     // },
   },
   thresholds: {
-    'http_req_duration{test_type:steady_iters}': ['p(95)<15000'],  // 95% of requests should be below 4000ms
-    // 'http_req_duration{test_type:steady_vus}': ['p(95)<15000'], // 95% of requests should be below 4000ms
+    // 'http_req_duration{test_type:steady_iters}': ['p(95)<15000'],  // 95% of requests should be below 4000ms
+    'http_req_duration{test_type:steady_vus}': ['p(95)<15000'], // 95% of requests should be below 4000ms
     // 'http_req_duration{test_type:stress}': ['p(95)<1000'], // Not run
     // 'http_req_duration{test_type:spike}': ['p(95)<1500'],  // Not run
     // 'http_req_duration{test_type:soak}': ['p(95)<800'],    // Not run
