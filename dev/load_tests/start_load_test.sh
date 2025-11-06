@@ -20,8 +20,9 @@ ITERATIONS=10
 SCRIPT_FILE=""
 USERS=1
 TARGET_HOST="http://localhost:8080"
+DURATION="1m"
 
-while getopts ":i:f:u:t:h" o; do
+while getopts ":i:f:u:t:d:h" o; do
   case "${o}" in
     i)
       ITERATIONS="${OPTARG}"
@@ -34,6 +35,9 @@ while getopts ":i:f:u:t:h" o; do
       ;;
     t)
       TARGET_HOST="${OPTARG}"
+      ;;
+    d)
+      DURATION="${OPTARG}"
       ;;
     h)
       usage
@@ -60,6 +64,7 @@ fi
 export TARGET_HOST
 export VUS_NUMBER="${USERS}"
 export ITERATIONS_NUMBER="${ITERATIONS}"
+export DURATION_TIME="${DURATION}"
 time k6 run \
     --no-usage-report \
     --quiet \

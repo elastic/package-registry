@@ -22,7 +22,7 @@ export const options = {
       exec: 'default',
       // startTime: '30m10s',
       vus: `${__ENV.VUS_NUMBER}`,
-      duration: '1m',
+      duration: `${__ENV.DURATION_TIME}`,
       tags: { test_type: 'steady_vus' },
     },
     // 2. Stress Test - progressively increasing load
