@@ -22,7 +22,7 @@ export const options = {
       exec: 'default',
       // startTime: '30m10s',
       vus: `${__ENV.VUS_NUMBER}`,
-      duration: '20m',
+      duration: '1m',
       tags: { test_type: 'steady_vus' },
     },
     // 2. Stress Test - progressively increasing load
@@ -97,6 +97,7 @@ const searches = [
   '/search?package=security_detection_engine',
   '/search?type=integration',
   '/search?package=aws&all=true',
+  '/search?kibana.version=9.0.0&prerelease=true',
   '/search?kibana.version=9.0.0',
   // add more combinations as needed
 ];
@@ -108,9 +109,13 @@ const categories = [
   '/categories?spec.min=2.0&spec.max=3.0',
   '/categories?spec.min=2.0&spec.max=3.0&prerelease=true',
   '/categories?prerelease=true&capabilities=security',
+  '/categories?kibana.version=9.0.0&prerelease=true',
   '/categories?kibana.version=9.0.0',
   // add more combinations as needed
 ];
+
+const minSleep = 1;
+const maxSleep = 2;
 
 export default function () {
   group('Core Endpoints', () => {
@@ -123,12 +128,12 @@ export default function () {
     packages.forEach((path) => {
       const res = http.get(`${BASE}${path}`, { tags: { endpoint: "package" } });
       check(res, { 'status 200': r => r.status === 200 });
-      sleep(randomIntBetween(1,2))
+      sleep(randomIntBetween(minSleep, maxSleep))
     });
     artifacts.forEach((path) => {
       const res = http.get(`${BASE}${path}`, { tags: { endpoint: "artifacts" } });
       check(res, { 'status 200': r => r.status === 200 });
-      sleep(randomIntBetween(1,2))
+      sleep(randomIntBetween(minSleep, maxSleep))
     });
   });
 
@@ -136,7 +141,7 @@ export default function () {
     statics.forEach((path) => {
       const res = http.get(`${BASE}${path}`, { tags: { endpoint: "statics" } });
       check(res, { 'status 200': r => r.status === 200 });
-      sleep(randomIntBetween(1,2))
+      sleep(randomIntBetween(minSleep, maxSleep))
     });
   });
 
@@ -146,7 +151,7 @@ export default function () {
     searches.forEach((path) => {
       const res = http.get(`${BASE}${path}`, { tags: { endpoint: "search" } });
       check(res, { 'status 200': r => r.status === 200 });
-      sleep(randomIntBetween(1,2))
+      sleep(randomIntBetween(minSleep, maxSleep))
     });
   });
 
@@ -155,7 +160,7 @@ export default function () {
     categories.forEach((path) => {
       const res = http.get(`${BASE}${path}`, { tags: { endpoint: "categories" } });
       check(res, { 'status 200': r => r.status === 200 });
-      sleep(randomIntBetween(1,2))
+      sleep(randomIntBetween(minSleep, maxSleep))
     });
   });
 }
