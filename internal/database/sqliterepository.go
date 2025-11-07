@@ -185,8 +185,8 @@ func (r *SQLiteRepository) Initialize(ctx context.Context) error {
 	return nil
 }
 
-func (r *SQLiteRepository) BeginTx(ctx context.Context) (*sql.Tx, error) {
-	tx, err := r.db.BeginTx(ctx, nil)
+func (r *SQLiteRepository) BeginTx(ctx context.Context, opts *sql.TxOptions) (*sql.Tx, error) {
+	tx, err := r.db.BeginTx(ctx, opts)
 	if err != nil {
 		return nil, err
 	}

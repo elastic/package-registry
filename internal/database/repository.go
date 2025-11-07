@@ -19,7 +19,7 @@ type Repository interface {
 	Drop(ctx context.Context, table string) error
 	Close(ctx context.Context) error
 
-	BeginTx(ctx context.Context) (*sql.Tx, error)
+	BeginTx(ctx context.Context, opts *sql.TxOptions) (*sql.Tx, error)
 
 	Ping(ctx context.Context) error
 

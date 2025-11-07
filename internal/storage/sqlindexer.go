@@ -249,7 +249,7 @@ func (i *SQLIndexer) updateDatabase(ctx context.Context, index *packages.Package
 	dbPackages := make([]*database.Package, 0, i.readPackagesBatchSize)
 
 	// Run all insert oprations (BulkAdd) in a single transaction for performance reasons.
-	tx, err := (*i.backup).BeginTx(ctx)
+	tx, err := (*i.backup).BeginTx(ctx, nil)
 	if err != nil {
 		return fmt.Errorf("failed to begin transaction in backup database: %w", err)
 	}
