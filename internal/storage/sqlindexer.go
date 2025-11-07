@@ -247,6 +247,13 @@ func (i *SQLIndexer) updateDatabase(ctx context.Context, index *packages.Package
 
 	totalProcessed := 0
 	dbPackages := make([]*database.Package, 0, i.readPackagesBatchSize)
+
+	ctx, tx, err := (*i.backup).BeginTx(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to begin transaction in backup database: %w", err)
+	}
+	defer tx.Rollback()
+
 	for {
 		endBatch := totalProcessed + i.readPackagesBatchSize
 		for j := totalProcessed; j < endBatch && j < len(*index); j++ {
@@ -268,6 +275,10 @@ func (i *SQLIndexer) updateDatabase(ctx context.Context, index *packages.Package
 		}
 		// reuse slice to avoid allocations
 		dbPackages = dbPackages[:0]
+	}
+
+	if err := tx.Commit(); err != nil {
+		return fmt.Errorf("failed to commit transaction in backup database: %w", err)
 	}
 
 	return nil

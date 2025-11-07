@@ -185,6 +185,26 @@ func (r *SQLiteRepository) Initialize(ctx context.Context) error {
 	return nil
 }
 
+func (r *SQLiteRepository) BeginTx(ctx context.Context) (context.Context, *sql.Tx, error) {
+	tx, err := r.db.BeginTx(ctx, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+	ctx = context.WithValue(ctx, txCtxKey{}, tx)
+	return ctx, tx, nil
+}
+
+func (r *SQLiteRepository) writer(ctx context.Context) (DBWriter, error) {
+	if ctxTx := ctx.Value(txCtxKey{}); ctxTx != nil {
+		tx, ok := ctxTx.(*sql.Tx)
+		if !ok {
+			return nil, fmt.Errorf("invalid transaction in context")
+		}
+		return tx, nil
+	}
+	return r.db, nil
+}
+
 func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []*Package) error {
 	span, ctx := apm.StartSpan(ctx, "SQL: Insert batches", "app")
 	span.Context.SetLabel("insert.batch.size", r.maxBulkAddBatchSize)
@@ -193,6 +213,11 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 
 	if len(pkgs) == 0 {
 		return nil
+	}
+
+	db, err := r.writer(ctx)
+	if err != nil {
+		return err
 	}
 
 	totalProcessed := 0
@@ -251,7 +276,7 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 		}
 		query := sb.String()
 
-		_, err := r.db.ExecContext(ctx, query, args...)
+		_, err := db.ExecContext(ctx, query, args...)
 		if err != nil {
 			// From github.com/mattn/go-sqlite3
 			// var sqliteErr sqlite3.Error

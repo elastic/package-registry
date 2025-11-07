@@ -4,7 +4,12 @@
 
 package database
 
-import "context"
+import (
+	"context"
+	"database/sql"
+)
+
+type txCtxKey struct{}
 
 type Repository interface {
 	Initialize(ctx context.Context) error
@@ -16,9 +21,15 @@ type Repository interface {
 	Drop(ctx context.Context, table string) error
 	Close(ctx context.Context) error
 
+	BeginTx(ctx context.Context) (context.Context, *sql.Tx, error)
+
 	Ping(ctx context.Context) error
 
 	File(ctx context.Context) string
+}
+
+type DBWriter interface {
+	ExecContext(ctx context.Context, query string, args ...any) (sql.Result, error)
 }
 
 type WhereOptions interface {
