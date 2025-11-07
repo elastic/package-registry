@@ -80,15 +80,16 @@ const statics = [
   '/package/aws/1.16.4/changelog.yml',
 ]
 
-const artifacts = [
-  '/epr/zoom/zoom-1.2.1.zip',
-  '/epr/aws/aws-1.16.4.zip',
-]
+const artifacts = []
+// const artifacts = [
+//   '/epr/zoom/zoom-1.2.1.zip',
+//   '/epr/aws/aws-1.16.4.zip',
+// ]
 
 const searches = [
   '/search',
   '/search?all=true&prerelease=true',
-  '/search?all=true&prerelease=false',
+  '/search?all=true',
   '/search?spec.min=2.0&spec.max=3.0',
   '/search?spec.min=2.0&spec.max=3.0&prerelease=true',
   '/search?prerelease=true&capabilities=security',
@@ -105,7 +106,6 @@ const searches = [
 const categories = [
   '/categories',
   '/categories?prerelease=true',
-  '/categories?prerelease=false',
   '/categories?spec.min=2.0&spec.max=3.0',
   '/categories?spec.min=2.0&spec.max=3.0&prerelease=true',
   '/categories?prerelease=true&capabilities=security',
