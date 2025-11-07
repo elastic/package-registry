@@ -24,6 +24,7 @@ mappings:
   apache/metrics: API
   aws/metrics: API
   awsfargate/metrics: API
+  azure/metrics: API
   containerd/metrics: API
   docker/metrics: API
   elasticsearch/metrics: API
