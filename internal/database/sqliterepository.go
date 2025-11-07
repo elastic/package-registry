@@ -194,7 +194,7 @@ func (r *SQLiteRepository) BeginTx(ctx context.Context) (context.Context, *sql.T
 	return ctx, tx, nil
 }
 
-func (r *SQLiteRepository) writer(ctx context.Context) (DBWriter, error) {
+func (r *SQLiteRepository) writer(ctx context.Context) (dbWriter, error) {
 	if ctxTx := ctx.Value(txCtxKey{}); ctxTx != nil {
 		tx, ok := ctxTx.(*sql.Tx)
 		if !ok {

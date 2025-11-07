@@ -28,7 +28,7 @@ type Repository interface {
 	File(ctx context.Context) string
 }
 
-type DBWriter interface {
+type dbWriter interface {
 	ExecContext(ctx context.Context, query string, args ...any) (sql.Result, error)
 }
 
