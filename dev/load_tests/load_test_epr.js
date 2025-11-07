@@ -31,9 +31,9 @@ export const options = {
     //   exec: 'stressTest',
     //   startTime: '5m10s',
     //   stages: [
-    //     { duration: '2m', target: 100 },
-    //     { duration: '3m', target: 200 },
-    //     { duration: '2m', target: 400 },
+    //     { duration: '2m', target: 10 },
+    //     { duration: '3m', target: 60 },
+    //     { duration: '2m', target: 30 },
     //     { duration: '2m', target: 0 }, // ramp down
     //   ],
     //   tags: { test_type: 'stress' },
@@ -90,27 +90,113 @@ const searches = [
   '/search',
   '/search?all=true&prerelease=true',
   '/search?all=true',
+  '/search?spec.min=1.0&spec.max=3.0',
   '/search?spec.min=2.0&spec.max=3.0',
+  '/search?spec.min=2.2&spec.max=3.1',
+  '/search?spec.min=3.0&spec.max=3.5',
+  '/search?prerelease=true&spec.min=2.3&spec.max=3.5',
   '/search?spec.min=2.0&spec.max=3.0&prerelease=true',
+  '/search?capabilities=security&spec.min=3.0&spec.max=3.5',
+  '/search?prerelease=true&capabilities=security&spec.min=3.0&spec.max=3.5',
   '/search?prerelease=true&capabilities=security',
+  '/search?prerelease=true&capabilities=observability',
+  '/search?prerelease=true&capabilities=observability,security',
   '/search?prerelease=true&category=security',
+  '/search?prerelease=true&category=observability',
   '/search?package=aws',
   '/search?package=security_detection_engine',
+  '/search?package=security_detection_engine&prerelease=true',
+  '/search?package=elastic_package_registry',
+  '/search?package=nginx',
+  '/search?package=nginx&prerelease=true',
+  '/search?package=system&prerelease=true&spec.min=2.3&spec.max=3.5',
+  '/search?package=system&prerelease=true&kibana.version=8.17.0',  
+  '/search?package=synthetics&prerelease=true&kibana.version=8.17.10',
   '/search?type=integration',
+  '/search?type=content',
+  '/search?type=content&kibana.version=9.2.1&spec.min=2.3&spec.max=3.5',
   '/search?package=aws&all=true',
+  '/search?kibana.version=9.3.0&spec.min=2.3&spec.max=3.5',
+  '/search?kibana.version=9.2.1&spec.min=2.3&spec.max=3.5',
+  '/search?kibana.version=9.2.0&spec.min=2.3&spec.max=3.5',
+  '/search?prerelease=true&kibana.version=9.2.0&spec.min=2.3&spec.max=3.5',
+  '/search?kibana.version=9.1.6&spec.min=2.3&spec.max=3.4',
+  '/search?kibana.version=9.1.5&spec.min=2.3&spec.max=3.4',
+  '/search?kibana.version=9.1.4&spec.min=2.3&spec.max=3.4',
+  '/search?prerelease=true&kibana.version=9.1.5&spec.min=2.3&spec.max=3.4',
+  '/search?type=content&capabilities=apm,observability,uptime&spec.min=3.0&spec.max=3.5',
   '/search?kibana.version=9.0.0&prerelease=true',
+  '/search?kibana.version=9.3.0&spec.min=2.3&spec.max=3.5',
   '/search?kibana.version=9.0.0',
+  '/search?kibana.version=8.19.6',
+  '/search?kibana.version=8.19.5',
+  '/search?kibana.version=8.19.4',
+  '/search?kibana.version=8.19.3',
+  '/search?kibana.version=8.19.2',
+  '/search?kibana.version=8.18.8',
+  '/search?prerelease=true&kibana.version=8.18.8',
+  '/search?kibana.version=8.18.5',
+  '/search?kibana.version=8.18.4',
+  '/search?kibana.version=8.18.2',
+  '/search?kibana.version=8.18.1',
+  '/search?kibana.version=8.18.0',
+  '/search?kibana.version=8.17.4',
+  '/search?kibana.version=8.17.3',
+  '/search?kibana.version=8.17.1',
+  '/search?kibana.version=8.16.0',
+  '/search?kibana.version=8.12.1',
+  '/search?kibana.version=8.1.0',
+  '/search?kibana.version=8.7.0',
+  '/search?kibana.version=9.1.0',
+  '/search?package=synthetics&experimental=true&kibana.version=8.5.0',
   // add more combinations as needed
 ];
 
 const categories = [
   '/categories',
   '/categories?prerelease=true',
+  '/categories?prerelease=true&include_policy_templates=true',
   '/categories?spec.min=2.0&spec.max=3.0',
+  '/categories?spec.min=2.2&spec.max=3.1',
   '/categories?spec.min=2.0&spec.max=3.0&prerelease=true',
+  '/categories?kibana.version=9.3.0&spec.min=2.3&spec.max=3.5',
+  '/categories?kibana.version=9.2.1&spec.min=2.3&spec.max=3.5',
+  '/categories?kibana.version=9.2.0&spec.min=2.3&spec.max=3.5',
+  '/categories?kibana.version=9.1.6&spec.min=2.3&spec.max=3.4',
+  '/categories?kibana.version=9.1.4&spec.min=2.3&spec.max=3.4',
+  '/categories?kibana.version=9.1.2&spec.min=2.3&spec.max=3.4',
+  '/categories?kibana.version=9.1.1&spec.min=2.3&spec.max=3.4',
+  '/categories?kibana.version=9.0.3&spec.min=2.3&spec.max=3.3',
+  '/categories?prerelease=true&kibana.version=9.1.6&spec.min=2.3&spec.max=3.4',
+  '/categories?prerelease=true&kibana.version=9.0.3&spec.min=2.3&spec.max=3.3',
   '/categories?prerelease=true&capabilities=security',
+  '/categories?prerelease=true&capabilities=observability',
+  '/categories?prerelease=true&capabilities=observability,security',
+  '/categories?capabilities=security&spec.min=3.0&spec.max=3.5',
+  '/categories?capabilities=apm,observability,uptime&spec.min=3.0&spec.max=3.5',
+  '/categories?prerelease=true&capabilities=security&spec.min=3.0&spec.max=3.5',
+  '/categories?kibana.version=9.2.0',
+  '/categories?kibana.version=9.1.0',
   '/categories?kibana.version=9.0.0&prerelease=true',
   '/categories?kibana.version=9.0.0',
+  '/categories?kibana.version=8.19.3&prerelease=true',
+  '/categories?kibana.version=8.19.6',
+  '/categories?kibana.version=8.19.5',
+  '/categories?kibana.version=8.19.4',
+  '/categories?kibana.version=8.19.3',
+  '/categories?kibana.version=8.19.2',
+  '/categories?kibana.version=8.19.2&prerelease=true',
+  '/categories?kibana.version=8.18.8',
+  '/categories?kibana.version=8.18.2',
+  '/categories?kibana.version=8.18.1',
+  '/categories?kibana.version=8.18.0',
+  '/categories?kibana.version=8.17.8',
+  '/categories?kibana.version=8.17.8&prerelease=true',
+  '/categories?kibana.version=8.17.1',
+  '/categories?kibana.version=8.16.0',
+  '/categories?kibana.version=8.13.4',
+  '/categories?kibana.version=8.1.0',
+  '/categories?kibana.version=8.7.0',
   // add more combinations as needed
 ];
 
@@ -118,11 +204,14 @@ const minSleep = 1;
 const maxSleep = 2;
 
 export default function () {
-  group('Core Endpoints', () => {
-    http.get(`${BASE}/`, { tags: { endpoint: 'root' } });
-    http.get(`${BASE}/health`, { tags: { endpoint: 'health' } });
-    http.get(`${BASE}/favicon.ico`, { tags: { endpoint: 'favicon' } });
-  });
+  // group('Core Endpoints', () => {
+  //   http.get(`${BASE}/`, { tags: { endpoint: 'root' } });
+  //   http.get(`${BASE}/health`, { tags: { endpoint: 'health' } });
+  //   http.get(`${BASE}/favicon.ico`, { tags: { endpoint: 'favicon' } });
+  // });
+  
+  // Set an initial sleep to randomize the start time of VUs
+  sleep(randomIntBetween(minSleep, maxSleep));
 
   group('Package & EPR', () => {
     packages.forEach((path) => {
