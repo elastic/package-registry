@@ -185,27 +185,22 @@ func (r *SQLiteRepository) Initialize(ctx context.Context) error {
 	return nil
 }
 
-func (r *SQLiteRepository) BeginTx(ctx context.Context) (context.Context, *sql.Tx, error) {
+func (r *SQLiteRepository) BeginTx(ctx context.Context) (*sql.Tx, error) {
 	tx, err := r.db.BeginTx(ctx, nil)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
-	ctx = context.WithValue(ctx, txCtxKey{}, tx)
-	return ctx, tx, nil
+	return tx, nil
 }
 
-func (r *SQLiteRepository) writer(ctx context.Context) (dbWriter, error) {
-	if ctxTx := ctx.Value(txCtxKey{}); ctxTx != nil {
-		tx, ok := ctxTx.(*sql.Tx)
-		if !ok {
-			return nil, fmt.Errorf("invalid transaction in context")
-		}
+func (r *SQLiteRepository) writer(tx *sql.Tx) (dbWriter, error) {
+	if tx != nil {
 		return tx, nil
 	}
 	return r.db, nil
 }
 
-func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []*Package) error {
+func (r *SQLiteRepository) BulkAdd(ctx context.Context, tx *sql.Tx, database string, pkgs []*Package) error {
 	span, ctx := apm.StartSpan(ctx, "SQL: Insert batches", "app")
 	span.Context.SetLabel("insert.batch.size", r.maxBulkAddBatchSize)
 	span.Context.SetLabel("database.path", r.File(ctx))
@@ -215,7 +210,7 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 		return nil
 	}
 
-	db, err := r.writer(ctx)
+	db, err := r.writer(tx)
 	if err != nil {
 		return err
 	}

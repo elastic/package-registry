@@ -248,7 +248,8 @@ func (i *SQLIndexer) updateDatabase(ctx context.Context, index *packages.Package
 	totalProcessed := 0
 	dbPackages := make([]*database.Package, 0, i.readPackagesBatchSize)
 
-	ctx, tx, err := (*i.backup).BeginTx(ctx)
+	// Run all insert oprations (BulkAdd) in a single transaction for performance reasons.
+	tx, err := (*i.backup).BeginTx(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to begin transaction in backup database: %w", err)
 	}
@@ -265,7 +266,7 @@ func (i *SQLIndexer) updateDatabase(ctx context.Context, index *packages.Package
 
 			dbPackages = append(dbPackages, newPackage)
 		}
-		err := (*i.backup).BulkAdd(ctx, "packages", dbPackages)
+		err := (*i.backup).BulkAdd(ctx, tx, "packages", dbPackages)
 		if err != nil {
 			return fmt.Errorf("failed to create all packages (bulk operation): %w", err)
 		}

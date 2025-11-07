@@ -9,11 +9,9 @@ import (
 	"database/sql"
 )
 
-type txCtxKey struct{}
-
 type Repository interface {
 	Initialize(ctx context.Context) error
-	BulkAdd(ctx context.Context, database string, pkgs []*Package) error
+	BulkAdd(ctx context.Context, tx *sql.Tx, database string, pkgs []*Package) error
 	All(ctx context.Context, database string, whereOptions WhereOptions) ([]*Package, error)
 	FilterFunc(ctx context.Context, database string, whereOptions WhereOptions, process func(ctx context.Context, pkg *Package) error) error
 	AllFunc(ctx context.Context, database string, whereOptions WhereOptions, process func(ctx context.Context, pkg *Package) error) error
@@ -21,7 +19,7 @@ type Repository interface {
 	Drop(ctx context.Context, table string) error
 	Close(ctx context.Context) error
 
-	BeginTx(ctx context.Context) (context.Context, *sql.Tx, error)
+	BeginTx(ctx context.Context) (*sql.Tx, error)
 
 	Ping(ctx context.Context) error
 
