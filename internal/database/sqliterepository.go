@@ -185,7 +185,22 @@ func (r *SQLiteRepository) Initialize(ctx context.Context) error {
 	return nil
 }
 
-func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []*Package) error {
+func (r *SQLiteRepository) BeginTx(ctx context.Context, opts *sql.TxOptions) (*sql.Tx, error) {
+	tx, err := r.db.BeginTx(ctx, opts)
+	if err != nil {
+		return nil, err
+	}
+	return tx, nil
+}
+
+func (r *SQLiteRepository) writer(tx *sql.Tx) (dbWriter, error) {
+	if tx != nil {
+		return tx, nil
+	}
+	return r.db, nil
+}
+
+func (r *SQLiteRepository) BulkAdd(ctx context.Context, tx *sql.Tx, database string, pkgs []*Package) error {
 	span, ctx := apm.StartSpan(ctx, "SQL: Insert batches", "app")
 	span.Context.SetLabel("insert.batch.size", r.maxBulkAddBatchSize)
 	span.Context.SetLabel("database.path", r.File(ctx))
@@ -193,6 +208,11 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 
 	if len(pkgs) == 0 {
 		return nil
+	}
+
+	db, err := r.writer(tx)
+	if err != nil {
+		return err
 	}
 
 	totalProcessed := 0
@@ -251,7 +271,7 @@ func (r *SQLiteRepository) BulkAdd(ctx context.Context, database string, pkgs []
 		}
 		query := sb.String()
 
-		_, err := r.db.ExecContext(ctx, query, args...)
+		_, err := db.ExecContext(ctx, query, args...)
 		if err != nil {
 			// From github.com/mattn/go-sqlite3
 			// var sqliteErr sqlite3.Error
