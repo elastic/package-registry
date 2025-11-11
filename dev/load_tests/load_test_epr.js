@@ -120,6 +120,18 @@ const packages = [
 const statics = [
   '/package/zoom/1.2.1/changelog.yml',
   '/package/aws/1.16.4/changelog.yml',
+  '/package/system/1.38.1/changelog.yml',
+  '/package/network_traffic/1.33.0/changelog.yml',
+  '/package/security_ai_prompts/1.0.10/changelog.yml',
+  '/package/elastic_connectors/1.0.3/changelog.yml',
+  '/package/synthetics/1.3.0/changelog.yml',
+  '/package/netflow/2.23.1/changelog.yml',
+  '/package/windows/3.1.0/changelog.yml',
+
+  // test failures
+  '/package/nonexistent_package/1.0.0/changelog.yml',
+  '/package/aws/999.999.999/changelog.yml',
+  '/package/system/1.38.0/manifest.yml',
 ]
 
 const artifacts = []
@@ -154,6 +166,7 @@ const searches = [
   '/search?package=system&prerelease=true&spec.min=2.3&spec.max=3.5',
   '/search?package=system&prerelease=true&kibana.version=8.17.0',  
   '/search?package=synthetics&prerelease=true&kibana.version=8.17.10',
+  '/search?package=synthetics&experimental=true&kibana.version=8.5.0',
   '/search?type=integration',
   '/search?type=content',
   '/search?type=content&kibana.version=9.2.1&spec.min=2.3&spec.max=3.5',
@@ -165,10 +178,12 @@ const searches = [
   '/search?kibana.version=9.1.6&spec.min=2.3&spec.max=3.4',
   '/search?kibana.version=9.1.5&spec.min=2.3&spec.max=3.4',
   '/search?kibana.version=9.1.4&spec.min=2.3&spec.max=3.4',
+  '/search?kibana.version=9.1.1&spec.min=2.3&spec.max=3.4',
+  '/search?kibana.version=9.0.8&spec.min=2.3&spec.max=3.3',
+  '/search?kibana.version=8.19.7&spec.max=3.4',
   '/search?prerelease=true&kibana.version=9.1.5&spec.min=2.3&spec.max=3.4',
   '/search?type=content&capabilities=apm,observability,uptime&spec.min=3.0&spec.max=3.5',
   '/search?kibana.version=9.0.0&prerelease=true',
-  '/search?kibana.version=9.3.0&spec.min=2.3&spec.max=3.5',
   '/search?kibana.version=9.0.0',
   '/search?kibana.version=8.19.6',
   '/search?kibana.version=8.19.5',
@@ -190,7 +205,15 @@ const searches = [
   '/search?kibana.version=8.1.0',
   '/search?kibana.version=8.7.0',
   '/search?kibana.version=9.1.0',
-  '/search?package=synthetics&experimental=true&kibana.version=8.5.0',
+  '/search?experimental=true&kibana.version=7.17.0',
+
+  // some wrong combinations to test edge cases
+  '/search?spec.min=3.5&spec.max=2.0',
+  '/search?spec.min=abc&spec.max=xyz',
+  '/search?kibana.version=invalid.version',
+  '/search?package=nonexistent_package',
+  '/search?type=unknown_type',
+  '/search?foo=bar'
   // add more combinations as needed
 ];
 
@@ -198,9 +221,12 @@ const categories = [
   '/categories',
   '/categories?prerelease=true',
   '/categories?prerelease=true&include_policy_templates=true',
+  '/categories?experimental=true&include_policy_templates=true&kibana.version=7.17.5',
+  '/categories?experimental=true&include_policy_templates=true&kibana.version=7.16.3',
   '/categories?spec.min=2.0&spec.max=3.0',
   '/categories?spec.min=2.2&spec.max=3.1',
   '/categories?spec.min=2.0&spec.max=3.0&prerelease=true',
+  '/categories?prerelease=true&kibana.version=8.19.6',
   '/categories?kibana.version=9.3.0&spec.min=2.3&spec.max=3.5',
   '/categories?kibana.version=9.2.1&spec.min=2.3&spec.max=3.5',
   '/categories?kibana.version=9.2.0&spec.min=2.3&spec.max=3.5',
@@ -208,6 +234,7 @@ const categories = [
   '/categories?kibana.version=9.1.4&spec.min=2.3&spec.max=3.4',
   '/categories?kibana.version=9.1.2&spec.min=2.3&spec.max=3.4',
   '/categories?kibana.version=9.1.1&spec.min=2.3&spec.max=3.4',
+  '/categories?kibana.version=9.0.8&spec.min=2.3&spec.max=3.3',
   '/categories?kibana.version=9.0.3&spec.min=2.3&spec.max=3.3',
   '/categories?prerelease=true&kibana.version=9.1.6&spec.min=2.3&spec.max=3.4',
   '/categories?prerelease=true&kibana.version=9.0.3&spec.min=2.3&spec.max=3.3',
@@ -239,6 +266,13 @@ const categories = [
   '/categories?kibana.version=8.13.4',
   '/categories?kibana.version=8.1.0',
   '/categories?kibana.version=8.7.0',
+  '/categories?experimental=true&kibana.version=7.17.0',
+
+  // some wrong combinations to test edge cases
+  '/categories?spec.min=3.5&spec.max=2.0',
+  '/categories?spec.min=abc&spec.max=xyz',
+  '/categories?kibana.version=invalid.version',
+  '/categories?foo=bar'
   // add more combinations as needed
 ];
 
@@ -253,7 +287,7 @@ export default function () {
   // });
   
   // Set an initial sleep to randomize the start time of VUs
-  sleep(randomIntBetween(minSleep, maxSleep));
+  sleep(randomIntBetween(0, 5));
 
   group('Package & EPR', () => {
     packages.forEach((path) => {
@@ -275,7 +309,6 @@ export default function () {
       sleep(randomIntBetween(minSleep, maxSleep))
     });
   });
-
 
   group('Search', () => {
     // Test /search with varying query parameters
