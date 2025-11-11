@@ -272,12 +272,21 @@ const categories = [
   '/categories?spec.min=3.5&spec.max=2.0',
   '/categories?spec.min=abc&spec.max=xyz',
   '/categories?kibana.version=invalid.version',
-  '/categories?foo=bar'
+  '/categories?foo=bar',
   // add more combinations as needed
 ];
 
-const minSleep = 1;
-const maxSleep = 2;
+const minSleep = 0;
+const maxSleep = 1;
+
+const shuffleArray = (array) => {
+  let arrayCopy = Array.from(array);
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arrayCopy[i], arrayCopy[j]] = [arrayCopy[j], arrayCopy[i]];
+  }
+  return arrayCopy;
+};
 
 export default function () {
   // group('Core Endpoints', () => {
@@ -287,15 +296,17 @@ export default function () {
   // });
   
   // Set an initial sleep to randomize the start time of VUs
-  sleep(randomIntBetween(0, 5));
+  sleep(randomIntBetween(0, 2));
 
   group('Package & EPR', () => {
-    packages.forEach((path) => {
+    let shuffledPackages = shuffleArray(packages);
+    shuffledPackages.forEach((path) => {
       const res = http.get(`${BASE}${path}`, { tags: { endpoint: "package" } });
       check(res, { 'status 200': r => r.status === 200 });
       sleep(randomIntBetween(minSleep, maxSleep))
     });
-    artifacts.forEach((path) => {
+    let shuffledArtifacts = shuffleArray(artifacts);
+    shuffledArtifacts.forEach((path) => {
       const res = http.get(`${BASE}${path}`, { tags: { endpoint: "artifacts" } });
       check(res, { 'status 200': r => r.status === 200 });
       sleep(randomIntBetween(minSleep, maxSleep))
@@ -303,7 +314,8 @@ export default function () {
   });
 
   group('Statics', () => {
-    statics.forEach((path) => {
+    let shuffledStatics = shuffleArray(statics);
+    shuffledStatics.forEach((path) => {
       const res = http.get(`${BASE}${path}`, { tags: { endpoint: "statics" } });
       check(res, { 'status 200': r => r.status === 200 });
       sleep(randomIntBetween(minSleep, maxSleep))
@@ -312,7 +324,8 @@ export default function () {
 
   group('Search', () => {
     // Test /search with varying query parameters
-    searches.forEach((path) => {
+    let shuffledSearches = shuffleArray(searches);
+    shuffledSearches.forEach((path) => {
       const res = http.get(`${BASE}${path}`, { tags: { endpoint: "search" } });
       check(res, { 'status 200': r => r.status === 200 });
       sleep(randomIntBetween(minSleep, maxSleep))
@@ -321,7 +334,8 @@ export default function () {
 
   group('Categories', () => {
     // Test /categories with varying query parameters
-    categories.forEach((path) => {
+    let shuffledCategories = shuffleArray(categories);
+    shuffledCategories.forEach((path) => {
       const res = http.get(`${BASE}${path}`, { tags: { endpoint: "categories" } });
       check(res, { 'status 200': r => r.status === 200 });
       sleep(randomIntBetween(minSleep, maxSleep))
