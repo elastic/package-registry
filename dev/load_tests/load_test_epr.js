@@ -161,10 +161,11 @@ const searches = [
   '/search?package=security_detection_engine',
   '/search?package=security_detection_engine&prerelease=true',
   '/search?package=elastic_package_registry',
+  '/search?package=elastic_package_registry&prerelease=true',
   '/search?package=nginx',
   '/search?package=nginx&prerelease=true',
   '/search?package=system&prerelease=true&spec.min=2.3&spec.max=3.5',
-  '/search?package=system&prerelease=true&kibana.version=8.17.0',  
+  '/search?package=system&prerelease=true&kibana.version=8.17.0',
   '/search?package=synthetics&prerelease=true&kibana.version=8.17.10',
   '/search?package=synthetics&experimental=true&kibana.version=8.5.0',
   '/search?type=integration',
@@ -294,7 +295,7 @@ export default function () {
   //   http.get(`${BASE}/health`, { tags: { endpoint: 'health' } });
   //   http.get(`${BASE}/favicon.ico`, { tags: { endpoint: 'favicon' } });
   // });
-  
+
   // Set an initial sleep to randomize the start time of VUs
   sleep(randomIntBetween(0, 2));
 
