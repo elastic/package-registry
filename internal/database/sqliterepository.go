@@ -347,9 +347,6 @@ func (r *SQLiteRepository) runQuery(ctx context.Context, query string, whereArgs
 			&pkg.Version,
 			&pkg.FormatVersion,
 			&pkg.Release,
-			&pkg.Prerelease,
-			&pkg.KibanaVersion,
-			&pkg.Type,
 			&pkg.Path,
 		}
 		if useJSONFields {
@@ -434,8 +431,8 @@ func sqlQueryWithWindowing(database string, whereOptions WhereOptions) (string, 
     ) p
 ) WHERE rnk = 1`)
 	// Example of query generated:
-	// SELECT name, version, formatVersion, release, prerelease, kibanaVersion, type, path, baseData FROM (
-	//    SELECT p.name, p.version, p.formatVersion, p.release, p.prerelease, p.kibanaVersion, p.type, p.path, p.baseData ,
+	// SELECT name, version, formatVersion, release, path, baseData FROM (
+	//    SELECT p.name, p.version, p.formatVersion, p.release, p.path, p.baseData ,
 	//            RANK() OVER (
 	//               PARTITION BY name
 	//               ORDER BY
@@ -444,7 +441,7 @@ func sqlQueryWithWindowing(database string, whereOptions WhereOptions) (string, 
 	//                versionPatch DESC
 	//            ) AS rnk
 	//    FROM (
-	//        SELECT pp.name, pp.version, pp.formatVersion, pp.release, pp.prerelease, pp.kibanaVersion, pp.type, pp.path, pp.baseData, pp.versionMajor, pp.versionMinor, pp.versionPatch, pp.versionPrerelease
+	//        SELECT pp.name, pp.version, pp.formatVersion, pp.release, pp.path, pp.baseData, pp.versionMajor, pp.versionMinor, pp.versionPatch, pp.versionPrerelease
 	//        FROM packages pp
 	//        WHERE cursor = ? AND prerelease = 0 AND release != 'experimental' AND semver_compare_ge(formatVersionMajorMinor, ?) = 1 AND semver_compare_le(formatVersionMajorMinor, ?) = 1
 	//    ) p
@@ -483,11 +480,13 @@ func filterKeysForSelect(useBaseData, useJSONFields bool) []string {
 			continue
 		case k.Name == baseDataColumnName && !useBaseData:
 			continue
+		// columns used only for ranking or filtering inside subqueries
 		case k.Name == "versionMajor" || k.Name == "versionMinor" || k.Name == "versionPatch" || k.Name == "versionPrerelease":
 			continue
-		case k.Name == "cursor" || k.Name == "formatVersionMajorMinor" || k.Name == "capabilities":
+		// columns used only for filtering, not required in SELECT
+		case k.Name == "cursor" || k.Name == "formatVersionMajorMinor" || k.Name == "prerelease" || k.Name == "kibanaVersion" || k.Name == "type":
 			continue
-		case k.Name == "discoveryFilterFields" || k.Name == "discoveryFilterDatasets":
+		case k.Name == "capabilities" || k.Name == "discoveryFilterFields" || k.Name == "discoveryFilterDatasets":
 			continue
 		default:
 			getKeys = append(getKeys, k.Name)
