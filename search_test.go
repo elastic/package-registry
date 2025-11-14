@@ -5,7 +5,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -76,7 +75,12 @@ func TestSearchWithProxyMode(t *testing.T) {
       {
         "name": "nginx",
         "title": "Datasource title",
-        "description": "Details about the data source."
+        "description": "Details about the data source.",
+        "data_streams": [
+          "datasources.examplelog1",
+          "datasources.examplelog2",
+          "datasources.examplemetric"
+        ]
       }
     ],
     "categories": [
@@ -95,9 +99,9 @@ func TestSearchWithProxyMode(t *testing.T) {
 		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
 		packages.NewFileSystemIndexer(testLogger, packagesBasePaths...),
 	)
-	defer indexer.Close(context.Background())
+	defer indexer.Close(t.Context())
 
-	err := indexer.Init(context.Background())
+	err := indexer.Init(t.Context())
 	require.NoError(t, err)
 
 	proxyMode, err := proxymode.NewProxyMode(
@@ -109,15 +113,18 @@ func TestSearchWithProxyMode(t *testing.T) {
 	)
 	require.NoError(t, err)
 
-	searchWithProxyHandler := searchHandlerWithProxyMode(testLogger, indexer, proxyMode, testCacheTime, nil)
+	searchHandler, err := newSearchHandler(testLogger, indexer, testCacheTime,
+		searchWithProxy(proxyMode),
+	)
+	require.NoError(t, err)
 	tests := []struct {
 		endpoint string
 		path     string
 		file     string
-		handler  func(w http.ResponseWriter, r *http.Request)
+		handler  http.Handler
 	}{
-		{"/search?all=true", "/search", "search-all-proxy.json", searchWithProxyHandler},
-		{"/search", "/search", "search-just-latest-proxy.json", searchWithProxyHandler},
+		{"/search?all=true", "/search", "search-all-proxy.json", searchHandler},
+		{"/search", "/search", "search-just-latest-proxy.json", searchHandler},
 	}
 
 	for _, test := range tests {

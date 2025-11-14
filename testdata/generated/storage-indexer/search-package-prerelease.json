@@ -27,13 +27,17 @@
     "conditions": {
       "kibana": {
         "version": "^7.16.0 || ^8.0.0"
+      },
+      "agent": {
+        "version": "^9.2.0"
       }
     },
     "owner": {
       "github": "elastic/security-external-integrations"
     },
     "categories": [
-      "security"
+      "security",
+      "credential_management"
     ],
     "signature_path": "/epr/1password/1password-1.4.0.zip.sig",
     "data_streams": [
@@ -80,6 +84,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "billing"
         ]
       },
       {
@@ -97,6 +104,9 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "cloudtrail"
         ]
       },
       {
@@ -111,6 +121,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "cloudwatch_logs",
+          "cloudwatch_metrics"
         ]
       },
       {
@@ -128,6 +142,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "dynamodb"
         ]
       },
       {
@@ -145,6 +162,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "ebs"
         ]
       },
       {
@@ -159,6 +179,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "ec2_logs",
+          "ec2_metrics"
         ]
       },
       {
@@ -176,6 +200,10 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "elb_logs",
+          "elb_metrics"
         ]
       },
       {
@@ -190,6 +218,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "lambda"
         ]
       },
       {
@@ -207,6 +238,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "natgateway"
         ]
       },
       {
@@ -224,6 +258,10 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "firewall_logs",
+          "firewall_metrics"
         ]
       },
       {
@@ -241,6 +279,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "rds"
         ]
       },
       {
@@ -259,6 +300,11 @@
         "categories": [
           "datastore",
           "security"
+        ],
+        "data_streams": [
+          "s3_daily_storage",
+          "s3_request",
+          "s3access"
         ]
       },
       {
@@ -276,6 +322,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "s3_storage_lens"
         ]
       },
       {
@@ -290,6 +339,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sns"
         ]
       },
       {
@@ -304,6 +356,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sqs"
         ]
       },
       {
@@ -321,12 +376,18 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "transitgateway"
         ]
       },
       {
         "name": "usage",
         "title": "AWS Usage",
-        "description": "Collect AWS usage metrics with Elastic Agent"
+        "description": "Collect AWS usage metrics with Elastic Agent",
+        "data_streams": [
+          "usage"
+        ]
       },
       {
         "name": "vpcflow",
@@ -344,6 +405,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "vpcflow"
         ]
       },
       {
@@ -361,6 +425,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "vpn"
         ]
       },
       {
@@ -379,6 +446,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "waf"
         ]
       },
       {
@@ -393,6 +463,10 @@
             "size": "32x40",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "route53_public_logs",
+          "route53_resolver_logs"
         ]
       },
       {
@@ -407,6 +481,9 @@
             "size": "33x39",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "cloudfront_logs"
         ]
       }
     ],
@@ -741,16 +818,16 @@
   {
     "name": "akamai",
     "title": "Akamai",
-    "version": "1.0.0",
+    "version": "2.28.0",
     "release": "ga",
-    "description": "Akamai Integration",
+    "description": "Collect logs from Akamai with Elastic Agent.",
     "type": "integration",
-    "download": "/epr/akamai/akamai-1.0.0.zip",
-    "path": "/package/akamai/1.0.0",
+    "download": "/epr/akamai/akamai-2.28.0.zip",
+    "path": "/package/akamai/2.28.0",
     "icons": [
       {
         "src": "/img/akamai_logo.svg",
-        "path": "/package/akamai/1.0.0/img/akamai_logo.svg",
+        "path": "/package/akamai/2.28.0/img/akamai_logo.svg",
         "title": "Akamai",
         "size": "409×167",
         "type": "image/svg+xml"
@@ -765,19 +842,18 @@
     ],
     "conditions": {
       "kibana": {
-        "version": "^7.16.0 || ^8.0.0"
+        "version": "^8.13.0 || ^9.0.0"
       }
     },
     "owner": {
-      "github": "elastic/security-external-integrations"
+      "type": "community",
+      "github": "elastic/security-service-integrations"
     },
     "categories": [
       "security",
-      "network",
-      "web",
-      "cloud"
+      "cdn_security"
     ],
-    "signature_path": "/epr/akamai/akamai-1.0.0.zip.sig",
+    "signature_path": "/epr/akamai/akamai-2.28.0.zip.sig",
     "data_streams": [
       {
         "type": "logs",
@@ -1334,6 +1410,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "app_insights"
         ]
       },
       {
@@ -1348,6 +1427,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "app_state"
         ]
       }
     ],
@@ -1408,6 +1490,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "billing"
         ]
       }
     ],
@@ -1462,6 +1547,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "eventhub"
         ]
       },
       {
@@ -1476,6 +1564,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "auditlogs",
+          "signinlogs"
         ]
       },
       {
@@ -1490,6 +1582,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "platformlogs"
         ]
       },
       {
@@ -1504,6 +1599,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "activitylogs"
         ]
       },
       {
@@ -1518,6 +1616,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "springcloudlogs"
         ]
       }
     ],
@@ -1600,6 +1701,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "monitor"
         ]
       },
       {
@@ -1614,6 +1718,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "compute_vm"
         ]
       },
       {
@@ -1628,6 +1735,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "compute_vm_scaleset"
         ]
       },
       {
@@ -1642,6 +1752,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_registry"
         ]
       },
       {
@@ -1656,6 +1769,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_instance"
         ]
       },
       {
@@ -1670,6 +1786,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_service"
         ]
       },
       {
@@ -1684,6 +1803,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "database_account"
         ]
       },
       {
@@ -1698,6 +1820,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "storage_account"
         ]
       }
     ],
@@ -2656,6 +2781,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "status"
         ]
       }
     ],
@@ -3323,6 +3451,95 @@
       "security"
     ],
     "signature_path": "/epr/dga/dga-0.0.2.zip.sig"
+  },
+  {
+    "name": "discovery_empty",
+    "title": "Discovery Empty",
+    "version": "0.1.0",
+    "release": "beta",
+    "source": {
+      "license": "Apache-2.0"
+    },
+    "description": "This package is a dummy example for packages with the content type and discovery field empty. These packages contain resources that are useful with data ingested by other integrations. They are not used to configure data sources.\n",
+    "type": "content",
+    "download": "/epr/discovery_empty/discovery_empty-0.1.0.zip",
+    "path": "/package/discovery_empty/0.1.0",
+    "icons": [
+      {
+        "src": "/img/system.svg",
+        "path": "/package/discovery_empty/0.1.0/img/system.svg",
+        "title": "system",
+        "size": "1000x1000",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.16.0"
+      },
+      "elastic": {
+        "subscription": "basic"
+      }
+    },
+    "owner": {
+      "type": "elastic",
+      "github": "elastic/ecosystem"
+    },
+    "categories": [
+      "support"
+    ]
+  },
+  {
+    "name": "discovery_fields",
+    "title": "Discovery Empty",
+    "version": "0.1.0",
+    "release": "beta",
+    "source": {
+      "license": "Apache-2.0"
+    },
+    "description": "This package is a dummy example for packages with the content type and discovery fields defined. These packages contain resources that are useful with data ingested by other integrations. They are not used to configure data sources.\n",
+    "type": "content",
+    "download": "/epr/discovery_fields/discovery_fields-0.1.0.zip",
+    "path": "/package/discovery_fields/0.1.0",
+    "icons": [
+      {
+        "src": "/img/system.svg",
+        "path": "/package/discovery_fields/0.1.0/img/system.svg",
+        "title": "system",
+        "size": "1000x1000",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.16.0"
+      },
+      "elastic": {
+        "subscription": "basic"
+      }
+    },
+    "owner": {
+      "type": "elastic",
+      "github": "elastic/ecosystem"
+    },
+    "categories": [
+      "support"
+    ],
+    "discovery": {
+      "fields": [
+        {
+          "name": "process.pid"
+        }
+      ],
+      "datasets": [
+        {
+          "name": "good_content.access"
+        },
+        {
+          "name": "good_content.errors"
+        }
+      ]
+    }
   },
   {
     "name": "docker",
@@ -5133,6 +5350,13 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container",
+          "node",
+          "pod",
+          "system",
+          "volume"
         ]
       },
       {
@@ -5147,6 +5371,22 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "state_container",
+          "state_cronjob",
+          "state_daemonset",
+          "state_deployment",
+          "state_job",
+          "state_node",
+          "state_persistentvolume",
+          "state_persistentvolumeclaim",
+          "state_pod",
+          "state_replicaset",
+          "state_resourcequota",
+          "state_service",
+          "state_statefulset",
+          "state_storageclass"
         ]
       },
       {
@@ -5161,6 +5401,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "apiserver"
         ]
       },
       {
@@ -5175,6 +5418,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "proxy"
         ]
       },
       {
@@ -5189,6 +5435,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "scheduler"
         ]
       },
       {
@@ -5203,6 +5452,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "controllermanager"
         ]
       },
       {
@@ -5217,6 +5469,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "event"
         ]
       },
       {
@@ -5231,6 +5486,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_logs"
         ]
       },
       {
@@ -5245,6 +5503,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "audit_logs"
         ]
       }
     ],
@@ -5393,6 +5654,40 @@
         "title": "Kubernetes Volume metrics"
       }
     ]
+  },
+  {
+    "name": "kubernetes_otel",
+    "title": "Kubernetes OpenTelemetry Assets",
+    "version": "0.0.6",
+    "release": "beta",
+    "description": "Utilise the pre-built dashboard for OTel-native metrics and events collected from a Kubernetes cluster",
+    "type": "content",
+    "download": "/epr/kubernetes_otel/kubernetes_otel-0.0.6.zip",
+    "path": "/package/kubernetes_otel/0.0.6",
+    "icons": [
+      {
+        "src": "/img/kubernetes-otel-logo.svg",
+        "path": "/package/kubernetes_otel/0.0.6/img/kubernetes-otel-logo.svg",
+        "title": "Sample logo",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.16.0"
+      },
+      "elastic": {
+        "subscription": "basic"
+      }
+    },
+    "owner": {
+      "type": "elastic",
+      "github": "elastic/obs-cloudnative-monitoring"
+    },
+    "categories": [
+      "kubernetes"
+    ],
+    "signature_path": "/epr/kubernetes_otel/kubernetes_otel-0.0.6.zip.sig"
   },
   {
     "name": "linux",
@@ -7338,6 +7633,47 @@
         "title": "Redis slow logs"
       }
     ]
+  },
+  {
+    "name": "sql",
+    "title": "SQL Input",
+    "version": "0.5.0",
+    "release": "beta",
+    "description": "Collects Metrics by Quering on SQL Databases",
+    "type": "input",
+    "download": "/epr/sql/sql-0.5.0.zip",
+    "path": "/package/sql/0.5.0",
+    "icons": [
+      {
+        "src": "/img/sql-server-icon.svg",
+        "path": "/package/sql/0.5.0/img/sql-server-icon.svg",
+        "title": "SQL logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "sql",
+        "title": "SQL Metrics",
+        "description": "Collects Metrics by Quering on SQL Databases"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.13.0"
+      },
+      "elastic": {
+        "subscription": "basic"
+      }
+    },
+    "owner": {
+      "github": "elastic/obs-infraobs-integrations"
+    },
+    "categories": [
+      "custom"
+    ],
+    "signature_path": "/epr/sql/sql-0.5.0.zip.sig"
   },
   {
     "name": "stan",

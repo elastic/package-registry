@@ -16,7 +16,6 @@ import (
 	"time"
 
 	"cloud.google.com/go/storage"
-
 	"github.com/prometheus/client_golang/prometheus"
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"

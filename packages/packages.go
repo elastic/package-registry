@@ -90,7 +90,8 @@ type GetOptions struct {
 	// where experimental packages are filtered by default.
 	Filter *Filter
 
-	FullData bool
+	FullData        bool
+	SkipPackageData bool
 }
 
 // FileSystemIndexer indexes packages from the filesystem.
@@ -316,6 +317,7 @@ type Filter struct {
 	SpecMin        *semver.Version
 	SpecMax        *semver.Version
 	Discovery      discoveryFilters
+	AgentVersion   *semver.Version
 
 	// Deprecated, release tags to be removed.
 	Experimental bool
@@ -451,6 +453,12 @@ func (f *Filter) Apply(ctx context.Context, packages Packages) (Packages, error)
 
 		if f.KibanaVersion != nil {
 			if valid := p.HasKibanaVersion(f.KibanaVersion); !valid {
+				continue
+			}
+		}
+
+		if f.AgentVersion != nil {
+			if valid := p.HasAgentVersion(f.AgentVersion); !valid {
 				continue
 			}
 		}

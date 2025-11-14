@@ -4,7 +4,126 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased](https://github.com/elastic/package-registry/compare/v1.30.0...main)
+## [unreleased](https://github.com/elastic/package-registry/compare/v1.33.0...main)
+
+### Breaking changes
+
+### Bugfixes
+
+### Added
+
+### Deprecated
+
+### Known Issues
+
+
+## [v1.33.0](https://github.com/elastic/package-registry/compare/v1.32.1...v1.33.0)
+
+### Breaking changes
+
+### Bugfixes
+
+* Update Go runtime to 1.25.3. [#1468](https://github.com/elastic/package-registry/pull/1468)
+* Fix performance issues when parsing some invalid certificates. [#1468](https://github.com/elastic/package-registry/pull/1468)
+
+### Added
+
+* Add new `agent.version` condition to search and categories endpoints. [#1460](https://github.com/elastic/package-registry/pull/1460)
+* Avoid parsing JSON columns in queries performed to artifacts related endpoints (SQL storage indexer). [#1386](https://github.com/elastic/package-registry/pull/1386)
+* Include SQL functions to improve filtering (SQL storage indexer). [#1442](https://github.com/elastic/package-registry/pull/1442)
+* Return just latest packages based on semantic versioning if `all=false` (SQL storage indexer). [#1445](https://github.com/elastic/package-registry/pull/1445)
+* Apply a capabilities filter at database level if capabilities query parameter is set (SQL storage indexer). [#1448](https://github.com/elastic/package-registry/pull/1448)
+* Apply the discovery filter at database level if discovery query parameter is set (SQL storage indexer). [#1454](https://github.com/elastic/package-registry/pull/1454)
+
+### Deprecated
+
+### Known Issues
+
+
+## [v1.32.1](https://github.com/elastic/package-registry/compare/v1.32.0...v1.32.1)
+
+### Breaking changes
+
+### Bugfixes
+
+* Include ingestion method also for input packages. [#1431](https://github.com/elastic/package-registry/pull/1431)
+
+### Added
+
+### Deprecated
+
+### Known Issues
+
+
+## [v1.32.0](https://github.com/elastic/package-registry/compare/v1.31.1...v1.32.0)
+
+### Breaking changes
+
+### Bugfixes
+
+* Update Go runtime to 1.25.1. [#1426](https://github.com/elastic/package-registry/pull/1426)
+* Fix context propagation in APM instrumentation in proxy mode. [#1424](https://github.com/elastic/package-registry/pull/1424)
+
+### Added
+
+* Added "ingestion_method" mapping to data_streams to provide a high-level understanding of data collection in order to support downstream documentation. [#1402](https://github.com/elastic/package-registry/pull/1402)
+* Add data_streams to search policy_templates. [#1408](https://github.com/elastic/package-registry/pull/1408)
+* Added Security Subcategory "misconfiguration_workflow" and "vulnerability_workflow" [#1414](https://github.com/elastic/package-registry/pull/1414)
+* Add "opentelemetry" category for packages related to OpenTelemetry. [#1415](https://github.com/elastic/package-registry/pull/1415)
+* Added APM information (trace.id, transaction.id, service.name, service.version, service.environment) to the logs in order to correlate signals in Kibana. [#1413](https://github.com/elastic/package-registry/pull/1413)
+
+### Deprecated
+
+### Known Issues
+
+
+## [v1.31.1](https://github.com/elastic/package-registry/compare/v1.31.0...v1.31.1)
+
+### Breaking changes
+
+### Bugfixes
+
+* Fix filtering by category in search endpoint (SQL Storage Indexer). [#1394](https://github.com/elastic/package-registry/pull/1394)
+* Update -allow-unknown-query-parameters flag to allow unknown query parameters by default. [#1395](https://github.com/elastic/package-registry/pull/1395)
+* Narrow the scope of the endpoints that validate the unknown parameters to just /search and /categories. [#1395](https://github.com/elastic/package-registry/pull/1395)
+* Fix filtering by capabilities in search and categories endpoint (SQL Storage Indexer). [#1396](https://github.com/elastic/package-registry/pull/1396)
+
+### Added
+
+### Deprecated
+
+### Known Issues
+
+
+## [v1.31.0](https://github.com/elastic/package-registry/compare/v1.30.1...v1.31.0)
+
+### Breaking changes
+
+* Fail requests with 400 error code if there are unknown query parameters. This can be disabled via flag (-allow-unknown-query-parameters). [#1382](https://github.com/elastic/package-registry/pull/1382)
+
+### Bugfixes
+
+* Update Go runtime to 1.24.6. [#1388](https://github.com/elastic/package-registry/pull/1388)
+
+### Added
+
+* New Security subcategory "asset_inventory" [#1357](https://github.com/elastic/package-registry/pull/1357)
+* Update default value for the batch size used in SQL storage indexer. [#1372](https://github.com/elastic/package-registry/pull/1372)
+* Skip adding to cache requests containing package query parameter. [#1378](https://github.com/elastic/package-registry/pull/1378)
+* Added cache for categories endpoint (SQL storage indexer). [#1379](https://github.com/elastic/package-registry/1379)
+* Update default values for cache search and TTL settings search (SQL storage indexer). [#1379](https://github.com/elastic/package-registry/1379)
+* Storage indexer based on Google Cloud Storage is now GA. [#1374](https://github.com/elastic/package-registry/pull/1374)
+
+### Deprecated
+
+### Known Issues
+
+* This release includes a breaking change introduced in [#1382](https://github.com/elastic/package-registry/pull/1382).
+  Requests with unknown query parameters fail with a 400 error code. This behaviour changes in the next release:
+  Elastic Package Registry will accept any unknown query parameters by default. If you choose to enable query parameter
+  validation, it will only affect the search and categories endpoints.[#1395](https://github.com/elastic/package-registry/pull/1395)
+
+## [v1.30.1](https://github.com/elastic/package-registry/compare/v1.30.0...v1.30.1)
 
 ### Breaking changes
 

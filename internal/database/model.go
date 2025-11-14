@@ -5,18 +5,23 @@
 package database
 
 type Package struct {
-	Cursor          string
-	Name            string
-	Version         string
-	FormatVersion   string
-	Release         string
-	Prerelease      bool
-	KibanaVersion   string
-	Capabilities    string
-	Categories      string
-	DiscoveryFields string
-	Type            string
-	Path            string
-	Data            []byte
-	BaseData        []byte
+	Cursor                  string
+	Name                    string
+	Version                 string
+	VersionMajor            int
+	VersionMinor            int
+	VersionPatch            int
+	VersionPrerelease       string
+	FormatVersion           string
+	FormatVersionMajorMinor string
+	Release                 string
+	Prerelease              bool
+	KibanaVersion           string
+	Capabilities            string
+	DiscoveryFilterFields   string
+	DiscoveryFilterDatasets string
+	Type                    string
+	Path                    string
+	Data                    []byte
+	BaseData                []byte
 }

@@ -1,0 +1,20 @@
+format_version: 1.0.0
+
+name: agent_version
+title: Agent Version
+description: >
+  An agent version integration.
+version: 1.0.0
+categories: ["custom", "web"]
+release: ga
+license: basic
+
+conditions:
+  kibana:
+    version: ">6.7.0"
+  agent:
+    version: "^9.2.0"
+
+icons:
+  - src: "/img/icon.svg"
+    type: "image/svg+xml"

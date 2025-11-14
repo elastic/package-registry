@@ -6,12 +6,13 @@ set -euo pipefail
 
 DOCKER_TAG=$(buildkite-agent meta-data get DOCKER_TAG)
 echo "version for tagging: ${DOCKER_TAG}"
-DOCKER_IMG_SOURCE="${DOCKER_REGISTRY}/package-registry/distribution:${TAG_NAME}"
+
+DOCKER_IMG_SOURCE="${DOCKER_IMAGE}:${TAG_NAME}"
 
 if [[ "${TAG_NAME}" == "production" ]]; then
-    DOCKER_IMG_TARGET="${DOCKER_REGISTRY}/package-registry/distribution:${DOCKER_TAG}"
+    DOCKER_IMG_TARGET="${DOCKER_IMAGE}:${DOCKER_TAG}"
 else
-    DOCKER_IMG_TARGET="${DOCKER_REGISTRY}/package-registry/distribution:${TAG_NAME}-${DOCKER_TAG}"
+    DOCKER_IMG_TARGET="${DOCKER_IMAGE}:${TAG_NAME}-${DOCKER_TAG}"
 fi
 
 echo "Docker retag"

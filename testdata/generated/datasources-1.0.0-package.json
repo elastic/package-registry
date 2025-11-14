@@ -1,0 +1,191 @@
+{
+  "name": "datasources",
+  "title": "Default datasource Integration",
+  "version": "1.0.0",
+  "release": "beta",
+  "description": "Package with data sources",
+  "type": "integration",
+  "download": "/epr/datasources/datasources-1.0.0.zip",
+  "path": "/package/datasources/1.0.0",
+  "categories": [
+    "custom"
+  ],
+  "format_version": "1.0.0",
+  "readme": "/package/datasources/1.0.0/docs/README.md",
+  "license": "basic",
+  "assets": [
+    "/package/datasources/1.0.0/manifest.yml",
+    "/package/datasources/1.0.0/docs/README.md",
+    "/package/datasources/1.0.0/data_stream/examplelog1/manifest.yml",
+    "/package/datasources/1.0.0/data_stream/examplelog2/manifest.yml",
+    "/package/datasources/1.0.0/data_stream/examplemetric/manifest.yml",
+    "/package/datasources/1.0.0/data_stream/examplelog1/fields/base-fields.yml",
+    "/package/datasources/1.0.0/data_stream/examplelog2/fields/base-fields.yml",
+    "/package/datasources/1.0.0/data_stream/examplemetric/fields/base-fields.yml",
+    "/package/datasources/1.0.0/data_stream/examplelog1/agent/stream/logs.yml",
+    "/package/datasources/1.0.0/data_stream/examplelog1/agent/stream/syslog.yml",
+    "/package/datasources/1.0.0/data_stream/examplelog2/agent/stream/stream.yml.hbs",
+    "/package/datasources/1.0.0/data_stream/examplemetric/agent/stream/stream.yml.hbs"
+  ],
+  "policy_templates": [
+    {
+      "name": "nginx",
+      "title": "Datasource title",
+      "description": "Details about the data source.",
+      "data_streams": [
+        "datasources.examplelog1",
+        "datasources.examplelog2",
+        "datasources.examplemetric"
+      ],
+      "inputs": [
+        {
+          "type": "nginx/metrics",
+          "vars": [
+            {
+              "name": "hosts",
+              "type": "text",
+              "description": "Nginx hosts",
+              "multi": true,
+              "required": true,
+              "show_user": false,
+              "default": [
+                "http://127.0.0.1"
+              ]
+            },
+            {
+              "name": "period",
+              "type": "duration",
+              "description": "Collection period. Valid values: 10s, 5m, 2h",
+              "multi": false,
+              "required": false,
+              "show_user": false,
+              "default": "10s"
+            },
+            {
+              "name": "username",
+              "type": "text",
+              "multi": false,
+              "required": false,
+              "show_user": false
+            },
+            {
+              "name": "password",
+              "type": "password",
+              "multi": false,
+              "required": false,
+              "show_user": false
+            }
+          ],
+          "description": "Collecting metrics for nginx."
+        },
+        {
+          "type": "logs",
+          "description": "Collect nginx logs."
+        },
+        {
+          "type": "syslog"
+        }
+      ],
+      "multiple": true
+    }
+  ],
+  "data_streams": [
+    {
+      "type": "logs",
+      "dataset": "datasources.examplelog1",
+      "title": "Example dataset with inputs",
+      "release": "beta",
+      "streams": [
+        {
+          "input": "logs",
+          "vars": [
+            {
+              "name": "paths",
+              "type": "text",
+              "description": "Paths to the nginx error log file.",
+              "multi": true,
+              "required": true,
+              "show_user": false,
+              "default": [
+                "/var/log/nginx/error.log*"
+              ]
+            }
+          ],
+          "template_path": "logs.yml",
+          "title": "Title of the stream",
+          "description": "Description of the stream with more details.",
+          "enabled": true
+        },
+        {
+          "input": "syslog",
+          "template_path": "syslog.yml",
+          "title": "Title of the stream",
+          "description": "Description of the stream with more details.",
+          "enabled": true,
+          "ingestion_method": "Network Protocol"
+        }
+      ],
+      "package": "datasources",
+      "path": "examplelog1"
+    },
+    {
+      "type": "logs",
+      "dataset": "datasources.examplelog2",
+      "title": "Example dataset with inputs",
+      "release": "beta",
+      "streams": [
+        {
+          "input": "logs",
+          "vars": [
+            {
+              "name": "paths",
+              "type": "text",
+              "description": "Paths to the nginx access log file.",
+              "multi": true,
+              "required": true,
+              "show_user": false,
+              "default": [
+                "/var/log/nginx/access.log*"
+              ]
+            }
+          ],
+          "template_path": "stream.yml.hbs",
+          "title": "Title of the stream",
+          "description": "Description of the stream with more details.",
+          "enabled": true
+        }
+      ],
+      "package": "datasources",
+      "path": "examplelog2"
+    },
+    {
+      "type": "metrics",
+      "dataset": "datasources.examplemetric",
+      "title": "Example data stream with inputs",
+      "release": "beta",
+      "streams": [
+        {
+          "input": "nginx/metrics",
+          "vars": [
+            {
+              "name": "url",
+              "type": "text",
+              "description": "Paths to the nginx access log file.",
+              "multi": false,
+              "required": true,
+              "show_user": false,
+              "default": "localhost"
+            }
+          ],
+          "template_path": "stream.yml.hbs",
+          "title": "Title of the stream",
+          "description": "Not enabled data source.",
+          "enabled": false,
+          "ingestion_method": "API"
+        }
+      ],
+      "package": "datasources",
+      "path": "examplemetric"
+    }
+  ]
+}

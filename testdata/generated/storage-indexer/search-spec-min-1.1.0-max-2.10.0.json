@@ -1,0 +1,148 @@
+[
+  {
+    "name": "endpoint",
+    "title": "Endpoint and Cloud Security",
+    "version": "8.3.0",
+    "release": "ga",
+    "description": "Protect your hosts and cloud workloads with threat prevention, detection, and deep security data visibility.",
+    "type": "integration",
+    "download": "/epr/endpoint/endpoint-8.3.0.zip",
+    "path": "/package/endpoint/8.3.0",
+    "icons": [
+      {
+        "src": "/img/security-logo-color-64px.svg",
+        "path": "/package/endpoint/8.3.0/img/security-logo-color-64px.svg",
+        "size": "16x16",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "endpoint",
+        "title": "Endpoint Security Integration",
+        "description": "Interact with the endpoint."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.3.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-onboarding-and-lifecycle-mgt"
+    },
+    "categories": [
+      "security",
+      "cloud"
+    ],
+    "signature_path": "/epr/endpoint/endpoint-8.3.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "endpoint.action.responses",
+        "title": "Endpoint Action Responses"
+      },
+      {
+        "type": "logs",
+        "dataset": "endpoint.actions",
+        "title": "Endpoint Actions"
+      },
+      {
+        "type": "logs",
+        "dataset": "endpoint.alerts",
+        "title": "Endpoint Alerts"
+      },
+      {
+        "type": "logs",
+        "dataset": "endpoint.diagnostic.collection",
+        "title": "Endpoint Alert Collection"
+      },
+      {
+        "type": "logs",
+        "dataset": "endpoint.events.file",
+        "title": "Endpoint File Events"
+      },
+      {
+        "type": "logs",
+        "dataset": "endpoint.events.library",
+        "title": "Endpoint Library and Driver Events"
+      },
+      {
+        "type": "metrics",
+        "dataset": "endpoint.metadata",
+        "title": "Endpoint Metadata"
+      },
+      {
+        "type": "metrics",
+        "dataset": "endpoint.metrics",
+        "title": "Endpoint Metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "endpoint.events.network",
+        "title": "Endpoint Network Events"
+      },
+      {
+        "type": "metrics",
+        "dataset": "endpoint.policy",
+        "title": "Endpoint Policy Response"
+      },
+      {
+        "type": "logs",
+        "dataset": "endpoint.events.process",
+        "title": "Endpoint Process Events"
+      },
+      {
+        "type": "logs",
+        "dataset": "endpoint.events.registry",
+        "title": "Endpoint Registry Events"
+      },
+      {
+        "type": "logs",
+        "dataset": "endpoint.events.security",
+        "title": "Endpoint Security Events"
+      }
+    ]
+  },
+  {
+    "name": "sql",
+    "title": "SQL Input",
+    "version": "0.5.0",
+    "release": "beta",
+    "description": "Collects Metrics by Quering on SQL Databases",
+    "type": "input",
+    "download": "/epr/sql/sql-0.5.0.zip",
+    "path": "/package/sql/0.5.0",
+    "icons": [
+      {
+        "src": "/img/sql-server-icon.svg",
+        "path": "/package/sql/0.5.0/img/sql-server-icon.svg",
+        "title": "SQL logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "sql",
+        "title": "SQL Metrics",
+        "description": "Collects Metrics by Quering on SQL Databases"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.13.0"
+      },
+      "elastic": {
+        "subscription": "basic"
+      }
+    },
+    "owner": {
+      "github": "elastic/obs-infraobs-integrations"
+    },
+    "categories": [
+      "custom"
+    ],
+    "signature_path": "/epr/sql/sql-0.5.0.zip.sig"
+  }
+]

@@ -1,0 +1,114 @@
+[
+  {
+    "id": "aws",
+    "title": "AWS",
+    "count": 3
+  },
+  {
+    "id": "azure",
+    "title": "Azure",
+    "count": 7
+  },
+  {
+    "id": "cdn_security",
+    "title": "Content Delivery Network",
+    "count": 1,
+    "parent_id": "security",
+    "parent_title": "Security"
+  },
+  {
+    "id": "cloud",
+    "title": "Cloud",
+    "count": 10
+  },
+  {
+    "id": "config_management",
+    "title": "Config management",
+    "count": 2
+  },
+  {
+    "id": "containers",
+    "title": "Containers",
+    "count": 4
+  },
+  {
+    "id": "credential_management",
+    "title": "Credential Management",
+    "count": 1,
+    "parent_id": "security",
+    "parent_title": "Security"
+  },
+  {
+    "id": "custom",
+    "title": "Custom",
+    "count": 10
+  },
+  {
+    "id": "datastore",
+    "title": "Database",
+    "count": 12
+  },
+  {
+    "id": "elastic_stack",
+    "title": "Elastic Stack",
+    "count": 7
+  },
+  {
+    "id": "google_cloud",
+    "title": "Google Cloud",
+    "count": 2
+  },
+  {
+    "id": "kubernetes",
+    "title": "Kubernetes",
+    "count": 4,
+    "parent_id": "observability",
+    "parent_title": "Observability"
+  },
+  {
+    "id": "message_queue",
+    "title": "Message Broker",
+    "count": 5,
+    "parent_id": "observability",
+    "parent_title": "Observability"
+  },
+  {
+    "id": "monitoring",
+    "title": "Monitoring",
+    "count": 8,
+    "parent_id": "observability",
+    "parent_title": "Observability"
+  },
+  {
+    "id": "network",
+    "title": "Network",
+    "count": 38
+  },
+  {
+    "id": "os_system",
+    "title": "Operating Systems",
+    "count": 11
+  },
+  {
+    "id": "productivity",
+    "title": "Productivity",
+    "count": 2
+  },
+  {
+    "id": "security",
+    "title": "Security",
+    "count": 101
+  },
+  {
+    "id": "support",
+    "title": "Support",
+    "count": 2
+  },
+  {
+    "id": "web",
+    "title": "Web Server",
+    "count": 19,
+    "parent_id": "observability",
+    "parent_title": "Observability"
+  }
+]

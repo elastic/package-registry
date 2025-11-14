@@ -11,7 +11,6 @@ import (
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/gorilla/mux"
-
 	"go.elastic.co/apm/module/apmzap/v2"
 	"go.uber.org/zap"
 
@@ -23,60 +22,93 @@ const artifactsRouterPath = "/epr/{packageName}/{packageName:[a-z0-9_]+}-{packag
 
 var errArtifactNotFound = errors.New("artifact not found")
 
-func artifactsHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
-	return artifactsHandlerWithProxyMode(logger, indexer, proxymode.NoProxy(logger), cacheTime)
+type artifactsHandler struct {
+	logger    *zap.Logger
+	indexer   Indexer
+	cacheTime time.Duration
+
+	proxyMode *proxymode.ProxyMode
 }
 
-func artifactsHandlerWithProxyMode(logger *zap.Logger, indexer Indexer, proxyMode *proxymode.ProxyMode, cacheTime time.Duration) func(w http.ResponseWriter, r *http.Request) {
-	return func(w http.ResponseWriter, r *http.Request) {
-		logger := logger.With(apmzap.TraceContext(r.Context())...)
+type artifactsOption func(*artifactsHandler)
 
-		vars := mux.Vars(r)
-		packageName, ok := vars["packageName"]
-		if !ok {
-			badRequest(w, "missing package name")
-			return
-		}
+func newArtifactsHandler(logger *zap.Logger, indexer Indexer, cacheTime time.Duration, opts ...artifactsOption) (*artifactsHandler, error) {
+	if indexer == nil {
+		return nil, errors.New("indexer is required for artifacts handler")
+	}
+	if cacheTime <= 0 {
+		return nil, errors.New("cache time must be greater than 0s")
+	}
 
-		packageVersion, ok := vars["packageVersion"]
-		if !ok {
-			badRequest(w, "missing package version")
-			return
-		}
+	a := &artifactsHandler{
+		logger:    logger,
+		indexer:   indexer,
+		cacheTime: cacheTime,
+	}
 
-		_, err := semver.StrictNewVersion(packageVersion)
+	for _, opt := range opts {
+		opt(a)
+	}
+
+	return a, nil
+}
+
+func artifactsWithProxy(pm *proxymode.ProxyMode) artifactsOption {
+	return func(h *artifactsHandler) {
+		h.proxyMode = pm
+	}
+}
+
+func (h *artifactsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	logger := h.logger.With(apmzap.TraceContext(r.Context())...)
+
+	vars := mux.Vars(r)
+	packageName, ok := vars["packageName"]
+	if !ok {
+		badRequest(w, "missing package name")
+		return
+	}
+
+	packageVersion, ok := vars["packageVersion"]
+	if !ok {
+		badRequest(w, "missing package version")
+		return
+	}
+
+	_, err := semver.StrictNewVersion(packageVersion)
+	if err != nil {
+		badRequest(w, "invalid package version")
+		return
+	}
+
+	opts := packages.NameVersionFilter(packageName, packageVersion)
+	opts.SkipPackageData = true
+
+	pkgs, err := h.indexer.Get(r.Context(), &opts)
+	if err != nil {
+		logger.Error("getting package path failed",
+			zap.String("package.name", packageName),
+			zap.String("package.version", packageVersion),
+			zap.Error(err))
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+	if len(pkgs) == 0 && h.proxyMode.Enabled() {
+		proxiedPackage, err := h.proxyMode.Package(r)
 		if err != nil {
-			badRequest(w, "invalid package version")
-			return
-		}
-
-		opts := packages.NameVersionFilter(packageName, packageVersion)
-		pkgs, err := indexer.Get(r.Context(), &opts)
-		if err != nil {
-			logger.Error("getting package path failed",
-				zap.String("package.name", packageName),
-				zap.String("package.version", packageVersion),
-				zap.Error(err))
+			logger.Error("proxy mode: package failed", zap.Error(err))
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
-		if len(pkgs) == 0 && proxyMode.Enabled() {
-			proxiedPackage, err := proxyMode.Package(r)
-			if err != nil {
-				logger.Error("proxy mode: package failed", zap.Error(err))
-				http.Error(w, "internal server error", http.StatusInternalServerError)
-				return
-			}
-			if proxiedPackage != nil {
-				pkgs = pkgs.Join(packages.Packages{proxiedPackage})
-			}
+		if proxiedPackage != nil {
+			pkgs = pkgs.Join(packages.Packages{proxiedPackage})
 		}
-		if len(pkgs) == 0 {
-			notFoundError(w, errArtifactNotFound)
-			return
-		}
-
-		cacheHeaders(w, cacheTime)
-		packages.ServePackage(logger, w, r, pkgs[0])
 	}
+	if len(pkgs) == 0 {
+		notFoundError(w, errArtifactNotFound)
+		return
+	}
+
+	cacheHeaders(w, h.cacheTime)
+	packages.ServePackage(logger, w, r, pkgs[0])
 }

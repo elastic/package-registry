@@ -5,6 +5,7 @@
 package main
 
 import (
+	"errors"
 	"net/http"
 	"time"
 
@@ -16,7 +17,15 @@ type indexData struct {
 	Version     string `json:"service.version"`
 }
 
-func indexHandler(cacheTime time.Duration) (func(w http.ResponseWriter, r *http.Request), error) {
+type indexHandler struct {
+	cacheTime time.Duration
+	body      []byte
+}
+
+func newIndexHandler(cacheTime time.Duration) (*indexHandler, error) {
+	if cacheTime <= 0 {
+		return nil, errors.New("cache time must be greater than 0s")
+	}
 	data := indexData{
 		ServiceName: serviceName,
 		Version:     version,
@@ -25,7 +34,13 @@ func indexHandler(cacheTime time.Duration) (func(w http.ResponseWriter, r *http.
 	if err != nil {
 		return nil, err
 	}
-	return func(w http.ResponseWriter, r *http.Request) {
-		serveJSONResponse(r.Context(), w, cacheTime, body)
+
+	return &indexHandler{
+		cacheTime: cacheTime,
+		body:      body,
 	}, nil
+}
+
+func (h *indexHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	serveJSONResponse(r.Context(), w, h.cacheTime, h.body)
 }

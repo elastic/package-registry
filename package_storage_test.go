@@ -5,7 +5,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -42,46 +41,96 @@ func generateSQLStorageIndexer(fs *fakestorage.Server, webServer string) (Indexe
 	return internalStorage.NewIndexer(testLogger, fs.Client(), options), nil
 }
 
-func generateTestCaseStorageEndpoints(indexer Indexer) []struct {
+func generateTestCaseStorageEndpoints(indexer Indexer) ([]struct {
 	endpoint string
 	path     string
 	file     string
-	handler  func(w http.ResponseWriter, r *http.Request)
-} {
+	handler  http.Handler
+}, error) {
+	searchHandler, err := newSearchHandler(testLogger, indexer, testCacheTime)
+	if err != nil {
+		return nil, err
+	}
+	categoriesHandler, err := newCategoriesHandler(testLogger, indexer, testCacheTime)
+	if err != nil {
+		return nil, err
+	}
+	disallowUnknownQueryParamsSearchHandler, err := newSearchHandler(testLogger, indexer, testCacheTime,
+		searchWithAllowUnknownQueryParameters(false),
+	)
+	if err != nil {
+		return nil, err
+	}
 	return []struct {
 		endpoint string
 		path     string
 		file     string
-		handler  func(w http.ResponseWriter, r *http.Request)
+		handler  http.Handler
 	}{
-		{"/search", "/search", "search.json", searchHandler(testLogger, indexer, testCacheTime)},
-		{"/search?all=true", "/search", "search-all.json", searchHandler(testLogger, indexer, testCacheTime)},
-		{"/categories", "/categories", "categories.json", categoriesHandler(testLogger, indexer, testCacheTime)},
-		{"/categories?experimental=true", "/categories", "categories-experimental.json", categoriesHandler(testLogger, indexer, testCacheTime)},
-		{"/categories?experimental=foo", "/categories", "categories-experimental-error.txt", categoriesHandler(testLogger, indexer, testCacheTime)},
-		{"/categories?experimental=true&kibana.version=6.5.2", "/categories", "categories-kibana652.json", categoriesHandler(testLogger, indexer, testCacheTime)},
-		{"/categories?prerelease=true", "/categories", "categories-prerelease.json", categoriesHandler(testLogger, indexer, testCacheTime)},
-		{"/categories?prerelease=foo", "/categories", "categories-prerelease-error.txt", categoriesHandler(testLogger, indexer, testCacheTime)},
-		{"/categories?prerelease=true&kibana.version=6.5.2", "/categories", "categories-prerelease-kibana652.json", categoriesHandler(testLogger, indexer, testCacheTime)},
-		{"/categories?include_policy_templates=true", "/categories", "categories-include-policy-templates.json", categoriesHandler(testLogger, indexer, testCacheTime)},
-		{"/categories?include_policy_templates=foo", "/categories", "categories-include-policy-templates-error.txt", categoriesHandler(testLogger, indexer, testCacheTime)},
-		{"/search?kibana.version=6.5.2", "/search", "search-kibana652.json", searchHandler(testLogger, indexer, testCacheTime)},
-		{"/search?kibana.version=7.2.1", "/search", "search-kibana721.json", searchHandler(testLogger, indexer, testCacheTime)},
-		{"/search?kibana.version=8.0.0", "/search", "search-kibana800.json", searchHandler(testLogger, indexer, testCacheTime)},
-		{"/search?category=web", "/search", "search-category-web.json", searchHandler(testLogger, indexer, testCacheTime)},
-		{"/search?category=web&all=true", "/search", "search-category-web-all.json", searchHandler(testLogger, indexer, testCacheTime)},
-		{"/search?category=observability", "/search", "search-category-observability-subcategories.json", searchHandler(testLogger, indexer, testCacheTime)},
-		{"/search?category=custom", "/search", "search-category-custom.json", searchHandler(testLogger, indexer, testCacheTime)},
-		{"/search?experimental=true", "/search", "search-package-experimental.json", searchHandler(testLogger, indexer, testCacheTime)},
-		{"/search?experimental=foo", "/search", "search-package-experimental-error.txt", searchHandler(testLogger, indexer, testCacheTime)},
-		{"/search?category=datastore&experimental=true", "/search", "search-category-datastore.json", searchHandler(testLogger, indexer, testCacheTime)},
-		{"/search?prerelease=true", "/search", "search-package-prerelease.json", searchHandler(testLogger, indexer, testCacheTime)},
-		{"/search?prerelease=foo", "/search", "search-package-prerelease-error.txt", searchHandler(testLogger, indexer, testCacheTime)},
-		{"/search?category=datastore&prerelease=true", "/search", "search-category-datastore-prerelease.json", searchHandler(testLogger, indexer, testCacheTime)},
+		// TODO: Ensure that the these requests are the same as the ones defined in "main_test.go" to avoid regressions in storage indexers.
+		{"/search", "/search", "search.json", searchHandler},
+		{"/search?all=true", "/search", "search-all.json", searchHandler},
+		{"/categories", "/categories", "categories.json", categoriesHandler},
+		{"/categories?experimental=true", "/categories", "categories-experimental.json", categoriesHandler},
+		{"/categories?experimental=foo", "/categories", "categories-experimental-error.txt", categoriesHandler},
+		{"/categories?experimental=true&kibana.version=6.5.2", "/categories", "categories-kibana652.json", categoriesHandler},
+		{"/categories?prerelease=true", "/categories", "categories-prerelease.json", categoriesHandler},
+		{"/categories?prerelease=foo", "/categories", "categories-prerelease-error.txt", categoriesHandler},
+		{"/categories?prerelease=true&kibana.version=6.5.2", "/categories", "categories-prerelease-kibana652.json", categoriesHandler},
+		{"/categories?include_policy_templates=true", "/categories", "categories-include-policy-templates.json", categoriesHandler},
+		{"/categories?include_policy_templates=foo", "/categories", "categories-include-policy-templates-error.txt", categoriesHandler},
+		{"/categories?capabilities=observability,security&prerelease=true", "/categories", "categories-prerelease-capabilities-observability-security.json", categoriesHandler},
+		{"/categories?capabilities=none&prerelease=true", "/categories", "categories-prerelease-capabilities-none.json", categoriesHandler},
+		{"/categories?spec.min=1.1&spec.max=2.10&prerelease=true", "/categories", "categories-spec-min-1.1.0-max-2.10.0.json", categoriesHandler},
+		{"/categories?spec.max=2.10&prerelease=true", "/categories", "categories-spec-max-2.10.0.json", categoriesHandler},
+		{"/categories?spec.max=2.10.1&prerelease=true", "/categories", "categories-spec-max-error.txt", categoriesHandler},
+		{"/categories?discovery=fields:process.pid&prerelease=true", "/categories", "categories-discovery-fields-process-pid.txt", categoriesHandler},
+		{"/categories?discovery=datasets:good_content.errors&prerelease=true", "/categories", "categories-discovery-datasets.txt", categoriesHandler},
+		{"/categories?discovery=datasets:good_content.errors&prerelease=true&discovery=fields:process.pid", "/categories", "categories-discovery-multiple.txt", categoriesHandler},
+		{"/categories?discovery=datasets:good_content.errors&prerelease=true&discovery=fields:process.path", "/categories", "categories-discovery-multiple-no-match.txt", categoriesHandler},
+		{"/search?kibana.version=6.5.2", "/search", "search-kibana652.json", searchHandler},
+		{"/search?kibana.version=7.2.1", "/search", "search-kibana721.json", searchHandler},
+		{"/search?kibana.version=8.0.0", "/search", "search-kibana800.json", searchHandler},
+		{"/search?category=web", "/search", "search-category-web.json", searchHandler},
+		{"/search?category=web&all=true", "/search", "search-category-web-all.json", searchHandler},
+		{"/search?category=observability", "/search", "search-category-observability-subcategories.json", searchHandler},
+		{"/search?category=custom", "/search", "search-category-custom.json", searchHandler},
+		{"/search?package=example", "/search", "search-package-example.json", searchHandler},
+		{"/search?package=example&all=true", "/search", "search-package-example-all.json", searchHandler},
+		{"/search?experimental=true", "/search", "search-package-experimental.json", searchHandler},
+		{"/search?experimental=foo", "/search", "search-package-experimental-error.txt", searchHandler},
+		{"/search?category=datastore&experimental=true", "/search", "search-category-datastore.json", searchHandler},
+		{"/search?prerelease=true", "/search", "search-package-prerelease.json", searchHandler},
+		{"/search?prerelease=foo", "/search", "search-package-prerelease-error.txt", searchHandler},
+		{"/search?category=datastore&prerelease=true", "/search", "search-category-datastore-prerelease.json", searchHandler},
+		{"/search?type=content&prerelease=true", "/search", "search-content-packages.json", searchHandler},
+		{"/search?type=input&prerelease=true", "/search", "search-input-packages.json", searchHandler},
+		{"/search?type=input&package=integration_input&prerelease=true", "/search", "search-input-integration-package.json", searchHandler},
+		{"/search?type=integration&package=integration_input&prerelease=true", "/search", "search-integration-integration-package.json", searchHandler},
+		{"/search?capabilities=observability,security&prerelease=true", "/search", "search-prerelease-capabilities-observability-security.json", searchHandler},
+		{"/search?capabilities=none&prerelease=true", "/search", "search-prerelease-capabilities-none.json", searchHandler},
+		{"/search?spec.min=1.1&spec.max=2.10&prerelease=true", "/search", "search-spec-min-1.1.0-max-2.10.0.json", searchHandler},
+		{"/search?spec.max=2.10&prerelease=true", "/search", "search-spec-max-2.10.0.json", searchHandler},
+		{"/search?spec.max=2.10.1&prerelease=true", "/search", "search-spec-max-error.txt", searchHandler},
+		{"/search?prerelease=true&discovery=fields:process.pid", "/search", "search-discovery-fields-process-pid.txt", searchHandler},
+		{"/search?prerelease=true&discovery=fields:non.existing.field", "/search", "search-discovery-fields-empty.txt", searchHandler},
+		{"/search?prerelease=true&discovery=datasets:good_content.errors", "/search", "search-discovery-datasets.txt", searchHandler},
+		{"/search?prerelease=true&discovery=datasets:good_content.errors&discovery=fields:process.pid", "/search", "search-discovery-multiple.txt", searchHandler},
+		{"/search?prerelease=true&discovery=datasets:good_content.errors&discovery=fields:process.path", "/search", "search-discovery-multiple-no-match.txt", searchHandler},
 
 		// Removed flags, kept ensure that they don't break requests from old versions.
-		{"/search?internal=true", "/search", "search-package-internal.json", searchHandler(testLogger, indexer, testCacheTime)},
-	}
+		{"/search?internal=true", "/search", "search-package-internal.json", searchHandler},
+
+		// Test queries with unknown query parameters
+		{"/search?package=yamlpipeline&unknown=true", "/search", "search-unknown-query-parameter-error.txt", disallowUnknownQueryParamsSearchHandler},
+		{"/search?package=yamlpipeline&unknown=true", "/search", "search-allowed-unknown-query-parameter.json", searchHandler},
+
+		// Test agent.version filtering
+		{"/search?package=1password&agent.version=9.1.0", "/search", "search-agent-910.json", searchHandler},
+		{"/search?package=1password&agent.version=9.5.0", "/search", "search-agent-950.json", searchHandler},
+		{"/categories?agent.version=9.1.0", "/categories", "categories-agent-910.json", categoriesHandler},
+		{"/categories?agent.version=9.5.0", "/categories", "categories-agent-950.json", categoriesHandler},
+	}, nil
 }
 
 func TestPackageStorage_Endpoints(t *testing.T) {
@@ -89,12 +138,14 @@ func TestPackageStorage_Endpoints(t *testing.T) {
 	defer fs.Stop()
 
 	indexer := storage.NewIndexer(testLogger, fs.Client(), storage.FakeIndexerOptions)
-	defer indexer.Close(context.Background())
+	defer indexer.Close(t.Context())
 
-	err := indexer.Init(context.Background())
+	err := indexer.Init(t.Context())
 	require.NoError(t, err)
 
-	tests := generateTestCaseStorageEndpoints(indexer)
+	tests, err := generateTestCaseStorageEndpoints(indexer)
+	require.NoError(t, err)
+
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
 			runEndpointWithStorageIndexer(t, test.endpoint, test.path, test.file, test.handler)
@@ -108,12 +159,14 @@ func TestPackageStorageSQL_Endpoints(t *testing.T) {
 
 	indexer, err := generateSQLStorageIndexer(fs, "")
 	require.NoError(t, err)
-	defer indexer.Close(context.Background())
+	defer indexer.Close(t.Context())
 
-	err = indexer.Init(context.Background())
+	err = indexer.Init(t.Context())
 	require.NoError(t, err)
 
-	tests := generateTestCaseStorageEndpoints(indexer)
+	tests, err := generateTestCaseStorageEndpoints(indexer)
+	require.NoError(t, err)
+
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
 			runEndpointWithStorageIndexer(t, test.endpoint, test.path, test.file, test.handler)
@@ -121,35 +174,41 @@ func TestPackageStorageSQL_Endpoints(t *testing.T) {
 	}
 }
 
-func generateTestPackageIndexEndpoints(indexer Indexer) []struct {
+func generateTestPackageIndexEndpoints(indexer Indexer) ([]struct {
 	endpoint string
 	path     string
 	file     string
-	handler  func(w http.ResponseWriter, r *http.Request)
-} {
-	packageIndexHandler := packageIndexHandler(testLogger, indexer, testCacheTime)
+	handler  http.Handler
+}, error) {
+	packageIndexHandler, err := newPackageIndexHandler(testLogger, indexer, testCacheTime)
+	if err != nil {
+		return nil, err
+	}
 	return []struct {
 		endpoint string
 		path     string
 		file     string
-		handler  func(w http.ResponseWriter, r *http.Request)
+		handler  http.Handler
 	}{
 		{"/package/1password/0.1.1/", packageIndexRouterPath, "1password-0.1.1.json", packageIndexHandler},
 		{"/package/kubernetes/0.3.0/", packageIndexRouterPath, "kubernetes-0.3.0.json", packageIndexHandler},
 		{"/package/osquery/1.0.3/", packageIndexRouterPath, "osquery-1.0.3.json", packageIndexHandler},
-	}
+		{"/package/sql/0.5.0/", packageIndexRouterPath, "sql-0.5.0.json", packageIndexHandler},
+		{"/package/cassandra/1.1.0/", packageIndexRouterPath, "cassandra-1.1.0.json", packageIndexHandler},
+	}, nil
 }
 
 func TestPackageStorage_PackageIndex(t *testing.T) {
 	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 	indexer := storage.NewIndexer(testLogger, fs.Client(), storage.FakeIndexerOptions)
-	defer indexer.Close(context.Background())
+	defer indexer.Close(t.Context())
 
-	err := indexer.Init(context.Background())
+	err := indexer.Init(t.Context())
 	require.NoError(t, err)
 
-	tests := generateTestPackageIndexEndpoints(indexer)
+	tests, err := generateTestPackageIndexEndpoints(indexer)
+	require.NoError(t, err)
 
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
@@ -164,12 +223,13 @@ func TestPackageSQLStorage_PackageIndex(t *testing.T) {
 
 	indexer, err := generateSQLStorageIndexer(fs, "")
 	require.NoError(t, err)
-	defer indexer.Close(context.Background())
+	defer indexer.Close(t.Context())
 
-	err = indexer.Init(context.Background())
+	err = indexer.Init(t.Context())
 	require.NoError(t, err)
 
-	tests := generateTestPackageIndexEndpoints(indexer)
+	tests, err := generateTestPackageIndexEndpoints(indexer)
+	require.NoError(t, err)
 
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
@@ -178,23 +238,26 @@ func TestPackageSQLStorage_PackageIndex(t *testing.T) {
 	}
 }
 
-func generateTestArtifactsEndpoints(indexer Indexer) []struct {
+func generateTestArtifactsEndpoints(indexer Indexer) ([]struct {
 	endpoint string
 	path     string
 	file     string
-	handler  func(w http.ResponseWriter, r *http.Request)
-} {
-	artifactsHandler := artifactsHandler(testLogger, indexer, testCacheTime)
+	handler  http.Handler
+}, error) {
+	artifactsHandler, err := newArtifactsHandler(testLogger, indexer, testCacheTime)
+	if err != nil {
+		return nil, err
+	}
 	return []struct {
 		endpoint string
 		path     string
 		file     string
-		handler  func(w http.ResponseWriter, r *http.Request)
+		handler  http.Handler
 	}{
 		{"/epr/1password/1password-0.1.1.zip", artifactsRouterPath, "1password-0.1.1.zip.txt", artifactsHandler},
 		{"/epr/kubernetes/kubernetes-999.999.999.zip", artifactsRouterPath, "artifact-package-version-not-found.txt", artifactsHandler},
 		{"/epr/missing/missing-1.0.3.zip", artifactsRouterPath, "artifact-package-not-found.txt", artifactsHandler},
-	}
+	}, nil
 }
 
 func TestPackageStorage_Artifacts(t *testing.T) {
@@ -210,12 +273,13 @@ func TestPackageStorage_Artifacts(t *testing.T) {
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
 	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
-	defer indexer.Close(context.Background())
+	defer indexer.Close(t.Context())
 
-	err := indexer.Init(context.Background())
+	err := indexer.Init(t.Context())
 	require.NoError(t, err)
 
-	tests := generateTestArtifactsEndpoints(indexer)
+	tests, err := generateTestArtifactsEndpoints(indexer)
+	require.NoError(t, err)
 
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
@@ -235,12 +299,13 @@ func TestPackageSQLStorage_Artifacts(t *testing.T) {
 
 	indexer, err := generateSQLStorageIndexer(fs, webServer.URL)
 	require.NoError(t, err)
-	defer indexer.Close(context.Background())
+	defer indexer.Close(t.Context())
 
-	err = indexer.Init(context.Background())
+	err = indexer.Init(t.Context())
 	require.NoError(t, err)
 
-	tests := generateTestArtifactsEndpoints(indexer)
+	tests, err := generateTestArtifactsEndpoints(indexer)
+	require.NoError(t, err)
 
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
@@ -249,22 +314,25 @@ func TestPackageSQLStorage_Artifacts(t *testing.T) {
 	}
 }
 
-func generateTestSignaturesEndpoints(indexer Indexer) []struct {
+func generateTestSignaturesEndpoints(indexer Indexer) ([]struct {
 	endpoint string
 	path     string
 	file     string
-	handler  func(w http.ResponseWriter, r *http.Request)
-} {
-	signaturesHandler := signaturesHandler(testLogger, indexer, testCacheTime)
+	handler  http.Handler
+}, error) {
+	signaturesHandler, err := newSignaturesHandler(testLogger, indexer, testCacheTime)
+	if err != nil {
+		return nil, err
+	}
 	return []struct {
 		endpoint string
 		path     string
 		file     string
-		handler  func(w http.ResponseWriter, r *http.Request)
+		handler  http.Handler
 	}{
 		{"/epr/1password/1password-0.1.1.zip.sig", signaturesRouterPath, "1password-0.1.1.zip.sig", signaturesHandler},
 		{"/epr/checkpoint/checkpoint-0.5.2.zip.sig", signaturesRouterPath, "checkpoint-0.5.2.zip.sig", signaturesHandler},
-	}
+	}, nil
 }
 
 func TestPackageStorage_Signatures(t *testing.T) {
@@ -280,12 +348,13 @@ func TestPackageStorage_Signatures(t *testing.T) {
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
 	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
-	defer indexer.Close(context.Background())
+	defer indexer.Close(t.Context())
 
-	err := indexer.Init(context.Background())
+	err := indexer.Init(t.Context())
 	require.NoError(t, err)
 
-	tests := generateTestSignaturesEndpoints(indexer)
+	tests, err := generateTestSignaturesEndpoints(indexer)
+	require.NoError(t, err)
 
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
@@ -305,12 +374,13 @@ func TestPackageSQLStorage_Signatures(t *testing.T) {
 
 	indexer, err := generateSQLStorageIndexer(fs, webServer.URL)
 	require.NoError(t, err)
-	defer indexer.Close(context.Background())
+	defer indexer.Close(t.Context())
 
-	err = indexer.Init(context.Background())
+	err = indexer.Init(t.Context())
 	require.NoError(t, err)
 
-	tests := generateTestSignaturesEndpoints(indexer)
+	tests, err := generateTestSignaturesEndpoints(indexer)
+	require.NoError(t, err)
 
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
@@ -319,23 +389,26 @@ func TestPackageSQLStorage_Signatures(t *testing.T) {
 	}
 }
 
-func generateTestStaticEndpoints(indexer Indexer) []struct {
+func generateTestStaticEndpoints(indexer Indexer) ([]struct {
 	endpoint string
 	path     string
 	file     string
-	handler  func(w http.ResponseWriter, r *http.Request)
-} {
-	staticHandler := staticHandler(testLogger, indexer, testCacheTime)
+	handler  http.Handler
+}, error) {
+	staticHandler, err := newStaticHandler(testLogger, indexer, testCacheTime)
+	if err != nil {
+		return nil, err
+	}
 	return []struct {
 		endpoint string
 		path     string
 		file     string
-		handler  func(w http.ResponseWriter, r *http.Request)
+		handler  http.Handler
 	}{
 		{"/package/1password/0.1.1/img/1password-logo-light-bg.svg", staticRouterPath, "1password-logo-light-bg.svg", staticHandler},
 		{"/package/cassandra/1.1.0/img/[Logs Cassandra] System Logs.jpg", staticRouterPath, "logs-cassandra-system-logs.jpg", staticHandler},
 		{"/package/cef/0.1.0/docs/README.md", staticRouterPath, "cef-readme.md", staticHandler},
-	}
+	}, nil
 }
 
 func TestPackageStorage_Statics(t *testing.T) {
@@ -351,12 +424,13 @@ func TestPackageStorage_Statics(t *testing.T) {
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
 	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
-	defer indexer.Close(context.Background())
+	defer indexer.Close(t.Context())
 
-	err := indexer.Init(context.Background())
+	err := indexer.Init(t.Context())
 	require.NoError(t, err)
 
-	tests := generateTestStaticEndpoints(indexer)
+	tests, err := generateTestStaticEndpoints(indexer)
+	require.NoError(t, err)
 
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
@@ -376,12 +450,13 @@ func TestPackagesQLStorage_Statics(t *testing.T) {
 
 	indexer, err := generateSQLStorageIndexer(fs, webServer.URL)
 	require.NoError(t, err)
-	defer indexer.Close(context.Background())
+	defer indexer.Close(t.Context())
 
-	err = indexer.Init(context.Background())
+	err = indexer.Init(t.Context())
 	require.NoError(t, err)
 
-	tests := generateTestStaticEndpoints(indexer)
+	tests, err := generateTestStaticEndpoints(indexer)
+	require.NoError(t, err)
 
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
@@ -390,20 +465,23 @@ func TestPackagesQLStorage_Statics(t *testing.T) {
 	}
 }
 
-func generateTestResolveHeadersEndpoints(indexer Indexer) []struct {
+func generateTestResolveHeadersEndpoints(indexer Indexer) ([]struct {
 	endpoint        string
 	path            string
 	file            string
 	responseHeaders map[string]string
-	handler         func(w http.ResponseWriter, r *http.Request)
-} {
-	staticHandler := staticHandler(testLogger, indexer, testCacheTime)
+	handler         http.Handler
+}, error) {
+	staticHandler, err := newStaticHandler(testLogger, indexer, testCacheTime)
+	if err != nil {
+		return nil, err
+	}
 	return []struct {
 		endpoint        string
 		path            string
 		file            string
 		responseHeaders map[string]string
-		handler         func(w http.ResponseWriter, r *http.Request)
+		handler         http.Handler
 	}{
 		{
 			endpoint: "/package/1password/0.1.1/img/1password-logo-light-bg.svg",
@@ -415,7 +493,7 @@ func generateTestResolveHeadersEndpoints(indexer Indexer) []struct {
 			},
 			handler: staticHandler,
 		},
-	}
+	}, nil
 }
 
 func TestPackageStorage_ResolverHeadersResponse(t *testing.T) {
@@ -434,12 +512,13 @@ func TestPackageStorage_ResolverHeadersResponse(t *testing.T) {
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
 	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
-	defer indexer.Close(context.Background())
+	defer indexer.Close(t.Context())
 
-	err := indexer.Init(context.Background())
+	err := indexer.Init(t.Context())
 	require.NoError(t, err)
 
-	tests := generateTestResolveHeadersEndpoints(indexer)
+	tests, err := generateTestResolveHeadersEndpoints(indexer)
+	require.NoError(t, err)
 
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
@@ -462,12 +541,13 @@ func TestPackageSQLStorage_ResolverHeadersResponse(t *testing.T) {
 
 	indexer, err := generateSQLStorageIndexer(fs, webServer.URL)
 	require.NoError(t, err)
-	defer indexer.Close(context.Background())
+	defer indexer.Close(t.Context())
 
-	err = indexer.Init(context.Background())
+	err = indexer.Init(t.Context())
 	require.NoError(t, err)
 
-	tests := generateTestResolveHeadersEndpoints(indexer)
+	tests, err := generateTestResolveHeadersEndpoints(indexer)
+	require.NoError(t, err)
 
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
@@ -476,18 +556,21 @@ func TestPackageSQLStorage_ResolverHeadersResponse(t *testing.T) {
 	}
 }
 
-func generateTestResolveErrorResponseEndpoints(indexer Indexer) []struct {
+func generateTestResolveErrorResponseEndpoints(indexer Indexer) ([]struct {
 	endpoint string
 	path     string
 	file     string
-	handler  func(w http.ResponseWriter, r *http.Request)
-} {
-	staticHandler := staticHandler(testLogger, indexer, testCacheTime)
+	handler  http.Handler
+}, error) {
+	staticHandler, err := newStaticHandler(testLogger, indexer, testCacheTime)
+	if err != nil {
+		return nil, err
+	}
 	return []struct {
 		endpoint string
 		path     string
 		file     string
-		handler  func(w http.ResponseWriter, r *http.Request)
+		handler  http.Handler
 	}{
 		{
 			endpoint: "/package/1password/0.1.1/img/1password-logo-light-bg.svg",
@@ -495,7 +578,7 @@ func generateTestResolveErrorResponseEndpoints(indexer Indexer) []struct {
 			file:     "1password-logo-light-bg.svg.error-response",
 			handler:  staticHandler,
 		},
-	}
+	}, nil
 }
 
 func TestPackageStorage_ResolverErrorResponse(t *testing.T) {
@@ -512,12 +595,14 @@ func TestPackageStorage_ResolverErrorResponse(t *testing.T) {
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
 	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
-	defer indexer.Close(context.Background())
+	defer indexer.Close(t.Context())
 
-	err := indexer.Init(context.Background())
+	err := indexer.Init(t.Context())
 	require.NoError(t, err)
 
-	tests := generateTestResolveErrorResponseEndpoints(indexer)
+	tests, err := generateTestResolveErrorResponseEndpoints(indexer)
+	require.NoError(t, err)
+
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
 			runEndpointWithStorageIndexer(t, test.endpoint, test.path, test.file, test.handler)
@@ -537,12 +622,14 @@ func TestPackageSQLStorage_ResolverErrorResponse(t *testing.T) {
 
 	indexer, err := generateSQLStorageIndexer(fs, webServer.URL)
 	require.NoError(t, err)
-	defer indexer.Close(context.Background())
+	defer indexer.Close(t.Context())
 
-	err = indexer.Init(context.Background())
+	err = indexer.Init(t.Context())
 	require.NoError(t, err)
 
-	tests := generateTestResolveErrorResponseEndpoints(indexer)
+	tests, err := generateTestResolveErrorResponseEndpoints(indexer)
+	require.NoError(t, err)
+
 	for _, test := range tests {
 		t.Run(test.endpoint, func(t *testing.T) {
 			runEndpointWithStorageIndexer(t, test.endpoint, test.path, test.file, test.handler)
@@ -550,10 +637,10 @@ func TestPackageSQLStorage_ResolverErrorResponse(t *testing.T) {
 	}
 }
 
-func runEndpointWithStorageIndexer(t *testing.T, endpoint, path, file string, handler func(w http.ResponseWriter, r *http.Request)) {
+func runEndpointWithStorageIndexer(t *testing.T, endpoint, path, file string, handler http.Handler) {
 	runEndpoint(t, endpoint, path, filepath.Join(storageIndexerGoldenDir, file), handler)
 }
 
-func runEndpointWithStorageIndexerAndHeaders(t *testing.T, endpoint, path, file string, headers map[string]string, handler func(w http.ResponseWriter, r *http.Request)) {
+func runEndpointWithStorageIndexerAndHeaders(t *testing.T, endpoint, path, file string, headers map[string]string, handler http.Handler) {
 	runEndpointWithHeaders(t, endpoint, path, filepath.Join(storageIndexerGoldenDir, file), headers, handler)
 }

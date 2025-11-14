@@ -11,7 +11,7 @@ CURRENT_DIR="$(pwd)"
 SCRIPT_DIR="$( cd -- "$(dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 usage() {
-    echo "$0 [-b <bucket_name>] [-p <epr_address>] [-e <emulator_address>] [-i <index_path>] [-c <config_path>] [-s] [-C] [-h]"
+    echo "$0 [-b <bucket_name>] [-p <epr_address>] [-e <emulator_address>] [-i <index_path>] [-c <config_path>] [-s] [-C] [-d] [-h]"
     echo -e "\t-b <bucket_name>: Bucket name. Default: example"
     echo -e "\t-p <epr_address>: Address of the package registry service. Default: localhost:8080"
     echo -e "\t-e <emulator_address>: Address of the emulator host (fake GCS server). Default: localhost:4443"
@@ -19,7 +19,8 @@ usage() {
     echo -e "\t\t\tIf set, the bucket name will be ignored (-b parameter) and Package Registry will use its default development bucket gs://fake-package-storage-internal"
     echo -e "\t-c <config_path>: Path to the configurastion file. Default: \"\""
     echo -e "\t-s : Enable SQL Storage indexer. By default Storage Indexer is enabled."
-    echo -e "\t-C : Enable Search Cache. Just supported with SQL Storage indexer. By default Search Cache is disabled."
+    echo -e "\t-C : Enable Cache for Search and Categories endpoints. Just supported with the SQL Storage indexer. By default both Caches are disabled."
+    echo -e "\t-d: Enable debug mode. Default: false"
     echo -e "\t-h: Show this message"
 }
 
@@ -29,9 +30,10 @@ INDEX_PATH=""
 EMULATOR_HOST="localhost:4443"
 CONFIG_PATH="${SCRIPT_DIR}/../config.yml"
 ENABLE_STORAGE_SQL_INDEXER=0
-ENABLE_SEARCH_CACHE=0
+ENABLE_DEBUG_MODE=0
+ENABLE_CACHE=0
 
-while getopts ":b:p:i:e:c:sCh" o; do
+while getopts ":b:p:i:e:c:sdCh" o; do
   case "${o}" in
     b)
       BUCKET_NAME="${OPTARG}"
@@ -52,7 +54,10 @@ while getopts ":b:p:i:e:c:sCh" o; do
       ENABLE_STORAGE_SQL_INDEXER=1
       ;;
     C)
-      ENABLE_SEARCH_CACHE=1
+      ENABLE_CACHE=1
+      ;;
+    d)
+      ENABLE_DEBUG_MODE=1
       ;;
     h)
       usage
@@ -96,20 +101,25 @@ else
     export EPR_FEATURE_STORAGE_INDEXER="false"
 fi
 
-if [[ "${ENABLE_SEARCH_CACHE}" == 1 ]]; then
+if [[ "${ENABLE_CACHE}" == 1 ]]; then
     export EPR_FEATURE_ENABLE_SEARCH_CACHE="true"
+    export EPR_FEATURE_ENABLE_CATEGORIES_CACHE="true"
 fi
 
 export EPR_DISABLE_PACKAGE_VALIDATION="true"
 export EPR_ADDRESS="${ADDRESS}"
 
-# export EPR_LOG_LEVEL="debug"
+if [[ "${ENABLE_DEBUG_MODE}" == 1 ]]; then
+    export EPR_LOG_LEVEL="debug"
+fi
 export EPR_CONFIG="${CONFIG_PATH}"
 # export EPR_SQL_INDEXER_DATABASE_FOLDER_PATH=/tmp
-# export EPR_SQL_INDEXER_SEARCH_CACHE_SIZE=100
-# export EPR_SQL_INDEXER_SEARCH_CACHE_TTL=10m
+# export EPR_SQL_INDEXER_SEARCH_CACHE_SIZE=250
+# export EPR_SQL_INDEXER_SEARCH_CACHE_TTL=24h
+# export EPR_SQL_INDEXER_CATEGORIES_CACHE_SIZE=100
+# export EPR_SQL_INDEXER_CATEGORIES_CACHE_TTL=24h
 # export EPR_SQL_INDEXER_READ_PACKAGES_BATCH_SIZE=2000
-# export EPR_SQL_INDEXER_DB_INSERT_BATCH_SIZE=2000
+# export EPR_SQL_INDEXER_DB_INSERT_BATCH_SIZE=500
 
 ./package-registry
 

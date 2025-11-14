@@ -27,13 +27,17 @@
     "conditions": {
       "kibana": {
         "version": "^7.16.0 || ^8.0.0"
+      },
+      "agent": {
+        "version": "^9.2.0"
       }
     },
     "owner": {
       "github": "elastic/security-external-integrations"
     },
     "categories": [
-      "security"
+      "security",
+      "credential_management"
     ],
     "signature_path": "/epr/1password/1password-1.4.0.zip.sig",
     "data_streams": [
@@ -430,6 +434,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "billing"
         ]
       },
       {
@@ -447,6 +454,9 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "cloudtrail"
         ]
       },
       {
@@ -461,6 +471,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "cloudwatch_logs",
+          "cloudwatch_metrics"
         ]
       },
       {
@@ -478,6 +492,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "dynamodb"
         ]
       },
       {
@@ -495,6 +512,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "ebs"
         ]
       },
       {
@@ -509,6 +529,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "ec2_logs",
+          "ec2_metrics"
         ]
       },
       {
@@ -526,6 +550,10 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "elb_logs",
+          "elb_metrics"
         ]
       },
       {
@@ -540,6 +568,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "lambda"
         ]
       },
       {
@@ -557,6 +588,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "natgateway"
         ]
       },
       {
@@ -574,6 +608,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "rds"
         ]
       },
       {
@@ -592,6 +629,11 @@
         "categories": [
           "datastore",
           "security"
+        ],
+        "data_streams": [
+          "s3_daily_storage",
+          "s3_request",
+          "s3access"
         ]
       },
       {
@@ -606,6 +648,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sns"
         ]
       },
       {
@@ -620,6 +665,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sqs"
         ]
       },
       {
@@ -637,12 +685,18 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "transitgateway"
         ]
       },
       {
         "name": "usage",
         "title": "AWS Usage",
-        "description": "Collect AWS Usage metrics"
+        "description": "Collect AWS Usage metrics",
+        "data_streams": [
+          "usage"
+        ]
       },
       {
         "name": "vpcflow",
@@ -660,6 +714,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "vpcflow"
         ]
       },
       {
@@ -677,6 +734,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "vpn"
         ]
       }
     ],
@@ -837,6 +897,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "billing"
         ]
       },
       {
@@ -854,6 +917,9 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "cloudtrail"
         ]
       },
       {
@@ -868,6 +934,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "cloudwatch_logs",
+          "cloudwatch_metrics"
         ]
       },
       {
@@ -885,6 +955,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "dynamodb"
         ]
       },
       {
@@ -902,6 +975,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "ebs"
         ]
       },
       {
@@ -916,6 +992,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "ec2_logs",
+          "ec2_metrics"
         ]
       },
       {
@@ -933,6 +1013,10 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "elb_logs",
+          "elb_metrics"
         ]
       },
       {
@@ -947,6 +1031,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "lambda"
         ]
       },
       {
@@ -964,6 +1051,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "natgateway"
         ]
       },
       {
@@ -981,6 +1071,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "rds"
         ]
       },
       {
@@ -999,6 +1092,11 @@
         "categories": [
           "datastore",
           "security"
+        ],
+        "data_streams": [
+          "s3_daily_storage",
+          "s3_request",
+          "s3access"
         ]
       },
       {
@@ -1013,6 +1111,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sns"
         ]
       },
       {
@@ -1027,6 +1128,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sqs"
         ]
       },
       {
@@ -1044,12 +1148,18 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "transitgateway"
         ]
       },
       {
         "name": "usage",
         "title": "AWS Usage",
-        "description": "Collect AWS Usage metrics"
+        "description": "Collect AWS Usage metrics",
+        "data_streams": [
+          "usage"
+        ]
       },
       {
         "name": "vpcflow",
@@ -1067,6 +1177,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "vpcflow"
         ]
       },
       {
@@ -1084,6 +1197,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "vpn"
         ]
       }
     ],
@@ -1244,6 +1360,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "billing"
         ]
       },
       {
@@ -1261,6 +1380,9 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "cloudtrail"
         ]
       },
       {
@@ -1275,6 +1397,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "cloudwatch_logs",
+          "cloudwatch_metrics"
         ]
       },
       {
@@ -1292,6 +1418,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "dynamodb"
         ]
       },
       {
@@ -1309,6 +1438,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "ebs"
         ]
       },
       {
@@ -1323,6 +1455,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "ec2_logs",
+          "ec2_metrics"
         ]
       },
       {
@@ -1340,6 +1476,10 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "elb_logs",
+          "elb_metrics"
         ]
       },
       {
@@ -1354,6 +1494,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "lambda"
         ]
       },
       {
@@ -1371,6 +1514,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "natgateway"
         ]
       },
       {
@@ -1388,6 +1534,10 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "firewall_logs",
+          "firewall_metrics"
         ]
       },
       {
@@ -1405,6 +1555,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "rds"
         ]
       },
       {
@@ -1423,6 +1576,11 @@
         "categories": [
           "datastore",
           "security"
+        ],
+        "data_streams": [
+          "s3_daily_storage",
+          "s3_request",
+          "s3access"
         ]
       },
       {
@@ -1440,6 +1598,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "s3_storage_lens"
         ]
       },
       {
@@ -1454,6 +1615,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sns"
         ]
       },
       {
@@ -1468,6 +1632,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sqs"
         ]
       },
       {
@@ -1485,12 +1652,18 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "transitgateway"
         ]
       },
       {
         "name": "usage",
         "title": "AWS Usage Metrics",
-        "description": "Collect usage metrics from Amazon Web Services with Elastic Agent"
+        "description": "Collect usage metrics from Amazon Web Services with Elastic Agent",
+        "data_streams": [
+          "usage"
+        ]
       },
       {
         "name": "vpcflow",
@@ -1508,6 +1681,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "vpcflow"
         ]
       },
       {
@@ -1525,6 +1701,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "vpn"
         ]
       },
       {
@@ -1543,6 +1722,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "waf"
         ]
       },
       {
@@ -1557,6 +1739,10 @@
             "size": "32x40",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "route53_public_logs",
+          "route53_resolver_logs"
         ]
       }
     ],
@@ -1747,6 +1933,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "billing"
         ]
       },
       {
@@ -1764,6 +1953,9 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "cloudtrail"
         ]
       },
       {
@@ -1778,6 +1970,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "cloudwatch_logs",
+          "cloudwatch_metrics"
         ]
       },
       {
@@ -1795,6 +1991,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "dynamodb"
         ]
       },
       {
@@ -1812,6 +2011,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "ebs"
         ]
       },
       {
@@ -1826,6 +2028,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "ec2_logs",
+          "ec2_metrics"
         ]
       },
       {
@@ -1843,6 +2049,10 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "elb_logs",
+          "elb_metrics"
         ]
       },
       {
@@ -1857,6 +2067,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "lambda"
         ]
       },
       {
@@ -1874,6 +2087,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "natgateway"
         ]
       },
       {
@@ -1891,6 +2107,10 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "firewall_logs",
+          "firewall_metrics"
         ]
       },
       {
@@ -1908,6 +2128,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "rds"
         ]
       },
       {
@@ -1926,6 +2149,11 @@
         "categories": [
           "datastore",
           "security"
+        ],
+        "data_streams": [
+          "s3_daily_storage",
+          "s3_request",
+          "s3access"
         ]
       },
       {
@@ -1943,6 +2171,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "s3_storage_lens"
         ]
       },
       {
@@ -1957,6 +2188,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sns"
         ]
       },
       {
@@ -1971,6 +2205,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sqs"
         ]
       },
       {
@@ -1988,12 +2225,18 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "transitgateway"
         ]
       },
       {
         "name": "usage",
         "title": "AWS Usage Metrics",
-        "description": "Collect usage metrics from Amazon Web Services with Elastic Agent"
+        "description": "Collect usage metrics from Amazon Web Services with Elastic Agent",
+        "data_streams": [
+          "usage"
+        ]
       },
       {
         "name": "vpcflow",
@@ -2011,6 +2254,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "vpcflow"
         ]
       },
       {
@@ -2028,6 +2274,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "vpn"
         ]
       },
       {
@@ -2046,6 +2295,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "waf"
         ]
       },
       {
@@ -2060,6 +2312,10 @@
             "size": "32x40",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "route53_public_logs",
+          "route53_resolver_logs"
         ]
       }
     ],
@@ -2250,6 +2506,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "billing"
         ]
       },
       {
@@ -2267,6 +2526,9 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "cloudtrail"
         ]
       },
       {
@@ -2281,6 +2543,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "cloudwatch_logs",
+          "cloudwatch_metrics"
         ]
       },
       {
@@ -2298,6 +2564,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "dynamodb"
         ]
       },
       {
@@ -2315,6 +2584,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "ebs"
         ]
       },
       {
@@ -2329,6 +2601,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "ec2_logs",
+          "ec2_metrics"
         ]
       },
       {
@@ -2346,6 +2622,10 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "elb_logs",
+          "elb_metrics"
         ]
       },
       {
@@ -2360,6 +2640,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "lambda"
         ]
       },
       {
@@ -2377,6 +2660,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "natgateway"
         ]
       },
       {
@@ -2394,6 +2680,10 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "firewall_logs",
+          "firewall_metrics"
         ]
       },
       {
@@ -2411,6 +2701,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "rds"
         ]
       },
       {
@@ -2429,6 +2722,11 @@
         "categories": [
           "datastore",
           "security"
+        ],
+        "data_streams": [
+          "s3_daily_storage",
+          "s3_request",
+          "s3access"
         ]
       },
       {
@@ -2446,6 +2744,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "s3_storage_lens"
         ]
       },
       {
@@ -2460,6 +2761,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sns"
         ]
       },
       {
@@ -2474,6 +2778,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sqs"
         ]
       },
       {
@@ -2491,12 +2798,18 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "transitgateway"
         ]
       },
       {
         "name": "usage",
         "title": "AWS Usage Metrics",
-        "description": "Collect usage metrics from Amazon Web Services with Elastic Agent"
+        "description": "Collect usage metrics from Amazon Web Services with Elastic Agent",
+        "data_streams": [
+          "usage"
+        ]
       },
       {
         "name": "vpcflow",
@@ -2514,6 +2827,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "vpcflow"
         ]
       },
       {
@@ -2531,6 +2847,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "vpn"
         ]
       },
       {
@@ -2549,6 +2868,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "waf"
         ]
       },
       {
@@ -2563,6 +2885,10 @@
             "size": "32x40",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "route53_public_logs",
+          "route53_resolver_logs"
         ]
       },
       {
@@ -2577,6 +2903,9 @@
             "size": "33x39",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "cloudfront_logs"
         ]
       }
     ],
@@ -2772,6 +3101,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "billing"
         ]
       },
       {
@@ -2789,6 +3121,9 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "cloudtrail"
         ]
       },
       {
@@ -2803,6 +3138,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "cloudwatch_logs",
+          "cloudwatch_metrics"
         ]
       },
       {
@@ -2820,6 +3159,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "dynamodb"
         ]
       },
       {
@@ -2837,6 +3179,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "ebs"
         ]
       },
       {
@@ -2851,6 +3196,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "ec2_logs",
+          "ec2_metrics"
         ]
       },
       {
@@ -2868,6 +3217,10 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "elb_logs",
+          "elb_metrics"
         ]
       },
       {
@@ -2882,6 +3235,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "lambda"
         ]
       },
       {
@@ -2899,6 +3255,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "natgateway"
         ]
       },
       {
@@ -2916,6 +3275,10 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "firewall_logs",
+          "firewall_metrics"
         ]
       },
       {
@@ -2933,6 +3296,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "rds"
         ]
       },
       {
@@ -2951,6 +3317,11 @@
         "categories": [
           "datastore",
           "security"
+        ],
+        "data_streams": [
+          "s3_daily_storage",
+          "s3_request",
+          "s3access"
         ]
       },
       {
@@ -2968,6 +3339,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "s3_storage_lens"
         ]
       },
       {
@@ -2982,6 +3356,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sns"
         ]
       },
       {
@@ -2996,6 +3373,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sqs"
         ]
       },
       {
@@ -3013,12 +3393,18 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "transitgateway"
         ]
       },
       {
         "name": "usage",
         "title": "AWS Usage Metrics",
-        "description": "Collect usage metrics from Amazon Web Services with Elastic Agent"
+        "description": "Collect usage metrics from Amazon Web Services with Elastic Agent",
+        "data_streams": [
+          "usage"
+        ]
       },
       {
         "name": "vpcflow",
@@ -3036,6 +3422,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "vpcflow"
         ]
       },
       {
@@ -3053,6 +3442,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "vpn"
         ]
       },
       {
@@ -3071,6 +3463,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "waf"
         ]
       },
       {
@@ -3085,6 +3480,10 @@
             "size": "32x40",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "route53_public_logs",
+          "route53_resolver_logs"
         ]
       },
       {
@@ -3099,6 +3498,9 @@
             "size": "33x39",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "cloudfront_logs"
         ]
       }
     ],
@@ -3294,6 +3696,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "billing"
         ]
       },
       {
@@ -3311,6 +3716,9 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "cloudtrail"
         ]
       },
       {
@@ -3325,6 +3733,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "cloudwatch_logs",
+          "cloudwatch_metrics"
         ]
       },
       {
@@ -3342,6 +3754,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "dynamodb"
         ]
       },
       {
@@ -3359,6 +3774,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "ebs"
         ]
       },
       {
@@ -3373,6 +3791,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "ec2_logs",
+          "ec2_metrics"
         ]
       },
       {
@@ -3390,6 +3812,10 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "elb_logs",
+          "elb_metrics"
         ]
       },
       {
@@ -3404,6 +3830,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "lambda"
         ]
       },
       {
@@ -3421,6 +3850,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "natgateway"
         ]
       },
       {
@@ -3438,6 +3870,10 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "firewall_logs",
+          "firewall_metrics"
         ]
       },
       {
@@ -3455,6 +3891,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "rds"
         ]
       },
       {
@@ -3473,6 +3912,11 @@
         "categories": [
           "datastore",
           "security"
+        ],
+        "data_streams": [
+          "s3_daily_storage",
+          "s3_request",
+          "s3access"
         ]
       },
       {
@@ -3490,6 +3934,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "s3_storage_lens"
         ]
       },
       {
@@ -3504,6 +3951,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sns"
         ]
       },
       {
@@ -3518,6 +3968,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sqs"
         ]
       },
       {
@@ -3535,12 +3988,18 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "transitgateway"
         ]
       },
       {
         "name": "usage",
         "title": "AWS Usage Metrics",
-        "description": "Collect usage metrics from Amazon Web Services with Elastic Agent"
+        "description": "Collect usage metrics from Amazon Web Services with Elastic Agent",
+        "data_streams": [
+          "usage"
+        ]
       },
       {
         "name": "vpcflow",
@@ -3558,6 +4017,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "vpcflow"
         ]
       },
       {
@@ -3575,6 +4037,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "vpn"
         ]
       },
       {
@@ -3593,6 +4058,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "waf"
         ]
       },
       {
@@ -3607,6 +4075,10 @@
             "size": "32x40",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "route53_public_logs",
+          "route53_resolver_logs"
         ]
       },
       {
@@ -3621,6 +4093,9 @@
             "size": "33x39",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "cloudfront_logs"
         ]
       }
     ],
@@ -3816,6 +4291,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "billing"
         ]
       },
       {
@@ -3833,6 +4311,9 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "cloudtrail"
         ]
       },
       {
@@ -3847,6 +4328,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "cloudwatch_logs",
+          "cloudwatch_metrics"
         ]
       },
       {
@@ -3864,6 +4349,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "dynamodb"
         ]
       },
       {
@@ -3881,6 +4369,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "ebs"
         ]
       },
       {
@@ -3895,6 +4386,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "ec2_logs",
+          "ec2_metrics"
         ]
       },
       {
@@ -3912,6 +4407,10 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "elb_logs",
+          "elb_metrics"
         ]
       },
       {
@@ -3926,6 +4425,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "lambda"
         ]
       },
       {
@@ -3943,6 +4445,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "natgateway"
         ]
       },
       {
@@ -3960,6 +4465,10 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "firewall_logs",
+          "firewall_metrics"
         ]
       },
       {
@@ -3977,6 +4486,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "rds"
         ]
       },
       {
@@ -3995,6 +4507,11 @@
         "categories": [
           "datastore",
           "security"
+        ],
+        "data_streams": [
+          "s3_daily_storage",
+          "s3_request",
+          "s3access"
         ]
       },
       {
@@ -4012,6 +4529,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "s3_storage_lens"
         ]
       },
       {
@@ -4026,6 +4546,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sns"
         ]
       },
       {
@@ -4040,6 +4563,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sqs"
         ]
       },
       {
@@ -4057,12 +4583,18 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "transitgateway"
         ]
       },
       {
         "name": "usage",
         "title": "AWS Usage Metrics",
-        "description": "Collect usage metrics from Amazon Web Services with Elastic Agent"
+        "description": "Collect usage metrics from Amazon Web Services with Elastic Agent",
+        "data_streams": [
+          "usage"
+        ]
       },
       {
         "name": "vpcflow",
@@ -4080,6 +4612,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "vpcflow"
         ]
       },
       {
@@ -4097,6 +4632,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "vpn"
         ]
       },
       {
@@ -4115,6 +4653,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "waf"
         ]
       },
       {
@@ -4129,6 +4670,10 @@
             "size": "32x40",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "route53_public_logs",
+          "route53_resolver_logs"
         ]
       },
       {
@@ -4143,6 +4688,9 @@
             "size": "33x39",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "cloudfront_logs"
         ]
       }
     ],
@@ -4338,6 +4886,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "billing"
         ]
       },
       {
@@ -4355,6 +4906,9 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "cloudtrail"
         ]
       },
       {
@@ -4369,6 +4923,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "cloudwatch_logs",
+          "cloudwatch_metrics"
         ]
       },
       {
@@ -4386,6 +4944,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "dynamodb"
         ]
       },
       {
@@ -4403,6 +4964,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "ebs"
         ]
       },
       {
@@ -4417,6 +4981,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "ec2_logs",
+          "ec2_metrics"
         ]
       },
       {
@@ -4434,6 +5002,10 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "elb_logs",
+          "elb_metrics"
         ]
       },
       {
@@ -4448,6 +5020,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "lambda"
         ]
       },
       {
@@ -4465,6 +5040,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "natgateway"
         ]
       },
       {
@@ -4482,6 +5060,10 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "firewall_logs",
+          "firewall_metrics"
         ]
       },
       {
@@ -4499,6 +5081,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "rds"
         ]
       },
       {
@@ -4517,6 +5102,11 @@
         "categories": [
           "datastore",
           "security"
+        ],
+        "data_streams": [
+          "s3_daily_storage",
+          "s3_request",
+          "s3access"
         ]
       },
       {
@@ -4534,6 +5124,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "s3_storage_lens"
         ]
       },
       {
@@ -4548,6 +5141,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sns"
         ]
       },
       {
@@ -4562,6 +5158,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sqs"
         ]
       },
       {
@@ -4579,12 +5178,18 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "transitgateway"
         ]
       },
       {
         "name": "usage",
         "title": "AWS Usage Metrics",
-        "description": "Collect AWS usage metrics with Elastic Agent"
+        "description": "Collect AWS usage metrics with Elastic Agent",
+        "data_streams": [
+          "usage"
+        ]
       },
       {
         "name": "vpcflow",
@@ -4602,6 +5207,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "vpcflow"
         ]
       },
       {
@@ -4619,6 +5227,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "vpn"
         ]
       },
       {
@@ -4637,6 +5248,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "waf"
         ]
       },
       {
@@ -4651,6 +5265,10 @@
             "size": "32x40",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "route53_public_logs",
+          "route53_resolver_logs"
         ]
       },
       {
@@ -4665,6 +5283,9 @@
             "size": "33x39",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "cloudfront_logs"
         ]
       }
     ],
@@ -4860,6 +5481,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "billing"
         ]
       },
       {
@@ -4877,6 +5501,9 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "cloudtrail"
         ]
       },
       {
@@ -4891,6 +5518,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "cloudwatch_logs",
+          "cloudwatch_metrics"
         ]
       },
       {
@@ -4908,6 +5539,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "dynamodb"
         ]
       },
       {
@@ -4925,6 +5559,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "ebs"
         ]
       },
       {
@@ -4939,6 +5576,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "ec2_logs",
+          "ec2_metrics"
         ]
       },
       {
@@ -4956,6 +5597,10 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "elb_logs",
+          "elb_metrics"
         ]
       },
       {
@@ -4970,6 +5615,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "lambda"
         ]
       },
       {
@@ -4987,6 +5635,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "natgateway"
         ]
       },
       {
@@ -5004,6 +5655,10 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "firewall_logs",
+          "firewall_metrics"
         ]
       },
       {
@@ -5021,6 +5676,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "rds"
         ]
       },
       {
@@ -5039,6 +5697,11 @@
         "categories": [
           "datastore",
           "security"
+        ],
+        "data_streams": [
+          "s3_daily_storage",
+          "s3_request",
+          "s3access"
         ]
       },
       {
@@ -5056,6 +5719,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "s3_storage_lens"
         ]
       },
       {
@@ -5070,6 +5736,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sns"
         ]
       },
       {
@@ -5084,6 +5753,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sqs"
         ]
       },
       {
@@ -5101,12 +5773,18 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "transitgateway"
         ]
       },
       {
         "name": "usage",
         "title": "AWS Usage",
-        "description": "Collect AWS usage metrics with Elastic Agent"
+        "description": "Collect AWS usage metrics with Elastic Agent",
+        "data_streams": [
+          "usage"
+        ]
       },
       {
         "name": "vpcflow",
@@ -5124,6 +5802,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "vpcflow"
         ]
       },
       {
@@ -5141,6 +5822,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "vpn"
         ]
       },
       {
@@ -5159,6 +5843,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "waf"
         ]
       },
       {
@@ -5173,6 +5860,10 @@
             "size": "32x40",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "route53_public_logs",
+          "route53_resolver_logs"
         ]
       },
       {
@@ -5187,6 +5878,9 @@
             "size": "33x39",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "cloudfront_logs"
         ]
       }
     ],
@@ -5382,6 +6076,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "billing"
         ]
       },
       {
@@ -5399,6 +6096,9 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "cloudtrail"
         ]
       },
       {
@@ -5413,6 +6113,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "cloudwatch_logs",
+          "cloudwatch_metrics"
         ]
       },
       {
@@ -5430,6 +6134,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "dynamodb"
         ]
       },
       {
@@ -5447,6 +6154,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "ebs"
         ]
       },
       {
@@ -5461,6 +6171,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "ec2_logs",
+          "ec2_metrics"
         ]
       },
       {
@@ -5478,6 +6192,10 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "elb_logs",
+          "elb_metrics"
         ]
       },
       {
@@ -5492,6 +6210,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "lambda"
         ]
       },
       {
@@ -5509,6 +6230,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "natgateway"
         ]
       },
       {
@@ -5526,6 +6250,10 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "firewall_logs",
+          "firewall_metrics"
         ]
       },
       {
@@ -5543,6 +6271,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "rds"
         ]
       },
       {
@@ -5561,6 +6292,11 @@
         "categories": [
           "datastore",
           "security"
+        ],
+        "data_streams": [
+          "s3_daily_storage",
+          "s3_request",
+          "s3access"
         ]
       },
       {
@@ -5578,6 +6314,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "s3_storage_lens"
         ]
       },
       {
@@ -5592,6 +6331,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sns"
         ]
       },
       {
@@ -5606,6 +6348,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sqs"
         ]
       },
       {
@@ -5623,12 +6368,18 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "transitgateway"
         ]
       },
       {
         "name": "usage",
         "title": "AWS Usage",
-        "description": "Collect AWS usage metrics with Elastic Agent"
+        "description": "Collect AWS usage metrics with Elastic Agent",
+        "data_streams": [
+          "usage"
+        ]
       },
       {
         "name": "vpcflow",
@@ -5646,6 +6397,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "vpcflow"
         ]
       },
       {
@@ -5663,6 +6417,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "vpn"
         ]
       },
       {
@@ -5681,6 +6438,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "waf"
         ]
       },
       {
@@ -5695,6 +6455,10 @@
             "size": "32x40",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "route53_public_logs",
+          "route53_resolver_logs"
         ]
       },
       {
@@ -5709,6 +6473,9 @@
             "size": "33x39",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "cloudfront_logs"
         ]
       }
     ],
@@ -5904,6 +6671,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "billing"
         ]
       },
       {
@@ -5921,6 +6691,9 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "cloudtrail"
         ]
       },
       {
@@ -5935,6 +6708,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "cloudwatch_logs",
+          "cloudwatch_metrics"
         ]
       },
       {
@@ -5952,6 +6729,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "dynamodb"
         ]
       },
       {
@@ -5969,6 +6749,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "ebs"
         ]
       },
       {
@@ -5983,6 +6766,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "ec2_logs",
+          "ec2_metrics"
         ]
       },
       {
@@ -6000,6 +6787,10 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "elb_logs",
+          "elb_metrics"
         ]
       },
       {
@@ -6014,6 +6805,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "lambda"
         ]
       },
       {
@@ -6031,6 +6825,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "natgateway"
         ]
       },
       {
@@ -6048,6 +6845,10 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "firewall_logs",
+          "firewall_metrics"
         ]
       },
       {
@@ -6065,6 +6866,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "rds"
         ]
       },
       {
@@ -6083,6 +6887,11 @@
         "categories": [
           "datastore",
           "security"
+        ],
+        "data_streams": [
+          "s3_daily_storage",
+          "s3_request",
+          "s3access"
         ]
       },
       {
@@ -6100,6 +6909,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "s3_storage_lens"
         ]
       },
       {
@@ -6114,6 +6926,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sns"
         ]
       },
       {
@@ -6128,6 +6943,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sqs"
         ]
       },
       {
@@ -6145,12 +6963,18 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "transitgateway"
         ]
       },
       {
         "name": "usage",
         "title": "AWS Usage",
-        "description": "Collect AWS usage metrics with Elastic Agent"
+        "description": "Collect AWS usage metrics with Elastic Agent",
+        "data_streams": [
+          "usage"
+        ]
       },
       {
         "name": "vpcflow",
@@ -6168,6 +6992,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "vpcflow"
         ]
       },
       {
@@ -6185,6 +7012,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "vpn"
         ]
       },
       {
@@ -6203,6 +7033,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "waf"
         ]
       },
       {
@@ -6217,6 +7050,10 @@
             "size": "32x40",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "route53_public_logs",
+          "route53_resolver_logs"
         ]
       },
       {
@@ -6231,6 +7068,9 @@
             "size": "33x39",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "cloudfront_logs"
         ]
       }
     ],
@@ -6426,6 +7266,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "billing"
         ]
       },
       {
@@ -6443,6 +7286,9 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "cloudtrail"
         ]
       },
       {
@@ -6457,6 +7303,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "cloudwatch_logs",
+          "cloudwatch_metrics"
         ]
       },
       {
@@ -6474,6 +7324,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "dynamodb"
         ]
       },
       {
@@ -6491,6 +7344,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "ebs"
         ]
       },
       {
@@ -6505,6 +7361,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "ec2_logs",
+          "ec2_metrics"
         ]
       },
       {
@@ -6522,6 +7382,10 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "elb_logs",
+          "elb_metrics"
         ]
       },
       {
@@ -6536,6 +7400,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "lambda"
         ]
       },
       {
@@ -6553,6 +7420,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "natgateway"
         ]
       },
       {
@@ -6570,6 +7440,10 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "firewall_logs",
+          "firewall_metrics"
         ]
       },
       {
@@ -6587,6 +7461,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "rds"
         ]
       },
       {
@@ -6605,6 +7482,11 @@
         "categories": [
           "datastore",
           "security"
+        ],
+        "data_streams": [
+          "s3_daily_storage",
+          "s3_request",
+          "s3access"
         ]
       },
       {
@@ -6622,6 +7504,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "s3_storage_lens"
         ]
       },
       {
@@ -6636,6 +7521,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sns"
         ]
       },
       {
@@ -6650,6 +7538,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sqs"
         ]
       },
       {
@@ -6667,12 +7558,18 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "transitgateway"
         ]
       },
       {
         "name": "usage",
         "title": "AWS Usage",
-        "description": "Collect AWS usage metrics with Elastic Agent"
+        "description": "Collect AWS usage metrics with Elastic Agent",
+        "data_streams": [
+          "usage"
+        ]
       },
       {
         "name": "vpcflow",
@@ -6690,6 +7587,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "vpcflow"
         ]
       },
       {
@@ -6707,6 +7607,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "vpn"
         ]
       },
       {
@@ -6725,6 +7628,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "waf"
         ]
       },
       {
@@ -6739,6 +7645,10 @@
             "size": "32x40",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "route53_public_logs",
+          "route53_resolver_logs"
         ]
       },
       {
@@ -6753,6 +7663,9 @@
             "size": "33x39",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "cloudfront_logs"
         ]
       }
     ],
@@ -6948,6 +7861,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "billing"
         ]
       },
       {
@@ -6965,6 +7881,9 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "cloudtrail"
         ]
       },
       {
@@ -6979,6 +7898,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "cloudwatch_logs",
+          "cloudwatch_metrics"
         ]
       },
       {
@@ -6996,6 +7919,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "dynamodb"
         ]
       },
       {
@@ -7013,6 +7939,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "ebs"
         ]
       },
       {
@@ -7027,6 +7956,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "ec2_logs",
+          "ec2_metrics"
         ]
       },
       {
@@ -7044,6 +7977,10 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "elb_logs",
+          "elb_metrics"
         ]
       },
       {
@@ -7058,6 +7995,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "lambda"
         ]
       },
       {
@@ -7075,6 +8015,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "natgateway"
         ]
       },
       {
@@ -7092,6 +8035,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "rds"
         ]
       },
       {
@@ -7110,6 +8056,11 @@
         "categories": [
           "datastore",
           "security"
+        ],
+        "data_streams": [
+          "s3_daily_storage",
+          "s3_request",
+          "s3access"
         ]
       },
       {
@@ -7127,6 +8078,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "s3_storage_lens"
         ]
       },
       {
@@ -7141,6 +8095,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sns"
         ]
       },
       {
@@ -7155,6 +8112,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sqs"
         ]
       },
       {
@@ -7172,12 +8132,18 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "transitgateway"
         ]
       },
       {
         "name": "usage",
         "title": "AWS Usage Metrics",
-        "description": "Collect usage metrics from Amazon Web Services with Elastic Agent"
+        "description": "Collect usage metrics from Amazon Web Services with Elastic Agent",
+        "data_streams": [
+          "usage"
+        ]
       },
       {
         "name": "vpcflow",
@@ -7195,6 +8161,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "vpcflow"
         ]
       },
       {
@@ -7212,6 +8181,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "vpn"
         ]
       },
       {
@@ -7230,6 +8202,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "waf"
         ]
       }
     ],
@@ -7400,6 +8375,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "billing"
         ]
       },
       {
@@ -7417,6 +8395,9 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "cloudtrail"
         ]
       },
       {
@@ -7431,6 +8412,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "cloudwatch_logs",
+          "cloudwatch_metrics"
         ]
       },
       {
@@ -7448,6 +8433,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "dynamodb"
         ]
       },
       {
@@ -7465,6 +8453,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "ebs"
         ]
       },
       {
@@ -7479,6 +8470,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "ec2_logs",
+          "ec2_metrics"
         ]
       },
       {
@@ -7496,6 +8491,10 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "elb_logs",
+          "elb_metrics"
         ]
       },
       {
@@ -7510,6 +8509,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "lambda"
         ]
       },
       {
@@ -7527,6 +8529,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "natgateway"
         ]
       },
       {
@@ -7544,6 +8549,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "rds"
         ]
       },
       {
@@ -7562,6 +8570,11 @@
         "categories": [
           "datastore",
           "security"
+        ],
+        "data_streams": [
+          "s3_daily_storage",
+          "s3_request",
+          "s3access"
         ]
       },
       {
@@ -7579,6 +8592,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "s3_storage_lens"
         ]
       },
       {
@@ -7593,6 +8609,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sns"
         ]
       },
       {
@@ -7607,6 +8626,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sqs"
         ]
       },
       {
@@ -7624,12 +8646,18 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "transitgateway"
         ]
       },
       {
         "name": "usage",
         "title": "AWS Usage Metrics",
-        "description": "Collect usage metrics from Amazon Web Services with Elastic Agent"
+        "description": "Collect usage metrics from Amazon Web Services with Elastic Agent",
+        "data_streams": [
+          "usage"
+        ]
       },
       {
         "name": "vpcflow",
@@ -7647,6 +8675,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "vpcflow"
         ]
       },
       {
@@ -7664,6 +8695,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "vpn"
         ]
       },
       {
@@ -7682,6 +8716,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "waf"
         ]
       }
     ],
@@ -7852,6 +8889,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "billing"
         ]
       },
       {
@@ -7869,6 +8909,9 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "cloudtrail"
         ]
       },
       {
@@ -7883,6 +8926,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "cloudwatch_logs",
+          "cloudwatch_metrics"
         ]
       },
       {
@@ -7900,6 +8947,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "dynamodb"
         ]
       },
       {
@@ -7917,6 +8967,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "ebs"
         ]
       },
       {
@@ -7931,6 +8984,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "ec2_logs",
+          "ec2_metrics"
         ]
       },
       {
@@ -7948,6 +9005,10 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "elb_logs",
+          "elb_metrics"
         ]
       },
       {
@@ -7962,6 +9023,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "lambda"
         ]
       },
       {
@@ -7979,6 +9043,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "natgateway"
         ]
       },
       {
@@ -7996,6 +9063,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "rds"
         ]
       },
       {
@@ -8014,6 +9084,11 @@
         "categories": [
           "datastore",
           "security"
+        ],
+        "data_streams": [
+          "s3_daily_storage",
+          "s3_request",
+          "s3access"
         ]
       },
       {
@@ -8031,6 +9106,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "s3_storage_lens"
         ]
       },
       {
@@ -8045,6 +9123,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sns"
         ]
       },
       {
@@ -8059,6 +9140,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sqs"
         ]
       },
       {
@@ -8076,12 +9160,18 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "transitgateway"
         ]
       },
       {
         "name": "usage",
         "title": "AWS Usage Metrics",
-        "description": "Collect usage metrics from Amazon Web Services with Elastic Agent"
+        "description": "Collect usage metrics from Amazon Web Services with Elastic Agent",
+        "data_streams": [
+          "usage"
+        ]
       },
       {
         "name": "vpcflow",
@@ -8099,6 +9189,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "vpcflow"
         ]
       },
       {
@@ -8116,6 +9209,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "vpn"
         ]
       },
       {
@@ -8134,6 +9230,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "waf"
         ]
       }
     ],
@@ -8304,6 +9403,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "billing"
         ]
       },
       {
@@ -8321,6 +9423,9 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "cloudtrail"
         ]
       },
       {
@@ -8335,6 +9440,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "cloudwatch_logs",
+          "cloudwatch_metrics"
         ]
       },
       {
@@ -8352,6 +9461,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "dynamodb"
         ]
       },
       {
@@ -8369,6 +9481,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "ebs"
         ]
       },
       {
@@ -8383,6 +9498,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "ec2_logs",
+          "ec2_metrics"
         ]
       },
       {
@@ -8400,6 +9519,10 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "elb_logs",
+          "elb_metrics"
         ]
       },
       {
@@ -8414,6 +9537,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "lambda"
         ]
       },
       {
@@ -8431,6 +9557,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "natgateway"
         ]
       },
       {
@@ -8448,6 +9577,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "rds"
         ]
       },
       {
@@ -8466,6 +9598,11 @@
         "categories": [
           "datastore",
           "security"
+        ],
+        "data_streams": [
+          "s3_daily_storage",
+          "s3_request",
+          "s3access"
         ]
       },
       {
@@ -8483,6 +9620,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "s3_storage_lens"
         ]
       },
       {
@@ -8497,6 +9637,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sns"
         ]
       },
       {
@@ -8511,6 +9654,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sqs"
         ]
       },
       {
@@ -8528,12 +9674,18 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "transitgateway"
         ]
       },
       {
         "name": "usage",
         "title": "AWS Usage Metrics",
-        "description": "Collect usage metrics from Amazon Web Services with Elastic Agent"
+        "description": "Collect usage metrics from Amazon Web Services with Elastic Agent",
+        "data_streams": [
+          "usage"
+        ]
       },
       {
         "name": "vpcflow",
@@ -8551,6 +9703,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "vpcflow"
         ]
       },
       {
@@ -8568,6 +9723,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "vpn"
         ]
       },
       {
@@ -8586,6 +9744,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "waf"
         ]
       }
     ],
@@ -8756,6 +9917,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "billing"
         ]
       },
       {
@@ -8773,6 +9937,9 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "cloudtrail"
         ]
       },
       {
@@ -8787,6 +9954,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "cloudwatch_logs",
+          "cloudwatch_metrics"
         ]
       },
       {
@@ -8804,6 +9975,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "dynamodb"
         ]
       },
       {
@@ -8821,6 +9995,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "ebs"
         ]
       },
       {
@@ -8835,6 +10012,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "ec2_logs",
+          "ec2_metrics"
         ]
       },
       {
@@ -8852,6 +10033,10 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "elb_logs",
+          "elb_metrics"
         ]
       },
       {
@@ -8866,6 +10051,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "lambda"
         ]
       },
       {
@@ -8883,6 +10071,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "natgateway"
         ]
       },
       {
@@ -8900,6 +10091,10 @@
         ],
         "categories": [
           "security"
+        ],
+        "data_streams": [
+          "firewall_logs",
+          "firewall_metrics"
         ]
       },
       {
@@ -8917,6 +10112,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "rds"
         ]
       },
       {
@@ -8935,6 +10133,11 @@
         "categories": [
           "datastore",
           "security"
+        ],
+        "data_streams": [
+          "s3_daily_storage",
+          "s3_request",
+          "s3access"
         ]
       },
       {
@@ -8952,6 +10155,9 @@
         ],
         "categories": [
           "datastore"
+        ],
+        "data_streams": [
+          "s3_storage_lens"
         ]
       },
       {
@@ -8966,6 +10172,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sns"
         ]
       },
       {
@@ -8980,6 +10189,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "sqs"
         ]
       },
       {
@@ -8997,12 +10209,18 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "transitgateway"
         ]
       },
       {
         "name": "usage",
         "title": "AWS Usage Metrics",
-        "description": "Collect usage metrics from Amazon Web Services with Elastic Agent"
+        "description": "Collect usage metrics from Amazon Web Services with Elastic Agent",
+        "data_streams": [
+          "usage"
+        ]
       },
       {
         "name": "vpcflow",
@@ -9020,6 +10238,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "vpcflow"
         ]
       },
       {
@@ -9037,6 +10258,9 @@
         ],
         "categories": [
           "network"
+        ],
+        "data_streams": [
+          "vpn"
         ]
       },
       {
@@ -9055,6 +10279,9 @@
         "categories": [
           "network",
           "security"
+        ],
+        "data_streams": [
+          "waf"
         ]
       },
       {
@@ -9069,6 +10296,10 @@
             "size": "32x40",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "route53_public_logs",
+          "route53_resolver_logs"
         ]
       }
     ],
@@ -9653,6 +10884,53 @@
       "cloud"
     ],
     "signature_path": "/epr/akamai/akamai-1.0.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "akamai.siem",
+        "title": "Akamai SIEM Logs"
+      }
+    ]
+  },
+  {
+    "name": "akamai",
+    "title": "Akamai",
+    "version": "2.28.0",
+    "release": "ga",
+    "description": "Collect logs from Akamai with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/akamai/akamai-2.28.0.zip",
+    "path": "/package/akamai/2.28.0",
+    "icons": [
+      {
+        "src": "/img/akamai_logo.svg",
+        "path": "/package/akamai/2.28.0/img/akamai_logo.svg",
+        "title": "Akamai",
+        "size": "409×167",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "akamai",
+        "title": "Akamai logs",
+        "description": "Collect SIEM logs from Akamai"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.13.0 || ^9.0.0"
+      }
+    },
+    "owner": {
+      "type": "community",
+      "github": "elastic/security-service-integrations"
+    },
+    "categories": [
+      "security",
+      "cdn_security"
+    ],
+    "signature_path": "/epr/akamai/akamai-2.28.0.zip.sig",
     "data_streams": [
       {
         "type": "logs",
@@ -12264,6 +13542,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "app_insights"
         ]
       },
       {
@@ -12278,6 +13559,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "app_state"
         ]
       }
     ],
@@ -12338,6 +13622,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "app_insights"
         ]
       },
       {
@@ -12352,6 +13639,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "app_state"
         ]
       }
     ],
@@ -12412,6 +13702,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "billing"
         ]
       }
     ],
@@ -12466,6 +13759,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "billing"
         ]
       }
     ],
@@ -12520,6 +13816,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "eventhub"
         ]
       },
       {
@@ -12534,6 +13833,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "auditlogs",
+          "signinlogs"
         ]
       },
       {
@@ -12548,6 +13851,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "platformlogs"
         ]
       },
       {
@@ -12562,6 +13868,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "activitylogs"
         ]
       },
       {
@@ -12576,6 +13885,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "springcloudlogs"
         ]
       }
     ],
@@ -12658,6 +13970,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "eventhub"
         ]
       },
       {
@@ -12672,6 +13987,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "auditlogs",
+          "signinlogs"
         ]
       },
       {
@@ -12686,6 +14005,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "platformlogs"
         ]
       },
       {
@@ -12700,6 +14022,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "activitylogs"
         ]
       },
       {
@@ -12714,6 +14039,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "springcloudlogs"
         ]
       }
     ],
@@ -12796,6 +14124,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "eventhub"
         ]
       },
       {
@@ -12810,6 +14141,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "auditlogs",
+          "signinlogs"
         ]
       },
       {
@@ -12824,6 +14159,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "platformlogs"
         ]
       },
       {
@@ -12838,6 +14176,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "activitylogs"
         ]
       },
       {
@@ -12852,6 +14193,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "springcloudlogs"
         ]
       }
     ],
@@ -12934,6 +14278,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "eventhub"
         ]
       },
       {
@@ -12948,6 +14295,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "auditlogs",
+          "signinlogs"
         ]
       },
       {
@@ -12962,6 +14313,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "platformlogs"
         ]
       },
       {
@@ -12976,6 +14330,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "activitylogs"
         ]
       },
       {
@@ -12990,6 +14347,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "springcloudlogs"
         ]
       }
     ],
@@ -13072,6 +14432,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "eventhub"
         ]
       },
       {
@@ -13086,6 +14449,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "auditlogs",
+          "signinlogs"
         ]
       },
       {
@@ -13100,6 +14467,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "platformlogs"
         ]
       },
       {
@@ -13114,6 +14484,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "activitylogs"
         ]
       },
       {
@@ -13128,6 +14501,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "springcloudlogs"
         ]
       }
     ],
@@ -13210,6 +14586,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "eventhub"
         ]
       },
       {
@@ -13224,6 +14603,10 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "auditlogs",
+          "signinlogs"
         ]
       },
       {
@@ -13238,6 +14621,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "platformlogs"
         ]
       },
       {
@@ -13252,6 +14638,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "activitylogs"
         ]
       },
       {
@@ -13266,6 +14655,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "springcloudlogs"
         ]
       }
     ],
@@ -13348,6 +14740,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "monitor"
         ]
       },
       {
@@ -13362,6 +14757,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "compute_vm"
         ]
       },
       {
@@ -13376,6 +14774,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "compute_vm_scaleset"
         ]
       },
       {
@@ -13390,6 +14791,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_registry"
         ]
       },
       {
@@ -13404,6 +14808,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_instance"
         ]
       },
       {
@@ -13418,6 +14825,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_service"
         ]
       },
       {
@@ -13432,6 +14842,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "database_account"
         ]
       },
       {
@@ -13446,6 +14859,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "storage_account"
         ]
       }
     ],
@@ -13536,6 +14952,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "monitor"
         ]
       },
       {
@@ -13550,6 +14969,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "compute_vm"
         ]
       },
       {
@@ -13564,6 +14986,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "compute_vm_scaleset"
         ]
       },
       {
@@ -13578,6 +15003,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_registry"
         ]
       },
       {
@@ -13592,6 +15020,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_instance"
         ]
       },
       {
@@ -13606,6 +15037,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_service"
         ]
       },
       {
@@ -13620,6 +15054,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "database_account"
         ]
       },
       {
@@ -13634,6 +15071,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "storage_account"
         ]
       }
     ],
@@ -13724,6 +15164,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "monitor"
         ]
       },
       {
@@ -13738,6 +15181,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "compute_vm"
         ]
       },
       {
@@ -13752,6 +15198,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "compute_vm_scaleset"
         ]
       },
       {
@@ -13766,6 +15215,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_registry"
         ]
       },
       {
@@ -13780,6 +15232,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_instance"
         ]
       },
       {
@@ -13794,6 +15249,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_service"
         ]
       },
       {
@@ -13808,6 +15266,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "database_account"
         ]
       },
       {
@@ -13822,6 +15283,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "storage_account"
         ]
       }
     ],
@@ -26306,6 +27770,13 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container",
+          "node",
+          "pod",
+          "system",
+          "volume"
         ]
       },
       {
@@ -26320,6 +27791,22 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "state_container",
+          "state_cronjob",
+          "state_daemonset",
+          "state_deployment",
+          "state_job",
+          "state_node",
+          "state_persistentvolume",
+          "state_persistentvolumeclaim",
+          "state_pod",
+          "state_replicaset",
+          "state_resourcequota",
+          "state_service",
+          "state_statefulset",
+          "state_storageclass"
         ]
       },
       {
@@ -26334,6 +27821,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "apiserver"
         ]
       },
       {
@@ -26348,6 +27838,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "proxy"
         ]
       },
       {
@@ -26362,6 +27855,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "scheduler"
         ]
       },
       {
@@ -26376,6 +27872,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "controllermanager"
         ]
       },
       {
@@ -26390,6 +27889,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "event"
         ]
       },
       {
@@ -26404,6 +27906,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_logs"
         ]
       }
     ],
@@ -26579,6 +28084,13 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container",
+          "node",
+          "pod",
+          "system",
+          "volume"
         ]
       },
       {
@@ -26593,6 +28105,22 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "state_container",
+          "state_cronjob",
+          "state_daemonset",
+          "state_deployment",
+          "state_job",
+          "state_node",
+          "state_persistentvolume",
+          "state_persistentvolumeclaim",
+          "state_pod",
+          "state_replicaset",
+          "state_resourcequota",
+          "state_service",
+          "state_statefulset",
+          "state_storageclass"
         ]
       },
       {
@@ -26607,6 +28135,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "apiserver"
         ]
       },
       {
@@ -26621,6 +28152,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "proxy"
         ]
       },
       {
@@ -26635,6 +28169,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "scheduler"
         ]
       },
       {
@@ -26649,6 +28186,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "controllermanager"
         ]
       },
       {
@@ -26663,6 +28203,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "event"
         ]
       },
       {
@@ -26677,6 +28220,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_logs"
         ]
       }
     ],
@@ -26852,6 +28398,13 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container",
+          "node",
+          "pod",
+          "system",
+          "volume"
         ]
       },
       {
@@ -26866,6 +28419,22 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "state_container",
+          "state_cronjob",
+          "state_daemonset",
+          "state_deployment",
+          "state_job",
+          "state_node",
+          "state_persistentvolume",
+          "state_persistentvolumeclaim",
+          "state_pod",
+          "state_replicaset",
+          "state_resourcequota",
+          "state_service",
+          "state_statefulset",
+          "state_storageclass"
         ]
       },
       {
@@ -26880,6 +28449,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "apiserver"
         ]
       },
       {
@@ -26894,6 +28466,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "proxy"
         ]
       },
       {
@@ -26908,6 +28483,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "scheduler"
         ]
       },
       {
@@ -26922,6 +28500,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "controllermanager"
         ]
       },
       {
@@ -26936,6 +28517,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "event"
         ]
       },
       {
@@ -26950,6 +28534,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_logs"
         ]
       }
     ],
@@ -27125,6 +28712,13 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container",
+          "node",
+          "pod",
+          "system",
+          "volume"
         ]
       },
       {
@@ -27139,6 +28733,22 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "state_container",
+          "state_cronjob",
+          "state_daemonset",
+          "state_deployment",
+          "state_job",
+          "state_node",
+          "state_persistentvolume",
+          "state_persistentvolumeclaim",
+          "state_pod",
+          "state_replicaset",
+          "state_resourcequota",
+          "state_service",
+          "state_statefulset",
+          "state_storageclass"
         ]
       },
       {
@@ -27153,6 +28763,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "apiserver"
         ]
       },
       {
@@ -27167,6 +28780,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "proxy"
         ]
       },
       {
@@ -27181,6 +28797,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "scheduler"
         ]
       },
       {
@@ -27195,6 +28814,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "controllermanager"
         ]
       },
       {
@@ -27209,6 +28831,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "event"
         ]
       },
       {
@@ -27223,6 +28848,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_logs"
         ]
       },
       {
@@ -27237,6 +28865,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "audit_logs"
         ]
       }
     ],
@@ -27417,6 +29048,13 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container",
+          "node",
+          "pod",
+          "system",
+          "volume"
         ]
       },
       {
@@ -27431,6 +29069,22 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "state_container",
+          "state_cronjob",
+          "state_daemonset",
+          "state_deployment",
+          "state_job",
+          "state_node",
+          "state_persistentvolume",
+          "state_persistentvolumeclaim",
+          "state_pod",
+          "state_replicaset",
+          "state_resourcequota",
+          "state_service",
+          "state_statefulset",
+          "state_storageclass"
         ]
       },
       {
@@ -27445,6 +29099,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "apiserver"
         ]
       },
       {
@@ -27459,6 +29116,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "proxy"
         ]
       },
       {
@@ -27473,6 +29133,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "scheduler"
         ]
       },
       {
@@ -27487,6 +29150,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "controllermanager"
         ]
       },
       {
@@ -27501,6 +29167,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "event"
         ]
       },
       {
@@ -27515,6 +29184,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_logs"
         ]
       }
     ],
@@ -27690,6 +29362,13 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container",
+          "node",
+          "pod",
+          "system",
+          "volume"
         ]
       },
       {
@@ -27704,6 +29383,22 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "state_container",
+          "state_cronjob",
+          "state_daemonset",
+          "state_deployment",
+          "state_job",
+          "state_node",
+          "state_persistentvolume",
+          "state_persistentvolumeclaim",
+          "state_pod",
+          "state_replicaset",
+          "state_resourcequota",
+          "state_service",
+          "state_statefulset",
+          "state_storageclass"
         ]
       },
       {
@@ -27718,6 +29413,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "apiserver"
         ]
       },
       {
@@ -27732,6 +29430,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "proxy"
         ]
       },
       {
@@ -27746,6 +29447,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "scheduler"
         ]
       },
       {
@@ -27760,6 +29464,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "controllermanager"
         ]
       },
       {
@@ -27774,6 +29481,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "event"
         ]
       },
       {
@@ -27788,6 +29498,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_logs"
         ]
       }
     ],
@@ -27963,6 +29676,13 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container",
+          "node",
+          "pod",
+          "system",
+          "volume"
         ]
       },
       {
@@ -27977,6 +29697,22 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "state_container",
+          "state_cronjob",
+          "state_daemonset",
+          "state_deployment",
+          "state_job",
+          "state_node",
+          "state_persistentvolume",
+          "state_persistentvolumeclaim",
+          "state_pod",
+          "state_replicaset",
+          "state_resourcequota",
+          "state_service",
+          "state_statefulset",
+          "state_storageclass"
         ]
       },
       {
@@ -27991,6 +29727,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "apiserver"
         ]
       },
       {
@@ -28005,6 +29744,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "proxy"
         ]
       },
       {
@@ -28019,6 +29761,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "scheduler"
         ]
       },
       {
@@ -28033,6 +29778,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "controllermanager"
         ]
       },
       {
@@ -28047,6 +29795,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "event"
         ]
       },
       {
@@ -28061,6 +29812,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_logs"
         ]
       }
     ],
@@ -28236,6 +29990,13 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container",
+          "node",
+          "pod",
+          "system",
+          "volume"
         ]
       },
       {
@@ -28250,6 +30011,22 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "state_container",
+          "state_cronjob",
+          "state_daemonset",
+          "state_deployment",
+          "state_job",
+          "state_node",
+          "state_persistentvolume",
+          "state_persistentvolumeclaim",
+          "state_pod",
+          "state_replicaset",
+          "state_resourcequota",
+          "state_service",
+          "state_statefulset",
+          "state_storageclass"
         ]
       },
       {
@@ -28264,6 +30041,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "apiserver"
         ]
       },
       {
@@ -28278,6 +30058,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "proxy"
         ]
       },
       {
@@ -28292,6 +30075,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "scheduler"
         ]
       },
       {
@@ -28306,6 +30092,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "controllermanager"
         ]
       },
       {
@@ -28320,6 +30109,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "event"
         ]
       },
       {
@@ -28334,6 +30126,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_logs"
         ]
       },
       {
@@ -28348,6 +30143,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "audit_logs"
         ]
       }
     ],
@@ -28528,6 +30326,13 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container",
+          "node",
+          "pod",
+          "system",
+          "volume"
         ]
       },
       {
@@ -28542,6 +30347,22 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "state_container",
+          "state_cronjob",
+          "state_daemonset",
+          "state_deployment",
+          "state_job",
+          "state_node",
+          "state_persistentvolume",
+          "state_persistentvolumeclaim",
+          "state_pod",
+          "state_replicaset",
+          "state_resourcequota",
+          "state_service",
+          "state_statefulset",
+          "state_storageclass"
         ]
       },
       {
@@ -28556,6 +30377,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "apiserver"
         ]
       },
       {
@@ -28570,6 +30394,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "proxy"
         ]
       },
       {
@@ -28584,6 +30411,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "scheduler"
         ]
       },
       {
@@ -28598,6 +30428,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "controllermanager"
         ]
       },
       {
@@ -28612,6 +30445,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "event"
         ]
       },
       {
@@ -28626,6 +30462,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_logs"
         ]
       },
       {
@@ -28640,6 +30479,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "audit_logs"
         ]
       }
     ],
@@ -28820,6 +30662,13 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container",
+          "node",
+          "pod",
+          "system",
+          "volume"
         ]
       },
       {
@@ -28834,6 +30683,22 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "state_container",
+          "state_cronjob",
+          "state_daemonset",
+          "state_deployment",
+          "state_job",
+          "state_node",
+          "state_persistentvolume",
+          "state_persistentvolumeclaim",
+          "state_pod",
+          "state_replicaset",
+          "state_resourcequota",
+          "state_service",
+          "state_statefulset",
+          "state_storageclass"
         ]
       },
       {
@@ -28848,6 +30713,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "apiserver"
         ]
       },
       {
@@ -28862,6 +30730,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "proxy"
         ]
       },
       {
@@ -28876,6 +30747,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "scheduler"
         ]
       },
       {
@@ -28890,6 +30764,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "controllermanager"
         ]
       },
       {
@@ -28904,6 +30781,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "event"
         ]
       },
       {
@@ -28918,6 +30798,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_logs"
         ]
       },
       {
@@ -28932,6 +30815,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "audit_logs"
         ]
       }
     ],
@@ -29112,6 +30998,13 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container",
+          "node",
+          "pod",
+          "system",
+          "volume"
         ]
       },
       {
@@ -29126,6 +31019,22 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "state_container",
+          "state_cronjob",
+          "state_daemonset",
+          "state_deployment",
+          "state_job",
+          "state_node",
+          "state_persistentvolume",
+          "state_persistentvolumeclaim",
+          "state_pod",
+          "state_replicaset",
+          "state_resourcequota",
+          "state_service",
+          "state_statefulset",
+          "state_storageclass"
         ]
       },
       {
@@ -29140,6 +31049,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "apiserver"
         ]
       },
       {
@@ -29154,6 +31066,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "proxy"
         ]
       },
       {
@@ -29168,6 +31083,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "scheduler"
         ]
       },
       {
@@ -29182,6 +31100,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "controllermanager"
         ]
       },
       {
@@ -29196,6 +31117,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "event"
         ]
       },
       {
@@ -29210,6 +31134,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_logs"
         ]
       },
       {
@@ -29224,6 +31151,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "audit_logs"
         ]
       }
     ],

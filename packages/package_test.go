@@ -338,3 +338,137 @@ func BenchmarkNewZipPackage(b *testing.B) {
 		assert.NoError(b, err)
 	}
 }
+
+func TestPackageSetRuntimeFields(t *testing.T) {
+	p := &Package{
+		FormatVersion: "3.5.0",
+		BasePackage: BasePackage{
+			Version: "3.6.0",
+			Conditions: &Conditions{
+				Kibana: &KibanaConditions{
+					Version: "^8.5.0",
+				},
+				Agent: &AgentConditions{
+					Version: "^8.5.0",
+				},
+			},
+		},
+	}
+
+	expectedVersion, err := semver.NewVersion("3.6.0")
+	require.NoError(t, err)
+	expectedKibanaConstraint, err := semver.NewConstraint("^8.5.0")
+	require.NoError(t, err)
+	expectedAgentConstraint, err := semver.NewConstraint("^8.5.0")
+	require.NoError(t, err)
+
+	err = p.setRuntimeFields()
+	require.NoError(t, err)
+	require.NotNil(t, p.versionSemVer)
+	require.NotNil(t, p.Conditions.Kibana.constraint)
+	require.NotNil(t, p.Conditions.Agent.constraint)
+	require.NotNil(t, p.specMajorMinorSemVer)
+
+	assert.Equal(t, expectedVersion, p.versionSemVer)
+	assert.Equal(t, expectedKibanaConstraint, p.Conditions.Kibana.constraint)
+	assert.Equal(t, expectedAgentConstraint, p.Conditions.Agent.constraint)
+	assert.Equal(t, "3.5.0", p.specMajorMinorSemVer.String())
+}
+
+func TestHasAgentVersion(t *testing.T) {
+	constraint, err := semver.NewConstraint("^5.6.0")
+	require.NoError(t, err)
+
+	tests := []struct {
+		name       string
+		pkg        *Package
+		versionStr string
+		expected   bool
+	}{
+		{
+			name: "no agent conditions",
+			pkg: &Package{
+				BasePackage: BasePackage{
+					Conditions: &Conditions{},
+				},
+			},
+			versionStr: "8.5.0",
+			expected:   true,
+		},
+		{
+			name: "no conditions",
+			pkg: &Package{
+				BasePackage: BasePackage{},
+			},
+			versionStr: "8.5.0",
+			expected:   true,
+		},
+		{
+			name: "empty input version",
+			pkg: &Package{
+				BasePackage: BasePackage{},
+			},
+			versionStr: "",
+			expected:   true,
+		},
+		{
+			name: "package without runtime conditions",
+			pkg: &Package{
+				BasePackage: BasePackage{
+					Conditions: &Conditions{
+						Agent: &AgentConditions{
+							Version: "^5.6.0",
+						},
+					},
+				},
+			},
+			versionStr: "4.5.0",
+			expected:   true,
+		},
+		{
+			name: "package with runtime conditions, valid check",
+			pkg: &Package{
+				BasePackage: BasePackage{
+					Conditions: &Conditions{
+						Agent: &AgentConditions{
+							Version:    "^5.6.0",
+							constraint: constraint,
+						},
+					},
+				},
+			},
+			versionStr: "5.8.0",
+			expected:   true,
+		},
+		{
+			name: "package with runtime conditions, not valid check",
+			pkg: &Package{
+				BasePackage: BasePackage{
+					Conditions: &Conditions{
+						Agent: &AgentConditions{
+							Version:    "^5.6.0",
+							constraint: constraint,
+						},
+					},
+				},
+			},
+			versionStr: "5.5.0",
+			expected:   false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+
+			var version *semver.Version
+			if tt.versionStr != "" {
+				var err error
+				version, err = semver.NewVersion(tt.versionStr)
+				require.NoError(t, err)
+			}
+
+			result := tt.pkg.HasAgentVersion(version)
+			assert.Equal(t, tt.expected, result)
+		})
+	}
+}

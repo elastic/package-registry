@@ -5,7 +5,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -40,9 +39,9 @@ func TestCategoriesWithProxyMode(t *testing.T) {
 	defer webServer.Close()
 
 	indexerProxy := packages.NewFileSystemIndexer(testLogger, "./testdata/second_package_path")
-	defer indexerProxy.Close(context.Background())
+	defer indexerProxy.Close(t.Context())
 
-	err := indexerProxy.Init(context.Background())
+	err := indexerProxy.Init(t.Context())
 	require.NoError(t, err)
 
 	proxyMode, err := proxymode.NewProxyMode(
@@ -54,16 +53,19 @@ func TestCategoriesWithProxyMode(t *testing.T) {
 	)
 	require.NoError(t, err)
 
-	categoriesWithProxyHandler := categoriesHandlerWithProxyMode(testLogger, indexerProxy, proxyMode, testCacheTime)
+	categoriesHandler, err := newCategoriesHandler(testLogger, indexerProxy, testCacheTime,
+		categoriesWithProxy(proxyMode),
+	)
+	require.NoError(t, err)
 
 	tests := []struct {
 		endpoint string
 		path     string
 		file     string
-		handler  func(w http.ResponseWriter, r *http.Request)
+		handler  http.Handler
 	}{
-		{"/categories", "/categories", "categories-proxy.json", categoriesWithProxyHandler},
-		{"/categories?kibana.version=6.5.0", "/categories", "categories-proxy-kibana-filter.json", categoriesWithProxyHandler},
+		{"/categories", "/categories", "categories-proxy.json", categoriesHandler},
+		{"/categories?kibana.version=6.5.0", "/categories", "categories-proxy-kibana-filter.json", categoriesHandler},
 	}
 
 	for _, test := range tests {
@@ -185,7 +187,7 @@ func TestGetCategories(t *testing.T) {
 
 	for _, c := range cases {
 		t.Run(c.Title, func(t *testing.T) {
-			result := getCategories(context.Background(), pkgs, c.IncludePolicyTemplates)
+			result := getCategories(t.Context(), pkgs, c.IncludePolicyTemplates)
 			assert.Equal(t, c.Expected, result)
 		})
 	}
