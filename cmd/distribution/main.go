@@ -74,10 +74,11 @@ func usageAndExit(status int) {
 }
 
 type config struct {
-	Address string `yaml:"address"`
-	Matrix  []configQuery
-	Queries []configQuery `yaml:"queries"`
-	Actions configActions `yaml:"actions"`
+	Address  string          `yaml:"address"`
+	Matrix   []configQuery   `yaml:"matrix"`
+	Queries  []configQuery   `yaml:"queries"`
+	Packages []configPackage `yaml:"packages"`
+	Actions  configActions   `yaml:"actions"`
 }
 
 func (c config) urls() (iter.Seq[*url.URL], error) {
@@ -122,6 +123,12 @@ func (c config) urls() (iter.Seq[*url.URL], error) {
 	}, nil
 }
 
+// downloadPathForPackage returns the paths to download the package with the given name and version and its signature.
+func (c config) downloadPathForPackage(name, version string) (string, string) {
+	path := path.Join("epr", name, fmt.Sprintf("%s-%s.zip", name, version))
+	return path, path + ".sig"
+}
+
 func (c config) collect(client *http.Client) ([]packageInfo, error) {
 	urls, err := c.urls()
 	if err != nil {
@@ -132,6 +139,15 @@ func (c config) collect(client *http.Client) ([]packageInfo, error) {
 		Name, Version string
 	}
 	packagesMap := make(map[key]packageInfo)
+
+	pinnedPackages, err := c.pinnedPackages()
+	if err != nil {
+		return nil, fmt.Errorf("failed to prepare pinned packages: %w", err)
+	}
+	for _, p := range pinnedPackages {
+		packagesMap[key{Name: p.Name, Version: p.Version}] = p
+	}
+
 	taskPool := newTaskPool(runtime.GOMAXPROCS(0))
 	for u := range urls {
 		taskPool.Do(func() error {
@@ -184,6 +200,20 @@ func (c config) collect(client *http.Client) ([]packageInfo, error) {
 	return result, nil
 }
 
+func (c config) pinnedPackages() ([]packageInfo, error) {
+	packages := make([]packageInfo, len(c.Packages))
+	for i, p := range c.Packages {
+		download, signature := c.downloadPathForPackage(p.Name, p.Version)
+		packages[i] = packageInfo{
+			Name:          p.Name,
+			Version:       p.Version,
+			Download:      download,
+			SignaturePath: signature,
+		}
+	}
+	return packages, nil
+}
+
 type configQuery struct {
 	Package       string `yaml:"package" url:"package,omitempty"`
 	All           bool   `yaml:"all" url:"all,omitempty"`
@@ -192,6 +222,11 @@ type configQuery struct {
 	KibanaVersion string `yaml:"kibana.version" url:"kibana.version,omitempty"`
 	SpecMin       string `yaml:"spec.min" url:"spec.min,omitempty"`
 	SpecMax       string `yaml:"spec.max" url:"spec.max,omitempty"`
+}
+
+type configPackage struct {
+	Name    string `yaml:"name"`
+	Version string `yaml:"version"`
 }
 
 func (q configQuery) Build() url.Values {
