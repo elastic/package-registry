@@ -18,7 +18,7 @@ func Example_config_urls() {
 		},
 	}
 
-	urls, err := config.urls()
+	urls, err := config.searchURLs()
 	if err != nil {
 		panic(err)
 	}
@@ -49,7 +49,7 @@ func Example_config_urls_matrix() {
 		},
 	}
 
-	urls, err := config.urls()
+	urls, err := config.searchURLs()
 	if err != nil {
 		panic(err)
 	}

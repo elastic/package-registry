@@ -8,13 +8,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
 	"iter"
 	"net/http"
 	"net/url"
 	"os"
 	"path"
-	"path/filepath"
 	"runtime"
 	"slices"
 	"strings"
@@ -81,7 +79,8 @@ type config struct {
 	Actions  configActions   `yaml:"actions"`
 }
 
-func (c config) urls() (iter.Seq[*url.URL], error) {
+// searchURLs generates the search searchURLs required for the given configuration.
+func (c config) searchURLs() (iter.Seq[*url.URL], error) {
 	address := defaultAddress
 	if c.Address != "" {
 		address = c.Address
@@ -130,7 +129,7 @@ func (c config) downloadPathForPackage(name, version string) (string, string) {
 }
 
 func (c config) collect(client *http.Client) ([]packageInfo, error) {
-	urls, err := c.urls()
+	urls, err := c.searchURLs()
 	if err != nil {
 		return nil, fmt.Errorf("failed to build URLs: %w", err)
 	}
@@ -311,53 +310,4 @@ func (a *printAction) init(c config) error {
 func (a *printAction) perform(i packageInfo) error {
 	fmt.Println("- ", i.Name, i.Version)
 	return nil
-}
-
-type downloadAction struct {
-	client *http.Client
-
-	Address     string `yaml:"address"`
-	Destination string `yaml:"destination"`
-}
-
-func (a *downloadAction) init(c config) error {
-	a.client = &http.Client{}
-	if a.Address == "" {
-		a.Address = c.Address
-	}
-	return os.MkdirAll(a.Destination, 0755)
-}
-
-func (a *downloadAction) perform(i packageInfo) error {
-	if err := a.download(i.Download); err != nil {
-		return fmt.Errorf("failed to download package %s: %w", i.Download, err)
-	}
-	if err := a.download(i.SignaturePath); err != nil {
-		return fmt.Errorf("failed to download signature %s: %w", i.SignaturePath, err)
-	}
-	return nil
-}
-
-func (a *downloadAction) download(urlPath string) error {
-	p, err := url.JoinPath(a.Address, urlPath)
-	if err != nil {
-		return fmt.Errorf("failed to build url: %w", err)
-	}
-	resp, err := a.client.Get(p)
-	if err != nil {
-		return fmt.Errorf("failed to get %s: %w", urlPath, err)
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("failed to get %s (status code %d)", urlPath, resp.StatusCode)
-	}
-
-	f, err := os.Create(filepath.Join(a.Destination, path.Base(urlPath)))
-	if err != nil {
-		return fmt.Errorf("failed to open %s in %s: %w", path.Base(urlPath), a.Destination, err)
-	}
-	defer f.Close()
-
-	_, err = io.Copy(f, resp.Body)
-	return err
 }
