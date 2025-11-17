@@ -397,7 +397,7 @@ func initIndexer(ctx context.Context, logger *zap.Logger, options serverOptions)
 		packages.NewZipFileSystemIndexer(logger, 0, packagesBasePaths...),
 		packages.NewFileSystemIndexer(logger, 0, packagesBasePaths...),
 	)
-	ensurePackagesAvailable(ctx, logger, combined)
+	ensurePackagesAvailable(ctx, logger, combined, options)
 	return combined
 }
 
@@ -580,6 +580,7 @@ func getConfig(logger *zap.Logger) (*Config, error) {
 		config.CategoriesCacheTTL = cacheTTL
 	}
 
+	// Flag overrides config
 	if packagePathsAllowEmpty {
 		config.PackagePathsAllowEmpty = true
 	}
@@ -613,7 +614,7 @@ func printConfig(logger *zap.Logger, config *Config) {
 	}
 }
 
-func ensurePackagesAvailable(ctx context.Context, logger *zap.Logger, indexer Indexer) {
+func ensurePackagesAvailable(ctx context.Context, logger *zap.Logger, indexer Indexer, options serverOptions) {
 	err := indexer.Init(ctx)
 	if err != nil {
 		logger.Fatal("Init failed", zap.Error(err))
@@ -628,7 +629,7 @@ func ensurePackagesAvailable(ctx context.Context, logger *zap.Logger, indexer In
 		logger.Info(fmt.Sprintf("%v local package manifests loaded.", len(packages)))
 	} else if featureProxyMode {
 		logger.Info("No local packages found, but the proxy mode can access remote ones.")
-	} else if packagePathsAllowEmpty {
+	} else if options.config.PackagePathsAllowEmpty {
 		logger.Warn("No packages found at startup. The registry is running but no content is available yet.")
 	} else {
 		logger.Fatal("No local packages found.")
