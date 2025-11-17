@@ -17,8 +17,8 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/Masterminds/semver/v3"
 	"github.com/google/go-querystring/query"
-	"golang.org/x/mod/semver"
 	"gopkg.in/yaml.v3"
 )
 
@@ -193,7 +193,21 @@ func (c config) collect(client *http.Client) ([]packageInfo, error) {
 			return n
 		}
 
-		return semver.Compare(a.Version, b.Version)
+		// An invalid semantic version string is considered less than a valid one.
+		// All invalid semantic version strings compare equal to each other.
+		// From https://pkg.go.dev/golang.org/x/mod/semver#Compare
+		va, errA := semver.NewVersion(a.Version)
+		vb, errB := semver.NewVersion(b.Version)
+		switch {
+		case errA != nil && errB != nil:
+			return 0
+		case errA != nil:
+			return -1
+		case errB != nil:
+			return 1
+		}
+
+		return va.Compare(vb)
 	})
 
 	return result, nil
