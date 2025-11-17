@@ -143,11 +143,12 @@ func NewFileSystemIndexer(logger *zap.Logger, watchInterval time.Duration, paths
 		return false, nil
 	}
 	return &FileSystemIndexer{
-		paths:     paths,
-		label:     "FileSystemIndexer",
-		walkerFn:  walkerFn,
-		fsBuilder: ExtractedFileSystemBuilder,
-		logger:    logger,
+		paths:         paths,
+		label:         "FileSystemIndexer",
+		walkerFn:      walkerFn,
+		fsBuilder:     ExtractedFileSystemBuilder,
+		logger:        logger,
+		watchInterval: watchInterval,
 	}
 }
 
@@ -177,11 +178,12 @@ func NewZipFileSystemIndexer(logger *zap.Logger, watchInterval time.Duration, pa
 		return true, nil
 	}
 	return &FileSystemIndexer{
-		paths:     paths,
-		label:     "ZipFileSystemIndexer",
-		walkerFn:  walkerFn,
-		fsBuilder: ZipFileSystemBuilder,
-		logger:    logger,
+		paths:         paths,
+		label:         "ZipFileSystemIndexer",
+		walkerFn:      walkerFn,
+		fsBuilder:     ZipFileSystemBuilder,
+		logger:        logger,
+		watchInterval: watchInterval,
 	}
 }
 
