@@ -109,10 +109,12 @@ type FileSystemIndexer struct {
 	fsBuilder FileSystemBuilder
 
 	logger *zap.Logger
+
+	watchInterval time.Duration
 }
 
 // NewFileSystemIndexer creates a new FileSystemIndexer for the given paths.
-func NewFileSystemIndexer(logger *zap.Logger, paths ...string) *FileSystemIndexer {
+func NewFileSystemIndexer(logger *zap.Logger, watchInterval time.Duration, paths ...string) *FileSystemIndexer {
 	walkerFn := func(basePath, path string, info os.DirEntry) (bool, error) {
 		relativePath, err := filepath.Rel(basePath, path)
 		if err != nil {
@@ -154,7 +156,7 @@ var ExtractedFileSystemBuilder = func(p *Package) (PackageFileSystem, error) {
 }
 
 // NewZipFileSystemIndexer creates a new ZipFileSystemIndexer for the given paths.
-func NewZipFileSystemIndexer(logger *zap.Logger, paths ...string) *FileSystemIndexer {
+func NewZipFileSystemIndexer(logger *zap.Logger, watchInterval time.Duration, paths ...string) *FileSystemIndexer {
 	walkerFn := func(basePath, path string, info os.DirEntry) (bool, error) {
 		if info.IsDir() {
 			return false, nil
@@ -192,6 +194,23 @@ func (i *FileSystemIndexer) Init(ctx context.Context) (err error) {
 	i.packageList, err = i.getPackagesFromFileSystem(ctx)
 	if err != nil {
 		return fmt.Errorf("reading packages from filesystem failed: %w", err)
+	}
+	if i.watchInterval > 0 {
+		i.logger.Info("Watching package paths for changes",
+			zap.Duration("interval", i.watchInterval))
+		go func() {
+			ticker := time.NewTicker(i.watchInterval)
+			defer ticker.Stop()
+			for range ticker.C {
+				i.logger.Debug("Refreshing packages from filesystem")
+				newPackageList, err := i.getPackagesFromFileSystem(ctx)
+				if err != nil {
+					i.logger.Error("reading packages from filesystem failed", zap.Error(err))
+					continue
+				}
+				i.packageList = newPackageList
+			}
+		}()
 	}
 	return nil
 }
