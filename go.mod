@@ -5,6 +5,7 @@ go 1.24.0
 require (
 	cloud.google.com/go/storage v1.57.1
 	github.com/Masterminds/semver/v3 v3.4.0
+	github.com/ProtonMail/go-crypto v1.3.0
 	github.com/elastic/go-licenser v0.4.2
 	github.com/elastic/go-ucfg v0.8.8
 	github.com/felixge/httpsnoop v1.0.4
@@ -48,6 +49,7 @@ require (
 	github.com/armon/go-radix v1.0.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
+	github.com/cloudflare/circl v1.6.0 // indirect
 	github.com/cncf/xds/go v0.0.0-20250501225837-2ac532fd4443 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect

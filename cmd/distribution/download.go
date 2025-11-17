@@ -15,7 +15,7 @@ import (
 	"path"
 	"path/filepath"
 
-	"golang.org/x/crypto/openpgp"
+	"github.com/ProtonMail/go-crypto/openpgp"
 )
 
 type downloadAction struct {
@@ -102,7 +102,7 @@ func (a *downloadAction) valid(info packageInfo) (bool, error) {
 	}
 	defer signature.Close()
 
-	_, err = openpgp.CheckArmoredDetachedSignature(a.keyRing, signed, signature)
+	_, err = openpgp.CheckArmoredDetachedSignature(a.keyRing, signed, signature, nil)
 	if err != nil {
 		return false, err
 	}
