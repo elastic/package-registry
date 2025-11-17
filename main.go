@@ -84,7 +84,8 @@ var (
 	proxyTo          string
 	serviceName      = getServiceName()
 
-	packagePathsAllowEmpty = false
+	packagePathsAllowEmpty    = false
+	packagePathsWatchInterval time.Duration
 
 	defaultConfig = Config{
 		CacheTimeIndex:               10 * time.Second,
@@ -132,6 +133,7 @@ func init() {
 	flag.StringVar(&proxyTo, "proxy-to", "https://epr.elastic.co/", "Proxy-to endpoint")
 
 	flag.BoolVar(&packagePathsAllowEmpty, "package-paths-allow-empty", false, "Allow empty package paths on startup")
+	flag.DurationVar(&packagePathsWatchInterval, "package-paths-watch-interval", 1*time.Minute, "Watch interval for package paths")
 }
 
 type Config struct {
@@ -145,7 +147,6 @@ type Config struct {
 	SearchCacheTTL               time.Duration `config:"search.cache_ttl"`                 // technical preview, used by the SQL storage indexe^
 	CategoriesCacheSize          int           `config:"categories.cache_size"`            // technical preview, used by the SQL storage indexer
 	CategoriesCacheTTL           time.Duration `config:"categories.cache_ttl"`             // technical preview, used by the SQL storage indexer
-	PackagePathsAllowEmpty       bool          `config:"package_paths_allow_empty"`
 }
 
 func main() {
@@ -393,11 +394,17 @@ func initIndexer(ctx context.Context, logger *zap.Logger, options serverOptions)
 		combined = append(combined, indexer)
 	}
 
+	var fsWatchInterval time.Duration
+	if packagePathsAllowEmpty {
+		// Only allow watch when empty paths are allowed
+		fsWatchInterval = packagePathsWatchInterval
+	}
+
 	combined = append(combined,
-		packages.NewZipFileSystemIndexer(logger, 0, packagesBasePaths...),
-		packages.NewFileSystemIndexer(logger, 0, packagesBasePaths...),
+		packages.NewZipFileSystemIndexer(logger, fsWatchInterval, packagesBasePaths...),
+		packages.NewFileSystemIndexer(logger, fsWatchInterval, packagesBasePaths...),
 	)
-	ensurePackagesAvailable(ctx, logger, combined, options)
+	ensurePackagesAvailable(ctx, logger, combined)
 	return combined
 }
 
@@ -580,10 +587,6 @@ func getConfig(logger *zap.Logger) (*Config, error) {
 		config.CategoriesCacheTTL = cacheTTL
 	}
 
-	// Flag overrides config
-	if packagePathsAllowEmpty {
-		config.PackagePathsAllowEmpty = true
-	}
 	return &config, nil
 }
 
@@ -614,7 +617,7 @@ func printConfig(logger *zap.Logger, config *Config) {
 	}
 }
 
-func ensurePackagesAvailable(ctx context.Context, logger *zap.Logger, indexer Indexer, options serverOptions) {
+func ensurePackagesAvailable(ctx context.Context, logger *zap.Logger, indexer Indexer) {
 	err := indexer.Init(ctx)
 	if err != nil {
 		logger.Fatal("Init failed", zap.Error(err))
@@ -629,7 +632,7 @@ func ensurePackagesAvailable(ctx context.Context, logger *zap.Logger, indexer In
 		logger.Info(fmt.Sprintf("%v local package manifests loaded.", len(packages)))
 	} else if featureProxyMode {
 		logger.Info("No local packages found, but the proxy mode can access remote ones.")
-	} else if options.config.PackagePathsAllowEmpty {
+	} else if packagePathsAllowEmpty {
 		logger.Warn("No packages found at startup. The registry is running but no content is available yet.")
 	} else {
 		logger.Fatal("No local packages found.")
