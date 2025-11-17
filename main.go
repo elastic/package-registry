@@ -47,8 +47,7 @@ import (
 )
 
 const (
-	serviceName         = "package-registry"
-	version             = "1.32.2"
+	version             = "1.33.1"
 	defaultInstanceName = "localhost"
 )
 
@@ -83,6 +82,7 @@ var (
 
 	featureProxyMode bool
 	proxyTo          string
+	serviceName      = getServiceName()
 
 	defaultConfig = Config{
 		CacheTimeIndex:               10 * time.Second,
@@ -334,6 +334,13 @@ func getHostname() string {
 		return defaultInstanceName
 	}
 	return hostname
+}
+
+func getServiceName() string {
+	if name := os.Getenv("ELASTIC_APM_SERVICE_NAME"); name != "" {
+		return name
+	}
+	return "package-registry"
 }
 
 func initMetricsServer(logger *zap.Logger) {

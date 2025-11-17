@@ -124,6 +124,12 @@ func generateTestCaseStorageEndpoints(indexer Indexer) ([]struct {
 		// Test queries with unknown query parameters
 		{"/search?package=yamlpipeline&unknown=true", "/search", "search-unknown-query-parameter-error.txt", disallowUnknownQueryParamsSearchHandler},
 		{"/search?package=yamlpipeline&unknown=true", "/search", "search-allowed-unknown-query-parameter.json", searchHandler},
+
+		// Test agent.version filtering
+		{"/search?package=1password&agent.version=9.1.0", "/search", "search-agent-910.json", searchHandler},
+		{"/search?package=1password&agent.version=9.5.0", "/search", "search-agent-950.json", searchHandler},
+		{"/categories?agent.version=9.1.0", "/categories", "categories-agent-910.json", categoriesHandler},
+		{"/categories?agent.version=9.5.0", "/categories", "categories-agent-950.json", categoriesHandler},
 	}, nil
 }
 

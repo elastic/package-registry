@@ -6,6 +6,7 @@ package storage
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"path/filepath"
 	"testing"
@@ -147,6 +148,13 @@ func BenchmarkSQLIndexerGet(b *testing.B) {
 	err = indexer.Init(b.Context())
 	require.NoError(b, err)
 
+	var discoveryPackageFilter packages.Filter
+	discoveryFilterDataset, err := packages.NewDiscoveryFilter("fields:process.pid")
+	require.NoError(b, err)
+	discoveryPackageFilter.Discovery = append(discoveryPackageFilter.Discovery, discoveryFilterDataset)
+	discoveryPackageFilter.AllVersions = false
+	discoveryPackageFilter.Prerelease = false
+
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		indexer.Get(b.Context(), &packages.GetOptions{})
@@ -166,6 +174,80 @@ func BenchmarkSQLIndexerGet(b *testing.B) {
 			SpecMin:     semver.MustParse("3.0"),
 			SpecMax:     semver.MustParse("3.3"),
 		}})
+		indexer.Get(b.Context(), &packages.GetOptions{Filter: &packages.Filter{
+			AllVersions:   false,
+			Prerelease:    false,
+			KibanaVersion: semver.MustParse("9.0.0"),
+		}})
+		indexer.Get(b.Context(), &packages.GetOptions{Filter: &packages.Filter{
+			AllVersions:  false,
+			Prerelease:   false,
+			Capabilities: []string{"security", "observability"},
+		}})
+		indexer.Get(b.Context(), &packages.GetOptions{Filter: &packages.Filter{
+			AllVersions:  false,
+			Prerelease:   false,
+			Capabilities: []string{"apm"},
+		}})
+		indexer.Get(b.Context(), &packages.GetOptions{Filter: &discoveryPackageFilter})
+	}
+}
+
+func BenchmarkSQLIndexerGetStaticsAndArtifacts(b *testing.B) {
+	// given
+	folder := b.TempDir()
+	dbPath := filepath.Join(folder, "test.db")
+	db, err := database.NewFileSQLDB(database.FileSQLDBOptions{Path: dbPath})
+	require.NoError(b, err)
+
+	swapDbPath := filepath.Join(folder, "swap_test.db")
+	swapDb, err := database.NewFileSQLDB(database.FileSQLDBOptions{Path: swapDbPath})
+	require.NoError(b, err)
+
+	options, err := CreateFakeIndexerOptions(db, swapDb)
+	require.NoError(b, err)
+
+	fs := PrepareFakeServer(b, "../../storage/testdata/search-index-all-full.json")
+	defer fs.Stop()
+	storageClient := fs.Client()
+
+	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
+
+	ctx := context.Background()
+	indexer := NewIndexer(logger, storageClient, options)
+	defer indexer.Close(ctx)
+
+	err = indexer.Init(ctx)
+	require.NoError(b, err)
+
+	skipJSON := true
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		// Mimic call to static handler
+		indexer.Get(context.Background(), &packages.GetOptions{Filter: &packages.Filter{
+			PackageName:    "aws",
+			PackageVersion: "1.16.4",
+			Prerelease:     true,
+			Experimental:   true,
+		}, SkipPackageData: skipJSON})
+		indexer.Get(context.Background(), &packages.GetOptions{Filter: &packages.Filter{
+			PackageName:    "zoom",
+			PackageVersion: "1.2.1",
+			Prerelease:     true,
+			Experimental:   true,
+		}, SkipPackageData: skipJSON})
+		indexer.Get(context.Background(), &packages.GetOptions{Filter: &packages.Filter{
+			PackageName:    "aws",
+			PackageVersion: "1.16.4",
+			Prerelease:     true,
+			Experimental:   true,
+		}, SkipPackageData: skipJSON})
+		indexer.Get(context.Background(), &packages.GetOptions{Filter: &packages.Filter{
+			PackageName:    "zoom",
+			PackageVersion: "1.2.1",
+			Prerelease:     true,
+			Experimental:   true,
+		}, SkipPackageData: skipJSON})
 	}
 }
 
@@ -480,4 +562,95 @@ func TestSQLGet_IndexUpdated(t *testing.T) {
 	require.Equal(t, "1password", foundPackages[0].Name)
 	require.Equal(t, "0.2.0", foundPackages[0].Version)
 	require.Equal(t, "1Password Events Reporting UPDATED", *foundPackages[0].Title)
+}
+
+func TestCreateDatabasePackage(t *testing.T) {
+	t.Parallel()
+
+	cases := []struct {
+		title    string
+		cursor   string
+		pkgBytes []byte
+		expected *database.Package
+	}{
+		{
+			title: "package with minimum data",
+			pkgBytes: []byte(`{
+  "name": "mypackage",
+  "version": "1.2.3",
+  "format_version": "2.2.2",
+  "type": "integration",
+  "description": "My package description",
+  "categories": ["cat1", "cat2"],
+  "conditions": {
+    "kibana": {
+      "version": "^8.17.0"
+	}
+  }
+}`),
+			cursor: "1",
+			expected: &database.Package{
+				Cursor:                  "1",
+				Name:                    "mypackage",
+				Version:                 "1.2.3",
+				VersionMajor:            1,
+				VersionMinor:            2,
+				VersionPatch:            3,
+				KibanaVersion:           "^8.17.0",
+				FormatVersion:           "2.2.2",
+				FormatVersionMajorMinor: "2.2.0",
+				Type:                    "integration",
+				Path:                    "mypackage-1.2.3.zip",
+				Data:                    []byte(`{"name":"mypackage","version":"1.2.3","description":"My package description","type":"integration","download":"","path":"","conditions":{"kibana":{"version":"^8.17.0"}},"categories":["cat1","cat2"],"format_version":"2.2.2"}`),
+				BaseData:                []byte(`{"name":"mypackage","version":"1.2.3","description":"My package description","type":"integration","download":"","path":"","conditions":{"kibana":{"version":"^8.17.0"}},"categories":["cat1","cat2"]}`),
+				Prerelease:              false,
+			},
+		},
+		{
+			title: "prerelease package",
+			pkgBytes: []byte(`{
+  "name": "mypackage",
+  "version": "1.2.3-beta1",
+  "format_version": "2.2.2",
+  "type": "integration",
+  "description": "My package description",
+  "categories": ["cat1", "cat2"],
+  "conditions": {
+    "kibana": {
+      "version": "^8.17.0"
+	}
+  }
+}`),
+			cursor: "1",
+			expected: &database.Package{
+				Cursor:                  "1",
+				Name:                    "mypackage",
+				Version:                 "1.2.3-beta1",
+				VersionMajor:            1,
+				VersionMinor:            2,
+				VersionPatch:            3,
+				VersionPrerelease:       "beta1",
+				KibanaVersion:           "^8.17.0",
+				FormatVersion:           "2.2.2",
+				FormatVersionMajorMinor: "2.2.0",
+				Type:                    "integration",
+				Path:                    "mypackage-1.2.3-beta1.zip",
+				Data:                    []byte(`{"name":"mypackage","version":"1.2.3-beta1","description":"My package description","type":"integration","download":"","path":"","conditions":{"kibana":{"version":"^8.17.0"}},"categories":["cat1","cat2"],"format_version":"2.2.2"}`),
+				BaseData:                []byte(`{"name":"mypackage","version":"1.2.3-beta1","description":"My package description","type":"integration","download":"","path":"","conditions":{"kibana":{"version":"^8.17.0"}},"categories":["cat1","cat2"]}`),
+				Prerelease:              true,
+			},
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.title, func(t *testing.T) {
+			// when
+			pkg := &packages.Package{}
+			err := json.Unmarshal(c.pkgBytes, pkg)
+			require.NoError(t, err, "package should be unmarshalled")
+			dbPkg, err := createDatabasePackage(pkg, c.cursor)
+			require.NoError(t, err, "database package should be created")
+			// then
+			assert.Equal(t, c.expected, dbPkg)
+		})
+	}
 }

@@ -4,13 +4,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased](https://github.com/elastic/package-registry/compare/v1.32.1...main)
+## [unreleased](https://github.com/elastic/package-registry/compare/v1.33.0...main)
 
 ### Breaking changes
 
 ### Bugfixes
 
 ### Added
+
+### Deprecated
+
+### Known Issues
+
+
+## [v1.33.0](https://github.com/elastic/package-registry/compare/v1.32.1...v1.33.0)
+
+### Breaking changes
+
+### Bugfixes
+
+* Update Go runtime to 1.25.3. [#1468](https://github.com/elastic/package-registry/pull/1468)
+* Fix performance issues when parsing some invalid certificates. [#1468](https://github.com/elastic/package-registry/pull/1468)
+
+### Added
+
+* Add new `agent.version` condition to search and categories endpoints. [#1460](https://github.com/elastic/package-registry/pull/1460)
+* Avoid parsing JSON columns in queries performed to artifacts related endpoints (SQL storage indexer). [#1386](https://github.com/elastic/package-registry/pull/1386)
+* Include SQL functions to improve filtering (SQL storage indexer). [#1442](https://github.com/elastic/package-registry/pull/1442)
+* Return just latest packages based on semantic versioning if `all=false` (SQL storage indexer). [#1445](https://github.com/elastic/package-registry/pull/1445)
+* Apply a capabilities filter at database level if capabilities query parameter is set (SQL storage indexer). [#1448](https://github.com/elastic/package-registry/pull/1448)
+* Apply the discovery filter at database level if discovery query parameter is set (SQL storage indexer). [#1454](https://github.com/elastic/package-registry/pull/1454)
 
 ### Deprecated
 

@@ -227,6 +227,13 @@ func newSearchFilterFromQuery(query url.Values, allowUnknownQueryParameters bool
 		case "internal":
 			// Parameter removed in https://github.com/elastic/package-registry/pull/765
 			// Keep it here to avoid breaking existing clients.
+		case "agent.version":
+			if v != "" {
+				filter.AgentVersion, err = semver.NewVersion(v)
+				if err != nil {
+					return nil, fmt.Errorf("invalid agent version '%s': %w", v, err)
+				}
+			}
 		default:
 			if !allowUnknownQueryParameters {
 				return nil, fmt.Errorf("unknown query parameter: %q", key)
