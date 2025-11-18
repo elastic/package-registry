@@ -277,8 +277,8 @@ const categories = [
   // add more combinations as needed
 ];
 
-const minSleep = 0;
-const maxSleep = 1;
+const minSleep = 1;
+const maxSleep = 2;
 
 const shuffleArray = (array) => {
   let arrayCopy = Array.from(array);
