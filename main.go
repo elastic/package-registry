@@ -184,6 +184,9 @@ func main() {
 	ctx := context.Background()
 
 	config := mustLoadConfig(logger)
+	if len(config.PackagePaths) == 0 {
+		logger.Fatal("no package paths configured, please set at least one path in the configuration file")
+	}
 
 	options := serverOptions{
 		apmTracer: apmTracer,
