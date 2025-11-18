@@ -84,8 +84,7 @@ var (
 	proxyTo          string
 	serviceName      = getServiceName()
 
-	packagePathsAllowEmpty    = false
-	packagePathsWatchInterval time.Duration
+	packagePathsEnableWatcher = false
 
 	defaultConfig = Config{
 		CacheTimeIndex:               10 * time.Second,
@@ -132,8 +131,7 @@ func init() {
 	flag.BoolVar(&featureProxyMode, "feature-proxy-mode", false, "Enable proxy mode to include packages from other endpoint (technical preview).")
 	flag.StringVar(&proxyTo, "proxy-to", "https://epr.elastic.co/", "Proxy-to endpoint")
 
-	flag.BoolVar(&packagePathsAllowEmpty, "package-paths-allow-empty", false, "Allow empty package paths on startup")
-	flag.DurationVar(&packagePathsWatchInterval, "package-paths-watch-interval", 1*time.Minute, "Watch interval for package paths")
+	flag.BoolVar(&packagePathsEnableWatcher, "package-paths-enable-watcher", false, "Enable file system watcher for package paths to automatically detect new packages.")
 }
 
 type Config struct {
@@ -397,15 +395,9 @@ func initIndexer(ctx context.Context, logger *zap.Logger, options serverOptions)
 		combined = append(combined, indexer)
 	}
 
-	var fsWatchInterval time.Duration
-	if packagePathsAllowEmpty {
-		// Only allow watch when empty paths are allowed
-		fsWatchInterval = packagePathsWatchInterval
-	}
-
 	combined = append(combined,
-		packages.NewZipFileSystemIndexer(logger, fsWatchInterval, packagesBasePaths...),
-		packages.NewFileSystemIndexer(logger, fsWatchInterval, packagesBasePaths...),
+		packages.NewZipFileSystemIndexer(logger, packagePathsEnableWatcher, packagesBasePaths...),
+		packages.NewFileSystemIndexer(logger, packagePathsEnableWatcher, packagesBasePaths...),
 	)
 	ensurePackagesAvailable(ctx, logger, combined)
 	return combined
@@ -635,7 +627,7 @@ func ensurePackagesAvailable(ctx context.Context, logger *zap.Logger, indexer In
 		logger.Info(fmt.Sprintf("%v local package manifests loaded.", len(packages)))
 	} else if featureProxyMode {
 		logger.Info("No local packages found, but the proxy mode can access remote ones.")
-	} else if packagePathsAllowEmpty {
+	} else if packagePathsEnableWatcher {
 		logger.Warn("No packages found at startup. The registry is running but no content is available yet.")
 	} else {
 		logger.Fatal("No local packages found.")

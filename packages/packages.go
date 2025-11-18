@@ -16,6 +16,7 @@ import (
 	"time"
 
 	"github.com/Masterminds/semver/v3"
+	"github.com/fsnotify/fsnotify"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"go.elastic.co/apm/v2"
@@ -111,13 +112,13 @@ type FileSystemIndexer struct {
 
 	logger *zap.Logger
 
-	watchInterval time.Duration
+	enablePathsWatcher bool
 
 	m sync.RWMutex
 }
 
 // NewFileSystemIndexer creates a new FileSystemIndexer for the given paths.
-func NewFileSystemIndexer(logger *zap.Logger, watchInterval time.Duration, paths ...string) *FileSystemIndexer {
+func NewFileSystemIndexer(logger *zap.Logger, enablePathsWatcher bool, paths ...string) *FileSystemIndexer {
 	walkerFn := func(basePath, path string, info os.DirEntry) (bool, error) {
 		relativePath, err := filepath.Rel(basePath, path)
 		if err != nil {
@@ -146,12 +147,12 @@ func NewFileSystemIndexer(logger *zap.Logger, watchInterval time.Duration, paths
 		return false, nil
 	}
 	return &FileSystemIndexer{
-		paths:         paths,
-		label:         "FileSystemIndexer",
-		walkerFn:      walkerFn,
-		fsBuilder:     ExtractedFileSystemBuilder,
-		logger:        logger,
-		watchInterval: watchInterval,
+		paths:              paths,
+		label:              "FileSystemIndexer",
+		walkerFn:           walkerFn,
+		fsBuilder:          ExtractedFileSystemBuilder,
+		logger:             logger,
+		enablePathsWatcher: enablePathsWatcher,
 	}
 }
 
@@ -160,7 +161,7 @@ var ExtractedFileSystemBuilder = func(p *Package) (PackageFileSystem, error) {
 }
 
 // NewZipFileSystemIndexer creates a new ZipFileSystemIndexer for the given paths.
-func NewZipFileSystemIndexer(logger *zap.Logger, watchInterval time.Duration, paths ...string) *FileSystemIndexer {
+func NewZipFileSystemIndexer(logger *zap.Logger, enablePathsWatcher bool, paths ...string) *FileSystemIndexer {
 	walkerFn := func(basePath, path string, info os.DirEntry) (bool, error) {
 		if info.IsDir() {
 			return false, nil
@@ -181,12 +182,12 @@ func NewZipFileSystemIndexer(logger *zap.Logger, watchInterval time.Duration, pa
 		return true, nil
 	}
 	return &FileSystemIndexer{
-		paths:         paths,
-		label:         "ZipFileSystemIndexer",
-		walkerFn:      walkerFn,
-		fsBuilder:     ZipFileSystemBuilder,
-		logger:        logger,
-		watchInterval: watchInterval,
+		paths:              paths,
+		label:              "ZipFileSystemIndexer",
+		walkerFn:           walkerFn,
+		fsBuilder:          ZipFileSystemBuilder,
+		logger:             logger,
+		enablePathsWatcher: enablePathsWatcher,
 	}
 }
 
@@ -201,41 +202,79 @@ func (i *FileSystemIndexer) Init(ctx context.Context) (err error) {
 		return fmt.Errorf("reading packages from filesystem failed: %w", err)
 	}
 
-	go i.watchPackageFileSystem(ctx)
+	if i.enablePathsWatcher {
+		go i.watchPackageFileSystem(ctx)
+	}
 	return nil
 }
 
-func (i *FileSystemIndexer) watchPackageFileSystem(ctx context.Context) error {
-	if i.watchInterval == 0 {
-		i.logger.Debug(fmt.Sprintf("No watcher configured for %s indexer, packageList will not be updated", i.label))
-		return nil
+func (i *FileSystemIndexer) watchPackageFileSystem(ctx context.Context) {
+	watcher, err := fsnotify.NewWatcher()
+	if err != nil {
+		i.logger.Error("failed to create fsnotify watcher", zap.Error(err))
+		return
 	}
-	i.logger.Debug(fmt.Sprintf("Watching %s indexer for changes", i.label))
-	ticker := time.NewTicker(i.watchInterval)
-	defer ticker.Stop()
+	defer watcher.Close()
+
+	for _, path := range i.paths {
+		if err := watcher.Add(path); err != nil {
+			i.logger.Error("failed to watch path", zap.String("path", path), zap.Error(err))
+			return
+		}
+		i.logger.Debug("watching path for changes", zap.String("path", path))
+	}
+
+	// Debounce filesystem events to avoid processing multiple events for the same operation
+	const debounceDelay = 500 * time.Millisecond
+	var debounceTimer *time.Timer
+	pendingUpdate := false
+
 	for {
-		i.logger.Debug("watchPackages: start")
-
-		var err error
-		func() {
-			newPackageList, err := i.getPackagesFromFileSystem(ctx)
-			if err != nil {
-				i.logger.Error("reading packages from filesystem failed", zap.Error(err))
-				return
-			}
-			i.m.Lock()
-			i.packageList = newPackageList
-			i.m.Unlock()
-		}()
-
 		select {
 		case <-ctx.Done():
-			i.logger.Debug("watchPackages: quit")
-			return err
-		case <-ticker.C:
+			if debounceTimer != nil {
+				debounceTimer.Stop()
+			}
+			i.logger.Debug("stopping package filesystem watcher")
+			return
+		case event, ok := <-watcher.Events:
+			if !ok {
+				return
+			}
+			i.logger.Debug("filesystem event detected", zap.String("event", event.String()), zap.String("indexer", i.label))
+
+			// Reset or start debounce timer
+			if debounceTimer != nil {
+				debounceTimer.Stop()
+			}
+			pendingUpdate = true
+			debounceTimer = time.AfterFunc(debounceDelay, func() {
+				if !pendingUpdate {
+					return
+				}
+				pendingUpdate = false
+
+				// Small additional delay to ensure filesystem operations are complete
+				time.Sleep(100 * time.Millisecond)
+
+				i.m.Lock()
+				defer i.m.Unlock()
+				i.logger.Debug("reloading packages after filesystem changes", zap.String("indexer", i.label))
+				newPackageList, err := i.getPackagesFromFileSystem(ctx)
+				if err != nil {
+					i.logger.Error("reading packages from filesystem failed", zap.Error(err), zap.String("indexer", i.label))
+					return
+				}
+				i.packageList = newPackageList
+				i.logger.Info("package list updated", zap.String("indexer", i.label), zap.Int("packages", len(newPackageList)))
+			})
+		case err, ok := <-watcher.Errors:
+			if !ok {
+				return
+			}
+			i.logger.Error("fsnotify watcher error", zap.Error(err), zap.String("indexer", i.label))
 		}
 	}
-
 }
 
 // Get returns a slice with packages.
@@ -275,9 +314,6 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 	span, _ := apm.StartSpan(ctx, "GetFromFileSystem", "app")
 	span.Context.SetLabel("indexer", i.label)
 	defer span.End()
-
-	i.m.RLock()
-	defer i.m.RUnlock()
 
 	type packageKey struct {
 		name    string

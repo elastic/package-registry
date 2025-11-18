@@ -38,7 +38,7 @@ func TestCategoriesWithProxyMode(t *testing.T) {
 	}))
 	defer webServer.Close()
 
-	indexerProxy := packages.NewFileSystemIndexer(testLogger, 0, "./testdata/second_package_path")
+	indexerProxy := packages.NewFileSystemIndexer(testLogger, false, "./testdata/second_package_path")
 	defer indexerProxy.Close(t.Context())
 
 	err := indexerProxy.Init(t.Context())
