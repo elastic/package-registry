@@ -183,6 +183,10 @@ func main() {
 
 	config := mustLoadConfig(logger)
 
+	if len(config.PackagePaths) == 0 && packagePathsEnableWatcher {
+		logger.Fatal("no package paths configured, cannot enable watcher")
+	}
+
 	options := serverOptions{
 		apmTracer: apmTracer,
 		config:    config,
