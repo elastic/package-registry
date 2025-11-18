@@ -142,7 +142,7 @@ type Config struct {
 	CacheTimeCatchAll            time.Duration `config:"cache_time.catch_all"`
 	SQLIndexerDatabaseFolderPath string        `config:"sql_indexer.database_folder_path"` // technical preview, used by the SQL storage indexer
 	SearchCacheSize              int           `config:"search.cache_size"`                // technical preview, used by the SQL storage indexer
-	SearchCacheTTL               time.Duration `config:"search.cache_ttl"`                 // technical preview, used by the SQL storage indexe^
+	SearchCacheTTL               time.Duration `config:"search.cache_ttl"`                 // technical preview, used by the SQL storage indexer
 	CategoriesCacheSize          int           `config:"categories.cache_size"`            // technical preview, used by the SQL storage indexer
 	CategoriesCacheTTL           time.Duration `config:"categories.cache_ttl"`             // technical preview, used by the SQL storage indexer
 }
