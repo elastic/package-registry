@@ -12,6 +12,7 @@ import (
 	"path/filepath"
 	"slices"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/Masterminds/semver/v3"
@@ -111,6 +112,8 @@ type FileSystemIndexer struct {
 	logger *zap.Logger
 
 	watchInterval time.Duration
+
+	m sync.RWMutex
 }
 
 // NewFileSystemIndexer creates a new FileSystemIndexer for the given paths.
@@ -197,24 +200,42 @@ func (i *FileSystemIndexer) Init(ctx context.Context) (err error) {
 	if err != nil {
 		return fmt.Errorf("reading packages from filesystem failed: %w", err)
 	}
-	if i.watchInterval > 0 {
-		i.logger.Info("Watching package paths for changes",
-			zap.Duration("interval", i.watchInterval))
-		go func() {
-			ticker := time.NewTicker(i.watchInterval)
-			defer ticker.Stop()
-			for range ticker.C {
-				i.logger.Debug("Refreshing packages from filesystem")
-				newPackageList, err := i.getPackagesFromFileSystem(ctx)
-				if err != nil {
-					i.logger.Error("reading packages from filesystem failed", zap.Error(err))
-					continue
-				}
-				i.packageList = newPackageList
-			}
-		}()
-	}
+
+	go i.watchPackageFileSystem(ctx)
 	return nil
+}
+
+func (i *FileSystemIndexer) watchPackageFileSystem(ctx context.Context) error {
+	if i.watchInterval == 0 {
+		i.logger.Info(fmt.Sprintf("No watcher configured for %s indexer, packageList will not be updated", i.label))
+		return nil
+	}
+	i.logger.Info(fmt.Sprintf("Watching %s indexer for changes", i.label))
+	ticker := time.NewTicker(i.watchInterval)
+	defer ticker.Stop()
+	for {
+		i.logger.Debug("watchPackages: start")
+
+		var err error
+		func() {
+			newPackageList, err := i.getPackagesFromFileSystem(ctx)
+			if err != nil {
+				i.logger.Error("reading packages from filesystem failed", zap.Error(err))
+				return
+			}
+			i.m.Lock()
+			i.packageList = newPackageList
+			i.m.Unlock()
+		}()
+
+		select {
+		case <-ctx.Done():
+			i.logger.Debug("watchPackages: quit")
+			return err
+		case <-ticker.C:
+		}
+	}
+
 }
 
 // Get returns a slice with packages.
@@ -231,6 +252,9 @@ func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages
 	span, ctx := apm.StartSpan(ctx, "GetFileSystemIndexer", "app")
 	span.Context.SetLabel("indexer", i.label)
 	defer span.End()
+
+	i.m.RLock()
+	defer i.m.RUnlock()
 
 	if opts == nil {
 		return i.packageList, nil
@@ -251,6 +275,9 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 	span, _ := apm.StartSpan(ctx, "GetFromFileSystem", "app")
 	span.Context.SetLabel("indexer", i.label)
 	defer span.End()
+
+	i.m.RLock()
+	defer i.m.RUnlock()
 
 	type packageKey struct {
 		name    string
