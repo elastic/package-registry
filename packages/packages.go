@@ -207,10 +207,10 @@ func (i *FileSystemIndexer) Init(ctx context.Context) (err error) {
 
 func (i *FileSystemIndexer) watchPackageFileSystem(ctx context.Context) error {
 	if i.watchInterval == 0 {
-		i.logger.Info(fmt.Sprintf("No watcher configured for %s indexer, packageList will not be updated", i.label))
+		i.logger.Debug(fmt.Sprintf("No watcher configured for %s indexer, packageList will not be updated", i.label))
 		return nil
 	}
-	i.logger.Info(fmt.Sprintf("Watching %s indexer for changes", i.label))
+	i.logger.Debug(fmt.Sprintf("Watching %s indexer for changes", i.label))
 	ticker := time.NewTicker(i.watchInterval)
 	defer ticker.Stop()
 	for {
