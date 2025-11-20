@@ -21,7 +21,9 @@ docker buildx create --use
 # do not push if DRY_RUN is true
 if [[ ${DRY_RUN:-true} == "true" ]]; then
     docker buildx imagetools create --dry-run -t "${DOCKER_IMG_TARGET}" "${DOCKER_IMG_SOURCE}"
+    docker buildx imagetools create --dry-run -t "${DOCKER_IMG_TARGET}-ubi" "${DOCKER_IMG_SOURCE}-ubi"
 else
     retry 3 docker buildx imagetools create -t "${DOCKER_IMG_TARGET}" "${DOCKER_IMG_SOURCE}"
+    retry 3 docker buildx imagetools create -t "${DOCKER_IMG_TARGET}-ubi" "${DOCKER_IMG_SOURCE}-ubi"
     echo "Docker image pushed: ${DOCKER_IMG_TARGET}"
 fi
