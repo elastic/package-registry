@@ -96,8 +96,8 @@ func TestSearchWithProxyMode(t *testing.T) {
 
 	packagesBasePaths := []string{"./testdata/second_package_path", "./testdata/package"}
 	indexer := NewCombinedIndexer(
-		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
-		packages.NewFileSystemIndexer(testLogger, packagesBasePaths...),
+		packages.NewZipFileSystemIndexer(testLogger, nil, false, "./testdata/local-storage"),
+		packages.NewFileSystemIndexer(testLogger, nil, false, packagesBasePaths...),
 	)
 	defer indexer.Close(t.Context())
 

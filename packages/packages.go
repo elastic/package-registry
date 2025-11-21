@@ -12,15 +12,22 @@ import (
 	"path/filepath"
 	"slices"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/Masterminds/semver/v3"
+	"github.com/fsnotify/fsnotify"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 
 	"github.com/elastic/package-registry/metrics"
+)
+
+const (
+	zipFileSystemIndexerName = "ZipFileSystemIndexer"
+	fileSystemIndexerName    = "FileSystemIndexer"
 )
 
 // ValidationDisabled is a flag which can disable package content validation (package, data streams, assets, etc.).
@@ -109,10 +116,16 @@ type FileSystemIndexer struct {
 	fsBuilder FileSystemBuilder
 
 	logger *zap.Logger
+
+	enablePathsWatcher bool
+
+	m sync.RWMutex
+
+	apmTracer *apm.Tracer
 }
 
 // NewFileSystemIndexer creates a new FileSystemIndexer for the given paths.
-func NewFileSystemIndexer(logger *zap.Logger, paths ...string) *FileSystemIndexer {
+func NewFileSystemIndexer(logger *zap.Logger, apmTracer *apm.Tracer, enablePathsWatcher bool, paths ...string) *FileSystemIndexer {
 	walkerFn := func(basePath, path string, info os.DirEntry) (bool, error) {
 		relativePath, err := filepath.Rel(basePath, path)
 		if err != nil {
@@ -141,11 +154,13 @@ func NewFileSystemIndexer(logger *zap.Logger, paths ...string) *FileSystemIndexe
 		return false, nil
 	}
 	return &FileSystemIndexer{
-		paths:     paths,
-		label:     "FileSystemIndexer",
-		walkerFn:  walkerFn,
-		fsBuilder: ExtractedFileSystemBuilder,
-		logger:    logger,
+		paths:              paths,
+		label:              fileSystemIndexerName,
+		walkerFn:           walkerFn,
+		fsBuilder:          ExtractedFileSystemBuilder,
+		logger:             logger,
+		enablePathsWatcher: enablePathsWatcher,
+		apmTracer:          apmTracer,
 	}
 }
 
@@ -154,7 +169,7 @@ var ExtractedFileSystemBuilder = func(p *Package) (PackageFileSystem, error) {
 }
 
 // NewZipFileSystemIndexer creates a new ZipFileSystemIndexer for the given paths.
-func NewZipFileSystemIndexer(logger *zap.Logger, paths ...string) *FileSystemIndexer {
+func NewZipFileSystemIndexer(logger *zap.Logger, apmTracer *apm.Tracer, enablePathsWatcher bool, paths ...string) *FileSystemIndexer {
 	walkerFn := func(basePath, path string, info os.DirEntry) (bool, error) {
 		if info.IsDir() {
 			return false, nil
@@ -175,11 +190,13 @@ func NewZipFileSystemIndexer(logger *zap.Logger, paths ...string) *FileSystemInd
 		return true, nil
 	}
 	return &FileSystemIndexer{
-		paths:     paths,
-		label:     "ZipFileSystemIndexer",
-		walkerFn:  walkerFn,
-		fsBuilder: ZipFileSystemBuilder,
-		logger:    logger,
+		paths:              paths,
+		label:              zipFileSystemIndexerName,
+		walkerFn:           walkerFn,
+		fsBuilder:          ZipFileSystemBuilder,
+		logger:             logger,
+		enablePathsWatcher: enablePathsWatcher,
+		apmTracer:          apmTracer,
 	}
 }
 
@@ -189,10 +206,98 @@ var ZipFileSystemBuilder = func(p *Package) (PackageFileSystem, error) {
 
 // Init initializes the indexer.
 func (i *FileSystemIndexer) Init(ctx context.Context) (err error) {
-	i.packageList, err = i.getPackagesFromFileSystem(ctx)
-	if err != nil {
-		return fmt.Errorf("reading packages from filesystem failed: %w", err)
+	if err := i.updatePackageFileSystemIndex(ctx); err != nil {
+		i.logger.Error("initializing package filesystem index failed",
+			zap.Error(err),
+			zap.String("indexer", i.label))
+		return err
 	}
+
+	if i.enablePathsWatcher {
+		go i.watchPackageFileSystem(ctx)
+	}
+	return nil
+}
+
+func (i *FileSystemIndexer) watchPackageFileSystem(ctx context.Context) {
+	watcher, err := fsnotify.NewWatcher()
+	if err != nil {
+		i.logger.Error("failed to create fsnotify watcher", zap.String("indexer", i.label), zap.Error(err))
+		return
+	}
+	defer watcher.Close()
+
+	if i.apmTracer == nil {
+		i.apmTracer = apm.DefaultTracer()
+	}
+
+	for _, path := range i.paths {
+		if err := watcher.Add(path); err != nil {
+			i.logger.Error("failed to watch path", zap.String("path", path), zap.String("indexer", i.label), zap.Error(err))
+			return
+		}
+		i.logger.Debug("watching path for changes", zap.String("path", path), zap.String("indexer", i.label))
+	}
+
+	debouncer := time.NewTimer(0)
+	debouncer.Stop()
+	defer debouncer.Stop()
+
+	for {
+		select {
+		case <-ctx.Done():
+			i.logger.Info("stopping filesystem watcher", zap.String("indexer", i.label))
+			return
+		case event, ok := <-watcher.Events:
+			if !ok {
+				return
+			}
+			// skip events that are not relevant for this indexer
+			if (i.label == zipFileSystemIndexerName && !strings.HasSuffix(event.Name, ".zip")) ||
+				(i.label == fileSystemIndexerName && strings.HasSuffix(event.Name, ".zip")) {
+				i.logger.Debug("skipping event at indexer", zap.String("indexer", i.label))
+				continue
+			}
+
+			i.logger.Debug("filesystem change detected", zap.String("event", event.String()), zap.String("indexer", i.label))
+			const debounceDelay = 1 * time.Second
+			debouncer.Reset(debounceDelay)
+		case <-debouncer.C:
+			tx := i.apmTracer.StartTransaction("updateFSIndex", "backend.watcher")
+			defer tx.End()
+
+			ctx := apm.ContextWithTransaction(ctx, tx)
+			// only when debouncer fires, we update the index
+			// debouncer only fires when no new events arrive during the debounceDelay
+			if err := i.updatePackageFileSystemIndex(ctx); err != nil {
+				i.logger.Error("updating package filesystem index failed",
+					zap.Error(err),
+					zap.String("indexer", i.label))
+			} else {
+				i.logger.Info("package filesystem index updated",
+					zap.String("indexer", i.label))
+			}
+		case err, ok := <-watcher.Errors:
+			if !ok {
+				return
+			}
+			i.logger.Error("fsnotify watcher error", zap.Error(err), zap.String("indexer", i.label))
+		}
+	}
+}
+
+func (i *FileSystemIndexer) updatePackageFileSystemIndex(ctx context.Context) error {
+	i.m.Lock()
+	defer i.m.Unlock()
+
+	newPackageList, err := i.getPackagesFromFileSystem(ctx)
+	if err != nil {
+		i.logger.Error("reading packages from filesystem failed",
+			zap.Error(err),
+			zap.String("indexer", i.label))
+		return err
+	}
+	i.packageList = newPackageList
 	return nil
 }
 
@@ -210,6 +315,9 @@ func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages
 	span, ctx := apm.StartSpan(ctx, "GetFileSystemIndexer", "app")
 	span.Context.SetLabel("indexer", i.label)
 	defer span.End()
+
+	i.m.RLock()
+	defer i.m.RUnlock()
 
 	if opts == nil {
 		return i.packageList, nil
