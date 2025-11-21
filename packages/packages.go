@@ -25,6 +25,11 @@ import (
 	"github.com/elastic/package-registry/metrics"
 )
 
+const (
+	zipFileSystemIndexerName = "ZipFileSystemIndexer"
+	fileSystemIndexerName    = "FileSystemIndexer"
+)
+
 // ValidationDisabled is a flag which can disable package content validation (package, data streams, assets, etc.).
 var ValidationDisabled bool
 
@@ -148,7 +153,7 @@ func NewFileSystemIndexer(logger *zap.Logger, enablePathsWatcher bool, paths ...
 	}
 	return &FileSystemIndexer{
 		paths:              paths,
-		label:              "FileSystemIndexer",
+		label:              fileSystemIndexerName,
 		walkerFn:           walkerFn,
 		fsBuilder:          ExtractedFileSystemBuilder,
 		logger:             logger,
@@ -183,7 +188,7 @@ func NewZipFileSystemIndexer(logger *zap.Logger, enablePathsWatcher bool, paths 
 	}
 	return &FileSystemIndexer{
 		paths:              paths,
-		label:              "ZipFileSystemIndexer",
+		label:              zipFileSystemIndexerName,
 		walkerFn:           walkerFn,
 		fsBuilder:          ZipFileSystemBuilder,
 		logger:             logger,
@@ -197,9 +202,11 @@ var ZipFileSystemBuilder = func(p *Package) (PackageFileSystem, error) {
 
 // Init initializes the indexer.
 func (i *FileSystemIndexer) Init(ctx context.Context) (err error) {
-	i.packageList, err = i.getPackagesFromFileSystem(ctx)
-	if err != nil {
-		return fmt.Errorf("reading packages from filesystem failed: %w", err)
+	if err := i.updatePackageFileSystemIndex(ctx); err != nil {
+		i.logger.Error("initializing package filesystem index failed",
+			zap.Error(err),
+			zap.String("indexer", i.label))
+		return err
 	}
 
 	if i.enablePathsWatcher {
@@ -211,63 +218,53 @@ func (i *FileSystemIndexer) Init(ctx context.Context) (err error) {
 func (i *FileSystemIndexer) watchPackageFileSystem(ctx context.Context) {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
-		i.logger.Error("failed to create fsnotify watcher", zap.Error(err))
+		i.logger.Error("failed to create fsnotify watcher", zap.String("indexer", i.label), zap.Error(err))
 		return
 	}
 	defer watcher.Close()
 
 	for _, path := range i.paths {
 		if err := watcher.Add(path); err != nil {
-			i.logger.Error("failed to watch path", zap.String("path", path), zap.Error(err))
+			i.logger.Error("failed to watch path", zap.String("path", path), zap.String("indexer", i.label), zap.Error(err))
 			return
 		}
-		i.logger.Debug("watching path for changes", zap.String("path", path))
+		i.logger.Debug("watching path for changes", zap.String("path", path), zap.String("indexer", i.label))
 	}
 
-	// Debounce filesystem events to avoid processing multiple events for the same operation
-	const debounceDelay = 500 * time.Millisecond
-	var debounceTimer *time.Timer
-	pendingUpdate := false
+	debouncer := time.NewTimer(0)
+	debouncer.Stop()
+	defer debouncer.Stop()
 
 	for {
 		select {
 		case <-ctx.Done():
-			if debounceTimer != nil {
-				debounceTimer.Stop()
-			}
-			i.logger.Debug("stopping package filesystem watcher")
+			i.logger.Info("stopping filesystem watcher", zap.String("indexer", i.label))
 			return
 		case event, ok := <-watcher.Events:
 			if !ok {
 				return
 			}
-			i.logger.Debug("filesystem event detected", zap.String("event", event.String()), zap.String("indexer", i.label))
-
-			// Reset or start debounce timer
-			if debounceTimer != nil {
-				debounceTimer.Stop()
+			// skip events that are not relevant for this indexer
+			if (i.label == zipFileSystemIndexerName && !strings.HasSuffix(event.Name, ".zip")) ||
+				(i.label == fileSystemIndexerName && strings.HasSuffix(event.Name, ".zip")) {
+				i.logger.Debug("skipping event at indexer", zap.String("indexer", i.label))
+				continue
 			}
-			pendingUpdate = true
-			debounceTimer = time.AfterFunc(debounceDelay, func() {
-				if !pendingUpdate {
-					return
-				}
-				pendingUpdate = false
 
-				// Small additional delay to ensure filesystem operations are complete
-				time.Sleep(100 * time.Millisecond)
-
-				i.m.Lock()
-				defer i.m.Unlock()
-				i.logger.Debug("reloading packages after filesystem changes", zap.String("indexer", i.label))
-				newPackageList, err := i.getPackagesFromFileSystem(ctx)
-				if err != nil {
-					i.logger.Error("reading packages from filesystem failed", zap.Error(err), zap.String("indexer", i.label))
-					return
-				}
-				i.packageList = newPackageList
-				i.logger.Info("package list updated", zap.String("indexer", i.label), zap.Int("packages", len(newPackageList)))
-			})
+			i.logger.Debug("filesystem change detected", zap.String("event", event.String()), zap.String("indexer", i.label))
+			const debounceDelay = 1 * time.Second
+			debouncer.Reset(debounceDelay)
+		case <-debouncer.C:
+			// only when debouncer fires, we update the index
+			// debouncer only fires when no new events arrive during the debounceDelay
+			if err := i.updatePackageFileSystemIndex(ctx); err != nil {
+				i.logger.Error("updating package filesystem index failed",
+					zap.Error(err),
+					zap.String("indexer", i.label))
+			} else {
+				i.logger.Info("package filesystem index updated",
+					zap.String("indexer", i.label))
+			}
 		case err, ok := <-watcher.Errors:
 			if !ok {
 				return
@@ -275,6 +272,21 @@ func (i *FileSystemIndexer) watchPackageFileSystem(ctx context.Context) {
 			i.logger.Error("fsnotify watcher error", zap.Error(err), zap.String("indexer", i.label))
 		}
 	}
+}
+
+func (i *FileSystemIndexer) updatePackageFileSystemIndex(ctx context.Context) error {
+	i.m.Lock()
+	defer i.m.Unlock()
+
+	newPackageList, err := i.getPackagesFromFileSystem(ctx)
+	if err != nil {
+		i.logger.Error("reading packages from filesystem failed",
+			zap.Error(err),
+			zap.String("indexer", i.label))
+		return err
+	}
+	i.packageList = newPackageList
+	return nil
 }
 
 // Get returns a slice with packages.
