@@ -120,10 +120,12 @@ type FileSystemIndexer struct {
 	enablePathsWatcher bool
 
 	m sync.RWMutex
+
+	apmTracer *apm.Tracer
 }
 
 // NewFileSystemIndexer creates a new FileSystemIndexer for the given paths.
-func NewFileSystemIndexer(logger *zap.Logger, enablePathsWatcher bool, paths ...string) *FileSystemIndexer {
+func NewFileSystemIndexer(logger *zap.Logger, apmTracer *apm.Tracer, enablePathsWatcher bool, paths ...string) *FileSystemIndexer {
 	walkerFn := func(basePath, path string, info os.DirEntry) (bool, error) {
 		relativePath, err := filepath.Rel(basePath, path)
 		if err != nil {
@@ -158,6 +160,7 @@ func NewFileSystemIndexer(logger *zap.Logger, enablePathsWatcher bool, paths ...
 		fsBuilder:          ExtractedFileSystemBuilder,
 		logger:             logger,
 		enablePathsWatcher: enablePathsWatcher,
+		apmTracer:          apmTracer,
 	}
 }
 
@@ -166,7 +169,7 @@ var ExtractedFileSystemBuilder = func(p *Package) (PackageFileSystem, error) {
 }
 
 // NewZipFileSystemIndexer creates a new ZipFileSystemIndexer for the given paths.
-func NewZipFileSystemIndexer(logger *zap.Logger, enablePathsWatcher bool, paths ...string) *FileSystemIndexer {
+func NewZipFileSystemIndexer(logger *zap.Logger, apmTracer *apm.Tracer, enablePathsWatcher bool, paths ...string) *FileSystemIndexer {
 	walkerFn := func(basePath, path string, info os.DirEntry) (bool, error) {
 		if info.IsDir() {
 			return false, nil
@@ -193,6 +196,7 @@ func NewZipFileSystemIndexer(logger *zap.Logger, enablePathsWatcher bool, paths 
 		fsBuilder:          ZipFileSystemBuilder,
 		logger:             logger,
 		enablePathsWatcher: enablePathsWatcher,
+		apmTracer:          apmTracer,
 	}
 }
 
@@ -222,6 +226,10 @@ func (i *FileSystemIndexer) watchPackageFileSystem(ctx context.Context) {
 		return
 	}
 	defer watcher.Close()
+
+	if i.apmTracer == nil {
+		i.apmTracer = apm.DefaultTracer()
+	}
 
 	for _, path := range i.paths {
 		if err := watcher.Add(path); err != nil {
@@ -255,6 +263,10 @@ func (i *FileSystemIndexer) watchPackageFileSystem(ctx context.Context) {
 			const debounceDelay = 1 * time.Second
 			debouncer.Reset(debounceDelay)
 		case <-debouncer.C:
+			tx := i.apmTracer.StartTransaction("updateFSIndex", "backend.watcher")
+			defer tx.End()
+
+			ctx := apm.ContextWithTransaction(ctx, tx)
 			// only when debouncer fires, we update the index
 			// debouncer only fires when no new events arrive during the debounceDelay
 			if err := i.updatePackageFileSystemIndex(ctx); err != nil {

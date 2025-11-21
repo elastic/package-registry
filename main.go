@@ -397,8 +397,8 @@ func initIndexer(ctx context.Context, logger *zap.Logger, options serverOptions)
 	}
 
 	combined = append(combined,
-		packages.NewZipFileSystemIndexer(logger, packagePathsEnableWatcher, packagesBasePaths...),
-		packages.NewFileSystemIndexer(logger, packagePathsEnableWatcher, packagesBasePaths...),
+		packages.NewZipFileSystemIndexer(logger, options.apmTracer, packagePathsEnableWatcher, packagesBasePaths...),
+		packages.NewFileSystemIndexer(logger, options.apmTracer, packagePathsEnableWatcher, packagesBasePaths...),
 	)
 	ensurePackagesAvailable(ctx, logger, combined)
 	return combined
