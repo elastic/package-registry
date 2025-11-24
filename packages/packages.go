@@ -226,6 +226,7 @@ func (i *FileSystemIndexer) Init(ctx context.Context) (err error) {
 }
 
 func (i *FileSystemIndexer) watchPackageFileSystem(ctx context.Context) {
+	// TODO: https://github.com/elastic/package-registry/issues/1488
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
 		i.logger.Error("failed to create fsnotify watcher", zap.String("indexer", i.label), zap.Error(err))
