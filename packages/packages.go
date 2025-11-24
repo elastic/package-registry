@@ -292,9 +292,6 @@ func (i *FileSystemIndexer) updatePackageFileSystemIndex(ctx context.Context) er
 
 	newPackageList, err := i.getPackagesFromFileSystem(ctx)
 	if err != nil {
-		i.logger.Error("reading packages from filesystem failed",
-			zap.Error(err),
-			zap.String("indexer", i.label))
 		return err
 	}
 	i.packageList = newPackageList
