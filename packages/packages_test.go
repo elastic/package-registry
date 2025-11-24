@@ -5,10 +5,18 @@
 package packages
 
 import (
+	"context"
+	"fmt"
+	"os"
+	"path/filepath"
 	"testing"
+	"time"
 
 	"github.com/Masterminds/semver/v3"
+	"github.com/elastic/package-registry/archiver"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"go.uber.org/zap"
 )
 
 func TestPackagesFilter(t *testing.T) {
@@ -777,6 +785,231 @@ func TestPackagesSpecMinMaxFilter(t *testing.T) {
 			assertFilterPackagesResult(t, c.Expected, result)
 		})
 	}
+}
+
+func TestFileSystemIndexer_watchPackageFileSystem(t *testing.T) {
+	t.Run("context cancellation stops watcher", func(t *testing.T) {
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+		ValidationDisabled = true
+
+		tmpDir := t.TempDir()
+		logger := zap.NewNop()
+
+		indexer := NewFileSystemIndexer(FSIndexerOptions{
+			Logger:             logger,
+			EnablePathsWatcher: true,
+		}, tmpDir)
+
+		err := indexer.Init(ctx)
+		require.NoError(t, err)
+
+		done := make(chan struct{})
+		go func() {
+			indexer.watchPackageFileSystem(ctx)
+			close(done)
+		}()
+
+		// Cancel context and verify watcher stops
+		cancel()
+
+		select {
+		case <-done:
+			// Success - watcher stopped
+		case <-time.After(2 * time.Second):
+			t.Fatal("watcher did not stop after context cancellation")
+		}
+	})
+
+	t.Run("file indexer debouncing filesystem events", func(t *testing.T) {
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+
+		ValidationDisabled = true
+		tmpDir := t.TempDir()
+		logger := zap.NewNop()
+
+		indexer := NewFileSystemIndexer(FSIndexerOptions{
+			Logger:             logger,
+			EnablePathsWatcher: true,
+		}, tmpDir)
+
+		err := indexer.Init(ctx)
+		require.NoError(t, err)
+
+		done := make(chan struct{})
+		go func() {
+			indexer.watchPackageFileSystem(ctx)
+			close(done)
+		}()
+
+		// Give watcher time to initialize
+		time.Sleep(100 * time.Millisecond)
+
+		for i := 0; i < 25; i++ {
+			createMockPackage(t, tmpDir, fmt.Sprintf("mypackage%d", i))
+		}
+
+		// Wait for debounce period plus buffer
+		time.Sleep(1500 * time.Millisecond)
+
+		require.Len(t, indexer.packageList, 25)
+		cancel()
+		<-done
+	})
+
+	t.Run("zip indexer debouncing filesystem events", func(t *testing.T) {
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+
+		ValidationDisabled = true
+		tmpDir := t.TempDir()
+		logger := zap.NewNop()
+
+		indexer := NewZipFileSystemIndexer(FSIndexerOptions{
+			Logger:             logger,
+			EnablePathsWatcher: true,
+		}, tmpDir)
+
+		err := indexer.Init(ctx)
+		require.NoError(t, err)
+
+		done := make(chan struct{})
+		go func() {
+			indexer.watchPackageFileSystem(ctx)
+			close(done)
+		}()
+
+		// Give watcher time to initialize
+		time.Sleep(100 * time.Millisecond)
+
+		for i := 0; i < 25; i++ {
+			createMockZipPackage(t, tmpDir, fmt.Sprintf("mypackage%d", i))
+		}
+
+		// Wait for debounce period plus buffer
+		time.Sleep(1500 * time.Millisecond)
+
+		require.Len(t, indexer.packageList, 25)
+		cancel()
+		<-done
+	})
+
+	t.Run("zip indexer ignores non-zip files", func(t *testing.T) {
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+		ValidationDisabled = true
+
+		tmpDir := t.TempDir()
+		logger := zap.NewNop()
+
+		indexer := NewZipFileSystemIndexer(FSIndexerOptions{
+			Logger:             logger,
+			EnablePathsWatcher: true,
+		}, tmpDir)
+
+		err := indexer.Init(ctx)
+		require.NoError(t, err)
+
+		done := make(chan struct{})
+		go func() {
+			indexer.watchPackageFileSystem(ctx)
+			close(done)
+		}()
+
+		time.Sleep(100 * time.Millisecond)
+
+		// Create non-zip file (should be ignored by zip indexer)
+		createMockPackage(t, tmpDir, "mypackage")
+		time.Sleep(1500 * time.Millisecond)
+		assert.Empty(t, indexer.packageList)
+
+		createMockZipPackage(t, tmpDir, "mypackage")
+		time.Sleep(1500 * time.Millisecond)
+		require.Len(t, indexer.packageList, 1)
+
+		cancel()
+		<-done
+	})
+
+	t.Run("file system indexer ignores zip files", func(t *testing.T) {
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+		ValidationDisabled = true
+
+		tmpDir := t.TempDir()
+		logger := zap.NewNop()
+
+		indexer := NewFileSystemIndexer(FSIndexerOptions{
+			Logger:             logger,
+			EnablePathsWatcher: true,
+		}, tmpDir)
+
+		err := indexer.Init(ctx)
+		require.NoError(t, err)
+
+		done := make(chan struct{})
+		go func() {
+			indexer.watchPackageFileSystem(ctx)
+			close(done)
+		}()
+
+		time.Sleep(100 * time.Millisecond)
+
+		// Create zip file (should be ignored by regular file system indexer)
+		createMockZipPackage(t, tmpDir, "mypackage")
+		time.Sleep(1500 * time.Millisecond)
+		assert.Empty(t, indexer.packageList)
+
+		createMockPackage(t, tmpDir, "mypackage")
+		time.Sleep(1500 * time.Millisecond)
+		require.Len(t, indexer.packageList, 1)
+
+		cancel()
+		<-done
+	})
+}
+
+func createMockPackage(t *testing.T, dest, pkgName string) {
+	t.Helper()
+
+	pkgDir := filepath.Join(dest, pkgName, "1.0.0")
+	err := os.MkdirAll(pkgDir, 0755)
+	require.NoError(t, err)
+
+	manifestContent := `name: ` + pkgName + `
+version: 1.0.0
+type: integration
+format_version: 1.0.0
+`
+	err = os.WriteFile(filepath.Join(pkgDir, "manifest.yml"), []byte(manifestContent), 0644)
+	require.NoError(t, err)
+
+	docsDir := filepath.Join(pkgDir, "docs")
+	err = os.MkdirAll(docsDir, 0755)
+	require.NoError(t, err)
+
+	err = os.WriteFile(filepath.Join(docsDir, "README.md"), []byte("# My Package\nThis is a test package."), 0644)
+	require.NoError(t, err)
+}
+
+func createMockZipPackage(t *testing.T, dest, pkgName string) {
+	t.Helper()
+
+	tmpMockFSDir := t.TempDir()
+	createMockPackage(t, tmpMockFSDir, pkgName)
+
+	w, err := os.Create(filepath.Join(dest, pkgName+"-1.0.0.zip"))
+	require.NoError(t, err)
+	defer w.Close()
+
+	err = archiver.ArchivePackage(w, archiver.PackageProperties{
+		Name:    pkgName,
+		Version: "1.0.0",
+		Path:    filepath.Join(tmpMockFSDir, pkgName, "1.0.0"),
+	})
+	require.NoError(t, err)
+
 }
 
 func mustBuildDiscoveryFilter(filters []string) discoveryFilters {
