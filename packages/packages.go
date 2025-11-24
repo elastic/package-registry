@@ -124,8 +124,14 @@ type FileSystemIndexer struct {
 	apmTracer *apm.Tracer
 }
 
+type FSIndexerOptions struct {
+	Logger             *zap.Logger
+	EnablePathsWatcher bool
+	APMTracer          *apm.Tracer
+}
+
 // NewFileSystemIndexer creates a new FileSystemIndexer for the given paths.
-func NewFileSystemIndexer(logger *zap.Logger, apmTracer *apm.Tracer, enablePathsWatcher bool, paths ...string) *FileSystemIndexer {
+func NewFileSystemIndexer(options FSIndexerOptions, paths ...string) *FileSystemIndexer {
 	walkerFn := func(basePath, path string, info os.DirEntry) (bool, error) {
 		relativePath, err := filepath.Rel(basePath, path)
 		if err != nil {
@@ -141,7 +147,7 @@ func NewFileSystemIndexer(logger *zap.Logger, apmTracer *apm.Tracer, enablePaths
 			versionDir := dirs[1]
 			_, err := semver.StrictNewVersion(versionDir)
 			if err != nil {
-				logger.Warn("ignoring unexpected directory",
+				options.Logger.Warn("ignoring unexpected directory",
 					zap.String("file.path", path))
 				return false, filepath.SkipDir
 			}
@@ -150,7 +156,7 @@ func NewFileSystemIndexer(logger *zap.Logger, apmTracer *apm.Tracer, enablePaths
 		// Unexpected file, return nil in order to continue processing sibling directories
 		// Fixes an annoying problem when the .DS_Store file is left behind and the package
 		// is not loading without any error information
-		logger.Warn("ignoring unexpected file", zap.String("file.path", path))
+		options.Logger.Warn("ignoring unexpected file", zap.String("file.path", path))
 		return false, nil
 	}
 	return &FileSystemIndexer{
@@ -158,9 +164,9 @@ func NewFileSystemIndexer(logger *zap.Logger, apmTracer *apm.Tracer, enablePaths
 		label:              fileSystemIndexerName,
 		walkerFn:           walkerFn,
 		fsBuilder:          ExtractedFileSystemBuilder,
-		logger:             logger,
-		enablePathsWatcher: enablePathsWatcher,
-		apmTracer:          apmTracer,
+		logger:             options.Logger,
+		enablePathsWatcher: options.EnablePathsWatcher,
+		apmTracer:          options.APMTracer,
 	}
 }
 
@@ -169,7 +175,7 @@ var ExtractedFileSystemBuilder = func(p *Package) (PackageFileSystem, error) {
 }
 
 // NewZipFileSystemIndexer creates a new ZipFileSystemIndexer for the given paths.
-func NewZipFileSystemIndexer(logger *zap.Logger, apmTracer *apm.Tracer, enablePathsWatcher bool, paths ...string) *FileSystemIndexer {
+func NewZipFileSystemIndexer(options FSIndexerOptions, paths ...string) *FileSystemIndexer {
 	walkerFn := func(basePath, path string, info os.DirEntry) (bool, error) {
 		if info.IsDir() {
 			return false, nil
@@ -181,7 +187,7 @@ func NewZipFileSystemIndexer(logger *zap.Logger, apmTracer *apm.Tracer, enablePa
 		// Check if the file is actually a zip file.
 		r, err := zip.OpenReader(path)
 		if err != nil {
-			logger.Warn("ignoring invalid zip file",
+			options.Logger.Warn("ignoring invalid zip file",
 				zap.String("file.path", path), zap.Error(err))
 			return false, nil
 		}
@@ -194,9 +200,9 @@ func NewZipFileSystemIndexer(logger *zap.Logger, apmTracer *apm.Tracer, enablePa
 		label:              zipFileSystemIndexerName,
 		walkerFn:           walkerFn,
 		fsBuilder:          ZipFileSystemBuilder,
-		logger:             logger,
-		enablePathsWatcher: enablePathsWatcher,
-		apmTracer:          apmTracer,
+		logger:             options.Logger,
+		enablePathsWatcher: options.EnablePathsWatcher,
+		apmTracer:          options.APMTracer,
 	}
 }
 
