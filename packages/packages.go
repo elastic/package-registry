@@ -258,6 +258,13 @@ func (i *FileSystemIndexer) watchPackageFileSystem(ctx context.Context) {
 			if !ok {
 				return
 			}
+
+			// Watching for create, write, rename and remove events
+			// https://pkg.go.dev/github.com/fsnotify/fsnotify@v1.9.0#Watcher
+			if !event.Has(fsnotify.Create) && !event.Has(fsnotify.Write) &&
+				!event.Has(fsnotify.Rename) && !event.Has(fsnotify.Remove) {
+				continue
+			}
 			// skip events that are not relevant for this indexer
 			if (i.label == zipFileSystemIndexerName && !strings.HasSuffix(event.Name, ".zip")) ||
 				(i.label == fileSystemIndexerName && strings.HasSuffix(event.Name, ".zip")) {

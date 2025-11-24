@@ -13,10 +13,11 @@ import (
 	"time"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/elastic/package-registry/archiver"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/zap"
+
+	"github.com/elastic/package-registry/archiver"
 )
 
 func TestPackagesFilter(t *testing.T) {
