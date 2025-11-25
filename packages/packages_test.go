@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"runtime"
 	"testing"
 	"time"
 
@@ -857,6 +858,12 @@ func TestFileSystemIndexer_watchPackageFileSystem(t *testing.T) {
 		require.Len(t, indexer.packageList, 25)
 		cancel()
 		<-done
+
+		// On Windows, file handles may not be released immediately after Close().
+		// Give the OS time to release file handles to avoid cleanup errors.
+		if runtime.GOOS == "windows" {
+			time.Sleep(500 * time.Millisecond)
+		}
 	})
 
 	t.Run("zip indexer debouncing filesystem events", func(t *testing.T) {
@@ -894,6 +901,12 @@ func TestFileSystemIndexer_watchPackageFileSystem(t *testing.T) {
 		require.Len(t, indexer.packageList, 25)
 		cancel()
 		<-done
+
+		// On Windows, file handles may not be released immediately after Close().
+		// Give the OS time to release file handles to avoid cleanup errors.
+		if runtime.GOOS == "windows" {
+			time.Sleep(500 * time.Millisecond)
+		}
 	})
 
 	t.Run("zip indexer ignores non-zip files", func(t *testing.T) {
@@ -931,6 +944,12 @@ func TestFileSystemIndexer_watchPackageFileSystem(t *testing.T) {
 
 		cancel()
 		<-done
+
+		// On Windows, file handles may not be released immediately after Close().
+		// Give the OS time to release file handles to avoid cleanup errors.
+		if runtime.GOOS == "windows" {
+			time.Sleep(500 * time.Millisecond)
+		}
 	})
 
 	t.Run("file system indexer ignores zip files", func(t *testing.T) {
@@ -968,6 +987,12 @@ func TestFileSystemIndexer_watchPackageFileSystem(t *testing.T) {
 
 		cancel()
 		<-done
+
+		// On Windows, file handles may not be released immediately after Close().
+		// Give the OS time to release file handles to avoid cleanup errors.
+		if runtime.GOOS == "windows" {
+			time.Sleep(500 * time.Millisecond)
+		}
 	})
 }
 
@@ -1002,7 +1027,6 @@ func createMockZipPackage(t *testing.T, dest, pkgName string) {
 
 	file, err := os.Create(filepath.Join(dest, pkgName+"-1.0.0.zip"))
 	require.NoError(t, err)
-	defer file.Close()
 
 	err = archiver.ArchivePackage(file, archiver.PackageProperties{
 		Name:    pkgName,
@@ -1011,6 +1035,11 @@ func createMockZipPackage(t *testing.T, dest, pkgName string) {
 	})
 	require.NoError(t, err)
 
+	// Explicitly sync and close the file to ensure it's fully written on Windows
+	err = file.Sync()
+	require.NoError(t, err)
+	err = file.Close()
+	require.NoError(t, err)
 }
 
 func mustBuildDiscoveryFilter(filters []string) discoveryFilters {
