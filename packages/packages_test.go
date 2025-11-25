@@ -1002,6 +1002,7 @@ func createMockZipPackage(t *testing.T, dest, pkgName string) {
 
 	file, err := os.Create(filepath.Join(dest, pkgName+"-1.0.0.zip"))
 	require.NoError(t, err)
+	defer file.Close()
 
 	err = archiver.ArchivePackage(file, archiver.PackageProperties{
 		Name:    pkgName,
