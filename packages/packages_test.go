@@ -802,8 +802,7 @@ func TestFileSystemIndexer_watchPackageFileSystem(t *testing.T) {
 			EnablePathsWatcher: true,
 		}, tmpDir)
 
-		err := indexer.Init(ctx)
-		require.NoError(t, err)
+		indexer.packageList = make(Packages, 0)
 
 		done := make(chan struct{})
 		go func() {
@@ -835,8 +834,7 @@ func TestFileSystemIndexer_watchPackageFileSystem(t *testing.T) {
 			EnablePathsWatcher: true,
 		}, tmpDir)
 
-		err := indexer.Init(ctx)
-		require.NoError(t, err)
+		indexer.packageList = make(Packages, 0)
 
 		done := make(chan struct{})
 		go func() {
@@ -854,9 +852,10 @@ func TestFileSystemIndexer_watchPackageFileSystem(t *testing.T) {
 		// Wait for debounce period plus buffer
 		time.Sleep(1500 * time.Millisecond)
 
-		require.Len(t, indexer.packageList, 25)
 		cancel()
 		<-done
+
+		assert.Len(t, indexer.packageList, 25)
 	})
 
 	t.Run("zip indexer debouncing filesystem events", func(t *testing.T) {
@@ -872,8 +871,7 @@ func TestFileSystemIndexer_watchPackageFileSystem(t *testing.T) {
 			EnablePathsWatcher: true,
 		}, tmpDir)
 
-		err := indexer.Init(ctx)
-		require.NoError(t, err)
+		indexer.packageList = make(Packages, 0)
 
 		done := make(chan struct{})
 		go func() {
@@ -895,9 +893,10 @@ func TestFileSystemIndexer_watchPackageFileSystem(t *testing.T) {
 		// Wait for debounce period plus buffer
 		time.Sleep(1500 * time.Millisecond)
 
-		require.Len(t, indexer.packageList, 25)
 		cancel()
 		<-done
+
+		assert.Len(t, indexer.packageList, 25)
 	})
 
 	t.Run("zip indexer ignores non-zip files", func(t *testing.T) {
@@ -913,8 +912,7 @@ func TestFileSystemIndexer_watchPackageFileSystem(t *testing.T) {
 			EnablePathsWatcher: true,
 		}, tmpDir)
 
-		err := indexer.Init(ctx)
-		require.NoError(t, err)
+		indexer.packageList = make(Packages, 0)
 
 		done := make(chan struct{})
 		go func() {
@@ -935,10 +933,11 @@ func TestFileSystemIndexer_watchPackageFileSystem(t *testing.T) {
 			require.NoError(t, err)
 		}()
 		time.Sleep(1500 * time.Millisecond)
-		require.Len(t, indexer.packageList, 1)
 
 		cancel()
 		<-done
+
+		assert.Len(t, indexer.packageList, 1)
 	})
 
 	t.Run("file system indexer ignores zip files", func(t *testing.T) {
@@ -954,8 +953,7 @@ func TestFileSystemIndexer_watchPackageFileSystem(t *testing.T) {
 			EnablePathsWatcher: true,
 		}, tmpDir)
 
-		err := indexer.Init(ctx)
-		require.NoError(t, err)
+		indexer.packageList = make(Packages, 0)
 
 		done := make(chan struct{})
 		go func() {
@@ -976,10 +974,11 @@ func TestFileSystemIndexer_watchPackageFileSystem(t *testing.T) {
 
 		createMockPackage(t, tmpDir, "mypackage")
 		time.Sleep(1500 * time.Millisecond)
-		require.Len(t, indexer.packageList, 1)
 
 		cancel()
 		<-done
+
+		assert.Len(t, indexer.packageList, 1)
 	})
 }
 
