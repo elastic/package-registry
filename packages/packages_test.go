@@ -885,7 +885,11 @@ func TestFileSystemIndexer_watchPackageFileSystem(t *testing.T) {
 		time.Sleep(100 * time.Millisecond)
 
 		for i := 0; i < 25; i++ {
-			createMockZipPackage(t, tmpDir, fmt.Sprintf("mypackage%d", i))
+			path := createMockZipPackage(t, tmpDir, fmt.Sprintf("mypackage%d", i))
+			defer func() {
+				err := os.Remove(path)
+				require.NoError(t, err)
+			}()
 		}
 
 		// Wait for debounce period plus buffer
@@ -925,7 +929,11 @@ func TestFileSystemIndexer_watchPackageFileSystem(t *testing.T) {
 		time.Sleep(1500 * time.Millisecond)
 		assert.Empty(t, indexer.packageList)
 
-		createMockZipPackage(t, tmpDir, "mypackage")
+		path := createMockZipPackage(t, tmpDir, "mypackage")
+		defer func() {
+			err := os.Remove(path)
+			require.NoError(t, err)
+		}()
 		time.Sleep(1500 * time.Millisecond)
 		require.Len(t, indexer.packageList, 1)
 
@@ -958,7 +966,11 @@ func TestFileSystemIndexer_watchPackageFileSystem(t *testing.T) {
 		time.Sleep(100 * time.Millisecond)
 
 		// Create zip file (should be ignored by regular file system indexer)
-		createMockZipPackage(t, tmpDir, "mypackage")
+		path := createMockZipPackage(t, tmpDir, "mypackage")
+		defer func() {
+			err := os.Remove(path)
+			require.NoError(t, err)
+		}()
 		time.Sleep(1500 * time.Millisecond)
 		assert.Empty(t, indexer.packageList)
 
@@ -994,13 +1006,14 @@ format_version: 1.0.0
 	require.NoError(t, err)
 }
 
-func createMockZipPackage(t *testing.T, dest, pkgName string) {
+func createMockZipPackage(t *testing.T, dest, pkgName string) string {
 	t.Helper()
 
 	tmpMockFSDir := t.TempDir()
 	createMockPackage(t, tmpMockFSDir, pkgName)
 
-	file, err := os.Create(filepath.Join(dest, pkgName+"-1.0.0.zip"))
+	zipFilepath := filepath.Join(dest, pkgName+"-1.0.0.zip")
+	file, err := os.Create(zipFilepath)
 	require.NoError(t, err)
 
 	err = archiver.ArchivePackage(file, archiver.PackageProperties{
@@ -1012,6 +1025,8 @@ func createMockZipPackage(t *testing.T, dest, pkgName string) {
 
 	err = file.Close()
 	require.NoError(t, err)
+
+	return zipFilepath
 }
 
 func mustBuildDiscoveryFilter(filters []string) discoveryFilters {
