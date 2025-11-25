@@ -1000,11 +1000,10 @@ func createMockZipPackage(t *testing.T, dest, pkgName string) {
 	tmpMockFSDir := t.TempDir()
 	createMockPackage(t, tmpMockFSDir, pkgName)
 
-	w, err := os.Create(filepath.Join(dest, pkgName+"-1.0.0.zip"))
+	file, err := os.Create(filepath.Join(dest, pkgName+"-1.0.0.zip"))
 	require.NoError(t, err)
-	defer w.Close()
 
-	err = archiver.ArchivePackage(w, archiver.PackageProperties{
+	err = archiver.ArchivePackage(file, archiver.PackageProperties{
 		Name:    pkgName,
 		Version: "1.0.0",
 		Path:    filepath.Join(tmpMockFSDir, pkgName, "1.0.0"),
