@@ -93,7 +93,7 @@ func buildArchiveHeader(info os.FileInfo, relativePath string) (*zip.FileHeader,
 	}
 
 	header.Method = zip.Deflate
-	header.Name = relativePath
+	header.Name = relativePath // Hypothesis, this should use filepath.ToSlash()
 	if info.IsDir() && !strings.HasSuffix(header.Name, "/") {
 		header.Name = header.Name + "/"
 	}
