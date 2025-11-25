@@ -7,11 +7,14 @@ package packages
 import (
 	"archive/zip"
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
+	"runtime"
 	"slices"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/Masterminds/semver/v3"
@@ -235,40 +238,103 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 		name    string
 		version string
 	}
+	type packageJob struct {
+		position int
+		path     string
+	}
+	numWorkers := runtime.GOMAXPROCS(0) / 2
+	mu := sync.Mutex{}
 	packagesFound := make(map[packageKey]struct{})
+	jobChan := make(chan packageJob)
+	errChan := make(chan error)
 
-	var pList Packages
+	count := 0
 	for _, basePath := range i.paths {
 		packagePaths, err := i.getPackagePaths(basePath)
 		if err != nil {
 			return nil, err
 		}
+		count += len(packagePaths)
+	}
+	pList := make(Packages, count)
 
-		i.logger.Info("Searching packages in " + basePath)
+	var wg sync.WaitGroup
+
+	i.logger.Info("Searching packages in filesystem", zap.String("indexer", i.label))
+	// Start workers
+	for range numWorkers {
+		wg.Add(1)
+		go func(logger *zap.Logger, fsBuilder FileSystemBuilder) {
+			defer wg.Done()
+			for pkgJob := range jobChan {
+				p, err := NewPackage(logger, pkgJob.path, fsBuilder)
+				if err != nil {
+					errChan <- fmt.Errorf("loading package failed (path: %s): %w", pkgJob.path, err)
+					continue
+				}
+
+				key := packageKey{name: p.Name, version: p.Version}
+				func() {
+					mu.Lock()
+					defer mu.Unlock()
+					if _, found := packagesFound[key]; found {
+						i.logger.Debug("duplicated package",
+							zap.String("package.name", p.Name),
+							zap.String("package.version", p.Version),
+							zap.String("package.path", p.BasePath))
+						return
+					}
+
+					packagesFound[key] = struct{}{}
+					pList[pkgJob.position] = p
+
+					i.logger.Debug("found package",
+						zap.String("package.name", p.Name),
+						zap.String("package.version", p.Version),
+						zap.String("package.path", p.BasePath))
+
+				}()
+			}
+		}(i.logger, i.fsBuilder)
+	}
+
+	count = 0
+	for _, basePath := range i.paths {
+		packagePaths, err := i.getPackagePaths(basePath)
+		if err != nil {
+			return nil, err
+		}
 		for _, path := range packagePaths {
-			p, err := NewPackage(i.logger, path, i.fsBuilder)
-			if err != nil {
-				return nil, fmt.Errorf("loading package failed (path: %s): %w", path, err)
-			}
-
-			key := packageKey{name: p.Name, version: p.Version}
-			if _, found := packagesFound[key]; found {
-				i.logger.Debug("duplicated package",
-					zap.String("package.name", p.Name),
-					zap.String("package.version", p.Version),
-					zap.String("package.path", p.BasePath))
-				continue
-			}
-
-			packagesFound[key] = struct{}{}
-			pList = append(pList, p)
-
-			i.logger.Debug("found package",
-				zap.String("package.name", p.Name),
-				zap.String("package.version", p.Version),
-				zap.String("package.path", p.BasePath))
+			jobChan <- packageJob{position: count, path: path}
+			count++
 		}
 	}
+	close(jobChan)
+
+	wg.Wait()
+
+	close(errChan)
+
+	var multiErr error
+	for err := range errChan {
+		multiErr = errors.Join(multiErr, err)
+	}
+
+	if multiErr != nil {
+		return nil, multiErr
+	}
+
+	// Remove null entries in case of duplicated packages
+	current := 0
+	for _, p := range pList {
+		if p != nil {
+			pList[current] = p
+			current++
+		}
+	}
+	pList = pList[:current]
+	i.logger.Info("Searching packages in filesystem done", zap.String("indexer", i.label))
+
 	return pList, nil
 }
 
