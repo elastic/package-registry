@@ -13,7 +13,6 @@ import (
 	"runtime"
 	"slices"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/Masterminds/semver/v3"
@@ -240,8 +239,6 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 	}
 
 	numWorkers := runtime.GOMAXPROCS(0)
-	mu := sync.Mutex{}
-	packagesFound := make(map[packageKey]struct{})
 
 	count := 0
 	for _, basePath := range i.paths {
@@ -272,19 +269,7 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 					return fmt.Errorf("loading package failed (path: %s): %w", path, err)
 				}
 
-				key := packageKey{name: p.Name, version: p.Version}
 				func() {
-					mu.Lock()
-					defer mu.Unlock()
-					if _, found := packagesFound[key]; found {
-						i.logger.Debug("duplicated package",
-							zap.String("package.name", p.Name),
-							zap.String("package.version", p.Version),
-							zap.String("package.path", p.BasePath))
-						return
-					}
-
-					packagesFound[key] = struct{}{}
 					pList[position] = p
 
 					i.logger.Debug("found package",
@@ -302,14 +287,28 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 		return nil, err
 	}
 
-	// Remove null entries in case of duplicated packages
+	// Loop through the packages and remove duplicates.
+	// Remove duplicates while preserving filesystem discovery order.
+	// Duplicate removal happens after initial loading to maintain the order packages
+	// are discovered in the filesystem. This ensures that when the same package version
+	// exists in multiple paths, we keep the version from the first path in the search order,
+	// not necessarily the first one loaded by the concurrent workers.
 	current := 0
+	packagesFound := make(map[packageKey]struct{})
 	for _, p := range pList {
-		if p != nil {
-			pList[current] = p
-			current++
+		key := packageKey{name: p.Name, version: p.Version}
+		if _, found := packagesFound[key]; found {
+			i.logger.Debug("duplicated package",
+				zap.String("package.name", p.Name),
+				zap.String("package.version", p.Version),
+				zap.String("package.path", p.BasePath))
+			continue
 		}
+		packagesFound[key] = struct{}{}
+		pList[current] = p
+		current++
 	}
+
 	pList = pList[:current]
 	i.logger.Info("Searching packages in filesystem done", zap.String("indexer", i.label), zap.Int("packages.size", len(pList)))
 
