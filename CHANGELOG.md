@@ -8,9 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Breaking changes
 
-### Bugfixes
+### Bugfixes 
+
+* Aded missing mapping for azure/metrics input. [#1474](https://github.com/elastic/package-registry/pull/1474)
 
 ### Added
+
+* Load local packages in parallel. [#1489](https://github.com/elastic/package-registry/pull/1489)
 
 ### Deprecated
 
