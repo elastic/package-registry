@@ -7,7 +7,6 @@ package packages
 import (
 	"archive/zip"
 	"context"
-	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -23,6 +22,7 @@ import (
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 
+	"github.com/elastic/package-registry/internal/workers"
 	"github.com/elastic/package-registry/metrics"
 )
 
@@ -238,15 +238,10 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 		name    string
 		version string
 	}
-	type packageJob struct {
-		position int
-		path     string
-	}
-	numWorkers := runtime.GOMAXPROCS(0) / 2
+
+	numWorkers := runtime.GOMAXPROCS(0)
 	mu := sync.Mutex{}
 	packagesFound := make(map[packageKey]struct{})
-	jobChan := make(chan packageJob)
-	errChan := make(chan error)
 
 	count := 0
 	for _, basePath := range i.paths {
@@ -258,19 +253,23 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 	}
 	pList := make(Packages, count)
 
-	var wg sync.WaitGroup
+	taskPool := workers.NewTaskPool(numWorkers)
 
 	i.logger.Info("Searching packages in filesystem", zap.String("indexer", i.label))
-	// Start workers
-	for range numWorkers {
-		wg.Add(1)
-		go func(logger *zap.Logger, fsBuilder FileSystemBuilder) {
-			defer wg.Done()
-			for pkgJob := range jobChan {
-				p, err := NewPackage(logger, pkgJob.path, fsBuilder)
+	count = 0
+	for _, basePath := range i.paths {
+		packagePaths, err := i.getPackagePaths(basePath)
+		if err != nil {
+			return nil, err
+		}
+		for _, p := range packagePaths {
+			position := count
+			path := p
+			count++
+			taskPool.Do(func() error {
+				p, err := NewPackage(i.logger, path, i.fsBuilder)
 				if err != nil {
-					errChan <- fmt.Errorf("loading package failed (path: %s): %w", pkgJob.path, err)
-					continue
+					return fmt.Errorf("loading package failed (path: %s): %w", path, err)
 				}
 
 				key := packageKey{name: p.Name, version: p.Version}
@@ -286,7 +285,7 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 					}
 
 					packagesFound[key] = struct{}{}
-					pList[pkgJob.position] = p
+					pList[position] = p
 
 					i.logger.Debug("found package",
 						zap.String("package.name", p.Name),
@@ -294,34 +293,13 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 						zap.String("package.path", p.BasePath))
 
 				}()
-			}
-		}(i.logger, i.fsBuilder)
-	}
-
-	count = 0
-	for _, basePath := range i.paths {
-		packagePaths, err := i.getPackagePaths(basePath)
-		if err != nil {
-			return nil, err
-		}
-		for _, path := range packagePaths {
-			jobChan <- packageJob{position: count, path: path}
-			count++
+				return nil
+			})
 		}
 	}
-	close(jobChan)
 
-	wg.Wait()
-
-	close(errChan)
-
-	var multiErr error
-	for err := range errChan {
-		multiErr = errors.Join(multiErr, err)
-	}
-
-	if multiErr != nil {
-		return nil, multiErr
+	if err := taskPool.Wait(); err != nil {
+		return nil, err
 	}
 
 	// Remove null entries in case of duplicated packages
@@ -333,7 +311,7 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 		}
 	}
 	pList = pList[:current]
-	i.logger.Info("Searching packages in filesystem done", zap.String("indexer", i.label))
+	i.logger.Info("Searching packages in filesystem done", zap.String("indexer", i.label), zap.Int("packages.size", len(pList)))
 
 	return pList, nil
 }
