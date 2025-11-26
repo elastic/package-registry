@@ -287,7 +287,6 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 		return nil, err
 	}
 
-	// Loop through the packages and remove duplicates.
 	// Remove duplicates while preserving filesystem discovery order.
 	// Duplicate removal happens after initial loading to maintain the order packages
 	// are discovered in the filesystem. This ensures that when the same package version
