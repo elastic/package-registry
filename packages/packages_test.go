@@ -9,7 +9,33 @@ import (
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/stretchr/testify/require"
+	"go.uber.org/zap/zapcore"
+
+	"github.com/elastic/package-registry/internal/util"
 )
+
+func BenchmarkInit(b *testing.B) {
+	// given
+	packagesBasePaths := []string{"../testdata/second_package_path", "../testdata/package"}
+
+	testLogger := util.NewTestLoggerLevel(zapcore.FatalLevel)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		zipIndexer := NewZipFileSystemIndexer(testLogger, "../testdata/local-storage")
+		dirIndexer := NewFileSystemIndexer(testLogger, packagesBasePaths...)
+
+		err := zipIndexer.Init(b.Context())
+		require.NoError(b, err)
+
+		err = dirIndexer.Init(b.Context())
+		require.NoError(b, err)
+
+		b.StopTimer()
+		require.NoError(b, zipIndexer.Close(b.Context()))
+		require.NoError(b, dirIndexer.Close(b.Context()))
+		b.StartTimer()
+	}
+}
 
 func TestPackagesFilter(t *testing.T) {
 	filterTestPackages := []filterTestPackage{
