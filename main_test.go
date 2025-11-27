@@ -60,11 +60,14 @@ func TestRouter(t *testing.T) {
 
 func TestEndpoints(t *testing.T) {
 	t.Parallel()
+	fsOpts := packages.FSIndexerOptions{
+		Logger: testLogger,
+	}
 
 	packagesBasePaths := []string{"./testdata/second_package_path", "./testdata/package"}
 	indexer := NewCombinedIndexer(
-		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
-		packages.NewFileSystemIndexer(testLogger, packagesBasePaths...),
+		packages.NewZipFileSystemIndexer(fsOpts, "./testdata/local-storage"),
+		packages.NewFileSystemIndexer(fsOpts, packagesBasePaths...),
 	)
 	t.Cleanup(func() { indexer.Close(context.Background()) })
 
@@ -171,8 +174,12 @@ func TestEndpoints(t *testing.T) {
 func TestArtifacts(t *testing.T) {
 	t.Parallel()
 
+	fsOpts := packages.FSIndexerOptions{
+		Logger: testLogger,
+	}
+
 	packagesBasePaths := []string{"./testdata/package"}
-	indexer := packages.NewFileSystemIndexer(testLogger, packagesBasePaths...)
+	indexer := packages.NewFileSystemIndexer(fsOpts, packagesBasePaths...)
 	t.Cleanup(func() { indexer.Close(context.Background()) })
 
 	err := indexer.Init(t.Context())
@@ -203,7 +210,10 @@ func TestArtifacts(t *testing.T) {
 func TestSignatures(t *testing.T) {
 	t.Parallel()
 
-	indexer := packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage")
+	fsOpts := packages.FSIndexerOptions{
+		Logger: testLogger,
+	}
+	indexer := packages.NewZipFileSystemIndexer(fsOpts, "./testdata/local-storage")
 	t.Cleanup(func() { indexer.Close(context.Background()) })
 
 	err := indexer.Init(t.Context())
@@ -232,8 +242,11 @@ func TestSignatures(t *testing.T) {
 func TestStatics(t *testing.T) {
 	t.Parallel()
 
+	fsOpts := packages.FSIndexerOptions{
+		Logger: testLogger,
+	}
 	packagesBasePaths := []string{"./testdata/package"}
-	indexer := packages.NewFileSystemIndexer(testLogger, packagesBasePaths...)
+	indexer := packages.NewFileSystemIndexer(fsOpts, packagesBasePaths...)
 	t.Cleanup(func() { indexer.Close(context.Background()) })
 
 	err := indexer.Init(t.Context())
@@ -324,9 +337,13 @@ func TestStaticsModifiedTime(t *testing.T) {
 		},
 	}
 
+	fsOpts := packages.FSIndexerOptions{
+		Logger: testLogger,
+	}
+
 	indexer := NewCombinedIndexer(
-		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
-		packages.NewFileSystemIndexer(testLogger, "./testdata/package"),
+		packages.NewZipFileSystemIndexer(fsOpts, "./testdata/local-storage"),
+		packages.NewFileSystemIndexer(fsOpts, "./testdata/package"),
 	)
 	t.Cleanup(func() { indexer.Close(context.Background()) })
 
@@ -361,7 +378,11 @@ func TestStaticsModifiedTime(t *testing.T) {
 func TestZippedArtifacts(t *testing.T) {
 	t.Parallel()
 
-	indexer := packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage")
+	fsOpts := packages.FSIndexerOptions{
+		Logger: testLogger,
+	}
+
+	indexer := packages.NewZipFileSystemIndexer(fsOpts, "./testdata/local-storage")
 	t.Cleanup(func() { indexer.Close(context.Background()) })
 
 	err := indexer.Init(t.Context())
@@ -395,10 +416,12 @@ func TestZippedArtifacts(t *testing.T) {
 
 func TestPackageIndex(t *testing.T) {
 	t.Parallel()
-
+	fsOpts := packages.FSIndexerOptions{
+		Logger: testLogger,
+	}
 	indexer := NewCombinedIndexer(
-		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
-		packages.NewFileSystemIndexer(testLogger, "./testdata/package"),
+		packages.NewZipFileSystemIndexer(fsOpts, "./testdata/local-storage"),
+		packages.NewFileSystemIndexer(fsOpts, "./testdata/package"),
 	)
 	t.Cleanup(func() { indexer.Close(context.Background()) })
 
@@ -435,8 +458,11 @@ func TestPackageIndex(t *testing.T) {
 func TestZippedPackageIndex(t *testing.T) {
 	t.Parallel()
 
+	fsOpts := packages.FSIndexerOptions{
+		Logger: testLogger,
+	}
 	packagesBasePaths := []string{"./testdata/local-storage"}
-	indexer := packages.NewZipFileSystemIndexer(testLogger, packagesBasePaths...)
+	indexer := packages.NewZipFileSystemIndexer(fsOpts, packagesBasePaths...)
 	t.Cleanup(func() { indexer.Close(context.Background()) })
 
 	err := indexer.Init(t.Context())
@@ -468,10 +494,14 @@ func TestZippedPackageIndex(t *testing.T) {
 func TestAllPackageIndex(t *testing.T) {
 	t.Parallel()
 
+	fsOpts := packages.FSIndexerOptions{
+		Logger: testLogger,
+	}
+
 	testPackagePath := filepath.Join("testdata", "package")
 	secondPackagePath := filepath.Join("testdata", "second_package_path")
 	packagesBasePaths := []string{secondPackagePath, testPackagePath}
-	indexer := packages.NewFileSystemIndexer(testLogger, packagesBasePaths...)
+	indexer := packages.NewFileSystemIndexer(fsOpts, packagesBasePaths...)
 	t.Cleanup(func() { indexer.Close(context.Background()) })
 
 	err := indexer.Init(t.Context())
@@ -528,9 +558,13 @@ func TestContentTypes(t *testing.T) {
 		{"/package/example/1.0.1/img/kibana-envoyproxy.jpg", "image/jpeg"},
 	}
 
+	fsOpts := packages.FSIndexerOptions{
+		Logger: testLogger,
+	}
+
 	indexer := NewCombinedIndexer(
-		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
-		packages.NewFileSystemIndexer(testLogger, "./testdata/package"),
+		packages.NewZipFileSystemIndexer(fsOpts, "./testdata/local-storage"),
+		packages.NewFileSystemIndexer(fsOpts, "./testdata/package"),
 	)
 	t.Cleanup(func() { indexer.Close(context.Background()) })
 
@@ -562,9 +596,13 @@ func TestContentTypes(t *testing.T) {
 func TestRangeDownloads(t *testing.T) {
 	t.Parallel()
 
+	fsOpts := packages.FSIndexerOptions{
+		Logger: testLogger,
+	}
+
 	indexer := NewCombinedIndexer(
-		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
-		packages.NewFileSystemIndexer(testLogger, "./testdata/package"),
+		packages.NewZipFileSystemIndexer(fsOpts, "./testdata/local-storage"),
+		packages.NewFileSystemIndexer(fsOpts, "./testdata/package"),
 	)
 	t.Cleanup(func() { indexer.Close(context.Background()) })
 
