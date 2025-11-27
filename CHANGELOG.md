@@ -10,11 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
-* Added missing mapping for azure/metrics input. [#1474](https://github.com/elastic/package-registry/pull/1474)
+* Add missing mapping for azure/metrics input. [#1474](https://github.com/elastic/package-registry/pull/1474)
 
 ### Added
 
-* Optimized package loading by reading package ZIP archives and package folders concurrently. [#1489](https://github.com/elastic/package-registry/pull/1489)
+* Optimize package loading by reading package ZIP archives and package folders concurrently. [#1489](https://github.com/elastic/package-registry/pull/1489)
 
 ### Deprecated
 
