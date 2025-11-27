@@ -220,7 +220,8 @@ func (i *FileSystemIndexer) Init(ctx context.Context) (err error) {
 	}
 
 	if i.enablePathsWatcher {
-		go i.watchPackageFileSystem(ctx)
+		// removing current transaction as we are starting a new one at watcher
+		go i.watchPackageFileSystem(apm.ContextWithTransaction(ctx, nil))
 	}
 	return nil
 }
