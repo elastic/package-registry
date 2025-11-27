@@ -84,6 +84,8 @@ var (
 	proxyTo          string
 	serviceName      = getServiceName()
 
+	packagePathsEnableWatcher = false
+
 	defaultConfig = Config{
 		CacheTimeIndex:               10 * time.Second,
 		CacheTimeSearch:              10 * time.Minute,
@@ -128,6 +130,8 @@ func init() {
 	// The following proxy-indexer related flags are technical preview and might be removed in the future or renamed
 	flag.BoolVar(&featureProxyMode, "feature-proxy-mode", false, "Enable proxy mode to include packages from other endpoint (technical preview).")
 	flag.StringVar(&proxyTo, "proxy-to", "https://epr.elastic.co/", "Proxy-to endpoint")
+
+	flag.BoolVar(&packagePathsEnableWatcher, "package-paths-enable-watcher", false, "Enable file system watcher for package paths to automatically detect new packages.")
 }
 
 type Config struct {
@@ -138,9 +142,9 @@ type Config struct {
 	CacheTimeCatchAll            time.Duration `config:"cache_time.catch_all"`
 	SQLIndexerDatabaseFolderPath string        `config:"sql_indexer.database_folder_path"` // technical preview, used by the SQL storage indexer
 	SearchCacheSize              int           `config:"search.cache_size"`                // technical preview, used by the SQL storage indexer
-	SearchCacheTTL               time.Duration `config:"search.cache_ttl"`                 // technical preview, used by the SQL storage indexe^
+	SearchCacheTTL               time.Duration `config:"search.cache_ttl"`                 // technical preview, used by the SQL storage indexer
 	CategoriesCacheSize          int           `config:"categories.cache_size"`            // technical preview, used by the SQL storage indexer
-	CategoriesCacheTTL           time.Duration `config:"categories.cache_ttl"`             // technical preview, used by the SQL storage indexe^
+	CategoriesCacheTTL           time.Duration `config:"categories.cache_ttl"`             // technical preview, used by the SQL storage indexer
 }
 
 func main() {
@@ -178,6 +182,10 @@ func main() {
 	ctx := context.Background()
 
 	config := mustLoadConfig(logger)
+
+	if len(config.PackagePaths) == 0 && packagePathsEnableWatcher {
+		logger.Fatal("no package paths configured, cannot enable watcher")
+	}
 
 	options := serverOptions{
 		apmTracer: apmTracer,
@@ -388,9 +396,15 @@ func initIndexer(ctx context.Context, logger *zap.Logger, options serverOptions)
 		combined = append(combined, indexer)
 	}
 
+	fsOptions := packages.FSIndexerOptions{
+		Logger:             logger,
+		EnablePathsWatcher: packagePathsEnableWatcher,
+		APMTracer:          options.apmTracer,
+	}
+
 	combined = append(combined,
-		packages.NewZipFileSystemIndexer(logger, packagesBasePaths...),
-		packages.NewFileSystemIndexer(logger, packagesBasePaths...),
+		packages.NewZipFileSystemIndexer(fsOptions, packagesBasePaths...),
+		packages.NewFileSystemIndexer(fsOptions, packagesBasePaths...),
 	)
 	ensurePackagesAvailable(ctx, logger, combined)
 	return combined
@@ -574,6 +588,7 @@ func getConfig(logger *zap.Logger) (*Config, error) {
 		}
 		config.CategoriesCacheTTL = cacheTTL
 	}
+
 	return &config, nil
 }
 
@@ -619,6 +634,8 @@ func ensurePackagesAvailable(ctx context.Context, logger *zap.Logger, indexer In
 		logger.Info(fmt.Sprintf("%v local package manifests loaded.", len(packages)))
 	} else if featureProxyMode {
 		logger.Info("No local packages found, but the proxy mode can access remote ones.")
+	} else if packagePathsEnableWatcher {
+		logger.Warn("No packages found at startup. The registry is running but no content is available yet.")
 	} else {
 		logger.Fatal("No local packages found.")
 	}
