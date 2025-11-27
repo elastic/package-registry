@@ -403,9 +403,9 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 		return nil, err
 	}
 
-	// Remove duplicates while preserving filesystem discovery order.
-	// Duplicate removal happens after initial loading to maintain the order packages
-	// are discovered in the filesystem. This ensures that when the same package version
+	// Remove duplicates while preserving the package discovery order in the paths set in the configuration.
+	// Duplicate removal happens after initial loading all packages in all paths to maintain the order packages
+	// are discovered in the paths set in the configuration. This ensures that when the same package version
 	// exists in multiple paths, we keep the version from the first path in the search order,
 	// not necessarily the first one loaded by the concurrent workers.
 	current := 0
