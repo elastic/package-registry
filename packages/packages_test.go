@@ -28,9 +28,12 @@ func BenchmarkInit(b *testing.B) {
 
 	testLogger := util.NewTestLoggerLevel(zapcore.FatalLevel)
 	b.ResetTimer()
+	fsOptions := FSIndexerOptions{
+		Logger: testLogger,
+	}
 	for i := 0; i < b.N; i++ {
-		zipIndexer := NewZipFileSystemIndexer(testLogger, "../testdata/local-storage")
-		dirIndexer := NewFileSystemIndexer(testLogger, packagesBasePaths...)
+		zipIndexer := NewZipFileSystemIndexer(fsOptions, "../testdata/local-storage")
+		dirIndexer := NewFileSystemIndexer(fsOptions, packagesBasePaths...)
 
 		err := zipIndexer.Init(b.Context())
 		require.NoError(b, err)
