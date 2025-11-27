@@ -121,6 +121,9 @@ type FileSystemIndexer struct {
 
 	enablePathsWatcher bool
 
+	// pathsWorkers is the number of concurrent workers to use when reading packages from the filesystem.
+	pathsWorkers int
+
 	m sync.RWMutex
 
 	apmTracer *apm.Tracer
@@ -130,6 +133,9 @@ type FSIndexerOptions struct {
 	Logger             *zap.Logger
 	EnablePathsWatcher bool
 	APMTracer          *apm.Tracer
+
+	// PathsWorkers is the number of concurrent workers to use when reading packages from the filesystem.
+	PathsWorkers int
 }
 
 // NewFileSystemIndexer creates a new FileSystemIndexer for the given paths.
@@ -161,6 +167,12 @@ func NewFileSystemIndexer(options FSIndexerOptions, paths ...string) *FileSystem
 		options.Logger.Warn("ignoring unexpected file", zap.String("file.path", path))
 		return false, nil
 	}
+
+	// If PathsWorkers is not set or is less than or equal to 0, use the number of CPU cores.
+	pathWorkers := options.PathsWorkers
+	if options.PathsWorkers <= 0 {
+		pathWorkers = runtime.GOMAXPROCS(0)
+	}
 	return &FileSystemIndexer{
 		paths:              paths,
 		label:              fileSystemIndexerName,
@@ -169,6 +181,7 @@ func NewFileSystemIndexer(options FSIndexerOptions, paths ...string) *FileSystem
 		logger:             options.Logger,
 		enablePathsWatcher: options.EnablePathsWatcher,
 		apmTracer:          options.APMTracer,
+		pathsWorkers:       pathWorkers,
 	}
 }
 
@@ -197,6 +210,12 @@ func NewZipFileSystemIndexer(options FSIndexerOptions, paths ...string) *FileSys
 
 		return true, nil
 	}
+
+	// If PathsWorkers is not set or is less than or equal to 0, use the number of CPU cores.
+	pathWorkers := options.PathsWorkers
+	if options.PathsWorkers <= 0 {
+		pathWorkers = runtime.GOMAXPROCS(0)
+	}
 	return &FileSystemIndexer{
 		paths:              paths,
 		label:              zipFileSystemIndexerName,
@@ -205,6 +224,7 @@ func NewZipFileSystemIndexer(options FSIndexerOptions, paths ...string) *FileSys
 		logger:             options.Logger,
 		enablePathsWatcher: options.EnablePathsWatcher,
 		apmTracer:          options.APMTracer,
+		pathsWorkers:       pathWorkers,
 	}
 }
 
@@ -368,7 +388,7 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 	}
 	pList := make(Packages, count)
 
-	taskPool := workers.NewTaskPool(runtime.GOMAXPROCS(0))
+	taskPool := workers.NewTaskPool(i.pathsWorkers)
 
 	i.logger.Info("Searching packages in filesystem", zap.String("indexer", i.label))
 	count = 0
