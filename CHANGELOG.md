@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Optimize package loading by reading package ZIP archives and package folders concurrently. [#1489](https://github.com/elastic/package-registry/pull/1489)
+* Allow empty package paths on startup. [#1482](https://github.com/elastic/package-registry/pull/1482)
 
 ### Deprecated
 
