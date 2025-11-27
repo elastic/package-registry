@@ -358,8 +358,6 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 		version string
 	}
 
-	numWorkers := runtime.GOMAXPROCS(0)
-
 	count := 0
 	for _, basePath := range i.paths {
 		packagePaths, err := i.getPackagePaths(basePath)
@@ -370,7 +368,7 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 	}
 	pList := make(Packages, count)
 
-	taskPool := workers.NewTaskPool(numWorkers)
+	taskPool := workers.NewTaskPool(runtime.GOMAXPROCS(0))
 
 	i.logger.Info("Searching packages in filesystem", zap.String("indexer", i.label))
 	count = 0
