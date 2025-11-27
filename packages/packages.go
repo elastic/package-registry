@@ -387,15 +387,13 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 					return fmt.Errorf("loading package failed (path: %s): %w", path, err)
 				}
 
-				func() {
-					pList[position] = p
+				pList[position] = p
 
-					i.logger.Debug("found package",
-						zap.String("package.name", p.Name),
-						zap.String("package.version", p.Version),
-						zap.String("package.path", p.BasePath))
+				i.logger.Debug("found package",
+					zap.String("package.name", p.Name),
+					zap.String("package.version", p.Version),
+					zap.String("package.path", p.BasePath))
 
-				}()
 				return nil
 			})
 		}
