@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"runtime"
 	"slices"
 	"strings"
 	"sync"
@@ -22,6 +23,7 @@ import (
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 
+	"github.com/elastic/package-registry/internal/workers"
 	"github.com/elastic/package-registry/metrics"
 )
 
@@ -119,6 +121,9 @@ type FileSystemIndexer struct {
 
 	enablePathsWatcher bool
 
+	// pathsWorkers is the number of concurrent workers to use when reading packages from the filesystem.
+	pathsWorkers int
+
 	m sync.RWMutex
 
 	apmTracer *apm.Tracer
@@ -128,6 +133,9 @@ type FSIndexerOptions struct {
 	Logger             *zap.Logger
 	EnablePathsWatcher bool
 	APMTracer          *apm.Tracer
+
+	// PathsWorkers is the number of concurrent workers to use when reading packages from the filesystem.
+	PathsWorkers int
 }
 
 // NewFileSystemIndexer creates a new FileSystemIndexer for the given paths.
@@ -159,6 +167,12 @@ func NewFileSystemIndexer(options FSIndexerOptions, paths ...string) *FileSystem
 		options.Logger.Warn("ignoring unexpected file", zap.String("file.path", path))
 		return false, nil
 	}
+
+	// If PathsWorkers is not set or is less than or equal to 0, use the number of CPU cores.
+	pathWorkers := options.PathsWorkers
+	if options.PathsWorkers <= 0 {
+		pathWorkers = runtime.GOMAXPROCS(0)
+	}
 	return &FileSystemIndexer{
 		paths:              paths,
 		label:              fileSystemIndexerName,
@@ -167,6 +181,7 @@ func NewFileSystemIndexer(options FSIndexerOptions, paths ...string) *FileSystem
 		logger:             options.Logger,
 		enablePathsWatcher: options.EnablePathsWatcher,
 		apmTracer:          options.APMTracer,
+		pathsWorkers:       pathWorkers,
 	}
 }
 
@@ -195,6 +210,12 @@ func NewZipFileSystemIndexer(options FSIndexerOptions, paths ...string) *FileSys
 
 		return true, nil
 	}
+
+	// If PathsWorkers is not set or is less than or equal to 0, use the number of CPU cores.
+	pathWorkers := options.PathsWorkers
+	if options.PathsWorkers <= 0 {
+		pathWorkers = runtime.GOMAXPROCS(0)
+	}
 	return &FileSystemIndexer{
 		paths:              paths,
 		label:              zipFileSystemIndexerName,
@@ -203,6 +224,7 @@ func NewZipFileSystemIndexer(options FSIndexerOptions, paths ...string) *FileSys
 		logger:             options.Logger,
 		enablePathsWatcher: options.EnablePathsWatcher,
 		apmTracer:          options.APMTracer,
+		pathsWorkers:       pathWorkers,
 	}
 }
 
@@ -355,40 +377,76 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 		name    string
 		version string
 	}
-	packagesFound := make(map[packageKey]struct{})
 
-	var pList Packages
+	count := 0
 	for _, basePath := range i.paths {
 		packagePaths, err := i.getPackagePaths(basePath)
 		if err != nil {
 			return nil, err
 		}
+		count += len(packagePaths)
+	}
+	pList := make(Packages, count)
 
-		i.logger.Info("Searching packages in " + basePath)
-		for _, path := range packagePaths {
-			p, err := NewPackage(i.logger, path, i.fsBuilder)
-			if err != nil {
-				return nil, fmt.Errorf("loading package failed (path: %s): %w", path, err)
-			}
+	taskPool := workers.NewTaskPool(i.pathsWorkers)
 
-			key := packageKey{name: p.Name, version: p.Version}
-			if _, found := packagesFound[key]; found {
-				i.logger.Debug("duplicated package",
+	i.logger.Info("Searching packages in filesystem", zap.String("indexer", i.label))
+	count = 0
+	for _, basePath := range i.paths {
+		packagePaths, err := i.getPackagePaths(basePath)
+		if err != nil {
+			return nil, err
+		}
+		for _, p := range packagePaths {
+			position := count
+			path := p
+			count++
+			taskPool.Do(func() error {
+				p, err := NewPackage(i.logger, path, i.fsBuilder)
+				if err != nil {
+					return fmt.Errorf("loading package failed (path: %s): %w", path, err)
+				}
+
+				pList[position] = p
+
+				i.logger.Debug("found package",
 					zap.String("package.name", p.Name),
 					zap.String("package.version", p.Version),
 					zap.String("package.path", p.BasePath))
-				continue
-			}
 
-			packagesFound[key] = struct{}{}
-			pList = append(pList, p)
+				return nil
+			})
+		}
+	}
 
-			i.logger.Debug("found package",
+	if err := taskPool.Wait(); err != nil {
+		return nil, err
+	}
+
+	// Remove duplicates while preserving the package discovery order in the paths set in the configuration.
+	// Duplicate removal happens after initial loading all packages in all paths to maintain the order packages
+	// are discovered in the paths set in the configuration. This ensures that when the same package version
+	// exists in multiple paths, we keep the version from the first path in the search order,
+	// not necessarily the first one loaded by the concurrent workers.
+	current := 0
+	packagesFound := make(map[packageKey]struct{})
+	for _, p := range pList {
+		key := packageKey{name: p.Name, version: p.Version}
+		if _, found := packagesFound[key]; found {
+			i.logger.Debug("duplicated package",
 				zap.String("package.name", p.Name),
 				zap.String("package.version", p.Version),
 				zap.String("package.path", p.BasePath))
+			continue
 		}
+		packagesFound[key] = struct{}{}
+		pList[current] = p
+		current++
 	}
+
+	pList = pList[:current]
+	i.logger.Info("Searching packages in filesystem done", zap.String("indexer", i.label), zap.Int("packages.size", len(pList)))
+
 	return pList, nil
 }
 

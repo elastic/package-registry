@@ -17,6 +17,7 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
 	"syscall"
@@ -85,6 +86,7 @@ var (
 	serviceName      = getServiceName()
 
 	packagePathsEnableWatcher = false
+	packagePathsWorkers       = 1
 
 	defaultConfig = Config{
 		CacheTimeIndex:               10 * time.Second,
@@ -132,6 +134,7 @@ func init() {
 	flag.StringVar(&proxyTo, "proxy-to", "https://epr.elastic.co/", "Proxy-to endpoint")
 
 	flag.BoolVar(&packagePathsEnableWatcher, "package-paths-enable-watcher", false, "Enable file system watcher for package paths to automatically detect new packages.")
+	flag.IntVar(&packagePathsWorkers, "package-paths-workers", runtime.GOMAXPROCS(0), "Number of workers to use for reading packages concurrently from the configured paths. Default is the number of CPU cores returned by GOMAXPROCS.")
 }
 
 type Config struct {
@@ -370,7 +373,6 @@ func initMetricsServer(logger *zap.Logger) {
 		}
 	}()
 }
-
 func initIndexer(ctx context.Context, logger *zap.Logger, options serverOptions) Indexer {
 	tx := options.apmTracer.StartTransaction("initIndexer", "backend.init")
 	defer tx.End()
@@ -400,7 +402,10 @@ func initIndexer(ctx context.Context, logger *zap.Logger, options serverOptions)
 		Logger:             logger,
 		EnablePathsWatcher: packagePathsEnableWatcher,
 		APMTracer:          options.apmTracer,
+		PathsWorkers:       packagePathsWorkers,
 	}
+	logger.Debug("Using workers to read packages from package paths", zap.Int("workers", fsOptions.PathsWorkers))
+	logger.Debug("Watching package paths for changes", zap.Bool("enabled", fsOptions.EnablePathsWatcher))
 
 	combined = append(combined,
 		packages.NewZipFileSystemIndexer(fsOptions, packagesBasePaths...),
@@ -751,6 +756,10 @@ func validateFlags() error {
 
 	if featureEnableCategoriesCache && !featureSQLStorageIndexer {
 		return fmt.Errorf("categories cache is just supported with SQL Storage indexer: feature-enable-categories-cache is enabled, but feature-sql-storage-indexer is not enabled")
+	}
+
+	if packagePathsWorkers <= 0 {
+		return fmt.Errorf("package-paths-workers must be greater than 0")
 	}
 
 	return nil
