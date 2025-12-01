@@ -5,10 +5,12 @@ go 1.24.0
 require (
 	cloud.google.com/go/storage v1.57.2
 	github.com/Masterminds/semver/v3 v3.4.0
+	github.com/ProtonMail/go-crypto v1.3.0
 	github.com/elastic/go-licenser v0.4.2
 	github.com/elastic/go-ucfg v0.8.8
 	github.com/felixge/httpsnoop v1.0.4
 	github.com/fsouza/fake-gcs-server v1.52.3
+	github.com/google/go-querystring v1.1.0
 	github.com/gorilla/mux v1.8.1
 	github.com/hashicorp/go-retryablehttp v0.7.8
 	github.com/hashicorp/golang-lru/v2 v2.0.7
@@ -25,6 +27,7 @@ require (
 	golang.org/x/tools v0.39.0
 	google.golang.org/api v0.256.0
 	gopkg.in/yaml.v2 v2.4.0
+	gopkg.in/yaml.v3 v3.0.1
 	honnef.co/go/tools v0.6.1
 	modernc.org/sqlite v1.40.1
 )
@@ -45,6 +48,7 @@ require (
 	github.com/armon/go-radix v1.0.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
+	github.com/cloudflare/circl v1.6.0 // indirect
 	github.com/cncf/xds/go v0.0.0-20250501225837-2ac532fd4443 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
@@ -106,7 +110,6 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20251103181224-f26f9409b101 // indirect
 	google.golang.org/grpc v1.76.0 // indirect
 	google.golang.org/protobuf v1.36.10 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 	howett.net/plist v1.0.1 // indirect
 	modernc.org/libc v1.66.10 // indirect
 	modernc.org/mathutil v1.7.1 // indirect
