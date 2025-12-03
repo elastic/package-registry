@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bugfixes
 
 * Add missing mapping for azure/metrics input. [#1474](https://github.com/elastic/package-registry/pull/1474)
+* Update Go runtime to 1.25.5. [#1496](https://github.com/elastic/package-registry/pull/1496)
 
 ### Added
 
