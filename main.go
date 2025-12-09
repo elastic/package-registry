@@ -48,7 +48,7 @@ import (
 )
 
 const (
-	version             = "1.34.0"
+	version             = "1.34.1"
 	defaultInstanceName = "localhost"
 )
 
@@ -373,6 +373,7 @@ func initMetricsServer(logger *zap.Logger) {
 		}
 	}()
 }
+
 func initIndexer(ctx context.Context, logger *zap.Logger, options serverOptions) Indexer {
 	tx := options.apmTracer.StartTransaction("initIndexer", "backend.init")
 	defer tx.End()
