@@ -38,7 +38,11 @@ func generateSQLStorageIndexer(fs *fakestorage.Server, webServer string) (Indexe
 	}
 	options.PackageStorageEndpoint = webServer
 
-	return internalStorage.NewIndexer(testLogger, fs.Client(), options), nil
+	return internalStorage.NewIndexer(testLogger, internalStorage.ClientNoAuth(fs), options), nil
+}
+
+func generateStorageIndexer(fs *fakestorage.Server, options storage.IndexerOptions) Indexer {
+	return storage.NewIndexer(testLogger, internalStorage.ClientNoAuth(fs), options)
 }
 
 func generateTestCaseStorageEndpoints(indexer Indexer) ([]struct {
@@ -137,7 +141,7 @@ func TestPackageStorage_Endpoints(t *testing.T) {
 	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
-	indexer := storage.NewIndexer(testLogger, fs.Client(), storage.FakeIndexerOptions)
+	indexer := generateStorageIndexer(fs, storage.FakeIndexerOptions)
 	defer indexer.Close(t.Context())
 
 	err := indexer.Init(t.Context())
@@ -201,7 +205,7 @@ func generateTestPackageIndexEndpoints(indexer Indexer) ([]struct {
 func TestPackageStorage_PackageIndex(t *testing.T) {
 	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
-	indexer := storage.NewIndexer(testLogger, fs.Client(), storage.FakeIndexerOptions)
+	indexer := generateStorageIndexer(fs, storage.FakeIndexerOptions)
 	defer indexer.Close(t.Context())
 
 	err := indexer.Init(t.Context())
@@ -272,7 +276,7 @@ func TestPackageStorage_Artifacts(t *testing.T) {
 	testIndexerOptions := storage.FakeIndexerOptions
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
-	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
+	indexer := generateStorageIndexer(fs, testIndexerOptions)
 	defer indexer.Close(t.Context())
 
 	err := indexer.Init(t.Context())
@@ -347,7 +351,7 @@ func TestPackageStorage_Signatures(t *testing.T) {
 	testIndexerOptions := storage.FakeIndexerOptions
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
-	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
+	indexer := generateStorageIndexer(fs, testIndexerOptions)
 	defer indexer.Close(t.Context())
 
 	err := indexer.Init(t.Context())
@@ -423,7 +427,7 @@ func TestPackageStorage_Statics(t *testing.T) {
 	testIndexerOptions := storage.FakeIndexerOptions
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
-	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
+	indexer := generateStorageIndexer(fs, testIndexerOptions)
 	defer indexer.Close(t.Context())
 
 	err := indexer.Init(t.Context())
@@ -511,7 +515,7 @@ func TestPackageStorage_ResolverHeadersResponse(t *testing.T) {
 	testIndexerOptions := storage.FakeIndexerOptions
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
-	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
+	indexer := generateStorageIndexer(fs, testIndexerOptions)
 	defer indexer.Close(t.Context())
 
 	err := indexer.Init(t.Context())
@@ -594,7 +598,7 @@ func TestPackageStorage_ResolverErrorResponse(t *testing.T) {
 	testIndexerOptions := storage.FakeIndexerOptions
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
-	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
+	indexer := generateStorageIndexer(fs, testIndexerOptions)
 	defer indexer.Close(t.Context())
 
 	err := indexer.Init(t.Context())

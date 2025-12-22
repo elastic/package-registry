@@ -37,9 +37,8 @@ func TestSQLInit(t *testing.T) {
 
 	fs := PrepareFakeServer(t, "../../storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
-	storageClient := fs.Client()
 
-	indexer := NewIndexer(util.NewTestLogger(), storageClient, options)
+	indexer := NewIndexer(util.NewTestLogger(), ClientNoAuth(fs), options)
 	defer indexer.Close(t.Context())
 
 	// when
@@ -65,12 +64,11 @@ func BenchmarkSQLInit(b *testing.B) {
 
 	fs := PrepareFakeServer(b, "../../storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
-	storageClient := fs.Client()
 
 	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		indexer := NewIndexer(logger, storageClient, options)
+		indexer := NewIndexer(logger, ClientNoAuth(fs), options)
 
 		err := indexer.Init(b.Context())
 		require.NoError(b, err)
@@ -97,11 +95,10 @@ func BenchmarkSQLIndexerUpdateIndex(b *testing.B) {
 
 	fs := PrepareFakeServer(b, "../../storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
-	storageClient := fs.Client()
 
 	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
 
-	indexer := NewIndexer(logger, storageClient, options)
+	indexer := NewIndexer(logger, ClientNoAuth(fs), options)
 	defer indexer.Close(b.Context())
 
 	start := time.Now()
@@ -138,11 +135,10 @@ func BenchmarkSQLIndexerGet(b *testing.B) {
 
 	fs := PrepareFakeServer(b, "../../storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
-	storageClient := fs.Client()
 
 	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
 
-	indexer := NewIndexer(logger, storageClient, options)
+	indexer := NewIndexer(logger, ClientNoAuth(fs), options)
 	defer indexer.Close(b.Context())
 
 	err = indexer.Init(b.Context())
@@ -209,12 +205,11 @@ func BenchmarkSQLIndexerGetStaticsAndArtifacts(b *testing.B) {
 
 	fs := PrepareFakeServer(b, "../../storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
-	storageClient := fs.Client()
 
 	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
 
 	ctx := context.Background()
-	indexer := NewIndexer(logger, storageClient, options)
+	indexer := NewIndexer(logger, ClientNoAuth(fs), options)
 	defer indexer.Close(ctx)
 
 	err = indexer.Init(ctx)
@@ -274,9 +269,8 @@ func TestSQLGet_ListPackages(t *testing.T) {
 
 	fs := PrepareFakeServer(t, "../../storage/testdata/search-index-all-full.json")
 	t.Cleanup(fs.Stop)
-	storageClient := fs.Client()
 
-	indexer := NewIndexer(util.NewTestLogger(), storageClient, options)
+	indexer := NewIndexer(util.NewTestLogger(), ClientNoAuth(fs), options)
 	t.Cleanup(func() { indexer.Close(context.Background()) })
 
 	err = indexer.Init(t.Context())
@@ -479,7 +473,8 @@ func TestSQLGet_IndexUpdated(t *testing.T) {
 
 	fs := PrepareFakeServer(t, "../../storage/testdata/search-index-all-small.json")
 	t.Cleanup(fs.Stop)
-	storageClient := fs.Client()
+
+	storageClient := ClientNoAuth(fs)
 
 	indexer := NewIndexer(util.NewTestLogger(), storageClient, options)
 	t.Cleanup(func() { indexer.Close(context.Background()) })
