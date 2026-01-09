@@ -82,6 +82,7 @@ type BasePackage struct {
 	SignaturePath           string               `config:"signature_path,omitempty" json:"signature_path,omitempty" yaml:"signature_path,omitempty"`
 	Discovery               *Discovery           `config:"discovery,omitempty" json:"discovery,omitempty,omitzero" yaml:"discovery,omitempty"`
 	BaseDataStreams         []*BaseDataStream    `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
+	Deprecated              *Deprecated          `config:"deprecated,omitempty" json:"deprecated,omitempty" yaml:"deprecated,omitempty"`
 }
 
 // BasePolicyTemplate is used for the package policy templates in the /search endpoint
@@ -109,10 +110,11 @@ type PolicyTemplate struct {
 	DeploymentModes *DeploymentModes `config:"deployment_modes,omitempty" json:"deployment_modes,omitempty" yaml:"deployment_modes,omitempty"`
 
 	// For purposes of "input packages"
-	Type            string `config:"type,omitempty" json:"type,omitempty" yaml:"type,omitempty"`
-	Input           string `config:"input,omitempty" json:"input,omitempty" yaml:"input,omitempty"`
-	IngestionMethod string `config:"ingestion_method,omitempty" json:"ingestion_method,omitempty" yaml:"ingestion_method,omitempty"`
-	TemplatePath    string `config:"template_path,omitempty" json:"template_path,omitempty" yaml:"template_path,omitempty"`
+	Type            string      `config:"type,omitempty" json:"type,omitempty" yaml:"type,omitempty"`
+	Input           string      `config:"input,omitempty" json:"input,omitempty" yaml:"input,omitempty"`
+	IngestionMethod string      `config:"ingestion_method,omitempty" json:"ingestion_method,omitempty" yaml:"ingestion_method,omitempty"`
+	TemplatePath    string      `config:"template_path,omitempty" json:"template_path,omitempty" yaml:"template_path,omitempty"`
+	Deprecated      *Deprecated `config:"deprecated,omitempty" json:"deprecated,omitempty" yaml:"deprecated,omitempty"`
 }
 
 // Source contains metadata about the source of the package and its distribution.
@@ -222,6 +224,11 @@ type DeploymentModes struct {
 type DeploymentMode struct {
 	Enabled   bool  `config:"enabled" json:"enabled" yaml:"enabled" validate:"required"`
 	IsDefault *bool `config:"is_default" json:"is_default,omitempty" yaml:"is_default,omitempty"`
+}
+
+type Deprecated struct {
+	Since       string `config:"since,omitempty" json:"since,omitempty" yaml:"since,omitempty"`
+	Description string `config:"description,omitempty" json:"description,omitempty" yaml:"description,omitempty"`
 }
 
 // Deprecated: NewCommand is not currently used and will be removed in a future release.
