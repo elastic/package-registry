@@ -706,6 +706,11 @@ func (f *Filter) Apply(ctx context.Context, packages Packages) (Packages, error)
 	// Filter by category after selecting the newer packages.
 	packagesList = filterCategories(packagesList, f.Category)
 
+	// when querying for all versions of a package, propagate deprecated info
+	if f.PackageName != "" {
+		packagesList = propagateDeprecatedInfo(packagesList)
+	}
+
 	return packagesList, nil
 }
 
@@ -840,4 +845,40 @@ func NameVersionFilter(name, version string) GetOptions {
 			PackageVersion: version,
 		},
 	}
+}
+
+// propagateDeprecatedInfo propagates deprecated information from the latest
+// non-prerelease version of a package to all its other versions that lack
+// deprecated information.
+func propagateDeprecatedInfo(packages Packages) Packages {
+	// Group packages by name
+	packagesByName := make(map[string]Packages)
+	for _, pkg := range packages {
+		packagesByName[pkg.Name] = append(packagesByName[pkg.Name], pkg)
+	}
+
+	// For each package name, find the latest version with deprecated info
+	for name, pkgs := range packagesByName {
+		var deprecatedPkgInfo *Deprecated
+
+		// Find the latest non-prerelease version with deprecated info
+		for _, pkg := range pkgs {
+			if pkg.IsDeprecated() && !pkg.IsPrerelease() {
+				if deprecatedPkgInfo == nil {
+					deprecatedPkgInfo = pkg.Deprecated
+				}
+			}
+		}
+
+		// Propagate to all versions
+		if deprecatedPkgInfo != nil {
+			for i := range packages {
+				if packages[i].Name == name && packages[i].Deprecated == nil {
+					packages[i].Deprecated = deprecatedPkgInfo
+				}
+			}
+		}
+	}
+
+	return packages
 }
