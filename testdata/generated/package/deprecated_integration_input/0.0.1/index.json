@@ -1,0 +1,78 @@
+{
+  "name": "deprecated_integration_input",
+  "title": "New Package",
+  "version": "0.0.1",
+  "release": "beta",
+  "source": {
+    "license": "Elastic-2.0"
+  },
+  "description": "This is a new package.",
+  "type": "integration",
+  "download": "/epr/deprecated_integration_input/deprecated_integration_input-0.0.1.zip",
+  "path": "/package/deprecated_integration_input/0.0.1",
+  "icons": [
+    {
+      "src": "/img/sample-logo.svg",
+      "path": "/package/deprecated_integration_input/0.0.1/img/sample-logo.svg",
+      "title": "Sample logo",
+      "size": "32x32",
+      "type": "image/svg+xml"
+    }
+  ],
+  "conditions": {
+    "kibana": {
+      "version": "^9.2.3"
+    },
+    "elastic": {
+      "subscription": "basic"
+    }
+  },
+  "owner": {
+    "type": "elastic",
+    "github": "elastic/integrations"
+  },
+  "categories": [
+    "custom"
+  ],
+  "format_version": "3.5.5",
+  "readme": "/package/deprecated_integration_input/0.0.1/docs/README.md",
+  "license": "basic",
+  "screenshots": [
+    {
+      "src": "/img/sample-screenshot.png",
+      "path": "/package/deprecated_integration_input/0.0.1/img/sample-screenshot.png",
+      "title": "Sample screenshot",
+      "size": "600x600",
+      "type": "image/png"
+    }
+  ],
+  "assets": [
+    "/package/deprecated_integration_input/0.0.1/LICENSE.txt",
+    "/package/deprecated_integration_input/0.0.1/changelog.yml",
+    "/package/deprecated_integration_input/0.0.1/manifest.yml",
+    "/package/deprecated_integration_input/0.0.1/sample_event.json",
+    "/package/deprecated_integration_input/0.0.1/docs/README.md",
+    "/package/deprecated_integration_input/0.0.1/img/sample-logo.svg",
+    "/package/deprecated_integration_input/0.0.1/img/sample-screenshot.png",
+    "/package/deprecated_integration_input/0.0.1/_dev/build/docs/README.md"
+  ],
+  "policy_templates": [
+    {
+      "name": "sample",
+      "title": "Sample logs",
+      "description": "Collect sample logs",
+      "inputs": [
+        {
+          "type": "logfile",
+          "title": "Collect sample logs from instances",
+          "description": "Collecting sample logs",
+          "deprecated": {
+            "since": "0.0.1",
+            "description": "This input is deprecated"
+          }
+        }
+      ],
+      "multiple": true
+    }
+  ]
+}

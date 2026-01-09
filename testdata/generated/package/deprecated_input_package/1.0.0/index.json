@@ -1,0 +1,77 @@
+{
+  "name": "deprecated_input_package",
+  "title": "New Package",
+  "version": "1.0.0",
+  "release": "ga",
+  "source": {
+    "license": "Elastic-2.0"
+  },
+  "description": "This is a new package.",
+  "type": "input",
+  "download": "/epr/deprecated_input_package/deprecated_input_package-1.0.0.zip",
+  "path": "/package/deprecated_input_package/1.0.0",
+  "icons": [
+    {
+      "src": "/img/sample-logo.svg",
+      "path": "/package/deprecated_input_package/1.0.0/img/sample-logo.svg",
+      "title": "Sample logo",
+      "size": "32x32",
+      "type": "image/svg+xml"
+    }
+  ],
+  "conditions": {
+    "kibana": {
+      "version": "^9.2.3"
+    },
+    "elastic": {
+      "subscription": "basic"
+    }
+  },
+  "owner": {
+    "type": "elastic",
+    "github": "elastic/integrations"
+  },
+  "categories": [
+    "custom"
+  ],
+  "deprecated": {
+    "since": "1.2.0",
+    "description": "This input package is deprecated"
+  },
+  "format_version": "3.6.0",
+  "readme": "/package/deprecated_input_package/1.0.0/docs/README.md",
+  "license": "basic",
+  "screenshots": [
+    {
+      "src": "/img/sample-screenshot.png",
+      "path": "/package/deprecated_input_package/1.0.0/img/sample-screenshot.png",
+      "title": "Sample screenshot",
+      "size": "600x600",
+      "type": "image/png"
+    }
+  ],
+  "assets": [
+    "/package/deprecated_input_package/1.0.0/LICENSE.txt",
+    "/package/deprecated_input_package/1.0.0/changelog.yml",
+    "/package/deprecated_input_package/1.0.0/manifest.yml",
+    "/package/deprecated_input_package/1.0.0/docs/README.md",
+    "/package/deprecated_input_package/1.0.0/fields/base-fields.yml",
+    "/package/deprecated_input_package/1.0.0/img/sample-logo.svg",
+    "/package/deprecated_input_package/1.0.0/img/sample-screenshot.png",
+    "/package/deprecated_input_package/1.0.0/input/input.yml.hbs",
+    "/package/deprecated_input_package/1.0.0/_dev/build/docs/README.md"
+  ],
+  "policy_templates": [
+    {
+      "name": "sample",
+      "title": "Sample logs",
+      "description": "Collect sample logs",
+      "multiple": true,
+      "type": "logs",
+      "input": "logfile",
+      "ingestion_method": "File",
+      "template_path": "input.yml.hbs"
+    }
+  ],
+  "elasticsearch": {}
+}
