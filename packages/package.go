@@ -867,3 +867,7 @@ func categoryTitles(categories categories.Categories) map[string]string {
 	}
 	return titles
 }
+
+func (p *Package) IsDeprecated() bool {
+	return p.Deprecated != nil
+}
