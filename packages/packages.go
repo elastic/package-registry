@@ -676,10 +676,6 @@ func (f *Filter) Apply(ctx context.Context, packages Packages) (Packages, error)
 
 		addPackage := true
 		if !f.AllVersions {
-			// skip deprecated package if not all versions are requested
-			if p.IsDeprecated() {
-				continue
-			}
 			// Check if the version exists and if it should be added or not.
 			for i, current := range packagesList {
 				if current.Name != p.Name {
