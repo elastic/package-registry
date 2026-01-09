@@ -53,8 +53,7 @@
     "/package/deprecated_integration_input/0.0.1/sample_event.json",
     "/package/deprecated_integration_input/0.0.1/docs/README.md",
     "/package/deprecated_integration_input/0.0.1/img/sample-logo.svg",
-    "/package/deprecated_integration_input/0.0.1/img/sample-screenshot.png",
-    "/package/deprecated_integration_input/0.0.1/_dev/build/docs/README.md"
+    "/package/deprecated_integration_input/0.0.1/img/sample-screenshot.png"
   ],
   "policy_templates": [
     {

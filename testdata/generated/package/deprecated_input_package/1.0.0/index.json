@@ -58,8 +58,7 @@
     "/package/deprecated_input_package/1.0.0/fields/base-fields.yml",
     "/package/deprecated_input_package/1.0.0/img/sample-logo.svg",
     "/package/deprecated_input_package/1.0.0/img/sample-screenshot.png",
-    "/package/deprecated_input_package/1.0.0/input/input.yml.hbs",
-    "/package/deprecated_input_package/1.0.0/_dev/build/docs/README.md"
+    "/package/deprecated_input_package/1.0.0/input/input.yml.hbs"
   ],
   "policy_templates": [
     {

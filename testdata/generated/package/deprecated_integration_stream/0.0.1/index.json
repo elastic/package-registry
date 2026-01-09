@@ -55,7 +55,6 @@
     "/package/deprecated_integration_stream/0.0.1/img/sample-logo.svg",
     "/package/deprecated_integration_stream/0.0.1/img/sample-screenshot.png",
     "/package/deprecated_integration_stream/0.0.1/data_stream/new_data_stream/manifest.yml",
-    "/package/deprecated_integration_stream/0.0.1/_dev/build/docs/README.md",
     "/package/deprecated_integration_stream/0.0.1/data_stream/new_data_stream/fields/base-fields.yml",
     "/package/deprecated_integration_stream/0.0.1/data_stream/new_data_stream/agent/stream/filestream.yml.hbs",
     "/package/deprecated_integration_stream/0.0.1/data_stream/new_data_stream/elasticsearch/ingest_pipeline/default.yml"
