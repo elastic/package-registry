@@ -162,6 +162,9 @@ func TestEndpoints(t *testing.T) {
 		// Test queries with unknown query parameters
 		{"/search?package=yamlpipeline&unknown=true", "/search", "search-unknown-query-parameter-error.txt", disallowUnknownQueryParamsSearchHandler},
 		{"/search?package=yamlpipeline&unknown=true", "/search", "search-allowed-unknown-query-parameter.json", searchHandler},
+
+		// Test queries with deprecated packages
+		{"/search?package=multiversion&all=true", "/search", "search-deprecated-package-versions.json", searchHandler},
 	}
 
 	for _, test := range tests {

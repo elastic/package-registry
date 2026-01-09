@@ -1,0 +1,30 @@
+- version: 1.2.0
+  changes:
+    - description: Deprecate package
+      type: deprecated
+      link: https://github.com/elastic/beats/issues/13507
+- version: 1.1.0
+  changes:
+    - description: Fix broken template
+      type: bugfix
+      link: https://github.com/elastic/beats/issues/13507
+    - description: Cleanup changelog descriptions
+      type: added
+      link: https://github.com/elastic/beats/issues/13506
+    - description: Deprecating old mutliversion dashboard
+      type: deprecated
+      link: https://github.com/elastic/beats/issues/13501
+- version: 1.0.4
+  changes:
+    - description: >
+        Unexpected breaking change had to be introduced. This should not happen in a minor.
+      type: breaking-change
+      link: https://github.com/elastic/beats/issues/13504
+- version: 1.0.3
+  changes:
+    - description: Fix broken template
+      type: bugfix
+      link: https://github.com/elastic/beats/issues/13507
+    - description: It is a known issue that the dashboard does not load properly
+      type: known-issue
+      link: https://github.com/elastic/beats/issues/13506
