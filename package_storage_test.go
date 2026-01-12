@@ -134,6 +134,9 @@ func generateTestCaseStorageEndpoints(indexer Indexer) ([]struct {
 		{"/search?package=1password&agent.version=9.5.0", "/search", "search-agent-950.json", searchHandler},
 		{"/categories?agent.version=9.1.0", "/categories", "categories-agent-910.json", categoriesHandler},
 		{"/categories?agent.version=9.5.0", "/categories", "categories-agent-950.json", categoriesHandler},
+
+		// Test deprecated packages
+		{"/search?package=apache&all=true", "/search", "search-deprecated-package-versions.json", searchHandler},
 	}, nil
 }
 
