@@ -429,7 +429,10 @@
     ],
     "deprecated": {
       "since": "1.2.0",
-      "description": "This input package is deprecated"
+      "description": "This input package is deprecated",
+      "replaced_by": {
+        "package": "new_input_package"
+      }
     }
   },
   {

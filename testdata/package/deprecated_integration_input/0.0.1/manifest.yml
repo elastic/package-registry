@@ -34,6 +34,8 @@ policy_templates:
         deprecated:
           since: 0.0.1
           description: "This input is deprecated"
+          replaced_by:
+            input: new_logfile
 owner:
   github: elastic/integrations
   type: elastic

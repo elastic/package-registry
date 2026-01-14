@@ -18,6 +18,8 @@ streams:
         deprecated:
           since: "0.0.1"
           description: "The 'paths' variable is deprecated."
+          replaced_by:
+            variable: log_paths
       - name: data_stream.dataset
         type: text
         title: "Dataset name"

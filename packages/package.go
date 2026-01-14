@@ -229,6 +229,12 @@ type DeploymentMode struct {
 type Deprecated struct {
 	Since       string `config:"since,omitempty" json:"since,omitempty" yaml:"since,omitempty"`
 	Description string `config:"description,omitempty" json:"description,omitempty" yaml:"description,omitempty"`
+	ReplacedBy  *struct {
+		Package        string `config:"package,omitempty" json:"package,omitempty" yaml:"package,omitempty"`
+		Variable       string `config:"variable,omitempty" json:"variable,omitempty" yaml:"variable,omitempty"`
+		Input          string `config:"input,omitempty" json:"input,omitempty" yaml:"input,omitempty"`
+		PolicyTemplate string `config:"policy_template,omitempty" json:"policy_template,omitempty" yaml:"policy_template,omitempty"`
+	} `config:"replaced_by,omitempty" json:"replaced_by,omitempty" yaml:"replaced_by,omitempty"`
 }
 
 // Deprecated: NewCommand is not currently used and will be removed in a future release.

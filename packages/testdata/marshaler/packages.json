@@ -733,7 +733,10 @@
    ],
    "deprecated": {
     "since": "1.2.0",
-    "description": "This input package is deprecated"
+    "description": "This input package is deprecated",
+    "replaced_by": {
+     "package": "new_input_package"
+    }
    },
    "format_version": "3.6.0",
    "readme": "/package/deprecated_input_package/1.0.0/docs/README.md",
@@ -841,7 +844,10 @@
      "template_path": "input.yml.hbs",
      "deprecated": {
       "since": "1.2.0",
-      "description": "This policy is deprecated"
+      "description": "This policy is deprecated",
+      "replaced_by": {
+       "policy_template": "sample"
+      }
      }
     },
     {
@@ -926,7 +932,10 @@
        "description": "Collecting sample logs",
        "deprecated": {
         "since": "0.0.1",
-        "description": "This input is deprecated"
+        "description": "This input is deprecated",
+        "replaced_by": {
+         "input": "new_logfile"
+        }
        }
       }
      ],
@@ -1033,7 +1042,10 @@
          ],
          "deprecated": {
           "since": "0.0.1",
-          "description": "The 'paths' variable is deprecated."
+          "description": "The 'paths' variable is deprecated.",
+          "replaced_by": {
+           "variable": "log_paths"
+          }
          }
         },
         {

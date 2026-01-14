@@ -36,7 +36,10 @@
   ],
   "deprecated": {
     "since": "1.2.0",
-    "description": "This input package is deprecated"
+    "description": "This input package is deprecated",
+    "replaced_by": {
+      "package": "new_input_package"
+    }
   },
   "format_version": "3.6.0",
   "readme": "/package/deprecated_input_package/1.0.0/docs/README.md",

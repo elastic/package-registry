@@ -97,7 +97,10 @@
               ],
               "deprecated": {
                 "since": "0.0.1",
-                "description": "The 'paths' variable is deprecated."
+                "description": "The 'paths' variable is deprecated.",
+                "replaced_by": {
+                  "variable": "log_paths"
+                }
               }
             },
             {

@@ -68,7 +68,10 @@
       "template_path": "input.yml.hbs",
       "deprecated": {
         "since": "1.2.0",
-        "description": "This policy is deprecated"
+        "description": "This policy is deprecated",
+        "replaced_by": {
+          "policy_template": "sample"
+        }
       }
     },
     {

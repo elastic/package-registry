@@ -67,7 +67,10 @@
           "description": "Collecting sample logs",
           "deprecated": {
             "since": "0.0.1",
-            "description": "This input is deprecated"
+            "description": "This input is deprecated",
+            "replaced_by": {
+              "input": "new_logfile"
+            }
           }
         }
       ],
