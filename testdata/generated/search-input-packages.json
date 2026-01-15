@@ -111,7 +111,14 @@
       {
         "name": "sample_deprecated",
         "title": "Sample logs",
-        "description": "Collect sample logs"
+        "description": "Collect sample logs",
+        "deprecated": {
+          "since": "1.2.0",
+          "description": "This policy is deprecated",
+          "replaced_by": {
+            "policy_template": "sample"
+          }
+        }
       },
       {
         "name": "sample",

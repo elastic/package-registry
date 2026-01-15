@@ -41,6 +41,8 @@ type BaseDataStream struct {
 	Dataset string `config:"dataset" json:"dataset" validate:"required"`
 
 	Title string `config:"title" json:"title" validate:"required"`
+
+	Deprecated *Deprecated `config:"deprecated,omitempty" json:"deprecated,omitempty" yaml:"deprecated,omitempty"`
 }
 
 type DataStream struct {
@@ -69,6 +71,8 @@ type DataStream struct {
 
 	// Reference to the package containing this data stream
 	packageRef *Package
+
+	Deprecated *Deprecated `config:"deprecated,omitempty" json:"deprecated,omitempty" yaml:"deprecated,omitempty"`
 }
 
 type Input struct {

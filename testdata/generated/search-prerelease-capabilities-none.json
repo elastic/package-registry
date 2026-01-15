@@ -770,19 +770,19 @@
   {
     "name": "deprecated_integration_stream",
     "title": "New Package",
-    "version": "0.0.1",
-    "release": "beta",
+    "version": "1.0.0",
+    "release": "ga",
     "source": {
       "license": "Elastic-2.0"
     },
     "description": "This is a new package.",
     "type": "integration",
-    "download": "/epr/deprecated_integration_stream/deprecated_integration_stream-0.0.1.zip",
-    "path": "/package/deprecated_integration_stream/0.0.1",
+    "download": "/epr/deprecated_integration_stream/deprecated_integration_stream-1.0.0.zip",
+    "path": "/package/deprecated_integration_stream/1.0.0",
     "icons": [
       {
         "src": "/img/sample-logo.svg",
-        "path": "/package/deprecated_integration_stream/0.0.1/img/sample-logo.svg",
+        "path": "/package/deprecated_integration_stream/1.0.0/img/sample-logo.svg",
         "title": "Sample logo",
         "size": "32x32",
         "type": "image/svg+xml"
@@ -821,19 +821,19 @@
   {
     "name": "deprecated_integration_input",
     "title": "New Package",
-    "version": "0.0.1",
-    "release": "beta",
+    "version": "1.0.0",
+    "release": "ga",
     "source": {
       "license": "Elastic-2.0"
     },
     "description": "This is a new package.",
     "type": "integration",
-    "download": "/epr/deprecated_integration_input/deprecated_integration_input-0.0.1.zip",
-    "path": "/package/deprecated_integration_input/0.0.1",
+    "download": "/epr/deprecated_integration_input/deprecated_integration_input-1.0.0.zip",
+    "path": "/package/deprecated_integration_input/1.0.0",
     "icons": [
       {
         "src": "/img/sample-logo.svg",
-        "path": "/package/deprecated_integration_input/0.0.1/img/sample-logo.svg",
+        "path": "/package/deprecated_integration_input/1.0.0/img/sample-logo.svg",
         "title": "Sample logo",
         "size": "32x32",
         "type": "image/svg+xml"
@@ -887,7 +887,14 @@
       {
         "name": "sample_deprecated",
         "title": "Sample logs",
-        "description": "Collect sample logs"
+        "description": "Collect sample logs",
+        "deprecated": {
+          "since": "1.2.0",
+          "description": "This policy is deprecated",
+          "replaced_by": {
+            "policy_template": "sample"
+          }
+        }
       },
       {
         "name": "sample",

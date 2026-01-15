@@ -94,6 +94,7 @@ type BasePolicyTemplate struct {
 	Categories      []string         `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
 	DeploymentModes *DeploymentModes `config:"deployment_modes,omitempty" json:"deployment_modes,omitempty" yaml:"deployment_modes,omitempty"`
 	DataStreams     []string         `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
+	Deprecated      *Deprecated      `config:"deprecated,omitempty" json:"deprecated,omitempty" yaml:"deprecated,omitempty"`
 }
 
 type PolicyTemplate struct {
@@ -491,6 +492,7 @@ func (p *Package) setBasePolicyTemplates() {
 			Icons:           t.Icons,
 			DeploymentModes: t.DeploymentModes,
 			DataStreams:     t.DataStreams,
+			Deprecated:      t.Deprecated,
 		}
 
 		p.BasePolicyTemplates = append(p.BasePolicyTemplates, baseT)
@@ -503,9 +505,10 @@ func (p *Package) setBasePolicyTemplates() {
 func (p *Package) setBaseDataStreams() {
 	for _, ds := range p.DataStreams {
 		baseStream := &BaseDataStream{
-			Type:    ds.Type,
-			Dataset: ds.Dataset,
-			Title:   ds.Title,
+			Type:       ds.Type,
+			Dataset:    ds.Dataset,
+			Title:      ds.Title,
+			Deprecated: ds.Deprecated,
 		}
 		p.BaseDataStreams = append(p.BaseDataStreams, baseStream)
 	}

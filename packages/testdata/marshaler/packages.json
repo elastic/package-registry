@@ -866,19 +866,19 @@
   {
    "name": "deprecated_integration_input",
    "title": "New Package",
-   "version": "0.0.1",
-   "release": "beta",
+   "version": "1.0.0",
+   "release": "ga",
    "source": {
     "license": "Elastic-2.0"
    },
    "description": "This is a new package.",
    "type": "integration",
-   "download": "/epr/deprecated_integration_input/deprecated_integration_input-0.0.1.zip",
-   "path": "/package/deprecated_integration_input/0.0.1",
+   "download": "/epr/deprecated_integration_input/deprecated_integration_input-1.0.0.zip",
+   "path": "/package/deprecated_integration_input/1.0.0",
    "icons": [
     {
      "src": "/img/sample-logo.svg",
-     "path": "/package/deprecated_integration_input/0.0.1/img/sample-logo.svg",
+     "path": "/package/deprecated_integration_input/1.0.0/img/sample-logo.svg",
      "title": "Sample logo",
      "size": "32x32",
      "type": "image/svg+xml"
@@ -899,26 +899,26 @@
    "categories": [
     "custom"
    ],
-   "format_version": "3.5.5",
-   "readme": "/package/deprecated_integration_input/0.0.1/docs/README.md",
+   "format_version": "3.6.0",
+   "readme": "/package/deprecated_integration_input/1.0.0/docs/README.md",
    "license": "basic",
    "screenshots": [
     {
      "src": "/img/sample-screenshot.png",
-     "path": "/package/deprecated_integration_input/0.0.1/img/sample-screenshot.png",
+     "path": "/package/deprecated_integration_input/1.0.0/img/sample-screenshot.png",
      "title": "Sample screenshot",
      "size": "600x600",
      "type": "image/png"
     }
    ],
    "assets": [
-    "/package/deprecated_integration_input/0.0.1/LICENSE.txt",
-    "/package/deprecated_integration_input/0.0.1/changelog.yml",
-    "/package/deprecated_integration_input/0.0.1/manifest.yml",
-    "/package/deprecated_integration_input/0.0.1/sample_event.json",
-    "/package/deprecated_integration_input/0.0.1/docs/README.md",
-    "/package/deprecated_integration_input/0.0.1/img/sample-logo.svg",
-    "/package/deprecated_integration_input/0.0.1/img/sample-screenshot.png"
+    "/package/deprecated_integration_input/1.0.0/LICENSE.txt",
+    "/package/deprecated_integration_input/1.0.0/changelog.yml",
+    "/package/deprecated_integration_input/1.0.0/manifest.yml",
+    "/package/deprecated_integration_input/1.0.0/sample_event.json",
+    "/package/deprecated_integration_input/1.0.0/docs/README.md",
+    "/package/deprecated_integration_input/1.0.0/img/sample-logo.svg",
+    "/package/deprecated_integration_input/1.0.0/img/sample-screenshot.png"
    ],
    "policy_templates": [
     {
@@ -946,19 +946,19 @@
   {
    "name": "deprecated_integration_stream",
    "title": "New Package",
-   "version": "0.0.1",
-   "release": "beta",
+   "version": "1.0.0",
+   "release": "ga",
    "source": {
     "license": "Elastic-2.0"
    },
    "description": "This is a new package.",
    "type": "integration",
-   "download": "/epr/deprecated_integration_stream/deprecated_integration_stream-0.0.1.zip",
-   "path": "/package/deprecated_integration_stream/0.0.1",
+   "download": "/epr/deprecated_integration_stream/deprecated_integration_stream-1.0.0.zip",
+   "path": "/package/deprecated_integration_stream/1.0.0",
    "icons": [
     {
      "src": "/img/sample-logo.svg",
-     "path": "/package/deprecated_integration_stream/0.0.1/img/sample-logo.svg",
+     "path": "/package/deprecated_integration_stream/1.0.0/img/sample-logo.svg",
      "title": "Sample logo",
      "size": "32x32",
      "type": "image/svg+xml"
@@ -979,30 +979,30 @@
    "categories": [
     "custom"
    ],
-   "format_version": "3.5.5",
-   "readme": "/package/deprecated_integration_stream/0.0.1/docs/README.md",
+   "format_version": "3.6.0",
+   "readme": "/package/deprecated_integration_stream/1.0.0/docs/README.md",
    "license": "basic",
    "screenshots": [
     {
      "src": "/img/sample-screenshot.png",
-     "path": "/package/deprecated_integration_stream/0.0.1/img/sample-screenshot.png",
+     "path": "/package/deprecated_integration_stream/1.0.0/img/sample-screenshot.png",
      "title": "Sample screenshot",
      "size": "600x600",
      "type": "image/png"
     }
    ],
    "assets": [
-    "/package/deprecated_integration_stream/0.0.1/LICENSE.txt",
-    "/package/deprecated_integration_stream/0.0.1/changelog.yml",
-    "/package/deprecated_integration_stream/0.0.1/manifest.yml",
-    "/package/deprecated_integration_stream/0.0.1/sample_event.json",
-    "/package/deprecated_integration_stream/0.0.1/docs/README.md",
-    "/package/deprecated_integration_stream/0.0.1/img/sample-logo.svg",
-    "/package/deprecated_integration_stream/0.0.1/img/sample-screenshot.png",
-    "/package/deprecated_integration_stream/0.0.1/data_stream/new_data_stream/manifest.yml",
-    "/package/deprecated_integration_stream/0.0.1/data_stream/new_data_stream/fields/base-fields.yml",
-    "/package/deprecated_integration_stream/0.0.1/data_stream/new_data_stream/agent/stream/filestream.yml.hbs",
-    "/package/deprecated_integration_stream/0.0.1/data_stream/new_data_stream/elasticsearch/ingest_pipeline/default.yml"
+    "/package/deprecated_integration_stream/1.0.0/LICENSE.txt",
+    "/package/deprecated_integration_stream/1.0.0/changelog.yml",
+    "/package/deprecated_integration_stream/1.0.0/manifest.yml",
+    "/package/deprecated_integration_stream/1.0.0/sample_event.json",
+    "/package/deprecated_integration_stream/1.0.0/docs/README.md",
+    "/package/deprecated_integration_stream/1.0.0/img/sample-logo.svg",
+    "/package/deprecated_integration_stream/1.0.0/img/sample-screenshot.png",
+    "/package/deprecated_integration_stream/1.0.0/data_stream/new_data_stream/manifest.yml",
+    "/package/deprecated_integration_stream/1.0.0/data_stream/new_data_stream/fields/base-fields.yml",
+    "/package/deprecated_integration_stream/1.0.0/data_stream/new_data_stream/agent/stream/filestream.yml.hbs",
+    "/package/deprecated_integration_stream/1.0.0/data_stream/new_data_stream/elasticsearch/ingest_pipeline/default.yml"
    ],
    "policy_templates": [
     {
@@ -1024,7 +1024,7 @@
      "type": "logs",
      "dataset": "deprecated_integration_stream.new_data_stream",
      "title": "New Data Stream",
-     "release": "beta",
+     "release": "ga",
      "ingest_pipeline": "default",
      "streams": [
       {

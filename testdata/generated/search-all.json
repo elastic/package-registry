@@ -121,6 +121,42 @@
     ]
   },
   {
+    "name": "nodirentries",
+    "title": "Example Integration",
+    "version": "1.0.0",
+    "release": "ga",
+    "description": "This is a zip package without directory entries.",
+    "type": "integration",
+    "download": "/epr/nodirentries/nodirentries-1.0.0.zip",
+    "path": "/package/nodirentries/1.0.0",
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Logs datasource",
+        "description": "Datasource for your log files."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "~7.x.x"
+      }
+    },
+    "owner": {
+      "github": "ruflin"
+    },
+    "categories": [
+      "crm",
+      "azure"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "nodirentries.foo",
+        "title": "Foo"
+      }
+    ]
+  },
+  {
     "name": "example",
     "title": "Example Integration",
     "version": "1.0.0",
@@ -155,42 +191,6 @@
       {
         "type": "logs",
         "dataset": "example.foo",
-        "title": "Foo"
-      }
-    ]
-  },
-  {
-    "name": "nodirentries",
-    "title": "Example Integration",
-    "version": "1.0.0",
-    "release": "ga",
-    "description": "This is a zip package without directory entries.",
-    "type": "integration",
-    "download": "/epr/nodirentries/nodirentries-1.0.0.zip",
-    "path": "/package/nodirentries/1.0.0",
-    "policy_templates": [
-      {
-        "name": "logs",
-        "title": "Logs datasource",
-        "description": "Datasource for your log files."
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "~7.x.x"
-      }
-    },
-    "owner": {
-      "github": "ruflin"
-    },
-    "categories": [
-      "crm",
-      "azure"
-    ],
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "nodirentries.foo",
         "title": "Foo"
       }
     ]
@@ -607,55 +607,6 @@
     ]
   },
   {
-    "name": "deprecated_input_policy",
-    "title": "New Package",
-    "version": "1.0.0",
-    "release": "ga",
-    "source": {
-      "license": "Elastic-2.0"
-    },
-    "description": "This is a new package.",
-    "type": "input",
-    "download": "/epr/deprecated_input_policy/deprecated_input_policy-1.0.0.zip",
-    "path": "/package/deprecated_input_policy/1.0.0",
-    "icons": [
-      {
-        "src": "/img/sample-logo.svg",
-        "path": "/package/deprecated_input_policy/1.0.0/img/sample-logo.svg",
-        "title": "Sample logo",
-        "size": "32x32",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "sample_deprecated",
-        "title": "Sample logs",
-        "description": "Collect sample logs"
-      },
-      {
-        "name": "sample",
-        "title": "Sample logs",
-        "description": "Collect sample logs"
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^9.2.3"
-      },
-      "elastic": {
-        "subscription": "basic"
-      }
-    },
-    "owner": {
-      "type": "elastic",
-      "github": "elastic/integrations"
-    },
-    "categories": [
-      "custom"
-    ]
-  },
-  {
     "name": "deprecated_input_package",
     "title": "New Package",
     "version": "1.0.0",
@@ -705,6 +656,157 @@
         "package": "new_input_package"
       }
     }
+  },
+  {
+    "name": "deprecated_input_policy",
+    "title": "New Package",
+    "version": "1.0.0",
+    "release": "ga",
+    "source": {
+      "license": "Elastic-2.0"
+    },
+    "description": "This is a new package.",
+    "type": "input",
+    "download": "/epr/deprecated_input_policy/deprecated_input_policy-1.0.0.zip",
+    "path": "/package/deprecated_input_policy/1.0.0",
+    "icons": [
+      {
+        "src": "/img/sample-logo.svg",
+        "path": "/package/deprecated_input_policy/1.0.0/img/sample-logo.svg",
+        "title": "Sample logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "sample_deprecated",
+        "title": "Sample logs",
+        "description": "Collect sample logs",
+        "deprecated": {
+          "since": "1.2.0",
+          "description": "This policy is deprecated",
+          "replaced_by": {
+            "policy_template": "sample"
+          }
+        }
+      },
+      {
+        "name": "sample",
+        "title": "Sample logs",
+        "description": "Collect sample logs"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^9.2.3"
+      },
+      "elastic": {
+        "subscription": "basic"
+      }
+    },
+    "owner": {
+      "type": "elastic",
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "custom"
+    ]
+  },
+  {
+    "name": "deprecated_integration_input",
+    "title": "New Package",
+    "version": "1.0.0",
+    "release": "ga",
+    "source": {
+      "license": "Elastic-2.0"
+    },
+    "description": "This is a new package.",
+    "type": "integration",
+    "download": "/epr/deprecated_integration_input/deprecated_integration_input-1.0.0.zip",
+    "path": "/package/deprecated_integration_input/1.0.0",
+    "icons": [
+      {
+        "src": "/img/sample-logo.svg",
+        "path": "/package/deprecated_integration_input/1.0.0/img/sample-logo.svg",
+        "title": "Sample logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "sample",
+        "title": "Sample logs",
+        "description": "Collect sample logs"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^9.2.3"
+      },
+      "elastic": {
+        "subscription": "basic"
+      }
+    },
+    "owner": {
+      "type": "elastic",
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "custom"
+    ]
+  },
+  {
+    "name": "deprecated_integration_stream",
+    "title": "New Package",
+    "version": "1.0.0",
+    "release": "ga",
+    "source": {
+      "license": "Elastic-2.0"
+    },
+    "description": "This is a new package.",
+    "type": "integration",
+    "download": "/epr/deprecated_integration_stream/deprecated_integration_stream-1.0.0.zip",
+    "path": "/package/deprecated_integration_stream/1.0.0",
+    "icons": [
+      {
+        "src": "/img/sample-logo.svg",
+        "path": "/package/deprecated_integration_stream/1.0.0/img/sample-logo.svg",
+        "title": "Sample logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "sample",
+        "title": "Sample logs",
+        "description": "Collect sample logs"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^9.2.3"
+      },
+      "elastic": {
+        "subscription": "basic"
+      }
+    },
+    "owner": {
+      "type": "elastic",
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "custom"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "deprecated_integration_stream.new_data_stream",
+        "title": "New Data Stream"
+      }
+    ]
   },
   {
     "name": "no_stream_configs",
