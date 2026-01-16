@@ -232,9 +232,10 @@ type Deprecated struct {
 	Description string `config:"description,omitempty" json:"description,omitempty" yaml:"description,omitempty"`
 	ReplacedBy  *struct {
 		Package        string `config:"package,omitempty" json:"package,omitempty" yaml:"package,omitempty"`
-		Variable       string `config:"variable,omitempty" json:"variable,omitempty" yaml:"variable,omitempty"`
-		Input          string `config:"input,omitempty" json:"input,omitempty" yaml:"input,omitempty"`
 		PolicyTemplate string `config:"policy_template,omitempty" json:"policy_template,omitempty" yaml:"policy_template,omitempty"`
+		Input          string `config:"input,omitempty" json:"input,omitempty" yaml:"input,omitempty"`
+		DataStream     string `config:"data_stream,omitempty" json:"data_stream,omitempty" yaml:"data_stream,omitempty"`
+		Variable       string `config:"variable,omitempty" json:"variable,omitempty" yaml:"variable,omitempty"`
 	} `config:"replaced_by,omitempty" json:"replaced_by,omitempty" yaml:"replaced_by,omitempty"`
 }
 
