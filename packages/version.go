@@ -10,7 +10,8 @@ import (
 	"github.com/Masterminds/semver/v3"
 )
 
-// LatestPackagesVersion returns a list of packages containing only the latest version
+// LatestPackagesVersion sorts the given package list and returns only the latest version of each package.
+// The input package list is modified by the sorting process.
 func LatestPackagesVersion(source Packages) (result Packages) {
 	sort.Sort(byNameVersion(source))
 
@@ -54,9 +55,14 @@ func (d DeprecatedPackages) IsDeprecated(name string) (Deprecated, bool) {
 }
 
 func GetLatestPackageVersionDeprecated(packages Packages) DeprecatedPackages {
+	// copy packages so LatestPackagesVersion doesn't modify the original slice
+	var pkgsCopy = make(Packages, len(packages))
+	if ok := copy(pkgsCopy, packages); ok != len(packages) {
+		return nil
+	}
 	// Build the deprecated packages map from the latest package versions.
 	deprecated := make(DeprecatedPackages)
-	for _, pkg := range LatestPackagesVersion(packages) {
+	for _, pkg := range LatestPackagesVersion(pkgsCopy) {
 		if pkg.IsDeprecated() {
 			deprecated[pkg.Name] = *pkg.Deprecated
 		}
