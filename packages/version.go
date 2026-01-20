@@ -54,15 +54,25 @@ func (d DeprecatedPackages) IsDeprecated(name string) (Deprecated, bool) {
 	return deprecated, found
 }
 
-func GetLatestPackageVersionDeprecated(packages Packages) DeprecatedPackages {
-	// copy packages so LatestPackagesVersion doesn't modify the original slice
+// GetLatestDeprecatedPackageVersion builds a map of deprecated notices from the latest version that has the notice.
+// If a package is deprecated in version 1.2.0 with a notice, but 1.3.0 does not have the notice, the notice from 1.2.0
+// will be used.
+func GetLatestDeprecatedNoticeFromPackages(packages Packages) DeprecatedPackages {
+	// copy packages so sorting does not affect the original slice
 	var pkgsCopy = make(Packages, len(packages))
 	if ok := copy(pkgsCopy, packages); ok != len(packages) {
 		return nil
 	}
-	// Build the deprecated packages map from the latest package versions.
-	deprecated := make(DeprecatedPackages)
-	for _, pkg := range LatestPackagesVersion(pkgsCopy) {
+	// sort all packages by name and version (newest first)
+	sort.Sort(byNameVersion(pkgsCopy))
+	// deprecated will hold the latest deprecated info per package
+	deprecated := make(DeprecatedPackages, 0)
+
+	for _, pkg := range pkgsCopy {
+		// if we already have deprecated info for this package, skip
+		if _, found := deprecated[pkg.Name]; found {
+			continue
+		}
 		if pkg.IsDeprecated() {
 			deprecated[pkg.Name] = *pkg.Deprecated
 		}
@@ -71,15 +81,10 @@ func GetLatestPackageVersionDeprecated(packages Packages) DeprecatedPackages {
 }
 
 // PropagateDeprecatedInfoToAllVersions adds deprecation information to all versions of deprecated packages.
-func PropagateDeprecatedInfoToAllVersions(packageList Packages, deprecatedPackages DeprecatedPackages) Packages {
-	packagesWithDeprecatedInfo := make(Packages, len(packageList))
-	for idx, pkg := range packageList {
-		// Create a copy of the package to avoid modifying the original one.
-		pkgCopy := *pkg
+func PropagateDeprecatedInfoToAllVersions(packageList Packages, deprecatedPackages DeprecatedPackages) {
+	for _, pkg := range packageList {
 		if deprecatedInfo, found := deprecatedPackages.IsDeprecated(pkg.Name); found {
-			pkgCopy.Deprecated = &deprecatedInfo
+			pkg.Deprecated = &deprecatedInfo
 		}
-		packagesWithDeprecatedInfo[idx] = &pkgCopy
 	}
-	return packagesWithDeprecatedInfo
 }

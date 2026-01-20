@@ -95,7 +95,9 @@ func (h *searchHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	opts := packages.GetOptions{
-		Filter: filter,
+		Filter:                  filter,
+		// 
+		IncludeDeprecatedNotice: true,
 	}
 
 	pkgs, err := h.indexer.Get(r.Context(), &opts)

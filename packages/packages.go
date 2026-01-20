@@ -101,12 +101,17 @@ type GetOptions struct {
 
 	FullData        bool
 	SkipPackageData bool
+	// IncludeDeprecatedNotice indicates whether to include deprecation notice information in the returned packages.
+	// If a package is deprecated, this information will be included in all the package versions.
+	IncludeDeprecatedNotice bool
 }
 
 // FileSystemIndexer indexes packages from the filesystem.
 type FileSystemIndexer struct {
 	paths       []string
 	packageList Packages
+
+	deprecatedPackages DeprecatedPackages
 
 	// Label used for APM instrumentation.
 	label string
@@ -332,6 +337,7 @@ func (i *FileSystemIndexer) updatePackageFileSystemIndex(ctx context.Context) er
 		return err
 	}
 	i.packageList = newPackageList
+	i.deprecatedPackages = GetLatestDeprecatedNoticeFromPackages(newPackageList)
 	return nil
 }
 
@@ -355,6 +361,10 @@ func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages
 
 	if opts == nil {
 		return i.packageList, nil
+	}
+
+	if opts.IncludeDeprecatedNotice {
+		PropagateDeprecatedInfoToAllVersions(i.packageList, i.deprecatedPackages)
 	}
 
 	if opts.Filter != nil {
@@ -702,11 +712,6 @@ func (f *Filter) Apply(ctx context.Context, packages Packages) (Packages, error)
 	// Filter by category after selecting the newer packages.
 	packagesList = filterCategories(packagesList, f.Category)
 
-	// when querying for all versions of a package, propagate deprecated info
-	if f.PackageName != "" {
-		packagesList = propagateDeprecatedInfo(packagesList)
-	}
-
 	return packagesList, nil
 }
 
@@ -841,40 +846,4 @@ func NameVersionFilter(name, version string) GetOptions {
 			PackageVersion: version,
 		},
 	}
-}
-
-// propagateDeprecatedInfo propagates deprecated information from the latest
-// non-prerelease version of a package to all its other versions that lack
-// deprecated information.
-func propagateDeprecatedInfo(packages Packages) Packages {
-	// Group packages by name
-	packagesByName := make(map[string]Packages)
-	for _, pkg := range packages {
-		packagesByName[pkg.Name] = append(packagesByName[pkg.Name], pkg)
-	}
-
-	// For each package name, find the latest version with deprecated info
-	for name, pkgs := range packagesByName {
-		var deprecatedPkgInfo *Deprecated
-
-		// Find the latest non-prerelease version with deprecated info
-		for _, pkg := range pkgs {
-			if pkg.IsDeprecated() && !pkg.IsPrerelease() {
-				if deprecatedPkgInfo == nil {
-					deprecatedPkgInfo = pkg.Deprecated
-				}
-			}
-		}
-
-		// Propagate to all versions
-		if deprecatedPkgInfo != nil {
-			for i := range packages {
-				if packages[i].Name == name && packages[i].Deprecated == nil {
-					packages[i].Deprecated = deprecatedPkgInfo
-				}
-			}
-		}
-	}
-
-	return packages
 }

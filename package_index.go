@@ -88,6 +88,7 @@ func (h *packageIndexHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) 
 	opts := packages.NameVersionFilter(packageName, packageVersion)
 	// Just this endpoint needs the full data, so we set it here.
 	opts.FullData = true
+	opts.IncludeDeprecatedNotice = true
 
 	pkgs, err := h.indexer.Get(r.Context(), &opts)
 	if err != nil {

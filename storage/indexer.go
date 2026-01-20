@@ -32,8 +32,9 @@ type Indexer struct {
 	options       IndexerOptions
 	storageClient *storage.Client
 
-	cursor      string
-	packageList packages.Packages
+	cursor             string
+	packageList        packages.Packages
+	deprecatedPackages packages.DeprecatedPackages
 
 	m sync.RWMutex
 
@@ -181,6 +182,8 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	i.packageList = *anIndex
 	metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
 	metrics.NumberIndexedPackages.Set(float64(len(i.packageList)))
+
+	i.deprecatedPackages = packages.GetLatestDeprecatedNoticeFromPackages(i.packageList)
 	return nil
 }
 
@@ -195,6 +198,10 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 
 	i.m.RLock()
 	defer i.m.RUnlock()
+
+	if opts.IncludeDeprecatedNotice {
+		packages.PropagateDeprecatedInfoToAllVersions(i.packageList, i.deprecatedPackages)
+	}
 
 	if opts != nil && opts.Filter != nil {
 		return opts.Filter.Apply(ctx, i.packageList)

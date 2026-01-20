@@ -282,6 +282,17 @@ func TestGet_ListPackages(t *testing.T) {
 			expectedName:    "apm",
 			expectedVersion: "8.2.0",
 		},
+		{
+			name: "all apache packages with deprecated notice included",
+			options: &packages.GetOptions{
+				Filter: &packages.Filter{
+					AllVersions: true,
+					PackageName: "apache",
+				},
+				IncludeDeprecatedNotice: true,
+			},
+			expected: 4,
+		},
 	}
 
 	for _, c := range cases {
@@ -298,6 +309,11 @@ func TestGet_ListPackages(t *testing.T) {
 			}
 			if c.expectedVersion != "" {
 				assert.Equal(t, c.expectedVersion, foundPackages[0].Version)
+			}
+			if c.options.IncludeDeprecatedNotice {
+				for _, pkg := range foundPackages {
+					assert.NotNil(t, pkg.Deprecated, "package %s should have deprecated notice", pkg.Name)
+				}
 			}
 		})
 	}

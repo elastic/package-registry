@@ -81,7 +81,11 @@
     "categories": [
       "custom",
       "web"
-    ]
+    ],
+    "deprecated": {
+      "since": "1.2.0",
+      "description": "This package is deprecated"
+    }
   },
   {
     "name": "multiversion",
@@ -107,7 +111,11 @@
     "categories": [
       "custom",
       "web"
-    ]
+    ],
+    "deprecated": {
+      "since": "1.2.0",
+      "description": "This package is deprecated"
+    }
   },
   {
     "name": "multiversion",
@@ -163,7 +171,11 @@
     "categories": [
       "custom",
       "web"
-    ]
+    ],
+    "deprecated": {
+      "since": "1.2.0",
+      "description": "This package is deprecated"
+    }
   },
   {
     "name": "reference",
