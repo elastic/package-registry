@@ -98,7 +98,7 @@ func (h *searchHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		Filter: filter,
 	}
 
-	packages, err := h.indexer.Get(r.Context(), &opts)
+	pkgs, err := h.indexer.Get(r.Context(), &opts)
 	if err != nil {
 		notFoundError(w, fmt.Errorf("fetching package failed: %w", err))
 		return
@@ -111,13 +111,13 @@ func (h *searchHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
-		packages = packages.Join(proxiedPackages)
+		pkgs = pkgs.Join(proxiedPackages)
 		if !opts.Filter.AllVersions {
-			packages = latestPackagesVersion(packages)
+			pkgs = packages.LatestPackagesVersion(pkgs)
 		}
 	}
 
-	data, err := getSearchOutput(r.Context(), packages)
+	data, err := getSearchOutput(r.Context(), pkgs)
 	if err != nil {
 		notFoundError(w, err)
 		return

@@ -2,19 +2,17 @@
 // or more contributor license agreements. Licensed under the Elastic License 2.0;
 // you may not use this file except in compliance with the Elastic License 2.0.
 
-package main
+package packages
 
 import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-
-	"github.com/elastic/package-registry/packages"
 )
 
 func TestLatestPackagesVersion(t *testing.T) {
-	newPackage := func(name string, version string) *packages.Package {
-		p := new(packages.Package)
+	newPackage := func(name string, version string) *Package {
+		p := new(Package)
 		p.Name = name
 		p.Version = version
 		return p
@@ -22,43 +20,43 @@ func TestLatestPackagesVersion(t *testing.T) {
 
 	cases := []struct {
 		title    string
-		source   packages.Packages
-		expected packages.Packages
+		source   Packages
+		expected Packages
 	}{
 		{
 			title: "single package",
-			source: packages.Packages{
+			source: Packages{
 				newPackage("foo", "1.2.3"),
 			},
-			expected: packages.Packages{
+			expected: Packages{
 				newPackage("foo", "1.2.3"),
 			},
 		},
 		{
 			title: "single package sorted versions",
-			source: packages.Packages{
+			source: Packages{
 				newPackage("foo", "1.2.3"),
 				newPackage("foo", "1.2.2"),
 				newPackage("foo", "1.2.1"),
 			},
-			expected: packages.Packages{
+			expected: Packages{
 				newPackage("foo", "1.2.3"),
 			},
 		},
 		{
 			title: "single package unsorted versions",
-			source: packages.Packages{
+			source: Packages{
 				newPackage("foo", "1.2.2"),
 				newPackage("foo", "1.2.1"),
 				newPackage("foo", "1.2.3"),
 			},
-			expected: packages.Packages{
+			expected: Packages{
 				newPackage("foo", "1.2.3"),
 			},
 		},
 		{
 			title: "multiple packages with multiple versions",
-			source: packages.Packages{
+			source: Packages{
 				newPackage("foo", "1.2.2"),
 				newPackage("bar", "1.2.1"),
 				newPackage("bar", "1.2.2"),
@@ -66,7 +64,7 @@ func TestLatestPackagesVersion(t *testing.T) {
 				newPackage("bar", "1.2.3"),
 				newPackage("foo", "1.2.3"),
 			},
-			expected: packages.Packages{
+			expected: Packages{
 				newPackage("bar", "1.2.3"),
 				newPackage("foo", "1.2.3"),
 			},
@@ -75,9 +73,15 @@ func TestLatestPackagesVersion(t *testing.T) {
 
 	for _, c := range cases {
 		t.Run(c.title, func(t *testing.T) {
-			result := latestPackagesVersion(c.source)
+			result := LatestPackagesVersion(c.source)
 			assert.EqualValues(t, c.expected, result)
 		})
 	}
 
+}
+
+func TestPropagateDeprecatedInfoToAllVersions(t *testing.T) {
+	t.Run("", func(t *testing.T) {
+		
+	})
 }
