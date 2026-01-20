@@ -199,7 +199,7 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 	i.m.RLock()
 	defer i.m.RUnlock()
 
-	if opts.IncludeDeprecatedNotice {
+	if opts != nil && opts.IncludeDeprecatedNotice {
 		packages.PropagateDeprecatedInfoToAllVersions(i.packageList, i.deprecatedPackages)
 	}
 
