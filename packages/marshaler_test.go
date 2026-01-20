@@ -23,7 +23,10 @@ var generateFlag = flag.Bool("generate", false, "Write golden files")
 func TestMarshalJSON(t *testing.T) {
 	// given
 	packagesBasePaths := []string{"../testdata/second_package_path", "../testdata/package"}
-	indexer := NewFileSystemIndexer(util.NewTestLogger(), packagesBasePaths...)
+	fsOpts := FSIndexerOptions{
+		Logger: util.NewTestLogger(),
+	}
+	indexer := NewFileSystemIndexer(fsOpts, packagesBasePaths...)
 	defer indexer.Close(t.Context())
 
 	err := indexer.Init(t.Context())
@@ -39,8 +42,12 @@ func TestMarshalJSON(t *testing.T) {
 
 func TestUnmarshalJSON(t *testing.T) {
 	// given
+
+	fsOpts := FSIndexerOptions{
+		Logger: util.NewTestLogger(),
+	}
 	packagesBasePaths := []string{"../testdata/second_package_path", "../testdata/package"}
-	indexer := NewFileSystemIndexer(util.NewTestLogger(), packagesBasePaths...)
+	indexer := NewFileSystemIndexer(fsOpts, packagesBasePaths...)
 	defer indexer.Close(t.Context())
 
 	err := indexer.Init(t.Context())

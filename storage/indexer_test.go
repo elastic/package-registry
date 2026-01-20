@@ -23,8 +23,8 @@ func TestInit(t *testing.T) {
 	// given
 	fs := internalStorage.PrepareFakeServer(t, "testdata/search-index-all-full.json")
 	defer fs.Stop()
-	storageClient := fs.Client()
-	indexer := NewIndexer(util.NewTestLogger(), storageClient, FakeIndexerOptions)
+
+	indexer := NewIndexer(util.NewTestLogger(), internalStorage.ClientNoAuth(fs), FakeIndexerOptions)
 	defer indexer.Close(t.Context())
 
 	// when
@@ -38,7 +38,7 @@ func BenchmarkInit(b *testing.B) {
 	// given
 	fs := internalStorage.PrepareFakeServer(b, "testdata/search-index-all-full.json")
 	defer fs.Stop()
-	storageClient := fs.Client()
+	storageClient := internalStorage.ClientNoAuth(fs)
 
 	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
 	b.ResetTimer()
@@ -58,10 +58,9 @@ func BenchmarkIndexerUpdateIndex(b *testing.B) {
 	// given
 	fs := internalStorage.PrepareFakeServer(b, "testdata/search-index-all-full.json")
 	defer fs.Stop()
-	storageClient := fs.Client()
 
 	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
-	indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
+	indexer := NewIndexer(logger, internalStorage.ClientNoAuth(fs), FakeIndexerOptions)
 	defer indexer.Close(b.Context())
 
 	err := indexer.Init(b.Context())
@@ -82,10 +81,9 @@ func BenchmarkIndexerGet(b *testing.B) {
 	// given
 	fs := internalStorage.PrepareFakeServer(b, "testdata/search-index-all-full.json")
 	defer fs.Stop()
-	storageClient := fs.Client()
 
 	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
-	indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
+	indexer := NewIndexer(logger, internalStorage.ClientNoAuth(fs), FakeIndexerOptions)
 	defer indexer.Close(b.Context())
 
 	err := indexer.Init(b.Context())
@@ -119,8 +117,7 @@ func TestGet_ListPackages(t *testing.T) {
 	// given
 	fs := internalStorage.PrepareFakeServer(t, "testdata/search-index-all-full.json")
 	t.Cleanup(fs.Stop)
-	storageClient := fs.Client()
-	indexer := NewIndexer(util.NewTestLogger(), storageClient, FakeIndexerOptions)
+	indexer := NewIndexer(util.NewTestLogger(), internalStorage.ClientNoAuth(fs), FakeIndexerOptions)
 	t.Cleanup(func() { indexer.Close(context.Background()) })
 
 	err := indexer.Init(t.Context())
@@ -312,9 +309,8 @@ func TestGet_IndexUpdated(t *testing.T) {
 	// given
 	fs := internalStorage.PrepareFakeServer(t, "testdata/search-index-all-small.json")
 	t.Cleanup(fs.Stop)
-	storageClient := fs.Client()
 
-	indexer := NewIndexer(util.NewTestLogger(), storageClient, FakeIndexerOptions)
+	indexer := NewIndexer(util.NewTestLogger(), internalStorage.ClientNoAuth(fs), FakeIndexerOptions)
 	t.Cleanup(func() { indexer.Close(context.Background()) })
 
 	err := indexer.Init(t.Context())

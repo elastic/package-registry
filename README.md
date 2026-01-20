@@ -134,6 +134,9 @@ docker run --rm -it -p 8080:8080 \
   docker.elastic.co/package-registry/package-registry:main
 ```
 
+> [!IMPORTANT]
+> When you mount local package directories into the container (e.g., `-v /path/to/packages:/packages/package-registry`), ensure the mounted directory has proper filesystem permissions allowing UID 1000 to read the files. Alternatively, you can run the container as root using `docker run --user 0 ...` if you encounter permission issues.
+
 **Listening on HTTPS**
 ```bash
 docker run --rm -it -p 8443:8443 \

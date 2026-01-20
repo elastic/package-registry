@@ -4,13 +4,47 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased](https://github.com/elastic/package-registry/compare/v1.33.0...main)
+## [unreleased](https://github.com/elastic/package-registry/compare/v1.35.0...origin/main)
 
 ### Breaking changes
 
 ### Bugfixes
 
 ### Added
+
+### Deprecated
+
+### Known Issues
+
+
+## [v1.35.0](https://github.com/elastic/package-registry/compare/v1.34.0...v1.35.0)
+
+### Breaking changes
+
+* Package registry container image runs by default as a non-root user (UID 1000). [#1503](https://github.com/elastic/package-registry/pull/1503)
+
+### Bugfixes
+
+### Added
+
+### Deprecated
+
+### Known Issues
+
+
+## [v1.34.0](https://github.com/elastic/package-registry/compare/v1.33.0...v1.34.0)
+
+### Breaking changes
+
+### Bugfixes
+
+* Add missing mapping for azure/metrics input. [#1474](https://github.com/elastic/package-registry/pull/1474)
+* Update Go runtime to 1.25.5. [#1496](https://github.com/elastic/package-registry/pull/1496)
+
+### Added
+
+* Optimize package loading by reading package ZIP archives and package folders concurrently. [#1489](https://github.com/elastic/package-registry/pull/1489)
+* Allow empty package paths on startup. [#1482](https://github.com/elastic/package-registry/pull/1482)
 
 ### Deprecated
 

@@ -24,8 +24,9 @@ func TestPrepareFakeServer(t *testing.T) {
 	fs := PrepareFakeServer(t, indexFile)
 	defer fs.Stop()
 
+	client := ClientNoAuth(fs)
+
 	// then
-	client := fs.Client()
 	require.NotNil(t, client, "client should be initialized")
 
 	aCursor := readObject(t, client.Bucket(FakePackageStorageBucketInternal).Object(cursorStoragePath))

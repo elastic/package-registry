@@ -39,6 +39,9 @@ WORKDIR /package-registry
 # Get in config which expects packages in /packages
 COPY config.docker.yml /package-registry/config.yml
 
+# Run as non-root user
+USER 1000
+
 # Start registry when container is run an expose it on port 8080
 EXPOSE 8080
 ENTRYPOINT ["./package-registry"]
