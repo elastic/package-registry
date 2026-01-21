@@ -463,7 +463,7 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 	}
 
 	// Apply deprecated notice propagation if requested.
-	if opts.IncludeDeprecatedNotice {
+	if opts != nil && opts.IncludeDeprecatedNotice {
 		packages.PropagateDeprecatedInfoToAllVersions(readPackages, i.deprecatedPackages)
 	}
 
