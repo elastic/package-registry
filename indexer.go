@@ -33,20 +33,20 @@ func (c CombinedIndexer) Init(ctx context.Context) error {
 }
 
 func (c CombinedIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.Packages, error) {
-	var pkgs packages.Packages
+	var packages packages.Packages
 	for _, indexer := range c {
 		p, err := indexer.Get(ctx, opts)
 		if err != nil {
 			return nil, err
 		}
-		pkgs = pkgs.Join(p)
+		packages = packages.Join(p)
 	}
 
 	if opts != nil && opts.Filter != nil && !opts.Filter.AllVersions {
-		return packages.LatestPackagesVersion(pkgs), nil
+		return latestPackagesVersion(packages), nil
 	}
 
-	return pkgs, nil
+	return packages, nil
 }
 
 func (c CombinedIndexer) Close(ctx context.Context) error {
@@ -58,4 +58,20 @@ func (c CombinedIndexer) Close(ctx context.Context) error {
 	}
 
 	return nil
+}
+
+func latestPackagesVersion(source packages.Packages) (result packages.Packages) {
+	packages.SortByNameVersion(source)
+
+	current := ""
+	for _, p := range source {
+		if p.Name == current {
+			continue
+		}
+
+		current = p.Name
+		result = append(result, p)
+	}
+
+	return result
 }
