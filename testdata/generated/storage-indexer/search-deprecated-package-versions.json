@@ -52,7 +52,11 @@
         "dataset": "apache.status",
         "title": "Apache status metrics"
       }
-    ]
+    ],
+    "deprecated": {
+      "since": "1.3.0",
+      "description": "This package is deprecated"
+    }
   },
   {
     "name": "apache",
@@ -166,7 +170,11 @@
         "dataset": "apache.status",
         "title": "Apache status metrics"
       }
-    ]
+    ],
+    "deprecated": {
+      "since": "1.3.0",
+      "description": "This package is deprecated"
+    }
   },
   {
     "name": "apache",
@@ -221,6 +229,10 @@
         "dataset": "apache.status",
         "title": "Apache status metrics"
       }
-    ]
+    ],
+    "deprecated": {
+      "since": "1.3.0",
+      "description": "This package is deprecated"
+    }
   }
 ]

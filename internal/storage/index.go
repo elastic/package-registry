@@ -115,7 +115,8 @@ func LoadPackagesAndCursorFromIndex(ctx context.Context, logger *zap.Logger, sto
 	return anIndex, storageCursor.Current, nil
 }
 
-func loadSearchIndexAllBatches(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, bucketName, rootStoragePath string, aCursor cursor, batchSize int, process func(context.Context, packages.Packages, string) error) error {
+func loadSearchIndexAllBatches(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, bucketName, rootStoragePath string, aCursor cursor, batchSize int,
+	process func(context.Context, packages.Packages, packages.Packages, string) error) error {
 	span, ctx := apm.StartSpan(ctx, "LoadSearchIndexAll", "app")
 	span.Context.SetLabel("load.method", "batches")
 	span.Context.SetLabel("load.batch.size", batchSize)
@@ -142,7 +143,9 @@ func loadSearchIndexAllBatches(ctx context.Context, logger *zap.Logger, storageC
 	// and we are looking to optimize for memory use.
 	dec := json.NewDecoder(objectReader)
 	count := 0
-	packages := make(packages.Packages, 0, batchSize)
+	pkgs := make(packages.Packages, 0, batchSize)
+	// save a batch of packages with deprecated notice, regardless of the package having multiple deprecated versions
+	pkgsWithDeprecatedNotice := make(packages.Packages, 0, batchSize)
 	for dec.More() {
 		// Read everything till the "packages" key in the map.
 		token, err := dec.Token()
@@ -169,16 +172,21 @@ func loadSearchIndexAllBatches(ctx context.Context, logger *zap.Logger, storageC
 			if err != nil {
 				return fmt.Errorf("unexpected error parsing package from index file (token: %v): %w", token, err)
 			}
-			packages = append(packages, p.PackageManifest)
+			pkgs = append(pkgs, p.PackageManifest)
 			count++
+			// check if the package has a deprecated notice, add it to a separate list
+			if p.PackageManifest.Deprecated != nil {
+				pkgsWithDeprecatedNotice = append(pkgsWithDeprecatedNotice, p.PackageManifest)
+			}
 
 			if count >= batchSize {
-				err = process(ctx, packages, aCursor.Current)
+				err = process(ctx, pkgs, pkgsWithDeprecatedNotice, aCursor.Current)
 				if err != nil {
 					return fmt.Errorf("error processing batch of packages: %w", err)
 				}
 				count = 0
-				packages = packages[:0] // Reset the slice to reuse the memory
+				pkgs = pkgs[:0]                                         // Reset the slice to reuse the memory
+				pkgsWithDeprecatedNotice = pkgsWithDeprecatedNotice[:0] // Reset the slice to reuse the memory
 			}
 		}
 
@@ -191,8 +199,8 @@ func loadSearchIndexAllBatches(ctx context.Context, logger *zap.Logger, storageC
 			return fmt.Errorf("expected closing array, found %v", token)
 		}
 	}
-	if len(packages) > 0 {
-		err = process(ctx, packages, aCursor.Current)
+	if len(pkgs) > 0 {
+		err = process(ctx, pkgs, pkgsWithDeprecatedNotice, aCursor.Current)
 		if err != nil {
 			return fmt.Errorf("error processing final batch of packages: %w", err)
 		}
@@ -200,7 +208,8 @@ func loadSearchIndexAllBatches(ctx context.Context, logger *zap.Logger, storageC
 	return nil
 }
 
-func LoadPackagesAndCursorFromIndexBatches(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, storageBucketInternal, currentCursor string, batchSize int, process func(context.Context, packages.Packages, string) error) (string, error) {
+func LoadPackagesAndCursorFromIndexBatches(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, storageBucketInternal, currentCursor string, batchSize int,
+	process func(context.Context, packages.Packages, packages.Packages, string) error) (string, error) {
 	bucketName, rootStoragePath, err := extractBucketNameFromURL(storageBucketInternal)
 	if err != nil {
 		return "", fmt.Errorf("can't extract bucket name from URL (url: %s): %w", storageBucketInternal, err)
