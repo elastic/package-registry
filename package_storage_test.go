@@ -59,6 +59,11 @@ func generateTestCaseStorageEndpoints(indexer Indexer) ([]struct {
 	if err != nil {
 		return nil, err
 	}
+	packageHandler, err := newPackageIndexHandler(testLogger, indexer, testCacheTime)
+	if err != nil {
+		return nil, err
+	}
+
 	disallowUnknownQueryParamsSearchHandler, err := newSearchHandler(testLogger, indexer, testCacheTime,
 		searchWithAllowUnknownQueryParameters(false),
 	)
@@ -135,8 +140,10 @@ func generateTestCaseStorageEndpoints(indexer Indexer) ([]struct {
 		{"/categories?agent.version=9.1.0", "/categories", "categories-agent-910.json", categoriesHandler},
 		{"/categories?agent.version=9.5.0", "/categories", "categories-agent-950.json", categoriesHandler},
 
-		// Test deprecated packages
+		// Test queries with deprecated packages
 		{"/search?package=apache&all=true", "/search", "search-deprecated-package-versions.json", searchHandler},
+		{"/package/apache/1.3.5/", packageIndexRouterPath, "package-apache-1.3.5.json", packageHandler},
+		{"/package/sql/0.5.0/", packageIndexRouterPath, "package-deprecated-sql-0.5.0.json", packageHandler},
 	}, nil
 }
 

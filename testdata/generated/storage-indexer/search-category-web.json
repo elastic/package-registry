@@ -40,7 +40,11 @@
       {
         "type": "logs",
         "dataset": "apache.access",
-        "title": "Apache access logs"
+        "title": "Apache access logs",
+        "deprecated": {
+          "since": "1.3.5",
+          "description": "This data stream is deprecated"
+        }
       },
       {
         "type": "logs",

@@ -54,7 +54,11 @@
       "type": "metrics",
       "input": "sql/metrics",
       "ingestion_method": "Database",
-      "template_path": "input.yml.hbs"
+      "template_path": "input.yml.hbs",
+      "deprecated": {
+        "since": "0.5.0",
+        "description": "This policy is deprecated"
+      }
     }
   ]
 }

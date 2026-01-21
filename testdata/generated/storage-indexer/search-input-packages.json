@@ -21,7 +21,11 @@
       {
         "name": "sql",
         "title": "SQL Metrics",
-        "description": "Collects Metrics by Quering on SQL Databases"
+        "description": "Collects Metrics by Quering on SQL Databases",
+        "deprecated": {
+          "since": "0.5.0",
+          "description": "This policy is deprecated"
+        }
       }
     ],
     "conditions": {
