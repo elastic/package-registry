@@ -86,9 +86,6 @@ func TestEndpoints(t *testing.T) {
 	categoriesHandler, err := newCategoriesHandler(testLogger, indexer, testCacheTime)
 	require.NoError(t, err)
 
-	packageHandler, err := newPackageIndexHandler(testLogger, indexer, testCacheTime)
-	require.NoError(t, err)
-
 	disallowUnknownQueryParamsSearchHandler, err := newSearchHandler(testLogger, indexer, testCacheTime,
 		searchWithAllowUnknownQueryParameters(false),
 	)
@@ -168,11 +165,6 @@ func TestEndpoints(t *testing.T) {
 
 		// Test queries with deprecated packages
 		{"/search?package=multiversion&all=true", "/search", "search-deprecated-package-versions.json", searchHandler},
-		{"/package/multiversion/1.1.0/", packageIndexRouterPath, "package-multiversion-1.1.0.json", packageHandler},
-		{"/package/deprecated_input_package/1.0.0/", packageIndexRouterPath, "package-deprecated-input-package-1.0.0.json", packageHandler},
-		{"/package/deprecated_input_policy/1.0.0/", packageIndexRouterPath, "package-deprecated-input-policy-1.0.0.json", packageHandler},
-		{"/package/deprecated_integration_input/1.0.0/", packageIndexRouterPath, "package-deprecated-integration-input-1.0.0.json", packageHandler},
-		{"/package/deprecated_integration_stream/1.0.0/", packageIndexRouterPath, "package-deprecated-integration-stream-1.0.0.json", packageHandler},
 	}
 
 	for _, test := range tests {
@@ -457,6 +449,11 @@ func TestPackageIndex(t *testing.T) {
 		{"/package/sql_input/1.0.1/", packageIndexRouterPath, "sql-input-package-not-found.json", packageIndexHandler},
 		{"/package/sql_input/0.3.0/", packageIndexRouterPath, "sql-input-package.json", packageIndexHandler},
 		{"/package/datasources/1.0.0/", packageIndexRouterPath, "datasources-1.0.0-package.json", packageIndexHandler},
+		{"/package/multiversion/1.1.0/", packageIndexRouterPath, "package-multiversion-1.1.0.json", packageIndexHandler},
+		{"/package/deprecated_input_package/1.0.0/", packageIndexRouterPath, "package-deprecated-input-package-1.0.0.json", packageIndexHandler},
+		{"/package/deprecated_input_policy/1.0.0/", packageIndexRouterPath, "package-deprecated-input-policy-1.0.0.json", packageIndexHandler},
+		{"/package/deprecated_integration_input/1.0.0/", packageIndexRouterPath, "package-deprecated-integration-input-1.0.0.json", packageIndexHandler},
+		{"/package/deprecated_integration_stream/1.0.0/", packageIndexRouterPath, "package-deprecated-integration-stream-1.0.0.json", packageIndexHandler},
 	}
 
 	for _, test := range tests {
