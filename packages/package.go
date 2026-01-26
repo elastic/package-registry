@@ -228,8 +228,8 @@ type DeploymentMode struct {
 }
 
 type Deprecated struct {
-	Since       string `config:"since,omitempty" json:"since,omitempty" yaml:"since,omitempty"`
-	Description string `config:"description,omitempty" json:"description,omitempty" yaml:"description,omitempty"`
+	Since       string `config:"since" json:"since" yaml:"since"`
+	Description string `config:"description" json:"description" yaml:"description"`
 	ReplacedBy  *struct {
 		Package        string `config:"package,omitempty" json:"package,omitempty" yaml:"package,omitempty"`
 		PolicyTemplate string `config:"policy_template,omitempty" json:"policy_template,omitempty" yaml:"policy_template,omitempty"`
