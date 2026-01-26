@@ -219,7 +219,7 @@ func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 
 	numPackages := 0
 	currentCursor, err := LoadPackagesAndCursorFromIndexBatches(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, i.cursor, i.readPackagesBatchSize,
-		func(ctx context.Context, pkgs packages.Packages, pkgsWithDeprecatedNotice packages.Packages, newCursor string) error {
+		func(ctx context.Context, pkgs packages.Packages, newCursor string) error {
 			// This function is called for each batch of packages read from the index.
 			startUpdate := time.Now()
 			if err := i.updateDatabase(ctx, &pkgs, newCursor); err != nil {
@@ -227,7 +227,7 @@ func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 			}
 			startDuration := time.Since(startUpdate)
 			numPackages += len(pkgs)
-			// save packages with deprecated notice into the overall list
+			// update packages with deprecated notice into the overall list
 			packages.UpdateLatestDeprecatedPackagesMapByName(pkgs, &i.deprecatedPackages)
 			i.logger.Debug("Filled database with a batch of packages", zap.Duration("elapsed.time", startDuration), zap.String("elapsed.time.human", startDuration.String()), zap.Int("num.packages", len(pkgs)))
 			return nil
