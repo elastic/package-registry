@@ -4,45 +4,50 @@
 
 package packages
 
-type DeprecatedPackages map[string]Deprecated
+import "github.com/Masterminds/semver/v3"
 
-// IsDeprecated checks if the package has been deprecated and returns the deprecation notice information.
-func (d DeprecatedPackages) IsDeprecated(name string) (Deprecated, bool) {
-	deprecated, found := d[name]
-	return deprecated, found
+type deprecatedMeta struct {
+	deprecated *Deprecated
+	version    *semver.Version
 }
 
-// GetLatestDeprecatedPackageVersion builds a map of deprecated notices from the latest version that has the notice.
-// If a package is deprecated in version 1.2.0 with a notice, but 1.3.0 does not have the notice, the notice from 1.2.0
-// will be used.
-func GetLatestDeprecatedNoticeFromPackages(packages Packages) DeprecatedPackages {
-	// copy packages so sorting does not affect the original slice
-	var pkgsCopy = make(Packages, len(packages))
-	if ok := copy(pkgsCopy, packages); ok != len(packages) {
-		return nil
-	}
-	// sort all packages by name and version (newest first)
-	SortByNameVersion(pkgsCopy)
-	// deprecated will hold the latest deprecated info per package
-	deprecated := make(DeprecatedPackages, 0)
+type DeprecatedPackages map[string]deprecatedMeta
 
-	for _, pkg := range pkgsCopy {
-		// if we already have deprecated info for this package, skip
-		if _, found := deprecated[pkg.Name]; found {
-			continue
-		}
-		if pkg.IsDeprecated() {
-			deprecated[pkg.Name] = *pkg.Deprecated
-		}
+func (d DeprecatedPackages) Deprecated(name string) (*Deprecated, bool) {
+	meta, found := d[name]
+	if !found {
+		return nil, false
 	}
-	return deprecated
+	return meta.deprecated, true
 }
 
-// PropagateDeprecatedInfoToAllVersions adds deprecation information to all versions of deprecated packages.
-func PropagateDeprecatedInfoToAllVersions(packageList Packages, deprecatedPackages DeprecatedPackages) {
+// UpdateLatestDeprecatedPackagesMapByName updates a map of the latest deprecated packages by name.
+// It ensures that for each package name, only the deprecation info of the latest version is stored.
+func UpdateLatestDeprecatedPackagesMapByName(input Packages, deprecatedPackages *DeprecatedPackages) {
+	if *deprecatedPackages == nil {
+		*deprecatedPackages = make(DeprecatedPackages)
+	}
+	for _, pkg := range input {
+		if pkg.BasePackage.Deprecated != nil {
+			deprecated := pkg.BasePackage.Deprecated
+
+			// if not existing or current version is greater than existing, update
+			if existing, found := (*deprecatedPackages)[pkg.BasePackage.Name]; !found || pkg.versionSemVer.GreaterThan(existing.version) {
+				(*deprecatedPackages)[pkg.BasePackage.Name] = deprecatedMeta{
+					deprecated: deprecated,
+					version:    pkg.versionSemVer,
+				}
+			}
+		}
+	}
+}
+
+// PropagateLatestDeprecatedInfoToPackageList adds deprecation information to all packages in the package list
+// based on the latest deprecated info available in the deprecated packages map.
+func PropagateLatestDeprecatedInfoToPackageList(packageList Packages, deprecatedPackages DeprecatedPackages) {
 	for _, pkg := range packageList {
-		if deprecatedInfo, found := deprecatedPackages.IsDeprecated(pkg.Name); found {
-			pkg.Deprecated = &deprecatedInfo
+		if deprecatedInfo, found := deprecatedPackages.Deprecated(pkg.Name); found {
+			pkg.Deprecated = deprecatedInfo
 		}
 	}
 }

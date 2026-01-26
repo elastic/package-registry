@@ -7,100 +7,271 @@ package packages
 import (
 	"testing"
 
+	"github.com/Masterminds/semver/v3"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGetLatestDeprecatedNoticeFromPackages(t *testing.T) {
-	newPackage := func(name string, version string, deprecated *Deprecated) *Package {
-		p := new(Package)
-		p.Name = name
-		p.Version = version
-		p.Deprecated = deprecated
-		return p
-	}
-
-	deprecatedNotice := &Deprecated{
-		Description: "This package is deprecated",
-	}
-
-	cases := []struct {
-		title    string
-		packages Packages
-		expected DeprecatedPackages
+func TestUpdateLatestDeprecatedPackagesMapByName(t *testing.T) {
+	tests := []struct {
+		name               string
+		input              Packages
+		deprecatedPackages DeprecatedPackages
+		expected           DeprecatedPackages
 	}{
 		{
-			title:    "empty package list",
-			packages: Packages{},
-			expected: DeprecatedPackages{},
+			name:               "nil deprecated packages map is initialized",
+			input:              Packages{},
+			deprecatedPackages: nil,
+			expected:           DeprecatedPackages{},
 		},
 		{
-			title: "single deprecated package",
-			packages: Packages{
-				newPackage("foo", "1.0.0", deprecatedNotice),
+			name: "inits map and adds new deprecated package",
+			input: Packages{
+				&Package{
+					BasePackage: BasePackage{
+						Name:       "test-package",
+						Deprecated: &Deprecated{},
+					},
+					versionSemVer: semver.MustParse("1.0.0"),
+				},
+			},
+			deprecatedPackages: nil,
+			expected: DeprecatedPackages{
+				"test-package": deprecatedMeta{
+					deprecated: &Deprecated{},
+					version:    semver.MustParse("1.0.0"),
+				},
+			},
+		},
+		{
+			name: "updates with newer version",
+			input: Packages{
+				{
+					BasePackage: BasePackage{
+						Name:       "test-package",
+						Deprecated: &Deprecated{},
+					},
+					versionSemVer: semver.MustParse("2.0.0"),
+				},
+			},
+			deprecatedPackages: DeprecatedPackages{
+				"test-package": deprecatedMeta{
+					deprecated: &Deprecated{},
+					version:    semver.MustParse("1.0.0"),
+				},
 			},
 			expected: DeprecatedPackages{
-				"foo": *deprecatedNotice,
+				"test-package": deprecatedMeta{
+					deprecated: &Deprecated{},
+					version:    semver.MustParse("2.0.0"),
+				},
 			},
 		},
 		{
-			title: "single non-deprecated package",
-			packages: Packages{
-				newPackage("foo", "1.0.0", nil),
+			name: "does not update with older version",
+			input: Packages{
+				&Package{
+					BasePackage: BasePackage{
+						Name:       "test-package",
+						Deprecated: &Deprecated{},
+					},
+					versionSemVer: semver.MustParse("1.0.0"),
+				},
 			},
-			expected: DeprecatedPackages{},
-		},
-		{
-			title: "multiple versions, latest is deprecated",
-			packages: Packages{
-				newPackage("foo", "1.0.0", nil),
-				newPackage("foo", "2.0.0", deprecatedNotice),
+			deprecatedPackages: DeprecatedPackages{
+				"test-package": deprecatedMeta{
+					deprecated: &Deprecated{},
+					version:    semver.MustParse("2.0.0"),
+				},
 			},
 			expected: DeprecatedPackages{
-				"foo": *deprecatedNotice,
+				"test-package": deprecatedMeta{
+					deprecated: &Deprecated{},
+					version:    semver.MustParse("2.0.0"),
+				},
 			},
 		},
 		{
-			// this case would be rare in practice, but we want to ensure the function behaves correctly
-			// even if an older version is deprecated while a newer one is not
-			title: "multiple versions, older version is deprecated",
-			packages: Packages{
-				newPackage("foo", "1.0.0", deprecatedNotice),
-				newPackage("foo", "2.0.0", nil),
+			name: "ignores non-deprecated packages",
+			input: Packages{
+				{
+					BasePackage: BasePackage{
+						Name:       "test-package",
+						Deprecated: nil,
+					},
+					versionSemVer: semver.MustParse("1.0.0"),
+				},
 			},
-			expected: DeprecatedPackages{
-				"foo": *deprecatedNotice,
-			},
+			deprecatedPackages: DeprecatedPackages{},
+			expected:           DeprecatedPackages{},
 		},
 		{
-			title: "multiple packages with different deprecation states",
-			packages: Packages{
-				newPackage("foo", "1.0.0", deprecatedNotice),
-				newPackage("bar", "1.0.0", nil),
-				newPackage("baz", "1.0.0", &Deprecated{Description: "Different notice"}),
+			name: "handles multiple packages",
+			input: Packages{
+				{
+					BasePackage: BasePackage{
+						Name:       "package-a",
+						Deprecated: &Deprecated{},
+					},
+					versionSemVer: semver.MustParse("1.0.0"),
+				},
+				{
+					BasePackage: BasePackage{
+						Name:       "package-b",
+						Deprecated: &Deprecated{},
+					},
+					versionSemVer: semver.MustParse("2.0.0"),
+				},
 			},
+			deprecatedPackages: DeprecatedPackages{},
 			expected: DeprecatedPackages{
-				"foo": *deprecatedNotice,
-				"baz": Deprecated{Description: "Different notice"},
-			},
-		},
-		{
-			// deprecation notice can be modified while the package is in maintenance mode
-			title: "unsorted packages, latest deprecated version should be used",
-			packages: Packages{
-				newPackage("foo", "1.0.0", &Deprecated{Description: "Old notice"}),
-				newPackage("foo", "3.0.0", nil),
-				newPackage("foo", "2.0.0", &Deprecated{Description: "Latest deprecated notice"}),
-			},
-			expected: DeprecatedPackages{
-				"foo": Deprecated{Description: "Latest deprecated notice"},
+				"package-a": deprecatedMeta{
+					deprecated: &Deprecated{},
+					version:    semver.MustParse("1.0.0"),
+				},
+				"package-b": deprecatedMeta{
+					deprecated: &Deprecated{},
+					version:    semver.MustParse("2.0.0"),
+				},
 			},
 		},
 	}
 
-	for _, c := range cases {
-		t.Run(c.title, func(t *testing.T) {
-			result := GetLatestDeprecatedNoticeFromPackages(c.packages)
-			assert.Equal(t, c.expected, result)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			UpdateLatestDeprecatedPackagesMapByName(tt.input, &tt.deprecatedPackages)
+			assert.Equal(t, tt.expected, tt.deprecatedPackages)
+		})
+	}
+}
+func TestPropagateLatestDeprecatedInfoToPackageList(t *testing.T) {
+	tests := []struct {
+		name               string
+		packageList        Packages
+		deprecatedPackages DeprecatedPackages
+		expected           Packages
+	}{
+		{
+			name:               "empty package list",
+			packageList:        Packages{},
+			deprecatedPackages: DeprecatedPackages{},
+			expected:           Packages{},
+		},
+		{
+			name: "propagates deprecation info to matching package",
+			packageList: Packages{
+				&Package{
+					BasePackage: BasePackage{
+						Name:       "test-package",
+						Deprecated: nil,
+					},
+				},
+			},
+			deprecatedPackages: DeprecatedPackages{
+				"test-package": deprecatedMeta{
+					deprecated: &Deprecated{},
+					version:    semver.MustParse("1.0.0"),
+				},
+			},
+			expected: Packages{
+				&Package{
+					BasePackage: BasePackage{
+						Name:       "test-package",
+						Deprecated: &Deprecated{},
+					},
+				},
+			},
+		},
+		{
+			name: "does not modify package without deprecation info",
+			packageList: Packages{
+				&Package{
+					BasePackage: BasePackage{
+						Name:       "test-package",
+						Deprecated: nil,
+					},
+				},
+			},
+			deprecatedPackages: DeprecatedPackages{},
+			expected: Packages{
+				&Package{
+					BasePackage: BasePackage{
+						Name:       "test-package",
+						Deprecated: nil,
+					},
+				},
+			},
+		},
+		{
+			name: "handles multiple packages with mixed deprecation",
+			packageList: Packages{
+				&Package{
+					BasePackage: BasePackage{
+						Name:       "deprecated-package",
+						Deprecated: nil,
+					},
+				},
+				&Package{
+					BasePackage: BasePackage{
+						Name:       "active-package",
+						Deprecated: nil,
+					},
+				},
+			},
+			deprecatedPackages: DeprecatedPackages{
+				"deprecated-package": deprecatedMeta{
+					deprecated: &Deprecated{},
+					version:    semver.MustParse("2.0.0"),
+				},
+			},
+			expected: Packages{
+				&Package{
+					BasePackage: BasePackage{
+						Name:       "deprecated-package",
+						Deprecated: &Deprecated{},
+					},
+				},
+				&Package{
+					BasePackage: BasePackage{
+						Name:       "active-package",
+						Deprecated: nil,
+					},
+				},
+			},
+		},
+		{
+			name: "overwrites existing deprecation info",
+			packageList: Packages{
+				&Package{
+					BasePackage: BasePackage{
+						Name:       "test-package",
+						Deprecated: &Deprecated{},
+					},
+				},
+			},
+			deprecatedPackages: DeprecatedPackages{
+				"test-package": deprecatedMeta{
+					deprecated: &Deprecated{},
+					version:    semver.MustParse("3.0.0"),
+				},
+			},
+			expected: Packages{
+				&Package{
+					BasePackage: BasePackage{
+						Name:       "test-package",
+						Deprecated: &Deprecated{},
+					},
+				},
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			PropagateLatestDeprecatedInfoToPackageList(tt.packageList, tt.deprecatedPackages)
+			for i, pkg := range tt.packageList {
+				assert.Equal(t, tt.expected[i].Deprecated, pkg.Deprecated)
+			}
 		})
 	}
 }

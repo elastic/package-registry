@@ -337,7 +337,7 @@ func (i *FileSystemIndexer) updatePackageFileSystemIndex(ctx context.Context) er
 		return err
 	}
 	i.packageList = newPackageList
-	i.deprecatedPackages = GetLatestDeprecatedNoticeFromPackages(newPackageList)
+	UpdateLatestDeprecatedPackagesMapByName(newPackageList, &i.deprecatedPackages)
 	return nil
 }
 
@@ -364,7 +364,7 @@ func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages
 	}
 
 	if opts.IncludeDeprecatedNotice {
-		PropagateDeprecatedInfoToAllVersions(i.packageList, i.deprecatedPackages)
+		PropagateLatestDeprecatedInfoToPackageList(i.packageList, i.deprecatedPackages)
 	}
 
 	if opts.Filter != nil {
