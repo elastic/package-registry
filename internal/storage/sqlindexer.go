@@ -459,10 +459,7 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 		return nil, err
 	}
 
-	// Apply deprecated notice propagation if requested.
-	if opts != nil && opts.IncludeDeprecatedNotice {
-		packages.PropagateLatestDeprecatedInfoToPackageList(readPackages, i.deprecatedPackages)
-	}
+	packages.PropagateLatestDeprecatedInfoToPackageList(readPackages, i.deprecatedPackages)
 
 	// Apply filtering at application level if needed, not required anymore access to the database.
 	if opts != nil && opts.Filter != nil {

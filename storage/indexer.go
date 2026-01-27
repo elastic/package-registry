@@ -183,7 +183,10 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
 	metrics.NumberIndexedPackages.Set(float64(len(i.packageList)))
 
+	// set the deprecated notice information once the package list is updated
 	packages.UpdateLatestDeprecatedPackagesMapByName(i.packageList, &i.deprecatedPackages)
+	packages.PropagateLatestDeprecatedInfoToPackageList(i.packageList, i.deprecatedPackages)
+
 	return nil
 }
 
@@ -198,10 +201,6 @@ func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.
 
 	i.m.RLock()
 	defer i.m.RUnlock()
-
-	if opts != nil && opts.IncludeDeprecatedNotice {
-		packages.PropagateLatestDeprecatedInfoToPackageList(i.packageList, i.deprecatedPackages)
-	}
 
 	if opts != nil && opts.Filter != nil {
 		return opts.Filter.Apply(ctx, i.packageList)

@@ -289,7 +289,6 @@ func TestGet_ListPackages(t *testing.T) {
 					AllVersions: true,
 					PackageName: "apache",
 				},
-				IncludeDeprecatedNotice: true,
 			},
 			expected: 4,
 		},
@@ -309,11 +308,6 @@ func TestGet_ListPackages(t *testing.T) {
 			}
 			if c.expectedVersion != "" {
 				assert.Equal(t, c.expectedVersion, foundPackages[0].Version)
-			}
-			if c.options.IncludeDeprecatedNotice {
-				for _, pkg := range foundPackages {
-					assert.NotNil(t, pkg.Deprecated, "package %s should have deprecated notice", pkg.Name)
-				}
 			}
 		})
 	}

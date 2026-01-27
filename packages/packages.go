@@ -101,9 +101,6 @@ type GetOptions struct {
 
 	FullData        bool
 	SkipPackageData bool
-	// IncludeDeprecatedNotice indicates whether to include deprecation notice information in the returned packages.
-	// If a package is deprecated, this information will be included in all the package versions.
-	IncludeDeprecatedNotice bool
 }
 
 // FileSystemIndexer indexes packages from the filesystem.
@@ -337,7 +334,9 @@ func (i *FileSystemIndexer) updatePackageFileSystemIndex(ctx context.Context) er
 		return err
 	}
 	i.packageList = newPackageList
+	// set the deprecated notice information once the package list is updated
 	UpdateLatestDeprecatedPackagesMapByName(newPackageList, &i.deprecatedPackages)
+	PropagateLatestDeprecatedInfoToPackageList(newPackageList, i.deprecatedPackages)
 	return nil
 }
 
@@ -361,10 +360,6 @@ func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages
 
 	if opts == nil {
 		return i.packageList, nil
-	}
-
-	if opts.IncludeDeprecatedNotice {
-		PropagateLatestDeprecatedInfoToPackageList(i.packageList, i.deprecatedPackages)
 	}
 
 	if opts.Filter != nil {
