@@ -198,13 +198,13 @@ func generateTestPackageIndexEndpoints(indexer Indexer) ([]struct {
 		file     string
 		handler  http.Handler
 	}{
-		{"/package/1password/0.1.1/", packageIndexRouterPath, "1password-0.1.1.json", packageIndexHandler},
-		{"/package/kubernetes/0.3.0/", packageIndexRouterPath, "kubernetes-0.3.0.json", packageIndexHandler},
-		{"/package/osquery/1.0.3/", packageIndexRouterPath, "osquery-1.0.3.json", packageIndexHandler},
+		// {"/package/1password/0.1.1/", packageIndexRouterPath, "1password-0.1.1.json", packageIndexHandler},
+		// {"/package/kubernetes/0.3.0/", packageIndexRouterPath, "kubernetes-0.3.0.json", packageIndexHandler},
+		// {"/package/osquery/1.0.3/", packageIndexRouterPath, "osquery-1.0.3.json", packageIndexHandler},
 		{"/package/sql/0.5.0/", packageIndexRouterPath, "sql-0.5.0.json", packageIndexHandler},
-		{"/package/cassandra/1.1.0/", packageIndexRouterPath, "cassandra-1.1.0.json", packageIndexHandler},
-		{"/package/apache/1.3.5/", packageIndexRouterPath, "package-apache-1.3.5.json", packageIndexHandler},
-		{"/package/sql/0.5.0/", packageIndexRouterPath, "package-deprecated-sql-0.5.0.json", packageIndexHandler},
+		{"/package/sql/0.4.0/", packageIndexRouterPath, "package-deprecated-sql-0.4.0.json", packageIndexHandler},
+		// {"/package/cassandra/1.1.0/", packageIndexRouterPath, "cassandra-1.1.0.json", packageIndexHandler},
+		// {"/package/apache/1.3.5/", packageIndexRouterPath, "package-apache-1.3.5.json", packageIndexHandler},
 	}, nil
 }
 

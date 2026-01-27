@@ -133,7 +133,7 @@ func TestGet_ListPackages(t *testing.T) {
 		{
 			name:     "all packages filter nil",
 			options:  &packages.GetOptions{},
-			expected: 1138,
+			expected: 1139,
 		},
 		{
 			name: "all versions of packages including prerelease",
@@ -143,7 +143,7 @@ func TestGet_ListPackages(t *testing.T) {
 					Prerelease:  true,
 				},
 			},
-			expected: 1138,
+			expected: 1139,
 		},
 		{
 			name: "latest versions of packages not including prerelease",

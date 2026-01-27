@@ -7679,7 +7679,11 @@
     "categories": [
       "custom"
     ],
-    "signature_path": "/epr/sql/sql-0.5.0.zip.sig"
+    "signature_path": "/epr/sql/sql-0.5.0.zip.sig",
+    "deprecated": {
+      "since": "0.5.0",
+      "description": "This package is deprecated"
+    }
   },
   {
     "name": "stan",

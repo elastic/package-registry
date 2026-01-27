@@ -335,8 +335,8 @@ func (i *FileSystemIndexer) updatePackageFileSystemIndex(ctx context.Context) er
 	}
 	i.packageList = newPackageList
 	// set the deprecated notice information once the package list is updated
-	UpdateLatestDeprecatedPackagesMapByName(newPackageList, &i.deprecatedPackages)
-	PropagateLatestDeprecatedInfoToPackageList(newPackageList, i.deprecatedPackages)
+	UpdateLatestDeprecatedPackagesMapByName(i.packageList, &i.deprecatedPackages)
+	PropagateLatestDeprecatedInfoToPackageList(i.packageList, i.deprecatedPackages)
 	return nil
 }
 
