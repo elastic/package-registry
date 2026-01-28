@@ -1,0 +1,242 @@
+[
+  {
+    "name": "apache",
+    "title": "Apache",
+    "version": "1.1.0",
+    "release": "ga",
+    "description": "This Elastic integration collects logs and metrics from Apache servers",
+    "type": "integration",
+    "download": "/epr/apache/apache-1.1.0.zip",
+    "path": "/package/apache/1.1.0",
+    "icons": [
+      {
+        "src": "/img/logo_apache.svg",
+        "path": "/package/apache/1.1.0/img/logo_apache.svg",
+        "title": "Apache Logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "apache",
+        "title": "Apache logs and metrics",
+        "description": "Collect logs and metrics from Apache instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "web"
+    ],
+    "signature_path": "/epr/apache/apache-1.1.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "apache.access",
+        "title": "Apache access logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "apache.error",
+        "title": "Apache error logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "apache.status",
+        "title": "Apache status metrics"
+      }
+    ],
+    "deprecated": {
+      "since": "1.3.0",
+      "description": "This package is deprecated"
+    }
+  },
+  {
+    "name": "apache",
+    "title": "Apache HTTP Server",
+    "version": "1.3.0",
+    "release": "ga",
+    "description": "Collect logs and metrics from Apache servers with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/apache/apache-1.3.0.zip",
+    "path": "/package/apache/1.3.0",
+    "icons": [
+      {
+        "src": "/img/logo_apache.svg",
+        "path": "/package/apache/1.3.0/img/logo_apache.svg",
+        "title": "Apache Logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "apache",
+        "title": "Apache logs and metrics",
+        "description": "Collect logs and metrics from Apache instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "web"
+    ],
+    "signature_path": "/epr/apache/apache-1.3.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "apache.access",
+        "title": "Apache access logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "apache.error",
+        "title": "Apache error logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "apache.status",
+        "title": "Apache status metrics"
+      }
+    ],
+    "deprecated": {
+      "since": "1.3.0",
+      "description": "This package is deprecated"
+    }
+  },
+  {
+    "name": "apache",
+    "title": "Apache HTTP Server",
+    "version": "1.3.2",
+    "release": "ga",
+    "description": "Collect logs and metrics from Apache servers with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/apache/apache-1.3.2.zip",
+    "path": "/package/apache/1.3.2",
+    "icons": [
+      {
+        "src": "/img/logo_apache.svg",
+        "path": "/package/apache/1.3.2/img/logo_apache.svg",
+        "title": "Apache Logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "apache",
+        "title": "Apache logs and metrics",
+        "description": "Collect logs and metrics from Apache instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "web"
+    ],
+    "signature_path": "/epr/apache/apache-1.3.2.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "apache.access",
+        "title": "Apache access logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "apache.error",
+        "title": "Apache error logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "apache.status",
+        "title": "Apache status metrics"
+      }
+    ],
+    "deprecated": {
+      "since": "1.3.0",
+      "description": "This package is deprecated"
+    }
+  },
+  {
+    "name": "apache",
+    "title": "Apache HTTP Server",
+    "version": "1.3.5",
+    "release": "ga",
+    "description": "Collect logs and metrics from Apache servers with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/apache/apache-1.3.5.zip",
+    "path": "/package/apache/1.3.5",
+    "icons": [
+      {
+        "src": "/img/logo_apache.svg",
+        "path": "/package/apache/1.3.5/img/logo_apache.svg",
+        "title": "Apache Logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "apache",
+        "title": "Apache logs and metrics",
+        "description": "Collect logs and metrics from Apache instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "web"
+    ],
+    "signature_path": "/epr/apache/apache-1.3.5.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "apache.access",
+        "title": "Apache access logs",
+        "deprecated": {
+          "since": "1.3.5",
+          "description": "This data stream is deprecated"
+        }
+      },
+      {
+        "type": "logs",
+        "dataset": "apache.error",
+        "title": "Apache error logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "apache.status",
+        "title": "Apache status metrics"
+      }
+    ],
+    "deprecated": {
+      "since": "1.3.0",
+      "description": "This package is deprecated"
+    }
+  }
+]

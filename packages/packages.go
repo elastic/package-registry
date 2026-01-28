@@ -108,6 +108,8 @@ type FileSystemIndexer struct {
 	paths       []string
 	packageList Packages
 
+	deprecatedPackages DeprecatedPackages
+
 	// Label used for APM instrumentation.
 	label string
 
@@ -332,6 +334,9 @@ func (i *FileSystemIndexer) updatePackageFileSystemIndex(ctx context.Context) er
 		return err
 	}
 	i.packageList = newPackageList
+	// set the deprecated notice information once the package list is updated
+	UpdateLatestDeprecatedPackagesMapByName(i.packageList, &i.deprecatedPackages)
+	PropagateLatestDeprecatedInfoToPackageList(i.packageList, i.deprecatedPackages)
 	return nil
 }
 

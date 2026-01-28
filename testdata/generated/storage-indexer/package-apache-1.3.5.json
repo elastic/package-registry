@@ -1,0 +1,493 @@
+{
+  "name": "apache",
+  "title": "Apache HTTP Server",
+  "version": "1.3.5",
+  "release": "ga",
+  "description": "Collect logs and metrics from Apache servers with Elastic Agent.",
+  "type": "integration",
+  "download": "/epr/apache/apache-1.3.5.zip",
+  "path": "/package/apache/1.3.5",
+  "icons": [
+    {
+      "src": "/img/logo_apache.svg",
+      "path": "/package/apache/1.3.5/img/logo_apache.svg",
+      "title": "Apache Logo",
+      "size": "32x32",
+      "type": "image/svg+xml"
+    }
+  ],
+  "conditions": {
+    "kibana": {
+      "version": "^7.14.0 || ^8.0.0"
+    }
+  },
+  "owner": {
+    "github": "elastic/integrations"
+  },
+  "categories": [
+    "web"
+  ],
+  "signature_path": "/epr/apache/apache-1.3.5.zip.sig",
+  "deprecated": {
+    "since": "1.3.0",
+    "description": "This package is deprecated"
+  },
+  "format_version": "1.0.0",
+  "readme": "/package/apache/1.3.5/docs/README.md",
+  "license": "basic",
+  "screenshots": [
+    {
+      "src": "/img/apache-metrics-overview.png",
+      "path": "/package/apache/1.3.5/img/apache-metrics-overview.png",
+      "title": "Apache metrics overview",
+      "size": "3360x3064",
+      "type": "image/png"
+    },
+    {
+      "src": "/img/apache-logs-overview.png",
+      "path": "/package/apache/1.3.5/img/apache-logs-overview.png",
+      "title": "Apache logs overview",
+      "size": "3342x1384",
+      "type": "image/png"
+    }
+  ],
+  "assets": [
+    "/package/apache/1.3.5/changelog.yml",
+    "/package/apache/1.3.5/manifest.yml",
+    "/package/apache/1.3.5/docs/README.md",
+    "/package/apache/1.3.5/img/apache-logs-overview.png",
+    "/package/apache/1.3.5/img/apache-metrics-overview.png",
+    "/package/apache/1.3.5/img/logo_apache.svg",
+    "/package/apache/1.3.5/data_stream/access/manifest.yml",
+    "/package/apache/1.3.5/data_stream/access/sample_event.json",
+    "/package/apache/1.3.5/data_stream/error/manifest.yml",
+    "/package/apache/1.3.5/data_stream/error/sample_event.json",
+    "/package/apache/1.3.5/data_stream/status/manifest.yml",
+    "/package/apache/1.3.5/data_stream/status/sample_event.json",
+    "/package/apache/1.3.5/kibana/dashboard/apache-Logs-Apache-Dashboard.json",
+    "/package/apache/1.3.5/kibana/dashboard/apache-Metrics-Apache-HTTPD-server-status.json",
+    "/package/apache/1.3.5/kibana/ml_module/apache-Logs-ml.json",
+    "/package/apache/1.3.5/kibana/search/apache-HTTPD.json",
+    "/package/apache/1.3.5/kibana/search/apache-access-logs.json",
+    "/package/apache/1.3.5/kibana/search/apache-errors-log.json",
+    "/package/apache/1.3.5/kibana/visualization/apache-22057f20-3a12-11eb-8946-296aab7b13db.json",
+    "/package/apache/1.3.5/kibana/visualization/apache-320cd980-3a36-11eb-8946-296aab7b13db.json",
+    "/package/apache/1.3.5/kibana/visualization/apache-47820ce0-3a1d-11eb-8946-296aab7b13db.json",
+    "/package/apache/1.3.5/kibana/visualization/apache-7724cf20-3a39-11eb-8946-296aab7b13db.json",
+    "/package/apache/1.3.5/kibana/visualization/apache-7d68f730-3a39-11eb-8946-296aab7b13db.json",
+    "/package/apache/1.3.5/kibana/visualization/apache-805d7bb0-3a10-11eb-8946-296aab7b13db.json",
+    "/package/apache/1.3.5/kibana/visualization/apache-99666080-3a20-11eb-8946-296aab7b13db.json",
+    "/package/apache/1.3.5/kibana/visualization/apache-HTTPD-CPU.json",
+    "/package/apache/1.3.5/kibana/visualization/apache-HTTPD-Load1-slash-5-slash-15.json",
+    "/package/apache/1.3.5/kibana/visualization/apache-HTTPD-Scoreboard.json",
+    "/package/apache/1.3.5/kibana/visualization/apache-a45311f0-3a34-11eb-8946-296aab7b13db.json",
+    "/package/apache/1.3.5/kibana/visualization/apache-access-unique-IPs-map.json",
+    "/package/apache/1.3.5/kibana/visualization/apache-browsers.json",
+    "/package/apache/1.3.5/kibana/visualization/apache-ed44f820-3a10-11eb-8946-296aab7b13db.json",
+    "/package/apache/1.3.5/kibana/visualization/apache-error-logs-over-time.json",
+    "/package/apache/1.3.5/kibana/visualization/apache-f4ffec70-3a36-11eb-8946-296aab7b13db.json",
+    "/package/apache/1.3.5/kibana/visualization/apache-operating-systems.json",
+    "/package/apache/1.3.5/kibana/visualization/apache-response-codes-of-top-URLs.json",
+    "/package/apache/1.3.5/kibana/visualization/apache-response-codes-over-time.json",
+    "/package/apache/1.3.5/data_stream/access/fields/agent.yml",
+    "/package/apache/1.3.5/data_stream/access/fields/base-fields.yml",
+    "/package/apache/1.3.5/data_stream/access/fields/ecs.yml",
+    "/package/apache/1.3.5/data_stream/access/fields/fields.yml",
+    "/package/apache/1.3.5/data_stream/error/fields/agent.yml",
+    "/package/apache/1.3.5/data_stream/error/fields/base-fields.yml",
+    "/package/apache/1.3.5/data_stream/error/fields/ecs.yml",
+    "/package/apache/1.3.5/data_stream/error/fields/fields.yml",
+    "/package/apache/1.3.5/data_stream/status/fields/agent.yml",
+    "/package/apache/1.3.5/data_stream/status/fields/base-fields.yml",
+    "/package/apache/1.3.5/data_stream/status/fields/ecs.yml",
+    "/package/apache/1.3.5/data_stream/status/fields/fields.yml",
+    "/package/apache/1.3.5/data_stream/access/agent/stream/httpjson.yml.hbs",
+    "/package/apache/1.3.5/data_stream/access/agent/stream/log.yml.hbs",
+    "/package/apache/1.3.5/data_stream/access/elasticsearch/ingest_pipeline/default.yml",
+    "/package/apache/1.3.5/data_stream/access/elasticsearch/ingest_pipeline/third-party.yml",
+    "/package/apache/1.3.5/data_stream/error/agent/stream/httpjson.yml.hbs",
+    "/package/apache/1.3.5/data_stream/error/agent/stream/log.yml.hbs",
+    "/package/apache/1.3.5/data_stream/error/elasticsearch/ingest_pipeline/default.yml",
+    "/package/apache/1.3.5/data_stream/error/elasticsearch/ingest_pipeline/third-party.yml",
+    "/package/apache/1.3.5/data_stream/status/agent/stream/stream.yml.hbs"
+  ],
+  "policy_templates": [
+    {
+      "name": "apache",
+      "title": "Apache logs and metrics",
+      "description": "Collect logs and metrics from Apache instances",
+      "inputs": [
+        {
+          "type": "logfile",
+          "title": "Collect logs from Apache instances",
+          "description": "Collecting Apache access and error logs",
+          "deprecated": {
+            "since": "1.3.5",
+            "description": "This input is deprecated"
+          }
+        },
+        {
+          "type": "httpjson",
+          "vars": [
+            {
+              "name": "url",
+              "type": "text",
+              "title": "URL of Splunk Enterprise Server",
+              "description": "i.e. scheme://host:port,  path is automatic",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "https://server.example.com:8089"
+            },
+            {
+              "name": "username",
+              "type": "text",
+              "title": "Splunk REST API Username",
+              "multi": false,
+              "required": false,
+              "show_user": true
+            },
+            {
+              "name": "password",
+              "type": "password",
+              "title": "Splunk REST API Password",
+              "multi": false,
+              "required": false,
+              "show_user": true
+            },
+            {
+              "name": "token",
+              "type": "password",
+              "title": "Splunk Authorization Token",
+              "description": "Bearer Token or Session Key, e.g. \"Bearer eyJFd3e46...\"\nor \"Splunk 192fd3e...\".  Cannot be used with username\nand password.\n",
+              "multi": false,
+              "required": false,
+              "show_user": true
+            },
+            {
+              "name": "ssl",
+              "type": "yaml",
+              "title": "SSL Configuration",
+              "description": "i.e. certificate_authorities, supported_protocols, verification_mode etc.",
+              "multi": false,
+              "required": false,
+              "show_user": false,
+              "default": "#certificate_authorities:\n#  - |\n#    -----BEGIN CERTIFICATE-----\n#    MIIDCjCCAfKgAwIBAgITJ706Mu2wJlKckpIvkWxEHvEyijANBgkqhkiG9w0BAQsF\n#    ADAUMRIwEAYDVQQDDAlsb2NhbGhvc3QwIBcNMTkwNzIyMTkyOTA0WhgPMjExOTA2\n#    MjgxOTI5MDRaMBQxEjAQBgNVBAMMCWxvY2FsaG9zdDCCASIwDQYJKoZIhvcNAQEB\n#    BQADggEPADCCAQoCggEBANce58Y/JykI58iyOXpxGfw0/gMvF0hUQAcUrSMxEO6n\n#    fZRA49b4OV4SwWmA3395uL2eB2NB8y8qdQ9muXUdPBWE4l9rMZ6gmfu90N5B5uEl\n#    94NcfBfYOKi1fJQ9i7WKhTjlRkMCgBkWPkUokvBZFRt8RtF7zI77BSEorHGQCk9t\n#    /D7BS0GJyfVEhftbWcFEAG3VRcoMhF7kUzYwp+qESoriFRYLeDWv68ZOvG7eoWnP\n#    PsvZStEVEimjvK5NSESEQa9xWyJOmlOKXhkdymtcUd/nXnx6UTCFgnkgzSdTWV41\n#    CI6B6aJ9svCTI2QuoIq2HxX/ix7OvW1huVmcyHVxyUECAwEAAaNTMFEwHQYDVR0O\n#    BBYEFPwN1OceFGm9v6ux8G+DZ3TUDYxqMB8GA1UdIwQYMBaAFPwN1OceFGm9v6ux\n#    8G+DZ3TUDYxqMA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEBAG5D\n#    874A4YI7YUwOVsVAdbWtgp1d0zKcPRR+r2OdSbTAV5/gcS3jgBJ3i1BN34JuDVFw\n#    3DeJSYT3nxy2Y56lLnxDeF8CUTUtVQx3CuGkRg1ouGAHpO/6OqOhwLLorEmxi7tA\n#    H2O8mtT0poX5AnOAhzVy7QW0D/k4WaoLyckM5hUa6RtvgvLxOwA0U+VGurCDoctu\n#    8F4QOgTAWyh8EZIwaKCliFRSynDpv3JTUwtfZkxo6K6nce1RhCWFAsMvDZL8Dgc0\n#    yvgJ38BRsFOtkRuAGSf6ZUwTO8JJRRIFnpUzXflAnGivK9M13D5GEQMmIl6U9Pvk\n#    sxSmbIUfc2SGJGCJD4I=\n#    -----END CERTIFICATE-----\n"
+            }
+          ],
+          "title": "Collect logs from third-party REST API (experimental)",
+          "description": "Collect logs from third-party REST API (experimental)"
+        },
+        {
+          "type": "apache/metrics",
+          "vars": [
+            {
+              "name": "hosts",
+              "type": "text",
+              "title": "Hosts",
+              "multi": true,
+              "required": true,
+              "show_user": true,
+              "default": [
+                "http://127.0.0.1"
+              ]
+            }
+          ],
+          "title": "Collect metrics from Apache instances",
+          "description": "Collecting Apache status metrics"
+        }
+      ],
+      "multiple": true
+    }
+  ],
+  "data_streams": [
+    {
+      "type": "logs",
+      "dataset": "apache.access",
+      "title": "Apache access logs",
+      "release": "ga",
+      "ingest_pipeline": "default",
+      "streams": [
+        {
+          "input": "logfile",
+          "vars": [
+            {
+              "name": "paths",
+              "type": "text",
+              "title": "Paths",
+              "multi": true,
+              "required": true,
+              "show_user": true,
+              "default": [
+                "/var/log/apache2/access.log*",
+                "/var/log/apache2/other_vhosts_access.log*",
+                "/var/log/httpd/access_log*"
+              ],
+              "deprecated": {
+                "since": "1.3.5",
+                "description": "This variable is deprecated"
+              }
+            },
+            {
+              "name": "tags",
+              "type": "text",
+              "title": "Tags",
+              "multi": true,
+              "required": true,
+              "show_user": false,
+              "default": [
+                "apache-access"
+              ]
+            },
+            {
+              "name": "preserve_original_event",
+              "type": "bool",
+              "title": "Preserve original event",
+              "description": "Preserves a raw copy of the original event, added to the field `event.original`",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": false
+            },
+            {
+              "name": "processors",
+              "type": "yaml",
+              "title": "Processors",
+              "description": "Processors are used to reduce the number of fields in the exported event or to enhance the event with metadata. This executes in the agent before the logs are parsed. See [Processors](https://www.elastic.co/guide/en/beats/filebeat/current/filtering-and-enhancing-data.html) for details.\n",
+              "multi": false,
+              "required": false,
+              "show_user": false
+            }
+          ],
+          "template_path": "log.yml.hbs",
+          "title": "Apache access logs",
+          "description": "Collect Apache access logs",
+          "enabled": true
+        },
+        {
+          "input": "httpjson",
+          "vars": [
+            {
+              "name": "interval",
+              "type": "text",
+              "title": "Interval to query Splunk Enterprise REST API",
+              "description": "Go Duration syntax (eg. 10s)",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "10s"
+            },
+            {
+              "name": "search",
+              "type": "text",
+              "title": "Splunk search string",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "search sourcetype=\"access*\""
+            },
+            {
+              "name": "tags",
+              "type": "text",
+              "title": "Tags",
+              "multi": true,
+              "required": false,
+              "show_user": false,
+              "default": [
+                "forwarded",
+                "apache-access"
+              ]
+            },
+            {
+              "name": "preserve_original_event",
+              "type": "bool",
+              "title": "Preserve original event",
+              "description": "Preserves a raw copy of the original event, added to the field `event.original`",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": false
+            },
+            {
+              "name": "processors",
+              "type": "yaml",
+              "title": "Processors",
+              "description": "Processors are used to reduce the number of fields in the exported event or to enhance the event with metadata. This executes in the agent before the logs are parsed. See [Processors](https://www.elastic.co/guide/en/beats/filebeat/current/filtering-and-enhancing-data.html) for details.\n",
+              "multi": false,
+              "required": false,
+              "show_user": false
+            }
+          ],
+          "template_path": "httpjson.yml.hbs",
+          "title": "Apache access logs via Splunk Enterprise REST API",
+          "description": "Collect apache access logs via Splunk Enterprise REST API",
+          "enabled": false
+        }
+      ],
+      "package": "apache",
+      "path": "access",
+      "deprecated": {
+        "since": "1.3.5",
+        "description": "This data stream is deprecated"
+      }
+    },
+    {
+      "type": "logs",
+      "dataset": "apache.error",
+      "title": "Apache error logs",
+      "release": "ga",
+      "ingest_pipeline": "default",
+      "streams": [
+        {
+          "input": "logfile",
+          "vars": [
+            {
+              "name": "paths",
+              "type": "text",
+              "title": "Paths",
+              "multi": true,
+              "required": true,
+              "show_user": true,
+              "default": [
+                "/var/log/apache2/error.log*",
+                "/var/log/httpd/error_log*"
+              ]
+            },
+            {
+              "name": "tags",
+              "type": "text",
+              "title": "Tags",
+              "multi": true,
+              "required": true,
+              "show_user": false,
+              "default": [
+                "apache-error"
+              ]
+            },
+            {
+              "name": "preserve_original_event",
+              "type": "bool",
+              "title": "Preserve original event",
+              "description": "Preserves a raw copy of the original event, added to the field `event.original`",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": false
+            },
+            {
+              "name": "processors",
+              "type": "yaml",
+              "title": "Processors",
+              "description": "Processors are used to reduce the number of fields in the exported event or to enhance the event with metadata. This executes in the agent before the logs are parsed. See [Processors](https://www.elastic.co/guide/en/beats/filebeat/current/filtering-and-enhancing-data.html) for details.\n",
+              "multi": false,
+              "required": false,
+              "show_user": false
+            }
+          ],
+          "template_path": "log.yml.hbs",
+          "title": "Apache error logs",
+          "description": "Collect Apache error logs",
+          "enabled": true
+        },
+        {
+          "input": "httpjson",
+          "vars": [
+            {
+              "name": "interval",
+              "type": "text",
+              "title": "Interval to query Splunk Enterprise REST API",
+              "description": "Go Duration syntax (eg. 10s)",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "10s"
+            },
+            {
+              "name": "search",
+              "type": "text",
+              "title": "Splunk search string",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "search sourcetype=apache:error OR sourcetype=apache_error"
+            },
+            {
+              "name": "tags",
+              "type": "text",
+              "title": "Tags",
+              "multi": true,
+              "required": false,
+              "show_user": false,
+              "default": [
+                "forwarded",
+                "apache-error"
+              ]
+            },
+            {
+              "name": "preserve_original_event",
+              "type": "bool",
+              "title": "Preserve original event",
+              "description": "Preserves a raw copy of the original event, added to the field `event.original`",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": false
+            },
+            {
+              "name": "processors",
+              "type": "yaml",
+              "title": "Processors",
+              "description": "Processors are used to reduce the number of fields in the exported event or to enhance the event with metadata. This executes in the agent before the logs are parsed. See [Processors](https://www.elastic.co/guide/en/beats/filebeat/current/filtering-and-enhancing-data.html) for details.\n",
+              "multi": false,
+              "required": false,
+              "show_user": false
+            }
+          ],
+          "template_path": "httpjson.yml.hbs",
+          "title": "Apache error logs via Splunk Enterprise REST API",
+          "description": "Collect apache error logs via Splunk Enterprise REST API",
+          "enabled": false
+        }
+      ],
+      "package": "apache",
+      "path": "error"
+    },
+    {
+      "type": "metrics",
+      "dataset": "apache.status",
+      "title": "Apache status metrics",
+      "release": "ga",
+      "streams": [
+        {
+          "input": "apache/metrics",
+          "vars": [
+            {
+              "name": "period",
+              "type": "text",
+              "title": "Period",
+              "multi": false,
+              "required": true,
+              "show_user": true,
+              "default": "30s"
+            },
+            {
+              "name": "server_status_path",
+              "type": "text",
+              "title": "Server Status Path",
+              "multi": false,
+              "required": true,
+              "show_user": false,
+              "default": "/server-status"
+            }
+          ],
+          "template_path": "stream.yml.hbs",
+          "title": "Apache status metrics",
+          "description": "Collect Apache status metrics",
+          "enabled": true
+        }
+      ],
+      "package": "apache",
+      "path": "status"
+    }
+  ]
+}

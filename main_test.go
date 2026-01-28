@@ -162,6 +162,9 @@ func TestEndpoints(t *testing.T) {
 		// Test queries with unknown query parameters
 		{"/search?package=yamlpipeline&unknown=true", "/search", "search-unknown-query-parameter-error.txt", disallowUnknownQueryParamsSearchHandler},
 		{"/search?package=yamlpipeline&unknown=true", "/search", "search-allowed-unknown-query-parameter.json", searchHandler},
+
+		// Test queries with deprecated packages
+		{"/search?package=multiversion&all=true", "/search", "search-deprecated-package-versions.json", searchHandler},
 	}
 
 	for _, test := range tests {
@@ -446,6 +449,11 @@ func TestPackageIndex(t *testing.T) {
 		{"/package/sql_input/1.0.1/", packageIndexRouterPath, "sql-input-package-not-found.json", packageIndexHandler},
 		{"/package/sql_input/0.3.0/", packageIndexRouterPath, "sql-input-package.json", packageIndexHandler},
 		{"/package/datasources/1.0.0/", packageIndexRouterPath, "datasources-1.0.0-package.json", packageIndexHandler},
+		{"/package/multiversion/1.1.0/", packageIndexRouterPath, "package-multiversion-1.1.0.json", packageIndexHandler},
+		{"/package/deprecated_input_package/1.0.0/", packageIndexRouterPath, "package-deprecated-input-package-1.0.0.json", packageIndexHandler},
+		{"/package/deprecated_input_policy/1.0.0/", packageIndexRouterPath, "package-deprecated-input-policy-1.0.0.json", packageIndexHandler},
+		{"/package/deprecated_integration_input/1.0.0/", packageIndexRouterPath, "package-deprecated-integration-input-1.0.0.json", packageIndexHandler},
+		{"/package/deprecated_integration_stream/1.0.0/", packageIndexRouterPath, "package-deprecated-integration-stream-1.0.0.json", packageIndexHandler},
 	}
 
 	for _, test := range tests {
