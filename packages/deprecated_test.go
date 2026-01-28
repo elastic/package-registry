@@ -220,15 +220,19 @@ func TestPropagateLatestDeprecatedInfoToPackageList(t *testing.T) {
 			},
 			deprecatedPackages: DeprecatedPackages{
 				"deprecated-package": deprecatedMeta{
-					deprecated: &Deprecated{},
-					version:    semver.MustParse("2.0.0"),
+					deprecated: &Deprecated{
+						Since: "2.0.0",
+					},
+					version: semver.MustParse("2.0.0"),
 				},
 			},
 			expected: Packages{
 				&Package{
 					BasePackage: BasePackage{
-						Name:       "deprecated-package",
-						Deprecated: &Deprecated{},
+						Name: "deprecated-package",
+						Deprecated: &Deprecated{
+							Since: "2.0.0",
+						},
 					},
 				},
 				&Package{
@@ -244,22 +248,28 @@ func TestPropagateLatestDeprecatedInfoToPackageList(t *testing.T) {
 			packageList: Packages{
 				&Package{
 					BasePackage: BasePackage{
-						Name:       "test-package",
-						Deprecated: &Deprecated{},
+						Name: "test-package",
+						Deprecated: &Deprecated{
+							Since: "1.0.0",
+						},
 					},
 				},
 			},
 			deprecatedPackages: DeprecatedPackages{
 				"test-package": deprecatedMeta{
-					deprecated: &Deprecated{},
-					version:    semver.MustParse("3.0.0"),
+					deprecated: &Deprecated{
+						Since: "3.0.0",
+					},
+					version: semver.MustParse("3.0.0"),
 				},
 			},
 			expected: Packages{
 				&Package{
 					BasePackage: BasePackage{
-						Name:       "test-package",
-						Deprecated: &Deprecated{},
+						Name: "test-package",
+						Deprecated: &Deprecated{
+							Since: "3.0.0",
+						},
 					},
 				},
 			},
