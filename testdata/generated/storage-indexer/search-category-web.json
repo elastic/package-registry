@@ -1,5 +1,70 @@
 [
   {
+    "name": "activemq",
+    "title": "ActiveMQ",
+    "version": "0.3.0",
+    "release": "beta",
+    "description": "Collect logs and metrics from ActiveMQ instances with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/activemq/activemq-0.3.0.zip",
+    "path": "/package/activemq/0.3.0",
+    "icons": [
+      {
+        "src": "/img/activemq.svg",
+        "path": "/package/activemq/0.3.0/img/activemq.svg",
+        "title": "activemq",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "activemq",
+        "title": "ActiveMQ logs and metrics",
+        "description": "Collect logs and metrics from ActiveMQ instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "web"
+    ],
+    "signature_path": "/epr/activemq/activemq-0.3.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "activemq.audit",
+        "title": "ActiveMQ audit logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "activemq.broker",
+        "title": "ActiveMQ broker metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "activemq.log",
+        "title": "ActiveMQ log logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "activemq.queue",
+        "title": "ActiveMQ queue metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "activemq.topic",
+        "title": "ActiveMQ topic metrics"
+      }
+    ]
+  },
+  {
     "name": "apache",
     "title": "Apache HTTP Server",
     "version": "1.3.5",
@@ -554,6 +619,142 @@
     ]
   },
   {
+    "name": "synthetics",
+    "title": "Elastic Synthetics",
+    "version": "0.9.2",
+    "release": "beta",
+    "description": "Monitor the availability of your services with Elastic Synthetics.",
+    "type": "integration",
+    "download": "/epr/synthetics/synthetics-0.9.2.zip",
+    "path": "/package/synthetics/0.9.2",
+    "icons": [
+      {
+        "src": "/img/uptime-logo-color-64px.svg",
+        "path": "/package/synthetics/0.9.2/img/uptime-logo-color-64px.svg",
+        "size": "16x16",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "synthetics",
+        "title": "Elastic Synthetics",
+        "description": "Perform synthetic health checks on network endpoints."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.1.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/uptime"
+    },
+    "categories": [
+      "elastic_stack",
+      "monitoring",
+      "web"
+    ],
+    "signature_path": "/epr/synthetics/synthetics-0.9.2.zip.sig",
+    "data_streams": [
+      {
+        "type": "synthetics",
+        "dataset": "browser",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "browser.network",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "browser.screenshot",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "http",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "icmp",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "tcp",
+        "title": "synthetic monitor check"
+      }
+    ]
+  },
+  {
+    "name": "iis",
+    "title": "IIS",
+    "version": "0.8.0",
+    "release": "beta",
+    "description": "Collect logs and metrics from Internet Information Services (IIS) servers with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/iis/iis-0.8.0.zip",
+    "path": "/package/iis/0.8.0",
+    "icons": [
+      {
+        "src": "/img/iis.svg",
+        "path": "/package/iis/0.8.0/img/iis.svg",
+        "title": "iis",
+        "size": "100x100",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "iis",
+        "title": "IIS logs and metrics",
+        "description": "Collect logs and metrics from IIS instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "web"
+    ],
+    "signature_path": "/epr/iis/iis-0.8.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "iis.access",
+        "title": "IIS access logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "iis.application_pool",
+        "title": "IIS application_pool metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "iis.error",
+        "title": "IIS error logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "iis.webserver",
+        "title": "IIS web server metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "iis.website",
+        "title": "IIS website metrics"
+      }
+    ]
+  },
+  {
     "name": "keycloak",
     "title": "Keycloak",
     "version": "1.2.1",
@@ -643,6 +844,117 @@
         "type": "logs",
         "dataset": "mattermost.audit",
         "title": "Audit Logs"
+      }
+    ]
+  },
+  {
+    "name": "network_traffic",
+    "title": "Network Packet Capture",
+    "version": "0.8.1",
+    "release": "beta",
+    "description": "Capture and analyze network traffic from a host with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/network_traffic/network_traffic-0.8.1.zip",
+    "path": "/package/network_traffic/0.8.1",
+    "policy_templates": [
+      {
+        "name": "network",
+        "title": "Network Packet Capture",
+        "description": "Capture network traffic"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.17.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "web"
+    ],
+    "signature_path": "/epr/network_traffic/network_traffic-0.8.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "network_traffic.amqp",
+        "title": "AMQP"
+      },
+      {
+        "type": "logs",
+        "dataset": "network_traffic.cassandra",
+        "title": "Cassandra"
+      },
+      {
+        "type": "logs",
+        "dataset": "network_traffic.dhcpv4",
+        "title": "DHCP"
+      },
+      {
+        "type": "logs",
+        "dataset": "network_traffic.dns",
+        "title": "DNS"
+      },
+      {
+        "type": "logs",
+        "dataset": "network_traffic.flow",
+        "title": "Flows"
+      },
+      {
+        "type": "logs",
+        "dataset": "network_traffic.http",
+        "title": "HTTP"
+      },
+      {
+        "type": "logs",
+        "dataset": "network_traffic.icmp",
+        "title": "ICMP"
+      },
+      {
+        "type": "logs",
+        "dataset": "network_traffic.memcached",
+        "title": "Memcached"
+      },
+      {
+        "type": "logs",
+        "dataset": "network_traffic.mongodb",
+        "title": "MongoDB"
+      },
+      {
+        "type": "logs",
+        "dataset": "network_traffic.mysql",
+        "title": "MySQL"
+      },
+      {
+        "type": "logs",
+        "dataset": "network_traffic.nfs",
+        "title": "NFS"
+      },
+      {
+        "type": "logs",
+        "dataset": "network_traffic.pgsql",
+        "title": "PostgreSQL"
+      },
+      {
+        "type": "logs",
+        "dataset": "network_traffic.redis",
+        "title": "Redis"
+      },
+      {
+        "type": "logs",
+        "dataset": "network_traffic.sip",
+        "title": "SIP"
+      },
+      {
+        "type": "logs",
+        "dataset": "network_traffic.thrift",
+        "title": "Thrift"
+      },
+      {
+        "type": "logs",
+        "dataset": "network_traffic.tls",
+        "title": "TLS"
       }
     ]
   },

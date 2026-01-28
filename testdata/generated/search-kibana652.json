@@ -1,5 +1,38 @@
 [
   {
+    "name": "dataset_is_prefix",
+    "title": "DatasetIsPrefix Flag",
+    "version": "0.0.1",
+    "release": "beta",
+    "description": "This package contains a datastream with the dataset_is_prefix flag set to true.\n",
+    "type": "integration",
+    "download": "/epr/dataset_is_prefix/dataset_is_prefix-0.0.1.zip",
+    "path": "/package/dataset_is_prefix/0.0.1",
+    "categories": [
+      "custom"
+    ],
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "dataset_is_prefix.test",
+        "title": "dataset_is_prefix test data stream"
+      }
+    ]
+  },
+  {
+    "name": "defaultrelease",
+    "title": "Default Release",
+    "version": "0.0.1",
+    "release": "beta",
+    "description": "Package without release, should be set to default",
+    "type": "solution",
+    "download": "/epr/defaultrelease/defaultrelease-0.0.1.zip",
+    "path": "/package/defaultrelease/0.0.1",
+    "categories": [
+      "aws"
+    ]
+  },
+  {
     "name": "datasources",
     "title": "Default datasource Integration",
     "version": "1.0.0",
@@ -37,6 +70,79 @@
     ]
   },
   {
+    "name": "ecs_style_dataset",
+    "title": "Default pipeline Integration",
+    "version": "0.0.1",
+    "release": "beta",
+    "description": "Tests the registry validations works for dataset fields using the ecs style format",
+    "type": "integration",
+    "download": "/epr/ecs_style_dataset/ecs_style_dataset-0.0.1.zip",
+    "path": "/package/ecs_style_dataset/0.0.1",
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Logs datasource",
+        "description": "Datasource for your log files."
+      }
+    ],
+    "categories": [
+      "monitoring"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "ecs_style_dataset.foo",
+        "title": "Foo"
+      }
+    ]
+  },
+  {
+    "name": "default_pipeline",
+    "title": "Default pipeline Integration",
+    "version": "0.0.2",
+    "release": "beta",
+    "description": "Tests if no pipeline is set, it defaults to the default one",
+    "type": "integration",
+    "download": "/epr/default_pipeline/default_pipeline-0.0.2.zip",
+    "path": "/package/default_pipeline/0.0.2",
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Logs datasource",
+        "description": "Datasource for your log files."
+      }
+    ],
+    "categories": [
+      "containers",
+      "message_queue"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "default_pipeline.foo",
+        "title": "Foo"
+      }
+    ]
+  },
+  {
+    "name": "example",
+    "title": "Example",
+    "version": "0.0.2",
+    "release": "beta",
+    "description": "This is the example integration.",
+    "type": "integration",
+    "download": "/epr/example/example-0.0.2.zip",
+    "path": "/package/example/0.0.2",
+    "conditions": {
+      "kibana": {
+        "version": ">=6.0.0"
+      }
+    },
+    "categories": [
+      "web"
+    ]
+  },
+  {
     "name": "metricsonly",
     "title": "Metrics Only",
     "version": "2.0.1",
@@ -57,6 +163,33 @@
     ]
   },
   {
+    "name": "multiple_false",
+    "title": "Multiple false",
+    "version": "0.0.1",
+    "release": "beta",
+    "description": "Tests that multiple can be set to false",
+    "type": "integration",
+    "download": "/epr/multiple_false/multiple_false-0.0.1.zip",
+    "path": "/package/multiple_false/0.0.1",
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Logs datasource",
+        "description": "Datasource for your log files."
+      }
+    ],
+    "categories": [
+      "custom"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "multiple_false.foo",
+        "title": "Foo"
+      }
+    ]
+  },
+  {
     "name": "no_stream_configs",
     "title": "No Stream configs",
     "version": "1.0.0",
@@ -74,6 +207,37 @@
         "dataset": "no_stream_configs.log",
         "title": "Log Yaml pipeline"
       }
+    ]
+  },
+  {
+    "name": "sql_input",
+    "title": "SQL Input",
+    "version": "0.3.0",
+    "release": "beta",
+    "description": "Execute custom queries against an SQL database and store the results in Elasticsearch.",
+    "type": "input",
+    "download": "/epr/sql_input/sql_input-0.3.0.zip",
+    "path": "/package/sql_input/0.3.0",
+    "icons": [
+      {
+        "src": "/img/sample-logo.svg",
+        "path": "/package/sql_input/0.3.0/img/sample-logo.svg",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "sql_query",
+        "title": "SQL Query",
+        "description": "Query the database to capture metrics."
+      }
+    ],
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "custom",
+      "datastore"
     ]
   },
   {

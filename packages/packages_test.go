@@ -264,7 +264,6 @@ func TestPackagesFilter(t *testing.T) {
 				// See: https://github.com/elastic/package-registry/pull/893
 				filterTestPackage{Name: "apache", Version: "1.0.0-rc1"},
 				filterTestPackage{Name: "apache", Version: "2.0.0-rc2"},
-				filterTestPackage{Name: "redisenterprise", Version: "0.1.1"},
 				filterTestPackage{Name: "obs_sec_package", Version: "2.0.0-rc1"},
 			),
 		},
@@ -319,6 +318,7 @@ func TestPackagesFilter(t *testing.T) {
 				// the GA one to avoid exposing prereleases to legacy kibanas.
 				// See: https://github.com/elastic/package-registry/pull/893
 				{Name: "redisenterprise", Version: "1.0.0"},
+				{Name: "redisenterprise", Version: "0.1.1"},
 			},
 		},
 		{

@@ -302,7 +302,7 @@ func TestIsPrerelease(t *testing.T) {
 		prerelease bool
 	}{
 		{"0.1.0-rc1", true},
-		{"0.1.0", true}, // Major version 0 shouldn't be considered stable.
+		{"0.1.0", false}, // Tech preview package should not be filtered by prerelease flag
 		{"1.0.0-beta1", true},
 		{"1.0.0-rc.1", true},
 		{"1.0.0-SNAPSHOT", true},
