@@ -334,6 +334,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "app_insights"
         ]
       },
       {
@@ -348,6 +351,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "app_state"
         ]
       }
     ],
@@ -408,6 +414,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "monitor"
         ]
       },
       {
@@ -422,6 +431,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "compute_vm"
         ]
       },
       {
@@ -436,6 +448,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "compute_vm_scaleset"
         ]
       },
       {
@@ -450,6 +465,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_registry"
         ]
       },
       {
@@ -464,6 +482,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_instance"
         ]
       },
       {
@@ -478,6 +499,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_service"
         ]
       },
       {
@@ -492,6 +516,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "database_account"
         ]
       },
       {
@@ -506,6 +533,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "storage_account"
         ]
       }
     ],

@@ -5,7 +5,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -39,7 +38,11 @@ func generateSQLStorageIndexer(fs *fakestorage.Server, webServer string) (Indexe
 	}
 	options.PackageStorageEndpoint = webServer
 
-	return internalStorage.NewIndexer(testLogger, fs.Client(), options), nil
+	return internalStorage.NewIndexer(testLogger, internalStorage.ClientNoAuth(fs), options), nil
+}
+
+func generateStorageIndexer(fs *fakestorage.Server, options storage.IndexerOptions) Indexer {
+	return storage.NewIndexer(testLogger, internalStorage.ClientNoAuth(fs), options)
 }
 
 func generateTestCaseStorageEndpoints(indexer Indexer) ([]struct {
@@ -125,6 +128,12 @@ func generateTestCaseStorageEndpoints(indexer Indexer) ([]struct {
 		// Test queries with unknown query parameters
 		{"/search?package=yamlpipeline&unknown=true", "/search", "search-unknown-query-parameter-error.txt", disallowUnknownQueryParamsSearchHandler},
 		{"/search?package=yamlpipeline&unknown=true", "/search", "search-allowed-unknown-query-parameter.json", searchHandler},
+
+		// Test agent.version filtering
+		{"/search?package=1password&agent.version=9.1.0", "/search", "search-agent-910.json", searchHandler},
+		{"/search?package=1password&agent.version=9.5.0", "/search", "search-agent-950.json", searchHandler},
+		{"/categories?agent.version=9.1.0", "/categories", "categories-agent-910.json", categoriesHandler},
+		{"/categories?agent.version=9.5.0", "/categories", "categories-agent-950.json", categoriesHandler},
 	}, nil
 }
 
@@ -132,10 +141,10 @@ func TestPackageStorage_Endpoints(t *testing.T) {
 	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
-	indexer := storage.NewIndexer(testLogger, fs.Client(), storage.FakeIndexerOptions)
-	defer indexer.Close(context.Background())
+	indexer := generateStorageIndexer(fs, storage.FakeIndexerOptions)
+	defer indexer.Close(t.Context())
 
-	err := indexer.Init(context.Background())
+	err := indexer.Init(t.Context())
 	require.NoError(t, err)
 
 	tests, err := generateTestCaseStorageEndpoints(indexer)
@@ -154,9 +163,9 @@ func TestPackageStorageSQL_Endpoints(t *testing.T) {
 
 	indexer, err := generateSQLStorageIndexer(fs, "")
 	require.NoError(t, err)
-	defer indexer.Close(context.Background())
+	defer indexer.Close(t.Context())
 
-	err = indexer.Init(context.Background())
+	err = indexer.Init(t.Context())
 	require.NoError(t, err)
 
 	tests, err := generateTestCaseStorageEndpoints(indexer)
@@ -188,16 +197,18 @@ func generateTestPackageIndexEndpoints(indexer Indexer) ([]struct {
 		{"/package/1password/0.1.1/", packageIndexRouterPath, "1password-0.1.1.json", packageIndexHandler},
 		{"/package/kubernetes/0.3.0/", packageIndexRouterPath, "kubernetes-0.3.0.json", packageIndexHandler},
 		{"/package/osquery/1.0.3/", packageIndexRouterPath, "osquery-1.0.3.json", packageIndexHandler},
+		{"/package/sql/0.5.0/", packageIndexRouterPath, "sql-0.5.0.json", packageIndexHandler},
+		{"/package/cassandra/1.1.0/", packageIndexRouterPath, "cassandra-1.1.0.json", packageIndexHandler},
 	}, nil
 }
 
 func TestPackageStorage_PackageIndex(t *testing.T) {
 	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
-	indexer := storage.NewIndexer(testLogger, fs.Client(), storage.FakeIndexerOptions)
-	defer indexer.Close(context.Background())
+	indexer := generateStorageIndexer(fs, storage.FakeIndexerOptions)
+	defer indexer.Close(t.Context())
 
-	err := indexer.Init(context.Background())
+	err := indexer.Init(t.Context())
 	require.NoError(t, err)
 
 	tests, err := generateTestPackageIndexEndpoints(indexer)
@@ -216,9 +227,9 @@ func TestPackageSQLStorage_PackageIndex(t *testing.T) {
 
 	indexer, err := generateSQLStorageIndexer(fs, "")
 	require.NoError(t, err)
-	defer indexer.Close(context.Background())
+	defer indexer.Close(t.Context())
 
-	err = indexer.Init(context.Background())
+	err = indexer.Init(t.Context())
 	require.NoError(t, err)
 
 	tests, err := generateTestPackageIndexEndpoints(indexer)
@@ -265,10 +276,10 @@ func TestPackageStorage_Artifacts(t *testing.T) {
 	testIndexerOptions := storage.FakeIndexerOptions
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
-	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
-	defer indexer.Close(context.Background())
+	indexer := generateStorageIndexer(fs, testIndexerOptions)
+	defer indexer.Close(t.Context())
 
-	err := indexer.Init(context.Background())
+	err := indexer.Init(t.Context())
 	require.NoError(t, err)
 
 	tests, err := generateTestArtifactsEndpoints(indexer)
@@ -292,9 +303,9 @@ func TestPackageSQLStorage_Artifacts(t *testing.T) {
 
 	indexer, err := generateSQLStorageIndexer(fs, webServer.URL)
 	require.NoError(t, err)
-	defer indexer.Close(context.Background())
+	defer indexer.Close(t.Context())
 
-	err = indexer.Init(context.Background())
+	err = indexer.Init(t.Context())
 	require.NoError(t, err)
 
 	tests, err := generateTestArtifactsEndpoints(indexer)
@@ -340,10 +351,10 @@ func TestPackageStorage_Signatures(t *testing.T) {
 	testIndexerOptions := storage.FakeIndexerOptions
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
-	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
-	defer indexer.Close(context.Background())
+	indexer := generateStorageIndexer(fs, testIndexerOptions)
+	defer indexer.Close(t.Context())
 
-	err := indexer.Init(context.Background())
+	err := indexer.Init(t.Context())
 	require.NoError(t, err)
 
 	tests, err := generateTestSignaturesEndpoints(indexer)
@@ -367,9 +378,9 @@ func TestPackageSQLStorage_Signatures(t *testing.T) {
 
 	indexer, err := generateSQLStorageIndexer(fs, webServer.URL)
 	require.NoError(t, err)
-	defer indexer.Close(context.Background())
+	defer indexer.Close(t.Context())
 
-	err = indexer.Init(context.Background())
+	err = indexer.Init(t.Context())
 	require.NoError(t, err)
 
 	tests, err := generateTestSignaturesEndpoints(indexer)
@@ -416,10 +427,10 @@ func TestPackageStorage_Statics(t *testing.T) {
 	testIndexerOptions := storage.FakeIndexerOptions
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
-	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
-	defer indexer.Close(context.Background())
+	indexer := generateStorageIndexer(fs, testIndexerOptions)
+	defer indexer.Close(t.Context())
 
-	err := indexer.Init(context.Background())
+	err := indexer.Init(t.Context())
 	require.NoError(t, err)
 
 	tests, err := generateTestStaticEndpoints(indexer)
@@ -443,9 +454,9 @@ func TestPackagesQLStorage_Statics(t *testing.T) {
 
 	indexer, err := generateSQLStorageIndexer(fs, webServer.URL)
 	require.NoError(t, err)
-	defer indexer.Close(context.Background())
+	defer indexer.Close(t.Context())
 
-	err = indexer.Init(context.Background())
+	err = indexer.Init(t.Context())
 	require.NoError(t, err)
 
 	tests, err := generateTestStaticEndpoints(indexer)
@@ -504,10 +515,10 @@ func TestPackageStorage_ResolverHeadersResponse(t *testing.T) {
 	testIndexerOptions := storage.FakeIndexerOptions
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
-	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
-	defer indexer.Close(context.Background())
+	indexer := generateStorageIndexer(fs, testIndexerOptions)
+	defer indexer.Close(t.Context())
 
-	err := indexer.Init(context.Background())
+	err := indexer.Init(t.Context())
 	require.NoError(t, err)
 
 	tests, err := generateTestResolveHeadersEndpoints(indexer)
@@ -534,9 +545,9 @@ func TestPackageSQLStorage_ResolverHeadersResponse(t *testing.T) {
 
 	indexer, err := generateSQLStorageIndexer(fs, webServer.URL)
 	require.NoError(t, err)
-	defer indexer.Close(context.Background())
+	defer indexer.Close(t.Context())
 
-	err = indexer.Init(context.Background())
+	err = indexer.Init(t.Context())
 	require.NoError(t, err)
 
 	tests, err := generateTestResolveHeadersEndpoints(indexer)
@@ -587,10 +598,10 @@ func TestPackageStorage_ResolverErrorResponse(t *testing.T) {
 	testIndexerOptions := storage.FakeIndexerOptions
 	testIndexerOptions.PackageStorageEndpoint = webServer.URL
 
-	indexer := storage.NewIndexer(testLogger, fs.Client(), testIndexerOptions)
-	defer indexer.Close(context.Background())
+	indexer := generateStorageIndexer(fs, testIndexerOptions)
+	defer indexer.Close(t.Context())
 
-	err := indexer.Init(context.Background())
+	err := indexer.Init(t.Context())
 	require.NoError(t, err)
 
 	tests, err := generateTestResolveErrorResponseEndpoints(indexer)
@@ -615,9 +626,9 @@ func TestPackageSQLStorage_ResolverErrorResponse(t *testing.T) {
 
 	indexer, err := generateSQLStorageIndexer(fs, webServer.URL)
 	require.NoError(t, err)
-	defer indexer.Close(context.Background())
+	defer indexer.Close(t.Context())
 
-	err = indexer.Init(context.Background())
+	err = indexer.Init(t.Context())
 	require.NoError(t, err)
 
 	tests, err := generateTestResolveErrorResponseEndpoints(indexer)

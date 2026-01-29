@@ -25,6 +25,35 @@
     ]
   },
   {
+    "name": "agent_version",
+    "title": "Agent Version",
+    "version": "1.0.0",
+    "release": "ga",
+    "description": "An agent version integration.\n",
+    "type": "integration",
+    "download": "/epr/agent_version/agent_version-1.0.0.zip",
+    "path": "/package/agent_version/1.0.0",
+    "icons": [
+      {
+        "src": "/img/icon.svg",
+        "path": "/package/agent_version/1.0.0/img/icon.svg",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": ">6.7.0"
+      },
+      "agent": {
+        "version": "^9.2.0"
+      }
+    },
+    "categories": [
+      "custom",
+      "web"
+    ]
+  },
+  {
     "name": "datastream_without_release",
     "title": "Apache Spark",
     "version": "0.1.0",
@@ -115,7 +144,12 @@
       {
         "name": "nginx",
         "title": "Datasource title",
-        "description": "Details about the data source."
+        "description": "Details about the data source.",
+        "data_streams": [
+          "datasources.examplelog1",
+          "datasources.examplelog2",
+          "datasources.examplemetric"
+        ]
       }
     ],
     "categories": [
@@ -545,6 +579,10 @@
         ],
         "categories": [
           "compute"
+        ],
+        "data_streams": [
+          "ec2_logs",
+          "ec2_metrics"
         ]
       }
     ],

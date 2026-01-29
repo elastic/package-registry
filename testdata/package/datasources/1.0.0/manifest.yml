@@ -57,3 +57,8 @@ policy_templates:
 
         # Common configuration options for this input
         vars:
+
+    data_streams:
+      - "datasources.examplelog1"
+      - "datasources.examplelog2"
+      - "datasources.examplemetric"

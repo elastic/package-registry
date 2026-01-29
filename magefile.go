@@ -7,6 +7,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -76,6 +77,13 @@ func Check() error {
 
 func Test() error {
 	return sh.RunV("go", "test", "./...", "-v")
+}
+
+func WriteTestGoldenFiles() error {
+	errMain := sh.RunV("go", "test", ".", "-v", "-generate")
+	errPackages := sh.RunV("go", "test", "./packages/...", "-v", "-generate")
+	err := errors.Join(errMain, errPackages)
+	return err
 }
 
 // Format adds license headers, formats .go files with goimports, and formats

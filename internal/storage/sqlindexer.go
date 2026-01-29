@@ -17,6 +17,7 @@ import (
 	"time"
 
 	"cloud.google.com/go/storage"
+	"github.com/Masterminds/semver/v3"
 	"github.com/prometheus/client_golang/prometheus"
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
@@ -246,6 +247,14 @@ func (i *SQLIndexer) updateDatabase(ctx context.Context, index *packages.Package
 
 	totalProcessed := 0
 	dbPackages := make([]*database.Package, 0, i.readPackagesBatchSize)
+
+	// Run all insert oprations (BulkAdd) in a single transaction for performance reasons.
+	tx, err := (*i.backup).BeginTx(ctx, nil)
+	if err != nil {
+		return fmt.Errorf("failed to begin transaction in backup database: %w", err)
+	}
+	defer tx.Rollback()
+
 	for {
 		endBatch := totalProcessed + i.readPackagesBatchSize
 		for j := totalProcessed; j < endBatch && j < len(*index); j++ {
@@ -257,7 +266,7 @@ func (i *SQLIndexer) updateDatabase(ctx context.Context, index *packages.Package
 
 			dbPackages = append(dbPackages, newPackage)
 		}
-		err := (*i.backup).BulkAdd(ctx, "packages", dbPackages)
+		err := (*i.backup).BulkAdd(ctx, tx, "packages", dbPackages)
 		if err != nil {
 			return fmt.Errorf("failed to create all packages (bulk operation): %w", err)
 		}
@@ -267,6 +276,10 @@ func (i *SQLIndexer) updateDatabase(ctx context.Context, index *packages.Package
 		}
 		// reuse slice to avoid allocations
 		dbPackages = dbPackages[:0]
+	}
+
+	if err := tx.Commit(); err != nil {
+		return fmt.Errorf("failed to commit transaction in backup database: %w", err)
 	}
 
 	return nil
@@ -319,23 +332,67 @@ func createDatabasePackage(pkg *packages.Package, cursor string) (*database.Pack
 		kibanaVersion = pkg.Conditions.Kibana.Version
 	}
 
+	pkgVersionSemver, err := semver.NewVersion(pkg.Version)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create version from %q: %w", pkgVersionSemver, err)
+	}
+
+	formatVersionSemver, err := semver.NewVersion(pkg.FormatVersion)
+	if err != nil {
+		return nil, fmt.Errorf("invalid format version '%s' for package %s-%s: %w", pkg.FormatVersion, pkg.Name, pkg.Version, err)
+	}
+	formatVersionMajorMinor := fmt.Sprintf("%d.%d.0", formatVersionSemver.Major(), formatVersionSemver.Minor())
+
+	discoveryFields := ""
+	fieldNames := []string{}
+	if pkg.Discovery != nil && pkg.Discovery.Fields != nil {
+		for _, field := range pkg.Discovery.Fields {
+			fieldNames = append(fieldNames, field.Name)
+		}
+		discoveryFields = strings.Join(fieldNames, ",")
+	}
+
+	discoveryDatasets := ""
+	datasetNames := []string{}
+	if pkg.Discovery != nil && pkg.Discovery.Datasets != nil {
+		for _, dataset := range pkg.Discovery.Datasets {
+			datasetNames = append(datasetNames, dataset.Name)
+		}
+		discoveryDatasets = strings.Join(datasetNames, ",")
+	}
+
+	capabilities := ""
+	if pkg.Conditions != nil && pkg.Conditions.Elastic != nil {
+		capabilities = strings.Join(pkg.Conditions.Elastic.Capabilities, ",")
+	}
+
 	newPackage := database.Package{
-		Cursor:        cursor,
-		Name:          pkg.Name,
-		Version:       pkg.Version,
-		FormatVersion: pkg.FormatVersion,
-		Path:          fmt.Sprintf("%s-%s.zip", pkg.Name, pkg.Version),
-		Type:          pkg.Type,
-		Release:       pkg.Release,
-		KibanaVersion: kibanaVersion,
-		Prerelease:    pkg.IsPrerelease(),
-		Data:          fullContents,
-		BaseData:      baseContents,
+		Cursor:                  cursor,
+		Name:                    pkg.Name,
+		Version:                 pkg.Version,
+		VersionMajor:            int(pkgVersionSemver.Major()),
+		VersionMinor:            int(pkgVersionSemver.Minor()),
+		VersionPatch:            int(pkgVersionSemver.Patch()),
+		VersionPrerelease:       pkgVersionSemver.Prerelease(),
+		DiscoveryFilterFields:   discoveryFields,
+		DiscoveryFilterDatasets: discoveryDatasets,
+		FormatVersion:           pkg.FormatVersion,
+		FormatVersionMajorMinor: formatVersionMajorMinor,
+		Path:                    fmt.Sprintf("%s-%s.zip", pkg.Name, pkg.Version),
+		Type:                    pkg.Type,
+		Release:                 pkg.Release,
+		KibanaVersion:           kibanaVersion,
+		Capabilities:            capabilities,
+		Prerelease:              pkg.IsPrerelease(),
+		Data:                    fullContents,
+		BaseData:                baseContents,
 	}
 
 	return &newPackage, nil
 }
 
+// Get returns the list of packages from the indexer, optionally filtered by the provided options.
+// If filter is nil, all packages are returned with the base data of the package.
 func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.Packages, error) {
 	start := time.Now()
 	defer func() {
@@ -345,60 +402,49 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 	defer span.End()
 
 	var readPackages packages.Packages
+
+	// Use a function to ensure the read lock is released as soon as possible.
 	err := func() error {
 		i.m.RLock()
 		defer i.m.RUnlock()
 
-		options := &database.SQLOptions{
-			CurrentCursor: i.cursor,
-		}
-		if opts != nil && opts.Filter != nil {
-			// TODO: Add support to filter by discovery fields if possible.
-			options.Filter = &database.FilterOptions{
-				Type:       opts.Filter.PackageType,
-				Name:       opts.Filter.PackageName,
-				Version:    opts.Filter.PackageVersion,
-				Prerelease: opts.Filter.Prerelease,
-			}
-			if opts.Filter.Experimental {
-				options.Filter.Prerelease = true
-			}
-		}
-		if opts != nil {
-			options.IncludeFullData = opts.FullData
-		}
+		options := createDatabaseOptions(i.cursor, opts)
 
-		err := (*i.current).AllFunc(ctx, "packages", options, func(ctx context.Context, p *database.Package) error {
-			var pkg packages.Package
-			var err error
-			if opts != nil && opts.FullData {
-				err = json.Unmarshal(p.Data, &pkg)
-			} else {
+		err := (*i.current).FilterFunc(ctx, "packages", options, func(ctx context.Context, p *database.Package) error {
+			pkg := &packages.Package{}
+			switch {
+			case opts != nil && opts.SkipPackageData:
+				// Set minimal package data.
+				// There are some private fields of the package that are not set here (versionSemver, specMajorMinorSemver, etc.),
+				// but they should not be needed when SkipPackageData is used.
+				pkg.Name = p.Name
+				pkg.Version = p.Version
+				pkg.FormatVersion = p.FormatVersion
+				pkg.Release = p.Release
+				pkg.Path = p.Path
+			case opts != nil && opts.FullData:
+				err := json.Unmarshal(p.Data, pkg)
+				if err != nil {
+					return fmt.Errorf("failed to parse full package %s-%s: %w", p.Name, p.Version, err)
+				}
+			default:
 				// BaseData is used for performance reasons, it contains only the fields that are needed for the search index.
 				// FormatVersion needs to be set from database to ensure compatibility with the package structure.
 				pkg.FormatVersion = p.FormatVersion
-				err = json.Unmarshal(p.BaseData, &pkg)
-			}
-			if err != nil {
-				return fmt.Errorf("failed to parse package %s-%s: %w", p.Name, p.Version, err)
+				err := json.Unmarshal(p.BaseData, pkg)
+				if err != nil {
+					return fmt.Errorf("failed to parse base package %s-%s: %w", p.Name, p.Version, err)
+				}
 			}
 			pkg.BasePath = p.Path
 			pkg.SetRemoteResolver(i.resolver)
-			readPackages = append(readPackages, &pkg)
+			readPackages = append(readPackages, pkg)
 			return nil
 		})
 		if err != nil {
-			return fmt.Errorf("failed to obtain all packages: %w", err)
+			return fmt.Errorf("failed to obtain packages: %w", err)
 		}
 		i.logger.Debug("Number of packages read from database", zap.Int("num.packages", len(readPackages)))
-
-		if opts != nil && opts.Filter != nil {
-			readPackages, err = opts.Filter.Apply(ctx, readPackages)
-			if err != nil {
-				return fmt.Errorf("failed to filter packages: %w", err)
-			}
-			return nil
-		}
 
 		return nil
 	}()
@@ -406,7 +452,108 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 		return nil, err
 	}
 
+	// Apply filtering at application level if needed, not required anymore access to the database.
+	if opts != nil && opts.Filter != nil {
+		if opts.Filter.PackageName != "" && opts.Filter.PackageVersion != "" {
+			if len(readPackages) > 1 {
+				return nil, fmt.Errorf("expected at most one package when filtering by name and version, got %d", len(readPackages))
+			}
+			// If we are filtering by name and version at database level, there should be at most one package and it can be returned early.
+			return readPackages, nil
+		}
+		readPackages, err = opts.Filter.Apply(ctx, readPackages)
+		if err != nil {
+			return nil, fmt.Errorf("failed to filter packages: %w", err)
+		}
+	}
+
 	return readPackages, nil
+}
+
+func createDatabaseOptions(cursor string, opts *packages.GetOptions) *database.SQLOptions {
+	sqlOptions := &database.SQLOptions{
+		CurrentCursor:      cursor,
+		IncludeFullData:    false,
+		SkipPackageData:    false,
+		JustLatestPackages: false,
+	}
+	if opts == nil {
+		return sqlOptions
+	}
+
+	sqlOptions.IncludeFullData = opts.FullData
+	sqlOptions.SkipPackageData = opts.SkipPackageData
+
+	if opts.Filter == nil {
+		return sqlOptions
+	}
+
+	if opts.Filter.Experimental {
+		// Experimental is also used in endpoints like /package or /epr to get a specific package.
+		// https://github.com/elastic/package-registry/blob/4b4eea9301902c15a75a8ef303c6e719f9ff6abd/packages/packages.go#L645
+
+		// If experimental is set, then it should be applied the same filters as in the legacyApply function:
+		// https://github.com/elastic/package-registry/blob/4b4eea9301902c15a75a8ef303c6e719f9ff6abd/packages/packages.go#L524
+		sqlOptions.Filter = &database.FilterOptions{
+			Type:    opts.Filter.PackageType,
+			Name:    opts.Filter.PackageName,
+			Version: opts.Filter.PackageVersion,
+			// When experimental is set, prerelease should also be included.
+			Prerelease: true,
+		}
+
+		if opts.Filter.KibanaVersion != nil {
+			sqlOptions.Filter.KibanaVersion = opts.Filter.KibanaVersion.String()
+		}
+
+		// Determine if we can use the optimized query to get just the latest packages.
+		// We can use it when we are not filtering by version, not requesting all versions,
+		sqlOptions.JustLatestPackages = !opts.Filter.AllVersions && opts.Filter.PackageVersion == ""
+
+		return sqlOptions
+	}
+
+	sqlOptions.Filter = &database.FilterOptions{
+		Type:         opts.Filter.PackageType,
+		Name:         opts.Filter.PackageName,
+		Version:      opts.Filter.PackageVersion,
+		Prerelease:   opts.Filter.Prerelease,
+		Capabilities: opts.Filter.Capabilities,
+	}
+	if opts.Filter.KibanaVersion != nil {
+		sqlOptions.Filter.KibanaVersion = opts.Filter.KibanaVersion.String()
+	}
+	if opts.Filter.SpecMin != nil {
+		sqlOptions.Filter.SpecMin = opts.Filter.SpecMin.String()
+	}
+	if opts.Filter.SpecMax != nil {
+		sqlOptions.Filter.SpecMax = opts.Filter.SpecMax.String()
+	}
+
+	if opts.Filter.Discovery != nil {
+		discoveryFields := []string{}
+		discoveryDatasets := []string{}
+		for _, filter := range opts.Filter.Discovery {
+			for _, field := range filter.Fields {
+				discoveryFields = append(discoveryFields, field.Name)
+			}
+			for _, dataset := range filter.Datasets {
+				discoveryDatasets = append(discoveryDatasets, dataset.Name)
+			}
+		}
+		sqlOptions.Filter.DiscoveryFilterFields = strings.Join(discoveryFields, ",")
+		sqlOptions.Filter.DiscoveryFilterDatasets = strings.Join(discoveryDatasets, ",")
+	}
+
+	// Determine if we can use the optimized query to get just the latest versions of the packages.
+	// We can use it when we are not filtering by version and not requesting all versions.
+	sqlOptions.JustLatestPackages = !opts.Filter.AllVersions && opts.Filter.PackageVersion == "" &&
+		// AgentVersion filtering is not compatible with just latest packages optimization.
+		// TODO: revisit this when AgentVersion filtering is implemented at database level.
+		// https://github.com/elastic/package-registry/issues/1461
+		opts.Filter.AgentVersion == nil
+
+	return sqlOptions
 }
 
 func (i *SQLIndexer) Close(ctx context.Context) error {

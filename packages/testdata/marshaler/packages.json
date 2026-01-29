@@ -82,6 +82,44 @@
    }
   },
   {
+   "name": "agent_version",
+   "title": "Agent Version",
+   "version": "1.0.0",
+   "release": "ga",
+   "description": "An agent version integration.\n",
+   "type": "integration",
+   "download": "/epr/agent_version/agent_version-1.0.0.zip",
+   "path": "/package/agent_version/1.0.0",
+   "icons": [
+    {
+     "src": "/img/icon.svg",
+     "path": "/package/agent_version/1.0.0/img/icon.svg",
+     "type": "image/svg+xml"
+    }
+   ],
+   "conditions": {
+    "kibana": {
+     "version": "\u003e6.7.0"
+    },
+    "agent": {
+     "version": "^9.2.0"
+    }
+   },
+   "categories": [
+    "custom",
+    "web"
+   ],
+   "format_version": "1.0.0",
+   "readme": "/package/agent_version/1.0.0/docs/README.md",
+   "license": "basic",
+   "assets": [
+    "/package/agent_version/1.0.0/changelog.yml",
+    "/package/agent_version/1.0.0/manifest.yml",
+    "/package/agent_version/1.0.0/docs/README.md",
+    "/package/agent_version/1.0.0/img/icon.svg"
+   ]
+  },
+  {
    "name": "dataset_is_prefix",
    "title": "DatasetIsPrefix Flag",
    "version": "0.0.1",
@@ -148,6 +186,11 @@
      "name": "nginx",
      "title": "Datasource title",
      "description": "Details about the data source.",
+     "data_streams": [
+      "datasources.examplelog1",
+      "datasources.examplelog2",
+      "datasources.examplemetric"
+     ],
      "inputs": [
       {
        "type": "nginx/metrics",
@@ -232,7 +275,8 @@
        "template_path": "syslog.yml",
        "title": "Title of the stream",
        "description": "Description of the stream with more details.",
-       "enabled": true
+       "enabled": true,
+       "ingestion_method": "Network Protocol"
       }
      ],
      "package": "datasources",
@@ -290,7 +334,8 @@
        "template_path": "stream.yml.hbs",
        "title": "Title of the stream",
        "description": "Not enabled data source.",
-       "enabled": false
+       "enabled": false,
+       "ingestion_method": "API"
       }
      ],
      "package": "datasources",
@@ -411,7 +456,8 @@
        "template_path": "stream.yml.hbs",
        "title": "Apache Spark nodes metrics",
        "description": "Collect Apache Spark nodes metrics using Jolokia agent.",
-       "enabled": true
+       "enabled": true,
+       "ingestion_method": "Jolokia"
       }
      ],
      "package": "datastream_without_release",
@@ -1671,7 +1717,8 @@
        "template_path": "stream.yml.hbs",
        "title": "AWS EC2 metrics",
        "description": "Collect AWS EC2 metrics",
-       "enabled": true
+       "enabled": true,
+       "ingestion_method": "API"
       }
      ],
      "package": "input_groups",
@@ -2418,7 +2465,8 @@
      "description": "Query the database to capture metrics.",
      "multiple": true,
      "type": "metrics",
-     "input": "sql",
+     "input": "sql/metrics",
+     "ingestion_method": "Database",
      "template_path": "input.yml.hbs"
     }
    ]

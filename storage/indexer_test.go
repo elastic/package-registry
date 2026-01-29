@@ -23,12 +23,12 @@ func TestInit(t *testing.T) {
 	// given
 	fs := internalStorage.PrepareFakeServer(t, "testdata/search-index-all-full.json")
 	defer fs.Stop()
-	storageClient := fs.Client()
-	indexer := NewIndexer(util.NewTestLogger(), storageClient, FakeIndexerOptions)
-	defer indexer.Close(context.Background())
+
+	indexer := NewIndexer(util.NewTestLogger(), internalStorage.ClientNoAuth(fs), FakeIndexerOptions)
+	defer indexer.Close(t.Context())
 
 	// when
-	err := indexer.Init(context.Background())
+	err := indexer.Init(t.Context())
 
 	// then
 	require.NoError(t, err)
@@ -38,18 +38,18 @@ func BenchmarkInit(b *testing.B) {
 	// given
 	fs := internalStorage.PrepareFakeServer(b, "testdata/search-index-all-full.json")
 	defer fs.Stop()
-	storageClient := fs.Client()
+	storageClient := internalStorage.ClientNoAuth(fs)
 
 	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
 
-		err := indexer.Init(context.Background())
+		err := indexer.Init(b.Context())
 		require.NoError(b, err)
 
 		b.StopTimer()
-		require.NoError(b, indexer.Close(context.Background()))
+		require.NoError(b, indexer.Close(b.Context()))
 		b.StartTimer()
 	}
 }
@@ -58,13 +58,12 @@ func BenchmarkIndexerUpdateIndex(b *testing.B) {
 	// given
 	fs := internalStorage.PrepareFakeServer(b, "testdata/search-index-all-full.json")
 	defer fs.Stop()
-	storageClient := fs.Client()
 
 	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
-	indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
-	defer indexer.Close(context.Background())
+	indexer := NewIndexer(logger, internalStorage.ClientNoAuth(fs), FakeIndexerOptions)
+	defer indexer.Close(b.Context())
 
-	err := indexer.Init(context.Background())
+	err := indexer.Init(b.Context())
 	require.NoError(b, err)
 
 	b.ResetTimer()
@@ -73,7 +72,7 @@ func BenchmarkIndexerUpdateIndex(b *testing.B) {
 		revision := fmt.Sprintf("%d", i+2)
 		internalStorage.UpdateFakeServer(b, fs, revision, "testdata/search-index-all-full.json")
 		b.StartTimer()
-		err = indexer.updateIndex(context.Background())
+		err = indexer.updateIndex(b.Context())
 		require.NoError(b, err, "index should be updated successfully")
 	}
 }
@@ -82,29 +81,28 @@ func BenchmarkIndexerGet(b *testing.B) {
 	// given
 	fs := internalStorage.PrepareFakeServer(b, "testdata/search-index-all-full.json")
 	defer fs.Stop()
-	storageClient := fs.Client()
 
 	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
-	indexer := NewIndexer(logger, storageClient, FakeIndexerOptions)
-	defer indexer.Close(context.Background())
+	indexer := NewIndexer(logger, internalStorage.ClientNoAuth(fs), FakeIndexerOptions)
+	defer indexer.Close(b.Context())
 
-	err := indexer.Init(context.Background())
+	err := indexer.Init(b.Context())
 	require.NoError(b, err)
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		indexer.Get(context.Background(), &packages.GetOptions{})
-		indexer.Get(context.Background(), &packages.GetOptions{
+		indexer.Get(b.Context(), &packages.GetOptions{})
+		indexer.Get(b.Context(), &packages.GetOptions{
 			Filter: &packages.Filter{
 				AllVersions: true,
 				Prerelease:  true,
 			},
 		})
-		indexer.Get(context.Background(), &packages.GetOptions{Filter: &packages.Filter{
+		indexer.Get(b.Context(), &packages.GetOptions{Filter: &packages.Filter{
 			AllVersions: false,
 			Prerelease:  false,
 		}})
-		indexer.Get(context.Background(), &packages.GetOptions{Filter: &packages.Filter{
+		indexer.Get(b.Context(), &packages.GetOptions{Filter: &packages.Filter{
 			AllVersions: false,
 			Prerelease:  false,
 			SpecMin:     semver.MustParse("3.0.0"),
@@ -114,15 +112,15 @@ func BenchmarkIndexerGet(b *testing.B) {
 }
 
 func TestGet_ListPackages(t *testing.T) {
+	t.Parallel()
+
 	// given
 	fs := internalStorage.PrepareFakeServer(t, "testdata/search-index-all-full.json")
-	defer fs.Stop()
-	storageClient := fs.Client()
-	indexer := NewIndexer(util.NewTestLogger(), storageClient, FakeIndexerOptions)
-	defer indexer.Close(context.Background())
+	t.Cleanup(fs.Stop)
+	indexer := NewIndexer(util.NewTestLogger(), internalStorage.ClientNoAuth(fs), FakeIndexerOptions)
+	t.Cleanup(func() { indexer.Close(context.Background()) })
 
-	ctx := context.Background()
-	err := indexer.Init(ctx)
+	err := indexer.Init(t.Context())
 	require.NoError(t, err, "storage indexer must be initialized properly")
 
 	cases := []struct {
@@ -288,8 +286,10 @@ func TestGet_ListPackages(t *testing.T) {
 
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
+			t.Parallel()
+
 			// when
-			foundPackages, err := indexer.Get(ctx, c.options)
+			foundPackages, err := indexer.Get(t.Context(), c.options)
 			// then
 			require.NoError(t, err, "packages should be returned")
 			require.Len(t, foundPackages, c.expected)
@@ -304,20 +304,20 @@ func TestGet_ListPackages(t *testing.T) {
 }
 
 func TestGet_IndexUpdated(t *testing.T) {
+	t.Parallel()
+
 	// given
 	fs := internalStorage.PrepareFakeServer(t, "testdata/search-index-all-small.json")
-	defer fs.Stop()
-	storageClient := fs.Client()
-	ctx := context.Background()
+	t.Cleanup(fs.Stop)
 
-	indexer := NewIndexer(util.NewTestLogger(), storageClient, FakeIndexerOptions)
-	defer indexer.Close(ctx)
+	indexer := NewIndexer(util.NewTestLogger(), internalStorage.ClientNoAuth(fs), FakeIndexerOptions)
+	t.Cleanup(func() { indexer.Close(context.Background()) })
 
-	err := indexer.Init(ctx)
+	err := indexer.Init(t.Context())
 	require.NoError(t, err, "storage indexer must be initialized properly")
 
 	// when
-	foundPackages, err := indexer.Get(ctx, &packages.GetOptions{
+	foundPackages, err := indexer.Get(t.Context(), &packages.GetOptions{
 		Filter: &packages.Filter{
 			PackageName: "1password",
 			PackageType: "integration",
@@ -334,10 +334,10 @@ func TestGet_IndexUpdated(t *testing.T) {
 	// when: index update is performed adding new packages
 	const secondRevision = "2"
 	internalStorage.UpdateFakeServer(t, fs, secondRevision, "testdata/search-index-all-full.json")
-	err = indexer.updateIndex(ctx)
+	err = indexer.updateIndex(t.Context())
 	require.NoError(t, err, "index should be updated successfully")
 
-	foundPackages, err = indexer.Get(ctx, &packages.GetOptions{
+	foundPackages, err = indexer.Get(t.Context(), &packages.GetOptions{
 		Filter: &packages.Filter{
 			PackageName: "1password",
 			PackageType: "integration",
@@ -354,10 +354,10 @@ func TestGet_IndexUpdated(t *testing.T) {
 	// when: index update is performed removing packages
 	const thirdRevision = "3"
 	internalStorage.UpdateFakeServer(t, fs, thirdRevision, "testdata/search-index-all-small.json")
-	err = indexer.updateIndex(ctx)
+	err = indexer.updateIndex(t.Context())
 	require.NoError(t, err, "index should be updated successfully")
 
-	foundPackages, err = indexer.Get(ctx, &packages.GetOptions{
+	foundPackages, err = indexer.Get(t.Context(), &packages.GetOptions{
 		Filter: &packages.Filter{
 			PackageName: "1password",
 			PackageType: "integration",
@@ -373,10 +373,10 @@ func TestGet_IndexUpdated(t *testing.T) {
 
 	// when: index update is performed updating some field of an existing pacakage
 	internalStorage.UpdateFakeServer(t, fs, "4", "testdata/search-index-all-small-updated-fields.json")
-	err = indexer.updateIndex(ctx)
+	err = indexer.updateIndex(t.Context())
 	require.NoError(t, err, "index should be updated successfully")
 
-	foundPackages, err = indexer.Get(ctx, &packages.GetOptions{
+	foundPackages, err = indexer.Get(t.Context(), &packages.GetOptions{
 		Filter: &packages.Filter{
 			PackageName: "1password",
 			PackageType: "integration",

@@ -220,6 +220,13 @@ func newCategoriesFilterFromQuery(query url.Values, allowUnknownQueryParameters 
 			}
 		case "include_policy_templates":
 			// This query parameter is allowed, but not used as a filter
+		case "agent.version":
+			if v != "" {
+				filter.AgentVersion, err = semver.NewVersion(v)
+				if err != nil {
+					return nil, fmt.Errorf("invalid agent version '%s': %w", v, err)
+				}
+			}
 		default:
 			if !allowUnknownQueryParameters {
 				return nil, fmt.Errorf("unknown query parameter: %q", key)

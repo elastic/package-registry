@@ -5,7 +5,6 @@
 package packages
 
 import (
-	"context"
 	"encoding/json"
 	"flag"
 	"os"
@@ -24,10 +23,13 @@ var generateFlag = flag.Bool("generate", false, "Write golden files")
 func TestMarshalJSON(t *testing.T) {
 	// given
 	packagesBasePaths := []string{"../testdata/second_package_path", "../testdata/package"}
-	indexer := NewFileSystemIndexer(util.NewTestLogger(), packagesBasePaths...)
-	defer indexer.Close(context.Background())
+	fsOpts := FSIndexerOptions{
+		Logger: util.NewTestLogger(),
+	}
+	indexer := NewFileSystemIndexer(fsOpts, packagesBasePaths...)
+	defer indexer.Close(t.Context())
 
-	err := indexer.Init(context.Background())
+	err := indexer.Init(t.Context())
 	require.NoError(t, err, "can't initialize indexer")
 
 	// when
@@ -40,11 +42,15 @@ func TestMarshalJSON(t *testing.T) {
 
 func TestUnmarshalJSON(t *testing.T) {
 	// given
-	packagesBasePaths := []string{"../testdata/second_package_path", "../testdata/package"}
-	indexer := NewFileSystemIndexer(util.NewTestLogger(), packagesBasePaths...)
-	defer indexer.Close(context.Background())
 
-	err := indexer.Init(context.Background())
+	fsOpts := FSIndexerOptions{
+		Logger: util.NewTestLogger(),
+	}
+	packagesBasePaths := []string{"../testdata/second_package_path", "../testdata/package"}
+	indexer := NewFileSystemIndexer(fsOpts, packagesBasePaths...)
+	defer indexer.Close(t.Context())
+
+	err := indexer.Init(t.Context())
 	require.NoError(t, err)
 
 	expectedFile, err := os.ReadFile(testFile)

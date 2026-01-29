@@ -5,7 +5,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -39,10 +38,14 @@ func TestCategoriesWithProxyMode(t *testing.T) {
 	}))
 	defer webServer.Close()
 
-	indexerProxy := packages.NewFileSystemIndexer(testLogger, "./testdata/second_package_path")
-	defer indexerProxy.Close(context.Background())
+	fsOpts := packages.FSIndexerOptions{
+		Logger: testLogger,
+	}
 
-	err := indexerProxy.Init(context.Background())
+	indexerProxy := packages.NewFileSystemIndexer(fsOpts, "./testdata/second_package_path")
+	defer indexerProxy.Close(t.Context())
+
+	err := indexerProxy.Init(t.Context())
 	require.NoError(t, err)
 
 	proxyMode, err := proxymode.NewProxyMode(
@@ -188,7 +191,7 @@ func TestGetCategories(t *testing.T) {
 
 	for _, c := range cases {
 		t.Run(c.Title, func(t *testing.T) {
-			result := getCategories(context.Background(), pkgs, c.IncludePolicyTemplates)
+			result := getCategories(t.Context(), pkgs, c.IncludePolicyTemplates)
 			assert.Equal(t, c.Expected, result)
 		})
 	}

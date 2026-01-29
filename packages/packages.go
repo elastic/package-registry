@@ -10,17 +10,26 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"runtime"
 	"slices"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/Masterminds/semver/v3"
+	"github.com/fsnotify/fsnotify"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 
+	"github.com/elastic/package-registry/internal/workers"
 	"github.com/elastic/package-registry/metrics"
+)
+
+const (
+	zipFileSystemIndexerName = "ZipFileSystemIndexer"
+	fileSystemIndexerName    = "FileSystemIndexer"
 )
 
 // ValidationDisabled is a flag which can disable package content validation (package, data streams, assets, etc.).
@@ -90,7 +99,8 @@ type GetOptions struct {
 	// where experimental packages are filtered by default.
 	Filter *Filter
 
-	FullData bool
+	FullData        bool
+	SkipPackageData bool
 }
 
 // FileSystemIndexer indexes packages from the filesystem.
@@ -108,10 +118,28 @@ type FileSystemIndexer struct {
 	fsBuilder FileSystemBuilder
 
 	logger *zap.Logger
+
+	enablePathsWatcher bool
+
+	// pathsWorkers is the number of concurrent workers to use when reading packages from the filesystem.
+	pathsWorkers int
+
+	m sync.RWMutex
+
+	apmTracer *apm.Tracer
+}
+
+type FSIndexerOptions struct {
+	Logger             *zap.Logger
+	EnablePathsWatcher bool
+	APMTracer          *apm.Tracer
+
+	// PathsWorkers is the number of concurrent workers to use when reading packages from the filesystem.
+	PathsWorkers int
 }
 
 // NewFileSystemIndexer creates a new FileSystemIndexer for the given paths.
-func NewFileSystemIndexer(logger *zap.Logger, paths ...string) *FileSystemIndexer {
+func NewFileSystemIndexer(options FSIndexerOptions, paths ...string) *FileSystemIndexer {
 	walkerFn := func(basePath, path string, info os.DirEntry) (bool, error) {
 		relativePath, err := filepath.Rel(basePath, path)
 		if err != nil {
@@ -127,7 +155,7 @@ func NewFileSystemIndexer(logger *zap.Logger, paths ...string) *FileSystemIndexe
 			versionDir := dirs[1]
 			_, err := semver.StrictNewVersion(versionDir)
 			if err != nil {
-				logger.Warn("ignoring unexpected directory",
+				options.Logger.Warn("ignoring unexpected directory",
 					zap.String("file.path", path))
 				return false, filepath.SkipDir
 			}
@@ -136,15 +164,24 @@ func NewFileSystemIndexer(logger *zap.Logger, paths ...string) *FileSystemIndexe
 		// Unexpected file, return nil in order to continue processing sibling directories
 		// Fixes an annoying problem when the .DS_Store file is left behind and the package
 		// is not loading without any error information
-		logger.Warn("ignoring unexpected file", zap.String("file.path", path))
+		options.Logger.Warn("ignoring unexpected file", zap.String("file.path", path))
 		return false, nil
 	}
+
+	// If PathsWorkers is not set or is less than or equal to 0, use the number of CPU cores.
+	pathWorkers := options.PathsWorkers
+	if options.PathsWorkers <= 0 {
+		pathWorkers = runtime.GOMAXPROCS(0)
+	}
 	return &FileSystemIndexer{
-		paths:     paths,
-		label:     "FileSystemIndexer",
-		walkerFn:  walkerFn,
-		fsBuilder: ExtractedFileSystemBuilder,
-		logger:    logger,
+		paths:              paths,
+		label:              fileSystemIndexerName,
+		walkerFn:           walkerFn,
+		fsBuilder:          ExtractedFileSystemBuilder,
+		logger:             options.Logger,
+		enablePathsWatcher: options.EnablePathsWatcher,
+		apmTracer:          options.APMTracer,
+		pathsWorkers:       pathWorkers,
 	}
 }
 
@@ -153,7 +190,7 @@ var ExtractedFileSystemBuilder = func(p *Package) (PackageFileSystem, error) {
 }
 
 // NewZipFileSystemIndexer creates a new ZipFileSystemIndexer for the given paths.
-func NewZipFileSystemIndexer(logger *zap.Logger, paths ...string) *FileSystemIndexer {
+func NewZipFileSystemIndexer(options FSIndexerOptions, paths ...string) *FileSystemIndexer {
 	walkerFn := func(basePath, path string, info os.DirEntry) (bool, error) {
 		if info.IsDir() {
 			return false, nil
@@ -165,7 +202,7 @@ func NewZipFileSystemIndexer(logger *zap.Logger, paths ...string) *FileSystemInd
 		// Check if the file is actually a zip file.
 		r, err := zip.OpenReader(path)
 		if err != nil {
-			logger.Warn("ignoring invalid zip file",
+			options.Logger.Warn("ignoring invalid zip file",
 				zap.String("file.path", path), zap.Error(err))
 			return false, nil
 		}
@@ -173,12 +210,21 @@ func NewZipFileSystemIndexer(logger *zap.Logger, paths ...string) *FileSystemInd
 
 		return true, nil
 	}
+
+	// If PathsWorkers is not set or is less than or equal to 0, use the number of CPU cores.
+	pathWorkers := options.PathsWorkers
+	if options.PathsWorkers <= 0 {
+		pathWorkers = runtime.GOMAXPROCS(0)
+	}
 	return &FileSystemIndexer{
-		paths:     paths,
-		label:     "ZipFileSystemIndexer",
-		walkerFn:  walkerFn,
-		fsBuilder: ZipFileSystemBuilder,
-		logger:    logger,
+		paths:              paths,
+		label:              zipFileSystemIndexerName,
+		walkerFn:           walkerFn,
+		fsBuilder:          ZipFileSystemBuilder,
+		logger:             options.Logger,
+		enablePathsWatcher: options.EnablePathsWatcher,
+		apmTracer:          options.APMTracer,
+		pathsWorkers:       pathWorkers,
 	}
 }
 
@@ -188,10 +234,104 @@ var ZipFileSystemBuilder = func(p *Package) (PackageFileSystem, error) {
 
 // Init initializes the indexer.
 func (i *FileSystemIndexer) Init(ctx context.Context) (err error) {
-	i.packageList, err = i.getPackagesFromFileSystem(ctx)
-	if err != nil {
-		return fmt.Errorf("reading packages from filesystem failed: %w", err)
+	if err := i.updatePackageFileSystemIndex(ctx); err != nil {
+		i.logger.Error("initializing package filesystem index failed",
+			zap.Error(err),
+			zap.String("indexer", i.label))
+		return err
 	}
+
+	if i.enablePathsWatcher {
+		// removing current transaction as we are starting a new one at watcher
+		go i.watchPackageFileSystem(apm.ContextWithTransaction(ctx, nil))
+	}
+	return nil
+}
+
+func (i *FileSystemIndexer) watchPackageFileSystem(ctx context.Context) {
+	// TODO: https://github.com/elastic/package-registry/issues/1488
+	watcher, err := fsnotify.NewWatcher()
+	if err != nil {
+		i.logger.Error("failed to create fsnotify watcher", zap.String("indexer", i.label), zap.Error(err))
+		return
+	}
+	defer watcher.Close()
+
+	if i.apmTracer == nil {
+		i.apmTracer = apm.DefaultTracer()
+	}
+
+	for _, path := range i.paths {
+		if err := watcher.Add(path); err != nil {
+			i.logger.Error("failed to watch path", zap.String("path", path), zap.String("indexer", i.label), zap.Error(err))
+			return
+		}
+		i.logger.Debug("watching path for changes", zap.String("path", path), zap.String("indexer", i.label))
+	}
+
+	debouncer := time.NewTimer(0)
+	debouncer.Stop()
+	defer debouncer.Stop()
+
+	for {
+		select {
+		case <-ctx.Done():
+			i.logger.Info("stopping filesystem watcher", zap.String("indexer", i.label))
+			return
+		case event, ok := <-watcher.Events:
+			if !ok {
+				return
+			}
+
+			// Watching for create, write, rename and remove events
+			// https://pkg.go.dev/github.com/fsnotify/fsnotify@v1.9.0#Watcher
+			if !event.Has(fsnotify.Create) && !event.Has(fsnotify.Write) &&
+				!event.Has(fsnotify.Rename) && !event.Has(fsnotify.Remove) {
+				continue
+			}
+			// skip events that are not relevant for this indexer
+			if (i.label == zipFileSystemIndexerName && !strings.HasSuffix(event.Name, ".zip")) ||
+				(i.label == fileSystemIndexerName && strings.HasSuffix(event.Name, ".zip")) {
+				i.logger.Debug("skipping event at indexer", zap.String("indexer", i.label))
+				continue
+			}
+
+			i.logger.Debug("filesystem change detected", zap.String("event", event.String()), zap.String("indexer", i.label))
+			const debounceDelay = 1 * time.Second
+			debouncer.Reset(debounceDelay)
+		case <-debouncer.C:
+			tx := i.apmTracer.StartTransaction("updateFSIndex", "backend.watcher")
+			defer tx.End()
+
+			ctx := apm.ContextWithTransaction(ctx, tx)
+			// only when debouncer fires, we update the index
+			// debouncer only fires when no new events arrive during the debounceDelay
+			if err := i.updatePackageFileSystemIndex(ctx); err != nil {
+				i.logger.Error("updating package filesystem index failed",
+					zap.Error(err),
+					zap.String("indexer", i.label))
+			} else {
+				i.logger.Info("package filesystem index updated",
+					zap.String("indexer", i.label))
+			}
+		case err, ok := <-watcher.Errors:
+			if !ok {
+				return
+			}
+			i.logger.Error("fsnotify watcher error", zap.Error(err), zap.String("indexer", i.label))
+		}
+	}
+}
+
+func (i *FileSystemIndexer) updatePackageFileSystemIndex(ctx context.Context) error {
+	i.m.Lock()
+	defer i.m.Unlock()
+
+	newPackageList, err := i.getPackagesFromFileSystem(ctx)
+	if err != nil {
+		return err
+	}
+	i.packageList = newPackageList
 	return nil
 }
 
@@ -209,6 +349,9 @@ func (i *FileSystemIndexer) Get(ctx context.Context, opts *GetOptions) (Packages
 	span, ctx := apm.StartSpan(ctx, "GetFileSystemIndexer", "app")
 	span.Context.SetLabel("indexer", i.label)
 	defer span.End()
+
+	i.m.RLock()
+	defer i.m.RUnlock()
 
 	if opts == nil {
 		return i.packageList, nil
@@ -234,40 +377,76 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 		name    string
 		version string
 	}
-	packagesFound := make(map[packageKey]struct{})
 
-	var pList Packages
+	count := 0
 	for _, basePath := range i.paths {
 		packagePaths, err := i.getPackagePaths(basePath)
 		if err != nil {
 			return nil, err
 		}
+		count += len(packagePaths)
+	}
+	pList := make(Packages, count)
 
-		i.logger.Info("Searching packages in " + basePath)
-		for _, path := range packagePaths {
-			p, err := NewPackage(i.logger, path, i.fsBuilder)
-			if err != nil {
-				return nil, fmt.Errorf("loading package failed (path: %s): %w", path, err)
-			}
+	taskPool := workers.NewTaskPool(i.pathsWorkers)
 
-			key := packageKey{name: p.Name, version: p.Version}
-			if _, found := packagesFound[key]; found {
-				i.logger.Debug("duplicated package",
+	i.logger.Info("Searching packages in filesystem", zap.String("indexer", i.label))
+	count = 0
+	for _, basePath := range i.paths {
+		packagePaths, err := i.getPackagePaths(basePath)
+		if err != nil {
+			return nil, err
+		}
+		for _, p := range packagePaths {
+			position := count
+			path := p
+			count++
+			taskPool.Do(func() error {
+				p, err := NewPackage(i.logger, path, i.fsBuilder)
+				if err != nil {
+					return fmt.Errorf("loading package failed (path: %s): %w", path, err)
+				}
+
+				pList[position] = p
+
+				i.logger.Debug("found package",
 					zap.String("package.name", p.Name),
 					zap.String("package.version", p.Version),
 					zap.String("package.path", p.BasePath))
-				continue
-			}
 
-			packagesFound[key] = struct{}{}
-			pList = append(pList, p)
+				return nil
+			})
+		}
+	}
 
-			i.logger.Debug("found package",
+	if err := taskPool.Wait(); err != nil {
+		return nil, err
+	}
+
+	// Remove duplicates while preserving the package discovery order in the paths set in the configuration.
+	// Duplicate removal happens after initial loading all packages in all paths to maintain the order packages
+	// are discovered in the paths set in the configuration. This ensures that when the same package version
+	// exists in multiple paths, we keep the version from the first path in the search order,
+	// not necessarily the first one loaded by the concurrent workers.
+	current := 0
+	packagesFound := make(map[packageKey]struct{})
+	for _, p := range pList {
+		key := packageKey{name: p.Name, version: p.Version}
+		if _, found := packagesFound[key]; found {
+			i.logger.Debug("duplicated package",
 				zap.String("package.name", p.Name),
 				zap.String("package.version", p.Version),
 				zap.String("package.path", p.BasePath))
+			continue
 		}
+		packagesFound[key] = struct{}{}
+		pList[current] = p
+		current++
 	}
+
+	pList = pList[:current]
+	i.logger.Info("Searching packages in filesystem done", zap.String("indexer", i.label), zap.Int("packages.size", len(pList)))
+
 	return pList, nil
 }
 
@@ -316,6 +495,7 @@ type Filter struct {
 	SpecMin        *semver.Version
 	SpecMax        *semver.Version
 	Discovery      discoveryFilters
+	AgentVersion   *semver.Version
 
 	// Deprecated, release tags to be removed.
 	Experimental bool
@@ -451,6 +631,12 @@ func (f *Filter) Apply(ctx context.Context, packages Packages) (Packages, error)
 
 		if f.KibanaVersion != nil {
 			if valid := p.HasKibanaVersion(f.KibanaVersion); !valid {
+				continue
+			}
+		}
+
+		if f.AgentVersion != nil {
+			if valid := p.HasAgentVersion(f.AgentVersion); !valid {
 				continue
 			}
 		}

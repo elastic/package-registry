@@ -1,0 +1,56 @@
+[
+  {
+    "name": "1password",
+    "title": "1Password",
+    "version": "1.4.0",
+    "release": "ga",
+    "description": "Collect events from 1Password Events API with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/1password/1password-1.4.0.zip",
+    "path": "/package/1password/1.4.0",
+    "icons": [
+      {
+        "src": "/img/1password-logo-light-bg.svg",
+        "path": "/package/1password/1.4.0/img/1password-logo-light-bg.svg",
+        "title": "1Password",
+        "size": "116x116",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "1password",
+        "title": "1Password Events",
+        "description": "Collect events from 1Password Events Reporting"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      },
+      "agent": {
+        "version": "^9.2.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security",
+      "credential_management"
+    ],
+    "signature_path": "/epr/1password/1password-1.4.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "1password.item_usages",
+        "title": "Collect 1Password item usages events"
+      },
+      {
+        "type": "logs",
+        "dataset": "1password.signin_attempts",
+        "title": "1Password sign-in attempt events"
+      }
+    ]
+  }
+]

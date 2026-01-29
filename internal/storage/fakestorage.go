@@ -5,13 +5,16 @@
 package storage
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"os"
 	"testing"
 
+	"cloud.google.com/go/storage"
 	"github.com/fsouza/fake-gcs-server/fakestorage"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/api/option"
 
 	"github.com/elastic/package-registry/internal/database"
 )
@@ -56,6 +59,19 @@ func PrepareFakeServer(tb testing.TB, indexPath string) *fakestorage.Server {
 	require.NoError(tb, err, "failed to prepare server objects")
 	tb.Logf("Prepared %d packages with total %d server objects.", numPackages, len(serverObjects))
 	return fakestorage.NewServer(serverObjects)
+}
+
+// ClientNoAuth returns a GCS client configured to talk to the server without any authentication.
+// Base on https://github.com/fsouza/fake-gcs-server/blob/0c333c15145e533e5595bc79def33fbbb5792e8a/fakestorage/server.go#L502-L508
+func ClientNoAuth(server *fakestorage.Server) *storage.Client {
+	client, err := storage.NewClient(context.Background(),
+		option.WithHTTPClient(server.HTTPClient()),
+		option.WithoutAuthentication(),
+	)
+	if err != nil {
+		panic(err)
+	}
+	return client
 }
 
 func UpdateFakeServer(tb testing.TB, server *fakestorage.Server, revision, indexPath string) {

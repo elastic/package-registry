@@ -49,7 +49,8 @@
       "description": "Query the database to capture metrics.",
       "multiple": true,
       "type": "metrics",
-      "input": "sql",
+      "input": "sql/metrics",
+      "ingestion_method": "Database",
       "template_path": "input.yml.hbs"
     }
   ]

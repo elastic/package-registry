@@ -5,7 +5,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -76,7 +75,12 @@ func TestSearchWithProxyMode(t *testing.T) {
       {
         "name": "nginx",
         "title": "Datasource title",
-        "description": "Details about the data source."
+        "description": "Details about the data source.",
+        "data_streams": [
+          "datasources.examplelog1",
+          "datasources.examplelog2",
+          "datasources.examplemetric"
+        ]
       }
     ],
     "categories": [
@@ -90,14 +94,18 @@ func TestSearchWithProxyMode(t *testing.T) {
 	}))
 	defer webServer.Close()
 
+	fsOpts := packages.FSIndexerOptions{
+		Logger: testLogger,
+	}
+
 	packagesBasePaths := []string{"./testdata/second_package_path", "./testdata/package"}
 	indexer := NewCombinedIndexer(
-		packages.NewZipFileSystemIndexer(testLogger, "./testdata/local-storage"),
-		packages.NewFileSystemIndexer(testLogger, packagesBasePaths...),
+		packages.NewZipFileSystemIndexer(fsOpts, "./testdata/local-storage"),
+		packages.NewFileSystemIndexer(fsOpts, packagesBasePaths...),
 	)
-	defer indexer.Close(context.Background())
+	defer indexer.Close(t.Context())
 
-	err := indexer.Init(context.Background())
+	err := indexer.Init(t.Context())
 	require.NoError(t, err)
 
 	proxyMode, err := proxymode.NewProxyMode(

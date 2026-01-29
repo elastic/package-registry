@@ -5,7 +5,6 @@
 package storage
 
 import (
-	"context"
 	"io"
 	"os"
 	"testing"
@@ -25,8 +24,9 @@ func TestPrepareFakeServer(t *testing.T) {
 	fs := PrepareFakeServer(t, indexFile)
 	defer fs.Stop()
 
+	client := ClientNoAuth(fs)
+
 	// then
-	client := fs.Client()
 	require.NotNil(t, client, "client should be initialized")
 
 	aCursor := readObject(t, client.Bucket(FakePackageStorageBucketInternal).Object(cursorStoragePath))
@@ -36,7 +36,7 @@ func TestPrepareFakeServer(t *testing.T) {
 }
 
 func readObject(t *testing.T, handle *storage.ObjectHandle) []byte {
-	reader, err := handle.NewReader(context.Background())
+	reader, err := handle.NewReader(t.Context())
 	require.NoErrorf(t, err, "can't initialize reader for object %s", handle.ObjectName())
 	content, err := io.ReadAll(reader)
 	require.NoErrorf(t, err, "io.ReadAll failed for object %s", handle.ObjectName())

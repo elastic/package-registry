@@ -19,6 +19,7 @@ import (
 	"github.com/elastic/go-ucfg/yaml"
 
 	"github.com/elastic/package-registry/categories"
+	"github.com/elastic/package-registry/internal/ingestionmethod"
 )
 
 const (
@@ -28,7 +29,8 @@ const (
 )
 
 var (
-	Categories = categories.DefaultCategories()
+	Categories       = categories.DefaultCategories()
+	IngestionMethods = ingestionmethod.DefaultIngestionMethod()
 
 	// Deprecated, keeping for backwards compatibility, Categories should be used instead.
 	CategoryTiles = categoryTitles(categories.DefaultCategories())
@@ -90,6 +92,7 @@ type BasePolicyTemplate struct {
 	Icons           []Image          `config:"icons,omitempty" json:"icons,omitempty" yaml:"icons,omitempty"`
 	Categories      []string         `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
 	DeploymentModes *DeploymentModes `config:"deployment_modes,omitempty" json:"deployment_modes,omitempty" yaml:"deployment_modes,omitempty"`
+	DataStreams     []string         `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
 }
 
 type PolicyTemplate struct {
@@ -106,9 +109,10 @@ type PolicyTemplate struct {
 	DeploymentModes *DeploymentModes `config:"deployment_modes,omitempty" json:"deployment_modes,omitempty" yaml:"deployment_modes,omitempty"`
 
 	// For purposes of "input packages"
-	Type         string `config:"type,omitempty" json:"type,omitempty" yaml:"type,omitempty"`
-	Input        string `config:"input,omitempty" json:"input,omitempty" yaml:"input,omitempty"`
-	TemplatePath string `config:"template_path,omitempty" json:"template_path,omitempty" yaml:"template_path,omitempty"`
+	Type            string `config:"type,omitempty" json:"type,omitempty" yaml:"type,omitempty"`
+	Input           string `config:"input,omitempty" json:"input,omitempty" yaml:"input,omitempty"`
+	IngestionMethod string `config:"ingestion_method,omitempty" json:"ingestion_method,omitempty" yaml:"ingestion_method,omitempty"`
+	TemplatePath    string `config:"template_path,omitempty" json:"template_path,omitempty" yaml:"template_path,omitempty"`
 }
 
 // Source contains metadata about the source of the package and its distribution.
@@ -118,7 +122,13 @@ type Source struct {
 
 type Conditions struct {
 	Kibana  *KibanaConditions  `config:"kibana,omitempty" json:"kibana,omitempty" yaml:"kibana,omitempty"`
-	Elastic *ElasticConditions `config:"elastic,omitempty" json:"elastic,omitempty" yaml"elastic,omitempty"`
+	Elastic *ElasticConditions `config:"elastic,omitempty" json:"elastic,omitempty" yaml:"elastic,omitempty"`
+	Agent   *AgentConditions   `config:"agent,omitempty" json:"agent,omitempty" yaml:"agent,omitempty"`
+}
+
+type AgentConditions struct {
+	Version    string `config:"version" json:"version" yaml:"version"`
+	constraint *semver.Constraints
 }
 
 // KibanaConditions defines conditions for Kibana (e.g. required version).
@@ -326,6 +336,11 @@ func newPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) 
 			readmePathShort := path.Join(packagePathPrefix, p.Name, p.Version, "docs", p.PolicyTemplates[i].Name+".md")
 			p.PolicyTemplates[i].Readme = &readmePathShort
 		}
+
+		// Fill ingestion method for input packages.
+		if p.Type == "input" && p.PolicyTemplates[i].Input != "" {
+			p.PolicyTemplates[i].IngestionMethod = IngestionMethods.Get(p.PolicyTemplates[i].Input)
+		}
 	}
 
 	p.setBasePolicyTemplates()
@@ -423,6 +438,13 @@ func (p *Package) setRuntimeFields() error {
 		}
 	}
 
+	if p.Conditions != nil && p.Conditions.Agent != nil {
+		p.Conditions.Agent.constraint, err = semver.NewConstraint(p.Conditions.Agent.Version)
+		if err != nil {
+			return fmt.Errorf("invalid Agent versions range %s: %w", p.Conditions.Agent.Version, err)
+		}
+	}
+
 	// Packages from proxy mode do not have "format_version" field
 	if p.FormatVersion == "" {
 		return nil
@@ -455,6 +477,7 @@ func (p *Package) setBasePolicyTemplates() {
 			Categories:      t.Categories,
 			Icons:           t.Icons,
 			DeploymentModes: t.DeploymentModes,
+			DataStreams:     t.DataStreams,
 		}
 
 		p.BasePolicyTemplates = append(p.BasePolicyTemplates, baseT)
@@ -513,6 +536,15 @@ func (p *Package) HasKibanaVersion(version *semver.Version) bool {
 	}
 
 	return p.Conditions.Kibana.constraint.Check(version)
+}
+
+func (p *Package) HasAgentVersion(version *semver.Version) bool {
+	// If the version is not specified, it is for all versions
+	if p.Conditions == nil || p.Conditions.Agent == nil || p.Conditions.Agent.constraint == nil || version == nil {
+		return true
+	}
+
+	return p.Conditions.Agent.constraint.Check(version)
 }
 
 func (p *Package) WorksWithCapabilities(capabilities []string) bool {

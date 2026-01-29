@@ -79,7 +79,7 @@ There are several options to run this for development purposes.
 ### Go command
 
 We recommend using [GVM](https://github.com/andrewkroh/gvm), same as done in the CI.
-This tool allows you to install multiple versions of Go, setting the Go environment in consequence: `eval "$(gvm 1.15.9)"`
+This tool allows you to install multiple versions of Go, setting the Go environment in consequence: `eval "$(gvm 1.25.1)"`
 
 To use the correct golang version, run:
 
@@ -131,8 +131,11 @@ docker run --rm -it -p 8080:8080 docker.elastic.co/package-registry/package-regi
 ```bash
 docker run --rm -it -p 8080:8080 \
   -v /path/to/local/packages:/packages/package-registry \
-  $(docker images -q docker.elastic.co/package-registry/package-registry:main)
+  docker.elastic.co/package-registry/package-registry:main
 ```
+
+> [!IMPORTANT]
+> When you mount local package directories into the container (e.g., `-v /path/to/packages:/packages/package-registry`), ensure the mounted directory has proper filesystem permissions allowing UID 1000 to read the files. Alternatively, you can run the container as root using `docker run --user 0 ...` if you encounter permission issues.
 
 **Listening on HTTPS**
 ```bash
@@ -311,3 +314,17 @@ CI automatically creates a new Docker image which will be available under `docke
 After the new registry Docker image is available, update the following projects that consume it:
 - Integrations: Update the version of the Package Registry Docker image as shown in this [sample PR](https://github.com/elastic/integrations/pull/581).
 - Elastic Package: Update the version of the Package Registry used in the docker-compose as shown in this [sample PR](https://github.com/elastic/elastic-package/pull/1254)
+
+## Development
+
+### Running Tests
+
+While developing on a new branch, there are some [Magefile targets](https://github.com/elastic/package-registry/blob/main/magefile.go) available that will help you in this development phase:
+
+- `mage test`: Run all tests.
+- `mage check`: Run static checks (format, add license headers, run `go mod tidy`, etc.).
+- `mage clean`: Delete generated files (e.g. `package-registry` binary).
+- `mage writeTestGoldenFiles`: Re-generate the expected test values of all tests if needed.
+    - Examples to use this target:
+      - a new package is added under `testdata/package`
+      - the `storage/testdata/search-index-all-full.json` file is updated with new packages or new fields.

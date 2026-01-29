@@ -4,13 +4,107 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased](https://github.com/elastic/package-registry/compare/v1.31.1...main)
+## [unreleased](https://github.com/elastic/package-registry/compare/v1.35.0...origin/main)
 
 ### Breaking changes
 
 ### Bugfixes
 
 ### Added
+
+### Deprecated
+
+### Known Issues
+
+
+## [v1.35.0](https://github.com/elastic/package-registry/compare/v1.34.0...v1.35.0)
+
+### Breaking changes
+
+* Package registry container image runs by default as a non-root user (UID 1000). [#1503](https://github.com/elastic/package-registry/pull/1503)
+
+### Bugfixes
+
+### Added
+
+### Deprecated
+
+### Known Issues
+
+
+## [v1.34.0](https://github.com/elastic/package-registry/compare/v1.33.0...v1.34.0)
+
+### Breaking changes
+
+### Bugfixes
+
+* Add missing mapping for azure/metrics input. [#1474](https://github.com/elastic/package-registry/pull/1474)
+* Update Go runtime to 1.25.5. [#1496](https://github.com/elastic/package-registry/pull/1496)
+
+### Added
+
+* Optimize package loading by reading package ZIP archives and package folders concurrently. [#1489](https://github.com/elastic/package-registry/pull/1489)
+* Allow empty package paths on startup. [#1482](https://github.com/elastic/package-registry/pull/1482)
+
+### Deprecated
+
+### Known Issues
+
+
+## [v1.33.0](https://github.com/elastic/package-registry/compare/v1.32.1...v1.33.0)
+
+### Breaking changes
+
+### Bugfixes
+
+* Update Go runtime to 1.25.3. [#1468](https://github.com/elastic/package-registry/pull/1468)
+* Fix performance issues when parsing some invalid certificates. [#1468](https://github.com/elastic/package-registry/pull/1468)
+
+### Added
+
+* Add new `agent.version` condition to search and categories endpoints. [#1460](https://github.com/elastic/package-registry/pull/1460)
+* Avoid parsing JSON columns in queries performed to artifacts related endpoints (SQL storage indexer). [#1386](https://github.com/elastic/package-registry/pull/1386)
+* Include SQL functions to improve filtering (SQL storage indexer). [#1442](https://github.com/elastic/package-registry/pull/1442)
+* Return just latest packages based on semantic versioning if `all=false` (SQL storage indexer). [#1445](https://github.com/elastic/package-registry/pull/1445)
+* Apply a capabilities filter at database level if capabilities query parameter is set (SQL storage indexer). [#1448](https://github.com/elastic/package-registry/pull/1448)
+* Apply the discovery filter at database level if discovery query parameter is set (SQL storage indexer). [#1454](https://github.com/elastic/package-registry/pull/1454)
+
+### Deprecated
+
+### Known Issues
+
+
+## [v1.32.1](https://github.com/elastic/package-registry/compare/v1.32.0...v1.32.1)
+
+### Breaking changes
+
+### Bugfixes
+
+* Include ingestion method also for input packages. [#1431](https://github.com/elastic/package-registry/pull/1431)
+
+### Added
+
+### Deprecated
+
+### Known Issues
+
+
+## [v1.32.0](https://github.com/elastic/package-registry/compare/v1.31.1...v1.32.0)
+
+### Breaking changes
+
+### Bugfixes
+
+* Update Go runtime to 1.25.1. [#1426](https://github.com/elastic/package-registry/pull/1426)
+* Fix context propagation in APM instrumentation in proxy mode. [#1424](https://github.com/elastic/package-registry/pull/1424)
+
+### Added
+
+* Added "ingestion_method" mapping to data_streams to provide a high-level understanding of data collection in order to support downstream documentation. [#1402](https://github.com/elastic/package-registry/pull/1402)
+* Add data_streams to search policy_templates. [#1408](https://github.com/elastic/package-registry/pull/1408)
+* Added Security Subcategory "misconfiguration_workflow" and "vulnerability_workflow" [#1414](https://github.com/elastic/package-registry/pull/1414)
+* Add "opentelemetry" category for packages related to OpenTelemetry. [#1415](https://github.com/elastic/package-registry/pull/1415)
+* Added APM information (trace.id, transaction.id, service.name, service.version, service.environment) to the logs in order to correlate signals in Kibana. [#1413](https://github.com/elastic/package-registry/pull/1413)
 
 ### Deprecated
 

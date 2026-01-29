@@ -334,6 +334,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "app_insights"
         ]
       },
       {
@@ -348,6 +351,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "app_state"
         ]
       }
     ],
@@ -408,6 +414,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "monitor"
         ]
       },
       {
@@ -422,6 +431,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "compute_vm"
         ]
       },
       {
@@ -436,6 +448,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "compute_vm_scaleset"
         ]
       },
       {
@@ -450,6 +465,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_registry"
         ]
       },
       {
@@ -464,6 +482,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_instance"
         ]
       },
       {
@@ -478,6 +499,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_service"
         ]
       },
       {
@@ -492,6 +516,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "database_account"
         ]
       },
       {
@@ -506,6 +533,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "storage_account"
         ]
       }
     ],
@@ -1118,6 +1148,13 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container",
+          "node",
+          "pod",
+          "system",
+          "volume"
         ]
       },
       {
@@ -1132,6 +1169,22 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "state_container",
+          "state_cronjob",
+          "state_daemonset",
+          "state_deployment",
+          "state_job",
+          "state_node",
+          "state_persistentvolume",
+          "state_persistentvolumeclaim",
+          "state_pod",
+          "state_replicaset",
+          "state_resourcequota",
+          "state_service",
+          "state_statefulset",
+          "state_storageclass"
         ]
       },
       {
@@ -1146,6 +1199,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "apiserver"
         ]
       },
       {
@@ -1160,6 +1216,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "proxy"
         ]
       },
       {
@@ -1174,6 +1233,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "scheduler"
         ]
       },
       {
@@ -1188,6 +1250,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "controllermanager"
         ]
       },
       {
@@ -1202,6 +1267,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "event"
         ]
       },
       {
@@ -1216,6 +1284,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "container_logs"
         ]
       },
       {
@@ -1230,6 +1301,9 @@
             "size": "32x32",
             "type": "image/svg+xml"
           }
+        ],
+        "data_streams": [
+          "audit_logs"
         ]
       }
     ],
