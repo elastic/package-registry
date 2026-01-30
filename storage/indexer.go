@@ -55,9 +55,10 @@ func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options Index
 		options.APMTracer = apm.DefaultTracer()
 	}
 	return &Indexer{
-		storageClient: storageClient,
-		options:       options,
-		logger:        logger,
+		storageClient:      storageClient,
+		options:            options,
+		logger:             logger,
+		deprecatedPackages: make(packages.DeprecatedPackages),
 	}
 }
 
@@ -184,7 +185,7 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 	metrics.NumberIndexedPackages.Set(float64(len(i.packageList)))
 
 	// set the deprecated notice information once the package list is updated
-	packages.UpdateLatestDeprecatedPackagesMapByName(i.packageList, &i.deprecatedPackages)
+	packages.UpdateLatestDeprecatedPackagesMapByName(i.packageList, i.deprecatedPackages)
 	packages.PropagateLatestDeprecatedInfoToPackageList(i.packageList, i.deprecatedPackages)
 
 	return nil

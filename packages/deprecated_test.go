@@ -19,31 +19,6 @@ func TestUpdateLatestDeprecatedPackagesMapByName(t *testing.T) {
 		expected           DeprecatedPackages
 	}{
 		{
-			name:               "nil deprecated packages map is initialized",
-			input:              Packages{},
-			deprecatedPackages: nil,
-			expected:           DeprecatedPackages{},
-		},
-		{
-			name: "inits map and adds new deprecated package",
-			input: Packages{
-				&Package{
-					BasePackage: BasePackage{
-						Name:       "test-package",
-						Deprecated: &Deprecated{},
-					},
-					versionSemVer: semver.MustParse("1.0.0"),
-				},
-			},
-			deprecatedPackages: nil,
-			expected: DeprecatedPackages{
-				"test-package": deprecatedMeta{
-					deprecated: &Deprecated{},
-					version:    semver.MustParse("1.0.0"),
-				},
-			},
-		},
-		{
 			name: "updates with newer version",
 			input: Packages{
 				{
@@ -139,7 +114,7 @@ func TestUpdateLatestDeprecatedPackagesMapByName(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			UpdateLatestDeprecatedPackagesMapByName(tt.input, &tt.deprecatedPackages)
+			UpdateLatestDeprecatedPackagesMapByName(tt.input, tt.deprecatedPackages)
 			assert.Equal(t, tt.expected, tt.deprecatedPackages)
 		})
 	}

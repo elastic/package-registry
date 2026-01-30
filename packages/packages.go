@@ -184,6 +184,7 @@ func NewFileSystemIndexer(options FSIndexerOptions, paths ...string) *FileSystem
 		enablePathsWatcher: options.EnablePathsWatcher,
 		apmTracer:          options.APMTracer,
 		pathsWorkers:       pathWorkers,
+		deprecatedPackages: make(DeprecatedPackages),
 	}
 }
 
@@ -227,6 +228,7 @@ func NewZipFileSystemIndexer(options FSIndexerOptions, paths ...string) *FileSys
 		enablePathsWatcher: options.EnablePathsWatcher,
 		apmTracer:          options.APMTracer,
 		pathsWorkers:       pathWorkers,
+		deprecatedPackages: make(DeprecatedPackages),
 	}
 }
 
@@ -335,7 +337,7 @@ func (i *FileSystemIndexer) updatePackageFileSystemIndex(ctx context.Context) er
 	}
 	i.packageList = newPackageList
 	// set the deprecated notice information once the package list is updated
-	UpdateLatestDeprecatedPackagesMapByName(i.packageList, &i.deprecatedPackages)
+	UpdateLatestDeprecatedPackagesMapByName(i.packageList, i.deprecatedPackages)
 	PropagateLatestDeprecatedInfoToPackageList(i.packageList, i.deprecatedPackages)
 	return nil
 }

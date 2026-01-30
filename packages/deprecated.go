@@ -23,17 +23,14 @@ func (d DeprecatedPackages) Deprecated(name string) (*Deprecated, bool) {
 
 // UpdateLatestDeprecatedPackagesMapByName updates a map of the latest deprecated packages by name.
 // It ensures that for each package name, only the deprecation info of the latest version is stored.
-func UpdateLatestDeprecatedPackagesMapByName(input Packages, deprecatedPackages *DeprecatedPackages) {
-	if *deprecatedPackages == nil {
-		*deprecatedPackages = make(DeprecatedPackages)
-	}
+func UpdateLatestDeprecatedPackagesMapByName(input Packages, deprecatedPackages DeprecatedPackages) {
 	for _, pkg := range input {
 		if pkg.BasePackage.Deprecated != nil {
 			deprecated := pkg.BasePackage.Deprecated
 
 			// if not existing or current version is greater than existing, update
-			if existing, found := (*deprecatedPackages)[pkg.BasePackage.Name]; !found || pkg.versionSemVer.GreaterThan(existing.version) {
-				(*deprecatedPackages)[pkg.BasePackage.Name] = deprecatedMeta{
+			if existing, found := deprecatedPackages[pkg.BasePackage.Name]; !found || pkg.versionSemVer.GreaterThan(existing.version) {
+				deprecatedPackages[pkg.BasePackage.Name] = deprecatedMeta{
 					deprecated: deprecated,
 					version:    pkg.versionSemVer,
 				}

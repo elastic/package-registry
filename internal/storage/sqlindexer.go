@@ -87,6 +87,7 @@ func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options Index
 		readPackagesBatchSize: defaultReadPackagesBatchSize,
 		cursor:                "init",
 		afterUpdateHook:       options.AfterUpdateIndexHook,
+		deprecatedPackages:    make(packages.DeprecatedPackages),
 	}
 
 	indexer.current = &indexer.database
@@ -228,7 +229,7 @@ func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 			startDuration := time.Since(startUpdate)
 			numPackages += len(pkgs)
 			// update packages with deprecated notice into the overall list
-			packages.UpdateLatestDeprecatedPackagesMapByName(pkgs, &i.deprecatedPackages)
+			packages.UpdateLatestDeprecatedPackagesMapByName(pkgs, i.deprecatedPackages)
 			i.logger.Debug("Filled database with a batch of packages", zap.Duration("elapsed.time", startDuration), zap.String("elapsed.time.human", startDuration.String()), zap.Int("num.packages", len(pkgs)))
 			return nil
 		})
