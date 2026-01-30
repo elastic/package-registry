@@ -115,8 +115,7 @@ func LoadPackagesAndCursorFromIndex(ctx context.Context, logger *zap.Logger, sto
 	return anIndex, storageCursor.Current, nil
 }
 
-func loadSearchIndexAllBatches(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, bucketName, rootStoragePath string, aCursor cursor, batchSize int,
-	process func(context.Context, packages.Packages, string) error) error {
+func loadSearchIndexAllBatches(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, bucketName, rootStoragePath string, aCursor cursor, batchSize int, process func(context.Context, packages.Packages, string) error) error {
 	span, ctx := apm.StartSpan(ctx, "LoadSearchIndexAll", "app")
 	span.Context.SetLabel("load.method", "batches")
 	span.Context.SetLabel("load.batch.size", batchSize)
@@ -143,7 +142,7 @@ func loadSearchIndexAllBatches(ctx context.Context, logger *zap.Logger, storageC
 	// and we are looking to optimize for memory use.
 	dec := json.NewDecoder(objectReader)
 	count := 0
-	pkgs := make(packages.Packages, 0, batchSize)
+	packages := make(packages.Packages, 0, batchSize)
 	for dec.More() {
 		// Read everything till the "packages" key in the map.
 		token, err := dec.Token()
@@ -170,16 +169,16 @@ func loadSearchIndexAllBatches(ctx context.Context, logger *zap.Logger, storageC
 			if err != nil {
 				return fmt.Errorf("unexpected error parsing package from index file (token: %v): %w", token, err)
 			}
-			pkgs = append(pkgs, p.PackageManifest)
+			packages = append(packages, p.PackageManifest)
 			count++
 
 			if count >= batchSize {
-				err = process(ctx, pkgs, aCursor.Current)
+				err = process(ctx, packages, aCursor.Current)
 				if err != nil {
 					return fmt.Errorf("error processing batch of packages: %w", err)
 				}
 				count = 0
-				pkgs = pkgs[:0] // Reset the slice to reuse the memory
+				packages = packages[:0] // Reset the slice to reuse the memory
 			}
 		}
 
@@ -192,8 +191,8 @@ func loadSearchIndexAllBatches(ctx context.Context, logger *zap.Logger, storageC
 			return fmt.Errorf("expected closing array, found %v", token)
 		}
 	}
-	if len(pkgs) > 0 {
-		err = process(ctx, pkgs, aCursor.Current)
+	if len(packages) > 0 {
+		err = process(ctx, packages, aCursor.Current)
 		if err != nil {
 			return fmt.Errorf("error processing final batch of packages: %w", err)
 		}
@@ -201,8 +200,7 @@ func loadSearchIndexAllBatches(ctx context.Context, logger *zap.Logger, storageC
 	return nil
 }
 
-func LoadPackagesAndCursorFromIndexBatches(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, storageBucketInternal, currentCursor string, batchSize int,
-	process func(context.Context, packages.Packages, string) error) (string, error) {
+func LoadPackagesAndCursorFromIndexBatches(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, storageBucketInternal, currentCursor string, batchSize int, process func(context.Context, packages.Packages, string) error) (string, error) {
 	bucketName, rootStoragePath, err := extractBucketNameFromURL(storageBucketInternal)
 	if err != nil {
 		return "", fmt.Errorf("can't extract bucket name from URL (url: %s): %w", storageBucketInternal, err)

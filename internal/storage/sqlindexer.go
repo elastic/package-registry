@@ -57,7 +57,6 @@ type SQLIndexer struct {
 	afterUpdateHook func(ctx context.Context)
 
 	// in-memory storage of deprecated packages, updated with every index update
-	// TODO: create an index of deprecated packages and access it directly from the database
 	deprecatedPackages packages.DeprecatedPackages
 }
 
