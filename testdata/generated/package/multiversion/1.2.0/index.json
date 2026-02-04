@@ -1,0 +1,39 @@
+{
+  "name": "multiversion",
+  "title": "Multi Version",
+  "version": "1.2.0",
+  "release": "ga",
+  "description": "Multiple versions of this integration exist.\n",
+  "type": "integration",
+  "download": "/epr/multiversion/multiversion-1.2.0.zip",
+  "path": "/package/multiversion/1.2.0",
+  "icons": [
+    {
+      "src": "/img/icon.svg",
+      "path": "/package/multiversion/1.2.0/img/icon.svg",
+      "type": "image/svg+xml"
+    }
+  ],
+  "conditions": {
+    "kibana": {
+      "version": ">6.7.0"
+    }
+  },
+  "categories": [
+    "custom",
+    "web"
+  ],
+  "deprecated": {
+    "since": "1.2.0",
+    "description": "This package is deprecated"
+  },
+  "format_version": "1.0.0",
+  "readme": "/package/multiversion/1.2.0/docs/README.md",
+  "license": "basic",
+  "assets": [
+    "/package/multiversion/1.2.0/changelog.yml",
+    "/package/multiversion/1.2.0/manifest.yml",
+    "/package/multiversion/1.2.0/docs/README.md",
+    "/package/multiversion/1.2.0/img/icon.svg"
+  ]
+}

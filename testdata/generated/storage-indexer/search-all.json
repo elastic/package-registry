@@ -13912,7 +13912,11 @@
         "dataset": "apache.status",
         "title": "Apache status metrics"
       }
-    ]
+    ],
+    "deprecated": {
+      "since": "1.3.0",
+      "description": "This package is deprecated"
+    }
   },
   {
     "name": "apache",
@@ -13967,7 +13971,11 @@
         "dataset": "apache.status",
         "title": "Apache status metrics"
       }
-    ]
+    ],
+    "deprecated": {
+      "since": "1.3.0",
+      "description": "This package is deprecated"
+    }
   },
   {
     "name": "apache",
@@ -14022,7 +14030,11 @@
         "dataset": "apache.status",
         "title": "Apache status metrics"
       }
-    ]
+    ],
+    "deprecated": {
+      "since": "1.3.0",
+      "description": "This package is deprecated"
+    }
   },
   {
     "name": "apache",
@@ -14065,7 +14077,11 @@
       {
         "type": "logs",
         "dataset": "apache.access",
-        "title": "Apache access logs"
+        "title": "Apache access logs",
+        "deprecated": {
+          "since": "1.3.5",
+          "description": "This data stream is deprecated"
+        }
       },
       {
         "type": "logs",
@@ -14077,7 +14093,11 @@
         "dataset": "apache.status",
         "title": "Apache status metrics"
       }
-    ]
+    ],
+    "deprecated": {
+      "since": "1.3.0",
+      "description": "This package is deprecated"
+    }
   },
   {
     "name": "tomcat",
@@ -25530,6 +25550,43 @@
     ]
   },
   {
+    "name": "discovery_empty",
+    "title": "Discovery Empty",
+    "version": "0.1.0",
+    "release": "beta",
+    "source": {
+      "license": "Apache-2.0"
+    },
+    "description": "This package is a dummy example for packages with the content type and discovery field empty. These packages contain resources that are useful with data ingested by other integrations. They are not used to configure data sources.\n",
+    "type": "content",
+    "download": "/epr/discovery_empty/discovery_empty-0.1.0.zip",
+    "path": "/package/discovery_empty/0.1.0",
+    "icons": [
+      {
+        "src": "/img/system.svg",
+        "path": "/package/discovery_empty/0.1.0/img/system.svg",
+        "title": "system",
+        "size": "1000x1000",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.16.0"
+      },
+      "elastic": {
+        "subscription": "basic"
+      }
+    },
+    "owner": {
+      "type": "elastic",
+      "github": "elastic/ecosystem"
+    },
+    "categories": [
+      "support"
+    ]
+  },
+  {
     "name": "discovery_fields",
     "title": "Discovery Empty",
     "version": "0.1.0",
@@ -25580,43 +25637,6 @@
         }
       ]
     }
-  },
-  {
-    "name": "discovery_empty",
-    "title": "Discovery Empty",
-    "version": "0.1.0",
-    "release": "beta",
-    "source": {
-      "license": "Apache-2.0"
-    },
-    "description": "This package is a dummy example for packages with the content type and discovery field empty. These packages contain resources that are useful with data ingested by other integrations. They are not used to configure data sources.\n",
-    "type": "content",
-    "download": "/epr/discovery_empty/discovery_empty-0.1.0.zip",
-    "path": "/package/discovery_empty/0.1.0",
-    "icons": [
-      {
-        "src": "/img/system.svg",
-        "path": "/package/discovery_empty/0.1.0/img/system.svg",
-        "title": "system",
-        "size": "1000x1000",
-        "type": "image/svg+xml"
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^8.16.0"
-      },
-      "elastic": {
-        "subscription": "basic"
-      }
-    },
-    "owner": {
-      "type": "elastic",
-      "github": "elastic/ecosystem"
-    },
-    "categories": [
-      "support"
-    ]
   },
   {
     "name": "docker",
@@ -44982,16 +45002,16 @@
   {
     "name": "sql",
     "title": "SQL Input",
-    "version": "0.5.0",
+    "version": "0.4.0",
     "release": "beta",
     "description": "Collects Metrics by Quering on SQL Databases",
     "type": "input",
-    "download": "/epr/sql/sql-0.5.0.zip",
-    "path": "/package/sql/0.5.0",
+    "download": "/epr/sql/sql-0.4.0.zip",
+    "path": "/package/sql/0.4.0",
     "icons": [
       {
         "src": "/img/sql-server-icon.svg",
-        "path": "/package/sql/0.5.0/img/sql-server-icon.svg",
+        "path": "/package/sql/0.4.0/img/sql-server-icon.svg",
         "title": "SQL logo",
         "size": "32x32",
         "type": "image/svg+xml"
@@ -45018,7 +45038,60 @@
     "categories": [
       "custom"
     ],
-    "signature_path": "/epr/sql/sql-0.5.0.zip.sig"
+    "signature_path": "/epr/sql/sql-0.4.0.zip.sig",
+    "deprecated": {
+      "since": "0.5.0",
+      "description": "This package is deprecated"
+    }
+  },
+  {
+    "name": "sql",
+    "title": "SQL Input",
+    "version": "0.5.0",
+    "release": "beta",
+    "description": "Collects Metrics by Quering on SQL Databases",
+    "type": "input",
+    "download": "/epr/sql/sql-0.5.0.zip",
+    "path": "/package/sql/0.5.0",
+    "icons": [
+      {
+        "src": "/img/sql-server-icon.svg",
+        "path": "/package/sql/0.5.0/img/sql-server-icon.svg",
+        "title": "SQL logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "sql",
+        "title": "SQL Metrics",
+        "description": "Collects Metrics by Quering on SQL Databases",
+        "deprecated": {
+          "since": "0.5.0",
+          "description": "This policy is deprecated"
+        }
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.13.0"
+      },
+      "elastic": {
+        "subscription": "basic"
+      }
+    },
+    "owner": {
+      "github": "elastic/obs-infraobs-integrations"
+    },
+    "categories": [
+      "custom"
+    ],
+    "signature_path": "/epr/sql/sql-0.5.0.zip.sig",
+    "deprecated": {
+      "since": "0.5.0",
+      "description": "This package is deprecated"
+    }
   },
   {
     "name": "stan",
