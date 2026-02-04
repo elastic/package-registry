@@ -162,7 +162,7 @@ func TestGet_ListPackages(t *testing.T) {
 					AllVersions: true,
 				},
 			},
-			expected: 663,
+			expected: 664,
 		},
 		{
 			name: "all packages with latest versions and no prerelease",
