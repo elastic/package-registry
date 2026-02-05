@@ -79,8 +79,8 @@ github.com/felixge/httpsnoop v1.0.4 h1:NFTV2Zj1bL4mc9sqWACXbQFVBBg2W3GPvqp8/ESS2
 github.com/felixge/httpsnoop v1.0.4/go.mod h1:m8KPJKqk1gH5J9DgRY2ASl2lWCfGKXixSwevea8zH2U=
 github.com/fsnotify/fsnotify v1.9.0 h1:2Ml+OJNzbYCTzsxtv8vKSFD9PbJjmhYF14k/jKC7S9k=
 github.com/fsnotify/fsnotify v1.9.0/go.mod h1:8jBTzvmWwFyi3Pb8djgCCO5IBqzKJ/Jwo8TRcHyHii0=
-github.com/fsouza/fake-gcs-server v1.53.0 h1:vboSrd2ZEBoIQBfvUBAWQX0xvSFh1oLsn/Cp+0Pa6IA=
-github.com/fsouza/fake-gcs-server v1.53.0/go.mod h1:kF+DadfinC7mlc1/2d/ZDHS9VyUk1hTcXJ6VwLSlzfM=
+github.com/fsouza/fake-gcs-server v1.53.1 h1:/gjEYut23/MMhe4daYJ5yIBGPUmLAYupgITuoWG3+jI=
+github.com/fsouza/fake-gcs-server v1.53.1/go.mod h1:kF+DadfinC7mlc1/2d/ZDHS9VyUk1hTcXJ6VwLSlzfM=
 github.com/go-ini/ini v1.67.0 h1:z6ZrTEZqSWOTyH2FlglNbNgARyHG8oLW9gMELqKr06A=
 github.com/go-ini/ini v1.67.0/go.mod h1:ByCAeIL28uOIIG0E3PJtZPDL8WnHpFKFOtgjp+3Ies8=
 github.com/go-jose/go-jose/v4 v4.1.3 h1:CVLmWDhDVRa6Mi/IgCgaopNosCaHz7zrMeF9MlZRkrs=
