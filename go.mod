@@ -16,10 +16,10 @@ require (
 	github.com/magefile/mage v1.15.0
 	github.com/prometheus/client_golang v1.23.2
 	github.com/stretchr/testify v1.11.1
-	go.elastic.co/apm/module/apmgorilla/v2 v2.7.2
-	go.elastic.co/apm/module/apmhttp/v2 v2.7.2
-	go.elastic.co/apm/module/apmzap/v2 v2.7.2
-	go.elastic.co/apm/v2 v2.7.2
+	go.elastic.co/apm/module/apmgorilla/v2 v2.7.3
+	go.elastic.co/apm/module/apmhttp/v2 v2.7.3
+	go.elastic.co/apm/module/apmzap/v2 v2.7.3
+	go.elastic.co/apm/v2 v2.7.3
 	go.elastic.co/ecszap v1.0.3
 	go.uber.org/zap v1.27.1
 	golang.org/x/tools v0.41.0
