@@ -54,6 +54,26 @@
     ]
   },
   {
+    "name": "dataset_is_prefix",
+    "title": "DatasetIsPrefix Flag",
+    "version": "0.0.1",
+    "release": "beta",
+    "description": "This package contains a datastream with the dataset_is_prefix flag set to true.\n",
+    "type": "integration",
+    "download": "/epr/dataset_is_prefix/dataset_is_prefix-0.0.1.zip",
+    "path": "/package/dataset_is_prefix/0.0.1",
+    "categories": [
+      "custom"
+    ],
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "dataset_is_prefix.test",
+        "title": "dataset_is_prefix test data stream"
+      }
+    ]
+  },
+  {
     "name": "datasources",
     "title": "Default datasource Integration",
     "version": "1.0.0",
@@ -93,6 +113,73 @@
         "dataset": "datasources.examplemetric",
         "title": "Example data stream with inputs"
       }
+    ]
+  },
+  {
+    "name": "deployment_modes",
+    "title": "Deployment Modes",
+    "version": "0.0.1",
+    "release": "beta",
+    "source": {
+      "license": "Elastic-2.0"
+    },
+    "description": "Package containing policy templates with different deployment modes",
+    "type": "integration",
+    "download": "/epr/deployment_modes/deployment_modes-0.0.1.zip",
+    "path": "/package/deployment_modes/0.0.1",
+    "icons": [
+      {
+        "src": "/img/sample-logo.svg",
+        "path": "/package/deployment_modes/0.0.1/img/sample-logo.svg",
+        "title": "Sample logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates_behavior": "combined_policy",
+    "policy_templates": [
+      {
+        "name": "agentless",
+        "title": "Sample logs",
+        "description": "Collect sample logs",
+        "deployment_modes": {
+          "default": {
+            "enabled": false
+          },
+          "agentless": {
+            "enabled": true,
+            "is_default": true
+          }
+        }
+      },
+      {
+        "name": "default",
+        "title": "Sample logs",
+        "description": "Collect sample logs",
+        "deployment_modes": {
+          "default": {
+            "enabled": true
+          },
+          "agentless": {
+            "enabled": true
+          }
+        }
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.15.2"
+      },
+      "elastic": {
+        "subscription": "basic"
+      }
+    },
+    "owner": {
+      "type": "elastic",
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "custom"
     ]
   },
   {
@@ -334,6 +421,33 @@
       "since": "1.2.0",
       "description": "This package is deprecated"
     }
+  },
+  {
+    "name": "multiple_false",
+    "title": "Multiple false",
+    "version": "0.0.1",
+    "release": "beta",
+    "description": "Tests that multiple can be set to false",
+    "type": "integration",
+    "download": "/epr/multiple_false/multiple_false-0.0.1.zip",
+    "path": "/package/multiple_false/0.0.1",
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Logs datasource",
+        "description": "Datasource for your log files."
+      }
+    ],
+    "categories": [
+      "custom"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "multiple_false.foo",
+        "title": "Foo"
+      }
+    ]
   },
   {
     "name": "deprecated_integration_stream",
@@ -600,6 +714,37 @@
         "dataset": "reference.reference",
         "title": "Reference Logs Title"
       }
+    ]
+  },
+  {
+    "name": "sql_input",
+    "title": "SQL Input",
+    "version": "0.3.0",
+    "release": "beta",
+    "description": "Execute custom queries against an SQL database and store the results in Elasticsearch.",
+    "type": "input",
+    "download": "/epr/sql_input/sql_input-0.3.0.zip",
+    "path": "/package/sql_input/0.3.0",
+    "icons": [
+      {
+        "src": "/img/sample-logo.svg",
+        "path": "/package/sql_input/0.3.0/img/sample-logo.svg",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "sql_query",
+        "title": "SQL Query",
+        "description": "Query the database to capture metrics."
+      }
+    ],
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "custom",
+      "datastore"
     ]
   },
   {

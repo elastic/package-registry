@@ -54,6 +54,84 @@
     ]
   },
   {
+    "name": "datastream_without_release",
+    "title": "Apache Spark",
+    "version": "0.1.0",
+    "release": "beta",
+    "description": "Collect metrics from Apache Spark with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/datastream_without_release/datastream_without_release-0.1.0.zip",
+    "path": "/package/datastream_without_release/0.1.0",
+    "icons": [
+      {
+        "src": "/img/apache_spark-logo.svg",
+        "path": "/package/datastream_without_release/0.1.0/img/apache_spark-logo.svg",
+        "title": "Apache Spark logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "apache_spark",
+        "title": "Apache Spark metrics",
+        "description": "Collect Apache Spark metrics"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.1.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/obs-service-integrations"
+    },
+    "categories": [
+      "datastore",
+      "monitoring"
+    ],
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "datastream_without_release.nodes",
+        "title": "Apache Spark nodes metrics"
+      }
+    ]
+  },
+  {
+    "name": "dataset_is_prefix",
+    "title": "DatasetIsPrefix Flag",
+    "version": "0.0.1",
+    "release": "beta",
+    "description": "This package contains a datastream with the dataset_is_prefix flag set to true.\n",
+    "type": "integration",
+    "download": "/epr/dataset_is_prefix/dataset_is_prefix-0.0.1.zip",
+    "path": "/package/dataset_is_prefix/0.0.1",
+    "categories": [
+      "custom"
+    ],
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "dataset_is_prefix.test",
+        "title": "dataset_is_prefix test data stream"
+      }
+    ]
+  },
+  {
+    "name": "defaultrelease",
+    "title": "Default Release",
+    "version": "0.0.1",
+    "release": "beta",
+    "description": "Package without release, should be set to default",
+    "type": "solution",
+    "download": "/epr/defaultrelease/defaultrelease-0.0.1.zip",
+    "path": "/package/defaultrelease/0.0.1",
+    "categories": [
+      "aws"
+    ]
+  },
+  {
     "name": "datasources",
     "title": "Default datasource Integration",
     "version": "1.0.0",
@@ -93,6 +171,165 @@
         "dataset": "datasources.examplemetric",
         "title": "Example data stream with inputs"
       }
+    ]
+  },
+  {
+    "name": "ecs_style_dataset",
+    "title": "Default pipeline Integration",
+    "version": "0.0.1",
+    "release": "beta",
+    "description": "Tests the registry validations works for dataset fields using the ecs style format",
+    "type": "integration",
+    "download": "/epr/ecs_style_dataset/ecs_style_dataset-0.0.1.zip",
+    "path": "/package/ecs_style_dataset/0.0.1",
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Logs datasource",
+        "description": "Datasource for your log files."
+      }
+    ],
+    "categories": [
+      "monitoring"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "ecs_style_dataset.foo",
+        "title": "Foo"
+      }
+    ]
+  },
+  {
+    "name": "default_pipeline",
+    "title": "Default pipeline Integration",
+    "version": "0.0.2",
+    "release": "beta",
+    "description": "Tests if no pipeline is set, it defaults to the default one",
+    "type": "integration",
+    "download": "/epr/default_pipeline/default_pipeline-0.0.2.zip",
+    "path": "/package/default_pipeline/0.0.2",
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Logs datasource",
+        "description": "Datasource for your log files."
+      }
+    ],
+    "categories": [
+      "containers",
+      "message_queue"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "default_pipeline.foo",
+        "title": "Foo"
+      }
+    ]
+  },
+  {
+    "name": "deployment_modes",
+    "title": "Deployment Modes",
+    "version": "0.0.1",
+    "release": "beta",
+    "source": {
+      "license": "Elastic-2.0"
+    },
+    "description": "Package containing policy templates with different deployment modes",
+    "type": "integration",
+    "download": "/epr/deployment_modes/deployment_modes-0.0.1.zip",
+    "path": "/package/deployment_modes/0.0.1",
+    "icons": [
+      {
+        "src": "/img/sample-logo.svg",
+        "path": "/package/deployment_modes/0.0.1/img/sample-logo.svg",
+        "title": "Sample logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates_behavior": "combined_policy",
+    "policy_templates": [
+      {
+        "name": "agentless",
+        "title": "Sample logs",
+        "description": "Collect sample logs",
+        "deployment_modes": {
+          "default": {
+            "enabled": false
+          },
+          "agentless": {
+            "enabled": true,
+            "is_default": true
+          }
+        }
+      },
+      {
+        "name": "default",
+        "title": "Sample logs",
+        "description": "Collect sample logs",
+        "deployment_modes": {
+          "default": {
+            "enabled": true
+          },
+          "agentless": {
+            "enabled": true
+          }
+        }
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.15.2"
+      },
+      "elastic": {
+        "subscription": "basic"
+      }
+    },
+    "owner": {
+      "type": "elastic",
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "custom"
+    ]
+  },
+  {
+    "name": "discovery_empty",
+    "title": "Discovery Empty",
+    "version": "0.1.0",
+    "release": "beta",
+    "source": {
+      "license": "Apache-2.0"
+    },
+    "description": "This package is a dummy example for packages with the content type and discovery field empty. These packages contain resources that are useful with data ingested by other integrations. They are not used to configure data sources.\n",
+    "type": "content",
+    "download": "/epr/discovery_empty/discovery_empty-0.1.0.zip",
+    "path": "/package/discovery_empty/0.1.0",
+    "icons": [
+      {
+        "src": "/img/system.svg",
+        "path": "/package/discovery_empty/0.1.0/img/system.svg",
+        "title": "system",
+        "size": "1000x1000",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.16.0"
+      },
+      "elastic": {
+        "subscription": "basic"
+      }
+    },
+    "owner": {
+      "type": "elastic",
+      "github": "elastic/ecosystem"
+    },
+    "categories": [
+      "support"
     ]
   },
   {
@@ -224,6 +461,58 @@
     ]
   },
   {
+    "name": "good_content",
+    "title": "Good content package",
+    "version": "0.1.0",
+    "release": "beta",
+    "source": {
+      "license": "Apache-2.0"
+    },
+    "description": "This package is a dummy example for packages with the content type. These packages contain resources that are useful with data ingested by other integrations. They are not used to configure data sources.\n",
+    "type": "content",
+    "download": "/epr/good_content/good_content-0.1.0.zip",
+    "path": "/package/good_content/0.1.0",
+    "icons": [
+      {
+        "src": "/img/system.svg",
+        "path": "/package/good_content/0.1.0/img/system.svg",
+        "title": "system",
+        "size": "1000x1000",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.16.0"
+      },
+      "elastic": {
+        "subscription": "basic"
+      }
+    },
+    "owner": {
+      "type": "elastic",
+      "github": "elastic/ecosystem"
+    },
+    "categories": [
+      "web"
+    ],
+    "discovery": {
+      "fields": [
+        {
+          "name": "process.pid"
+        }
+      ],
+      "datasets": [
+        {
+          "name": "good_content.access"
+        },
+        {
+          "name": "good_content.errors"
+        }
+      ]
+    }
+  },
+  {
     "name": "hidden",
     "title": "Hidden",
     "version": "1.0.0",
@@ -270,6 +559,69 @@
         "type": "metrics",
         "dataset": "ilm_policy.ilm_policy",
         "title": "ILM policy overrride data stream"
+      }
+    ]
+  },
+  {
+    "name": "input_groups",
+    "title": "Input Groups",
+    "version": "0.0.1",
+    "release": "beta",
+    "description": "AWS Integration for testing input groups",
+    "type": "integration",
+    "download": "/epr/input_groups/input_groups-0.0.1.zip",
+    "path": "/package/input_groups/0.0.1",
+    "icons": [
+      {
+        "src": "/img/logo_aws.svg",
+        "path": "/package/input_groups/0.0.1/img/logo_aws.svg",
+        "title": "logo aws",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "ec2",
+        "title": "AWS EC2",
+        "description": "Collect logs and metrics from EC2 service",
+        "icons": [
+          {
+            "src": "/img/logo_ec2.svg",
+            "path": "/package/input_groups/0.0.1/img/logo_ec2.svg",
+            "title": "AWS EC2 logo",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "categories": [
+          "compute"
+        ],
+        "data_streams": [
+          "ec2_logs",
+          "ec2_metrics"
+        ]
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "~7.x.x"
+      }
+    },
+    "categories": [
+      "aws",
+      "cloud"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "input_groups.ec2_logs",
+        "title": "AWS EC2 logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "input_groups.ec2_metrics",
+        "title": "AWS EC2 metrics"
       }
     ]
   },
@@ -412,6 +764,33 @@
       "since": "1.2.0",
       "description": "This package is deprecated"
     }
+  },
+  {
+    "name": "multiple_false",
+    "title": "Multiple false",
+    "version": "0.0.1",
+    "release": "beta",
+    "description": "Tests that multiple can be set to false",
+    "type": "integration",
+    "download": "/epr/multiple_false/multiple_false-0.0.1.zip",
+    "path": "/package/multiple_false/0.0.1",
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Logs datasource",
+        "description": "Datasource for your log files."
+      }
+    ],
+    "categories": [
+      "custom"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "multiple_false.foo",
+        "title": "Foo"
+      }
+    ]
   },
   {
     "name": "deprecated_integration_stream",
@@ -717,6 +1096,37 @@
         "dataset": "reference.reference",
         "title": "Reference Logs Title"
       }
+    ]
+  },
+  {
+    "name": "sql_input",
+    "title": "SQL Input",
+    "version": "0.3.0",
+    "release": "beta",
+    "description": "Execute custom queries against an SQL database and store the results in Elasticsearch.",
+    "type": "input",
+    "download": "/epr/sql_input/sql_input-0.3.0.zip",
+    "path": "/package/sql_input/0.3.0",
+    "icons": [
+      {
+        "src": "/img/sample-logo.svg",
+        "path": "/package/sql_input/0.3.0/img/sample-logo.svg",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "sql_query",
+        "title": "SQL Query",
+        "description": "Query the database to capture metrics."
+      }
+    ],
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "custom",
+      "datastore"
     ]
   },
   {
