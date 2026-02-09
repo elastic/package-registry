@@ -55,6 +55,9 @@ type SQLIndexer struct {
 	readPackagesBatchSize int
 
 	afterUpdateHook func(ctx context.Context)
+
+	// in-memory storage of deprecated packages, updated with every index update
+	deprecatedPackages packages.DeprecatedPackages
 }
 
 type IndexerOptions struct {
@@ -83,6 +86,7 @@ func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options Index
 		readPackagesBatchSize: defaultReadPackagesBatchSize,
 		cursor:                "init",
 		afterUpdateHook:       options.AfterUpdateIndexHook,
+		deprecatedPackages:    make(packages.DeprecatedPackages),
 	}
 
 	indexer.current = &indexer.database
@@ -214,17 +218,20 @@ func (i *SQLIndexer) updateIndex(ctx context.Context) error {
 	}(i.cursor)
 
 	numPackages := 0
-	currentCursor, err := LoadPackagesAndCursorFromIndexBatches(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, i.cursor, i.readPackagesBatchSize, func(ctx context.Context, pkgs packages.Packages, newCursor string) error {
-		// This function is called for each batch of packages read from the index.
-		startUpdate := time.Now()
-		if err := i.updateDatabase(ctx, &pkgs, newCursor); err != nil {
-			return fmt.Errorf("failed to update database: %w", err)
-		}
-		startDuration := time.Since(startUpdate)
-		numPackages += len(pkgs)
-		i.logger.Debug("Filled database with a batch of packages", zap.Duration("elapsed.time", startDuration), zap.String("elapsed.time.human", startDuration.String()), zap.Int("num.packages", len(pkgs)))
-		return nil
-	})
+	currentCursor, err := LoadPackagesAndCursorFromIndexBatches(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, i.cursor, i.readPackagesBatchSize,
+		func(ctx context.Context, pkgs packages.Packages, newCursor string) error {
+			// This function is called for each batch of packages read from the index.
+			startUpdate := time.Now()
+			if err := i.updateDatabase(ctx, &pkgs, newCursor); err != nil {
+				return fmt.Errorf("failed to update database: %w", err)
+			}
+			startDuration := time.Since(startUpdate)
+			numPackages += len(pkgs)
+			// update packages with deprecated notice into the overall list
+			packages.UpdateLatestDeprecatedPackagesMapByName(pkgs, i.deprecatedPackages)
+			i.logger.Debug("Filled database with a batch of packages", zap.Duration("elapsed.time", startDuration), zap.String("elapsed.time.human", startDuration.String()), zap.Int("num.packages", len(pkgs)))
+			return nil
+		})
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 		return fmt.Errorf("can't load the search-index-all index content: %w", err)
@@ -451,6 +458,8 @@ func (i *SQLIndexer) Get(ctx context.Context, opts *packages.GetOptions) (packag
 	if err != nil {
 		return nil, err
 	}
+
+	packages.PropagateLatestDeprecatedInfoToPackageList(readPackages, i.deprecatedPackages)
 
 	// Apply filtering at application level if needed, not required anymore access to the database.
 	if opts != nil && opts.Filter != nil {

@@ -10,7 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
+* Update Go runtime to 1.25.6. [#1545](https://github.com/elastic/package-registry/pull/1545)
+
 ### Added
+
+* Add deprecated field support. [#1516](https://github.com/elastic/package-registry/pull/1516)
 
 ### Deprecated
 

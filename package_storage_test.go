@@ -59,6 +59,7 @@ func generateTestCaseStorageEndpoints(indexer Indexer) ([]struct {
 	if err != nil {
 		return nil, err
 	}
+
 	disallowUnknownQueryParamsSearchHandler, err := newSearchHandler(testLogger, indexer, testCacheTime,
 		searchWithAllowUnknownQueryParameters(false),
 	)
@@ -134,6 +135,9 @@ func generateTestCaseStorageEndpoints(indexer Indexer) ([]struct {
 		{"/search?package=1password&agent.version=9.5.0", "/search", "search-agent-950.json", searchHandler},
 		{"/categories?agent.version=9.1.0", "/categories", "categories-agent-910.json", categoriesHandler},
 		{"/categories?agent.version=9.5.0", "/categories", "categories-agent-950.json", categoriesHandler},
+
+		// Test queries with deprecated packages
+		{"/search?package=apache&all=true", "/search", "search-deprecated-package-versions.json", searchHandler},
 	}, nil
 }
 
@@ -198,7 +202,9 @@ func generateTestPackageIndexEndpoints(indexer Indexer) ([]struct {
 		{"/package/kubernetes/0.3.0/", packageIndexRouterPath, "kubernetes-0.3.0.json", packageIndexHandler},
 		{"/package/osquery/1.0.3/", packageIndexRouterPath, "osquery-1.0.3.json", packageIndexHandler},
 		{"/package/sql/0.5.0/", packageIndexRouterPath, "sql-0.5.0.json", packageIndexHandler},
+		{"/package/sql/0.4.0/", packageIndexRouterPath, "package-deprecated-sql-0.4.0.json", packageIndexHandler},
 		{"/package/cassandra/1.1.0/", packageIndexRouterPath, "cassandra-1.1.0.json", packageIndexHandler},
+		{"/package/apache/1.3.5/", packageIndexRouterPath, "package-apache-1.3.5.json", packageIndexHandler},
 	}, nil
 }
 

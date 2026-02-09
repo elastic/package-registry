@@ -23,6 +23,10 @@
     "custom",
     "web"
   ],
+  "deprecated": {
+    "since": "1.2.0",
+    "description": "This package is deprecated"
+  },
   "format_version": "1.0.0",
   "readme": "/package/multiversion/1.1.0/docs/README.md",
   "license": "basic",

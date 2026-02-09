@@ -82,6 +82,7 @@ type BasePackage struct {
 	SignaturePath           string               `config:"signature_path,omitempty" json:"signature_path,omitempty" yaml:"signature_path,omitempty"`
 	Discovery               *Discovery           `config:"discovery,omitempty" json:"discovery,omitempty,omitzero" yaml:"discovery,omitempty"`
 	BaseDataStreams         []*BaseDataStream    `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
+	Deprecated              *Deprecated          `config:"deprecated,omitempty" json:"deprecated,omitempty" yaml:"deprecated,omitempty"`
 }
 
 // BasePolicyTemplate is used for the package policy templates in the /search endpoint
@@ -93,6 +94,7 @@ type BasePolicyTemplate struct {
 	Categories      []string         `config:"categories,omitempty" json:"categories,omitempty" yaml:"categories,omitempty"`
 	DeploymentModes *DeploymentModes `config:"deployment_modes,omitempty" json:"deployment_modes,omitempty" yaml:"deployment_modes,omitempty"`
 	DataStreams     []string         `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
+	Deprecated      *Deprecated      `config:"deprecated,omitempty" json:"deprecated,omitempty" yaml:"deprecated,omitempty"`
 }
 
 type PolicyTemplate struct {
@@ -109,10 +111,11 @@ type PolicyTemplate struct {
 	DeploymentModes *DeploymentModes `config:"deployment_modes,omitempty" json:"deployment_modes,omitempty" yaml:"deployment_modes,omitempty"`
 
 	// For purposes of "input packages"
-	Type            string `config:"type,omitempty" json:"type,omitempty" yaml:"type,omitempty"`
-	Input           string `config:"input,omitempty" json:"input,omitempty" yaml:"input,omitempty"`
-	IngestionMethod string `config:"ingestion_method,omitempty" json:"ingestion_method,omitempty" yaml:"ingestion_method,omitempty"`
-	TemplatePath    string `config:"template_path,omitempty" json:"template_path,omitempty" yaml:"template_path,omitempty"`
+	Type            string      `config:"type,omitempty" json:"type,omitempty" yaml:"type,omitempty"`
+	Input           string      `config:"input,omitempty" json:"input,omitempty" yaml:"input,omitempty"`
+	IngestionMethod string      `config:"ingestion_method,omitempty" json:"ingestion_method,omitempty" yaml:"ingestion_method,omitempty"`
+	TemplatePath    string      `config:"template_path,omitempty" json:"template_path,omitempty" yaml:"template_path,omitempty"`
+	Deprecated      *Deprecated `config:"deprecated,omitempty" json:"deprecated,omitempty" yaml:"deprecated,omitempty"`
 }
 
 // Source contains metadata about the source of the package and its distribution.
@@ -222,6 +225,18 @@ type DeploymentModes struct {
 type DeploymentMode struct {
 	Enabled   bool  `config:"enabled" json:"enabled" yaml:"enabled" validate:"required"`
 	IsDefault *bool `config:"is_default" json:"is_default,omitempty" yaml:"is_default,omitempty"`
+}
+
+type Deprecated struct {
+	Since       string `config:"since" json:"since" yaml:"since"`
+	Description string `config:"description" json:"description" yaml:"description"`
+	ReplacedBy  *struct {
+		Package        string `config:"package,omitempty" json:"package,omitempty" yaml:"package,omitempty"`
+		PolicyTemplate string `config:"policy_template,omitempty" json:"policy_template,omitempty" yaml:"policy_template,omitempty"`
+		Input          string `config:"input,omitempty" json:"input,omitempty" yaml:"input,omitempty"`
+		DataStream     string `config:"data_stream,omitempty" json:"data_stream,omitempty" yaml:"data_stream,omitempty"`
+		Variable       string `config:"variable,omitempty" json:"variable,omitempty" yaml:"variable,omitempty"`
+	} `config:"replaced_by,omitempty" json:"replaced_by,omitempty" yaml:"replaced_by,omitempty"`
 }
 
 // Deprecated: NewCommand is not currently used and will be removed in a future release.
@@ -478,6 +493,7 @@ func (p *Package) setBasePolicyTemplates() {
 			Icons:           t.Icons,
 			DeploymentModes: t.DeploymentModes,
 			DataStreams:     t.DataStreams,
+			Deprecated:      t.Deprecated,
 		}
 
 		p.BasePolicyTemplates = append(p.BasePolicyTemplates, baseT)
@@ -490,9 +506,10 @@ func (p *Package) setBasePolicyTemplates() {
 func (p *Package) setBaseDataStreams() {
 	for _, ds := range p.DataStreams {
 		baseStream := &BaseDataStream{
-			Type:    ds.Type,
-			Dataset: ds.Dataset,
-			Title:   ds.Title,
+			Type:       ds.Type,
+			Dataset:    ds.Dataset,
+			Title:      ds.Title,
+			Deprecated: ds.Deprecated,
 		}
 		p.BaseDataStreams = append(p.BaseDataStreams, baseStream)
 	}

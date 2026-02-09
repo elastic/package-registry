@@ -385,17 +385,17 @@
   },
   {
     "name": "multiversion",
-    "title": "Multi Version Second with the same version! This one should win, because it is first.",
-    "version": "1.1.0",
+    "title": "Multi Version",
+    "version": "1.2.0",
     "release": "ga",
     "description": "Multiple versions of this integration exist.\n",
     "type": "integration",
-    "download": "/epr/multiversion/multiversion-1.1.0.zip",
-    "path": "/package/multiversion/1.1.0",
+    "download": "/epr/multiversion/multiversion-1.2.0.zip",
+    "path": "/package/multiversion/1.2.0",
     "icons": [
       {
         "src": "/img/icon.svg",
-        "path": "/package/multiversion/1.1.0/img/icon.svg",
+        "path": "/package/multiversion/1.2.0/img/icon.svg",
         "type": "image/svg+xml"
       }
     ],
@@ -407,7 +407,213 @@
     "categories": [
       "custom",
       "web"
+    ],
+    "deprecated": {
+      "since": "1.2.0",
+      "description": "This package is deprecated"
+    }
+  },
+  {
+    "name": "deprecated_integration_stream",
+    "title": "New Package",
+    "version": "1.0.0",
+    "release": "ga",
+    "source": {
+      "license": "Elastic-2.0"
+    },
+    "description": "This is a new package.",
+    "type": "integration",
+    "download": "/epr/deprecated_integration_stream/deprecated_integration_stream-1.0.0.zip",
+    "path": "/package/deprecated_integration_stream/1.0.0",
+    "icons": [
+      {
+        "src": "/img/sample-logo.svg",
+        "path": "/package/deprecated_integration_stream/1.0.0/img/sample-logo.svg",
+        "title": "Sample logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "sample",
+        "title": "Sample logs",
+        "description": "Collect sample logs"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^9.2.3"
+      },
+      "elastic": {
+        "subscription": "basic"
+      }
+    },
+    "owner": {
+      "type": "elastic",
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "custom"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "deprecated_integration_stream.new_data_stream",
+        "title": "New Data Stream"
+      }
     ]
+  },
+  {
+    "name": "deprecated_integration_input",
+    "title": "New Package",
+    "version": "1.0.0",
+    "release": "ga",
+    "source": {
+      "license": "Elastic-2.0"
+    },
+    "description": "This is a new package.",
+    "type": "integration",
+    "download": "/epr/deprecated_integration_input/deprecated_integration_input-1.0.0.zip",
+    "path": "/package/deprecated_integration_input/1.0.0",
+    "icons": [
+      {
+        "src": "/img/sample-logo.svg",
+        "path": "/package/deprecated_integration_input/1.0.0/img/sample-logo.svg",
+        "title": "Sample logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "sample",
+        "title": "Sample logs",
+        "description": "Collect sample logs"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^9.2.3"
+      },
+      "elastic": {
+        "subscription": "basic"
+      }
+    },
+    "owner": {
+      "type": "elastic",
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "custom"
+    ]
+  },
+  {
+    "name": "deprecated_input_policy",
+    "title": "New Package",
+    "version": "1.0.0",
+    "release": "ga",
+    "source": {
+      "license": "Elastic-2.0"
+    },
+    "description": "This is a new package.",
+    "type": "input",
+    "download": "/epr/deprecated_input_policy/deprecated_input_policy-1.0.0.zip",
+    "path": "/package/deprecated_input_policy/1.0.0",
+    "icons": [
+      {
+        "src": "/img/sample-logo.svg",
+        "path": "/package/deprecated_input_policy/1.0.0/img/sample-logo.svg",
+        "title": "Sample logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "sample_deprecated",
+        "title": "Sample logs",
+        "description": "Collect sample logs",
+        "deprecated": {
+          "since": "1.2.0",
+          "description": "This policy is deprecated",
+          "replaced_by": {
+            "policy_template": "sample"
+          }
+        }
+      },
+      {
+        "name": "sample",
+        "title": "Sample logs",
+        "description": "Collect sample logs"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^9.2.3"
+      },
+      "elastic": {
+        "subscription": "basic"
+      }
+    },
+    "owner": {
+      "type": "elastic",
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "custom"
+    ]
+  },
+  {
+    "name": "deprecated_input_package",
+    "title": "New Package",
+    "version": "1.0.0",
+    "release": "ga",
+    "source": {
+      "license": "Elastic-2.0"
+    },
+    "description": "This is a new package.",
+    "type": "input",
+    "download": "/epr/deprecated_input_package/deprecated_input_package-1.0.0.zip",
+    "path": "/package/deprecated_input_package/1.0.0",
+    "icons": [
+      {
+        "src": "/img/sample-logo.svg",
+        "path": "/package/deprecated_input_package/1.0.0/img/sample-logo.svg",
+        "title": "Sample logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "sample",
+        "title": "Sample logs",
+        "description": "Collect sample logs"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^9.2.3"
+      },
+      "elastic": {
+        "subscription": "basic"
+      }
+    },
+    "owner": {
+      "type": "elastic",
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "custom"
+    ],
+    "deprecated": {
+      "since": "1.2.0",
+      "description": "This input package is deprecated",
+      "replaced_by": {
+        "package": "new_input_package"
+      }
+    }
   },
   {
     "name": "nginx",
