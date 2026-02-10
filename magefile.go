@@ -34,8 +34,24 @@ const (
 	buildDir = "./build"
 )
 
+// modules is the list of Go modules in this repository.
+// Add new modules here to automatically include them in test, lint, and other targets.
+var modules = []struct {
+	name string // Display name
+	path string // Relative path from repo root
+}{
+	{"package-registry", "."},
+	{"cmd/distribution", "cmd/distribution"},
+}
+
 func Build() error {
 	return sh.Run("go", "build", ".")
+}
+
+// BuildDistribution builds the distribution binary in cmd/distribution.
+func BuildDistribution() error {
+	fmt.Println(">> Building cmd/distribution")
+	return sh.RunWith(map[string]string{"PWD": "cmd/distribution"}, "go", "build", "-o", "distribution", ".")
 }
 
 // DockerBuild builds the Docker image for the package registry. It must be specified
@@ -76,7 +92,14 @@ func Check() error {
 }
 
 func Test() error {
-	return sh.RunV("go", "test", "./...", "-v")
+	for _, mod := range modules {
+		fmt.Printf(">> Testing %s\n", mod.name)
+		err := sh.RunWith(map[string]string{"PWD": mod.path}, "go", "test", "./...", "-v")
+		if err != nil {
+			return fmt.Errorf("%s tests failed: %w", mod.name, err)
+		}
+	}
+	return nil
 }
 
 func WriteTestGoldenFiles() error {
@@ -155,17 +178,41 @@ func Clean() error {
 		return err
 	}
 
-	return os.RemoveAll("package-registry")
+	// Clean main package-registry binary
+	err = os.RemoveAll("package-registry")
+	if err != nil {
+		return err
+	}
+
+	// Clean distribution binary
+	err = os.RemoveAll("cmd/distribution/distribution")
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // ModTidy cleans unused dependencies.
 func ModTidy() error {
-	fmt.Println(">> fmt - go mod tidy: Generating go mod files")
-	return sh.RunV("go", "mod", "tidy")
+	for _, mod := range modules {
+		fmt.Printf(">> fmt - go mod tidy: Generating go mod files for %s\n", mod.name)
+		err := sh.RunWith(map[string]string{"PWD": mod.path}, "go", "mod", "tidy")
+		if err != nil {
+			return fmt.Errorf("%s go mod tidy failed: %w", mod.name, err)
+		}
+	}
+	return nil
 }
 
 // Staticcheck runs a static code analyzer.
 func Staticcheck() error {
-	fmt.Println(">> check - staticcheck: Running static code analyzer")
-	return sh.RunV("go", "run", StaticcheckImportPath, "./...")
+	for _, mod := range modules {
+		fmt.Printf(">> check - staticcheck: Running static code analyzer on %s\n", mod.name)
+		err := sh.RunWith(map[string]string{"PWD": mod.path}, "go", "run", StaticcheckImportPath, "./...")
+		if err != nil {
+			return fmt.Errorf("%s staticcheck failed: %w", mod.name, err)
+		}
+	}
+	return nil
 }
