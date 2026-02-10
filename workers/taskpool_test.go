@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestTaskPool_BasicExecution(t *testing.T) {
+func TestTaskPoolBasicExecution(t *testing.T) {
 	pool := NewTaskPool(2)
 
 	var counter atomic.Int32
@@ -30,7 +30,7 @@ func TestTaskPool_BasicExecution(t *testing.T) {
 	require.Equal(t, int32(10), counter.Load())
 }
 
-func TestTaskPool_ErrorHandling(t *testing.T) {
+func TestTaskPoolErrorHandling(t *testing.T) {
 	pool := NewTaskPool(2)
 
 	expectedErr := errors.New("task failed")
@@ -46,7 +46,7 @@ func TestTaskPool_ErrorHandling(t *testing.T) {
 	require.Contains(t, err.Error(), "task failed")
 }
 
-func TestTaskPool_MultipleErrors(t *testing.T) {
+func TestTaskPoolMultipleErrors(t *testing.T) {
 	pool := NewTaskPool(2)
 
 	err1 := errors.New("error 1")
@@ -69,7 +69,7 @@ func TestTaskPool_MultipleErrors(t *testing.T) {
 	}
 }
 
-func TestTaskPool_Concurrency(t *testing.T) {
+func TestTaskPoolConcurrency(t *testing.T) {
 	poolSize := 3
 	pool := NewTaskPool(poolSize)
 
