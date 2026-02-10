@@ -10,7 +10,7 @@ import (
 	"os"
 	"runtime"
 
-	"github.com/elastic/package-registry/internal/workers"
+	"github.com/elastic/package-registry/workers"
 )
 
 const defaultAddress = "https://epr.elastic.co"

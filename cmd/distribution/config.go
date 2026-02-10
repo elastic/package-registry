@@ -22,7 +22,7 @@ import (
 	"github.com/google/go-querystring/query"
 	"gopkg.in/yaml.v3"
 
-	"github.com/elastic/package-registry/internal/workers"
+	"github.com/elastic/package-registry/workers"
 )
 
 type config struct {
