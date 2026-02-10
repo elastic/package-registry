@@ -1,0 +1,269 @@
+// Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
+// or more contributor license agreements. Licensed under the Elastic License 2.0;
+// you may not use this file except in compliance with the Elastic License 2.0.
+
+package main
+
+import (
+	"encoding/json"
+	"errors"
+	"fmt"
+	"iter"
+	"net/http"
+	"net/url"
+	"os"
+	"path"
+	"runtime"
+	"slices"
+	"strings"
+
+	"github.com/Masterminds/semver/v3"
+	"github.com/elastic/package-registry/internal/workers"
+	"github.com/google/go-querystring/query"
+	"gopkg.in/yaml.v3"
+)
+
+type config struct {
+	Address  string          `yaml:"address"`
+	Matrix   []configQuery   `yaml:"matrix"`
+	Queries  []configQuery   `yaml:"queries"`
+	Packages []configPackage `yaml:"packages"`
+	Actions  configActions   `yaml:"actions"`
+}
+
+// searchURLs generates the search searchURLs required for the given configuration.
+func (c config) searchURLs() (iter.Seq[*url.URL], error) {
+	address := defaultAddress
+	if c.Address != "" {
+		address = c.Address
+	}
+	basePath, err := url.JoinPath(address, "search")
+	if err != nil {
+		return nil, fmt.Errorf("invalid address: %w", err)
+	}
+	baseURL, err := url.Parse(basePath)
+	if err != nil {
+		// This should not happen because JoinPath already parses the url.
+		fmt.Printf("invalid url (%s): %s", baseURL, err)
+		os.Exit(-1)
+	}
+	matrix := c.Matrix
+	if len(matrix) == 0 {
+		matrix = []configQuery{{}}
+	}
+	return func(yield func(*url.URL) bool) {
+		for _, m := range matrix {
+			for _, q := range c.Queries {
+				values := m.Build()
+				for k, v := range q.Build() {
+					values[k] = v
+				}
+				ref := ""
+				encoded := values.Encode()
+				if len(encoded) > 0 {
+					ref = "?" + encoded
+				}
+				url, err := baseURL.Parse(ref)
+				if err != nil {
+					panic("invalid query " + encoded)
+				}
+				if !yield(url) {
+					return
+				}
+			}
+		}
+	}, nil
+}
+
+// downloadPathForPackage returns the paths to download the package with the given name and version and its signature.
+func (c config) downloadPathForPackage(name, version string) (string, string) {
+	path := path.Join("epr", name, fmt.Sprintf("%s-%s.zip", name, version))
+	return path, path + ".sig"
+}
+
+func (c config) collect(client *http.Client) ([]packageInfo, error) {
+	urls, err := c.searchURLs()
+	if err != nil {
+		return nil, fmt.Errorf("failed to build URLs: %w", err)
+	}
+
+	type key struct {
+		Name, Version string
+	}
+	packagesMap := make(map[key]packageInfo)
+
+	pinnedPackages, err := c.pinnedPackages()
+	if err != nil {
+		return nil, fmt.Errorf("failed to prepare pinned packages: %w", err)
+	}
+	for _, p := range pinnedPackages {
+		packagesMap[key{Name: p.Name, Version: p.Version}] = p
+	}
+
+	taskPool := workers.NewTaskPool(runtime.GOMAXPROCS(0))
+	for u := range urls {
+		taskPool.Do(func() error {
+			resp, err := client.Get(u.String())
+			if err != nil {
+				return fmt.Errorf("failed to GET %s: %w", u, err)
+			}
+			if resp.StatusCode != http.StatusOK {
+				resp.Body.Close()
+				return fmt.Errorf("failed to GET %s (status code %d)", u, resp.StatusCode)
+			}
+
+			var packages []packageInfo
+			err = json.NewDecoder(resp.Body).Decode(&packages)
+			if err != nil {
+				resp.Body.Close()
+				return fmt.Errorf("failed to parse search response: %w", err)
+			}
+			resp.Body.Close()
+			fmt.Println(u.String(), len(packages), "packages")
+
+			for _, p := range packages {
+				k := key{Name: p.Name, Version: p.Version}
+				if _, found := packagesMap[k]; found {
+					continue
+				}
+				packagesMap[k] = p
+			}
+
+			return nil
+		})
+	}
+	if err := taskPool.Wait(); err != nil {
+		return nil, err
+	}
+
+	result := make([]packageInfo, 0, len(packagesMap))
+	for _, p := range packagesMap {
+		result = append(result, p)
+	}
+
+	slices.SortFunc(result, func(a, b packageInfo) int {
+		if n := strings.Compare(a.Name, b.Name); n != 0 {
+			return n
+		}
+
+		// An invalid semantic version string is considered less than a valid one.
+		// All invalid semantic version strings compare equal to each other.
+		// From https://pkg.go.dev/golang.org/x/mod/semver#Compare
+		va, errA := semver.NewVersion(a.Version)
+		vb, errB := semver.NewVersion(b.Version)
+		switch {
+		case errA != nil && errB != nil:
+			return 0
+		case errA != nil:
+			return -1
+		case errB != nil:
+			return 1
+		}
+
+		return va.Compare(vb)
+	})
+
+	return result, nil
+}
+
+func (c config) pinnedPackages() ([]packageInfo, error) {
+	packages := make([]packageInfo, len(c.Packages))
+	for i, p := range c.Packages {
+		download, signature := c.downloadPathForPackage(p.Name, p.Version)
+		packages[i] = packageInfo{
+			Name:          p.Name,
+			Version:       p.Version,
+			Download:      download,
+			SignaturePath: signature,
+		}
+	}
+	return packages, nil
+}
+
+type packageInfo struct {
+	Name          string `json:"name"`
+	Version       string `json:"version"`
+	Download      string `json:"download"`
+	SignaturePath string `json:"signature_path"`
+}
+
+func configActionFactory(name string) (configAction, error) {
+	switch name {
+	case "print":
+		return &printAction{}, nil
+	case "download":
+		return &downloadAction{}, nil
+	default:
+		return nil, fmt.Errorf("unknown action %s", name)
+	}
+}
+
+type configAction interface {
+	init(config) error
+	perform(packageInfo) error
+}
+
+type configQuery struct {
+	Package       string `yaml:"package" url:"package,omitempty"`
+	All           bool   `yaml:"all" url:"all,omitempty"`
+	Prerelease    bool   `yaml:"prerelease" url:"prerelease,omitempty"`
+	Type          string `yaml:"type" url:"type,omitempty"`
+	KibanaVersion string `yaml:"kibana.version" url:"kibana.version,omitempty"`
+	SpecMin       string `yaml:"spec.min" url:"spec.min,omitempty"`
+	SpecMax       string `yaml:"spec.max" url:"spec.max,omitempty"`
+}
+
+type configPackage struct {
+	Name    string `yaml:"name"`
+	Version string `yaml:"version"`
+}
+
+func (q configQuery) Build() url.Values {
+	v, err := query.Values(q)
+	if err != nil {
+		panic(err)
+	}
+	return v
+}
+
+func readConfig(path string) (config, error) {
+	var config config
+	d, err := os.ReadFile(path)
+	if err != nil {
+		return config, err
+	}
+
+	return config, yaml.Unmarshal(d, &config)
+}
+
+type configActions []configAction
+
+var _ yaml.Unmarshaler = &configActions{}
+
+func (actions *configActions) UnmarshalYAML(node *yaml.Node) error {
+	var actionsMap []map[string]yaml.Node
+	err := node.Decode(&actionsMap)
+	if err != nil {
+		return fmt.Errorf("failed to decode actions: %w", err)
+	}
+
+	*actions = make(configActions, 0, len(actionsMap))
+	for _, configMap := range actionsMap {
+		if len(configMap) != 1 {
+			return errors.New("multiple entries found in action")
+		}
+		for name, config := range configMap {
+			action, err := configActionFactory(name)
+			if err != nil {
+				return err
+			}
+			err = config.Decode(action)
+			if err != nil {
+				return fmt.Errorf("could not decode action %s: %w", name, err)
+			}
+			*actions = append(*actions, action)
+		}
+	}
+
+	return nil
+}
