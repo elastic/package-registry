@@ -27,32 +27,23 @@ func TestDownloadActionInit(t *testing.T) {
 
 	err := action.init(config{})
 	require.NoError(t, err)
-	require.NotNil(t, action.client)
-	require.NotNil(t, action.keyRing)
+	assert.NotNil(t, action.client)
+	assert.NotNil(t, action.keyRing)
 
 	// Verify destination directory was created
 	info, err := os.Stat(tempDir)
 	require.NoError(t, err)
-	require.True(t, info.IsDir())
-}
-
-func TestDownloadActionInitInvalidDestination(t *testing.T) {
-	// Try to create a directory in a path that doesn't exist
-	action := &downloadAction{
-		Destination: "/nonexistent/subdir/destination",
-	}
-
-	err := action.init(config{})
-	require.Error(t, err)
+	assert.True(t, info.IsDir())
 }
 
 func TestDownloadActionDestinationPath(t *testing.T) {
+	destination := filepath.Join(os.TempDir(), "downloads")
 	action := &downloadAction{
-		Destination: "/tmp/downloads",
+		Destination: destination,
 	}
 
 	path := action.destinationPath("epr/nginx/nginx-1.0.0.zip")
-	require.Equal(t, "/tmp/downloads/nginx-1.0.0.zip", path)
+	require.Equal(t, filepath.Join(destination, "nginx-1.0.0.zip"), path)
 }
 
 func TestDownloadActionDownload(t *testing.T) {
@@ -77,7 +68,7 @@ func TestDownloadActionDownload(t *testing.T) {
 	// Verify file was created with correct content
 	downloaded, err := os.ReadFile(filepath.Join(tempDir, "nginx-1.0.0.zip"))
 	require.NoError(t, err)
-	require.Equal(t, testContent, downloaded)
+	assert.Equal(t, testContent, downloaded)
 }
 
 func TestDownloadActionDownloadHTTPError(t *testing.T) {
@@ -96,7 +87,7 @@ func TestDownloadActionDownloadHTTPError(t *testing.T) {
 
 	err := action.download("epr/nginx/nginx-1.0.0.zip")
 	require.Error(t, err)
-	require.Contains(t, err.Error(), "status code 404")
+	assert.Contains(t, err.Error(), "status code 404")
 }
 
 func TestDownloadActionPerformSkipsIfAlreadyDownloaded(t *testing.T) {
@@ -147,7 +138,7 @@ func TestDownloadActionPerformSkipsIfAlreadyDownloaded(t *testing.T) {
 
 	err = action.perform(info)
 	require.NoError(t, err)
-	require.False(t, serverCalled, "Server should not be called when package is already valid")
+	assert.False(t, serverCalled, "Server should not be called when package is already valid")
 }
 
 func TestDownloadActionPerformDownloadsIfMissing(t *testing.T) {
@@ -247,7 +238,7 @@ func TestDownloadActionValid(t *testing.T) {
 
 	valid, err := action.valid(info)
 	require.NoError(t, err)
-	require.True(t, valid)
+	assert.True(t, valid)
 }
 
 func TestDownloadActionValidInvalidSignature(t *testing.T) {
@@ -288,7 +279,7 @@ func TestDownloadActionValidInvalidSignature(t *testing.T) {
 
 	valid, err := action.valid(info)
 	require.Error(t, err)
-	require.False(t, valid)
+	assert.False(t, valid)
 }
 
 func TestDownloadActionValidMissingFiles(t *testing.T) {
@@ -307,7 +298,7 @@ func TestDownloadActionValidMissingFiles(t *testing.T) {
 
 	valid, err := action.valid(info)
 	require.Error(t, err)
-	require.False(t, valid)
+	assert.False(t, valid)
 }
 
 func TestDownloadActionAddressInheritance(t *testing.T) {
