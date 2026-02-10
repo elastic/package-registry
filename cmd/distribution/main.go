@@ -44,7 +44,7 @@ func main() {
 			for _, action := range config.Actions {
 				err := action.perform(info)
 				if err != nil {
-					return fmt.Errorf("failed to collect packages: %w", err)
+					return fmt.Errorf("failed to perform action: %w", err)
 				}
 			}
 			return nil

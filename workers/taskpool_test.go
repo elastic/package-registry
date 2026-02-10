@@ -30,10 +30,6 @@ func TestTaskPool_BasicExecution(t *testing.T) {
 	require.Equal(t, int32(10), counter.Load())
 }
 
-// TestTaskPool_ErrorHandling tests that errors from tasks are captured.
-// Note: Due to a race condition in the errorLoop implementation (nested goroutine
-// without synchronization), this test may not consistently fail when errors occur.
-// This is a known issue in the production code.
 func TestTaskPool_ErrorHandling(t *testing.T) {
 	pool := NewTaskPool(2)
 
@@ -50,9 +46,6 @@ func TestTaskPool_ErrorHandling(t *testing.T) {
 	require.Contains(t, err.Error(), "task failed")
 }
 
-// TestTaskPool_MultipleErrors tests that multiple errors are joined.
-// Note: Due to race conditions in errorLoop, we can only verify that
-// at least one error is captured, not necessarily both.
 func TestTaskPool_MultipleErrors(t *testing.T) {
 	pool := NewTaskPool(2)
 
@@ -74,7 +67,6 @@ func TestTaskPool_MultipleErrors(t *testing.T) {
 		hasErr2 := strings.Contains(errMsg, "error 2")
 		require.True(t, hasErr1 || hasErr2, "should contain at least one error")
 	}
-	// Note: Due to race condition in errorLoop, errors may not be captured at all
 }
 
 func TestTaskPool_Concurrency(t *testing.T) {
