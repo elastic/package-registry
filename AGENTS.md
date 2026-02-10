@@ -93,6 +93,25 @@ Test packages are stored in `testdata/package/` with various scenarios (e.g., `d
 - **Import grouping**: Elastic packages (`github.com/elastic`) grouped after third-party
 - Run `mage check` before committing to ensure formatting and licensing
 
+### Testing Assertions
+
+When using testify for test assertions:
+- Use **`require`** only for blocking assertions that would cause panics if they fail (e.g., nil checks before dereferencing)
+- Use **`assert`** for all other assertions so multiple checks can run in the same test
+- This approach provides better test failure visibility by showing all failing assertions at once
+
+Example:
+```go
+// Use require for blocking checks
+require.NotNil(t, result)           // Must pass or dereferencing will panic
+require.NoError(t, err)             // Must pass or result may be invalid
+
+// Use assert for validation checks
+assert.Equal(t, "expected", result.Name)
+assert.True(t, result.IsValid)
+assert.Len(t, result.Items, 3)
+```
+
 ### Package Structure
 
 Packages follow the [package-spec](https://github.com/elastic/package-spec) specification. Changes to package structure should be proposed to package-spec first.
