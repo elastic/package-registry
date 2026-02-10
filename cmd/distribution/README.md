@@ -6,10 +6,6 @@ A utility for downloading packages from Elastic Package Registry (EPR).
 
 The distribution tool allows you to collect and download integration packages from an EPR instance based on configurable search queries. It supports filtering by package type, Kibana version, spec version, and other parameters.
 
-## Module
-
-This tool is maintained as a separate Go module (`github.com/elastic/package-registry/cmd/distribution`) within the package-registry repository. It depends on the main package-registry module for the shared `workers` package.
-
 ## Building
 
 ```bash
