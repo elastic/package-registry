@@ -16,11 +16,13 @@ import (
 	"runtime"
 	"slices"
 	"strings"
+	"sync"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/elastic/package-registry/internal/workers"
 	"github.com/google/go-querystring/query"
 	"gopkg.in/yaml.v3"
+
+	"github.com/elastic/package-registry/internal/workers"
 )
 
 type config struct {
@@ -90,6 +92,7 @@ func (c config) collect(client *http.Client) ([]packageInfo, error) {
 	type key struct {
 		Name, Version string
 	}
+	var mapLock sync.Mutex
 	packagesMap := make(map[key]packageInfo)
 
 	pinnedPackages, err := c.pinnedPackages()
@@ -121,6 +124,7 @@ func (c config) collect(client *http.Client) ([]packageInfo, error) {
 			resp.Body.Close()
 			fmt.Println(u.String(), len(packages), "packages")
 
+			mapLock.Lock()
 			for _, p := range packages {
 				k := key{Name: p.Name, Version: p.Version}
 				if _, found := packagesMap[k]; found {
@@ -128,6 +132,7 @@ func (c config) collect(client *http.Client) ([]packageInfo, error) {
 				}
 				packagesMap[k] = p
 			}
+			mapLock.Unlock()
 
 			return nil
 		})
