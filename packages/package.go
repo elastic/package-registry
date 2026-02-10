@@ -612,6 +612,10 @@ func (p *Package) IsPrerelease() bool {
 	return isPrerelease(p.versionSemVer)
 }
 
+func (p *Package) isTechPreview() bool {
+	return isTechPreview(p.versionSemVer)
+}
+
 func isPrerelease(version *semver.Version) bool {
 	return version.Prerelease() != ""
 }

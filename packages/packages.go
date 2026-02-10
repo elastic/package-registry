@@ -775,16 +775,16 @@ func (f *Filter) legacyApply(ctx context.Context, packages Packages) Packages {
 	}
 
 	if f.AllVersions {
-		packageHasNonPrerelease := make(map[string]bool)
+		packageHasNonPrereleaseAndTechPreview := make(map[string]bool)
 		for _, p := range packagesList {
-			if !p.IsPrerelease() {
-				packageHasNonPrerelease[p.Name] = true
+			if !p.IsPrerelease() && !p.isTechPreview() {
+				packageHasNonPrereleaseAndTechPreview[p.Name] = true
 			}
 		}
 
 		i := 0
 		for _, p := range packagesList {
-			if packageHasNonPrerelease[p.Name] && p.IsPrerelease() {
+			if packageHasNonPrereleaseAndTechPreview[p.Name] && (p.IsPrerelease() || p.isTechPreview()) {
 				continue
 			}
 			packagesList[i] = p
