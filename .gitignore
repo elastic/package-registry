@@ -1,5 +1,6 @@
 .DS_Store
 package-registry
+cmd/distribution/distribution
 
 .idea
 *.iml

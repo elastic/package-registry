@@ -45,6 +45,7 @@ var modules = []struct {
 }
 
 func Build() error {
+	fmt.Println(">> Building package-registry")
 	return sh.Run("go", "build", ".")
 }
 
@@ -79,6 +80,7 @@ func Check() error {
 	mg.SerialDeps(
 		Format,
 		Build,
+		BuildDistribution,
 		ModTidy,
 		Staticcheck,
 	)

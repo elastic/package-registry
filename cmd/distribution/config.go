@@ -110,18 +110,16 @@ func (c config) collect(client *http.Client) ([]packageInfo, error) {
 			if err != nil {
 				return fmt.Errorf("failed to GET %s: %w", u, err)
 			}
+			defer resp.Body.Close()
 			if resp.StatusCode != http.StatusOK {
-				resp.Body.Close()
 				return fmt.Errorf("failed to GET %s (status code %d)", u, resp.StatusCode)
 			}
 
 			var packages []packageInfo
 			err = json.NewDecoder(resp.Body).Decode(&packages)
 			if err != nil {
-				resp.Body.Close()
 				return fmt.Errorf("failed to parse search response: %w", err)
 			}
-			resp.Body.Close()
 			fmt.Println(u.String(), len(packages), "packages")
 
 			mapLock.Lock()
