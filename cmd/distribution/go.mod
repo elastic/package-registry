@@ -6,7 +6,7 @@ require (
 	github.com/Masterminds/semver/v3 v3.4.0
 	github.com/ProtonMail/go-crypto v1.3.0
 	github.com/elastic/package-registry v0.0.0
-	github.com/google/go-querystring v1.1.0
+	github.com/google/go-querystring v1.2.0
 	github.com/stretchr/testify v1.11.1
 	gopkg.in/yaml.v3 v3.0.1
 )
