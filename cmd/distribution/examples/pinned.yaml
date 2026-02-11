@@ -1,0 +1,16 @@
+# Base address of the Package Registry
+address: "https://epr.elastic.co"
+
+queries:
+  - package: apache
+    all: true
+    spec.min: 3.0
+
+packages:
+  - name: apache
+    version: 2.1.0
+
+actions:
+  - print:
+  - download:
+      destination: ./build/pinned

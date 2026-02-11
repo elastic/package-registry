@@ -23,8 +23,8 @@ import (
 	"go.elastic.co/apm/v2"
 	"go.uber.org/zap"
 
-	"github.com/elastic/package-registry/internal/workers"
 	"github.com/elastic/package-registry/metrics"
+	"github.com/elastic/package-registry/workers"
 )
 
 const (

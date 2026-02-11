@@ -12,3 +12,10 @@ updates:
       elastic-apm:
         patterns:
           - "go.elastic.co/apm/*"
+  - package-ecosystem: "gomod"
+    directory: "/cmd/distribution"
+    schedule:
+      interval: "daily"
+    labels:
+      - automation
+    open-pull-requests-limit: 10
