@@ -8,8 +8,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Breaking changes
 
-* Return tech preview package without prerelease flag [#1538](https://github.com/elastic/package-registry/pull/1538)
-
 ### Bugfixes
 
 * Update Go runtime to 1.25.6. [#1545](https://github.com/elastic/package-registry/pull/1545)
@@ -17,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Add deprecated field support. [#1516](https://github.com/elastic/package-registry/pull/1516)
+* Return tech preview package without prerelease flag [#1538](https://github.com/elastic/package-registry/pull/1538)
 
 ### Deprecated
 
