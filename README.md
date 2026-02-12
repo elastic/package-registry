@@ -167,23 +167,23 @@ These images contain only the package registry, they don't contain any package.
 
 #### Build a Custom Docker Package Registry Image
 
-The official Docker container for the Elastic Package Registry includes all available packages. For development or specific deployments, you might want to build a custom, smaller container that only includes packages compatible with your target Kibana environment. This results in a much smaller image footprint.
+The official Docker container for the Elastic Package Registry includes all available packages for every Kibana version. For development or specific deployments, you might want to build a custom, smaller container that only includes packages compatible with your target Kibana environment. This results in a much smaller image footprint.
 
 To build your own custom Elastic Package Registry container image, follow these steps:
 
-1.  **Define Your Package Set**: Create or modify the `cmd/distribution/custom-packages.yml` file to specify the desired package versions. You can filter by `kibana.version`, `spec.max`, and other criteria.
+1.  **Define Your Package Set**: Create or modify the `cmd/distribution/examples/custom-packages.yml` file to specify the desired package versions. You can filter by `kibana.version`, `spec.max`, and other criteria.
 
 2.  **Build the Image**: Run the following command from the root of the repository to build your custom image.
 
-    > **Note**: If you use a different configuration file than the default, remember to update the `Dockerfile.custom-registry` accordingly.
+> **Note**: If you use a different configuration file than the default, remember to update the `Dockerfile.custom-registry` accordingly.
 
-    ```bash
-    docker build -f Dockerfile.custom-registry -t custom-package-registry .
-    ```
+```bash
+docker build -f Dockerfile.custom-registry -t custom-package-registry .
+```
 
 **Example: Smaller Image Footprint**
 
-Here is an example of a custom image built with packages compatible with Kibana `>8.18`. The resulting image is significantly smaller than the official one.
+Here is an example of a custom image built with packages compatible with Kibana `>8.18.0` & `>9.0.0`. The resulting image is significantly smaller than the default one.
 
 ```bash
  docker images
