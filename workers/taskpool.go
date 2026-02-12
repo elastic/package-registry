@@ -27,12 +27,14 @@ func NewTaskPool(size int) *taskPool {
 // Do runs the task in a goroutine, ensuring no more tasks are running than the size of the pool.
 func (p *taskPool) Do(task func() error) {
 	p.pool <- struct{}{}
-	p.wg.Go(func() {
+	p.wg.Add(1)
+	go func() {
+		defer p.wg.Done()
 		defer func() { <-p.pool }()
 
 		err := task()
 		p.recordError(err)
-	})
+	}()
 }
 
 func (p *taskPool) recordError(err error) {
