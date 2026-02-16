@@ -1,5 +1,50 @@
 [
   {
+    "name": "aws_logs",
+    "title": "Custom AWS Logs",
+    "version": "0.2.1",
+    "release": "beta",
+    "description": "Collect raw logs from AWS S3 or CloudWatch with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/aws_logs/aws_logs-0.2.1.zip",
+    "path": "/package/aws_logs/0.2.1",
+    "icons": [
+      {
+        "src": "/img/icon.svg",
+        "path": "/package/aws_logs/0.2.1/img/icon.svg",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "aws_logs",
+        "title": "Custom AWS Logs",
+        "description": "Collect raw logs from AWS S3 or CloudWatch with Elastic Agent."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/obs-cloud-monitoring"
+    },
+    "categories": [
+      "custom",
+      "cloud",
+      "aws"
+    ],
+    "signature_path": "/epr/aws_logs/aws_logs-0.2.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "aws_logs.generic",
+        "title": "Custom logs from AWS"
+      }
+    ]
+  },
+  {
     "name": "gcp_pubsub",
     "title": "Custom Google Pub/Sub Logs",
     "version": "1.0.0",
@@ -291,5 +336,54 @@
         "title": "Custom Windows Event Log Dataset"
       }
     ]
+  },
+  {
+    "name": "sql",
+    "title": "SQL Input",
+    "version": "0.5.0",
+    "release": "beta",
+    "description": "Collects Metrics by Quering on SQL Databases",
+    "type": "input",
+    "download": "/epr/sql/sql-0.5.0.zip",
+    "path": "/package/sql/0.5.0",
+    "icons": [
+      {
+        "src": "/img/sql-server-icon.svg",
+        "path": "/package/sql/0.5.0/img/sql-server-icon.svg",
+        "title": "SQL logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "sql",
+        "title": "SQL Metrics",
+        "description": "Collects Metrics by Quering on SQL Databases",
+        "deprecated": {
+          "since": "0.5.0",
+          "description": "This policy is deprecated"
+        }
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.13.0"
+      },
+      "elastic": {
+        "subscription": "basic"
+      }
+    },
+    "owner": {
+      "github": "elastic/obs-infraobs-integrations"
+    },
+    "categories": [
+      "custom"
+    ],
+    "signature_path": "/epr/sql/sql-0.5.0.zip.sig",
+    "deprecated": {
+      "since": "0.5.0",
+      "description": "This package is deprecated"
+    }
   }
 ]

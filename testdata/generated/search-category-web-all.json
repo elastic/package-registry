@@ -29,6 +29,76 @@
     ]
   },
   {
+    "name": "example",
+    "title": "Example",
+    "version": "0.0.2",
+    "release": "beta",
+    "description": "This is the example integration.",
+    "type": "integration",
+    "download": "/epr/example/example-0.0.2.zip",
+    "path": "/package/example/0.0.2",
+    "conditions": {
+      "kibana": {
+        "version": ">=6.0.0"
+      }
+    },
+    "categories": [
+      "web"
+    ]
+  },
+  {
+    "name": "good_content",
+    "title": "Good content package",
+    "version": "0.1.0",
+    "release": "beta",
+    "source": {
+      "license": "Apache-2.0"
+    },
+    "description": "This package is a dummy example for packages with the content type. These packages contain resources that are useful with data ingested by other integrations. They are not used to configure data sources.\n",
+    "type": "content",
+    "download": "/epr/good_content/good_content-0.1.0.zip",
+    "path": "/package/good_content/0.1.0",
+    "icons": [
+      {
+        "src": "/img/system.svg",
+        "path": "/package/good_content/0.1.0/img/system.svg",
+        "title": "system",
+        "size": "1000x1000",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.16.0"
+      },
+      "elastic": {
+        "subscription": "basic"
+      }
+    },
+    "owner": {
+      "type": "elastic",
+      "github": "elastic/ecosystem"
+    },
+    "categories": [
+      "web"
+    ],
+    "discovery": {
+      "fields": [
+        {
+          "name": "process.pid"
+        }
+      ],
+      "datasets": [
+        {
+          "name": "good_content.access"
+        },
+        {
+          "name": "good_content.errors"
+        }
+      ]
+    }
+  },
+  {
     "name": "longdocs",
     "title": "Long Docs",
     "version": "1.0.4",

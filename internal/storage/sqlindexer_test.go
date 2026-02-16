@@ -306,7 +306,7 @@ func TestSQLGet_ListPackages(t *testing.T) {
 					Prerelease:  false,
 				},
 			},
-			expected: 99,
+			expected: 121,
 		},
 		{
 			name: "all packages with all versions and no prerelease",
@@ -315,7 +315,7 @@ func TestSQLGet_ListPackages(t *testing.T) {
 					AllVersions: true,
 				},
 			},
-			expected: 495,
+			expected: 664,
 		},
 		{
 			name: "all packages with latest versions and no prerelease",
@@ -324,7 +324,7 @@ func TestSQLGet_ListPackages(t *testing.T) {
 					Prerelease: false,
 				},
 			},
-			expected: 99,
+			expected: 121,
 		},
 		{
 			name: "all packages prerelease",
@@ -410,7 +410,7 @@ func TestSQLGet_ListPackages(t *testing.T) {
 					Capabilities: []string{"uptime"},
 				},
 			},
-			expected: 98,
+			expected: 121,
 		},
 		{
 			name: "filtering packages with security capabilities",
@@ -421,7 +421,7 @@ func TestSQLGet_ListPackages(t *testing.T) {
 					Capabilities: []string{"security"},
 				},
 			},
-			expected: 99,
+			expected: 121,
 		},
 		{
 			name: "latest package",

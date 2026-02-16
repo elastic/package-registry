@@ -1,5 +1,375 @@
 [
   {
+    "name": "activemq",
+    "title": "ActiveMQ",
+    "version": "0.2.0",
+    "release": "beta",
+    "description": "Collect logs and metrics from ActiveMQ instances with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/activemq/activemq-0.2.0.zip",
+    "path": "/package/activemq/0.2.0",
+    "icons": [
+      {
+        "src": "/img/activemq.svg",
+        "path": "/package/activemq/0.2.0/img/activemq.svg",
+        "title": "activemq",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "activemq",
+        "title": "ActiveMQ logs and metrics",
+        "description": "Collect logs and metrics from ActiveMQ instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "web"
+    ],
+    "signature_path": "/epr/activemq/activemq-0.2.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "activemq.audit",
+        "title": "ActiveMQ audit logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "activemq.broker",
+        "title": "ActiveMQ broker metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "activemq.log",
+        "title": "ActiveMQ log logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "activemq.queue",
+        "title": "ActiveMQ queue metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "activemq.topic",
+        "title": "ActiveMQ topic metrics"
+      }
+    ]
+  },
+  {
+    "name": "activemq",
+    "title": "ActiveMQ",
+    "version": "0.3.0",
+    "release": "beta",
+    "description": "Collect logs and metrics from ActiveMQ instances with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/activemq/activemq-0.3.0.zip",
+    "path": "/package/activemq/0.3.0",
+    "icons": [
+      {
+        "src": "/img/activemq.svg",
+        "path": "/package/activemq/0.3.0/img/activemq.svg",
+        "title": "activemq",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "activemq",
+        "title": "ActiveMQ logs and metrics",
+        "description": "Collect logs and metrics from ActiveMQ instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "web"
+    ],
+    "signature_path": "/epr/activemq/activemq-0.3.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "activemq.audit",
+        "title": "ActiveMQ audit logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "activemq.broker",
+        "title": "ActiveMQ broker metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "activemq.log",
+        "title": "ActiveMQ log logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "activemq.queue",
+        "title": "ActiveMQ queue metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "activemq.topic",
+        "title": "ActiveMQ topic metrics"
+      }
+    ]
+  },
+  {
+    "name": "akamai",
+    "title": "Akamai",
+    "version": "0.1.0",
+    "release": "beta",
+    "description": "Akamai Integration",
+    "type": "integration",
+    "download": "/epr/akamai/akamai-0.1.0.zip",
+    "path": "/package/akamai/0.1.0",
+    "icons": [
+      {
+        "src": "/img/akamai_logo.svg",
+        "path": "/package/akamai/0.1.0/img/akamai_logo.svg",
+        "title": "Akamai",
+        "size": "409×167",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "akamai",
+        "title": "Akamai logs",
+        "description": "Collect SIEM logs from Akamai"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security",
+      "network",
+      "web",
+      "cloud"
+    ],
+    "signature_path": "/epr/akamai/akamai-0.1.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "akamai.siem",
+        "title": "Akamai SIEM Logs"
+      }
+    ]
+  },
+  {
+    "name": "akamai",
+    "title": "Akamai",
+    "version": "0.1.1",
+    "release": "beta",
+    "description": "Akamai Integration",
+    "type": "integration",
+    "download": "/epr/akamai/akamai-0.1.1.zip",
+    "path": "/package/akamai/0.1.1",
+    "icons": [
+      {
+        "src": "/img/akamai_logo.svg",
+        "path": "/package/akamai/0.1.1/img/akamai_logo.svg",
+        "title": "Akamai",
+        "size": "409×167",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "akamai",
+        "title": "Akamai logs",
+        "description": "Collect SIEM logs from Akamai"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security",
+      "network",
+      "web",
+      "cloud"
+    ],
+    "signature_path": "/epr/akamai/akamai-0.1.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "akamai.siem",
+        "title": "Akamai SIEM Logs"
+      }
+    ]
+  },
+  {
+    "name": "akamai",
+    "title": "Akamai",
+    "version": "0.1.2",
+    "release": "beta",
+    "description": "Akamai Integration",
+    "type": "integration",
+    "download": "/epr/akamai/akamai-0.1.2.zip",
+    "path": "/package/akamai/0.1.2",
+    "icons": [
+      {
+        "src": "/img/akamai_logo.svg",
+        "path": "/package/akamai/0.1.2/img/akamai_logo.svg",
+        "title": "Akamai",
+        "size": "409×167",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "akamai",
+        "title": "Akamai logs",
+        "description": "Collect SIEM logs from Akamai"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security",
+      "network",
+      "web",
+      "cloud"
+    ],
+    "signature_path": "/epr/akamai/akamai-0.1.2.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "akamai.siem",
+        "title": "Akamai SIEM Logs"
+      }
+    ]
+  },
+  {
+    "name": "akamai",
+    "title": "Akamai",
+    "version": "0.1.3",
+    "release": "beta",
+    "description": "Akamai Integration",
+    "type": "integration",
+    "download": "/epr/akamai/akamai-0.1.3.zip",
+    "path": "/package/akamai/0.1.3",
+    "icons": [
+      {
+        "src": "/img/akamai_logo.svg",
+        "path": "/package/akamai/0.1.3/img/akamai_logo.svg",
+        "title": "Akamai",
+        "size": "409×167",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "akamai",
+        "title": "Akamai logs",
+        "description": "Collect SIEM logs from Akamai"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security",
+      "network",
+      "web",
+      "cloud"
+    ],
+    "signature_path": "/epr/akamai/akamai-0.1.3.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "akamai.siem",
+        "title": "Akamai SIEM Logs"
+      }
+    ]
+  },
+  {
+    "name": "akamai",
+    "title": "Akamai",
+    "version": "0.2.0",
+    "release": "beta",
+    "description": "Akamai Integration",
+    "type": "integration",
+    "download": "/epr/akamai/akamai-0.2.0.zip",
+    "path": "/package/akamai/0.2.0",
+    "icons": [
+      {
+        "src": "/img/akamai_logo.svg",
+        "path": "/package/akamai/0.2.0/img/akamai_logo.svg",
+        "title": "Akamai",
+        "size": "409×167",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "akamai",
+        "title": "Akamai logs",
+        "description": "Collect SIEM logs from Akamai"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security",
+      "network",
+      "web",
+      "cloud"
+    ],
+    "signature_path": "/epr/akamai/akamai-0.2.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "akamai.siem",
+        "title": "Akamai SIEM Logs"
+      }
+    ]
+  },
+  {
     "name": "akamai",
     "title": "Akamai",
     "version": "1.0.0",
@@ -1394,6 +1764,166 @@
   {
     "name": "azure_application_insights",
     "title": "Azure Application Insights Metrics Overview",
+    "version": "0.1.0",
+    "release": "beta",
+    "description": "Azure Application Insights",
+    "type": "integration",
+    "download": "/epr/azure_application_insights/azure_application_insights-0.1.0.zip",
+    "path": "/package/azure_application_insights/0.1.0",
+    "icons": [
+      {
+        "src": "/img/app_insights.png",
+        "path": "/package/azure_application_insights/0.1.0/img/app_insights.png",
+        "title": "logo docker",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "app_insights",
+        "title": "Azure Application Insights metrics",
+        "description": "Azure Application Insights Metrics Integration",
+        "icons": [
+          {
+            "src": "/img//app_insights.png",
+            "path": "/package/azure_application_insights/0.1.0/img/app_insights.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "data_streams": [
+          "app_insights"
+        ]
+      },
+      {
+        "name": "app_state",
+        "title": "Azure Application State Insights metrics",
+        "description": "Azure Application State Insights Metrics Integration",
+        "icons": [
+          {
+            "src": "/img/application_insights_blue.png",
+            "path": "/package/azure_application_insights/0.1.0/img/application_insights_blue.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "data_streams": [
+          "app_state"
+        ]
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "azure",
+      "web"
+    ],
+    "signature_path": "/epr/azure_application_insights/azure_application_insights-0.1.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "azure.app_insights",
+        "title": "Azure Application Insights"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.app_state",
+        "title": "Azure Application State"
+      }
+    ]
+  },
+  {
+    "name": "azure_application_insights",
+    "title": "Azure Application Insights Metrics Overview",
+    "version": "0.3.0",
+    "release": "beta",
+    "description": "Collect application insights metrics from Azure Monitor with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/azure_application_insights/azure_application_insights-0.3.0.zip",
+    "path": "/package/azure_application_insights/0.3.0",
+    "icons": [
+      {
+        "src": "/img/app_insights.png",
+        "path": "/package/azure_application_insights/0.3.0/img/app_insights.png",
+        "title": "logo docker",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "app_insights",
+        "title": "Azure Application Insights Metrics",
+        "description": "Collect application insights metrics from Azure Monitor with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img//app_insights.png",
+            "path": "/package/azure_application_insights/0.3.0/img/app_insights.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "data_streams": [
+          "app_insights"
+        ]
+      },
+      {
+        "name": "app_state",
+        "title": "Azure Application State Insights Metrics",
+        "description": "Collect application state related metrics from Azure Monitor with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/application_insights_blue.png",
+            "path": "/package/azure_application_insights/0.3.0/img/application_insights_blue.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "data_streams": [
+          "app_state"
+        ]
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "azure",
+      "web"
+    ],
+    "signature_path": "/epr/azure_application_insights/azure_application_insights-0.3.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "azure.app_insights",
+        "title": "Azure Application Insights"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.app_state",
+        "title": "Azure Application State"
+      }
+    ]
+  },
+  {
+    "name": "azure_application_insights",
+    "title": "Azure Application Insights Metrics Overview",
     "version": "1.0.0",
     "release": "ga",
     "description": "Collect application insights metrics from Azure Monitor with Elastic Agent.",
@@ -2188,6 +2718,430 @@
     ]
   },
   {
+    "name": "azure_metrics",
+    "title": "Azure resource metrics",
+    "version": "0.3.1",
+    "release": "beta",
+    "description": "This Elastic integration collects and aggregates metrics from Azure resources",
+    "type": "integration",
+    "download": "/epr/azure_metrics/azure_metrics-0.3.1.zip",
+    "path": "/package/azure_metrics/0.3.1",
+    "icons": [
+      {
+        "src": "/img/azure_metrics_logo.png",
+        "path": "/package/azure_metrics/0.3.1/img/azure_metrics_logo.png",
+        "title": "logo docker",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "monitor",
+        "title": "Azure Monitor metrics",
+        "description": "Azure Monitor Metrics Integration",
+        "icons": [
+          {
+            "src": "/img/monitor_logo.png",
+            "path": "/package/azure_metrics/0.3.1/img/monitor_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "data_streams": [
+          "monitor"
+        ]
+      },
+      {
+        "name": "compute_vm",
+        "title": "Azure Virtual Machines metrics",
+        "description": "Azure Virtual Machines Metrics Integration",
+        "icons": [
+          {
+            "src": "/img/compute_vm_logo.png",
+            "path": "/package/azure_metrics/0.3.1/img/compute_vm_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "data_streams": [
+          "compute_vm"
+        ]
+      },
+      {
+        "name": "compute_vm_scaleset",
+        "title": "Azure Virtual Machines Scaleset metrics",
+        "description": "Azure Virtual Machines Scaleset Metrics Integration",
+        "icons": [
+          {
+            "src": "/img/compute_vm_scaleset_logo.png",
+            "path": "/package/azure_metrics/0.3.1/img/compute_vm_scaleset_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "data_streams": [
+          "compute_vm_scaleset"
+        ]
+      },
+      {
+        "name": "container_registry",
+        "title": "Azure Container Registry metrics",
+        "description": "Azure Container Registry Metrics Integration",
+        "icons": [
+          {
+            "src": "/img/container_registry_logo.png",
+            "path": "/package/azure_metrics/0.3.1/img/container_registry_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "data_streams": [
+          "container_registry"
+        ]
+      },
+      {
+        "name": "container_instance",
+        "title": "Azure Container Instance metrics",
+        "description": "Azure Container Instance Metrics Integration",
+        "icons": [
+          {
+            "src": "/img/container_instance_logo.png",
+            "path": "/package/azure_metrics/0.3.1/img/container_instance_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "data_streams": [
+          "container_instance"
+        ]
+      },
+      {
+        "name": "container_service",
+        "title": "Azure Container Service metrics",
+        "description": "Azure Container Service Metrics Integration",
+        "icons": [
+          {
+            "src": "/img/container_service_logo.png",
+            "path": "/package/azure_metrics/0.3.1/img/container_service_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "data_streams": [
+          "container_service"
+        ]
+      },
+      {
+        "name": "database_account",
+        "title": "Azure Database Account metrics",
+        "description": "Azure Database Account Metrics Integration",
+        "icons": [
+          {
+            "src": "/img/database_account_logo.png",
+            "path": "/package/azure_metrics/0.3.1/img/database_account_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "data_streams": [
+          "database_account"
+        ]
+      },
+      {
+        "name": "storage_account",
+        "title": "Azure Storage Account metrics",
+        "description": "Azure Storage Account Metrics Integration",
+        "icons": [
+          {
+            "src": "/img/storage_account_logo.png",
+            "path": "/package/azure_metrics/0.3.1/img/storage_account_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "data_streams": [
+          "storage_account"
+        ]
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "azure",
+      "web"
+    ],
+    "signature_path": "/epr/azure_metrics/azure_metrics-0.3.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "azure.compute_vm",
+        "title": "Compute VM"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.compute_vm_scaleset",
+        "title": "Compute VM Scaleset"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.container_instance",
+        "title": "Container Instance"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.container_registry",
+        "title": "Container Registry"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.container_service",
+        "title": "Container Service"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.database_account",
+        "title": "Database Account"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.monitor",
+        "title": "Monitor"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.storage_account",
+        "title": "Storage Account"
+      }
+    ]
+  },
+  {
+    "name": "azure_metrics",
+    "title": "Azure resource metrics",
+    "version": "0.3.2",
+    "release": "beta",
+    "description": "This Elastic integration collects and aggregates metrics from Azure resources",
+    "type": "integration",
+    "download": "/epr/azure_metrics/azure_metrics-0.3.2.zip",
+    "path": "/package/azure_metrics/0.3.2",
+    "icons": [
+      {
+        "src": "/img/azure_metrics_logo.png",
+        "path": "/package/azure_metrics/0.3.2/img/azure_metrics_logo.png",
+        "title": "logo docker",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "monitor",
+        "title": "Azure Monitor metrics",
+        "description": "Azure Monitor Metrics Integration",
+        "icons": [
+          {
+            "src": "/img/monitor_logo.png",
+            "path": "/package/azure_metrics/0.3.2/img/monitor_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "data_streams": [
+          "monitor"
+        ]
+      },
+      {
+        "name": "compute_vm",
+        "title": "Azure Virtual Machines metrics",
+        "description": "Azure Virtual Machines Metrics Integration",
+        "icons": [
+          {
+            "src": "/img/compute_vm_logo.png",
+            "path": "/package/azure_metrics/0.3.2/img/compute_vm_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "data_streams": [
+          "compute_vm"
+        ]
+      },
+      {
+        "name": "compute_vm_scaleset",
+        "title": "Azure Virtual Machines Scaleset metrics",
+        "description": "Azure Virtual Machines Scaleset Metrics Integration",
+        "icons": [
+          {
+            "src": "/img/compute_vm_scaleset_logo.png",
+            "path": "/package/azure_metrics/0.3.2/img/compute_vm_scaleset_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "data_streams": [
+          "compute_vm_scaleset"
+        ]
+      },
+      {
+        "name": "container_registry",
+        "title": "Azure Container Registry metrics",
+        "description": "Azure Container Registry Metrics Integration",
+        "icons": [
+          {
+            "src": "/img/container_registry_logo.png",
+            "path": "/package/azure_metrics/0.3.2/img/container_registry_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "data_streams": [
+          "container_registry"
+        ]
+      },
+      {
+        "name": "container_instance",
+        "title": "Azure Container Instance metrics",
+        "description": "Azure Container Instance Metrics Integration",
+        "icons": [
+          {
+            "src": "/img/container_instance_logo.png",
+            "path": "/package/azure_metrics/0.3.2/img/container_instance_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "data_streams": [
+          "container_instance"
+        ]
+      },
+      {
+        "name": "container_service",
+        "title": "Azure Container Service metrics",
+        "description": "Azure Container Service Metrics Integration",
+        "icons": [
+          {
+            "src": "/img/container_service_logo.png",
+            "path": "/package/azure_metrics/0.3.2/img/container_service_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "data_streams": [
+          "container_service"
+        ]
+      },
+      {
+        "name": "database_account",
+        "title": "Azure Database Account metrics",
+        "description": "Azure Database Account Metrics Integration",
+        "icons": [
+          {
+            "src": "/img/database_account_logo.png",
+            "path": "/package/azure_metrics/0.3.2/img/database_account_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "data_streams": [
+          "database_account"
+        ]
+      },
+      {
+        "name": "storage_account",
+        "title": "Azure Storage Account metrics",
+        "description": "Azure Storage Account Metrics Integration",
+        "icons": [
+          {
+            "src": "/img/storage_account_logo.png",
+            "path": "/package/azure_metrics/0.3.2/img/storage_account_logo.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "data_streams": [
+          "storage_account"
+        ]
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "azure",
+      "web"
+    ],
+    "signature_path": "/epr/azure_metrics/azure_metrics-0.3.2.zip.sig",
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "azure.compute_vm",
+        "title": "Compute VM"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.compute_vm_scaleset",
+        "title": "Compute VM Scaleset"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.container_instance",
+        "title": "Container Instance"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.container_registry",
+        "title": "Container Registry"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.container_service",
+        "title": "Container Service"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.database_account",
+        "title": "Database Account"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.monitor",
+        "title": "Monitor"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.storage_account",
+        "title": "Storage Account"
+      }
+    ]
+  },
+  {
     "name": "cloudflare",
     "title": "Cloudflare",
     "version": "1.0.2",
@@ -2647,6 +3601,627 @@
     ]
   },
   {
+    "name": "synthetics",
+    "title": "Elastic Synthetics",
+    "version": "0.3.0",
+    "release": "beta",
+    "description": "This Elastic integration allows you to monitor the availability of your services",
+    "type": "integration",
+    "download": "/epr/synthetics/synthetics-0.3.0.zip",
+    "path": "/package/synthetics/0.3.0",
+    "icons": [
+      {
+        "src": "/img/uptime-logo-color-64px.svg",
+        "path": "/package/synthetics/0.3.0/img/uptime-logo-color-64px.svg",
+        "size": "16x16",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "synthetics",
+        "title": "Elastic Synthetics",
+        "description": "Perform synthetic health checks on network endpoints."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.13.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/uptime"
+    },
+    "categories": [
+      "elastic_stack",
+      "monitoring",
+      "web"
+    ],
+    "signature_path": "/epr/synthetics/synthetics-0.3.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "synthetics",
+        "dataset": "browser",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "browser.network",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "browser.screenshot",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "http",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "icmp",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "tcp",
+        "title": "synthetic monitor check"
+      }
+    ]
+  },
+  {
+    "name": "synthetics",
+    "title": "Elastic Synthetics",
+    "version": "0.5.0",
+    "release": "beta",
+    "description": "Monitor the availability of your services with Elastic Synthetics.",
+    "type": "integration",
+    "download": "/epr/synthetics/synthetics-0.5.0.zip",
+    "path": "/package/synthetics/0.5.0",
+    "icons": [
+      {
+        "src": "/img/uptime-logo-color-64px.svg",
+        "path": "/package/synthetics/0.5.0/img/uptime-logo-color-64px.svg",
+        "size": "16x16",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "synthetics",
+        "title": "Elastic Synthetics",
+        "description": "Perform synthetic health checks on network endpoints."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/uptime"
+    },
+    "categories": [
+      "elastic_stack",
+      "monitoring",
+      "web"
+    ],
+    "signature_path": "/epr/synthetics/synthetics-0.5.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "synthetics",
+        "dataset": "browser",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "browser.network",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "browser.screenshot",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "http",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "icmp",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "tcp",
+        "title": "synthetic monitor check"
+      }
+    ]
+  },
+  {
+    "name": "synthetics",
+    "title": "Elastic Synthetics",
+    "version": "0.7.0",
+    "release": "beta",
+    "description": "Monitor the availability of your services with Elastic Synthetics.",
+    "type": "integration",
+    "download": "/epr/synthetics/synthetics-0.7.0.zip",
+    "path": "/package/synthetics/0.7.0",
+    "icons": [
+      {
+        "src": "/img/uptime-logo-color-64px.svg",
+        "path": "/package/synthetics/0.7.0/img/uptime-logo-color-64px.svg",
+        "size": "16x16",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "synthetics",
+        "title": "Elastic Synthetics",
+        "description": "Perform synthetic health checks on network endpoints."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/uptime"
+    },
+    "categories": [
+      "elastic_stack",
+      "monitoring",
+      "web"
+    ],
+    "signature_path": "/epr/synthetics/synthetics-0.7.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "synthetics",
+        "dataset": "browser",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "browser.network",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "browser.screenshot",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "http",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "icmp",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "tcp",
+        "title": "synthetic monitor check"
+      }
+    ]
+  },
+  {
+    "name": "synthetics",
+    "title": "Elastic Synthetics",
+    "version": "0.8.1",
+    "release": "beta",
+    "description": "Monitor the availability of your services with Elastic Synthetics.",
+    "type": "integration",
+    "download": "/epr/synthetics/synthetics-0.8.1.zip",
+    "path": "/package/synthetics/0.8.1",
+    "icons": [
+      {
+        "src": "/img/uptime-logo-color-64px.svg",
+        "path": "/package/synthetics/0.8.1/img/uptime-logo-color-64px.svg",
+        "size": "16x16",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "synthetics",
+        "title": "Elastic Synthetics",
+        "description": "Perform synthetic health checks on network endpoints."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/uptime"
+    },
+    "categories": [
+      "elastic_stack",
+      "monitoring",
+      "web"
+    ],
+    "signature_path": "/epr/synthetics/synthetics-0.8.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "synthetics",
+        "dataset": "browser",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "browser.network",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "browser.screenshot",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "http",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "icmp",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "tcp",
+        "title": "synthetic monitor check"
+      }
+    ]
+  },
+  {
+    "name": "synthetics",
+    "title": "Elastic Synthetics",
+    "version": "0.9.0",
+    "release": "beta",
+    "description": "Monitor the availability of your services with Elastic Synthetics.",
+    "type": "integration",
+    "download": "/epr/synthetics/synthetics-0.9.0.zip",
+    "path": "/package/synthetics/0.9.0",
+    "icons": [
+      {
+        "src": "/img/uptime-logo-color-64px.svg",
+        "path": "/package/synthetics/0.9.0/img/uptime-logo-color-64px.svg",
+        "size": "16x16",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "synthetics",
+        "title": "Elastic Synthetics",
+        "description": "Perform synthetic health checks on network endpoints."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.1.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/uptime"
+    },
+    "categories": [
+      "elastic_stack",
+      "monitoring",
+      "web"
+    ],
+    "signature_path": "/epr/synthetics/synthetics-0.9.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "synthetics",
+        "dataset": "browser",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "browser.network",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "browser.screenshot",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "http",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "icmp",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "tcp",
+        "title": "synthetic monitor check"
+      }
+    ]
+  },
+  {
+    "name": "synthetics",
+    "title": "Elastic Synthetics",
+    "version": "0.9.2",
+    "release": "beta",
+    "description": "Monitor the availability of your services with Elastic Synthetics.",
+    "type": "integration",
+    "download": "/epr/synthetics/synthetics-0.9.2.zip",
+    "path": "/package/synthetics/0.9.2",
+    "icons": [
+      {
+        "src": "/img/uptime-logo-color-64px.svg",
+        "path": "/package/synthetics/0.9.2/img/uptime-logo-color-64px.svg",
+        "size": "16x16",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "synthetics",
+        "title": "Elastic Synthetics",
+        "description": "Perform synthetic health checks on network endpoints."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.1.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/uptime"
+    },
+    "categories": [
+      "elastic_stack",
+      "monitoring",
+      "web"
+    ],
+    "signature_path": "/epr/synthetics/synthetics-0.9.2.zip.sig",
+    "data_streams": [
+      {
+        "type": "synthetics",
+        "dataset": "browser",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "browser.network",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "browser.screenshot",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "http",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "icmp",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "tcp",
+        "title": "synthetic monitor check"
+      }
+    ]
+  },
+  {
+    "name": "iis",
+    "title": "IIS",
+    "version": "0.2.7",
+    "release": "beta",
+    "description": "IIS Integration",
+    "type": "integration",
+    "download": "/epr/iis/iis-0.2.7.zip",
+    "path": "/package/iis/0.2.7",
+    "icons": [
+      {
+        "src": "/img/iis.svg",
+        "path": "/package/iis/0.2.7/img/iis.svg",
+        "title": "iis",
+        "size": "100x100",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "iis",
+        "title": "IIS logs and metrics",
+        "description": "Collect logs and metrics from IIS instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.9.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "web"
+    ],
+    "signature_path": "/epr/iis/iis-0.2.7.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "iis.access",
+        "title": "IIS access logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "iis.application_pool",
+        "title": "IIS application_pool metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "iis.error",
+        "title": "IIS error logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "iis.webserver",
+        "title": "IIS web server metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "iis.website",
+        "title": "IIS website metrics"
+      }
+    ]
+  },
+  {
+    "name": "iis",
+    "title": "IIS",
+    "version": "0.5.0",
+    "release": "beta",
+    "description": "IIS Integration",
+    "type": "integration",
+    "download": "/epr/iis/iis-0.5.0.zip",
+    "path": "/package/iis/0.5.0",
+    "icons": [
+      {
+        "src": "/img/iis.svg",
+        "path": "/package/iis/0.5.0/img/iis.svg",
+        "title": "iis",
+        "size": "100x100",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "iis",
+        "title": "IIS logs and metrics",
+        "description": "Collect logs and metrics from IIS instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "web"
+    ],
+    "signature_path": "/epr/iis/iis-0.5.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "iis.access",
+        "title": "IIS access logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "iis.application_pool",
+        "title": "IIS application_pool metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "iis.error",
+        "title": "IIS error logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "iis.webserver",
+        "title": "IIS web server metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "iis.website",
+        "title": "IIS website metrics"
+      }
+    ]
+  },
+  {
+    "name": "iis",
+    "title": "IIS",
+    "version": "0.8.0",
+    "release": "beta",
+    "description": "Collect logs and metrics from Internet Information Services (IIS) servers with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/iis/iis-0.8.0.zip",
+    "path": "/package/iis/0.8.0",
+    "icons": [
+      {
+        "src": "/img/iis.svg",
+        "path": "/package/iis/0.8.0/img/iis.svg",
+        "title": "iis",
+        "size": "100x100",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "iis",
+        "title": "IIS logs and metrics",
+        "description": "Collect logs and metrics from IIS instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "web"
+    ],
+    "signature_path": "/epr/iis/iis-0.8.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "iis.access",
+        "title": "IIS access logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "iis.application_pool",
+        "title": "IIS application_pool metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "iis.error",
+        "title": "IIS error logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "iis.webserver",
+        "title": "IIS web server metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "iis.website",
+        "title": "IIS website metrics"
+      }
+    ]
+  },
+  {
     "name": "keycloak",
     "title": "Keycloak",
     "version": "1.0.0",
@@ -2969,6 +4544,117 @@
         "type": "logs",
         "dataset": "mattermost.audit",
         "title": "Audit Logs"
+      }
+    ]
+  },
+  {
+    "name": "network_traffic",
+    "title": "Network Packet Capture",
+    "version": "0.8.1",
+    "release": "beta",
+    "description": "Capture and analyze network traffic from a host with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/network_traffic/network_traffic-0.8.1.zip",
+    "path": "/package/network_traffic/0.8.1",
+    "policy_templates": [
+      {
+        "name": "network",
+        "title": "Network Packet Capture",
+        "description": "Capture network traffic"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.17.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "web"
+    ],
+    "signature_path": "/epr/network_traffic/network_traffic-0.8.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "network_traffic.amqp",
+        "title": "AMQP"
+      },
+      {
+        "type": "logs",
+        "dataset": "network_traffic.cassandra",
+        "title": "Cassandra"
+      },
+      {
+        "type": "logs",
+        "dataset": "network_traffic.dhcpv4",
+        "title": "DHCP"
+      },
+      {
+        "type": "logs",
+        "dataset": "network_traffic.dns",
+        "title": "DNS"
+      },
+      {
+        "type": "logs",
+        "dataset": "network_traffic.flow",
+        "title": "Flows"
+      },
+      {
+        "type": "logs",
+        "dataset": "network_traffic.http",
+        "title": "HTTP"
+      },
+      {
+        "type": "logs",
+        "dataset": "network_traffic.icmp",
+        "title": "ICMP"
+      },
+      {
+        "type": "logs",
+        "dataset": "network_traffic.memcached",
+        "title": "Memcached"
+      },
+      {
+        "type": "logs",
+        "dataset": "network_traffic.mongodb",
+        "title": "MongoDB"
+      },
+      {
+        "type": "logs",
+        "dataset": "network_traffic.mysql",
+        "title": "MySQL"
+      },
+      {
+        "type": "logs",
+        "dataset": "network_traffic.nfs",
+        "title": "NFS"
+      },
+      {
+        "type": "logs",
+        "dataset": "network_traffic.pgsql",
+        "title": "PostgreSQL"
+      },
+      {
+        "type": "logs",
+        "dataset": "network_traffic.redis",
+        "title": "Redis"
+      },
+      {
+        "type": "logs",
+        "dataset": "network_traffic.sip",
+        "title": "SIP"
+      },
+      {
+        "type": "logs",
+        "dataset": "network_traffic.thrift",
+        "title": "Thrift"
+      },
+      {
+        "type": "logs",
+        "dataset": "network_traffic.tls",
+        "title": "TLS"
       }
     ]
   },

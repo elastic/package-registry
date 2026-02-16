@@ -2,7 +2,7 @@
   {
     "id": "aws",
     "title": "AWS",
-    "count": 23
+    "count": 25
   },
   {
     "id": "azure",
@@ -19,7 +19,7 @@
   {
     "id": "cloud",
     "title": "Cloud",
-    "count": 35
+    "count": 37
   },
   {
     "id": "config_management",
@@ -29,7 +29,7 @@
   {
     "id": "containers",
     "title": "Containers",
-    "count": 11
+    "count": 12
   },
   {
     "id": "credential_management",
@@ -41,17 +41,17 @@
   {
     "id": "custom",
     "title": "Custom",
-    "count": 7
+    "count": 9
   },
   {
     "id": "datastore",
     "title": "Database",
-    "count": 14
+    "count": 16
   },
   {
     "id": "elastic_stack",
     "title": "Elastic Stack",
-    "count": 5
+    "count": 6
   },
   {
     "id": "google_cloud",
@@ -61,7 +61,7 @@
   {
     "id": "kubernetes",
     "title": "Kubernetes",
-    "count": 11,
+    "count": 12,
     "parent_id": "observability",
     "parent_title": "Observability"
   },
@@ -75,19 +75,19 @@
   {
     "id": "monitoring",
     "title": "Monitoring",
-    "count": 5,
+    "count": 7,
     "parent_id": "observability",
     "parent_title": "Observability"
   },
   {
     "id": "network",
     "title": "Network",
-    "count": 33
+    "count": 34
   },
   {
     "id": "os_system",
     "title": "Operating Systems",
-    "count": 9
+    "count": 11
   },
   {
     "id": "productivity",
@@ -97,12 +97,17 @@
   {
     "id": "security",
     "title": "Security",
-    "count": 79
+    "count": 88
+  },
+  {
+    "id": "support",
+    "title": "Support",
+    "count": 2
   },
   {
     "id": "web",
     "title": "Web Server",
-    "count": 23,
+    "count": 27,
     "parent_id": "observability",
     "parent_title": "Observability"
   }

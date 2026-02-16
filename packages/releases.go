@@ -14,9 +14,10 @@ const (
 	ReleaseGa           = "ga"
 
 	// Default release if no release is configured
-	DefaultRelease    = ReleaseGa
-	DefaultPrerelease = ReleaseBeta
-	DefaultLicense    = "basic"
+	DefaultRelease            = ReleaseGa
+	DefaultPrerelease         = ReleaseBeta
+	DefaultReleaseTechPreview = ReleaseBeta
+	DefaultLicense            = "basic"
 )
 
 var ReleaseTypes = map[string]interface{}{
@@ -36,5 +37,9 @@ func releaseForSemVerCompat(version *semver.Version) string {
 	if isPrerelease(version) {
 		return DefaultPrerelease
 	}
+	if isTechPreview(version) {
+		return DefaultReleaseTechPreview
+	}
+
 	return DefaultRelease
 }

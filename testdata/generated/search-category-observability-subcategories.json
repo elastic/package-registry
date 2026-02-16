@@ -29,6 +29,158 @@
     ]
   },
   {
+    "name": "datastream_without_release",
+    "title": "Apache Spark",
+    "version": "0.1.0",
+    "release": "beta",
+    "description": "Collect metrics from Apache Spark with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/datastream_without_release/datastream_without_release-0.1.0.zip",
+    "path": "/package/datastream_without_release/0.1.0",
+    "icons": [
+      {
+        "src": "/img/apache_spark-logo.svg",
+        "path": "/package/datastream_without_release/0.1.0/img/apache_spark-logo.svg",
+        "title": "Apache Spark logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "apache_spark",
+        "title": "Apache Spark metrics",
+        "description": "Collect Apache Spark metrics"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.1.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/obs-service-integrations"
+    },
+    "categories": [
+      "datastore",
+      "monitoring"
+    ],
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "datastream_without_release.nodes",
+        "title": "Apache Spark nodes metrics"
+      }
+    ]
+  },
+  {
+    "name": "ecs_style_dataset",
+    "title": "Default pipeline Integration",
+    "version": "0.0.1",
+    "release": "beta",
+    "description": "Tests the registry validations works for dataset fields using the ecs style format",
+    "type": "integration",
+    "download": "/epr/ecs_style_dataset/ecs_style_dataset-0.0.1.zip",
+    "path": "/package/ecs_style_dataset/0.0.1",
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Logs datasource",
+        "description": "Datasource for your log files."
+      }
+    ],
+    "categories": [
+      "monitoring"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "ecs_style_dataset.foo",
+        "title": "Foo"
+      }
+    ]
+  },
+  {
+    "name": "default_pipeline",
+    "title": "Default pipeline Integration",
+    "version": "0.0.2",
+    "release": "beta",
+    "description": "Tests if no pipeline is set, it defaults to the default one",
+    "type": "integration",
+    "download": "/epr/default_pipeline/default_pipeline-0.0.2.zip",
+    "path": "/package/default_pipeline/0.0.2",
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Logs datasource",
+        "description": "Datasource for your log files."
+      }
+    ],
+    "categories": [
+      "containers",
+      "message_queue"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "default_pipeline.foo",
+        "title": "Foo"
+      }
+    ]
+  },
+  {
+    "name": "good_content",
+    "title": "Good content package",
+    "version": "0.1.0",
+    "release": "beta",
+    "source": {
+      "license": "Apache-2.0"
+    },
+    "description": "This package is a dummy example for packages with the content type. These packages contain resources that are useful with data ingested by other integrations. They are not used to configure data sources.\n",
+    "type": "content",
+    "download": "/epr/good_content/good_content-0.1.0.zip",
+    "path": "/package/good_content/0.1.0",
+    "icons": [
+      {
+        "src": "/img/system.svg",
+        "path": "/package/good_content/0.1.0/img/system.svg",
+        "title": "system",
+        "size": "1000x1000",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.16.0"
+      },
+      "elastic": {
+        "subscription": "basic"
+      }
+    },
+    "owner": {
+      "type": "elastic",
+      "github": "elastic/ecosystem"
+    },
+    "categories": [
+      "web"
+    ],
+    "discovery": {
+      "fields": [
+        {
+          "name": "process.pid"
+        }
+      ],
+      "datasets": [
+        {
+          "name": "good_content.access"
+        },
+        {
+          "name": "good_content.errors"
+        }
+      ]
+    }
+  },
+  {
     "name": "longdocs",
     "title": "Long Docs",
     "version": "1.0.4",

@@ -300,8 +300,9 @@ func TestPackagesFilter(t *testing.T) {
 				// See: https://github.com/elastic/package-registry/pull/893
 				filterTestPackage{Name: "apache", Version: "1.0.0-rc1"},
 				filterTestPackage{Name: "apache", Version: "2.0.0-rc2"},
-				filterTestPackage{Name: "redisenterprise", Version: "0.1.1"},
 				filterTestPackage{Name: "obs_sec_package", Version: "2.0.0-rc1"},
+				// Tech preview versions (major < 1) must be skipped if there are GA versions.
+				filterTestPackage{Name: "redisenterprise", Version: "0.1.1"},
 			),
 		},
 		{
@@ -352,7 +353,7 @@ func TestPackagesFilter(t *testing.T) {
 			},
 			Expected: []filterTestPackage{
 				// There are two versions available for 8.5, but we return only
-				// the GA one to avoid exposing prereleases to legacy kibanas.
+				// the GA one to avoid exposing prereleases and tech previews to legacy kibanas.
 				// See: https://github.com/elastic/package-registry/pull/893
 				{Name: "redisenterprise", Version: "1.0.0"},
 			},
