@@ -1,6 +1,6 @@
 module github.com/elastic/package-registry
 
-go 1.24.0
+go 1.25.0
 
 require (
 	cloud.google.com/go/storage v1.60.0
@@ -25,7 +25,7 @@ require (
 	golang.org/x/tools v0.42.0
 	google.golang.org/api v0.266.0
 	gopkg.in/yaml.v2 v2.4.0
-	honnef.co/go/tools v0.6.1
+	honnef.co/go/tools v0.7.0
 	modernc.org/sqlite v1.45.0
 )
 
