@@ -6,7 +6,7 @@ require (
 	cloud.google.com/go/storage v1.60.0
 	github.com/Masterminds/semver/v3 v3.4.0
 	github.com/elastic/go-licenser v0.4.2
-	github.com/elastic/go-ucfg v0.8.8
+	github.com/elastic/go-ucfg v0.9.0
 	github.com/felixge/httpsnoop v1.0.4
 	github.com/fsouza/fake-gcs-server v1.54.0
 	github.com/gorilla/mux v1.8.1
