@@ -1,0 +1,71 @@
+# This image contains the package-registry binary AND a pre-warmed set of packages.
+
+ARG GO_VERSION=1.24
+ARG BUILDER_IMAGE=golang
+ARG RUNNER_IMAGE=cgr.dev/chainguard/wolfi-base
+
+# STAGE 1: Build the 'distribution' tool
+FROM --platform=${BUILDPLATFORM:-linux} ${BUILDER_IMAGE}:${GO_VERSION} AS distribution-builder
+WORKDIR /src
+COPY . .
+ARG TARGETPLATFORM
+# Build the distribution binary inside its own directory
+RUN make -C cmd/distribution release-${TARGETPLATFORM:-linux/amd64}
+
+
+# STAGE 2: Run the 'distribution' tool to download packages
+FROM distribution-builder AS packager
+# Copy the custom configuration for the packages we want
+COPY ./cmd/distribution/custom-packages.yml .
+# Run the tool. It will create the packages in 'build/distribution/'
+RUN ./cmd/distribution/distribution ./cmd/distribution/custom-packages.yml
+
+
+# STAGE 3: Build the final 'package-registry' binary
+FROM --platform=${BUILDPLATFORM:-linux} ${BUILDER_IMAGE}:${GO_VERSION} AS registry-builder
+WORKDIR /src
+COPY . .
+ARG TARGETPLATFORM
+# Build the main package-registry binary from the root directory
+RUN make release-${TARGETPLATFORM:-linux/amd64}
+
+
+# STAGE 4: Final image assembly
+FROM ${RUNNER_IMAGE}
+
+# Get dependencies (same as original Dockerfile)
+# Mailcap is installed to get mime types information.
+RUN if grep -q "Red Hat" /etc/os-release ; then \
+    microdnf install -y mailcap zip rsync && \
+    microdnf clean all ; \
+  else \
+    apk update && \
+    apk add mailcap zip rsync curl && \
+    rm -rf /var/cache/apk/* ; \
+  fi
+
+WORKDIR /package-registry
+
+# Copy the main binary from the 'registry-builder' stage
+COPY --from=registry-builder /src/package-registry .
+
+# --- THIS IS THE KEY STEP ---
+# Copy the downloaded packages from the 'packager' stage into the final image
+# The registry is configured to look for packages in '/packages/package-registry/'
+COPY --from=packager /src/build/distribution/. /packages/package-registry/
+
+# Get in config which expects packages in /packages
+COPY config.docker.yml ./config.yml
+
+# Run as non-root user
+USER 1000
+
+# Start registry when container is run an expose it on port 8080
+EXPOSE 8080
+ENTRYPOINT ["./package-registry"]
+
+# Make sure it's accessible from outside the container
+ENV EPR_ADDRESS=0.0.0.0:8080
+
+HEALTHCHECK --interval=1s --retries=30 CMD curl --silent --fail localhost:8080/health || exit 1
+

@@ -165,6 +165,39 @@ If you want to run the most recent registry for development, run the main tag.
 
 These images contain only the package registry, they don't contain any package.
 
+#### Build a Custom Docker Package Registry Image
+
+The official Docker container for the Elastic Package Registry includes all available packages for every Kibana version. For development or specific deployments, you might want to build a custom, smaller container that only includes packages compatible with your target Kibana environment. This results in a much smaller image footprint.
+
+To build your own custom Elastic Package Registry container image, follow these steps:
+
+1.  **Define Your Package Set**: Create or modify the `cmd/distribution/examples/custom-packages.yml` file to specify the desired package versions. You can filter by `kibana.version`, `spec.max`, and other criteria.
+
+2.  **Build the Image**: Run the following command from the root of the repository to build your custom image.
+
+> **Note**: If you use a different configuration file than the default, remember to update the `Dockerfile.custom-registry` accordingly.
+
+```bash
+docker build -f Dockerfile.custom-registry -t custom-package-registry .
+```
+
+**Example: Smaller Image Footprint**
+
+Here is an example of a custom image built with packages compatible with Kibana `>8.18.0` & `>9.0.0`. The resulting image is significantly smaller than the default one.
+
+```bash
+ docker images
+
+IMAGE                            ID             DISK USAGE   CONTENT SIZE   EXTRA
+custom-package-registry:latest   193b9b282bf2       1.61GB          631MB       
+```
+
+You can run your custom registry with the following command:
+
+```bash
+docker run --rm -it -p 8080:8080 custom-package-registry
+```
+
 ### Testing with Kibana
 
 The Docker image of Package Registry is just an empty distribution without any packages.
@@ -243,6 +276,7 @@ information collected for requests in the [APM Guide](https://www.elastic.co/gui
 
 You can configure the agent to send the data to any APM Server using the following environment variables:
 
+* `ELASTIC_APM_ACTIVE`: Boolean to activate the APM.
 * `ELASTIC_APM_SERVER_URL`: Address of the APM Server. Instrumentation is
   disabled in Package Registry if this variable is not set.
 * `ELASTIC_APM_API_KEY`: API key to use to authenticate with the APM Server, if needed.
