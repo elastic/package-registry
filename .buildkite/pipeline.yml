@@ -71,6 +71,30 @@ steps:
         artifact_paths:
           - "tests-report-darwin.xml"
 
+  - group: ":lock: Run FIPS Unit tests"
+    key: fips-tests
+    steps:
+      - label: ":linux::lock: FIPS Test on Linux"
+        key: test-fips-linux
+        command:
+          - ".buildkite/scripts/run-tests-fips.sh"
+        agents:
+          image: "${LINUX_GOLANG_AGENT_IMAGE}"
+          cpu: "8"
+          memory: "4G"
+        artifact_paths:
+          - "tests-report-fips-linux.xml"
+
+      - label: ":macos::lock: FIPS Test on Macos ARM"
+        key: test-fips-macos-arm
+        command:
+          - ".buildkite/scripts/run-tests-fips.sh"
+        agents:
+          provider: "orka"
+          imagePrefix: "${MACOS_ARM_AGENT_IMAGE}"
+        artifact_paths:
+          - "tests-report-fips-darwin.xml"
+
   - label: ":junit: Junit annotate"
     agents:
       # requires at least "bash", "curl" and "git"
@@ -89,6 +113,10 @@ steps:
         allow_failure: true
       - step: "test-macos-arm"
         allow_failure: true
+      - step: "test-fips-linux"
+        allow_failure: true
+      - step: "test-fips-macos-arm"
+        allow_failure: true
 
   - label: ":docker: Publish docker image"
     key: "publish"
@@ -101,6 +129,10 @@ steps:
       - step: "test-win"
         allow_failure: false
       - step: "test-macos-arm"
+        allow_failure: false
+      - step: "test-fips-linux"
+        allow_failure: false
+      - step: "test-fips-macos-arm"
         allow_failure: false
       - step: "build"
         allow_failure: false
