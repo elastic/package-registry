@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Sort packages by semver when searching, after existing title sorting. [#1585](https://github.com/elastic/package-registry/pull/1585)
+
 ### Deprecated
 
 ### Known Issues
