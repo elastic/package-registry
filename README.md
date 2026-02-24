@@ -171,7 +171,7 @@ The official Docker container for the Elastic Package Registry includes all avai
 
 To build your own custom Elastic Package Registry container image, follow these steps:
 
-1.  **Define Your Package Set**: Create or modify the `cmd/distribution/examples/custom-packages.yml` file to specify the desired package versions. You can filter by `kibana.version`, `spec.max`, and other criteria.
+1.  **Define Your Package Set**: Create or modify the `cmd/distribution/examples/custom-packages.yaml` file to specify the desired package versions. You can filter by `kibana.version`, `spec.max`, and other criteria. All the available settings are documented in the distribution [README](./cmd/distribution/README.md)
 
 2.  **Build the Image**: Run the following command from the root of the repository to build your custom image.
 

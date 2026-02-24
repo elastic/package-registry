@@ -16,9 +16,9 @@ RUN make -C cmd/distribution release-${TARGETPLATFORM:-linux/amd64}
 # STAGE 2: Run the 'distribution' tool to download packages
 FROM distribution-builder AS packager
 # Copy the custom configuration for the packages we want
-COPY ./cmd/distribution/custom-packages.yml .
+COPY ./cmd/distribution/examples/custom-packages.yaml .
 # Run the tool. It will create the packages in 'build/distribution/'
-RUN ./cmd/distribution/distribution ./cmd/distribution/custom-packages.yml
+RUN ./cmd/distribution/distribution ./cmd/distribution/examples/custom-packages.yaml
 
 
 # STAGE 3: Build the final 'package-registry' binary
