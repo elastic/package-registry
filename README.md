@@ -276,7 +276,6 @@ information collected for requests in the [APM Guide](https://www.elastic.co/gui
 
 You can configure the agent to send the data to any APM Server using the following environment variables:
 
-* `ELASTIC_APM_ACTIVE`: Boolean to activate the APM.
 * `ELASTIC_APM_SERVER_URL`: Address of the APM Server. Instrumentation is
   disabled in Package Registry if this variable is not set.
 * `ELASTIC_APM_API_KEY`: API key to use to authenticate with the APM Server, if needed.
