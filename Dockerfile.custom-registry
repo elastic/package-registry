@@ -1,6 +1,6 @@
 # This image contains the package-registry binary AND a pre-warmed set of packages.
 
-ARG GO_VERSION=1.24
+ARG GO_VERSION=1.25.7
 ARG BUILDER_IMAGE=golang
 ARG RUNNER_IMAGE=cgr.dev/chainguard/wolfi-base
 
