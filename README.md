@@ -178,7 +178,7 @@ To build your own custom Elastic Package Registry container image, follow these 
 > **Note**: If you use a different configuration file than the default, remember to update the `Dockerfile.custom-registry` accordingly.
 
 ```bash
-docker build -f Dockerfile.custom-registry -t custom-package-registry .
+docker build --build-arg GO_VERSION="$(cat .go-version)" -f Dockerfile.custom-registry -t custom-package-registry .
 ```
 
 **Example: Smaller Image Footprint**
