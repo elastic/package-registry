@@ -46,6 +46,31 @@ var modules = []module{
 	{"cmd/distribution", "cmd/distribution"},
 }
 
+func runInAllModules(fn func(mod module) error) error {
+	wd, err := os.Getwd()
+	if err != nil {
+		return fmt.Errorf("failed to get working directory: %w", err)
+	}
+	defer func() {
+		err := os.Chdir(wd)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "failed to change directory to working directory: %s\n", err)
+			panic(err)
+		}
+	}()
+	for _, mod := range modules {
+		err = os.Chdir(filepath.Join(wd, mod.path))
+		if err != nil {
+			return fmt.Errorf("failed to change directory to %s: %w", mod.path, err)
+		}
+		err = fn(mod)
+		if err != nil {
+			return fmt.Errorf("%s failed: %w", mod.name, err)
+		}
+	}
+	return nil
+}
+
 func Build() error {
 	fmt.Println(">> Building package-registry")
 	return sh.Run("go", "build", ".")
@@ -53,8 +78,13 @@ func Build() error {
 
 // BuildDistribution builds the distribution binary in cmd/distribution.
 func BuildDistribution() error {
-	fmt.Println(">> Building cmd/distribution")
-	return sh.RunWithV(map[string]string{"PWD": "cmd/distribution"}, "go", "build", "-o", "distribution", ".")
+	return runInAllModules(func(mod module) error {
+		if mod.name != "cmd/distribution" {
+			return nil
+		}
+		fmt.Fprintf(os.Stderr, ">> Building cmd/distribution\n")
+		return sh.RunV("go", "build", "-o", "distribution", ".")
+	})
 }
 
 // DockerBuild builds the Docker image for the package registry. It must be specified
@@ -93,31 +123,6 @@ func Check() error {
 		return err
 	}
 	return sh.RunV("git", "diff-index", "--exit-code", "HEAD", "--")
-}
-
-func runInAllModules(fn func(mod module) error) error {
-	wd, err := os.Getwd()
-	if err != nil {
-		return fmt.Errorf("failed to get working directory: %w", err)
-	}
-	defer func() {
-		err := os.Chdir(wd)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "failed to change directory to working directory: %s\n", err)
-			panic(err)
-		}
-	}()
-	for _, mod := range modules {
-		err = os.Chdir(filepath.Join(wd, mod.path))
-		if err != nil {
-			return fmt.Errorf("failed to change directory to %s: %w", mod.path, err)
-		}
-		err = fn(mod)
-		if err != nil {
-			return fmt.Errorf("%s failed: %w", mod.name, err)
-		}
-	}
-	return nil
 }
 
 func Test() error {
