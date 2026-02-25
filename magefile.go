@@ -104,8 +104,8 @@ func runInAllModules(fn func(mod module) error) error {
 		err := os.Chdir(wd)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "failed to change directory to working directory: %s\n", err)
+			panic(err)
 		}
-		panic(err)
 	}()
 	for _, mod := range modules {
 		err = os.Chdir(filepath.Join(wd, mod.path))
