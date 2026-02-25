@@ -34,13 +34,15 @@ const (
 	buildDir = "./build"
 )
 
-// modules is the list of Go modules in this repository.
-// Add new modules here to automatically include them in test, lint, and other targets.
-var modules = []struct {
+type module struct {
 	name string // Display name
 	path string // Relative path from repo root
-}{
-	// {"package-registry", "."},
+}
+
+// modules is the list of Go modules in this repository.
+// Add new modules here to automatically include them in test, lint, and other targets.
+var modules = []module{
+	{"package-registry", "."},
 	{"cmd/distribution", "cmd/distribution"},
 }
 
@@ -93,15 +95,29 @@ func Check() error {
 	return sh.RunV("git", "diff-index", "--exit-code", "HEAD", "--")
 }
 
-func Test() error {
+func runInAllModules(fn func(mod module) error) error {
+	wd, err := os.Getwd()
+	if err != nil {
+		return fmt.Errorf("failed to get working directory: %w", err)
+	}
 	for _, mod := range modules {
-		fmt.Fprintf(os.Stderr, ">> Testing %s\n", mod.name)
-		err := sh.RunWithV(map[string]string{"PWD": mod.path}, "go", "test", "./...", "-v")
+		err = os.Chdir(filepath.Join(wd, mod.path))
 		if err != nil {
-			return fmt.Errorf("%s tests failed: %w", mod.name, err)
+			return fmt.Errorf("failed to change directory to %s: %w", mod.path, err)
+		}
+		err = fn(mod)
+		if err != nil {
+			return fmt.Errorf("%s failed: %w", mod.name, err)
 		}
 	}
 	return nil
+}
+
+func Test() error {
+	return runInAllModules(func(mod module) error {
+		fmt.Fprintf(os.Stderr, ">> test - running tests for %s\n", mod.name)
+		return sh.RunV("go", "test", "./...", "-v")
+	})
 }
 
 func WriteTestGoldenFiles() error {
@@ -197,24 +213,16 @@ func Clean() error {
 
 // ModTidy cleans unused dependencies.
 func ModTidy() error {
-	for _, mod := range modules {
-		fmt.Printf(">> fmt - go mod tidy: Generating go mod files for %s\n", mod.name)
-		err := sh.RunWithV(map[string]string{"PWD": mod.path}, "go", "mod", "tidy")
-		if err != nil {
-			return fmt.Errorf("%s go mod tidy failed: %w", mod.name, err)
-		}
-	}
-	return nil
+	return runInAllModules(func(mod module) error {
+		fmt.Fprintf(os.Stderr, ">> fmt - go mod tidy: Generating go mod files for %s\n", mod.name)
+		return sh.RunV("go", "mod", "tidy")
+	})
 }
 
 // Staticcheck runs a static code analyzer.
 func Staticcheck() error {
-	for _, mod := range modules {
-		fmt.Printf(">> check - staticcheck: Running static code analyzer on %s\n", mod.name)
-		err := sh.RunWithV(map[string]string{"PWD": mod.path}, "go", "run", StaticcheckImportPath, "./...")
-		if err != nil {
-			return fmt.Errorf("%s staticcheck failed: %w", mod.name, err)
-		}
-	}
-	return nil
+	return runInAllModules(func(mod module) error {
+		fmt.Fprintf(os.Stderr, ">> check - staticcheck: Running static code analyzer on %s\n", mod.name)
+		return sh.RunV("go", "run", StaticcheckImportPath, "./...")
+	})
 }
