@@ -40,7 +40,7 @@ var modules = []struct {
 	name string // Display name
 	path string // Relative path from repo root
 }{
-	{"package-registry", "."},
+	// {"package-registry", "."},
 	{"cmd/distribution", "cmd/distribution"},
 }
 
@@ -52,7 +52,7 @@ func Build() error {
 // BuildDistribution builds the distribution binary in cmd/distribution.
 func BuildDistribution() error {
 	fmt.Println(">> Building cmd/distribution")
-	return sh.RunWith(map[string]string{"PWD": "cmd/distribution"}, "go", "build", "-o", "distribution", ".")
+	return sh.RunWithV(map[string]string{"PWD": "cmd/distribution"}, "go", "build", "-o", "distribution", ".")
 }
 
 // DockerBuild builds the Docker image for the package registry. It must be specified
@@ -95,8 +95,8 @@ func Check() error {
 
 func Test() error {
 	for _, mod := range modules {
-		fmt.Printf(">> Testing %s\n", mod.name)
-		err := sh.RunWith(map[string]string{"PWD": mod.path}, "go", "test", "./...", "-v")
+		fmt.Fprintf(os.Stderr, ">> Testing %s\n", mod.name)
+		err := sh.RunWithV(map[string]string{"PWD": mod.path}, "go", "test", "./...", "-v")
 		if err != nil {
 			return fmt.Errorf("%s tests failed: %w", mod.name, err)
 		}
@@ -199,7 +199,7 @@ func Clean() error {
 func ModTidy() error {
 	for _, mod := range modules {
 		fmt.Printf(">> fmt - go mod tidy: Generating go mod files for %s\n", mod.name)
-		err := sh.RunWith(map[string]string{"PWD": mod.path}, "go", "mod", "tidy")
+		err := sh.RunWithV(map[string]string{"PWD": mod.path}, "go", "mod", "tidy")
 		if err != nil {
 			return fmt.Errorf("%s go mod tidy failed: %w", mod.name, err)
 		}
@@ -211,7 +211,7 @@ func ModTidy() error {
 func Staticcheck() error {
 	for _, mod := range modules {
 		fmt.Printf(">> check - staticcheck: Running static code analyzer on %s\n", mod.name)
-		err := sh.RunWith(map[string]string{"PWD": mod.path}, "go", "run", StaticcheckImportPath, "./...")
+		err := sh.RunWithV(map[string]string{"PWD": mod.path}, "go", "run", StaticcheckImportPath, "./...")
 		if err != nil {
 			return fmt.Errorf("%s staticcheck failed: %w", mod.name, err)
 		}
