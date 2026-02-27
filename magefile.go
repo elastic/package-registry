@@ -34,14 +34,41 @@ const (
 	buildDir = "./build"
 )
 
-// modules is the list of Go modules in this repository.
-// Add new modules here to automatically include them in test, lint, and other targets.
-var modules = []struct {
+type module struct {
 	name string // Display name
 	path string // Relative path from repo root
-}{
+}
+
+// modules is the list of Go modules in this repository.
+// Add new modules here to automatically include them in test, lint, and other targets.
+var modules = []module{
 	{"package-registry", "."},
 	{"cmd/distribution", "cmd/distribution"},
+}
+
+func runInAllModules(fn func(mod module) error) error {
+	wd, err := os.Getwd()
+	if err != nil {
+		return fmt.Errorf("failed to get working directory: %w", err)
+	}
+	defer func() {
+		err := os.Chdir(wd)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "failed to change directory to working directory: %s\n", err)
+			panic(err)
+		}
+	}()
+	for _, mod := range modules {
+		err = os.Chdir(filepath.Join(wd, mod.path))
+		if err != nil {
+			return fmt.Errorf("failed to change directory to %s: %w", mod.path, err)
+		}
+		err = fn(mod)
+		if err != nil {
+			return fmt.Errorf("%s failed: %w", mod.name, err)
+		}
+	}
+	return nil
 }
 
 func Build() error {
@@ -51,8 +78,13 @@ func Build() error {
 
 // BuildDistribution builds the distribution binary in cmd/distribution.
 func BuildDistribution() error {
-	fmt.Println(">> Building cmd/distribution")
-	return sh.RunWith(map[string]string{"PWD": "cmd/distribution"}, "go", "build", "-o", "distribution", ".")
+	return runInAllModules(func(mod module) error {
+		if mod.name != "cmd/distribution" {
+			return nil
+		}
+		fmt.Fprintf(os.Stderr, ">> Building cmd/distribution\n")
+		return sh.RunV("go", "build", "-o", "distribution", ".")
+	})
 }
 
 // DockerBuild builds the Docker image for the package registry. It must be specified
@@ -94,14 +126,10 @@ func Check() error {
 }
 
 func Test() error {
-	for _, mod := range modules {
-		fmt.Printf(">> Testing %s\n", mod.name)
-		err := sh.RunWith(map[string]string{"PWD": mod.path}, "go", "test", "./...", "-v")
-		if err != nil {
-			return fmt.Errorf("%s tests failed: %w", mod.name, err)
-		}
-	}
-	return nil
+	return runInAllModules(func(mod module) error {
+		fmt.Fprintf(os.Stderr, ">> test - running tests for %s\n", mod.name)
+		return sh.RunV("go", "test", "./...", "-v")
+	})
 }
 
 func WriteTestGoldenFiles() error {
@@ -197,24 +225,16 @@ func Clean() error {
 
 // ModTidy cleans unused dependencies.
 func ModTidy() error {
-	for _, mod := range modules {
-		fmt.Printf(">> fmt - go mod tidy: Generating go mod files for %s\n", mod.name)
-		err := sh.RunWith(map[string]string{"PWD": mod.path}, "go", "mod", "tidy")
-		if err != nil {
-			return fmt.Errorf("%s go mod tidy failed: %w", mod.name, err)
-		}
-	}
-	return nil
+	return runInAllModules(func(mod module) error {
+		fmt.Fprintf(os.Stderr, ">> fmt - go mod tidy: Generating go mod files for %s\n", mod.name)
+		return sh.RunV("go", "mod", "tidy")
+	})
 }
 
 // Staticcheck runs a static code analyzer.
 func Staticcheck() error {
-	for _, mod := range modules {
-		fmt.Printf(">> check - staticcheck: Running static code analyzer on %s\n", mod.name)
-		err := sh.RunWith(map[string]string{"PWD": mod.path}, "go", "run", StaticcheckImportPath, "./...")
-		if err != nil {
-			return fmt.Errorf("%s staticcheck failed: %w", mod.name, err)
-		}
-	}
-	return nil
+	return runInAllModules(func(mod module) error {
+		fmt.Fprintf(os.Stderr, ">> check - staticcheck: Running static code analyzer on %s\n", mod.name)
+		return sh.RunV("go", "run", StaticcheckImportPath, "./...")
+	})
 }
