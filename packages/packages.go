@@ -44,6 +44,11 @@ func (p Packages) Less(i, j int) bool {
 	if p[i].Title != nil && p[j].Title != nil && *p[i].Title != *p[j].Title {
 		return *p[i].Title < *p[j].Title
 	}
+	iSemVer, iErr := semver.NewVersion(p[i].Version)
+	jSemVer, jErr := semver.NewVersion(p[j].Version)
+	if iErr == nil && jErr == nil {
+		return iSemVer.LessThan(jSemVer)
+	}
 	return p[i].Version < p[j].Version
 }
 

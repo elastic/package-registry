@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"sort"
 	"testing"
 	"time"
 
@@ -1208,4 +1209,56 @@ func assertFilterPackagesResult(t *testing.T, expected []filterTestPackage, foun
 			t.Logf("- %s-%s", p.Name, p.Version)
 		}
 	}
+}
+
+func strPtr(s string) *string { return &s }
+
+func TestPackagesSort(t *testing.T) {
+	t.Run("sorts by title alphabetically", func(t *testing.T) {
+		pkgs := Packages{
+			{BasePackage: BasePackage{Name: "c_pkg", Title: strPtr("Zebra Integration"), Version: "1.0.0"}},
+			{BasePackage: BasePackage{Name: "a_pkg", Title: strPtr("Apple Integration"), Version: "1.0.0"}},
+			{BasePackage: BasePackage{Name: "b_pkg", Title: strPtr("Mango Integration"), Version: "1.0.0"}},
+		}
+		sort.Sort(pkgs)
+		assert.Equal(t, "Apple Integration", *pkgs[0].Title)
+		assert.Equal(t, "Mango Integration", *pkgs[1].Title)
+		assert.Equal(t, "Zebra Integration", *pkgs[2].Title)
+	})
+
+	t.Run("sorts by semver version when titles are equal", func(t *testing.T) {
+		// Regression test: lexicographic ordering would sort 8.19.2 after 8.19.15
+		// because "2" > "1", but semantic ordering puts 8.19.2 before 8.19.15.
+		pkgs := Packages{
+			{BasePackage: BasePackage{Name: "security_detection_engine", Title: strPtr("Prebuilt Security Detection Rules"), Version: "8.19.15"}},
+			{BasePackage: BasePackage{Name: "security_detection_engine", Title: strPtr("Prebuilt Security Detection Rules"), Version: "8.19.2"}},
+			{BasePackage: BasePackage{Name: "security_detection_engine", Title: strPtr("Prebuilt Security Detection Rules"), Version: "8.2.1"}},
+			{BasePackage: BasePackage{Name: "security_detection_engine", Title: strPtr("Prebuilt Security Detection Rules"), Version: "1.0.1"}},
+			{BasePackage: BasePackage{Name: "security_detection_engine", Title: strPtr("Prebuilt Security Detection Rules"), Version: "8.19.9"}},
+		}
+		sort.Sort(pkgs)
+		versions := make([]string, len(pkgs))
+		for i, p := range pkgs {
+			versions[i] = p.Version
+		}
+		assert.Equal(t, []string{"1.0.1", "8.2.1", "8.19.2", "8.19.9", "8.19.15"}, versions)
+	})
+
+	t.Run("sorts by title first, then version within same title", func(t *testing.T) {
+		pkgs := Packages{
+			{BasePackage: BasePackage{Name: "b_pkg", Title: strPtr("Beta"), Version: "2.0.0"}},
+			{BasePackage: BasePackage{Name: "a_pkg", Title: strPtr("Alpha"), Version: "1.0.0"}},
+			{BasePackage: BasePackage{Name: "b_pkg", Title: strPtr("Beta"), Version: "10.0.0"}},
+			{BasePackage: BasePackage{Name: "a_pkg", Title: strPtr("Alpha"), Version: "9.0.0"}},
+		}
+		sort.Sort(pkgs)
+		assert.Equal(t, "Alpha", *pkgs[0].Title)
+		assert.Equal(t, "1.0.0", pkgs[0].Version)
+		assert.Equal(t, "Alpha", *pkgs[1].Title)
+		assert.Equal(t, "9.0.0", pkgs[1].Version)
+		assert.Equal(t, "Beta", *pkgs[2].Title)
+		assert.Equal(t, "2.0.0", pkgs[2].Version)
+		assert.Equal(t, "Beta", *pkgs[3].Title)
+		assert.Equal(t, "10.0.0", pkgs[3].Version)
+	})
 }
