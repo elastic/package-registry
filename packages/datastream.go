@@ -89,7 +89,8 @@ type Input struct {
 }
 
 type Stream struct {
-	Input      string     `config:"input" json:"input" validate:"required"`
+	Input      string     `config:"input,omitempty" json:"input,omitempty" yaml:"input,omitempty"`
+	Package    string     `config:"package" json:"package,omitempty" yaml:"package,omitempty"`
 	Vars       []Variable `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
 	DataStream string     `config:"data_stream" json:"data_stream,omitempty" yaml:"data_stream,omitempty"`
 	// TODO: This might cause issues when consuming the json as the key contains . (had been an issue in the past if I remember correctly)
