@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Support input references by package: input `type` is no longer required when `package` is set (format_version 3.6.0+, aligns with package-spec and composable packages). [#1605](https://github.com/elastic/package-registry/pull/1605)
 * Sort packages by semver when searching, after existing title sorting. [#1585](https://github.com/elastic/package-registry/pull/1585)
 
 ### Deprecated
