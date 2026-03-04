@@ -2986,51 +2986,6 @@
    ]
   },
   {
-   "name": "package_reference",
-   "title": "Package Reference",
-   "version": "0.1.0",
-   "release": "beta",
-   "description": "Test package with a policy template input using a package reference instead of type.",
-   "type": "integration",
-   "download": "/epr/package_reference/package_reference-0.1.0.zip",
-   "path": "/package/package_reference/0.1.0",
-   "conditions": {
-    "kibana": {
-     "version": "^8.18.0"
-    }
-   },
-   "owner": {
-    "type": "elastic",
-    "github": "elastic/integrations"
-   },
-   "categories": [
-    "custom"
-   ],
-   "format_version": "3.6.0",
-   "readme": "/package/package_reference/0.1.0/docs/README.md",
-   "license": "basic",
-   "assets": [
-    "/package/package_reference/0.1.0/changelog.yml",
-    "/package/package_reference/0.1.0/manifest.yml",
-    "/package/package_reference/0.1.0/docs/README.md"
-   ],
-   "policy_templates": [
-    {
-     "name": "package_ref_policy",
-     "title": "Package Reference Policy",
-     "description": "A policy template with an input referencing a package.",
-     "inputs": [
-      {
-       "package": "sql_input",
-       "title": "Collect SQL metrics from package reference",
-       "description": "Collecting SQL metrics using referenced input package"
-      }
-     ],
-     "multiple": true
-    }
-   ]
-  },
-  {
    "name": "reference",
    "title": "Reference package",
    "version": "1.0.0",

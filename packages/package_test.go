@@ -225,31 +225,31 @@ func TestValidateInputPackageReference(t *testing.T) {
 		{
 			// package has only `package`
 			title:         "valid package",
-			packagePath:   "../testdata/package/stream_validation/0.1.0",
+			packagePath:   "../testdata/input_validation/stream_validation/0.1.0",
 			expectedError: false,
 		},
 		{
 			// package has not `input` or `package`
 			title:         "invalid package",
-			packagePath:   "../testdata/package/stream_validation_invalid/0.1.0",
+			packagePath:   "../testdata/input_validation/stream_validation_invalid/0.1.0",
 			expectedError: true,
 		},
 		{
 			// input has `package` only
 			title:         "input with package only is valid",
-			packagePath:   "../testdata/package/package_reference/0.1.0",
+			packagePath:   "../testdata/input_validation/package_reference/0.1.0",
 			expectedError: false,
 		},
 		{
 			// input has `type` only
 			title:         "input with type only is valid",
-			packagePath:   "../testdata/package/policy_template_type_input/0.1.0",
+			packagePath:   "../testdata/input_validation/policy_template_type_input/0.1.0",
 			expectedError: false,
 		},
 		{
 			// input has both `type` and `package`
 			title:         "input with both type and package is invalid",
-			packagePath:   "../testdata/package/policy_template_both_inputs/0.1.0",
+			packagePath:   "../testdata/input_validation/policy_template_both_inputs/0.1.0",
 			expectedError: true,
 		},
 	}

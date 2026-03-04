@@ -318,6 +318,10 @@ func (d *DataStream) validStreamsInput() error {
 		if stream.Input != "" && stream.Package == "" {
 			continue
 		}
+		if stream.Input == "" && stream.Package != "" {
+			continue
+		}
+		return fmt.Errorf("stream %s must have a input or package", stream.Title)
 	}
 	return nil
 }
