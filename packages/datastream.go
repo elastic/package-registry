@@ -76,7 +76,8 @@ type DataStream struct {
 }
 
 type Input struct {
-	Type            string      `config:"type" json:"type" validate:"required"`
+	Type            string      `config:"type,omitempty" json:"type,omitempty" yaml:"type,omitempty"`
+	Package         string      `config:"package,omitempty" json:"package,omitempty" yaml:"package,omitempty"`
 	Vars            []Variable  `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
 	Title           string      `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
 	Description     string      `config:"description" json:"description,omitempty" yaml:"description,omitempty"`
