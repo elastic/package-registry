@@ -301,12 +301,25 @@ func (d *DataStream) Validate() error {
 	if err != nil {
 		return fmt.Errorf("validating required fields failed: %w", err)
 	}
+
+	if err := d.validStreamsInput(); err != nil {
+		return err
+	}
 	return nil
 }
 
 func (d *DataStream) validType() bool {
 	_, exists := validTypes[d.Type]
 	return exists
+}
+
+func (d *DataStream) validStreamsInput() error {
+	for _, stream := range d.Streams {
+		if stream.Input != "" && stream.Package == "" {
+			continue
+		}
+	}
+	return nil
 }
 
 func validateIngestPipelineFile(fs PackageFileSystem, pipelinePath string) error {

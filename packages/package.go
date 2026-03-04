@@ -748,6 +748,9 @@ func (p *Package) Validate() error {
 		return fmt.Errorf("version in manifest file is not consistent with path: %w", err)
 	}
 
+	if err := p.validatePackageReference(); err != nil {
+		return err
+	}
 	return p.ValidateDataStreams()
 }
 
@@ -767,6 +770,21 @@ func (p *Package) validateVersionConsistency() error {
 
 	if !versionPackage.Equal(versionDir) {
 		return fmt.Errorf("inconsistent versions (path: %s, manifest: %s)", versionDir.String(), p.versionSemVer.String())
+	}
+	return nil
+}
+
+func (p *Package) validatePackageReference() error {
+	for _, pt := range p.PolicyTemplates {
+		for _, input := range pt.Inputs {
+			if input.Type != "" && input.Package == "" {
+				continue
+			}
+			if input.Type == "" && input.Package != "" {
+				continue
+			}
+			return fmt.Errorf("input %s in policy template %s must have a type or package", input.Title, pt.Name)
+		}
 	}
 	return nil
 }

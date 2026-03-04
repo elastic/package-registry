@@ -1,0 +1,11 @@
+format_version: 3.0.0
+name: stream_validation
+title: Stream Validation
+description: Test package for validating stream input/package rules.
+type: integration
+version: 0.1.0
+categories:
+  - custom
+owner:
+  github: elastic/integrations
+  type: elastic

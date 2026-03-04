@@ -1,0 +1,6 @@
+title: Valid Stream
+type: logs
+streams:
+  - input: logfile
+    title: Log stream (input only)
+    description: A stream using input only — valid per XOR rule.
