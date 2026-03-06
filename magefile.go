@@ -121,12 +121,16 @@ func Test() error {
 
 // TestFIPS runs all tests with FIPS 140 mode enabled.
 func TestFIPS() error {
-	fmt.Println(">> Downloading dependencies")
-	err := sh.Run("go", "mod", "download")
-	if err != nil {
-		return fmt.Errorf("failed to download dependencies: %w", err)
+	// Download dependencies for all modules first
+	for _, mod := range modules {
+		fmt.Printf(">> Downloading dependencies for %s\n", mod.name)
+		err := sh.RunWith(map[string]string{"PWD": mod.path}, "go", "mod", "download")
+		if err != nil {
+			return fmt.Errorf("failed to download dependencies for %s: %w", mod.name, err)
+		}
 	}
 
+	// Run tests with FIPS enabled
 	for _, mod := range modules {
 		fmt.Printf(">> Testing %s with FIPS 140 enabled\n", mod.name)
 		err := sh.RunWith(map[string]string{
