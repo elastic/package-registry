@@ -780,6 +780,9 @@ func (p *Package) validatePackageReference() error {
 			if input.Type == "" && input.Package == "" {
 				return fmt.Errorf("input %s in policy template %s must have a type or package", input.Title, pt.Name)
 			}
+			if input.Type != "" && input.Package != "" {
+				return fmt.Errorf("input %s in policy template %s must have a type or package, but not both", input.Title, pt.Name)
+			}
 		}
 	}
 	return nil
