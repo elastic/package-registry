@@ -777,13 +777,9 @@ func (p *Package) validateVersionConsistency() error {
 func (p *Package) validatePackageReference() error {
 	for _, pt := range p.PolicyTemplates {
 		for _, input := range pt.Inputs {
-			if input.Type != "" && input.Package == "" {
-				continue
+			if input.Type == "" && input.Package == "" {
+				return fmt.Errorf("input %s in policy template %s must have a type or package", input.Title, pt.Name)
 			}
-			if input.Type == "" && input.Package != "" {
-				continue
-			}
-			return fmt.Errorf("input %s in policy template %s must have a type or package", input.Title, pt.Name)
 		}
 	}
 	return nil

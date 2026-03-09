@@ -315,13 +315,9 @@ func (d *DataStream) validType() bool {
 
 func (d *DataStream) validStreamsInput() error {
 	for _, stream := range d.Streams {
-		if stream.Input != "" && stream.Package == "" {
-			continue
+		if stream.Input == "" && stream.Package == "" {
+			return fmt.Errorf("stream %s must have a input or package", stream.Title)
 		}
-		if stream.Input == "" && stream.Package != "" {
-			continue
-		}
-		return fmt.Errorf("stream %s must have a input or package", stream.Title)
 	}
 	return nil
 }
