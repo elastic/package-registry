@@ -1,4 +1,4 @@
-format_version: 3.0.0
+format_version: 3.6.0
 name: stream_validation
 title: Stream Validation
 description: Test package for validating stream input/package rules.

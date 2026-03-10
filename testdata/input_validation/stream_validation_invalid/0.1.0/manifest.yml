@@ -1,4 +1,4 @@
-format_version: 3.0.0
+format_version: 3.6.0
 name: stream_validation_invalid
 title: Stream Validation Invalid
 description: Test package with a data stream that violates the stream input XOR rule.
