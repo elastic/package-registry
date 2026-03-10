@@ -19,6 +19,14 @@
   "categories": [
     "custom"
   ],
+  "requires": {
+    "input": [
+      {
+        "package": "sql_input",
+        "version": "0.2.0"
+      }
+    ]
+  },
   "format_version": "3.6.0",
   "readme": "/package/package_reference/0.1.0/docs/README.md",
   "license": "basic",

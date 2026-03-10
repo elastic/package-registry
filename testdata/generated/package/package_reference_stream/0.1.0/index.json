@@ -14,10 +14,19 @@
   "categories": [
     "custom"
   ],
+  "requires": {
+    "input": [
+      {
+        "package": "sql_input",
+        "version": "0.2.0"
+      }
+    ]
+  },
   "format_version": "3.6.0",
   "readme": "/package/package_reference_stream/0.1.0/docs/README.md",
   "license": "basic",
   "assets": [
+    "/package/package_reference_stream/0.1.0/changelog.yml",
     "/package/package_reference_stream/0.1.0/manifest.yml",
     "/package/package_reference_stream/0.1.0/docs/README.md",
     "/package/package_reference_stream/0.1.0/data_stream/valid_stream/manifest.yml",

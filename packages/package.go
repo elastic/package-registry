@@ -62,6 +62,18 @@ type Package struct {
 
 type FileSystemBuilder func(*Package) (PackageFileSystem, error)
 
+// PackageRequirement defines a dependency on another package (input or content).
+type PackageRequirement struct {
+	Package string `config:"package" json:"package" yaml:"package" validate:"required"`
+	Version string `config:"version" json:"version" yaml:"version" validate:"required"`
+}
+
+// PackageRequirements holds package dependencies from the manifest requires field.
+type PackageRequirements struct {
+	Input   []PackageRequirement `config:"input,omitempty" json:"input,omitempty" yaml:"input,omitempty"`
+	Content []PackageRequirement `config:"content,omitempty" json:"content,omitempty" yaml:"content,omitempty"`
+}
+
 // BasePackage is used for the output of the package info in the /search endpoint
 type BasePackage struct {
 	Name                    string               `config:"name" json:"name"`
@@ -83,6 +95,7 @@ type BasePackage struct {
 	Discovery               *Discovery           `config:"discovery,omitempty" json:"discovery,omitempty,omitzero" yaml:"discovery,omitempty"`
 	BaseDataStreams         []*BaseDataStream    `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
 	Deprecated              *Deprecated          `config:"deprecated,omitempty" json:"deprecated,omitempty" yaml:"deprecated,omitempty"`
+	Requires                *PackageRequirements `config:"requires,omitempty" json:"requires,omitempty" yaml:"requires,omitempty"`
 }
 
 // BasePolicyTemplate is used for the package policy templates in the /search endpoint
