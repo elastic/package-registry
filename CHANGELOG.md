@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
-* Update Go runtime to 1.26.1 [TBD](https://github.com/elastic/package-registry/pull/1613)
+* Update Go runtime to 1.25.8 [1613](https://github.com/elastic/package-registry/pull/1613)
 
 ### Added
 
