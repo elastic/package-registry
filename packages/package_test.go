@@ -223,9 +223,9 @@ func TestValidateInputPackageReference(t *testing.T) {
 		expectedError bool
 	}{
 		{
-			// package has only `package`
-			title:         "valid package",
-			packagePath:   "../testdata/input_validation/stream_validation/0.1.0",
+			// data stream has only `package`
+			title:         "valid package reference stream",
+			packagePath:   "../testdata/package/package_reference_stream/0.1.0",
 			expectedError: false,
 		},
 		{
@@ -237,7 +237,7 @@ func TestValidateInputPackageReference(t *testing.T) {
 		{
 			// input has `package` only
 			title:         "input with package only is valid",
-			packagePath:   "../testdata/input_validation/package_reference/0.1.0",
+			packagePath:   "../testdata/package/package_reference/0.1.0",
 			expectedError: false,
 		},
 		{

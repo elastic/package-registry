@@ -793,7 +793,7 @@
     ]
   },
   {
-    "name": "deprecated_integration_stream",
+    "name": "deprecated_input_package",
     "title": "New Package",
     "version": "1.0.0",
     "release": "ga",
@@ -801,13 +801,13 @@
       "license": "Elastic-2.0"
     },
     "description": "This is a new package.",
-    "type": "integration",
-    "download": "/epr/deprecated_integration_stream/deprecated_integration_stream-1.0.0.zip",
-    "path": "/package/deprecated_integration_stream/1.0.0",
+    "type": "input",
+    "download": "/epr/deprecated_input_package/deprecated_input_package-1.0.0.zip",
+    "path": "/package/deprecated_input_package/1.0.0",
     "icons": [
       {
         "src": "/img/sample-logo.svg",
-        "path": "/package/deprecated_integration_stream/1.0.0/img/sample-logo.svg",
+        "path": "/package/deprecated_input_package/1.0.0/img/sample-logo.svg",
         "title": "Sample logo",
         "size": "32x32",
         "type": "image/svg+xml"
@@ -835,57 +835,13 @@
     "categories": [
       "custom"
     ],
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "deprecated_integration_stream.new_data_stream",
-        "title": "New Data Stream"
+    "deprecated": {
+      "since": "1.2.0",
+      "description": "This input package is deprecated",
+      "replaced_by": {
+        "package": "new_input_package"
       }
-    ]
-  },
-  {
-    "name": "deprecated_integration_input",
-    "title": "New Package",
-    "version": "1.0.0",
-    "release": "ga",
-    "source": {
-      "license": "Elastic-2.0"
-    },
-    "description": "This is a new package.",
-    "type": "integration",
-    "download": "/epr/deprecated_integration_input/deprecated_integration_input-1.0.0.zip",
-    "path": "/package/deprecated_integration_input/1.0.0",
-    "icons": [
-      {
-        "src": "/img/sample-logo.svg",
-        "path": "/package/deprecated_integration_input/1.0.0/img/sample-logo.svg",
-        "title": "Sample logo",
-        "size": "32x32",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "sample",
-        "title": "Sample logs",
-        "description": "Collect sample logs"
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^9.2.3"
-      },
-      "elastic": {
-        "subscription": "basic"
-      }
-    },
-    "owner": {
-      "type": "elastic",
-      "github": "elastic/integrations"
-    },
-    "categories": [
-      "custom"
-    ]
+    }
   },
   {
     "name": "deprecated_input_policy",
@@ -944,7 +900,7 @@
     ]
   },
   {
-    "name": "deprecated_input_package",
+    "name": "deprecated_integration_input",
     "title": "New Package",
     "version": "1.0.0",
     "release": "ga",
@@ -952,13 +908,57 @@
       "license": "Elastic-2.0"
     },
     "description": "This is a new package.",
-    "type": "input",
-    "download": "/epr/deprecated_input_package/deprecated_input_package-1.0.0.zip",
-    "path": "/package/deprecated_input_package/1.0.0",
+    "type": "integration",
+    "download": "/epr/deprecated_integration_input/deprecated_integration_input-1.0.0.zip",
+    "path": "/package/deprecated_integration_input/1.0.0",
     "icons": [
       {
         "src": "/img/sample-logo.svg",
-        "path": "/package/deprecated_input_package/1.0.0/img/sample-logo.svg",
+        "path": "/package/deprecated_integration_input/1.0.0/img/sample-logo.svg",
+        "title": "Sample logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "sample",
+        "title": "Sample logs",
+        "description": "Collect sample logs"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^9.2.3"
+      },
+      "elastic": {
+        "subscription": "basic"
+      }
+    },
+    "owner": {
+      "type": "elastic",
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "custom"
+    ]
+  },
+  {
+    "name": "deprecated_integration_stream",
+    "title": "New Package",
+    "version": "1.0.0",
+    "release": "ga",
+    "source": {
+      "license": "Elastic-2.0"
+    },
+    "description": "This is a new package.",
+    "type": "integration",
+    "download": "/epr/deprecated_integration_stream/deprecated_integration_stream-1.0.0.zip",
+    "path": "/package/deprecated_integration_stream/1.0.0",
+    "icons": [
+      {
+        "src": "/img/sample-logo.svg",
+        "path": "/package/deprecated_integration_stream/1.0.0/img/sample-logo.svg",
         "title": "Sample logo",
         "size": "32x32",
         "type": "image/svg+xml"
@@ -986,13 +986,13 @@
     "categories": [
       "custom"
     ],
-    "deprecated": {
-      "since": "1.2.0",
-      "description": "This input package is deprecated",
-      "replaced_by": {
-        "package": "new_input_package"
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "deprecated_integration_stream.new_data_stream",
+        "title": "New Data Stream"
       }
-    }
+    ]
   },
   {
     "name": "no_stream_configs",
@@ -1039,6 +1039,59 @@
         "type": "traces",
         "dataset": "traces.traces",
         "title": "notapmtraces"
+      }
+    ]
+  },
+  {
+    "name": "package_reference",
+    "title": "Package Reference",
+    "version": "0.1.0",
+    "release": "beta",
+    "description": "Test package with a policy template input using a package reference instead of type.",
+    "type": "integration",
+    "download": "/epr/package_reference/package_reference-0.1.0.zip",
+    "path": "/package/package_reference/0.1.0",
+    "policy_templates": [
+      {
+        "name": "package_ref_policy",
+        "title": "Package Reference Policy",
+        "description": "A policy template with an input referencing a package."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.18.0"
+      }
+    },
+    "owner": {
+      "type": "elastic",
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "custom"
+    ]
+  },
+  {
+    "name": "package_reference_stream",
+    "title": "Package Reference Stream",
+    "version": "0.1.0",
+    "release": "beta",
+    "description": "Test package for validating stream input/package rules.",
+    "type": "integration",
+    "download": "/epr/package_reference_stream/package_reference_stream-0.1.0.zip",
+    "path": "/package/package_reference_stream/0.1.0",
+    "owner": {
+      "type": "elastic",
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "custom"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "package_reference_stream.valid_stream",
+        "title": "Package Reference Stream"
       }
     ]
   },

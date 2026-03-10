@@ -1,0 +1,45 @@
+{
+  "name": "package_reference_stream",
+  "title": "Package Reference Stream",
+  "version": "0.1.0",
+  "release": "beta",
+  "description": "Test package for validating stream input/package rules.",
+  "type": "integration",
+  "download": "/epr/package_reference_stream/package_reference_stream-0.1.0.zip",
+  "path": "/package/package_reference_stream/0.1.0",
+  "owner": {
+    "type": "elastic",
+    "github": "elastic/integrations"
+  },
+  "categories": [
+    "custom"
+  ],
+  "format_version": "3.6.0",
+  "readme": "/package/package_reference_stream/0.1.0/docs/README.md",
+  "license": "basic",
+  "assets": [
+    "/package/package_reference_stream/0.1.0/manifest.yml",
+    "/package/package_reference_stream/0.1.0/docs/README.md",
+    "/package/package_reference_stream/0.1.0/data_stream/valid_stream/manifest.yml",
+    "/package/package_reference_stream/0.1.0/data_stream/valid_stream/fields/base-fields.yml"
+  ],
+  "data_streams": [
+    {
+      "type": "logs",
+      "dataset": "package_reference_stream.valid_stream",
+      "title": "Package Reference Stream",
+      "release": "beta",
+      "streams": [
+        {
+          "package": "sql_input",
+          "template_path": "stream.yml.hbs",
+          "title": "Log stream (input only)",
+          "description": "A stream using input only — valid per XOR rule.",
+          "enabled": true
+        }
+      ],
+      "package": "package_reference_stream",
+      "path": "valid_stream"
+    }
+  ]
+}
