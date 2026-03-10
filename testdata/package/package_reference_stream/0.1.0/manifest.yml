@@ -4,6 +4,10 @@ title: Package Reference Stream
 description: Test package for validating stream input/package rules.
 type: integration
 version: 0.1.0
+requires:
+  input:
+    - package: sql_input
+      version: 0.2.0
 categories:
   - custom
 owner:
