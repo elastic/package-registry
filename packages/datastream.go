@@ -76,7 +76,8 @@ type DataStream struct {
 }
 
 type Input struct {
-	Type            string      `config:"type" json:"type" validate:"required"`
+	Type            string      `config:"type,omitempty" json:"type,omitempty" yaml:"type,omitempty"`
+	Package         string      `config:"package,omitempty" json:"package,omitempty" yaml:"package,omitempty"`
 	Vars            []Variable  `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
 	Title           string      `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
 	Description     string      `config:"description" json:"description,omitempty" yaml:"description,omitempty"`
@@ -88,7 +89,8 @@ type Input struct {
 }
 
 type Stream struct {
-	Input      string     `config:"input" json:"input" validate:"required"`
+	Input      string     `config:"input,omitempty" json:"input,omitempty" yaml:"input,omitempty"`
+	Package    string     `config:"package" json:"package,omitempty" yaml:"package,omitempty"`
 	Vars       []Variable `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
 	DataStream string     `config:"data_stream" json:"data_stream,omitempty" yaml:"data_stream,omitempty"`
 	// TODO: This might cause issues when consuming the json as the key contains . (had been an issue in the past if I remember correctly)
@@ -299,12 +301,28 @@ func (d *DataStream) Validate() error {
 	if err != nil {
 		return fmt.Errorf("validating required fields failed: %w", err)
 	}
+
+	if err := d.validStreamsInput(); err != nil {
+		return err
+	}
 	return nil
 }
 
 func (d *DataStream) validType() bool {
 	_, exists := validTypes[d.Type]
 	return exists
+}
+
+func (d *DataStream) validStreamsInput() error {
+	for _, stream := range d.Streams {
+		if stream.Input == "" && stream.Package == "" {
+			return fmt.Errorf("stream %s must have a input or package", stream.Title)
+		}
+		if stream.Input != "" && stream.Package != "" {
+			return fmt.Errorf("stream %s must have a input or package, but not both", stream.Title)
+		}
+	}
+	return nil
 }
 
 func validateIngestPipelineFile(fs PackageFileSystem, pipelinePath string) error {

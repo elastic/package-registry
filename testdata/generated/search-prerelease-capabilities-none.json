@@ -1018,6 +1018,59 @@
     ]
   },
   {
+    "name": "package_reference",
+    "title": "Package Reference",
+    "version": "0.1.0",
+    "release": "beta",
+    "description": "Test package with a policy template input using a package reference instead of type.",
+    "type": "integration",
+    "download": "/epr/package_reference/package_reference-0.1.0.zip",
+    "path": "/package/package_reference/0.1.0",
+    "policy_templates": [
+      {
+        "name": "package_ref_policy",
+        "title": "Package Reference Policy",
+        "description": "A policy template with an input referencing a package."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.18.0"
+      }
+    },
+    "owner": {
+      "type": "elastic",
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "custom"
+    ]
+  },
+  {
+    "name": "package_reference_stream",
+    "title": "Package Reference Stream",
+    "version": "0.1.0",
+    "release": "beta",
+    "description": "Test package for validating stream input/package rules.",
+    "type": "integration",
+    "download": "/epr/package_reference_stream/package_reference_stream-0.1.0.zip",
+    "path": "/package/package_reference_stream/0.1.0",
+    "owner": {
+      "type": "elastic",
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "custom"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "package_reference_stream.valid_stream",
+        "title": "Package Reference Stream"
+      }
+    ]
+  },
+  {
     "name": "reference",
     "title": "Reference package",
     "version": "1.0.0",

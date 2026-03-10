@@ -1,0 +1,6 @@
+title: Package Reference Stream
+type: logs
+streams:
+  - package: sql_input
+    title: Log stream (input only)
+    description: A stream using input only — valid per XOR rule.

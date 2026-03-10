@@ -1,0 +1,21 @@
+format_version: 3.6.0
+name: policy_template_both_inputs
+title: Policy Template Both Inputs
+description: >-
+  Test package with a policy template input that sets both type and package — invalid per XOR rule.
+type: integration
+version: 0.1.0
+categories:
+  - custom
+policy_templates:
+  - name: both_inputs_policy
+    title: Both Inputs Policy
+    description: A policy template whose input has both type and package set.
+    inputs:
+      - type: logfile
+        package: sql_input
+        title: Invalid input with both type and package
+        description: This input violates the XOR rule by setting both type and package.
+owner:
+  github: elastic/integrations
+  type: elastic

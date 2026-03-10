@@ -1,0 +1,5 @@
+title: Bad Stream
+type: logs
+streams:
+  - title: Bad stream (input and package set)
+    description: A stream with both input and package — invalid per XOR rule.

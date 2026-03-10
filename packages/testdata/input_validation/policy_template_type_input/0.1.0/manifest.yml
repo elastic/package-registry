@@ -1,0 +1,20 @@
+format_version: 3.6.0
+name: policy_template_type_input
+title: Policy Template Type Input
+description: >-
+  Test package with a policy template input using type only — valid per XOR rule.
+type: integration
+version: 0.1.0
+categories:
+  - custom
+policy_templates:
+  - name: type_only_policy
+    title: Type Only Policy
+    description: A policy template whose input has type set and no package.
+    inputs:
+      - type: logfile
+        title: Collect logs via logfile input
+        description: Collects logs using the logfile input type.
+owner:
+  github: elastic/integrations
+  type: elastic

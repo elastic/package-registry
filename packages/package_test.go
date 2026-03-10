@@ -212,6 +212,61 @@ func TestHasKibanaVersion(t *testing.T) {
 	}
 }
 
+func TestValidateInputPackageReference(t *testing.T) {
+
+	fsBuilder := func(p *Package) (PackageFileSystem, error) {
+		return NewExtractedPackageFileSystem(p)
+	}
+	cases := []struct {
+		title         string
+		packagePath   string
+		expectedError bool
+	}{
+		{
+			// data stream has only `package`
+			title:         "valid package reference stream",
+			packagePath:   "../testdata/package/package_reference_stream/0.1.0",
+			expectedError: false,
+		},
+		{
+			// package has not `input` or `package`
+			title:         "invalid package",
+			packagePath:   "./testdata/input_validation/stream_validation_invalid/0.1.0",
+			expectedError: true,
+		},
+		{
+			// input has `package` only
+			title:         "input with package only is valid",
+			packagePath:   "../testdata/package/package_reference/0.1.0",
+			expectedError: false,
+		},
+		{
+			// input has `type` only
+			title:         "input with type only is valid",
+			packagePath:   "./testdata/input_validation/policy_template_type_input/0.1.0",
+			expectedError: false,
+		},
+		{
+			// input has both `type` and `package`
+			title:         "input with both type and package is invalid",
+			packagePath:   "./testdata/input_validation/policy_template_both_inputs/0.1.0",
+			expectedError: true,
+		},
+	}
+
+	logger := zap.Must(zap.NewDevelopment())
+	for _, c := range cases {
+		t.Run(c.title, func(t *testing.T) {
+			_, err := NewPackage(logger, c.packagePath, fsBuilder)
+			if c.expectedError {
+				assert.Error(t, err)
+				return
+			}
+			assert.NoError(t, err)
+		})
+	}
+}
+
 func TestNewPackageFromPath(t *testing.T) {
 	packagePath := "../testdata/package/reference/1.0.0"
 	absPath, err := filepath.Abs(packagePath)
