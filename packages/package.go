@@ -64,8 +64,8 @@ type FileSystemBuilder func(*Package) (PackageFileSystem, error)
 
 // PackageRequirement defines a dependency on another package (input or content).
 type PackageRequirement struct {
-	Package string `config:"package" json:"package" yaml:"package"`
-	Version string `config:"version" json:"version" yaml:"version"`
+	Package string `config:"package" json:"package" yaml:"package" validate:"required"`
+	Version string `config:"version" json:"version" yaml:"version" validate:"required"`
 }
 
 // PackageRequirements holds package dependencies from the manifest requires field.
