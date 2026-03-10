@@ -1041,7 +1041,15 @@
     },
     "categories": [
       "custom"
-    ]
+    ],
+    "requires": {
+      "input": [
+        {
+          "package": "sql_input",
+          "version": "0.2.0"
+        }
+      ]
+    }
   },
   {
     "name": "package_reference_stream",
@@ -1065,7 +1073,15 @@
         "dataset": "package_reference_stream.valid_stream",
         "title": "Package Reference Stream"
       }
-    ]
+    ],
+    "requires": {
+      "input": [
+        {
+          "package": "sql_input",
+          "version": "0.2.0"
+        }
+      ]
+    }
   },
   {
     "name": "reference",
