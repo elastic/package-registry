@@ -9,11 +9,26 @@ function fixCRLF {
 }
 
 function withGolang($version) {
-    Write-Host "--- Install golang"
-    choco install -y golang --version $version
-    $env:ChocolateyInstall = Convert-Path "$((Get-Command choco).Path)\..\.."
-    Import-Module "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
-    refreshenv
+    Write-Host "--- Install golang (GVM)"
+    $workDir = if ($env:WORKSPACE) { $env:WORKSPACE } else { $PWD.Path }
+    $binDir = Join-Path $workDir "bin"
+    if (-not (Test-Path $binDir)) { New-Item -ItemType Directory -Path $binDir | Out-Null }
+    $gvmExe = Join-Path $binDir "gvm-windows-amd64.exe"
+    $gvmUrl = "https://github.com/andrewkroh/gvm/releases/download/$env:SETUP_GVM_VERSION/gvm-windows-amd64.exe"
+
+    $maxTries = 5
+    for ($i = 1; $i -le $maxTries; $i++) {
+        try {
+            Invoke-WebRequest -Uri $gvmUrl -OutFile $gvmExe -UseBasicParsing
+            break
+        } catch {
+            if ($i -eq $maxTries) { throw }
+            Start-Sleep -Seconds 3
+        }
+    }
+
+    & $gvmExe --format=powershell $version | Invoke-Expression
+    $env:PATH = "$(go env GOPATH)\bin;$env:PATH"
     go version
     go env
 }
