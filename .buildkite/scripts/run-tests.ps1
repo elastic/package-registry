@@ -10,7 +10,7 @@ function fixCRLF {
 
 function withGolang($version) {
     Write-Host "--- Install golang"
-    $latest_1_25_versions = @('1.25.7')
+    $latest_1_25_versions = @('1.25.8')
     # not all latest Golang versions of 1.25.x are available since 1.26.0 is released
     if ($version -in $latest_1_25_versions) {
         Write-Host "$version not available in cholocatey, using 1.25.7"
