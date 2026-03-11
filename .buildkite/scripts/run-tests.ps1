@@ -8,11 +8,17 @@ function fixCRLF {
     git reset --quiet --hard
 }
 
-function withGolang($version) {
-    Write-Host "--- Install golang (GVM)"
+function ensureBinPath {
     $workDir = if ($env:WORKSPACE) { $env:WORKSPACE } else { $PWD.Path }
     $binDir = Join-Path $workDir "bin"
     if (-not (Test-Path $binDir)) { New-Item -ItemType Directory -Path $binDir | Out-Null }
+    $env:PATH = "$binDir;$env:PATH"
+    return $binDir
+}
+
+function withGolang($version) {
+    Write-Host "--- Install golang (GVM)"
+    $binDir = ensureBinPath
     $gvmExe = Join-Path $binDir "gvm-windows-amd64.exe"
     $gvmUrl = "https://github.com/andrewkroh/gvm/releases/download/$env:SETUP_GVM_VERSION/gvm-windows-amd64.exe"
 
@@ -27,6 +33,7 @@ function withGolang($version) {
         }
     }
 
+    # GVM with --format=powershell prints env-setting code; Invoke-Expression runs it in this session so Go is on PATH
     & $gvmExe --format=powershell $version | Invoke-Expression
     $env:PATH = "$(go env GOPATH)\bin;$env:PATH"
     go version
