@@ -22,6 +22,7 @@ function withGolang($version) {
     $gvmExe = Join-Path $binDir "gvm-windows-amd64.exe"
     $gvmUrl = "https://github.com/andrewkroh/gvm/releases/download/$env:SETUP_GVM_VERSION/gvm-windows-amd64.exe"
 
+    Write-Host "Installing GVM tool"
     $maxTries = 5
     for ($i = 1; $i -le $maxTries; $i++) {
         try {
@@ -33,6 +34,7 @@ function withGolang($version) {
         }
     }
 
+    Write-Host "Installing Go version $version"
     # GVM with --format=powershell prints env-setting code; Invoke-Expression runs it in this session so Go is on PATH
     & $gvmExe --format=powershell $version | Invoke-Expression
     $env:PATH = "$(go env GOPATH)\bin;$env:PATH"
