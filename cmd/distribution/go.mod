@@ -4,7 +4,7 @@ go 1.25.0
 
 require (
 	github.com/Masterminds/semver/v3 v3.4.0
-	github.com/ProtonMail/go-crypto v1.4.0
+	github.com/ProtonMail/go-crypto v1.4.1
 	github.com/elastic/go-licenser v0.4.2
 	github.com/elastic/package-registry v0.0.0
 	github.com/google/go-querystring v1.2.0
