@@ -66,7 +66,7 @@ steps:
         command:
           - ".buildkite/scripts/run-tests.sh"
         agents:
-          provider: "orka"
+          provider: "orka3"
           imagePrefix: "${MACOS_ARM_AGENT_IMAGE}"
         artifact_paths:
           - "tests-report-darwin.xml"
