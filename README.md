@@ -136,6 +136,8 @@ docker run --rm -it -p 8080:8080 \
 
 > [!IMPORTANT]
 > When you mount local package directories into the container (e.g., `-v /path/to/packages:/packages/package-registry`), ensure the mounted directory has proper filesystem permissions allowing UID 1000 to read the files. Alternatively, you can run the container as root using `docker run --user 0 ...` if you encounter permission issues.
+>
+> By default, the registry requires all packages to have a `.sig` signature file. If your local packages are unsigned, disable this check by adding `-e EPR_REQUIRE_PACKAGE_SIGNATURES=false` to the `docker run` command.
 
 **Listening on HTTPS**
 ```bash
