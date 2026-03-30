@@ -246,8 +246,8 @@ func TestDownloadActionPerformRejectsInvalidSignature(t *testing.T) {
 	// Downloaded files must be cleaned up after a verification failure.
 	_, pkgErr := os.Stat(filepath.Join(tempDir, "nginx-1.0.0.zip"))
 	_, sigErr := os.Stat(filepath.Join(tempDir, "nginx-1.0.0.zip.sig"))
-	assert.True(t, os.IsNotExist(pkgErr), "package file should be removed after verification failure")
-	assert.True(t, os.IsNotExist(sigErr), "signature file should be removed after verification failure")
+	assert.True(t, errors.Is(pkgErr, fs.ErrNotExist), "package file should be removed after verification failure")
+	assert.True(t, errors.Is(sigErr, fs.ErrNotExist), "signature file should be removed after verification failure")
 }
 
 func TestDownloadActionValid(t *testing.T) {
