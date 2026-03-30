@@ -202,6 +202,54 @@ func TestDownloadActionPerformDownloadsIfMissing(t *testing.T) {
 	}
 }
 
+func TestDownloadActionPerformRejectsInvalidSignature(t *testing.T) {
+	tempDir := t.TempDir()
+
+	entity, err := openpgp.NewEntity("test", "test", "test@example.com", nil)
+	require.NoError(t, err)
+
+	pkgContent := []byte("test package")
+	// Corrupt the signature by signing different content than what will be served.
+	var sigBuf bytes.Buffer
+	err = openpgp.ArmoredDetachSign(&sigBuf, entity, bytes.NewReader([]byte("different content")), nil)
+	require.NoError(t, err)
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/epr/nginx/nginx-1.0.0.zip" {
+			w.Write(pkgContent)
+		} else if r.URL.Path == "/epr/nginx/nginx-1.0.0.zip.sig" {
+			w.Write(sigBuf.Bytes())
+		} else {
+			w.WriteHeader(http.StatusNotFound)
+		}
+	}))
+	defer server.Close()
+
+	action := &downloadAction{
+		Destination: tempDir,
+		client:      &http.Client{},
+		Address:     server.URL,
+		keyRing:     openpgp.EntityList{entity},
+	}
+
+	info := packageInfo{
+		Name:          "nginx",
+		Version:       "1.0.0",
+		Download:      "epr/nginx/nginx-1.0.0.zip",
+		SignaturePath: "epr/nginx/nginx-1.0.0.zip.sig",
+	}
+
+	err = action.perform(info)
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "signature verification failed")
+
+	// Downloaded files must be cleaned up after a verification failure.
+	_, pkgErr := os.Stat(filepath.Join(tempDir, "nginx-1.0.0.zip"))
+	_, sigErr := os.Stat(filepath.Join(tempDir, "nginx-1.0.0.zip.sig"))
+	assert.True(t, os.IsNotExist(pkgErr), "package file should be removed after verification failure")
+	assert.True(t, os.IsNotExist(sigErr), "signature file should be removed after verification failure")
+}
+
 func TestDownloadActionValid(t *testing.T) {
 	tempDir := t.TempDir()
 
