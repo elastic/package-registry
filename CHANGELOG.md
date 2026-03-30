@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Breaking changes
 
+* Require proxy targets to be HTTPS by default. [#1647](https://github.com/elastic/package-registry/pull/1647)
+
 ### Bugfixes
 
 ### Added
