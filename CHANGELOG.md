@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Breaking changes
 
+* Require local indexers to include signatures for packages. [#1646](https://github.com/elastic/package-registry/pull/1646)
+
 ### Bugfixes
 
 ### Added

@@ -1012,6 +1012,102 @@ func TestFileSystemIndexer_watchPackageFileSystem(t *testing.T) {
 	})
 }
 
+func TestRequireSignatures(t *testing.T) {
+	logger := zap.NewNop()
+
+	t.Run("FileSystemIndexer fails when RequireSignatures=true and no sig file", func(t *testing.T) {
+		ValidationDisabled = true
+		tmpDir := t.TempDir()
+		createMockPackage(t, tmpDir, "mypkg")
+
+		indexer := NewFileSystemIndexer(FSIndexerOptions{
+			Logger:            logger,
+			RequireSignatures: true,
+		}, tmpDir)
+
+		err := indexer.Init(context.Background())
+		require.ErrorContains(t, err, "mypkg-1.0.0")
+		require.ErrorContains(t, err, "missing a required signature file")
+	})
+
+	t.Run("FileSystemIndexer succeeds when RequireSignatures=true and sig file present", func(t *testing.T) {
+		ValidationDisabled = true
+		tmpDir := t.TempDir()
+		createMockPackage(t, tmpDir, "mypkg")
+		createMockSignatureFile(t, filepath.Join(tmpDir, "mypkg", "1.0.0"))
+
+		indexer := NewFileSystemIndexer(FSIndexerOptions{
+			Logger:            logger,
+			RequireSignatures: true,
+		}, tmpDir)
+
+		err := indexer.Init(context.Background())
+		require.NoError(t, err)
+
+		pkgs, err := indexer.Get(context.Background(), nil)
+		require.NoError(t, err)
+		assert.Len(t, pkgs, 1)
+	})
+
+	t.Run("FileSystemIndexer succeeds when RequireSignatures=false and no sig file", func(t *testing.T) {
+		ValidationDisabled = true
+		tmpDir := t.TempDir()
+		createMockPackage(t, tmpDir, "mypkg")
+
+		indexer := NewFileSystemIndexer(FSIndexerOptions{
+			Logger:            logger,
+			RequireSignatures: false,
+		}, tmpDir)
+
+		err := indexer.Init(context.Background())
+		require.NoError(t, err)
+
+		pkgs, err := indexer.Get(context.Background(), nil)
+		require.NoError(t, err)
+		assert.Len(t, pkgs, 1)
+	})
+
+	t.Run("ZipFileSystemIndexer fails when RequireSignatures=true and no sig file", func(t *testing.T) {
+		ValidationDisabled = true
+		tmpDir := t.TempDir()
+		createMockZipPackage(t, tmpDir, "mypkg")
+
+		indexer := NewZipFileSystemIndexer(FSIndexerOptions{
+			Logger:            logger,
+			RequireSignatures: true,
+		}, tmpDir)
+
+		err := indexer.Init(context.Background())
+		require.ErrorContains(t, err, "mypkg-1.0.0")
+		require.ErrorContains(t, err, "missing a required signature file")
+	})
+
+	t.Run("ZipFileSystemIndexer succeeds when RequireSignatures=true and sig file present", func(t *testing.T) {
+		ValidationDisabled = true
+		tmpDir := t.TempDir()
+		zipPath := createMockZipPackage(t, tmpDir, "mypkg")
+		createMockSignatureFile(t, zipPath)
+
+		indexer := NewZipFileSystemIndexer(FSIndexerOptions{
+			Logger:            logger,
+			RequireSignatures: true,
+		}, tmpDir)
+
+		err := indexer.Init(context.Background())
+		require.NoError(t, err)
+
+		pkgs, err := indexer.Get(context.Background(), nil)
+		require.NoError(t, err)
+		assert.Len(t, pkgs, 1)
+	})
+}
+
+func createMockSignatureFile(t *testing.T, basePath string) {
+	t.Helper()
+	err := os.WriteFile(basePath+".sig", []byte("mock signature"), 0644)
+	require.NoError(t, err)
+}
+
 func createMockPackage(t *testing.T, dest, pkgName string) {
 	t.Helper()
 
