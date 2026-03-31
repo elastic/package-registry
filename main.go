@@ -82,10 +82,10 @@ var (
 
 	allowUnknownQueryParameters bool
 
-	featureProxyMode    bool
-	proxyTo             string
-	proxyAllowInsecure  bool
-	serviceName         = getServiceName()
+	featureProxyMode   bool
+	proxyTo            string
+	proxyAllowInsecure bool
+	serviceName        = getServiceName()
 
 	packagePathsEnableWatcher = false
 	packagePathsWorkers       = 1
