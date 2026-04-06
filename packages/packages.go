@@ -427,6 +427,9 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 				if err != nil {
 					return fmt.Errorf("loading package failed (path: %s): %w", path, err)
 				}
+				if i.requireSignatures && p.SignaturePath == "" {
+					return fmt.Errorf("package %s-%s is missing a required signature file", p.Name, p.Version)
+				}
 
 				pList[position] = p
 
@@ -466,14 +469,6 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 	}
 
 	pList = pList[:current]
-
-	if i.requireSignatures {
-		for _, p := range pList {
-			if p.SignaturePath == "" {
-				return nil, fmt.Errorf("package %s-%s is missing a required signature file", p.Name, p.Version)
-			}
-		}
-	}
 
 	i.logger.Info("Searching packages in filesystem done", zap.String("indexer", i.label), zap.Int("packages.size", len(pList)))
 
