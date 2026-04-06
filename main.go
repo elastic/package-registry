@@ -89,6 +89,7 @@ var (
 
 	packagePathsEnableWatcher = false
 	packagePathsWorkers       = 1
+	packageRequireSignatures  = true
 
 	defaultConfig = Config{
 		CacheTimeIndex:               10 * time.Second,
@@ -138,6 +139,7 @@ func init() {
 
 	flag.BoolVar(&packagePathsEnableWatcher, "package-paths-enable-watcher", false, "Enable file system watcher for package paths to automatically detect new packages.")
 	flag.IntVar(&packagePathsWorkers, "package-paths-workers", runtime.GOMAXPROCS(0), "Number of workers to use for reading packages concurrently from the configured paths. Default is the number of CPU cores returned by GOMAXPROCS.")
+	flag.BoolVar(&packageRequireSignatures, "require-package-signatures", true, "Require all packages to have a signature file. Disable for self-hosted registries with custom unsigned packages.")
 }
 
 type Config struct {
@@ -407,6 +409,7 @@ func initIndexer(ctx context.Context, logger *zap.Logger, options serverOptions)
 		EnablePathsWatcher: packagePathsEnableWatcher,
 		APMTracer:          options.apmTracer,
 		PathsWorkers:       packagePathsWorkers,
+		RequireSignatures:  packageRequireSignatures,
 	}
 	logger.Debug("Using workers to read packages from package paths", zap.Int("workers", fsOptions.PathsWorkers))
 	logger.Debug("Watching package paths for changes", zap.Bool("enabled", fsOptions.EnablePathsWatcher))
