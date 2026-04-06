@@ -390,45 +390,35 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 		version string
 	}
 
-	count := 0
+	var allPackagePaths []string
 	for _, basePath := range i.paths {
 		packagePaths, err := i.getPackagePaths(basePath)
 		if err != nil {
 			return nil, err
 		}
-		count += len(packagePaths)
+		allPackagePaths = append(allPackagePaths, packagePaths...)
 	}
-	pList := make(Packages, count)
+	pList := make(Packages, len(allPackagePaths))
 
 	taskPool := workers.NewTaskPool(i.pathsWorkers)
 
 	i.logger.Info("Searching packages in filesystem", zap.String("indexer", i.label))
-	count = 0
-	for _, basePath := range i.paths {
-		packagePaths, err := i.getPackagePaths(basePath)
-		if err != nil {
-			return nil, err
-		}
-		for _, p := range packagePaths {
-			position := count
-			path := p
-			count++
-			taskPool.Do(func() error {
-				p, err := NewPackage(i.logger, path, i.fsBuilder)
-				if err != nil {
-					return fmt.Errorf("loading package failed (path: %s): %w", path, err)
-				}
+	for position, path := range allPackagePaths {
+		taskPool.Do(func() error {
+			p, err := NewPackage(i.logger, path, i.fsBuilder)
+			if err != nil {
+				return fmt.Errorf("loading package failed (path: %s): %w", path, err)
+			}
 
-				pList[position] = p
+			pList[position] = p
 
-				i.logger.Debug("found package",
-					zap.String("package.name", p.Name),
-					zap.String("package.version", p.Version),
-					zap.String("package.path", p.BasePath))
+			i.logger.Debug("found package",
+				zap.String("package.name", p.Name),
+				zap.String("package.version", p.Version),
+				zap.String("package.path", p.BasePath))
 
-				return nil
-			})
-		}
+			return nil
+		})
 	}
 
 	if err := taskPool.Wait(); err != nil {
