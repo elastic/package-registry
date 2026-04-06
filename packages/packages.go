@@ -131,6 +131,9 @@ type FileSystemIndexer struct {
 	// pathsWorkers is the number of concurrent workers to use when reading packages from the filesystem.
 	pathsWorkers int
 
+	// requireSignatures enforces that all indexed packages must have a signature file.
+	requireSignatures bool
+
 	m sync.RWMutex
 
 	apmTracer *apm.Tracer
@@ -143,6 +146,10 @@ type FSIndexerOptions struct {
 
 	// PathsWorkers is the number of concurrent workers to use when reading packages from the filesystem.
 	PathsWorkers int
+
+	// RequireSignatures enforces that all packages must have a signature file.
+	// Should be disabled for self-hosted registries with custom unsigned packages.
+	RequireSignatures bool
 }
 
 // NewFileSystemIndexer creates a new FileSystemIndexer for the given paths.
@@ -189,6 +196,7 @@ func NewFileSystemIndexer(options FSIndexerOptions, paths ...string) *FileSystem
 		enablePathsWatcher: options.EnablePathsWatcher,
 		apmTracer:          options.APMTracer,
 		pathsWorkers:       pathWorkers,
+		requireSignatures:  options.RequireSignatures,
 		deprecatedPackages: make(DeprecatedPackages),
 	}
 }
@@ -233,6 +241,7 @@ func NewZipFileSystemIndexer(options FSIndexerOptions, paths ...string) *FileSys
 		enablePathsWatcher: options.EnablePathsWatcher,
 		apmTracer:          options.APMTracer,
 		pathsWorkers:       pathWorkers,
+		requireSignatures:  options.RequireSignatures,
 		deprecatedPackages: make(DeprecatedPackages),
 	}
 }
@@ -409,6 +418,9 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 			if err != nil {
 				return fmt.Errorf("loading package failed (path: %s): %w", path, err)
 			}
+			if i.requireSignatures && p.SignaturePath == "" {
+				return fmt.Errorf("package %s-%s is missing a required signature file", p.Name, p.Version)
+			}
 
 			pList[position] = p
 
@@ -447,6 +459,7 @@ func (i *FileSystemIndexer) getPackagesFromFileSystem(ctx context.Context) (Pack
 	}
 
 	pList = pList[:current]
+
 	i.logger.Info("Searching packages in filesystem done", zap.String("indexer", i.label), zap.Int("packages.size", len(pList)))
 
 	return pList, nil
