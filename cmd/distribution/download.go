@@ -56,7 +56,13 @@ func (a *downloadAction) perform(i packageInfo) error {
 		return fmt.Errorf("failed to download package %s: %w", i.Download, err)
 	}
 	if err := a.download(i.SignaturePath); err != nil {
+		os.Remove(a.destinationPath(i.Download))
 		return fmt.Errorf("failed to download signature %s: %w", i.SignaturePath, err)
+	}
+	if _, err := a.valid(i); err != nil {
+		os.Remove(a.destinationPath(i.Download))
+		os.Remove(a.destinationPath(i.SignaturePath))
+		return fmt.Errorf("signature verification failed for %s: %w", i.Download, err)
 	}
 	return nil
 }

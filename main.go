@@ -14,6 +14,7 @@ import (
 	"net"
 	"net/http"
 	_ "net/http/pprof"
+	"net/url"
 	"os"
 	"os/signal"
 	"path/filepath"
@@ -81,9 +82,10 @@ var (
 
 	allowUnknownQueryParameters bool
 
-	featureProxyMode bool
-	proxyTo          string
-	serviceName      = getServiceName()
+	featureProxyMode   bool
+	proxyTo            string
+	proxyAllowInsecure bool
+	serviceName        = getServiceName()
 
 	packagePathsEnableWatcher = false
 	packagePathsWorkers       = 1
@@ -133,6 +135,7 @@ func init() {
 	// The following proxy-indexer related flags are technical preview and might be removed in the future or renamed
 	flag.BoolVar(&featureProxyMode, "feature-proxy-mode", false, "Enable proxy mode to include packages from other endpoint (technical preview).")
 	flag.StringVar(&proxyTo, "proxy-to", "https://epr.elastic.co/", "Proxy-to endpoint")
+	flag.BoolVar(&proxyAllowInsecure, "proxy-allow-insecure", false, "Allow HTTP (non-HTTPS) proxy-to endpoints. Use only in development or trusted environments.")
 
 	flag.BoolVar(&packagePathsEnableWatcher, "package-paths-enable-watcher", false, "Enable file system watcher for package paths to automatically detect new packages.")
 	flag.IntVar(&packagePathsWorkers, "package-paths-workers", runtime.GOMAXPROCS(0), "Number of workers to use for reading packages concurrently from the configured paths. Default is the number of CPU cores returned by GOMAXPROCS.")
@@ -764,6 +767,16 @@ func validateFlags() error {
 
 	if packagePathsWorkers <= 0 {
 		return fmt.Errorf("package-paths-workers must be greater than 0")
+	}
+
+	if featureProxyMode && proxyTo != "" {
+		proxyToURL, err := url.Parse(proxyTo)
+		if err != nil {
+			return fmt.Errorf("invalid -proxy-to URL: %w", err)
+		}
+		if !proxyAllowInsecure && proxyToURL.Scheme != "https" {
+			return fmt.Errorf("-proxy-to must use HTTPS (got %q); use -proxy-allow-insecure to allow HTTP", proxyTo)
+		}
 	}
 
 	return nil

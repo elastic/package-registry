@@ -292,6 +292,8 @@ For example:
 package-registry --feature-proxy-mode=true -proxy-to=https://epr.elastic.co
 ```
 
+The `-proxy-to` endpoint must use HTTPS. To allow an HTTP endpoint (e.g. in development or trusted environments), pass `-proxy-allow-insecure` (or `EPR_PROXY_ALLOW_INSECURE`).
+
 ### Storage indexers
 
 Elastic Package Registry (EPR) supports multiple ways to retrieve package information. By default, it uses the File system indexer to read packages (folders or zip files) from the paths defined in the `config.yml`.
