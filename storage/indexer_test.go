@@ -7,6 +7,8 @@ package storage
 import (
 	"context"
 	"fmt"
+	"os"
+	"strings"
 	"testing"
 
 	"github.com/Masterminds/semver/v3"
@@ -19,7 +21,16 @@ import (
 	"github.com/elastic/package-registry/packages"
 )
 
+func isFIPSMode() bool {
+	godebug := os.Getenv("GODEBUG")
+	return strings.Contains(godebug, "fips140=only") ||
+		strings.Contains(godebug, "fips140=on")
+}
+
 func TestInit(t *testing.T) {
+	if isFIPSMode() {
+		t.Skip("Skipping storage tests in FIPS mode (fake-gcs-server uses non-FIPS crypto)")
+	}
 	// given
 	fs := internalStorage.PrepareFakeServer(t, "testdata/search-index-all-full.json")
 	defer fs.Stop()
@@ -112,6 +123,9 @@ func BenchmarkIndexerGet(b *testing.B) {
 }
 
 func TestGet_ListPackages(t *testing.T) {
+	if isFIPSMode() {
+		t.Skip("Skipping storage tests in FIPS mode (fake-gcs-server uses non-FIPS crypto)")
+	}
 	t.Parallel()
 
 	// given
@@ -314,6 +328,9 @@ func TestGet_ListPackages(t *testing.T) {
 }
 
 func TestGet_IndexUpdated(t *testing.T) {
+	if isFIPSMode() {
+		t.Skip("Skipping storage tests in FIPS mode (fake-gcs-server uses non-FIPS crypto)")
+	}
 	t.Parallel()
 
 	// given

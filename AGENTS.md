@@ -9,10 +9,12 @@ This project uses [Mage](https://magefile.org) as its build tool. Run `mage` wit
 ```bash
 # Build
 mage build                # Build package-registry binary
+mage buildFIPS            # Build with FIPS 140 support
 go run .                  # Run directly without building
 
 # Test
 mage test                 # Run all tests
+mage testFIPS             # Run tests with FIPS 140 enabled
 go test ./...             # Alternative: run all tests
 go test -v ./packages     # Run tests for specific package
 go test . -generate       # Regenerate golden test files (after adding test packages)

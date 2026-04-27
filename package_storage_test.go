@@ -8,7 +8,9 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/fsouza/fake-gcs-server/fakestorage"
@@ -18,6 +20,13 @@ import (
 	internalStorage "github.com/elastic/package-registry/internal/storage"
 	"github.com/elastic/package-registry/storage"
 )
+
+// isFIPSMode returns true if FIPS 140 mode is enabled
+func isFIPSMode() bool {
+	godebug := os.Getenv("GODEBUG")
+	return strings.Contains(godebug, "fips140=only") ||
+		strings.Contains(godebug, "fips140=on")
+}
 
 const storageIndexerGoldenDir = "storage-indexer"
 
@@ -142,6 +151,9 @@ func generateTestCaseStorageEndpoints(indexer Indexer) ([]struct {
 }
 
 func TestPackageStorage_Endpoints(t *testing.T) {
+	if isFIPSMode() {
+		t.Skip("Skipping storage tests in FIPS mode (fake-gcs-server uses non-FIPS crypto)")
+	}
 	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
@@ -162,6 +174,9 @@ func TestPackageStorage_Endpoints(t *testing.T) {
 }
 
 func TestPackageStorageSQL_Endpoints(t *testing.T) {
+	if isFIPSMode() {
+		t.Skip("Skipping storage tests in FIPS mode (fake-gcs-server uses non-FIPS crypto)")
+	}
 	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
@@ -209,6 +224,9 @@ func generateTestPackageIndexEndpoints(indexer Indexer) ([]struct {
 }
 
 func TestPackageStorage_PackageIndex(t *testing.T) {
+	if isFIPSMode() {
+		t.Skip("Skipping storage tests in FIPS mode (fake-gcs-server uses non-FIPS crypto)")
+	}
 	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 	indexer := generateStorageIndexer(fs, storage.FakeIndexerOptions)
@@ -228,6 +246,9 @@ func TestPackageStorage_PackageIndex(t *testing.T) {
 }
 
 func TestPackageSQLStorage_PackageIndex(t *testing.T) {
+	if isFIPSMode() {
+		t.Skip("Skipping storage tests in FIPS mode (fake-gcs-server uses non-FIPS crypto)")
+	}
 	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
@@ -271,6 +292,9 @@ func generateTestArtifactsEndpoints(indexer Indexer) ([]struct {
 }
 
 func TestPackageStorage_Artifacts(t *testing.T) {
+	if isFIPSMode() {
+		t.Skip("Skipping storage tests in FIPS mode (fake-gcs-server uses non-FIPS crypto)")
+	}
 	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
@@ -299,6 +323,9 @@ func TestPackageStorage_Artifacts(t *testing.T) {
 }
 
 func TestPackageSQLStorage_Artifacts(t *testing.T) {
+	if isFIPSMode() {
+		t.Skip("Skipping storage tests in FIPS mode (fake-gcs-server uses non-FIPS crypto)")
+	}
 	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
@@ -346,6 +373,9 @@ func generateTestSignaturesEndpoints(indexer Indexer) ([]struct {
 }
 
 func TestPackageStorage_Signatures(t *testing.T) {
+	if isFIPSMode() {
+		t.Skip("Skipping storage tests in FIPS mode (fake-gcs-server uses non-FIPS crypto)")
+	}
 	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
@@ -374,6 +404,9 @@ func TestPackageStorage_Signatures(t *testing.T) {
 }
 
 func TestPackageSQLStorage_Signatures(t *testing.T) {
+	if isFIPSMode() {
+		t.Skip("Skipping storage tests in FIPS mode (fake-gcs-server uses non-FIPS crypto)")
+	}
 	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
@@ -422,6 +455,9 @@ func generateTestStaticEndpoints(indexer Indexer) ([]struct {
 }
 
 func TestPackageStorage_Statics(t *testing.T) {
+	if isFIPSMode() {
+		t.Skip("Skipping storage tests in FIPS mode (fake-gcs-server uses non-FIPS crypto)")
+	}
 	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
@@ -450,6 +486,9 @@ func TestPackageStorage_Statics(t *testing.T) {
 }
 
 func TestPackagesQLStorage_Statics(t *testing.T) {
+	if isFIPSMode() {
+		t.Skip("Skipping storage tests in FIPS mode (fake-gcs-server uses non-FIPS crypto)")
+	}
 	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
@@ -507,6 +546,9 @@ func generateTestResolveHeadersEndpoints(indexer Indexer) ([]struct {
 }
 
 func TestPackageStorage_ResolverHeadersResponse(t *testing.T) {
+	if isFIPSMode() {
+		t.Skip("Skipping storage tests in FIPS mode (fake-gcs-server uses non-FIPS crypto)")
+	}
 	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
@@ -538,6 +580,9 @@ func TestPackageStorage_ResolverHeadersResponse(t *testing.T) {
 }
 
 func TestPackageSQLStorage_ResolverHeadersResponse(t *testing.T) {
+	if isFIPSMode() {
+		t.Skip("Skipping storage tests in FIPS mode (fake-gcs-server uses non-FIPS crypto)")
+	}
 	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
@@ -592,6 +637,9 @@ func generateTestResolveErrorResponseEndpoints(indexer Indexer) ([]struct {
 }
 
 func TestPackageStorage_ResolverErrorResponse(t *testing.T) {
+	if isFIPSMode() {
+		t.Skip("Skipping storage tests in FIPS mode (fake-gcs-server uses non-FIPS crypto)")
+	}
 	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
@@ -621,6 +669,9 @@ func TestPackageStorage_ResolverErrorResponse(t *testing.T) {
 }
 
 func TestPackageSQLStorage_ResolverErrorResponse(t *testing.T) {
+	if isFIPSMode() {
+		t.Skip("Skipping storage tests in FIPS mode (fake-gcs-server uses non-FIPS crypto)")
+	}
 	fs := internalStorage.PrepareFakeServer(t, "./storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
 
