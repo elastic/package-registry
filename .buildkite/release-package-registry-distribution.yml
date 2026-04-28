@@ -49,6 +49,52 @@ steps:
       - elastic/vault-docker-login#v0.6.0:
           secret_path: 'kv/ci-shared/platform-ingest/elastic_docker_registry'
 
+  - label: ":docker: Copy release images to Docker Hub"
+    key: copy-release-images-to-dockerhub
+    if: "build.source == 'ui' || build.env('BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG') == 'fleet-server'"
+    command:
+      - |-
+        set -euo pipefail
+
+        DOCKER_TAG="$(buildkite-agent meta-data get DOCKER_TAG)"
+
+        cat <<YAML | buildkite-agent pipeline upload
+        steps:
+          - trigger: unified-release-copy-elastic-images-to-dockerhub
+            label: ":docker: Copy release images to Docker Hub"
+            async: true
+            build:
+              env:
+                IMAGES_NAMES: "package-registry/distribution"
+                IMAGES_TAG: "${DOCKER_TAG}"
+          - trigger: unified-release-copy-elastic-images-to-dockerhub
+            label: ":docker: Copy release UBI images to Docker Hub"
+            async: true
+            build:
+              env:
+                IMAGES_NAMES: "package-registry/distribution"
+                IMAGES_TAG: "${DOCKER_TAG}-ubi"
+          - trigger: unified-release-copy-elastic-images-to-dockerhub
+            label: ":docker: Copy release lite images to Docker Hub"
+            async: true
+            build:
+              env:
+                IMAGES_NAMES: "package-registry/distribution"
+                IMAGES_TAG: "lite-${DOCKER_TAG}"
+          - trigger: unified-release-copy-elastic-images-to-dockerhub
+            label: ":docker: Copy release lite UBI images to Docker Hub"
+            async: true
+            build:
+              env:
+                IMAGES_NAMES: "package-registry/distribution"
+                IMAGES_TAG: "lite-${DOCKER_TAG}-ubi"
+        YAML
+    agents:
+      provider: "gcp"
+    depends_on:
+      - step: "release-distribution"
+        allow_failure: false
+
 notify:
   - email: "$NOTIFY_TO"
     if: "build.state == 'failed' && build.env('BUILDKITE_PULL_REQUEST') == 'false'"
