@@ -54,6 +54,538 @@
     ]
   },
   {
+    "name": "activemq",
+    "title": "ActiveMQ",
+    "version": "0.3.0",
+    "release": "beta",
+    "description": "Collect logs and metrics from ActiveMQ instances with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/activemq/activemq-0.3.0.zip",
+    "path": "/package/activemq/0.3.0",
+    "icons": [
+      {
+        "src": "/img/activemq.svg",
+        "path": "/package/activemq/0.3.0/img/activemq.svg",
+        "title": "activemq",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "activemq",
+        "title": "ActiveMQ logs and metrics",
+        "description": "Collect logs and metrics from ActiveMQ instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "web"
+    ],
+    "signature_path": "/epr/activemq/activemq-0.3.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "activemq.audit",
+        "title": "ActiveMQ audit logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "activemq.broker",
+        "title": "ActiveMQ broker metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "activemq.log",
+        "title": "ActiveMQ log logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "activemq.queue",
+        "title": "ActiveMQ queue metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "activemq.topic",
+        "title": "ActiveMQ topic metrics"
+      }
+    ]
+  },
+  {
+    "name": "akamai",
+    "title": "Akamai",
+    "version": "2.28.0",
+    "release": "ga",
+    "description": "Collect logs from Akamai with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/akamai/akamai-2.28.0.zip",
+    "path": "/package/akamai/2.28.0",
+    "icons": [
+      {
+        "src": "/img/akamai_logo.svg",
+        "path": "/package/akamai/2.28.0/img/akamai_logo.svg",
+        "title": "Akamai",
+        "size": "409×167",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "akamai",
+        "title": "Akamai logs",
+        "description": "Collect SIEM logs from Akamai"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.13.0 || ^9.0.0"
+      }
+    },
+    "owner": {
+      "type": "community",
+      "github": "elastic/security-service-integrations"
+    },
+    "categories": [
+      "security",
+      "cdn_security"
+    ],
+    "signature_path": "/epr/akamai/akamai-2.28.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "akamai.siem",
+        "title": "Akamai SIEM Logs"
+      }
+    ]
+  },
+  {
+    "name": "apache",
+    "title": "Apache HTTP Server",
+    "version": "1.3.5",
+    "release": "ga",
+    "description": "Collect logs and metrics from Apache servers with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/apache/apache-1.3.5.zip",
+    "path": "/package/apache/1.3.5",
+    "icons": [
+      {
+        "src": "/img/logo_apache.svg",
+        "path": "/package/apache/1.3.5/img/logo_apache.svg",
+        "title": "Apache Logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "apache",
+        "title": "Apache logs and metrics",
+        "description": "Collect logs and metrics from Apache instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "web"
+    ],
+    "signature_path": "/epr/apache/apache-1.3.5.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "apache.access",
+        "title": "Apache access logs",
+        "deprecated": {
+          "since": "1.3.5",
+          "description": "This data stream is deprecated"
+        }
+      },
+      {
+        "type": "logs",
+        "dataset": "apache.error",
+        "title": "Apache error logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "apache.status",
+        "title": "Apache status metrics"
+      }
+    ],
+    "deprecated": {
+      "since": "1.3.0",
+      "description": "This package is deprecated"
+    }
+  },
+  {
+    "name": "apm",
+    "title": "Elastic APM",
+    "version": "8.2.0",
+    "release": "ga",
+    "description": "Ingest APM data",
+    "type": "integration",
+    "download": "/epr/apm/apm-8.2.0.zip",
+    "path": "/package/apm/8.2.0",
+    "icons": [
+      {
+        "src": "/img/logo_apm.svg",
+        "path": "/package/apm/8.2.0/img/logo_apm.svg",
+        "title": "APM Logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "apmserver",
+        "title": "Elastic APM Integration",
+        "description": "Elastic APM Integration"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.2.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/apm-server"
+    },
+    "categories": [
+      "elastic_stack",
+      "monitoring"
+    ],
+    "signature_path": "/epr/apm/apm-8.2.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "apm.app",
+        "title": "APM application logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "apm.app",
+        "title": "APM application metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "apm.error",
+        "title": "APM errors"
+      },
+      {
+        "type": "metrics",
+        "dataset": "apm.internal",
+        "title": "APM internal metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "apm.profiling",
+        "title": "APM profiles"
+      },
+      {
+        "type": "traces",
+        "dataset": "apm.rum",
+        "title": "APM RUM traces"
+      },
+      {
+        "type": "traces",
+        "dataset": "apm.sampled",
+        "title": "APM tail-sampled traces"
+      },
+      {
+        "type": "traces",
+        "dataset": "apm",
+        "title": "APM traces"
+      }
+    ]
+  },
+  {
+    "name": "atlassian_bitbucket",
+    "title": "Atlassian Bitbucket",
+    "version": "1.2.1",
+    "release": "ga",
+    "description": "Collect logs from Atlassian Bitbucket with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/atlassian_bitbucket/atlassian_bitbucket-1.2.1.zip",
+    "path": "/package/atlassian_bitbucket/1.2.1",
+    "icons": [
+      {
+        "src": "/img/bitbucket-logo.svg",
+        "path": "/package/atlassian_bitbucket/1.2.1/img/bitbucket-logo.svg",
+        "title": "Bitbucket Logo",
+        "size": "625x564",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "audit",
+        "title": "Audit Logs",
+        "description": "Collect audit logs from Atlassian Bitbucket with Elastic Agent."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security",
+      "web"
+    ],
+    "signature_path": "/epr/atlassian_bitbucket/atlassian_bitbucket-1.2.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "atlassian_bitbucket.audit",
+        "title": "Bitbucket Audit Logs"
+      }
+    ]
+  },
+  {
+    "name": "atlassian_confluence",
+    "title": "Atlassian Confluence",
+    "version": "1.3.0",
+    "release": "ga",
+    "description": "Collect logs from Atlassian Confluence with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/atlassian_confluence/atlassian_confluence-1.3.0.zip",
+    "path": "/package/atlassian_confluence/1.3.0",
+    "icons": [
+      {
+        "src": "/img/confluence-logo.svg",
+        "path": "/package/atlassian_confluence/1.3.0/img/confluence-logo.svg",
+        "title": "Confluence Logo",
+        "size": "400x400",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "audit",
+        "title": "Audit Logs",
+        "description": "Collect audit logs from Atlassian Confluence with Elastic Agent."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security",
+      "web"
+    ],
+    "signature_path": "/epr/atlassian_confluence/atlassian_confluence-1.3.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "atlassian_confluence.audit",
+        "title": "Confluence Audit Logs"
+      }
+    ]
+  },
+  {
+    "name": "atlassian_jira",
+    "title": "Atlassian Jira",
+    "version": "1.3.0",
+    "release": "ga",
+    "description": "Collect logs from Atlassian Jira with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/atlassian_jira/atlassian_jira-1.3.0.zip",
+    "path": "/package/atlassian_jira/1.3.0",
+    "icons": [
+      {
+        "src": "/img/jira-software-logo.svg",
+        "path": "/package/atlassian_jira/1.3.0/img/jira-software-logo.svg",
+        "title": "Jira Software Logo",
+        "size": "590x625",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "audit",
+        "title": "Audit Logs",
+        "description": "Collect audit logs from Atlassian Jira with Elastic Agent."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security",
+      "web"
+    ],
+    "signature_path": "/epr/atlassian_jira/atlassian_jira-1.3.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "atlassian_jira.audit",
+        "title": "Jira Audit Logs"
+      }
+    ]
+  },
+  {
+    "name": "auditd",
+    "title": "Auditd Logs",
+    "version": "3.1.0",
+    "release": "ga",
+    "description": "Collect logs from Linux audit daemon with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/auditd/auditd-3.1.0.zip",
+    "path": "/package/auditd/3.1.0",
+    "icons": [
+      {
+        "src": "/img/linux.svg",
+        "path": "/package/auditd/3.1.0/img/linux.svg",
+        "title": "linux",
+        "size": "299x354",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "auditd",
+        "title": "Auditd logs",
+        "description": "Collect logs from Auditd instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "os_system"
+    ],
+    "signature_path": "/epr/auditd/auditd-3.1.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "auditd.log",
+        "title": "Auditd logs"
+      }
+    ]
+  },
+  {
+    "name": "auditd_manager",
+    "title": "Auditd Manager",
+    "version": "1.0.0",
+    "release": "ga",
+    "description": "The Auditd Manager Integration receives audit events from the Linux Audit Framework that is a part of the Linux kernel.",
+    "type": "integration",
+    "download": "/epr/auditd_manager/auditd_manager-1.0.0.zip",
+    "path": "/package/auditd_manager/1.0.0",
+    "icons": [
+      {
+        "src": "/img/linux.svg",
+        "path": "/package/auditd_manager/1.0.0/img/linux.svg",
+        "title": "linux",
+        "size": "299x354",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "auditd",
+        "title": "Auditd",
+        "description": "Collect auditd events"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.2.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "os_system",
+      "security"
+    ],
+    "signature_path": "/epr/auditd_manager/auditd_manager-1.0.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "auditd_manager.auditd",
+        "title": "Auditd Manager"
+      }
+    ]
+  },
+  {
+    "name": "auth0",
+    "title": "Auth0 Log Streams Integration",
+    "version": "1.0.0",
+    "release": "ga",
+    "description": "Collect logs from Auth0 with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/auth0/auth0-1.0.0.zip",
+    "path": "/package/auth0/1.0.0",
+    "icons": [
+      {
+        "src": "/img/auth0-logo.svg",
+        "path": "/package/auth0/1.0.0/img/auth0-logo.svg",
+        "title": "Auth0 logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "auth0_events",
+        "title": "Auth0 log stream events via Webhooks",
+        "description": "Collect Auth0 log streams events via Webhooks."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "cloud",
+      "network",
+      "security"
+    ],
+    "signature_path": "/epr/auth0/auth0-1.0.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "auth0.logs",
+        "title": "Auth0 logs via Webhooks"
+      }
+    ]
+  },
+  {
     "name": "aws",
     "title": "AWS",
     "version": "1.16.4",
@@ -649,6 +1181,51 @@
     ]
   },
   {
+    "name": "aws_logs",
+    "title": "Custom AWS Logs",
+    "version": "0.2.1",
+    "release": "beta",
+    "description": "Collect raw logs from AWS S3 or CloudWatch with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/aws_logs/aws_logs-0.2.1.zip",
+    "path": "/package/aws_logs/0.2.1",
+    "icons": [
+      {
+        "src": "/img/icon.svg",
+        "path": "/package/aws_logs/0.2.1/img/icon.svg",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "aws_logs",
+        "title": "Custom AWS Logs",
+        "description": "Collect raw logs from AWS S3 or CloudWatch with Elastic Agent."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/obs-cloud-monitoring"
+    },
+    "categories": [
+      "custom",
+      "cloud",
+      "aws"
+    ],
+    "signature_path": "/epr/aws_logs/aws_logs-0.2.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "aws_logs.generic",
+        "title": "Custom logs from AWS"
+      }
+    ]
+  },
+  {
     "name": "awsfargate",
     "title": "AWS Fargate",
     "version": "0.1.1",
@@ -692,835 +1269,6 @@
         "type": "metrics",
         "dataset": "awsfargate.task_stats",
         "title": "AWS Fargate task_stats metrics"
-      }
-    ]
-  },
-  {
-    "name": "ti_abusech",
-    "title": "AbuseCH",
-    "version": "1.2.3",
-    "release": "ga",
-    "description": "Collect threat intelligence from AbuseCH API with Elastic Agent.",
-    "type": "integration",
-    "download": "/epr/ti_abusech/ti_abusech-1.2.3.zip",
-    "path": "/package/ti_abusech/1.2.3",
-    "icons": [
-      {
-        "src": "/img/abusech2.svg",
-        "path": "/package/ti_abusech/1.2.3/img/abusech2.svg",
-        "title": "AbuseCH",
-        "size": "512x512",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "ti_abusech",
-        "title": "AbuseCH API",
-        "description": "Collect threat intelligence from the AbuseCH API"
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^8.0.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/security-external-integrations"
-    },
-    "categories": [
-      "security"
-    ],
-    "signature_path": "/epr/ti_abusech/ti_abusech-1.2.3.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "ti_abusech.malware",
-        "title": "AbuseCH Malware logs"
-      },
-      {
-        "type": "logs",
-        "dataset": "ti_abusech.malwarebazaar",
-        "title": "AbuseCH MalwareBazaar logs"
-      },
-      {
-        "type": "logs",
-        "dataset": "ti_abusech.url",
-        "title": "AbuseCH URL logs"
-      }
-    ]
-  },
-  {
-    "name": "activemq",
-    "title": "ActiveMQ",
-    "version": "0.3.0",
-    "release": "beta",
-    "description": "Collect logs and metrics from ActiveMQ instances with Elastic Agent.",
-    "type": "integration",
-    "download": "/epr/activemq/activemq-0.3.0.zip",
-    "path": "/package/activemq/0.3.0",
-    "icons": [
-      {
-        "src": "/img/activemq.svg",
-        "path": "/package/activemq/0.3.0/img/activemq.svg",
-        "title": "activemq",
-        "size": "32x32",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "activemq",
-        "title": "ActiveMQ logs and metrics",
-        "description": "Collect logs and metrics from ActiveMQ instances"
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^7.16.0 || ^8.0.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/integrations"
-    },
-    "categories": [
-      "web"
-    ],
-    "signature_path": "/epr/activemq/activemq-0.3.0.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "activemq.audit",
-        "title": "ActiveMQ audit logs"
-      },
-      {
-        "type": "metrics",
-        "dataset": "activemq.broker",
-        "title": "ActiveMQ broker metrics"
-      },
-      {
-        "type": "logs",
-        "dataset": "activemq.log",
-        "title": "ActiveMQ log logs"
-      },
-      {
-        "type": "metrics",
-        "dataset": "activemq.queue",
-        "title": "ActiveMQ queue metrics"
-      },
-      {
-        "type": "metrics",
-        "dataset": "activemq.topic",
-        "title": "ActiveMQ topic metrics"
-      }
-    ]
-  },
-  {
-    "name": "akamai",
-    "title": "Akamai",
-    "version": "2.28.0",
-    "release": "ga",
-    "description": "Collect logs from Akamai with Elastic Agent.",
-    "type": "integration",
-    "download": "/epr/akamai/akamai-2.28.0.zip",
-    "path": "/package/akamai/2.28.0",
-    "icons": [
-      {
-        "src": "/img/akamai_logo.svg",
-        "path": "/package/akamai/2.28.0/img/akamai_logo.svg",
-        "title": "Akamai",
-        "size": "409×167",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "akamai",
-        "title": "Akamai logs",
-        "description": "Collect SIEM logs from Akamai"
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^8.13.0 || ^9.0.0"
-      }
-    },
-    "owner": {
-      "type": "community",
-      "github": "elastic/security-service-integrations"
-    },
-    "categories": [
-      "security",
-      "cdn_security"
-    ],
-    "signature_path": "/epr/akamai/akamai-2.28.0.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "akamai.siem",
-        "title": "Akamai SIEM Logs"
-      }
-    ]
-  },
-  {
-    "name": "ti_otx",
-    "title": "AlienVault OTX",
-    "version": "1.2.2",
-    "release": "ga",
-    "description": "Collect threat intelligence from AlienVault OTX with Elastic Agent.",
-    "type": "integration",
-    "download": "/epr/ti_otx/ti_otx-1.2.2.zip",
-    "path": "/package/ti_otx/1.2.2",
-    "icons": [
-      {
-        "src": "/img/otx.svg",
-        "path": "/package/ti_otx/1.2.2/img/otx.svg",
-        "title": "Alienvault OTX",
-        "size": "216x216",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "ti_otx",
-        "title": "Alienvault OTX",
-        "description": "Collect threat intelligence from the Alienvault OTX"
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^8.0.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/security-external-integrations"
-    },
-    "categories": [
-      "security"
-    ],
-    "signature_path": "/epr/ti_otx/ti_otx-1.2.2.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "ti_otx.threat",
-        "title": "Alienvault OTX logs"
-      }
-    ]
-  },
-  {
-    "name": "ti_anomali",
-    "title": "Anomali",
-    "version": "1.2.3",
-    "release": "ga",
-    "description": "Collect threat intelligence from Anomali APIs with Elastic Agent.",
-    "type": "integration",
-    "download": "/epr/ti_anomali/ti_anomali-1.2.3.zip",
-    "path": "/package/ti_anomali/1.2.3",
-    "icons": [
-      {
-        "src": "/img/anomali.svg",
-        "path": "/package/ti_anomali/1.2.3/img/anomali.svg",
-        "title": "Anomali",
-        "size": "216x216",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "ti_anomali",
-        "title": "Anomali",
-        "description": "Collect threat intelligence from the Anomali Limo API and Anomali Threatstream."
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^8.0.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/security-external-integrations"
-    },
-    "categories": [
-      "security"
-    ],
-    "signature_path": "/epr/ti_anomali/ti_anomali-1.2.3.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "ti_anomali.limo",
-        "title": "Anomali Limo"
-      },
-      {
-        "type": "logs",
-        "dataset": "ti_anomali.threatstream",
-        "title": "Anomali Threatstream"
-      }
-    ]
-  },
-  {
-    "name": "apache",
-    "title": "Apache HTTP Server",
-    "version": "1.3.5",
-    "release": "ga",
-    "description": "Collect logs and metrics from Apache servers with Elastic Agent.",
-    "type": "integration",
-    "download": "/epr/apache/apache-1.3.5.zip",
-    "path": "/package/apache/1.3.5",
-    "icons": [
-      {
-        "src": "/img/logo_apache.svg",
-        "path": "/package/apache/1.3.5/img/logo_apache.svg",
-        "title": "Apache Logo",
-        "size": "32x32",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "apache",
-        "title": "Apache logs and metrics",
-        "description": "Collect logs and metrics from Apache instances"
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^7.14.0 || ^8.0.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/integrations"
-    },
-    "categories": [
-      "web"
-    ],
-    "signature_path": "/epr/apache/apache-1.3.5.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "apache.access",
-        "title": "Apache access logs",
-        "deprecated": {
-          "since": "1.3.5",
-          "description": "This data stream is deprecated"
-        }
-      },
-      {
-        "type": "logs",
-        "dataset": "apache.error",
-        "title": "Apache error logs"
-      },
-      {
-        "type": "metrics",
-        "dataset": "apache.status",
-        "title": "Apache status metrics"
-      }
-    ],
-    "deprecated": {
-      "since": "1.3.0",
-      "description": "This package is deprecated"
-    }
-  },
-  {
-    "name": "tomcat",
-    "title": "Apache Tomcat",
-    "version": "1.3.1",
-    "release": "ga",
-    "description": "Collect and parse logs from Apache Tomcat servers with Elastic Agent.",
-    "type": "integration",
-    "download": "/epr/tomcat/tomcat-1.3.1.zip",
-    "path": "/package/tomcat/1.3.1",
-    "icons": [
-      {
-        "src": "/img/logo.svg",
-        "path": "/package/tomcat/1.3.1/img/logo.svg",
-        "title": "Apache Tomcat logo",
-        "size": "32x32",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "log",
-        "title": "Apache Tomcat",
-        "description": "Collect Apache Tomcat logs from syslog or a file."
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^7.14.1 || ^8.0.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/security-external-integrations"
-    },
-    "categories": [
-      "web",
-      "security"
-    ],
-    "signature_path": "/epr/tomcat/tomcat-1.3.1.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "tomcat.log",
-        "title": "Apache Tomcat logs"
-      }
-    ]
-  },
-  {
-    "name": "netscout",
-    "title": "Arbor Peakflow SP Logs",
-    "version": "0.7.0",
-    "release": "experimental",
-    "description": "Collect and parse logs from Netscout Arbor Peakflow SP with Elastic Agent.",
-    "type": "integration",
-    "download": "/epr/netscout/netscout-0.7.0.zip",
-    "path": "/package/netscout/0.7.0",
-    "icons": [
-      {
-        "src": "/img/logo.svg",
-        "path": "/package/netscout/0.7.0/img/logo.svg",
-        "title": "Arbor Peakflow SP logo",
-        "size": "32x32",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "sightline",
-        "title": "Arbor Peakflow SP",
-        "description": "Collect Arbor Peakflow SP logs from syslog or a file."
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^7.14.1 || ^8.0.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/security-external-integrations"
-    },
-    "categories": [
-      "security"
-    ],
-    "signature_path": "/epr/netscout/netscout-0.7.0.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "netscout.sightline",
-        "title": "Arbor Peakflow SP logs"
-      }
-    ]
-  },
-  {
-    "name": "atlassian_bitbucket",
-    "title": "Atlassian Bitbucket",
-    "version": "1.2.1",
-    "release": "ga",
-    "description": "Collect logs from Atlassian Bitbucket with Elastic Agent.",
-    "type": "integration",
-    "download": "/epr/atlassian_bitbucket/atlassian_bitbucket-1.2.1.zip",
-    "path": "/package/atlassian_bitbucket/1.2.1",
-    "icons": [
-      {
-        "src": "/img/bitbucket-logo.svg",
-        "path": "/package/atlassian_bitbucket/1.2.1/img/bitbucket-logo.svg",
-        "title": "Bitbucket Logo",
-        "size": "625x564",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "audit",
-        "title": "Audit Logs",
-        "description": "Collect audit logs from Atlassian Bitbucket with Elastic Agent."
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^7.16.0 || ^8.0.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/security-external-integrations"
-    },
-    "categories": [
-      "security",
-      "web"
-    ],
-    "signature_path": "/epr/atlassian_bitbucket/atlassian_bitbucket-1.2.1.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "atlassian_bitbucket.audit",
-        "title": "Bitbucket Audit Logs"
-      }
-    ]
-  },
-  {
-    "name": "atlassian_confluence",
-    "title": "Atlassian Confluence",
-    "version": "1.3.0",
-    "release": "ga",
-    "description": "Collect logs from Atlassian Confluence with Elastic Agent.",
-    "type": "integration",
-    "download": "/epr/atlassian_confluence/atlassian_confluence-1.3.0.zip",
-    "path": "/package/atlassian_confluence/1.3.0",
-    "icons": [
-      {
-        "src": "/img/confluence-logo.svg",
-        "path": "/package/atlassian_confluence/1.3.0/img/confluence-logo.svg",
-        "title": "Confluence Logo",
-        "size": "400x400",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "audit",
-        "title": "Audit Logs",
-        "description": "Collect audit logs from Atlassian Confluence with Elastic Agent."
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^7.16.0 || ^8.0.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/security-external-integrations"
-    },
-    "categories": [
-      "security",
-      "web"
-    ],
-    "signature_path": "/epr/atlassian_confluence/atlassian_confluence-1.3.0.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "atlassian_confluence.audit",
-        "title": "Confluence Audit Logs"
-      }
-    ]
-  },
-  {
-    "name": "atlassian_jira",
-    "title": "Atlassian Jira",
-    "version": "1.3.0",
-    "release": "ga",
-    "description": "Collect logs from Atlassian Jira with Elastic Agent.",
-    "type": "integration",
-    "download": "/epr/atlassian_jira/atlassian_jira-1.3.0.zip",
-    "path": "/package/atlassian_jira/1.3.0",
-    "icons": [
-      {
-        "src": "/img/jira-software-logo.svg",
-        "path": "/package/atlassian_jira/1.3.0/img/jira-software-logo.svg",
-        "title": "Jira Software Logo",
-        "size": "590x625",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "audit",
-        "title": "Audit Logs",
-        "description": "Collect audit logs from Atlassian Jira with Elastic Agent."
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^7.16.0 || ^8.0.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/security-external-integrations"
-    },
-    "categories": [
-      "security",
-      "web"
-    ],
-    "signature_path": "/epr/atlassian_jira/atlassian_jira-1.3.0.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "atlassian_jira.audit",
-        "title": "Jira Audit Logs"
-      }
-    ]
-  },
-  {
-    "name": "auditd",
-    "title": "Auditd Logs",
-    "version": "3.1.0",
-    "release": "ga",
-    "description": "Collect logs from Linux audit daemon with Elastic Agent.",
-    "type": "integration",
-    "download": "/epr/auditd/auditd-3.1.0.zip",
-    "path": "/package/auditd/3.1.0",
-    "icons": [
-      {
-        "src": "/img/linux.svg",
-        "path": "/package/auditd/3.1.0/img/linux.svg",
-        "title": "linux",
-        "size": "299x354",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "auditd",
-        "title": "Auditd logs",
-        "description": "Collect logs from Auditd instances"
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^8.0.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/security-external-integrations"
-    },
-    "categories": [
-      "os_system"
-    ],
-    "signature_path": "/epr/auditd/auditd-3.1.0.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "auditd.log",
-        "title": "Auditd logs"
-      }
-    ]
-  },
-  {
-    "name": "auditd_manager",
-    "title": "Auditd Manager",
-    "version": "1.0.0",
-    "release": "ga",
-    "description": "The Auditd Manager Integration receives audit events from the Linux Audit Framework that is a part of the Linux kernel.",
-    "type": "integration",
-    "download": "/epr/auditd_manager/auditd_manager-1.0.0.zip",
-    "path": "/package/auditd_manager/1.0.0",
-    "icons": [
-      {
-        "src": "/img/linux.svg",
-        "path": "/package/auditd_manager/1.0.0/img/linux.svg",
-        "title": "linux",
-        "size": "299x354",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "auditd",
-        "title": "Auditd",
-        "description": "Collect auditd events"
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^8.2.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/security-external-integrations"
-    },
-    "categories": [
-      "os_system",
-      "security"
-    ],
-    "signature_path": "/epr/auditd_manager/auditd_manager-1.0.0.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "auditd_manager.auditd",
-        "title": "Auditd Manager"
-      }
-    ]
-  },
-  {
-    "name": "auth0",
-    "title": "Auth0 Log Streams Integration",
-    "version": "1.0.0",
-    "release": "ga",
-    "description": "Collect logs from Auth0 with Elastic Agent.",
-    "type": "integration",
-    "download": "/epr/auth0/auth0-1.0.0.zip",
-    "path": "/package/auth0/1.0.0",
-    "icons": [
-      {
-        "src": "/img/auth0-logo.svg",
-        "path": "/package/auth0/1.0.0/img/auth0-logo.svg",
-        "title": "Auth0 logo",
-        "size": "32x32",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "auth0_events",
-        "title": "Auth0 log stream events via Webhooks",
-        "description": "Collect Auth0 log streams events via Webhooks."
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^7.16.0 || ^8.0.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/security-external-integrations"
-    },
-    "categories": [
-      "cloud",
-      "network",
-      "security"
-    ],
-    "signature_path": "/epr/auth0/auth0-1.0.0.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "auth0.logs",
-        "title": "Auth0 logs via Webhooks"
-      }
-    ]
-  },
-  {
-    "name": "azure_application_insights",
-    "title": "Azure Application Insights Metrics Overview",
-    "version": "1.0.1",
-    "release": "ga",
-    "description": "Collect application insights metrics from Azure Monitor with Elastic Agent.",
-    "type": "integration",
-    "download": "/epr/azure_application_insights/azure_application_insights-1.0.1.zip",
-    "path": "/package/azure_application_insights/1.0.1",
-    "icons": [
-      {
-        "src": "/img/app_insights.png",
-        "path": "/package/azure_application_insights/1.0.1/img/app_insights.png",
-        "title": "logo docker",
-        "size": "32x32",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "app_insights",
-        "title": "Azure Application Insights Metrics",
-        "description": "Collect application insights metrics from Azure Monitor with Elastic Agent.",
-        "icons": [
-          {
-            "src": "/img//app_insights.png",
-            "path": "/package/azure_application_insights/1.0.1/img/app_insights.png",
-            "title": "logo azure",
-            "size": "32x32",
-            "type": "image/svg+xml"
-          }
-        ],
-        "data_streams": [
-          "app_insights"
-        ]
-      },
-      {
-        "name": "app_state",
-        "title": "Azure Application State Insights Metrics",
-        "description": "Collect application state related metrics from Azure Monitor with Elastic Agent.",
-        "icons": [
-          {
-            "src": "/img/application_insights_blue.png",
-            "path": "/package/azure_application_insights/1.0.1/img/application_insights_blue.png",
-            "title": "logo azure",
-            "size": "32x32",
-            "type": "image/svg+xml"
-          }
-        ],
-        "data_streams": [
-          "app_state"
-        ]
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^7.14.0 || ^8.0.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/integrations"
-    },
-    "categories": [
-      "azure",
-      "web"
-    ],
-    "signature_path": "/epr/azure_application_insights/azure_application_insights-1.0.1.zip.sig",
-    "data_streams": [
-      {
-        "type": "metrics",
-        "dataset": "azure.app_insights",
-        "title": "Azure Application Insights"
-      },
-      {
-        "type": "metrics",
-        "dataset": "azure.app_state",
-        "title": "Azure Application State"
-      }
-    ]
-  },
-  {
-    "name": "azure_billing",
-    "title": "Azure Billing Metrics",
-    "version": "1.0.1",
-    "release": "ga",
-    "description": "Collect billing metrics with Elastic Agent.",
-    "type": "integration",
-    "download": "/epr/azure_billing/azure_billing-1.0.1.zip",
-    "path": "/package/azure_billing/1.0.1",
-    "icons": [
-      {
-        "src": "/img/billing.png",
-        "path": "/package/azure_billing/1.0.1/img/billing.png",
-        "title": "logo docker",
-        "size": "32x32",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "billing",
-        "title": "Azure Billing Metrics",
-        "description": "Collect billing information with Elastic Agent.",
-        "icons": [
-          {
-            "src": "/img//billing.png",
-            "path": "/package/azure_billing/1.0.1/img/billing.png",
-            "title": "logo azure",
-            "size": "32x32",
-            "type": "image/svg+xml"
-          }
-        ],
-        "data_streams": [
-          "billing"
-        ]
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^7.15.0 || ^8.0.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/integrations"
-    },
-    "categories": [
-      "azure"
-    ],
-    "signature_path": "/epr/azure_billing/azure_billing-1.0.1.zip.sig",
-    "data_streams": [
-      {
-        "type": "metrics",
-        "dataset": "azure.billing",
-        "title": "Azure Billing Metrics"
       }
     ]
   },
@@ -1675,6 +1423,143 @@
         "type": "logs",
         "dataset": "azure.springcloudlogs",
         "title": "Azure Spring Cloud Logs"
+      }
+    ]
+  },
+  {
+    "name": "azure_application_insights",
+    "title": "Azure Application Insights Metrics Overview",
+    "version": "1.0.1",
+    "release": "ga",
+    "description": "Collect application insights metrics from Azure Monitor with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/azure_application_insights/azure_application_insights-1.0.1.zip",
+    "path": "/package/azure_application_insights/1.0.1",
+    "icons": [
+      {
+        "src": "/img/app_insights.png",
+        "path": "/package/azure_application_insights/1.0.1/img/app_insights.png",
+        "title": "logo docker",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "app_insights",
+        "title": "Azure Application Insights Metrics",
+        "description": "Collect application insights metrics from Azure Monitor with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img//app_insights.png",
+            "path": "/package/azure_application_insights/1.0.1/img/app_insights.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "data_streams": [
+          "app_insights"
+        ]
+      },
+      {
+        "name": "app_state",
+        "title": "Azure Application State Insights Metrics",
+        "description": "Collect application state related metrics from Azure Monitor with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img/application_insights_blue.png",
+            "path": "/package/azure_application_insights/1.0.1/img/application_insights_blue.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "data_streams": [
+          "app_state"
+        ]
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "azure",
+      "web"
+    ],
+    "signature_path": "/epr/azure_application_insights/azure_application_insights-1.0.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "azure.app_insights",
+        "title": "Azure Application Insights"
+      },
+      {
+        "type": "metrics",
+        "dataset": "azure.app_state",
+        "title": "Azure Application State"
+      }
+    ]
+  },
+  {
+    "name": "azure_billing",
+    "title": "Azure Billing Metrics",
+    "version": "1.0.1",
+    "release": "ga",
+    "description": "Collect billing metrics with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/azure_billing/azure_billing-1.0.1.zip",
+    "path": "/package/azure_billing/1.0.1",
+    "icons": [
+      {
+        "src": "/img/billing.png",
+        "path": "/package/azure_billing/1.0.1/img/billing.png",
+        "title": "logo docker",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "billing",
+        "title": "Azure Billing Metrics",
+        "description": "Collect billing information with Elastic Agent.",
+        "icons": [
+          {
+            "src": "/img//billing.png",
+            "path": "/package/azure_billing/1.0.1/img/billing.png",
+            "title": "logo azure",
+            "size": "32x32",
+            "type": "image/svg+xml"
+          }
+        ],
+        "data_streams": [
+          "billing"
+        ]
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.15.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "azure"
+    ],
+    "signature_path": "/epr/azure_billing/azure_billing-1.0.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "azure.billing",
+        "title": "Azure Billing Metrics"
       }
     ]
   },
@@ -1979,85 +1864,112 @@
     ]
   },
   {
-    "name": "cef",
-    "title": "CEF Logs",
-    "version": "2.0.0",
+    "name": "carbon_black_cloud",
+    "title": "VMware Carbon Black Cloud",
+    "version": "1.0.2",
     "release": "ga",
-    "description": "Collect logs from CEF Logs with Elastic Agent.",
+    "description": "Collect logs from VMWare Carbon Black Cloud with Elastic Agent.",
     "type": "integration",
-    "download": "/epr/cef/cef-2.0.0.zip",
-    "path": "/package/cef/2.0.0",
-    "policy_templates": [
-      {
-        "name": "cef",
-        "title": "CEF logs",
-        "description": "Collect logs from CEF instances"
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^8.0.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/security-external-integrations"
-    },
-    "categories": [
-      "network",
-      "security"
-    ],
-    "signature_path": "/epr/cef/cef-2.0.0.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "cef.log",
-        "title": "CEF log logs"
-      }
-    ]
-  },
-  {
-    "name": "cloud_security_posture",
-    "title": "CIS Kubernetes Benchmark",
-    "version": "0.0.14",
-    "release": "experimental",
-    "description": "Check Kubernetes cluster compliance with the Kubernetes CIS benchmark.",
-    "type": "integration",
-    "download": "/epr/cloud_security_posture/cloud_security_posture-0.0.14.zip",
-    "path": "/package/cloud_security_posture/0.0.14",
+    "download": "/epr/carbon_black_cloud/carbon_black_cloud-1.0.2.zip",
+    "path": "/package/carbon_black_cloud/1.0.2",
     "icons": [
       {
-        "src": "/img/cis-kubernetes-benchmark-logo.svg",
-        "path": "/package/cloud_security_posture/0.0.14/img/cis-kubernetes-benchmark-logo.svg",
-        "title": "CIS Kubernetes Benchmark logo",
+        "src": "/img/carbon_black_cloud-logo.svg",
+        "path": "/package/carbon_black_cloud/1.0.2/img/carbon_black_cloud-logo.svg",
+        "title": "Carbon Black Cloud logo",
         "size": "32x32",
         "type": "image/svg+xml"
       }
     ],
     "policy_templates": [
       {
-        "name": "kspm",
-        "title": "CIS Kubernetes Benchmark",
-        "description": "Check Kubernetes cluster compliance with the Kubernetes CIS benchmark."
+        "name": "carbon_black_cloud",
+        "title": "Carbon Black Cloud",
+        "description": "Collect Logs from Carbon Black Cloud"
       }
     ],
     "conditions": {
       "kibana": {
-        "version": "^8.3.0"
+        "version": "^7.17.0 || ^8.0.0"
       }
     },
     "owner": {
-      "github": "elastic/cloud-security-posture"
+      "github": "elastic/security-external-integrations"
     },
     "categories": [
-      "containers",
-      "kubernetes"
+      "security"
     ],
-    "signature_path": "/epr/cloud_security_posture/cloud_security_posture-0.0.14.zip.sig",
+    "signature_path": "/epr/carbon_black_cloud/carbon_black_cloud-1.0.2.zip.sig",
     "data_streams": [
       {
         "type": "logs",
-        "dataset": "cloud_security_posture.findings",
-        "title": "Findings"
+        "dataset": "carbon_black_cloud.alert",
+        "title": "Alert"
+      },
+      {
+        "type": "logs",
+        "dataset": "carbon_black_cloud.asset_vulnerability_summary",
+        "title": "Asset Vulnerability Summary"
+      },
+      {
+        "type": "logs",
+        "dataset": "carbon_black_cloud.audit",
+        "title": "Audit"
+      },
+      {
+        "type": "logs",
+        "dataset": "carbon_black_cloud.endpoint_event",
+        "title": "Endpoint Event"
+      },
+      {
+        "type": "logs",
+        "dataset": "carbon_black_cloud.watchlist_hit",
+        "title": "Watchlist Hit"
+      }
+    ]
+  },
+  {
+    "name": "carbonblack_edr",
+    "title": "VMware Carbon Black EDR",
+    "version": "1.2.0",
+    "release": "ga",
+    "description": "Collect logs from VMware Carbon Black EDR with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/carbonblack_edr/carbonblack_edr-1.2.0.zip",
+    "path": "/package/carbonblack_edr/1.2.0",
+    "icons": [
+      {
+        "src": "/img/carbon-black-logo.svg",
+        "path": "/package/carbonblack_edr/1.2.0/img/carbon-black-logo.svg",
+        "title": "VMWare Carbon Black",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "log",
+        "title": "Carbon Black EDR logs",
+        "description": "Collect logs from Carbon Black EDR"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security"
+    ],
+    "signature_path": "/epr/carbonblack_edr/carbonblack_edr-1.2.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "carbonblack_edr.log",
+        "title": "Carbon Black EDR logs"
       }
     ]
   },
@@ -2109,6 +2021,43 @@
         "type": "metrics",
         "dataset": "cassandra.metrics",
         "title": "metrics"
+      }
+    ]
+  },
+  {
+    "name": "cef",
+    "title": "CEF Logs",
+    "version": "2.0.0",
+    "release": "ga",
+    "description": "Collect logs from CEF Logs with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/cef/cef-2.0.0.zip",
+    "path": "/package/cef/2.0.0",
+    "policy_templates": [
+      {
+        "name": "cef",
+        "title": "CEF logs",
+        "description": "Collect logs from CEF instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "network",
+      "security"
+    ],
+    "signature_path": "/epr/cef/cef-2.0.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "cef.log",
+        "title": "CEF log logs"
       }
     ]
   },
@@ -2706,6 +2655,52 @@
     ]
   },
   {
+    "name": "cloud_security_posture",
+    "title": "CIS Kubernetes Benchmark",
+    "version": "0.0.14",
+    "release": "experimental",
+    "description": "Check Kubernetes cluster compliance with the Kubernetes CIS benchmark.",
+    "type": "integration",
+    "download": "/epr/cloud_security_posture/cloud_security_posture-0.0.14.zip",
+    "path": "/package/cloud_security_posture/0.0.14",
+    "icons": [
+      {
+        "src": "/img/cis-kubernetes-benchmark-logo.svg",
+        "path": "/package/cloud_security_posture/0.0.14/img/cis-kubernetes-benchmark-logo.svg",
+        "title": "CIS Kubernetes Benchmark logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "kspm",
+        "title": "CIS Kubernetes Benchmark",
+        "description": "Check Kubernetes cluster compliance with the Kubernetes CIS benchmark."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.3.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/cloud-security-posture"
+    },
+    "categories": [
+      "containers",
+      "kubernetes"
+    ],
+    "signature_path": "/epr/cloud_security_posture/cloud_security_posture-0.0.14.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "cloud_security_posture.findings",
+        "title": "Findings"
+      }
+    ]
+  },
+  {
     "name": "cloudflare",
     "title": "Cloudflare",
     "version": "2.0.0",
@@ -2866,389 +2861,6 @@
     ]
   },
   {
-    "name": "aws_logs",
-    "title": "Custom AWS Logs",
-    "version": "0.2.1",
-    "release": "beta",
-    "description": "Collect raw logs from AWS S3 or CloudWatch with Elastic Agent.",
-    "type": "integration",
-    "download": "/epr/aws_logs/aws_logs-0.2.1.zip",
-    "path": "/package/aws_logs/0.2.1",
-    "icons": [
-      {
-        "src": "/img/icon.svg",
-        "path": "/package/aws_logs/0.2.1/img/icon.svg",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "aws_logs",
-        "title": "Custom AWS Logs",
-        "description": "Collect raw logs from AWS S3 or CloudWatch with Elastic Agent."
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^7.16.0 || ^8.0.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/obs-cloud-monitoring"
-    },
-    "categories": [
-      "custom",
-      "cloud",
-      "aws"
-    ],
-    "signature_path": "/epr/aws_logs/aws_logs-0.2.1.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "aws_logs.generic",
-        "title": "Custom logs from AWS"
-      }
-    ]
-  },
-  {
-    "name": "gcp_pubsub",
-    "title": "Custom Google Pub/Sub Logs",
-    "version": "1.0.0",
-    "release": "ga",
-    "description": "Collect Logs from Google Pub/Sub topics",
-    "type": "integration",
-    "download": "/epr/gcp_pubsub/gcp_pubsub-1.0.0.zip",
-    "path": "/package/gcp_pubsub/1.0.0",
-    "icons": [
-      {
-        "src": "/img/logo_gcp.svg",
-        "path": "/package/gcp_pubsub/1.0.0/img/logo_gcp.svg",
-        "title": "logo gcp",
-        "size": "32x32",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "gcp",
-        "title": "Custom Google Pub/Sub Logs",
-        "description": "Collect Logs from Google Pub/Sub topics"
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^7.16.0 || ^8.0.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/security-external-integrations"
-    },
-    "categories": [
-      "google_cloud",
-      "cloud",
-      "custom"
-    ],
-    "signature_path": "/epr/gcp_pubsub/gcp_pubsub-1.0.0.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "gcp_pubsub.generic",
-        "title": "Custom Google Pub/Sub Logs"
-      }
-    ]
-  },
-  {
-    "name": "http_endpoint",
-    "title": "Custom HTTP Endpoint Logs",
-    "version": "1.0.1",
-    "release": "ga",
-    "description": "Collect JSON data from listening HTTP port with Elastic Agent.",
-    "type": "integration",
-    "download": "/epr/http_endpoint/http_endpoint-1.0.1.zip",
-    "path": "/package/http_endpoint/1.0.1",
-    "icons": [
-      {
-        "src": "/img/icon.svg",
-        "path": "/package/http_endpoint/1.0.1/img/icon.svg",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "http_endpoint",
-        "title": "Custom HTTP Endpoint Logs",
-        "description": "Collect JSON data from listening HTTP port with Elastic Agent."
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^7.16.0 || ^8.0.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/security-external-integrations"
-    },
-    "categories": [
-      "custom"
-    ],
-    "signature_path": "/epr/http_endpoint/http_endpoint-1.0.1.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "http_endpoint.generic",
-        "title": "Custom HTTP Endpoint Logs"
-      }
-    ]
-  },
-  {
-    "name": "httpjson",
-    "title": "Custom HTTPJSON Input",
-    "version": "1.1.1",
-    "release": "ga",
-    "description": "Collect custom data from REST API's with Elastic Agent.",
-    "type": "integration",
-    "download": "/epr/httpjson/httpjson-1.1.1.zip",
-    "path": "/package/httpjson/1.1.1",
-    "policy_templates": [
-      {
-        "name": "generic",
-        "title": "Custom HTTPJSON Input",
-        "description": "Collect custom data from REST API's"
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^7.16.0 || ^8.0.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/security-external-integrations"
-    },
-    "categories": [
-      "custom"
-    ],
-    "signature_path": "/epr/httpjson/httpjson-1.1.1.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "httpjson.generic",
-        "title": "Custom HTTPJSON Input"
-      }
-    ]
-  },
-  {
-    "name": "journald",
-    "title": "Custom Journald logs",
-    "version": "0.0.2",
-    "release": "experimental",
-    "description": "Collect logs from journald with Elastic Agent.",
-    "type": "integration",
-    "download": "/epr/journald/journald-0.0.2.zip",
-    "path": "/package/journald/0.0.2",
-    "icons": [
-      {
-        "src": "/img/systemd-logo.svg",
-        "path": "/package/journald/0.0.2/img/systemd-logo.svg",
-        "title": "systemd logo",
-        "size": "32x32",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "logs",
-        "title": "Journald",
-        "description": "Collect sample logs"
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^7.16.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/integrations"
-    },
-    "categories": [
-      "custom"
-    ],
-    "signature_path": "/epr/journald/journald-0.0.2.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "journald.log",
-        "title": "Journald Log"
-      }
-    ]
-  },
-  {
-    "name": "log",
-    "title": "Custom Logs",
-    "version": "1.0.0",
-    "release": "ga",
-    "description": "Collect custom logs with Elastic Agent.",
-    "type": "integration",
-    "download": "/epr/log/log-1.0.0.zip",
-    "path": "/package/log/1.0.0",
-    "icons": [
-      {
-        "src": "/img/icon.svg",
-        "path": "/package/log/1.0.0/img/icon.svg",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "logs",
-        "title": "Custom logs",
-        "description": "Collect your custom log files."
-      }
-    ],
-    "owner": {
-      "github": "elastic/integrations"
-    },
-    "categories": [
-      "custom"
-    ],
-    "signature_path": "/epr/log/log-1.0.0.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "log.log",
-        "title": "Log Dataset"
-      }
-    ]
-  },
-  {
-    "name": "tcp",
-    "title": "Custom TCP Logs",
-    "version": "1.0.0",
-    "release": "ga",
-    "description": "Collect raw TCP data from listening TCP port with Elastic Agent.",
-    "type": "integration",
-    "download": "/epr/tcp/tcp-1.0.0.zip",
-    "path": "/package/tcp/1.0.0",
-    "icons": [
-      {
-        "src": "/img/icon.svg",
-        "path": "/package/tcp/1.0.0/img/icon.svg",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "tcp",
-        "title": "Custom TCP Logs",
-        "description": "Collect raw TCP data from listening TCP port with Elastic Agent."
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^7.16.0 || ^8.0.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/security-external-integrations"
-    },
-    "categories": [
-      "custom"
-    ],
-    "signature_path": "/epr/tcp/tcp-1.0.0.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "tcp.generic",
-        "title": "Custom TCP Logs"
-      }
-    ]
-  },
-  {
-    "name": "udp",
-    "title": "Custom UDP Logs",
-    "version": "1.0.1",
-    "release": "ga",
-    "description": "Collect raw UDP data from listening UDP port with Elastic Agent.",
-    "type": "integration",
-    "download": "/epr/udp/udp-1.0.1.zip",
-    "path": "/package/udp/1.0.1",
-    "icons": [
-      {
-        "src": "/img/icon.svg",
-        "path": "/package/udp/1.0.1/img/icon.svg",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "udp",
-        "title": "Custom UDP Logs",
-        "description": "Collect raw UDP data from listening UDP port with Elastic Agent."
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^7.16.0 || ^8.0.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/security-external-integrations"
-    },
-    "categories": [
-      "custom"
-    ],
-    "signature_path": "/epr/udp/udp-1.0.1.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "udp.generic",
-        "title": "Custom UDP Logs"
-      }
-    ]
-  },
-  {
-    "name": "winlog",
-    "title": "Custom Windows Event Logs",
-    "version": "1.4.0",
-    "release": "ga",
-    "description": "Collect and parse logs from any Windows event log channel with Elastic Agent.",
-    "type": "integration",
-    "download": "/epr/winlog/winlog-1.4.0.zip",
-    "path": "/package/winlog/1.4.0",
-    "icons": [
-      {
-        "src": "/img/logo_windows.svg",
-        "path": "/package/winlog/1.4.0/img/logo_windows.svg",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "winlogs",
-        "title": "Custom Windows event logs",
-        "description": "Collect your custom Windows event logs."
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^7.16.0 || ^8.0.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/security-external-integrations"
-    },
-    "categories": [
-      "custom"
-    ],
-    "signature_path": "/epr/winlog/winlog-1.4.0.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "winlog.winlog",
-        "title": "Custom Windows Event Log Dataset"
-      }
-    ]
-  },
-  {
     "name": "cyberark",
     "title": "CyberArk",
     "version": "0.4.4",
@@ -3335,52 +2947,6 @@
         "type": "logs",
         "dataset": "cyberarkpas.audit",
         "title": "CyberArk PAS audit logs"
-      }
-    ]
-  },
-  {
-    "name": "ti_cybersixgill",
-    "title": "Cybersixgill",
-    "version": "1.3.2",
-    "release": "ga",
-    "description": "This Elastic integration collects threat intelligence from Cybersixgill",
-    "type": "integration",
-    "download": "/epr/ti_cybersixgill/ti_cybersixgill-1.3.2.zip",
-    "path": "/package/ti_cybersixgill/1.3.2",
-    "icons": [
-      {
-        "src": "/img/cybersixgill.svg",
-        "path": "/package/ti_cybersixgill/1.3.2/img/cybersixgill.svg",
-        "title": "Cybersixgill",
-        "size": "32x32",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "cybersixgill",
-        "title": "Cybersixgill Threat Intel",
-        "description": "Collect Threat Intel from Cybersixgill"
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^8.0.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/security-external-integrations"
-    },
-    "categories": [
-      "security",
-      "productivity"
-    ],
-    "signature_path": "/epr/ti_cybersixgill/ti_cybersixgill-1.3.2.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "ti_cybersixgill.threat",
-        "title": "Cybersixgill Darkfeed Logs"
       }
     ]
   },
@@ -3636,87 +3202,6 @@
     ]
   },
   {
-    "name": "apm",
-    "title": "Elastic APM",
-    "version": "8.2.0",
-    "release": "ga",
-    "description": "Ingest APM data",
-    "type": "integration",
-    "download": "/epr/apm/apm-8.2.0.zip",
-    "path": "/package/apm/8.2.0",
-    "icons": [
-      {
-        "src": "/img/logo_apm.svg",
-        "path": "/package/apm/8.2.0/img/logo_apm.svg",
-        "title": "APM Logo",
-        "size": "32x32",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "apmserver",
-        "title": "Elastic APM Integration",
-        "description": "Elastic APM Integration"
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^8.2.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/apm-server"
-    },
-    "categories": [
-      "elastic_stack",
-      "monitoring"
-    ],
-    "signature_path": "/epr/apm/apm-8.2.0.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "apm.app",
-        "title": "APM application logs"
-      },
-      {
-        "type": "metrics",
-        "dataset": "apm.app",
-        "title": "APM application metrics"
-      },
-      {
-        "type": "logs",
-        "dataset": "apm.error",
-        "title": "APM errors"
-      },
-      {
-        "type": "metrics",
-        "dataset": "apm.internal",
-        "title": "APM internal metrics"
-      },
-      {
-        "type": "metrics",
-        "dataset": "apm.profiling",
-        "title": "APM profiles"
-      },
-      {
-        "type": "traces",
-        "dataset": "apm.rum",
-        "title": "APM RUM traces"
-      },
-      {
-        "type": "traces",
-        "dataset": "apm.sampled",
-        "title": "APM tail-sampled traces"
-      },
-      {
-        "type": "traces",
-        "dataset": "apm",
-        "title": "APM traces"
-      }
-    ]
-  },
-  {
     "name": "elastic_agent",
     "title": "Elastic Agent",
     "version": "1.3.1",
@@ -3846,77 +3331,6 @@
         "type": "metrics",
         "dataset": "elastic_agent.packetbeat",
         "title": "Elastic Agent"
-      }
-    ]
-  },
-  {
-    "name": "synthetics",
-    "title": "Elastic Synthetics",
-    "version": "0.9.2",
-    "release": "beta",
-    "description": "Monitor the availability of your services with Elastic Synthetics.",
-    "type": "integration",
-    "download": "/epr/synthetics/synthetics-0.9.2.zip",
-    "path": "/package/synthetics/0.9.2",
-    "icons": [
-      {
-        "src": "/img/uptime-logo-color-64px.svg",
-        "path": "/package/synthetics/0.9.2/img/uptime-logo-color-64px.svg",
-        "size": "16x16",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "synthetics",
-        "title": "Elastic Synthetics",
-        "description": "Perform synthetic health checks on network endpoints."
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^8.1.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/uptime"
-    },
-    "categories": [
-      "elastic_stack",
-      "monitoring",
-      "web"
-    ],
-    "signature_path": "/epr/synthetics/synthetics-0.9.2.zip.sig",
-    "data_streams": [
-      {
-        "type": "synthetics",
-        "dataset": "browser",
-        "title": "synthetic monitor check"
-      },
-      {
-        "type": "synthetics",
-        "dataset": "browser.network",
-        "title": "synthetic monitor check"
-      },
-      {
-        "type": "synthetics",
-        "dataset": "browser.screenshot",
-        "title": "synthetic monitor check"
-      },
-      {
-        "type": "synthetics",
-        "dataset": "http",
-        "title": "synthetic monitor check"
-      },
-      {
-        "type": "synthetics",
-        "dataset": "icmp",
-        "title": "synthetic monitor check"
-      },
-      {
-        "type": "synthetics",
-        "dataset": "tcp",
-        "title": "synthetic monitor check"
       }
     ]
   },
@@ -4390,51 +3804,6 @@
     ]
   },
   {
-    "name": "github",
-    "title": "GitHub",
-    "version": "1.0.0",
-    "release": "ga",
-    "description": "Collect events from GitHub with Elastic Agent.",
-    "type": "integration",
-    "download": "/epr/github/github-1.0.0.zip",
-    "path": "/package/github/1.0.0",
-    "icons": [
-      {
-        "src": "/img/github.svg",
-        "path": "/package/github/1.0.0/img/github.svg",
-        "title": "GitHub",
-        "size": "1024x1024",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "github",
-        "title": "GitHub logs",
-        "description": "Collect logs from GitHub"
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^7.16.0 || ^8.0.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/security-external-integrations"
-    },
-    "categories": [
-      "security"
-    ],
-    "signature_path": "/epr/github/github-1.0.0.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "github.audit",
-        "title": "GitHub Audit Logs"
-      }
-    ]
-  },
-  {
     "name": "gcp",
     "title": "Google Cloud Platform",
     "version": "1.9.0",
@@ -4498,47 +3867,94 @@
     ]
   },
   {
-    "name": "santa",
-    "title": "Google Santa Logs",
-    "version": "2.0.1",
+    "name": "gcp_pubsub",
+    "title": "Custom Google Pub/Sub Logs",
+    "version": "1.0.0",
     "release": "ga",
-    "description": "Collect and parse logs from Google Santa instances with Elastic Agent.",
+    "description": "Collect Logs from Google Pub/Sub topics",
     "type": "integration",
-    "download": "/epr/santa/santa-2.0.1.zip",
-    "path": "/package/santa/2.0.1",
+    "download": "/epr/gcp_pubsub/gcp_pubsub-1.0.0.zip",
+    "path": "/package/gcp_pubsub/1.0.0",
     "icons": [
       {
-        "src": "/img/icon.svg",
-        "path": "/package/santa/2.0.1/img/icon.svg",
-        "title": "Google Santa",
+        "src": "/img/logo_gcp.svg",
+        "path": "/package/gcp_pubsub/1.0.0/img/logo_gcp.svg",
+        "title": "logo gcp",
+        "size": "32x32",
         "type": "image/svg+xml"
       }
     ],
     "policy_templates": [
       {
-        "name": "santa",
-        "title": "Google Santa logs",
-        "description": "Collect logs from Google Santa instances"
+        "name": "gcp",
+        "title": "Custom Google Pub/Sub Logs",
+        "description": "Collect Logs from Google Pub/Sub topics"
       }
     ],
     "conditions": {
       "kibana": {
-        "version": "^7.17.0 || ^8.0.0"
+        "version": "^7.16.0 || ^8.0.0"
       }
     },
     "owner": {
       "github": "elastic/security-external-integrations"
     },
     "categories": [
-      "security",
-      "os_system"
+      "google_cloud",
+      "cloud",
+      "custom"
     ],
-    "signature_path": "/epr/santa/santa-2.0.1.zip.sig",
+    "signature_path": "/epr/gcp_pubsub/gcp_pubsub-1.0.0.zip.sig",
     "data_streams": [
       {
         "type": "logs",
-        "dataset": "santa.log",
-        "title": "Google Santa log logs"
+        "dataset": "gcp_pubsub.generic",
+        "title": "Custom Google Pub/Sub Logs"
+      }
+    ]
+  },
+  {
+    "name": "github",
+    "title": "GitHub",
+    "version": "1.0.0",
+    "release": "ga",
+    "description": "Collect events from GitHub with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/github/github-1.0.0.zip",
+    "path": "/package/github/1.0.0",
+    "icons": [
+      {
+        "src": "/img/github.svg",
+        "path": "/package/github/1.0.0/img/github.svg",
+        "title": "GitHub",
+        "size": "1024x1024",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "github",
+        "title": "GitHub logs",
+        "description": "Collect logs from GitHub"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security"
+    ],
+    "signature_path": "/epr/github/github-1.0.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "github.audit",
+        "title": "GitHub Audit Logs"
       }
     ]
   },
@@ -4774,6 +4190,85 @@
     ]
   },
   {
+    "name": "http_endpoint",
+    "title": "Custom HTTP Endpoint Logs",
+    "version": "1.0.1",
+    "release": "ga",
+    "description": "Collect JSON data from listening HTTP port with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/http_endpoint/http_endpoint-1.0.1.zip",
+    "path": "/package/http_endpoint/1.0.1",
+    "icons": [
+      {
+        "src": "/img/icon.svg",
+        "path": "/package/http_endpoint/1.0.1/img/icon.svg",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "http_endpoint",
+        "title": "Custom HTTP Endpoint Logs",
+        "description": "Collect JSON data from listening HTTP port with Elastic Agent."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "custom"
+    ],
+    "signature_path": "/epr/http_endpoint/http_endpoint-1.0.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "http_endpoint.generic",
+        "title": "Custom HTTP Endpoint Logs"
+      }
+    ]
+  },
+  {
+    "name": "httpjson",
+    "title": "Custom HTTPJSON Input",
+    "version": "1.1.1",
+    "release": "ga",
+    "description": "Collect custom data from REST API's with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/httpjson/httpjson-1.1.1.zip",
+    "path": "/package/httpjson/1.1.1",
+    "policy_templates": [
+      {
+        "name": "generic",
+        "title": "Custom HTTPJSON Input",
+        "description": "Collect custom data from REST API's"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "custom"
+    ],
+    "signature_path": "/epr/httpjson/httpjson-1.1.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "httpjson.generic",
+        "title": "Custom HTTPJSON Input"
+      }
+    ]
+  },
+  {
     "name": "iis",
     "title": "IIS",
     "version": "0.8.0",
@@ -4967,48 +4462,47 @@
     ]
   },
   {
-    "name": "juniper_junos",
-    "title": "Juniper JunOS",
-    "version": "0.1.1",
+    "name": "journald",
+    "title": "Custom Journald logs",
+    "version": "0.0.2",
     "release": "experimental",
-    "description": "Collect logs from Juniper JunOS with Elastic Agent.",
+    "description": "Collect logs from journald with Elastic Agent.",
     "type": "integration",
-    "download": "/epr/juniper_junos/juniper_junos-0.1.1.zip",
-    "path": "/package/juniper_junos/0.1.1",
+    "download": "/epr/journald/journald-0.0.2.zip",
+    "path": "/package/journald/0.0.2",
     "icons": [
       {
-        "src": "/img/logo.svg",
-        "path": "/package/juniper_junos/0.1.1/img/logo.svg",
-        "title": "Juniper logo",
+        "src": "/img/systemd-logo.svg",
+        "path": "/package/journald/0.0.2/img/systemd-logo.svg",
+        "title": "systemd logo",
         "size": "32x32",
         "type": "image/svg+xml"
       }
     ],
     "policy_templates": [
       {
-        "name": "juniper",
-        "title": "Juniper JunOS logs",
-        "description": "Collect Juniper JunOS logs from syslog or a file."
+        "name": "logs",
+        "title": "Journald",
+        "description": "Collect sample logs"
       }
     ],
     "conditions": {
       "kibana": {
-        "version": "^8.0.0"
+        "version": "^7.16.0"
       }
     },
     "owner": {
-      "github": "elastic/security-external-integrations"
+      "github": "elastic/integrations"
     },
     "categories": [
-      "network",
-      "security"
+      "custom"
     ],
-    "signature_path": "/epr/juniper_junos/juniper_junos-0.1.1.zip.sig",
+    "signature_path": "/epr/journald/journald-0.0.2.zip.sig",
     "data_streams": [
       {
         "type": "logs",
-        "dataset": "juniper_junos.log",
-        "title": "Juniper JUNOS logs"
+        "dataset": "journald.log",
+        "title": "Journald Log"
       }
     ]
   },
@@ -5065,6 +4559,52 @@
         "type": "logs",
         "dataset": "juniper.srx",
         "title": "Juniper SRX logs"
+      }
+    ]
+  },
+  {
+    "name": "juniper_junos",
+    "title": "Juniper JunOS",
+    "version": "0.1.1",
+    "release": "experimental",
+    "description": "Collect logs from Juniper JunOS with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/juniper_junos/juniper_junos-0.1.1.zip",
+    "path": "/package/juniper_junos/0.1.1",
+    "icons": [
+      {
+        "src": "/img/logo.svg",
+        "path": "/package/juniper_junos/0.1.1/img/logo.svg",
+        "title": "Juniper logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "juniper",
+        "title": "Juniper JunOS logs",
+        "description": "Collect Juniper JunOS logs from syslog or a file."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "network",
+      "security"
+    ],
+    "signature_path": "/epr/juniper_junos/juniper_junos-0.1.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "juniper_junos.log",
+        "title": "Juniper JUNOS logs"
       }
     ]
   },
@@ -5784,6 +5324,44 @@
     ]
   },
   {
+    "name": "log",
+    "title": "Custom Logs",
+    "version": "1.0.0",
+    "release": "ga",
+    "description": "Collect custom logs with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/log/log-1.0.0.zip",
+    "path": "/package/log/1.0.0",
+    "icons": [
+      {
+        "src": "/img/icon.svg",
+        "path": "/package/log/1.0.0/img/icon.svg",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "logs",
+        "title": "Custom logs",
+        "description": "Collect your custom log files."
+      }
+    ],
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "custom"
+    ],
+    "signature_path": "/epr/log/log-1.0.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "log.log",
+        "title": "Log Dataset"
+      }
+    ]
+  },
+  {
     "name": "logstash",
     "title": "Logstash",
     "version": "1.1.0",
@@ -5844,37 +5422,6 @@
     ]
   },
   {
-    "name": "problemchild",
-    "title": "LotL Attack Detection",
-    "version": "0.0.2",
-    "release": "experimental",
-    "description": "The ProblemChild framework is used to detect living off the land activity. Requires a Platinum subscription.",
-    "type": "integration",
-    "download": "/epr/problemchild/problemchild-0.0.2.zip",
-    "path": "/package/problemchild/0.0.2",
-    "icons": [
-      {
-        "src": "/img/icon-machine-learning.svg",
-        "path": "/package/problemchild/0.0.2/img/icon-machine-learning.svg",
-        "title": "Sample logo",
-        "size": "32x32",
-        "type": "image/svg+xml"
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^8.0.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/ml-ui"
-    },
-    "categories": [
-      "security"
-    ],
-    "signature_path": "/epr/problemchild/problemchild-0.0.2.zip.sig"
-  },
-  {
     "name": "m365_defender",
     "title": "M365 Defender Logs",
     "version": "1.0.3",
@@ -5918,51 +5465,6 @@
         "type": "logs",
         "dataset": "m365_defender.log",
         "title": "M365 Defender Logs"
-      }
-    ]
-  },
-  {
-    "name": "ti_misp",
-    "title": "MISP",
-    "version": "1.2.2",
-    "release": "ga",
-    "description": "This Elastic integration collects events from MISP",
-    "type": "integration",
-    "download": "/epr/ti_misp/ti_misp-1.2.2.zip",
-    "path": "/package/ti_misp/1.2.2",
-    "icons": [
-      {
-        "src": "/img/misp.svg",
-        "path": "/package/ti_misp/1.2.2/img/misp.svg",
-        "title": "MISP",
-        "size": "216x216",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "ti_misp",
-        "title": "MISP",
-        "description": "Collect threat intelligence from the MISP API."
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^8.0.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/security-external-integrations"
-    },
-    "categories": [
-      "security"
-    ],
-    "signature_path": "/epr/ti_misp/ti_misp-1.2.2.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "ti_misp.threat",
-        "title": "MISP"
       }
     ]
   },
@@ -6065,51 +5567,6 @@
     ]
   },
   {
-    "name": "microsoft_dhcp",
-    "title": "Microsoft DHCP",
-    "version": "1.3.1",
-    "release": "ga",
-    "description": "Collect logs from Microsoft DHCP with Elastic Agent.",
-    "type": "integration",
-    "download": "/epr/microsoft_dhcp/microsoft_dhcp-1.3.1.zip",
-    "path": "/package/microsoft_dhcp/1.3.1",
-    "icons": [
-      {
-        "src": "/img/logo.svg",
-        "path": "/package/microsoft_dhcp/1.3.1/img/logo.svg",
-        "title": "Microsoft logo",
-        "size": "32x32",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "microsoft_dhcp",
-        "title": "Microsoft DHCP",
-        "description": "Collect Microsoft DHCP logs."
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^7.14.0 || ^8.0.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/security-external-integrations"
-    },
-    "categories": [
-      "network"
-    ],
-    "signature_path": "/epr/microsoft_dhcp/microsoft_dhcp-1.3.1.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "microsoft_dhcp.log",
-        "title": "Microsoft DHCP Logs"
-      }
-    ]
-  },
-  {
     "name": "microsoft_defender_endpoint",
     "title": "Microsoft Defender for Endpoint",
     "version": "2.1.0",
@@ -6153,6 +5610,51 @@
         "type": "logs",
         "dataset": "microsoft_defender_endpoint.log",
         "title": "Microsoft Defender for Endpoint logs"
+      }
+    ]
+  },
+  {
+    "name": "microsoft_dhcp",
+    "title": "Microsoft DHCP",
+    "version": "1.3.1",
+    "release": "ga",
+    "description": "Collect logs from Microsoft DHCP with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/microsoft_dhcp/microsoft_dhcp-1.3.1.zip",
+    "path": "/package/microsoft_dhcp/1.3.1",
+    "icons": [
+      {
+        "src": "/img/logo.svg",
+        "path": "/package/microsoft_dhcp/1.3.1/img/logo.svg",
+        "title": "Microsoft logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "microsoft_dhcp",
+        "title": "Microsoft DHCP",
+        "description": "Collect Microsoft DHCP logs."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "network"
+    ],
+    "signature_path": "/epr/microsoft_dhcp/microsoft_dhcp-1.3.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "microsoft_dhcp.log",
+        "title": "Microsoft DHCP Logs"
       }
     ]
   },
@@ -6538,6 +6040,51 @@
         "type": "logs",
         "dataset": "netflow.log",
         "title": "NetFlow logs"
+      }
+    ]
+  },
+  {
+    "name": "netscout",
+    "title": "Arbor Peakflow SP Logs",
+    "version": "0.7.0",
+    "release": "experimental",
+    "description": "Collect and parse logs from Netscout Arbor Peakflow SP with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/netscout/netscout-0.7.0.zip",
+    "path": "/package/netscout/0.7.0",
+    "icons": [
+      {
+        "src": "/img/logo.svg",
+        "path": "/package/netscout/0.7.0/img/logo.svg",
+        "title": "Arbor Peakflow SP logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "sightline",
+        "title": "Arbor Peakflow SP",
+        "description": "Collect Arbor Peakflow SP logs from syslog or a file."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.1 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security"
+    ],
+    "signature_path": "/epr/netscout/netscout-0.7.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "netscout.sightline",
+        "title": "Arbor Peakflow SP logs"
       }
     ]
   },
@@ -7039,6 +6586,51 @@
     ]
   },
   {
+    "name": "panw",
+    "title": "Palo Alto Networks Logs",
+    "version": "1.5.3",
+    "release": "ga",
+    "description": "Collect PAN-OS firewall monitoring logs from Palo Alto Networks devices with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/panw/panw-1.5.3.zip",
+    "path": "/package/panw/1.5.3",
+    "icons": [
+      {
+        "src": "/img/logo-integrations-paloalto-networks.svg",
+        "path": "/package/panw/1.5.3/img/logo-integrations-paloalto-networks.svg",
+        "title": "Palo Alto Networks",
+        "size": "216x216",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "panw",
+        "title": "Palo Alto Networks PAN-OS firewall logs",
+        "description": "Collect logs from Palo Alto Networks PAN-OS firewall"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security"
+    ],
+    "signature_path": "/epr/panw/panw-1.5.3.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "panw.panos",
+        "title": "Palo Alto Networks PAN-OS firewall logs"
+      }
+    ]
+  },
+  {
     "name": "panw_cortex_xdr",
     "title": "Palo Alto Cortex XDR Logs",
     "version": "1.1.1",
@@ -7084,47 +6676,48 @@
     ]
   },
   {
-    "name": "panw",
-    "title": "Palo Alto Networks Logs",
-    "version": "1.5.3",
-    "release": "ga",
-    "description": "Collect PAN-OS firewall monitoring logs from Palo Alto Networks devices with Elastic Agent.",
+    "name": "pfsense",
+    "title": "pfSense Logs",
+    "version": "0.3.1",
+    "release": "experimental",
+    "description": "Collect and parse logs from pfSense devices with Elastic Agent.",
     "type": "integration",
-    "download": "/epr/panw/panw-1.5.3.zip",
-    "path": "/package/panw/1.5.3",
+    "download": "/epr/pfsense/pfsense-0.3.1.zip",
+    "path": "/package/pfsense/0.3.1",
     "icons": [
       {
-        "src": "/img/logo-integrations-paloalto-networks.svg",
-        "path": "/package/panw/1.5.3/img/logo-integrations-paloalto-networks.svg",
-        "title": "Palo Alto Networks",
-        "size": "216x216",
+        "src": "/img/pfsense.svg",
+        "path": "/package/pfsense/0.3.1/img/pfsense.svg",
+        "title": "pfsense",
+        "size": "512x143",
         "type": "image/svg+xml"
       }
     ],
     "policy_templates": [
       {
-        "name": "panw",
-        "title": "Palo Alto Networks PAN-OS firewall logs",
-        "description": "Collect logs from Palo Alto Networks PAN-OS firewall"
+        "name": "pfsense",
+        "title": "pfSense logs",
+        "description": "Collect logs from pfSense systems"
       }
     ],
     "conditions": {
       "kibana": {
-        "version": "^7.16.0 || ^8.0.0"
+        "version": "^7.15.0 || ^8.0.0"
       }
     },
     "owner": {
       "github": "elastic/security-external-integrations"
     },
     "categories": [
+      "network",
       "security"
     ],
-    "signature_path": "/epr/panw/panw-1.5.3.zip.sig",
+    "signature_path": "/epr/pfsense/pfsense-0.3.1.zip.sig",
     "data_streams": [
       {
         "type": "logs",
-        "dataset": "panw.panos",
-        "title": "Palo Alto Networks PAN-OS firewall logs"
+        "dataset": "pfsense.log",
+        "title": "pfSense log logs"
       }
     ]
   },
@@ -7194,34 +6787,35 @@
     ]
   },
   {
-    "name": "security_detection_engine",
-    "title": "Prebuilt Security Detection Rules",
-    "version": "0.16.2",
-    "release": "ga",
-    "description": "Prebuilt detection rules for Elastic Security",
+    "name": "problemchild",
+    "title": "LotL Attack Detection",
+    "version": "0.0.2",
+    "release": "experimental",
+    "description": "The ProblemChild framework is used to detect living off the land activity. Requires a Platinum subscription.",
     "type": "integration",
-    "download": "/epr/security_detection_engine/security_detection_engine-0.16.2.zip",
-    "path": "/package/security_detection_engine/0.16.2",
+    "download": "/epr/problemchild/problemchild-0.0.2.zip",
+    "path": "/package/problemchild/0.0.2",
     "icons": [
       {
-        "src": "/img/security-logo-color-64px.svg",
-        "path": "/package/security_detection_engine/0.16.2/img/security-logo-color-64px.svg",
-        "size": "16x16",
+        "src": "/img/icon-machine-learning.svg",
+        "path": "/package/problemchild/0.0.2/img/icon-machine-learning.svg",
+        "title": "Sample logo",
+        "size": "32x32",
         "type": "image/svg+xml"
       }
     ],
     "conditions": {
       "kibana": {
-        "version": "^7.16.0"
+        "version": "^8.0.0"
       }
     },
     "owner": {
-      "github": "elastic/protections"
+      "github": "elastic/ml-ui"
     },
     "categories": [
       "security"
     ],
-    "signature_path": "/epr/security_detection_engine/security_detection_engine-0.16.2.zip.sig"
+    "signature_path": "/epr/problemchild/problemchild-0.0.2.zip.sig"
   },
   {
     "name": "prometheus",
@@ -7526,51 +7120,6 @@
     ]
   },
   {
-    "name": "ti_recordedfuture",
-    "title": "Recorded Future",
-    "version": "0.1.2",
-    "release": "beta",
-    "description": "Collect threat intelligence from Recorded Future with Elastic Agent.",
-    "type": "integration",
-    "download": "/epr/ti_recordedfuture/ti_recordedfuture-0.1.2.zip",
-    "path": "/package/ti_recordedfuture/0.1.2",
-    "icons": [
-      {
-        "src": "/img/logo.svg",
-        "path": "/package/ti_recordedfuture/0.1.2/img/logo.svg",
-        "title": "Recorded Future",
-        "size": "216x216",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "ti_recordedfuture",
-        "title": "Recorded Future",
-        "description": "Collect threat intelligence from Recorded Future."
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^8.0.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/security-external-integrations"
-    },
-    "categories": [
-      "security"
-    ],
-    "signature_path": "/epr/ti_recordedfuture/ti_recordedfuture-0.1.2.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "ti_recordedfuture.threat",
-        "title": "Recorded Future"
-      }
-    ]
-  },
-  {
     "name": "redis",
     "title": "Redis",
     "version": "1.2.0",
@@ -7637,114 +7186,79 @@
     ]
   },
   {
-    "name": "sql",
-    "title": "SQL Input",
-    "version": "0.5.0",
-    "release": "beta",
-    "description": "Collects Metrics by Quering on SQL Databases",
-    "type": "input",
-    "download": "/epr/sql/sql-0.5.0.zip",
-    "path": "/package/sql/0.5.0",
-    "icons": [
-      {
-        "src": "/img/sql-server-icon.svg",
-        "path": "/package/sql/0.5.0/img/sql-server-icon.svg",
-        "title": "SQL logo",
-        "size": "32x32",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "sql",
-        "title": "SQL Metrics",
-        "description": "Collects Metrics by Quering on SQL Databases",
-        "deprecated": {
-          "since": "0.5.0",
-          "description": "This policy is deprecated"
-        }
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^8.13.0"
-      },
-      "elastic": {
-        "subscription": "basic"
-      }
-    },
-    "owner": {
-      "github": "elastic/obs-infraobs-integrations"
-    },
-    "categories": [
-      "custom"
-    ],
-    "signature_path": "/epr/sql/sql-0.5.0.zip.sig",
-    "deprecated": {
-      "since": "0.5.0",
-      "description": "This package is deprecated"
-    }
-  },
-  {
-    "name": "stan",
-    "title": "STAN",
-    "version": "1.2.0",
+    "name": "santa",
+    "title": "Google Santa Logs",
+    "version": "2.0.1",
     "release": "ga",
-    "description": "Collect logs and metrics from STAN servers with Elastic Agent.",
+    "description": "Collect and parse logs from Google Santa instances with Elastic Agent.",
     "type": "integration",
-    "download": "/epr/stan/stan-1.2.0.zip",
-    "path": "/package/stan/1.2.0",
+    "download": "/epr/santa/santa-2.0.1.zip",
+    "path": "/package/santa/2.0.1",
     "icons": [
       {
-        "src": "/img/stan.svg",
-        "path": "/package/stan/1.2.0/img/stan.svg",
-        "title": "STAN Logo",
-        "size": "32x32",
+        "src": "/img/icon.svg",
+        "path": "/package/santa/2.0.1/img/icon.svg",
+        "title": "Google Santa",
         "type": "image/svg+xml"
       }
     ],
     "policy_templates": [
       {
-        "name": "stan",
-        "title": "STAN Logs and Metrics",
-        "description": "Collect logs and metrics from STAN instances"
+        "name": "santa",
+        "title": "Google Santa logs",
+        "description": "Collect logs from Google Santa instances"
       }
     ],
     "conditions": {
       "kibana": {
-        "version": "^7.14.0 || ^8.0.0"
+        "version": "^7.17.0 || ^8.0.0"
       }
     },
     "owner": {
-      "github": "elastic/integrations"
+      "github": "elastic/security-external-integrations"
     },
     "categories": [
-      "message_queue",
-      "kubernetes"
+      "security",
+      "os_system"
     ],
-    "signature_path": "/epr/stan/stan-1.2.0.zip.sig",
+    "signature_path": "/epr/santa/santa-2.0.1.zip.sig",
     "data_streams": [
       {
-        "type": "metrics",
-        "dataset": "stan.channels",
-        "title": "Stan channels metrics"
-      },
-      {
         "type": "logs",
-        "dataset": "stan.log",
-        "title": "STAN logs"
-      },
-      {
-        "type": "metrics",
-        "dataset": "stan.stats",
-        "title": "Stan stats metrics"
-      },
-      {
-        "type": "metrics",
-        "dataset": "stan.subscriptions",
-        "title": "Stan subscriptions metrics"
+        "dataset": "santa.log",
+        "title": "Google Santa log logs"
       }
     ]
+  },
+  {
+    "name": "security_detection_engine",
+    "title": "Prebuilt Security Detection Rules",
+    "version": "0.16.2",
+    "release": "ga",
+    "description": "Prebuilt detection rules for Elastic Security",
+    "type": "integration",
+    "download": "/epr/security_detection_engine/security_detection_engine-0.16.2.zip",
+    "path": "/package/security_detection_engine/0.16.2",
+    "icons": [
+      {
+        "src": "/img/security-logo-color-64px.svg",
+        "path": "/package/security_detection_engine/0.16.2/img/security-logo-color-64px.svg",
+        "size": "16x16",
+        "type": "image/svg+xml"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/protections"
+    },
+    "categories": [
+      "security"
+    ],
+    "signature_path": "/epr/security_detection_engine/security_detection_engine-0.16.2.zip.sig"
   },
   {
     "name": "snort",
@@ -7939,6 +7453,55 @@
     ]
   },
   {
+    "name": "sql",
+    "title": "SQL Input",
+    "version": "0.5.0",
+    "release": "beta",
+    "description": "Collects Metrics by Quering on SQL Databases",
+    "type": "input",
+    "download": "/epr/sql/sql-0.5.0.zip",
+    "path": "/package/sql/0.5.0",
+    "icons": [
+      {
+        "src": "/img/sql-server-icon.svg",
+        "path": "/package/sql/0.5.0/img/sql-server-icon.svg",
+        "title": "SQL logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "sql",
+        "title": "SQL Metrics",
+        "description": "Collects Metrics by Quering on SQL Databases",
+        "deprecated": {
+          "since": "0.5.0",
+          "description": "This policy is deprecated"
+        }
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.13.0"
+      },
+      "elastic": {
+        "subscription": "basic"
+      }
+    },
+    "owner": {
+      "github": "elastic/obs-infraobs-integrations"
+    },
+    "categories": [
+      "custom"
+    ],
+    "signature_path": "/epr/sql/sql-0.5.0.zip.sig",
+    "deprecated": {
+      "since": "0.5.0",
+      "description": "This package is deprecated"
+    }
+  },
+  {
     "name": "squid",
     "title": "Squid Logs",
     "version": "0.7.0",
@@ -7971,6 +7534,67 @@
         "type": "logs",
         "dataset": "squid.log",
         "title": "Squid logs"
+      }
+    ]
+  },
+  {
+    "name": "stan",
+    "title": "STAN",
+    "version": "1.2.0",
+    "release": "ga",
+    "description": "Collect logs and metrics from STAN servers with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/stan/stan-1.2.0.zip",
+    "path": "/package/stan/1.2.0",
+    "icons": [
+      {
+        "src": "/img/stan.svg",
+        "path": "/package/stan/1.2.0/img/stan.svg",
+        "title": "STAN Logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "stan",
+        "title": "STAN Logs and Metrics",
+        "description": "Collect logs and metrics from STAN instances"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "message_queue",
+      "kubernetes"
+    ],
+    "signature_path": "/epr/stan/stan-1.2.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "metrics",
+        "dataset": "stan.channels",
+        "title": "Stan channels metrics"
+      },
+      {
+        "type": "logs",
+        "dataset": "stan.log",
+        "title": "STAN logs"
+      },
+      {
+        "type": "metrics",
+        "dataset": "stan.stats",
+        "title": "Stan stats metrics"
+      },
+      {
+        "type": "metrics",
+        "dataset": "stan.subscriptions",
+        "title": "Stan subscriptions metrics"
       }
     ]
   },
@@ -8108,6 +7732,77 @@
     ]
   },
   {
+    "name": "synthetics",
+    "title": "Elastic Synthetics",
+    "version": "0.9.2",
+    "release": "beta",
+    "description": "Monitor the availability of your services with Elastic Synthetics.",
+    "type": "integration",
+    "download": "/epr/synthetics/synthetics-0.9.2.zip",
+    "path": "/package/synthetics/0.9.2",
+    "icons": [
+      {
+        "src": "/img/uptime-logo-color-64px.svg",
+        "path": "/package/synthetics/0.9.2/img/uptime-logo-color-64px.svg",
+        "size": "16x16",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "synthetics",
+        "title": "Elastic Synthetics",
+        "description": "Perform synthetic health checks on network endpoints."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.1.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/uptime"
+    },
+    "categories": [
+      "elastic_stack",
+      "monitoring",
+      "web"
+    ],
+    "signature_path": "/epr/synthetics/synthetics-0.9.2.zip.sig",
+    "data_streams": [
+      {
+        "type": "synthetics",
+        "dataset": "browser",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "browser.network",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "browser.screenshot",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "http",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "icmp",
+        "title": "synthetic monitor check"
+      },
+      {
+        "type": "synthetics",
+        "dataset": "tcp",
+        "title": "synthetic monitor check"
+      }
+    ]
+  },
+  {
     "name": "system",
     "title": "System",
     "version": "1.6.4",
@@ -8234,6 +7929,49 @@
     ]
   },
   {
+    "name": "tcp",
+    "title": "Custom TCP Logs",
+    "version": "1.0.0",
+    "release": "ga",
+    "description": "Collect raw TCP data from listening TCP port with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/tcp/tcp-1.0.0.zip",
+    "path": "/package/tcp/1.0.0",
+    "icons": [
+      {
+        "src": "/img/icon.svg",
+        "path": "/package/tcp/1.0.0/img/icon.svg",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "tcp",
+        "title": "Custom TCP Logs",
+        "description": "Collect raw TCP data from listening TCP port with Elastic Agent."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "custom"
+    ],
+    "signature_path": "/epr/tcp/tcp-1.0.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "tcp.generic",
+        "title": "Custom TCP Logs"
+      }
+    ]
+  },
+  {
     "name": "tenable_sc",
     "title": "Tenable.sc",
     "version": "1.1.1",
@@ -8289,6 +8027,292 @@
     ]
   },
   {
+    "name": "ti_abusech",
+    "title": "AbuseCH",
+    "version": "1.2.3",
+    "release": "ga",
+    "description": "Collect threat intelligence from AbuseCH API with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/ti_abusech/ti_abusech-1.2.3.zip",
+    "path": "/package/ti_abusech/1.2.3",
+    "icons": [
+      {
+        "src": "/img/abusech2.svg",
+        "path": "/package/ti_abusech/1.2.3/img/abusech2.svg",
+        "title": "AbuseCH",
+        "size": "512x512",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "ti_abusech",
+        "title": "AbuseCH API",
+        "description": "Collect threat intelligence from the AbuseCH API"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security"
+    ],
+    "signature_path": "/epr/ti_abusech/ti_abusech-1.2.3.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "ti_abusech.malware",
+        "title": "AbuseCH Malware logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "ti_abusech.malwarebazaar",
+        "title": "AbuseCH MalwareBazaar logs"
+      },
+      {
+        "type": "logs",
+        "dataset": "ti_abusech.url",
+        "title": "AbuseCH URL logs"
+      }
+    ]
+  },
+  {
+    "name": "ti_anomali",
+    "title": "Anomali",
+    "version": "1.2.3",
+    "release": "ga",
+    "description": "Collect threat intelligence from Anomali APIs with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/ti_anomali/ti_anomali-1.2.3.zip",
+    "path": "/package/ti_anomali/1.2.3",
+    "icons": [
+      {
+        "src": "/img/anomali.svg",
+        "path": "/package/ti_anomali/1.2.3/img/anomali.svg",
+        "title": "Anomali",
+        "size": "216x216",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "ti_anomali",
+        "title": "Anomali",
+        "description": "Collect threat intelligence from the Anomali Limo API and Anomali Threatstream."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security"
+    ],
+    "signature_path": "/epr/ti_anomali/ti_anomali-1.2.3.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "ti_anomali.limo",
+        "title": "Anomali Limo"
+      },
+      {
+        "type": "logs",
+        "dataset": "ti_anomali.threatstream",
+        "title": "Anomali Threatstream"
+      }
+    ]
+  },
+  {
+    "name": "ti_cybersixgill",
+    "title": "Cybersixgill",
+    "version": "1.3.2",
+    "release": "ga",
+    "description": "This Elastic integration collects threat intelligence from Cybersixgill",
+    "type": "integration",
+    "download": "/epr/ti_cybersixgill/ti_cybersixgill-1.3.2.zip",
+    "path": "/package/ti_cybersixgill/1.3.2",
+    "icons": [
+      {
+        "src": "/img/cybersixgill.svg",
+        "path": "/package/ti_cybersixgill/1.3.2/img/cybersixgill.svg",
+        "title": "Cybersixgill",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "cybersixgill",
+        "title": "Cybersixgill Threat Intel",
+        "description": "Collect Threat Intel from Cybersixgill"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security",
+      "productivity"
+    ],
+    "signature_path": "/epr/ti_cybersixgill/ti_cybersixgill-1.3.2.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "ti_cybersixgill.threat",
+        "title": "Cybersixgill Darkfeed Logs"
+      }
+    ]
+  },
+  {
+    "name": "ti_misp",
+    "title": "MISP",
+    "version": "1.2.2",
+    "release": "ga",
+    "description": "This Elastic integration collects events from MISP",
+    "type": "integration",
+    "download": "/epr/ti_misp/ti_misp-1.2.2.zip",
+    "path": "/package/ti_misp/1.2.2",
+    "icons": [
+      {
+        "src": "/img/misp.svg",
+        "path": "/package/ti_misp/1.2.2/img/misp.svg",
+        "title": "MISP",
+        "size": "216x216",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "ti_misp",
+        "title": "MISP",
+        "description": "Collect threat intelligence from the MISP API."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security"
+    ],
+    "signature_path": "/epr/ti_misp/ti_misp-1.2.2.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "ti_misp.threat",
+        "title": "MISP"
+      }
+    ]
+  },
+  {
+    "name": "ti_otx",
+    "title": "AlienVault OTX",
+    "version": "1.2.2",
+    "release": "ga",
+    "description": "Collect threat intelligence from AlienVault OTX with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/ti_otx/ti_otx-1.2.2.zip",
+    "path": "/package/ti_otx/1.2.2",
+    "icons": [
+      {
+        "src": "/img/otx.svg",
+        "path": "/package/ti_otx/1.2.2/img/otx.svg",
+        "title": "Alienvault OTX",
+        "size": "216x216",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "ti_otx",
+        "title": "Alienvault OTX",
+        "description": "Collect threat intelligence from the Alienvault OTX"
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security"
+    ],
+    "signature_path": "/epr/ti_otx/ti_otx-1.2.2.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "ti_otx.threat",
+        "title": "Alienvault OTX logs"
+      }
+    ]
+  },
+  {
+    "name": "ti_recordedfuture",
+    "title": "Recorded Future",
+    "version": "0.1.2",
+    "release": "beta",
+    "description": "Collect threat intelligence from Recorded Future with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/ti_recordedfuture/ti_recordedfuture-0.1.2.zip",
+    "path": "/package/ti_recordedfuture/0.1.2",
+    "icons": [
+      {
+        "src": "/img/logo.svg",
+        "path": "/package/ti_recordedfuture/0.1.2/img/logo.svg",
+        "title": "Recorded Future",
+        "size": "216x216",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "ti_recordedfuture",
+        "title": "Recorded Future",
+        "description": "Collect threat intelligence from Recorded Future."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "security"
+    ],
+    "signature_path": "/epr/ti_recordedfuture/ti_recordedfuture-0.1.2.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "ti_recordedfuture.threat",
+        "title": "Recorded Future"
+      }
+    ]
+  },
+  {
     "name": "ti_threatq",
     "title": "ThreatQuotient",
     "version": "1.2.2",
@@ -8330,6 +8354,52 @@
         "type": "logs",
         "dataset": "ti_threatq.threat",
         "title": "ThreatQ"
+      }
+    ]
+  },
+  {
+    "name": "tomcat",
+    "title": "Apache Tomcat",
+    "version": "1.3.1",
+    "release": "ga",
+    "description": "Collect and parse logs from Apache Tomcat servers with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/tomcat/tomcat-1.3.1.zip",
+    "path": "/package/tomcat/1.3.1",
+    "icons": [
+      {
+        "src": "/img/logo.svg",
+        "path": "/package/tomcat/1.3.1/img/logo.svg",
+        "title": "Apache Tomcat logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "log",
+        "title": "Apache Tomcat",
+        "description": "Collect Apache Tomcat logs from syslog or a file."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.1 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "web",
+      "security"
+    ],
+    "signature_path": "/epr/tomcat/tomcat-1.3.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "tomcat.log",
+        "title": "Apache Tomcat logs"
       }
     ]
   },
@@ -8385,112 +8455,45 @@
     ]
   },
   {
-    "name": "carbon_black_cloud",
-    "title": "VMware Carbon Black Cloud",
-    "version": "1.0.2",
+    "name": "udp",
+    "title": "Custom UDP Logs",
+    "version": "1.0.1",
     "release": "ga",
-    "description": "Collect logs from VMWare Carbon Black Cloud with Elastic Agent.",
+    "description": "Collect raw UDP data from listening UDP port with Elastic Agent.",
     "type": "integration",
-    "download": "/epr/carbon_black_cloud/carbon_black_cloud-1.0.2.zip",
-    "path": "/package/carbon_black_cloud/1.0.2",
+    "download": "/epr/udp/udp-1.0.1.zip",
+    "path": "/package/udp/1.0.1",
     "icons": [
       {
-        "src": "/img/carbon_black_cloud-logo.svg",
-        "path": "/package/carbon_black_cloud/1.0.2/img/carbon_black_cloud-logo.svg",
-        "title": "Carbon Black Cloud logo",
-        "size": "32x32",
+        "src": "/img/icon.svg",
+        "path": "/package/udp/1.0.1/img/icon.svg",
         "type": "image/svg+xml"
       }
     ],
     "policy_templates": [
       {
-        "name": "carbon_black_cloud",
-        "title": "Carbon Black Cloud",
-        "description": "Collect Logs from Carbon Black Cloud"
+        "name": "udp",
+        "title": "Custom UDP Logs",
+        "description": "Collect raw UDP data from listening UDP port with Elastic Agent."
       }
     ],
     "conditions": {
       "kibana": {
-        "version": "^7.17.0 || ^8.0.0"
+        "version": "^7.16.0 || ^8.0.0"
       }
     },
     "owner": {
       "github": "elastic/security-external-integrations"
     },
     "categories": [
-      "security"
+      "custom"
     ],
-    "signature_path": "/epr/carbon_black_cloud/carbon_black_cloud-1.0.2.zip.sig",
+    "signature_path": "/epr/udp/udp-1.0.1.zip.sig",
     "data_streams": [
       {
         "type": "logs",
-        "dataset": "carbon_black_cloud.alert",
-        "title": "Alert"
-      },
-      {
-        "type": "logs",
-        "dataset": "carbon_black_cloud.asset_vulnerability_summary",
-        "title": "Asset Vulnerability Summary"
-      },
-      {
-        "type": "logs",
-        "dataset": "carbon_black_cloud.audit",
-        "title": "Audit"
-      },
-      {
-        "type": "logs",
-        "dataset": "carbon_black_cloud.endpoint_event",
-        "title": "Endpoint Event"
-      },
-      {
-        "type": "logs",
-        "dataset": "carbon_black_cloud.watchlist_hit",
-        "title": "Watchlist Hit"
-      }
-    ]
-  },
-  {
-    "name": "carbonblack_edr",
-    "title": "VMware Carbon Black EDR",
-    "version": "1.2.0",
-    "release": "ga",
-    "description": "Collect logs from VMware Carbon Black EDR with Elastic Agent.",
-    "type": "integration",
-    "download": "/epr/carbonblack_edr/carbonblack_edr-1.2.0.zip",
-    "path": "/package/carbonblack_edr/1.2.0",
-    "icons": [
-      {
-        "src": "/img/carbon-black-logo.svg",
-        "path": "/package/carbonblack_edr/1.2.0/img/carbon-black-logo.svg",
-        "title": "VMWare Carbon Black",
-        "size": "32x32",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "log",
-        "title": "Carbon Black EDR logs",
-        "description": "Collect logs from Carbon Black EDR"
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^7.14.0 || ^8.0.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/security-external-integrations"
-    },
-    "categories": [
-      "security"
-    ],
-    "signature_path": "/epr/carbonblack_edr/carbonblack_edr-1.2.0.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "carbonblack_edr.log",
-        "title": "Carbon Black EDR logs"
+        "dataset": "udp.generic",
+        "title": "Custom UDP Logs"
       }
     ]
   },
@@ -8623,6 +8626,49 @@
         "type": "logs",
         "dataset": "windows.sysmon_operational",
         "title": "Windows Sysmon/Operational events"
+      }
+    ]
+  },
+  {
+    "name": "winlog",
+    "title": "Custom Windows Event Logs",
+    "version": "1.4.0",
+    "release": "ga",
+    "description": "Collect and parse logs from any Windows event log channel with Elastic Agent.",
+    "type": "integration",
+    "download": "/epr/winlog/winlog-1.4.0.zip",
+    "path": "/package/winlog/1.4.0",
+    "icons": [
+      {
+        "src": "/img/logo_windows.svg",
+        "path": "/package/winlog/1.4.0/img/logo_windows.svg",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "winlogs",
+        "title": "Custom Windows event logs",
+        "description": "Collect your custom Windows event logs."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.16.0 || ^8.0.0"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "custom"
+    ],
+    "signature_path": "/epr/winlog/winlog-1.4.0.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "winlog.winlog",
+        "title": "Custom Windows Event Log Dataset"
       }
     ]
   },
@@ -9012,6 +9058,52 @@
     ]
   },
   {
+    "name": "zscaler",
+    "title": "Zscaler NSS Logs",
+    "version": "0.5.1",
+    "release": "experimental",
+    "description": "Deprecated. Use the Zscaler ZIA integration instead.",
+    "type": "integration",
+    "download": "/epr/zscaler/zscaler-0.5.1.zip",
+    "path": "/package/zscaler/0.5.1",
+    "icons": [
+      {
+        "src": "/img/logo.svg",
+        "path": "/package/zscaler/0.5.1/img/logo.svg",
+        "title": "Zscaler NSS logo",
+        "size": "32x32",
+        "type": "image/svg+xml"
+      }
+    ],
+    "policy_templates": [
+      {
+        "name": "zia",
+        "title": "Zscaler NSS",
+        "description": "Collect Zscaler NSS logs from syslog or a file."
+      }
+    ],
+    "conditions": {
+      "kibana": {
+        "version": "^7.14.1"
+      }
+    },
+    "owner": {
+      "github": "elastic/security-external-integrations"
+    },
+    "categories": [
+      "network",
+      "security"
+    ],
+    "signature_path": "/epr/zscaler/zscaler-0.5.1.zip.sig",
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "zscaler.zia",
+        "title": "Zscaler NSS logs"
+      }
+    ]
+  },
+  {
     "name": "zscaler_zia",
     "title": "Zscaler Internet Access",
     "version": "0.1.3",
@@ -9077,52 +9169,6 @@
     ]
   },
   {
-    "name": "zscaler",
-    "title": "Zscaler NSS Logs",
-    "version": "0.5.1",
-    "release": "experimental",
-    "description": "Deprecated. Use the Zscaler ZIA integration instead.",
-    "type": "integration",
-    "download": "/epr/zscaler/zscaler-0.5.1.zip",
-    "path": "/package/zscaler/0.5.1",
-    "icons": [
-      {
-        "src": "/img/logo.svg",
-        "path": "/package/zscaler/0.5.1/img/logo.svg",
-        "title": "Zscaler NSS logo",
-        "size": "32x32",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "zia",
-        "title": "Zscaler NSS",
-        "description": "Collect Zscaler NSS logs from syslog or a file."
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^7.14.1"
-      }
-    },
-    "owner": {
-      "github": "elastic/security-external-integrations"
-    },
-    "categories": [
-      "network",
-      "security"
-    ],
-    "signature_path": "/epr/zscaler/zscaler-0.5.1.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "zscaler.zia",
-        "title": "Zscaler NSS logs"
-      }
-    ]
-  },
-  {
     "name": "zscaler_zpa",
     "title": "Zscaler Private Access",
     "version": "0.1.2",
@@ -9184,52 +9230,6 @@
         "type": "logs",
         "dataset": "zscaler_zpa.user_status",
         "title": "User Status Logs"
-      }
-    ]
-  },
-  {
-    "name": "pfsense",
-    "title": "pfSense Logs",
-    "version": "0.3.1",
-    "release": "experimental",
-    "description": "Collect and parse logs from pfSense devices with Elastic Agent.",
-    "type": "integration",
-    "download": "/epr/pfsense/pfsense-0.3.1.zip",
-    "path": "/package/pfsense/0.3.1",
-    "icons": [
-      {
-        "src": "/img/pfsense.svg",
-        "path": "/package/pfsense/0.3.1/img/pfsense.svg",
-        "title": "pfsense",
-        "size": "512x143",
-        "type": "image/svg+xml"
-      }
-    ],
-    "policy_templates": [
-      {
-        "name": "pfsense",
-        "title": "pfSense logs",
-        "description": "Collect logs from pfSense systems"
-      }
-    ],
-    "conditions": {
-      "kibana": {
-        "version": "^7.15.0 || ^8.0.0"
-      }
-    },
-    "owner": {
-      "github": "elastic/security-external-integrations"
-    },
-    "categories": [
-      "network",
-      "security"
-    ],
-    "signature_path": "/epr/pfsense/pfsense-0.3.1.zip.sig",
-    "data_streams": [
-      {
-        "type": "logs",
-        "dataset": "pfsense.log",
-        "title": "pfSense log logs"
       }
     ]
   }
