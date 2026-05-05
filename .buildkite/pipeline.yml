@@ -112,6 +112,32 @@ steps:
       - elastic/vault-docker-login#v0.6.0:
           secret_path: 'kv/ci-shared/platform-ingest/elastic_docker_registry'
 
+  - trigger: unified-release-copy-elastic-images-to-dockerhub
+    label: ":docker: Copy release images to Docker Hub"
+    key: "copy-release-images-to-dockerhub"
+    async: true
+    build:
+      env:
+        IMAGES_NAMES: "package-registry/package-registry"
+        IMAGES_TAG: "${BUILDKITE_TAG}"
+    depends_on:
+      - step: "publish"
+        allow_failure: false
+    if: build.tag =~ /^v\d+\.\d+\.\d+$$/
+
+  - trigger: unified-release-copy-elastic-images-to-dockerhub
+    label: ":docker: Copy release UBI images to Docker Hub"
+    key: "copy-release-ubi-images-to-dockerhub"
+    async: true
+    build:
+      env:
+        IMAGES_NAMES: "package-registry/package-registry"
+        IMAGES_TAG: "${BUILDKITE_TAG}-ubi"
+    depends_on:
+      - step: "publish"
+        allow_failure: false
+    if: build.tag =~ /^v\d+\.\d+\.\d+$$/
+
   - trigger: "package-storage-infra-update-package-registry"
     label: ":esbuild: Downstream - Update package registry"
     key: "downstream-update-package-registry"
