@@ -16,6 +16,15 @@ steps:
     key: lint
     command:
       - ".buildkite/scripts/lint.sh"
+    timeout_in_minutes: 15
+    retry:
+      automatic:
+        - exit_status: -1
+          limit: 2
+        - exit_status: 143
+          limit: 2
+        - exit_status: 255
+          limit: 2
     agents:
       image: "${LINUX_GOLANG_AGENT_IMAGE}"
       cpu: "8"
@@ -25,6 +34,15 @@ steps:
     key: build
     command:
       - ".buildkite/scripts/build.sh"
+    timeout_in_minutes: 15
+    retry:
+      automatic:
+        - exit_status: -1
+          limit: 2
+        - exit_status: 143
+          limit: 2
+        - exit_status: 255
+          limit: 2
     agents:
       image: "${LINUX_GOLANG_AGENT_IMAGE}"
       cpu: "8"
@@ -34,6 +52,15 @@ steps:
     key: smoke-test-fake-gcs-server
     command:
       - ".buildkite/scripts/test-epr-gcs.sh"
+    timeout_in_minutes: 30
+    retry:
+      automatic:
+        - exit_status: -1
+          limit: 2
+        - exit_status: 143
+          limit: 2
+        - exit_status: 255
+          limit: 2
     agents:
       provider: "gcp"
 
@@ -44,6 +71,16 @@ steps:
         key: test-linux
         command:
           - ".buildkite/scripts/run-tests.sh"
+        cancel_on_build_failing: true
+        timeout_in_minutes: 30
+        retry:
+          automatic:
+            - exit_status: -1
+              limit: 2
+            - exit_status: 143
+              limit: 2
+            - exit_status: 255
+              limit: 2
         agents:
           image: "${LINUX_GOLANG_AGENT_IMAGE}"
           cpu: "8"
@@ -55,6 +92,16 @@ steps:
         key: test-win
         command:
           - ".buildkite/scripts/run-tests.ps1"
+        cancel_on_build_failing: true
+        timeout_in_minutes: 30
+        retry:
+          automatic:
+            - exit_status: -1
+              limit: 2
+            - exit_status: 143
+              limit: 2
+            - exit_status: 255
+              limit: 2
         agents:
           provider: "gcp"
           image: "${WINDOWS_AGENT_IMAGE}"
@@ -65,6 +112,16 @@ steps:
         key: test-macos-arm
         command:
           - ".buildkite/scripts/run-tests.sh"
+        cancel_on_build_failing: true
+        timeout_in_minutes: 30
+        retry:
+          automatic:
+            - exit_status: -1
+              limit: 2
+            - exit_status: 143
+              limit: 2
+            - exit_status: 255
+              limit: 2
         agents:
           provider: "orka"
           imagePrefix: "${MACOS_ARM_AGENT_IMAGE}"
@@ -93,6 +150,18 @@ steps:
   - label: ":docker: Publish docker image"
     key: "publish"
     command: ".buildkite/scripts/publish.sh"
+    timeout_in_minutes: 30
+    concurrency: 1
+    concurrency_group: "package-registry/publish-${BUILDKITE_BRANCH}"
+    concurrency_method: "ordered"
+    retry:
+      automatic:
+        - exit_status: -1
+          limit: 2
+        - exit_status: 143
+          limit: 2
+        - exit_status: 255
+          limit: 2
     agents:
       provider: "gcp"
     depends_on:
@@ -115,7 +184,7 @@ steps:
   - trigger: unified-release-copy-elastic-images-to-dockerhub
     label: ":docker: Copy release images to Docker Hub"
     key: "copy-release-images-to-dockerhub"
-    async: true
+    async: false
     build:
       env:
         IMAGES_NAMES: "package-registry/package-registry"
@@ -123,12 +192,13 @@ steps:
     depends_on:
       - step: "publish"
         allow_failure: false
+    # Release-only: gates dockerhub copy + downstream update, prerelease tags intentionally excluded.
     if: build.tag =~ /^v\d+\.\d+\.\d+$$/
 
   - trigger: unified-release-copy-elastic-images-to-dockerhub
     label: ":docker: Copy release UBI images to Docker Hub"
     key: "copy-release-ubi-images-to-dockerhub"
-    async: true
+    async: false
     build:
       env:
         IMAGES_NAMES: "package-registry/package-registry"
