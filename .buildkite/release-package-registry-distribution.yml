@@ -52,8 +52,7 @@ steps:
   - label: ":docker: Copy release images to Docker Hub"
     key: copy-release-images-to-dockerhub
     if: "build.source == 'ui' || build.env('BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG') == 'fleet-server'"
-    command:
-      - |-
+    command: |
         set -euo pipefail
 
         DOCKER_TAG="$(buildkite-agent meta-data get DOCKER_TAG)"
