@@ -12,6 +12,11 @@ env:
   MACOS_ARM_AGENT_IMAGE: "generic-13-ventura-arm"
 
 steps:
+  - label: "Dummy test"
+    key: dummy-test
+    command: |
+      set -euo pipefail
+      echo "Test message"
   - label: ":golangci-lint: Checks formatting / linting"
     key: lint
     command:
