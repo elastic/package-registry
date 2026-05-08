@@ -41,8 +41,8 @@ type Packages []*Package
 func (p Packages) Len() int      { return len(p) }
 func (p Packages) Swap(i, j int) { p[i], p[j] = p[j], p[i] }
 func (p Packages) Less(i, j int) bool {
-	if p[i].Title != nil && p[j].Title != nil && *p[i].Title != *p[j].Title {
-		return *p[i].Title < *p[j].Title
+	if p[i].Name != p[j].Name {
+		return p[i].Name < p[j].Name
 	}
 	iSemVer, iErr := semver.NewVersion(p[i].Version)
 	jSemVer, jErr := semver.NewVersion(p[j].Version)

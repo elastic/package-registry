@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
+* Sort packages by name instead of title for a more stable and deterministic sort order. [#1689](https://github.com/elastic/package-registry/pull/1689)
+
 ### Added
 
 ### Deprecated

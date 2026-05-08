@@ -1310,21 +1310,19 @@ func assertFilterPackagesResult(t *testing.T, expected []filterTestPackage, foun
 func strPtr(s string) *string { return &s }
 
 func TestPackagesSort(t *testing.T) {
-	t.Run("sorts by title alphabetically", func(t *testing.T) {
+	t.Run("sorts by name alphabetically", func(t *testing.T) {
 		pkgs := Packages{
-			{BasePackage: BasePackage{Name: "c_pkg", Title: strPtr("Zebra Integration"), Version: "1.0.0"}},
-			{BasePackage: BasePackage{Name: "a_pkg", Title: strPtr("Apple Integration"), Version: "1.0.0"}},
+			{BasePackage: BasePackage{Name: "c_pkg", Title: strPtr("Apple Integration"), Version: "1.0.0"}},
+			{BasePackage: BasePackage{Name: "a_pkg", Title: strPtr("Zebra Integration"), Version: "1.0.0"}},
 			{BasePackage: BasePackage{Name: "b_pkg", Title: strPtr("Mango Integration"), Version: "1.0.0"}},
 		}
 		sort.Sort(pkgs)
-		assert.Equal(t, "Apple Integration", *pkgs[0].Title)
-		assert.Equal(t, "Mango Integration", *pkgs[1].Title)
-		assert.Equal(t, "Zebra Integration", *pkgs[2].Title)
+		assert.Equal(t, "a_pkg", pkgs[0].Name)
+		assert.Equal(t, "b_pkg", pkgs[1].Name)
+		assert.Equal(t, "c_pkg", pkgs[2].Name)
 	})
 
-	t.Run("sorts by semver version when titles are equal", func(t *testing.T) {
-		// Regression test: lexicographic ordering would sort 8.19.2 after 8.19.15
-		// because "2" > "1", but semantic ordering puts 8.19.2 before 8.19.15.
+	t.Run("sorts by semver version when names are equal", func(t *testing.T) {
 		pkgs := Packages{
 			{BasePackage: BasePackage{Name: "security_detection_engine", Title: strPtr("Prebuilt Security Detection Rules"), Version: "8.19.15"}},
 			{BasePackage: BasePackage{Name: "security_detection_engine", Title: strPtr("Prebuilt Security Detection Rules"), Version: "8.19.2"}},
@@ -1340,7 +1338,7 @@ func TestPackagesSort(t *testing.T) {
 		assert.Equal(t, []string{"1.0.1", "8.2.1", "8.19.2", "8.19.9", "8.19.15"}, versions)
 	})
 
-	t.Run("sorts by title first, then version within same title", func(t *testing.T) {
+	t.Run("sorts by name first, then version within same name", func(t *testing.T) {
 		pkgs := Packages{
 			{BasePackage: BasePackage{Name: "b_pkg", Title: strPtr("Beta"), Version: "2.0.0"}},
 			{BasePackage: BasePackage{Name: "a_pkg", Title: strPtr("Alpha"), Version: "1.0.0"}},
@@ -1348,13 +1346,13 @@ func TestPackagesSort(t *testing.T) {
 			{BasePackage: BasePackage{Name: "a_pkg", Title: strPtr("Alpha"), Version: "9.0.0"}},
 		}
 		sort.Sort(pkgs)
-		assert.Equal(t, "Alpha", *pkgs[0].Title)
+		assert.Equal(t, "a_pkg", pkgs[0].Name)
 		assert.Equal(t, "1.0.0", pkgs[0].Version)
-		assert.Equal(t, "Alpha", *pkgs[1].Title)
+		assert.Equal(t, "a_pkg", pkgs[1].Name)
 		assert.Equal(t, "9.0.0", pkgs[1].Version)
-		assert.Equal(t, "Beta", *pkgs[2].Title)
+		assert.Equal(t, "b_pkg", pkgs[2].Name)
 		assert.Equal(t, "2.0.0", pkgs[2].Version)
-		assert.Equal(t, "Beta", *pkgs[3].Title)
+		assert.Equal(t, "b_pkg", pkgs[3].Name)
 		assert.Equal(t, "10.0.0", pkgs[3].Version)
 	})
 }
