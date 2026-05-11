@@ -22,9 +22,7 @@ set +e
 DOCKER_TAG=$(buildkite-agent meta-data get DOCKER_TAG)
 set -e
 if [ -z "${DOCKER_TAG:-}" ]; then
-    echo "error: DOCKER_TAG meta-data is not set."
-    echo "  - For UI builds: provide a value in the 'Input version for docker tag' input step."
-    echo "  - For fleet-server-triggered builds: the triggering pipeline must run 'buildkite-agent meta-data set DOCKER_TAG <version>' before triggering this pipeline."
+    echo "erorr: DOCKER_TAG is not set up, Please setup, DOCKER_TAG"
     exit 1
 fi
 
