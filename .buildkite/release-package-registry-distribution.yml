@@ -4,19 +4,9 @@ env:
   NOTIFY_TO: "ecosystem-team@elastic.co"
 
 steps:
-  - label: ":thought_balloon: Pipeline contract"
-    if: "build.source == 'ui' || build.env('BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG') == 'fleet-server'"
-    command: |
-      buildkite-agent annotate --style "info" --context "release-contract" <<'MD'
-      ### Release package-registry distribution
-
-      This pipeline only runs for:
-
-      - `build.source == 'ui'` (uses the input step to collect `DOCKER_TAG`).
-      - Builds triggered from the `fleet-server` pipeline (must set `DOCKER_TAG` via `buildkite-agent meta-data set DOCKER_TAG <version>` before triggering).
-
-      Expected `DOCKER_TAG` format: `major.minor.patch(-prerelease)?` (e.g. `1.2.3` or `1.2.3-alpha`).
-      MD
+  - label: ":thought_balloon: Notification"
+    command:
+      - "echo 'Please notice the pipeline runs for build.source=ui, or BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG == fleet-server only'"
 
   - input: ":truffleruby: Input version for docker tag"
     key: input
@@ -35,7 +25,6 @@ steps:
     depends_on:
       - step: "input"
         allow_failure: false
-    allow_dependency_failure: true
 
   - label: ":hammer: Release registry distribution {{matrix.tag_name}}"
     key: release-distribution
@@ -56,17 +45,6 @@ steps:
     depends_on:
       - step: "validate"
         allow_failure: false
-    concurrency: 1
-    concurrency_group: "package-registry/distribution-release"
-    concurrency_method: "ordered"
-    retry:
-      automatic:
-        - exit_status: -1
-          limit: 2
-        - exit_status: 143
-          limit: 2
-        - exit_status: 255
-          limit: 2
     plugins:
       - elastic/vault-docker-login#v0.6.0:
           secret_path: 'kv/ci-shared/platform-ingest/elastic_docker_registry'
@@ -118,15 +96,6 @@ steps:
       provider: "gcp"
     depends_on:
       - step: "release-distribution"
-        allow_failure: false
-    retry:
-      automatic:
-        - exit_status: -1
-          limit: 2
-        - exit_status: 143
-          limit: 2
-        - exit_status: 255
-          limit: 2
 
 notify:
   - email: "$NOTIFY_TO"
