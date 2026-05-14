@@ -1100,6 +1100,24 @@ func TestRequireSignatures(t *testing.T) {
 		require.NoError(t, err)
 		assert.Len(t, pkgs, 1)
 	})
+
+	t.Run("ZipFileSystemIndexer succeeds when RequireSignatures=false and no sig file", func(t *testing.T) {
+		ValidationDisabled = true
+		tmpDir := t.TempDir()
+		createMockZipPackage(t, tmpDir, "mypkg")
+
+		indexer := NewZipFileSystemIndexer(FSIndexerOptions{
+			Logger:            logger,
+			RequireSignatures: false,
+		}, tmpDir)
+
+		err := indexer.Init(context.Background())
+		require.NoError(t, err)
+
+		pkgs, err := indexer.Get(context.Background(), nil)
+		require.NoError(t, err)
+		assert.Len(t, pkgs, 1)
+	})
 }
 
 func createMockSignatureFile(t *testing.T, basePath string) {
