@@ -6,7 +6,6 @@ package main
 
 import (
 	"flag"
-	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -15,7 +14,7 @@ import (
 
 func TestFlagsFromEnv(t *testing.T) {
 	expected := "my value"
-	os.Setenv("EPR_TEST_DUMMY", expected)
+	t.Setenv("EPR_TEST_DUMMY", expected)
 
 	var dummyFlag string
 	flagSet := flag.NewFlagSet("", flag.PanicOnError)
@@ -28,7 +27,7 @@ func TestFlagsFromEnv(t *testing.T) {
 
 func TestFlagsPrecedence(t *testing.T) {
 	expected := "flag value"
-	os.Setenv("EPR_TEST_PRECEDENCE_DUMMY", "other value")
+	t.Setenv("EPR_TEST_PRECEDENCE_DUMMY", "other value")
 
 	var dummyFlag string
 	flagSet := flag.NewFlagSet("", flag.PanicOnError)
