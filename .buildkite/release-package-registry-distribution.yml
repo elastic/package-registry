@@ -94,6 +94,7 @@ steps:
         YAML
     depends_on:
       - step: "release-distribution"
+        allow_failure: false
 
 notify:
   - email: "$NOTIFY_TO"
