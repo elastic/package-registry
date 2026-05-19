@@ -1,0 +1,54 @@
+# When dependabot bumps a dependency in the root module, indirect dependencies
+# in cmd/distribution (a separate Go module) may fall out of sync. This workflow
+# runs go mod tidy in cmd/distribution on every dependabot go_modules push and
+# commits any resulting changes back to the branch.
+
+name: post-dependabot
+
+on:
+  push:
+    branches:
+      - "dependabot/go_modules/**"
+      - "!dependabot/go_modules/cmd/distribution/**"
+
+jobs:
+  update-cmd-distribution:
+    permissions:
+      contents: write
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: .go-version
+
+      - name: set up git user
+        uses: elastic/oblt-actions/git/setup@v1
+        with:
+          username: 'dependabot[bot]'
+          email: 'dependabot[bot]@users.noreply.github.com'
+
+      - name: Run go mod tidy in cmd/distribution
+        run: cd cmd/distribution && go mod tidy
+
+      - name: Check for modified go.mod or go.sum
+        id: dist-check
+        run: |
+          if git diff --quiet HEAD -- cmd/distribution/go.mod cmd/distribution/go.sum; then
+            echo "modified=false" >> $GITHUB_OUTPUT
+          else
+            echo "modified=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit updated cmd/distribution go.mod and go.sum
+        if: steps.dist-check.outputs.modified == 'true'
+        run: |
+          git add cmd/distribution/go.mod cmd/distribution/go.sum
+          git commit -m "Update go.mod in cmd/distribution"
+
+      - name: Push changes
+        if: steps.dist-check.outputs.modified == 'true'
+        run: git push
