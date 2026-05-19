@@ -2,6 +2,7 @@
 # in cmd/distribution (a separate Go module) may fall out of sync. This workflow
 # runs go mod tidy in cmd/distribution on every dependabot go_modules push and
 # commits any resulting changes back to the branch.
+
 name: post-dependabot
 
 on:
