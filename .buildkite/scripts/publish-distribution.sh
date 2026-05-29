@@ -4,7 +4,12 @@ source .buildkite/scripts/tooling.sh
 
 set -euo pipefail
 
-DOCKER_TAG=$(buildkite-agent meta-data get DOCKER_TAG)
+DOCKER_TAG=$(buildkite-agent meta-data get DOCKER_TAG --default="")
+if [[ -z "${DOCKER_TAG:-""}" ]]; then
+    echo "ERROR: DOCKER_TAG meta-data is empty or not set"
+    exit 1
+fi
+
 echo "version for tagging: ${DOCKER_TAG}"
 
 DOCKER_IMG_SOURCE="${DOCKER_IMAGE}:${TAG_NAME}"
