@@ -55,9 +55,8 @@ steps:
     command: |
         set -euo pipefail
 
-        DOCKER_TAG="$(buildkite-agent meta-data get DOCKER_TAG)"
 
-        cat <<YAML | buildkite-agent pipeline upload
+        buildkite-agent pipeline upload << PIPELINE
         steps:
           - trigger: unified-release-copy-elastic-images-to-dockerhub
             label: ":docker: Copy release images to Docker Hub"
@@ -66,7 +65,7 @@ steps:
             build:
               env:
                 IMAGES_NAMES: "package-registry/distribution"
-                IMAGES_TAG: "${DOCKER_TAG}"
+                IMAGES_TAG: "$${DOCKER_TAG}"
           - trigger: unified-release-copy-elastic-images-to-dockerhub
             label: ":docker: Copy release UBI images to Docker Hub"
             key: copy-prod-ubi
@@ -74,7 +73,7 @@ steps:
             build:
               env:
                 IMAGES_NAMES: "package-registry/distribution"
-                IMAGES_TAG: "${DOCKER_TAG}-ubi"
+                IMAGES_TAG: "$${DOCKER_TAG}-ubi"
           - trigger: unified-release-copy-elastic-images-to-dockerhub
             label: ":docker: Copy release lite images to Docker Hub"
             key: copy-lite
@@ -82,7 +81,7 @@ steps:
             build:
               env:
                 IMAGES_NAMES: "package-registry/distribution"
-                IMAGES_TAG: "lite-${DOCKER_TAG}"
+                IMAGES_TAG: "lite-$${DOCKER_TAG}"
           - trigger: unified-release-copy-elastic-images-to-dockerhub
             label: ":docker: Copy release lite UBI images to Docker Hub"
             key: copy-lite-ubi
@@ -90,8 +89,8 @@ steps:
             build:
               env:
                 IMAGES_NAMES: "package-registry/distribution"
-                IMAGES_TAG: "lite-${DOCKER_TAG}-ubi"
-        YAML
+                IMAGES_TAG: "lite-$${DOCKER_TAG}-ubi"
+        PIPELINE
     depends_on:
       - step: "release-distribution"
         allow_failure: false
