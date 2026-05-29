@@ -55,6 +55,7 @@ steps:
     command: |
         set -euo pipefail
 
+        DOCKER_TAG="$$(buildkite-agent meta-data get DOCKER_TAG)"
 
         buildkite-agent pipeline upload << PIPELINE
         steps:
