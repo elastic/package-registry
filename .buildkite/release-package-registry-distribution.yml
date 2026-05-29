@@ -56,6 +56,10 @@ steps:
         set -euo pipefail
 
         DOCKER_TAG="$$(buildkite-agent meta-data get DOCKER_TAG)"
+        if [[ -z "${DOCKER_TAG}" ]]; then
+            echo "ERROR: DOCKER_TAG meta-data is empty or not set"
+            exit 1
+        fi
 
         buildkite-agent pipeline upload << PIPELINE
         steps:
