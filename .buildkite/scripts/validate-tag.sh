@@ -19,10 +19,10 @@ transformTagAndValidate() {
 }
 
 set +e
-DOCKER_TAG=$(buildkite-agent meta-data get DOCKER_TAG)
+DOCKER_TAG=$(buildkite-agent meta-data get DOCKER_TAG --default="")
 set -e
-if [ -z "${DOCKER_TAG:-}" ]; then
-    echo "erorr: DOCKER_TAG is not set up, Please setup, DOCKER_TAG"
+if [ -z "${DOCKER_TAG:-""}" ]; then
+    echo "ERROR: DOCKER_TAG meta-data is empty or not set"
     exit 1
 fi
 
