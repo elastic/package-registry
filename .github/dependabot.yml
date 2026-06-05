@@ -8,10 +8,15 @@ updates:
     labels:
       - automation
     open-pull-requests-limit: 10
+    allow:
+      - dependency-type: "all" # Also indirect dependencies.
     groups:
       elastic-apm:
         patterns:
           - "go.elastic.co/apm/*"
+      opentelemetry:
+        patterns:
+          - "go.opentelemetry.io/*"
   - package-ecosystem: "gomod"
     directory: "/cmd/distribution"
     schedule:
@@ -19,3 +24,5 @@ updates:
     labels:
       - automation
     open-pull-requests-limit: 10
+    allow:
+      - dependency-type: "all" # Also indirect dependencies.
