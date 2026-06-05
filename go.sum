@@ -32,8 +32,8 @@ github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.56
 github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.56.0/go.mod h1:hEpiGU18xf70qb3jbTcIggWAiEfX/cOIVc2OTe4OegA=
 github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/cloudmock v0.56.0 h1:ZIT85vKP7LBS84XJ0WdJ3dPOX3iz4j3c0+lpajGQMyo=
 github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/cloudmock v0.56.0/go.mod h1:rqP9UEhOXv9WhQ7Gjz+G5y/pf8+BJZW5/Ts0AhE0PwE=
-github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.56.0 h1:0YP0+/ixwu+Uqeu/FGiBZNQ19huiUxxiPXIc9WsLKuQ=
-github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.56.0/go.mod h1:6ZZMQhZKDvUvkJw2rc+oDP90tMMzuU/J+5HG1ZmPOmE=
+github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.57.0 h1:RoO5+d7uCmDqovLrHCr2/BuViUXvdcrNxyNM1pN9dDQ=
+github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.57.0/go.mod h1:YqwkQPrWSC7+byyc1VlKbWLBF5JsW5IoL6xUkemYSXk=
 github.com/Masterminds/semver/v3 v3.5.0 h1:kQceYJfbupGfZOKZQg0kou0DgAKhzDg2NZPAwZ/2OOE=
 github.com/Masterminds/semver/v3 v3.5.0/go.mod h1:4V+yj/TJE1HU9XfppCwVMZq3I84lprf4nC11bSS5beM=
 github.com/armon/go-radix v1.0.0 h1:F4z6KzEeeQIMeLFa97iZU6vupzoecKdU5TX24SNppXI=
