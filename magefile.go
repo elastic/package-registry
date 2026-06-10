@@ -76,6 +76,21 @@ func Build() error {
 	return sh.Run("go", "build", ".")
 }
 
+// BuildFIPS builds the package-registry binary with FIPS 140 support.
+func BuildFIPS() error {
+	fmt.Println(">> Downloading dependencies")
+	err := sh.Run("go", "mod", "download")
+	if err != nil {
+		return fmt.Errorf("failed to download dependencies: %w", err)
+	}
+
+	fmt.Println(">> Building package-registry with FIPS support")
+	return sh.RunWith(map[string]string{
+		"GOFIPS140": "v1.0.0",
+		"GODEBUG":   "fips140=only",
+	}, "go", "build", ".")
+}
+
 // BuildDistribution builds the distribution binary in cmd/distribution.
 func BuildDistribution() error {
 	return runInAllModules(func(mod module) error {
@@ -130,6 +145,32 @@ func Test() error {
 		fmt.Fprintf(os.Stderr, ">> test - running tests for %s\n", mod.name)
 		return sh.RunV("go", "test", "./...", "-v")
 	})
+}
+
+// TestFIPS runs all tests with FIPS 140 mode enabled.
+func TestFIPS() error {
+	// Download dependencies for all modules first
+	for _, mod := range modules {
+		fmt.Printf(">> Downloading dependencies for %s\n", mod.name)
+		err := sh.RunWith(map[string]string{"PWD": mod.path}, "go", "mod", "download")
+		if err != nil {
+			return fmt.Errorf("failed to download dependencies for %s: %w", mod.name, err)
+		}
+	}
+
+	// Run tests with FIPS enabled
+	for _, mod := range modules {
+		fmt.Printf(">> Testing %s with FIPS 140 enabled\n", mod.name)
+		err := sh.RunWith(map[string]string{
+			"PWD":       mod.path,
+			"GOFIPS140": "v1.0.0",
+			"GODEBUG":   "fips140=only",
+		}, "go", "test", "./...", "-v")
+		if err != nil {
+			return fmt.Errorf("%s FIPS tests failed: %w", mod.name, err)
+		}
+	}
+	return nil
 }
 
 func WriteTestGoldenFiles() error {

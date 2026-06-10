@@ -103,6 +103,23 @@ mage build
 Once built, the Package Registry can be run as `./package-registry`. Find below
 more details about the available configuration options.
 
+#### FIPS 140 Support
+
+To build a FIPS 140 compliant binary, use:
+```
+mage buildFIPS
+```
+
+This builds the binary with Go's FIPS 140 mode enabled (`GOFIPS140=v1.0.0 GODEBUG=fips140=only`), ensuring all cryptographic operations use FIPS-validated implementations.
+
+**Testing with FIPS:**
+
+To run tests in FIPS mode:
+```
+mage testFIPS
+```
+
+Note: Tests that rely on third-party services (like fake-gcs-server for storage tests) are automatically skipped in FIPS mode, as these dependencies may use non-FIPS-compliant cryptographic operations.
 
 ### Docker
 

@@ -15,6 +15,9 @@ import (
 )
 
 func TestPrepareFakeServer(t *testing.T) {
+	if isFIPSMode() {
+		t.Skip("Skipping storage tests in FIPS mode (fake-gcs-server uses non-FIPS crypto)")
+	}
 	// given
 	indexFile := "../../storage/testdata/search-index-all-full.json"
 	testIndexFile, err := os.ReadFile(indexFile)
