@@ -74,7 +74,7 @@ require (
 	github.com/prometheus/common v0.69.0 // indirect
 	github.com/prometheus/procfs v0.20.1 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
-	github.com/spiffe/go-spiffe/v2 v2.8.0 // indirect
+	github.com/spiffe/go-spiffe/v2 v2.8.1 // indirect
 	go.elastic.co/fastjson v1.5.1 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
