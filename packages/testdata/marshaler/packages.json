@@ -655,7 +655,8 @@
       },
       "agentless": {
        "enabled": true,
-       "is_default": true
+       "is_default": true,
+       "release": "beta"
       }
      }
     },
