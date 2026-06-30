@@ -236,8 +236,9 @@ type DeploymentModes struct {
 }
 
 type DeploymentMode struct {
-	Enabled   bool  `config:"enabled" json:"enabled" yaml:"enabled" validate:"required"`
-	IsDefault *bool `config:"is_default" json:"is_default,omitempty" yaml:"is_default,omitempty"`
+	Enabled   bool   `config:"enabled" json:"enabled" yaml:"enabled" validate:"required"`
+	IsDefault *bool  `config:"is_default" json:"is_default,omitempty" yaml:"is_default,omitempty"`
+	Release   string `config:"release,omitempty" json:"release,omitempty" yaml:"release,omitempty"`
 }
 
 type Deprecated struct {
@@ -368,6 +369,10 @@ func newPackage(basePath string, fsBuilder FileSystemBuilder) (*Package, error) 
 		// Fill ingestion method for input packages.
 		if p.Type == "input" && p.PolicyTemplates[i].Input != "" {
 			p.PolicyTemplates[i].IngestionMethod = IngestionMethods.Get(p.PolicyTemplates[i].Input)
+		}
+
+		if err := validateDeploymentModeRelease(p.PolicyTemplates[i].DeploymentModes); err != nil {
+			return nil, fmt.Errorf("policy template %q: %w", p.PolicyTemplates[i].Name, err)
 		}
 	}
 
@@ -623,6 +628,16 @@ func (p *Package) IsNewerOrEqual(pp *Package) bool {
 
 func (p *Package) IsPrerelease() bool {
 	return isPrerelease(p.versionSemVer)
+}
+
+func validateDeploymentModeRelease(modes *DeploymentModes) error {
+	if modes == nil || modes.Agentless == nil || modes.Agentless.Release == "" {
+		return nil
+	}
+	if !IsValidAgentlessRelease(modes.Agentless.Release) {
+		return fmt.Errorf("invalid agentless release: %q", modes.Agentless.Release)
+	}
+	return nil
 }
 
 func (p *Package) isTechPreview() bool {
