@@ -26,8 +26,20 @@ var ReleaseTypes = map[string]interface{}{
 	ReleaseGa:           nil,
 }
 
+// AgentlessReleaseTypes contains valid release values for deployment_modes.agentless.release.
+// Unlike the package-level release, "experimental" is not valid here.
+var AgentlessReleaseTypes = map[string]interface{}{
+	ReleaseBeta: nil,
+	ReleaseGa:   nil,
+}
+
 func IsValidRelease(release string) bool {
 	_, exists := ReleaseTypes[release]
+	return exists
+}
+
+func IsValidAgentlessRelease(release string) bool {
+	_, exists := AgentlessReleaseTypes[release]
 	return exists
 }
 
