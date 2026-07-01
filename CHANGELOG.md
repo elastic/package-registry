@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Bugfixes
 
 * Sort packages by name instead of title for a more stable and deterministic sort order. [#1689](https://github.com/elastic/package-registry/pull/1689)
+* Update Go runtime to 1.26.4. [#1807](https://github.com/elastic/package-registry/pull/1807)
 
 ### Added
 
@@ -42,7 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 
-* Update Go runtime to 1.25.8 [1613](https://github.com/elastic/package-registry/pull/1613)
+* Update Go runtime to 1.25.8 [#1613](https://github.com/elastic/package-registry/pull/1613)
 
 ### Added
 
