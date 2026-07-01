@@ -231,11 +231,15 @@ type Download struct {
 }
 
 type DeploymentModes struct {
-	Default   *DeploymentMode `config:"default,omitempty" json:"default,omitempty" yaml:"default,omitempty"`
-	Agentless *DeploymentMode `config:"agentless,omitempty" json:"agentless,omitempty" yaml:"agentless,omitempty"`
+	Default   *DefaultDeploymentMode   `config:"default,omitempty" json:"default,omitempty" yaml:"default,omitempty"`
+	Agentless *AgentlessDeploymentMode `config:"agentless,omitempty" json:"agentless,omitempty" yaml:"agentless,omitempty"`
 }
 
-type DeploymentMode struct {
+type DefaultDeploymentMode struct {
+	Enabled bool `config:"enabled" json:"enabled" yaml:"enabled" validate:"required"`
+}
+
+type AgentlessDeploymentMode struct {
 	Enabled   bool   `config:"enabled" json:"enabled" yaml:"enabled" validate:"required"`
 	IsDefault *bool  `config:"is_default" json:"is_default,omitempty" yaml:"is_default,omitempty"`
 	Release   string `config:"release,omitempty" json:"release,omitempty" yaml:"release,omitempty"`

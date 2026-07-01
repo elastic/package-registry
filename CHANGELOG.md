@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Add support for the `deployment_modes.agentless.release` field so it is exposed in package and search responses. [#1801](https://github.com/elastic/package-registry/pull/1801)
+
 ### Deprecated
 
 ### Known Issues
