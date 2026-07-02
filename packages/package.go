@@ -638,7 +638,7 @@ func validateDeploymentModeRelease(modes *DeploymentModes) error {
 	if modes == nil || modes.Agentless == nil || modes.Agentless.Release == "" {
 		return nil
 	}
-	if !IsValidAgentlessRelease(modes.Agentless.Release) {
+	if !isValidAgentlessRelease(modes.Agentless.Release) {
 		return fmt.Errorf("invalid agentless release: %q", modes.Agentless.Release)
 	}
 	return nil
