@@ -37,6 +37,7 @@ steps:
     env:
       TAG_NAME: "{{matrix.tag_name}}"
       DOCKER_IMAGE: "docker.elastic.co/package-registry/distribution"
+      DOCKER_IMAGE_RENAMED: "docker.elastic.co/package-registry/package-registry-distribution"
       DRY_RUN: false
     command:
       - ".buildkite/scripts/publish-distribution.sh"
@@ -69,7 +70,7 @@ steps:
             async: false
             build:
               env:
-                IMAGES_NAMES: "package-registry/distribution"
+                IMAGES_NAMES: "package-registry/package-registry-distribution"
                 IMAGES_TAG: "$${DOCKER_TAG}"
           - trigger: unified-release-copy-elastic-images-to-dockerhub
             label: ":docker: Copy release UBI images to Docker Hub"
@@ -77,7 +78,7 @@ steps:
             async: false
             build:
               env:
-                IMAGES_NAMES: "package-registry/distribution"
+                IMAGES_NAMES: "package-registry/package-registry-distribution"
                 IMAGES_TAG: "$${DOCKER_TAG}-ubi"
           - trigger: unified-release-copy-elastic-images-to-dockerhub
             label: ":docker: Copy release lite images to Docker Hub"
@@ -85,7 +86,7 @@ steps:
             async: false
             build:
               env:
-                IMAGES_NAMES: "package-registry/distribution"
+                IMAGES_NAMES: "package-registry/package-registry-distribution"
                 IMAGES_TAG: "lite-$${DOCKER_TAG}"
           - trigger: unified-release-copy-elastic-images-to-dockerhub
             label: ":docker: Copy release lite UBI images to Docker Hub"
@@ -93,7 +94,7 @@ steps:
             async: false
             build:
               env:
-                IMAGES_NAMES: "package-registry/distribution"
+                IMAGES_NAMES: "package-registry/package-registry-distribution"
                 IMAGES_TAG: "lite-$${DOCKER_TAG}-ubi"
         PIPELINE
     depends_on:
