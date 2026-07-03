@@ -37,6 +37,7 @@ steps:
     env:
       TAG_NAME: "{{matrix.tag_name}}"
       DOCKER_IMAGE: "docker.elastic.co/package-registry/distribution"
+      DOCKER_IMAGE_RENAMED: "docker.elastic.co/package-registry/package-registry-distribution"
       DRY_RUN: false
     command:
       - ".buildkite/scripts/publish-distribution.sh"
@@ -49,11 +50,17 @@ steps:
       - elastic/vault-docker-login#v0.6.0:
           secret_path: 'kv/ci-shared/platform-ingest/elastic_docker_registry'
 
-  - label: ":docker: Copy release images to Docker Hub"
-    key: copy-release-images-to-dockerhub
+  - label: ":docker: Trigger copy release images to Docker Hub"
+    key: trigger-copy-release-images-to-dockerhub
     if: "build.source == 'ui' || build.env('BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG') == 'fleet-server'"
     command: |
         set -euo pipefail
+
+        DRY_RUN="$$(buildkite-agent meta-data get DRY_RUN --default="$${DRY_RUN:-"false"}")"
+        if [[ "$${DRY_RUN:-"false"}" == "true" ]]; then
+            echo "Skip triggering steps to release images to Docker Hub"
+            exit 0
+        fi
 
         DOCKER_TAG="$$(buildkite-agent meta-data get DOCKER_TAG --default="")"
         if [[ -z "$${DOCKER_TAG:-""}" ]]; then
@@ -69,7 +76,7 @@ steps:
             async: false
             build:
               env:
-                IMAGES_NAMES: "package-registry/distribution"
+                IMAGES_NAMES: "package-registry/package-registry-distribution"
                 IMAGES_TAG: "$${DOCKER_TAG}"
           - trigger: unified-release-copy-elastic-images-to-dockerhub
             label: ":docker: Copy release UBI images to Docker Hub"
@@ -77,7 +84,7 @@ steps:
             async: false
             build:
               env:
-                IMAGES_NAMES: "package-registry/distribution"
+                IMAGES_NAMES: "package-registry/package-registry-distribution"
                 IMAGES_TAG: "$${DOCKER_TAG}-ubi"
           - trigger: unified-release-copy-elastic-images-to-dockerhub
             label: ":docker: Copy release lite images to Docker Hub"
@@ -85,7 +92,7 @@ steps:
             async: false
             build:
               env:
-                IMAGES_NAMES: "package-registry/distribution"
+                IMAGES_NAMES: "package-registry/package-registry-distribution"
                 IMAGES_TAG: "lite-$${DOCKER_TAG}"
           - trigger: unified-release-copy-elastic-images-to-dockerhub
             label: ":docker: Copy release lite UBI images to Docker Hub"
@@ -93,7 +100,7 @@ steps:
             async: false
             build:
               env:
-                IMAGES_NAMES: "package-registry/distribution"
+                IMAGES_NAMES: "package-registry/package-registry-distribution"
                 IMAGES_TAG: "lite-$${DOCKER_TAG}-ubi"
         PIPELINE
     depends_on:
