@@ -56,7 +56,7 @@ steps:
     command: |
         set -euo pipefail
 
-        DRY_RUN="$$(buildkite-agent meta-data get DRY_RUN --default="${DRY_RUN:-"false"}")"
+        DRY_RUN="$$(buildkite-agent meta-data get DRY_RUN --default="$${DRY_RUN:-"false"}")"
         if [[ "$${DRY_RUN:-"false"}" == "true" ]]; then
             echo "Skip triggering steps to release images to Docker Hub"
             exit 0
