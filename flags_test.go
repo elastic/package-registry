@@ -5,6 +5,7 @@
 package main
 
 import (
+	"crypto/tls"
 	"flag"
 	"testing"
 
@@ -52,4 +53,45 @@ func TestFlagEnvName(t *testing.T) {
 	for _, c := range cases {
 		assert.Equal(t, c.expected, flagEnvName(c.flagName))
 	}
+}
+
+func TestValidateFlagsFIPSTLSMinVersion(t *testing.T) {
+	// Save and restore globals modified by validateFlags.
+	origIsFIPS := isFIPSBinary
+	origTLSMin := tlsMinVersionValue
+	origCert := tlsCertFile
+	origKey := tlsKeyFile
+	t.Cleanup(func() {
+		isFIPSBinary = origIsFIPS
+		tlsMinVersionValue = origTLSMin
+		tlsCertFile = origCert
+		tlsKeyFile = origKey
+	})
+
+	// Provide dummy cert/key paths so the existing cert-presence check passes.
+	tlsCertFile = "cert.pem"
+	tlsKeyFile = "key.pem"
+
+	t.Run("FIPS binary with TLS 1.1 is rejected", func(t *testing.T) {
+		isFIPSBinary = func() bool { return true }
+		tlsMinVersionValue = tlsVersionValue(tls.VersionTLS11)
+		err := validateFlags()
+		require.Error(t, err)
+		assert.Contains(t, err.Error(), "FIPS 140-3")
+		assert.Contains(t, err.Error(), "1.1")
+	})
+
+	t.Run("FIPS binary with TLS 1.2 is allowed", func(t *testing.T) {
+		isFIPSBinary = func() bool { return true }
+		tlsMinVersionValue = tlsVersionValue(tls.VersionTLS12)
+		err := validateFlags()
+		require.NoError(t, err)
+	})
+
+	t.Run("non-FIPS binary with TLS 1.1 is allowed", func(t *testing.T) {
+		isFIPSBinary = func() bool { return false }
+		tlsMinVersionValue = tlsVersionValue(tls.VersionTLS11)
+		err := validateFlags()
+		require.NoError(t, err)
+	})
 }

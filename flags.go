@@ -10,6 +10,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"runtime/debug"
 	"strings"
 )
 
@@ -68,6 +69,21 @@ func flagsFromEnv(flagSet *flag.FlagSet) error {
 		}
 	})
 	return flagErrors
+}
+
+// isFIPSBinary reports whether the running binary was built with GOFIPS140.
+// Exposed as a variable so tests can stub the build-info check.
+var isFIPSBinary = func() bool {
+	bi, ok := debug.ReadBuildInfo()
+	if !ok {
+		return false
+	}
+	for _, s := range bi.Settings {
+		if s.Key == "GOFIPS140" && s.Value != "" {
+			return true
+		}
+	}
+	return false
 }
 
 const flagEnvPrefix = "EPR_"

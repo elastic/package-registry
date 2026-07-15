@@ -751,6 +751,9 @@ func validateFlags() error {
 		if tlsCertFile == "" || tlsKeyFile == "" {
 			return fmt.Errorf("-tls-min-version set but missing TLS cert and key files (-tls-cert and -tls-key)")
 		}
+		if isFIPSBinary() && uint16(tlsMinVersionValue) < tls.VersionTLS12 {
+			return fmt.Errorf("FIPS 140-3 build: -tls-min-version %s is not permitted; minimum allowed version is 1.2", tlsMinVersionValue)
+		}
 	}
 
 	if featureStorageIndexer && featureSQLStorageIndexer {
