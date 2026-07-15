@@ -37,6 +37,15 @@ steps:
     agents:
       provider: "gcp"
 
+  - label: ":lock: FIPS 140-3 build & test"
+    key: fips-build-test
+    command:
+      - ".buildkite/scripts/test-fips.sh"
+    agents:
+      image: "${LINUX_GOLANG_AGENT_IMAGE}"
+      cpu: "8"
+      memory: "4G"
+
   - group: ":go: Run Unit tests"
     key: unit-tests
     steps:
@@ -107,6 +116,8 @@ steps:
       - step: "lint"
         allow_failure: false
       - step: "smoke-test-fake-gcs-server"
+        allow_failure: false
+      - step: "fips-build-test"
         allow_failure: false
     plugins:
       - elastic/vault-docker-login#v0.6.0:
