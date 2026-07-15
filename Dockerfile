@@ -13,7 +13,11 @@ WORKDIR /package-registry
 
 ARG TARGETPLATFORM
 
-RUN make release-${TARGETPLATFORM:-linux}
+# FIPS=1 builds the binary against the certified Go FIPS 140-3 crypto module.
+# See docs/fips.md.
+ARG FIPS=0
+
+RUN make release-${TARGETPLATFORM:-linux} FIPS=${FIPS}
 
 
 # Run binary
