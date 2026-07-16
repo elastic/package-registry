@@ -89,28 +89,47 @@ func ClientNoAuth(server *fakestorage.Server) *storage.Client {
 }
 
 // UpdateFakeServer simulates an index update by stopping the given fake
-// server and returning a new one seeded with the objects for the given
-// revision. Callers must point any client bound to the old server at the
-// returned one.
+// server and returning a new one that contains the previous server's objects
+// plus the new revision's objects. Callers must point any client bound to
+// the old server at the returned one.
 //
-// It deliberately doesn't add the new revision's objects to the running
-// server via Server.CreateObject: fake-gcs-server always recomputes real
-// crc32c/MD5 checksums server-side for objects added that way (and via the
-// HTTP upload path), mirroring how real GCS never trusts client-supplied
-// checksums on write, which panics under strict FIPS 140-3 enforcement
-// (GODEBUG=fips140=only). InitialObjects bypass that recomputation (see
-// PrepareFakeServer), so restarting the server keeps object creation on
+// It doesn't add the new revision's objects to the running server via
+// Server.CreateObject because fake-gcs-server's internal toBackendObjects
+// converter (used on that path) strips Md5Hash before handing off to the
+// backend, which then recomputes it from scratch — a path that panics under
+// strict FIPS 140-3 enforcement (GODEBUG=fips140=only) since MD5 isn't an
+// approved algorithm. InitialObjects bypass that recomputation (see
+// PrepareFakeServer), so restarting the server keeps all object creation on
 // that path instead.
+//
+// New revision objects are appended after the existing ones so they win any
+// name conflicts (e.g. the cursor object is overwritten with the new revision).
 func UpdateFakeServer(tb testing.TB, server *fakestorage.Server, revision, indexPath string) *fakestorage.Server {
 	indexContent, err := os.ReadFile(indexPath)
 	require.NoError(tb, err, "index file must be populated")
 
-	serverObjects, numPackages, err := PrepareServerObjects(revision, indexContent)
+	newObjects, numPackages, err := PrepareServerObjects(revision, indexContent)
 	require.NoError(tb, err, "failed to prepare server objects")
-	tb.Logf("Prepared %d packages with total %d server objects.", numPackages, len(serverObjects))
+	tb.Logf("Prepared %d packages with total %d server objects.", numPackages, len(newObjects))
+
+	// Collect all existing objects from the running server so the new server
+	// is additive: previous revision files remain accessible alongside the
+	// new ones. GetObject round-trips through fromBackendObjects which
+	// preserves the stored Md5Hash, keeping subsequent InitialObjects
+	// insertion FIPS-safe (non-empty Md5Hash skips recomputation).
+	listResp, err := server.ListObjectsWithOptionsPaginated(FakePackageStorageBucketInternal, fakestorage.ListOptions{})
+	require.NoError(tb, err, "failed to list existing server objects")
+	existingAttrs := listResp.Objects
+	allObjects := make([]fakestorage.Object, 0, len(existingAttrs)+len(newObjects))
+	for _, attrs := range existingAttrs {
+		obj, err := server.GetObject(FakePackageStorageBucketInternal, attrs.Name)
+		require.NoError(tb, err, "failed to retrieve existing server object %q", attrs.Name)
+		allObjects = append(allObjects, obj)
+	}
+	allObjects = append(allObjects, newObjects...)
 
 	server.Stop()
-	return fakestorage.NewServer(serverObjects)
+	return fakestorage.NewServer(allObjects)
 }
 
 type searchIndexAll struct {
