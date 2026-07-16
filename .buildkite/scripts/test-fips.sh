@@ -5,19 +5,20 @@ source .buildkite/scripts/pre-install-command.sh
 set -euo pipefail
 
 add_bin_path
+with_jq
 with_mage
 
 echo "--- Build FIPS 140-3 binary"
 mage -debug buildFIPS
 
 echo "--- Verify FIPS 140-3 build settings"
-build_info="$(go version -m package-registry)"
-echo "${build_info}"
+# GOFIPS140 includes a commit hash suffix (e.g. v1.0.0-c2097c7c), not just v1.0.0.
+fips_version=$(go version -m -json package-registry | jq -r '.Settings[] | select(.Key == "GOFIPS140") | .Value')
+default_godebug=$(go version -m -json package-registry | jq -r '.Settings[] | select(.Key == "DefaultGODEBUG") | .Value')
 
-fips_version="$(echo "${build_info}" | grep -oE 'GOFIPS140=\S+' | cut -d= -f2-)"
-default_godebug="$(echo "${build_info}" | grep -oE 'DefaultGODEBUG=\S+' | cut -d= -f2-)"
+go version -m package-registry
 
-if [[ "${fips_version}" != v1.0.0* ]]; then
+if [[ ! "${fips_version}" =~ ^v1\.0\.0(-[a-f0-9]{5,40})?$ ]]; then
 	echo "Expected GOFIPS140 to reference the certified v1.0.0 module, got: '${fips_version}'"
 	exit 1
 fi
