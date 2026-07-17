@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"os"
 	"runtime/debug"
+	"slices"
 	"strings"
 )
 
@@ -78,12 +79,9 @@ var isFIPSBinary = func() bool {
 	if !ok {
 		return false
 	}
-	for _, s := range bi.Settings {
-		if s.Key == "GOFIPS140" && s.Value != "" {
-			return true
-		}
-	}
-	return false
+	return slices.ContainsFunc(bi.Settings, func(s debug.BuildSetting) bool {
+		return s.Key == "GOFIPS140" && s.Value != ""
+	})
 }
 
 const flagEnvPrefix = "EPR_"
