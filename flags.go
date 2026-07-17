@@ -73,8 +73,7 @@ func flagsFromEnv(flagSet *flag.FlagSet) error {
 }
 
 // isFIPSBinary reports whether the running binary was built with GOFIPS140.
-// Exposed as a variable so tests can stub the build-info check.
-var isFIPSBinary = func() bool {
+func isFIPSBinary() bool {
 	bi, ok := debug.ReadBuildInfo()
 	if !ok {
 		return false

@@ -55,43 +55,38 @@ func TestFlagEnvName(t *testing.T) {
 	}
 }
 
-func TestValidateFlagsFIPSTLSMinVersion(t *testing.T) {
-	// Save and restore globals modified by validateFlags.
-	origIsFIPS := isFIPSBinary
-	origTLSMin := tlsMinVersionValue
-	origCert := tlsCertFile
-	origKey := tlsKeyFile
-	t.Cleanup(func() {
-		isFIPSBinary = origIsFIPS
-		tlsMinVersionValue = origTLSMin
-		tlsCertFile = origCert
-		tlsKeyFile = origKey
-	})
+func TestValidateTLSFlagsFIPSTLSMinVersion(t *testing.T) {
+	tests := []struct {
+		name       string
+		fips       bool
+		minVersion tlsVersionValue
+		wantError  string
+	}{
+		{
+			name:       "FIPS binary with TLS 1.1 is rejected",
+			fips:       true,
+			minVersion: tlsVersionValue(tls.VersionTLS11),
+			wantError:  "FIPS 140-3 build: -tls-min-version 1.1 is not permitted; minimum allowed version is 1.2",
+		},
+		{
+			name:       "FIPS binary with TLS 1.2 is allowed",
+			fips:       true,
+			minVersion: tlsVersionValue(tls.VersionTLS12),
+		},
+		{
+			name:       "non-FIPS binary with TLS 1.1 is allowed",
+			minVersion: tlsVersionValue(tls.VersionTLS11),
+		},
+	}
 
-	// Provide dummy cert/key paths so the existing cert-presence check passes.
-	tlsCertFile = "cert.pem"
-	tlsKeyFile = "key.pem"
-
-	t.Run("FIPS binary with TLS 1.1 is rejected", func(t *testing.T) {
-		isFIPSBinary = func() bool { return true }
-		tlsMinVersionValue = tlsVersionValue(tls.VersionTLS11)
-		err := validateFlags()
-		require.Error(t, err)
-		assert.Contains(t, err.Error(), "FIPS 140-3")
-		assert.Contains(t, err.Error(), "1.1")
-	})
-
-	t.Run("FIPS binary with TLS 1.2 is allowed", func(t *testing.T) {
-		isFIPSBinary = func() bool { return true }
-		tlsMinVersionValue = tlsVersionValue(tls.VersionTLS12)
-		err := validateFlags()
-		require.NoError(t, err)
-	})
-
-	t.Run("non-FIPS binary with TLS 1.1 is allowed", func(t *testing.T) {
-		isFIPSBinary = func() bool { return false }
-		tlsMinVersionValue = tlsVersionValue(tls.VersionTLS11)
-		err := validateFlags()
-		require.NoError(t, err)
-	})
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := validateTLSFlags("cert.pem", "key.pem", tt.minVersion, tt.fips)
+			if tt.wantError != "" {
+				assert.EqualError(t, err, tt.wantError)
+				return
+			}
+			assert.NoError(t, err)
+		})
+	}
 }
