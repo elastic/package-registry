@@ -90,8 +90,8 @@ func ClientNoAuth(server *fakestorage.Server) *storage.Client {
 
 // UpdateFakeServer simulates an index update by stopping the given fake
 // server and returning a new one that contains the previous server's objects
-// plus the new revision's objects. Callers must point any client bound to
-// the old server at the returned one.
+// plus the new revision's objects, together with a storage client configured
+// to use the new server.
 //
 // It doesn't add the new revision's objects to the running server via
 // Server.CreateObject because fake-gcs-server's internal toBackendObjects
@@ -104,7 +104,7 @@ func ClientNoAuth(server *fakestorage.Server) *storage.Client {
 //
 // New revision objects are appended after the existing ones so they win any
 // name conflicts (e.g. the cursor object is overwritten with the new revision).
-func UpdateFakeServer(tb testing.TB, server *fakestorage.Server, revision, indexPath string) *fakestorage.Server {
+func UpdateFakeServer(tb testing.TB, server *fakestorage.Server, revision, indexPath string) (*fakestorage.Server, *storage.Client) {
 	indexContent, err := os.ReadFile(indexPath)
 	require.NoError(tb, err, "index file must be populated")
 
@@ -129,7 +129,8 @@ func UpdateFakeServer(tb testing.TB, server *fakestorage.Server, revision, index
 	allObjects = append(allObjects, newObjects...)
 
 	server.Stop()
-	return fakestorage.NewServer(allObjects)
+	newServer := fakestorage.NewServer(allObjects)
+	return newServer, ClientNoAuth(newServer)
 }
 
 type searchIndexAll struct {

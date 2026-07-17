@@ -70,8 +70,7 @@ func BenchmarkIndexerUpdateIndex(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		b.StopTimer()
 		revision := fmt.Sprintf("%d", i+2)
-		fs = internalStorage.UpdateFakeServer(b, fs, revision, "testdata/search-index-all-full.json")
-		indexer.storageClient = internalStorage.ClientNoAuth(fs)
+		fs, indexer.storageClient = internalStorage.UpdateFakeServer(b, fs, revision, "testdata/search-index-all-full.json")
 		b.StartTimer()
 		err = indexer.updateIndex(b.Context())
 		require.NoError(b, err, "index should be updated successfully")
@@ -344,8 +343,7 @@ func TestGet_IndexUpdated(t *testing.T) {
 
 	// when: index update is performed adding new packages
 	const secondRevision = "2"
-	fs = internalStorage.UpdateFakeServer(t, fs, secondRevision, "testdata/search-index-all-full.json")
-	indexer.storageClient = internalStorage.ClientNoAuth(fs)
+	fs, indexer.storageClient = internalStorage.UpdateFakeServer(t, fs, secondRevision, "testdata/search-index-all-full.json")
 	err = indexer.updateIndex(t.Context())
 	require.NoError(t, err, "index should be updated successfully")
 
@@ -365,8 +363,7 @@ func TestGet_IndexUpdated(t *testing.T) {
 
 	// when: index update is performed removing packages
 	const thirdRevision = "3"
-	fs = internalStorage.UpdateFakeServer(t, fs, thirdRevision, "testdata/search-index-all-small.json")
-	indexer.storageClient = internalStorage.ClientNoAuth(fs)
+	fs, indexer.storageClient = internalStorage.UpdateFakeServer(t, fs, thirdRevision, "testdata/search-index-all-small.json")
 	err = indexer.updateIndex(t.Context())
 	require.NoError(t, err, "index should be updated successfully")
 
@@ -385,8 +382,7 @@ func TestGet_IndexUpdated(t *testing.T) {
 	require.Equal(t, "0.2.0", foundPackages[0].Version)
 
 	// when: index update is performed updating some field of an existing pacakage
-	fs = internalStorage.UpdateFakeServer(t, fs, "4", "testdata/search-index-all-small-updated-fields.json")
-	indexer.storageClient = internalStorage.ClientNoAuth(fs)
+	fs, indexer.storageClient = internalStorage.UpdateFakeServer(t, fs, "4", "testdata/search-index-all-small-updated-fields.json")
 	err = indexer.updateIndex(t.Context())
 	require.NoError(t, err, "index should be updated successfully")
 
