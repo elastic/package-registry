@@ -22,6 +22,7 @@ DOCKER_IMAGE_TARGETS=("${DOCKER_IMAGE}")
 if [[ -n "${DOCKER_IMAGE_RENAMED:-""}" ]]; then
     DOCKER_IMAGE_TARGETS+=("${DOCKER_IMAGE_RENAMED}")
 fi
+IMAGE_SUFFIXES=("" "-ubi" "-fips")
 
 echo "Docker retag"
 docker buildx create --use
@@ -33,13 +34,16 @@ for image in "${DOCKER_IMAGE_TARGETS[@]}"; do
         DOCKER_IMG_TARGET="${image}:${TAG_NAME}-${DOCKER_TAG}"
     fi
 
-    # do not push if DRY_RUN is true
-    if [[ ${DRY_RUN:-true} == "true" ]]; then
-        docker buildx imagetools create --dry-run -t "${DOCKER_IMG_TARGET}" "${DOCKER_IMG_SOURCE}"
-        docker buildx imagetools create --dry-run -t "${DOCKER_IMG_TARGET}-ubi" "${DOCKER_IMG_SOURCE}-ubi"
-    else
-        retry 3 docker buildx imagetools create -t "${DOCKER_IMG_TARGET}" "${DOCKER_IMG_SOURCE}"
-        retry 3 docker buildx imagetools create -t "${DOCKER_IMG_TARGET}-ubi" "${DOCKER_IMG_SOURCE}-ubi"
-        echo "Docker image pushed: ${DOCKER_IMG_TARGET}"
-    fi
+    for suffix in "${IMAGE_SUFFIXES[@]}"; do
+        source_image="${DOCKER_IMG_SOURCE}${suffix}"
+        target_image="${DOCKER_IMG_TARGET}${suffix}"
+
+        # do not push if DRY_RUN is true
+        if [[ ${DRY_RUN:-true} == "true" ]]; then
+            docker buildx imagetools create --dry-run -t "${target_image}" "${source_image}"
+        else
+            retry 3 docker buildx imagetools create -t "${target_image}" "${source_image}"
+            echo "Docker image pushed: ${target_image}"
+        fi
+    done
 done

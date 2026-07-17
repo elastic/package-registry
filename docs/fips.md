@@ -46,6 +46,20 @@ This builds `docker.elastic.co/package-registry/package-registry:main-fips`.
 Published FIPS images use the same `-fips` tag suffix as the existing `-ubi`
 variant, for example `docker.elastic.co/package-registry/package-registry:v1.40.0-fips`.
 
+Package-filled distribution images are also published with the `-fips` suffix.
+For an Elastic Stack release such as `8.19.0`, the production and lite variants
+are available as:
+
+```text
+docker.elastic.co/package-registry/distribution:8.19.0-fips
+docker.elastic.co/package-registry/distribution:lite-8.19.0-fips
+```
+
+These images use the FIPS-enabled Package Registry server and contain the same
+package sets as their corresponding non-FIPS distribution images. The
+`cmd/distribution` limitation described below applies to the build-time package
+collection tool, not to the deployed server in these images.
+
 ## Verifying a binary
 
 A binary built with `GOFIPS140` embeds that information, along with a default
