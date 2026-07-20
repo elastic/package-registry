@@ -13,6 +13,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/ProtonMail/go-crypto/openpgp"
@@ -20,7 +21,17 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+// isFIPSMode returns true if FIPS 140 mode is enabled
+func isFIPSMode() bool {
+	godebug := os.Getenv("GODEBUG")
+	return strings.Contains(godebug, "fips140=only") ||
+		strings.Contains(godebug, "fips140=on")
+}
+
 func TestDownloadActionInit(t *testing.T) {
+	if isFIPSMode() {
+		t.Skip("Skipping distribution tests in FIPS mode (go-crypto/openpgp is not FIPS-compliant)")
+	}
 	tempDir := t.TempDir()
 
 	action := &downloadAction{
@@ -93,6 +104,9 @@ func TestDownloadActionDownloadHTTPError(t *testing.T) {
 }
 
 func TestDownloadActionPerformSkipsIfAlreadyDownloaded(t *testing.T) {
+	if isFIPSMode() {
+		t.Skip("Skipping distribution tests in FIPS mode (go-crypto/openpgp is not FIPS-compliant)")
+	}
 	tempDir := t.TempDir()
 
 	// Create a simple test key for signing
@@ -144,6 +158,9 @@ func TestDownloadActionPerformSkipsIfAlreadyDownloaded(t *testing.T) {
 }
 
 func TestDownloadActionPerformDownloadsIfMissing(t *testing.T) {
+	if isFIPSMode() {
+		t.Skip("Skipping distribution tests in FIPS mode (go-crypto/openpgp is not FIPS-compliant)")
+	}
 	tempDir := t.TempDir()
 
 	// Create a simple test key for signing
@@ -253,6 +270,9 @@ func TestDownloadActionPerformRejectsInvalidSignature(t *testing.T) {
 }
 
 func TestDownloadActionValid(t *testing.T) {
+	if isFIPSMode() {
+		t.Skip("Skipping distribution tests in FIPS mode (go-crypto/openpgp is not FIPS-compliant)")
+	}
 	tempDir := t.TempDir()
 
 	// Create a test key
@@ -292,6 +312,9 @@ func TestDownloadActionValid(t *testing.T) {
 }
 
 func TestDownloadActionValidInvalidSignature(t *testing.T) {
+	if isFIPSMode() {
+		t.Skip("Skipping distribution tests in FIPS mode (go-crypto/openpgp is not FIPS-compliant)")
+	}
 	tempDir := t.TempDir()
 
 	// Create test package
@@ -352,6 +375,9 @@ func TestDownloadActionValidMissingFiles(t *testing.T) {
 }
 
 func TestDownloadActionAddressInheritance(t *testing.T) {
+	if isFIPSMode() {
+		t.Skip("Skipping distribution tests in FIPS mode (go-crypto/openpgp is not FIPS-compliant)")
+	}
 	tempDir := t.TempDir()
 
 	tests := []struct {
@@ -393,6 +419,9 @@ func TestDownloadActionAddressInheritance(t *testing.T) {
 }
 
 func TestDownloadActionIntegration(t *testing.T) {
+	if isFIPSMode() {
+		t.Skip("Skipping distribution tests in FIPS mode (go-crypto/openpgp is not FIPS-compliant)")
+	}
 	tempDir := t.TempDir()
 
 	// Create test packages

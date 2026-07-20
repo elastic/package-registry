@@ -8,7 +8,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 
@@ -22,7 +24,16 @@ import (
 	"github.com/elastic/package-registry/packages"
 )
 
+func isFIPSMode() bool {
+	godebug := os.Getenv("GODEBUG")
+	return strings.Contains(godebug, "fips140=only") ||
+		strings.Contains(godebug, "fips140=on")
+}
+
 func TestSQLInit(t *testing.T) {
+	if isFIPSMode() {
+		t.Skip("Skipping storage tests in FIPS mode (fake-gcs-server uses non-FIPS crypto)")
+	}
 	t.Parallel()
 
 	// given
@@ -247,6 +258,9 @@ func BenchmarkSQLIndexerGetStaticsAndArtifacts(b *testing.B) {
 }
 
 func TestSQLGet_ListPackages(t *testing.T) {
+	if isFIPSMode() {
+		t.Skip("Skipping storage tests in FIPS mode (fake-gcs-server uses non-FIPS crypto)")
+	}
 	t.Parallel()
 
 	// given
@@ -459,6 +473,9 @@ func TestSQLGet_ListPackages(t *testing.T) {
 }
 
 func TestSQLGet_IndexUpdated(t *testing.T) {
+	if isFIPSMode() {
+		t.Skip("Skipping storage tests in FIPS mode (fake-gcs-server uses non-FIPS crypto)")
+	}
 	t.Parallel()
 
 	// given
