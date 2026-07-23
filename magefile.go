@@ -32,6 +32,10 @@ const (
 	StaticcheckImportPath = "honnef.co/go/tools/cmd/staticcheck"
 
 	buildDir = "./build"
+
+	// GOFIPS140Version pins the certified Go FIPS 140-3 crypto module used by
+	// FIPS builds. See https://go.dev/doc/security/fips140#fips-140-3-mode and docs/fips.md.
+	GOFIPS140Version = "v1.0.0"
 )
 
 type module struct {
@@ -42,8 +46,8 @@ type module struct {
 // modules is the list of Go modules in this repository.
 // Add new modules here to automatically include them in test, lint, and other targets.
 var modules = []module{
-	{"package-registry", "."},
-	{"cmd/distribution", "cmd/distribution"},
+	{name: "package-registry", path: "."},
+	{name: "cmd/distribution", path: "cmd/distribution"},
 }
 
 func runInAllModules(fn func(mod module) error) error {
@@ -76,6 +80,13 @@ func Build() error {
 	return sh.Run("go", "build", ".")
 }
 
+// BuildFIPS builds package-registry against the certified Go FIPS 140-3
+// crypto module. See docs/fips.md.
+func BuildFIPS() error {
+	fmt.Println(">> Building package-registry (FIPS 140-3)")
+	return sh.RunWith(map[string]string{"GOFIPS140": GOFIPS140Version}, "go", "build", ".")
+}
+
 // BuildDistribution builds the distribution binary in cmd/distribution.
 func BuildDistribution() error {
 	return runInAllModules(func(mod module) error {
@@ -90,6 +101,16 @@ func BuildDistribution() error {
 // DockerBuild builds the Docker image for the package registry. It must be specified
 // the docker tag to be used as an argument (e.g. main, latest).
 func DockerBuild(tag string) error {
+	return dockerBuild(tag, false)
+}
+
+// DockerBuildFIPS builds the Docker image for the package registry against the
+// certified Go FIPS 140-3 crypto module. See docs/fips.md.
+func DockerBuildFIPS(tag string) error {
+	return dockerBuild(tag, true)
+}
+
+func dockerBuild(tag string, fips bool) error {
 	contents, err := os.ReadFile(".go-version")
 	if err != nil {
 		return fmt.Errorf("failed to read .go-version: %w", err)
@@ -100,9 +121,15 @@ func DockerBuild(tag string) error {
 	}
 	dockerImage := fmt.Sprintf("docker.elastic.co/package-registry/package-registry:%s", tag)
 
+	args := []string{"build", "--rm", "--build-arg", fmt.Sprintf("GO_VERSION=%s", goVersion)}
+	if fips {
+		dockerImage += "-fips"
+		args = append(args, "--build-arg", "FIPS=1")
+	}
+	args = append(args, "-t", dockerImage, ".")
+
 	fmt.Println(">> Building Docker image:", dockerImage)
-	err = sh.Run("docker", "build", "--rm", "--build-arg", fmt.Sprintf("GO_VERSION=%s", goVersion), "-t", dockerImage, ".")
-	if err != nil {
+	if err := sh.Run("docker", args...); err != nil {
 		return fmt.Errorf("failed to build docker image: %w", err)
 	}
 	return nil
@@ -130,6 +157,14 @@ func Test() error {
 		fmt.Fprintf(os.Stderr, ">> test - running tests for %s\n", mod.name)
 		return sh.RunV("go", "test", "./...", "-v")
 	})
+}
+
+// TestFIPS runs the package-registry test suite compiled against the certified
+// Go FIPS 140-3 crypto module (GOFIPS140) under strict GODEBUG=fips140=only.
+// See docs/fips.md.
+func TestFIPS() error {
+	fmt.Fprintf(os.Stderr, ">> test - running FIPS 140-3 tests for package-registry (GODEBUG=fips140=only)\n")
+	return sh.RunWithV(map[string]string{"GOFIPS140": GOFIPS140Version, "GODEBUG": "fips140=only"}, "go", "test", "./...", "-v")
 }
 
 func WriteTestGoldenFiles() error {

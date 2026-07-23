@@ -5,6 +5,7 @@
 package main
 
 import (
+	"crypto/tls"
 	"flag"
 	"testing"
 
@@ -51,5 +52,41 @@ func TestFlagEnvName(t *testing.T) {
 
 	for _, c := range cases {
 		assert.Equal(t, c.expected, flagEnvName(c.flagName))
+	}
+}
+
+func TestValidateTLSFlagsFIPSTLSMinVersion(t *testing.T) {
+	tests := []struct {
+		name       string
+		fips       bool
+		minVersion tlsVersionValue
+		wantError  string
+	}{
+		{
+			name:       "FIPS binary with TLS 1.1 is rejected",
+			fips:       true,
+			minVersion: tlsVersionValue(tls.VersionTLS11),
+			wantError:  "FIPS 140-3 build: -tls-min-version 1.1 is not permitted; minimum allowed version is 1.2",
+		},
+		{
+			name:       "FIPS binary with TLS 1.2 is allowed",
+			fips:       true,
+			minVersion: tlsVersionValue(tls.VersionTLS12),
+		},
+		{
+			name:       "non-FIPS binary with TLS 1.1 is allowed",
+			minVersion: tlsVersionValue(tls.VersionTLS11),
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := validateTLSFlags("cert.pem", "key.pem", tt.minVersion, tt.fips)
+			if tt.wantError != "" {
+				assert.EqualError(t, err, tt.wantError)
+				return
+			}
+			assert.NoError(t, err)
+		})
 	}
 }

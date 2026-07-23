@@ -747,10 +747,8 @@ func getRouter(logger *zap.Logger, options serverOptions) (*mux.Router, error) {
 }
 
 func validateFlags() error {
-	if tlsMinVersionValue > 0 {
-		if tlsCertFile == "" || tlsKeyFile == "" {
-			return fmt.Errorf("-tls-min-version set but missing TLS cert and key files (-tls-cert and -tls-key)")
-		}
+	if err := validateTLSFlags(tlsCertFile, tlsKeyFile, tlsMinVersionValue, isFIPSBinary()); err != nil {
+		return err
 	}
 
 	if featureStorageIndexer && featureSQLStorageIndexer {
@@ -779,5 +777,18 @@ func validateFlags() error {
 		}
 	}
 
+	return nil
+}
+
+func validateTLSFlags(certFile, keyFile string, minVersion tlsVersionValue, fips bool) error {
+	if minVersion == 0 {
+		return nil
+	}
+	if certFile == "" || keyFile == "" {
+		return fmt.Errorf("-tls-min-version set but missing TLS cert and key files (-tls-cert and -tls-key)")
+	}
+	if fips && uint16(minVersion) < tls.VersionTLS12 {
+		return fmt.Errorf("FIPS 140-3 build: -tls-min-version %s is not permitted; minimum allowed version is 1.2", minVersion)
+	}
 	return nil
 }

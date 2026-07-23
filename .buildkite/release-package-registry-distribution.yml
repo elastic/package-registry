@@ -87,6 +87,14 @@ steps:
                 IMAGES_NAMES: "package-registry/package-registry-distribution"
                 IMAGES_TAG: "$${DOCKER_TAG}-ubi"
           - trigger: unified-release-copy-elastic-images-to-dockerhub
+            label: ":docker: Copy release FIPS images to Docker Hub"
+            key: copy-prod-fips
+            async: false
+            build:
+              env:
+                IMAGES_NAMES: "package-registry/package-registry-distribution"
+                IMAGES_TAG: "$${DOCKER_TAG}-fips"
+          - trigger: unified-release-copy-elastic-images-to-dockerhub
             label: ":docker: Copy release lite images to Docker Hub"
             key: copy-lite
             async: false
@@ -102,6 +110,14 @@ steps:
               env:
                 IMAGES_NAMES: "package-registry/package-registry-distribution"
                 IMAGES_TAG: "lite-$${DOCKER_TAG}-ubi"
+          - trigger: unified-release-copy-elastic-images-to-dockerhub
+            label: ":docker: Copy release lite FIPS images to Docker Hub"
+            key: copy-lite-fips
+            async: false
+            build:
+              env:
+                IMAGES_NAMES: "package-registry/package-registry-distribution"
+                IMAGES_TAG: "lite-$${DOCKER_TAG}-fips"
         PIPELINE
     depends_on:
       - step: "release-distribution"
