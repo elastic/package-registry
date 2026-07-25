@@ -72,7 +72,9 @@ type DataStream struct {
 	// Reference to the package containing this data stream
 	packageRef *Package
 
-	Deprecated *Deprecated `config:"deprecated,omitempty" json:"deprecated,omitempty" yaml:"deprecated,omitempty"`
+	Deprecated          *Deprecated          `config:"deprecated,omitempty" json:"deprecated,omitempty" yaml:"deprecated,omitempty"`
+	IaCBlueprints       []IaCBlueprint       `config:"iac_blueprints,omitempty" json:"iac_blueprints,omitempty" yaml:"iac_blueprints,omitempty"`
+	ProviderPermissions []ProviderPermission `config:"provider_permissions,omitempty" json:"provider_permissions,omitempty" yaml:"provider_permissions,omitempty"`
 }
 
 type Input struct {
@@ -84,8 +86,10 @@ type Input struct {
 	Streams         []Stream    `config:"streams" json:"streams,omitempty" yaml:"streams,omitempty"`
 	TemplatePath    string      `config:"template_path" json:"template_path,omitempty" yaml:"template_path,omitempty"`
 	InputGroup      string      `config:"input_group" json:"input_group,omitempty" yaml:"input_group,omitempty"`
-	DeploymentModes []string    `config:"deployment_modes,omitempty" json:"deployment_modes,omitempty" yaml:"deployment_modes,omitempty"`
-	Deprecated      *Deprecated `config:"deprecated,omitempty" json:"deprecated,omitempty" yaml:"deprecated,omitempty"`
+	DeploymentModes     []string             `config:"deployment_modes,omitempty" json:"deployment_modes,omitempty" yaml:"deployment_modes,omitempty"`
+	Deprecated          *Deprecated          `config:"deprecated,omitempty" json:"deprecated,omitempty" yaml:"deprecated,omitempty"`
+	IaCBlueprints       []IaCBlueprint       `config:"iac_blueprints,omitempty" json:"iac_blueprints,omitempty" yaml:"iac_blueprints,omitempty"`
+	ProviderPermissions []ProviderPermission `config:"provider_permissions,omitempty" json:"provider_permissions,omitempty" yaml:"provider_permissions,omitempty"`
 }
 
 type Stream struct {
