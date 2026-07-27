@@ -22,7 +22,18 @@ DOCKER_IMAGE_TARGETS=("${DOCKER_IMAGE}")
 if [[ -n "${DOCKER_IMAGE_RENAMED:-""}" ]]; then
     DOCKER_IMAGE_TARGETS+=("${DOCKER_IMAGE_RENAMED}")
 fi
-IMAGE_SUFFIXES=("" "-ubi" "-fips")
+IMAGE_SUFFIXES=("" "-ubi")
+FIPS_SOURCE_IMAGE="${DOCKER_IMG_SOURCE}-fips"
+FIPS_SOURCE_AVAILABLE=false
+
+# The FIPS distribution source does not exist until the first release that
+# includes a FIPS package-registry image. Skip it during that transition.
+if retry 3 docker buildx imagetools inspect "${FIPS_SOURCE_IMAGE}" > /dev/null; then
+    IMAGE_SUFFIXES+=("-fips")
+    FIPS_SOURCE_AVAILABLE=true
+else
+    echo "FIPS source image is not available yet, skipping: ${FIPS_SOURCE_IMAGE}"
+fi
 
 echo "Docker retag"
 docker buildx create --use
@@ -47,3 +58,5 @@ for image in "${DOCKER_IMAGE_TARGETS[@]}"; do
         fi
     done
 done
+
+buildkite-agent meta-data set "fips-distribution-${TAG_NAME}-available" "${FIPS_SOURCE_AVAILABLE}"
