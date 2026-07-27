@@ -23,7 +23,9 @@ if [[ ! "${fips_version}" =~ ^v1\.0\.0(-[a-f0-9]{5,40})?$ ]]; then
 	exit 1
 fi
 
-if [[ "${default_godebug}" != *"fips140=on"* ]]; then
+# DefaultGODEBUG can contain other comma-separated Go defaults, so match the
+# complete fips140 entry instead of requiring the whole value to be equal.
+if [[ ! "${default_godebug}" =~ (^|,)fips140=on(,|$) ]]; then
 	echo "Expected DefaultGODEBUG to contain fips140=on, got: '${default_godebug}'"
 	exit 1
 fi
