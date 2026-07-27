@@ -47,12 +47,12 @@ Published FIPS images use the same `-fips` tag suffix as the existing `-ubi`
 variant, for example `docker.elastic.co/package-registry/package-registry:v1.40.0-fips`.
 
 Package-filled distribution images are also published with the `-fips` suffix.
-For an Elastic Stack release such as `8.19.0`, the production and lite variants
+For an Elastic Stack release such as `9.6.0`, the production and lite variants
 are available as:
 
 ```text
-docker.elastic.co/package-registry/distribution:8.19.0-fips
-docker.elastic.co/package-registry/distribution:lite-8.19.0-fips
+docker.elastic.co/package-registry/distribution:9.6.0-fips
+docker.elastic.co/package-registry/distribution:lite-9.6.0-fips
 ```
 
 These images use the FIPS-enabled Package Registry server and contain the same
