@@ -90,3 +90,33 @@ func TestValidateTLSFlagsFIPSTLSMinVersion(t *testing.T) {
 		})
 	}
 }
+
+func TestEffectiveTLSMinVersion(t *testing.T) {
+	tests := []struct {
+		name       string
+		fips       bool
+		minVersion tlsVersionValue
+		expected   uint16
+	}{
+		{
+			name:       "explicit version is preserved",
+			fips:       true,
+			minVersion: tlsVersionValue(tls.VersionTLS13),
+			expected:   tls.VersionTLS13,
+		},
+		{
+			name:     "FIPS binary defaults to TLS 1.2",
+			fips:     true,
+			expected: tls.VersionTLS12,
+		},
+		{
+			name: "non-FIPS binary uses Go default",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.expected, effectiveTLSMinVersion(tt.minVersion, tt.fips))
+		})
+	}
+}

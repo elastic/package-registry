@@ -512,9 +512,8 @@ func initServer(logger *zap.Logger, options serverOptions) *http.Server {
 	apmgorilla.Instrument(router, apmgorilla.WithTracer(options.apmTracer))
 	router.Use(util.LoggingMiddleware(logger))
 
-	var tlsConfig tls.Config
-	if tlsMinVersionValue > 0 {
-		tlsConfig.MinVersion = uint16(tlsMinVersionValue)
+	tlsConfig := tls.Config{
+		MinVersion: effectiveTLSMinVersion(tlsMinVersionValue, isFIPSBinary()),
 	}
 
 	return &http.Server{Addr: address, Handler: router, TLSConfig: &tlsConfig}
@@ -791,4 +790,16 @@ func validateTLSFlags(certFile, keyFile string, minVersion tlsVersionValue, fips
 		return fmt.Errorf("FIPS 140-3 build: -tls-min-version %s is not permitted; minimum allowed version is 1.2", minVersion)
 	}
 	return nil
+}
+
+func effectiveTLSMinVersion(minVersion tlsVersionValue, fips bool) uint16 {
+	if minVersion > 0 {
+		return uint16(minVersion)
+	}
+	// Make the FIPS requirement explicit instead of relying on Go's default,
+	// while preserving that default for non-FIPS binaries.
+	if fips {
+		return tls.VersionTLS12
+	}
+	return 0
 }
