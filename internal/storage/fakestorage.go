@@ -117,9 +117,17 @@ func UpdateFakeServer(tb testing.TB, server *fakestorage.Server, revision, index
 	// new ones. GetObject round-trips through fromBackendObjects which
 	// preserves the stored Md5Hash, keeping subsequent InitialObjects
 	// insertion FIPS-safe (non-empty Md5Hash skips recomputation).
-	listResp, err := server.ListObjectsWithOptionsPaginated(FakePackageStorageBucketInternal, fakestorage.ListOptions{})
-	require.NoError(tb, err, "failed to list existing server objects")
-	existingAttrs := listResp.Objects
+	var existingAttrs []fakestorage.ObjectAttrs
+	var pageToken string
+	for {
+		listResp, err := server.ListObjectsWithOptionsPaginated(FakePackageStorageBucketInternal, fakestorage.ListOptions{PageToken: pageToken})
+		require.NoError(tb, err, "failed to list existing server objects")
+		existingAttrs = append(existingAttrs, listResp.Objects...)
+		if listResp.NextPageToken == "" {
+			break
+		}
+		pageToken = listResp.NextPageToken
+	}
 	allObjects := make([]fakestorage.Object, 0, len(existingAttrs)+len(newObjects))
 	for _, attrs := range existingAttrs {
 		obj, err := server.GetObject(FakePackageStorageBucketInternal, attrs.Name)

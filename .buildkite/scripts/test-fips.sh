@@ -13,8 +13,9 @@ mage -debug buildFIPS
 
 echo "--- Verify FIPS 140-3 build settings"
 # GOFIPS140 includes a commit hash suffix (e.g. v1.0.0-c2097c7c), not just v1.0.0.
-fips_version=$(go version -m -json package-registry | jq -r '.Settings[] | select(.Key == "GOFIPS140") | .Value')
-default_godebug=$(go version -m -json package-registry | jq -r '.Settings[] | select(.Key == "DefaultGODEBUG") | .Value')
+build_info=$(go version -m -json package-registry)
+fips_version=$(echo "${build_info}" | jq -r '.Settings[] | select(.Key == "GOFIPS140") | .Value')
+default_godebug=$(echo "${build_info}" | jq -r '.Settings[] | select(.Key == "DefaultGODEBUG") | .Value')
 
 go version -m package-registry
 

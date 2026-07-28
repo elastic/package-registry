@@ -31,7 +31,7 @@ build_push_docker_image() {
 		--label TIMESTAMP="$(date +%Y-%m-%d_%H:%M)" \
 		.
 
-	echo "Docker images pushed: ${DOCKER_IMG_TAG}${tag_suffix} ${DOCKER_IMG_TAG_BRANCH}${tag_suffix}"
+	echo "Docker images pushed: ${docker_img_tag} ${docker_img_tag_branch}"
 }
 
 if [[ "${BUILDKITE_PULL_REQUEST}" != "false" ]]; then
