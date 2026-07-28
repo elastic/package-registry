@@ -68,6 +68,34 @@ steps:
             exit 1
         fi
 
+        upload_fips_copy_step() {
+            local tag_name="$$1"
+            local image_tag="$$2"
+            local step_key="$$3"
+            local availability
+            availability="$$(buildkite-agent meta-data get "fips-distribution-$${tag_name}-available" --default="false")"
+
+            if [[ "$${availability}" != "true" ]]; then
+                echo "Skip triggering FIPS image copy for $${tag_name}: source image was not available"
+                return
+            fi
+
+            buildkite-agent pipeline upload << PIPELINE
+        steps:
+          - trigger: unified-release-copy-elastic-images-to-dockerhub
+            label: ":docker: Copy release $${tag_name} FIPS images to Docker Hub"
+            key: "$${step_key}"
+            async: false
+            build:
+              env:
+                IMAGES_NAMES: "package-registry/package-registry-distribution"
+                IMAGES_TAG: "$${image_tag}"
+        PIPELINE
+        }
+
+        upload_fips_copy_step "production" "$${DOCKER_TAG}-fips" "copy-prod-fips"
+        upload_fips_copy_step "lite" "lite-$${DOCKER_TAG}-fips" "copy-lite-fips"
+
         buildkite-agent pipeline upload << PIPELINE
         steps:
           - trigger: unified-release-copy-elastic-images-to-dockerhub

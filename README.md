@@ -103,6 +103,19 @@ mage build
 Once built, the Package Registry can be run as `./package-registry`. Find below
 more details about the available configuration options.
 
+### FIPS 140-3
+
+Package Registry can be built against Go's certified FIPS 140-3 crypto module
+for deployment in FIPS-regulated environments. See [docs/fips.md](./docs/fips.md)
+for build instructions, how to verify a binary, and known limitations.
+
+```bash
+mage buildFIPS
+```
+
+A `-fips` suffixed Docker image is also published alongside each release
+(e.g. `docker.elastic.co/package-registry/package-registry:v1.40.0-fips`).
+
 
 ### Docker
 

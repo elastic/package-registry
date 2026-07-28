@@ -22,6 +22,18 @@ DOCKER_IMAGE_TARGETS=("${DOCKER_IMAGE}")
 if [[ -n "${DOCKER_IMAGE_RENAMED:-""}" ]]; then
     DOCKER_IMAGE_TARGETS+=("${DOCKER_IMAGE_RENAMED}")
 fi
+IMAGE_SUFFIXES=("" "-ubi")
+FIPS_SOURCE_IMAGE="${DOCKER_IMG_SOURCE}-fips"
+FIPS_SOURCE_AVAILABLE=false
+
+# The FIPS distribution source does not exist until the first release that
+# includes a FIPS package-registry image. Skip it during that transition.
+if retry 3 docker buildx imagetools inspect "${FIPS_SOURCE_IMAGE}" > /dev/null; then
+    IMAGE_SUFFIXES+=("-fips")
+    FIPS_SOURCE_AVAILABLE=true
+else
+    echo "FIPS source image is not available yet, skipping: ${FIPS_SOURCE_IMAGE}"
+fi
 
 echo "Docker retag"
 docker buildx create --use
@@ -33,13 +45,18 @@ for image in "${DOCKER_IMAGE_TARGETS[@]}"; do
         DOCKER_IMG_TARGET="${image}:${TAG_NAME}-${DOCKER_TAG}"
     fi
 
-    # do not push if DRY_RUN is true
-    if [[ ${DRY_RUN:-true} == "true" ]]; then
-        docker buildx imagetools create --dry-run -t "${DOCKER_IMG_TARGET}" "${DOCKER_IMG_SOURCE}"
-        docker buildx imagetools create --dry-run -t "${DOCKER_IMG_TARGET}-ubi" "${DOCKER_IMG_SOURCE}-ubi"
-    else
-        retry 3 docker buildx imagetools create -t "${DOCKER_IMG_TARGET}" "${DOCKER_IMG_SOURCE}"
-        retry 3 docker buildx imagetools create -t "${DOCKER_IMG_TARGET}-ubi" "${DOCKER_IMG_SOURCE}-ubi"
-        echo "Docker image pushed: ${DOCKER_IMG_TARGET}"
-    fi
+    for suffix in "${IMAGE_SUFFIXES[@]}"; do
+        source_image="${DOCKER_IMG_SOURCE}${suffix}"
+        target_image="${DOCKER_IMG_TARGET}${suffix}"
+
+        # do not push if DRY_RUN is true
+        if [[ ${DRY_RUN:-true} == "true" ]]; then
+            docker buildx imagetools create --dry-run -t "${target_image}" "${source_image}"
+        else
+            retry 3 docker buildx imagetools create -t "${target_image}" "${source_image}"
+            echo "Docker image pushed: ${target_image}"
+        fi
+    done
 done
+
+buildkite-agent meta-data set "fips-distribution-${TAG_NAME}-available" "${FIPS_SOURCE_AVAILABLE}"

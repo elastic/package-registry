@@ -94,7 +94,7 @@ func BenchmarkSQLIndexerUpdateIndex(b *testing.B) {
 	require.NoError(b, err)
 
 	fs := PrepareFakeServer(b, "../../storage/testdata/search-index-all-full.json")
-	defer fs.Stop()
+	defer func() { fs.Stop() }()
 
 	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
 
@@ -110,7 +110,7 @@ func BenchmarkSQLIndexerUpdateIndex(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		b.StopTimer()
 		revision := fmt.Sprintf("%d", i+2)
-		UpdateFakeServer(b, fs, revision, "../../storage/testdata/search-index-all-full.json")
+		fs, indexer.storageClient = UpdateFakeServer(b, fs, revision, "../../storage/testdata/search-index-all-full.json")
 		b.StartTimer()
 		start = time.Now()
 		err = indexer.updateIndex(b.Context())
@@ -472,7 +472,7 @@ func TestSQLGet_IndexUpdated(t *testing.T) {
 	require.NoError(t, err)
 
 	fs := PrepareFakeServer(t, "../../storage/testdata/search-index-all-small.json")
-	t.Cleanup(fs.Stop)
+	t.Cleanup(func() { fs.Stop() })
 
 	storageClient := ClientNoAuth(fs)
 
@@ -498,7 +498,7 @@ func TestSQLGet_IndexUpdated(t *testing.T) {
 	require.Equal(t, "0.2.0", foundPackages[0].Version)
 
 	// when: index update is performed
-	UpdateFakeServer(t, fs, "2", "../../storage/testdata/search-index-all-full.json")
+	fs, indexer.storageClient = UpdateFakeServer(t, fs, "2", "../../storage/testdata/search-index-all-full.json")
 	err = indexer.updateIndex(t.Context())
 	require.NoError(t, err, "index should be updated successfully")
 
@@ -517,7 +517,7 @@ func TestSQLGet_IndexUpdated(t *testing.T) {
 	require.Equal(t, "1.4.0", foundPackages[0].Version)
 
 	// when: index update is performed removing packages
-	UpdateFakeServer(t, fs, "3", "../../storage/testdata/search-index-all-small.json")
+	fs, indexer.storageClient = UpdateFakeServer(t, fs, "3", "../../storage/testdata/search-index-all-small.json")
 	err = indexer.updateIndex(t.Context())
 	require.NoError(t, err, "index should be updated successfully")
 
@@ -537,7 +537,7 @@ func TestSQLGet_IndexUpdated(t *testing.T) {
 	require.Equal(t, "1Password Events Reporting", *foundPackages[0].Title)
 
 	// when: index update is performed updating some field of an existing package
-	UpdateFakeServer(t, fs, "4", "../../storage/testdata/search-index-all-small-updated-fields.json")
+	fs, indexer.storageClient = UpdateFakeServer(t, fs, "4", "../../storage/testdata/search-index-all-small-updated-fields.json")
 	err = indexer.updateIndex(t.Context())
 	require.NoError(t, err, "index should be updated successfully")
 
