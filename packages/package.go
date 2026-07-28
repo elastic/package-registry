@@ -40,10 +40,10 @@ type Package struct {
 	BasePackage   `config:",inline" json:",inline" yaml:",inline"`
 	FormatVersion string `config:"format_version" json:"format_version" yaml:"format_version"`
 
-	Readme          *string               `config:"readme,omitempty" json:"readme,omitempty" yaml:"readme,omitempty"`
-	License         string                `config:"license,omitempty" json:"license,omitempty" yaml:"license,omitempty"`
-	Screenshots     []Image               `config:"screenshots,omitempty" json:"screenshots,omitempty" yaml:"screenshots,omitempty"`
-	Assets          []string              `config:"assets,omitempty" json:"assets,omitempty" yaml:"assets,omitempty"`
+	Readme              *string               `config:"readme,omitempty" json:"readme,omitempty" yaml:"readme,omitempty"`
+	License             string                `config:"license,omitempty" json:"license,omitempty" yaml:"license,omitempty"`
+	Screenshots         []Image               `config:"screenshots,omitempty" json:"screenshots,omitempty" yaml:"screenshots,omitempty"`
+	Assets              []string              `config:"assets,omitempty" json:"assets,omitempty" yaml:"assets,omitempty"`
 	PolicyTemplates     []PolicyTemplate      `config:"policy_templates,omitempty" json:"policy_templates,omitempty" yaml:"policy_templates,omitempty"`
 	DataStreams         []*DataStream         `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
 	Vars                []Variable            `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
@@ -133,7 +133,7 @@ type PolicyTemplate struct {
 	TemplatePath    string      `config:"template_path,omitempty" json:"template_path,omitempty" yaml:"template_path,omitempty"`
 	Deprecated      *Deprecated `config:"deprecated,omitempty" json:"deprecated,omitempty" yaml:"deprecated,omitempty"`
 
-	IaCBlueprints      []IaCBlueprint      `config:"iac_blueprints,omitempty" json:"iac_blueprints,omitempty" yaml:"iac_blueprints,omitempty"`
+	IaCBlueprints       []IaCBlueprint       `config:"iac_blueprints,omitempty" json:"iac_blueprints,omitempty" yaml:"iac_blueprints,omitempty"`
 	ProviderPermissions []ProviderPermission `config:"provider_permissions,omitempty" json:"provider_permissions,omitempty" yaml:"provider_permissions,omitempty"`
 }
 

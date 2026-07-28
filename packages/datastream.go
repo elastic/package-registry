@@ -78,14 +78,14 @@ type DataStream struct {
 }
 
 type Input struct {
-	Type            string      `config:"type,omitempty" json:"type,omitempty" yaml:"type,omitempty"`
-	Package         string      `config:"package,omitempty" json:"package,omitempty" yaml:"package,omitempty"`
-	Vars            []Variable  `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
-	Title           string      `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
-	Description     string      `config:"description" json:"description,omitempty" yaml:"description,omitempty"`
-	Streams         []Stream    `config:"streams" json:"streams,omitempty" yaml:"streams,omitempty"`
-	TemplatePath    string      `config:"template_path" json:"template_path,omitempty" yaml:"template_path,omitempty"`
-	InputGroup      string      `config:"input_group" json:"input_group,omitempty" yaml:"input_group,omitempty"`
+	Type                string               `config:"type,omitempty" json:"type,omitempty" yaml:"type,omitempty"`
+	Package             string               `config:"package,omitempty" json:"package,omitempty" yaml:"package,omitempty"`
+	Vars                []Variable           `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
+	Title               string               `config:"title" json:"title,omitempty" yaml:"title,omitempty"`
+	Description         string               `config:"description" json:"description,omitempty" yaml:"description,omitempty"`
+	Streams             []Stream             `config:"streams" json:"streams,omitempty" yaml:"streams,omitempty"`
+	TemplatePath        string               `config:"template_path" json:"template_path,omitempty" yaml:"template_path,omitempty"`
+	InputGroup          string               `config:"input_group" json:"input_group,omitempty" yaml:"input_group,omitempty"`
 	DeploymentModes     []string             `config:"deployment_modes,omitempty" json:"deployment_modes,omitempty" yaml:"deployment_modes,omitempty"`
 	Deprecated          *Deprecated          `config:"deprecated,omitempty" json:"deprecated,omitempty" yaml:"deprecated,omitempty"`
 	IaCBlueprints       []IaCBlueprint       `config:"iac_blueprints,omitempty" json:"iac_blueprints,omitempty" yaml:"iac_blueprints,omitempty"`
