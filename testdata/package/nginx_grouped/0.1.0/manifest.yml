@@ -1,0 +1,16 @@
+format_version: 2.10.0
+name: nginx_grouped
+title: Nginx Grouped
+description: Test package for the group field on BasePackage.
+version: 0.1.0
+type: integration
+release: beta
+categories:
+  - custom
+group: nginx
+conditions:
+  kibana:
+    version: ">=8.0.0"
+owner:
+  github: elastic/integrations
+  type: elastic
