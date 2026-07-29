@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Add FIPS 140-3 build support via `GOFIPS140=v1.0.0`; new `mage buildFIPS`, `mage dockerBuildFIPS`, and `mage testFIPS` targets; `-fips` Docker and package-filled distribution images published per release. See [docs/fips.md](./docs/fips.md). [#1858](https://github.com/elastic/package-registry/pull/1858)
 * FIPS builds now reject startup if `-tls-min-version` is set below TLS 1.2. [#1858](https://github.com/elastic/package-registry/pull/1858)
 * `internal/storage`: `UpdateFakeServer` now restarts the fake GCS server instead of adding objects to the running one, keeping object creation on the `InitialObjects` path to avoid MD5 recomputation under strict FIPS mode. [#1858](https://github.com/elastic/package-registry/pull/1858)
-* Add optional `group` field to `BasePackage`; packages whose manifest sets `group` now include it in `/search` and `/package/{name}/{version}` responses. Packages without `group` omit the field (`omitempty`), preserving backwards compatibility. [1896](https://github.com/elastic/package-registry/pull/1896)
+* Add optional `group` field to `BasePackage`; packages whose manifest sets `group` now include it in `/search` and `/package/{name}/{version}` responses. Packages without `group` omit the field (`omitempty`), preserving backwards compatibility. [#1896](https://github.com/elastic/package-registry/pull/1896)
 
 ### Deprecated
 
