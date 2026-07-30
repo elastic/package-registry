@@ -999,6 +999,29 @@
     "signature_path": "/epr/nginx/nginx-1.15.0.zip.sig"
   },
   {
+    "name": "nginx_grouped",
+    "title": "Nginx Grouped",
+    "version": "0.1.0",
+    "release": "beta",
+    "description": "Test package for the group field on BasePackage.",
+    "type": "integration",
+    "download": "/epr/nginx_grouped/nginx_grouped-0.1.0.zip",
+    "path": "/package/nginx_grouped/0.1.0",
+    "conditions": {
+      "kibana": {
+        "version": ">=8.0.0"
+      }
+    },
+    "owner": {
+      "type": "elastic",
+      "github": "elastic/integrations"
+    },
+    "categories": [
+      "custom"
+    ],
+    "group": "nginx"
+  },
+  {
     "name": "no_stream_configs",
     "title": "No Stream configs",
     "version": "1.0.0",

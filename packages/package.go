@@ -96,6 +96,7 @@ type BasePackage struct {
 	BaseDataStreams         []*BaseDataStream    `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
 	Deprecated              *Deprecated          `config:"deprecated,omitempty" json:"deprecated,omitempty" yaml:"deprecated,omitempty"`
 	Requires                *PackageRequirements `config:"requires,omitempty" json:"requires,omitempty" yaml:"requires,omitempty"`
+	Group                   string               `config:"group,omitempty" json:"group,omitempty" yaml:"group,omitempty"`
 }
 
 // BasePolicyTemplate is used for the package policy templates in the /search endpoint
