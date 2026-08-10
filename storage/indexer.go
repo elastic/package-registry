@@ -262,35 +262,46 @@ func (i *Indexer) incrementalSync(ctx context.Context, latestCursorValue string)
 
 // applyDelta modifies the in-memory packageList by applying a delta.
 // Must be called with i.m held for writing.
+//
+// The implementation avoids the previous 3× peak (full slice → full map → new slice)
+// by building small maps only for the delta entries and doing a single-pass
+// filter+update over the existing slice, reusing its backing array.
 func (i *Indexer) applyDelta(delta *internalStorage.SearchIndexDelta) {
-	pkgMap := make(map[string]*packages.Package, len(i.packageList))
+	removeKeys := make(map[string]struct{}, len(delta.Removed))
+	for _, ref := range delta.Removed {
+		removeKeys[ref.Name+"-"+ref.Version] = struct{}{}
+	}
+
+	updateMap := make(map[string]*packages.Package, len(delta.Updated))
+	for _, entry := range delta.Updated {
+		p := entry.PackageManifest
+		p.BasePath = fmt.Sprintf("%s-%s.zip", p.Name, p.Version)
+		p.SetRemoteResolver(i.resolver)
+		updateMap[p.Name+"-"+p.Version] = &p
+	}
+
+	out := i.packageList[:0]
 	for _, p := range i.packageList {
-		pkgMap[p.Name+"-"+p.Version] = p
+		key := p.Name + "-" + p.Version
+		if _, removed := removeKeys[key]; removed {
+			continue
+		}
+		if newer, ok := updateMap[key]; ok {
+			out = append(out, newer)
+			delete(updateMap, key)
+		} else {
+			out = append(out, p)
+		}
 	}
 
 	for _, entry := range delta.Added {
 		p := entry.PackageManifest
 		p.BasePath = fmt.Sprintf("%s-%s.zip", p.Name, p.Version)
 		p.SetRemoteResolver(i.resolver)
-		pkgMap[p.Name+"-"+p.Version] = &p
+		out = append(out, &p)
 	}
 
-	for _, entry := range delta.Updated {
-		p := entry.PackageManifest
-		p.BasePath = fmt.Sprintf("%s-%s.zip", p.Name, p.Version)
-		p.SetRemoteResolver(i.resolver)
-		pkgMap[p.Name+"-"+p.Version] = &p
-	}
-
-	for _, ref := range delta.Removed {
-		delete(pkgMap, ref.Name+"-"+ref.Version)
-	}
-
-	newList := make(packages.Packages, 0, len(pkgMap))
-	for _, p := range pkgMap {
-		newList = append(newList, p)
-	}
-	i.packageList = newList
+	i.packageList = out
 }
 
 func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.Packages, error) {
