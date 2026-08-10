@@ -48,6 +48,7 @@ type IndexerOptions struct {
 	PackageStorageBucketInternal string
 	PackageStorageEndpoint       string
 	WatchInterval                time.Duration
+	IncrementalUpdates           bool
 }
 
 func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options IndexerOptions) *Indexer {
@@ -161,13 +162,26 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 		metrics.StorageIndexerUpdateIndexDurationSeconds.Observe(time.Since(start).Seconds())
 	}()
 
-	anIndex, currentCursor, err := internalStorage.LoadPackagesAndCursorFromIndex(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, i.cursor)
+	latestCursorValue, err := internalStorage.LoadLatestCursorValue(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal)
+	if err != nil {
+		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
+		return fmt.Errorf("can't load latest cursor: %w", err)
+	}
+	if i.cursor == latestCursorValue {
+		return nil
+	}
+
+	if i.cursor == "" || !i.options.IncrementalUpdates {
+		return i.fullSync(ctx, latestCursorValue)
+	}
+	return i.incrementalSync(ctx, latestCursorValue)
+}
+
+func (i *Indexer) fullSync(ctx context.Context, latestCursorValue string) error {
+	anIndex, err := internalStorage.LoadSearchIndexAllForCursor(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, latestCursorValue)
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 		return fmt.Errorf("can't load the search-index-all index content: %w", err)
-	}
-	if i.cursor == currentCursor {
-		return nil
 	}
 	if anIndex == nil {
 		i.logger.Info("Downloaded new search-index-all index. No packages found.")
@@ -179,16 +193,104 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 
 	i.m.Lock()
 	defer i.m.Unlock()
-	i.cursor = currentCursor
+	i.cursor = latestCursorValue
 	i.packageList = *anIndex
 	metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
 	metrics.NumberIndexedPackages.Set(float64(len(i.packageList)))
 
-	// set the deprecated notice information once the package list is updated
 	packages.UpdateLatestDeprecatedPackagesMapByName(i.packageList, i.deprecatedPackages)
 	packages.PropagateLatestDeprecatedInfoToPackageList(i.packageList, i.deprecatedPackages)
 
 	return nil
+}
+
+func (i *Indexer) incrementalSync(ctx context.Context, latestCursorValue string) error {
+	timestamps, err := internalStorage.ListCursorsBetween(ctx, i.storageClient, i.options.PackageStorageBucketInternal, i.cursor, latestCursorValue)
+	if err != nil {
+		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
+		return fmt.Errorf("can't list cursors between %s and %s: %w", i.cursor, latestCursorValue, err)
+	}
+
+	type revision struct {
+		timestamp string
+		delta     *internalStorage.SearchIndexDelta
+		fullIndex *packages.Packages
+	}
+
+	revisions := make([]revision, 0, len(timestamps))
+	for _, ts := range timestamps {
+		delta, err := internalStorage.LoadSearchIndexDelta(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, ts)
+		if err != nil {
+			if errors.Is(err, storage.ErrObjectNotExist) {
+				i.logger.Warn("delta file missing, falling back to full sync for timestamp", zap.String("cursor", ts))
+				anIndex, err := internalStorage.LoadSearchIndexAllForCursor(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, ts)
+				if err != nil {
+					metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
+					return fmt.Errorf("can't load search-index-all for cursor %s: %w", ts, err)
+				}
+				revisions = append(revisions, revision{timestamp: ts, fullIndex: anIndex})
+			} else {
+				metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
+				return fmt.Errorf("can't load delta for cursor %s: %w", ts, err)
+			}
+		} else {
+			revisions = append(revisions, revision{timestamp: ts, delta: delta})
+		}
+	}
+
+	i.m.Lock()
+	defer i.m.Unlock()
+
+	for _, r := range revisions {
+		if r.fullIndex != nil {
+			i.transformSearchIndexAllToPackages(r.fullIndex)
+			i.packageList = *r.fullIndex
+		} else {
+			i.applyDelta(r.delta)
+		}
+		i.cursor = r.timestamp
+	}
+
+	metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
+	metrics.NumberIndexedPackages.Set(float64(len(i.packageList)))
+
+	packages.UpdateLatestDeprecatedPackagesMapByName(i.packageList, i.deprecatedPackages)
+	packages.PropagateLatestDeprecatedInfoToPackageList(i.packageList, i.deprecatedPackages)
+
+	return nil
+}
+
+// applyDelta modifies the in-memory packageList by applying a delta.
+// Must be called with i.m held for writing.
+func (i *Indexer) applyDelta(delta *internalStorage.SearchIndexDelta) {
+	pkgMap := make(map[string]*packages.Package, len(i.packageList))
+	for _, p := range i.packageList {
+		pkgMap[p.Name+"-"+p.Version] = p
+	}
+
+	for _, entry := range delta.Added {
+		p := entry.PackageManifest
+		p.BasePath = fmt.Sprintf("%s-%s.zip", p.Name, p.Version)
+		p.SetRemoteResolver(i.resolver)
+		pkgMap[p.Name+"-"+p.Version] = &p
+	}
+
+	for _, entry := range delta.Updated {
+		p := entry.PackageManifest
+		p.BasePath = fmt.Sprintf("%s-%s.zip", p.Name, p.Version)
+		p.SetRemoteResolver(i.resolver)
+		pkgMap[p.Name+"-"+p.Version] = &p
+	}
+
+	for _, ref := range delta.Removed {
+		delete(pkgMap, ref.Name+"-"+ref.Version)
+	}
+
+	newList := make(packages.Packages, 0, len(pkgMap))
+	for _, p := range pkgMap {
+		newList = append(newList, p)
+	}
+	i.packageList = newList
 }
 
 func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.Packages, error) {

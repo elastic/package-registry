@@ -51,3 +51,16 @@ func loadCursor(ctx context.Context, logger *zap.Logger, storageClient *storage.
 	logger.Debug("loaded cursor file", zap.String("cursor", c.String()))
 	return &c, nil
 }
+
+// LoadLatestCursorValue reads cursor.json and returns the Current timestamp value.
+func LoadLatestCursorValue(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, storageBucketInternal string) (string, error) {
+	bucketName, rootStoragePath, err := extractBucketNameFromURL(storageBucketInternal)
+	if err != nil {
+		return "", fmt.Errorf("can't extract bucket name from URL: %w", err)
+	}
+	c, err := loadCursor(ctx, logger, storageClient, bucketName, rootStoragePath)
+	if err != nil {
+		return "", err
+	}
+	return c.Current, nil
+}

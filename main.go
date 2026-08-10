@@ -76,6 +76,7 @@ var (
 	featureEnableCategoriesCache bool
 
 	featureStorageIndexer        bool
+	featureIncrementalUpdates    bool
 	storageIndexerBucketInternal string
 	storageEndpoint              string
 	storageIndexerWatchInterval  time.Duration
@@ -129,6 +130,8 @@ func init() {
 	flag.DurationVar(&storageIndexerWatchInterval, "storage-indexer-watch-interval", 1*time.Minute, "Address of the package-registry service.")
 	// The following storage related flags are technical preview and might be removed in the future or renamed
 	flag.BoolVar(&featureSQLStorageIndexer, "feature-sql-storage-indexer", false, "Enable SQL storage indexer to include packages from Package Storage v2 (technical preview).")
+	flag.BoolVar(&featureIncrementalUpdates, "feature-incremental-updates", false,
+		"Enable incremental index updates using delta files (technical preview).")
 	flag.BoolVar(&featureEnableSearchCache, "feature-enable-search-cache", false, "Enable cache for search requests. Just supported with the SQL storage indexer. (technical preview).")
 	flag.BoolVar(&featureEnableCategoriesCache, "feature-enable-categories-cache", false, "Enable cache for categories requests. Just supported with the SQL storage indexer. (technical preview).")
 
@@ -432,6 +435,7 @@ func initStorageIndexer(ctx context.Context, logger *zap.Logger, options serverO
 		PackageStorageBucketInternal: storageIndexerBucketInternal,
 		PackageStorageEndpoint:       storageEndpoint,
 		WatchInterval:                storageIndexerWatchInterval,
+		IncrementalUpdates:           featureIncrementalUpdates,
 	}), nil
 }
 

@@ -15,6 +15,7 @@ const (
 	v2MetadataStoragePath = "v2/metadata"
 	cursorStoragePath     = v2MetadataStoragePath + "/cursor.json"
 	searchIndexAllFile    = "search-index-all.json"
+	searchIndexDeltaFile  = "search-index-delta.json"
 
 	// Public bucket
 	artifactsStoragePath         = "artifacts"

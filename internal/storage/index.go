@@ -223,3 +223,12 @@ func LoadPackagesAndCursorFromIndexBatches(ctx context.Context, logger *zap.Logg
 	}
 	return storageCursor.Current, nil
 }
+
+// LoadSearchIndexAllForCursor reads search-index-all.json for a specific cursor value.
+func LoadSearchIndexAllForCursor(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, storageBucketInternal, cursorValue string) (*packages.Packages, error) {
+	bucketName, rootStoragePath, err := extractBucketNameFromURL(storageBucketInternal)
+	if err != nil {
+		return nil, fmt.Errorf("can't extract bucket name from URL: %w", err)
+	}
+	return loadSearchIndexAll(ctx, logger, storageClient, bucketName, rootStoragePath, cursor{Current: cursorValue})
+}
