@@ -23,6 +23,82 @@ import (
 	"github.com/elastic/package-registry/internal/util"
 )
 
+// BenchmarkFilterApply measures Filter.Apply ("latest version per name" path).
+// The inner O(N²) scan is replaced by an O(1) map lookup, so runtime should
+// scale linearly with the number of packages instead of quadratically.
+func BenchmarkFilterApply(b *testing.B) {
+	for _, tc := range []struct {
+		names    int // distinct package names
+		versions int // versions per name
+	}{
+		{100, 5},
+		{500, 5},
+		{1000, 5},
+		{2000, 5},
+	} {
+		pkgs := syntheticPackages(tc.names, tc.versions)
+		f := Filter{AllVersions: false}
+
+		b.Run(fmt.Sprintf("names=%d/versions=%d", tc.names, tc.versions), func(b *testing.B) {
+			b.ReportAllocs()
+			b.ResetTimer()
+			for b.Loop() {
+				_, _ = f.Apply(b.Context(), pkgs)
+			}
+		})
+	}
+}
+
+// BenchmarkFilterApplyAllVersions is the AllVersions=true path (no dedup map).
+func BenchmarkFilterApplyAllVersions(b *testing.B) {
+	pkgs := syntheticPackages(500, 5)
+	f := Filter{AllVersions: true}
+	b.ReportAllocs()
+	b.ResetTimer()
+	for b.Loop() {
+		_, _ = f.Apply(b.Context(), pkgs)
+	}
+}
+
+// BenchmarkLegacyApply measures the experimental=true path (legacyApply).
+func BenchmarkLegacyApply(b *testing.B) {
+	for _, tc := range []struct {
+		names    int
+		versions int
+	}{
+		{100, 5},
+		{500, 5},
+		{1000, 5},
+	} {
+		pkgs := syntheticPackages(tc.names, tc.versions)
+		f := Filter{Experimental: true, AllVersions: false}
+
+		b.Run(fmt.Sprintf("names=%d/versions=%d", tc.names, tc.versions), func(b *testing.B) {
+			b.ReportAllocs()
+			b.ResetTimer()
+			for b.Loop() {
+				_ = f.legacyApply(b.Context(), pkgs)
+			}
+		})
+	}
+}
+
+// syntheticPackages builds a slice of names*versions Package pointers with
+// distinct names and ascending semver versions, simulating a realistic index.
+func syntheticPackages(names, versions int) Packages {
+	pkgs := make(Packages, 0, names*versions)
+	for i := 0; i < names; i++ {
+		for v := 0; v < versions; v++ {
+			pkgs = append(pkgs, filterTestPackage{
+				Name:    fmt.Sprintf("pkg-%04d", i),
+				Version: fmt.Sprintf("1.%d.0", v),
+				Type:    "integration",
+			}.Build())
+		}
+	}
+	return pkgs
+}
+
 func BenchmarkInit(b *testing.B) {
 	// given
 	packagesBasePaths := []string{"../testdata/second_package_path", "../testdata/package"}
