@@ -477,7 +477,7 @@ func TestIncrementalUpdate(t *testing.T) {
 		require.NoError(t, err)
 
 		deltaContent := readDeltaFile(t, "testdata/search-index-delta-add.json")
-		fs, indexer.storageClient = internalStorage.UpdateFakeServerWithDelta(t, fs, "2", deltaContent)
+		_, indexer.storageClient = internalStorage.UpdateFakeServerWithDelta(t, fs, "2", deltaContent)
 
 		err = indexer.updateIndex(t.Context())
 		require.NoError(t, err)
@@ -510,7 +510,7 @@ func TestIncrementalUpdate(t *testing.T) {
 		require.NoError(t, err)
 
 		deltaContent := readDeltaFile(t, "testdata/search-index-delta-remove.json")
-		fs, indexer.storageClient = internalStorage.UpdateFakeServerWithDelta(t, fs, "2", deltaContent)
+		_, indexer.storageClient = internalStorage.UpdateFakeServerWithDelta(t, fs, "2", deltaContent)
 
 		err = indexer.updateIndex(t.Context())
 		require.NoError(t, err)
@@ -536,7 +536,7 @@ func TestIncrementalUpdate(t *testing.T) {
 		require.NoError(t, err)
 
 		deltaContent := readDeltaFile(t, "testdata/search-index-delta-update.json")
-		fs, indexer.storageClient = internalStorage.UpdateFakeServerWithDelta(t, fs, "2", deltaContent)
+		_, indexer.storageClient = internalStorage.UpdateFakeServerWithDelta(t, fs, "2", deltaContent)
 
 		err = indexer.updateIndex(t.Context())
 		require.NoError(t, err)
@@ -567,7 +567,7 @@ func TestIncrementalUpdate(t *testing.T) {
 		// revision "3": remove 0.1.1
 		fs, indexer.storageClient = internalStorage.UpdateFakeServerWithDelta(t, fs, "3", readDeltaFile(t, "testdata/search-index-delta-remove.json"))
 		// revision "4": update 0.2.0 title — cursor.json now points to "4"
-		fs, indexer.storageClient = internalStorage.UpdateFakeServerWithDelta(t, fs, "4", readDeltaFile(t, "testdata/search-index-delta-update.json"))
+		_, indexer.storageClient = internalStorage.UpdateFakeServerWithDelta(t, fs, "4", readDeltaFile(t, "testdata/search-index-delta-update.json"))
 
 		// single updateIndex call should apply all three deltas
 		err = indexer.updateIndex(t.Context())
@@ -605,7 +605,7 @@ func TestIncrementalUpdate(t *testing.T) {
 		err := indexer.Init(t.Context())
 		require.NoError(t, err)
 
-		fs, indexer.storageClient = internalStorage.UpdateFakeServer(t, fs, "2", "testdata/search-index-all-full.json")
+		_, indexer.storageClient = internalStorage.UpdateFakeServer(t, fs, "2", "testdata/search-index-all-full.json")
 		err = indexer.updateIndex(t.Context())
 		require.NoError(t, err)
 
@@ -670,7 +670,7 @@ func TestIncrementalUpdate(t *testing.T) {
 		require.NoError(t, err)
 
 		// revision "2" has a full search-index-all.json but no delta file
-		fs, indexer.storageClient = internalStorage.UpdateFakeServer(t, fs, "2", "testdata/search-index-all-full.json")
+		_, indexer.storageClient = internalStorage.UpdateFakeServer(t, fs, "2", "testdata/search-index-all-full.json")
 
 		err = indexer.updateIndex(t.Context())
 		require.NoError(t, err)
