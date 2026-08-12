@@ -172,9 +172,9 @@ func PrepareServerObjects(revision string, indexContent []byte) ([]fakestorage.O
 	return serverObjects, len(index.Packages), nil
 }
 
-// PrepareDeltaServerObjects creates GCS objects for a delta file revision:
+// prepareDeltaServerObjects creates GCS objects for a delta file revision:
 // a cursor.json pointing to revision and a search-index-delta.json at that revision's path.
-func PrepareDeltaServerObjects(revision string, deltaContent []byte) []fakestorage.Object {
+func prepareDeltaServerObjects(revision string, deltaContent []byte) []fakestorage.Object {
 	return []fakestorage.Object{
 		{
 			ObjectAttrs: fakestorage.ObjectAttrs{
@@ -195,7 +195,7 @@ func PrepareDeltaServerObjects(revision string, deltaContent []byte) []fakestora
 // server and returning a new one with the previous objects plus the new revision's
 // delta file (no search-index-all.json for the new revision).
 func UpdateFakeServerWithDelta(tb testing.TB, server *fakestorage.Server, revision string, deltaContent []byte) (*fakestorage.Server, *storage.Client) {
-	newObjects := PrepareDeltaServerObjects(revision, deltaContent)
+	newObjects := prepareDeltaServerObjects(revision, deltaContent)
 
 	var existingAttrs []fakestorage.ObjectAttrs
 	var pageToken string

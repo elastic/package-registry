@@ -29,11 +29,11 @@ type packageIndexEntry struct {
 type SearchIndexDelta struct {
 	Added   []packageIndexEntry `json:"added"`
 	Updated []packageIndexEntry `json:"updated"`
-	Removed []RemovedPackageRef `json:"removed"`
+	Removed []removedPackageRef `json:"removed"`
 }
 
-// RemovedPackageRef identifies a package to remove by name and version.
-type RemovedPackageRef struct {
+// removedPackageRef identifies a package to remove by name and version.
+type removedPackageRef struct {
 	Name    string `json:"name"`
 	Version string `json:"version"`
 }

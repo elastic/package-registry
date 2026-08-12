@@ -131,7 +131,7 @@ func init() {
 	// The following storage related flags are technical preview and might be removed in the future or renamed
 	flag.BoolVar(&featureSQLStorageIndexer, "feature-sql-storage-indexer", false, "Enable SQL storage indexer to include packages from Package Storage v2 (technical preview).")
 	flag.BoolVar(&featureIncrementalUpdates, "feature-incremental-updates", false,
-		"Enable incremental index updates using delta files (technical preview).")
+		"Enable incremental index updates using delta files (technical preview). Not supported with the SQL storage indexer.")
 	flag.BoolVar(&featureEnableSearchCache, "feature-enable-search-cache", false, "Enable cache for search requests. Just supported with the SQL storage indexer. (technical preview).")
 	flag.BoolVar(&featureEnableCategoriesCache, "feature-enable-categories-cache", false, "Enable cache for categories requests. Just supported with the SQL storage indexer. (technical preview).")
 

@@ -247,12 +247,18 @@ func (i *Indexer) incrementalSync(ctx context.Context, latestCursorValue string)
 		return nil
 	}
 
+	// Pre-transform full-index revisions before acquiring the lock; i.resolver is read-only after init.
+	for j := range revisions {
+		if revisions[j].fullIndex != nil {
+			i.transformSearchIndexAllToPackages(revisions[j].fullIndex)
+		}
+	}
+
 	i.m.Lock()
 	defer i.m.Unlock()
 
 	for _, r := range revisions {
 		if r.fullIndex != nil {
-			i.transformSearchIndexAllToPackages(r.fullIndex)
 			i.packageList = *r.fullIndex
 		} else if r.delta != nil {
 			i.applyDelta(r.delta)

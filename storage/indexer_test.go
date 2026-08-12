@@ -658,9 +658,11 @@ func TestIncrementalUpdate(t *testing.T) {
 		err = indexer.updateIndex(t.Context())
 		require.NoError(t, err)
 
-		foundPackages, err := indexer.Get(t.Context(), &packages.GetOptions{})
+		foundPackages, err := indexer.Get(t.Context(), &packages.GetOptions{
+			Filter: &packages.Filter{AllVersions: true, Prerelease: true},
+		})
 		require.NoError(t, err)
-		assert.Greater(t, len(foundPackages), 2, "full sync should have loaded all packages")
+		assert.Len(t, foundPackages, 1139, "full sync should have loaded all packages")
 	})
 
 	t.Run("same_cursor_skips", func(t *testing.T) {
@@ -724,9 +726,11 @@ func TestIncrementalUpdate(t *testing.T) {
 		err = indexer.updateIndex(t.Context())
 		require.NoError(t, err)
 
-		foundPackages, err := indexer.Get(t.Context(), &packages.GetOptions{})
+		foundPackages, err := indexer.Get(t.Context(), &packages.GetOptions{
+			Filter: &packages.Filter{AllVersions: true, Prerelease: true},
+		})
 		require.NoError(t, err)
-		assert.Greater(t, len(foundPackages), 2, "fallback full sync should have loaded all packages")
+		assert.Len(t, foundPackages, 1139, "fallback full sync should have loaded all packages")
 	})
 
 	// This test is intentionally racy without the fix in applyDelta that allocates a
