@@ -231,6 +231,8 @@ func (i *Indexer) incrementalSync(ctx context.Context, latestCursorValue string)
 				if anIndex == nil {
 					i.logger.Info("Delta fallback: full sync returned no packages for revision.", zap.String("cursor", ts))
 				}
+				// Full sync supersedes all prior deltas — reset to avoid holding multiple full copies in memory.
+				revisions = revisions[:0]
 				revisions = append(revisions, revision{timestamp: ts, fullIndex: anIndex})
 			} else {
 				metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
@@ -239,6 +241,10 @@ func (i *Indexer) incrementalSync(ctx context.Context, latestCursorValue string)
 		} else {
 			revisions = append(revisions, revision{timestamp: ts, delta: delta})
 		}
+	}
+
+	if len(revisions) == 0 {
+		return nil
 	}
 
 	i.m.Lock()

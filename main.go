@@ -400,6 +400,9 @@ func initIndexer(ctx context.Context, logger *zap.Logger, options serverOptions)
 		}
 		combined = append(combined, indexer)
 	case featureStorageIndexer:
+		if featureIncrementalUpdates {
+			logger.Warn("Technical preview: Incremental updates feature is enabled.")
+		}
 		indexer, err := initStorageIndexer(ctx, logger, options)
 		if err != nil {
 			logger.Fatal("failed to initialize storage indexer", zap.Error(err))
@@ -756,6 +759,10 @@ func validateFlags() error {
 
 	if featureStorageIndexer && featureSQLStorageIndexer {
 		return fmt.Errorf("both -feature-storage-indexer and -feature-sql-storage-indexer flags are enabled but are mutually exclusive")
+	}
+
+	if featureIncrementalUpdates && featureSQLStorageIndexer {
+		return fmt.Errorf("feature-incremental-updates is not supported with feature-sql-storage-indexer; disable one of them")
 	}
 
 	if featureEnableSearchCache && !featureSQLStorageIndexer {

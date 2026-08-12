@@ -482,6 +482,7 @@ func TestIncrementalUpdate(t *testing.T) {
 
 		err = indexer.updateIndex(t.Context())
 		require.NoError(t, err)
+		assert.Equal(t, "2", indexer.cursor, "cursor must advance to the applied revision")
 
 		foundPackages, err := indexer.Get(t.Context(), &packages.GetOptions{
 			Filter: &packages.Filter{AllVersions: true, Prerelease: true, PackageName: "1password"},
@@ -515,6 +516,7 @@ func TestIncrementalUpdate(t *testing.T) {
 
 		err = indexer.updateIndex(t.Context())
 		require.NoError(t, err)
+		assert.Equal(t, "2", indexer.cursor, "cursor must advance to the applied revision")
 
 		foundPackages, err := indexer.Get(t.Context(), &packages.GetOptions{
 			Filter: &packages.Filter{AllVersions: true, Prerelease: true, PackageName: "1password"},
@@ -541,6 +543,7 @@ func TestIncrementalUpdate(t *testing.T) {
 
 		err = indexer.updateIndex(t.Context())
 		require.NoError(t, err)
+		assert.Equal(t, "2", indexer.cursor, "cursor must advance to the applied revision")
 
 		foundPackages, err := indexer.Get(t.Context(), &packages.GetOptions{
 			Filter: &packages.Filter{PackageName: "1password", PackageVersion: "0.2.0", Prerelease: true},
@@ -549,6 +552,50 @@ func TestIncrementalUpdate(t *testing.T) {
 		require.Len(t, foundPackages, 1)
 		require.NotNil(t, foundPackages[0].Title)
 		assert.Equal(t, "1Password Events Reporting UPDATED DELTA", *foundPackages[0].Title)
+	})
+
+	t.Run("update_is_full_replacement", func(t *testing.T) {
+		// Verifies that an updated package is fully replaced, not merged with the original.
+		t.Parallel()
+
+		fs := internalStorage.PrepareFakeServer(t, "testdata/search-index-all-small.json")
+		t.Cleanup(fs.Stop)
+
+		indexer := NewIndexer(util.NewTestLogger(), internalStorage.ClientNoAuth(fs), incrementalOptions)
+		t.Cleanup(func() { indexer.Close(context.Background()) })
+
+		err := indexer.Init(t.Context())
+		require.NoError(t, err)
+
+		deltaContent := readDeltaFile(t, "testdata/search-index-delta-update.json")
+		_, indexer.storageClient = internalStorage.UpdateFakeServerWithDelta(t, fs, "2", deltaContent)
+
+		err = indexer.updateIndex(t.Context())
+		require.NoError(t, err)
+
+		allPackages, err := indexer.Get(t.Context(), &packages.GetOptions{
+			Filter: &packages.Filter{AllVersions: true, Prerelease: true, PackageName: "1password"},
+		})
+		require.NoError(t, err)
+		// Exact count: update must not duplicate — still exactly 2 versions.
+		require.Len(t, allPackages, 2, "update must replace, not duplicate the package entry")
+
+		byVersion := make(map[string]*packages.Package)
+		for _, p := range allPackages {
+			pkg := p
+			byVersion[p.Version] = pkg
+		}
+
+		require.Contains(t, byVersion, "0.2.0")
+		require.Contains(t, byVersion, "0.1.1")
+
+		updated := byVersion["0.2.0"]
+		require.NotNil(t, updated.Title)
+		assert.Equal(t, "1Password Events Reporting UPDATED DELTA", *updated.Title, "0.2.0 title must reflect the delta, not the original")
+
+		untouched := byVersion["0.1.1"]
+		require.NotNil(t, untouched.Title)
+		assert.Equal(t, "1Password Events Reporting", *untouched.Title, "0.1.1 must not be affected by the update delta")
 	})
 
 	t.Run("multiple_deltas_in_order", func(t *testing.T) {
@@ -573,6 +620,7 @@ func TestIncrementalUpdate(t *testing.T) {
 		// single updateIndex call should apply all three deltas
 		err = indexer.updateIndex(t.Context())
 		require.NoError(t, err)
+		assert.Equal(t, "4", indexer.cursor, "cursor must advance to the last applied revision")
 
 		foundPackages, err := indexer.Get(t.Context(), &packages.GetOptions{
 			Filter: &packages.Filter{AllVersions: true, Prerelease: true, PackageName: "1password"},
