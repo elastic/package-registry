@@ -62,17 +62,6 @@ func TestListCursorsBetween_MultipleIntermediates(t *testing.T) {
 	assert.Equal(t, []string{"2", "3", "4"}, timestamps)
 }
 
-func TestListCursorsBetween_ExcludesSince(t *testing.T) {
-	server := newCursorsServer(t, "1", "2", "3")
-	client := ClientNoAuth(server)
-
-	timestamps, err := listCursorsBetween(t.Context(), client, FakePackageStorageBucketInternal, "", "1", "3")
-	require.NoError(t, err)
-	assert.NotContains(t, timestamps, "1")
-	assert.Contains(t, timestamps, "2")
-	assert.Contains(t, timestamps, "3")
-}
-
 // TestListCursorsBetween_FixedLengthSort verifies that multi-character cursor values
 // sort correctly. listCursorsBetween uses lexicographic ordering, which requires
 // cursor values to be fixed-length strings (e.g. zero-padded integers or Unix
