@@ -228,6 +228,9 @@ func (i *Indexer) incrementalSync(ctx context.Context, latestCursorValue string)
 					metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 					return fmt.Errorf("can't load search-index-all for cursor %s: %w", ts, err)
 				}
+				if anIndex == nil {
+					i.logger.Info("Delta fallback: full sync returned no packages for revision.", zap.String("cursor", ts))
+				}
 				revisions = append(revisions, revision{timestamp: ts, fullIndex: anIndex})
 			} else {
 				metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
@@ -245,7 +248,7 @@ func (i *Indexer) incrementalSync(ctx context.Context, latestCursorValue string)
 		if r.fullIndex != nil {
 			i.transformSearchIndexAllToPackages(r.fullIndex)
 			i.packageList = *r.fullIndex
-		} else {
+		} else if r.delta != nil {
 			i.applyDelta(r.delta)
 		}
 		i.cursor = r.timestamp
@@ -280,7 +283,7 @@ func (i *Indexer) applyDelta(delta *internalStorage.SearchIndexDelta) {
 		updateMap[p.Name+"-"+p.Version] = &p
 	}
 
-	out := i.packageList[:0]
+	out := make(packages.Packages, 0, len(i.packageList))
 	for _, p := range i.packageList {
 		key := p.Name + "-" + p.Version
 		if _, removed := removeKeys[key]; removed {

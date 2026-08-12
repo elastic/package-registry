@@ -81,3 +81,16 @@ func TestListCursorsBetween_IncludesUntil(t *testing.T) {
 	require.NoError(t, err)
 	assert.Contains(t, timestamps, "3")
 }
+
+// TestListCursorsBetween_FixedLengthSort verifies that multi-character cursor values
+// sort correctly. listCursorsBetween uses lexicographic ordering, which requires
+// cursor values to be fixed-length strings (e.g. zero-padded integers or Unix
+// epoch timestamps). This test uses zero-padded values to document that assumption.
+func TestListCursorsBetween_FixedLengthSort(t *testing.T) {
+	server := newCursorsServer(t, "09", "10", "11", "12")
+	client := ClientNoAuth(server)
+
+	timestamps, err := listCursorsBetween(t.Context(), client, FakePackageStorageBucketInternal, "", "09", "12")
+	require.NoError(t, err)
+	assert.Equal(t, []string{"10", "11", "12"}, timestamps)
+}

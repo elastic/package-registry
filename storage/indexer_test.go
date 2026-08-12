@@ -8,6 +8,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"sync"
 	"testing"
 
 	"github.com/Masterminds/semver/v3"
@@ -678,5 +679,36 @@ func TestIncrementalUpdate(t *testing.T) {
 		foundPackages, err := indexer.Get(t.Context(), &packages.GetOptions{})
 		require.NoError(t, err)
 		assert.Greater(t, len(foundPackages), 2, "fallback full sync should have loaded all packages")
+	})
+
+	// This test is intentionally racy without the fix in applyDelta that allocates a
+	// fresh backing array. Run with -race to detect regressions.
+	t.Run("concurrent_get_and_apply_delta", func(t *testing.T) {
+		t.Parallel()
+
+		fs := internalStorage.PrepareFakeServer(t, "testdata/search-index-all-small.json")
+		t.Cleanup(fs.Stop)
+
+		indexer := NewIndexer(util.NewTestLogger(), internalStorage.ClientNoAuth(fs), incrementalOptions)
+		t.Cleanup(func() { indexer.Close(context.Background()) })
+
+		err := indexer.Init(t.Context())
+		require.NoError(t, err)
+
+		deltaContent := readDeltaFile(t, "testdata/search-index-delta-add.json")
+		_, indexer.storageClient = internalStorage.UpdateFakeServerWithDelta(t, fs, "2", deltaContent)
+
+		var wg sync.WaitGroup
+		for range 50 {
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				_, _ = indexer.Get(t.Context(), &packages.GetOptions{})
+			}()
+		}
+
+		err = indexer.updateIndex(t.Context())
+		require.NoError(t, err)
+		wg.Wait()
 	})
 }

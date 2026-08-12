@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Add incremental index updates for the storage indexer via `--feature-incremental-updates` / `EPR_FEATURE_INCREMENTAL_UPDATES`. When enabled, poll cycles after the initial full sync apply `search-index-delta.json` files instead of re-downloading the full index, significantly reducing per-cycle memory and CPU usage. [#1923](https://github.com/elastic/package-registry/pull/1923)
+* Improve performance of `Filter.Apply` and `legacyApply` for large package lists by replacing the latest-version dedup pass with a map-based lookup. [#1923](https://github.com/elastic/package-registry/pull/1923)
+
 ### Deprecated
 
 ### Known Issues

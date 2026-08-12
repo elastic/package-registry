@@ -16,6 +16,9 @@ import (
 
 // listCursorsBetween returns all timestamp folder names in v2/metadata/ that are
 // strictly greater than since and less than or equal to until, in ascending order.
+// Cursor values must be lexicographically comparable in chronological order (e.g.
+// zero-padded or fixed-length strings such as Unix epoch seconds). Simple unpadded
+// integer strings break ordering once they reach a second digit ("9" > "10").
 func listCursorsBetween(ctx context.Context, storageClient *storage.Client, bucketName, rootStoragePath, since, until string) ([]string, error) {
 	prefix := joinObjectPaths(rootStoragePath, v2MetadataStoragePath) + "/"
 
