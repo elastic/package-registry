@@ -598,6 +598,47 @@ func TestIncrementalUpdate(t *testing.T) {
 		assert.Equal(t, "1Password Events Reporting", *untouched.Title, "0.1.1 must not be affected by the update delta")
 	})
 
+	t.Run("update_removes_absent_fields", func(t *testing.T) {
+		// Verifies that a delta update is a full replacement: fields present in the
+		// original but absent from the delta entry must not survive in the result.
+		// Seed: 1password 0.2.0 has categories=["security"] and no group.
+		// Delta: replaces with a manifest that has group="observability" and no categories.
+		// Expected: group is set, categories is empty.
+		t.Parallel()
+
+		fs := internalStorage.PrepareFakeServer(t, "testdata/search-index-all-small.json")
+		t.Cleanup(fs.Stop)
+
+		indexer := NewIndexer(util.NewTestLogger(), internalStorage.ClientNoAuth(fs), incrementalOptions)
+		t.Cleanup(func() { indexer.Close(context.Background()) })
+
+		err := indexer.Init(t.Context())
+		require.NoError(t, err)
+
+		deltaContent := readDeltaFile(t, "testdata/search-index-delta-update-field-removal.json")
+		_, indexer.storageClient = internalStorage.UpdateFakeServerWithDelta(t, fs, "2", deltaContent)
+
+		err = indexer.updateIndex(t.Context())
+		require.NoError(t, err)
+
+		allPackages, err := indexer.Get(t.Context(), &packages.GetOptions{
+			Filter: &packages.Filter{AllVersions: true, Prerelease: true, PackageName: "1password"},
+		})
+		require.NoError(t, err)
+		require.Len(t, allPackages, 2)
+
+		byVersion := make(map[string]*packages.Package)
+		for _, p := range allPackages {
+			pkg := p
+			byVersion[p.Version] = pkg
+		}
+
+		updated := byVersion["0.2.0"]
+		require.NotNil(t, updated)
+		assert.Equal(t, "observability", updated.Group, "group from delta must be present")
+		assert.Empty(t, updated.Categories, "categories absent from delta must not survive in the result")
+	})
+
 	t.Run("multiple_deltas_in_order", func(t *testing.T) {
 		t.Parallel()
 
