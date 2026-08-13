@@ -9,6 +9,7 @@ import (
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestUpdateLatestDeprecatedPackagesMapByName(t *testing.T) {
@@ -259,4 +260,26 @@ func TestPropagateLatestDeprecatedInfoToPackageList(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestPropagateLatestDeprecatedInfoToPackageList_DoesNotMutateOriginalPointer(t *testing.T) {
+	// Callers that hold a *Package pointer obtained before PropagateLatestDeprecatedInfoToPackageList
+	// runs (e.g. via a prior Get()) must not observe a write to their pointer's Deprecated field.
+	// The function must allocate a new *Package for each affected entry instead of mutating in-place.
+	original := &Package{BasePackage: BasePackage{Name: "test-package"}}
+	list := Packages{original}
+
+	deprecatedPackages := DeprecatedPackages{
+		"test-package": deprecatedMeta{
+			deprecated: &Deprecated{Since: "2.0.0"},
+			version:    semver.MustParse("2.0.0"),
+		},
+	}
+
+	PropagateLatestDeprecatedInfoToPackageList(list, deprecatedPackages)
+
+	assert.Nil(t, original.Deprecated, "original *Package must not be mutated")
+	assert.NotSame(t, original, list[0], "list must hold a new *Package allocation, not the original pointer")
+	require.NotNil(t, list[0].Deprecated)
+	assert.Equal(t, "2.0.0", list[0].Deprecated.Since)
 }

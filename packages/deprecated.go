@@ -45,10 +45,14 @@ func UpdateLatestDeprecatedPackagesMapByName(input Packages, deprecatedPackages 
 
 // PropagateLatestDeprecatedInfoToPackageList adds deprecation information to all packages in the package list
 // based on the latest deprecated info available in the deprecated packages map.
+// Each affected package is shallow-copied before setting Deprecated so that callers holding a prior
+// Get() result are not subject to a data race on the shared *Package pointer.
 func PropagateLatestDeprecatedInfoToPackageList(packageList Packages, deprecatedPackages DeprecatedPackages) {
-	for _, pkg := range packageList {
+	for i, pkg := range packageList {
 		if deprecatedInfo, found := deprecatedPackages.Deprecated(pkg.Name); found {
-			pkg.Deprecated = deprecatedInfo
+			pkgCopy := *pkg
+			pkgCopy.Deprecated = deprecatedInfo
+			packageList[i] = &pkgCopy
 		}
 	}
 }

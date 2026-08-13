@@ -763,4 +763,41 @@ func TestIncrementalUpdate(t *testing.T) {
 		require.NoError(t, err)
 		wg.Wait()
 	})
+
+	// Exercises the deprecated-propagation write path during concurrent Get calls.
+	// The seed contains a deprecated package so deprecatedPackages is populated after
+	// full sync. The delta adds a new version of the same package — applyDelta reuses
+	// the existing *Package pointer for the unchanged entry, then
+	// PropagateLatestDeprecatedInfoToPackageList writes through it. Run with -race to
+	// detect a regression back to in-place mutation of shared pointers.
+	t.Run("concurrent_get_and_apply_delta_with_deprecated", func(t *testing.T) {
+		t.Parallel()
+
+		fs := internalStorage.PrepareFakeServer(t, "testdata/search-index-all-small-deprecated.json")
+		t.Cleanup(fs.Stop)
+
+		indexer := NewIndexer(util.NewTestLogger(), internalStorage.ClientNoAuth(fs), incrementalOptions)
+		t.Cleanup(func() { indexer.Close(context.Background()) })
+
+		err := indexer.Init(t.Context())
+		require.NoError(t, err)
+
+		// Add 1password 0.3.0; the seeded 0.2.0 pointer is reused by applyDelta and
+		// then written to by PropagateLatestDeprecatedInfoToPackageList.
+		deltaContent := readDeltaFile(t, "testdata/search-index-delta-add.json")
+		_, indexer.storageClient = internalStorage.UpdateFakeServerWithDelta(t, fs, "2", deltaContent)
+
+		var wg sync.WaitGroup
+		for range 50 {
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				_, _ = indexer.Get(t.Context(), &packages.GetOptions{})
+			}()
+		}
+
+		err = indexer.updateIndex(t.Context())
+		require.NoError(t, err)
+		wg.Wait()
+	})
 }
