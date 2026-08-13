@@ -214,6 +214,7 @@ func (i *Indexer) incrementalSync(ctx context.Context, latestCursorValue string)
 	type revision struct {
 		timestamp string
 		delta     *internalStorage.SearchIndexDelta
+		prepared  *preparedDelta
 		fullIndex *packages.Packages
 	}
 
@@ -244,10 +245,14 @@ func (i *Indexer) incrementalSync(ctx context.Context, latestCursorValue string)
 		return nil
 	}
 
-	// Pre-transform full-index revisions before acquiring the lock; i.resolver is read-only after init.
+	// Pre-process all revisions before acquiring the lock; i.resolver is read-only after init.
 	for j := range revisions {
 		if revisions[j].fullIndex != nil {
 			i.transformSearchIndexAllToPackages(revisions[j].fullIndex)
+		} else if revisions[j].delta != nil {
+			pd := i.prepareDelta(revisions[j].delta)
+			revisions[j].prepared = &pd
+			revisions[j].delta = nil
 		}
 	}
 
@@ -257,8 +262,8 @@ func (i *Indexer) incrementalSync(ctx context.Context, latestCursorValue string)
 	for _, r := range revisions {
 		if r.fullIndex != nil {
 			i.packageList = *r.fullIndex
-		} else if r.delta != nil {
-			i.applyDelta(r.delta)
+		} else if r.prepared != nil {
+			i.applyDelta(*r.prepared)
 		}
 		i.cursor = r.timestamp
 	}
@@ -272,13 +277,15 @@ func (i *Indexer) incrementalSync(ctx context.Context, latestCursorValue string)
 	return nil
 }
 
-// applyDelta modifies the in-memory packageList by applying a delta.
-// Must be called with i.m held for writing.
-//
-// The implementation avoids the previous 3× peak (full slice → full map → new slice)
-// by building small maps only for the delta entries and doing a single-pass
-// filter+update over the existing slice, reusing its backing array.
-func (i *Indexer) applyDelta(delta *internalStorage.SearchIndexDelta) {
+type preparedDelta struct {
+	removeKeys map[string]struct{}
+	updateMap  map[string]*packages.Package
+	added      packages.Packages
+}
+
+// prepareDelta builds lookup structures from a raw delta. Safe to call without holding i.m
+// because it only reads delta.* and i.resolver, both of which are read-only after init.
+func (i *Indexer) prepareDelta(delta *internalStorage.SearchIndexDelta) preparedDelta {
 	removeKeys := make(map[string]struct{}, len(delta.Removed))
 	for _, ref := range delta.Removed {
 		removeKeys[ref.Name+"-"+ref.Version] = struct{}{}
@@ -292,27 +299,34 @@ func (i *Indexer) applyDelta(delta *internalStorage.SearchIndexDelta) {
 		updateMap[p.Name+"-"+p.Version] = &p
 	}
 
-	out := make(packages.Packages, 0, len(i.packageList))
-	for _, p := range i.packageList {
-		key := p.Name + "-" + p.Version
-		if _, removed := removeKeys[key]; removed {
-			continue
-		}
-		if newer, ok := updateMap[key]; ok {
-			out = append(out, newer)
-			delete(updateMap, key)
-		} else {
-			out = append(out, p)
-		}
-	}
-
+	added := make(packages.Packages, 0, len(delta.Added))
 	for _, entry := range delta.Added {
 		p := entry.PackageManifest
 		p.BasePath = fmt.Sprintf("%s-%s.zip", p.Name, p.Version)
 		p.SetRemoteResolver(i.resolver)
-		out = append(out, &p)
+		added = append(added, &p)
 	}
 
+	return preparedDelta{removeKeys: removeKeys, updateMap: updateMap, added: added}
+}
+
+// applyDelta applies a pre-processed delta to i.packageList.
+// Must be called with i.m held for writing.
+func (i *Indexer) applyDelta(pd preparedDelta) {
+	out := make(packages.Packages, 0, max(0, len(i.packageList)-len(pd.removeKeys))+len(pd.added))
+	for _, p := range i.packageList {
+		key := p.Name + "-" + p.Version
+		if _, removed := pd.removeKeys[key]; removed {
+			continue
+		}
+		if newer, ok := pd.updateMap[key]; ok {
+			out = append(out, newer)
+			delete(pd.updateMap, key)
+		} else {
+			out = append(out, p)
+		}
+	}
+	out = append(out, pd.added...)
 	i.packageList = out
 }
 
