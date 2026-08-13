@@ -91,30 +91,6 @@ func buildIndexStoragePath(rootStoragePath string, aCursor cursor, indexFile str
 	return joinObjectPaths(rootStoragePath, v2MetadataStoragePath, aCursor.Current, indexFile)
 }
 
-func LoadPackagesAndCursorFromIndex(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, storageBucketInternal, currentCursor string) (*packages.Packages, string, error) {
-	bucketName, rootStoragePath, err := extractBucketNameFromURL(storageBucketInternal)
-	if err != nil {
-		return nil, "", fmt.Errorf("can't extract bucket name from URL (url: %s): %w", storageBucketInternal, err)
-	}
-
-	storageCursor, err := loadCursor(ctx, logger, storageClient, bucketName, rootStoragePath)
-	if err != nil {
-		return nil, "", fmt.Errorf("can't load latest cursor: %w", err)
-	}
-
-	if storageCursor.Current == currentCursor {
-		logger.Info("cursor is up-to-date", zap.String("cursor.current", currentCursor))
-		return nil, currentCursor, nil
-	}
-	logger.Info("cursor will be updated", zap.String("cursor.current", currentCursor), zap.String("cursor.next", storageCursor.Current))
-
-	anIndex, err := loadSearchIndexAll(ctx, logger, storageClient, bucketName, rootStoragePath, *storageCursor)
-	if err != nil {
-		return nil, "", fmt.Errorf("can't load the search-index-all index content: %w", err)
-	}
-	return anIndex, storageCursor.Current, nil
-}
-
 func loadSearchIndexAllBatches(ctx context.Context, logger *zap.Logger, storageClient *storage.Client, bucketName, rootStoragePath string, aCursor cursor, batchSize int, process func(context.Context, packages.Packages, string) error) error {
 	span, ctx := apm.StartSpan(ctx, "LoadSearchIndexAll", "app")
 	span.Context.SetLabel("load.method", "batches")

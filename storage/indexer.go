@@ -228,9 +228,6 @@ func (i *Indexer) incrementalSync(ctx context.Context, latestCursorValue string)
 					metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 					return fmt.Errorf("can't load search-index-all for cursor %s: %w", ts, err)
 				}
-				if anIndex == nil {
-					i.logger.Info("Delta fallback: full sync returned no packages for revision.", zap.String("cursor", ts))
-				}
 				// Full sync supersedes all prior deltas — reset to avoid holding multiple full copies in memory.
 				revisions = revisions[:0]
 				revisions = append(revisions, revision{timestamp: ts, fullIndex: anIndex})
