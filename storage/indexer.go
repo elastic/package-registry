@@ -259,6 +259,7 @@ func (i *Indexer) incrementalSync(ctx context.Context, latestCursorValue string)
 			i.packageList = *r.fullIndex
 		} else if r.prepared != nil {
 			i.applyDelta(*r.prepared)
+			i.logger.Debug("applied delta", zap.String("timestamp", r.timestamp), zap.String("index.packages.size", fmt.Sprintf("%d", i.packageList.Len())))
 		}
 		i.cursor = r.timestamp
 	}
@@ -313,19 +314,24 @@ func (i *Indexer) applyDelta(pd preparedDelta) {
 	for _, p := range i.packageList {
 		key := p.Name + "-" + p.Version
 		if _, removed := pd.removeKeys[key]; removed {
+			i.logger.Debug("removed package", zap.String("package", key))
 			continue
 		}
 		if newer, ok := pd.updateMap[key]; ok {
 			out = append(out, newer)
 			delete(pd.updateMap, key)
+			i.logger.Debug("updated package", zap.String("package", key))
 		} else {
 			out = append(out, p)
+			i.logger.Debug("kept package", zap.String("package", key))
 		}
 		seen[key] = struct{}{}
 	}
 	for _, p := range pd.added {
-		if _, exists := seen[p.Name+"-"+p.Version]; !exists {
+		key := p.Name + "-" + p.Version
+		if _, exists := seen[key]; !exists {
 			out = append(out, p)
+			i.logger.Debug("added package", zap.String("package", key))
 		}
 	}
 	i.packageList = out
