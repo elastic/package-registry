@@ -842,3 +842,37 @@ func TestIncrementalUpdate(t *testing.T) {
 		wg.Wait()
 	})
 }
+
+func TestApplyDelta_AddDuplicateSkipped(t *testing.T) {
+	// If pd.added contains a package whose name+version is already in i.packageList,
+	// applyDelta must not produce a duplicate entry.
+	t.Parallel()
+
+	title := "Original"
+	existing := &packages.Package{BasePackage: packages.BasePackage{Name: "foo", Version: "1.0.0", Title: &title}}
+	other := &packages.Package{BasePackage: packages.BasePackage{Name: "bar", Version: "2.0.0"}}
+
+	indexer := &Indexer{
+		packageList: packages.Packages{existing, other},
+	}
+
+	dupTitle := "Duplicate"
+	dup := &packages.Package{BasePackage: packages.BasePackage{Name: "foo", Version: "1.0.0", Title: &dupTitle}}
+
+	indexer.applyDelta(preparedDelta{
+		removeKeys: map[string]struct{}{},
+		updateMap:  map[string]*packages.Package{},
+		added:      packages.Packages{dup},
+	})
+
+	require.Len(t, indexer.packageList, 2, "duplicate in added must not create a second entry")
+
+	byKey := make(map[string]*packages.Package)
+	for _, p := range indexer.packageList {
+		byKey[p.Name+"-"+p.Version] = p
+	}
+	require.Contains(t, byKey, "foo-1.0.0")
+	require.Contains(t, byKey, "bar-2.0.0")
+	// The original pointer wins; the duplicate is dropped.
+	assert.Equal(t, "Original", *byKey["foo-1.0.0"].Title, "original package must be kept, not the duplicate")
+}

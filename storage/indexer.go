@@ -313,6 +313,7 @@ func (i *Indexer) prepareDelta(delta *internalStorage.SearchIndexDelta) prepared
 // applyDelta applies a pre-processed delta to i.packageList.
 // Must be called with i.m held for writing.
 func (i *Indexer) applyDelta(pd preparedDelta) {
+	seen := make(map[string]struct{}, len(i.packageList))
 	out := make(packages.Packages, 0, max(0, len(i.packageList)-len(pd.removeKeys))+len(pd.added))
 	for _, p := range i.packageList {
 		key := p.Name + "-" + p.Version
@@ -325,8 +326,13 @@ func (i *Indexer) applyDelta(pd preparedDelta) {
 		} else {
 			out = append(out, p)
 		}
+		seen[key] = struct{}{}
 	}
-	out = append(out, pd.added...)
+	for _, p := range pd.added {
+		if _, exists := seen[p.Name+"-"+p.Version]; !exists {
+			out = append(out, p)
+		}
+	}
 	i.packageList = out
 }
 
