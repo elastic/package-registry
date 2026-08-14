@@ -906,6 +906,7 @@ func TestApplyDelta_AddDuplicateSkipped(t *testing.T) {
 	other := &packages.Package{BasePackage: packages.BasePackage{Name: "bar", Version: "2.0.0"}}
 
 	indexer := &Indexer{
+		logger:      util.NewTestLogger(),
 		packageList: packages.Packages{existing, other},
 	}
 
