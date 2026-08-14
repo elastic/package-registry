@@ -222,20 +222,15 @@ func (i *Indexer) incrementalSync(ctx context.Context, latestCursorValue string)
 	for _, ts := range timestamps {
 		delta, err := internalStorage.LoadSearchIndexDelta(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, ts)
 		if err != nil {
-			if errors.Is(err, storage.ErrObjectNotExist) {
-				i.logger.Warn("delta file missing, falling back to full sync for timestamp", zap.String("cursor", ts))
-				anIndex, err := internalStorage.LoadSearchIndexAllForCursor(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, ts)
-				if err != nil {
-					metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
-					return fmt.Errorf("can't load search-index-all for cursor %s: %w", ts, err)
-				}
-				// Full sync supersedes all prior deltas — reset to avoid holding multiple full copies in memory.
-				revisions = revisions[:0]
-				revisions = append(revisions, revision{timestamp: ts, fullIndex: anIndex})
-			} else {
+			i.logger.Warn("failed to load delta, falling back to full sync for timestamp", zap.String("cursor", ts), zap.Error(err))
+			anIndex, err := internalStorage.LoadSearchIndexAllForCursor(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, ts)
+			if err != nil {
 				metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
-				return fmt.Errorf("can't load delta for cursor %s: %w", ts, err)
+				return fmt.Errorf("can't load search-index-all for cursor %s: %w", ts, err)
 			}
+			// Full sync supersedes all prior deltas — reset to avoid holding multiple full copies in memory.
+			revisions = revisions[:0]
+			revisions = append(revisions, revision{timestamp: ts, fullIndex: anIndex})
 		} else {
 			revisions = append(revisions, revision{timestamp: ts, delta: delta})
 		}

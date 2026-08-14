@@ -749,6 +749,59 @@ func TestIncrementalUpdate(t *testing.T) {
 		assert.Len(t, foundPackages, 2, "full sync on startup must load all packages")
 	})
 
+	t.Run("delta_corrupt_falls_back_to_full_sync", func(t *testing.T) {
+		// A delta file that exists but contains invalid JSON (e.g. a write that was
+		// truncated mid-flight) must trigger the same full-sync fallback as a missing
+		// delta, leaving the indexer in a consistent state.
+		t.Parallel()
+
+		fs := internalStorage.PrepareFakeServer(t, "testdata/search-index-all-small.json")
+		t.Cleanup(fs.Stop)
+
+		indexer := NewIndexer(util.NewTestLogger(), internalStorage.ClientNoAuth(fs), incrementalOptions)
+		t.Cleanup(func() { indexer.Close(context.Background()) })
+
+		err := indexer.Init(t.Context())
+		require.NoError(t, err)
+
+		// Publish a valid search-index-all.json at revision "2" first, then overlay a
+		// corrupt delta for the same revision. The full index must survive as the fallback.
+		fs, indexer.storageClient = internalStorage.UpdateFakeServer(t, fs, "2", "testdata/search-index-all-full.json")
+		_, indexer.storageClient = internalStorage.UpdateFakeServerWithDelta(t, fs, "2", []byte(`{invalid json`))
+
+		err = indexer.updateIndex(t.Context())
+		require.NoError(t, err, "corrupt delta must fall back to full sync without error")
+		assert.Equal(t, "2", indexer.cursor, "cursor must advance even when delta was corrupt")
+
+		foundPackages, err := indexer.Get(t.Context(), &packages.GetOptions{
+			Filter: &packages.Filter{AllVersions: true, Prerelease: true},
+		})
+		require.NoError(t, err)
+		assert.Len(t, foundPackages, 1139, "fallback full sync must load all packages")
+	})
+
+	t.Run("delta_corrupt_no_full_index_returns_error", func(t *testing.T) {
+		// When a delta is corrupt AND no search-index-all.json exists for that revision,
+		// updateIndex must return an error and leave the cursor unchanged.
+		t.Parallel()
+
+		fs := internalStorage.PrepareFakeServer(t, "testdata/search-index-all-small.json")
+		t.Cleanup(fs.Stop)
+
+		indexer := NewIndexer(util.NewTestLogger(), internalStorage.ClientNoAuth(fs), incrementalOptions)
+		t.Cleanup(func() { indexer.Close(context.Background()) })
+
+		err := indexer.Init(t.Context())
+		require.NoError(t, err)
+
+		// Publish only a corrupt delta for revision "2" — no search-index-all.json.
+		_, indexer.storageClient = internalStorage.UpdateFakeServerWithDelta(t, fs, "2", []byte(`{invalid json`))
+
+		err = indexer.updateIndex(t.Context())
+		require.Error(t, err, "must return an error when both delta and full index are unavailable")
+		assert.Equal(t, "1", indexer.cursor, "cursor must not advance when update fails")
+	})
+
 	t.Run("delta_missing_falls_back_to_full_sync", func(t *testing.T) {
 		t.Parallel()
 
