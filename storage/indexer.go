@@ -212,7 +212,7 @@ func (i *Indexer) incrementalSync(ctx context.Context, latestCursorValue string)
 	}
 
 	type revision struct {
-		cursor string
+		cursor    string
 		delta     *internalStorage.SearchIndexDelta
 		prepared  *preparedDelta
 		fullIndex *packages.Packages
