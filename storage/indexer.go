@@ -323,7 +323,6 @@ func (i *Indexer) applyDelta(pd preparedDelta) {
 			i.logger.Debug("updated package", zap.String("package", key))
 		} else {
 			out = append(out, p)
-			i.logger.Debug("kept package", zap.String("package", key))
 		}
 		seen[key] = struct{}{}
 	}
