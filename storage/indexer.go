@@ -48,6 +48,7 @@ type IndexerOptions struct {
 	PackageStorageBucketInternal string
 	PackageStorageEndpoint       string
 	WatchInterval                time.Duration
+	IncrementalUpdates           bool
 }
 
 func NewIndexer(logger *zap.Logger, storageClient *storage.Client, options IndexerOptions) *Indexer {
@@ -161,13 +162,26 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 		metrics.StorageIndexerUpdateIndexDurationSeconds.Observe(time.Since(start).Seconds())
 	}()
 
-	anIndex, currentCursor, err := internalStorage.LoadPackagesAndCursorFromIndex(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, i.cursor)
+	latestCursorValue, err := internalStorage.LoadLatestCursorValue(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal)
+	if err != nil {
+		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
+		return fmt.Errorf("can't load latest cursor: %w", err)
+	}
+	if i.cursor == latestCursorValue {
+		return nil
+	}
+
+	if i.cursor == "" || !i.options.IncrementalUpdates {
+		return i.fullSync(ctx, latestCursorValue)
+	}
+	return i.incrementalSync(ctx, latestCursorValue)
+}
+
+func (i *Indexer) fullSync(ctx context.Context, latestCursorValue string) error {
+	anIndex, err := internalStorage.LoadSearchIndexAllForCursor(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, latestCursorValue)
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 		return fmt.Errorf("can't load the search-index-all index content: %w", err)
-	}
-	if i.cursor == currentCursor {
-		return nil
 	}
 	if anIndex == nil {
 		i.logger.Info("Downloaded new search-index-all index. No packages found.")
@@ -179,16 +193,147 @@ func (i *Indexer) updateIndex(ctx context.Context) error {
 
 	i.m.Lock()
 	defer i.m.Unlock()
-	i.cursor = currentCursor
+	i.cursor = latestCursorValue
 	i.packageList = *anIndex
 	metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
 	metrics.NumberIndexedPackages.Set(float64(len(i.packageList)))
 
-	// set the deprecated notice information once the package list is updated
 	packages.UpdateLatestDeprecatedPackagesMapByName(i.packageList, i.deprecatedPackages)
 	packages.PropagateLatestDeprecatedInfoToPackageList(i.packageList, i.deprecatedPackages)
 
 	return nil
+}
+
+func (i *Indexer) incrementalSync(ctx context.Context, latestCursorValue string) error {
+	cursors, err := internalStorage.ListCursorsBetween(ctx, i.storageClient, i.options.PackageStorageBucketInternal, i.cursor, latestCursorValue)
+	if err != nil {
+		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
+		return fmt.Errorf("can't list cursors between %s and %s: %w", i.cursor, latestCursorValue, err)
+	}
+
+	type revision struct {
+		cursor    string
+		delta     *internalStorage.SearchIndexDelta
+		prepared  *preparedDelta
+		fullIndex *packages.Packages
+	}
+
+	revisions := make([]revision, 0, len(cursors))
+	for _, cursor := range cursors {
+		delta, err := internalStorage.LoadSearchIndexDelta(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, cursor)
+		if err != nil {
+			i.logger.Warn("failed to load delta, falling back to full sync for timestamp", zap.String("cursor", cursor), zap.Error(err))
+			anIndex, err := internalStorage.LoadSearchIndexAllForCursor(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, cursor)
+			if err != nil {
+				metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
+				return fmt.Errorf("can't load search-index-all for cursor %s: %w", cursor, err)
+			}
+			// Full sync supersedes all prior deltas — reset to avoid holding multiple full copies in memory.
+			revisions = revisions[:0]
+			revisions = append(revisions, revision{cursor: cursor, fullIndex: anIndex})
+		} else {
+			revisions = append(revisions, revision{cursor: cursor, delta: delta})
+		}
+	}
+
+	if len(revisions) == 0 {
+		return nil
+	}
+
+	// Pre-process all revisions before acquiring the lock; i.resolver is read-only after init.
+	for j := range revisions {
+		if revisions[j].fullIndex != nil {
+			i.transformSearchIndexAllToPackages(revisions[j].fullIndex)
+		} else if revisions[j].delta != nil {
+			pd := i.prepareDelta(revisions[j].delta)
+			revisions[j].prepared = &pd
+			revisions[j].delta = nil
+		}
+	}
+
+	i.m.Lock()
+	defer i.m.Unlock()
+
+	for _, r := range revisions {
+		if r.fullIndex != nil {
+			i.packageList = *r.fullIndex
+		} else if r.prepared != nil {
+			i.applyDelta(*r.prepared)
+			i.logger.Debug("applied delta", zap.String("cursor", r.cursor), zap.String("index.packages.size", fmt.Sprintf("%d", i.packageList.Len())))
+		}
+		i.cursor = r.cursor
+	}
+
+	metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
+	metrics.NumberIndexedPackages.Set(float64(len(i.packageList)))
+
+	packages.UpdateLatestDeprecatedPackagesMapByName(i.packageList, i.deprecatedPackages)
+	packages.PropagateLatestDeprecatedInfoToPackageList(i.packageList, i.deprecatedPackages)
+
+	return nil
+}
+
+type preparedDelta struct {
+	removeKeys map[string]struct{}
+	updateMap  map[string]*packages.Package
+	added      packages.Packages
+}
+
+// prepareDelta builds lookup structures from a raw delta. Safe to call without holding i.m
+// because it only reads delta.* and i.resolver, both of which are read-only after init.
+func (i *Indexer) prepareDelta(delta *internalStorage.SearchIndexDelta) preparedDelta {
+	removeKeys := make(map[string]struct{}, len(delta.Removed))
+	for _, ref := range delta.Removed {
+		removeKeys[ref.Name+"-"+ref.Version] = struct{}{}
+	}
+
+	updateMap := make(map[string]*packages.Package, len(delta.Updated))
+	for _, entry := range delta.Updated {
+		p := entry.PackageManifest
+		p.BasePath = fmt.Sprintf("%s-%s.zip", p.Name, p.Version)
+		p.SetRemoteResolver(i.resolver)
+		updateMap[p.Name+"-"+p.Version] = &p
+	}
+
+	added := make(packages.Packages, 0, len(delta.Added))
+	for _, entry := range delta.Added {
+		p := entry.PackageManifest
+		p.BasePath = fmt.Sprintf("%s-%s.zip", p.Name, p.Version)
+		p.SetRemoteResolver(i.resolver)
+		added = append(added, &p)
+	}
+
+	return preparedDelta{removeKeys: removeKeys, updateMap: updateMap, added: added}
+}
+
+// applyDelta applies a pre-processed delta to i.packageList.
+// Must be called with i.m held for writing.
+func (i *Indexer) applyDelta(pd preparedDelta) {
+	seen := make(map[string]struct{}, len(i.packageList))
+	out := make(packages.Packages, 0, max(0, len(i.packageList)-len(pd.removeKeys))+len(pd.added))
+	for _, p := range i.packageList {
+		key := p.Name + "-" + p.Version
+		if _, removed := pd.removeKeys[key]; removed {
+			i.logger.Debug("removed package", zap.String("package", key))
+			continue
+		}
+		if newer, ok := pd.updateMap[key]; ok {
+			out = append(out, newer)
+			delete(pd.updateMap, key)
+			i.logger.Debug("updated package", zap.String("package", key))
+		} else {
+			out = append(out, p)
+		}
+		seen[key] = struct{}{}
+	}
+	for _, p := range pd.added {
+		key := p.Name + "-" + p.Version
+		if _, exists := seen[key]; !exists {
+			out = append(out, p)
+			i.logger.Debug("added package", zap.String("package", key))
+		}
+	}
+	i.packageList = out
 }
 
 func (i *Indexer) Get(ctx context.Context, opts *packages.GetOptions) (packages.Packages, error) {

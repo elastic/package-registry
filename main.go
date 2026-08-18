@@ -76,6 +76,7 @@ var (
 	featureEnableCategoriesCache bool
 
 	featureStorageIndexer        bool
+	featureIncrementalUpdates    bool
 	storageIndexerBucketInternal string
 	storageEndpoint              string
 	storageIndexerWatchInterval  time.Duration
@@ -129,6 +130,8 @@ func init() {
 	flag.DurationVar(&storageIndexerWatchInterval, "storage-indexer-watch-interval", 1*time.Minute, "Address of the package-registry service.")
 	// The following storage related flags are technical preview and might be removed in the future or renamed
 	flag.BoolVar(&featureSQLStorageIndexer, "feature-sql-storage-indexer", false, "Enable SQL storage indexer to include packages from Package Storage v2 (technical preview).")
+	flag.BoolVar(&featureIncrementalUpdates, "feature-incremental-updates", false,
+		"Enable incremental index updates using delta files (technical preview). Not supported with the SQL storage indexer.")
 	flag.BoolVar(&featureEnableSearchCache, "feature-enable-search-cache", false, "Enable cache for search requests. Just supported with the SQL storage indexer. (technical preview).")
 	flag.BoolVar(&featureEnableCategoriesCache, "feature-enable-categories-cache", false, "Enable cache for categories requests. Just supported with the SQL storage indexer. (technical preview).")
 
@@ -397,6 +400,9 @@ func initIndexer(ctx context.Context, logger *zap.Logger, options serverOptions)
 		}
 		combined = append(combined, indexer)
 	case featureStorageIndexer:
+		if featureIncrementalUpdates {
+			logger.Warn("Technical preview: Incremental updates feature is enabled.")
+		}
 		indexer, err := initStorageIndexer(ctx, logger, options)
 		if err != nil {
 			logger.Fatal("failed to initialize storage indexer", zap.Error(err))
@@ -432,6 +438,7 @@ func initStorageIndexer(ctx context.Context, logger *zap.Logger, options serverO
 		PackageStorageBucketInternal: storageIndexerBucketInternal,
 		PackageStorageEndpoint:       storageEndpoint,
 		WatchInterval:                storageIndexerWatchInterval,
+		IncrementalUpdates:           featureIncrementalUpdates,
 	}), nil
 }
 
@@ -752,6 +759,10 @@ func validateFlags() error {
 
 	if featureStorageIndexer && featureSQLStorageIndexer {
 		return fmt.Errorf("both -feature-storage-indexer and -feature-sql-storage-indexer flags are enabled but are mutually exclusive")
+	}
+
+	if featureIncrementalUpdates && featureSQLStorageIndexer {
+		return fmt.Errorf("feature-incremental-updates is not supported with feature-sql-storage-indexer; disable one of them")
 	}
 
 	if featureEnableSearchCache && !featureSQLStorageIndexer {

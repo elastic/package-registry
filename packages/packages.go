@@ -632,7 +632,11 @@ func (f *Filter) Apply(ctx context.Context, packages Packages) (Packages, error)
 	}
 
 	// Checks that only the most recent version of an integration is added to the list
-	var packagesList Packages
+	packagesList := make(Packages, 0, len(packages))
+	var latestIdx map[string]int
+	if !f.AllVersions {
+		latestIdx = make(map[string]int, len(packages))
+	}
 	for _, p := range packages {
 		// Skip experimental packages if flag is not specified.
 		if p.Release == ReleaseExperimental && !f.Prerelease {
@@ -689,29 +693,17 @@ func (f *Filter) Apply(ctx context.Context, packages Packages) (Packages, error)
 			}
 		}
 
-		addPackage := true
 		if !f.AllVersions {
-			// Check if the version exists and if it should be added or not.
-			for i, current := range packagesList {
-				if current.Name != p.Name {
-					continue
+			if idx, found := latestIdx[p.Name]; found {
+				// Slot already exists: replace only if p is newer.
+				if !packagesList[idx].IsNewerOrEqual(p) {
+					packagesList[idx] = p
 				}
-
-				addPackage = false
-
-				// If the package in the list is newer or equal, do nothing.
-				if current.IsNewerOrEqual(p) {
-					continue
-				}
-
-				// Otherwise replace it.
-				packagesList[i] = p
+				continue
 			}
+			latestIdx[p.Name] = len(packagesList)
 		}
-
-		if addPackage {
-			packagesList = append(packagesList, p)
-		}
+		packagesList = append(packagesList, p)
 	}
 
 	// Filter by category after selecting the newer packages.
@@ -727,7 +719,11 @@ func (f *Filter) legacyApply(ctx context.Context, packages Packages) Packages {
 	}
 
 	// Checks that only the most recent version of an integration is added to the list
-	var packagesList Packages
+	packagesList := make(Packages, 0, len(packages))
+	var latestIdx map[string]int
+	if !f.AllVersions {
+		latestIdx = make(map[string]int, len(packages))
+	}
 	for _, p := range packages {
 		// Skip experimental packages if flag is not specified.
 		if p.Release == ReleaseExperimental && !f.Experimental {
@@ -752,34 +748,24 @@ func (f *Filter) legacyApply(ctx context.Context, packages Packages) Packages {
 			continue
 		}
 
-		addPackage := true
 		if !f.AllVersions {
-			// Check if the version exists and if it should be added or not.
-			for i, current := range packagesList {
-				if current.Name != p.Name {
-					continue
-				}
-
-				addPackage = false
-
+			if idx, found := latestIdx[p.Name]; found {
+				current := packagesList[idx]
 				// If the package in the list is newer or equal, do nothing, unless it is a prerelease.
 				if current.IsPrerelease() == p.IsPrerelease() && current.IsNewerOrEqual(p) {
 					continue
 				}
-
 				// If the package in the list is not a prerelease, and current is, do nothing.
 				if !current.IsPrerelease() && p.IsPrerelease() {
 					continue
 				}
-
 				// Otherwise replace it.
-				packagesList[i] = p
+				packagesList[idx] = p
+				continue
 			}
+			latestIdx[p.Name] = len(packagesList)
 		}
-
-		if addPackage {
-			packagesList = append(packagesList, p)
-		}
+		packagesList = append(packagesList, p)
 	}
 
 	if f.AllVersions {
@@ -812,7 +798,7 @@ func filterCategories(packages Packages, category string) Packages {
 	if category == "" {
 		return packages
 	}
-	var result Packages
+	result := make(Packages, 0, len(packages))
 	for _, p := range packages {
 		if !p.HasCategory(category) && !p.HasPolicyTemplateWithCategory(category) {
 			continue

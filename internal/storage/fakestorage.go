@@ -171,3 +171,52 @@ func PrepareServerObjects(revision string, indexContent []byte) ([]fakestorage.O
 	})
 	return serverObjects, len(index.Packages), nil
 }
+
+// prepareDeltaServerObjects creates GCS objects for a delta file revision:
+// a cursor.json pointing to revision and a search-index-delta.json at that revision's path.
+func prepareDeltaServerObjects(revision string, deltaContent []byte) []fakestorage.Object {
+	return []fakestorage.Object{
+		{
+			ObjectAttrs: fakestorage.ObjectAttrs{
+				BucketName: FakePackageStorageBucketInternal, Name: cursorStoragePath, Md5Hash: fakeObjectMD5Hash,
+			},
+			Content: []byte(`{"current":"` + revision + `"}`),
+		},
+		{
+			ObjectAttrs: fakestorage.ObjectAttrs{
+				BucketName: FakePackageStorageBucketInternal, Name: joinObjectPaths(v2MetadataStoragePath, revision, searchIndexDeltaFile), Md5Hash: fakeObjectMD5Hash,
+			},
+			Content: deltaContent,
+		},
+	}
+}
+
+// UpdateFakeServerWithDelta simulates a delta update by stopping the given fake
+// server and returning a new one with the previous objects plus the new revision's
+// delta file (no search-index-all.json for the new revision).
+func UpdateFakeServerWithDelta(tb testing.TB, server *fakestorage.Server, revision string, deltaContent []byte) (*fakestorage.Server, *storage.Client) {
+	newObjects := prepareDeltaServerObjects(revision, deltaContent)
+
+	var existingAttrs []fakestorage.ObjectAttrs
+	var pageToken string
+	for {
+		listResp, err := server.ListObjectsWithOptionsPaginated(FakePackageStorageBucketInternal, fakestorage.ListOptions{PageToken: pageToken})
+		require.NoError(tb, err, "failed to list existing server objects")
+		existingAttrs = append(existingAttrs, listResp.Objects...)
+		if listResp.NextPageToken == "" {
+			break
+		}
+		pageToken = listResp.NextPageToken
+	}
+	allObjects := make([]fakestorage.Object, 0, len(existingAttrs)+len(newObjects))
+	for _, attrs := range existingAttrs {
+		obj, err := server.GetObject(FakePackageStorageBucketInternal, attrs.Name)
+		require.NoError(tb, err, "failed to retrieve existing server object %q", attrs.Name)
+		allObjects = append(allObjects, obj)
+	}
+	allObjects = append(allObjects, newObjects...)
+
+	server.Stop()
+	newServer := fakestorage.NewServer(allObjects)
+	return newServer, ClientNoAuth(newServer)
+}

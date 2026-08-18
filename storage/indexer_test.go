@@ -7,6 +7,8 @@ package storage
 import (
 	"context"
 	"fmt"
+	"os"
+	"sync"
 	"testing"
 
 	"github.com/Masterminds/semver/v3"
@@ -74,6 +76,49 @@ func BenchmarkIndexerUpdateIndex(b *testing.B) {
 		b.StartTimer()
 		err = indexer.updateIndex(b.Context())
 		require.NoError(b, err, "index should be updated successfully")
+	}
+}
+
+// BenchmarkIndexerUpdateIndex_Incremental measures the cost of applying a small
+// delta (1 package added) against a large in-memory index (search-index-all-full.json,
+// ~1139 packages). Compare directly with BenchmarkIndexerUpdateIndex which does a
+// full reload of the same index every poll cycle.
+//
+// The delta server is set up once at revision "2" (lexicographically > "1", the
+// initial revision from PrepareFakeServer). Each iteration resets the indexer cursor
+// to "1" so updateIndex always sees a real "1"→"2" incremental transition, measuring
+// only the steady-state cost: GCS cursor list + delta read + applyDelta.
+func BenchmarkIndexerUpdateIndex_Incremental(b *testing.B) {
+	// given
+	fs := internalStorage.PrepareFakeServer(b, "testdata/search-index-all-full.json")
+	defer func() { fs.Stop() }()
+
+	deltaContent, err := os.ReadFile("testdata/search-index-delta-add.json")
+	require.NoError(b, err)
+
+	incrementalOptions := IndexerOptions{
+		PackageStorageBucketInternal: "gs://" + internalStorage.FakePackageStorageBucketInternal,
+		WatchInterval:                0,
+		IncrementalUpdates:           true,
+	}
+
+	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
+	indexer := NewIndexer(logger, internalStorage.ClientNoAuth(fs), incrementalOptions)
+	defer indexer.Close(b.Context())
+
+	err = indexer.Init(b.Context())
+	require.NoError(b, err)
+
+	// Set up the delta at revision "2" once — "2" > "1" lexicographically so
+	// ListCursorsBetween will find it on every iteration.
+	fs, indexer.storageClient = internalStorage.UpdateFakeServerWithDelta(b, fs, "2", deltaContent)
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		// Reset cursor so updateIndex sees a live "1"→"2" incremental transition.
+		indexer.cursor = "1"
+		err = indexer.updateIndex(b.Context())
+		require.NoError(b, err, "incremental index update should succeed")
 	}
 }
 
@@ -402,4 +447,486 @@ func TestGet_IndexUpdated(t *testing.T) {
 	require.Equal(t, "1password", foundPackages[0].Name)
 	require.Equal(t, "0.2.0", foundPackages[0].Version)
 	require.Equal(t, "1Password Events Reporting UPDATED", *foundPackages[0].Title)
+}
+
+func TestIncrementalUpdate(t *testing.T) {
+	t.Parallel()
+
+	incrementalOptions := IndexerOptions{
+		PackageStorageBucketInternal: "gs://" + internalStorage.FakePackageStorageBucketInternal,
+		WatchInterval:                0,
+		IncrementalUpdates:           true,
+	}
+
+	readDeltaFile := func(t *testing.T, path string) []byte {
+		t.Helper()
+		content, err := os.ReadFile(path)
+		require.NoError(t, err, "delta test data file must be readable")
+		return content
+	}
+
+	t.Run("add_package", func(t *testing.T) {
+		t.Parallel()
+
+		fs := internalStorage.PrepareFakeServer(t, "testdata/search-index-all-small.json")
+		t.Cleanup(fs.Stop)
+
+		indexer := NewIndexer(util.NewTestLogger(), internalStorage.ClientNoAuth(fs), incrementalOptions)
+		t.Cleanup(func() { indexer.Close(context.Background()) })
+
+		err := indexer.Init(t.Context())
+		require.NoError(t, err)
+
+		deltaContent := readDeltaFile(t, "testdata/search-index-delta-add.json")
+		_, indexer.storageClient = internalStorage.UpdateFakeServerWithDelta(t, fs, "2", deltaContent)
+
+		err = indexer.updateIndex(t.Context())
+		require.NoError(t, err)
+		assert.Equal(t, "2", indexer.cursor, "cursor must advance to the applied revision")
+
+		foundPackages, err := indexer.Get(t.Context(), &packages.GetOptions{
+			Filter: &packages.Filter{AllVersions: true, Prerelease: true, PackageName: "1password"},
+		})
+		require.NoError(t, err)
+		require.Len(t, foundPackages, 3, "should have original 2 packages plus the new 0.3.0")
+
+		versions := make(map[string]bool)
+		for _, p := range foundPackages {
+			versions[p.Version] = true
+		}
+		assert.True(t, versions["0.3.0"], "new 0.3.0 package must be present")
+		assert.True(t, versions["0.1.1"], "original 0.1.1 package must be present")
+		assert.True(t, versions["0.2.0"], "original 0.2.0 package must be present")
+	})
+
+	t.Run("remove_package", func(t *testing.T) {
+		t.Parallel()
+
+		fs := internalStorage.PrepareFakeServer(t, "testdata/search-index-all-small.json")
+		t.Cleanup(fs.Stop)
+
+		indexer := NewIndexer(util.NewTestLogger(), internalStorage.ClientNoAuth(fs), incrementalOptions)
+		t.Cleanup(func() { indexer.Close(context.Background()) })
+
+		err := indexer.Init(t.Context())
+		require.NoError(t, err)
+
+		deltaContent := readDeltaFile(t, "testdata/search-index-delta-remove.json")
+		_, indexer.storageClient = internalStorage.UpdateFakeServerWithDelta(t, fs, "2", deltaContent)
+
+		err = indexer.updateIndex(t.Context())
+		require.NoError(t, err)
+		assert.Equal(t, "2", indexer.cursor, "cursor must advance to the applied revision")
+
+		foundPackages, err := indexer.Get(t.Context(), &packages.GetOptions{
+			Filter: &packages.Filter{AllVersions: true, Prerelease: true, PackageName: "1password"},
+		})
+		require.NoError(t, err)
+		require.Len(t, foundPackages, 1, "0.1.1 should have been removed")
+		assert.Equal(t, "0.2.0", foundPackages[0].Version)
+	})
+
+	t.Run("update_package_fields", func(t *testing.T) {
+		t.Parallel()
+
+		fs := internalStorage.PrepareFakeServer(t, "testdata/search-index-all-small.json")
+		t.Cleanup(fs.Stop)
+
+		indexer := NewIndexer(util.NewTestLogger(), internalStorage.ClientNoAuth(fs), incrementalOptions)
+		t.Cleanup(func() { indexer.Close(context.Background()) })
+
+		err := indexer.Init(t.Context())
+		require.NoError(t, err)
+
+		deltaContent := readDeltaFile(t, "testdata/search-index-delta-update.json")
+		_, indexer.storageClient = internalStorage.UpdateFakeServerWithDelta(t, fs, "2", deltaContent)
+
+		err = indexer.updateIndex(t.Context())
+		require.NoError(t, err)
+		assert.Equal(t, "2", indexer.cursor, "cursor must advance to the applied revision")
+
+		foundPackages, err := indexer.Get(t.Context(), &packages.GetOptions{
+			Filter: &packages.Filter{PackageName: "1password", PackageVersion: "0.2.0", Prerelease: true},
+		})
+		require.NoError(t, err)
+		require.Len(t, foundPackages, 1)
+		require.NotNil(t, foundPackages[0].Title)
+		assert.Equal(t, "1Password Events Reporting UPDATED DELTA", *foundPackages[0].Title)
+	})
+
+	t.Run("update_is_full_replacement", func(t *testing.T) {
+		// Verifies that an updated package is fully replaced, not merged with the original.
+		t.Parallel()
+
+		fs := internalStorage.PrepareFakeServer(t, "testdata/search-index-all-small.json")
+		t.Cleanup(fs.Stop)
+
+		indexer := NewIndexer(util.NewTestLogger(), internalStorage.ClientNoAuth(fs), incrementalOptions)
+		t.Cleanup(func() { indexer.Close(context.Background()) })
+
+		err := indexer.Init(t.Context())
+		require.NoError(t, err)
+
+		deltaContent := readDeltaFile(t, "testdata/search-index-delta-update.json")
+		_, indexer.storageClient = internalStorage.UpdateFakeServerWithDelta(t, fs, "2", deltaContent)
+
+		err = indexer.updateIndex(t.Context())
+		require.NoError(t, err)
+
+		allPackages, err := indexer.Get(t.Context(), &packages.GetOptions{
+			Filter: &packages.Filter{AllVersions: true, Prerelease: true, PackageName: "1password"},
+		})
+		require.NoError(t, err)
+		// Exact count: update must not duplicate — still exactly 2 versions.
+		require.Len(t, allPackages, 2, "update must replace, not duplicate the package entry")
+
+		byVersion := make(map[string]*packages.Package)
+		for _, p := range allPackages {
+			pkg := p
+			byVersion[p.Version] = pkg
+		}
+
+		require.Contains(t, byVersion, "0.2.0")
+		require.Contains(t, byVersion, "0.1.1")
+
+		updated := byVersion["0.2.0"]
+		require.NotNil(t, updated.Title)
+		assert.Equal(t, "1Password Events Reporting UPDATED DELTA", *updated.Title, "0.2.0 title must reflect the delta, not the original")
+
+		untouched := byVersion["0.1.1"]
+		require.NotNil(t, untouched.Title)
+		assert.Equal(t, "1Password Events Reporting", *untouched.Title, "0.1.1 must not be affected by the update delta")
+	})
+
+	t.Run("update_removes_absent_fields", func(t *testing.T) {
+		// Verifies that a delta update is a full replacement: fields present in the
+		// original but absent from the delta entry must not survive in the result.
+		// Seed: 1password 0.2.0 has categories=["security"] and no group.
+		// Delta: replaces with a manifest that has group="observability" and no categories.
+		// Expected: group is set, categories is empty.
+		t.Parallel()
+
+		fs := internalStorage.PrepareFakeServer(t, "testdata/search-index-all-small.json")
+		t.Cleanup(fs.Stop)
+
+		indexer := NewIndexer(util.NewTestLogger(), internalStorage.ClientNoAuth(fs), incrementalOptions)
+		t.Cleanup(func() { indexer.Close(context.Background()) })
+
+		err := indexer.Init(t.Context())
+		require.NoError(t, err)
+
+		deltaContent := readDeltaFile(t, "testdata/search-index-delta-update-field-removal.json")
+		_, indexer.storageClient = internalStorage.UpdateFakeServerWithDelta(t, fs, "2", deltaContent)
+
+		err = indexer.updateIndex(t.Context())
+		require.NoError(t, err)
+
+		allPackages, err := indexer.Get(t.Context(), &packages.GetOptions{
+			Filter: &packages.Filter{AllVersions: true, Prerelease: true, PackageName: "1password"},
+		})
+		require.NoError(t, err)
+		require.Len(t, allPackages, 2)
+
+		byVersion := make(map[string]*packages.Package)
+		for _, p := range allPackages {
+			pkg := p
+			byVersion[p.Version] = pkg
+		}
+
+		updated := byVersion["0.2.0"]
+		require.NotNil(t, updated)
+		assert.Equal(t, "observability", updated.Group, "group from delta must be present")
+		assert.Empty(t, updated.Categories, "categories absent from delta must not survive in the result")
+	})
+
+	t.Run("multiple_deltas_in_order", func(t *testing.T) {
+		t.Parallel()
+
+		fs := internalStorage.PrepareFakeServer(t, "testdata/search-index-all-small.json")
+		t.Cleanup(fs.Stop)
+
+		indexer := NewIndexer(util.NewTestLogger(), internalStorage.ClientNoAuth(fs), incrementalOptions)
+		t.Cleanup(func() { indexer.Close(context.Background()) })
+
+		err := indexer.Init(t.Context())
+		require.NoError(t, err)
+
+		// revision "2": add 0.3.0
+		fs, indexer.storageClient = internalStorage.UpdateFakeServerWithDelta(t, fs, "2", readDeltaFile(t, "testdata/search-index-delta-add.json"))
+		// revision "3": remove 0.1.1
+		fs, indexer.storageClient = internalStorage.UpdateFakeServerWithDelta(t, fs, "3", readDeltaFile(t, "testdata/search-index-delta-remove.json"))
+		// revision "4": update 0.2.0 title — cursor.json now points to "4"
+		_, indexer.storageClient = internalStorage.UpdateFakeServerWithDelta(t, fs, "4", readDeltaFile(t, "testdata/search-index-delta-update.json"))
+
+		// single updateIndex call should apply all three deltas
+		err = indexer.updateIndex(t.Context())
+		require.NoError(t, err)
+		assert.Equal(t, "4", indexer.cursor, "cursor must advance to the last applied revision")
+
+		foundPackages, err := indexer.Get(t.Context(), &packages.GetOptions{
+			Filter: &packages.Filter{AllVersions: true, Prerelease: true, PackageName: "1password"},
+		})
+		require.NoError(t, err)
+		require.Len(t, foundPackages, 2, "0.1.1 removed, 0.2.0 and 0.3.0 remain")
+
+		versions := make(map[string]*packages.Package)
+		for _, p := range foundPackages {
+			pkg := p
+			versions[p.Version] = pkg
+		}
+		assert.Contains(t, versions, "0.2.0")
+		assert.Contains(t, versions, "0.3.0")
+		assert.NotContains(t, versions, "0.1.1")
+		if p, ok := versions["0.2.0"]; ok {
+			require.NotNil(t, p.Title)
+			assert.Equal(t, "1Password Events Reporting UPDATED DELTA", *p.Title)
+		}
+	})
+
+	t.Run("flag_off_uses_full_sync", func(t *testing.T) {
+		t.Parallel()
+
+		fs := internalStorage.PrepareFakeServer(t, "testdata/search-index-all-small.json")
+		t.Cleanup(fs.Stop)
+
+		indexer := NewIndexer(util.NewTestLogger(), internalStorage.ClientNoAuth(fs), FakeIndexerOptions)
+		t.Cleanup(func() { indexer.Close(context.Background()) })
+
+		err := indexer.Init(t.Context())
+		require.NoError(t, err)
+
+		_, indexer.storageClient = internalStorage.UpdateFakeServer(t, fs, "2", "testdata/search-index-all-full.json")
+		err = indexer.updateIndex(t.Context())
+		require.NoError(t, err)
+
+		foundPackages, err := indexer.Get(t.Context(), &packages.GetOptions{
+			Filter: &packages.Filter{AllVersions: true, Prerelease: true},
+		})
+		require.NoError(t, err)
+		assert.Len(t, foundPackages, 1139, "full sync should have loaded all packages")
+	})
+
+	t.Run("same_cursor_skips", func(t *testing.T) {
+		t.Parallel()
+
+		fs := internalStorage.PrepareFakeServer(t, "testdata/search-index-all-small.json")
+		t.Cleanup(fs.Stop)
+
+		indexer := NewIndexer(util.NewTestLogger(), internalStorage.ClientNoAuth(fs), incrementalOptions)
+		t.Cleanup(func() { indexer.Close(context.Background()) })
+
+		err := indexer.Init(t.Context())
+		require.NoError(t, err)
+
+		// cursor still "1" — no change on server
+		err = indexer.updateIndex(t.Context())
+		require.NoError(t, err)
+
+		foundPackages, err := indexer.Get(t.Context(), &packages.GetOptions{
+			Filter: &packages.Filter{AllVersions: true, Prerelease: true, PackageName: "1password"},
+		})
+		require.NoError(t, err)
+		assert.Len(t, foundPackages, 2, "package list should be unchanged")
+	})
+
+	t.Run("startup_always_full_sync", func(t *testing.T) {
+		t.Parallel()
+
+		fs := internalStorage.PrepareFakeServer(t, "testdata/search-index-all-small.json")
+		t.Cleanup(fs.Stop)
+
+		indexer := NewIndexer(util.NewTestLogger(), internalStorage.ClientNoAuth(fs), incrementalOptions)
+		t.Cleanup(func() { indexer.Close(context.Background()) })
+
+		// cursor is "" on startup — must do full sync even with IncrementalUpdates: true
+		err := indexer.Init(t.Context())
+		require.NoError(t, err)
+
+		foundPackages, err := indexer.Get(t.Context(), &packages.GetOptions{
+			Filter: &packages.Filter{AllVersions: true, Prerelease: true, PackageName: "1password"},
+		})
+		require.NoError(t, err)
+		assert.Len(t, foundPackages, 2, "full sync on startup must load all packages")
+	})
+
+	t.Run("delta_corrupt_falls_back_to_full_sync", func(t *testing.T) {
+		// A delta file that exists but contains invalid JSON (e.g. a write that was
+		// truncated mid-flight) must trigger the same full-sync fallback as a missing
+		// delta, leaving the indexer in a consistent state.
+		t.Parallel()
+
+		fs := internalStorage.PrepareFakeServer(t, "testdata/search-index-all-small.json")
+		t.Cleanup(fs.Stop)
+
+		indexer := NewIndexer(util.NewTestLogger(), internalStorage.ClientNoAuth(fs), incrementalOptions)
+		t.Cleanup(func() { indexer.Close(context.Background()) })
+
+		err := indexer.Init(t.Context())
+		require.NoError(t, err)
+
+		// Publish a valid search-index-all.json at revision "2" first, then overlay a
+		// corrupt delta for the same revision. The full index must survive as the fallback.
+		fs, indexer.storageClient = internalStorage.UpdateFakeServer(t, fs, "2", "testdata/search-index-all-full.json")
+		_, indexer.storageClient = internalStorage.UpdateFakeServerWithDelta(t, fs, "2", []byte(`{invalid json`))
+
+		err = indexer.updateIndex(t.Context())
+		require.NoError(t, err, "corrupt delta must fall back to full sync without error")
+		assert.Equal(t, "2", indexer.cursor, "cursor must advance even when delta was corrupt")
+
+		foundPackages, err := indexer.Get(t.Context(), &packages.GetOptions{
+			Filter: &packages.Filter{AllVersions: true, Prerelease: true},
+		})
+		require.NoError(t, err)
+		assert.Len(t, foundPackages, 1139, "fallback full sync must load all packages")
+	})
+
+	t.Run("delta_corrupt_no_full_index_returns_error", func(t *testing.T) {
+		// When a delta is corrupt AND no search-index-all.json exists for that revision,
+		// updateIndex must return an error and leave the cursor unchanged.
+		t.Parallel()
+
+		fs := internalStorage.PrepareFakeServer(t, "testdata/search-index-all-small.json")
+		t.Cleanup(fs.Stop)
+
+		indexer := NewIndexer(util.NewTestLogger(), internalStorage.ClientNoAuth(fs), incrementalOptions)
+		t.Cleanup(func() { indexer.Close(context.Background()) })
+
+		err := indexer.Init(t.Context())
+		require.NoError(t, err)
+
+		// Publish only a corrupt delta for revision "2" — no search-index-all.json.
+		_, indexer.storageClient = internalStorage.UpdateFakeServerWithDelta(t, fs, "2", []byte(`{invalid json`))
+
+		err = indexer.updateIndex(t.Context())
+		require.Error(t, err, "must return an error when both delta and full index are unavailable")
+		assert.Equal(t, "1", indexer.cursor, "cursor must not advance when update fails")
+	})
+
+	t.Run("delta_missing_falls_back_to_full_sync", func(t *testing.T) {
+		t.Parallel()
+
+		fs := internalStorage.PrepareFakeServer(t, "testdata/search-index-all-small.json")
+		t.Cleanup(fs.Stop)
+
+		indexer := NewIndexer(util.NewTestLogger(), internalStorage.ClientNoAuth(fs), incrementalOptions)
+		t.Cleanup(func() { indexer.Close(context.Background()) })
+
+		err := indexer.Init(t.Context())
+		require.NoError(t, err)
+
+		// revision "2" has a full search-index-all.json but no delta file
+		_, indexer.storageClient = internalStorage.UpdateFakeServer(t, fs, "2", "testdata/search-index-all-full.json")
+
+		err = indexer.updateIndex(t.Context())
+		require.NoError(t, err)
+
+		foundPackages, err := indexer.Get(t.Context(), &packages.GetOptions{
+			Filter: &packages.Filter{AllVersions: true, Prerelease: true},
+		})
+		require.NoError(t, err)
+		assert.Len(t, foundPackages, 1139, "fallback full sync should have loaded all packages")
+	})
+
+	// This test is intentionally racy without the fix in applyDelta that allocates a
+	// fresh backing array. Run with -race to detect regressions.
+	t.Run("concurrent_get_and_apply_delta", func(t *testing.T) {
+		t.Parallel()
+
+		fs := internalStorage.PrepareFakeServer(t, "testdata/search-index-all-small.json")
+		t.Cleanup(fs.Stop)
+
+		indexer := NewIndexer(util.NewTestLogger(), internalStorage.ClientNoAuth(fs), incrementalOptions)
+		t.Cleanup(func() { indexer.Close(context.Background()) })
+
+		err := indexer.Init(t.Context())
+		require.NoError(t, err)
+
+		deltaContent := readDeltaFile(t, "testdata/search-index-delta-add.json")
+		_, indexer.storageClient = internalStorage.UpdateFakeServerWithDelta(t, fs, "2", deltaContent)
+
+		var wg sync.WaitGroup
+		for range 50 {
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				_, _ = indexer.Get(t.Context(), &packages.GetOptions{})
+			}()
+		}
+
+		err = indexer.updateIndex(t.Context())
+		require.NoError(t, err)
+		wg.Wait()
+	})
+
+	// Exercises the deprecated-propagation write path during concurrent Get calls.
+	// The seed contains a deprecated package so deprecatedPackages is populated after
+	// full sync. The delta adds a new version of the same package — applyDelta reuses
+	// the existing *Package pointer for the unchanged entry, then
+	// PropagateLatestDeprecatedInfoToPackageList writes through it. Run with -race to
+	// detect a regression back to in-place mutation of shared pointers.
+	t.Run("concurrent_get_and_apply_delta_with_deprecated", func(t *testing.T) {
+		t.Parallel()
+
+		fs := internalStorage.PrepareFakeServer(t, "testdata/search-index-all-small-deprecated.json")
+		t.Cleanup(fs.Stop)
+
+		indexer := NewIndexer(util.NewTestLogger(), internalStorage.ClientNoAuth(fs), incrementalOptions)
+		t.Cleanup(func() { indexer.Close(context.Background()) })
+
+		err := indexer.Init(t.Context())
+		require.NoError(t, err)
+
+		// Add 1password 0.3.0; the seeded 0.2.0 pointer is reused by applyDelta and
+		// then written to by PropagateLatestDeprecatedInfoToPackageList.
+		deltaContent := readDeltaFile(t, "testdata/search-index-delta-add.json")
+		_, indexer.storageClient = internalStorage.UpdateFakeServerWithDelta(t, fs, "2", deltaContent)
+
+		var wg sync.WaitGroup
+		for range 50 {
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				_, _ = indexer.Get(t.Context(), &packages.GetOptions{})
+			}()
+		}
+
+		err = indexer.updateIndex(t.Context())
+		require.NoError(t, err)
+		wg.Wait()
+	})
+}
+
+func TestApplyDelta_AddDuplicateSkipped(t *testing.T) {
+	// If pd.added contains a package whose name+version is already in i.packageList,
+	// applyDelta must not produce a duplicate entry.
+	t.Parallel()
+
+	title := "Original"
+	existing := &packages.Package{BasePackage: packages.BasePackage{Name: "foo", Version: "1.0.0", Title: &title}}
+	other := &packages.Package{BasePackage: packages.BasePackage{Name: "bar", Version: "2.0.0"}}
+
+	indexer := &Indexer{
+		logger:      util.NewTestLogger(),
+		packageList: packages.Packages{existing, other},
+	}
+
+	dupTitle := "Duplicate"
+	dup := &packages.Package{BasePackage: packages.BasePackage{Name: "foo", Version: "1.0.0", Title: &dupTitle}}
+
+	indexer.applyDelta(preparedDelta{
+		removeKeys: map[string]struct{}{},
+		updateMap:  map[string]*packages.Package{},
+		added:      packages.Packages{dup},
+	})
+
+	require.Len(t, indexer.packageList, 2, "duplicate in added must not create a second entry")
+
+	byKey := make(map[string]*packages.Package)
+	for _, p := range indexer.packageList {
+		byKey[p.Name+"-"+p.Version] = p
+	}
+	require.Contains(t, byKey, "foo-1.0.0")
+	require.Contains(t, byKey, "bar-2.0.0")
+	// The original pointer wins; the duplicate is dropped.
+	assert.Equal(t, "Original", *byKey["foo-1.0.0"].Title, "original package must be kept, not the duplicate")
 }

@@ -1,0 +1,22 @@
+{
+    "added": [
+        {
+            "package_manifest": {
+                "name": "1password",
+                "title": "1Password Events Reporting",
+                "version": "0.3.0",
+                "release": "beta",
+                "description": "Collect events from 1Password Events API with Elastic Agent.",
+                "type": "integration",
+                "download": "/epr/1password/1password-0.3.0.zip",
+                "path": "/package/1password/0.3.0",
+                "categories": ["security"],
+                "format_version": "1.0.0",
+                "conditions": {"kibana": {"version": "^7.16.0 || ^8.0.0"}},
+                "owner": {"github": "elastic/security-external-integrations"}
+            }
+        }
+    ],
+    "updated": [],
+    "removed": []
+}
