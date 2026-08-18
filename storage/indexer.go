@@ -205,34 +205,34 @@ func (i *Indexer) fullSync(ctx context.Context, latestCursorValue string) error 
 }
 
 func (i *Indexer) incrementalSync(ctx context.Context, latestCursorValue string) error {
-	timestamps, err := internalStorage.ListCursorsBetween(ctx, i.storageClient, i.options.PackageStorageBucketInternal, i.cursor, latestCursorValue)
+	cursors, err := internalStorage.ListCursorsBetween(ctx, i.storageClient, i.options.PackageStorageBucketInternal, i.cursor, latestCursorValue)
 	if err != nil {
 		metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
 		return fmt.Errorf("can't list cursors between %s and %s: %w", i.cursor, latestCursorValue, err)
 	}
 
 	type revision struct {
-		timestamp string
+		cursor string
 		delta     *internalStorage.SearchIndexDelta
 		prepared  *preparedDelta
 		fullIndex *packages.Packages
 	}
 
-	revisions := make([]revision, 0, len(timestamps))
-	for _, ts := range timestamps {
-		delta, err := internalStorage.LoadSearchIndexDelta(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, ts)
+	revisions := make([]revision, 0, len(cursors))
+	for _, cursor := range cursors {
+		delta, err := internalStorage.LoadSearchIndexDelta(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, cursor)
 		if err != nil {
-			i.logger.Warn("failed to load delta, falling back to full sync for timestamp", zap.String("cursor", ts), zap.Error(err))
-			anIndex, err := internalStorage.LoadSearchIndexAllForCursor(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, ts)
+			i.logger.Warn("failed to load delta, falling back to full sync for timestamp", zap.String("cursor", cursor), zap.Error(err))
+			anIndex, err := internalStorage.LoadSearchIndexAllForCursor(ctx, i.logger, i.storageClient, i.options.PackageStorageBucketInternal, cursor)
 			if err != nil {
 				metrics.StorageIndexerUpdateIndexErrorsTotal.Inc()
-				return fmt.Errorf("can't load search-index-all for cursor %s: %w", ts, err)
+				return fmt.Errorf("can't load search-index-all for cursor %s: %w", cursor, err)
 			}
 			// Full sync supersedes all prior deltas — reset to avoid holding multiple full copies in memory.
 			revisions = revisions[:0]
-			revisions = append(revisions, revision{timestamp: ts, fullIndex: anIndex})
+			revisions = append(revisions, revision{cursor: cursor, fullIndex: anIndex})
 		} else {
-			revisions = append(revisions, revision{timestamp: ts, delta: delta})
+			revisions = append(revisions, revision{cursor: cursor, delta: delta})
 		}
 	}
 
@@ -259,9 +259,9 @@ func (i *Indexer) incrementalSync(ctx context.Context, latestCursorValue string)
 			i.packageList = *r.fullIndex
 		} else if r.prepared != nil {
 			i.applyDelta(*r.prepared)
-			i.logger.Debug("applied delta", zap.String("timestamp", r.timestamp), zap.String("index.packages.size", fmt.Sprintf("%d", i.packageList.Len())))
+			i.logger.Debug("applied delta", zap.String("cursor", r.cursor), zap.String("index.packages.size", fmt.Sprintf("%d", i.packageList.Len())))
 		}
-		i.cursor = r.timestamp
+		i.cursor = r.cursor
 	}
 
 	metrics.StorageIndexerUpdateIndexSuccessTotal.Inc()
