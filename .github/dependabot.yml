@@ -17,6 +17,9 @@ updates:
       opentelemetry:
         patterns:
           - "go.opentelemetry.io/*"
+      golang-x:
+        patterns:
+          - "golang.org/x/*"
   - package-ecosystem: "gomod"
     directory: "/cmd/distribution"
     schedule:
@@ -26,3 +29,7 @@ updates:
     open-pull-requests-limit: 10
     allow:
       - dependency-type: "all" # Also indirect dependencies.
+    groups:
+      golang-x:
+        patterns:
+          - "golang.org/x/*"
