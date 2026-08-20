@@ -1,0 +1,22 @@
+# Base address of the Package Registry
+address: "https://epr.elastic.co"
+
+# Queries are executed with each one of the parameters of the matrix.
+matrix:
+  - spec.max: 3.5
+  - prerelease: true
+    spec.max: 3.5
+
+# Queries to execute to discover packages >8.18.0 & >9.0.0.
+queries:
+  - kibana.version: 8.18.0
+    spec.max: 3.4
+  - kibana.version: 9.0.0
+    spec.min: 2.3
+    spec.max: 3.4
+
+
+actions:
+  - print:
+  - download:
+      destination: ./build/distribution
