@@ -11,7 +11,7 @@ require (
 	github.com/stretchr/testify v1.12.1
 	golang.org/x/tools v0.49.0
 	gopkg.in/yaml.v3 v3.0.1
-	honnef.co/go/tools v0.8.0
+	honnef.co/go/tools v0.8.1
 )
 
 require (
