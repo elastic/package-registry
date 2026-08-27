@@ -79,8 +79,8 @@ github.com/felixge/httpsnoop v1.1.0 h1:3YtUj32ZZkqZtt3sZZsClsymw/QDuVfpNhoA31zeO
 github.com/felixge/httpsnoop v1.1.0/go.mod h1:Zqxgdd+1Rkcz8euOqdr7lqgCRJztwr5hp9vDSi5UZCE=
 github.com/fsnotify/fsnotify v1.10.1 h1:b0/UzAf9yR5rhf3RPm9gf3ehBPpf0oZKIjtpKrx59Ho=
 github.com/fsnotify/fsnotify v1.10.1/go.mod h1:TLheqan6HD6GBK6PrDWyDPBaEV8LspOxvPSjC+bVfgo=
-github.com/fsouza/fake-gcs-server v1.56.0 h1:0Y5MHIJYLSCXAnlYZPq3CA3k2ggsnVj3TsVWHnDFfmk=
-github.com/fsouza/fake-gcs-server v1.56.0/go.mod h1:YWNj8Gseru6LXGCBRSqU7fHJq/ESitLrFHT49lYHvdc=
+github.com/fsouza/fake-gcs-server v1.56.1 h1:K03sAvbLvDz4hAynpCCUqnNRp+ik9JFSvHbkD/wTPOU=
+github.com/fsouza/fake-gcs-server v1.56.1/go.mod h1:rzibfBNKouMLeVYDkIDqUiCEcfgDyJWe+4PhG7uesmU=
 github.com/go-jose/go-jose/v4 v4.1.4 h1:moDMcTHmvE6Groj34emNPLs/qtYXRVcd6S7NHbHz3kA=
 github.com/go-jose/go-jose/v4 v4.1.4/go.mod h1:x4oUasVrzR7071A4TnHLGSPpNOm2a21K9Kf04k1rs08=
 github.com/go-logr/logr v1.2.2/go.mod h1:jdQByPbusPIv2/zmleS9BjJVeZ6kBagPoEUsqbVz/1A=
