@@ -200,7 +200,37 @@ func updateGoVersion(goVersionPath, dockerfilePath, version string) error {
 	return nil
 }
 
+func checkGoVersionFilesInSync() error {
+	goVersionContents, err := os.ReadFile(goVersionFile)
+	if err != nil {
+		return fmt.Errorf("failed to read %s: %w", goVersionFile, err)
+	}
+	goVersion := strings.TrimSpace(string(goVersionContents))
+	if goVersion == "" {
+		return fmt.Errorf("empty go version in %s", goVersionFile)
+	}
+
+	dockerfileContents, err := os.ReadFile(dockerfile)
+	if err != nil {
+		return fmt.Errorf("failed to read %s: %w", dockerfile, err)
+	}
+	matches := dockerfileGoVersionPattern.FindAll(dockerfileContents, -1)
+	if len(matches) != 1 {
+		return fmt.Errorf("expected exactly one ARG GO_VERSION=<version> declaration in %s, found %d", dockerfile, len(matches))
+	}
+
+	expected := "ARG GO_VERSION=" + goVersion
+	if string(matches[0]) != expected {
+		return fmt.Errorf("Go version in %s does not match %s: got %q, expected %q", dockerfile, goVersionFile, string(matches[0]), expected)
+	}
+	return nil
+}
+
 func Check() error {
+	if err := checkGoVersionFilesInSync(); err != nil {
+		return fmt.Errorf("Go version consistency check failed: %w", err)
+	}
+
 	mg.SerialDeps(
 		Format,
 		Build,

@@ -9,7 +9,6 @@ package main
 import (
 	"os"
 	"path/filepath"
-	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -17,18 +16,7 @@ import (
 )
 
 func TestUpdateGoVersionFilesInSync(t *testing.T) {
-	goVersionContents, err := os.ReadFile(goVersionFile)
-	require.NoError(t, err)
-
-	version := strings.TrimSpace(string(goVersionContents))
-	assert.NotEmpty(t, version)
-
-	dockerfileContents, err := os.ReadFile(dockerfile)
-	require.NoError(t, err)
-
-	matches := dockerfileGoVersionPattern.FindAll(dockerfileContents, -1)
-	require.Len(t, matches, 1)
-	assert.Equal(t, "ARG GO_VERSION="+version, string(matches[0]))
+	assert.NoError(t, checkGoVersionFilesInSync())
 }
 
 func TestUpdateGoVersion(t *testing.T) {

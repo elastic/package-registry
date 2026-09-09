@@ -1,6 +1,7 @@
 # This image contains the package-registry binary.
 # It expects packages to be mounted under /packages/package-registry or have a config file loaded into /package-registry/config.yml
 
+# Keep in sync with .go-version.
 ARG GO_VERSION=1.26.7
 ARG BUILDER_IMAGE=golang
 ARG RUNNER_IMAGE=cgr.dev/chainguard/wolfi-base
