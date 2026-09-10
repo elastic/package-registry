@@ -7,10 +7,8 @@
 package main
 
 import (
-	"bytes"
 	"errors"
 	"fmt"
-	goversion "go/version"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -142,64 +140,6 @@ func dockerBuild(tag string, fips bool) error {
 	return nil
 }
 
-// UpdateGoVersion updates the Go version used by development tooling and the
-// Docker builder image.
-func UpdateGoVersion(version string) error {
-	return updateGoVersion(goVersionFile, dockerfile, version)
-}
-
-func updateGoVersion(goVersionPath, dockerfilePath, version string) error {
-	version = strings.TrimSpace(version)
-	if version == "" {
-		return fmt.Errorf("Go version must not be empty")
-	}
-	if !goversion.IsValid("go" + version) {
-		return fmt.Errorf("invalid Go version %q", version)
-	}
-
-	goVersionContents, err := os.ReadFile(goVersionPath)
-	if err != nil {
-		return fmt.Errorf("failed to read %s: %w", goVersionPath, err)
-	}
-	dockerfileContents, err := os.ReadFile(dockerfilePath)
-	if err != nil {
-		return fmt.Errorf("failed to read %s: %w", dockerfilePath, err)
-	}
-
-	matches := dockerfileGoVersionPattern.FindAllIndex(dockerfileContents, -1)
-	if len(matches) != 1 {
-		return fmt.Errorf("expected exactly one ARG GO_VERSION=<version> declaration in %s, found %d", dockerfilePath, len(matches))
-	}
-	match := matches[0]
-	updatedDockerfile := make([]byte, 0, len(dockerfileContents)-match[1]+match[0]+len("ARG GO_VERSION=")+len(version))
-	updatedDockerfile = append(updatedDockerfile, dockerfileContents[:match[0]]...)
-	updatedDockerfile = append(updatedDockerfile, "ARG GO_VERSION="...)
-	updatedDockerfile = append(updatedDockerfile, version...)
-	updatedDockerfile = append(updatedDockerfile, dockerfileContents[match[1]:]...)
-	updatedGoVersion := []byte(version + "\n")
-
-	goVersionChanged := !bytes.Equal(goVersionContents, updatedGoVersion)
-	if goVersionChanged {
-		if err := os.WriteFile(goVersionPath, updatedGoVersion, 0644); err != nil {
-			return fmt.Errorf("failed to write %s: %w", goVersionPath, err)
-		}
-	}
-	if !bytes.Equal(dockerfileContents, updatedDockerfile) {
-		if err := os.WriteFile(dockerfilePath, updatedDockerfile, 0644); err != nil {
-			if goVersionChanged {
-				if rollbackErr := os.WriteFile(goVersionPath, goVersionContents, 0644); rollbackErr != nil {
-					return errors.Join(
-						fmt.Errorf("failed to write %s: %w", dockerfilePath, err),
-						fmt.Errorf("failed to restore %s: %w", goVersionPath, rollbackErr),
-					)
-				}
-			}
-			return fmt.Errorf("failed to write %s: %w", dockerfilePath, err)
-		}
-	}
-	return nil
-}
-
 func checkGoVersionFilesInSync() error {
 	goVersionContents, err := os.ReadFile(goVersionFile)
 	if err != nil {
@@ -248,7 +188,7 @@ func Check() error {
 }
 
 func Test() error {
-	if err := sh.RunV("go", "test", "-tags=mage", "-run", "^TestUpdateGoVersion", "."); err != nil {
+	if err := sh.RunV("go", "test", "-tags=mage", "."); err != nil {
 		return fmt.Errorf("magefile tests failed: %w", err)
 	}
 	return runInAllModules(func(mod module) error {
