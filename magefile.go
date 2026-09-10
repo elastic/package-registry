@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 
 	"github.com/magefile/mage/mg"
@@ -31,12 +32,16 @@ const (
 	// StaticcheckImport path is the import path of the staticcheck tool.
 	StaticcheckImportPath = "honnef.co/go/tools/cmd/staticcheck"
 
-	buildDir = "./build"
+	buildDir      = "./build"
+	goVersionFile = ".go-version"
+	dockerfile    = "Dockerfile"
 
 	// GOFIPS140Version pins the certified Go FIPS 140-3 crypto module used by
 	// FIPS builds. See https://go.dev/doc/security/fips140#fips-140-3-mode and docs/fips.md.
 	GOFIPS140Version = "v1.0.0"
 )
+
+var dockerfileGoVersionPattern = regexp.MustCompile(`(?m)^ARG GO_VERSION=[^\r\n]+`)
 
 type module struct {
 	name string // Display name
@@ -111,13 +116,13 @@ func DockerBuildFIPS(tag string) error {
 }
 
 func dockerBuild(tag string, fips bool) error {
-	contents, err := os.ReadFile(".go-version")
+	contents, err := os.ReadFile(goVersionFile)
 	if err != nil {
-		return fmt.Errorf("failed to read .go-version: %w", err)
+		return fmt.Errorf("failed to read %s: %w", goVersionFile, err)
 	}
 	goVersion := strings.TrimSpace(string(contents))
 	if goVersion == "" {
-		return fmt.Errorf("empty go version in .go-version")
+		return fmt.Errorf("empty go version in %s", goVersionFile)
 	}
 	dockerImage := fmt.Sprintf("docker.elastic.co/package-registry/package-registry:%s", tag)
 
@@ -135,7 +140,37 @@ func dockerBuild(tag string, fips bool) error {
 	return nil
 }
 
+func checkGoVersionFilesInSync(goVersionPath, dockerfilePath string) error {
+	goVersionContents, err := os.ReadFile(goVersionPath)
+	if err != nil {
+		return fmt.Errorf("failed to read %s: %w", goVersionPath, err)
+	}
+	goVersion := strings.TrimSpace(string(goVersionContents))
+	if goVersion == "" {
+		return fmt.Errorf("empty go version in %s", goVersionPath)
+	}
+
+	dockerfileContents, err := os.ReadFile(dockerfilePath)
+	if err != nil {
+		return fmt.Errorf("failed to read %s: %w", dockerfilePath, err)
+	}
+	matches := dockerfileGoVersionPattern.FindAll(dockerfileContents, -1)
+	if len(matches) != 1 {
+		return fmt.Errorf("expected exactly one ARG GO_VERSION=<version> declaration in %s, found %d", dockerfilePath, len(matches))
+	}
+
+	expected := "ARG GO_VERSION=" + goVersion
+	if string(matches[0]) != expected {
+		return fmt.Errorf("Go version in %s does not match %s: got %q, expected %q", dockerfilePath, goVersionPath, string(matches[0]), expected)
+	}
+	return nil
+}
+
 func Check() error {
+	if err := checkGoVersionFilesInSync(goVersionFile, dockerfile); err != nil {
+		return fmt.Errorf("Go version consistency check failed: %w", err)
+	}
+
 	mg.SerialDeps(
 		Format,
 		Build,
@@ -153,6 +188,9 @@ func Check() error {
 }
 
 func Test() error {
+	if err := sh.RunV("go", "test", "-tags=mage", "."); err != nil {
+		return fmt.Errorf("magefile tests failed: %w", err)
+	}
 	return runInAllModules(func(mod module) error {
 		fmt.Fprintf(os.Stderr, ">> test - running tests for %s\n", mod.name)
 		return sh.RunV("go", "test", "./...", "-v")
