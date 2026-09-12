@@ -40,15 +40,17 @@ type Package struct {
 	BasePackage   `config:",inline" json:",inline" yaml:",inline"`
 	FormatVersion string `config:"format_version" json:"format_version" yaml:"format_version"`
 
-	Readme          *string               `config:"readme,omitempty" json:"readme,omitempty" yaml:"readme,omitempty"`
-	License         string                `config:"license,omitempty" json:"license,omitempty" yaml:"license,omitempty"`
-	Screenshots     []Image               `config:"screenshots,omitempty" json:"screenshots,omitempty" yaml:"screenshots,omitempty"`
-	Assets          []string              `config:"assets,omitempty" json:"assets,omitempty" yaml:"assets,omitempty"`
-	PolicyTemplates []PolicyTemplate      `config:"policy_templates,omitempty" json:"policy_templates,omitempty" yaml:"policy_templates,omitempty"`
-	DataStreams     []*DataStream         `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
-	Vars            []Variable            `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
-	Elasticsearch   *PackageElasticsearch `config:"elasticsearch,omitempty" json:"elasticsearch,omitempty" yaml:"elasticsearch,omitempty"`
-	Agent           *PackageAgent         `config:"agent,omitempty" json:"agent,omitempty" yaml:"agent,omitempty"`
+	Readme              *string               `config:"readme,omitempty" json:"readme,omitempty" yaml:"readme,omitempty"`
+	License             string                `config:"license,omitempty" json:"license,omitempty" yaml:"license,omitempty"`
+	Screenshots         []Image               `config:"screenshots,omitempty" json:"screenshots,omitempty" yaml:"screenshots,omitempty"`
+	Assets              []string              `config:"assets,omitempty" json:"assets,omitempty" yaml:"assets,omitempty"`
+	PolicyTemplates     []PolicyTemplate      `config:"policy_templates,omitempty" json:"policy_templates,omitempty" yaml:"policy_templates,omitempty"`
+	DataStreams         []*DataStream         `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
+	Vars                []Variable            `config:"vars" json:"vars,omitempty" yaml:"vars,omitempty"`
+	Elasticsearch       *PackageElasticsearch `config:"elasticsearch,omitempty" json:"elasticsearch,omitempty" yaml:"elasticsearch,omitempty"`
+	Agent               *PackageAgent         `config:"agent,omitempty" json:"agent,omitempty" yaml:"agent,omitempty"`
+	IaCBlueprints       []IaCBlueprint        `config:"iac_blueprints,omitempty" json:"iac_blueprints,omitempty" yaml:"iac_blueprints,omitempty"`
+	ProviderPermissions []ProviderPermission  `config:"provider_permissions,omitempty" json:"provider_permissions,omitempty" yaml:"provider_permissions,omitempty"`
 	// Local path to the package dir
 	BasePath string `json:"-" yaml:"-"`
 
@@ -130,6 +132,40 @@ type PolicyTemplate struct {
 	IngestionMethod string      `config:"ingestion_method,omitempty" json:"ingestion_method,omitempty" yaml:"ingestion_method,omitempty"`
 	TemplatePath    string      `config:"template_path,omitempty" json:"template_path,omitempty" yaml:"template_path,omitempty"`
 	Deprecated      *Deprecated `config:"deprecated,omitempty" json:"deprecated,omitempty" yaml:"deprecated,omitempty"`
+
+	IaCBlueprints       []IaCBlueprint       `config:"iac_blueprints,omitempty" json:"iac_blueprints,omitempty" yaml:"iac_blueprints,omitempty"`
+	ProviderPermissions []ProviderPermission `config:"provider_permissions,omitempty" json:"provider_permissions,omitempty" yaml:"provider_permissions,omitempty"`
+}
+
+// IaCBlueprint is a contribution to a shared IaC canonical blueprint.
+type IaCBlueprint struct {
+	ID      string `config:"id" json:"id" yaml:"id" validate:"required"`
+	Format  string `config:"format" json:"format" yaml:"format" validate:"required"`
+	Patches string `config:"patches" json:"patches" yaml:"patches" validate:"required"`
+	Title   string `config:"title,omitempty" json:"title,omitempty" yaml:"title,omitempty"`
+}
+
+// ProviderPermission declares permissions and roles required from a named provider.
+type ProviderPermission struct {
+	Provider    string            `config:"provider" json:"provider" yaml:"provider" validate:"required"`
+	Description string            `config:"description,omitempty" json:"description,omitempty" yaml:"description,omitempty"`
+	Roles       []ProviderRole    `config:"roles,omitempty" json:"roles,omitempty" yaml:"roles,omitempty"`
+	Permissions []PermissionEntry `config:"permissions,omitempty" json:"permissions,omitempty" yaml:"permissions,omitempty"`
+}
+
+// ProviderRole is a pre-defined role or managed policy to attach.
+type ProviderRole struct {
+	Name        string `config:"name" json:"name" yaml:"name" validate:"required"`
+	ID          string `config:"id,omitempty" json:"id,omitempty" yaml:"id,omitempty"`
+	Description string `config:"description,omitempty" json:"description,omitempty" yaml:"description,omitempty"`
+}
+
+// PermissionEntry is an individual permission grant required by an integration unit.
+type PermissionEntry struct {
+	Name        string                 `config:"name" json:"name" yaml:"name" validate:"required"`
+	Description string                 `config:"description,omitempty" json:"description,omitempty" yaml:"description,omitempty"`
+	Resources   []string               `config:"resources,omitempty" json:"resources,omitempty" yaml:"resources,omitempty"`
+	Conditions  map[string]interface{} `config:"conditions,omitempty" json:"conditions,omitempty" yaml:"conditions,omitempty"`
 }
 
 // Source contains metadata about the source of the package and its distribution.
