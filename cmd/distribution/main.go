@@ -6,9 +6,7 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 	"os"
-	"runtime"
 
 	"github.com/elastic/package-registry/workers"
 )
@@ -32,13 +30,13 @@ func main() {
 		}
 	}
 
-	packages, err := config.collect(&http.Client{})
+	packages, err := config.collect(httpClient)
 	if err != nil {
 		fmt.Printf("failed to collect packages: %s", err)
 		os.Exit(-1)
 	}
 
-	taskpool := workers.NewTaskPool(runtime.GOMAXPROCS(0))
+	taskpool := workers.NewTaskPool(maxConcurrency)
 	for _, info := range packages {
 		taskpool.Do(func() error {
 			for _, action := range config.Actions {

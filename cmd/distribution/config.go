@@ -5,6 +5,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -13,7 +14,6 @@ import (
 	"net/url"
 	"os"
 	"path"
-	"runtime"
 	"slices"
 	"strings"
 	"sync"
@@ -103,14 +103,20 @@ func (c config) collect(client *http.Client) ([]packageInfo, error) {
 		packagesMap[key{Name: p.Name, Version: p.Version}] = p
 	}
 
-	taskPool := workers.NewTaskPool(runtime.GOMAXPROCS(0))
+	taskPool := workers.NewTaskPool(maxConcurrency)
 	for u := range urls {
 		taskPool.Do(func() error {
-			resp, err := client.Get(u.String())
+			ctx, cancel := context.WithTimeout(context.Background(), searchTimeout)
+			defer cancel()
+			req, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String(), nil)
+			if err != nil {
+				return fmt.Errorf("failed to build request for %s: %w", u, err)
+			}
+			resp, err := client.Do(req)
 			if err != nil {
 				return fmt.Errorf("failed to GET %s: %w", u, err)
 			}
-			defer resp.Body.Close()
+			defer drainAndClose(resp.Body)
 			if resp.StatusCode != http.StatusOK {
 				return fmt.Errorf("failed to GET %s (status code %d)", u, resp.StatusCode)
 			}

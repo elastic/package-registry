@@ -20,6 +20,39 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestDownloadMissingSignaturePath(t *testing.T) {
+	tempDir := t.TempDir()
+
+	requestCount := 0
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		requestCount++
+		w.WriteHeader(http.StatusOK)
+	}))
+	defer server.Close()
+
+	action := &downloadAction{
+		Destination: tempDir,
+		client:      &http.Client{},
+		Address:     server.URL,
+	}
+
+	info := packageInfo{
+		Name:          "nginx",
+		Version:       "1.0.0",
+		Download:      "epr/nginx/nginx-1.0.0.zip",
+		SignaturePath: "",
+	}
+
+	err := action.perform(info)
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "nginx-1.0.0")
+	assert.Equal(t, 0, requestCount, "server should receive zero requests")
+
+	entries, err := os.ReadDir(tempDir)
+	require.NoError(t, err)
+	assert.Empty(t, entries, "no files should be left in destination")
+}
+
 func TestDownloadActionInit(t *testing.T) {
 	tempDir := t.TempDir()
 

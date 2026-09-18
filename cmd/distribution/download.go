@@ -6,6 +6,7 @@ package main
 
 import (
 	"bytes"
+	"context"
 	_ "embed"
 	"fmt"
 	"io"
@@ -33,7 +34,7 @@ type downloadAction struct {
 var publicKey []byte
 
 func (a *downloadAction) init(c config) error {
-	a.client = &http.Client{}
+	a.client = httpClient
 	if a.Address == "" {
 		a.Address = c.Address
 	}
@@ -49,6 +50,9 @@ func (a *downloadAction) init(c config) error {
 }
 
 func (a *downloadAction) perform(i packageInfo) error {
+	if i.SignaturePath == "" {
+		return fmt.Errorf("package %s-%s has no signature path", i.Name, i.Version)
+	}
 	if valid, _ := a.valid(i); valid {
 		return nil
 	}
@@ -72,11 +76,17 @@ func (a *downloadAction) download(urlPath string) error {
 	if err != nil {
 		return fmt.Errorf("failed to build url: %w", err)
 	}
-	resp, err := a.client.Get(p)
+	ctx, cancel := context.WithTimeout(context.Background(), downloadTimeout)
+	defer cancel()
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, p, nil)
+	if err != nil {
+		return fmt.Errorf("failed to build request for %s: %w", urlPath, err)
+	}
+	resp, err := a.client.Do(req)
 	if err != nil {
 		return fmt.Errorf("failed to get %s: %w", urlPath, err)
 	}
-	defer resp.Body.Close()
+	defer drainAndClose(resp.Body)
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("failed to get %s (status code %d)", urlPath, resp.StatusCode)
 	}
