@@ -27,6 +27,7 @@ go install github.com/elastic/package-registry/cmd/distribution@latest
 
 The tool requires a YAML configuration file that defines:
 - **address**: EPR endpoint to query (defaults to `https://epr.elastic.co`)
+- **keep**: Newest versions of each package to retain from each search response (default 0 = unlimited). When greater than 1, `all=true` is sent to EPR automatically so every version is returned before the window is applied. The window is per search response (one matrix entry × one query), so each Kibana release version gets its own set of newest installable versions before results are merged. Overridable per `matrix` entry or per `queries` entry.
 - **queries**: Search parameters to filter packages
 - **matrix**: Parameter combinations to expand queries
 - **packages**: Specific packages to include by name and version

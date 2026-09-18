@@ -405,3 +405,273 @@ func TestPrintAction(t *testing.T) {
 	})
 	require.NoError(t, err)
 }
+
+func keepPtr(n int) *int { return &n }
+
+func TestConfigKeepFor(t *testing.T) {
+	tests := []struct {
+		name     string
+		doc      int
+		matrix   *int
+		query    *int
+		expected int
+	}{
+		{name: "nothing set", expected: 0},
+		{name: "document default only", doc: 3, expected: 3},
+		{name: "matrix overrides document", doc: 3, matrix: keepPtr(5), expected: 5},
+		{name: "query overrides both", doc: 3, matrix: keepPtr(5), query: keepPtr(2), expected: 2},
+		{name: "query zero overrides non-zero default", doc: 3, query: keepPtr(0), expected: 0},
+		{name: "negative clamped to zero", doc: -1, expected: 0},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			cfg := config{Keep: tt.doc}
+			m := configQuery{Keep: tt.matrix}
+			q := configQuery{Keep: tt.query}
+			assert.Equal(t, tt.expected, cfg.keepFor(m, q))
+		})
+	}
+}
+
+func TestTruncateVersions(t *testing.T) {
+	tests := []struct {
+		name     string
+		packages []packageInfo
+		keep     int
+		expected []packageInfo
+	}{
+		{
+			name:     "keep zero returns all",
+			packages: []packageInfo{{Name: "nginx", Version: "1.0.0"}, {Name: "nginx", Version: "2.0.0"}},
+			keep:     0,
+			expected: []packageInfo{{Name: "nginx", Version: "1.0.0"}, {Name: "nginx", Version: "2.0.0"}},
+		},
+		{
+			name:     "keep above group size returns all",
+			packages: []packageInfo{{Name: "nginx", Version: "1.0.0"}, {Name: "nginx", Version: "2.0.0"}},
+			keep:     5,
+			expected: []packageInfo{{Name: "nginx", Version: "1.0.0"}, {Name: "nginx", Version: "2.0.0"}},
+		},
+		{
+			name: "two names truncated independently",
+			packages: []packageInfo{
+				{Name: "nginx", Version: "1.0.0"},
+				{Name: "nginx", Version: "2.0.0"},
+				{Name: "nginx", Version: "3.0.0"},
+				{Name: "apache", Version: "1.0.0"},
+				{Name: "apache", Version: "2.0.0"},
+				{Name: "apache", Version: "3.0.0"},
+			},
+			keep: 2,
+			expected: []packageInfo{
+				{Name: "apache", Version: "2.0.0"},
+				{Name: "apache", Version: "3.0.0"},
+				{Name: "nginx", Version: "2.0.0"},
+				{Name: "nginx", Version: "3.0.0"},
+			},
+		},
+		{
+			name: "invalid semver dropped first",
+			packages: []packageInfo{
+				{Name: "nginx", Version: "not-a-version"},
+				{Name: "nginx", Version: "1.0.0"},
+				{Name: "nginx", Version: "2.0.0"},
+			},
+			keep: 2,
+			expected: []packageInfo{
+				{Name: "nginx", Version: "1.0.0"},
+				{Name: "nginx", Version: "2.0.0"},
+			},
+		},
+		{
+			name:     "empty slice",
+			packages: []packageInfo{},
+			keep:     2,
+			expected: []packageInfo{},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := truncateVersions(tt.packages, tt.keep)
+			assert.Equal(t, tt.expected, result)
+		})
+	}
+}
+
+func TestConfigSearchURLsKeepForcesAll(t *testing.T) {
+	tests := []struct {
+		name         string
+		keep         int
+		queryKeep    *int
+		expectedURLs []string
+	}{
+		{
+			name:         "keep > 1 sets all=true",
+			keep:         2,
+			expectedURLs: []string{"http://localhost:8080/search?all=true&package=nginx"},
+		},
+		{
+			name:         "keep == 1 does not set all=true",
+			keep:         1,
+			expectedURLs: []string{"http://localhost:8080/search?package=nginx"},
+		},
+		{
+			name:         "keep == 0 does not set all=true",
+			keep:         0,
+			expectedURLs: []string{"http://localhost:8080/search?package=nginx"},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			cfg := config{
+				Address: "http://localhost:8080",
+				Keep:    tt.keep,
+				Queries: []configQuery{{Package: "nginx"}},
+			}
+			urls, err := cfg.searchURLs()
+			require.NoError(t, err)
+
+			var actual []string
+			for u := range urls {
+				actual = append(actual, u.String())
+			}
+			assert.Equal(t, tt.expectedURLs, actual)
+		})
+	}
+}
+
+func TestConfigQueryBuildKeepExcluded(t *testing.T) {
+	q := configQuery{Package: "nginx", Keep: keepPtr(3)}
+	values := q.Build()
+	assert.Equal(t, url.Values{"package": []string{"nginx"}}, values)
+}
+
+func TestConfigCollectKeep(t *testing.T) {
+	packages := []packageInfo{
+		{Name: "nginx", Version: "1.0.0"},
+		{Name: "nginx", Version: "2.0.0"},
+		{Name: "nginx", Version: "3.0.0"},
+		{Name: "nginx", Version: "4.0.0"},
+		{Name: "nginx", Version: "5.0.0"},
+		{Name: "apache", Version: "1.0.0"},
+		{Name: "apache", Version: "2.0.0"},
+		{Name: "apache", Version: "3.0.0"},
+	}
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		json.NewEncoder(w).Encode(packages)
+	}))
+	defer server.Close()
+
+	cfg := config{
+		Address: server.URL,
+		Keep:    2,
+		Queries: []configQuery{{Package: "nginx"}},
+	}
+
+	result, err := cfg.collect(&http.Client{})
+	require.NoError(t, err)
+	require.Len(t, result, 4)
+	assert.Equal(t, "apache", result[0].Name)
+	assert.Equal(t, "2.0.0", result[0].Version)
+	assert.Equal(t, "apache", result[1].Name)
+	assert.Equal(t, "3.0.0", result[1].Version)
+	assert.Equal(t, "nginx", result[2].Name)
+	assert.Equal(t, "4.0.0", result[2].Version)
+	assert.Equal(t, "nginx", result[3].Name)
+	assert.Equal(t, "5.0.0", result[3].Version)
+}
+
+func TestConfigCollectKeepIsPerResponse(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		var resp []packageInfo
+		switch r.URL.Query().Get("kibana.version") {
+		case "8.0.0":
+			resp = []packageInfo{
+				{Name: "nginx", Version: "1.0.0"},
+				{Name: "nginx", Version: "2.0.0"},
+			}
+		case "9.0.0":
+			resp = []packageInfo{
+				{Name: "nginx", Version: "3.0.0"},
+				{Name: "nginx", Version: "4.0.0"},
+			}
+		}
+		json.NewEncoder(w).Encode(resp)
+	}))
+	defer server.Close()
+
+	cfg := config{
+		Address: server.URL,
+		Keep:    1,
+		Matrix: []configQuery{
+			{KibanaVersion: "8.0.0"},
+			{KibanaVersion: "9.0.0"},
+		},
+		Queries: []configQuery{{Package: "nginx"}},
+	}
+
+	result, err := cfg.collect(&http.Client{})
+	require.NoError(t, err)
+	// Each matrix entry contributes its own newest 1, so the union has 2.
+	require.Len(t, result, 2)
+	assert.Equal(t, "2.0.0", result[0].Version)
+	assert.Equal(t, "4.0.0", result[1].Version)
+}
+
+func TestConfigCollectKeepDoesNotTruncatePinned(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		resp := []packageInfo{
+			{Name: "nginx", Version: "1.0.0"},
+			{Name: "nginx", Version: "2.0.0"},
+			{Name: "nginx", Version: "3.0.0"},
+		}
+		json.NewEncoder(w).Encode(resp)
+	}))
+	defer server.Close()
+
+	cfg := config{
+		Address: server.URL,
+		Keep:    1,
+		Packages: []configPackage{
+			{Name: "nginx", Version: "1.0.0"},
+		},
+		Queries: []configQuery{{Package: "nginx"}},
+	}
+
+	result, err := cfg.collect(&http.Client{})
+	require.NoError(t, err)
+	// Pinned nginx 1.0.0 is kept; the search contributes nginx 3.0.0 (newest 1).
+	require.Len(t, result, 2)
+	assert.Equal(t, "nginx", result[0].Name)
+	assert.Equal(t, "1.0.0", result[0].Version)
+	assert.Equal(t, "epr/nginx/nginx-1.0.0.zip", result[0].Download)
+	assert.Equal(t, "nginx", result[1].Name)
+	assert.Equal(t, "3.0.0", result[1].Version)
+}
+
+func TestReadConfigValidKeep(t *testing.T) {
+	tempDir := t.TempDir()
+	configPath := filepath.Join(tempDir, "config.yaml")
+
+	configContent := `
+address: "https://test.elastic.co"
+keep: 3
+queries:
+  - package: nginx
+    keep: 1
+  - package: apache
+`
+	err := os.WriteFile(configPath, []byte(configContent), 0644)
+	require.NoError(t, err)
+
+	cfg, err := readConfig(configPath)
+	require.NoError(t, err)
+	assert.Equal(t, 3, cfg.Keep)
+	require.NotNil(t, cfg.Queries[0].Keep)
+	assert.Equal(t, 1, *cfg.Queries[0].Keep)
+	assert.Nil(t, cfg.Queries[1].Keep)
+}

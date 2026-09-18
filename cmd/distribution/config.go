@@ -26,15 +26,34 @@ import (
 )
 
 type config struct {
-	Address  string          `yaml:"address"`
+	Address string `yaml:"address"`
+	// Keep is the default newest-N window per package per search response.
+	// Zero keeps everything. Values > 1 force all=true on the wire.
+	// Individual matrix entries and queries can override this.
+	Keep     int             `yaml:"keep"`
 	Matrix   []configQuery   `yaml:"matrix"`
 	Queries  []configQuery   `yaml:"queries"`
 	Packages []configPackage `yaml:"packages"`
 	Actions  configActions   `yaml:"actions"`
 }
 
-// searchURLs generates the search searchURLs required for the given configuration.
-func (c config) searchURLs() (iter.Seq[*url.URL], error) {
+// keepFor returns the number of versions to keep for a search. A query
+// overrides its matrix entry, which overrides the document default. Zero, and
+// any negative value, keep every version.
+func (c config) keepFor(m, q configQuery) int {
+	keep := c.Keep
+	if m.Keep != nil {
+		keep = *m.Keep
+	}
+	if q.Keep != nil {
+		keep = *q.Keep
+	}
+	return max(keep, 0)
+}
+
+// searchURLs generates the search URLs required for the given configuration,
+// each with the number of newest versions to keep from its response.
+func (c config) searchURLs() (iter.Seq2[*url.URL, int], error) {
 	address := defaultAddress
 	if c.Address != "" {
 		address = c.Address
@@ -53,23 +72,29 @@ func (c config) searchURLs() (iter.Seq[*url.URL], error) {
 	if len(matrix) == 0 {
 		matrix = []configQuery{{}}
 	}
-	return func(yield func(*url.URL) bool) {
+	return func(yield func(*url.URL, int) bool) {
 		for _, m := range matrix {
 			for _, q := range c.Queries {
+				keep := c.keepFor(m, q)
 				values := m.Build()
 				for k, v := range q.Build() {
 					values[k] = v
+				}
+				if keep > 1 {
+					// The registry returns a single version per package unless all is set,
+					// and it has no way to limit the result size.
+					values.Set("all", "true")
 				}
 				ref := ""
 				encoded := values.Encode()
 				if len(encoded) > 0 {
 					ref = "?" + encoded
 				}
-				url, err := baseURL.Parse(ref)
+				u, err := baseURL.Parse(ref)
 				if err != nil {
 					panic("invalid query " + encoded)
 				}
-				if !yield(url) {
+				if !yield(u, keep) {
 					return
 				}
 			}
@@ -104,7 +129,7 @@ func (c config) collect(client *http.Client) ([]packageInfo, error) {
 	}
 
 	taskPool := workers.NewTaskPool(maxConcurrency)
-	for u := range urls {
+	for u, keep := range urls {
 		taskPool.Do(func() error {
 			ctx, cancel := context.WithTimeout(context.Background(), searchTimeout)
 			defer cancel()
@@ -126,10 +151,11 @@ func (c config) collect(client *http.Client) ([]packageInfo, error) {
 			if err != nil {
 				return fmt.Errorf("failed to parse search response: %w", err)
 			}
-			fmt.Println(u.String(), len(packages), "packages")
+			kept := truncateVersions(packages, keep)
+			fmt.Println(u.String(), len(kept), "of", len(packages), "packages")
 
 			mapLock.Lock()
-			for _, p := range packages {
+			for _, p := range kept {
 				k := key{Name: p.Name, Version: p.Version}
 				if _, found := packagesMap[k]; found {
 					continue
@@ -150,29 +176,65 @@ func (c config) collect(client *http.Client) ([]packageInfo, error) {
 		result = append(result, p)
 	}
 
-	slices.SortFunc(result, func(a, b packageInfo) int {
-		if n := strings.Compare(a.Name, b.Name); n != 0 {
-			return n
-		}
-
-		// An invalid semantic version string is considered less than a valid one.
-		// All invalid semantic version strings compare equal to each other.
-		// From https://pkg.go.dev/golang.org/x/mod/semver#Compare
-		va, errA := semver.NewVersion(a.Version)
-		vb, errB := semver.NewVersion(b.Version)
-		switch {
-		case errA != nil && errB != nil:
-			return 0
-		case errA != nil:
-			return -1
-		case errB != nil:
-			return 1
-		}
-
-		return va.Compare(vb)
-	})
+	slices.SortFunc(result, comparePackageInfo)
 
 	return result, nil
+}
+
+// comparePackageInfo orders packages by name, and then by version.
+func comparePackageInfo(a, b packageInfo) int {
+	if n := strings.Compare(a.Name, b.Name); n != 0 {
+		return n
+	}
+	return compareVersions(a.Version, b.Version)
+}
+
+// compareVersions orders two version strings.
+//
+// An invalid semantic version string is considered less than a valid one.
+// All invalid semantic version strings compare equal to each other.
+// From https://pkg.go.dev/golang.org/x/mod/semver#Compare
+func compareVersions(a, b string) int {
+	va, errA := semver.NewVersion(a)
+	vb, errB := semver.NewVersion(b)
+	switch {
+	case errA != nil && errB != nil:
+		return 0
+	case errA != nil:
+		return -1
+	case errB != nil:
+		return 1
+	}
+	return va.Compare(vb)
+}
+
+// truncateVersions keeps at most keep newest versions of each package in
+// packages, reordering and compacting it in place. A keep of zero or less
+// keeps everything. Versions that are not valid semantic versions sort oldest
+// and are dropped first.
+//
+// The window is per search response on purpose: each matrix entry is a Kibana
+// version that needs its own installable versions, so the limit is applied
+// before responses are merged.
+func truncateVersions(packages []packageInfo, keep int) []packageInfo {
+	if keep <= 0 || len(packages) <= keep {
+		return packages
+	}
+
+	// Stable so that versions comparing equal (invalid ones) are dropped in
+	// the order the registry returned them, rather than arbitrarily.
+	slices.SortStableFunc(packages, comparePackageInfo)
+
+	n := 0
+	for i := 0; i < len(packages); {
+		j := i
+		for j < len(packages) && packages[j].Name == packages[i].Name {
+			j++
+		}
+		n += copy(packages[n:], packages[max(i, j-keep):j])
+		i = j
+	}
+	return packages[:n]
 }
 
 func (c config) pinnedPackages() ([]packageInfo, error) {
@@ -220,6 +282,9 @@ type configQuery struct {
 	KibanaVersion string `yaml:"kibana.version" url:"kibana.version,omitempty"`
 	SpecMin       string `yaml:"spec.min" url:"spec.min,omitempty"`
 	SpecMax       string `yaml:"spec.max" url:"spec.max,omitempty"`
+	// Keep overrides the document default. It is not a registry parameter:
+	// /search cannot limit results, so the window is applied in collect.
+	Keep *int `yaml:"keep" url:"-"`
 }
 
 type configPackage struct {
