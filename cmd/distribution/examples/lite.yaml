@@ -1,30 +1,11 @@
-# Lite distribution
-#
-# Mirrors all historical and current versions of 18 core Elastic integration
-# packages: apache, apm, elastic_agent, endpoint, fleet_server, kubernetes,
-# linux, log, mysql, nginx, osquery_manager, profiler_collector,
-# profiler_symbolizer, security_ai_prompts, security_detection_engine,
-# synthetics, system, windows.
-#
-# Queries use all=true to return every compatible version, not just the latest
-# per minor. The Kibana version matrix (7.17.x through 9.5.x) combined with
-# spec.min/spec.max constraints — sourced from the Fleet plugin constants —
-# gates which packages are eligible for each Kibana release.
-#
-# Prerelease packages (release: beta, 0.x versions) are included because the
-# queries omit prerelease=true, which means EPR returns GA and beta-flagged
-# packages but excludes hyphenated pre-release builds (-preview-*, -rc, -dev).
+# Lite distribution: 18 core Elastic integration packages across Kibana 8.15–9.5.
+# Beta-flagged packages are included; hyphenated pre-release builds (-preview-*, -rc, -dev) are not.
 
 # Base address of the Package Registry
 address: "https://epr.elastic.co"
 
-# Queries are executed with each one of the parameters of the matrix.
-#
-# kibana.version: official Kibana release tags — https://github.com/elastic/kibana/tags
-#
-# spec.min / spec.max: REGISTRY_SPEC_MIN/MAX_VERSION constants from the Kibana Fleet plugin:
-#   ≤8.17  x-pack/plugins/fleet/server/config.ts
-#   ≥8.18  x-pack/platform/plugins/shared/fleet/server/config.ts
+# Kibana release matrix. Each entry runs all queries independently.
+# spec.min / spec.max: REGISTRY_SPEC_MIN/MAX_VERSION from the Fleet plugin config.
 matrix:
   # - kibana.version: 7.17.26
   # - kibana.version: 7.17.27
@@ -288,16 +269,8 @@ matrix:
   - spec.min: 2.3
     spec.max: 3.6
 
-# Queries to execute to discover packages.
-#
-# all=true: return every compatible version of each package, not just the
-# latest. Without it, each search returns 1 version per package per matrix
-# entry (~86 packages total). With it, all historical versions are returned
-# (~1285 packages). The search request count is identical either way
-# (matrix × queries = 103 × 18 = 1854 requests); the difference is in the
-# download phase: all=true means ~2570 downloads (zip + sig) on a cold run vs
-# ~172 without it. Subsequent runs are cheap — already-valid packages are
-# skipped via signature check, so only new EPR releases are downloaded.
+# Packages to fetch. all=true returns every compatible version per matrix entry.
+# security_detection_engine and system use keep: 4 to limit to the 4 newest versions.
 queries:
   - package: apache
     all: true
@@ -328,11 +301,11 @@ queries:
   - package: security_ai_prompts
     all: true
   - package: security_detection_engine
-    all: true
+    keep: 4
   - package: synthetics
     all: true
   - package: system
-    all: true
+    keep: 4
   - package: windows
     all: true
 
