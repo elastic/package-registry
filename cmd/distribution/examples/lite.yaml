@@ -1,5 +1,7 @@
 # Lite distribution: 18 core Elastic integration packages across Kibana 8.15–9.5.
 # Beta-flagged packages are included; hyphenated pre-release builds (-preview-*, -rc, -dev) are not.
+# A small set of old versions required by Kibana's Fleet API integration tests is pinned via the
+# packages: block below, since they predate the matrix window or are prerelease-gated.
 
 # Base address of the Package Registry
 address: "https://epr.elastic.co"
@@ -308,6 +310,27 @@ queries:
     keep: 4
   - package: windows
     all: true
+
+# Versions required by Kibana's Fleet API integration tests that search cannot
+# reach: apache 0.1.x is prerelease-gated (not returned without prerelease=true),
+# endpoint 1.0.0 and elastic_agent 1.2.0 declare 7.x kibana conditions and are
+# invisible to any 8.x matrix entry, and the system/endpoint versions fall outside
+# even the largest keep window. Pins bypass search and the keep window entirely.
+packages:
+  - name: apache
+    version: 0.1.3
+  - name: apache
+    version: 0.1.4
+  - name: elastic_agent
+    version: 1.2.0
+  - name: endpoint
+    version: 1.0.0
+  - name: endpoint
+    version: 8.6.1
+  - name: system
+    version: 1.27.0
+  - name: system
+    version: 1.50.0
 
 actions:
   - print:

@@ -44,11 +44,11 @@ The tool requires a YAML configuration file that defines:
 - **keep**: Newest versions of each package to retain from each search response (default 0 = unlimited). When greater than 1, `all=true` is sent to EPR automatically so every version is returned before the window is applied. The window is per search response (one matrix entry × one query), so each Kibana release version gets its own set of newest installable versions before results are merged. Overridable per `matrix` entry or per `queries` entry.
 - **queries**: Search parameters to filter packages
 - **matrix**: Parameter combinations to expand queries
-- **packages**: Specific packages to include by name and version
-- **actions**: Operations to perform (print, download, validate)
+- **packages**: Specific package versions to include unconditionally (see below)
+- **actions**: Operations to perform (print, download)
 
 See the `examples/` directory for complete configuration files (`all.yaml`,
-`lite.yaml`, `pinned.yaml`, `sample.yaml`, `test.yaml`).
+`lite.yaml`, `pinned.yaml`, `production-slim.yaml`, `sample.yaml`, `test.yaml`).
 
 ## Configuration Examples
 
@@ -61,7 +61,7 @@ actions:
   - print: {}
 ```
 
-### Download with Validation
+### Download Packages
 ```yaml
 address: https://epr.elastic.co
 queries:
@@ -70,15 +70,35 @@ queries:
 actions:
   - download:
       destination: ./packages
-      validate: true
 ```
+
+### Pinning Specific Versions
+
+Use `packages:` to include exact package versions that search cannot reach —
+versions older than the `keep` window, versions whose `conditions.kibana.version`
+falls outside the matrix, or prerelease (`0.x`) versions that EPR only returns
+under `prerelease=true`. Pinned entries bypass both search and the `keep` window.
+
+```yaml
+packages:
+  - name: apache
+    version: 0.1.3
+  - name: endpoint
+    version: 1.0.0
+```
+
+Pins are resolved directly to `epr/<name>/<name>-<version>.zip` on the configured
+address. There is no existence check at config time; a wrong name or version causes
+a hard failure at download time (non-200 response). Both the ZIP and its `.sig`
+file are downloaded unconditionally — signature verification runs on every package.
+
+See `examples/pinned.yaml` for a self-contained example.
 
 ## Actions
 
 - **print**: Output package names and versions to console
 - **download**: Download package ZIP files and signatures
   - `destination`: Target directory for downloads
-  - `validate`: Verify package signatures using GPG
 
 ## Dependencies
 
