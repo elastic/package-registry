@@ -26,10 +26,10 @@ address: "https://epr.elastic.co"
 #   ≤8.17  x-pack/plugins/fleet/server/config.ts
 #   ≥8.18  x-pack/platform/plugins/shared/fleet/server/config.ts
 matrix:
-  - kibana.version: 7.17.26
-  - kibana.version: 7.17.27
-  - kibana.version: 7.17.28
-  - kibana.version: 7.17.29
+  # - kibana.version: 7.17.26
+  # - kibana.version: 7.17.27
+  # - kibana.version: 7.17.28
+  # - kibana.version: 7.17.29
   - kibana.version: 8.15.4
     spec.max: 3.0
   - kibana.version: 8.15.5
@@ -289,6 +289,15 @@ matrix:
     spec.max: 3.6
 
 # Queries to execute to discover packages.
+#
+# all=true: return every compatible version of each package, not just the
+# latest. Without it, each search returns 1 version per package per matrix
+# entry (~86 packages total). With it, all historical versions are returned
+# (~1285 packages). The search request count is identical either way
+# (matrix × queries = 103 × 18 = 1854 requests); the difference is in the
+# download phase: all=true means ~2570 downloads (zip + sig) on a cold run vs
+# ~172 without it. Subsequent runs are cheap — already-valid packages are
+# skipped via signature check, so only new EPR releases are downloaded.
 queries:
   - package: apache
     all: true
