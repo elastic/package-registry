@@ -1,3 +1,20 @@
+# Lite distribution
+#
+# Mirrors all historical and current versions of 18 core Elastic integration
+# packages: apache, apm, elastic_agent, endpoint, fleet_server, kubernetes,
+# linux, log, mysql, nginx, osquery_manager, profiler_collector,
+# profiler_symbolizer, security_ai_prompts, security_detection_engine,
+# synthetics, system, windows.
+#
+# Queries use all=true to return every compatible version, not just the latest
+# per minor. The Kibana version matrix (7.17.x through 9.5.x) combined with
+# spec.min/spec.max constraints — sourced from the Fleet plugin constants —
+# gates which packages are eligible for each Kibana release.
+#
+# Prerelease packages (release: beta, 0.x versions) are included because the
+# queries omit prerelease=true, which means EPR returns GA and beta-flagged
+# packages but excludes hyphenated pre-release builds (-preview-*, -rc, -dev).
+
 # Base address of the Package Registry
 address: "https://epr.elastic.co"
 
@@ -274,23 +291,41 @@ matrix:
 # Queries to execute to discover packages.
 queries:
   - package: apache
+    all: true
   - package: apm
+    all: true
   - package: elastic_agent
+    all: true
   - package: endpoint
+    all: true
   - package: fleet_server
+    all: true
   - package: kubernetes
+    all: true
   - package: linux
+    all: true
   - package: log
+    all: true
   - package: mysql
+    all: true
   - package: nginx
+    all: true
   - package: osquery_manager
+    all: true
   - package: profiler_collector
+    all: true
   - package: profiler_symbolizer
+    all: true
   - package: security_ai_prompts
+    all: true
   - package: security_detection_engine
+    all: true
   - package: synthetics
+    all: true
   - package: system
+    all: true
   - package: windows
+    all: true
 
 actions:
   - print:
