@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/elastic/package-registry/workers"
+	"github.com/elastic/package-registry/cmd/distribution/internal/workers"
 )
 
 const defaultAddress = "https://epr.elastic.co"

@@ -6,7 +6,6 @@ require (
 	github.com/Masterminds/semver/v3 v3.5.0
 	github.com/ProtonMail/go-crypto v1.4.1
 	github.com/elastic/go-licenser v0.4.2
-	github.com/elastic/package-registry v1.38.0
 	github.com/google/go-querystring v1.2.0
 	github.com/stretchr/testify v1.12.1
 	golang.org/x/tools v0.50.0
@@ -25,5 +24,3 @@ require (
 	golang.org/x/sys v0.48.0 // indirect
 	golang.org/x/telemetry v0.0.0-20260908163034-4bcc4b2ee518 // indirect
 )
-
-replace github.com/elastic/package-registry => ../..

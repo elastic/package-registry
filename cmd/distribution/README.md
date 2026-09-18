@@ -13,11 +13,25 @@ cd cmd/distribution
 go build
 ```
 
-Or install directly:
+Or with the repository's build tool:
 
 ```bash
-go install github.com/elastic/package-registry/cmd/distribution@latest
+mage buildDistribution
 ```
+
+Or install directly from any branch commit:
+
+```bash
+# latest from main
+go install github.com/elastic/package-registry/cmd/distribution@latest
+
+# reproducible pin
+go install github.com/elastic/package-registry/cmd/distribution@<commit-sha>
+```
+
+Note: `@vX.Y.Z` version installs are not yet supported. The repository's
+`vX.Y.Z` tags are root-module tags and do not apply to this nested module. Use
+`@latest` or an explicit commit SHA.
 
 ## Usage
 
@@ -33,7 +47,8 @@ The tool requires a YAML configuration file that defines:
 - **packages**: Specific packages to include by name and version
 - **actions**: Operations to perform (print, download, validate)
 
-See `minimal.yaml` and `lite-all.yaml` for example configurations.
+See the `examples/` directory for complete configuration files (`all.yaml`,
+`lite.yaml`, `pinned.yaml`, `sample.yaml`, `test.yaml`).
 
 ## Configuration Examples
 
@@ -67,4 +82,8 @@ actions:
 
 ## Dependencies
 
-Managed via Go modules. Run `go mod tidy` to update dependencies.
+`cmd/distribution` is a self-contained Go module with no dependency on the
+parent `github.com/elastic/package-registry` module. The concurrency primitive
+it needs (`internal/workers`) is a local copy, allowing `go install` to work
+without any `replace` directives. Run `go mod tidy` inside this directory to
+update dependencies.
