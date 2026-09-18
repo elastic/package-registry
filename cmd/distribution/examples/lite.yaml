@@ -278,10 +278,12 @@ queries:
   - package: elastic_agent
   - package: endpoint
   - package: fleet_server
+  - package: kubernetes
   - package: linux
   - package: log
   - package: mysql
   - package: nginx
+  - package: osquery_manager
   - package: profiler_collector
   - package: profiler_symbolizer
   - package: security_ai_prompts
