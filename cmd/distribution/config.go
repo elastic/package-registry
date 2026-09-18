@@ -52,7 +52,9 @@ func (c config) keepFor(m, q configQuery) int {
 }
 
 // searchURLs generates the search URLs required for the given configuration,
-// each with the number of newest versions to keep from its response.
+// each with the number of newest versions to keep from its response. Duplicate
+// URLs — produced when a query key fully overrides its matrix key — are
+// collapsed into a single entry whose keep window is merged by mergeKeep.
 func (c config) searchURLs() (iter.Seq2[*url.URL, int], error) {
 	address := defaultAddress
 	if c.Address != "" {
@@ -72,34 +74,62 @@ func (c config) searchURLs() (iter.Seq2[*url.URL, int], error) {
 	if len(matrix) == 0 {
 		matrix = []configQuery{{}}
 	}
+
+	type urlKeep struct {
+		u    *url.URL
+		keep int
+	}
+	var ordered []urlKeep
+	seen := make(map[string]int) // URL string → index in ordered
+
+	for _, m := range matrix {
+		for _, q := range c.Queries {
+			keep := c.keepFor(m, q)
+			values := m.Build()
+			for k, v := range q.Build() {
+				values[k] = v
+			}
+			if keep > 1 {
+				// The registry returns a single version per package unless all is set,
+				// and it has no way to limit the result size.
+				values.Set("all", "true")
+			}
+			ref := ""
+			encoded := values.Encode()
+			if len(encoded) > 0 {
+				ref = "?" + encoded
+			}
+			u, err := baseURL.Parse(ref)
+			if err != nil {
+				panic("invalid query " + encoded)
+			}
+			key := u.String()
+			if idx, dup := seen[key]; dup {
+				ordered[idx].keep = mergeKeep(ordered[idx].keep, keep)
+			} else {
+				seen[key] = len(ordered)
+				ordered = append(ordered, urlKeep{u: u, keep: keep})
+			}
+		}
+	}
+
 	return func(yield func(*url.URL, int) bool) {
-		for _, m := range matrix {
-			for _, q := range c.Queries {
-				keep := c.keepFor(m, q)
-				values := m.Build()
-				for k, v := range q.Build() {
-					values[k] = v
-				}
-				if keep > 1 {
-					// The registry returns a single version per package unless all is set,
-					// and it has no way to limit the result size.
-					values.Set("all", "true")
-				}
-				ref := ""
-				encoded := values.Encode()
-				if len(encoded) > 0 {
-					ref = "?" + encoded
-				}
-				u, err := baseURL.Parse(ref)
-				if err != nil {
-					panic("invalid query " + encoded)
-				}
-				if !yield(u, keep) {
-					return
-				}
+		for _, uk := range ordered {
+			if !yield(uk.u, uk.keep) {
+				return
 			}
 		}
 	}, nil
+}
+
+// mergeKeep combines the keep windows of two identical search URLs. Zero means
+// unlimited, so it wins over any bounded window; otherwise the wider window
+// wins because its result set is a superset of the narrower one.
+func mergeKeep(a, b int) int {
+	if a == 0 || b == 0 {
+		return 0
+	}
+	return max(a, b)
 }
 
 // downloadPathForPackage returns the paths to download the package with the given name and version and its signature.
@@ -128,27 +158,43 @@ func (c config) collect(client *http.Client) ([]packageInfo, error) {
 		packagesMap[key{Name: p.Name, Version: p.Version}] = p
 	}
 
-	taskPool := workers.NewTaskPool(maxConcurrency)
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	taskPool := workers.NewTaskPool(searchConcurrency)
 	for u, keep := range urls {
+		if ctx.Err() != nil {
+			break
+		}
 		taskPool.Do(func() error {
-			ctx, cancel := context.WithTimeout(context.Background(), searchTimeout)
-			defer cancel()
-			req, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String(), nil)
+			if ctx.Err() != nil {
+				return nil // another task already failed; do not touch the server
+			}
+			reqCtx, reqCancel := context.WithTimeout(ctx, searchTimeout)
+			defer reqCancel()
+			req, err := http.NewRequestWithContext(reqCtx, http.MethodGet, u.String(), nil)
 			if err != nil {
+				cancel()
 				return fmt.Errorf("failed to build request for %s: %w", u, err)
 			}
 			resp, err := client.Do(req)
 			if err != nil {
+				if ctx.Err() != nil {
+					return nil // context was cancelled by another failing task
+				}
+				cancel()
 				return fmt.Errorf("failed to GET %s: %w", u, err)
 			}
 			defer drainAndClose(resp.Body)
 			if resp.StatusCode != http.StatusOK {
+				cancel()
 				return fmt.Errorf("failed to GET %s (status code %d)", u, resp.StatusCode)
 			}
 
 			var packages []packageInfo
 			err = json.NewDecoder(resp.Body).Decode(&packages)
 			if err != nil {
+				cancel()
 				return fmt.Errorf("failed to parse search response: %w", err)
 			}
 			kept := truncateVersions(packages, keep)

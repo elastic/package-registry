@@ -11,13 +11,25 @@ import (
 	"time"
 )
 
-// maxConcurrency bounds how many requests are in flight against the registry.
+// searchConcurrency bounds how many search requests are in flight at once.
+// A single all=true search response is ~22 MB on the origin before gzip; two
+// concurrent requests cost ~44 MB instead of ~90 MB at concurrency 4. Under
+// sustained distress the adaptive pacer reduces this further automatically.
 // Deliberately a constant and not a config knob: it exists to protect the
 // registry, not to be tuned per run.
-const maxConcurrency = 4
+const searchConcurrency = 2
+
+// downloadConcurrency bounds how many package downloads are in flight at once.
+// Downloads are static files served from object storage, so a higher
+// concurrency than search is safe.
+// Deliberately a constant and not a config knob.
+const downloadConcurrency = 4
 
 const (
-	searchTimeout   = 1 * time.Minute
+	// searchTimeout covers up to maxAttempts attempts (ResponseHeaderTimeout
+	// 30 s each) plus up to maxAttempts-1 backoff sleeps capped at retryMaxWait,
+	// plus pacer waits: 4×30 s + 3×30 s = 210 s < 5 min with headroom to spare.
+	searchTimeout   = 5 * time.Minute
 	downloadTimeout = 15 * time.Minute
 )
 
@@ -35,7 +47,7 @@ func newHTTPClient() *http.Client {
 
 	// HTTP/1.1 only: the default of 2 closes connections while other workers
 	// are still running. No effect on the h2 path.
-	transport.MaxIdleConnsPerHost = maxConcurrency
+	transport.MaxIdleConnsPerHost = max(searchConcurrency, downloadConcurrency)
 	transport.ResponseHeaderTimeout = 30 * time.Second
 
 	// ResponseHeaderTimeout is not propagated to HTTP/2, so ping a quiet
@@ -46,7 +58,7 @@ func newHTTPClient() *http.Client {
 	}
 
 	return &http.Client{
-		Transport: &userAgentTransport{next: transport, userAgent: buildUserAgent()},
+		Transport: newRetryTransport(&userAgentTransport{next: transport, userAgent: buildUserAgent()}),
 	}
 }
 

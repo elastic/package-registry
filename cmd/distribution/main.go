@@ -36,7 +36,7 @@ func main() {
 		os.Exit(-1)
 	}
 
-	taskpool := workers.NewTaskPool(maxConcurrency)
+	taskpool := workers.NewTaskPool(downloadConcurrency)
 	for _, info := range packages {
 		taskpool.Do(func() error {
 			for _, action := range config.Actions {

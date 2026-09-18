@@ -6,11 +6,14 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
 	"os"
 	"path/filepath"
+	"sync"
+	"sync/atomic"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -674,4 +677,157 @@ queries:
 	require.NotNil(t, cfg.Queries[0].Keep)
 	assert.Equal(t, 1, *cfg.Queries[0].Keep)
 	assert.Nil(t, cfg.Queries[1].Keep)
+}
+
+// TestConfigCollectFailFast verifies that when one search request fails
+// terminally, the context is cancelled and the remaining URLs are not sent
+// to the server. Total server hits must be well below len(urls)*maxAttempts.
+func TestConfigCollectFailFast(t *testing.T) {
+	var hits atomic.Int64
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		hits.Add(1)
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+	}))
+	defer server.Close()
+
+	// Build a config with 20 matrix entries so there are plenty of URLs to
+	// cancel before they are sent.
+	matrix := make([]configQuery, 20)
+	for i := range matrix {
+		matrix[i] = configQuery{KibanaVersion: fmt.Sprintf("8.%d.0", i)}
+	}
+	cfg := config{
+		Address: server.URL,
+		Matrix:  matrix,
+		Queries: []configQuery{{Package: "nginx"}},
+	}
+
+	client, _ := newTestClient()
+	_, err := cfg.collect(client)
+	require.Error(t, err)
+
+	// The error must be the real failure, not a context noise message.
+	assert.Contains(t, err.Error(), "status code 500",
+		"error must report the actual failure status")
+	assert.NotContains(t, err.Error(), "context canceled",
+		"context.Canceled must be swallowed; only the root cause should surface")
+
+	// Fail-fast must bound total hits to far fewer than 20*maxAttempts = 80.
+	// Using 20 as the bound: if fail-fast works, only a handful of URLs fire.
+	assert.Less(t, hits.Load(), int64(20),
+		"fail-fast should stop the majority of requests")
+}
+
+// TestConfigCollectRetriesTransientError verifies that a 503 on the first
+// attempt is retried and collect ultimately returns the full package set.
+func TestConfigCollectRetriesTransientError(t *testing.T) {
+	var mu sync.Mutex
+	hitCount := make(map[string]int)
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		mu.Lock()
+		hitCount[r.URL.String()]++
+		count := hitCount[r.URL.String()]
+		mu.Unlock()
+
+		if count == 1 {
+			w.WriteHeader(http.StatusServiceUnavailable)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode([]packageInfo{
+			{Name: "nginx", Version: "1.0.0", Download: "/epr/nginx/nginx-1.0.0.zip"},
+		})
+	}))
+	defer server.Close()
+
+	cfg := config{
+		Address: server.URL,
+		Matrix: []configQuery{
+			{KibanaVersion: "8.0.0"},
+			{KibanaVersion: "9.0.0"},
+		},
+		Queries: []configQuery{{Package: "nginx"}},
+	}
+
+	client, _ := newTestClient()
+	packages, err := cfg.collect(client)
+	require.NoError(t, err)
+	// Both matrix entries return nginx 1.0.0; after dedup by (name, version) it's 1 package.
+	require.Len(t, packages, 1)
+	assert.Equal(t, "nginx", packages[0].Name)
+}
+
+// TestConfigSearchURLsDeduplicates verifies that identical URLs produced by
+// different matrix/query combinations are collapsed into a single entry,
+// and that keep windows are merged correctly.
+func TestConfigSearchURLsDeduplicates(t *testing.T) {
+	tests := []struct {
+		name       string
+		cfg        config
+		wantCount  int
+		wantKeep   int // expected keep for the first (and only) URL
+	}{
+		{
+			name: "query spec.max overrides both matrix spec.max values",
+			cfg: config{
+				Address: "http://localhost:8080",
+				Matrix: []configQuery{
+					{SpecMax: "3.0"},
+					{SpecMax: "3.3"},
+				},
+				Queries: []configQuery{
+					{Package: "nginx", SpecMax: "3.6"},
+				},
+			},
+			wantCount: 1,
+			wantKeep:  0, // both matrix entries inherit the document default of 0
+		},
+		{
+			name: "merged keep takes the wider window",
+			cfg: config{
+				Address: "http://localhost:8080",
+				Matrix: []configQuery{
+					{Keep: keepPtr(2)},
+					{Keep: keepPtr(3)},
+				},
+				// No package filter so both matrix entries produce the same
+				// /search?all=true URL (keep>1 forces all=true in both).
+				Queries: []configQuery{{}},
+			},
+			wantCount: 1,
+			wantKeep:  3,
+		},
+		{
+			name: "unlimited (keep=0) wins over any bounded window",
+			cfg: config{
+				Address: "http://localhost:8080",
+				Matrix: []configQuery{
+					{Keep: keepPtr(0)},
+					{Keep: keepPtr(1)},
+				},
+				Queries: []configQuery{{}},
+			},
+			wantCount: 1,
+			wantKeep:  0,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			urls, err := tt.cfg.searchURLs()
+			require.NoError(t, err)
+
+			var gotURLs []string
+			var gotKeeps []int
+			for u, k := range urls {
+				gotURLs = append(gotURLs, u.String())
+				gotKeeps = append(gotKeeps, k)
+			}
+
+			require.Len(t, gotURLs, tt.wantCount,
+				"expected %d unique URL(s), got: %v", tt.wantCount, gotURLs)
+			assert.Equal(t, tt.wantKeep, gotKeeps[0])
+		})
+	}
 }
