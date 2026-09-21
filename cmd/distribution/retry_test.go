@@ -324,9 +324,9 @@ func TestPacerWaitsAreSpaced(t *testing.T) {
 // TestParseRetryAfter checks the Retry-After parsing helpers.
 func TestParseRetryAfter(t *testing.T) {
 	tests := []struct {
-		input   string
-		want    time.Duration
-		wantOK  bool
+		input  string
+		want   time.Duration
+		wantOK bool
 	}{
 		{"0", 0, true},
 		{"5", 5 * time.Second, true},

@@ -763,10 +763,10 @@ func TestConfigCollectRetriesTransientError(t *testing.T) {
 // and that keep windows are merged correctly.
 func TestConfigSearchURLsDeduplicates(t *testing.T) {
 	tests := []struct {
-		name       string
-		cfg        config
-		wantCount  int
-		wantKeep   int // expected keep for the first (and only) URL
+		name      string
+		cfg       config
+		wantCount int
+		wantKeep  int // expected keep for the first (and only) URL
 	}{
 		{
 			name: "query spec.max overrides both matrix spec.max values",
