@@ -15,11 +15,12 @@ import (
 )
 
 // searchConcurrency bounds how many search requests are in flight at once.
-// A single all=true search response is ~22 MB on the origin before gzip; two
-// concurrent requests cost ~44 MB instead of ~90 MB at concurrency 4.
+// A single all=true search response is ~22 MB on the origin before gzip;
+// keeping this at 1 avoids back-to-back large requests that can trigger 502s
+// on the origin under load.
 // Deliberately a constant and not a config knob: it exists to protect the
 // registry, not to be tuned per run.
-const searchConcurrency = 2
+const searchConcurrency = 1
 
 // downloadConcurrency bounds how many package downloads are in flight at once.
 // Downloads are static files served from object storage, so a higher
@@ -30,8 +31,8 @@ const downloadConcurrency = 4
 const (
 	// searchTimeout covers up to maxAttempts attempts (ResponseHeaderTimeout
 	// 30 s each) plus up to maxAttempts-1 backoff sleeps capped at retryMaxWait:
-	// 4×30 s + 3×30 s = 210 s < 5 min with headroom to spare.
-	searchTimeout   = 5 * time.Minute
+	// 7×30 s + 6×30 s = 390 s < 10 min with headroom to spare.
+	searchTimeout   = 10 * time.Minute
 	downloadTimeout = 15 * time.Minute
 )
 

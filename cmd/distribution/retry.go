@@ -16,8 +16,8 @@ import (
 )
 
 const (
-	// maxAttempts is the total number of attempts per request (1 initial + 3 retries).
-	maxAttempts = 4
+	// maxAttempts is the total number of attempts per request (1 initial + 6 retries).
+	maxAttempts = 7
 
 	retryBaseWait = 1 * time.Second
 	retryMaxWait  = 30 * time.Second
@@ -31,7 +31,7 @@ const (
 	// Sized for the search phase (large slow responses) and download phase
 	// combined: on a healthy registry the natural throughput of 22 MB search
 	// responses keeps the actual rate well below this ceiling.
-	registryRate  = 50
+	registryRate  = 20
 	registryBurst = 4 // matches downloadConcurrency
 )
 
