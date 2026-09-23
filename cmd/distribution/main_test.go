@@ -488,6 +488,24 @@ func TestTruncateVersions(t *testing.T) {
 			},
 		},
 		{
+			// EPR returns packages oldest-first; truncateVersions must keep newest
+			// regardless of input order.
+			name: "newest-first input keeps newest versions",
+			packages: []packageInfo{
+				{Name: "apache", Version: "3.0.2"},
+				{Name: "apache", Version: "3.0.1"},
+				{Name: "apache", Version: "3.0.0"},
+				{Name: "apache", Version: "2.0.0"},
+				{Name: "apache", Version: "1.1.0"},
+			},
+			keep: 3,
+			expected: []packageInfo{
+				{Name: "apache", Version: "3.0.0"},
+				{Name: "apache", Version: "3.0.1"},
+				{Name: "apache", Version: "3.0.2"},
+			},
+		},
+		{
 			name:     "empty slice",
 			packages: []packageInfo{},
 			keep:     2,
