@@ -13,10 +13,13 @@ cd cmd/distribution
 go build
 ```
 
-Or with the repository's build tool:
+Or with the repository's build tool (run from the repository root):
 
 ```bash
-mage buildDistribution
+mage buildDistribution  # Build the distribution binary
+mage test               # Run all tests (covers both modules)
+mage check              # Format, license headers, mod tidy, staticcheck
+mage modTidy            # Run go mod tidy across all modules
 ```
 
 Or install directly from any branch commit:
@@ -105,5 +108,5 @@ See `examples/pinned.yaml` for a self-contained example.
 `cmd/distribution` is a self-contained Go module with no dependency on the
 parent `github.com/elastic/package-registry` module. The concurrency primitive
 it needs (`internal/workers`) is a local copy, allowing `go install` to work
-without any `replace` directives. Run `go mod tidy` inside this directory to
-update dependencies.
+without any `replace` directives. Run `mage modTidy` from the repository root
+(or `go mod tidy` inside this directory) to update dependencies.
