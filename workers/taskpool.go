@@ -49,7 +49,6 @@ func (p *taskPool) recordError(err error) {
 
 // Wait waits for all the tasks to finish, and joins the errors found. The pool cannot be used after calling Wait.
 func (p *taskPool) Wait() error {
-	close(p.pool)
 	p.wg.Wait()
 	return errors.Join(p.errors...)
 }
