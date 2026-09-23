@@ -53,19 +53,21 @@ func (a *downloadAction) perform(i packageInfo) error {
 	if i.SignaturePath == "" {
 		return fmt.Errorf("package %s-%s has no signature path", i.Name, i.Version)
 	}
-	if valid, _ := a.valid(i); valid {
+	if valid, err := a.valid(i); valid {
 		return nil
+	} else if err != nil {
+		fmt.Fprintf(os.Stderr, "existing file invalid for %s, re-downloading: %v\n", i.Download, err)
 	}
 	if err := a.download(i.Download); err != nil {
 		return fmt.Errorf("failed to download package %s: %w", i.Download, err)
 	}
 	if err := a.download(i.SignaturePath); err != nil {
-		os.Remove(a.destinationPath(i.Download))
+		removeFile(a.destinationPath(i.Download))
 		return fmt.Errorf("failed to download signature %s: %w", i.SignaturePath, err)
 	}
 	if _, err := a.valid(i); err != nil {
-		os.Remove(a.destinationPath(i.Download))
-		os.Remove(a.destinationPath(i.SignaturePath))
+		removeFile(a.destinationPath(i.Download))
+		removeFile(a.destinationPath(i.SignaturePath))
 		return fmt.Errorf("signature verification failed for %s: %w", i.Download, err)
 	}
 	return nil
@@ -95,10 +97,18 @@ func (a *downloadAction) download(urlPath string) error {
 	if err != nil {
 		return fmt.Errorf("failed to open %s in %s: %w", path.Base(urlPath), a.Destination, err)
 	}
-	defer f.Close()
+	if _, err = io.Copy(f, resp.Body); err != nil {
+		f.Close()
+		return err
+	}
+	return f.Close()
+}
 
-	_, err = io.Copy(f, resp.Body)
-	return err
+// removeFile removes path and logs to stderr if the removal fails.
+func removeFile(path string) {
+	if err := os.Remove(path); err != nil && !os.IsNotExist(err) {
+		fmt.Fprintf(os.Stderr, "failed to remove %s: %v\n", path, err)
+	}
 }
 
 func (a *downloadAction) destinationPath(urlPath string) string {

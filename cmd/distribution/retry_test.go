@@ -6,7 +6,6 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -15,44 +14,41 @@ import (
 	"testing"
 	"time"
 
+	retryablehttp "github.com/hashicorp/go-retryablehttp"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"golang.org/x/time/rate"
 )
 
-// newTestClient returns an *http.Client whose retryTransport records backoff
-// durations but does not actually sleep, and whose pacer also skips real
-// sleeping. This makes retry behaviour deterministic and instant in tests.
-// The returned slice accumulates all sleep durations requested by the retry
-// logic (not the pacer). Use the slice to assert on Retry-After handling.
+// newTestClient returns an *http.Client backed by retryablehttp for tests.
+// The rate limiter is set to infinite so tests aren't rate-limited.
+// The backoff records computed durations but does not actually sleep.
+// Use the returned slice to inspect backoff values.
 func newTestClient() (*http.Client, *[]time.Duration) {
 	var mu sync.Mutex
-	var sleeps []time.Duration
+	var waits []time.Duration
 
-	rt := newRetryTransport(http.DefaultTransport)
-	rt.sleep = func(ctx context.Context, d time.Duration) error {
+	inner := &limiterTransport{
+		next:    http.DefaultTransport,
+		limiter: rate.NewLimiter(rate.Inf, registryBurst),
+	}
+
+	rc := retryablehttp.NewClient()
+	rc.RetryMax = maxAttempts - 1
+	rc.RetryWaitMin = retryBaseWait
+	rc.RetryWaitMax = retryMaxWait
+	rc.Backoff = func(minW, maxW time.Duration, attemptNum int, resp *http.Response) time.Duration {
+		d := retryAfterBackoff(minW, maxW, attemptNum, resp)
 		mu.Lock()
-		sleeps = append(sleeps, d)
+		waits = append(waits, d)
 		mu.Unlock()
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		default:
-			return nil
-		}
+		return 0 // skip actual sleep
 	}
-	// Deterministic jitter: always return half of cap so tests are predictable.
-	rt.jitter = func(max time.Duration) time.Duration {
-		return max / 2
-	}
-	rt.pacer.sleep = func(ctx context.Context, d time.Duration) error {
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		default:
-			return nil
-		}
-	}
-	return &http.Client{Transport: rt}, &sleeps
+	rc.ErrorHandler = retryablehttp.PassthroughErrorHandler
+	rc.Logger = nil
+	rc.HTTPClient = &http.Client{Transport: inner}
+
+	return rc.StandardClient(), &waits
 }
 
 // TestRetryTransportRetriesTransientStatuses checks that each 5xx/429 status
@@ -75,8 +71,7 @@ func TestRetryTransportRetriesTransientStatuses(t *testing.T) {
 					w.WriteHeader(status)
 					return
 				}
-				w.Header().Set("Content-Type", "application/json")
-				json.NewEncoder(w).Encode([]packageInfo{{Name: "nginx", Version: "1.0.0"}})
+				w.WriteHeader(http.StatusOK)
 			}))
 			defer server.Close()
 
@@ -134,13 +129,33 @@ func TestRetryTransportExhaustsMaxAttempts(t *testing.T) {
 		"expected exactly maxAttempts=%d total requests", maxAttempts)
 }
 
+// TestExhaustedRetriesSurfaceStatusCode guards the PassthroughErrorHandler
+// decision: after all retries are spent the real HTTP status code is returned
+// rather than an error wrapping "giving up after N attempt(s)".
+func TestExhaustedRetriesSurfaceStatusCode(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusServiceUnavailable)
+	}))
+	defer server.Close()
+
+	client, _ := newTestClient()
+	resp, err := client.Get(server.URL)
+	require.NoError(t, err, "PassthroughErrorHandler must not convert the response to an error")
+	defer resp.Body.Close()
+
+	assert.Equal(t, http.StatusServiceUnavailable, resp.StatusCode,
+		"real status code must be surfaced after exhausted retries")
+}
+
 // TestRetryTransportRetryAfterHeader checks that a Retry-After header is
 // honoured instead of the computed jitter backoff.
 func TestRetryTransportRetryAfterHeader(t *testing.T) {
 	tests := []struct {
-		name        string
-		header      string
-		wantSeconds float64
+		name         string
+		header       string
+		wantSeconds  float64
+		wantInRange  bool    // true when the result is a range, not an exact value
+		wantRangeMax float64 // upper bound when wantInRange is true
 	}{
 		{
 			name:        "integer seconds",
@@ -153,9 +168,10 @@ func TestRetryTransportRetryAfterHeader(t *testing.T) {
 			wantSeconds: retryMaxWait.Seconds(),
 		},
 		{
-			name:        "garbage falls back to jitter",
-			header:      "not-a-date",
-			wantSeconds: 0.5, // jitter = cap/2; cap at attempt 0 = retryBaseWait = 1s; 1s/2=0.5s
+			name:         "garbage falls back to jitter",
+			header:       "not-a-date",
+			wantInRange:  true,
+			wantRangeMax: retryBaseWait.Seconds(), // jitter in [0, retryBaseWait) for attempt 0
 		},
 		{
 			name:        "HTTP-date in the past gives zero delay",
@@ -178,20 +194,27 @@ func TestRetryTransportRetryAfterHeader(t *testing.T) {
 			}))
 			defer server.Close()
 
-			client, sleeps := newTestClient()
+			client, waits := newTestClient()
 			resp, err := client.Get(server.URL)
 			require.NoError(t, err)
 			defer resp.Body.Close()
 
 			require.Equal(t, int64(2), hits.Load())
-			require.Len(t, *sleeps, 1, "expected exactly one sleep")
-			assert.InDelta(t, tt.wantSeconds, (*sleeps)[0].Seconds(), 0.001)
+			require.Len(t, *waits, 1, "expected exactly one backoff computation")
+			if tt.wantInRange {
+				assert.GreaterOrEqual(t, (*waits)[0].Seconds(), 0.0)
+				assert.Less(t, (*waits)[0].Seconds(), tt.wantRangeMax,
+					"jitter backoff must be below cap")
+			} else {
+				assert.InDelta(t, tt.wantSeconds, (*waits)[0].Seconds(), 0.001)
+			}
 		})
 	}
 }
 
 // TestRetryTransportContextCancelledDuringBackoff checks that cancelling the
-// context during a backoff wait stops the retry loop immediately.
+// context during a retry wait stops the retry loop without waiting the full
+// backoff duration.
 func TestRetryTransportContextCancelledDuringBackoff(t *testing.T) {
 	var hits atomic.Int64
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -200,29 +223,43 @@ func TestRetryTransportContextCancelledDuringBackoff(t *testing.T) {
 	}))
 	defer server.Close()
 
-	rt := newRetryTransport(http.DefaultTransport)
-	// The sleep function cancels the request context before returning, simulating
-	// a cancellation that arrives during the backoff wait.
-	var cancelFn context.CancelFunc
-	rt.sleep = func(ctx context.Context, d time.Duration) error {
-		cancelFn() // cancel via the outer context
-		return ctx.Err()
+	// Use real, long retry waits so that context cancellation wins the race.
+	inner := &limiterTransport{
+		next:    http.DefaultTransport,
+		limiter: rate.NewLimiter(rate.Inf, registryBurst),
 	}
-	rt.jitter = func(max time.Duration) time.Duration { return 0 }
-	rt.pacer.sleep = func(ctx context.Context, d time.Duration) error { return nil }
+	rc := retryablehttp.NewClient()
+	rc.RetryMax = maxAttempts - 1
+	rc.RetryWaitMin = 10 * time.Second
+	rc.RetryWaitMax = 10 * time.Second
+	rc.Backoff = func(minW, maxW time.Duration, attemptNum int, resp *http.Response) time.Duration {
+		return minW
+	}
+	rc.ErrorHandler = retryablehttp.PassthroughErrorHandler
+	rc.Logger = nil
+	rc.HTTPClient = &http.Client{Transport: inner}
+	client := rc.StandardClient()
 
 	ctx, cancel := context.WithCancel(context.Background())
-	cancelFn = cancel
 	defer cancel()
+
+	// Cancel during the backoff wait — after the first hit.
+	go func() {
+		time.Sleep(50 * time.Millisecond)
+		cancel()
+	}()
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, server.URL, nil)
 	require.NoError(t, err)
 
-	client := &http.Client{Transport: rt}
+	start := time.Now()
 	_, err = client.Do(req)
+	elapsed := time.Since(start)
+
 	require.Error(t, err)
 	assert.Equal(t, int64(1), hits.Load(),
 		"should stop after the first attempt when context is cancelled during backoff")
+	assert.Less(t, elapsed, 5*time.Second, "should not wait the full retry duration")
 }
 
 // TestRetryTransportAlreadyCancelledContext checks that a pre-cancelled context
@@ -249,76 +286,124 @@ func TestRetryTransportAlreadyCancelledContext(t *testing.T) {
 		"a pre-cancelled context must produce no server hits")
 }
 
-// TestPacerPenalizeAndReward checks the interval arithmetic for penalize and
-// reward.
-func TestPacerPenalizeAndReward(t *testing.T) {
-	t.Run("penalize from zero reaches min interval then doubles", func(t *testing.T) {
-		p := newPacer()
-		p.penalize()
-		assert.Equal(t, 500*time.Millisecond, p.interval,
-			"first penalize: 0 → pacerMinInterval(250ms) → ×2 = 500ms")
-		p.penalize()
-		assert.Equal(t, 1*time.Second, p.interval)
-		p.penalize()
-		assert.Equal(t, 2*time.Second, p.interval)
-		p.penalize()
-		assert.Equal(t, 4*time.Second, p.interval)
-		p.penalize()
-		assert.Equal(t, pacerMaxInterval, p.interval, "saturates at pacerMaxInterval")
-		p.penalize()
-		assert.Equal(t, pacerMaxInterval, p.interval, "stays at pacerMaxInterval")
-	})
+// TestRateLimitedOnSuccess verifies that the limiterTransport bounds throughput
+// on fast 200 responses — the case the former pacer never covered.
+func TestRateLimitedOnSuccess(t *testing.T) {
+	const rps = 50.0
+	const burst = 4
+	const n = burst + 6 // requests beyond the burst must be spaced by 1/rps
 
-	t.Run("reward decays to zero", func(t *testing.T) {
-		p := newPacer()
-		p.interval = pacerMaxInterval
-		// Decay: interval = interval*3/4, snapped to 0 below pacerMinInterval/2 = 125ms.
-		prev := p.interval
-		for p.interval > 0 {
-			p.reward()
-			if p.interval > 0 {
-				assert.Less(t, p.interval, prev, "reward should decrease interval")
-				prev = p.interval
-			}
-		}
-		assert.Equal(t, time.Duration(0), p.interval, "reward eventually snaps to zero")
-	})
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	}))
+	defer server.Close()
+
+	inner := &limiterTransport{
+		next:    http.DefaultTransport,
+		limiter: rate.NewLimiter(rps, burst),
+	}
+	client := &http.Client{Transport: inner}
+
+	start := time.Now()
+	for range n {
+		resp, err := client.Get(server.URL)
+		require.NoError(t, err)
+		resp.Body.Close()
+	}
+	elapsed := time.Since(start)
+
+	// After exhausting the burst, the remaining (n-burst) requests must each
+	// wait at least 1/rps seconds.
+	minExpected := time.Duration(float64(n-burst) / rps * float64(time.Second))
+	assert.GreaterOrEqual(t, elapsed, minExpected,
+		"rate limiter must slow down requests beyond the burst")
 }
 
-// TestPacerWaitsAreSpaced verifies that successive calls to wait are spaced by
-// at least interval. The test uses a fixed fake clock (all callers see the same
-// wall time) and a no-op sleep, so it is deterministic and instant.
-func TestPacerWaitsAreSpaced(t *testing.T) {
-	const interval = 200 * time.Millisecond
+// TestRateLimitedOnFailure verifies that the limiterTransport bounds throughput
+// even when every response is a failure, preventing a retry storm.
+func TestRateLimitedOnFailure(t *testing.T) {
+	const rps = 50.0
+	const burst = 4
+	const n = burst + 4
 
-	// Fixed fake time: all calls to now() return the same instant, simulating
-	// callers arriving simultaneously (worst case for spacing correctness).
-	fixedNow := time.Now()
-	fakeClock := func() time.Time { return fixedNow }
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusBadGateway)
+	}))
+	defer server.Close()
 
-	var slept []time.Duration
-	fakeSleep := func(ctx context.Context, d time.Duration) error {
-		slept = append(slept, d)
-		return nil
+	inner := &limiterTransport{
+		next:    http.DefaultTransport,
+		limiter: rate.NewLimiter(rps, burst),
 	}
+	client := &http.Client{Transport: inner}
 
-	p := &pacer{
-		interval: interval,
-		now:      fakeClock,
-		sleep:    fakeSleep,
+	start := time.Now()
+	for range n {
+		resp, err := client.Get(server.URL)
+		require.NoError(t, err)
+		resp.Body.Close()
 	}
+	elapsed := time.Since(start)
 
-	// Call wait 3 times (sequential, all seeing the same "now").
-	// 1st: p.next is zero (past) → delay=0, p.next advances to now+interval.
-	// 2nd: p.next=now+interval > now → delay=interval, p.next→now+2×interval.
-	// 3rd: p.next=now+2×interval > now → delay=2×interval.
-	for range 3 {
-		require.NoError(t, p.wait(context.Background()))
+	minExpected := time.Duration(float64(n-burst) / rps * float64(time.Second))
+	assert.GreaterOrEqual(t, elapsed, minExpected,
+		"rate limiter must bound request rate on failure too")
+}
+
+// TestContextCancelledDuringLimiterWait checks that cancelling the context
+// while waiting for a rate-limiter token returns promptly without sending a request.
+func TestContextCancelledDuringLimiterWait(t *testing.T) {
+	var hits atomic.Int64
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		hits.Add(1)
+		w.WriteHeader(http.StatusOK)
+	}))
+	defer server.Close()
+
+	// Rate effectively zero after the burst so the second request blocks indefinitely.
+	limiter := rate.NewLimiter(rate.Limit(0.001), 1)
+	inner := &limiterTransport{next: http.DefaultTransport, limiter: limiter}
+	client := &http.Client{Transport: inner}
+
+	// First request consumes the single burst token.
+	resp, err := client.Get(server.URL)
+	require.NoError(t, err)
+	resp.Body.Close()
+	require.Equal(t, int64(1), hits.Load())
+
+	// Second request: cancel context before the limiter grants a token.
+	ctx, cancel := context.WithCancel(context.Background())
+	go func() {
+		time.Sleep(10 * time.Millisecond)
+		cancel()
+	}()
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, server.URL, nil)
+	require.NoError(t, err)
+
+	start := time.Now()
+	_, err = client.Do(req)
+	elapsed := time.Since(start)
+
+	require.Error(t, err, "limiter Wait must return an error on context cancellation")
+	assert.Less(t, elapsed, 1*time.Second, "should return promptly after context cancellation")
+	assert.Equal(t, int64(1), hits.Load(), "no request must be sent after context cancellation")
+}
+
+// TestRetryAfterBackoffJitter verifies that jitter values differ across calls
+// and all stay within the expected range.
+func TestRetryAfterBackoffJitter(t *testing.T) {
+	const attemptNum = 0
+	cap := retryBaseWait << attemptNum // 1 s for attempt 0
+
+	seen := make(map[time.Duration]bool)
+	for range 20 {
+		d := retryAfterBackoff(retryBaseWait, retryMaxWait, attemptNum, nil)
+		assert.GreaterOrEqual(t, d, time.Duration(0))
+		assert.Less(t, d, cap)
+		seen[d] = true
 	}
-
-	require.Len(t, slept, 2, "first caller needs no sleep; 2nd and 3rd do")
-	assert.Equal(t, interval, slept[0], "2nd caller waits one interval")
-	assert.Equal(t, 2*interval, slept[1], "3rd caller waits two intervals")
+	assert.Greater(t, len(seen), 1, "jitter values must not all be identical")
 }
 
 // TestParseRetryAfter checks the Retry-After parsing helpers.

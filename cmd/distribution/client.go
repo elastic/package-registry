@@ -9,12 +9,14 @@ import (
 	"net/http"
 	"runtime/debug"
 	"time"
+
+	retryablehttp "github.com/hashicorp/go-retryablehttp"
+	"golang.org/x/time/rate"
 )
 
 // searchConcurrency bounds how many search requests are in flight at once.
 // A single all=true search response is ~22 MB on the origin before gzip; two
-// concurrent requests cost ~44 MB instead of ~90 MB at concurrency 4. Under
-// sustained distress the adaptive pacer reduces this further automatically.
+// concurrent requests cost ~44 MB instead of ~90 MB at concurrency 4.
 // Deliberately a constant and not a config knob: it exists to protect the
 // registry, not to be tuned per run.
 const searchConcurrency = 2
@@ -27,8 +29,8 @@ const downloadConcurrency = 4
 
 const (
 	// searchTimeout covers up to maxAttempts attempts (ResponseHeaderTimeout
-	// 30 s each) plus up to maxAttempts-1 backoff sleeps capped at retryMaxWait,
-	// plus pacer waits: 4×30 s + 3×30 s = 210 s < 5 min with headroom to spare.
+	// 30 s each) plus up to maxAttempts-1 backoff sleeps capped at retryMaxWait:
+	// 4×30 s + 3×30 s = 210 s < 5 min with headroom to spare.
 	searchTimeout   = 5 * time.Minute
 	downloadTimeout = 15 * time.Minute
 )
@@ -57,9 +59,21 @@ func newHTTPClient() *http.Client {
 		PingTimeout:     15 * time.Second,
 	}
 
-	return &http.Client{
-		Transport: newRetryTransport(&userAgentTransport{next: transport, userAgent: buildUserAgent()}),
+	inner := &limiterTransport{
+		next:    &userAgentTransport{next: transport, userAgent: buildUserAgent()},
+		limiter: rate.NewLimiter(registryRate, registryBurst),
 	}
+
+	rc := retryablehttp.NewClient()
+	rc.RetryMax = maxAttempts - 1
+	rc.RetryWaitMin = retryBaseWait
+	rc.RetryWaitMax = retryMaxWait
+	rc.Backoff = retryAfterBackoff
+	rc.ErrorHandler = retryablehttp.PassthroughErrorHandler
+	rc.Logger = nil
+	rc.HTTPClient = &http.Client{Transport: inner}
+
+	return rc.StandardClient()
 }
 
 type userAgentTransport struct {

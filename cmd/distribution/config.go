@@ -67,7 +67,7 @@ func (c config) searchURLs() (iter.Seq2[*url.URL, int], error) {
 	baseURL, err := url.Parse(basePath)
 	if err != nil {
 		// This should not happen because JoinPath already parses the url.
-		fmt.Printf("invalid url (%s): %s", baseURL, err)
+		fmt.Fprintf(os.Stderr, "invalid url %q: %s\n", basePath, err)
 		os.Exit(-1)
 	}
 	matrix := c.Matrix
@@ -198,7 +198,7 @@ func (c config) collect(client *http.Client) ([]packageInfo, error) {
 				return fmt.Errorf("failed to parse search response: %w", err)
 			}
 			kept := truncateVersions(packages, keep)
-			fmt.Println(u.String(), len(kept), "of", len(packages), "packages")
+			fmt.Fprintf(os.Stderr, "%s %d of %d packages\n", u.String(), len(kept), len(packages))
 
 			mapLock.Lock()
 			for _, p := range kept {
