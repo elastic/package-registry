@@ -10,9 +10,12 @@
 #   installable versions of each package available offline.
 #
 
-
 # Base address of the Package Registry
 address: "https://epr.elastic.co"
+
+# Document-wide default: keep the 3 newest versions of every package per matrix entry.
+# Individual queries can override this with their own keep: N; 0 (the default) keeps everything.
+keep: 3
 
 # Kibana release matrix. Each entry runs the query independently and keeps the 3 newest versions.
 # spec.min / spec.max: REGISTRY_SPEC_MIN/MAX_VERSION from the Fleet plugin config.
@@ -279,10 +282,8 @@ matrix:
   - spec.min: 2.3
     spec.max: 3.6
 
-# No package filter — all packages compatible with each matrix entry are fetched.
-# keep: 3 retains the 3 newest versions per package per matrix entry before results are merged.
 queries:
-  - keep: 3
+  - {}  # no filter — fetch all packages; document-level keep: 3 applies
 
 actions:
   - print:

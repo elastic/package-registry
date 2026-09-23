@@ -6,6 +6,9 @@
 # Base address of the Package Registry
 address: "https://epr.elastic.co"
 
+# keep: N  # document-wide default newest-N per package per matrix entry (0 = keep everything).
+#           # Individual queries below may override this; see security_detection_engine and system.
+
 # Kibana release matrix. Each entry runs all queries independently.
 # spec.min / spec.max: REGISTRY_SPEC_MIN/MAX_VERSION from the Fleet plugin config.
 matrix:
