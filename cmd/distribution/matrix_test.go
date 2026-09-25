@@ -292,6 +292,28 @@ func TestRewriteMatrixPreservesBlankLineSeparator(t *testing.T) {
 	assert.Contains(t, string(result), "    spec.max: 3.6\n\nqueries:")
 }
 
+func TestRewriteMatrixPreservesTopLevelCommentBetweenSections(t *testing.T) {
+	const configWithInterSectionComment = `address: "https://epr.elastic.co"
+
+matrix:
+  - kibana.version: 9.5.0
+    spec.min: 2.3
+    spec.max: 3.6
+
+# Comment between matrix and queries blocks.
+queries:
+  - {}
+`
+	entries := []configQuery{
+		{KibanaVersion: "9.5.0", SpecMin: "2.3", SpecMax: "3.6"},
+		{KibanaVersion: "9.5.1", SpecMin: "2.3", SpecMax: "3.6"},
+	}
+	result, err := rewriteMatrix([]byte(configWithInterSectionComment), entries)
+	require.NoError(t, err)
+	assert.Contains(t, string(result), "# Comment between matrix and queries blocks.",
+		"top-level comments between sections must not be dropped on rewrite")
+}
+
 func TestRewriteMatrixNoMatrixKey(t *testing.T) {
 	_, err := rewriteMatrix([]byte("address: foo\nqueries:\n  - {}\n"), nil)
 	assert.Error(t, err)

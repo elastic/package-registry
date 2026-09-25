@@ -280,8 +280,8 @@ func rewriteMatrix(src []byte, entries []configQuery) ([]byte, error) {
 		if len(line) == 0 {
 			continue
 		}
-		// A line at column 0 that is not a comment begins the next section.
-		if line[0] != ' ' && line[0] != '\t' && line[0] != '#' {
+		// Any non-indented line begins the next section (including top-level comments).
+		if line[0] != ' ' && line[0] != '\t' {
 			nextSection = i
 			break
 		}
