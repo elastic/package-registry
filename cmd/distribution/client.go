@@ -20,12 +20,16 @@ import (
 // on the origin under load.
 // Deliberately a constant and not a config knob: it exists to protect the
 // registry, not to be tuned per run.
+// TODO: expose as an optional flag/env-var override so new values can be
+// tested without rebuilding the tool.
 const searchConcurrency = 1
 
 // downloadConcurrency bounds how many package downloads are in flight at once.
 // Downloads are static files served from object storage, so a higher
 // concurrency than search is safe.
 // Deliberately a constant and not a config knob.
+// TODO: expose as an optional flag/env-var override so new values can be
+// tested without rebuilding the tool.
 const downloadConcurrency = 4
 
 const (
