@@ -52,6 +52,7 @@ type DataStream struct {
 	Hidden          bool   `config:"hidden" json:"hidden,omitempty" yaml:"hidden,omitempty"`
 	IlmPolicy       string `config:"ilm_policy" json:"ilm_policy,omitempty" yaml:"ilm_policy,omitempty"`
 	DatasetIsPrefix bool   `config:"dataset_is_prefix" json:"dataset_is_prefix,omitempty" yaml:"dataset_is_prefix,omitempty"`
+	UseOtelSuffix   bool   `config:"use_otel_suffix" json:"use_otel_suffix,omitempty" yaml:"use_otel_suffix,omitempty"`
 
 	Title   string `config:"title" json:"title" validate:"required"`
 	Release string `config:"release" json:"release,omitempty"`
