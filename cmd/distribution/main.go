@@ -14,6 +14,21 @@ import (
 const defaultAddress = "https://epr.elastic.co"
 
 func main() {
+	if len(os.Args) >= 2 {
+		switch os.Args[1] {
+		case "update-matrix":
+			if len(os.Args) < 3 {
+				fmt.Fprintln(os.Stderr, "usage:", os.Args[0], "update-matrix <config.yaml>...")
+				os.Exit(-1)
+			}
+			if err := runUpdateMatrix(os.Args[2:]); err != nil {
+				fmt.Fprintln(os.Stderr, err)
+				os.Exit(-1)
+			}
+			return
+		}
+	}
+
 	if len(os.Args) != 2 {
 		usageAndExit(-1)
 	}

@@ -39,7 +39,11 @@ Note: `@vX.Y.Z` version installs are not yet supported. The repository's
 ## Usage
 
 ```bash
+# Collect and download packages from a config file
 ./distribution <config.yaml>
+
+# Add missing Kibana versions to a config's matrix
+./distribution update-matrix <config.yaml>...
 ```
 
 The tool requires a YAML configuration file that defines:
@@ -102,6 +106,44 @@ See `examples/pinned.yaml` for a self-contained example.
 - **print**: Output package names and versions to console
 - **download**: Download package ZIP files and signatures
   - `destination`: Target directory for downloads
+
+## Updating the Kibana matrix
+
+The `update-matrix` subcommand keeps the `matrix:` block of one or more config
+files up to date with the currently active Elastic branches and their next
+planned versions.
+
+```bash
+./distribution update-matrix examples/production-slim.yaml examples/lite.yaml
+```
+
+**What it does:**
+
+1. Fetches the list of active branches from the Elastic artifacts API:
+   `https://storage.googleapis.com/artifacts-api/snapshots/branches.json`
+   (e.g. `["main", "9.5", "9.4", "8.19"]`)
+
+2. For each branch, fetches the next planned version (with `-SNAPSHOT` stripped)
+   from `.../snapshots/<branch>.json`.
+
+3. Fetches the Fleet spec bounds for that branch from
+   `https://raw.githubusercontent.com/elastic/kibana/<branch>/x-pack/platform/plugins/shared/fleet/server/config.ts`.
+   `REGISTRY_SPEC_MAX_VERSION` is required; `REGISTRY_SPEC_MIN_VERSION` is
+   optional (some older branches omit it).
+
+4. Generates one matrix entry for every patch from `X.Y.0` through the next
+   version inclusive (e.g. next `9.5.5` → entries 9.5.0–9.5.5).
+
+5. **Merges by adding only** — existing entries are never modified or removed.
+   The matrix intentionally covers all 8.x and 9.x releases (7.x is the only
+   floor removed by hand). Removing versions is always a manual change in a
+   reviewed PR.
+
+6. Rewrites the file in place, preserving header comments, other sections, and
+   commented-out entries inside the matrix block.
+
+The command is idempotent: a second run with the same active branches produces
+no diff.
 
 ## Dependencies
 
