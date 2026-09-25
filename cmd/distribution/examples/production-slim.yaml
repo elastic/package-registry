@@ -1,15 +1,23 @@
-# Lite distribution: 18 core Elastic integration packages across Kibana 8.15–9.5.
-# Beta-flagged packages are included; hyphenated pre-release builds (-preview-*, -rc, -dev) are not.
-# A small set of old versions required by Kibana's Fleet API integration tests is pinned via the
-# packages: block below, since they predate the matrix window or are prerelease-gated.
+# Production distribution: all packages across Kibana 8.15–9.5, 3 newest versions per matrix entry.
+#
+# Difference from an unrestricted "all" fetch (all=true, no version.limit):
+#   An unrestricted fetch returns every historical version of every package
+#   (~13 700 entries as of Sep 2025). This config uses version.limit: 3, which retains
+#   the 3 newest compatible versions per package *per matrix entry* before
+#   results are merged. The union across all Kibana versions in the matrix
+#   typically yields ~2 500 entries — a ~5× reduction in image size — while
+#   still guaranteeing that every Kibana release in the matrix has at least 3
+#   installable versions of each package available offline.
+#
 
 # Base address of the Package Registry
 address: "https://epr.elastic.co"
 
-# version.limit: N  # document-wide default newest-N per package per matrix entry (0 = keep everything).
-#                   # Individual queries below may override this; see security_detection_engine and system.
+# Document-wide default: keep the 3 newest versions of every package per matrix entry.
+# Individual queries can override this with their own version.limit: N; 0 (the default) keeps everything.
+version.limit: 3
 
-# Kibana release matrix. Each entry runs all queries independently.
+# Kibana release matrix. Each entry runs the query independently and keeps the 3 newest versions.
 # spec.min / spec.max: REGISTRY_SPEC_MIN/MAX_VERSION from the Fleet plugin config.
 matrix:
   # - kibana.version: 7.17.26
@@ -285,68 +293,10 @@ matrix:
   - spec.min: 2.3
     spec.max: 3.6
 
-# Packages to fetch. all=true returns every compatible version per matrix entry.
-# security_detection_engine and system use version.limit: 4 to limit to the 4 newest versions.
 queries:
-  - package: apache
-    all: true
-  - package: apm
-    all: true
-  - package: elastic_agent
-    all: true
-  - package: endpoint
-    all: true
-  - package: fleet_server
-    all: true
-  - package: kubernetes
-    all: true
-  - package: linux
-    all: true
-  - package: log
-    all: true
-  - package: mysql
-    all: true
-  - package: nginx
-    all: true
-  - package: osquery_manager
-    all: true
-  - package: profiler_collector
-    all: true
-  - package: profiler_symbolizer
-    all: true
-  - package: security_ai_prompts
-    all: true
-  - package: security_detection_engine
-    version.limit: 4
-  - package: synthetics
-    all: true
-  - package: system
-    version.limit: 4
-  - package: windows
-    all: true
-
-# Versions required by Kibana's Fleet API integration tests that search cannot
-# reach: apache 0.1.x is prerelease-gated (not returned without prerelease=true),
-# endpoint 1.0.0 and elastic_agent 1.2.0 declare 7.x kibana conditions and are
-# invisible to any 8.x matrix entry, and the system/endpoint versions fall outside
-# even the largest version.limit window. Pins bypass search and the version.limit window entirely.
-packages:
-  - name: apache
-    version: 0.1.3
-  - name: apache
-    version: 0.1.4
-  - name: elastic_agent
-    version: 1.2.0
-  - name: endpoint
-    version: 1.0.0
-  - name: endpoint
-    version: 8.6.1
-  - name: system
-    version: 1.27.0
-  - name: system
-    version: 1.50.0
+  - {}  # no filter — fetch all packages; document-level version.limit: 3 applies
 
 actions:
   - print:
   # - download:
-  #     destination: ./build/distribution-lite
+  #     destination: ./docker/packages

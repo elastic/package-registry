@@ -6,11 +6,14 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
 	"os"
 	"path/filepath"
+	"sync"
+	"sync/atomic"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -404,4 +407,444 @@ func TestPrintAction(t *testing.T) {
 		Version: "1.0.0",
 	})
 	require.NoError(t, err)
+}
+
+func versionLimitPtr(n int) *int { return &n }
+
+func TestConfigVersionLimitFor(t *testing.T) {
+	tests := []struct {
+		name     string
+		doc      int
+		matrix   *int
+		query    *int
+		expected int
+	}{
+		{name: "nothing set", expected: 0},
+		{name: "document default only", doc: 3, expected: 3},
+		{name: "matrix overrides document", doc: 3, matrix: versionLimitPtr(5), expected: 5},
+		{name: "query overrides both", doc: 3, matrix: versionLimitPtr(5), query: versionLimitPtr(2), expected: 2},
+		{name: "query zero overrides non-zero default", doc: 3, query: versionLimitPtr(0), expected: 0},
+		{name: "negative clamped to zero", doc: -1, expected: 0},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			cfg := config{VersionLimit: tt.doc}
+			m := configQuery{VersionLimit: tt.matrix}
+			q := configQuery{VersionLimit: tt.query}
+			assert.Equal(t, tt.expected, cfg.versionLimitFor(m, q))
+		})
+	}
+}
+
+func TestTruncateVersions(t *testing.T) {
+	tests := []struct {
+		name     string
+		packages []packageInfo
+		keep     int
+		expected []packageInfo
+	}{
+		{
+			name:     "keep zero returns all",
+			packages: []packageInfo{{Name: "nginx", Version: "1.0.0"}, {Name: "nginx", Version: "2.0.0"}},
+			keep:     0,
+			expected: []packageInfo{{Name: "nginx", Version: "1.0.0"}, {Name: "nginx", Version: "2.0.0"}},
+		},
+		{
+			name:     "keep above group size returns all",
+			packages: []packageInfo{{Name: "nginx", Version: "1.0.0"}, {Name: "nginx", Version: "2.0.0"}},
+			keep:     5,
+			expected: []packageInfo{{Name: "nginx", Version: "1.0.0"}, {Name: "nginx", Version: "2.0.0"}},
+		},
+		{
+			name: "two names truncated independently",
+			packages: []packageInfo{
+				{Name: "nginx", Version: "1.0.0"},
+				{Name: "nginx", Version: "2.0.0"},
+				{Name: "nginx", Version: "3.0.0"},
+				{Name: "apache", Version: "1.0.0"},
+				{Name: "apache", Version: "2.0.0"},
+				{Name: "apache", Version: "3.0.0"},
+			},
+			keep: 2,
+			expected: []packageInfo{
+				{Name: "apache", Version: "2.0.0"},
+				{Name: "apache", Version: "3.0.0"},
+				{Name: "nginx", Version: "2.0.0"},
+				{Name: "nginx", Version: "3.0.0"},
+			},
+		},
+		{
+			name: "invalid semver dropped first",
+			packages: []packageInfo{
+				{Name: "nginx", Version: "not-a-version"},
+				{Name: "nginx", Version: "1.0.0"},
+				{Name: "nginx", Version: "2.0.0"},
+			},
+			keep: 2,
+			expected: []packageInfo{
+				{Name: "nginx", Version: "1.0.0"},
+				{Name: "nginx", Version: "2.0.0"},
+			},
+		},
+		{
+			// EPR returns packages oldest-first; truncateVersions must keep newest
+			// regardless of input order.
+			name: "newest-first input keeps newest versions",
+			packages: []packageInfo{
+				{Name: "apache", Version: "3.0.2"},
+				{Name: "apache", Version: "3.0.1"},
+				{Name: "apache", Version: "3.0.0"},
+				{Name: "apache", Version: "2.0.0"},
+				{Name: "apache", Version: "1.1.0"},
+			},
+			keep: 3,
+			expected: []packageInfo{
+				{Name: "apache", Version: "3.0.0"},
+				{Name: "apache", Version: "3.0.1"},
+				{Name: "apache", Version: "3.0.2"},
+			},
+		},
+		{
+			name:     "empty slice",
+			packages: []packageInfo{},
+			keep:     2,
+			expected: []packageInfo{},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := truncateVersions(tt.packages, tt.keep)
+			assert.Equal(t, tt.expected, result)
+		})
+	}
+}
+
+func TestConfigSearchURLsVersionLimitForcesAll(t *testing.T) {
+	tests := []struct {
+		name         string
+		versionLimit int
+		expectedURLs []string
+	}{
+		{
+			name:         "version.limit > 1 sets all=true",
+			versionLimit: 2,
+			expectedURLs: []string{"http://localhost:8080/search?all=true&package=nginx"},
+		},
+		{
+			name:         "version.limit == 1 does not set all=true",
+			versionLimit: 1,
+			expectedURLs: []string{"http://localhost:8080/search?package=nginx"},
+		},
+		{
+			name:         "version.limit == 0 does not set all=true",
+			versionLimit: 0,
+			expectedURLs: []string{"http://localhost:8080/search?package=nginx"},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			cfg := config{
+				Address:      "http://localhost:8080",
+				VersionLimit: tt.versionLimit,
+				Queries:      []configQuery{{Package: "nginx"}},
+			}
+			urls, err := cfg.searchURLs()
+			require.NoError(t, err)
+
+			var actual []string
+			for u := range urls {
+				actual = append(actual, u.String())
+			}
+			assert.Equal(t, tt.expectedURLs, actual)
+		})
+	}
+}
+
+func TestConfigQueryBuildVersionLimitExcluded(t *testing.T) {
+	q := configQuery{Package: "nginx", VersionLimit: versionLimitPtr(3)}
+	values := q.Build()
+	assert.Equal(t, url.Values{"package": []string{"nginx"}}, values)
+}
+
+func TestConfigCollectVersionLimit(t *testing.T) {
+	packages := []packageInfo{
+		{Name: "nginx", Version: "1.0.0"},
+		{Name: "nginx", Version: "2.0.0"},
+		{Name: "nginx", Version: "3.0.0"},
+		{Name: "nginx", Version: "4.0.0"},
+		{Name: "nginx", Version: "5.0.0"},
+		{Name: "apache", Version: "1.0.0"},
+		{Name: "apache", Version: "2.0.0"},
+		{Name: "apache", Version: "3.0.0"},
+	}
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		json.NewEncoder(w).Encode(packages)
+	}))
+	defer server.Close()
+
+	cfg := config{
+		Address:      server.URL,
+		VersionLimit: 2,
+		Queries:      []configQuery{{Package: "nginx"}},
+	}
+
+	result, err := cfg.collect(&http.Client{})
+	require.NoError(t, err)
+	require.Len(t, result, 4)
+	assert.Equal(t, "apache", result[0].Name)
+	assert.Equal(t, "2.0.0", result[0].Version)
+	assert.Equal(t, "apache", result[1].Name)
+	assert.Equal(t, "3.0.0", result[1].Version)
+	assert.Equal(t, "nginx", result[2].Name)
+	assert.Equal(t, "4.0.0", result[2].Version)
+	assert.Equal(t, "nginx", result[3].Name)
+	assert.Equal(t, "5.0.0", result[3].Version)
+}
+
+func TestConfigCollectVersionLimitIsPerResponse(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		var resp []packageInfo
+		switch r.URL.Query().Get("kibana.version") {
+		case "8.0.0":
+			resp = []packageInfo{
+				{Name: "nginx", Version: "1.0.0"},
+				{Name: "nginx", Version: "2.0.0"},
+			}
+		case "9.0.0":
+			resp = []packageInfo{
+				{Name: "nginx", Version: "3.0.0"},
+				{Name: "nginx", Version: "4.0.0"},
+			}
+		}
+		json.NewEncoder(w).Encode(resp)
+	}))
+	defer server.Close()
+
+	cfg := config{
+		Address:      server.URL,
+		VersionLimit: 1,
+		Matrix: []configQuery{
+			{KibanaVersion: "8.0.0"},
+			{KibanaVersion: "9.0.0"},
+		},
+		Queries: []configQuery{{Package: "nginx"}},
+	}
+
+	result, err := cfg.collect(&http.Client{})
+	require.NoError(t, err)
+	// Each matrix entry contributes its own newest 1, so the union has 2.
+	require.Len(t, result, 2)
+	assert.Equal(t, "2.0.0", result[0].Version)
+	assert.Equal(t, "4.0.0", result[1].Version)
+}
+
+func TestConfigCollectVersionLimitDoesNotTruncatePinned(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		resp := []packageInfo{
+			{Name: "nginx", Version: "1.0.0"},
+			{Name: "nginx", Version: "2.0.0"},
+			{Name: "nginx", Version: "3.0.0"},
+		}
+		json.NewEncoder(w).Encode(resp)
+	}))
+	defer server.Close()
+
+	cfg := config{
+		Address:      server.URL,
+		VersionLimit: 1,
+		Packages: []configPackage{
+			{Name: "nginx", Version: "1.0.0"},
+		},
+		Queries: []configQuery{{Package: "nginx"}},
+	}
+
+	result, err := cfg.collect(&http.Client{})
+	require.NoError(t, err)
+	// Pinned nginx 1.0.0 is kept; the search contributes nginx 3.0.0 (newest 1).
+	require.Len(t, result, 2)
+	assert.Equal(t, "nginx", result[0].Name)
+	assert.Equal(t, "1.0.0", result[0].Version)
+	assert.Equal(t, "epr/nginx/nginx-1.0.0.zip", result[0].Download)
+	assert.Equal(t, "nginx", result[1].Name)
+	assert.Equal(t, "3.0.0", result[1].Version)
+}
+
+func TestReadConfigValidVersionLimit(t *testing.T) {
+	tempDir := t.TempDir()
+	configPath := filepath.Join(tempDir, "config.yaml")
+
+	configContent := `
+address: "https://test.elastic.co"
+version.limit: 3
+queries:
+  - package: nginx
+    version.limit: 1
+  - package: apache
+`
+	err := os.WriteFile(configPath, []byte(configContent), 0644)
+	require.NoError(t, err)
+
+	cfg, err := readConfig(configPath)
+	require.NoError(t, err)
+	assert.Equal(t, 3, cfg.VersionLimit)
+	require.NotNil(t, cfg.Queries[0].VersionLimit)
+	assert.Equal(t, 1, *cfg.Queries[0].VersionLimit)
+	assert.Nil(t, cfg.Queries[1].VersionLimit)
+}
+
+// TestConfigCollectFailFast verifies that when one search request fails
+// terminally, the context is cancelled and the remaining URLs are not sent
+// to the server. Total server hits must be well below len(urls)*maxAttempts.
+func TestConfigCollectFailFast(t *testing.T) {
+	var hits atomic.Int64
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		hits.Add(1)
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+	}))
+	defer server.Close()
+
+	// Build a config with 20 matrix entries so there are plenty of URLs to
+	// cancel before they are sent.
+	matrix := make([]configQuery, 20)
+	for i := range matrix {
+		matrix[i] = configQuery{KibanaVersion: fmt.Sprintf("8.%d.0", i)}
+	}
+	cfg := config{
+		Address: server.URL,
+		Matrix:  matrix,
+		Queries: []configQuery{{Package: "nginx"}},
+	}
+
+	client, _ := newTestClient()
+	_, err := cfg.collect(client)
+	require.Error(t, err)
+
+	// The error must be the real failure, not a context noise message.
+	assert.Contains(t, err.Error(), "status code 500",
+		"error must report the actual failure status")
+	assert.NotContains(t, err.Error(), "context canceled",
+		"context.Canceled must be swallowed; only the root cause should surface")
+
+	// Fail-fast must bound total hits to far fewer than 20*maxAttempts = 80.
+	// Using 20 as the bound: if fail-fast works, only a handful of URLs fire.
+	assert.Less(t, hits.Load(), int64(20),
+		"fail-fast should stop the majority of requests")
+}
+
+// TestConfigCollectRetriesTransientError verifies that a 503 on the first
+// attempt is retried and collect ultimately returns the full package set.
+func TestConfigCollectRetriesTransientError(t *testing.T) {
+	var mu sync.Mutex
+	hitCount := make(map[string]int)
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		mu.Lock()
+		hitCount[r.URL.String()]++
+		count := hitCount[r.URL.String()]
+		mu.Unlock()
+
+		if count == 1 {
+			w.WriteHeader(http.StatusServiceUnavailable)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode([]packageInfo{
+			{Name: "nginx", Version: "1.0.0", Download: "/epr/nginx/nginx-1.0.0.zip"},
+		})
+	}))
+	defer server.Close()
+
+	cfg := config{
+		Address: server.URL,
+		Matrix: []configQuery{
+			{KibanaVersion: "8.0.0"},
+			{KibanaVersion: "9.0.0"},
+		},
+		Queries: []configQuery{{Package: "nginx"}},
+	}
+
+	client, _ := newTestClient()
+	packages, err := cfg.collect(client)
+	require.NoError(t, err)
+	// Both matrix entries return nginx 1.0.0; after dedup by (name, version) it's 1 package.
+	require.Len(t, packages, 1)
+	assert.Equal(t, "nginx", packages[0].Name)
+}
+
+// TestConfigSearchURLsDeduplicates verifies that identical URLs produced by
+// different matrix/query combinations are collapsed into a single entry,
+// and that version limits are merged correctly.
+func TestConfigSearchURLsDeduplicates(t *testing.T) {
+	tests := []struct {
+		name      string
+		cfg       config
+		wantCount int
+		wantLimit int // expected version.limit for the first (and only) URL
+	}{
+		{
+			name: "query spec.max overrides both matrix spec.max values",
+			cfg: config{
+				Address: "http://localhost:8080",
+				Matrix: []configQuery{
+					{SpecMax: "3.0"},
+					{SpecMax: "3.3"},
+				},
+				Queries: []configQuery{
+					{Package: "nginx", SpecMax: "3.6"},
+				},
+			},
+			wantCount: 1,
+			wantLimit: 0, // both matrix entries inherit the document default of 0
+		},
+		{
+			name: "merged version.limit takes the wider window",
+			cfg: config{
+				Address: "http://localhost:8080",
+				Matrix: []configQuery{
+					{VersionLimit: versionLimitPtr(2)},
+					{VersionLimit: versionLimitPtr(3)},
+				},
+				// No package filter so both matrix entries produce the same
+				// /search?all=true URL (version.limit>1 forces all=true in both).
+				Queries: []configQuery{{}},
+			},
+			wantCount: 1,
+			wantLimit: 3,
+		},
+		{
+			name: "unlimited (version.limit=0) wins over any bounded window",
+			cfg: config{
+				Address: "http://localhost:8080",
+				Matrix: []configQuery{
+					{VersionLimit: versionLimitPtr(0)},
+					{VersionLimit: versionLimitPtr(1)},
+				},
+				Queries: []configQuery{{}},
+			},
+			wantCount: 1,
+			wantLimit: 0,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			urls, err := tt.cfg.searchURLs()
+			require.NoError(t, err)
+
+			var gotURLs []string
+			var gotLimits []int
+			for u, k := range urls {
+				gotURLs = append(gotURLs, u.String())
+				gotLimits = append(gotLimits, k)
+			}
+
+			require.Len(t, gotURLs, tt.wantCount,
+				"expected %d unique URL(s), got: %v", tt.wantCount, gotURLs)
+			assert.Equal(t, tt.wantLimit, gotLimits[0])
+		})
+	}
 }

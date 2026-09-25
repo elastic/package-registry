@@ -5,6 +5,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -13,7 +14,6 @@ import (
 	"net/url"
 	"os"
 	"path"
-	"runtime"
 	"slices"
 	"strings"
 	"sync"
@@ -22,19 +22,40 @@ import (
 	"github.com/google/go-querystring/query"
 	"gopkg.in/yaml.v3"
 
-	"github.com/elastic/package-registry/workers"
+	"github.com/elastic/package-registry/cmd/distribution/internal/workers"
 )
 
 type config struct {
-	Address  string          `yaml:"address"`
-	Matrix   []configQuery   `yaml:"matrix"`
-	Queries  []configQuery   `yaml:"queries"`
-	Packages []configPackage `yaml:"packages"`
-	Actions  configActions   `yaml:"actions"`
+	Address string `yaml:"address"`
+	// VersionLimit is the default newest-N window per package per search response.
+	// Zero keeps everything. Values > 1 force all=true on the wire.
+	// Individual matrix entries and queries can override this.
+	VersionLimit int             `yaml:"version.limit"`
+	Matrix       []configQuery   `yaml:"matrix"`
+	Queries      []configQuery   `yaml:"queries"`
+	Packages     []configPackage `yaml:"packages"`
+	Actions      configActions   `yaml:"actions"`
 }
 
-// searchURLs generates the search searchURLs required for the given configuration.
-func (c config) searchURLs() (iter.Seq[*url.URL], error) {
+// versionLimitFor returns the number of versions to keep for a search. A query
+// overrides its matrix entry, which overrides the document default. Zero, and
+// any negative value, keep every version.
+func (c config) versionLimitFor(m, q configQuery) int {
+	limit := c.VersionLimit
+	if m.VersionLimit != nil {
+		limit = *m.VersionLimit
+	}
+	if q.VersionLimit != nil {
+		limit = *q.VersionLimit
+	}
+	return max(limit, 0)
+}
+
+// searchURLs generates the search URLs required for the given configuration,
+// each with the version limit from its response. Duplicate
+// URLs — produced when a query key fully overrides its matrix key — are
+// collapsed into a single entry whose limit is merged by mergeVersionLimit.
+func (c config) searchURLs() (iter.Seq2[*url.URL, int], error) {
 	address := defaultAddress
 	if c.Address != "" {
 		address = c.Address
@@ -46,35 +67,69 @@ func (c config) searchURLs() (iter.Seq[*url.URL], error) {
 	baseURL, err := url.Parse(basePath)
 	if err != nil {
 		// This should not happen because JoinPath already parses the url.
-		fmt.Printf("invalid url (%s): %s", baseURL, err)
+		fmt.Fprintf(os.Stderr, "invalid url %q: %s\n", basePath, err)
 		os.Exit(-1)
 	}
 	matrix := c.Matrix
 	if len(matrix) == 0 {
 		matrix = []configQuery{{}}
 	}
-	return func(yield func(*url.URL) bool) {
-		for _, m := range matrix {
-			for _, q := range c.Queries {
-				values := m.Build()
-				for k, v := range q.Build() {
-					values[k] = v
-				}
-				ref := ""
-				encoded := values.Encode()
-				if len(encoded) > 0 {
-					ref = "?" + encoded
-				}
-				url, err := baseURL.Parse(ref)
-				if err != nil {
-					panic("invalid query " + encoded)
-				}
-				if !yield(url) {
-					return
-				}
+
+	type urlLimit struct {
+		u     *url.URL
+		limit int
+	}
+	var ordered []urlLimit
+	seen := make(map[string]int) // URL string → index in ordered
+
+	for _, m := range matrix {
+		for _, q := range c.Queries {
+			limit := c.versionLimitFor(m, q)
+			values := m.Build()
+			for k, v := range q.Build() {
+				values[k] = v
+			}
+			if limit > 1 {
+				// The registry returns a single version per package unless all is set,
+				// and it has no way to limit the result size.
+				values.Set("all", "true")
+			}
+			ref := ""
+			encoded := values.Encode()
+			if len(encoded) > 0 {
+				ref = "?" + encoded
+			}
+			u, err := baseURL.Parse(ref)
+			if err != nil {
+				panic("invalid query " + encoded)
+			}
+			key := u.String()
+			if idx, dup := seen[key]; dup {
+				ordered[idx].limit = mergeVersionLimit(ordered[idx].limit, limit)
+			} else {
+				seen[key] = len(ordered)
+				ordered = append(ordered, urlLimit{u: u, limit: limit})
+			}
+		}
+	}
+
+	return func(yield func(*url.URL, int) bool) {
+		for _, ul := range ordered {
+			if !yield(ul.u, ul.limit) {
+				return
 			}
 		}
 	}, nil
+}
+
+// mergeVersionLimit combines the version limits of two identical search URLs. Zero means
+// unlimited, so it wins over any bounded window; otherwise the wider window
+// wins because its result set is a superset of the narrower one.
+func mergeVersionLimit(a, b int) int {
+	if a == 0 || b == 0 {
+		return 0
+	}
+	return max(a, b)
 }
 
 // downloadPathForPackage returns the paths to download the package with the given name and version and its signature.
@@ -103,27 +158,50 @@ func (c config) collect(client *http.Client) ([]packageInfo, error) {
 		packagesMap[key{Name: p.Name, Version: p.Version}] = p
 	}
 
-	taskPool := workers.NewTaskPool(runtime.GOMAXPROCS(0))
-	for u := range urls {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	taskPool := workers.NewTaskPool(searchConcurrency)
+	for u, limit := range urls {
+		if ctx.Err() != nil {
+			break
+		}
 		taskPool.Do(func() error {
-			resp, err := client.Get(u.String())
+			if ctx.Err() != nil {
+				return nil // another task already failed; do not touch the server
+			}
+			reqCtx, reqCancel := context.WithTimeout(ctx, searchTimeout)
+			defer reqCancel()
+			req, err := http.NewRequestWithContext(reqCtx, http.MethodGet, u.String(), nil)
 			if err != nil {
+				cancel()
+				return fmt.Errorf("failed to build request for %s: %w", u, err)
+			}
+			resp, err := client.Do(req)
+			if err != nil {
+				if ctx.Err() != nil {
+					return nil // context was cancelled by another failing task
+				}
+				cancel()
 				return fmt.Errorf("failed to GET %s: %w", u, err)
 			}
-			defer resp.Body.Close()
+			defer drainAndClose(resp.Body)
 			if resp.StatusCode != http.StatusOK {
+				cancel()
 				return fmt.Errorf("failed to GET %s (status code %d)", u, resp.StatusCode)
 			}
 
 			var packages []packageInfo
 			err = json.NewDecoder(resp.Body).Decode(&packages)
 			if err != nil {
+				cancel()
 				return fmt.Errorf("failed to parse search response: %w", err)
 			}
-			fmt.Println(u.String(), len(packages), "packages")
+			kept := truncateVersions(packages, limit)
+			fmt.Fprintf(os.Stderr, "%s %d of %d packages\n", u.String(), len(kept), len(packages))
 
 			mapLock.Lock()
-			for _, p := range packages {
+			for _, p := range kept {
 				k := key{Name: p.Name, Version: p.Version}
 				if _, found := packagesMap[k]; found {
 					continue
@@ -144,29 +222,65 @@ func (c config) collect(client *http.Client) ([]packageInfo, error) {
 		result = append(result, p)
 	}
 
-	slices.SortFunc(result, func(a, b packageInfo) int {
-		if n := strings.Compare(a.Name, b.Name); n != 0 {
-			return n
-		}
-
-		// An invalid semantic version string is considered less than a valid one.
-		// All invalid semantic version strings compare equal to each other.
-		// From https://pkg.go.dev/golang.org/x/mod/semver#Compare
-		va, errA := semver.NewVersion(a.Version)
-		vb, errB := semver.NewVersion(b.Version)
-		switch {
-		case errA != nil && errB != nil:
-			return 0
-		case errA != nil:
-			return -1
-		case errB != nil:
-			return 1
-		}
-
-		return va.Compare(vb)
-	})
+	slices.SortFunc(result, comparePackageInfo)
 
 	return result, nil
+}
+
+// comparePackageInfo orders packages by name, and then by version.
+func comparePackageInfo(a, b packageInfo) int {
+	if n := strings.Compare(a.Name, b.Name); n != 0 {
+		return n
+	}
+	return compareVersions(a.Version, b.Version)
+}
+
+// compareVersions orders two version strings.
+//
+// An invalid semantic version string is considered less than a valid one.
+// All invalid semantic version strings compare equal to each other.
+// From https://pkg.go.dev/golang.org/x/mod/semver#Compare
+func compareVersions(a, b string) int {
+	va, errA := semver.NewVersion(a)
+	vb, errB := semver.NewVersion(b)
+	switch {
+	case errA != nil && errB != nil:
+		return 0
+	case errA != nil:
+		return -1
+	case errB != nil:
+		return 1
+	}
+	return va.Compare(vb)
+}
+
+// truncateVersions keeps at most limit newest versions of each package in
+// packages, reordering and compacting it in place. A limit of zero or less
+// keeps everything. Versions that are not valid semantic versions sort oldest
+// and are dropped first.
+//
+// The window is per search response on purpose: each matrix entry is a Kibana
+// version that needs its own installable versions, so the limit is applied
+// before responses are merged.
+func truncateVersions(packages []packageInfo, limit int) []packageInfo {
+	if limit <= 0 || len(packages) <= limit {
+		return packages
+	}
+
+	// Stable so that versions comparing equal (invalid ones) are dropped in
+	// the order the registry returned them, rather than arbitrarily.
+	slices.SortStableFunc(packages, comparePackageInfo)
+
+	n := 0
+	for i := 0; i < len(packages); {
+		j := i
+		for j < len(packages) && packages[j].Name == packages[i].Name {
+			j++
+		}
+		n += copy(packages[n:], packages[max(i, j-limit):j])
+		i = j
+	}
+	return packages[:n]
 }
 
 func (c config) pinnedPackages() ([]packageInfo, error) {
@@ -214,6 +328,9 @@ type configQuery struct {
 	KibanaVersion string `yaml:"kibana.version" url:"kibana.version,omitempty"`
 	SpecMin       string `yaml:"spec.min" url:"spec.min,omitempty"`
 	SpecMax       string `yaml:"spec.max" url:"spec.max,omitempty"`
+	// VersionLimit overrides the document default. It is not a registry parameter:
+	// /search cannot limit results, so the window is applied in collect.
+	VersionLimit *int `yaml:"version.limit" url:"-"`
 }
 
 type configPackage struct {

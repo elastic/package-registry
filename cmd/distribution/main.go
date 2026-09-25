@@ -6,39 +6,52 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 	"os"
-	"runtime"
 
-	"github.com/elastic/package-registry/workers"
+	"github.com/elastic/package-registry/cmd/distribution/internal/workers"
 )
 
 const defaultAddress = "https://epr.elastic.co"
 
 func main() {
+	if len(os.Args) >= 2 {
+		switch os.Args[1] {
+		case "update-matrix":
+			if len(os.Args) < 3 {
+				fmt.Fprintln(os.Stderr, "usage:", os.Args[0], "update-matrix <config.yaml>...")
+				os.Exit(-1)
+			}
+			if err := runUpdateMatrix(os.Args[2:]); err != nil {
+				fmt.Fprintln(os.Stderr, err)
+				os.Exit(-1)
+			}
+			return
+		}
+	}
+
 	if len(os.Args) != 2 {
 		usageAndExit(-1)
 	}
 	config, err := readConfig(os.Args[1])
 	if err != nil {
-		fmt.Printf("failed to read configuration from %s: %s\n", os.Args[1], err)
+		fmt.Fprintf(os.Stderr, "failed to read configuration from %s: %s\n", os.Args[1], err)
 		os.Exit(-1)
 	}
 	for _, action := range config.Actions {
 		err := action.init(config)
 		if err != nil {
-			fmt.Printf("failed to initialize actions: %s", err)
+			fmt.Fprintf(os.Stderr, "failed to initialize actions: %s\n", err)
 			os.Exit(-1)
 		}
 	}
 
-	packages, err := config.collect(&http.Client{})
+	packages, err := config.collect(httpClient)
 	if err != nil {
-		fmt.Printf("failed to collect packages: %s", err)
+		fmt.Fprintf(os.Stderr, "failed to collect packages: %s\n", err)
 		os.Exit(-1)
 	}
 
-	taskpool := workers.NewTaskPool(runtime.GOMAXPROCS(0))
+	taskpool := workers.NewTaskPool(downloadConcurrency)
 	for _, info := range packages {
 		taskpool.Do(func() error {
 			for _, action := range config.Actions {
@@ -51,14 +64,14 @@ func main() {
 		})
 	}
 	if err := taskpool.Wait(); err != nil {
-		fmt.Println(err)
+		fmt.Fprintln(os.Stderr, err)
 		os.Exit(-1)
 	}
-	fmt.Println(len(packages), "packages total")
+	fmt.Fprintln(os.Stderr, len(packages), "packages total")
 }
 
 func usageAndExit(status int) {
-	fmt.Println(os.Args[0], "[config.yaml]")
+	fmt.Fprintln(os.Stderr, os.Args[0], "[config.yaml]")
 	os.Exit(status)
 }
 
