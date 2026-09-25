@@ -780,9 +780,9 @@ func TestConfigCollectRetriesTransientError(t *testing.T) {
 // and that version limits are merged correctly.
 func TestConfigSearchURLsDeduplicates(t *testing.T) {
 	tests := []struct {
-		name         string
-		cfg          config
-		wantCount    int
+		name      string
+		cfg       config
+		wantCount int
 		wantLimit int // expected version.limit for the first (and only) URL
 	}{
 		{
