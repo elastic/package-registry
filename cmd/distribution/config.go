@@ -27,34 +27,34 @@ import (
 
 type config struct {
 	Address string `yaml:"address"`
-	// Keep is the default newest-N window per package per search response.
+	// VersionLimit is the default newest-N window per package per search response.
 	// Zero keeps everything. Values > 1 force all=true on the wire.
 	// Individual matrix entries and queries can override this.
-	Keep     int             `yaml:"keep"`
-	Matrix   []configQuery   `yaml:"matrix"`
-	Queries  []configQuery   `yaml:"queries"`
-	Packages []configPackage `yaml:"packages"`
-	Actions  configActions   `yaml:"actions"`
+	VersionLimit int             `yaml:"version.limit"`
+	Matrix       []configQuery   `yaml:"matrix"`
+	Queries      []configQuery   `yaml:"queries"`
+	Packages     []configPackage `yaml:"packages"`
+	Actions      configActions   `yaml:"actions"`
 }
 
-// keepFor returns the number of versions to keep for a search. A query
+// versionLimitFor returns the number of versions to keep for a search. A query
 // overrides its matrix entry, which overrides the document default. Zero, and
 // any negative value, keep every version.
-func (c config) keepFor(m, q configQuery) int {
-	keep := c.Keep
-	if m.Keep != nil {
-		keep = *m.Keep
+func (c config) versionLimitFor(m, q configQuery) int {
+	limit := c.VersionLimit
+	if m.VersionLimit != nil {
+		limit = *m.VersionLimit
 	}
-	if q.Keep != nil {
-		keep = *q.Keep
+	if q.VersionLimit != nil {
+		limit = *q.VersionLimit
 	}
-	return max(keep, 0)
+	return max(limit, 0)
 }
 
 // searchURLs generates the search URLs required for the given configuration,
-// each with the number of newest versions to keep from its response. Duplicate
+// each with the version limit from its response. Duplicate
 // URLs — produced when a query key fully overrides its matrix key — are
-// collapsed into a single entry whose keep window is merged by mergeKeep.
+// collapsed into a single entry whose limit is merged by mergeVersionLimit.
 func (c config) searchURLs() (iter.Seq2[*url.URL, int], error) {
 	address := defaultAddress
 	if c.Address != "" {
@@ -75,21 +75,21 @@ func (c config) searchURLs() (iter.Seq2[*url.URL, int], error) {
 		matrix = []configQuery{{}}
 	}
 
-	type urlKeep struct {
-		u    *url.URL
-		keep int
+	type urlLimit struct {
+		u     *url.URL
+		limit int
 	}
-	var ordered []urlKeep
+	var ordered []urlLimit
 	seen := make(map[string]int) // URL string → index in ordered
 
 	for _, m := range matrix {
 		for _, q := range c.Queries {
-			keep := c.keepFor(m, q)
+			limit := c.versionLimitFor(m, q)
 			values := m.Build()
 			for k, v := range q.Build() {
 				values[k] = v
 			}
-			if keep > 1 {
+			if limit > 1 {
 				// The registry returns a single version per package unless all is set,
 				// and it has no way to limit the result size.
 				values.Set("all", "true")
@@ -105,27 +105,27 @@ func (c config) searchURLs() (iter.Seq2[*url.URL, int], error) {
 			}
 			key := u.String()
 			if idx, dup := seen[key]; dup {
-				ordered[idx].keep = mergeKeep(ordered[idx].keep, keep)
+				ordered[idx].limit = mergeVersionLimit(ordered[idx].limit, limit)
 			} else {
 				seen[key] = len(ordered)
-				ordered = append(ordered, urlKeep{u: u, keep: keep})
+				ordered = append(ordered, urlLimit{u: u, limit: limit})
 			}
 		}
 	}
 
 	return func(yield func(*url.URL, int) bool) {
-		for _, uk := range ordered {
-			if !yield(uk.u, uk.keep) {
+		for _, ul := range ordered {
+			if !yield(ul.u, ul.limit) {
 				return
 			}
 		}
 	}, nil
 }
 
-// mergeKeep combines the keep windows of two identical search URLs. Zero means
+// mergeVersionLimit combines the version limits of two identical search URLs. Zero means
 // unlimited, so it wins over any bounded window; otherwise the wider window
 // wins because its result set is a superset of the narrower one.
-func mergeKeep(a, b int) int {
+func mergeVersionLimit(a, b int) int {
 	if a == 0 || b == 0 {
 		return 0
 	}
@@ -162,7 +162,7 @@ func (c config) collect(client *http.Client) ([]packageInfo, error) {
 	defer cancel()
 
 	taskPool := workers.NewTaskPool(searchConcurrency)
-	for u, keep := range urls {
+	for u, limit := range urls {
 		if ctx.Err() != nil {
 			break
 		}
@@ -197,7 +197,7 @@ func (c config) collect(client *http.Client) ([]packageInfo, error) {
 				cancel()
 				return fmt.Errorf("failed to parse search response: %w", err)
 			}
-			kept := truncateVersions(packages, keep)
+			kept := truncateVersions(packages, limit)
 			fmt.Fprintf(os.Stderr, "%s %d of %d packages\n", u.String(), len(kept), len(packages))
 
 			mapLock.Lock()
@@ -254,16 +254,16 @@ func compareVersions(a, b string) int {
 	return va.Compare(vb)
 }
 
-// truncateVersions keeps at most keep newest versions of each package in
-// packages, reordering and compacting it in place. A keep of zero or less
+// truncateVersions keeps at most limit newest versions of each package in
+// packages, reordering and compacting it in place. A limit of zero or less
 // keeps everything. Versions that are not valid semantic versions sort oldest
 // and are dropped first.
 //
 // The window is per search response on purpose: each matrix entry is a Kibana
 // version that needs its own installable versions, so the limit is applied
 // before responses are merged.
-func truncateVersions(packages []packageInfo, keep int) []packageInfo {
-	if keep <= 0 || len(packages) <= keep {
+func truncateVersions(packages []packageInfo, limit int) []packageInfo {
+	if limit <= 0 || len(packages) <= limit {
 		return packages
 	}
 
@@ -277,7 +277,7 @@ func truncateVersions(packages []packageInfo, keep int) []packageInfo {
 		for j < len(packages) && packages[j].Name == packages[i].Name {
 			j++
 		}
-		n += copy(packages[n:], packages[max(i, j-keep):j])
+		n += copy(packages[n:], packages[max(i, j-limit):j])
 		i = j
 	}
 	return packages[:n]
@@ -328,9 +328,9 @@ type configQuery struct {
 	KibanaVersion string `yaml:"kibana.version" url:"kibana.version,omitempty"`
 	SpecMin       string `yaml:"spec.min" url:"spec.min,omitempty"`
 	SpecMax       string `yaml:"spec.max" url:"spec.max,omitempty"`
-	// Keep overrides the document default. It is not a registry parameter:
+	// VersionLimit overrides the document default. It is not a registry parameter:
 	// /search cannot limit results, so the window is applied in collect.
-	Keep *int `yaml:"keep" url:"-"`
+	VersionLimit *int `yaml:"version.limit" url:"-"`
 }
 
 type configPackage struct {

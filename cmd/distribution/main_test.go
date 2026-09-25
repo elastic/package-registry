@@ -409,9 +409,9 @@ func TestPrintAction(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func keepPtr(n int) *int { return &n }
+func versionLimitPtr(n int) *int { return &n }
 
-func TestConfigKeepFor(t *testing.T) {
+func TestConfigVersionLimitFor(t *testing.T) {
 	tests := []struct {
 		name     string
 		doc      int
@@ -421,18 +421,18 @@ func TestConfigKeepFor(t *testing.T) {
 	}{
 		{name: "nothing set", expected: 0},
 		{name: "document default only", doc: 3, expected: 3},
-		{name: "matrix overrides document", doc: 3, matrix: keepPtr(5), expected: 5},
-		{name: "query overrides both", doc: 3, matrix: keepPtr(5), query: keepPtr(2), expected: 2},
-		{name: "query zero overrides non-zero default", doc: 3, query: keepPtr(0), expected: 0},
+		{name: "matrix overrides document", doc: 3, matrix: versionLimitPtr(5), expected: 5},
+		{name: "query overrides both", doc: 3, matrix: versionLimitPtr(5), query: versionLimitPtr(2), expected: 2},
+		{name: "query zero overrides non-zero default", doc: 3, query: versionLimitPtr(0), expected: 0},
 		{name: "negative clamped to zero", doc: -1, expected: 0},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			cfg := config{Keep: tt.doc}
-			m := configQuery{Keep: tt.matrix}
-			q := configQuery{Keep: tt.query}
-			assert.Equal(t, tt.expected, cfg.keepFor(m, q))
+			cfg := config{VersionLimit: tt.doc}
+			m := configQuery{VersionLimit: tt.matrix}
+			q := configQuery{VersionLimit: tt.query}
+			assert.Equal(t, tt.expected, cfg.versionLimitFor(m, q))
 		})
 	}
 }
@@ -521,26 +521,25 @@ func TestTruncateVersions(t *testing.T) {
 	}
 }
 
-func TestConfigSearchURLsKeepForcesAll(t *testing.T) {
+func TestConfigSearchURLsVersionLimitForcesAll(t *testing.T) {
 	tests := []struct {
 		name         string
-		keep         int
-		queryKeep    *int
+		versionLimit int
 		expectedURLs []string
 	}{
 		{
-			name:         "keep > 1 sets all=true",
-			keep:         2,
+			name:         "version.limit > 1 sets all=true",
+			versionLimit: 2,
 			expectedURLs: []string{"http://localhost:8080/search?all=true&package=nginx"},
 		},
 		{
-			name:         "keep == 1 does not set all=true",
-			keep:         1,
+			name:         "version.limit == 1 does not set all=true",
+			versionLimit: 1,
 			expectedURLs: []string{"http://localhost:8080/search?package=nginx"},
 		},
 		{
-			name:         "keep == 0 does not set all=true",
-			keep:         0,
+			name:         "version.limit == 0 does not set all=true",
+			versionLimit: 0,
 			expectedURLs: []string{"http://localhost:8080/search?package=nginx"},
 		},
 	}
@@ -548,9 +547,9 @@ func TestConfigSearchURLsKeepForcesAll(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			cfg := config{
-				Address: "http://localhost:8080",
-				Keep:    tt.keep,
-				Queries: []configQuery{{Package: "nginx"}},
+				Address:      "http://localhost:8080",
+				VersionLimit: tt.versionLimit,
+				Queries:      []configQuery{{Package: "nginx"}},
 			}
 			urls, err := cfg.searchURLs()
 			require.NoError(t, err)
@@ -564,13 +563,13 @@ func TestConfigSearchURLsKeepForcesAll(t *testing.T) {
 	}
 }
 
-func TestConfigQueryBuildKeepExcluded(t *testing.T) {
-	q := configQuery{Package: "nginx", Keep: keepPtr(3)}
+func TestConfigQueryBuildVersionLimitExcluded(t *testing.T) {
+	q := configQuery{Package: "nginx", VersionLimit: versionLimitPtr(3)}
 	values := q.Build()
 	assert.Equal(t, url.Values{"package": []string{"nginx"}}, values)
 }
 
-func TestConfigCollectKeep(t *testing.T) {
+func TestConfigCollectVersionLimit(t *testing.T) {
 	packages := []packageInfo{
 		{Name: "nginx", Version: "1.0.0"},
 		{Name: "nginx", Version: "2.0.0"},
@@ -588,9 +587,9 @@ func TestConfigCollectKeep(t *testing.T) {
 	defer server.Close()
 
 	cfg := config{
-		Address: server.URL,
-		Keep:    2,
-		Queries: []configQuery{{Package: "nginx"}},
+		Address:      server.URL,
+		VersionLimit: 2,
+		Queries:      []configQuery{{Package: "nginx"}},
 	}
 
 	result, err := cfg.collect(&http.Client{})
@@ -606,7 +605,7 @@ func TestConfigCollectKeep(t *testing.T) {
 	assert.Equal(t, "5.0.0", result[3].Version)
 }
 
-func TestConfigCollectKeepIsPerResponse(t *testing.T) {
+func TestConfigCollectVersionLimitIsPerResponse(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		var resp []packageInfo
 		switch r.URL.Query().Get("kibana.version") {
@@ -626,8 +625,8 @@ func TestConfigCollectKeepIsPerResponse(t *testing.T) {
 	defer server.Close()
 
 	cfg := config{
-		Address: server.URL,
-		Keep:    1,
+		Address:      server.URL,
+		VersionLimit: 1,
 		Matrix: []configQuery{
 			{KibanaVersion: "8.0.0"},
 			{KibanaVersion: "9.0.0"},
@@ -643,7 +642,7 @@ func TestConfigCollectKeepIsPerResponse(t *testing.T) {
 	assert.Equal(t, "4.0.0", result[1].Version)
 }
 
-func TestConfigCollectKeepDoesNotTruncatePinned(t *testing.T) {
+func TestConfigCollectVersionLimitDoesNotTruncatePinned(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		resp := []packageInfo{
 			{Name: "nginx", Version: "1.0.0"},
@@ -655,8 +654,8 @@ func TestConfigCollectKeepDoesNotTruncatePinned(t *testing.T) {
 	defer server.Close()
 
 	cfg := config{
-		Address: server.URL,
-		Keep:    1,
+		Address:      server.URL,
+		VersionLimit: 1,
 		Packages: []configPackage{
 			{Name: "nginx", Version: "1.0.0"},
 		},
@@ -674,16 +673,16 @@ func TestConfigCollectKeepDoesNotTruncatePinned(t *testing.T) {
 	assert.Equal(t, "3.0.0", result[1].Version)
 }
 
-func TestReadConfigValidKeep(t *testing.T) {
+func TestReadConfigValidVersionLimit(t *testing.T) {
 	tempDir := t.TempDir()
 	configPath := filepath.Join(tempDir, "config.yaml")
 
 	configContent := `
 address: "https://test.elastic.co"
-keep: 3
+version.limit: 3
 queries:
   - package: nginx
-    keep: 1
+    version.limit: 1
   - package: apache
 `
 	err := os.WriteFile(configPath, []byte(configContent), 0644)
@@ -691,10 +690,10 @@ queries:
 
 	cfg, err := readConfig(configPath)
 	require.NoError(t, err)
-	assert.Equal(t, 3, cfg.Keep)
-	require.NotNil(t, cfg.Queries[0].Keep)
-	assert.Equal(t, 1, *cfg.Queries[0].Keep)
-	assert.Nil(t, cfg.Queries[1].Keep)
+	assert.Equal(t, 3, cfg.VersionLimit)
+	require.NotNil(t, cfg.Queries[0].VersionLimit)
+	assert.Equal(t, 1, *cfg.Queries[0].VersionLimit)
+	assert.Nil(t, cfg.Queries[1].VersionLimit)
 }
 
 // TestConfigCollectFailFast verifies that when one search request fails
@@ -778,13 +777,13 @@ func TestConfigCollectRetriesTransientError(t *testing.T) {
 
 // TestConfigSearchURLsDeduplicates verifies that identical URLs produced by
 // different matrix/query combinations are collapsed into a single entry,
-// and that keep windows are merged correctly.
+// and that version limits are merged correctly.
 func TestConfigSearchURLsDeduplicates(t *testing.T) {
 	tests := []struct {
-		name      string
-		cfg       config
-		wantCount int
-		wantKeep  int // expected keep for the first (and only) URL
+		name         string
+		cfg          config
+		wantCount    int
+		wantLimit int // expected version.limit for the first (and only) URL
 	}{
 		{
 			name: "query spec.max overrides both matrix spec.max values",
@@ -799,35 +798,35 @@ func TestConfigSearchURLsDeduplicates(t *testing.T) {
 				},
 			},
 			wantCount: 1,
-			wantKeep:  0, // both matrix entries inherit the document default of 0
+			wantLimit: 0, // both matrix entries inherit the document default of 0
 		},
 		{
-			name: "merged keep takes the wider window",
+			name: "merged version.limit takes the wider window",
 			cfg: config{
 				Address: "http://localhost:8080",
 				Matrix: []configQuery{
-					{Keep: keepPtr(2)},
-					{Keep: keepPtr(3)},
+					{VersionLimit: versionLimitPtr(2)},
+					{VersionLimit: versionLimitPtr(3)},
 				},
 				// No package filter so both matrix entries produce the same
-				// /search?all=true URL (keep>1 forces all=true in both).
+				// /search?all=true URL (version.limit>1 forces all=true in both).
 				Queries: []configQuery{{}},
 			},
 			wantCount: 1,
-			wantKeep:  3,
+			wantLimit: 3,
 		},
 		{
-			name: "unlimited (keep=0) wins over any bounded window",
+			name: "unlimited (version.limit=0) wins over any bounded window",
 			cfg: config{
 				Address: "http://localhost:8080",
 				Matrix: []configQuery{
-					{Keep: keepPtr(0)},
-					{Keep: keepPtr(1)},
+					{VersionLimit: versionLimitPtr(0)},
+					{VersionLimit: versionLimitPtr(1)},
 				},
 				Queries: []configQuery{{}},
 			},
 			wantCount: 1,
-			wantKeep:  0,
+			wantLimit: 0,
 		},
 	}
 
@@ -837,15 +836,15 @@ func TestConfigSearchURLsDeduplicates(t *testing.T) {
 			require.NoError(t, err)
 
 			var gotURLs []string
-			var gotKeeps []int
+			var gotLimits []int
 			for u, k := range urls {
 				gotURLs = append(gotURLs, u.String())
-				gotKeeps = append(gotKeeps, k)
+				gotLimits = append(gotLimits, k)
 			}
 
 			require.Len(t, gotURLs, tt.wantCount,
 				"expected %d unique URL(s), got: %v", tt.wantCount, gotURLs)
-			assert.Equal(t, tt.wantKeep, gotKeeps[0])
+			assert.Equal(t, tt.wantLimit, gotLimits[0])
 		})
 	}
 }

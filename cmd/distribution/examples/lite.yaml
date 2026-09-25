@@ -6,8 +6,8 @@
 # Base address of the Package Registry
 address: "https://epr.elastic.co"
 
-# keep: N  # document-wide default newest-N per package per matrix entry (0 = keep everything).
-#           # Individual queries below may override this; see security_detection_engine and system.
+# version.limit: N  # document-wide default newest-N per package per matrix entry (0 = keep everything).
+#                   # Individual queries below may override this; see security_detection_engine and system.
 
 # Kibana release matrix. Each entry runs all queries independently.
 # spec.min / spec.max: REGISTRY_SPEC_MIN/MAX_VERSION from the Fleet plugin config.
@@ -286,7 +286,7 @@ matrix:
     spec.max: 3.6
 
 # Packages to fetch. all=true returns every compatible version per matrix entry.
-# security_detection_engine and system use keep: 4 to limit to the 4 newest versions.
+# security_detection_engine and system use version.limit: 4 to limit to the 4 newest versions.
 queries:
   - package: apache
     all: true
@@ -317,11 +317,11 @@ queries:
   - package: security_ai_prompts
     all: true
   - package: security_detection_engine
-    keep: 4
+    version.limit: 4
   - package: synthetics
     all: true
   - package: system
-    keep: 4
+    version.limit: 4
   - package: windows
     all: true
 
@@ -329,7 +329,7 @@ queries:
 # reach: apache 0.1.x is prerelease-gated (not returned without prerelease=true),
 # endpoint 1.0.0 and elastic_agent 1.2.0 declare 7.x kibana conditions and are
 # invisible to any 8.x matrix entry, and the system/endpoint versions fall outside
-# even the largest keep window. Pins bypass search and the keep window entirely.
+# even the largest version.limit window. Pins bypass search and the version.limit window entirely.
 packages:
   - name: apache
     version: 0.1.3
@@ -348,5 +348,5 @@ packages:
 
 actions:
   - print:
-  - download:
-      destination: ./build/distribution-lite
+  # - download:
+  #     destination: ./build/distribution-lite

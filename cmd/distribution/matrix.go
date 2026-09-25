@@ -245,8 +245,8 @@ func renderMatrixBlock(entries []configQuery) []byte {
 		if e.Prerelease {
 			writeField("prerelease", "true")
 		}
-		if e.Keep != nil {
-			writeField("keep", fmt.Sprintf("%d", *e.Keep))
+		if e.VersionLimit != nil {
+			writeField("version.limit", fmt.Sprintf("%d", *e.VersionLimit))
 		}
 	}
 	return buf.Bytes()
