@@ -63,7 +63,13 @@ func retryAfterBackoff(minWait, maxWait time.Duration, attemptNum int, resp *htt
 			}
 		}
 	}
-	cap := min(minWait<<attemptNum, maxWait)
+	// Guard against shift overflow: if minWait<<attemptNum overflows int64 it
+	// wraps to a negative value; fall back to maxWait in that case.
+	shifted := minWait << min(attemptNum, 62)
+	cap := maxWait
+	if shifted > 0 {
+		cap = min(shifted, maxWait)
+	}
 	var wait time.Duration
 	if cap > 0 {
 		wait = rand.N(cap)

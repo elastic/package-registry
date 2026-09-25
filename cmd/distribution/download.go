@@ -99,9 +99,14 @@ func (a *downloadAction) download(urlPath string) error {
 	}
 	if _, err = io.Copy(f, resp.Body); err != nil {
 		f.Close()
+		removeFile(f.Name())
 		return err
 	}
-	return f.Close()
+	if err := f.Close(); err != nil {
+		removeFile(f.Name())
+		return err
+	}
+	return nil
 }
 
 // removeFile removes path and logs to stderr if the removal fails.

@@ -6,11 +6,11 @@ package workers
 
 import (
 	"errors"
-	"strings"
 	"sync/atomic"
 	"testing"
 	"time"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -60,13 +60,9 @@ func TestTaskPoolMultipleErrors(t *testing.T) {
 	})
 
 	err := pool.Wait()
-	if err != nil {
-		// At least one error should be present
-		errMsg := err.Error()
-		hasErr1 := strings.Contains(errMsg, "error 1")
-		hasErr2 := strings.Contains(errMsg, "error 2")
-		require.True(t, hasErr1 || hasErr2, "should contain at least one error")
-	}
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "error 1")
+	assert.Contains(t, err.Error(), "error 2")
 }
 
 func TestTaskPoolConcurrency(t *testing.T) {
