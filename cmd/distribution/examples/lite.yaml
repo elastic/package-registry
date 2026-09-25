@@ -118,6 +118,8 @@ matrix:
     spec.max: 3.4
   - kibana.version: 8.19.21
     spec.max: 3.4
+  - kibana.version: 8.19.22
+    spec.max: 3.4
   - kibana.version: 9.0.0
     spec.min: 2.3
     spec.max: 3.3
@@ -256,6 +258,9 @@ matrix:
   - kibana.version: 9.4.7
     spec.min: 2.3
     spec.max: 3.6
+  - kibana.version: 9.4.8
+    spec.min: 2.3
+    spec.max: 3.6
   - kibana.version: 9.5.0
     spec.min: 2.3
     spec.max: 3.6
@@ -269,6 +274,12 @@ matrix:
     spec.min: 2.3
     spec.max: 3.6
   - kibana.version: 9.5.4
+    spec.min: 2.3
+    spec.max: 3.6
+  - kibana.version: 9.5.5
+    spec.min: 2.3
+    spec.max: 3.6
+  - kibana.version: 9.6.0
     spec.min: 2.3
     spec.max: 3.6
   - spec.min: 2.3
