@@ -1,0 +1,33 @@
+{
+  "name": "otel_suffix",
+  "title": "OTel Suffix Flag",
+  "version": "1.0.0",
+  "release": "beta",
+  "description": "This package contains a datastream with the use_otel_suffix flag set to true.\n",
+  "type": "integration",
+  "download": "/epr/otel_suffix/otel_suffix-1.0.0.zip",
+  "path": "/package/otel_suffix/1.0.0",
+  "categories": [
+    "custom"
+  ],
+  "format_version": "1.0.0",
+  "readme": "/package/otel_suffix/1.0.0/docs/README.md",
+  "license": "basic",
+  "assets": [
+    "/package/otel_suffix/1.0.0/manifest.yml",
+    "/package/otel_suffix/1.0.0/docs/README.md",
+    "/package/otel_suffix/1.0.0/data_stream/logs/manifest.yml",
+    "/package/otel_suffix/1.0.0/data_stream/logs/fields/base-fields.yml"
+  ],
+  "data_streams": [
+    {
+      "type": "logs",
+      "dataset": "otel_suffix.logs",
+      "use_otel_suffix": true,
+      "title": "OTel suffix logs data stream",
+      "release": "beta",
+      "package": "otel_suffix",
+      "path": "logs"
+    }
+  ]
+}

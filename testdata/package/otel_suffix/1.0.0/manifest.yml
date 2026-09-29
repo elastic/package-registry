@@ -1,0 +1,12 @@
+format_version: 1.0.0
+
+name: otel_suffix
+title: OTel Suffix Flag
+description: >
+  This package contains a datastream with the use_otel_suffix flag set to true.
+version: 1.0.0
+categories: ["custom"]
+release: beta
+
+license: basic
+type: integration

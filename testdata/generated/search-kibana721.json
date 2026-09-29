@@ -496,6 +496,26 @@
     ]
   },
   {
+    "name": "otel_suffix",
+    "title": "OTel Suffix Flag",
+    "version": "1.0.0",
+    "release": "beta",
+    "description": "This package contains a datastream with the use_otel_suffix flag set to true.\n",
+    "type": "integration",
+    "download": "/epr/otel_suffix/otel_suffix-1.0.0.zip",
+    "path": "/package/otel_suffix/1.0.0",
+    "categories": [
+      "custom"
+    ],
+    "data_streams": [
+      {
+        "type": "logs",
+        "dataset": "otel_suffix.logs",
+        "title": "OTel suffix logs data stream"
+      }
+    ]
+  },
+  {
     "name": "package_reference_stream",
     "title": "Package Reference Stream",
     "version": "0.1.0",
