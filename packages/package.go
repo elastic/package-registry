@@ -109,6 +109,7 @@ type BasePolicyTemplate struct {
 	DeploymentModes *DeploymentModes `config:"deployment_modes,omitempty" json:"deployment_modes,omitempty" yaml:"deployment_modes,omitempty"`
 	DataStreams     []string         `config:"data_streams,omitempty" json:"data_streams,omitempty" yaml:"data_streams,omitempty"`
 	Deprecated      *Deprecated      `config:"deprecated,omitempty" json:"deprecated,omitempty" yaml:"deprecated,omitempty"`
+	FipsCompatible  *bool            `config:"fips_compatible,omitempty" json:"fips_compatible,omitempty" yaml:"fips_compatible,omitempty"`
 }
 
 type PolicyTemplate struct {
@@ -130,6 +131,7 @@ type PolicyTemplate struct {
 	IngestionMethod string      `config:"ingestion_method,omitempty" json:"ingestion_method,omitempty" yaml:"ingestion_method,omitempty"`
 	TemplatePath    string      `config:"template_path,omitempty" json:"template_path,omitempty" yaml:"template_path,omitempty"`
 	Deprecated      *Deprecated `config:"deprecated,omitempty" json:"deprecated,omitempty" yaml:"deprecated,omitempty"`
+	FipsCompatible  *bool       `config:"fips_compatible,omitempty" json:"fips_compatible,omitempty" yaml:"fips_compatible,omitempty"`
 }
 
 // Source contains metadata about the source of the package and its distribution.
@@ -517,6 +519,7 @@ func (p *Package) setBasePolicyTemplates() {
 			DeploymentModes: t.DeploymentModes,
 			DataStreams:     t.DataStreams,
 			Deprecated:      t.Deprecated,
+			FipsCompatible:  t.FipsCompatible,
 		}
 
 		p.BasePolicyTemplates = append(p.BasePolicyTemplates, baseT)
