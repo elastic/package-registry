@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bugfixes
 * Update Go runtime to 1.26.7. [#2040](https://github.com/elastic/package-registry/pull/2040)
+* Fix potential panic in `workers.taskPool.Wait()` by removing premature channel close; `wg.Wait()` alone is sufficient for synchronisation. [#2109](https://github.com/elastic/package-registry/pull/2109)
 
 ### Added
 

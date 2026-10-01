@@ -123,6 +123,19 @@ When working with Storage Indexers (cloud storage backend):
 - Use `dev/launch_epr_service_storage_indexer.sh` to run EPR with storage indexer enabled
 - Test data: `storage/testdata/search-index-all-full.json`
 
+### Module Layout
+
+The repository contains two Go modules, both managed together:
+
+- `.` — `github.com/elastic/package-registry` (the registry server)
+- `cmd/distribution` — `github.com/elastic/package-registry/cmd/distribution` (the distribution download tool)
+
+Both are listed in `magefile.go`'s `modules` var (line 51), so `mage test`,
+`mage check`, and `mage modTidy` cover both. **`cmd/distribution` must remain
+fully independent of the parent module** — it must not gain a `require
+github.com/elastic/package-registry` dependency or a `replace` directive,
+because either breaks `go install github.com/elastic/package-registry/cmd/distribution@latest`.
+
 ### Release Process
 
 Releases are tagged via GitHub releases. After tagging:
@@ -139,4 +152,4 @@ Releases are tagged via GitHub releases. After tagging:
 
 ## Version
 
-Current version: Check `version` constant in `main.go` (currently 1.35.1)
+Current version: check the `version` constant in `main.go`.
