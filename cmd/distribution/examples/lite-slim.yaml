@@ -1,0 +1,352 @@
+# Lite distribution: 18 core Elastic integration packages across Kibana 8.15–9.5.
+# Beta-flagged packages are included; hyphenated pre-release builds (-preview-*, -rc, -dev) are not.
+# A small set of old versions required by Kibana's Fleet API integration tests is pinned via the
+# packages: block below, since they predate the matrix window or are prerelease-gated.
+
+# Base address of the Package Registry
+address: "https://epr.elastic.co"
+
+# version.limit: N  # document-wide default newest-N per package per matrix entry (0 or unset = no limit).
+#                   # Individual queries below may override this; see security_detection_engine and system.
+
+# Kibana release matrix. Each entry runs all queries independently.
+# spec.min / spec.max: REGISTRY_SPEC_MIN/MAX_VERSION from the Fleet plugin config.
+matrix:
+  # - kibana.version: 7.17.26
+  # - kibana.version: 7.17.27
+  # - kibana.version: 7.17.28
+  # - kibana.version: 7.17.29
+  - kibana.version: 8.15.4
+    spec.max: 3.0
+  - kibana.version: 8.15.5
+    spec.max: 3.0
+  - kibana.version: 8.16.0
+    spec.max: 3.3
+  - kibana.version: 8.16.1
+    spec.max: 3.3
+  - kibana.version: 8.16.2
+    spec.max: 3.3
+  - kibana.version: 8.16.3
+    spec.max: 3.3
+  - kibana.version: 8.16.4
+    spec.max: 3.3
+  - kibana.version: 8.16.5
+    spec.max: 3.3
+  - kibana.version: 8.16.6
+    spec.max: 3.3
+  - kibana.version: 8.17.0
+    spec.max: 3.3
+  - kibana.version: 8.17.1
+    spec.max: 3.3
+  - kibana.version: 8.17.2
+    spec.max: 3.3
+  - kibana.version: 8.17.3
+    spec.max: 3.3
+  - kibana.version: 8.17.4
+    spec.max: 3.3
+  - kibana.version: 8.17.5
+    spec.max: 3.3
+  - kibana.version: 8.17.6
+    spec.max: 3.3
+  - kibana.version: 8.17.7
+    spec.max: 3.3
+  - kibana.version: 8.17.8
+    spec.max: 3.3
+  - kibana.version: 8.17.9
+    spec.max: 3.3
+  - kibana.version: 8.17.10
+    spec.max: 3.3
+  - kibana.version: 8.18.0
+    spec.max: 3.3
+  - kibana.version: 8.18.1
+    spec.max: 3.3
+  - kibana.version: 8.18.2
+    spec.max: 3.3
+  - kibana.version: 8.18.3
+    spec.max: 3.3
+  - kibana.version: 8.18.4
+    spec.max: 3.3
+  - kibana.version: 8.18.5
+    spec.max: 3.3
+  - kibana.version: 8.18.6
+    spec.max: 3.3
+  - kibana.version: 8.18.7
+    spec.max: 3.3
+  - kibana.version: 8.18.8
+    spec.max: 3.3
+  - kibana.version: 8.19.0
+    spec.max: 3.4
+  - kibana.version: 8.19.1
+    spec.max: 3.4
+  - kibana.version: 8.19.2
+    spec.max: 3.4
+  - kibana.version: 8.19.3
+    spec.max: 3.4
+  - kibana.version: 8.19.4
+    spec.max: 3.4
+  - kibana.version: 8.19.5
+    spec.max: 3.4
+  - kibana.version: 8.19.6
+    spec.max: 3.4
+  - kibana.version: 8.19.7
+    spec.max: 3.4
+  - kibana.version: 8.19.8
+    spec.max: 3.4
+  - kibana.version: 8.19.9
+    spec.max: 3.4
+  - kibana.version: 8.19.10
+    spec.max: 3.4
+  - kibana.version: 8.19.11
+    spec.max: 3.4
+  - kibana.version: 8.19.12
+    spec.max: 3.4
+  - kibana.version: 8.19.13
+    spec.max: 3.4
+  - kibana.version: 8.19.14
+    spec.max: 3.4
+  - kibana.version: 8.19.15
+    spec.max: 3.4
+  - kibana.version: 8.19.16
+    spec.max: 3.4
+  - kibana.version: 8.19.17
+    spec.max: 3.4
+  - kibana.version: 8.19.18
+    spec.max: 3.4
+  - kibana.version: 8.19.19
+    spec.max: 3.4
+  - kibana.version: 8.19.20
+    spec.max: 3.4
+  - kibana.version: 8.19.21
+    spec.max: 3.4
+  - kibana.version: 8.19.22
+    spec.max: 3.4
+  - kibana.version: 9.0.0
+    spec.min: 2.3
+    spec.max: 3.3
+  - kibana.version: 9.0.1
+    spec.min: 2.3
+    spec.max: 3.3
+  - kibana.version: 9.0.2
+    spec.min: 2.3
+    spec.max: 3.3
+  - kibana.version: 9.0.3
+    spec.min: 2.3
+    spec.max: 3.3
+  - kibana.version: 9.0.4
+    spec.min: 2.3
+    spec.max: 3.3
+  - kibana.version: 9.0.5
+    spec.min: 2.3
+    spec.max: 3.3
+  - kibana.version: 9.0.6
+    spec.min: 2.3
+    spec.max: 3.3
+  - kibana.version: 9.0.7
+    spec.min: 2.3
+    spec.max: 3.3
+  - kibana.version: 9.0.8
+    spec.min: 2.3
+    spec.max: 3.3
+  - kibana.version: 9.1.0
+    spec.min: 2.3
+    spec.max: 3.4
+  - kibana.version: 9.1.1
+    spec.min: 2.3
+    spec.max: 3.4
+  - kibana.version: 9.1.2
+    spec.min: 2.3
+    spec.max: 3.4
+  - kibana.version: 9.1.3
+    spec.min: 2.3
+    spec.max: 3.4
+  - kibana.version: 9.1.4
+    spec.min: 2.3
+    spec.max: 3.4
+  - kibana.version: 9.1.5
+    spec.min: 2.3
+    spec.max: 3.4
+  - kibana.version: 9.1.6
+    spec.min: 2.3
+    spec.max: 3.4
+  - kibana.version: 9.1.7
+    spec.min: 2.3
+    spec.max: 3.4
+  - kibana.version: 9.1.8
+    spec.min: 2.3
+    spec.max: 3.4
+  - kibana.version: 9.1.9
+    spec.min: 2.3
+    spec.max: 3.4
+  - kibana.version: 9.1.10
+    spec.min: 2.3
+    spec.max: 3.4
+  - kibana.version: 9.2.0
+    spec.min: 2.3
+    spec.max: 3.5
+  - kibana.version: 9.2.1
+    spec.min: 2.3
+    spec.max: 3.5
+  - kibana.version: 9.2.2
+    spec.min: 2.3
+    spec.max: 3.5
+  - kibana.version: 9.2.3
+    spec.min: 2.3
+    spec.max: 3.5
+  - kibana.version: 9.2.4
+    spec.min: 2.3
+    spec.max: 3.5
+  - kibana.version: 9.2.5
+    spec.min: 2.3
+    spec.max: 3.5
+  - kibana.version: 9.2.6
+    spec.min: 2.3
+    spec.max: 3.5
+  - kibana.version: 9.2.7
+    spec.min: 2.3
+    spec.max: 3.5
+  - kibana.version: 9.2.8
+    spec.min: 2.3
+    spec.max: 3.5
+  - kibana.version: 9.3.0
+    spec.min: 2.3
+    spec.max: 3.5
+  - kibana.version: 9.3.1
+    spec.min: 2.3
+    spec.max: 3.5
+  - kibana.version: 9.3.2
+    spec.min: 2.3
+    spec.max: 3.5
+  - kibana.version: 9.3.3
+    spec.min: 2.3
+    spec.max: 3.5
+  - kibana.version: 9.3.4
+    spec.min: 2.3
+    spec.max: 3.5
+  - kibana.version: 9.3.5
+    spec.min: 2.3
+    spec.max: 3.5
+  - kibana.version: 9.3.6
+    spec.min: 2.3
+    spec.max: 3.5
+  - kibana.version: 9.3.7
+    spec.min: 2.3
+    spec.max: 3.5
+  - kibana.version: 9.3.8
+    spec.min: 2.3
+    spec.max: 3.5
+  - kibana.version: 9.4.0
+    spec.min: 2.3
+    spec.max: 3.6
+  - kibana.version: 9.4.1
+    spec.min: 2.3
+    spec.max: 3.6
+  - kibana.version: 9.4.2
+    spec.min: 2.3
+    spec.max: 3.6
+  - kibana.version: 9.4.3
+    spec.min: 2.3
+    spec.max: 3.6
+  - kibana.version: 9.4.4
+    spec.min: 2.3
+    spec.max: 3.6
+  - kibana.version: 9.4.5
+    spec.min: 2.3
+    spec.max: 3.6
+  - kibana.version: 9.4.6
+    spec.min: 2.3
+    spec.max: 3.6
+  - kibana.version: 9.4.7
+    spec.min: 2.3
+    spec.max: 3.6
+  - kibana.version: 9.4.8
+    spec.min: 2.3
+    spec.max: 3.6
+  - kibana.version: 9.5.0
+    spec.min: 2.3
+    spec.max: 3.6
+  - kibana.version: 9.5.1
+    spec.min: 2.3
+    spec.max: 3.6
+  - kibana.version: 9.5.2
+    spec.min: 2.3
+    spec.max: 3.6
+  - kibana.version: 9.5.3
+    spec.min: 2.3
+    spec.max: 3.6
+  - kibana.version: 9.5.4
+    spec.min: 2.3
+    spec.max: 3.6
+  - kibana.version: 9.5.5
+    spec.min: 2.3
+    spec.max: 3.6
+  - kibana.version: 9.6.0
+    spec.min: 2.3
+    spec.max: 3.6
+  - spec.min: 2.3
+    spec.max: 3.6
+
+# Packages to fetch. all=true returns every compatible version per matrix entry.
+# security_detection_engine and system use version.limit: 4 to limit to the 4 newest versions.
+queries:
+  - package: apache
+    all: true
+  - package: apm
+    all: true
+  - package: elastic_agent
+    all: true
+  - package: endpoint
+    all: true
+  - package: fleet_server
+    all: true
+  - package: kubernetes
+    all: true
+  - package: linux
+    all: true
+  - package: log
+    all: true
+  - package: mysql
+    all: true
+  - package: nginx
+    all: true
+  - package: osquery_manager
+    all: true
+  - package: profiler_collector
+    all: true
+  - package: profiler_symbolizer
+    all: true
+  - package: security_ai_prompts
+    all: true
+  - package: security_detection_engine
+    version.limit: 4
+  - package: synthetics
+    all: true
+  - package: system
+    version.limit: 4
+  - package: windows
+    all: true
+
+# Versions required by Kibana's Fleet API integration tests that search cannot
+# reach: apache 0.1.x is prerelease-gated (not returned without prerelease=true),
+# endpoint 1.0.0 and elastic_agent 1.2.0 declare 7.x kibana conditions and are
+# invisible to any 8.x matrix entry, and the system/endpoint versions fall outside
+# even the largest version.limit window. Pins bypass search and the version.limit window entirely.
+packages:
+  - name: apache
+    version: 0.1.3
+  - name: apache
+    version: 0.1.4
+  - name: elastic_agent
+    version: 1.2.0
+  - name: endpoint
+    version: 1.0.0
+  - name: endpoint
+    version: 8.6.1
+  - name: system
+    version: 1.27.0
+  - name: system
+    version: 1.50.0
+
+actions:
+  - print:
+  - download:
+      destination: ./build/distribution-lite
