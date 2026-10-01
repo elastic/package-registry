@@ -441,19 +441,19 @@ func TestTruncateVersions(t *testing.T) {
 	tests := []struct {
 		name     string
 		packages []packageInfo
-		keep     int
+		limit    int
 		expected []packageInfo
 	}{
 		{
-			name:     "keep zero returns all",
+			name:     "limit zero applies no truncation",
 			packages: []packageInfo{{Name: "nginx", Version: "1.0.0"}, {Name: "nginx", Version: "2.0.0"}},
-			keep:     0,
+			limit:    0,
 			expected: []packageInfo{{Name: "nginx", Version: "1.0.0"}, {Name: "nginx", Version: "2.0.0"}},
 		},
 		{
-			name:     "keep above group size returns all",
+			name:     "limit above group size returns all",
 			packages: []packageInfo{{Name: "nginx", Version: "1.0.0"}, {Name: "nginx", Version: "2.0.0"}},
-			keep:     5,
+			limit:    5,
 			expected: []packageInfo{{Name: "nginx", Version: "1.0.0"}, {Name: "nginx", Version: "2.0.0"}},
 		},
 		{
@@ -466,7 +466,7 @@ func TestTruncateVersions(t *testing.T) {
 				{Name: "apache", Version: "2.0.0"},
 				{Name: "apache", Version: "3.0.0"},
 			},
-			keep: 2,
+			limit: 2,
 			expected: []packageInfo{
 				{Name: "apache", Version: "2.0.0"},
 				{Name: "apache", Version: "3.0.0"},
@@ -481,7 +481,7 @@ func TestTruncateVersions(t *testing.T) {
 				{Name: "nginx", Version: "1.0.0"},
 				{Name: "nginx", Version: "2.0.0"},
 			},
-			keep: 2,
+			limit: 2,
 			expected: []packageInfo{
 				{Name: "nginx", Version: "1.0.0"},
 				{Name: "nginx", Version: "2.0.0"},
@@ -498,7 +498,7 @@ func TestTruncateVersions(t *testing.T) {
 				{Name: "apache", Version: "2.0.0"},
 				{Name: "apache", Version: "1.1.0"},
 			},
-			keep: 3,
+			limit: 3,
 			expected: []packageInfo{
 				{Name: "apache", Version: "3.0.0"},
 				{Name: "apache", Version: "3.0.1"},
@@ -508,14 +508,14 @@ func TestTruncateVersions(t *testing.T) {
 		{
 			name:     "empty slice",
 			packages: []packageInfo{},
-			keep:     2,
+			limit:    2,
 			expected: []packageInfo{},
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result := truncateVersions(tt.packages, tt.keep)
+			result := truncateVersions(tt.packages, tt.limit)
 			assert.Equal(t, tt.expected, result)
 		})
 	}

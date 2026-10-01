@@ -6,7 +6,7 @@
 # Base address of the Package Registry
 address: "https://epr.elastic.co"
 
-# version.limit: N  # document-wide default newest-N per package per matrix entry (0 = keep everything).
+# version.limit: N  # document-wide default newest-N per package per matrix entry (0 or unset = no limit).
 #                   # Individual queries below may override this; see security_detection_engine and system.
 
 # Kibana release matrix. Each entry runs all queries independently.

@@ -48,7 +48,7 @@ Note: `@vX.Y.Z` version installs are not yet supported. The repository's
 
 The tool requires a YAML configuration file that defines:
 - **address**: EPR endpoint to query (defaults to `https://epr.elastic.co`)
-- **keep**: Newest versions of each package to retain from each search response (default 0 = unlimited). When greater than 1, `all=true` is sent to EPR automatically so every version is returned before the window is applied. The window is per search response (one matrix entry × one query), so each Kibana release version gets its own set of newest installable versions before results are merged. Overridable per `matrix` entry or per `queries` entry.
+- **version.limit**: Newest versions of each package to retain from each search response (default 0 = no limit: the query is left unchanged and the registry default applies). When greater than 1, `all=true` is sent to EPR automatically so every version is returned before the window is applied. The window is per search response (one matrix entry × one query), so each Kibana release version gets its own set of newest installable versions before results are merged. Overridable per `matrix` entry or per `queries` entry.
 - **queries**: Search parameters to filter packages
 - **matrix**: Parameter combinations to expand queries
 - **packages**: Specific package versions to include unconditionally (see below)
@@ -82,9 +82,9 @@ actions:
 ### Pinning Specific Versions
 
 Use `packages:` to include exact package versions that search cannot reach —
-versions older than the `keep` window, versions whose `conditions.kibana.version`
+versions older than the `version.limit` window, versions whose `conditions.kibana.version`
 falls outside the matrix, or prerelease (`0.x`) versions that EPR only returns
-under `prerelease=true`. Pinned entries bypass both search and the `keep` window.
+under `prerelease=true`. Pinned entries bypass both search and the `version.limit` window.
 
 ```yaml
 packages:

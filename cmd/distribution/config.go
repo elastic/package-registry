@@ -27,9 +27,10 @@ import (
 
 type config struct {
 	Address string `yaml:"address"`
-	// VersionLimit is the default newest-N window per package per search response.
-	// Zero keeps everything. Values > 1 force all=true on the wire.
-	// Individual matrix entries and queries can override this.
+	// VersionLimit is the default number of newest versions kept per package.
+	// Zero (or unset) applies no limit and leaves the query untouched, so the
+	// registry's standard behaviour applies. Values > 1 add all=true to the query.
+	// Matrix entries and queries can override this.
 	VersionLimit int             `yaml:"version.limit"`
 	Matrix       []configQuery   `yaml:"matrix"`
 	Queries      []configQuery   `yaml:"queries"`
@@ -38,8 +39,8 @@ type config struct {
 }
 
 // versionLimitFor returns the number of versions to keep for a search. A query
-// overrides its matrix entry, which overrides the document default. Zero, and
-// any negative value, keep every version.
+// overrides its matrix entry, which overrides the document default. Zero and
+// negative values mean no limit.
 func (c config) versionLimitFor(m, q configQuery) int {
 	limit := c.VersionLimit
 	if m.VersionLimit != nil {
@@ -123,7 +124,7 @@ func (c config) searchURLs() (iter.Seq2[*url.URL, int], error) {
 }
 
 // mergeVersionLimit combines the version limits of two identical search URLs. Zero means
-// unlimited, so it wins over any bounded window; otherwise the wider window
+// no limit, so it wins over any bounded window; otherwise the wider window
 // wins because its result set is a superset of the narrower one.
 func mergeVersionLimit(a, b int) int {
 	if a == 0 || b == 0 {
@@ -256,7 +257,7 @@ func compareVersions(a, b string) int {
 
 // truncateVersions keeps at most limit newest versions of each package in
 // packages, reordering and compacting it in place. A limit of zero or less
-// keeps everything. Versions that are not valid semantic versions sort oldest
+// applies no truncation. Versions that are not valid semantic versions sort oldest
 // and are dropped first.
 //
 // The window is per search response on purpose: each matrix entry is a Kibana
