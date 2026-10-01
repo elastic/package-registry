@@ -298,5 +298,5 @@ queries:
 
 actions:
   - print:
-  # - download:
-  #     destination: ./docker/packages
+  - download:
+      destination: ./docker/packages

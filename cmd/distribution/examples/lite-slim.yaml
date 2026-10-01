@@ -348,5 +348,5 @@ packages:
 
 actions:
   - print:
-  # - download:
-  #     destination: ./build/distribution-lite
+  - download:
+      destination: ./build/distribution-lite
