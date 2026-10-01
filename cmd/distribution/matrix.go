@@ -341,7 +341,9 @@ func runUpdateMatrix(paths []string) error {
 	src := matrixSource{
 		artifactsURL: defaultArtifactsURL,
 		kibanaRawURL: defaultKibanaRawURL,
-		client:       &http.Client{Timeout: 60 * time.Second},
+		// Not the shared httpClient: it is tuned and rate-limited for the
+		// registry, and these requests go to GCS and GitHub.
+		client: &http.Client{Timeout: 60 * time.Second},
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)

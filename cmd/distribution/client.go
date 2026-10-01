@@ -43,7 +43,9 @@ const (
 // httpClient is shared by the search and the download phases.
 var httpClient = newHTTPClient()
 
-func newHTTPClient() *http.Client {
+// newHTTPClient builds the shared client. Options adjust the underlying
+// transport last and exist so tests can trust an httptest server's CA.
+func newHTTPClient(opts ...func(*http.Transport)) *http.Client {
 	// Clone keeps DefaultTransport's proxy, dial and TLS timeouts, and its
 	// HTTP/2 support. HTTP/2 must stay enabled: the registry serves h2 and a
 	// single multiplexed connection is what keeps this tool cheap for it.
@@ -62,6 +64,10 @@ func newHTTPClient() *http.Client {
 	transport.HTTP2 = &http.HTTP2Config{
 		SendPingTimeout: 15 * time.Second,
 		PingTimeout:     15 * time.Second,
+	}
+
+	for _, opt := range opts {
+		opt(transport)
 	}
 
 	inner := &limiterTransport{
