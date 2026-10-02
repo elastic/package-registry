@@ -32,8 +32,12 @@ steps:
     matrix:
       setup:
         tag_name:
+          # NOTE: "lite" and "production" (non-slim) are planned to be deprecated
+          # in favour of "lite-slim" and "production-slim". Keep both until then.
           - "lite"
           - "production"
+          - "lite-slim"
+          - "production-slim"
     env:
       TAG_NAME: "{{matrix.tag_name}}"
       DOCKER_IMAGE: "docker.elastic.co/package-registry/distribution"
@@ -93,8 +97,39 @@ steps:
         PIPELINE
         }
 
+        upload_slim_copy_step() {
+            local tag_name="$$1"
+            local image_tag="$$2"
+            local step_key="$$3"
+            local availability
+            availability="$$(buildkite-agent meta-data get "slim-distribution-$${tag_name}-available" --default="false")"
+
+            if [[ "$${availability}" != "true" ]]; then
+                echo "Skip triggering slim image copy for $${tag_name}: source image was not available"
+                return
+            fi
+
+            buildkite-agent pipeline upload << PIPELINE
+        steps:
+          - trigger: unified-release-copy-elastic-images-to-dockerhub
+            label: ":docker: Copy release $${tag_name} images to Docker Hub"
+            key: "$${step_key}"
+            async: false
+            build:
+              env:
+                IMAGES_NAMES: "package-registry/package-registry-distribution"
+                IMAGES_TAG: "$${image_tag}"
+        PIPELINE
+        }
+
         upload_fips_copy_step "production" "$${DOCKER_TAG}-fips" "copy-prod-fips"
         upload_fips_copy_step "lite" "lite-$${DOCKER_TAG}-fips" "copy-lite-fips"
+        upload_fips_copy_step "production-slim" "$${DOCKER_TAG}-slim-fips" "copy-prod-slim-fips"
+        upload_fips_copy_step "lite-slim" "lite-$${DOCKER_TAG}-slim-fips" "copy-lite-slim-fips"
+        upload_slim_copy_step "production-slim" "$${DOCKER_TAG}-slim" "copy-prod-slim"
+        upload_slim_copy_step "production-slim" "$${DOCKER_TAG}-slim-ubi" "copy-prod-slim-ubi"
+        upload_slim_copy_step "lite-slim" "lite-$${DOCKER_TAG}-slim" "copy-lite-slim"
+        upload_slim_copy_step "lite-slim" "lite-$${DOCKER_TAG}-slim-ubi" "copy-lite-slim-ubi"
 
         buildkite-agent pipeline upload << PIPELINE
         steps:
