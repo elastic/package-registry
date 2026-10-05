@@ -17,6 +17,7 @@ import (
 	"slices"
 	"strings"
 	"sync"
+	"sync/atomic"
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/google/go-querystring/query"
@@ -162,6 +163,7 @@ func (c config) collect(client *http.Client) ([]packageInfo, error) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
+	var searches atomic.Int64
 	taskPool := workers.NewTaskPool(searchConcurrency)
 	for u, limit := range urls {
 		if ctx.Err() != nil {
@@ -199,7 +201,7 @@ func (c config) collect(client *http.Client) ([]packageInfo, error) {
 				return fmt.Errorf("failed to parse search response: %w", err)
 			}
 			kept := truncateVersions(packages, limit)
-			fmt.Fprintf(os.Stderr, "%s %d of %d packages\n", u.String(), len(kept), len(packages))
+			searches.Add(1)
 
 			mapLock.Lock()
 			for _, p := range kept {
@@ -217,6 +219,8 @@ func (c config) collect(client *http.Client) ([]packageInfo, error) {
 	if err := taskPool.Wait(); err != nil {
 		return nil, err
 	}
+
+	fmt.Fprintf(os.Stderr, "%d searches done, %d unique packages found\n", searches.Load(), len(packagesMap))
 
 	result := make([]packageInfo, 0, len(packagesMap))
 	for _, p := range packagesMap {
