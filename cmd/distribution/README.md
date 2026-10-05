@@ -1,10 +1,10 @@
 # Distribution Tool
 
-A utility for downloading packages from Elastic Package Registry (EPR).
+A utility for collecting packages from Elastic Package Registry (EPR) and downloading them from EPR or from an alternative source such as a bucket.
 
 ## Overview
 
-The distribution tool allows you to collect and download integration packages from an EPR instance based on configurable search queries. It supports filtering by package type, Kibana version, spec version, and other parameters.
+The distribution tool collects integration packages from an EPR instance based on configurable search queries, and downloads them with their signatures, verifying each signature. It supports filtering by package type, Kibana version, spec version, and other parameters. Packages are downloaded from EPR by default, or from a bucket URL to take load off EPR (see [Actions](#actions)).
 
 ## Building
 
@@ -100,8 +100,9 @@ packages:
     version: 1.0.0
 ```
 
-Pins are resolved directly to `epr/<name>/<name>-<version>.zip` on the configured
-address. There is no existence check at config time; a wrong name or version causes
+Pins get the same `epr/<name>/<name>-<version>.zip` download path that search
+results have, so they are fetched from whichever source the `download` action uses.
+There is no existence check at config time; a wrong name or version causes
 a hard failure at download time (non-200 response). Both the ZIP and its `.sig`
 file are downloaded unconditionally — signature verification runs on every package.
 
@@ -119,9 +120,10 @@ See `examples/pinned.yaml` for a self-contained example.
     package's `download` and `signature_path`. When unset, files come from `address`
     at `epr/<name>/<name>-<version>.zip`.
 
-`-write-list` and `-from-list` cannot be used together. A list is a JSON array of
-`name`, `version`, `download` and `signature_path`; every entry needs the last two.
-Splitting the run lets several builds share one search and keeps reruns to the downloads.
+The download paths in search results always keep the `epr/<name>/` form, so the
+paths shown in a written list and in error messages are the same whichever source is
+used; `bucket_url` only changes where the request goes. The action logs its source and
+destination once at startup.
 
 ### Search EPR, download from a bucket
 
@@ -134,6 +136,17 @@ actions:
       bucket_url: https://storage.googleapis.com/my-bucket/artifacts/packages
       destination: ./packages
 ```
+
+## Separating search from download
+
+`-write-list <file>` runs the search, writes the resolved packages as a JSON array of
+`name`, `version`, `download` and `signature_path`, and exits without running any
+action. `-from-list <file>` skips the search, loads that list (every entry needs
+`download` and `signature_path`) and runs the actions. The two flags cannot be used
+together; the config file is still required, since it defines the actions.
+
+This lets several builds share one search, and a rerun repeats only the downloads
+because files that are already valid are skipped.
 
 ## Updating the Kibana matrix
 

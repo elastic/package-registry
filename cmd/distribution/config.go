@@ -134,7 +134,8 @@ func mergeVersionLimit(a, b int) int {
 	return max(a, b)
 }
 
-// downloadPathForPackage returns the paths to download the package with the given name and version and its signature.
+// downloadPathForPackage returns the registry paths of the package with the given name and version and its signature.
+// They are the same paths search results carry; the download action decides which source they are fetched from.
 func (c config) downloadPathForPackage(name, version string) (string, string) {
 	path := path.Join("epr", name, fmt.Sprintf("%s-%s.zip", name, version))
 	return path, path + ".sig"
