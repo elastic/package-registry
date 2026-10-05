@@ -8,8 +8,10 @@ import (
 	"bytes"
 	"context"
 	_ "embed"
+	"errors"
 	"fmt"
 	"io"
+	"io/fs"
 	"net/http"
 	"net/url"
 	"os"
@@ -55,7 +57,7 @@ func (a *downloadAction) perform(i packageInfo) error {
 	}
 	if valid, err := a.valid(i); valid {
 		return nil
-	} else if err != nil {
+	} else if err != nil && !errors.Is(err, fs.ErrNotExist) {
 		fmt.Fprintf(os.Stderr, "existing file invalid for %s, re-downloading: %v\n", i.Download, err)
 	}
 	if err := a.download(i.Download); err != nil {
