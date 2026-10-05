@@ -15,6 +15,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 	"testing"
 
 	"github.com/ProtonMail/go-crypto/openpgp"
@@ -505,6 +506,51 @@ func TestDownloadActionIntegration(t *testing.T) {
 		_, err = os.Stat(filepath.Join(tempDir, pkg.name+".sig"))
 		require.NoError(t, err)
 	}
+}
+
+func TestDownloadActionBucketURL(t *testing.T) {
+	tempDir := t.TempDir()
+
+	entity, err := openpgp.NewEntity("test", "test", "test@example.com", nil)
+	require.NoError(t, err)
+	pkgContent := []byte("test package")
+	var sigBuf bytes.Buffer
+	require.NoError(t, openpgp.ArmoredDetachSign(&sigBuf, entity, bytes.NewReader(pkgContent), nil))
+
+	var paths []string
+	var mu sync.Mutex
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		mu.Lock()
+		paths = append(paths, r.URL.Path)
+		mu.Unlock()
+		switch r.URL.Path {
+		case "/bucket/nginx-1.0.0.zip":
+			w.Write(pkgContent)
+		case "/bucket/nginx-1.0.0.zip.sig":
+			w.Write(sigBuf.Bytes())
+		default:
+			w.WriteHeader(http.StatusNotFound)
+		}
+	}))
+	defer server.Close()
+
+	action := &downloadAction{
+		Destination: tempDir,
+		Address:     "http://unused.invalid",
+		BucketURL:   server.URL + "/bucket",
+	}
+	require.NoError(t, action.init(config{}))
+	action.keyRing = openpgp.EntityList{entity}
+
+	err = action.perform(packageInfo{
+		Name:          "nginx",
+		Version:       "1.0.0",
+		Download:      "epr/nginx/nginx-1.0.0.zip",
+		SignaturePath: "epr/nginx/nginx-1.0.0.zip.sig",
+	})
+	require.NoError(t, err)
+	assert.ElementsMatch(t, []string{"/bucket/nginx-1.0.0.zip", "/bucket/nginx-1.0.0.zip.sig"}, paths)
+	assert.FileExists(t, filepath.Join(tempDir, "nginx-1.0.0.zip"))
 }
 
 func TestDownloadActionPerformMissingFileIsNotLogged(t *testing.T) {
