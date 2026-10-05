@@ -347,6 +347,5 @@ packages:
     version: 1.50.0
 
 actions:
-  - print:
   - download:
       destination: ./build/distribution-lite

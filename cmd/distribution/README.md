@@ -42,6 +42,12 @@ Note: `@vX.Y.Z` version installs are not yet supported. The repository's
 # Collect and download packages from a config file
 ./distribution <config.yaml>
 
+# Search only: write the resolved package list to a file and exit
+./distribution -write-list packages.json <config.yaml>
+
+# Download from a previously written list, without searching
+./distribution -from-list packages.json <config.yaml>
+
 # Add missing Kibana versions to a config's matrix
 ./distribution update-matrix <config.yaml>...
 ```
@@ -55,7 +61,7 @@ The tool requires a YAML configuration file that defines:
 - **actions**: Operations to perform (print, download)
 
 See the `examples/` directory for complete configuration files (`all.yaml`,
-`lite.yaml`, `pinned.yaml`, `production-slim.yaml`, `sample.yaml`, `test.yaml`).
+`lite-slim.yaml`, `pinned.yaml`, `production-slim.yaml`, `sample.yaml`, `test.yaml`).
 
 ## Configuration Examples
 
@@ -106,6 +112,28 @@ See `examples/pinned.yaml` for a self-contained example.
 - **print**: Output package names and versions to console
 - **download**: Download package ZIP files and signatures
   - `destination`: Target directory for downloads
+  - `address`: Where to download from (defaults to the top-level `address`)
+  - `bucket_url`: Base URL of a bucket holding every package and signature in a single
+    directory. When set, it is used instead of `address` and each file is downloaded from
+    `<bucket_url>/<name>-<version>.zip[.sig]`, taking only the file name from the
+    package's `download` and `signature_path`. When unset, files come from `address`
+    at `epr/<name>/<name>-<version>.zip`.
+
+`-write-list` and `-from-list` cannot be used together. A list is a JSON array of
+`name`, `version`, `download` and `signature_path`; every entry needs the last two.
+Splitting the run lets several builds share one search and keeps reruns to the downloads.
+
+### Search EPR, download from a bucket
+
+```yaml
+address: https://epr.elastic.co   # used for /search
+queries:
+  - type: integration
+actions:
+  - download:
+      bucket_url: https://storage.googleapis.com/my-bucket/artifacts/packages
+      destination: ./packages
+```
 
 ## Updating the Kibana matrix
 
@@ -114,7 +142,7 @@ files up to date with the currently active Elastic branches and their next
 planned versions.
 
 ```bash
-./distribution update-matrix examples/production-slim.yaml examples/lite.yaml
+./distribution update-matrix examples/production-slim.yaml examples/lite-slim.yaml
 ```
 
 **What it does:**
@@ -134,7 +162,8 @@ planned versions.
 4. Generates one matrix entry for every patch from `X.Y.0` through the next
    version inclusive (e.g. next `9.5.5` → entries 9.5.0–9.5.5).
 
-5. **Merges by adding only** — existing entries are never modified or removed.
+5. **Merges by adding only** — existing entries are never removed, and only the spec bounds of
+   unreleased (next) versions are refreshed.
    The matrix intentionally covers all 8.x and 9.x releases (7.x is the only
    floor removed by hand). Removing versions is always a manual change in a
    reviewed PR.

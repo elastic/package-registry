@@ -297,6 +297,5 @@ queries:
   - {}  # no filter — fetch all packages; document-level version.limit: 3 applies
 
 actions:
-  - print:
   - download:
       destination: ./docker/packages
