@@ -5,6 +5,9 @@
 package main
 
 import (
+	"encoding/json"
+	"errors"
+	"flag"
 	"fmt"
 	"os"
 
@@ -29,26 +32,61 @@ func main() {
 		}
 	}
 
-	if len(os.Args) != 2 {
-		usageAndExit(-1)
-	}
-	config, err := readConfig(os.Args[1])
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "failed to read configuration from %s: %s\n", os.Args[1], err)
+	if err := run(os.Args[1:]); err != nil {
+		fmt.Fprintln(os.Stderr, err)
 		os.Exit(-1)
 	}
-	for _, action := range config.Actions {
-		err := action.init(config)
+}
+
+func run(args []string) error {
+	flags := flag.NewFlagSet(os.Args[0], flag.ContinueOnError)
+	writeList := flags.String("write-list", "", "collect packages, write them as JSON to `file` and exit without performing actions")
+	fromList := flags.String("from-list", "", "read packages from the JSON `file` written by -write-list instead of collecting them")
+	flags.Usage = func() {
+		fmt.Fprintln(flags.Output(), "usage:", os.Args[0], "[-write-list file | -from-list file] <config.yaml>")
+		flags.PrintDefaults()
+	}
+	if err := flags.Parse(args); err != nil {
+		return err
+	}
+	if flags.NArg() != 1 {
+		flags.Usage()
+		return errors.New("expected exactly one configuration file")
+	}
+	if *writeList != "" && *fromList != "" {
+		return errors.New("-write-list and -from-list cannot be used together")
+	}
+
+	configPath := flags.Arg(0)
+	config, err := readConfig(configPath)
+	if err != nil {
+		return fmt.Errorf("failed to read configuration from %s: %w", configPath, err)
+	}
+
+	var packages []packageInfo
+	if *fromList != "" {
+		packages, err = readPackageList(*fromList)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "failed to initialize actions: %s\n", err)
-			os.Exit(-1)
+			return err
+		}
+	} else {
+		packages, err = config.collect(httpClient)
+		if err != nil {
+			return fmt.Errorf("failed to collect packages: %w", err)
+		}
+		if *writeList != "" {
+			if err := writePackageList(*writeList, packages); err != nil {
+				return err
+			}
+			fmt.Fprintln(os.Stderr, len(packages), "packages written to", *writeList)
+			return nil
 		}
 	}
 
-	packages, err := config.collect(httpClient)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "failed to collect packages: %s\n", err)
-		os.Exit(-1)
+	for _, action := range config.Actions {
+		if err := action.init(config); err != nil {
+			return fmt.Errorf("failed to initialize actions: %w", err)
+		}
 	}
 
 	taskpool := workers.NewTaskPool(downloadConcurrency)
@@ -64,15 +102,41 @@ func main() {
 		})
 	}
 	if err := taskpool.Wait(); err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(-1)
+		return err
 	}
 	fmt.Fprintln(os.Stderr, len(packages), "packages total")
+	return nil
 }
 
-func usageAndExit(status int) {
-	fmt.Fprintln(os.Stderr, os.Args[0], "[config.yaml]")
-	os.Exit(status)
+// writePackageList writes packages as JSON to path.
+func writePackageList(path string, packages []packageInfo) error {
+	d, err := json.MarshalIndent(packages, "", "  ")
+	if err != nil {
+		return fmt.Errorf("failed to encode package list: %w", err)
+	}
+	if err := os.WriteFile(path, append(d, '\n'), 0644); err != nil {
+		return fmt.Errorf("failed to write package list to %s: %w", path, err)
+	}
+	return nil
+}
+
+// readPackageList reads a list written by writePackageList and checks that
+// every entry can be downloaded.
+func readPackageList(path string) ([]packageInfo, error) {
+	d, err := os.ReadFile(path)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read package list: %w", err)
+	}
+	var packages []packageInfo
+	if err := json.Unmarshal(d, &packages); err != nil {
+		return nil, fmt.Errorf("failed to parse package list %s: %w", path, err)
+	}
+	for i, p := range packages {
+		if p.Download == "" || p.SignaturePath == "" {
+			return nil, fmt.Errorf("invalid package list %s: entry %d (%s-%s) needs download and signature_path", path, i, p.Name, p.Version)
+		}
+	}
+	return packages, nil
 }
 
 type printAction struct{}

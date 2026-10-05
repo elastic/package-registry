@@ -12,6 +12,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"testing"
@@ -847,4 +848,67 @@ func TestConfigSearchURLsDeduplicates(t *testing.T) {
 			assert.Equal(t, tt.wantLimit, gotLimits[0])
 		})
 	}
+}
+
+func TestPackageListRoundTrip(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "list.json")
+	packages := []packageInfo{
+		{Name: "a", Version: "1.0.0", Download: "epr/a/a-1.0.0.zip", SignaturePath: "epr/a/a-1.0.0.zip.sig"},
+		{Name: "b", Version: "2.0.0", Download: "epr/b/b-2.0.0.zip", SignaturePath: "epr/b/b-2.0.0.zip.sig"},
+	}
+	require.NoError(t, writePackageList(path, packages))
+
+	read, err := readPackageList(path)
+	require.NoError(t, err)
+	assert.Equal(t, packages, read)
+}
+
+func TestReadPackageListInvalid(t *testing.T) {
+	dir := t.TempDir()
+	tests := map[string]string{
+		"missing signature": `[{"name":"a","version":"1.0.0","download":"epr/a/a-1.0.0.zip"}]`,
+		"missing download":  `[{"name":"a","version":"1.0.0","signature_path":"epr/a/a-1.0.0.zip.sig"}]`,
+		"not json":          `nope`,
+	}
+	for name, content := range tests {
+		t.Run(name, func(t *testing.T) {
+			path := filepath.Join(dir, strings.ReplaceAll(name, " ", "_")+".json")
+			require.NoError(t, os.WriteFile(path, []byte(content), 0644))
+			_, err := readPackageList(path)
+			assert.Error(t, err)
+		})
+	}
+}
+
+func TestRunWriteListAndFromList(t *testing.T) {
+	dir := t.TempDir()
+	var searches atomic.Int32
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/search" {
+			searches.Add(1)
+			fmt.Fprint(w, `[{"name":"a","version":"1.0.0","download":"/epr/a/a-1.0.0.zip","signature_path":"/epr/a/a-1.0.0.zip.sig"}]`)
+			return
+		}
+		w.WriteHeader(http.StatusNotFound)
+	}))
+	defer server.Close()
+
+	configPath := filepath.Join(dir, "config.yaml")
+	require.NoError(t, os.WriteFile(configPath, []byte("address: "+server.URL+"\nqueries:\n  - {}\nactions:\n  - print:\n"), 0644))
+	listPath := filepath.Join(dir, "list.json")
+
+	require.NoError(t, run([]string{"-write-list", listPath, configPath}))
+	assert.Equal(t, int32(1), searches.Load())
+	list, err := readPackageList(listPath)
+	require.NoError(t, err)
+	assert.Len(t, list, 1)
+
+	require.NoError(t, run([]string{"-from-list", listPath, configPath}))
+	assert.Equal(t, int32(1), searches.Load(), "-from-list must not search")
+}
+
+func TestRunRejectsWriteListWithFromList(t *testing.T) {
+	err := run([]string{"-write-list", "a.json", "-from-list", "b.json", "config.yaml"})
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "cannot be used together")
 }
