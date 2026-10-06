@@ -508,7 +508,7 @@ func TestDownloadActionIntegration(t *testing.T) {
 	}
 }
 
-func TestDownloadActionBucketURL(t *testing.T) {
+func TestDownloadActionDownloadURL(t *testing.T) {
 	tempDir := t.TempDir()
 
 	entity, err := openpgp.NewEntity("test", "test", "test@example.com", nil)
@@ -537,7 +537,7 @@ func TestDownloadActionBucketURL(t *testing.T) {
 	action := &downloadAction{
 		Destination: tempDir,
 		Address:     "http://unused.invalid",
-		BucketURL:   server.URL + "/bucket",
+		DownloadURL: server.URL + "/bucket",
 	}
 	require.NoError(t, action.init(config{}))
 	action.keyRing = openpgp.EntityList{entity}

@@ -27,10 +27,13 @@ type downloadAction struct {
 
 	Address     string `yaml:"address"`
 	Destination string `yaml:"destination"`
-	// BucketURL, when set, is the base URL of a bucket holding all packages and
-	// signatures in a single directory. Files are then downloaded from
-	// <BucketURL>/<file name> instead of the registry address.
-	BucketURL string `yaml:"bucket_url"`
+	// DownloadURL, when set, is the base URL for downloading the artifacts. All
+	// packages and signatures are expected in a single directory. Files are then downloaded from
+	// <DownloadURL>/<file name> instead of the registry address.
+	// The source must be publicly accessible: requests are sent without
+	// credentials.
+	// TODO: support authenticated download sources.
+	DownloadURL string `yaml:"download_url"`
 }
 
 // publicKey is the public key of the key used to sign elastic artifacts.
@@ -49,8 +52,8 @@ func (a *downloadAction) init(c config) error {
 		return fmt.Errorf("failed to create desination directory: %w", err)
 	}
 	source := a.Address
-	if a.BucketURL != "" {
-		source = a.BucketURL
+	if a.DownloadURL != "" {
+		source = a.DownloadURL
 	}
 	fmt.Fprintf(os.Stderr, "downloading packages from %s to %s\n", source, a.Destination)
 	a.keyRing, err = openpgp.ReadArmoredKeyRing(bytes.NewReader(publicKey))
@@ -87,8 +90,8 @@ func (a *downloadAction) perform(i packageInfo) error {
 func (a *downloadAction) download(urlPath string) error {
 	var p string
 	var err error
-	if a.BucketURL != "" {
-		p, err = url.JoinPath(a.BucketURL, path.Base(urlPath))
+	if a.DownloadURL != "" {
+		p, err = url.JoinPath(a.DownloadURL, path.Base(urlPath))
 	} else {
 		p, err = url.JoinPath(a.Address, urlPath)
 	}
