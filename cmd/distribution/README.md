@@ -1,6 +1,6 @@
 # Distribution Tool
 
-A utility for collecting packages from Elastic Package Registry (EPR) and downloading them from EPR or from an alternative source such as a bucket.
+A utility for collecting packages from Elastic Package Registry (EPR) and downloading them from EPR or from a Package Storage endpoint.
 
 ## Overview
 
@@ -43,10 +43,14 @@ Note: `@vX.Y.Z` version installs are not yet supported. The repository's
 ./distribution <config.yaml>
 
 # Search only: write the resolved package list to a file and exit
-./distribution -write-list packages.json <config.yaml>
+./distribution -write-list=packages.json <config.yaml>
 
 # Download from a previously written list, without searching
-./distribution -from-list packages.json <config.yaml>
+./distribution -from-list=packages.json <config.yaml>
+
+# Same, with the file taken from `list` in the configuration
+./distribution -write-list <config.yaml>
+./distribution -from-list <config.yaml>
 
 # Add missing Kibana versions to a config's matrix
 ./distribution update-matrix <config.yaml>...
@@ -54,6 +58,7 @@ Note: `@vX.Y.Z` version installs are not yet supported. The repository's
 
 The tool requires a YAML configuration file that defines:
 - **address**: EPR endpoint to query (defaults to `https://epr.elastic.co`)
+- **list**: Default file for `-write-list` and `-from-list` (optional, see [Separating search from download](#separating-search-from-download))
 - **version.limit**: Newest versions of each package to retain from each search response (default 0 = no limit: the query is left unchanged and the registry default applies). When greater than 1, `all=true` is sent to EPR automatically so every version is returned before the window is applied. The window is per search response (one matrix entry × one query), so each Kibana release version gets its own set of newest installable versions before results are merged. Overridable per `matrix` entry or per `queries` entry.
 - **queries**: Search parameters to filter packages
 - **matrix**: Parameter combinations to expand queries
@@ -141,11 +146,33 @@ actions:
 
 ## Separating search from download
 
-`-write-list <file>` runs the search, writes the resolved packages as a JSON array of
+`-write-list` runs the search, writes the resolved packages as a JSON array of
 `name`, `version`, `download` and `signature_path`, and exits without running any
-action. `-from-list <file>` skips the search, loads that list (every entry needs
+action. `-from-list` skips the search, loads that list (every entry needs
 `download` and `signature_path`) and runs the actions. The two flags cannot be used
 together; the config file is still required, since it defines the actions.
+
+The file is the `list` value of the configuration. Give it on the command line as
+`-write-list=<file>` or `-from-list=<file>` to override it, or when the configuration has
+no `list`. The `=` is required: `-write-list <file>` treats `<file>` as the configuration
+path. Use `./true` for a file literally named `true`. A bare flag with no `list` in the
+configuration is an error, reported before any search is made.
+
+```yaml
+address: https://epr.elastic.co
+list: packages.json
+queries:
+  - type: integration
+actions:
+  - download:
+      storage_endpoint: https://package-storage.elastic.co/
+      destination: ./packages
+```
+
+```bash
+./distribution -write-list config.yaml   # search, write packages.json
+./distribution -from-list config.yaml    # download from packages.json
+```
 
 This lets several builds share one search, and a rerun repeats only the downloads
 because files that are already valid are skipped.

@@ -28,6 +28,9 @@ import (
 
 type config struct {
 	Address string `yaml:"address"`
+	// List is the default file for -write-list and -from-list. The flags can
+	// override it with -write-list=<file> and -from-list=<file>.
+	List string `yaml:"list"`
 	// VersionLimit is the default number of newest versions kept per package.
 	// Zero (or unset) applies no limit and leaves the query untouched, so the
 	// registry's standard behaviour applies. Values > 1 add all=true to the query.

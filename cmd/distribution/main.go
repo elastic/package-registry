@@ -40,10 +40,11 @@ func main() {
 
 func run(args []string) error {
 	flags := flag.NewFlagSet(os.Args[0], flag.ContinueOnError)
-	writeList := flags.String("write-list", "", "collect packages, write them as JSON to `file` and exit without performing actions")
-	fromList := flags.String("from-list", "", "read packages from the JSON `file` written by -write-list instead of collecting them")
+	var writeList, fromList listFlag
+	flags.Var(&writeList, "write-list", "collect packages, write them as JSON to the list file and exit without performing actions; the file is the `list` of the configuration unless given as -write-list=file")
+	flags.Var(&fromList, "from-list", "read packages from the JSON list file written by -write-list instead of collecting them; the file is the `list` of the configuration unless given as -from-list=file")
 	flags.Usage = func() {
-		fmt.Fprintln(flags.Output(), "usage:", os.Args[0], "[-write-list file | -from-list file] <config.yaml>")
+		fmt.Fprintln(flags.Output(), "usage:", os.Args[0], "[-write-list[=file] | -from-list[=file]] <config.yaml>")
 		flags.PrintDefaults()
 	}
 	if err := flags.Parse(args); err != nil {
@@ -53,7 +54,7 @@ func run(args []string) error {
 		flags.Usage()
 		return errors.New("expected exactly one configuration file")
 	}
-	if *writeList != "" && *fromList != "" {
+	if writeList.set && fromList.set {
 		return errors.New("-write-list and -from-list cannot be used together")
 	}
 
@@ -63,9 +64,24 @@ func run(args []string) error {
 		return fmt.Errorf("failed to read configuration from %s: %w", configPath, err)
 	}
 
+	// Resolve the paths before searching so a missing one fails fast.
+	var fromPath, writePath string
+	if fromList.set {
+		fromPath, err = fromList.resolve("-from-list", config.List)
+		if err != nil {
+			return err
+		}
+	}
+	if writeList.set {
+		writePath, err = writeList.resolve("-write-list", config.List)
+		if err != nil {
+			return err
+		}
+	}
+
 	var packages []packageInfo
-	if *fromList != "" {
-		packages, err = readPackageList(*fromList)
+	if fromList.set {
+		packages, err = readPackageList(fromPath)
 		if err != nil {
 			return err
 		}
@@ -74,11 +90,11 @@ func run(args []string) error {
 		if err != nil {
 			return fmt.Errorf("failed to collect packages: %w", err)
 		}
-		if *writeList != "" {
-			if err := writePackageList(*writeList, packages); err != nil {
+		if writeList.set {
+			if err := writePackageList(writePath, packages); err != nil {
 				return err
 			}
-			fmt.Fprintln(os.Stderr, len(packages), "packages written to", *writeList)
+			fmt.Fprintln(os.Stderr, len(packages), "packages written to", writePath)
 			return nil
 		}
 	}
@@ -106,6 +122,38 @@ func run(args []string) error {
 	}
 	fmt.Fprintln(os.Stderr, len(packages), "packages total")
 	return nil
+}
+
+// listFlag is a flag with an optional value. Given bare, it only turns the
+// mode on and the path comes from the configuration; given as -flag=file, the
+// file overrides the configuration. Use ./true for a file literally named true.
+type listFlag struct {
+	set  bool
+	path string
+}
+
+func (f *listFlag) String() string { return f.path }
+
+func (f *listFlag) IsBoolFlag() bool { return true }
+
+func (f *listFlag) Set(v string) error {
+	f.set = true
+	f.path = v
+	if v == "true" {
+		f.path = ""
+	}
+	return nil
+}
+
+// resolve returns the flag value, or fallback when the flag was given bare.
+func (f *listFlag) resolve(name, fallback string) (string, error) {
+	if f.path != "" {
+		return f.path, nil
+	}
+	if fallback == "" {
+		return "", fmt.Errorf("%s needs a file: set list in the configuration or use %s=<file>", name, name)
+	}
+	return fallback, nil
 }
 
 // writePackageList writes packages as JSON to path.

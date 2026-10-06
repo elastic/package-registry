@@ -897,18 +897,75 @@ func TestRunWriteListAndFromList(t *testing.T) {
 	require.NoError(t, os.WriteFile(configPath, []byte("address: "+server.URL+"\nqueries:\n  - {}\nactions:\n  - print:\n"), 0644))
 	listPath := filepath.Join(dir, "list.json")
 
-	require.NoError(t, run([]string{"-write-list", listPath, configPath}))
+	require.NoError(t, run([]string{"-write-list=" + listPath, configPath}))
 	assert.Equal(t, int32(1), searches.Load())
 	list, err := readPackageList(listPath)
 	require.NoError(t, err)
 	assert.Len(t, list, 1)
 
-	require.NoError(t, run([]string{"-from-list", listPath, configPath}))
+	require.NoError(t, run([]string{"-from-list=" + listPath, configPath}))
 	assert.Equal(t, int32(1), searches.Load(), "-from-list must not search")
 }
 
 func TestRunRejectsWriteListWithFromList(t *testing.T) {
-	err := run([]string{"-write-list", "a.json", "-from-list", "b.json", "config.yaml"})
+	err := run([]string{"-write-list=a.json", "-from-list=b.json", "config.yaml"})
 	require.Error(t, err)
 	assert.Contains(t, err.Error(), "cannot be used together")
+}
+
+func TestRunListFromConfig(t *testing.T) {
+	dir := t.TempDir()
+	var searches atomic.Int32
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/search" {
+			searches.Add(1)
+			fmt.Fprint(w, `[{"name":"a","version":"1.0.0","download":"/epr/a/a-1.0.0.zip","signature_path":"/epr/a/a-1.0.0.zip.sig"}]`)
+			return
+		}
+		w.WriteHeader(http.StatusNotFound)
+	}))
+	defer server.Close()
+
+	listPath := filepath.Join(dir, "list.json")
+	overridePath := filepath.Join(dir, "override.json")
+	configPath := filepath.Join(dir, "config.yaml")
+	require.NoError(t, os.WriteFile(configPath, []byte("address: "+server.URL+"\nlist: "+listPath+"\nqueries:\n  - {}\nactions:\n  - print:\n"), 0644))
+
+	require.NoError(t, run([]string{"-write-list", configPath}))
+	assert.FileExists(t, listPath)
+
+	require.NoError(t, run([]string{"-write-list=" + overridePath, configPath}))
+	assert.FileExists(t, overridePath)
+
+	require.NoError(t, run([]string{"-from-list", configPath}))
+	require.NoError(t, run([]string{"-from-list=" + overridePath, configPath}))
+	assert.Equal(t, int32(2), searches.Load(), "-from-list must not search")
+}
+
+func TestRunListWithoutPath(t *testing.T) {
+	dir := t.TempDir()
+	configPath := filepath.Join(dir, "config.yaml")
+	require.NoError(t, os.WriteFile(configPath, []byte("actions:\n  - print:\n"), 0644))
+
+	err := run([]string{"-from-list", configPath})
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "set list in the configuration")
+}
+
+func TestRunWriteListWithoutPathDoesNotSearch(t *testing.T) {
+	dir := t.TempDir()
+	var searches atomic.Int32
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		searches.Add(1)
+		fmt.Fprint(w, `[]`)
+	}))
+	defer server.Close()
+
+	configPath := filepath.Join(dir, "config.yaml")
+	require.NoError(t, os.WriteFile(configPath, []byte("address: "+server.URL+"\nqueries:\n  - {}\nactions:\n  - print:\n"), 0644))
+
+	err := run([]string{"-write-list", configPath})
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "set list in the configuration")
+	assert.Equal(t, int32(0), searches.Load(), "a missing list path must fail before searching")
 }
