@@ -13,6 +13,12 @@
 # Base address of the Package Registry
 address: "https://epr.elastic.co"
 
+# Default file for -write-list and -from-list. Split the run in two steps:
+#   ./distribution -write-list production-slim.yaml   # search only, write the resolved packages here
+#   ./distribution -from-list production-slim.yaml    # skip the search, run the actions on that list
+# Use -write-list=<file> / -from-list=<file> to override it. Not needed for a plain run.
+list: ./build/distribution-production-packages.json
+
 # Document-wide default: keep the 3 newest versions of every package per matrix entry.
 # Individual queries can override this with their own version.limit: N; 0 or unset applies no limit.
 version.limit: 3
