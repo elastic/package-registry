@@ -897,18 +897,18 @@ func TestRunWriteListAndFromList(t *testing.T) {
 	require.NoError(t, os.WriteFile(configPath, []byte("address: "+server.URL+"\nqueries:\n  - {}\nactions:\n  - print:\n"), 0644))
 	listPath := filepath.Join(dir, "list.json")
 
-	require.NoError(t, run([]string{"-write-list=" + listPath, configPath}))
+	require.NoError(t, run([]string{"-search-only", "-list", listPath, configPath}))
 	assert.Equal(t, int32(1), searches.Load())
 	list, err := readPackageList(listPath)
 	require.NoError(t, err)
 	assert.Len(t, list, 1)
 
-	require.NoError(t, run([]string{"-from-list=" + listPath, configPath}))
-	assert.Equal(t, int32(1), searches.Load(), "-from-list must not search")
+	require.NoError(t, run([]string{"-download-only", "-list", listPath, configPath}))
+	assert.Equal(t, int32(1), searches.Load(), "-download-only must not search")
 }
 
 func TestRunRejectsWriteListWithFromList(t *testing.T) {
-	err := run([]string{"-write-list=a.json", "-from-list=b.json", "config.yaml"})
+	err := run([]string{"-search-only", "-download-only", "config.yaml"})
 	require.Error(t, err)
 	assert.Contains(t, err.Error(), "cannot be used together")
 }
@@ -931,15 +931,15 @@ func TestRunListFromConfig(t *testing.T) {
 	configPath := filepath.Join(dir, "config.yaml")
 	require.NoError(t, os.WriteFile(configPath, []byte("address: "+server.URL+"\nlist: "+listPath+"\nqueries:\n  - {}\nactions:\n  - print:\n"), 0644))
 
-	require.NoError(t, run([]string{"-write-list", configPath}))
+	require.NoError(t, run([]string{"-search-only", configPath}))
 	assert.FileExists(t, listPath)
 
-	require.NoError(t, run([]string{"-write-list=" + overridePath, configPath}))
+	require.NoError(t, run([]string{"-search-only", "-list", overridePath, configPath}))
 	assert.FileExists(t, overridePath)
 
-	require.NoError(t, run([]string{"-from-list", configPath}))
-	require.NoError(t, run([]string{"-from-list=" + overridePath, configPath}))
-	assert.Equal(t, int32(2), searches.Load(), "-from-list must not search")
+	require.NoError(t, run([]string{"-download-only", configPath}))
+	require.NoError(t, run([]string{"-download-only", "-list", overridePath, configPath}))
+	assert.Equal(t, int32(2), searches.Load(), "-download-only must not search")
 }
 
 func TestRunListWithoutPath(t *testing.T) {
@@ -947,7 +947,7 @@ func TestRunListWithoutPath(t *testing.T) {
 	configPath := filepath.Join(dir, "config.yaml")
 	require.NoError(t, os.WriteFile(configPath, []byte("actions:\n  - print:\n"), 0644))
 
-	err := run([]string{"-from-list", configPath})
+	err := run([]string{"-download-only", configPath})
 	require.Error(t, err)
 	assert.Contains(t, err.Error(), "set list in the configuration")
 }
@@ -964,8 +964,68 @@ func TestRunWriteListWithoutPathDoesNotSearch(t *testing.T) {
 	configPath := filepath.Join(dir, "config.yaml")
 	require.NoError(t, os.WriteFile(configPath, []byte("address: "+server.URL+"\nqueries:\n  - {}\nactions:\n  - print:\n"), 0644))
 
-	err := run([]string{"-write-list", configPath})
+	err := run([]string{"-search-only", configPath})
 	require.Error(t, err)
 	assert.Contains(t, err.Error(), "set list in the configuration")
 	assert.Equal(t, int32(0), searches.Load(), "a missing list path must fail before searching")
+}
+
+func TestRunInitializesActionsBeforeSearching(t *testing.T) {
+	dir := t.TempDir()
+	var searches atomic.Int32
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		searches.Add(1)
+		fmt.Fprint(w, `[]`)
+	}))
+	defer server.Close()
+
+	blocker := filepath.Join(dir, "file")
+	require.NoError(t, os.WriteFile(blocker, nil, 0644))
+	configPath := filepath.Join(dir, "config.yaml")
+	require.NoError(t, os.WriteFile(configPath, []byte("address: "+server.URL+"\nqueries:\n  - {}\nactions:\n  - download:\n      destination: "+filepath.Join(blocker, "out")+"\n"), 0644))
+
+	err := run([]string{configPath})
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "failed to initialize actions")
+	assert.Zero(t, searches.Load(), "actions must be initialized before searching")
+}
+
+func TestRunWriteListDoesNotInitializeActions(t *testing.T) {
+	dir := t.TempDir()
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprint(w, `[]`)
+	}))
+	defer server.Close()
+
+	destination := filepath.Join(dir, "out")
+	configPath := filepath.Join(dir, "config.yaml")
+	require.NoError(t, os.WriteFile(configPath, []byte("address: "+server.URL+"\nqueries:\n  - {}\nactions:\n  - download:\n      destination: "+destination+"\n"), 0644))
+
+	require.NoError(t, run([]string{"-search-only", "-list", filepath.Join(dir, "list.json"), configPath}))
+	assert.NoDirExists(t, destination)
+}
+
+func TestRunFromListWarnsAboutIgnoredSearchConfig(t *testing.T) {
+	dir := t.TempDir()
+	listPath := filepath.Join(dir, "list.json")
+	require.NoError(t, writePackageList(listPath, nil))
+	configPath := filepath.Join(dir, "config.yaml")
+	require.NoError(t, os.WriteFile(configPath, []byte("version.limit: 3\nqueries:\n  - {}\nactions:\n  - print:\n"), 0644))
+
+	stderr := captureStderr(t, func() {
+		require.NoError(t, run([]string{"-download-only", "-list", listPath, configPath}))
+	})
+	assert.Contains(t, stderr, "queries, matrix and version.limit are ignored")
+
+	require.NoError(t, os.WriteFile(configPath, []byte("actions:\n  - print:\n"), 0644))
+	stderr = captureStderr(t, func() {
+		require.NoError(t, run([]string{"-download-only", "-list", listPath, configPath}))
+	})
+	assert.NotContains(t, stderr, "ignored")
+}
+
+func TestRunListRequiresMode(t *testing.T) {
+	err := run([]string{"-list", "a.json", "config.yaml"})
+	require.Error(t, err)
+	assert.Contains(t, err.Error(), "-list needs -search-only or -download-only")
 }
