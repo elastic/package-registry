@@ -4,7 +4,7 @@ A utility for collecting packages from Elastic Package Registry (EPR) and downlo
 
 ## Overview
 
-The distribution tool collects integration packages from an EPR instance based on configurable search queries, and downloads them with their signatures, verifying each signature. It supports filtering by package type, Kibana version, spec version, and other parameters. Packages are downloaded from EPR by default, or from a download URL (e.g. a bucket) to take load off EPR (see [Actions](#actions)).
+The distribution tool collects integration packages from an EPR instance based on configurable search queries, and downloads them with their signatures, verifying each signature. It supports filtering by package type, Kibana version, spec version, and other parameters. Packages are downloaded from EPR by default, or from a Package Storage endpoint to take load off EPR (see [Actions](#actions)).
 
 ## Building
 
@@ -114,16 +114,17 @@ See `examples/pinned.yaml` for a self-contained example.
 - **download**: Download package ZIP files and signatures
   - `destination`: Target directory for downloads
   - `address`: Where to download from (defaults to the top-level `address`)
-  - `download_url`: Base URL for downloading the artifacts, serving every package and
-    signature in a single directory. The bucket or source must be public:
-    authenticated sources are not supported yet (TODO). When set, it is used instead of `address` and each file is downloaded from
-    `<download_url>/<name>-<version>.zip[.sig]`, taking only the file name from the
-    package's `download` and `signature_path`. When unset, files come from `address`
-    at `epr/<name>/<name>-<version>.zip`.
+  - `storage_endpoint`: Package Storage public endpoint, the same value as the
+    `storage-endpoint` flag of the registry (EPR uses `https://package-storage.elastic.co/`
+    by default). When set, it is used instead of `address` and each file is downloaded from
+    `<storage_endpoint>/artifacts/packages/<name>-<version>.zip[.sig]`, taking only the
+    file name from the package's `download` and `signature_path`. When unset, files come
+    from `address` at `epr/<name>/<name>-<version>.zip`. The endpoint must be public:
+    authenticated sources are not supported yet (TODO).
 
 The download paths in search results always keep the `epr/<name>/` form, so the
 paths shown in a written list and in error messages are the same whichever source is
-used; `download_url` only changes where the request goes. The action logs its source and
+used; `storage_endpoint` only changes where the request goes. The action logs its source and
 destination once at startup.
 
 ### Search EPR, download from another source
@@ -134,7 +135,7 @@ queries:
   - type: integration
 actions:
   - download:
-      download_url: https://storage.googleapis.com/my-bucket/artifacts/packages
+      storage_endpoint: https://package-storage.elastic.co/
       destination: ./packages
 ```
 

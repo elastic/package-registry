@@ -508,7 +508,7 @@ func TestDownloadActionIntegration(t *testing.T) {
 	}
 }
 
-func TestDownloadActionDownloadURL(t *testing.T) {
+func TestDownloadActionStorageEndpoint(t *testing.T) {
 	tempDir := t.TempDir()
 
 	entity, err := openpgp.NewEntity("test", "test", "test@example.com", nil)
@@ -524,9 +524,9 @@ func TestDownloadActionDownloadURL(t *testing.T) {
 		paths = append(paths, r.URL.Path)
 		mu.Unlock()
 		switch r.URL.Path {
-		case "/bucket/nginx-1.0.0.zip":
+		case "/artifacts/packages/nginx-1.0.0.zip":
 			w.Write(pkgContent)
-		case "/bucket/nginx-1.0.0.zip.sig":
+		case "/artifacts/packages/nginx-1.0.0.zip.sig":
 			w.Write(sigBuf.Bytes())
 		default:
 			w.WriteHeader(http.StatusNotFound)
@@ -535,9 +535,9 @@ func TestDownloadActionDownloadURL(t *testing.T) {
 	defer server.Close()
 
 	action := &downloadAction{
-		Destination: tempDir,
-		Address:     "http://unused.invalid",
-		DownloadURL: server.URL + "/bucket",
+		Destination:     tempDir,
+		Address:         "http://unused.invalid",
+		StorageEndpoint: server.URL,
 	}
 	require.NoError(t, action.init(config{}))
 	action.keyRing = openpgp.EntityList{entity}
@@ -549,7 +549,7 @@ func TestDownloadActionDownloadURL(t *testing.T) {
 		SignaturePath: "epr/nginx/nginx-1.0.0.zip.sig",
 	})
 	require.NoError(t, err)
-	assert.ElementsMatch(t, []string{"/bucket/nginx-1.0.0.zip", "/bucket/nginx-1.0.0.zip.sig"}, paths)
+	assert.ElementsMatch(t, []string{"/artifacts/packages/nginx-1.0.0.zip", "/artifacts/packages/nginx-1.0.0.zip.sig"}, paths)
 	assert.FileExists(t, filepath.Join(tempDir, "nginx-1.0.0.zip"))
 }
 

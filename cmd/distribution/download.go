@@ -27,14 +27,19 @@ type downloadAction struct {
 
 	Address     string `yaml:"address"`
 	Destination string `yaml:"destination"`
-	// DownloadURL, when set, is the base URL for downloading the artifacts. All
-	// packages and signatures are expected in a single directory. Files are then downloaded from
-	// <DownloadURL>/<file name> instead of the registry address.
+	// StorageEndpoint, when set, is the Package Storage public endpoint, the same
+	// value as the storage-endpoint flag of the registry. Files are downloaded
+	// from <StorageEndpoint>/artifacts/packages/<file name> instead of the
+	// registry address.
 	// The source must be publicly accessible: requests are sent without
 	// credentials.
 	// TODO: support authenticated download sources.
-	DownloadURL string `yaml:"download_url"`
+	StorageEndpoint string `yaml:"storage_endpoint"`
 }
+
+// storageArtifactsPath is the path under the Package Storage endpoint where
+// packages and signatures are stored.
+const storageArtifactsPath = "artifacts/packages"
 
 // publicKey is the public key of the key used to sign elastic artifacts.
 // Downloaded from https://artifacts.elastic.co/GPG-KEY-elasticsearch
@@ -52,8 +57,8 @@ func (a *downloadAction) init(c config) error {
 		return fmt.Errorf("failed to create desination directory: %w", err)
 	}
 	source := a.Address
-	if a.DownloadURL != "" {
-		source = a.DownloadURL
+	if a.StorageEndpoint != "" {
+		source = a.StorageEndpoint
 	}
 	fmt.Fprintf(os.Stderr, "downloading packages from %s to %s\n", source, a.Destination)
 	a.keyRing, err = openpgp.ReadArmoredKeyRing(bytes.NewReader(publicKey))
@@ -90,8 +95,8 @@ func (a *downloadAction) perform(i packageInfo) error {
 func (a *downloadAction) download(urlPath string) error {
 	var p string
 	var err error
-	if a.DownloadURL != "" {
-		p, err = url.JoinPath(a.DownloadURL, path.Base(urlPath))
+	if a.StorageEndpoint != "" {
+		p, err = url.JoinPath(a.StorageEndpoint, storageArtifactsPath, path.Base(urlPath))
 	} else {
 		p, err = url.JoinPath(a.Address, urlPath)
 	}
