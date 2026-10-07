@@ -10,6 +10,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/elastic/package-registry/cmd/distribution/internal/workers"
 )
@@ -40,17 +41,23 @@ func main() {
 
 func run(args []string) error {
 	flags := flag.NewFlagSet(os.Args[0], flag.ContinueOnError)
-	var searchOnly, downloadOnly bool
+	var help, searchOnly, downloadOnly bool
 	var listPath string
-	flags.BoolVar(&searchOnly, "search-only", false, "collect packages, write them as JSON to the list file and exit without performing actions; needs `list` in the configuration or -list")
-	flags.BoolVar(&downloadOnly, "download-only", false, "read packages from the JSON list file written by -search-only instead of collecting them, and perform the actions; needs `list` in the configuration or -list")
-	flags.StringVar(&listPath, "list", "", "`file` for the package list, overriding `list` in the configuration; only used with -search-only or -download-only")
+	flags.BoolVar(&help, "help", false, "show this help and exit")
+	flags.BoolVar(&help, "h", false, "show this help and exit")
+	flags.BoolVar(&searchOnly, "search-only", false, "collect packages, write them as JSON to the list file and exit without performing actions; needs 'list' in the configuration or -list")
+	flags.BoolVar(&downloadOnly, "download-only", false, "read packages from the JSON list file written by -search-only instead of collecting them, and perform the actions; needs 'list' in the configuration or -list")
+	flags.StringVar(&listPath, "list", "", "`file` for the package list, overriding 'list' in the configuration; only used with -search-only or -download-only")
 	flags.Usage = func() {
 		fmt.Fprintln(flags.Output(), "usage:", os.Args[0], "[-search-only | -download-only] [-list file] <config.yaml>")
 		flags.PrintDefaults()
 	}
 	if err := flags.Parse(args); err != nil {
 		return err
+	}
+	if help {
+		flags.Usage()
+		return nil
 	}
 	if flags.NArg() != 1 {
 		flags.Usage()
@@ -81,6 +88,11 @@ func run(args []string) error {
 			}
 			return fmt.Errorf("%s needs a list file: set list in the configuration or use -list <file>", flagName)
 		}
+		if searchOnly {
+			if err := os.MkdirAll(filepath.Dir(listPath), 0755); err != nil {
+				return fmt.Errorf("failed to create directory for package list %s: %w", listPath, err)
+			}
+		}
 	}
 
 	// Initialize the actions before searching so a bad configuration fails
@@ -95,8 +107,8 @@ func run(args []string) error {
 
 	var packages []packageInfo
 	if downloadOnly {
-		if len(config.Queries) > 0 || len(config.Matrix) > 0 || config.VersionLimit != 0 {
-			fmt.Fprintf(os.Stderr, "warning: queries, matrix and version.limit are ignored with -download-only; only the packages in %s are processed\n", listPath)
+		if len(config.Queries) > 0 || len(config.Matrix) > 0 || len(config.Packages) > 0 || config.VersionLimit != 0 {
+			fmt.Fprintf(os.Stderr, "warning: queries, matrix, packages and version.limit are ignored with -download-only; only the packages in %s are processed\n", listPath)
 		}
 		packages, err = readPackageList(listPath)
 		if err != nil {

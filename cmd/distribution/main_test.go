@@ -1010,18 +1010,43 @@ func TestRunFromListWarnsAboutIgnoredSearchConfig(t *testing.T) {
 	listPath := filepath.Join(dir, "list.json")
 	require.NoError(t, writePackageList(listPath, nil))
 	configPath := filepath.Join(dir, "config.yaml")
-	require.NoError(t, os.WriteFile(configPath, []byte("version.limit: 3\nqueries:\n  - {}\nactions:\n  - print:\n"), 0644))
+	require.NoError(t, os.WriteFile(configPath, []byte("version.limit: 3\nqueries:\n  - {}\npackages:\n  - name: a\n    version: 1.0.0\nactions:\n  - print:\n"), 0644))
 
 	stderr := captureStderr(t, func() {
 		require.NoError(t, run([]string{"-download-only", "-list", listPath, configPath}))
 	})
-	assert.Contains(t, stderr, "queries, matrix and version.limit are ignored")
+	assert.Contains(t, stderr, "queries, matrix, packages and version.limit are ignored")
 
 	require.NoError(t, os.WriteFile(configPath, []byte("actions:\n  - print:\n"), 0644))
 	stderr = captureStderr(t, func() {
 		require.NoError(t, run([]string{"-download-only", "-list", listPath, configPath}))
 	})
 	assert.NotContains(t, stderr, "ignored")
+}
+
+func TestRunHelp(t *testing.T) {
+	for _, arg := range []string{"-h", "-help"} {
+		stderr := captureStderr(t, func() {
+			assert.NoError(t, run([]string{arg}))
+		})
+		assert.Contains(t, stderr, "usage:", arg)
+		assert.Contains(t, stderr, "-search-only", arg)
+	}
+}
+
+func TestRunSearchOnlyCreatesListDirectory(t *testing.T) {
+	dir := t.TempDir()
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprint(w, `[{"name":"a","version":"1.0.0","download":"/epr/a/a-1.0.0.zip","signature_path":"/epr/a/a-1.0.0.zip.sig"}]`)
+	}))
+	defer server.Close()
+
+	configPath := filepath.Join(dir, "config.yaml")
+	require.NoError(t, os.WriteFile(configPath, []byte("address: "+server.URL+"\nqueries:\n  - {}\nactions:\n  - print:\n"), 0644))
+	listPath := filepath.Join(dir, "nested", "dir", "list.json")
+
+	require.NoError(t, run([]string{"-search-only", "-list", listPath, configPath}))
+	assert.FileExists(t, listPath)
 }
 
 func TestRunListRequiresMode(t *testing.T) {
