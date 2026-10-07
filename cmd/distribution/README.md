@@ -1,5 +1,8 @@
 # Distribution Tool
 
+> [!NOTE]
+> This tool is in technical preview: the flags and the configuration syntax may still change.
+
 A utility for collecting packages from Elastic Package Registry (EPR) and downloading them from EPR or from a Package Storage endpoint.
 
 ## Overview
@@ -162,7 +165,7 @@ on the command line; `-list` takes precedence over the configuration. If neither
 given the command fails before any search is made. `-list` is only accepted together
 with `-search-only` or `-download-only`; a plain run does not read or write a list.
 
-With `-download-only` the `queries`, `matrix` and `version.limit` of the configuration are
+With `-download-only` the `queries`, `matrix`, `packages` and `version.limit` of the configuration are
 ignored, and a warning is printed if they are set: only the packages in the list are
 processed. With `-search-only` the actions are not initialized or run.
 
