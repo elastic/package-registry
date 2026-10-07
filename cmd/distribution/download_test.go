@@ -8,11 +8,14 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"io"
 	"io/fs"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"strings"
+	"sync"
 	"testing"
 
 	"github.com/ProtonMail/go-crypto/openpgp"
@@ -503,4 +506,102 @@ func TestDownloadActionIntegration(t *testing.T) {
 		_, err = os.Stat(filepath.Join(tempDir, pkg.name+".sig"))
 		require.NoError(t, err)
 	}
+}
+
+func TestDownloadActionStorageEndpoint(t *testing.T) {
+	tempDir := t.TempDir()
+
+	entity, err := openpgp.NewEntity("test", "test", "test@example.com", nil)
+	require.NoError(t, err)
+	pkgContent := []byte("test package")
+	var sigBuf bytes.Buffer
+	require.NoError(t, openpgp.ArmoredDetachSign(&sigBuf, entity, bytes.NewReader(pkgContent), nil))
+
+	var paths []string
+	var mu sync.Mutex
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		mu.Lock()
+		paths = append(paths, r.URL.Path)
+		mu.Unlock()
+		switch r.URL.Path {
+		case "/artifacts/packages/nginx-1.0.0.zip":
+			w.Write(pkgContent)
+		case "/artifacts/packages/nginx-1.0.0.zip.sig":
+			w.Write(sigBuf.Bytes())
+		default:
+			w.WriteHeader(http.StatusNotFound)
+		}
+	}))
+	defer server.Close()
+
+	action := &downloadAction{
+		Destination:     tempDir,
+		Address:         "http://unused.invalid",
+		StorageEndpoint: server.URL,
+	}
+	require.NoError(t, action.init(config{}))
+	action.keyRing = openpgp.EntityList{entity}
+
+	err = action.perform(packageInfo{
+		Name:          "nginx",
+		Version:       "1.0.0",
+		Download:      "epr/nginx/nginx-1.0.0.zip",
+		SignaturePath: "epr/nginx/nginx-1.0.0.zip.sig",
+	})
+	require.NoError(t, err)
+	assert.ElementsMatch(t, []string{"/artifacts/packages/nginx-1.0.0.zip", "/artifacts/packages/nginx-1.0.0.zip.sig"}, paths)
+	assert.FileExists(t, filepath.Join(tempDir, "nginx-1.0.0.zip"))
+}
+
+func TestDownloadActionPerformMissingFileIsNotLogged(t *testing.T) {
+	tempDir := t.TempDir()
+
+	entity, err := openpgp.NewEntity("test", "test", "test@example.com", nil)
+	require.NoError(t, err)
+	pkgContent := []byte("test package")
+	var sigBuf bytes.Buffer
+	require.NoError(t, openpgp.ArmoredDetachSign(&sigBuf, entity, bytes.NewReader(pkgContent), nil))
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if strings.HasSuffix(r.URL.Path, ".sig") {
+			w.Write(sigBuf.Bytes())
+			return
+		}
+		w.Write(pkgContent)
+	}))
+	defer server.Close()
+
+	action := &downloadAction{
+		Destination: tempDir,
+		client:      &http.Client{},
+		Address:     server.URL,
+		keyRing:     openpgp.EntityList{entity},
+	}
+	info := packageInfo{
+		Name:          "nginx",
+		Version:       "1.0.0",
+		Download:      "epr/nginx/nginx-1.0.0.zip",
+		SignaturePath: "epr/nginx/nginx-1.0.0.zip.sig",
+	}
+
+	logs := captureStderr(t, func() {
+		require.NoError(t, action.perform(info))
+	})
+	assert.Empty(t, logs)
+}
+
+// captureStderr returns what f writes to os.Stderr.
+func captureStderr(t *testing.T, f func()) string {
+	t.Helper()
+	r, w, err := os.Pipe()
+	require.NoError(t, err)
+	orig := os.Stderr
+	os.Stderr = w
+	defer func() { os.Stderr = orig }()
+
+	f()
+	require.NoError(t, w.Close())
+	out, err := io.ReadAll(r)
+	require.NoError(t, err)
+	return string(out)
 }
