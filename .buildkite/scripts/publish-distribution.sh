@@ -53,8 +53,7 @@ echo "Docker retag"
 docker buildx create --use
 
 for image in "${DOCKER_IMAGE_TARGETS[@]}"; do
-    # NOTE: the non-slim tags (lite*, production*) are planned to be deprecated
-    # in favour of the slim ones (*-slim*). Keep retagging both until then.
+    # NOTE: the non-slim tags (lite*, production*) may be deprecated in the future.
     case "${TAG_NAME}" in
         production)
             DOCKER_IMG_TARGET="${image}:${DOCKER_TAG}"
