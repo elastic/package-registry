@@ -1,10 +1,13 @@
 # Distribution Tool
 
-A utility for downloading packages from Elastic Package Registry (EPR).
+> [!NOTE]
+> This tool is in technical preview: the flags and the configuration syntax may still change.
+
+A utility for collecting packages from Elastic Package Registry (EPR) and downloading them from EPR or from a Package Storage endpoint.
 
 ## Overview
 
-The distribution tool allows you to collect and download integration packages from an EPR instance based on configurable search queries. It supports filtering by package type, Kibana version, spec version, and other parameters.
+The distribution tool collects integration packages from an EPR instance based on configurable search queries, and downloads them with their signatures, verifying each signature. It supports filtering by package type, Kibana version, spec version, and other parameters. Packages are downloaded from EPR by default, or from a Package Storage endpoint to take load off EPR (see [Actions](#actions)).
 
 ## Building
 
@@ -42,12 +45,24 @@ Note: `@vX.Y.Z` version installs are not yet supported. The repository's
 # Collect and download packages from a config file
 ./distribution <config.yaml>
 
+# Search only: write the resolved package list and exit.
+# -search-only and -download-only need a list file: `list` in the configuration or -list <file>.
+./distribution -search-only -list packages.json <config.yaml>
+
+# Download from a previously written list, without searching
+./distribution -download-only -list packages.json <config.yaml>
+
+# Same, with the file taken from `list` in the configuration
+./distribution -search-only <config.yaml>
+./distribution -download-only <config.yaml>
+
 # Add missing Kibana versions to a config's matrix
 ./distribution update-matrix <config.yaml>...
 ```
 
 The tool requires a YAML configuration file that defines:
 - **address**: EPR endpoint to query (defaults to `https://epr.elastic.co`)
+- **list**: File for `-search-only` and `-download-only`; required by them unless `-list <file>` is given (optional otherwise, see [Separating search from download](#separating-search-from-download))
 - **version.limit**: Newest versions of each package to retain from each search response (default 0 = no limit: the query is left unchanged and the registry default applies). When greater than 1, `all=true` is sent to EPR automatically so every version is returned before the window is applied. The window is per search response (one matrix entry × one query), so each Kibana release version gets its own set of newest installable versions before results are merged. Overridable per `matrix` entry or per `queries` entry.
 - **queries**: Search parameters to filter packages
 - **matrix**: Parameter combinations to expand queries
@@ -55,7 +70,7 @@ The tool requires a YAML configuration file that defines:
 - **actions**: Operations to perform (print, download)
 
 See the `examples/` directory for complete configuration files (`all.yaml`,
-`lite.yaml`, `pinned.yaml`, `production-slim.yaml`, `sample.yaml`, `test.yaml`).
+`lite-slim.yaml`, `pinned.yaml`, `production-slim.yaml`, `sample.yaml`, `test.yaml`).
 
 ## Configuration Examples
 
@@ -94,8 +109,9 @@ packages:
     version: 1.0.0
 ```
 
-Pins are resolved directly to `epr/<name>/<name>-<version>.zip` on the configured
-address. There is no existence check at config time; a wrong name or version causes
+Pins get the same `epr/<name>/<name>-<version>.zip` download path that search
+results have, so they are fetched from whichever source the `download` action uses.
+There is no existence check at config time; a wrong name or version causes
 a hard failure at download time (non-200 response). Both the ZIP and its `.sig`
 file are downloaded unconditionally — signature verification runs on every package.
 
@@ -106,6 +122,75 @@ See `examples/pinned.yaml` for a self-contained example.
 - **print**: Output package names and versions to console
 - **download**: Download package ZIP files and signatures
   - `destination`: Target directory for downloads
+  - `address`: Where to download from (defaults to the top-level `address`)
+  - `storage_endpoint`: Package Storage public endpoint, the same value as the
+    `storage-endpoint` flag of the registry (EPR uses `https://package-storage.elastic.co/`
+    by default). When set, it is used instead of `address` and each file is downloaded from
+    `<storage_endpoint>/artifacts/packages/<name>-<version>.zip[.sig]`, taking only the
+    file name from the package's `download` and `signature_path`. When unset, files come
+    from `address` at `epr/<name>/<name>-<version>.zip`. The endpoint must be public:
+    authenticated sources are not supported yet (TODO).
+
+The download paths in search results always keep the `epr/<name>/` form, so the
+paths shown in a written list and in error messages are the same whichever source is
+used; `storage_endpoint` only changes where the request goes. The action logs its source and
+destination once at startup.
+
+### Search EPR, download from another source
+
+```yaml
+address: https://epr.elastic.co   # used for /search
+queries:
+  - type: integration
+actions:
+  - download:
+      storage_endpoint: https://package-storage.elastic.co/
+      destination: ./packages
+```
+
+## Separating search from download
+
+By default a single run searches and downloads. Two flags split the run:
+
+- `-search-only` runs the search, writes the resolved packages as a JSON array of
+  `name`, `version`, `download` and `signature_path`, and exits without running any action.
+- `-download-only` skips the search, loads that list (every entry needs `download` and
+  `signature_path`) and runs the actions.
+
+The two flags cannot be used together, and the config file is still required, since it
+defines the actions.
+
+**Both flags need a list file.** Set `list` in the configuration, or pass `-list <file>`
+on the command line; `-list` takes precedence over the configuration. If neither is
+given the command fails before any search is made. `-list` is only accepted together
+with `-search-only` or `-download-only`; a plain run does not read or write a list.
+
+With `-download-only` the `queries`, `matrix`, `packages` and `version.limit` of the configuration are
+ignored, and a warning is printed if they are set: only the packages in the list are
+processed. With `-search-only` the actions are not initialized or run.
+
+```yaml
+address: https://epr.elastic.co
+list: packages.json
+queries:
+  - type: integration
+actions:
+  - download:
+      storage_endpoint: https://package-storage.elastic.co/
+      destination: ./packages
+```
+
+```bash
+./distribution -search-only config.yaml     # search, write packages.json (from `list`)
+./distribution -download-only config.yaml   # download from packages.json (from `list`)
+
+# or, without `list` in the configuration
+./distribution -search-only -list packages.json config.yaml
+./distribution -download-only -list packages.json config.yaml
+```
+
+This lets several builds share one search, and a rerun repeats only the downloads
+because files that are already valid are skipped.
 
 ## Updating the Kibana matrix
 
@@ -114,7 +199,7 @@ files up to date with the currently active Elastic branches and their next
 planned versions.
 
 ```bash
-./distribution update-matrix examples/production-slim.yaml examples/lite.yaml
+./distribution update-matrix examples/production-slim.yaml examples/lite-slim.yaml
 ```
 
 **What it does:**
@@ -134,7 +219,8 @@ planned versions.
 4. Generates one matrix entry for every patch from `X.Y.0` through the next
    version inclusive (e.g. next `9.5.5` → entries 9.5.0–9.5.5).
 
-5. **Merges by adding only** — existing entries are never modified or removed.
+5. **Merges by adding only** — existing entries are never removed, and only the spec bounds of
+   unreleased (next) versions are refreshed.
    The matrix intentionally covers all 8.x and 9.x releases (7.x is the only
    floor removed by hand). Removing versions is always a manual change in a
    reviewed PR.

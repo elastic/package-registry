@@ -17,6 +17,7 @@ import (
 	"slices"
 	"strings"
 	"sync"
+	"sync/atomic"
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/google/go-querystring/query"
@@ -27,6 +28,9 @@ import (
 
 type config struct {
 	Address string `yaml:"address"`
+	// List is the file for -search-only and -download-only. The -list flag
+	// overrides it.
+	List string `yaml:"list"`
 	// VersionLimit is the default number of newest versions kept per package.
 	// Zero (or unset) applies no limit and leaves the query untouched, so the
 	// registry's standard behaviour applies. Values > 1 add all=true to the query.
@@ -133,7 +137,8 @@ func mergeVersionLimit(a, b int) int {
 	return max(a, b)
 }
 
-// downloadPathForPackage returns the paths to download the package with the given name and version and its signature.
+// downloadPathForPackage returns the registry paths of the package with the given name and version and its signature.
+// They are the same paths search results carry; the download action decides which source they are fetched from.
 func (c config) downloadPathForPackage(name, version string) (string, string) {
 	path := path.Join("epr", name, fmt.Sprintf("%s-%s.zip", name, version))
 	return path, path + ".sig"
@@ -162,6 +167,7 @@ func (c config) collect(client *http.Client) ([]packageInfo, error) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
+	var searches atomic.Int64
 	taskPool := workers.NewTaskPool(searchConcurrency)
 	for u, limit := range urls {
 		if ctx.Err() != nil {
@@ -199,7 +205,7 @@ func (c config) collect(client *http.Client) ([]packageInfo, error) {
 				return fmt.Errorf("failed to parse search response: %w", err)
 			}
 			kept := truncateVersions(packages, limit)
-			fmt.Fprintf(os.Stderr, "%s %d of %d packages\n", u.String(), len(kept), len(packages))
+			searches.Add(1)
 
 			mapLock.Lock()
 			for _, p := range kept {
@@ -217,6 +223,8 @@ func (c config) collect(client *http.Client) ([]packageInfo, error) {
 	if err := taskPool.Wait(); err != nil {
 		return nil, err
 	}
+
+	fmt.Fprintf(os.Stderr, "%d searches done, %d unique packages found\n", searches.Load(), len(packagesMap))
 
 	result := make([]packageInfo, 0, len(packagesMap))
 	for _, p := range packagesMap {

@@ -4,12 +4,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased](https://github.com/elastic/package-registry/compare/v1.40.0...main)
+## [unreleased](https://github.com/elastic/package-registry/compare/v1.41.0...main)
 
 ### Breaking changes
 
 ### Bugfixes
-* Update Go runtime to 1.26.7. [#2040](https://github.com/elastic/package-registry/pull/2040)
+
+### Added
+
+### Deprecated
+
+### Known Issues
+
+
+## [v1.41.0](https://github.com/elastic/package-registry/compare/v1.40.0...v1.41.0)
+
+### Breaking changes
+
+### Bugfixes
+
+* Update Go runtime to 1.26.8. [#2145](https://github.com/elastic/package-registry/pull/2145)
 * Fix potential panic in `workers.taskPool.Wait()` by removing premature channel close; `wg.Wait()` alone is sufficient for synchronisation. [#2109](https://github.com/elastic/package-registry/pull/2109)
 
 ### Added

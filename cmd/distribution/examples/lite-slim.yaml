@@ -6,7 +6,14 @@
 # Base address of the Package Registry
 address: "https://epr.elastic.co"
 
-# version.limit: N  # document-wide default newest-N per package per matrix entry (0 or unset = no limit).
+# File for -search-only and -download-only, which need it (here or with -list <file>).
+# Split the run in two steps:
+#   ./distribution -search-only lite-slim.yaml     # search only, write the resolved packages here
+#   ./distribution -download-only lite-slim.yaml   # skip the search, run the actions on that list
+# Use -list <file> to override it. Not needed for a plain run.
+list: ./build/distribution-lite-packages.json
+
+# version.limit: N # document-wide default newest-N per package per matrix entry (0 or unset = no limit).
 #                   # Individual queries below may override this; see security_detection_engine and system.
 
 # Kibana release matrix. Each entry runs all queries independently.

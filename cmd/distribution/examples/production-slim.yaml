@@ -13,6 +13,13 @@
 # Base address of the Package Registry
 address: "https://epr.elastic.co"
 
+# File for -search-only and -download-only, which need it (here or with -list <file>).
+# Split the run in two steps:
+#   ./distribution -search-only production-slim.yaml     # search only, write the resolved packages here
+#   ./distribution -download-only production-slim.yaml   # skip the search, run the actions on that list
+# Use -list <file> to override it. Not needed for a plain run.
+list: ./build/distribution-production-packages.json
+
 # Document-wide default: keep the 3 newest versions of every package per matrix entry.
 # Individual queries can override this with their own version.limit: N; 0 or unset applies no limit.
 version.limit: 3

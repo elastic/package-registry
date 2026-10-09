@@ -8,8 +8,10 @@ import (
 	"bytes"
 	"context"
 	_ "embed"
+	"errors"
 	"fmt"
 	"io"
+	"io/fs"
 	"net/http"
 	"net/url"
 	"os"
@@ -25,7 +27,19 @@ type downloadAction struct {
 
 	Address     string `yaml:"address"`
 	Destination string `yaml:"destination"`
+	// StorageEndpoint, when set, is the Package Storage public endpoint, the same
+	// value as the storage-endpoint flag of the registry. Files are downloaded
+	// from <StorageEndpoint>/artifacts/packages/<file name> instead of the
+	// registry address.
+	// The source must be publicly accessible: requests are sent without
+	// credentials.
+	// TODO: support authenticated download sources.
+	StorageEndpoint string `yaml:"storage_endpoint"`
 }
+
+// storageArtifactsPath is the path under the Package Storage endpoint where
+// packages and signatures are stored.
+const storageArtifactsPath = "artifacts/packages"
 
 // publicKey is the public key of the key used to sign elastic artifacts.
 // Downloaded from https://artifacts.elastic.co/GPG-KEY-elasticsearch
@@ -42,6 +56,11 @@ func (a *downloadAction) init(c config) error {
 	if err != nil {
 		return fmt.Errorf("failed to create desination directory: %w", err)
 	}
+	source := a.Address
+	if a.StorageEndpoint != "" {
+		source = a.StorageEndpoint
+	}
+	fmt.Fprintf(os.Stderr, "downloading packages from %s to %s\n", source, a.Destination)
 	a.keyRing, err = openpgp.ReadArmoredKeyRing(bytes.NewReader(publicKey))
 	if err != nil {
 		return fmt.Errorf("failed to initialize public key: %w", err)
@@ -55,7 +74,7 @@ func (a *downloadAction) perform(i packageInfo) error {
 	}
 	if valid, err := a.valid(i); valid {
 		return nil
-	} else if err != nil {
+	} else if err != nil && !errors.Is(err, fs.ErrNotExist) {
 		fmt.Fprintf(os.Stderr, "existing file invalid for %s, re-downloading: %v\n", i.Download, err)
 	}
 	if err := a.download(i.Download); err != nil {
@@ -74,7 +93,13 @@ func (a *downloadAction) perform(i packageInfo) error {
 }
 
 func (a *downloadAction) download(urlPath string) error {
-	p, err := url.JoinPath(a.Address, urlPath)
+	var p string
+	var err error
+	if a.StorageEndpoint != "" {
+		p, err = url.JoinPath(a.StorageEndpoint, storageArtifactsPath, path.Base(urlPath))
+	} else {
+		p, err = url.JoinPath(a.Address, urlPath)
+	}
 	if err != nil {
 		return fmt.Errorf("failed to build url: %w", err)
 	}
