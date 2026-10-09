@@ -23,6 +23,20 @@ if [[ -n "${DOCKER_IMAGE_RENAMED:-""}" ]]; then
     DOCKER_IMAGE_TARGETS+=("${DOCKER_IMAGE_RENAMED}")
 fi
 IMAGE_SUFFIXES=("" "-ubi")
+
+# Slim distributions do not exist until the first build that includes them.
+# Skip the whole retag during that transition.
+if [[ "${TAG_NAME}" == *-slim ]]; then
+    if retry 3 docker buildx imagetools inspect "${DOCKER_IMG_SOURCE}" > /dev/null; then
+        buildkite-agent meta-data set "slim-distribution-${TAG_NAME}-available" "true"
+    else
+        echo "Slim source image is not available yet, skipping: ${DOCKER_IMG_SOURCE}"
+        buildkite-agent meta-data set "slim-distribution-${TAG_NAME}-available" "false"
+        buildkite-agent meta-data set "fips-distribution-${TAG_NAME}-available" "false"
+        exit 0
+    fi
+fi
+
 FIPS_SOURCE_IMAGE="${DOCKER_IMG_SOURCE}-fips"
 FIPS_SOURCE_AVAILABLE=false
 
@@ -39,11 +53,21 @@ echo "Docker retag"
 docker buildx create --use
 
 for image in "${DOCKER_IMAGE_TARGETS[@]}"; do
-    if [[ "${TAG_NAME}" == "production" ]]; then
-        DOCKER_IMG_TARGET="${image}:${DOCKER_TAG}"
-    else
-        DOCKER_IMG_TARGET="${image}:${TAG_NAME}-${DOCKER_TAG}"
-    fi
+    # NOTE: the non-slim tags (lite*, production*) may be deprecated in the future.
+    case "${TAG_NAME}" in
+        production)
+            DOCKER_IMG_TARGET="${image}:${DOCKER_TAG}"
+            ;;
+        production-slim)
+            DOCKER_IMG_TARGET="${image}:${DOCKER_TAG}-slim"
+            ;;
+        *-slim)
+            DOCKER_IMG_TARGET="${image}:${TAG_NAME%-slim}-${DOCKER_TAG}-slim"
+            ;;
+        *)
+            DOCKER_IMG_TARGET="${image}:${TAG_NAME}-${DOCKER_TAG}"
+            ;;
+    esac
 
     for suffix in "${IMAGE_SUFFIXES[@]}"; do
         source_image="${DOCKER_IMG_SOURCE}${suffix}"
