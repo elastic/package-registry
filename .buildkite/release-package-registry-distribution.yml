@@ -32,8 +32,11 @@ steps:
     matrix:
       setup:
         tag_name:
+          # NOTE: the non-slim "lite" and "production" distributions may be deprecated in the future
           - "lite"
           - "production"
+          - "lite-slim"
+          - "production-slim"
     env:
       TAG_NAME: "{{matrix.tag_name}}"
       DOCKER_IMAGE: "docker.elastic.co/package-registry/distribution"
@@ -68,22 +71,23 @@ steps:
             exit 1
         fi
 
-        upload_fips_copy_step() {
-            local tag_name="$$1"
-            local image_tag="$$2"
-            local step_key="$$3"
+        upload_copy_step() {
+            local suffix="$$1"
+            local tag_name="$$2"
+            local image_tag="$$3"
+            local step_key="$$4"
             local availability
-            availability="$$(buildkite-agent meta-data get "fips-distribution-$${tag_name}-available" --default="false")"
+            availability="$$(buildkite-agent meta-data get "$${suffix}-distribution-$${tag_name}-available" --default="false")"
 
             if [[ "$${availability}" != "true" ]]; then
-                echo "Skip triggering FIPS image copy for $${tag_name}: source image was not available"
+                echo "Skip triggering $${suffix} image copy for $${tag_name}: source image was not available"
                 return
             fi
 
             buildkite-agent pipeline upload << PIPELINE
         steps:
           - trigger: unified-release-copy-elastic-images-to-dockerhub
-            label: ":docker: Copy release $${tag_name} FIPS images to Docker Hub"
+            label: ":docker: Copy release $${tag_name} $${suffix} images to Docker Hub"
             key: "$${step_key}"
             async: false
             build:
@@ -93,8 +97,14 @@ steps:
         PIPELINE
         }
 
-        upload_fips_copy_step "production" "$${DOCKER_TAG}-fips" "copy-prod-fips"
-        upload_fips_copy_step "lite" "lite-$${DOCKER_TAG}-fips" "copy-lite-fips"
+        upload_copy_step fips "production" "$${DOCKER_TAG}-fips" "copy-prod-fips"
+        upload_copy_step fips "lite" "lite-$${DOCKER_TAG}-fips" "copy-lite-fips"
+        upload_copy_step fips "production-slim" "$${DOCKER_TAG}-slim-fips" "copy-prod-slim-fips"
+        upload_copy_step fips "lite-slim" "lite-$${DOCKER_TAG}-slim-fips" "copy-lite-slim-fips"
+        upload_copy_step slim "production-slim" "$${DOCKER_TAG}-slim" "copy-prod-slim"
+        upload_copy_step slim "production-slim" "$${DOCKER_TAG}-slim-ubi" "copy-prod-slim-ubi"
+        upload_copy_step slim "lite-slim" "lite-$${DOCKER_TAG}-slim" "copy-lite-slim"
+        upload_copy_step slim "lite-slim" "lite-$${DOCKER_TAG}-slim-ubi" "copy-lite-slim-ubi"
 
         buildkite-agent pipeline upload << PIPELINE
         steps:
