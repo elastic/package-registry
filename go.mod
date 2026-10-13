@@ -23,7 +23,7 @@ require (
 	go.elastic.co/ecszap v1.0.3
 	go.uber.org/zap v1.28.0
 	golang.org/x/tools v0.51.0
-	google.golang.org/api v0.300.0
+	google.golang.org/api v0.301.0
 	gopkg.in/yaml.v2 v2.4.0
 	honnef.co/go/tools v0.8.1
 	modernc.org/sqlite v1.60.1
@@ -37,7 +37,7 @@ require (
 require (
 	cel.dev/expr v0.25.3 // indirect
 	cloud.google.com/go v0.123.0 // indirect
-	cloud.google.com/go/auth v0.24.0 // indirect
+	cloud.google.com/go/auth v0.24.1-0.20261001053825-dbc26066f70a // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.3.0 // indirect
 	cloud.google.com/go/compute/metadata v0.10.0 // indirect
 	cloud.google.com/go/iam v1.14.0 // indirect
