@@ -4,4 +4,5 @@ source .buildkite/scripts/tooling.sh
 
 set -euo pipefail
 
-unset_secrets
+# Remember: unset here any variable ending in _SECRET or _TOKEN that is set in the pre-command hook.
+# Do not unset VAULT_TOKEN: the vault-docker-login plugin (>= v0.8.1) needs it in its pre-exit hook.
