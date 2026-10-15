@@ -120,7 +120,7 @@ steps:
       - step: "fips-build-test"
         allow_failure: false
     plugins:
-      - elastic/vault-docker-login#v0.6.0:
+      - elastic/vault-docker-login#v0.8.1:
           secret_path: 'kv/ci-shared/platform-ingest/elastic_docker_registry'
 
   - trigger: unified-release-copy-elastic-images-to-dockerhub

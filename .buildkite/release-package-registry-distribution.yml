@@ -50,7 +50,7 @@ steps:
       - step: "validate"
         allow_failure: false
     plugins:
-      - elastic/vault-docker-login#v0.6.0:
+      - elastic/vault-docker-login#v0.8.1:
           secret_path: 'kv/ci-shared/platform-ingest/elastic_docker_registry'
 
   - label: ":docker: Trigger copy release images to Docker Hub"
