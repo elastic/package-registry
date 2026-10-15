@@ -22,6 +22,10 @@ retry() {
 
 unset_secrets () {
   for var in $(printenv | sed 's;=.*;;' | sort); do
+    # vault-docker-login plugin (>= v0.8.1) needs VAULT_TOKEN in its pre-exit hook
+    if [[ "$var" == "VAULT_TOKEN" ]]; then
+      continue
+    fi
     if [[ "$var" == *_SECRET || "$var" == *_TOKEN ]]; then
       unset "$var"
     fi
