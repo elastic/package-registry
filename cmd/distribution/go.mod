@@ -12,7 +12,7 @@ require (
 	golang.org/x/time v0.16.0
 	golang.org/x/tools v0.52.0
 	gopkg.in/yaml.v3 v3.0.1
-	honnef.co/go/tools v0.8.1
+	honnef.co/go/tools v0.8.2
 )
 
 require (
