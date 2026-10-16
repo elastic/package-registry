@@ -120,8 +120,11 @@ steps:
       - step: "fips-build-test"
         allow_failure: false
     plugins:
-      - elastic/vault-docker-login#v0.6.0:
+      - elastic/vault-docker-login#v0.8.1:
           secret_path: 'kv/ci-shared/platform-ingest/elastic_docker_registry'
+          # This step lasts more than 10 minutes, so the Vault token could have expired when the
+          # plugin runs its pre-exit hook. The credentials are removed in .buildkite/hooks/pre-exit
+          disable_logout: true
 
   - trigger: unified-release-copy-elastic-images-to-dockerhub
     label: ":docker: Copy release images to Docker Hub"

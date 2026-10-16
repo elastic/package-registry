@@ -4,4 +4,14 @@ source .buildkite/scripts/tooling.sh
 
 set -euo pipefail
 
-unset_secrets
+# Remember: unset here any variable ending in _SECRET or _TOKEN that is set in the pre-command hook.
+# Do not unset VAULT_TOKEN: the vault-docker-login plugin (>= v0.8.1) needs it in its pre-exit hook.
+
+# The main pipeline (package-registry) configures vault-docker-login with `disable_logout: true`
+# since the step lasts long enough for the Vault token to expire, so the plugin does not log out
+# from the container registry. Delete the credentials here to not leave them in the agent.
+# Other pipelines (e.g. release distribution) keep the plugin logout enabled.
+if [[ "${BUILDKITE_PIPELINE_SLUG:-}" == "package-registry" ]]; then
+  echo "Delete container registry creds from $HOME/.docker/config.json"
+  rm -f "$HOME/.docker/config.json"
+fi
