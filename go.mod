@@ -25,7 +25,7 @@ require (
 	golang.org/x/tools v0.52.0
 	google.golang.org/api v0.301.0
 	gopkg.in/yaml.v2 v2.4.0
-	honnef.co/go/tools v0.8.1
+	honnef.co/go/tools v0.8.2
 	modernc.org/sqlite v1.60.1
 )
 
