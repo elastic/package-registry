@@ -7,13 +7,11 @@ set -euo pipefail
 # Remember: unset here any variable ending in _SECRET or _TOKEN that is set in the pre-command hook.
 # Do not unset VAULT_TOKEN: the vault-docker-login plugin (>= v0.8.1) needs it in its pre-exit hook.
 
-# Steps that last long enough for the Vault token to expire (e.g. the Docker build in
-# pipeline.yml) configure vault-docker-login with `disable_logout: true`, so the plugin does
-# not log out from the container registry. Delete the credentials here to not leave them in
-# the agent. The release distribution pipeline keeps the plugin logout enabled (it only lasts
-# a few seconds), so skip it there. The file does not exist in steps that do not use the
-# plugin, so do not fail in that case.
-if [[ "${BUILDKITE_PIPELINE_SLUG:-}" != "package-registry-release-package-registry-distribution" ]]; then
+# The main pipeline (package-registry) configures vault-docker-login with `disable_logout: true`
+# since the step lasts long enough for the Vault token to expire, so the plugin does not log out
+# from the container registry. Delete the credentials here to not leave them in the agent.
+# Other pipelines (e.g. release distribution) keep the plugin logout enabled.
+if [[ "${BUILDKITE_PIPELINE_SLUG:-}" == "package-registry" ]]; then
   echo "Delete container registry creds from $HOME/.docker/config.json"
   rm -f "$HOME/.docker/config.json"
 fi
