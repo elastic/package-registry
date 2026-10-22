@@ -72,8 +72,6 @@ type PackageRequirement struct {
 type PackageRequirements struct {
 	Input   []PackageRequirement `config:"input,omitempty" json:"input,omitempty" yaml:"input,omitempty"`
 	Content []PackageRequirement `config:"content,omitempty" json:"content,omitempty" yaml:"content,omitempty"`
-	// PROTOTYPE: integration groups.
-	Integration []PackageRequirement `config:"integration,omitempty" json:"integration,omitempty" yaml:"integration,omitempty"`
 }
 
 // BasePackage is used for the output of the package info in the /search endpoint
@@ -99,7 +97,7 @@ type BasePackage struct {
 	Deprecated              *Deprecated          `config:"deprecated,omitempty" json:"deprecated,omitempty" yaml:"deprecated,omitempty"`
 	Requires                *PackageRequirements `config:"requires,omitempty" json:"requires,omitempty" yaml:"requires,omitempty"`
 	Group                   string               `config:"group,omitempty" json:"group,omitempty" yaml:"group,omitempty"`
-	// PROTOTYPE: integration groups. Map of schema name -> {integration, default}.
+	// PROTOTYPE: integration groups. Map of schema name -> {package, default}.
 	Schemas map[string]interface{} `config:"schemas,omitempty" json:"schemas,omitempty" yaml:"schemas,omitempty"`
 }
 
