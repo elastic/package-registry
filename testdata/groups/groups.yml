@@ -1,0 +1,17 @@
+groups:
+  nginx:
+    title: Nginx
+    description: Collect logs and metrics from Nginx.
+    icon: nginx
+    schemas:
+      otel:
+        package: nginx_otel
+        default: true
+      ecs:
+        package: nginx
+  apache:
+    title: Apache HTTP Server
+    icon: apache
+    schemas:
+      ecs:
+        package: apache

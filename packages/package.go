@@ -97,8 +97,6 @@ type BasePackage struct {
 	Deprecated              *Deprecated          `config:"deprecated,omitempty" json:"deprecated,omitempty" yaml:"deprecated,omitempty"`
 	Requires                *PackageRequirements `config:"requires,omitempty" json:"requires,omitempty" yaml:"requires,omitempty"`
 	Group                   string               `config:"group,omitempty" json:"group,omitempty" yaml:"group,omitempty"`
-	// PROTOTYPE: integration groups. Map of schema name -> {package, default}.
-	Schemas map[string]interface{} `config:"schemas,omitempty" json:"schemas,omitempty" yaml:"schemas,omitempty"`
 }
 
 // BasePolicyTemplate is used for the package policy templates in the /search endpoint
