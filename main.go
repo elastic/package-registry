@@ -156,9 +156,6 @@ type Config struct {
 	SearchCacheTTL               time.Duration `config:"search.cache_ttl"`                 // technical preview, used by the SQL storage indexer
 	CategoriesCacheSize          int           `config:"categories.cache_size"`            // technical preview, used by the SQL storage indexer
 	CategoriesCacheTTL           time.Duration `config:"categories.cache_ttl"`             // technical preview, used by the SQL storage indexer
-	// PROTOTYPE: integration groups taxonomy (groups.yml in the integrations repo), served as /groups.
-	// Relative paths are resolved from the config file's directory.
-	GroupsFile string `config:"groups_file"`
 }
 
 func main() {
@@ -576,9 +573,6 @@ func getConfig(logger *zap.Logger) (*Config, error) {
 	if err != nil {
 		return nil, fmt.Errorf("unpacking config failed (path: %s): %w", configPath, err)
 	}
-	if config.GroupsFile != "" && !filepath.IsAbs(config.GroupsFile) {
-		config.GroupsFile = filepath.Join(filepath.Dir(configPath), config.GroupsFile)
-	}
 
 	// Parse environment variables to override config values in technical preview mode
 	if path, found := os.LookupEnv("EPR_SQL_INDEXER_DATABASE_FOLDER_PATH"); found && path != "" {
@@ -739,17 +733,11 @@ func getRouter(logger *zap.Logger, options serverOptions) (*mux.Router, error) {
 		return nil, fmt.Errorf("can't create static handler: %w", err)
 	}
 
-	groupsHandler, err := newGroupsHandler(options.config.GroupsFile, options.config.CacheTimeCategories)
-	if err != nil {
-		return nil, fmt.Errorf("can't create groups handler: %w", err)
-	}
-
 	router := mux.NewRouter().StrictSlash(true)
 	router.Handle("/", indexHandler)
 	router.Handle("/index.json", indexHandler)
 	router.Handle("/search", searchHandler)
 	router.Handle("/categories", categoriesHandler)
-	router.Handle("/groups", groupsHandler)
 	router.Handle("/health", healthHandler)
 	router.Handle("/favicon.ico", faviconHandler)
 	router.Handle(artifactsRouterPath, artifactsHandler)
