@@ -78,7 +78,7 @@ _build_call() {
     assert_output --partial "--build-arg GO_VERSION=$(cat .go-version)"
     assert_output --partial "--build-arg BUILDER_IMAGE=docker.elastic.co/wolfi/go"
     assert_output --partial "--build-arg RUNNER_IMAGE=docker.elastic.co/wolfi/chainguard-base --build-arg FIPS=0"
-    assert_output --partial "--label BRANCH_NAME=main --label GIT_SHA=abc123 --label GO_VERSION=1.2.3 --label TIMESTAMP="
+    assert_output --partial "--label BRANCH_NAME=main --label GIT_SHA=abc123 --label GO_VERSION=$(cat .go-version) --label TIMESTAMP="
 }
 
 @test "build_push_docker_image adds the suffix to the tags of the ubi flavour" {

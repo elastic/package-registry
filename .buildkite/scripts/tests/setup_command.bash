@@ -53,7 +53,6 @@ _create_stub() {
 _set_publish_env() {
     export DOCKER_IMG="docker.elastic.co/package-registry/package-registry"
     export DOCKER_IMG_PR="docker.elastic.co/observability-ci/package-registry"
-    export SETUP_GOLANG_VERSION="1.2.3"
 }
 
 # Variables set by the Buildkite agent for a build. They must be set explicitly by each test, the

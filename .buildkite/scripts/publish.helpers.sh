@@ -53,7 +53,7 @@ build_push_docker_image() {
 		--build-arg FIPS="${fips}" \
 		--label BRANCH_NAME="${TAG_NAME}" \
 		--label GIT_SHA="${BUILDKITE_COMMIT}" \
-		--label GO_VERSION="${SETUP_GOLANG_VERSION}" \
+		--label GO_VERSION="${go_version}" \
 		--label TIMESTAMP="$(date +%Y-%m-%d_%H:%M)" \
 		.
 
