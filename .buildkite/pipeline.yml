@@ -4,6 +4,7 @@ env:
   SETUP_GVM_VERSION: "v0.6.0" # https://github.com/andrewkroh/gvm/issues/44#issuecomment-1013231151
   SETUP_MAGE_VERSION: "1.15.0"
   JQ_VERSION: "1.7"
+  CRANE_VERSION: "v0.22.1"
   DOCKER_IMG: "docker.elastic.co/package-registry/package-registry"
   DOCKER_IMG_PR: "docker.elastic.co/observability-ci/package-registry"
   # Agent images used in pipeline steps
