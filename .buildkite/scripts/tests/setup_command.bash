@@ -93,3 +93,43 @@ if [[ "$1 $2" == "buildx build" ]]; then
 fi
 EOF
 }
+
+# Stub of buildkite-agent that records the arguments of every call in BUILDKITE_AGENT_CALLS_FILE.
+_mock_buildkite_agent() {
+    export BUILDKITE_AGENT_CALLS_FILE="${BATS_TEST_TMPDIR}/buildkite_agent_calls"
+    : > "${BUILDKITE_AGENT_CALLS_FILE}"
+
+    _create_stub buildkite-agent <<'EOF'
+echo "$*" >> "${BUILDKITE_AGENT_CALLS_FILE}"
+EOF
+}
+
+# Stub uname and curl so with_crane installs a fake crane that answers "crane digest" with the given
+# digest (and "fake crane" for anything else, e.g. "crane version"). Used by tests that run the whole
+# push + sign path. Requires WORKSPACE to be set (with_crane installs into ${WORKSPACE}/bin).
+#
+# Usage: _mock_crane_install <digest>
+_mock_crane_install() {
+    export CRANE_STUB_DIGEST="$1"
+
+    _create_stub uname <<'EOF'
+if [[ "${1:-}" == "-m" ]]; then
+    echo "x86_64"
+else
+    echo "Linux"
+fi
+EOF
+    _create_stub curl <<'EOF'
+while [[ $# -gt 0 ]]; do
+    if [[ "$1" == "-o" ]]; then
+        output="$2"
+    fi
+    shift
+done
+fake_dir="$(mktemp -d)"
+printf '#!/bin/bash\nif [[ "$1" == "digest" ]]; then echo "%s"; else echo "fake crane"; fi\n' "${CRANE_STUB_DIGEST}" > "${fake_dir}/crane"
+chmod +x "${fake_dir}/crane"
+tar -C "${fake_dir}" -czf "${output}" crane
+rm -rf "${fake_dir}"
+EOF
+}

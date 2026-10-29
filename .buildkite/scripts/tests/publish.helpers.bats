@@ -68,6 +68,23 @@ _build_call() {
     grep -F -- "-t ${DOCKER_IMG}:${BUILDKITE_COMMIT}$1 -t " "${DOCKER_CALLS_FILE}"
 }
 
+# Write the command file that resolves and uploads the digest of a flavour, run from a scratch dir
+# so the digest files do not land in the repository. Sets UPLOAD_WORKDIR to that scratch dir.
+#
+# Usage: _run_upload_digest <flavour> [<tag_suffix>]
+_run_upload_digest() {
+    UPLOAD_WORKDIR="${BATS_TEST_TMPDIR}/work"
+    mkdir -p "${UPLOAD_WORKDIR}"
+    cat <<EOF > "${COMMAND_FILE}"
+cd "${UPLOAD_WORKDIR}"
+source ${ROOT_DIR}/.buildkite/scripts/tooling.sh
+source ${ROOT_DIR}/.buildkite/scripts/publish.helpers.sh
+set_image_tags
+upload_image_digest_for_signing "$1" "${2:-}"
+EOF
+    run ${test_command}
+}
+
 @test "set_image_tags uses the branch name for branch builds" {
     _set_buildkite_env main false
     _run_set_image_tags
@@ -232,4 +249,24 @@ EOF
     assert_failure
     assert_output --partial "ERROR: crane command not found"
     assert_file_not_exists "${DIGEST_FILE}"
+}
+
+@test "upload_image_digest_for_signing writes and uploads the flavour digest file" {
+    _set_buildkite_env main false
+    _mock_crane "sha256:abc123"
+    _mock_buildkite_agent
+    _run_upload_digest "base" ""
+    assert_success
+    assert_equal "$(cat "${UPLOAD_WORKDIR}/package-registry-base-images-digest.txt")" "${DOCKER_IMG}:main@sha256:abc123"
+    assert_equal "$(cat "${BUILDKITE_AGENT_CALLS_FILE}")" "artifact upload package-registry-base-images-digest.txt"
+}
+
+@test "upload_image_digest_for_signing uses the git tag and the flavour suffix in the reference" {
+    _set_buildkite_env main false v1.2.3
+    _mock_crane "sha256:abc123"
+    _mock_buildkite_agent
+    _run_upload_digest "fips" "-fips"
+    assert_success
+    assert_equal "$(cat "${UPLOAD_WORKDIR}/package-registry-fips-images-digest.txt")" "${DOCKER_IMG}:v1.2.3-fips@sha256:abc123"
+    assert_equal "$(cat "${CRANE_CALLS_FILE}.args")" "digest ${DOCKER_IMG}:v1.2.3-fips"
 }

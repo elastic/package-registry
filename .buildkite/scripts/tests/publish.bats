@@ -10,6 +10,21 @@ setup() {
 
     _set_publish_env
     _mock_docker
+
+    # non-PR builds install crane and upload digest files for signing; mock both so the push path
+    # never reaches the network, and crane resolves to a fixed digest.
+    export WORKSPACE="${BATS_TEST_TMPDIR}/workspace"
+    mkdir -p "${WORKSPACE}"
+    _mock_crane_install "sha256:deadbeef"
+    _mock_buildkite_agent
+}
+
+# publish.sh writes the digest files in the working directory (the repository root); remove them so
+# they do not linger as untracked files.
+teardown() {
+    rm -f package-registry-base-images-digest.txt \
+          package-registry-ubi-images-digest.txt \
+          package-registry-fips-images-digest.txt
 }
 
 @test "publish builds and pushes the three flavours in order" {
@@ -51,6 +66,49 @@ setup() {
     assert_line --index 0 --partial "-t ${DOCKER_IMG}:abc123 -t ${DOCKER_IMG}:v1.2.3 --build-arg"
     assert_line --index 1 --partial "-t ${DOCKER_IMG}:abc123-ubi -t ${DOCKER_IMG}:v1.2.3-ubi --build-arg"
     assert_line --index 2 --partial "-t ${DOCKER_IMG}:abc123-fips -t ${DOCKER_IMG}:v1.2.3-fips --build-arg"
+}
+
+@test "publish signs non-PR builds by uploading one digest file per flavour" {
+    _set_buildkite_env main false
+
+    run bash .buildkite/scripts/publish.sh
+    assert_success
+
+    # one digest file per flavour, referencing the rolling tag and the resolved digest
+    assert_equal "$(cat package-registry-base-images-digest.txt)" "${DOCKER_IMG}:main@sha256:deadbeef"
+    assert_equal "$(cat package-registry-ubi-images-digest.txt)" "${DOCKER_IMG}:main-ubi@sha256:deadbeef"
+    assert_equal "$(cat package-registry-fips-images-digest.txt)" "${DOCKER_IMG}:main-fips@sha256:deadbeef"
+
+    # each digest file uploaded as a buildkite artifact
+    run cat "${BUILDKITE_AGENT_CALLS_FILE}"
+    assert_line "artifact upload package-registry-base-images-digest.txt"
+    assert_line "artifact upload package-registry-ubi-images-digest.txt"
+    assert_line "artifact upload package-registry-fips-images-digest.txt"
+}
+
+@test "publish signs tag builds using the git tag in the digest reference" {
+    _set_buildkite_env main false v1.2.3
+
+    run bash .buildkite/scripts/publish.sh
+    assert_success
+
+    assert_equal "$(cat package-registry-base-images-digest.txt)" "${DOCKER_IMG}:v1.2.3@sha256:deadbeef"
+    assert_equal "$(cat package-registry-ubi-images-digest.txt)" "${DOCKER_IMG}:v1.2.3-ubi@sha256:deadbeef"
+    assert_equal "$(cat package-registry-fips-images-digest.txt)" "${DOCKER_IMG}:v1.2.3-fips@sha256:deadbeef"
+}
+
+@test "publish does not sign pull request builds" {
+    _set_buildkite_env feature 123
+
+    run bash .buildkite/scripts/publish.sh
+    assert_success
+
+    assert_file_not_exists package-registry-base-images-digest.txt
+    assert_file_not_exists package-registry-ubi-images-digest.txt
+    assert_file_not_exists package-registry-fips-images-digest.txt
+
+    run cat "${BUILDKITE_AGENT_CALLS_FILE}"
+    assert_output ""
 }
 
 @test "publish stops at the first flavour whose build keeps failing" {
