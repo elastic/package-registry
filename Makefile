@@ -18,6 +18,16 @@ else
 GO_BUILD_ENV=
 endif
 
+# BATS versions
+# https://bats-core.readthedocs.io/en/stable/writing-tests.html#special-variables
+BATS_CORE_VERSION=v1.14.0
+BATS_ASSERT_VERSION=v2.2.4
+BATS_SUPPORT_VERSION=v0.3.0
+BATS_MOCK_VERSION=v2.2.0
+BATS_FILE_VERSION=v0.4.0
+BATS_SOURCE_DIR=$(CURDIR)/bats_tests/test_helper
+BATS_WORK_DIR_TESTS=$(CURDIR)/tmp_bats_exec
+
 .PHONY: $(OSS_TARGETS)
 $(OSS_TARGETS): release-%:
 	$(eval $@_OS := $(firstword $(subst /, ,$(lastword $(subst release-, ,$@)))))
@@ -29,3 +39,48 @@ $(PLATFORM_TARGETS): release-%:
 	$(eval $@_GO_ARCH := $(word 2, $(subst /, ,$(lastword $(subst release-, ,$@)))))
 	$(eval $@_ARCH := $(TARGET_ARCH_$($@_GO_ARCH)))
 	$(GO_BUILD_ENV) GOOS=$($@_OS) GOARCH=$($@_GO_ARCH) go build $(BUILD_FLAGS) .
+
+.PHONY: bats bats-clean bats-tester bats-tester-ci
+bats: ## Install bats and libraries in the project itself
+	@echo "Prepare bats-core repo"
+	@[ -d $(BATS_SOURCE_DIR)/bats-core ] \
+	  || git -c advice.detachedHead=false clone --quiet -b $(BATS_CORE_VERSION) --depth 1 https://github.com/bats-core/bats-core \
+	     $(BATS_SOURCE_DIR)/bats-core
+	@echo "Prepare bats-assert repo"
+	@[ -d $(BATS_SOURCE_DIR)/bats-assert ] \
+	  || git -c advice.detachedHead=false clone --quiet -b $(BATS_ASSERT_VERSION) --depth 1 https://github.com/bats-core/bats-assert \
+	     $(BATS_SOURCE_DIR)/bats-assert
+	@echo "Prepare bats-support repo"
+	@[ -d $(BATS_SOURCE_DIR)/bats-support ] \
+	  || git -c advice.detachedHead=false clone --quiet -b $(BATS_SUPPORT_VERSION) --depth 1 https://github.com/bats-core/bats-support \
+	     $(BATS_SOURCE_DIR)/bats-support
+	@echo "Prepare bats-mocks repo"
+	@[ -d $(BATS_SOURCE_DIR)/bats-mock ] \
+	  || git -c advice.detachedHead=false clone --quiet -b $(BATS_MOCK_VERSION) --depth 1 https://github.com/buildkite-plugins/bats-mock \
+	     $(BATS_SOURCE_DIR)/bats-mock
+	@echo "Prepare bats-file repo"
+	@[ -d $(BATS_SOURCE_DIR)/bats-file ] \
+	  || git -c advice.detachedHead=false clone --quiet -b $(BATS_FILE_VERSION) --depth 1 https://github.com/bats-core/bats-file \
+	     $(BATS_SOURCE_DIR)/bats-file
+
+bats-clean:
+	@echo "Cleaning bats directories"
+	rm -rf $(BATS_SOURCE_DIR)
+	rm -rf $(BATS_WORK_DIR_TESTS)
+
+bats-tester-ci: bats
+	mkdir -p $(CURDIR)/build/test-results
+	@echo "Running tests bats"
+	@rm -rf $(BATS_WORK_DIR_TESTS)
+	@mkdir -p $(BATS_WORK_DIR_TESTS)
+	@cd $(BATS_WORK_DIR_TESTS) && \
+	  $(BATS_SOURCE_DIR)/bats-core/bin/bats --formatter junit $(CURDIR)/.buildkite/scripts/tests > $(CURDIR)/build/test-results/TEST-bats.xml
+	@rm -rf "$(BATS_WORK_DIR_TESTS)"
+
+bats-tester: bats
+	@echo "Running tests bats"
+	@rm -rf "$(BATS_WORK_DIR_TESTS)"
+	@mkdir -p $(BATS_WORK_DIR_TESTS)
+	@cd $(BATS_WORK_DIR_TESTS) && \
+	  $(BATS_SOURCE_DIR)/bats-core/bin/bats --verbose-run --formatter pretty $(CURDIR)/.buildkite/scripts/tests
+	@rm -rf "$(BATS_WORK_DIR_TESTS)"
