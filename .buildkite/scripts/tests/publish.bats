@@ -38,6 +38,7 @@ setup() {
     assert_line --index 0 --partial "-t ${DOCKER_IMG_PR}:abc123 -t ${DOCKER_IMG_PR}:PR-123 --build-arg"
     assert_line --index 1 --partial "-t ${DOCKER_IMG_PR}:abc123-ubi -t ${DOCKER_IMG_PR}:PR-123-ubi --build-arg"
     assert_line --index 2 --partial "-t ${DOCKER_IMG_PR}:abc123-fips -t ${DOCKER_IMG_PR}:PR-123-fips --build-arg"
+    assert_equal "${#lines[@]}" "3"
     refute_output --partial "${DOCKER_IMG}:"
 }
 
