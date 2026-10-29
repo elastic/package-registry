@@ -37,6 +37,7 @@ build_push_docker_image() {
 	fi
 	local docker_img_tag="${DOCKER_IMG_TAG}${tag_suffix}"
 	local docker_img_tag_branch="${DOCKER_IMG_TAG_BRANCH}${tag_suffix}"
+	local go_version
 	go_version=$(cat .go-version)
 
 	docker buildx create --use
