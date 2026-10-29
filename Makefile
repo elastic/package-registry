@@ -68,7 +68,10 @@ bats-tester-ci: bats
 	@rm -rf $(BATS_WORK_DIR_TESTS)
 	@mkdir -p $(BATS_WORK_DIR_TESTS)
 	@cd $(BATS_WORK_DIR_TESTS) && \
-	  $(BATS_SOURCE_DIR)/bats-core/bin/bats --formatter junit $(CURDIR)/.buildkite/scripts/tests > $(CURDIR)/tests-report-bats.xml
+	  $(BATS_SOURCE_DIR)/bats-core/bin/bats --formatter pretty --report-formatter junit --output $(BATS_WORK_DIR_TESTS) $(CURDIR)/.buildkite/scripts/tests; \
+	  status=$$?; \
+	  mv $(BATS_WORK_DIR_TESTS)/report.xml $(CURDIR)/tests-report-bats.xml; \
+	  exit $$status
 	@rm -rf "$(BATS_WORK_DIR_TESTS)"
 
 bats-tester: bats
