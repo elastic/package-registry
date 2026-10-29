@@ -17,13 +17,20 @@ setup() {
     eval "${pipefail_option}"
 
     export WORKSPACE="${BATS_TEST_TMPDIR}/workspace"
-    export CRANE_VERSION="v0.0.1"
-    export CURL_ARGS_FILE="${BATS_TEST_TMPDIR}/curl_args"
     mkdir -p "${WORKSPACE}"
     ORIGINAL_PATH="${PATH}"
+}
 
-    # curl replacement: records the arguments and writes a tarball with a fake crane binary
-    # in the path given with -o
+teardown() {
+    PATH="${ORIGINAL_PATH}"
+}
+
+# Setup only needed by the with_crane tests: pin the version and replace curl with a function that
+# records its arguments and writes, in the path given with -o, a tarball with a fake crane binary.
+_mock_crane_download() {
+    export CRANE_VERSION="v0.0.1"
+    export CURL_ARGS_FILE="${BATS_TEST_TMPDIR}/curl_args"
+
     curl() {
         echo "$*" > "${CURL_ARGS_FILE}"
         local output=""
@@ -41,11 +48,8 @@ setup() {
     }
 }
 
-teardown() {
-    PATH="${ORIGINAL_PATH}"
-}
-
 @test "with_crane downloads the pinned version for linux amd64" {
+    _mock_crane_download
     platform_type="Linux"
     hw_type="x86_64"
 
@@ -57,6 +61,7 @@ teardown() {
 }
 
 @test "with_crane downloads the pinned version for linux arm64" {
+    _mock_crane_download
     platform_type="Linux"
     hw_type="aarch64"
 
@@ -67,6 +72,7 @@ teardown() {
 }
 
 @test "with_crane downloads the pinned version for darwin arm64" {
+    _mock_crane_download
     platform_type="Darwin"
     hw_type="arm64"
 
@@ -77,6 +83,7 @@ teardown() {
 }
 
 @test "with_crane installs an executable crane available in PATH" {
+    _mock_crane_download
     platform_type="Linux"
     hw_type="x86_64"
 
@@ -87,6 +94,7 @@ teardown() {
 }
 
 @test "with_crane does not leave temporary files behind" {
+    _mock_crane_download
     platform_type="Linux"
     hw_type="x86_64"
 
