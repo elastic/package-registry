@@ -26,6 +26,18 @@ _common_setup() {
     _create_stub sleep <<'EOF'
 exit 0
 EOF
+
+    # Fail loudly if a script under test reaches a side-effecting command without the test
+    # stubbing it, instead of hitting the real Docker daemon or registry. Tests that need these
+    # override them with _mock_docker / _mock_crane.
+    _create_stub docker <<'EOF'
+echo "ERROR: 'docker' called in a bats test without _mock_docker" >&2
+exit 1
+EOF
+    _create_stub crane <<'EOF'
+echo "ERROR: 'crane' called in a bats test without _mock_crane" >&2
+exit 1
+EOF
 }
 
 # Create an executable stub in a directory that is first in PATH. The body is read from stdin.

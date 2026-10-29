@@ -89,6 +89,12 @@ _build_call() {
     assert_output "${DOCKER_IMG} v1.2.3 ${DOCKER_IMG}:abc123 ${DOCKER_IMG}:v1.2.3"
 }
 
+@test "docker fails loudly when a test calls it without _mock_docker" {
+    run docker images
+    assert_failure
+    assert_output --partial "ERROR: 'docker' called in a bats test without _mock_docker"
+}
+
 @test "build_push_docker_image builds the base flavour for amd64 and arm64" {
     _set_buildkite_env main false
     _mock_docker
