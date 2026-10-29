@@ -39,7 +39,7 @@ steps:
       cpu: "4"
       memory: "2G"
     artifact_paths:
-      - "build/test-results/TEST-bats.xml"
+      - "tests-report-bats.xml"
 
   - label: ":wrench: Smoke tests running EPR with fake GCS server"
     key: smoke-test-fake-gcs-server
@@ -103,6 +103,8 @@ steps:
           always-annotate: true
           run-in-docker: false
     depends_on:
+      - step: "bats-tests"
+        allow_failure: true
       - step: "test-linux"
         allow_failure: true
       - step: "test-win"

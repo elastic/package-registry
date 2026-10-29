@@ -64,12 +64,11 @@ bats-clean:
 	rm -rf $(BATS_WORK_DIR_TESTS)
 
 bats-tester-ci: bats
-	@mkdir -p $(CURDIR)/build/test-results
 	@echo "Running tests bats"
 	@rm -rf $(BATS_WORK_DIR_TESTS)
 	@mkdir -p $(BATS_WORK_DIR_TESTS)
 	@cd $(BATS_WORK_DIR_TESTS) && \
-	  $(BATS_SOURCE_DIR)/bats-core/bin/bats --formatter junit $(CURDIR)/.buildkite/scripts/tests > $(CURDIR)/build/test-results/TEST-bats.xml
+	  $(BATS_SOURCE_DIR)/bats-core/bin/bats --formatter junit $(CURDIR)/.buildkite/scripts/tests > $(CURDIR)/tests-report-bats.xml
 	@rm -rf "$(BATS_WORK_DIR_TESTS)"
 
 bats-tester: bats
