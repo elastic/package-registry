@@ -30,6 +30,17 @@ steps:
       cpu: "8"
       memory: "4G"
 
+  - label: ":bash: Test CI scripts (bats)"
+    key: bats-tests
+    command:
+      - "make bats-tester-ci"
+    agents:
+      image: "${LINUX_GOLANG_AGENT_IMAGE}"
+      cpu: "4"
+      memory: "2G"
+    artifact_paths:
+      - "build/test-results/TEST-bats.xml"
+
   - label: ":wrench: Smoke tests running EPR with fake GCS server"
     key: smoke-test-fake-gcs-server
     command:
