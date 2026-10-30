@@ -76,12 +76,15 @@ steps:
             local tag_name="$$2"
             local image_tag="$$3"
             local step_key="$$4"
-            local availability
-            availability="$$(buildkite-agent meta-data get "$${suffix}-distribution-$${tag_name}-available" --default="false")"
 
-            if [[ "$${availability}" != "true" ]]; then
-                echo "Skip triggering $${suffix} image copy for $${tag_name}: source image was not available"
-                return
+            if [[ "$${suffix}" == "slim" ]]; then
+                local availability
+                availability="$$(buildkite-agent meta-data get "$${suffix}-distribution-$${tag_name}-available" --default="false")"
+
+                if [[ "$${availability}" != "true" ]]; then
+                    echo "Skip triggering $${suffix} image copy for $${tag_name}: source image was not available"
+                    return
+                fi
             fi
 
             buildkite-agent pipeline upload << PIPELINE
