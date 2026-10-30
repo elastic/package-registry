@@ -221,10 +221,30 @@ triggered build:
 | `UPLOAD_SIGNATURE` | `true` | Upload the generated cosign signatures. |
 | `IMAGES_TAG` | `${BUILDKITE_TAG}` on tag builds, `${BUILDKITE_BRANCH}-${BUILDKITE_COMMIT}` on branch builds | Value used as the cosign `tag=` annotation on the signature. |
 
+##### Distribution images
+
+The [release distribution pipeline](.buildkite/release-package-registry-distribution.yml)
+also signs the `docker.elastic.co/package-registry/package-registry-distribution`
+images (all flavours: default, `-ubi`, `-fips`). Signatures are stored in the image
+repository, so they do not follow a retag to another repository:
+
+| Image | Signed by |
+|---|---|
+| `package-registry/distribution` | Already signed when it is built (`package-storage-infra`), the release only retags it. |
+| `package-registry/package-registry-distribution` | The release distribution pipeline. |
+
+[`publish-distribution.sh`](.buildkite/scripts/publish-distribution.sh) uploads
+`package-registry-distribution-<distribution>-images-digest.txt` for each
+distribution, and the `trigger-sign-release-images` step starts the signing pipeline
+with `ARTIFACT_PATTERN=package-registry-distribution-*-images-digest.txt`,
+`UPLOAD_SIGNATURE=true` and `IMAGES_TAG` set to the released version. Nothing is
+signed on a dry run.
+
 > [!IMPORTANT]
-> End-to-end signing requires the package-registry build pipeline to be in the
+> End-to-end signing requires the build pipelines (`package-registry` and
+> `package-registry-release-package-registry-distribution`) to be in the
 > `unified-release-container-image-signing` allowlist. Until that is in place the
-> trigger cannot sign.
+> triggers cannot sign.
 
 ### Testing with Kibana
 
