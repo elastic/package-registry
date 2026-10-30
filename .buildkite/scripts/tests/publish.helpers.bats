@@ -270,3 +270,24 @@ EOF
     assert_equal "$(cat "${UPLOAD_WORKDIR}/package-registry-fips-images-digest.txt")" "${DOCKER_IMG}:v1.2.3-fips@sha256:abc123"
     assert_equal "$(cat "${CRANE_CALLS_FILE}.args")" "digest ${DOCKER_IMG}:v1.2.3-fips"
 }
+
+# The signing trigger step in .buildkite/pipeline.yml collects the digest files with a glob
+# (ARTIFACT_PATTERN). This checks that the artifact the helper actually uploads matches that glob, so
+# the two sides cannot drift apart silently (a renamed digest file or an edited pattern breaks it).
+@test "the signing ARTIFACT_PATTERN matches the artifact that upload_image_digest_for_signing uploads" {
+    _set_buildkite_env main false
+    _mock_crane "sha256:abc123"
+    _mock_buildkite_agent
+    _run_upload_digest "base" ""
+    assert_success
+
+    local uploaded pattern
+    uploaded="$(sed -E 's/^artifact upload //' "${BUILDKITE_AGENT_CALLS_FILE}")"
+    pattern="$(grep -m1 'ARTIFACT_PATTERN:' .buildkite/pipeline.yml | sed -E 's/.*"([^"]*)".*/\1/')"
+    refute [ -z "${pattern}" ]
+
+    case "${uploaded}" in
+        ${pattern}) ;;
+        *) fail "pipeline ARTIFACT_PATTERN '${pattern}' does not match uploaded artifact '${uploaded}'" ;;
+    esac
+}
