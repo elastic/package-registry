@@ -112,6 +112,22 @@ assert.True(t, result.IsValid)
 assert.Len(t, result.Items, 3)
 ```
 
+### CI shell script tests (bats)
+
+The shell scripts in `.buildkite/scripts/` are covered by [bats](https://github.com/bats-core/bats-core)
+tests in `.buildkite/scripts/tests/`. Run them with `make bats-tester` (pretty output) or
+`make bats-tester-ci` (JUnit report); `make bats` installs the helper libraries.
+
+- Each test writes the code under test into a `command.sh` and runs it with
+  `bash -e -u -o pipefail` (the pipeline's flags) via `${test_command}`, so scripts are
+  exercised the way CI runs them.
+- Any external command a script invokes MUST be stubbed so no test ever reaches the network,
+  the registry, or the Docker daemon. Use `_mock_docker` or `_create_stub` (stubs are
+  executables placed first on `PATH`). As a safety net, `_common_setup` installs a default
+  `docker` stub that fails the test if called without `_mock_docker`.
+- Set the `BUILDKITE_*` variables explicitly in each test (via `_set_buildkite_env`); never
+  rely on values inherited from the surrounding build.
+
 ### Package Structure
 
 Packages follow the [package-spec](https://github.com/elastic/package-spec) specification. Changes to package structure should be proposed to package-spec first.

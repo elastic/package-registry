@@ -5,3 +5,14 @@ cmd/distribution/distribution
 .idea
 *.iml
 build
+
+# Test reports generated in CI
+tests-report-linux.xml
+tests-report-win.xml
+tests-report-darwin.xml
+tests-report-bats.xml
+
+# Bash test framework BATS
+# Folders defined in the Makefile
+bats_tests/
+tmp_bats_exec/
