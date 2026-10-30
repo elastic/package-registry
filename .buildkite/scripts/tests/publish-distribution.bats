@@ -108,3 +108,27 @@ teardown() {
     assert_failure
     assert_output --partial "could not resolve digest"
 }
+
+# The signing trigger step in .buildkite/release-package-registry-distribution.yml collects the digest
+# files with a glob (ARTIFACT_PATTERN). This checks that every artifact the script actually uploads
+# matches that glob, so the two sides cannot drift apart silently.
+@test "the signing ARTIFACT_PATTERN matches the artifacts that publish-distribution uploads" {
+    for tag_name in lite production lite-slim production-slim; do
+        TAG_NAME="${tag_name}" run bash .buildkite/scripts/publish-distribution.sh
+        assert_success
+    done
+
+    local pattern uploaded
+    pattern="$(grep -m1 'ARTIFACT_PATTERN:' .buildkite/release-package-registry-distribution.yml | sed -E 's/.*"([^"]*)".*/\1/')"
+    refute [ -z "${pattern}" ]
+
+    run grep "^artifact upload" "${BUILDKITE_AGENT_CALLS_FILE}"
+    assert_equal "${#lines[@]}" "4"
+    for line in "${lines[@]}"; do
+        uploaded="${line#artifact upload }"
+        case "${uploaded}" in
+            ${pattern}) ;;
+            *) fail "pipeline ARTIFACT_PATTERN '${pattern}' does not match uploaded artifact '${uploaded}'" ;;
+        esac
+    done
+}
