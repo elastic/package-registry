@@ -39,24 +39,21 @@ $(PLATFORM_TARGETS): release-%:
 	$(eval $@_ARCH := $(TARGET_ARCH_$($@_GO_ARCH)))
 	$(GO_BUILD_ENV) GOOS=$($@_OS) GOARCH=$($@_GO_ARCH) go build $(BUILD_FLAGS) .
 
+# Clone a bats repository at the given tag, replacing any existing checkout of another version.
+# Usage: $(call bats_install,<repository>,<tag>)
+define bats_install
+	@echo "Prepare $(1) repo"
+	@[ "$$(git -C $(BATS_SOURCE_DIR)/$(1) describe --tags --exact-match 2>/dev/null)" = "$(2)" ] \
+	  || { rm -rf $(BATS_SOURCE_DIR)/$(1) \
+	       && git -c advice.detachedHead=false clone --quiet -b $(2) --depth 1 https://github.com/bats-core/$(1) $(BATS_SOURCE_DIR)/$(1); }
+endef
+
 .PHONY: bats bats-clean bats-tester bats-tester-ci
 bats: ## Install bats and libraries in the project itself
-	@echo "Prepare bats-core repo"
-	@[ -d $(BATS_SOURCE_DIR)/bats-core ] \
-	  || git -c advice.detachedHead=false clone --quiet -b $(BATS_CORE_VERSION) --depth 1 https://github.com/bats-core/bats-core \
-	     $(BATS_SOURCE_DIR)/bats-core
-	@echo "Prepare bats-assert repo"
-	@[ -d $(BATS_SOURCE_DIR)/bats-assert ] \
-	  || git -c advice.detachedHead=false clone --quiet -b $(BATS_ASSERT_VERSION) --depth 1 https://github.com/bats-core/bats-assert \
-	     $(BATS_SOURCE_DIR)/bats-assert
-	@echo "Prepare bats-support repo"
-	@[ -d $(BATS_SOURCE_DIR)/bats-support ] \
-	  || git -c advice.detachedHead=false clone --quiet -b $(BATS_SUPPORT_VERSION) --depth 1 https://github.com/bats-core/bats-support \
-	     $(BATS_SOURCE_DIR)/bats-support
-	@echo "Prepare bats-file repo"
-	@[ -d $(BATS_SOURCE_DIR)/bats-file ] \
-	  || git -c advice.detachedHead=false clone --quiet -b $(BATS_FILE_VERSION) --depth 1 https://github.com/bats-core/bats-file \
-	     $(BATS_SOURCE_DIR)/bats-file
+	$(call bats_install,bats-core,$(BATS_CORE_VERSION))
+	$(call bats_install,bats-assert,$(BATS_ASSERT_VERSION))
+	$(call bats_install,bats-support,$(BATS_SUPPORT_VERSION))
+	$(call bats_install,bats-file,$(BATS_FILE_VERSION))
 
 bats-clean:
 	@echo "Cleaning bats directories"
