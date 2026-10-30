@@ -1,6 +1,8 @@
 #!/bin/bash
 # DRY_RUN is true by default - script will not push to registry
 source .buildkite/scripts/tooling.sh
+source .buildkite/scripts/pre-install-command.sh
+source .buildkite/scripts/publish.helpers.sh
 
 set -euo pipefail
 
@@ -49,6 +51,11 @@ else
     echo "FIPS source image is not available yet, skipping: ${FIPS_SOURCE_IMAGE}"
 fi
 
+# Images pushed to DOCKER_IMAGE_RENAMED, to be signed. The signature is stored in the image
+# repository, so it does not follow the retag from DOCKER_IMAGE (already signed when it was built)
+# to DOCKER_IMAGE_RENAMED.
+SIGNING_IMAGES=()
+
 echo "Docker retag"
 docker buildx create --use
 
@@ -79,8 +86,27 @@ for image in "${DOCKER_IMAGE_TARGETS[@]}"; do
         else
             retry 3 docker buildx imagetools create -t "${target_image}" "${source_image}"
             echo "Docker image pushed: ${target_image}"
+            if [[ -n "${DOCKER_IMAGE_RENAMED:-""}" && "${image}" == "${DOCKER_IMAGE_RENAMED}" ]]; then
+                SIGNING_IMAGES+=("${target_image}")
+            fi
         fi
     done
 done
+
+# Upload the digests of the pushed images for the unified-release-container-image-signing pipeline,
+# one artifact per distribution. crane reads the digests from the registry, so it is only installed
+# and used when images have been pushed.
+if [[ ${#SIGNING_IMAGES[@]} -gt 0 ]]; then
+    with_crane
+
+    DIGEST_FILE="package-registry-distribution-${TAG_NAME}-images-digest.txt"
+    : > "${DIGEST_FILE}"
+    for target_image in "${SIGNING_IMAGES[@]}"; do
+        write_image_digest_file "${target_image}" "${DIGEST_FILE}.tmp"
+        cat "${DIGEST_FILE}.tmp" >> "${DIGEST_FILE}"
+    done
+    rm -f "${DIGEST_FILE}.tmp"
+    retry 5 buildkite-agent artifact upload "${DIGEST_FILE}"
+fi
 
 buildkite-agent meta-data set "fips-distribution-${TAG_NAME}-available" "${FIPS_SOURCE_AVAILABLE}"
