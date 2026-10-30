@@ -5,3 +5,8 @@ cmd/distribution/distribution
 .idea
 *.iml
 build
+
+# Bash test framework BATS
+# Folders defined in the Makefile
+bats_tests/
+tmp_bats_exec/

@@ -4,6 +4,7 @@ env:
   SETUP_GVM_VERSION: "v0.6.0" # https://github.com/andrewkroh/gvm/issues/44#issuecomment-1013231151
   SETUP_MAGE_VERSION: "1.15.0"
   JQ_VERSION: "1.7"
+  CRANE_VERSION: "v0.22.1"
   DOCKER_IMG: "docker.elastic.co/package-registry/package-registry"
   DOCKER_IMG_PR: "docker.elastic.co/observability-ci/package-registry"
   # Agent images used in pipeline steps
@@ -29,6 +30,17 @@ steps:
       image: "${LINUX_GOLANG_AGENT_IMAGE}"
       cpu: "8"
       memory: "4G"
+
+  - label: ":bash: Test CI scripts (bats)"
+    key: bats-tests
+    command:
+      - "make bats-tester-ci"
+    agents:
+      image: "${LINUX_GOLANG_AGENT_IMAGE}"
+      cpu: "4"
+      memory: "2G"
+    artifact_paths:
+      - "build/test-results/TEST-bats.xml"
 
   - label: ":wrench: Smoke tests running EPR with fake GCS server"
     key: smoke-test-fake-gcs-server
@@ -125,6 +137,38 @@ steps:
           # This step lasts more than 10 minutes, so the Vault token could have expired when the
           # plugin runs its pre-exit hook. The credentials are removed in .buildkite/hooks/pre-exit
           disable_logout: true
+
+  - trigger: unified-release-container-image-signing
+    label: ":key: Sign release container images"
+    key: "sign-release-container-images"
+    async: false
+    build:
+      env:
+        ARTIFACT_PATTERN: "package-registry-*-images-digest.txt"
+        UPLOAD_SIGNATURE: "true"
+        IMAGES_TAG: "${BUILDKITE_TAG}"
+    depends_on:
+      - step: "publish"
+        allow_failure: false
+    # Tag builds are public; sign them with the released version as the cosign tag annotation.
+    if: build.tag != null
+
+  - trigger: unified-release-container-image-signing
+    label: ":key: Sign branch container images"
+    key: "sign-branch-container-images"
+    async: false
+    build:
+      env:
+        ARTIFACT_PATTERN: "package-registry-*-images-digest.txt"
+        UPLOAD_SIGNATURE: "true"
+        IMAGES_TAG: "${BUILDKITE_BRANCH}-${BUILDKITE_COMMIT}"
+    depends_on:
+      - step: "publish"
+        allow_failure: false
+    # Non-PR branch builds (e.g. main) are public too; sign them with a controlled
+    # <branch>-<commit> cosign tag annotation. PR images are not signed. The
+    # BUILDKITE_PULL_REQUEST check matches the one publish.sh uses to gate signing.
+    if: build.tag == null && build.env('BUILDKITE_PULL_REQUEST') == 'false'
 
   - trigger: unified-release-copy-elastic-images-to-dockerhub
     label: ":docker: Copy release images to Docker Hub"
