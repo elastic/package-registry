@@ -11,3 +11,8 @@ build
 public
 testdata
 docs
+
+# Bats working directories and test reports
+bats_tests
+tmp_bats_exec
+tests-report-*.xml
