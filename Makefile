@@ -43,9 +43,9 @@ $(PLATFORM_TARGETS): release-%:
 # Usage: $(call bats_install,<repository>,<tag>)
 define bats_install
 	@echo "Prepare $(1) repo"
-	@[ "$$(git -C $(BATS_SOURCE_DIR)/$(1) describe --tags --exact-match 2>/dev/null)" = "$(2)" ] \
-	  || { rm -rf $(BATS_SOURCE_DIR)/$(1) \
-	       && git -c advice.detachedHead=false clone --quiet -b $(2) --depth 1 https://github.com/bats-core/$(1) $(BATS_SOURCE_DIR)/$(1); }
+	@[ "$$(git -C "$(BATS_SOURCE_DIR)/$(1)" describe --tags --exact-match 2>/dev/null)" = "$(2)" ] \
+	  || { rm -rf "$(BATS_SOURCE_DIR)/$(1)" \
+	       && git -c advice.detachedHead=false clone --quiet -b $(2) --depth 1 https://github.com/bats-core/$(1) "$(BATS_SOURCE_DIR)/$(1)"; }
 endef
 
 .PHONY: bats bats-clean bats-tester bats-tester-ci
@@ -57,24 +57,24 @@ bats: ## Install bats and libraries in the project itself
 
 bats-clean:
 	@echo "Cleaning bats directories"
-	rm -rf $(BATS_SOURCE_DIR)
-	rm -rf $(BATS_WORK_DIR_TESTS)
+	rm -rf "$(BATS_SOURCE_DIR)"
+	rm -rf "$(BATS_WORK_DIR_TESTS)"
 
 bats-tester-ci: bats
 	@echo "Running tests bats"
-	@rm -rf $(BATS_WORK_DIR_TESTS)
-	@mkdir -p $(BATS_WORK_DIR_TESTS)
-	@cd $(BATS_WORK_DIR_TESTS) && \
-	  $(BATS_SOURCE_DIR)/bats-core/bin/bats --formatter pretty --report-formatter junit --output $(BATS_WORK_DIR_TESTS) $(CURDIR)/.buildkite/scripts/tests; \
+	@rm -rf "$(BATS_WORK_DIR_TESTS)"
+	@mkdir -p "$(BATS_WORK_DIR_TESTS)"
+	@cd "$(BATS_WORK_DIR_TESTS)" && \
+	  "$(BATS_SOURCE_DIR)/bats-core/bin/bats" --formatter pretty --report-formatter junit --output "$(BATS_WORK_DIR_TESTS)" "$(CURDIR)/.buildkite/scripts/tests"; \
 	  status=$$?; \
-	  if [ -f report.xml ]; then mv report.xml $(CURDIR)/tests-report-bats.xml; fi; \
-	  cd $(CURDIR) && rm -rf $(BATS_WORK_DIR_TESTS); \
+	  if [ -f report.xml ]; then mv report.xml "$(CURDIR)/tests-report-bats.xml"; fi; \
+	  cd "$(CURDIR)" && rm -rf "$(BATS_WORK_DIR_TESTS)"; \
 	  exit $$status
 
 bats-tester: bats
 	@echo "Running tests bats"
 	@rm -rf "$(BATS_WORK_DIR_TESTS)"
-	@mkdir -p $(BATS_WORK_DIR_TESTS)
-	@cd $(BATS_WORK_DIR_TESTS) && \
-	  $(BATS_SOURCE_DIR)/bats-core/bin/bats --verbose-run --formatter pretty $(CURDIR)/.buildkite/scripts/tests
+	@mkdir -p "$(BATS_WORK_DIR_TESTS)"
+	@cd "$(BATS_WORK_DIR_TESTS)" && \
+	  "$(BATS_SOURCE_DIR)/bats-core/bin/bats" --verbose-run --formatter pretty "$(CURDIR)/.buildkite/scripts/tests"
 	@rm -rf "$(BATS_WORK_DIR_TESTS)"
