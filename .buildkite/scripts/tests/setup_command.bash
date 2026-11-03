@@ -14,8 +14,10 @@ _common_setup() {
 
     # tests write the code to run into command.sh and run it in a new shell with the same flags
     # used in the pipelines: run ${test_command}
+    # test_command is the name of a function so the path of the file (that could contain spaces
+    # if TMPDIR does) is kept as a single argument
     COMMAND_FILE="${BATS_TEST_TMPDIR}/command.sh"
-    export test_command="bash -e -u -o pipefail ${COMMAND_FILE}"
+    test_command="_run_command_file"
 
     # stubs of external commands, found before the real ones
     STUB_BIN="${BATS_TEST_TMPDIR}/bin"
@@ -34,6 +36,11 @@ EOF
 echo "ERROR: 'docker' called in a bats test without _mock_docker" >&2
 exit 1
 EOF
+}
+
+# Run COMMAND_FILE in a new shell with the same flags used in the pipelines.
+_run_command_file() {
+    bash -e -u -o pipefail "${COMMAND_FILE}"
 }
 
 # Create an executable stub in a directory that is first in PATH. The body is read from stdin.
