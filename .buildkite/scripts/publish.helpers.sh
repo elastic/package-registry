@@ -6,7 +6,8 @@
 # - pull requests are pushed to DOCKER_IMG_PR, using the tag PR-<number>
 # - other builds are pushed to DOCKER_IMG, using the branch name as tag
 # - if there is a git tag, it is used instead as tag
-# Sets DOCKER_NAMESPACE, TAG_NAME, DOCKER_IMG_TAG (commit) and DOCKER_IMG_TAG_BRANCH (rolling tag).
+# Sets DOCKER_NAMESPACE, TAG_NAME, DOCKER_IMG_TAG (commit), DOCKER_IMG_TAG_BRANCH (rolling/release
+# tag) and SIGN_IMAGE_REF (the reference the signing step resolves for this build).
 set_image_tags() {
 	if [[ "${BUILDKITE_PULL_REQUEST}" != "false" ]]; then
 		DOCKER_NAMESPACE="${DOCKER_IMG_PR}"
@@ -23,6 +24,16 @@ set_image_tags() {
 
 	DOCKER_IMG_TAG="${DOCKER_NAMESPACE}:${BUILDKITE_COMMIT}"
 	DOCKER_IMG_TAG_BRANCH="${DOCKER_NAMESPACE}:${TAG_NAME}"
+
+	# Reference the signing step resolves to find this build's image, chosen so a concurrent publish
+	# cannot make it read another build's digest: the commit tag on branch builds (unique among
+	# concurrent branch builds), the release tag on tag builds (pushed only by the tag build, and the
+	# image actually released). Signing is by digest, so this only has to resolve to the right image.
+	if [ -n "${BUILDKITE_TAG:-}" ]; then
+		SIGN_IMAGE_REF="${DOCKER_IMG_TAG_BRANCH}"
+	else
+		SIGN_IMAGE_REF="${DOCKER_IMG_TAG}"
+	fi
 }
 
 # Build and push the multi-platform image of a flavour. Requires set_image_tags to be called first.
@@ -40,17 +51,18 @@ build_push_docker_image() {
 	local go_version
 	go_version=$(cat .go-version)
 
-	# Branch builds push the commit tag (:<commit>) alongside the rolling tag so the signing step has
-	# an immutable, build-unique reference to resolve. Tag builds push only the release tag (:<tag>):
-	# the commit image already exists from the branch build, and re-pushing it would overwrite it with
-	# a freshly built (different) digest; the released :<tag> image is the one we sign.
-	local tag_args=()
-	local pushed_tags="${docker_img_tag_branch}"
+	# Branch and PR builds push the commit tag alongside the branch/PR tag; tag builds push only the
+	# release tag (the commit image already exists from the branch build, and re-pushing it would
+	# overwrite it with a different rebuilt digest). See set_image_tags for how signing picks a ref.
+	local push_tags=("${docker_img_tag_branch}")
 	if [[ -z "${BUILDKITE_TAG:-}" ]]; then
-		tag_args+=(-t "${docker_img_tag}")
-		pushed_tags="${docker_img_tag} ${docker_img_tag_branch}"
+		push_tags=("${docker_img_tag}" "${docker_img_tag_branch}")
 	fi
-	tag_args+=(-t "${docker_img_tag_branch}")
+
+	local tag_args=() tag
+	for tag in "${push_tags[@]}"; do
+		tag_args+=(-t "${tag}")
+	done
 
 	docker buildx create --use
 
@@ -68,7 +80,7 @@ build_push_docker_image() {
 		--label TIMESTAMP="$(date +%Y-%m-%d_%H:%M)" \
 		.
 
-	echo "Docker images pushed: ${pushed_tags}"
+	echo "Docker images pushed: ${push_tags[*]}"
 }
 
 # Resolve the digest of an image already pushed to the registry and write
@@ -98,29 +110,15 @@ write_image_digest_file() {
 
 # Resolve the digest of a flavour just pushed to the registry and upload its digest file as a
 # Buildkite artifact, so the unified-release-container-image-signing pipeline can collect it with
-# the "package-registry-*-images-digest.txt" glob. Requires set_image_tags to have run and crane
-# to be installed.
-#
-# A reference unique to this build is resolved, so a concurrent publish cannot make us read another
-# build's digest:
-#   - branch builds resolve the commit tag (DOCKER_IMG_TAG, :<commit>), unique among concurrent
-#     branch builds; the rolling :<branch> tag is repointed by every build and must not be resolved.
-#   - tag builds resolve the release tag (DOCKER_IMG_TAG_BRANCH, :<tag>), which only the tag build
-#     pushes and which is the image actually released (build_push_docker_image skips the commit tag
-#     on tag builds, so it is not a reliable reference there).
-# Signing is by digest, so the reference only has to resolve to the right image; the branch/release
-# name travels to signing separately as the IMAGES_TAG annotation in .buildkite/pipeline.yml.
+# the "package-registry-*-images-digest.txt" glob. Requires set_image_tags to have run (it picks
+# SIGN_IMAGE_REF) and crane to be installed. Signing is by digest; the branch/release name reaches
+# signing separately as the IMAGES_TAG annotation in .buildkite/pipeline.yml.
 #
 # Usage: upload_image_digest_for_signing <flavour> [<tag_suffix>]
 upload_image_digest_for_signing() {
 	local flavour="$1"
 	local tag_suffix="${2:-}"
-	local image_ref
-	if [[ -n "${BUILDKITE_TAG:-}" ]]; then
-		image_ref="${DOCKER_IMG_TAG_BRANCH}${tag_suffix}"
-	else
-		image_ref="${DOCKER_IMG_TAG}${tag_suffix}"
-	fi
+	local image_ref="${SIGN_IMAGE_REF}${tag_suffix}"
 	local digest_file="package-registry-${flavour}-images-digest.txt"
 
 	write_image_digest_file "${image_ref}" "${digest_file}"

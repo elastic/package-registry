@@ -15,16 +15,15 @@ setup() {
     # never reaches the network, and crane resolves to a fixed digest.
     export WORKSPACE="${BATS_TEST_TMPDIR}/workspace"
     mkdir -p "${WORKSPACE}"
-    _mock_crane_install "sha256:deadbeef"
+    export CRANE_STUB_DIGEST="sha256:deadbeef"
+    _install_fake_crane
     _mock_buildkite_agent
 }
 
 # publish.sh writes the digest files in the working directory (the repository root); remove them so
 # they do not linger as untracked files.
 teardown() {
-    rm -f package-registry-base-images-digest.txt \
-          package-registry-ubi-images-digest.txt \
-          package-registry-fips-images-digest.txt
+    rm -f package-registry-*-images-digest.txt
 }
 
 @test "publish builds and pushes the three flavours in order" {
