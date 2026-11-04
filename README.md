@@ -209,8 +209,10 @@ How it works:
 2. A trigger step in [`pipeline.yml`](.buildkite/pipeline.yml) starts
    `unified-release-container-image-signing`, depending on the `publish` step so
    it runs after the digest artifacts have been uploaded. cosign signs by digest
-   with `--recursive` (the index and its child manifests); the commit tag and the
-   branch/tag share the same index digest, so each flavour is signed once.
+   with `--recursive` (the index and its child manifests). On branch builds the
+   commit tag and the branch tag point to the same index digest, so signing that
+   digest covers both; tag builds push and sign only the release-tagged image.
+   Either way each flavour is signed once.
 
 The signing pipeline is configured through these environment variables on the
 triggered build:
