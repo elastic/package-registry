@@ -94,7 +94,9 @@ with_crane() {
     mkdir -p "${tmp_folder}"
     local tar_filepath="${tmp_folder}/crane.tar.gz"
 
-    retry 5 curl -sSL -o "${tar_filepath}" "https://github.com/google/go-containerregistry/releases/download/${CRANE_VERSION}/${binary}"
+    # --fail makes curl exit non-zero on HTTP errors (e.g. 429/503) so the retry loop
+    # catches them, instead of saving the error body and letting tar fail on it.
+    retry 5 curl --fail -sSL -o "${tar_filepath}" "https://github.com/google/go-containerregistry/releases/download/${CRANE_VERSION}/${binary}"
     tar -C "${WORKSPACE}/bin" -xpf "${tar_filepath}" crane
     chmod +x "${WORKSPACE}/bin/crane"
     rm -rf "${tmp_folder}"

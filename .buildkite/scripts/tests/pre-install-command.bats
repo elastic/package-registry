@@ -61,6 +61,8 @@ EOF
     assert_output --partial "fake crane v0.0.1"
     run cat "${CURL_ARGS_FILE}"
     assert_output --partial "https://github.com/google/go-containerregistry/releases/download/v0.0.1/go-containerregistry_Linux_x86_64.tar.gz"
+    # --fail is required so HTTP errors reach the retry loop instead of being saved as the tarball.
+    assert_output --partial "--fail"
 }
 
 @test "with_crane downloads the pinned version for linux arm64" {
