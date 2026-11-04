@@ -257,18 +257,21 @@ EOF
     _mock_buildkite_agent
     _run_upload_digest "base" ""
     assert_success
-    assert_equal "$(cat "${UPLOAD_WORKDIR}/package-registry-base-images-digest.txt")" "${DOCKER_IMG}:main@sha256:abc123"
+    assert_equal "$(cat "${UPLOAD_WORKDIR}/package-registry-base-images-digest.txt")" "${DOCKER_IMG}:abc123@sha256:abc123"
     assert_equal "$(cat "${BUILDKITE_AGENT_CALLS_FILE}")" "artifact upload package-registry-base-images-digest.txt"
 }
 
-@test "upload_image_digest_for_signing uses the git tag and the flavour suffix in the reference" {
+# The digest reference uses the commit tag, not the git tag, even on tag builds: a concurrent build
+# could repoint the rolling tag, so the commit tag is the only reference guaranteed to resolve to
+# this build's image. The git tag reaches signing via the IMAGES_TAG annotation, not this file.
+@test "upload_image_digest_for_signing uses the commit tag and the flavour suffix in the reference" {
     _set_buildkite_env main false v1.2.3
     _mock_crane "sha256:abc123"
     _mock_buildkite_agent
     _run_upload_digest "fips" "-fips"
     assert_success
-    assert_equal "$(cat "${UPLOAD_WORKDIR}/package-registry-fips-images-digest.txt")" "${DOCKER_IMG}:v1.2.3-fips@sha256:abc123"
-    assert_equal "$(cat "${CRANE_CALLS_FILE}.args")" "digest ${DOCKER_IMG}:v1.2.3-fips"
+    assert_equal "$(cat "${UPLOAD_WORKDIR}/package-registry-fips-images-digest.txt")" "${DOCKER_IMG}:abc123-fips@sha256:abc123"
+    assert_equal "$(cat "${CRANE_CALLS_FILE}.args")" "digest ${DOCKER_IMG}:abc123-fips"
 }
 
 # The signing trigger step in .buildkite/pipeline.yml collects the digest files with a glob

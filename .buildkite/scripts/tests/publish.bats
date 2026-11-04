@@ -75,10 +75,10 @@ teardown() {
     run bash .buildkite/scripts/publish.sh
     assert_success
 
-    # one digest file per flavour, referencing the rolling tag and the resolved digest
-    assert_equal "$(cat package-registry-base-images-digest.txt)" "${DOCKER_IMG}:main@sha256:deadbeef"
-    assert_equal "$(cat package-registry-ubi-images-digest.txt)" "${DOCKER_IMG}:main-ubi@sha256:deadbeef"
-    assert_equal "$(cat package-registry-fips-images-digest.txt)" "${DOCKER_IMG}:main-fips@sha256:deadbeef"
+    # one digest file per flavour, referencing the commit tag and the resolved digest
+    assert_equal "$(cat package-registry-base-images-digest.txt)" "${DOCKER_IMG}:abc123@sha256:deadbeef"
+    assert_equal "$(cat package-registry-ubi-images-digest.txt)" "${DOCKER_IMG}:abc123-ubi@sha256:deadbeef"
+    assert_equal "$(cat package-registry-fips-images-digest.txt)" "${DOCKER_IMG}:abc123-fips@sha256:deadbeef"
 
     # each digest file uploaded as a buildkite artifact
     run cat "${BUILDKITE_AGENT_CALLS_FILE}"
@@ -87,15 +87,18 @@ teardown() {
     assert_line "artifact upload package-registry-fips-images-digest.txt"
 }
 
-@test "publish signs tag builds using the git tag in the digest reference" {
+# Tag builds sign by the commit reference too; the git tag does not leak into the digest files (it
+# reaches signing as the IMAGES_TAG annotation in pipeline.yml). This guards against the commit tag
+# being swapped back for the rolling/release tag, which a concurrent build could repoint.
+@test "publish signs tag builds using the commit in the digest reference" {
     _set_buildkite_env main false v1.2.3
 
     run bash .buildkite/scripts/publish.sh
     assert_success
 
-    assert_equal "$(cat package-registry-base-images-digest.txt)" "${DOCKER_IMG}:v1.2.3@sha256:deadbeef"
-    assert_equal "$(cat package-registry-ubi-images-digest.txt)" "${DOCKER_IMG}:v1.2.3-ubi@sha256:deadbeef"
-    assert_equal "$(cat package-registry-fips-images-digest.txt)" "${DOCKER_IMG}:v1.2.3-fips@sha256:deadbeef"
+    assert_equal "$(cat package-registry-base-images-digest.txt)" "${DOCKER_IMG}:abc123@sha256:deadbeef"
+    assert_equal "$(cat package-registry-ubi-images-digest.txt)" "${DOCKER_IMG}:abc123-ubi@sha256:deadbeef"
+    assert_equal "$(cat package-registry-fips-images-digest.txt)" "${DOCKER_IMG}:abc123-fips@sha256:deadbeef"
 }
 
 @test "publish does not sign pull request builds" {

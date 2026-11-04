@@ -88,14 +88,20 @@ write_image_digest_file() {
 # Resolve the digest of a flavour just pushed to the registry and upload its digest file as a
 # Buildkite artifact, so the unified-release-container-image-signing pipeline can collect it with
 # the "package-registry-*-images-digest.txt" glob. Requires set_image_tags to have run and crane
-# to be installed. The rolling/release tag and the commit tag share one digest, so a single
-# reference per flavour is reported (using the rolling/release tag).
+# to be installed.
+#
+# The commit tag (DOCKER_IMG_TAG) is resolved, not the rolling/release tag (DOCKER_IMG_TAG_BRANCH):
+# both point to this build's image, but the commit tag is unique to this build, while a concurrent
+# branch build (main is never cancelled/skipped) can repoint the rolling tag between the push and
+# this lookup, which would make us sign another build's image. Signing is by digest, so the commit
+# reference resolves to the right digest regardless; the release/branch name travels to signing
+# separately as the IMAGES_TAG annotation in .buildkite/pipeline.yml.
 #
 # Usage: upload_image_digest_for_signing <flavour> [<tag_suffix>]
 upload_image_digest_for_signing() {
 	local flavour="$1"
 	local tag_suffix="${2:-}"
-	local image_ref="${DOCKER_IMG_TAG_BRANCH}${tag_suffix}"
+	local image_ref="${DOCKER_IMG_TAG}${tag_suffix}"
 	local digest_file="package-registry-${flavour}-images-digest.txt"
 
 	write_image_digest_file "${image_ref}" "${digest_file}"
