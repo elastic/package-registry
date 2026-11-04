@@ -188,32 +188,32 @@ EOF
 }
 
 @test "write_image_digest_file writes the image reference with its digest" {
-    _mock_crane "sha256:abc123"
+    _mock_crane "sha256:feedface"
     _run_write_digest
     assert_success
-    assert_output --partial "${IMAGE_REF}@sha256:abc123"
-    assert_equal "$(cat "${DIGEST_FILE}")" "${IMAGE_REF}@sha256:abc123"
+    assert_output --partial "${IMAGE_REF}@sha256:feedface"
+    assert_equal "$(cat "${DIGEST_FILE}")" "${IMAGE_REF}@sha256:feedface"
     assert_equal "$(cat "${CRANE_CALLS_FILE}.args")" "digest ${IMAGE_REF}"
 }
 
 @test "write_image_digest_file overwrites an existing digest file" {
-    _mock_crane "sha256:abc123"
+    _mock_crane "sha256:feedface"
     echo "old content" > "${DIGEST_FILE}"
     _run_write_digest
     assert_success
-    assert_equal "$(cat "${DIGEST_FILE}")" "${IMAGE_REF}@sha256:abc123"
+    assert_equal "$(cat "${DIGEST_FILE}")" "${IMAGE_REF}@sha256:feedface"
 }
 
 @test "write_image_digest_file retries when crane fails temporarily" {
-    _mock_crane "sha256:abc123" 2
+    _mock_crane "sha256:feedface" 2
     _run_write_digest
     assert_success
     assert_equal "$(head -1 "${CRANE_CALLS_FILE}")" "3"
-    assert_equal "$(cat "${DIGEST_FILE}")" "${IMAGE_REF}@sha256:abc123"
+    assert_equal "$(cat "${DIGEST_FILE}")" "${IMAGE_REF}@sha256:feedface"
 }
 
 @test "write_image_digest_file fails when crane keeps failing" {
-    _mock_crane "sha256:abc123" 100
+    _mock_crane "sha256:feedface" 100
     _run_write_digest
     assert_failure
     assert_output --partial "ERROR: could not resolve digest for ${IMAGE_REF}"
@@ -253,11 +253,11 @@ EOF
 
 @test "upload_image_digest_for_signing writes and uploads the flavour digest file" {
     _set_buildkite_env main false
-    _mock_crane "sha256:abc123"
+    _mock_crane "sha256:feedface"
     _mock_buildkite_agent
     _run_upload_digest "base" ""
     assert_success
-    assert_equal "$(cat "${UPLOAD_WORKDIR}/package-registry-base-images-digest.txt")" "${DOCKER_IMG}:abc123@sha256:abc123"
+    assert_equal "$(cat "${UPLOAD_WORKDIR}/package-registry-base-images-digest.txt")" "${DOCKER_IMG}:abc123@sha256:feedface"
     assert_equal "$(cat "${BUILDKITE_AGENT_CALLS_FILE}")" "artifact upload package-registry-base-images-digest.txt"
 }
 
@@ -266,11 +266,11 @@ EOF
 # this build's image. The git tag reaches signing via the IMAGES_TAG annotation, not this file.
 @test "upload_image_digest_for_signing uses the commit tag and the flavour suffix in the reference" {
     _set_buildkite_env main false v1.2.3
-    _mock_crane "sha256:abc123"
+    _mock_crane "sha256:feedface"
     _mock_buildkite_agent
     _run_upload_digest "fips" "-fips"
     assert_success
-    assert_equal "$(cat "${UPLOAD_WORKDIR}/package-registry-fips-images-digest.txt")" "${DOCKER_IMG}:abc123-fips@sha256:abc123"
+    assert_equal "$(cat "${UPLOAD_WORKDIR}/package-registry-fips-images-digest.txt")" "${DOCKER_IMG}:abc123-fips@sha256:feedface"
     assert_equal "$(cat "${CRANE_CALLS_FILE}.args")" "digest ${DOCKER_IMG}:abc123-fips"
 }
 
@@ -279,7 +279,7 @@ EOF
 # the two sides cannot drift apart silently (a renamed digest file or an edited pattern breaks it).
 @test "the signing ARTIFACT_PATTERN matches the artifact that upload_image_digest_for_signing uploads" {
     _set_buildkite_env main false
-    _mock_crane "sha256:abc123"
+    _mock_crane "sha256:feedface"
     _mock_buildkite_agent
     _run_upload_digest "base" ""
     assert_success
