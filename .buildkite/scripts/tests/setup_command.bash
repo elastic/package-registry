@@ -14,8 +14,10 @@ _common_setup() {
 
     # tests write the code to run into command.sh and run it in a new shell with the same flags
     # used in the pipelines: run ${test_command}
+    # test_command is the name of a function so the path of the file (that could contain spaces
+    # if TMPDIR does) is kept as a single argument
     COMMAND_FILE="${BATS_TEST_TMPDIR}/command.sh"
-    export test_command="bash -e -u -o pipefail ${COMMAND_FILE}"
+    test_command="_run_command_file"
 
     # stubs of external commands, found before the real ones
     STUB_BIN="${BATS_TEST_TMPDIR}/bin"
@@ -40,6 +42,11 @@ exit 1
 EOF
 }
 
+# Run COMMAND_FILE in a new shell with the same flags used in the pipelines.
+_run_command_file() {
+    bash -e -u -o pipefail "${COMMAND_FILE}"
+}
+
 # Create an executable stub in a directory that is first in PATH. The body is read from stdin.
 #
 # Usage: _create_stub <command_name> <<'EOF' ... EOF
@@ -57,7 +64,6 @@ _create_stub() {
 _set_publish_env() {
     export DOCKER_IMG="docker.elastic.co/package-registry/package-registry"
     export DOCKER_IMG_PR="docker.elastic.co/observability-ci/package-registry"
-    export SETUP_GOLANG_VERSION="1.2.3"
 }
 
 # Variables set by the Buildkite agent for a build. They must be set explicitly by each test, the

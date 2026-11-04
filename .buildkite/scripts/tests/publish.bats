@@ -53,6 +53,7 @@ teardown() {
     assert_line --index 0 --partial "-t ${DOCKER_IMG_PR}:abc123 -t ${DOCKER_IMG_PR}:PR-123 --build-arg"
     assert_line --index 1 --partial "-t ${DOCKER_IMG_PR}:abc123-ubi -t ${DOCKER_IMG_PR}:PR-123-ubi --build-arg"
     assert_line --index 2 --partial "-t ${DOCKER_IMG_PR}:abc123-fips -t ${DOCKER_IMG_PR}:PR-123-fips --build-arg"
+    assert_equal "${#lines[@]}" "3"
     refute_output --partial "${DOCKER_IMG}:"
 }
 
@@ -118,8 +119,9 @@ teardown() {
     run bash .buildkite/scripts/publish.sh
     assert_failure 1
 
-    run grep -c "^buildx build" "${DOCKER_CALLS_FILE}"
-    assert_output "3"
-    run grep -c -- "-ubi" "${DOCKER_CALLS_FILE}"
-    assert_output "0"
+    # 3 attempts of the base flavour, the number of attempts of "retry" in publish.helpers.sh
+    run grep "^buildx build" "${DOCKER_CALLS_FILE}"
+    assert_success
+    assert_equal "${#lines[@]}" "3"
+    refute_output --partial "abc123-ubi"
 }
