@@ -30,6 +30,17 @@ steps:
       cpu: "8"
       memory: "4G"
 
+  - label: ":bash: Test CI scripts (bats)"
+    key: bats-tests
+    command:
+      - "make bats-tester-ci"
+    agents:
+      image: "${LINUX_GOLANG_AGENT_IMAGE}"
+      cpu: "4"
+      memory: "2G"
+    artifact_paths:
+      - "tests-report-bats.xml"
+
   - label: ":wrench: Smoke tests running EPR with fake GCS server"
     key: smoke-test-fake-gcs-server
     command:
@@ -92,6 +103,8 @@ steps:
           always-annotate: true
           run-in-docker: false
     depends_on:
+      - step: "bats-tests"
+        allow_failure: true
       - step: "test-linux"
         allow_failure: true
       - step: "test-win"
