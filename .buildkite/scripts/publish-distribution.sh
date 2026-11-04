@@ -24,32 +24,7 @@ DOCKER_IMAGE_TARGETS=("${DOCKER_IMAGE}")
 if [[ -n "${DOCKER_IMAGE_RENAMED:-""}" ]]; then
     DOCKER_IMAGE_TARGETS+=("${DOCKER_IMAGE_RENAMED}")
 fi
-IMAGE_SUFFIXES=("" "-ubi")
-
-# Slim distributions do not exist until the first build that includes them.
-# Skip the whole retag during that transition.
-if [[ "${TAG_NAME}" == *-slim ]]; then
-    if retry 3 docker buildx imagetools inspect "${DOCKER_IMG_SOURCE}" > /dev/null; then
-        buildkite-agent meta-data set "slim-distribution-${TAG_NAME}-available" "true"
-    else
-        echo "Slim source image is not available yet, skipping: ${DOCKER_IMG_SOURCE}"
-        buildkite-agent meta-data set "slim-distribution-${TAG_NAME}-available" "false"
-        buildkite-agent meta-data set "fips-distribution-${TAG_NAME}-available" "false"
-        exit 0
-    fi
-fi
-
-FIPS_SOURCE_IMAGE="${DOCKER_IMG_SOURCE}-fips"
-FIPS_SOURCE_AVAILABLE=false
-
-# The FIPS distribution source does not exist until the first release that
-# includes a FIPS package-registry image. Skip it during that transition.
-if retry 3 docker buildx imagetools inspect "${FIPS_SOURCE_IMAGE}" > /dev/null; then
-    IMAGE_SUFFIXES+=("-fips")
-    FIPS_SOURCE_AVAILABLE=true
-else
-    echo "FIPS source image is not available yet, skipping: ${FIPS_SOURCE_IMAGE}"
-fi
+IMAGE_SUFFIXES=("" "-ubi" "-fips")
 
 # Images pushed to DOCKER_IMAGE_RENAMED, to be signed. The signature is stored in the image
 # repository, so it does not follow the retag from DOCKER_IMAGE (already signed when it was built)
@@ -108,5 +83,3 @@ if [[ ${#SIGNING_IMAGES[@]} -gt 0 ]]; then
     rm -f "${DIGEST_FILE}.tmp"
     retry 5 buildkite-agent artifact upload "${DIGEST_FILE}"
 fi
-
-buildkite-agent meta-data set "fips-distribution-${TAG_NAME}-available" "${FIPS_SOURCE_AVAILABLE}"

@@ -37,6 +37,7 @@ build_push_docker_image() {
 	fi
 	local docker_img_tag="${DOCKER_IMG_TAG}${tag_suffix}"
 	local docker_img_tag_branch="${DOCKER_IMG_TAG_BRANCH}${tag_suffix}"
+	local go_version
 	go_version=$(cat .go-version)
 
 	docker buildx create --use
@@ -52,7 +53,7 @@ build_push_docker_image() {
 		--build-arg FIPS="${fips}" \
 		--label BRANCH_NAME="${TAG_NAME}" \
 		--label GIT_SHA="${BUILDKITE_COMMIT}" \
-		--label GO_VERSION="${SETUP_GOLANG_VERSION}" \
+		--label GO_VERSION="${go_version}" \
 		--label TIMESTAMP="$(date +%Y-%m-%d_%H:%M)" \
 		.
 

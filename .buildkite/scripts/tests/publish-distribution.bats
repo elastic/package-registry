@@ -53,8 +53,7 @@ teardown() {
     assert_line "artifact upload package-registry-distribution-production-images-digest.txt"
 }
 
-@test "publish-distribution signs the fips image when its source is available" {
-    # the stub of docker answers every "imagetools inspect" successfully, so the fips source exists
+@test "publish-distribution signs the fips image" {
     run bash .buildkite/scripts/publish-distribution.sh
     assert_success
 
