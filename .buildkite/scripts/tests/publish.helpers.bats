@@ -63,9 +63,10 @@ echo "${CRANE_STUB_DIGEST}"
 EOF
 }
 
-# Print the "docker buildx build" call of a flavour, identified by the suffix of its tags.
+# Print the "docker buildx build" call recorded under test. Each test here builds a single flavour,
+# so the one buildx build line is unambiguous (the tag suffix is asserted by the caller).
 _build_call() {
-    grep -F -- "-t ${DOCKER_IMG}:${BUILDKITE_COMMIT}$1 -t " "${DOCKER_CALLS_FILE}"
+    grep -F -- "buildx build --push" "${DOCKER_CALLS_FILE}"
 }
 
 # Write the command file that resolves and uploads the digest of a flavour, run from a scratch dir
@@ -148,14 +149,16 @@ EOF
     assert_output --partial "--build-arg RUNNER_IMAGE=docker.elastic.co/wolfi/chainguard-base-fips --build-arg FIPS=1"
 }
 
-@test "build_push_docker_image labels the image with the git tag when building a tag" {
+@test "build_push_docker_image pushes only the git tag when building a tag" {
     _set_buildkite_env main false v1.2.3
     _mock_docker
     _run_build_push "docker.elastic.co/wolfi/chainguard-base" ""
     assert_success
     run _build_call ""
-    assert_output --partial "-t ${DOCKER_IMG}:abc123 -t ${DOCKER_IMG}:v1.2.3 --build-arg"
+    assert_output --partial "-t ${DOCKER_IMG}:v1.2.3 --build-arg"
     assert_output --partial "--label BRANCH_NAME=v1.2.3"
+    # the commit tag is not re-pushed on tag builds (it already exists from the branch build)
+    refute_output --partial "${DOCKER_IMG}:abc123"
 }
 
 @test "build_push_docker_image retries a failed build" {
@@ -261,17 +264,16 @@ EOF
     assert_equal "$(cat "${BUILDKITE_AGENT_CALLS_FILE}")" "artifact upload package-registry-base-images-digest.txt"
 }
 
-# The digest reference uses the commit tag, not the git tag, even on tag builds: a concurrent build
-# could repoint the rolling tag, so the commit tag is the only reference guaranteed to resolve to
-# this build's image. The git tag reaches signing via the IMAGES_TAG annotation, not this file.
-@test "upload_image_digest_for_signing uses the commit tag and the flavour suffix in the reference" {
+# Tag builds resolve the release tag (:<tag>): only the tag build pushes it and it is the released
+# image, so it is a reliable, build-unique reference. Branch builds resolve the commit tag instead.
+@test "upload_image_digest_for_signing uses the git tag and the flavour suffix on tag builds" {
     _set_buildkite_env main false v1.2.3
     _mock_crane "sha256:feedface"
     _mock_buildkite_agent
     _run_upload_digest "fips" "-fips"
     assert_success
-    assert_equal "$(cat "${UPLOAD_WORKDIR}/package-registry-fips-images-digest.txt")" "${DOCKER_IMG}:abc123-fips@sha256:feedface"
-    assert_equal "$(cat "${CRANE_CALLS_FILE}.args")" "digest ${DOCKER_IMG}:abc123-fips"
+    assert_equal "$(cat "${UPLOAD_WORKDIR}/package-registry-fips-images-digest.txt")" "${DOCKER_IMG}:v1.2.3-fips@sha256:feedface"
+    assert_equal "$(cat "${CRANE_CALLS_FILE}.args")" "digest ${DOCKER_IMG}:v1.2.3-fips"
 }
 
 # The signing trigger step in .buildkite/pipeline.yml collects the digest files with a glob

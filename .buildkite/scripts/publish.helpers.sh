@@ -40,13 +40,24 @@ build_push_docker_image() {
 	local go_version
 	go_version=$(cat .go-version)
 
+	# Branch builds push the commit tag (:<commit>) alongside the rolling tag so the signing step has
+	# an immutable, build-unique reference to resolve. Tag builds push only the release tag (:<tag>):
+	# the commit image already exists from the branch build, and re-pushing it would overwrite it with
+	# a freshly built (different) digest; the released :<tag> image is the one we sign.
+	local tag_args=()
+	local pushed_tags="${docker_img_tag_branch}"
+	if [[ -z "${BUILDKITE_TAG:-}" ]]; then
+		tag_args+=(-t "${docker_img_tag}")
+		pushed_tags="${docker_img_tag} ${docker_img_tag_branch}"
+	fi
+	tag_args+=(-t "${docker_img_tag_branch}")
+
 	docker buildx create --use
 
 	retry 3 docker buildx build --push \
 		--platform linux/amd64,linux/arm64/v8 \
 		--progress plain \
-		-t "${docker_img_tag}" \
-		-t "${docker_img_tag_branch}" \
+		"${tag_args[@]}" \
 		--build-arg GO_VERSION="${go_version}" \
 		--build-arg BUILDER_IMAGE=docker.elastic.co/wolfi/go \
 		--build-arg RUNNER_IMAGE="${runner_image}" \
@@ -57,7 +68,7 @@ build_push_docker_image() {
 		--label TIMESTAMP="$(date +%Y-%m-%d_%H:%M)" \
 		.
 
-	echo "Docker images pushed: ${docker_img_tag} ${docker_img_tag_branch}"
+	echo "Docker images pushed: ${pushed_tags}"
 }
 
 # Resolve the digest of an image already pushed to the registry and write
@@ -90,18 +101,26 @@ write_image_digest_file() {
 # the "package-registry-*-images-digest.txt" glob. Requires set_image_tags to have run and crane
 # to be installed.
 #
-# The commit tag (DOCKER_IMG_TAG) is resolved, not the rolling/release tag (DOCKER_IMG_TAG_BRANCH):
-# both point to this build's image, but the commit tag is unique to this build, while a concurrent
-# branch build (main is never cancelled/skipped) can repoint the rolling tag between the push and
-# this lookup, which would make us sign another build's image. Signing is by digest, so the commit
-# reference resolves to the right digest regardless; the release/branch name travels to signing
-# separately as the IMAGES_TAG annotation in .buildkite/pipeline.yml.
+# A reference unique to this build is resolved, so a concurrent publish cannot make us read another
+# build's digest:
+#   - branch builds resolve the commit tag (DOCKER_IMG_TAG, :<commit>), unique among concurrent
+#     branch builds; the rolling :<branch> tag is repointed by every build and must not be resolved.
+#   - tag builds resolve the release tag (DOCKER_IMG_TAG_BRANCH, :<tag>), which only the tag build
+#     pushes and which is the image actually released (build_push_docker_image skips the commit tag
+#     on tag builds, so it is not a reliable reference there).
+# Signing is by digest, so the reference only has to resolve to the right image; the branch/release
+# name travels to signing separately as the IMAGES_TAG annotation in .buildkite/pipeline.yml.
 #
 # Usage: upload_image_digest_for_signing <flavour> [<tag_suffix>]
 upload_image_digest_for_signing() {
 	local flavour="$1"
 	local tag_suffix="${2:-}"
-	local image_ref="${DOCKER_IMG_TAG}${tag_suffix}"
+	local image_ref
+	if [[ -n "${BUILDKITE_TAG:-}" ]]; then
+		image_ref="${DOCKER_IMG_TAG_BRANCH}${tag_suffix}"
+	else
+		image_ref="${DOCKER_IMG_TAG}${tag_suffix}"
+	fi
 	local digest_file="package-registry-${flavour}-images-digest.txt"
 
 	write_image_digest_file "${image_ref}" "${digest_file}"
