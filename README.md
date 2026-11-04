@@ -238,7 +238,7 @@ repository, so they do not follow a retag to another repository:
 
 | Image | Signed by |
 |---|---|
-| `package-registry/distribution` | Already signed when it is built (`package-storage-infra`), the release only retags it. |
+| `package-registry/distribution` | Already signed when it is built (`package-storage-infra`), the release only retags it — unless `SIGN_DISTRIBUTION_IMAGES=true` (see below), which also signs its stack-version tags here. |
 | `package-registry/package-registry-distribution` | The release distribution pipeline. |
 
 [`publish-distribution.sh`](.buildkite/scripts/publish-distribution.sh) uploads
@@ -247,6 +247,15 @@ distribution, and the `trigger-sign-release-images` step starts the signing pipe
 with `ARTIFACT_PATTERN=package-registry-distribution-*-images-digest.txt`,
 `UPLOAD_SIGNATURE=true` and `IMAGES_TAG` set to the released version. Nothing is
 signed on a dry run.
+
+By default only the `package-registry-distribution` repository is signed, because
+the original `package-registry/distribution` images are assumed to be signed
+upstream by `package-storage-infra`. Set `SIGN_DISTRIBUTION_IMAGES=true` (an
+environment variable on the `release-distribution` step) to also sign the
+stack-version tags (e.g. `:<version>`, `:<version>-ubi`, `:<version>-fips`) pushed
+to `package-registry/distribution`. A cosign signature is stored per repository and
+keyed by digest, so this adds explicit coverage for those tags rather than relying
+on the upstream signature.
 
 > [!IMPORTANT]
 > End-to-end signing requires the build pipelines (`package-registry` and

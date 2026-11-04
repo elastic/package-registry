@@ -26,15 +26,28 @@ if [[ -n "${DOCKER_IMAGE_RENAMED:-""}" ]]; then
 fi
 IMAGE_SUFFIXES=("" "-ubi" "-fips")
 
-# Images pushed to DOCKER_IMAGE_RENAMED, to be signed. The signature is stored in the image
-# repository, so it does not follow the retag from DOCKER_IMAGE (already signed when it was built)
-# to DOCKER_IMAGE_RENAMED.
+# SIGN_DISTRIBUTION_IMAGES (default false): also sign the stack-version tags pushed to the original
+# DOCKER_IMAGE repo (package-registry/distribution), not only DOCKER_IMAGE_RENAMED. A cosign signature
+# is stored per repository (keyed by digest) and does not follow the retag, so the renamed repo is
+# always signed here; the original distribution repo is assumed to be signed upstream by
+# package-storage-infra unless this flag opts into signing it too.
+SIGN_DISTRIBUTION_IMAGES="${SIGN_DISTRIBUTION_IMAGES:-false}"
+
+# Target images whose stack-version tags must be signed, collected as they are pushed.
 SIGNING_IMAGES=()
 
 echo "Docker retag"
 docker buildx create --use
 
 for image in "${DOCKER_IMAGE_TARGETS[@]}"; do
+    # Decide once per repo whether its pushed tags are collected for signing: the renamed repo
+    # always, the original distribution repo only when SIGN_DISTRIBUTION_IMAGES is set.
+    sign_repo=false
+    if [[ "${image}" == "${DOCKER_IMAGE_RENAMED:-}" ]] \
+        || [[ "${SIGN_DISTRIBUTION_IMAGES}" == "true" && "${image}" == "${DOCKER_IMAGE}" ]]; then
+        sign_repo=true
+    fi
+
     # NOTE: the non-slim tags (lite*, production*) may be deprecated in the future.
     case "${TAG_NAME}" in
         production)
@@ -61,7 +74,7 @@ for image in "${DOCKER_IMAGE_TARGETS[@]}"; do
         else
             retry 3 docker buildx imagetools create -t "${target_image}" "${source_image}"
             echo "Docker image pushed: ${target_image}"
-            if [[ -n "${DOCKER_IMAGE_RENAMED:-""}" && "${image}" == "${DOCKER_IMAGE_RENAMED}" ]]; then
+            if [[ "${sign_repo}" == "true" ]]; then
                 SIGNING_IMAGES+=("${target_image}")
             fi
         fi

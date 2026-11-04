@@ -78,6 +78,29 @@ teardown() {
     # distribution/* is already signed by package-storage-infra, only a retag happens here
     run cat package-registry-distribution-production-images-digest.txt
     refute_output --partial "${DOCKER_IMAGE}:"
+
+    # only the renamed repo is signed, one line per flavour
+    assert_line "${DOCKER_IMAGE_RENAMED}:1.2.3@sha256:deadbeef"
+    assert_line "${DOCKER_IMAGE_RENAMED}:1.2.3-ubi@sha256:deadbeef"
+    assert_line "${DOCKER_IMAGE_RENAMED}:1.2.3-fips@sha256:deadbeef"
+    assert_equal "${#lines[@]}" "3"
+}
+
+@test "publish-distribution also signs the distribution repo when SIGN_DISTRIBUTION_IMAGES is true" {
+    export SIGN_DISTRIBUTION_IMAGES="true"
+
+    run bash .buildkite/scripts/publish-distribution.sh
+    assert_success
+
+    # both repos signed: the original distribution repo and the renamed repo, one line per flavour
+    run cat package-registry-distribution-production-images-digest.txt
+    assert_line "${DOCKER_IMAGE}:1.2.3@sha256:deadbeef"
+    assert_line "${DOCKER_IMAGE}:1.2.3-ubi@sha256:deadbeef"
+    assert_line "${DOCKER_IMAGE}:1.2.3-fips@sha256:deadbeef"
+    assert_line "${DOCKER_IMAGE_RENAMED}:1.2.3@sha256:deadbeef"
+    assert_line "${DOCKER_IMAGE_RENAMED}:1.2.3-ubi@sha256:deadbeef"
+    assert_line "${DOCKER_IMAGE_RENAMED}:1.2.3-fips@sha256:deadbeef"
+    assert_equal "${#lines[@]}" "6"
 }
 
 @test "publish-distribution does not sign anything on a dry run" {
