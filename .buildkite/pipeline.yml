@@ -116,6 +116,15 @@ steps:
   - label: ":docker: Publish docker image"
     key: "publish"
     command: ".buildkite/scripts/publish.sh"
+    # This step performs both the image build/push and the digest resolution + upload for signing, so
+    # the two always run together for a given build (signing has to sign what this build just pushed).
+    # Serialize the step across all builds (static group key, so branch and tag builds share the
+    # group) and run queued publishes in dispatch order (concurrency_method: ordered): this way the
+    # rolling :main tag always ends up pointing at the latest build, instead of whichever of two
+    # overlapping publishes happens to push last, and no two publishes update :main at the same time.
+    concurrency: 1
+    concurrency_group: "package-registry/package-registry-publish"
+    concurrency_method: ordered
     agents:
       provider: "gcp"
     depends_on:

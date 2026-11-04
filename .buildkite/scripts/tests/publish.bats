@@ -64,9 +64,11 @@ teardown() {
     assert_success
 
     run grep "^buildx build" "${DOCKER_CALLS_FILE}"
-    assert_line --index 0 --partial "-t ${DOCKER_IMG}:abc123 -t ${DOCKER_IMG}:v1.2.3 --build-arg"
-    assert_line --index 1 --partial "-t ${DOCKER_IMG}:abc123-ubi -t ${DOCKER_IMG}:v1.2.3-ubi --build-arg"
-    assert_line --index 2 --partial "-t ${DOCKER_IMG}:abc123-fips -t ${DOCKER_IMG}:v1.2.3-fips --build-arg"
+    assert_line --index 0 --partial "-t ${DOCKER_IMG}:v1.2.3 --build-arg"
+    assert_line --index 1 --partial "-t ${DOCKER_IMG}:v1.2.3-ubi --build-arg"
+    assert_line --index 2 --partial "-t ${DOCKER_IMG}:v1.2.3-fips --build-arg"
+    # the commit tag is not re-pushed on tag builds (it already exists from the branch build)
+    refute_output --partial "${DOCKER_IMG}:abc123"
 }
 
 @test "publish signs non-PR builds by uploading one digest file per flavour" {
@@ -75,10 +77,10 @@ teardown() {
     run bash .buildkite/scripts/publish.sh
     assert_success
 
-    # one digest file per flavour, referencing the rolling tag and the resolved digest
-    assert_equal "$(cat package-registry-base-images-digest.txt)" "${DOCKER_IMG}:main@sha256:deadbeef"
-    assert_equal "$(cat package-registry-ubi-images-digest.txt)" "${DOCKER_IMG}:main-ubi@sha256:deadbeef"
-    assert_equal "$(cat package-registry-fips-images-digest.txt)" "${DOCKER_IMG}:main-fips@sha256:deadbeef"
+    # one digest file per flavour, referencing the commit tag and the resolved digest
+    assert_equal "$(cat package-registry-base-images-digest.txt)" "${DOCKER_IMG}:abc123@sha256:deadbeef"
+    assert_equal "$(cat package-registry-ubi-images-digest.txt)" "${DOCKER_IMG}:abc123-ubi@sha256:deadbeef"
+    assert_equal "$(cat package-registry-fips-images-digest.txt)" "${DOCKER_IMG}:abc123-fips@sha256:deadbeef"
 
     # each digest file uploaded as a buildkite artifact
     run cat "${BUILDKITE_AGENT_CALLS_FILE}"
@@ -87,6 +89,8 @@ teardown() {
     assert_line "artifact upload package-registry-fips-images-digest.txt"
 }
 
+# Tag builds sign by the release tag (:<tag>): only the tag build pushes it and it is the released
+# image, so it is a reliable, build-unique reference. Branch builds sign by the commit tag instead.
 @test "publish signs tag builds using the git tag in the digest reference" {
     _set_buildkite_env main false v1.2.3
 
