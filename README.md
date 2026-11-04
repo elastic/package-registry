@@ -166,17 +166,23 @@ docker run --rm -it -p 8443:8443 \
 #### Docker images published
 
 We publish Docker images containing only the package registry (they don't
-contain any package) for each successful build. Every build publishes two tags:
-one with the commit SHA and one with the branch name, git tag, or pull request.
+contain any package) for each successful build. Branch and pull request builds
+publish two tags, one with the commit SHA and one with the branch name or pull
+request number. Release-tag builds publish a single tag, the git tag: the commit
+image already exists from the branch build and is not rebuilt.
 
-Branch and tag builds are published to `docker.elastic.co/package-registry/package-registry`:
+Branch builds are published to `docker.elastic.co/package-registry/package-registry`
+with the commit SHA and the branch name:
 
 * `docker.elastic.co/package-registry/package-registry:f999b7a84d977cd19a379f0cec802aa1ef7ca379` (commit)
 * `docker.elastic.co/package-registry/package-registry:main` (branch)
+
+Release-tag builds are published to the same namespace with only the git tag:
+
 * `docker.elastic.co/package-registry/package-registry:v0.2.0` (git tag)
 
 Pull request builds are published to the internal `observability-ci` namespace
-instead, with a `PR-<number>` tag:
+instead, with the commit SHA and a `PR-<number>` tag:
 
 * `docker.elastic.co/observability-ci/package-registry:f999b7a84d977cd19a379f0cec802aa1ef7ca379` (commit)
 * `docker.elastic.co/observability-ci/package-registry:PR-111`
