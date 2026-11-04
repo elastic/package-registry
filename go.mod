@@ -30,7 +30,7 @@ require (
 )
 
 require (
-	github.com/pandatix/go-abnf v0.5.3 // indirect
+	github.com/pandatix/go-abnf v0.5.5 // indirect
 	go.opentelemetry.io/otel/log v1.47.0 // indirect
 	go.yaml.in/yaml/v3 v3.0.6 // indirect
 )
