@@ -20,7 +20,8 @@ setup() {
     # reaches the network, and crane resolves to a fixed digest.
     export WORKSPACE="${BATS_TEST_TMPDIR}/workspace"
     mkdir -p "${WORKSPACE}"
-    _mock_crane_install "sha256:deadbeef"
+    export CRANE_STUB_DIGEST="sha256:deadbeef"
+    _install_fake_crane
 
     export BUILDKITE_AGENT_CALLS_FILE="${BATS_TEST_TMPDIR}/buildkite_agent_calls"
     : > "${BUILDKITE_AGENT_CALLS_FILE}"
@@ -124,7 +125,8 @@ teardown() {
 }
 
 @test "publish-distribution fails when the digest cannot be resolved" {
-    _mock_crane_install ""
+    # the fake crane reports "null", which write_image_digest_file treats as unresolvable
+    CRANE_STUB_DIGEST="null" _install_fake_crane
 
     run bash .buildkite/scripts/publish-distribution.sh
     assert_failure

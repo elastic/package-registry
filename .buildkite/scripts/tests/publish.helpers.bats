@@ -64,7 +64,7 @@ EOF
 }
 
 # Print the "docker buildx build" call recorded under test. Each test here builds a single flavour,
-# so the one buildx build line is unambiguous (the tag suffix is asserted by the caller).
+# so the one buildx build line is unambiguous.
 _build_call() {
     grep -F -- "buildx build --push" "${DOCKER_CALLS_FILE}"
 }
@@ -121,7 +121,7 @@ EOF
     assert_output --partial "Docker images pushed: ${DOCKER_IMG}:abc123 ${DOCKER_IMG}:main"
     run grep -c "^buildx create --use" "${DOCKER_CALLS_FILE}"
     assert_output "1"
-    run _build_call ""
+    run _build_call
     assert_output --partial "buildx build --push --platform linux/amd64,linux/arm64/v8 --progress plain"
     assert_output --partial "-t ${DOCKER_IMG}:abc123 -t ${DOCKER_IMG}:main --build-arg"
     assert_output --partial "--build-arg GO_VERSION=$(cat .go-version)"
@@ -135,7 +135,7 @@ EOF
     _mock_docker
     _run_build_push "registry.access.redhat.com/ubi9/ubi-minimal:9.6" "-ubi"
     assert_success
-    run _build_call "-ubi"
+    run _build_call
     assert_output --partial "-t ${DOCKER_IMG}:abc123-ubi -t ${DOCKER_IMG}:main-ubi --build-arg"
     assert_output --partial "--build-arg RUNNER_IMAGE=registry.access.redhat.com/ubi9/ubi-minimal:9.6 --build-arg FIPS=0"
 }
@@ -145,7 +145,7 @@ EOF
     _mock_docker
     _run_build_push "docker.elastic.co/wolfi/chainguard-base-fips" "-fips"
     assert_success
-    run _build_call "-fips"
+    run _build_call
     assert_output --partial "--build-arg RUNNER_IMAGE=docker.elastic.co/wolfi/chainguard-base-fips --build-arg FIPS=1"
 }
 
@@ -154,7 +154,7 @@ EOF
     _mock_docker
     _run_build_push "docker.elastic.co/wolfi/chainguard-base" ""
     assert_success
-    run _build_call ""
+    run _build_call
     assert_output --partial "-t ${DOCKER_IMG}:v1.2.3 --build-arg"
     assert_output --partial "--label BRANCH_NAME=v1.2.3"
     # the commit tag is not re-pushed on tag builds (it already exists from the branch build)
