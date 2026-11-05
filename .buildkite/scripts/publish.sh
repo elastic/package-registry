@@ -1,6 +1,5 @@
 #!/bin/bash
 source .buildkite/scripts/tooling.sh
-source .buildkite/scripts/pre-install-command.sh
 source .buildkite/scripts/publish.helpers.sh
 
 set -euo pipefail
@@ -17,13 +16,14 @@ build_push_docker_image "registry.access.redhat.com/ubi9/ubi-minimal:9.6" "-ubi"
 echo "--- Build package-registry FIPS"
 build_push_docker_image "docker.elastic.co/wolfi/chainguard-base-fips" "-fips"
 
-# Resolve each pushed image's digest and upload it for the unified-release-container-image-signing
-# pipeline. crane reads the digest from the registry, so it is only installed and used on the push
-# path. PR builds run this too so the whole path is exercised on every PR, but their digest files are
-# named so the signing pipeline cannot collect them (see upload_image_digest_for_signing); the signing
-# trigger steps in .buildkite/pipeline.yml are gated off for PRs as well, so PR images are not signed.
-with_crane
-echo "--- Create digest files for package-registry images"
-upload_image_digest_for_signing "base" ""
-upload_image_digest_for_signing "ubi" "-ubi"
-upload_image_digest_for_signing "fips" "-fips"
+# Upload a build-unique image reference per flavour for the separate digest step
+# (resolve_image_digests.sh) to resolve after the push. Digest resolution is decoupled from the push
+# so a transient crane/registry failure cannot fail an already-successful push (which would leave the
+# pushed image unsigned); the digest step is retried on its own instead. The refs are frozen in the
+# artifacts so the digest step resolves the exact images this build pushed, independent of any shared
+# tag. PR builds upload refs too (the digest step resolves them under a non-collectable "pr-" name to
+# exercise the path); the signing trigger steps in .buildkite/pipeline.yml are gated off for PRs.
+echo "--- Upload image refs for signing"
+upload_image_ref_for_signing "base" ""
+upload_image_ref_for_signing "ubi" "-ubi"
+upload_image_ref_for_signing "fips" "-fips"

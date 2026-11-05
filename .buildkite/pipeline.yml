@@ -116,11 +116,13 @@ steps:
   - label: ":docker: Publish docker image"
     key: "publish"
     command: ".buildkite/scripts/publish.sh"
-    # This step performs both the image build/push and the digest resolution + upload for signing, so
-    # the two always run together for a given build (signing has to sign what this build just pushed).
-    # Serialize publishes in dispatch order (concurrency_method: ordered) so the rolling :main tag
-    # always ends up pointing at the latest build, instead of whichever of two overlapping publishes
-    # happens to push last, and no two publishes update :main at the same time.
+    # This step builds/pushes the images and uploads a build-unique image ref per flavour; the separate
+    # "resolve-image-digests" step then resolves the signing digests from those refs. Serialize
+    # publishes in dispatch order (concurrency_method: ordered) so the rolling :main tag always ends up
+    # pointing at the latest build, instead of whichever of two overlapping publishes happens to push
+    # last, and no two publishes update :main at the same time. (Signing correctness no longer needs
+    # this serialization -- the ref is build-unique and the artifacts are run-scoped -- so this is only
+    # :main rolling-tag hygiene.)
     #
     # The group key is per PR: branch and tag builds have BUILDKITE_PULL_REQUEST="false" so they share
     # one "...-publish-false" slot (where the :main / release-tag ordering matters), while each PR gets
@@ -155,6 +157,30 @@ steps:
           # plugin runs its pre-exit hook. The credentials are removed in .buildkite/hooks/pre-exit
           disable_logout: true
 
+  - label: ":key: Resolve image digests"
+    key: "resolve-image-digests"
+    command: ".buildkite/scripts/resolve_image_digests.sh"
+    # Resolve the signing digests in a step of its own, after the push, so a transient crane/registry
+    # failure does not fail an already-successful publish (which would leave the pushed image unsigned).
+    # It downloads the build-unique image-ref-*.txt artifacts the publish step uploaded, resolves each
+    # with crane, and writes + uploads the digest files the signing trigger collects. A step-level
+    # automatic retry lets a transient crane flake self-heal; because the images are already pushed and
+    # the refs are build-scoped artifacts, a retry resolves the same images with no rebuild or re-push.
+    # crane reads the registry, so it gets the same vault-docker-login plugin as the publish step.
+    retry:
+      automatic:
+        - exit_status: "*"
+          limit: 2
+    agents:
+      provider: "gcp"
+    depends_on:
+      - step: "publish"
+        allow_failure: false
+    plugins:
+      - elastic/vault-docker-login#v0.8.1:
+          secret_path: 'kv/ci-shared/platform-ingest/elastic_docker_registry'
+          disable_logout: true
+
   - trigger: unified-release-container-image-signing
     label: ":key: Sign release container images"
     key: "sign-release-container-images"
@@ -165,7 +191,7 @@ steps:
         UPLOAD_SIGNATURE: "true"
         IMAGES_TAG: "${BUILDKITE_TAG}"
     depends_on:
-      - step: "publish"
+      - step: "resolve-image-digests"
         allow_failure: false
     # Tag builds are public; sign them with the released version as the cosign tag annotation.
     if: build.tag != null
@@ -180,7 +206,7 @@ steps:
         UPLOAD_SIGNATURE: "true"
         IMAGES_TAG: "${BUILDKITE_BRANCH}-${BUILDKITE_COMMIT}"
     depends_on:
-      - step: "publish"
+      - step: "resolve-image-digests"
         allow_failure: false
     # Non-PR branch builds (e.g. main) are public too; sign them with a controlled
     # <branch>-<commit> cosign tag annotation. PR images are not signed. The

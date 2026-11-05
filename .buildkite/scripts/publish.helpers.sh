@@ -114,27 +114,77 @@ write_image_digest_file() {
 	echo "Wrote image digest for signing: ${image_ref}@${digest} -> ${digest_file}"
 }
 
-# Resolve the digest of a flavour just pushed to the registry and upload its digest file as a
-# Buildkite artifact, so the unified-release-container-image-signing pipeline can collect it with
-# the "package-registry-*-images-digest.txt" glob. Requires set_image_tags to have run (it picks
-# SIGN_IMAGE_REF) and crane to be installed. Signing is by digest; the branch/release name reaches
-# signing separately as the IMAGES_TAG annotation in .buildkite/pipeline.yml.
+# Write the build-unique reference of a flavour to its ref file (a single line, frozen in the uploaded
+# artifact so a retry of the digest step reuses the exact image this build pushed) and upload it as a
+# Buildkite artifact, so the separate digest step (resolve_image_digests.sh) can resolve its digest
+# after the push. Decoupling resolution from the push keeps a transient crane/registry failure from
+# failing an already-successful push (which would leave the pushed image unsigned), and forwards a
+# build-unique ref so the digest step resolves the exact image this build pushed, not whatever a shared
+# tag points at. Requires set_image_tags to have run (it picks SIGN_IMAGE_REF).
 #
-# Usage: upload_image_digest_for_signing <flavour> [<tag_suffix>]
-upload_image_digest_for_signing() {
+# Usage: upload_image_ref_for_signing <flavour> [<tag_suffix>]
+upload_image_ref_for_signing() {
 	local flavour="$1"
 	local tag_suffix="${2:-}"
 	local image_ref="${SIGN_IMAGE_REF}${tag_suffix}"
+	local ref_file="image-ref-${flavour}.txt"
+
+	echo "${image_ref}" > "${ref_file}"
+	echo "Wrote image ref for signing: ${image_ref} -> ${ref_file}"
+	retry 5 buildkite-agent artifact upload "${ref_file}"
+}
+
+# Print the digest artifact filename for a flavour. Single source of truth for the name the signing
+# pipeline collects: it must stay in sync with the ARTIFACT_PATTERN
+# ("package-registry-*-images-digest.txt") in .buildkite/pipeline.yml. On PR builds the name is
+# prefixed with "pr-" so it does NOT match that pattern: PR builds resolve digests to exercise the
+# path, but their files must never be collected by the signing pipeline (which is also gated off for
+# PRs by the trigger steps' "if:" conditions).
+#
+# Usage: digest_file_name <flavour>
+digest_file_name() {
+	local flavour="$1"
 	local digest_file="package-registry-${flavour}-images-digest.txt"
 
-	# PR builds upload digest files only to exercise this path end to end; they must never be collected
-	# by the signing pipeline. Prefix the filename so it does not match ARTIFACT_PATTERN
-	# ("package-registry-*-images-digest.txt") in .buildkite/pipeline.yml. The signing trigger steps are
-	# also gated off for PRs by their "if:" conditions; this naming is a second, independent safety net.
 	if [[ "${BUILDKITE_PULL_REQUEST}" != "false" ]]; then
 		digest_file="pr-${digest_file}"
 	fi
+	echo "${digest_file}"
+}
 
-	write_image_digest_file "${image_ref}" "${digest_file}"
-	retry 5 buildkite-agent artifact upload "${digest_file}"
+# Resolve a signing digest for every image-ref-*.txt in the current directory (uploaded by the publish
+# step and downloaded by the digest step), writing and uploading the matching digest file. Requires
+# crane to be installed. Signing is by digest; the branch/release name reaches signing separately as
+# the IMAGES_TAG annotation in .buildkite/pipeline.yml. A ref that cannot be resolved does not abort
+# the others (every resolvable image is still signed) but makes the function return non-zero, so the
+# step fails and can be retriggered without re-running the push.
+resolve_image_digests() {
+	local ref_file flavour image_ref digest_file
+	local found=0
+	local failed=0
+
+	for ref_file in image-ref-*.txt; do
+		# With no matches the glob stays literal, so skip the non-existent file.
+		[[ -e "${ref_file}" ]] || continue
+		found=1
+
+		flavour="${ref_file#image-ref-}"
+		flavour="${flavour%.txt}"
+		read -r image_ref < "${ref_file}"
+		digest_file="$(digest_file_name "${flavour}")"
+
+		# write_image_digest_file already logs the failure; just record it so the other refs still
+		# resolve and the step ends non-zero (retriggerable).
+		if write_image_digest_file "${image_ref}" "${digest_file}"; then
+			retry 5 buildkite-agent artifact upload "${digest_file}"
+		else
+			failed=1
+		fi
+	done
+
+	if [[ "${found}" -eq 0 ]]; then
+		echo "No image-ref-*.txt artifacts found; nothing to resolve"
+	fi
+
+	return "${failed}"
 }

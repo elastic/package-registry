@@ -78,11 +78,11 @@ _build_call() {
     grep -F -- "buildx build --push" "${DOCKER_CALLS_FILE}"
 }
 
-# Write the command file that resolves and uploads the digest of a flavour, run from a scratch dir
-# so the digest files do not land in the repository. Sets UPLOAD_WORKDIR to that scratch dir.
+# Write the command file that writes and uploads the build-unique ref of a flavour, run from a scratch
+# dir so the ref files do not land in the repository. Sets UPLOAD_WORKDIR to that scratch dir.
 #
-# Usage: _run_upload_digest <flavour> [<tag_suffix>]
-_run_upload_digest() {
+# Usage: _run_upload_ref <flavour> [<tag_suffix>]
+_run_upload_ref() {
     UPLOAD_WORKDIR="${BATS_TEST_TMPDIR}/work"
     mkdir -p "${UPLOAD_WORKDIR}"
     cat <<EOF > "${COMMAND_FILE}"
@@ -90,7 +90,30 @@ cd "${UPLOAD_WORKDIR}"
 source ${ROOT_DIR}/.buildkite/scripts/tooling.sh
 source ${ROOT_DIR}/.buildkite/scripts/publish.helpers.sh
 set_image_tags
-upload_image_digest_for_signing "$1" "${2:-}"
+upload_image_ref_for_signing "$1" "${2:-}"
+EOF
+    run ${test_command}
+}
+
+# Write the command file that prints digest_file_name for a flavour, then run it.
+#
+# Usage: _run_digest_file_name <flavour>
+_run_digest_file_name() {
+    cat <<EOF > "${COMMAND_FILE}"
+${sources}
+digest_file_name "$1"
+EOF
+    run ${test_command}
+}
+
+# Write the command file that runs resolve_image_digests from BATS_TEST_TMPDIR, then run it. Seed the
+# image-ref-*.txt files in ${BATS_TEST_TMPDIR} (and set the crane / buildkite-agent mocks) before
+# calling; the resolved digest files land in ${BATS_TEST_TMPDIR} too.
+_run_resolve_image_digests() {
+    cat <<EOF > "${COMMAND_FILE}"
+${sources}
+cd "${BATS_TEST_TMPDIR}"
+resolve_image_digests
 EOF
     run ${test_command}
 }
@@ -272,66 +295,133 @@ EOF
     assert_file_not_exists "${DIGEST_FILE}"
 }
 
-@test "upload_image_digest_for_signing writes and uploads the flavour digest file" {
+@test "upload_image_ref_for_signing writes and uploads the flavour ref file" {
     _set_buildkite_env main false
-    _mock_crane "sha256:feedface"
     _mock_buildkite_agent
-    _run_upload_digest "base" ""
+    _run_upload_ref "base" ""
     assert_success
-    assert_equal "$(cat "${UPLOAD_WORKDIR}/package-registry-base-images-digest.txt")" "${DOCKER_IMG}:abc123@sha256:feedface"
-    assert_equal "$(cat "${BUILDKITE_AGENT_CALLS_FILE}")" "artifact upload package-registry-base-images-digest.txt"
+    assert_equal "$(cat "${UPLOAD_WORKDIR}/image-ref-base.txt")" "${DOCKER_IMG}:abc123"
+    assert_equal "$(cat "${BUILDKITE_AGENT_CALLS_FILE}")" "artifact upload image-ref-base.txt"
 }
 
-# Tag builds resolve the release tag (:<tag>): only the tag build pushes it and it is the released
-# image, so it is a reliable, build-unique reference. Branch builds resolve the commit tag instead.
-@test "upload_image_digest_for_signing uses the git tag and the flavour suffix on tag builds" {
+# Tag builds forward the release tag (:<tag>) as the build-unique ref: only the tag build pushes it and
+# it is the released image. Branch builds forward the commit tag instead.
+@test "upload_image_ref_for_signing uses the git tag and the flavour suffix on tag builds" {
     _set_buildkite_env main false v1.2.3
-    _mock_crane "sha256:feedface"
     _mock_buildkite_agent
-    _run_upload_digest "fips" "-fips"
+    _run_upload_ref "fips" "-fips"
     assert_success
-    assert_equal "$(cat "${UPLOAD_WORKDIR}/package-registry-fips-images-digest.txt")" "${DOCKER_IMG}:v1.2.3-fips@sha256:feedface"
-    assert_equal "$(cat "${CRANE_CALLS_FILE}.args")" "digest ${DOCKER_IMG}:v1.2.3-fips"
+    assert_equal "$(cat "${UPLOAD_WORKDIR}/image-ref-fips.txt")" "${DOCKER_IMG}:v1.2.3-fips"
 }
 
-# The signing trigger step in .buildkite/pipeline.yml collects the digest files with a glob
-# (ARTIFACT_PATTERN). This checks that the artifact the helper actually uploads matches that glob, so
-# the two sides cannot drift apart silently (a renamed digest file or an edited pattern breaks it).
-@test "the signing ARTIFACT_PATTERN matches the artifact that upload_image_digest_for_signing uploads" {
+@test "upload_image_ref_for_signing uses the PR namespace on PR builds" {
+    _set_buildkite_env feature 123
+    _mock_buildkite_agent
+    _run_upload_ref "base" ""
+    assert_success
+    assert_equal "$(cat "${UPLOAD_WORKDIR}/image-ref-base.txt")" "${DOCKER_IMG_PR}:abc123"
+}
+
+@test "digest_file_name returns the signing name on non-PR builds" {
+    _set_buildkite_env main false
+    _run_digest_file_name "base"
+    assert_success
+    assert_output "package-registry-base-images-digest.txt"
+}
+
+# PR builds resolve digests to exercise the path, but their files must not be collected by the signing
+# pipeline, so the name is prefixed with pr- (which does not match ARTIFACT_PATTERN).
+@test "digest_file_name prefixes the name with pr- on PR builds" {
+    _set_buildkite_env feature 123
+    _run_digest_file_name "base"
+    assert_success
+    assert_output "pr-package-registry-base-images-digest.txt"
+}
+
+@test "resolve_image_digests resolves each ref to its digest file and uploads it" {
     _set_buildkite_env main false
     _mock_crane "sha256:feedface"
     _mock_buildkite_agent
-    _run_upload_digest "base" ""
+    echo "${DOCKER_IMG}:abc123" > "${BATS_TEST_TMPDIR}/image-ref-base.txt"
+    echo "${DOCKER_IMG}:abc123-ubi" > "${BATS_TEST_TMPDIR}/image-ref-ubi.txt"
+    _run_resolve_image_digests
     assert_success
-
-    local uploaded pattern
-    uploaded="$(sed -E 's/^artifact upload //' "${BUILDKITE_AGENT_CALLS_FILE}")"
-    pattern="$(grep -m1 'ARTIFACT_PATTERN:' .buildkite/pipeline.yml | sed -E 's/.*"([^"]*)".*/\1/')"
-    refute [ -z "${pattern}" ]
-
-    case "${uploaded}" in
-        ${pattern}) ;;
-        *) fail "pipeline ARTIFACT_PATTERN '${pattern}' does not match uploaded artifact '${uploaded}'" ;;
-    esac
+    assert_equal "$(cat "${BATS_TEST_TMPDIR}/package-registry-base-images-digest.txt")" "${DOCKER_IMG}:abc123@sha256:feedface"
+    assert_equal "$(cat "${BATS_TEST_TMPDIR}/package-registry-ubi-images-digest.txt")" "${DOCKER_IMG}:abc123-ubi@sha256:feedface"
+    run cat "${BUILDKITE_AGENT_CALLS_FILE}"
+    assert_line "artifact upload package-registry-base-images-digest.txt"
+    assert_line "artifact upload package-registry-ubi-images-digest.txt"
 }
 
-# The companion of the test above: PR builds upload the digest files under a pr- prefixed name that
-# must NOT match the signing pipeline's ARTIFACT_PATTERN, so the signing pipeline can never collect a
-# PR image's digest even if it were ever triggered for a PR.
-@test "the signing ARTIFACT_PATTERN does not match the artifact uploaded on PR builds" {
+# On PR builds resolve_image_digests writes the digest files under the pr- prefixed, non-collectable
+# name (via digest_file_name), so the signing pipeline cannot pick up a PR image's digest.
+@test "resolve_image_digests writes PR digest files under the non-collectable pr- name" {
     _set_buildkite_env feature 123
     _mock_crane "sha256:feedface"
     _mock_buildkite_agent
-    _run_upload_digest "base" ""
+    echo "${DOCKER_IMG_PR}:abc123" > "${BATS_TEST_TMPDIR}/image-ref-base.txt"
+    _run_resolve_image_digests
     assert_success
+    assert_equal "$(cat "${BATS_TEST_TMPDIR}/pr-package-registry-base-images-digest.txt")" "${DOCKER_IMG_PR}:abc123@sha256:feedface"
+    assert_file_not_exists "${BATS_TEST_TMPDIR}/package-registry-base-images-digest.txt"
+}
 
-    local uploaded pattern
-    uploaded="$(sed -E 's/^artifact upload //' "${BUILDKITE_AGENT_CALLS_FILE}")"
+@test "resolve_image_digests does nothing when there are no ref files" {
+    _set_buildkite_env main false
+    _mock_crane "sha256:feedface"
+    _mock_buildkite_agent
+    _run_resolve_image_digests
+    assert_success
+    assert_output --partial "nothing to resolve"
+    run cat "${BUILDKITE_AGENT_CALLS_FILE}"
+    assert_output ""
+}
+
+# A ref that cannot be resolved does not abort the others (every resolvable image is still signed) but
+# makes the step fail so it can be retriggered.
+@test "resolve_image_digests fails on an unresolvable ref but still uploads the resolvable one" {
+    _set_buildkite_env main false
+    _mock_buildkite_agent
+    # crane succeeds for the base ref and always fails for the fips ref.
+    _create_stub crane <<'STUB'
+if [[ "$2" == *-fips ]]; then
+    exit 1
+else
+    echo "sha256:feedface"
+fi
+STUB
+    echo "${DOCKER_IMG}:abc123" > "${BATS_TEST_TMPDIR}/image-ref-base.txt"
+    echo "${DOCKER_IMG}:abc123-fips" > "${BATS_TEST_TMPDIR}/image-ref-fips.txt"
+    _run_resolve_image_digests
+    assert_failure
+    assert_output --partial "could not resolve digest"
+    # the resolvable image's digest file was still written and uploaded
+    assert_file_exists "${BATS_TEST_TMPDIR}/package-registry-base-images-digest.txt"
+    run cat "${BUILDKITE_AGENT_CALLS_FILE}"
+    assert_line "artifact upload package-registry-base-images-digest.txt"
+}
+
+# The signing trigger step in .buildkite/pipeline.yml collects the digest files with a glob
+# (ARTIFACT_PATTERN). This checks that digest_file_name on a non-PR build matches that glob and that the
+# pr- prefixed PR name does NOT, so the two sides cannot drift apart silently.
+@test "the signing ARTIFACT_PATTERN matches non-PR digest names but not the pr- names" {
+    local pattern
     pattern="$(grep -m1 'ARTIFACT_PATTERN:' .buildkite/pipeline.yml | sed -E 's/.*"([^"]*)".*/\1/')"
     refute [ -z "${pattern}" ]
 
-    case "${uploaded}" in
-        ${pattern}) fail "PR digest artifact '${uploaded}' must not match signing ARTIFACT_PATTERN '${pattern}'" ;;
+    _set_buildkite_env main false
+    _run_digest_file_name "base"
+    assert_success
+    case "${output}" in
+        ${pattern}) ;;
+        *) fail "pipeline ARTIFACT_PATTERN '${pattern}' does not match non-PR digest name '${output}'" ;;
+    esac
+
+    _set_buildkite_env feature 123
+    _run_digest_file_name "base"
+    assert_success
+    case "${output}" in
+        ${pattern}) fail "PR digest name '${output}' must not match signing ARTIFACT_PATTERN '${pattern}'" ;;
         *) ;;
     esac
 }
