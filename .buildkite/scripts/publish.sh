@@ -7,6 +7,9 @@ set -euo pipefail
 
 set_image_tags
 
+# Create a single buildx builder reused by the three flavour builds below.
+setup_buildx
+
 echo "--- Build package-registry"
 build_push_docker_image "docker.elastic.co/wolfi/chainguard-base" ""
 echo "--- Build package-registry UBI"

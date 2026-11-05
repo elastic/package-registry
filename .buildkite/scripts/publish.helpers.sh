@@ -36,7 +36,15 @@ set_image_tags() {
 	fi
 }
 
-# Build and push the multi-platform image of a flavour. Requires set_image_tags to be called first.
+# Create a buildx builder and select it as the current one. Call once per publish run, before the
+# build_push_docker_image calls: a single builder then serves every flavour, instead of one builder
+# being created per build.
+setup_buildx() {
+	docker buildx create --use
+}
+
+# Build and push the multi-platform image of a flavour. Requires set_image_tags and setup_buildx to
+# be called first.
 #
 # Usage: build_push_docker_image <runner_image> [<tag_suffix>]
 build_push_docker_image() {
@@ -63,8 +71,6 @@ build_push_docker_image() {
 	for tag in "${push_tags[@]}"; do
 		tag_args+=(-t "${tag}")
 	done
-
-	docker buildx create --use
 
 	retry 3 docker buildx build --push \
 		--platform linux/amd64,linux/arm64/v8 \

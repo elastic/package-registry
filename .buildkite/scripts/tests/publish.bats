@@ -40,6 +40,10 @@ teardown() {
     assert_line --index 2 --partial "-t ${DOCKER_IMG}:abc123-fips -t ${DOCKER_IMG}:main-fips --build-arg"
     assert_line --index 2 --partial "RUNNER_IMAGE=docker.elastic.co/wolfi/chainguard-base-fips --build-arg FIPS=1"
     assert_equal "${#lines[@]}" "3"
+
+    # a single buildx builder is created for the whole run, not one per flavour
+    run grep -c "^buildx create --use" "${DOCKER_CALLS_FILE}"
+    assert_output "1"
 }
 
 @test "publish pushes pull requests to the PR namespace" {
