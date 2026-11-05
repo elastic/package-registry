@@ -37,7 +37,7 @@ SIGN_DISTRIBUTION_IMAGES="${SIGN_DISTRIBUTION_IMAGES:-false}"
 SIGNING_IMAGES=()
 
 echo "Docker retag"
-docker buildx create --use
+setup_buildx
 
 for image in "${DOCKER_IMAGE_TARGETS[@]}"; do
     # Decide once per repo whether its pushed tags are collected for signing: the renamed repo
