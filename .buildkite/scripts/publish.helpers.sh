@@ -80,7 +80,7 @@ build_push_docker_image() {
 		--label TIMESTAMP="$(date +%Y-%m-%d_%H:%M)" \
 		.
 
-	echo "Docker images pushed: ${push_tags[*]}"
+	echo "+++ Docker images pushed: ${push_tags[*]}"
 }
 
 # Resolve the digest of an image already pushed to the registry and write
