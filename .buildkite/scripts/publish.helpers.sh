@@ -36,7 +36,15 @@ set_image_tags() {
 	fi
 }
 
-# Build and push the multi-platform image of a flavour. Requires set_image_tags to be called first.
+# Create a buildx builder and select it as the current one. Call once per publish run, before the
+# build_push_docker_image calls: a single builder then serves every flavour, instead of one builder
+# being created per build.
+setup_buildx() {
+	docker buildx create --use
+}
+
+# Build and push the multi-platform image of a flavour. Requires set_image_tags and setup_buildx to
+# be called first.
 #
 # Usage: build_push_docker_image <runner_image> [<tag_suffix>]
 build_push_docker_image() {
@@ -64,8 +72,6 @@ build_push_docker_image() {
 		tag_args+=(-t "${tag}")
 	done
 
-	docker buildx create --use
-
 	retry 3 docker buildx build --push \
 		--platform linux/amd64,linux/arm64/v8 \
 		--progress plain \
@@ -80,7 +86,7 @@ build_push_docker_image() {
 		--label TIMESTAMP="$(date +%Y-%m-%d_%H:%M)" \
 		.
 
-	echo "Docker images pushed: ${push_tags[*]}"
+	echo "+++ Docker images pushed: ${push_tags[*]}"
 }
 
 # Resolve the digest of an image already pushed to the registry and write
@@ -120,6 +126,14 @@ upload_image_digest_for_signing() {
 	local tag_suffix="${2:-}"
 	local image_ref="${SIGN_IMAGE_REF}${tag_suffix}"
 	local digest_file="package-registry-${flavour}-images-digest.txt"
+
+	# PR builds upload digest files only to exercise this path end to end; they must never be collected
+	# by the signing pipeline. Prefix the filename so it does not match ARTIFACT_PATTERN
+	# ("package-registry-*-images-digest.txt") in .buildkite/pipeline.yml. The signing trigger steps are
+	# also gated off for PRs by their "if:" conditions; this naming is a second, independent safety net.
+	if [[ "${BUILDKITE_PULL_REQUEST}" != "false" ]]; then
+		digest_file="pr-${digest_file}"
+	fi
 
 	write_image_digest_file "${image_ref}" "${digest_file}"
 	retry 5 buildkite-agent artifact upload "${digest_file}"

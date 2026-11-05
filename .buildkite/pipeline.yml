@@ -118,12 +118,18 @@ steps:
     command: ".buildkite/scripts/publish.sh"
     # This step performs both the image build/push and the digest resolution + upload for signing, so
     # the two always run together for a given build (signing has to sign what this build just pushed).
-    # Serialize the step across all builds (static group key, so branch and tag builds share the
-    # group) and run queued publishes in dispatch order (concurrency_method: ordered): this way the
-    # rolling :main tag always ends up pointing at the latest build, instead of whichever of two
-    # overlapping publishes happens to push last, and no two publishes update :main at the same time.
+    # Serialize publishes in dispatch order (concurrency_method: ordered) so the rolling :main tag
+    # always ends up pointing at the latest build, instead of whichever of two overlapping publishes
+    # happens to push last, and no two publishes update :main at the same time.
+    #
+    # The group key is per PR: branch and tag builds have BUILDKITE_PULL_REQUEST="false" so they share
+    # one "...-publish-false" slot (where the :main / release-tag ordering matters), while each PR gets
+    # its own "...-publish-<n>" slot. PR images only go to PR-<n> tags and never touch :main, so there
+    # is no reason for them to queue behind other PRs or behind branch/tag publishes; this scopes the
+    # serialization to a PR's own overlapping builds and keeps PRs from throttling each other. The env
+    # var is interpolated at pipeline-upload time.
     concurrency: 1
-    concurrency_group: "package-registry/package-registry-publish"
+    concurrency_group: "package-registry/package-registry-publish-${BUILDKITE_PULL_REQUEST}"
     concurrency_method: ordered
     agents:
       provider: "gcp"

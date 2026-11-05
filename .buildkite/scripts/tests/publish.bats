@@ -23,7 +23,7 @@ setup() {
 # publish.sh writes the digest files in the working directory (the repository root); remove them so
 # they do not linger as untracked files.
 teardown() {
-    rm -f package-registry-*-images-digest.txt
+    rm -f package-registry-*-images-digest.txt pr-package-registry-*-images-digest.txt
 }
 
 @test "publish builds and pushes the three flavours in order" {
@@ -40,6 +40,10 @@ teardown() {
     assert_line --index 2 --partial "-t ${DOCKER_IMG}:abc123-fips -t ${DOCKER_IMG}:main-fips --build-arg"
     assert_line --index 2 --partial "RUNNER_IMAGE=docker.elastic.co/wolfi/chainguard-base-fips --build-arg FIPS=1"
     assert_equal "${#lines[@]}" "3"
+
+    # a single buildx builder is created for the whole run, not one per flavour
+    run grep -c "^buildx create --use" "${DOCKER_CALLS_FILE}"
+    assert_output "1"
 }
 
 @test "publish pushes pull requests to the PR namespace" {
@@ -101,18 +105,30 @@ teardown() {
     assert_equal "$(cat package-registry-fips-images-digest.txt)" "${DOCKER_IMG}:v1.2.3-fips@sha256:deadbeef"
 }
 
-@test "publish does not sign pull request builds" {
+# PR builds exercise the signing-input path too, but write and upload the digest files under a pr-
+# prefixed name that cannot match the signing pipeline's ARTIFACT_PATTERN, so the signing pipeline
+# would never collect them (and its trigger steps are gated off for PRs anyway).
+@test "publish uploads PR digest files under a name the signing pipeline cannot collect" {
     _set_buildkite_env feature 123
 
     run bash .buildkite/scripts/publish.sh
     assert_success
 
+    # the digest files are written under the pr- prefixed name, referencing the PR namespace...
+    assert_equal "$(cat pr-package-registry-base-images-digest.txt)" "${DOCKER_IMG_PR}:abc123@sha256:deadbeef"
+    assert_equal "$(cat pr-package-registry-ubi-images-digest.txt)" "${DOCKER_IMG_PR}:abc123-ubi@sha256:deadbeef"
+    assert_equal "$(cat pr-package-registry-fips-images-digest.txt)" "${DOCKER_IMG_PR}:abc123-fips@sha256:deadbeef"
+
+    # ...and not under the signing name (which matches ARTIFACT_PATTERN)
     assert_file_not_exists package-registry-base-images-digest.txt
     assert_file_not_exists package-registry-ubi-images-digest.txt
     assert_file_not_exists package-registry-fips-images-digest.txt
 
+    # each pr- prefixed file is uploaded as a buildkite artifact
     run cat "${BUILDKITE_AGENT_CALLS_FILE}"
-    assert_output ""
+    assert_line "artifact upload pr-package-registry-base-images-digest.txt"
+    assert_line "artifact upload pr-package-registry-ubi-images-digest.txt"
+    assert_line "artifact upload pr-package-registry-fips-images-digest.txt"
 }
 
 @test "publish stops at the first flavour whose build keeps failing" {

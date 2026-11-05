@@ -34,6 +34,15 @@ EOF
     run ${test_command}
 }
 
+# Write the command file that calls setup_buildx, then run it.
+_run_setup_buildx() {
+    cat <<EOF > "${COMMAND_FILE}"
+${sources}
+setup_buildx
+EOF
+    run ${test_command}
+}
+
 # Write the command file that resolves the digest of IMAGE_REF into DIGEST_FILE, then run it.
 _run_write_digest() {
     cat <<EOF > "${COMMAND_FILE}"
@@ -113,14 +122,23 @@ EOF
     assert_output --partial "ERROR: 'docker' called in a bats test without _mock_docker"
 }
 
+@test "setup_buildx creates and selects a single buildx builder" {
+    _mock_docker
+    _run_setup_buildx
+    assert_success
+    run grep -c "^buildx create --use" "${DOCKER_CALLS_FILE}"
+    assert_output "1"
+}
+
 @test "build_push_docker_image builds the base flavour for amd64 and arm64" {
     _set_buildkite_env main false
     _mock_docker
     _run_build_push "docker.elastic.co/wolfi/chainguard-base" ""
     assert_success
     assert_output --partial "Docker images pushed: ${DOCKER_IMG}:abc123 ${DOCKER_IMG}:main"
+    # build_push_docker_image no longer creates a builder; setup_buildx does that once per run.
     run grep -c "^buildx create --use" "${DOCKER_CALLS_FILE}"
-    assert_output "1"
+    assert_output "0"
     run _build_call
     assert_output --partial "buildx build --push --platform linux/amd64,linux/arm64/v8 --progress plain"
     assert_output --partial "-t ${DOCKER_IMG}:abc123 -t ${DOCKER_IMG}:main --build-arg"
@@ -294,5 +312,26 @@ EOF
     case "${uploaded}" in
         ${pattern}) ;;
         *) fail "pipeline ARTIFACT_PATTERN '${pattern}' does not match uploaded artifact '${uploaded}'" ;;
+    esac
+}
+
+# The companion of the test above: PR builds upload the digest files under a pr- prefixed name that
+# must NOT match the signing pipeline's ARTIFACT_PATTERN, so the signing pipeline can never collect a
+# PR image's digest even if it were ever triggered for a PR.
+@test "the signing ARTIFACT_PATTERN does not match the artifact uploaded on PR builds" {
+    _set_buildkite_env feature 123
+    _mock_crane "sha256:feedface"
+    _mock_buildkite_agent
+    _run_upload_digest "base" ""
+    assert_success
+
+    local uploaded pattern
+    uploaded="$(sed -E 's/^artifact upload //' "${BUILDKITE_AGENT_CALLS_FILE}")"
+    pattern="$(grep -m1 'ARTIFACT_PATTERN:' .buildkite/pipeline.yml | sed -E 's/.*"([^"]*)".*/\1/')"
+    refute [ -z "${pattern}" ]
+
+    case "${uploaded}" in
+        ${pattern}) fail "PR digest artifact '${uploaded}' must not match signing ARTIFACT_PATTERN '${pattern}'" ;;
+        *) ;;
     esac
 }
