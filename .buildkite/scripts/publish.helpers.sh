@@ -121,6 +121,14 @@ upload_image_digest_for_signing() {
 	local image_ref="${SIGN_IMAGE_REF}${tag_suffix}"
 	local digest_file="package-registry-${flavour}-images-digest.txt"
 
+	# PR builds upload digest files only to exercise this path end to end; they must never be collected
+	# by the signing pipeline. Prefix the filename so it does not match ARTIFACT_PATTERN
+	# ("package-registry-*-images-digest.txt") in .buildkite/pipeline.yml. The signing trigger steps are
+	# also gated off for PRs by their "if:" conditions; this naming is a second, independent safety net.
+	if [[ "${BUILDKITE_PULL_REQUEST}" != "false" ]]; then
+		digest_file="pr-${digest_file}"
+	fi
+
 	write_image_digest_file "${image_ref}" "${digest_file}"
 	retry 5 buildkite-agent artifact upload "${digest_file}"
 }

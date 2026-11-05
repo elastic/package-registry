@@ -296,3 +296,24 @@ EOF
         *) fail "pipeline ARTIFACT_PATTERN '${pattern}' does not match uploaded artifact '${uploaded}'" ;;
     esac
 }
+
+# The companion of the test above: PR builds upload the digest files under a pr- prefixed name that
+# must NOT match the signing pipeline's ARTIFACT_PATTERN, so the signing pipeline can never collect a
+# PR image's digest even if it were ever triggered for a PR.
+@test "the signing ARTIFACT_PATTERN does not match the artifact uploaded on PR builds" {
+    _set_buildkite_env feature 123
+    _mock_crane "sha256:feedface"
+    _mock_buildkite_agent
+    _run_upload_digest "base" ""
+    assert_success
+
+    local uploaded pattern
+    uploaded="$(sed -E 's/^artifact upload //' "${BUILDKITE_AGENT_CALLS_FILE}")"
+    pattern="$(grep -m1 'ARTIFACT_PATTERN:' .buildkite/pipeline.yml | sed -E 's/.*"([^"]*)".*/\1/')"
+    refute [ -z "${pattern}" ]
+
+    case "${uploaded}" in
+        ${pattern}) fail "PR digest artifact '${uploaded}' must not match signing ARTIFACT_PATTERN '${pattern}'" ;;
+        *) ;;
+    esac
+}
