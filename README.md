@@ -199,19 +199,22 @@ If you want to run the most recent registry for development, run the `main` tag.
 
 The published images are signed with [cosign](https://github.com/sigstore/cosign)
 (Sigstore) through the Elastic release team's `unified-release-container-image-signing`
-pipeline. All non-pull-request images are signed — branch and release-tag builds,
-in every flavour (default, `-ubi`, `-fips`). Pull request images (in the
-`observability-ci` namespace) are not signed.
+pipeline. All non-pull-request images are signed — branch builds and every tag
+build (including prerelease tags such as `v1.2.3-rc1`), in every flavour
+(default, `-ubi`, `-fips`). Pull request images (in the `observability-ci`
+namespace) are not signed.
 
 How it works:
 
-1. After [`publish.sh`](.buildkite/scripts/publish.sh) pushes each image, it
-   resolves the image's multi-arch manifest (OCI image index) digest with
-   [`crane`](https://github.com/google/go-containerregistry) and writes an
-   `<image_ref>@sha256:<digest>` line to `package-registry-<flavour>-images-digest.txt`,
-   uploaded as a Buildkite artifact. `crane` is installed by the `with_crane`
+1. [`publish.sh`](.buildkite/scripts/publish.sh) builds and pushes each image with
+   `docker buildx build --metadata-file` and reads the pushed multi-arch manifest
+   (OCI image index) digest from that metadata with
+   [`jq`](https://jqlang.github.io/jq/), then writes an `<image_ref>@sha256:<digest>`
+   line to `package-registry-<flavour>-images-digest.txt`, uploaded as a Buildkite
+   artifact. The digest is captured from the build result at push time (no registry
+   read-back), so it is this build's exact image. `jq` is installed by the `with_jq`
    helper in [`pre-install-command.sh`](.buildkite/scripts/pre-install-command.sh),
-   pinned via the `CRANE_VERSION` env variable in [`pipeline.yml`](.buildkite/pipeline.yml).
+   pinned via the `JQ_VERSION` env variable in [`pipeline.yml`](.buildkite/pipeline.yml).
 2. A trigger step in [`pipeline.yml`](.buildkite/pipeline.yml) starts
    `unified-release-container-image-signing`, depending on the `publish` step so
    it runs after the digest artifacts have been uploaded. cosign signs by digest

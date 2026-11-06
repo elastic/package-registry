@@ -169,9 +169,11 @@ steps:
     depends_on:
       - step: "publish"
         allow_failure: false
-    # Release tag builds only (semver vX.Y.Z; prerelease tags intentionally excluded, matching the
-    # dockerhub-copy and downstream steps). Sign them with the released version as the cosign tag annotation.
-    if: build.tag =~ /^v\d+\.\d+\.\d+$$/
+    # All tag builds, including prereleases such as v1.2.3-rc1: every published non-PR image is signed.
+    # Together with the branch trigger below (non-tag, non-PR builds) this covers all non-PR images.
+    # Unlike the dockerhub-copy/downstream steps, signing is intentionally NOT restricted to stable
+    # releases. Sign with the git tag as the cosign tag annotation.
+    if: build.tag != null
 
   - trigger: unified-release-container-image-signing
     label: ":key: Sign branch container images"
