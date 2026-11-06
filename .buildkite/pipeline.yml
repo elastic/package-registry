@@ -33,7 +33,7 @@ steps:
   - label: ":bash: Test CI scripts (bats)"
     key: bats-tests
     command:
-      - "make bats-tester-ci"
+      - ".buildkite/scripts/bats-tests.sh"
     agents:
       image: "${LINUX_GOLANG_AGENT_IMAGE}"
       cpu: "4"
@@ -115,6 +115,24 @@ steps:
   - label: ":docker: Publish docker image"
     key: "publish"
     command: ".buildkite/scripts/publish.sh"
+    # This step builds/pushes the images and, for each flavour, captures the pushed multi-arch index
+    # digest from the buildx --metadata-file and uploads a digest file for signing. The digest is read
+    # from the build result (not a registry read-back), so it is this build's exact image regardless of
+    # any concurrent build repointing a tag. Serialize publishes in dispatch order
+    # (concurrency_method: ordered) so the rolling :main tag always ends up pointing at the latest
+    # build, instead of whichever of two overlapping publishes happens to push last. (Signing
+    # correctness does not depend on this serialization -- the digest is captured at push time -- so it
+    # is only :main rolling-tag hygiene.)
+    #
+    # The group key is per PR: branch and tag builds have BUILDKITE_PULL_REQUEST="false" so they share
+    # one "...-publish-false" slot (where the :main / release-tag ordering matters), while each PR gets
+    # its own "...-publish-<n>" slot. PR images only go to PR-<n> tags and never touch :main, so there
+    # is no reason for them to queue behind other PRs or behind branch/tag publishes; this scopes the
+    # serialization to a PR's own overlapping builds and keeps PRs from throttling each other. The env
+    # var is interpolated at pipeline-upload time.
+    concurrency: 1
+    concurrency_group: "package-registry/package-registry-publish-${BUILDKITE_PULL_REQUEST}"
+    concurrency_method: ordered
     agents:
       provider: "gcp"
     depends_on:
@@ -138,6 +156,41 @@ steps:
           # This step lasts more than 10 minutes, so the Vault token could have expired when the
           # plugin runs its pre-exit hook. The credentials are removed in .buildkite/hooks/pre-exit
           disable_logout: true
+
+  - trigger: unified-release-container-image-signing
+    label: ":key: Sign release container images"
+    key: "sign-release-container-images"
+    async: false
+    build:
+      env:
+        ARTIFACT_PATTERN: "package-registry-*-images-digest.txt"
+        UPLOAD_SIGNATURE: "true"
+        IMAGES_TAG: "${BUILDKITE_TAG}"
+    depends_on:
+      - step: "publish"
+        allow_failure: false
+    # All tag builds, including prereleases such as v1.2.3-rc1: every published non-PR image is signed.
+    # Together with the branch trigger below (non-tag, non-PR builds) this covers all non-PR images.
+    # Unlike the dockerhub-copy/downstream steps, signing is intentionally NOT restricted to stable
+    # releases. Sign with the git tag as the cosign tag annotation.
+    if: build.tag != null
+
+  - trigger: unified-release-container-image-signing
+    label: ":key: Sign branch container images"
+    key: "sign-branch-container-images"
+    async: false
+    build:
+      env:
+        ARTIFACT_PATTERN: "package-registry-*-images-digest.txt"
+        UPLOAD_SIGNATURE: "true"
+        IMAGES_TAG: "${BUILDKITE_BRANCH}-${BUILDKITE_COMMIT}"
+    depends_on:
+      - step: "publish"
+        allow_failure: false
+    # Non-PR branch builds (e.g. main) are public too; sign them with a controlled
+    # <branch>-<commit> cosign tag annotation. PR images are not signed. The
+    # BUILDKITE_PULL_REQUEST check matches the one publish.sh uses to gate signing.
+    if: build.tag == null && build.env('BUILDKITE_PULL_REQUEST') == 'false'
 
   - trigger: unified-release-copy-elastic-images-to-dockerhub
     label: ":docker: Copy release images to Docker Hub"

@@ -165,20 +165,77 @@ docker run --rm -it -p 8443:8443 \
 
 #### Docker images published
 
-We publish a Docker image with each successful build commit on branches, tags, or PR.
-For each commit we have two docker image tags, one with the commit as tag
+We publish Docker images containing only the package registry (they don't
+contain any package) for each successful build. Branch and pull request builds
+publish two tags, one with the commit SHA and one with the branch name or pull
+request number. Release-tag builds publish a single tag, the git tag: the commit
+image already exists from the branch build and is not rebuilt.
 
-`docker.elastic.co/package-registry/package-registry:f999b7a84d977cd19a379f0cec802aa1ef7ca379`
+Branch builds are published to `docker.elastic.co/package-registry/package-registry`
+with the commit SHA and the branch name:
 
-Another Docker tag with the git branch or tag name
+* `docker.elastic.co/package-registry/package-registry:f999b7a84d977cd19a379f0cec802aa1ef7ca379` (commit)
+* `docker.elastic.co/package-registry/package-registry:main` (branch)
 
-* `docker.elastic.co/package-registry/package-registry:main`
-* `docker.elastic.co/package-registry/package-registry:pr-111`
-* `docker.elastic.co/package-registry/package-registry:v0.2.0`
+Release-tag builds are published to the same namespace with only the git tag:
 
-If you want to run the most recent registry for development, run the main tag.
+* `docker.elastic.co/package-registry/package-registry:v0.2.0` (git tag)
 
-These images contain only the package registry, they don't contain any package.
+Pull request builds are published to the internal `observability-ci` namespace
+instead, with the commit SHA and a `PR-<number>` tag:
+
+* `docker.elastic.co/observability-ci/package-registry:f999b7a84d977cd19a379f0cec802aa1ef7ca379` (commit)
+* `docker.elastic.co/observability-ci/package-registry:PR-111`
+
+These images are for Elastic-internal use and are not publicly available.
+
+Each build produces three flavours, distinguished by a tag suffix: the default
+image, a UBI-based image (`-ubi`) and a FIPS image (`-fips`), for example
+`docker.elastic.co/package-registry/package-registry:main-ubi`.
+
+If you want to run the most recent registry for development, run the `main` tag.
+
+#### Signing published images
+
+The published images are signed with [cosign](https://github.com/sigstore/cosign)
+(Sigstore) through the Elastic release team's `unified-release-container-image-signing`
+pipeline. All non-pull-request images are signed — branch builds and every tag
+build (including prerelease tags such as `v1.2.3-rc1`), in every flavour
+(default, `-ubi`, `-fips`). Pull request images (in the `observability-ci`
+namespace) are not signed.
+
+How it works:
+
+1. [`publish.sh`](.buildkite/scripts/publish.sh) builds and pushes each image with
+   `docker buildx build --metadata-file` and reads the pushed multi-arch manifest
+   (OCI image index) digest from that metadata with
+   [`jq`](https://jqlang.github.io/jq/), then writes an `<image_ref>@sha256:<digest>`
+   line to `package-registry-<flavour>-images-digest.txt`, uploaded as a Buildkite
+   artifact. The digest is captured from the build result at push time (no registry
+   read-back), so it is this build's exact image. `jq` is installed by the `with_jq`
+   helper in [`pre-install-command.sh`](.buildkite/scripts/pre-install-command.sh),
+   pinned via the `JQ_VERSION` env variable in [`pipeline.yml`](.buildkite/pipeline.yml).
+2. A trigger step in [`pipeline.yml`](.buildkite/pipeline.yml) starts
+   `unified-release-container-image-signing`, depending on the `publish` step so
+   it runs after the digest artifacts have been uploaded. cosign signs by digest
+   with `--recursive` (the index and its child manifests). On branch builds the
+   commit tag and the branch tag point to the same index digest, so signing that
+   digest covers both; tag builds push and sign only the release-tagged image.
+   Either way each flavour is signed once.
+
+The signing pipeline is configured through these environment variables on the
+triggered build:
+
+| Variable | Value | Description |
+|---|---|---|
+| `ARTIFACT_PATTERN` | `package-registry-*-images-digest.txt` | Glob the signing pipeline uses to collect the digest artifacts uploaded by the publish step. |
+| `UPLOAD_SIGNATURE` | `true` | Upload the generated cosign signatures. |
+| `IMAGES_TAG` | `${BUILDKITE_TAG}` on tag builds, `${BUILDKITE_BRANCH}-${BUILDKITE_COMMIT}` on branch builds | Value used as the cosign `tag=` annotation on the signature. |
+
+> [!IMPORTANT]
+> End-to-end signing requires the package-registry build pipeline to be in the
+> `unified-release-container-image-signing` allowlist. Until that is in place the
+> trigger cannot sign.
 
 ### Testing with Kibana
 
