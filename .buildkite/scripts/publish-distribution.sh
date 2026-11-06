@@ -3,6 +3,7 @@
 source .buildkite/scripts/tooling.sh
 source .buildkite/scripts/pre-install-command.sh
 source .buildkite/scripts/publish.helpers.sh
+source .buildkite/scripts/publish-distribution.helpers.sh
 
 set -euo pipefail
 

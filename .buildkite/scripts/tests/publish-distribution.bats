@@ -7,6 +7,7 @@
 
 setup() {
     load 'setup_command'
+    load 'setup_distribution_command'
     _common_setup
 
     _mock_docker

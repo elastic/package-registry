@@ -251,6 +251,15 @@ with `ARTIFACT_PATTERN=package-registry-distribution-*-images-digest.txt`,
 `UPLOAD_SIGNATURE=true` and `IMAGES_TAG` set to the released version. Nothing is
 signed on a dry run.
 
+Unlike `publish.sh`, this pipeline *retags* already-built images with
+`docker buildx imagetools create` rather than building them, so there is no buildx
+build metadata to read the digest from. It instead resolves each pushed tag's digest
+with a `crane digest` read-back from the registry (the `with_crane` /
+`write_image_digest_file` helpers in
+[`publish-distribution.helpers.sh`](.buildkite/scripts/publish-distribution.helpers.sh),
+pinned via `CRANE_VERSION`), the same way the other Elastic pipelines feeding
+`unified-release-container-image-signing` resolve the signing digest.
+
 By default only the `package-registry-distribution` repository is signed, because
 the original `package-registry/distribution` images are assumed to be signed
 upstream by `package-storage-infra`. Set `SIGN_DISTRIBUTION_IMAGES=true` (an
