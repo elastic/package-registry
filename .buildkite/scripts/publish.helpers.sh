@@ -43,8 +43,9 @@ setup_buildx() {
 	docker buildx create --use
 }
 
-# Build and push the multi-platform image of a flavour. Requires set_image_tags and setup_buildx to
-# be called first.
+# Build and push the multi-platform image of a flavour, writing the buildx result metadata (which
+# carries the pushed multi-arch index digest) to buildx-metadata-<flavour>.json. Requires
+# set_image_tags and setup_buildx to be called first.
 #
 # Usage: build_push_docker_image <runner_image> [<tag_suffix>]
 build_push_docker_image() {
@@ -54,6 +55,11 @@ build_push_docker_image() {
 	if [[ "${tag_suffix}" == "-fips" ]]; then
 		fips=1
 	fi
+	# flavour derived from the suffix ("" -> base, "-ubi" -> ubi, "-fips" -> fips), used to name the
+	# buildx metadata file so upload_image_digest_for_signing can find this flavour's digest.
+	local flavour="${tag_suffix#-}"
+	flavour="${flavour:-base}"
+	local metadata_file="buildx-metadata-${flavour}.json"
 	local docker_img_tag="${DOCKER_IMG_TAG}${tag_suffix}"
 	local docker_img_tag_branch="${DOCKER_IMG_TAG_BRANCH}${tag_suffix}"
 	local go_version
@@ -72,10 +78,15 @@ build_push_docker_image() {
 		tag_args+=(-t "${tag}")
 	done
 
+	# buildx writes the result metadata (incl. the pushed multi-arch index digest) only on a successful
+	# build, so remove any stale file from a previous attempt before building.
+	rm -f "${metadata_file}"
+
 	retry 3 docker buildx build --push \
 		--platform linux/amd64,linux/arm64/v8 \
 		--progress plain \
 		"${tag_args[@]}" \
+		--metadata-file "${metadata_file}" \
 		--build-arg GO_VERSION="${go_version}" \
 		--build-arg BUILDER_IMAGE=docker.elastic.co/wolfi/go \
 		--build-arg RUNNER_IMAGE="${runner_image}" \
@@ -89,49 +100,39 @@ build_push_docker_image() {
 	echo "+++ Docker images pushed: ${push_tags[*]}"
 }
 
-# Resolve the digest of an image already pushed to the registry and write
-# "<image_ref>@<digest>" to the given file. These files are the input of the
-# unified-release-container-image-signing pipeline.
+# Print the pushed multi-arch index digest recorded in a buildx --metadata-file. This is resolved at
+# push time (immutable, no registry read-back), so it is immune to a concurrent build repointing a
+# shared tag. Guards that the metadata describes an image INDEX (manifest list) and that the digest is
+# present, failing loudly otherwise. Requires jq.
 #
-# Usage: write_image_digest_file <image_ref> <digest_file>
-write_image_digest_file() {
-	local image_ref="$1"
-	local digest_file="$2"
-	local digest
+# Usage: buildx_metadata_digest <metadata_file>
+buildx_metadata_digest() {
+	local metadata_file="$1"
+	local mediatype digest
 
-	if ! command -v crane > /dev/null 2>&1; then
-		echo "ERROR: crane command not found" >&2
+	if [[ ! -f "${metadata_file}" ]]; then
+		echo "ERROR: buildx metadata file not found: ${metadata_file}" >&2
 		return 1
 	fi
 
-	if ! digest="$(retry 5 crane digest "${image_ref}")" \
-		|| [[ -z "${digest}" || "${digest}" == "null" ]]; then
-		echo "ERROR: could not resolve digest for ${image_ref}" >&2
+	# A multi-platform --push produces an image index; cosign --recursive signs that index digest, not
+	# a per-platform manifest digest, so assert the metadata actually describes an index.
+	mediatype="$(jq -r '.["containerimage.descriptor"].mediaType // ""' "${metadata_file}")"
+	case "${mediatype}" in
+	*image.index.v1+json | *manifest.list.v2+json) ;;
+	*)
+		echo "ERROR: expected a multi-arch image index in ${metadata_file}, got mediaType '${mediatype}'" >&2
+		return 1
+		;;
+	esac
+
+	digest="$(jq -r '.["containerimage.digest"] // ""' "${metadata_file}")"
+	if [[ -z "${digest}" || "${digest}" == "null" ]]; then
+		echo "ERROR: no containerimage.digest in ${metadata_file}" >&2
 		return 1
 	fi
 
-	echo "${image_ref}@${digest}" > "${digest_file}"
-	echo "Wrote image digest for signing: ${image_ref}@${digest} -> ${digest_file}"
-}
-
-# Write the build-unique reference of a flavour to its ref file (a single line, frozen in the uploaded
-# artifact so a retry of the digest step reuses the exact image this build pushed) and upload it as a
-# Buildkite artifact, so the separate digest step (resolve_image_digests.sh) can resolve its digest
-# after the push. Decoupling resolution from the push keeps a transient crane/registry failure from
-# failing an already-successful push (which would leave the pushed image unsigned), and forwards a
-# build-unique ref so the digest step resolves the exact image this build pushed, not whatever a shared
-# tag points at. Requires set_image_tags to have run (it picks SIGN_IMAGE_REF).
-#
-# Usage: upload_image_ref_for_signing <flavour> [<tag_suffix>]
-upload_image_ref_for_signing() {
-	local flavour="$1"
-	local tag_suffix="${2:-}"
-	local image_ref="${SIGN_IMAGE_REF}${tag_suffix}"
-	local ref_file="image-ref-${flavour}.txt"
-
-	echo "${image_ref}" > "${ref_file}"
-	echo "Wrote image ref for signing: ${image_ref} -> ${ref_file}"
-	retry 5 buildkite-agent artifact upload "${ref_file}"
+	echo "${digest}"
 }
 
 # Print the digest artifact filename for a flavour. Single source of truth for the name the signing
@@ -152,39 +153,24 @@ digest_file_name() {
 	echo "${digest_file}"
 }
 
-# Resolve a signing digest for every image-ref-*.txt in the current directory (uploaded by the publish
-# step and downloaded by the digest step), writing and uploading the matching digest file. Requires
-# crane to be installed. Signing is by digest; the branch/release name reaches signing separately as
-# the IMAGES_TAG annotation in .buildkite/pipeline.yml. A ref that cannot be resolved does not abort
-# the others (every resolvable image is still signed) but makes the function return non-zero, so the
-# step fails and can be retriggered without re-running the push.
-resolve_image_digests() {
-	local ref_file flavour image_ref digest_file
-	local found=0
-	local failed=0
+# Write the digest file for a flavour from its buildx metadata and upload it as a Buildkite artifact,
+# so the unified-release-container-image-signing pipeline can collect it with the ARTIFACT_PATTERN
+# glob. Requires set_image_tags (it picks SIGN_IMAGE_REF) and the flavour's build_push_docker_image
+# (it writes buildx-metadata-<flavour>.json) to have run. The digest comes from the buildx metadata,
+# so it is this build's exact pushed image regardless of any later tag repoint; the branch/release name
+# reaches signing separately as the IMAGES_TAG annotation in .buildkite/pipeline.yml.
+#
+# Usage: upload_image_digest_for_signing <flavour> [<tag_suffix>]
+upload_image_digest_for_signing() {
+	local flavour="$1"
+	local tag_suffix="${2:-}"
+	local metadata_file="buildx-metadata-${flavour}.json"
+	local image_ref="${SIGN_IMAGE_REF}${tag_suffix}"
+	local digest_file digest
+	digest_file="$(digest_file_name "${flavour}")"
+	digest="$(buildx_metadata_digest "${metadata_file}")" || return 1
 
-	for ref_file in image-ref-*.txt; do
-		# With no matches the glob stays literal, so skip the non-existent file.
-		[[ -e "${ref_file}" ]] || continue
-		found=1
-
-		flavour="${ref_file#image-ref-}"
-		flavour="${flavour%.txt}"
-		read -r image_ref < "${ref_file}"
-		digest_file="$(digest_file_name "${flavour}")"
-
-		# write_image_digest_file already logs the failure; just record it so the other refs still
-		# resolve and the step ends non-zero (retriggerable).
-		if write_image_digest_file "${image_ref}" "${digest_file}"; then
-			retry 5 buildkite-agent artifact upload "${digest_file}"
-		else
-			failed=1
-		fi
-	done
-
-	if [[ "${found}" -eq 0 ]]; then
-		echo "No image-ref-*.txt artifacts found; nothing to resolve"
-	fi
-
-	return "${failed}"
+	echo "${image_ref}@${digest}" > "${digest_file}"
+	echo "Wrote image digest for signing: ${image_ref}@${digest} -> ${digest_file}"
+	retry 5 buildkite-agent artifact upload "${digest_file}"
 }

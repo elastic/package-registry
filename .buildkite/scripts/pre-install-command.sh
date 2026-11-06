@@ -79,35 +79,8 @@ with_jq() {
     jq --version
 }
 
-with_crane() {
-    create_bin_folder
-    check_platform_architecture
-
-    echo "--- Install crane ${CRANE_VERSION}"
-    # crane release assets use the raw OS name (Linux/Darwin) and x86_64/arm64
-    local crane_arch="${arch_type}"
-    if [[ "${arch_type}" == "amd64" ]]; then
-        crane_arch="x86_64"
-    fi
-    local binary="go-containerregistry_${platform_type}_${crane_arch}.tar.gz"
-    local tmp_folder="${WORKSPACE}/tmp"
-    mkdir -p "${tmp_folder}"
-    local tar_filepath="${tmp_folder}/crane.tar.gz"
-
-    # --fail makes curl exit non-zero on HTTP errors (e.g. 429/503) so the retry loop
-    # catches them, instead of saving the error body and letting tar fail on it.
-    retry 5 curl --fail -sSL -o "${tar_filepath}" "https://github.com/google/go-containerregistry/releases/download/${CRANE_VERSION}/${binary}"
-    tar -C "${WORKSPACE}/bin" -xpf "${tar_filepath}" crane
-    chmod +x "${WORKSPACE}/bin/crane"
-    rm -rf "${tmp_folder}"
-
-    add_bin_path
-    crane version
-}
-
 # Required env variables:
 #   WORKSPACE
 #   SETUP_MAGE_VERSION
 WORKSPACE=${WORKSPACE:-"$(pwd)"}
 SETUP_MAGE_VERSION=${SETUP_MAGE_VERSION:-"1.14.0"}
-CRANE_VERSION=${CRANE_VERSION:-"v0.22.1"}
