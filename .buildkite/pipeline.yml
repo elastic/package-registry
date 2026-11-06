@@ -169,8 +169,9 @@ steps:
     depends_on:
       - step: "publish"
         allow_failure: false
-    # Tag builds are public; sign them with the released version as the cosign tag annotation.
-    if: build.tag != null
+    # Release tag builds only (semver vX.Y.Z; prerelease tags intentionally excluded, matching the
+    # dockerhub-copy and downstream steps). Sign them with the released version as the cosign tag annotation.
+    if: build.tag =~ /^v\d+\.\d+\.\d+$$/
 
   - trigger: unified-release-container-image-signing
     label: ":key: Sign branch container images"
