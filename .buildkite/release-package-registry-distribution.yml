@@ -17,6 +17,16 @@ steps:
         hint: "e.g. 0.0.1"
         key: "DOCKER_TAG"
         required: true
+      - select: "Skip retag (only sign already-pushed images)"
+        hint: "Re-run signing for a previous build without retagging; the images must already exist in the registry."
+        key: "SKIP_RETAG"
+        required: false
+        default: "false"
+        options:
+          - label: "No — retag and sign"
+            value: "false"
+          - label: "Yes — only sign (skip retag)"
+            value: "true"
 
   - label: ":hammer: Validate docker tag"
     if: "build.source == 'ui' || build.env('BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG') == 'fleet-server'"

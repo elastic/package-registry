@@ -15,6 +15,13 @@ fi
 
 echo "version for tagging: ${DOCKER_TAG}"
 
+# SKIP_RETAG (default false): when "true", do not retag/push the images, only resolve the digests of
+# the already-pushed target tags and upload them for signing. Use it to re-run the signing step of a
+# previous build (e.g. after a transient signing failure) without repeating the retag. The images must
+# already exist in the registry, otherwise the digest resolution fails loudly. Has no effect on dry
+# runs (nothing is signed then). Set by the "Skip retag" input field on UI builds.
+SKIP_RETAG=$(buildkite-agent meta-data get SKIP_RETAG --default="false")
+
 DOCKER_IMG_SOURCE="${DOCKER_IMAGE}:${TAG_NAME}"
 
 # DOCKER_IMAGE_RENAMED is optional: when set, the retagged image is also
@@ -73,8 +80,13 @@ for image in "${DOCKER_IMAGE_TARGETS[@]}"; do
         if [[ ${DRY_RUN:-true} == "true" ]]; then
             docker buildx imagetools create --dry-run -t "${target_image}" "${source_image}"
         else
-            retry 3 docker buildx imagetools create -t "${target_image}" "${source_image}"
-            echo "Docker image pushed: ${target_image}"
+            # SKIP_RETAG reuses the image pushed by a previous run; otherwise retag it now.
+            if [[ "${SKIP_RETAG}" == "true" ]]; then
+                echo "SKIP_RETAG: not retagging, will sign existing image: ${target_image}"
+            else
+                retry 3 docker buildx imagetools create -t "${target_image}" "${source_image}"
+                echo "Docker image pushed: ${target_image}"
+            fi
             if [[ "${sign_repo}" == "true" ]]; then
                 SIGNING_IMAGES+=("${target_image}")
             fi
@@ -84,7 +96,7 @@ done
 
 # Upload the digests of the pushed images for the unified-release-container-image-signing pipeline,
 # one artifact per distribution. crane reads the digests from the registry, so it is only installed
-# and used when images have been pushed.
+# and used when there are images to sign (pushed in this run, or in a previous one under SKIP_RETAG).
 if [[ ${#SIGNING_IMAGES[@]} -gt 0 ]]; then
     with_crane
 

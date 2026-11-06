@@ -260,6 +260,14 @@ with a `crane digest` read-back from the registry (the `with_crane` /
 pinned via `CRANE_VERSION`), the same way the other Elastic pipelines feeding
 `unified-release-container-image-signing` resolve the signing digest.
 
+Because the digest is resolved from images already in the registry, the signing can
+be repeated without retagging: the **Skip retag** input field (`SKIP_RETAG=true`) on a
+UI build makes `publish-distribution.sh` skip the `imagetools create` step and only
+resolve and upload the digests of the already-pushed tags. Use it to re-run signing for
+a previous build (e.g. after a transient signing failure); the images must already
+exist in the registry, otherwise the digest resolution fails. It has no effect on a dry
+run (nothing is signed then).
+
 By default only the `package-registry-distribution` repository is signed, because
 the original `package-registry/distribution` images are assumed to be signed
 upstream by `package-storage-infra`. Set `SIGN_DISTRIBUTION_IMAGES=true` (an

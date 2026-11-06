@@ -30,6 +30,8 @@ setup() {
 echo "$*" >> "${BUILDKITE_AGENT_CALLS_FILE}"
 if [[ "$1 $2" == "meta-data get" && "$3" == "DOCKER_TAG" ]]; then
     echo "1.2.3"
+elif [[ "$1 $2" == "meta-data get" && "$3" == "SKIP_RETAG" ]]; then
+    echo "${SKIP_RETAG_META:-false}"
 fi
 EOF
 }
@@ -103,6 +105,27 @@ teardown() {
     assert_line "${DOCKER_IMAGE_RENAMED}:1.2.3-ubi@sha256:deadbeef"
     assert_line "${DOCKER_IMAGE_RENAMED}:1.2.3-fips@sha256:deadbeef"
     assert_equal "${#lines[@]}" "6"
+}
+
+@test "publish-distribution signs without retagging when SKIP_RETAG is true" {
+    export SKIP_RETAG_META="true"
+
+    run bash .buildkite/scripts/publish-distribution.sh
+    assert_success
+
+    # no retag happened: imagetools create was never called (only setup_buildx's "buildx create")
+    run cat "${DOCKER_CALLS_FILE}"
+    refute_output --partial "imagetools create"
+
+    # the digests of the already-pushed images are still resolved and uploaded for signing
+    run cat package-registry-distribution-production-images-digest.txt
+    assert_line "${DOCKER_IMAGE_RENAMED}:1.2.3@sha256:deadbeef"
+    assert_line "${DOCKER_IMAGE_RENAMED}:1.2.3-ubi@sha256:deadbeef"
+    assert_line "${DOCKER_IMAGE_RENAMED}:1.2.3-fips@sha256:deadbeef"
+    assert_equal "${#lines[@]}" "3"
+
+    run cat "${BUILDKITE_AGENT_CALLS_FILE}"
+    assert_line "artifact upload package-registry-distribution-production-images-digest.txt"
 }
 
 @test "publish-distribution does not sign anything on a dry run" {
