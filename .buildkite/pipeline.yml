@@ -33,7 +33,7 @@ steps:
   - label: ":bash: Test CI scripts (bats)"
     key: bats-tests
     command:
-      - "make bats-tester-ci"
+      - ".buildkite/scripts/bats-tests.sh"
     agents:
       image: "${LINUX_GOLANG_AGENT_IMAGE}"
       cpu: "4"
