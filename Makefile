@@ -73,7 +73,6 @@ bats-tester-ci: bats
 
 bats-tester: bats
 	@echo "Running tests bats"
-	@rm -rf "$(BATS_WORK_DIR_TESTS)"
 	@mkdir -p "$(BATS_WORK_DIR_TESTS)"
 	@cd "$(BATS_WORK_DIR_TESTS)" && \
 	  "$(BATS_SOURCE_DIR)/bats-core/bin/bats" --verbose-run --formatter pretty "$(CURDIR)/.buildkite/scripts/tests"
