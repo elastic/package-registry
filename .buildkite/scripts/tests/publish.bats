@@ -11,19 +11,19 @@ setup() {
     _set_publish_env
     _mock_docker
 
-    # non-PR builds install crane and upload digest files for signing; mock both so the push path
-    # never reaches the network, and crane resolves to a fixed digest.
+    # publish.sh installs jq (with_jq) to read the pushed digest out of the buildx metadata, then
+    # uploads one digest file per flavour. Mock the jq install (no network) and buildkite-agent; the
+    # docker mock writes the buildx metadata with a fixed digest.
     export WORKSPACE="${BATS_TEST_TMPDIR}/workspace"
     mkdir -p "${WORKSPACE}"
-    export CRANE_STUB_DIGEST="sha256:deadbeef"
-    _install_fake_crane
+    _mock_jq_install
     _mock_buildkite_agent
 }
 
-# publish.sh writes the digest files in the working directory (the repository root); remove them so
-# they do not linger as untracked files.
+# publish.sh writes the buildx metadata + digest files in the working directory (the repository root);
+# remove them so they do not linger as untracked files.
 teardown() {
-    rm -f package-registry-*-images-digest.txt pr-package-registry-*-images-digest.txt
+    rm -f buildx-metadata-*.json package-registry-*-images-digest.txt pr-package-registry-*-images-digest.txt
 }
 
 @test "publish builds and pushes the three flavours in order" {
@@ -33,11 +33,11 @@ teardown() {
     assert_success
 
     run grep "^buildx build" "${DOCKER_CALLS_FILE}"
-    assert_line --index 0 --partial "-t ${DOCKER_IMG}:abc123 -t ${DOCKER_IMG}:main --build-arg"
+    assert_line --index 0 --partial "-t ${DOCKER_IMG}:abc123 -t ${DOCKER_IMG}:main --metadata-file buildx-metadata-base.json"
     assert_line --index 0 --partial "RUNNER_IMAGE=docker.elastic.co/wolfi/chainguard-base --build-arg FIPS=0"
-    assert_line --index 1 --partial "-t ${DOCKER_IMG}:abc123-ubi -t ${DOCKER_IMG}:main-ubi --build-arg"
+    assert_line --index 1 --partial "-t ${DOCKER_IMG}:abc123-ubi -t ${DOCKER_IMG}:main-ubi --metadata-file buildx-metadata-ubi.json"
     assert_line --index 1 --partial "RUNNER_IMAGE=registry.access.redhat.com/ubi9/ubi-minimal:9.6 --build-arg FIPS=0"
-    assert_line --index 2 --partial "-t ${DOCKER_IMG}:abc123-fips -t ${DOCKER_IMG}:main-fips --build-arg"
+    assert_line --index 2 --partial "-t ${DOCKER_IMG}:abc123-fips -t ${DOCKER_IMG}:main-fips --metadata-file buildx-metadata-fips.json"
     assert_line --index 2 --partial "RUNNER_IMAGE=docker.elastic.co/wolfi/chainguard-base-fips --build-arg FIPS=1"
     assert_equal "${#lines[@]}" "3"
 
@@ -53,9 +53,9 @@ teardown() {
     assert_success
 
     run grep "^buildx build" "${DOCKER_CALLS_FILE}"
-    assert_line --index 0 --partial "-t ${DOCKER_IMG_PR}:abc123 -t ${DOCKER_IMG_PR}:PR-123 --build-arg"
-    assert_line --index 1 --partial "-t ${DOCKER_IMG_PR}:abc123-ubi -t ${DOCKER_IMG_PR}:PR-123-ubi --build-arg"
-    assert_line --index 2 --partial "-t ${DOCKER_IMG_PR}:abc123-fips -t ${DOCKER_IMG_PR}:PR-123-fips --build-arg"
+    assert_line --index 0 --partial "-t ${DOCKER_IMG_PR}:abc123 -t ${DOCKER_IMG_PR}:PR-123 --metadata-file buildx-metadata-base.json"
+    assert_line --index 1 --partial "-t ${DOCKER_IMG_PR}:abc123-ubi -t ${DOCKER_IMG_PR}:PR-123-ubi --metadata-file buildx-metadata-ubi.json"
+    assert_line --index 2 --partial "-t ${DOCKER_IMG_PR}:abc123-fips -t ${DOCKER_IMG_PR}:PR-123-fips --metadata-file buildx-metadata-fips.json"
     assert_equal "${#lines[@]}" "3"
     refute_output --partial "${DOCKER_IMG}:"
 }
@@ -67,20 +67,20 @@ teardown() {
     assert_success
 
     run grep "^buildx build" "${DOCKER_CALLS_FILE}"
-    assert_line --index 0 --partial "-t ${DOCKER_IMG}:v1.2.3 --build-arg"
-    assert_line --index 1 --partial "-t ${DOCKER_IMG}:v1.2.3-ubi --build-arg"
-    assert_line --index 2 --partial "-t ${DOCKER_IMG}:v1.2.3-fips --build-arg"
+    assert_line --index 0 --partial "-t ${DOCKER_IMG}:v1.2.3 --metadata-file buildx-metadata-base.json"
+    assert_line --index 1 --partial "-t ${DOCKER_IMG}:v1.2.3-ubi --metadata-file buildx-metadata-ubi.json"
+    assert_line --index 2 --partial "-t ${DOCKER_IMG}:v1.2.3-fips --metadata-file buildx-metadata-fips.json"
     # the commit tag is not re-pushed on tag builds (it already exists from the branch build)
     refute_output --partial "${DOCKER_IMG}:abc123"
 }
 
-@test "publish signs non-PR builds by uploading one digest file per flavour" {
+@test "publish writes and uploads one digest file per flavour for signing" {
     _set_buildkite_env main false
 
     run bash .buildkite/scripts/publish.sh
     assert_success
 
-    # one digest file per flavour, referencing the commit tag and the resolved digest
+    # one digest file per flavour: the commit tag (branch builds) and the digest from the buildx metadata
     assert_equal "$(cat package-registry-base-images-digest.txt)" "${DOCKER_IMG}:abc123@sha256:deadbeef"
     assert_equal "$(cat package-registry-ubi-images-digest.txt)" "${DOCKER_IMG}:abc123-ubi@sha256:deadbeef"
     assert_equal "$(cat package-registry-fips-images-digest.txt)" "${DOCKER_IMG}:abc123-fips@sha256:deadbeef"
@@ -93,7 +93,7 @@ teardown() {
 }
 
 # Tag builds sign by the release tag (:<tag>): only the tag build pushes it and it is the released
-# image, so it is a reliable, build-unique reference. Branch builds sign by the commit tag instead.
+# image. Branch builds sign by the commit tag instead.
 @test "publish signs tag builds using the git tag in the digest reference" {
     _set_buildkite_env main false v1.2.3
 
@@ -105,16 +105,16 @@ teardown() {
     assert_equal "$(cat package-registry-fips-images-digest.txt)" "${DOCKER_IMG}:v1.2.3-fips@sha256:deadbeef"
 }
 
-# PR builds exercise the signing-input path too, but write and upload the digest files under a pr-
-# prefixed name that cannot match the signing pipeline's ARTIFACT_PATTERN, so the signing pipeline
-# would never collect them (and its trigger steps are gated off for PRs anyway).
-@test "publish uploads PR digest files under a name the signing pipeline cannot collect" {
+# PR builds resolve digests too (to exercise the path), but under a pr- prefixed name that cannot match
+# the signing pipeline's ARTIFACT_PATTERN, so the signing pipeline would never collect them (and its
+# trigger steps are gated off for PRs anyway).
+@test "publish writes PR digest files under a name the signing pipeline cannot collect" {
     _set_buildkite_env feature 123
 
     run bash .buildkite/scripts/publish.sh
     assert_success
 
-    # the digest files are written under the pr- prefixed name, referencing the PR namespace...
+    # written under the pr- prefixed name, referencing the PR namespace...
     assert_equal "$(cat pr-package-registry-base-images-digest.txt)" "${DOCKER_IMG_PR}:abc123@sha256:deadbeef"
     assert_equal "$(cat pr-package-registry-ubi-images-digest.txt)" "${DOCKER_IMG_PR}:abc123-ubi@sha256:deadbeef"
     assert_equal "$(cat pr-package-registry-fips-images-digest.txt)" "${DOCKER_IMG_PR}:abc123-fips@sha256:deadbeef"
@@ -124,7 +124,6 @@ teardown() {
     assert_file_not_exists package-registry-ubi-images-digest.txt
     assert_file_not_exists package-registry-fips-images-digest.txt
 
-    # each pr- prefixed file is uploaded as a buildkite artifact
     run cat "${BUILDKITE_AGENT_CALLS_FILE}"
     assert_line "artifact upload pr-package-registry-base-images-digest.txt"
     assert_line "artifact upload pr-package-registry-ubi-images-digest.txt"

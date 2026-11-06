@@ -29,15 +29,10 @@ _common_setup() {
 exit 0
 EOF
 
-    # Fail loudly if a script under test reaches a side-effecting command without the test
-    # stubbing it, instead of hitting the real Docker daemon or registry. Tests that need these
-    # override them with _mock_docker / _mock_crane.
+    # Fail loudly if a script under test reaches the Docker daemon without the test stubbing it,
+    # instead of hitting the real daemon or registry. Tests that need it override it with _mock_docker.
     _create_stub docker <<'EOF'
 echo "ERROR: 'docker' called in a bats test without _mock_docker" >&2
-exit 1
-EOF
-    _create_stub crane <<'EOF'
-echo "ERROR: 'crane' called in a bats test without _mock_crane" >&2
 exit 1
 EOF
 }
@@ -82,11 +77,16 @@ _set_buildkite_env() {
 }
 
 # Stub of docker that records the arguments of every call in DOCKER_CALLS_FILE and fails the first
-# DOCKER_STUB_BUILD_FAILURES calls of "docker buildx build".
+# DOCKER_STUB_BUILD_FAILURES calls of "docker buildx build". On a successful "buildx build" it emulates
+# buildx writing its result metadata to the --metadata-file path (as real buildx does only on success),
+# with containerimage.digest = DOCKER_STUB_DIGEST and descriptor.mediaType = DOCKER_STUB_MEDIATYPE
+# (override those before calling to exercise buildx_metadata_digest's guards).
 _mock_docker() {
     export DOCKER_CALLS_FILE="${BATS_TEST_TMPDIR}/docker_calls"
     export DOCKER_BUILD_FAILURES_FILE="${BATS_TEST_TMPDIR}/docker_build_failures"
     echo 0 > "${DOCKER_BUILD_FAILURES_FILE}"
+    export DOCKER_STUB_DIGEST="${DOCKER_STUB_DIGEST:-sha256:deadbeef}"
+    export DOCKER_STUB_MEDIATYPE="${DOCKER_STUB_MEDIATYPE:-application/vnd.oci.image.index.v1+json}"
 
     _create_stub docker <<'EOF'
 echo "$*" >> "${DOCKER_CALLS_FILE}"
@@ -95,6 +95,16 @@ if [[ "$1 $2" == "buildx build" ]]; then
     if [[ "${failures}" -lt "${DOCKER_STUB_BUILD_FAILURES:-0}" ]]; then
         echo $((failures + 1)) > "${DOCKER_BUILD_FAILURES_FILE}"
         exit 1
+    fi
+    meta=""
+    prev=""
+    for arg in "$@"; do
+        if [[ "${prev}" == "--metadata-file" ]]; then meta="${arg}"; fi
+        prev="${arg}"
+    done
+    if [[ -n "${meta}" ]]; then
+        printf '{"containerimage.digest":"%s","containerimage.descriptor":{"mediaType":"%s","digest":"%s","size":1}}\n' \
+            "${DOCKER_STUB_DIGEST}" "${DOCKER_STUB_MEDIATYPE}" "${DOCKER_STUB_DIGEST}" > "${meta}"
     fi
 fi
 EOF
@@ -110,46 +120,26 @@ echo "$*" >> "${BUILDKITE_AGENT_CALLS_FILE}"
 EOF
 }
 
-# Stub uname and curl so a later with_crane call installs a fake crane instead of downloading the real
-# one. The fake crane answers "crane digest" with ${CRANE_STUB_DIGEST} (default sha256:fakedigest) and
-# prints "fake crane ${CRANE_VERSION}" otherwise (e.g. "crane version"). Export CRANE_STUB_DIGEST or
-# CRANE_STUB_VERSION before calling to override the defaults. CRANE_VERSION is forced from
-# CRANE_STUB_VERSION so the pipeline-level CRANE_VERSION cannot leak into with_crane's download URL.
-# uname reports <system>/<machine> (default Linux/x86_64); curl records its arguments in CURL_ARGS_FILE
-# and writes the tarball to its -o path. Requires WORKSPACE (with_crane installs into ${WORKSPACE}/bin).
-#
-# Usage: [CRANE_STUB_DIGEST=<digest>] [CRANE_STUB_VERSION=<version>] _install_fake_crane [<system>] [<machine>]
-_install_fake_crane() {
-    export CRANE_STUB_DIGEST="${CRANE_STUB_DIGEST:-sha256:fakedigest}"
-    export CRANE_VERSION="${CRANE_STUB_VERSION:-v0.0.1}"
-    export UNAME_STUB_SYSTEM="${1:-Linux}"
-    export UNAME_STUB_MACHINE="${2:-x86_64}"
+# Stub curl so a later with_jq call "installs" jq by copying the system jq into the download path,
+# instead of fetching it from the network. Requires a working jq on PATH (the bats environment provides
+# one) and WORKSPACE (with_jq installs into ${WORKSPACE}/bin). Records curl arguments in CURL_ARGS_FILE.
+_mock_jq_install() {
     export CURL_ARGS_FILE="${BATS_TEST_TMPDIR}/curl_args"
     : > "${CURL_ARGS_FILE}"
+    # with_jq builds the download URL from JQ_VERSION (set by the pipeline env); provide it so the
+    # script does not trip over `set -u` in tests.
+    export JQ_VERSION="${JQ_VERSION:-1.7}"
+    REAL_JQ="$(command -v jq)"
+    export REAL_JQ
 
-    _create_stub uname <<'EOF'
-if [[ "${1:-}" == "-m" ]]; then
-    echo "${UNAME_STUB_MACHINE}"
-else
-    echo "${UNAME_STUB_SYSTEM}"
-fi
-EOF
     _create_stub curl <<'EOF'
 echo "$*" >> "${CURL_ARGS_FILE}"
 output=""
-while [[ $# -gt 0 ]]; do
-    if [[ "$1" == "-o" ]]; then
-        output="$2"
-    fi
-    shift
+prev=""
+for arg in "$@"; do
+    if [[ "${prev}" == "-o" ]]; then output="${arg}"; fi
+    prev="${arg}"
 done
-fake_dir="$(mktemp -d)"
-cat > "${fake_dir}/crane" <<'CRANE'
-#!/bin/bash
-if [[ "$1" == "digest" ]]; then echo "${CRANE_STUB_DIGEST}"; else echo "fake crane ${CRANE_VERSION}"; fi
-CRANE
-chmod +x "${fake_dir}/crane"
-tar -C "${fake_dir}" -czf "${output}" crane
-rm -rf "${fake_dir}"
+if [[ -n "${output}" ]]; then cp "${REAL_JQ}" "${output}"; fi
 EOF
 }

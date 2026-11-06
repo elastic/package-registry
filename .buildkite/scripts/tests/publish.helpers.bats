@@ -8,8 +8,12 @@ setup() {
     _set_publish_env
 
     sources="source .buildkite/scripts/tooling.sh; source .buildkite/scripts/publish.helpers.sh;"
-    DIGEST_FILE="${BATS_TEST_TMPDIR}/package-registry-images-digest.txt"
-    IMAGE_REF="docker.elastic.co/package-registry/package-registry:main"
+}
+
+# Build tests run build_push_docker_image in the repo root (it reads .go-version); the docker mock
+# writes a buildx metadata file there per flavour. Remove those so they do not linger.
+teardown() {
+    rm -f buildx-metadata-*.json
 }
 
 # Write the command file that calls set_image_tags and prints the resulting variables, then run it.
@@ -43,48 +47,29 @@ EOF
     run ${test_command}
 }
 
-# Write the command file that resolves the digest of IMAGE_REF into DIGEST_FILE, then run it.
-_run_write_digest() {
-    cat <<EOF > "${COMMAND_FILE}"
-${sources}
-write_image_digest_file "${IMAGE_REF}" "${DIGEST_FILE}"
-EOF
-    run ${test_command}
-}
-
-# Setup only needed by the tests that resolve digests: replace crane with a stub.
-#   CRANE_STUB_DIGEST: digest printed by "crane digest" (empty prints nothing)
-#   CRANE_STUB_FAILURES: number of calls that fail before "crane digest" succeeds
-_mock_crane() {
-    export CRANE_STUB_DIGEST="${1:-}"
-    export CRANE_STUB_FAILURES="${2:-0}"
-    export CRANE_CALLS_FILE="${BATS_TEST_TMPDIR}/crane_calls"
-    echo 0 > "${CRANE_CALLS_FILE}"
-
-    _create_stub crane <<'EOF'
-calls="$(cat "${CRANE_CALLS_FILE}")"
-echo $((calls + 1)) > "${CRANE_CALLS_FILE}"
-echo "$*" >> "${CRANE_CALLS_FILE}.args"
-if [[ "${calls}" -lt "${CRANE_STUB_FAILURES}" ]]; then
-    exit 1
-fi
-echo "${CRANE_STUB_DIGEST}"
-EOF
-}
-
 # Print the "docker buildx build" call recorded under test. Each test here builds a single flavour,
 # so the one buildx build line is unambiguous.
 _build_call() {
     grep -F -- "buildx build --push" "${DOCKER_CALLS_FILE}"
 }
 
-# Write the command file that resolves and uploads the digest of a flavour, run from a scratch dir
-# so the digest files do not land in the repository. Sets UPLOAD_WORKDIR to that scratch dir.
+# Write the command file that prints digest_file_name for a flavour, then run it.
+#
+# Usage: _run_digest_file_name <flavour>
+_run_digest_file_name() {
+    cat <<EOF > "${COMMAND_FILE}"
+${sources}
+digest_file_name "$1"
+EOF
+    run ${test_command}
+}
+
+# Write the command file that writes + uploads the digest file of a flavour from a prepared buildx
+# metadata file, run from a scratch dir so the digest files do not land in the repository. Prepare
+# buildx-metadata-<flavour>.json in UPLOAD_WORKDIR (set by the test) before calling.
 #
 # Usage: _run_upload_digest <flavour> [<tag_suffix>]
 _run_upload_digest() {
-    UPLOAD_WORKDIR="${BATS_TEST_TMPDIR}/work"
-    mkdir -p "${UPLOAD_WORKDIR}"
     cat <<EOF > "${COMMAND_FILE}"
 cd "${UPLOAD_WORKDIR}"
 source ${ROOT_DIR}/.buildkite/scripts/tooling.sh
@@ -141,7 +126,7 @@ EOF
     assert_output "0"
     run _build_call
     assert_output --partial "buildx build --push --platform linux/amd64,linux/arm64/v8 --progress plain"
-    assert_output --partial "-t ${DOCKER_IMG}:abc123 -t ${DOCKER_IMG}:main --build-arg"
+    assert_output --partial "-t ${DOCKER_IMG}:abc123 -t ${DOCKER_IMG}:main --metadata-file buildx-metadata-base.json --build-arg"
     assert_output --partial "--build-arg GO_VERSION=$(cat .go-version)"
     assert_output --partial "--build-arg BUILDER_IMAGE=docker.elastic.co/wolfi/go"
     assert_output --partial "--build-arg RUNNER_IMAGE=docker.elastic.co/wolfi/chainguard-base --build-arg FIPS=0"
@@ -154,7 +139,7 @@ EOF
     _run_build_push "registry.access.redhat.com/ubi9/ubi-minimal:9.6" "-ubi"
     assert_success
     run _build_call
-    assert_output --partial "-t ${DOCKER_IMG}:abc123-ubi -t ${DOCKER_IMG}:main-ubi --build-arg"
+    assert_output --partial "-t ${DOCKER_IMG}:abc123-ubi -t ${DOCKER_IMG}:main-ubi --metadata-file buildx-metadata-ubi.json --build-arg"
     assert_output --partial "--build-arg RUNNER_IMAGE=registry.access.redhat.com/ubi9/ubi-minimal:9.6 --build-arg FIPS=0"
 }
 
@@ -164,6 +149,7 @@ EOF
     _run_build_push "docker.elastic.co/wolfi/chainguard-base-fips" "-fips"
     assert_success
     run _build_call
+    assert_output --partial "--metadata-file buildx-metadata-fips.json"
     assert_output --partial "--build-arg RUNNER_IMAGE=docker.elastic.co/wolfi/chainguard-base-fips --build-arg FIPS=1"
 }
 
@@ -173,7 +159,7 @@ EOF
     _run_build_push "docker.elastic.co/wolfi/chainguard-base" ""
     assert_success
     run _build_call
-    assert_output --partial "-t ${DOCKER_IMG}:v1.2.3 --build-arg"
+    assert_output --partial "-t ${DOCKER_IMG}:v1.2.3 --metadata-file buildx-metadata-base.json --build-arg"
     assert_output --partial "--label BRANCH_NAME=v1.2.3"
     # the commit tag is not re-pushed on tag builds (it already exists from the branch build)
     refute_output --partial "${DOCKER_IMG}:abc123"
@@ -208,130 +194,126 @@ EOF
     assert_output "3"
 }
 
-@test "write_image_digest_file writes the image reference with its digest" {
-    _mock_crane "sha256:feedface"
-    _run_write_digest
-    assert_success
-    assert_output --partial "${IMAGE_REF}@sha256:feedface"
-    assert_equal "$(cat "${DIGEST_FILE}")" "${IMAGE_REF}@sha256:feedface"
-    assert_equal "$(cat "${CRANE_CALLS_FILE}.args")" "digest ${IMAGE_REF}"
-}
-
-@test "write_image_digest_file overwrites an existing digest file" {
-    _mock_crane "sha256:feedface"
-    echo "old content" > "${DIGEST_FILE}"
-    _run_write_digest
-    assert_success
-    assert_equal "$(cat "${DIGEST_FILE}")" "${IMAGE_REF}@sha256:feedface"
-}
-
-@test "write_image_digest_file retries when crane fails temporarily" {
-    _mock_crane "sha256:feedface" 2
-    _run_write_digest
-    assert_success
-    assert_equal "$(head -1 "${CRANE_CALLS_FILE}")" "3"
-    assert_equal "$(cat "${DIGEST_FILE}")" "${IMAGE_REF}@sha256:feedface"
-}
-
-@test "write_image_digest_file fails when crane keeps failing" {
-    _mock_crane "sha256:feedface" 100
-    _run_write_digest
-    assert_failure
-    assert_output --partial "ERROR: could not resolve digest for ${IMAGE_REF}"
-    assert_equal "$(head -1 "${CRANE_CALLS_FILE}")" "5"
-    assert_file_not_exists "${DIGEST_FILE}"
-}
-
-@test "write_image_digest_file fails when the digest is empty" {
-    _mock_crane ""
-    _run_write_digest
-    assert_failure
-    assert_output --partial "ERROR: could not resolve digest for ${IMAGE_REF}"
-    assert_file_not_exists "${DIGEST_FILE}"
-}
-
-@test "write_image_digest_file fails when the digest is null" {
-    _mock_crane "null"
-    _run_write_digest
-    assert_failure
-    assert_output --partial "ERROR: could not resolve digest for ${IMAGE_REF}"
-    assert_file_not_exists "${DIGEST_FILE}"
-}
-
-@test "write_image_digest_file fails when crane is not installed" {
-    # a PATH without the crane binary (the stubs are not needed, only builtins are used)
+@test "buildx_metadata_digest extracts the multi-arch index digest" {
+    cat > "${BATS_TEST_TMPDIR}/meta.json" <<'JSON'
+{"containerimage.digest":"sha256:feedface","containerimage.descriptor":{"mediaType":"application/vnd.oci.image.index.v1+json","digest":"sha256:feedface"}}
+JSON
     cat <<EOF > "${COMMAND_FILE}"
 ${sources}
-PATH="${BATS_TEST_TMPDIR}/empty"
-write_image_digest_file "${IMAGE_REF}" "${DIGEST_FILE}"
+buildx_metadata_digest "${BATS_TEST_TMPDIR}/meta.json"
 EOF
+    run ${test_command}
+    assert_success
+    assert_output "sha256:feedface"
+}
 
+@test "buildx_metadata_digest fails when the metadata file is missing" {
+    cat <<EOF > "${COMMAND_FILE}"
+${sources}
+buildx_metadata_digest "${BATS_TEST_TMPDIR}/nope.json"
+EOF
     run ${test_command}
     assert_failure
-    assert_output --partial "ERROR: crane command not found"
-    assert_file_not_exists "${DIGEST_FILE}"
+    assert_output --partial "buildx metadata file not found"
+}
+
+@test "buildx_metadata_digest fails when the digest is absent" {
+    echo '{"containerimage.descriptor":{"mediaType":"application/vnd.oci.image.index.v1+json"}}' > "${BATS_TEST_TMPDIR}/meta.json"
+    cat <<EOF > "${COMMAND_FILE}"
+${sources}
+buildx_metadata_digest "${BATS_TEST_TMPDIR}/meta.json"
+EOF
+    run ${test_command}
+    assert_failure
+    assert_output --partial "no containerimage.digest"
+}
+
+# A single-platform build produces a manifest, not an index; signing needs the index digest, so this
+# must be rejected rather than silently signing a per-platform manifest.
+@test "buildx_metadata_digest rejects a non-index (single-platform) manifest" {
+    echo '{"containerimage.digest":"sha256:feedface","containerimage.descriptor":{"mediaType":"application/vnd.oci.image.manifest.v1+json"}}' > "${BATS_TEST_TMPDIR}/meta.json"
+    cat <<EOF > "${COMMAND_FILE}"
+${sources}
+buildx_metadata_digest "${BATS_TEST_TMPDIR}/meta.json"
+EOF
+    run ${test_command}
+    assert_failure
+    assert_output --partial "expected a multi-arch image index"
+}
+
+@test "digest_file_name returns the signing name on non-PR builds" {
+    _set_buildkite_env main false
+    _run_digest_file_name "base"
+    assert_success
+    assert_output "package-registry-base-images-digest.txt"
+}
+
+# PR builds resolve digests to exercise the path, but their files must not be collected by the signing
+# pipeline, so the name is prefixed with pr- (which does not match ARTIFACT_PATTERN).
+@test "digest_file_name prefixes the name with pr- on PR builds" {
+    _set_buildkite_env feature 123
+    _run_digest_file_name "base"
+    assert_success
+    assert_output "pr-package-registry-base-images-digest.txt"
 }
 
 @test "upload_image_digest_for_signing writes and uploads the flavour digest file" {
     _set_buildkite_env main false
-    _mock_crane "sha256:feedface"
     _mock_buildkite_agent
+    UPLOAD_WORKDIR="${BATS_TEST_TMPDIR}/work"
+    mkdir -p "${UPLOAD_WORKDIR}"
+    echo '{"containerimage.digest":"sha256:feedface","containerimage.descriptor":{"mediaType":"application/vnd.oci.image.index.v1+json"}}' > "${UPLOAD_WORKDIR}/buildx-metadata-base.json"
     _run_upload_digest "base" ""
     assert_success
     assert_equal "$(cat "${UPLOAD_WORKDIR}/package-registry-base-images-digest.txt")" "${DOCKER_IMG}:abc123@sha256:feedface"
     assert_equal "$(cat "${BUILDKITE_AGENT_CALLS_FILE}")" "artifact upload package-registry-base-images-digest.txt"
 }
 
-# Tag builds resolve the release tag (:<tag>): only the tag build pushes it and it is the released
-# image, so it is a reliable, build-unique reference. Branch builds resolve the commit tag instead.
+# Tag builds sign by the release tag (:<tag>); branch builds sign by the commit tag.
 @test "upload_image_digest_for_signing uses the git tag and the flavour suffix on tag builds" {
     _set_buildkite_env main false v1.2.3
-    _mock_crane "sha256:feedface"
     _mock_buildkite_agent
+    UPLOAD_WORKDIR="${BATS_TEST_TMPDIR}/work"
+    mkdir -p "${UPLOAD_WORKDIR}"
+    echo '{"containerimage.digest":"sha256:feedface","containerimage.descriptor":{"mediaType":"application/vnd.oci.image.index.v1+json"}}' > "${UPLOAD_WORKDIR}/buildx-metadata-fips.json"
     _run_upload_digest "fips" "-fips"
     assert_success
     assert_equal "$(cat "${UPLOAD_WORKDIR}/package-registry-fips-images-digest.txt")" "${DOCKER_IMG}:v1.2.3-fips@sha256:feedface"
-    assert_equal "$(cat "${CRANE_CALLS_FILE}.args")" "digest ${DOCKER_IMG}:v1.2.3-fips"
+}
+
+@test "upload_image_digest_for_signing writes PR digest files under the non-collectable pr- name" {
+    _set_buildkite_env feature 123
+    _mock_buildkite_agent
+    UPLOAD_WORKDIR="${BATS_TEST_TMPDIR}/work"
+    mkdir -p "${UPLOAD_WORKDIR}"
+    echo '{"containerimage.digest":"sha256:feedface","containerimage.descriptor":{"mediaType":"application/vnd.oci.image.index.v1+json"}}' > "${UPLOAD_WORKDIR}/buildx-metadata-base.json"
+    _run_upload_digest "base" ""
+    assert_success
+    assert_equal "$(cat "${UPLOAD_WORKDIR}/pr-package-registry-base-images-digest.txt")" "${DOCKER_IMG_PR}:abc123@sha256:feedface"
+    assert_file_not_exists "${UPLOAD_WORKDIR}/package-registry-base-images-digest.txt"
 }
 
 # The signing trigger step in .buildkite/pipeline.yml collects the digest files with a glob
-# (ARTIFACT_PATTERN). This checks that the artifact the helper actually uploads matches that glob, so
-# the two sides cannot drift apart silently (a renamed digest file or an edited pattern breaks it).
-@test "the signing ARTIFACT_PATTERN matches the artifact that upload_image_digest_for_signing uploads" {
+# (ARTIFACT_PATTERN). This checks that digest_file_name on a non-PR build matches that glob and that the
+# pr- prefixed PR name does NOT, so the two sides cannot drift apart silently.
+@test "the signing ARTIFACT_PATTERN matches non-PR digest names but not the pr- names" {
+    local pattern
+    pattern="$(grep -m1 'ARTIFACT_PATTERN:' .buildkite/pipeline.yml | sed -E 's/.*"([^"]*)".*/\1/')"
+    refute [ -z "${pattern}" ]
+
     _set_buildkite_env main false
-    _mock_crane "sha256:feedface"
-    _mock_buildkite_agent
-    _run_upload_digest "base" ""
+    _run_digest_file_name "base"
     assert_success
-
-    local uploaded pattern
-    uploaded="$(sed -E 's/^artifact upload //' "${BUILDKITE_AGENT_CALLS_FILE}")"
-    pattern="$(grep -m1 'ARTIFACT_PATTERN:' .buildkite/pipeline.yml | sed -E 's/.*"([^"]*)".*/\1/')"
-    refute [ -z "${pattern}" ]
-
-    case "${uploaded}" in
+    case "${output}" in
         ${pattern}) ;;
-        *) fail "pipeline ARTIFACT_PATTERN '${pattern}' does not match uploaded artifact '${uploaded}'" ;;
+        *) fail "pipeline ARTIFACT_PATTERN '${pattern}' does not match non-PR digest name '${output}'" ;;
     esac
-}
 
-# The companion of the test above: PR builds upload the digest files under a pr- prefixed name that
-# must NOT match the signing pipeline's ARTIFACT_PATTERN, so the signing pipeline can never collect a
-# PR image's digest even if it were ever triggered for a PR.
-@test "the signing ARTIFACT_PATTERN does not match the artifact uploaded on PR builds" {
     _set_buildkite_env feature 123
-    _mock_crane "sha256:feedface"
-    _mock_buildkite_agent
-    _run_upload_digest "base" ""
+    _run_digest_file_name "base"
     assert_success
-
-    local uploaded pattern
-    uploaded="$(sed -E 's/^artifact upload //' "${BUILDKITE_AGENT_CALLS_FILE}")"
-    pattern="$(grep -m1 'ARTIFACT_PATTERN:' .buildkite/pipeline.yml | sed -E 's/.*"([^"]*)".*/\1/')"
-    refute [ -z "${pattern}" ]
-
-    case "${uploaded}" in
-        ${pattern}) fail "PR digest artifact '${uploaded}' must not match signing ARTIFACT_PATTERN '${pattern}'" ;;
+    case "${output}" in
+        ${pattern}) fail "PR digest name '${output}' must not match signing ARTIFACT_PATTERN '${pattern}'" ;;
         *) ;;
     esac
 }
