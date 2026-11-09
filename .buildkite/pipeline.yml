@@ -203,7 +203,14 @@ steps:
     depends_on:
       - step: "publish"
         allow_failure: false
+      - step: "sign-release-container-images"
+        allow_failure: false
     # Release-only: gates dockerhub copy + downstream update, prerelease tags intentionally excluded.
+    #
+    # The copy pipeline copies the cosign signatures along with the image, but only the signatures
+    # that already exist in docker.elastic.co when the copy runs (otherwise it copies the image and
+    # warns). So the signing trigger above must complete first: it is async: false, so this
+    # dependency waits for the signing build itself, not just for the trigger step.
     if: build.tag =~ /^v\d+\.\d+\.\d+$$/
 
   - trigger: unified-release-copy-elastic-images-to-dockerhub
@@ -217,6 +224,8 @@ steps:
     depends_on:
       - step: "publish"
         allow_failure: false
+      - step: "sign-release-container-images"
+        allow_failure: false
     if: build.tag =~ /^v\d+\.\d+\.\d+$$/
 
   - trigger: unified-release-copy-elastic-images-to-dockerhub
@@ -229,6 +238,8 @@ steps:
         IMAGES_TAG: "${BUILDKITE_TAG}-fips"
     depends_on:
       - step: "publish"
+        allow_failure: false
+      - step: "sign-release-container-images"
         allow_failure: false
     if: build.tag =~ /^v\d+\.\d+\.\d+$$/
 
