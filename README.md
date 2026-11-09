@@ -232,11 +232,6 @@ triggered build:
 | `UPLOAD_SIGNATURE` | `true` | Upload the generated cosign signatures. |
 | `IMAGES_TAG` | `${BUILDKITE_TAG}` on tag builds, `${BUILDKITE_BRANCH}-${BUILDKITE_COMMIT}` on branch builds | Value used as the cosign `tag=` annotation on the signature. |
 
-> [!IMPORTANT]
-> End-to-end signing requires the package-registry build pipeline to be in the
-> `unified-release-container-image-signing` allowlist. Until that is in place the
-> trigger cannot sign.
-
 ### Testing with Kibana
 
 The Docker image of Package Registry is just an empty distribution without any packages.
