@@ -277,12 +277,6 @@ to `package-registry/distribution`. A cosign signature is stored per repository 
 keyed by digest, so this adds explicit coverage for those tags rather than relying
 on the upstream signature.
 
-> [!IMPORTANT]
-> End-to-end signing requires the build pipelines (`package-registry` and
-> `package-registry-release-package-registry-distribution`) to be in the
-> `unified-release-container-image-signing` allowlist. Until that is in place the
-> triggers cannot sign.
-
 ### Testing with Kibana
 
 The Docker image of Package Registry is just an empty distribution without any packages.
