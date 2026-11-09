@@ -241,8 +241,8 @@ repository, so they do not follow a retag to another repository:
 
 | Image | Signed by |
 |---|---|
-| `package-registry/distribution` | Already signed when it is built (`package-storage-infra`), the release only retags it — unless `SIGN_DISTRIBUTION_IMAGES=true` (see below), which also signs its stack-version tags here. |
-| `package-registry/package-registry-distribution` | The release distribution pipeline. |
+| `package-registry/distribution` | Already signed upstream when it is built (`package-storage-infra`); the release distribution pipeline retags it and, with `SIGN_DISTRIBUTION_IMAGES=true` (the default here, see below), also signs its stack-version tags. |
+| `package-registry/package-registry-distribution` | The release distribution pipeline (always). |
 
 [`publish-distribution.sh`](.buildkite/scripts/publish-distribution.sh) uploads
 `package-registry-distribution-<distribution>-images-digest.txt` for each
@@ -268,14 +268,20 @@ a previous build (e.g. after a transient signing failure); the images must alrea
 exist in the registry, otherwise the digest resolution fails. It has no effect on a dry
 run (nothing is signed then).
 
-By default only the `package-registry-distribution` repository is signed, because
-the original `package-registry/distribution` images are assumed to be signed
-upstream by `package-storage-infra`. Set `SIGN_DISTRIBUTION_IMAGES=true` (an
-environment variable on the `release-distribution` step) to also sign the
-stack-version tags (e.g. `:<version>`, `:<version>-ubi`, `:<version>-fips`) pushed
-to `package-registry/distribution`. A cosign signature is stored per repository and
-keyed by digest, so this adds explicit coverage for those tags rather than relying
-on the upstream signature.
+The `package-registry-distribution` repository is always signed here. The
+`SIGN_DISTRIBUTION_IMAGES` environment variable on the `release-distribution` step
+(`true` by default) additionally signs the stack-version tags (e.g. `:<version>`,
+`:<version>-ubi`, `:<version>-fips`) pushed to the original
+`package-registry/distribution` repository. A cosign signature is stored per
+repository and keyed by digest, so even though those images are already signed
+upstream by `package-storage-infra`, this adds an explicit signature for the
+stack-version tags here rather than relying on the upstream one. Set it to `false`
+to sign only the renamed repository.
+
+The Docker Hub copy step (`trigger-copy-release-images-to-dockerhub`) depends on the
+signing trigger (`trigger-sign-release-images`), which runs the signing build with
+`async: false`. This guarantees the images are signed before they are copied to
+Docker Hub, instead of the two running in parallel.
 
 ### Testing with Kibana
 

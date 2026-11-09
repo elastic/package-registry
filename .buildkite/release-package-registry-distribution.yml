@@ -52,9 +52,10 @@ steps:
       TAG_NAME: "{{matrix.tag_name}}"
       DOCKER_IMAGE: "docker.elastic.co/package-registry/distribution"
       DOCKER_IMAGE_RENAMED: "docker.elastic.co/package-registry/package-registry-distribution"
-      # Set to "true" to also sign the stack-version tags under the original
-      # package-registry/distribution repo (not only package-registry-distribution).
-      SIGN_DISTRIBUTION_IMAGES: "false"
+      # Also sign the stack-version tags under the original package-registry/distribution
+      # repo (not only package-registry-distribution), even though those images are already
+      # signed upstream by package-storage-infra. Set to "false" to sign only the renamed repo.
+      SIGN_DISTRIBUTION_IMAGES: "true"
       DRY_RUN: false
     command:
       - ".buildkite/scripts/publish-distribution.sh"
@@ -186,8 +187,10 @@ steps:
                 IMAGES_NAMES: "package-registry/package-registry-distribution"
                 IMAGES_TAG: "lite-$${DOCKER_TAG}-ubi"
         PIPELINE
+    # Depend on the signing trigger (which itself depends on release-distribution and runs the
+    # signing build with async: false) so the images are signed before they are copied to Docker Hub.
     depends_on:
-      - step: "release-distribution"
+      - step: "trigger-sign-release-images"
         allow_failure: false
 
 notify:
