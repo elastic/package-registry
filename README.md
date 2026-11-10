@@ -279,20 +279,20 @@ stack-version tags here rather than relying on the upstream one. Set it to `fals
 to sign only the renamed repository.
 
 The images are signed before they are copied to Docker Hub. The signing and copy
-triggers are both uploaded dynamically, so the copy step
-(`trigger-copy-release-images-to-dockerhub`) depends on `trigger-sign-release-images`
-only to ensure the `sign-release-images` trigger exists by the time it runs; the
-actual ordering comes from each uploaded copy trigger declaring
-`depends_on: sign-release-images`, so it waits for that `async: false` signing build
-to finish rather than running in parallel with it.
+triggers are both uploaded dynamically: `trigger-sign-release-images` uploads the
+`sign-release-images` trigger, and the copy step
+(`trigger-copy-release-images-to-dockerhub`) depends on `trigger-sign-release-images`.
+Because [a step that depends on an upload step also depends on everything that step
+uploaded](https://buildkite.com/docs/pipelines/configure/depends-on), the copy step
+transitively waits for the `async: false` `sign-release-images` build to finish, so
+the copy triggers it uploads run after signing — no per-copy `depends_on` is needed.
 
-During the signing rollout, those copy triggers set `allow_failure: true` on that
-`sign-release-images` dependency. The copy still waits for signing, but a signing
-failure no longer blocks it, keeping the pre-signing behaviour of publishing to
-Docker Hub (a failed signing still turns the build red, which is caught by the
-failure notification). Flip `allow_failure` back to `false` once signing has proven
-stable over a release or two, so that an unsigned image can no longer reach Docker
-Hub.
+During the signing rollout, that dependency uses `allow_failure: true`. The copy
+still waits for signing, but a signing failure no longer blocks it, keeping the
+pre-signing behaviour of publishing to Docker Hub (a failed signing still turns the
+build red, which is caught by the failure notification). Flip `allow_failure` back to
+`false` once signing has proven stable over a release or two, so that an unsigned
+image can no longer reach Docker Hub.
 
 ### Testing with Kibana
 
