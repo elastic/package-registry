@@ -278,10 +278,13 @@ upstream by `package-storage-infra`, this adds an explicit signature for the
 stack-version tags here rather than relying on the upstream one. Set it to `false`
 to sign only the renamed repository.
 
-The Docker Hub copy step (`trigger-copy-release-images-to-dockerhub`) depends on the
-signing trigger (`trigger-sign-release-images`), which runs the signing build with
-`async: false`. This guarantees the images are signed before they are copied to
-Docker Hub, instead of the two running in parallel.
+The images are signed before they are copied to Docker Hub. The signing and copy
+triggers are both uploaded dynamically, so the copy step
+(`trigger-copy-release-images-to-dockerhub`) depends on `trigger-sign-release-images`
+only to ensure the `sign-release-images` trigger exists by the time it runs; the
+actual ordering comes from each uploaded copy trigger declaring
+`depends_on: sign-release-images`, so it waits for that `async: false` signing build
+to finish rather than running in parallel with it.
 
 ### Testing with Kibana
 

@@ -136,6 +136,9 @@ steps:
             label: ":docker: Copy release $${tag_name} $${suffix} images to Docker Hub"
             key: "$${step_key}"
             async: false
+            # Wait for the signing build (sign-release-images, async: false) so images are signed
+            # before being copied to Docker Hub.
+            depends_on: ["sign-release-images"]
             build:
               env:
                 IMAGES_NAMES: "package-registry/package-registry-distribution"
@@ -158,6 +161,7 @@ steps:
             label: ":docker: Copy release images to Docker Hub"
             key: copy-prod
             async: false
+            depends_on: ["sign-release-images"]
             build:
               env:
                 IMAGES_NAMES: "package-registry/package-registry-distribution"
@@ -166,6 +170,7 @@ steps:
             label: ":docker: Copy release UBI images to Docker Hub"
             key: copy-prod-ubi
             async: false
+            depends_on: ["sign-release-images"]
             build:
               env:
                 IMAGES_NAMES: "package-registry/package-registry-distribution"
@@ -174,6 +179,7 @@ steps:
             label: ":docker: Copy release lite images to Docker Hub"
             key: copy-lite
             async: false
+            depends_on: ["sign-release-images"]
             build:
               env:
                 IMAGES_NAMES: "package-registry/package-registry-distribution"
@@ -182,13 +188,15 @@ steps:
             label: ":docker: Copy release lite UBI images to Docker Hub"
             key: copy-lite-ubi
             async: false
+            depends_on: ["sign-release-images"]
             build:
               env:
                 IMAGES_NAMES: "package-registry/package-registry-distribution"
                 IMAGES_TAG: "lite-$${DOCKER_TAG}-ubi"
         PIPELINE
-    # Depend on the signing trigger (which itself depends on release-distribution and runs the
-    # signing build with async: false) so the images are signed before they are copied to Docker Hub.
+    # Depend on the signing trigger step so that, by the time this command runs, it has already
+    # uploaded the sign-release-images step; the copy trigger steps uploaded below depend on that
+    # sign-release-images step (async: false) so the images are signed before being copied to Docker Hub.
     depends_on:
       - step: "trigger-sign-release-images"
         allow_failure: false
