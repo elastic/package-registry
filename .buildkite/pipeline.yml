@@ -10,6 +10,7 @@ env:
   LINUX_GOLANG_AGENT_IMAGE: "golang:${SETUP_GOLANG_VERSION}"
   WINDOWS_AGENT_IMAGE: "family/core-windows-2022"
   MACOS_ARM_AGENT_IMAGE: "generic-13-ventura-arm"
+  NOTIFY_TO: "ecosystem-team@elastic.co"
 
 steps:
   - label: ":golangci-lint: Checks formatting / linting"
@@ -203,8 +204,13 @@ steps:
     depends_on:
       - step: "publish"
         allow_failure: false
+      # Rollout: the copy always waits for the signing build, but for now a signing failure does
+      # not block it, keeping the pre-signing behaviour of publishing to Docker Hub regardless.
+      # When signing passes -- the normal case -- the copy runs after it and the signatures are
+      # copied along with the image. Flip to false once signing has proven stable over a release
+      # or two, so that a signing failure stops unsigned images from reaching Docker Hub.
       - step: "sign-release-container-images"
-        allow_failure: false
+        allow_failure: true
     # Release-only: gates dockerhub copy + downstream update, prerelease tags intentionally excluded.
     #
     # The copy pipeline copies the cosign signatures along with the image, but only the signatures
@@ -224,8 +230,9 @@ steps:
     depends_on:
       - step: "publish"
         allow_failure: false
+      # Rollout, see the first Docker Hub copy step above.
       - step: "sign-release-container-images"
-        allow_failure: false
+        allow_failure: true
     if: build.tag =~ /^v\d+\.\d+\.\d+$$/
 
   - trigger: unified-release-copy-elastic-images-to-dockerhub
@@ -239,8 +246,9 @@ steps:
     depends_on:
       - step: "publish"
         allow_failure: false
+      # Rollout, see the first Docker Hub copy step above.
       - step: "sign-release-container-images"
-        allow_failure: false
+        allow_failure: true
     if: build.tag =~ /^v\d+\.\d+\.\d+$$/
 
   - trigger: "package-storage-infra-update-package-registry"
@@ -257,3 +265,11 @@ steps:
       - step: "publish"
         allow_failure: false
     if: build.tag =~ /^v\d+\.\d+\.\d+$$/
+
+# Tag builds are the ones that sign images and copy them to Docker Hub, and the copy is not blocked
+# by a signing failure (see the Docker Hub copy steps), so a release can complete with unsigned
+# images on Docker Hub. Mail on a failed release build so that gets noticed. build.tag != null also
+# covers non-PR: a pull request build never has a tag.
+notify:
+  - email: "$NOTIFY_TO"
+    if: build.state == 'failed' && build.tag != null
