@@ -286,6 +286,14 @@ actual ordering comes from each uploaded copy trigger declaring
 `depends_on: sign-release-images`, so it waits for that `async: false` signing build
 to finish rather than running in parallel with it.
 
+During the signing rollout, those copy triggers set `allow_failure: true` on that
+`sign-release-images` dependency. The copy still waits for signing, but a signing
+failure no longer blocks it, keeping the pre-signing behaviour of publishing to
+Docker Hub (a failed signing still turns the build red, which is caught by the
+failure notification). Flip `allow_failure` back to `false` once signing has proven
+stable over a release or two, so that an unsigned image can no longer reach Docker
+Hub.
+
 ### Testing with Kibana
 
 The Docker image of Package Registry is just an empty distribution without any packages.
