@@ -125,6 +125,12 @@ tests in `.buildkite/scripts/tests/`. Run them with `make bats-tester` (pretty o
   the registry, or the Docker daemon. Use `_mock_docker` or `_create_stub` (stubs are
   executables placed first on `PATH`). As a safety net, `_common_setup` installs a default
   `docker` stub that fails the test if called without `_mock_docker`.
+- The base publish path captures the signing digest from the `docker buildx build`
+  `--metadata-file`, so its tests need no crane. The distribution retag path
+  (`publish-distribution.sh`) instead resolves digests with `crane digest`, so its tests
+  (`publish-distribution.bats`) load `setup_distribution_command` and call `_install_fake_crane`
+  to stub crane. Keep that helper there, local to the distribution tests, so the shared
+  `setup_command.bash` stays crane-free.
 - Set the `BUILDKITE_*` variables explicitly in each test (via `_set_buildkite_env`); never
   rely on values inherited from the surrounding build.
 

@@ -232,6 +232,68 @@ triggered build:
 | `UPLOAD_SIGNATURE` | `true` | Upload the generated cosign signatures. |
 | `IMAGES_TAG` | `${BUILDKITE_TAG}` on tag builds, `${BUILDKITE_BRANCH}-${BUILDKITE_COMMIT}` on branch builds | Value used as the cosign `tag=` annotation on the signature. |
 
+##### Distribution images
+
+The [release distribution pipeline](.buildkite/release-package-registry-distribution.yml)
+also signs the `docker.elastic.co/package-registry/package-registry-distribution`
+images (all flavours: default, `-ubi`, `-fips`). Signatures are stored in the image
+repository, so they do not follow a retag to another repository:
+
+| Image | Signed by |
+|---|---|
+| `package-registry/distribution` | Already signed upstream when it is built (`package-storage-infra`); the release distribution pipeline retags it and, with `SIGN_DISTRIBUTION_IMAGES=true` (the default here, see below), also signs its stack-version tags. |
+| `package-registry/package-registry-distribution` | The release distribution pipeline (always). |
+
+[`publish-distribution.sh`](.buildkite/scripts/publish-distribution.sh) uploads
+`package-registry-distribution-<distribution>-images-digest.txt` for each
+distribution, and the `trigger-sign-release-images` step starts the signing pipeline
+with `ARTIFACT_PATTERN=package-registry-distribution-*-images-digest.txt`,
+`UPLOAD_SIGNATURE=true` and `IMAGES_TAG` set to the released version. Nothing is
+signed on a dry run.
+
+Unlike `publish.sh`, this pipeline *retags* already-built images with
+`docker buildx imagetools create` rather than building them, so there is no buildx
+build metadata to read the digest from. It instead resolves each pushed tag's digest
+with a `crane digest` read-back from the registry (the `with_crane` /
+`write_image_digest_file` helpers in
+[`publish-distribution.helpers.sh`](.buildkite/scripts/publish-distribution.helpers.sh),
+pinned via `CRANE_VERSION`), the same way the other Elastic pipelines feeding
+`unified-release-container-image-signing` resolve the signing digest.
+
+Because the digest is resolved from images already in the registry, the signing can
+be repeated without retagging: the **Skip retag** input field (`SKIP_RETAG=true`) on a
+UI build makes `publish-distribution.sh` skip the `imagetools create` step and only
+resolve and upload the digests of the already-pushed tags. Use it to re-run signing for
+a previous build (e.g. after a transient signing failure); the images must already
+exist in the registry, otherwise the digest resolution fails. It has no effect on a dry
+run (nothing is signed then).
+
+The `package-registry-distribution` repository is always signed here. The
+`SIGN_DISTRIBUTION_IMAGES` environment variable on the `release-distribution` step
+(`true` by default) additionally signs the stack-version tags (e.g. `:<version>`,
+`:<version>-ubi`, `:<version>-fips`) pushed to the original
+`package-registry/distribution` repository. A cosign signature is stored per
+repository and keyed by digest, so even though those images are already signed
+upstream by `package-storage-infra`, this adds an explicit signature for the
+stack-version tags here rather than relying on the upstream one. Set it to `false`
+to sign only the renamed repository.
+
+The images are signed before they are copied to Docker Hub. The signing and copy
+triggers are both uploaded dynamically: `trigger-sign-release-images` uploads the
+`sign-release-images` trigger, and the copy step
+(`trigger-copy-release-images-to-dockerhub`) depends on `trigger-sign-release-images`.
+Because [a step that depends on an upload step also depends on everything that step
+uploaded](https://buildkite.com/docs/pipelines/configure/depends-on), the copy step
+transitively waits for the `async: false` `sign-release-images` build to finish, so
+the copy triggers it uploads run after signing — no per-copy `depends_on` is needed.
+
+During the signing rollout, that dependency uses `allow_failure: true`. The copy
+still waits for signing, but a signing failure no longer blocks it, keeping the
+pre-signing behaviour of publishing to Docker Hub (a failed signing still turns the
+build red, which is caught by the failure notification). Flip `allow_failure` back to
+`false` once signing has proven stable over a release or two, so that an unsigned
+image can no longer reach Docker Hub.
+
 ### Testing with Kibana
 
 The Docker image of Package Registry is just an empty distribution without any packages.

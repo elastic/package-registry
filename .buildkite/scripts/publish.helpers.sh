@@ -37,7 +37,7 @@ set_image_tags() {
 }
 
 # Create a buildx builder and select it as the current one. Call once per publish run, before the
-# build_push_docker_image calls: a single builder then serves every flavour, instead of one builder
+# image build/push or retag calls: a single builder then serves every flavour, instead of one builder
 # being created per build.
 setup_buildx() {
 	docker buildx create --use

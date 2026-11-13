@@ -2,6 +2,7 @@
 
 env:
   NOTIFY_TO: "ecosystem-team@elastic.co"
+  CRANE_VERSION: "v0.22.1"
 
 steps:
   - label: ":thought_balloon: Notification"
@@ -16,6 +17,16 @@ steps:
         hint: "e.g. 0.0.1"
         key: "DOCKER_TAG"
         required: true
+      - select: "Skip retag (only sign already-pushed images)"
+        hint: "Re-run signing for a previous build without retagging; the images must already exist in the registry."
+        key: "SKIP_RETAG"
+        required: false
+        default: "false"
+        options:
+          - label: "No — retag and sign"
+            value: "false"
+          - label: "Yes — only sign (skip retag)"
+            value: "true"
 
   - label: ":hammer: Validate docker tag"
     if: "build.source == 'ui' || build.env('BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG') == 'fleet-server'"
@@ -41,6 +52,10 @@ steps:
       TAG_NAME: "{{matrix.tag_name}}"
       DOCKER_IMAGE: "docker.elastic.co/package-registry/distribution"
       DOCKER_IMAGE_RENAMED: "docker.elastic.co/package-registry/package-registry-distribution"
+      # Also sign the stack-version tags under the original package-registry/distribution
+      # repo (not only package-registry-distribution), even though those images are already
+      # signed upstream by package-storage-infra. Set to "false" to sign only the renamed repo.
+      SIGN_DISTRIBUTION_IMAGES: "true"
       DRY_RUN: false
     command:
       - ".buildkite/scripts/publish-distribution.sh"
@@ -52,6 +67,44 @@ steps:
     plugins:
       - elastic/vault-docker-login#v0.8.1:
           secret_path: 'kv/ci-shared/platform-ingest/elastic_docker_registry'
+
+  - label: ":key: Trigger sign release images"
+    key: trigger-sign-release-images
+    if: "build.source == 'ui' || build.env('BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG') == 'fleet-server'"
+    command: |
+        set -euo pipefail
+
+        DRY_RUN="$$(buildkite-agent meta-data get DRY_RUN --default="$${DRY_RUN:-"false"}")"
+        if [[ "$${DRY_RUN:-"false"}" == "true" ]]; then
+            echo "Skip triggering the signing of release images"
+            exit 0
+        fi
+
+        DOCKER_TAG="$$(buildkite-agent meta-data get DOCKER_TAG --default="")"
+        if [[ -z "$${DOCKER_TAG:-""}" ]]; then
+            echo "ERROR: DOCKER_TAG meta-data is empty or not set"
+            exit 1
+        fi
+
+        # Only the package-registry-distribution images are signed here, the digests are uploaded
+        # as artifacts by the release-distribution steps. The distribution images are signed
+        # when they are built, the retag of them does not need a new signature.
+        # IMAGES_TAG is the release version, it is only used as the cosign tag annotation.
+        buildkite-agent pipeline upload << PIPELINE
+        steps:
+          - trigger: unified-release-container-image-signing
+            label: ":key: Sign release images"
+            key: sign-release-images
+            async: false
+            build:
+              env:
+                ARTIFACT_PATTERN: "package-registry-distribution-*-images-digest.txt"
+                UPLOAD_SIGNATURE: "true"
+                IMAGES_TAG: "$${DOCKER_TAG}"
+        PIPELINE
+    depends_on:
+      - step: "release-distribution"
+        allow_failure: false
 
   - label: ":docker: Trigger copy release images to Docker Hub"
     key: trigger-copy-release-images-to-dockerhub
@@ -134,9 +187,17 @@ steps:
                 IMAGES_NAMES: "package-registry/package-registry-distribution"
                 IMAGES_TAG: "lite-$${DOCKER_TAG}-ubi"
         PIPELINE
+    # The copy waits for the signing build without each copy trigger declaring it: this step depends
+    # on trigger-sign-release-images, which uploads sign-release-images, and Buildkite makes a step
+    # that depends on an upload step also depend on everything that step uploaded -- see
+    # https://buildkite.com/docs/pipelines/configure/depends-on ("Explicit dependencies in uploaded
+    # steps"). So this command step only runs once sign-release-images (async: false) has finished,
+    # and the copy triggers it uploads therefore run after signing. Rollout: allow_failure keeps a
+    # signing failure from blocking the copy (the build still goes red and is caught by the failure
+    # notification); flip it back to false once signing is stable over a release or two.
     depends_on:
-      - step: "release-distribution"
-        allow_failure: false
+      - step: "trigger-sign-release-images"
+        allow_failure: true
 
 notify:
   - email: "$NOTIFY_TO"
