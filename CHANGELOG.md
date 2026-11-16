@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Breaking changes
 
 ### Bugfixes
-* Update Go runtime to 1.26.11. [#XXXX](https://github.com/elastic/package-registry/pull/XXXX)
+* Update Go runtime to 1.26.11. [#2306](https://github.com/elastic/package-registry/pull/2306)
 
 ### Added
 
