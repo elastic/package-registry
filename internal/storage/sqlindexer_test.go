@@ -8,6 +8,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"os"
 	"path/filepath"
 	"testing"
 	"time"
@@ -50,17 +51,7 @@ func TestSQLInit(t *testing.T) {
 
 func BenchmarkSQLInit(b *testing.B) {
 	// given
-	folder := b.TempDir()
-	dbPath := filepath.Join(folder, "test.db")
-	db, err := database.NewFileSQLDB(database.FileSQLDBOptions{Path: dbPath})
-	require.NoError(b, err)
-
-	swapDbPath := filepath.Join(folder, "swap_test.db")
-	swapDb, err := database.NewFileSQLDB(database.FileSQLDBOptions{Path: swapDbPath})
-	require.NoError(b, err)
-
-	options, err := CreateFakeIndexerOptions(db, swapDb)
-	require.NoError(b, err)
+	rootFolder := b.TempDir()
 
 	fs := PrepareFakeServer(b, "../../storage/testdata/search-index-all-full.json")
 	defer fs.Stop()
@@ -68,13 +59,32 @@ func BenchmarkSQLInit(b *testing.B) {
 	logger := util.NewTestLoggerLevel(zapcore.FatalLevel)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		indexer := NewIndexer(logger, ClientNoAuth(fs), options)
+		// Databases must be created inside the loop: indexer.Close() closes both of
+		// them, so they cannot be shared across iterations. Every iteration also needs
+		// to start from an empty database for Init to be measured consistently.
+		b.StopTimer()
+		folder := filepath.Join(rootFolder, fmt.Sprintf("run-%d", i))
+		require.NoError(b, os.MkdirAll(folder, 0o755))
 
-		err := indexer.Init(b.Context())
+		db, err := database.NewFileSQLDB(database.FileSQLDBOptions{Path: filepath.Join(folder, "test.db")})
+		require.NoError(b, err)
+
+		swapDb, err := database.NewFileSQLDB(database.FileSQLDBOptions{Path: filepath.Join(folder, "swap_test.db")})
+		require.NoError(b, err)
+
+		options, err := CreateFakeIndexerOptions(db, swapDb)
+		require.NoError(b, err)
+
+		indexer := NewIndexer(logger, ClientNoAuth(fs), options)
+		b.StartTimer()
+
+		err = indexer.Init(b.Context())
 		require.NoError(b, err)
 
 		b.StopTimer()
 		require.NoError(b, indexer.Close(b.Context()))
+		// Keep disk usage bounded, these databases are not small.
+		require.NoError(b, os.RemoveAll(folder))
 		b.StartTimer()
 	}
 }
