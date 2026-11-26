@@ -26,7 +26,7 @@ require (
 	google.golang.org/api v0.316.0
 	gopkg.in/yaml.v2 v2.4.0
 	honnef.co/go/tools v0.8.2
-	modernc.org/sqlite v1.62.0
+	modernc.org/sqlite v1.63.0
 )
 
 require (
